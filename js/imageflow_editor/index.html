@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de">
+<head>
+<title>ImageFlow 0.9</title>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" />
+<meta name="language" content="de" />
+<meta name="description" content="ImageFlow ist eine Bildergallerie in Javascript, angelehnt an Apples CoverFlow."/>
+<meta name="keywords" content="ImageFlow, image flow, CoverFlow, cover flow, Javascript, imageflow in javascript, coverflow in javascript" />
+<meta name="robots" content="index, follow, noarchive" />
+<link rel="shortcut icon" href="favicon.ico" type="image/ico" />
+<link rel="stylesheet" title="Standard" href="screen.css" type="text/css" media="screen" />
+<script language="JavaScript" type="text/javascript" src="imageflow.js"></script>
+</head>
+<body>
+<div id="changelog">
+	<div>
+		<b>Download:</b> <a href="http://194.95.111.244/~countzero/scripts/_myImageFlow/ImageFlow_0.9.rar">ImageFlow_0.9.rar</a> [22 KB]<br/>
+		<br/>
+		You are free to use this in any product, or on any web site. For more information about ImageFlow read the <a href="http://194.95.111.244/~countzero/myCMS/index.php?c_id=5&amp;s_id=21">Documentation</a> and check my <a href="http://194.95.111.244/~countzero/myCMS/index.php?c_id=1&amp;s_id=4&amp;tag=ImageFlow">Newsblog</a>. For anything else simply drop me a line in my <a href="http://shoutbox.finnrudolph.de/">Shoutbox</a>.<br/><br/>
+		<br/>
+		<b>ChangeLog</b><br/>
+		<br/>
+		Version 0.9
+		<ul>
+			<li>Fixed the IE bug (Invalid Argument, line 141, character 4)<br/></li>
+			<li>Fixed the selection bug (ugly text and image selection on slider dragging) <br/></li>
+			<li>Fixed the back button bug (using the back button with Safari 3 or Opera sometimes crashed ImageFlow) <br/></li>
+		</ul>
+		<p id="lnk" style="display:inline;"><a style="text-decoration:underline;cursor:pointer;" onclick="document.getElementById('log').style.display='block'; document.getElementById('lnk').style.display='none';refresh();" >Show full ChangeLog</a><br/><br/><br/></p>
+	</div>
+	<div style="text-align:left;display:none;padding-top:10px;" id="log">
+		Version 0.8
+		<ul>
+			<li>Added Safari 1.x compatibility (a very big thanks to Stephan Droste!)<br/></li>
+			<li>Added image link events onclick and ondblclick: the link is directly stored in the longdesc attribute of the image tag<br/></li>
+			<li>Improved image scaling: now <i>all</i> image formats will stay inside the main div container "imageflow"<br/></li>
+			<li>Minor performance improvements<br/></li>
+		</ul>
+		<br/>
+		Version 0.7
+		<ul>
+			<li>Added different cursor types<br/></li>
+			<li>Added configuration variables<br/></li>
+			<li>Changed implementation: <i>all</i> JavaScript is now stored inside the imageflow.js<br/></li>
+			<li>Changed the captions handling: now the caption text is directly stored in the alt attribute of the image tag<br/></li>
+			<li>Fixed a bug (<a href="http://194.95.111.244/~countzero/myCMS/index.php?c_id=14&amp;s_id=15&amp;ShowEntry=1196180083">description</a>)<br/></li>
+		</ul>
+		<br/>
+		Version 0.6
+		<ul>
+			<li>Added arrow key support<br/></li>
+			<li>Improved usability: now it just interacts on mouse wheel events if the cursor is <i>over</i> the main div container "imageflow"<br/></li>
+			<li>Improved div container positioning<br/></li>
+			<li>Fixed a bug (<a href="http://194.95.111.244/~countzero/myCMS/index.php?c_id=14&amp;s_id=15&amp;ShowEntry=1196111855">description</a>)<br/></li>
+		</ul>
+		<br/>
+		Version 0.5.1
+		<ul>
+			<li>Fixed a mouse wheel bug (<a href="http://194.95.111.244/~countzero/myCMS/index.php?c_id=14&amp;s_id=15&amp;ShowEntry=1195662384">description</a>)<br/></li>
+		</ul>
+		<br/>
+		Version 0.5
+		<ul>
+			<li>Added focus feature: now it can handle large amounts of images (>100)<br/></li>
+			<li>Added scrollbar<br/></li>
+			<li>Fixed display order of loading procedure<br/></li>
+		</ul>
+		<br/>
+		Version 0.4
+		<ul>
+			<li>Added mouse wheel support<br/></li>
+			<li>Added loading bar<br/></li>
+			<li>Minor performance improvements<br/></li>
+		</ul>
+		<br/>
+		Version 0.3
+		<ul>
+			<li>Added server side generated reflections<br/></li>
+			<li>Minor performance improvements<br/></li>
+			<li>Fixed correct scaling of square formats<br/></li>
+		</ul>
+		<br/>
+		Version 0.2
+		<ul>
+			<li>Changed global scaling and positioning: now it scales in relation to the div container "images"<br/></li>
+		</ul>
+		<br/>
+		Version 0.1
+		<ul>
+			<li>Improved browser compatibility<br/></li>
+			<li>Added bottom alignment<br/></li>
+			<li>Added correct scaling of different image formats<br/></li>
+		</ul>
+		<br/>
+	</div>
+	<div>
+		<b>Donate</b><br/>
+		<br/>
+		If you like ImageFlow and want to donate for my work simply use moneybrookers or PayPal:<br/>
+		<br/>
+	</div>
+	<a href="https://www.moneybookers.com/app/?rid=4434964"><img style="position:relative;" src="moneybrookers.png" alt="moneybrookers_logo" /></a>
+	<form style="display:inline;padding-left:50px;" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+		<input type="hidden" name="cmd" value="_xclick" />
+		<input type="hidden" name="business" value="finn.rudolph@googlemail.com" />
+		<input type="hidden" name="item_name" value="ImageFlow Donation" />
+		<input type="hidden" name="no_shipping" value="0" />
+		<input type="hidden" name="currency_code" value="EUR" />
+		<input type="hidden" name="tax" value="0" />
+		<input type="hidden" name="lc" value="GB" />
+		<input type="hidden" name="bn" value="PP-DonationsBF" />
+		<input type="image" src="paypal.gif" style="border:0;" name="submit" alt="Donate via PayPal" />
+	</form>
+	<br/><br/>
+	<div>
+		Open your free <a href="https://www.moneybookers.com/app/?rid=4434964">moneybookers.com</a> account with your email address. Upload funds to your account via bank transfer, credit/debit card or cheque. And send the amount of your choice to my account: finn.rudolph@googlemail.com<br/>
+	</div>
+</div>
+
+<h1>ImageFlow 0.9</h1><br/>
+<div id="imageflow"> 
+	<div id="loading">
+		<b>Loading images</b><br/>
+		<img src="loading.gif" width="208" height="13" alt="loading" />
+	</div>
+	<div id="images">
+		<img src="reflect.php?img=img/img001.png" longdesc="img/img001.png" alt="Image 1" />
+		<img src="reflect.php?img=img/img002.png" longdesc="img/img002.png" alt="Image 2" />
+		<img src="reflect.php?img=img/img003.png" longdesc="img/img003.png" alt="Image 3" />
+		<img src="reflect.php?img=img/img002.png" longdesc="img/img002.png" alt="Image 4" />
+		<img src="reflect.php?img=img/img003.png" longdesc="img/img003.png" alt="Image 5" />
+		<img src="reflect.php?img=img/img001.png" longdesc="img/img001.png" alt="Image 6" />
+		<img src="reflect.php?img=img/img002.png" longdesc="img/img002.png" alt="Image 7" />
+		<img src="reflect.php?img=img/img003.png" longdesc="img/img003.png" alt="Image 8" />
+		<img src="reflect.php?img=img/img002.png" longdesc="img/img002.png" alt="Image 9" />
+		<img src="reflect.php?img=img/img001.png" longdesc="img/img001.png" alt="Image 10" />
+	</div>
+	<div id="captions"></div>
+	<div id="scrollbar">
+		<div id="slider"></div>
+	</div>
+</div>
+</body>
+</html>

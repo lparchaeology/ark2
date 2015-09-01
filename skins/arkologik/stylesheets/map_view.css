@@ -1,0 +1,349 @@
+.header {
+    font-size: 1.85714rem;
+    line-height: 1.84615;
+    color: #444;
+    text-align:center;
+    display: inline;
+    margin-left: 5%;
+    text-align: center;
+    font-weight: 600;
+}
+body#mapview {
+    height:100%;
+    overflow: hidden;
+}
+
+#mapview .mainwrapper {
+    overflow: hidden;
+}
+
+body.map_view #hdr-print,
+body.map_view .leftpanel {
+    display:none;
+}
+
+.mapwrapper div.mc_subform {
+    border:none;
+    margin:0;
+}
+
+.mapview {
+    background: url("textured_paper.jpeg") repeat scroll 0 0 rgba(0, 0, 0, 0);
+    height: 1000px;
+    width: 100%;
+    display: inline-block;
+}
+
+.secondary_col .mapview {
+    height: 200px;
+    width: auto;
+    display: inline-block;
+}
+
+.ol-attribution {
+}
+
+.ol-control button {
+    background: none repeat scroll 0 0 rgba(60, 60, 60, 0.3);
+}
+
+.ol-control button:hover,
+.ol-control button:focus {
+    background: none repeat scroll 0 0 rgba(0, 155, 219, 0.8);
+}
+
+button.ol-full-screen-false::after {content:none;}
+
+.ol-zoomslider-thumb {
+    background: none repeat scroll 0 0 rgba(60, 60, 60, 0.3);
+}
+
+.ol-scale-line {
+    background: none repeat scroll 0 0 rgba(60, 60, 60, 0.3);
+}
+
+#tags {
+    display: none;
+}
+.navbar-inverse .navbar-inner {
+    background: none repeat scroll 0 0 #1f6b75;
+}
+.navbar-inverse .brand {
+    color: white;
+    padding: 5px;
+}
+
+.ol-control {
+    z-index:5;
+}
+.ol-popup {
+    background-color: white;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+    bottom: 12px;
+    display: none;
+    left: -50px;
+    padding: 15px;
+    position: absolute;
+}
+.ol-popup:after, .ol-popup:before {
+    border: medium solid transparent;
+    content: " ";
+    height: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 100%;
+    width: 0;
+}
+.ol-popup:after {
+    border-top-color: white;
+    border-width: 10px;
+    left: 48px;
+    margin-left: -10px;
+}
+.ol-popup:before {
+    border-top-color: #cccccc;
+    border-width: 11px;
+    left: 48px;
+    margin-left: -11px;
+}
+.ol-popup-closer {
+    position: absolute;
+    right: 8px;
+    text-decoration: none;
+    top: 2px;
+}
+.ol-popup-closer:after {
+    content: "✖";
+}
+
+#slider_holder {
+    background:#eee;
+    z-index:2;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 5% 2em ; 
+    left:0;
+    right:0;
+    bottom: 0;
+    width:90%;
+}
+
+#popup iframe {
+    height: 8.9em;
+    width: 210px;
+    overflow: hidden;
+}
+
+#popup {
+    background: #eeeeee;
+    box-shadow: 10px 10px 5px #888888;
+    padding: 5px;
+    display:inline-block;
+    position:fixed;
+    z-index:10;
+}
+
+#popup iframe,
+#popup span { display:inline-block; }
+
+#overlayTitleElem,
+#backbtn { float:left; }
+#forebtn { float:right; }
+
+img.loading {
+    margin:90px;
+    z-index:1;
+    position: absolute;
+    left:0;
+     }
+
+.trayhandle {
+    z-index:3;
+    width:30px;
+    height: 100%;
+    background:rgba(251, 251, 251, 0.5);
+    position: absolute;
+    left:0;
+        }
+        
+.trayhandle img {
+    position:absolute;
+    top:50%;
+    margin-top:-5em
+}
+        
+.maptray {
+    position: absolute;
+    left:-999px;
+    height: 60%;
+    top: 20%;
+    overflow-y: auto;
+}
+
+.maptray img {
+    position:relative;
+    margin:0;
+}
+
+.maptray img.legend {
+    padding: 5px;
+    background:#fff;
+    top: 0;
+}
+
+.leftpanel {
+    bottom: 0;
+    top:0;
+    left:0;
+    width:196px;
+    position: absolute;
+    z-index: 1;
+    overflow:scroll;
+}
+
+.map_panel {
+    background: none repeat scroll 0 0 #ffffff;
+    border: 2px outset #d3d3d3;
+}
+
+.map_panelwrapper.mc_subform { margin:0; border:none; }
+
+.map_panel svg { margin: 0 6px; }
+
+.map_panel h4 { width:100%; }
+
+#legend_panel { overflow:scroll; width:260px; position:relative; height:70%; }
+
+#legend_panel ul.attribute_options { position:absolute; }
+
+#legend_panel li { display: inline; float: left; width: 118px; border-bottom:1px solid #c3c3c3; margin:6px; }
+
+#legend_panel a { color: #444444;}
+
+#legend_panel li.hover a { color:#ff561d; }
+
+.layer { padding:6px; cursor: pointer; }
+
+.hiddenlayer { padding:6px; color:#999; cursor: pointer;  }
+
+.loadinglayer { 
+    padding:6px;
+    background: url('/waterloouncovered/skins/waterloo/images/loading.gif') no-repeat right center;
+ }
+
+.layerswitcher{
+    background: none repeat scroll 0 0 #ffffff;
+    border: 2px outset #d3d3d3;
+    bottom: 0;
+    top:0;
+    left:0;
+    width:250px;
+    position: absolute;
+    z-index: 1;
+    overflow:scroll;
+}
+
+.layerswitcher li.layer { 
+    background: url('/waterloouncovered/skins/arkologik/images/plusminus/view.png') no-repeat right center #000080; 
+    font-size:1em; 
+    color:#fff; 
+    text-transform:uppercase;
+}
+
+#main.main_mapadmin { padding:0; }
+
+#map_view.home .ol-control button,
+#map_view.home .ol-zoomslider-thumb {background-color: rgba(60, 60, 60, 1)}
+
+#map_view.home .ol-control button.ol-full-screen-false::after {
+    content: "";
+}
+
+#map_view .ol-zoom,
+#map_view .ol-zoomslider { left:200px; }
+#map_view .ol-scale-line { position:fixed; left:330px;  }
+
+#map_view .leftpanel {float:left; }
+
+.layerswitcher {
+    background: url("../images/body-background@2x.png") repeat scroll center center / 1140px auto #5b5b5b;
+    color: #ffffff;
+    height: 100%;
+    padding-top: 50px;
+    position: absolute;
+    width: 260px;
+    z-index: 3;
+}
+
+.layerswitcher .hiddenlayer { color:#666 }
+
+.layerswitcher .layer:hover,
+.layerswitcher .layer:focus { color: #009bdb; cursor:pointer; }
+.layerswitcher .hiddenlayer:hover,
+.layerswitcher .hiddenlayer:focus { cursor:pointer; }
+
+.contextmenu {
+	position: absolute;
+	display: none;
+    background:#eee;
+    border-radius:16px;
+    padding: 10px 10px 54px;
+    z-index: 2;
+    margin:16px 8px;
+}
+
+.tools {
+    z-index:4;
+    position: absolute;
+    left:10px;
+    bottom: 16px;
+    background:#eee;
+    border-radius:32px;
+    padding:5px;
+}
+
+.tools img { max-height:32px; }
+
+.tool {
+    z-index:5;
+    position: absolute;
+    left:0;
+    bottom: 16px;
+    background:#eee;
+    border-radius:32px;
+    padding:5px;
+}
+
+.tool.active {
+    background:#FF561D;
+}
+
+.tool img { 
+	max-height:32px;
+    }
+
+.toolbox { display:none; }
+
+.mc_subform .tools { position:relative; bottom:64px; }
+
+.search_item.selected { background: #afd7ff none repeat scroll 0 0; }
+
+div.map_col {
+    border: 1px solid #909090;
+    float: left;
+    height: 400px;
+    margin: 0 6px 0 0;
+    overflow: hidden;
+    width: 468px;
+}
+div.text_col {
+    border-left: 2px solid #707376;
+    border-right: 2px solid #707376;
+    float: left;
+    height: 400px;
+    margin: 0 4px 0 0;
+    overflow: scroll;
+    width: 300px;
+}

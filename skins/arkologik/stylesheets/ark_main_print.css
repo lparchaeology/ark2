@@ -1,0 +1,543 @@
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+
+/**
+* skins/arkologik/stylesheets/ark_main_moz_print.css
+*
+* Mozilla print stylesheet for arkologik skin
+*
+* PHP versions 4 and 5
+*
+* LICENSE:
+*    ARK - The Archaeological Recording Kit.
+*    An open-source framework for displaying and working with archaeological data
+*    Copyright (C) 2008  L - P : Partnership Ltd.
+*    This program is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*    You should have received a copy of the GNU General Public License
+*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+* @category   css
+* @package    ark
+* @author     Jessica Ogden <j.ogden@lparchaeology.com>
+* @copyright  1999-2008 L - P : Partnership Ltd.
+* @license    http://ark.lparchaeology.com/license
+* @link       http://ark.lparchaeology.com/svn/skins/arkologik/stylesheets/ark_main_moz_print.css
+* @since      File available since Release 0.8
+*/
+
+
+
+* {
+    margin:0;
+    text-decoration:none;
+}
+body {
+	font-size:9pt;
+	font-family:Helvetica,Arial,Verdana,sans-serif;
+	text-align:left;
+}
+
+#hdr-print  {
+	margin:0;
+	padding:0;
+	width:100%;
+}
+
+#wrapper {
+	width:auto; /*  Width = auto allows Google Chrome to print multiple pages. Using pixel widths from screen css (width of the main_results div minus the margins) displays table correctly in Firefox */
+	border:0;
+	margin:0;
+	padding:0;
+	color: #000000;
+	background: transparent;
+	float: none !important;
+}
+#main {
+	border-right:none;
+}
+h1 {
+    font-size:pt;
+    padding-bottom:5px;
+}    
+h4 {
+    font-size: 10pt;
+    padding:4px;
+}
+h5  {
+    font-size:10pt;
+    padding:3px;
+}
+a:link, a:visited {
+	color: #000000;
+}
+img {
+	border: medium none;
+	visibility: visible;
+}
+ul  {
+	list-style-type:none;
+	margin:0;
+	padding:0;
+}
+label {
+	margin: 0 0 0 10px;
+}
+.value {
+    /* Apply class to DATA */
+    padding: 0;
+    display: block;
+}
+.data {
+    /* Apply class to DATA */
+    padding: 0;
+    display: block;
+    vertical-align:baseline;
+}
+.row  {
+	display:block;
+	margin:0;
+	overflow:hidden;
+	padding:5px;
+	width:100%;
+}
+table {
+	page-break-inside:auto;
+}
+th {
+    /* Table headers */
+    font-style:bold;
+    vertical-align:baseline;
+}
+td {
+    /* Same as class .value - Apply to values of fields */
+    padding: 0;
+    vertical-align:top;
+}
+tr {
+	page-break-inside:avoid; 
+	page-break-after:auto;
+}
+/* Data View Results TABLE */
+table.result_tbl {
+    border-collapse:collapse;
+    margin: 0 6px 0 10px;
+}
+table.result_tbl tr {
+    border-bottom:1px solid gray;    
+}
+table.result_tbl th {
+    padding: 20px 0 6px 6px;
+}
+table.result_tbl td {
+    padding: 6px;
+}
+table.result_tbl span.options {
+    display: block;
+    width: 100px;
+}
+table.result_tbl img {
+    margin: 2px 4px -3px 3px;
+}
+table.result_tbl img.sml {
+    margin: 0px 6px 0px 10px;
+}
+table.result_tbl img.sort {
+    margin: 0px 6px 15px 0;
+    float: left;
+}
+table.result_tbl input {
+    margin: 0 4px 0 10px;
+}
+/* Data View Results TEXT */
+ul.result_ul li.search_item {
+	border-top: 1px solid gray;
+}
+/* CHAT Results */
+/* Results list - chat etc */
+ul.result_ul {
+
+    margin: 10px 6px 0 10px;
+}
+ul.result_ul li.search_item {
+    margin: 0;
+    padding: 10px 0 10px 0;
+    border-bottom: 1px solid gray;
+}
+div#page_level ul.result_ul li.search_item p {
+    margin: 0 0 0 20px;
+    padding: 0 0 2px 0;
+}
+ul.text_fields {
+    margin: 0 0 0 10px;
+    padding: 0;
+}
+ul.text_fields li {
+    margin: 2px 0 0 0;
+    padding: 0;
+    overflow: hidden;
+}
+ul.text_fields li label {
+    margin: 0 4px 0 0;
+    padding: 0;
+    font-weight: bold;
+    float: left;
+}
+/* PAGING of search results navigator below */
+div#paging_nav {
+    margin: 0 6px 0 10px;
+    padding: 4px 0 4px 4px;
+}
+div#paging_nav span.info {
+    margin: 6px;
+    padding: 0;
+    display: block;
+    float: left;
+}
+/* MICRO VIEW */
+div#printbrk {
+    margin:0;
+    float: left;
+    width:100%;
+    page-break-after:always;
+}
+
+
+/* Columns */
+div.primary_col {
+    /* Styling for the primary column */
+    margin: 0;
+    float: left;
+    width: 60%;
+}
+div.secondary_col {
+    /* Styling for the secondary column */
+    margin: 0;
+    float: left;
+    width: 40%;
+}
+
+/* Record Nav */
+div#record_nav {
+    font-size:10pt;
+    margin: 5px;
+    padding: 3px;
+    overflow: hidden;
+    border: 2px solid #909090;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    color:#000000;
+}
+
+div#record_nav label {
+    float: left;
+    margin: 3px 3px 3px 0;
+    padding: 4px;
+    font-weight:bold;
+}            
+div#record_nav ul {
+    float:left;
+    overflow: hidden;
+    margin: 0;
+    padding:0;
+}
+div#record_nav ul li {
+    float: left;
+    margin: 3px 3px 3px 0;
+    padding: 4px;   
+}
+div#record_nav ul li.current {
+    border: 1px solid #909090;
+    background:none;
+    color: #909090;
+}
+/* Subform Divs */
+div.sf_nav  {
+    border-bottom: 2px solid #909090;
+    margin-bottom: 4px;
+}
+div.mc_subform {
+    /* Styling for mc subforms */
+    border: 2px solid #909090;
+    margin: 0 0 5px 5px;
+    overflow:hidden;
+}
+div.mc_subform textarea {
+    width: 360px;
+    height: 30px;
+    text-align: left;
+    margin: 0;
+}
+div.mc_subform span.data{
+    display:block;
+    font-size:0.8em;
+    overflow:hidden;
+    padding:0 10px 0 0;
+}
+span.value {
+    display:block;
+    overflow:hidden;
+    padding: 0 10px 0 0;
+}
+.value {
+    font-size: 0.8em;
+}
+.hz_list li {
+    padding: 2px 5px 2px 5px;
+}	
+/* Paragraphs */
+div.mc_subform p {
+    padding: 5px 0 5px 0;
+}
+/* frm_subform (subforms within frames) */
+div.frm_subform {
+    border: none;
+    margin: 0;
+    padding: 3px;
+}
+label.form_label {
+    /* labels in FORMS - ie USER INPUT */
+    display: block;
+    float: left;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin: 0 5px 0 0;
+    text-align: left;
+    width: 28%;
+}
+/* Field Lists */
+/* this is applied to long lists of fields */
+ul.field_list {
+    margin: 0;
+    padding: 0;
+}
+ul.field_list li {
+    margin: 0;
+    border-bottom: 1px solid gray;
+}
+/* Attribute Subforms */
+/* attr_list contains one li per attr (use a field list to loop over the fields/attrtypes)*/
+ul.attr_list {
+    margin: 0;
+    padding: 0;
+}
+ul.attr_list li {
+    margin: 0;
+    padding: 0 4px;
+    float: left;
+    border: none;
+    border-left: 1px solid #gray;
+}
+form.attr_form {
+    float: left;
+}
+label.attr_label {
+    /* labels for attribute lists - suggest to make this like form_label */
+    float: left;
+    display: block;
+    text-align: left;
+    margin: 0px;
+    margin-right: 5px;
+    font-weight:bold;
+}
+/* Data Lists */
+ul.data {
+    margin: 2px 0;
+    padding: 0;
+}
+.data li {
+    margin: 0;
+    padding: 2px 4px;
+    overflow: hidden;
+}
+/* XMI subform */
+span.xmi_txt {
+   color: #337373;
+}
+span.xmi_val {
+   margin: 0 4px 0 0;
+   color: #737173;
+   font-weight: bold;
+}
+/* this is the parent list of XMIed items */
+ul.xmi_list {
+   margin: 0;
+   padding: 0;
+}
+ul.xmi_list li {
+   margin: 0;
+   padding: 2px 4px;
+   border-bottom: 1px solid gray;
+   overflow:hidden;
+}
+/* this is for the list of fields within each XMIed item */
+ul.xmi_field {
+   margin: 5px 0;
+   padding: 0;
+}
+ul.xmi_field li {
+   border: none;
+   margin: 4px 0;
+   padding: 2px 0;
+}
+ul.xmi_field li label {
+   margin: 0 4px 0 0;
+   padding: 0;
+   font-weight: bold;
+}
+/* INTERPRETATIONS */
+.recordarea {
+    /* This is to group various bits of a record */
+    /* In the cxt interps this was applied to the <li> */
+    margin: 4px;
+    padding: 4px;
+    overflow: hidden;
+    border: 1px solid gray;
+}
+.textblock {
+    /* This is for the main block of text */
+    /* In cxt interp it was applied to a span */
+    margin: 0px;
+    padding: 0px;
+    display: block;
+    overflow: hidden;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid gray;
+}
+
+/* SPANS */
+span.inp {
+	display:block;
+	width:100%;
+	margin:0 0 10px 0;
+}
+
+/* THE MATRIX */
+ul.matrix_rows {
+    /* NOTE THE PLURAL */
+    margin: 1px;
+    padding: 0;
+    list-style-type: none;
+    text-align: center;
+}
+ul.matrix_row {
+    display: table;
+    margin: 0 auto;
+}
+/* LIs IN ROWS */
+/* GENERIC - Applies to ALL li's of a matrix row */
+ul.matrix_row li {
+    display: table-cell;
+    padding: 0px;
+    text-indent: 0;
+    overflow:hidden;
+    visibility: visible;
+}
+/* SELECTIVE BY CLASS */
+ul.matrix_row li.lthn {
+    background-image: url(../images/matrix/vline.png);
+    background-repeat:  no-repeat;
+    background-position: bottom center;
+}
+ul.matrix_row li.middle {
+    padding: 2px;
+    background-image: url(../images/matrix/vline.png);
+    background-repeat: repeat-y;
+    background-position: center;
+}
+ul.matrix_row li.ethn {
+    background-image: url(../images/matrix/vline.png);
+    background-repeat:  no-repeat;
+    background-position: top center;
+    vertical-align: bottom;
+}
+/* LINKs IN LIs */
+ul.matrix_row li a {
+    color: #444444;
+    padding: 0px;
+    margin: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: #FFFFFF;
+    display:block;
+}
+/* Matrix FORMS */
+ul.matrix_row li form {
+    color: #444444;
+    padding: 0px;
+    margin: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+/* SPANS */
+ul.matrix_row li span {
+    padding: 0px;
+    margin: 0px;
+    background-color: #FFFFFF;
+    display:block;
+}
+/* SELECTIVE by class for As and Ps*/
+ul.matrix_row li .erl {
+    margin-top: 3px;
+}
+ul.matrix_row li .ltr {
+    margin-bottom: 3px
+}
+
+/* MAPPING */
+div.olMap {
+    margin: 0 !important;
+    padding: 0 !important;
+}	
+div.smallmap {
+    height:200px;    
+}	
+
+#scaleLine div.olControlScaleLineTop {
+    border-color: -moz-use-text-color white white;
+    border-style: none solid solid;
+    border-width: medium 2px 2px;
+    text-align: center;
+    color: white;
+}
+#scaleLine div.olControlScaleLineBottom {
+    border-color: white white -moz-use-text-color;
+    border-style: solid solid none;
+    border-width: 2px 2px medium;
+    margin-top: -2px;
+    text-align: center;
+    color: white;
+}
+#scaleText {
+    color: white;
+    font-size: 0.8em;
+}	
+#mapOutput {
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #FF561D;
+}
+div.olMapViewport {
+    text-align: left;
+    position:relative;
+    overflow:hidden;
+    padding:0;
+    margin:0;
+}
+	
+
+/* List of items displayed on screen NOT to be displayed in print */
+#hdr, #lpanel, a.chevrons, ul#record_refresh, ul#record_admin, #record_upper, #navcontainer, #search, #version, ul.sf_nav, div#results_nav, div#multi_action_toolbar, table.result_tbl span.options, li.search_item span.options, ul.pag_list, form#perpage_selector, form#perpage_inf, a.sf_spat_map, img.northarrow {
+    display:none;
+}
+/*
+
+
+*/
