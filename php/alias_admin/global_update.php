@@ -46,7 +46,7 @@ if ($qtype == 'add') {
     $class_id = reqQst($_REQUEST,'class_id');
     $item_val= 'cor_lut_'.$type.'type';
     $cre_by = $user_id;
-    $cre_on = gmdate("Y-m-d H:i:s", time());
+    $cre_on = dbTimestamp();
     //Alias
     // 1 - MUST BE SET
     if (!$new_alias) {
@@ -71,7 +71,7 @@ if ($qtype == 'edt') {
     $class_id = reqQst($_REQUEST,'class_id');
     $item_val= 'cor_lut_'.$type.'type';
     $cre_by = $user_id;
-    $cre_on = gmdate("Y-m-d H:i:s", time());
+    $cre_on = dbTimestamp();
     
     //Alias
     // 1 - MUST BE SET
@@ -91,7 +91,7 @@ if ($qtype == 'del') {
     $query_needed = 'G3';
     $frag_id = reqQst($_REQUEST,'frag_id');
     $cre_by = $user_id;
-    $cre_on = gmdate("Y-m-d H:i:s", time());
+    $cre_on = dbTimestamp();
 }
 
 // ---------- Execution ------------

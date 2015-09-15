@@ -83,9 +83,9 @@ if ($update_db == 'addcmp') {
     $source_db = reqQst($_REQUEST,'source_db');
     $ste_cd = reqQst($_REQUEST,'ste_cd');
     $cre_by = $user_id;
-    $cre_on = gmdate("Y-m-d H:i:s", time());;
+    $cre_on = dbTimestamp();
     $import_cre_by = $user_id;
-    $import_cre_on = gmdate("Y-m-d H:i:s", time());;
+    $import_cre_on = dbTimestamp();
     // This is not currently in use 9/9/2010 GH
     $type = 'dry_run';
     
@@ -142,9 +142,9 @@ if ($update_db == 'edtcmp') {
     $source_db = reqQst($_REQUEST,'source_db');
     $ste_cd = reqQst($_REQUEST,'ste_cd');
     $cre_by = $user_id;
-    $cre_on = gmdate("Y-m-d H:i:s", time());;
+    $cre_on = dbTimestamp();
     $import_cre_by = $user_id;
-    $import_cre_on = gmdate("Y-m-d H:i:s", time());;
+    $import_cre_on = dbTimestamp();
     // This is not currently in use 9/9/2010 GH
     $type = 'dry_run';
     

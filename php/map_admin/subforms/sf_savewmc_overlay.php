@@ -101,11 +101,7 @@ if (get_magic_quotes_gpc()) {
     echo "ADMIN ERROR - Magic Quotes are on... that's not very secure";
     $comments = stripslashes($comments);
 }
-$cre_on = "NOW()";
-
-if ($cre_on == "NOW()") {
-    $cre_on = gmdate("Y-m-d H:i:s", time());
-}
+$cre_on = dbTimestamp();
 
 $sql = "
     INSERT INTO cor_tbl_wmc (name, comments, wmc,scales, extents, projection, zoom, legend_array, OSM, gmap_api_key,public, cre_by, cre_on)

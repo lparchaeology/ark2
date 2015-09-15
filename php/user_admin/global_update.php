@@ -133,7 +133,7 @@ if ($update_db == 'adusrl') {
     $cpw = reqQst($_REQUEST,'cpw');
     $newabk = reqQst($_REQUEST,'newabk');
 
-    $cre_on = gmdate("Y-m-d H:i:s", time());
+    $cre_on = dbTimestamp();
 
     // evaluate variables
 
@@ -224,7 +224,7 @@ if ($update_db == 'edtusr') {
 
     $user_id = reqQst($_REQUEST,'user_id');
     $cre_by = reqQst($_SESSION,'user_id');
-    $cre_on = gmdate("Y-m-d H:i:s", time());
+    $cre_on = dbTimestamp();
 
     // evaluate variables
 
@@ -274,7 +274,7 @@ if ($update_db == 'edtpwd') {
 
     $user_id = reqQst($_REQUEST,'user_id');
     $cre_by = reqQst($_SESSION,'user_id');
-    $cre_on = gmdate("Y-m-d H:i:s", time());
+    $cre_on = dbTimestamp();
 
     // evaluate variables
 
@@ -315,7 +315,7 @@ if ($update_db == 'adsgrp') {
 
     $user_id = reqQst($_REQUEST,'user_id');
     $cre_by = reqQst($_SESSION,'user_id');
-    $cre_on = gmdate("Y-m-d H:i:s", time());
+    $cre_on = dbTimestamp();
 
     // evaluate variables
 
@@ -346,7 +346,7 @@ if ($update_db == 'dlsgrp') {
 
     $user_id = reqQst($_REQUEST,'user_id');
     $cre_by = reqQst($_SESSION,'user_id');
-    $cre_on = gmdate("Y-m-d H:i:s", time());
+    $cre_on = dbTimestamp();
 
     // evaluate variables
 
@@ -377,7 +377,7 @@ if ($update_db == 'usrdis') {
 
     $user_id = reqQst($_REQUEST,'user_id');
     $cre_by = reqQst($_SESSION,'user_id');
-    $cre_on = gmdate("Y-m-d H:i:s", time());
+    $cre_on = dbTimestamp();
 
     // evaluate variables
 
@@ -402,7 +402,7 @@ if ($update_db == 'usrena') {
 
     $user_id = reqQst($_REQUEST,'user_id');
     $cre_by = reqQst($_SESSION,'user_id');
-    $cre_on = gmdate("Y-m-d H:i:s", time());
+    $cre_on = dbTimestamp();
 
     // evaluate variables
 

@@ -52,7 +52,7 @@ $type_module = reqQst($_REQUEST, 'type_module');
 $new_alias = reqQst($_REQUEST, 'new_alias');
 $new_alias_lang = reqQst($_REQUEST, 'new_alias_lang');
 $cre_by = $user_id;
-$cre_on = gmdate("Y-m-d H:i:s", time());
+$cre_on = dbTimestamp();
 
 
 // if we have all the required fields then we can enter the process routine

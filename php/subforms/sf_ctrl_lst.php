@@ -45,7 +45,7 @@ $sf_conf_name = reqQst($_REQUEST, 'sf_conf');
 //$lang
 
 // DEV NOTE: ADD THESE TO STANDARD MARKUP TABLE
-$cre_on = gmdate("Y-m-d H:i:s", time());
+$cre_on = dbTimestamp();
 
 // this is a list of all the markup nnames to be queried from the db
 $mk_list = array(

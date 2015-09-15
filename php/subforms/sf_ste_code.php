@@ -40,7 +40,7 @@ $new_ste_cd = reqArkVar('new_ste_cd');
 $reset = reqQst($_REQUEST, 'reset');
 
 // Tidy these up
-$cre_on = gmdate("Y-m-d H:i:s", time());
+$cre_on = dbTimestamp();
 
 $mk_list = array(
                 'stecdtitle',

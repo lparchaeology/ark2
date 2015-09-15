@@ -48,7 +48,7 @@ $data = json_decode($jsondata,true);
 array_shift($data);
 global $user_id;
 $cre_by = $user_id;
-$cre_on = gmdate("Y-m-d H:i:s", time());
+$cre_on = dbTimestamp();
 $resulttable=array();
 
 foreach ($data as $itemvalue => $value){

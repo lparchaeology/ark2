@@ -167,6 +167,25 @@ function dbError($ex,$err = "")
     echo "$err $ex";
 }
 // }}} dbError()
+// {{{ dbTimestamp()
+/**
+ * Returns the db timestamp
+ *
+ * @param string $timestamp  The timestamp, NOW(), or blank
+ * @return string $timestamp  The timestamp
+ * @author John Layt
+ * @since 2.0
+ *
+ */
+
+function dbTimestamp($timestamp = NULL)
+{
+    if (!$timestamp || $timestamp == "NOW()") {
+        return gmdate("Y-m-d H:i:s", time());
+    }
+    return $timestamp;
+}
+// }}}
 // {{{ addAttr()
 
 /**
@@ -201,9 +220,7 @@ function addAttr($attribute, $itemkey, $itemvalue, $cre_by, $cre_on, $bv = FALSE
     
     // prepare the SQL statement
     
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     
     $sql = "INSERT INTO cor_tbl_attribute (attribute, boolean, itemkey, itemvalue, cre_by, cre_on) VALUES(?,?,?,?,?,?)";
     $params = array($attribute, $bv, $itemkey, $itemvalue, $cre_by, $cre_on);
@@ -264,9 +281,7 @@ function addAction($actiontype, $itemkey, $itemvalue, $actorkey, $actorvalue, $c
 {
     global $db, $log;
     // setup the sql
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     $sql = "
         INSERT INTO cor_tbl_action (actiontype, itemkey, itemvalue, actor_itemkey, actor_itemvalue, cre_by, cre_on)
         VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -361,9 +376,7 @@ function addAlias($new_alias, $new_attr_id, $alias_table, $lang, $cre_by, $cre_o
 function addDate($datetype, $itemkey, $itemvalue, $date, $cre_by, $cre_on) {
     global $db, $log;
     // setup sql
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     $sql = "
         INSERT INTO cor_tbl_date (datetype, itemkey, itemvalue, date, cre_by, cre_on)
         VALUES (?, ?, ?, ?, ?, ?)
@@ -414,9 +427,7 @@ function addDate($datetype, $itemkey, $itemvalue, $date, $cre_by, $cre_on) {
 function addFile($itemkey, $itemvalue, $file, $cre_by, $cre_on)
 {
     global $db, $log;
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     $sql = "
         INSERT INTO cor_tbl_file (itemkey, itemvalue, file, cre_by, cre_on)
         VALUES (?, ?, ?, ?, ?)
@@ -483,9 +494,7 @@ function addItemKey($itemkey, $itemvalue, $cre_by, $cre_on, $modtype = FALSE)
         $itemvalue = $ste_cd.'_'.$mod_no_val;
     }
     // SQL (if we are using modtypes it is a little different)
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     if ($modtype) {
         $sql = "
             INSERT INTO $tbl ($mod_cd, $mod_no, ste_cd, $modtypename ,cre_by, cre_on)
@@ -533,9 +542,7 @@ function addMap($map, $cre_by,$cre_on)
     $tbl = 'cor_tbl_map';
     $next = getSingle("MAX(id)", $tbl, '1') + 1;
     
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     
     $sql_txt = "INSERT INTO $tbl (id,cre_by,cre_on)
                 values (?,?,?)";
@@ -611,9 +618,7 @@ function addMarkup($nname, $markup, $mod_short, $lang, $description, $cre_by, $c
 {
     global $db, $log;
     // setup sql
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     $sql = "
         INSERT INTO cor_tbl_markup (nname, markup, mod_short, language, description, cre_by, cre_on)
         VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -669,9 +674,7 @@ function addNumber($numtype, $itemkey, $itemvalue, $num, $cre_by, $cre_on)
 {
     global $db, $log;
     // make sql
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     $sql = "
         INSERT INTO cor_tbl_number (numbertype, itemkey, itemvalue, number, cre_by, cre_on)
         VALUES (?, ?, ?, ?, ?, ?)
@@ -725,9 +728,7 @@ function addSpan($spantype, $itemkey, $itemvalue, $beg, $end, $cre_by, $cre_on)
 {
     global $db, $log;
     // make up the sql
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     $sql = "
         INSERT INTO cor_tbl_span (spantype, itemkey, itemvalue, beg, end, cre_by, cre_on)
         VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -782,9 +783,7 @@ function addSpanAttr($span_id, $spanlabel, $cre_by, $cre_on)
 {
     global $db, $log;
     // setup sql
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     $sql = "
         INSERT INTO cor_tbl_spanattr (span, spanlabel, cre_by, cre_on)
         VALUES (?, ?, ?, ?)
@@ -840,9 +839,7 @@ function addTxt($txttype, $itemkey, $itemvalue, $txt, $lang, $cre_by, $cre_on)
         // echo "ADMIN ERROR: Magic Quotes are on... that's not very secure";
         $txt = stripslashes($txt);
     }
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     $sql = "
         INSERT INTO cor_tbl_txt (txttype, itemkey, itemvalue, txt, language, cre_by, cre_on)
         VALUES (?, ?, ?, ?, ?,?, ?)
@@ -913,9 +910,7 @@ function addXmi($itemkey, $itemvalue, $xmi_itemkey, $list, $ste_cd, $cre_by, $cr
         return FALSE;
     }
     $array = explode(' ', $list);
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     $sql_arrays = array();
     // loop over the list
     foreach ($array as $value) {
@@ -1430,9 +1425,7 @@ function edtAction($action_id, $actorkey, $actorvalue, $cre_by, $cre_on)
 {
     global $db, $log;
     // set up sql
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     $sql = "
         UPDATE cor_tbl_action
         SET actor_itemkey = ?, actor_itemvalue = ?, cre_by = ?, cre_on = ?
@@ -1499,9 +1492,7 @@ function edtAttr($attribute, $bv, $frag_id, $cre_by, $cre_on)
     // Basics
     global $db, $log;
     // Set up the SQL
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     $sql = "
         UPDATE cor_tbl_attribute
         SET attribute = ?, boolean = ?, cre_by = ?, cre_on = ?
@@ -1551,9 +1542,7 @@ function edtAttr($attribute, $bv, $frag_id, $cre_by, $cre_on)
 
 function edtCmapData($db, $cmap, $sourcedata, $sourcelocation, $mapto_tbl, $mapto_class, $mapto_classtype, $mapto_id, $cre_on, $qtype=FALSE)
 {
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     $sql = "
     INSERT INTO cor_tbl_cmap_data
     (cmap, sourcedata, sourcelocation, mapto_tbl, mapto_class, mapto_classtype, mapto_id, description, cre_by, cre_on)
@@ -1598,9 +1587,7 @@ function edtDate($date, $date_id, $cre_by, $cre_on)
 {
     global $db, $log;
     // set up sql
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     $sql = "
         UPDATE cor_tbl_date
         SET date = ?, cre_by = ?, cre_on = ?
@@ -1727,9 +1714,7 @@ function edtFragKey($frag_id, $dclass, $new_itemkey, $new_itemval, $cre_by, $cre
     // tbl
     $tbl = 'cor_tbl_'.$dclass;
     // set up the sql
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     $sql = "
         UPDATE $tbl
         SET itemkey = ?, itemvalue = ?, cre_by = ?, cre_on = ?
@@ -1910,9 +1895,7 @@ function edtLut($db, $table, $new_lut_val, $ark_mod, $attrtype, $lang, $cre_by, 
     $nickname = str_replace($remove_this, '', strtolower($new_lut_val));
     
     // 2 - ADD TO THE LUT AND RETURN THE NEW ATTRIBUTE ID (depending on type)
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     if ($table == 'cor_lut_attribute') {
         $sql = "
             INSERT INTO $table (attribute, module, attributetype, cre_by, cre_on)
@@ -1999,9 +1982,7 @@ function edtMarkup($id, $nname, $markup, $mod_short, $lang, $description, $cre_b
 {
     global $db, $log;
     // set up sql
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     $sql = "
         UPDATE cor_tbl_markup
         SET nname = ?, markup = ?, mod_short = ?, language = ?, description = ?, cre_by = ?, cre_on = ?
@@ -2068,9 +2049,7 @@ function edtNumber($num_id, $num, $cre_by, $cre_on)
 {
     global $db, $log;
     // set up sql
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     $sql = "
         UPDATE cor_tbl_number
         SET number = ?, cre_by = ?, cre_on = ?
@@ -2129,9 +2108,7 @@ function edtSpan($span_id, $beg, $end, $cre_by, $cre_on)
 {
     global $db;
     // set up the sql
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     $sql = "
         UPDATE cor_tbl_span 
             SET beg = ?
@@ -2197,9 +2174,7 @@ function edtTxt($txt_id, $txt, $lang, $cre_by, $cre_on)
         // echo "Magic Quotes are on... that's not very secure";
         $txt = stripslashes($txt);
     }
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     // set up the sql
     $sql = "
         UPDATE cor_tbl_txt
@@ -5085,9 +5060,7 @@ function logCmplxEvent($event, $ref, $refid, $vars, $cre_by, $cre_on)
     $ref = serialize($ref);
     $refid = serialize($refid);
     $vars = serialize($vars);
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     // setup the SQL
     $sql = "
         INSERT
@@ -5127,9 +5100,7 @@ function logEvent($event, $vars, $cre_by, $cre_on)
 {
     global $db;
     // setup the SQL
-    if ($cre_on == "NOW()") {
-        $cre_on = gmdate("Y-m-d H:i:s", time());
-    }
+    $cre_on = dbTimestamp($cre_on);
     $sql = "
         INSERT
         INTO cor_tbl_log (event, vars, cre_by, cre_on)
