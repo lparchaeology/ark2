@@ -272,28 +272,20 @@ switch($stage) {
             $i++;
         } while (!$unique);        
         // second, add the attr to the lut
-        $sql = "
-            INSERT INTO cor_lut_attribute (attribute, attributetype, module, cre_by, cre_on)
-            VALUES (?, ?, ?, ?, ?)
-        ";
-        $params = array($nickname, $attr_type_edt_id, 'cor', $cre_by, $cre_on);
-        $sql = dbPrepareQuery($sql,__FUNCTION__);
-        $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-        $new_attr_id = $db->lastInsertId();
+        $table = 'cor_lut_attribute';
+        $fields = array('attribute', 'attributetype', 'module', 'cre_by', 'cre_on');
+        $values = array($nickname, $attr_type_edt_id, 'cor', $cre_by, $cre_on);
+        $logtype = 'adnatt';
+        $results = dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
+        $new_attr_id = $results['new_id'];
         // NOW DO THE ALIAS
-        $sql = "
-            INSERT INTO cor_tbl_alias (alias, aliastype, language, itemkey, itemvalue, cre_by, cre_on)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        ";
-        $params = array($new_attr, 1, $ali_lang, 'cor_lut_attribute', $new_attr_id, $cre_by, $cre_on);
-        $logvars = "A new value was added to cor_tbl_alias. The sql: ". serialize($sql);
+        $table = 'cor_tbl_alias';
+        $fields = array('alias', 'aliastype', 'language', 'itemkey', 'itemvalue', 'cre_by', 'cre_on');
+        $values = array($new_attr, 1, $ali_lang, 'cor_lut_attribute', $new_attr_id, $cre_by, $cre_on);
         $logtype = 'adnali';
-        $sql = dbPrepareQuery($sql,__FUNCTION__);
-        $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-        $new_ali_id = $db->lastInsertId();
-        $logvars = $logvars."\nThe new alias id is: $new_ali_id";
-        logEvent($logtype, $logvars, $cre_by, $cre_on);
-        
+        $results = dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
+        $new_ali_id = $results['new_id'];
+
         // Measure and report success
         if ($new_attr_id && $new_ali_id) {
             $form = "<h5>$mk_success</h5>\n";

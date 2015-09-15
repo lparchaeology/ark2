@@ -167,6 +167,55 @@ function dbError($ex,$err = "")
     echo "$err $ex";
 }
 // }}} dbError()
+// {{{ dbRunAddQuery()
+
+/**
+ * Runs a DB query, logs if requested, and returns a result array
+ *
+ * @param string $table The table to insert into
+ * @param array $fields The fields to insert
+ * @param array $values The values to set the fields to
+ * @param string $logtype  The query type to log
+ * @param string $log_by  The author of the query
+ * @param string $log_on  The timestamp of the query
+ * @param string $function  The function name (to be used in any error messages)
+ * @return array $result  An array containing results info
+ * @author John Layt
+ * @since 2.0
+ *
+ */
+
+function dbRunAddQuery($table, $fields, $values, $logtype, $log_by, $log_on, $function)
+{
+    global $db, $log;
+    // Create the sql
+    $fl = implode(', ', $fields);
+    $vl = str_repeat('?, ', count($fields) - 1).'?';
+    $sql = "
+        INSERT INTO $table ($fl)
+        VALUES ($vl)
+    ";
+    // Execute the query
+    $stmt = dbPrepareQuery($sql, $function);
+    $stmt = dbExecuteQuery($stmt, $values, $function);
+    // Prepare the results
+    if ($stmt->errorCode() == '00000') {
+        $results['new_id'] = $db->lastInsertId();
+        $results['success'] = TRUE;
+        $results['sql'] = $stmt;
+    } else {
+        $results['new_id'] = FALSE;
+        $results['success'] = FALSE;
+        $results['failed_sql'] = $stmt;
+    }
+    if ($log == 'on') {
+        $logvars = 'The sql: '. json_encode($stmt);
+        logEvent($logtype, $logvars, $log_by, $log_on);
+    }
+    return ($results);
+}
+
+// }}}
 // {{{ dbTimestamp()
 /**
  * Returns the db timestamp
@@ -210,52 +259,21 @@ function dbTimestamp($timestamp = NULL)
 
 function addAttr($attribute, $itemkey, $itemvalue, $cre_by, $cre_on, $bv = FALSE)
 {
-    // Basics
-    global $db, $log;
     // config error handling
     if (! $attribute or ! $itemkey or ! $itemvalue or ! $cre_by or ! $cre_on) {
         echo "addAttr: one of the required params is missing";
         return FALSE;
     }
-    
+
     // prepare the SQL statement
-    
     $cre_on = dbTimestamp($cre_on);
-    
-    $sql = "INSERT INTO cor_tbl_attribute (attribute, boolean, itemkey, itemvalue, cre_by, cre_on) VALUES(?,?,?,?,?,?)";
-    $params = array($attribute, $bv, $itemkey, $itemvalue, $cre_by, $cre_on);
-    
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    // Log vars
-    if ($log == 'on') {
-        $logvars = 'The sql: '. json_encode($sql);
-        $logtype = 'addatr';
-    }
+    $table = 'cor_tbl_attribute';
+    $fields = array('attribute', 'boolean', 'itemkey', 'itemvalue', 'cre_by', 'cre_on');
+    $values = array($attribute, $bv, $itemkey, $itemvalue, $cre_by, $cre_on);
+    $logtype = 'addatr';
+
     // Run the query
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    // Handle the results
-    $new_id = $db->lastInsertId();
-    if ($new_id) {
-        $results[] =
-            array(
-                'new_id' => $new_id,
-                'success' => TRUE,
-                'sql' => $sql 
-        );
-    } else {
-        $results[] =
-            array(
-                'new_id' => FALSE,
-                'success' => FALSE,
-                'failed_sql' => $sql 
-        );
-    }
-    // Log the event
-    if (isset($logvars)) {
-        logEvent($logtype, $logvars, $cre_by, $cre_on);
-    }
-    // Return
-    return ($results);
+    return dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}
@@ -277,38 +295,16 @@ function addAttr($attribute, $itemkey, $itemvalue, $cre_by, $cre_on, $bv = FALSE
  *
  */
 
-function addAction($actiontype, $itemkey, $itemvalue, $actorkey, $actorvalue, $cre_by, $cre_on)
+function addAction($actiontype, $itemkey, $itemvalue, $actor_itemkey, $actor_itemvalue, $cre_by, $cre_on)
 {
-    global $db, $log;
     // setup the sql
     $cre_on = dbTimestamp($cre_on);
-    $sql = "
-        INSERT INTO cor_tbl_action (actiontype, itemkey, itemvalue, actor_itemkey, actor_itemvalue, cre_by, cre_on)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    ";
-    $params = array($actiontype, $itemkey, $itemvalue, $actorkey, $actorvalue, $cre_by, $cre_on);
-    // setup the log vars
-    if ($log == 'on') {
-        $logvars = 'The sql: '.json_encode($sql);
-        $logtype = 'actadd';
-    }
+    $able = 'cor_tbl_action';
+    $fields = array('actiontype', 'itemkey', 'itemvalue', 'actor_itemkey', 'actor_itemvalue', 'cre_by', 'cre_on');
+    $values = array($actiontype, $itemkey, $itemvalue, $actor_itemkey, $actor_itemvalue, $cre_by, $cre_on);
+    $logtype = 'actadd';
     // run query
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    $new_id = $db->lastInsertId();
-    if ($new_id) {
-        $results['new_id'] = $new_id;
-        $results['success'] = TRUE;
-        $results['sql'] = $sql;
-    } else {
-        $results['new_id'] = FALSE;
-        $results['success'] = FALSE;
-        $results['failed_sql'] = $sql;
-    }
-    if (isset($logvars)) {
-        logEvent($logtype, $logvars, $cre_by, $cre_on);
-    }
-    return ($results);
+    return dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}
@@ -327,32 +323,15 @@ function addAction($actiontype, $itemkey, $itemvalue, $actorkey, $actorvalue, $c
  */
 function addAlias($new_alias, $new_attr_id, $alias_table, $lang, $cre_by, $cre_on)
 {
-    global $db, $log;
-    
     // NOW DO THE ALIAS
-    $sql = "
-            INSERT INTO cor_tbl_alias (alias, aliastype, language, itemkey, itemvalue, cre_by, cre_on)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        ";
-    $params = array($new_alias, 1, $lang, $alias_table, $new_attr_id, $cre_by, $cre_on);
-    $logvars = "A new value was added to cor_tbl_alias. The sql: ". serialize($sql);
+    $cre_on = dbTimestamp($cre_on);
+    $table = 'cor_tbl_alias';
+    $fields = array('alias', 'aliastype', 'language', 'item_key', 'itemvalue', 'cre_by', 'cre_on');
+    $values = array($new_alias, 1, $lang, $alias_table, $new_attr_id, $cre_by, $cre_on);
     $logtype = 'adnali';
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    $new_id = $db->lastInsertId();
-    if ($new_id) {
-        $results['new_id'] = $new_id;
-        $results['success'] = TRUE;
-        $results['sql'] = $sql;
-    } else {
-        $results['new_id'] = FALSE;
-        $results['success'] = FALSE;
-        $results['failed_sql'] = $sql;
-    }
-    if (isset($logvars)) {
-        logEvent($logtype, $logvars, $cre_by, $cre_on);
-    }
-    return ($results);
+
+    // Run the query
+    return dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}
@@ -374,37 +353,15 @@ function addAlias($new_alias, $new_attr_id, $alias_table, $lang, $cre_by, $cre_o
  */
 
 function addDate($datetype, $itemkey, $itemvalue, $date, $cre_by, $cre_on) {
-    global $db, $log;
     // setup sql
     $cre_on = dbTimestamp($cre_on);
-    $sql = "
-        INSERT INTO cor_tbl_date (datetype, itemkey, itemvalue, date, cre_by, cre_on)
-        VALUES (?, ?, ?, ?, ?, ?)
-    ";
-    $params = array($datetype, $itemkey, $itemvalue, $date, $cre_by, $cre_on);
+    $table = 'cor_tbl_date';
+    $fields = array('datetype', 'itemkey', 'itemvalue', 'date', 'cre_by', 'cre_on');
+    $values = array($datetype, $itemkey, $itemvalue, $date, $cre_by, $cre_on);
+    $logtype = 'datadd';
 
-    // log vars
-    if ($log == 'on') {
-        $logvars = 'The sql: ' . json_encode ( $sql );
-        $logtype = 'datadd';
-    }
     // run query
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    $new_id = $db->lastInsertId();
-    if ($new_id) {
-        $results['new_id'] = $new_id;
-        $results['success'] = TRUE;
-        $results['sql'] = $sql;
-    } else {
-        $results['new_id'] = FALSE;
-        $results['success'] = FALSE;
-        $results['failed_sql'] = $sql;
-    }
-    if (isset($logvars)) {
-        logEvent($logtype, $logvars, $cre_by, $cre_on);
-    }
-    return ($results);
+    return dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}
@@ -426,40 +383,13 @@ function addDate($datetype, $itemkey, $itemvalue, $date, $cre_by, $cre_on) {
 
 function addFile($itemkey, $itemvalue, $file, $cre_by, $cre_on)
 {
-    global $db, $log;
     $cre_on = dbTimestamp($cre_on);
-    $sql = "
-        INSERT INTO cor_tbl_file (itemkey, itemvalue, file, cre_by, cre_on)
-        VALUES (?, ?, ?, ?, ?)
-    ";
-    $params = array($itemkey, $itemvalue, $file, $cre_by, $cre_on);
-    if ($log == 'on') {
-        $logvars = 'The sql: '.json_encode($sql);
-        $logtype = 'addfil';
-    }
+    $table = 'cor_tbl_file';
+    $fields = array('itemkey', 'itemvalue', 'file', 'cre_by', 'cre_on');
+    $values = array($itemkey, $itemvalue, $file, $cre_by, $cre_on);
+    $logtype = 'addfil';
     // Run the query
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    $new_id = $db->lastInsertId();
-    if ($new_id) {
-        $results[] =
-            array(
-                'new_id' => $new_id,
-                'success' => TRUE,
-                'sql' => $sql 
-        );
-    } else {
-        $results[] =
-            array(
-                'new_id' => FALSE,
-                'success' => FALSE,
-                'failed_sql' => $sql 
-        );
-    }
-    if (isset($logvars)) {
-        logEvent($logtype, $logvars, $cre_by, $cre_on);
-    }
-    return ($results);
+    return dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}
@@ -481,53 +411,29 @@ function addFile($itemkey, $itemvalue, $file, $cre_by, $cre_on)
 
 function addItemKey($itemkey, $itemvalue, $cre_by, $cre_on, $modtype = FALSE)
 {
-    global $db, $log;
     $mod_short = splitItemkey($itemkey);
-    $tbl = $mod_short.'_tbl_'.$mod_short;
+    $table = $mod_short.'_tbl_'.$mod_short;
     $mod_cd = $mod_short.'_cd';
     $mod_no = $mod_short.'_no';
     $modtypename = $mod_short.'type';
     $mod_no_val = splitItemval($itemvalue);
     $ste_cd = splitItemval ( $itemvalue, TRUE );
     if ($mod_no_val == 'next') {
-        $mod_no_val = getSingle("MAX($mod_no)", $tbl, 'ste_cd = "'.$ste_cd."\"") + 1;
+        $mod_no_val = getSingle("MAX($mod_no)", $table, 'ste_cd = "'.$ste_cd."\"") + 1;
         $itemvalue = $ste_cd.'_'.$mod_no_val;
     }
     // SQL (if we are using modtypes it is a little different)
     $cre_on = dbTimestamp($cre_on);
     if ($modtype) {
-        $sql = "
-            INSERT INTO $tbl ($mod_cd, $mod_no, ste_cd, $modtypename ,cre_by, cre_on)
-            VALUES (?, ?, ?, ?, ?, ?)
-        ";
-        $params = array($itemvalue, $mod_no_val, $ste_cd, $modtype, $cre_by, $cre_on);
+        $fields = array($mod_cd, $mod_no, 'ste_cd', $modtypename, 'cre_by', 'cre_on');
+        $values = array($itemvalue, $mod_no_val, $ste_cd, $modtype, $cre_by, $cre_on);
     } else {
-        $sql = "
-            INSERT INTO $tbl ($mod_cd, $mod_no, ste_cd, cre_by, cre_on)
-            VALUES (?, ?, ?,?,?)
-        ";
-        $params = array($itemvalue, $mod_no_val, $ste_cd, $cre_by, $cre_on);
+        $fields = array($mod_cd, $mod_no, 'ste_cd', 'cre_by', 'cre_on');
+        $values = array($itemvalue, $mod_no_val, $ste_cd, $cre_by, $cre_on);
     }
-    if ($log == 'on') {
-        $logvars = 'The sql: '.json_encode($sql);
-        $logtype = 'keyadd';
-    }
+    $logtype = 'keyadd';
     // run the query
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-
-    $result['rows'] = $sql->rowCount();
-    if ($result['rows'] == 1) {
-        $result['success'] = TRUE;
-        $result['new_itemvalue'] = $itemvalue;
-    } else {
-        $result['success'] = FALSE;
-        $result['failed_sql'] = $sql;
-    }
-    if (isset($logvars)) {
-        logEvent($logtype, $logvars, $cre_by, $cre_on);
-    }
-    return ($result);
+    return dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}
@@ -535,64 +441,31 @@ function addItemKey($itemkey, $itemvalue, $cre_by, $cre_on, $modtype = FALSE)
 
 function addMap($map, $cre_by,$cre_on)
 {
-    global $db, $log, $default_site_cd;
-    
+    global $default_site_cd;
     $ste_cd= reqArkVar('ste_cd', $default_site_cd);
-    
-    $tbl = 'cor_tbl_map';
-    $next = getSingle("MAX(id)", $tbl, '1') + 1;
-    
+    $table = 'cor_tbl_map';
+    // TODO Make id AUTO-INCREMENT
+    $next = getSingle("MAX(id)", $table, '1') + 1;
     $cre_on = dbTimestamp($cre_on);
-    
-    $sql_txt = "INSERT INTO $tbl (id,cre_by,cre_on)
-                values (?,?,?)";
-    
-    $params = array($next,$cre_by,$cre_on);
+    $fields = array('id', 'cre_by', 'cre_on');
+    $values = array($next, $cre_by, $cre_on);
+    $logtype = 'addmap';
 
-    $sql = dbPrepareQuery($sql_txt,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    
-    $result['rows'] = $sql->rowCount();
-    if ($result['rows'] == 1) {
-        $result['success'] = TRUE;
-        $result['new_itemvalue'] = $next;
-    } else {
-        $result['success'] = FALSE;
-        $result['failed_sql'] = $sql;
-    }
-    if (isset($logvars)) {
-        logEvent($logtype, $logvars, $cre_by, $cre_on);
-    }
-    return ($result);
+    return dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 // {{{ addMapLayer()
 
 function addMapLayer($map, $cre_by)
 {
-    global $db, $log;
-    
-    $tbl = 'cor_tbl_maplayer';
-    $next = getSingle("MAX(id)", $tbl, '1') + 1;
-    
-    $sql_txt = "INSERT INTO $tbl (id,map,cre_by,cre_on)
-                values (?,?,?,?)";
-    $params = array($next,$map,$cre_by,'NOW()');
+    $table = 'cor_tbl_maplayer';
+    // TODO Make id AUTO-INCREMENT
+    $next = getSingle("MAX(id)", $table, '1') + 1;
+    $cre_on = dbTimestamp('NOW()');
+    $fields = array('id', 'map', 'cre_by', 'cre_on');
+    $values = array($next, $map, $cre_by, $cre_on);
+    $logtype = 'addmapl';
 
-    $sql = dbPrepareQuery($sql_txt,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    
-    $result['rows'] = $sql->rowCount();
-    if ($result['rows'] == 1) {
-        $result['success'] = TRUE;
-        $result['new_itemvalue'] = $next;
-    } else {
-        $result['success'] = FALSE;
-        $result['failed_sql'] = $sql;
-    }
-    if (isset($logvars)) {
-        logEvent($logtype, $logvars, $cre_by, $cre_on);
-    }
-    return ($result);
+    return dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}
@@ -614,42 +487,16 @@ function addMapLayer($map, $cre_by)
  *
  */
 
-function addMarkup($nname, $markup, $mod_short, $lang, $description, $cre_by, $cre_on, $dry_run = FALSE)
+function addMarkup($nname, $markup, $mod_short, $lang, $description, $cre_by, $cre_on)
 {
-    global $db, $log;
     // setup sql
     $cre_on = dbTimestamp($cre_on);
-    $sql = "
-        INSERT INTO cor_tbl_markup (nname, markup, mod_short, language, description, cre_by, cre_on)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    ";
-    $params = array($nname, $markup, $mod_short, $lang, $description, $cre_by, $cre_on);
-    // log vars
-    if ($log == 'on') {
-        $logvars = 'The sql: '.json_encode($sql);
-        $logtype = 'addmrk';
-    }
+    $table = 'cor_tbl_markup';
+    $fields = array('nname', 'markup', 'mod_short', 'language', 'description', 'cre_by', 'cre_on');
+    $values = array($nname, $markup, $mod_short, $lang, $description, $cre_by, $cre_on);
+    $logtype = 'addmrk';
     // run query
-    if (!$dry_run) {
-        $sql = dbPrepareQuery($sql,__FUNCTION__);
-        $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-        $new_id = $db->lastInsertId();
-    } else {
-        print "SQL to be run: $sql";
-    }
-    if ($new_id) {
-        $results['new_id'] = $new_id;
-        $results['success'] = TRUE;
-        $results['sql'] = $sql;
-    } else {
-        $results['new_id'] = FALSE;
-        $results['success'] = FALSE;
-        $results['failed_sql'] = $sql;
-    }
-    if (isset($logvars)) {
-        logEvent($logtype, $logvars, $cre_by, $cre_on);
-    }
-    return ($results);
+    return dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}
@@ -672,37 +519,14 @@ function addMarkup($nname, $markup, $mod_short, $lang, $description, $cre_by, $c
 
 function addNumber($numtype, $itemkey, $itemvalue, $num, $cre_by, $cre_on)
 {
-    global $db, $log;
     // make sql
     $cre_on = dbTimestamp($cre_on);
-    $sql = "
-        INSERT INTO cor_tbl_number (numbertype, itemkey, itemvalue, number, cre_by, cre_on)
-        VALUES (?, ?, ?, ?, ?, ?)
-    ";
-    $params = array($numtype, $itemkey, $itemvalue, $num, $cre_by, $cre_on);
-    // set up log
-    if ($log == 'on') {
-        $logvars = 'The sql: '. json_encode($sql);
-        $logtype = 'numadd';
-    }
-    //
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    $new_id = $db->lastInsertId();
-    
-    if ($new_id) {
-        $results['new_id'] = $new_id;
-        $results['success'] = TRUE;
-        $results['sql'] = $sql;
-    } else {
-        $results['new_id'] = FALSE;
-        $results['success'] = FALSE;
-        $results['failed_sql'] = $sql;
-    }
-    if (isset($logvars)) {
-        logEvent($logtype, $logvars, $cre_by, $cre_on);
-    }
-    return ($results);
+    $table = 'cor_tbl_number';
+    $fields = array('numbertype', 'itemkey', 'itemvalue', 'number', 'cre_by', 'cre_on');
+    $values = array($numtype, $itemkey, $itemvalue, $num, $cre_by, $cre_on);
+    $logtype = 'numadd';
+    // run query
+    return dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}
@@ -726,35 +550,14 @@ function addNumber($numtype, $itemkey, $itemvalue, $num, $cre_by, $cre_on)
 
 function addSpan($spantype, $itemkey, $itemvalue, $beg, $end, $cre_by, $cre_on)
 {
-    global $db, $log;
     // make up the sql
     $cre_on = dbTimestamp($cre_on);
-    $sql = "
-        INSERT INTO cor_tbl_span (spantype, itemkey, itemvalue, beg, end, cre_by, cre_on)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    ";
+    $table = 'cor_tbl_span';
+    $fields = array('spantype', 'itemkey', 'itemvalue', 'beg', 'end', 'cre_by', 'cre_on');
     $params = array($spantype, $itemkey, $itemvalue, $beg, $end, $cre_by, $cre_on);
-    if ($log == 'on') {
-        $logvars = 'The sql: '.json_encode($sql);
-        $logtype = 'spnadd';
-    }
+    $logtype = 'spnadd';
     // run the query
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    $new_id = $db->lastInsertId();
-    if ($new_id) {
-        $results['new_id'] = $new_id;
-        $results['success'] = TRUE;
-        $results['sql'] = $sql;
-    } else {
-        $results['new_id'] = FALSE;
-        $results['success'] = FALSE;
-        $results['failed_sql'] = $sql;
-    }
-    if (isset($logvars)) {
-        logEvent($logtype, $logvars, $cre_by, $cre_on);
-    }
-    return($results);
+    return dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}
@@ -781,36 +584,14 @@ function addSpan($spantype, $itemkey, $itemvalue, $beg, $end, $cre_by, $cre_on)
 
 function addSpanAttr($span_id, $spanlabel, $cre_by, $cre_on)
 {
-    global $db, $log;
     // setup sql
     $cre_on = dbTimestamp($cre_on);
-    $sql = "
-        INSERT INTO cor_tbl_spanattr (span, spanlabel, cre_by, cre_on)
-        VALUES (?, ?, ?, ?)
-    ";
-    $params = array($span_id, $spanlabel, $cre_by, $cre_on);
-    // log vars
-    if ($log == 'on') {
-        $logvars = 'The sql: '.json_encode($sql);
-        $logtype = 'spatad';
-    }
+    $table = 'cor_tbl_spanattr';
+    $fields = array('span', 'spanlabel', 'cre_by', 'cre_on');
+    $values = array($span_id, $spanlabel, $cre_by, $cre_on);
+    $logtype = 'spatad';
     // run the query
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    $new_id = $db->lastInsertId();
-    if ($new_id) {
-        $results['new_id'] = $new_id;
-        $results['success'] = TRUE;
-        $results['sql'] = $sql;
-    } else {
-        $results['new_id'] = FALSE;
-        $results['success'] = FALSE;
-        $results['failed_sql'] = $sql;
-    }
-    if (isset($logvars)) {
-        logEvent($logtype, $logvars, $cre_by, $cre_on);
-    }
-    return ($results);
+    return dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}
@@ -834,45 +615,17 @@ function addSpanAttr($span_id, $spanlabel, $cre_by, $cre_on)
 
 function addTxt($txttype, $itemkey, $itemvalue, $txt, $lang, $cre_by, $cre_on)
 {
-    global $db, $log;
     if (get_magic_quotes_gpc()) {
         // echo "ADMIN ERROR: Magic Quotes are on... that's not very secure";
         $txt = stripslashes($txt);
     }
     $cre_on = dbTimestamp($cre_on);
-    $sql = "
-        INSERT INTO cor_tbl_txt (txttype, itemkey, itemvalue, txt, language, cre_by, cre_on)
-        VALUES (?, ?, ?, ?, ?,?, ?)
-    ";
-    $params = array($txttype, $itemkey, $itemvalue, $txt, $lang, $cre_by, $cre_on);
+    $tables = 'cor_tbl_txt';
+    $fields = array('txttype', 'itemkey', 'itemvalue', 'txt', 'language', 'cre_by', 'cre_on');
+    $values = array($txttype, $itemkey, $itemvalue, $txt, $lang, $cre_by, $cre_on);
+    $logtype = 'txtadd';
 
-    if ($log == 'on') {
-        $logvars = 'The sql: '.json_encode($sql);
-        $logtype = 'txtadd';
-    }
-    //For debug
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    $new_id = $db->lastInsertId();
-    if ($new_id) {
-        $results[] =
-            array(
-                'new_id' => $new_id,
-                'success' => TRUE,
-                'sql' => $sql
-        );
-    } else {
-        $results[] =
-            array(
-                'new_id' => FALSE,
-                'success' => FALSE,
-                'failed_sql' => $sql
-        );
-    }
-    if (isset($logvars)) {
-        logEvent($logtype, $logvars, $cre_by, $cre_on);
-    }
-    return ($results);
+    return dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}
@@ -903,7 +656,6 @@ function addTxt($txttype, $itemkey, $itemvalue, $txt, $lang, $cre_by, $cre_on)
 
 function addXmi($itemkey, $itemvalue, $xmi_itemkey, $list, $ste_cd, $cre_by, $cre_on)
 {
-    global $db, $log;
     // perform a check for $ste_cd
     if (!$ste_cd) {
         echo 'ADMIN ERROR: $ste_cd is required for adding XMIs check your vd settings';
@@ -911,6 +663,7 @@ function addXmi($itemkey, $itemvalue, $xmi_itemkey, $list, $ste_cd, $cre_by, $cr
     }
     $array = explode(' ', $list);
     $cre_on = dbTimestamp($cre_on);
+    $table = 'cor_tbl_xmi';
     $sql_arrays = array();
     // loop over the list
     foreach ($array as $value) {
@@ -922,43 +675,15 @@ function addXmi($itemkey, $itemvalue, $xmi_itemkey, $list, $ste_cd, $cre_by, $cr
             }
             // set up sql
             $sql_arrays [] = array (
-                    'query' => "INSERT INTO cor_tbl_xmi (itemkey, itemvalue, xmi_itemkey, xmi_itemvalue, cre_by, cre_on)
-                        VALUES (?, ?, ?, ?, ?, ?)",
-                    'params' => array (
-                            $itemkey,
-                            $itemvalue,
-                            $xmi_itemkey,
-                            $xmi_itemvalue,
-                            $cre_by,
-                            $cre_on 
-                    ) 
+                    'fields' => array('itemkey', 'itemvalue', 'xmi_itemkey', 'xmi_itemvalue', 'cre_by', 'cre_on'),
+                    'values' => array ($itemkey, $itemvalue, $xmi_itemkey, $xmi_itemvalue, $cre_by, $cre_on )
             );
         }
     }
     // loop over the sql
     foreach ($sql_arrays as $sql_array) {
         // run the query
-        $sql = dbPrepareQuery($sql_array['query'],__FUNCTION__);
-        $sql = dbExecuteQuery($sql,$sql_array['params'],__FUNCTION__);
-        $new_id = $db->lastInsertId();
-        if ($new_id) {
-            $results[] =
-                array(
-                    'new_id' => $new_id,
-                    'success' => TRUE,
-                    'sql' => $sql
-            );
-        }else {
-            $results[] =
-                array(
-                    'new_id' => FALSE,
-                    'success' => FALSE,
-                    'failed_sql' => $sql
-            );
-        }
-        if (isset($logvars)) {
-            logEvent($logtype, $logvars, $cre_by, $cre_on);
-        }
+        $results[] = dbRunAddQuery($table, $sql_array['fields'], $sql_array['values'], $logtype, $cre_by, $cre_on, __FUNCTION__);
     }
     return ($results);
 }
@@ -5220,11 +4945,8 @@ function mkNavLang($qstr=FALSE)
 
 function registerFileName($txttype, $itemkey, $itemvalue, $file, $lang, $cre_by, $cre_on)
 {
-    // clean the filename
-    // $file = end(explode("/",$file));
-    global $db, $log;
     $mod_short = splitItemkey($itemkey);
-    $tbl = $mod_short . '_tbl_' . $mod_short;
+    $table = $mod_short . '_tbl_' . $mod_short;
     $mod_cd = $mod_short . '_cd';
     $mod_no = $mod_short . '_no';
     $modtypename = $mod_short . 'type';
@@ -5235,37 +4957,15 @@ function registerFileName($txttype, $itemkey, $itemvalue, $file, $lang, $cre_by,
         $mod_no_val = getSingle("MAX($mod_no)", $tbl, '1');
         $mod_cd_val = $ste_cd . '_' . $mod_no_val;
     }
-    $sql = "
-    INSERT INTO cor_tbl_txt (txttype, itemkey, itemvalue, txt, language, cre_by, cre_on)
-    VALUES  (?, ?, ?, ?, ?, ?, ?);
-    ";
-    $params = array($txttype, $itemkey, $mod_cd_val, $file, $lang, $cre_by, $cre_on);
+    $cre_on = dbTimestamp($cre_on);
+
+    $tables = 'cor_tbl_txt';
+    $fields = array('txttype', 'itemkey', 'itemvalue', 'txt', 'language', 'cre_by', 'cre_on');
+    $values = array($txttype, $itemkey, $mod_cd_val, $file, $lang, $cre_by, $cre_on);
+    $logtype = 'fileadd';
+
     // run the query
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    if ($log == 'on') {
-        $logvars = 'The sql: ' . mysql_real_escape_string($sql);
-        $logtype = 'fileadd';
-    }
-    // For debug
-    $new_id = $db->lastInsertId();
-    if ($new_id) {
-        $results[] = array(
-                        'new_id' => $new_id,
-                        'success' => TRUE,
-                        'sql' => $sql
-        );
-    } else {
-        $results[] = array(
-                        'new_id' => FALSE,
-                        'success' => FALSE,
-                        'failed_sql' => $sql
-        );
-    }
-    if (isset($logvars)) {
-        logEvent($logtype, $logvars, $cre_by, $cre_on);
-    }
-    return ($results);
+    return dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 // }}}
 

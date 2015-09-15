@@ -430,47 +430,29 @@ if ($update_db && !isset($query_needed) ){
 
 if ($query_needed == 'G1' AND !$error) {
 
-    $sql = "
-    INSERT INTO cor_tbl_people (username, firstname, lastname, initials, email1, account_enabled)
-    VALUES (?, ?, ?, ?, ?, ?)
-    ";
-    $params = array($username, $fname, $lname, $init, $email, 0);
-
-    $logvars = 'The sql: '. serialize($sql);
-    $logvars = $logvars.' Cre_by: '.$cre_by;
+    $table = 'cor_tbl_people';
+    $fields = array('username', 'firstname', 'lastname', 'initials', 'email1', 'account_enabled');
+    $values = array($username, $fname, $lname, $init, $email, 0);
     $logtype = 'addusr';
+    $results = dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    $affected_rows = $sql->rowCount();
-
-    if ($affected_rows == 1) {
+    if ($results['success']) {
         $message[] = getMarkup('cor_tbl_markup', $lang, 'addusr_sucs');
     }
-
-    if ($logvars) {
-        logEvent($logtype, $logvars, $cre_by, $cre_on);
-    }
-
 }
 
 //OPTION 2 - ADUSRL
 
 if ($query_needed == 'G2' AND !$error) {
 
-    $sql = "
-        INSERT INTO cor_tbl_users (username, password, firstname, lastname, initials, email, account_enabled)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    ";
-    $params = array($username, $password, $fname, $lname, $init, $email, 1);
-
-    $logvars = 'The sql: '. serialize($sql);
+    $table = 'cor_tbl_users';
+    $fields = array('username', 'password', 'firstname', 'lastname', 'initials', 'email', 'account_enabled');
+    $values = array($username, $password, $fname, $lname, $init, $email, 1);
     $logtype = 'adusrl';
+    $results = dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 
-    $sql = dbPrepareQuery($sql,"Add user err: ");
-    $sql = dbExecuteQuery($sql,$params,"Add user err: ");
-    $new_uid = $db->lastInsertId();
-    $affected_rows1 = $sql->rowCount();
+    $new_uid = $results['new_id'];
+    $affected_rows1 = $results['success'];
     $cre_by = $new_uid;
 
     if ($logvars) {
@@ -518,7 +500,7 @@ if ($query_needed == 'G2' AND !$error) {
         }
     }
 
-    if ($affected_rows1 == 1) {
+    if ($affected_rows1) {
         $message[] = getMarkup('cor_tbl_markup', $lang, 'addusr_newid');
         $message[] = "<a href=\"{$_SERVER['PHP_SELF']}/user_admin.php?view=edtuser&user_id=$new_uid\">".$username."</a>";
     }

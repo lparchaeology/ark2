@@ -767,26 +767,17 @@ function extrFrAli($db, $cmap, $uid, $cmap_struc_info, $cmap_info, $type=FALSE)
         }
         if ($ex_attr_id && $ex_attr) {
             // INSERT THE NEW ALIAS REFERENCING THE EXISTING TABLE AND ID
-            $sql = "
-                INSERT INTO cor_tbl_alias
-                (alias, aliastype, language, itemkey, itemvalue, cre_by, cre_on)
-                VALUES 
-                (?, ?, ?, ?, ?, ?, NOW())
-            ";
-            $params = array($realdata, 1, $lang, $itemkey, $ex_attr_id, $cre_by);
-            $logvars = "A new value was added to cor_tbl_alias.";
-            $logvars .= "The sql: ". serialize($sql);
+            $cre_on = dbTimestamp();
+            $table = 'cor_tbl_alias';
+            $fields = array('alias', 'aliastype', 'language', 'itemkey', 'itemvalue', 'cre_by', 'cre_on');
+            $values = array($realdata, 1, $lang, $itemkey, $ex_attr_id, $cre_by, $cre_on);
             $logtype = 'adnali';
             //Handle the alias insert
             if ($type == 'dry_run') {
                 $msg = "$lang alias '$realdata' will be added for '$ex_attr'<br/><br/>";
                 $msg .= "$sql_alias<br/><br/>";
             } else {
-                $sql = dbPrepareQuery($sql,__FUNCTION__);
-                $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-                $new_ali_id = $db->lastInsertId();
-                $logvars = $logvars."\nThe new alias id is: $new_ali_id";
-                logEvent($logtype, $logvars, $cre_by, $cre_on);
+                $results = dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
                 // Add this new value to the cmap_data
                 edtCmapData(
                     $db,

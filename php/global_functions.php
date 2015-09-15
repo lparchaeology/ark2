@@ -7238,40 +7238,23 @@ function processFilesDry($dir, $batch, $mod, $cre_by, $cre_on, $size=FALSE, $ori
 
 function registerFile($file,$filetype,$batch,$module,$cre_by,$cre_on,$uri = FALSE)
 {
-    global $db, $log;
-    $sql = FALSE;
-    $new_id = FALSE;
+    $table = 'cor_lut_file';
+    $logtype = 'fileregister';
     if ($uri) {
         //check that this file hasn't already been uploaded
         $uri_id = getSingle('id', 'cor_lut_file', 'uri = "' . $uri . '"');
         if (!$uri_id) {
-            // make sql
-            $sql = "
-                INSERT INTO cor_lut_file (id,filename,uri,filetype,module,batch,cre_by,cre_on)
-                VALUES (NULL,?, ?, ?,?, ?,?,NOW())
-            ";
-            $params = array($file, $uri, $filetype,$module,$batch,$cre_by);
+            $fields = array('id', 'filename', 'uri', 'filetype', 'module', 'batch', 'cre_by', 'cre_on');
+            $values = array(NULL, $file, $uri, $filetype, $module, $batch, $cre_by, $cre_on);
         }
     } else {
-        // make sql
-        $sql = "
-            INSERT INTO cor_lut_file (id,filename,filetype,module,batch,cre_by,cre_on)
-            VALUES (NULL,?, ?, ?, ?,?,NOW())
-        ";
-        $params = array($file, $filetype,$module,$batch,$cre_by);
         $uri_id = FALSE;
+        $fields = array('id', 'filename', 'filetype', 'module', 'batch', 'cre_by', 'cre_on');
+        $values = array(NULL, $file, $filetype, $module, $batch, $cre_by, $cre_on);
     }
-    // set up log
-    if ($log == 'on') {
-        $logvars = 'The sql: '. json_encode($sql);
-        $logtype = 'fileregister';
-    }
-    //
     if (!$uri_id) {
-        $sql = dbPrepareQuery($sql,__FUNCTION__);
-        $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-        $results['new_id'] = $db->lastInsertId();
-        $new_id = $db->lastInsertId();
+        $results = dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
+        $new_id = $results['new_id'];
     } else {
         $results['new_id'] = FALSE;
         $results['success'] = FALSE;
@@ -7287,9 +7270,6 @@ function registerFile($file,$filetype,$batch,$module,$cre_by,$cre_on,$uri = FALS
         $results['new_id'] = FALSE;
         $results['success'] = FALSE;
         $results['failed_sql'] = serialize($sql);
-    }
-    if (isset($logvars)) {
-        logEvent($logtype, $logvars, $cre_by, $cre_on);
     }
     return ($results);
 }

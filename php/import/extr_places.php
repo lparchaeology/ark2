@@ -58,25 +58,24 @@ $layerObj->open();
 //$type = the type of query desired
 //$log = the logging switch
 
-function edtPlace($placetype, $module, $place, $layername, $layerid, $cre_by, $cre_on, $type, $log) {
+function edtPlace($placetype, $module, $place, $layername, $layerid, $cre_by, $cre_on, $type, $log)
+{
+    global $db;
 
-global $db;
+    $place = mysql_real_escape_string($place);
 
-$place = mysql_real_escape_string($place);
-
-if ($type == 'add') {
-
-$sql = "
-INSERT INTO cor_lut_place (place, module, placetype, layername, layerid, cre_by, cre_on)
-VALUES ('$place', '$module', $placetype, '$layername', '$layerid', $cre_by, $cre_on)
-";
-
-if ($log == 'on') {
-$logvars = 'The sql: '.mysql_real_escape_string($sql);
-$logtype = 'txtadd';
-}
-
-}
+    if ($type == 'add') {
+        $table = 'cor_lut_place';
+        $fields = array('place', 'module', 'placetype', 'layername', 'layerid', 'cre_by', 'cre_on');
+        $values = array($place, $module, $placetype, $layername, $layerid, $cre_by, $cre_on);
+        $logtype = 'txtadd';
+        $results = dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
+        if ($results['success']) {
+            printf("Func: edtPlace<br/>SQL: ".$results['sql']."<br/>");
+            return $results['new_id'];
+        }
+        die("Func: edtPlace<br/>SQL: ".$results['failed_sql']."<br/>");
+    }
 
 // if ($type == 'edt') {
 
@@ -125,23 +124,6 @@ $logtype = 'txtadd';
 
 //For debug
 //printf("$sql<br><br><br>");
-
-mysql_query($sql, $db) or die("Func: edtPlace<br/>SQL: $sql<br/>Error: " . mysql_error());
-$new_id = mysql_insert_id();
-
- printf("Func: edtPlace<br/>SQL: $sql<br/>");
-
-if ($logvars AND $log_ref) {
-logCmplxEvent($logtype, $log_ref, $log_refid, $logvars, $cre_by, $cre_on);
-}
-if ($logvars AND !$log_ref) {
-logEvent($logtype, $logvars, $cre_by, $cre_on);
-}
-
-if ($type == 'add') {
-return ($new_id);
-}
-
 }
 
 
@@ -223,19 +205,13 @@ $status = $layerObj->whichShapes($map_extent);
            }
 
            //now set up the alias
-
-           $sql_alias = "
-                INSERT INTO cor_tbl_alias (alias, aliastype, language, itemkey, itemvalue, cre_by, cre_on)
-                VALUES ( '$place_alias', 1,'$layerattributelang', 'cor_lut_place', $place_id, 1, 'NOW()')
-               ";
-           $logvars = "A new value was added to cor_tbl_alias. The sql: ".mysql_real_escape_string($sql_alias);
-           $logtype = 'adnali';
-
-           mysql_query($sql_alias, $db) or die("Func: add new Place<br/>SQL: $sql_alias<br/>Error: " . mysql_error());
-           printf("Script: import/extr_places.php<br/>SQL: $sql_alias<br/>");
-           $new_ali_id = mysql_insert_id();
-           $logvars = $logvars."\nThe new alias id is: $new_ali_id";
-           //   logEvent($logtype, $logvars, $cre_by, $cre_on);
+            $cre_on = dbTimestamp();
+            $table = 'cor_tbl_alias';
+            $fields = array('alias', 'aliastype', 'language', 'itemkey', 'itemvalue', 'cre_by', 'cre_on');
+            $values = array($place_alias, 1, $layerattributelang, 'cor_lut_place', $place_id, 1, $cre_on);
+            $logtype = 'adnali';
+            $results = dbRunAddQuery($table, $fields, $values, $logtype, 1, $cre_on, __FUNCTION__);
+            printf("Script: import/extr_places.php<br/>SQL: ".$results['sql']."<br/>");
 
        }//end of if blank
 

@@ -59,28 +59,24 @@ $cre_on = dbTimestamp();
 if ($type AND $type_nname AND $type_module AND $new_alias AND $new_alias_lang) {
     //DO THE PROCESSING HERE
     //first we need to add the new type
-    $sql = "
-        INSERT INTO cor_lut_$type ($type, module, cre_by, cre_on)
-        VALUES (?,?,?,?)
-    ";
-    $params = array($type_nname,$type_module,$cre_by, $cre_on);
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    
+    $table = "cor_lut_$type";
+    $fields = array($type, 'module', 'cre_by', 'cre_on');
+    $values = array($type_nname, $type_module, $cre_by, $cre_on);
+    $logtype = 'addclasstype';
+    $results = dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
+
     // get the $new_id
-    $new_id = $db->lastInsertId();
+    $new_id = $results['new_id'];
     
     // pre process language
     $alias_lang = getSingle('language', 'cor_lut_language','id = ' . $new_alias_lang);
     
     //now we need to add the alias for this type
-    $sql = "
-        INSERT INTO cor_tbl_alias (alias, aliastype, language, itemkey, itemvalue, cre_by, cre_on)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    ";
-    $params = array($new_alias, 1, $alias_lang, "cor_lut_$type", $new_id, $cre_by, $cre_on);
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
+    $table = 'cor_tbl_alias';
+    $fields = array('alias', 'aliastype', 'language', 'itemkey', 'itemvalue', 'cre_by', 'cre_on');
+    $values = array($new_alias, 1, $alias_lang, "cor_lut_$type", $new_id, $cre_by, $cre_on);
+    $logtype = 'adnali';
+    $results = dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // A dd of modules

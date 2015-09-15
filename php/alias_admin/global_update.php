@@ -99,19 +99,11 @@ if ($qtype == 'del') {
 //OPTION 1 - ADD ALIAS
 
 if ($query_needed == 'G1' AND !$error) {
-    $sql = "
-    INSERT INTO cor_tbl_alias (alias, aliastype, language, itemkey, itemvalue, cre_by, cre_on)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
-    ";
-    $params = array($new_alias, 1, $alias_lang, $item_val, $class_id, $cre_by, $cre_on);
-
-    $logvars = 'The sql: '. json_encode($sql);
-    $logvars = $logvars.' Cre_by: '.$cre_by;
+    $table = 'cor_tbl_alias';
+    $fields = array('alias', 'aliastype', 'language', 'itemkey', 'itemvalue', 'cre_by', 'cre_on');
+    $values = array($new_alias, 1, $alias_lang, $item_val, $class_id, $cre_by, $cre_on);
     $logtype = 'addalias';
-    
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-   
+    $results = dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 //OPTION 2 - EDT ALIAS

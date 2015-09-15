@@ -101,43 +101,15 @@ if (get_magic_quotes_gpc()) {
     echo "ADMIN ERROR - Magic Quotes are on... that's not very secure";
     $comments = stripslashes($comments);
 }
+
 $cre_on = dbTimestamp();
+$table = 'cor_tbl_wmc';
+$fields = array('name', 'comments', 'wmc', 'scales', 'extents', 'projection', 'zoom', 'legend_array', 'OSM', 'gmap_api_key', 'public', 'cre_by', 'cre_on');
+$values = array($name, $comments, $wmc, $scales, $extents, $projection, $zoom, $legend_array, $OSM, $gmap_api_key, $public, $user_id, $cre_on);
+$logtype = 'savewmc';
+$results = dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 
-$sql = "
-    INSERT INTO cor_tbl_wmc (name, comments, wmc,scales, extents, projection, zoom, legend_array, OSM, gmap_api_key,public, cre_by, cre_on)
-    VALUES (?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?)
-";
-$params = array($name, $comments, $wmc, $scales, $extents,$projection, $zoom, $legend_array, $OSM, $gmap_api_key, $public, $user_id, $cre_on);
-//For debug
-   
-$sql = dbPrepareQuery($sql,__FUNCTION__);
-// Log vars
-if ($log == 'on') {
-   $logvars = 'The sql: '. json_encode($sql);
-   $logtype = 'addatr';
-}
-// Run the query
-$sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-// Handle the results
-$new_id = $db->lastInsertId();
-   
-if ($new_id) {
-    $results[] =
-        array(
-            'new_id' => $new_id,
-            'success' => TRUE,
-            'sql' => $sql
-    );
-}else {
-    $results[] =
-        array(
-            'new_id' => FALSE,
-            'success' => FALSE,
-            'failed_sql' => $sql
-    );
-}
-
-if ($results[0]['success'] == TRUE) {
+if ($results['success'] == TRUE) {
     $update_success = TRUE;
     $message = $mk_savesuccessful;
     $_SESSION['legend_array'] = unserialize($legend_array);

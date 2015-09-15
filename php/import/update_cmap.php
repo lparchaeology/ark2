@@ -1322,18 +1322,16 @@ if ($update_db == 'edsspn') {
 //OPTION 1 - ADDCMP
 if ($query_needed == 'G1' AND !$error) {
     // setup the sql
-    $sql = "
-        INSERT INTO cor_tbl_cmap (nname, description, sourcedb, stecd, import_cre_by, import_cre_on, type, cre_by, cre_on)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ";
-    $params = array($nickname, $cmap_desc, $source_db, $ste_cd, $import_cre_by, $import_cre_on, $type, $cre_by, $cre_on);
+    $table = 'cor_tbl_cmap';
+    $fields = array('nname', 'description', 'sourcedb', 'stecd', 'import_cre_by', 'import_cre_on', 'type', 'cre_by', 'cre_on');
+    $values = array($nickname, $cmap_desc, $source_db, $ste_cd, $import_cre_by, $import_cre_on, $type, $cre_by, $cre_on);
+    $logtype = 'upcmap';
+
     if ($dry_run) {
-        $message[] = $sql;
+        $message[] = $table;
     } else {
-        $sql = dbPrepareQuery($sql,__FUNCTION__);
-        $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-        $affected_rows = $sql->rowCount();
-        if ($affected_rows == 1) {
+        $results = dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
+        if ($results['success']) {
             $message[] = $mk_recsucs;
         }
     }
@@ -1377,100 +1375,71 @@ if ($query_needed == 'G3' AND empty($error)) {
 
 //OPTION 4 - ADSXXX Various Add Operations
 if ($query_needed == 'G4' AND !$error) {
-    // setup the sql
-    $sql = "
-        INSERT INTO cor_tbl_cmap_structure (
-            `cmap`, 
-            `tbl`, 
-            `col`, 
-            `class`, 
-            `uid_col`, 
-            `itemkey`, 
-            `raw_itemval_tbl`, 
-            `raw_itemval_col`, 
-            `raw_itemval_join_col`, 
-            `tbl_itemval_join_col`, 
-            `type`, 
-            `lang`, 
-            `true`, 
-            `false`, 
-            `notset`,
-            `lut_tbl`,
-            `lut_idcol`,
-            `lut_valcol`,
-            `end_source_col`,
-            `xmi_itemkey`, 
-            `xmi_itemval_col`, 
-            `raw_stecd_tbl`, 
-            `raw_stecd_col`, 
-            `raw_stecd_join_col`, 
-            `tbl_stecd_join_col`, 
-            `ark_mod`, 
-            `log`)
-        VALUES (
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?, 
-            ?)
-    ";
-    $params = array($cmap_id, 
-        $tbl, 
-        $col, 
-        $import_class, 
-        $uid_col, 
-        $itemkey, 
-        $raw_itemval_tbl, 
-        $raw_itemval_col, 
-        $raw_itemval_join_col, 
-        $tbl_itemval_join_col, 
-        $type, 
-        $frmlang, 
-        $true, 
-        $false, 
-        $notset, 
-        $lut_tbl, 
-        $lut_idcol, 
-        $lut_valcol, 
-        $end_source_col, 
-        $xmi_itemkey, 
-        $xmi_itemval_col, 
-        $raw_stecd_tbl, 
-        $raw_stecd_col, 
-        $raw_stecd_join_col, 
-        $tbl_stecd_join_col, 
-        $ark_mod, 
-        $log
-    );
+    $table = 'cor_tbl_cmap_structure';
+    $fields = array(
+                `cmap`,
+                `tbl`,
+                `col`,
+                `class`,
+                `uid_col`,
+                `itemkey`,
+                `raw_itemval_tbl`,
+                `raw_itemval_col`,
+                `raw_itemval_join_col`,
+                `tbl_itemval_join_col`,
+                `type`,
+                `lang`,
+                `true`,
+                `false`,
+                `notset`,
+                `lut_tbl`,
+                `lut_idcol`,
+                `lut_valcol`,
+                `end_source_col`,
+                `xmi_itemkey`,
+                `xmi_itemval_col`,
+                `raw_stecd_tbl`,
+                `raw_stecd_col`,
+                `raw_stecd_join_col`,
+                `tbl_stecd_join_col`,
+                `ark_mod`,
+                `log`,
+                );
+    $values = array(
+                $cmap_id, 
+                $tbl, 
+                $col, 
+                $import_class, 
+                $uid_col, 
+                $itemkey, 
+                $raw_itemval_tbl, 
+                $raw_itemval_col, 
+                $raw_itemval_join_col, 
+                $tbl_itemval_join_col, 
+                $type, 
+                $frmlang, 
+                $true, 
+                $false, 
+                $notset, 
+                $lut_tbl, 
+                $lut_idcol, 
+                $lut_valcol, 
+                $end_source_col, 
+                $xmi_itemkey, 
+                $xmi_itemval_col, 
+                $raw_stecd_tbl, 
+                $raw_stecd_col, 
+                $raw_stecd_join_col, 
+                $tbl_stecd_join_col, 
+                $ark_mod, 
+                $log
+                );
+    $logtype = 'adnali';
     if ($dry_run) {
-        $message[] = $sql;
+        $message[] = $table;
     } else {
-        $sql = dbPrepareQuery($sql,__FUNCTION__);
-        $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-        $affected_rows = $sql->rowCount();
-        if ($affected_rows == 1) {
+        $results = dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
+        if ($results['success']) {
             $message[] = $mk_recsucs;
         }
     }

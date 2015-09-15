@@ -102,13 +102,11 @@ switch($stage) {
         }
         // second, add the attr to the lut
         if ($unique) {
-            $sql = "
-                INSERT INTO cor_tbl_ste (id, description, cre_by, cre_on)
-                VALUES (?, ?, ?, ?)
-            ";
-            $params = array($new_ste_cd,'',$cre_by, $cre_on);
-            $sql = dbPrepareQuery($sql,__FUNCTION__);
-            $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
+            $table = 'cor_tbl_ste';
+            $fields = array('id', 'description', 'cre_by', 'cre_on');
+            $values = array($new_ste_cd,'',$cre_by, $cre_on);
+            $logtype = 'adnste';
+            $results = dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
         }
         // Measure and report success
         if ($new_ste_cd && $unique) {

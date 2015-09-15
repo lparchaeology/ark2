@@ -3065,25 +3065,15 @@ function getFtr($id) {
 
 function addFtr($filter, $type, $nname, $sgrp, $cre_by)
 {
-    global $db;
     // serialize the filter for storage
     $filter = serialize($filter);
-    // create some SQL
-    $sql = "
-        INSERT INTO cor_tbl_filter (filter, type, nname, sgrp, cre_by, cre_on)
-        VALUES (?, ?, ?, ?, ?, NOW())
-    ";
-    $params = array($filter, $type, $nname, $sgrp, $cre_by);
-    // run the query
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    $new_id = $db->lastInsertId();
-    // handle the results
-    if (isset($new_id)) {
-        return($new_id);
-    } else {
-        return FALSE;
-    }
+    $cre_on = dbTimestamp();
+    $table = 'cor_tbl_filter';
+    $fields = array('filter', 'type', 'nname', 'sgrp', 'cre_by', 'cre_on');
+    $values = array($filter, $type, $nname, $sgrp, $cre_by, $cre_on);
+    $logtype = 'addalias';
+    $results = dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
+    return $results['new_id'];
 }
 // }}}
 // {{{ edtFtr()
