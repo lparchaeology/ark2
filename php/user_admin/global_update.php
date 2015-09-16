@@ -480,15 +480,11 @@ if ($query_needed == 'G2' AND !$error) {
     if ( $new_uid && $newabk ){
         $newrecord = addItemKey('abk_cd', $ste_cd.'_next', $user_id, 'NOW()', 1);
         if ($newrecord['new_itemvalue']){
-            $sql = "
-                UPDATE cor_tbl_users SET
-                itemkey = ?,
-                itemvalue = ?
-                WHERE id = ? 
-                ";
-            $params = array('abk_cd',$newrecord['new_itemvalue'],$new_uid);
-            $sql = dbPrepareQuery($sql,"Auto ABK err: ");
-            $sql = dbExecuteQuery($sql,$params,"Auto ABK err: ");
+            $table = 'cor_tbl_users';
+            $fields = array('itemkey', 'itemvalue');
+            $values = array('abk_cd', $newrecord['new_itemvalue']);
+            $logtype = 'useredt';
+            $results = dbUpdateSingleIdRow($table, $new_uid, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
             $inittype = getClassType('txt', 'initials');
             $nametype = getClassType('txt', 'name');
             if ($inittype){

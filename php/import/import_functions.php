@@ -328,15 +328,10 @@ function extrNum($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
             //therefore insert the new ids into the relevant fields in the import db table
             $source_db = getCmapDB($db, $cmap);
             $db = dbConnect($sql_server, $sql_user, $sql_pwd, $source_db);
-            $sql = "
-                UPDATE $tbl
-                SET $chain_itemkey_col = ?, $chain_itemval_col = ?
-                WHERE $uid_col = ?
-            ";
-            $params = array($chain_itemkey,$ret['new_id'],$uid);
-            $sql = dbPrepareQuery($sql,__FUNCTION__);
-            $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-            
+            $fields = array($chain_itemkey_col, $chain_itemval_col);
+            $values = array($chain_itemkey, $ret['new_id']);
+            $logtype = 'chnedt';
+            $results = dbUpdateAllRows($tbl, array($uid_col), array($uid), $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
         }
         $db = dbConnect($sql_server, $sql_user, $sql_pwd, $ark_db);
         // $db->query("use $source_db");
@@ -656,15 +651,10 @@ function extrAttrB($extract_db, $cmap, $uid, $cmap_struc_info, $cmap_info)
             printPre($source_db);
             $db = dbConnect($sql_server, $sql_user, $sql_pwd, $source_db);
             $db->query("use $source_db");
-            $sql = "
-            UPDATE $tbl
-            SET $chain_itemkey_col = ?, $chain_itemval_col = ?
-            WHERE $uid_col = ?
-            ";
-            $params = array($chain_itemkey,$ret[0]['new_id'],$uid);
-            $sql = dbPrepareQuery($sql,__FUNCTION__ . "adding chain data");
-            $sql = dbExecuteQuery($sql,$params,__FUNCTION__. "adding chain data");
-        
+            $fields = array($chain_itemkey_col, $chain_itemval_col);
+            $values = array($chain_itemkey, $ret['new_id']);
+            $logtype = 'chnedt';
+            $results = dbUpdateAllRows($tbl, array($uid_col), array($uid), $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
         }
         return ($ret[0]['new_id']);
     }

@@ -3101,27 +3101,16 @@ function addFtr($filter, $type, $nname, $sgrp, $cre_by)
 
 function edtFtr($filter, $nname, $sgrp, $f_id)
 {
-    global $db;
     // serialize the filter array for storage
     $filter = serialize($filter);
-    // create some SQL
-    $sql = "
-        UPDATE cor_tbl_filter
-        SET filter = ?, nname = ?, sgrp = ?
-        WHERE id = ?
-    ";
-    $params = array($filter,$nname,$sgrp,$f_id);
-    // run the query
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    // provide feedback
-    $rows = $sql->rowCount();
-    if ($rows == 1) {
-        $results['success'] = TRUE;
-        $results['rows'] = $rows;
-    }else {
-        $results['success'] = FALSE;
-    }
+    $cre_on = dbTimestamp();
+    $table = 'cor_tbl_filter';
+    $key = 'id';
+    $id = $f_id;
+    $fields = array('filter', 'nname', 'sgrp');
+    $values = array($filter, $nname, $sgrp);
+    $logtype = 'edtftr';
+    $results = dbUpdateSingleIdRow($table, $key, $id, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}

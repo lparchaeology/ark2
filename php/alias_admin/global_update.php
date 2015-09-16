@@ -109,18 +109,11 @@ if ($query_needed == 'G1' AND !$error) {
 //OPTION 2 - EDT ALIAS
 
 if ($query_needed == 'G2' AND !$error) {
-    $sql = "UPDATE cor_tbl_alias SET
-    alias = ?,
-    language = ?,
-    cre_by = ?,
-    cre_on = ?
-    WHERE id = ?
-    ";
-    $params = array($new_alias,$alias_lang,$cre_by,$cre_on,$edt);
-    
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    
+    $table = 'cor_tbl_alias';
+    $fields = array('alias', 'language', 'cre_by', 'cre_on');
+    $values = array($new_alias, $alias_lang, $cre_by, $cre_on);
+    $logtype = 'aliasedt';
+    $results = dbUpdateSingleIdRow($table, $edt, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 //OPTION 3 - DELETE ALIAS

@@ -216,6 +216,92 @@ function dbRunAddQuery($table, $fields, $values, $logtype, $log_by, $log_on, $fu
 }
 
 // }}}
+// {{{ dbUpdateSingleIdRow()
+
+/**
+ * Runs a DB Update query for a single row on an ID-keyed table,
+ * logs the query if required, and returns a result array
+ *
+ * @param string $table The table to update
+ * @param string $id The id key of the row to update
+ * @param array $fields The fields to update
+ * @param array $values The values to update the fields to
+ * @param string $logtype  The query type to log
+ * @param string $log_by  The author of the query
+ * @param string $log_on  The timestamp of the query
+ * @param string $function  The function name (to be used in any error messages)
+ * @return array $results containing useful feedback including 'success' containing TRUE or FALSE
+ * @author John Layt
+ * @since 2.0
+ *
+*/
+
+function dbUpdateSingleIdRow($table, $id, $fields, $values, $logtype, $log_by, $log_on, $function)
+{
+    dbUpdateAllRows($table, array('id'), array($id), $fields, $values, $logtype, $log_by, $log_on, $function);
+}
+
+// }}}
+// {{{ dbUpdateAllRows()
+
+/**
+ * Runs a DB Update query for all rows matching a given key,
+ * logs the query if required, and returns a result array
+ *
+ * @param string $table The table to update
+ * @param array $key_fields The key fields of the row(s) to update
+ * @param array $key_values The key values of the row(s) to update
+ * @param array $fields The fields to update
+ * @param array $values The values to update the fields to
+ * @param string $logtype  The query type to log
+ * @param string $log_by  The author of the query
+ * @param string $log_on  The timestamp of the query
+ * @param string $function  The function name (to be used in any error messages)
+ * @return array $results containing useful feedback including 'success' containing TRUE or FALSE
+ * @author John Layt
+ * @since 2.0
+ *
+*/
+
+function dbUpdateAllRows($table, $key_fields, $key_values, $fields, $values, $logtype, $log_by, $log_on, $function)
+{
+    global $db, $log, $conf_log_edt;
+    $set = implode(' = ?,', $fields).' = ?';
+    $where = implode(' = ? AND', $key_fields).' = ?';
+    $parms = array_merge($values, $key_values);
+    $sql = "
+        UPDATE $table
+        SET $set
+        WHERE $where
+    ";
+    // log the old entry
+    if ($log == 'on' && $conf_log_edt == 'on') {
+        //TODO Fix getRow/getMulti, WHERE is a security hole!
+        $logvars = getMulti($table, "WHERE $key = $id");
+    }
+    // run query
+    $stmt = dbPrepareQuery($sql, $function);
+    $stmt = dbExecuteQuery($stmt, $parms, $function);
+    if ($stmt->errorCode() == '00000') {
+        $results['success'] = TRUE;
+        $results['rows'] = $stmt->rowCount();
+        $results['sql'] = $stmt;
+    } else {
+        $results['success'] = FALSE;
+        $results['failed_sql'] = $stmt;
+    }
+    if ($log == 'on' && $conf_log_edt == 'on') {
+        foreach($logvars as $row) {
+            // TODO fix for non-id tables
+            $log_ref = $table;
+            $log_refid = $row['id'];
+            logCmplxEvent($logtype, $log_ref, $log_refid, $logvars, $log_by, $log_on);
+        }
+    }
+    return ($results);
+}
+
+// }}}
 // {{{ dbTimestamp()
 /**
  * Returns the db timestamp
@@ -1146,45 +1232,14 @@ function ddAttr($top_id, $top_val, $attributetype, $return="dd",$order=FALSE, $d
  *
 */
 
-function edtAction($action_id, $actorkey, $actorvalue, $cre_by, $cre_on)
+function edtAction($action_id, $actor_itemkey, $actor_itemvalue, $cre_by, $cre_on)
 {
-    global $db, $log;
-    // set up sql
     $cre_on = dbTimestamp($cre_on);
-    $sql = "
-        UPDATE cor_tbl_action
-        SET actor_itemkey = ?, actor_itemvalue = ?, cre_by = ?, cre_on = ?
-        WHERE id = ?
-    ";
-    $params = array($actorkey,$actorvalue,$cre_by,$cre_on,$action_id);
-    // log the old entry
-    if ($log == 'on') {
-        $logvars = getRow('cor_tbl_action', $action_id);
-        $log_ref = 'cor_tbl_action';
-        $log_refid = $logvars['id'];
-        $logtype = 'actedt';
-    } else {
-        $log_ref = FALSE;
-        $log_refid = FALSE;
-        $logvars = FALSE;
-    }
-    // run query
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    $rows = $sql->rowCount();
-    if ($rows == 1) {
-        $results['success'] = TRUE;
-        $results['rows'] = $rows;
-        $results['log_ref'] = $log_ref;
-        $results['log_refid'] = $log_refid;
-    } else {
-        $results['success'] = FALSE;
-    }
-    if (isset($logvars) AND $log_ref) {
-        logCmplxEvent($logtype, $log_ref, $log_refid, $logvars, $cre_by, $cre_on);
-    }
-    // return
-    return ($results);
+    $table = 'cor_tbl_action';
+    $fields = array('actor_itemkey', 'actor_itemvalue', 'cre_by', 'cre_on');
+    $values = array($actor_itemkey, $actor_itemvalue, $cre_by, $cre_on);
+    $logtype = 'actedt';
+    return dbUpdateSingleIdRow($table, $action_id, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}
@@ -1214,43 +1269,12 @@ function edtAction($action_id, $actorkey, $actorvalue, $cre_by, $cre_on)
 
 function edtAttr($attribute, $bv, $frag_id, $cre_by, $cre_on)
 {
-    // Basics
-    global $db, $log;
-    // Set up the SQL
     $cre_on = dbTimestamp($cre_on);
-    $sql = "
-        UPDATE cor_tbl_attribute
-        SET attribute = ?, boolean = ?, cre_by = ?, cre_on = ?
-        WHERE id = ?
-    ";
-    $params = array($attribute,$bv,$cre_by,$cre_on,$frag_id);
-    // log the old entry
-    if ($log == 'on') {
-        $logvars = getRow('cor_tbl_attribute', $frag_id);
-        $log_ref = 'cor_tbl_attribute';
-        $log_refid = $logvars[0];
-        $logtype = 'atredt';
-    } else {
-        $log_ref = FALSE;
-        $logvars = FALSE;
-        $log_refid = FALSE;
-    }
-    // run query
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    $rows = $sql->rowCount();
-    if ($rows == 1) {
-        $results['success'] = TRUE;
-        $results['rows'] = $rows;
-        $results['log_ref'] = $log_ref;
-        $results['log_refid'] = $log_refid;
-    }else {
-        $results['success'] = FALSE;
-    }
-    if (isset($logvars) && $log_ref) {
-        logCmplxEvent($logtype, $log_ref, $log_refid, $logvars, $cre_by, $cre_on);
-    }
-    return ($results);
+    $table = 'cor_tbl_attribute';
+    $fields = array('attribute', 'boolean', 'cre_by', 'cre_on');
+    $values = array($attribute, $bv, $cre_by, $cre_on);
+    $logtype = 'atredt';
+    return dbUpdateSingleIdRow($table, $frag_id, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}
@@ -1267,24 +1291,19 @@ function edtAttr($attribute, $bv, $frag_id, $cre_by, $cre_on)
 
 function edtCmapData($db, $cmap, $sourcedata, $sourcelocation, $mapto_tbl, $mapto_class, $mapto_classtype, $mapto_id, $cre_on, $qtype=FALSE)
 {
+    $description = 'mapping added automatically by the import function';
+    $cre_by = 'auto';
     $cre_on = dbTimestamp($cre_on);
-    $sql = "
-    INSERT INTO cor_tbl_cmap_data
-    (cmap, sourcedata, sourcelocation, mapto_tbl, mapto_class, mapto_classtype, mapto_id, description, cre_by, cre_on)
-    VALUES
-    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ";
-    $params = array($cmap, $sourcedata, $sourcelocation, $mapto_tbl, $mapto_class, $mapto_classtype, $mapto_id, 'mapping added automatically by the import function', 'auto', $cre_on);
-
-    $logvars = "A new value was added to cmap_data. The sql: ".json_encode($sql);
+    // Set up the SQL
+    $table = 'cor_tbl_cmap_data';
+    $fields = array('cmap', 'sourcedata', 'sourcelocation', 'mapto_tbl', 'mapto_class', 'mapto_classtype', 'mapto_id', 'description', 'cre_by', 'cre_on');
+    $values = array($cmap, $sourcedata, $sourcelocation, $mapto_tbl, $mapto_class, $mapto_classtype, $mapto_id, $description, $cre_by, $cre_on);
     $logtype = 'adcmdt';
     // Dry run
     if ($qtype == 'dry_run') {
-        printf ("<br/><h3>edtCmapData() - the cmap data</h3>$sql");
+        printf ("<br/><h3>edtCmapData() - the cmap data</h3>Fields = $fields, Values = $values");
     } else {
-        $sql = dbPrepareQuery($sql,__FUNCTION__);
-        $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-        logEvent($logtype, $logvars, 1, $cre_on);
+        return dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
     }
 }
 
@@ -1310,41 +1329,12 @@ function edtCmapData($db, $cmap, $sourcedata, $sourcelocation, $mapto_tbl, $mapt
 
 function edtDate($date, $date_id, $cre_by, $cre_on)
 {
-    global $db, $log;
-    // set up sql
     $cre_on = dbTimestamp($cre_on);
-    $sql = "
-        UPDATE cor_tbl_date
-        SET date = ?, cre_by = ?, cre_on = ?
-        WHERE id = ?
-    ";
-    $params = array($date,$cre_by,$cre_on,$date_id);
-    // log the old entry
-    if ($log == 'on') {
-        $logvars = getRow('cor_tbl_date', $date_id);
-        $log_ref = 'cor_tbl_date';
-        $log_refid = $logvars['id'];
-        $logtype = 'datedt';
-    } else {
-        $log_ref = FALSE;
-        $log_refid = FALSE;
-    }
-    // run query
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    $rows = $sql->rowCount();
-    if ($rows == 1) {
-        $results['success'] = TRUE;
-        $results['rows'] = $rows;
-        $results['log_ref'] = $log_ref;
-        $results['log_refid'] = $log_refid;
-    } else {
-        $results['success'] = FALSE;
-    }
-    if (isset($logvars) AND $log_ref) {
-        logCmplxEvent($logtype, $log_ref, $log_refid, $logvars, $cre_by, $cre_on);
-    }
-    return ($results);
+    $table = 'cor_tbl_date';
+    $fields = array('date', 'cre_by', 'cre_on');
+    $values = array($date, $cre_by, $cre_on);
+    $logtype = 'datedt';
+    return dbUpdateSingleIdRow($table, $date_id, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}
@@ -1430,33 +1420,16 @@ function edtFile($itemkey, $itemvalue, $files, $cre_by, $cre_on)
 
 function edtFragKey($frag_id, $dclass, $new_itemkey, $new_itemval, $cre_by, $cre_on) 
 {
-    global $db, $log;
     // handle non standard dataclass naming
     if ($dclass == 'attr') {
         echo "ADMIN ERROR: as of v1.0 dataclass in fields must be declared as 'attribute' not 'attr'<br/>function edtFragKey()<br/>";
         $dclass = 'attribute';
     }
-    // tbl
-    $tbl = 'cor_tbl_'.$dclass;
-    // set up the sql
     $cre_on = dbTimestamp($cre_on);
-    $sql = "
-        UPDATE $tbl
-        SET itemkey = ?, itemvalue = ?, cre_by = ?, cre_on = ?
-        WHERE id = ?
-    ";
-    $params = array($new_itemkey,$new_itemval,$cre_by,$cre_on,$frag_id);
-    // Run the Query
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    $rows = $sql->rowCount();
-    if ($rows > 0) {
-        $results['success'] = TRUE;
-        $results['rows'] = $rows;
-    }else {
-        $results['success'] = FALSE;
-    }
-    return ($results);
+    $table = 'cor_tbl_'.$dclass;
+    $fields = array('itemkey', 'itemvalue', 'cre_by', 'cre_on');
+    $values = array($new_itemkey, $new_itemval, $cre_by, $cre_on);
+    return dbUpdateSingleIdRow($table, $frag_id, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}
@@ -1489,56 +1462,27 @@ function edtFragKey($frag_id, $dclass, $new_itemkey, $new_itemval, $cre_by, $cre
 
 function edtItemKey($itemkey, $itemvalue, $cre_by, $cre_on, $modtype=FALSE)
 {
-    global $db, $log;
     $mod_short = splitItemkey($itemkey);
-    $tbl = $mod_short.'_tbl_'.$mod_short;
     $mod_cd = $mod_short.'_cd';
     $mod_no = $mod_short.'_no';
     $modtypename = $mod_short.'type';
     $mod_no_val = splitItemval($itemvalue);
-    $itemvalue = $itemvalue;
     $ste_cd = splitItemval($itemvalue, TRUE);
-    
+
     //SQL if we are using modtypes is a little different
+    $table = $mod_short.'_tbl_'.$mod_short;
+    $key_fields = array($mod_cd);
+    $key_values = array($itemvalue);
     if ($modtype) {
-        $sql = "
-            UPDATE $tbl
-            SET $mod_cd = ?,
-                $mod_no = ?,
-                ste_cd = ?,
-                $modtypename = ?,
-                cre_by = ?
-            WHERE $mod_cd = ?
-        ";
-        $params = array($itemvalue,$mod_no_val,$ste_cd,$modtype,$cre_by,$itemvalue);
+        $fields = array($mod_cd, $mod_no, 'ste_cd', $modtypename, 'cre_by');
+        $values = array($itemvalue, $mod_no_val, $ste_cd, $modtype, $cre_by);
     } else {
-        $sql = "
-            UPDATE $tbl
-            SET $mod_cd = ?,
-                $mod_no = ?,
-                ste_cd = ?,
-                cre_by = ?
-            WHERE $mod_cd = ?
-        ";
-        $params = array($itemvalue,$mod_no_val,$ste_cd,$cre_by,$itemvalue);
+        $fields = array($mod_cd, $mod_no, 'ste_cd', 'cre_by');
+        $values = array($itemvalue, $mod_no_val, $ste_cd, $cre_by);
     }
-    if ($log == 'on') {
-        $logvars = 'The sql: '.json_encode($sql);
-        $logtype = 'keyadd';
-    }
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    $rows = $sql->rowCount();
-    if ($rows == 1) {
-        $results['success'] = TRUE;
-        $results['rows'] = $rows;
-    } else {
-        $results['success'] = FALSE;
-    }
-    if (isset($logvars) && $log_ref) {
-        logCmplxEvent($logtype, $log_ref, $log_refid, $logvars, $cre_by, $cre_on);
-    }
-    return ($results);
+    $logtype = 'keyedt';
+
+    return dbUpdateAllRows($table, $key_fields, $key_values, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}
@@ -1566,34 +1510,18 @@ function edtItemKey($itemkey, $itemvalue, $cre_by, $cre_on, $modtype=FALSE)
 
 function edtItemVal($itemkey, $old_itemval, $new_itemval)
 {
-    global $db;
     $mod = splitItemkey($itemkey);
-    $tbl = $mod.'_tbl_'.$mod;
     $mod_cd_col = $mod.'_cd';
     $mod_no_col = $mod.'_no';
     $new_mod_no_val = splitItemval($new_itemval);
     $ste_cd = splitItemval($new_itemval, TRUE);
-    
-    //SQL
-    $sql = "
-        UPDATE $tbl
-        SET $mod_cd_col = ?,
-            $mod_no_col = ?,
-            ste_cd = ?
-        WHERE $mod_cd_col = ?
-    ";
-    $params = array($new_itemval,$new_mod_no_val,$ste_cd,$old_itemval);
-    // run the query
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    $rows = $sql->rowCount();
-    if ($rows == 1) {
-        $results['success'] = TRUE;
-        $results['rows'] = $rows;
-    } else {
-        $results['success'] = FALSE;
-    }
-    return ($results);
+
+    $table = $mod.'_tbl_'.$mod;
+    $key_fields = array($mod_cd_col);
+    $key_values = array($old_itemval);
+    $fields = array($mod_cd_col, $mod_no_col, 'ste_cd');
+    $values = array($new_itemval, $new_mod_no_val, $ste_cd);
+    return dbUpdateAllRows($table, $key_fields, $key_values, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}
@@ -1613,12 +1541,12 @@ function edtItemVal($itemkey, $old_itemval, $new_itemval)
 *
 */
 
-function edtLut($db, $table, $new_lut_val, $ark_mod, $attrtype, $lang, $cre_by, $cre_on, $qtype=FALSE)
+function edtLut($db, $table, $new_lut_val, $ark_mod, $attrtype, $lang, $cre_by, $cre_on)
 {
     // 1 - MAKE UP A NICKNAME FOR THE NEW ENTRY
     $remove_this = array(" ","'",",","-","(",")"); 
     $nickname = str_replace($remove_this, '', strtolower($new_lut_val));
-    
+
     // 2 - ADD TO THE LUT AND RETURN THE NEW ATTRIBUTE ID (depending on type)
     $cre_on = dbTimestamp($cre_on);
     if ($table == 'cor_lut_attribute') {
@@ -1642,20 +1570,13 @@ function edtLut($db, $table, $new_lut_val, $ark_mod, $attrtype, $lang, $cre_by, 
         ";
         $params = array($nickname,$ark_mod,$cre_by,$cre_on);
     }
-
-    $logvars = "A new value was added to $table. The sql: ".json_encode($sql);
     $logtype = 'adnlut';
-    // Dry Runs
-    if ($qtype == 'dry_run') {
-        printf ("<br/><h3>edtLut() - the lut entry</h3>$sql");
-        $new_lut_id = FALSE;
-    } else {
-        $sql = dbPrepareQuery($sql,__FUNCTION__);
-        $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-        $new_lut_id = $db->lastInsertId();
-        $logvars = $logvars."\nThe new lut id is: $new_lut_id";
-        logEvent($logtype, $logvars, $cre_by, $cre_on);
-    }
+
+    $sql = dbPrepareQuery($sql,__FUNCTION__);
+    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
+    $new_lut_id = $db->lastInsertId();
+    $logvars = $logvars."\nThe new lut id is: $new_lut_id";
+    logEvent($logtype, $logvars, $cre_by, $cre_on);
     
     // NOW DO THE ALIAS
     $sql_alias = "
@@ -1667,15 +1588,11 @@ function edtLut($db, $table, $new_lut_val, $ark_mod, $attrtype, $lang, $cre_by, 
     $logvars = "A new value was added to cor_tbl_alias. The sql: ".json_encode($sql_alias);
     $logtype = 'adnali';
     
-    if ($qtype == 'dry_run') {
-        printf ("<br/><h3>edtLut() - the Alias</h3>$sql_alias");
-    } else {
-        $sql_alias = dbPrepareQuery($sql_alias,__FUNCTION__);
-        $sql_alias = dbExecuteQuery($sql_alias,$alias_params,__FUNCTION__);
-        $new_ali_id = $db->lastInsertId();
-        $logvars = $logvars."\nThe new alias id is: $new_ali_id";
-        logEvent($logtype, $logvars, $cre_by, $cre_on);
-    }
+    $sql_alias = dbPrepareQuery($sql_alias,__FUNCTION__);
+    $sql_alias = dbExecuteQuery($sql_alias,$alias_params,__FUNCTION__);
+    $new_ali_id = $db->lastInsertId();
+    $logvars = $logvars."\nThe new alias id is: $new_ali_id";
+    logEvent($logtype, $logvars, $cre_by, $cre_on);
     return($new_lut_id);
 }
 
@@ -1685,7 +1602,7 @@ function edtLut($db, $table, $new_lut_val, $ark_mod, $attrtype, $lang, $cre_by, 
 /**
  * edits markup
  *
- * @param string $id  the id of the markup record
+ * @param string $mk_id  the id of the markup record
  * @param string $nname  the nickname of the markup
  * @param string $markup  the markup to add
  * @param string $mod_short  the language of the markup
@@ -1703,51 +1620,14 @@ function edtLut($db, $table, $new_lut_val, $ark_mod, $attrtype, $lang, $cre_by, 
  *
  */
 
-function edtMarkup($id, $nname, $markup, $mod_short, $lang, $description, $cre_by, $cre_on, $dry_run = FALSE)
+function edtMarkup($mk_id, $nname, $markup, $mod_short, $lang, $description, $cre_by, $cre_on)
 {
-    global $db, $log;
-    // set up sql
     $cre_on = dbTimestamp($cre_on);
-    $sql = "
-        UPDATE cor_tbl_markup
-        SET nname = ?, markup = ?, mod_short = ?, language = ?, description = ?, cre_by = ?, cre_on = ?
-        WHERE id = ?
-    ";
-    $params = array($nname,$markup,$mod_short,$lang,$description,$cre_by,$cre_on,$id);
-    // log the old entry
-    if ($log == 'on') {
-        $log_refid = FALSE;
-        $logvars = getRow('cor_tbl_markup', $id);
-        $log_ref = 'cor_tbl_markup';
-        if (array_key_exists(0,$logvars)) {
-            $log_refid = $logvars[0];
-        }
-        $logtype = 'markupedt';
-    } else {
-        $log_ref = FALSE;
-        $log_refid = FALSE;
-    }
-    // run query
-    if (!$dry_run) {
-        $sql = dbPrepareQuery($sql,__FUNCTION__);
-        $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-        $rows = $sql->rowCount();
-    } else {
-        print "SQL to be run: $sql";
-        printPre($params);
-    }
-    if ($rows == 1) {
-        $results['success'] = TRUE;
-        $results['rows'] = $rows;
-        $results['log_ref'] = $log_ref;
-        $results['log_refid'] = $log_refid;
-    } else {
-        $results['success'] = FALSE;
-    }
-    if (isset($logvars) && $log_ref) {
-        logCmplxEvent($logtype, $log_ref, $log_refid, $logvars, $cre_by, $cre_on);
-    }
-    return ($results);
+    $table = 'cor_tbl_markup';
+    $fields = array('nname', 'markup', 'mod_short', 'language', 'description', 'cre_by', 'cre_on');
+    $values = array($nname, $markup, $mod_short, $lang, $description, $cre_by, $cre_on);
+    $logtype = 'markupedt';
+    return dbUpdateSingleIdRow($table, $mk_id, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}
@@ -1772,37 +1652,12 @@ function edtMarkup($id, $nname, $markup, $mod_short, $lang, $description, $cre_b
  
 function edtNumber($num_id, $num, $cre_by, $cre_on)
 {
-    global $db, $log;
-    // set up sql
     $cre_on = dbTimestamp($cre_on);
-    $sql = "
-        UPDATE cor_tbl_number
-        SET number = ?, cre_by = ?, cre_on = ?
-        WHERE id = ?
-    ";
-    $params = array($num,$cre_by,$cre_on,$num_id);
-    // log the previous data
-    if ($log == 'on') {
-        $logvars = getRow('cor_tbl_number', FALSE , $where);
-        $log_ref = 'cor_tbl_number';
-        $log_refid = $logvars[0];
-        $logtype = 'numedt';
-    }
-    // run the query
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    $rows = $sql->rowCount();
-    if ($rows == 1) {
-        $result['success'] = TRUE;
-        $result['sql'] = $sql;
-    } else {
-        $result['success'] = FALSE;
-        $result['failed_sql'] = $sql;
-    }
-    if (isset($logvars) && $log_ref) {
-        logCmplxEvent($logtype, $log_ref, $log_refid, $logvars, $cre_by, $cre_on);
-    }
-    return ($result);
+    $table = 'cor_tbl_number';
+    $fields = array('number', 'cre_by', 'cre_on');
+    $values = array($num, $cre_by, $cre_on);
+    $logtype = 'numedt';
+    return dbUpdateSingleIdRow($table, $num_id, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}
@@ -1831,40 +1686,12 @@ function edtNumber($num_id, $num, $cre_by, $cre_on)
  
 function edtSpan($span_id, $beg, $end, $cre_by, $cre_on)
 {
-    global $db;
-    // set up the sql
     $cre_on = dbTimestamp($cre_on);
-    $sql = "
-        UPDATE cor_tbl_span 
-            SET beg = ?
-                end = ?
-                cre_by = ?
-                cre_on = ?
-            WHERE id= ?"
-        ;
-    $params = array($beg,$end,$cre_by,$cre_on,$span_id);
-    // logging
-    if ($log == 'on') {
-        $logvars = getRow('cor_tbl_span', FALSE , "WHERE id = $span_id");
-        $log_ref = 'cor_tbl_span';
-        $log_refid = $logvars[0];
-        $logtype = 'spanedt';
-    }
-    // run query
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    $rows = $sql->rowCount();
-    if ($result['rows'] == 1) {
-        $result['success'] = TRUE;
-        $result['new_itemvalue'] = $mod_cd_val;
-    } else {
-        $result['success'] = FALSE;
-        $result['failed_sql'] = $sql;
-    }
-    if (isset($logvars) && $log_ref) {
-        logCmplxEvent($logtype, $log_ref, $log_refid, $logvars, $cre_by, $cre_on);
-    }
-    return ($result);
+    $table = 'cor_tbl_span';
+    $fields = array('beg', 'end', 'cre_by', 'cre_on');
+    $params = array($beg, $end, $cre_by, $cre_on);
+    $logtype = 'spanedt';
+    return dbUpdateSingleIdRow($table, $span_id, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}
@@ -1894,46 +1721,16 @@ function edtSpan($span_id, $beg, $end, $cre_by, $cre_on)
 
 function edtTxt($txt_id, $txt, $lang, $cre_by, $cre_on) 
 {
-    global $db, $log;
     if (get_magic_quotes_gpc()) {
         // echo "Magic Quotes are on... that's not very secure";
         $txt = stripslashes($txt);
     }
     $cre_on = dbTimestamp($cre_on);
-    // set up the sql
-    $sql = "
-        UPDATE cor_tbl_txt
-        SET txt = ?, language = ?, cre_by = ?, cre_on = ?
-        WHERE id = ?
-    ";
-    $params = array($txt, $lang, $cre_by, $cre_on,$txt_id);
-    
-    if ($log == 'on') {
-        $logvars = getRow('cor_tbl_txt', $txt_id , FALSE);
-        $log_ref = 'cor_tbl_txt';
-        $log_refid = $logvars[0];
-        $logtype = 'edtsgl';
-    } else {
-        $log_ref = FALSE;
-        $logvars = FALSE;
-    }
-    // Run the Query
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    
-    // Handle the results
-    $rows = $sql->rowCount();
-    if ($rows > 0) {
-        $results['success'] = TRUE;
-        $results['rows'] = $rows;
-    } else {
-        $results['success'] = FALSE;
-    }
-    // Log the edit
-    if ($logvars && $log_ref) {
-        logCmplxEvent($logtype, $log_ref, $log_refid, $logvars, $cre_by, $cre_on);
-    }
-    return ($results);
+    $table = 'cor_tbl_txt';
+    $fields = array('txt', 'language', 'cre_by', 'cre_on');
+    $values = array($txt, $lang, $cre_by, $cre_on);
+    $logtype = 'textedt';
+    return dbUpdateSingleIdRow($table, $txt_id, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
 }
 
 // }}}
