@@ -41,8 +41,6 @@
 
 include_once('db_functions.php');
 
-ini_set('include_path', ini_get('include_path').$fs_path_sep.$pear_path);
-
 require_once ('HTMLPurifier.auto.php');
 $purifierconfig = HTMLPurifier_Config::createDefault();
 $purifier = new HTMLPurifier($purifierconfig);

@@ -41,15 +41,6 @@
 require_once ('php/auth/auth_functions.php');
 require_once ('php/filter_functions.php');
 
-// Set up PEAR path
-if (!isset($fs_path_sep)) {
-    $doc = "http://ark.lparchaeology.com/wiki/index.php/Env_settings.php";
-    echo "ADMIN ERROR: fs_path_sep is not set. See: $doc<br/>";
-    unset ($doc);
-}
-$pear_path = $fs_path_sep.$pear_path;
-ini_set('include_path', ini_get('include_path').$pear_path);
-
 //setup the LiveUser variables
 require_once ('php/auth/liveuser/conf.php');
 require_once ('php/auth/liveuser/createlu.php');
