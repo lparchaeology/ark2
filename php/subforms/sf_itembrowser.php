@@ -124,7 +124,7 @@ if ($recentitems) {
                     if ($files) {
                         $file = array_pop($files);
                         $alt = $file['filename'];
-                        if (file_exists("{$registered_files_dir}{$fs_slash}arkthumb_{$file['id']}.jpg")) {
+                        if (file_exists("{$registered_files_dir}/arkthumb_{$file['id']}.jpg")) {
                             $src = $registered_files_host . 'arkthumb_' . $file['id'] . '.jpg';
                         }
                     } else {

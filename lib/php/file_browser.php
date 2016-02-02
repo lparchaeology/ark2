@@ -971,7 +971,7 @@ if ($open_dir = @opendir($dir)) {
         </td>
         <td colspan="3">
             <?php 
-                echo "<a href=\"?dir=$dir$fs_slash$a_dir&$qs\">".$a_dir."</a>"; 
+                echo "<a href=\"?dir="$dir.DIRECTORY_SEPARATOR.$a_dir"&$qs\">".$a_dir."</a>";
             ?>
         </td>
     </tr>

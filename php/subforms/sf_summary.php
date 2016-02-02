@@ -44,7 +44,7 @@ if (array_key_exists('photo', $fields)) {
     if ($linked_files) {
         // package this up into the field so it can be sent to frmElem()
         foreach ( $linked_files as $linked_file ) {
-            if (file_exists($registered_files_dir . $fs_slash . "webthumb_" . $linked_file['id'] . ".jpg")) {
+            if (file_exists($registered_files_dir . DIRECTORY_SEPARATOR . "webthumb_" . $linked_file['id'] . ".jpg")) {
                 $photo_src = $registered_files_host . "webthumb_" . $linked_file['id'] . ".jpg";
                 $summaryphoto = "<img src=\"$photo_src\" alt=\"{$linked_file['id']}\"/>";
             } else {

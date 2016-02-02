@@ -1422,7 +1422,7 @@ function feedBk($type)
 function frmElem($field, $itemkey, $itemvalue=FALSE)
 {
     // SETUP
-    global $db, $lang, $skin_path, $registered_files_dir, $registered_files_host, $fs_slash, $purifier;
+    global $db, $lang, $skin_path, $registered_files_dir, $registered_files_host, $purifier;
     
 
     $mk_delete = getMarkup('cor_tbl_markup', $lang,'delete');
@@ -2088,7 +2088,7 @@ function frmElem($field, $itemkey, $itemvalue=FALSE)
                 $del_sw .= "</a>";
                 if ($sf_display == 'thumbs') {
                     //check for the thumbnail - if there isn't one then just put in the default
-                    if (!file_exists("{$registered_files_dir}{$fs_slash}arkthumb_{$file['id']}.jpg")) {
+                    if (!file_exists("{$registered_files_dir}/arkthumb_{$file['id']}.jpg")) {
                         $thumb_src = mkThumb($file,'arkthumb');
                         $webthumb_src = "<li class=\"file_thumbs\">";
                     } else {
@@ -5276,11 +5276,11 @@ function mkTblTh($fields)
  
 function mkThumb($file, $type)
 { 
-    global $skin_path, $registered_files_dir, $registered_files_host, $fs_slash; 
+    global $skin_path, $registered_files_dir, $registered_files_host;
     $thumb_src = ''; 
     if (is_array($file)) { 
         // first of all we check if we have the actual thumbnail - if so we are done 
-        if (file_exists("{$registered_files_dir}{$fs_slash}{$type}_{$file['id']}.jpg")) { 
+        if (file_exists("{$registered_files_dir}/{$type}_{$file['id']}.jpg")) {
             $thumb_src = "<img src=\"{$registered_files_host}{$type}_{$file['id']}.jpg\" alt=\"file_image\"/></a>"; 
             return $thumb_src; 
         } 
@@ -5288,7 +5288,7 @@ function mkThumb($file, $type)
         $file_extension = strtolower(substr(strrchr($file['filename'],"."),1));
         if ($file_extension) { 
             //set up the thumb - check if we have one - if not go for the default 
-            $filepath_local = $_SERVER['DOCUMENT_ROOT']."$skin_path{$fs_slash}images{$fs_slash}file_icons{$fs_slash}icon_$file_extension.png";
+            $filepath_local = $_SERVER['DOCUMENT_ROOT']."$skin_path/images/file_icons/icon_$file_extension.png";
             if (file_exists("$filepath_local")) { 
                 $thumb_src = "<img src=\"$skin_path/images/file_icons/icon_$file_extension.png\" alt=\"file_image\"/>"; 
             } else { 
@@ -6209,7 +6209,7 @@ function processFiles($dir, $batch, $mod, $cre_by, $cre_on, $size=FALSE, $orig_f
     ini_set("max_execution_time", "36000");
     
     // globals
-    global $registered_files_dir, $fu, $phMagickDir, $lang, $fs_slash, $pdfthumbgrid;
+    global $registered_files_dir, $fu, $phMagickDir, $lang, $pdfthumbgrid;
     
     // markup
     $mk_not_accessible = getMarkup('cor_tbl_markup', $lang, 'file_not_accessible');
@@ -6276,8 +6276,8 @@ function processFiles($dir, $batch, $mod, $cre_by, $cre_on, $size=FALSE, $orig_f
         $file_location = 'local';
     }
     // pop a slash on if there isn't one already
-    if (substr($sflp, -1) != $fs_slash && $sflp != '') {
-        $sflp = $sflp.$fs_slash;
+    if (substr($sflp, -1) != DIRECTORY_SEPARATOR && $sflp != '') {
+        $sflp = $sflp.DIRECTORY_SEPARATOR;
     }
     
     // Logic part 2 - what do we need to do with the files
@@ -6615,7 +6615,7 @@ function processFiles($dir, $batch, $mod, $cre_by, $cre_on, $size=FALSE, $orig_f
             // do the crunching
             if ($crunch_file && $convert && !$skip_file) {
                 // do the process
-                $phMagick = new phMagick($frposf, $registered_files_dir.$fs_slash.$results['new_id'].'.jpg');
+                $phMagick = new phMagick($frposf, $registered_files_dir.DIRECTORY_SEPARATOR.$results['new_id'].'.jpg');
                 $phMagick->convert();
                 // get the results
                 $phMagickLog = $phMagick->getLog();
@@ -6624,7 +6624,7 @@ function processFiles($dir, $batch, $mod, $cre_by, $cre_on, $size=FALSE, $orig_f
                     $make_thumb = TRUE;
                     $converted = TRUE;
                     //change the name of the file_handler to be the .jpg
-                    $frposf_converted = $registered_files_dir.$fs_slash.$results['new_id'].'.jpg';
+                    $frposf_converted = $registered_files_dir.DIRECTORY_SEPARATOR.$results['new_id'].'.jpg';
                     // test for file
                     if (!file_exists($frposf_converted)){
                         // if the file does not exist we are probably dealing with a multi page image
@@ -6640,33 +6640,33 @@ function processFiles($dir, $batch, $mod, $cre_by, $cre_on, $size=FALSE, $orig_f
                         // For single page thumbnails
                         if ($thumbnailsize==1){
                             //delete all jpgs apart from the first page 
-                            foreach ( glob($registered_files_dir.$fs_slash.$results['new_id']."-[1-9]*.jpg") as $unwantedjpg ) {
+                            foreach ( glob($registered_files_dir.DIRECTORY_SEPARATOR.$results['new_id']."-[1-9]*.jpg") as $unwantedjpg ) {
                                 unlink($unwantedjpg);
                             }
                             // set the new image path to the converted file
-                            $frposf_converted = $registered_files_dir.$fs_slash.$results['new_id'].'-0.jpg';
+                            $frposf_converted = $registered_files_dir.DIRECTORY_SEPARATOR.$results['new_id'].'-0.jpg';
                         // for multi page thumbnails
                         } else {
                             //remove all the jpegs 
-                            foreach ( glob($registered_files_dir.$fs_slash.$results['new_id']."-[0-9]*.jpg") as $unwantedjpg ) {
+                            foreach ( glob($registered_files_dir.DIRECTORY_SEPARATOR.$results['new_id']."-[0-9]*.jpg") as $unwantedjpg ) {
                                 unlink($unwantedjpg);
                             }
                             
                             // create png of the image, phmagick tiling function does not work with jpeg
-                            $phMagick = new phMagick($frposf, $registered_files_dir.$fs_slash.$results['new_id'].'.png');
+                            $phMagick = new phMagick($frposf, $registered_files_dir.DIRECTORY_SEPARATOR.$results['new_id'].'.png');
                             $phMagick->convert();
                             // create an array to hold references to our images
                             $paths = array ();
                             // add files to the paths array until its length matches the number of images required
                             while ( $thumbnailsize > count($paths) ) {
-                                $paths [] = $registered_files_dir.$fs_slash.$results['new_id'].'-'.count($paths).'.png';
+                                $paths [] = $registered_files_dir.DIRECTORY_SEPARATOR.$results['new_id'].'-'.count($paths).'.png';
                             }
                             // do the tiling operation
                             $tiler = new phMagick();
-                            $tiler->setDestination($registered_files_dir.$fs_slash.$results['new_id'].'.jpg')->tile($paths, $pdfthumbgrid ['width'], $pdfthumbgrid ['height']);
-                            $frposf_converted = $registered_files_dir.$fs_slash.$results['new_id'].'.jpg';
+                            $tiler->setDestination($registered_files_dir.DIRECTORY_SEPARATOR.$results['new_id'].'.jpg')->tile($paths, $pdfthumbgrid ['width'], $pdfthumbgrid ['height']);
+                            $frposf_converted = $registered_files_dir.DIRECTORY_SEPARATOR.$results['new_id'].'.jpg';
                             // delete all the png files created
-                            foreach ( glob($registered_files_dir.$fs_slash.$results['new_id']."-[0-9]*.png") as $workingpng ) {
+                            foreach ( glob($registered_files_dir.DIRECTORY_SEPARATOR.$results['new_id']."-[0-9]*.png") as $workingpng ) {
                                 unlink($workingpng);
                             }
                         }
@@ -6684,7 +6684,7 @@ function processFiles($dir, $batch, $mod, $cre_by, $cre_on, $size=FALSE, $orig_f
             // Now make the thumbs
             if ($crunch_file && $make_thumb && !$skip_file) {
                 // arkthumb (for imageflow)
-                $tgt_img1 = $registered_files_dir.$fs_slash.'arkthumb_'.$results['new_id'].'.jpg';
+                $tgt_img1 = $registered_files_dir.DIRECTORY_SEPARATOR.'arkthumb_'.$results['new_id'].'.jpg';
                     // if we have converted the file then make sure we use the converted filename
                 if ($converted == TRUE) {
                     $arkthumb = new imagick($frposf_converted);
@@ -6701,7 +6701,7 @@ function processFiles($dir, $batch, $mod, $cre_by, $cre_on, $size=FALSE, $orig_f
                 }
                 $ret['files'][$file]['crunch']['arkthumb']['result'] = $tgt_img1;
                 // webthumb (for lightbox)
-                $tgt_img2 = $registered_files_dir.$fs_slash.'webthumb_'.$results['new_id'].'.jpg';
+                $tgt_img2 = $registered_files_dir.DIRECTORY_SEPARATOR.'webthumb_'.$results['new_id'].'.jpg';
                     // if we have converted the file then make sure we use the converted filename
                 if ($converted == TRUE) {
                     $arkthumb = new imagick($frposf_converted);
@@ -6733,7 +6733,7 @@ function processFiles($dir, $batch, $mod, $cre_by, $cre_on, $size=FALSE, $orig_f
                 } else {
                     $filestore_folder = $registered_files_dir;
                 }
-                $tgt_file = "{$filestore_folder}$fs_slash{$results['new_id']}.$file_ext";
+                $tgt_file = "{$filestore_folder}DIRECTORY_SEPARATOR{$results['new_id']}.$file_ext";
                 // move (copy and delete) the file from the original loaction to the filestore
                 if ($cpres = copy($frposf, $tgt_file)) {
                     // feedback
@@ -6805,7 +6805,7 @@ function processFilesDry($dir, $batch, $mod, $cre_by, $cre_on, $size=FALSE, $ori
 {
     
     // globals
-    global $registered_files_dir, $fu, $phMagickDir, $lang, $fs_slash;
+    global $registered_files_dir, $fu, $phMagickDir, $lang;
     
     ini_set("max_post_size","1000M");
     
@@ -6872,8 +6872,8 @@ function processFilesDry($dir, $batch, $mod, $cre_by, $cre_on, $size=FALSE, $ori
         $file_location = 'local';
     }
     // pop a slash on if there isn't one already
-    if (substr($sflp, -1) != $fs_slash && $sflp != '') {
-        $sflp = $sflp.$fs_slash;
+    if (substr($sflp, -1) != DIRECTORY_SEPARATOR && $sflp != '') {
+        $sflp = $sflp.DIRECTORY_SEPARATOR;
     }
     $ret['messages'][] = "We will be using $file_location files at $sflp";
     

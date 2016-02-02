@@ -205,7 +205,7 @@ switch ($sf_state) {
                     foreach ($files as $key => $file) {
                         $file_ext = strtolower(end(explode('.', $file['filename'])));
                         //check for the thumbnail - if there isn't one then just put in the default
-                        if (!file_exists("{$registered_files_dir}{$fs_slash}arkthumb_{$file['id']}.jpg")) {
+                        if (!file_exists("{$registered_files_dir}/arkthumb_{$file['id']}.jpg")) {
                             $thumb_src = mkThumb($file, 'arkthumb');
                             $webthumb_src = "<li class=\"file_thumbs\">";
                         } else {

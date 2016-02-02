@@ -6,7 +6,7 @@ $abk_cd = "ARK_".$user_id;
 $files = getFile("abk_cd", $abk_cd, 'profilephoto');
 if ($files){
     $image = current($files);
-    if (file_exists("{$registered_files_dir}{$fs_slash}arkthumb_{$image['id']}.jpg")){
+    if (file_exists("{$registered_files_dir}/arkthumb_{$image['id']}.jpg")){
         $profilephoto = "{$registered_files_host}arkthumb_{$image['id']}.jpg";
     }
 }

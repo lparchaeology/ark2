@@ -148,7 +148,7 @@ function loadingScreen(element, form_holder) {
 $phpvars =
     array(
         'filesize_limit' => $filesize_limit,
-        'upload_dir_plus_trailing_slash' => $default_upload_dir.$fs_slash,
+        'upload_dir_plus_trailing_slash' => $default_upload_dir.DIRECTORY_SEPARATOR,
         'skin_path' => $skin_path,
 );
 // return and echo this javascript

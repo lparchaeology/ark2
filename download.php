@@ -63,7 +63,7 @@ if (!$fullpath) {
         echo "ADMIN ERROR: registered_files_dir is not correctly set";
         break;
     }
-    $filename = $registered_files_dir.$fs_slash.$filename;
+    $filename = $registered_files_dir.DIRECTORY_SEPARATOR.$filename;
 }
 $hrbool =reqQst($_REQUEST,'hrname');
 //human readable name

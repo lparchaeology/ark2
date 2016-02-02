@@ -104,7 +104,7 @@ if ($mode == 'from_comp' || $mode == 'from_ipad') {
     if ($mode == 'from_ipad') {
         echo "<img src=\"$skin_path/images/loading.gif\"/>";
         // move it from where it is, to the upload dir, using the name the filename token 'camera' created
-        move_uploaded_file($_FILES["file"]["tmp_name"], $default_upload_dir . $fs_slash . $_FILES["file"]["name"]);
+        move_uploaded_file($_FILES["file"]["tmp_name"], $default_upload_dir . DIRECTORY_SEPARATOR . $_FILES["file"]["name"]);
         $filename = $_FILES["file"]["name"];
     }
     $file_array = array(
