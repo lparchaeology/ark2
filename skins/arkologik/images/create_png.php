@@ -33,7 +33,7 @@
 */
 header('Content-type: image/png');
 
-include('../../../config/settings.php');
+include('../../../src/settings.php');
 include('../../../php/global_functions.php');
 //script to output a png (after headers have been sent)
 //this script can be used as the src in an <img> tag

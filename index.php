@@ -36,16 +36,15 @@
 */
 
 // INCLUDES
-include('config/settings.php');
+include('src/settings.php');
 include('php/global_functions.php');
-$db = dbConnect($sql_server, $sql_user, $sql_pwd, $ark_db);
 $lang = $default_lang;
 
 
 //THE ENTIRE INDEX PAGE IS A FUNCTION
 function login_page($errorMessage) {
 
-include('config/settings.php');
+include('src/settings.php');
 
 if(!file_exists($ark_root_dir.'/skins/'.$skin.'/templates/login_page.php')){
     header('Location: config/preflight_checks.php');
@@ -61,7 +60,6 @@ $pagename = 'user_home';
 $mk_arkname = getMarkup('cor_tbl_markup', $lang, $arkname_mk);
 $mk_splash = getMarkup('cor_tbl_markup', $lang, 'splash');
 
-$db = dbConnect($sql_server, $sql_user, $sql_pwd, $ark_db);
 // -- PAGE SETTINGS -- //
 // handle missing config
 if (!$pagename) {
@@ -93,7 +91,7 @@ include_once($ark_root_dir.'/skins/'.$skin.'/templates/login_page.php');
 //DO AUTHENTICATION
 
 // This is the part of the script checks auth status and does the redirections as appropriate
-include_once ('config/settings.php');
+include_once ('src/settings.php');
 
 //LOGOUT ROUTINE
 $logout = reqQst($_REQUEST,'logout');

@@ -37,7 +37,7 @@
 */
 
 // -- INCLUDE SETTINGS AND FUNCTIONS -- //
-include('config/settings.php');
+include('src/settings.php');
 include('php/global_functions.php');
 include('php/validation_functions.php');
 
@@ -91,7 +91,6 @@ $cur_code_dir = $pg_settings['cur_code_dir'];
 
 
 // -- AUTH -- //
-$db = dbConnect($sql_server, $sql_user, $sql_pwd, $ark_db);
 include_once ('php/auth/inc_auth.php');
 // ANON LOGINS
 // check for anon logins
@@ -124,9 +123,6 @@ if (isset($anonymous_login['username']) && $$liveuser->getProperty('handle') == 
 } else {
     $anon_login = FALSE;
 }
-
-// PART2 - select the relevant page contents
-include_once ("config/page_settings.php");
 
 // PART3 - DISP ARRAY
 //    This is based on an array from the page settings

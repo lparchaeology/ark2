@@ -51,7 +51,7 @@ error_reporting(E_ALL);
 
 
 // -- INCLUDE SETTINGS AND FUNCTIONS -- //
-include('../php/settings/settings.php');
+include('../src/settings.php');
 include('../php/global_functions.php');
 include('../php/validation_functions.php');
 

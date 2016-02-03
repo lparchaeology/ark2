@@ -2460,7 +2460,7 @@ function dispFltAction($filter, $filter_id)
             } elseif (isset($filter['actor'])) {
                 $alias = getAlias('cor_lut_actiontype',$lang,'id',$filter['action'],1);
                 $var = "<label>{$alias} - </label>";
-                include('config/settings.php');
+                include('src/settings.php');
                 include_once('config/mod_abk_settings.php');
                 if ($filter['actor'] != 'All Actors') {
                     $txttype = $abk_xmiconf['fields'][0]['classtype'];
@@ -2930,7 +2930,7 @@ function prcsHitsMod($hits, $mod)
     // loop over each hit processing as required
     // allow the admin to specify fields to put at the top of every result (meta about that item)
     $meta_fields_name = 'conf_'.$mod_short.'_res_meta_fields';
-    include ("config/settings.php");
+    include ("src/settings.php");
     include ("config/field_settings.php");
     include ("config/mod_{$mod_short}_settings.php");
     if (isset($$meta_fields_name)) {

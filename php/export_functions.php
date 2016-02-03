@@ -527,7 +527,7 @@ function csvElem($field, $itemkey, $itemvalue)
         $xmi_mod = $field['xmi_mod'];
         $xmi_key = $xmi_mod . '_cd';
         // Includes relevant settings file
-        include ('config/settings.php');
+        include ('src/settings.php');
         include ('config/field_settings.php');
         include ('config/mod_'.$xmi_mod.'_settings.php');
         $xmi_conf_name = $xmi_mod.'_xmiconf';

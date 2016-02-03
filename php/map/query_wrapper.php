@@ -35,8 +35,7 @@
 
 $_SESSION = array();
 global $wxs_qlayers;
-include('../../config/settings.php');
-include('../../config/env_settings.php');
+include('../../src/settings.php');
 include('../global_functions.php');
 //DEV NOTE: need to detect browser manually due to class location bug in global_funcs
 $browser = reqQst($_SESSION, 'browser');
@@ -58,7 +57,6 @@ if (!$browser) {
     }
 }
 $stylesheet = getStylesheet($browser);
-$db = dbConnect($sql_server, $sql_user, $sql_pwd, $ark_db);
 $layer = reqQst($_REQUEST,'layer');
 $itemval = reqQst($_REQUEST,'ark_id');
 //get the mod settings

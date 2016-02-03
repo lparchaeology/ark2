@@ -38,7 +38,7 @@
 
 
 // INCLUDES
-include_once ('../config/settings.php');
+include_once ('../src/settings.php');
 include_once ('global_functions.php');
 
 // SESSION START
@@ -46,7 +46,6 @@ session_name($ark_name);
 session_start();
 
 // GLOBAL VARS
-$db = dbConnect($sql_server, $sql_user, $sql_pwd, $ark_db);
 $lang = reqArkVar('lang', $default_lang);
 
 // REQUEST

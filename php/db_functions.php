@@ -4363,7 +4363,7 @@ function getAllItems($mod)
 function getSfs($mod)
 {
     // fetch the settings for this module
-    include("config/settings.php");
+    include("src/settings.php");
     include("config/field_settings.php");
     include("config/mod_{$mod}_settings.php");
     // DEV NOTE: This should be handled by a proper object for each module

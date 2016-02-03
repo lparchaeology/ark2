@@ -34,9 +34,8 @@
 */
 
 
-include('../../config/settings.php');
+include('../../src/settings.php');
 include('../global_functions.php');
-$db = dbConnect($sql_server, $sql_user, $sql_pwd, $ark_db);
 
 
 $headers = "

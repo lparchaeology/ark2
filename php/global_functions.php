@@ -4143,7 +4143,7 @@ function mkResultsChat($results_array, $filters)
 {
     global $lang, $conf_micro_viewer;
     // settings are needed to run fields properly inside this func
-    include('config/settings.php');
+    include('src/settings.php');
     // markup
     $mk_score = getMarkup('cor_tbl_markup', $lang, 'score');
     $mk_viewmsg = getMarkup('cor_tbl_markup', $lang, 'viewmsg');
@@ -4708,7 +4708,7 @@ function mkResultsThumb($results_array, $filters)
 {
     global $lang, $conf_micro_viewer;
     // settings are needed to run fields properly inside this func
-    include('config/settings.php');
+    include('src/settings.php');
     // markup
     $mk_score = getMarkup('cor_tbl_markup', $lang, 'score');
     $mk_viewmsg = getMarkup('cor_tbl_markup', $lang, 'viewmsg');
@@ -5977,7 +5977,7 @@ function prcsTabCols($cols)
     }
     
     // include the main settings
-    include('config/settings.php');
+    include('src/settings.php');
     // pre-process out any XMI columns as these will add in extra elements to the array and therefore mess up keys
     foreach ($cols as $key => $col) {
         switch ($col['col_type']) {
@@ -7326,7 +7326,7 @@ function reqModSetting($mod, $var)
     // global the session
     global $_SESSION;
     // settings are needed to bring fields and vd_settings inside this func
-    include('config/settings.php'); // see changeset [1227]
+    include('src/settings.php'); // see changeset [1227]
     // setup the name of the global settings/object for this module
     $mod_obj_name = 'mod_'.$mod;
     $mod_obj = reqQst($_SESSION, $mod_obj_name);
@@ -7789,7 +7789,7 @@ function resTblTd($field, $itemkey, $itemvalue)
         $xmi_mod = $field['xmi_mod'];
         $xmi_key = $xmi_mod . '_cd';
         // Includes relevant settings file
-        include ('config/settings.php');
+        include ('src/settings.php');
         include ('config/mod_'.$xmi_mod.'_settings.php');
         $xmi_conf_name = $xmi_mod.'_xmiconf';
         $xmi_conf = $$xmi_conf_name;

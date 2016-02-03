@@ -36,7 +36,7 @@
 */
 
 //GLOBAL INCLUDES
-include_once ('../../config/settings.php');
+include_once ('../../src/settings.php');
 if (!extension_loaded('MapScript')){
   if (strtoupper(substr(PHP_OS, 0,3) == 'WIN')){
      dl('php_mapscript.dll');

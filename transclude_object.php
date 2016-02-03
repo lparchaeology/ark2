@@ -34,9 +34,8 @@
 */
 
 // INCLUDES
-include_once ('config/settings.php');
+include_once ('src/settings.php');
 include_once ('php/global_functions.php');
-$db = dbConnect($sql_server, $sql_user, $sql_pwd, $ark_db);
 
 //request the variables needed
 

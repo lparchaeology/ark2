@@ -38,7 +38,7 @@
 
 
 // INCLUDES
-include_once ('config/settings.php');
+include_once ('src/settings.php');
 include_once ('config/map_settings.php');
 include_once ('php/global_functions.php');
 include_once ('php/validation_functions.php');
@@ -110,7 +110,6 @@ $cur_code_dir = $pg_settings['cur_code_dir'];
 
 
 // -- AUTH -- //
-$db = dbConnect($sql_server, $sql_user, $sql_pwd, $ark_db);
 include_once ('php/auth/inc_auth.php');
 
 

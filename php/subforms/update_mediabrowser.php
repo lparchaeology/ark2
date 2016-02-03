@@ -50,7 +50,7 @@
 
 
 // -- INCLUDE SETTINGS AND FUNCTIONS -- //
-include('../../config/settings.php');
+include('../../src/settings.php');
 include('../global_functions.php');
 include('../validation_functions.php');
 
@@ -68,7 +68,6 @@ $link_file = reqQst($_REQUEST, 'link_file');
 
 
 // -- AUTH -- //
-$db = dbConnect($sql_server, $sql_user, $sql_pwd, $ark_db);
 // DEV NOTE: THIS NEEDS AUTH TO GET THE CRE_BY
 $cre_by = 1;
 

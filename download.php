@@ -42,7 +42,7 @@
 */
 
 // settings
-include('config/settings.php');
+include('src/settings.php');
 include('php/global_functions.php');
 
 // this is sent to the qryst
@@ -50,8 +50,6 @@ $filename = reqQst($_REQUEST,'file');
 
 // extract the file extension
 $file_extension = strtolower(substr(strrchr($filename,"."),1));
-
-$db = dbConnect($sql_server, $sql_user, $sql_pwd, $ark_db);
 
 // this token is sent to indicate the filename includes the full path
 $fullpath = reqQst($_REQUEST, 'fullpath');

@@ -1,6 +1,6 @@
 <?php
 // -- INCLUDE SETTINGS AND FUNCTIONS -- //
-include_once('config/settings.php');
+include_once('src/settings.php');
 include_once('php/global_functions.php');
 include('php/validation_functions.php');
 
@@ -13,7 +13,6 @@ $pagename="chaintable";
 $pg_settings_nm = 'conf_page_'.$pagename;
 $pg_settings = $$pg_settings_nm;
 $psgrp = $pg_settings['sgrp'];
-$db = dbConnect($sql_server, $sql_user, $sql_pwd, $ark_db);
 
 // authorisation script
 require_once('php/auth/inc_auth.php');

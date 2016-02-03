@@ -35,7 +35,7 @@
 
 
 // -- INCLUDE SETTINGS AND FUNCTIONS -- //
-include('config/settings.php');
+include('src/settings.php');
 include('php/global_functions.php');
 include('php/validation_functions.php');
 include('php/export_functions.php');
@@ -94,7 +94,6 @@ $allowed_api_requests =
 
 
 // -- AUTH -- //
-$db = dbConnect($sql_server, $sql_user, $sql_pwd, $ark_db);
 include_once ('php/auth/inc_auth.php');
 // ANON LOGINS
 // check for anon logins

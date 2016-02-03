@@ -37,10 +37,10 @@
 
 // INCLUDES
 include_once ('global_functions.php');
-include_once ('../config/settings.php');
+include_once ('../src/settings.php');
 include_once ('map_admin/map_admin_functions.php');
 include_once ('map/map_functions.php');
-$db = dbConnect($sql_server, $sql_user, $sql_pwd, $ark_db);
+
 // SESSION Start the session
 // Start the session
 session_name($ark_name);
