@@ -3553,7 +3553,7 @@ function mkprtRecordNav($conf, $rec_page, $current_view)
 
 function mkRecordNav($conf, $rec_page, $current_view, $item_key=FALSE, $item_val=FALSE)
 {
-    global $lang, $_SESSION, $authitems, $conf_br, $mod_short, $mode, $conf_micro_viewer, $ark_dir, $record_admin_grps;
+    global $lang, $_SESSION, $authitems, $conf_br, $mod_short, $search_mode, $conf_micro_viewer, $ark_dir, $record_admin_grps;
     if (!$item_key) {
         global $item_key, $$item_key;
         $item_val = $$item_key;
@@ -3703,7 +3703,7 @@ function mkRecordNav($conf, $rec_page, $current_view, $item_key=FALSE, $item_val
             if ($op_jumper) {
                 $var .= "<div id=\"record_jumper\">\n";
                 $link = $ark_dir.'data_entry.php';
-                $var .= mkNavItem($mode, $mk_go, $item_key, '', $link, FALSE);
+                $var .= mkNavItem($search_mode, $mk_go, $item_key, '', $link, FALSE);
                 $var .= "</div>\n";
             }
             break;
@@ -3721,7 +3721,7 @@ function mkRecordNav($conf, $rec_page, $current_view, $item_key=FALSE, $item_val
             if ($op_jumper) {
                 $var .= "<div id=\"record_jumper\">\n";
                 $link = $ark_dir.'micro_view.php';
-                $var .= mkNavItem($mode, $mk_go, $item_key, '', $link, FALSE);
+                $var .= mkNavItem($search_mode, $mk_go, $item_key, '', $link, FALSE);
                 $var .= "</div>\n";
             }
             break;
@@ -3729,7 +3729,7 @@ function mkRecordNav($conf, $rec_page, $current_view, $item_key=FALSE, $item_val
             if ($op_jumper) {
                 $var .= "<div id=\"record_jumper\">\n";
                 $link = $ark_dir.'data_entry.php';
-                $var .= mkNavItem($mode, $mk_go, $item_key, '', $link, $mod_alias);
+                $var .= mkNavItem($search_mode, $mk_go, $item_key, '', $link, $mod_alias);
                 $var .= "</div>\n";
             }
             break;
