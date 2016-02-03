@@ -125,7 +125,7 @@ function buildFltFtx($filters, $qstr)
 
 function execFltftx($filter, $simple=FALSE)
 {
-    global $lang, $ftx_mode;
+    global $lang, $search_ftx_mode;
     $src = $filter['src'];
     $hits = FALSE;
     $results_array = FALSE;
@@ -135,12 +135,12 @@ function execFltftx($filter, $simple=FALSE)
         $src = stripslashes($src);
     }
     // Handle the search mode
-    if (!$ftx_mode) {
-        $ftx_mode = 'normal';
+    if (!$search_ftx_mode) {
+        $search_ftx_mode = 'normal';
     }
     // 1a - Search the normal text
     // Setup SQL
-    if ($ftx_mode == 'fancy') {
+    if ($search_ftx_mode == 'fancy') {
         $sql = "
             SELECT id, itemkey, itemvalue, txt, txttype,
             MATCH (txt, itemvalue) AGAINST (? IN BOOLEAN MODE) AS score
@@ -462,7 +462,7 @@ function buildFltTxt($filters, $qstr)
 
 function execFltTxt($filter, $simple=FALSE)
 {
-    global $lang, $ftx_mode;
+    global $lang, $search_ftx_mode;
     $txt = $filter['txt'];
     $txttype = $filter['txttype'];
     $hits = FALSE;
@@ -473,12 +473,12 @@ function execFltTxt($filter, $simple=FALSE)
         $txt = stripslashes($txt);
     }
     // Handle the search mode
-    if (!$ftx_mode) {
-        $ftx_mode = 'normal';
+    if (!$search_ftx_mode) {
+        $search_ftx_mode = 'normal';
     }
     // Search the text table
     // Setup SQL
-    if ($ftx_mode == 'fancy') {
+    if ($search_ftx_mode == 'fancy') {
         $sql = "
             SELECT id, itemkey, itemvalue, txt, txttype, MATCH (txt) AGAINST (? IN BOOLEAN MODE) AS score
             FROM cor_tbl_txt
