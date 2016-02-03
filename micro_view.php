@@ -36,7 +36,6 @@
 *
 */
 
-
 // -- INCLUDE SETTINGS AND FUNCTIONS -- //
 include('src/settings.php');
 include('php/global_functions.php');
@@ -50,7 +49,6 @@ session_start();
 
 
 // -- MANUAL configuration vars for this page -- //
-$pagename = 'micro_view';
 $error = FALSE;
 $message = FALSE;
 
@@ -78,22 +76,16 @@ $sf_key = $item_key;
 $sf_val = $$item_key;
 
 // -- PAGE SETTINGS -- //
-// handle missing config
-if (!$pagename) {
-    die ('ADMIN ERROR: No $pagename variable setup. Required as of v1.1, supersedes $filename');
-}
-// handle missing config
-$pg_settings_nm = 'conf_page_'.$pagename;
-$pg_settings = $$pg_settings_nm;
-if (!$pg_settings) {
-    die ("ADMIN ERROR: No settings (${$pg_settings_nm})found for the page $pagename");
+$page_conf = ARK\Web\PageConfig::page('micro_view');
+if (!$page_conf->isValid()) {
+    die ('ADMIN ERROR: No config in database for page '.$page_conf->id());
 }
 // title for this HTML page
-$page_title = $ark_name.' - '.$pg_settings['title'];
+$page_title = $ark_name.' - '.$page_conf->title();
 // the page's sgrp value
-$psgrp = $pg_settings['sgrp'];
+$psgrp = $page_conf->sgrp();
 // current code directory (location of any files related to this page)
-$cur_code_dir = $pg_settings['cur_code_dir'];
+$cur_code_dir = $page_conf->codeDir();
 
 //register the target url
 $_SESSION['target_url'] = $_SERVER['REQUEST_URI'];
@@ -351,7 +343,7 @@ if ($update_db === $dynamic_delete_name) {
     }
 }
 
-$javascript = mkJavaScriptSource($pg_settings['name']);
+$javascript = mkJavaScriptSource($page_conf->name());
 // -- OUTPUT-- //
 
 

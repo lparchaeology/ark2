@@ -2667,7 +2667,7 @@ function mkHelpTray($sf_conf){
  * 
  * Creates Javascript Includes for inclusion on main pages
  * 
-* @param string $page the $pg_settings[name] of the page requesting javascript
+* @param string $page the PageConfig->name() of the page requesting javascript
 * @return string $return a string of html script objects
 * @author Michael Johnson
 * @since v1.2
@@ -3156,7 +3156,7 @@ function mkNavItem($mode, $button, $item_key, $default, $link=FALSE, $mod_label=
 /**
 * makes up ARK main navigation bar
 *
-* @param array $pages  information about the pages
+* @param array $pages  information about the pages, an array of PageConfig objects
 * @param array $links  information about static links
 * @param boolean $force_active a way to ensure forcing an active tab
 * @return string $nav  a resolved xhtml string
@@ -3191,20 +3191,12 @@ function mkNavMain($pages, $links=FALSE, $force_active=FALSE)
     $nav = "<ul id=\"navlist\">\n";
     // Loop over the pages
     if ($pages) {
-        foreach ($pages as $page) {
+        foreach ($pages as $page_conf) {
             $active = FALSE;
-            //check to see if the active tab has been set in the pages array
-            if ($force_active == TRUE) {
-                if (array_key_exists('active', $page)) {
-                    $active = ' id="active"';
-                } else {
-                    $active = FALSE;
-                }
-            }
-            $link = $page['file']; 
-            if ($page['is_visible']) {
-                $vars = $page['navlinkvars'];
-                $label = getMarkup('cor_tbl_markup', $lang, $page['navname']);
+            $link = $page_conf->file();
+            if ($page_conf->isVisible()) {
+                $vars = $page_conf->navLinkVars();
+                $label = getMarkup('cor_tbl_markup', $lang, $page_conf->navName());
                 //if we are not forcing a tab then fallback on the filename
                 if (($_SERVER['PHP_SELF']) == $ark_root_path.$link && $force_active == FALSE) {
                     $active = ' id="active"';

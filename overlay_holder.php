@@ -36,6 +36,7 @@
 * @since      File available since Release 0.8
 */
 
+use LPArchaeology\ARK;
 
 // INCLUDES
 include_once ('src/settings.php');
@@ -50,7 +51,6 @@ session_start();
 
 
 // MANUAL vars needed in this page
-$pagename = 'overlay_holder';
 $error = FALSE;
 $message = FALSE;
 $admin_error = FALSE;
@@ -91,22 +91,16 @@ if (!$sf_val) {
 
 
 // -- PAGE SETTINGS -- //
-// handle missing config
-if (!$pagename) {
-    die ('ADMIN ERROR: No $pagename variable setup. Required as of v1.1, supersedes $filename');
-}
-// handle missing config
-$pg_settings_nm = 'conf_page_'.$pagename;
-$pg_settings = $$pg_settings_nm;
-if (!$pg_settings) {
-    die ("ADMIN ERROR: No settings (${$pg_settings_nm})found for the page $pagename");
+$page_conf = ARK\Web\PageConfig::page('overlay_holder');
+if (!$page_conf->isValid()) {
+    die ('ADMIN ERROR: No config in database for page '.$page_conf->id());
 }
 // title for this HTML page
-$page_title = $ark_name.' - '.$pg_settings['title'];
+$page_title = $ark_name.' - '.$page_conf->title();
 // the page's sgrp value
-$psgrp = $pg_settings['sgrp'];
+$psgrp = $page_conf->sgrp();
 // current code directory (location of any files related to this page)
-$cur_code_dir = $pg_settings['cur_code_dir'];
+$cur_code_dir = $page_conf->codeDir();
 
 
 // -- AUTH -- //
@@ -191,7 +185,7 @@ if ($update_db === 'delfrag') {
     include_once('php/update_db.php');
 }
 
-$javascript = mkJavaScriptSource($pg_settings['title']);
+$javascript = mkJavaScriptSource($page_conf->name());
 
 // ---------OUTPUT--------- //
 

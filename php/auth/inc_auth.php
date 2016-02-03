@@ -100,17 +100,12 @@ $_SESSION['sgrp_arr'] = $sgrp_arr;
 
 
 // get a list of pages this user is permitted access
-foreach ($conf_pages as $key => $auth_pg) {
-    $page_settings_array_name = 'conf_page_'.$auth_pg;
-    if (isset($$page_settings_array_name)) {
-        $page_settings = $$page_settings_array_name;
-        $page_sgrp = $page_settings['sgrp'];
+$conf_pages = LPArchaeology\ARK\Web\PageConfig::pages();
+foreach ($conf_pages as $auth_pg) {
+    if ($auth_pg->isValid() and in_array($auth_pg->sgrp(), $sgrp_arr)) {
+        $authorised_pages[] = $auth_pg;
     } else {
-        echo "ADMIN ERROR: page $auth_pg needs a $page_settings_array_name setup<br/>";
-        $page_sgrp = FALSE;
-    }
-    if (in_array($page_sgrp, $sgrp_arr)) {
-        $authorised_pages[] = $page_settings;
+        echo "ADMIN ERROR: No config in database for page ".$auth_pg->id()."<br/>";
     }
 }
 

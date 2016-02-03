@@ -34,6 +34,8 @@
 * @since      File available since Release 0.6
 */
 
+use LPArchaeology\ARK;
+
 // INCLUDES
 include('src/settings.php');
 include('php/global_functions.php');
@@ -48,7 +50,6 @@ session_start();
 ini_set('include_path', ini_get('include_path').':/usr/share/php5/PEAR');
 
 // MANUAL vars needed in this page
-$pagename = 'import';
 $error = FALSE;
 $message = FALSE;
 
@@ -58,22 +59,16 @@ $module = 'mod_cor';
 
 
 // -- PAGE SETTINGS -- //
-// handle missing config
-if (!$pagename) {
-    die ('ADMIN ERROR: No $pagename variable setup. Required as of v1.1, supersedes $filename');
-}
-// handle missing config
-$pg_settings_nm = 'conf_page_'.$pagename;
-$pg_settings = $$pg_settings_nm;
-if (!$pg_settings) {
-    die ("ADMIN ERROR: No settings (${$pg_settings_nm})found for the page $pagename");
+$page_conf = ARK\Web\PageConfig::page('import');
+if (!$page_conf->isValid()) {
+    die ('ADMIN ERROR: No config in database for page '.$page_conf->id());
 }
 // title for this HTML page
-$page_title = $ark_name.' - '.$pg_settings['title'];
+$page_title = $ark_name.' - '.$page_conf->title();
 // the page's sgrp value
-$psgrp = $pg_settings['sgrp'];
+$psgrp = $page_conf->sgrp();
 // current code directory (location of any files related to this page)
-$cur_code_dir = $pg_settings['cur_code_dir'];
+$cur_code_dir = $page_conf->codeDir();
 
 
 // -- AUTH -- //
@@ -112,7 +107,7 @@ if ($update_db) {
     include('php/import/update_cmap.php');
 }
 
-$javascript = mkJavaScriptSource($pg_settings['name']);
+$javascript = mkJavaScriptSource($page_conf->name());
 
 
 // ---------OUTPUT--------- //

@@ -1,4 +1,6 @@
 <?php
+use LPArchaeology\ARK;
+
 // -- INCLUDE SETTINGS AND FUNCTIONS -- //
 include_once('src/settings.php');
 include_once('php/global_functions.php');
@@ -9,10 +11,11 @@ session_name($ark_name);
 session_start();
 
 // required page setup
-$pagename="chaintable";
-$pg_settings_nm = 'conf_page_'.$pagename;
-$pg_settings = $$pg_settings_nm;
-$psgrp = $pg_settings['sgrp'];
+$page_conf = ARK\Web\PageConfig::page('chaintable');
+if (!$page_conf->isValid()) {
+    die ('ADMIN ERROR: No config in database for page '.$page_conf->id());
+}
+$psgrp = $page_conf->sgrp();
 
 // authorisation script
 require_once('php/auth/inc_auth.php');
