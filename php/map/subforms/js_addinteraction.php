@@ -229,7 +229,7 @@ $(document).ready(function() {
         var workingfeatures = working<?php echo $user_id;?>Source.getFeatures();
         var geojson  = new ol.format.GeoJSON;
         var geojson     = geojson.writeFeatures(workingfeatures);
-        url = "<?php echo $ark_dir;?>api.php?req=update_mapfile";
+        url = "<?php echo $ark_root_path;?>/api.php?req=update_mapfile";
         data = { target : "<?php echo $target;?>_"+context+".geojson", json: geojson };
         $.ajax({
             type: "POST",

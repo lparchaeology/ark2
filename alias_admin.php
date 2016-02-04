@@ -130,7 +130,7 @@ if ($update_db) {
 
 <?php echo "<!DOCTYPE ".$doctype.">";
 
-include($ark_server_path."/skins/".$skin."/templates/inc-header.php"); ?>
+include($skin_dir."/templates/inc-header.php"); ?>
 
 <!-- BEGIN leftpanel -->
     <div id="lpanel" class="leftpanel">
@@ -160,7 +160,7 @@ if ($message) {
 
 
 <!-- ARK FOOTER -->
-<?php  include($ark_server_path."/skins/".$skin."/templates/inc-footer.php");  ?>
+<?php  include($skin_dir."/templates/inc-footer.php");  ?>
 
 
 <!-- end CONTENT WRAPPER -->

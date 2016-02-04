@@ -182,7 +182,7 @@ switch($sf_state) {
             print("</div>\n");
         } else {
             print ($mk_mapsaved);
-            $button = "<a id=\"close\" class=\"btn\" href=\"{$ark_dir}map_view.php?mapId={$mapId}&reset_map=true\">$mk_close</a>";
+            $button = "<a id=\"close\" class=\"btn\" href=\"{$ark_root_path}/map_view.php?mapId={$mapId}&reset_map=true\">$mk_close</a>";
             print $button;
         }
         break;

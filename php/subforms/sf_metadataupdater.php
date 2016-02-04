@@ -523,7 +523,7 @@ switch ($sf_state) {
         .arkdnd {cursor: pointer; display:block; padding:10px;}
         .metatable {cell-padding:10px;}
         </style>';
-        $var .= "<script type=\"text/javascript\" src=\"".$ark_dir."mod_code/js/irodsmetaupdater.js\"></script>";
+        $var .= "<script type=\"text/javascript\" src=\"".$ark_root_path."/mod_code/js/irodsmetaupdater.js\"></script>";
 
         $var .= "<script type=\"text/javascript\">console.log(document.getElementById(\"filename\").innerHTML)</script>";
         

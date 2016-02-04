@@ -355,10 +355,10 @@ if ($expsize == 'A0'){
 //this is where we start processing and making the PDF itself
 
 //choose the right north arrow image
-$north_arrow_url = "$ark_server_path/skins/$skin/images/legend/northarrow.png";
+$north_arrow_url = "$ark_root_dir/skins/$skin/images/legend/northarrow.png";
 
 //set up the logo
-$logo_url = "$ark_server_path/skins/$skin/images/logo.png";
+$logo_url = "$ark_root_dir/skins/$skin/images/logo.png";
 
 //set the Merlin Message (DEV NOTE: This can be built later using drawing numbers etc.)
 $merlinmsg = 'This map was created using ARK';

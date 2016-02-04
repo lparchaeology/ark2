@@ -285,9 +285,9 @@ switch ($sf_state) {
         $var = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
               <html xmlns="http://www.w3.org/1999/xhtml" lang="de">
               <head>';
-        $var .= "<script language=\"JavaScript\" type=\"text/javascript\" src=\"$ark_dir/js/imageflow/imageflow.js\"></script>\n";
-        $var .= "<script type=\"text/javascript\" src=\"$ark_dir/js/lightbox.js\"></script>\n";
-        $var .= "<link href=\"$ark_dir/$stylesheet\" type=\"text/css\" rel=\"stylesheet\" />";
+        $var .= "<script language=\"JavaScript\" type=\"text/javascript\" src=\"$ark_root_path/js/imageflow/imageflow.js\"></script>\n";
+        $var .= "<script type=\"text/javascript\" src=\"$ark_root_path/js/lightbox.js\"></script>\n";
+        $var .= "<link href=\"$ark_root_path/$stylesheet\" type=\"text/css\" rel=\"stylesheet\" />";
         $var .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"ark/skins/$skin/stylesheets/lightbox.css\" />";
         $var .= "</head>\n";
         $var .= '<body>';

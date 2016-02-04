@@ -12,7 +12,7 @@ $action_array = getActor($sf_key, $sf_val,  $fields['action']['classtype'], 'abk
 $summary_eventlabel =$fields['action']['field_alias'];
 if ($action_array) {
     foreach ( $action_array as $action ) {
-    	$summary_actor = "<a href=\"{$ark_dir}micro_view.php?item_key=abk_cd&abk_cd={$action['actor_itemvalue']}\">";
+    	$summary_actor = "<a href=\"{$ark_root_path}/micro_view.php?item_key=abk_cd&abk_cd={$action['actor_itemvalue']}\">";
     	
        $summary_actor .= getActorElem($action['actor_itemvalue'], 
                 $fields['action']['actors_element'], 'abk_cd', 'txt');
@@ -45,7 +45,7 @@ if (array_key_exists('photo', $fields)) {
         // package this up into the field so it can be sent to frmElem()
         foreach ( $linked_files as $linked_file ) {
             if (file_exists($registered_files_dir . DIRECTORY_SEPARATOR . "webthumb_" . $linked_file['id'] . ".jpg")) {
-                $photo_src = $registered_files_host . "webthumb_" . $linked_file['id'] . ".jpg";
+                $photo_src = $registered_files_path . "/webthumb_" . $linked_file['id'] . ".jpg";
                 $summaryphoto = "<img src=\"$photo_src\" alt=\"{$linked_file['id']}\"/>";
             } else {
                 $photo_src = "{$skin_path}/images/common/placeholder-find-photo.png";

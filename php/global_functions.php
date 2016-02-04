@@ -1415,7 +1415,7 @@ function feedBk($type)
 function frmElem($field, $itemkey, $itemvalue=FALSE)
 {
     // SETUP
-    global $lang, $skin_path, $registered_files_dir, $registered_files_host, $purifier;
+    global $lang, $skin_path, $registered_files_dir, $registered_files_path, $purifier;
     
 
     $mk_delete = getMarkup('cor_tbl_markup', $lang,'delete');
@@ -2088,7 +2088,7 @@ function frmElem($field, $itemkey, $itemvalue=FALSE)
                         $thumb = mkThumb($file,'arkthumb');
                         $thumb_src = "$thumb</a>";
                         $webthumb_src = "<li class=\"file_thumbs\">";
-                        $webthumb_src .= "<a href=\"{$registered_files_host}webthumb_{$file['id']}.jpg\"";
+                        $webthumb_src .= "<a href=\"{$registered_files_path}/webthumb_{$file['id']}.jpg\"";
                         $webthumb_src .= " class=\"imagebox sketch_img_display\" title=\"{$file['filename']}\">";
                     }
                     $var .= $webthumb_src;
@@ -2459,7 +2459,7 @@ function loadFiles($dir)
 
 function mkArkFooter()
 {
-    global $lang, $soft_name, $ark_dir;
+    global $lang, $soft_name, $ark_root_path;
     if (reqQst($_SESSION, 'authorised')) {
         $mk_help = getMarkup('cor_tbl_markup', $lang, 'help');
         $mk_logout = getMarkup('cor_tbl_markup', $lang, 'logout');
@@ -2468,7 +2468,7 @@ function mkArkFooter()
         $var .= "<span>$soft_name</span>";
         $var .= mkNavLang();
         $var .= "<span><a href=\"http://ark.lparchaeology.com/wiki\">$mk_help</a></span>";
-        $var .= "<span class=\"noborder\"><a href=\"{$ark_dir}index.php?logout=true\">$mk_logout</a></span>";
+        $var .= "<span class=\"noborder\"><a href=\"{$ark_root_path}/index.php?logout=true\">$mk_logout</a></span>";
         $var .= "</div>\n";
         $var .= "<div class=\"credits\">\n";
         $var .= "<p>Powered by</p>\n";
@@ -2675,38 +2675,38 @@ function mkHelpTray($sf_conf){
 
 function mkJavaScriptSource($page){
     
+    global $ark_root_path, $ark_lib_path;
     $return = "";
     
     // Helper function for adding ark dir to path
     function wrap($path){
-        global $ark_dir;
         
-        $open = '<script type="text/javascript" src="'.$ark_dir;
+        $open = '<script type="text/javascript" src="';
         $close= '"></script>';
         return $open.$path.$close;
         
     }
 
     $paths = array (
-                    'lib/js/jquery-ui.js',
-                    'lib/js/jquery.colorbox.js',
-                    'lib/js/php.js',
-                    'js/js_functions.js',
-                    'js/livesearch.js',
-                    'js/common.js',
+                    $ark_lib_path.'/js/jquery-ui.js',
+                    $ark_lib_path.'/js/jquery.colorbox.js',
+                    $ark_lib_path.'/js/php.js',
+                    $ark_root_path.'/js/js_functions.js',
+                    $ark_root_path.'/js/livesearch.js',
+                    $ark_root_path.'/js/common.js',
     );
     switch ($page){
         case ('Map View'):
         case ('Map Admin'):
-            $paths [] = 'lib/js/ol3/ol.js';
-            $paths [] = 'js/map_functions.js';
+            $paths [] = $ark_lib_path.'/js/ol3/ol.js';
+            $paths [] = $ark_root_path.'/js/map_functions.js';
             break;
         case ('Data Entry'):
             break;
         case ('Data View'):
         case ('Record View'):
-            $paths [] = 'lib/js/ol3/ol.js';
-            $paths [] = 'js/mulit_edit.js';
+            $paths [] = $ark_lib_path.'/js/ol3/ol.js';
+            $paths [] = $ark_root_path.'/js/mulit_edit.js';
             break;
         default :
             break;
@@ -2992,7 +2992,7 @@ function mkMultiResultActionNav()
 
 function mkMvTabNav($cols)
 {
-    global $lang, $item_key, $$item_key, $ark_dir, $curcol;
+    global $lang, $item_key, $$item_key, $curcol;
     // set up a return var
     $nav = FALSE;
     // loop over each column
@@ -3185,7 +3185,7 @@ function mkNavItem($mode, $button, $item_key, $default, $link=FALSE, $mod_label=
 
 function mkNavMain($pages, $links=FALSE, $force_active=FALSE)
 {
-    global $ark_dir, $lang;
+    global $ark_root_path, $lang;
     $vars = FALSE;
     // Start list
     $nav = "<ul id=\"navlist\">\n";
@@ -3206,11 +3206,11 @@ function mkNavMain($pages, $links=FALSE, $force_active=FALSE)
                 $vars = $page['navlinkvars'];
                 $label = getMarkup('cor_tbl_markup', $lang, $page['navname']);
                 //if we are not forcing a tab then fallback on the filename
-                if (($_SERVER['PHP_SELF']) == $ark_dir.$link && $force_active == FALSE) {
+                if (($_SERVER['PHP_SELF']) == $ark_root_path.$link && $force_active == FALSE) {
                     $active = ' id="active"';
                 }
                 $nav .= "<li$active>";
-                $nav .= "<a href=\"$ark_dir$link$vars\">$label</a>";
+                $nav .= "<a href=\"$ark_root_path$link$vars\">$label</a>";
                 $nav .= "</li>\n";
                 unset($active, $vars, $label);
             }
@@ -3224,7 +3224,7 @@ function mkNavMain($pages, $links=FALSE, $force_active=FALSE)
             $vars = $links['vars'];
             $label = $links['label'];
         }
-        $nav .= "<li><a href=\"$ark_dir{$link}?{$vars}\">$label</a></li>\n";
+        $nav .= "<li><a href=\"$ark_root_path{$link}?{$vars}\">$label</a></li>\n";
     }
     // Close the list
     $nav .= "</ul>";
@@ -3553,7 +3553,7 @@ function mkprtRecordNav($conf, $rec_page, $current_view)
 
 function mkRecordNav($conf, $rec_page, $current_view, $item_key=FALSE, $item_val=FALSE)
 {
-    global $lang, $_SESSION, $authitems, $conf_br, $mod_short, $search_mode, $conf_micro_viewer, $ark_dir, $record_admin_grps;
+    global $lang, $_SESSION, $authitems, $conf_br, $mod_short, $search_mode, $conf_micro_viewer, $ark_root_path, $record_admin_grps;
     if (!$item_key) {
         global $item_key, $$item_key;
         $item_val = $$item_key;
@@ -3702,7 +3702,7 @@ function mkRecordNav($conf, $rec_page, $current_view, $item_key=FALSE, $item_val
             $var .= "<label>{$mod_alias}&nbsp;&#45;&nbsp;{$mk_form}</label>\n";
             if ($op_jumper) {
                 $var .= "<div id=\"record_jumper\">\n";
-                $link = $ark_dir.'data_entry.php';
+                $link = $ark_root_path.'/data_entry.php';
                 $var .= mkNavItem($search_mode, $mk_go, $item_key, '', $link, FALSE);
                 $var .= "</div>\n";
             }
@@ -3720,7 +3720,7 @@ function mkRecordNav($conf, $rec_page, $current_view, $item_key=FALSE, $item_val
             $var .= "<label>{$mod_alias}</label>\n";
             if ($op_jumper) {
                 $var .= "<div id=\"record_jumper\">\n";
-                $link = $ark_dir.'micro_view.php';
+                $link = $ark_root_path.'/micro_view.php';
                 $var .= mkNavItem($search_mode, $mk_go, $item_key, '', $link, FALSE);
                 $var .= "</div>\n";
             }
@@ -3728,7 +3728,7 @@ function mkRecordNav($conf, $rec_page, $current_view, $item_key=FALSE, $item_val
         default:
             if ($op_jumper) {
                 $var .= "<div id=\"record_jumper\">\n";
-                $link = $ark_dir.'data_entry.php';
+                $link = $ark_root_path.'/data_entry.php';
                 $var .= mkNavItem($search_mode, $mk_go, $item_key, '', $link, $mod_alias);
                 $var .= "</div>\n";
             }
@@ -4284,12 +4284,12 @@ function mkResultsJson($results_array, $filters)
 function mkResultsMap($results_array, $filters)
 {
     include_once('php/map/map_functions.php');
-    global $lang, $disp_mode, $wxs_query_map, $wxs_qlayers, $ark_dir, $skin;
+    global $lang, $disp_mode, $wxs_query_map, $wxs_qlayers, $ark_root_path, $skin;
     $var = '';
     $mk_no_spat_results = getMarkup('cor_tbl_markup', $lang, 'no_spat_results');
     $have_spat_results = FALSE;
     $skin = reqArkVar('skin', $skin);
-    $skin_path = $ark_dir."skins/$skin";
+    $skin_path = "$ark_skins_path/$skin";
     //first thing is we need to check the variables - otherwise we won't bother making the map
     //and just display the chat.
     if (!is_array($wxs_qlayers)) {
@@ -4339,7 +4339,7 @@ function mkResultsMap($results_array, $filters)
         
         if ($map) {
             $var = '<script type="text/javascript" src="lib/js/ol3/ol.js"></script>';
-            $var .= "<link rel=\"stylesheet\" href=\"{$ark_dir}lib/js/ol3/ol.css\" /><link rel=\"stylesheet\" href=\"{$skin_path}/stylesheets/map_view.css\" />";
+            $var .= "<link rel=\"stylesheet\" href=\"{$ark_lib_path}/js/ol3/ol.css\" /><link rel=\"stylesheet\" href=\"{$skin_path}/stylesheets/map_view.css\" />";
             $var .= "<div class=\"result_map\">";
             $var .= "<div id=\"map_col\" class=\"map_col\">";
             $var .= '<div id="popup"></div>';
@@ -5269,12 +5269,12 @@ function mkTblTh($fields)
  
 function mkThumb($file, $type)
 { 
-    global $skin_path, $registered_files_dir, $registered_files_host;
+    global $skin_path, $registered_files_dir, $registered_files_path;
     $thumb_src = ''; 
     if (is_array($file)) { 
         // first of all we check if we have the actual thumbnail - if so we are done 
         if (file_exists("{$registered_files_dir}/{$type}_{$file['id']}.jpg")) {
-            $thumb_src = "<img src=\"{$registered_files_host}{$type}_{$file['id']}.jpg\" alt=\"file_image\"/></a>"; 
+            $thumb_src = "<img src=\"{$registered_files_path}/{$type}_{$file['id']}.jpg\" alt=\"file_image\"/></a>";
             return $thumb_src; 
         } 
         // next try to return an icon based on file extension
@@ -5739,7 +5739,7 @@ function mkUploadResultsTable($upload_results, $dry = FALSE)
 
 function mkUserInfo() 
 {
-    global $lang, $soft_name, $ark_dir;
+    global $lang, $soft_name, $ark_root_path;
     if (reqQst($_SESSION, 'authorised')) {
         $mk_help = getMarkup('cor_tbl_markup', $lang, 'help');
         $mk_logout = getMarkup('cor_tbl_markup', $lang, 'logout');
@@ -5747,7 +5747,7 @@ function mkUserInfo()
         $var .= "<span>$soft_name</span>";
         $var .= mkNavLang();
         $var .= "<span><a href=\"http://ark.lparchaeology.com/wiki\">$mk_help</a></span>";
-        $var .= "<span class=\"noborder\"><a href=\"{$ark_dir}index.php?logout=true\">$mk_logout</a></span>";
+        $var .= "<span class=\"noborder\"><a href=\"{$ark_root_path}/index.php?logout=true\">$mk_logout</a></span>";
         return ($var);
     }
 }
@@ -6202,7 +6202,7 @@ function processFiles($dir, $batch, $mod, $cre_by, $cre_on, $size=FALSE, $orig_f
     ini_set("max_execution_time", "36000");
     
     // globals
-    global $registered_files_dir, $fu, $phMagickDir, $lang, $pdfthumbgrid;
+    global $registered_files_dir, $fu, $phmagick_file, $lang, $pdfthumbgrid;
     
     // markup
     $mk_not_accessible = getMarkup('cor_tbl_markup', $lang, 'file_not_accessible');
@@ -6328,10 +6328,10 @@ function processFiles($dir, $batch, $mod, $cre_by, $cre_on, $size=FALSE, $orig_f
     }
     
     // test for the presence of phMagick
-    if (isset($phMagickDir)) {
-        if (is_file($phMagickDir)) {
+    if (isset($phmagick_file)) {
+        if (is_file($phmagick_file)) {
             $phMagickAvailable = TRUE;
-            include_once $phMagickDir;
+            include_once $phmagick_file;
         } else {
             $phMagickAvailable = FALSE;
         }
@@ -6582,7 +6582,7 @@ function processFiles($dir, $batch, $mod, $cre_by, $cre_on, $size=FALSE, $orig_f
                     } else {
                         $convert = FALSE;
                         $make_thumb = FALSE;
-                        $ret['files'][$file]['crunch']['convertible'] = "no phMagick (at: $phMagickDir), do not make thumb";
+                        $ret['files'][$file]['crunch']['convertible'] = "no phMagick (at: $phmagick_file), do not make thumb";
                     }
                 } else {
                     $convert = FALSE;
@@ -6798,7 +6798,7 @@ function processFilesDry($dir, $batch, $mod, $cre_by, $cre_on, $size=FALSE, $ori
 {
     
     // globals
-    global $registered_files_dir, $fu, $phMagickDir, $lang;
+    global $registered_files_dir, $fu, $phmagick_file, $lang;
     
     ini_set("max_post_size","1000M");
     
@@ -6921,10 +6921,10 @@ function processFilesDry($dir, $batch, $mod, $cre_by, $cre_on, $size=FALSE, $ori
     }
     
     // test for the presence of phMagick
-    if (isset($phMagickDir)) {
-        if (is_file($phMagickDir)) {
+    if (isset($phmagick_file)) {
+        if (is_file($phmagick_file)) {
             $phMagickAvailable = TRUE;
-            include_once $phMagickDir;
+            include_once $phmagick_file;
         } else {
             $phMagickAvailable = FALSE;
         }
@@ -7615,7 +7615,7 @@ function resFdCurr($field, $itemkey, $itemvalue)
 function resTblTd($field, $itemkey, $itemvalue)
 {
     
-    global $lang, $ark_dir, $registered_files_host, $conf_micro_viewer, $skin_path;
+    global $lang, $ark_root_path, $registered_files_path, $conf_micro_viewer, $skin_path;
     
     // get an itemkey
     if ($field['dataclass'] == 'itemkey') {
@@ -7706,7 +7706,7 @@ function resTblTd($field, $itemkey, $itemvalue)
                         $field['actors_elementclass']
                 );
                 if($link){
-                	$var = "<a href=\"{$ark_dir}micro_view.php?item_key=abk_cd&abk_cd={$action['actor_itemvalue']}\">".$var."</a>";
+                	$var = "<a href=\"{$ark_root_path}/micro_view.php?item_key=abk_cd&abk_cd={$action['actor_itemvalue']}\">".$var."</a>";
  
                 }
             }
@@ -7717,7 +7717,7 @@ function resTblTd($field, $itemkey, $itemvalue)
                 foreach ($action_array as $action) {
                     $var .= '<li>';
                		if($link){
-                		$var .= "<a href=\"{$ark_dir}micro_view.php?item_key=abk_cd&abk_cd={$action['actor_itemvalue']}\">";
+                		$var .= "<a href=\"{$ark_root_path}/micro_view.php?item_key=abk_cd&abk_cd={$action['actor_itemvalue']}\">";
 	                }
                     $var .= 
                         getActorElem(
@@ -7904,8 +7904,8 @@ function resTblTd($field, $itemkey, $itemvalue)
                 $id = $current_file['id'];
                 $mult_files = FALSE;
             }
-            $webthumb_url = "{$registered_files_host}webthumb_{$id}.jpg";
-            $arkthumb_url = "{$registered_files_host}arkthumb_{$id}.jpg";
+            $webthumb_url = "{$registered_files_path}/webthumb_{$id}.jpg";
+            $arkthumb_url = "{$registered_files_path}/arkthumb_{$id}.jpg";
             // assemble the li
             if ($op_disp_meta) {
                 $var .= "<span class=\"filename\">{$current_file['filename']}</span>";
@@ -8039,7 +8039,7 @@ function resTblTd($field, $itemkey, $itemvalue)
                     $label = getMarkup('cor_tbl_markup', $lang, 'view');
                     $img = "<img src=\"$skin_path/images/plusminus/view.png\"";
                     $img .= " alt=\"$label\" class=\"med\" title=\"View Record\" />";
-                    $var .= "<a href=\"{$ark_dir}micro_view.php?";
+                    $var .= "<a href=\"{$ark_root_path}/micro_view.php?";
                     $var .= "item_key=$itemkey&amp;$itemkey=$itemvalue\">$img</a>";
                 }
                 if ($value == 'check') {
@@ -8058,7 +8058,7 @@ function resTblTd($field, $itemkey, $itemvalue)
                     $label = getMarkup('cor_tbl_markup', $lang, 'enter');
                     $img = "<img src=\"$skin_path/images/plusminus/detailed.png\"";
                     $img .= " alt=\"$label\" class=\"med\" title=\"Enter Record\" />";
-                    $var .= "<a href=\"{$ark_dir}data_entry.php?view=detfrm&amp;";
+                    $var .= "<a href=\"{$ark_root_path}/data_entry.php?view=detfrm&amp;";
                     $var .= "item_key=$itemkey&amp;$itemkey=$itemvalue\">$img</a>";
                 }
                 if ($value == 'qed') {
@@ -8071,10 +8071,10 @@ function resTblTd($field, $itemkey, $itemvalue)
         } else {
             // these are defaults
             $label = getMarkup('cor_tbl_markup', $lang, 'view');
-            $var = "<a href=\"{$ark_dir}micro_view.php?item_key=$itemkey&amp;$itemkey=$itemvalue\">";
+            $var = "<a href=\"{$ark_root_path}/micro_view.php?item_key=$itemkey&amp;$itemkey=$itemvalue\">";
             $var .= "[$label]</a>";
             $label = getMarkup('cor_tbl_markup', $lang, 'enter');                
-            $var .= "<a href=\"{$ark_dir}data_entry.php?view=detfrm&amp;item_key=$itemkey&amp;";
+            $var .= "<a href=\"{$ark_root_path}/data_entry.php?view=detfrm&amp;item_key=$itemkey&amp;";
             $var .= "$itemkey=$itemvalue\">";
             $var .= "[$label]</a>";
             $label = getMarkup('cor_tbl_markup', $lang, 'qed');

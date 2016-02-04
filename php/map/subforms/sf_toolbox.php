@@ -99,7 +99,7 @@ switch ($sf_state) {
 		}
 		// Make the mode switcher
 		$icons .= "<div class=\"tool\" id=\"edit_mode_icon\">";
-		$icons .= "<a href=\"{$ark_dir}map_view.php?view=$switchmode\">";
+		$icons .= "<a href=\"{$ark_root_path}/map_view.php?view=$switchmode\">";
 		$icons .= "<img src=\"$skin_path/images/maptools/$switchmode.png\">";
 		$icons .= "</a>";
 		$icons .= '</div>';

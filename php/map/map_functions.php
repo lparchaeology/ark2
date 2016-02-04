@@ -552,7 +552,7 @@ function genAddLayer($layer, $map)
  */
 function genDataViewInteraction($map, $field)
 {
-    global $ark_dir, $skin_path, $lang;
+    global $skin_path, $lang;
     
     $mod_cd = $field['module'] . "_cd";
     
@@ -797,7 +797,7 @@ function genSelected($sf_key, $sf_val, $field, $map)
  */
 function genSelectInteraction($map, $field)
 {
-    global $ark_dir, $skin_path, $lang;
+    global $ark_root_path, $skin_path, $lang;
     
     $mod_cd = $field['module'] . "_cd";
     
@@ -841,7 +841,7 @@ function genSelectInteraction($map, $field)
             console.log(featpix);
             overlay.getElement().style.display = 'inline-block';
             overlay.setPosition(featcoords);
-            overlay.getElement().innerHTML = '<a href=\"$ark_dir/micro_view.php?item_key=$mod_cd&$mod_cd='+ark_id+'\"><h4>$mod_alias '+ark_id.split('_')[1]+'</h4></a>';
+            overlay.getElement().innerHTML = '<a href=\"$ark_root_path/micro_view.php?item_key=$mod_cd&$mod_cd='+ark_id+'\"><h4>$mod_alias '+ark_id.split('_')[1]+'</h4></a>';
             overlay.getElement().innerHTML += '<img class=\"loading\" src=\"$skin_path/images/lightbox/loading.gif\"></img>';
             var iframe = document.createElement('iframe');
             iframe.setAttribute(\"id\",\"popupiframe\");
@@ -879,7 +879,7 @@ function genSelectInteraction($map, $field)
  */
 function genSelectMultiInteraction($map, $field)
 {
-    global $ark_dir, $skin_path, $lang;
+    global $ark_root_path, $skin_path, $lang;
     
     $mod_cd = $field['module'] . "_cd";
     
@@ -943,7 +943,7 @@ function genSelectMultiInteraction($map, $field)
             multiSelectOverlay.setStyle(overlayStyle);
             iframes[ark_id].style.display = 'inline';
             var titleElem = document.getElementById('overlayTitleElem');
-            titleElem.href='$ark_dir/micro_view.php?itemkey=$mod_cd&$mod_cd='+ark_id;
+            titleElem.href='$ark_root_path/micro_view.php?itemkey=$mod_cd&$mod_cd='+ark_id;
             titleElem.innerHTML = '<h5>$mod_alias '+ark_id.split('_')[1]+'</h5>';
         }
         
@@ -988,7 +988,7 @@ function genSelectMultiInteraction($map, $field)
                 titlebar.appendChild(forebtn);
                 var titleElem = document.createElement('a');
                 titleElem.id = 'overlayTitleElem';
-                titleElem.href='$ark_dir/micro_view.php?itemkey=$mod_cd&$mod_cd='+ark_id;
+                titleElem.href='$ark_root_path/micro_view.php?itemkey=$mod_cd&$mod_cd='+ark_id;
                 titleElem.innerHTML = '<h5>$mod_alias '+ark_id.split('_')[1]+'</h5>';
                 titlebar.appendChild(titleElem);
                 iframes[ark_id].style.display = 'inline';

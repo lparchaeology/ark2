@@ -106,7 +106,7 @@ $javascript = mkJavaScriptSource($pg_settings['name']);
 
 // ---------OUTPUT--------- //
 
-include($ark_server_path."/skins/".$skin."/templates/inc-header.php");
+include($skin_dir."/templates/inc-header.php");
 ?>
 
 <!-- BEGIN maincontent -->
@@ -129,7 +129,7 @@ if ($permitted) {
 
 echo '</div>';
  
-include($ark_server_path."/skins/".$skin."/templates/inc-footer.php");
+include($skin_dir."/templates/inc-footer.php");
 
 ?>
 </div>

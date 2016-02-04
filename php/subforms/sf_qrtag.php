@@ -70,7 +70,7 @@ switch ($sf_state) {
         $var .= "<div id=\"{$sf_conf['sf_html_id']}\" class=\"{$sf_cssclass}\">";
         $var .= sfNav($sf_title, $cur_col_id, $cur_sf_id, $$disp_cols);
         $web_host = getWebHost();
-        $target_url = "$web_host/$ark_dir/micro_view.php?&item_key=$sf_key&$sf_key=$sf_val";
+        $target_url = "$web_host/$ark_root_path/micro_view.php?&item_key=$sf_key&$sf_key=$sf_val";
         $target_url = rawurlencode($target_url);
         $var .= "<a target=\"_blank\">";
         $var .= "<img border='0' alt='qrtag' src='lib/php/qr_img/php/qr_img.php?d=$target_url&e=M&v=AUTO&s=3'></a>";

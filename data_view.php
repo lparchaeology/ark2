@@ -267,13 +267,13 @@ if ($results_array && $perpage == 'inf') {
 
 $javascript = mkJavaScriptSource($pg_settings['name']);
 $skin = reqArkVar('skin', $skin);
-$skin_path = $ark_dir."skins/$skin";
+$skin_path = "$ark_skins_path/$skin";
 
 $wrapperclass = "wrp_results";
 
 // ---------OUTPUT--------- //
 
-include($ark_server_path."/skins/".$skin."/templates/inc-header.php");
+include($skin_dir."/templates/inc-header.php");
 
 ?>
 
@@ -318,7 +318,7 @@ if (isset($result_output)) {
 </div>
 
 <?php
-    include($ark_server_path."/skins/".$skin."/templates/inc-footer.php"); ?>
+    include($skin_dir."/templates/inc-footer.php"); ?>
 
 
 <!-- end content WRAPPER -->
@@ -448,7 +448,7 @@ if( is_array($results_array) ){
     echo $fieldAliasJs;
 }
 ?>
-<script type="text/javascript" src="<?php echo $ark_dir ?>js/multi_edit.js"></script>
+<script type="text/javascript" src="<?php echo $ark_root_path ?>/js/multi_edit.js"></script>
        
 </body>
 </html>

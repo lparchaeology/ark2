@@ -386,7 +386,7 @@ switch ($sf_state) {
         if ($message) {
             feedBk('message');
         }
-        $link = $ark_dir.'/data_entry.php?'.$sf_key.'='.$sf_val.'&view=detfrm&item_key='.$sf_key;
+        $link = $ark_root_path.'/data_entry.php?'.$sf_key.'='.$sf_val.'&view=detfrm&item_key='.$sf_key;
         printf('<p>Totals will be calculated when editing is complete</p>');
         printf("</div>\n\n");
         break;

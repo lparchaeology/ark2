@@ -369,9 +369,9 @@ if(preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|c
 }
 
 $skin = reqArkVar('skin', $skin);
-$skin_path = $ark_dir."skins/$skin";
+$skin_path = "$ark_skins_path/$skin";
 
-include($ark_server_path."/skins/".$skin."/templates/inc-header.php");
+include($skin_dir."/templates/inc-header.php");
 
 ?>
 <!-- BEGIN leftpanel -->
@@ -605,5 +605,5 @@ if (!$error) {
 
 ?>
 <!-- ARK FOOTER -->
-<?php  include($ark_server_path."/skins/".$skin."/templates/inc-footer.php");  ?>
+<?php  include($skin_dir."/templates/inc-footer.php");  ?>
     

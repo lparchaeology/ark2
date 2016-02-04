@@ -155,7 +155,7 @@ switch ($sf_state) {
        				"AND cor_tbl_alias.alias LIKE '{$layer['projection']}'");
        		$servertypeattrno = getLutIdFromData('cor_lut_attribute', $lang,
        				"AND cor_tbl_alias.alias = 'mapserver'");
-       		$action = $ark_dir."overlay_holder.php?sf_conf=conf_map_newlayer";
+       		$action = $ark_root_path."/overlay_holder.php?sf_conf=conf_map_newlayer";
        		$options .= "<div><form id=\"{$layer['name']}_form\" action=\"$action\" name=\"newlayer\" method=\"POST\">";
 			$options .= "<input type=\"submit\" value=\"{$layer['name']}\">";
 			$options .= "<input type=\"hidden\" name=\"update_db\" value=\"newlayer\">";

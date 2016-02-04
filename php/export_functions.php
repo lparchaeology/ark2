@@ -207,7 +207,7 @@ function exportMediaRSS($export_conf, $mod)
 function elemMediaRSS($export_conf, $mod)
 {
     $web_host = getWebHost();
-    global $ark_dir;
+    global $ark_root_path;
     $elem = '';
     //check if we have a txt field in the export conf to be used as the label
     foreach ($export_conf['export_fields'] as $key => $value) {
@@ -233,9 +233,9 @@ function elemMediaRSS($export_conf, $mod)
                 $elem .= "<title>{$file['itemvalue']}</title>";
             }
             $elem .="
-                <link>$web_host/$ark_dir/micro_view.php?item_key={$mod}_cd&amp;{$mod}_cd={$file['itemvalue']}</link>
-                 <media:thumbnail url=\"$web_host/$ark_dir/data/files/arkthumb_{$file['file']}.jpg\"/>
-                 <media:content url=\"$web_host/$ark_dir/data/files/{$file['file']}.jpg\"/>
+                <link>$web_host/$ark_root_path/micro_view.php?item_key={$mod}_cd&amp;{$mod}_cd={$file['itemvalue']}</link>
+                 <media:thumbnail url=\"$web_host/$ark_root_path/data/files/arkthumb_{$file['file']}.jpg\"/>
+                 <media:content url=\"$web_host/$ark_root_path/data/files/{$file['file']}.jpg\"/>
              </item>
             ";
         }
@@ -406,7 +406,7 @@ function exportCSV($results_array, $conf)
 
 function csvElem($field, $itemkey, $itemvalue)
 {
-    global $lang, $ark_dir, $registered_files_dir;
+    global $lang, $registered_files_dir;
     
     // get an itemkey
     if ($field['dataclass'] == 'itemkey') {
@@ -1139,7 +1139,7 @@ function addFeed($filters, $feed_mode, $limit, $feedtitle, $feeddesc, $feeddisp_
 function exportAtom($export_conf)
 {
     // globals
-    global $lang, $ark_dir;
+    global $lang, $ark_root_path;
     // get the web host
     $webhost = getWebHost();
     // establish the current URL
@@ -1199,7 +1199,7 @@ function exportAtom($export_conf)
         if (array_key_exists('AtomExt',$conf_array)) {
             $cols = resTblTh($conf_array['AtomExt']['export_fields'],'silent');
         }
-        $item_link = $webhost . $ark_dir . "micro_view.php?itemkey={$res_item['itemkey']}&amp;{$res_item['itemkey']}={$res_item['itemval']}";
+        $item_link = $webhost . $ark_root_path . "/micro_view.php?itemkey={$res_item['itemkey']}&amp;{$res_item['itemkey']}={$res_item['itemval']}";
         $xml_content_output .= "<entry>\n";
         $xml_content_output .= "<title>{$res_item['itemval']}</title>\n";
         $xml_content_output .= "<link href=\"$item_link\"/>\n";

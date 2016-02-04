@@ -81,7 +81,7 @@ if (features.getLength()){
             overlay.setPosition(featcoords);
             //selected = features[feature];
             var ark_id = e.properties.ark_id.toUpperCase()
-            overlay.getElement().innerHTML = '<a href="<?php echo $ark_dir?>/micro_view.php?item_key=loc_cd&loc_cd='+ark_id+'"><h4>Location '+ark_id.split('_')[1]+'</h4></a>';
+            overlay.getElement().innerHTML = '<a href="<?php echo $ark_root_path?>/micro_view.php?item_key=loc_cd&loc_cd='+ark_id+'"><h4>Location '+ark_id.split('_')[1]+'</h4></a>';
             overlay.getElement().innerHTML += '<img class="loading" src=<?php echo $skin_path."/images/lightbox/loading.gif"?>></img>';
             var iframe = document.createElement('iframe');
             iframe.setAttribute("id","popupiframe");

@@ -35,9 +35,6 @@ header('Content-type: image/png');
 
 include('../../../config/settings.php');
 include('../../../php/global_functions.php');
-//we need to get the correct skin_path - as this is a standalone file talking to the server we need to futz a bit
-$expl_skin_path = explode('skins', $skin_path);
-$skin_path = '/' . $ark_server_path . '/skins' . $expl_skin_path[1];
 //script to output a png (after headers have been sent)
 //this script can be used as the src in an <img> tag
 
@@ -48,14 +45,14 @@ $type =  reqQst($_REQUEST,'type');
 
 if ($type == 1) {
 
- $im_file = $skin_path. "/images/legend/line.png";
+ $im_file = $skin_dir. "/images/legend/line.png";
 
 }
 
 if ($type == 2) {
 
  // $im_file = "../../../ark/skins/arkologik/images/legend/poly.png";
-  $im_file = $skin_path . "/images/legend/poly.png";
+  $im_file = $skin_dir . "/images/legend/poly.png";
 
 
 }
@@ -63,7 +60,7 @@ if ($type == 2) {
 if ($type == 3) {
 
   //$im_file = "../../../ark/skins/arkologik/images/legend/raster.png";
-  $im_file = $skin_path . "/images/legend/raster.png";
+  $im_file = $skin_dir . "/images/legend/raster.png";
 
 
 }
@@ -71,7 +68,7 @@ if ($type == 3) {
 if ($type == 4) {
 
  // $im_file = "../../../ark/skins/arkologik/images/legend/poly.png";
-  $im_file = $skin_path . "/images/legend/poly.png";
+  $im_file = $skin_dir . "/images/legend/poly.png";
 
 
 }
@@ -79,7 +76,7 @@ if ($type == 4) {
 if ($type == 0) {
 
  // $im_file = "../../../ark/skins/arkologik/images/legend/point.png";
- $im_file = $skin_path . "/images/legend/point.png";
+ $im_file = $skin_dir . "/images/legend/point.png";
 
 
 }

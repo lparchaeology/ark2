@@ -75,7 +75,7 @@ switch ($sf_state) {
     case 'lpanel':
         echo '<div class="leftpanel">';
         echo "<div class=\"logo\">
-        <a href=\"{$ark_dir}user_home.php\">
+        <a href=\"{$ark_root_path}user_home.php\">
         <img alt=\"{$ark_name}\" src=\"{$skin_path}/images/logo.png\">
         </a>
         </div> ";
@@ -99,7 +99,7 @@ switch ($sf_state) {
             foreach($switchmodes as $switchmode => $group){
                 if(array_intersect(array($group), $_SESSION['sgrp_arr'])){
                     $mk_switchtext = getMarkup('cor_tbl_markup', $lang, $switchmode.'maplink');
-                    $var .= "<li><a href=\"{$ark_dir}map_view.php?view=$switchmode\">";
+                    $var .= "<li><a href=\"{$ark_root_path}/map_view.php?view=$switchmode\">";
                     $var .= $mk_switchtext;
                     $var .= "</a></li>";
                 }

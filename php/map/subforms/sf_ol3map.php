@@ -67,7 +67,7 @@ if (!$map || $reset_map==TRUE) {
     }
 }
 
-$css = "<link rel=\"stylesheet\" href=\"$ark_dir/lib/js/ol3/ol.css\" />";
+$css = "<link rel=\"stylesheet\" href=\"$ark_lib_path/js/ol3/ol.css\" />";
 $css .= "<link rel=\"stylesheet\" href=\"$skin_path/stylesheets/map_view.css\" />";
 
 $script = "<script src=\"http://cdnjs.cloudflare.com/ajax/libs/proj4js/2.2.1/proj4.js\" type=\"text/javascript\"></script>";

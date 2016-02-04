@@ -80,7 +80,7 @@ if ($link_file == 'item') {
 $exif_id = reqQst($_REQUEST, 'exif_id');
 if ($exif_id) {
     $map = reqQst($_REQUEST, 'map');
-    $exif_array = getExifData("$registered_files_dir$exif_id.jpg", 'html', $map);
+    $exif_array = getExifData("$registered_files_dir/$exif_id.jpg", 'html', $map);
     if (is_array($exif_array) && $exif_array['success'] == 0) {
         echo "<ul class=\"exif_data\"><li class=\"exif_row\"><span class=\"exif_data\">No EXIF Data Available</span></li></ul>";
     } else {

@@ -118,7 +118,7 @@ $javascript = mkJavaScriptSource($pg_settings['name']);
 
 // ---------OUTPUT--------- //
 
-include($ark_server_path."/skins/".$skin."/templates/inc-header.php");
+include($skin_dir."/templates/inc-header.php");
 
 ?>
 <!-- BEGIN leftpanel -->
@@ -158,7 +158,7 @@ if ($cmap_id && $view != 'edtcmap' && $view != 'newcmap' && $view != 'home' && $
  echo '</div>'; 
    
 // ARK FOOTER
-include($ark_server_path."/skins/".$skin."/templates/inc-footer.php");
+include($skin_dir."/templates/inc-footer.php");
 
     ?>
 <!-- end CONTENT WRAPPER -->

@@ -47,7 +47,7 @@ function login_page($errorMessage) {
 
 include('config/settings.php');
 
-if(!file_exists($ark_server_path.'/skins/'.$skin.'/templates/login_page.php')){
+if(!file_exists($ark_root_dir.'/skins/'.$skin.'/templates/login_page.php')){
     header('Location: config/preflight_checks.php');
 }
 
@@ -86,7 +86,7 @@ $page_title = $mk_arkname;
 $cwidth = reqQst($_REQUEST, 'nwidth');
 
 // ---------OUTPUT--------- //
-include_once($ark_server_path.'/skins/'.$skin.'/templates/login_page.php');
+include_once($ark_root_dir.'/skins/'.$skin.'/templates/login_page.php');
 
 }
 
@@ -125,7 +125,7 @@ if (isset($anonymous_login['username']) && $$liveuser->getProperty('handle') == 
 //LOGIN AUTHENTICATION
 if (reqQst($_SESSION, 'authorised')&&!isset($anon_login)) {
     //there is a user logged in
-    if ($target_url && $target_url!=$ark_dir.'index.php') {
+    if ($target_url && $target_url!=$ark_root_path.'/index.php') {
         header("Location: $target_url");
     } else {
         header("Location: user_home.php");

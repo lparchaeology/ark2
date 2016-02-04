@@ -680,7 +680,7 @@ function fileIcon($l)
 //
 function makeArrow($sort_by, $sort_as, $type, $dir, $text)
 {
-    global $ark_dir, $qs;
+    global $qs;
     if($sort_by == $type && $sort_as == "desc")
     {
         return "<a href=\"?dir=".$dir."&amp;sort_by=".$type."&amp;sort_as=asc&$qs\">

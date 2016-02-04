@@ -664,9 +664,9 @@ function fileChanged($time)
 //
 function fileIcon($l)
 {
-    global $ark_dir;
+    global $ark_root_path;
     $l = strtolower($l);
-    return "$ark_dir/php/data_entry/file_browser.php?img=".$l;
+    return "$ark_root_path/php/data_entry/file_browser.php?img=".$l;
 }
 
 //
@@ -674,15 +674,15 @@ function fileIcon($l)
 //
 function makeArrow($sort_by, $sort_as, $type, $dir, $text)
 {
-    global $ark_dir;
+    global $ark_root_path;
     if($sort_by == $type && $sort_as == "desc")
     {
         return "<a href=\"?dir=".$dir."&amp;sort_by=".$type."&amp;sort_as=asc\">
-        $text <img style=\"border:0;\" alt=\"asc\" src=\"$ark_dir/php/data_entry/file_browser.php?img=arrow_up\" /></a>";
+        $text <img style=\"border:0;\" alt=\"asc\" src=\"$ark_root_path/php/data_entry/file_browser.php?img=arrow_up\" /></a>";
     }
     else
         return "<a href=\"?dir=".$dir."&amp;sort_by=".$type."&amp;sort_as=desc\">
-        $text <img style=\"border:0;\" alt=\"desc\" src=\"$ark_dir/php/data_entry/file_browser.php?img=arrow_down\" /></a>";
+        $text <img style=\"border:0;\" alt=\"desc\" src=\"$ark_root_path/php/data_entry/file_browser.php?img=arrow_down\" /></a>";
 }
 
 //

@@ -266,7 +266,7 @@ if ($update_db === 'delfrag') {
 // ---------OUTPUT--------- //
 
 $javascript = mkJavaScriptSource($pg_settings['name']);
-include($ark_server_path."/skins/".$skin."/templates/inc-header.php");
+include($skin_dir."/templates/inc-header.php");
 ?>
 <!-- BEGIN leftpanel -->
 <div id="lpanel" class="leftpanel">
@@ -367,7 +367,7 @@ if ($col && !$error) {
 
 <!-- end CONTENT WRAPPER -->
 </div>
-<?php include($ark_server_path."/skins/".$skin."/templates/inc-footer.php"); ?>
+<?php include($skin_dir."/templates/inc-footer.php"); ?>
 
 </body>
 </html>

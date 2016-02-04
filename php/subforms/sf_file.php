@@ -62,11 +62,11 @@ if (array_key_exists('op_sf_cssclass', $sf_conf)) {
 }
 
 // Check that the registered files (host) path has been configured
-if ($registered_files_host) {
-    $file_host = $registered_files_host;
+if ($registered_files_path) {
+    $file_host = $registered_files_path;
 } else {
     $doc = "http://ark.lparchaeology.com/wiki/index.php/Env_settings.php#.24registered_files_host";
-    echo "ADMIN ERROR: registered_files_host is not set. See: $doc<br/>";
+    echo "ADMIN ERROR: registered_files_path is not set. See: $doc<br/>";
     unset ($doc);
 }
 // Check that the registered files dir path has been configured
@@ -174,19 +174,19 @@ switch ($sf_state) {
             switch ($sf_display) {
                 case 'imageflow':
                     $var .= "
-                            <script type=\"text/javascript\" src=\"$ark_dir/js/imageflow/imageflow.js\"></script>
+                            <script type=\"text/javascript\" src=\"$ark_root_path/js/imageflow/imageflow.js\"></script>
                             <div id=\"imageflow\">
                                 <div id=\"flowloading\">
                                     <b>Loading images</b><br/>
-                                    <img src=\"$ark_dir/js/imageflow/loading.gif\" width=\"208\" height=\"13\" alt=\"loading\" />
+                                    <img src=\"$ark_root_path/js/imageflow/loading.gif\" width=\"208\" height=\"13\" alt=\"loading\" />
                                 </div>";
                     $var .= '   <div id="images">';
                     
                     foreach ($files as $key => $file) {
                         $file_ext = end(explode('.', $file['filename']));
-                        $var .= "<a class=\"imagebox\" href=\"{$registered_files_host}webthumb_{$file['id']}.jpg\" title=\"{$file['filename']}\" >";
-                        $var .= "<img id=\"image\" src=\"$ark_dir/js/imageflow/reflect.php?img={$registered_files_dir}/arkthumb_{$file['id']}.jpg\"";
-                        $var .= " alt=\"{$file['filename']}\" long_desc=\"$file_host{$file['id']}.{$file_ext}\" /> \n</a>";
+                        $var .= "<a class=\"imagebox\" href=\"{$registered_files_path}/webthumb_{$file['id']}.jpg\" title=\"{$file['filename']}\" >";
+                        $var .= "<img id=\"image\" src=\"$ark_root_path/js/imageflow/reflect.php?img={$registered_files_dir}/arkthumb_{$file['id']}.jpg\"";
+                        $var .= " alt=\"{$file['filename']}\" long_desc=\"$file_host/{$file['id']}.{$file_ext}\" /> \n</a>";
                     }
                     $var .= '</div>
                             <div id="captions"></div>
@@ -211,7 +211,7 @@ switch ($sf_state) {
                         } else {
                             $thumb = mkThumb($file, 'arkthumb');
                             $thumb_src = "$thumb</a>";
-                            $webthumb_src = "<li class=\"file_thumbs\"><a href=\"{$registered_files_host}webthumb_{$file['id']}.jpg\" class=\"imagebox\" title=\"{$file['filename']}\">";
+                            $webthumb_src = "<li class=\"file_thumbs\"><a href=\"{$registered_files_path}/webthumb_{$file['id']}.jpg\" class=\"imagebox\" title=\"{$file['filename']}\">";
                         }
                         $var .= $webthumb_src;
                         $var .= $thumb_src;
@@ -237,7 +237,7 @@ switch ($sf_state) {
                     $var .= "<ul>";
                     foreach ($files as $key => $file) {
                         $var .= "<li class=\"file_list\">";
-                        $var .= "<a class=\"imagebox\" href=\"{$registered_files_host}webthumb_{$file['id']}.jpg\""; 
+                        $var .= "<a class=\"imagebox\" href=\"{$registered_files_path}/webthumb_{$file['id']}.jpg\"";
                         $var .= "alt=\"{$file['filename']}\" title=\"{$file['filename']}\">";
                         $var .= "{$file['filename']}</a>";
                         $var .= "<a href=\"download.php?file={$file['id']}.{$file_ext[1]}&hrname={$file['field']['op_hrname']}\"";  

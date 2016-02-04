@@ -32,7 +32,7 @@
 
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<!--[if IE]><script src="<?php echo "$ark_dir" ?>lib/js/ie.js"></script><![endif]-->
+<!--[if IE]><script src="<?php echo "$ark_lib_path" ?>/js/ie.js"></script><![endif]-->
 
 <link href="<?php echo $skin_path ?>/images/ark_favicon.ico"
 	rel="shortcut icon" />
@@ -50,7 +50,7 @@
 </div>
 <div id="hdr">
 
-    <div class="logo"><a href="<?php echo $ark_dir;?>user_home.php"><img src="<?php echo "$skin_path" ?>/images/logo.png" alt="<?php echo "$skin_path" ?>" /></a></div>
+    <div class="logo"><a href="<?php echo $ark_root_path;?>/user_home.php"><img src="<?php echo "$skin_path" ?>/images/logo.png" alt="<?php echo "$skin_path" ?>" /></a></div>
         
     <div id="hdr-tools">    
         <div id="version">v<?php echo $version ?></div>
@@ -69,7 +69,7 @@
     <?php if ($errorMessage) echo "<div id=\"message\"><p>$errorMessage</p></div>" ?>
 
     <div class="login_form">
-        <form id="login" method="post" action="<?php echo $ark_dir ?>user_home.php">
+        <form id="login" method="post" action="<?php echo $ark_root_path ?>/user_home.php">
             <ul>
                 <li class="row">
                     <h5 class="login_label">User name:</h5>
@@ -109,12 +109,12 @@
 	<!-- END sitewrapper -->
 
 	<!-- Modernizr -->
-	<script src="<?php echo "$ark_dir" ?>lib/js/modernizr.js"></script>
+	<script src="<?php echo "$ark_lib_path" ?>/js/modernizr.js"></script>
 
 	<!-- CSSUA -->
-	<script src="<?php echo "$ark_dir" ?>lib/js/cssua.js"></script>
+	<script src="<?php echo "$ark_lib_path" ?>/js/cssua.js"></script>
 
 	<!-- Common -->
-	<script src="<?php echo "$ark_dir" ?>lib/js/common.js"></script>
+	<script src="<?php echo "$ark_lib_path" ?>/js/common.js"></script>
 
 </body>

@@ -40,7 +40,7 @@ printf("<h1>%s</h1>\n", getMarkup('cor_tbl_markup', $lang, 'markupadminoptions')
 
 print("<ul class=\"markuplpanel\">\n");
 $var = "<li><a href=\"{$_SERVER['PHP_SELF']}?view=add_mkup\">Add New Markup</a></li>";
-$var .= "<li><a href=\"" . $ark_dir . "php/markup_admin/export_mkup.php?&amp;output=XHTML\">Batch Translate Markup</a></li>";
+$var .= "<li><a href=\"" . $ark_root_path . "/php/markup_admin/export_mkup.php?&amp;output=XHTML\">Batch Translate Markup</a></li>";
 $var .= "<li>Edit Markup (below)</li>";
 echo $var;
 foreach ($alphabet as $key => $letter) {

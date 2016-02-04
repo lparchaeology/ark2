@@ -436,8 +436,8 @@ if (in_array($sf_state, array('min_view','min_edit','min_ent'))){
         $div="<div id=\"div-{$sf_conf['sf_html_id']}\" class=\"{$sf_cssclass}\">\n";
         // put in the nav
         $div.=sfNav($sf_title, $cur_col_id, $cur_sf_id, $$disp_cols);
-        $div.="<script src={$ark_dir}lib/js/jquery.tablesorter.min.js></script>";
-        $div.="<script src={$ark_dir}lib/js/jquery.tablesorter.widget-editable.js></script>";
+        $div.="<script src={$ark_lib_path}/js/jquery.tablesorter.min.js></script>";
+        $div.="<script src={$ark_lib_path}/js/jquery.tablesorter.widget-editable.js></script>";
 
         if ($error) {
             feedBk('error');

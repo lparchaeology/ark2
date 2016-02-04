@@ -51,7 +51,7 @@ if (array_key_exists('actiontype',$sf_conf)) {
     foreach ($sf_conf['actiontype'] as $action) {
     
         //establish the current URL
-        $url = getWebHost() . $ark_dir . "api.php?";
+        $url = getWebHost() . $ark_root_path . "/api.php?";
         $params = "req=getFilter&ftr_id=new&ftype=action&action=$action&actor=$sf_val&disp_mode=text";
 
         $json = file_get_contents($url . $params);
@@ -100,7 +100,7 @@ if (array_key_exists('actiontype',$sf_conf)) {
             
                 //lets grab the fields
             
-                $url = getWebHost() . $ark_dir . "api.php?";
+                $url = getWebHost() . $ark_root_path . "/api.php?";
                 @$params = "req=getFields&fields[]=$desc_field&fields[]=$actor_field&fields[]=$date_field&itemkey={$value['itemkey']}&{$value['itemkey']}={$value['itemval']}";
             
                 $field_json = file_get_contents($url . $params);
@@ -112,7 +112,7 @@ if (array_key_exists('actiontype',$sf_conf)) {
                 $user = $field_json[$keys[1]][0]['current'];
                 $date = date_create($field_json[$keys[2]][0]['current']);
                 $date = date_format($date,"Y/m/d");
-                $link_to_item = getWebHost() . $ark_dir . "micro_view.php?item_key={$value['itemkey']}&{$value['itemkey']}={$value['itemval']}";
+                $link_to_item = getWebHost() . $ark_root_path . "/micro_view.php?item_key={$value['itemkey']}&{$value['itemkey']}={$value['itemval']}";
                 $var .= "<a class=\"activityblock\" href=\"$link_to_item\">";
                 $var .= "<h4>$type - {$value['itemval']}</h4>";
                 $var .= "<p>$desc</p>";

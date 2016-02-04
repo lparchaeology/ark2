@@ -63,7 +63,7 @@ $maparray = getMulti('cor_tbl_map', '1','id');
 $maps = "";
 foreach ($maparray as $map){
     $maps .= "<li>";
-    $maps .= "<a id=\"map$map\" class=\"maplink\" href=\"{$ark_dir}map_view.php?mapId={$map}&reset_map=true\">";
+    $maps .= "<a id=\"map$map\" class=\"maplink\" href=\"{$ark_root_path}/map_view.php?mapId={$map}&reset_map=true\">";
     $maps .= getAlias('cor_tbl_map', $lang, 'id', $map, 1);
     $maps .= "</a>";
     if ($is_record_admin == TRUE) {

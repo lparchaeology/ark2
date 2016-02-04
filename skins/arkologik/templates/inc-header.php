@@ -32,7 +32,7 @@
 <div id="wrapper" class="wrp_normal">
 
         <div id="hdr">
-        <div class="logo"><a href="<?php echo $ark_dir;?>user_home.php"><img src="<?php echo "$skin_path" ?>/images/logo.png" alt="<?php echo "$skin_path" ?>" /></a></div>
+        <div class="logo"><a href="<?php echo $ark_root_path;?>/user_home.php"><img src="<?php echo "$skin_path" ?>/images/logo.png" alt="<?php echo "$skin_path" ?>" /></a></div>
         
         <div id="hdr-tools" class="keybtns">
         <div id="version">v<?php echo $version ?></div>

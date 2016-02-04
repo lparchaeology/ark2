@@ -37,7 +37,7 @@
 $mkduplicate= getMarkup('cor_tbl_markup', $lang, 'duplicate');
 $mksave = getMarkup('cor_tbl_markup', $lang, 'save');
 
-echo '<form id="register-'.$mod_short.'_cd" action="'.$ark_dir.'/data_entry.php?view=regist&item_key='.$mod_short.'_cd" method="post">';
+echo '<form id="register-'.$mod_short.'_cd" action="'.$ark_root_path.'/data_entry.php?view=regist&item_key='.$mod_short.'_cd" method="post">';
 // put in hidden for the normal form
 echo "<input type=\"hidden\" name=\"submiss_serial\" value=\"{$_SESSION['submiss_serial']}\" />\n";
 echo "<input type=\"hidden\" name=\"$item_key\" value=\"{$$item_key}\" />\n";

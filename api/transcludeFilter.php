@@ -118,15 +118,15 @@ if ($errors == 0) {
     <link href="<?php echo $skin_path ?>/images/ark_favicon.ico" rel="shortcut icon" />
     
     <!-- javascript libraries -->
-    <script type="text/javascript" src="<?php echo $ark_dir ?>lib/js/jquery.js"></script>
-    <script type="text/javascript" src="<?php echo $ark_dir ?>lib/js/php.js"></script>
-    <script type="text/javascript" src="<?php echo $ark_dir ?>lib/js/prototype.js"></script>
-    <script type="text/javascript" src="<?php echo $ark_dir ?>lib/js/scriptaculous.js?load=effects"></script>
+    <script type="text/javascript" src="<?php echo $ark_lib_path ?>/js/jquery.js"></script>
+    <script type="text/javascript" src="<?php echo $ark_lib_path ?>/js/php.js"></script>
+    <script type="text/javascript" src="<?php echo $ark_lib_path ?>/js/prototype.js"></script>
+    <script type="text/javascript" src="<?php echo $ark_lib_path ?>/js/scriptaculous.js?load=effects"></script>
     
     <!-- ARK javascript -->
-    <script type="text/javascript" src="<?php echo $ark_dir ?>js/js_functions.js"></script>
-    <script type="text/javascript" src="<?php echo $ark_dir ?>js/lightbox.js"></script>
-    <script type="text/javascript" src="<?php echo $ark_dir ?>js/livesearch.js"></script>
+    <script type="text/javascript" src="<?php echo $ark_root_path ?>/js/js_functions.js"></script>
+    <script type="text/javascript" src="<?php echo $ark_root_path ?>/js/lightbox.js"></script>
+    <script type="text/javascript" src="<?php echo $ark_root_path ?>/js/livesearch.js"></script>
 </head>
 
 <body>

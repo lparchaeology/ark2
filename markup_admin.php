@@ -125,7 +125,7 @@ $module = 'mod_cor';
 $mk_header = getMarkup('cor_tbl_markup', $lang, 'markupadminoptions');
 
 $skin = reqArkVar('skin', $skin);
-$skin_path = $ark_dir."skins/$skin";
+$skin_path = "$ark_skins_path/$skin";
 
 $wrapperclass = "wrp_normal";
 
@@ -133,7 +133,7 @@ $javascript = mkJavaScriptSource($pg_settings['name']);
 
 // ---------OUTPUT--------- //
 
-include($ark_server_path."/skins/".$skin."/templates/inc-header.php");
+include($skin_dir."/templates/inc-header.php");
 ?>
 
 <!-- BEGIN leftpanel -->
@@ -171,7 +171,7 @@ if ($message) {
 </div>
 
 <!-- ARK FOOTER -->
-<?php  include($ark_server_path."/skins/".$skin."/templates/inc-footer.php");  ?>
+<?php  include($skin_dir."/templates/inc-footer.php");  ?>
 
 
 </body>
