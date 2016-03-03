@@ -3191,23 +3191,27 @@ function mkNavMain($pages, $links=FALSE, $force_active=FALSE)
     $nav = "<ul id=\"navlist\">\n";
     // Loop over the pages
     if ($pages) {
+        $nav_pages = array();
         foreach ($pages as $page_conf) {
-            $active = FALSE;
-            $link = $page_conf->file();
             if ($page_conf->isVisible()) {
-                $vars = $page_conf->navLinkVars();
-                $label = getMarkup('cor_tbl_markup', $lang, $page_conf->navName());
-                //if we are not forcing a tab then fallback on the filename
-                if (($_SERVER['PHP_SELF']) == $ark_root_path.$link && $force_active == FALSE) {
-                    $active = ' id="active"';
-                }
-                $nav .= "<li$active>";
-                $nav .= "<a href=\"$ark_root_path$link$vars\">$label</a>";
-                $nav .= "</li>\n";
-                unset($active, $vars, $label);
+                $nav_pages[$page_conf->navOrder()] = $page_conf;
+            };
+        };
+        ksort($nav_pages);
+        foreach ($nav_pages as $page_conf) {
+            $active = FALSE;
+            $link = '/'.$page_conf->file();
+            $vars = $page_conf->navLinkVars();
+            $label = getMarkup('cor_tbl_markup', $lang, $page_conf->navName());
+            //if we are not forcing a tab then fallback on the filename
+            if (($_SERVER['PHP_SELF']) == $ark_root_path.$link && $force_active == FALSE) {
+                $active = ' id="active"';
             }
-            unset ($link);
+            $nav .= "<li$active>";
+            $nav .= "<a href=\"$ark_root_path$link$vars\">$label</a>";
+            $nav .= "</li>\n";
         }
+        unset ($nav_pages, $active, $vars, $label, $link);
     }
     // Loop over any extra links
     if ($links) {
