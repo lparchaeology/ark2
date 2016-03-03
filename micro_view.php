@@ -36,6 +36,8 @@
 *
 */
 
+use LPArchaeology\ARK;
+
 // -- INCLUDE SETTINGS AND FUNCTIONS -- //
 include('src/settings.php');
 include('php/global_functions.php');
@@ -74,7 +76,6 @@ if(!$view) {
 // setup the sf_key and sf_val
 $sf_key = $item_key;
 $sf_val = $$item_key;
-
 // -- PAGE SETTINGS -- //
 $page_conf = ARK\Web\PageConfig::page('micro_view');
 if (!$page_conf->isValid()) {
@@ -123,9 +124,10 @@ if ($mod_short) {
     //Pull mod specific settings
     $module = 'mod_'.$mod_short;
     $mod_alias = getAlias('cor_tbl_module', $lang, 'itemkey', $sf_key, 1);
-    include_once ("config/mod_{$mod_short}_settings.php");
+    ${$mod_short.'_conf_mcd_cols'} = $page_conf->layout($mod_short, 'section')->config();
+    $field_delete = new ARK\DB\FieldConfig('conf_field_delete');
+    $conf_field_delete = $field_delete->config();
 }
-
 
 // PART3 - DISP ARRAY
 //    This is based on an array per mod in the session or alternatively the settings
@@ -302,10 +304,6 @@ $col_nav = reqQst($_REQUEST,'col_nav');
 $_SESSION[$disp_cols] = $$disp_cols;
 
 
-// PART7 - Make the RESULTS NAV
-$record_nav = mkRecordNav($conf_record_nav, 'micro_view', 'micro_view');
-
-
 // PART8 - Custom Page Title
 // this is done so far down the page in order to use data in the page title
 $page_title = $page_title.': '.$$item_key;
@@ -352,19 +350,15 @@ $skin_path = "$ark_skins_path/$skin";
 
 include($skin_dir."/templates/inc-header.php");
 
+include('php/common/page_nav.php');
+
 ?>
-<!-- BEGIN leftpanel -->
-    <div id="lpanel" class="leftpanel">
-    
-      <?php include_once($cur_code_dir.'left_panel.php') ?>
-      
-    </div>
 
 <!-- BEGIN maincontent -->
     <div id="main" class="main_mcrview">
 
 <?php
-echo "$record_nav";
+include('php/micro_view/section_header.php');
 
 // feedback
 if ($error) {
@@ -381,14 +375,6 @@ if ($message) {
 // the results
 if (isset($result_output)) {
     echo "$result_output";
-}
- 
-// If no Itemkey or Itemval - give feedback cleanly to the user
-if (!$sf_key) {
-    $message[] = 'Select a form...';
-}
-if (!$sf_val && $sf_key) {
-    $message [] = 'Search for a ' . $mod_alias . ' item...';
 }
 
 //<!-- MAIN CONTENT (IN COLUMNS) -->

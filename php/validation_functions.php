@@ -1516,6 +1516,31 @@ function chkSfCond($itemkey, $itemvalue, $sf_cond) {
 }
 
 /// }}}
+// {{{ chkFtrMode()
+
+/**
+* Check if subform should be show for the current filter mode
+*
+* @param string $itemkey  the itemkey
+* @param string $itemvalue  the itemvalue
+* @param string array $args  This takes a comma separated list of args
+* @return boolean $return  If the subform should be shown
+* @author John Layt
+* @since 2.0
+*
+*/
+
+function chkFtrMode($itemkey, $itemvalue, $args)
+{
+    global $sf_conf, $ftr_mode, $page_conf;
+    // Don't show if not on data_view and there are no filters
+    if ($page_conf->id() != 'data_view' and !reqQst($_SESSION, 'filters')) {
+        return FALSE;
+    }
+    return ($sf_conf['op_ftr_mode'] == 'default' || $sf_conf['op_ftr_mode'] == $ftr_mode);
+}
+
+/// }}}
 /// {{{ chkFragPresence()
 
 /**
