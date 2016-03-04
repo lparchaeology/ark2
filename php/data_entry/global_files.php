@@ -122,7 +122,7 @@ if (!$error) {
 
 // start a subform
 echo "<div class=\"mc_subform\">\n";
-echo "<a rel=\"lightbox\" href=\"overlay_holder.php?lboxreload=1&sf_conf=$conf_batchfileupload\"><img src=\"$skin_path/images/recordnav/addfile.png\" alt=\"media_browser\" class=\"med\"/></a>";
+echo "<a rel=\"lightbox\" href=\"overlay_holder.php?lboxreload=1&subform_id=$default_batch_file_upload\"><img src=\"$skin_path/images/recordnav/addfile.png\" alt=\"media_browser\" class=\"med\"/></a>";
 
 // provide feedback to the user
 if ($error) {

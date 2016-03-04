@@ -124,10 +124,10 @@ $view_title = getMarkup('cor_tbl_markup', $lang, $view);
 // Get the mod settings
 $mod_short = substr($item_key, 0, 3);
 if ($mod_short) {
+    //Pull mod specific settings
     $module = 'mod_'.$mod_short;
     $mod_alias = getAlias('cor_tbl_module', $lang, 'itemkey', $item_key, 1);
-    //Pull mod specific settings
-    include ('config/' . $module . '_settings.php');
+    $conf_dat_regist = $page_conf->layout($mod_short, 'section')->columns()[0]->config();
 } else {
     $mod_alias = FALSE;
 }
@@ -139,6 +139,7 @@ if ($view != 'home' && $view != 'files'){
 } else {
     $col = FALSE;
 }
+
 // manually set up some vars for this column
 $disp_cols = 'data_entry_single';
 $$disp_cols = array($col);
@@ -248,9 +249,6 @@ $$disp_cols = array($col);
 // MARKUP
 $mk_go = getMarkup('cor_tbl_markup', $lang, 'go');
 
-// MAKE THE DATA ENTRY NAV
-$entry_nav = mkRecordNav($conf_entry_nav, 'data_entry', $view);
-
 // ---- PROCESS ---- //
 if ($update_db === 'delfrag') {
     include_once('php/update_db.php');
@@ -260,20 +258,12 @@ if ($update_db === 'delfrag') {
 
 $javascript = mkJavaScriptSource($page_conf->name());
 include($skin_dir."/templates/inc-header.php");
+include('php/common/page_nav.php');
 ?>
-<!-- BEGIN leftpanel -->
-<div id="lpanel" class="leftpanel">
-        <?php include_once($cur_code_dir.'left_panel.php') ?>
-    </div>
 
 <!-- THE MAIN AREA -->
 <div id="main" class="main_normal">
-<?php 
-if ($view != 'home') {
-    //RECORD NAVIGATION
-    echo $entry_nav;
-}
-?>
+
 <div id="page_level"><?php if(isset($plc)) include_once ("$plc") ?></div>
 
 <div id="mod_level">
