@@ -52,20 +52,6 @@ if (array_key_exists('op_modtype', $sf_conf)) {
     $modtype = FALSE;
 }
 
-// If modtype is FALSE the fields will only come from one list , if TRUE the 
-// fields will come from different field lists. 
-if (chkModType($mod_short) && $modtype!=FALSE) {
-    $modtype = getModType($mod_short, $sf_val);
-    $fields = $sf_conf["type{$modtype}_fields"];
-} else {
-    $fields = $sf_conf['fields'];
-}
-
-// a final check to make sure it is set up
-if (!isset($sf_conf['fields'])) {
-    echo "ADMIN ERROR: the fields module list was not set up correctly";
-}
-
 // If an optional CSS class has been specified, use it. Otherwise set a default
 if (array_key_exists('op_sf_cssclass', $sf_conf)) {
     $sf_cssclass = $sf_conf['op_sf_cssclass'];
@@ -105,12 +91,8 @@ switch ($sf_state) {
     case 'p_max_view' :
     case 's_max_view' :
     case 'lpanel' :
-        // put in the nav
-        ?>
-        <div id="<?php echo $sf_conf['sf_html_id']?>" class="menubtn"><a href="#"><?php echo $sf_title ?></a></div>
-        <nav id="<?php echo $sf_conf['sf_html_id']?>_nav" class="sidemenu">
-        <div class="prompt"><?php echo getMarkup('cor_tbl_markup', $lang, $sf_conf['prompt'])?></div>
-        <?php
+        print("<div id=\"{$sf_conf['sf_html_id']}\" class=\"{$sf_cssclass}\">");
+        print(sfNav($sf_title, $cur_col_id, $cur_sf_id, $$disp_cols));
         $searchlist = "<ul>";
         foreach ( $classtypes as $id => $alias ) {
             $searchitem = "<a href=\"{$sf_conf['href']}&amp;ftype=action&amp;ftr_id=new&amp;action=$id\">";
@@ -120,7 +102,7 @@ switch ($sf_state) {
         }
         $searchlist .= "</ul>";
         print $searchlist;
-        print("</nav>");
+        print("</div>");
         // clean up
         break;
         
@@ -139,7 +121,6 @@ switch ($sf_state) {
 unset ($sf_conf);
 unset ($val);
 unset ($sf_state);
-unset ($fields);
 unset ($alias_lang_info);
 
 ?>

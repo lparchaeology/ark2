@@ -81,6 +81,9 @@ if (!array_key_exists('op_ftr_mode', $sf_conf)) {
     $ftr_mode = $sf_conf['op_ftr_mode'];
 }
 
+$mk_publicfilters = getMarkup('cor_tbl_markup', $lang, 'publicfilters');
+$mk_savedfilters = getMarkup('cor_tbl_markup', $lang, 'savedfilters');
+$mk_your = getMarkup('cor_tbl_markup', $lang, 'your');
 
 // ---- PROCESS ---- //
 // process is done by filters.php
@@ -130,7 +133,6 @@ if ($filters) {
 }
 
 // Labels and so on
-$mk_title = getMarkup('cor_tbl_markup', $lang, $sf_conf['sf_title']);
 $mk_your = getMarkup('cor_tbl_markup', $lang, 'your');
 $mk_savedfilters = getMarkup('cor_tbl_markup', $lang, 'savedfilters');
 

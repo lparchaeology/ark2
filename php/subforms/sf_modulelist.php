@@ -44,26 +44,26 @@ $mod_short = substr($item_key, 0, 3);
 // The default for modules with several modtypes is to have one field list,
 // which is the same for all the differnt modtypes
 // If you want to use different field lists for each modtype add to the subform
-// settings 'op_modtype'=> TRUE and instead of 'fields' => array( add
-// 'type1_fields' => array( for each type. 
+// settings 'op_modtype'=> TRUE and instead of 'modules' => array( add
+// 'type1_modules' => array( for each type.
 if (array_key_exists('op_modtype', $sf_conf)) {
     $modtype = $sf_conf['op_modtype'];
 } else {
     $modtype = FALSE;
 }
 
-// If modtype is FALSE the fields will only come from one list , if TRUE the 
-// fields will come from different field lists. 
+// If modtype is FALSE the modules will only come from one list , if TRUE the
+// modules will come from different field lists.
 if (chkModType($mod_short) && $modtype!=FALSE) {
     $modtype = getModType($mod_short, $sf_val);
-    $fields = $sf_conf["type{$modtype}_fields"];
+    $modules = $sf_conf["type{$modtype}_modules"];
 } else {
-    $fields = $sf_conf['fields'];
+    $modules = $sf_conf['modules'];
 }
 
 // a final check to make sure it is set up
-if (!isset($sf_conf['fields'])) {
-    echo "ADMIN ERROR: the fields module list was not set up correctly";
+if (!isset($sf_conf['modules'])) {
+    echo "ADMIN ERROR: the module list was not set up correctly";
 }
 
 // If an optional CSS class has been specified, use it. Otherwise set a default
@@ -127,7 +127,7 @@ switch ($sf_state) {
         if (isset($modshort)) {
             $old_mod_short = $modshort;
         }
-        foreach ( $sf_conf['fields'] as $modshort ) {
+        foreach ($modules as $modshort) {
             $moditem = "<a href=\"{$sf_conf['href']}&amp;item_key={$modshort}&#95;cd\">";
             $moditem .= getAlias('cor_tbl_module', $lang, 'itemkey', $modshort . '_cd', 1);
             $moditem .= "</a>";
@@ -158,7 +158,7 @@ switch ($sf_state) {
 unset ($sf_conf);
 unset ($val);
 unset ($sf_state);
-unset ($fields);
+unset ($modules);
 unset ($alias_lang_info);
 
 ?>

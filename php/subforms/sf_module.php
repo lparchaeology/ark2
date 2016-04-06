@@ -35,16 +35,13 @@
 
 // ---- SETUP ---- //
 
-// Set the fields
-$fields = $sf_conf['fields'];
-
 // Set the ark page
 $ark_page = $sf_conf['ark_page'];
 
 // Do we ever want to feed this subform live? Amend?
 // this script is fed a module_list either live or in the form of fields
 if (!isset($module_list)) {
-    $module_list = $fields;
+    $module_list = $sf_conf['modules'];
     $cleanup = TRUE;
 } else {
     $cleanup = FALSE;
@@ -119,7 +116,6 @@ switch ($sf_state) {
 unset ($sf_conf);
 unset ($val);
 unset ($sf_state);
-unset ($fields);
 unset ($alias_lang_info);
 if ($cleanup) {
     unset($module_list);

@@ -44,7 +44,7 @@ $mod_short = substr($item_key, 0, 3);
 // The default for modules with several modtypes is to have one field list,
 // which is the same for all the differnt modtypes
 // If you want to use different field lists for each modtype add to the subform
-// settings 'op_modtype'=> TRUE and instead of 'fields' => array( add
+// settings 'op_modtype'=> TRUE and instead of 'links' => array( add
 // 'type1_fields' => array( for each type. 
 if (array_key_exists('op_modtype', $sf_conf)) {
     $modtype = $sf_conf['op_modtype'];
@@ -52,18 +52,18 @@ if (array_key_exists('op_modtype', $sf_conf)) {
     $modtype = FALSE;
 }
 
-// If modtype is FALSE the fields will only come from one list , if TRUE the 
-// fields will come from different field lists. 
+// If modtype is FALSE the links will only come from one list , if TRUE the
+// links will come from different link lists.
 if (chkModType($mod_short) && $modtype!=FALSE) {
     $modtype = getModType($mod_short, $sf_val);
-    $fields = $sf_conf["type{$modtype}_fields"];
+    $links = $sf_conf["type{$modtype}_links"];
 } else {
-    $fields = $sf_conf['fields'];
+    $links = $sf_conf['links'];
 }
 
-// this script can be fed a link_list either live or in teh form of fields
+// this script can be fed a link_list either live or in teh form of links
 if (!isset($link_list)) {
-    $link_list = $fields;
+    $link_list = $links;
     $cleanup = TRUE;
 } else {
     $cleanup = FALSE;
@@ -84,8 +84,8 @@ if (array_key_exists('op_sf_cssclass', $sf_conf)) {
 if (array_key_exists('op_linktype', $sf_conf)) {
     $linktype = $sf_conf['op_linktype'];
 } else {
-    // Set as text as default
-    $linktype = 'text';
+    // Use link default
+    $linktype = '';
 }
 
 // ---- PROCESS ---- //
@@ -158,7 +158,7 @@ switch ($sf_state) {
         }
         // Loop over the links
         foreach($link_list as $link) {
-            echo mkLeftPanelLink($link, $linktype);
+            echo mkLink($link, $linktype);
         }
         // Cleanly end list
         print("</ul>");
@@ -174,7 +174,13 @@ switch ($sf_state) {
         print("<ul id=\"{$sf_conf['sf_html_id']}\" class=\"$sf_cssclass\" >\n");
         // Loop over the links
         foreach($link_list as $link) {
-            echo mkLeftPanelLink($link, $linktype);
+            if ($link['list_class']) {
+                print("<li class=\"{$link['list_class']}\" >\n");
+            } else {
+                print("<li>\n");
+            }
+            echo mkLink($link, $linktype);
+            print("</li>\n");
         }
         // Cleanly end list
         print("</ul>");
@@ -196,7 +202,7 @@ switch ($sf_state) {
 unset ($sf_conf);
 unset ($val);
 unset ($sf_state);
-unset ($fields);
+unset ($links);
 unset ($alias_lang_info);
 if ($cleanup) {
     unset($link_list);

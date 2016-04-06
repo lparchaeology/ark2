@@ -172,6 +172,8 @@ switch ($sf_state) {
         
     // Max
     case 'p_max_ent':
+    case 'p_max_view':
+    case 'p_max_edit':
         // put in the entry nav for overlays (other states delegate this to the page)
         if ($sf_state == 'overlay') {
             echo mkRecordNav($conf_entry_nav, 'data_entry', 'overlay');

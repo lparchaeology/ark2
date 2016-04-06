@@ -166,21 +166,21 @@ switch ($sf_state) {
         
         echo '<div id="'.$sf_conf['sf_html_id'].'" class="mapview '.$view.'">';
         
-        $map_sf_conf = $sf_conf['subforms'];
-        
-        
-        
-        foreach ($map_sf_conf as $sf_conf ) {
-            if (array_key_exists('op_condition', $sf_conf)) {
-                // check the condition
-                if (chkSfCond($item_key, $$item_key, $sf_conf['op_condition'])) {
+        if (array_key_exists('subforms', $sf_conf)) {
+            $map_sf_conf = $sf_conf['subforms'];
+
+            foreach ($map_sf_conf as $sf_conf ) {
+                if (array_key_exists('op_condition', $sf_conf)) {
+                    // check the condition
+                    if (chkSfCond($item_key, $$item_key, $sf_conf['op_condition'])) {
+                        include ($sf_conf['script']);
+                    }
+                } else {
                     include ($sf_conf['script']);
                 }
-            } else {
-                include ($sf_conf['script']);
             }
         }
-        
+
         echo '<div id="popup"></div>';
         print $script;
         echo '</script>';
