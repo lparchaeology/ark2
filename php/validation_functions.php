@@ -895,6 +895,246 @@ function chkDupStr($dup, $col, $tbl, $sql, $element, $params)
     }
 }
 
+// }}}// {{{ chkSgrList()
+
+/**
+ * a thing for checking many to one relationships - needs generalising
+ *
+ * @param string $var  containing the list to check
+ * @param array $val_vars  containing the validation criteria
+ * @param array $field_vars  containing the field criteria
+ * @return string $ret_list  a reordered list containing only valid itemvalues
+ * @author Stuart Eve
+ * @since 0.6
+ *
+ */
+
+function chkSgrList($var, $val_vars, $field_vars)
+{
+    global $ste_cd, $sf_val;
+    $errs = FALSE;
+    $var_name = $val_vars['var_name'];
+    $xmi_mod = $field_vars['xmi_mod'];
+    // first explode the item list
+    $exp_list = explode (' ', trim($var));
+    if(count($exp_list) == 1 && empty($exp_list[0])){
+        $errs[] =
+        array(
+                        'field' => $var_name,
+                        'vars' => "$var_name was blank",
+                        'err' => 'skip'
+        );
+    } else
+    if (count($exp_list) > 1) {
+        $errs[] =
+        array(
+                        'field' => $var_name,
+                        'vars' => "Subgroups can only have one context",
+                        'err' => 'on'
+        );
+    } else 
+    // foreach through the list checking if each item is valid.
+    // If it is then add it to the return list, otherwise add it a string
+    // to be sent to the messages array
+    if (count($exp_list) == 1) {
+        $ret_list = FALSE;
+        $value = $exp_list[0];
+        if (is_numeric($value)) {
+            $valid =
+            chkValid(
+                    FALSE,
+                    $ste_cd,
+                    $value,
+                    $xmi_mod . '_tbl_' . $xmi_mod,
+                    $xmi_mod . '_cd'
+            );
+        } else {
+            $valid =
+            chkValid(
+                    $value,
+                    FALSE,
+                    FALSE,
+                    $xmi_mod . '_tbl_' . $xmi_mod,
+                    $xmi_mod . '_cd'
+            );
+        }
+        if (!$value) {
+            // The value is blank - send a skip error
+            $valid = FALSE;
+            $var =
+            array(
+                'field' => $val_vars['var_name'],
+                'vars' => "The {$val_vars['var_name']} was set to skip",
+                'err' => 'skip'
+                        );
+            return ($var);
+        }
+        $otherXmis = getXmi('cxt_cd',$sf_val,'sgr');
+
+        if (is_array($otherXmis)) {
+            $valid = FALSE;
+            $errs[] =
+            array(
+                            'field' => $var_name,
+                            'vars' => "context can only have one Subgroup, <a href=\"\">refresh<a> to see subgroups already added",
+                            'err' => 'on'
+            );
+        }
+        if ($valid == FALSE) {
+            $ret_list .= $value.' ';
+        } else {
+            $errs[] =
+            array(
+                            'field' => $var_name,
+                            'vars' => "The item '$value' is not a valid $xmi_mod. ",
+                            'err' => 'on'
+            );
+        }
+    } else {
+        $errs[] =
+        array(
+                        'field' => $var_name,
+                        'vars' => "The list doesn't not appear to be a space separated list",
+                        'err' => 'on'
+        );
+    }
+    if ($errs) {
+        $ret_errs =
+        array(
+                        'field' => $var_name,
+                        'vars' => FALSE,
+                        'err' => 'on'
+        );
+        foreach ($errs as $err) {
+            $ret_errs['vars'] .= $err['vars'];
+        }
+        return $ret_errs;
+    } else {
+        $ret_list = rtrim($ret_list);
+        return $ret_list;
+    }
+}
+
+// }}}
+// {{{ chkCxtSgrList()
+
+/**
+ * a thing for checking many to one relationships - needs generalising
+ *
+ * @param string $var  containing the list to check
+ * @param array $val_vars  containing the validation criteria
+ * @param array $field_vars  containing the field criteria
+ * @return string $ret_list  a reordered list containing only valid itemvalues
+ * @author Stuart Eve
+ * @since 0.6
+ *
+ */
+
+function chkCxtSgrList($var, $val_vars, $field_vars)
+{
+    global $ste_cd, $sf_val;
+    $errs = FALSE;
+    $var_name = $val_vars['var_name'];
+    $xmi_mod = $field_vars['xmi_mod'];
+    // first explode the item list
+    $exp_list = explode (' ', trim($var));
+    if(count($exp_list) == 1 && empty($exp_list[0])){
+        $errs[] =
+        array(
+                        'field' => $var_name,
+                        'vars' => "$var_name was blank",
+                        'err' => 'skip'
+        );
+    } else
+    if (count($exp_list) > 1) {
+        $errs[] =
+        array(
+                        'field' => $var_name,
+                        'vars' => "Subgroups can only have one context",
+                        'err' => 'on'
+        );
+    } else 
+    // foreach through the list checking if each item is valid.
+    // If it is then add it to the return list, otherwise add it a string
+    // to be sent to the messages array
+    if (count($exp_list) == 1) {
+        $ret_list = FALSE;
+        $value = $exp_list[0];
+        if (is_numeric($value)) {
+            $valid =
+            chkValid(
+                    FALSE,
+                    $ste_cd,
+                    $value,
+                    $xmi_mod . '_tbl_' . $xmi_mod,
+                    $xmi_mod . '_cd'
+            );
+        } else {
+            $valid =
+            chkValid(
+                    $value,
+                    FALSE,
+                    FALSE,
+                    $xmi_mod . '_tbl_' . $xmi_mod,
+                    $xmi_mod . '_cd'
+            );
+        }
+        if (!$value) {
+            // The value is blank - send a skip error
+            $valid = FALSE;
+            $var =
+            array(
+                'field' => $val_vars['var_name'],
+                'vars' => "The {$val_vars['var_name']} was set to skip",
+                'err' => 'skip'
+                        );
+            return ($var);
+        }
+        $otherXmis = getXmi('cxt_cd',$value,'sgr');
+        if (is_array($otherXmis)) {
+            $valid = FALSE;
+            $errs[] =
+            array(
+                            'field' => $var_name,
+                            'vars' => "Context already in Subgroup <a href=\"sgr_cd/{$otherXmis[0]['xmi_itemvalue']}\">{$otherXmis[0]['xmi_itemvalue']}</a>",
+                            'err' => 'on'
+            );
+        }
+        if ($valid == FALSE) {
+            $ret_list .= $value.' ';
+        } else {
+            $errs[] =
+            array(
+                            'field' => $var_name,
+                            'vars' => "The item '$value' is not a valid $xmi_mod. ",
+                            'err' => 'on'
+            );
+        }
+    } else {
+        $errs[] =
+        array(
+                        'field' => $var_name,
+                        'vars' => "The list doesn't not appear to be a space separated list",
+                        'err' => 'on'
+        );
+    }
+    if ($errs) {
+        $ret_errs =
+        array(
+                        'field' => $var_name,
+                        'vars' => FALSE,
+                        'err' => 'on'
+        );
+        foreach ($errs as $err) {
+            $ret_errs['vars'] .= $err['vars'];
+        }
+        return $ret_errs;
+    } else {
+        $ret_list = rtrim($ret_list);
+        return $ret_list;
+    }
+}
+
 // }}}
 // {{{ chkValid()
 
@@ -1027,6 +1267,53 @@ function chkSkipBlank($var, $val_vars, $field_vars)
 }
 
 // }}}
+// {{{ chkSkipBlankAndDup()
+
+/**
+ * checks to see if a submitted value is blank or duplicate and skip this field if it is
+ *
+ * @param string $var  containing the string to check
+ * @param array $val_vars  containing the validation criteria
+ * @param array $field_vars  containing the field criteria
+ * @return string $var  a valid date (or FALSE)
+ * @author Guy Hunt
+ * @author Mike Johnson
+ * @since 1.2
+ *
+ */
+
+function chkSkipBlankAndDup($var, $val_vars, $field_vars)
+{
+    global $sf_key, $sf_val;
+
+    $var_name = $val_vars['var_name'];
+    
+    if(isset($sf_val)){
+        $existing_txts = getChData('txt', $sf_key, $sf_val, $field_vars['classtype']);
+        if(is_array($existing_txts)){
+            foreach($existing_txts as $existing){
+                if($existing['txt'] === $var){
+                    $var =
+                        array(
+                            'field' => $var_name,
+                            'vars' => "This text frag has already been added id ={$existing['id']}",
+                            'err' => 'skip'
+                        );
+                }
+            }
+        }
+    }
+    // check
+    if (!isset($var) or !$var) {
+        $var =
+        array(
+                        'field' => $var_name,
+                        'vars' => "The $var_name {$field_vars['classtype']} was not set",
+                        'err' => 'skip'
+                                );
+    }
+    return ($var);
+}
 // {{{ chkItemList()
 
 /**
