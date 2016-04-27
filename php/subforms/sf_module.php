@@ -89,10 +89,7 @@ switch ($sf_state) {
         print("<ul class=\"module_list\" id=\"{$sf_conf['sf_html_id']}\">\n");
         // Loop over the links
         foreach($module_list as $lp) {  
-            // Check for a detfrm for this module
-            $conf_dat_detfrm = FALSE;
-            include ("config/mod_{$lp}_settings.php");
-            echo mkModItem($lp, $ark_page, $conf_dat_detfrm);
+            echo mkModItem($lp, $ark_page);
             // Set the sf_key to default in the user home page
             // This is relevant in the user home page or other non-entry pages
             if ($ark_page == 'user_home') {

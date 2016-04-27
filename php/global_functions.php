@@ -2895,7 +2895,7 @@ function mkMinimiser($mod_short)
 *
 */
 
-function mkModItem($mod_short, $ark_page, $detfrm_conf=FALSE) 
+function mkModItem($mod_short, $ark_page)
 {
     global $lang, $view, $item_key, $$item_key, $col, $cur_max, $skin_path, $record_admin_grps;
     // Pull the module specific settings
@@ -2916,13 +2916,6 @@ function mkModItem($mod_short, $ark_page, $detfrm_conf=FALSE)
             $var .= "<a href=\"{$_SERVER['PHP_SELF']}?view=regist&amp;item_key={$mod_short}&#95;cd\">";
             $var .= $img;
             $var .= "</a>";
-            // Check if detailed form is configured for this module
-            if ($detfrm_conf) {
-                    $img = "<img src=\"$skin_path/images/recordnav/detailed.png\" title=\"{$mod_alias} Form\" class=\"med\" />";
-                    $var .= "<a href=\"{$_SERVER['PHP_SELF']}?view=detfrm&amp;item_key={$mod_short}&#95;cd\">";
-                    $var .= $img;
-                    $var .= "</a>";
-            }
             break;
         case 'micro_view':
             $img = "<img src=\"$skin_path/images/plusminus/view.png\" title=\"View a {$mod_alias}\" class=\"med\" />";
