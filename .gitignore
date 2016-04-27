@@ -1,2 +1,4 @@
 .DS_Store
 .kdev4
+vendor
+composer.phar
