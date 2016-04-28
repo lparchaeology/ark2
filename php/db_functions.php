@@ -61,10 +61,14 @@
 
 function dbConnect($sql_server, $sql_user, $sql_pwd, $ark_db)
 {
-    // connect to the DB server
+   $db = NULL;
+   // connect to the DB server
     try {
         $db = new PDO("mysql:host=$sql_server;dbname=$ark_db;charset=utf8", $sql_user, $sql_pwd,
                 array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+        //  now set the appropriate exception modes, etc.
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     } catch(PDOException $ex) {
         // make up error string
         $err = "Error making db connection to $sql_server ";
@@ -79,9 +83,6 @@ function dbConnect($sql_server, $sql_user, $sql_pwd, $ark_db)
         $err .= "using user: $sql_user and password $password server returned error:<br/>";
         dbError($ex->getMessage(),$err);
     }
-    //  now set the appropriate exception modes, etc.
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     // return
     return ($db);
 }
@@ -114,6 +115,7 @@ function dbPrepareQuery($sql_statement,$func)
     if (!isset($sql)){
         // for debuggery
         printPre(array('sql'=>$sql_statement,'func'=>$func));
+        return FALSE;
     }
     return $sql;
 }
