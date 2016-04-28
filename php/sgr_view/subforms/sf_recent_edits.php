@@ -150,7 +150,6 @@ if (isset($qry_results)) {
 
 function getRecentRows($mod_short, $itemkey, $ste_cd, $num_rows)
 {
-    global $db;
     // setup
     $mod_table = $mod_short.'_tbl_'.$mod_short;
 

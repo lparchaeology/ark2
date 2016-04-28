@@ -561,7 +561,6 @@ function chkNumeric($var, $val_vars, $field_vars)
 
 function chkDuplicate($var, $val_vars, $field_vars)
 {
-    global $db;
     $item_cd = $var;
     $mod = $field_vars['module'];
     $tbl = $mod.'_tbl_'.$mod;
@@ -606,8 +605,6 @@ function chkDuplicate($var, $val_vars, $field_vars)
 
 function chkDate($var, $val_vars, $field_vars)
 {
-    global $db;
-    
     $var_name = $val_vars['var_name'];
     $format = $field_vars['datestyle'];
     
@@ -756,7 +753,6 @@ function chkFalse($var, $val_vars, $field_vars)
 
 function chkDupDouble($col1, $val1, $col2, $val2, $tbl)
 {
-    global $db;
     // Set up SQL
     $sql = "
         SELECT id
@@ -795,7 +791,6 @@ function chkDupDouble($col1, $val1, $col2, $val2, $tbl)
 
 function chkDupSimple($item, $tbl, $col)
 {
-    global $db;
     // Set up the SQL
     $sql = "
         SELECT $col
@@ -846,7 +841,6 @@ function chkDupSimple($item, $tbl, $col)
 
 function chkDupStr($dup, $col, $tbl, $sql, $element, $params)
 {
-    global $db;
     if (!$element) {
         $element = $col;
     }
@@ -1161,7 +1155,6 @@ function chkCxtSgrList($var, $val_vars, $field_vars)
 
 function chkValid($item_val, $ste_cd, $item_id, $tbl, $clm)
 {
-    global $db;
     // if there is no item_cd, set it from the ste_cd and item_id
     if (!$item_val) {
         $item_val = $ste_cd.'_'.$item_id;
@@ -1213,7 +1206,6 @@ function chkAbk($var, $val_vars, $field_vars)
         );
         return ($var);
     }
-    global $db;
     $sql = "
     SELECT abk_cd
     FROM abk_tbl_abk

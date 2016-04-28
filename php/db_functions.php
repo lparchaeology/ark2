@@ -314,7 +314,7 @@ function dbUpdateSingleIdRow($table, $id, $fields, $values, $logtype, $log_by, $
 
 function dbUpdateAllRows($table, $key_fields, $key_values, $fields, $values, $logtype, $log_by, $log_on, $function)
 {
-    global $db, $log, $conf_log_edt;
+    global $log, $conf_log_edt;
     $set = implode(' = ?,', $fields).' = ?';
     $where = implode(' = ? AND', $key_fields).' = ?';
     $parms = array_merge($values, $key_values);
@@ -845,7 +845,7 @@ function addXmi($itemkey, $itemvalue, $xmi_itemkey, $list, $ste_cd, $cre_by, $cr
 
 function delFrag($class, $frag_id, $cre_by, $cre_on)
 {
-    global $db, $log;
+    global $log;
     if (!$class or !$frag_id) {
         echo "delFrag: one of the params is set empty/FALSE";
         return FALSE;
@@ -928,7 +928,6 @@ function delFrag($class, $frag_id, $cre_by, $cre_on)
 
 function chkModType($mod)
 {
-    global $db;
     $tbl = $mod.'_tbl_'.$mod;
     $typecol = $mod.'type';
     // setup sql
@@ -973,7 +972,7 @@ function chkModType($mod)
 
 function ddAlias($top_id, $top_val, $lut, $lang, $dd_name, $order, $return_mode, $id_col = 'id', $dynamic = FALSE)
 {
-    global $db, $default_lang;
+    global $default_lang;
     //Set a default if needed
     if (!$top_val) {
         $top_val = '---select---';
@@ -1098,7 +1097,7 @@ function ddAlias($top_id, $top_val, $lut, $lang, $dd_name, $order, $return_mode,
  */
 function getAllClasstypeAlias($lut, $lang, $id_col = 'id')
 {
-    global $db, $default_lang;
+    global $default_lang;
     
     $sqltext = "
         SELECT cor_tbl_alias.alias, cor_tbl_alias.language, $lut.$id_col
@@ -1178,7 +1177,7 @@ function getAllClasstypeAlias($lut, $lang, $id_col = 'id')
 
 function ddAttr($top_id, $top_val, $attributetype, $return="dd",$order=FALSE, $dynamic=FALSE)
 {
-    global $db, $lang;
+    global $lang;
     //Set a default if needed
     if (!$top_val) {
         $top_val = '---select---';
@@ -1338,7 +1337,7 @@ function edtAttr($attribute, $bv, $frag_id, $cre_by, $cre_on)
  * @since
  */
 
-function edtCmapData($db, $cmap, $sourcedata, $sourcelocation, $mapto_tbl, $mapto_class, $mapto_classtype, $mapto_id, $cre_on, $qtype=FALSE)
+function edtCmapData($cmap, $sourcedata, $sourcelocation, $mapto_tbl, $mapto_class, $mapto_classtype, $mapto_id, $cre_on, $qtype=FALSE)
 {
     $description = 'mapping added automatically by the import function';
     $cre_by = 'auto';
@@ -1410,7 +1409,7 @@ function edtDate($date, $date_id, $cre_by, $cre_on)
 
 function edtFile($itemkey, $itemvalue, $files, $cre_by, $cre_on)
 {
-    global $db, $log;
+    global $log;
     // handle lists of files
     if (!is_array($files)) {
         $array = explode(' ', $files);
@@ -1590,8 +1589,9 @@ function edtItemVal($itemkey, $old_itemval, $new_itemval)
 *
 */
 
-function edtLut($db, $table, $new_lut_val, $ark_mod, $attrtype, $lang, $cre_by, $cre_on)
+function edtLut($table, $new_lut_val, $ark_mod, $attrtype, $lang, $cre_by, $cre_on)
 {
+    global $db;
     // 1 - MAKE UP A NICKNAME FOR THE NEW ENTRY
     $remove_this = array(" ","'",",","-","(",")"); 
     $nickname = str_replace($remove_this, '', strtolower($new_lut_val));
@@ -1811,7 +1811,7 @@ function edtTxt($txt_id, $txt, $lang, $cre_by, $cre_on)
 
 function edtXmi($itemkey, $itemvalue, $xmi_itemkey, $list, $ste_cd, $cre_by, $cre_on)
 {
-    global $db, $log;
+    global $log;
     $mod = substr($xmi_itemkey, 0, 3);
     $array = explode(' ', $list);
     // loop over the list cleaning it up into an array
@@ -1870,7 +1870,6 @@ function edtXmi($itemkey, $itemvalue, $xmi_itemkey, $list, $ste_cd, $cre_by, $cr
 
 function getSingleText($itemkey, $itemvalue, $txttype, $lang=FALSE)
 {
-    global $db;
     // Setup
     if ($lang) {
         $andlang = "AND cor_tbl_txt.language = ?";
@@ -1933,7 +1932,6 @@ function getSingleText($itemkey, $itemvalue, $txttype, $lang=FALSE)
 
 function getActor($itemkey, $itemvalue, $actiontype=FALSE, $actorkey=FALSE)
 {
-    global $db;
     // Setup
     $lut = 'cor_lut_actiontype';
     // numeric actiontypes
@@ -2039,7 +2037,6 @@ function getActor($itemkey, $itemvalue, $actiontype=FALSE, $actorkey=FALSE)
 
 function getAction($actorkey, $actorvalue, $subjkey=FALSE, $subjvalue=FALSE)
 {
-    global $db;
     $lut = 'cor_lut_actiontype';
     // Set up SQL
     if ($subjkey && $subjvalue) {
@@ -2108,7 +2105,6 @@ function getAction($actorkey, $actorvalue, $subjkey=FALSE, $subjvalue=FALSE)
 
 function getActorElem($actor_id, $elem, $actor_itemkey=FALSE, $elemclass=FALSE) 
 {
-    global $db;
     if ($actor_itemkey) {
         // NB in this case, the $elem contains the actual classtype eg the txttype or attrtype
         switch ($elemclass) {
@@ -2157,7 +2153,6 @@ function getActorElem($actor_id, $elem, $actor_itemkey=FALSE, $elemclass=FALSE)
 
 function getNumber($itemkey, $itemvalue, $numbertype)
 {
-    global $db;
     $lut = 'cor_lut_numbertype';
     if (is_numeric($numbertype)) {
         $sql = "
@@ -2210,7 +2205,6 @@ function getNumber($itemkey, $itemvalue, $numbertype)
 
 function getFile($itemkey, $itemvalue, $filetype=FALSE)
 {
-    global $db;
     // Handle filetypes
     $params = array($itemkey,$itemvalue);
     if ($filetype) {
@@ -2261,7 +2255,6 @@ function getFile($itemkey, $itemvalue, $filetype=FALSE)
 
 function getFileName($filenr)
 {
-    global $db;
     $sql = "
         SELECT *
         FROM cor_lut_file
@@ -2300,7 +2293,6 @@ function getFileName($filenr)
 
 function getAllFiles($mod=FALSE)
 {
-    global $db;
     $sql = "
         SELECT itemkey,itemvalue,file
         FROM cor_tbl_file
@@ -2360,7 +2352,6 @@ function getAllFiles($mod=FALSE)
 
 function getLogVars($ref, $refid, $type)
 {
-    global $db;
     if ($type == 'multi') {
         $sql = "
             SELECT id, vars, cre_on, cre_by
@@ -2427,7 +2418,6 @@ function getLogVars($ref, $refid, $type)
 
 function getCh($dclass, $itemkey, $itemvalue, $type=FALSE)
 {
-    global $db;
     $tbl = 'cor_tbl_'.$dclass;
     $classtype = $dclass.'type';
     $lut = 'cor_lut_'.$classtype;
@@ -2575,7 +2565,6 @@ function getCh($dclass, $itemkey, $itemvalue, $type=FALSE)
 
 function getChDataByClass($dclass, $itemkey, $itemvalue, $type=FALSE, $recursive=FALSE)
 {
-    global $db;
     $tbl = 'cor_tbl_'.$dclass;
     $classtype = $dclass.'type';
     $lut = 'cor_lut_'.$classtype;
@@ -2981,7 +2970,6 @@ function getChLinkUp($key, $value)
 function getAttr($itemkey, $itemvalue, $attribute, $element, $lang = FALSE)
 {
     // Basics
-    global $db;
     if (!$lang) {
         global $lang;
     }
@@ -3069,7 +3057,6 @@ function getAttr($itemkey, $itemvalue, $attribute, $element, $lang = FALSE)
 
 function getDateARK($itemkey, $itemvalue, $datetype, $datestyle)
 {
-    global $db;
     $lut = 'cor_lut_datetype';
     // set up the SQL fr different eventualities
     if (is_numeric($datetype)) {
@@ -3310,7 +3297,6 @@ function getEXIFData($filename, $mode = 'array', $map = FALSE)
 
 function getXmi($itemkey, $itemvalue, $mod=FALSE)
 {
-    global $db;
     // setup sql
     $sql = "
         SELECT id, itemkey, itemvalue, xmi_itemkey, xmi_itemvalue
@@ -3389,7 +3375,7 @@ function getXmi($itemkey, $itemvalue, $mod=FALSE)
 
 function getLutIdFromData($lut, $lang, $and)
 {
-    global $db, $ark_db;
+    global $ark_db;
     // switch database
     // TODO: DEV NOTE
     // use does not work with PDO so db specified in query
@@ -3434,7 +3420,6 @@ function getLutIdFromData($lut, $lang, $and)
 
 function getModType($mod, $item)
 {
-    global $db;
     // error handling
     if (!isset($mod)) {
         echo "function: getModType<br/>";
@@ -3489,7 +3474,6 @@ function getModType($mod, $item)
 
 function getClassType($dataclass, $rawvar)
 {
-    global $db;
     if (!$dataclass or !$rawvar) {
         echo "error in getClassType missing var: dataclass: '$dataclass'; rawvar: '$rawvar'";
         return FALSE;
@@ -3550,7 +3534,6 @@ function getClassType($dataclass, $rawvar)
 
 function getSpan($itemkey, $itemvalue, $spantype)
 {
-    global $db;
     $lut = 'cor_lut_spantype';
     // set up the SQL
     if (is_numeric($spantype)) {
@@ -3609,7 +3592,7 @@ function getSpan($itemkey, $itemvalue, $spantype)
 
 function getSpanAttr($span_id, $element, $aliastype=NULL)
 {
-    global $db, $lang;
+    global $lang;
     // setup the SQL
     if ($element == 'alias') {
         $sql = "
@@ -3671,7 +3654,7 @@ function getSpanAttr($span_id, $element, $aliastype=NULL)
 
 function getAlias($tbl, $lang, $col, $src_key, $type)
 {
-    global $db, $default_lang;
+    global $default_lang;
     // check if the requested alias already exists in the cache
     if (array_key_exists('alias_cache', $_SESSION)) {
         if (array_key_exists($tbl.$lang.$col.$src_key.$type, $_SESSION['alias_cache'])) {
@@ -3747,7 +3730,6 @@ function getAlias($tbl, $lang, $col, $src_key, $type)
 
 function getAllAliases($tbl, $col, $src_key, $type)
 {
-    global $db;
     // make the sql
     $sql = "
         SELECT a.id, alias,language
@@ -3794,7 +3776,6 @@ function getAllAliases($tbl, $col, $src_key, $type)
 
 function getRow($tbl, $id=FALSE, $where=FALSE)
 {
-    global $db;
     // sql depends if the id is to be used
     if ($id) {
         $sql = "
@@ -3838,8 +3819,7 @@ function getRow($tbl, $id=FALSE, $where=FALSE)
 
 function getSingle($col, $tbl, $where, $params = array())
 {
-    global $db;
-//     set up SQL
+    // set up SQL
     if ( stristr($where,'where')){
         $where = substr($where, stripos($where,"where")+5);
     }
@@ -3882,7 +3862,6 @@ function getSingle($col, $tbl, $where, $params = array())
 
 function getMulti($tbl, $where, $col=FALSE, $distinct=FALSE)
 {
-    global $db;
     // make up the sql
     if (!$col) {
         $col = '*';
@@ -3932,7 +3911,7 @@ function getMulti($tbl, $where, $col=FALSE, $distinct=FALSE)
 
 function getFIndex($dataclass, $classtype, $mod)
 {
-    global $db, $results_array;
+    global $results_array;
     switch ($dataclass) {
         case 'attribute':
             $sql = "
@@ -3995,7 +3974,7 @@ function getMarkup($tbl, $lang, $nname, $bool = FALSE)
     }
     // NORMAL MARKUP CALLS
     $markup = FALSE;
-    global $db, $default_lang;
+    global $default_lang;
     // prepare the SQL statement
     $sql = "SELECT 
             markup,language 
@@ -4061,7 +4040,6 @@ function getMarkup($tbl, $lang, $nname, $bool = FALSE)
 
 function getMetadataByClass($dclass, $type=FALSE)
 {
-    global $db;
     $tbl = 'cor_tbl_'.$dclass;
     $classtype = $dclass.'type';
     $lut = 'cor_lut_'.$classtype;
@@ -4114,7 +4092,6 @@ function getMetadataByClass($dclass, $type=FALSE)
 
 function getUserAttr($user_id, $element)
 {
-    global $db;
     if ($element == 'full') {
         $select = 'firstname, lastname';
     } else {
@@ -4146,7 +4123,6 @@ function getUserAttr($user_id, $element)
 /**
  * gets a site code from one of 3 sources
  *
- * @param $db resource  the db connection
  * @param $cmap_id string  the id number of this CMAP
  * @param $stecd_lut array  parameters of a look up table
  * @return $ste_cd string  the ste_cd
@@ -4187,7 +4163,7 @@ function getUserAttr($user_id, $element)
  *
  */
 
-function getSteCd($db, $cmap_id, $stecd_lut=FALSE)
+function getSteCd($cmap_id, $stecd_lut=FALSE)
 {
     global $ark_db, $sql_server, $sql_user, $sql_pwd, $db;
 
@@ -4221,7 +4197,7 @@ function getSteCd($db, $cmap_id, $stecd_lut=FALSE)
         // both options need to switch to the source db
         // get the source_db (may be in a whole other db)
         $db = dbConnect($sql_server, $sql_user, $sql_pwd, $ark_db);
-        $source_db = getCmapDB($db, $cmap_id);
+        $source_db = getCmapDB($cmap_id);
         $db = dbConnect($sql_server, $sql_user, $sql_pwd, $source_db);
 
         // LOOK UP JOIN
@@ -4282,7 +4258,6 @@ function getSteCd($db, $cmap_id, $stecd_lut=FALSE)
 /**
  * retrieves an array of table names from the specified database
  *
- * @param object $db  a valid db connection
  * @param string $db_name  the database name to use
  * @return array $tables  containing the table names in the specified db
  * @author Guy Hunt
@@ -4290,7 +4265,7 @@ function getSteCd($db, $cmap_id, $stecd_lut=FALSE)
  *
  */
 
-function getTables($db, $db_name)
+function getTables($db_name)
 {
     // Set up SQL
     $sql = "SHOW TABLES FROM $db_name";
@@ -4313,7 +4288,6 @@ function getTables($db, $db_name)
 /**
  * retrieves an array of column names from the specified database and table
  *
- * @param object $db  a valid db connection
  * @param string $db_name  the database name to use
  * @param string $table_name  the name of the table to get the columns from
  * @return array $columns  containing the table names in the specified db
@@ -4322,7 +4296,7 @@ function getTables($db, $db_name)
  *
  */
 
-function getColumns($db, $db_name, $table_name)
+function getColumns($db_name, $table_name)
 {
     // Set up the SQL
     $sql = "SHOW COLUMNS FROM $db_name.$table_name";
@@ -4355,7 +4329,6 @@ function getColumns($db, $db_name, $table_name)
 
 function getAllItems($mod)
 {
-    global $db;
     $items = array();
     // Set up the SQL
     $sql = "SELECT * FROM {$mod}_tbl_{$mod}";
@@ -4558,7 +4531,6 @@ function getSfs($mod)
 
 function getRegisterRows($mod_short, $itemkey, $ste_cd, $num_rows)
 {
-    global $db;
     // setup
     $mod_table = $mod_short.'_tbl_'.$mod_short;
     
@@ -4627,7 +4599,6 @@ function getRegisterRows($mod_short, $itemkey, $ste_cd, $num_rows)
 
 function logCmplxEvent($event, $ref, $refid, $vars, $cre_by, $cre_on)
 {
-    global $db;
     $ref = serialize($ref);
     $refid = serialize($refid);
     $vars = serialize($vars);
@@ -4645,7 +4616,6 @@ function logCmplxEvent($event, $ref, $refid, $vars, $cre_by, $cre_on)
     // run the query
     $sql = dbPrepareQuery($sql,__FUNCTION__);
     $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    $new_id = $db->lastInsertId();
 }
 
 // }}}
@@ -4669,7 +4639,6 @@ function logCmplxEvent($event, $ref, $refid, $vars, $cre_by, $cre_on)
 
 function logEvent($event, $vars, $cre_by, $cre_on)
 {
-    global $db;
     // setup the SQL
     $cre_on = dbTimestamp($cre_on);
     $sql = "
@@ -4701,7 +4670,7 @@ function logEvent($event, $vars, $cre_by, $cre_on)
 
 function mkNavLang($qstr=FALSE)
 {
-    global $db, $lang, $form_method,$purifier;
+    global $lang, $form_method,$purifier;
     $page = $_SERVER['PHP_SELF'];
     if (!$qstr) {
         if (!empty($_SERVER['QUERY_STRING'])) {

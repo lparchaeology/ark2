@@ -77,7 +77,7 @@ include('php/import/inc_cmap_nav.php');
 
 // DATA
 // try to get infor for this if we are cleared for edits
-if ($import_class && $join && $ste_join && $cmap_struc_info = chkForField($db, $cmap_id, $table, $field)) {
+if ($import_class && $join && $ste_join && $cmap_struc_info = chkForField($cmap_id, $table, $field)) {
     $update = 'edit';
     // now fill in the vars for the forms (requested above)
     $uid_col = $cmap_struc_info['uid_col'];
@@ -105,7 +105,7 @@ if ($import_class && $join && $ste_join && $cmap_struc_info = chkForField($db, $
 // setup a selector for columns on this table
 $cols_select = FALSE;
 if ($table) {
-    if ($import_cols = getColumns($db, $cmap_details['sourcedb'], $table)) {
+    if ($import_cols = getColumns($cmap_details['sourcedb'], $table)) {
         // make a dd of these columns for use if needed
         foreach ($import_cols as $key => $col) {
             $cols_select .= "<option value=\"$col\">$col</option>\n";
@@ -955,7 +955,7 @@ if ($import_cols) {
         // edit routine
         if ($column == $field) {
             // first check status
-            $in_map = chkForField($db, $cmap_details['id'], $table, $column);
+            $in_map = chkForField($cmap_details['id'], $table, $column);
             // if not in the map this is an add routine
             if (!$in_map) {
                 echo "<div class=\"mc_subform\">\n";
@@ -1043,7 +1043,7 @@ if ($import_cols) {
         // else a view routine
         } else {
             // first check status
-            $in_map = chkForField($db, $cmap_details['id'], $table, $column);
+            $in_map = chkForField($cmap_details['id'], $table, $column);
             // display this field
             if (!$in_map) {
                 echo "<div class=\"mc_subform\">\n";

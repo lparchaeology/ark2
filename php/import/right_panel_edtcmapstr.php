@@ -33,7 +33,7 @@
 * @since      File available since Release 0.6
 */
 
-$all_tbls = getTables($db, $cmap_details['sourcedb']);
+$all_tbls = getTables($cmap_details['sourcedb']);
 $import_tbls = array();
 foreach ($all_tbls as $key => $tbl) {
     if (substr($tbl, 0 , 6) == 'import') {

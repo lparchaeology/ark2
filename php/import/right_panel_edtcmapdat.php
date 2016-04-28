@@ -34,7 +34,7 @@
 
 // NOTE: In order for these forms to work, you need to make sure that the data_entry/global_update.php functions are included into your process script.
 
-$cmap_details = getRow($db, 'cor_tbl_cmap', $cmap_id, FALSE);
+$cmap_details = getRow('cor_tbl_cmap', $cmap_id, FALSE);
 
 ?>
 

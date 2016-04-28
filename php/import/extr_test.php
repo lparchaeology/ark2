@@ -101,7 +101,7 @@ if (isset($cmap) && isset($row)) {
 if (isset($cmap) && isset($cmap_struc_info)) {
     // GET THE DATA
     // select the right source
-    $source_db = getCmapDB($db, $cmap);
+    $source_db = getCmapDB($cmap);
     $db = dbConnect($sql_server, $sql_user, $sql_pwd, $source_db);
     // set up the sql
     $sql = "
@@ -392,46 +392,46 @@ if (isset($sql) && $row = $sql->fetch(PDO::FETCH_ASSOC)) {
         // SELECT WHICH FUNC TO RUN
         // Key using modtypes
         if ($cmap_struc_info['class'] == 'modkey') {
-            $outcome = extrKey($db, $cmap, $uid, $cmap_struc_info, $cmap_info);
+            $outcome = extrKey($cmap, $uid, $cmap_struc_info, $cmap_info);
         }
         // Key (all other mods)
         if ($cmap_struc_info['class'] == 'key') {
-            $outcome = extrKey($db, $cmap, $uid, $cmap_struc_info, $cmap_info);
+            $outcome = extrKey($cmap, $uid, $cmap_struc_info, $cmap_info);
         }
         // Txt
         if ($cmap_struc_info['class'] == 'txt') {
-            $outcome = extrTxt($db, $cmap, $uid, $cmap_struc_info, $cmap_info);
+            $outcome = extrTxt($cmap, $uid, $cmap_struc_info, $cmap_info);
         }
         // Dates
         if ($cmap_struc_info['class'] == 'date') {
-            $outcome = extrDate($db, $cmap, $uid, $cmap_struc_info, $cmap_info);
+            $outcome = extrDate($cmap, $uid, $cmap_struc_info, $cmap_info);
         }
         // Numbers
         if ($cmap_struc_info['class'] == 'num') {
-            $outcome = extrNum($db, $cmap, $uid, $cmap_struc_info, $cmap_info);
+            $outcome = extrNum($cmap, $uid, $cmap_struc_info, $cmap_info);
         }
         // Attr
         if ($cmap_struc_info['class'] == 'attra') {
-            $outcome = extrAttrA($db, $cmap, $uid, $cmap_struc_info, $cmap_info);
+            $outcome = extrAttrA($cmap, $uid, $cmap_struc_info, $cmap_info);
         }
         if ($cmap_struc_info['class'] == 'attrb') {
-            $outcome = extrAttrB($db, $cmap, $uid, $cmap_struc_info, $cmap_info);
+            $outcome = extrAttrB($cmap, $uid, $cmap_struc_info, $cmap_info);
         }
         // Spans
         if ($cmap_struc_info['class'] == 'span') {
-            $outcome = extrSpan($db, $cmap, $uid, $cmap_struc_info, $cmap_info);
+            $outcome = extrSpan($cmap, $uid, $cmap_struc_info, $cmap_info);
         }
         // XMIs
         if ($cmap_struc_info['class'] == 'xmi') {
-            $outcome = extrXmi($db, $cmap, $uid, $cmap_struc_info, $cmap_info);
+            $outcome = extrXmi($cmap, $uid, $cmap_struc_info, $cmap_info);
         }
         // Aliases
         if ($cmap_struc_info['class'] == 'alias') {
-            $outcome = extrFrAli($db, $cmap, $uid, $cmap_struc_info, $cmap_info);
+            $outcome = extrFrAli($cmap, $uid, $cmap_struc_info, $cmap_info);
         }
         // Actors
         if ($cmap_struc_info['class'] == 'action') {
-            $outcome = extrAction($db, $cmap, $uid, $cmap_struc_info, $cmap_info);
+            $outcome = extrAction($cmap, $uid, $cmap_struc_info, $cmap_info);
         }
         
         // return some feedback

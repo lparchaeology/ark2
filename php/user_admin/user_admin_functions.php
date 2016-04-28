@@ -50,7 +50,6 @@
 
 function chkDupUsr($username)
 {
-    global $db;
     $sql = "
         SELECT id
         FROM cor_tbl_users
@@ -83,7 +82,6 @@ function chkDupUsr($username)
 
 function chkDupInit($init)
 {
-    global $db;
     $sql = "
         SELECT initials
         FROM cor_tbl_users
@@ -120,7 +118,6 @@ function chkDupInit($init)
 
 function makeUsrname($firstname, $lastname, $init, $type)
 {
-    global $db;
     // make lastname and initials lowercase
     $lastname = strtolower($lastname);
     $init = strtolower($init);

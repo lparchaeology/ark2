@@ -90,7 +90,7 @@ foreach ($data as $itemvalue => $value){
             // if there isn't on, we need to add it
             if (!$attrid) {
                 // create a new entry in the lut table
-                $attrid = edtLut($db, "cor_lut_" . $dataclass, $value, $mod_short, $classtypeid, $lang, $user_id, "NOW()");
+                $attrid = edtLut("cor_lut_" . $dataclass, $value, $mod_short, $classtypeid, $lang, $user_id, "NOW()");
             }
             // test it again
             if (!$attrid) {

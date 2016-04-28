@@ -333,7 +333,7 @@ foreach ( $sf_conf['metadata'] as $mapping ) {
                         // get the classtype id s
                         $classtypeid = getClassType($metatable[$irodsrow]['dataclass'], $metatable[$irodsrow]['classtype']);
                         // create a new entry in the lut table
-                        $irodsid = edtLut($db, "cor_lut_".$metatable[$irodsrow]['dataclass'], $meta->value, $mod_short, $classtypeid, $lang, $user_id, "NOW()");
+                        $irodsid = edtLut("cor_lut_".$metatable[$irodsrow]['dataclass'], $meta->value, $mod_short, $classtypeid, $lang, $user_id, "NOW()");
                     }
                     // test it again
                     if (!$irodsid) {

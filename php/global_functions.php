@@ -298,8 +298,6 @@ function build_sorter($key) {
  */
 function chkCxtSpanlabel($ste_cd, $beg, $end, $spanlabelid, $conf_tvclab) {
 
-global $db;
-
 if ($ste_cd) {
 $beg = $ste_cd.'_'.$beg;
 $end = $ste_cd.'_'.$end;
@@ -777,7 +775,7 @@ function dateSelect($type, $fields, $datetype, $date=FALSE)
 
 function ddActor($dd_name, $actor_mod, $elem, $elemclass, $top_id, $top_val, $actor_type=FALSE, $action=FALSE)
 {
-    global $db, $user_id, $ste_cd;
+    global $user_id, $ste_cd;
     $actor_itemkey = $actor_mod.'_cd';
     $actor_table = $actor_mod.'_tbl_'.$actor_mod;
     $actor_lut = $actor_mod.'_lut_'.$actor_mod . 'type';
@@ -864,7 +862,7 @@ function ddActor($dd_name, $actor_mod, $elem, $elemclass, $top_id, $top_val, $ac
 
 function ddComplex($top_id, $top_val, $tbl, $dd_name, $dataclass, $classtype, $sqlorder, $fragorder=FALSE, $id_col=FALSE)
 {
-    global $db, $lang;
+    global $lang;
     //Set a default if needed
     if (!$top_val) {
         $top_val = '---select---';
@@ -927,7 +925,6 @@ function ddComplex($top_id, $top_val, $tbl, $dd_name, $dataclass, $classtype, $s
 
 function ddItemval($top_id, $top_val, $itemkey)
 {
-    global $db;
     //Set a default if needed
     if (!$top_val) {
         $top_val = '---select---';
@@ -1021,7 +1018,6 @@ function ddSelected($var, $value)
 
 function ddSimple($top_id, $top_val, $lut, $nickname, $dd_name, $order, $return_mode=FALSE, $id_col=FALSE)
 {
-    global $db;
     // DEPRECATED call. Will always return code from 0.7
     if (!$return_mode) {
         $return_mode = 'code';
@@ -1097,7 +1093,6 @@ function ddSimple($top_id, $top_val, $lut, $nickname, $dd_name, $order, $return_
 
 function ddUnique($top_id, $top_val, $lut, $nickname, $dd_name, $order, $id_col=FALSE)
 {
-    global $db;
     //Set a default if needed
     if (!$top_val) {
         $top_val = '---select---';
@@ -1422,7 +1417,7 @@ function feedBk($type)
 function frmElem($field, $itemkey, $itemvalue=FALSE)
 {
     // SETUP
-    global $db, $lang, $skin_path, $registered_files_dir, $registered_files_host, $purifier;
+    global $lang, $skin_path, $registered_files_dir, $registered_files_host, $purifier;
     
 
     $mk_delete = getMarkup('cor_tbl_markup', $lang,'delete');
@@ -4291,7 +4286,7 @@ function mkResultsJson($results_array, $filters)
 function mkResultsMap($results_array, $filters)
 {
     include_once('php/map/map_functions.php');
-    global $lang, $disp_mode, $wxs_query_map, $wxs_qlayers, $db, $ark_dir, $skin;
+    global $lang, $disp_mode, $wxs_query_map, $wxs_qlayers, $ark_dir, $skin;
     $var = '';
     $mk_no_spat_results = getMarkup('cor_tbl_markup', $lang, 'no_spat_results');
     $have_spat_results = FALSE;
@@ -5146,7 +5141,7 @@ function mkSearchType($modes, $name, $item_key, $default, $width, $link=FALSE)
 function mkSteCdNav($ol = FALSE)
 {
     // set up global vars
-    global $ste_cd, $db, $lang, $default_site_cd, $form_method;
+    global $ste_cd, $lang, $default_site_cd, $form_method;
     // get existing ste_cd
     $ste_cd = reqArkVar('ste_cd', $default_site_cd);
     // OFFER FEEDBACK
@@ -5330,7 +5325,7 @@ function mkTitle ($itemkey, $itemval, $title_vars)
 {
     // SETUP
     $title = FALSE;
-    global $db, $lang;
+    global $lang;
     $mod = substr($itemkey, 0, 3);
     // loop over the vars sticking them together
     foreach ($title_vars as $titleelem) {

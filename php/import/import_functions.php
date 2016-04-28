@@ -37,7 +37,6 @@
 /**
  * extracts information from a source (import) database about a text fragment
  *
- * @param object $db  a valid mysql connection
  * @param integer $cmap  the id of the current concordance map
  * @param integer $uid  the id of the column in the source table we are looking at
  * @param array $cmap_struc_info  array containing all of the relevant values from the structure map
@@ -50,7 +49,7 @@
  *
  */
 
-function extrTxt($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
+function extrTxt($cmap, $uid, $cmap_struc_info, $cmap_info)
 {
     global $sql_server, $sql_user, $sql_pwd, $ark_db, $i, $db;
     
@@ -72,10 +71,10 @@ function extrTxt($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 
     // ste_cd
     $stecd_lut = buildStecdLut($uid, $tbl, $cmap_struc_info);
-    $imp_ste_cd = getSteCd($db, $cmap, $stecd_lut);
+    $imp_ste_cd = getSteCd($cmap, $stecd_lut);
     
     // $source_db
-    $source_db = getCmapDB($db, $cmap);
+    $source_db = getCmapDB($cmap);
     $db = dbConnect($sql_server, $sql_user, $sql_pwd, $source_db);
     // $db->dbExecuteQuery$source_db");
     
@@ -96,7 +95,6 @@ function extrTxt($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
     // $itemval
     $itemval =
         getItemVal(
-            $db,
             $imp_ste_cd,
             $raw_itemval_col,
             $tbl_itemval_join_col,
@@ -182,7 +180,6 @@ function extrTxt($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 /**
 * extracts numbers and sends to addNum()
 *
-* @param object $db  a valid mysql connection
 * @param integer $cmap  the id of the current concordance map
 * @param integer $uid  the id of the column in the source table we are looking at
 * @param array $cmap_struc_info  array containing all of the relevant values from the structure map
@@ -195,7 +192,7 @@ function extrTxt($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 *
 */
 
-function extrNum($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
+function extrNum($cmap, $uid, $cmap_struc_info, $cmap_info)
 {
     global $sql_server, $sql_user, $sql_pwd, $ark_db, $i, $db;
     
@@ -222,9 +219,9 @@ function extrNum($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 
     // ste_cd
     $stecd_lut = buildStecdLut($uid, $tbl, $cmap_struc_info);
-    $imp_ste_cd = getSteCd($db, $cmap, $stecd_lut);
+    $imp_ste_cd = getSteCd($cmap, $stecd_lut);
 
-    $source_db = getCmapDB($db, $cmap);
+    $source_db = getCmapDB($cmap);
     $db = dbConnect($sql_server, $sql_user, $sql_pwd, $source_db);
     // $db->query("use $source_db");
     
@@ -246,7 +243,6 @@ function extrNum($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
     // $itemval
     $itemval =
         getItemVal(
-            $db,
             $imp_ste_cd,
             $raw_itemval_col,
             $tbl_itemval_join_col,
@@ -326,7 +322,7 @@ function extrNum($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
         if ($chain) {
             //this is going to need to be chained - 
             //therefore insert the new ids into the relevant fields in the import db table
-            $source_db = getCmapDB($db, $cmap);
+            $source_db = getCmapDB($cmap);
             $db = dbConnect($sql_server, $sql_user, $sql_pwd, $source_db);
             $fields = array($chain_itemkey_col, $chain_itemval_col);
             $values = array($chain_itemkey, $ret['new_id']);
@@ -345,7 +341,6 @@ function extrNum($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 /**
 * extracts type A Atrributes (boolean like attributes)
 *
-* @param object $db  the source db
 * @param string $cmap  the cmap
 * @param string $uid  the unique id if this row
 * @param array $cmap_struc_info  array of info about the structure
@@ -356,7 +351,7 @@ function extrNum($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 *
 */
 
-function extrAttrA($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
+function extrAttrA($cmap, $uid, $cmap_struc_info, $cmap_info)
 {
     global $sql_server, $sql_user, $sql_pwd, $ark_db, $i, $db;
     // Basic set up
@@ -381,9 +376,9 @@ function extrAttrA($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 
     // ste_cd
     $stecd_lut = buildStecdLut($uid, $tbl, $cmap_struc_info);
-    $imp_ste_cd = getSteCd($db, $cmap, $stecd_lut);
+    $imp_ste_cd = getSteCd($cmap, $stecd_lut);
 
-    $source_db = getCmapDB($db, $cmap);
+    $source_db = getCmapDB($cmap);
     $db = dbConnect($sql_server, $sql_user, $sql_pwd, $source_db);
     // $db->query("use $source_db");
     
@@ -405,7 +400,6 @@ function extrAttrA($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
     // $itemval
     $itemval =
         getItemVal(
-            $db,
             $imp_ste_cd,
             $raw_itemval_col,
             $tbl_itemval_join_col,
@@ -498,7 +492,6 @@ function extrAttrA($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 /**
 * extracting type B Atrributes (attributes linking to lut data)
 *
-* @param object $db  the source db
 * @param string $cmap  the cmap
 * @param string $uid  the unique id if this row
 * @param array $cmap_struc_info  array of info about the structure
@@ -512,7 +505,7 @@ function extrAttrA($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 */
 // Function for extracting type B Atrributes (attributes linking to lut data)
 
-function extrAttrB($extract_db, $cmap, $uid, $cmap_struc_info, $cmap_info)
+function extrAttrB($cmap, $uid, $cmap_struc_info, $cmap_info)
 {
     global $sql_server, $sql_user, $sql_pwd, $ark_db, $i, $chain, $db;
     
@@ -550,7 +543,7 @@ function extrAttrB($extract_db, $cmap, $uid, $cmap_struc_info, $cmap_info)
     
     // ste_cd
     $stecd_lut = buildStecdLut($uid, $tbl, $cmap_struc_info);
-    $imp_ste_cd = getSteCd($db, $cmap, $stecd_lut);
+    $imp_ste_cd = getSteCd($cmap, $stecd_lut);
     // check if the uid is a number or a alphanumeric code
     
      if (!is_numeric($uid) AND substr($uid,0,1) != "'") {
@@ -570,7 +563,6 @@ function extrAttrB($extract_db, $cmap, $uid, $cmap_struc_info, $cmap_info)
     } else {
         $attribute =
             processLutEntry(
-                $db,
                 $cmap,
                 $lut_tbl,
                 $lut_idcol,
@@ -594,7 +586,6 @@ function extrAttrB($extract_db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 
     $itemval =
         getItemVal(
-            $db,
             $imp_ste_cd,
             $raw_itemval_col,
             $tbl_itemval_join_col,
@@ -647,7 +638,7 @@ function extrAttrB($extract_db, $cmap, $uid, $cmap_struc_info, $cmap_info)
         if ($chain) {
             //this is going to need to be chained -
             //therefore insert the new ids into the relevant fields in the import db table
-            $source_db = getCmapDB($db, $cmap);
+            $source_db = getCmapDB($cmap);
             printPre($source_db);
             $db = dbConnect($sql_server, $sql_user, $sql_pwd, $source_db);
             $db->query("use $source_db");
@@ -666,7 +657,6 @@ function extrAttrB($extract_db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 /**
 * extracts Aliases of data fragments
 *
-* @param object $db  the source db
 * @param string $cmap  the cmap
 * @param string $uid  the unique id if this row
 * @param array $cmap_struc_info  array of info about the structure
@@ -677,11 +667,11 @@ function extrAttrB($extract_db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 *
 */
 
-function extrFrAli($db, $cmap, $uid, $cmap_struc_info, $cmap_info, $type=FALSE)
+function extrFrAli($cmap, $uid, $cmap_struc_info, $cmap_info, $type=FALSE)
 {
     global $sql_server, $sql_user, $sql_pwd, $ark_db, $i, $db;
     
-    $source_db = getCmapDB($db, $cmap);
+    $source_db = getCmapDB($cmap);
     $db = dbConnect($sql_server, $sql_user, $sql_pwd, $source_db);
     // $db->query("use $source_db");
     // in the case of aliases the itemkey is in effect the name of the table
@@ -705,7 +695,7 @@ function extrFrAli($db, $cmap, $uid, $cmap_struc_info, $cmap_info, $type=FALSE)
     
     // ste_cd
     $stecd_lut = buildStecdLut($uid, $tbl, $cmap_struc_info);
-    $imp_ste_cd = getSteCd($db, $cmap, $stecd_lut);
+    $imp_ste_cd = getSteCd($cmap, $stecd_lut);
     
     // FIRST - GET BACK THE REAL VALUE
 
@@ -770,7 +760,6 @@ function extrFrAli($db, $cmap, $uid, $cmap_struc_info, $cmap_info, $type=FALSE)
                 $results = dbRunAddQuery($table, $fields, $values, $logtype, $cre_by, $cre_on, __FUNCTION__);
                 // Add this new value to the cmap_data
                 edtCmapData(
-                    $db,
                     $cmap,
                     $realdata,
                     "$tbl.$col",
@@ -807,7 +796,6 @@ function extrFrAli($db, $cmap, $uid, $cmap_struc_info, $cmap_info, $type=FALSE)
 /**
 * extracts information from a source db and sends this to the edtDate() function
 *
-* @param object $db  the source db
 * @param string $cmap  the cmap
 * @param string $uid  the unique id if this row
 * @param array $cmap_struc_info  array of info about the structure
@@ -818,7 +806,7 @@ function extrFrAli($db, $cmap, $uid, $cmap_struc_info, $cmap_info, $type=FALSE)
 *
 */
 
-function extrDate($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
+function extrDate($cmap, $uid, $cmap_struc_info, $cmap_info)
 {
     global $sql_server, $sql_user, $sql_pwd, $ark_db, $i, $db;
     
@@ -839,9 +827,9 @@ function extrDate($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 
     // ste_cd
     $stecd_lut = buildStecdLut($uid, $tbl, $cmap_struc_info);
-    $imp_ste_cd = getSteCd($db, $cmap, $stecd_lut);
+    $imp_ste_cd = getSteCd($cmap, $stecd_lut);
  
-    $source_db = getCmapDB($db, $cmap);
+    $source_db = getCmapDB($cmap);
     $db = dbConnect($sql_server, $sql_user, $sql_pwd, $source_db);
     // $db->query("use $source_db");
     
@@ -863,7 +851,6 @@ function extrDate($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
     // $itemval
     $itemval =
         getItemVal(
-            $db,
             $imp_ste_cd,
             $raw_itemval_col,
             $tbl_itemval_join_col,
@@ -924,7 +911,7 @@ function extrDate($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
     }
     // Live Add
     if ($type == 'add' && $date !== NULL) {
-        // Run the addDate()    $source_db = getCmapDB($db, $cmap);
+        // Run the addDate()    $source_db = getCmapDB($cmap);
         $db = dbConnect($sql_server, $sql_user, $sql_pwd, $source_db);
         // $db->query("use $source_db");
         $ret = addDate($datetype, $itemkey, $itemval, $date, $cre_by, $cre_on);
@@ -938,7 +925,6 @@ function extrDate($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 /**
 * extracts information from a source db and sends this to addSpan()
 *
-* @param object $db  the source db
 * @param string $cmap  the cmap
 * @param string $uid  the unique id if this row
 * @param array $cmap_struc_info  array of info about the structure
@@ -949,9 +935,9 @@ function extrDate($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 *
 **/
 
-function extrSpan($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
+function extrSpan($cmap, $uid, $cmap_struc_info, $cmap_info)
 {
-    global $sql_server, $sql_user, $sql_pwd, $ark_db, $i;
+    global $sql_server, $sql_user, $sql_pwd, $ark_db, $i, $db;
     $spantype = $cmap_struc_info['type'];
     $itemkey = $cmap_struc_info['itemkey'];
     $raw_itemval_col = $cmap_struc_info['raw_itemval_col'];
@@ -969,12 +955,12 @@ function extrSpan($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 
     if (array_key_exists('raw_stecd_col', $cmap_struc_info)) {
         $stecd_lut = buildStecdLut($uid,$tbl,$cmap_struc_info);
-        $imp_ste_cd = getSteCd($db, $cmap, $stecd_lut);
+        $imp_ste_cd = getSteCd($cmap, $stecd_lut);
     } else {
-        $imp_ste_cd = getSteCd($db, $cmap);
+        $imp_ste_cd = getSteCd($cmap);
     }
  
-    $source_db = getCmapDB($db, $cmap);
+    $source_db = getCmapDB($cmap);
     $db = dbConnect($sql_server, $sql_user, $sql_pwd, $source_db);
     //$db->query("use $source_db");
 
@@ -998,7 +984,6 @@ function extrSpan($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
     
    $itemval =
         getItemVal(
-            $db,
             $imp_ste_cd,
             $raw_itemval_col,
             $tbl_itemval_join_col,
@@ -1075,7 +1060,6 @@ function extrSpan($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 /**
 * extracts information from a source db and sends this to edtXmi()
 *
-* @param object $db  the source db
 * @param string $cmap  the cmap
 * @param string $uid  the unique id if this row
 * @param array $cmap_struc_info  array of info about the structure
@@ -1086,7 +1070,7 @@ function extrSpan($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 *
 */
 
-function extrXmi($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
+function extrXmi($cmap, $uid, $cmap_struc_info, $cmap_info)
 {
     global $sql_server, $sql_user, $sql_pwd, $ark_db, $i, $db;
     
@@ -1111,13 +1095,13 @@ function extrXmi($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
     // also handle the FALSE keyword
     if ($cmap_struc_info['raw_stecd_col'] && $cmap_struc_info['raw_stecd_col'] != 'FALSE') {
         $stecd_lut = buildStecdLut($uid,$tbl,$cmap_struc_info);
-        $imp_ste_cd = getSteCd($db, $cmap, $stecd_lut);
+        $imp_ste_cd = getSteCd($cmap, $stecd_lut);
     } else {
-        $imp_ste_cd = getSteCd($db, $cmap);
+        $imp_ste_cd = getSteCd($cmap);
     }
     
     // $source_db
-    $source_db = getCmapDB($db, $cmap);
+    $source_db = getCmapDB($cmap);
     $db = dbConnect($sql_server, $sql_user, $sql_pwd, $source_db);
     // $db->query("use $source_db");
     
@@ -1140,7 +1124,6 @@ function extrXmi($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
     // $itemval
     $itemval =
         getItemVal(
-            $db,
             $imp_ste_cd,
             $raw_itemval_col,
             $tbl_itemval_join_col,
@@ -1221,7 +1204,6 @@ function extrXmi($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 /**
 * extracts information from a source (import) database about a standard key
 *
-* @param object $db  a valid mysql connection
 * @param integer $cmap  the id of the current concordance map
 * @param integer $uid  the id of the column in the source table we are looking at
 * @param array $cmap_struc_info  array containing all of the relevant values from the structure map
@@ -1233,7 +1215,7 @@ function extrXmi($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 *
 */
 
-function extrKey($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
+function extrKey($cmap, $uid, $cmap_struc_info, $cmap_info)
 {
     global $sql_server, $sql_user, $sql_pwd, $ark_db, $i, $db;
     $tbl = $cmap_struc_info['tbl'];
@@ -1248,10 +1230,10 @@ function extrKey($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
     
     // ste_cd
     $stecd_lut = buildStecdLut($uid, $tbl, $cmap_struc_info);
-    $imp_ste_cd = getSteCd($db, $cmap, $stecd_lut);
+    $imp_ste_cd = getSteCd($cmap, $stecd_lut);
     
     // source_db
-    $source_db = getCmapDB($db, $cmap);
+    $source_db = getCmapDB($cmap);
     $db = dbConnect($sql_server, $sql_user, $sql_pwd, $source_db);
     // $db->query("use $source_db");
     
@@ -1321,7 +1303,6 @@ function extrKey($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 /**
 * extract information from a source db about actors
 *
-* @param object $db  a valid mysql connection
 * @param integer $cmap  the id of the current concordance map
 * @param integer $uid  the id of the column in the source table we are looking at
 * @param array $cmap_struc_info  array containing all of the relevant values from the structure map
@@ -1349,7 +1330,7 @@ function extrKey($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 *
 */
 
-function extrAction($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
+function extrAction($cmap, $uid, $cmap_struc_info, $cmap_info)
 {
     global $sql_server, $sql_user, $sql_pwd, $ark_db, $i, $db;
     // Set up
@@ -1378,9 +1359,9 @@ function extrAction($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
 
     // ste_cd
     $stecd_lut = buildStecdLut($uid, $tbl, $cmap_struc_info);
-    $imp_ste_cd = getSteCd($db, $cmap, $stecd_lut);
+    $imp_ste_cd = getSteCd($cmap, $stecd_lut);
 
-    $source_db = getCmapDB($db, $cmap);
+    $source_db = getCmapDB($cmap);
     $db = dbConnect($sql_server, $sql_user, $sql_pwd, $source_db);
     // $db->query("use $source_db");
     
@@ -1405,7 +1386,6 @@ function extrAction($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
         } else {
             $actiontype =
                 processLutEntry (
-                    $db,
                     $cmap,
                     $lut_tbl,
                     $lut_idcol,
@@ -1431,7 +1411,6 @@ function extrAction($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
     // $db->query("use $source_db");
     $itemval =
         getItemVal(
-            $db,
             $imp_ste_cd,
             $raw_itemval_col,
             $tbl_itemval_join_col,
@@ -1464,7 +1443,7 @@ function extrAction($db, $cmap, $uid, $cmap_struc_info, $cmap_info)
         // Stick the ste_cd to the front
         // ste_cd
         $stecd_lut = buildStecdLut($uid, $tbl, $cmap_struc_info);
-        $imp_ste_cd = getSteCd($db, $cmap, $stecd_lut);
+        $imp_ste_cd = getSteCd($cmap, $stecd_lut);
         $actorval = $actor_ste_cd.'_'.$actor_raw;
     }
 
@@ -1560,8 +1539,6 @@ function getCmapData($sourcelocation, $sourcedata, $dclass, $classtype) {
 /**
 * processes an LUT entry, returning an ID
 *
-* @param object $db  a valid mysql connection
-* TBC
 * @return integer  the new id of the text fragment (or FALSE on error)
 * @author Guy Hunt
 * @since 0.4
@@ -1570,7 +1547,7 @@ function getCmapData($sourcelocation, $sourcedata, $dclass, $classtype) {
 *
 */
 
-function processLutEntry($db, $cmap, $lut_tbl, $lut_idcol, $lut_id, $lut_valcol, $ark_lut, $ark_mod, $dclass, $classtype, $lang, $cre_by, $cre_on, $qtype=FALSE)
+function processLutEntry($cmap, $lut_tbl, $lut_idcol, $lut_id, $lut_valcol, $ark_lut, $ark_mod, $dclass, $classtype, $lang, $cre_by, $cre_on, $qtype=FALSE)
 {
     // setup
     $ctype_col = $dclass.'type';
@@ -1613,7 +1590,6 @@ function processLutEntry($db, $cmap, $lut_tbl, $lut_idcol, $lut_id, $lut_valcol,
         // Do an insert to the ark lut and return the new id
         $ark_new_lut_id =
             edtLut(
-                $db,
                 $ark_lut,
                 $lutrealdata,
                 $ark_mod,
@@ -1625,7 +1601,6 @@ function processLutEntry($db, $cmap, $lut_tbl, $lut_idcol, $lut_id, $lut_valcol,
         );
         // Add this new value to the cmap_data
         edtCmapData(
-            $db,
             $cmap,
             $lutrealdata,
             "$lut_tbl.$lut_valcol",
@@ -1660,14 +1635,13 @@ function processLutEntry($db, $cmap, $lut_tbl, $lut_idcol, $lut_id, $lut_valcol,
 /**
 * retrieves the name of the source db for a cmap using the id
 *
-* @param object $db  the current db connection
 * @param string $id  the cmap id
 * @return void
 * @author Guy Hunt
 * @since 0.4
 */
 
-function getCmapDB($db, $id)
+function getCmapDB($id)
 {
     $where = " id = $id";
     $sourcedb=getSingle("sourcedb", "cor_tbl_cmap", $where);
@@ -1698,7 +1672,7 @@ function getCmapDB($db, $id)
 * This function can make up the 
 */
 
-function getItemVal($db, $imp_ste_cd, $raw_itemval_col, $tbl_itemval_join_col, $raw_itemval_tbl, $raw_itemval_join_col, $tbl, $uid_col, $uid)
+function getItemVal($imp_ste_cd, $raw_itemval_col, $tbl_itemval_join_col, $raw_itemval_tbl, $raw_itemval_join_col, $tbl, $uid_col, $uid)
 {
     
     //check if the uid is a number or a alphanumeric code
@@ -1747,7 +1721,6 @@ function getItemVal($db, $imp_ste_cd, $raw_itemval_col, $tbl_itemval_join_col, $
 /**
 * check the cmap for a field
 *
-* @param object $db  a valid db connection
 * @param string $cmap  the cmap
 * @param string $tbl  the table
 * @param string $col  the colum
@@ -1756,7 +1729,7 @@ function getItemVal($db, $imp_ste_cd, $raw_itemval_col, $tbl_itemval_join_col, $
 * @since 0.4
 *
 */
-function chkForField($db, $cmap, $tbl, $col)
+function chkForField($cmap, $tbl, $col)
 {
     $where= "where tbl = '$tbl'
         AND col = '$col'

@@ -125,7 +125,7 @@ function buildFltFtx($filters, $qstr)
 
 function execFltftx($filter, $simple=FALSE)
 {
-    global $db, $lang, $ftx_mode;
+    global $lang, $ftx_mode;
     $src = $filter['src'];
     $hits = FALSE;
     $results_array = FALSE;
@@ -462,7 +462,7 @@ function buildFltTxt($filters, $qstr)
 
 function execFltTxt($filter, $simple=FALSE)
 {
-    global $db, $lang, $ftx_mode;
+    global $lang, $ftx_mode;
     $txt = $filter['txt'];
     $txttype = $filter['txttype'];
     $hits = FALSE;
@@ -693,7 +693,7 @@ function buildFltKey($filters, $qstr)
 
 function execFltkey($filter, $simple=FALSE)
 {
-    global $db, $lang;
+    global $lang;
     $hits = FALSE;
     $results_array = FALSE;
     $where = FALSE;
@@ -999,7 +999,7 @@ function buildFltAtr($filters, $qstr)
 
 function execFltAtr($filter, $simple=FALSE)
 {
-    global $db, $lang;
+    global $lang;
     $hits = FALSE;
     $results_array = FALSE;
     
@@ -1356,7 +1356,7 @@ function buildFltstecd($filters, $qstr)
 
 function execFltstecd($filter, $simple=FALSE)
 {
-    global $db, $lang, $loaded_modules;
+    global $lang, $loaded_modules;
     $scode = $filter['scode'];
     $hits = FALSE;
     $results_array = FALSE;
@@ -1596,7 +1596,7 @@ function execFltPlace($filter,$simple=FALSE)
 {
     //this uses some mapping functions - so include the map_functions
     include_once ('map/map_functions.php');
-    global $db, $lang,$wxs_qlayers;
+    global $lang,$wxs_qlayers;
     $valid_itemvals = array();
     $hits = FALSE;
     $results_array = FALSE;
@@ -1977,7 +1977,7 @@ function buildFltRange($filters, $qstr)
 
 function execFltRange($filter, $simple=FALSE)
 {
-    global $db, $lang;
+    global $lang;
     $hits = FALSE;
     $results_array = FALSE;
     // Type alias
@@ -2332,7 +2332,7 @@ function buildFltAction($filters, $qstr)
 
 function execFltAction($filter, $simple=FALSE)
 {
-    global $db, $lang;
+    global $lang;
     $hits = FALSE;
     $results_array = FALSE;
     $where = FALSE;
@@ -2568,7 +2568,7 @@ function buildFltManual($filters, $qstr)
 
 function execFltManual($filter, $simple=FALSE)
 {
-    global $db, $lang;
+    global $lang;
     $hits = FALSE;
     $results_array = FALSE;
     $where = FALSE;
@@ -3133,7 +3133,6 @@ function edtFtr($filter, $nname, $sgrp, $f_id)
 
 function delFtr($f_id)
 {
-    global $db;
     // create some SQL
     $sql = "
         DELETE FROM cor_tbl_filter

@@ -51,7 +51,6 @@
 
 function getPermUserId($user_id,$auth_container = 'ARK_USERS')
 {
-    global $db;
     //first get the liveuser perm_user_id
     $sql = "
         SELECT perm_user_id 
@@ -95,7 +94,7 @@ function getPermUserId($user_id,$auth_container = 'ARK_USERS')
 
 function getAuthItems($filter_results = FALSE)
 {
-    global $db, $loaded_modules, $user_id;
+    global $loaded_modules, $user_id;
     // if filter results_array has been sent pre-process it
     if ($filter_results) {
         // put results into the authitems array
@@ -160,7 +159,6 @@ function getAuthItems($filter_results = FALSE)
 
 function getSfilter($sfilter_id)
 {
-    global $db;
     //get the filter array
     $sfilter = getFtr($sfilter_id);
     if ($sfilter) {
