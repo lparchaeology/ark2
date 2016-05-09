@@ -45,7 +45,7 @@ $version = '1.2';
 
 // -- SERVER ENVIRONMENT -- //
 // settings related to your server environment
-include('env_settings.php');
+include('server.php');
 
 
 // -- GENERAL -- //
@@ -141,7 +141,7 @@ $record_admin_grps =
 $skin = 'arkologik';
 $mobileskin='arkemical';
 // Skin path
-$skin_path = $ark_dir."skins/$skin";
+$skin_path = $ark_root_path."/skins/$skin";
 
 
 // -- FILES -- //

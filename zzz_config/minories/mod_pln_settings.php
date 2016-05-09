@@ -156,7 +156,7 @@ $conf_mcd_tmbxmi =
         'view_state' => 'max',
         'edit_state' => 'view', // not yet setup in sf
         'sf_title' => 'timbers', //appears in the titlebar of the subform (mk nname)
-        'sf_html_id' => 'cxt_tmb_display', // the form id tag (must be unique)
+        'sf_html_id' => 'pln_tmb_display', // the form id tag (must be unique)
         'script' => 'php/subforms/sf_xmi.php',
         'sf_nav_type' => 'nmedit',
         'xmi_mode' => 'auto',
@@ -181,7 +181,7 @@ array(
         'edit_state' => 'view',
         'sf_nav_type' => 'name',
         'sf_title' => 'share', //appears in the titlebar of the subform (mk nname)
-        'sf_html_id' => 'share_buttons', //the form id tag (must be unique)
+        'sf_html_id' => 'pln_share_buttons', //the form id tag (must be unique)
         'script' => 'php/subforms/sf_socialshare.php',
         'fields' =>
         array(

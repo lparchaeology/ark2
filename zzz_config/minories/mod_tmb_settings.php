@@ -167,12 +167,11 @@ $conf_mcd_tmbcomment =
 /* ATTRIBUTES */
 $conf_mcd_tmblocn =
     array(
-        'field_id' => 'conf_mcd_tmblocn',
         'view_state' => 'max',
         'edit_state' => 'view',
         'sf_nav_type' => 'nmedit',
         'sf_title' => 'tbmlocn',
-        'sf_html_id' => 'tbmlocn', // Must be unique
+        'sf_html_id' => 'tbm_locn', // Must be unique
         'script' => 'php/subforms/sf_attr_bytype.php',
         'op_label' => 'space',
         'op_input' => 'save',
@@ -184,7 +183,6 @@ $conf_mcd_tmblocn =
 //Record complete flag
 $conf_mcd_tmbstatus =
     array(
-        'field_id' => 'conf_mcd_tmbstatus',
         'view_state' => 'max',
         'edit_state' => 'view',
         'sf_nav_type' => 'nmedit',

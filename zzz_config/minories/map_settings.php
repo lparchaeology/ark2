@@ -33,8 +33,11 @@
 * @since      File available since Release 1.0
 */
 
+include('field_settings.php');
+
 $vd_map_chainkey =
 array(
+                'vld_rule_id' => 'vd_map_chainkey',
                 'rq_func' => 'reqManual',
                 'vd_func' => 'chkSet',
                 'var_name' => 'itemkey',
@@ -42,6 +45,7 @@ array(
 );
 $vd_maplayer_chainkey =
 array(
+                'vld_rule_id' => 'vd_maplayer_chainkey',
                 'rq_func' => 'reqManual',
                 'vd_func' => 'chkSet',
                 'var_name' => 'itemkey',
@@ -49,6 +53,7 @@ array(
 );
 $vd_chainval =
 array(
+                'vld_rule_id' => 'vd_chainval',
                 'rq_func' => 'reqMulti',
                 'vd_func' => 'chkSet',
                 'var_name' => 'itemval',
@@ -58,150 +63,194 @@ array(
 
 $mapchain_txt_add_validation =
     array(
-        $vd_cre_on,
-        $vd_log,
-        $vd_cre_by,
-        $txt_vd_txttype,
-        $txt_vd_txt,
-        $vd_map_chainkey,
-        $vd_chainval,
-        $vd_live_lang
-);
+        'vld_group_id' => 'vd_chainval',
+        'rules' => array(
+                    $vd_cre_on,
+                    $vd_log,
+                    $vd_cre_by,
+                    $txt_vd_txttype,
+                    $txt_vd_txt,
+                    $vd_map_chainkey,
+                    $vd_chainval,
+                    $vd_live_lang
+                ),
+    );
+
 // edt txt default validation group
 $mapchain_txt_edt_validation =
     array(
-        $vd_cre_on,
-        $vd_log,
-        $vd_cre_by,
-        $txt_vd_txttype,
-        $txt_vd_txt,
-        $vd_map_chainkey,
-        $vd_chainval,
-        $vd_frag_id,
-        $vd_live_lang
-);
+        'vld_group_id' => 'vd_chainval',
+        'rules' => array(
+                    $vd_cre_on,
+                    $vd_log,
+                    $vd_cre_by,
+                    $txt_vd_txttype,
+                    $txt_vd_txt,
+                    $vd_map_chainkey,
+                    $vd_chainval,
+                    $vd_frag_id,
+                    $vd_live_lang
+                ),
+    );
+
 $mapchain_attr_add_validation =
     array(
-        $vd_cre_on,
-        $vd_log,
-        $vd_cre_by,
-        $attr_vd_attributetype,
-        $attr_vd_attribute,
-        $attr_vd_bv,
-        $vd_map_chainkey,
-        $vd_chainval,
-);
+        'vld_group_id' => 'vd_chainval',
+        'rules' => array(
+                    $vd_cre_on,
+                    $vd_log,
+                    $vd_cre_by,
+                    $attr_vd_attributetype,
+                    $attr_vd_attribute,
+                    $attr_vd_bv,
+                    $vd_map_chainkey,
+                    $vd_chainval,
+                ),
+    );
 
 // edt attr default validation group
 $mapchain_attr_edt_validation =
     array(
-        $vd_cre_on,
-        $vd_log,
-        $vd_cre_by,
-        $attr_vd_attributetype,
-        $attr_vd_attribute,
-        $attr_vd_bv,
-        $vd_map_chainkey,
-        $vd_chainval,
-        $vd_frag_id
-);
+        'vld_group_id' => 'vd_chainval',
+        'rules' => array(
+                    $vd_cre_on,
+                    $vd_log,
+                    $vd_cre_by,
+                    $attr_vd_attributetype,
+                    $attr_vd_attribute,
+                    $attr_vd_bv,
+                    $vd_map_chainkey,
+                    $vd_chainval,
+                    $vd_frag_id
+                ),
+    );
 
 // add number default validation group
 $mapchain_number_add_validation =
     array(
-        $vd_cre_on,
-        $vd_log,
-        $vd_cre_by,
-        $number_vd_numbertype,
-        $number_vd_number,
-        $vd_map_chainkey,
-        $vd_chainval,
-);
+        'vld_group_id' => 'vd_chainval',
+        'rules' => array(
+                    $vd_cre_on,
+                    $vd_log,
+                    $vd_cre_by,
+                    $number_vd_numbertype,
+                    $number_vd_number,
+                    $vd_map_chainkey,
+                    $vd_chainval,
+                ),
+    );
+
 // edt number default validation group
 $mapchain_number_edt_validation =
     array(
-        $vd_cre_on,
-        $vd_log,
-        $vd_cre_by,
-        $number_vd_numbertype,
-        $number_vd_number,
-        $vd_map_chainkey,
-        $vd_chainval,
-        $vd_frag_id,
-);
+        'vld_group_id' => 'vd_chainval',
+        'rules' => array(
+                    $vd_cre_on,
+                    $vd_log,
+                    $vd_cre_by,
+                    $number_vd_numbertype,
+                    $number_vd_number,
+                    $vd_map_chainkey,
+                    $vd_chainval,
+                    $vd_frag_id,
+                ),
+    );
+
 $layerchain_txt_add_validation =
     array(
-        $vd_cre_on,
-        $vd_log,
-        $vd_cre_by,
-        $txt_vd_txttype,
-        $txt_vd_txt,
-        $vd_maplayer_chainkey,
-        $vd_chainval,
-        $vd_live_lang
-);
+        'vld_group_id' => 'vd_chainval',
+        'rules' => array(
+                    $vd_cre_on,
+                    $vd_log,
+                    $vd_cre_by,
+                    $txt_vd_txttype,
+                    $txt_vd_txt,
+                    $vd_maplayer_chainkey,
+                    $vd_chainval,
+                    $vd_live_lang
+                ),
+    );
+
 // edt txt default validation group
 $layerchain_txt_edt_validation =
     array(
-        $vd_cre_on,
-        $vd_log,
-        $vd_cre_by,
-        $txt_vd_txttype,
-        $txt_vd_txt,
-        $vd_maplayer_chainkey,
-        $vd_chainval,
-        $vd_frag_id,
-        $vd_live_lang
-);
+        'vld_group_id' => 'vd_chainval',
+        'rules' => array(
+                    $vd_cre_on,
+                    $vd_log,
+                    $vd_cre_by,
+                    $txt_vd_txttype,
+                    $txt_vd_txt,
+                    $vd_maplayer_chainkey,
+                    $vd_chainval,
+                    $vd_frag_id,
+                    $vd_live_lang
+                ),
+    );
+
 $layerchain_attr_add_validation =
     array(
-        $vd_cre_on,
-        $vd_log,
-        $vd_cre_by,
-        $attr_vd_attributetype,
-        $attr_vd_attribute,
-        $attr_vd_bv,
-        $vd_maplayer_chainkey,
-        $vd_chainval,
-);
+        'vld_group_id' => 'vd_chainval',
+        'rules' => array(
+                    $vd_cre_on,
+                    $vd_log,
+                    $vd_cre_by,
+                    $attr_vd_attributetype,
+                    $attr_vd_attribute,
+                    $attr_vd_bv,
+                    $vd_maplayer_chainkey,
+                    $vd_chainval,
+                ),
+    );
 
 // edt attr default validation group
 $layerchain_attr_edt_validation =
     array(
-        $vd_cre_on,
-        $vd_log,
-        $vd_cre_by,
-        $attr_vd_attributetype,
-        $attr_vd_attribute,
-        $attr_vd_bv,
-        $vd_maplayer_chainkey,
-        $vd_chainval,
-        $vd_frag_id
-);
+        'vld_group_id' => 'vd_chainval',
+        'rules' => array(
+                    $vd_cre_on,
+                    $vd_log,
+                    $vd_cre_by,
+                    $attr_vd_attributetype,
+                    $attr_vd_attribute,
+                    $attr_vd_bv,
+                    $vd_maplayer_chainkey,
+                    $vd_chainval,
+                    $vd_frag_id
+                ),
+    );
 
 // add number default validation group
 $layerchain_number_add_validation =
     array(
-        $vd_cre_on,
-        $vd_log,
-        $vd_cre_by,
-        $number_vd_numbertype,
-        $number_vd_number,
-        $vd_maplayer_chainkey,
-        $vd_chainval,
-);
+        'vld_group_id' => 'vd_chainval',
+        'rules' => array(
+                    $vd_cre_on,
+                    $vd_log,
+                    $vd_cre_by,
+                    $number_vd_numbertype,
+                    $number_vd_number,
+                    $vd_maplayer_chainkey,
+                    $vd_chainval,
+                ),
+    );
+
 // edt number default validation group
 $layerchain_number_edt_validation =
     array(
-        $vd_cre_on,
-        $vd_log,
-        $vd_cre_by,
-        $number_vd_numbertype,
-        $number_vd_number,
-        $vd_maplayer_chainkey,
-        $vd_chainval,
-        $vd_frag_id,
-);
+        'vld_group_id' => 'vd_chainval',
+        'rules' => array(
+                    $vd_cre_on,
+                    $vd_log,
+                    $vd_cre_by,
+                    $number_vd_numbertype,
+                    $number_vd_number,
+                    $vd_maplayer_chainkey,
+                    $vd_chainval,
+                    $vd_frag_id,
+                ),
+    );
+
 /** MAP Fields
  * These fields are required for a map
  */
@@ -357,7 +406,7 @@ $conf_map_layer_manager =
         'edit_state' => 'view', 
         'sf_nav_type' => 'full',
         'sf_title' => 'layermanager', 
-        'sf_html_id' => 'layermanager', // Must be unique
+        'sf_html_id' => 'map_layermanager', // Must be unique
         'script' => 'php/map/subforms/sf_layermanager.php',
         'op_class' => 'panel',
         'op_label' => 'space',
@@ -376,7 +425,7 @@ $conf_map_add_interaction =
         'edit_state' => 'view',
         'sf_nav_type' => 'full',
         'sf_title' => 'addinteraction',
-        'sf_html_id' => 'addinteraction', // Must be unique
+        'sf_html_id' => 'map_addinteraction', // Must be unique
         'script' => 'php/map/subforms/sf_mapinteraction.php',
         'interaction' => 'add',
         'op_class' => 'interaction panel',
@@ -395,7 +444,7 @@ $conf_map_modify_interaction =
         'edit_state' => 'view',
         'sf_nav_type' => 'full',
         'sf_title' => 'modifyinteraction',
-        'sf_html_id' => 'modifyinteraction', // Must be unique
+        'sf_html_id' => 'map_modifyinteraction', // Must be unique
         'script' => 'php/map/subforms/sf_mapinteraction.php',
         'interaction' => 'modify',
         'op_class' => 'interaction',
@@ -413,7 +462,7 @@ $conf_map_delete_interaction =
         'edit_state' => 'view',
         'sf_nav_type' => 'full',
         'sf_title' => 'deleteinteraction',
-        'sf_html_id' => 'deleteinteraction', // Must be unique
+        'sf_html_id' => 'map_deleteinteraction', // Must be unique
         'script' => 'php/map/subforms/sf_mapinteraction.php',
         'interaction' => 'delete',
         'op_class' => 'interaction',
@@ -431,7 +480,7 @@ $conf_map_save_interaction =
                 'edit_state' => 'view',
                 'sf_nav_type' => 'full',
                 'sf_title' => 'saveinteraction',
-                'sf_html_id' => 'saveinteraction', // Must be unique
+                'sf_html_id' => 'map_saveinteraction', // Must be unique
                 'script' => 'php/map/subforms/sf_mapinteraction.php',
                 'interaction' => 'save',
                 'op_class' => '',
@@ -451,7 +500,7 @@ $conf_map_savemap =
                 'edit_state' => 'view',
                 'sf_nav_type' => 'nmedit',
                 'sf_title' => 'savemap',
-                'sf_html_id' => 'savemap', // Must be unique
+                'sf_html_id' => 'map_savemap', // Must be unique
                 'script' => 'php/map/subforms/sf_savemap.php',
                 'op_modtype' => FALSE, //if each modtype uses same fields (see below)
                 'op_class' => 'overlay',
@@ -473,7 +522,7 @@ $conf_map_newlayer =
         'edit_state' => 'view',
         'sf_nav_type' => 'nmedit',
         'sf_title' => 'newlayer',
-        'sf_html_id' => 'newlayer', // Must be unique
+        'sf_html_id' => 'map_newlayer', // Must be unique
         'script' => 'php/map/subforms/sf_newlayer.php',
         'op_class' => 'overlay',
         'op_modtype' => FALSE, //if each modtype uses same fields (see below)
@@ -498,7 +547,7 @@ $conf_map_editlayer =
         'edit_state' => 'view',
         'sf_nav_type' => 'nmedit',
         'sf_title' => 'editlayer',
-        'sf_html_id' => 'editlayer', // Must be unique
+        'sf_html_id' => 'map_editlayer', // Must be unique
         'script' => 'php/map/subforms/sf_editlayer.php',
         'op_class' => 'overlay',
         'op_modtype' => FALSE, //if each modtype uses same fields (see below)
@@ -523,7 +572,7 @@ $conf_map_serverlayer =
             'edit_state' => 'view',
             'sf_nav_type' => 'nmedit',
             'sf_title' => 'newlayer',
-            'sf_html_id' => 'newlayer', // Must be unique
+            'sf_html_id' => 'map_newlayer', // Must be unique
             'script' => 'php/map/subforms/sf_serverlayer.php',
             'op_class' => 'overlay',
             'op_modtype' => FALSE, //if each modtype uses same fields (see below)
@@ -548,7 +597,7 @@ array(
                 'edit_state' => 'view',
                 'sf_nav_type' => 'nmedit',
                 'sf_title' => 'choosemap',
-                'sf_html_id' => 'choosemap', // Must be unique
+                'sf_html_id' => 'map_choosemap', // Must be unique
                 'script' => 'php/map/subforms/sf_choosemap.php',
                 'op_modtype' => FALSE, //if each modtype uses same fields (see below)
                 'conflict_res_sf' => 'conf_mcd_dnarecord',
@@ -577,7 +626,7 @@ $map_view_left_panel  =
 );
 $conf_mapsf_admintools =
     array(
-        'sf_html_id' => 'admintools',
+        'sf_html_id' => 'map_admintools',
         'view_state' => 'max',
         'edit_state' => 'view',
         'sf_title' => '',
@@ -598,7 +647,7 @@ $conf_mapsf_admintools =
 );
 $conf_map_admin =
 array (
-                'sf_html_id' => 'map_view',
+                'sf_html_id' => 'map_admin',
                 'view_state' => 'max',
                 'edit_state' => 'view',
                 'sf_title' => '',
@@ -621,7 +670,7 @@ array (
 $conf_sf_thematise = array(
     'sf_conf_id'=>'thematise',
     'sf_title'=>'thematise',
-    'sf_html_id'=>'thematise',
+    'sf_html_id'=>'map_thematise',
     'view_state' => 'max',
     'edit_state' => 'view',
     'op_map'=>FALSE,
@@ -639,7 +688,7 @@ $conf_map_layerswitcher =
             'view_state' => 'max',
             'edit_state' => 'view', 
             'sf_nav_type' => 'full',
-            'sf_title' => 'layerswitcher', 
+            'sf_title' => 'map_layerswitcher', 
             'sf_html_id' => 'layerswitcher', // Must be unique
             'script' => 'php/map/subforms/sf_layermanager.php',
             'op_class' => 'panel',
@@ -650,7 +699,7 @@ $conf_map_layerswitcher =
         );
 $conf_map_home =
 array (
-                'sf_html_id' => 'map_view',
+                'sf_html_id' => 'map_home',
                 'view_state' => 'max',
                 'edit_state' => 'view',
                 'sf_title' => '',
@@ -673,7 +722,7 @@ array (
 );
 $conf_mapsf_edittools =
     array(
-        'sf_html_id' => 'edittools',
+        'sf_html_id' => 'map_edittools',
         'view_state' => 'max',
         'edit_state' => 'view',
         'sf_title' => '',
@@ -692,7 +741,7 @@ $conf_mapsf_edittools =
 );
 $conf_map_edit =
     array (
-        'sf_html_id' => 'map_view',
+        'sf_html_id' => 'map_edit',
         'view_state' => 'max',
         'edit_state' => 'view',
         'sf_title' => '',
@@ -718,7 +767,7 @@ $conf_mapsf_grouptool =
         'edit_state' => 'edit',
         'sf_nav_type' => 'full',
         'sf_title' => 'addinteraction',
-        'sf_html_id' => 'addinteraction', // Must be unique
+        'sf_html_id' => 'map_grouptool', // Must be unique
         'script' => 'php/map/subforms/sf_mapgrouptool.php',
         'op_label' => 'space',
         'op_icon' => 'addinteraction.png',
@@ -733,7 +782,7 @@ $conf_mapsf_grouptool =
 
 $conf_map_group =
     array(
-        'sf_html_id' => 'mapgroup_view',
+        'sf_html_id' => 'map_group_view',
         'view_state' => 'max',
         'edit_state' => 'view',
         'sf_title' => '',

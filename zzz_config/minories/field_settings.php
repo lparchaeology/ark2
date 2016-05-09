@@ -53,6 +53,7 @@ include('vd_settings.php');
 
 $vd_txtchainkey =
     array(
+        'vld_rule_id' => 'vd_txtchainkey',
         'rq_func' => 'reqManual',
         'vd_func' => 'chkSet',
         'var_name' => 'itemkey',
@@ -60,62 +61,76 @@ $vd_txtchainkey =
 );
 $vd_chainval =
     array(
+        'vld_rule_id' => 'vd_chainval',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkSet',
         'var_name' => 'itemval',
         'lv_name' => 'interp_id',
         'var_locn' => 'request'
-);
+    );
 
 $custom_action_add_vd =
     array(
-        $vd_cre_on,
-        $vd_cre_by,
-        $action_vd_actor_itemkey,
-        $action_vd_5,
-        $action_vd_valid,
-        $action_vd_6,
-        $vd_txtchainkey,
-        $vd_chainval
-);
+        'vld_group_id' => 'vd_chainval',
+        'rules' => array(
+                    $vd_cre_on,
+                    $vd_cre_by,
+                    $action_vd_actor_itemkey,
+                    $action_vd_5,
+                    $action_vd_valid,
+                    $action_vd_6,
+                    $vd_txtchainkey,
+                    $vd_chainval,
+                ),
+    );
 
 $custom_action_edt_vd =
     array(
-        $vd_cre_on,
-        $vd_cre_by,
-        $action_vd_actor_itemkey,
-        $action_vd_5,
-        $action_vd_valid,
-        $action_vd_6,
-        $vd_txtchainkey,
-        $vd_frag_id,
-        $vd_chainval
-);
+        'vld_group_id' => 'vd_chainval',
+        'rules' => array(
+                    $vd_cre_on,
+                    $vd_cre_by,
+                    $action_vd_actor_itemkey,
+                    $action_vd_5,
+                    $action_vd_valid,
+                    $action_vd_6,
+                    $vd_txtchainkey,
+                    $vd_frag_id,
+                    $vd_chainval
+                ),
+    );
 
 $custom_date_add_vd =
     array(
-        $vd_cre_on,
-        $vd_cre_by,
-        $date_vd_datetype,
-        $date_vd_date,
-        $date_vd_dateset,
-        $vd_txtchainkey,
-        $vd_chainval
-);
+        'vld_group_id' => 'vd_chainval',
+        'rules' => array(
+                    $vd_cre_on,
+                    $vd_cre_by,
+                    $date_vd_datetype,
+                    $date_vd_date,
+                    $date_vd_dateset,
+                    $vd_txtchainkey,
+                    $vd_chainval
+                ),
+    );
 
 $custom_date_edt_vd =
     array(
-        $vd_cre_on,
-        $vd_cre_by,
-        $date_vd_datetype,
-        $date_vd_date,
-        $vd_txtchainkey,
-        $vd_frag_id,
-        $vd_chainval
-);
+        'vld_group_id' => 'vd_chainval',
+        'rules' => array(
+                    $vd_cre_on,
+                    $vd_cre_by,
+                    $date_vd_datetype,
+                    $date_vd_date,
+                    $vd_txtchainkey,
+                    $vd_frag_id,
+                    $vd_chainval
+                ),
+    );
 
 $vd_attrchainkey =
 array(
+        'vld_rule_id' => 'vd_attrchainkey',
                 'rq_func' => 'reqManual',
                 'vd_func' => 'chkSet',
                 'var_name' => 'itemkey',
@@ -123,6 +138,7 @@ array(
 );
 $vd_attrchainval =
     array(
+        'vld_rule_id' => 'vd_attrchainval',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkSet',
         'var_name' => 'itemval',
@@ -132,81 +148,104 @@ $vd_attrchainval =
 
 // add number chain2attribute validation group
 $chain_number_add_validation =
-array(
-                $vd_cre_on,
-                $vd_log,
-                $vd_ste_cd,
-                $vd_cre_by,
-                $number_vd_numbertype,
-                $number_vd_number,
-                $vd_attrchainkey,
-                $vd_attrchainval,
-);
+    array(
+        'vld_group_id' => 'vd_chainval',
+        'rules' => array(
+                    $vd_cre_on,
+                    $vd_log,
+                    $vd_ste_cd,
+                    $vd_cre_by,
+                    $number_vd_numbertype,
+                    $number_vd_number,
+                    $vd_attrchainkey,
+                    $vd_attrchainval,
+                ),
+    );
+
 // edt number default validation group
 $chain_number_edt_validation =
-array(
-                $vd_cre_on,
-                $vd_log,
-                $vd_ste_cd,
-                $vd_cre_by,
-                $number_vd_numbertype,
-                $number_vd_number,
-                $vd_attrchainkey,
-                $vd_chainval,
-                $vd_attrchainval,
-);
+    array(
+        'vld_group_id' => 'vd_chainval',
+        'rules' => array(
+                    $vd_cre_on,
+                    $vd_log,
+                    $vd_ste_cd,
+                    $vd_cre_by,
+                    $number_vd_numbertype,
+                    $number_vd_number,
+                    $vd_attrchainkey,
+                    $vd_chainval,
+                    $vd_attrchainval,
+                ),
+    );
+
 // add txt default validation group
 $chain_txt_add_validation =
     array(
-        $vd_cre_on,
-        $vd_log,
-        $vd_ste_cd,
-        $vd_cre_by,
-        $txt_vd_txttype,
-        $txt_vd_txt,
-        $vd_attrchainkey,
-        $vd_chainval,
-        $vd_live_lang
-);
+        'vld_group_id' => 'vd_chainval',
+        'rules' => array(
+                    $vd_cre_on,
+                    $vd_log,
+                    $vd_ste_cd,
+                    $vd_cre_by,
+                    $txt_vd_txttype,
+                    $txt_vd_txt,
+                    $vd_attrchainkey,
+                    $vd_chainval,
+                    $vd_live_lang
+                ),
+    );
+
 // edt txt default validation group
 $chain_txt_edt_validation =
     array(
-        $vd_cre_on,
-        $vd_log,
-        $vd_ste_cd,
-        $vd_cre_by,
-        $txt_vd_txttype,
-        $txt_vd_txt,
-        $vd_attrchainkey,
-        $vd_chainval,
-        $vd_frag_id,
-        $vd_live_lang
-);
+        'vld_group_id' => 'vd_chainval',
+        'rules' => array(
+                    $vd_cre_on,
+                    $vd_log,
+                    $vd_ste_cd,
+                    $vd_cre_by,
+                    $txt_vd_txttype,
+                    $txt_vd_txt,
+                    $vd_attrchainkey,
+                    $vd_chainval,
+                    $vd_frag_id,
+                    $vd_live_lang
+                ),
+    );
+
 // add xmi default validation group
 $chain_xmi_add_validation =
-array(
-                $vd_attrchainkey,
-                $vd_chainval,
-                $xmi_vd_xmi_itemkey,
-                $xmi_vd_xmi_itemlist,
-                $vd_log,
-                $vd_ste_cd,
-                $vd_cre_on,
-                $vd_cre_by
-);
+    array(
+        'vld_group_id' => 'vd_chainval',
+        'rules' => array(
+                    $vd_attrchainkey,
+                    $vd_chainval,
+                    $xmi_vd_xmi_itemkey,
+                    $xmi_vd_xmi_itemlist,
+                    $vd_log,
+                    $vd_ste_cd,
+                    $vd_cre_on,
+                    $vd_cre_by
+                ),
+    );
 
 // edt xmi default validation group
 $chain_xmi_edt_validation =
-array(
-                $vd_attrchainkey,
-                $vd_chainval,
-                $xmi_vd_xmi_itemkey,
-                $xmi_vd_xmi_itemlist,
-                $vd_log,
-                $vd_ste_cd,
-                $vd_cre_on,
-                $vd_cre_by
-);
+    array(
+        'vld_group_id' => 'vd_chainval',
+        'rules' => array(
+                    $vd_attrchainkey,
+                    $vd_chainval,
+                    $xmi_vd_xmi_itemkey,
+                    $xmi_vd_xmi_itemlist,
+                    $vd_log,
+                    $vd_ste_cd,
+                    $vd_cre_on,
+                    $vd_cre_by
+                    ),
+    );
+
 /**
 *
 * FIELDS
@@ -2815,6 +2854,7 @@ $conf_field_grpdatingnarrativeon =
 
 $conf_event_compiled = 
     array(
+        'event_id' => 'conf_event_compiled',
         'type' => 'compiled',
         'date' => $conf_field_compiledon,
         'action' => $conf_field_compiledby
@@ -2822,6 +2862,7 @@ $conf_event_compiled =
 
 $conf_event_taken = 
     array(
+        'event_id' => 'conf_event_taken',
         'type' => 'taken',
         'date' => $conf_field_takenon,
         'action' => $conf_field_takenby
@@ -2829,6 +2870,7 @@ $conf_event_taken =
 
 $conf_event_drawn = 
     array(
+        'event_id' => 'conf_event_drawn',
         'type' => 'drawn',
         'date' => $conf_field_drawnon,
         'action' => $conf_field_drawnby
@@ -2836,6 +2878,7 @@ $conf_event_drawn =
 
 $conf_event_checked = 
     array(
+        'event_id' => 'conf_event_checked',
         'type' => 'checked',
         'date' => $conf_field_checkedby,
         'action' => FALSE
@@ -2843,6 +2886,7 @@ $conf_event_checked =
 
 $conf_event_issued = 
     array(
+        'event_id' => 'conf_event_issued',
         'type' => 'issued',
         'date' => $conf_field_issuedon,
         'action' => $conf_field_issuedto
@@ -2910,6 +2954,7 @@ $conf_reg_op =
 );
 $conf_reg_op_no_qed = 
     array(
+        'field_id' => 'conf_reg_op_no_qed',
         'dataclass' => 'op',
         'classtype' => 'none',
         'options' => 'view,enter',
@@ -2945,6 +2990,7 @@ $conf_reg_op_no_enter =
 
 $conf_field_delete = 
     array(
+        'field_id' => 'conf_field_delete',
         'dataclass' => 'delete',
         'classtype' => 'delete',
         'editable' => TRUE,

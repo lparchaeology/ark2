@@ -231,7 +231,7 @@ $conf_mcd_rgfdispchars =
         'edit_state' => 'view',
         'sf_nav_type' => 'nmedit',
         'sf_title' => 'rgfdispchars', //appears in the titlebar of the subform (mk nname)
-        'sf_html_id' => 'rgfdispchars', //the form id tag (must be unique)
+        'sf_html_id' => 'rgf_dispchars', //the form id tag (must be unique)
         'script' => 'php/subforms/sf_attr_bytype.php',
         'op_label' => 'space',
         'op_input' => 'save',
@@ -269,7 +269,7 @@ $conf_mcd_share =
 	        'edit_state' => 'view',
 	        'sf_nav_type' => 'name',
 	        'sf_title' => 'share', //appears in the titlebar of the subform (mk nname)
-	        'sf_html_id' => 'share_buttons', //the form id tag (must be unique)
+	        'sf_html_id' => 'rgf_share_buttons', //the form id tag (must be unique)
 	        'script' => 'php/subforms/sf_socialshare.php',
 	        'fields' =>
 	        array(

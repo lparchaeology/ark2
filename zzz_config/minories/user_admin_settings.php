@@ -61,7 +61,7 @@ array(
                 'script' => 'php/subforms/sf_linklist.php',
                 'op_sf_cssclass' => 'menulnk',
                 //type uses same fields (see below)
-                'fields' => $link_list_useradmin
+                'links' => $link_list_useradmin
 );
 
 $user_admin_left_panel =
@@ -80,6 +80,7 @@ $user_admin_left_panel =
 
 $conf_sf_userdetails=
     array(
+        'sf_html_id' => 'user_details', // Must be unique
         'sf_nav_type' => 'name',
         'view_state' => 'max',
         'edit_state' => 'edit',
@@ -98,7 +99,7 @@ array(
                 'view_state' => 'max',
                 'edit_state' => 'view',
                 'sf_title' => 'info',
-                'sf_html_id' => 'abk_info', // Must be unique
+                'sf_html_id' => 'user_info', // Must be unique
                 'script' => 'php/subforms/sf_txt.php',
                 'sf_nav_type' => 'name',
                 'op_label' => 'space',
@@ -112,6 +113,7 @@ array(
 );
 $conf_sf_password=
     array(
+        'sf_html_id' => 'user_password', // Must be unique
         'sf_nav_type' => 'name',
         'view_state' => 'max',
         'edit_state' => 'edit',
@@ -125,6 +127,7 @@ $conf_sf_password=
 
 $conf_sf_sgrp=
     array(
+        'sf_html_id' => 'user_sgrp', // Must be unique
         'sf_nav_type' => 'name',
         'view_state' => 'max',
         'edit_state' => 'edit',

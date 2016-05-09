@@ -57,6 +57,7 @@
 // cre_on - request and chkSet
 $vd_cre_on =
     array(
+        'vld_rule_id' => 'vd_cre_on',
         'rq_func' => 'reqManual',
         'vd_func' => 'chkSet',
         'var_name' => 'cre_on',
@@ -65,15 +66,18 @@ $vd_cre_on =
 // log - request and chkSet
 $vd_log =
     array(
+        'vld_rule_id' => 'vd_log',
         'rq_func' => 'reqManual',
         'vd_func' => 'chkSet',
         'var_name' => 'log',
-        'force_var' => $conf_log_add
+        'lv_name' => 'log_ins',
+        'var_locn' => 'live'
 );
 // 2 - Session/Live stuff
 // cre_by - request and chkSet
 $vd_cre_by = 
     array(
+        'vld_rule_id' => 'vd_cre_by',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkSet',
         'var_name' => 'cre_by',
@@ -83,6 +87,7 @@ $vd_cre_by =
 // lang - request and chkSet
 $vd_live_lang = 
     array(
+        'vld_rule_id' => 'vd_live_lang',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkSet',
         'var_name' => 'lang',
@@ -90,11 +95,19 @@ $vd_live_lang =
         'var_locn' => 'live'
 );
 // ste_cd - request and chkSet
-$vd_ste_cd = array('rq_func' => 'reqMulti', 'vd_func' => 'chkSet', 'var_name' => 'ste_cd', 'lv_name' => 'ste_cd', 'var_locn' => 'session');
+$vd_ste_cd = array(
+        'vld_rule_id' => 'vd_ste_cd',
+        'rq_func' => 'reqMulti',
+        'vd_func' => 'chkSet',
+        'var_name' => 'ste_cd',
+        'lv_name' => 'ste_cd',
+        'var_locn' => 'session'
+);
 // 3 - Forms
 // itemkey - request and chkSet
 $vd_key =
     array(
+        'vld_rule_id' => 'vd_key',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkSet',
         'var_name' => 'itemkey',
@@ -105,6 +118,7 @@ $vd_key =
 // frag_id - request and chkSet - needed on most edit routines
 $vd_frag_id =
     array(
+        'vld_rule_id' => 'vd_frag_id',
         'rq_func' => 'reqFragId',
         'vd_func' => 'chkSet',
         'var_name' => 'frag_id',
@@ -122,6 +136,7 @@ $vd_frag_id =
 // mod_short - request and chkSet
 $key_vd_mod_short =
     array(
+        'vld_rule_id' => 'key_vd_mod_short',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkSet',
         'var_name' => 'mod_short',
@@ -131,6 +146,7 @@ $key_vd_mod_short =
 // itemkey - request and chkSet
 $key_vd_mod_short =
     array(
+        'vld_rule_id' => 'key_vd_mod_short',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkSet',
         'var_name' => 'itemkey',
@@ -141,6 +157,7 @@ $key_vd_mod_short =
 // modtype - request and chkSet
 $key_vd_modtype =
     array(
+        'vld_rule_id' => 'key_vd_modtype',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkSet',
         'var_name' => 'modtype',
@@ -151,6 +168,7 @@ $key_vd_modtype =
 // itemval - request and chkSet
 $key_vd_itemval_a =
     array(
+        'vld_rule_id' => 'key_vd_itemval_a',
         'rq_func' => 'reqItemVal',
         'vd_func' => 'chkSet',
         'var_name' => 'itemval',
@@ -162,6 +180,7 @@ $key_vd_itemval_a =
 // itemval - request and chkDuplicate
 $key_vd_itemval_b =
     array(
+        'vld_rule_id' => 'key_vd_itemval_b',
         'rq_func' => 'reqItemVal',
         'vd_func' => 'chkDuplicate',
         'var_name' => 'itemval',
@@ -173,6 +192,7 @@ $key_vd_itemval_b =
 // mod_no_val - request and chkSet
 $key_vd_mod_no_val_a =
     array(
+        'vld_rule_id' => 'key_vd_mod_no_val_a',
         'rq_func' => 'reqItemVal',
         'vd_func' => 'chkSet',
         'var_name' => 'mod_no_val',
@@ -184,6 +204,7 @@ $key_vd_mod_no_val_a =
 // mod_no_val - request and chkNumeric
 $key_vd_mod_no_val_b =
     array(
+        'vld_rule_id' => 'key_vd_mod_no_val_b',
         'rq_func' => 'reqItemVal',
         'vd_func' => 'chkNumeric',
         'var_name' => 'mod_no_val',
@@ -196,6 +217,8 @@ $key_vd_mod_no_val_b =
 // add ItemKey default validation group
 $key_add_validation =
     array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
         $vd_ste_cd,
         $key_vd_mod_short,
         $key_vd_itemval_a,
@@ -204,9 +227,12 @@ $key_add_validation =
         $key_vd_mod_no_val_b,
         $vd_cre_by,
         $vd_cre_on
+        ),
 );
 $key_add_validation_loose =
     array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
         $vd_ste_cd,
         $key_vd_mod_short,
         $key_vd_itemval_a,
@@ -215,11 +241,14 @@ $key_add_validation_loose =
         //$key_vd_mod_no_val_b,
         $vd_cre_by,
         $vd_cre_on
+        ),
 );
 
 // edt ItemKey default validation group
 $key_edt_validation =
     array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
         $vd_ste_cd,
         $key_vd_mod_short,
         $key_vd_itemval_a,
@@ -227,26 +256,33 @@ $key_edt_validation =
         $vd_cre_by,
         $vd_cre_on,
         $vd_log
+        ),
 );
 
 //modType
 $modtype_add_validation = 
     array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
         $key_vd_modtype,
         $key_vd_mod_short,
         $key_vd_itemval_a,
         $vd_cre_by,
         $vd_cre_on
+        ),
 );
 
 $modtype_edt_validation = 
     array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
         $key_vd_modtype,
         $key_vd_modtype,
         $key_vd_mod_short,
         $key_vd_itemval_a,
         $vd_cre_by,
         $vd_cre_on
+        ),
 );
 
 // edtTxt()
@@ -259,6 +295,7 @@ $modtype_edt_validation =
 // txttype - request and chkSet
 $txt_vd_txttype =
     array(
+        'vld_rule_id' => 'txt_vd_txttype',
         'rq_func' => 'reqClassType',
         'vd_func' => 'chkSet',
         'var_name' => 'txttype',
@@ -268,6 +305,7 @@ $txt_vd_txttype =
 // txt - request and chkSet
 $txt_vd_txt =
     array(
+        'vld_rule_id' => 'txt_vd_txt',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkSkipBlankAndDup',
         'var_name' => 'txt',
@@ -277,6 +315,7 @@ $txt_vd_txt =
 // txt - request and chkSet
 $txt_vd_requiredtxt =
     array(
+        'vld_rule_id' => 'txt_vd_requiredtxt',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkSet',
         'var_name' => 'txt',
@@ -287,6 +326,7 @@ $txt_vd_requiredtxt =
 // itemkey - request and chkSet
 $txt_vd_key =
     array(
+        'vld_rule_id' => 'txt_vd_key',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkSet',
         'var_name' => 'itemkey',
@@ -296,6 +336,7 @@ $txt_vd_key =
 // itemval - request and chkSet
 $txt_vd_val =
     array(
+        'vld_rule_id' => 'txt_vd_val',
         'rq_func' => 'reqItemVal',
         'vd_func' => 'chkSet',
         'var_name' => 'itemval',
@@ -307,6 +348,8 @@ $txt_vd_val =
 // add txt default validation group
 $txt_add_validation =
     array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
         $vd_cre_on,
         $vd_log,
         $vd_ste_cd,
@@ -316,10 +359,13 @@ $txt_add_validation =
         $txt_vd_key,
         $txt_vd_val,
         $vd_live_lang
+        ),
 );
 // edt txt default validation group
 $txt_edt_validation =
     array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
         $vd_cre_on,
         $vd_log,
         $vd_ste_cd,
@@ -330,6 +376,7 @@ $txt_edt_validation =
         $txt_vd_val,
         $vd_frag_id,
         $vd_live_lang
+        ),
 );
 
 // edtNumber()
@@ -342,6 +389,7 @@ $txt_edt_validation =
 // numbertype - request and chkSet
 $number_vd_numbertype =
     array(
+        'vld_rule_id' => 'number_vd_numbertype',
         'rq_func' => 'reqClassType',
         'vd_func' => 'chkSet',
         'var_name' => 'numbertype',
@@ -351,6 +399,7 @@ $number_vd_numbertype =
 // number - request and chkSet
 $number_vd_number =
     array(
+        'vld_rule_id' => 'number_vd_number',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkSet',
         'var_name' => 'number',
@@ -361,6 +410,7 @@ $number_vd_number =
 // itemkey - request and chkSet
 $number_vd_key =
     array(
+        'vld_rule_id' => 'number_vd_key',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkSet',
         'var_name' => 'itemkey',
@@ -370,6 +420,7 @@ $number_vd_key =
 // itemval - request and chkSet
 $number_vd_val =
     array(
+        'vld_rule_id' => 'number_vd_val',
         'rq_func' => 'reqItemVal',
         'vd_func' => 'chkSet',
         'var_name' => 'itemval',
@@ -381,6 +432,8 @@ $number_vd_val =
 // add number default validation group
 $number_add_validation =
     array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
         $vd_cre_on,
         $vd_log,
         $vd_ste_cd,
@@ -389,10 +442,13 @@ $number_add_validation =
         $number_vd_number,
         $number_vd_key,
         $number_vd_val,
+        ),
 );
 // edt number default validation group
 $number_edt_validation =
     array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
         $vd_cre_on,
         $vd_log,
         $vd_ste_cd,
@@ -402,6 +458,7 @@ $number_edt_validation =
         $number_vd_key,
         $number_vd_val,
         $vd_frag_id,
+        ),
 );
 
 
@@ -415,6 +472,7 @@ $number_edt_validation =
 // datetype - request and chkSet
 $date_vd_datetype =
     array(
+        'vld_rule_id' => 'date_vd_datetype',
         'rq_func' => 'reqClassType',
         'vd_func' => 'chkSet',
         'var_name' => 'datetype',
@@ -424,6 +482,7 @@ $date_vd_datetype =
 // date - request and chkDate
 $date_vd_date =
     array(
+        'vld_rule_id' => 'date_vd_date',
         'rq_func' => 'reqDate',
         'vd_func' => 'chkDate',
         'var_name' => 'date',
@@ -433,6 +492,7 @@ $date_vd_date =
 // date - request and chkSet
 $date_vd_dateset =
     array(
+        'vld_rule_id' => 'date_vd_dateset',
         'rq_func' => 'reqDate',
         'vd_func' => 'chkDateSet',
         'var_name' => 'date',
@@ -443,6 +503,7 @@ $date_vd_dateset =
 // itemkey - request and chkSet
 $date_vd_key =
     array(
+        'vld_rule_id' => 'date_vd_key',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkSet',
         'var_name' => 'itemkey',
@@ -452,6 +513,7 @@ $date_vd_key =
 // itemval - request and chkSet
 $date_vd_val =
     array(
+        'vld_rule_id' => 'date_vd_val',
         'rq_func' => 'reqItemVal',
         'vd_func' => 'chkSet',
         'var_name' => 'itemval',
@@ -464,6 +526,8 @@ $date_vd_val =
 // add date default validation group
 $date_add_validation =
     array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
         $vd_cre_on,
         $vd_cre_by,
         $date_vd_datetype,
@@ -471,11 +535,14 @@ $date_add_validation =
         $date_vd_dateset,
         $date_vd_key,
         $date_vd_val
+        ),
 );
 
 // edt date default validation group
 $date_edt_validation =
     array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
         $vd_cre_on,
         $vd_log,
         $vd_ste_cd,
@@ -485,6 +552,7 @@ $date_edt_validation =
         $date_vd_key,
         $vd_frag_id,
         $date_vd_val
+        ),
 );
 
 
@@ -498,6 +566,7 @@ $date_edt_validation =
 // actiontype - request and chkSet
 $action_vd_5 =
     array(
+        'vld_rule_id' => 'action_vd_5',
         'rq_func' => 'reqClassType',
         'vd_func' => 'chkSet',
         'var_name' => 'actiontype',
@@ -507,6 +576,7 @@ $action_vd_5 =
 // actor itemkey
 $action_vd_actor_itemkey =
     array(
+        'vld_rule_id' => 'action_vd_actor_itemkey',
         'rq_func' => 'reqManual',
         'vd_func' => 'chkSet',
         'var_name' => 'actor_itemkey',
@@ -515,6 +585,7 @@ $action_vd_actor_itemkey =
 // actor - request and chkSet
 $action_vd_6 =
     array(
+        'vld_rule_id' => 'action_vd_6',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkSet',
         'var_name' => 'actor',
@@ -524,6 +595,7 @@ $action_vd_6 =
 // actor - request and chkSet
 $action_vd_valid =
     array(
+        'vld_rule_id' => 'action_vd_valid',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkAbk',
         'var_name' => 'actor',
@@ -533,6 +605,7 @@ $action_vd_valid =
 //    compound form vars
 $action_vd_7 =
     array(
+        'vld_rule_id' => 'action_vd_7',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkSet',
         'var_name' => 'itemkey',
@@ -541,6 +614,7 @@ $action_vd_7 =
 );
 $action_vd_8 =
     array(
+        'vld_rule_id' => 'action_vd_8',
         'rq_func' => 'reqItemVal',
         'vd_func' => 'chkSet',
         'var_name' => 'itemval',
@@ -552,6 +626,8 @@ $action_vd_8 =
 // add action default validation group
 $action_add_validation =
     array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
         $vd_cre_on,
         $vd_log,
         $vd_ste_cd,
@@ -562,10 +638,13 @@ $action_add_validation =
         $action_vd_6,
         $action_vd_7,
         $action_vd_8
+        ),
 );
 // edt action default validation group
 $action_edt_validation =
     array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
         $vd_cre_on,
         $vd_log,
         $vd_ste_cd,
@@ -577,6 +656,7 @@ $action_edt_validation =
         $action_vd_7,
         $vd_frag_id,
         $action_vd_8
+        ),
 );
 
 // edtAttr()
@@ -588,6 +668,7 @@ $action_edt_validation =
 // attributetype - request and chkSet
 $attr_vd_attributetype =
     array(
+        'vld_rule_id' => 'attr_vd_attributetype',
         'rq_func' => 'reqClassType',
         'vd_func' => 'chkSet',
         'var_name' => 'attributetype',
@@ -597,6 +678,7 @@ $attr_vd_attributetype =
 // attr - request and chkSet
 $attr_vd_attribute =
     array(
+        'vld_rule_id' => 'attr_vd_attribute',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkSet',
         'var_name' => 'attribute',
@@ -606,6 +688,7 @@ $attr_vd_attribute =
 // bv - request and chkSet
 $attr_vd_bv =
     array(
+        'vld_rule_id' => 'attr_vd_bv',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkSet',
         'var_name' => 'bv',
@@ -616,6 +699,7 @@ $attr_vd_bv =
 // itemkey - request and chkSet
 $attr_vd_key =
     array(
+        'vld_rule_id' => 'attr_vd_key',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkSet',
         'var_name' => 'itemkey',
@@ -625,6 +709,7 @@ $attr_vd_key =
 // itemval - request and chkSet
 $attr_vd_val =
     array(
+        'vld_rule_id' => 'attr_vd_val',
         'rq_func' => 'reqItemVal',
         'vd_func' => 'chkSet',
         'var_name' => 'itemval',
@@ -636,6 +721,8 @@ $attr_vd_val =
 // add attr default validation group
 $attr_add_validation =
     array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
         $vd_cre_on,
         $vd_log,
         $vd_ste_cd,
@@ -645,10 +732,13 @@ $attr_add_validation =
         $attr_vd_bv,
         $attr_vd_key,
         $attr_vd_val
+        ),
 );
 // edt attr default validation group
 $attr_edt_validation =
     array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
         $vd_cre_on,
         $vd_log,
         $vd_ste_cd,
@@ -659,6 +749,7 @@ $attr_edt_validation =
         $attr_vd_key,
         $attr_vd_val,
         $vd_frag_id
+        ),
 );
 
 // edtSpan()
@@ -670,6 +761,7 @@ $attr_edt_validation =
 // spantype - request and chkSet
 $span_vd_spantype =
     array(
+        'vld_rule_id' => 'span_vd_spantype',
         'rq_func' => 'reqClassType',
         'vd_func' => 'chkSet',
         'var_name' => 'spantype',
@@ -679,6 +771,7 @@ $span_vd_spantype =
 // daterange_beg - request and chkSet
 $span_vd_dr_beg =
     array(
+        'vld_rule_id' => 'span_vd_dr_beg',
         'rq_func' => 'reqDateRange',
         'vd_func' => 'chkSet',
         'var_name' => 'beg',
@@ -688,6 +781,7 @@ $span_vd_dr_beg =
 // daterange end - request and chkSet
 $span_vd_dr_end =
     array(
+        'vld_rule_id' => 'span_vd_dr_end',
         'rq_func' => 'reqDateRange',
         'vd_func' => 'chkSet',
         'var_name' => 'end',
@@ -698,6 +792,7 @@ $span_vd_dr_end =
 // itemkey - request and chkSet
 $span_vd_key =
     array(
+        'vld_rule_id' => 'span_vd_key',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkSet',
         'var_name' => 'itemkey',
@@ -707,6 +802,7 @@ $span_vd_key =
 // itemval - request and chkSet
 $span_vd_val =
     array(
+        'vld_rule_id' => 'span_vd_val',
         'rq_func' => 'reqItemVal',
         'vd_func' => 'chkSet',
         'var_name' => 'itemval',
@@ -718,6 +814,8 @@ $span_vd_val =
 // add span default validation group
 $span_add_validation =
     array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
         $vd_cre_on,
         $vd_log,
         $vd_cre_by,
@@ -726,10 +824,13 @@ $span_add_validation =
         $span_vd_dr_end,
         $span_vd_key,
         $span_vd_val
+        ),
 );
 // edt span default validation group
 $span_edt_validation =
     array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
         $vd_cre_on,
         $vd_log,
         $vd_ste_cd,
@@ -738,6 +839,7 @@ $span_edt_validation =
         $span_vd_dr_beg,
         $span_vd_dr_end,
         $vd_frag_id
+        ),
 );
 
 // edtXmi()
@@ -749,6 +851,7 @@ $span_edt_validation =
 
 $xmi_vd_itemkey =
     array(
+        'vld_rule_id' => 'xmi_vd_itemkey',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkSet',
         'var_name' => 'itemkey',
@@ -757,6 +860,7 @@ $xmi_vd_itemkey =
 );
 $xmi_vd_itemval =
     array(
+        'vld_rule_id' => 'xmi_vd_itemval',
         'rq_func' => 'reqItemVal',
         'vd_func' => 'chkSet',
         'var_name' => 'itemval',
@@ -768,6 +872,7 @@ $xmi_vd_itemval =
 
 $xmi_vd_xmi_itemkey =
     array(
+        'vld_rule_id' => 'xmi_vd_xmi_itemkey',
         'rq_func' => 'reqField',
         'vd_func' => 'chkSet',
         'var_name' => 'xmi_itemkey',
@@ -776,6 +881,7 @@ $xmi_vd_xmi_itemkey =
 
 $xmi_vd_xmi_itemlist =
     array(
+        'vld_rule_id' => 'xmi_vd_xmi_itemlist',
         'rq_func' => 'reqItemList',
         'vd_func' => 'chkItemListAllowBlank',
         'var_name' => 'xmi_list',
@@ -787,6 +893,7 @@ $xmi_vd_xmi_itemlist =
 
 $vd_sgr =
     array(
+        'vld_rule_id' => 'vd_sgr',
         'rq_func' => 'reqItemList',
         'vd_func' => 'chkSgrList',
         'var_name' => 'xmi_list',
@@ -798,6 +905,7 @@ $vd_sgr =
 
 $vd_cxtsgr =
     array(
+        'vld_rule_id' => 'vd_cxtsgr',
         'rq_func' => 'reqItemList',
         'vd_func' => 'chkCxtSgrList',
         'var_name' => 'xmi_list',
@@ -811,6 +919,8 @@ $vd_cxtsgr =
 // add xmi default validation group
 $xmi_add_validation =
     array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
         $xmi_vd_itemkey,
         $xmi_vd_itemval,
         $xmi_vd_xmi_itemkey,
@@ -819,10 +929,13 @@ $xmi_add_validation =
         $vd_ste_cd,
         $vd_cre_on,
         $vd_cre_by
+        ),
 );
 
 $sgr_add_validation =
 array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
                 $xmi_vd_itemkey,
                 $xmi_vd_itemval,
                 $xmi_vd_xmi_itemkey,
@@ -831,9 +944,12 @@ array(
                 $vd_ste_cd,
                 $vd_cre_on,
                 $vd_cre_by
+        ),
 );
 $cxtsgr_add_validation =
 array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
                 $xmi_vd_itemkey,
                 $xmi_vd_itemval,
                 $xmi_vd_xmi_itemkey,
@@ -842,10 +958,13 @@ array(
                 $vd_ste_cd,
                 $vd_cre_on,
                 $vd_cre_by
+        ),
 );
 // edt xmi default validation group
 $xmi_edt_validation =
     array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
         $xmi_vd_itemkey,
         $xmi_vd_itemval,
         $xmi_vd_xmi_itemkey,
@@ -854,6 +973,7 @@ $xmi_edt_validation =
         $vd_ste_cd,
         $vd_cre_on,
         $vd_cre_by
+        ),
 );
 
 // DELETIONS
@@ -865,6 +985,7 @@ $xmi_edt_validation =
 
 $del_vd_frag_id =
     array(
+        'vld_rule_id' => 'del_vd_frag_id',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkSet',
         'var_name' => 'frag_id',
@@ -873,6 +994,7 @@ $del_vd_frag_id =
 );
 $del_vd_frag_id_2 =
     array(
+        'vld_rule_id' => 'del_vd_frag_id_2',
         'rq_func' => 'reqMulti',
         'vd_func' => 'chkChDown',
         'var_name' => 'frag_id',
@@ -882,16 +1004,20 @@ $del_vd_frag_id_2 =
 // add xmi default validation group
 $del_validation =
     array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
         $del_vd_frag_id,
         $del_vd_frag_id_2,
         $vd_cre_on,
         $vd_cre_by
+        ),
 );
 
 //for file uploads
 // file - request and chkSet
  $file_vd_file =
    array(
+        'vld_rule_id' => 'file_vd_file',
        'rq_func' => 'reqMulti',
        'vd_func' => 'chkSkipBlank',
        'var_name' => 'file',
@@ -901,6 +1027,7 @@ $del_validation =
  // file - request and chkSet
  $file_vd_requiredfile =
    array(
+        'vld_rule_id' => 'file_vd_requiredfile',
        'rq_func' => 'reqMulti',
        'vd_func' => 'chkSet',
        'var_name' => 'file',
@@ -911,6 +1038,7 @@ $del_validation =
  // itemkey - request and chkSet
  $file_vd_key =
    array(
+        'vld_rule_id' => 'file_vd_key',
        'rq_func' => 'reqMulti',
        'vd_func' => 'chkSet',
        'var_name' => 'itemkey',
@@ -920,6 +1048,7 @@ $del_validation =
  // file - request and chkSet
  $file_vd_val =
    array(
+        'vld_rule_id' => 'file_vd_val',
        'rq_func' => 'reqItemVal',
        'vd_func' => 'chkSet',
        'var_name' => 'itemval',
@@ -931,6 +1060,8 @@ $del_validation =
  // add file default validation group
  $file_add_validation =
    array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
        $vd_cre_on,
        $vd_log,
        $vd_ste_cd,
@@ -938,10 +1069,13 @@ $del_validation =
        $file_vd_file,
        $file_vd_key,
        $file_vd_val,
+        ),
  );
  // edt file default validation group
  $file_edt_validation =
    array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
        $vd_cre_on,
        $vd_log,
        $vd_ste_cd,
@@ -950,10 +1084,12 @@ $del_validation =
        $file_vd_key,
        $file_vd_val,
      //  $vd_frag_id,
+        ),
  );
 
  $vd_txtchainkey =
      array(
+        'vld_rule_id' => 'vd_txtchainkey',
          'rq_func' => 'reqManual',
          'vd_func' => 'chkSet',
          'var_name' => 'itemkey',
@@ -961,6 +1097,7 @@ $del_validation =
  );
  $vd_chainval =
      array(
+        'vld_rule_id' => 'vd_chainval',
          'rq_func' => 'reqMulti',
          'vd_func' => 'chkSet',
          'var_name' => 'itemval',
@@ -970,6 +1107,8 @@ $del_validation =
 
  $custom_action_add_vd =
      array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
          $vd_cre_on,
          $vd_cre_by,
          $action_vd_actor_itemkey,
@@ -978,10 +1117,13 @@ $del_validation =
          $action_vd_6,
          $vd_txtchainkey,
          $vd_chainval
+        ),
  );
 
  $custom_action_edt_vd =
      array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
          $vd_cre_on,
          $vd_cre_by,
          $action_vd_actor_itemkey,
@@ -991,10 +1133,13 @@ $del_validation =
          $vd_txtchainkey,
          $vd_frag_id,
          $vd_chainval
+        ),
  );
 
  $custom_date_add_vd =
      array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
          $vd_cre_on,
          $vd_cre_by,
          $date_vd_datetype,
@@ -1002,10 +1147,13 @@ $del_validation =
          $date_vd_dateset,
          $vd_txtchainkey,
          $vd_chainval
+        ),
  );
 
  $custom_date_edt_vd =
      array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
          $vd_cre_on,
          $vd_cre_by,
          $date_vd_datetype,
@@ -1013,10 +1161,12 @@ $del_validation =
          $vd_txtchainkey,
          $vd_frag_id,
          $vd_chainval
+        ),
  );
 
  $vd_attrchainkey =
  array(
+        'vld_rule_id' => 'vd_attrchainkey',
                  'rq_func' => 'reqManual',
                  'vd_func' => 'chkSet',
                  'var_name' => 'itemkey',
@@ -1024,6 +1174,7 @@ $del_validation =
  );
  $vd_attrchainval =
      array(
+        'vld_rule_id' => 'vd_attrchainval',
          'rq_func' => 'reqMulti',
          'vd_func' => 'chkSet',
          'var_name' => 'itemval',
@@ -1034,6 +1185,8 @@ $del_validation =
  // add number chain2attribute validation group
  $chain_number_add_validation =
  array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
                  $vd_cre_on,
                  $vd_log,
                  $vd_ste_cd,
@@ -1042,10 +1195,13 @@ $del_validation =
                  $number_vd_number,
                  $vd_attrchainkey,
                  $vd_attrchainval,
+        ),
  );
  // edt number default validation group
  $chain_number_edt_validation =
  array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
                  $vd_cre_on,
                  $vd_log,
                  $vd_ste_cd,
@@ -1055,10 +1211,13 @@ $del_validation =
                  $vd_attrchainkey,
                  $vd_attrchainval,
          $vd_frag_id,
+        ),
  );
  // add txt default validation group
  $chain_txt_add_validation =
      array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
          $vd_cre_on,
          $vd_log,
          $vd_ste_cd,
@@ -1068,10 +1227,13 @@ $del_validation =
          $vd_attrchainkey,
          $vd_chainval,
          $vd_live_lang
+        ),
  );
  // edt txt default validation group
  $chain_txt_edt_validation =
      array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
          $vd_cre_on,
          $vd_log,
          $vd_ste_cd,
@@ -1082,10 +1244,13 @@ $del_validation =
          $vd_chainval,
          $vd_frag_id,
          $vd_live_lang
+        ),
  );
  // add xmi default validation group
  $chain_xmi_add_validation =
  array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
                  $vd_attrchainkey,
                  $vd_chainval,
                  $xmi_vd_xmi_itemkey,
@@ -1094,11 +1259,14 @@ $del_validation =
                  $vd_ste_cd,
                  $vd_cre_on,
                  $vd_cre_by
+        ),
  );
 
  // edt xmi default validation group
  $chain_xmi_edt_validation =
  array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
                  $vd_attrchainkey,
                  $vd_chainval,
                  $xmi_vd_xmi_itemkey,
@@ -1107,17 +1275,21 @@ $del_validation =
                  $vd_ste_cd,
                  $vd_cre_on,
                  $vd_cre_by
+        ),
  );
  // conf_field_cxtxmi has custom validation to allow us to skip linking contexts where sph's are not of contexts
  // add xmi default validation group
  $custom_xmi_add_validation =
      array(
+        'vld_group_id' => 'vld_group_id',
+        'rules' => array(
          $xmi_vd_itemkey,
          $xmi_vd_itemval,
          $xmi_vd_xmi_itemkey,
          $vd_ste_cd,
          $vd_cre_on,
          $vd_cre_by
+        ),
  );
  
 ?>

@@ -132,7 +132,7 @@ $conf_mac_ipadonlybrowser =
         'edit_state' => 'view',
         'sf_nav_type' => 'none',
         'sf_title' => 'media_uploader',
-        'sf_html_id' => 'mac_mediabrowser', // Must be unique
+        'sf_html_id' => 'mac_ipadmediabrowser', // Must be unique
         'script' => 'php/subforms/sf_mediabrowser.php',
         'op_label' => 'save',
         'op_input' => 'go',
@@ -185,6 +185,173 @@ $conf_mcd_deleterecord =
         )
 );
 
+$conf_mcd_itemnav =
+    array(
+        'view_state' => 'max',
+        'edit_state' => 'view',
+        'sf_nav_type' => 'none',
+        'sf_title' => 'item_nav',
+        'sf_html_id' => 'sf_itemnav', // Must be unique
+        'script' => 'php/subforms/sf_itemnav.php',
+        'op_modtype' => FALSE, //if each modtype uses same fields (see below)
+        'fields' =>
+            array(
+        )
+);
+
+$conf_mcd_sitenav =
+    array(
+        'view_state' => 'max',
+        'edit_state' => 'view',
+        'sf_nav_type' => 'none',
+        'sf_title' => 'site_nav',
+        'sf_html_id' => 'sf_sitenav', // Must be unique
+        'script' => 'php/subforms/sf_sitenav.php',
+        'op_modtype' => FALSE, //if each modtype uses same fields (see below)
+        'fields' =>
+            array(
+        )
+);
+
+$conf_mcd_moddulenav =
+    array(
+        'view_state' => 'max',
+        'edit_state' => 'view',
+        'sf_nav_type' => 'none',
+        'sf_title' => 'module_nav',
+        'sf_html_id' => 'sf_modulenav', // Must be unique
+        'script' => 'php/subforms/sf_modulenav.php',
+        'op_modtype' => FALSE, //if each modtype uses same fields (see below)
+        'fields' =>
+            array(
+        )
+);
+
+$conf_mcd_itemadmin =
+    array(
+        'view_state' => 'max',
+        'edit_state' => 'view',
+        'sf_nav_type' => 'none',
+        'sf_title' => 'item_admin',
+        'sf_html_id' => 'sf_itemadmin', // Must be unique
+        'script' => 'php/subforms/sf_itemadmin.php',
+        'op_modtype' => FALSE, //if each modtype uses same fields (see below)
+        'fields' =>
+            array(
+        )
+);
+
+// To add a new sitecode
+$conf_mcd_newstecode =
+    array(
+        'view_state' => 'max',
+        'edit_state' => 'view',
+        'sf_nav_type' => 'nmedit',
+        'sf_title' => 'newstecode',
+        'sf_html_id' => 'newstecode', // Must be unique
+        'script' => 'php/subforms/sf_ste_code.php',
+        'fields' =>
+            array(
+        ),
+);
+
+// Configure the admin linklist for the left panel
+$link_list_admin[] =
+    array(
+        'link_id' => 'link_add_site',
+        'type' => 'link',
+        'page' => 'overlay_holder',
+        'query' => array('subform_id' => $conf_mcd_newstecode['sf_html_id']),
+        'href' => "overlay_holder.php?sf_conf=conf_mcd_newstecode",
+        'mkname' => 'newstecode',
+        'css_class' => FALSE,
+        'lightbox' => TRUE,
+    );
+
+$link_list_admin[] =
+    array(
+        'link_id' => 'link_file_upload',
+        'type' => 'link',
+        'page' => 'overlay_holder',
+        'query' => array('subform_id' => ${$conf_batchfileupload}['sf_html_id']),
+        'href' => "overlay_holder.php?sf_conf=conf_batchfileupload",
+        'mkname' => 'uplfile',
+        'css_class' => FALSE,
+        'lightbox' => TRUE,
+    );
+
+$link_list_admin[] =
+    array(
+        'link_id' => 'link_import',
+        'type' => 'link',
+        'page' => 'import',
+        'query' => array('view' => 'home'),
+        'href' => "{$ark_root_path}/import.php?view=home",
+        'mkname' => 'importadmin',
+        'css_class' => FALSE,
+        'lightbox' => FALSE
+    );
+
+$link_list_admin[] =
+    array(
+        'link_id' => 'link_user_admin',
+        'type' => 'link',
+        'page' => 'user_admin',
+        'query' => array('view' => 'home'),
+        'href' => "{$ark_root_path}/user_admin.php?view=home",
+        'mkname' => 'useradmin',
+        'css_class' => FALSE,
+        'lightbox' => FALSE
+    );
+
+$link_list_admin[] =
+    array(
+        'link_id' => 'link_alias_admin',
+        'type' => 'link',
+        'page' => 'alias_admin',
+        'query' => array('view' => 'home'),
+        'href' => "{$ark_root_path}/alias_admin.php?view=home",
+        'mkname' => 'aliasadmin',
+        'css_class' => FALSE,
+        'lightbox' => FALSE
+    );
+
+$link_list_admin[] =
+    array(
+        'link_id' => 'link_markup_admin',
+        'type' => 'link',
+        'page' => 'markup_admin',
+        'query' => array('view' => 'home'),
+        'href' => "{$ark_root_path}/markup_admin.php?view=home",
+        'mkname' => 'markupadmin',
+        'css_class' => FALSE,
+        'lightbox' => FALSE
+    );
+
+$link_list_admin[] =
+    array(
+        'link_id' => 'link_map_admin',
+        'type' => 'link',
+        'page' => 'map_admin',
+        'query' => array('view' => 'home'),
+        'href' => "{$ark_root_path}/map_admin.php?view=home",
+        'mkname' => 'mapadmin',
+        'css_class' => FALSE,
+        'lightbox' => FALSE
+    );
+
+$conf_mcd_adminmenu =
+    array(
+        'view_state' => 'max',
+        'edit_state' => 'view',
+        'sf_nav_type' => 'name',
+        'sf_title' => 'adminmenu',
+        'sf_html_id' => 'sf_adminmenu', // Must be unique
+        'script' => 'php/subforms/sf_linklist.php',
+        'op_sf_cssclass' => 'menulnk',
+        //type uses same fields (see below)
+        'links' => $link_list_admin
+    );
 
 /**  USER HOME
 *   These settings control the subforms and left panel in the user home
@@ -217,14 +384,14 @@ $uhlp_subform_modules =
     array(
         'view_state' => 'max',
         'edit_state' => 'view',
-        'sf_nav_type' => 'none',
+        'sf_nav_type' => 'name',
         'sf_title' => 'delpaddlist', 
-        'sf_html_id' => 'delpaddlist', // Must be unique
+        'sf_html_id' => 'uhlpaddlist', // Must be unique
         'script' => 'php/subforms/sf_module.php',
         'ark_page' => 'user_home',
         'href'=> 'data_entry.php?view=regist',
         'prompt'=>'addnew',
-        'fields' =>
+        'modules' =>
             array (
                 'cxt',
                 'sph',
@@ -241,12 +408,21 @@ $uhlp_subform_search =
     array(
         'view_state' => 'max',
         'edit_state' => 'view',
-        'sf_nav_type' => 'none',
+        'sf_nav_type' => 'name',
         'sf_title' => 'actorfilter',
         'sf_html_id' => 'actorfilter', // Must be unique
         'script' => 'php/subforms/sf_quickactorfilter.php',
         'href'=> 'data_view.php?disp_mode=table',
         'prompt'=>'searchactions',
+        'op_condition' =>
+            array(
+                array(
+                    'func'=> 'chkFtrMode',
+                    'args'=> FALSE
+            ),
+        ),
+        'op_ftr_mode' => 'standard',
+        'op_sf_cssclass' => 'ftr_list',
         'fields' =>
             array(
             ),
@@ -265,16 +441,27 @@ array(
 // Group these subforms together into a single left panel array
 $user_home_left_panel =
     array(
+        'column_id' => 'user_home_left_panel',
         'col_id' => 'mvlp',
         'col_alias' => FALSE,
         'col_type' => 'lpanel',
         'subforms' =>
             array(
-                //$uhlp_subform_profilepane,
                 $uhlp_subform_modules,
-                $uhlp_subform_search,
+                $conf_mcd_adminmenu,
         )
 );
+
+$user_home_page_nav =
+    array(
+        'layout_id' => 'user_home_page_nav',
+        'mkname' => '',
+        'op_display_type' => 'cols',
+        'op_top_col' => 'delp',
+        'columns' => array(
+            $user_home_left_panel,
+        ),
+    );
 
 /**  MAIN PANEL
 *
@@ -455,20 +642,6 @@ $minimiser = false;
 // GLOBAL SUBFORMS
 // These global subforms are for overlay options
 
-// To add a new sitecode
-$conf_mcd_newstecode =
-    array(
-        'view_state' => 'max',
-        'edit_state' => 'view',
-        'sf_nav_type' => 'nmedit',
-        'sf_title' => 'newstecode',
-        'sf_html_id' => 'newstecode', // Must be unique
-        'script' => 'php/subforms/sf_ste_code.php',
-        'fields' =>
-            array(
-        ),
-);
-
 // To add to a control list
 $conf_mcd_addctrllst =
     array(
@@ -488,18 +661,6 @@ $conf_mcd_addctrllst =
 
 $delpoutput = 'subforms';
     
-// Configure the linklist for the left panel
-// In this example the linklist will be pulled in a sf_linklist, below
-// and so links are still needed even using 'subforms' option above
-$link_list_admin[] = 
-    array(
-        'href' => "overlay_holder.php?sf_conf=$conf_batchfileupload",
-        'mknname' => 'uplfile',
-        'img' => 'bigplus.png',
-        'css_class' => 'cboxlarge',
-        'lightbox' => TRUE,
-);
-
 // Now configure the subforms to appear in the left panel
 // Now configure the subforms to appear in the left panel
 $delp_subform_module =
@@ -512,7 +673,7 @@ $delp_subform_module =
         'script' => 'php/subforms/sf_module.php',
         'ark_page'=> 'data_entry',
         'prompt'=>'addnew',
-        'fields' =>
+        'modules' =>
             array(
                 'cxt',
                 'sph',
@@ -525,40 +686,32 @@ $delp_subform_module =
             ),
     );
 
-$link_list_admin[] =
-array(
-                'href' => "{$ark_dir}/import.php?view=home",
-                'mknname' => 'import',
-                'css_class' => FALSE,
-                'lightbox' => FALSE
-);
-
-$delp_subform_admin =
-array(
-                'view_state' => 'max',
-                'edit_state' => 'view',
-                'sf_nav_type' => 'none',
-                'sf_title' => 'delpadmin',
-                'sf_html_id' => 'delpadmin', // Must be unique
-                'script' => 'php/subforms/sf_linklist.php',
-                'op_sf_cssclass' => 'menulnk',
-                //type uses same fields (see below)
-                'fields' => $link_list_admin
-);
-
 // Now package these subforms into an array for the left panel
 $data_entry_left_panel =
     array(
+        'column_id' => 'data_entry_nav_col',
         'col_id' => 'delp',
         'col_alias' => FALSE,
         'col_type' => 'primary_col',
         'subforms' =>
             array(
                 //$uhlp_subform_profilepane,
-                $delp_subform_module,
-                $delp_subform_admin,
+                $conf_mcd_sitenav,
+                $conf_mcd_moddulenav,
             ),
     );
+
+$data_entry_page_nav =
+    array(
+        'layout_id' => 'data_entry_page_nav',
+        'mkname' => 'forms',
+        'op_display_type' => 'cols',
+        'op_top_col' => 'delp',
+        'columns' => array(
+            $data_entry_left_panel,
+        ),
+    );
+
 
 $delp_subform_mobadd =
 array(
@@ -570,7 +723,7 @@ array(
                 'script' => 'php/subforms/sf_modulelist.php',
                 'href'=> 'data_entry.php?view=regist',
                 'prompt'=>'addnew',
-                'fields' =>
+                'modules' =>
                 array(
                     'cxt',
                     'sph',
@@ -592,7 +745,7 @@ array(
                 'script' => 'php/subforms/sf_modulelist.php',
                 'href'=> 'data_entry.php?view=home',
                 'prompt'=>'addnew',
-                'fields' =>
+                'modules' =>
                 array(
                     'cxt',
                     'sph',
@@ -613,8 +766,6 @@ array(
                 array(
                     $delp_subform_mobadd,
                     $delp_subform_mobedit,
-                    $delp_subform_admin,
-                    //$uhlp_subform_profilepane,
                 ),
 );
 
@@ -627,6 +778,7 @@ array(
 // Navigation options
 $group_entry_nav[] =
     array(
+        'link_id' => 'link_prev',
         'name' => 'prev',
         'title' => FALSE,
         'type' => 'text',
@@ -638,6 +790,7 @@ $group_entry_nav[] =
 );
 $group_entry_nav[] =
     array(
+        'link_id' => 'link_ste_cd',
         'name' => 'ste_cd',
         'title' => FALSE,
         'type' => 'text',
@@ -649,6 +802,7 @@ $group_entry_nav[] =
 );
 $group_entry_nav[] =
     array(
+        'link_id' => 'link_current',
         'name' => 'current',
         'title' => FALSE,
         'type' => 'text',
@@ -660,6 +814,7 @@ $group_entry_nav[] =
 );
 $group_entry_nav[] =
     array(
+        'link_id' => 'link_modtype',
         'name' => 'modtype',
         'title' => FALSE,
         'type' => 'text',
@@ -671,6 +826,7 @@ $group_entry_nav[] =
 );
 $group_entry_nav[] =
     array(
+        'link_id' => 'link_next',
         'name' => 'next',
         'title' => FALSE,
         'type' => 'text',
@@ -685,6 +841,9 @@ $group_entry_admin = array();
 
 $group_entry_admin[] =
     array(
+        'link_id' => 'link_tools',
+        'page' => 'overlay_holder',
+        'query' => array('subform_id' => 'ctrllst', 'lboxreload' => '0'),
         'name' => 'tools',  
         'title' => 'addctrllst',
         'type' => 'img',
@@ -692,10 +851,11 @@ $group_entry_admin[] =
         'css_class' => 'gears colorbox',
         'mkname' => 'tools',
         'lightbox' => FALSE,
-        'reloadpage' => 'data_entry.php',
+        'reloadpage' => 'data_entry',
 );
 $group_entry_admin[] =
     array(
+        'link_id' => 'link_delete',
         'name' => 'delete',
         'title' => 'delete',
         'type' => 'img',
@@ -703,10 +863,11 @@ $group_entry_admin[] =
         'css_class' => 'delimg colorbox',
         'mkname' => 'del',
         'lightbox' => FALSE,
-        'reloadpage' => 'data_entry.php',
+        'reloadpage' => 'data_entry',
 );
 $group_entry_admin[] =
     array(
+        'link_id' => 'link_changemod',
         'name' => 'changemod',
         'title' => 'changemod',
         'type' => 'text',
@@ -714,10 +875,11 @@ $group_entry_admin[] =
         'css_class' => 'recedit colorbox',
         'mkname' => 'chngmod',
         'lightbox' => FALSE,
-        'reloadpage' => 'data_entry.php',
+        'reloadpage' => 'data_entry',
 );
 $group_entry_admin[] =
     array(
+        'link_id' => 'link_changeval',
         'name' => 'changeval',
         'title' => 'changeval',
         'type' => 'text',
@@ -725,7 +887,7 @@ $group_entry_admin[] =
         'css_class' => 'recedit colorbox',
         'mkname' => 'DEL',
         'lightbox' => FALSE,
-        'reloadpage' => 'data_entry.php',
+        'reloadpage' => 'data_entry',
 );
 // Now package these groups of options up into a toolbar
 $conf_entry_nav =
@@ -773,7 +935,7 @@ array(
                 'col_mkname' => FALSE,
                 'subforms' =>
                 array(
-                    //$data_entry_jumper,
+                    $data_entry_jumper,
                 ),
 );
 
@@ -873,11 +1035,11 @@ $conf_viewer_rows = 10;
 // Number of pages to display on the data viewer
 $conf_num_res_pgs = 1; // best choose an odd number
 // Default data viewer page
-$conf_data_viewer = $ark_dir."data_view.php";
+$conf_data_viewer = $ark_root_path."/data_view.php";
 // Default feed viewer page
-$conf_feed_viewer = $ark_dir."feed.php";
+$conf_feed_viewer = $ark_root_path."/feed.php";
 // Default search page - search functions will send data thru to this page
-$conf_search_viewer = $ark_dir."data_view.php";
+$conf_search_viewer = $ark_root_path."/data_view.php";
 
 // GLOBAL SUBFORMS
 // To export to CSV files
@@ -887,7 +1049,7 @@ $conf_mac_exportdownloadcsv =
         'edit_state' => 'view',
         'sf_nav_type' => 'none',
         'sf_title' => 'exportdownloadcsv', 
-        'sf_html_id' => 'mac_cxtexportdownloadcsv', // Must be unique
+        'sf_html_id' => 'mac_exportdownloadcsv', // Must be unique
         'script' => 'php/data_view/subforms/sf_exportdownload.php',
         'op_label' => 'prepdl',
         'op_input' => 'go',
@@ -928,108 +1090,223 @@ $conf_viewer_rows = 25;
 // Number of pages to display on the data viewer
 $conf_num_res_pgs = 5; // best choose an odd number
 // Default data viewer page
-$conf_data_viewer = $ark_dir."data_view.php";
+$conf_data_viewer = $ark_root_path."/data_view.php";
 // Default feed viewer page
-$conf_feed_viewer = $ark_dir."feed.php";
+$conf_feed_viewer = $ark_root_path."/feed.php";
 // Default search page - search funtions will send data thru to this page
-$conf_search_viewer = $ark_dir."data_view.php";
+$conf_search_viewer = $ark_root_path."/data_view.php";
 // Default $output_mode for the data viewer (table, text, map, thumbs)
 $default_output_mode = 'table';
 
 // LEFT PANEL
 // The left panel for filters is a series of complex subforms
 
+$link_list_toolitem[] =
+    array(
+        'link_id' => 'link_filter_reset',
+        'type' => 'img',
+        'page' => 'data_view',
+        'query' => array('reset' => '1'),
+        'href' => "data_view.php?reset=1",
+        'mkname' => 'filterclr',
+        'img' => 'results/bigminus.png',
+        'lightbox' => FALSE,
+        'css_class' => 'clear_ftr'
+);
+$link_list_toolitem[] =
+    array(
+        'link_id' => 'link_filter_run',
+        'type' => 'img',
+        'page' => 'data_view',
+        'query' => array('runall' => '1'),
+        'href' => "data_view.php?runall=1",
+        'mkname' => 'filterrun',
+        'img' => 'results/refresh.png',
+        'lightbox' => FALSE,
+        'css_class' => 'refresh'
+);
+$link_list_toolitem[] =
+    array(
+        'link_id' => 'link_filter_save',
+        'type' => 'img',
+        'page' => 'overlay_holder',
+        'query' => array('subform_id' => 'userhome_my_saved_filters'),
+        'href' => "overlay_holder.php?sf_conf=userhome_my_saved_filters",
+        'mkname' => 'filtersave',
+        'img' => 'results/save.png',
+        'lightbox' => FALSE,
+        'css_class' => 'save dr_toggle'
+);
+
 // Linklist for standard item filters
 $link_list_stditem[] =
     array(
-        'href' => "{$_SERVER['PHP_SELF']}?ftype=key&amp;key=7&amp;ftr_id=new", 
-        'mknname' => 'filterrgf',
-        'img' => 'view_mag.png',
+        'link_id' => 'link_filter_rgf',
+        'type' => 'icon',
+        'page' => 'data_view',
+        'query' => array('ftype' => 'key', 'key' => '7', 'ftr_id' => 'new'),
+        'href' => "{$_SERVER['PHP_SELF']}?ftype=key&amp;key=7&amp;ftr_id=new",
+        'mkname' => 'filterrgf',
+        'img' => 'plusminus/view_mag.png',
         'lightbox' => FALSE,
-        'css_class' => FALSE
+        'css_class' => FALSE,
+        'img_class' => 'med',
 );
 $link_list_stditem[] =
     array(
-        'href' => "{$_SERVER['PHP_SELF']}?ftype=key&amp;key=3&amp;ftr_id=new", 
-        'mknname' => 'filtercxt',
-        'img' => 'view_mag.png',
+        'link_id' => 'link_filter_cxt',
+        'type' => 'icon',
+        'page' => 'data_view',
+        'query' => array('ftype' => 'key', 'key' => '3', 'ftr_id' => 'new'),
+        'href' => "{$_SERVER['PHP_SELF']}?ftype=key&amp;key=3&amp;ftr_id=new",
+        'mkname' => 'filtercxt',
+        'img' => 'plusminus/view_mag.png',
         'lightbox' => FALSE,
-        'css_class' => FALSE
+        'css_class' => FALSE,
+        'img_class' => 'med',
 );
 $link_list_stditem[] =
     array(
-        'href' => "{$_SERVER['PHP_SELF']}?ftype=key&amp;key=5&amp;ftr_id=new", 
-        'mknname' => 'filtersph',
-        'img' => 'view_mag.png',
+        'link_id' => 'link_filter_sph',
+        'type' => 'icon',
+        'page' => 'data_view',
+        'query' => array('ftype' => 'key', 'key' => '5', 'ftr_id' => 'new'),
+        'href' => "{$_SERVER['PHP_SELF']}?ftype=key&amp;key=5&amp;ftr_id=new",
+        'mkname' => 'filtersph',
+        'img' => 'plusminus/view_mag.png',
         'lightbox' => FALSE,
-        'css_class' => FALSE
+        'css_class' => FALSE,
+        'img_class' => 'med',
 );
 $link_list_stditem[] =
     array(
-        'href' => "{$_SERVER['PHP_SELF']}?ftype=key&amp;key=4&amp;ftr_id=new", 
-        'mknname' => 'filterpln',
-        'img' => 'view_mag.png',
+        'link_id' => 'link_filter_pln',
+        'type' => 'icon',
+        'page' => 'data_view',
+        'query' => array('ftype' => 'key', 'key' => '4', 'ftr_id' => 'new'),
+        'href' => "{$_SERVER['PHP_SELF']}?ftype=key&amp;key=4&amp;ftr_id=new",
+        'mkname' => 'filterpln',
+        'img' => 'plusminus/view_mag.png',
         'lightbox' => FALSE,
-        'css_class' => FALSE
+        'css_class' => FALSE,
+        'img_class' => 'med',
 );
 $link_list_stditem[] =
    array(
-        'href' => "{$_SERVER['PHP_SELF']}?ftype=key&amp;key=15&amp;ftr_id=new", 
-        'mknname' => 'filtersec',
-        'img' => 'view_mag.png',
+        'link_id' => 'link_filter_sec',
+        'type' => 'icon',
+        'page' => 'data_view',
+        'query' => array('ftype' => 'key', 'key' => '15', 'ftr_id' => 'new'),
+        'href' => "{$_SERVER['PHP_SELF']}?ftype=key&amp;key=15&amp;ftr_id=new",
+        'mkname' => 'filtersec',
+        'img' => 'plusminus/view_mag.png',
         'lightbox' => FALSE,
-        'css_class' => FALSE
+        'css_class' => FALSE,
+        'img_class' => 'med',
 );
 $link_list_stditem[] =
    array(
-        'href' => "{$_SERVER['PHP_SELF']}?ftype=key&amp;key=16&amp;ftr_id=new", 
-        'mknname' => 'filtersgr',
-        'img' => 'view_mag.png',
+        'link_id' => 'link_filter_sgr',
+        'type' => 'icon',
+        'page' => 'data_view',
+        'query' => array('ftype' => 'key', 'key' => '16', 'ftr_id' => 'new'),
+        'href' => "{$_SERVER['PHP_SELF']}?ftype=key&amp;key=16&amp;ftr_id=new",
+        'mkname' => 'filtersgr',
+        'img' => 'plusminus/view_mag.png',
         'lightbox' => FALSE,
-        'css_class' => FALSE
+        'css_class' => FALSE,
+        'img_class' => 'med',
 );
 $link_list_stditem[] =
    array(
-        'href' => "{$_SERVER['PHP_SELF']}?ftype=key&amp;key=18&amp;ftr_id=new", 
-        'mknname' => 'filtertmb',
-        'img' => 'view_mag.png',
+        'link_id' => 'link_filter_tmb',
+        'type' => 'icon',
+        'page' => 'data_view',
+        'query' => array('ftype' => 'key', 'key' => '18', 'ftr_id' => 'new'),
+        'href' => "{$_SERVER['PHP_SELF']}?ftype=key&amp;key=18&amp;ftr_id=new",
+        'mkname' => 'filtertmb',
+        'img' => 'plusminus/view_mag.png',
         'lightbox' => FALSE,
-        'css_class' => FALSE
+        'css_class' => FALSE,
+        'img_class' => 'med',
+);
+$link_list_stditem[] =
+    array(
+        'link_id' => 'link_filter_smp',
+        'type' => 'icon',
+        'page' => 'data_view',
+        'query' => array('ftype' => 'key', 'key' => '6', 'ftr_id' => 'new'),
+        'href' => "{$_SERVER['PHP_SELF']}?ftype=key&amp;key=6&amp;ftr_id=new",
+        'mkname' => 'filtersmp',
+        'img' => 'plusminus/view_mag.png',
+        'lightbox' => FALSE,
+        'css_class' => FALSE,
+        'img_class' => 'med',
 );
 // Linklist for standard level criteria
 $link_list_stdcriteria[] =
     array(
-        'href' => "{$_SERVER['PHP_SELF']}?ftr_id=new&amp;ftype=atr&amp;atrtype=14&amp;op_display=fauxdex&amp;bv=1", 
-        'mknname' => 'filterperiod',
-        'img' => 'view_mag.png',
+        'link_id' => 'link_filter_period',
+        'type' => 'icon',
+        'page' => 'data_view',
+        'query' => array('ftype' => 'atr', 'atrtype' => '14', 'ftr_id' => 'new', 'op_display' => 'fauxdex', 'bv' => '1'),
+        'href' => "{$_SERVER['PHP_SELF']}?ftr_id=new&amp;ftype=atr&amp;atrtype=14&amp;op_display=fauxdex&amp;bv=1",
+        'mkname' => 'filterperiod',
+        'img' => 'plusminus/view_mag.png',
         'lightbox' => FALSE,
-        'css_class' => FALSE
-);
-$link_list_stditem[] =
-    array(
-        'href' => "{$_SERVER['PHP_SELF']}?ftype=key&amp;key=6&amp;ftr_id=new", 
-        'mknname' => 'filtersmp',
-        'img' => 'view_mag.png',
-        'lightbox' => FALSE,
-        'css_class' => FALSE
+        'css_class' => FALSE,
+        'img_class' => 'med',
 );
 $link_list_stdcriteria[] = 
      array(
-         'href' => "{$_SERVER['PHP_SELF']}?ftr_id=new&amp;ftype=atr&amp;atrtype=24&amp;op_display=fauxdex&amp;bv=1", 
-         'mknname' => 'filterbasicint',
-         'img' => 'view_mag.png',
+        'link_id' => 'link_filter_basicint',
+        'type' => 'icon',
+        'page' => 'data_view',
+        'query' => array('ftype' => 'amp', 'atrtype' => '24', 'ftr_id' => 'new', 'op_display' => 'fauxdex', 'bv' => '1'),
+         'href' => "{$_SERVER['PHP_SELF']}?ftr_id=new&amp;ftype=atr&amp;atrtype=24&amp;op_display=fauxdex&amp;bv=1",
+         'mkname' => 'filterbasicint',
+         'img' => 'plusminus/view_mag.png',
          'lightbox' => FALSE,
-         'css_class' => FALSE
+         'css_class' => FALSE,
+        'img_class' => 'med',
 );
 $link_list_stdcriteria[] =
     array(
-        'href' => "{$_SERVER['PHP_SELF']}?ftype=txt&amp;txttype=67&amp;ftr_id=new", 
-        'mknname' => 'filtername',
-        'img' => 'view_mag.png',
+        'link_id' => 'link_filter_name',
+        'type' => 'icon',
+        'page' => 'data_view',
+        'query' => array('ftype' => 'txt', 'txttype' => '67', 'ftr_id' => 'new'),
+        'href' => "{$_SERVER['PHP_SELF']}?ftype=txt&amp;txttype=67&amp;ftr_id=new",
+        'mkname' => 'filtername',
+        'img' => 'plusminus/view_mag.png',
         'lightbox' => FALSE,
-        'css_class' => FALSE
+        'css_class' => FALSE,
+        'img_class' => 'med',
 );
 
+// Subform to hold standard item linklist
+$dvlp_subform_toolitem =
+    array(
+        'view_state' => 'min',
+        'edit_state' => 'view',
+        'sf_nav_type' => 'none',
+        'sf_title' => 'ftr_options',
+        'sf_html_id' => 'ftr_options', // Must be unique
+        'script' => 'php/subforms/sf_linklist.php',
+        'op_modtype' => FALSE, //if each modtype uses same fields (see below)
+        // Does the linklist use an icon instead of a label as link
+        'op_linktype' => 'img',
+        'op_sf_cssclass' => 'ftr_options',
+        'op_condition' =>
+            array(
+                array(
+                    'func'=> 'chkFtrMode',
+                    'args'=> FALSE
+            ),
+        ),
+        'op_ftr_mode' => 'default',
+        'links' => $link_list_toolitem
+);
 // Subform to hold standard item linklist
 $dvlp_subform_stditem =
     array(
@@ -1037,13 +1314,21 @@ $dvlp_subform_stditem =
         'edit_state' => 'view',
         'sf_nav_type' => 'name',
         'sf_title' => 'dvlp_searchitems', 
-        'sf_html_id' => 'dvlp_filters', // Must be unique
+        'sf_html_id' => 'dvlp_searchitems', // Must be unique
         'script' => 'php/subforms/sf_linklist.php',
         'op_modtype' => FALSE, //if each modtype uses same fields (see below)
         // Does the linklist use an icon instead of a label as link
         'op_linktype' => 'link',
         'op_sf_cssclass' => 'ftr_list',
-        'fields' => $link_list_stditem
+        'op_condition' =>
+            array(
+                array(
+                    'func'=> 'chkFtrMode',
+                    'args'=> FALSE
+            ),
+        ),
+        'op_ftr_mode' => 'standard',
+        'links' => $link_list_stditem
 );
 // Subform to hold standard criteria linklist
 $dvlp_subform_stdcriteria =
@@ -1052,55 +1337,88 @@ $dvlp_subform_stdcriteria =
         'edit_state' => 'view',
         'sf_nav_type' => 'name',
         'sf_title' => 'dvlp_searchcriteria', 
-        'sf_html_id' => 'dvlp_filters', // Must be unique
+        'sf_html_id' => 'dvlp_searchcriteria', // Must be unique
         'script' => 'php/subforms/sf_linklist.php',
         'op_modtype' => FALSE, //if each modtype uses same fields (see below)
         // Does the linklist use an icon instead of a label as link
         'op_linktype' => 'link',
         'op_sf_cssclass' => 'ftr_list',
-        'fields' => $link_list_stdcriteria
+        'op_condition' =>
+            array(
+                array(
+                    'func'=> 'chkFtrMode',
+                    'args'=> FALSE
+            ),
+        ),
+        'op_ftr_mode' => 'standard',
+        'links' => $link_list_stdcriteria
 );
 
 // A linklist to hold different (more raw) filters for advanced users
 $link_list_advfilters[] =
     array(
+        'link_id' => 'link_filter_item',
+        'type' => 'icon',
+        'page' => 'data_view',
+        'query' => array('ftype' => 'key', 'ftr_id' => 'new'),
         'href' => "{$_SERVER['PHP_SELF']}?ftype=key&amp;ftr_id=new", 
-        'mknname' => 'filteritem',
-        'img' => 'view_mag.png',
+        'mkname' => 'filteritem',
+        'img' => 'plusminus/view_mag.png',
         'lightbox' => FALSE,
-        'css_class' => FALSE
+        'css_class' => FALSE,
+        'img_class' => 'med',
 );
 $link_list_advfilters[] =
     array(
+        'link_id' => 'link_filter_att',
+        'type' => 'icon',
+        'page' => 'data_view',
+        'query' => array('ftype' => 'atr', 'ftr_id' => 'new'),
         'href' => "{$_SERVER['PHP_SELF']}?ftype=atr&amp;ftr_id=new", 
-        'mknname' => 'filteratt',
-        'img' => 'view_mag.png',
+        'mkname' => 'filteratt',
+        'img' => 'plusminus/view_mag.png',
         'lightbox' => FALSE,
-        'css_class' => FALSE
+        'css_class' => FALSE,
+        'img_class' => 'med',
 );
 $link_list_advfilters[] =
     array(
+        'link_id' => 'link_filter_actor',
+        'type' => 'icon',
+        'page' => 'data_view',
+        'query' => array('ftype' => 'action', 'ftr_id' => 'new'),
         'href' => "{$_SERVER['PHP_SELF']}?ftype=action&amp;ftr_id=new", 
-        'mknname' => 'filteractor',
-        'img' => 'view_mag.png',
+        'mkname' => 'filteractor',
+        'img' => 'plusminus/view_mag.png',
         'lightbox' => FALSE,
-        'css_class' => FALSE
+        'css_class' => FALSE,
+        'img_class' => 'med',
 );
 $link_list_advfilters[] =
     array(
+        'link_id' => 'link_filter_ftx',
+        'type' => 'icon',
+        'page' => 'data_view',
+        'query' => array('ftype' => 'ftx', 'ftr_id' => 'new'),
         'href' => "{$_SERVER['PHP_SELF']}?ftype=ftx&amp;ftr_id=new", 
-        'mknname' => 'ftx',
-        'img' => 'view_mag.png',
+        'mkname' => 'ftx',
+        'img' => 'plusminus/view_mag.png',
         'lightbox' => FALSE,
-        'css_class' => FALSE
+        'css_class' => FALSE,
+        'img_class' => 'med',
 );
 $link_list_advfilters[] =
     array(
+        'link_id' => 'link_filter_xmi',
+        'type' => 'icon',
+        'page' => 'data_view',
+        'query' => array('ftype' => 'xmi', 'ftr_id' => 'new'),
         'href' => "{$_SERVER['PHP_SELF']}?ftype=xmi&amp;ftr_id=new", 
-        'mknname' => 'xmifilter',
-        'img' => 'view_mag.png',
+        'mkname' => 'xmifilter',
+        'img' => 'plusminus/view_mag.png',
         'lightbox' => FALSE,
-        'css_class' => FALSE
+        'css_class' => FALSE,
+        'img_class' => 'med',
 );
 // Subform to hold a list of raw filters
 $dvlp_subform_advfilters =
@@ -1109,13 +1427,21 @@ $dvlp_subform_advfilters =
         'edit_state' => 'view',
         'sf_nav_type' => 'name',
         'sf_title' => 'dvlp_filters', 
-        'sf_html_id' => 'dvlp_filters', // Must be unique
+        'sf_html_id' => 'dvlp_advfilters', // Must be unique
         'script' => 'php/subforms/sf_linklist.php',
         'op_modtype' => FALSE, //if each modtype uses same fields (see below)
         // Does the linklist use an icon instead of a label as link
         'op_linktype' => 'label',
         'op_sf_cssclass' => 'ftr_list',
-        'fields' => $link_list_advfilters
+        'op_condition' =>
+            array(
+                array(
+                    'func'=> 'chkFtrMode',
+                    'args'=> FALSE
+            ),
+        ),
+        'op_ftr_mode' => 'advanced',
+        'links' => $link_list_advfilters
 );
 
 // Subform for the filter builder to run in the left panel
@@ -1124,8 +1450,8 @@ $dvlp_filter_builder =
         'view_state' => 'min',
         'edit_state' => 'view',
         'sf_nav_type' => 'none',
-        'sf_title' => 'dvlp_filters', 
-        'sf_html_id' => 'dvlp_filters', // Must be unique
+        'sf_title' => '',
+        'sf_html_id' => 'dvlp_buildfilters', // Must be unique
         'script' => 'php/data_view/subforms/sf_buildfilter.php',
         'op_modtype' => FALSE, //if each modtype uses same fields (see below)
         // Does the linklist use an icon instead of a label as link
@@ -1139,13 +1465,34 @@ $dvlp_filter_builder =
         ),
 );
 
+// Subform for the active filters
+$dvlp_active_filters =
+    array(
+        'view_state' => 'min',
+        'edit_state' => 'view',
+        'sf_nav_type' => 'name',
+        'sf_title' => 'filters',
+        'sf_html_id' => 'dvlp_activefilters', // Must be unique
+        'script' => 'php/data_view/subforms/sf_activefilters.php',
+        'op_modtype' => FALSE, //if each modtype uses same fields (see below)
+        'op_sf_cssclass' => 'sf_nav',
+        'op_condition' =>
+            array(
+                array(
+                    'func'=> 'chkFtrMode',
+                    'args'=> FALSE
+            ),
+        ),
+        'op_ftr_mode' => 'default',
+);
+
 // Subform for the filter builder in an overlay (no condition)
 $dvlp_overlay_filter_builder =
     array(
         'view_state' => 'min',
         'edit_state' => 'view',
         'sf_nav_type' => 'none',
-        'sf_title' => 'dvlp_filters', 
+        'sf_title' => 'dvlp_filters',
         'sf_html_id' => 'dvlp_filter_builder', // Must be unique
         'script' => 'php/data_view/subforms/sf_buildfilter.php',
         'op_modtype' => FALSE, //if each modtype uses same fields (see below)
@@ -1159,11 +1506,36 @@ $dvlp_my_saved_filters =
         'view_state' => 'min',
         'edit_state' => 'view',
         'sf_nav_type' => 'name',
-        'sf_title' => 'savedfilters', 
+        'sf_title' => 'savedfilters',
         'sf_html_id' => 'dvlp_saved_filters', // Must be unique
         'script' => 'php/subforms/sf_mysavedstuff.php',
         'op_modtype' => FALSE, //if each modtype uses same fields (see below)
         'op_sf_cssclass' => 'saved_ftr',
+        'op_condition' =>
+            array(
+                array(
+                    'func'=> 'chkFtrMode',
+                    'args'=> FALSE
+            ),
+        ),
+        'op_ftr_mode' => 'drawer',
+);
+
+// Subform for the Save/Saved filters
+$dvlp_save_filters =
+    array(
+        'view_state' => 'min',
+        'edit_state' => 'view',
+        'sf_nav_type' => 'name',
+        'sf_title' => 'savefilter',
+        'sf_html_id' => 'dvlp_savefilter', // Must be unique
+        'script' => 'php/data_view/subforms/sf_savefilter.php',
+        'op_modtype' => FALSE, //if each modtype uses same fields (see below)
+        'op_sf_cssclass' => 'dr',
+        'subforms' =>
+            array(
+                $dvlp_my_saved_filters,
+        ),
 );
 
 // Make a column to hold the subforms
@@ -1172,25 +1544,29 @@ $data_view_left_panel =
         'col_id' => 'dvlp',
         'col_alias' => FALSE,
         'col_type' => 'primary_col',
-        'basic_subforms' =>
+        'subforms' =>
             array(
-        ),
-        'standard_subforms' =>
-            array(
+                $dvlp_subform_toolitem,
+                $dvlp_active_filters,
                 $dvlp_filter_builder,
                 $dvlp_subform_stditem,
                 $dvlp_subform_stdcriteria,
-        ),
-        'adv_subforms' =>
-            array(
-                $dvlp_filter_builder,
+                $uhlp_subform_search,
                 $dvlp_subform_advfilters,
-        ),
-        'op_dr_subforms' =>
-            array(
-                $dvlp_my_saved_filters,
+                $dvlp_save_filters,
         ),
 );
+
+$data_view_page_nav =
+    array(
+        'layout_id' => 'data_view_page_nav',
+        'mkname' => 'filterpanel',
+        'op_display_type' => 'cols',
+        'op_top_col' => 'dvlp',
+        'columns' => array(
+            $data_view_left_panel,
+        ),
+    );
 
 // RESULTS TOOLBAR
 // Controls what navigation and options appear in data entry record toolbar
@@ -1319,7 +1695,7 @@ $conf_page_micro_view =
 
 // GENERAL SETTINGS
 // Default Micro viewer page (used by search result handlers)
-$conf_micro_viewer = $ark_dir."micro_view.php";
+$conf_micro_viewer = $ark_root_path."/micro_view.php";
 
 // LEFT PANEL
 // Choose the type of output for the left panel (subforms or linklist)
@@ -1338,7 +1714,7 @@ $mvlp_subform_module =
         'sf_html_id' => 'mvlpmodlist', // Must be unique
         'script' => 'php/subforms/sf_module.php',
         'ark_page'=> 'micro_view',
-        'fields' =>
+        'modules' =>
             array (
                 'cxt',
                 'sph',
@@ -1360,8 +1736,10 @@ $micro_view_left_panel =
         'col_type' => 'primary_col',
         'subforms' =>
             array(
-                $mvlp_subform_module,
-                $delp_subform_admin
+                $dvlp_subform_toolitem,
+                $dvlp_active_filters,
+                $conf_mcd_itemnav,
+                $conf_mcd_itemadmin,
         )
 );
 
@@ -1375,6 +1753,17 @@ $micro_view_mobile_panel =
                 //$mvlp_subform_module
         )
 );
+
+$micro_view_page_nav =
+    array(
+        'layout_id' => 'micro_view_page_nav',
+        'mkname' => '',
+        'op_display_type' => 'cols',
+        'op_top_col' => 'mvlp',
+        'columns' => array(
+            $micro_view_left_panel,
+        ),
+    );
 
 // RECORD TOOLBAR
 // Controls what navigation and options appear in data entry record toolbar
@@ -1482,7 +1871,7 @@ $group_admin[] =
         'css_class' => 'recedit colorbox',
         'mkname' => 'chgkey',
         'lightbox' => FALSE,
-        'reloadpage' => 'micro_entry.php',
+        'reloadpage' => 'micro_entry',
 );
 
 // Package these button groups up into a toolbar
@@ -1572,7 +1961,7 @@ $conf_page_sgr_view =
 
 // GENERAL SETTINGS
 // Default Micro viewer page (used by search result handlers)
-$conf_sgr_viewer = $ark_dir."sgr_view.php";
+$conf_sgr_viewer = $ark_root_path."/sgr_view.php";
 
 // LEFT PANEL
 // Choose the type of output for the left panel (subforms or linklist)
@@ -1591,7 +1980,7 @@ array(
                 'sf_html_id' => 'sgrlpmodlist', // Must be unique
                 'script' => 'php/subforms/sf_module.php',
                 'ark_page'=> 'sgr_view',
-                'fields' =>
+                'modules' =>
                     array (
                         'cxt',
                         'sph',
@@ -1614,7 +2003,6 @@ array(
                 'subforms' =>
                 array(
                     $sgrlp_subform_module,
-                    $delp_subform_admin
                 )
 );
 
@@ -1628,6 +2016,18 @@ array(
                                 //$mvlp_subform_module
                 )
 );
+
+$sgr_view_page_nav =
+    array(
+        'layout_id' => 'sgr_view_page_nav',
+        'mkname' => '',
+        'op_display_type' => 'cols',
+        'op_top_col' => 'sgrlp',
+        'columns' => array(
+            $sgr_view_left_panel,
+        ),
+    );
+
 
 // RECORD TOOLBAR
 // Controls what navigation and options appear in data entry record toolbar
@@ -1665,7 +2065,7 @@ array(
                 'edit_state' => 'view',
                 'sf_nav_type' => 'none',
                 'sf_title' => 'jumper',
-                'sf_html_id' => 'uh_jumper', // Must be unique
+                'sf_html_id' => 'sgr_jumper', // Must be unique
                 'script' => 'php/subforms/sf_jumper.php',
                 'op_sf_cssclass' => 'basic_subform',
                 'fields' => $jumper_list_sgr_view,
@@ -1768,6 +2168,7 @@ $map_more_info_button = FALSE;
 // ALIAS ADMIN PAGE SETTINGS
 $conf_page_alias_admin =
     array(
+        'page_id' =>'alias_admin',
         'name' =>'Alias Admin',
         'title' => 'Alias Admin Page',
         'file' => 'alias_admin.php',
@@ -1775,8 +2176,81 @@ $conf_page_alias_admin =
         'navname' => 'aliasnav',
         'navlinkvars' => '?view=home',
         'cur_code_dir' => 'php/alias_admin/',
-        'is_visible' => TRUE
+        'is_visible' => FALSE
 );
+
+$alias_admin_nav_list[] =
+    array(
+        'link_id' => 'link_alias_add',
+        'name' => '',
+        'title' => '',
+        'type' => 'text',
+        'page' => 'alias_admin',
+        'query' => array('view' => 'addclasstype'),
+        'href' => "alias_admin.php?view=addclasstype",
+        'mkname' => 'addclasstype',
+        'img' => '',
+        'lightbox' => FALSE,
+        'css_class' => '',
+        'list_class' => '',
+        'reloadpage' => '',
+);
+
+$alias_admin_nav_list[] =
+    array(
+        'link_id' => 'link_alias_edit',
+        'name' => '',
+        'title' => '',
+        'type' => 'text',
+        'page' => 'alias_admin',
+        'query' => array('view' => 'viewalias'),
+        'href' => "alias_admin.php?view=viewalias",
+        'mkname' => 'edtalias',
+        'img' => '',
+        'lightbox' => FALSE,
+        'css_class' => '',
+        'list_class' => '',
+        'reloadpage' => '',
+);
+
+$alias_admin_nav_links =
+    array(
+        'view_state' => 'min',
+        'edit_state' => 'view',
+        'sf_nav_type' => 'none',
+        'sf_title' => '',
+        'sf_html_id' => 'alias_admin_nav_links', // Must be unique
+        'script' => 'php/subforms/sf_linklist.php',
+        'op_modtype' => FALSE, //if each modtype uses same fields (see below)
+        // Does the linklist use an icon instead of a label as link
+        'op_linktype' => 'link',
+        'op_sf_cssclass' => 'module_list',
+        'links' => $alias_admin_nav_list
+    );
+
+$alias_admin_nav_col =
+    array(
+        'column_id' => 'alias_admin_nav_col',
+        'col_id' => 'main_column',
+        'col_alias' => FALSE,
+        'col_type' => 'primary_col',
+        'col_mkname' => FALSE,
+        'subforms' => array(
+            $alias_admin_nav_links,
+            $conf_mcd_adminmenu,
+        ),
+    );
+
+$alias_admin_page_nav =
+    array(
+        'layout_id' => 'alias_admin_page_nav',
+        'mkname' => 'aliasadminoptions',
+        'op_display_type' => 'cols',
+        'op_top_col' => 'main_column',
+        'columns' => array(
+            $alias_admin_nav_col,
+        ),
+    );
 
 // MAP ADMIN PAGE SETTINGS
 $conf_page_map_admin =
@@ -1788,7 +2262,7 @@ $conf_page_map_admin =
         'navname' => 'mapadminnav',
         'navlinkvars' => '?view=home',
         'cur_code_dir' => 'php/map_admin/',
-        'is_visible' => TRUE // Set to TRUE if using mapping
+        'is_visible' => FALSE // Set to TRUE if using mapping
 );
 
 // MARKUP ADMIN PAGE SETTINGS
@@ -1801,8 +2275,43 @@ $conf_page_markup_admin =
         'navname' => 'markupnav',
         'navlinkvars' => '?view=home',
         'cur_code_dir' => 'php/markup_admin/',
-        'is_visible' => TRUE
+        'is_visible' => FALSE
 );
+
+$markup_admin_nav_links =
+    array(
+        'view_state' => 'min',
+        'edit_state' => 'view',
+        'sf_nav_type' => 'none',
+        'sf_title' => '',
+        'sf_html_id' => 'markup_admin_nav_links', // Must be unique
+        'script' => 'php/markup_admin/sf_mkupnav.php',
+        'op_sf_cssclass' => 'markuplpanel',
+    );
+
+$markup_admin_nav_col =
+    array(
+        'column_id' => 'markup_admin_nav_col',
+        'col_id' => 'main_column',
+        'col_alias' => FALSE,
+        'col_type' => 'primary_col',
+        'col_mkname' => FALSE,
+        'subforms' => array(
+            $markup_admin_nav_links,
+            $conf_mcd_adminmenu,
+        ),
+    );
+
+$markup_admin_page_nav =
+    array(
+        'layout_id' => 'markup_admin_page_nav',
+        'mkname' => 'markupadminoptions',
+        'op_display_type' => 'cols',
+        'op_top_col' => 'main_column',
+        'columns' => array(
+            $markup_admin_nav_col,
+        ),
+    );
 
 // USER ADMIN PAGE SETTINGS
 $conf_page_user_admin =
@@ -1814,8 +2323,73 @@ $conf_page_user_admin =
         'navname' => 'usersnav',
         'navlinkvars' => '?view=home',
         'cur_code_dir' => 'php/user_admin/',
-        'is_visible' => TRUE
+        'is_visible' => FALSE
 );
+
+$user_admin_nav_list[] =
+    array(
+        'link_id' => 'link_user_add',
+        'type' => 'icon',
+        'page' => 'user_admin',
+        'query' => array('view' => 'addusrl'),
+        'mkname' => 'addusrl',
+        'img' => 'plusminus/bigplus.png',
+        'lightbox' => FALSE,
+        'css_class' => '',
+        'img_class' => 'med',
+);
+
+$user_admin_nav_list[] =
+    array(
+        'link_id' => 'link_user_edit',
+        'type' => 'icon',
+        'page' => 'user_admin',
+        'query' => array('view' => 'edtuser'),
+        'mkname' => 'edtuser',
+        'img' => 'plusminus/edit.png',
+        'lightbox' => FALSE,
+        'css_class' => '',
+        'img_class' => 'med',
+);
+
+$user_admin_nav_links =
+    array(
+        'view_state' => 'min',
+        'edit_state' => 'view',
+        'sf_nav_type' => 'none',
+        'sf_title' => '',
+        'sf_html_id' => 'user_admin_nav_links', // Must be unique
+        'script' => 'php/subforms/sf_linklist.php',
+        'op_modtype' => FALSE, //if each modtype uses same fields (see below)
+        // Does the linklist use an icon instead of a label as link
+        'op_linktype' => 'icon',
+        'op_sf_cssclass' => 'module_list',
+        'links' => $user_admin_nav_list
+    );
+
+$user_admin_nav_col =
+    array(
+        'column_id' => 'user_admin_nav_col',
+        'col_id' => 'main_column',
+        'col_alias' => FALSE,
+        'col_type' => 'primary_col',
+        'col_mkname' => FALSE,
+        'subforms' => array(
+            $user_admin_nav_links,
+            $conf_mcd_adminmenu,
+        ),
+    );
+
+$user_admin_page_nav =
+    array(
+        'layout_id' => 'user_admin_page_nav',
+        'mkname' => 'useradminoptions',
+        'op_display_type' => 'cols',
+        'op_top_col' => 'main_column',
+        'columns' => array(
+            $user_admin_nav_col,
+        ),
+    );
 
 // IMPORT PAGE SETTINGS
 $conf_page_import =
@@ -1827,8 +2401,130 @@ $conf_page_import =
         'navname' => 'importnav',
         'navlinkvars' => '?view=home',
         'cur_code_dir' => 'php/import/',
-        'is_visible' => TRUE
+        'is_visible' => FALSE
 );
+
+$import_db_nav_list[] =
+    array(
+        'link_id' => 'link_import_new_cmap',
+        'type' => 'text',
+        'page' => 'import',
+        'query' => array('view' => 'newcmap'),
+        'mkname' => 'newcmap',
+        'lightbox' => FALSE,
+        'css_class' => '',
+);
+
+$import_db_nav_list[] =
+    array(
+        'link_id' => 'link_import_edt_cmap',
+        'type' => 'text',
+        'page' => 'import',
+        'query' => array('view' => 'edtcmap'),
+        'mkname' => 'edtcmap',
+        'lightbox' => FALSE,
+        'css_class' => '',
+);
+
+$import_db_nav_list[] =
+    array(
+        'link_id' => 'link_import_str_cmap',
+        'type' => 'text',
+        'page' => 'import',
+        'query' => array('view' => 'edtcmapstr'),
+        'mkname' => 'edtcmapstr',
+        'lightbox' => FALSE,
+        'css_class' => '',
+);
+
+$import_db_nav_list[] =
+    array(
+        'link_id' => 'link_import_extr',
+        'type' => 'text',
+        'page' => 'import',
+        'query' => array('view' => 'extr_test'),
+        'mkname' => 'extr_test',
+        'lightbox' => FALSE,
+        'css_class' => '',
+);
+
+$import_db_nav_links =
+    array(
+        'view_state' => 'min',
+        'edit_state' => 'view',
+        'sf_nav_type' => 'name',
+        'sf_title' => 'dbimport',
+        'sf_html_id' => 'import_db_nav_links', // Must be unique
+        'script' => 'php/subforms/sf_linklist.php',
+        'op_modtype' => FALSE, //if each modtype uses same fields (see below)
+        // Does the linklist use an icon instead of a label as link
+        'op_linktype' => 'link',
+        'op_sf_cssclass' => 'module_list',
+        'links' => $import_db_nav_list
+    );
+
+$import_file_nav_list[] =
+    array(
+        'link_id' => 'link_import_pick',
+        'type' => 'text',
+        'page' => 'import',
+        'query' => array('view' => 'json_picker'),
+        'mkname' => 'json_picker',
+        'lightbox' => FALSE,
+        'css_class' => '',
+);
+
+$import_file_nav_list[] =
+    array(
+        'link_id' => 'link_import_file',
+        'type' => 'text',
+        'page' => 'import',
+        'query' => array('view' => 'json_import'),
+        'mkname' => 'json_import',
+        'lightbox' => FALSE,
+        'css_class' => '',
+);
+
+$import_file_nav_links =
+    array(
+        'view_state' => 'min',
+        'edit_state' => 'view',
+        'sf_nav_type' => 'name',
+        'sf_title' => 'jsonimport',
+        'sf_html_id' => 'import_file_nav_links', // Must be unique
+        'script' => 'php/subforms/sf_linklist.php',
+        'op_modtype' => FALSE, //if each modtype uses same fields (see below)
+        // Does the linklist use an icon instead of a label as link
+        'op_linktype' => 'link',
+        'op_sf_cssclass' => 'module_list',
+        'links' => $import_file_nav_list
+    );
+
+$import_nav_col =
+    array(
+        'column_id' => 'import_nav_col',
+        'col_id' => 'main_column',
+        'col_alias' => FALSE,
+        'col_type' => 'primary_col',
+        'col_mkname' => FALSE,
+        'subforms' => array(
+            $import_db_nav_links,
+            $import_file_nav_links,
+            $conf_mcd_adminmenu,
+        ),
+    );
+
+$import_page_nav =
+    array(
+        'layout_id' => 'import_page_nav',
+        'mkname' => 'importoptions',
+        'op_display_type' => 'cols',
+        'op_top_col' => 'main_column',
+        'columns' => array(
+            $import_nav_col,
+        ),
+    );
+
 
 // HIDDEN PAGES
 // FEED PAGE SETTINGS
