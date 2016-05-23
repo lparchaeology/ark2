@@ -75,6 +75,8 @@ $view = reqArkVar('view'); // beware! this is not really used by data_view (left
 $ftr_mode = reqArkVar('ftr_mode', 'standard'); // this is page specific... move out of this block? GH 24/11/11
 $results_mode = reqArkVar('results_mode', 'disp'); // this is page specific... move out of this block? GH 24/11/11
 $ste_cd = reqArkVar('ste_cd', $default_site_cd);
+$item_key = reqArkVar('item_key', $default_itemkey);
+$$item_key = reqQst($_REQUEST, $item_key);
 $phpsessid = reqQst($_REQUEST, 'PHPSESSID');
 $update_db = reqQst($_REQUEST, 'update_db');
 $submiss_serial = reqArkVar('submiss_serial');
@@ -267,14 +269,10 @@ $wrapperclass = "wrp_results";
 // ---------OUTPUT--------- //
 
 include($skin_dir."/templates/inc-header.php");
+include($page_conf->codeDir().'page_nav.php');
 
 ?>
 
-<div id="lpanel" class="leftpanel">
-<?php
-include($cur_code_dir."/filter_panel.php");
-?>
-</div>
 <div class="data_view_content">
 
 
