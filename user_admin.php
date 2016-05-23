@@ -145,13 +145,9 @@ if ($update_db) {
 $javascript = mkJavaScriptSource($page_conf->name());
 
 include($skin_dir."/templates/inc-header.php");
+include('php/common/page_nav.php');
 ?>
 
-<!-- BEGIN leftpanel -->
-    <div id="lpanel" class="leftpanel">
-        <?php include_once($cur_code_dir.'left_panel.php') ?>
-    </div>
-    
     <!-- BEGIN maincontent -->
     <div id="main" class="main_normal">
 
