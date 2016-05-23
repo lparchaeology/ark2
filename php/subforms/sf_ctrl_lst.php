@@ -233,7 +233,7 @@ switch($stage) {
         $form = "<p>$mk_newtermlab $new_attr</p>\n";
         $form .= $similar;
         $form .= "<p>$mk_ifsure</p>\n";
-        // $form .= "<p><a href=\"{$_SERVER['PHP_SELF']}?reset=1&amp;sf_conf=conf_mcd_addctrllst\">$mk_tryotherterm</a></p>\n";        
+        // $form .= "<p><a href=\"{$_SERVER['PHP_SELF']}?reset=1&amp;subform_id=ctrllst\">$mk_tryotherterm</a></p>\n";
         $form .= "<form method=\"$form_method\" id=\"edit_controlled_list\" action=\"{$_SERVER['PHP_SELF']}\">\n";
         $form .= "<fieldset>\n";
         $form .= "<input type=\"hidden\" name=\"submiss_serial\" value=\"{$_SESSION['submiss_serial']}\" />\n";

@@ -125,22 +125,22 @@ if ($mod_short) {
     //Pull mod specific settings
     $module = 'mod_'.$mod_short;
     $mod_alias = getAlias('cor_tbl_module', $lang, 'itemkey', $sf_key, 1);
+    //TODO Delete include once all overlays converted
     include_once ("config/mod_{$mod_short}_settings.php");
 }
 
 // CONTENT Setup
 // Set up a column to hold the subform. NB: Only ONE subform is permitted
-// Get the name of the subform
-if (!$sf_conf_name = reqQst($_REQUEST,'sf_conf')) {
-    echo "ADMIN ERROR: send name of sf_conf to overlay_holder.php<br/>\n";
-    $admin_error = TRUE;
-}
-// Get the sf_conf
-if (!isset($$sf_conf_name)) {
-    echo "ADMIN ERROR: sf_conf: $sf_conf_name not found by overlay_holder.php in mod_{$mod_short}_settings.php<br/>\n";
-    $admin_error = TRUE;
-} else {
+if ($subform_id = reqQst($_REQUEST,'subform_id')) {
+    $sf = new ARK\Web\SubformConfig($subform_id);
+    $sf_conf = $sf->config();
+    unset($sf);
+} elseif ($sf_conf_name = reqQst($_REQUEST,'sf_conf')) {
+    //TODO Delete include once all overlays converted
     $sf_conf = $$sf_conf_name;
+} else {
+    echo "ADMIN ERROR: no sf_conf or subform_id found for overlay_holder to use<br/>\n";
+    $admin_error = TRUE;
 }
 
 // ANON LOGINS
