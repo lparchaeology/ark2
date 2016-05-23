@@ -1510,9 +1510,11 @@ function chkItemListAllowBlank($var, $val_vars, $field_vars)
 function chkSfCond($itemkey, $itemvalue, $sf_cond) {
     foreach ($sf_cond as $key => $value) {
         $func = $value['func'];
-        $return = $func($itemkey,$itemvalue,$value['args']);
+        if (!$func($itemkey,$itemvalue,$value['args'])) {
+            return FALSE;
+        }
     }
-    return $return;
+    return TRUE;
 }
 
 /// }}}
