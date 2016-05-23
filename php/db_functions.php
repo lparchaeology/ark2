@@ -167,6 +167,55 @@ function dbError($ex,$err = "")
     echo "$err $ex";
 }
 // }}} dbError()
+// {{{ getSelectAllRows()
+
+/**
+ * gets multiple rows from the db
+ *
+ * @param string $tbl  The table to select from
+ * @param array $where  Array of field/value to select with
+ * @param array $cols  The columns to select
+ * @param string $distinct  Distinct select
+ * @return array $res_arr  Array of results, empty if none
+ * @author John Layt
+ * @since 2.0
+ */
+
+function dbSelectAllRows($tbl, $where=FALSE, $cols=FALSE, $distinct=FALSE)
+{
+    if (is_array($where) and count($where)) {
+        $where = 'WHERE '.implode(' = ? AND', array_keys($where)).' = ?';
+        $parms = array_values($where);
+    } else {
+        $where = '';
+        $params = array();
+    }
+    if (is_array($cols) and count($cols)) {
+        $cols = implode(',', $cols);
+    } elseif (!$cols) {
+        $cols = '*';
+    }
+    if ($distinct == TRUE) {
+        $distinct = 'DISTINCT';
+    } else {
+        $distinct = '';
+    }
+    $sql = "
+        SELECT $distinct $cols
+        FROM $tbl
+        $where
+    ";
+    $sql = dbPrepareQuery($sql, __FUNCTION__);
+    $sql = dbExecuteQuery($sql, $params, __FUNCTION__);
+    $results = array();
+    // return the results
+    while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
+        $results[] = $row;
+    }
+    return ($results);
+}
+
+// }}} getSelectAllRows()
 // {{{ dbRunAddQuery()
 
 /**
