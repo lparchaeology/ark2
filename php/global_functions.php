@@ -1068,6 +1068,44 @@ function ddSimple($top_id, $top_val, $lut, $nickname, $dd_name, $order, $return_
 }
 
 // }}}
+// {{{ ddSimpleAlias()
+
+/**
+* Makes a dropdown menu from the db using an alias for the display value
+*
+* @param string $dd_name  The name attribute of the select tag
+* @param string $id_tbl  The table for the option values
+* @param string $id_col  The column of the option value
+* @param string $alias_tbl  The table for the Alias values
+* @param string $alias_col  The column of the Alias value
+* @return string $dd  The html select element
+* @author John Layt
+* @since 2.0
+*/
+
+function ddSimpleAlias($dd_name, $id_tbl, $id_col, $alias_tbl, $alias_col, $selected_id = FALSE)
+{
+    global $lang;
+    $dd = "<select name=\"$dd_name\" id=\"dd_$dd_name\">";
+    //Set a default if needed
+    if (!$selected_id) {
+        $dd .= "<option value=\"\">'---select---'</option>\n";
+    }
+    $options = dbSelectAllRows($id_tbl, FALSE, array($id_col));
+    foreach ($options as $option) {
+        $value = $option[$id_col];
+        $alias = getAlias($alias_tbl, $lang, $alias_col, $value, 1);
+        if ($value == $selected_id) {
+            $dd .= "<option value=\"$value\" selected>$alias</option>\n";
+        } else {
+            $dd .= "<option value=\"$value\">$alias</option>\n";
+        }
+    }
+    $dd .= '</select>';
+    return($dd);
+}
+
+// }}}
 // {{{ ddUnique
 
 /**
@@ -1307,14 +1345,19 @@ function doubleNeedle($needle, $haystack)
 
 function dynLink($dir, $name, $value)
 {
-    if ($dir == 'prev') {
+    if ($dir == 'first') {
         $chevrons = '&lt;&lt;';
     }
-    if ($dir == 'next') {
+    if ($dir == 'last') {
         $chevrons = '&gt;&gt;';
     }
-    $var = "<a href=\"{$_SERVER['PHP_SELF']}?item_key=$name&amp;$name=$value\" class=\"chevrons\">$chevrons</a>";
-    return($var);
+    if ($dir == 'prev') {
+        $chevrons = '&lt;';
+    }
+    if ($dir == 'next') {
+        $chevrons = '&gt;';
+    }
+    return "<a href=\"{$_SERVER['PHP_SELF']}?item_key=$name&amp;$name=$value\" class=\"chevrons\">$chevrons</a>";
 }
 
 // }}}
@@ -2023,7 +2066,7 @@ function frmElem($field, $itemkey, $itemvalue=FALSE)
     }    
     // for class 'file'
     if ($field['dataclass'] == 'file') {
-        global $sf_display, $conf_media_browser;
+        global $sf_display, $default_media_browser;
         if (!is_numeric($field['classtype'])) {
             $filetype = getSingle('id', 'cor_lut_filetype', "filetype = \"{$field['classtype']}\"");
         }
@@ -2046,7 +2089,7 @@ function frmElem($field, $itemkey, $itemvalue=FALSE)
             //add the option for the media browser and also a hidden field to take the file_ids from the media browser
             $var = "<input type=\"hidden\" name=\"{$field['classtype']}_qtype\" value=\"add\" />\n";
             $var .= "<input type=\"hidden\" id=\"mb_fileform\" name=\"{$field['classtype']}[]\" value=\"\" />";
-            $var .= "<a class=\"btn cboxlarge\" href=\"overlay_holder.php?lboxreload=$lboxreload&sf_conf=$conf_media_browser&link_file=$link_file_val&sf_val=$itemvalue&sf_key=$itemkey&filetype=$filetype\">";
+            $var .= "<a class=\"btn cboxlarge\" href=\"overlay_holder.php?lboxreload=$lboxreload&subform_id=$default_media_browser&link_file=$link_file_val&sf_val=$itemvalue&sf_key=$itemkey&filetype=$filetype\">";
             $var .= "<img src=\"$skin_path/images/recordnav/addfile.png\" alt=\"media_browser\" class=\"med\"/></a>";
             $var .= "<ul id=\"mb_file_list\"></ul>";
             $var .= $mk_nofiles;
@@ -2749,66 +2792,89 @@ function mkJsVars($vars, $json_name)
 }
 
 // }}}
-// {{{ mkLeftPanelLink()
+// {{{ mkLink()
 
 /**
-* takes the left panel array from the settings file and creates a link
+* Make a link from a standard link config
 *
-* @param array $left_panel the left panel array from the settings file 
-* @return $var string  the left panel link
+* @param array $link The link settings
+* @param string $type An override link type (optional)
+* @return $var string  the link html
 * @author Henriette Roued
-* @since v0.6
+* @author John Layt
+* @since v2.0
 *
-* Significantly rewritten at v0.9 by GH 22/2/2011
-*
-*
+* Replaced mkLeftPanalLink in 2.0
 */
 
-function mkLeftPanelLink($link, $linktype)
+function mkLink($link, $type='')
 {
     global $lang, $skin_path;
-    // pre-flight checks
-    if (!array_key_exists('css_class', $link)) {
-        echo "ADMIN ERROR: as of v1.0 left panel links require parameter 'css_class' (use FALSE if not required)";
-        return FALSE;
-    }
-    if (!array_key_exists('lightbox', $link)) {
-        echo "ADMIN ERROR: as of v1.0 left panel links require parameter 'lightbox' (use FALSE if not required)";
-        return FALSE;
+    if ($type) {
+        $link_type = $type;
+    } else {
+        $link_type = $link['type'];
     }
     // markup
-    $mk = getMarkup('cor_tbl_markup', $lang, $link['mknname']);
+    if ($link['mkname']) {
+        $mk = getMarkup('cor_tbl_markup', $lang, $link['mkname']);
+        $alt = "alt=\"$mk\"";
+    } else {
+        $mk = '';
+        $alt = '';
+    }
+    // set href if required
+    if ($link['href']) {
+        $href = "href=\"{$link['href']}\"";
+    } else {
+        $href = '';
+    }
     // set css class if required
     if ($link['css_class']) {
-        $css_class = " class=\"{$link['css_class']}";
+        // set light box if required
+        if ($link['lightbox']) {
+            $css_class = "class=\"{$link['css_class']} colorbox\"";
+        } else {
+            $css_class = "class=\"{$link['css_class']}\"";
+        }
     } else {
-        $css_class = FALSE;
+        $css_class = '';
     }
-    // set light box if required
-    if (reqQst($link,'lightbox')) {
-        $css_class .= " colorbox\"";
-        $lightbox = "";
+    // set img if required
+    if ($link['img']) {
+        $img_src = "src=\"{$skin_path}/images/{$link['img']}\"";
     } else {
-        $lightbox = FALSE;
-        $css_class .= "\"";
+        $img_src = '';
     }
-    // If the linktype is image, put in an icon-based link
-    if ($linktype == 'icon') {
-        $lp_href = $link['href'];
-        $lp_icon = $link['img'];
-        $img = "<img src=\"{$skin_path}/images/plusminus/$lp_icon\" alt=\"$mk\" class=\"med\" />";
-        $var = '<li><label>';
-        $var .= $mk;
-        $var .= '</label>';
-        $var .= "<a href=\"$lp_href\" $lightbox $css_class >";
-        $var .= $img;
-        $var .= '</a></li>';
+    // set img class if required
+    if ($link['img_class']) {
+        $img_class = "class=\"{$link['img_class']}\"";
+    } else {
+        $img_class = '';
+    }
+    if ($link_type == 'icon') {
+        $var = "<label>$mk</label>";
+        $var .= "<a $href $css_class >";
+        if ($img_src) {
+            $var .= "<img $img_src $alt $img_class />";
+        }
+        $var .= '</a>';
+    } else if ($link_type == 'img') {
+        $var = "<a $href $css_class >";
+        if ($img_src) {
+            $var .= "<img $img_src $alt $img_class />";
+        }
+        $var .= '</a>';
     } else {
         // We will use a text-based link as default
-        $lp_href = $link['href'];
-        $var = "<li><h4><a href=\"$lp_href\" $lightbox $css_class >";
+        $var = "<a $href $css_class >";
         $var .= $mk;
-        $var .= '</a></h4></li>';
+        $var .= '</a>';
+    }
+    if (array_key_exists('links', $link)) {
+        foreach ($link['links'] as $sublink) {
+            $var .= mkLink($sublink, $type);
+        }
     }
     return $var;
 }
@@ -3683,7 +3749,7 @@ function mkRecordNav($conf, $rec_page, $current_view, $item_key=FALSE, $item_val
                     $regtools = "<a href=\"overlay_holder.php?";
                     $regtools .= "overlay=true&amp;";
                     $regtools .= "lboxreload=1&amp;";
-                    $regtools .= "sf_conf=conf_mcd_newstecode\" rel=\"lightbox|200\"";
+                    $regtools .= "subform_id=newstecode\" rel=\"lightbox|200\"";
                     $regtools .= "class=\"gears\"";
                     $regtools .= "title=\"Admin Tools - Add Site Code\">";
                     // put in the tool
@@ -3771,12 +3837,6 @@ function mkRecordNav($conf, $rec_page, $current_view, $item_key=FALSE, $item_val
                 } else {
                     $lightbox = FALSE;
                     $css_class .= "\"";
-                }
-               // set a reload page if required
-                if (array_key_exists('reloadpage', $button)) {
-                    $reloadpage = "{$button['reloadpage']}";
-                } else {
-                    $reloadpage = FALSE;
                 }
                 // Change behaviour depending on link type
                 switch ($button['name']) {
@@ -3902,7 +3962,7 @@ function mkRecordNav($conf, $rec_page, $current_view, $item_key=FALSE, $item_val
                         $chgitemval .= "$item_key={$item_val}&amp;";
                         $chgitemval .= "lang=$lang&amp;";
                         $chgitemval .= "lboxreload=1&amp;";
-                        $chgitemval .= "reloadpage=$reloadpage&amp;";
+                        $chgitemval .= "reloadpage={$button['reloadpage']}.php&amp;";
                         $chgitemval .= "sf_conf=conf_mcd_itemval\" rel=\"lightbox|200\"";
                         // decide if this is a text based icon or a graphic
                         if ($button['type'] == 'text') {
@@ -5109,8 +5169,6 @@ function mkSearchType($modes, $name, $item_key, $default, $width, $link=FALSE)
 
 // }}}
 
-
-
 // {{{ mkSteCdNav()
 
 /**
@@ -5132,7 +5190,7 @@ function mkSearchType($modes, $name, $item_key, $default, $width, $link=FALSE)
 *
 */
 
-function mkSteCdNav($ol = FALSE)
+function mkSteCdNav($overlay = FALSE)
 {
     // set up global vars
     global $ste_cd, $lang, $default_site_cd, $form_method;
@@ -5142,59 +5200,121 @@ function mkSteCdNav($ol = FALSE)
     if (!$ste_cd) {
         echo "ADMIN ERROR: mkSteCdNav() no ste_cd is set up (check for default failed)<br/>";
     }
-    // handle overlay mode
-    $ol_var = FALSE;    
-    if ($ol == 'overlay') {
-        global $item_key, $$item_key;
-        $lboxreload = reqQst($_REQUEST, 'lboxreload');
-        $sf_conf_name = reqQst($_REQUEST, 'sf_conf');
-        $ol_var = "<input type=\"hidden\" name=\"sf_conf\" value=\"{$sf_conf_name}\" />\n";
-        $ol_var .= "<input type=\"hidden\" name=\"lboxreload\" value=\"{$lboxreload}\" />\n";
-        $ol_var .= "<input type=\"hidden\" name=\"item_key\" value=\"{$item_key}\" />\n";
-        $ol_var .= "<input type=\"hidden\" name=\"$item_key\" value=\"{$$item_key}\" />\n";
+
+    $sites = array();
+    $rows = dbSelectAllRows('cor_tbl_ste', FALSE, array('id'));
+    foreach ($rows as $row) {
+        $sites[] = $row['id'];
     }
-    // Check if there is more than one site code in the database
-    // SQL
-    $sql = "
-        SELECT *
-        FROM cor_tbl_ste
-    ";
-    $params = array();
-    // Run the query
-    $sql = dbPrepareQuery($sql,__FUNCTION__);
-    $sql = dbExecuteQuery($sql,$params,__FUNCTION__);
-    // handle the result
-    $i = 0;
-    if ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
-        do {
-            $i++;
-        } while ($row = $sql->fetch(PDO::FETCH_ASSOC));
+
+    $form = "<form method=\"$form_method\" id=\"ste_cd_selector\" action=\"{$_SERVER['PHP_SELF']}\" class=\"row\">\n";
+    $form .= mkOverlayInputVars($overlay);
+    $form .= "<span class=\"input\">";
+    $form .= "<label>".getMarkup('cor_tbl_markup', $lang, 'ste_cd')."</label>\n";
+    $form .= "<select name=\"ste_cd\" id=\"dd_ste_cd\" onchange=\"this.form.submit();\" >";
+    foreach ($sites as $site) {
+        $value = "{$_SERVER['PHP_SELF']}?item_key=$site";
+        if ($site == $ste_cd) {
+            $form .= "<option value=\"$site\" selected>$site</option>\n";
+        } else {
+            $form .= "<option value=\"$site\">$site</option>\n";
+        }
     }
-    if ($i > 1) {
-        $enable_select = 1;
-    }
-    // OUTPUT A SELECTOR
-    $var = FALSE;
-    if (isset($enable_select)) {
-    //Draw a form with dd and submit
-        $dd = ddSimple($ste_cd, $ste_cd, 'cor_tbl_ste', 'id', 'ste_cd', '', 'code');
-        $mk_go = getMarkup('cor_tbl_markup', $lang, 'go');
-        $mk_stecd = getMarkup('cor_tbl_markup', $lang, 'ste_cd');
-        $var = "
-            <form method=\"$form_method\" id=\"ste_cd_selector\" action=\"{$_SERVER['PHP_SELF']}\" class=\"row\">\n
-            $ol_var
-            <label>$mk_stecd</label>\n
-            <span class=\"input\">$dd</span>
-            <span class=\"input\"><button type=\"submit\">$mk_go</button></span>
-            </form>\n\n
-        ";
-    }
-    // return the var (or FALSE)
-    return $var;
+    $form .= '</select>';
+    $form .= "</span>";
+    $form .= "</form>\n\n";
+    return $form;
 }
 
 // }}}
 
+// {{{ mkModNav()
+
+/**
+* Makes the module navigator for use in forms
+*
+* @param array $modules  Array of module short codes to be listed in required order, if empty or not set then lists all modules
+* @param string $selected  The module code to select by default, if FALSE then don't select any
+* @param string $overlay  switch to let this func know that it should handle overlay input vars
+* @return $var string  the module navigator
+* @author Stuart Eve
+* @author John Layt
+* @since v2.0
+*/
+
+function mkModNav($modules = array(), $selected = FALSE, $overlay = FALSE)
+{
+    // set up global vars
+    global $lang, $form_method;
+
+    $mods = array();
+    if (count($modules)) {
+        foreach ($modules as $mod_short) {
+            $mods[] = $mod_short.'_cd';
+        }
+    } else {
+        $rows = dbSelectAllRows('cor_tbl_module', FALSE, array('itemkey'));
+        foreach ($rows as $row) {
+            if ($row['itemkey'] != 'cor_cd') {
+                $mods[] = $row['itemkey'];
+            }
+        }
+    }
+
+    $form = "<form method=\"$form_method\" id=\"mod_cd_selector\" action=\"{$_SERVER['PHP_SELF']}\" class=\"row\">\n";
+    $form .= mkOverlayInputVars($overlay);
+    $form .= "<label>".getMarkup('cor_tbl_markup', $lang, 'module')."</label>\n";
+    $form .= "<span class=\"input\">";
+    $form .= "<select name=\"mod_cd\" id=\"dd_mod_cd\" onchange=\"this.form.action=this.value;this.form.submit();\" >";
+    if (!$selected) {
+        $form .= "<option value=\"\">'---select---'</option>\n";
+    }
+    foreach ($mods as $mod) {
+        $alias = getAlias('cor_tbl_module', $lang, 'itemkey', $mod, 1);
+        $value = "{$_SERVER['PHP_SELF']}?item_key=$mod";
+        if ($mod == $selected) {
+            $form .= "<option value=\"$value\" selected>$alias</option>\n";
+        } else {
+            $form .= "<option value=\"$value\">$alias</option>\n";
+        }
+    }
+    $form .= '</select>';
+    $form .= "</span>";
+    $form .= "</form>\n\n";
+    return $form;
+}
+
+// }}}
+
+// {{{ mkOverlayForm()
+
+/**
+* Makes the overlay form input vars if required
+*
+* @param string $overlay  switch to let this func know that it should handle overlay input vars
+* @return $var string  the module navigator
+* @author Stuart Eve
+* @author John Layt
+* @since v2.0
+*/
+
+function mkOverlayInputVars($ol = FALSE)
+{
+    // handle overlay mode
+    $var = '';
+    if ($ol == 'overlay') {
+        global $item_key, $$item_key;
+        $lboxreload = reqQst($_REQUEST, 'lboxreload');
+        $sf_conf_name = reqQst($_REQUEST, 'sf_conf');
+        $var .= "<input type=\"hidden\" name=\"sf_conf\" value=\"{$sf_conf_name}\" />\n";
+        $var .= "<input type=\"hidden\" name=\"lboxreload\" value=\"{$lboxreload}\" />\n";
+        $var .= "<input type=\"hidden\" name=\"item_key\" value=\"{$item_key}\" />\n";
+        $var .= "<input type=\"hidden\" name=\"$item_key\" value=\"{$$item_key}\" />\n";
+    }
+    return $var;
+}
+
+// }}}
 
 // {{{ mkTblTh()
 
