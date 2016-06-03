@@ -1,0 +1,41 @@
+{# Define the standard navbar block #}
+{% block navbar %}
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ path('homepage') }}">{{ 'site.brand' | translate }}</a>
+            </div><!-- /.navbar.header -->
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    {% if global.user %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                {{ 'user.greeting' | translate('default', {'%name%': global.user.displayName }) }}
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ path('user') }}"><span class="glyphicon glyphicon-user"></span> {{ 'user.menu.view' | translate }}</a></li>
+                                <li><a href="{{ path('user.profile-edit') }}"><span class="glyphicon glyphicon-edit"></span> {{ 'user.menu.edit' | translate }}</a></li>
+                                <li><a href="{{ path('user.change-password') }}"><span class="glyphicon glyphicon-lock"></span> {{ 'user.menu.password' | translate }}</a></li>
+                                <li><a href="{{ path('user.list') }}"><span class="glyphicon glyphicon-list"></span> {{ 'user.menu.list' | translate }}</a></li>
+                                <li><a href="{{ path('user.logout') }}"><span class="glyphicon glyphicon-off"></span> {{ 'user.menu.logout' | translate }}</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li><a href="{{ path('user.login') }}">{{ 'user.menu.login' | translate }}</a></li>
+                        <li><a href="{{ path('user.register') }}">{{ 'user.menu.register' | translate }}</a></li>
+                    {% endif %}
+                </ul>
+                <form class="navbar-form navbar-right">
+                    <input type="text" class="form-control" placeholder="{{ 'search.placeholder' | translate }}">
+                </form>
+            </div><!-- /.navbar.collapse -->
+        </div><!-- /.container-fluid -->
+    </nav><!-- /.navbar -->
+{% endblock navbar %}

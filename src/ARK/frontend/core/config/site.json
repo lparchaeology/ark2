@@ -1,0 +1,13 @@
+{
+    "site": "core",
+    "debug": true,
+    "locale": "en",
+    "api": {
+        "enable": true,
+        "path": "/api/v2"
+    },
+    "web": {
+        "enable": true,
+        "frontend": "core"
+    }
+}

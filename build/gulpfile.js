@@ -6,61 +6,134 @@ var autoprefixer = require('gulp-autoprefixer');
 var uglify = require('gulp-uglifyjs');
 var rename = require('gulp-rename');
 var fs = require("fs");
+var merge = require('merge-stream');
+var concat = require('gulp-concat');
 
 /*
- * Default task to provide help on available tasks
+ * core task to provide help on available tasks
  */
-gulp.task('default', function() {
+gulp.task('core', function() {
     console.log('Welcome to the ARK 2 build system!');
     console.log('Available tasks via "npm run <task>"');
-    console.log('  "build" - Build and install all assets');
-    console.log('  "fonts" - Build and install just fonts');
-    console.log('  "js" - Build and install just javascript');
-    console.log('  "css" - Build and install just css');
+    console.log('  "create" - Create a new Frontend');
+    console.log('  "build" - Build all Frontend assets');
+    console.log('  "web" - Build just web directory');
+    console.log('  "config" - Build just config');
+    console.log('  "fonts" - Build just fonts');
+    console.log('  "images" - Build just images');
+    console.log('  "js" - Build just javascript');
+    console.log('  "css" - Build just css');
+    console.log('  "xliff" - Build just xliff');
+    console.log('  "bin" - Build just bin directory');
 });
 
 var config = {
     assetsDir: './assets',
-    rootDir: '../web',
+    srcDir: '../src',
     vendorDir: './vendor',
     bootstrapDir: './vendor/bootstrap-sass/assets',
 };
 
 /*
- * Task to create new theme
+ * Task to create new frontend
  */
 gulp.task('create', function() {
-    var theme = (util.env.theme || 'default');
-    var src = config.assetsDir + '/default/**/*';
-    var dest = config.assetsDir + '/' + theme;
+    var frontend = (util.env.frontend || 'core');
+    var src = [config.assetsDir + '/core/**/*', config.assetsDir + '/core/**/.*'];
+    var dest = config.assetsDir + '/' + frontend;
     try {
         fs.statSync(dest);
-        util.log('Theme already exists!');
+        util.log('Frontend already exists!');
         return util.noop();
     } catch(e) {
-        return gulp.src([src])
+        return gulp.src(src)
                    .pipe(gulp.dest(dest));
     }
 });
 
 /*
- * Task to install required fonts into the theme
+ * Task to install required web files into the frontend
  */
-gulp.task('fonts', function() {
-    var theme = (util.env.theme || 'default');
-    var src = config.bootstrapDir + '/fonts/**/*';
-    var dest = config.rootDir + '/themes/' + theme + '/fonts';
+gulp.task('web', function() {
+    var frontend = (util.env.frontend || 'core');
+    var namespace = (util.env.namespace || 'ARK');
+    var src = [config.assetsDir + '/' + frontend + '/web/**/*', config.assetsDir + '/' + frontend + '/web/**/.*'];
+    var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/web';
+    return gulp.src(src)
+               .pipe(gulp.dest(dest));
+});
+
+/*
+ * Task to install required config files into the frontend
+ */
+gulp.task('config', function() {
+    var frontend = (util.env.frontend || 'core');
+    var namespace = (util.env.namespace || 'ARK');
+    var src = config.assetsDir + '/' + frontend + '/config/**/*';
+    var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/config';
     return gulp.src([src])
                .pipe(gulp.dest(dest));
 });
 
 /*
- * Task to install required twig templates into the theme
+ * Task to install required config files into the frontend
+ */
+gulp.task('bin', function() {
+    var frontend = (util.env.frontend || 'core');
+    var namespace = (util.env.namespace || 'ARK');
+    var src = config.assetsDir + '/' + frontend + '/bin/**/*';
+    var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/bin';
+    return gulp.src([src])
+               .pipe(gulp.dest(dest));
+});
+
+/*
+ * Task to install required xliff files into the frontend
+ */
+gulp.task('xliff', function() {
+    var frontend = (util.env.frontend || 'core');
+    var namespace = (util.env.namespace || 'ARK');
+    var src = config.assetsDir + '/' + frontend + '/xliff/**/*';
+    var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/translations';
+    return gulp.src([src])
+               .pipe(gulp.dest(dest));
+});
+
+/*
+ * Task to install required fonts into the frontend
+ */
+gulp.task('fonts', function() {
+    var frontend = (util.env.frontend || 'core');
+    var namespace = (util.env.namespace || 'ARK');
+    var src = config.bootstrapDir + '/fonts/**/*';
+    var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/assets/fonts';
+    return gulp.src([src])
+               .pipe(gulp.dest(dest));
+});
+
+/*
+ * Task to install required images into the frontend
+ */
+gulp.task('images', function() {
+    var frontend = (util.env.frontend || 'core');
+    var namespace = (util.env.namespace || 'ARK');
+    var src = [
+        config.vendorDir + '/x-editable/dist/bootstrap3-editable/img/**/*',
+        config.assetsDir + '/' + frontend + '/images/**/*'
+    ];
+    var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/assets/images';
+    return gulp.src(src)
+               .pipe(gulp.dest(dest));
+});
+
+/*
+ * Task to install required twig templates into the frontend
  */
 gulp.task('twig', function() {
-    var theme = (util.env.theme || 'default');
-    var src = config.assetsDir + '/' + theme + '/twig/**/*';
-    var dest = config.rootDir + '/themes/' + theme + '/templates';
+    var frontend = (util.env.frontend || 'core');
+    var namespace = (util.env.namespace || 'ARK');
+    var src = config.assetsDir + '/' + frontend + '/twig/**/*';
+    var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/templates';
     return gulp.src([src])
                .pipe(gulp.dest(dest));
 });
@@ -69,17 +142,41 @@ gulp.task('twig', function() {
  * Task to compile required js into single minified js file
  */
 gulp.task('js', function() {
-    var theme = (util.env.theme || 'default');
+    var frontend = (util.env.frontend || 'core');
+    var namespace = (util.env.namespace || 'ARK');
     var src = [
-        config.vendorDir + '/jquery/dist/jquery.min.js',
+        config.vendorDir + '/jquery/dist/jquery.js',
         config.bootstrapDir + '/javascripts/bootstrap.js',
+        config.vendorDir + '/select2/dist/js/select2.js',
+        config.vendorDir + '/file-saver.js/FileSaver.js',
+        config.vendorDir + '/tableExport.jquery.plugin/tableExport.min.js',
+        config.vendorDir + '/col-resizable/colResizable-1.6.js',
+        config.vendorDir + '/moment/moment.js',
+        config.vendorDir + '/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.js',
+        config.vendorDir + '/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.js',
+        config.vendorDir + '/bootstrap-table/dist/bootstrap-table.js',
+        config.vendorDir + '/bootstrap-table/dist/extensions/accent-neutralise/bootstrap-table-accent-neutralise.js',
+        config.vendorDir + '/bootstrap-table/dist/extensions/cookie/bootstrap-table-cookie.js',
+        config.vendorDir + '/bootstrap-table/dist/extensions/copy-rows/bootstrap-table-copy-rows.js',
+        config.vendorDir + '/bootstrap-table/dist/extensions/editable/bootstrap-table-editable.js',
+        config.vendorDir + '/bootstrap-table/dist/extensions/export/bootstrap-table-export.js',
+        config.vendorDir + '/bootstrap-table/dist/extensions/flat-json/bootstrap-table-flat-json.js',
+        config.vendorDir + '/bootstrap-table/dist/extensions/mobile/bootstrap-table-mobile.js',
+        config.vendorDir + '/bootstrap-table/dist/extensions/multiple-search/bootstrap-table-multiple-search.js',
+        config.vendorDir + '/bootstrap-table/dist/extensions/multiple-sort/bootstrap-table-multiple-sort.js',
+        config.vendorDir + '/bootstrap-table/dist/extensions/natural-sort/bootstrap-table-natural-sort.js',
+        config.vendorDir + '/bootstrap-table/dist/extensions/resizeable/bootstrap-table-resizeable.js',
+        config.vendorDir + '/bootstrap-table/dist/extensions/select2-filter/bootstrap-table-select2-filter.js',
+        config.vendorDir + '/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.js',
+        config.assetsDir + '/' + frontend + '/js/**/*'
     ];
-    var dest = config.rootDir + '/themes/' + theme + '/scripts';
+    var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/assets/scripts';
     var conf = {
         compress: false,
         outSourceMap: true,
-    }
+    };
     return gulp.src(src)
+               .pipe(concat('ark.js'))
                .pipe(uglify('ark.min.js', conf))
                .pipe(gulp.dest(dest));
 });
@@ -88,17 +185,25 @@ gulp.task('js', function() {
  * Task to compile required Sass templates into single minified CSS file
  */
 gulp.task('css', function() {
-    var theme = (util.env.theme || 'default');
-    var src = './assets/' + theme + '/scss/ark.scss';
-    var dest = config.rootDir + '/themes/' + theme + '/styles';
+    var frontend = (util.env.frontend || 'core');
+    var namespace = (util.env.namespace || 'ARK');
+    var sassSrc = './assets/' + frontend + '/scss/ark.scss';
+    var cssSrc = [
+        config.vendorDir + '/select2/dist/css/select2.min.css',
+        config.vendorDir + '/select2-bootstrap-frontend/dist/select2-bootstrap.min.css',
+        config.vendorDir + '/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.css',
+        config.vendorDir + '/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css',
+        config.vendorDir + '/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css'
+    ];
+    var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/assets/styles';
     var mapsConf = {
         loadMaps: true,
-    }
+    };
     var sassConf = {
         outputStyle: 'compressed',
         includePaths: [config.bootstrapDir + '/stylesheets'],
         precision: 8,
-    }
+    };
     var prefixConf = {
         // Bootstrap 3 supported browsers, see bootstrap-sass docs
         browsers: [
@@ -111,17 +216,22 @@ gulp.task('css', function() {
             "Opera >= 12",
             "Safari >= 6"
         ]
-    }
-    return gulp.src(src)
-               .pipe(sourcemaps.init(mapsConf))
-               .pipe(sass(sassConf).on('error', sass.logError))
-               .pipe(autoprefixer(prefixConf))
-               .pipe(rename('ark.min.css'))
-               .pipe(sourcemaps.write('.'))
-               .pipe(gulp.dest(dest));
+    };
+    var sassStream = gulp.src(sassSrc)
+                         .pipe(sourcemaps.init(mapsConf))
+                         .pipe(sass(sassConf).on('error', sass.logError));
+
+    var cssStream = gulp.src(cssSrc)
+                        .pipe(concat('tmp.css'));
+
+    return merge(sassStream, cssStream)
+            .pipe(concat('ark.min.css'))
+            .pipe(autoprefixer(prefixConf))
+            .pipe(sourcemaps.write('.'))
+            .pipe(gulp.dest(dest));
 });
 
 /*
- * Task to build and install theme, i.e. fonts, js, css, and templates
+ * Task to build and install frontend, i.e. fonts, js, css, and templates
  */
-gulp.task('build', ['fonts', 'js', 'css', 'twig']);
+gulp.task('build', ['fonts', 'images', 'js', 'css', 'twig', 'xliff', 'web', 'config', 'bin']);

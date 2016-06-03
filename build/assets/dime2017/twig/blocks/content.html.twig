@@ -1,0 +1,39 @@
+{# Define the standard content block #}
+{% block content %}
+
+    {% block flash %}{% endblock %}
+
+    {% if item_form is defined %}
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-inline form-group">
+                    {{ form_start(item_form) }}
+                    {{ form_widget(item_form) }}
+                    {{ form_end(item_form) }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if layout is defined %}
+        {% for element in layout.elements %}
+            {% if forms is defined and forms[element.id] is defined %}
+                {% include element.template() with {'layout': element, 'forms': forms[element.id]} %}
+            {% else %}
+                {% include element.template() with {'layout': element} %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% if contents is defined %}
+        <div class="row dime-content">
+            <div class="col-xs-6 content-col-1">
+                {{ contents|raw }}
+            </div>
+            <div class="col-xs-6 content-col-2">
+                {{ contents2|raw }}
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock content %}

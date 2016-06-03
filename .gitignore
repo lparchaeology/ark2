@@ -2,4 +2,10 @@
 .kdev4
 /build/node_modules
 /build/vendor
+/sites/**/
+!/sites/*.json
 /vendor/
+.settings/
+.buildpath
+.project
+composer.lock

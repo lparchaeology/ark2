@@ -1,0 +1,1099 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.concrete5.org/doctrine-xml/0.5">
+  <table name="abk_lut_abktype">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="abktype" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="abk_tbl_abk">
+    <field name="abk_cd" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="abk_no" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="ste_cd" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="abktype" type="integer">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_lut_actiontype">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="actiontype" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="module" type="string" size="3">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_lut_aliastype">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="aliastype" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_lut_attribute">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="attribute" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="attributetype" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="module" type="string" size="3">
+      <default value="cxt"/>
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_lut_attributetype">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="attributetype" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="module" type="string" size="3">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_lut_datetype">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="datetype" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="module" type="string" size="3">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_lut_file">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="filename" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="uri" type="text" size="65535"/>
+    <field name="filetype" type="integer">
+      <notnull/>
+    </field>
+    <field name="module" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="batch" type="string" size="255">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_lut_filetype">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="filetype" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_lut_language">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="language" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_lut_numbertype">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="numbertype" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="module" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="qualifier" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="type" type="string" size="10">
+      <default value="number"/>
+      <notnull/>
+    </field>
+    <field name="multiple_of" type="float" size="10.0"/>
+    <field name="minimum" type="float" size="10.0"/>
+    <field name="exclusive_minimum" type="boolean"/>
+    <field name="maximum" type="float" size="10.0"/>
+    <field name="exclusive_maximum" type="float" size="10.0"/>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_lut_spanlabel">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="spantype" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="typemod" type="string" size="3">
+      <notnull/>
+    </field>
+    <field name="spanlabel" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_lut_spantype">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="spantype" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="meta" type="text" size="16777215">
+      <notnull/>
+    </field>
+    <field name="evaluation" type="text" size="16777215">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_lut_txttype">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="txttype" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="module" type="string" size="3">
+      <notnull/>
+    </field>
+    <field name="min_length" type="integer"/>
+    <field name="max_length" type="integer"/>
+    <field name="pattern" type="string" size="30"/>
+    <field name="format" type="string" size="20"/>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_action">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="actiontype" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="itemkey" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="itemvalue" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="actor_itemkey" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="actor_itemvalue" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_alias">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="alias" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="aliastype" type="integer">
+      <default value="1"/>
+      <notnull/>
+    </field>
+    <field name="language" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="itemkey" type="string" size="50">
+      <default value="cor_lut_txttype"/>
+      <notnull/>
+    </field>
+    <field name="itemvalue" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <index name="alias">
+      <col>alias</col>
+    </index>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_attribute">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="attribute" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="itemkey" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="itemvalue" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="boolean" type="boolean">
+      <default value="1"/>
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_cmap">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="nname" type="string" size="20">
+      <notnull/>
+    </field>
+    <field name="description" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="sourcedb" type="string" size="15">
+      <notnull/>
+    </field>
+    <field name="stecd" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="import_cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="import_cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <field name="type" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_cmap_data">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="cmap" type="string" size="100">
+      <notnull/>
+    </field>
+    <field name="sourcedata" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="sourcelocation" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="mapto_tbl" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="mapto_id" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="description" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="string" size="15">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_cmap_structure">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="cmap" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="tbl" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="col" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="class" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="uid_col" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="itemkey" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="raw_itemval_tbl" type="string" size="255">
+      <default value="FALSE"/>
+      <notnull/>
+    </field>
+    <field name="raw_itemval_col" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="raw_itemval_join_col" type="string" size="255">
+      <default value="FALSE"/>
+      <notnull/>
+    </field>
+    <field name="tbl_itemval_join_col" type="string" size="255">
+      <default value="FALSE"/>
+      <notnull/>
+    </field>
+    <field name="type" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="lang" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="true" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="false" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="notset" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="lut_tbl" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="lut_idcol" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="lut_valcol" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="end_source_col" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="xmi_itemkey" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="xmi_itemval_col" type="string" size="100">
+      <notnull/>
+    </field>
+    <field name="ark_mod" type="string" size="3">
+      <notnull/>
+      <fixed/>
+    </field>
+    <field name="log" type="string" size="3">
+      <default value="yes"/>
+      <notnull/>
+      <fixed/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_col">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="dbname" type="string" size="25">
+      <notnull/>
+    </field>
+    <field name="description" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="1"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_date">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="datetype" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="itemkey" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="itemvalue" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="date" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_file">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="itemkey" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="itemvalue" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="file" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <index name="txt">
+      <col>file</col>
+    </index>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_filter">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="filter" type="text" size="65535">
+      <notnull/>
+    </field>
+    <field name="type" type="string" size="6">
+      <notnull/>
+    </field>
+    <field name="nname" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="sgrp" type="integer">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="string" size="3">
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_log">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="event" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="ref" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="refid" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="vars" type="text">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_map">
+    <field name="id" type="integer">
+      <unsigned/>
+      <notnull/>
+    </field>
+    <field name="ste_cd" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="map_cd" type="string" size="30">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <notnull/>
+    </field>
+    <field name="cre_on" type="integer"/>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_maplayer">
+    <field name="id" type="integer">
+      <notnull/>
+    </field>
+    <field name="map" type="integer">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_markup">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="nname" type="string" size="25">
+      <notnull/>
+    </field>
+    <field name="markup" type="text" size="65535">
+      <notnull/>
+    </field>
+    <field name="mod_short" type="text" size="65535">
+      <notnull/>
+    </field>
+    <field name="language" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="description" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_module">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="itemkey" type="string" size="6">
+      <notnull/>
+    </field>
+    <field name="name" type="string" size="20">
+      <notnull/>
+    </field>
+    <field name="shortform" type="string" size="3">
+      <notnull/>
+    </field>
+    <field name="description" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_number">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="numbertype" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="typemod" type="string" size="3">
+      <notnull/>
+    </field>
+    <field name="itemkey" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="itemvalue" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="fragtype" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="fragid" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="number" type="float" size="10.0">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_sgrp">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="sgrp" type="string" size="100">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_span">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="spantype" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="typemod" type="string" size="3">
+      <notnull/>
+    </field>
+    <field name="itemkey" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="itemvalue" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="beg" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="end" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_spanattr">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="span" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="spanlabel" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_ste">
+    <field name="id" type="string" size="10">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="description" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_txt">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="txttype" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="itemkey" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="itemvalue" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="txt" type="text">
+      <notnull/>
+    </field>
+    <field name="language" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_users">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="username" type="string" size="20">
+      <notnull/>
+    </field>
+    <field name="password" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="firstname" type="string" size="100"/>
+    <field name="lastname" type="string" size="100"/>
+    <field name="initials" type="string" size="10"/>
+    <field name="sfilter" type="integer">
+      <notnull/>
+    </field>
+    <field name="email" type="string" size="100"/>
+    <field name="account_enabled" type="boolean">
+      <default value="1"/>
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <notnull/>
+    </field>
+    <field name="itemkey" type="string" size="100"/>
+    <field name="itemvalue" type="string" size="30"/>
+    <index name="initials">
+      <unique/>
+      <col>initials</col>
+    </index>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_wmc">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="name" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="comments" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="wmc" type="text">
+      <notnull/>
+    </field>
+    <field name="scales" type="text" size="65535">
+      <notnull/>
+    </field>
+    <field name="extents" type="text" size="65535">
+      <notnull/>
+    </field>
+    <field name="projection" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="zoom" type="integer">
+      <notnull/>
+    </field>
+    <field name="legend_array" type="text" size="65535">
+      <notnull/>
+    </field>
+    <field name="OSM" type="integer">
+      <notnull/>
+    </field>
+    <field name="gmap_api_key" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="public" type="boolean">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_tbl_xmi">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="itemkey" type="string" size="20">
+      <notnull/>
+    </field>
+    <field name="itemvalue" type="string" size="20">
+      <notnull/>
+    </field>
+    <field name="xmi_itemkey" type="string" size="20">
+      <notnull/>
+    </field>
+    <field name="xmi_itemvalue" type="string" size="20">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <default value="0000-00-00 00:00:00"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+</schema>

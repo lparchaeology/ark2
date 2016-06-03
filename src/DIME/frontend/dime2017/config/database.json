@@ -1,0 +1,25 @@
+{
+    "servers": {
+        "mamp": {
+            "driver": "pdo_mysql",
+            "host": "127.0.0.1",
+            "port": "8889",
+            "user": "dime_ark_user",
+            "password": "dime_ark_pass"
+        }
+    },
+    "connections": {
+        "data": {
+            "server":   "mamp",
+            "dbname": "dime_ark_data"
+        },
+        "core": {
+            "server":   "mamp",
+            "dbname": "dime_ark_core"
+        },
+        "user": {
+            "server":   "mamp",
+            "dbname": "dime_ark_user"
+        }
+    }
+}

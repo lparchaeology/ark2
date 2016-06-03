@@ -1,0 +1,25 @@
+{
+    "servers": {
+        "mamp": {
+            "driver": "pdo_mysql",
+            "host": "127.0.0.1",
+            "port": "8889",
+            "user": "ark_user",
+            "password": "ark_pass"
+        }
+    },
+    "connections": {
+        "data": {
+            "server":   "mamp",
+            "dbname": "ark_data"
+        },
+        "core": {
+            "server":   "mamp",
+            "dbname": "ark_core"
+        },
+        "user": {
+            "server":   "mamp",
+            "dbname": "ark_user"
+        }
+    }
+}
