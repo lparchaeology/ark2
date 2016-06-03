@@ -135,6 +135,8 @@ function getAuthItems($filter_results = FALSE)
         // foreach through the array sorting the arrays
         foreach ($authitems as $key => $items) {
             natsort($authitems[$key]);
+            // natsort retains the original key association which we don't want
+            $authitems[$key] = array_values($authitems[$key]);
         }
         return $authitems;
     } else {
