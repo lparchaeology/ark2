@@ -1,11 +1,12 @@
+#!/usr/bin/env php
 <?php
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* web/index.php
+* build/console
 *
-* Ark Front Controller
+* Ark Build Console
 *
 * PHP versions 5 and 7
 *
@@ -28,12 +29,15 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/web/index.php
+* @see        http://ark.lparchaeology.com/code/build/console
 * @since      2.0
 */
 
+ini_set('display_errors', 1);
+
 require_once __DIR__.'/../vendor/autoload.php';
 
-$app = new ARK\Application();
-require __DIR__.'/../src/controllers.php';
-$app->run();
+set_time_limit(0);
+
+$console = new ARK\Console\BuildConsole();
+$console->run();

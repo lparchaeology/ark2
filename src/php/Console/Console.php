@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* web/index.php
+* src/php/Console/Console.php
 *
-* Ark Front Controller
+* Ark Console base class
 *
 * PHP versions 5 and 7
 *
@@ -28,12 +28,21 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/web/index.php
+* @see        http://ark.lparchaeology.com/code/src/php/Console/Console.php
 * @since      2.0
 */
 
-require_once __DIR__.'/../vendor/autoload.php';
+namespace ARK\Console;
 
-$app = new ARK\Application();
-require __DIR__.'/../src/controllers.php';
-$app->run();
+class Console extends \Symfony\Component\Console\Application
+{
+    protected $app;
+
+    public function __construct($name = 'ARK Console')
+    {
+        // TODO Use global version number
+        parent::__construct($name, '1.2.90');
+        $this->app = new \ARK\Application();
+        $this->setDispatcher($this->app['dispatcher']);
+    }
+}
