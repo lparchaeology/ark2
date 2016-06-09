@@ -1,0 +1,23 @@
+{
+  "name": "ark",
+  "description": "ARK - The Archaeological Recording Kit",
+  "main": "index.js",
+  "authors": [
+    "L~P : Heritage LLP"
+  ],
+  "license": "GPL-3.0",
+  "keywords": [
+    "archaeology",
+    "heritage",
+    "database"
+  ],
+  "homepage": "https://github.com/lparchaeology/ark2",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
