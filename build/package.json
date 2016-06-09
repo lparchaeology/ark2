@@ -6,6 +6,7 @@
   "scripts": {
     "test": "test",
     "bower": "bower",
+    "gulp": "gulp",
     "update": "bower update"
   },
   "repository": {
@@ -24,6 +25,7 @@
   },
   "homepage": "https://github.com/lparchaeology/ark2#readme",
   "devDependencies": {
-    "bower": "^1.7.9"
+    "bower": "^1.7.9",
+    "gulp": "^3.9.1"
   }
 }
