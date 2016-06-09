@@ -1,0 +1,24 @@
+{
+  "name": "ark",
+  "version": "1.2.90",
+  "description": "ARK - The Archaeological Recording Kit",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lparchaeology/ark2.git"
+  },
+  "keywords": [
+    "archaeology",
+    "heritage",
+    "database"
+  ],
+  "author": "L~P : Heritage LLP",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/lparchaeology/ark2/issues"
+  },
+  "homepage": "https://github.com/lparchaeology/ark2#readme"
+}
