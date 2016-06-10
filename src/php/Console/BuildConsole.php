@@ -39,5 +39,20 @@ class BuildConsole extends Console
     public function __construct()
     {
         parent::__construct('ARK Build Console');
+
+        // Doctrine DBAL Commands
+        $this->add(new \Doctrine\DBAL\Tools\Console\Command\ImportCommand());
+        $this->add(new \Doctrine\DBAL\Tools\Console\Command\RunSqlCommand());
+
+        // Doctrine DBAL Helper
+        $this->getHelperSet()->set(new \Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper($this->app['db']), 'db');
+
+        // Doctrine Migrations Commands
+        $this->add(new \Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand());
+        $this->add(new \Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand());
+        $this->add(new \Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand());
+        $this->add(new \Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand());
+        $this->add(new \Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand());
+        $this->add(new \Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand());
     }
 }

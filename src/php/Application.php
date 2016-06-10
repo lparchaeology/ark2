@@ -76,6 +76,9 @@ class Application extends \Silex\Application
         $app->register(new \Silex\Provider\HttpFragmentServiceProvider());
         $app->register(new \Silex\Provider\ServiceControllerServiceProvider());
 
+        // Enable the Database
+        $app->register(new \Silex\Provider\DoctrineServiceProvider());
+
         // Enable the logger
         $app->register(new \Silex\Provider\MonologServiceProvider());
         $app['monolog.logfile'] = $app['dir.var'].'/logs/ark.log';
@@ -112,6 +115,7 @@ class Application extends \Silex\Application
                 'profiler.cache_dir' => $app['dir.var'].'/cache/profiler',
             ));
             $app->register(new TranslationProfilerServiceProvider());
+            $app->register(new \Sorien\Provider\DoctrineProfilerServiceProvider());
         }
     }
 
