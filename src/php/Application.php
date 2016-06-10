@@ -105,13 +105,15 @@ class Application extends \Silex\Application
         $app['locale_fallbacks'] = array('en');
         $app->extend('translator', function($translator, $app) {
             // TODO Load translation files
-            //$translator->addResource('xliff', $app['dir.root'].'/l10n/en.xliff', 'en');
+            $translator->addResource('xliff', $app['dir.theme'].'/translations/messages.en.xlf', 'en');
+            $translator->addResource('xliff', $app['dir.theme'].'/translations/messages.pl.xlf', 'pl');
             return $translator;
         });
 
         // Enable Twig templates
         $app->register(new \Silex\Provider\TwigServiceProvider());
         $app['twig.path'] = array($app['dir.theme'].'/templates');
+        $app['twig.form.templates'] = array('ark_form_layout.html.twig');
         $app['twig.options'] = array('cache' => $app['dir.var'].'/cache/twig');
 
         // Enable Forms and related providers
@@ -129,7 +131,7 @@ class Application extends \Silex\Application
         $app->register(new \rootLogin\UserProvider\Provider\UserProviderServiceProvider());
         $app['user.options'] = array(
             'templates' => [
-                'layout' => 'layout.html.twig',
+                'layout' => 'ark_main_layout.html.twig',
             ],
             'userConnection' => 'default',
             'userClass' => 'rootLogin\UserProvider\Entity\LegacyUser',

@@ -1,0 +1,41 @@
+{% use "bootstrap_3_horizontal_layout.html.twig" %}
+
+{% block form_panel_class -%}
+col-sm-12
+{%- endblock form_panel_class %}
+
+{% block panel_row -%}
+    <div class="form-group">
+        <div class="{{ block('form_panel_class') }}">
+            {{- form_widget(form) -}}
+        </div>
+    </div>
+{%- endblock panel_row %}
+
+{% block panel_widget %}
+    {% spaceless %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col col-xs-6">
+                        <h3 class="panel-title">{{ title }}</h3>
+                    </div>
+                    <div class="col col-xs-6 text-right">
+                        {{ form_widget(form.lock) }}
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                {{ form_rest(form) }}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock panel_widget %}
+
+{% block event_row -%}
+    <div class="form-group">
+        <div class="form-inline">
+            {{- form_widget(form) -}}
+        </div>
+    </div>
+{%- endblock event_row %}

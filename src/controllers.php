@@ -10,10 +10,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 $app->mount('/users', new \rootLogin\UserProvider\Provider\UserProviderControllerProvider());
 $app->get('/', function () use ($app) {
-    return $app['twig']->render('index.html.twig', array());
-})
-->bind('homepage')
-;
+    $contents = $app->trans('ark.welcome');
+    return $app['twig']->render('ark_content_page.html.twig', array('contents' => $contents));
+})->bind('homepage');
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {

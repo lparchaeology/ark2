@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="ark.brand">
+                <source>ark.brand</source>
+                <target>My ARK</target>
+            </trans-unit>
+            <trans-unit id="ark.welcome">
+                <source>ark.welcome</source>
+                <target><![CDATA[Welcome to your new <a href="http://ark.lparchaeology.com/">ARK</a> based on <a href="http://silex.sensiolabs.org/">Silex 2</a>!]]></target>
+            </trans-unit>
+            <trans-unit id="search.placeholder">
+                <source>search.placeholder</source>
+                <target>Search...</target>
+            </trans-unit>
+            <trans-unit id="user.greeting">
+                <source>user.greeting</source>
+                <target>Hello, %name%!</target>
+            </trans-unit>
+            <trans-unit id="user.menu.view">
+                <source>user.menu.view</source>
+                <target>View your profile</target>
+            </trans-unit>
+            <trans-unit id="user.menu.edit">
+                <source>user.menu.edit</source>
+                <target>Edit your profile</target>
+            </trans-unit>
+            <trans-unit id="user.menu.password">
+                <source>user.menu.password</source>
+                <target>Change your password</target>
+            </trans-unit>
+            <trans-unit id="user.menu.logout">
+                <source>user.menu.logout</source>
+                <target>Sign out</target>
+            </trans-unit>
+            <trans-unit id="user.menu.list">
+                <source>user.menu.list</source>
+                <target>List users</target>
+            </trans-unit>
+            <trans-unit id="user.menu.login">
+                <source>user.menu.login</source>
+                <target>Sign in</target>
+            </trans-unit>
+            <trans-unit id="user.menu.register">
+                <source>user.menu.register</source>
+                <target>Create account</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
