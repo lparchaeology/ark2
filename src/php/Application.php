@@ -64,11 +64,14 @@ class Application extends \Silex\Application
             $app['debug'] = true;
         }
 
+        date_default_timezone_set('UTC');
+
         // Configure directories
         $app['dir.root'] = __DIR__.'/../..';
         $app['dir.var'] = $app['dir.root'].'/var';
         // TODO MultiArk mode
-        $app['dir.ark'] = $app['dir.root'].'/arks/default';
+        $app['dir.arks'] = $app['dir.root'].'/arks';
+        $app['dir.ark'] = $app['dir.arks'].'/default';
         $app['dir.config'] = $app['dir.ark'].'/config';
         $app['dir.data'] = $app['dir.ark'].'/data';
         // TODO configurable themes
@@ -82,6 +85,7 @@ class Application extends \Silex\Application
 
         // Enable the Database
         $app->register(new \Silex\Provider\DoctrineServiceProvider());
+        $app->register(new Database\Provider\ConfigurationServiceProvider());
 
         // Enable the logger
         $app->register(new \Silex\Provider\MonologServiceProvider());
