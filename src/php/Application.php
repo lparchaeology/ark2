@@ -35,11 +35,13 @@
 namespace ARK;
 
 use Symfony\Component\Debug\Debug;
+use ARK\Translation\Profiler\TranslationProfilerServiceProvider;
 
 class Application extends \Silex\Application
 {
     use \Silex\Application\TwigTrait;
     use \Silex\Application\MonologTrait;
+    use \Silex\Application\TranslationTrait;
 
     public function __construct()
     {
@@ -84,6 +86,18 @@ class Application extends \Silex\Application
             $app['monolog.level'] = 'WARNING';
         }
 
+        // Enable Locale/Translation
+        $app->register(new \Silex\Provider\LocaleServiceProvider());
+        $app->register(new \Silex\Provider\TranslationServiceProvider());
+        // TODO Load from config
+        $app['locale'] = 'en';
+        $app['locale_fallbacks'] = array('en');
+        $app->extend('translator', function($translator, $app) {
+            // TODO Load translation files
+            //$translator->addResource('xliff', $app['dir.root'].'/l10n/en.xliff', 'en');
+            return $translator;
+        });
+
         // Enable Twig templates
         $app->register(new \Silex\Provider\TwigServiceProvider());
         $app['twig.path'] = array($app['dir.theme'].'/templates');
@@ -97,6 +111,7 @@ class Application extends \Silex\Application
             $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
                 'profiler.cache_dir' => $app['dir.var'].'/cache/profiler',
             ));
+            $app->register(new TranslationProfilerServiceProvider());
         }
     }
 
