@@ -111,6 +111,7 @@ class Application extends \Silex\Application
 
         // If debug mode also enable the profiler
         if ($app['debug']) {
+            $app->register(new \Silex\Provider\VarDumperServiceProvider());
             $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
                 'profiler.cache_dir' => $app['dir.var'].'/cache/profiler',
             ));
