@@ -42,6 +42,7 @@ class Application extends \Silex\Application
     use \Silex\Application\TwigTrait;
     use \Silex\Application\MonologTrait;
     use \Silex\Application\TranslationTrait;
+    use \Silex\Application\FormTrait;
 
     public function __construct()
     {
@@ -105,6 +106,11 @@ class Application extends \Silex\Application
         $app->register(new \Silex\Provider\TwigServiceProvider());
         $app['twig.path'] = array($app['dir.theme'].'/templates');
         $app['twig.options'] = array('cache' => $app['dir.var'].'/cache/twig');
+
+        // Enable Forms and related providers
+        $app->register(new \Silex\Provider\ValidatorServiceProvider());
+        $app->register(new \Silex\Provider\FormServiceProvider());
+        $app->register(new \Silex\Provider\CsrfServiceProvider());
 
         // Enable other providers
         $app->register(new \Silex\Provider\AssetServiceProvider());
