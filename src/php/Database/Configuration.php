@@ -38,7 +38,12 @@ use Doctrine\DBAL\Connection;
 
 class Configuration
 {
+    const LOCAL = 'local';
+    const GLOBL = 'global';
+
     private $_settings = array();
+    private $_local = array();
+    private $_global = array();
 
     public function __construct($localFile, $globalFile='')
     {
