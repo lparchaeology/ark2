@@ -40,6 +40,9 @@ class BuildConsole extends Console
     {
         parent::__construct('ARK Build Console');
 
+        // Database Commands
+        $this->add(new \ARK\Database\Command\ReverseCommand());
+
         // Doctrine DBAL Commands
         $this->add(new \Doctrine\DBAL\Tools\Console\Command\ImportCommand());
         $this->add(new \Doctrine\DBAL\Tools\Console\Command\RunSqlCommand());
