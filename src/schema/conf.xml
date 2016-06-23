@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.concrete5.org/doctrine-xml/0.5">
+  <table name="cor_conf_alias">
+    <field name="element_id" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="tbl" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="col" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="src_key" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="type" type="integer">
+      <notnull/>
+    </field>
+    <field name="lang" type="string" size="10"/>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_conf_ark">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="name" type="string" size="20">
+      <notnull/>
+    </field>
+    <field name="markup" type="string" size="20">
+      <notnull/>
+    </field>
+    <field name="site_code" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="display_errors" type="boolean">
+      <notnull/>
+    </field>
+    <field name="log_ins" type="boolean">
+      <notnull/>
+    </field>
+    <field name="log_upd" type="boolean">
+      <notnull/>
+    </field>
+    <field name="log_del" type="boolean">
+      <notnull/>
+    </field>
+    <field name="search_mode" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="search_ftx_mode" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="anon_login" type="boolean">
+      <notnull/>
+    </field>
+    <field name="anon_user" type="string" size="20">
+      <notnull/>
+    </field>
+    <field name="anon_password" type="string" size="20">
+      <notnull/>
+    </field>
+    <field name="skin" type="string" size="20">
+      <notnull/>
+    </field>
+    <field name="skin_mobile" type="string" size="20">
+      <notnull/>
+    </field>
+    <field name="form_method" type="string" size="5">
+      <notnull/>
+    </field>
+    <field name="language" type="string" size="5">
+      <notnull/>
+    </field>
+    <field name="arkthumb_width" type="integer">
+      <notnull/>
+    </field>
+    <field name="arkthumb_height" type="integer">
+      <notnull/>
+    </field>
+    <field name="webthumb_width" type="integer">
+      <notnull/>
+    </field>
+    <field name="webthumb_height" type="integer">
+      <notnull/>
+    </field>
+    <field name="max_upload_size" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="version_original" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="version_database" type="string" size="10">
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_conf_condition">
+    <field name="element_id" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="seq" type="integer">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="func" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="args" type="string" size="30"/>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_conf_element">
+    <field name="element_id" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="element_type" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="markup" type="string" size="20"/>
+    <field name="description" type="string" size="50">
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_conf_element_type">
+    <field name="element_type" type="string" size="10">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="conf_table" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="conf_key" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="description" type="string" size="30">
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_conf_element_vld">
+    <field name="element_id" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="vld_role" type="string" size="3">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="vld_group_id" type="string" size="30">
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_conf_field">
+    <field name="field_id" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="dataclass" type="string" size="20">
+      <notnull/>
+    </field>
+    <field name="classtype" type="string" size="20">
+      <notnull/>
+    </field>
+    <field name="editable" type="boolean">
+      <notnull/>
+    </field>
+    <field name="hidden" type="boolean">
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_conf_group">
+    <field name="element_id" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="seq" type="integer">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="enabled" type="boolean">
+      <notnull/>
+    </field>
+    <field name="child_id" type="string" size="30">
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_conf_layout_role">
+    <field name="layout_role" type="string" size="15">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="description" type="string" size="30">
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_conf_link">
+    <field name="link_id" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="type" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="name" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="markup" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="title" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="link_class" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="img_class" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="list_class" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="lightbox" type="boolean">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="image" type="string" size="20">
+      <notnull/>
+    </field>
+    <field name="page" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="reload_page" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="query" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="link" type="string" size="255">
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_conf_modtype">
+    <field name="module_id" type="string" size="3">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="modtype" type="string" size="3">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="description" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="markup" type="string" size="20">
+      <notnull/>
+    </field>
+    <field name="schema_group_id" type="string" size="30">
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_conf_module">
+    <field name="module_id" type="string" size="3">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="itemkey" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="name" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="markup" type="string" size="20">
+      <notnull/>
+    </field>
+    <field name="tbl" type="string" size="20">
+      <notnull/>
+    </field>
+    <field name="type_lut_tbl" type="string" size="20">
+      <notnull/>
+    </field>
+    <field name="enabled" type="boolean">
+      <notnull/>
+    </field>
+    <field name="description" type="string" size="30">
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_conf_option">
+    <field name="element_id" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="option_id" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="type" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="value" type="string" size="255"/>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_conf_page">
+    <field name="page_id" type="string" size="20">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="name" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="title" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="enabled" type="boolean">
+      <notnull/>
+    </field>
+    <field name="visible" type="boolean">
+      <notnull/>
+    </field>
+    <field name="sgrp" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="file" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="code_dir" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="nav_seq" type="integer">
+      <notnull/>
+    </field>
+    <field name="navname" type="string" size="20">
+      <notnull/>
+    </field>
+    <field name="nav_link_vars" type="string" size="20">
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_conf_page_layout">
+    <field name="page_id" type="string" size="20">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="module_id" type="string" size="3">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="layout_role" type="string" size="10">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="layout_id" type="string" size="30">
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_conf_subform">
+    <field name="subform_id" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="view_state" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="edit_state" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="nav_type" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="title" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="script" type="string" size="100">
+      <notnull/>
+    </field>
+    <field name="label" type="string" size="10"/>
+    <field name="input" type="string" size="10"/>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_conf_user_role">
+    <field name="user_role" type="string" size="10">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="markup" type="string" size="20">
+      <notnull/>
+    </field>
+    <field name="description" type="string" size="30">
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_conf_vld_group">
+    <field name="vld_group_id" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="seq" type="integer">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="vld_rule_id" type="string" size="30">
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_conf_vld_role">
+    <field name="vld_role" type="string" size="3">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="description" type="string" size="30">
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cor_conf_vld_rule">
+    <field name="vld_rule_id" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="rq_func" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="vd_func" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="var_name" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="lv_name" type="string" size="30"/>
+    <field name="var_locn" type="string" size="30"/>
+    <field name="force_var" type="string" size="30"/>
+    <field name="req_keytype" type="string" size="30"/>
+    <field name="ret_keytype" type="string" size="30"/>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+</schema>

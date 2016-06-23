@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.concrete5.org/doctrine-xml/0.5">
+  <table name="cxt_lut_cxttype">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="cxttype" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <deftimestamp/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="cxt_tbl_cxt">
+    <field name="cxt_cd" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="cxt_no" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="ste_cd" type="string" size="10">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cxttype" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <deftimestamp/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="grp_tbl_grp">
+    <field name="grp_cd" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="grp_no" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="ste_cd" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <deftimestamp/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="pln_tbl_pln">
+    <field name="pln_cd" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="pln_no" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="ste_cd" type="string" size="10">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <deftimestamp/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="rgf_lut_rgftype">
+    <field name="id" type="integer">
+      <autoincrement/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="rgftype" type="string" size="255">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <deftimestamp/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="rgf_tbl_rgf">
+    <field name="rgf_cd" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="rgf_no" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="ste_cd" type="string" size="10">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="rgftype" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <deftimestamp/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="sec_tbl_sec">
+    <field name="sec_cd" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="sec_no" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="ste_cd" type="string" size="10">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <deftimestamp/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="sgr_tbl_sgr">
+    <field name="sgr_cd" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="sgr_no" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="ste_cd" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <deftimestamp/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="smp_tbl_smp">
+    <field name="smp_cd" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="smp_no" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="ste_cd" type="string" size="10">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <deftimestamp/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="sph_tbl_sph">
+    <field name="sph_cd" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="sph_no" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="ste_cd" type="string" size="10">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <deftimestamp/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+  <table name="tmb_tbl_tmb">
+    <field name="tmb_cd" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="tmb_no" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="ste_cd" type="string" size="10">
+      <notnull/>
+    </field>
+    <field name="cre_by" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="cre_on" type="datetime">
+      <deftimestamp/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
+  </table>
+</schema>
