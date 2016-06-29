@@ -38,6 +38,7 @@ namespace ARK\Schema;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Symfony\Component\Form\FormBuilder;
+use ARK\Form\Type\EventType;
 
 class Event extends Element
 {
@@ -82,13 +83,16 @@ class Event extends Element
     }
     // }}}
     // {{{ buildForm()
-    function buildForm(FormBuilder &$formBuilder)
+    function buildForm(FormBuilder &$formBuilder, $options = array())
     {
         if (!$this->isValid()) {
             return;
         }
-        $this->_actionField->buildForm($formBuilder);
-        $this->_dateField->buildForm($formBuilder);
+        $options['label'] = false;
+        $options['title'] = $this->_id;
+        $options['eventAction'] = $this->_actionField;
+        $options['eventDate'] = $this->_dateField;
+        $formBuilder->add($this->_id, EventType::class, $options);
     }
     // }}}
     // {{{ toJsonSchema()

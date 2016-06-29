@@ -38,6 +38,7 @@ namespace ARK\Schema;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Symfony\Component\Form\FormBuilder;
+use ARK\Form\Type\PanelType;
 
 class Group extends Element
 {
@@ -103,8 +104,15 @@ class Group extends Element
         if (!$this->isValid()) {
             return;
         }
-        foreach ($this->_elements as $element) {
-            $element->buildForm($formBuilder);
+        if ($this->_type == 'subform') {
+            $options['label'] = false;
+            $options['title'] = $this->_id;
+            $options['elements'] = $this->_elements;
+            $formBuilder->add($this->_id, PanelType::class, $options);
+        } else {
+            foreach ($this->_elements as $element) {
+                $element->buildForm($formBuilder);
+            }
         }
     }
     // }}}
