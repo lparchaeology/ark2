@@ -35,6 +35,7 @@
 namespace ARK\Console\Command;
 
 use ARK\Database\Database;
+use Silex\Application;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Statement;
 use Symfony\Component\Console\Input\InputArgument;
@@ -45,6 +46,14 @@ use Symfony\Component\Console\Question\Question;
 
 class CreateArkCommand extends \Symfony\Component\Console\Command\Command
 {
+    private $app;
+
+    public function __construct(Application $app)
+    {
+        parent::__construct();
+        $this->app = $app;
+    }
+
     protected function configure()
     {
         $this->setName('ark:create')
@@ -62,13 +71,22 @@ class CreateArkCommand extends \Symfony\Component\Console\Command\Command
         $passwordQuestion->setHidden(true);
         $passwordQuestion->setHiddenFallback(false);
         $passwordQuestion->setMaxAttempts(3);
+        $adminEmailQuestion = new Question('Please enter the admin user email: ', '');
+        $adminPasswordQuestion = new Question('Please enter the admin user password: ', '');
+        $adminPasswordQuestion->setHidden(true);
 
         $question = $this->getHelper('question');
         $user = $question->ask($input, $output, $userQuestion);
         $password = $question->ask($input, $output, $passwordQuestion);
+        $adminEmail = $question->ask($input, $output, $adminEmailQuestion);
+        $adminPassword = $question->ask($input, $output, $adminPasswordQuestion);
 
         $db = new Database();
         if ($db->createInstance($instance, $user, $password)) {
+            $user = $this->app['user.manager']->create($adminEmail, $adminPassword);
+            $user->setEnabled(true);
+            $user->addRole('ROLE_ADMIN');
+            $this->app['user.manager']->save($user);
             $output->writeln('ARK instance created.');
         } else {
             $output->writeln("\nFAILED: ARK instance not created.");

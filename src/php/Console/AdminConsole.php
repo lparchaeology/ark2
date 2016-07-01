@@ -48,7 +48,15 @@ class AdminConsole extends Console
         parent::__construct('ARK Admin Console');
 
         // ARK Commands
-        $this->add(new Command\CreateArkCommand());
+        $this->add(new Command\CreateArkCommand($this->app));
+
+        // User Commands
+        $this->add(new \rootLogin\UserProvider\Command\UserCreateCommand($this->app));
+        $this->add(new \rootLogin\UserProvider\Command\UserListCommand($this->app));
+        $this->add(new \rootLogin\UserProvider\Command\UserDeleteCommand($this->app));
+        $this->add(new \rootLogin\UserProvider\Command\UserRoleAddCommand($this->app));
+        $this->add(new \rootLogin\UserProvider\Command\UserRoleListCommand($this->app));
+        $this->add(new \rootLogin\UserProvider\Command\UserRoleRemoveCommand($this->app));
 
         // User Commands
         $this->add(new UserCreateCommand($this->app));

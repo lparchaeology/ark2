@@ -145,6 +145,7 @@ class Database
         // Load the current database schema
         $this->loadSchema($conn, 'src/schema/core.xml');
         $this->loadSchema($conn, 'src/schema/conf.xml');
+        $this->loadSchema($conn, 'src/schema/user.xml');
         $conn->close();
         $conn = null;
         return true;
