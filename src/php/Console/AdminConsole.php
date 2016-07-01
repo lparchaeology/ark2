@@ -34,11 +34,26 @@
 
 namespace ARK\Console;
 
+use rootLogin\UserProvider\Command\UserCreateCommand;
+use rootLogin\UserProvider\Command\UserListCommand;
+use rootLogin\UserProvider\Command\UserDeleteCommand;
+use rootLogin\UserProvider\Command\UserRoleAddCommand;
+use rootLogin\UserProvider\Command\UserRoleListCommand;
+use rootLogin\UserProvider\Command\UserRoleRemoveCommand;
+
 class AdminConsole extends Console
 {
     public function __construct()
     {
         parent::__construct('ARK Admin Console');
+
+        // User Commands
+        $this->add(new UserCreateCommand($this->app));
+        $this->add(new UserListCommand($this->app));
+        $this->add(new UserDeleteCommand($this->app));
+        $this->add(new UserRoleAddCommand($this->app));
+        $this->add(new UserRoleListCommand($this->app));
+        $this->add(new UserRoleRemoveCommand($this->app));
 
         // Doctrine DBAL Commands
         $this->add(new \Doctrine\DBAL\Tools\Console\Command\ImportCommand());

@@ -43,6 +43,8 @@ class Application extends \Silex\Application
     use \Silex\Application\MonologTrait;
     use \Silex\Application\TranslationTrait;
     use \Silex\Application\FormTrait;
+    use \Silex\Application\SecurityTrait;
+    use \Silex\Application\SwiftmailerTrait;
 
     public function __construct()
     {
@@ -76,6 +78,7 @@ class Application extends \Silex\Application
         // Enable core providers
         $app->register(new \Silex\Provider\HttpFragmentServiceProvider());
         $app->register(new \Silex\Provider\ServiceControllerServiceProvider());
+        $app->register(new \Silex\Provider\SessionServiceProvider());
 
         // Enable the Database
         $app->register(new \Silex\Provider\DoctrineServiceProvider());
@@ -111,6 +114,48 @@ class Application extends \Silex\Application
         $app->register(new \Silex\Provider\ValidatorServiceProvider());
         $app->register(new \Silex\Provider\FormServiceProvider());
         $app->register(new \Silex\Provider\CsrfServiceProvider());
+
+        // Enable mail provider
+        $app->register(new \Silex\Provider\SwiftmailerServiceProvider());
+        $app['swiftmailer.options'] = array();
+
+        // Enable Security and User providers
+        $app->register(new \Silex\Provider\SecurityServiceProvider());
+        $app->register(new \Silex\Provider\RememberMeServiceProvider());
+        $app->register(new \rootLogin\UserProvider\Provider\UserProviderServiceProvider());
+        $app['user.options'] = array(
+            'templates' => [
+                'layout' => 'layout.html.twig',
+            ],
+            'userConnection' => 'default',
+            'userClass' => 'rootLogin\UserProvider\Entity\LegacyUser',
+            'userTableName' => 'ark_user',
+            'userCustomFieldsTableName' => 'ark_user_field',
+            'editCustomFields' => [],
+        );
+        $app['security.firewalls'] = array(
+            // Ensure dev tools are available if anon access disabled
+            'dev_area' => array(
+                'pattern' => '^/(_(profiler|wdt)|css|images|js)/',
+            ),
+            // Ensure login / register are available if anon access disabled
+            'login_area' => array(
+                'pattern' => '(^/user/login$)|(^/user/register$)|(^/user/forgot-password$)',
+            ),
+            'secured_area' => array(
+                'pattern' => '^.*$',
+                'anonymous' => false,
+                'remember_me' => array(),
+                'form' => array(
+                    'login_path' => '/user/login',
+                    'check_path' => '/user/login_check',
+                ),
+                'logout' => array(
+                    'logout_path' => '/user/logout',
+                ),
+                'users' => function($app) { return $app['user.manager']; },
+            ),
+        );
 
         // Enable other providers
         $app->register(new \Silex\Provider\AssetServiceProvider());

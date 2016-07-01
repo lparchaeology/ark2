@@ -63,6 +63,7 @@
         "symfony/monolog-bridge": "^3.1",
         "symfony/process": "^3.1",
         "symfony/security": "^3.1",
+        "symfony/security-bundle": "^3.0",
         "symfony/security-csrf": "^3.0",
         "symfony/serializer": "^3.1",
         "symfony/translation": "^3.1",
@@ -79,7 +80,8 @@
         "bernard/silex": "^0.5.0",
         "simple-bus/message-bus": "^2.2",
         "simple-bus/asynchronous": "^2.1",
-        "simple-bus/serialization": "^2.0"
+        "simple-bus/serialization": "^2.0",
+        "rootlogin/silex-userprovider": "dev-silex2"
     },
     "autoload": {
         "psr-4": {"ARK\\": "src/php/"}
@@ -96,5 +98,11 @@
         ]
     },
     "require-dev": {
+    },
+    "repositories": {
+        "silex-userprovider": {
+            "type": "vcs",
+            "url": "https://github.com/lparchaeology/silex-userprovider"
+        }
     }
 }
