@@ -146,18 +146,18 @@ class Application extends \Silex\Application
             ),
             // Ensure login / register are available if anon access disabled
             'login_area' => array(
-                'pattern' => '(^/user/login$)|(^/user/register$)|(^/user/forgot-password$)',
+                'pattern' => '(^/users/login$)|(^/users/register$)|(^/users/forgot-password$)',
             ),
             'secured_area' => array(
                 'pattern' => '^.*$',
                 'anonymous' => false,
                 'remember_me' => array(),
                 'form' => array(
-                    'login_path' => '/user/login',
-                    'check_path' => '/user/login_check',
+                    'login_path' => '/users/login',
+                    'check_path' => '/users/login_check',
                 ),
                 'logout' => array(
-                    'logout_path' => '/user/logout',
+                    'logout_path' => '/users/logout',
                 ),
                 'users' => function($app) { return $app['user.manager']; },
             ),
