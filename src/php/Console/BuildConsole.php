@@ -34,28 +34,45 @@
 
 namespace ARK\Console;
 
+use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand;
+use ARK\Console\Command\BuildInstallCommand;
+use ARK\Console\Command\BuildUpdateCommand;
+use ARK\Console\Command\ThemeBuildCommand;
+use ARK\Console\Command\ThemeCreateCommand;
+use ARK\Console\Command\ThemeCssCommand;
+use ARK\Console\Command\ThemeFontsCommand;
+use ARK\Console\Command\ThemeJsCommand;
+use ARK\Console\Command\ThemeTwigCommand;
+use ARK\Database\Command\ReverseCommand;
+
 class BuildConsole extends Console
 {
     public function __construct()
     {
         parent::__construct('ARK Build Console');
 
-        // Database Commands
-        $this->add(new \ARK\Database\Command\ReverseCommand());
+        // Build Environment Commands
+        $this->add(new BuildInstallCommand());
+        $this->add(new BuildUpdateCommand());
 
-        // Doctrine DBAL Commands
-        $this->add(new \Doctrine\DBAL\Tools\Console\Command\ImportCommand());
-        $this->add(new \Doctrine\DBAL\Tools\Console\Command\RunSqlCommand());
+        // Theme Commands
+        $this->add(new ThemeBuildCommand());
+        $this->add(new ThemeCreateCommand());
+        $this->add(new ThemeCssCommand());
+        $this->add(new ThemeFontsCommand());
+        $this->add(new ThemeJsCommand());
+        $this->add(new ThemeTwigCommand());
+
+        // Database Commands
+        $this->add(new ReverseCommand());
 
         // Doctrine DBAL Helper
-        $this->getHelperSet()->set(new \Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper($this->app['db']), 'db');
+        $this->getHelperSet()->set(new ConnectionHelper($this->app['db']), 'db');
 
         // Doctrine Migrations Commands
-        $this->add(new \Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand());
-        $this->add(new \Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand());
-        $this->add(new \Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand());
-        $this->add(new \Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand());
-        $this->add(new \Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand());
-        $this->add(new \Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand());
+        $this->add(new DiffCommand());
+        $this->add(new GenerateCommand());
     }
 }
