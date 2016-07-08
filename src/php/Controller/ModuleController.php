@@ -38,6 +38,7 @@ namespace ARK\Controller;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -91,7 +92,10 @@ class ModuleController
         }
 
         $schema = new \ARK\Schema\Group($app['db'], 'micro_view_'.$mod['module_id'].'_section');
-        return $schema->toJsonSchema();
+        $response = new JsonResponse(null);
+        $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
+        $response->setData($schema->toSchema());
+        return $response;
     }
 
 }

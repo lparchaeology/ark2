@@ -45,15 +45,15 @@ class Option
     private $_value = null;
     private $_valid = false;
 
-    // {{{ _loadConfig()
+    // {{{ __construct()
     private function __construct($type = null, $key = null, $value = null)
     {
         $config = array('type' => $type, 'option_id' => $key, 'value' => $value);
-        $this->_loadConfig($config);
+        $this->_loadConfig(null, $config);
     }
     // }}}
     // {{{ _loadConfig()
-    private function _loadConfig($config)
+    private function _loadConfig($db, $config)
     {
         if (!isset($config['type']) || !isset($config['option_id']) || !isset($config['value'])) {
             return;
@@ -62,7 +62,7 @@ class Option
         $this->_key = $config['option_id'];
         switch ($this->_type) {
             case 'field':
-                $this->_value = new Field($config['value']);
+                $this->_value = new Field($db, $config['value']);
                 break;
             //case 'smart':
             //    if (array_key_exists('value', $config)) {
@@ -115,7 +115,7 @@ class Option
         $option = new Option();
         try {
             $config =  $db->fetchAssoc('SELECT * FROM cor_conf_option WHERE element_id = ? AND option_id = ?', array($element_id, $option_id));
-            $option->_loadConfig($config);
+            $option->_loadConfig($db, $config);
         } catch (DBALException $e) {
             return $option;
         }
@@ -130,7 +130,7 @@ class Option
             $rows =  $db->fetchAll('SELECT * FROM cor_conf_option WHERE element_id = ?', array($element_id));
             foreach ($rows as $config) {
                 $option = new Option();
-                $option->_loadConfig($config);
+                $option->_loadConfig($db, $config);
                 if ($option->isValid()) {
                     $options[] = $option;
                 }

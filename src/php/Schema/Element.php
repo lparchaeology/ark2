@@ -44,6 +44,7 @@ class Element
     protected $_id = '';
     protected $_valid = false;
     protected $_type = '';
+    protected $_isGroup = false;
     protected $_title = '';
     protected $_description = '';
     protected $_alias = null;
@@ -59,7 +60,7 @@ class Element
             return;
         }
         $sql = "
-            SELECT cor_conf_element.*, cor_conf_element_type.conf_table, cor_conf_element_type.conf_key
+            SELECT cor_conf_element.*, cor_conf_element_type.is_group, cor_conf_element_type.conf_table, cor_conf_element_type.conf_key
             FROM cor_conf_element
             LEFT JOIN cor_conf_element_type
             ON cor_conf_element.element_type = cor_conf_element_type.element_type
@@ -72,6 +73,7 @@ class Element
         }
         $config = $db->fetchAssoc($sql, $values);
         $this->_type = $config['element_type'];
+        $this->_isGroup = $config['is_group'];
         $this->_title = $config['markup'];
         $this->_description = $config['description'];
         $this->_table = $config['conf_table'];
@@ -97,6 +99,12 @@ class Element
     function type()
     {
         return $this->_type;
+    }
+    // }}}
+    // {{{ isGroup()
+    function isGroup()
+    {
+        return $this->_isGroup;
     }
     // }}}
     // {{{ title()

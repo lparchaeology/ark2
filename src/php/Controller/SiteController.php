@@ -38,6 +38,7 @@ namespace ARK\Controller;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Extension\Core\Type;
 
 class SiteController
@@ -65,10 +66,13 @@ class SiteController
         return $app['twig']->render('ark_form_page.html.twig', array('form' => $form->createView()));
     }
 
-    public function getSchemaAction(Application $app, Request $request)
+    public function getSchemaAction(Application $app, Request $request, $site)
     {
-
-        return $app['twig']->render('index.html.twig', array('contents' => 'A list of sites...'));
+        $schema = new \ARK\Schema\Group($app['db'], 'site_schema_'.$site);
+        $response = new JsonResponse(null);
+        $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
+        $response->setData($schema->toSchema());
+        return $response;
     }
 
 }

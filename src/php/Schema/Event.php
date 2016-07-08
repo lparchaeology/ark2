@@ -95,26 +95,26 @@ class Event extends Element
         $formBuilder->add($this->_id, EventType::class, $options);
     }
     // }}}
-    // {{{ toJsonSchema()
-    function toJsonSchema()
+    // {{{ toSchema()
+    function toSchema()
     {
         if (!$this->isValid()) {
             return '';
         }
-        $json = '{';
-        $json .= '"type": "object",';
-        $json .= '"title": "'.$this->_title.'",';
-        $json .= '"description": "'.$this->_description.'",';
-        $json .= '"properties": {';
-        $json .= $this->_actionField->toJsonSchema();
-        $json .= $this->_dateField->toJsonSchema();
-        $json .= '"required": [';
-        $json .= '"'.$this->_actionField->id().'",';
-        $json .= '"'.$this->_dateField->id().'",';
-        $json .= '],';
-        $json .= '"additionalProperties": false,';
-        $json .= '}';
-        return $json;
+        $schema = array();
+        $schema['type'] = 'object';
+        $schema['title'] = $this->_title;
+        $schema['description'] = $this->_description;
+        $schema['properties'] = array_merge(
+            $this->_actionField->toSchema(),
+            $this->_dateField->toSchema()
+        );
+        $schema['required'] = array(
+            $this->_actionField->id(),
+            $this->_dateField->id(),
+        );
+        $schema['additionalProperties'] = false;
+        return array($this->_id => $schema);
     }
     // }}}
     // {{{ fetchEvents()

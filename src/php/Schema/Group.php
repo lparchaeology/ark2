@@ -52,7 +52,7 @@ class Group extends Element
         }
         try {
             parent::__construct($db, $group_id);
-            if ($this->_type != 'layout' && $this->_type != 'column' && $this->_type != 'subform') {
+            if (!$this->_isGroup) {
                 return;
             }
             $sql = "
@@ -116,18 +116,24 @@ class Group extends Element
         }
     }
     // }}}
-    // {{{ toJsonSchema()
-    function toJsonSchema()
+    // {{{ toSchema()
+    function toSchema()
     {
         if (!$this->isValid()) {
             return '';
         }
-        $json = '{';
-        foreach ($this->_elements as $element) {
-            $json .= $element->toJsonSchema();
+        $schema = array();
+        $schema['type'] = 'object';
+        $schema['title'] = $this->_title;
+        $schema['description'] = $this->_description;
+        if (count($this->_elements)) {
+            $schema['properties'] = array();
+            foreach ($this->_elements as $element) {
+                $schema['properties'] = array_merge($schema['properties'], $element->toSchema());
+            }
         }
-        $json .= '}';
-        return $json;
+        $schema['additionalProperties'] = false;
+        return array($this->_id => $schema);
     }
     // }}}
 }

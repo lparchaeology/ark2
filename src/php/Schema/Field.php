@@ -183,10 +183,11 @@ class Field extends Element
         return;
     }
     // }}}
-    // {{{ toJsonSchema()
-    function toJsonSchema()
+    // {{{ toSchema()
+    function toSchema()
     {
-        return '';
+        $schema = array('title' => $this->_title);
+        return array($this->_id => $schema);
     }
     // }}}
     // {{{ fetchFields()
