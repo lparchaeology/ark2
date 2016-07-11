@@ -55,6 +55,8 @@ class ItemController
             throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$site);
         }
 
+        $forms = array();
+
         $data = array(
             'site' => $site,
             'module' => $module,
@@ -64,10 +66,18 @@ class ItemController
         $formBuilder->add('site', Type\TextType::class, array('label' => 'Site', 'disabled' => true));
         $formBuilder->add('module', Type\TextType::class, array('label' => 'Module', 'disabled' => true));
         $formBuilder->add('item', Type\TextType::class, array('label' => 'Item', 'disabled' => true));
-        $schema = new \ARK\Schema\Group($app['db'], 'micro_view_'.$mod['module_id'].'_section');
-        $schema->buildForm($formBuilder);
-        $form = $formBuilder->getForm();
+        $forms['item_form'] = $formBuilder->getForm()->createView();
 
+        $schema = new \ARK\Schema\Group($app['db'], 'micro_view_'.$mod['module_id'].'_section');
+        $cols = $schema->elements();
+        $i = 1;
+        foreach ($cols as $col) {
+            $formBuilder = $app->form(array());
+            $col->buildForm($formBuilder);
+            $forms['col'.$i.'_form'] = $formBuilder->getForm()->createView();
+            $i += 1;
+        }
+        /*
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -78,8 +88,8 @@ class ItemController
             // redirect somewhere
             return $app->redirect('form');
         }
-
-        return $app['twig']->render('ark_form_page.html.twig', array('form' => $form->createView()));
+        */
+        return $app['twig']->render('ark_col_form_page.html.twig', $forms);
     }
 
 }
