@@ -117,6 +117,12 @@ class Event extends Element
         return array($this->_id => $schema);
     }
     // }}}
+    // {{{ allFields()
+    function allFields()
+    {
+        return array($this->_actionField, $this->_dateField);
+    }
+    // }}}
     // {{{ fetchEvents()
     static function fetchEvents(Connection $db, $element_id, $enabled = true)
     {

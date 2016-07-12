@@ -10,34 +10,42 @@
             {{ form_end(item_form) }}
         </div>
     </div>
-    {% if col2_form is defined %}
+    {% if col2_forms is defined %}
         <div class="row">
-            <div class="col-md-8">
-                {{ form_start(col1_form) }}
-                {{ form_widget(col1_form) }}
-                {{ form_end(col1_form) }}
+            <div class="col-md-8 panel-group">
+                {% for form in col1_forms %}
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    {{ form_end(form) }}
+                {% endfor %}
             </div>
-            <div class="col-md-4">
-                {{ form_start(col2_form) }}
-                {{ form_widget(col2_form) }}
-                {{ form_end(col2_form) }}
+            <div class="col-md-4 panel-group">
+                {% for form in col2_forms %}
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    {{ form_end(form) }}
+                {% endfor %}
             </div>
         </div>
     {% else %}
         <div class="row">
-            <div class="col-md-12">
-                {{ form_start(col1_form) }}
-                {{ form_widget(col1_form) }}
-                {{ form_end(col1_form) }}
+            <div class="col-md-12 panel-group">
+                {% for form in col1_forms %}
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    {{ form_end(form) }}
+                {% endfor %}
             </div>
         </div>
     {% endif %}
-    {% if col3_form is defined %}
+    {% if col3_forms is defined %}
         <div class="row">
-            <div class="col-md-12">
-                {{ form_start(col3_form) }}
-                {{ form_widget(col3_form) }}
-                {{ form_end(col3_form) }}
+            <div class="col-md-12 panel-group">
+                {% for form in col3_forms %}
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    {{ form_end(form) }}
+                {% endfor %}
             </div>
         </div>
     {% endif %}

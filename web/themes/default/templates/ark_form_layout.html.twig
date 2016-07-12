@@ -12,7 +12,13 @@ col-sm-12
     </div>
 {%- endblock panel_row %}
 
+{% block submit_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('btn-default') ~ ' btn-xs btn')|trim}) %}
+    {{- parent() -}}
+{%- endblock %}
+
 {% block panel_widget %}
+
     {% spaceless %}
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -26,7 +32,12 @@ col-sm-12
                 </div>
             </div>
             <div class="panel-body">
-                {{ form_rest(form) }}
+                {% for child in form.children if child.vars.id != form.save.vars.id %}
+                    {{ form_row(child) }}
+                {% endfor %}
+            </div>
+            <div class="panel-footer text-right">
+                {{ form_widget(form.save) }}
             </div>
         </div>
     {% endspaceless %}

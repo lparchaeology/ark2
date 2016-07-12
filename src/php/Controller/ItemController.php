@@ -72,9 +72,12 @@ class ItemController
         $cols = $schema->elements();
         $i = 1;
         foreach ($cols as $col) {
-            $formBuilder = $app->form(array());
-            $col->buildForm($formBuilder);
-            $forms['col'.$i.'_form'] = $formBuilder->getForm()->createView();
+            $panels = $col->elements();
+            foreach ($panels as $panel) {
+                $formBuilder = $app->form(array());
+                $panel->buildForm($formBuilder);
+                $forms['col'.$i.'_forms'][] = $formBuilder->getForm()->createView();
+            }
             $i += 1;
         }
         /*

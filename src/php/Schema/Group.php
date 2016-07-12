@@ -136,4 +136,18 @@ class Group extends Element
         return array($this->_id => $schema);
     }
     // }}}
+    // {{{ allFields()
+    function allFields()
+    {
+        $fields = array();
+        foreach ($this->_elements as $element) {
+            if ($element->type() == 'field') {
+                $fields[] = $element;
+            } else {
+                $fields = array_merge($fields, $element->allFields());
+            }
+        }
+        return $fields;
+    }
+    // }}}
 }

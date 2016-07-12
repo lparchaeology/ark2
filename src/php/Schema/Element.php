@@ -149,6 +149,12 @@ class Element
         return '';
     }
     // }}}
+    // {{{ allFields()
+    function allFields()
+    {
+        return array();
+    }
+    // }}}
     // {{{ fetchGroupArrays()
     static function fetchGroupArrays(Connection $db, $parent_id, $child_type = null, $enabled = true)
     {
