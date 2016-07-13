@@ -40,6 +40,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Doctrine\DBAL\Connection;
 
 class ItemController
 {
@@ -47,7 +48,7 @@ class ItemController
     {
         $mod_lower = strtolower($module);
         try {
-            $mod = $app['db']->fetchAssoc('SELECT * FROM cor_conf_module WHERE module_id = ? OR url = ?', array($mod_lower, $mod_lower));
+            $mod = $app['db.conf']->fetchAssoc('SELECT * FROM cor_conf_module WHERE module_id = ? OR url = ?', array($mod_lower, $mod_lower));
         } catch (DBALException $e) {
             throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$site);
         }
@@ -57,24 +58,30 @@ class ItemController
 
         $forms = array();
 
-        $data = array(
+        $itemKey = array(
             'site' => $site,
-            'module' => $module,
+            'module' => $mod['module_id'],
             'item' => $item,
+            'key' => $mod['module_id'].'_cd',
+            'value' => $site.'_'.$item,
         );
-        $formBuilder = $app->form($data);
-        $formBuilder->add('site', Type\TextType::class, array('label' => 'Site', 'disabled' => true));
-        $formBuilder->add('module', Type\TextType::class, array('label' => 'Module', 'disabled' => true));
-        $formBuilder->add('item', Type\TextType::class, array('label' => 'Item', 'disabled' => true));
+        $formBuilder = $app->form($itemKey);
+        $formBuilder->add('site', Type\TextType::class, array('label' => 'Site', 'attr' => array('readonly' => true)));
+        $formBuilder->add('module', Type\TextType::class, array('label' => 'Module', 'attr' => array('readonly' => true)));
+        $formBuilder->add('item', Type\TextType::class, array('label' => 'Item', 'attr' => array('readonly' => true)));
         $forms['item_form'] = $formBuilder->getForm()->createView();
 
-        $schema = new \ARK\Schema\Group($app['db'], 'micro_view_'.$mod['module_id'].'_section');
+        $schema = new \ARK\Schema\Group($app['db.conf'], 'micro_view_'.$mod['module_id'].'_section');
         $cols = $schema->elements();
         $i = 1;
         foreach ($cols as $col) {
             $panels = $col->elements();
             foreach ($panels as $panel) {
-                $formBuilder = $app->form(array());
+                //$data = $model->getFields($itemKey, $panel->allFields());
+                $data = array();
+                $data[$panel->id()] = $this->getFields($app['db'], $itemKey, $panel->allFields());
+                dump($data);
+                $formBuilder = $app->form($data);
                 $panel->buildForm($formBuilder);
                 $forms['col'.$i.'_forms'][] = $formBuilder->getForm()->createView();
             }
@@ -93,6 +100,30 @@ class ItemController
         }
         */
         return $app['twig']->render('ark_col_form_page.html.twig', $forms);
+    }
+
+    // TODO Move to Model class
+    private function getFields(Connection $connection, $itemKey, $fields)
+    {
+        $values = array();
+        $db = new \ARK\Database\Database();
+        foreach ($fields as $field) {
+            switch ($field->dataclass()) {
+                case 'txt':
+                    $row = $db->getText($connection, $itemKey, $field->classtype(), 'en');
+                    $values[$field->id()] = $row['txt'];
+                    break;
+                case 'number':
+                    $row = $db->getNumber($connection, $itemKey, $field->classtype());
+                    $values[$field->id()] = $row['number'];
+                    break;
+                case 'date':
+                    $row = $db->getDate($connection, $itemKey, $field->classtype());
+                    $values[$field->id()] = $row['date'];
+                    break;
+            }
+        }
+        return $values;
     }
 
 }

@@ -252,4 +252,47 @@ class Database
             $connection->query($query);
         }
     }
+
+    public function getText(Connection $connection, $item, $classtype, $lang)
+    {
+        $sql = "
+            SELECT *
+            FROM cor_tbl_txt, cor_lut_txttype
+            WHERE cor_lut_txttype.txttype = :classtype
+            AND cor_tbl_txt.txttype = cor_lut_txttype.id
+            AND cor_tbl_txt.itemkey = :itemkey
+            AND cor_tbl_txt.itemvalue = :itemvalue
+            AND cor_tbl_txt.language = :lang
+        ";
+        $params = array(':classtype' => $classtype, ':itemkey' => $item['key'], ':itemvalue' => $item['value'], ':lang' => $lang);
+        return $connection->fetchAssoc($sql, $params);
+    }
+
+    public function getNumber(Connection $connection, $item, $classtype)
+    {
+        $sql = "
+            SELECT *
+            FROM cor_tbl_number, cor_lut_numbertype
+            WHERE cor_lut_numbertype.numbertype = :classtype
+            AND cor_tbl_number.numbertype = cor_lut_numbertype.id
+            AND cor_tbl_number.itemkey = :itemkey
+            AND cor_tbl_number.itemvalue = :itemvalue
+        ";
+        $params = array(':classtype' => $classtype, ':itemkey' => $item['key'], ':itemvalue' => $item['value']);
+        return $connection->fetchAssoc($sql, $params);
+    }
+
+    public function getDate(Connection $connection, $item, $classtype)
+    {
+        $sql = "
+            SELECT *
+            FROM cor_tbl_date, cor_lut_datetype
+            WHERE cor_lut_datetype.datetype = :classtype
+            AND cor_tbl_date.datetype = cor_lut_datetype.id
+            AND cor_tbl_date.itemkey = :itemkey
+            AND cor_tbl_date.itemvalue = :itemvalue
+        ";
+        $params = array(':classtype' => $classtype, ':itemkey' => $item['key'], ':itemvalue' => $item['value']);
+        return $connection->fetchAssoc($sql, $params);
+    }
 }

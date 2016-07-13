@@ -133,7 +133,7 @@ class Application extends \Silex\Application
             'templates' => [
                 'layout' => 'ark_main_layout.html.twig',
             ],
-            'userConnection' => 'default',
+            'userConnection' => 'user',
             'userClass' => 'rootLogin\UserProvider\Entity\LegacyUser',
             'userTableName' => 'ark_user',
             'userCustomFieldsTableName' => 'ark_user_field',
