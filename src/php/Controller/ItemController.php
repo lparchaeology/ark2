@@ -119,7 +119,13 @@ class ItemController
                     break;
                 case 'date':
                     $row = $db->getDate($connection, $itemKey, $field->classtype());
-                    $values[$field->id()] = $row['date'];
+                    $values[$field->id()] = new \DateTime($row['date']);
+                    break;
+                case 'attribute':
+                    dump('attr'.$field->classtype());
+                    $row = $db->getAttribute($connection, $itemKey, $field->classtype());
+                    dump($row);
+                    $values[$field->id()] = $row['attribute'];
                     break;
             }
         }

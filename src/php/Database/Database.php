@@ -295,4 +295,19 @@ class Database
         $params = array(':classtype' => $classtype, ':itemkey' => $item['key'], ':itemvalue' => $item['value']);
         return $connection->fetchAssoc($sql, $params);
     }
+
+    public function getAttribute(Connection $connection, $item, $classtype)
+    {
+        $sql = "
+            SELECT *
+            FROM cor_tbl_attribute, cor_lut_attributetype, cor_lut_attribute
+            WHERE cor_lut_attributetype.attributetype = :classtype
+            AND cor_lut_attribute.attributetype = cor_lut_attributetype.id
+            AND cor_tbl_attribute.attribute = cor_lut_attribute.id
+            AND cor_tbl_attribute.itemkey = :itemkey
+            AND cor_tbl_attribute.itemvalue = :itemvalue
+        ";
+        $params = array(':classtype' => $classtype, ':itemkey' => $item['key'], ':itemvalue' => $item['value']);
+        return $connection->fetchAssoc($sql, $params);
+    }
 }

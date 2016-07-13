@@ -140,6 +140,8 @@ class Field extends Element
                 $formBuilder->add($this->_id, Type\TextType::class, $options);
                 break;
             case 'attribute':
+                //TODO Only add null if allowed null
+                $options['choices']['--- Select One ---'] = null;
                 foreach ($this->_attributes as $val) {
                     $options['choices'][$val] = $val;
                 }
@@ -170,7 +172,7 @@ class Field extends Element
                 $formBuilder->add($this->_id, Type\CollectionType::class, $options);
                 break;
             case 'txt':
-                $formBuilder->add($this->_id, Type\TextType::class, $options);
+                $formBuilder->add($this->_id, Type\TextareaType::class, $options);
                 break;
             case 'xmi':
                 $option['entry_type'] = Type\TextType::class;
