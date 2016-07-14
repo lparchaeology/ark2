@@ -83,7 +83,18 @@ class Event extends Element
     }
     // }}}
     // {{{ buildForm()
-    function buildForm(FormBuilder &$formBuilder, $options = array())
+    function formData(Connection $connection, $itemKey)
+    {
+        $data = array();
+        $data[$this->id()] = array_merge(
+            $this->_actionField->formData($connection, $itemKey),
+            $this->_dateField->formData($connection, $itemKey)
+        );
+        return $data;
+    }
+    // }}}
+    // {{{ buildForm()
+    function buildForm(FormBuilder &$formBuilder, array $options = array())
     {
         if (!$this->isValid()) {
             return;

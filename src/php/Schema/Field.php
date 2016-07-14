@@ -128,8 +128,52 @@ class Field extends Element
         return $this->_attributes;
     }
     // }}}
+    // {{{ formData()
+    function formData(Connection $connection, $itemKey)
+    {
+        if (!$this->isValid()) {
+            return array();
+        }
+        $db = new \ARK\Database\Database();
+        $data = array();
+        switch ($this->dataclass()) {
+            case 'txt':
+                $row = $db->getText($connection, $itemKey, $this->classtype(), 'en');
+                if (isset($row['txt'])) {
+                    $data[$this->id()] = $row['txt'];
+                }
+                break;
+            case 'number':
+                $row = $db->getNumber($connection, $itemKey, $this->classtype());
+                if (isset($row['number'])) {
+                    $data[$this->id()] = $row['number'];
+                }
+                break;
+            case 'date':
+                $row = $db->getDate($connection, $itemKey, $this->classtype());
+                if (isset($row['date'])) {
+                    dump($this->id().' = '.$row['date']);
+                    $data[$this->id()] = new \DateTime($row['date']);
+                }
+                break;
+            case 'attribute':
+                $row = $db->getAttribute($connection, $itemKey, $this->classtype());
+                if (isset($row['attribute'])) {
+                    $data[$this->id()] = $row['attribute'];
+                }
+                break;
+            case 'file':
+                $row = $db->getFile($connection, $itemKey, $this->classtype());
+                if (isset($row['file'])) {
+                    //$data[$this->id()] = $row['filename'];
+                }
+                break;
+        }
+        return $data;
+    }
+    // }}}
     // {{{ buildForm()
-    function buildForm(FormBuilder &$formBuilder)
+    function buildForm(FormBuilder &$formBuilder, array $options = array())
     {
         if (!$this->isValid()) {
             return;

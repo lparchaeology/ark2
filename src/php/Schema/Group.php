@@ -99,7 +99,17 @@ class Group extends Element
     }
     // }}}
     // {{{ buildForm()
-    function buildForm(FormBuilder &$formBuilder)
+    function formData(Connection $connection, $itemKey)
+    {
+        $data = array();
+        foreach ($this->_elements as $element) {
+            $data = array_merge($data, $element->formData($connection, $itemKey));
+        }
+        return $data;
+    }
+    // }}}
+    // {{{ buildForm()
+    function buildForm(FormBuilder &$formBuilder, array $options = array())
     {
         if (!$this->isValid()) {
             return;
@@ -111,7 +121,7 @@ class Group extends Element
             $formBuilder->add($this->_id, PanelType::class, $options);
         } else {
             foreach ($this->_elements as $element) {
-                $element->buildForm($formBuilder);
+                $element->buildForm($formBuilder, $options);
             }
         }
     }

@@ -137,8 +137,14 @@ class Element
         return $this->_conditions;
     }
     // }}}
+    // {{{ formData()
+    function formData(Connection $connection, $itemKey)
+    {
+        return array();
+    }
+    // }}}
     // {{{ buildForm()
-    function buildForm(FormBuilder &$formBuilder)
+    function buildForm(FormBuilder &$formBuilder, array $options = array())
     {
         return;
     }

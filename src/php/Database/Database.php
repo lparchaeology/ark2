@@ -264,7 +264,12 @@ class Database
             AND cor_tbl_txt.itemvalue = :itemvalue
             AND cor_tbl_txt.language = :lang
         ";
-        $params = array(':classtype' => $classtype, ':itemkey' => $item['key'], ':itemvalue' => $item['value'], ':lang' => $lang);
+        $params = array(
+            ':classtype' => $classtype,
+            ':itemkey' => $item['key'],
+            ':itemvalue' => $item['value'],
+            ':lang' => $lang,
+        );
         return $connection->fetchAssoc($sql, $params);
     }
 
@@ -278,7 +283,11 @@ class Database
             AND cor_tbl_number.itemkey = :itemkey
             AND cor_tbl_number.itemvalue = :itemvalue
         ";
-        $params = array(':classtype' => $classtype, ':itemkey' => $item['key'], ':itemvalue' => $item['value']);
+        $params = array(
+            ':classtype' => $classtype,
+            ':itemkey' => $item['key'],
+            ':itemvalue' => $item['value'],
+        );
         return $connection->fetchAssoc($sql, $params);
     }
 
@@ -292,7 +301,11 @@ class Database
             AND cor_tbl_date.itemkey = :itemkey
             AND cor_tbl_date.itemvalue = :itemvalue
         ";
-        $params = array(':classtype' => $classtype, ':itemkey' => $item['key'], ':itemvalue' => $item['value']);
+        $params = array(
+            ':classtype' => $classtype,
+            ':itemkey' => $item['key'],
+            ':itemvalue' => $item['value'],
+        );
         return $connection->fetchAssoc($sql, $params);
     }
 
@@ -307,7 +320,31 @@ class Database
             AND cor_tbl_attribute.itemkey = :itemkey
             AND cor_tbl_attribute.itemvalue = :itemvalue
         ";
-        $params = array(':classtype' => $classtype, ':itemkey' => $item['key'], ':itemvalue' => $item['value']);
+        $params = array(
+            ':classtype' => $classtype,
+            ':itemkey' => $item['key'],
+            ':itemvalue' => $item['value'],
+        );
         return $connection->fetchAssoc($sql, $params);
     }
+
+    public function getFile(Connection $connection, $item, $classtype)
+    {
+        $sql = "
+            SELECT *
+            FROM cor_tbl_file, cor_lut_filetype, cor_lut_file
+            WHERE cor_lut_filetype.filetype = :classtype
+            AND cor_lut_file.filetype = cor_lut_filetype.id
+            AND cor_tbl_file.file = cor_lut_file.id
+            AND cor_tbl_file.itemkey = :itemkey
+            AND cor_tbl_file.itemvalue = :itemvalue
+        ";
+        $params = array(
+            ':classtype' => $classtype,
+            ':itemkey' => $item['key'],
+            ':itemvalue' => $item['value'],
+        );
+        return $connection->fetchAssoc($sql, $params);
+    }
+
 }

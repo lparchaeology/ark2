@@ -40,6 +40,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\DBAL\Connection;
 
 class ItemController
@@ -79,10 +80,12 @@ class ItemController
             foreach ($panels as $panel) {
                 //$data = $model->getFields($itemKey, $panel->allFields());
                 $data = array();
-                $data[$panel->id()] = $this->getFields($app['db'], $itemKey, $panel->allFields());
+                //$data[$panel->id()] = $this->getFields($app['db'], $itemKey, $panel->allFields());
+                $data[$panel->id()] = $panel->formData($app['db'], $itemKey, $itemKey);
                 dump($data);
-                $formBuilder = $app->form($data);
+                $formBuilder = $app->namedForm($panel->id(), $data);
                 $panel->buildForm($formBuilder);
+                dump($formBuilder->getForm());
                 $forms['col'.$i.'_forms'][] = $formBuilder->getForm()->createView();
             }
             $i += 1;
@@ -111,21 +114,34 @@ class ItemController
             switch ($field->dataclass()) {
                 case 'txt':
                     $row = $db->getText($connection, $itemKey, $field->classtype(), 'en');
-                    $values[$field->id()] = $row['txt'];
+                    if (isset($row['txt'])) {
+                        $values[$field->id()] = $row['txt'];
+                    }
                     break;
                 case 'number':
                     $row = $db->getNumber($connection, $itemKey, $field->classtype());
-                    $values[$field->id()] = $row['number'];
+                    if (isset($row['number'])) {
+                        $values[$field->id()] = $row['number'];
+                    }
                     break;
                 case 'date':
                     $row = $db->getDate($connection, $itemKey, $field->classtype());
-                    $values[$field->id()] = new \DateTime($row['date']);
+                    if (isset($row['date'])) {
+                        dump($field->id().' = '.$row['date']);
+                        $values[$field->id()] = new \DateTime($row['date']);
+                    }
                     break;
                 case 'attribute':
-                    dump('attr'.$field->classtype());
                     $row = $db->getAttribute($connection, $itemKey, $field->classtype());
-                    dump($row);
-                    $values[$field->id()] = $row['attribute'];
+                    if (isset($row['attribute'])) {
+                        $values[$field->id()] = $row['attribute'];
+                    }
+                    break;
+                case 'file':
+                    $row = $db->getFile($connection, $itemKey, $field->classtype());
+                    if (isset($row['txt'])) {
+                        //$values[$field->id()] = $row['filename'];
+                    }
                     break;
             }
         }
