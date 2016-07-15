@@ -37,6 +37,7 @@ namespace ARK\Schema;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
+use ARK\Database\Database;
 
 class Rule
 {
@@ -52,12 +53,12 @@ class Rule
     private $_returnKeyType = null;
 
     // {{{ __construct()
-    function __construct(Connection $db, $vld_rule_id = null)
+    function __construct(Database $db, $vld_rule_id = null)
     {
         if ($vld_rule_id == null) {
             return;
         }
-        $config = $db->fetchAssoc('SELECT * FROM cor_conf_vld_rule WHERE vld_rule_id = ?', array($vld_rule_id));
+        $config = $db->config()->fetchAssoc('SELECT * FROM cor_conf_vld_rule WHERE vld_rule_id = ?', array($vld_rule_id));
         $this->_loadConfig($config);
     }
     // }}}
@@ -129,11 +130,11 @@ class Rule
     }
     // }}}
     // {{{ fetchGroupRules()
-    static function fetchGroupRules(Connection $db, $vld_group_id)
+    static function fetchGroupRules(Database $db, $vld_group_id)
     {
         $rules = array();
         try {
-            $rows = $db->fetchAll('SELECT * FROM cor_conf_vld_group WHERE vld_group_id = ?', array($vld_group_id));
+            $rows = $db->config()->fetchAll('SELECT * FROM cor_conf_vld_group WHERE vld_group_id = ?', array($vld_group_id));
             foreach ($rows as $row) {
                 $rule = new Rule($db, $row['vld_rule_id']);
                 if ($rule->isValid()) {
@@ -147,12 +148,12 @@ class Rule
     }
     // }}}
     // {{{ fetchRole()
-    static function fetchValidationRole(Connection $db, $element_id, $vld_role)
+    static function fetchValidationRole(Database $db, $element_id, $vld_role)
     {
         $rules = array();
         try {
-            $row = $db->fetchAssoc('SELECT * FROM cor_conf_element_vld WHERE element_id = ? AND vld_role = ?', array($element_id, $vld_role));
-            $rows = $db->fetchAll('SELECT * FROM cor_conf_vld_group WHERE vld_group_id = ?', array($row['vld_group_id']));
+            $row = $db-config()->fetchAssoc('SELECT * FROM cor_conf_element_vld WHERE element_id = ? AND vld_role = ?', array($element_id, $vld_role));
+            $rows = $db->config()->fetchAll('SELECT * FROM cor_conf_vld_group WHERE vld_group_id = ?', array($row['vld_group_id']));
             foreach ($rows as $row) {
                 $rule = new Rule($db, $row['vld_rule_id']);
                 if ($rule->isValid()) {
@@ -166,14 +167,14 @@ class Rule
     }
     // }}}
     // {{{ fetchAllRoles()
-    static function fetchAllValidationRoles(Connection $db, $element_id)
+    static function fetchAllValidationRoles(Database $db, $element_id)
     {
         $roles = array();
         try {
-            $role_rows = $db->fetchAll('SELECT * FROM cor_conf_element_vld WHERE element_id = ?', array($element_id));
+            $role_rows = $db->config()->fetchAll('SELECT * FROM cor_conf_element_vld WHERE element_id = ?', array($element_id));
             foreach ($role_rows as $role_row) {
                 $vld_role = $role_row['vld_role'];
-                $rows = $db->fetchAll('SELECT * FROM cor_conf_vld_group WHERE vld_group_id = ?', array($role_row['vld_group_id']));
+                $rows = $db->config()->fetchAll('SELECT * FROM cor_conf_vld_group WHERE vld_group_id = ?', array($role_row['vld_group_id']));
                 foreach ($rows as $row) {
                     $rule = new Rule($db, $row['vld_rule_id']);
                     if ($rule->isValid()) {

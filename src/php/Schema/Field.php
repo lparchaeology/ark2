@@ -39,6 +39,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Extension\Core\Type;
+use ARK\Database\Database;
 
 class Field extends Element
 {
@@ -51,14 +52,14 @@ class Field extends Element
     private $_attributes = array();
 
     // {{{ __construct()
-    function __construct(Connection $db, $field_id = null)
+    function __construct(Database $db, $field_id = null)
     {
         if ($field_id == null) {
             return;
         }
         try {
             parent::__construct($db, $field_id, 'field');
-            $config = $db->fetchAssoc('SELECT * FROM cor_conf_field WHERE field_id = ?', array($field_id));
+            $config = $db->config()->fetchAssoc('SELECT * FROM cor_conf_field WHERE field_id = ?', array($field_id));
             $this->_dataclass = $config['dataclass'];
             $this->_classtype = $config['classtype'];
             $this->_editable = (bool)$config['editable'];
@@ -67,14 +68,18 @@ class Field extends Element
             if ($this->_dataclass != 'xmi' && $this->_dataclass != 'geom') {
                 $type = $config['dataclass'].'type';
                 $tbl = 'cor_lut_'.$type;
-                $class = $db->fetchAssoc("SELECT * FROM $tbl WHERE $type = ?", array($config['classtype']));
+                $class = $db->data()->fetchAssoc("SELECT * FROM $tbl WHERE $type = ?", array($config['classtype']));
             }
             if ($this->_dataclass == 'attribute') {
-                $attrs = $db->fetchAll('SELECT * FROM cor_lut_attribute WHERE attributetype = ?', array($class['id']));
+                $attrs = $db->data()->fetchAll('SELECT * FROM cor_lut_attribute WHERE attributetype = ?', array($class['id']));
                 foreach ($attrs as $attr) {
                     $this->_attributes[] = $attr['attribute'];
                 }
             }
+            if (!$this->alias()->isValid()) {
+                $this->_alias = Alias::dataclassAlias($this->_dataclass, $this->_classtype);
+            }
+            $this->_db = $db;
             $this->_valid = true;
         } catch (DBALException $e) {
             echo 'Invalid config for field : '.$field_id;
@@ -129,43 +134,47 @@ class Field extends Element
     }
     // }}}
     // {{{ formData()
-    function formData(Connection $connection, $itemKey)
+    function formData($itemKey)
     {
         if (!$this->isValid()) {
             return array();
         }
-        $db = new \ARK\Database\Database();
         $data = array();
         switch ($this->dataclass()) {
             case 'txt':
-                $row = $db->getText($connection, $itemKey, $this->classtype(), 'en');
+                $row = $this->_db->getText($itemKey, $this->classtype(), 'en');
                 if (isset($row['txt'])) {
                     $data[$this->id()] = $row['txt'];
                 }
                 break;
             case 'number':
-                $row = $db->getNumber($connection, $itemKey, $this->classtype());
+                $row = $this->_db->getNumber($itemKey, $this->classtype());
                 if (isset($row['number'])) {
                     $data[$this->id()] = $row['number'];
                 }
                 break;
             case 'date':
-                $row = $db->getDate($connection, $itemKey, $this->classtype());
+                $row = $this->_db->getDate($itemKey, $this->classtype());
                 if (isset($row['date'])) {
-                    dump($this->id().' = '.$row['date']);
                     $data[$this->id()] = new \DateTime($row['date']);
                 }
                 break;
             case 'attribute':
-                $row = $db->getAttribute($connection, $itemKey, $this->classtype());
+                $row = $this->_db->getAttribute($itemKey, $this->classtype());
                 if (isset($row['attribute'])) {
                     $data[$this->id()] = $row['attribute'];
                 }
                 break;
             case 'file':
-                $row = $db->getFile($connection, $itemKey, $this->classtype());
+                $row = $this->_db->getFile($itemKey, $this->classtype());
                 if (isset($row['file'])) {
                     //$data[$this->id()] = $row['filename'];
+                }
+                break;
+            case 'action':
+                $action = $this->_db->getAction($itemKey, $this->classtype());
+                if (isset($action['actor_itemkey']) and isset($action['actor_itemvalue'])) {
+                    $data[$this->id()] = $action['actor_itemkey'].'.'.$action['actor_itemvalue'];
                 }
                 break;
         }
@@ -178,16 +187,21 @@ class Field extends Element
         if (!$this->isValid()) {
             return;
         }
-        $options['label'] = $this->_title;
+        $options['label'] = $this->alias()->tranKey();
         switch ($this->dataclass()) {
             case 'action':
-                $formBuilder->add($this->_id, Type\TextType::class, $options);
+                $options['choices']['--- Select One ---'] = null;
+                $actors = $this->_db->getActors();
+                foreach ($actors as $actor) {
+                    $options['choices']['abk_cd.'.$actor['abk_cd'].'.name'] = 'abk_cd.'.$actor['abk_cd'];
+                }
+                $formBuilder->add($this->_id, Type\ChoiceType::class, $options);
                 break;
             case 'attribute':
                 //TODO Only add null if allowed null
                 $options['choices']['--- Select One ---'] = null;
                 foreach ($this->_attributes as $val) {
-                    $options['choices'][$val] = $val;
+                    $options['choices']['attribute.'.$this->_classtype.'.'.$val.'.normal'] = $val;
                 }
                 $formBuilder->add($this->_id, Type\ChoiceType::class, $options);
                 break;
@@ -237,7 +251,7 @@ class Field extends Element
     }
     // }}}
     // {{{ fetchFields()
-    static function fetchFields(Connection $db, $element_id, $enabled = true)
+    static function fetchFields(Database $db, $element_id, $enabled = true)
     {
         $children = Element::fetchGroupArrays($db, $element_id, 'field', $enabled);
         $fields = array();

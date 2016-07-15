@@ -38,6 +38,7 @@ namespace ARK\Schema;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Symfony\Component\Form\FormBuilder;
+use ARK\Database\Database;
 
 class Element
 {
@@ -52,7 +53,7 @@ class Element
     protected $_conditions = array();
 
     // {{{ __construct()
-    function __construct(Connection $db, $element_id = null, $element_type = '')
+    function __construct(Database $db, $element_id = null, $element_type = '')
     {
         $this->_id = $element_id;
         $this->_alias = new Alias($db);
@@ -71,14 +72,14 @@ class Element
             $sql .= ' AND cor_conf_element.element_type = ?';
             $values[] = $element_type;
         }
-        $config = $db->fetchAssoc($sql, $values);
+        $config = $db->config()->fetchAssoc($sql, $values);
         $this->_type = $config['element_type'];
         $this->_isGroup = $config['is_group'];
         $this->_title = $config['markup'];
         $this->_description = $config['description'];
         $this->_table = $config['conf_table'];
         $this->_key = $config['conf_key'];
-        $this->_alias = new Alias($db, $element_id);
+        $this->_alias = Alias::elementAlias($db, $element_id);
         $this->_options = Option::fetchOptions($db, $element_id);
         $this->_conditions = Condition::fetchConditions($db, $element_id);
     }
@@ -138,7 +139,7 @@ class Element
     }
     // }}}
     // {{{ formData()
-    function formData(Connection $connection, $itemKey)
+    function formData($itemKey)
     {
         return array();
     }
@@ -162,7 +163,7 @@ class Element
     }
     // }}}
     // {{{ fetchGroupArrays()
-    static function fetchGroupArrays(Connection $db, $parent_id, $child_type = null, $enabled = true)
+    static function fetchGroupArrays(Database $db, $parent_id, $child_type = null, $enabled = true)
     {
         $where = 'cor_conf_group.element_id = ?';
         $values[] = $parent_id;
@@ -182,7 +183,7 @@ class Element
             WHERE $where
         ";
         try {
-            return $db->fetchAll($sql, $values);
+            return $db->config()->fetchAll($sql, $values);
         } catch (DBALException $e) {
             return array();
         }

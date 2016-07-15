@@ -37,6 +37,7 @@ namespace ARK\Schema;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
+use ARK\Database\Database;
 
 class Condition
 {
@@ -87,11 +88,11 @@ class Condition
     }
     // }}}
     // {{{ fetchConditions()
-    static function fetchConditions(Connection $db, $element_id)
+    static function fetchConditions(Database $db, $element_id)
     {
         $conditions = array();
         try {
-            $rows = $db->fetchAll('SELECT * FROM cor_conf_condition WHERE element_id = ?', array($element_id));
+            $rows = $db->config()->fetchAll('SELECT * FROM cor_conf_condition WHERE element_id = ?', array($element_id));
             foreach ($rows as $row) {
                 $condition = new Condition();
                 $condition->_loadConfig($row);

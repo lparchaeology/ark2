@@ -38,6 +38,7 @@ namespace ARK\Schema;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Symfony\Component\Form\FormBuilder;
+use ARK\Database\Database;
 use ARK\Form\Type\EventType;
 
 class Event extends Element
@@ -46,7 +47,7 @@ class Event extends Element
     private $_actionField = null;
 
     // {{{ __construct()
-    function __construct(Connection $db, $event_id = null)
+    function __construct(Database $db, $event_id = null)
     {
         $this->_dateField = new Field($db);
         $this->_actionField = new Field($db);
@@ -83,12 +84,12 @@ class Event extends Element
     }
     // }}}
     // {{{ buildForm()
-    function formData(Connection $connection, $itemKey)
+    function formData($itemKey)
     {
         $data = array();
         $data[$this->id()] = array_merge(
-            $this->_actionField->formData($connection, $itemKey),
-            $this->_dateField->formData($connection, $itemKey)
+            $this->_actionField->formData($itemKey),
+            $this->_dateField->formData($itemKey)
         );
         return $data;
     }

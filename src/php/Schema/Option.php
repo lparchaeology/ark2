@@ -37,6 +37,7 @@ namespace ARK\Schema;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
+use ARK\Database\Database;
 
 class Option
 {
@@ -110,11 +111,11 @@ class Option
     }
     // }}}
     // {{{ fetchOption()
-    static function fetchOption(Connection $db, $element_id, $option_id)
+    static function fetchOption(Database $db, $element_id, $option_id)
     {
         $option = new Option();
         try {
-            $config =  $db->fetchAssoc('SELECT * FROM cor_conf_option WHERE element_id = ? AND option_id = ?', array($element_id, $option_id));
+            $config =  $db->config()->fetchAssoc('SELECT * FROM cor_conf_option WHERE element_id = ? AND option_id = ?', array($element_id, $option_id));
             $option->_loadConfig($db, $config);
         } catch (DBALException $e) {
             return $option;
@@ -123,11 +124,11 @@ class Option
     }
     // }}}
     // {{{ fetchOptions()
-    static function fetchOptions(Connection $db, $element_id)
+    static function fetchOptions(Database $db, $element_id)
     {
         $options = array();
         try {
-            $rows =  $db->fetchAll('SELECT * FROM cor_conf_option WHERE element_id = ?', array($element_id));
+            $rows =  $db->config()->fetchAll('SELECT * FROM cor_conf_option WHERE element_id = ?', array($element_id));
             foreach ($rows as $config) {
                 $option = new Option();
                 $option->_loadConfig($db, $config);
@@ -142,7 +143,7 @@ class Option
     }
     // }}}
     // {{{ fetchOptionsArray()
-    static function fetchOptionsArray(Connection $db, $element_id)
+    static function fetchOptionsArray(Database $db, $element_id)
     {
         $optionsArray = array();
         $options = Option::options($db, $element_id);

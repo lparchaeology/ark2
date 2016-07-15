@@ -37,6 +37,7 @@ namespace ARK\Schema;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
+use ARK\Database\Database;
 
 class Alias
 {
@@ -44,25 +45,23 @@ class Alias
     private $_column = '';
     private $_key = '';
     private $_type = '';
+    private $_attrType = '';
     private $_language = '';
     private $_valid = false;
 
-    // {{{ __construct()
-    function __construct(Connection $db = null, $element_id = null)
+    // {{{ _loadConfig()
+    private function _loadConfig($config)
     {
-        if ($db == null || $element_id == null) {
-            return;
-        }
-        try {
-            $config = $db->fetchAssoc('SELECT * FROM cor_conf_alias WHERE element_id = ?', array($element_id));
+        if (count($config)) {
             $this->_table = $config['tbl'];
             $this->_column = $config['col'];
             $this->_key = $config['src_key'];
             $this->_type = $config['type'];
             $this->_language = $config['lang'];
+            if (isset($config['attributetype'])) {
+                $_attrType = $config['attributetype'];
+            }
             $this->_valid = true;
-        } catch (DBALException $e) {
-            return;
         }
     }
     // }}}
@@ -102,6 +101,19 @@ class Alias
         return $this->_language;
     }
     // }}}
+    // {{{ tranKey()
+    function tranKey()
+    {
+        if (!$this->isValid()) {
+            return false;
+        }
+        if ($this->_attrType) {
+            return $this->column().'.'.$this->_attrType.'.'.$this->key().'.'.$this->type();
+        } else {
+            return $this->column().'.'.$this->key().'.'.$this->type();
+        }
+    }
+    // }}}
     // {{{ config()
     function config()
     {
@@ -113,6 +125,51 @@ class Alias
         $config['alias_src_key'] = $this->key();
         $config['alias_type'] = $this->type();
         return $config;
+    }
+    // }}}
+    // {{{ elementAlias()
+    static function elementAlias(Database $db, $element_id)
+    {
+        $alias = new Alias();
+        try {
+            $sql = "
+                SELECT *
+                FROM cor_conf_alias, cor_conf_aliastype
+                WHERE cor_conf_alias.element_id = :element_id
+                AND cor_conf_alias.aliastype = cor_conf_aliastype.id
+            ";
+            $config = $db->config()->fetchAssoc($sql, array(':element_id' => $element_id));
+            if (!$config) {
+                return $alias;
+            }
+            if ($config['itemkey'] == 'cor_lut_attribute') {
+                $sql = "
+                    SELECT *
+                    FROM cor_lut_attribute, cor_lut_attributetype
+                    WHERE cor_lut_attribute.id = :id
+                    AND cor_lut_attribute.attributetype = cor_lut_attributetype.id
+                ";
+                $attr = $db->data()->fetchAssoc($sql, array(':id' => $config['itemvalue']));
+                $config['attributetype'] = $attr['attributetype'];
+            }
+        } catch (DBALException $e) {
+            return $alias;
+        }
+        $alias->_loadConfig($config);
+        return $alias;
+    }
+    // }}}
+    // {{{ dataclassAlias()
+    static function dataclassAlias($dataclass, $classtype)
+    {
+        $alias = new Alias();
+        $config['tbl'] = 'cor_lut_'.$dataclass.'type';
+        $config['col'] = $dataclass.'type';
+        $config['src_key'] = $classtype;
+        $config['type'] = 'normal';
+        $config['lang'] = null;
+        $alias->_loadConfig($config);
+        return $alias;
     }
     // }}}
 }

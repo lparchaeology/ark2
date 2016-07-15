@@ -38,14 +38,21 @@ namespace ARK\Schema;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Symfony\Component\Form\FormBuilder;
+use ARK\Database\Database;
 use ARK\Form\Type\PanelType;
 
 class Group extends Element
 {
+    private $_viewState = '';
+    private $_editState = '';
+    private $_navType = '';
+    private $_script = '';
+    private $_label = NULL;
+    private $_input = NULL;
     private $_elements = array();
 
     // {{{ __construct()
-    function __construct(Connection $db, $group_id = null)
+    function __construct(Database $db, $group_id = null)
     {
         if ($group_id == null) {
             return;
@@ -55,6 +62,21 @@ class Group extends Element
             if (!$this->_isGroup) {
                 return;
             }
+            if ($this->type() == 'subform') {
+                $sql = "
+                    SELECT *
+                    FROM cor_conf_subform
+                    WHERE subform_id = ?
+                ";
+                $config = $db->config()->fetchAssoc($sql, array($group_id));
+                $this->_viewState = $config['view_state'];
+                $this->_editState = $config['edit_state'];
+                $this->_navType = $config['nav_type'];
+                $this->_title = $config['title'];
+                $this->_script = $config['script'];
+                $this->_label = $config['label'];
+                $this->_input = $config['input'];
+            }
             $sql = "
                 SELECT cor_conf_group.*, cor_conf_element.element_type AS child_type
                 FROM cor_conf_group
@@ -62,7 +84,7 @@ class Group extends Element
                 ON cor_conf_group.child_id = cor_conf_element.element_id
                 WHERE cor_conf_group.element_id = ?
             ";
-            $children = $db->fetchAll($sql, array($group_id));
+            $children = $db->config()->fetchAll($sql, array($group_id));
             foreach ($children as $child) {
                 switch ($child['child_type']) {
                     case 'field':
@@ -99,11 +121,11 @@ class Group extends Element
     }
     // }}}
     // {{{ buildForm()
-    function formData(Connection $connection, $itemKey)
+    function formData($itemKey)
     {
         $data = array();
         foreach ($this->_elements as $element) {
-            $data = array_merge($data, $element->formData($connection, $itemKey));
+            $data = array_merge($data, $element->formData($itemKey));
         }
         return $data;
     }
@@ -116,7 +138,7 @@ class Group extends Element
         }
         if ($this->_type == 'subform') {
             $options['label'] = false;
-            $options['title'] = $this->_id;
+            $options['title'] = $this->_title;
             $options['elements'] = $this->_elements;
             $formBuilder->add($this->_id, PanelType::class, $options);
         } else {

@@ -37,6 +37,7 @@ namespace ARK\Schema;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
+use ARK\Database\Database;
 
 class Link extends Element
 {
@@ -55,14 +56,14 @@ class Link extends Element
     private $_link = '';
 
     // {{{ __construct()
-    function __construct($link_id = NULL)
+    function __construct(Database $db, $link_id = NULL)
     {
         if ($link_id == NULL) {
             return;
         }
         try {
             parent::__construct($db, $link_id, 'link');
-            $config = $db->fetchAssoc('SELECT * FROM cor_conf_link WHERE link_id = ?', array($link_id));
+            $config = $db->config()->fetchAssoc('SELECT * FROM cor_conf_link WHERE link_id = ?', array($link_id));
             $this->_linkType = $config['type'];
             $this->_name = $config['name'];
             $this->_markup = $config['markup'];
@@ -208,7 +209,7 @@ class Link extends Element
     }
     // }}}
     // {{{ fetchLinks()
-    static function fetchLinks(Connection $db, $element_id, $enabled = true)
+    static function fetchLinks(Database $db, $element_id, $enabled = true)
     {
         $children = Element::fetchGroupArrays($db, $element_id, 'link', $enabled);
         $links = array();
