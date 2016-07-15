@@ -1,8 +1,4 @@
-{% use "bootstrap_3_horizontal_layout.html.twig" %}
-
-{% block form_panel_class -%}
-col-sm-12
-{%- endblock form_panel_class %}
+{% use "bootstrap_3_layout.html.twig" %}
 
 {% block panel_row -%}
     <div class="form-group">
@@ -24,7 +20,7 @@ col-sm-12
             <div class="panel-heading">
                 <div class="row">
                     <div class="col col-xs-6">
-                        <h3 class="panel-title">{{ title }}</h3>
+                        <h3 class="panel-title">{{ title|trans }}</h3>
                     </div>
                     <div class="col col-xs-6 text-right">
                         {{ form_widget(form.lock) }}
