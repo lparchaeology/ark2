@@ -34,13 +34,45 @@
 
 namespace ARK\Database;
 
+use Silex\Application;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Statement;
 use Doctrine\DBAL\DBALException;
 
 class Database
 {
+    private $_app = null;
     private $_drivers = array('pdo_mysql', 'pdo_pgsql', 'pdo_sqlite');
+
+    public function __construct(Application $app)
+    {
+        $this->_app = $app;
+    }
+
+    public function settings()
+    {
+        return $this->_app['dbs.settings'];
+    }
+
+    public function data()
+    {
+        return $this->_app['db.data'];
+    }
+
+    public function config()
+    {
+        return $this->_app['db.conf'];
+    }
+
+    public function user()
+    {
+        return $this->_app['db.user'];
+    }
+
+    public function spatial()
+    {
+        return $this->_app['db.spatial'];
+    }
 
     public function createInstance($instance, $user, $password)
     {
@@ -143,18 +175,18 @@ class Database
             return false;
         }
         // Load the current database schema
-        $this->loadSchema($conn, 'src/schema/core.xml');
-        $this->loadSchema($conn, 'src/schema/conf.xml');
-        $this->loadSchema($conn, 'src/schema/user.xml');
+        $this->loadSchema($this->data(), 'src/schema/core.xml');
+        $this->loadSchema($this->config(), 'src/schema/conf.xml');
+        $this->loadSchema($this->user(), 'src/schema/user.xml');
         $conn->close();
         $conn = null;
         return true;
     }
 
-    public function addUser(Connection $connection, $user, $password, $database)
+    public function addUser($user, $password, $database)
     {
-        $this->createUser($connection, $user, $password);
-        $this->grantUser($connection, $user, $database);
+        $this->createUser($user, $password);
+        $this->grantUser($user, $database);
     }
 
     private function _platform($connection)
@@ -162,9 +194,9 @@ class Database
         return $connection->getDriver()->getDatabasePlatform()->getName();
     }
 
-    public function listUsers(Connection $connection)
+    public function listUsers()
     {
-        $platform = $this->_platform($connection);
+        $platform = $this->_platform($this->user());
         if ($platform == 'mysql') {
             $sql = "SELECT CONCAT(QUOTE(User),'@',QUOTE(Host)) Identity FROM mysql.user ORDER BY User";
         } else if ($platform == 'postgresql') {
@@ -172,17 +204,17 @@ class Database
         } else {
             return;
         }
-        return $connection->fetchAll($sql);
+        return $this->user()->fetchAll($sql);
     }
 
-    public function createUser(Connection $connection, $user, $password)
+    public function createUser($user, $password)
     {
-        $platform = $this->_platform($connection);
+        $platform = $this->_platform($this->user());
         if ($platform == 'mysql') {
             $sql = 'CREATE USER ?@? IDENTIFIED BY ?';
-            $host = $connection->getHost();
+            $host = $this->user()->getHost();
             if ($host == '127.0.0.1') {
-                $connection->executeUpdate($sql, array($user, 'localhost', $password));
+                $this->user()->executeUpdate($sql, array($user, 'localhost', $password));
             }
             $params = array($user, $host, $password);
         } else if ($platform == 'postgresql') {
@@ -191,15 +223,15 @@ class Database
         } else {
             return;
         }
-        $connection->executeUpdate($sql, $params);
+        $this->user()->executeUpdate($sql, $params);
     }
 
-    private function _applyPermissions(Connection $connection, $action, $user, $database)
+    private function _applyPermissions($action, $user, $database)
     {
-        $platform = $this->_platform($connection);
+        $platform = $this->_platform($this->user());
         if ($platform == 'mysql') {
             $clause = 'ON '.$database.'.* TO ?@?';
-            $params = array($user, $connection->getHost());
+            $params = array($user, $this->user()->getHost());
         } else if ($platform == 'postgresql') {
             $clause = 'ON '.$database.'.* TO ?';
             $params = array($user);
@@ -209,36 +241,36 @@ class Database
         $permissions = array('CREATE','SELECT', 'INSERT', 'UPDATE', 'DELETE');
         foreach ($permissions as $permission) {
             $sql = $action.' '.$permission.' '.$clause;
-            $connection->executeUpdate($sql, $params);
+            $this->user()->executeUpdate($sql, $params);
         }
         if ($platform == 'mysql') {
-            $connection->executeUpdate('FLUSH PRIVILEGES');
+            $this->user()->executeUpdate('FLUSH PRIVILEGES');
         }
     }
 
-    public function grantUser(Connection $connection, $user, $database)
+    public function grantUser($user, $database)
     {
-        $this->_applyPermissions($connection, 'GRANT', $user, $database);
+        $this->_applyPermissions('GRANT', $user, $database);
     }
 
-    public function revokeUser(Connection $connection, $user, $database)
+    public function revokeUser($user, $database)
     {
-        $this->_applyPermissions($connection, 'REVOKE', $user, $database);
+        $this->_applyPermissions('REVOKE', $user, $database);
     }
 
-    public function dropUser(Connection $connection, $user)
+    public function dropUser($user)
     {
-        $platform = $this->_platform($connection);
+        $platform = $this->_platform($this->user());
         if ($platform == 'mysql') {
             $sql = 'DROP USER ?@?';
-            $params = array($identity, $connection->getHost());
+            $params = array($identity, $this->user()->getHost());
         } else if ($platform == 'postgresql') {
             $sql = 'DROP USER ?';
             $params = array($user);
         } else {
             return;
         }
-        $connection->executeUpdate($sql, $params);
+        $this->user()->executeUpdate($sql, $params);
     }
 
     public function loadSchema(Connection $connection, $schemaPath)
@@ -253,7 +285,7 @@ class Database
         }
     }
 
-    public function getText(Connection $connection, $item, $classtype, $lang)
+    public function getText($item, $classtype, $lang)
     {
         $sql = "
             SELECT *
@@ -270,10 +302,10 @@ class Database
             ':itemvalue' => $item['value'],
             ':lang' => $lang,
         );
-        return $connection->fetchAssoc($sql, $params);
+        return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getNumber(Connection $connection, $item, $classtype)
+    public function getNumber($item, $classtype)
     {
         $sql = "
             SELECT *
@@ -288,10 +320,10 @@ class Database
             ':itemkey' => $item['key'],
             ':itemvalue' => $item['value'],
         );
-        return $connection->fetchAssoc($sql, $params);
+        return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getDate(Connection $connection, $item, $classtype)
+    public function getDate($item, $classtype)
     {
         $sql = "
             SELECT *
@@ -306,10 +338,10 @@ class Database
             ':itemkey' => $item['key'],
             ':itemvalue' => $item['value'],
         );
-        return $connection->fetchAssoc($sql, $params);
+        return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getAttribute(Connection $connection, $item, $classtype)
+    public function getAttribute($item, $classtype)
     {
         $sql = "
             SELECT *
@@ -325,10 +357,10 @@ class Database
             ':itemkey' => $item['key'],
             ':itemvalue' => $item['value'],
         );
-        return $connection->fetchAssoc($sql, $params);
+        return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getFile(Connection $connection, $item, $classtype)
+    public function getFile($item, $classtype)
     {
         $sql = "
             SELECT *
@@ -344,7 +376,49 @@ class Database
             ':itemkey' => $item['key'],
             ':itemvalue' => $item['value'],
         );
-        return $connection->fetchAssoc($sql, $params);
+        return $this->data()->fetchAssoc($sql, $params);
     }
 
+    public function getAction($item, $classtype)
+    {
+        $sql = "
+            SELECT *
+            FROM cor_tbl_action, cor_lut_actiontype
+            WHERE cor_lut_actiontype.actiontype = :classtype
+            AND cor_tbl_action.actiontype = cor_lut_actiontype.id
+            AND cor_tbl_action.itemkey = :itemkey
+            AND cor_tbl_action.itemvalue = :itemvalue
+        ";
+        $params = array(
+            ':classtype' => $classtype,
+            ':itemkey' => $item['key'],
+            ':itemvalue' => $item['value'],
+        );
+        return $this->data()->fetchAssoc($sql, $params);
+    }
+
+    public function getActor($item)
+    {
+        $sql = "
+            SELECT *
+            FROM abk_tbl_abk, abk_lut_abktype
+            WHERE abk_tbl_abk.abk_cd = :itemvalue
+            AND abk_lut_abktype.id = abk_tbl_abk.abktype
+        ";
+        $params = array(
+            ':itemkey' => $item['key'],
+            ':itemvalue' => $item['value'],
+        );
+        return $this->data()->fetchAssoc($sql, $params);
+    }
+
+    public function getActors()
+    {
+        $sql = "
+            SELECT *
+            FROM abk_tbl_abk, abk_lut_abktype
+            WHERE abk_lut_abktype.id = abk_tbl_abk.abktype
+        ";
+        return $this->data()->fetchAll($sql, array());
+    }
 }

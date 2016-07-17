@@ -37,8 +37,8 @@ namespace ARK\Database\Provider;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Doctrine\DBAL\Connection;
-
 use ARK\Database\Configuration;
+use ARK\Database\Database;
 
 class ConfigurationServiceProvider implements ServiceProviderInterface
 {
@@ -52,8 +52,8 @@ class ConfigurationServiceProvider implements ServiceProviderInterface
             }
             $initialized = true;
 
-            $config = new Configuration($app['dir.config'].'/database.json', $app['dir.arks'].'/database.json');
-            $conns = $config->connections();
+            $app['dbs.settings'] = new Configuration($app['dir.config'].'/database.json', $app['dir.arks'].'/database.json');
+            $conns = $app['dbs.settings']->connections();
             if (!count($conns)) {
                 // If no connections configured, then use the defaults from DoctrineServiceProvider
                 $conns = array('default' => $app['db.default_options']);
@@ -61,6 +61,14 @@ class ConfigurationServiceProvider implements ServiceProviderInterface
             $app['dbs.options'] = $conns;
             $app['dbs.default'] = 'default';
         });
+
+        // Lazy load the Data Database connection
+        $app['db.data'] = function ($app) {
+            if (isset($app['dbs.options']['data'])) {
+                return $app['dbs']['data'];
+            }
+            return $app['db'];
+        };
 
         // Lazy load the User Database connection
         $app['db.user'] = function ($app) {
@@ -86,5 +94,9 @@ class ConfigurationServiceProvider implements ServiceProviderInterface
             return $app['db'];
         };
 
+        // Lazy load the Database class
+        $app['database'] = function ($app) {
+            return new Database($app);
+        };
     }
 }
