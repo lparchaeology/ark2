@@ -42,6 +42,7 @@ use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\DBAL\Connection;
+use ARK\Database\Database;
 
 class ItemController
 {
@@ -49,7 +50,7 @@ class ItemController
     {
         $mod_lower = strtolower($module);
         try {
-            $mod = $app['db.conf']->fetchAssoc('SELECT * FROM cor_conf_module WHERE module_id = ? OR url = ?', array($mod_lower, $mod_lower));
+            $mod = $app['database']->config()->fetchAssoc('SELECT * FROM cor_conf_module WHERE module_id = ? OR url = ?', array($mod_lower, $mod_lower));
         } catch (DBALException $e) {
             throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$site);
         }
@@ -72,7 +73,7 @@ class ItemController
         $formBuilder->add('item', Type\TextType::class, array('label' => 'Item', 'attr' => array('readonly' => true)));
         $forms['item_form'] = $formBuilder->getForm()->createView();
 
-        $schema = new \ARK\Schema\Group($app['db.conf'], 'micro_view_'.$mod['module_id'].'_section');
+        $schema = new \ARK\Schema\Group($app['database'], 'micro_view_'.$mod['module_id'].'_section');
         $cols = $schema->elements();
         $i = 1;
         foreach ($cols as $col) {
@@ -81,11 +82,9 @@ class ItemController
                 //$data = $model->getFields($itemKey, $panel->allFields());
                 $data = array();
                 //$data[$panel->id()] = $this->getFields($app['db'], $itemKey, $panel->allFields());
-                $data[$panel->id()] = $panel->formData($app['db'], $itemKey, $itemKey);
-                dump($data);
+                $data[$panel->id()] = $panel->formData($itemKey, $itemKey);
                 $formBuilder = $app->namedForm($panel->id(), $data);
                 $panel->buildForm($formBuilder);
-                dump($formBuilder->getForm());
                 $forms['col'.$i.'_forms'][] = $formBuilder->getForm()->createView();
             }
             $i += 1;
@@ -106,10 +105,9 @@ class ItemController
     }
 
     // TODO Move to Model class
-    private function getFields(Connection $connection, $itemKey, $fields)
+    private function getFields(Database $db, $itemKey, $fields)
     {
         $values = array();
-        $db = new \ARK\Database\Database();
         foreach ($fields as $field) {
             switch ($field->dataclass()) {
                 case 'txt':
@@ -127,7 +125,6 @@ class ItemController
                 case 'date':
                     $row = $db->getDate($connection, $itemKey, $field->classtype());
                     if (isset($row['date'])) {
-                        dump($field->id().' = '.$row['date']);
                         $values[$field->id()] = new \DateTime($row['date']);
                     }
                     break;
