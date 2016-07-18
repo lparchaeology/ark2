@@ -1,0 +1,27 @@
+{% extends "ark_main_layout.html.twig" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="alert alert-info" role="alert">Hey there, here's an alert...</div>
+
+    {% for row in layout.rows %}
+        <div class="row">
+            {% for col in row.cols %}
+                <div class="{{ col.class }}">
+                    {% if col.contents is defined %}
+                        {{ contents|raw }}
+                    {% else %}
+                        {% for form in col.forms %}
+                            {{ form_row(form) }}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
