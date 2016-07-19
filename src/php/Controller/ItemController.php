@@ -58,14 +58,46 @@ class ItemController
             throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$site);
         }
 
+        try {
+            $mod_tbl = $mod['tbl'];
+            $modtype_tbl = $mod['modtype_tbl'];
+            $itemkey = $mod['itemkey'];
+            $modtype = $mod['modtype'];
+            if ($modtype) {
+                $sql = "
+                    SELECT *
+                    FROM $mod_tbl, $modtype_tbl
+                    WHERE $mod_tbl.$itemkey = :itemvalue
+                    AND $modtype_tbl.id = $mod_tbl.$modtype
+                ";
+            } else {
+                $sql = "
+                    SELECT *
+                    FROM $mod_tbl
+                    WHERE $mod_tbl.$itemkey = :itemvalue
+                ";
+            }
+            $params = array(
+                ':itemvalue' => $site.'_'.$item,
+            );
+            $itemRow = $app['database']->data()->fetchAssoc($sql, $params);
+        } catch (DBALException $e) {
+            throw new NotFoundHttpException('Item '.$site.'_'.$item.' not found!');
+        }
+        if (!$itemRow) {
+            throw new NotFoundHttpException('Item '.$site.'_'.$item.' not found!');
+        }
+
         $forms = array();
 
         $itemKey = array(
             'site' => $site,
             'module' => $mod['module_id'],
+            'modtype' => $itemRow[$mod['modtype']],
             'item' => $item,
-            'key' => $mod['module_id'].'_cd',
-            'value' => $site.'_'.$item,
+            'key' => $mod['itemkey'],
+            'modname' => $mod['name'],
+            'value' => $itemRow[$mod['itemkey']],
         );
         $formBuilder = $app->form($itemKey);
         $formBuilder->add('site', Type\TextType::class, array('label' => 'Site', 'attr' => array('readonly' => true)));
@@ -73,6 +105,21 @@ class ItemController
         $formBuilder->add('item', Type\TextType::class, array('label' => 'Item', 'attr' => array('readonly' => true)));
         $forms['item_form'] = $formBuilder->getForm()->createView();
 
+        if ($itemKey['module'] == 'abk') {
+            $layout = new \ARK\Schema\Layout($app['database'], $itemKey['module'].'_layout_item', $itemKey['modname'], $itemKey['modtype']);
+            foreach ($layout->rows() as $rdx => $row) {
+                foreach ($row as $cdx => $col) {
+                    foreach ($col as $subform) {
+                        $data = array();
+                        $data[$subform->id()] = $subform->formData($itemKey, $itemKey);
+                        $formBuilder = $app->namedForm($subform->id(), $data);
+                        $subform->buildForm($formBuilder);
+                        $forms[$rdx][$cdx][] = $formBuilder->getForm()->createView();
+                    }
+                }
+            }
+            return $app['twig']->render($layout->template(), array('layout' => $layout, 'forms' => $forms));
+        }
         $schema = new \ARK\Schema\Group($app['database'], 'micro_view_'.$mod['module_id'].'_section');
         $cols = $schema->elements();
         $i = 1;

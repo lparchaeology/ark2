@@ -48,6 +48,10 @@ class Element
     protected $_isGroup = false;
     protected $_title = '';
     protected $_description = '';
+    protected $_table = '';
+    protected $_key = '';
+    protected $_module = '';
+    protected $_modtype = '';
     protected $_alias = null;
     protected $_options = array();
     protected $_conditions = array();
@@ -79,6 +83,8 @@ class Element
         $this->_description = $config['description'];
         $this->_table = $config['conf_table'];
         $this->_key = $config['conf_key'];
+        //$this->_module = $config['module'];
+        //$this->_modtype = $config['modtype'];
         $this->_alias = Alias::elementAlias($db, $element_id);
         $this->_options = Option::fetchOptions($db, $element_id);
         $this->_conditions = Condition::fetchConditions($db, $element_id);
@@ -118,6 +124,30 @@ class Element
     function description()
     {
         return $this->_description;
+    }
+    // }}}
+    // {{{ table()
+    function table()
+    {
+        return $this->_table;
+    }
+    // }}}
+    // {{{ key()
+    function key()
+    {
+        return $this->_key;
+    }
+    // }}}
+    // {{{ module()
+    function module()
+    {
+        return $this->_module;
+    }
+    // }}}
+    // {{{ modtype()
+    function modtype()
+    {
+        return $this->_modtype;
     }
     // }}}
     // {{{ alias()
