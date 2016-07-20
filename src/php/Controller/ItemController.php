@@ -107,14 +107,16 @@ class ItemController
 
         if ($itemKey['module'] == 'abk') {
             $layout = new \ARK\Schema\Layout($app['database'], $itemKey['module'].'_layout_item', $itemKey['modname'], $itemKey['modtype']);
-            foreach ($layout->rows() as $rdx => $row) {
-                foreach ($row as $cdx => $col) {
-                    foreach ($col as $subform) {
-                        $data = array();
-                        $data[$subform->id()] = $subform->formData($itemKey, $itemKey);
-                        $formBuilder = $app->namedForm($subform->id(), $data);
-                        $subform->buildForm($formBuilder);
-                        $forms[$rdx][$cdx][] = $formBuilder->getForm()->createView();
+            foreach ($layout->tabs() as $tdx => $tab) {
+                foreach ($tab as $rdx => $row) {
+                    foreach ($row as $cdx => $col) {
+                        foreach ($col as $subform) {
+                            $data = array();
+                            $data[$subform->id()] = $subform->formData($itemKey, $itemKey);
+                            $formBuilder = $app->namedForm($subform->id(), $data);
+                            $subform->buildForm($formBuilder);
+                            $forms[$tdx][$rdx][$cdx][] = $formBuilder->getForm()->createView();
+                        }
                     }
                 }
             }

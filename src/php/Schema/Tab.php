@@ -41,7 +41,6 @@ use ARK\Database\Database;
 class Layout extends Element
 {
     private $_template = '';
-    private $_showSingleTab = false;
     private $_tabs = array();
 
     // {{{ __construct()

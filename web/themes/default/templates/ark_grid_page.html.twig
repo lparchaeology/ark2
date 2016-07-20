@@ -6,21 +6,51 @@
 
     <div class="alert alert-info" role="alert">Hey there, here's an alert...</div>
 
-    {% for rdx, row in layout.rows %}
-        <div class="row">
-            {% for cdx, col in row %}
-                <div class="col-md-12">
-                    {% if col.contents is defined %}
-                        {{ contents|raw }}
-                    {% else %}
-                        {% for form in forms[rdx][cdx] %}
-                            {{ form_row(form) }}
-                        {% endfor %}
-                    {% endif %}
-                </div>
+    <div class="row col-md-12 form-inline form-group">
+        {{ form_start(forms.item_form) }}
+        {{ form_widget(forms.item_form) }}
+        {{ form_end(forms.item_form) }}
+    </div>
+
+    {% if layout.tabs|length > 1 %}
+        <ul class="nav nav-tabs" role="tablist">
+            {% set active = 'class=active' %}
+            {% for tdx, tab in layout.tabs %}
+                <li role="presentation" {{active}}><a href="#{{tdx}}" aria-controls="{{tdx}}" role="tab" data-toggle="tab">{{tdx}}</a></li>
+                {% set active = '' %}
             {% endfor %}
-        </div>
-    {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="tab-content">
+        {% set active = ' in active' %}
+        {% for tdx, tab in layout.tabs %}
+            <div role="tabpanel" class="tab-pane fade{{active}}" id="{{tdx}}">
+                {% set active = '' %}
+                {% for rdx, row in tab %}
+                    <div class="row">
+                        {% if row|length == 2 %}
+                            {% set colclass = 'col-md-8' %}
+                        {% else %}
+                            {% set colclass = 'col-md-12' %}
+                        {% endif %}
+                        {% for cdx, col in row %}
+                            <div class="{{colclass}}">
+                                {% set colclass = 'col-md-4' %}
+                                {% if col.contents is defined %}
+                                    {{ contents|raw }}
+                                {% else %}
+                                    {% for form in forms[tdx][rdx][cdx] %}
+                                        {{ form_row(form) }}
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
 
 </div>
 
