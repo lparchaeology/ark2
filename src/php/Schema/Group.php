@@ -50,6 +50,7 @@ class Group extends Element
     private $_label = NULL;
     private $_input = NULL;
     private $_elements = array();
+    private $_formType = '';
 
     // {{{ __construct()
     function __construct(Database $db, $group_id = null)
@@ -76,6 +77,7 @@ class Group extends Element
                 $this->_script = $config['script'];
                 $this->_label = $config['label'];
                 $this->_input = $config['input'];
+                $this->_formType = $config['form_type'];
             }
             $sql = "
                 SELECT cor_conf_group.*, cor_conf_element.element_type AS child_type
@@ -95,6 +97,9 @@ class Group extends Element
                         break;
                     case 'event':
                         $element = new Event($db, $child['child_id']);
+                        break;
+                    case 'layout':
+                        $element = Layout::fetchLayout($db, $child['child_id']);
                         break;
                     default:
                         $element = new Group($db, $child['child_id']);
@@ -137,10 +142,17 @@ class Group extends Element
             return;
         }
         if ($this->_type == 'subform') {
-            $options['label'] = false;
-            $options['title'] = $this->_title;
-            $options['elements'] = $this->_elements;
-            $formBuilder->add($this->_id, PanelType::class, $options);
+            if ($this->_formType) {
+                foreach ($this->options() as $option) {
+                    $options['sf_options'][$option->key()] = $option->value();
+                }
+                $formBuilder->add($this->_id, $this->_formType, $options);
+            } else {
+                $options['label'] = false;
+                $options['elements'] = $this->_elements;
+                $options['title'] = $this->_title;
+                $formBuilder->add($this->_id, PanelType::class, $options);
+            }
         } else {
             foreach ($this->_elements as $element) {
                 $element->buildForm($formBuilder, $options);

@@ -159,7 +159,7 @@ class Element
     // {{{ options()
     function options()
     {
-        return $this->_options;
+        return array_values($this->_options);
     }
     // }}}
     // {{{ conditions()

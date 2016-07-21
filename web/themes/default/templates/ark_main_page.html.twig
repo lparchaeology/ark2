@@ -1,0 +1,19 @@
+{% extends "ark_main_layout.html.twig" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="alert alert-info" role="alert">Hey there, here's an alert...</div>
+
+    <div class="row col-md-12 form-inline form-group">
+        {{ form_start(forms.item_form) }}
+        {{ form_widget(forms.item_form) }}
+        {{ form_end(forms.item_form) }}
+    </div>
+
+    {% include layout.template %}
+
+</div>
+
+{% endblock %}

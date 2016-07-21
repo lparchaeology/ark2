@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/TabbedLayout.php
+* src/php/Schema/GridLayout.php
 *
-* ARK Schema TabbedLayout
+* ARK Schema GridLayout
 *
 * PHP version 5 and 7
 *
@@ -28,7 +28,7 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/TabbedLayout.php
+* @see        http://ark.lparchaeology.com/code/src/php/Schema/GridLayout.php
 * @since      2.0
 *
 */
@@ -37,7 +37,7 @@ namespace ARK\Schema;
 
 use ARK\Database\Database;
 
-class TabbedLayout extends Layout
+class GridLayout extends Layout
 {
     function __construct(Database $db = null, $layout_id = null, $mod = null, $modtype = null)
     {
@@ -88,13 +88,13 @@ class TabbedLayout extends Layout
         if (isset($this->_options['default_tab'])) {
             return $this->_options['default_tab'];
         } else {
-            return $this->tabs()[0]->id();
+            return $this->_tabs[0]->id();
         }
     }
 
     function tabs()
     {
-        return $this->elements();
+        return $this->_elements;
     }
 
 }

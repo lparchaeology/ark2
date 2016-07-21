@@ -6,13 +6,12 @@
 
     <div class="alert alert-info" role="alert">Hey there, here's an alert...</div>
 
-    <div class="row">
-        <div class="col-md-12">
-            {{ form_start(item_form) }}
-            {{ form_widget(item_form) }}
-            {{ form_end(item_form) }}
-        </div>
+    <div class="row col-md-12 form-inline form-group">
+        {{ form_start(item_form) }}
+        {{ form_widget(item_form) }}
+        {{ form_end(item_form) }}
     </div>
+
     {% if col2_forms is defined %}
         <div class="row">
             <div class="col-md-8 panel-group">

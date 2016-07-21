@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/Layout.php
+* src/php/Form/Type/EventType.php
 *
-* ARK Schema Layout
+* ARK Event Form Type
 *
 * PHP version 5 and 7
 *
@@ -28,47 +28,41 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/Layout.php
+* @see        http://ark.lparchaeology.com/code/src/php/Form/Type/EventType.php
 * @since      2.0
 *
 */
 
-namespace ARK\Schema;
+namespace ARK\Form\Type;
 
-use ARK\Database\Database;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class Layout extends Group
+class EmbedType extends AbstractType
 {
-    protected $_template = '';
-
-    private function _loadConfig($config)
+    // {{{ buildView()
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        if (!isset($config['template'])) {
-            return;
-        }
-        $this->_template = $config['template'];
-        $this->_valid = true;
+        $view->vars['embed'] = $options['sf_options']['embed'];
     }
-
-    function template()
+    // {{{ configureOptions()
+    // }}}
+    public function configureOptions(OptionsResolver $resolver)
     {
-        if (isset($this->_options['template'])) {
-            return $this->_options['template'];
-        } else {
-            return $this->_template;
-        }
+        $resolver->setDefaults(array(
+            'sf_options' => array(),
+            'embed' => '',
+        ));
     }
-
-    static function fetchLayout(Database $db, $layout_id)
+    // }}}
+    // {{{ getParent()
+    public function getParent()
     {
-        try {
-            $config =  $db->config()->fetchAssoc('SELECT * FROM ark_config_layout WHERE layout_id = ?', array($layout_id));
-            $layout = new $config['class'];
-            $layout->_loadConfig($config);
-            return $layout;
-        } catch (DBALException $e) {
-            return new Layout();
-        }
+        return FormType::class;
     }
-
+    // }}}
 }

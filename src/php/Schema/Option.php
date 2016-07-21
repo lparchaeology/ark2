@@ -133,7 +133,7 @@ class Option
                 $option = new Option();
                 $option->_loadConfig($db, $config);
                 if ($option->isValid()) {
-                    $options[] = $option;
+                    $options[$option->key()] = $option;
                 }
             }
         } catch (DBALException $e) {
@@ -146,7 +146,7 @@ class Option
     static function fetchOptionsArray(Database $db, $element_id)
     {
         $optionsArray = array();
-        $options = Option::options($db, $element_id);
+        $options = Option::fetchOptions($db, $element_id);
         foreach ($options as $option) {
             $optionsArray[$option->key()] = $option->value();
         }
