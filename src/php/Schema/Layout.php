@@ -41,6 +41,14 @@ class Layout extends Group
 {
     protected $_template = '';
 
+    function __construct(Database $db = null, $layout_id = null, $mod = null, $modtype = null)
+    {
+        if ($db == null || $layout_id == null) {
+            return;
+        }
+        parent::__construct($db, $layout_id);
+    }
+
     private function _loadConfig($config)
     {
         if (!isset($config['template'])) {
@@ -63,7 +71,7 @@ class Layout extends Group
     {
         try {
             $config =  $db->config()->fetchAssoc('SELECT * FROM ark_config_layout WHERE layout_id = ?', array($layout_id));
-            $layout = new $config['class'];
+            $layout = new $config['class']($db, $layout_id);
             $layout->_loadConfig($config);
             return $layout;
         } catch (DBALException $e) {

@@ -43,6 +43,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\DBAL\Connection;
 use ARK\Database\Database;
+use ARK\Schema\Layout;
 
 class ItemController
 {
@@ -106,7 +107,7 @@ class ItemController
         $forms['item_form'] = $formBuilder->getForm()->createView();
 
         if ($itemKey['module'] == 'abk') {
-            $layout = new \ARK\Schema\TabbedLayout($app['database'], $itemKey['module'].'_layout_item_tabs', $itemKey['modname'], $itemKey['modtype']);
+            $layout = Layout::fetchLayout($app['database'], $itemKey['module'].'_layout_item_tabs', $itemKey['modname'], $itemKey['modtype']);
             foreach ($layout->tabs() as $tdx => $tab) {
                 foreach ($tab as $rdx => $row) {
                     foreach ($row as $cdx => $col) {
@@ -120,6 +121,8 @@ class ItemController
                     }
                 }
             }
+            dump($layout);
+            dump($forms);
             return $app['twig']->render('ark_main_page.html.twig', array('layout' => $layout, 'forms' => $forms));
         }
         $schema = new \ARK\Schema\Group($app['database'], 'micro_view_'.$mod['module_id'].'_section');

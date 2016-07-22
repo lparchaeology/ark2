@@ -55,7 +55,7 @@ class Group extends Element
     // {{{ __construct()
     function __construct(Database $db, $group_id = null)
     {
-        if ($group_id == null) {
+        if ($db == null || $group_id == null) {
             return;
         }
         try {
