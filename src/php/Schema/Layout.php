@@ -35,18 +35,21 @@
 
 namespace ARK\Schema;
 
+use Twig_Environment;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\Type\FormType;
 use ARK\Database\Database;
 
 class Layout extends Group
 {
     protected $_template = '';
 
-    function __construct(Database $db = null, $layout_id = null, $mod = null, $modtype = null)
+    function __construct(Database $db = null, $layout_id = null, $modname = null, $modtype = null)
     {
         if ($db == null || $layout_id == null) {
             return;
         }
-        parent::__construct($db, $layout_id);
+        parent::__construct($db, $layout_id, $modname, $modtype);
     }
 
     private function _loadConfig($config)
@@ -67,11 +70,27 @@ class Layout extends Group
         }
     }
 
-    static function fetchLayout(Database $db, $layout_id)
+    function render(Twig_Environment $twig, FormFactoryInterface $factory, $itemKey, array $options = array())
+    {
+        $options['layout'] = $this;
+        $options['forms'] = $this->renderForms($factory, $itemKey);
+        return $twig->render($this->_template, $options);
+    }
+
+    function renderForms(FormFactoryInterface $factory, $itemKey)
+    {
+        $forms = array();
+        foreach ($this->elements() as $element) {
+            $forms[$element->id()] = $element->renderForms($factory, $itemKey);
+        }
+        return $forms;
+    }
+
+    static function fetchLayout(Database $db, $layout_id, $module, $modtype)
     {
         try {
             $config =  $db->config()->fetchAssoc('SELECT * FROM ark_config_layout WHERE layout_id = ?', array($layout_id));
-            $layout = new $config['class']($db, $layout_id);
+            $layout = new $config['class']($db, $layout_id, $module, $modtype);
             $layout->_loadConfig($config);
             return $layout;
         } catch (DBALException $e) {

@@ -36,65 +36,39 @@
 namespace ARK\Schema;
 
 use ARK\Database\Database;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class GridLayout extends Layout
 {
-    function __construct(Database $db = null, $layout_id = null, $mod = null, $modtype = null)
+    function __construct(Database $db = null, $layout_id = null, $modname = null, $modtype = null)
     {
         if ($db == null || $layout_id == null) {
             return;
         }
-        parent::__construct($db, $layout_id, $mod, $modtype);
+        parent::__construct($db, $layout_id, $modname, $modtype);
     }
 
-    function toggle()
+    function cols($row)
     {
-        if (isset($this->_options['toggle'])) {
-            return $this->_options['toggle'];
-        } else {
-            return 'tab';
+        return $this->_grid[$row];
+    }
+
+    function rows()
+    {
+        return $this->_grid;
+    }
+
+    function renderForms(FormFactoryInterface $factory, $itemKey)
+    {
+        $forms = array();
+        foreach ($this->rows() as $rdx => $row) {
+            foreach ($row as $cdx => $col) {
+                foreach ($col as $cell) {
+                    $forms[$rdx][$cdx][] = $cell->renderForms($factory, $itemKey);
+                }
+            }
         }
-    }
-
-    function justified()
-    {
-        if (isset($this->_options['justified'])) {
-            return $this->_options['justified'];
-        } else {
-            return false;
-        }
-    }
-
-    function fade()
-    {
-        if (isset($this->_options['fade'])) {
-            return $this->_options['fade'];
-        } else {
-            return false;
-        }
-    }
-
-    function showSingleTab()
-    {
-        if (isset($this->_options['show_single_tab'])) {
-            return $this->_options['show_single_tab'];
-        } else {
-            return false;
-        }
-    }
-
-    function defaultTab()
-    {
-        if (isset($this->_options['default_tab'])) {
-            return $this->_options['default_tab'];
-        } else {
-            return $this->_tabs[0]->id();
-        }
-    }
-
-    function tabs()
-    {
-        return $this->_elements;
+        return $forms;
     }
 
 }

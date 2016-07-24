@@ -12,7 +12,13 @@
             {% for cdx, col in row %}
                 <div class="{{colclass}}">
                     {% set colclass = 'col-md-4' %}
-                    {% include col.template() with {'layout': col, 'forms': forms[rdx][cdx]} only %}
+                    {% for idx, cell in col %}
+                        {% if cell.type == 'layout' %}
+                            {% include cell.template with {'layout': cell, 'forms': forms[rdx][cdx][idx]} only %}
+                        {% else %}
+                            {{ form_row(forms[rdx][cdx][idx]) }}
+                        {% endif %}
+                    {% endfor %}
                 </div>
             {% endfor %}
         </div>

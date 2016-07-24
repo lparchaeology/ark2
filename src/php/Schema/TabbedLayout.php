@@ -36,15 +36,16 @@
 namespace ARK\Schema;
 
 use ARK\Database\Database;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class TabbedLayout extends Layout
 {
-    function __construct(Database $db = null, $layout_id = null, $mod = null, $modtype = null)
+    function __construct(Database $db = null, $layout_id = null, $modname = null, $modtype = null)
     {
         if ($db == null || $layout_id == null) {
             return;
         }
-        parent::__construct($db, $layout_id, $mod, $modtype);
+        parent::__construct($db, $layout_id, $modname, $modtype);
     }
 
     function toggle()
@@ -95,6 +96,15 @@ class TabbedLayout extends Layout
     function tabs()
     {
         return $this->elements();
+    }
+
+    function renderForms(FormFactoryInterface $factory, $itemKey)
+    {
+        $forms = array();
+        foreach ($this->tabs() as $tab) {
+            $forms[$tab->id()] = $tab->renderForms($factory, $itemKey);
+        }
+        return $forms;
     }
 
 }

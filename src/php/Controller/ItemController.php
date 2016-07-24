@@ -108,6 +108,9 @@ class ItemController
 
         if ($itemKey['module'] == 'abk') {
             $layout = Layout::fetchLayout($app['database'], $itemKey['module'].'_layout_item_tabs', $itemKey['modname'], $itemKey['modtype']);
+            dump($layout);
+            return $layout->render($app['twig'], $app['form.factory'], $itemKey);
+            /*
             foreach ($layout->tabs() as $tdx => $tab) {
                 foreach ($tab as $rdx => $row) {
                     foreach ($row as $cdx => $col) {
@@ -121,9 +124,9 @@ class ItemController
                     }
                 }
             }
-            dump($layout);
             dump($forms);
             return $app['twig']->render('ark_main_page.html.twig', array('layout' => $layout, 'forms' => $forms));
+            */
         }
         $schema = new \ARK\Schema\Group($app['database'], 'micro_view_'.$mod['module_id'].'_section');
         $cols = $schema->elements();

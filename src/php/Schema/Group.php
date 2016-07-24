@@ -43,89 +43,72 @@ use ARK\Form\Type\PanelType;
 
 class Group extends Element
 {
-    private $_viewState = '';
-    private $_editState = '';
-    private $_navType = '';
-    private $_script = '';
-    private $_label = NULL;
-    private $_input = NULL;
-    private $_elements = array();
-    private $_formType = '';
+    protected $_grid = array();
+    protected $_elements = array();
 
-    // {{{ __construct()
-    function __construct(Database $db, $group_id = null)
+    function __construct(Database $db = null, $group_id = null, $modname = null, $modtype = null)
     {
         if ($db == null || $group_id == null) {
             return;
         }
-        try {
-            parent::__construct($db, $group_id);
-            if (!$this->_isGroup) {
-                return;
-            }
-            if ($this->type() == 'subform') {
-                $sql = "
-                    SELECT *
-                    FROM cor_conf_subform
-                    WHERE subform_id = ?
-                ";
-                $config = $db->config()->fetchAssoc($sql, array($group_id));
-                $this->_viewState = $config['view_state'];
-                $this->_editState = $config['edit_state'];
-                $this->_navType = $config['nav_type'];
-                $this->_title = $config['title'];
-                $this->_script = $config['script'];
-                $this->_label = $config['label'];
-                $this->_input = $config['input'];
-                $this->_formType = $config['form_type'];
-            }
-            $sql = "
-                SELECT cor_conf_group.*, cor_conf_element.element_type AS child_type
-                FROM cor_conf_group
-                LEFT JOIN cor_conf_element
-                ON cor_conf_group.child_id = cor_conf_element.element_id
-                WHERE cor_conf_group.element_id = ?
-            ";
-            $children = $db->config()->fetchAll($sql, array($group_id));
-            foreach ($children as $child) {
-                switch ($child['child_type']) {
-                    case 'field':
-                        $element = new Field($db, $child['child_id']);
-                        break;
-                    case 'link':
-                        $element = new Link($db, $child['child_id']);
-                        break;
-                    case 'event':
-                        $element = new Event($db, $child['child_id']);
-                        break;
-                    case 'layout':
-                        $element = Layout::fetchLayout($db, $child['child_id']);
-                        break;
-                    default:
-                        $element = new Group($db, $child['child_id']);
-                        break;
-                }
-                if (!$element->isValid()) {
-                    echo 'Not valid element!!! '.$child['child_id'].' '.$child['child_type'].'<br/>';
-                    $this->_elements = array();
-                    return;
-                }
-                $this->_elements[] = $element;
-            }
-            $this->_valid = true;
-        } catch (DBALException $e) {
-            throw $e;
+        parent::__construct($db, $group_id);
+        if (!$this->_isGroup) {
             return;
         }
+        $sql = "
+            SELECT cor_conf_group.*, cor_conf_element.element_type AS child_type
+            FROM cor_conf_group, cor_conf_element
+            WHERE cor_conf_group.element_id = :element_id
+            AND (cor_conf_group.modtype = :modtype OR cor_conf_group.modtype = :modname OR cor_conf_group.modtype = :modcor)
+            AND cor_conf_group.enabled = :enabled
+            AND cor_conf_group.child_id = cor_conf_element.element_id
+            ORDER BY cor_conf_group.row, cor_conf_group.col, cor_conf_group.seq
+        ";
+        $params = array(
+            ':element_id' => $group_id,
+            ':modtype' => $modtype,
+            ':modname' => $modname,
+            ':modcor' => 'mod_cor',
+            ':enabled' => true,
+        );
+        $children = $db->config()->fetchAll($sql, $params);
+        foreach ($children as $child) {
+            switch ($child['child_type']) {
+                case 'field':
+                    $element = new Field($db, $child['child_id']);
+                    break;
+                case 'link':
+                    $element = new Link($db, $child['child_id']);
+                    break;
+                case 'event':
+                    $element = new Event($db, $child['child_id']);
+                    break;
+                case 'layout':
+                    $element = Layout::fetchLayout($db, $child['child_id'], $modname, $modtype);
+                    break;
+                case 'subform':
+                    $element = new Subform($db, $child['child_id'], $modname, $modtype);
+                    break;
+                default: // Page, Column, Schema
+                    $element = new Group($db, $child['child_id'], $modname, $modtype);
+                    break;
+            }
+            if (!$element->isValid()) {
+                echo 'Not valid child element!!! '.$child['child_id'].' '.$child['child_type'].'<br/>';
+                $this->_elements = array();
+                return;
+            }
+            $this->_elements[] = $element;
+            $this->_grid[$child['row']][$child['col']][] = $element;
+        }
+        $this->_valid = true;
     }
-    // }}}
-    // {{{ elements()
+
     function elements()
     {
         return $this->_elements;
     }
-    // }}}
-    // {{{ buildForm()
+
     function formData($itemKey)
     {
         $data = array();
@@ -134,33 +117,17 @@ class Group extends Element
         }
         return $data;
     }
-    // }}}
-    // {{{ buildForm()
+
     function buildForm(FormBuilder &$formBuilder, array $options = array())
     {
         if (!$this->isValid()) {
             return;
         }
-        if ($this->_type == 'subform') {
-            if ($this->_formType) {
-                foreach ($this->options() as $option) {
-                    $options['sf_options'][$option->key()] = $option->value();
-                }
-                $formBuilder->add($this->_id, $this->_formType, $options);
-            } else {
-                $options['label'] = false;
-                $options['elements'] = $this->_elements;
-                $options['title'] = $this->_title;
-                $formBuilder->add($this->_id, PanelType::class, $options);
-            }
-        } else {
-            foreach ($this->_elements as $element) {
-                $element->buildForm($formBuilder, $options);
-            }
+        foreach ($this->_elements as $element) {
+            $element->buildForm($formBuilder, $options);
         }
     }
-    // }}}
-    // {{{ toSchema()
+
     function toSchema()
     {
         if (!$this->isValid()) {
@@ -179,8 +146,7 @@ class Group extends Element
         $schema['additionalProperties'] = false;
         return array($this->_id => $schema);
     }
-    // }}}
-    // {{{ allFields()
+
     function allFields()
     {
         $fields = array();
@@ -193,5 +159,4 @@ class Group extends Element
         }
         return $fields;
     }
-    // }}}
 }
