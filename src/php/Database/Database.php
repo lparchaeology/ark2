@@ -285,21 +285,20 @@ class Database
         }
     }
 
-    public function getText($item, $classtype, $lang)
+    public function getText($itemkey, $itemvalue, $txttype, $lang)
     {
         $sql = "
             SELECT *
-            FROM cor_tbl_txt, cor_lut_txttype
-            WHERE cor_lut_txttype.txttype = :classtype
-            AND cor_tbl_txt.txttype = cor_lut_txttype.id
-            AND cor_tbl_txt.itemkey = :itemkey
-            AND cor_tbl_txt.itemvalue = :itemvalue
-            AND cor_tbl_txt.language = :lang
+            FROM cor_tbl_txt
+            WHERE itemkey = :itemkey
+            AND itemvalue = :itemvalue
+            AND txttype = :txttype
+            AND language = :lang
         ";
         $params = array(
-            ':classtype' => $classtype,
-            ':itemkey' => $item['key'],
-            ':itemvalue' => $item['value'],
+            ':itemkey' => $itemkey,
+            ':itemvalue' => $itemvalue,
+            ':txttype' => $txttype,
             ':lang' => $lang,
         );
         return $this->data()->fetchAssoc($sql, $params);
@@ -323,39 +322,36 @@ class Database
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getDate($item, $classtype)
+    public function getDate($itemkey, $itemvalue, $datetype)
     {
         $sql = "
             SELECT *
-            FROM cor_tbl_date, cor_lut_datetype
-            WHERE cor_lut_datetype.datetype = :classtype
-            AND cor_tbl_date.datetype = cor_lut_datetype.id
-            AND cor_tbl_date.itemkey = :itemkey
-            AND cor_tbl_date.itemvalue = :itemvalue
+            FROM cor_tbl_date
+            WHERE itemkey = :itemkey
+            AND itemvalue = :itemvalue
+            AND datetype = :datetype
         ";
         $params = array(
-            ':classtype' => $classtype,
-            ':itemkey' => $item['key'],
-            ':itemvalue' => $item['value'],
+            ':itemkey' => $itemkey,
+            ':itemvalue' => $itemvalue,
+            ':datetype' => $datetype,
         );
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getAttribute($item, $classtype)
+    public function getAttribute($itemkey, $itemvalue, $attributetype)
     {
         $sql = "
             SELECT *
-            FROM cor_tbl_attribute, cor_lut_attributetype, cor_lut_attribute
-            WHERE cor_lut_attributetype.attributetype = :classtype
-            AND cor_lut_attribute.attributetype = cor_lut_attributetype.id
-            AND cor_tbl_attribute.attribute = cor_lut_attribute.id
-            AND cor_tbl_attribute.itemkey = :itemkey
-            AND cor_tbl_attribute.itemvalue = :itemvalue
+            FROM cor_tbl_attribute
+            WHERE itemkey = :itemkey
+            AND itemvalue = :itemvalue
+            AND attributetype = :attributetype
         ";
         $params = array(
-            ':classtype' => $classtype,
-            ':itemkey' => $item['key'],
-            ':itemvalue' => $item['value'],
+            ':itemkey' => $itemkey,
+            ':itemvalue' => $itemvalue,
+            ':attributetype' => $attributetype,
         );
         return $this->data()->fetchAssoc($sql, $params);
     }
@@ -379,46 +375,99 @@ class Database
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getAction($item, $classtype)
+    public function getAction($itemkey, $itemvalue, $actiontype)
     {
         $sql = "
             SELECT *
-            FROM cor_tbl_action, cor_lut_actiontype
-            WHERE cor_lut_actiontype.actiontype = :classtype
-            AND cor_tbl_action.actiontype = cor_lut_actiontype.id
-            AND cor_tbl_action.itemkey = :itemkey
-            AND cor_tbl_action.itemvalue = :itemvalue
+            FROM cor_tbl_action
+            WHERE itemkey = :itemkey
+            AND itemvalue = :itemvalue
+            AND actiontype = :actiontype
         ";
         $params = array(
-            ':classtype' => $classtype,
-            ':itemkey' => $item['key'],
-            ':itemvalue' => $item['value'],
+            ':itemkey' => $itemkey,
+            ':itemvalue' => $itemvalue,
+            ':actiontype' => $actiontype,
         );
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getActor($item)
+    public function getActor($itemkey, $itemvalue, $mod_tbl = null)
     {
+        if (empty($mod_tbl)) {
+            $mod_tbl = $this->getModuleTable($itemkey);
+        }
         $sql = "
             SELECT *
-            FROM abk_tbl_abk, abk_lut_abktype
-            WHERE abk_tbl_abk.abk_cd = :itemvalue
-            AND abk_lut_abktype.id = abk_tbl_abk.abktype
+            FROM $mod_tbl
+            WHERE $itemkey = :itemvalue
         ";
         $params = array(
-            ':itemkey' => $item['key'],
-            ':itemvalue' => $item['value'],
+            ':itemvalue' => $itemvalue,
         );
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getActors()
+    public function getActors($mod_tbl = null)
+    {
+        if (empty($mod_tbl)) {
+            $mod_tbl = $this->getModuleTable('abk');
+        }
+        $sql = "
+            SELECT *
+            FROM $mod_tbl
+        ";
+        $params = array();
+        return $this->data()->fetchAll($sql, $params);
+    }
+
+    public function getItem($itemkey, $itemvalue, $mod_tbl = null)
+    {
+        if (empty($mod_tbl)) {
+            $mod_tbl = $this->getModuleTable($itemkey);
+        }
+        $sql = "
+            SELECT *
+            FROM $mod_tbl
+            WHERE $mod_tbl.$itemkey = :itemvalue
+        ";
+        $params = array(
+            ':itemvalue' => $itemvalue,
+        );
+        return $this->data()->fetchAssoc($sql, $params);
+    }
+
+    public function getModuleTable($itemkey)
+    {
+        return $this->getModule($itemkey)['tbl'];
+    }
+
+    public function getModule($module_id)
     {
         $sql = "
             SELECT *
-            FROM abk_tbl_abk, abk_lut_abktype
-            WHERE abk_lut_abktype.id = abk_tbl_abk.abktype
+            FROM ark_config_module
+            WHERE module_id = :module_id
+            OR modname = :module_id
+            OR itemkey = :module_id
+            OR url = :module_id
         ";
-        return $this->data()->fetchAll($sql, array());
+        $params = array(
+            ':module_id' => $module_id,
+        );
+        return $this->config()->fetchAssoc($sql, $params);
+    }
+
+    public function getLayout($layout_id)
+    {
+        $sql = "
+            SELECT *
+            FROM ark_config_layout
+            WHERE layout_id = :layout_id
+        ";
+        $params = array(
+            ':layout_id' => $layout_id,
+        );
+        return $this->config()->fetchAssoc($sql, $params);
     }
 }

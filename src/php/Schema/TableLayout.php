@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/GridLayout.php
+* src/php/Schema/TableLayout.php
 *
-* ARK Schema GridLayout
+* ARK Schema TableLayout
 *
 * PHP version 5 and 7
 *
@@ -28,7 +28,7 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/GridLayout.php
+* @see        http://ark.lparchaeology.com/code/src/php/Schema/TableLayout.php
 * @since      2.0
 *
 */
@@ -38,7 +38,7 @@ namespace ARK\Schema;
 use ARK\Database\Database;
 use Symfony\Component\Form\FormFactoryInterface;
 
-class GridLayout extends Layout
+class TableLayout extends Layout
 {
     function __construct(Database $db = null, $layout_id = null, $modname = null, $modtype = null)
     {
@@ -46,30 +46,52 @@ class GridLayout extends Layout
             return;
         }
         parent::__construct($db, $layout_id, $modname, $modtype);
-        $this->_template = 'gridlayout.html.twig';
+        $this->_template = 'tablelayout.html.twig';
     }
 
-    function cols($row)
+    function striped()
     {
-        return $this->_grid[$row];
-    }
-
-    function rows()
-    {
-        return $this->_grid;
-    }
-
-    function renderForms(FormFactoryInterface $factory, $itemKey)
-    {
-        $forms = array();
-        foreach ($this->rows() as $rdx => $row) {
-            foreach ($row as $cdx => $col) {
-                foreach ($col as $cell) {
-                    $forms[$rdx][$cdx][] = $cell->renderForms($factory, $itemKey);
-                }
-            }
+        if (isset($this->_options['striped'])) {
+            return $this->_options['striped'];
+        } else {
+            return false;
         }
-        return $forms;
+    }
+
+    function bordered()
+    {
+        if (isset($this->_options['bordered'])) {
+            return $this->_options['bordered'];
+        } else {
+            return false;
+        }
+    }
+
+    function hover()
+    {
+        if (isset($this->_options['hover'])) {
+            return $this->_options['hover'];
+        } else {
+            return false;
+        }
+    }
+
+    function condensed()
+    {
+        if (isset($this->_options['condensed'])) {
+            return $this->_options['condensed'];
+        } else {
+            return false;
+        }
+    }
+
+    function responsive()
+    {
+        if (isset($this->_options['responsive'])) {
+            return $this->_options['responsive'];
+        } else {
+            return false;
+        }
     }
 
 }

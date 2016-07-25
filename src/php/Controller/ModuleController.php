@@ -46,12 +46,7 @@ class ModuleController
 {
     public function viewModuleAction(Application $app, Request $request, $site, $module)
     {
-        $mod_lower = strtolower($module);
-        try {
-            $mod = $app['database']->config()->fetchAssoc('SELECT * FROM cor_conf_module WHERE module_id = ? OR url = ?', array($mod_lower, $mod_lower));
-        } catch (DBALException $e) {
-            throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$site);
-        }
+        $mod = $app['database']->getModule(strtolower($module));
         if (!$mod) {
             throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$site);
         }
@@ -81,17 +76,12 @@ class ModuleController
 
     public function getSchemaAction(Application $app, Request $request, $site, $module)
     {
-        $mod_lower = strtolower($module);
-        try {
-            $mod = $app['database']->config()->fetchAssoc('SELECT * FROM cor_conf_module WHERE module_id = ? OR url = ?', array($mod_lower, $mod_lower));
-        } catch (DBALException $e) {
-            throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$site);
-        }
+        $mod = $app['database']->getModule(strtolower($module));
         if (!$mod) {
             throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$site);
         }
 
-        $schema = new \ARK\Schema\Group($app['database'], 'micro_view_'.$mod['module_id'].'_section');
+        $schema = new \ARK\Schema\Group($app['database'], $mod['module_id'].'_layout_item');
         $response = new JsonResponse(null);
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
         $response->setData($schema->toSchema());

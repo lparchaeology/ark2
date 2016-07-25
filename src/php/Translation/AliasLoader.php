@@ -48,9 +48,6 @@ class AliasLoader implements LoaderInterface
             FROM cor_lut_aliastype
         ";
         $rows = $db->data()->fetchAll($sql, array());
-        foreach ($rows as $row) {
-            $aliastype[$row['id']] = $row['aliastype'];
-        }
         $sql = "
             SELECT *
             FROM cor_tbl_alias
@@ -65,9 +62,8 @@ class AliasLoader implements LoaderInterface
             if ($tbl == 'cor_lut_attribute') {
                 $sql = "
                     SELECT *
-                    FROM cor_lut_attribute, cor_lut_attributetype
-                    WHERE cor_lut_attribute.id = :id
-                    AND cor_lut_attribute.attributetype = cor_lut_attributetype.id
+                    FROM cor_lut_attribute
+                    WHERE attributetype = :id
                 ";
             } else {
                 $sql = "
@@ -90,9 +86,9 @@ class AliasLoader implements LoaderInterface
                 $src_key = substr($alias['itemkey'], 8);
             }
             if ($tbl == 'cor_lut_attribute') {
-                $key = $src_key.'.'.$source['attributetype'].'.'.$source[$src_key].'.'.$aliastype[$alias['aliastype']];
+                $key = $src_key.'.'.$source['attributetype'].'.'.$source[$src_key].'.'.$alias['aliastype'];
             } else {
-                $key = $src_key.'.'.$source[$src_key].'.'.$aliastype[$alias['aliastype']];
+                $key = $src_key.'.'.$source[$src_key].'.'.$alias['aliastype'];
             }
             $catalogue->set($key, $alias['alias'], $domain);
         }

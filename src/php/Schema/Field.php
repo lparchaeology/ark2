@@ -71,7 +71,7 @@ class Field extends Element
                 $class = $db->data()->fetchAssoc("SELECT * FROM $tbl WHERE $type = ?", array($config['classtype']));
             }
             if ($this->_dataclass == 'attribute') {
-                $attrs = $db->data()->fetchAll('SELECT * FROM cor_lut_attribute WHERE attributetype = ?', array($class['id']));
+                $attrs = $db->data()->fetchAll('SELECT * FROM cor_lut_attribute WHERE attributetype = ?', array($class['attributetype']));
                 foreach ($attrs as $attr) {
                     $this->_attributes[] = $attr['attribute'];
                 }
@@ -142,7 +142,7 @@ class Field extends Element
         $data = array();
         switch ($this->dataclass()) {
             case 'txt':
-                $row = $this->_db->getText($itemKey, $this->classtype(), 'en');
+                $row = $this->_db->getText($itemKey['key'], $itemKey['value'], $this->classtype(), 'en');
                 if (isset($row['txt'])) {
                     $data[$this->id()] = $row['txt'];
                 }
@@ -154,13 +154,13 @@ class Field extends Element
                 }
                 break;
             case 'date':
-                $row = $this->_db->getDate($itemKey, $this->classtype());
+                $row = $this->_db->getDate($itemKey['key'], $itemKey['value'], $this->classtype());
                 if (isset($row['date'])) {
                     $data[$this->id()] = new \DateTime($row['date']);
                 }
                 break;
             case 'attribute':
-                $row = $this->_db->getAttribute($itemKey, $this->classtype());
+                $row = $this->_db->getAttribute($itemKey['key'], $itemKey['value'], $this->classtype());
                 if (isset($row['attribute'])) {
                     $data[$this->id()] = $row['attribute'];
                 }
@@ -172,7 +172,7 @@ class Field extends Element
                 }
                 break;
             case 'action':
-                $action = $this->_db->getAction($itemKey, $this->classtype());
+                $action = $this->_db->getAction($itemKey['key'], $itemKey['value'], $this->classtype());
                 if (isset($action['actor_itemkey']) and isset($action['actor_itemvalue'])) {
                     $data[$this->id()] = $action['actor_itemkey'].'.'.$action['actor_itemvalue'];
                 }

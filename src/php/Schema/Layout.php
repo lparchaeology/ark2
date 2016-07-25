@@ -50,31 +50,30 @@ class Layout extends Group
             return;
         }
         parent::__construct($db, $layout_id, $modname, $modtype);
+        $this->_template = 'layout.html.twig';
     }
 
     private function _loadConfig($config)
     {
-        if (!isset($config['template'])) {
-            return;
+        if (isset($config['template']) && $config['template']) {
+            $this->_template = $config['template'];
         }
-        $this->_template = $config['template'];
         $this->_valid = true;
     }
 
     function template()
     {
-        if (isset($this->_options['template'])) {
-            return $this->_options['template'];
-        } else {
-            return $this->_template;
-        }
+        return $this->_template;
     }
 
     function render(Twig_Environment $twig, FormFactoryInterface $factory, $itemKey, array $options = array())
     {
-        $options['layout'] = $this;
-        $options['forms'] = $this->renderForms($factory, $itemKey);
-        return $twig->render($this->_template, $options);
+        if ($this->_template) {
+            $options['layout'] = $this;
+            $options['forms'] = $this->renderForms($factory, $itemKey);
+            return $twig->render($this->_template, $options);
+        }
+        return '';
     }
 
     function renderForms(FormFactoryInterface $factory, $itemKey)
@@ -88,14 +87,13 @@ class Layout extends Group
 
     static function fetchLayout(Database $db, $layout_id, $module, $modtype)
     {
-        try {
-            $config =  $db->config()->fetchAssoc('SELECT * FROM ark_config_layout WHERE layout_id = ?', array($layout_id));
+        $config =  $db->getLayout($layout_id);
+        if (isset($config['class'])) {
             $layout = new $config['class']($db, $layout_id, $module, $modtype);
             $layout->_loadConfig($config);
             return $layout;
-        } catch (DBALException $e) {
-            return new Layout();
         }
+        return new Layout();
     }
 
 }

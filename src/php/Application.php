@@ -108,11 +108,11 @@ class Application extends \Silex\Application
         $app['locale_fallbacks'] = array('en');
         $app->extend('translator', function($translator, $app) {
             $translator->addLoader('markup', new MarkupLoader());
-            $translator->addLoader('alias', new AliasLoader());
+            //$translator->addLoader('alias', new AliasLoader());
             $translator->addLoader('actor', new ActorLoader());
             // TODO Load translation files
             $translator->addResource('markup', $app['database'], 'en');
-            $translator->addResource('alias', $app['database'], 'en');
+            //$translator->addResource('alias', $app['database'], 'en');
             $translator->addResource('actor', $app['database'], 'en');
             $translator->addResource('xliff', $app['dir.theme'].'/translations/messages.en.xlf', 'en');
             $translator->addResource('xliff', $app['dir.theme'].'/translations/messages.pl.xlf', 'pl');

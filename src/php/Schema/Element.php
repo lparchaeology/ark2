@@ -66,10 +66,9 @@ class Element
         }
         $sql = "
             SELECT cor_conf_element.*, cor_conf_element_type.is_group, cor_conf_element_type.conf_table, cor_conf_element_type.conf_key
-            FROM cor_conf_element
-            LEFT JOIN cor_conf_element_type
-            ON cor_conf_element.element_type = cor_conf_element_type.element_type
+            FROM cor_conf_element, cor_conf_element_type
             WHERE cor_conf_element.element_id = ?
+            AND cor_conf_element.element_type = cor_conf_element_type.element_type
         ";
         $values[] = $element_id;
         if ($element_type) {

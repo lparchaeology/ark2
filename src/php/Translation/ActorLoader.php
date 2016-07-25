@@ -43,31 +43,11 @@ class ActorLoader implements LoaderInterface
     public function load($db, $locale, $domain = 'actors')
     {
         $catalogue = new MessageCatalogue($locale);
-        /*
-        $db = new Database();
-        $actors = $db->getActors();
-        $sql = "
-            SELECT *
-            FROM cor_lut_texttype
-            WHERE module = :module
-        ";
-        $fields = $db->data()->fetchAll($sql, array(':module' => 'abk'));
-        foreach ($rows as $row) {
-            $aliastype[$row['id']] = $row['aliastype'];
-        }
-        foreach ($actors as $actor) {
-            $item['key'] = $actor[''];
-            $item['item'] = $actor[''];
-            foreach ($fields as $field) {
-                $data = $db->getText(
-            }
-        }
-        */
         $sql = "
             SELECT *
             FROM abk_tbl_abk, cor_tbl_txt, cor_lut_txttype
             WHERE cor_lut_txttype.module = :module
-            AND cor_tbl_txt.txttype = cor_lut_txttype.id
+            AND cor_tbl_txt.txttype = cor_lut_txttype.txttype
             AND cor_tbl_txt.itemkey = :itemkey
             AND cor_tbl_txt.itemvalue = abk_tbl_abk.abk_cd
             AND cor_tbl_txt.language = :lang

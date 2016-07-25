@@ -46,6 +46,7 @@ class TabbedLayout extends Layout
             return;
         }
         parent::__construct($db, $layout_id, $modname, $modtype);
+        $this->_template = 'tabbedlayout.html.twig';
     }
 
     function toggle()
@@ -96,15 +97,6 @@ class TabbedLayout extends Layout
     function tabs()
     {
         return $this->elements();
-    }
-
-    function renderForms(FormFactoryInterface $factory, $itemKey)
-    {
-        $forms = array();
-        foreach ($this->tabs() as $tab) {
-            $forms[$tab->id()] = $tab->renderForms($factory, $itemKey);
-        }
-        return $forms;
     }
 
 }

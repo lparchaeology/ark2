@@ -49,114 +49,45 @@ class ItemController
 {
     public function viewItemAction(Application $app, Request $request, $site, $module, $item)
     {
-        $mod_lower = strtolower($module);
-        try {
-            $mod = $app['database']->config()->fetchAssoc('SELECT * FROM cor_conf_module WHERE module_id = ? OR url = ?', array($mod_lower, $mod_lower));
-        } catch (DBALException $e) {
-            throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$site);
-        }
+        $mod = $app['database']->getModule(strtolower($module));
         if (!$mod) {
             throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$site);
         }
 
-        try {
-            $mod_tbl = $mod['tbl'];
-            $modtype_tbl = $mod['modtype_tbl'];
-            $itemkey = $mod['itemkey'];
-            $modtype = $mod['modtype'];
-            if ($modtype) {
-                $sql = "
-                    SELECT *
-                    FROM $mod_tbl, $modtype_tbl
-                    WHERE $mod_tbl.$itemkey = :itemvalue
-                    AND $modtype_tbl.id = $mod_tbl.$modtype
-                ";
-            } else {
-                $sql = "
-                    SELECT *
-                    FROM $mod_tbl
-                    WHERE $mod_tbl.$itemkey = :itemvalue
-                ";
-            }
-            $params = array(
-                ':itemvalue' => $site.'_'.$item,
-            );
-            $itemRow = $app['database']->data()->fetchAssoc($sql, $params);
-        } catch (DBALException $e) {
-            throw new NotFoundHttpException('Item '.$site.'_'.$item.' not found!');
-        }
-        if (!$itemRow) {
-            throw new NotFoundHttpException('Item '.$site.'_'.$item.' not found!');
-        }
+        $mod_tbl = $mod['tbl'];
+        $modtype = $mod['modtype'];
+        $itemkey = $mod['itemkey'];
+        $itemvalue = $site.'_'.$item;
 
-        $forms = array();
+        $itemRow = $app['database']->getItem($itemkey, $itemvalue, $mod_tbl);
+        if (!$itemRow) {
+            throw new NotFoundHttpException('Item '.$itemvalue.' not found!');
+        }
 
         $itemKey = array(
             'site' => $site,
             'module' => $mod['module_id'],
-            'modtype' => $itemRow[$mod['modtype']],
             'item' => $item,
-            'key' => $mod['itemkey'],
-            'modname' => $mod['name'],
-            'value' => $itemRow[$mod['itemkey']],
+            'key' => $itemkey,
+            'modname' => $mod['modname'],
+            'value' => $itemRow[$itemkey],
         );
+        if (empty($modtype)) {
+            $itemKey['modtype'] = $mod['modname'];
+        } else {
+            $itemKey['modtype'] = $itemRow[$modtype];
+        }
+
+        // TODO Make into a Subform
+        $forms = array();
         $formBuilder = $app->form($itemKey);
         $formBuilder->add('site', Type\TextType::class, array('label' => 'Site', 'attr' => array('readonly' => true)));
         $formBuilder->add('module', Type\TextType::class, array('label' => 'Module', 'attr' => array('readonly' => true)));
         $formBuilder->add('item', Type\TextType::class, array('label' => 'Item', 'attr' => array('readonly' => true)));
         $forms['item_form'] = $formBuilder->getForm()->createView();
 
-        if ($itemKey['module'] == 'abk') {
-            $layout = Layout::fetchLayout($app['database'], $itemKey['module'].'_layout_item_tabs', $itemKey['modname'], $itemKey['modtype']);
-            dump($layout);
-            return $layout->render($app['twig'], $app['form.factory'], $itemKey);
-            /*
-            foreach ($layout->tabs() as $tdx => $tab) {
-                foreach ($tab as $rdx => $row) {
-                    foreach ($row as $cdx => $col) {
-                        foreach ($col as $subform) {
-                            $data = array();
-                            $data[$subform->id()] = $subform->formData($itemKey, $itemKey);
-                            $formBuilder = $app->namedForm($subform->id(), $data);
-                            $subform->buildForm($formBuilder);
-                            $forms[$tdx][$rdx][$cdx][] = $formBuilder->getForm()->createView();
-                        }
-                    }
-                }
-            }
-            dump($forms);
-            return $app['twig']->render('ark_main_page.html.twig', array('layout' => $layout, 'forms' => $forms));
-            */
-        }
-        $schema = new \ARK\Schema\Group($app['database'], 'micro_view_'.$mod['module_id'].'_section');
-        $cols = $schema->elements();
-        $i = 1;
-        foreach ($cols as $col) {
-            $panels = $col->elements();
-            foreach ($panels as $panel) {
-                //$data = $model->getFields($itemKey, $panel->allFields());
-                $data = array();
-                //$data[$panel->id()] = $this->getFields($app['db'], $itemKey, $panel->allFields());
-                $data[$panel->id()] = $panel->formData($itemKey, $itemKey);
-                $formBuilder = $app->namedForm($panel->id(), $data);
-                $panel->buildForm($formBuilder);
-                $forms['col'.$i.'_forms'][] = $formBuilder->getForm()->createView();
-            }
-            $i += 1;
-        }
-        /*
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
-            // do something with the data
-
-            // redirect somewhere
-            return $app->redirect('form');
-        }
-        */
-        return $app['twig']->render('ark_col_form_page.html.twig', $forms);
+        $layout = Layout::fetchLayout($app['database'], $itemKey['module'].'_layout_item', $itemKey['modname'], $itemKey['modtype']);
+        return $layout->render($app['twig'], $app['form.factory'], $itemKey, array('item_form' => $forms['item_form']));
     }
 
     // TODO Move to Model class

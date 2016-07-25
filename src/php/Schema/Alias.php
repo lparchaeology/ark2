@@ -131,28 +131,13 @@ class Alias
     static function elementAlias(Database $db, $element_id)
     {
         $alias = new Alias();
-        try {
-            $sql = "
-                SELECT *
-                FROM cor_conf_alias, cor_conf_aliastype
-                WHERE cor_conf_alias.element_id = :element_id
-                AND cor_conf_alias.aliastype = cor_conf_aliastype.id
-            ";
-            $config = $db->config()->fetchAssoc($sql, array(':element_id' => $element_id));
-            if (!$config) {
-                return $alias;
-            }
-            if ($config['itemkey'] == 'cor_lut_attribute') {
-                $sql = "
-                    SELECT *
-                    FROM cor_lut_attribute, cor_lut_attributetype
-                    WHERE cor_lut_attribute.id = :id
-                    AND cor_lut_attribute.attributetype = cor_lut_attributetype.id
-                ";
-                $attr = $db->data()->fetchAssoc($sql, array(':id' => $config['itemvalue']));
-                $config['attributetype'] = $attr['attributetype'];
-            }
-        } catch (DBALException $e) {
+        $sql = "
+            SELECT *
+            FROM cor_conf_alias
+            WHERE cor_conf_alias.element_id = :element_id
+        ";
+        $config = $db->config()->fetchAssoc($sql, array(':element_id' => $element_id));
+        if (!$config) {
             return $alias;
         }
         $alias->_loadConfig($config);

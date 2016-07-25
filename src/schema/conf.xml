@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema xmlns="http://www.concrete5.org/doctrine-xml/0.5">
-  <table name="cor_conf_alias">
+  <table name="ark_config_alias">
     <field name="element_id" type="string" size="30">
       <key/>
       <notnull/>
@@ -20,7 +20,7 @@
     <field name="lang" type="string" size="10"/>
     <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
   </table>
-  <table name="cor_conf_ark">
+  <table name="ark_config_ark">
     <field name="id" type="integer">
       <autoincrement/>
       <key/>
@@ -97,7 +97,7 @@
     </field>
     <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
   </table>
-  <table name="cor_conf_condition">
+  <table name="ark_config_condition">
     <field name="element_id" type="string" size="30">
       <key/>
       <notnull/>
@@ -112,7 +112,7 @@
     <field name="args" type="string" size="30"/>
     <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
   </table>
-  <table name="cor_conf_element">
+  <table name="ark_config_element">
     <field name="element_id" type="string" size="30">
       <key/>
       <notnull/>
@@ -126,7 +126,7 @@
     </field>
     <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
   </table>
-  <table name="cor_conf_element_type">
+  <table name="ark_config_element_type">
     <field name="element_type" type="string" size="10">
       <key/>
       <notnull/>
@@ -142,7 +142,7 @@
     </field>
     <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
   </table>
-  <table name="cor_conf_element_vld">
+  <table name="ark_config_element_vld">
     <field name="element_id" type="string" size="30">
       <key/>
       <notnull/>
@@ -156,7 +156,7 @@
     </field>
     <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
   </table>
-  <table name="cor_conf_field">
+  <table name="ark_config_field">
     <field name="field_id" type="string" size="30">
       <key/>
       <notnull/>
@@ -175,7 +175,7 @@
     </field>
     <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
   </table>
-  <table name="cor_conf_group">
+  <table name="ark_config_group">
     <field name="element_id" type="string" size="30">
       <key/>
       <notnull/>
@@ -192,7 +192,7 @@
     </field>
     <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
   </table>
-  <table name="cor_conf_layout_role">
+  <table name="ark_config_layout_role">
     <field name="layout_role" type="string" size="15">
       <key/>
       <notnull/>
@@ -202,7 +202,7 @@
     </field>
     <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
   </table>
-  <table name="cor_conf_link">
+  <table name="ark_config_link">
     <field name="link_id" type="string" size="30">
       <key/>
       <notnull/>
@@ -249,27 +249,7 @@
     </field>
     <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
   </table>
-  <table name="cor_conf_modtype">
-    <field name="module_id" type="string" size="3">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="modtype" type="string" size="3">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="description" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="markup" type="string" size="20">
-      <notnull/>
-    </field>
-    <field name="schema_group_id" type="string" size="30">
-      <notnull/>
-    </field>
-    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
-  </table>
-  <table name="cor_conf_module">
+  <table name="ark_config_module">
     <field name="module_id" type="string" size="3">
       <key/>
       <notnull/>
@@ -297,7 +277,7 @@
     </field>
     <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
   </table>
-  <table name="cor_conf_option">
+  <table name="ark_config_option">
     <field name="element_id" type="string" size="30">
       <key/>
       <notnull/>
@@ -312,7 +292,7 @@
     <field name="value" type="string" size="255"/>
     <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
   </table>
-  <table name="cor_conf_page">
+  <table name="ark_config_page">
     <field name="page_id" type="string" size="20">
       <key/>
       <notnull/>
@@ -349,7 +329,7 @@
     </field>
     <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
   </table>
-  <table name="cor_conf_page_layout">
+  <table name="ark_config_page_layout">
     <field name="page_id" type="string" size="20">
       <key/>
       <notnull/>
@@ -367,7 +347,7 @@
     </field>
     <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
   </table>
-  <table name="cor_conf_subform">
+  <table name="ark_config_subform">
     <field name="subform_id" type="string" size="30">
       <key/>
       <notnull/>
@@ -391,7 +371,7 @@
     <field name="input" type="string" size="10"/>
     <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
   </table>
-  <table name="cor_conf_user_role">
+  <table name="ark_config_user_role">
     <field name="user_role" type="string" size="10">
       <key/>
       <notnull/>
@@ -404,7 +384,7 @@
     </field>
     <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
   </table>
-  <table name="cor_conf_vld_group">
+  <table name="ark_config_vld_group">
     <field name="vld_group_id" type="string" size="30">
       <key/>
       <notnull/>
@@ -418,7 +398,7 @@
     </field>
     <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
   </table>
-  <table name="cor_conf_vld_role">
+  <table name="ark_config_vld_role">
     <field name="vld_role" type="string" size="3">
       <key/>
       <notnull/>
@@ -428,7 +408,7 @@
     </field>
     <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci"/>
   </table>
-  <table name="cor_conf_vld_rule">
+  <table name="ark_config_vld_rule">
     <field name="vld_rule_id" type="string" size="30">
       <key/>
       <notnull/>
