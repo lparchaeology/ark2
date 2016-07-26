@@ -35,66 +35,54 @@
 
 namespace ARK\Schema;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
 use Symfony\Component\Form\FormBuilder;
 use ARK\Database\Database;
 use ARK\Form\Type\EventType;
 
 class Event extends Element
 {
-    private $_dateField = null;
-    private $_actionField = null;
+    private $_date = null;
+    private $_action = null;
 
-    // {{{ __construct()
-    function __construct(Database $db, $event_id = null)
+    function __construct(Database $db = null, $event_id = null)
     {
-        $this->_dateField = new Field($db);
-        $this->_actionField = new Field($db);
-        if ($event_id == null) {
+        $this->_date = new Field();
+        $this->_action = new Field();
+        if ($db == null || $event_id == null) {
             return;
         }
-        try {
-            parent::__construct($db, $event_id, 'event');
-            $fields = Field::fetchFields($db, $event_id);
-            foreach ($fields as $field) {
-                if ($field->dataclass() == 'date') {
-                    $this->_dateField = $field;
-                } else if ($field->dataclass() == 'action') {
-                    $this->_actionField = $field;
-                }
+        parent::__construct($db, $event_id, 'event');
+        $fields = Field::fetchFields($db, $event_id);
+        foreach ($fields as $field) {
+            if ($field->dataclass() == 'date') {
+                $this->_date = $field;
+            } else if ($field->dataclass() == 'action') {
+                $this->_action = $field;
             }
-            $this->_valid = $this->_dateField->isValid() && $this->_actionField->isValid();
-        } catch (DBALException $e) {
-            echo 'Invalid config for event : '.$event_id;
-            throw $e;
         }
+        $this->_valid = $this->_date->isValid() && $this->_action->isValid();
     }
-    // }}}
-    // {{{ dateField()
-    function dateField()
+
+    function date()
     {
-        return $this->_dateField;
+        return $this->_date;
     }
-    // }}}
-    // {{{ actionField()
-    function actionField()
+
+    function action()
     {
-        return $this->_actionField;
+        return $this->_action;
     }
-    // }}}
-    // {{{ buildForm()
+
     function formData($itemKey)
     {
         $data = array();
         $data[$this->id()] = array_merge(
-            $this->_actionField->formData($itemKey),
-            $this->_dateField->formData($itemKey)
+            $this->_action->formData($itemKey),
+            $this->_date->formData($itemKey)
         );
         return $data;
     }
-    // }}}
-    // {{{ buildForm()
+
     function buildForm(FormBuilder &$formBuilder, array $options = array())
     {
         if (!$this->isValid()) {
@@ -102,12 +90,11 @@ class Event extends Element
         }
         $options['label'] = false;
         $options['title'] = $this->_id;
-        $options['eventAction'] = $this->_actionField;
-        $options['eventDate'] = $this->_dateField;
+        $options['eventAction'] = $this->_action;
+        $options['eventDate'] = $this->_date;
         $formBuilder->add($this->_id, EventType::class, $options);
     }
-    // }}}
-    // {{{ toSchema()
+
     function toSchema()
     {
         if (!$this->isValid()) {
@@ -118,35 +105,20 @@ class Event extends Element
         $schema['title'] = $this->_title;
         $schema['description'] = $this->_description;
         $schema['properties'] = array_merge(
-            $this->_actionField->toSchema(),
-            $this->_dateField->toSchema()
+            $this->_action->toSchema(),
+            $this->_date->toSchema()
         );
         $schema['required'] = array(
-            $this->_actionField->id(),
-            $this->_dateField->id(),
+            $this->_action->id(),
+            $this->_date->id(),
         );
         $schema['additionalProperties'] = false;
         return array($this->_id => $schema);
     }
-    // }}}
-    // {{{ allFields()
+
     function allFields()
     {
-        return array($this->_actionField, $this->_dateField);
+        return array($this->_action, $this->_date);
     }
-    // }}}
-    // {{{ fetchEvents()
-    static function fetchEvents(Connection $db, $element_id, $enabled = true)
-    {
-        $children = Element::fetchGroupArrays($db, $element_id, 'event', $enabled);
-        $events = array();
-        foreach ($children as $child) {
-            $event = new Event($child['child_id']);
-            if ($event->isValid()) {
-                $events[] = $event;
-            }
-        }
-        return $events;
-    }
-    // }}}
+
 }

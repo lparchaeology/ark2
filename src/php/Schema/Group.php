@@ -35,8 +35,6 @@
 
 namespace ARK\Schema;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
 use Symfony\Component\Form\FormBuilder;
 use ARK\Database\Database;
 use ARK\Form\Type\PanelType;
@@ -55,23 +53,7 @@ class Group extends Element
         if (!$this->_isGroup) {
             return;
         }
-        $sql = "
-            SELECT cor_conf_group.*, cor_conf_element.element_type AS child_type
-            FROM cor_conf_group, cor_conf_element
-            WHERE cor_conf_group.element_id = :element_id
-            AND (cor_conf_group.modtype = :modtype OR cor_conf_group.modtype = :modname OR cor_conf_group.modtype = :modcor)
-            AND cor_conf_group.enabled = :enabled
-            AND cor_conf_group.child_id = cor_conf_element.element_id
-            ORDER BY cor_conf_group.row, cor_conf_group.col, cor_conf_group.seq
-        ";
-        $params = array(
-            ':element_id' => $group_id,
-            ':modtype' => $modtype,
-            ':modname' => $modname,
-            ':modcor' => 'mod_cor',
-            ':enabled' => true,
-        );
-        $children = $db->config()->fetchAll($sql, $params);
+        $children = $db->getGroupForModule($group_id, $modname, $modtype);
         foreach ($children as $child) {
             switch ($child['child_type']) {
                 case 'field':
@@ -99,7 +81,7 @@ class Group extends Element
                 return;
             }
             $this->_elements[] = $element;
-            $this->_grid[$child['row']][$child['col']][] = $element;
+            $this->_grid[$child['row']][$child['col']][$child['seq']] = $element;
         }
         $this->_valid = true;
     }

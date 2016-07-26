@@ -35,8 +35,6 @@
 
 namespace ARK\Schema;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
 use ARK\Database\Database;
 
 class Option
@@ -46,14 +44,12 @@ class Option
     private $_value = null;
     private $_valid = false;
 
-    // {{{ __construct()
     private function __construct($type = null, $key = null, $value = null)
     {
         $config = array('type' => $type, 'option_id' => $key, 'value' => $value);
         $this->_loadConfig(null, $config);
     }
-    // }}}
-    // {{{ _loadConfig()
+
     private function _loadConfig($db, $config)
     {
         if (!isset($config['type']) || !isset($config['option_id']) || !isset($config['value'])) {
@@ -65,70 +61,50 @@ class Option
             case 'field':
                 $this->_value = new Field($db, $config['value']);
                 break;
-            //case 'smart':
-            //    if (array_key_exists('value', $config)) {
-            //        $this->_value = $config['value'];
-            //    } else {
-            //        $this->_value = null;
-            //    }
-            //    break;
             default:
                 $this->_value = unserialize($config['value']);
                 break;
         }
         $this->_valid = true;
     }
-    // }}}
-    // {{{ key()
-    function key()
-    {
-        return $this->_key;
-    }
-    // }}}
-    // {{{ isValid()
+
     function isValid()
     {
         return $this->_valid;
     }
-    // }}}
-    // {{{ type()
+
     function type()
     {
         return $this->_type;
     }
-    // }}}
-    // {{{ value()
+
+    function key()
+    {
+        return $this->_key;
+    }
+
     function value()
     {
         return $this->_value;
     }
-    // }}}
-    // {{{ config()
-    function config()
-    {
-        $config[$this->_key] = $this->_value;
-        return $config;
-    }
-    // }}}
-    // {{{ fetchOption()
+
     static function fetchOption(Database $db, $element_id, $option_id)
     {
         $option = new Option();
         try {
-            $config =  $db->config()->fetchAssoc('SELECT * FROM cor_conf_option WHERE element_id = ? AND option_id = ?', array($element_id, $option_id));
+            $config =  $db->getOptions($element_id, $option_id);
             $option->_loadConfig($db, $config);
         } catch (DBALException $e) {
             return $option;
         }
         return $option;
     }
-    // }}}
-    // {{{ fetchOptions()
+
     static function fetchOptions(Database $db, $element_id)
     {
         $options = array();
         try {
-            $rows =  $db->config()->fetchAll('SELECT * FROM cor_conf_option WHERE element_id = ?', array($element_id));
+            $rows =  $db->getOptions($element_id);
             foreach ($rows as $config) {
                 $option = new Option();
                 $option->_loadConfig($db, $config);
@@ -141,8 +117,7 @@ class Option
         }
         return $options;
     }
-    // }}}
-    // {{{ fetchOptionsArray()
+
     static function fetchOptionsArray(Database $db, $element_id)
     {
         $optionsArray = array();
@@ -152,5 +127,4 @@ class Option
         }
         return $optionsArray;
     }
-    // }}}
 }

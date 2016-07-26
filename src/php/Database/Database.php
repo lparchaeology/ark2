@@ -471,6 +471,110 @@ class Database
         return $this->config()->fetchAssoc($sql, $params);
     }
 
+    public function getElement($element_id, $element_type = null)
+    {
+        $sql = "
+            SELECT ark_config_element.*, ark_config_element_type.is_group, ark_config_element_type.conf_table, ark_config_element_type.conf_key
+            FROM ark_config_element, ark_config_element_type
+            WHERE ark_config_element.element_id = :element_id
+            AND ark_config_element.element_type = ark_config_element_type.element_type
+        ";
+        $params = array(
+            ':element_id' => $element_id,
+        );
+        if ($element_type) {
+            $sql .= ' AND ark_config_element.element_type = :element_type';
+            $params[':element_type'] = $element_type;
+        }
+        return $this->config()->fetchAssoc($sql, $params);
+    }
+
+    public function getField($field_id)
+    {
+        $sql = "
+            SELECT *
+            FROM ark_config_field
+            WHERE field_id = :field_id
+        ";
+        $params = array(
+            ':field_id' => $field_id,
+        );
+        return $this->config()->fetchAssoc($sql, $params);
+    }
+
+    public function getGroupForModule($group_id, $modname, $modtype = null)
+    {
+        $sql = "
+            SELECT ark_config_group.*, ark_config_element.element_type AS child_type
+            FROM ark_config_group, ark_config_element
+            WHERE ark_config_group.element_id = :element_id
+            AND (ark_config_group.modtype = :modname OR ark_config_group.modtype = :modtype OR ark_config_group.modtype = :mod_cor)
+            AND ark_config_group.enabled = :enabled
+            AND ark_config_group.child_id = ark_config_element.element_id
+            ORDER BY ark_config_group.row, ark_config_group.col, ark_config_group.seq
+        ";
+        $params = array(
+            ':element_id' => $group_id,
+            ':modtype' => $modtype,
+            ':modname' => $modname,
+            ':mod_cor' => 'mod_cor',
+            ':enabled' => true,
+        );
+        if (!$modtype) {
+            $params[':modtype'] = 'mod_cor';
+        }
+        return $this->config()->fetchAll($sql, $params);
+    }
+
+    public function getGroup($element_id, $child_type = null, $enabled = true)
+    {
+        $sql = "
+            SELECT ark_config_group.*, ark_config_element.element_type AS child_type
+            FROM ark_config_group, ark_config_element
+            WHERE ark_config_group.element_id = :element_id
+            AND ark_config_group.child_id = ark_config_element.element_id
+            ORDER BY ark_config_group.row, ark_config_group.col, ark_config_group.seq
+        ";
+        $params[':element_id'] = $element_id;
+        if ($child_type) {
+            $sql .= ' AND ark_config_element.element_type = :element_type';
+            $params[':element_type'] = $child_type;
+        }
+        if ($enabled === true || $enabled === false) {
+            $sql .= ' AND ark_config_group.enabled = :enabled';
+            $params[':enabled'] = $enabled;
+        }
+        return $this->config()->fetchAll($sql, $params);
+    }
+
+    public function getOption($element_id, $option_id)
+    {
+        $sql = "
+            SELECT *
+            FROM ark_config_option
+            WHERE element_id = :element_id
+            AND option_id = :option_id
+        ";
+        $params = array(
+            ':element_id' => $element_id,
+            ':option_id' => $option_id,
+        );
+        return $this->config()->fetchAssoc($sql, $params);
+    }
+
+    public function getOptions($element_id)
+    {
+        $sql = "
+            SELECT *
+            FROM ark_config_option
+            WHERE element_id = :element_id
+        ";
+        $params = array(
+            ':element_id' => $element_id,
+        );
+        return $this->config()->fetchAll($sql, $params);
+    }
+
     public function getTranslations($domain = null)
     {
         $sql = "

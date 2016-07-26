@@ -114,8 +114,8 @@ forall each module
         $field['additionalProperties'] = false;
         $fields['txt'] = $field;
 
-        $cor_conf_field = $conn->fetchAll('SELECT * FROM cor_conf_field ORDER BY dataclass');
-        foreach ($cor_conf_field as $row) {
+        $ark_config_field = $conn->fetchAll('SELECT * FROM ark_config_field ORDER BY dataclass');
+        foreach ($ark_config_field as $row) {
             $field = array();
             switch ($row['dataclass']) {
                 case 'action':

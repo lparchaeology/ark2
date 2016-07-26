@@ -35,8 +35,6 @@
 
 namespace ARK\Schema;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Extension\Core\Type;
 use ARK\Database\Database;
@@ -51,67 +49,56 @@ class Field extends Element
     private $_constraints = array();
     private $_attributes = array();
 
-    // {{{ __construct()
-    function __construct(Database $db, $field_id = null)
+    function __construct(Database $db = null, $field_id = null)
     {
-        if ($field_id == null) {
+        if ($db == null || $field_id == null) {
             return;
         }
-        try {
-            parent::__construct($db, $field_id, 'field');
-            $config = $db->config()->fetchAssoc('SELECT * FROM cor_conf_field WHERE field_id = ?', array($field_id));
-            $this->_dataclass = $config['dataclass'];
-            $this->_classtype = $config['classtype'];
-            $this->_editable = (bool)$config['editable'];
-            $this->_hidden = (bool)$config['hidden'];
-            $this->_rules = Rule::fetchAllValidationRoles($db, $field_id);
-            if ($this->_dataclass != 'xmi' && $this->_dataclass != 'geom') {
-                $type = $config['dataclass'].'type';
-                $tbl = 'cor_lut_'.$type;
-                $class = $db->data()->fetchAssoc("SELECT * FROM $tbl WHERE $type = ?", array($config['classtype']));
-            }
-            if ($this->_dataclass == 'attribute') {
-                $attrs = $db->data()->fetchAll('SELECT * FROM cor_lut_attribute WHERE attributetype = ?', array($class['attributetype']));
-                foreach ($attrs as $attr) {
-                    $this->_attributes[] = $attr['attribute'];
-                }
-            }
-            if (!$this->alias()->isValid()) {
-                $this->_alias = Alias::dataclassAlias($this->_dataclass, $this->_classtype);
-            }
-            $this->_db = $db;
-            $this->_valid = true;
-        } catch (DBALException $e) {
-            echo 'Invalid config for field : '.$field_id;
-            throw $e;
+        parent::__construct($db, $field_id, 'field');
+        $config = $db->getField($field_id);
+        $this->_dataclass = $config['dataclass'];
+        $this->_classtype = $config['classtype'];
+        $this->_editable = (bool)$config['editable'];
+        $this->_hidden = (bool)$config['hidden'];
+        $this->_rules = Rule::fetchAllValidationRoles($db, $field_id);
+        if ($this->_dataclass != 'xmi' && $this->_dataclass != 'geom') {
+            $type = $config['dataclass'].'type';
+            $tbl = 'cor_lut_'.$type;
+            $class = $db->data()->fetchAssoc("SELECT * FROM $tbl WHERE $type = ?", array($config['classtype']));
         }
+        if ($this->_dataclass == 'attribute') {
+            $attrs = $db->data()->fetchAll('SELECT * FROM cor_lut_attribute WHERE attributetype = ?', array($class['attributetype']));
+            foreach ($attrs as $attr) {
+                $this->_attributes[] = $attr['attribute'];
+            }
+        }
+        if (!$this->alias()->isValid()) {
+            $this->_alias = Alias::dataclassAlias($this->_dataclass, $this->_classtype);
+        }
+        $this->_db = $db;
+        $this->_valid = true;
     }
-    // }}}
-    // {{{ dataclass()
+
     function dataclass()
     {
         return $this->_dataclass;
     }
-    // }}}
-    // {{{ classtype()
+
     function classtype()
     {
         return $this->_classtype;
     }
-    // }}}
-    // {{{ editable()
+
     function editable()
     {
         return $this->_editable;
     }
-    // }}}
-    // {{{ hidden()
+
     function hidden()
     {
         return $this->_hidden;
     }
-    // }}}
-    // {{{ validationRules()
+
     function validationRules($vld_role)
     {
         if (array_key_exists($vld_role, $this->_rules)) {
@@ -120,20 +107,17 @@ class Field extends Element
             return array();
         }
     }
-    // }}}
-    // {{{ constraints()
+
     function constraints()
     {
         return $this->_constraints;
     }
-    // }}}
-    // {{{ attributes()
+
     function attributes()
     {
         return $this->_attributes;
     }
-    // }}}
-    // {{{ formData()
+
     function formData($itemKey)
     {
         if (!$this->isValid()) {
@@ -180,8 +164,7 @@ class Field extends Element
         }
         return $data;
     }
-    // }}}
-    // {{{ buildForm()
+
     function buildForm(FormBuilder &$formBuilder, array $options = array())
     {
         if (!$this->isValid()) {
@@ -242,18 +225,16 @@ class Field extends Element
         }
         return;
     }
-    // }}}
-    // {{{ toSchema()
+
     function toSchema()
     {
         $schema = array('title' => $this->_title);
         return array($this->_id => $schema);
     }
-    // }}}
-    // {{{ fetchFields()
+
     static function fetchFields(Database $db, $element_id, $enabled = true)
     {
-        $children = Element::fetchGroupArrays($db, $element_id, 'field', $enabled);
+        $children = $db->getGroup($element_id, 'field', $enabled);
         $fields = array();
         foreach ($children as $child) {
             $field = new Field($db, $child['child_id']);
@@ -263,5 +244,5 @@ class Field extends Element
         }
         return $fields;
     }
-    // }}}
+
 }

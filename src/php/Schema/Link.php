@@ -211,7 +211,7 @@ class Link extends Element
     // {{{ fetchLinks()
     static function fetchLinks(Database $db, $element_id, $enabled = true)
     {
-        $children = Element::fetchGroupArrays($db, $element_id, 'link', $enabled);
+        $children = $db->getGroup($element_id, 'link', $enabled);
         $links = array();
         foreach ($children as $child) {
             $link = new Link($child['child_id']);
