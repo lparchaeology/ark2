@@ -470,4 +470,20 @@ class Database
         );
         return $this->config()->fetchAssoc($sql, $params);
     }
+
+    public function getTranslations($domain = null)
+    {
+        $sql = "
+            SELECT *
+            FROM ark_config_translation
+        ";
+        $params = array();
+        if ($domain) {
+            $sql .= "
+                WHERE domain = :domain
+            ";
+            $params[':domain'] = $domain;
+        }
+        return $this->config()->fetchAll($sql, $params);
+    }
 }
