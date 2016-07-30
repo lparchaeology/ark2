@@ -1,0 +1,27 @@
+<div>
+
+    {% for rdx, row in layout.rows %}
+        <div class="row">
+            {% if row|length == 3 %}
+                {% set colclass = 'col-md-4' %}
+            {% elseif row|length == 2 %}
+                {% set colclass = 'col-md-8' %}
+            {% else %}
+                {% set colclass = 'col-md-12' %}
+            {% endif %}
+            {% for cdx, col in row %}
+                <div class="{{colclass}}">
+                    {% set colclass = 'col-md-4' %}
+                    {% for idx, cell in col %}
+                        {% if cell.type == 'layout' %}
+                            {% include cell.template with {'layout': cell, 'forms': forms[rdx][cdx][idx]} only %}
+                        {% else %}
+                            {{ form_row(forms[rdx][cdx][idx]) }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+</div>

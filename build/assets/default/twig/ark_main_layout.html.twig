@@ -38,7 +38,6 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="{{ path('user.list') }}">{{ 'user.menu.list' | trans }}</a></li>
                         {% if global.user %}
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -48,7 +47,8 @@
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="{{ path('user') }}"><span class="glyphicon glyphicon-user"></span> {{ 'user.menu.view' | trans }}</a></li>
                                     <li><a href="{{ path('user.profile-edit') }}"><span class="glyphicon glyphicon-edit"></span> {{ 'user.menu.edit' | trans }}</a></li>
-                                    <li><a href="{{ path('user.change-password') }}"><span class="glyphicon glyphicon-edit"></span> {{ 'user.menu.password' | trans }}</a></li>
+                                    <li><a href="{{ path('user.change-password') }}"><span class="glyphicon glyphicon-lock"></span> {{ 'user.menu.password' | trans }}</a></li>
+                                    <li><a href="{{ path('user.list') }}"><span class="glyphicon glyphicon-list"></span> {{ 'user.menu.list' | trans }}</a></li>
                                     <li><a href="{{ path('user.logout') }}"><span class="glyphicon glyphicon-off"></span> {{ 'user.menu.logout' | trans }}</a></li>
                                 </ul>
                             </li>
