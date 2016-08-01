@@ -6,14 +6,20 @@
 
     <div class="alert alert-info" role="alert">Hey there, here's an alert...</div>
 
-    <div class="row col-md-12 form-inline form-group">
-        {{ form_start(item_form) }}
-        {{ form_widget(item_form) }}
-        {{ form_end(item_form) }}
-    </div>
+    {% if item_form is defined %}
+        <div class="row col-md-12 form-inline form-group">
+            {{ form_start(item_form) }}
+            {{ form_widget(item_form) }}
+            {{ form_end(item_form) }}
+        </div>
+    {% endif %}
 
     {% for element in layout.elements %}
-        {% include element.template() with {'layout': element, 'forms': forms[element.id]} only %}
+        {% if forms is defined and forms[element.id] is defined %}
+            {% include element.template() with {'layout': element, 'forms': forms[element.id]} %}
+        {% else %}
+            {% include element.template() with {'layout': element} %}
+        {% endif %}
     {% endfor %}
 
 </div>
