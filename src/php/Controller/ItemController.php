@@ -87,7 +87,8 @@ class ItemController
         $forms['item_form'] = $formBuilder->getForm()->createView();
 
         $layout = Layout::fetchLayout($app['database'], $itemKey['module'].'_layout_item', $itemKey['modname'], $itemKey['modtype']);
-        return $layout->render($app['twig'], $app['form.factory'], $itemKey, array('item_form' => $forms['item_form']));
+        $options = array('item_form' => $forms['item_form']);
+        return $layout->render($app['twig'], $options, $app['form.factory'], $itemKey);
     }
 
     public function registerItemAction(Application $app, Request $request, $ste_cd, $mod_slug)
@@ -99,17 +100,16 @@ class ItemController
 
         $items = $app['database']->getRecentItems($ste_cd, $module['module_id'], 5);
 
-        $data  = array(
+        $options  = array(
             'itemkey' => $module['itemkey'],
             'items' => $items,
         );
         if ($module['modtype']) {
-            $data['modtype'] = $module['modtype'];
+            $options['modtype'] = $module['modtype'];
         }
-        return $app['twig']->render('ark_register_page.html.twig', $data);
 
-        //$layout = Layout::fetchLayout($app['database'], $itemKey['module'].'_layout_item', $itemKey['modname'], $itemKey['modtype']);
-        //return $layout->render($app['twig'], $app['form.factory'], $itemKey, array('item_form' => $forms['item_form']));
+        $layout = Layout::fetchLayout($app['database'], $module['module_id'].'_layout_register', $module['modname']);
+        return $layout->render($app['twig'], $options);
     }
 
     // TODO Move to Model class

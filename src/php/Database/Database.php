@@ -437,9 +437,11 @@ class Database
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function countItems($ste_cd, $module_id)
+    public function countItems($ste_cd, $module_id, $mod_tbl = null)
     {
-        $mod_tbl = $this->getModuleTable($module_id);
+        if (empty($mod_tbl)) {
+            $mod_tbl = $this->getModuleTable($module_id);
+        }
         $sql = "
             SELECT COUNT(*) as 'count'
             FROM $mod_tbl
@@ -454,10 +456,10 @@ class Database
     public function getRecentItems($ste_cd, $module_id, $rows)
     {
         $module = $this->getModule($module_id);
-        $count = $this->countItems($ste_cd, $module_id);
-        $start = ($count > $rows) ? $count - $rows : 0;
         $itemkey = $module['itemkey'];
         $mod_tbl = $module['tbl'];
+        $count = $this->countItems($ste_cd, $module_id, $mod_tbl);
+        $start = ($count > $rows) ? $count - $rows : 0;
         $sql = "
             SELECT *
             FROM $mod_tbl
