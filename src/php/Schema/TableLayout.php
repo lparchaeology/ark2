@@ -46,7 +46,7 @@ class TableLayout extends Layout
             return;
         }
         parent::__construct($db, $layout_id, $modname, $modtype);
-        $this->_template = 'tablelayout.html.twig';
+        $this->_template = 'layouts/table.html.twig';
     }
 
     function striped()

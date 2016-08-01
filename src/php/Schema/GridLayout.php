@@ -46,7 +46,7 @@ class GridLayout extends Layout
             return;
         }
         parent::__construct($db, $layout_id, $modname, $modtype);
-        $this->_template = 'gridlayout.html.twig';
+        $this->_template = 'layouts/grid.html.twig';
     }
 
     function cols($row)

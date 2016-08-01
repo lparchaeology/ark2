@@ -46,7 +46,7 @@ class TabbedLayout extends Layout
             return;
         }
         parent::__construct($db, $layout_id, $modname, $modtype);
-        $this->_template = 'tabbedlayout.html.twig';
+        $this->_template = 'layouts/tabbed.html.twig';
     }
 
     function toggle()
