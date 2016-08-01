@@ -112,6 +112,27 @@ class ItemController
         return $layout->render($app['twig'], $options);
     }
 
+    public function listItemsAction(Application $app, Request $request, $ste_cd, $mod_slug)
+    {
+        $module = $app['database']->getModule(strtolower($mod_slug));
+        if (!$module) {
+            throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$ste_cd);
+        }
+
+        $items = $app['database']->getItems($ste_cd, $module['module_id'], $module['tbl']);
+
+        $options  = array(
+            'itemkey' => $module['itemkey'],
+            'items' => $items,
+        );
+        if ($module['modtype']) {
+            $options['modtype'] = $module['modtype'];
+        }
+
+        $layout = Layout::fetchLayout($app['database'], 'cor_layout_list', $module['modname']);
+        return $layout->render($app['twig'], $options);
+    }
+
     // TODO Move to Model class
     private function getFields(Database $db, $itemKey, $fields)
     {

@@ -437,6 +437,23 @@ class Database
         return $this->data()->fetchAssoc($sql, $params);
     }
 
+    public function getItems($ste_cd, $module_id, $mod_tbl = null)
+    {
+        if (!$mod_tbl) {
+            $module = $this->getModule($module_id);
+            $mod_tbl = $module['tbl'];
+        }
+        $sql = "
+            SELECT *
+            FROM $mod_tbl
+            WHERE ste_cd = :ste_cd
+        ";
+        $params = array(
+            ':ste_cd' => $ste_cd,
+        );
+        return $this->data()->fetchAll($sql, $params);
+    }
+
     public function countItems($ste_cd, $module_id, $mod_tbl = null)
     {
         if (empty($mod_tbl)) {

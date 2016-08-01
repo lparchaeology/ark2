@@ -1,4 +1,4 @@
-<div>
+<div {%- if layout.responsive %} class="table-responsive" {%- endif -%} >
 
     <h3>Table Layout</h3>
 
@@ -6,7 +6,23 @@
         {{field.id}} / {{field.dataclass}} / {{field.classtype}}<br/>
     {% endfor %}
 
-    <table id="register-table" data-toggle="table">
+    {% set table_class %}
+        table
+        {% if layout.striped %} table-striped {%- endif %}
+        {% if layout.bordered %} table-bordered {%- endif %}
+        {% if layout.hover %} table-hover {%- endif %}
+        {% if layout.condensed %} table-condensed {%- endif %}
+    {% endset %}
+
+    <table id="{{layout.id}}"
+           class="{{table_class}}"
+           data-toggle="table"
+           data-classes="{{table_class}}"
+           {% if layout.pagination -%} data-pagination="true" {%- endif %}
+           {% if layout.search -%} data-search="true" {%- endif %}
+           {% if not layout.header -%} data-show-header="false" {%- endif %}
+           {% if layout.footer -%} data-show-footer="true" {%- endif %}
+           >
 
         <thead>
             <tr>

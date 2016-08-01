@@ -49,49 +49,76 @@ class TableLayout extends Layout
         $this->_template = 'layouts/table.html.twig';
     }
 
+    function header()
+    {
+        if (isset($this->_options['header'])) {
+            return $this->_options['header'];
+        }
+        return true;
+    }
+
+    function footer()
+    {
+        if (isset($this->_options['header'])) {
+            return $this->_options['header'];
+        }
+        return false;
+    }
+
     function striped()
     {
         if (isset($this->_options['striped'])) {
             return $this->_options['striped'];
-        } else {
-            return false;
         }
+        return false;
     }
 
     function bordered()
     {
         if (isset($this->_options['bordered'])) {
             return $this->_options['bordered'];
-        } else {
-            return false;
         }
+        return false;
     }
 
     function hover()
     {
         if (isset($this->_options['hover'])) {
             return $this->_options['hover'];
-        } else {
-            return false;
         }
+        return true;
     }
 
     function condensed()
     {
         if (isset($this->_options['condensed'])) {
             return $this->_options['condensed'];
-        } else {
-            return false;
         }
+        return false;
     }
 
     function responsive()
     {
         if (isset($this->_options['responsive'])) {
             return $this->_options['responsive'];
-        } else {
-            return false;
         }
+        return true;
+    }
+
+    function pagination()
+    {
+        if (isset($this->_options['pagination'])) {
+            return $this->_options['pagination'];
+        }
+        return true;
+    }
+
+    function search()
+    {
+        if (isset($this->_options['search'])) {
+            return $this->_options['search'];
+        }
+        return true;
     }
 
     function fields()
