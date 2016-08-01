@@ -437,6 +437,40 @@ class Database
         return $this->data()->fetchAssoc($sql, $params);
     }
 
+    public function countItems($ste_cd, $module_id)
+    {
+        $mod_tbl = $this->getModuleTable($module_id);
+        $sql = "
+            SELECT COUNT(*) as 'count'
+            FROM $mod_tbl
+            WHERE ste_cd = :ste_cd
+        ";
+        $params = array(
+            ':ste_cd' => $ste_cd,
+        );
+        return $this->data()->fetchAssoc($sql, $params)['count'];
+    }
+
+    public function getRecentItems($ste_cd, $module_id, $rows)
+    {
+        $module = $this->getModule($module_id);
+        $count = $this->countItems($ste_cd, $module_id);
+        $start = ($count > $rows) ? $count - $rows : 0;
+        $itemkey = $module['itemkey'];
+        $mod_tbl = $module['tbl'];
+        $sql = "
+            SELECT *
+            FROM $mod_tbl
+            WHERE ste_cd = :ste_cd
+            ORDER BY cre_on
+            LIMIT $start, $rows
+        ";
+        $params = array(
+            ':ste_cd' => $ste_cd,
+        );
+        return $this->data()->fetchAll($sql, $params);
+    }
+
     public function getModuleTable($itemkey)
     {
         return $this->getModule($itemkey)['tbl'];

@@ -90,6 +90,28 @@ class ItemController
         return $layout->render($app['twig'], $app['form.factory'], $itemKey, array('item_form' => $forms['item_form']));
     }
 
+    public function registerItemAction(Application $app, Request $request, $ste_cd, $mod_slug)
+    {
+        $module = $app['database']->getModule(strtolower($mod_slug));
+        if (!$module) {
+            throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$ste_cd);
+        }
+
+        $items = $app['database']->getRecentItems($ste_cd, $module['module_id'], 5);
+
+        $data  = array(
+            'itemkey' => $module['itemkey'],
+            'items' => $items,
+        );
+        if ($module['modtype']) {
+            $data['modtype'] = $module['modtype'];
+        }
+        return $app['twig']->render('ark_register_page.html.twig', $data);
+
+        //$layout = Layout::fetchLayout($app['database'], $itemKey['module'].'_layout_item', $itemKey['modname'], $itemKey['modtype']);
+        //return $layout->render($app['twig'], $app['form.factory'], $itemKey, array('item_form' => $forms['item_form']));
+    }
+
     // TODO Move to Model class
     private function getFields(Database $db, $itemKey, $fields)
     {

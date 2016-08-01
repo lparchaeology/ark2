@@ -1054,6 +1054,29 @@ a.editable-click.editable-disabled:hover {
   margin-right: -5px;
 }
 
+/**
+ * @author vincent loh <vincent.ml@gmail.com>
+ * @version: v1.0.0
+ * https://github.com/vinzloh/bootstrap-table/
+ * Sticky header for bootstrap-table
+ */
+
+.fix-sticky {
+    position: fixed;
+    z-index: 100;
+}
+.fix-sticky thead {
+    background: #fff;
+}
+
+.fix-sticky thead th,
+.fix-sticky thead th:first-child {
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 1px solid #eee;
+    border-radius: 0;
+}
+
 ﻿/*!
  * Bootstrap v3.3.6 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
