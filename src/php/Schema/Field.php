@@ -61,12 +61,10 @@ class Field extends Element
         $this->_editable = (bool)$config['editable'];
         $this->_hidden = (bool)$config['hidden'];
         $this->_rules = Rule::fetchAllValidationRoles($db, $field_id);
-        if ($this->_dataclass != 'xmi' && $this->_dataclass != 'geom') {
+        if ($this->_dataclass == 'attribute') {
             $type = $config['dataclass'].'type';
             $tbl = 'cor_lut_'.$type;
             $class = $db->data()->fetchAssoc("SELECT * FROM $tbl WHERE $type = ?", array($config['classtype']));
-        }
-        if ($this->_dataclass == 'attribute') {
             $attrs = $db->data()->fetchAll('SELECT * FROM cor_lut_attribute WHERE attributetype = ?', array($class['attributetype']));
             foreach ($attrs as $attr) {
                 $this->_attributes[] = $attr['attribute'];

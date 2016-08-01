@@ -44,10 +44,14 @@ class Option
     private $_value = null;
     private $_valid = false;
 
-    private function __construct($type = null, $key = null, $value = null)
+    private function __construct($key = null, $value = null)
     {
-        $config = array('type' => $type, 'option_id' => $key, 'value' => $value);
-        $this->_loadConfig(null, $config);
+        if (!$key || !$value) {
+            return;
+        }
+        $this->_key = $key;
+        $this->setValue($value);
+        $this->_valid = true;
     }
 
     private function _loadConfig($db, $config)
@@ -55,15 +59,11 @@ class Option
         if (!isset($config['type']) || !isset($config['option_id']) || !isset($config['value'])) {
             return;
         }
-        $this->_type = $config['type'];
         $this->_key = $config['option_id'];
-        switch ($this->_type) {
-            case 'field':
-                $this->_value = new Field($db, $config['value']);
-                break;
-            default:
-                $this->_value = unserialize($config['value']);
-                break;
+        if ($config['type'] == 'field') {
+            $this->setValue(new Field($db, $config['value']));
+        } else {
+            $this->setValue(unserialize($config['value']));
         }
         $this->_valid = true;
     }
@@ -86,6 +86,15 @@ class Option
     function value()
     {
         return $this->_value;
+    }
+
+    function setValue($value)
+    {
+        $this->_value = $value;
+        $this->_type = gettype($value);
+        if ($this->_type == 'object') {
+            $this->_type = get_class($value);
+        }
     }
 
     static function fetchOption(Database $db, $element_id, $option_id)

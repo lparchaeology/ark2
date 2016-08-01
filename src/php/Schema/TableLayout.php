@@ -94,4 +94,9 @@ class TableLayout extends Layout
         }
     }
 
+    function fields()
+    {
+        return $this->elements();
+    }
+
 }

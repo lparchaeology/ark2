@@ -66,30 +66,32 @@ class Layout extends Group
         return $this->_template;
     }
 
-    function render(Twig_Environment $twig, FormFactoryInterface $factory, $itemKey, array $options = array())
+    function render(Twig_Environment $twig, array $options = array(), FormFactoryInterface $factory = null, $formsKey = null)
     {
         if ($this->_template) {
             $options['layout'] = $this;
-            $options['forms'] = $this->renderForms($factory, $itemKey);
+            if ($factory && $formsKey) {
+                $options['forms'] = $this->renderForms($factory, $formsKey);
+            }
             return $twig->render($this->_template, $options);
         }
         return '';
     }
 
-    function renderForms(FormFactoryInterface $factory, $itemKey)
+    function renderForms(FormFactoryInterface $factory, $formsKey)
     {
         $forms = array();
         foreach ($this->elements() as $element) {
-            $forms[$element->id()] = $element->renderForms($factory, $itemKey);
+            $forms[$element->id()] = $element->renderForms($factory, $formsKey);
         }
         return $forms;
     }
 
-    static function fetchLayout(Database $db, $layout_id, $module, $modtype)
+    static function fetchLayout(Database $db, $layout_id, $modname, $modtype = null)
     {
         $config =  $db->getLayout($layout_id);
         if (isset($config['class'])) {
-            $layout = new $config['class']($db, $layout_id, $module, $modtype);
+            $layout = new $config['class']($db, $layout_id, $modname, $modtype);
             $layout->_loadConfig($config);
             return $layout;
         }
