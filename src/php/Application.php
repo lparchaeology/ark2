@@ -120,7 +120,7 @@ class Application extends \Silex\Application
         // Enable Twig templates
         $app->register(new \Silex\Provider\TwigServiceProvider());
         $app['twig.path'] = array($app['dir.theme'].'/templates');
-        $app['twig.form.templates'] = array('ark_form_layout.html.twig');
+        $app['twig.form.templates'] = array('forms/layout.html.twig');
         $app['twig.options'] = array('cache' => $app['dir.var'].'/cache/twig');
 
         // Enable Forms and related providers
@@ -138,7 +138,7 @@ class Application extends \Silex\Application
         $app->register(new \rootLogin\UserProvider\Provider\UserProviderServiceProvider());
         $app['user.options'] = array(
             'templates' => [
-                'layout' => 'ark_main_layout.html.twig',
+                'layout' => 'pages/page.html.twig',
             ],
             'userConnection' => 'user',
             'userClass' => 'rootLogin\UserProvider\Entity\LegacyUser',

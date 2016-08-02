@@ -1,10 +1,4 @@
-{% extends "ark_main_layout.html.twig" %}
-
-{% block content %}
-
-<div class="container-fluid">
-
-    <div class="alert alert-info" role="alert">Hey there, here's an alert...</div>
+<div>
 
     {% for element in layout.elements %}
         {% if forms is defined and forms[element.id] is defined %}
@@ -15,5 +9,3 @@
     {% endfor %}
 
 </div>
-
-{% endblock %}

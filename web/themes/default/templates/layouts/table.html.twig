@@ -1,4 +1,4 @@
-<div {%- if layout.responsive %} class="table-responsive" {%- endif -%} >
+<div>
 
     <h3>Table Layout</h3>
 
@@ -18,20 +18,23 @@
            class="{{table_class}}"
            data-toggle="table"
            data-classes="{{table_class}}"
+           data-show-refresh="true"
+           data-show-toggle="true"
            {% if layout.pagination -%} data-pagination="true" {%- endif %}
            {% if layout.search -%} data-search="true" {%- endif %}
            {% if not layout.header -%} data-show-header="false" {%- endif %}
            {% if layout.footer -%} data-show-footer="true" {%- endif %}
+           {% if layout.export -%} data-show-export="true" {%- endif %}
            >
 
         <thead>
             <tr>
-                <th>Item</th>
+                <th data-sortable="true">Item</th>
                 {% if modtype is defined %}
-                    <th>Type</th>
+                    <th data-sortable="true">Type</th>
                 {% endif %}
-                <th>Created By</th>
-                <th>Created On</th>
+                <th data-sortable="true">Created By</th>
+                <th data-sortable="true">Created On</th>
             </tr>
         </thead>
 

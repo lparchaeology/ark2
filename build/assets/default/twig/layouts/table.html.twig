@@ -6,42 +6,35 @@
         {{field.id}} / {{field.dataclass}} / {{field.classtype}}<br/>
     {% endfor %}
 
-    <table id="register-table" data-toggle="table">
+    {% set table_class %}
+        table
+        {% if layout.striped %} table-striped {%- endif %}
+        {% if layout.bordered %} table-bordered {%- endif %}
+        {% if layout.hover %} table-hover {%- endif %}
+        {% if layout.condensed %} table-condensed {%- endif %}
+    {% endset %}
+
+    <table id="{{layout.id}}"
+           class="{{table_class}}"
+           data-toggle="table"
+           data-classes="{{table_class}}"
+           data-show-refresh="true"
+           data-show-toggle="true"
+           {% if layout.pagination -%} data-pagination="true" {%- endif %}
+           {% if layout.search -%} data-search="true" {%- endif %}
+           {% if not layout.header -%} data-show-header="false" {%- endif %}
+           {% if layout.footer -%} data-show-footer="true" {%- endif %}
+           {% if layout.export -%} data-show-export="true" {%- endif %}
+           >
 
         <thead>
             <tr>
-                <th data-field="id"
-                    data-editable="true"
-                    data-editable-mode="inline"
-                    data-editable-onblur="ignore"
-                    data-editable-showbuttons="false"
-                    data-editable-send="never"
-                    data-editable-toggle="manual"
-                >Item</th>
+                <th data-sortable="true">Item</th>
                 {% if modtype is defined %}
-                    <th data-editable="true"
-                        data-editable-mode="inline"
-                        data-editable-onblur="ignore"
-                        data-editable-showbuttons="false"
-                        data-editable-send="never"
-                        data-editable-toggle="manual"
-                    >Type</th>
+                    <th data-sortable="true">Type</th>
                 {% endif %}
-                <th data-editable="true"
-                    data-editable-mode="inline"
-                    data-editable-onblur="ignore"
-                    data-editable-showbuttons="false"
-                    data-editable-send="never"
-                    data-editable-toggle="manual"
-                >Created By</th>
-                <th data-editable="true"
-                    data-editable-mode="inline"
-                    data-editable-onblur="ignore"
-                    data-editable-showbuttons="false"
-                    data-editable-send="never"
-                    data-editable-toggle="manual"
-                >Created On</th>
-                <th data-events="registerEvents">Actions</th>
+                <th data-sortable="true">Created By</th>
+                <th data-sortable="true">Created On</th>
             </tr>
         </thead>
 
@@ -54,21 +47,8 @@
                     {% endif %}
                     <td>{{ item.cre_by }}</td>
                     <td>{{ item.cre_on }}</td>
-                    <td><a class="row-view" href="javascript:void(0)" title="View"><i class="glyphicon glyphicon-eye-open"></i></a><nbsp/><nbsp/>
-                        <a class="row-edit" href="javascript:void(0)" title="Edit"><i class="glyphicon glyphicon-edit"></i></a><nbsp/><nbsp/>
-                        <a class="row-delete" href="javascript:void(0)" title="Delete"><i class="glyphicon glyphicon-trash"></i></a></td>
                 </tr>
             {% endfor %}
-            <tr id="register-new">
-                <td></td>
-                {% if modtype is defined %}
-                    <td></td>
-                {% endif %}
-                <td></td>
-                <td></td>
-                <td><a class="row-save" href="javascript:void(0)" title="Save"><i class="glyphicon glyphicon-ok"></i></a><nbsp/><nbsp/>
-                    <a class="row-cancel" href="javascript:void(0)" title="Cancel"><i class="glyphicon glyphicon-remove"></i></a></td>
-            </tr>
         </tbody>
 
     </table>

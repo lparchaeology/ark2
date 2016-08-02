@@ -1,0 +1,32 @@
+{# Define the standard content block #}
+{% block content %}
+
+    <div class="alert alert-info" role="alert">Hey there, here's an alert...</div>
+
+    {% if item_form is defined %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-inline form-group">
+                    {{ form_start(item_form) }}
+                    {{ form_widget(item_form) }}
+                    {{ form_end(item_form) }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if layout is defined %}
+        {% for element in layout.elements %}
+            {% if forms is defined and forms[element.id] is defined %}
+                {% include element.template() with {'layout': element, 'forms': forms[element.id]} %}
+            {% else %}
+                {% include element.template() with {'layout': element} %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% if contents is defined %}
+        {{ contents|raw }}
+    {% endif %}
+
+{% endblock content %}

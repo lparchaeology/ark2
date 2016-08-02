@@ -13,7 +13,7 @@ $app->mount('/sites', new \ARK\Route\SiteControllerProvider());
 $app->mount('/api/v2', new \ARK\Route\ApiControllerProvider());
 $app->get('/', function () use ($app) {
     $contents = $app->trans('ark.welcome');
-    return $app['twig']->render('ark_content_page.html.twig', array('contents' => $contents));
+    return $app['twig']->render('pages/page.html.twig', array('contents' => $contents));
 })->bind('homepage');
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {

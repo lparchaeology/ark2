@@ -63,7 +63,7 @@ class SiteController
             return $app->redirect('form');
         }
 
-        return $app['twig']->render('ark_form_page.html.twig', array('form' => $form->createView()));
+        return $app['twig']->render('pages/page.html.twig', array('form' => $form->createView()));
     }
 
     public function getSchemaAction(Application $app, Request $request, $site)

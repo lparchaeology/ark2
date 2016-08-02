@@ -1,7 +1,0 @@
-<div>
-
-    {% for element in layout.elements %}
-        {% include element.template() with {'layout': element, 'forms': forms[element.id]} only %}
-    {% endfor %}
-
-</div>
