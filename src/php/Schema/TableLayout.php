@@ -51,74 +51,52 @@ class TableLayout extends Layout
 
     function header()
     {
-        if (isset($this->_options['header'])) {
-            return $this->_options['header'];
-        }
-        return true;
+        return $this->optionValue('header', true);
     }
 
     function footer()
     {
-        if (isset($this->_options['header'])) {
-            return $this->_options['header'];
-        }
-        return false;
+        return $this->optionValue('footer', false);
     }
 
     function striped()
     {
-        if (isset($this->_options['striped'])) {
-            return $this->_options['striped'];
-        }
-        return false;
+        return $this->optionValue('striped', false);
     }
 
     function bordered()
     {
-        if (isset($this->_options['bordered'])) {
-            return $this->_options['bordered'];
-        }
-        return false;
+        return $this->optionValue('bordered', false);
     }
 
     function hover()
     {
-        if (isset($this->_options['hover'])) {
-            return $this->_options['hover'];
-        }
-        return true;
+        return $this->optionValue('hover', true);
     }
 
     function condensed()
     {
-        if (isset($this->_options['condensed'])) {
-            return $this->_options['condensed'];
-        }
-        return false;
+        return $this->optionValue('condensed', false);
     }
 
     function responsive()
     {
-        if (isset($this->_options['responsive'])) {
-            return $this->_options['responsive'];
-        }
-        return true;
+        return $this->optionValue('responsive', true);
     }
 
     function pagination()
     {
-        if (isset($this->_options['pagination'])) {
-            return $this->_options['pagination'];
-        }
-        return true;
+        return $this->optionValue('pagination', true);
     }
 
     function search()
     {
-        if (isset($this->_options['search'])) {
-            return $this->_options['search'];
-        }
-        return true;
+        return $this->optionValue('search', true);
+    }
+
+    function export()
+    {
+        return $this->optionValue('export', true);
     }
 
     function fields()

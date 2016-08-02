@@ -133,6 +133,22 @@ abstract class Element
         return $this->_alias;
     }
 
+    function option($key)
+    {
+        if (isset($this->_options[$key])) {
+            return $this->_options[$key];
+        }
+        return new Option();
+    }
+
+    function optionValue($key, $default = null)
+    {
+        if (isset($this->_options[$key])) {
+            return $this->_options[$key]->value();
+        }
+        return $default;
+    }
+
     function options()
     {
         return array_values($this->_options);
