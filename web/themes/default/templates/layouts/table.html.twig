@@ -1,13 +1,10 @@
+{# Standard table layout using Bootstrap Table (http://bootstrap-table.wenzhixin.net.cn/documentation/) #}
 <div>
 
     <h3>Table Layout</h3>
 
-    {% for field in layout.fields %}
-        {{field.id}} / {{field.dataclass}} / {{field.classtype}}<br/>
-    {% endfor %}
-
     {% set table_class %}
-        table
+        table table-bootstrap-table
         {% if layout.striped %} table-striped {%- endif %}
         {% if layout.bordered %} table-bordered {%- endif %}
         {% if layout.hover %} table-hover {%- endif %}
@@ -18,8 +15,10 @@
            class="{{table_class}}"
            data-toggle="table"
            data-classes="{{table_class}}"
-           data-show-refresh="true"
+           data-sort-name="{{layout.fields[0].id}}"
+           {#data-show-refresh="true"#}
            data-show-toggle="true"
+           data-show-columns="true"
            {% if layout.pagination -%} data-pagination="true" {%- endif %}
            {% if layout.search -%} data-search="true" {%- endif %}
            {% if not layout.header -%} data-show-header="false" {%- endif %}
@@ -29,24 +28,44 @@
 
         <thead>
             <tr>
-                <th data-sortable="true">Item</th>
-                {% if modtype is defined %}
-                    <th data-sortable="true">Type</th>
-                {% endif %}
-                <th data-sortable="true">Created By</th>
-                <th data-sortable="true">Created On</th>
+                {% for field in layout.fields %}
+                    <th data-field="{{field.id}}"
+                        data-title="{{field.title|trans}}"
+                        {% if field.tooltip -%} data-titleTooltip="{{field.tooltip|trans}}" {%- endif %}
+                        {% if field.widget == 'radio' -%} data-radio {%- endif %}
+                        {% if field.widget == 'checkbox' -%} data-checkbox {%- endif %}
+                        {% if field.align -%} data-align="{{field.align}}" {%- endif %}
+                        {% if field.rowSpan > 1 -%} data-rowspan="field.rowSpan" {%- endif %}
+                        {% if field.colSpan > 1 -%} data-colspan="field.colSpan" {%- endif %}
+                        {% if field.sortable -%} data-sortable="true" {%- endif %}
+                        {% if field.sortable and field.sortOrder != 'asc' -%} data-sort-order="{{field.sortOrder}}" {%- endif %}
+                        {% if field.hidden -%} data-visible="false" {%- endif %}
+                        {% if not field.searchable -%} data-searchable="false" {%- endif %}
+                    >
+                        {{field.title|trans}}
+                    </th>
+                {% endfor %}
             </tr>
         </thead>
 
         <tbody>
             {% for item in items %}
                 <tr>
-                    <td>{{ item[itemkey] }}</td>
-                    {% if modtype is defined %}
-                        <td>{{ item[modtype] }}</td>
-                    {% endif %}
-                    <td>{{ item.cre_by }}</td>
-                    <td>{{ item.cre_on }}</td>
+                    {% for field in layout.fields %}
+                        <td>
+                            {% if item[field.id] is defined %}
+                                {% if field.dataclass == 'date' %}
+                                    {{ item[field.id].format('Y-m-d H:i:s') }}
+                                {% elseif field.dataclass in ['action', 'attribute', 'modtype'] %}
+                                    {{ item[field.id]|trans }}
+                                {% elseif field.dataclass == 'itemkey' %}
+                                    <a href="{{item[itemno]}}">{{ item[field.id] }}</a>
+                                {% else %}
+                                    {{ item[field.id] }}
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
                 </tr>
             {% endfor %}
         </tbody>

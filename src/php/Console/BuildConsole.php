@@ -43,6 +43,7 @@ use ARK\Console\Command\ThemeBuildCommand;
 use ARK\Console\Command\ThemeCreateCommand;
 use ARK\Console\Command\ThemeCssCommand;
 use ARK\Console\Command\ThemeFontsCommand;
+use ARK\Console\Command\ThemeImageCommand;
 use ARK\Console\Command\ThemeJsCommand;
 use ARK\Console\Command\ThemeTwigCommand;
 use ARK\Database\Command\ReverseCommand;
@@ -62,6 +63,7 @@ class BuildConsole extends Console
         $this->add(new ThemeCreateCommand());
         $this->add(new ThemeCssCommand());
         $this->add(new ThemeFontsCommand());
+        $this->add(new ThemeImageCommand());
         $this->add(new ThemeJsCommand());
         $this->add(new ThemeTwigCommand());
 

@@ -49,6 +49,10 @@ class ThemeJsCommand extends ProcessCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $theme = $input->getArgument('theme');
+        if (!$theme) {
+            $theme = 'default';
+        }
         $this->runProcess('npm run js -- --theme '.$theme, $output);
     }
 }

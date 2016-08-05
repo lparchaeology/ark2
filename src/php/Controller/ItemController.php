@@ -75,7 +75,8 @@ class ItemController
         if (empty($modtype)) {
             $itemKey['modtype'] = $mod['modname'];
         } else {
-            $itemKey['modtype'] = $itemRow[$modtype];
+            $itemKey['modtype'] = $modtype;
+            $itemKey[$modtype] = $itemRow[$modtype];
         }
 
         // TODO Make into a Subform
@@ -98,17 +99,53 @@ class ItemController
             throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$ste_cd);
         }
 
+        $mod_tbl = $module['tbl'];
+        $modtype = $module['modtype'];
+        $itemkey = $module['itemkey'];
+
+        $itemKey = array(
+            'site' => $ste_cd,
+            'mod_slug' => $mod_slug,
+            'module' => $module['module_id'],
+            'key' => $itemkey,
+            'modname' => $module['modname'],
+        );
+
+        $layout = Layout::fetchLayout($app['database'], 'cor_layout_register', $module['modname']);
+
+        $fields = $layout->allFields();
+        foreach ($fields as $field) {
+            if ($field->dataclass() == 'itemkey') {
+                $keyfield = $field->id();
+            }
+        }
         $items = $app['database']->getRecentItems($ste_cd, $module['module_id'], 5);
+        foreach ($items as &$item) {
+            if (empty($modtype)) {
+                $itemKey['modtype'] = $module['modname'];
+            } else {
+                $itemKey['modtype'] = $modtype;
+                $itemKey[$modtype] = $item[$modtype];
+            }
+            $itemKey['value'] = $item[$itemkey];
+            $data = array();
+            foreach ($fields as $field) {
+                $data = array_merge($data, $field->formData($itemKey, true));
+            }
+            $item = array_merge($item, $data);
+        }
+
 
         $options  = array(
             'itemkey' => $module['itemkey'],
+            'itemno' => $module['itemno'],
             'items' => $items,
+            'keyfield' => $keyfield,
         );
         if ($module['modtype']) {
             $options['modtype'] = $module['modtype'];
         }
 
-        $layout = Layout::fetchLayout($app['database'], 'cor_layout_register', $module['modname']);
         return $layout->render($app['twig'], $options);
     }
 
@@ -119,17 +156,45 @@ class ItemController
             throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$ste_cd);
         }
 
-        $items = $app['database']->getItems($ste_cd, $module['module_id'], $module['tbl']);
+        $mod_tbl = $module['tbl'];
+        $modtype = $module['modtype'];
+        $itemkey = $module['itemkey'];
+
+        $itemKey = array(
+            'site' => $ste_cd,
+            'mod_slug' => $mod_slug,
+            'module' => $module['module_id'],
+            'key' => $itemkey,
+            'modname' => $module['modname'],
+        );
+
+        $layout = Layout::fetchLayout($app['database'], 'cor_layout_list', $module['modname']);
+        $fields = $layout->allFields();
+        $items = $app['database']->getItems($ste_cd, $module['module_id']);
+        foreach ($items as &$item) {
+            if (empty($modtype)) {
+                $itemKey['modtype'] = $module['modname'];
+            } else {
+                $itemKey['modtype'] = $modtype;
+                $itemKey[$modtype] = $item[$modtype];
+            }
+            $itemKey['value'] = $item[$itemkey];
+            $data = array();
+            foreach ($fields as $field) {
+                $data = array_merge($data, $field->formData($itemKey, true));
+            }
+            $item = array_merge($item, $data);
+        }
 
         $options  = array(
             'itemkey' => $module['itemkey'],
+            'itemno' => $module['itemno'],
             'items' => $items,
         );
         if ($module['modtype']) {
             $options['modtype'] = $module['modtype'];
         }
 
-        $layout = Layout::fetchLayout($app['database'], 'cor_layout_list', $module['modname']);
         return $layout->render($app['twig'], $options);
     }
 
@@ -140,31 +205,31 @@ class ItemController
         foreach ($fields as $field) {
             switch ($field->dataclass()) {
                 case 'txt':
-                    $row = $db->getText($connection, $itemKey, $field->classtype(), 'en');
+                    $row = $db->getText($itemKey, $field->classtype(), 'en');
                     if (isset($row['txt'])) {
                         $values[$field->id()] = $row['txt'];
                     }
                     break;
                 case 'number':
-                    $row = $db->getNumber($connection, $itemKey, $field->classtype());
+                    $row = $db->getNumber($itemKey, $field->classtype());
                     if (isset($row['number'])) {
                         $values[$field->id()] = $row['number'];
                     }
                     break;
                 case 'date':
-                    $row = $db->getDate($connection, $itemKey, $field->classtype());
+                    $row = $db->getDate($itemKey, $field->classtype());
                     if (isset($row['date'])) {
                         $values[$field->id()] = new \DateTime($row['date']);
                     }
                     break;
                 case 'attribute':
-                    $row = $db->getAttribute($connection, $itemKey, $field->classtype());
+                    $row = $db->getAttribute($itemKey, $field->classtype());
                     if (isset($row['attribute'])) {
                         $values[$field->id()] = $row['attribute'];
                     }
                     break;
                 case 'file':
-                    $row = $db->getFile($connection, $itemKey, $field->classtype());
+                    $row = $db->getFile($itemKey, $field->classtype());
                     if (isset($row['txt'])) {
                         //$values[$field->id()] = $row['filename'];
                     }

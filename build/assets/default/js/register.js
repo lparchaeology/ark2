@@ -1,6 +1,6 @@
 $(document).ready(function() {
     editableNewRegisterRow();
-    ('#register-table').bootstrapTable('hideLoading');
+    $('#register-table').bootstrapTable('hideLoading');
 });
 
 function hideEditableRegisterRow() {

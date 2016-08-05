@@ -1,11 +1,15 @@
 {# Define the standard content block #}
 {% block content %}
 
-    <div class="alert alert-info" role="alert">Hey there, here's an alert...</div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="alert alert-info" role="alert">Hey there, here's an alert...</div>
+        </div>
+    </div>
 
     {% if item_form is defined %}
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-xs-12">
                 <div class="form-inline form-group">
                     {{ form_start(item_form) }}
                     {{ form_widget(item_form) }}
@@ -26,7 +30,11 @@
     {% endif %}
 
     {% if contents is defined %}
-        {{ contents|raw }}
+        <div class="row">
+            <div class="col-xs-12">
+                {{ contents|raw }}
+            </div>
+        </div>
     {% endif %}
 
 {% endblock content %}

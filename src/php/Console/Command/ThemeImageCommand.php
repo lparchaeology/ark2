@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Console/Command/ThemeTwigCommand.php
+* src/php/Console/Command/ThemeImageCommand.php
 *
-* Ark Build JS Command
+* Ark Build Image Command
 *
 * PHP versions 5 and 7
 *
@@ -28,7 +28,7 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Console/Command/ThemeTwigCommand.php
+* @see        http://ark.lparchaeology.com/code/src/php/Console/Command/ThemeImageCommand.php
 * @since      2.0
 */
 
@@ -38,12 +38,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ThemeTwigCommand extends ProcessCommand
+class ThemeImageCommand extends ProcessCommand
 {
     protected function configure()
     {
-        $this->setName('theme:twig')
-             ->setDescription('Build the ARK theme Twig.')
+        $this->setName('theme:img')
+             ->setDescription('Build the ARK theme Images.')
              ->addArgument('theme', InputArgument::OPTIONAL, 'The theme to build');
     }
 
@@ -53,6 +53,6 @@ class ThemeTwigCommand extends ProcessCommand
         if (!$theme) {
             $theme = 'default';
         }
-        $this->runProcess('npm run twig -- --theme '.$theme, $output);
+        $this->runProcess('npm run img -- --theme '.$theme, $output);
     }
 }

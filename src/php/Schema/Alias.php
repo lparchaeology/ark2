@@ -157,4 +157,17 @@ class Alias
         return $alias;
     }
     // }}}
+    // {{{ modtypeAlias()
+    static function modtypeAlias($value)
+    {
+        $alias = new Alias();
+        $config['tbl'] = 'ark_config_modtype';
+        $config['col'] = 'modtype';
+        $config['src_key'] = $value;
+        $config['type'] = 'normal';
+        $config['lang'] = null;
+        $alias->_loadConfig($config);
+        return $alias;
+    }
+    // }}}
 }

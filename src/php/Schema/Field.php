@@ -77,6 +77,14 @@ class Field extends Element
         $this->_valid = true;
     }
 
+    function title()
+    {
+        if ($this->_title) {
+            return $this->_title;
+        }
+        return $this->_alias->tranKey();
+    }
+
     function dataclass()
     {
         return $this->_dataclass;
@@ -95,6 +103,46 @@ class Field extends Element
     function hidden()
     {
         return $this->_hidden;
+    }
+
+    function tooltip()
+    {
+        return $this->optionValue('tooltip', '');
+    }
+
+    function widget()
+    {
+        return $this->optionValue('widget', '');
+    }
+
+    function align()
+    {
+        return $this->optionValue('align', '');
+    }
+
+    function rowSpan()
+    {
+        return $this->optionValue('rowSpan', 1);
+    }
+
+    function colSpan()
+    {
+        return $this->optionValue('colSpan', 1);
+    }
+
+    function sortable()
+    {
+        return $this->optionValue('sortable', true);
+    }
+
+    function sortOrder()
+    {
+        return $this->optionValue('sortOrder', 'asc');
+    }
+
+    function searchable()
+    {
+        return $this->optionValue('searchable', true);
     }
 
     function validationRules($vld_role)
@@ -116,13 +164,28 @@ class Field extends Element
         return $this->_attributes;
     }
 
-    function formData($itemKey)
+    function formData($itemKey, $trans = false)
     {
         if (!$this->isValid()) {
             return array();
         }
         $data = array();
         switch ($this->dataclass()) {
+            case 'itemkey':
+                if ($trans) {
+                    $data[$this->id()] = '<a href="sites/'.$itemKey['site'].'/'.$itemKey['mod_slug'].'/'.$itemKey['value'].'">'.$itemKey['value'].'</a>';
+                    $data[$this->id()] = $itemKey['value'];
+                } else {
+                    $data[$this->id()] = $itemKey['value'];
+                }
+                break;
+            case 'modtype':
+                if ($trans) {
+                    $data[$this->id()] = $itemKey['modtype'].'.'.$itemKey[$itemKey['modtype']].'.normal';
+                } else {
+                    $data[$this->id()] = $itemKey['modtype'];
+                }
+                break;
             case 'txt':
                 $row = $this->_db->getText($itemKey['key'], $itemKey['value'], $this->classtype(), 'en');
                 if (isset($row['txt'])) {
@@ -144,7 +207,11 @@ class Field extends Element
             case 'attribute':
                 $row = $this->_db->getAttribute($itemKey['key'], $itemKey['value'], $this->classtype());
                 if (isset($row['attribute'])) {
-                    $data[$this->id()] = $row['attribute'];
+                    if ($trans) {
+                        $data[$this->id()] = 'attribute.'.$row['attributetype'].'.'.$row['attribute'].'.normal';
+                    } else {
+                        $data[$this->id()] = $row['attribute'];
+                    }
                 }
                 break;
             case 'file':
@@ -156,7 +223,11 @@ class Field extends Element
             case 'action':
                 $action = $this->_db->getAction($itemKey['key'], $itemKey['value'], $this->classtype());
                 if (isset($action['actor_itemkey']) and isset($action['actor_itemvalue'])) {
-                    $data[$this->id()] = $action['actor_itemkey'].'.'.$action['actor_itemvalue'];
+                    if ($trans) {
+                        $data[$this->id()] = $action['actor_itemkey'].'.'.$action['actor_itemvalue'].'.name';
+                    } else {
+                        $data[$this->id()] = $action['actor_itemkey'].'.'.$action['actor_itemvalue'];
+                    }
                 }
                 break;
         }

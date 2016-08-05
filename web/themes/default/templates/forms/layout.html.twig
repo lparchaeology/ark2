@@ -15,28 +15,30 @@
 
 {% block panel_widget %}
 
-    {% spaceless %}
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col col-xs-6">
-                        <h3 class="panel-title">{{ title|trans }}</h3>
-                    </div>
-                    <div class="col col-xs-6 text-right">
-                        {{ form_widget(form.lock) }}
-                    </div>
+    <div class="panel panel-default">
+
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col col-xs-6">
+                    <h3 class="panel-title">{{ title|trans }}</h3>
+                </div>
+                <div class="col col-xs-6 text-right">
+                    {{ form_widget(form.lock) }}
                 </div>
             </div>
-            <div class="panel-body">
-                {% for child in form.children if child.vars.id != form.save.vars.id %}
-                    {{ form_row(child) }}
-                {% endfor %}
-            </div>
-            <div class="panel-footer text-right">
-                {{ form_widget(form.save) }}
-            </div>
         </div>
-    {% endspaceless %}
+
+        <div class="panel-body">
+            {% for child in form.children if child.vars.id != form.save.vars.id %}
+                {{ form_row(child) }}
+            {% endfor %}
+        </div>
+        <div class="panel-footer text-right">
+            {{ form_widget(form.save) }}
+        </div>
+
+    </div>
+
 {% endblock panel_widget %}
 
 {% block event_row -%}

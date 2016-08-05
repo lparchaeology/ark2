@@ -42,7 +42,6 @@ class DatabaseLoader implements LoaderInterface
 {
     public function load($db, $locale, $domain = 'messages')
     {
-        dump($domain);
         $catalogue = new MessageCatalogue($locale);
         $rows = $db->getTranslations($domain);
         foreach ($rows as $row) {
