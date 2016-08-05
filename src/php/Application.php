@@ -182,6 +182,13 @@ class Application extends \Silex\Application
             $app->register(new TranslationProfilerServiceProvider());
             $app->register(new \Sorien\Provider\DoctrineProfilerServiceProvider());
         }
+
+        // Test some alerts TODO Load stored flashes from database
+        $app['session']->getFlashBag()->clear();
+        $app['session']->getFlashBag()->add('info', 'This is a Flash Message');
+        //$app['session']->getFlashBag()->add('warning', 'This is a Warning');
+        //$app['session']->getFlashBag()->add('success', 'This is a Success');
+        //$app['session']->getFlashBag()->add('danger', 'This is a Danger!!!');
     }
 
 }

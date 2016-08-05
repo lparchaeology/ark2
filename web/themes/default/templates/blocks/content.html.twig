@@ -1,11 +1,7 @@
 {# Define the standard content block #}
 {% block content %}
 
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="alert alert-info" role="alert">Hey there, here's an alert...</div>
-        </div>
-    </div>
+    {% block flash %}{% endblock %}
 
     {% if item_form is defined %}
         <div class="row">

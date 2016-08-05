@@ -1,0 +1,14 @@
+{# Block to write out correctly formatted field value #}
+{% block itemvalue -%}
+    {% if field is defined and item[field.id] is defined %}
+        {% if field.dataclass == 'date' %}
+            {{ item[field.id].format('Y-m-d H:i:s') }}
+        {% elseif field.dataclass in ['action', 'attribute', 'modtype'] %}
+            {{ item[field.id]|trans }}
+        {% elseif field.dataclass == 'itemkey' %}
+            <a href="{{item[itemno]}}">{{ item[field.id] }}</a>
+        {% else %}
+            {{ item[field.id] }}
+        {% endif %}
+    {% endif %}
+{%- endblock itemvalue %}

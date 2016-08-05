@@ -87,7 +87,7 @@ class ItemController
         $formBuilder->add('item', Type\TextType::class, array('label' => 'Item', 'attr' => array('readonly' => true)));
         $forms['item_form'] = $formBuilder->getForm()->createView();
 
-        $layout = Layout::fetchLayout($app['database'], 'cor_layout_item', $itemKey['modname'], $itemKey['modtype']);
+        $layout = Layout::fetchLayout($app['database'], 'cor_layout_item', $itemKey['modname'], $itemRow[$modtype]);
         $options = array('item_form' => $forms['item_form']);
         return $layout->render($app['twig'], $options, $app['form.factory'], $itemKey);
     }
