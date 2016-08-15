@@ -34,6 +34,7 @@
 
 namespace ARK;
 
+use Psr\Log\LogLevel;
 use Symfony\Component\Debug\Debug;
 use ARK\Translation\ActorLoader;
 use ARK\Translation\DatabaseLoader;
@@ -95,8 +96,10 @@ class Application extends \Silex\Application
         $app['monolog.name'] = 'ark';
         if ($app['debug']) {
             $app['monolog.level'] = 'DEBUG';
+            $app['logger.level'] = LogLevel::DEBUG;
         } else {
             $app['monolog.level'] = 'WARNING';
+            $app['logger.level'] = LogLevel::WARNING;
         }
 
         // Enable Locale/Translation
