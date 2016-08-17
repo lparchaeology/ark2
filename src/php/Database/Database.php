@@ -628,6 +628,37 @@ class Database
         return $this->config()->fetchAll($sql, $params);
     }
 
+    public function getProperty($propertyId)
+    {
+        $sql = "
+            SELECT *
+            FROM ark_schema_property, ark_schema_format, ark_schema_number, ark_schema_string
+            WHERE ark_schema_property.property = :property
+            AND ark_schema_property.format = ark_schema_format.format
+            AND ark_schema_property.format = ark_schema_number.format
+            AND ark_schema_property.format = ark_schema_string.format
+        ";
+        $params = array(
+            ':property' => $propertyId,
+        );
+        $property = $this->config()->fetchAssoc($sql, $params);
+        $sql = "
+            SELECT *
+            FROM ark_schema_enum
+            WHERE ark_schema_enum.property = :property
+        ";
+        $property['enum'] = $this->config()->fetchAll($sql, $params);
+        if ($property['type'] == 'object' {
+            $sql = "
+                SELECT *
+                FROM ark_schema_object
+                WHERE ark_schema_enum.object = :property
+            ";
+            $property['properties'] = $this->config()->fetchAll($sql, $params);
+        }
+        return $property;
+    }
+
     public function getTranslations($domain = null)
     {
         $sql = "
