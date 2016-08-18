@@ -42,10 +42,13 @@ class Property
     private $_id = '';
     private $_format = '';
     private $_type = '';
+    private $_default = null;
     private $_input = '';
     private $_minItems = 0;
     private $_maxItems = 1;
     private $_uniqueItems = true;
+    private $_sortable = false;
+    private $_searchable = false;
     private $_enum = array();
     private $_module = '';
     private $_dataclass = '';
@@ -78,6 +81,11 @@ class Property
     public function type()
     {
         return $this->_type;
+    }
+
+    public function default()
+    {
+        return $this->_default;
     }
 
     public function input()
@@ -132,32 +140,53 @@ class Property
 
     public function sortable()
     {
-        return $this->optionValue('sortable', true);
-    }
-
-    public function sortOrder()
-    {
-        return $this->optionValue('sortOrder', 'asc');
+        return $this-_sortable;
     }
 
     public function searchable()
     {
-        return $this->optionValue('searchable', true);
+        return $this->_searchable;
     }
 
     public function toSchema()
     {
-        $schema = array('title' => $this->_title);
-        return array($this->_id => $schema);
+
+        $schema['title'] = $this->_keyword.'.title';
+        $schema['description'] = $this->_keyword.'.description';
+        if ($this->_default != null) {
+            $schema['default'] = $this->_default;
+        }
+        $schema['type'] = $this->_type;
+        if ($this->hasEnum()) {
+            $schema['enum'] = $this->_enum;
+        }
+
+        if ($this->isArray()) {
+            $array['type'] = 'array';
+            $array['items'] = $schema;
+            $array['additionalItems'] = false;
+            if ($this->_minItems > 0) {
+                $array['minItems'] = $this->_minItems;
+            }
+            if ($this->_maxItems > 1) {
+                $array['maxItems'] = $this->_maxItems;
+            }
+            $array['uniqueItems'] = $this->_uniqueItems;
+            return $array;
+        }
+        return $schema;
     }
 
     static public function property(Database $db, $propertyId)
     {
-        $config = $db->getSchemaProperty($propertyId);
+        $config = $db->getProperty($propertyId);
         $property = null;
         switch ($config['type']) {
             case 'object':
                 $property = new ObjectProperty();
+                break;
+            case 'array':
+                $property = new ArrayProperty();
                 break;
             case 'string':
                 $property = new StringProperty();

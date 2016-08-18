@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/ObjectProperty.php
+* src/php/Schema/ArrayProperty.php
 *
-* ARK Schema ObjectProperty
+* ARK Schema ArrayProperty
 *
 * PHP version 5 and 7
 *
@@ -28,53 +28,48 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/ObjectProperty.php
+* @see        http://ark.lparchaeology.com/code/src/php/Schema/ArrayProperty.php
 * @since      2.0
 *
 */
 
 namespace ARK\Schema;
 
-class ObjectProperty extends Property
+class ArrayProperty extends Property
 {
-    private $_properties = array();
-    private $_required = array();
-    private $_graphRoot = '';
-
     private function _loadConfig($config)
     {
         parent::_loadConfig($config);
-        foreach ($config['properties'] as $property) {
-            $this->_properties[] = Property::property($property);
-            if ($property['required']) {
-                $this->_required[] = $property['property'];
-            }
-            if ($property['graph_root']) {
-                $this->_graphRoot = $property['property'];
-            }
-        }
     }
 
-    public function properties()
+    public function minItems()
     {
-        return $this->_properties;
+        return $this->_minItems;
     }
 
-    public function required()
+    public function maxItems()
     {
-        return $this->_required;
+        return $this->_maxItems;
+    }
+
+    public function uniqueItems()
+    {
+        return $this->_uniqueItems;
     }
 
     public function toSchema()
     {
-        $object['type'] = 'object';
-        $object['properties'] = array();
-        foreach ($this->properties() as $property) {
-            $object['properties'][$this->id()] = $property->toSchema();
+        $array['type'] = 'array';
+        $array['items'] = parent::toSchema();
+        $array['additionalItems'] = false;
+        if ($this->_minItems > 0) {
+            $array['minItems'] = $this->_minItems;
         }
-        $object['required'] = $this->required();
-        $object['additionalProperties'] = false;
-        $schema[$this->id()] = $property;
+        if ($this->_maxItems > 1) {
+            $array['maxItems'] = $this->_maxItems;
+        }
+        $array['uniqueItems'] = $this->_uniqueItems;
+        $schema[$this->_id] = $array;
         return $schema;
     }
 
