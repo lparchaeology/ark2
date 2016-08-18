@@ -648,7 +648,7 @@ class Database
             WHERE ark_schema_enum.property = :property
         ";
         $property['enum'] = $this->config()->fetchAll($sql, $params);
-        if ($property['type'] == 'object' {
+        if ($property['type'] == 'object') {
             $sql = "
                 SELECT *
                 FROM ark_schema_object
