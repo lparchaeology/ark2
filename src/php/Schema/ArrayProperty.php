@@ -37,9 +37,9 @@ namespace ARK\Schema;
 
 class ArrayProperty extends Property
 {
-    private function _loadConfig($config)
+    private function _loadConfig(Database $db, $config)
     {
-        parent::_loadConfig($config);
+        parent::_loadConfig($db, $config);
     }
 
     public function minItems()

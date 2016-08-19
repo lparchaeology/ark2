@@ -9,7 +9,7 @@
         {% for tab in layout.tabs %}
             {% set active = (tab.id == layout.defaultTab ? ' class=active') %}
             <li role="presentation"{{active}}>
-                <a href="#{{tab.id}}" aria-controls="{{tab.id}}" role="tab" data-toggle="{{layout.toggle}}">{{tab.title|trans}}</a>
+                <a href="#{{tab.id}}" aria-controls="{{tab.id}}" role="tab" data-toggle="{{layout.toggle}}">{{tab.keyword|trans}}</a>
             </li>
         {% endfor %}
 

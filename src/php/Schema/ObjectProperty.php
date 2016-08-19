@@ -35,17 +35,19 @@
 
 namespace ARK\Schema;
 
+use ARK\Database\Database;
+
 class ObjectProperty extends Property
 {
     private $_properties = array();
     private $_required = array();
     private $_graphRoot = '';
 
-    private function _loadConfig($config)
+    protected function _loadConfig(Database $db, $config)
     {
-        parent::_loadConfig($config);
+        parent::_loadConfig($db, $config);
         foreach ($config['properties'] as $property) {
-            $this->_properties[] = Property::property($property);
+            $this->_properties[] = Property::property($db, $property['property']);
             if ($property['required']) {
                 $this->_required[] = $property['property'];
             }
@@ -74,8 +76,7 @@ class ObjectProperty extends Property
         }
         $object['required'] = $this->required();
         $object['additionalProperties'] = false;
-        $schema[$this->id()] = $property;
-        return $schema;
+        return $object;
     }
 
 }

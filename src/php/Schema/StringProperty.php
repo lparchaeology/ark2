@@ -35,6 +35,8 @@
 
 namespace ARK\Schema;
 
+use ARK\Database\Database;
+
 class StringProperty extends Property
 {
     private $_pattern = '';
@@ -43,24 +45,19 @@ class StringProperty extends Property
     private $_size = 0;
     private $_spellcheck = false;
 
-    private function _loadConfig($config)
+    protected function _loadConfig(Database $db, $config)
     {
-        parent::_loadConfig($config);
-        $this->_pattern = $property['pattern'];
-        $this->_minLength = $property['min_length'];
-        $this->_maxLength = $property['max_length'];
-        $this->_size = $property['size'];
-        $this->_spellcheck = (bool)$property['spellcheck'];
+        parent::_loadConfig($db, $config);
+        $this->_pattern = $config['pattern'];
+        $this->_minLength = $config['min_length'];
+        $this->_maxLength = $config['max_length'];
+        $this->_size = $config['size'];
+        $this->_spellcheck = (bool)$config['spellcheck'];
     }
 
     public function pattern()
     {
         return $this->_pattern;
-    }
-
-    public function minLength()
-    {
-        return $this->_minLength;
     }
 
     public function minLength()

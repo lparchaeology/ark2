@@ -53,10 +53,13 @@ class Property
     private $_module = '';
     private $_dataclass = '';
     private $_keyword = '';
-    private $_valid = false;
+    protected $_valid = false;
 
-    private function _loadConfig($config)
+    protected function _loadConfig(Database $db, $config)
     {
+        if (!isset($config['property'])) {
+            return;
+        }
         $this->_id = $config['property'];
         $this->_format = $config['format'];
         $this->_type = $config['type'];
@@ -83,7 +86,7 @@ class Property
         return $this->_type;
     }
 
-    public function default()
+    public function defaultValue()
     {
         return $this->_default;
     }
@@ -198,7 +201,7 @@ class Property
                 $property = new Property();
                 break;
         }
-        $property->_loadConfig($config);
+        $property->_loadConfig($db, $config);
         return $property;
     }
 

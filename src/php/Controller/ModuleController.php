@@ -41,6 +41,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use ARK\Schema\Schema;
 
 class ModuleController
 {
@@ -81,7 +82,7 @@ class ModuleController
             throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$site);
         }
 
-        $schema = new \ARK\Schema\Group($app['database'], $mod['module'].'_layout_item');
+        $schema = new Schema($app['database'], $mod['module']);
         $response = new JsonResponse(null);
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
         $response->setData($schema->toSchema());

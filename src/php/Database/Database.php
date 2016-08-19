@@ -510,6 +510,19 @@ class Database
         return $this->config()->fetchAssoc($sql, $params);
     }
 
+    public function getModtypes($module)
+    {
+        $sql = "
+            SELECT *
+            FROM ark_schema_modtype
+            WHERE module = :module
+        ";
+        $params = array(
+            ':module' => $module,
+        );
+        return $this->config()->fetchAll($sql, $params);
+    }
+
     public function getLayout($layout)
     {
         $sql = "
@@ -721,30 +734,67 @@ class Database
         return $this->config()->fetchAll($sql, $params);
     }
 
+    public function getObject($object, $type = null)
+    {
+        $sql = "
+            SELECT *
+            FROM ark_schema_object
+            WHERE object = :object
+        ";
+        $params = array(
+            ':object' => $object,
+        );
+        if ($type) {
+            $sql .= ' AND type = :type';
+            $params[':type'] = $type;
+        }
+        return $this->config()->fetchAssoc($sql, $params);
+    }
+
     public function getProperty($propertyId)
     {
         $sql = "
             SELECT *
-            FROM ark_schema_property, ark_schema_format, ark_schema_number, ark_schema_string
+            FROM ark_schema_property
+            LEFT JOIN ark_schema_format ON ark_schema_property.format = ark_schema_format.format
+            LEFT JOIN ark_schema_number ON ark_schema_property.format = ark_schema_number.format
+            LEFT JOIN ark_schema_string ON ark_schema_property.format = ark_schema_string.format
             WHERE ark_schema_property.property = :property
-            AND ark_schema_property.format = ark_schema_format.format
-            AND ark_schema_property.format = ark_schema_number.format
-            AND ark_schema_property.format = ark_schema_string.format
         ";
         $params = array(
             ':property' => $propertyId,
         );
         $property = $this->config()->fetchAssoc($sql, $params);
         $property['enum'] = $this->getEnums($propertyId);
+        dump('here');
+        dump($property);
         if ($property['type'] == 'object') {
-            $sql = "
-                SELECT *
-                FROM ark_schema_object
-                WHERE ark_schema_enum.object = :property
-            ";
-            $property['properties'] = $this->config()->fetchAll($sql, $params);
+            $property['properties'] = $this->getObjectProperties($propertyId);
         }
         return $property;
+    }
+
+    public function getObjectProperties($object)
+    {
+        $sql = "
+            SELECT *
+            FROM ark_schema_object_property
+            WHERE object = :object
+        ";
+        $params = array(
+            ':object' => $object,
+        );
+        return $this->config()->fetchAll($sql, $params);
+    }
+
+    public function getObjectPropertiesList($object)
+    {
+        $properties = $this->getObjectProperties($object);
+        $list = array();
+        foreach ($properties as $property) {
+            $list[] = $property['property'];
+        }
+        return $list;
     }
 
     public function getEnums($property)
@@ -752,7 +802,7 @@ class Database
         $sql = "
             SELECT *
             FROM ark_schema_enum
-            WHERE ark_schema_enum.property = :property
+            WHERE property = :property
         ";
         $params = array(
             ':property' => $property,
