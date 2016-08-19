@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/Event.php
+* src/php/Layout/Event.php
 *
-* ARK Schema Event
+* ARK Layout Event
 *
 * PHP version 5 and 7
 *
@@ -28,12 +28,12 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/Event.php
+* @see        http://ark.lparchaeology.com/code/src/php/Layout/Event.php
 * @since      2.0
 *
 */
 
-namespace ARK\Schema;
+namespace ARK\Layout;
 
 use Symfony\Component\Form\FormBuilder;
 use ARK\Database\Database;
@@ -42,25 +42,24 @@ use ARK\Form\Type\EventType;
 class Event extends Element
 {
     private $_date = null;
-    private $_action = null;
+    private $_actions = array();
 
-    function __construct(Database $db = null, $event_id = null)
+    function __construct(Database $db = null, $event = null)
     {
         $this->_date = new Field();
-        $this->_action = new Field();
-        if ($db == null || $event_id == null) {
+        if ($db == null || $event == null) {
             return;
         }
-        parent::__construct($db, $event_id, 'event');
-        $fields = Field::fetchFields($db, $event_id);
+        parent::__construct($db, $event, 'event');
+        $fields = Field::fetchFields($db, $event);
         foreach ($fields as $field) {
-            if ($field->dataclass() == 'date') {
+            if ($field->dataclass() == 'date' && $field->isValid()) {
                 $this->_date = $field;
-            } else if ($field->dataclass() == 'action') {
-                $this->_action = $field;
+            } else if ($field->dataclass() == 'action' && $field->isValid()) {
+                $this->_actions[] = $field;
             }
         }
-        $this->_valid = $this->_date->isValid() && $this->_action->isValid();
+        $this->_valid = $this->_date && $this->_actions;
     }
 
     function date()
@@ -68,16 +67,17 @@ class Event extends Element
         return $this->_date;
     }
 
-    function action()
+    function actions()
     {
-        return $this->_action;
+        return $this->_actions;
     }
 
     function formData($itemKey)
     {
         $data = array();
         $data[$this->id()] = array_merge(
-            $this->_action->formData($itemKey),
+            // TODO Do all actions
+            $this->_actions[0]->formData($itemKey),
             $this->_date->formData($itemKey)
         );
         return $data;
@@ -90,35 +90,14 @@ class Event extends Element
         }
         $options['label'] = false;
         $options['title'] = $this->_id;
-        $options['eventAction'] = $this->_action;
+        $options['eventActions'] = $this->_actions;
         $options['eventDate'] = $this->_date;
         $formBuilder->add($this->_id, EventType::class, $options);
     }
 
-    function toSchema()
-    {
-        if (!$this->isValid()) {
-            return '';
-        }
-        $schema = array();
-        $schema['type'] = 'object';
-        $schema['title'] = $this->_title;
-        $schema['description'] = $this->_description;
-        $schema['properties'] = array_merge(
-            $this->_action->toSchema(),
-            $this->_date->toSchema()
-        );
-        $schema['required'] = array(
-            $this->_action->id(),
-            $this->_date->id(),
-        );
-        $schema['additionalProperties'] = false;
-        return array($this->_id => $schema);
-    }
-
     function allFields()
     {
-        return array($this->_action, $this->_date);
+        return array_merge($this->_actions, array($this->_date));
     }
 
 }

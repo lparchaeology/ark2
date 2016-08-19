@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/Group.php
+* src/php/Controller/ItemController.php
 *
 * ARK Schema Group
 *
@@ -28,7 +28,7 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/Group.php
+* @see        http://ark.lparchaeology.com/code/src/php/Controller/ItemController.php
 * @since      2.0
 *
 */
@@ -43,7 +43,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\DBAL\Connection;
 use ARK\Database\Database;
-use ARK\Schema\Layout;
+use ARK\Layout\Layout;
 
 class ItemController
 {
@@ -66,14 +66,13 @@ class ItemController
 
         $itemKey = array(
             'site' => $site,
-            'module' => $mod['module_id'],
+            'module' => $mod['module'],
             'item' => $item,
             'key' => $itemkey,
-            'modname' => $mod['modname'],
             'value' => $itemRow[$itemkey],
         );
         if (empty($modtype)) {
-            $itemKey['modtype'] = $mod['modname'];
+            $itemKey['modtype'] = $mod['module'];
         } else {
             $itemKey['modtype'] = $modtype;
             $itemKey[$modtype] = $itemRow[$modtype];
@@ -87,7 +86,7 @@ class ItemController
         $formBuilder->add('item', Type\TextType::class, array('label' => 'Item', 'attr' => array('readonly' => true)));
         $forms['item_form'] = $formBuilder->getForm()->createView();
 
-        $layout = Layout::fetchLayout($app['database'], 'cor_layout_item', $itemKey['modname'], $itemRow[$modtype]);
+        $layout = Layout::fetchLayout($app['database'], 'cor_layout_item', $itemKey['module'], $itemRow[$modtype]);
         $options = array('item_form' => $forms['item_form']);
         return $layout->render($app['twig'], $options, $app['form.factory'], $itemKey);
     }
@@ -106,23 +105,23 @@ class ItemController
         $itemKey = array(
             'site' => $ste_cd,
             'mod_slug' => $mod_slug,
-            'module' => $module['module_id'],
+            'module' => $module['module'],
             'key' => $itemkey,
-            'modname' => $module['modname'],
         );
 
-        $layout = Layout::fetchLayout($app['database'], 'cor_layout_register', $module['modname']);
+        $layout = Layout::fetchLayout($app['database'], 'cor_layout_register', $module['module']);
 
         $fields = $layout->allFields();
+        dump($fields);
         foreach ($fields as $field) {
             if ($field->dataclass() == 'itemkey') {
                 $keyfield = $field->id();
             }
         }
-        $items = $app['database']->getRecentItems($ste_cd, $module['module_id'], 5);
+        $items = $app['database']->getRecentItems($ste_cd, $module['module'], 5);
         foreach ($items as &$item) {
             if (empty($modtype)) {
-                $itemKey['modtype'] = $module['modname'];
+                $itemKey['modtype'] = $module['module'];
             } else {
                 $itemKey['modtype'] = $modtype;
                 $itemKey[$modtype] = $item[$modtype];
@@ -163,17 +162,16 @@ class ItemController
         $itemKey = array(
             'site' => $ste_cd,
             'mod_slug' => $mod_slug,
-            'module' => $module['module_id'],
+            'module' => $module['module'],
             'key' => $itemkey,
-            'modname' => $module['modname'],
         );
 
-        $layout = Layout::fetchLayout($app['database'], 'cor_layout_list', $module['modname']);
+        $layout = Layout::fetchLayout($app['database'], 'cor_layout_list', $module['module']);
         $fields = $layout->allFields();
-        $items = $app['database']->getItems($ste_cd, $module['module_id']);
+        $items = $app['database']->getItems($ste_cd, $module['module']);
         foreach ($items as &$item) {
             if (empty($modtype)) {
-                $itemKey['modtype'] = $module['modname'];
+                $itemKey['modtype'] = $module['module'];
             } else {
                 $itemKey['modtype'] = $modtype;
                 $itemKey[$modtype] = $item[$modtype];

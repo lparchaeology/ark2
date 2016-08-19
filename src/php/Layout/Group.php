@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/Group.php
+* src/php/Layout/Group.php
 *
-* ARK Schema Group
+* ARK Layout Group
 *
 * PHP version 5 and 7
 *
@@ -28,12 +28,12 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/Group.php
+* @see        http://ark.lparchaeology.com/code/src/php/Layout/Group.php
 * @since      2.0
 *
 */
 
-namespace ARK\Schema;
+namespace ARK\Layout;
 
 use Symfony\Component\Form\FormBuilder;
 use ARK\Database\Database;
@@ -44,44 +44,41 @@ class Group extends Element
     protected $_grid = array();
     protected $_elements = array();
 
-    function __construct(Database $db = null, $group_id = null, $modname = null, $modtype = null)
+    function __construct(Database $db = null, $group = null, $module = null, $modtype = null)
     {
-        if ($db == null || $group_id == null) {
+        if ($db == null || $group == null) {
             return;
         }
-        parent::__construct($db, $group_id);
+        parent::__construct($db, $group);
         if (!$this->_isGroup) {
             return;
         }
-        $children = $db->getGroupForModule($group_id, $modname, $modtype);
+        $children = $db->getGroupForModule($group, $module, $modtype);
         foreach ($children as $child) {
             switch ($child['child_type']) {
                 case 'field':
-                    $element = new Field($db, $child['child_id']);
+                    $element = new Field($db, $child['child']);
                     break;
                 case 'link':
-                    $element = new Link($db, $child['child_id']);
+                    $element = new Link($db, $child['child']);
                     break;
                 case 'event':
-                    $element = new Event($db, $child['child_id']);
+                    $element = new Event($db, $child['child']);
                     break;
                 case 'layout':
-                    $element = Layout::fetchLayout($db, $child['child_id'], $modname, $modtype);
+                    $element = Layout::fetchLayout($db, $child['child'], $module, $modtype);
                     break;
                 case 'subform':
-                    $element = new Subform($db, $child['child_id'], $modname, $modtype);
+                    $element = new Subform($db, $child['child'], $module, $modtype);
                     break;
-                default: // Page, Column, Schema
-                    $element = new Group($db, $child['child_id'], $modname, $modtype);
+                default: // Page, Column, Layout
+                    $element = new Group($db, $child['child'], $module, $modtype);
                     break;
             }
-            if (!$element->isValid()) {
-                echo 'Not valid child element!!! '.$child['child_id'].' '.$child['child_type'].'<br/>';
-                $this->_elements = array();
-                return;
+            if ($element->isValid()) {
+                $this->_elements[] = $element;
+                $this->_grid[$child['row']][$child['col']][$child['seq']] = $element;
             }
-            $this->_elements[] = $element;
-            $this->_grid[$child['row']][$child['col']][$child['seq']] = $element;
         }
         $this->_valid = true;
     }
@@ -108,25 +105,6 @@ class Group extends Element
         foreach ($this->_elements as $element) {
             $element->buildForm($formBuilder, $options);
         }
-    }
-
-    function toSchema()
-    {
-        if (!$this->isValid()) {
-            return '';
-        }
-        $schema = array();
-        $schema['type'] = 'object';
-        $schema['title'] = $this->_title;
-        $schema['description'] = $this->_description;
-        if (count($this->_elements)) {
-            $schema['properties'] = array();
-            foreach ($this->_elements as $element) {
-                $schema['properties'] = array_merge($schema['properties'], $element->toSchema());
-            }
-        }
-        $schema['additionalProperties'] = false;
-        return array($this->_id => $schema);
     }
 
     function allFields()

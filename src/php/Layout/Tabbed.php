@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/TableLayout.php
+* src/php/Layout/Tabbed.php
 *
-* ARK Schema TableLayout
+* ARK Layout Tabbed
 *
 * PHP version 5 and 7
 *
@@ -28,17 +28,17 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/TableLayout.php
+* @see        http://ark.lparchaeology.com/code/src/php/Layout/Tabbed.php
 * @since      2.0
 *
 */
 
-namespace ARK\Schema;
+namespace ARK\Layout;
 
 use ARK\Database\Database;
 use Symfony\Component\Form\FormFactoryInterface;
 
-class TableLayout extends Layout
+class Tabbed extends Layout
 {
     function __construct(Database $db = null, $layout_id = null, $modname = null, $modtype = null)
     {
@@ -46,60 +46,55 @@ class TableLayout extends Layout
             return;
         }
         parent::__construct($db, $layout_id, $modname, $modtype);
-        $this->_template = 'layouts/table.html.twig';
+        $this->_template = 'layouts/tabbed.html.twig';
     }
 
-    function header()
+    function toggle()
     {
-        return $this->optionValue('header', true);
+        if (isset($this->_options['toggle'])) {
+            return $this->_options['toggle'];
+        } else {
+            return 'tab';
+        }
     }
 
-    function footer()
+    function justified()
     {
-        return $this->optionValue('footer', false);
+        if (isset($this->_options['justified'])) {
+            return $this->_options['justified'];
+        } else {
+            return false;
+        }
     }
 
-    function striped()
+    function fade()
     {
-        return $this->optionValue('striped', false);
+        if (isset($this->_options['fade'])) {
+            return $this->_options['fade'];
+        } else {
+            return false;
+        }
     }
 
-    function bordered()
+    function showSingleTab()
     {
-        return $this->optionValue('bordered', false);
+        if (isset($this->_options['show_single_tab'])) {
+            return $this->_options['show_single_tab'];
+        } else {
+            return false;
+        }
     }
 
-    function hover()
+    function defaultTab()
     {
-        return $this->optionValue('hover', true);
+        if (isset($this->_options['default_tab'])) {
+            return $this->_options['default_tab'];
+        } else {
+            return $this->tabs()[0]->id();
+        }
     }
 
-    function condensed()
-    {
-        return $this->optionValue('condensed', false);
-    }
-
-    function responsive()
-    {
-        return $this->optionValue('responsive', true);
-    }
-
-    function pagination()
-    {
-        return $this->optionValue('pagination', true);
-    }
-
-    function search()
-    {
-        return $this->optionValue('search', true);
-    }
-
-    function export()
-    {
-        return $this->optionValue('export', true);
-    }
-
-    function fields()
+    function tabs()
     {
         return $this->elements();
     }

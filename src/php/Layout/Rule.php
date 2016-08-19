@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/Rule.php
+* src/php/Layout/Rule.php
 *
-* ARK Schema Rule
+* ARK Layout Rule
 *
 * PHP version 5 and 7
 *
@@ -28,12 +28,12 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/Rule.php
+* @see        http://ark.lparchaeology.com/code/src/php/Layout/Rule.php
 * @since      2.0
 *
 */
 
-namespace ARK\Schema;
+namespace ARK\Layout;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
@@ -52,24 +52,22 @@ class Rule
     private $_requestKeyType = null;
     private $_returnKeyType = null;
 
-    // {{{ __construct()
-    function __construct(Database $db, $vld_rule_id = null)
+    function __construct(Database $db, $vld_rule = null)
     {
-        if ($vld_rule_id == null) {
+        if ($vld_rule == null) {
             return;
         }
-        $config = $db->config()->fetchAssoc('SELECT * FROM cor_conf_vld_rule WHERE vld_rule_id = ?', array($vld_rule_id));
+        $config = $db->getRule($vld_rule);
         $this->_loadConfig($config);
     }
-    // }}}
-    // {{{ _loadConfig()
+
     private function _loadConfig($config)
     {
         if (!count($config)) {
             return;
         }
-        $this->_valid = TRUE;
-        $this->_id = $config['vld_rule_id'];
+        $this->_valid = true;
+        $this->_id = $config['vld_rule'];
         $this->_requestFunction = $config['rq_func'];
         $this->_validateFunction = $config['vd_func'];
         $this->_variableName = $config['var_name'];
@@ -89,20 +87,17 @@ class Rule
             $this->_returnKeyType = $config['ret_keytype'];
         }
     }
-    // }}}
-    // {{{ id()
+
     function id()
     {
         return $this->_id;
     }
-    // }}}
-    // {{{ isValid()
+
     function isValid()
     {
         return $this->_valid;
     }
-    // }}}
-    // {{{ config()
+
     function config()
     {
         if (!$this->isValid()) {
@@ -128,62 +123,48 @@ class Rule
         }
         return $config;
     }
-    // }}}
-    // {{{ fetchGroupRules()
-    static function fetchGroupRules(Database $db, $vld_group_id)
+
+    static function fetchGroupRules(Database $db, $vld_group)
     {
         $rules = array();
-        try {
-            $rows = $db->config()->fetchAll('SELECT * FROM cor_conf_vld_group WHERE vld_group_id = ?', array($vld_group_id));
-            foreach ($rows as $row) {
-                $rule = new Rule($db, $row['vld_rule_id']);
-                if ($rule->isValid()) {
-                    $rules[] = $rule;
-                }
+        $rows = $db->getValidationGroup($vld_group);
+        foreach ($rows as $row) {
+            $rule = new Rule($db, $row['vld_rule']);
+            if ($rule->isValid()) {
+                $rules[] = $rule;
             }
-        } catch (DBALException $e) {
-            return array();
         }
         return $rules;
     }
-    // }}}
-    // {{{ fetchRole()
-    static function fetchValidationRole(Database $db, $element_id, $vld_role)
+
+    static function fetchValidationRole(Database $db, $element, $vld_role)
     {
         $rules = array();
-        try {
-            $row = $db-config()->fetchAssoc('SELECT * FROM cor_conf_element_vld WHERE element_id = ? AND vld_role = ?', array($element_id, $vld_role));
-            $rows = $db->config()->fetchAll('SELECT * FROM cor_conf_vld_group WHERE vld_group_id = ?', array($row['vld_group_id']));
-            foreach ($rows as $row) {
-                $rule = new Rule($db, $row['vld_rule_id']);
-                if ($rule->isValid()) {
-                    $rules[] = $rule;
-                }
+        $row = $db->getElementValidationGroup($element, $vld_role);
+        $rows = $db->getValidationGroup($row['vld_group']);
+        foreach ($rows as $row) {
+            $rule = new Rule($db, $row['vld_rule']);
+            if ($rule->isValid()) {
+                $rules[] = $rule;
             }
-        } catch (DBALException $e) {
-            return array();
         }
         return $rules;
     }
     // }}}
     // {{{ fetchAllRoles()
-    static function fetchAllValidationRoles(Database $db, $element_id)
+    static function fetchAllValidationRoles(Database $db, $element)
     {
         $roles = array();
-        try {
-            $role_rows = $db->config()->fetchAll('SELECT * FROM cor_conf_element_vld WHERE element_id = ?', array($element_id));
-            foreach ($role_rows as $role_row) {
-                $vld_role = $role_row['vld_role'];
-                $rows = $db->config()->fetchAll('SELECT * FROM cor_conf_vld_group WHERE vld_group_id = ?', array($role_row['vld_group_id']));
-                foreach ($rows as $row) {
-                    $rule = new Rule($db, $row['vld_rule_id']);
-                    if ($rule->isValid()) {
-                        $roles[$vld_role][] = $rule;
-                    }
+        $role_rows = $db->getElementValidationGroups($element);
+        foreach ($role_rows as $role_row) {
+            $vld_role = $role_row['vld_role'];
+            $rows = $db->getValidationGroup($role_row['vld_group']);
+            foreach ($rows as $row) {
+                $rule = new Rule($db, $row['vld_rule']);
+                if ($rule->isValid()) {
+                    $roles[$vld_role][] = $rule;
                 }
             }
-        } catch (DBALException $e) {
-            return array();
         }
         return $roles;
     }

@@ -437,10 +437,10 @@ class Database
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getItems($ste_cd, $module_id, $mod_tbl = null)
+    public function getItems($ste_cd, $module, $mod_tbl = null)
     {
         if (!$mod_tbl) {
-            $module = $this->getModule($module_id);
+            $module = $this->getModule($module);
             $mod_tbl = $module['tbl'];
         }
         $sql = "
@@ -454,10 +454,10 @@ class Database
         return $this->data()->fetchAll($sql, $params);
     }
 
-    public function countItems($ste_cd, $module_id, $mod_tbl = null)
+    public function countItems($ste_cd, $module, $mod_tbl = null)
     {
         if (empty($mod_tbl)) {
-            $mod_tbl = $this->getModuleTable($module_id);
+            $mod_tbl = $this->getModuleTable($module);
         }
         $sql = "
             SELECT COUNT(*) as 'count'
@@ -470,12 +470,12 @@ class Database
         return $this->data()->fetchAssoc($sql, $params)['count'];
     }
 
-    public function getRecentItems($ste_cd, $module_id, $rows)
+    public function getRecentItems($ste_cd, $module, $rows)
     {
-        $module = $this->getModule($module_id);
+        $module = $this->getModule($module);
         $itemkey = $module['itemkey'];
         $mod_tbl = $module['tbl'];
-        $count = $this->countItems($ste_cd, $module_id, $mod_tbl);
+        $count = $this->countItems($ste_cd, $module, $mod_tbl);
         $start = ($count > $rows) ? $count - $rows : 0;
         $sql = "
             SELECT *
@@ -495,135 +495,228 @@ class Database
         return $this->getModule($itemkey)['tbl'];
     }
 
-    public function getModule($module_id)
+    public function getModule($module)
     {
         $sql = "
             SELECT *
-            FROM ark_config_module
-            WHERE module_id = :module_id
-            OR modname = :module_id
-            OR itemkey = :module_id
-            OR url = :module_id
+            FROM ark_schema_module
+            WHERE module = :module
+            OR itemkey = :module
+            OR url = :module
         ";
         $params = array(
-            ':module_id' => $module_id,
+            ':module' => $module,
         );
         return $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getLayout($layout_id)
+    public function getLayout($layout)
     {
         $sql = "
             SELECT *
-            FROM ark_config_layout
-            WHERE layout_id = :layout_id
+            FROM ark_layout_layout
+            WHERE layout = :layout
         ";
         $params = array(
-            ':layout_id' => $layout_id,
+            ':layout' => $layout,
         );
         return $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getElement($element_id, $element_type = null)
+    public function getElement($element, $element_type = null)
     {
         $sql = "
-            SELECT ark_config_element.*, ark_config_element_type.is_group, ark_config_element_type.conf_table, ark_config_element_type.conf_key
-            FROM ark_config_element, ark_config_element_type
-            WHERE ark_config_element.element_id = :element_id
-            AND ark_config_element.element_type = ark_config_element_type.element_type
+            SELECT ark_layout_element.*, ark_layout_element_type.is_group, ark_layout_element_type.tbl
+            FROM ark_layout_element, ark_layout_element_type
+            WHERE ark_layout_element.element = :element
+            AND ark_layout_element.element_type = ark_layout_element_type.element_type
         ";
         $params = array(
-            ':element_id' => $element_id,
+            ':element' => $element,
         );
         if ($element_type) {
-            $sql .= ' AND ark_config_element.element_type = :element_type';
+            $sql .= ' AND ark_layout_element.element_type = :element_type';
             $params[':element_type'] = $element_type;
         }
         return $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getField($field_id)
+    public function getField($field)
     {
         $sql = "
             SELECT *
-            FROM ark_config_field
-            WHERE field_id = :field_id
+            FROM ark_layout_field, ark_schema_property
+            WHERE field = :field
+            AND ark_layout_field.property = ark_schema_property.property
         ";
         $params = array(
-            ':field_id' => $field_id,
+            ':field' => $field,
         );
         return $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getGroupForModule($group_id, $modname, $modtype = null)
+    public function getSubform($subform)
     {
         $sql = "
-            SELECT ark_config_group.*, ark_config_element.element_type AS child_type
-            FROM ark_config_group, ark_config_element
-            WHERE ark_config_group.element_id = :element_id
-            AND (ark_config_group.modtype = :modname OR ark_config_group.modtype = :modtype OR ark_config_group.modtype = :mod_cor)
-            AND ark_config_group.enabled = :enabled
-            AND ark_config_group.child_id = ark_config_element.element_id
-            ORDER BY ark_config_group.row, ark_config_group.col, ark_config_group.seq
+            SELECT *
+            FROM cor_conf_subform
+            WHERE subform = :subform
         ";
         $params = array(
-            ':element_id' => $group_id,
+            ':subform' => $subform,
+        );
+        $config = $this->config()->fetchAssoc($sql, $params);
+    }
+
+    public function getGroupForModule($group, $module, $modtype = null)
+    {
+        $sql = "
+            SELECT ark_layout_group.*, ark_layout_element.element_type AS child_type
+            FROM ark_layout_group, ark_layout_element
+            WHERE ark_layout_group.element = :element
+            AND (ark_layout_group.modtype = :module OR ark_layout_group.modtype = :modtype OR ark_layout_group.modtype = :cor)
+            AND ark_layout_group.enabled = :enabled
+            AND ark_layout_group.child = ark_layout_element.element
+            ORDER BY ark_layout_group.row, ark_layout_group.col, ark_layout_group.seq
+        ";
+        $params = array(
+            ':element' => $group,
             ':modtype' => $modtype,
-            ':modname' => $modname,
-            ':mod_cor' => 'mod_cor',
+            ':module' => $module,
+            ':cor' => 'cor',
             ':enabled' => true,
         );
         if (!$modtype) {
-            $params[':modtype'] = 'mod_cor';
+            $params[':modtype'] = 'cor';
         }
         return $this->config()->fetchAll($sql, $params);
     }
 
-    public function getGroup($element_id, $child_type = null, $enabled = true)
+    public function getGroup($element, $child_type = null, $enabled = true)
     {
         $sql = "
-            SELECT ark_config_group.*, ark_config_element.element_type AS child_type
-            FROM ark_config_group, ark_config_element
-            WHERE ark_config_group.element_id = :element_id
-            AND ark_config_group.child_id = ark_config_element.element_id
-            ORDER BY ark_config_group.row, ark_config_group.col, ark_config_group.seq
+            SELECT ark_layout_group.*, ark_layout_element.element_type AS child_type
+            FROM ark_layout_group, ark_layout_element
+            WHERE ark_layout_group.element = :element
+            AND ark_layout_group.child = ark_layout_element.element
+            ORDER BY ark_layout_group.row, ark_layout_group.col, ark_layout_group.seq
         ";
-        $params[':element_id'] = $element_id;
+        $params[':element'] = $element;
         if ($child_type) {
-            $sql .= ' AND ark_config_element.element_type = :element_type';
+            $sql .= ' AND ark_layout_element.element_type = :element_type';
             $params[':element_type'] = $child_type;
         }
         if ($enabled === true || $enabled === false) {
-            $sql .= ' AND ark_config_group.enabled = :enabled';
+            $sql .= ' AND ark_layout_group.enabled = :enabled';
             $params[':enabled'] = $enabled;
         }
         return $this->config()->fetchAll($sql, $params);
     }
 
-    public function getOption($element_id, $option_id)
+    public function getRule($vld_rule)
     {
         $sql = "
             SELECT *
-            FROM ark_config_option
-            WHERE element_id = :element_id
-            AND option_id = :option_id
+            FROM cor_conf_vld_rule
+            WHERE vld_rule = :vld_rule
         ";
         $params = array(
-            ':element_id' => $element_id,
-            ':option_id' => $option_id,
+            ':vld_rule' => $vld_rule,
         );
         return $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getOptions($element_id)
+    public function getElementValidationGroup($element, $vld_role)
     {
         $sql = "
             SELECT *
-            FROM ark_config_option
-            WHERE element_id = :element_id
+            FROM cor_conf_element_vld
+            WHERE element = :element
+            AND vld_role = :vld_role
         ";
         $params = array(
-            ':element_id' => $element_id,
+            ':element' => $element,
+            ':vld_role' => $vld_role,
+        );
+        return $this->config()->fetchAssoc($sql, $params);
+    }
+
+    public function getElementValidationGroups($element)
+    {
+        $sql = "
+            SELECT *
+            FROM cor_conf_element_vld
+            WHERE element = :element
+        ";
+        $params = array(
+            ':element' => $element,
+        );
+        return $this->config()->fetchAll($sql, $params);
+    }
+
+    public function getValidationGroup($vld_group)
+    {
+        $sql = "
+            SELECT *
+            FROM cor_conf_vld_group
+            WHERE vld_group = :vld_group
+        ";
+        $params = array(
+            ':vld_group' => $vld_group,
+        );
+        return $this->config()->fetchAll($sql, $params);
+    }
+
+    public function getConditions($element)
+    {
+        $sql = "
+            SELECT *
+            FROM cor_conf_condition
+            WHERE element = :element
+        ";
+        $params = array(
+            ':element' => $element,
+        );
+        return $this->config()->fetchAll($sql, $params);
+    }
+
+    public function getLink($link)
+    {
+        $sql = "
+            SELECT *
+            FROM cor_conf_link
+            WHERE link = :link
+        ";
+        $params = array(
+            ':link' => $link,
+        );
+        return $this->config()->fetchAssoc($sql, $params);
+    }
+
+    public function getOption($element, $option)
+    {
+        $sql = "
+            SELECT *
+            FROM ark_layout_option
+            WHERE element = :element
+            AND option = :option
+        ";
+        $params = array(
+            ':element' => $element,
+            ':option' => $option,
+        );
+        return $this->config()->fetchAssoc($sql, $params);
+    }
+
+    public function getOptions($element)
+    {
+        $sql = "
+            SELECT *
+            FROM ark_layout_option
+            WHERE element = :element
+        ";
+        $params = array(
+            ':element' => $element,
         );
         return $this->config()->fetchAll($sql, $params);
     }
@@ -642,12 +735,7 @@ class Database
             ':property' => $propertyId,
         );
         $property = $this->config()->fetchAssoc($sql, $params);
-        $sql = "
-            SELECT *
-            FROM ark_schema_enum
-            WHERE ark_schema_enum.property = :property
-        ";
-        $property['enum'] = $this->config()->fetchAll($sql, $params);
+        $property['enum'] = $this->getEnums($propertyId);
         if ($property['type'] == 'object') {
             $sql = "
                 SELECT *
@@ -657,6 +745,19 @@ class Database
             $property['properties'] = $this->config()->fetchAll($sql, $params);
         }
         return $property;
+    }
+
+    public function getEnums($property)
+    {
+        $sql = "
+            SELECT *
+            FROM ark_schema_enum
+            WHERE ark_schema_enum.property = :property
+        ";
+        $params = array(
+            ':property' => $property,
+        );
+        return $this->config()->fetchAll($sql, $params);
     }
 
     public function getTranslations($domain = null)

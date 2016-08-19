@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/GridLayout.php
+* src/php/Layout/Table.php
 *
-* ARK Schema GridLayout
+* ARK Layout Table
 *
 * PHP version 5 and 7
 *
@@ -28,17 +28,17 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/GridLayout.php
+* @see        http://ark.lparchaeology.com/code/src/php/Layout/Table.php
 * @since      2.0
 *
 */
 
-namespace ARK\Schema;
+namespace ARK\Layout;
 
 use ARK\Database\Database;
 use Symfony\Component\Form\FormFactoryInterface;
 
-class GridLayout extends Layout
+class Table extends Layout
 {
     function __construct(Database $db = null, $layout_id = null, $modname = null, $modtype = null)
     {
@@ -46,30 +46,62 @@ class GridLayout extends Layout
             return;
         }
         parent::__construct($db, $layout_id, $modname, $modtype);
-        $this->_template = 'layouts/grid.html.twig';
+        $this->_template = 'layouts/table.html.twig';
     }
 
-    function cols($row)
+    function header()
     {
-        return $this->_grid[$row];
+        return $this->optionValue('header', true);
     }
 
-    function rows()
+    function footer()
     {
-        return $this->_grid;
+        return $this->optionValue('footer', false);
     }
 
-    function renderForms(FormFactoryInterface $factory, $itemKey)
+    function striped()
     {
-        $forms = array();
-        foreach ($this->rows() as $rdx => $row) {
-            foreach ($row as $cdx => $col) {
-                foreach ($col as $cell) {
-                    $forms[$rdx][$cdx][] = $cell->renderForms($factory, $itemKey);
-                }
-            }
-        }
-        return $forms;
+        return $this->optionValue('striped', false);
+    }
+
+    function bordered()
+    {
+        return $this->optionValue('bordered', false);
+    }
+
+    function hover()
+    {
+        return $this->optionValue('hover', true);
+    }
+
+    function condensed()
+    {
+        return $this->optionValue('condensed', false);
+    }
+
+    function responsive()
+    {
+        return $this->optionValue('responsive', true);
+    }
+
+    function pagination()
+    {
+        return $this->optionValue('pagination', true);
+    }
+
+    function search()
+    {
+        return $this->optionValue('search', true);
+    }
+
+    function export()
+    {
+        return $this->optionValue('export', true);
+    }
+
+    function fields()
+    {
+        return $this->elements();
     }
 
 }

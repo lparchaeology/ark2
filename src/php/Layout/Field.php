@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/Field.php
+* src/php/Layout/Field.php
 *
-* ARK Schema Field
+* ARK Layout Field
 *
 * PHP version 5 and 7
 *
@@ -28,12 +28,12 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/Field.php
+* @see        http://ark.lparchaeology.com/code/src/php/Layout/Field.php
 * @since      2.0
 *
 */
 
-namespace ARK\Schema;
+namespace ARK\Layout;
 
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Extension\Core\Type;
@@ -42,45 +42,39 @@ use ARK\Database\Database;
 class Field extends Element
 {
     private $_dataclass = '';
-    private $_classtype = '';
+    private $_property = '';
     private $_editable = false;
     private $_hidden = false;
     private $_rules = array();
-    private $_constraints = array();
-    private $_attributes = array();
+    private $_values = array();
 
-    function __construct(Database $db = null, $field_id = null)
+    function __construct(Database $db = null, $field = null)
     {
-        if ($db == null || $field_id == null) {
+        if ($db == null || $field == null) {
             return;
         }
-        parent::__construct($db, $field_id, 'field');
-        $config = $db->getField($field_id);
+        parent::__construct($db, $field, 'field');
+        $config = $db->getField($field);
         $this->_dataclass = $config['dataclass'];
-        $this->_classtype = $config['classtype'];
+        $this->_property = $config['property'];
         $this->_editable = (bool)$config['editable'];
         $this->_hidden = (bool)$config['hidden'];
-        $this->_rules = Rule::fetchAllValidationRoles($db, $field_id);
-        if ($this->_dataclass == 'attribute') {
-            $type = $config['dataclass'].'type';
-            $tbl = 'cor_lut_'.$type;
-            $class = $db->data()->fetchAssoc("SELECT * FROM $tbl WHERE $type = ?", array($config['classtype']));
-            $attrs = $db->data()->fetchAll('SELECT * FROM cor_lut_attribute WHERE attributetype = ?', array($class['attributetype']));
-            foreach ($attrs as $attr) {
-                $this->_attributes[] = $attr['attribute'];
-            }
+        $this->_rules = Rule::fetchAllValidationRoles($db, $field);
+        $enums = $db->getEnums($this->_property);
+        foreach ($enums as $enum) {
+            $this->_values[] = $enum['value'];
         }
         if (!$this->alias()->isValid()) {
-            $this->_alias = Alias::dataclassAlias($this->_dataclass, $this->_classtype);
+            $this->_alias = Alias::dataclassAlias($this->_dataclass, $this->_property);
         }
         $this->_db = $db;
         $this->_valid = true;
     }
 
-    function title()
+    function keyword()
     {
-        if ($this->_title) {
-            return $this->_title;
+        if ($this->_keyword) {
+            return $this->_keyword;
         }
         return $this->_alias->tranKey();
     }
@@ -90,9 +84,9 @@ class Field extends Element
         return $this->_dataclass;
     }
 
-    function classtype()
+    function property()
     {
-        return $this->_classtype;
+        return $this->_property;
     }
 
     function editable()
@@ -154,14 +148,9 @@ class Field extends Element
         }
     }
 
-    function constraints()
+    function values()
     {
-        return $this->_constraints;
-    }
-
-    function attributes()
-    {
-        return $this->_attributes;
+        return $this->_values;
     }
 
     function formData($itemKey, $trans = false)
@@ -187,25 +176,25 @@ class Field extends Element
                 }
                 break;
             case 'txt':
-                $row = $this->_db->getText($itemKey['key'], $itemKey['value'], $this->classtype(), 'en');
+                $row = $this->_db->getText($itemKey['key'], $itemKey['value'], $this->property(), 'en');
                 if (isset($row['txt'])) {
                     $data[$this->id()] = $row['txt'];
                 }
                 break;
             case 'number':
-                $row = $this->_db->getNumber($itemKey, $this->classtype());
+                $row = $this->_db->getNumber($itemKey, $this->property());
                 if (isset($row['number'])) {
                     $data[$this->id()] = $row['number'];
                 }
                 break;
             case 'date':
-                $row = $this->_db->getDate($itemKey['key'], $itemKey['value'], $this->classtype());
+                $row = $this->_db->getDate($itemKey['key'], $itemKey['value'], $this->property());
                 if (isset($row['date'])) {
                     $data[$this->id()] = new \DateTime($row['date']);
                 }
                 break;
             case 'attribute':
-                $row = $this->_db->getAttribute($itemKey['key'], $itemKey['value'], $this->classtype());
+                $row = $this->_db->getAttribute($itemKey['key'], $itemKey['value'], $this->property());
                 if (isset($row['attribute'])) {
                     if ($trans) {
                         $data[$this->id()] = 'attribute.'.$row['attributetype'].'.'.$row['attribute'].'.normal';
@@ -215,13 +204,13 @@ class Field extends Element
                 }
                 break;
             case 'file':
-                $row = $this->_db->getFile($itemKey, $this->classtype());
+                $row = $this->_db->getFile($itemKey, $this->property());
                 if (isset($row['file'])) {
                     //$data[$this->id()] = $row['filename'];
                 }
                 break;
             case 'action':
-                $action = $this->_db->getAction($itemKey['key'], $itemKey['value'], $this->classtype());
+                $action = $this->_db->getAction($itemKey['key'], $itemKey['value'], $this->property());
                 if (isset($action['actor_itemkey']) and isset($action['actor_itemvalue'])) {
                     if ($trans) {
                         $data[$this->id()] = $action['actor_itemkey'].'.'.$action['actor_itemvalue'].'.name';
@@ -252,8 +241,8 @@ class Field extends Element
             case 'attribute':
                 //TODO Only add null if allowed null
                 $options['choices']['--- Select One ---'] = null;
-                foreach ($this->_attributes as $val) {
-                    $options['choices']['attribute.'.$this->_classtype.'.'.$val.'.normal'] = $val;
+                foreach ($this->_values as $val) {
+                    $options['choices']['attribute.'.$this->_property.'.'.$val.'.normal'] = $val;
                 }
                 $formBuilder->add($this->_id, Type\ChoiceType::class, $options);
                 break;
@@ -268,7 +257,7 @@ class Field extends Element
                 $formBuilder->add($this->_id, Type\TextType::class, $options);
                 break;
             case 'modtype':
-                foreach ($this->_attributes as $val) {
+                foreach ($this->_values as $val) {
                     $options['choices'][$val] = $val;
                 }
                 $formBuilder->add($this->_id, Type\ChoiceType::class, $options);
@@ -295,18 +284,12 @@ class Field extends Element
         return;
     }
 
-    function toSchema()
+    static function fetchFields(Database $db, $element, $enabled = true)
     {
-        $schema = array('title' => $this->_title);
-        return array($this->_id => $schema);
-    }
-
-    static function fetchFields(Database $db, $element_id, $enabled = true)
-    {
-        $children = $db->getGroup($element_id, 'field', $enabled);
+        $children = $db->getGroup($element, 'field', $enabled);
         $fields = array();
         foreach ($children as $child) {
-            $field = new Field($db, $child['child_id']);
+            $field = new Field($db, $child['child']);
             if ($field->isValid()) {
                 $fields[] = $field;
             }

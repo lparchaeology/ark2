@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/Layout.php
+* src/php/Layout/Layout.php
 *
-* ARK Schema Layout
+* ARK Layout Layout
 *
 * PHP version 5 and 7
 *
@@ -28,12 +28,12 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/Layout.php
+* @see        http://ark.lparchaeology.com/code/src/php/Layout/Layout.php
 * @since      2.0
 *
 */
 
-namespace ARK\Schema;
+namespace ARK\Layout;
 
 use Twig_Environment;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -44,12 +44,12 @@ class Layout extends Group
 {
     protected $_template = '';
 
-    function __construct(Database $db = null, $layout_id = null, $modname = null, $modtype = null)
+    function __construct(Database $db = null, $layout = null, $module = null, $modtype = null)
     {
-        if ($db == null || $layout_id == null) {
+        if ($db == null || $layout == null) {
             return;
         }
-        parent::__construct($db, $layout_id, $modname, $modtype);
+        parent::__construct($db, $layout, $module, $modtype);
         $this->_template = 'layout.html.twig';
     }
 
@@ -87,11 +87,11 @@ class Layout extends Group
         return $forms;
     }
 
-    static function fetchLayout(Database $db, $layout_id, $modname, $modtype = null)
+    static function fetchLayout(Database $db, $layout, $module, $modtype = null)
     {
-        $config =  $db->getLayout($layout_id);
+        $config =  $db->getLayout($layout);
         if (isset($config['class'])) {
-            $layout = new $config['class']($db, $layout_id, $modname, $modtype);
+            $layout = new $config['class']($db, $layout, $module, $modtype);
             $layout->_loadConfig($config);
             return $layout;
         }

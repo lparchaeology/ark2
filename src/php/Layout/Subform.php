@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/Group.php
+* src/php/Layout/Subform.php
 *
-* ARK Schema Group
+* ARK Layout Subform
 *
 * PHP version 5 and 7
 *
@@ -28,12 +28,12 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/Group.php
+* @see        http://ark.lparchaeology.com/code/src/php/Layout/Subform.php
 * @since      2.0
 *
 */
 
-namespace ARK\Schema;
+namespace ARK\Layout;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
@@ -51,25 +51,17 @@ class Subform extends Group
     private $_input = NULL;
     private $_formType = '';
 
-    function __construct(Database $db = null, $subform_id = null, $modname = null, $modtype = null)
+    function __construct(Database $db = null, $subform = null, $module = null, $modtype = null)
     {
-        if ($db == null || $subform_id == null) {
+        if ($db == null || $subform == null) {
             return;
         }
-        parent::__construct($db, $subform_id, $modname, $modtype);
-        $sql = "
-            SELECT *
-            FROM cor_conf_subform
-            WHERE subform_id = :subform_id
-        ";
-        $params = array(
-            ':subform_id' => $subform_id,
-        );
-        $config = $db->config()->fetchAssoc($sql, $params);
+        parent::__construct($db, $subform, $module, $modtype);
+        $config = $db->getSubform($subform);
         $this->_viewState = $config['view_state'];
         $this->_editState = $config['edit_state'];
         $this->_navType = $config['nav_type'];
-        $this->_title = $config['title'];
+        $this->_keyword = $config['keyword'];
         $this->_label = $config['label'];
         $this->_input = $config['input'];
         $this->_formType = $config['form_type'];
@@ -81,7 +73,7 @@ class Subform extends Group
         $data = $this->formData($itemKey);
         $options['label'] = false;
         $options['elements'] = $this->_elements;
-        $options['title'] = $this->_title;
+        $options['keyword'] = $this->_keyword;
         $formBuilder = $factory->createNamedBuilder($this->_id, PanelType::class, $data, $options);
         foreach ($this->_elements as $element) {
             $element->buildForm($formBuilder);

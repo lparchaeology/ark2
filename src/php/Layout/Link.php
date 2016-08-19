@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/Link.php
+* src/php/Layout/Link.php
 *
-* ARK Schema Link
+* ARK Layout Link
 *
 * PHP version 5 and 7
 *
@@ -28,12 +28,12 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/Link.php
+* @see        http://ark.lparchaeology.com/code/src/php/Layout/Link.php
 * @since      2.0
 *
 */
 
-namespace ARK\Schema;
+namespace ARK\Layout;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
@@ -56,14 +56,14 @@ class Link extends Element
     private $_link = '';
 
     // {{{ __construct()
-    function __construct(Database $db, $link_id = NULL)
+    function __construct(Database $db, $link = NULL)
     {
-        if ($link_id == NULL) {
+        if ($link == NULL) {
             return;
         }
         try {
-            parent::__construct($db, $link_id, 'link');
-            $config = $db->config()->fetchAssoc('SELECT * FROM cor_conf_link WHERE link_id = ?', array($link_id));
+            parent::__construct($db, $link, 'link');
+            $config = $db->getLink($link);
             $this->_linkType = $config['type'];
             $this->_name = $config['name'];
             $this->_markup = $config['markup'];
@@ -76,7 +76,7 @@ class Link extends Element
             $this->_page = $config['page'];
             $this->_reloadPage = $config['reload_page'];
             $this->_query = unserialize($config['query']);
-            $this->_link = $config['link'];
+            $this->_link = $config['url'];
             $this->_valid = true;
         } catch (DBALException $e) {
             return;
@@ -155,10 +155,10 @@ class Link extends Element
         return $this->_query;
     }
     // }}}
-    // {{{ link()
-    function link()
+    // {{{ url()
+    function url()
     {
-        return $this->_link;
+        return $this->_url;
     }
     // }}}
     // {{{ href()
@@ -179,7 +179,7 @@ class Link extends Element
                 $href .= implode('&', $parms);
             }
         } else {
-            $href = $this->$link;
+            $href = $this->_url;
         }
         return $href;
     }
@@ -193,28 +193,13 @@ class Link extends Element
         $formBuilder->add($this->_id, UriType::class, array('label' => $this->_title));
     }
     // }}}
-    // {{{ toJsonSchema()
-    function toJsonSchema()
-    {
-        if (!$this->isValid()) {
-            return '';
-        }
-        $json = '{';
-        $json .= '"type": "string",';
-        $json .= '"title": "'.$this->_title.'",';
-        $json .= '"description": "'.$this->_description.'",';
-        $json .= '"format": "uri"';
-        $json .= '}';
-        return $json;
-    }
-    // }}}
     // {{{ fetchLinks()
-    static function fetchLinks(Database $db, $element_id, $enabled = true)
+    static function fetchLinks(Database $db, $element, $enabled = true)
     {
-        $children = $db->getGroup($element_id, 'link', $enabled);
+        $children = $db->getGroup($element, 'link', $enabled);
         $links = array();
         foreach ($children as $child) {
-            $link = new Link($child['child_id']);
+            $link = new Link($child['child']);
             if ($link->isValid()) {
                 $links[] = $link;
             }

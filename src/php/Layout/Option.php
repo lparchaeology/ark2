@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/Option.php
+* src/php/Layout/Option.php
 *
-* ARK Schema Option
+* ARK Layout Option
 *
 * PHP version 5 and 7
 *
@@ -28,12 +28,12 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/Option.php
+* @see        http://ark.lparchaeology.com/code/src/php/Layout/Option.php
 * @since      2.0
 *
 */
 
-namespace ARK\Schema;
+namespace ARK\Layout;
 
 use ARK\Database\Database;
 
@@ -56,10 +56,10 @@ class Option
 
     private function _loadConfig($db, $config)
     {
-        if (!isset($config['type']) || !isset($config['option_id']) || !isset($config['value'])) {
+        if (!isset($config['type']) || !isset($config['opt']) || !isset($config['value'])) {
             return;
         }
-        $this->_key = $config['option_id'];
+        $this->_key = $config['opt'];
         if ($config['type'] == 'field') {
             $this->setValue(new Field($db, $config['value']));
         } else {
@@ -97,40 +97,32 @@ class Option
         }
     }
 
-    static function fetchOption(Database $db, $element_id, $option_id)
+    static function fetchOption(Database $db, $element, $option)
     {
         $option = new Option();
-        try {
-            $config =  $db->getOptions($element_id, $option_id);
-            $option->_loadConfig($db, $config);
-        } catch (DBALException $e) {
-            return $option;
-        }
+        $config =  $db->getOption($element, $option);
+        $option->_loadConfig($db, $config);
         return $option;
     }
 
-    static function fetchOptions(Database $db, $element_id)
+    static function fetchOptions(Database $db, $element)
     {
         $options = array();
-        try {
-            $rows =  $db->getOptions($element_id);
-            foreach ($rows as $config) {
-                $option = new Option();
-                $option->_loadConfig($db, $config);
-                if ($option->isValid()) {
-                    $options[$option->key()] = $option;
-                }
+        $rows =  $db->getOptions($element);
+        foreach ($rows as $config) {
+            $option = new Option();
+            $option->_loadConfig($db, $config);
+            if ($option->isValid()) {
+                $options[$option->key()] = $option;
             }
-        } catch (DBALException $e) {
-            return array();
         }
         return $options;
     }
 
-    static function fetchOptionsArray(Database $db, $element_id)
+    static function fetchOptionsArray(Database $db, $element)
     {
         $optionsArray = array();
-        $options = Option::fetchOptions($db, $element_id);
+        $options = Option::fetchOptions($db, $element);
         foreach ($options as $option) {
             $optionsArray[$option->key()] = $option->value();
         }

@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/Alias.php
+* src/php/Layout/Alias.php
 *
-* ARK Schema Alias
+* ARK Layout Alias
 *
 * PHP version 5 and 7
 *
@@ -28,12 +28,12 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/Alias.php
+* @see        http://ark.lparchaeology.com/code/src/php/Layout/Alias.php
 * @since      2.0
 *
 */
 
-namespace ARK\Schema;
+namespace ARK\Layout;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
@@ -128,15 +128,15 @@ class Alias
     }
     // }}}
     // {{{ elementAlias()
-    static function elementAlias(Database $db, $element_id)
+    static function elementAlias(Database $db, $element)
     {
         $alias = new Alias();
         $sql = "
             SELECT *
             FROM cor_conf_alias
-            WHERE cor_conf_alias.element_id = :element_id
+            WHERE cor_conf_alias.element = :element
         ";
-        $config = $db->config()->fetchAssoc($sql, array(':element_id' => $element_id));
+        $config = $db->config()->fetchAssoc($sql, array(':element' => $element));
         if (!$config) {
             return $alias;
         }
@@ -161,7 +161,7 @@ class Alias
     static function modtypeAlias($value)
     {
         $alias = new Alias();
-        $config['tbl'] = 'ark_config_modtype';
+        $config['tbl'] = 'ark_schema_modtype';
         $config['col'] = 'modtype';
         $config['src_key'] = $value;
         $config['type'] = 'normal';

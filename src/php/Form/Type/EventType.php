@@ -48,7 +48,7 @@ class EventType extends AbstractType
     // {{{ buildForm()
     function buildForm(FormBuilderInterface $formBuilder, array $options)
     {
-        $options['eventAction']->buildForm($formBuilder);
+        $options['eventActions'][0]->buildForm($formBuilder);
         $options['eventDate']->buildForm($formBuilder);
         $formBuilder->add('save', SubmitType::class);
     }
@@ -57,7 +57,7 @@ class EventType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['title'] = $options['title'];
-        $view->vars['eventAction'] = $options['eventAction'];
+        $view->vars['eventActions'] = $options['eventActions'];
         $view->vars['eventDate'] = $options['eventDate'];
     }
     // {{{ configureOptions()
@@ -66,7 +66,7 @@ class EventType extends AbstractType
     {
         $resolver->setDefaults(array(
             'title' => '',
-            'eventAction' => null,
+            'eventActions' => null,
             'eventDate' => null,
         ));
     }

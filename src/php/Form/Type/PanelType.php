@@ -58,6 +58,7 @@ class PanelType extends AbstractType
     // {{{ buildView()
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
+        $view->vars['keyword'] = $options['keyword'];
         $view->vars['title'] = $options['title'];
     }
     // {{{ configureOptions()
@@ -65,6 +66,7 @@ class PanelType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
+            'keyword' => '',
             'title' => '',
             'elements' => array(),
         ));

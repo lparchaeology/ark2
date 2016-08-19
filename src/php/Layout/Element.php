@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/Element.php
+* src/php/Layout/Element.php
 *
-* ARK Schema Element
+* ARK Layout Element
 *
 * PHP version 5 and 7
 *
@@ -28,15 +28,13 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/Element.php
+* @see        http://ark.lparchaeology.com/code/src/php/Layout/Element.php
 * @since      2.0
 *
 */
 
-namespace ARK\Schema;
+namespace ARK\Layout;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
 use Symfony\Component\Form\FormBuilder;
 use ARK\Database\Database;
 
@@ -49,7 +47,6 @@ abstract class Element
     protected $_title = '';
     protected $_description = '';
     protected $_table = '';
-    protected $_key = '';
     protected $_module = '';
     protected $_modtype = '';
     protected $_alias = null;
@@ -57,25 +54,23 @@ abstract class Element
     protected $_conditions = array();
 
     // {{{ __construct()
-    function __construct(Database $db, $element_id = null, $element_type = null)
+    function __construct(Database $db, $element = null, $element_type = null)
     {
         $this->_alias = new Alias($db);
-        if (!$element_id) {
+        if (!$element) {
             return;
         }
-        $this->_id = $element_id;
-        $config = $db->getElement($element_id, $element_type);
+        $this->_id = $element;
+        $config = $db->getElement($element, $element_type);
         $this->_type = $config['element_type'];
         $this->_isGroup = $config['is_group'];
-        $this->_title = $config['title'];
-        $this->_description = $config['description'];
-        $this->_table = $config['conf_table'];
-        $this->_key = $config['conf_key'];
-        $this->_module = $config['module_id'];
+        $this->_keyword = $config['keyword'];
+        $this->_table = $config['tbl'];
+        $this->_module = $config['module'];
         $this->_modtype = $config['modtype'];
-        $this->_alias = Alias::elementAlias($db, $element_id);
-        $this->_options = Option::fetchOptions($db, $element_id);
-        $this->_conditions = Condition::fetchConditions($db, $element_id);
+        $this->_alias = Alias::elementAlias($db, $element);
+        $this->_options = Option::fetchOptions($db, $element);
+        $this->_conditions = Condition::fetchConditions($db, $element);
     }
 
     function id()
@@ -98,24 +93,14 @@ abstract class Element
         return $this->_isGroup;
     }
 
-    function title()
+    function keyword()
     {
-        return $this->_title;
-    }
-
-    function description()
-    {
-        return $this->_description;
+        return $this->_keyword;
     }
 
     function table()
     {
         return $this->_table;
-    }
-
-    function key()
-    {
-        return $this->_key;
     }
 
     function module()
@@ -167,11 +152,6 @@ abstract class Element
     function buildForm(FormBuilder &$formBuilder, array $options = array())
     {
         return;
-    }
-
-    function toJsonSchema()
-    {
-        return '';
     }
 
     function allFields()

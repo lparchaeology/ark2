@@ -81,7 +81,7 @@ class ModuleController
             throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$site);
         }
 
-        $schema = new \ARK\Schema\Group($app['database'], $mod['module_id'].'_layout_item');
+        $schema = new \ARK\Schema\Group($app['database'], $mod['module'].'_layout_item');
         $response = new JsonResponse(null);
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
         $response->setData($schema->toSchema());
