@@ -85,7 +85,7 @@ class ModuleController
         $schema = new Schema($app['database'], $mod['module']);
         $response = new JsonResponse(null);
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
-        $response->setData($schema->toSchema());
+        $response->setData($schema->schema());
         return $response;
     }
 

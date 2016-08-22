@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/StringProperty.php
+* src/php/Schema/NumberProperty.php
 *
-* ARK Schema StringProperty
+* ARK Schema NumberProperty
 *
 * PHP version 5 and 7
 *
@@ -28,7 +28,7 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/StringProperty.php
+* @see        http://ark.lparchaeology.com/code/src/php/Schema/NumberProperty.php
 * @since      2.0
 *
 */
@@ -37,67 +37,65 @@ namespace ARK\Schema;
 
 use ARK\Database\Database;
 
-class StringProperty extends Property
+class NumberProperty extends Property
 {
-    private $_pattern = '';
-    private $_minLength = 0;
-    private $_maxLength = 0;
-    private $_size = 0;
-    private $_spellcheck = false;
+    private $_minimum = null;
+    private $_exclusiveMinimum = false;
+    private $_maximum = null;
+    private $_exclusiveMaximum = false;
+    private $_multipleOf = null;
 
     protected function _loadConfig(Database $db, $config)
     {
         parent::_loadConfig($db, $config);
-        $this->_pattern = $config['pattern'];
-        $this->_minLength = $config['min_length'];
-        $this->_maxLength = $config['max_length'];
-        $this->_size = $config['size'];
-        $this->_spellcheck = (bool)$config['spellcheck'];
+        $this->_minimum = $config['minimum'];
+        $this->_exclusiveMinimum = $config['exclusive_minimum'];
+        $this->_maximum = $config['maximum'];
+        $this->_exclusiveMaximum = $config['exclusive_maximum'];
+        $this->_multipleOf = $config['multiple_of'];
     }
 
-    public function pattern()
+    public function minimum()
     {
-        return $this->_pattern;
+        return $this->_minimum;
     }
 
-    public function minLength()
+    public function exclusiveMinimum()
     {
-        return $this->_minLength;
+        return $this->_exclusiveMinimum;
     }
 
-    public function maxLength()
+    public function maximum()
     {
-        return $this->_maxLength;
+        return $this->_maximum;
     }
 
-    public function size()
+    public function exclusiveMaximum()
     {
-        return $this->_size;
+        return $this->_exclusiveMaximum;
     }
 
-    public function spellcheck()
+    public function multipleOf()
     {
-        return $this->_spellcheck;
+        return $this->_multipleOf;
     }
 
     public function definition($reference = Schema::ReferenceSchema)
     {
-        $definition = parent::definition($reference);
+        $definition = parent::definition();
         if (!$reference) {
-            if ($this->_minLength > 0) {
-                $definition['min_length'] = $this->_minLength;
+            if ($this->_minimum) {
+                $definition['minimum'] = $this->_minimum;
+                $definition['exclusive_minimum'] = $this->_exclusiveMinimum;
             }
-            if ($this->_maxLength > 0) {
-                $definition['max_length'] = $this->_maxLength;
+            if ($this->_maximum) {
+                $definition['maximum'] = $this->_maximum;
+                $definition['exclusive_maximum'] = $this->_exclusiveMaximum;
             }
-            if ($this->_pattern) {
-                $definition['pattern'] = $this->_pattern;
-            }
-            if ($this->_format && $this->_format != 'text') {
-                $definition['format'] = $this->_format;
+            if ($this->_multipleOf) {
+                $definition['multiple_of'] = $this->_multipleOf;
             }
         }
-        return $definition;
     }
 
 }

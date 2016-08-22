@@ -42,11 +42,17 @@ class ObjectProperty extends Property
     private $_properties = array();
     private $_required = array();
     private $_graphRoot = '';
+    private $_definitions = array();
 
     protected function _loadConfig(Database $db, $config)
     {
         parent::_loadConfig($db, $config);
-        foreach ($config['properties'] as $property) {
+        if ($this->format() == 'object') {
+            $properties = $db->getObjectProperties($this->id());
+        } else {
+            $properties = $db->getObjectProperties($this->format());
+        }
+        foreach ($properties as $property) {
             $this->_properties[] = Property::property($db, $property['property']);
             if ($property['required']) {
                 $this->_required[] = $property['property'];
@@ -67,16 +73,34 @@ class ObjectProperty extends Property
         return $this->_required;
     }
 
-    public function toSchema()
+    public function definitions()
     {
-        $object['type'] = 'object';
-        $object['properties'] = array();
-        foreach ($this->properties() as $property) {
-            $object['properties'][$this->id()] = $property->toSchema();
+        if (!$this->_definitions) {
+            foreach ($this->_properties as $property) {
+                if ($property->type() == 'object') {
+                    $this->_definitions = array_merge($this->_definitions, $property->definitions());
+                } else {
+                    $this->_definitions[$property->format()] = $property->definition();
+                }
+            }
         }
-        $object['required'] = $this->required();
-        $object['additionalProperties'] = false;
-        return $object;
+        return $this->_definitions;
+    }
+
+    public function definition($reference = Schema::ReferenceSchema)
+    {
+        if (!$reference || $this->format() != 'object' || ($reference && $this->format() == 'object')) {
+            $definition = parent::definition(Schema::FullSchema);
+            $definition['properties'] = array();
+            foreach ($this->properties() as $property) {
+                $definition['properties'][$property->id()] = $property->definition($reference);
+            }
+            $definition['required'] = $this->required();
+            $definition['additionalProperties'] = false;
+        } else {
+            $definition = parent::definition($reference);
+        }
+        return $definition;
     }
 
 }

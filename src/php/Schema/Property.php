@@ -40,7 +40,7 @@ use ARK\Database\Database;
 class Property
 {
     private $_id = '';
-    private $_format = '';
+    protected $_format = '';
     private $_type = '';
     private $_default = null;
     private $_input = '';
@@ -49,10 +49,9 @@ class Property
     private $_uniqueItems = true;
     private $_sortable = false;
     private $_searchable = false;
-    private $_enum = array();
-    private $_module = '';
     private $_dataclass = '';
     private $_keyword = '';
+    private $_enum = array();
     protected $_valid = false;
 
     protected function _loadConfig(Database $db, $config)
@@ -69,16 +68,31 @@ class Property
         $this->_uniqueItems = (bool)$config['unique_items'];
         $this->_sortable = (bool)$config['sortable'];
         $this->_searchable = (bool)$config['searchable'];
-        $this->_enum = $config['enum'];
-        $this->_module = $config['module'];
         $this->_dataclass = $config['dataclass'];
-        $this->_keyword = $config['keyword'];
+        $this->_keyword = ($config['keyword'] ? $config['keyword'] : $config['format_keyword']);
+
+        if ($this->_dataclass == 'modtype') {
+            $modtypes = $db->getModtypes($config['module']);
+            foreach ($modtypes as $modtype) {
+                $this->_enum[] = $modtype['modtype'];
+            }
+        } else if ($this->_dataclass == 'module') {
+            $this->_enum[] = $config['module'];
+        } else {
+            $this->_enum = $db->getEnums($this->_id);
+        }
+
         $this->_valid = true;
     }
 
     public function id()
     {
         return $this->_id;
+    }
+
+    public function format()
+    {
+        return $this->_format;
     }
 
     public function type()
@@ -126,11 +140,6 @@ class Property
         return $this->_enum;
     }
 
-    public function module()
-    {
-        return $this->_module;
-    }
-
     public function classtype()
     {
         return $this->_classtype;
@@ -151,17 +160,45 @@ class Property
         return $this->_searchable;
     }
 
-    public function toSchema()
+    public function reference()
     {
+        return "#/definitions/".$this->_format;
+    }
 
-        $schema['title'] = $this->_keyword.'.title';
-        $schema['description'] = $this->_keyword.'.description';
-        if ($this->_default != null) {
-            $schema['default'] = $this->_default;
+    public function definition($reference = Schema::ReferenceSchema)
+    {
+        $definition = array();
+        if ($reference) {
+            $definition['$ref'] = $this->reference();
+        } else {
+            $definition['type'] = $this->_type;
         }
-        $schema['type'] = $this->_type;
+        return $definition;
+    }
+
+    public function attributes()
+    {
+        $attributes = array();
+        if ($this->_keyword) {
+            $attributes['title'] = $this->_keyword.'.title';
+            $attributes['description'] = $this->_keyword.'.description';
+        }
+        if ($this->_default != null) {
+            $attributes['default'] = $this->_default;
+        }
         if ($this->hasEnum()) {
-            $schema['enum'] = $this->_enum;
+            $attributes['enum'] = $this->_enum;
+        }
+        return $attributes;
+    }
+
+    public function subschema($reference = Schema::ReferenceSchema)
+    {
+        $schema = $this->attributes();
+        if (!$reference || $this->format() == 'object') {
+            $schema = array_merge($schema, $this->definition($reference));
+        } else {
+            $schema['$ref'] = $this->reference();
         }
 
         if ($this->isArray()) {

@@ -734,27 +734,36 @@ class Database
         return $this->config()->fetchAll($sql, $params);
     }
 
-    public function getObject($object, $type = null)
+    public function getSchemaProperties($module)
+    {
+        $sql = "
+            SELECT *
+            FROM ark_schema_schema
+            WHERE ark_schema_schema.module = :module
+        ";
+        $params = array(
+            ':module' => $module,
+        );
+        return $this->config()->fetchAll($sql, $params);
+    }
+
+    public function getObjectProperties($object)
     {
         $sql = "
             SELECT *
             FROM ark_schema_object
-            WHERE object = :object
+            WHERE ark_schema_object.object = :object
         ";
         $params = array(
             ':object' => $object,
         );
-        if ($type) {
-            $sql .= ' AND type = :type';
-            $params[':type'] = $type;
-        }
-        return $this->config()->fetchAssoc($sql, $params);
+        return $this->config()->fetchAll($sql, $params);
     }
 
     public function getProperty($propertyId)
     {
         $sql = "
-            SELECT *
+            SELECT *, ark_schema_property.format, ark_schema_property.keyword, ark_schema_format.keyword as format_keyword
             FROM ark_schema_property
             LEFT JOIN ark_schema_format ON ark_schema_property.format = ark_schema_format.format
             LEFT JOIN ark_schema_number ON ark_schema_property.format = ark_schema_number.format
@@ -764,37 +773,7 @@ class Database
         $params = array(
             ':property' => $propertyId,
         );
-        $property = $this->config()->fetchAssoc($sql, $params);
-        $property['enum'] = $this->getEnums($propertyId);
-        dump('here');
-        dump($property);
-        if ($property['type'] == 'object') {
-            $property['properties'] = $this->getObjectProperties($propertyId);
-        }
-        return $property;
-    }
-
-    public function getObjectProperties($object)
-    {
-        $sql = "
-            SELECT *
-            FROM ark_schema_object_property
-            WHERE object = :object
-        ";
-        $params = array(
-            ':object' => $object,
-        );
-        return $this->config()->fetchAll($sql, $params);
-    }
-
-    public function getObjectPropertiesList($object)
-    {
-        $properties = $this->getObjectProperties($object);
-        $list = array();
-        foreach ($properties as $property) {
-            $list[] = $property['property'];
-        }
-        return $list;
+        return $this->config()->fetchAssoc($sql, $params);
     }
 
     public function getEnums($property)

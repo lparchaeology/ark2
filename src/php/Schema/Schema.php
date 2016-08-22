@@ -37,49 +37,118 @@ namespace ARK\Schema;
 
 use ARK\Database\Database;
 
-class Schema extends ObjectProperty
+class Schema
 {
+    const FullSchema = 0;
+    const ReferenceSchema = 1;
+
     private $_db = '';
     private $_module = '';
     private $_modtype = '';
     private $_modtypes = '';
-    private $_config = '';
-    private $_mod = '';
+    private $_properties = array();
+    private $_required = array();
+    private $_definitions = array();
+    private $_schema = array();
 
     public function __construct(Database $db, $module)
     {
-        $config = $db->getObject($module, 'schema');
-        $config['properties'] = $db->getObjectProperties($module);
-        $this->_config = $config;
-        parent::_loadConfig($db, $config);
         $mod = $db->getModule($module);
-        $this->_mod = $mod;
         $this->_module = $module;
         $this->_modtype = $mod['modtype'];
         $modtypes = $db->getModtypes($module);
         foreach ($modtypes as $modtype) {
             $this->_modtypes[] = $modtype['modtype'];
         }
-        $this->_valid = true;
+        $properties = $db->getSchemaProperties($module);
+        foreach ($properties as $property) {
+            $this->_properties[$property['modtype']][] = Property::property($db, $property['property']);
+            if ($property['required']) {
+                $this->_required[$property['modtype']][] = $property['property'];
+            }
+        }
     }
 
-    public function toSchema()
+    public function module()
     {
-        $schema['$module'] = $this->_module;
-        $schema['$config'] = $this->_config;
-        $schema['$mod'] = $this->_mod;
+        return $this->_module;
+    }
+
+    public function modtype()
+    {
+        return $this->_modtype;
+    }
+
+    public function modtypes()
+    {
+        return $this->_modtypes;
+    }
+
+    public function properties($modtype)
+    {
+        return array_merge($this->_properties[$this->_module], $this->_properties[$modtype]);
+    }
+
+    public function required($modtype)
+    {
+        return array_merge($this->_required[$this->_module], $this->_required[$modtype]);
+    }
+
+    public function definitions()
+    {
+        if (!$this->_definitions) {
+            $modtypes = array_merge(array($this->_module), $this->_modtypes);
+            foreach ($modtypes as $modtype) {
+                foreach ($this->_properties[$modtype] as $property) {
+                    if ($property->type() == 'object') {
+                        $this->_definitions = array_merge($this->_definitions, $property->definitions());
+                    }
+                    if ($property->format() != 'object') {
+                        if ($property->type() == 'object') {
+                            $this->_definitions[$property->format()] = $property->definition();
+                        } else {
+                            $this->_definitions[$property->format()] = $property->definition(Schema::FullSchema);
+                        }
+                    }
+                }
+            }
+        }
+        return $this->_definitions;
+    }
+
+    public function schema($reference = Schema::ReferenceSchema)
+    {
+        if (isset($this->_schema[$reference])) {
+            return $this->_schema[$reference];
+        }
         $schema['$schema'] = 'http://json-schema.org/draft-04/schema#';
-        $schema = array_merge($schema, parent::toSchema());
+        if ($reference) {
+            $schema['definitions'] = $this->definitions();
+        }
+        $schema['type'] = 'object';
+        $schema['properties'] = array();
+        foreach ($this->_properties[$this->_module] as $property) {
+            $schema['properties'][$property->id()] = $property->subschema($reference);
+        }
+        $schema['required'] = $this->_required[$this->_module];
+        $schema['additionalProperties'] = false;
         if ($this->_modtype) {
             $anyof = array();
             foreach ($this->_modtypes as $modtype) {
                 $subschema = array();
-                $subschema['properties'][$this->_modtype]['enum'] = array($this->_modtype);
-                $subschema['required'] = array($this->_modtype);
+                $subschema['properties'] = array();
+                $subschema['properties'][$this->_modtype]['enum'] = array($modtype);
+                foreach ($this->_properties[$modtype] as $property) {
+                    $subschema['properties'][$property->id()] = $property->subschema($reference);
+                }
+                if (isset($this->_required[$modtype])) {
+                    $subschema['required'] = $this->_required[$modtype];
+                }
                 $anyof[] = $subschema;
             }
             $schema['anyOf'] = $anyof;
         }
+        $this->_schema[$reference] = $schema;
         return $schema;
     }
 
