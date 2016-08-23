@@ -304,20 +304,19 @@ class Database
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getNumber($item, $classtype)
+    public function getNumber($itemkey, $itemvalue, $numbertype)
     {
         $sql = "
             SELECT *
-            FROM cor_tbl_number, cor_lut_numbertype
-            WHERE cor_lut_numbertype.numbertype = :classtype
-            AND cor_tbl_number.numbertype = cor_lut_numbertype.id
-            AND cor_tbl_number.itemkey = :itemkey
-            AND cor_tbl_number.itemvalue = :itemvalue
+            FROM cor_tbl_number
+            WHERE itemkey = :itemkey
+            AND itemvalue = :itemvalue
+            AND numbertype = :numbertype
         ";
         $params = array(
-            ':classtype' => $classtype,
-            ':itemkey' => $item['key'],
-            ':itemvalue' => $item['value'],
+            ':itemkey' => $itemkey,
+            ':itemvalue' => $itemvalue,
+            ':numbertype' => $numbertype,
         );
         return $this->data()->fetchAssoc($sql, $params);
     }
@@ -335,6 +334,23 @@ class Database
             ':itemkey' => $itemkey,
             ':itemvalue' => $itemvalue,
             ':datetype' => $datetype,
+        );
+        return $this->data()->fetchAssoc($sql, $params);
+    }
+
+    public function getSpan($itemkey, $itemvalue, $spantype)
+    {
+        $sql = "
+            SELECT *
+            FROM cor_tbl_span
+            WHERE itemkey = :itemkey
+            AND itemvalue = :itemvalue
+            AND spantype = :spantype
+        ";
+        $params = array(
+            ':itemkey' => $itemkey,
+            ':itemvalue' => $itemvalue,
+            ':spantype' => $spantype,
         );
         return $this->data()->fetchAssoc($sql, $params);
     }

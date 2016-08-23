@@ -80,7 +80,7 @@ class ObjectProperty extends Property
                 if ($property->type() == 'object') {
                     $this->_definitions = array_merge($this->_definitions, $property->definitions());
                 } else {
-                    $this->_definitions[$property->format()] = $property->definition();
+                    $this->_definitions[$property->format()] = $property->definition(Schema::FullSchema);
                 }
             }
         }

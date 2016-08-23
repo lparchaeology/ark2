@@ -182,13 +182,19 @@ class Field extends Element
                 }
                 break;
             case 'number':
-                $row = $this->_db->getNumber($itemKey, $this->property());
+                $row = $this->_db->getNumber($itemKey['key'], $itemKey['value'], $this->property());
                 if (isset($row['number'])) {
                     $data[$this->id()] = $row['number'];
                 }
                 break;
             case 'date':
                 $row = $this->_db->getDate($itemKey['key'], $itemKey['value'], $this->property());
+                if (isset($row['date'])) {
+                    $data[$this->id()] = new \DateTime($row['date']);
+                }
+                break;
+            case 'span':
+                $row = $this->_db->getSpan($itemKey['key'], $itemKey['value'], $this->property());
                 if (isset($row['date'])) {
                     $data[$this->id()] = new \DateTime($row['date']);
                 }
@@ -204,7 +210,7 @@ class Field extends Element
                 }
                 break;
             case 'file':
-                $row = $this->_db->getFile($itemKey, $this->property());
+                $row = $this->_db->getFile($itemKey['key'], $itemKey['value'], $this->property());
                 if (isset($row['file'])) {
                     //$data[$this->id()] = $row['filename'];
                 }
