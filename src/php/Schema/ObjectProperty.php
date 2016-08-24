@@ -53,7 +53,7 @@ class ObjectProperty extends Property
             $properties = $db->getObjectProperties($this->format());
         }
         foreach ($properties as $property) {
-            $this->_properties[] = Property::property($db, $property['property']);
+            $this->_properties[] = Property::property($db, $property['property'], $config['schema']);
             if ($property['required']) {
                 $this->_required[] = $property['property'];
             }

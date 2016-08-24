@@ -174,7 +174,7 @@ class DataClass extends Element
                 $options['choices']['--- Select One ---'] = null;
                 $actors = $this->_db->getActors();
                 foreach ($actors as $actor) {
-                    $options['choices']['abk_cd.'.$actor['abk_cd'].'.name'] = 'abk_cd.'.$actor['abk_cd'];
+                    $options['choices']['act_cd.'.$actor['act_cd'].'.name'] = 'act_cd.'.$actor['act_cd'];
                 }
                 $formBuilder->add($this->_id, Type\ChoiceType::class, $options);
                 break;

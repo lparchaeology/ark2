@@ -426,7 +426,7 @@ class Database
     public function getActors($mod_tbl = null)
     {
         if (empty($mod_tbl)) {
-            $mod_tbl = $this->getModuleTable('abk');
+            $mod_tbl = $this->getModuleTable('act');
         }
         $sql = "
             SELECT *
@@ -525,7 +525,7 @@ class Database
         return $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getModtypes($module)
+    public function getModtypes($schema, $module)
     {
         $sql = "
             SELECT *
@@ -749,14 +749,16 @@ class Database
         return $this->config()->fetchAll($sql, $params);
     }
 
-    public function getSchemaProperties($module)
+    public function getSchemaStructure($schema, $module)
     {
         $sql = "
             SELECT *
-            FROM ark_schema_schema
-            WHERE ark_schema_schema.module = :module
+            FROM ark_schema_structure
+            WHERE ark_schema_structure.schema_id = :schema
+            AND ark_schema_structure.module = :module
         ";
         $params = array(
+            ':schema' => $schema,
             ':module' => $module,
         );
         return $this->config()->fetchAll($sql, $params);

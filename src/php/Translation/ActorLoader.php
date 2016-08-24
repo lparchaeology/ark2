@@ -45,12 +45,12 @@ class ActorLoader implements LoaderInterface
         $catalogue = new MessageCatalogue($locale);
         $sql = "
             SELECT *
-            FROM abk_tbl_abk, cor_tbl_txt
+            FROM act_tbl_act, cor_tbl_txt
             WHERE cor_tbl_txt.itemkey = :itemkey
-            AND cor_tbl_txt.itemvalue = abk_tbl_abk.abk_cd
+            AND cor_tbl_txt.itemvalue = act_tbl_act.act_cd
         ";
         $params = array(
-            ':itemkey' => 'abk_cd',
+            ':itemkey' => 'act_cd',
             ':txttype' => 'name',
         );
         $actors = $db->data()->fetchAll($sql, $params);

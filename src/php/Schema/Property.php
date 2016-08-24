@@ -72,7 +72,7 @@ class Property
         $this->_keyword = ($config['keyword'] ? $config['keyword'] : $config['format_keyword']);
 
         if ($this->_dataclass == 'modtype') {
-            $modtypes = $db->getModtypes($config['module']);
+            $modtypes = $db->getModtypes($config['schema'], $config['module']);
             foreach ($modtypes as $modtype) {
                 $this->_enum[] = $modtype['modtype'];
             }
@@ -217,9 +217,10 @@ class Property
         return $schema;
     }
 
-    static public function property(Database $db, $propertyId)
+    static public function property(Database $db, $propertyId, $schema = null)
     {
         $config = $db->getProperty($propertyId);
+        $config['schema'] = $schema;
         $property = null;
         switch ($config['type']) {
             case 'object':
