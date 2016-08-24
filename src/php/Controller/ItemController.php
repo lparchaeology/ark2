@@ -44,9 +44,48 @@ use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\DBAL\Connection;
 use ARK\Database\Database;
 use ARK\Layout\Layout;
+use ARK\Schema\Schema;
 
 class ItemController
 {
+    public function getItemAction(Application $app, Request $request, $site, $module, $item)
+    {
+        $mod = $app['database']->getModule(strtolower($module));
+        if (!$mod) {
+            throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$site);
+        }
+
+        $mod_tbl = $mod['tbl'];
+        $modtype = $mod['modtype'];
+        $itemkey = $mod['itemkey'];
+        $itemvalue = $site.'_'.$item;
+
+        $itemRow = $app['database']->getItem($itemkey, $itemvalue, $mod_tbl);
+        if (!$itemRow) {
+            throw new NotFoundHttpException('Item '.$itemvalue.' not found!');
+        }
+
+        $itemKey = array(
+            'site' => $site,
+            'module' => $mod['module'],
+            'item' => $item,
+            'key' => $itemkey,
+            'value' => $itemRow[$itemkey],
+        );
+        if (empty($modtype)) {
+            $itemKey['modtype'] = $mod['module'];
+        } else {
+            $itemKey['modtype'] = $modtype;
+            $itemKey[$modtype] = $itemRow[$modtype];
+        }
+
+        $schema = new Schema($app['database'], $mod['module']);
+        $response = new JsonResponse(null);
+        $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
+        $response->setData($schema->schema());
+        return $response;
+    }
+
     public function viewItemAction(Application $app, Request $request, $site, $module, $item)
     {
         $mod = $app['database']->getModule(strtolower($module));

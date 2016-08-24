@@ -372,21 +372,20 @@ class Database
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getFile($item, $classtype)
+    public function getFile($itemkey, $itemvalue, $property)
     {
         $sql = "
             SELECT *
-            FROM cor_tbl_file, cor_lut_filetype, cor_lut_file
-            WHERE cor_lut_filetype.filetype = :classtype
-            AND cor_lut_file.filetype = cor_lut_filetype.id
-            AND cor_tbl_file.file = cor_lut_file.id
-            AND cor_tbl_file.itemkey = :itemkey
+            FROM cor_tbl_file, cor_lut_file
+            WHERE cor_tbl_file.itemkey = :itemkey
             AND cor_tbl_file.itemvalue = :itemvalue
+            AND cor_tbl_file.property = :property
+            AND cor_tbl_file.file = cor_lut_file.file
         ";
         $params = array(
-            ':classtype' => $classtype,
             ':itemkey' => $item['key'],
             ':itemvalue' => $item['value'],
+            ':property' => $property,
         );
         return $this->data()->fetchAssoc($sql, $params);
     }
