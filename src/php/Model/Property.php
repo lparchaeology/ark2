@@ -217,6 +217,59 @@ class Property
         return $schema;
     }
 
+    public function data(Database $db, $item, $lang)
+    {
+        switch ($this->_dataclass) {
+            case 'action':
+                $data =  $db->getAction($item->itemkey(), $item->itemvalue(), $this->_id);
+                $value = ($data ? array($data['actor_itemkey'], $data['actor_itemvalue']) : null);
+                break;
+            case 'date':
+                $data = $db->getDate($item->itemkey(), $item->itemvalue(), $this->_id);
+                $value = ($data ? $data['date'] : null);
+                break;
+            case 'file':
+                $data = $db->getFile($item->itemkey(), $item->itemvalue(), $this->_id);
+                $value = ($data ? $data['filename'] : null);
+                break;
+            case 'number':
+                $data = $db->getNumber($item->itemkey(), $item->itemvalue(), $this->_id);
+                $value = ($data ? $data['number'] : null);
+                break;
+            case 'span':
+                $data = $db->getSpan($item->itemkey(), $item->itemvalue(), $this->_id);
+                $value = ($data ? array($data['beg'], $data['end']) : null);
+                break;
+            case 'txt':
+                $data = $db->getText($item->itemkey(), $item->itemvalue(), $this->_id, $lang);
+                $value = ($data ? $data['txt'] : null);
+                break;
+            case 'xmi':
+                $data = $db->getXmi($item->itemkey(), $item->itemvalue(), $this->_id);
+                $value = ($data ? array($data['xmi_itemkey'], $data['xmi_itemvalue']) : null);
+                break;
+            case 'modtype':
+                $value = $item->modtype();
+                break;
+            case 'item':
+                $value = $item->id();
+                break;
+            case 'module':
+                $value = $item->module();
+                break;
+            case 'site':
+                $value = $item->site();
+                break;
+            default:
+                $value = null;
+                break;
+        }
+        if ($value) {
+            return $value;
+        }
+        return null;
+    }
+
     static public function property(Database $db, $propertyId, $schema = null)
     {
         $config = $db->getProperty($propertyId);

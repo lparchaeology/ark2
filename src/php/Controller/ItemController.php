@@ -44,44 +44,61 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\DBAL\Connection;
 use ARK\Database\Database;
+use ARK\Model\Item;
+use ARK\Model\Module;
 use ARK\View\Layout;
 
 class ItemController
 {
-    public function getItemAction(Application $app, Request $request, $site, $module, $item)
+    public function getItemAction(Application $app, Request $request, $siteSlug, $moduleSlug, $itemSlug)
     {
-        $mod = $app['database']->getModule(strtolower($module));
-        if (!$mod) {
-            throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$site);
-        }
-
-        $mod_tbl = $mod['tbl'];
-        $modtype = $mod['modtype'];
-        $itemkey = $mod['itemkey'];
-        $itemvalue = $site.'_'.$item;
-
-        $itemRow = $app['database']->getItem($itemkey, $itemvalue, $mod_tbl);
-        if (!$itemRow) {
-            throw new NotFoundHttpException('Item '.$itemvalue.' not found!');
-        }
-
-        $itemKey = array(
-            'site' => $site,
-            'module' => $mod['module'],
-            'item' => $item,
-            'key' => $itemkey,
-            'value' => $itemRow[$itemkey],
-        );
-        if (empty($modtype)) {
-            $itemKey['modtype'] = $mod['module'];
-        } else {
-            $itemKey['modtype'] = $modtype;
-            $itemKey[$modtype] = $itemRow[$modtype];
-        }
-
         $response = new JsonResponse(null);
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
-        $response->setData('');
+        $jsonapi['jsonapi']['version'] = '1.0';
+        $errors = array();
+
+        $model = new Module($app['database'], $siteSlug, $moduleSlug);
+
+        if ($model->valid()) {
+            $item = new Item($app['database'], $model->site(), $model->module(), $itemSlug);
+            if (!$item->valid()) {
+                $error['title'] = 'Invalid Item';
+                $error['detail'] = 'Item '.$itemSlug.' is not valid for Site Code '.$siteSlug.' and Module '.$moduleSlug;
+                $errors[] = $error;
+            }
+        } else {
+            $site = $app['database']->getItem('ste_cd', $siteSlug);
+            if (!$site) {
+                $error['title'] = 'Invalid Site Code';
+                $error['detail'] = 'Site Code '.$siteSlug.' is not valid.';
+                $errors[] = $error;
+            }
+            $mod = $app['database']->getModule($moduleSlug);
+            if (!$mod) {
+                $error['title'] = 'Invalid Module';
+                $error['detail'] = 'Module '.$moduleSlug.' is not valid.';
+                $errors[] = $error;
+            }
+            if (!$errors) {
+                $error['title'] = 'Invalid Module for Site Code';
+                $error['detail'] = 'Module '.$moduleSlug.' is not valid for Site Code '.$siteSlug;
+                $errors[] = $error;
+            }
+        }
+
+        if ($errors) {
+            $jsonapi['errors'] = $errors;
+        } else {
+            $data['type'] = $model->type();
+            $data['id'] = $item->itemvalue();
+            $data['meta']['site'] = $item->site();
+            $data['meta']['module'] = $item->module();
+            $data['meta']['item'] = $item->id();
+            $data['attributes'] = $model->data($app['database'], $item, $app['locale']);
+            $jsonapi['data'] = $data;
+        }
+
+        $response->setData($jsonapi);
         return $response;
     }
 

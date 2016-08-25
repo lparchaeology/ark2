@@ -103,4 +103,13 @@ class ObjectProperty extends Property
         return $definition;
     }
 
+    public function data(Database $db, $item, $lang)
+    {
+        $data = array();
+        foreach ($this->properties() as $property) {
+            $data[$property->id()] = $property->data($db, $item, $lang);
+        }
+        return $data;
+    }
+
 }

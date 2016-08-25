@@ -60,7 +60,7 @@ class ApiControllerProvider implements ControllerProviderInterface
 
         $controllers
             ->method('GET')
-            ->get('/{site}/{module}/{item}', 'ARK\\Controller\\ItemController::getItemAction')
+            ->get('/{siteSlug}/{moduleSlug}/{itemSlug}', 'ARK\\Controller\\ItemController::getItemAction')
             ->bind('api.item.get');
 
         $controllers

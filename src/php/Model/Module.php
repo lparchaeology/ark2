@@ -40,8 +40,9 @@ use ARK\Database\Database;
 class Module
 {
     private $_db = '';
+    private $_site = '';
     private $_module = '';
-    private $_modtype = '';
+    private $_type = '';
     private $_itemkey = '';
     private $_itemno = '';
     private $_table = '';
@@ -65,8 +66,9 @@ class Module
             return;
         }
 
+        $this->_site = $site;
         $this->_module = $module;
-        $this->_modtype = $mod['modtype'];
+        $this->_type = $mod['url'];
         $this->_itemkey = $mod['itemkey'];
         $this->_itemno = $mod['itemno'];
         $this->_table = $mod['tbl'];
@@ -92,14 +94,19 @@ class Module
         return $this->_valid;
     }
 
+    public function site()
+    {
+        return $this->_site;
+    }
+
     public function module()
     {
         return $this->_module;
     }
 
-    public function modtype()
+    public function type()
     {
-        return $this->_modtype;
+        return $this->_type;
     }
 
     public function itemkey()
@@ -195,6 +202,17 @@ class Module
         }
         $this->_schema[$reference] = $schema;
         return $schema;
+    }
+
+    public function data(Database $db, $item, $lang)
+    {
+        $data = array();
+        if ($item->valid()) {
+            foreach ($this->properties($item->modtype()) as $property) {
+                $data[$property->id()] = $property->data($db, $item, $lang);
+            }
+        }
+        return $data;
     }
 
 }

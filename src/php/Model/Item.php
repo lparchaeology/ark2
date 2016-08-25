@@ -45,24 +45,21 @@ class Item
     private $_itemkey = '';
     private $_itemvalue = '';
     private $_modtype = '';
-    protected $_valid = null;
+    protected $_valid = false;
 
-    public function __construct($siteOrItemKey, $moduleOrItemValue, $itemId = null)
+    public function __construct(Database $db, $site, $module, $item)
     {
-        if ($itemId) {
-            $this->_site = $siteOrItemKey;
-            $this->_module = $moduleOrItemValue;
-            $this->_id = $itemId;
-            $this->_itemkey = $this->_module.'_cd';
-            $this->_itemvalue = $this->_site.'_'.$this->_id;
-        } else {
-            $parts = explode('_', $moduleOrItemValue);
-            $this->_module = $parts[0];
-            $parts = explode('_', $moduleOrItemValue);
-            $this->_site = $parts[0];
-            $this->_id = $parts[1];
-            $this->_itemkey = $siteOrItemKey;
-            $this->_itemvalue = $moduleOrItemValue;
+        $this->_site = $site;
+        $this->_module = $module;
+        $this->_id = $item;
+        $this->_itemkey = $this->_module.'_cd';
+        $this->_itemvalue = $this->_site.'_'.$this->_id;
+        $data = $db->getItem($this->_itemkey, $this->_itemvalue);
+        if ($data) {
+            if (isset($data['modtype'])) {
+                $this->_modtype = $data['modtype'];
+            }
+            $this->_valid = true;
         }
     }
 
@@ -96,7 +93,7 @@ class Item
         return $this->_modtype;
     }
 
-    public function isValid()
+    public function valid()
     {
         return $this->_valid;
     }

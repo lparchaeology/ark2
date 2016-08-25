@@ -505,6 +505,19 @@ class Database
         return $this->data()->fetchAll($sql, $params);
     }
 
+    public function getItemProperty($itemkey, $itemvalue, $property)
+    {
+        $sql = "
+            SELECT *
+            FROM $mod_tbl
+            WHERE $mod_tbl.$itemkey = :itemvalue
+        ";
+        $params = array(
+            ':itemvalue' => $itemvalue,
+        );
+        return $this->data()->fetchAssoc($sql, $params);
+    }
+
     public function getModuleTable($itemkey)
     {
         return $this->getModule($itemkey)['tbl'];
@@ -781,7 +794,7 @@ class Database
         return $this->config()->fetchAll($sql, $params);
     }
 
-    public function getProperty($propertyId)
+    public function getProperty($property)
     {
         $sql = "
             SELECT *, ark_model_property.format, ark_model_property.keyword, ark_model_format.keyword as format_keyword
@@ -792,7 +805,7 @@ class Database
             WHERE ark_model_property.property = :property
         ";
         $params = array(
-            ':property' => $propertyId,
+            ':property' => $property,
         );
         return $this->config()->fetchAssoc($sql, $params);
     }
