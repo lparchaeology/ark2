@@ -44,8 +44,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\DBAL\Connection;
 use ARK\Database\Database;
-use ARK\Layout\Layout;
-use ARK\Schema\Schema;
+use ARK\View\Layout;
 
 class ItemController
 {
@@ -80,10 +79,9 @@ class ItemController
             $itemKey[$modtype] = $itemRow[$modtype];
         }
 
-        $schema = new Schema($app['database'], $mod['module']);
         $response = new JsonResponse(null);
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
-        $response->setData($schema->schema());
+        $response->setData('');
         return $response;
     }
 

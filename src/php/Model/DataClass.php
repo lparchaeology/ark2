@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/DataClass.php
+* src/php/Model/DataClass.php
 *
-* ARK Schema DataClass
+* ARK Model DataClass
 *
 * PHP version 5 and 7
 *
@@ -28,12 +28,12 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/DataClass.php
+* @see        http://ark.lparchaeology.com/code/src/php/Model/DataClass.php
 * @since      2.0
 *
 */
 
-namespace ARK\Schema;
+namespace ARK\Model;
 
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Extension\Core\Type;
@@ -224,7 +224,7 @@ class DataClass extends Element
         return;
     }
 
-    function toSchema()
+    function schema()
     {
         $schema = array('title' => $this->_title);
         return array($this->_id => $schema);

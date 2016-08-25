@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/Module.php
+* src/php/Model/Module.php
 *
-* ARK Schema Module
+* ARK Model Module
 *
 * PHP version 5 and 7
 *
@@ -28,12 +28,12 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/Module.php
+* @see        http://ark.lparchaeology.com/code/src/php/Model/Module.php
 * @since      2.0
 *
 */
 
-namespace ARK\Schema;
+namespace ARK\Model;
 
 use ARK\Database\Database;
 
@@ -46,32 +46,50 @@ class Module
     private $_itemno = '';
     private $_table = '';
     private $_keyword = '';
-    private $_modtypes = '';
+    private $_modtypes = array();
     private $_properties = array();
     private $_required = array();
     private $_definitions = array();
     private $_schema = array();
+    private $_valid = false;
 
-    public function __construct(Database $db, $schema, $module)
+    public function __construct(Database $db, $site, $module)
     {
         $mod = $db->getModule($module);
+        if (!$mod) {
+            return;
+        }
+
+        $properties = $db->getModelStructure($site, $mod['module']);
+        if (!$properties) {
+            return;
+        }
+
         $this->_module = $module;
         $this->_modtype = $mod['modtype'];
         $this->_itemkey = $mod['itemkey'];
         $this->_itemno = $mod['itemno'];
         $this->_table = $mod['tbl'];
         $this->_keyword = $mod['keyword'];
-        $modtypes = $db->getModtypes($schema, $module);
-        foreach ($modtypes as $modtype) {
-            $this->_modtypes[] = $modtype['modtype'];
-        }
-        $properties = $db->getSchemaStructure($schema, $module);
+
         foreach ($properties as $property) {
+            $schema = $property['schema_id'];
             $this->_properties[$property['modtype']][] = Property::property($db, $property['property'], $schema);
             if ($property['required']) {
                 $this->_required[$property['modtype']][] = $property['property'];
             }
         }
+
+        $modtypes = $db->getModtypes($module, $schema);
+        foreach ($modtypes as $modtype) {
+            $this->_modtypes[] = $modtype['modtype'];
+        }
+        $this->_valid = true;
+    }
+
+    public function valid()
+    {
+        return $this->_valid;
     }
 
     public function module()
@@ -171,7 +189,9 @@ class Module
                 }
                 $anyof[] = $subschema;
             }
-            $schema['anyOf'] = $anyof;
+            if ($anyof) {
+                $schema['anyOf'] = $anyof;
+            }
         }
         $this->_schema[$reference] = $schema;
         return $schema;

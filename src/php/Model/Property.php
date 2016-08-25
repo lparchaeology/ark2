@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/Property.php
+* src/php/Model/Property.php
 *
-* ARK Schema Property
+* ARK Model Property
 *
 * PHP version 5 and 7
 *
@@ -28,12 +28,12 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/Property.php
+* @see        http://ark.lparchaeology.com/code/src/php/Model/Property.php
 * @since      2.0
 *
 */
 
-namespace ARK\Schema;
+namespace ARK\Model;
 
 use ARK\Database\Database;
 
@@ -72,7 +72,7 @@ class Property
         $this->_keyword = ($config['keyword'] ? $config['keyword'] : $config['format_keyword']);
 
         if ($this->_dataclass == 'modtype') {
-            $modtypes = $db->getModtypes($config['schema'], $config['module']);
+            $modtypes = $db->getModtypes($config['module'], $config['schema']);
             foreach ($modtypes as $modtype) {
                 $this->_enum[] = $modtype['modtype'];
             }

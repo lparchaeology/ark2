@@ -383,8 +383,8 @@ class Database
             AND cor_tbl_file.file = cor_lut_file.file
         ";
         $params = array(
-            ':itemkey' => $item['key'],
-            ':itemvalue' => $item['value'],
+            ':itemkey' => $itemkey,
+            ':itemvalue' => $itemvalue,
             ':property' => $property,
         );
         return $this->data()->fetchAssoc($sql, $params);
@@ -514,26 +514,28 @@ class Database
     {
         $sql = "
             SELECT *
-            FROM ark_schema_module
+            FROM ark_config_module
             WHERE module = :module
             OR itemkey = :module
             OR url = :module
         ";
         $params = array(
-            ':module' => $module,
+            ':module' => strtolower($module),
         );
         return $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getModtypes($schema, $module)
+    public function getModtypes($module, $schema)
     {
         $sql = "
             SELECT *
-            FROM ark_schema_modtype
+            FROM ark_model_modtype
             WHERE module = :module
+            AND schema_id = :schema
         ";
         $params = array(
             ':module' => $module,
+            ':schema' => $schema,
         );
         return $this->config()->fetchAll($sql, $params);
     }
@@ -542,7 +544,7 @@ class Database
     {
         $sql = "
             SELECT *
-            FROM ark_layout_layout
+            FROM ark_view_layout
             WHERE layout = :layout
         ";
         $params = array(
@@ -554,16 +556,16 @@ class Database
     public function getElement($element, $element_type = null)
     {
         $sql = "
-            SELECT ark_layout_element.*, ark_layout_element_type.is_group, ark_layout_element_type.tbl
-            FROM ark_layout_element, ark_layout_element_type
-            WHERE ark_layout_element.element = :element
-            AND ark_layout_element.element_type = ark_layout_element_type.element_type
+            SELECT ark_view_element.*, ark_view_element_type.is_group, ark_view_element_type.tbl
+            FROM ark_view_element, ark_view_element_type
+            WHERE ark_view_element.element = :element
+            AND ark_view_element.element_type = ark_view_element_type.element_type
         ";
         $params = array(
             ':element' => $element,
         );
         if ($element_type) {
-            $sql .= ' AND ark_layout_element.element_type = :element_type';
+            $sql .= ' AND ark_view_element.element_type = :element_type';
             $params[':element_type'] = $element_type;
         }
         return $this->config()->fetchAssoc($sql, $params);
@@ -573,9 +575,9 @@ class Database
     {
         $sql = "
             SELECT *
-            FROM ark_layout_field, ark_schema_property
+            FROM ark_view_field, ark_model_property
             WHERE field = :field
-            AND ark_layout_field.property = ark_schema_property.property
+            AND ark_view_field.property = ark_model_property.property
         ";
         $params = array(
             ':field' => $field,
@@ -599,13 +601,13 @@ class Database
     public function getGroupForModule($group, $module, $modtype = null)
     {
         $sql = "
-            SELECT ark_layout_group.*, ark_layout_element.element_type AS child_type
-            FROM ark_layout_group, ark_layout_element
-            WHERE ark_layout_group.element = :element
-            AND (ark_layout_group.modtype = :module OR ark_layout_group.modtype = :modtype OR ark_layout_group.modtype = :cor)
-            AND ark_layout_group.enabled = :enabled
-            AND ark_layout_group.child = ark_layout_element.element
-            ORDER BY ark_layout_group.row, ark_layout_group.col, ark_layout_group.seq
+            SELECT ark_view_group.*, ark_view_element.element_type AS child_type
+            FROM ark_view_group, ark_view_element
+            WHERE ark_view_group.element = :element
+            AND (ark_view_group.modtype = :module OR ark_view_group.modtype = :modtype OR ark_view_group.modtype = :cor)
+            AND ark_view_group.enabled = :enabled
+            AND ark_view_group.child = ark_view_element.element
+            ORDER BY ark_view_group.row, ark_view_group.col, ark_view_group.seq
         ";
         $params = array(
             ':element' => $group,
@@ -623,19 +625,19 @@ class Database
     public function getGroup($element, $child_type = null, $enabled = true)
     {
         $sql = "
-            SELECT ark_layout_group.*, ark_layout_element.element_type AS child_type
-            FROM ark_layout_group, ark_layout_element
-            WHERE ark_layout_group.element = :element
-            AND ark_layout_group.child = ark_layout_element.element
-            ORDER BY ark_layout_group.row, ark_layout_group.col, ark_layout_group.seq
+            SELECT ark_view_group.*, ark_view_element.element_type AS child_type
+            FROM ark_view_group, ark_view_element
+            WHERE ark_view_group.element = :element
+            AND ark_view_group.child = ark_view_element.element
+            ORDER BY ark_view_group.row, ark_view_group.col, ark_view_group.seq
         ";
         $params[':element'] = $element;
         if ($child_type) {
-            $sql .= ' AND ark_layout_element.element_type = :element_type';
+            $sql .= ' AND ark_view_element.element_type = :element_type';
             $params[':element_type'] = $child_type;
         }
         if ($enabled === true || $enabled === false) {
-            $sql .= ' AND ark_layout_group.enabled = :enabled';
+            $sql .= ' AND ark_view_group.enabled = :enabled';
             $params[':enabled'] = $enabled;
         }
         return $this->config()->fetchAll($sql, $params);
@@ -725,7 +727,7 @@ class Database
     {
         $sql = "
             SELECT *
-            FROM ark_layout_option
+            FROM ark_view_option
             WHERE element = :element
             AND option = :option
         ";
@@ -740,7 +742,7 @@ class Database
     {
         $sql = "
             SELECT *
-            FROM ark_layout_option
+            FROM ark_view_option
             WHERE element = :element
         ";
         $params = array(
@@ -749,16 +751,18 @@ class Database
         return $this->config()->fetchAll($sql, $params);
     }
 
-    public function getSchemaStructure($schema, $module)
+    public function getModelStructure($site, $module)
     {
         $sql = "
             SELECT *
-            FROM ark_schema_structure
-            WHERE ark_schema_structure.schema_id = :schema
-            AND ark_schema_structure.module = :module
+            FROM ark_model_site, ark_model_module
+            WHERE ark_model_site.site = :site
+            AND ark_model_site.module = :module
+            AND ark_model_site.schema_id = ark_model_module.schema_id
+            AND ark_model_site.module = ark_model_module.module
         ";
         $params = array(
-            ':schema' => $schema,
+            ':site' => $site,
             ':module' => $module,
         );
         return $this->config()->fetchAll($sql, $params);
@@ -768,8 +772,8 @@ class Database
     {
         $sql = "
             SELECT *
-            FROM ark_schema_object
-            WHERE ark_schema_object.object = :object
+            FROM ark_model_object
+            WHERE ark_model_object.object = :object
         ";
         $params = array(
             ':object' => $object,
@@ -780,12 +784,12 @@ class Database
     public function getProperty($propertyId)
     {
         $sql = "
-            SELECT *, ark_schema_property.format, ark_schema_property.keyword, ark_schema_format.keyword as format_keyword
-            FROM ark_schema_property
-            LEFT JOIN ark_schema_format ON ark_schema_property.format = ark_schema_format.format
-            LEFT JOIN ark_schema_number ON ark_schema_property.format = ark_schema_number.format
-            LEFT JOIN ark_schema_string ON ark_schema_property.format = ark_schema_string.format
-            WHERE ark_schema_property.property = :property
+            SELECT *, ark_model_property.format, ark_model_property.keyword, ark_model_format.keyword as format_keyword
+            FROM ark_model_property
+            LEFT JOIN ark_model_format ON ark_model_property.format = ark_model_format.format
+            LEFT JOIN ark_model_number ON ark_model_property.format = ark_model_number.format
+            LEFT JOIN ark_model_string ON ark_model_property.format = ark_model_string.format
+            WHERE ark_model_property.property = :property
         ";
         $params = array(
             ':property' => $propertyId,
@@ -797,7 +801,7 @@ class Database
     {
         $sql = "
             SELECT *
-            FROM ark_schema_enum
+            FROM ark_model_enum
             WHERE property = :property
         ";
         $params = array(

@@ -68,7 +68,7 @@ class SiteController
 
     public function getSchemaAction(Application $app, Request $request, $site)
     {
-        $schema = new \ARK\Schema\Group($app['db'], 'site_schema_'.$site);
+        $schema = new \ARK\Model\Site($app['db'], 'site_schema_'.$site);
         $response = new JsonResponse(null);
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
         $response->setData($schema->toSchema());

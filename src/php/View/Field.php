@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Layout/Field.php
+* src/php/View/Field.php
 *
-* ARK Layout Field
+* ARK View Field
 *
 * PHP version 5 and 7
 *
@@ -28,12 +28,12 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Layout/Field.php
+* @see        http://ark.lparchaeology.com/code/src/php/View/Field.php
 * @since      2.0
 *
 */
 
-namespace ARK\Layout;
+namespace ARK\View;
 
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Extension\Core\Type;

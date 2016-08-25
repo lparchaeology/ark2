@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/ArrayProperty.php
+* src/php/Model/Schema.php
 *
-* ARK Schema ArrayProperty
+* ARK Model Schema
 *
 * PHP version 5 and 7
 *
@@ -28,49 +28,17 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/ArrayProperty.php
+* @see        http://ark.lparchaeology.com/code/src/php/Model/Schema.php
 * @since      2.0
 *
 */
 
-namespace ARK\Schema;
+namespace ARK\Model;
 
-class ArrayProperty extends Property
+use ARK\Database\Database;
+
+class Schema
 {
-    private function _loadConfig(Database $db, $config)
-    {
-        parent::_loadConfig($db, $config);
-    }
-
-    public function minItems()
-    {
-        return $this->_minItems;
-    }
-
-    public function maxItems()
-    {
-        return $this->_maxItems;
-    }
-
-    public function uniqueItems()
-    {
-        return $this->_uniqueItems;
-    }
-
-    public function toSchema()
-    {
-        $array['type'] = 'array';
-        $array['items'] = parent::toSchema();
-        $array['additionalItems'] = false;
-        if ($this->_minItems > 0) {
-            $array['minItems'] = $this->_minItems;
-        }
-        if ($this->_maxItems > 1) {
-            $array['maxItems'] = $this->_maxItems;
-        }
-        $array['uniqueItems'] = $this->_uniqueItems;
-        $schema[$this->_id] = $array;
-        return $schema;
-    }
-
+    const FullSchema = 0;
+    const ReferenceSchema = 1;
 }

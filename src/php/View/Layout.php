@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Layout/Layout.php
+* src/php/View/Layout.php
 *
-* ARK Layout Layout
+* ARK View Layout
 *
 * PHP version 5 and 7
 *
@@ -28,12 +28,12 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Layout/Layout.php
+* @see        http://ark.lparchaeology.com/code/src/php/View/Layout.php
 * @since      2.0
 *
 */
 
-namespace ARK\Layout;
+namespace ARK\View;
 
 use Twig_Environment;
 use Symfony\Component\Form\FormFactoryInterface;

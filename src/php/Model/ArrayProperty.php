@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Layout/Grid.php
+* src/php/Model/ArrayProperty.php
 *
-* ARK Grid Layout
+* ARK Model ArrayProperty
 *
 * PHP version 5 and 7
 *
@@ -28,48 +28,48 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Layout/Grid.php
+* @see        http://ark.lparchaeology.com/code/src/php/Model/ArrayProperty.php
 * @since      2.0
 *
 */
 
-namespace ARK\Layout;
+namespace ARK\Model;
 
-use ARK\Database\Database;
-use Symfony\Component\Form\FormFactoryInterface;
-
-class Grid extends Layout
+class ArrayProperty extends Property
 {
-    function __construct(Database $db = null, $layout = null, $module = null, $modtype = null)
+    private function _loadConfig(Database $db, $config)
     {
-        if ($db == null || $layout == null) {
-            return;
+        parent::_loadConfig($db, $config);
+    }
+
+    public function minItems()
+    {
+        return $this->_minItems;
+    }
+
+    public function maxItems()
+    {
+        return $this->_maxItems;
+    }
+
+    public function uniqueItems()
+    {
+        return $this->_uniqueItems;
+    }
+
+    public function definition($reference = Schema::ReferenceSchema)
+    {
+        $definition = parent::definition($reference);
+        $definition['items'] = parent::subschema();
+        $definition['additionalItems'] = false;
+        if ($this->_minItems > 0) {
+            $definition['minItems'] = $this->_minItems;
         }
-        parent::__construct($db, $layout, $module, $modtype);
-        $this->_template = 'layouts/grid.html.twig';
-    }
-
-    function cols($row)
-    {
-        return $this->_grid[$row];
-    }
-
-    function rows()
-    {
-        return $this->_grid;
-    }
-
-    function renderForms(FormFactoryInterface $factory, $itemKey)
-    {
-        $forms = array();
-        foreach ($this->rows() as $rdx => $row) {
-            foreach ($row as $cdx => $col) {
-                foreach ($col as $cell) {
-                    $forms[$rdx][$cdx][] = $cell->renderForms($factory, $itemKey);
-                }
-            }
+        if ($this->_maxItems > 1) {
+            $definition['maxItems'] = $this->_maxItems;
         }
-        return $forms;
+        $definition['uniqueItems'] = $this->_uniqueItems;
+        return $definition;
     }
 
 }

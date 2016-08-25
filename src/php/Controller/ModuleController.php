@@ -5,7 +5,7 @@
 /**
 * src/php/Controller/ModuleController.php
 *
-* ARK Schema Group
+* ARK Module Controller
 *
 * PHP version 5 and 7
 *
@@ -41,7 +41,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use ARK\Schema\Module;
+use ARK\Model\Module;
 
 class ModuleController
 {
@@ -77,12 +77,20 @@ class ModuleController
 
     public function getSchemaAction(Application $app, Request $request, $site, $module)
     {
-        $mod = $app['database']->getModule(strtolower($module));
-        if (!$mod) {
+        $schema = new Module($app['database'], $site, $module);
+
+        if (!$schema->valid()) {
+            $ste = $app['database']->getItem('ste_cd', $site);
+            if (!$ste) {
+                throw new NotFoundHttpException('Site '.$site.' is not valid.');
+            }
+            $mod = $app['database']->getModule($module);
+            if (!$mod) {
+                throw new NotFoundHttpException('Module '.$module.' is not valid');
+            }
             throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$site);
         }
 
-        $schema = new Module($app['database'], 'simple', $mod['module']);
         $response = new JsonResponse(null);
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
         $response->setData($schema->schema());

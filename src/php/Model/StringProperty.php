@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Schema/StringProperty.php
+* src/php/Model/StringProperty.php
 *
-* ARK Schema StringProperty
+* ARK Model StringProperty
 *
 * PHP version 5 and 7
 *
@@ -28,12 +28,12 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Schema/StringProperty.php
+* @see        http://ark.lparchaeology.com/code/src/php/Model/StringProperty.php
 * @since      2.0
 *
 */
 
-namespace ARK\Schema;
+namespace ARK\Model;
 
 use ARK\Database\Database;
 

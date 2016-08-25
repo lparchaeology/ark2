@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Layout/Group.php
+* src/php/View/Group.php
 *
-* ARK Layout Group
+* ARK View Group
 *
 * PHP version 5 and 7
 *
@@ -28,12 +28,12 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Layout/Group.php
+* @see        http://ark.lparchaeology.com/code/src/php/View/Group.php
 * @since      2.0
 *
 */
 
-namespace ARK\Layout;
+namespace ARK\View;
 
 use Symfony\Component\Form\FormBuilder;
 use ARK\Database\Database;
@@ -71,7 +71,7 @@ class Group extends Element
                 case 'subform':
                     $element = new Subform($db, $child['child'], $module, $modtype);
                     break;
-                default: // Page, Column, Layout
+                default: // Page, Column
                     $element = new Group($db, $child['child'], $module, $modtype);
                     break;
             }

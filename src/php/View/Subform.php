@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Layout/Subform.php
+* src/php/View/Subform.php
 *
-* ARK Layout Subform
+* ARK View Subform
 *
 * PHP version 5 and 7
 *
@@ -28,12 +28,12 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Layout/Subform.php
+* @see        http://ark.lparchaeology.com/code/src/php/View/Subform.php
 * @since      2.0
 *
 */
 
-namespace ARK\Layout;
+namespace ARK\View;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
