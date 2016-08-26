@@ -73,6 +73,11 @@ class Item
         return $this->_module;
     }
 
+    public function item()
+    {
+        return $this->_id;
+    }
+
     public function id()
     {
         return $this->_id;

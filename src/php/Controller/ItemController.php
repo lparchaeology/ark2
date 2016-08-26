@@ -102,91 +102,118 @@ class ItemController
         return $response;
     }
 
-    public function viewItemAction(Application $app, Request $request, $site, $module, $item)
+    public function getItemsAction(Application $app, Request $request, $siteSlug, $moduleSlug)
     {
-        $mod = $app['database']->getModule(strtolower($module));
-        if (!$mod) {
-            throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$site);
-        }
+        $response = new JsonResponse(null);
+        $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
+        $jsonapi['jsonapi']['version'] = '1.0';
+        $errors = array();
 
-        $mod_tbl = $mod['tbl'];
-        $modtype = $mod['modtype'];
-        $itemkey = $mod['itemkey'];
-        $itemvalue = $site.'_'.$item;
+        $model = new Module($app['database'], $siteSlug, $moduleSlug);
 
-        $itemRow = $app['database']->getItem($itemkey, $itemvalue, $mod_tbl);
-        if (!$itemRow) {
-            throw new NotFoundHttpException('Item '.$itemvalue.' not found!');
-        }
-
-        $itemKey = array(
-            'site' => $site,
-            'module' => $mod['module'],
-            'item' => $item,
-            'key' => $itemkey,
-            'value' => $itemRow[$itemkey],
-        );
-        if (empty($modtype)) {
-            $itemKey['modtype'] = $mod['module'];
+        if ($model->valid()) {
         } else {
-            $itemKey['modtype'] = $modtype;
-            $itemKey[$modtype] = $itemRow[$modtype];
+            $site = $app['database']->getItem('ste_cd', $siteSlug);
+            if (!$site) {
+                $error['title'] = 'Invalid Site Code';
+                $error['detail'] = 'Site Code '.$siteSlug.' is not valid.';
+                $errors[] = $error;
+            }
+            $mod = $app['database']->getModule($moduleSlug);
+            if (!$mod) {
+                $error['title'] = 'Invalid Module';
+                $error['detail'] = 'Module '.$moduleSlug.' is not valid.';
+                $errors[] = $error;
+            }
+            if (!$errors) {
+                $error['title'] = 'Invalid Module for Site Code';
+                $error['detail'] = 'Module '.$moduleSlug.' is not valid for Site Code '.$siteSlug;
+                $errors[] = $error;
+            }
+        }
+
+        if ($errors) {
+            $jsonapi['errors'] = $errors;
+        } else {
+            $data['type'] = $model->type();
+            $data['id'] = $item->itemvalue();
+            $data['meta']['site'] = $item->site();
+            $data['meta']['module'] = $item->module();
+            $data['meta']['item'] = $item->id();
+            $data['attributes'] = $model->data($app['database'], $item, $app['locale']);
+            $jsonapi['data'] = $data;
+        }
+
+        $response->setData($jsonapi);
+        return $response;
+    }
+
+    public function viewItemAction(Application $app, Request $request, $siteSlug, $moduleSlug, $itemSlug)
+    {
+        $model = new Module($app['database'], $siteSlug, $moduleSlug);
+
+        if ($model->valid()) {
+            $item = new Item($app['database'], $model->site(), $model->module(), $itemSlug);
+            if (!$item->valid()) {
+                throw new NotFoundHttpException('Item '.$itemSlug.' is not valid for Site Code '.$siteSlug.' and Module '.$moduleSlug);
+            }
+        } else {
+            $site = $app['database']->getItem('ste_cd', $siteSlug);
+            if (!$site) {
+                throw new NotFoundHttpException('Site Code '.$siteSlug.' is not valid.');
+            }
+            $mod = $app['database']->getModule($moduleSlug);
+            if (!$mod) {
+                throw new NotFoundHttpException('Module '.$moduleSlug.' is not valid.');
+            }
+            throw new NotFoundHttpException('Module '.$module.' is not valid for Site Code '.$site);
         }
 
         // TODO Make into a Subform
         $forms = array();
-        $formBuilder = $app->form($itemKey);
+        $formBuilder = $app->form($item);
         $formBuilder->add('site', Type\TextType::class, array('label' => 'Site', 'attr' => array('readonly' => true)));
         $formBuilder->add('module', Type\TextType::class, array('label' => 'Module', 'attr' => array('readonly' => true)));
         $formBuilder->add('item', Type\TextType::class, array('label' => 'Item', 'attr' => array('readonly' => true)));
         $forms['item_form'] = $formBuilder->getForm()->createView();
 
-        $layout = Layout::fetchLayout($app['database'], 'cor_layout_item', $itemKey['module'], $itemRow[$modtype]);
+        $layout = Layout::fetchLayout($app['database'], 'cor_layout_item', $item->module(), $item->modtype());
         $options = array('item_form' => $forms['item_form']);
-        return $layout->render($app['twig'], $options, $app['form.factory'], $itemKey);
+        return $layout->render($app['twig'], $options, $app['form.factory'], $item);
     }
 
-    public function registerItemAction(Application $app, Request $request, $ste_cd, $mod_slug)
+    public function registerItemAction(Application $app, Request $request, $siteSlug, $moduleSlug)
     {
-        $module = $app['database']->getModule(strtolower($mod_slug));
-        if (!$module) {
-            throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$ste_cd);
+        $model = new Module($app['database'], $siteSlug, $moduleSlug);
+
+        if (!$model->valid()) {
+            $site = $app['database']->getItem('ste_cd', $siteSlug);
+            if (!$site) {
+                throw new NotFoundHttpException('Site Code '.$siteSlug.' is not valid.');
+            }
+            $mod = $app['database']->getModule($moduleSlug);
+            if (!$mod) {
+                throw new NotFoundHttpException('Module '.$moduleSlug.' is not valid.');
+            }
+            throw new NotFoundHttpException('Module '.$module.' is not valid for Site Code '.$site);
         }
 
-        $mod_tbl = $module['tbl'];
-        $modtype = $module['modtype'];
-        $itemkey = $module['itemkey'];
-
-        $itemKey = array(
-            'site' => $ste_cd,
-            'mod_slug' => $mod_slug,
-            'module' => $module['module'],
-            'key' => $itemkey,
-        );
-
-        $layout = Layout::fetchLayout($app['database'], 'cor_layout_register', $module['module']);
+        $layout = Layout::fetchLayout($app['database'], 'cor_layout_register', $model->module());
 
         $fields = $layout->allFields();
-        dump($fields);
         foreach ($fields as $field) {
             if ($field->dataclass() == 'itemkey') {
                 $keyfield = $field->id();
             }
         }
-        $items = $app['database']->getRecentItems($ste_cd, $module['module'], 5);
-        foreach ($items as &$item) {
-            if (empty($modtype)) {
-                $itemKey['modtype'] = $module['module'];
-            } else {
-                $itemKey['modtype'] = $modtype;
-                $itemKey[$modtype] = $item[$modtype];
-            }
-            $itemKey['value'] = $item[$itemkey];
+        $recent = $app['database']->getRecentItems($ste_cd, $model->module(), 5);
+        foreach ($recent as $key) {
+            $item = new Item($model->site(), $model->module(), str($key[$model->itemno()]));
             $data = array();
             foreach ($fields as $field) {
-                $data = array_merge($data, $field->formData($itemKey, true));
+                $data = array_merge($data, $field->formData($item, true));
             }
-            $item = array_merge($item, $data);
+            $items[] = array_merge($item, $data);
         }
 
 

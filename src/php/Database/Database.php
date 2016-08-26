@@ -41,6 +41,9 @@ use Doctrine\DBAL\DBALException;
 
 class Database
 {
+    const FetchFirst = 0;
+    const FetchAll =1;
+
     private $_app = null;
     private $_drivers = array('pdo_mysql', 'pdo_pgsql', 'pdo_sqlite');
 
@@ -285,7 +288,7 @@ class Database
         }
     }
 
-    public function getText($itemkey, $itemvalue, $txttype, $lang)
+    public function getText($itemkey, $itemvalue, $txttype, $lang, $mode = Database::FetchFirst)
     {
         $sql = "
             SELECT *
@@ -301,10 +304,13 @@ class Database
             ':txttype' => $txttype,
             ':lang' => $lang,
         );
+        if ($mode == Database::FetchAll) {
+            return $this->data()->fetchAll($sql, $params);
+        }
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getNumber($itemkey, $itemvalue, $numbertype)
+    public function getNumber($itemkey, $itemvalue, $numbertype, $mode = Database::FetchFirst)
     {
         $sql = "
             SELECT *
@@ -318,10 +324,13 @@ class Database
             ':itemvalue' => $itemvalue,
             ':numbertype' => $numbertype,
         );
+        if ($mode == Database::FetchAll) {
+            return $this->data()->fetchAll($sql, $params);
+        }
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getDate($itemkey, $itemvalue, $datetype)
+    public function getDate($itemkey, $itemvalue, $datetype, $mode = Database::FetchFirst)
     {
         $sql = "
             SELECT *
@@ -335,10 +344,13 @@ class Database
             ':itemvalue' => $itemvalue,
             ':datetype' => $datetype,
         );
+        if ($mode == Database::FetchAll) {
+            return $this->data()->fetchAll($sql, $params);
+        }
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getSpan($itemkey, $itemvalue, $spantype)
+    public function getSpan($itemkey, $itemvalue, $spantype, $mode = Database::FetchFirst)
     {
         $sql = "
             SELECT *
@@ -352,10 +364,13 @@ class Database
             ':itemvalue' => $itemvalue,
             ':spantype' => $spantype,
         );
+        if ($mode == Database::FetchAll) {
+            return $this->data()->fetchAll($sql, $params);
+        }
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getAttribute($itemkey, $itemvalue, $attributetype)
+    public function getAttribute($itemkey, $itemvalue, $attributetype, $mode = Database::FetchFirst)
     {
         $sql = "
             SELECT *
@@ -369,10 +384,13 @@ class Database
             ':itemvalue' => $itemvalue,
             ':attributetype' => $attributetype,
         );
+        if ($mode == Database::FetchAll) {
+            return $this->data()->fetchAll($sql, $params);
+        }
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getFile($itemkey, $itemvalue, $property)
+    public function getFile($itemkey, $itemvalue, $property, $mode = Database::FetchFirst)
     {
         $sql = "
             SELECT *
@@ -387,10 +405,13 @@ class Database
             ':itemvalue' => $itemvalue,
             ':property' => $property,
         );
+        if ($mode == Database::FetchAll) {
+            return $this->data()->fetchAll($sql, $params);
+        }
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getAction($itemkey, $itemvalue, $actiontype)
+    public function getAction($itemkey, $itemvalue, $actiontype, $mode = Database::FetchFirst)
     {
         $sql = "
             SELECT *
@@ -404,10 +425,13 @@ class Database
             ':itemvalue' => $itemvalue,
             ':actiontype' => $actiontype,
         );
+        if ($mode == Database::FetchAll) {
+            return $this->data()->fetchAll($sql, $params);
+        }
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getActor($itemkey, $itemvalue, $mod_tbl = null)
+    public function getActor($itemkey, $itemvalue, $mode = Database::FetchFirst, $mod_tbl = null)
     {
         if (empty($mod_tbl)) {
             $mod_tbl = $this->getModuleTable($itemkey);
@@ -420,6 +444,9 @@ class Database
         $params = array(
             ':itemvalue' => $itemvalue,
         );
+        if ($mode == Database::FetchAll) {
+            return $this->data()->fetchAll($sql, $params);
+        }
         return $this->data()->fetchAssoc($sql, $params);
     }
 

@@ -153,7 +153,7 @@ class Field extends Element
         return $this->_values;
     }
 
-    function formData($itemKey, $trans = false)
+    function formData($item, $trans = false)
     {
         if (!$this->isValid()) {
             return array();
@@ -162,45 +162,45 @@ class Field extends Element
         switch ($this->dataclass()) {
             case 'itemkey':
                 if ($trans) {
-                    $data[$this->id()] = '<a href="sites/'.$itemKey['site'].'/'.$itemKey['mod_slug'].'/'.$itemKey['value'].'">'.$itemKey['value'].'</a>';
-                    $data[$this->id()] = $itemKey['value'];
+                    $data[$this->id()] = '<a href="sites/'.$item->site().'/'.$item->module().'/'.$item->itemvalue().'">'.$item->itemvalue().'</a>';
+                    $data[$this->id()] = $item->itemvalue();
                 } else {
-                    $data[$this->id()] = $itemKey['value'];
+                    $data[$this->id()] = $item->itemvalue();
                 }
                 break;
             case 'modtype':
                 if ($trans) {
-                    $data[$this->id()] = $itemKey['modtype'].'.'.$itemKey[$itemKey['modtype']].'.normal';
+                    $data[$this->id()] = $item->module().'.'.$item->modtype().'.normal';
                 } else {
-                    $data[$this->id()] = $itemKey['modtype'];
+                    $data[$this->id()] = $item->modtype();
                 }
                 break;
             case 'txt':
-                $row = $this->_db->getText($itemKey['key'], $itemKey['value'], $this->property(), 'en');
+                $row = $this->_db->getText($item->itemkey(), $item->itemvalue(), $this->property(), 'en');
                 if (isset($row['txt'])) {
                     $data[$this->id()] = $row['txt'];
                 }
                 break;
             case 'number':
-                $row = $this->_db->getNumber($itemKey['key'], $itemKey['value'], $this->property());
+                $row = $this->_db->getNumber($item->itemkey(), $item->itemvalue(), $this->property());
                 if (isset($row['number'])) {
                     $data[$this->id()] = $row['number'];
                 }
                 break;
             case 'date':
-                $row = $this->_db->getDate($itemKey['key'], $itemKey['value'], $this->property());
+                $row = $this->_db->getDate($item->itemkey(), $item->itemvalue(), $this->property());
                 if (isset($row['date'])) {
                     $data[$this->id()] = new \DateTime($row['date']);
                 }
                 break;
             case 'span':
-                $row = $this->_db->getSpan($itemKey['key'], $itemKey['value'], $this->property());
+                $row = $this->_db->getSpan($item->itemkey(), $item->itemvalue(), $this->property());
                 if (isset($row['date'])) {
                     $data[$this->id()] = new \DateTime($row['date']);
                 }
                 break;
             case 'attribute':
-                $row = $this->_db->getAttribute($itemKey['key'], $itemKey['value'], $this->property());
+                $row = $this->_db->getAttribute($item->itemkey(), $item->itemvalue(), $this->property());
                 if (isset($row['attribute'])) {
                     if ($trans) {
                         $data[$this->id()] = 'attribute.'.$row['attributetype'].'.'.$row['attribute'].'.normal';
@@ -210,13 +210,13 @@ class Field extends Element
                 }
                 break;
             case 'file':
-                $row = $this->_db->getFile($itemKey['key'], $itemKey['value'], $this->property());
+                $row = $this->_db->getFile($item->itemkey(), $item->itemvalue(), $this->property());
                 if (isset($row['file'])) {
                     //$data[$this->id()] = $row['filename'];
                 }
                 break;
             case 'action':
-                $action = $this->_db->getAction($itemKey['key'], $itemKey['value'], $this->property());
+                $action = $this->_db->getAction($item->itemkey(), $item->itemvalue(), $this->property());
                 if (isset($action['actor_itemkey']) and isset($action['actor_itemvalue'])) {
                     if ($trans) {
                         $data[$this->id()] = $action['actor_itemkey'].'.'.$action['actor_itemvalue'].'.name';

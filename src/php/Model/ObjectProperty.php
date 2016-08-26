@@ -106,8 +106,12 @@ class ObjectProperty extends Property
     public function data(Database $db, $item, $lang)
     {
         $data = array();
+        // TODO Graph/chain data!
         foreach ($this->properties() as $property) {
             $data[$property->id()] = $property->data($db, $item, $lang);
+        }
+        if ($this->maxItems() != 1) {
+            return array($data);
         }
         return $data;
     }

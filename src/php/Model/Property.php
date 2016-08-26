@@ -217,36 +217,70 @@ class Property
         return $schema;
     }
 
+    protected function _mode()
+    {
+        if ($this->_maxItems == 1) {
+            return Database::FetchFirst;
+        }
+        return Database::FetchAll;
+    }
+
+    protected function _value($data, $field, $field2 = null)
+    {
+        if (!$data) {
+            return null;
+        }
+        if ($this->_maxItems == 1) {
+            if ($field2) {
+                return array($data[$field], $data[$field2]);
+            }
+            return $data[$field];
+        }
+        $values = null;
+        foreach ($data as $row) {
+            if ($field2) {
+                $values[] = array($row[$field], $row[$field2]);
+            } else {
+                $values[] = $row[$field];
+            }
+        }
+        return $values;
+    }
+
     public function data(Database $db, $item, $lang)
     {
         switch ($this->_dataclass) {
             case 'action':
-                $data =  $db->getAction($item->itemkey(), $item->itemvalue(), $this->_id);
-                $value = ($data ? array($data['actor_itemkey'], $data['actor_itemvalue']) : null);
+                $data =  $db->getAction($item->itemkey(), $item->itemvalue(), $this->_id, $this->_mode());
+                $value = $this->_value($data, 'actor_itemkey', 'actor_itemvalue');
+                break;
+            case 'attribute':
+                $data =  $db->getAttribute($item->itemkey(), $item->itemvalue(), $this->_id, $this->_mode());
+                $value = $this->_value($data, 'attribute');
                 break;
             case 'date':
-                $data = $db->getDate($item->itemkey(), $item->itemvalue(), $this->_id);
-                $value = ($data ? $data['date'] : null);
+                $data = $db->getDate($item->itemkey(), $item->itemvalue(), $this->_id, $this->_mode());
+                $value = $this->_value($data, 'date');
                 break;
             case 'file':
-                $data = $db->getFile($item->itemkey(), $item->itemvalue(), $this->_id);
-                $value = ($data ? $data['filename'] : null);
+                $data = $db->getFile($item->itemkey(), $item->itemvalue(), $this->_id, $this->_mode());
+                $value = $this->_value($data, 'filename');
                 break;
             case 'number':
-                $data = $db->getNumber($item->itemkey(), $item->itemvalue(), $this->_id);
-                $value = ($data ? $data['number'] : null);
+                $data = $db->getNumber($item->itemkey(), $item->itemvalue(), $this->_id, $this->_mode());
+                $value = $this->_value($data, 'number');
                 break;
             case 'span':
-                $data = $db->getSpan($item->itemkey(), $item->itemvalue(), $this->_id);
-                $value = ($data ? array($data['beg'], $data['end']) : null);
+                $data = $db->getSpan($item->itemkey(), $item->itemvalue(), $this->_id, $this->_mode());
+                $value = $this->_value($data, 'beg', 'end');
                 break;
             case 'txt':
-                $data = $db->getText($item->itemkey(), $item->itemvalue(), $this->_id, $lang);
-                $value = ($data ? $data['txt'] : null);
+                $data = $db->getText($item->itemkey(), $item->itemvalue(), $this->_id, $lang, $this->_mode());
+                $value = $this->_value($data, 'txt');
                 break;
             case 'xmi':
-                $data = $db->getXmi($item->itemkey(), $item->itemvalue(), $this->_id);
-                $value = ($data ? array($data['xmi_itemkey'], $data['xmi_itemvalue']) : null);
+                $data = $db->getXmi($item->itemkey(), $item->itemvalue(), $this->_id, $this->_mode());
+                $value = $this->_value($data, 'xmi_itemkey', 'xmi_itemvalue');
                 break;
             case 'modtype':
                 $value = $item->modtype();
@@ -261,38 +295,39 @@ class Property
                 $value = $item->site();
                 break;
             default:
-                $value = null;
+                $value = 'dataclass = '.$this->_dataclass;
                 break;
         }
-        if ($value) {
-            return $value;
-        }
-        return null;
+        return $value;
     }
 
     static public function property(Database $db, $propertyId, $schema = null)
     {
-        $config = $db->getProperty($propertyId);
-        $config['schema'] = $schema;
         $property = null;
-        switch ($config['type']) {
-            case 'object':
-                $property = new ObjectProperty();
-                break;
-            case 'array':
-                $property = new ArrayProperty();
-                break;
-            case 'string':
-                $property = new StringProperty();
-                break;
-            case 'number':
-                $property = new NumberProperty();
-                break;
-            default:
-                $property = new Property();
-                break;
+        $config = $db->getProperty($propertyId);
+        if ($config) {
+            if ($schema) {
+                $config['schema'] = $schema;
+            }
+            switch ($config['type']) {
+                case 'object':
+                    $property = new ObjectProperty();
+                    break;
+                case 'array':
+                    $property = new ArrayProperty();
+                    break;
+                case 'string':
+                    $property = new StringProperty();
+                    break;
+                case 'number':
+                    $property = new NumberProperty();
+                    break;
+                default:
+                    $property = new Property();
+                    break;
+            }
+            $property->_loadConfig($db, $config);
         }
-        $property->_loadConfig($db, $config);
         return $property;
     }
 

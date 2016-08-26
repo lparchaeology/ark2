@@ -136,7 +136,10 @@ class Module
 
     public function properties($modtype)
     {
-        return array_merge($this->_properties[$this->_module], $this->_properties[$modtype]);
+        if (isset($this->_properties[$modtype])) {
+            return array_merge($this->_properties[$this->_module], $this->_properties[$modtype]);
+        }
+        return $this->_properties[$this->_module];
     }
 
     public function required($modtype)
