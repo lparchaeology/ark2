@@ -40,6 +40,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Extension\Core\Type;
+use ARK\Model\Item;
+use ARK\Model\Site;
 
 class SiteController
 {
@@ -66,13 +68,52 @@ class SiteController
         return $app['twig']->render('pages/page.html.twig', array('form' => $form->createView()));
     }
 
-    public function getSchemaAction(Application $app, Request $request, $site)
+    public function getSiteAction(Application $app, Request $request, $siteSlug)
     {
-        $schema = new \ARK\Model\Site($app['db'], 'site_schema_'.$site);
         $response = new JsonResponse(null);
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
-        $response->setData($schema->toSchema());
+        $jsonapi['jsonapi']['version'] = '1.0';
+        $errors = array();
+
+        try {
+            $site = Site::get($app['database'], $siteSlug);
+            $item = Item::get($app['database'], $site->id(), 'ste', $site->id());
+            if ($request->get('schema') == 'true') {
+                $jsonapi['meta']['schema'] = $site->schema();
+            }
+            $jsonapi['data']['type'] = $site->type();
+            $jsonapi['data']['id'] = $site->id();
+            $jsonapi['data']['attributes'] = $site->data($item, $app['locale']);
+        } catch (Error $e) {
+            $jsonapi['errors'][] = $e->payload();
+        }
+
+        $response->setData($jsonapi);
         return $response;
     }
 
+    public function getSitesAction(Application $app, Request $request)
+    {
+        $response = new JsonResponse(null);
+        $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
+        $jsonapi['jsonapi']['version'] = '1.0';
+        $errors = array();
+
+        try {
+            $sites = Site::getAll($app['database']);
+            foreach ($sites as $site) {
+                $resource['type'] = $site->type();
+                $resource['id'] = $site->id();
+                if ($request->get('schema') == 'true') {
+                    $resource['meta']['schema'] = $site->schema();
+                }
+                $jsonapi['data'][] = $resource;
+            }
+        } catch (Error $e) {
+            $jsonapi['errors'][] = $e->payload();
+        }
+
+        $response->setData($jsonapi);
+        return $response;
+    }
 }

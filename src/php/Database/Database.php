@@ -463,6 +463,73 @@ class Database
         return $this->data()->fetchAll($sql, $params);
     }
 
+    public function getSites()
+    {
+        $sql = "
+            SELECT *
+            FROM ark_module_ste
+        ";
+        $params = array();
+        $items = $this->data()->fetchAll($sql, $params);
+        $sql = "
+            SELECT *
+            FROM ark_model_site, ark_config_module
+            WHERE ark_model_site.module = :module
+            AND ark_model_site.module = ark_config_module.module
+        ";
+        $params = array(
+            ':module' => 'ste',
+        );
+        $mods = $this->config()->fetchAll($sql, $params);
+        foreach ($mods as $module) {
+            $modules[$module['site']] = $module;
+        }
+        foreach ($items as $item) {
+            $sites[] = array_merge($item, $modules[$item['ste_cd']]);
+        }
+        return $sites;
+    }
+
+    public function getSite($site)
+    {
+        $item = $this->getItem('ste_cd', $site, 'ark_module_ste');
+        if (!$item) {
+            return $item;
+        }
+        $module = $this->getSiteModule($site, 'ste');
+        return array_merge($item, $module);
+    }
+
+    public function getSiteModules($site)
+    {
+        $sql = "
+            SELECT *
+            FROM ark_model_site, ark_config_module
+            WHERE ark_model_site.site = :site
+            AND ark_model_site.module = ark_config_module.module
+        ";
+        $params = array(
+            ':site' => $site,
+        );
+        return $this->config()->fetchAll($sql, $params);
+    }
+
+    public function getSiteModule($site, $module)
+    {
+        $sql = "
+            SELECT *
+            FROM ark_model_site, ark_config_module
+            WHERE ark_model_site.site = :site
+            AND ark_model_site.module = :module
+            AND ark_model_site.module = ark_config_module.module
+        ";
+        $params = array(
+            ':site' => $site,
+            ':module' => $module,
+        );
+        return $this->config()->fetchAssoc($sql, $params);
+    }
+
     public function getItem($itemkey, $itemvalue, $mod_tbl = null)
     {
         if (empty($mod_tbl)) {
@@ -791,34 +858,52 @@ class Database
         return $this->config()->fetchAll($sql, $params);
     }
 
-    public function getModelStructure($site, $module)
+    public function getSchemaProperties($schema, $module)
     {
         $sql = "
-            SELECT *
-            FROM ark_model_site, ark_model_module
-            WHERE ark_model_site.site = :site
-            AND ark_model_site.module = :module
-            AND ark_model_site.schema_id = ark_model_module.schema_id
-            AND ark_model_site.module = ark_model_module.module
+            SELECT *, ark_model_property.format, ark_model_property.keyword, ark_model_format.keyword as format_keyword
+            FROM ark_model_module, ark_model_property
+            LEFT JOIN ark_model_format ON ark_model_property.format = ark_model_format.format
+            LEFT JOIN ark_model_number ON ark_model_property.format = ark_model_number.format
+            LEFT JOIN ark_model_string ON ark_model_property.format = ark_model_string.format
+            WHERE ark_model_module.schema_id = :schema
+            AND ark_model_module.module = :module
+            AND ark_model_module.property = ark_model_property.property
         ";
         $params = array(
-            ':site' => $site,
+            ':schema' => $schema,
             ':module' => $module,
         );
-        return $this->config()->fetchAll($sql, $params);
+        $results = $this->config()->fetchAll($sql, $params);
+        foreach ($results as $result) {
+            if ((!isset($result['keyword']) || !$result['keyword']) && isset($result['format_keyword'])) {
+                $result['keyword'] = $result['format_keyword'];
+            }
+        }
+        return $results;
     }
 
     public function getObjectProperties($object)
     {
         $sql = "
-            SELECT *
-            FROM ark_model_object
+            SELECT *, ark_model_property.format, ark_model_property.keyword, ark_model_format.keyword as format_keyword
+            FROM ark_model_object, ark_model_property
+            LEFT JOIN ark_model_format ON ark_model_property.format = ark_model_format.format
+            LEFT JOIN ark_model_number ON ark_model_property.format = ark_model_number.format
+            LEFT JOIN ark_model_string ON ark_model_property.format = ark_model_string.format
             WHERE ark_model_object.object = :object
+            AND ark_model_object.property = ark_model_property.property
         ";
         $params = array(
             ':object' => $object,
         );
-        return $this->config()->fetchAll($sql, $params);
+        $results = $this->config()->fetchAll($sql, $params);
+        foreach ($results as $result) {
+            if ((!isset($result['keyword']) || !$result['keyword']) && isset($result['format_keyword'])) {
+                $result['keyword'] = $result['format_keyword'];
+            }
+        }
+        return $results;
     }
 
     public function getProperty($property)
@@ -834,7 +919,11 @@ class Database
         $params = array(
             ':property' => $property,
         );
-        return $this->config()->fetchAssoc($sql, $params);
+        $result = $this->config()->fetchAssoc($sql, $params);
+        if ((!isset($result['keyword']) or !$result['keyword']) && isset($result['format_keyword'])) {
+            $result['keyword'] = $result['format_keyword'];
+        }
+        return $result;
     }
 
     public function getEnums($property)

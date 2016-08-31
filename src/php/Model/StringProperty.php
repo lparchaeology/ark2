@@ -39,62 +39,67 @@ use ARK\Database\Database;
 
 class StringProperty extends Property
 {
-    private $_pattern = '';
-    private $_minLength = 0;
-    private $_maxLength = 0;
-    private $_size = 0;
-    private $_spellcheck = false;
+    private $pattern = '';
+    private $minLength = 0;
+    private $maxLength = 0;
+    private $size = 0;
+    private $spellcheck = false;
 
-    protected function _loadConfig(Database $db, $config)
+    protected function __construct(Database $db, $id)
     {
-        parent::_loadConfig($db, $config);
-        $this->_pattern = $config['pattern'];
-        $this->_minLength = $config['min_length'];
-        $this->_maxLength = $config['max_length'];
-        $this->_size = $config['size'];
-        $this->_spellcheck = (bool)$config['spellcheck'];
+        parent::__construct($db, $id);
+    }
+
+    protected function loadConfig($config)
+    {
+        parent::loadConfig($config);
+        $this->pattern = $config['pattern'];
+        $this->minLength = $config['min_length'];
+        $this->maxLength = $config['max_length'];
+        $this->size = $config['size'];
+        $this->spellcheck = (bool)$config['spellcheck'];
     }
 
     public function pattern()
     {
-        return $this->_pattern;
+        return $this->pattern;
     }
 
     public function minLength()
     {
-        return $this->_minLength;
+        return $this->minLength;
     }
 
     public function maxLength()
     {
-        return $this->_maxLength;
+        return $this->maxLength;
     }
 
     public function size()
     {
-        return $this->_size;
+        return $this->size;
     }
 
     public function spellcheck()
     {
-        return $this->_spellcheck;
+        return $this->spellcheck;
     }
 
     public function definition($reference = Schema::ReferenceSchema)
     {
         $definition = parent::definition($reference);
         if (!$reference) {
-            if ($this->_minLength > 0) {
-                $definition['min_length'] = $this->_minLength;
+            if ($this->minLength > 0) {
+                $definition['min_length'] = $this->minLength;
             }
-            if ($this->_maxLength > 0) {
-                $definition['max_length'] = $this->_maxLength;
+            if ($this->maxLength > 0) {
+                $definition['max_length'] = $this->maxLength;
             }
-            if ($this->_pattern) {
-                $definition['pattern'] = $this->_pattern;
+            if ($this->pattern) {
+                $definition['pattern'] = $this->pattern;
             }
-            if ($this->_format && $this->_format != 'text') {
-                $definition['format'] = $this->_format;
+            if ($this->format && $this->format != 'text') {
+                $definition['format'] = $this->format;
             }
         }
         return $definition;

@@ -37,132 +37,123 @@ namespace ARK\Model;
 
 use ARK\Database\Database;
 
-class Property
+class Property extends AbstractResource
 {
-    private $_id = '';
-    protected $_format = '';
-    private $_type = '';
-    private $_default = null;
-    private $_input = '';
-    private $_minItems = 0;
-    private $_maxItems = 1;
-    private $_uniqueItems = true;
-    private $_sortable = false;
-    private $_searchable = false;
-    private $_dataclass = '';
-    private $_keyword = '';
-    private $_enum = array();
-    protected $_valid = false;
+    protected $format = '';
+    private $default = null;
+    private $input = '';
+    private $minItems = 0;
+    private $maxItems = 1;
+    private $uniqueItems = true;
+    private $sortable = false;
+    private $searchable = false;
+    private $dataclass = '';
+    private $enum = array();
 
-    protected function _loadConfig(Database $db, $config)
+    protected function __construct(Database $db, $id)
     {
+        parent::__construct($db, $id);
+    }
+
+    protected function loadConfig($config)
+    {
+        parent::loadConfig($config);
+
         if (!isset($config['property'])) {
             return;
         }
-        $this->_id = $config['property'];
-        $this->_format = $config['format'];
-        $this->_type = $config['type'];
-        $this->_input = $config['input'];
-        $this->_minItems = $config['min_items'];
-        $this->_maxItems = $config['max_items'];
-        $this->_uniqueItems = (bool)$config['unique_items'];
-        $this->_sortable = (bool)$config['sortable'];
-        $this->_searchable = (bool)$config['searchable'];
-        $this->_dataclass = $config['dataclass'];
-        $this->_keyword = ($config['keyword'] ? $config['keyword'] : $config['format_keyword']);
+        $this->id = $config['property'];
+        $this->format = $config['format'];
+        $this->type = $config['type'];
+        $this->input = $config['input'];
+        $this->minItems = $config['min_items'];
+        $this->maxItems = $config['max_items'];
+        $this->uniqueItems = (bool)$config['unique_items'];
+        $this->sortable = (bool)$config['sortable'];
+        $this->searchable = (bool)$config['searchable'];
+        $this->dataclass = $config['dataclass'];
+        $this->keyword = ($config['keyword'] ? $config['keyword'] : $config['format_keyword']);
 
-        if ($this->_dataclass == 'modtype') {
-            $modtypes = $db->getModtypes($config['module'], $config['schema']);
+        if ($this->dataclass == 'modtype') {
+            $modtypes = $this->db->getModtypes($config['module'], $config['schema_id']);
             foreach ($modtypes as $modtype) {
-                $this->_enum[] = $modtype['modtype'];
+                $this->enum[] = $modtype['modtype'];
             }
-        } else if ($this->_dataclass == 'module') {
-            $this->_enum[] = $config['module'];
+        } else if ($this->dataclass == 'module') {
+            $this->enum[] = $config['module'];
         } else {
-            $this->_enum = $db->getEnums($this->_id);
+            $enums = $this->db->getEnums($this->id);
+            foreach ($enums as $enum) {
+                $this->enum[] = $enum['value'];
+            }
         }
 
-        $this->_valid = true;
-    }
-
-    public function id()
-    {
-        return $this->_id;
+        $this->valid = true;
     }
 
     public function format()
     {
-        return $this->_format;
-    }
-
-    public function type()
-    {
-        return $this->_type;
+        return $this->format;
     }
 
     public function defaultValue()
     {
-        return $this->_default;
+        return $this->default;
     }
 
     public function input()
     {
-        return $this->_input;
+        return $this->input;
     }
 
     public function isArray()
     {
-        return ($this->_maxItems != 1);
+        return ($this->maxItems != 1);
     }
 
     public function minItems()
     {
-        return $this->_minItems;
+        return $this->minItems;
     }
 
     public function maxItems()
     {
-        return $this->_maxItems;
+        return $this->maxItems;
     }
 
     public function uniqueItems()
     {
-        return $this->_uniqueItems;
+        return $this->uniqueItems;
     }
 
     public function hasEnum()
     {
-        return (count($this->_enum) > 0);
+        return (count($this->enum) > 0);
     }
 
     public function enum()
     {
-        return $this->_enum;
+        return $this->enum;
     }
 
     public function classtype()
     {
-        return $this->_classtype;
-    }
-
-    public function keyword()
-    {
-        return $this->_keyword;
+        return $this->classtype;
     }
 
     public function sortable()
     {
-        return $this-_sortable;
+        return $this-sortable;
     }
 
     public function searchable()
     {
-        return $this->_searchable;
+        return $this->searchable;
     }
 
     public function reference()
     {
-        return "#/definitions/".$this->_format;
+        return "#/definitions/".$this->format;
     }
 
     public function definition($reference = Schema::ReferenceSchema)
@@ -171,7 +162,7 @@ class Property
         if ($reference) {
             $definition['$ref'] = $this->reference();
         } else {
-            $definition['type'] = $this->_type;
+            $definition['type'] = $this->type();
         }
         return $definition;
     }
@@ -179,15 +170,15 @@ class Property
     public function attributes()
     {
         $attributes = array();
-        if ($this->_keyword) {
-            $attributes['title'] = $this->_keyword.'.title';
-            $attributes['description'] = $this->_keyword.'.description';
+        if ($this->keyword) {
+            $attributes['title'] = $this->keyword.'.title';
+            $attributes['description'] = $this->keyword.'.description';
         }
-        if ($this->_default != null) {
-            $attributes['default'] = $this->_default;
+        if ($this->default != null) {
+            $attributes['default'] = $this->default;
         }
         if ($this->hasEnum()) {
-            $attributes['enum'] = $this->_enum;
+            $attributes['enum'] = $this->enum();
         }
         return $attributes;
     }
@@ -205,32 +196,32 @@ class Property
             $array['type'] = 'array';
             $array['items'] = $schema;
             $array['additionalItems'] = false;
-            if ($this->_minItems > 0) {
-                $array['minItems'] = $this->_minItems;
+            if ($this->minItems > 0) {
+                $array['minItems'] = $this->minItems;
             }
-            if ($this->_maxItems > 1) {
-                $array['maxItems'] = $this->_maxItems;
+            if ($this->maxItems > 1) {
+                $array['maxItems'] = $this->maxItems;
             }
-            $array['uniqueItems'] = $this->_uniqueItems;
+            $array['uniqueItems'] = $this->uniqueItems;
             return $array;
         }
         return $schema;
     }
 
-    protected function _mode()
+    protected function mode()
     {
-        if ($this->_maxItems == 1) {
+        if ($this->maxItems == 1) {
             return Database::FetchFirst;
         }
         return Database::FetchAll;
     }
 
-    protected function _value($data, $field, $field2 = null)
+    protected function value($data, $field, $field2 = null)
     {
         if (!$data) {
             return null;
         }
-        if ($this->_maxItems == 1) {
+        if ($this->maxItems == 1) {
             if ($field2) {
                 return array($data[$field], $data[$field2]);
             }
@@ -247,40 +238,40 @@ class Property
         return $values;
     }
 
-    public function data(Database $db, $item, $lang)
+    public function data(Item $item, $lang)
     {
-        switch ($this->_dataclass) {
+        switch ($this->dataclass) {
             case 'action':
-                $data =  $db->getAction($item->itemkey(), $item->itemvalue(), $this->_id, $this->_mode());
-                $value = $this->_value($data, 'actor_itemkey', 'actor_itemvalue');
+                $data =  $this->db->getAction($item->itemkey(), $item->itemvalue(), $this->id, $this->mode());
+                $value = $this->value($data, 'actor_itemkey', 'actor_itemvalue');
                 break;
             case 'attribute':
-                $data =  $db->getAttribute($item->itemkey(), $item->itemvalue(), $this->_id, $this->_mode());
-                $value = $this->_value($data, 'attribute');
+                $data =  $this->db->getAttribute($item->itemkey(), $item->itemvalue(), $this->id, $this->mode());
+                $value = $this->value($data, 'attribute');
                 break;
             case 'date':
-                $data = $db->getDate($item->itemkey(), $item->itemvalue(), $this->_id, $this->_mode());
-                $value = $this->_value($data, 'date');
+                $data = $this->db->getDate($item->itemkey(), $item->itemvalue(), $this->id, $this->mode());
+                $value = $this->value($data, 'date');
                 break;
             case 'file':
-                $data = $db->getFile($item->itemkey(), $item->itemvalue(), $this->_id, $this->_mode());
-                $value = $this->_value($data, 'filename');
+                $data = $this->db->getFile($item->itemkey(), $item->itemvalue(), $this->id, $this->mode());
+                $value = $this->value($data, 'filename');
                 break;
             case 'number':
-                $data = $db->getNumber($item->itemkey(), $item->itemvalue(), $this->_id, $this->_mode());
-                $value = $this->_value($data, 'number');
+                $data = $this->db->getNumber($item->itemkey(), $item->itemvalue(), $this->id, $this->mode());
+                $value = $this->value($data, 'number');
                 break;
             case 'span':
-                $data = $db->getSpan($item->itemkey(), $item->itemvalue(), $this->_id, $this->_mode());
-                $value = $this->_value($data, 'beg', 'end');
+                $data = $this->db->getSpan($item->itemkey(), $item->itemvalue(), $this->id, $this->mode());
+                $value = $this->value($data, 'beg', 'end');
                 break;
             case 'txt':
-                $data = $db->getText($item->itemkey(), $item->itemvalue(), $this->_id, $lang, $this->_mode());
-                $value = $this->_value($data, 'txt');
+                $data = $this->db->getText($item->itemkey(), $item->itemvalue(), $this->id, $lang, $this->mode());
+                $value = $this->value($data, 'txt');
                 break;
             case 'xmi':
-                $data = $db->getXmi($item->itemkey(), $item->itemvalue(), $this->_id, $this->_mode());
-                $value = $this->_value($data, 'xmi_itemkey', 'xmi_itemvalue');
+                $data = $this->db->getXmi($item->itemkey(), $item->itemvalue(), $this->id, $this->mode());
+                $value = $this->value($data, 'xmi_itemkey', 'xmi_itemvalue');
                 break;
             case 'modtype':
                 $value = $item->modtype();
@@ -295,40 +286,77 @@ class Property
                 $value = $item->site();
                 break;
             default:
-                $value = 'dataclass = '.$this->_dataclass;
+                $value = 'dataclass = '.$this->dataclass;
                 break;
         }
         return $value;
     }
 
-    static public function property(Database $db, $propertyId, $schema = null)
+    static private function createFromConfig($db, $id, $config)
     {
-        $property = null;
-        $config = $db->getProperty($propertyId);
-        if ($config) {
-            if ($schema) {
-                $config['schema'] = $schema;
-            }
+        if (isset($config['type'])) {
             switch ($config['type']) {
                 case 'object':
-                    $property = new ObjectProperty();
+                    $property = new ObjectProperty($db, $id);
                     break;
                 case 'array':
-                    $property = new ArrayProperty();
+                    $property = new ArrayProperty($db, $id);
                     break;
                 case 'string':
-                    $property = new StringProperty();
+                    $property = new StringProperty($db, $id);
                     break;
                 case 'number':
-                    $property = new NumberProperty();
+                    $property = new NumberProperty($db, $id);
                     break;
                 default:
-                    $property = new Property();
+                    $property = new Property($db, $id);
                     break;
             }
-            $property->_loadConfig($db, $config);
+        } else {
+            $property = new Property($db, $id);
         }
+        $property->loadConfig($config);
         return $property;
     }
 
+    static public function get(Database $db, $property)
+    {
+        $config = $db->getProperty($property);
+        return Property::createFromConfig($db, $property, $config);
+    }
+
+    public function getAllSchema(Database $db, $schema, $type, $enabled = true)
+    {
+        $properties = array();
+        $configs = $this->db->getSchemaProperties($schema, $type);
+        foreach ($configs as $config) {
+            $property = Property::createFromConfig($db, $config['property'], $config);
+            if ($property->isValid() && ($config['enabled'] || !$enabled)) {
+                $element['property'] = $property;
+                $element['subtype'] = $config['modtype'];
+                $element['required'] = $config['required'];
+                $element['enabled'] = $config['enabled'];
+                $element['deprecated'] = $config['deprecated'];
+                $properties[$property->id()] = $element;
+            }
+        }
+        return $properties;
+    }
+
+    public function getAllObject(Database $db, $object)
+    {
+        $properties = array();
+        $configs = $this->db->getObjectProperties($object);
+        foreach ($configs as $config) {
+            $property = Property::createFromConfig($db, $config['property'], $config);
+            if ($property->isValid()) {
+                $element['property'] = $property;
+                $element['subtype'] = $object;
+                $element['required'] = $config['required'];
+                $element['graph_root'] = $config['graph_root'];
+                $properties[$property->id()] = $element;
+            }
+        }
+        return $properties;
+    }
 }

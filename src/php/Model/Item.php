@@ -39,68 +39,99 @@ use ARK\Database\Database;
 
 class Item
 {
-    private $_site = '';
-    private $_module = '';
-    private $_id = '';
-    private $_itemkey = '';
-    private $_itemvalue = '';
-    private $_modtype = '';
-    protected $_valid = false;
+    private $site = '';
+    private $module = '';
+    private $item = '';
+    private $itemkey = '';
+    private $itemvalue = '';
+    private $subtype = null;
+    protected $valid = false;
 
-    public function __construct(Database $db, $site, $module, $item)
+    public function __construct($site = '', $module = '', $item = '', $subtype = null)
     {
-        $this->_site = $site;
-        $this->_module = $module;
-        $this->_id = $item;
-        $this->_itemkey = $this->_module.'_cd';
-        $this->_itemvalue = $this->_site.'_'.$this->_id;
-        $data = $db->getItem($this->_itemkey, $this->_itemvalue);
-        if ($data) {
-            if (isset($data['modtype'])) {
-                $this->_modtype = $data['modtype'];
-            }
-            $this->_valid = true;
+        if ($site) {
+            $config['ste_cd'] = $site;
+            $config['module'] = $module;
+            $config['item'] = $item;
+            $config['modtype'] = $subtype;
+            $this->loadConfig($config);
         }
+    }
+
+    protected function loadConfig($config)
+    {
+        $this->site = $config['ste_cd'];
+        $this->module = $config['module'];
+        $this->item = $config['item'];
+        $this->itemkey = $this->module.'_cd';
+        $this->itemvalue = ($this->module == 'ste' ? $this->site : $this->site.'_'.$this->item);
+        if (isset($config['modtype'])) {
+            $this->subtype = $config['modtype'];
+        }
+        $this->valid = true;
+    }
+
+    public function isValid()
+    {
+        return $this->valid;
     }
 
     public function site()
     {
-        return $this->_site;
+        return $this->site;
     }
 
     public function module()
     {
-        return $this->_module;
+        return $this->module;
     }
 
     public function item()
     {
-        return $this->_id;
-    }
-
-    public function id()
-    {
-        return $this->_id;
+        return $this->item;
     }
 
     public function itemkey()
     {
-        return $this->_itemkey;
+        return $this->itemkey;
     }
 
     public function itemvalue()
     {
-        return $this->_itemvalue;
+        return $this->itemvalue;
     }
 
-    public function modtype()
+    public function subtype()
     {
-        return $this->_modtype;
+        return $this->subtype;
     }
 
-    public function valid()
+    static public function get(Database $db, $site, $module, $id)
     {
-        return $this->_valid;
+        $item = new Item();
+        $itemkey = $module.'_cd';
+        $itemvalue = ($module == 'ste' ? $site : $site.'_'.$id);
+        $config = $db->getItem($itemkey, $itemvalue);
+        if (!$config) {
+            //throw new Error(1000);
+            return $item;
+        }
+        $config['module'] = $module;
+        $item->loadConfig($config);
+        return $item;
+    }
+
+    static public function getAll(Database $db, $site, $module)
+    {
+        $items = array();
+        $configs = $db->getItems($site, $module);
+        foreach ($configs as $config) {
+            $item = new Item();
+            $config['module'] = $module;
+            $item->loadConfig($config);
+            $items[] = $item;
+        }
+        return $items;
     }
 
 }

@@ -39,52 +39,30 @@ use ARK\Database\Database;
 
 class ObjectProperty extends Property
 {
-    private $_properties = array();
-    private $_required = array();
-    private $_graphRoot = '';
-    private $_definitions = array();
+    use ObjectTrait;
 
-    protected function _loadConfig(Database $db, $config)
+    private $graphRoot = '';
+
+    protected function __construct(Database $db, $id)
     {
-        parent::_loadConfig($db, $config);
-        if ($this->format() == 'object') {
-            $properties = $db->getObjectProperties($this->id());
-        } else {
-            $properties = $db->getObjectProperties($this->format());
-        }
+        parent::__construct($db, $id);
+    }
+
+    protected function loadConfig($config)
+    {
+        parent::loadConfig($config);
+        $this->typeCode = ($this->format() == 'object' ? $this->id : $this->format());
+    }
+
+    private function getProperties()
+    {
+        $properties = Property::getAllObject($this->db, $this->typeCode);
         foreach ($properties as $property) {
-            $this->_properties[] = Property::property($db, $property['property'], $config['schema']);
-            if ($property['required']) {
-                $this->_required[] = $property['property'];
-            }
             if ($property['graph_root']) {
-                $this->_graphRoot = $property['property'];
+                $this->graphRoot = $property['property'];
             }
         }
-    }
-
-    public function properties()
-    {
-        return $this->_properties;
-    }
-
-    public function required()
-    {
-        return $this->_required;
-    }
-
-    public function definitions()
-    {
-        if (!$this->_definitions) {
-            foreach ($this->_properties as $property) {
-                if ($property->type() == 'object') {
-                    $this->_definitions = array_merge($this->_definitions, $property->definitions());
-                } else {
-                    $this->_definitions[$property->format()] = $property->definition(Schema::FullSchema);
-                }
-            }
-        }
-        return $this->_definitions;
+        return $properties;
     }
 
     public function definition($reference = Schema::ReferenceSchema)
@@ -103,12 +81,12 @@ class ObjectProperty extends Property
         return $definition;
     }
 
-    public function data(Database $db, $item, $lang)
+    public function data(Item $item, $lang)
     {
         $data = array();
         // TODO Graph/chain data!
         foreach ($this->properties() as $property) {
-            $data[$property->id()] = $property->data($db, $item, $lang);
+            $data[$property->id()] = $property->data($item, $lang);
         }
         if ($this->maxItems() != 1) {
             return array($data);

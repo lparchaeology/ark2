@@ -46,11 +46,67 @@ use Doctrine\DBAL\Connection;
 use ARK\Database\Database;
 use ARK\Model\Item;
 use ARK\Model\Module;
+use ARK\Model\Site;
 use ARK\View\Layout;
 
 class ItemController
 {
     public function getItemAction(Application $app, Request $request, $siteSlug, $moduleSlug, $itemSlug)
+    {
+        $response = new JsonResponse(null);
+        $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
+        $jsonapi['jsonapi']['version'] = '1.0';
+        $errors = array();
+
+        try {
+            $site = Site::get($app['database'], $siteSlug);
+            $module = Module::get($app['database'], $site, $moduleSlug);
+            $item = Item::get($app['database'], $site->id(), $module->id(), $itemSlug);
+            $jsonapi['meta']['site'] = $item->site();
+            $jsonapi['meta']['module'] = $item->module();
+            $jsonapi['meta']['item'] = $item->item();
+            if ($request->get('schema') == 'true') {
+                $jsonapi['meta']['schema'] = $module->schema();
+            }
+            $jsonapi['data']['type'] = $module->type();
+            $jsonapi['data']['id'] = $item->item();
+            $jsonapi['data']['attributes'] = $module->data($item, $app['locale']);
+        } catch (Error $e) {
+            $jsonapi['errors'][] = $e->payload();
+        }
+
+        $response->setData($jsonapi);
+        return $response;
+    }
+
+    public function getItemsAction(Application $app, Request $request, $siteSlug, $moduleSlug)
+    {
+        $response = new JsonResponse(null);
+        $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
+        $jsonapi['jsonapi']['version'] = '1.0';
+        $errors = array();
+
+        try {
+            $site = Site::get($app['database'], $siteSlug);
+            $module = Module::get($app['database'], $site, $moduleSlug);
+            $items = Item::getAll($app['database'], $site->id(), $module->id());
+            foreach ($items as $item) {
+                $resource['type'] = $module->type();
+                $resource['id'] = $item->item();
+                if ($request->get('schema') == 'true') {
+                    $resource['meta']['schema'] = $module->schema();
+                }
+                $jsonapi['data'][] = $resource;
+            }
+        } catch (Error $e) {
+            $jsonapi['errors'][] = $e->payload();
+        }
+
+        $response->setData($jsonapi);
+        return $response;
+    }
+
+    public function getItemActionOld(Application $app, Request $request, $siteSlug, $moduleSlug, $itemSlug)
     {
         $response = new JsonResponse(null);
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
@@ -102,7 +158,7 @@ class ItemController
         return $response;
     }
 
-    public function getItemsAction(Application $app, Request $request, $siteSlug, $moduleSlug)
+    public function getItemsActionOld(Application $app, Request $request, $siteSlug, $moduleSlug)
     {
         $response = new JsonResponse(null);
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);

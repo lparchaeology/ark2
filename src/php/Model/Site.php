@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Model/Module.php
+* src/php/Model/Site.php
 *
-* ARK Model Module
+* ARK Model Site
 *
 * PHP version 5 and 7
 *
@@ -28,7 +28,7 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Model/Module.php
+* @see        http://ark.lparchaeology.com/code/src/php/Model/Site.php
 * @since      2.0
 *
 */
@@ -37,71 +37,56 @@ namespace ARK\Model;
 
 use ARK\Database\Database;
 
-final class Module extends AbstractResource
+final class Site extends AbstractResource
 {
-    private $site = '';
-    private $itemkey = '';
-    private $itemno = '';
-    private $table = '';
-
     use ObjectTrait;
 
-    protected function __construct(Database $db, $id)
+    private $modules = null;
+
+    protected function __construct(Database $db, $site)
     {
-        parent::__construct($db, $id);
+        parent::__construct($db, $site);
     }
 
-    protected function loadConfig($config, Site $site = null)
+    protected function loadConfig($config)
     {
         parent::loadConfig($config);
-
-        $this->site = $site;
         $this->typeCode = $config['module'];
         $this->type = $config['url'];
-        $this->itemkey = $config['itemkey'];
-        $this->itemno = $config['itemno'];
-        $this->table = $config['tbl'];
         $this->valid = true;
     }
 
-    public function site()
+    public function modules()
     {
-        return $this->site;
+        if ($this->modules == null) {
+            $modules = Module::getAll($this->db, $this->id());
+            $this->modules = ($modules ? $modules : array());
+        }
+        return $this->modules;
     }
 
-    public function itemkey()
+    public static function get(Database $db, $siteCode)
     {
-        return $this->itemkey;
-    }
-
-    public function itemno()
-    {
-        return $this->itemno;
-    }
-
-    static public function get(Database $db, Site $site, $moduleId)
-    {
-        $module = new Module($db, $moduleId);
-        $config = $db->getModule($moduleId);
+        $site = new Site($db, $siteCode);
+        $config = $db->getSite($siteCode);
         if (!$config) {
             throw new Error(1000);
         }
-        $module->loadConfig($config, $site);
-        return $module;
+        $site->loadConfig($config);
+        return $site;
     }
 
-    static public function getAll(Database $db, Site $site, $enabled = true)
+    public static function getAll(Database $db)
     {
-        $modules = array();
-        $configs = $db->getSiteModules($site->id());
+        $sites = array();
+        $configs = $db->getSites();
         foreach ($configs as $config) {
-            $module = new Module($db, $config['module']);
-            $module->loadConfig($config, $site);
-            if ($module->isValid() && ($module->isEnabled() || !$enabled)) {
-                $modules[] = $module;
+            $site = new Site($db, $config['ste_cd']);
+            $site->loadConfig($config);
+            if ($site->isValid()) {
+                $sites[] = $site;
             }
         }
-        return $modules;
+        return $sites;
     }
-
 }

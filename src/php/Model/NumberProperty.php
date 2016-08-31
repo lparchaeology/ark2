@@ -39,61 +39,66 @@ use ARK\Database\Database;
 
 class NumberProperty extends Property
 {
-    private $_minimum = null;
-    private $_exclusiveMinimum = false;
-    private $_maximum = null;
-    private $_exclusiveMaximum = false;
-    private $_multipleOf = null;
+    private $minimum = null;
+    private $exclusiveMinimum = false;
+    private $maximum = null;
+    private $exclusiveMaximum = false;
+    private $multipleOf = null;
 
-    protected function _loadConfig(Database $db, $config)
+    protected function __construct(Database $db, $id)
     {
-        parent::_loadConfig($db, $config);
-        $this->_minimum = $config['minimum'];
-        $this->_exclusiveMinimum = $config['exclusive_minimum'];
-        $this->_maximum = $config['maximum'];
-        $this->_exclusiveMaximum = $config['exclusive_maximum'];
-        $this->_multipleOf = $config['multiple_of'];
+        parent::__construct($db, $id);
+    }
+
+    protected function loadConfig($config)
+    {
+        parent::loadConfig($config);
+        $this->minimum = $config['minimum'];
+        $this->exclusiveMinimum = $config['exclusive_minimum'];
+        $this->maximum = $config['maximum'];
+        $this->exclusiveMaximum = $config['exclusive_maximum'];
+        $this->multipleOf = $config['multiple_of'];
     }
 
     public function minimum()
     {
-        return $this->_minimum;
+        return $this->minimum;
     }
 
     public function exclusiveMinimum()
     {
-        return $this->_exclusiveMinimum;
+        return $this->exclusiveMinimum;
     }
 
     public function maximum()
     {
-        return $this->_maximum;
+        return $this->maximum;
     }
 
     public function exclusiveMaximum()
     {
-        return $this->_exclusiveMaximum;
+        return $this->exclusiveMaximum;
     }
 
     public function multipleOf()
     {
-        return $this->_multipleOf;
+        return $this->multipleOf;
     }
 
     public function definition($reference = Schema::ReferenceSchema)
     {
         $definition = parent::definition();
         if (!$reference) {
-            if ($this->_minimum) {
-                $definition['minimum'] = $this->_minimum;
-                $definition['exclusive_minimum'] = $this->_exclusiveMinimum;
+            if ($this->minimum) {
+                $definition['minimum'] = $this->minimum;
+                $definition['exclusive_minimum'] = $this->exclusiveMinimum;
             }
-            if ($this->_maximum) {
-                $definition['maximum'] = $this->_maximum;
-                $definition['exclusive_maximum'] = $this->_exclusiveMaximum;
+            if ($this->maximum) {
+                $definition['maximum'] = $this->maximum;
+                $definition['exclusive_maximum'] = $this->exclusiveMaximum;
             }
-            if ($this->_multipleOf) {
-                $definition['multiple_of'] = $this->_multipleOf;
+            if ($this->multipleOf) {
+                $definition['multiple_of'] = $this->multipleOf;
             }
         }
     }

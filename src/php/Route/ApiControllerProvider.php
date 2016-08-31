@@ -50,31 +50,33 @@ class ApiControllerProvider implements ControllerProviderInterface
 
         $controllers
             ->method('GET')
-            ->get('/{site}/{module}/schema', 'ARK\\Controller\\ModuleController::getSchemaAction')
-            ->bind('api.module.schema');
-
-        $controllers
-            ->method('GET')
-            ->get('/{site}/schema', 'ARK\\Controller\\SiteController::getSchemaAction')
-            ->bind('api.site.schema');
-
-        $controllers
-            ->method('GET')
-            ->get('/{siteSlug}/{moduleSlug}/{itemSlug}', 'ARK\\Controller\\ItemController::getItemAction')
+            ->get('/sites/{siteSlug}/modules/{moduleSlug}/items/{itemSlug}', 'ARK\\Controller\\ItemController::getItemAction')
             ->bind('api.item.get');
 
         $controllers
             ->method('GET')
-            ->get('/{site}/{module}', 'ARK\\Controller\\ModuleController::getModuleAction')
+            ->get('/sites/{siteSlug}/modules/{moduleSlug}/items', 'ARK\\Controller\\ItemController::getItemsAction')
+            ->bind('api.items.get');
+
+        $controllers
+            ->method('GET')
+            ->get('/sites/{siteSlug}/modules/{moduleSlug}', 'ARK\\Controller\\ModuleController::getModuleAction')
             ->bind('api.module.get');
 
         $controllers
             ->method('GET')
-            ->get('/{site}', 'ARK\\Controller\\SiteController::getSiteAction')
+            ->get('/sites/{siteSlug}/modules', 'ARK\\Controller\\ModuleController::getModulesAction')
+            ->bind('api.modules.get');
+
+        $controllers
+            ->method('GET')
+            ->get('/sites/{siteSlug}', 'ARK\\Controller\\SiteController::getSiteAction')
             ->bind('api.site.get');
 
-        $controllers->method('GET')->get('/', 'ARK\\Controller\\SiteController::getSitesAction')
-            ->bind('api.list');
+        $controllers
+            ->method('GET')
+            ->get('/sites', 'ARK\\Controller\\SiteController::getSitesAction')
+            ->bind('api.sites.get');
 
         return $controllers;
     }

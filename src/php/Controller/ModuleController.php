@@ -41,7 +41,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use ARK\Model\Item;
 use ARK\Model\Module;
+use ARK\Model\Site;
 
 class ModuleController
 {
@@ -75,25 +77,54 @@ class ModuleController
         return $app['twig']->render('pages/page.html.twig', array('form' => $form->createView()));
     }
 
-    public function getSchemaAction(Application $app, Request $request, $site, $module)
+    public function getModuleAction(Application $app, Request $request, $siteSlug, $moduleSlug)
     {
-        $schema = new Module($app['database'], $site, $module);
-
-        if (!$schema->valid()) {
-            $ste = $app['database']->getItem('ste_cd', $site);
-            if (!$ste) {
-                throw new NotFoundHttpException('Site '.$site.' is not valid.');
-            }
-            $mod = $app['database']->getModule($module);
-            if (!$mod) {
-                throw new NotFoundHttpException('Module '.$module.' is not valid');
-            }
-            throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$site);
-        }
-
         $response = new JsonResponse(null);
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
-        $response->setData($schema->schema());
+        $jsonapi['jsonapi']['version'] = '1.0';
+        $errors = array();
+
+        try {
+            $site = Site::get($app['database'], $siteSlug);
+            $module = Module::get($app['database'], $site, $moduleSlug);
+            $item = Item::get($app['database'], $site->id(), $module->id(), '');
+            if ($request->get('schema') == 'true') {
+                $jsonapi['meta']['schema'] = $module->schema();
+            }
+            $jsonapi['data']['type'] = $module->type();
+            $jsonapi['data']['id'] = $module->id();
+            $jsonapi['data']['attributes'] = $module->data($item, $app['locale']);
+        } catch (Error $e) {
+            $jsonapi['errors'][] = $e->payload();
+        }
+
+        $response->setData($jsonapi);
+        return $response;
+    }
+
+    public function getModulesAction(Application $app, Request $request, $siteSlug)
+    {
+        $response = new JsonResponse(null);
+        $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
+        $jsonapi['jsonapi']['version'] = '1.0';
+        $errors = array();
+
+        try {
+            $site = Site::get($app['database'], $siteSlug);
+            $modules = Module::getAll($app['database'], $site);
+            foreach ($modules as $module) {
+                $resource['type'] = $module->type();
+                $resource['id'] = $module->id();
+            if ($request->get('schema') == 'true') {
+                $resource['meta']['schema'] = $module->schema();
+            }
+                $jsonapi['data'][] = $resource;
+            }
+        } catch (Error $e) {
+            $jsonapi['errors'][] = $e->payload();
+        }
+
+        $response->setData($jsonapi);
         return $response;
     }
 
