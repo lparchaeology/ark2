@@ -50,12 +50,12 @@ class SiteControllerProvider implements ControllerProviderInterface
 
         $controllers
             ->method('GET')
-            ->get('/{ste_cd}/{mod_slug}/register', 'ARK\\Controller\\ItemController::registerItemAction')
+            ->get('/{siteSlug}/{moduleSlug}/register', 'ARK\\Controller\\ItemController::registerItemAction')
             ->bind('sites.item.register');
 
         $controllers
             ->method('GET')
-            ->get('/{ste_cd}/{mod_slug}/list', 'ARK\\Controller\\ItemController::listItemsAction')
+            ->get('/{siteSlug}/{moduleSlug}/list', 'ARK\\Controller\\ItemController::listItemsAction')
             ->bind('sites.item.list');
 
         $controllers
@@ -65,12 +65,12 @@ class SiteControllerProvider implements ControllerProviderInterface
 
         $controllers
             ->method('GET')
-            ->get('/{site}/{module}', 'ARK\\Controller\\ModuleController::viewModuleAction')
+            ->get('/{siteSlug}/{moduleSlug}', 'ARK\\Controller\\ModuleController::viewModuleAction')
             ->bind('sites.module.view');
 
         $controllers
             ->method('GET')
-            ->get('/{site}', 'ARK\\Controller\\SiteController::viewSiteAction')
+            ->get('/{siteSlug}', 'ARK\\Controller\\SiteController::viewSiteAction')
             ->bind('sites.view');
 
         $controllers->method('GET')->get('/', 'ARK\\Controller\\SiteController::listSitesAction')

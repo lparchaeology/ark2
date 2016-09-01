@@ -50,23 +50,13 @@ class ApiControllerProvider implements ControllerProviderInterface
 
         $controllers
             ->method('GET')
-            ->get('/sites/{siteSlug}/modules/{moduleSlug}/items/{itemSlug}', 'ARK\\Controller\\ItemController::getItemAction')
+            ->get('/sites/{siteSlug}/{moduleSlug}/{itemSlug}', 'ARK\\Controller\\ModuleController::getItemAction')
             ->bind('api.item.get');
 
         $controllers
             ->method('GET')
-            ->get('/sites/{siteSlug}/modules/{moduleSlug}/items', 'ARK\\Controller\\ItemController::getItemsAction')
-            ->bind('api.items.get');
-
-        $controllers
-            ->method('GET')
-            ->get('/sites/{siteSlug}/modules/{moduleSlug}', 'ARK\\Controller\\ModuleController::getModuleAction')
+            ->get('/sites/{siteSlug}/{moduleSlug}', 'ARK\\Controller\\ModuleController::getModuleAction')
             ->bind('api.module.get');
-
-        $controllers
-            ->method('GET')
-            ->get('/sites/{siteSlug}/modules', 'ARK\\Controller\\ModuleController::getModulesAction')
-            ->bind('api.modules.get');
 
         $controllers
             ->method('GET')

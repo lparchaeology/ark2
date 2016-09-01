@@ -57,9 +57,7 @@ final class Module extends AbstractResource
 
         $this->site = $site;
         $this->typeCode = $config['module'];
-        $this->type = $config['url'];
-        $this->itemkey = $config['itemkey'];
-        $this->itemno = $config['itemno'];
+        $this->type = $config['resource'];
         $this->table = $config['tbl'];
         $this->valid = true;
     }
@@ -67,16 +65,6 @@ final class Module extends AbstractResource
     public function site()
     {
         return $this->site;
-    }
-
-    public function itemkey()
-    {
-        return $this->itemkey;
-    }
-
-    public function itemno()
-    {
-        return $this->itemno;
     }
 
     static public function get(Database $db, Site $site, $moduleId)

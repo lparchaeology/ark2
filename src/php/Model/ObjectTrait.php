@@ -51,7 +51,7 @@ trait ObjectTrait
             $this->subtypes = array();
             $subtypes = $this->db->getModtypes($this->id, $this->schemaId);
             foreach ($subtypes as $subtype) {
-                $this->subtypes[] = $subtype['modtype'];
+                $this->subtypes[] = $subtype['subtype'];
             }
         }
         return $this->subtypes;

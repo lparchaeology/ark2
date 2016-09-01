@@ -52,15 +52,33 @@ final class Site extends AbstractResource
     {
         parent::loadConfig($config);
         $this->typeCode = $config['module'];
-        $this->type = $config['url'];
+        $this->type = $config['resource'];
         $this->valid = true;
+    }
+
+    private function loadModules()
+    {
+        $modules = Module::getAll($this->db, $this->id());
+        $this->modules = ($modules ? $modules : array());
+    }
+
+    public function module($module)
+    {
+        if ($this->modules === null) {
+            $this->loadModules();
+        }
+        foreach ($this->modules as $mod) {
+            if ($mod->id() == $module || $mod->type() == $module) {
+                return $mod;
+            }
+        }
+        throw new Error(9999);
     }
 
     public function modules()
     {
-        if ($this->modules == null) {
-            $modules = Module::getAll($this->db, $this->id());
-            $this->modules = ($modules ? $modules : array());
+        if ($this->modules === null) {
+            $this->loadModules();
         }
         return $this->modules;
     }
@@ -70,7 +88,7 @@ final class Site extends AbstractResource
         $site = new Site($db, $siteCode);
         $config = $db->getSite($siteCode);
         if (!$config) {
-            throw new Error(1000);
+            throw new Error(9999);
         }
         $site->loadConfig($config);
         return $site;
@@ -81,7 +99,7 @@ final class Site extends AbstractResource
         $sites = array();
         $configs = $db->getSites();
         foreach ($configs as $config) {
-            $site = new Site($db, $config['ste_cd']);
+            $site = new Site($db, $config['site']);
             $site->loadConfig($config);
             if ($site->isValid()) {
                 $sites[] = $site;

@@ -50,23 +50,23 @@ class Item
     public function __construct($site = '', $module = '', $item = '', $subtype = null)
     {
         if ($site) {
-            $config['ste_cd'] = $site;
+            $config['site'] = $site;
             $config['module'] = $module;
             $config['item'] = $item;
-            $config['modtype'] = $subtype;
+            $config['subtype'] = $subtype;
             $this->loadConfig($config);
         }
     }
 
     protected function loadConfig($config)
     {
-        $this->site = $config['ste_cd'];
+        $this->site = $config['site'];
         $this->module = $config['module'];
         $this->item = $config['item'];
         $this->itemkey = $this->module.'_cd';
         $this->itemvalue = ($this->module == 'ste' ? $this->site : $this->site.'_'.$this->item);
-        if (isset($config['modtype'])) {
-            $this->subtype = $config['modtype'];
+        if (isset($config['subtype'])) {
+            $this->subtype = $config['subtype'];
         }
         $this->valid = true;
     }
@@ -109,9 +109,7 @@ class Item
     static public function get(Database $db, $site, $module, $id)
     {
         $item = new Item();
-        $itemkey = $module.'_cd';
-        $itemvalue = ($module == 'ste' ? $site : $site.'_'.$id);
-        $config = $db->getItem($itemkey, $itemvalue);
+        $config = $db->getItem($site, $module, $id);
         if (!$config) {
             //throw new Error(1000);
             return $item;

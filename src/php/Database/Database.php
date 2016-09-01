@@ -481,18 +481,20 @@ class Database
             ':module' => 'ste',
         );
         $mods = $this->config()->fetchAll($sql, $params);
+        dump($mods);
+        dump($items);
         foreach ($mods as $module) {
             $modules[$module['site']] = $module;
         }
         foreach ($items as $item) {
-            $sites[] = array_merge($item, $modules[$item['ste_cd']]);
+            $sites[] = array_merge($item, $modules[$item['site']]);
         }
         return $sites;
     }
 
     public function getSite($site)
     {
-        $item = $this->getItem('ste_cd', $site, 'ark_module_ste');
+        $item = $this->getItem($site, 'ste', $site, 'ark_module_ste');
         if (!$item) {
             return $item;
         }
@@ -530,23 +532,25 @@ class Database
         return $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getItem($itemkey, $itemvalue, $mod_tbl = null)
+    public function getItem($site, $module, $item, $mod_tbl = null)
     {
         if (empty($mod_tbl)) {
-            $mod_tbl = $this->getModuleTable($itemkey);
+            $mod_tbl = $this->getModuleTable($module);
         }
         $sql = "
             SELECT *
             FROM $mod_tbl
-            WHERE $mod_tbl.$itemkey = :itemvalue
+            WHERE site = :site
+            AND item = :item
         ";
         $params = array(
-            ':itemvalue' => $itemvalue,
+            ':site' => $site,
+            ':item' => $item,
         );
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getItems($ste_cd, $module, $mod_tbl = null)
+    public function getItems($site, $module, $mod_tbl = null)
     {
         if (!$mod_tbl) {
             $module = $this->getModule($module);
@@ -555,15 +559,15 @@ class Database
         $sql = "
             SELECT *
             FROM $mod_tbl
-            WHERE ste_cd = :ste_cd
+            WHERE site = :site
         ";
         $params = array(
-            ':ste_cd' => $ste_cd,
+            ':site' => $site,
         );
         return $this->data()->fetchAll($sql, $params);
     }
 
-    public function countItems($ste_cd, $module, $mod_tbl = null)
+    public function countItems($site, $module, $mod_tbl = null)
     {
         if (empty($mod_tbl)) {
             $mod_tbl = $this->getModuleTable($module);
@@ -571,30 +575,30 @@ class Database
         $sql = "
             SELECT COUNT(*) as 'count'
             FROM $mod_tbl
-            WHERE ste_cd = :ste_cd
+            WHERE site = :site
         ";
         $params = array(
-            ':ste_cd' => $ste_cd,
+            ':site' => $site,
         );
         return $this->data()->fetchAssoc($sql, $params)['count'];
     }
 
-    public function getRecentItems($ste_cd, $module, $rows)
+    public function getRecentItems($site, $module, $rows)
     {
         $module = $this->getModule($module);
         $itemkey = $module['itemkey'];
         $mod_tbl = $module['tbl'];
-        $count = $this->countItems($ste_cd, $module, $mod_tbl);
+        $count = $this->countItems($site, $module, $mod_tbl);
         $start = ($count > $rows) ? $count - $rows : 0;
         $sql = "
             SELECT *
             FROM $mod_tbl
-            WHERE ste_cd = :ste_cd
+            WHERE site = :site
             ORDER BY cre_on
             LIMIT $start, $rows
         ";
         $params = array(
-            ':ste_cd' => $ste_cd,
+            ':site' => $site,
         );
         return $this->data()->fetchAll($sql, $params);
     }
@@ -623,8 +627,7 @@ class Database
             SELECT *
             FROM ark_config_module
             WHERE module = :module
-            OR itemkey = :module
-            OR url = :module
+            OR resource = :module
         ";
         $params = array(
             ':module' => strtolower($module),
@@ -636,7 +639,7 @@ class Database
     {
         $sql = "
             SELECT *
-            FROM ark_model_modtype
+            FROM ark_model_subtype
             WHERE module = :module
             AND schema_id = :schema
         ";
@@ -705,26 +708,26 @@ class Database
         $config = $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getGroupForModule($group, $module, $modtype = null)
+    public function getGroupForModule($group, $module, $subtype = null)
     {
         $sql = "
             SELECT ark_view_group.*, ark_view_element.element_type AS child_type
             FROM ark_view_group, ark_view_element
             WHERE ark_view_group.element = :element
-            AND (ark_view_group.modtype = :module OR ark_view_group.modtype = :modtype OR ark_view_group.modtype = :cor)
+            AND (ark_view_group.subtype = :module OR ark_view_group.subtype = :subtype OR ark_view_group.subtype = :cor)
             AND ark_view_group.enabled = :enabled
             AND ark_view_group.child = ark_view_element.element
             ORDER BY ark_view_group.row, ark_view_group.col, ark_view_group.seq
         ";
         $params = array(
             ':element' => $group,
-            ':modtype' => $modtype,
+            ':subtype' => $subtype,
             ':module' => $module,
             ':cor' => 'cor',
             ':enabled' => true,
         );
-        if (!$modtype) {
-            $params[':modtype'] = 'cor';
+        if (!$subtype) {
+            $params[':subtype'] = 'cor';
         }
         return $this->config()->fetchAll($sql, $params);
     }

@@ -123,7 +123,7 @@ class ItemController
                 $errors[] = $error;
             }
         } else {
-            $site = $app['database']->getItem('ste_cd', $siteSlug);
+            $site = $app['database']->getItem('site', $siteSlug);
             if (!$site) {
                 $error['title'] = 'Invalid Site Code';
                 $error['detail'] = 'Site Code '.$siteSlug.' is not valid.';
@@ -169,7 +169,7 @@ class ItemController
 
         if ($model->valid()) {
         } else {
-            $site = $app['database']->getItem('ste_cd', $siteSlug);
+            $site = $app['database']->getItem('site', $siteSlug);
             if (!$site) {
                 $error['title'] = 'Invalid Site Code';
                 $error['detail'] = 'Site Code '.$siteSlug.' is not valid.';
@@ -214,7 +214,7 @@ class ItemController
                 throw new NotFoundHttpException('Item '.$itemSlug.' is not valid for Site Code '.$siteSlug.' and Module '.$moduleSlug);
             }
         } else {
-            $site = $app['database']->getItem('ste_cd', $siteSlug);
+            $site = $app['database']->getItem('site', $siteSlug);
             if (!$site) {
                 throw new NotFoundHttpException('Site Code '.$siteSlug.' is not valid.');
             }
@@ -233,7 +233,7 @@ class ItemController
         $formBuilder->add('item', Type\TextType::class, array('label' => 'Item', 'attr' => array('readonly' => true)));
         $forms['item_form'] = $formBuilder->getForm()->createView();
 
-        $layout = Layout::fetchLayout($app['database'], 'cor_layout_item', $item->module(), $item->modtype());
+        $layout = Layout::fetchLayout($app['database'], 'cor_layout_item', $item->module(), $item->subtype());
         $options = array('item_form' => $forms['item_form']);
         return $layout->render($app['twig'], $options, $app['form.factory'], $item);
     }
@@ -243,7 +243,7 @@ class ItemController
         $model = new Module($app['database'], $siteSlug, $moduleSlug);
 
         if (!$model->valid()) {
-            $site = $app['database']->getItem('ste_cd', $siteSlug);
+            $site = $app['database']->getItem('site', $siteSlug);
             if (!$site) {
                 throw new NotFoundHttpException('Site Code '.$siteSlug.' is not valid.');
             }
@@ -262,7 +262,7 @@ class ItemController
                 $keyfield = $field->id();
             }
         }
-        $recent = $app['database']->getRecentItems($ste_cd, $model->module(), 5);
+        $recent = $app['database']->getRecentItems($site, $model->module(), 5);
         foreach ($recent as $key) {
             $item = new Item($model->site(), $model->module(), str($key[$model->itemno()]));
             $data = array();
@@ -279,26 +279,26 @@ class ItemController
             'items' => $items,
             'keyfield' => $keyfield,
         );
-        if ($module['modtype']) {
-            $options['modtype'] = $module['modtype'];
+        if ($module['subtype']) {
+            $options['subtype'] = $module['subtype'];
         }
 
         return $layout->render($app['twig'], $options);
     }
 
-    public function listItemsAction(Application $app, Request $request, $ste_cd, $mod_slug)
+    public function listItemsAction(Application $app, Request $request, $site, $mod_slug)
     {
         $module = $app['database']->getModule(strtolower($mod_slug));
         if (!$module) {
-            throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$ste_cd);
+            throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$site);
         }
 
         $mod_tbl = $module['tbl'];
-        $modtype = $module['modtype'];
+        $subtype = $module['subtype'];
         $itemkey = $module['itemkey'];
 
         $itemKey = array(
-            'site' => $ste_cd,
+            'site' => $site,
             'mod_slug' => $mod_slug,
             'module' => $module['module'],
             'key' => $itemkey,
@@ -306,13 +306,13 @@ class ItemController
 
         $layout = Layout::fetchLayout($app['database'], 'cor_layout_list', $module['module']);
         $fields = $layout->allFields();
-        $items = $app['database']->getItems($ste_cd, $module['module']);
+        $items = $app['database']->getItems($site, $module['module']);
         foreach ($items as &$item) {
-            if (empty($modtype)) {
-                $itemKey['modtype'] = $module['module'];
+            if (empty($subtype)) {
+                $itemKey['subtype'] = $module['module'];
             } else {
-                $itemKey['modtype'] = $modtype;
-                $itemKey[$modtype] = $item[$modtype];
+                $itemKey['subtype'] = $subtype;
+                $itemKey[$subtype] = $item[$subtype];
             }
             $itemKey['value'] = $item[$itemkey];
             $data = array();
@@ -327,8 +327,8 @@ class ItemController
             'itemno' => $module['itemno'],
             'items' => $items,
         );
-        if ($module['modtype']) {
-            $options['modtype'] = $module['modtype'];
+        if ($module['subtype']) {
+            $options['subtype'] = $module['subtype'];
         }
 
         return $layout->render($app['twig'], $options);
