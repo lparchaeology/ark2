@@ -81,7 +81,8 @@
         "simple-bus/message-bus": "^2.2",
         "simple-bus/asynchronous": "^2.1",
         "simple-bus/serialization": "^2.0",
-        "rootlogin/silex-userprovider": "dev-silex2"
+        "rootlogin/silex-userprovider": "dev-silex2",
+        "mauro-moreno/silex-jsonapi": "^2.0"
     },
     "autoload": {
         "psr-4": {"ARK\\": "src/php/"}

@@ -173,6 +173,11 @@ class Application extends \Silex\Application
             ),
         );
 
+        // Enable the JSON:API provider
+        $app['mappers'] = array(
+        );
+        $app->register(new MauroMoreno\JsonApi\JsonApiServiceProvider);
+
         // Enable other providers
         $app->register(new \Silex\Provider\AssetServiceProvider());
 
