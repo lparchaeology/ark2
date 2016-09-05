@@ -242,35 +242,35 @@ class Property extends AbstractResource
     {
         switch ($this->dataclass) {
             case 'action':
-                $data =  $this->db->getAction($item->itemkey(), $item->itemvalue(), $this->id, $this->mode());
-                $value = $this->value($data, 'actor_itemkey', 'actor_itemvalue');
+                $data =  $this->db->getAction($item->module(), $item->item(), $this->id, $this->mode());
+                $value = $this->value($data, 'actor_module', 'actor_item');
                 break;
             case 'attribute':
-                $data =  $this->db->getAttribute($item->itemkey(), $item->itemvalue(), $this->id, $this->mode());
+                $data =  $this->db->getAttribute($item->module(), $item->item(), $this->id, $this->mode());
                 $value = $this->value($data, 'attribute');
                 break;
             case 'date':
-                $data = $this->db->getDate($item->itemkey(), $item->itemvalue(), $this->id, $this->mode());
+                $data = $this->db->getDate($item->module(), $item->item(), $this->id, $this->mode());
                 $value = $this->value($data, 'date');
                 break;
             case 'file':
-                $data = $this->db->getFile($item->itemkey(), $item->itemvalue(), $this->id, $this->mode());
+                $data = $this->db->getFile($item->module(), $item->item(), $this->id, $this->mode());
                 $value = $this->value($data, 'filename');
                 break;
             case 'number':
-                $data = $this->db->getNumber($item->itemkey(), $item->itemvalue(), $this->id, $this->mode());
+                $data = $this->db->getNumber($item->module(), $item->item(), $this->id, $this->mode());
                 $value = $this->value($data, 'number');
                 break;
             case 'span':
-                $data = $this->db->getSpan($item->itemkey(), $item->itemvalue(), $this->id, $this->mode());
+                $data = $this->db->getSpan($item->module(), $item->item(), $this->id, $this->mode());
                 $value = $this->value($data, 'beg', 'end');
                 break;
             case 'txt':
-                $data = $this->db->getText($item->itemkey(), $item->itemvalue(), $this->id, $lang, $this->mode());
+                $data = $this->db->getText($item->module(), $item->item(), $this->id, $lang, $this->mode());
                 $value = $this->value($data, 'txt');
                 break;
             case 'xmi':
-                $data = $this->db->getXmi($item->itemkey(), $item->itemvalue(), $this->id, $this->mode());
+                $data = $this->db->getXmi($item->module(), $item->item(), $this->id, $this->mode());
                 $value = $this->value($data, 'xmi_itemkey', 'xmi_itemvalue');
                 break;
             case 'modtype':
@@ -333,7 +333,7 @@ class Property extends AbstractResource
             $property = Property::createFromConfig($db, $config['property'], $config);
             if ($property->isValid() && ($config['enabled'] || !$enabled)) {
                 $element['property'] = $property;
-                $element['subtype'] = $config['modtype'];
+                $element['modtype'] = $config['modtype'];
                 $element['required'] = $config['required'];
                 $element['enabled'] = $config['enabled'];
                 $element['deprecated'] = $config['deprecated'];
@@ -351,7 +351,7 @@ class Property extends AbstractResource
             $property = Property::createFromConfig($db, $config['property'], $config);
             if ($property->isValid()) {
                 $element['property'] = $property;
-                $element['subtype'] = $object;
+                $element['modtype'] = $object;
                 $element['required'] = $config['required'];
                 $element['graph_root'] = $config['graph_root'];
                 $properties[$property->id()] = $element;

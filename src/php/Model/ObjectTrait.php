@@ -39,22 +39,22 @@ use ARK\Database\Database;
 
 trait ObjectTrait
 {
-    private $subtypes = null;
+    private $modtypes = null;
     private $properties = null;
     private $required = null;
     private $definitions = null;
     private $schema = null;
 
-    public function subtypes()
+    public function modtypes()
     {
-        if ($this->subtypes === null) {
-            $this->subtypes = array();
-            $subtypes = $this->db->getModtypes($this->id, $this->schemaId);
-            foreach ($subtypes as $subtype) {
-                $this->subtypes[] = $subtype['subtype'];
+        if ($this->modtypes === null) {
+            $this->modtypes = array();
+            $modtypes = $this->db->getModtypes($this->id, $this->schemaId);
+            foreach ($modtypes as $modtype) {
+                $this->modtypes[] = $modtype['modtype'];
             }
         }
-        return $this->subtypes;
+        return $this->modtypes;
     }
 
     private function getProperties()
@@ -70,9 +70,9 @@ trait ObjectTrait
         $this->definitions = array();
         foreach ($properties as $id => $config) {
             $property = $config['property'];
-            $this->properties[$config['subtype']][] = $property;
+            $this->properties[$config['modtype']][] = $property;
             if ($config['required']) {
-                $this->required[$config['subtype']][] = $id;
+                $this->required[$config['modtype']][] = $id;
             }
             if ($property->type() == 'object') {
                 $this->definitions = array_merge($this->definitions, $property->definitions());
@@ -87,26 +87,26 @@ trait ObjectTrait
         }
     }
 
-    public function properties($subtype = null)
+    public function properties($modtype = null)
     {
         if ($this->properties === null) {
             $this->loadProperties();
         }
         $properties = (isset($this->properties[$this->typeCode]) ? $this->properties[$this->typeCode] : array());
-        if ($subtype && $subtype != $this->typeCode && isset($this->properties[$subtype])) {
-            return array_merge($properties, $this->properties[$subtype]);
+        if ($modtype && $modtype != $this->typeCode && isset($this->properties[$modtype])) {
+            return array_merge($properties, $this->properties[$modtype]);
         }
         return $properties;
     }
 
-    public function required($subtype = null)
+    public function required($modtype = null)
     {
         if ($this->required === null) {
             $this->loadProperties();
         }
         $required = (isset($this->required[$this->typeCode]) ? $this->required[$this->typeCode] : array());
-        if ($subtype && $subtype != $this->typeCode && isset($this->required[$subtype])) {
-            return array_merge($required, $this->required[$subtype]);
+        if ($modtype && $modtype != $this->typeCode && isset($this->required[$modtype])) {
+            return array_merge($required, $this->required[$modtype]);
         }
         return $required;
     }
@@ -125,6 +125,7 @@ trait ObjectTrait
             return $this->schema[$reference];
         }
         $schema['$schema'] = 'http://json-schema.org/draft-04/schema#';
+        $schema['schema_id'] = $this->schemaId;
         if ($reference) {
             $schema['definitions'] = $this->definitions();
         }
@@ -135,17 +136,17 @@ trait ObjectTrait
         }
         $schema['required'] = $this->required($this->typeCode);
         $schema['additionalProperties'] = false;
-        if ($this->subtypes()) {
+        if ($this->modtypes()) {
             $anyof = array();
-            foreach ($this->subtypes() as $subtype) {
+            foreach ($this->modtypes() as $modtype) {
                 $subschema = array();
                 $subschema['properties'] = array();
-                $subschema['properties'][$subtype]['enum'] = array($subtype);
-                foreach ($this->properties($subtype) as $property) {
+                $subschema['properties'][$modtype]['enum'] = array($modtype);
+                foreach ($this->properties($modtype) as $property) {
                     $subschema['properties'][$property->id()] = $property->subschema($reference);
                 }
-                if (isset($this->required[$subtype])) {
-                    $subschema['required'] = $this->required[$subtype];
+                if (isset($this->required[$modtype])) {
+                    $subschema['required'] = $this->required[$modtype];
                 }
                 $anyof[] = $subschema;
             }
@@ -160,7 +161,7 @@ trait ObjectTrait
     public function data(Item $item, $lang)
     {
         $data = null;
-        foreach ($this->properties($item->subtype()) as $property) {
+        foreach ($this->properties($item->modtype()) as $property) {
             $data[$property->id()] = $property->data($item, $lang);
         }
         return $data;

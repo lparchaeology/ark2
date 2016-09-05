@@ -40,8 +40,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Extension\Core\Type;
-use ARK\Model\Item;
-use ARK\Model\Site;
+use ARK\Model\Module;
 
 class SiteController
 {
@@ -76,14 +75,15 @@ class SiteController
         $errors = array();
 
         try {
-            $site = Site::get($app['database'], $siteSlug);
-            $item = Item::get($app['database'], $site->id(), 'ste', $site->id());
+            $ark = Module::get($app['database'], 'ark');
+            $module = Module::getSubmodule($app['database'], $ark, 'ste');
+            $item = $module->item($siteSlug);
             if ($request->get('schema') == 'true') {
-                $jsonapi['meta']['schema'] = $site->schema();
+                $jsonapi['meta']['schema'] = $module->schema();
             }
-            $jsonapi['data']['type'] = $site->type();
-            $jsonapi['data']['id'] = $site->id();
-            $jsonapi['data']['attributes'] = $site->data($item, $app['locale']);
+            $jsonapi['data']['type'] = $module->type();
+            $jsonapi['data']['id'] = $module->id();
+            $jsonapi['data']['attributes'] = $module->data($item, $app['locale']);
         } catch (Error $e) {
             $jsonapi['errors'][] = $e->payload();
         }
@@ -98,22 +98,31 @@ class SiteController
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
         $jsonapi['jsonapi']['version'] = '1.0';
         $errors = array();
+        dump('start');
 
         try {
-            $sites = Site::getAll($app['database']);
-            foreach ($sites as $site) {
-                $resource['type'] = $site->type();
-                $resource['id'] = $site->id();
+            dump('get ark');
+            $ark = Module::get($app['database'], 'ark');
+            dump($ark);
+            $module = Module::getSubmodule($app['database'], $ark, 'ste');
+            dump($module);
+            $items = $module->items();
+            dump($items);
+            foreach ($items as $item) {
+                $resource['type'] = $module->type();
+                $resource['id'] = $item->item();
                 if ($request->get('schema') == 'true') {
-                    $resource['meta']['schema'] = $site->schema();
+                    $resource['meta']['schema'] = $module->schema();
                 }
                 $jsonapi['data'][] = $resource;
             }
         } catch (Error $e) {
+            throw new \Exception('wtf!');
             $jsonapi['errors'][] = $e->payload();
         }
 
         $response->setData($jsonapi);
+        //throw new \Exception('crash!');
         return $response;
     }
 }

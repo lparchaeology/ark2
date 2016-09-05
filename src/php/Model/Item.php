@@ -39,34 +39,29 @@ use ARK\Database\Database;
 
 class Item
 {
-    private $site = '';
-    private $module = '';
-    private $item = '';
-    private $itemkey = '';
-    private $itemvalue = '';
-    private $subtype = null;
+    private $module = null;
+    private $item = null;
+    private $index = null;
+    private $modtype = '';
     protected $valid = false;
 
-    public function __construct($site = '', $module = '', $item = '', $subtype = null)
+    public function __construct($module = null, $item = null, $modtype = null)
     {
-        if ($site) {
-            $config['site'] = $site;
+        if ($module) {
             $config['module'] = $module;
             $config['item'] = $item;
-            $config['subtype'] = $subtype;
+            $config['modtype'] = $modtype;
             $this->loadConfig($config);
         }
     }
 
     protected function loadConfig($config)
     {
-        $this->site = $config['site'];
         $this->module = $config['module'];
         $this->item = $config['item'];
-        $this->itemkey = $this->module.'_cd';
-        $this->itemvalue = ($this->module == 'ste' ? $this->site : $this->site.'_'.$this->item);
-        if (isset($config['subtype'])) {
-            $this->subtype = $config['subtype'];
+        $this->index = substr($this->item, strrpos($this->item, '.') + 1);
+        if (isset($config['modtype'])) {
+            $this->modtype = $config['modtype'];
         }
         $this->valid = true;
     }
@@ -74,11 +69,6 @@ class Item
     public function isValid()
     {
         return $this->valid;
-    }
-
-    public function site()
-    {
-        return $this->site;
     }
 
     public function module()
@@ -91,38 +81,33 @@ class Item
         return $this->item;
     }
 
-    public function itemkey()
+    public function index()
     {
-        return $this->itemkey;
+        return $this->index;
     }
 
-    public function itemvalue()
+    public function modtype()
     {
-        return $this->itemvalue;
+        return $this->modtype;
     }
 
-    public function subtype()
+    static public function get(Database $db, $module, $item, $table = null)
     {
-        return $this->subtype;
-    }
-
-    static public function get(Database $db, $site, $module, $id)
-    {
-        $item = new Item();
-        $config = $db->getItem($site, $module, $id);
+        $itm = new Item();
+        $config = $db->getItem($module, $item, $table);
         if (!$config) {
             //throw new Error(1000);
-            return $item;
+            return $itm;
         }
         $config['module'] = $module;
-        $item->loadConfig($config);
-        return $item;
+        $itm->loadConfig($config);
+        return $itm;
     }
 
-    static public function getAll(Database $db, $site, $module)
+    static public function getAll(Database $db, $module, $parent = null, $table = null)
     {
         $items = array();
-        $configs = $db->getItems($site, $module);
+        $configs = $db->getItems($module, $parent);
         foreach ($configs as $config) {
             $item = new Item();
             $config['module'] = $module;

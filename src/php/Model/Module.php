@@ -39,10 +39,9 @@ use ARK\Database\Database;
 
 final class Module extends AbstractResource
 {
-    private $site = '';
-    private $itemkey = '';
-    private $itemno = '';
-    private $table = '';
+    private $parent = null;
+    private $table = null;
+    private $modules = null;
 
     use ObjectTrait;
 
@@ -51,37 +50,90 @@ final class Module extends AbstractResource
         parent::__construct($db, $id);
     }
 
-    protected function loadConfig($config, Site $site = null)
+    protected function loadConfig($config, Module $parent = null)
     {
         parent::loadConfig($config);
 
-        $this->site = $site;
+        $this->parent = $parent;
         $this->typeCode = $config['module'];
         $this->type = $config['resource'];
         $this->table = $config['tbl'];
         $this->valid = true;
     }
 
-    public function site()
+    public function parent()
     {
-        return $this->site;
+        return $this->parent;
     }
 
-    static public function get(Database $db, Site $site, $moduleId)
+    private function loadSubodules()
+    {
+        $modules = Module::getAll($this->db, $this->id());
+        $this->submodules = ($modules ? $modules : array());
+    }
+
+    public function submodule($module)
+    {
+        if ($this->submodules === null) {
+            $this->loadSubodules();
+        }
+        foreach ($this->submodules as $mod) {
+            if ($mod->id() == $module || $mod->type() == $module) {
+                return $mod;
+            }
+        }
+        throw new Error(9999);
+    }
+
+    public function submodules()
+    {
+        if ($this->submodules === null) {
+            $this->loadSubodules();
+        }
+        return $this->submodules;
+    }
+
+    public function item($item)
+    {
+        return Item::get($this->db, $this->id, $item, $this->table);
+    }
+
+    public function items()
+    {
+        if ($this->parent && $this->parent->id() != 'ark') {
+            $parent = $this->parent->id();
+        } else {
+            $parent = null;
+        }
+        return Item::getAll($this->db, $this->id, $parent, $this->table);
+    }
+
+    static public function get(Database $db, $moduleId, Module $parent = null)
     {
         $module = new Module($db, $moduleId);
         $config = $db->getModule($moduleId);
         if (!$config) {
             throw new Error(1000);
         }
-        $module->loadConfig($config, $site);
+        $module->loadConfig($config, $parent);
         return $module;
     }
 
-    static public function getAll(Database $db, Site $site, $enabled = true)
+    static public function getSubmodule(Database $db, Module $parent, $submodule)
+    {
+        $module = new Module($db, $submodule);
+        $config = $db->getSubmodule($parent->id(), $submodule);
+        if (!$config) {
+            throw new Error(1000);
+        }
+        $module->loadConfig($config, $parent);
+        return $module;
+    }
+
+    static public function getSubmodules(Database $db, $module, $enabled = true)
     {
         $modules = array();
-        $configs = $db->getSiteModules($site->id());
+        $configs = $db->getSubmodules($module);
         foreach ($configs as $config) {
             $module = new Module($db, $config['module']);
             $module->loadConfig($config, $site);

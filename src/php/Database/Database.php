@@ -463,76 +463,37 @@ class Database
         return $this->data()->fetchAll($sql, $params);
     }
 
-    public function getSites()
+    public function getSubmodules($module)
     {
         $sql = "
             SELECT *
-            FROM ark_module_ste
-        ";
-        $params = array();
-        $items = $this->data()->fetchAll($sql, $params);
-        $sql = "
-            SELECT *
-            FROM ark_model_site, ark_config_module
-            WHERE ark_model_site.module = :module
-            AND ark_model_site.module = ark_config_module.module
+            FROM ark_model_submodule, ark_config_module
+            WHERE ark_model_submodule.module = :module
+            AND ark_model_submodule.submodule = ark_config_module.module
         ";
         $params = array(
-            ':module' => 'ste',
-        );
-        $mods = $this->config()->fetchAll($sql, $params);
-        dump($mods);
-        dump($items);
-        foreach ($mods as $module) {
-            $modules[$module['site']] = $module;
-        }
-        foreach ($items as $item) {
-            $sites[] = array_merge($item, $modules[$item['site']]);
-        }
-        return $sites;
-    }
-
-    public function getSite($site)
-    {
-        $item = $this->getItem($site, 'ste', $site, 'ark_module_ste');
-        if (!$item) {
-            return $item;
-        }
-        $module = $this->getSiteModule($site, 'ste');
-        return array_merge($item, $module);
-    }
-
-    public function getSiteModules($site)
-    {
-        $sql = "
-            SELECT *
-            FROM ark_model_site, ark_config_module
-            WHERE ark_model_site.site = :site
-            AND ark_model_site.module = ark_config_module.module
-        ";
-        $params = array(
-            ':site' => $site,
+            ':module' => $module,
         );
         return $this->config()->fetchAll($sql, $params);
     }
 
-    public function getSiteModule($site, $module)
+    public function getSubmodule($module, $submodule)
     {
         $sql = "
             SELECT *
-            FROM ark_model_site, ark_config_module
-            WHERE ark_model_site.site = :site
-            AND ark_model_site.module = :module
-            AND ark_model_site.module = ark_config_module.module
+            FROM ark_model_submodule, ark_config_module
+            WHERE ark_model_submodule.module = :module
+            AND ark_model_submodule.submodule = :submodule
+            AND ark_model_submodule.submodule = ark_config_module.module
         ";
         $params = array(
-            ':site' => $site,
             ':module' => $module,
+            ':submodule' => $submodule,
         );
         return $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getItem($site, $module, $item, $mod_tbl = null)
+    public function getItem($module, $item, $mod_tbl = null)
     {
         if (empty($mod_tbl)) {
             $mod_tbl = $this->getModuleTable($module);
@@ -540,17 +501,15 @@ class Database
         $sql = "
             SELECT *
             FROM $mod_tbl
-            WHERE site = :site
-            AND item = :item
+            WHERE item = :item
         ";
         $params = array(
-            ':site' => $site,
             ':item' => $item,
         );
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getItems($site, $module, $mod_tbl = null)
+    public function getItems($module, $parent = null, $mod_tbl = null)
     {
         if (!$mod_tbl) {
             $module = $this->getModule($module);
@@ -559,15 +518,18 @@ class Database
         $sql = "
             SELECT *
             FROM $mod_tbl
-            WHERE site = :site
         ";
-        $params = array(
-            ':site' => $site,
-        );
+        $params = array();
+        if ($parent) {
+            $sql .= "
+                WHERE item LIKE :parent
+            ";
+            $params[':parent'] = $parent.'[_]%';
+        }
         return $this->data()->fetchAll($sql, $params);
     }
 
-    public function countItems($site, $module, $mod_tbl = null)
+    public function countItems($module, $parent = null, $mod_tbl = null)
     {
         if (empty($mod_tbl)) {
             $mod_tbl = $this->getModuleTable($module);
@@ -575,31 +537,39 @@ class Database
         $sql = "
             SELECT COUNT(*) as 'count'
             FROM $mod_tbl
-            WHERE site = :site
         ";
-        $params = array(
-            ':site' => $site,
-        );
+        $params = array();
+        if ($parent) {
+            $sql .= "
+                WHERE item LIKE :parent
+            ";
+            $params[':parent'] = $parent.'[_]%';
+        }
         return $this->data()->fetchAssoc($sql, $params)['count'];
     }
 
-    public function getRecentItems($site, $module, $rows)
+    public function getRecentItems($module, $parent, $rows)
     {
         $module = $this->getModule($module);
         $itemkey = $module['itemkey'];
         $mod_tbl = $module['tbl'];
-        $count = $this->countItems($site, $module, $mod_tbl);
+        $count = $this->countItems($module, $parent, $mod_tbl);
         $start = ($count > $rows) ? $count - $rows : 0;
+        $params = array();
         $sql = "
             SELECT *
             FROM $mod_tbl
-            WHERE site = :site
+        ";
+        if ($parent) {
+            $sql .= "
+                WHERE item LIKE :parent
+            ";
+            $params[':parent'] = $parent.'[_]%';
+        }
+        $sql .= "
             ORDER BY cre_on
             LIMIT $start, $rows
         ";
-        $params = array(
-            ':site' => $site,
-        );
         return $this->data()->fetchAll($sql, $params);
     }
 
@@ -639,7 +609,7 @@ class Database
     {
         $sql = "
             SELECT *
-            FROM ark_model_subtype
+            FROM ark_model_modtype
             WHERE module = :module
             AND schema_id = :schema
         ";
@@ -708,26 +678,26 @@ class Database
         $config = $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getGroupForModule($group, $module, $subtype = null)
+    public function getGroupForModule($group, $module, $modtype = null)
     {
         $sql = "
             SELECT ark_view_group.*, ark_view_element.element_type AS child_type
             FROM ark_view_group, ark_view_element
             WHERE ark_view_group.element = :element
-            AND (ark_view_group.subtype = :module OR ark_view_group.subtype = :subtype OR ark_view_group.subtype = :cor)
+            AND (ark_view_group.modtype = :module OR ark_view_group.modtype = :modtype OR ark_view_group.modtype = :cor)
             AND ark_view_group.enabled = :enabled
             AND ark_view_group.child = ark_view_element.element
             ORDER BY ark_view_group.row, ark_view_group.col, ark_view_group.seq
         ";
         $params = array(
             ':element' => $group,
-            ':subtype' => $subtype,
+            ':modtype' => $modtype,
             ':module' => $module,
             ':cor' => 'cor',
             ':enabled' => true,
         );
-        if (!$subtype) {
-            $params[':subtype'] = 'cor';
+        if (!$modtype) {
+            $params[':modtype'] = 'cor';
         }
         return $this->config()->fetchAll($sql, $params);
     }

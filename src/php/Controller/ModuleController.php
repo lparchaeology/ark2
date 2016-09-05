@@ -85,6 +85,11 @@ class ModuleController
         $errors = array();
 
         try {
+            $ark = Module::get($app['database'], 'ark');
+            $module = Module::getSubmodule($app['database'], $ark, 'ste');
+            $item = $module->item($siteSlug);
+            $submodule = Module::getSubmodule($app['database'], $module, 'ste');
+
             $site = Site::get($app['database'], $siteSlug);
             $module = Module::get($app['database'], $site, $moduleSlug);
             $item = Item::get($app['database'], $site->id(), $module->id(), '');
