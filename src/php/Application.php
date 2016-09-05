@@ -36,6 +36,7 @@ namespace ARK;
 
 use Psr\Log\LogLevel;
 use Symfony\Component\Debug\Debug;
+use MauroMoreno\SilexJsonApi\JsonApiServiceProvider;
 use ARK\Translation\ActorLoader;
 use ARK\Translation\DatabaseLoader;
 use ARK\Translation\Profiler\TranslationProfilerServiceProvider;
@@ -176,7 +177,7 @@ class Application extends \Silex\Application
         // Enable the JSON:API provider
         $app['mappers'] = array(
         );
-        $app->register(new MauroMoreno\JsonApi\JsonApiServiceProvider);
+        $app->register(new JsonApiServiceProvider);
 
         // Enable other providers
         $app->register(new \Silex\Provider\AssetServiceProvider());
