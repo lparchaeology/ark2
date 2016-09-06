@@ -37,7 +37,7 @@ $classes = array(
 // Purge new tables
 if (true && $update) {
     print_r("===========================================================================================\n\n");
-    print_r("Purging Tables\n\n");
+    print_r("Deleting Tables\n\n");
     foreach ($modules as $module) {
         clearTable($new, 'ark_module_'.$module);
     }
@@ -48,14 +48,29 @@ if (true && $update) {
 }
 
 // Import ARKs
-importArk('ark_minories', 'MNO12');
-importArk('ark_prescot', 'PCO06');
-importArk('ark_olaves', 'SOL13');
-importArk('ark_horsegroom', 'HGI13');
+importSchema('ark_prescot', 'PCO06', 'prescot');
+importSchema('ark_olaves', 'SOL13', 'olaves');
+importSchema('ark_horsegroom', 'HGI13', 'horse');
 
 
-function importArk($dbname, $site) {
+function importSchema($dbname, $site, $schema_id) {
     global $new, $classes, $update;
+
+    print_r("===========================================================================================\n\n");
+    print_r("Deleting Schema $schema_id");
+    $sql = "
+        DELETE
+        FROM ark_model_module
+        WHERE schema_id = :schema_id
+    ";
+    $params = array(
+        ':schema_id' => $schema_id,
+    );
+    if ($update) {
+        $new->executeUpdate($sql, array());
+        print_r(" - Done\n");
+    }
+    print_r("\n");
 
     print_r("===========================================================================================\n\n");
     print_r('Importing Site '.$site.' from Database '.$dbname."\n\n");
@@ -84,25 +99,10 @@ function importArk($dbname, $site) {
         if ($module != 'cor') {
             $itemkey = $module.'_cd';
             $old_tbl = $module.'_tbl_'.$module;
-            if ($module == 'abk') {
-                $new_tbl = 'ark_module_act';
-            } else {
-                $new_tbl = 'ark_module_'.$module;
-            }
-            if ($mod['modtype']) {
-                $modtype = $mod['modtype'];
-                $type_tbl = $module.'_lut_'.$modtype;
-                $sql = "
-                    SELECT $old_tbl.$itemkey AS itemkey, $type_tbl.$modtype AS modtype, $old_tbl.cre_by, $old_tbl.cre_on
-                    FROM $old_tbl, $type_tbl
-                    WHERE $old_tbl.$modtype = $type_tbl.id
-                ";
-            } else {
-                $sql = "
-                    SELECT $old_tbl.$itemkey AS itemkey, $old_tbl.cre_by, $old_tbl.cre_on
-                    FROM $old_tbl
-                ";
-            }
+            $sql = "
+                SELECT $old_tbl.$itemkey AS itemkey, $old_tbl.cre_by, $old_tbl.cre_on
+                FROM $old_tbl
+            ";
             $items = $old->fetchAll($sql, array());
             print_r($old_tbl.' : '.count($items)."\n");
             if ($module == 'abk') {
@@ -306,94 +306,4 @@ function insertRow($new_db, $row, $table) {
     }
 }
 
-function getParent($db, $tbl, $id) {
-    $sql = "
-        SELECT *
-        FROM $tbl
-        WHERE id = ?
-    ";
-    $parent = $db->fetchAssoc($sql, array($id));
-    if (isTable($parent['itemkey'])) {
-        return getParent($db, $parent['itemkey'], $parent['itemvalue']);
-    }
-    return array('itemkey' => $parent['itemkey'], 'itemvalue' => $parent['itemvalue']);
-}
-
-function isTable($itemkey) {
-    return (substr($itemkey, 0, 8) == 'cor_tbl_');
-}
-
-function clearTable($db, $table) {
-    global $update;
-    print_r("Clear table : $table");
-    $sql = "TRUNCATE TABLE $table";
-    if ($update) {
-        $db->executeUpdate($sql, array());
-        print_r(" - Done\n");
-    }
-    print_r("\n");
-}
-
-function fixAttribute($attr) {
-    switch ($attr) {
-        case '<5%':
-            return 'lt5pcnt';
-        case '5-20%':
-            return '5to20pcnt';
-        case '20-40%':
-            return '20to40pcnt';
-        case '40-60%':
-            return '40to60pcnt';
-        case '60-80%':
-            return '60to80pcnt';
-        case '80-100%':
-            return '80to100pcnt';
-        case '1:1':
-            return 'ratio1to1';
-        case '1:10':
-            return 'ratio1to10';
-        case '1:20':
-            return 'ratio1to20';
-        case '0.2m':
-            return '02m';
-        case '0.3m':
-            return '03m';
-        case '0.3m0.2m':
-            return '03m02m';
-        case '0.2m1m':
-            return '02m1m';
-        case '1m0.5m':
-            return '1m05m';
-        case '1m0.3m':
-            return '1m03m';
-        case '0.5m':
-            return '05m';
-        case '0.5m0.2m':
-            return '05m02m';
-        case '0.3m1m':
-            return '03m1m';
-        case '0.2m0.5m':
-            return '02m05m';
-        case '0.3m0.5m':
-            return '03m05m';
-        case '0.5m0.2':
-            return '05m02';
-        case '0.2m0.5m1m':
-            return '02m05m1m';
-        case '0.2m0.2m':
-            return '02m02m';
-        case 'c.t.p.':
-            return 'ctp';
-        case 'n/a':
-            return 'na';
-        case 'rb??':
-            return 'rbq';
-        case 'n/a_1':
-            return 'na_1';
-        case 'n/a_2':
-            return 'na_2';
-        default:
-            return $attr;
-    }
-}
 
