@@ -119,24 +119,25 @@ final class Module extends AbstractResource
         return $module;
     }
 
-    static public function getSubmodule(Database $db, Module $parent, $submodule)
+    static public function getSubmodule(Database $db, Module $parent, Item $item, $submodule)
     {
         $module = new Module($db, $submodule);
-        $config = $db->getSubmodule($parent->id(), $submodule);
+        $config = $db->getSubmodule($parent->id(), $item->schemaId(), $submodule);
         if (!$config) {
-            throw new Error(1000);
+            throw new \Exception();
+            //throw new Error(1000);
         }
         $module->loadConfig($config, $parent);
         return $module;
     }
 
-    static public function getSubmodules(Database $db, $module, $enabled = true)
+    static public function getSubmodules(Database $db, Module $parent, Item $item, $enabled = true)
     {
         $modules = array();
-        $configs = $db->getSubmodules($module);
+        $configs = $db->getSubmodules($parent->id(), $item->schemaId());
         foreach ($configs as $config) {
             $module = new Module($db, $config['module']);
-            $module->loadConfig($config, $site);
+            $module->loadConfig($config, $parent);
             if ($module->isValid() && ($module->isEnabled() || !$enabled)) {
                 $modules[] = $module;
             }

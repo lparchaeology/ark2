@@ -116,7 +116,7 @@ class DataClass extends Element
         return $this->_attributes;
     }
 
-    function formData($itemKey)
+    function formData(Item $item)
     {
         if (!$this->isValid()) {
             return array();
@@ -124,7 +124,7 @@ class DataClass extends Element
         $data = array();
         switch ($this->dataclass()) {
             case 'txt':
-                $row = $this->_db->getText($itemKey['key'], $itemKey['value'], $this->classtype(), 'en');
+                $row = $this->_db->getText($item->module(), $item->id(), $this->classtype(), 'en');
                 if (isset($row['txt'])) {
                     $data[$this->id()] = $row['txt'];
                 }
@@ -136,13 +136,13 @@ class DataClass extends Element
                 }
                 break;
             case 'date':
-                $row = $this->_db->getDate($itemKey['key'], $itemKey['value'], $this->classtype());
+                $row = $this->_db->getDate($item->module(), $item->id(), $this->classtype());
                 if (isset($row['date'])) {
                     $data[$this->id()] = new \DateTime($row['date']);
                 }
                 break;
             case 'attribute':
-                $row = $this->_db->getAttribute($itemKey['key'], $itemKey['value'], $this->classtype());
+                $row = $this->_db->getAttribute($item->module(), $item->id(), $this->classtype());
                 if (isset($row['attribute'])) {
                     $data[$this->id()] = $row['attribute'];
                 }
@@ -154,7 +154,7 @@ class DataClass extends Element
                 }
                 break;
             case 'action':
-                $action = $this->_db->getAction($itemKey['key'], $itemKey['value'], $this->classtype());
+                $action = $this->_db->getAction($item->module(), $item->id(), $this->classtype());
                 if (isset($action['actor_itemkey']) and isset($action['actor_itemvalue'])) {
                     $data[$this->id()] = $action['actor_itemkey'].'.'.$action['actor_itemvalue'];
                 }

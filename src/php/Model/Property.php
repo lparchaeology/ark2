@@ -251,7 +251,7 @@ class Property extends AbstractResource
                 break;
             case 'date':
                 $data = $this->db->getDate($item->module(), $item->item(), $this->id, $this->mode());
-                $value = $this->value($data, 'date');
+                $value = $this->value($data, 'value');
                 break;
             case 'file':
                 $data = $this->db->getFile($item->module(), $item->item(), $this->id, $this->mode());
@@ -259,15 +259,15 @@ class Property extends AbstractResource
                 break;
             case 'number':
                 $data = $this->db->getNumber($item->module(), $item->item(), $this->id, $this->mode());
-                $value = $this->value($data, 'number');
+                $value = $this->value($data, 'value');
                 break;
             case 'span':
                 $data = $this->db->getSpan($item->module(), $item->item(), $this->id, $this->mode());
                 $value = $this->value($data, 'beg', 'end');
                 break;
             case 'txt':
-                $data = $this->db->getText($item->module(), $item->item(), $this->id, $lang, $this->mode());
-                $value = $this->value($data, 'txt');
+                $data = $this->db->getString($item->module(), $item->item(), $this->id, $lang, $this->mode());
+                $value = $this->value($data, 'value');
                 break;
             case 'xmi':
                 $data = $this->db->getXmi($item->module(), $item->item(), $this->id, $this->mode());

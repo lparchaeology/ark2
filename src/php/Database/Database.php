@@ -288,121 +288,18 @@ class Database
         }
     }
 
-    public function getText($itemkey, $itemvalue, $txttype, $lang, $mode = Database::FetchFirst)
+    private function getFragment($table, $module, $id, $property, $mode = Database::FetchFirst)
     {
         $sql = "
             SELECT *
-            FROM cor_tbl_txt
-            WHERE itemkey = :itemkey
-            AND itemvalue = :itemvalue
-            AND txttype = :txttype
-            AND language = :lang
+            FROM $table
+            WHERE module = :module
+            AND id = :id
+            AND property = :property
         ";
         $params = array(
-            ':itemkey' => $itemkey,
-            ':itemvalue' => $itemvalue,
-            ':txttype' => $txttype,
-            ':lang' => $lang,
-        );
-        if ($mode == Database::FetchAll) {
-            return $this->data()->fetchAll($sql, $params);
-        }
-        return $this->data()->fetchAssoc($sql, $params);
-    }
-
-    public function getNumber($itemkey, $itemvalue, $numbertype, $mode = Database::FetchFirst)
-    {
-        $sql = "
-            SELECT *
-            FROM cor_tbl_number
-            WHERE itemkey = :itemkey
-            AND itemvalue = :itemvalue
-            AND numbertype = :numbertype
-        ";
-        $params = array(
-            ':itemkey' => $itemkey,
-            ':itemvalue' => $itemvalue,
-            ':numbertype' => $numbertype,
-        );
-        if ($mode == Database::FetchAll) {
-            return $this->data()->fetchAll($sql, $params);
-        }
-        return $this->data()->fetchAssoc($sql, $params);
-    }
-
-    public function getDate($itemkey, $itemvalue, $datetype, $mode = Database::FetchFirst)
-    {
-        $sql = "
-            SELECT *
-            FROM cor_tbl_date
-            WHERE itemkey = :itemkey
-            AND itemvalue = :itemvalue
-            AND datetype = :datetype
-        ";
-        $params = array(
-            ':itemkey' => $itemkey,
-            ':itemvalue' => $itemvalue,
-            ':datetype' => $datetype,
-        );
-        if ($mode == Database::FetchAll) {
-            return $this->data()->fetchAll($sql, $params);
-        }
-        return $this->data()->fetchAssoc($sql, $params);
-    }
-
-    public function getSpan($itemkey, $itemvalue, $spantype, $mode = Database::FetchFirst)
-    {
-        $sql = "
-            SELECT *
-            FROM cor_tbl_span
-            WHERE itemkey = :itemkey
-            AND itemvalue = :itemvalue
-            AND spantype = :spantype
-        ";
-        $params = array(
-            ':itemkey' => $itemkey,
-            ':itemvalue' => $itemvalue,
-            ':spantype' => $spantype,
-        );
-        if ($mode == Database::FetchAll) {
-            return $this->data()->fetchAll($sql, $params);
-        }
-        return $this->data()->fetchAssoc($sql, $params);
-    }
-
-    public function getAttribute($itemkey, $itemvalue, $attributetype, $mode = Database::FetchFirst)
-    {
-        $sql = "
-            SELECT *
-            FROM cor_tbl_attribute
-            WHERE itemkey = :itemkey
-            AND itemvalue = :itemvalue
-            AND attributetype = :attributetype
-        ";
-        $params = array(
-            ':itemkey' => $itemkey,
-            ':itemvalue' => $itemvalue,
-            ':attributetype' => $attributetype,
-        );
-        if ($mode == Database::FetchAll) {
-            return $this->data()->fetchAll($sql, $params);
-        }
-        return $this->data()->fetchAssoc($sql, $params);
-    }
-
-    public function getFile($itemkey, $itemvalue, $property, $mode = Database::FetchFirst)
-    {
-        $sql = "
-            SELECT *
-            FROM cor_tbl_file, cor_lut_file
-            WHERE cor_tbl_file.itemkey = :itemkey
-            AND cor_tbl_file.itemvalue = :itemvalue
-            AND cor_tbl_file.property = :property
-            AND cor_tbl_file.file = cor_lut_file.file
-        ";
-        $params = array(
-            ':itemkey' => $itemkey,
-            ':itemvalue' => $itemvalue,
+            ':module' => $module,
+            ':id' => $id,
             ':property' => $property,
         );
         if ($mode == Database::FetchAll) {
@@ -411,19 +308,82 @@ class Database
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getAction($itemkey, $itemvalue, $actiontype, $mode = Database::FetchFirst)
+    public function getAction($module, $id, $property, $mode = Database::FetchFirst)
+    {
+        return $this->getFragment('cor_tbl_action', $module, $id, $property, $mode);
+    }
+
+    public function getAttribute($module, $id, $property, $mode = Database::FetchFirst)
+    {
+        return $this->getFragment('cor_tbl_attribute', $module, $id, $property, $mode);
+    }
+
+    public function getBoolean($module, $id, $property, $mode = Database::FetchFirst)
+    {
+        return $this->getFragment('ark_data_boolean', $module, $id, $property, $mode);
+    }
+
+    public function getDate($module, $id, $property, $mode = Database::FetchFirst)
+    {
+        return $this->getFragment('ark_data_date', $module, $id, $property, $mode);
+    }
+
+    public function getInteger($module, $id, $property, $mode = Database::FetchFirst)
+    {
+        return $this->getFragment('ark_data_integer', $module, $id, $property, $mode);
+    }
+
+    public function getNumber($module, $id, $property, $mode = Database::FetchFirst)
+    {
+        return $this->getFragment('ark_data_number', $module, $id, $property, $mode);
+    }
+
+    public function getSpan($module, $id, $property, $mode = Database::FetchFirst)
+    {
+        return $this->getFragment('cor_tbl_span', $module, $id, $property, $mode);
+    }
+
+    public function getString($module, $id, $property, $lang, $mode = Database::FetchFirst)
     {
         $sql = "
             SELECT *
-            FROM cor_tbl_action
-            WHERE itemkey = :itemkey
-            AND itemvalue = :itemvalue
-            AND actiontype = :actiontype
+            FROM ark_data_string
+            WHERE module = :module
+            AND id = :id
+            AND property = :property
+            AND language = :language
         ";
         $params = array(
-            ':itemkey' => $itemkey,
-            ':itemvalue' => $itemvalue,
-            ':actiontype' => $actiontype,
+            ':module' => $module,
+            ':id' => $id,
+            ':property' => $property,
+            ':language' => $lang,
+        );
+        if ($mode == Database::FetchAll) {
+            return $this->data()->fetchAll($sql, $params);
+        }
+        return $this->data()->fetchAssoc($sql, $params);
+    }
+
+    public function getXmi($module, $id, $property, $mode = Database::FetchFirst)
+    {
+        return $this->getFragment('ark_data_xmi', $module, $id, $property, $mode);
+    }
+
+    public function getFile($module, $id, $property, $mode = Database::FetchFirst)
+    {
+        $sql = "
+            SELECT *
+            FROM cor_tbl_file, cor_lut_file
+            WHERE cor_tbl_file.module = :module
+            AND cor_tbl_file.id = :id
+            AND cor_tbl_file.property = :property
+            AND cor_tbl_file.file = cor_lut_file.file
+        ";
+        $params = array(
+            ':module' => $module,
+            ':id' => $id,
+            ':property' => $property,
         );
         if ($mode == Database::FetchAll) {
             return $this->data()->fetchAll($sql, $params);
@@ -463,31 +423,35 @@ class Database
         return $this->data()->fetchAll($sql, $params);
     }
 
-    public function getSubmodules($module)
+    public function getSubmodules($module, $schema_id)
     {
         $sql = "
             SELECT *
             FROM ark_model_submodule, ark_config_module
             WHERE ark_model_submodule.module = :module
+            AND ark_model_submodule.schema_id = :schema_id
             AND ark_model_submodule.submodule = ark_config_module.module
         ";
         $params = array(
             ':module' => $module,
+            ':schema_id' => $schema_id,
         );
         return $this->config()->fetchAll($sql, $params);
     }
 
-    public function getSubmodule($module, $submodule)
+    public function getSubmodule($module, $schema_id, $submodule)
     {
         $sql = "
             SELECT *
             FROM ark_model_submodule, ark_config_module
             WHERE ark_model_submodule.module = :module
+            AND ark_model_submodule.schema_id = :schema_id
             AND ark_model_submodule.submodule = :submodule
-            AND ark_model_submodule.submodule = ark_config_module.module
+            AND ark_config_module.module = ark_model_submodule.submodule
         ";
         $params = array(
             ':module' => $module,
+            ':schema_id' => $schema_id,
             ':submodule' => $submodule,
         );
         return $this->config()->fetchAssoc($sql, $params);

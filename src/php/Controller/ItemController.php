@@ -81,15 +81,23 @@ class ItemController
 
     public function getItemsAction(Application $app, Request $request, $siteSlug, $moduleSlug)
     {
+        $uri = $request->getSchemeAndHttpHost().$request->getBaseUrl().$request->getPathInfo();
         $response = new JsonResponse(null);
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
         $jsonapi['jsonapi']['version'] = '1.0';
         $errors = array();
 
         try {
-            $site = Site::get($app['database'], $siteSlug);
-            $module = Module::get($app['database'], $site, $moduleSlug);
-            $items = Item::getAll($app['database'], $site->id(), $module->id());
+            $arkMod = Module::get($app['database'], 'ark');
+            $ark = $arkMod->item('ark');
+            $mod = $app['database']->getModule($siteSlug);
+            $siteMod = Module::getSubmodule($app['database'], $arkMod, $ark, $mod['module']);
+            $site = $siteMod->item($siteSlug);
+            $mod = $app['database']->getModule($moduleSlug);
+            $moduleMod = Module::getSubmodule($app['database'], $siteMod, $site, $mod['module']);
+            $module = $moduleMod->item($moduleSlug);
+            $items = $moduleMod->items();
+
             foreach ($items as $item) {
                 $resource['type'] = $module->type();
                 $resource['id'] = $item->item();

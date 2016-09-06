@@ -79,54 +79,35 @@ class ModuleController
 
     public function getModuleAction(Application $app, Request $request, $siteSlug, $moduleSlug)
     {
+        $uri = $request->getSchemeAndHttpHost().$request->getBaseUrl().$request->getPathInfo();
         $response = new JsonResponse(null);
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
         $jsonapi['jsonapi']['version'] = '1.0';
         $errors = array();
 
         try {
-            $ark = Module::get($app['database'], 'ark');
-            $module = Module::getSubmodule($app['database'], $ark, 'ste');
-            $item = $module->item($siteSlug);
-            $submodule = Module::getSubmodule($app['database'], $module, 'ste');
+            $arkMod = Module::get($app['database'], 'ark');
+            $ark = $arkMod->item('ark');
+            $siteMod = Module::getSubmodule($app['database'], $arkMod, $ark, 'ste');
+            $site = $siteMod->item($siteSlug);
+            $mod = $app['database']->getModule($moduleSlug);
+            $module = Module::getSubmodule($app['database'], $siteMod, $site, $mod['module']);
+            $item = $module->item($moduleSlug);
+            $submodules = Module::getSubmodules($app['database'], $module, $item);
 
-            $site = Site::get($app['database'], $siteSlug);
-            $module = Module::get($app['database'], $site, $moduleSlug);
-            $item = Item::get($app['database'], $site->id(), $module->id(), '');
             if ($request->get('schema') == 'true') {
                 $jsonapi['meta']['schema'] = $module->schema();
             }
             $jsonapi['data']['type'] = $module->type();
             $jsonapi['data']['id'] = $module->id();
             $jsonapi['data']['attributes'] = $module->data($item, $app['locale']);
-        } catch (Error $e) {
-            $jsonapi['errors'][] = $e->payload();
-        }
-
-        $response->setData($jsonapi);
-        return $response;
-    }
-
-    public function getModulesAction(Application $app, Request $request, $siteSlug)
-    {
-        $response = new JsonResponse(null);
-        $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
-        $jsonapi['jsonapi']['version'] = '1.0';
-        $errors = array();
-
-        try {
-            $site = Site::get($app['database'], $siteSlug);
-            $modules = Module::getAll($app['database'], $site);
-            foreach ($modules as $module) {
-                $resource['type'] = $module->type();
-                $resource['id'] = $module->id();
-            if ($request->get('schema') == 'true') {
-                $resource['meta']['schema'] = $module->schema();
+            foreach ($submodules as $submodule) {
+                $jsonapi['data']['references'][$submodule->type()]['links']['related'] = $uri.'/'.$submodule->type();
             }
-                $jsonapi['data'][] = $resource;
-            }
+            $jsonapi['data']['links']['self'] = $uri;
         } catch (Error $e) {
-            $jsonapi['errors'][] = $e->payload();
+            $jsonapi['errors'][] = 'error';
+            //$jsonapi['errors'][] = $e->payload();
         }
 
         $response->setData($jsonapi);
