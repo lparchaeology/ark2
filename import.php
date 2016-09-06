@@ -20,6 +20,17 @@ $config = array(
 $new = \Doctrine\DBAL\DriverManager::getConnection($config);
 $new->connect();
 
+$config = array(
+    'driver' => 'pdo_mysql',
+    'host' => '127.0.0.1',
+    'port' => '8889',
+    'dbname' => 'ark_config',
+    'user' => 'ark_user',
+    'password' => 'arkpass',
+);
+$config_db = \Doctrine\DBAL\DriverManager::getConnection($config);
+$config_db->connect();
+
 // New modules to clear
 $modules = array('act', 'cxt', 'grp', 'lus', 'pln', 'rgf', 'sec', 'sgr', 'smp', 'spf', 'sph', 'ste', 'tmb');
 // Standard dataclass list to import
@@ -48,14 +59,14 @@ if (true && $update) {
 }
 
 // Import ARKs
-importArk('ark_minories', 'MNO12');
-importArk('ark_prescot', 'PCO06');
-importArk('ark_olaves', 'SOL13');
-importArk('ark_horsegroom', 'HGI13');
+importArk('ark_minories', 'MNO12', '100 Minories', 'minories', false);
+importArk('ark_prescot', 'PCO06', 'Prescot Street', 'prescot');
+importArk('ark_stolaves', 'SOL13', 'St Olaves', 'olaves');
+importArk('ark_horsegroom', 'HGI13', 'Horse and Groom', 'horse');
 
 
-function importArk($dbname, $site) {
-    global $new, $classes, $update;
+function importArk($dbname, $site, $name, $schema_id, $importSchema = true) {
+    global $new, $config_db, $classes, $update;
 
     print_r("===========================================================================================\n\n");
     print_r('Importing Site '.$site.' from Database '.$dbname."\n\n");
@@ -72,7 +83,6 @@ function importArk($dbname, $site) {
     $old = \Doctrine\DBAL\DriverManager::getConnection($config);
     $old->connect();
 
-    // Get the module list to import, note table needs modification to include modtype field
     $sql = "
         SELECT *
         FROM cor_tbl_module
@@ -135,6 +145,36 @@ function importArk($dbname, $site) {
             }
             print_r($new_tbl.' : '.$updates."\n\n");
         }
+    }
+
+    // Insert the Site Module entry and name
+    $sql = "
+        INSERT INTO ark_module_ste
+        (id, item, schema_id)
+        VALUES (:id, :item, :schema_id)
+    ";
+    $params = array(
+        ':id' => $site,
+        ':item' => $site,
+        ':schema_id' => $schema_id,
+    );
+    if ($update) {
+        $new->executeUpdate($sql, $params);
+    }
+    $sql = "
+        INSERT INTO ark_data_string
+        (module, id, property, language, value)
+        VALUES (:module, :id, :property, :language, :value)
+    ";
+    $params = array(
+        ':module' => 'ste',
+        ':id' => $site,
+        ':property' => 'name',
+        ':language' => 'en',
+        ':value' => $name,
+    );
+    if ($update) {
+        $new->executeUpdate($sql, $params);
     }
 
     // Copy the standard data classes
@@ -284,6 +324,82 @@ function importArk($dbname, $site) {
 
     // TODO Span stuff
     $special = array('spanlabel', 'spanattr');
+
+    if ($importSchema) {
+        print_r("===========================================================================================\n\n");
+        print_r("Deleting Schema $schema_id");
+        $sql = "
+            DELETE
+            FROM ark_model_module
+            WHERE schema_id = :schema_id
+        ";
+        $params = array(
+            ':schema_id' => $schema_id,
+        );
+        if ($update) {
+            $config_db->executeUpdate($sql, $params);
+            print_r(" - Done\n");
+        }
+        print_r("\n");
+        $props = array();
+        $modules[] = array('shortform' => 'ste');
+        foreach ($modules as $mod) {
+            $module = $mod['shortform'];
+            if ($module == 'cor') {
+                continue;
+            }
+            if ($module == 'abk') {
+                $module = 'act';
+            }
+            $tbl = 'ark_module_'.$module;
+            $sql = "
+                SELECT *
+                FROM $tbl
+            ";
+            $items = $new->fetchAll($sql, array());
+            foreach ($items as $item) {
+                foreach ($classes as $dataclass => $new_tbl) {
+                    $sql = "
+                        SELECT *
+                        FROM $new_tbl
+                        WHERE module = :module and id = :id
+                    ";
+                    $params = array(
+                        ':module' => $module,
+                        ':id' => $item['id'],
+                    );
+                    $frags = $new->fetchAll($sql, $params);
+                    foreach ($frags as $frag) {
+                        if ($frag['property']) {
+                            $props[$module][$frag['property']] = $frag['property'];
+                        }
+                    }
+                }
+            }
+        }
+        $sql = "
+            INSERT INTO ark_model_module
+            (module, schema_id, modtype, property)
+            VALUES (:module, :schema_id, :modtype, :property)
+        ";
+        foreach ($props as $module => $props) {
+            print_r('Module '.$module.' has '.count($props)." properties with values:\n");
+            foreach ($props as $property => $val) {
+                print_r(' - '.$property."\n");
+                $params = array(
+                    ':module' => $module,
+                    ':schema_id' => $schema_id,
+                    ':modtype' => $module,
+                    ':property' => $property,
+                );
+                if ($update) {
+                    $config_db->executeUpdate($sql, $params);
+                }
+            }
+            print_r("\n");
+        }
+    }
+
 }
 
 function insertRow($new_db, $row, $table) {
