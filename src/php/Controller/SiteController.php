@@ -79,7 +79,7 @@ class SiteController
             $module = Module::getSubmodule($app['database'], $ark, 'ste');
             $item = $module->item($siteSlug);
             if ($request->get('schema') == 'true') {
-                $jsonapi['meta']['schema'] = $module->schema();
+                $jsonapi['meta']['schema'] = $module->schema($item);
             }
             $jsonapi['data']['type'] = $module->type();
             $jsonapi['data']['id'] = $module->id();
@@ -101,18 +101,14 @@ class SiteController
         dump('start');
 
         try {
-            dump('get ark');
             $ark = Module::get($app['database'], 'ark');
-            dump($ark);
             $module = Module::getSubmodule($app['database'], $ark, 'ste');
-            dump($module);
             $items = $module->items();
-            dump($items);
             foreach ($items as $item) {
                 $resource['type'] = $module->type();
                 $resource['id'] = $item->item();
                 if ($request->get('schema') == 'true') {
-                    $resource['meta']['schema'] = $module->schema();
+                    $resource['meta']['schema'] = $module->schema($item);
                 }
                 $jsonapi['data'][] = $resource;
             }

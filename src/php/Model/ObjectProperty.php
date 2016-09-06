@@ -70,10 +70,10 @@ class ObjectProperty extends Property
         if (!$reference || $this->format() != 'object' || ($reference && $this->format() == 'object')) {
             $definition = parent::definition(Schema::FullSchema);
             $definition['properties'] = array();
-            foreach ($this->properties() as $property) {
+            foreach ($this->properties($this->schemaId) as $property) {
                 $definition['properties'][$property->id()] = $property->definition($reference);
             }
-            $definition['required'] = $this->required();
+            $definition['required'] = $this->required($this->schemaId);
             $definition['additionalProperties'] = false;
         } else {
             $definition = parent::definition($reference);
@@ -85,7 +85,7 @@ class ObjectProperty extends Property
     {
         $data = array();
         // TODO Graph/chain data!
-        foreach ($this->properties() as $property) {
+        foreach ($this->properties($this->schemaId) as $property) {
             $data[$property->id()] = $property->data($item, $lang);
         }
         if ($this->maxItems() != 1) {

@@ -57,92 +57,97 @@ trait ObjectTrait
         return $this->modtypes;
     }
 
-    private function getProperties()
+    private function getProperties($schemaId)
     {
-        return Property::getAllSchema($this->db, $this->schemaId, $this->typeCode);
+        return Property::getAllSchema($this->db, $schemaId, $this->typeCode);
     }
 
-    private function loadProperties()
+    private function loadProperties($schemaId)
     {
-        $properties = $this->getProperties();
-        $this->properties = array();
-        $this->required = array();
-        $this->definitions = array();
+        $properties = $this->getProperties($schemaId);
+        $this->properties[$schemaId] = array();
+        $this->required[$schemaId] = array();
+        $this->definitions[$schemaId] = array();
         foreach ($properties as $id => $config) {
             $property = $config['property'];
-            $this->properties[$config['modtype']][] = $property;
+            $this->properties[$schemaId][$config['modtype']][] = $property;
             if ($config['required']) {
-                $this->required[$config['modtype']][] = $id;
+                $this->required[$schemaId][$config['modtype']][] = $id;
             }
             if ($property->type() == 'object') {
-                $this->definitions = array_merge($this->definitions, $property->definitions());
+                $this->definitions[$schemaId] = array_merge($this->definitions[$schemaId], $property->definitions($schemaId));
             }
             if ($property->format() != 'object') {
                 if ($property->type() == 'object') {
-                    $this->definitions[$property->format()] = $property->definition();
+                    $this->definitions[$schemaId][$property->format()] = $property->definition();
                 } else {
-                    $this->definitions[$property->format()] = $property->definition(Schema::FullSchema);
+                    $this->definitions[$schemaId][$property->format()] = $property->definition(Schema::FullSchema);
                 }
             }
         }
     }
 
-    public function properties($modtype = null)
+    public function properties($schemaId, $modtype = null)
     {
-        if ($this->properties === null) {
-            $this->loadProperties();
+        if ($this->properties === null || !isset($this->properties[$schemaId]) || $this->properties[$schemaId] === null) {
+            $this->loadProperties($schemaId);
         }
-        $properties = (isset($this->properties[$this->typeCode]) ? $this->properties[$this->typeCode] : array());
-        if ($modtype && $modtype != $this->typeCode && isset($this->properties[$modtype])) {
-            return array_merge($properties, $this->properties[$modtype]);
+        $properties = (isset($this->properties[$schemaId][$this->typeCode]) ? $this->properties[$schemaId][$this->typeCode] : array());
+        if ($modtype && $modtype != $this->typeCode && isset($this->properties[$schemaId][$modtype])) {
+            return array_merge($properties, $this->properties[$schemaId][$modtype]);
         }
         return $properties;
     }
 
-    public function required($modtype = null)
+    public function required($schemaId, $modtype = null)
     {
-        if ($this->required === null) {
-            $this->loadProperties();
+        if ($this->required === null || !isset($this->required[$schemaId]) || $this->required[$schemaId] === null) {
+            $this->loadProperties($schemaId);
         }
-        $required = (isset($this->required[$this->typeCode]) ? $this->required[$this->typeCode] : array());
-        if ($modtype && $modtype != $this->typeCode && isset($this->required[$modtype])) {
-            return array_merge($required, $this->required[$modtype]);
+        $required = (isset($this->required[$schemaId][$this->typeCode]) ? $this->required[$schemaId][$this->typeCode] : array());
+        if ($modtype && $modtype != $this->typeCode && isset($this->required[$schemaId][$modtype])) {
+            return array_merge($required[$schemaId], $this->required[$schemaId][$modtype]);
         }
         return $required;
     }
 
-    public function definitions()
+    public function definitions($schemaId)
     {
-        if ($this->definitions === null) {
-            $this->loadProperties();
+        if ($this->definitions === null || !isset($this->definitions[$schemaId]) || $this->definitions[$schemaId] === null) {
+            $this->loadProperties($schemaId);
         }
-        return $this->definitions;
+        return $this->definitions[$schemaId];
     }
 
-    public function schema($reference = Schema::ReferenceSchema)
+    public function schema(Item $item, $reference = Schema::ReferenceSchema)
     {
-        if (isset($this->schema[$reference])) {
-            return $this->schema[$reference];
+        if ($item && $item->schemaId()) {
+            $schemaId = $item->schemaId();
+        } else {
+            $schemaId = $this->schemaId;
+        }
+        if (isset($this->schema[$schemaId][$reference])) {
+            return $this->schema[$schemaId][$reference];
         }
         $schema['$schema'] = 'http://json-schema.org/draft-04/schema#';
-        $schema['schema_id'] = $this->schemaId;
+        $schema['schema_id'] = $schemaId;
         if ($reference) {
-            $schema['definitions'] = $this->definitions();
+            $schema['definitions'] = $this->definitions($schemaId);
         }
         $schema['type'] = 'object';
         $schema['properties'] = array();
-        foreach ($this->properties($this->typeCode) as $property) {
+        foreach ($this->properties($schemaId, $this->typeCode) as $property) {
             $schema['properties'][$property->id()] = $property->subschema($reference);
         }
         $schema['required'] = $this->required($this->typeCode);
         $schema['additionalProperties'] = false;
-        if ($this->modtypes()) {
+        if ($this->modtypes($schemaId)) {
             $anyof = array();
-            foreach ($this->modtypes() as $modtype) {
+            foreach ($this->modtypes($schemaId) as $modtype) {
                 $subschema = array();
                 $subschema['properties'] = array();
                 $subschema['properties'][$modtype]['enum'] = array($modtype);
-                foreach ($this->properties($modtype) as $property) {
+                foreach ($this->properties($schemaId, $modtype) as $property) {
                     $subschema['properties'][$property->id()] = $property->subschema($reference);
                 }
                 if (isset($this->required[$modtype])) {
@@ -161,7 +166,7 @@ trait ObjectTrait
     public function data(Item $item, $lang)
     {
         $data = null;
-        foreach ($this->properties($item->modtype()) as $property) {
+        foreach ($this->properties($item->schemaId(), $item->modtype()) as $property) {
             $data[$property->id()] = $property->data($item, $lang);
         }
         return $data;

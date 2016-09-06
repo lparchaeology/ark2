@@ -43,6 +43,7 @@ class Item
     private $item = null;
     private $index = null;
     private $modtype = '';
+    private $schemaId = null;
     protected $valid = false;
 
     public function __construct($module = null, $item = null, $modtype = null)
@@ -63,6 +64,7 @@ class Item
         if (isset($config['modtype'])) {
             $this->modtype = $config['modtype'];
         }
+        $this->schemaId = $config['schema_id'];
         $this->valid = true;
     }
 
@@ -89,6 +91,11 @@ class Item
     public function modtype()
     {
         return $this->modtype;
+    }
+
+    public function schemaId()
+    {
+        return $this->schemaId;
     }
 
     static public function get(Database $db, $module, $item, $table = null)
