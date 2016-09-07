@@ -43,7 +43,7 @@ trait ObjectTrait
     private $properties = null;
     private $required = null;
     private $definitions = null;
-    private $schema = null;
+    private $schemas = null;
 
     public function modtypes()
     {
@@ -57,14 +57,9 @@ trait ObjectTrait
         return $this->modtypes;
     }
 
-    private function getProperties($schemaId)
-    {
-        return Property::getAllSchema($this->db, $schemaId, $this->typeCode);
-    }
-
     private function loadProperties($schemaId)
     {
-        $properties = $this->getProperties($schemaId);
+        $properties = Property::getAllSchema($this->db, $schemaId, $this->typeCode);
         $this->properties[$schemaId] = array();
         $this->required[$schemaId] = array();
         $this->definitions[$schemaId] = array();
@@ -106,7 +101,7 @@ trait ObjectTrait
         }
         $required = (isset($this->required[$schemaId][$this->typeCode]) ? $this->required[$schemaId][$this->typeCode] : array());
         if ($modtype && $modtype != $this->typeCode && isset($this->required[$schemaId][$modtype])) {
-            return array_merge($required[$schemaId], $this->required[$schemaId][$modtype]);
+            return array_merge($required, $this->required[$schemaId][$modtype]);
         }
         return $required;
     }
@@ -119,15 +114,10 @@ trait ObjectTrait
         return $this->definitions[$schemaId];
     }
 
-    public function schema(Item $item, $reference = Schema::ReferenceSchema)
+    public function schema($schemaId, $reference = Schema::ReferenceSchema)
     {
-        if ($item && $item->schemaId()) {
-            $schemaId = $item->schemaId();
-        } else {
-            $schemaId = $this->schemaId;
-        }
-        if (isset($this->schema[$schemaId][$reference])) {
-            return $this->schema[$schemaId][$reference];
+        if (isset($this->schemas[$schemaId][$reference])) {
+            return $this->schemas[$schemaId][$reference];
         }
         $schema['$schema'] = 'http://json-schema.org/draft-04/schema#';
         $schema['schema_id'] = $schemaId;
@@ -139,7 +129,7 @@ trait ObjectTrait
         foreach ($this->properties($schemaId, $this->typeCode) as $property) {
             $schema['properties'][$property->id()] = $property->subschema($reference);
         }
-        $schema['required'] = $this->required($this->typeCode);
+        $schema['required'] = $this->required($schemaId);
         $schema['additionalProperties'] = false;
         if ($this->modtypes($schemaId)) {
             $anyof = array();
@@ -147,31 +137,22 @@ trait ObjectTrait
                 $subschema = array();
                 $subschema['properties'] = array();
                 $subschema['properties'][$modtype]['enum'] = array($modtype);
-                foreach ($this->properties($schemaId, $modtype) as $property) {
-                    $subschema['properties'][$property->id()] = $property->subschema($reference);
+                if (isset($this->properties[$schemaId][$modtype])) {
+                    foreach ($this->properties[$schemaId][$modtype] as $property) {
+                        $subschema['properties'][$property->id()] = $property->subschema($reference);
+                    }
+                    if (isset($this->required[$modtype])) {
+                        $subschema['required'] = $this->required[$modtype];
+                    }
+                    $anyof[] = $subschema;
                 }
-                if (isset($this->required[$modtype])) {
-                    $subschema['required'] = $this->required[$modtype];
-                }
-                $anyof[] = $subschema;
             }
             if ($anyof) {
                 $schema['anyOf'] = $anyof;
             }
         }
-        $this->schema[$reference] = $schema;
+        $this->schemas[$reference] = $schema;
         return $schema;
     }
-
-    public function data(Item $item, $lang)
-    {
-        $data = null;
-        foreach ($this->properties($item->schemaId(), $item->modtype()) as $property) {
-            $data[$property->id()] = $property->data($item, $lang);
-        }
-        return $data;
-    }
-
-
 
 }

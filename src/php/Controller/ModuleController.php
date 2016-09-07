@@ -77,41 +77,4 @@ class ModuleController
         return $app['twig']->render('pages/page.html.twig', array('form' => $form->createView()));
     }
 
-    public function getModuleAction(Application $app, Request $request, $siteSlug, $moduleSlug)
-    {
-        $uri = $request->getSchemeAndHttpHost().$request->getBaseUrl().$request->getPathInfo();
-        $response = new JsonResponse(null);
-        $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
-        $jsonapi['jsonapi']['version'] = '1.0';
-        $errors = array();
-
-        try {
-            $arkMod = Module::get($app['database'], 'ark');
-            $ark = $arkMod->item('ark');
-            $siteMod = Module::getSubmodule($app['database'], $arkMod, $ark, 'ste');
-            $site = $siteMod->item($siteSlug);
-            $mod = $app['database']->getModule($moduleSlug);
-            $module = Module::getSubmodule($app['database'], $siteMod, $site, $mod['module']);
-            $item = $module->item($moduleSlug);
-            $submodules = Module::getSubmodules($app['database'], $module, $item);
-
-            if ($request->get('schema') == 'true') {
-                $jsonapi['meta']['schema'] = $module->schema();
-            }
-            $jsonapi['data']['type'] = $module->type();
-            $jsonapi['data']['id'] = $module->id();
-            $jsonapi['data']['attributes'] = $module->data($item, $app['locale']);
-            foreach ($submodules as $submodule) {
-                $jsonapi['data']['references'][$submodule->type()]['links']['related'] = $uri.'/'.$submodule->type();
-            }
-            $jsonapi['data']['links']['self'] = $uri;
-        } catch (Error $e) {
-            $jsonapi['errors'][] = 'error';
-            //$jsonapi['errors'][] = $e->payload();
-        }
-
-        $response->setData($jsonapi);
-        return $response;
-    }
-
 }

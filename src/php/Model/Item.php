@@ -40,31 +40,36 @@ use ARK\Database\Database;
 class Item
 {
     private $module = null;
-    private $item = null;
+    private $id = null;
+    private $parent = null;
     private $index = null;
     private $modtype = '';
     private $schemaId = null;
     protected $valid = false;
 
-    public function __construct($module = null, $item = null, $modtype = null)
+    protected function loadConfig($config, Module $module)
     {
-        if ($module) {
-            $config['module'] = $module;
-            $config['item'] = $item;
-            $config['modtype'] = $modtype;
-            $this->loadConfig($config);
+        $this->module = $module;
+        $this->id = $config['item'];
+        if (isset($config['parent'])) {
+            $this->parent = $config['parent'];
         }
-    }
-
-    protected function loadConfig($config)
-    {
-        $this->module = $config['module'];
-        $this->item = $config['item'];
-        $this->index = substr($this->item, strrpos($this->item, '.') + 1);
+        if (isset($config['idx'])) {
+            $this->index = $config['idx'];
+        } else {
+            $last = strrpos($this->id, '_');
+            if ($last === false) {
+                $this->index = $this->id;
+            } else {
+                $this->index = substr($this->id, $last + 1);
+            }
+        }
         if (isset($config['modtype'])) {
             $this->modtype = $config['modtype'];
         }
-        $this->schemaId = $config['schema_id'];
+        if (isset($config['schema_id'])) {
+            $this->schemaId = $config['schema_id'];
+        }
         $this->valid = true;
     }
 
@@ -78,9 +83,9 @@ class Item
         return $this->module;
     }
 
-    public function item()
+    public function id()
     {
-        return $this->item;
+        return $this->id;
     }
 
     public function index()
@@ -95,30 +100,86 @@ class Item
 
     public function schemaId()
     {
-        return $this->schemaId;
-    }
-
-    static public function get(Database $db, $module, $item, $table = null)
-    {
-        $itm = new Item();
-        $config = $db->getItem($module, $item, $table);
-        if (!$config) {
-            //throw new Error(1000);
-            return $itm;
+        if ($this->schemaId) {
+            return $this->schemaId;
+        } elseif ($this->module) {
+            return $this->module->schemaId();
         }
-        $config['module'] = $module;
-        $itm->loadConfig($config);
-        return $itm;
+        return null;
     }
 
-    static public function getAll(Database $db, $module, $parent = null, $table = null)
+    public function schema($reference = Schema::ReferenceSchema)
+    {
+        return $this->module->schema($this->schemaId(), $reference);
+    }
+
+    public function properties()
+    {
+        return $this->module->properties($this->schemaId(), $this->modtype());
+    }
+
+    public function required()
+    {
+        return $this->module->required($this->schemaId(), $this->modtype());
+    }
+
+    public function definitions()
+    {
+        return $this->module->definitions($this->schemaId());
+    }
+
+    public function attributes($lang)
+    {
+        $attributes = array();
+        foreach ($this->properties() as $property) {
+            $attributes[$property->id()] = $property->value($this, $lang);
+        }
+        return $attributes;
+    }
+
+    public function submodules()
+    {
+        return $this->module->submodules($this->schemaId());
+    }
+
+    public function submodule($module)
+    {
+        return $this->module->submodule($this->schemaId(), $module);
+    }
+
+    static public function get(Database $db, Module $module, $id, $table = null)
+    {
+        $item = new Item();
+        $config = $db->getItem($module->id(), $id, $table);
+        if (!$config) {
+            // Item not found
+            //throw new Error(9999);
+            throw new \Exception();
+        }
+        $item->loadConfig($config, $module);
+        return $item;
+    }
+
+    static public function getFromIndex(Database $db, Module $module, $parent, $index, $table = null)
+    {
+        $item = new Item();
+        $config = $db->getItemFromIndex($module->id(), $parent, $index, $table);
+        if (!$config) {
+            // Item not found
+            //throw new Error(9999);
+            throw new \Exception();
+        }
+        $item->loadConfig($config, $module);
+        return $item;
+    }
+
+    static public function getAll(Database $db, Module $module, $parent = null, $table = null)
     {
         $items = array();
-        $configs = $db->getItems($module, $parent);
+        $configs = $db->getItems($module->id(), $parent);
         foreach ($configs as $config) {
             $item = new Item();
-            $config['module'] = $module;
-            $item->loadConfig($config);
+            $item->loadConfig($config, $module);
             $items[] = $item;
         }
         return $items;

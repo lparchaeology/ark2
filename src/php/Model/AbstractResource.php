@@ -84,6 +84,11 @@ abstract class AbstractResource
         return $this->type;
     }
 
+    public function schemaId()
+    {
+        return $this->schemaId;
+    }
+
     public function isValid()
     {
         return $this->valid;

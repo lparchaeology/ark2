@@ -288,18 +288,18 @@ class Database
         }
     }
 
-    private function getFragment($table, $module, $id, $property, $mode = Database::FetchFirst)
+    private function getFragment($table, $module, $item, $property, $mode = Database::FetchFirst)
     {
         $sql = "
             SELECT *
             FROM $table
             WHERE module = :module
-            AND id = :id
+            AND item = :item
             AND property = :property
         ";
         $params = array(
             ':module' => $module,
-            ':id' => $id,
+            ':item' => $item,
             ':property' => $property,
         );
         if ($mode == Database::FetchAll) {
@@ -308,54 +308,54 @@ class Database
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getAction($module, $id, $property, $mode = Database::FetchFirst)
+    public function getAction($module, $item, $property, $mode = Database::FetchFirst)
     {
-        return $this->getFragment('cor_tbl_action', $module, $id, $property, $mode);
+        return $this->getFragment('cor_tbl_action', $module, $item, $property, $mode);
     }
 
-    public function getAttribute($module, $id, $property, $mode = Database::FetchFirst)
+    public function getAttribute($module, $item, $property, $mode = Database::FetchFirst)
     {
-        return $this->getFragment('cor_tbl_attribute', $module, $id, $property, $mode);
+        return $this->getFragment('cor_tbl_attribute', $module, $item, $property, $mode);
     }
 
-    public function getBoolean($module, $id, $property, $mode = Database::FetchFirst)
+    public function getBoolean($module, $item, $property, $mode = Database::FetchFirst)
     {
-        return $this->getFragment('ark_data_boolean', $module, $id, $property, $mode);
+        return $this->getFragment('ark_data_boolean', $module, $item, $property, $mode);
     }
 
-    public function getDate($module, $id, $property, $mode = Database::FetchFirst)
+    public function getDate($module, $item, $property, $mode = Database::FetchFirst)
     {
-        return $this->getFragment('ark_data_date', $module, $id, $property, $mode);
+        return $this->getFragment('ark_data_date', $module, $item, $property, $mode);
     }
 
-    public function getInteger($module, $id, $property, $mode = Database::FetchFirst)
+    public function getInteger($module, $item, $property, $mode = Database::FetchFirst)
     {
-        return $this->getFragment('ark_data_integer', $module, $id, $property, $mode);
+        return $this->getFragment('ark_data_integer', $module, $item, $property, $mode);
     }
 
-    public function getNumber($module, $id, $property, $mode = Database::FetchFirst)
+    public function getNumber($module, $item, $property, $mode = Database::FetchFirst)
     {
-        return $this->getFragment('ark_data_number', $module, $id, $property, $mode);
+        return $this->getFragment('ark_data_number', $module, $item, $property, $mode);
     }
 
-    public function getSpan($module, $id, $property, $mode = Database::FetchFirst)
+    public function getSpan($module, $item, $property, $mode = Database::FetchFirst)
     {
-        return $this->getFragment('cor_tbl_span', $module, $id, $property, $mode);
+        return $this->getFragment('cor_tbl_span', $module, $item, $property, $mode);
     }
 
-    public function getString($module, $id, $property, $lang, $mode = Database::FetchFirst)
+    public function getString($module, $item, $property, $lang, $mode = Database::FetchFirst)
     {
         $sql = "
             SELECT *
             FROM ark_data_string
             WHERE module = :module
-            AND id = :id
+            AND item = :item
             AND property = :property
             AND language = :language
         ";
         $params = array(
             ':module' => $module,
-            ':id' => $id,
+            ':item' => $item,
             ':property' => $property,
             ':language' => $lang,
         );
@@ -365,24 +365,24 @@ class Database
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getXmi($module, $id, $property, $mode = Database::FetchFirst)
+    public function getXmi($module, $item, $property, $mode = Database::FetchFirst)
     {
-        return $this->getFragment('ark_data_xmi', $module, $id, $property, $mode);
+        return $this->getFragment('ark_data_xmi', $module, $item, $property, $mode);
     }
 
-    public function getFile($module, $id, $property, $mode = Database::FetchFirst)
+    public function getFile($module, $item, $property, $mode = Database::FetchFirst)
     {
         $sql = "
             SELECT *
             FROM cor_tbl_file, cor_lut_file
             WHERE cor_tbl_file.module = :module
-            AND cor_tbl_file.id = :id
+            AND cor_tbl_file.item = :item
             AND cor_tbl_file.property = :property
             AND cor_tbl_file.file = cor_lut_file.file
         ";
         $params = array(
             ':module' => $module,
-            ':id' => $id,
+            ':item' => $item,
             ':property' => $property,
         );
         if ($mode == Database::FetchAll) {
@@ -473,6 +473,24 @@ class Database
         return $this->data()->fetchAssoc($sql, $params);
     }
 
+    public function getItemFromIndex($module, $parent, $index, $mod_tbl = null)
+    {
+        if (empty($mod_tbl)) {
+            $mod_tbl = $this->getModuleTable($module);
+        }
+        $sql = "
+            SELECT *
+            FROM $mod_tbl
+            WHERE parent = :parent
+            AND idx = :idx
+        ";
+        $params = array(
+            ':parent' => $parent,
+            ':idx' => $index,
+        );
+        return $this->data()->fetchAssoc($sql, $params);
+    }
+
     public function getItems($module, $parent = null, $mod_tbl = null)
     {
         if (!$mod_tbl) {
@@ -486,10 +504,13 @@ class Database
         $params = array();
         if ($parent) {
             $sql .= "
-                WHERE item LIKE :parent
+                WHERE parent = :parent
             ";
-            $params[':parent'] = $parent.'[_]%';
+            $params[':parent'] = $parent;
         }
+        $sql .= "
+            ORDER BY LENGTH(item), item
+        ";
         return $this->data()->fetchAll($sql, $params);
     }
 
@@ -531,7 +552,7 @@ class Database
             $params[':parent'] = $parent.'[_]%';
         }
         $sql .= "
-            ORDER BY cre_on
+            ORDER BY cre_on, LENGTH(item), item
             LIMIT $start, $rows
         ";
         return $this->data()->fetchAll($sql, $params);
@@ -798,7 +819,7 @@ class Database
     public function getSchemaProperties($schema, $module)
     {
         $sql = "
-            SELECT *, ark_model_property.format, ark_model_property.keyword, ark_model_format.keyword as format_keyword
+            SELECT *, ark_model_property.format, ark_model_property.keyword, ark_model_format.keyword AS format_keyword
             FROM ark_model_module, ark_model_property
             LEFT JOIN ark_model_format ON ark_model_property.format = ark_model_format.format
             LEFT JOIN ark_model_number ON ark_model_property.format = ark_model_number.format

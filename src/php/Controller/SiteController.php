@@ -44,10 +44,10 @@ use ARK\Model\Module;
 
 class SiteController
 {
-    public function viewSiteAction(Application $app, Request $request, $site)
+    public function viewSiteAction(Application $app, Request $request, $siteSlug)
     {
         $data = array(
-            'site' => $site,
+            'site' => $siteSlug,
         );
         $formBuilder = $app->form($data);
         $formBuilder->add('site', Type\TextType::class, array('label' => 'Site', 'disabled' => true));
@@ -78,16 +78,16 @@ class SiteController
         try {
             $arkMod = Module::get($app['database'], 'ark');
             $ark = $arkMod->item('ark');
-            $siteMod = Module::getSubmodule($app['database'], $arkMod, $ark, 'ste');
-            $site = $siteMod->item($siteSlug);
-            $submodules = Module::getSubmodules($app['database'], $siteMod, $site);
+            $siteMod = $ark->submodule('ste');
+            $item = $siteMod->item($siteSlug);
+
             if ($request->get('schema') == 'true') {
-                $jsonapi['meta']['schema'] = $siteMod->schema($site);
+                $jsonapi['meta']['schema'] = $item->schema();
             }
-            $jsonapi['data']['type'] = $siteMod->type();
-            $jsonapi['data']['id'] = $siteMod->id();
-            $jsonapi['data']['attributes'] = $siteMod->data($site, $app['locale']);
-            foreach ($submodules as $submodule) {
+            $jsonapi['data']['type'] = $item->module()->type();
+            $jsonapi['data']['id'] = $item->id();
+            $jsonapi['data']['attributes'] = $item->attributes($app['locale']);
+            foreach ($item->submodules() as $submodule) {
                 $jsonapi['data']['references'][$submodule->type()]['links']['related'] = $uri.'/'.$submodule->type();
             }
             $jsonapi['data']['links']['self'] = $uri;
@@ -101,23 +101,25 @@ class SiteController
 
     public function getSitesAction(Application $app, Request $request)
     {
+        $uri = $request->getSchemeAndHttpHost().$request->getBaseUrl().$request->getPathInfo();
         $response = new JsonResponse(null);
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
         $jsonapi['jsonapi']['version'] = '1.0';
         $errors = array();
-        dump('start');
 
         try {
             $arkMod = Module::get($app['database'], 'ark');
             $ark = $arkMod->item('ark');
-            $siteMod = Module::getSubmodule($app['database'], $arkMod, $ark, 'ste');
-            $items = $siteMod->items();
+            $siteMod = $ark->submodule('ste');
+            $items = $siteMod->items('');
+
             foreach ($items as $item) {
-                $resource['type'] = $siteMod->type();
-                $resource['id'] = $item->item();
+                $resource['type'] = $item->module()->type();
+                $resource['id'] = $item->id();
                 if ($request->get('schema') == 'true') {
-                    $resource['meta']['schema'] = $siteMod->schema($item);
+                    $resource['meta']['schema'] = $item->schema();
                 }
+                $resource['links']['self'] = $uri.'/'.$item->index();
                 $jsonapi['data'][] = $resource;
             }
         } catch (Error $e) {

@@ -8,9 +8,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 //Request::setTrustedProxies(array('127.0.0.1'));
 
+$app->mount('/api/v2', new \ARK\Route\ApiControllerProvider());
 $app->mount('/users', new \rootLogin\UserProvider\Provider\UserProviderControllerProvider());
 $app->mount('/sites', new \ARK\Route\SiteControllerProvider());
-$app->mount('/api/v2', new \ARK\Route\ApiControllerProvider());
 $app->get('/', function () use ($app) {
     $contents = $app->trans('ark.welcome');
     return $app['twig']->render('pages/page.html.twig', array('contents' => $contents));

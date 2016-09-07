@@ -45,18 +45,19 @@ class ActorLoader implements LoaderInterface
         $catalogue = new MessageCatalogue($locale);
         $sql = "
             SELECT *
-            FROM act_tbl_act, cor_tbl_txt
-            WHERE cor_tbl_txt.itemkey = :itemkey
-            AND cor_tbl_txt.itemvalue = act_tbl_act.act_cd
+            FROM ark_module_act, ark_data_string
+            WHERE ark_data_string.module = :module
+            AND ark_data_string.id = ark_module_act.id
+            AND ark_data_string.property = :property
         ";
         $params = array(
-            ':itemkey' => 'act_cd',
-            ':txttype' => 'name',
+            ':module' => 'act',
+            ':property' => 'name',
         );
         $actors = $db->data()->fetchAll($sql, $params);
         foreach ($actors as $actor) {
-            $key = $actor['itemkey'].'.'.$actor['itemvalue'].'.'.$actor['txttype'];
-            $catalogue->set($key, $actor['txt'], $domain);
+            $key = 'actors.'.$actor['id'].'.'.$actor['property'];
+            $catalogue->set($key, $actor['value'], $domain);
         }
         return $catalogue;
     }

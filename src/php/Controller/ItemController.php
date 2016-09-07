@@ -53,24 +53,32 @@ class ItemController
 {
     public function getItemAction(Application $app, Request $request, $siteSlug, $moduleSlug, $itemSlug)
     {
+        $uri = $request->getSchemeAndHttpHost().$request->getBaseUrl().$request->getPathInfo();
         $response = new JsonResponse(null);
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
         $jsonapi['jsonapi']['version'] = '1.0';
         $errors = array();
 
         try {
-            $site = Site::get($app['database'], $siteSlug);
-            $module = Module::get($app['database'], $site, $moduleSlug);
-            $item = Item::get($app['database'], $site->id(), $module->id(), $itemSlug);
-            $jsonapi['meta']['site'] = $item->site();
-            $jsonapi['meta']['module'] = $item->module();
-            $jsonapi['meta']['item'] = $item->item();
+            $arkMod = Module::get($app['database'], 'ark');
+            $ark = $arkMod->item('ark');
+            $siteMod = $ark->submodule('ste');
+            $site = $siteMod->item($siteSlug);
+            $mod = $app['database']->getModule($moduleSlug);
+            $module = $site->submodule($mod['module']);
+            $item = $module->itemFromIndex($site->id(), $itemSlug);
+
             if ($request->get('schema') == 'true') {
-                $jsonapi['meta']['schema'] = $module->schema();
+                $jsonapi['meta']['schema'] = $item->schema();
             }
-            $jsonapi['data']['type'] = $module->type();
-            $jsonapi['data']['id'] = $item->item();
-            $jsonapi['data']['attributes'] = $module->data($item, $app['locale']);
+            $jsonapi['data']['type'] = $item->module()->type();
+            $jsonapi['data']['id'] = $item->id();
+            $jsonapi['data']['attributes'] = $item->attributes($app['locale']);
+            foreach ($item->submodules() as $submodule) {
+                $jsonapi['data']['references'][$submodule->type()]['links']['related'] = $uri.'/'.$submodule->type();
+            }
+            $jsonapi['data']['links']['self'] = $uri;
+
         } catch (Error $e) {
             $jsonapi['errors'][] = $e->payload();
         }
@@ -90,20 +98,19 @@ class ItemController
         try {
             $arkMod = Module::get($app['database'], 'ark');
             $ark = $arkMod->item('ark');
-            $mod = $app['database']->getModule($siteSlug);
-            $siteMod = Module::getSubmodule($app['database'], $arkMod, $ark, $mod['module']);
+            $siteMod = $ark->submodule('ste');
             $site = $siteMod->item($siteSlug);
             $mod = $app['database']->getModule($moduleSlug);
-            $moduleMod = Module::getSubmodule($app['database'], $siteMod, $site, $mod['module']);
-            $module = $moduleMod->item($moduleSlug);
-            $items = $moduleMod->items();
+            $module = $site->submodule($mod['module']);
+            $items = $module->items($site->id());
 
             foreach ($items as $item) {
-                $resource['type'] = $module->type();
-                $resource['id'] = $item->item();
+                $resource['type'] = $item->module()->type();
+                $resource['id'] = $item->id();
                 if ($request->get('schema') == 'true') {
-                    $resource['meta']['schema'] = $module->schema();
+                    $resource['meta']['schema'] = $item->schema();
                 }
+                $resource['links']['self'] = $uri.'/'.$item->index();
                 $jsonapi['data'][] = $resource;
             }
         } catch (Error $e) {

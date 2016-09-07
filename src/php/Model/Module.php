@@ -54,6 +54,9 @@ final class Module extends AbstractResource
     {
         parent::loadConfig($config);
 
+        if (isset($config['subschema_id'])) {
+            $this->schemaId = $config['subschema_id'];
+        }
         $this->parent = $parent;
         $this->typeCode = $config['module'];
         $this->type = $config['resource'];
@@ -66,18 +69,18 @@ final class Module extends AbstractResource
         return $this->parent;
     }
 
-    private function loadSubodules()
+    private function loadSubodules($schemaId)
     {
-        $modules = Module::getAll($this->db, $this->id());
-        $this->submodules = ($modules ? $modules : array());
+        $submodules = Module::getSubmodules($this->db, $this, $schemaId);
+        $this->submodules[$schemaId] = ($submodules ? $submodules : array());
     }
 
-    public function submodule($module)
+    public function submodule($schemaId, $module)
     {
-        if ($this->submodules === null) {
-            $this->loadSubodules();
+        if (!isset($this->submodules[$schemaId])) {
+            $this->loadSubodules($schemaId);
         }
-        foreach ($this->submodules as $mod) {
+        foreach ($this->submodules[$schemaId] as $mod) {
             if ($mod->id() == $module || $mod->type() == $module) {
                 return $mod;
             }
@@ -85,27 +88,27 @@ final class Module extends AbstractResource
         throw new Error(9999);
     }
 
-    public function submodules()
+    public function submodules($schemaId)
     {
-        if ($this->submodules === null) {
-            $this->loadSubodules();
+        if (!isset($this->submodules[$schemaId])) {
+            $this->loadSubodules($schemaId);
         }
-        return $this->submodules;
+        return $this->submodules[$schemaId];
     }
 
-    public function item($item)
+    public function item($id)
     {
-        return Item::get($this->db, $this->id, $item, $this->table);
+        return Item::get($this->db, $this, $id, $this->table);
     }
 
-    public function items()
+    public function itemFromIndex($parent, $index)
     {
-        if ($this->parent && $this->parent->id() != 'ark') {
-            $parent = $this->parent->id();
-        } else {
-            $parent = null;
-        }
-        return Item::getAll($this->db, $this->id, $parent, $this->table);
+        return Item::getFromIndex($this->db, $this, $parent, $index, $this->table);
+    }
+
+    public function items($parent = null)
+    {
+        return Item::getAll($this->db, $this, $parent, $this->table);
     }
 
     static public function get(Database $db, $moduleId, Module $parent = null)
@@ -131,10 +134,10 @@ final class Module extends AbstractResource
         return $module;
     }
 
-    static public function getSubmodules(Database $db, Module $parent, Item $item, $enabled = true)
+    static public function getSubmodules(Database $db, Module $parent, $schemaId, $enabled = true)
     {
         $modules = array();
-        $configs = $db->getSubmodules($parent->id(), $item->schemaId());
+        $configs = $db->getSubmodules($parent->id(), $schemaId);
         foreach ($configs as $config) {
             $module = new Module($db, $config['module']);
             $module->loadConfig($config, $parent);
