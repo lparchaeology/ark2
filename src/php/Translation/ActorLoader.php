@@ -47,7 +47,7 @@ class ActorLoader implements LoaderInterface
             SELECT *
             FROM ark_module_act, ark_data_string
             WHERE ark_data_string.module = :module
-            AND ark_data_string.id = ark_module_act.id
+            AND ark_data_string.item = ark_module_act.item
             AND ark_data_string.property = :property
         ";
         $params = array(
@@ -56,7 +56,7 @@ class ActorLoader implements LoaderInterface
         );
         $actors = $db->data()->fetchAll($sql, $params);
         foreach ($actors as $actor) {
-            $key = 'actors.'.$actor['id'].'.'.$actor['property'];
+            $key = 'actors.'.$actor['item'].'.'.$actor['property'];
             $catalogue->set($key, $actor['value'], $domain);
         }
         return $catalogue;
