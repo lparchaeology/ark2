@@ -44,6 +44,11 @@ $classes = array(
     'txt' => 'ark_data_string',
     'xmi' => 'ark_data_xmi',
 );
+// classtypes to map to new property names
+$propertMap = array(
+    'cxtsheet' => 'sheet',
+    'images' => 'image',
+);
 
 // Purge new tables
 if (true && $update) {
