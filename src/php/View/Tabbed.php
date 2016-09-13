@@ -35,68 +35,63 @@
 
 namespace ARK\View;
 
-use ARK\Database\Database;
 use Symfony\Component\Form\FormFactoryInterface;
+use ARK\Database\Database;
+use ARK\Model\Module;
 
 class Tabbed extends Layout
 {
-    function __construct(Database $db = null, $layout_id = null, $modname = null, $modtype = null)
+    public function __construct(Database $db = null, string $layout = null, Module $module = null, string $modtype = null)
     {
-        if ($db == null || $layout_id == null) {
+        if ($db == null || $layout == null) {
             return;
         }
-        parent::__construct($db, $layout_id, $modname, $modtype);
-        $this->_template = 'layouts/tabbed.html.twig';
+        parent::__construct($db, $layout, $module, $modtype);
+        $this->template = 'layouts/tabbed.html.twig';
     }
 
-    function toggle()
+    public function toggle()
     {
-        if (isset($this->_options['toggle'])) {
-            return $this->_options['toggle'];
-        } else {
-            return 'tab';
+        if (isset($this->options['toggle'])) {
+            return $this->options['toggle'];
         }
+        return 'tab';
     }
 
-    function justified()
+    public function justified()
     {
-        if (isset($this->_options['justified'])) {
-            return $this->_options['justified'];
-        } else {
-            return false;
+        if (isset($this->options['justified'])) {
+            return $this->options['justified'];
         }
+        return false;
     }
 
-    function fade()
+    public function fade()
     {
-        if (isset($this->_options['fade'])) {
-            return $this->_options['fade'];
-        } else {
-            return false;
+        if (isset($this->options['fade'])) {
+            return $this->options['fade'];
         }
+        return false;
     }
 
-    function showSingleTab()
+    public function showSingleTab()
     {
-        if (isset($this->_options['show_single_tab'])) {
-            return $this->_options['show_single_tab'];
-        } else {
-            return false;
+        if (isset($this->options['show_single_tab'])) {
+            return $this->options['show_single_tab'];
         }
+        return false;
     }
 
-    function defaultTab()
+    public function defaultTab()
     {
-        if (isset($this->_options['default_tab'])) {
-            return $this->_options['default_tab'];
-        } else {
-            return $this->tabs()[0]->id();
+        if (isset($this->options['default_tab'])) {
+            return $this->options['default_tab'];
         }
+        return $this->tabs()[0]->id();
     }
 
-    function tabs()
+    public function tabs()
     {
         return $this->elements();
     }
-
 }

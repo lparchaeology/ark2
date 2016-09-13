@@ -37,23 +37,25 @@ namespace ARK\View;
 
 use Symfony\Component\Form\FormBuilder;
 use ARK\Database\Database;
+use ARK\Model\Item;
+use ARK\Model\Module;
 use ARK\Form\Type\PanelType;
 
 class Group extends Element
 {
-    protected $_grid = array();
-    protected $_elements = array();
+    protected $grid = array();
+    protected $elements = array();
 
-    function __construct(Database $db = null, $group = null, $module = null, $modtype = null)
+    public function __construct(Database $db = null, string $group = null, Module $module = null, string $modtype = null)
     {
         if ($db == null || $group == null) {
             return;
         }
         parent::__construct($db, $group);
-        if (!$this->_isGroup) {
+        if (!$this->isGroup) {
             return;
         }
-        $children = $db->getGroupForModule($group, $module, $modtype);
+        $children = $db->getGroupForModule($group, $module->id(), $modtype);
         foreach ($children as $child) {
             switch ($child['child_type']) {
                 case 'field':
@@ -76,41 +78,41 @@ class Group extends Element
                     break;
             }
             if ($element->isValid()) {
-                $this->_elements[] = $element;
-                $this->_grid[$child['row']][$child['col']][$child['seq']] = $element;
+                $this->elements[] = $element;
+                $this->grid[$child['row']][$child['col']][$child['seq']] = $element;
             }
         }
-        $this->_valid = true;
+        $this->valid = true;
     }
 
-    function elements()
+    public function elements()
     {
-        return $this->_elements;
+        return $this->elements;
     }
 
-    function formData($itemKey)
+    public function formData(Item $item)
     {
         $data = array();
-        foreach ($this->_elements as $element) {
-            $data = array_merge($data, $element->formData($itemKey));
+        foreach ($this->elements as $element) {
+            $data = array_merge($data, $element->formData($item));
         }
         return $data;
     }
 
-    function buildForm(FormBuilder &$formBuilder, array $options = array())
+    public function buildForm(FormBuilder &$formBuilder, array $options = array())
     {
         if (!$this->isValid()) {
             return;
         }
-        foreach ($this->_elements as $element) {
+        foreach ($this->elements as $element) {
             $element->buildForm($formBuilder, $options);
         }
     }
 
-    function allFields()
+    public function allFields()
     {
         $fields = array();
-        foreach ($this->_elements as $element) {
+        foreach ($this->elements as $element) {
             if ($element->type() == 'field') {
                 $fields[] = $element;
             } else {

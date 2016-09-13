@@ -37,126 +37,126 @@ namespace ARK\View;
 
 use Symfony\Component\Form\FormBuilder;
 use ARK\Database\Database;
+use ARK\Model\Item;
 
 abstract class Element
 {
-    protected $_id = '';
-    protected $_valid = false;
-    protected $_type = '';
-    protected $_isGroup = false;
-    protected $_title = '';
-    protected $_description = '';
-    protected $_table = '';
-    protected $_module = '';
-    protected $_modtype = '';
-    protected $_alias = null;
-    protected $_options = array();
-    protected $_conditions = array();
+    protected $id = '';
+    protected $valid = false;
+    protected $type = '';
+    protected $isGroup = false;
+    protected $title = '';
+    protected $description = '';
+    protected $table = '';
+    protected $module = '';
+    protected $modtype = '';
+    protected $alias = null;
+    protected $options = array();
+    protected $conditions = array();
 
     // {{{ __construct()
-    function __construct(Database $db, $element = null, $element_type = null)
+    public function __construct(Database $db, string $element = null, string $elementType = null)
     {
-        $this->_alias = new Alias($db);
+        $this->alias = new Alias($db);
         if (!$element) {
             return;
         }
-        $this->_id = $element;
-        $config = $db->getElement($element, $element_type);
-        $this->_type = $config['element_type'];
-        $this->_isGroup = $config['is_group'];
-        $this->_keyword = $config['keyword'];
-        $this->_table = $config['tbl'];
-        $this->_module = $config['module'];
-        $this->_modtype = $config['modtype'];
-        $this->_alias = Alias::elementAlias($db, $element);
-        $this->_options = Option::fetchOptions($db, $element);
-        $this->_conditions = Condition::fetchConditions($db, $element);
+        $this->id = $element;
+        $config = $db->getElement($element, $elementType);
+        $this->type = $config['element_type'];
+        $this->isGroup = $config['is_group'];
+        $this->keyword = $config['keyword'];
+        $this->table = $config['tbl'];
+        $this->moduleId = $config['module'];
+        $this->modtype = $config['modtype'];
+        $this->alias = Alias::elementAlias($db, $element);
+        $this->options = Option::fetchOptions($db, $element);
+        $this->conditions = Condition::fetchConditions($db, $element);
     }
 
-    function id()
+    public function id()
     {
-        return $this->_id;
+        return $this->id;
     }
 
-    function isValid()
+    public function isValid()
     {
-        return $this->_valid;
+        return $this->valid;
     }
 
-    function type()
+    public function type()
     {
-        return $this->_type;
+        return $this->type;
     }
 
-    function isGroup()
+    public function isGroup()
     {
-        return $this->_isGroup;
+        return $this->isGroup;
     }
 
-    function keyword()
+    public function keyword()
     {
-        return $this->_keyword;
+        return $this->keyword;
     }
 
-    function table()
+    public function table()
     {
-        return $this->_table;
+        return $this->table;
     }
 
-    function module()
+    public function moduleId()
     {
-        return $this->_module;
+        return $this->moduleId;
     }
 
-    function modtype()
+    public function modtype()
     {
-        return $this->_modtype;
+        return $this->modtype;
     }
 
-    function alias()
+    public function alias()
     {
-        return $this->_alias;
+        return $this->alias;
     }
 
-    function option($key)
+    public function option(string $key)
     {
-        if (isset($this->_options[$key])) {
-            return $this->_options[$key];
+        if (isset($this->options[$key])) {
+            return $this->options[$key];
         }
         return new Option();
     }
 
-    function optionValue($key, $default = null)
+    public function optionValue(string $key, $default = null)
     {
-        if (isset($this->_options[$key])) {
-            return $this->_options[$key]->value();
+        if (isset($this->options[$key])) {
+            return $this->options[$key]->value();
         }
         return $default;
     }
 
-    function options()
+    public function options()
     {
-        return array_values($this->_options);
+        return array_values($this->options);
     }
 
-    function conditions()
+    public function conditions()
     {
-        return $this->_conditions;
+        return $this->conditions;
     }
 
-    function formData($itemKey)
+    public function formData(Item $item)
     {
         return array();
     }
 
-    function buildForm(FormBuilder &$formBuilder, array $options = array())
+    public function buildForm(FormBuilder &$formBuilder, array $options = array())
     {
         return;
     }
 
-    function allFields()
+    public function allFields()
     {
         return array();
     }
-
 }

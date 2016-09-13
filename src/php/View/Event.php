@@ -37,16 +37,17 @@ namespace ARK\View;
 
 use Symfony\Component\Form\FormBuilder;
 use ARK\Database\Database;
+use ARK\Model\Item;
 use ARK\Form\Type\EventType;
 
 class Event extends Element
 {
-    private $_date = null;
-    private $_actions = array();
+    private $date = null;
+    private $actions = array();
 
-    function __construct(Database $db = null, $event = null)
+    public function __construct(Database $db = null, string $event = null)
     {
-        $this->_date = new Field();
+        $this->date = new Field();
         if ($db == null || $event == null) {
             return;
         }
@@ -54,50 +55,49 @@ class Event extends Element
         $fields = Field::fetchFields($db, $event);
         foreach ($fields as $field) {
             if ($field->dataclass() == 'date' && $field->isValid()) {
-                $this->_date = $field;
-            } else if ($field->dataclass() == 'action' && $field->isValid()) {
-                $this->_actions[] = $field;
+                $this->date = $field;
+            } elseif ($field->dataclass() == 'action' && $field->isValid()) {
+                $this->actions[] = $field;
             }
         }
-        $this->_valid = $this->_date && $this->_actions;
+        $this->valid = $this->date && $this->actions;
     }
 
-    function date()
+    public function date()
     {
-        return $this->_date;
+        return $this->date;
     }
 
-    function actions()
+    public function actions()
     {
-        return $this->_actions;
+        return $this->actions;
     }
 
-    function formData($itemKey)
+    public function formData(Item $item)
     {
         $data = array();
         $data[$this->id()] = array_merge(
             // TODO Do all actions
-            $this->_actions[0]->formData($itemKey),
-            $this->_date->formData($itemKey)
+            $this->actions[0]->formData($item),
+            $this->date->formData($item)
         );
         return $data;
     }
 
-    function buildForm(FormBuilder &$formBuilder, array $options = array())
+    public function buildForm(FormBuilder &$formBuilder, array $options = array())
     {
         if (!$this->isValid()) {
             return;
         }
         $options['label'] = false;
-        $options['title'] = $this->_id;
-        $options['eventActions'] = $this->_actions;
-        $options['eventDate'] = $this->_date;
-        $formBuilder->add($this->_id, EventType::class, $options);
+        $options['title'] = $this->id;
+        $options['eventActions'] = $this->actions;
+        $options['eventDate'] = $this->date;
+        $formBuilder->add($this->id, EventType::class, $options);
     }
 
-    function allFields()
+    public function allFields()
     {
-        return array_merge($this->_actions, array($this->_date));
+        return array_merge($this->actions, array($this->date));
     }
-
 }

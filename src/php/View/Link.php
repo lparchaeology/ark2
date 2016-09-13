@@ -41,135 +41,118 @@ use ARK\Database\Database;
 
 class Link extends Element
 {
-    private $_linkType = '';
-    private $_name = '';
-    private $_markup = '';
-    private $_linkTitle = '';
-    private $_linkClass = '';
-    private $_imageClass = '';
-    private $_listClass = '';
-    private $_lightbox = false;
-    private $_image = '';
-    private $_page = '';
-    private $_reloadPage = '';
-    private $_query = array();
-    private $_link = '';
+    private $linkType = '';
+    private $name = '';
+    private $markup = '';
+    private $linkTitle = '';
+    private $linkClass = '';
+    private $imageClass = '';
+    private $listClass = '';
+    private $lightbox = false;
+    private $image = '';
+    private $page = '';
+    private $reloadPage = '';
+    private $query = array();
+    private $link = '';
 
-    // {{{ __construct()
-    function __construct(Database $db, $link = NULL)
+    public function __construct(Database $db, string $link = null)
     {
-        if ($link == NULL) {
+        if ($link == null) {
             return;
         }
         try {
             parent::__construct($db, $link, 'link');
             $config = $db->getLink($link);
-            $this->_linkType = $config['type'];
-            $this->_name = $config['name'];
-            $this->_markup = $config['markup'];
-            $this->_linkTitle = $config['title'];
-            $this->_linkClass = $config['link_class'];
-            $this->_imageClass = $config['img_class'];
-            $this->_listClass = $config['list_class'];
-            $this->_lightbox = $config['lightbox'];
-            $this->_image = $config['image'];
-            $this->_page = $config['page'];
-            $this->_reloadPage = $config['reload_page'];
-            $this->_query = unserialize($config['query']);
-            $this->_link = $config['url'];
-            $this->_valid = true;
+            $this->linkType = $config['type'];
+            $this->name = $config['name'];
+            $this->markup = $config['markup'];
+            $this->linkTitle = $config['title'];
+            $this->linkClass = $config['link_class'];
+            $this->imageClass = $config['img_class'];
+            $this->listClass = $config['list_class'];
+            $this->lightbox = $config['lightbox'];
+            $this->image = $config['image'];
+            $this->page = $config['page'];
+            $this->reloadPage = $config['reload_page'];
+            $this->query = unserialize($config['query']);
+            $this->link = $config['url'];
+            $this->valid = true;
         } catch (DBALException $e) {
             return;
         }
     }
-    // }}}
-    // {{{ linkType()
-    function linkType()
+
+    public function linkType()
     {
-        return $this->_linkType;
+        return $this->linkType;
     }
-    // }}}
-    // {{{ name()
-    function name()
+
+    public function name()
     {
-        return $this->_name;
+        return $this->name;
     }
-    // }}}
-    // {{{ markup()
-    function markup()
+
+    public function markup()
     {
-        return $this->_markup;
+        return $this->markup;
     }
-    // }}}
-    // {{{ linkTitle()
-    function linkTitle()
+
+    public function linkTitle()
     {
-        return $this->_linkTitle;
+        return $this->linkTitle;
     }
-    // }}}
-    // {{{ linkClass()
-    function linkClass()
+
+    public function linkClass()
     {
-        return $this->_linkClass;
+        return $this->linkClass;
     }
-    // }}}
-    // {{{ imageClass()
-    function imageClass()
+
+    public function imageClass()
     {
-        return $this->_imageClass;
+        return $this->imageClass;
     }
-    // }}}
-    // {{{ listClass()
-    function listClass()
+
+    public function listClass()
     {
-        return $this->_listClass;
+        return $this->listClass;
     }
-    // }}}
-    // {{{ lightbox()
-    function lightbox()
+
+    public function lightbox()
     {
-        return $this->_lightbox;
+        return $this->lightbox;
     }
-    // }}}
-    // {{{ image()
-    function image()
+
+    public function image()
     {
-        return $this->_image;
+        return $this->image;
     }
-    // }}}
-    // {{{ page()
-    function page()
+    public function page()
     {
-        return $this->_page;
+        return $this->page;
     }
-    // }}}
-    // {{{ reloadPage()
-    function reloadPage()
+    public function reloadPage()
     {
-        return $this->_reloadPage;
+        return $this->reloadPage;
     }
-    // }}}
-    // {{{ query()
-    function query()
+
+    public function query()
     {
-        return $this->_query;
+        return $this->query;
     }
-    // }}}
-    // {{{ url()
-    function url()
+
+    public function url()
     {
-        return $this->_url;
+        return $this->url;
     }
-    // }}}
-    // {{{ href()
-    function href()
+
+    public function href()
     {
-        if ($this->_page) {
-            $href = $this->_page.'.php';
-            if ($this->_query) {
+        if ($this->page) {
+            $href = $this->page.'.php';
+            if ($this->query) {
                 $href .= '?';
                 $parms = array();
-                foreach ($this->_query as $key => $value) {
+                foreach ($this->query as $key => $value) {
                     if ($value) {
                         $parms[] = $key.'='.$value;
                     } else {
@@ -179,22 +162,20 @@ class Link extends Element
                 $href .= implode('&', $parms);
             }
         } else {
-            $href = $this->_url;
+            $href = $this->url;
         }
         return $href;
     }
-    // }}}
-    // {{{ buildForm()
-    function buildForm(FormBuilder &$formBuilder)
+
+    public function buildForm(FormBuilder &$formBuilder)
     {
         if (!$this->isValid()) {
             return;
         }
-        $formBuilder->add($this->_id, UriType::class, array('label' => $this->_title));
+        $formBuilder->add($this->id, UriType::class, array('label' => $this->title));
     }
-    // }}}
-    // {{{ fetchLinks()
-    static function fetchLinks(Database $db, $element, $enabled = true)
+
+    public static function fetchLinks(Database $db, $element, bool $enabled = true)
     {
         $children = $db->getGroup($element, 'link', $enabled);
         $links = array();
@@ -206,5 +187,4 @@ class Link extends Element
         }
         return $links;
     }
-    // }}}
 }

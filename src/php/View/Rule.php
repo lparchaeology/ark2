@@ -41,93 +41,93 @@ use ARK\Database\Database;
 
 class Rule
 {
-    private $_id = '';
-    private $_valid = false;
-    private $_requestFunction = '';
-    private $_validateFunction = '';
-    private $_variableName = '';
-    private $_liveVariableName = null;
-    private $_variableLocation = null;
-    private $_forceVariable = null;
-    private $_requestKeyType = null;
-    private $_returnKeyType = null;
+    private $id = '';
+    private $valid = false;
+    private $requestFunction = '';
+    private $validateFunction = '';
+    private $variableName = '';
+    private $liveVariableName = null;
+    private $variableLocation = null;
+    private $forceVariable = null;
+    private $requestKeyType = null;
+    private $returnKeyType = null;
 
-    function __construct(Database $db, $vld_rule = null)
+    public function __construct(Database $db, string $vldRule = null)
     {
-        if ($vld_rule == null) {
+        if ($vldRule == null) {
             return;
         }
-        $config = $db->getRule($vld_rule);
-        $this->_loadConfig($config);
+        $config = $db->getRule($vldRule);
+        $this->loadConfig($config);
     }
 
-    private function _loadConfig($config)
+    private function loadConfig(array $config)
     {
         if (!count($config)) {
             return;
         }
-        $this->_valid = true;
-        $this->_id = $config['vld_rule'];
-        $this->_requestFunction = $config['rq_func'];
-        $this->_validateFunction = $config['vd_func'];
-        $this->_variableName = $config['var_name'];
+        $this->valid = true;
+        $this->id = $config['vld_rule'];
+        $this->requestFunction = $config['rq_func'];
+        $this->validateFunction = $config['vd_func'];
+        $this->variableName = $config['var_name'];
         if (isset($config['lv_name'])) {
-            $this->_liveVariableName = $config['lv_name'];
+            $this->liveVariableName = $config['lv_name'];
         }
         if (isset($config['var_locn'])) {
-            $this->_variableLocation = $config['var_locn'];
+            $this->variableLocation = $config['var_locn'];
         }
         if (isset($config['force_var'])) {
-            $this->_forceVariable = $config['force_var'];
+            $this->forceVariable = $config['force_var'];
         }
         if (isset($config['req_keytype'])) {
-            $this->_requestKeyType = $config['req_keytype'];
+            $this->requestKeyType = $config['req_keytype'];
         }
         if (isset($config['ret_keytype'])) {
-            $this->_returnKeyType = $config['ret_keytype'];
+            $this->returnKeyType = $config['ret_keytype'];
         }
     }
 
-    function id()
+    public function id()
     {
-        return $this->_id;
+        return $this->id;
     }
 
-    function isValid()
+    public function isValid()
     {
-        return $this->_valid;
+        return $this->valid;
     }
 
-    function config()
+    public function config()
     {
         if (!$this->isValid()) {
             return array();
         }
-        $config['rq_func'] = $this->_requestFunction;
-        $config['vd_func'] = $this->_validateFunction;
-        $config['var_name'] = $this->_variableName;
-        if ($this->_liveVariableName != null) {
-            $config['lv_name'] = $this->_liveVariableName;
+        $config['rq_func'] = $this->requestFunction;
+        $config['vd_func'] = $this->validateFunction;
+        $config['var_name'] = $this->variableName;
+        if ($this->liveVariableName != null) {
+            $config['lv_name'] = $this->liveVariableName;
         }
-        if ($this->_variableLocation != null) {
-            $config['var_locn'] = $this->_variableLocation;
+        if ($this->variableLocation != null) {
+            $config['var_locn'] = $this->variableLocation;
         }
-        if ($this->_forceVariable != null) {
-            $config['force_var'] = $this->_forceVariable;
+        if ($this->forceVariable != null) {
+            $config['force_var'] = $this->forceVariable;
         }
-        if ($this->_requestKeyType != null) {
-            $config['req_keytype'] = $this->_requestKeyType;
+        if ($this->requestKeyType != null) {
+            $config['req_keytype'] = $this->requestKeyType;
         }
-        if ($this->_returnKeyType != null) {
-            $config['ret_keytype'] = $this->_returnKeyType;
+        if ($this->returnKeyType != null) {
+            $config['ret_keytype'] = $this->returnKeyType;
         }
         return $config;
     }
 
-    static function fetchGroupRules(Database $db, $vld_group)
+    public static function fetchGroupRules(Database $db, string $vldGroup)
     {
         $rules = array();
-        $rows = $db->getValidationGroup($vld_group);
+        $rows = $db->getValidationGroup($vldGroup);
         foreach ($rows as $row) {
             $rule = new Rule($db, $row['vld_rule']);
             if ($rule->isValid()) {
@@ -137,10 +137,10 @@ class Rule
         return $rules;
     }
 
-    static function fetchValidationRole(Database $db, $element, $vld_role)
+    public static function fetchValidationRole(Database $db, string $element, string $vldRole)
     {
         $rules = array();
-        $row = $db->getElementValidationGroup($element, $vld_role);
+        $row = $db->getElementValidationGroup($element, $vldRole);
         $rows = $db->getValidationGroup($row['vld_group']);
         foreach ($rows as $row) {
             $rule = new Rule($db, $row['vld_rule']);
@@ -150,9 +150,8 @@ class Rule
         }
         return $rules;
     }
-    // }}}
-    // {{{ fetchAllRoles()
-    static function fetchAllValidationRoles(Database $db, $element)
+
+    public static function fetchAllValidationRoles(Database $db, string $element)
     {
         $roles = array();
         $role_rows = $db->getElementValidationGroups($element);
@@ -168,5 +167,4 @@ class Rule
         }
         return $roles;
     }
-    // }}}
 }

@@ -40,52 +40,53 @@ use Doctrine\DBAL\DBALException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormBuilder;
 use ARK\Database\Database;
+use ARK\Model\Item;
+use ARK\Model\Module;
 use ARK\Form\Type\PanelType;
 
 class Subform extends Group
 {
-    private $_viewState = '';
-    private $_editState = '';
-    private $_navType = '';
-    private $_label = NULL;
-    private $_input = NULL;
-    private $_formType = '';
+    private $viewState = '';
+    private $editState = '';
+    private $navType = '';
+    private $label = null;
+    private $input = null;
+    private $formType = '';
 
-    function __construct(Database $db = null, $subform = null, $module = null, $modtype = null)
+    public function __construct(Database $db = null, string $subform = null, Module $module = null, string $modtype = null)
     {
         if ($db == null || $subform == null) {
             return;
         }
         parent::__construct($db, $subform, $module, $modtype);
         $config = $db->getSubform($subform);
-        $this->_viewState = $config['view_state'];
-        $this->_editState = $config['edit_state'];
-        $this->_navType = $config['nav_type'];
-        $this->_keyword = $config['keyword'];
-        $this->_label = $config['label'];
-        $this->_input = $config['input'];
-        $this->_formType = $config['form_type'];
-        $this->_valid = true;
+        $this->viewState = $config['view_state'];
+        $this->editState = $config['edit_state'];
+        $this->navType = $config['nav_type'];
+        $this->keyword = $config['keyword'];
+        $this->label = $config['label'];
+        $this->input = $config['input'];
+        $this->formType = $config['form_type'];
+        $this->valid = true;
     }
 
-    function renderForms(FormFactoryInterface $factory, $itemKey)
+    public function renderForms(FormFactoryInterface $factory, Item $item)
     {
-        $data = $this->formData($itemKey);
+        $data = $this->formData($item);
         $options['label'] = false;
-        $options['elements'] = $this->_elements;
-        $options['keyword'] = $this->_keyword;
-        $formBuilder = $factory->createNamedBuilder($this->_id, PanelType::class, $data, $options);
-        foreach ($this->_elements as $element) {
+        $options['elements'] = $this->elements;
+        $options['keyword'] = $this->keyword;
+        $formBuilder = $factory->createNamedBuilder($this->id, PanelType::class, $data, $options);
+        foreach ($this->elements as $element) {
             $element->buildForm($formBuilder);
         }
         return $formBuilder->getForm()->createView();
 
-        if ($this->_formType) {
+        if ($this->formType) {
             foreach ($this->options() as $option) {
                 $options['sf_options'][$option->key()] = $option->value();
             }
-            $formBuilder->add($this->_id, $this->_formType, $options);
+            $formBuilder->add($this->id, $this->formType, $options);
         }
     }
-
 }

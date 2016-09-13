@@ -39,63 +39,64 @@ use Twig_Environment;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Type\FormType;
 use ARK\Database\Database;
+use ARK\Model\Item;
+use ARK\Model\Module;
 
 class Layout extends Group
 {
-    protected $_template = '';
+    protected $template = '';
 
-    function __construct(Database $db = null, $layout = null, $module = null, $modtype = null)
+    public function __construct(Database $db = null, string $layout = null, Module $module = null, string $modtype = null)
     {
         if ($db == null || $layout == null) {
             return;
         }
         parent::__construct($db, $layout, $module, $modtype);
-        $this->_template = 'layout.html.twig';
+        $this->template = 'layout.html.twig';
     }
 
-    private function _loadConfig($config)
+    private function loadConfig(array $config)
     {
         if (isset($config['template']) && $config['template']) {
-            $this->_template = $config['template'];
+            $this->template = $config['template'];
         }
-        $this->_valid = true;
+        $this->valid = true;
     }
 
-    function template()
+    public function template()
     {
-        return $this->_template;
+        return $this->template;
     }
 
-    function render(Twig_Environment $twig, array $options = array(), FormFactoryInterface $factory = null, $formsKey = null)
+    public function render(Twig_Environment $twig, array $options = array(), FormFactoryInterface $factory = null, Item $item = null)
     {
-        if ($this->_template) {
+        if ($this->template) {
             $options['layout'] = $this;
-            if ($factory && $formsKey) {
-                $options['forms'] = $this->renderForms($factory, $formsKey);
+            if ($factory && $item) {
+                $options['forms'] = $this->renderForms($factory, $item);
             }
-            return $twig->render($this->_template, $options);
+            return $twig->render($this->template, $options);
         }
         return '';
     }
 
-    function renderForms(FormFactoryInterface $factory, $formsKey)
+    public function renderForms(FormFactoryInterface $factory, Item $item)
     {
         $forms = array();
         foreach ($this->elements() as $element) {
-            $forms[$element->id()] = $element->renderForms($factory, $formsKey);
+            $forms[$element->id()] = $element->renderForms($factory, $item);
         }
         return $forms;
     }
 
-    static function fetchLayout(Database $db, $layout, $module, $modtype = null)
+    public static function fetchLayout(Database $db, string $layout, Module $module, string $modtype = null)
     {
         $config =  $db->getLayout($layout);
         if (isset($config['class'])) {
             $layout = new $config['class']($db, $layout, $module, $modtype);
-            $layout->_loadConfig($config);
+            $layout->loadConfig($config);
             return $layout;
         }
         return new Layout();
     }
-
 }

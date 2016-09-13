@@ -41,37 +41,33 @@ use ARK\Database\Database;
 
 class Condition
 {
-    private $_function = '';
-    private $_arguments = array();
-    private $_valid = false;
+    private $function = '';
+    private $arguments = array();
+    private $valid = false;
 
-    function __construct()
+    private function loadConfig(array $config)
     {
+        $this->function = $config['func'];
+        $this->arguments = explode(',', $config['args']);
+        $this->valid = true;
     }
 
-    private function _loadConfig($config)
+    public function isValid()
     {
-        $this->_function = $config['func'];
-        $this->_arguments = explode(',', $config['args']);
-        $this->_valid = true;
+        return $this->valid;
     }
 
-    function isValid()
+    public function func()
     {
-        return $this->_valid;
+        return $this->function;
     }
 
-    function func()
+    public function arguments()
     {
-        return $this->_function;
+        return $this->arguments;
     }
 
-    function arguments()
-    {
-        return $this->_arguments;
-    }
-
-    function config()
+    public function config()
     {
         if (!$this->isValid()) {
             return array();
@@ -81,18 +77,17 @@ class Condition
         return $config;
     }
 
-    static function fetchConditions(Database $db, $element)
+    public static function fetchConditions(Database $db, string $element)
     {
         $conditions = array();
         $rows = $db->getConditions($element);
         foreach ($rows as $row) {
             $condition = new Condition();
-            $condition->_loadConfig($row);
+            $condition->loadConfig($row);
             if ($condition->isValid()) {
                 $conditions[] = $condition;
             }
         }
         return $conditions;
     }
-
 }

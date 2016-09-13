@@ -35,73 +35,73 @@
 
 namespace ARK\View;
 
-use ARK\Database\Database;
 use Symfony\Component\Form\FormFactoryInterface;
+use ARK\Database\Database;
+use ARK\Model\Module;
 
 class Table extends Layout
 {
-    function __construct(Database $db = null, $layout_id = null, $modname = null, $modtype = null)
+    public function __construct(Database $db = null, string $layout = null, Module $module = null, string $modtype = null)
     {
-        if ($db == null || $layout_id == null) {
+        if ($db == null || $layout == null) {
             return;
         }
-        parent::__construct($db, $layout_id, $modname, $modtype);
-        $this->_template = 'layouts/table.html.twig';
+        parent::__construct($db, $layout, $module, $modtype);
+        $this->template = 'layouts/table.html.twig';
     }
 
-    function header()
+    public function header()
     {
         return $this->optionValue('header', true);
     }
 
-    function footer()
+    public function footer()
     {
         return $this->optionValue('footer', false);
     }
 
-    function striped()
+    public function striped()
     {
         return $this->optionValue('striped', false);
     }
 
-    function bordered()
+    public function bordered()
     {
         return $this->optionValue('bordered', false);
     }
 
-    function hover()
+    public function hover()
     {
         return $this->optionValue('hover', true);
     }
 
-    function condensed()
+    public function condensed()
     {
         return $this->optionValue('condensed', false);
     }
 
-    function responsive()
+    public function responsive()
     {
         return $this->optionValue('responsive', true);
     }
 
-    function pagination()
+    public function pagination()
     {
         return $this->optionValue('pagination', true);
     }
 
-    function search()
+    public function search()
     {
         return $this->optionValue('search', true);
     }
 
-    function export()
+    public function export()
     {
         return $this->optionValue('export', true);
     }
 
-    function fields()
+    public function fields()
     {
         return $this->elements();
     }
-
 }

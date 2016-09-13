@@ -41,81 +41,71 @@ use ARK\Database\Database;
 
 class Alias
 {
-    private $_table = '';
-    private $_column = '';
-    private $_key = '';
-    private $_type = '';
-    private $_attrType = '';
-    private $_language = '';
-    private $_valid = false;
+    private $table = '';
+    private $column = '';
+    private $key = '';
+    private $type = '';
+    private $attrType = '';
+    private $language = '';
+    private $valid = false;
 
-    // {{{ _loadConfig()
-    private function _loadConfig($config)
+    private function loadConfig(array $config)
     {
         if (count($config)) {
-            $this->_table = $config['tbl'];
-            $this->_column = $config['col'];
-            $this->_key = $config['src_key'];
-            $this->_type = $config['type'];
-            $this->_language = $config['lang'];
+            $this->table = $config['tbl'];
+            $this->column = $config['col'];
+            $this->key = $config['src_key'];
+            $this->type = $config['type'];
+            $this->language = $config['lang'];
             if (isset($config['attributetype'])) {
-                $_attrType = $config['attributetype'];
+                $this->attrType = $config['attributetype'];
             }
-            $this->_valid = true;
+            $this->valid = true;
         }
     }
-    // }}}
-    // {{{ isValid()
-    function isValid()
+
+    public function isValid()
     {
-        return $this->_valid;
+        return $this->valid;
     }
-    // }}}
-    // {{{ table()
-    function table()
+
+    public function table()
     {
-        return $this->_table;
+        return $this->table;
     }
-    // }}}
-    // {{{ column()
-    function column()
+
+    public function column()
     {
-        return $this->_column;
+        return $this->column;
     }
-    // }}}
-    // {{{ key()
-    function key()
+
+    public function key()
     {
-        return $this->_key;
+        return $this->key;
     }
-    // }}}
-    // {{{ type()
-    function type()
+
+    public function type()
     {
-        return $this->_type;
+        return $this->type;
     }
-    // }}}
-    // {{{ language()
-    function language()
+
+    public function language()
     {
-        return $this->_language;
+        return $this->language;
     }
-    // }}}
-    // {{{ tranKey()
-    function tranKey()
+
+    public function keyword()
     {
         if (!$this->isValid()) {
             return false;
         }
-        if ($this->_attrType) {
-            return $this->column().'.'.$this->_attrType.'.'.$this->key().'.'.$this->type();
-        } else {
-            return $this->column().'.'.$this->key().'.'.$this->type();
+        if ($this->attrType) {
+            return $this->column().'.'.$this->attrType.'.'.$this->key().'.'.$this->type();
         }
+        return $this->column().'.'.$this->key().'.'.$this->type();
     }
-    // }}}
-    // {{{ config()
-    function config()
+
+    public function config()
     {
         if (!$this->isValid()) {
             return false;
@@ -126,9 +116,8 @@ class Alias
         $config['alias_type'] = $this->type();
         return $config;
     }
-    // }}}
-    // {{{ elementAlias()
-    static function elementAlias(Database $db, $element)
+
+    public static function elementAlias(Database $db, string $element)
     {
         $alias = new Alias();
         $sql = "
@@ -140,12 +129,11 @@ class Alias
         if (!$config) {
             return $alias;
         }
-        $alias->_loadConfig($config);
+        $alias->loadConfig($config);
         return $alias;
     }
-    // }}}
-    // {{{ dataclassAlias()
-    static function dataclassAlias($dataclass, $classtype)
+
+    public static function dataclassAlias(string $dataclass, string $classtype)
     {
         $alias = new Alias();
         $config['tbl'] = 'cor_lut_'.$dataclass.'type';
@@ -153,21 +141,19 @@ class Alias
         $config['src_key'] = $classtype;
         $config['type'] = 'normal';
         $config['lang'] = null;
-        $alias->_loadConfig($config);
+        $alias->loadConfig($config);
         return $alias;
     }
-    // }}}
-    // {{{ modtypeAlias()
-    static function modtypeAlias($value)
+
+    public static function modtypeAlias(string $modtype)
     {
         $alias = new Alias();
         $config['tbl'] = 'ark_schema_modtype';
         $config['col'] = 'modtype';
-        $config['src_key'] = $value;
+        $config['src_key'] = $modtype;
         $config['type'] = 'normal';
         $config['lang'] = null;
-        $alias->_loadConfig($config);
+        $alias->loadConfig($config);
         return $alias;
     }
-    // }}}
 }

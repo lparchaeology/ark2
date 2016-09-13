@@ -47,34 +47,21 @@ use ARK\Model\Site;
 
 class ModuleController
 {
-    public function viewModuleAction(Application $app, Request $request, $site, $module)
+    public function viewModuleAction(Application $app, Request $request, $siteSlug, $moduleSlug)
     {
-        $mod = $app['database']->getModule(strtolower($module));
+        $mod = $app['database']->getModule(strtolower($moduleSlug));
         if (!$mod) {
-            throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$site);
+            throw new NotFoundHttpException('Module '.$moduleSlug.' is not valid for site '.$siteSlug);
         }
 
         $data = array(
-            'site' => $site,
-            'module' => $module,
+            'site' => $siteSlug,
+            'module' => $moduleSlug,
         );
         $formBuilder = $app->form($data);
         $formBuilder->add('site', Type\TextType::class, array('label' => 'Site', 'disabled' => true));
         $formBuilder->add('module', Type\TextType::class, array('label' => 'Module', 'disabled' => true));
         $form = $formBuilder->getForm();
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
-            // do something with the data
-
-            // redirect somewhere
-            return $app->redirect('form');
-        }
-
         return $app['twig']->render('pages/page.html.twig', array('form' => $form->createView()));
     }
-
 }

@@ -39,79 +39,79 @@ use ARK\Database\Database;
 
 class Option
 {
-    private $_type = '';
-    private $_key = '';
-    private $_value = null;
-    private $_valid = false;
+    private $type = '';
+    private $key = '';
+    private $value = null;
+    private $valid = false;
 
-    private function __construct($key = null, $value = null)
+    private function __construct(string $key = null, $value = null)
     {
         if (!$key || !$value) {
             return;
         }
-        $this->_key = $key;
+        $this->key = $key;
         $this->setValue($value);
-        $this->_valid = true;
+        $this->valid = true;
     }
 
-    private function _loadConfig($db, $config)
+    private function loadConfig(Database $db, array $config)
     {
         if (!isset($config['type']) || !isset($config['opt']) || !isset($config['value'])) {
             return;
         }
-        $this->_key = $config['opt'];
+        $this->key = $config['opt'];
         if ($config['type'] == 'field') {
             $this->setValue(new Field($db, $config['value']));
         } else {
             $this->setValue(unserialize($config['value']));
         }
-        $this->_valid = true;
+        $this->valid = true;
     }
 
-    function isValid()
+    public function isValid()
     {
-        return $this->_valid;
+        return $this->valid;
     }
 
-    function type()
+    public function type()
     {
-        return $this->_type;
+        return $this->type;
     }
 
-    function key()
+    public function key()
     {
-        return $this->_key;
+        return $this->key;
     }
 
-    function value()
+    public function value()
     {
-        return $this->_value;
+        return $this->value;
     }
 
-    function setValue($value)
+    public function setValue($value)
     {
-        $this->_value = $value;
-        $this->_type = gettype($value);
-        if ($this->_type == 'object') {
-            $this->_type = get_class($value);
+        $this->value = $value;
+        $this->type = gettype($value);
+        if ($this->type == 'object') {
+            $this->type = get_class($value);
         }
     }
 
-    static function fetchOption(Database $db, $element, $option)
+    public static function fetchOption(Database $db, string $element, string $option)
     {
         $option = new Option();
         $config =  $db->getOption($element, $option);
-        $option->_loadConfig($db, $config);
+        $option->loadConfig($db, $config);
         return $option;
     }
 
-    static function fetchOptions(Database $db, $element)
+    public static function fetchOptions(Database $db, string $element)
     {
         $options = array();
         $rows =  $db->getOptions($element);
         foreach ($rows as $config) {
             $option = new Option();
-            $option->_loadConfig($db, $config);
+            $option->loadConfig($db, $config);
             if ($option->isValid()) {
                 $options[$option->key()] = $option;
             }
@@ -119,7 +119,7 @@ class Option
         return $options;
     }
 
-    static function fetchOptionsArray(Database $db, $element)
+    public static function fetchOptionsArray(Database $db, string $element)
     {
         $optionsArray = array();
         $options = Option::fetchOptions($db, $element);

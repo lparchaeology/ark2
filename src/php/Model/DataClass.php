@@ -41,129 +41,142 @@ use ARK\Database\Database;
 
 class DataClass extends Element
 {
-    private $_dataclass = '';
-    private $_classtype = '';
-    private $_editable = false;
-    private $_hidden = false;
-    private $_rules = array();
-    private $_constraints = array();
-    private $_attributes = array();
+    private $dataclass = '';
+    private $classtype = '';
+    private $editable = false;
+    private $hidden = false;
+    private $rules = array();
+    private $constraints = array();
+    private $attributes = array();
 
-    function __construct(Database $db = null, $field_id = null)
+    public function __construct(Database $db = null, $field = null)
     {
-        if ($db == null || $field_id == null) {
+        if ($db == null || $field == null) {
             return;
         }
-        parent::__construct($db, $field_id, 'field');
-        $config = $db->getDataClass($field_id);
-        $this->_dataclass = $config['dataclass'];
-        $this->_classtype = $config['classtype'];
-        $this->_editable = (bool)$config['editable'];
-        $this->_hidden = (bool)$config['hidden'];
-        $this->_rules = Rule::fetchAllValidationRoles($db, $field_id);
-        if ($this->_dataclass == 'attribute') {
+        parent::__construct($db, $field, 'field');
+        $config = $db->getDataClass($field);
+        $this->dataclass = $config['dataclass'];
+        $this->classtype = $config['classtype'];
+        $this->editable = (bool)$config['editable'];
+        $this->hidden = (bool)$config['hidden'];
+        $this->rules = Rule::fetchAllValidationRoles($db, $field);
+        if ($this->dataclass == 'attribute') {
             $type = $config['dataclass'].'type';
             $tbl = 'cor_lut_'.$type;
             $class = $db->data()->fetchAssoc("SELECT * FROM $tbl WHERE $type = ?", array($config['classtype']));
             $attrs = $db->data()->fetchAll('SELECT * FROM cor_lut_attribute WHERE attributetype = ?', array($class['attributetype']));
             foreach ($attrs as $attr) {
-                $this->_attributes[] = $attr['attribute'];
+                $this->attributes[] = $attr['attribute'];
             }
         }
         if (!$this->alias()->isValid()) {
-            $this->_alias = Alias::dataclassAlias($this->_dataclass, $this->_classtype);
+            $this->alias = Alias::dataclassAlias($this->dataclass, $this->classtype);
         }
-        $this->_db = $db;
-        $this->_valid = true;
+        $this->db = $db;
+        $this->valid = true;
     }
 
-    function dataclass()
+    public function dataclass()
     {
-        return $this->_dataclass;
+        return $this->dataclass;
     }
 
-    function classtype()
+    public function classtype()
     {
-        return $this->_classtype;
+        return $this->classtype;
     }
 
-    function editable()
+    public function editable()
     {
-        return $this->_editable;
+        return $this->editable;
     }
 
-    function hidden()
+    public function hidden()
     {
-        return $this->_hidden;
+        return $this->hidden;
     }
 
-    function validationRules($vld_role)
+    public function validationRules($vldRole)
     {
-        if (array_key_exists($vld_role, $this->_rules)) {
-            return $this->_rules[$vld_role];
-        } else {
-            return array();
+        if (array_key_exists($vldRole, $this->rules)) {
+            return $this->rules[$vldRole];
         }
+        return array();
     }
 
-    function constraints()
+    public function constraints()
     {
-        return $this->_constraints;
+        return $this->constraints;
     }
 
-    function attributes()
+    public function attributes()
     {
-        return $this->_attributes;
+        return $this->attributes;
     }
 
-    function formData(Item $item)
+    public function formData(Item $item)
     {
         if (!$this->isValid()) {
             return array();
         }
+        dump($item);
         $data = array();
         switch ($this->dataclass()) {
-            case 'txt':
-                $row = $this->_db->getText($item->module(), $item->id(), $this->classtype(), 'en');
-                if (isset($row['txt'])) {
-                    $data[$this->id()] = $row['txt'];
-                }
-                break;
-            case 'number':
-                $row = $this->_db->getNumber($itemKey, $this->classtype());
-                if (isset($row['number'])) {
-                    $data[$this->id()] = $row['number'];
-                }
-                break;
-            case 'date':
-                $row = $this->_db->getDate($item->module(), $item->id(), $this->classtype());
-                if (isset($row['date'])) {
-                    $data[$this->id()] = new \DateTime($row['date']);
+            case 'action':
+                $action = $this->db->getAction($item->module()->id(), $item->id(), $this->classtype());
+                if (isset($action['actor_itemkey']) and isset($action['actor_itemvalue'])) {
+                    $data[$this->id()] = $action['actor_itemkey'].'.'.$action['actor_itemvalue'];
                 }
                 break;
             case 'attribute':
-                $row = $this->_db->getAttribute($item->module(), $item->id(), $this->classtype());
+                $row = $this->db->getAttribute($item->module()->id(), $item->id(), $this->classtype());
                 if (isset($row['attribute'])) {
                     $data[$this->id()] = $row['attribute'];
                 }
                 break;
-            case 'file':
-                $row = $this->_db->getFile($itemKey, $this->classtype());
-                if (isset($row['file'])) {
-                    //$data[$this->id()] = $row['filename'];
+            case 'date':
+                $row = $this->db->getDate($item->module()->id(), $item->id(), $this->classtype());
+                if (isset($row['value'])) {
+                    $data[$this->id()] = new \DateTime($row['value']);
                 }
                 break;
-            case 'action':
-                $action = $this->_db->getAction($item->module(), $item->id(), $this->classtype());
-                if (isset($action['actor_itemkey']) and isset($action['actor_itemvalue'])) {
-                    $data[$this->id()] = $action['actor_itemkey'].'.'.$action['actor_itemvalue'];
+            case 'file':
+                $row = $this->db->getFile($item->module()->id(), $item->id(), $this->classtype());
+                if (isset($row['filename'])) {
+                    $data[$this->id()] = $row['filename'];
+                }
+                break;
+            case 'number':
+                $row = $this->db->getNumber($item->module()->id(), $item->id(), $this->classtype());
+                if (isset($row['value'])) {
+                    $data[$this->id()] = $row['value'];
+                }
+                break;
+            case 'span':
+                $row = $this->db->getSpan($item->module()->id(), $item->id(), , $this->classtype());
+                if (isset($row['beg']) && isset($row['end'])) {
+                    $data[$this->id()] = array($row['beg'], $row['end']);
+                }
+                break;
+            case 'txt':
+                $row = $this->db->getString($item->module()->id(), $item->id(), $this->classtype(), 'en');
+                debug($row);
+                if (isset($row['value'])) {
+                    $data[$this->id()] = $row['value'];
+                }
+                break;
+            case 'xmi':
+                $row = $this->db->getXmi($item->module()->id(), $item->id(), , $this->classtype());
+                if (isset($row['xmi_itemkey']) && isset($row['xmi_itemvalue'])) {
+                    $data[$this->id()] = array($row['xmi_itemkey'], $row['xmi_itemvalue']);
                 }
                 break;
         }
         return $data;
     }
 
-    function buildForm(FormBuilder &$formBuilder, array $options = array())
+    public function buildForm(FormBuilder &$formBuilder, array $options = array())
     {
         if (!$this->isValid()) {
             return;
@@ -172,67 +185,67 @@ class DataClass extends Element
         switch ($this->dataclass()) {
             case 'action':
                 $options['choices']['--- Select One ---'] = null;
-                $actors = $this->_db->getActors();
+                $actors = $this->db->getActors();
                 foreach ($actors as $actor) {
                     $options['choices']['act_cd.'.$actor['act_cd'].'.name'] = 'act_cd.'.$actor['act_cd'];
                 }
-                $formBuilder->add($this->_id, Type\ChoiceType::class, $options);
+                $formBuilder->add($this->id, Type\ChoiceType::class, $options);
                 break;
             case 'attribute':
                 //TODO Only add null if allowed null
                 $options['choices']['--- Select One ---'] = null;
-                foreach ($this->_attributes as $val) {
-                    $options['choices']['attribute.'.$this->_classtype.'.'.$val.'.normal'] = $val;
+                foreach ($this->attributes as $val) {
+                    $options['choices']['attribute.'.$this->classtype.'.'.$val.'.normal'] = $val;
                 }
-                $formBuilder->add($this->_id, Type\ChoiceType::class, $options);
+                $formBuilder->add($this->id, Type\ChoiceType::class, $options);
                 break;
             case 'date':
                 $options['date_widget'] = 'single_text';
-                $formBuilder->add($this->_id, Type\DateTimeType::class, $options);
+                $formBuilder->add($this->id, Type\DateTimeType::class, $options);
                 break;
             case 'file':
-                $formBuilder->add($this->_id, Type\FileType::class, $options);
+                $formBuilder->add($this->id, Type\FileType::class, $options);
                 break;
             case 'itemkey':
-                $formBuilder->add($this->_id, Type\TextType::class, $options);
+                $formBuilder->add($this->id, Type\TextType::class, $options);
                 break;
             case 'modtype':
-                foreach ($this->_attributes as $val) {
+                foreach ($this->attributes as $val) {
                     $options['choices'][$val] = $val;
                 }
-                $formBuilder->add($this->_id, Type\ChoiceType::class, $options);
+                $formBuilder->add($this->id, Type\ChoiceType::class, $options);
                 break;
             case 'number':
-                $formBuilder->add($this->_id, Type\NumberType::class, $options);
+                $formBuilder->add($this->id, Type\NumberType::class, $options);
                 break;
             case 'span':
                 $option['entry_type'] = Type\TextType::class;
                 $option['entry_options'] = array();
-                $formBuilder->add($this->_id, Type\CollectionType::class, $options);
+                $formBuilder->add($this->id, Type\CollectionType::class, $options);
                 break;
             case 'txt':
-                $formBuilder->add($this->_id, Type\TextareaType::class, $options);
+                $formBuilder->add($this->id, Type\TextareaType::class, $options);
                 break;
             case 'xmi':
                 $option['entry_type'] = Type\TextType::class;
                 $option['allow_add'] = true;
                 $option['allow_delete'] = true;
                 $option['entry_options'] = array();
-                $formBuilder->add($this->_id, Type\CollectionType::class, $options);
+                $formBuilder->add($this->id, Type\CollectionType::class, $options);
                 break;
         }
         return;
     }
 
-    function schema()
+    public function schema()
     {
-        $schema = array('title' => $this->_title);
-        return array($this->_id => $schema);
+        $schema = array('title' => $this->title);
+        return array($this->id => $schema);
     }
 
-    static function fetchDataClasss(Database $db, $element_id, $enabled = true)
+    public static function fetchDataClasss(Database $db, $element, $enabled = true)
     {
-        $children = $db->getGroup($element_id, 'field', $enabled);
+        $children = $db->getGroup($element, 'field', $enabled);
         $fields = array();
         foreach ($children as $child) {
             $field = new DataClass($db, $child['child_id']);

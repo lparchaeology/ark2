@@ -83,6 +83,12 @@ class Item
         return $this->module;
     }
 
+    // TODO temp for use in Forms
+    public function moduleId()
+    {
+        return $this->module;
+    }
+
     public function id()
     {
         return $this->id;
@@ -91,6 +97,11 @@ class Item
     public function index()
     {
         return $this->index;
+    }
+
+    public function parent()
+    {
+        return $this->parent;
     }
 
     public function modtype()

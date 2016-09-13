@@ -35,41 +35,42 @@
 
 namespace ARK\View;
 
-use ARK\Database\Database;
 use Symfony\Component\Form\FormFactoryInterface;
+use ARK\Database\Database;
+use ARK\Model\Item;
+use ARK\Model\Module;
 
 class Grid extends Layout
 {
-    function __construct(Database $db = null, $layout = null, $module = null, $modtype = null)
+    public function __construct(Database $db = null, string $layout = null, Module $module = null, string $modtype = null)
     {
         if ($db == null || $layout == null) {
             return;
         }
         parent::__construct($db, $layout, $module, $modtype);
-        $this->_template = 'layouts/grid.html.twig';
+        $this->template = 'layouts/grid.html.twig';
     }
 
-    function cols($row)
+    public function cols(int $row)
     {
-        return $this->_grid[$row];
+        return $this->grid[$row];
     }
 
-    function rows()
+    public function rows()
     {
-        return $this->_grid;
+        return $this->grid;
     }
 
-    function renderForms(FormFactoryInterface $factory, $itemKey)
+    public function renderForms(FormFactoryInterface $factory, Item $item)
     {
         $forms = array();
         foreach ($this->rows() as $rdx => $row) {
             foreach ($row as $cdx => $col) {
                 foreach ($col as $cell) {
-                    $forms[$rdx][$cdx][] = $cell->renderForms($factory, $itemKey);
+                    $forms[$rdx][$cdx][] = $cell->renderForms($factory, $item);
                 }
             }
         }
         return $forms;
     }
-
 }
