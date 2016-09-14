@@ -66,7 +66,6 @@ class AliasLoader implements LoaderInterface
                     WHERE attributetype = :id
                 ";
             } else if ($tbl == 'ark_config_modtype') {
-                dump($tbl);
                 $sql = "
                     SELECT *
                     FROM ark_config_modtype
@@ -95,7 +94,6 @@ class AliasLoader implements LoaderInterface
             if ($tbl == 'cor_lut_attribute') {
                 $key = $src_key.'.'.$source['attributetype'].'.'.$source[$src_key].'.'.$alias['aliastype'];
             } else if ($tbl == 'ark_config_module') {
-                dump($source)
                 $key = $source['modtype'].'.'.$source['itemvalue'].'.'.$alias['aliastype'];
             } else {
                 $key = $src_key.'.'.$source[$src_key].'.'.$alias['aliastype'];

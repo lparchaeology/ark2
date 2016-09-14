@@ -35,6 +35,7 @@
 
 namespace ARK\View;
 
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Extension\Core\Type;
 use ARK\Database\Database;
@@ -176,26 +177,26 @@ class Field extends Element
                 break;
             case 'txt':
                 $row = $this->db->getString($item->module()->id(), $item->id(), $this->property(), 'en');
-                if (isset($row['txt'])) {
-                    $data[$this->id()] = $row['txt'];
+                if (isset($row['value'])) {
+                    $data[$this->id()] = $row['value'];
                 }
                 break;
             case 'number':
                 $row = $this->db->getNumber($item->module()->id(), $item->id(), $this->property());
-                if (isset($row['number'])) {
-                    $data[$this->id()] = $row['number'];
+                if (isset($row['value'])) {
+                    $data[$this->id()] = $row['value'];
                 }
                 break;
             case 'date':
                 $row = $this->db->getDate($item->module()->id(), $item->id(), $this->property());
-                if (isset($row['date'])) {
-                    $data[$this->id()] = new \DateTime($row['date']);
+                if (isset($row['value'])) {
+                    $data[$this->id()] = new \DateTime($row['value']);
                 }
                 break;
             case 'span':
                 $row = $this->db->getSpan($item->module()->id(), $item->id(), $this->property());
-                if (isset($row['date'])) {
-                    $data[$this->id()] = new \DateTime($row['date']);
+                if (isset($row['value'])) {
+                    $data[$this->id()] = new \DateTime($row['value']);
                 }
                 break;
             case 'attribute':
@@ -210,17 +211,17 @@ class Field extends Element
                 break;
             case 'file':
                 $row = $this->db->getFile($item->module()->id(), $item->id(), $this->property());
-                if (isset($row['file'])) {
-                    //$data[$this->id()] = $row['filename'];
+                if (isset($row['filename'])) {
+                    $data[$this->id()] = new File($row['filename'], false);
                 }
                 break;
             case 'action':
                 $action = $this->db->getAction($item->module()->id(), $item->id(), $this->property());
-                if (isset($action['actor_itemkey']) and isset($action['actor_id'])) {
+                if (isset($action['actor_module']) and isset($action['actor_item'])) {
                     if ($trans) {
-                        $data[$this->id()] = $action['actor_itemkey'].'.'.$action['actor_id'].'.name';
+                        $data[$this->id()] = $action['actor_module'].'.'.$action['actor_item'].'.name';
                     } else {
-                        $data[$this->id()] = $action['actor_itemkey'].'.'.$action['actor_id'];
+                        $data[$this->id()] = $action['actor_module'].'.'.$action['actor_item'];
                     }
                 }
                 break;
@@ -239,7 +240,7 @@ class Field extends Element
                 $options['choices']['--- Select One ---'] = null;
                 $actors = $this->db->getActors();
                 foreach ($actors as $actor) {
-                    $options['choices']['act.act.name'] = 'act.'.$actor['item'];
+                    $options['choices']['actors.'.$actor['item'].'.name'] = 'act.'.$actor['item'];
                 }
                 $formBuilder->add($this->id, Type\ChoiceType::class, $options);
                 break;

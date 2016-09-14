@@ -137,7 +137,7 @@ class ItemController
         if (!$item->isValid()) {
             throw new NotFoundHttpException('Item '.$itemSlug.' is not valid for Site Code '.$siteSlug.' and Module '.$moduleSlug);
         }
-dump('working???');
+
         // TODO Make into a Subform
         $forms = array();
         $formBuilder = $app->form($item);
