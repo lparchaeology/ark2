@@ -88,7 +88,8 @@ class SiteController
             $jsonapi['data']['id'] = $item->id();
             $jsonapi['data']['attributes'] = $item->attributes($app['locale']);
             foreach ($item->submodules() as $submodule) {
-                $jsonapi['data']['references'][$submodule->type()]['links']['related'] = $uri.'/'.$submodule->type();
+                $jsonapi['data']['relationships'][$submodule->type()]['meta']['module'] = $submodule->id();
+                $jsonapi['data']['relationships'][$submodule->type()]['links']['related'] = $uri.'/'.$submodule->type();
             }
             $jsonapi['data']['links']['self'] = $uri;
         } catch (Error $e) {

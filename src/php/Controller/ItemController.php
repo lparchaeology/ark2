@@ -59,13 +59,10 @@ class ItemController
         $jsonapi['jsonapi']['version'] = '1.0';
 
         try {
-            $arkMod = Module::get($app['database'], 'ark');
-            $ark = $arkMod->item('ark');
-            $siteMod = $ark->submodule('ste');
-            $site = $siteMod->item($siteSlug);
+            $ark = Module::get($app['database'], 'ark')->item('ark');;
+            $site = $ark->submodule('ste')->item($siteSlug);
             $mod = $app['database']->getModule($moduleSlug);
-            $module = $site->submodule($mod['module']);
-            $item = $module->itemFromIndex($site->id(), $itemSlug);
+            $item = $site->submodule($mod['module'])->itemFromIndex($site->id(), $itemSlug);
 
             if ($request->get('schema') == 'true') {
                 $jsonapi['meta']['schema'] = $item->schema();
@@ -74,7 +71,12 @@ class ItemController
             $jsonapi['data']['id'] = $item->id();
             $jsonapi['data']['attributes'] = $item->attributes($app['locale']);
             foreach ($item->submodules() as $submodule) {
-                $jsonapi['data']['references'][$submodule->type()]['links']['related'] = $uri.'/'.$submodule->type();
+                $jsonapi['data']['relationships'][$submodule->type()]['links']['related'] = $uri.'/'.$submodule->type();
+            }
+            foreach ($item->relationships() as $relationship) {
+                $jsonapi['data']['relationships'][$relationship->type()]['links']['self'] = $request->getUri().'/relationships/'.$relationship->type();
+                $jsonapi['data']['relationships'][$relationship->type()]['links']['related'] = $uri.'/'.$relationship->type();
+                $jsonapi['data']['relationships'][$relationship->type()]['data'][] = $uri.'/'.$relationship->type();
             }
             $jsonapi['data']['links']['self'] = $uri;
         } catch (Error $e) {
@@ -101,6 +103,7 @@ class ItemController
             $module = $site->submodule($mod['module']);
             $items = $module->items($site->id());
 
+            $jsonapi['data'] = array();
             foreach ($items as $item) {
                 $resource['type'] = $item->module()->type();
                 $resource['id'] = $item->id();
@@ -143,12 +146,12 @@ class ItemController
         $formBuilder = $app->form($item);
         $formBuilder->add('parent', Type\TextType::class, array('label' => 'Site', 'attr' => array('readonly' => true)));
         $formBuilder->add('moduleId', Type\TextType::class, array('label' => 'Module', 'attr' => array('readonly' => true)));
-        $formBuilder->add('id', Type\TextType::class, array('label' => 'Item', 'attr' => array('readonly' => true)));
-        //$forms['item_form'] = $formBuilder->getForm()->createView();
+        $formBuilder->add('index', Type\TextType::class, array('label' => 'Item', 'attr' => array('readonly' => true)));
+        $forms['item_form'] = $formBuilder->getForm()->createView();
 
         $layout = Layout::fetchLayout($app['database'], 'cor_layout_item', $item->module(), $item->modtype());
-        //$options = array('item_form' => $forms['item_form']);
-        return $layout->render($app['twig'], array(), $app['form.factory'], $item);
+        $options = array('item_form' => $forms['item_form']);
+        return $layout->render($app['twig'], $options, $app['form.factory'], $item);
     }
 
     public function registerItemAction(Application $app, Request $request, $siteSlug, $moduleSlug)

@@ -365,9 +365,53 @@ class Database
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getXmi($module, $item, $property, $mode = Database::FetchFirst)
+    public function getXmis($module, $item, $xmiModule)
     {
-        return $this->getFragment('ark_data_xmi', $module, $item, $property, $mode);
+        $sql = "
+            SELECT *
+            FROM ark_data_xmi
+            WHERE (module = :module AND item = :item AND xmi_module = :xmi_module)
+            OR (xmi_module = :module AND xmi_item = :item AND module = :xmi_module)
+        ";
+        $params = array(
+            ':module' => $module,
+            ':item' => $item,
+            ':xmi_module' => $xmiModule,
+        );
+        $rows = $this->data()->fetchAll($sql, $params);
+        foreach ($rows as $row) {
+            $this->switchXmi($row);
+        }
+        return $rows;
+    }
+
+    public function getXmi($module, $item, $xmiModule, $xmiItem)
+    {
+        $sql = "
+            SELECT *
+            FROM ark_data_xmi
+            WHERE (module = :module AND item = :item AND xmi_module = :xmi_module AND xmi_item = :xmi_item)
+            OR (module = :xmi_module AND item = :xmi_item AND xmi_module = :module AND xmi_item = :item)
+        ";
+        $params = array(
+            ':module' => $module,
+            ':item' => $item,
+            ':xmi_module' => $xmiModule,
+            ':xmi_item' => $xmiItem,
+        );
+        $row = $this->data()->fetchAssoc($sql, $params);
+        $this->switchXmi($row);
+        return $row;
+    }
+
+    private function switchXmi(&$row, $module, $item)
+    {
+        if ($row && $row['xmi_module'] == $module && $row['xmi_item'] == $item) {
+            $row['xmi_module'] = $row['module'];
+            $row['xmi_item'] = $row['item'];
+            $row['module'] = $module;
+            $row['item'] = $item;
+        }
     }
 
     public function getFile($module, $item, $property, $mode = Database::FetchFirst)
@@ -455,6 +499,21 @@ class Database
             ':submodule' => $submodule,
         );
         return $this->config()->fetchAssoc($sql, $params);
+    }
+
+    public function getXmiModules($module, $schema_id)
+    {
+        $sql = "
+            SELECT *
+            FROM ark_model_xmi, ark_config_module
+            WHERE ark_model_xmi.module = :module
+            AND ark_model_xmi.schema_id = :schema_id
+        ";
+        $params = array(
+            ':module' => $module,
+            ':schema_id' => $schema_id,
+        );
+        return $this->config()->fetchAll($sql, $params);
     }
 
     public function getItem($module, $item, $mod_tbl = null)

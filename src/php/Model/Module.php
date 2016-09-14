@@ -41,7 +41,8 @@ final class Module extends AbstractResource
 {
     private $parent = null;
     private $table = null;
-    private $modules = null;
+    private $submodules = null;
+    private $xmis = null;
 
     use ObjectTrait;
 
@@ -50,14 +51,18 @@ final class Module extends AbstractResource
         parent::__construct($db, $id);
     }
 
-    protected function loadConfig($config, Module $parent = null)
+    protected function loadConfig($config, Item $parent = null)
     {
         parent::loadConfig($config);
 
         if (isset($config['subschema_id'])) {
             $this->schemaId = $config['subschema_id'];
         }
-        $this->parent = $parent;
+        if ($parent === null) {
+            $this->parent = Item::getRoot($this, 'ARK');
+        } else {
+            $this->parent = $parent;
+        }
         $this->typeCode = $config['module'];
         $this->type = $config['resource'];
         $this->table = $config['tbl'];
@@ -69,31 +74,59 @@ final class Module extends AbstractResource
         return $this->parent;
     }
 
-    private function loadSubodules($schemaId)
+    private function loadSubmodules(Item $item)
     {
-        $submodules = Module::getSubmodules($this->db, $this, $schemaId);
-        $this->submodules[$schemaId] = ($submodules ? $submodules : array());
+        $submodules = Module::getSubmodules($this->db, $item);
+        $this->submodules[$item->schemaId()] = ($submodules ? $submodules : array());
     }
 
-    public function submodule($schemaId, $module)
+    private function loadXmi($item)
     {
+        //print_r($item->module()->parent()->module()->id());
+        //print_r($item->module()->parent()->schemaId());
+        $xmis = $this->db->getXmiModules($item->module()->parent()->module()->id(), $item->module()->parent()->schemaId());
+        //print_r($xmis);
+        $this->xmis = array();
+        foreach ($xmis as $xmi) {
+            $this->xmis[$item->schemaId()][$xmi['module1']][] = $xmi['module2'];
+            $this->xmis[$item->schemaId()][$xmi['module2']][] = $xmi['module1'];
+        }
+    }
+
+    public function submodule(Item $item, string $submodule)
+    {
+        $schemaId = $item->schemaId();
         if (!isset($this->submodules[$schemaId])) {
-            $this->loadSubodules($schemaId);
+            $this->loadSubmodules($item);
         }
         foreach ($this->submodules[$schemaId] as $mod) {
-            if ($mod->id() == $module || $mod->type() == $module) {
+            if ($mod->id() == $submodule || $mod->type() == $submodule) {
                 return $mod;
             }
         }
-        throw new Error(9999);
+        throw new \Exception('No submodule found '.$submodule);
+        //throw new Error(9999);
     }
 
-    public function submodules($schemaId)
+    public function submodules(Item $item)
     {
+        $schemaId = $item->schemaId();
         if (!isset($this->submodules[$schemaId])) {
-            $this->loadSubodules($schemaId);
+            $this->loadSubmodules($item);
         }
         return $this->submodules[$schemaId];
+    }
+
+    public function relationships(Item $item)
+    {
+        if (!isset($this->xmis[$item->schemaId()])) {
+            $this->loadXmi($item);
+        }
+        $modules = array();
+        foreach ($this->xmis[$item->schemaId()][$item->module()->id()] as $moduleId) {
+            $modules[] = $item->module()->parent()->submodule($moduleId);
+        }
+        return $modules;
     }
 
     public function item($id)
@@ -111,41 +144,41 @@ final class Module extends AbstractResource
         return Item::getAll($this->db, $this, $parent, $this->table);
     }
 
-    static public function get(Database $db, $moduleId, Module $parent = null)
+    static public function get(Database $db, $moduleId, Item $item = null)
     {
         $module = new Module($db, $moduleId);
         $config = $db->getModule($moduleId);
         if (!$config) {
-            throw new Error(1000);
+            //throw new Error(1000);
+            throw new \Exception('No module config '.$moduleId);
         }
-        $module->loadConfig($config, $parent);
+        $module->loadConfig($config, $item);
         return $module;
     }
 
-    static public function getSubmodule(Database $db, Module $parent, Item $item, $submodule)
+    static public function getSubmodule(Database $db, Item $item, $submodule)
     {
         $module = new Module($db, $submodule);
-        $config = $db->getSubmodule($parent->id(), $item->schemaId(), $submodule);
+        $config = $db->getSubmodule($item->module()->id(), $item->schemaId(), $submodule);
         if (!$config) {
-            throw new \Exception();
+            throw new \Exception('No submodule config '.$submodule);
             //throw new Error(1000);
         }
-        $module->loadConfig($config, $parent);
+        $module->loadConfig($config, $item);
         return $module;
     }
 
-    static public function getSubmodules(Database $db, Module $parent, $schemaId, $enabled = true)
+    static public function getSubmodules(Database $db, Item $item, $enabled = true)
     {
         $modules = array();
-        $configs = $db->getSubmodules($parent->id(), $schemaId);
+        $configs = $db->getSubmodules($item->module()->id(), $item->schemaId());
         foreach ($configs as $config) {
             $module = new Module($db, $config['module']);
-            $module->loadConfig($config, $parent);
+            $module->loadConfig($config, $item);
             if ($module->isValid() && ($module->isEnabled() || !$enabled)) {
                 $modules[] = $module;
             }
         }
         return $modules;
     }
-
 }

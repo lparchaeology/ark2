@@ -86,7 +86,7 @@ class Item
     // TODO temp for use in Forms
     public function moduleId()
     {
-        return $this->module;
+        return $this->module->id();
     }
 
     public function id()
@@ -94,14 +94,14 @@ class Item
         return $this->id;
     }
 
-    public function index()
-    {
-        return $this->index;
-    }
-
     public function parent()
     {
         return $this->parent;
+    }
+
+    public function index()
+    {
+        return $this->index;
     }
 
     public function modtype()
@@ -113,7 +113,8 @@ class Item
     {
         if ($this->schemaId) {
             return $this->schemaId;
-        } elseif ($this->module) {
+        }
+        if ($this->module) {
             return $this->module->schemaId();
         }
         return null;
@@ -148,14 +149,24 @@ class Item
         return $attributes;
     }
 
-    public function submodules()
+    public function relationships()
     {
-        return $this->module->submodules($this->schemaId());
+        return $this->module->relationships($this);
     }
 
-    public function submodule($module)
+    public function related($moduleId)
     {
-        return $this->module->submodule($this->schemaId(), $module);
+        return $this->module->related($this, $moduleId);
+    }
+
+    public function submodules()
+    {
+        return $this->module->submodules($this);
+    }
+
+    public function submodule($submodule)
+    {
+        return $this->module->submodule($this, $submodule);
     }
 
     static public function get(Database $db, Module $module, $id, $table = null)
@@ -167,6 +178,15 @@ class Item
             //throw new Error(9999);
             throw new \Exception();
         }
+        $item->loadConfig($config, $module);
+        return $item;
+    }
+
+    static public function getRoot(Module $module, $id)
+    {
+        $item = new Item();
+        $config['item'] = $id;
+        //$config['schema_id'] = $module->schemaId();
         $item->loadConfig($config, $module);
         return $item;
     }

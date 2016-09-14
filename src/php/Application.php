@@ -159,6 +159,10 @@ class Application extends \Silex\Application
             'login_area' => array(
                 'pattern' => '(^/users/login$)|(^/users/register$)|(^/users/forgot-password$)',
             ),
+            // FIXME Make API always available if anon access disabled
+            'api_area' => array(
+                'pattern' => '(^/api)',
+            ),
             'secured_area' => array(
                 'pattern' => '^.*$',
                 'anonymous' => false,
