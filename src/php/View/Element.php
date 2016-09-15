@@ -96,6 +96,7 @@ abstract class Element
 
     public function keyword()
     {
+        dump($this->keyword);
         return $this->keyword;
     }
 

@@ -82,10 +82,7 @@ final class Module extends AbstractResource
 
     private function loadXmi($item)
     {
-        //print_r($item->module()->parent()->module()->id());
-        //print_r($item->module()->parent()->schemaId());
         $xmis = $this->db->getXmiModules($item->module()->parent()->module()->id(), $item->module()->parent()->schemaId());
-        //print_r($xmis);
         $this->xmis = array();
         foreach ($xmis as $xmi) {
             $this->xmis[$item->schemaId()][$xmi['module1']][] = $xmi['module2'];
@@ -127,6 +124,11 @@ final class Module extends AbstractResource
             $modules[] = $item->module()->parent()->submodule($moduleId);
         }
         return $modules;
+    }
+
+    public function related(Item $item)
+    {
+        return Item::getAllXmi($this->db, $this, $item, $this->table);
     }
 
     public function item($id)

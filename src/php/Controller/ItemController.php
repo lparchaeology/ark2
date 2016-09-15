@@ -76,7 +76,11 @@ class ItemController
             foreach ($item->relationships() as $relationship) {
                 $jsonapi['data']['relationships'][$relationship->type()]['links']['self'] = $request->getUri().'/relationships/'.$relationship->type();
                 $jsonapi['data']['relationships'][$relationship->type()]['links']['related'] = $uri.'/'.$relationship->type();
-                $jsonapi['data']['relationships'][$relationship->type()]['data'][] = $uri.'/'.$relationship->type();
+                foreach ($relationship->related($item) as $related) {
+                    $resource['type'] = $related->module()->type();
+                    $resource['id'] = $related->id();
+                    $jsonapi['data']['relationships'][$relationship->type()]['data'][] = $resource;
+                }
             }
             $jsonapi['data']['links']['self'] = $uri;
         } catch (Error $e) {
@@ -156,21 +160,20 @@ class ItemController
 
     public function registerItemAction(Application $app, Request $request, $siteSlug, $moduleSlug)
     {
-        $module = new Module($app['database'], $siteSlug, $moduleSlug);
-
-        if (!$module->valid()) {
-            $site = $app['database']->getItem('site', $siteSlug);
-            if (!$site) {
-                throw new NotFoundHttpException('Site Code '.$siteSlug.' is not valid.');
-            }
-            $mod = $app['database']->getModule($moduleSlug);
-            if (!$mod) {
-                throw new NotFoundHttpException('Module '.$moduleSlug.' is not valid.');
-            }
-            throw new NotFoundHttpException('Module '.$module.' is not valid for Site Code '.$site);
+        $arkMod = Module::get($app['database'], 'ark');
+        $ark = $arkMod->item('ark');
+        $siteMod = $ark->submodule('ste');
+        $site = $siteMod->item($siteSlug);
+        if (!$site->isValid()) {
+            throw new NotFoundHttpException('Site Code '.$siteSlug.' is not valid.');
+        }
+        $mod = $app['database']->getModule($moduleSlug);
+        $module = $site->submodule($mod['module']);
+        if (!$module->isValid()) {
+            throw new NotFoundHttpException('Module '.$moduleSlug.' is not valid for Site Code '.$siteSlug);
         }
 
-        $layout = Layout::fetchLayout($app['database'], 'cor_layout_register', $module->module());
+        $layout = Layout::fetchLayout($app['database'], 'cor_layout_register', $module);
 
         $fields = $layout->allFields();
         foreach ($fields as $field) {
@@ -178,7 +181,9 @@ class ItemController
                 $keyfield = $field->id();
             }
         }
-        $recent = $app['database']->getRecentItems($site, $module->module(), 5);
+        dump($site);
+        dump($site->id());
+        $recent = $app['database']->getRecentItems($module->id(), $site->id(), 5);
         foreach ($recent as $key) {
             $item = new Item($module->site(), $module->module(), str($key[$module->itemno()]));
             $data = array();

@@ -45,6 +45,9 @@ class DatabaseLoader implements LoaderInterface
         $catalogue = new MessageCatalogue($locale);
         $rows = $db->getTranslations($domain);
         foreach ($rows as $row) {
+            if ($row['role']) {
+                $catalogue->set($row['keyword'].$row['role'], $row['text'], 'messages');
+            }
             $catalogue->set($row['keyword'], $row['text'], 'messages');
         }
         return $catalogue;

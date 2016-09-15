@@ -365,27 +365,28 @@ class Database
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getXmis($module, $item, $xmiModule)
+    public function getXmiItems($module, $item, $xmiModule, $xmiTable = null)
     {
+        if (empty($mod_tbl)) {
+            $mod_tbl = $this->getModuleTable($module);
+        }
         $sql = "
-            SELECT *
-            FROM ark_data_xmi
-            WHERE (module = :module AND item = :item AND xmi_module = :xmi_module)
-            OR (xmi_module = :module AND xmi_item = :item AND module = :xmi_module)
+            SELECT $xmiTable.*
+            FROM ark_data_xmi, $xmiTable
+            WHERE (ark_data_xmi.module = :module AND ark_data_xmi.item = :item AND ark_data_xmi.xmi_module = :xmi_module
+                   AND $xmiTable.item = ark_data_xmi.xmi_item)
+            OR (ark_data_xmi.xmi_module = :module AND ark_data_xmi.xmi_item = :item AND ark_data_xmi.module = :xmi_module
+                AND $xmiTable.item = ark_data_xmi.item)
         ";
         $params = array(
             ':module' => $module,
             ':item' => $item,
             ':xmi_module' => $xmiModule,
         );
-        $rows = $this->data()->fetchAll($sql, $params);
-        foreach ($rows as $row) {
-            $this->switchXmi($row);
-        }
-        return $rows;
+        return $this->data()->fetchAll($sql, $params);
     }
 
-    public function getXmi($module, $item, $xmiModule, $xmiItem)
+    public function getXmiItem($module, $item, $xmiModule, $xmiItem)
     {
         $sql = "
             SELECT *
@@ -508,6 +509,7 @@ class Database
             FROM ark_model_xmi, ark_config_module
             WHERE ark_model_xmi.module = :module
             AND ark_model_xmi.schema_id = :schema_id
+            AND ark_config_module.module = ark_model_xmi.module
         ";
         $params = array(
             ':module' => $module,
@@ -592,11 +594,11 @@ class Database
         return $this->data()->fetchAssoc($sql, $params)['count'];
     }
 
-    public function getRecentItems($module, $parent, $rows)
+    public function getRecentItems($module, $parent, $rows, $mod_tbl = null)
     {
-        $module = $this->getModule($module);
-        $itemkey = $module['itemkey'];
-        $mod_tbl = $module['tbl'];
+        if (empty($mod_tbl)) {
+            $mod_tbl = $this->getModuleTable($module);
+        }
         $count = $this->countItems($module, $parent, $mod_tbl);
         $start = ($count > $rows) ? $count - $rows : 0;
         $params = array();
@@ -719,7 +721,7 @@ class Database
         $params = array(
             ':subform' => $subform,
         );
-        $config = $this->config()->fetchAssoc($sql, $params);
+        return $this->config()->fetchAssoc($sql, $params);
     }
 
     public function getGroupForModule($group, $module, $modtype = null)

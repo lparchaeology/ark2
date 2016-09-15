@@ -154,11 +154,6 @@ class Item
         return $this->module->relationships($this);
     }
 
-    public function related($moduleId)
-    {
-        return $this->module->related($this, $moduleId);
-    }
-
     public function submodules()
     {
         return $this->module->submodules($this);
@@ -216,4 +211,15 @@ class Item
         return $items;
     }
 
+    static public function getAllXmi(Database $db, Module $module, Item $item, $table = null)
+    {
+        $items = array();
+        $configs = $db->getXmiItems($item->module()->id(), $item->id(), $module->id(), $table);
+        foreach ($configs as $config) {
+            $item = new Item();
+            $item->loadConfig($config, $module);
+            $items[] = $item;
+        }
+        return $items;
+    }
 }
