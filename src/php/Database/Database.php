@@ -41,9 +41,6 @@ use Doctrine\DBAL\DBALException;
 
 class Database
 {
-    const FetchFirst = 0;
-    const FetchAll =1;
-
     private $_app = null;
     private $_drivers = array('pdo_mysql', 'pdo_pgsql', 'pdo_sqlite');
 
@@ -288,7 +285,7 @@ class Database
         }
     }
 
-    private function getFragment($table, $module, $item, $property, $mode = Database::FetchFirst)
+    private function getFragments($table, $module, $item, $property)
     {
         $sql = "
             SELECT *
@@ -302,67 +299,47 @@ class Database
             ':item' => $item,
             ':property' => $property,
         );
-        if ($mode == Database::FetchAll) {
-            return $this->data()->fetchAll($sql, $params);
-        }
-        return $this->data()->fetchAssoc($sql, $params);
+        return $this->data()->fetchAll($sql, $params);
     }
 
-    public function getAction($module, $item, $property, $mode = Database::FetchFirst)
+    public function getAction($module, $item, $property)
     {
-        return $this->getFragment('cor_tbl_action', $module, $item, $property, $mode);
+        return $this->getFragments('cor_tbl_action', $module, $item, $property);
     }
 
-    public function getAttribute($module, $item, $property, $mode = Database::FetchFirst)
+    public function getBoolean($module, $item, $property)
     {
-        return $this->getFragment('cor_tbl_attribute', $module, $item, $property, $mode);
+        return $this->getFragments('ark_data_boolean', $module, $item, $property);
     }
 
-    public function getBoolean($module, $item, $property, $mode = Database::FetchFirst)
+    public function getDate($module, $item, $property)
     {
-        return $this->getFragment('ark_data_boolean', $module, $item, $property, $mode);
+        return $this->getFragments('ark_data_date', $module, $item, $property);
     }
 
-    public function getDate($module, $item, $property, $mode = Database::FetchFirst)
+    public function getInteger($module, $item, $property)
     {
-        return $this->getFragment('ark_data_date', $module, $item, $property, $mode);
+        return $this->getFragments('ark_data_integer', $module, $item, $property);
     }
 
-    public function getInteger($module, $item, $property, $mode = Database::FetchFirst)
+    public function getNumber($module, $item, $property)
     {
-        return $this->getFragment('ark_data_integer', $module, $item, $property, $mode);
+        return $this->getFragments('ark_data_number', $module, $item, $property);
     }
 
-    public function getNumber($module, $item, $property, $mode = Database::FetchFirst)
+    public function getSpan($module, $item, $property)
     {
-        return $this->getFragment('ark_data_number', $module, $item, $property, $mode);
+        return $this->getFragments('cor_tbl_span', $module, $item, $property);
     }
 
-    public function getSpan($module, $item, $property, $mode = Database::FetchFirst)
+    public function getString($module, $item, $property)
     {
-        return $this->getFragment('cor_tbl_span', $module, $item, $property, $mode);
+        return $this->getFragments('ark_data_string', $module, $item, $property);
     }
 
-    public function getString($module, $item, $property, $lang, $mode = Database::FetchFirst)
+    public function getText($module, $item, $property)
     {
-        $sql = "
-            SELECT *
-            FROM ark_data_string
-            WHERE module = :module
-            AND item = :item
-            AND property = :property
-            AND language = :language
-        ";
-        $params = array(
-            ':module' => $module,
-            ':item' => $item,
-            ':property' => $property,
-            ':language' => $lang,
-        );
-        if ($mode == Database::FetchAll) {
-            return $this->data()->fetchAll($sql, $params);
-        }
-        return $this->data()->fetchAssoc($sql, $params);
+        return $this->getFragments('ark_data_text', $module, $item, $property);
     }
 
     public function getXmiItems($module, $item, $xmiModule, $xmiTable = null)
@@ -429,25 +406,6 @@ class Database
             ':module' => $module,
             ':item' => $item,
             ':property' => $property,
-        );
-        if ($mode == Database::FetchAll) {
-            return $this->data()->fetchAll($sql, $params);
-        }
-        return $this->data()->fetchAssoc($sql, $params);
-    }
-
-    public function getActor($itemkey, $itemvalue, $mode = Database::FetchFirst, $mod_tbl = null)
-    {
-        if (empty($mod_tbl)) {
-            $mod_tbl = $this->getModuleTable($itemkey);
-        }
-        $sql = "
-            SELECT *
-            FROM $mod_tbl
-            WHERE $itemkey = :itemvalue
-        ";
-        $params = array(
-            ':itemvalue' => $itemvalue,
         );
         if ($mode == Database::FetchAll) {
             return $this->data()->fetchAll($sql, $params);
@@ -587,9 +545,9 @@ class Database
         $params = array();
         if ($parent) {
             $sql .= "
-                WHERE item LIKE :parent
+                WHERE parent = :parent
             ";
-            $params[':parent'] = $parent.'[_]%';
+            $params[':parent'] = $parent;
         }
         return $this->data()->fetchAssoc($sql, $params)['count'];
     }
@@ -608,28 +566,15 @@ class Database
         ";
         if ($parent) {
             $sql .= "
-                WHERE item LIKE :parent
+                WHERE parent = :parent
             ";
-            $params[':parent'] = $parent.'[_]%';
+            $params[':parent'] = $parent;
         }
         $sql .= "
             ORDER BY cre_on, LENGTH(item), item
             LIMIT $start, $rows
         ";
         return $this->data()->fetchAll($sql, $params);
-    }
-
-    public function getItemProperty($itemkey, $itemvalue, $property)
-    {
-        $sql = "
-            SELECT *
-            FROM $mod_tbl
-            WHERE $mod_tbl.$itemkey = :itemvalue
-        ";
-        $params = array(
-            ':itemvalue' => $itemvalue,
-        );
-        return $this->data()->fetchAssoc($sql, $params);
     }
 
     public function getModuleTable($itemkey)

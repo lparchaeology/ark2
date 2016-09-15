@@ -14,7 +14,7 @@
                     data-editable-send="never"
                     data-editable-toggle="manual"
                 >Item</th>
-                {% if modtype is defined %}
+                {% if item.modtype is defined %}
                     <th data-editable="true"
                         data-editable-mode="inline"
                         data-editable-onblur="ignore"
@@ -44,9 +44,9 @@
         <tbody>
             {% for item in items %}
                 <tr>
-                    <td>{{ item[itemkey] }}</td>
-                    {% if modtype is defined %}
-                        <td>{{ item[modtype] }}</td>
+                    <td>{{ item.item }}</td>
+                    {% if item.modtype is defined %}
+                        <td>{{ item.modtype }}</td>
                     {% endif %}
                     <td>{{ item.cre_by }}</td>
                     <td>{{ item.cre_on }}</td>
@@ -57,7 +57,7 @@
             {% endfor %}
             <tr id="register-new">
                 <td></td>
-                {% if modtype is defined %}
+                {% if item.modtype is defined %}
                     <td></td>
                 {% endif %}
                 <td></td>

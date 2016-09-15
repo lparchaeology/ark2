@@ -176,80 +176,69 @@ class ItemController
         $layout = Layout::fetchLayout($app['database'], 'cor_layout_register', $module);
 
         $fields = $layout->allFields();
-        foreach ($fields as $field) {
-            if ($field->dataclass() == 'itemkey') {
-                $keyfield = $field->id();
-            }
-        }
-        dump($site);
-        dump($site->id());
-        $recent = $app['database']->getRecentItems($module->id(), $site->id(), 5);
-        foreach ($recent as $key) {
-            $item = new Item($module->site(), $module->module(), str($key[$module->itemno()]));
+        $items = Item::getRecent($app['database'], $module, $site->id(), 5);
+        $rows = array();
+        foreach ($items as $item) {
             $data = array();
             foreach ($fields as $field) {
                 $data = array_merge($data, $field->formData($item, true));
             }
-            $items[] = array_merge($item, $data);
+            $data['item'] = $item->id();
+            $data['parent'] = $item->parent();
+            $data['idx'] = $item->index();
+            if ($item->modtype()) {
+                $data['modtype'] = $item->modtype();
+            }
+            $data['cre_by'] = '';
+            $data['cre_on'] = '';
+            $rows[] = $data;
         }
 
         $options  = array(
-            'itemkey' => $module['itemkey'],
-            'itemno' => $module['itemno'],
-            'items' => $items,
-            'keyfield' => $keyfield,
+            'items' => $rows,
         );
-        if ($module['modtype']) {
-            $options['modtype'] = $module['modtype'];
-        }
 
         return $layout->render($app['twig'], $options);
     }
 
-    public function listItemsAction(Application $app, Request $request, $site, $mod_slug)
+    public function listItemsAction(Application $app, Request $request, $siteSlug, $moduleSlug)
     {
-        $module = $app['database']->getModule(strtolower($mod_slug));
-        if (!$module) {
-            throw new NotFoundHttpException('Module '.$module.' is not valid for site '.$site);
+        $arkMod = Module::get($app['database'], 'ark');
+        $ark = $arkMod->item('ark');
+        $siteMod = $ark->submodule('ste');
+        $site = $siteMod->item($siteSlug);
+        if (!$site->isValid()) {
+            throw new NotFoundHttpException('Site Code '.$siteSlug.' is not valid.');
+        }
+        $mod = $app['database']->getModule($moduleSlug);
+        $module = $site->submodule($mod['module']);
+        if (!$module->isValid()) {
+            throw new NotFoundHttpException('Module '.$moduleSlug.' is not valid for Site Code '.$siteSlug);
         }
 
-        $mod_tbl = $module['tbl'];
-        $modtype = $module['modtype'];
-        $itemkey = $module['itemkey'];
+        $layout = Layout::fetchLayout($app['database'], 'cor_layout_list', $module);
 
-        $itemKey = array(
-            'site' => $site,
-            'mod_slug' => $mod_slug,
-            'module' => $module['module'],
-            'key' => $itemkey,
-        );
-
-        $layout = Layout::fetchLayout($app['database'], 'cor_layout_list', $module['module']);
         $fields = $layout->allFields();
-        $items = $app['database']->getItems($site, $module['module']);
-        foreach ($items as &$item) {
-            if (empty($modtype)) {
-                $itemKey['modtype'] = $module['module'];
-            } else {
-                $itemKey['modtype'] = $modtype;
-                $itemKey[$modtype] = $item[$modtype];
-            }
-            $itemKey['value'] = $item[$itemkey];
+        $items = Item::getAll($app['database'], $module, $site->id());
+        $rows = array();
+        foreach ($items as $item) {
             $data = array();
             foreach ($fields as $field) {
-                $data = array_merge($data, $field->formData($itemKey, true));
+                $data = array_merge($data, $field->formData($item, true));
             }
-            $item = array_merge($item, $data);
+            $field = 'conf_field_'.$module->id().'_cd';
+            $data[$field] = $item->id();
+            $data['item'] = $item->id();
+            $data['parent'] = $item->parent();
+            $data['idx'] = $item->index();
+            $data['modtype'] = $item->modtype();
+            $data['item'] = $item->id();
+            $rows[] = $data;
         }
 
         $options  = array(
-            'itemkey' => $module['itemkey'],
-            'itemno' => $module['itemno'],
-            'items' => $items,
+            'items' => $rows,
         );
-        if ($module['modtype']) {
-            $options['modtype'] = $module['modtype'];
-        }
 
         return $layout->render($app['twig'], $options);
     }

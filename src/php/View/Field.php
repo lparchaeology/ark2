@@ -78,7 +78,7 @@ class Field extends Element
         if ($this->keyword) {
             return $this->keyword;
         }
-        return $this->alias->tranKey();
+        return $this->alias->keyword();
     }
 
     public function dataclass()
@@ -176,7 +176,7 @@ class Field extends Element
                 }
                 break;
             case 'txt':
-                $row = $this->db->getString($item->module()->id(), $item->id(), $this->property(), 'en');
+                $row = $this->db->getText($item->module()->id(), $item->id(), $this->property());
                 if (isset($row['value'])) {
                     $data[$this->id()] = $row['value'];
                 }
@@ -200,7 +200,7 @@ class Field extends Element
                 }
                 break;
             case 'attribute':
-                $row = $this->db->getAttribute($item->module()->id(), $item->id(), $this->property());
+                $row = $this->db->getString($item->module()->id(), $item->id(), $this->property());
                 if (isset($row['attribute'])) {
                     if ($trans) {
                         $data[$this->id()] = 'attribute.'.$row['attributetype'].'.'.$row['attribute'].'.normal';

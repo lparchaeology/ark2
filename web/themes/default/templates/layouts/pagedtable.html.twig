@@ -30,7 +30,7 @@
             <tr>
                 {% for field in layout.fields %}
                     <th data-field="{{field.id}}"
-                        data-title="{{field.title|trans}}"
+                        data-title="{{field.keyword|trans}}"
                         {% if field.tooltip -%} data-titleTooltip="{{field.tooltip|trans}}" {%- endif %}
                         {% if field.widget == 'radio' -%} data-radio {%- endif %}
                         {% if field.widget == 'checkbox' -%} data-checkbox {%- endif %}
@@ -42,7 +42,7 @@
                         {% if field.hidden -%} data-visible="false" {%- endif %}
                         {% if not field.searchable -%} data-searchable="false" {%- endif %}
                     >
-                        {{field.title|trans}}
+                        {{field.keyword|trans}}
                     </th>
                 {% endfor %}
             </tr>
@@ -53,7 +53,17 @@
                 <tr>
                     {% for field in layout.fields %}
                         <td>
-                            {% block fieldvalue %}{% endblock %}
+                            {% if field is defined and item[field.id] is defined %}
+                                {% if field.dataclass == 'date' %}
+                                    {{ item[field.id].format('Y-m-d H:i:s') }}
+                                {% elseif field.dataclass in ['action', 'attribute', 'modtype'] %}
+                                    {{ item[field.id]|trans }}
+                                {% elseif field.dataclass == null %}
+                                    <a href="{{item.idx}}">{{ item[field.id] }}</a>
+                                {% else %}
+                                    {{ item[field.id]|trans }}
+                                {% endif %}
+                            {% endif %}
                         </td>
                     {% endfor %}
                 </tr>

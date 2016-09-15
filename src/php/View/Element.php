@@ -45,7 +45,7 @@ abstract class Element
     protected $valid = false;
     protected $type = '';
     protected $isGroup = false;
-    protected $title = '';
+    protected $keyword = '';
     protected $description = '';
     protected $table = '';
     protected $module = '';
@@ -96,7 +96,6 @@ abstract class Element
 
     public function keyword()
     {
-        dump($this->keyword);
         return $this->keyword;
     }
 

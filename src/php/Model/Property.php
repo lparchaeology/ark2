@@ -213,7 +213,7 @@ class Property extends AbstractResource
         if ($this->maxItems == 1) {
             return Database::FetchFirst;
         }
-        return Database::FetchAll;
+        return ;
     }
 
     protected function extractFields($data, $field, $field2 = null)
@@ -238,39 +238,39 @@ class Property extends AbstractResource
         return $values;
     }
 
-    public function value(Item $item, $lang)
+    public function value(Item $item)
     {
         switch ($this->dataclass) {
             case 'action':
-                $data =  $this->db->getAction($item->module()->id(), $item->id(), $this->id, $this->mode());
+                $data =  $this->db->getAction($item->module()->id(), $item->id(), $this->id, Database::FetchAll);
                 $value = $this->extractFields($data, 'actor_module', 'actor_item');
                 break;
             case 'attribute':
-                $data =  $this->db->getAttribute($item->module()->id(), $item->id(), $this->id, $this->mode());
+                $data =  $this->db->getAttribute($item->module()->id(), $item->id(), $this->id, Database::FetchAll);
                 $value = $this->extractFields($data, 'attribute');
                 break;
             case 'date':
-                $data = $this->db->getDate($item->module()->id(), $item->id(), $this->id, $this->mode());
+                $data = $this->db->getDate($item->module()->id(), $item->id(), $this->id, Database::FetchAll);
                 $value = $this->extractFields($data, 'value');
                 break;
             case 'file':
-                $data = $this->db->getFile($item->module()->id(), $item->id(), $this->id, $this->mode());
+                $data = $this->db->getFile($item->module()->id(), $item->id(), $this->id, Database::FetchAll);
                 $value = $this->extractFields($data, 'filename');
                 break;
             case 'number':
-                $data = $this->db->getNumber($item->module()->id(), $item->id(), $this->id, $this->mode());
+                $data = $this->db->getNumber($item->module()->id(), $item->id(), $this->id, Database::FetchAll);
                 $value = $this->extractFields($data, 'value');
                 break;
             case 'span':
-                $data = $this->db->getSpan($item->module()->id(), $item->id(), $this->id, $this->mode());
+                $data = $this->db->getSpan($item->module()->id(), $item->id(), $this->id, Database::FetchAll);
                 $value = $this->extractFields($data, 'beg', 'end');
                 break;
             case 'txt':
-                $data = $this->db->getString($item->module()->id(), $item->id(), $this->id, $lang, $this->mode());
+                $data = $this->db->getString($item->module()->id(), $item->id(), $this->id, $lang, Database::FetchAll);
                 $value = $this->extractFields($data, 'value');
                 break;
             case 'xmi':
-                $data = $this->db->getXmi($item->module()->id(), $item->id(), $this->id, $this->mode());
+                $data = $this->db->getXmi($item->module()->id(), $item->id(), $this->id, Database::FetchAll);
                 $value = $this->extractFields($data, 'xmi_itemkey', 'xmi_itemvalue');
                 break;
             case 'modtype':

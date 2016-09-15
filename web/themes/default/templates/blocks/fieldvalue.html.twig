@@ -1,5 +1,6 @@
 {# Block to write out correctly formatted field value #}
-{% block itemvalue -%}
+{% block fieldvalue -%}
+    {{dump('infieldvalue')}}
     {% if field is defined and item[field.id] is defined %}
         {% if field.dataclass == 'date' %}
             {{ item[field.id].format('Y-m-d H:i:s') }}
@@ -11,4 +12,4 @@
             {{ item[field.id] }}
         {% endif %}
     {% endif %}
-{%- endblock itemvalue %}
+{%- endblock fieldvalue %}

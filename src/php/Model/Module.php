@@ -41,6 +41,7 @@ final class Module extends AbstractResource
 {
     private $parent = null;
     private $table = null;
+    private $modtypes = null;
     private $submodules = null;
     private $xmis = null;
 
@@ -88,6 +89,27 @@ final class Module extends AbstractResource
             $this->xmis[$item->schemaId()][$xmi['module1']][] = $xmi['module2'];
             $this->xmis[$item->schemaId()][$xmi['module2']][] = $xmi['module1'];
         }
+    }
+
+    private function loadModtypes($schemaId)
+    {
+        $modtypes = $this->db->getModtypes($this->id(), $schemaId);
+        $this->modtypes = array();
+        foreach ($modtypes as $modtype) {
+            $this->xmis[$schemaId][] = $modtype['modtype'];
+        }
+    }
+
+    public function modtypes($schemaId = null)
+    {
+        return array();
+        if ($schemaId === null) {
+            $schemaId = $this->schemaId();
+        }
+        if (!isset($this->modtypes[$schemaId])) {
+            $this->loadModtypes($schemaId);
+        }
+        return $this->modtypes[$schemaId];
     }
 
     public function submodule(Item $item, string $submodule)

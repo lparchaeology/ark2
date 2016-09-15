@@ -199,10 +199,22 @@ class Item
         return $item;
     }
 
-    static public function getAll(Database $db, Module $module, $parent = null, $table = null)
+    static public function getAll(Database $db, Module $module, $parent, $table = null)
     {
         $items = array();
-        $configs = $db->getItems($module->id(), $parent);
+        $configs = $db->getItems($module->id(), $parent, $table);
+        foreach ($configs as $config) {
+            $item = new Item();
+            $item->loadConfig($config, $module);
+            $items[] = $item;
+        }
+        return $items;
+    }
+
+    static public function getRecent(Database $db, Module $module, $parent, $limit, $table = null)
+    {
+        $items = array();
+        $configs = $db->getRecentItems($module->id(), $parent, $limit, $table);
         foreach ($configs as $config) {
             $item = new Item();
             $item->loadConfig($config, $module);
