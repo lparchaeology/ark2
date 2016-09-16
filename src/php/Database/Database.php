@@ -41,40 +41,40 @@ use Doctrine\DBAL\DBALException;
 
 class Database
 {
-    private $_app = null;
-    private $_drivers = array('pdo_mysql', 'pdo_pgsql', 'pdo_sqlite');
+    private $app = null;
+    private $drivers = array('pdo_mysql', 'pdo_pgsql', 'pdo_sqlite');
 
     public function __construct(Application $app)
     {
-        $this->_app = $app;
+        $this->app = $app;
     }
 
     public function settings()
     {
-        return $this->_app['dbs.settings'];
+        return $this->app['dbs.settings'];
     }
 
     public function data()
     {
-        return $this->_app['db.data'];
+        return $this->app['db.data'];
     }
 
     public function config()
     {
-        return $this->_app['db.conf'];
+        return $this->app['db.conf'];
     }
 
     public function user()
     {
-        return $this->_app['db.user'];
+        return $this->app['db.user'];
     }
 
     public function spatial()
     {
-        return $this->_app['db.spatial'];
+        return $this->app['db.spatial'];
     }
 
-    public function createInstance($instance, $user, $password)
+    public function createInstance(string $instance, string $user, string $password)
     {
         // Get the required details
         $database = 'ark_'.$instance;
@@ -99,7 +99,7 @@ class Database
         );
         $config = array_replace($server, $admin);
         // Check only supported platfroms
-        if (!in_array($server['driver'], $this->_drivers)) {
+        if (!in_array($server['driver'], $this->drivers)) {
             echo 'Invalid or unsupported DBAL driver '.$server['driver'];
             return false;
         }
@@ -141,7 +141,7 @@ class Database
             return false;
         }
         // Set MySQL default charset and collation to utf8
-        if ($this->_platform($conn) == 'mysql') {
+        if ($this->platform($conn) == 'mysql') {
             $conn->query("ALTER DATABASE $database CHARACTER SET utf8 COLLATE utf8_unicode_ci");
         }
         // Add the user
@@ -183,33 +183,33 @@ class Database
         return true;
     }
 
-    public function addUser($user, $password, $database)
+    public function addUser(string $user, string $password, string $database)
     {
         $this->createUser($user, $password);
         $this->grantUser($user, $database);
     }
 
-    private function _platform($connection)
+    private function platform(Connection $connection)
     {
         return $connection->getDriver()->getDatabasePlatform()->getName();
     }
 
     public function listUsers()
     {
-        $platform = $this->_platform($this->user());
+        $platform = $this->platform($this->user());
         if ($platform == 'mysql') {
             $sql = "SELECT CONCAT(QUOTE(User),'@',QUOTE(Host)) Identity FROM mysql.user ORDER BY User";
-        } else if ($platform == 'postgresql') {
+        } elseif ($platform == 'postgresql') {
             $sql = 'SELECT rolname FROM pg_roles';
         } else {
-            return;
+            return array();
         }
         return $this->user()->fetchAll($sql);
     }
 
-    public function createUser($user, $password)
+    public function createUser(string $user, string $password)
     {
-        $platform = $this->_platform($this->user());
+        $platform = $this->platform($this->user());
         if ($platform == 'mysql') {
             $sql = 'CREATE USER ?@? IDENTIFIED BY ?';
             $host = $this->user()->getHost();
@@ -217,7 +217,7 @@ class Database
                 $this->user()->executeUpdate($sql, array($user, 'localhost', $password));
             }
             $params = array($user, $host, $password);
-        } else if ($platform == 'postgresql') {
+        } elseif ($platform == 'postgresql') {
             $sql = 'CREATE USER ? WITH ENCRYPTED PASSWORD ?';
             $params = array($user, $password);
         } else {
@@ -226,13 +226,13 @@ class Database
         $this->user()->executeUpdate($sql, $params);
     }
 
-    private function _applyPermissions($action, $user, $database)
+    private function applyPermissions(string $action, string $user, string $database)
     {
-        $platform = $this->_platform($this->user());
+        $platform = $this->platform($this->user());
         if ($platform == 'mysql') {
             $clause = 'ON '.$database.'.* TO ?@?';
             $params = array($user, $this->user()->getHost());
-        } else if ($platform == 'postgresql') {
+        } elseif ($platform == 'postgresql') {
             $clause = 'ON '.$database.'.* TO ?';
             $params = array($user);
         } else {
@@ -248,23 +248,23 @@ class Database
         }
     }
 
-    public function grantUser($user, $database)
+    public function grantUser(string $user, string $database)
     {
-        $this->_applyPermissions('GRANT', $user, $database);
+        $this->applyPermissions('GRANT', $user, $database);
     }
 
-    public function revokeUser($user, $database)
+    public function revokeUser(string $user, string $database)
     {
-        $this->_applyPermissions('REVOKE', $user, $database);
+        $this->applyPermissions('REVOKE', $user, $database);
     }
 
-    public function dropUser($user)
+    public function dropUser(string $user)
     {
-        $platform = $this->_platform($this->user());
+        $platform = $this->platform($this->user());
         if ($platform == 'mysql') {
             $sql = 'DROP USER ?@?';
-            $params = array($identity, $this->user()->getHost());
-        } else if ($platform == 'postgresql') {
+            $params = array($user, $this->user()->getHost());
+        } elseif ($platform == 'postgresql') {
             $sql = 'DROP USER ?';
             $params = array($user);
         } else {
@@ -273,7 +273,7 @@ class Database
         $this->user()->executeUpdate($sql, $params);
     }
 
-    public function loadSchema(Connection $connection, $schemaPath)
+    public function loadSchema(Connection $connection, string $schemaPath)
     {
         // Load the current database schema
         $platform = $connection->getDatabasePlatform();
@@ -285,7 +285,7 @@ class Database
         }
     }
 
-    private function getFragments($table, $module, $item, $property)
+    private function getFragments(string $table, string $module, string $item, string $property)
     {
         $sql = "
             SELECT *
@@ -302,58 +302,68 @@ class Database
         return $this->data()->fetchAll($sql, $params);
     }
 
-    public function getAction($module, $item, $property)
+    public function getAction(string $module, string $item, string $property)
     {
         return $this->getFragments('cor_tbl_action', $module, $item, $property);
     }
 
-    public function getBoolean($module, $item, $property)
+    public function getBoolean(string $module, string $item, string $property)
     {
-        return $this->getFragments('ark_data_boolean', $module, $item, $property);
+        return $this->getFragments('ark_dataclass_boolean', $module, $item, $property);
     }
 
-    public function getDate($module, $item, $property)
+    public function getDate(string $module, string $item, string $property)
     {
-        return $this->getFragments('ark_data_date', $module, $item, $property);
+        return $this->getFragments('ark_dataclass_date', $module, $item, $property);
     }
 
-    public function getInteger($module, $item, $property)
+    public function getDateTime(string $module, string $item, string $property)
     {
-        return $this->getFragments('ark_data_integer', $module, $item, $property);
+        return $this->getFragments('ark_dataclass_datetime', $module, $item, $property);
     }
 
-    public function getNumber($module, $item, $property)
+    public function getFloat(string $module, string $item, string $property)
     {
-        return $this->getFragments('ark_data_number', $module, $item, $property);
+        return $this->getFragments('ark_dataclass_float', $module, $item, $property);
     }
 
-    public function getSpan($module, $item, $property)
+    public function getInteger(string $module, string $item, string $property)
+    {
+        return $this->getFragments('ark_dataclass_integer', $module, $item, $property);
+    }
+
+    public function getSpan(string $module, string $item, string $property)
     {
         return $this->getFragments('cor_tbl_span', $module, $item, $property);
     }
 
-    public function getString($module, $item, $property)
+    public function getString(string $module, string $item, string $property)
     {
-        return $this->getFragments('ark_data_string', $module, $item, $property);
+        return $this->getFragments('ark_dataclass_string', $module, $item, $property);
     }
 
-    public function getText($module, $item, $property)
+    public function getText(string $module, string $item, string $property)
     {
-        return $this->getFragments('ark_data_text', $module, $item, $property);
+        return $this->getFragments('ark_dataclass_text', $module, $item, $property);
     }
 
-    public function getXmiItems($module, $item, $xmiModule, $xmiTable = null)
+    public function getTime(string $module, string $item, string $property)
     {
-        if (empty($mod_tbl)) {
-            $mod_tbl = $this->getModuleTable($module);
+        return $this->getFragments('ark_dataclass_time', $module, $item, $property);
+    }
+
+    public function getXmiItems(string $module, string $item, string $xmiModule, string $xmiTable = null)
+    {
+        if (empty($moduleTable)) {
+            $moduleTable = $this->getModuleTable($module);
         }
         $sql = "
             SELECT $xmiTable.*
-            FROM ark_data_xmi, $xmiTable
-            WHERE (ark_data_xmi.module = :module AND ark_data_xmi.item = :item AND ark_data_xmi.xmi_module = :xmi_module
-                   AND $xmiTable.item = ark_data_xmi.xmi_item)
-            OR (ark_data_xmi.xmi_module = :module AND ark_data_xmi.xmi_item = :item AND ark_data_xmi.module = :xmi_module
-                AND $xmiTable.item = ark_data_xmi.item)
+            FROM ark_dataclass_xmi, $xmiTable
+            WHERE (ark_dataclass_xmi.module = :module AND ark_dataclass_xmi.item = :item AND ark_dataclass_xmi.xmi_module = :xmi_module
+                   AND $xmiTable.item = ark_dataclass_xmi.xmi_item)
+            OR (ark_dataclass_xmi.xmi_module = :module AND ark_dataclass_xmi.xmi_item = :item AND ark_dataclass_xmi.module = :xmi_module
+                AND $xmiTable.item = ark_dataclass_xmi.item)
         ";
         $params = array(
             ':module' => $module,
@@ -363,11 +373,11 @@ class Database
         return $this->data()->fetchAll($sql, $params);
     }
 
-    public function getXmiItem($module, $item, $xmiModule, $xmiItem)
+    public function getXmiItem(string $module, string $item, string $xmiModule, string $xmiItem)
     {
         $sql = "
             SELECT *
-            FROM ark_data_xmi
+            FROM ark_dataclass_xmi
             WHERE (module = :module AND item = :item AND xmi_module = :xmi_module AND xmi_item = :xmi_item)
             OR (module = :xmi_module AND item = :xmi_item AND xmi_module = :module AND xmi_item = :item)
         ";
@@ -382,7 +392,7 @@ class Database
         return $row;
     }
 
-    private function switchXmi(&$row, $module, $item)
+    private function switchXmi(array &$row, string $module, string $item)
     {
         if ($row && $row['xmi_module'] == $module && $row['xmi_item'] == $item) {
             $row['xmi_module'] = $row['module'];
@@ -392,7 +402,7 @@ class Database
         }
     }
 
-    public function getFile($module, $item, $property, $mode = Database::FetchFirst)
+    public function getFile(string $module, string $item, string $property)
     {
         $sql = "
             SELECT *
@@ -407,26 +417,23 @@ class Database
             ':item' => $item,
             ':property' => $property,
         );
-        if ($mode == Database::FetchAll) {
-            return $this->data()->fetchAll($sql, $params);
-        }
-        return $this->data()->fetchAssoc($sql, $params);
+        return $this->data()->fetchAll($sql, $params);
     }
 
-    public function getActors($mod_tbl = null)
+    public function getActors(string $moduleTable = null)
     {
-        if (empty($mod_tbl)) {
-            $mod_tbl = $this->getModuleTable('act');
+        if (empty($moduleTable)) {
+            $moduleTable = $this->getModuleTable('act');
         }
         $sql = "
             SELECT *
-            FROM $mod_tbl
+            FROM $moduleTable
         ";
         $params = array();
         return $this->data()->fetchAll($sql, $params);
     }
 
-    public function getSubmodules($module, $schema_id)
+    public function getSubmodules(string $module, string $schemaId)
     {
         $sql = "
             SELECT *
@@ -437,12 +444,12 @@ class Database
         ";
         $params = array(
             ':module' => $module,
-            ':schema_id' => $schema_id,
+            ':schema_id' => $schemaId,
         );
         return $this->config()->fetchAll($sql, $params);
     }
 
-    public function getSubmodule($module, $schema_id, $submodule)
+    public function getSubmodule(string $module, string $schemaId, string $submodule)
     {
         $sql = "
             SELECT *
@@ -454,13 +461,13 @@ class Database
         ";
         $params = array(
             ':module' => $module,
-            ':schema_id' => $schema_id,
+            ':schema_id' => $schemaId,
             ':submodule' => $submodule,
         );
         return $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getXmiModules($module, $schema_id)
+    public function getXmiModules(string $module, string $schemaId)
     {
         $sql = "
             SELECT *
@@ -471,19 +478,19 @@ class Database
         ";
         $params = array(
             ':module' => $module,
-            ':schema_id' => $schema_id,
+            ':schema_id' => $schemaId,
         );
         return $this->config()->fetchAll($sql, $params);
     }
 
-    public function getItem($module, $item, $mod_tbl = null)
+    public function getItem(string $module, string $item, string $moduleTable = null)
     {
-        if (empty($mod_tbl)) {
-            $mod_tbl = $this->getModuleTable($module);
+        if (empty($moduleTable)) {
+            $moduleTable = $this->getModuleTable($module);
         }
         $sql = "
             SELECT *
-            FROM $mod_tbl
+            FROM $moduleTable
             WHERE item = :item
         ";
         $params = array(
@@ -492,14 +499,14 @@ class Database
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getItemFromIndex($module, $parent, $index, $mod_tbl = null)
+    public function getItemFromIndex(string $module, string $parent, string $index, string $moduleTable = null)
     {
-        if (empty($mod_tbl)) {
-            $mod_tbl = $this->getModuleTable($module);
+        if (empty($moduleTable)) {
+            $moduleTable = $this->getModuleTable($module);
         }
         $sql = "
             SELECT *
-            FROM $mod_tbl
+            FROM $moduleTable
             WHERE parent = :parent
             AND idx = :idx
         ";
@@ -510,15 +517,15 @@ class Database
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getItems($module, $parent = null, $mod_tbl = null)
+    public function getItems($module, $parent = null, $moduleTable = null)
     {
-        if (!$mod_tbl) {
+        if (!$moduleTable) {
             $module = $this->getModule($module);
-            $mod_tbl = $module['tbl'];
+            $moduleTable = $module['tbl'];
         }
         $sql = "
             SELECT *
-            FROM $mod_tbl
+            FROM $moduleTable
         ";
         $params = array();
         if ($parent) {
@@ -533,14 +540,14 @@ class Database
         return $this->data()->fetchAll($sql, $params);
     }
 
-    public function countItems($module, $parent = null, $mod_tbl = null)
+    public function countItems(string $module, string $parent = null, string $moduleTable = null)
     {
-        if (empty($mod_tbl)) {
-            $mod_tbl = $this->getModuleTable($module);
+        if (empty($moduleTable)) {
+            $moduleTable = $this->getModuleTable($module);
         }
         $sql = "
             SELECT COUNT(*) as 'count'
-            FROM $mod_tbl
+            FROM $moduleTable
         ";
         $params = array();
         if ($parent) {
@@ -552,17 +559,17 @@ class Database
         return $this->data()->fetchAssoc($sql, $params)['count'];
     }
 
-    public function getRecentItems($module, $parent, $rows, $mod_tbl = null)
+    public function getRecentItems(string $module, string $parent, string $rows, string $moduleTable = null)
     {
-        if (empty($mod_tbl)) {
-            $mod_tbl = $this->getModuleTable($module);
+        if (empty($moduleTable)) {
+            $moduleTable = $this->getModuleTable($module);
         }
-        $count = $this->countItems($module, $parent, $mod_tbl);
+        $count = $this->countItems($module, $parent, $moduleTable);
         $start = ($count > $rows) ? $count - $rows : 0;
         $params = array();
         $sql = "
             SELECT *
-            FROM $mod_tbl
+            FROM $moduleTable
         ";
         if ($parent) {
             $sql .= "
@@ -577,12 +584,12 @@ class Database
         return $this->data()->fetchAll($sql, $params);
     }
 
-    public function getModuleTable($itemkey)
+    public function getModuleTable(string $itemkey)
     {
         return $this->getModule($itemkey)['tbl'];
     }
 
-    public function getModule($module)
+    public function getModule(string $module)
     {
         $sql = "
             SELECT *
@@ -596,7 +603,7 @@ class Database
         return $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getModtypes($module, $schema)
+    public function getModtypes(string $module, $schema)
     {
         $sql = "
             SELECT *
@@ -611,7 +618,7 @@ class Database
         return $this->config()->fetchAll($sql, $params);
     }
 
-    public function getLayout($layout)
+    public function getLayout(string $layout)
     {
         $sql = "
             SELECT *
@@ -624,7 +631,7 @@ class Database
         return $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getElement($element, $element_type = null)
+    public function getElement(string $element, string $elementType = null)
     {
         $sql = "
             SELECT ark_view_element.*, ark_view_element_type.is_group, ark_view_element_type.tbl
@@ -635,14 +642,14 @@ class Database
         $params = array(
             ':element' => $element,
         );
-        if ($element_type) {
+        if ($elementType) {
             $sql .= ' AND ark_view_element.element_type = :element_type';
-            $params[':element_type'] = $element_type;
+            $params[':element_type'] = $elementType;
         }
         return $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getField($field)
+    public function getField(string $field)
     {
         $sql = "
             SELECT *
@@ -656,7 +663,7 @@ class Database
         return $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getSubform($subform)
+    public function getSubform(string $subform)
     {
         $sql = "
             SELECT *
@@ -669,7 +676,7 @@ class Database
         return $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getGroupForModule($group, $module, $modtype = null)
+    public function getGroupForModule(string $group, string $module, string $modtype = null)
     {
         $sql = "
             SELECT ark_view_group.*, ark_view_element.element_type AS child_type
@@ -693,7 +700,7 @@ class Database
         return $this->config()->fetchAll($sql, $params);
     }
 
-    public function getGroup($element, $child_type = null, $enabled = true)
+    public function getGroup(string $element, string $childType = null, bool $enabled = true)
     {
         $sql = "
             SELECT ark_view_group.*, ark_view_element.element_type AS child_type
@@ -703,9 +710,9 @@ class Database
             ORDER BY ark_view_group.row, ark_view_group.col, ark_view_group.seq
         ";
         $params[':element'] = $element;
-        if ($child_type) {
+        if ($childType) {
             $sql .= ' AND ark_view_element.element_type = :element_type';
-            $params[':element_type'] = $child_type;
+            $params[':element_type'] = $childType;
         }
         if ($enabled === true || $enabled === false) {
             $sql .= ' AND ark_view_group.enabled = :enabled';
@@ -714,7 +721,7 @@ class Database
         return $this->config()->fetchAll($sql, $params);
     }
 
-    public function getRule($vld_rule)
+    public function getRule(string $vldRule)
     {
         $sql = "
             SELECT *
@@ -722,12 +729,12 @@ class Database
             WHERE vld_rule = :vld_rule
         ";
         $params = array(
-            ':vld_rule' => $vld_rule,
+            ':vld_rule' => $vldRule,
         );
         return $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getElementValidationGroup($element, $vld_role)
+    public function getElementValidationGroup(string $element, string $vldRole)
     {
         $sql = "
             SELECT *
@@ -737,12 +744,12 @@ class Database
         ";
         $params = array(
             ':element' => $element,
-            ':vld_role' => $vld_role,
+            ':vld_role' => $vldRole,
         );
         return $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getElementValidationGroups($element)
+    public function getElementValidationGroups(string $element)
     {
         $sql = "
             SELECT *
@@ -755,7 +762,7 @@ class Database
         return $this->config()->fetchAll($sql, $params);
     }
 
-    public function getValidationGroup($vld_group)
+    public function getValidationGroup(string $vldGroup)
     {
         $sql = "
             SELECT *
@@ -763,12 +770,12 @@ class Database
             WHERE vld_group = :vld_group
         ";
         $params = array(
-            ':vld_group' => $vld_group,
+            ':vld_group' => $vldGroup,
         );
         return $this->config()->fetchAll($sql, $params);
     }
 
-    public function getConditions($element)
+    public function getConditions(string $element)
     {
         $sql = "
             SELECT *
@@ -781,7 +788,7 @@ class Database
         return $this->config()->fetchAll($sql, $params);
     }
 
-    public function getLink($link)
+    public function getLink(string $link)
     {
         $sql = "
             SELECT *
@@ -794,7 +801,7 @@ class Database
         return $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getOption($element, $option)
+    public function getOption(string $element, string $option)
     {
         $sql = "
             SELECT *
@@ -809,7 +816,7 @@ class Database
         return $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getOptions($element)
+    public function getOptions(string $element)
     {
         $sql = "
             SELECT *
@@ -822,7 +829,7 @@ class Database
         return $this->config()->fetchAll($sql, $params);
     }
 
-    public function getSchemaProperties($schema, $module)
+    public function getSchemaProperties(string $schema, string $module)
     {
         $sql = "
             SELECT *, ark_model_property.format, ark_model_property.keyword, ark_model_format.keyword AS format_keyword
@@ -847,7 +854,7 @@ class Database
         return $results;
     }
 
-    public function getObjectProperties($object)
+    public function getObjectProperties(string $object)
     {
         $sql = "
             SELECT *, ark_model_property.format, ark_model_property.keyword, ark_model_format.keyword as format_keyword
@@ -870,7 +877,7 @@ class Database
         return $results;
     }
 
-    public function getProperty($property)
+    public function getProperty(string $property)
     {
         $sql = "
             SELECT *, ark_model_property.format, ark_model_property.keyword, ark_model_format.keyword as format_keyword
@@ -890,7 +897,7 @@ class Database
         return $result;
     }
 
-    public function getEnums($property)
+    public function getEnums(string $property)
     {
         $sql = "
             SELECT *
@@ -903,7 +910,7 @@ class Database
         return $this->config()->fetchAll($sql, $params);
     }
 
-    public function getTranslations($domain = null)
+    public function getTranslations(string $domain = null)
     {
         $sql = "
             SELECT *
