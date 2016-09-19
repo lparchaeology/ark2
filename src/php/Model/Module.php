@@ -47,22 +47,18 @@ final class Module extends AbstractResource
 
     use ObjectTrait;
 
-    protected function __construct(Database $db, $id)
+    protected function __construct(Database $db, string $id)
     {
         parent::__construct($db, $id);
     }
 
-    protected function loadConfig($config, Item $parent = null)
+    protected function init(array $config, Module $parent = null)
     {
-        parent::loadConfig($config);
+        parent::init($config);
 
+        $this->parent = $parent;
         if (isset($config['subschema_id'])) {
             $this->schemaId = $config['subschema_id'];
-        }
-        if ($parent === null) {
-            $this->parent = Item::getRoot($this, 'ARK');
-        } else {
-            $this->parent = $parent;
         }
         $this->typeCode = $config['module'];
         $this->type = $config['resource'];
@@ -75,13 +71,18 @@ final class Module extends AbstractResource
         return $this->parent;
     }
 
-    private function loadSubmodules(Item $item)
+    public function table()
     {
-        $submodules = Module::getSubmodules($this->db, $item);
-        $this->submodules[$item->schemaId()] = ($submodules ? $submodules : array());
+        return $this->table;
     }
 
-    private function loadXmi($item)
+    private function loadSubmodules(string $schemaId)
+    {
+        $submodules = Module::getSubmodules($this->db, $this, $schemaId);
+        $this->submodules[$schemaId] = ($submodules ? $submodules : array());
+    }
+
+    private function loadXmi(Item $item)
     {
         $xmis = $this->db->getXmiModules($item->module()->parent()->module()->id(), $item->module()->parent()->schemaId());
         $this->xmis = array();
@@ -91,18 +92,17 @@ final class Module extends AbstractResource
         }
     }
 
-    private function loadModtypes($schemaId)
+    private function loadModtypes(string $schemaId)
     {
         $modtypes = $this->db->getModtypes($this->id(), $schemaId);
         $this->modtypes = array();
         foreach ($modtypes as $modtype) {
-            $this->xmis[$schemaId][] = $modtype['modtype'];
+            $this->modtypes[$schemaId][] = $modtype['modtype'];
         }
     }
 
     public function modtypes($schemaId = null)
     {
-        return array();
         if ($schemaId === null) {
             $schemaId = $this->schemaId();
         }
@@ -112,13 +112,9 @@ final class Module extends AbstractResource
         return $this->modtypes[$schemaId];
     }
 
-    public function submodule(Item $item, string $submodule)
+    public function submodule(string $schemaId, string $submodule)
     {
-        $schemaId = $item->schemaId();
-        if (!isset($this->submodules[$schemaId])) {
-            $this->loadSubmodules($item);
-        }
-        foreach ($this->submodules[$schemaId] as $mod) {
+        foreach ($this->submodules($schemaId) as $mod) {
             if ($mod->id() == $submodule || $mod->type() == $submodule) {
                 return $mod;
             }
@@ -127,11 +123,10 @@ final class Module extends AbstractResource
         //throw new Error(9999);
     }
 
-    public function submodules(Item $item)
+    public function submodules(string $schemaId)
     {
-        $schemaId = $item->schemaId();
         if (!isset($this->submodules[$schemaId])) {
-            $this->loadSubmodules($item);
+            $this->loadSubmodules($schemaId);
         }
         return $this->submodules[$schemaId];
     }
@@ -150,25 +145,25 @@ final class Module extends AbstractResource
 
     public function related(Item $item)
     {
-        return Item::getAllXmi($this->db, $this, $item, $this->table);
+        return Item::getAllXmi($this->db, $this, $item);
     }
 
-    public function item($id)
+    public function item(string $id)
     {
-        return Item::get($this->db, $this, $id, $this->table);
+        return Item::get($this->db, $this, $id);
     }
 
-    public function itemFromIndex($parent, $index)
+    public function itemFromIndex($parent, string $index)
     {
-        return Item::getFromIndex($this->db, $this, $parent, $index, $this->table);
+        return Item::getFromIndex($this->db, $this, $parent, $index);
     }
 
     public function items($parent = null)
     {
-        return Item::getAll($this->db, $this, $parent, $this->table);
+        return Item::getAll($this->db, $this, $parent);
     }
 
-    static public function get(Database $db, $moduleId, Item $item = null)
+    public static function getRoot(Database $db, string $moduleId)
     {
         $module = new Module($db, $moduleId);
         $config = $db->getModule($moduleId);
@@ -176,29 +171,30 @@ final class Module extends AbstractResource
             //throw new Error(1000);
             throw new \Exception('No module config '.$moduleId);
         }
-        $module->loadConfig($config, $item);
+        $config['schema_id'] = $moduleId;
+        $module->init($config);
         return $module;
     }
 
-    static public function getSubmodule(Database $db, Item $item, $submodule)
+    public static function getSubmodule(Database $db, Module $parent, string $schemaId, string $submodule)
     {
         $module = new Module($db, $submodule);
-        $config = $db->getSubmodule($item->module()->id(), $item->schemaId(), $submodule);
+        $config = $db->getSubmodule($parent->id(), $schemaId, $submodule);
         if (!$config) {
             throw new \Exception('No submodule config '.$submodule);
             //throw new Error(1000);
         }
-        $module->loadConfig($config, $item);
+        $module->init($config, $parent);
         return $module;
     }
 
-    static public function getSubmodules(Database $db, Item $item, $enabled = true)
+    public static function getSubmodules(Database $db, Module $parent, string $schemaId, bool $enabled = true)
     {
         $modules = array();
-        $configs = $db->getSubmodules($item->module()->id(), $item->schemaId());
+        $configs = $db->getSubmodules($parent->id(), $schemaId);
         foreach ($configs as $config) {
             $module = new Module($db, $config['module']);
-            $module->loadConfig($config, $item);
+            $module->init($config, $parent);
             if ($module->isValid() && ($module->isEnabled() || !$enabled)) {
                 $modules[] = $module;
             }

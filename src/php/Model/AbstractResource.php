@@ -49,13 +49,13 @@ abstract class AbstractResource
     protected $deprecated = false;
     protected $valid = false;
 
-    protected function __construct(Database $db, $id)
+    protected function __construct(Database $db, string $id)
     {
         $this->db = $db;
         $this->id = $id;
     }
 
-    protected function loadConfig($config)
+    protected function init(array $config)
     {
         if (isset($config['type'])) {
             $this->type = $config['type'];
@@ -109,9 +109,8 @@ abstract class AbstractResource
         return $this->keyword;
     }
 
-    public function data(Item $item, $lang)
+    public function data(Item $item, string $lang)
     {
         return null;
     }
-
 }

@@ -57,7 +57,7 @@ trait ObjectTrait
         return $this->modtypes;
     }
 
-    private function loadProperties($schemaId)
+    private function loadProperties(string $schemaId)
     {
         $properties = Property::getAllSchema($this->db, $schemaId, $this->typeCode);
         $this->properties[$schemaId] = array();
@@ -82,7 +82,7 @@ trait ObjectTrait
         }
     }
 
-    public function properties($schemaId, $modtype = null)
+    public function properties(string $schemaId, string $modtype = null)
     {
         if ($this->properties === null || !isset($this->properties[$schemaId]) || $this->properties[$schemaId] === null) {
             $this->loadProperties($schemaId);
@@ -94,7 +94,7 @@ trait ObjectTrait
         return $properties;
     }
 
-    public function required($schemaId, $modtype = null)
+    public function required(string $schemaId, string $modtype = null)
     {
         if ($this->required === null || !isset($this->required[$schemaId]) || $this->required[$schemaId] === null) {
             $this->loadProperties($schemaId);
@@ -106,7 +106,7 @@ trait ObjectTrait
         return $required;
     }
 
-    public function definitions($schemaId)
+    public function definitions(string $schemaId)
     {
         if ($this->definitions === null || !isset($this->definitions[$schemaId]) || $this->definitions[$schemaId] === null) {
             $this->loadProperties($schemaId);
@@ -114,7 +114,7 @@ trait ObjectTrait
         return $this->definitions[$schemaId];
     }
 
-    public function schema($schemaId, $reference = Schema::ReferenceSchema)
+    public function schema(string $schemaId, int $reference = Schema::ReferenceSchema)
     {
         if (isset($this->schemas[$schemaId][$reference])) {
             return $this->schemas[$schemaId][$reference];
@@ -154,5 +154,4 @@ trait ObjectTrait
         $this->schemas[$reference] = $schema;
         return $schema;
     }
-
 }

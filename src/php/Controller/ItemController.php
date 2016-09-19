@@ -59,10 +59,9 @@ class ItemController
         $jsonapi['jsonapi']['version'] = '1.0';
 
         try {
-            $ark = Module::get($app['database'], 'ark')->item('ark');;
-            $site = $ark->submodule('ste')->item($siteSlug);
-            $mod = $app['database']->getModule($moduleSlug);
-            $item = $site->submodule($mod['module'])->itemFromIndex($site->id(), $itemSlug);
+            $root = Module::getRoot($app['database'], 'ark');
+            $site = $root->submodule('ste')->item($siteSlug);
+            $item = $site->submodule($moduleSlug)->itemFromIndex($site->id(), $itemSlug);
 
             if ($request->get('schema') == 'true') {
                 $jsonapi['meta']['schema'] = $item->schema();
@@ -99,13 +98,9 @@ class ItemController
         $jsonapi['jsonapi']['version'] = '1.0';
 
         try {
-            $arkMod = Module::get($app['database'], 'ark');
-            $ark = $arkMod->item('ark');
-            $siteMod = $ark->submodule('ste');
-            $site = $siteMod->item($siteSlug);
-            $mod = $app['database']->getModule($moduleSlug);
-            $module = $site->submodule($mod['module']);
-            $items = $module->items($site->id());
+            $root = Module::getRoot($app['database'], 'ark');
+            $site = $root->submodule('ste')->item($siteSlug);
+            $items = $site->submodule($moduleSlug)->items($site->id());
 
             $jsonapi['data'] = array();
             foreach ($items as $item) {
@@ -127,20 +122,17 @@ class ItemController
 
     public function viewItemAction(Application $app, Request $request, $siteSlug, $moduleSlug, $itemSlug)
     {
-        $arkMod = Module::get($app['database'], 'ark');
-        $ark = $arkMod->item('ark');
-        $siteMod = $ark->submodule('ste');
-        $site = $siteMod->item($siteSlug);
+        $root = Module::getRoot($app['database'], 'ark');
+        $site = $root->submodule('ste')->item($siteSlug);
         if (!$site->isValid()) {
             throw new NotFoundHttpException('Site Code '.$siteSlug.' is not valid.');
         }
-        $mod = $app['database']->getModule($moduleSlug);
-        $module = $site->submodule($mod['module']);
-        if (!$module->isValid()) {
+
+        if (!$site->submodule($moduleSlug)->isValid()) {
             throw new NotFoundHttpException('Module '.$moduleSlug.' is not valid for Site Code '.$siteSlug);
         }
 
-        $item = $module->itemFromIndex($site->id(), $itemSlug);
+        $item = $site->submodule($moduleSlug)->itemFromIndex($site->id(), $itemSlug);
         if (!$item->isValid()) {
             throw new NotFoundHttpException('Item '.$itemSlug.' is not valid for Site Code '.$siteSlug.' and Module '.$moduleSlug);
         }

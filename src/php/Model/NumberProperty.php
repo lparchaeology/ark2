@@ -45,12 +45,12 @@ class NumberProperty extends Property
     private $exclusiveMaximum = false;
     private $multipleOf = null;
 
-    protected function __construct(Database $db, $id)
+    protected function __construct(Database $db, string $id)
     {
         parent::__construct($db, $id);
     }
 
-    protected function loadConfig($config)
+    protected function loadConfig(array $config)
     {
         parent::loadConfig($config);
         $this->minimum = $config['minimum'];
@@ -85,7 +85,7 @@ class NumberProperty extends Property
         return $this->multipleOf;
     }
 
-    public function definition($reference = Schema::ReferenceSchema)
+    public function definition(int $reference = Schema::ReferenceSchema)
     {
         $definition = parent::definition();
         if (!$reference) {

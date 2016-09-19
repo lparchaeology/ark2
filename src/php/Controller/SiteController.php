@@ -46,25 +46,10 @@ class SiteController
 {
     public function viewSiteAction(Application $app, Request $request, $siteSlug)
     {
-        $data = array(
-            'site' => $siteSlug,
-        );
-        $formBuilder = $app->form($data);
-        $formBuilder->add('site', Type\TextType::class, array('label' => 'Site', 'disabled' => true));
-        $form = $formBuilder->getForm();
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
-            // do something with the data
-
-            // redirect somewhere
-            return $app->redirect('form');
-        }
-
-        return $app['twig']->render('pages/page.html.twig', array('form' => $form->createView()));
+        $root = Module::getRoot($app['database'], 'ark');
+        $item = $root->submodule('ste')->item($siteSlug);
+        $layout = Layout::fetchLayout($app['database'], 'cor_layout_site', $item->module(), $item->modtype());
+        return $layout->render($app['twig'], array(), $app['form.factory'], $item);
     }
 
     public function getSiteAction(Application $app, Request $request, $siteSlug)
@@ -73,13 +58,10 @@ class SiteController
         $response = new JsonResponse(null);
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
         $jsonapi['jsonapi']['version'] = '1.0';
-        $errors = array();
 
         try {
-            $arkMod = Module::get($app['database'], 'ark');
-            $ark = $arkMod->item('ark');
-            $siteMod = $ark->submodule('ste');
-            $item = $siteMod->item($siteSlug);
+            $root = Module::getRoot($app['database'], 'ark');
+            $item = $root->submodule($root->schemaId(), 'ste')->item($siteSlug);
 
             if ($request->get('schema') == 'true') {
                 $jsonapi['meta']['schema'] = $item->schema();
@@ -106,13 +88,10 @@ class SiteController
         $response = new JsonResponse(null);
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
         $jsonapi['jsonapi']['version'] = '1.0';
-        $errors = array();
 
         try {
-            $arkMod = Module::get($app['database'], 'ark');
-            $ark = $arkMod->item('ark');
-            $siteMod = $ark->submodule('ste');
-            $items = $siteMod->items('');
+            $root = Module::getRoot($app['database'], 'ark');
+            $items = $root->submodule('ste')->items();
 
             foreach ($items as $item) {
                 $resource['type'] = $item->module()->type();

@@ -835,7 +835,8 @@ class Database
             SELECT *, ark_model_property.format, ark_model_property.keyword, ark_model_format.keyword AS format_keyword
             FROM ark_model_module, ark_model_property
             LEFT JOIN ark_model_format ON ark_model_property.format = ark_model_format.format
-            LEFT JOIN ark_model_number ON ark_model_property.format = ark_model_number.format
+            LEFT JOIN ark_model_float ON ark_model_property.format = ark_model_float.format
+            LEFT JOIN ark_model_integer ON ark_model_property.format = ark_model_integer.format
             LEFT JOIN ark_model_string ON ark_model_property.format = ark_model_string.format
             WHERE ark_model_module.schema_id = :schema
             AND ark_model_module.module = :module

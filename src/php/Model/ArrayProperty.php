@@ -37,7 +37,7 @@ namespace ARK\Model;
 
 class ArrayProperty extends Property
 {
-    private function _loadConfig(Database $db, $config)
+    private function _loadConfig(Database $db, array $config)
     {
         parent::_loadConfig($db, $config);
     }
@@ -57,7 +57,7 @@ class ArrayProperty extends Property
         return $this->_uniqueItems;
     }
 
-    public function definition($reference = Schema::ReferenceSchema)
+    public function definition(int $reference = Schema::ReferenceSchema)
     {
         $definition = parent::definition($reference);
         $definition['items'] = parent::subschema();

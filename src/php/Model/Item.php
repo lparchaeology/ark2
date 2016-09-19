@@ -47,28 +47,19 @@ class Item
     private $schemaId = null;
     protected $valid = false;
 
-    protected function loadConfig($config, Module $module)
+    protected function init(Module $module, array $config)
     {
         $this->module = $module;
         $this->id = $config['item'];
-        if (isset($config['parent'])) {
-            $this->parent = $config['parent'];
-        }
-        if (isset($config['idx'])) {
-            $this->index = $config['idx'];
-        } else {
-            $last = strrpos($this->id, '_');
-            if ($last === false) {
-                $this->index = $this->id;
-            } else {
-                $this->index = substr($this->id, $last + 1);
-            }
-        }
+        $this->parent = $config['parent'];
+        $this->index = $config['idx'];
         if (isset($config['modtype'])) {
             $this->modtype = $config['modtype'];
         }
         if (isset($config['schema_id'])) {
             $this->schemaId = $config['schema_id'];
+        } else {
+            $this->schemaId = $module->schemaId();
         }
         $this->valid = true;
     }
@@ -111,52 +102,46 @@ class Item
 
     public function schemaId()
     {
-        if ($this->schemaId) {
-            return $this->schemaId;
-        }
-        if ($this->module) {
-            return $this->module->schemaId();
-        }
-        return null;
+        return $this->schemaId;
     }
 
-    public function schema($reference = Schema::ReferenceSchema)
+    public function schema(int $reference = Schema::ReferenceSchema)
     {
-        return $this->module->schema($this->schemaId(), $reference);
+        return $this->module->schema($this->schemaId, $reference);
     }
 
     public function properties()
     {
-        return $this->module->properties($this->schemaId(), $this->modtype());
+        return $this->module->properties($this->schemaId, $this->modtype);
     }
 
     public function required()
     {
-        return $this->module->required($this->schemaId(), $this->modtype());
+        return $this->module->required($this->schemaId, $this->modtype);
     }
 
     public function definitions()
     {
-        return $this->module->definitions($this->schemaId());
+        return $this->module->definitions($this->schemaId);
     }
 
-    public function attributes($lang)
+    public function attributes()
     {
         $attributes = array();
         foreach ($this->properties() as $property) {
-            $attributes[$property->id()] = $property->value($this, $lang);
+            $attributes[$property->id()] = $property->value($this);
         }
         return $attributes;
     }
 
     public function relationships()
     {
-        return $this->module->relationships($this);
+        return $this->module->relationships($this->schemaId);
     }
 
     public function submodules()
     {
-        return $this->module->submodules($this);
+        return $this->module->submodules($this->schemaId);
     }
 
     public function submodule($submodule)
@@ -164,72 +149,63 @@ class Item
         return $this->module->submodule($this, $submodule);
     }
 
-    static public function get(Database $db, Module $module, $id, $table = null)
+    public static function get(Database $db, Module $module, string $id)
     {
         $item = new Item();
-        $config = $db->getItem($module->id(), $id, $table);
+        $config = $db->getItem($module->id(), $id, $module->table());
         if (!$config) {
             // Item not found
             //throw new Error(9999);
             throw new \Exception();
         }
-        $item->loadConfig($config, $module);
+        $item->init($module, $config);
         return $item;
     }
 
-    static public function getRoot(Module $module, $id)
+    public static function getFromIndex(Database $db, Module $module, string $parent, string $index)
     {
         $item = new Item();
-        $config['item'] = $id;
-        //$config['schema_id'] = $module->schemaId();
-        $item->loadConfig($config, $module);
-        return $item;
-    }
-
-    static public function getFromIndex(Database $db, Module $module, $parent, $index, $table = null)
-    {
-        $item = new Item();
-        $config = $db->getItemFromIndex($module->id(), $parent, $index, $table);
+        $config = $db->getItemFromIndex($module->id(), $parent, $index, $module->table());
         if (!$config) {
             // Item not found
             //throw new Error(9999);
             throw new \Exception();
         }
-        $item->loadConfig($config, $module);
+        $item->init($module, $config);
         return $item;
     }
 
-    static public function getAll(Database $db, Module $module, $parent, $table = null)
+    public static function getAll(Database $db, Module $module, string $parent)
     {
         $items = array();
-        $configs = $db->getItems($module->id(), $parent, $table);
+        $configs = $db->getItems($module->id(), $parent, $module->table());
         foreach ($configs as $config) {
             $item = new Item();
-            $item->loadConfig($config, $module);
+            $item->init($module, $config);
             $items[] = $item;
         }
         return $items;
     }
 
-    static public function getRecent(Database $db, Module $module, $parent, $limit, $table = null)
+    public static function getRecent(Database $db, Module $module, string $parent, int $limit)
     {
         $items = array();
-        $configs = $db->getRecentItems($module->id(), $parent, $limit, $table);
+        $configs = $db->getRecentItems($module->id(), $parent, $limit, $module->table());
         foreach ($configs as $config) {
             $item = new Item();
-            $item->loadConfig($config, $module);
+            $item->init($config, $module);
             $items[] = $item;
         }
         return $items;
     }
 
-    static public function getAllXmi(Database $db, Module $module, Item $item, $table = null)
+    public static function getAllXmi(Database $db, Module $module, Item $item)
     {
         $items = array();
-        $configs = $db->getXmiItems($item->module()->id(), $item->id(), $module->id(), $table);
+        $configs = $db->getXmiItems($item->module()->id(), $item->id(), $module->id(), $module->table());
         foreach ($configs as $config) {
             $item = new Item();
-            $item->loadConfig($config, $module);
+            $item->init($config, $module);
             $items[] = $item;
         }
         return $items;

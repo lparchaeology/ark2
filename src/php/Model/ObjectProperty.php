@@ -43,12 +43,12 @@ class ObjectProperty extends Property
 
     private $graphRoot = '';
 
-    protected function __construct(Database $db, $id)
+    protected function __construct(Database $db, string $id)
     {
         parent::__construct($db, $id);
     }
 
-    protected function loadConfig($config)
+    protected function loadConfig(array $config)
     {
         parent::loadConfig($config);
         $this->typeCode = ($this->format() == 'object' ? $this->id : $this->format());
@@ -65,7 +65,7 @@ class ObjectProperty extends Property
         return $properties;
     }
 
-    public function definition($reference = Schema::ReferenceSchema)
+    public function definition(int $reference = Schema::ReferenceSchema)
     {
         if (!$reference || $this->format() != 'object' || ($reference && $this->format() == 'object')) {
             $definition = parent::definition(Schema::FullSchema);
@@ -81,7 +81,7 @@ class ObjectProperty extends Property
         return $definition;
     }
 
-    public function data(Item $item, $lang)
+    public function data(Item $item, string $lang)
     {
         $data = array();
         // TODO Graph/chain data!

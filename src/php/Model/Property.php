@@ -50,14 +50,14 @@ class Property extends AbstractResource
     private $dataclass = '';
     private $enum = array();
 
-    protected function __construct(Database $db, $id)
+    protected function __construct(Database $db, string $id)
     {
         parent::__construct($db, $id);
     }
 
-    protected function loadConfig($config)
+    protected function init(array $config)
     {
-        parent::loadConfig($config);
+        parent::init($config);
 
         if (!isset($config['property'])) {
             return;
@@ -79,7 +79,7 @@ class Property extends AbstractResource
             foreach ($modtypes as $modtype) {
                 $this->enum[] = $modtype['modtype'];
             }
-        } else if ($this->dataclass == 'module') {
+        } elseif ($this->dataclass == 'module') {
             $this->enum[] = $config['module'];
         } else {
             $enums = $this->db->getEnums($this->id);
@@ -156,7 +156,7 @@ class Property extends AbstractResource
         return "#/definitions/".$this->format;
     }
 
-    public function definition($reference = Schema::ReferenceSchema)
+    public function definition(int $reference = Schema::ReferenceSchema)
     {
         $definition = array();
         if ($reference) {
@@ -183,7 +183,7 @@ class Property extends AbstractResource
         return $attributes;
     }
 
-    public function subschema($reference = Schema::ReferenceSchema)
+    public function subschema(int $reference = Schema::ReferenceSchema)
     {
         $schema = $this->attributes();
         if (!$reference || $this->format() == 'object') {
@@ -216,7 +216,7 @@ class Property extends AbstractResource
         return ;
     }
 
-    protected function extractFields($data, $field, $field2 = null)
+    protected function extractFields(array $data, string $field, string $field2 = null)
     {
         if (!$data) {
             return null;
@@ -242,35 +242,35 @@ class Property extends AbstractResource
     {
         switch ($this->dataclass) {
             case 'action':
-                $data =  $this->db->getAction($item->module()->id(), $item->id(), $this->id, Database::FetchAll);
+                $data =  $this->db->getAction($item->module()->id(), $item->id(), $this->id);
                 $value = $this->extractFields($data, 'actor_module', 'actor_item');
                 break;
             case 'attribute':
-                $data =  $this->db->getAttribute($item->module()->id(), $item->id(), $this->id, Database::FetchAll);
+                $data =  $this->db->getAttribute($item->module()->id(), $item->id(), $this->id);
                 $value = $this->extractFields($data, 'attribute');
                 break;
             case 'date':
-                $data = $this->db->getDate($item->module()->id(), $item->id(), $this->id, Database::FetchAll);
+                $data = $this->db->getDate($item->module()->id(), $item->id(), $this->id);
                 $value = $this->extractFields($data, 'value');
                 break;
             case 'file':
-                $data = $this->db->getFile($item->module()->id(), $item->id(), $this->id, Database::FetchAll);
+                $data = $this->db->getFile($item->module()->id(), $item->id(), $this->id);
                 $value = $this->extractFields($data, 'filename');
                 break;
             case 'number':
-                $data = $this->db->getNumber($item->module()->id(), $item->id(), $this->id, Database::FetchAll);
+                $data = $this->db->getNumber($item->module()->id(), $item->id(), $this->id);
                 $value = $this->extractFields($data, 'value');
                 break;
             case 'span':
-                $data = $this->db->getSpan($item->module()->id(), $item->id(), $this->id, Database::FetchAll);
+                $data = $this->db->getSpan($item->module()->id(), $item->id(), $this->id);
                 $value = $this->extractFields($data, 'beg', 'end');
                 break;
             case 'txt':
-                $data = $this->db->getString($item->module()->id(), $item->id(), $this->id, $lang, Database::FetchAll);
+                $data = $this->db->getString($item->module()->id(), $item->id(), $this->id);
                 $value = $this->extractFields($data, 'value');
                 break;
             case 'xmi':
-                $data = $this->db->getXmi($item->module()->id(), $item->id(), $this->id, Database::FetchAll);
+                $data = $this->db->getXmi($item->module()->id(), $item->id(), $this->id);
                 $value = $this->extractFields($data, 'xmi_itemkey', 'xmi_itemvalue');
                 break;
             case 'modtype':
@@ -282,9 +282,6 @@ class Property extends AbstractResource
             case 'module':
                 $value = $item->module()->id();
                 break;
-            case 'site':
-                $value = $item->site();
-                break;
             default:
                 $value = 'dataclass = '.$this->dataclass;
                 break;
@@ -292,7 +289,7 @@ class Property extends AbstractResource
         return $value;
     }
 
-    static private function createFromConfig($db, $id, $config)
+    static private function createFromConfig(Database $db, string $id, array $config)
     {
         if (isset($config['type'])) {
             switch ($config['type']) {
@@ -315,17 +312,17 @@ class Property extends AbstractResource
         } else {
             $property = new Property($db, $id);
         }
-        $property->loadConfig($config);
+        $property->init($config);
         return $property;
     }
 
-    static public function get(Database $db, $property)
+    static public function get(Database $db, string $property)
     {
         $config = $db->getProperty($property);
         return Property::createFromConfig($db, $property, $config);
     }
 
-    static public function getAllSchema(Database $db, $schemaId, $type, $enabled = true)
+    static public function getAllSchema(Database $db, string $schemaId, string $type, bool $enabled = true)
     {
         $properties = array();
         $configs = $db->getSchemaProperties($schemaId, $type);
@@ -343,7 +340,7 @@ class Property extends AbstractResource
         return $properties;
     }
 
-    static public function getAllObject(Database $db, $object)
+    static public function getAllObject(Database $db, string $object)
     {
         $properties = array();
         $configs = $db->getObjectProperties($object);

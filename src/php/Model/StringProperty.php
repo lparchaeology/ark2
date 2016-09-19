@@ -45,12 +45,12 @@ class StringProperty extends Property
     private $size = 0;
     private $spellcheck = false;
 
-    protected function __construct(Database $db, $id)
+    protected function __construct(Database $db, string $id)
     {
         parent::__construct($db, $id);
     }
 
-    protected function loadConfig($config)
+    protected function loadConfig(array $config)
     {
         parent::loadConfig($config);
         $this->pattern = $config['pattern'];
@@ -85,7 +85,7 @@ class StringProperty extends Property
         return $this->spellcheck;
     }
 
-    public function definition($reference = Schema::ReferenceSchema)
+    public function definition(int $reference = Schema::ReferenceSchema)
     {
         $definition = parent::definition($reference);
         if (!$reference) {
