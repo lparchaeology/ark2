@@ -36,6 +36,7 @@ namespace ARK\Database\Command;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\DBALException;
 
 class DatabaseCommand extends Command
 {
@@ -64,7 +65,7 @@ class DatabaseCommand extends Command
         // Get the Admin Connection
         try {
             $conn = \Doctrine\DBAL\DriverManager::getConnection($config);
-        } except (DBALException as $e) {
+        } catch (DBALException $e) {
             // DBALException: driverRequired, unknownDriver, invalidDriverClass, invalidWrapperClass(wrapperClass)
             echo 'DBAL configuration failed: '.$e->getCode().' - '.$e->getMessage();
             return;
@@ -72,7 +73,7 @@ class DatabaseCommand extends Command
         // Test the Admin connection
         try {
             $conn->connect();
-        } except (PDOException $e) {
+        } catch (PDOException $e) {
             // PDOException: SQL92 SQLSTATE code
             echo 'Server connection failed: '.$e->getCode().' - '.$e->getMessage();
             return;

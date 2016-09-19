@@ -55,7 +55,7 @@ class SimpleBusServiceProvider implements ServiceProviderInterface
                 new FinishesHandlingMessageBeforeHandlingNext(),
                 new LoggingMiddleware($app['logger'], $app['logger.level']),
             );
-        }
+        };
 
         $app['bus.command'] = function () use ($app) {
             return new MessageBusSupportingMiddleware($app['bus.command.middleware']);
@@ -66,7 +66,7 @@ class SimpleBusServiceProvider implements ServiceProviderInterface
                 new FinishesHandlingMessageBeforeHandlingNext(),
                 new LoggingMiddleware($app['logger'], $app['logger.level']),
             );
-        }
+        };
 
         $app['bus.event'] = function () use ($app) {
             return new MessageBusSupportingMiddleware($app['bus.event.middleware']);
@@ -81,15 +81,15 @@ class SimpleBusServiceProvider implements ServiceProviderInterface
                 throw new \Exception($serviceId . ' to handle message could not be located.');
             }
         );
+
         $app['bus.handlers'] = function () {
-            return array(
-                // example
-                // Fully\Qualified\Class\Name\Of\Command::class => 'command.handler_service_id'
-            );
+            return array();
         };
+
         $app['bus.handler.resolver'] = function () {
             return new ClassBasedNameResolver();
         };
+
         $app['bus.handler.map'] = function () use ($app) {
             return new LazyLoadingMessageHandlerMap(
                 $app['bus.handlers'],
