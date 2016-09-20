@@ -43,12 +43,10 @@ use ARK\Model\Item;
 
 class Field extends Element
 {
-    private $dataclass = '';
     private $property = '';
     private $editable = false;
     private $hidden = false;
     private $rules = array();
-    private $values = array();
 
     public function __construct(Database $db = null, string $field = null)
     {
@@ -57,18 +55,10 @@ class Field extends Element
         }
         parent::__construct($db, $field, 'field');
         $config = $db->getField($field);
-        $this->dataclass = $config['dataclass'];
         $this->property = $config['property'];
         $this->editable = (bool)$config['editable'];
         $this->hidden = (bool)$config['hidden'];
         $this->rules = Rule::fetchAllValidationRoles($db, $field);
-        $enums = $db->getEnums($this->property);
-        foreach ($enums as $enum) {
-            $this->values[] = $enum['value'];
-        }
-        if (!$this->alias()->isValid() && $this->dataclass && $this->property) {
-            $this->alias = Alias::dataclassAlias($this->dataclass, $this->property);
-        }
         $this->db = $db;
         $this->valid = true;
     }
@@ -79,11 +69,6 @@ class Field extends Element
             return $this->keyword;
         }
         return $this->alias->keyword();
-    }
-
-    public function dataclass()
-    {
-        return $this->dataclass;
     }
 
     public function property()
@@ -149,18 +134,13 @@ class Field extends Element
         return array();
     }
 
-    public function values()
-    {
-        return $this->values;
-    }
-
     public function formData(Item $item, bool $trans = false)
     {
         if (!$this->isValid()) {
             return array();
         }
         $data = array();
-        switch ($this->dataclass()) {
+        switch ($this->property()->dataclass()) {
             case 'itemkey':
                 if ($trans) {
                     $data[$this->id()] = '<a href="sites/'.$item->parent().'/'.$item->module()->id().'/'.$item->id().'">'.$item->id().'</a>';
@@ -247,7 +227,7 @@ class Field extends Element
             case 'attribute':
                 //TODO Only add null if allowed null
                 $options['choices']['--- Select One ---'] = null;
-                foreach ($this->values as $val) {
+                foreach ($this->property->enum() as $val) {
                     $options['choices']['attribute.'.$this->property().'.'.$val.'.normal'] = $val;
                 }
                 $formBuilder->add($this->id, Type\ChoiceType::class, $options);
@@ -263,7 +243,7 @@ class Field extends Element
                 $formBuilder->add($this->id, Type\TextType::class, $options);
                 break;
             case 'modtype':
-                foreach ($this->values as $val) {
+                foreach ($this->property->enum() as $val) {
                     $options['choices'][$val] = $val;
                 }
                 $formBuilder->add($this->id, Type\ChoiceType::class, $options);

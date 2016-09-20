@@ -208,14 +208,6 @@ class Property extends AbstractResource
         return $schema;
     }
 
-    protected function mode()
-    {
-        if ($this->maxItems == 1) {
-            return Database::FetchFirst;
-        }
-        return ;
-    }
-
     protected function extractFields(array $data, string $field, string $field2 = null)
     {
         if (!$data) {
@@ -236,57 +228,6 @@ class Property extends AbstractResource
             }
         }
         return $values;
-    }
-
-    public function value(Item $item)
-    {
-        switch ($this->dataclass) {
-            case 'action':
-                $data =  $this->db->getAction($item->module()->id(), $item->id(), $this->id);
-                $value = $this->extractFields($data, 'actor_module', 'actor_item');
-                break;
-            case 'attribute':
-                $data =  $this->db->getAttribute($item->module()->id(), $item->id(), $this->id);
-                $value = $this->extractFields($data, 'attribute');
-                break;
-            case 'date':
-                $data = $this->db->getDate($item->module()->id(), $item->id(), $this->id);
-                $value = $this->extractFields($data, 'value');
-                break;
-            case 'file':
-                $data = $this->db->getFile($item->module()->id(), $item->id(), $this->id);
-                $value = $this->extractFields($data, 'filename');
-                break;
-            case 'number':
-                $data = $this->db->getNumber($item->module()->id(), $item->id(), $this->id);
-                $value = $this->extractFields($data, 'value');
-                break;
-            case 'span':
-                $data = $this->db->getSpan($item->module()->id(), $item->id(), $this->id);
-                $value = $this->extractFields($data, 'beg', 'end');
-                break;
-            case 'txt':
-                $data = $this->db->getString($item->module()->id(), $item->id(), $this->id);
-                $value = $this->extractFields($data, 'value');
-                break;
-            case 'xmi':
-                $data = $this->db->getXmi($item->module()->id(), $item->id(), $this->id);
-                $value = $this->extractFields($data, 'xmi_itemkey', 'xmi_itemvalue');
-                break;
-            case 'modtype':
-                $value = $item->modtype();
-                break;
-            case 'item':
-                $value = $item->id();
-                break;
-            case 'module':
-                $value = $item->module()->id();
-                break;
-            default:
-                $value = 'dataclass = '.$this->dataclass;
-                break;
-        }
-        return $value;
     }
 
     static private function createFromConfig(Database $db, string $id, array $config)

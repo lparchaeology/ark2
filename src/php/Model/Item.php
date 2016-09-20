@@ -115,6 +115,51 @@ class Item
         return $this->module->properties($this->schemaId, $this->modtype);
     }
 
+    public function property(string $property)
+    {
+        return $this->module->properties($this->schemaId, $this->modtype, $property);
+    }
+
+    public function propertyValues(string $property)
+    {
+        $prop = $this->property($property);
+        switch ($prop->dataclass()) {
+            case 'blob':
+            case 'boolean':
+            case 'date':
+            case 'datetime':
+            case 'float':
+            case 'integer':
+            case 'string':
+            case 'time':
+                $data = $this->db->getDataclassFragments($this->module()->id(), $this->id(), $prop->id());
+                return array_column($data, 'value');
+            case 'file':
+                $data = $this->db->getFile($this->module()->id(), $this->id(), $prop->id());
+                return array_column($data, 'filename');
+            case 'action':
+                $data =  $this->db->getAction($this->module()->id(), $this->id(), $prop->id());
+                $value = $this->extractFields($data, 'actor_module', 'actor_item');
+                break;
+            case 'span':
+                $data = $this->db->getSpan($this->module()->id(), $this->id(), $prop->id());
+                $value = $this->extractFields($data, 'beg', 'end');
+                break;
+            case 'text':
+                $data = $this->db->getString($this->module()->id(), $this->id(), $prop->id());
+                $value = $this->extractFields($data, 'lang', 'value');
+                break;
+            case 'xmi':
+                $data = $this->db->getXmi($this->module()->id(), $this->id(), $prop->id());
+                $value = $this->extractFields($data, 'xmi_itemkey', 'xmi_itemvalue');
+                break;
+            default:
+                $value = array('TODO: dataclass '.$prop->dataclass());
+                break;
+        }
+        return $value;
+    }
+
     public function required()
     {
         return $this->module->required($this->schemaId, $this->modtype);
@@ -152,7 +197,7 @@ class Item
     public static function get(Database $db, Module $module, string $id)
     {
         $item = new Item();
-        $config = $db->getItem($module->id(), $id, $module->table());
+        $config = $db->getItem($module->id(), $id);
         if (!$config) {
             // Item not found
             //throw new Error(9999);
@@ -165,7 +210,7 @@ class Item
     public static function getFromIndex(Database $db, Module $module, string $parent, string $index)
     {
         $item = new Item();
-        $config = $db->getItemFromIndex($module->id(), $parent, $index, $module->table());
+        $config = $db->getItemFromIndex($module->id(), $parent, $index);
         if (!$config) {
             // Item not found
             //throw new Error(9999);
@@ -178,7 +223,7 @@ class Item
     public static function getAll(Database $db, Module $module, string $parent)
     {
         $items = array();
-        $configs = $db->getItems($module->id(), $parent, $module->table());
+        $configs = $db->getItems($module->id(), $parent);
         foreach ($configs as $config) {
             $item = new Item();
             $item->init($module, $config);
@@ -190,7 +235,7 @@ class Item
     public static function getRecent(Database $db, Module $module, string $parent, int $limit)
     {
         $items = array();
-        $configs = $db->getRecentItems($module->id(), $parent, $limit, $module->table());
+        $configs = $db->getRecentItems($module->id(), $parent, $limit);
         foreach ($configs as $config) {
             $item = new Item();
             $item->init($config, $module);
@@ -202,7 +247,7 @@ class Item
     public static function getAllXmi(Database $db, Module $module, Item $item)
     {
         $items = array();
-        $configs = $db->getXmiItems($item->module()->id(), $item->id(), $module->id(), $module->table());
+        $configs = $db->getXmiItems($item->module()->id(), $item->id(), $module->id());
         foreach ($configs as $config) {
             $item = new Item();
             $item->init($config, $module);

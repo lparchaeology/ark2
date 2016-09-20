@@ -43,6 +43,8 @@ class Database
 {
     private $app = null;
     private $drivers = array('pdo_mysql', 'pdo_pgsql', 'pdo_sqlite');
+    private $modules = array();
+    private $classes = array();
 
     public function __construct(Application $app)
     {
@@ -285,7 +287,90 @@ class Database
         }
     }
 
-    private function getFragments(string $table, string $module, string $item, string $property)
+    private function loadModules()
+    {
+        if ($this->modules) {
+            return;
+        }
+        $sql = "
+            SELECT tbl
+            FROM ark_config_modules
+        ";
+        $modules = $this->data()->fetchAll($sql, array());
+        foreach ($modules as $module) {
+            $this->modules[$module['module']] = $module;
+        }
+    }
+
+    private function getModuleTable(string $module)
+    {
+        $this->loadModules();
+        return $this->modules[$module]['tbl'];
+    }
+
+    private function loadDataclasses()
+    {
+        if ($this->classes) {
+            return;
+        }
+        $sql = "
+            SELECT tbl
+            FROM ark_model_dataclass
+        ";
+        $classes = $this->data()->fetchAll($sql, array());
+        foreach ($classes as $class) {
+            $this->classes[$class['dataclass']] = $class;
+        }
+    }
+
+    private function getDataclassTable(string $dataclass)
+    {
+        $this->loadDataclasses();
+        return $this->classes[$dataclass]['tbl'];
+    }
+
+    private function fragmentsSql(string $table)
+    {
+        $sql = "
+            SELECT *
+            FROM $table
+            WHERE module = :module
+            AND item = :item
+        ";
+        return $sql;
+    }
+
+    private function fragmentsUnionSql(array $tables)
+    {
+        $sql = '';
+        foreach ($tables as $table) {
+            if ($sql) {
+                $sql .= "
+                    UNION ALL
+                ";
+            }
+            $sql .= $this->fragmentsSql($table);
+        }
+        return $sql;
+    }
+
+    public function getScalarFragments(string $module, string $item)
+    {
+        $sql = "
+            SELECT tbl
+            FROM ark_model_dataclass
+            WHERE type = 'scalar'
+        ";
+        $tables = $this->data()->fetchAll($sql, array());
+        $sql = fragmentsUnionSql(array_column($tables, 'tbl'));
+        $params = array(
+            ':module' => $module,
+            ':item' => $item,
+        );
+        return $this->data()->fetchAll($sql, $params);
+    }
+
+    private function getTableFragments(string $table, string $module, string $item, string $property)
     {
         $sql = "
             SELECT *
@@ -302,54 +387,10 @@ class Database
         return $this->data()->fetchAll($sql, $params);
     }
 
-    public function getAction(string $module, string $item, string $property)
+    public function getDataclassFragments(string $module, string $item, string $property, string $dataclass)
     {
-        return $this->getFragments('cor_tbl_action', $module, $item, $property);
-    }
-
-    public function getBoolean(string $module, string $item, string $property)
-    {
-        return $this->getFragments('ark_dataclass_boolean', $module, $item, $property);
-    }
-
-    public function getDate(string $module, string $item, string $property)
-    {
-        return $this->getFragments('ark_dataclass_date', $module, $item, $property);
-    }
-
-    public function getDateTime(string $module, string $item, string $property)
-    {
-        return $this->getFragments('ark_dataclass_datetime', $module, $item, $property);
-    }
-
-    public function getFloat(string $module, string $item, string $property)
-    {
-        return $this->getFragments('ark_dataclass_float', $module, $item, $property);
-    }
-
-    public function getInteger(string $module, string $item, string $property)
-    {
-        return $this->getFragments('ark_dataclass_integer', $module, $item, $property);
-    }
-
-    public function getSpan(string $module, string $item, string $property)
-    {
-        return $this->getFragments('cor_tbl_span', $module, $item, $property);
-    }
-
-    public function getString(string $module, string $item, string $property)
-    {
-        return $this->getFragments('ark_dataclass_string', $module, $item, $property);
-    }
-
-    public function getText(string $module, string $item, string $property)
-    {
-        return $this->getFragments('ark_dataclass_text', $module, $item, $property);
-    }
-
-    public function getTime(string $module, string $item, string $property)
-    {
-        return $this->getFragments('ark_dataclass_time', $module, $item, $property);
+        $table = $this->getDataclassTable($dataclass);
+        return $this->getTableFragments($table, $module, $item, $property);
     }
 
     public function getXmiItems(string $module, string $item, string $xmiModule, string $xmiTable = null)
@@ -483,14 +524,12 @@ class Database
         return $this->config()->fetchAll($sql, $params);
     }
 
-    public function getItem(string $module, string $item, string $moduleTable = null)
+    public function getItem(string $module, string $item)
     {
-        if (empty($moduleTable)) {
-            $moduleTable = $this->getModuleTable($module);
-        }
+        $table = $this->getModuleTable($module);
         $sql = "
             SELECT *
-            FROM $moduleTable
+            FROM $table
             WHERE item = :item
         ";
         $params = array(
@@ -499,14 +538,12 @@ class Database
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getItemFromIndex(string $module, string $parent, string $index, string $moduleTable = null)
+    public function getItemFromIndex(string $module, string $parent, string $index)
     {
-        if (empty($moduleTable)) {
-            $moduleTable = $this->getModuleTable($module);
-        }
+        $table = $this->getModuleTable($module);
         $sql = "
             SELECT *
-            FROM $moduleTable
+            FROM $table
             WHERE parent = :parent
             AND idx = :idx
         ";
@@ -517,15 +554,12 @@ class Database
         return $this->data()->fetchAssoc($sql, $params);
     }
 
-    public function getItems($module, $parent = null, $moduleTable = null)
+    public function getItems($module, $parent = null)
     {
-        if (!$moduleTable) {
-            $module = $this->getModule($module);
-            $moduleTable = $module['tbl'];
-        }
+        $table = $this->getModuleTable($module);
         $sql = "
             SELECT *
-            FROM $moduleTable
+            FROM $table
         ";
         $params = array();
         if ($parent) {
@@ -540,14 +574,12 @@ class Database
         return $this->data()->fetchAll($sql, $params);
     }
 
-    public function countItems(string $module, string $parent = null, string $moduleTable = null)
+    public function countItems(string $module, string $parent = null)
     {
-        if (empty($moduleTable)) {
-            $moduleTable = $this->getModuleTable($module);
-        }
+        $table = $this->getModuleTable($module);
         $sql = "
             SELECT COUNT(*) as 'count'
-            FROM $moduleTable
+            FROM $table
         ";
         $params = array();
         if ($parent) {
@@ -559,17 +591,15 @@ class Database
         return $this->data()->fetchAssoc($sql, $params)['count'];
     }
 
-    public function getRecentItems(string $module, string $parent, string $rows, string $moduleTable = null)
+    public function getRecentItems(string $module, string $parent, string $rows)
     {
-        if (empty($moduleTable)) {
-            $moduleTable = $this->getModuleTable($module);
-        }
+        $table = $this->getModuleTable($module);
         $count = $this->countItems($module, $parent, $moduleTable);
         $start = ($count > $rows) ? $count - $rows : 0;
         $params = array();
         $sql = "
             SELECT *
-            FROM $moduleTable
+            FROM $table
         ";
         if ($parent) {
             $sql .= "
@@ -582,11 +612,6 @@ class Database
             LIMIT $start, $rows
         ";
         return $this->data()->fetchAll($sql, $params);
-    }
-
-    public function getModuleTable(string $itemkey)
-    {
-        return $this->getModule($itemkey)['tbl'];
     }
 
     public function getModule(string $module)

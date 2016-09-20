@@ -59,13 +59,16 @@ trait ObjectTrait
 
     private function loadProperties(string $schemaId)
     {
+        if (isset($this->properties[$schemaId])) {
+            return;
+        }
         $properties = Property::getAllSchema($this->db, $schemaId, $this->typeCode);
         $this->properties[$schemaId] = array();
         $this->required[$schemaId] = array();
         $this->definitions[$schemaId] = array();
         foreach ($properties as $id => $config) {
             $property = $config['property'];
-            $this->properties[$schemaId][$config['modtype']][] = $property;
+            $this->properties[$schemaId][$config['modtype']][$id] = $property;
             if ($config['required']) {
                 $this->required[$schemaId][$config['modtype']][] = $id;
             }
@@ -84,21 +87,29 @@ trait ObjectTrait
 
     public function properties(string $schemaId, string $modtype = null)
     {
-        if ($this->properties === null || !isset($this->properties[$schemaId]) || $this->properties[$schemaId] === null) {
-            $this->loadProperties($schemaId);
-        }
-        $properties = (isset($this->properties[$schemaId][$this->typeCode]) ? $this->properties[$schemaId][$this->typeCode] : array());
+        $this->loadProperties($schemaId);
+        $properties = (isset($this->properties[$schemaId][$this->typeCode]) ? array_values($this->properties[$schemaId][$this->typeCode]) : array());
         if ($modtype && $modtype != $this->typeCode && isset($this->properties[$schemaId][$modtype])) {
-            return array_merge($properties, $this->properties[$schemaId][$modtype]);
+            return array_merge($properties, array_values($this->properties[$schemaId][$modtype]));
         }
         return $properties;
     }
 
+    public function property(string $schemaId, string $modtype = null, string $property)
+    {
+        $this->loadProperties($schemaId);
+        if (isset($this->properties[$schemaId][$this->typeCode][$property])) {
+            return $this->properties[$schemaId][$this->typeCode][$property];
+        }
+        if (isset($this->properties[$schemaId][$modtype][$property])) {
+            return $this->properties[$schemaId][$modtype][$property];
+        }
+        return null;
+    }
+
     public function required(string $schemaId, string $modtype = null)
     {
-        if ($this->required === null || !isset($this->required[$schemaId]) || $this->required[$schemaId] === null) {
-            $this->loadProperties($schemaId);
-        }
+        $this->loadProperties($schemaId);
         $required = (isset($this->required[$schemaId][$this->typeCode]) ? $this->required[$schemaId][$this->typeCode] : array());
         if ($modtype && $modtype != $this->typeCode && isset($this->required[$schemaId][$modtype])) {
             return array_merge($required, $this->required[$schemaId][$modtype]);
@@ -108,9 +119,7 @@ trait ObjectTrait
 
     public function definitions(string $schemaId)
     {
-        if ($this->definitions === null || !isset($this->definitions[$schemaId]) || $this->definitions[$schemaId] === null) {
-            $this->loadProperties($schemaId);
-        }
+        $this->loadProperties($schemaId);
         return $this->definitions[$schemaId];
     }
 

@@ -40,7 +40,6 @@ use ARK\Database\Database;
 final class Module extends AbstractResource
 {
     private $parent = null;
-    private $table = null;
     private $modtypes = null;
     private $submodules = null;
     private $xmis = null;
@@ -62,18 +61,12 @@ final class Module extends AbstractResource
         }
         $this->typeCode = $config['module'];
         $this->type = $config['resource'];
-        $this->table = $config['tbl'];
         $this->valid = true;
     }
 
     public function parent()
     {
         return $this->parent;
-    }
-
-    public function table()
-    {
-        return $this->table;
     }
 
     private function loadSubmodules(string $schemaId)

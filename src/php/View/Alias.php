@@ -133,18 +133,6 @@ class Alias
         return $alias;
     }
 
-    public static function dataclassAlias(string $dataclass, string $classtype)
-    {
-        $alias = new Alias();
-        $config['tbl'] = 'cor_lut_'.$dataclass.'type';
-        $config['col'] = $dataclass.'type';
-        $config['src_key'] = $classtype;
-        $config['type'] = 'normal';
-        $config['lang'] = null;
-        $alias->loadConfig($config);
-        return $alias;
-    }
-
     public static function modtypeAlias(string $modtype)
     {
         $alias = new Alias();
