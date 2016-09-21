@@ -293,10 +293,10 @@ class Database
             return;
         }
         $sql = "
-            SELECT tbl
-            FROM ark_config_modules
+            SELECT *
+            FROM ark_config_module
         ";
-        $modules = $this->data()->fetchAll($sql, array());
+        $modules = $this->config()->fetchAll($sql, array());
         foreach ($modules as $module) {
             $this->modules[$module['module']] = $module;
         }
@@ -314,10 +314,10 @@ class Database
             return;
         }
         $sql = "
-            SELECT tbl
+            SELECT *
             FROM ark_model_dataclass
         ";
-        $classes = $this->data()->fetchAll($sql, array());
+        $classes = $this->config()->fetchAll($sql, array());
         foreach ($classes as $class) {
             $this->classes[$class['dataclass']] = $class;
         }

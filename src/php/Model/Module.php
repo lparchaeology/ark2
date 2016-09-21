@@ -75,13 +75,25 @@ final class Module extends AbstractResource
         $this->submodules[$schemaId] = ($submodules ? $submodules : array());
     }
 
-    private function loadXmi(Item $item)
+    private function loadXmi(string $schemaId)
     {
-        $xmis = $this->db->getXmiModules($item->module()->parent()->module()->id(), $item->module()->parent()->schemaId());
+        $xmis = $this->db->getXmiModules($this->parent()->id(), $this->parent()->schemaId());
+        print_r($schemaId);
+        print_r('<br />');
+        print_r($this->id());
+        print_r('<br />');
+        print_r($this->schemaId());
+        print_r('<br />');
+        print_r($this->parent()->id());
+        print_r('<br />');
+        print_r($this->parent()->schemaId());
+        print_r('<br />');
+        print_r($xmis);
+        print_r('<br />');
         $this->xmis = array();
         foreach ($xmis as $xmi) {
-            $this->xmis[$item->schemaId()][$xmi['module1']][] = $xmi['module2'];
-            $this->xmis[$item->schemaId()][$xmi['module2']][] = $xmi['module1'];
+            $this->xmis[$schemaId][$xmi['module1']][] = $xmi['module2'];
+            $this->xmis[$schemaId][$xmi['module2']][] = $xmi['module1'];
         }
     }
 
@@ -124,21 +136,17 @@ final class Module extends AbstractResource
         return $this->submodules[$schemaId];
     }
 
-    public function relationships(Item $item)
+    public function relationships(string $schemaId)
     {
-        if (!isset($this->xmis[$item->schemaId()])) {
-            $this->loadXmi($item);
+        if (!isset($this->xmis[$schemaId])) {
+            $this->loadXmi($schemaId);
         }
         $modules = array();
-        foreach ($this->xmis[$item->schemaId()][$item->module()->id()] as $moduleId) {
-            $modules[] = $item->module()->parent()->submodule($moduleId);
+        print_r($this->xmis);
+        foreach ($this->xmis[$schemaId][$this->id()] as $moduleId) {
+            $modules[] = $this->parent()->submodule($moduleId);
         }
         return $modules;
-    }
-
-    public function related(Item $item)
-    {
-        return Item::getAllXmi($this->db, $this, $item);
     }
 
     public function item(string $id)

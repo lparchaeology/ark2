@@ -60,7 +60,7 @@ class ItemController
 
         try {
             $root = Module::getRoot($app['database'], 'ark');
-            $site = $root->submodule('ste')->item($siteSlug);
+            $site = $root->submodule($root->schemaId(), 'ste')->item($siteSlug);
             $item = $site->submodule($moduleSlug)->itemFromIndex($site->id(), $itemSlug);
 
             if ($request->get('schema') == 'true') {
@@ -68,14 +68,14 @@ class ItemController
             }
             $jsonapi['data']['type'] = $item->module()->type();
             $jsonapi['data']['id'] = $item->id();
-            $jsonapi['data']['attributes'] = $item->attributes($app['locale']);
+            $jsonapi['data']['attributes'] = $item->attributes();
             foreach ($item->submodules() as $submodule) {
                 $jsonapi['data']['relationships'][$submodule->type()]['links']['related'] = $uri.'/'.$submodule->type();
             }
             foreach ($item->relationships() as $relationship) {
                 $jsonapi['data']['relationships'][$relationship->type()]['links']['self'] = $request->getUri().'/relationships/'.$relationship->type();
                 $jsonapi['data']['relationships'][$relationship->type()]['links']['related'] = $uri.'/'.$relationship->type();
-                foreach ($relationship->related($item) as $related) {
+                foreach ($item->related($relationship) as $related) {
                     $resource['type'] = $related->module()->type();
                     $resource['id'] = $related->id();
                     $jsonapi['data']['relationships'][$relationship->type()]['data'][] = $resource;
@@ -123,7 +123,7 @@ class ItemController
     public function viewItemAction(Application $app, Request $request, $siteSlug, $moduleSlug, $itemSlug)
     {
         $root = Module::getRoot($app['database'], 'ark');
-        $site = $root->submodule('ste')->item($siteSlug);
+        $site = $root->submodule('ste', $root->schemaId())->item($siteSlug);
         if (!$site->isValid()) {
             throw new NotFoundHttpException('Site Code '.$siteSlug.' is not valid.');
         }

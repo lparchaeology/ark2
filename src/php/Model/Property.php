@@ -136,9 +136,9 @@ class Property extends AbstractResource
         return $this->enum;
     }
 
-    public function classtype()
+    public function dataclass()
     {
-        return $this->classtype;
+        return $this->dataclass;
     }
 
     public function sortable()
@@ -206,28 +206,6 @@ class Property extends AbstractResource
             return $array;
         }
         return $schema;
-    }
-
-    protected function extractFields(array $data, string $field, string $field2 = null)
-    {
-        if (!$data) {
-            return null;
-        }
-        if ($this->maxItems == 1) {
-            if ($field2) {
-                return array($data[$field], $data[$field2]);
-            }
-            return $data[$field];
-        }
-        $values = null;
-        foreach ($data as $row) {
-            if ($field2) {
-                $values[] = array($row[$field], $row[$field2]);
-            } else {
-                $values[] = $row[$field];
-            }
-        }
-        return $values;
     }
 
     static private function createFromConfig(Database $db, string $id, array $config)
