@@ -61,7 +61,7 @@ class ItemController
         try {
             $root = Module::getRoot($app['database'], 'ark');
             $site = $root->submodule($root->schemaId(), 'ste')->item($siteSlug);
-            $item = $site->submodule($moduleSlug)->itemFromIndex($site->id(), $itemSlug);
+            $item = $site->submodule($moduleSlug)->itemFromIndex($site, $itemSlug);
 
             if ($request->get('schema') == 'true') {
                 $jsonapi['meta']['schema'] = $item->schema();

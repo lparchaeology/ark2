@@ -75,21 +75,9 @@ final class Module extends AbstractResource
         $this->submodules[$schemaId] = ($submodules ? $submodules : array());
     }
 
-    private function loadXmi(string $schemaId)
+    private function loadXmiModules(string $schemaId)
     {
-        $xmis = $this->db->getXmiModules($this->parent()->id(), $this->parent()->schemaId());
-        print_r($schemaId);
-        print_r('<br />');
-        print_r($this->id());
-        print_r('<br />');
-        print_r($this->schemaId());
-        print_r('<br />');
-        print_r($this->parent()->id());
-        print_r('<br />');
-        print_r($this->parent()->schemaId());
-        print_r('<br />');
-        print_r($xmis);
-        print_r('<br />');
+        $xmis = $this->db->getXmiModules($this->id(), $schemaId);
         $this->xmis = array();
         foreach ($xmis as $xmi) {
             $this->xmis[$schemaId][$xmi['module1']][] = $xmi['module2'];
@@ -136,30 +124,29 @@ final class Module extends AbstractResource
         return $this->submodules[$schemaId];
     }
 
-    public function relationships(string $schemaId)
+    public function xmis(string $schemaId, string $submodule)
     {
         if (!isset($this->xmis[$schemaId])) {
-            $this->loadXmi($schemaId);
+            $this->loadXmiModules($schemaId);
         }
-        $modules = array();
-        print_r($this->xmis);
-        foreach ($this->xmis[$schemaId][$this->id()] as $moduleId) {
-            $modules[] = $this->parent()->submodule($moduleId);
+        $xmis = array();
+        foreach ($this->xmis[$schemaId][$submodule] as $module) {
+            $xmis[] = $this->submodule($schemaId, $module);
         }
-        return $modules;
+        return $xmis;
     }
 
-    public function item(string $id)
+    public function item(string $id, Item $parent = null)
     {
-        return Item::get($this->db, $this, $id);
+        return Item::get($this->db, $this, $parent, $id);
     }
 
-    public function itemFromIndex($parent, string $index)
+    public function itemFromIndex(Item $parent, string $index)
     {
         return Item::getFromIndex($this->db, $this, $parent, $index);
     }
 
-    public function items($parent = null)
+    public function items(Item $parent = null)
     {
         return Item::getAll($this->db, $this, $parent);
     }

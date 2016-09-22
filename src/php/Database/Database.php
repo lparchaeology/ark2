@@ -395,8 +395,8 @@ class Database
 
     public function getXmiItems(string $module, string $item, string $xmiModule, string $xmiTable = null)
     {
-        if (empty($moduleTable)) {
-            $moduleTable = $this->getModuleTable($module);
+        if (empty($xmiTable)) {
+            $xmiTable = $this->getModuleTable($xmiModule);
         }
         $sql = "
             SELECT $xmiTable.*

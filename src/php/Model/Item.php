@@ -48,17 +48,22 @@ class Item
     private $schemaId = null;
     protected $valid = false;
 
-    protected function init(Database $db, Module $module, array $config)
+    protected function init(Database $db, Module $module, Item $parent = null, array $config)
     {
         $this->db = $db;
         $this->module = $module;
         $this->id = $config['item'];
-        $this->parent = $config['parent'];
+        if ($parent) {
+            $this->parent = $parent;
+        } elseif (isset($config['parent']) && $config['parent']) {
+            // TODO get the actual parent
+            $this->parent = $config['parent'];
+        }
         $this->index = $config['idx'];
-        if (isset($config['modtype'])) {
+        if (isset($config['modtype']) && $config['modtype']) {
             $this->modtype = $config['modtype'];
         }
-        if (isset($config['schema_id'])) {
+        if (isset($config['schema_id']) && $config['schema_id']) {
             $this->schemaId = $config['schema_id'];
         } else {
             $this->schemaId = $module->schemaId();
@@ -213,7 +218,10 @@ class Item
 
     public function relationships()
     {
-        return $this->module->relationships($this->schemaId);
+        if ($this->parent) {
+            return $this->parent->module->xmis($this->parent->schemaId(), $this->module->id());
+        }
+        return null;
     }
 
     public function related(Module $module = null)
@@ -226,6 +234,7 @@ class Item
         } else {
             $related = Item::getAllXmi($this->db, $module, $this);
         }
+        return $related;
     }
 
     public function submodules()
@@ -238,7 +247,7 @@ class Item
         return $this->module->submodule($this->schemaId, $submodule);
     }
 
-    public static function get(Database $db, Module $module, string $id)
+    public static function get(Database $db, Module $module, Item $parent = null, string $id)
     {
         $item = new Item();
         $config = $db->getItem($module->id(), $id);
@@ -247,42 +256,46 @@ class Item
             //throw new Error(9999);
             throw new \Exception();
         }
-        $item->init($db, $module, $config);
+        // TODO check parent matches!
+        $item->init($db, $module, $parent, $config);
         return $item;
     }
 
-    public static function getFromIndex(Database $db, Module $module, string $parent, string $index)
+    public static function getFromIndex(Database $db, Module $module, Item $parent = null, string $index)
     {
         $item = new Item();
-        $config = $db->getItemFromIndex($module->id(), $parent, $index);
+        $config = $db->getItemFromIndex($module->id(), $parent->id(), $index);
         if (!$config) {
             // Item not found
             //throw new Error(9999);
             throw new \Exception();
         }
-        $item->init($db, $module, $config);
+        // TODO check parent matches!
+        $item->init($db, $module, $parent, $config);
         return $item;
     }
 
-    public static function getAll(Database $db, Module $module, string $parent)
+    public static function getAll(Database $db, Module $module, Item $parent = null)
     {
         $items = array();
-        $configs = $db->getItems($module->id(), $parent);
+        $configs = $db->getItems($module->id(), $parent->id());
+        // TODO check parent matches!
         foreach ($configs as $config) {
             $item = new Item();
-            $item->init($db, $module, $config);
+            $item->init($db, $module, $parent, $config);
             $items[] = $item;
         }
         return $items;
     }
 
-    public static function getRecent(Database $db, Module $module, string $parent, int $limit)
+    public static function getRecent(Database $db, Module $module, Item $parent = null, int $limit)
     {
         $items = array();
-        $configs = $db->getRecentItems($module->id(), $parent, $limit);
+        $configs = $db->getRecentItems($module->id(), $parent->id(), $limit);
+        // TODO check parent matches!
         foreach ($configs as $config) {
             $item = new Item();
-            $item->init($db, $config, $module);
+            $item->init($db, $module, $parent, $config);
             $items[] = $item;
         }
         return $items;
@@ -292,9 +305,10 @@ class Item
     {
         $items = array();
         $configs = $db->getXmiItems($item->module()->id(), $item->id(), $module->id());
+        // TODO check parent matches!
         foreach ($configs as $config) {
             $item = new Item();
-            $item->init($db, $config, $module);
+            $item->init($db, $module, $item->parent(), $config);
             $items[] = $item;
         }
         return $items;
