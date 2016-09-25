@@ -50,9 +50,9 @@ class NumberProperty extends Property
         parent::__construct($db, $id);
     }
 
-    protected function loadConfig(array $config)
+    protected function init(array $config)
     {
-        parent::loadConfig($config);
+        parent::init($config);
         $this->minimum = $config['minimum'];
         $this->exclusiveMinimum = $config['exclusive_minimum'];
         $this->maximum = $config['maximum'];

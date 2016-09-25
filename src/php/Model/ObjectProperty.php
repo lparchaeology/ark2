@@ -48,9 +48,9 @@ class ObjectProperty extends Property
         parent::__construct($db, $id);
     }
 
-    protected function loadConfig(array $config)
+    protected function init(array $config)
     {
-        parent::loadConfig($config);
+        parent::init($config);
         $this->typeCode = ($this->format() == 'object' ? $this->id : $this->format());
     }
 

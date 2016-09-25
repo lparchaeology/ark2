@@ -37,9 +37,9 @@ namespace ARK\Model;
 
 class ArrayProperty extends Property
 {
-    private function _loadConfig(Database $db, array $config)
+    private function init(Database $db, array $config)
     {
-        parent::_loadConfig($db, $config);
+        parent::init($db, $config);
     }
 
     public function minItems()

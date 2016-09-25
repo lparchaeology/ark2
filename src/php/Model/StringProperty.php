@@ -50,9 +50,9 @@ class StringProperty extends Property
         parent::__construct($db, $id);
     }
 
-    protected function loadConfig(array $config)
+    protected function init(array $config)
     {
-        parent::loadConfig($config);
+        parent::init($config);
         $this->pattern = $config['pattern'];
         $this->minLength = $config['min_length'];
         $this->maxLength = $config['max_length'];
