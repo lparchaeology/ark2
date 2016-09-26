@@ -150,12 +150,12 @@ class Field extends Element
                 break;
             case 'modtype':
                 if ($trans) {
-                    $data[$this->id()] = $item->module()->id().'.'.$item->modtype().'.normal';
+                    $data[$this->id()] = $item->module()->id().'.'.$item->modtype().'.default';
                 } else {
                     $data[$this->id()] = $item->modtype();
                 }
                 break;
-            case 'txt':
+            case 'text':
                 $row = $this->db->getText($item->module()->id(), $item->id(), $this->property());
                 if (isset($row['value'])) {
                     $data[$this->id()] = $row['value'];
@@ -179,11 +179,11 @@ class Field extends Element
                     $data[$this->id()] = new \DateTime($row['value']);
                 }
                 break;
-            case 'attribute':
+            case 'string':
                 $row = $this->db->getString($item->module()->id(), $item->id(), $this->property());
                 if (isset($row['attribute'])) {
                     if ($trans) {
-                        $data[$this->id()] = 'attribute.'.$row['attributetype'].'.'.$row['attribute'].'.normal';
+                        $data[$this->id()] = 'property.'.$row['attributetype'].'.'.$row['attribute'].'.default';
                     } else {
                         $data[$this->id()] = $row['attribute'];
                     }
@@ -228,7 +228,7 @@ class Field extends Element
                 //TODO Only add null if allowed null
                 $options['choices']['--- Select One ---'] = null;
                 foreach ($this->property->enum() as $val) {
-                    $options['choices']['attribute.'.$this->property().'.'.$val.'.normal'] = $val;
+                    $options['choices']['property.'.$this->property().'.'.$val.'.default'] = $val;
                 }
                 $formBuilder->add($this->id, Type\ChoiceType::class, $options);
                 break;

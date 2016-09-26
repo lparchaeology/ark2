@@ -45,10 +45,10 @@ class ActorLoader implements LoaderInterface
         $catalogue = new MessageCatalogue($locale);
         $sql = "
             SELECT *
-            FROM ark_module_act, ark_data_string
-            WHERE ark_data_string.module = :module
-            AND ark_data_string.item = ark_module_act.item
-            AND ark_data_string.property = :property
+            FROM ark_module_act, ark_dataclass_string
+            WHERE ark_dataclass_string.module = :module
+            AND ark_dataclass_string.item = ark_module_act.item
+            AND ark_dataclass_string.property = :property
         ";
         $params = array(
             ':module' => 'act',

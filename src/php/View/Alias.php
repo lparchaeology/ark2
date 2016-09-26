@@ -139,7 +139,7 @@ class Alias
         $config['tbl'] = 'ark_schema_modtype';
         $config['col'] = 'modtype';
         $config['src_key'] = $modtype;
-        $config['type'] = 'normal';
+        $config['type'] = 'default';
         $config['lang'] = null;
         $alias->loadConfig($config);
         return $alias;

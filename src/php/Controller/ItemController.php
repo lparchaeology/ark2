@@ -123,7 +123,7 @@ class ItemController
     public function viewItemAction(Application $app, Request $request, $siteSlug, $moduleSlug, $itemSlug)
     {
         $root = Module::getRoot($app['database'], 'ark');
-        $site = $root->submodule('ste', $root->schemaId())->item($siteSlug);
+        $site = $root->submodule($root->schemaId(), 'ste')->item($siteSlug);
         if (!$site->isValid()) {
             throw new NotFoundHttpException('Site Code '.$siteSlug.' is not valid.');
         }
@@ -132,7 +132,7 @@ class ItemController
             throw new NotFoundHttpException('Module '.$moduleSlug.' is not valid for Site Code '.$siteSlug);
         }
 
-        $item = $site->submodule($moduleSlug)->itemFromIndex($site->id(), $itemSlug);
+        $item = $site->submodule($moduleSlug)->itemFromIndex($site, $itemSlug);
         if (!$item->isValid()) {
             throw new NotFoundHttpException('Item '.$itemSlug.' is not valid for Site Code '.$siteSlug.' and Module '.$moduleSlug);
         }

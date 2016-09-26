@@ -54,9 +54,9 @@ class Event extends Element
         parent::__construct($db, $event, 'event');
         $fields = Field::fetchFields($db, $event);
         foreach ($fields as $field) {
-            if ($field->dataclass() == 'date' && $field->isValid()) {
+            if ($field->property()->dataclass() == 'date' && $field->isValid()) {
                 $this->date = $field;
-            } elseif ($field->dataclass() == 'action' && $field->isValid()) {
+            } elseif ($field->property()->dataclass() == 'action' && $field->isValid()) {
                 $this->actions[] = $field;
             }
         }
