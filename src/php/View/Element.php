@@ -36,82 +36,36 @@
 namespace ARK\View;
 
 use Symfony\Component\Form\FormBuilder;
+use ARK\AbstractObject;
 use ARK\Database\Database;
 use ARK\Model\Item;
 
-abstract class Element
+abstract class Element extends AbstractObject
 {
-    protected $id = '';
-    protected $valid = false;
-    protected $type = '';
     protected $isGroup = false;
-    protected $keyword = '';
-    protected $description = '';
-    protected $table = '';
-    protected $module = '';
-    protected $modtype = '';
     protected $alias = null;
     protected $options = array();
     protected $conditions = array();
 
-    // {{{ __construct()
-    public function __construct(Database $db, string $element = null, string $elementType = null)
+    protected function __construct(Database $db, string $element)
     {
-        $this->alias = new Alias($db);
-        if (!$element) {
-            return;
-        }
-        $this->id = $element;
-        $config = $db->getElement($element, $elementType);
-        $this->type = $config['element_type'];
+        parent::__construct($db, $element);
+    }
+
+    protected function init(array $config)
+    {
+        parent::init($config);
+        $this->type = $config['type'];
         $this->isGroup = $config['is_group'];
         $this->keyword = $config['keyword'];
-        $this->table = $config['tbl'];
-        $this->moduleId = $config['module'];
-        $this->modtype = $config['modtype'];
-        $this->alias = Alias::elementAlias($db, $element);
-        $this->options = Option::fetchOptions($db, $element);
-        $this->conditions = Condition::fetchConditions($db, $element);
-    }
-
-    public function id()
-    {
-        return $this->id;
-    }
-
-    public function isValid()
-    {
-        return $this->valid;
-    }
-
-    public function type()
-    {
-        return $this->type;
+        $this->alias = Alias::elementAlias($this->db, $this->id);
+        $this->options = Option::fetchOptions($this->db, $this->id);
+        $this->conditions = Condition::fetchConditions($this->db, $this->id);
     }
 
     public function isGroup()
     {
         return $this->isGroup;
-    }
-
-    public function keyword()
-    {
-        return $this->keyword;
-    }
-
-    public function table()
-    {
-        return $this->table;
-    }
-
-    public function moduleId()
-    {
-        return $this->moduleId;
-    }
-
-    public function modtype()
-    {
-        return $this->modtype;
     }
 
     public function alias()
@@ -158,5 +112,16 @@ abstract class Element
     public function allFields()
     {
         return array();
+    }
+
+    public static function get(Database $db, string $id, Item $item = null)
+    {
+        $config =  $db->getElement($id);
+        if (!empty($config['class'])) {
+            $element = new $config['class']($db, $id);
+            $element->init($config, $item);
+            return $element;
+        }
+        return new Layout($db, $id);
     }
 }

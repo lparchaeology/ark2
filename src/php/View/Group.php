@@ -38,45 +38,26 @@ namespace ARK\View;
 use Symfony\Component\Form\FormBuilder;
 use ARK\Database\Database;
 use ARK\Model\Item;
-use ARK\Model\Module;
 use ARK\Form\Type\PanelType;
 
-class Group extends Element
+abstract class Group extends Element
 {
     protected $grid = array();
     protected $elements = array();
+    protected $item = null;
 
-    public function __construct(Database $db = null, string $group = null, Module $module = null, string $modtype = null)
+    protected function __construct(Database $db, string $group)
     {
-        if ($db == null || $group == null) {
-            return;
-        }
         parent::__construct($db, $group);
-        if (!$this->isGroup) {
-            return;
-        }
-        $children = $db->getGroupForModule($group, $module->id(), $modtype);
+    }
+
+    protected function init(array $config, Item $item = null)
+    {
+        parent::init($config);
+        $this->item = $item;
+        $children = $this->db->getGroupForModule($this->id, $item->module()->id(), $item->modtype());
         foreach ($children as $child) {
-            switch ($child['child_type']) {
-                case 'field':
-                    $element = new Field($db, $child['child']);
-                    break;
-                case 'link':
-                    $element = new Link($db, $child['child']);
-                    break;
-                case 'event':
-                    $element = new Event($db, $child['child']);
-                    break;
-                case 'layout':
-                    $element = Layout::fetchLayout($db, $child['child'], $module, $modtype);
-                    break;
-                case 'subform':
-                    $element = new Subform($db, $child['child'], $module, $modtype);
-                    break;
-                default: // Page, Column
-                    $element = new Group($db, $child['child'], $module, $modtype);
-                    break;
-            }
+            $element = Element::get($this->db, $child['child'], $item);
             if ($element->isValid()) {
                 $this->elements[] = $element;
                 $this->grid[$child['row']][$child['col']][$child['seq']] = $element;

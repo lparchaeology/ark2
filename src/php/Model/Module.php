@@ -35,9 +35,10 @@
 
 namespace ARK\Model;
 
+use ARK\AbstractObject;
 use ARK\Database\Database;
 
-final class Module extends AbstractResource
+final class Module extends AbstractObject
 {
     private $parent = null;
     private $modtypes = null;
@@ -54,11 +55,9 @@ final class Module extends AbstractResource
     protected function init(array $config, Module $parent = null)
     {
         parent::init($config);
+        $this->initSchema($config);
 
         $this->parent = $parent;
-        if (isset($config['subschema_id'])) {
-            $this->schemaId = $config['subschema_id'];
-        }
         $this->typeCode = $config['module'];
         $this->type = $config['resource'];
         $this->valid = true;

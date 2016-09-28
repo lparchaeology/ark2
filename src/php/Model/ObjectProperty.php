@@ -51,6 +51,7 @@ class ObjectProperty extends Property
     protected function init(array $config)
     {
         parent::init($config);
+        $this->initSchema($config);
         $this->typeCode = ($this->format() == 'object' ? $this->id : $this->format());
     }
 
@@ -93,5 +94,4 @@ class ObjectProperty extends Property
         }
         return $data;
     }
-
 }

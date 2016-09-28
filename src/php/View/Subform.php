@@ -41,7 +41,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormBuilder;
 use ARK\Database\Database;
 use ARK\Model\Item;
-use ARK\Model\Module;
 use ARK\Form\Type\PanelType;
 
 class Subform extends Group
@@ -53,13 +52,14 @@ class Subform extends Group
     private $input = null;
     private $formType = '';
 
-    public function __construct(Database $db = null, string $subform = null, Module $module = null, string $modtype = null)
+    protected function __construct(Database $db, string $subform)
     {
-        if ($db == null || $subform == null) {
-            return;
-        }
-        parent::__construct($db, $subform, $module, $modtype);
-        $config = $db->getSubform($subform);
+        parent::__construct($db, $subform);
+    }
+
+    protected function init(array $config, Item $item)
+    {
+        parent::init($config, $item);
         $this->viewState = $config['view_state'];
         $this->editState = $config['edit_state'];
         $this->navType = $config['nav_type'];

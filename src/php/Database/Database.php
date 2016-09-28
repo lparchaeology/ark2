@@ -401,9 +401,13 @@ class Database
         $sql = "
             SELECT $xmiTable.*
             FROM ark_dataclass_xmi, $xmiTable
-            WHERE (ark_dataclass_xmi.module = :module AND ark_dataclass_xmi.item = :item AND ark_dataclass_xmi.xmi_module = :xmi_module
+            WHERE (ark_dataclass_xmi.module = :module
+                   AND ark_dataclass_xmi.item = :item
+                   AND ark_dataclass_xmi.xmi_module = :xmi_module
                    AND $xmiTable.item = ark_dataclass_xmi.xmi_item)
-            OR (ark_dataclass_xmi.xmi_module = :module AND ark_dataclass_xmi.xmi_item = :item AND ark_dataclass_xmi.module = :xmi_module
+            OR (ark_dataclass_xmi.xmi_module = :module
+                AND ark_dataclass_xmi.xmi_item = :item
+                AND ark_dataclass_xmi.module = :xmi_module
                 AND $xmiTable.item = ark_dataclass_xmi.item)
         ";
         $params = array(
@@ -656,21 +660,21 @@ class Database
         return $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getElement(string $element, string $elementType = null)
+    public function getElement(string $element)
     {
         $sql = "
-            SELECT ark_view_element.*, ark_view_element_type.is_group, ark_view_element_type.tbl
+            SELECT *
             FROM ark_view_element, ark_view_element_type
+            LEFT JOIN ark_view_field ON ark_view_field.field = :element
+            LEFT JOIN ark_view_layout ON ark_view_layout.layout = :element
+            LEFT JOIN cor_conf_link ON cor_conf_link.link = :element
+            LEFT JOIN cor_conf_subform ON cor_conf_subform.subform = :element
             WHERE ark_view_element.element = :element
-            AND ark_view_element.element_type = ark_view_element_type.element_type
+            AND ark_view_element.type = ark_view_element_type.type
         ";
         $params = array(
             ':element' => $element,
         );
-        if ($elementType) {
-            $sql .= ' AND ark_view_element.element_type = :element_type';
-            $params[':element_type'] = $elementType;
-        }
         return $this->config()->fetchAssoc($sql, $params);
     }
 
@@ -704,7 +708,7 @@ class Database
     public function getGroupForModule(string $group, string $module, string $modtype = null)
     {
         $sql = "
-            SELECT ark_view_group.*, ark_view_element.element_type AS child_type
+            SELECT ark_view_group.*, ark_view_element.type AS child_type
             FROM ark_view_group, ark_view_element
             WHERE ark_view_group.element = :element
             AND (ark_view_group.modtype = :module OR ark_view_group.modtype = :modtype OR ark_view_group.modtype = :cor)
@@ -728,7 +732,7 @@ class Database
     public function getGroup(string $element, string $childType = null, bool $enabled = true)
     {
         $sql = "
-            SELECT ark_view_group.*, ark_view_element.element_type AS child_type
+            SELECT ark_view_group.*, ark_view_element.type AS child_type
             FROM ark_view_group, ark_view_element
             WHERE ark_view_group.element = :element
             AND ark_view_group.child = ark_view_element.element
@@ -736,8 +740,8 @@ class Database
         ";
         $params[':element'] = $element;
         if ($childType) {
-            $sql .= ' AND ark_view_element.element_type = :element_type';
-            $params[':element_type'] = $childType;
+            $sql .= ' AND ark_view_element.type = :type';
+            $params[':type'] = $childType;
         }
         if ($enabled === true || $enabled === false) {
             $sql .= ' AND ark_view_group.enabled = :enabled';
@@ -925,11 +929,11 @@ class Database
         return $result;
     }
 
-    public function getEnums(string $property)
+    public function getAllowedValues(string $property)
     {
         $sql = "
             SELECT *
-            FROM ark_model_enum
+            FROM ark_model_value
             WHERE property = :property
         ";
         $params = array(

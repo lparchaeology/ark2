@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Model/ElementTrait.php
+* src/php/AbstractObject.php
 *
-* ARK Model ElementTrait
+* ARK Model AbstractObject
 *
 * PHP version 5 and 7
 *
@@ -28,22 +28,20 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Model/ElementTrait.php
+* @see        http://ark.lparchaeology.com/code/src/php/AbstractObject.php
 * @since      2.0
 *
 */
 
-namespace ARK\Model;
+namespace ARK;
 
 use ARK\Database\Database;
 
-abstract class ElementTrait
+abstract class AbstractObject
 {
     protected $db = null;
     protected $id = '';
     protected $type = '';
-    protected $typeCode = '';
-    protected $schemaId = '';
     protected $keyword = '';
     protected $enabled = true;
     protected $deprecated = false;
@@ -55,13 +53,10 @@ abstract class ElementTrait
         $this->id = $id;
     }
 
-    protected function loadConfig(array $config)
+    protected function init(array $config)
     {
         if (isset($config['type'])) {
             $this->type = $config['type'];
-        }
-        if (isset($config['schema_id'])) {
-            $this->schemaId = $config['schema_id'];
         }
         if (isset($config['keyword'])) {
             $this->keyword = $config['keyword'];
@@ -103,10 +98,4 @@ abstract class ElementTrait
     {
         return $this->keyword;
     }
-
-    public function data(Item $item, string $lang)
-    {
-        return null;
-    }
-
 }

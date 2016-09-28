@@ -39,7 +39,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Extension\Core\Type;
 use ARK\Database\Database;
-use ARK\Model\Item;
+use ARK\Model\Property;
 
 class Field extends Element
 {
@@ -48,18 +48,19 @@ class Field extends Element
     private $hidden = false;
     private $rules = array();
 
-    public function __construct(Database $db = null, string $field = null)
+    protected function __construct(Database $db, string $field)
     {
-        if ($db == null || $field == null) {
-            return;
-        }
-        parent::__construct($db, $field, 'field');
-        $config = $db->getField($field);
+        parent::__construct($db, $field);
+    }
+
+    protected function init(array $config)
+    {
+        parent::init($config);
         $this->property = $config['property'];
-        $this->editable = (bool)$config['editable'];
-        $this->hidden = (bool)$config['hidden'];
-        $this->rules = Rule::fetchAllValidationRoles($db, $field);
-        $this->db = $db;
+        $this->dataclass = $config['dataclass'];
+        $this->editable = $config['editable'];
+        $this->hidden = $config['hidden'];
+        $this->rules = Rule::fetchAllValidationRoles($db, $this-id());
         $this->valid = true;
     }
 
@@ -74,6 +75,11 @@ class Field extends Element
     public function property()
     {
         return $this->property;
+    }
+
+    public function dataclass()
+    {
+        return $this->dataclass;
     }
 
     public function editable()
@@ -140,7 +146,7 @@ class Field extends Element
             return array();
         }
         $data = array();
-        switch ($this->property()->dataclass()) {
+        switch ($this->dataclass()) {
             case 'itemkey':
                 if ($trans) {
                     $data[$this->id()] = '<a href="sites/'.$item->parent().'/'.$item->module()->id().'/'.$item->id().'">'.$item->id().'</a>';
@@ -227,7 +233,7 @@ class Field extends Element
             case 'attribute':
                 //TODO Only add null if allowed null
                 $options['choices']['--- Select One ---'] = null;
-                foreach ($this->property->enum() as $val) {
+                foreach ($this->property->allowedValues() as $val) {
                     $options['choices']['property.'.$this->property().'.'.$val.'.default'] = $val;
                 }
                 $formBuilder->add($this->id, Type\ChoiceType::class, $options);
@@ -243,7 +249,7 @@ class Field extends Element
                 $formBuilder->add($this->id, Type\TextType::class, $options);
                 break;
             case 'modtype':
-                foreach ($this->property->enum() as $val) {
+                foreach ($this->property->allowedValues() as $val) {
                     $options['choices'][$val] = $val;
                 }
                 $formBuilder->add($this->id, Type\ChoiceType::class, $options);

@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/View/Grid.php
+* src/php/Model/SchemaTrait.php
 *
-* ARK Grid View
+* ARK Model Schema Trait
 *
 * PHP version 5 and 7
 *
@@ -28,45 +28,26 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/View/Grid.php
+* @see        http://ark.lparchaeology.com/code/src/php/Model/Resource.php
 * @since      2.0
 *
 */
 
-namespace ARK\View;
+namespace ARK\Model;
 
-use Symfony\Component\Form\FormFactoryInterface;
-use ARK\Database\Database;
-use ARK\Model\Item;
-
-class Grid extends Layout
+trait SchemaTrait
 {
-    protected function __construct(Database $db, string $layout)
+    protected function initSchema(array $config)
     {
-        parent::__construct($db, $layout);
-        $this->template = 'layouts/grid.html.twig';
-    }
-
-    public function cols(int $row)
-    {
-        return $this->grid[$row];
-    }
-
-    public function rows()
-    {
-        return $this->grid;
-    }
-
-    public function renderForms(FormFactoryInterface $factory, Item $item)
-    {
-        $forms = array();
-        foreach ($this->rows() as $rdx => $row) {
-            foreach ($row as $cdx => $col) {
-                foreach ($col as $cell) {
-                    $forms[$rdx][$cdx][] = $cell->renderForms($factory, $item);
-                }
-            }
+        if (!empty($config['subschema_id'])) {
+            $this->schemaId = $config['subschema_id'];
+        } elseif (!empty($config['schema_id'])) {
+            $this->schemaId = $config['schema_id'];
         }
-        return $forms;
+    }
+
+    public function schemaId()
+    {
+        return $this->schemaId;
     }
 }

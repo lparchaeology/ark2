@@ -55,31 +55,28 @@ class Link extends Element
     private $query = array();
     private $link = '';
 
-    public function __construct(Database $db, string $link = null)
+    protected function __construct(Database $db, string $link)
     {
-        if ($link == null) {
-            return;
-        }
-        try {
-            parent::__construct($db, $link, 'link');
-            $config = $db->getLink($link);
-            $this->linkType = $config['type'];
-            $this->name = $config['name'];
-            $this->markup = $config['markup'];
-            $this->linkTitle = $config['title'];
-            $this->linkClass = $config['link_class'];
-            $this->imageClass = $config['img_class'];
-            $this->listClass = $config['list_class'];
-            $this->lightbox = $config['lightbox'];
-            $this->image = $config['image'];
-            $this->page = $config['page'];
-            $this->reloadPage = $config['reload_page'];
-            $this->query = unserialize($config['query']);
-            $this->link = $config['url'];
-            $this->valid = true;
-        } catch (DBALException $e) {
-            return;
-        }
+        parent::__construct($db, $link);
+    }
+
+    protected function init(array $config)
+    {
+        parent::init($config);
+        $this->linkType = $config['type'];
+        $this->name = $config['name'];
+        $this->markup = $config['markup'];
+        $this->linkTitle = $config['title'];
+        $this->linkClass = $config['link_class'];
+        $this->imageClass = $config['img_class'];
+        $this->listClass = $config['list_class'];
+        $this->lightbox = $config['lightbox'];
+        $this->image = $config['image'];
+        $this->page = $config['page'];
+        $this->reloadPage = $config['reload_page'];
+        $this->query = unserialize($config['query']);
+        $this->link = $config['url'];
+        $this->valid = true;
     }
 
     public function linkType()

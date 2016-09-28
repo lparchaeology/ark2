@@ -47,7 +47,7 @@ use ARK\Database\Database;
 use ARK\Model\Item;
 use ARK\Model\Module;
 use ARK\Model\Site;
-use ARK\View\Layout;
+use ARK\View\Element;
 
 class ItemController
 {
@@ -140,12 +140,12 @@ class ItemController
         // TODO Make into a Subform
         $forms = array();
         $formBuilder = $app->form($item);
-        $formBuilder->add('parent', Type\TextType::class, array('label' => 'Site', 'attr' => array('readonly' => true)));
+        $formBuilder->add('parentId', Type\TextType::class, array('label' => 'Site', 'attr' => array('readonly' => true)));
         $formBuilder->add('moduleId', Type\TextType::class, array('label' => 'Module', 'attr' => array('readonly' => true)));
         $formBuilder->add('index', Type\TextType::class, array('label' => 'Item', 'attr' => array('readonly' => true)));
         $forms['item_form'] = $formBuilder->getForm()->createView();
 
-        $layout = Layout::fetchLayout($app['database'], 'cor_layout_item', $item->module(), $item->modtype());
+        $layout = Element::get($app['database'], 'cor_layout_item', $item);
         $options = array('item_form' => $forms['item_form']);
         return $layout->render($app['twig'], $options, $app['form.factory'], $item);
     }

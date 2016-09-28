@@ -39,11 +39,14 @@ use ARK\Database\Database;
 
 trait ObjectTrait
 {
+    protected $typeCode = '';
     private $modtypes = null;
     private $properties = null;
     private $required = null;
     private $definitions = null;
     private $schemas = null;
+
+    use SchemaTrait;
 
     public function modtypes()
     {

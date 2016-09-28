@@ -45,13 +45,15 @@ class Item
     private $parent = null;
     private $index = null;
     private $modtype = '';
-    private $schemaId = null;
     protected $valid = false;
+
+    use SchemaTrait;
 
     protected function init(Database $db, Module $module, Item $parent = null, array $config)
     {
         $this->db = $db;
         $this->module = $module;
+        $this->initSchema($config);
         $this->id = $config['item'];
         if ($parent) {
             $this->parent = $parent;
@@ -63,9 +65,7 @@ class Item
         if (isset($config['modtype']) && $config['modtype']) {
             $this->modtype = $config['modtype'];
         }
-        if (isset($config['schema_id']) && $config['schema_id']) {
-            $this->schemaId = $config['schema_id'];
-        } else {
+        if (empty($this->schemaId)) {
             $this->schemaId = $module->schemaId();
         }
         $this->valid = true;
@@ -97,6 +97,12 @@ class Item
         return $this->parent;
     }
 
+    // TODO temp for use in Forms
+    public function parentId()
+    {
+        return $this->parent->id();
+    }
+
     public function index()
     {
         return $this->index;
@@ -105,11 +111,6 @@ class Item
     public function modtype()
     {
         return $this->modtype;
-    }
-
-    public function schemaId()
-    {
-        return $this->schemaId;
     }
 
     public function schema(int $reference = Schema::ReferenceSchema)
@@ -148,7 +149,7 @@ class Item
 
     public function attribute(Property $property)
     {
-            switch ($property->dataclass()) {
+        switch ($property->dataclass()) {
             case 'blob':
             case 'boolean':
             case 'date':
@@ -157,28 +158,53 @@ class Item
             case 'integer':
             case 'string':
             case 'time':
-                $data = $this->db->getDataclassFragments($this->module()->id(), $this->id(), $property->id(), $property->dataclass());
-                return $this->value($data, $property->isArray(), 'value');
+                $data = $this->db->getDataclassFragments(
+                    $this->module()->id(),
+                    $this->id(),
+                    $property->id(),
+                    $property->dataclass()
+                );
+                return $this->value($data, $property->multipleValues(), 'value');
             case 'file':
-                $data = $this->db->getDataclassFragments($this->module()->id(), $this->id(), $property->id(), $property->dataclass());
-                return $this->value($data, $property->isArray(), 'filename');
+                $data = $this->db->getDataclassFragments(
+                    $this->module()->id(),
+                    $this->id(),
+                    $property->id(),
+                    $property->dataclass()
+                );
+                return $this->value($data, $property->multipleValues(), 'filename');
             case 'action':
-                $data =  $this->db->getDataclassFragments($this->module()->id(), $this->id(), $property->id(), $property->dataclass());
-                return $this->keyedValues($data, $property->isArray(), 'actor_module', 'actor_item');
+                $data =  $this->db->getDataclassFragments(
+                    $this->module()->id(),
+                    $this->id(),
+                    $property->id(),
+                    $property->dataclass()
+                );
+                return $this->keyedValues($data, $property->multipleValues(), 'actor_module', 'actor_item');
             case 'span':
-                $data = $this->db->getDataclassFragments($this->module()->id(), $this->id(), $property->id(), $property->dataclass());
-                return $this->keyedValues($data, $property->isArray(), 'beg', 'end');
+                $data = $this->db->getDataclassFragments(
+                    $this->module()->id(),
+                    $this->id(),
+                    $property->id(),
+                    $property->dataclass()
+                );
+                return $this->keyedValues($data, $property->multipleValues(), 'beg', 'end');
             case 'text':
-                $data = $this->db->getDataclassFragments($this->module()->id(), $this->id(), $property->id(), $property->dataclass());
+                $data = $this->db->getDataclassFragments(
+                    $this->module()->id(),
+                    $this->id(),
+                    $property->id(),
+                    $property->dataclass()
+                );
                 return $this->textValue($data);
             default:
                 return 'TODO: dataclass '.$property->dataclass();
         }
     }
 
-    private function value(array $data, bool $isArray, string $field)
+    private function value(array $data, bool $multipleValues, string $field)
     {
-        if ($isArray) {
+        if ($multipleValues) {
             $values = null;
             foreach ($data as $row) {
                 $values[] = $row[$field];
@@ -193,7 +219,7 @@ class Item
 
     private function textValue(array $data)
     {
-        // TODO Somewhere we need to prevent text fields being isArray!
+        // TODO Somewhere we need to prevent text fields being multipleValues!
         $values = null;
         foreach ($data as $row) {
             $values[][$row['language']] = $row['value'];
@@ -201,9 +227,9 @@ class Item
         return $values;
     }
 
-    private function keyedValues(array $data, bool $isArray, string $field1, string $field2)
+    private function keyedValues(array $data, bool $multipleValues, string $field1, string $field2)
     {
-        if ($isArray) {
+        if ($multipleValues) {
             $values = null;
             foreach ($data as $row) {
                 $values[] = array($field1 => $row[$field1], $field2 = $row[$field2]);

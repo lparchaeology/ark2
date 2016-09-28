@@ -40,24 +40,21 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Type\FormType;
 use ARK\Database\Database;
 use ARK\Model\Item;
-use ARK\Model\Module;
 
 class Layout extends Group
 {
     protected $template = '';
 
-    public function __construct(Database $db = null, string $layout = null, Module $module = null, string $modtype = null)
+    protected function __construct(Database $db, string $layout)
     {
-        if ($db == null || $layout == null) {
-            return;
-        }
-        parent::__construct($db, $layout, $module, $modtype);
-        $this->template = 'layout.html.twig';
+        parent::__construct($db, $layout);
+        $this->template = 'layouts/layout.html.twig';
     }
 
-    private function loadConfig(array $config)
+    protected function init(array $config, Item $item = null)
     {
-        if (isset($config['template']) && $config['template']) {
+        parent::init($config, $item);
+        if (!empty($config['template'])) {
             $this->template = $config['template'];
         }
         $this->valid = true;
@@ -68,8 +65,12 @@ class Layout extends Group
         return $this->template;
     }
 
-    public function render(Twig_Environment $twig, array $options = array(), FormFactoryInterface $factory = null, Item $item = null)
-    {
+    public function render(
+        Twig_Environment $twig,
+        array $options = array(),
+        FormFactoryInterface $factory = null,
+        Item $item = null
+    ) {
         if ($this->template) {
             $options['layout'] = $this;
             if ($factory && $item) {
@@ -89,12 +90,12 @@ class Layout extends Group
         return $forms;
     }
 
-    public static function fetchLayout(Database $db, string $layout, Module $module, string $modtype = null)
+    public static function getLayout(Database $db, string $layout, Item $item)
     {
         $config =  $db->getLayout($layout);
         if (isset($config['class'])) {
-            $layout = new $config['class']($db, $layout, $module, $modtype);
-            $layout->loadConfig($config);
+            $layout = new $config['class']($db, $layout, $item);
+            $layout->init($config, $item);
             return $layout;
         }
         return new Layout();

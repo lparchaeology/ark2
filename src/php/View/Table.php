@@ -37,16 +37,12 @@ namespace ARK\View;
 
 use Symfony\Component\Form\FormFactoryInterface;
 use ARK\Database\Database;
-use ARK\Model\Module;
 
 class Table extends Layout
 {
-    public function __construct(Database $db = null, string $layout = null, Module $module = null, string $modtype = null)
+    protected function __construct(Database $db, string $layout)
     {
-        if ($db == null || $layout == null) {
-            return;
-        }
-        parent::__construct($db, $layout, $module, $modtype);
+        parent::__construct($db, $layout);
         $this->template = 'layouts/table.html.twig';
     }
 

@@ -45,14 +45,15 @@ class Event extends Element
     private $date = null;
     private $actions = array();
 
-    public function __construct(Database $db = null, string $event = null)
+    protected function __construct(Database $db, string $event)
     {
-        $this->date = new Field();
-        if ($db == null || $event == null) {
-            return;
-        }
-        parent::__construct($db, $event, 'event');
-        $fields = Field::fetchFields($db, $event);
+        parent::__construct($db, $event);
+    }
+
+    protected function init(array $config)
+    {
+        parent::init($config);
+        $fields = Field::fetchFields($db, $this->id());
         foreach ($fields as $field) {
             if ($field->property()->dataclass() == 'date' && $field->isValid()) {
                 $this->date = $field;

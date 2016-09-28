@@ -35,20 +35,22 @@
 
 namespace ARK\Model;
 
+use ARK\AbstractObject;
 use ARK\Database\Database;
 
-class Property extends AbstractResource
+class Property extends AbstractObject
 {
     protected $format = '';
-    private $default = null;
-    private $input = '';
-    private $minItems = 0;
-    private $maxItems = 1;
-    private $uniqueItems = true;
+    private $dataclass = '';
+    private $defaultValue = null;
+    private $minValues = 0;
+    private $maxValues = 1;
+    private $uniqueValues = true;
+    private $additionalValues = false;
+    private $allowedValues = array();
     private $sortable = false;
     private $searchable = false;
-    private $dataclass = '';
-    private $enum = array();
+    private $input = '';
 
     protected function __construct(Database $db, string $id)
     {
@@ -64,27 +66,28 @@ class Property extends AbstractResource
         }
         $this->id = $config['property'];
         $this->format = $config['format'];
+        $this->dataclass = $config['dataclass'];
         $this->type = $config['type'];
-        $this->input = $config['input'];
-        $this->minItems = $config['min_items'];
-        $this->maxItems = $config['max_items'];
-        $this->uniqueItems = (bool)$config['unique_items'];
+        $this->minValues = $config['min_values'];
+        $this->maxValues = $config['max_values'];
+        $this->uniqueValues = (bool)$config['unique_values'];
+        $this->additionalValues = (bool)$config['additional_values'];
         $this->sortable = (bool)$config['sortable'];
         $this->searchable = (bool)$config['searchable'];
-        $this->dataclass = $config['dataclass'];
+        $this->input = $config['input'];
         $this->keyword = ($config['keyword'] ? $config['keyword'] : $config['format_keyword']);
 
         if ($this->dataclass == 'modtype') {
             $modtypes = $this->db->getModtypes($config['module'], $config['schema_id']);
             foreach ($modtypes as $modtype) {
-                $this->enum[] = $modtype['modtype'];
+                $this->allowedValues[] = $modtype['modtype'];
             }
         } elseif ($this->dataclass == 'module') {
-            $this->enum[] = $config['module'];
+            $this->allowedValues[] = $config['module'];
         } else {
-            $enums = $this->db->getEnums($this->id);
-            foreach ($enums as $enum) {
-                $this->enum[] = $enum['value'];
+            $allowedValues = $this->db->getallowedValues($this->id);
+            foreach ($allowedValues as $allowedValues) {
+                $this->allowedValues[] = $allowedValues['value'];
             }
         }
 
@@ -96,49 +99,49 @@ class Property extends AbstractResource
         return $this->format;
     }
 
-    public function defaultValue()
-    {
-        return $this->default;
-    }
-
-    public function input()
-    {
-        return $this->input;
-    }
-
-    public function isArray()
-    {
-        return ($this->maxItems != 1);
-    }
-
-    public function minItems()
-    {
-        return $this->minItems;
-    }
-
-    public function maxItems()
-    {
-        return $this->maxItems;
-    }
-
-    public function uniqueItems()
-    {
-        return $this->uniqueItems;
-    }
-
-    public function hasEnum()
-    {
-        return (count($this->enum) > 0);
-    }
-
-    public function enum()
-    {
-        return $this->enum;
-    }
-
     public function dataclass()
     {
         return $this->dataclass;
+    }
+
+    public function defaultValue()
+    {
+        return $this->defaultValue;
+    }
+
+    public function multipleValues()
+    {
+        return ($this->maxValues != 1);
+    }
+
+    public function minValues()
+    {
+        return $this->minValues;
+    }
+
+    public function maxValues()
+    {
+        return $this->maxValues;
+    }
+
+    public function uniqueValues()
+    {
+        return $this->uniqueValues;
+    }
+
+    public function additionalValues()
+    {
+        return $this->additionalValues;
+    }
+
+    public function hasAllowedValues()
+    {
+        return (count($this->allowedValues) > 0);
+    }
+
+    public function allowedValues()
+    {
+        return $this->allowedValues;
     }
 
     public function sortable()
@@ -149,6 +152,11 @@ class Property extends AbstractResource
     public function searchable()
     {
         return $this->searchable;
+    }
+
+    public function input()
+    {
+        return $this->input;
     }
 
     public function reference()
@@ -177,8 +185,8 @@ class Property extends AbstractResource
         if ($this->default != null) {
             $attributes['default'] = $this->default;
         }
-        if ($this->hasEnum()) {
-            $attributes['enum'] = $this->enum();
+        if ($this->hasallowedValues()) {
+            $attributes['allowedValues'] = $this->allowedValues();
         }
         return $attributes;
     }
@@ -192,23 +200,23 @@ class Property extends AbstractResource
             $schema['$ref'] = $this->reference();
         }
 
-        if ($this->isArray()) {
+        if ($this->multipleValues()) {
             $array['type'] = 'array';
             $array['items'] = $schema;
-            $array['additionalItems'] = false;
-            if ($this->minItems > 0) {
-                $array['minItems'] = $this->minItems;
+            $array['additionalItems'] = $this->additionalValues;
+            if ($this->minValues > 0) {
+                $array['minItems'] = $this->minValues;
             }
-            if ($this->maxItems > 1) {
-                $array['maxItems'] = $this->maxItems;
+            if ($this->maxValues > 1) {
+                $array['maxItems'] = $this->maxValues;
             }
-            $array['uniqueItems'] = $this->uniqueItems;
+            $array['uniqueItems'] = $this->uniqueValues;
             return $array;
         }
         return $schema;
     }
 
-    static private function createFromConfig(Database $db, string $id, array $config)
+    private static function createFromConfig(Database $db, string $id, array $config)
     {
         if (isset($config['type'])) {
             switch ($config['type']) {
@@ -235,13 +243,13 @@ class Property extends AbstractResource
         return $property;
     }
 
-    static public function get(Database $db, string $property)
+    public static function get(Database $db, string $property)
     {
         $config = $db->getProperty($property);
         return Property::createFromConfig($db, $property, $config);
     }
 
-    static public function getAllSchema(Database $db, string $schemaId, string $type, bool $enabled = true)
+    public static function getAllSchema(Database $db, string $schemaId, string $type, bool $enabled = true)
     {
         $properties = array();
         $configs = $db->getSchemaProperties($schemaId, $type);
@@ -259,7 +267,7 @@ class Property extends AbstractResource
         return $properties;
     }
 
-    static public function getAllObject(Database $db, string $object)
+    public static function getAllObject(Database $db, string $object)
     {
         $properties = array();
         $configs = $db->getObjectProperties($object);
