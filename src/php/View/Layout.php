@@ -68,36 +68,24 @@ class Layout extends Group
     public function render(
         Twig_Environment $twig,
         array $options = array(),
-        FormFactoryInterface $factory = null,
-        Item $item = null
+        FormFactoryInterface $factory = null
     ) {
         if ($this->template) {
             $options['layout'] = $this;
-            if ($factory && $item) {
-                $options['forms'] = $this->renderForms($factory, $item);
+            if ($factory && $this->item) {
+                $options['forms'] = $this->renderForms($factory);
             }
             return $twig->render($this->template, $options);
         }
         return '';
     }
 
-    public function renderForms(FormFactoryInterface $factory, Item $item)
+    public function renderForms(FormFactoryInterface $factory)
     {
         $forms = array();
         foreach ($this->elements() as $element) {
-            $forms[$element->id()] = $element->renderForms($factory, $item);
+            $forms[$element->id()] = $element->renderForms($factory);
         }
         return $forms;
-    }
-
-    public static function getLayout(Database $db, string $layout, Item $item)
-    {
-        $config =  $db->getLayout($layout);
-        if (isset($config['class'])) {
-            $layout = new $config['class']($db, $layout, $item);
-            $layout->init($config, $item);
-            return $layout;
-        }
-        return new Layout();
     }
 }

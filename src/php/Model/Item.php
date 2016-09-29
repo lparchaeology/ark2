@@ -149,6 +149,12 @@ class Item
 
     public function attribute(Property $property)
     {
+        $data = $this->db->getDataclassFragments(
+            $this->module()->id(),
+            $this->id(),
+            $property->id(),
+            $property->dataclass()
+        );
         switch ($property->dataclass()) {
             case 'blob':
             case 'boolean':
@@ -158,44 +164,14 @@ class Item
             case 'integer':
             case 'string':
             case 'time':
-                $data = $this->db->getDataclassFragments(
-                    $this->module()->id(),
-                    $this->id(),
-                    $property->id(),
-                    $property->dataclass()
-                );
                 return $this->value($data, $property->multipleValues(), 'value');
             case 'file':
-                $data = $this->db->getDataclassFragments(
-                    $this->module()->id(),
-                    $this->id(),
-                    $property->id(),
-                    $property->dataclass()
-                );
                 return $this->value($data, $property->multipleValues(), 'filename');
             case 'action':
-                $data =  $this->db->getDataclassFragments(
-                    $this->module()->id(),
-                    $this->id(),
-                    $property->id(),
-                    $property->dataclass()
-                );
                 return $this->keyedValues($data, $property->multipleValues(), 'actor_module', 'actor_item');
             case 'span':
-                $data = $this->db->getDataclassFragments(
-                    $this->module()->id(),
-                    $this->id(),
-                    $property->id(),
-                    $property->dataclass()
-                );
                 return $this->keyedValues($data, $property->multipleValues(), 'beg', 'end');
             case 'text':
-                $data = $this->db->getDataclassFragments(
-                    $this->module()->id(),
-                    $this->id(),
-                    $property->id(),
-                    $property->dataclass()
-                );
                 return $this->textValue($data);
             default:
                 return 'TODO: dataclass '.$property->dataclass();

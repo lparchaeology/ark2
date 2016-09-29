@@ -44,7 +44,6 @@ abstract class Group extends Element
 {
     protected $grid = array();
     protected $elements = array();
-    protected $item = null;
 
     protected function __construct(Database $db, string $group)
     {
@@ -53,8 +52,7 @@ abstract class Group extends Element
 
     protected function init(array $config, Item $item = null)
     {
-        parent::init($config);
-        $this->item = $item;
+        parent::init($config, $item);
         $children = $this->db->getGroupForModule($this->id, $item->module()->id(), $item->modtype());
         foreach ($children as $child) {
             $element = Element::get($this->db, $child['child'], $item);
@@ -71,11 +69,11 @@ abstract class Group extends Element
         return $this->elements;
     }
 
-    public function formData(Item $item)
+    public function formData()
     {
         $data = array();
         foreach ($this->elements as $element) {
-            $data = array_merge($data, $element->formData($item));
+            $data = array_merge($data, $element->formData());
         }
         return $data;
     }

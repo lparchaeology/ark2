@@ -663,7 +663,7 @@ class Database
     public function getElement(string $element)
     {
         $sql = "
-            SELECT *
+            SELECT *, ark_view_element_type.class AS class, ark_view_layout.class AS layout_class
             FROM ark_view_element, ark_view_element_type
             LEFT JOIN ark_view_field ON ark_view_field.field = :element
             LEFT JOIN ark_view_layout ON ark_view_layout.layout = :element
@@ -675,7 +675,11 @@ class Database
         $params = array(
             ':element' => $element,
         );
-        return $this->config()->fetchAssoc($sql, $params);
+        $results = $this->config()->fetchAssoc($sql, $params);
+        if (empty($results['class']) && !empty($results['layout_class'])) {
+            $results['class'] = $results['layout_class'];
+        }
+        return $results;
     }
 
     public function getField(string $field)

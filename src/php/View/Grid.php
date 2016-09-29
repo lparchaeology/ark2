@@ -57,13 +57,13 @@ class Grid extends Layout
         return $this->grid;
     }
 
-    public function renderForms(FormFactoryInterface $factory, Item $item)
+    public function renderForms(FormFactoryInterface $factory)
     {
         $forms = array();
         foreach ($this->rows() as $rdx => $row) {
             foreach ($row as $cdx => $col) {
                 foreach ($col as $cell) {
-                    $forms[$rdx][$cdx][] = $cell->renderForms($factory, $item);
+                    $forms[$rdx][$cdx][] = $cell->renderForms($factory, $this->item);
                 }
             }
         }

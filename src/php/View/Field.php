@@ -39,6 +39,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Extension\Core\Type;
 use ARK\Database\Database;
+use ARK\Model\Item;
 use ARK\Model\Property;
 
 class Field extends Element
@@ -53,14 +54,13 @@ class Field extends Element
         parent::__construct($db, $field);
     }
 
-    protected function init(array $config)
+    protected function init(array $config, Item $item = null)
     {
-        parent::init($config);
+        parent::init($config, $item);
         $this->property = $config['property'];
-        $this->dataclass = $config['dataclass'];
         $this->editable = $config['editable'];
         $this->hidden = $config['hidden'];
-        $this->rules = Rule::fetchAllValidationRoles($db, $this-id());
+        $this->rules = Rule::fetchAllValidationRoles($this->db, $this->id());
         $this->valid = true;
     }
 
@@ -74,12 +74,7 @@ class Field extends Element
 
     public function property()
     {
-        return $this->property;
-    }
-
-    public function dataclass()
-    {
-        return $this->dataclass;
+        return $this->item->property($this->property);
     }
 
     public function editable()
@@ -140,74 +135,68 @@ class Field extends Element
         return array();
     }
 
-    public function formData(Item $item, bool $trans = false)
+    public function formData(bool $trans = false)
     {
-        if (!$this->isValid()) {
+        if (!$this->isValid() || !$this->property()) {
             return array();
         }
         $data = array();
-        switch ($this->dataclass()) {
+        $values = $this->item->attribute($this->property());
+        if (is_array($values)) {
+            $values = $values[0];
+        }
+        switch ($this->property()->dataclass()) {
             case 'itemkey':
                 if ($trans) {
-                    $data[$this->id()] = '<a href="sites/'.$item->parent().'/'.$item->module()->id().'/'.$item->id().'">'.$item->id().'</a>';
+                    $data[$this->id()] = '<a href="sites/'.$this->item->parent().'/'.$this->item->module()->id().'/'.$this->item->id().'">'.$this->item->id().'</a>';
                 } else {
-                    $data[$this->id()] = $item->id();
+                    $data[$this->id()] = $this->item->id();
                 }
                 break;
             case 'modtype':
                 if ($trans) {
-                    $data[$this->id()] = $item->module()->id().'.'.$item->modtype().'.default';
+                    $data[$this->id()] = $this->item->module()->id().'.'.$this->item->modtype();
                 } else {
-                    $data[$this->id()] = $item->modtype();
+                    $data[$this->id()] = $this->item->modtype();
+                }
+                break;
+            case 'blob':
+            case 'boolean':
+            case 'date':
+            case 'datetime':
+            case 'float':
+            case 'integer':
+            case 'span':
+            case 'time':
+                if ($values) {
+                    $data[$this->id()] = $values;
                 }
                 break;
             case 'text':
-                $row = $this->db->getText($item->module()->id(), $item->id(), $this->property());
-                if (isset($row['value'])) {
-                    $data[$this->id()] = $row['value'];
-                }
-                break;
-            case 'number':
-                $row = $this->db->getNumber($item->module()->id(), $item->id(), $this->property());
-                if (isset($row['value'])) {
-                    $data[$this->id()] = $row['value'];
-                }
-                break;
-            case 'date':
-                $row = $this->db->getDate($item->module()->id(), $item->id(), $this->property());
-                if (isset($row['value'])) {
-                    $data[$this->id()] = new \DateTime($row['value']);
-                }
-                break;
-            case 'span':
-                $row = $this->db->getSpan($item->module()->id(), $item->id(), $this->property());
-                if (isset($row['value'])) {
-                    $data[$this->id()] = new \DateTime($row['value']);
+                if ($values) {
+                    $data[$this->id()] = $values['en'];
                 }
                 break;
             case 'string':
-                $row = $this->db->getString($item->module()->id(), $item->id(), $this->property());
-                if (isset($row['attribute'])) {
+                if ($values) {
                     if ($trans) {
-                        $data[$this->id()] = 'property.'.$row['attributetype'].'.'.$row['attribute'].'.default';
+                        $data[$this->id()] = $this->property()->keyword().'.'.$values;
                     } else {
-                        $data[$this->id()] = $row['attribute'];
+                        $data[$this->id()] = $values;
                     }
                 }
                 break;
             case 'file':
-                $row = $this->db->getFile($item->module()->id(), $item->id(), $this->property());
-                if (isset($row['filename'])) {
-                    $data[$this->id()] = new File($row['filename'], false);
+                if ($values) {
+                    $data[$this->id()] = new File($values['filename'], false);
                 }
                 break;
             case 'action':
-                $action = $this->db->getAction($item->module()->id(), $item->id(), $this->property());
-                if (isset($action['actor_module']) and isset($action['actor_item'])) {
+                if (isset($values[0]['actor_module']) and isset($values['actor_item'])) {
                     if ($trans) {
-                        $data[$this->id()] = $action['actor_module'].'.'.$action['actor_item'].'.name';
+                        $data[$this->id()] = $values['actor_module'].'.'.$values['actor_item'].'.name';
                     } else {
-                        $data[$this->id()] = $action['actor_module'].'.'.$action['actor_item'];
+                        $data[$this->id()] = $values['actor_module'].'.'.$values['actor_item'];
                     }
                 }
                 break;
@@ -217,11 +206,11 @@ class Field extends Element
 
     public function buildForm(FormBuilder &$formBuilder, array $options = array())
     {
-        if (!$this->isValid()) {
+        if (!$this->isValid() || !$this->property()) {
             return;
         }
         $options['label'] = $this->alias()->keyword();
-        switch ($this->dataclass()) {
+        switch ($this->property()->dataclass()) {
             case 'action':
                 $options['choices']['--- Select One ---'] = null;
                 $actors = $this->db->getActors();
@@ -230,15 +219,23 @@ class Field extends Element
                 }
                 $formBuilder->add($this->id, Type\ChoiceType::class, $options);
                 break;
-            case 'attribute':
+            case 'string':
                 //TODO Only add null if allowed null
                 $options['choices']['--- Select One ---'] = null;
-                foreach ($this->property->allowedValues() as $val) {
-                    $options['choices']['property.'.$this->property().'.'.$val.'.default'] = $val;
+                foreach ($this->property()->allowedValues() as $val) {
+                    $options['choices']['property.'.$this->property.'.'.$val] = $val;
                 }
                 $formBuilder->add($this->id, Type\ChoiceType::class, $options);
                 break;
             case 'date':
+                $options['date_widget'] = 'single_text';
+                $formBuilder->add($this->id, Type\DateType::class, $options);
+                break;
+            case 'time':
+                $options['date_widget'] = 'single_text';
+                $formBuilder->add($this->id, Type\TimeType::class, $options);
+                break;
+            case 'datetime':
                 $options['date_widget'] = 'single_text';
                 $formBuilder->add($this->id, Type\DateTimeType::class, $options);
                 break;
@@ -262,7 +259,7 @@ class Field extends Element
                 $option['entry_options'] = array();
                 $formBuilder->add($this->id, Type\CollectionType::class, $options);
                 break;
-            case 'txt':
+            case 'text':
                 $formBuilder->add($this->id, Type\TextareaType::class, $options);
                 break;
             case 'xmi':
@@ -273,7 +270,6 @@ class Field extends Element
                 $formBuilder->add($this->id, Type\CollectionType::class, $options);
                 break;
         }
-        return;
     }
 
     public static function fetchFields(Database $db, string $element, bool $enabled = true)

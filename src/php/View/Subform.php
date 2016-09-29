@@ -57,7 +57,7 @@ class Subform extends Group
         parent::__construct($db, $subform);
     }
 
-    protected function init(array $config, Item $item)
+    protected function init(array $config, Item $item = null)
     {
         parent::init($config, $item);
         $this->viewState = $config['view_state'];
@@ -70,9 +70,9 @@ class Subform extends Group
         $this->valid = true;
     }
 
-    public function renderForms(FormFactoryInterface $factory, Item $item)
+    public function renderForms(FormFactoryInterface $factory)
     {
-        $data = $this->formData($item);
+        $data = $this->formData();
         $options['label'] = false;
         $options['elements'] = $this->elements;
         $options['keyword'] = $this->keyword;

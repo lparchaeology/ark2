@@ -46,15 +46,17 @@ abstract class Element extends AbstractObject
     protected $alias = null;
     protected $options = array();
     protected $conditions = array();
+    protected $item = null;
 
     protected function __construct(Database $db, string $element)
     {
         parent::__construct($db, $element);
     }
 
-    protected function init(array $config)
+    protected function init(array $config, Item $item = null)
     {
         parent::init($config);
+        $this->item = $item;
         $this->type = $config['type'];
         $this->isGroup = $config['is_group'];
         $this->keyword = $config['keyword'];
@@ -99,7 +101,7 @@ abstract class Element extends AbstractObject
         return $this->conditions;
     }
 
-    public function formData(Item $item)
+    public function formData()
     {
         return array();
     }

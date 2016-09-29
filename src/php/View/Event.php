@@ -50,10 +50,10 @@ class Event extends Element
         parent::__construct($db, $event);
     }
 
-    protected function init(array $config)
+    protected function init(array $config, Item $item = null)
     {
-        parent::init($config);
-        $fields = Field::fetchFields($db, $this->id());
+        parent::init($config, $item);
+        $fields = Field::fetchFields($this->db, $this->id());
         foreach ($fields as $field) {
             if ($field->property()->dataclass() == 'date' && $field->isValid()) {
                 $this->date = $field;
@@ -74,13 +74,13 @@ class Event extends Element
         return $this->actions;
     }
 
-    public function formData(Item $item)
+    public function formData()
     {
         $data = array();
         $data[$this->id()] = array_merge(
             // TODO Do all actions
-            $this->actions[0]->formData($item),
-            $this->date->formData($item)
+            $this->actions[0]->formData(),
+            $this->date->formData()
         );
         return $data;
     }
