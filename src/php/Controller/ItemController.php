@@ -99,8 +99,8 @@ class ItemController
 
         try {
             $root = Module::getRoot($app['database'], 'ark');
-            $site = $root->submodule('ste')->item($siteSlug);
-            $items = $site->submodule($moduleSlug)->items($site->id());
+            $site = $root->submodule($root->schemaId(), 'ste')->item($siteSlug);
+            $items = $site->submodule($moduleSlug)->items($site);
 
             $jsonapi['data'] = array();
             foreach ($items as $item) {

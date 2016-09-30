@@ -41,14 +41,26 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Extension\Core\Type;
 use ARK\Model\Module;
+use ARK\View\Element;
 
 class SiteController
 {
     public function viewSiteAction(Application $app, Request $request, $siteSlug)
     {
         $root = Module::getRoot($app['database'], 'ark');
-        $item = $root->submodule('ste')->item($siteSlug);
-        $layout = Layout::fetchLayout($app['database'], 'cor_layout_site', $item->module(), $item->modtype());
+        $item = $root->submodule($root->schemaId(), 'ste')->item($siteSlug);
+        if (!$item->isValid()) {
+            throw new NotFoundHttpException('Site Code '.$siteSlug.' is not valid.');
+        }
+        $layout = Element::get($app['database'], 'cor_layout_item', $item);
+        return $layout->render($app['twig'], array(), $app['form.factory'], $item);
+    }
+
+    public function listSitesAction(Application $app, Request $request)
+    {
+        $root = Module::getRoot($app['database'], 'ark');
+        $items = $root->submodule($root->schemaId(), 'ste')->items();
+        $layout = Element::get($app['database'], 'cor_layout_list', $item);
         return $layout->render($app['twig'], array(), $app['form.factory'], $item);
     }
 
@@ -91,7 +103,7 @@ class SiteController
 
         try {
             $root = Module::getRoot($app['database'], 'ark');
-            $items = $root->submodule('ste')->items();
+            $items = $root->submodule($root->schemaId(), 'ste')->items();
 
             foreach ($items as $item) {
                 $resource['type'] = $item->module()->type();

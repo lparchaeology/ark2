@@ -390,7 +390,10 @@ class Database
     public function getDataclassFragments(string $module, string $item, string $property, string $dataclass)
     {
         $table = $this->getDataclassTable($dataclass);
-        return $this->getTableFragments($table, $module, $item, $property);
+        if ($table) {
+            return $this->getTableFragments($table, $module, $item, $property);
+        }
+        return array();
     }
 
     public function getXmiItems(string $module, string $item, string $xmiModule, string $xmiTable = null)

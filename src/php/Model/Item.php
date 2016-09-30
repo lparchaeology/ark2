@@ -149,32 +149,34 @@ class Item
 
     public function attribute(Property $property)
     {
-        $data = $this->db->getDataclassFragments(
-            $this->module()->id(),
-            $this->id(),
-            $property->id(),
-            $property->dataclass()
-        );
-        switch ($property->dataclass()) {
-            case 'blob':
-            case 'boolean':
-            case 'date':
-            case 'datetime':
-            case 'float':
-            case 'integer':
-            case 'string':
-            case 'time':
-                return $this->value($data, $property->multipleValues(), 'value');
-            case 'file':
-                return $this->value($data, $property->multipleValues(), 'filename');
-            case 'action':
-                return $this->keyedValues($data, $property->multipleValues(), 'actor_module', 'actor_item');
-            case 'span':
-                return $this->keyedValues($data, $property->multipleValues(), 'beg', 'end');
-            case 'text':
-                return $this->textValue($data);
-            default:
-                return 'TODO: dataclass '.$property->dataclass();
+        if ($property->dataclass()) {
+            $data = $this->db->getDataclassFragments(
+                $this->module()->id(),
+                $this->id(),
+                $property->id(),
+                $property->dataclass()
+            );
+            switch ($property->dataclass()) {
+                case 'blob':
+                case 'boolean':
+                case 'date':
+                case 'datetime':
+                case 'float':
+                case 'integer':
+                case 'string':
+                case 'time':
+                    return $this->value($data, $property->multipleValues(), 'value');
+                case 'file':
+                    return $this->value($data, $property->multipleValues(), 'filename');
+                case 'action':
+                    return $this->keyedValues($data, $property->multipleValues(), 'actor_module', 'actor_item');
+                case 'span':
+                    return $this->keyedValues($data, $property->multipleValues(), 'beg', 'end');
+                case 'text':
+                    return $this->textValue($data);
+                default:
+                    return 'TODO: dataclass '.$property->dataclass();
+            }
         }
     }
 
@@ -280,14 +282,18 @@ class Item
     public static function getAll(Database $db, Module $module, Item $parent = null)
     {
         $items = array();
-        $configs = $db->getItems($module->id(), $parent->id());
+        $parentId = $parent ? $parent->id() : null;
+        $configs = $db->getItems($module->id(), $parentId);
         // TODO check parent matches!
         foreach ($configs as $config) {
             $item = new Item();
             $item->init($db, $module, $parent, $config);
             $items[] = $item;
         }
-        return $items;
+        if ($items) {
+            return $items;
+        }
+        return array();
     }
 
     public static function getRecent(Database $db, Module $module, Item $parent = null, int $limit)
