@@ -37,6 +37,8 @@ namespace ARK\Model;
 
 trait SchemaTrait
 {
+    protected $schemaId = '';
+
     protected function initSchema(array $config)
     {
         if (!empty($config['subschema_id'])) {

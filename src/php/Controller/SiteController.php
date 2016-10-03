@@ -40,15 +40,28 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Extension\Core\Type;
+use ARK\Model\Collection;
+use ARK\Model\Item;
 use ARK\Model\Module;
 use ARK\View\Element;
 
 class SiteController
 {
+    private function loadFlashes(Application $app)
+    {
+        $app['session']->getFlashBag()->clear();
+        $flashes = $app['database']->getFlashes($app['locale']);
+        //$flashes = array();
+        foreach ($flashes as $flash) {
+            $app['session']->getFlashBag()->add($flash['type'], $flash['text']);
+        }
+    }
+
     public function viewSiteAction(Application $app, Request $request, $siteSlug)
     {
-        $root = Module::getRoot($app['database'], 'ark');
-        $item = $root->submodule($root->schemaId(), 'ste')->item($siteSlug);
+        $this->loadFlashes($app);
+        $root = Item::getRoot($app['database'], 'ark');
+        $item = $root->submodule('ste')->item($siteSlug);
         if (!$item->isValid()) {
             throw new NotFoundHttpException('Site Code '.$siteSlug.' is not valid.');
         }
@@ -58,10 +71,31 @@ class SiteController
 
     public function listSitesAction(Application $app, Request $request)
     {
-        $root = Module::getRoot($app['database'], 'ark');
-        $items = $root->submodule($root->schemaId(), 'ste')->items();
-        $layout = Element::get($app['database'], 'cor_layout_list', $item);
-        return $layout->render($app['twig'], array(), $app['form.factory'], $item);
+        $this->loadFlashes($app);
+        $root = Item::getRoot($app['database'], 'ark');
+        $sites = Collection::get($app['database'], $root->submodule('ste'), null, 'sites');
+        $layout = Element::get($app['database'], 'cor_layout_list', $sites);
+
+        $fields = $layout->allFields();
+        $items = $sites->items();
+        $rows = array();
+        foreach ($items as $item) {
+            $data = array();
+            $data['id'] = $item->id();
+            $data['parent'] = $item->parent();
+            $data['idx'] = $item->index();
+            $data['item'] = $item->item();
+            $data['modtype'] = $item->modtype();
+            foreach ($fields as $field) {
+                $data = array_merge($data, $field->itemData($item, true));
+            }
+            $rows[] = $data;
+        }
+        $options  = array(
+            'items' => $rows,
+        );
+
+        return $layout->render($app['twig'], $options);
     }
 
     public function getSiteAction(Application $app, Request $request, $siteSlug)
@@ -80,7 +114,7 @@ class SiteController
             }
             $jsonapi['data']['type'] = $item->module()->type();
             $jsonapi['data']['id'] = $item->id();
-            $jsonapi['data']['attributes'] = $item->attributes($app['locale']);
+            $jsonapi['data']['attributes'] = $item->attributes();
             foreach ($item->submodules() as $submodule) {
                 $jsonapi['data']['relationships'][$submodule->type()]['meta']['module'] = $submodule->id();
                 $jsonapi['data']['relationships'][$submodule->type()]['links']['related'] = $uri.'/'.$submodule->type();

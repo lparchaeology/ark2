@@ -37,105 +37,26 @@ namespace ARK\Model;
 
 use ARK\Database\Database;
 
-class Item
+class Item extends AbstractResource
 {
-    private $db = null;
-    private $module = null;
-    private $id = null;
-    private $parent = null;
     private $index = null;
-    private $modtype = '';
-    protected $valid = false;
-
-    use SchemaTrait;
+    private $iitem = null;
 
     protected function init(Database $db, Module $module, Item $parent = null, array $config)
     {
-        $this->db = $db;
-        $this->module = $module;
-        $this->initSchema($config);
-        $this->id = $config['item'];
-        if ($parent) {
-            $this->parent = $parent;
-        } elseif (isset($config['parent']) && $config['parent']) {
-            // TODO get the actual parent
-            $this->parent = $config['parent'];
-        }
+        parent::init($db, $module, $parent, $config);
         $this->index = $config['idx'];
-        if (isset($config['modtype']) && $config['modtype']) {
-            $this->modtype = $config['modtype'];
-        }
-        if (empty($this->schemaId)) {
-            $this->schemaId = $module->schemaId();
-        }
-        $this->valid = true;
+        $this->item = $config['item'];
     }
 
-    public function isValid()
+    public function item()
     {
-        return $this->valid;
-    }
-
-    public function module()
-    {
-        return $this->module;
-    }
-
-    // TODO temp for use in Forms
-    public function moduleId()
-    {
-        return $this->module->id();
-    }
-
-    public function id()
-    {
-        return $this->id;
-    }
-
-    public function parent()
-    {
-        return $this->parent;
-    }
-
-    // TODO temp for use in Forms
-    public function parentId()
-    {
-        return $this->parent->id();
+        return $this->item;
     }
 
     public function index()
     {
         return $this->index;
-    }
-
-    public function modtype()
-    {
-        return $this->modtype;
-    }
-
-    public function schema(int $reference = Schema::ReferenceSchema)
-    {
-        return $this->module->schema($this->schemaId, $reference);
-    }
-
-    public function properties()
-    {
-        return $this->module->properties($this->schemaId, $this->modtype);
-    }
-
-    public function property(string $property)
-    {
-        return $this->module->property($this->schemaId, $this->modtype, $property);
-    }
-
-    public function required()
-    {
-        return $this->module->required($this->schemaId, $this->modtype);
-    }
-
-    public function definitions()
-    {
-        return $this->module->definitions($this->schemaId);
     }
 
     public function attributes()
@@ -149,6 +70,12 @@ class Item
 
     public function attribute(Property $property)
     {
+        if ($property->id() == 'item') {
+            return $this->item;
+        }
+        if ($property->id() == 'modtype') {
+            return $this->modtype;
+        }
         if ($property->dataclass()) {
             $data = $this->db->getDataclassFragments(
                 $this->module()->id(),
@@ -220,14 +147,6 @@ class Item
         return null;
     }
 
-    public function relationships()
-    {
-        if ($this->parent) {
-            return $this->parent->module->xmis($this->parent->schemaId(), $this->module->id());
-        }
-        return null;
-    }
-
     public function related(Module $module = null)
     {
         $related = array();
@@ -239,16 +158,6 @@ class Item
             $related = Item::getAllXmi($this->db, $module, $this);
         }
         return $related;
-    }
-
-    public function submodules()
-    {
-        return $this->module->submodules($this->schemaId);
-    }
-
-    public function submodule(string $submodule)
-    {
-        return $this->module->submodule($this->schemaId, $submodule);
     }
 
     public static function get(Database $db, Module $module, Item $parent = null, string $id)
@@ -277,6 +186,11 @@ class Item
         // TODO check parent matches!
         $item->init($db, $module, $parent, $config);
         return $item;
+    }
+
+    public static function getRoot(Database $db, string $root)
+    {
+        return Item::get($db, Module::getRoot($db, $root), null, $root);
     }
 
     public static function getAll(Database $db, Module $module, Item $parent = null)

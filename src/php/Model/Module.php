@@ -57,6 +57,11 @@ final class Module extends AbstractObject
         parent::init($config);
         $this->initSchema($config);
 
+        $schemas = $this->db->getModuleSchemas($this->id);
+        foreach ($schemas as $schema) {
+            $this->schemas[$schema['schema_id']] = array();
+        }
+
         $this->parent = $parent;
         $this->typeCode = $config['module'];
         $this->type = $config['resource'];
@@ -66,6 +71,11 @@ final class Module extends AbstractObject
     public function parent()
     {
         return $this->parent;
+    }
+
+    public function schemas()
+    {
+        return array_keys($this->schemas);
     }
 
     private function loadSubmodules(string $schemaId)
@@ -87,7 +97,7 @@ final class Module extends AbstractObject
     private function loadModtypes(string $schemaId)
     {
         $modtypes = $this->db->getModtypes($this->id(), $schemaId);
-        $this->modtypes = array();
+        $this->modtypes[$schemaId] = array();
         foreach ($modtypes as $modtype) {
             $this->modtypes[$schemaId][] = $modtype['modtype'];
         }

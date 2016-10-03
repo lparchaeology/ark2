@@ -40,7 +40,7 @@ use Doctrine\DBAL\DBALException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormBuilder;
 use ARK\Database\Database;
-use ARK\Model\Item;
+use ARK\Model\AbstractResource;
 use ARK\Form\Type\PanelType;
 
 class Subform extends Group
@@ -57,9 +57,9 @@ class Subform extends Group
         parent::__construct($db, $subform);
     }
 
-    protected function init(array $config, Item $item = null)
+    protected function init(array $config, AbstractResource $resource = null)
     {
-        parent::init($config, $item);
+        parent::init($config, $resource);
         $this->viewState = $config['view_state'];
         $this->editState = $config['edit_state'];
         $this->navType = $config['nav_type'];

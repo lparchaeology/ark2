@@ -37,7 +37,7 @@ namespace ARK\View;
 
 use Symfony\Component\Form\FormBuilder;
 use ARK\Database\Database;
-use ARK\Model\Item;
+use ARK\Model\AbstractResource;
 use ARK\Form\Type\EventType;
 
 class Event extends Element
@@ -50,9 +50,9 @@ class Event extends Element
         parent::__construct($db, $event);
     }
 
-    protected function init(array $config, Item $item = null)
+    protected function init(array $config, AbstractResource $resource = null)
     {
-        parent::init($config, $item);
+        parent::init($config, $resource);
         $fields = Field::fetchFields($this->db, $this->id());
         foreach ($fields as $field) {
             if ($field->property()->dataclass() == 'date' && $field->isValid()) {

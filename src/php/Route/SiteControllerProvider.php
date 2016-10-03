@@ -55,7 +55,7 @@ class SiteControllerProvider implements ControllerProviderInterface
 
         $controllers
             ->method('GET')
-            ->get('/{siteSlug}/{moduleSlug}/list', 'ARK\\Controller\\ItemController::listItemsAction')
+            ->get('/{siteSlug}/{moduleSlug}', 'ARK\\Controller\\ItemController::listItemsAction')
             ->bind('sites.item.list');
 
         $controllers

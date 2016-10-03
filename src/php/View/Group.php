@@ -37,7 +37,7 @@ namespace ARK\View;
 
 use Symfony\Component\Form\FormBuilder;
 use ARK\Database\Database;
-use ARK\Model\Item;
+use ARK\Model\AbstractResource;
 use ARK\Form\Type\PanelType;
 
 abstract class Group extends Element
@@ -50,12 +50,12 @@ abstract class Group extends Element
         parent::__construct($db, $group);
     }
 
-    protected function init(array $config, Item $item = null)
+    protected function init(array $config, AbstractResource $resource = null)
     {
-        parent::init($config, $item);
-        $children = $this->db->getGroupForModule($this->id, $item->module()->id(), $item->modtype());
+        parent::init($config, $resource);
+        $children = $this->db->getGroupForModule($this->id, $resource->module()->id(), $resource->modtype());
         foreach ($children as $child) {
-            $element = Element::get($this->db, $child['child'], $item);
+            $element = Element::get($this->db, $child['child'], $resource);
             if ($element->isValid()) {
                 $this->elements[] = $element;
                 $this->grid[$child['row']][$child['col']][$child['seq']] = $element;

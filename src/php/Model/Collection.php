@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/View/Grid.php
+* src/php/Model/Collection.php
 *
-* ARK Grid View
+* ARK Model Item
 *
 * PHP version 5 and 7
 *
@@ -28,44 +28,35 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/View/Grid.php
+* @see        http://ark.lparchaeology.com/code/src/php/Model/Item.php
 * @since      2.0
 *
 */
 
-namespace ARK\View;
+namespace ARK\Model;
 
-use Symfony\Component\Form\FormFactoryInterface;
 use ARK\Database\Database;
 
-class Grid extends Layout
+class Collection extends AbstractResource
 {
-    protected function __construct(Database $db, string $layout)
+    private $index = null;
+
+    protected function init(Database $db, Module $module, Item $parent = null, array $config)
     {
-        parent::__construct($db, $layout);
-        $this->template = 'layouts/grid.html.twig';
+        parent::init($db, $module, $parent, $config);
+        $this->id = $config['id'];
     }
 
-    public function cols(int $row)
+    public function items()
     {
-        return $this->grid[$row];
+        return $this->module->items($this->parent);
     }
 
-    public function rows()
+    public static function get(Database $db, Module $module, Item $parent = null, string $id)
     {
-        return $this->grid;
-    }
-
-    public function renderForms(FormFactoryInterface $factory)
-    {
-        $forms = array();
-        foreach ($this->rows() as $rdx => $row) {
-            foreach ($row as $cdx => $col) {
-                foreach ($col as $cell) {
-                    $forms[$rdx][$cdx][] = $cell->renderForms($factory, $this->resource);
-                }
-            }
-        }
-        return $forms;
+        $coll = new Collection();
+        $config['id'] =  'id';
+        $coll->init($db, $module, $parent, $config);
+        return $coll;
     }
 }

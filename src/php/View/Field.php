@@ -39,6 +39,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Extension\Core\Type;
 use ARK\Database\Database;
+use ARK\Model\AbstractResource;
 use ARK\Model\Item;
 use ARK\Model\Property;
 
@@ -54,9 +55,9 @@ class Field extends Element
         parent::__construct($db, $field);
     }
 
-    protected function init(array $config, Item $item = null)
+    protected function init(array $config, AbstractResource $resource = null)
     {
-        parent::init($config, $item);
+        parent::init($config, $resource);
         $this->property = $config['property'];
         $this->editable = $config['editable'];
         $this->hidden = $config['hidden'];
@@ -69,12 +70,15 @@ class Field extends Element
         if ($this->keyword) {
             return $this->keyword;
         }
+        if ($this->property() && $this->property()->keyword()) {
+            return $this->property()->keyword();
+        }
         return $this->alias->keyword();
     }
 
     public function property()
     {
-        return $this->item->property($this->property);
+        return $this->resource->property($this->property);
     }
 
     public function editable()
@@ -137,39 +141,42 @@ class Field extends Element
 
     public function formData(bool $trans = false)
     {
-        if (!$this->isValid() || !$this->property()) {
+        return $this->itemData($this->resource, $trans);
+    }
+
+    public function itemData(Item $item, bool $trans = false)
+    {
+        if (!$this->isValid()) {
             return array();
         }
         $data = array();
-        $values = $this->item->attribute($this->property());
+        //HACK Do properly!
+        if ($this->id == 'submodules') {
+            $subs = $item->submodules();
+            foreach ($subs as $sub) {
+                $data[$this->id()][] = '<a href="'.$sub->type().'">'.$sub->keyword().'</a>';
+            }
+            return $data;
+        }
+        $values = $item->attribute($this->property());
         if (is_array($values)) {
             $values = $values[0];
         }
         switch ($this->property()->dataclass()) {
-            case 'itemkey':
-                if ($trans) {
-                    $data[$this->id()] = '<a href="sites/'.$this->item->parent().'/'.$this->item->module()->id().'/'.$this->item->id().'">'.$this->item->id().'</a>';
-                } else {
-                    $data[$this->id()] = $this->item->id();
-                }
-                break;
-            case 'modtype':
-                if ($trans) {
-                    $data[$this->id()] = $this->item->module()->id().'.'.$this->item->modtype();
-                } else {
-                    $data[$this->id()] = $this->item->modtype();
-                }
-                break;
             case 'blob':
             case 'boolean':
-            case 'date':
-            case 'datetime':
             case 'float':
             case 'integer':
             case 'span':
-            case 'time':
                 if ($values) {
                     $data[$this->id()] = $values;
+                }
+                break;
+            case 'date':
+            case 'datetime':
+            case 'time':
+                if ($values) {
+                    $data[$this->id()] = new \DateTime($values);
                 }
                 break;
             case 'text':
@@ -179,7 +186,23 @@ class Field extends Element
                 break;
             case 'string':
                 if ($values) {
-                    if ($trans) {
+                    if ($this->property()->id() == 'item') {
+                        if ($trans) {
+                            if ($item->parent()) {
+                                $data[$this->id()] = '<a href="'.$item->module()->type().'/'.$item->index().'">'.$item->item().'</a>';
+                            } else {
+                                $data[$this->id()] = '<a href="'.$item->index().'">'.$item->item().'</a>';
+                            }
+                        } else {
+                            $data[$this->id()] = $item->id();
+                        }
+                    } elseif ($this->property()->id() == 'modtype') {
+                        if ($trans) {
+                            $data[$this->id()] = 'module.'.$item->module()->id().'.modtype.'.$item->modtype();
+                        } else {
+                            $data[$this->id()] = $item->modtype();
+                        }
+                    } elseif ($trans && !$this->property()->literal()) {    
                         $data[$this->id()] = $this->property()->keyword().'.'.$values;
                     } else {
                         $data[$this->id()] = $values;
@@ -206,10 +229,18 @@ class Field extends Element
 
     public function buildForm(FormBuilder &$formBuilder, array $options = array())
     {
-        if (!$this->isValid() || !$this->property()) {
+        if (!$this->isValid()) {
             return;
         }
-        $options['label'] = $this->alias()->keyword();
+        //HACK Do properly!
+        if ($this->id == 'submodules') {
+            $options['label'] = false;
+            $options['entry_type'] = Type\TextType::class;
+            $options['entry_options'] = array('label' => false, 'attr' => array('readonly' => true));
+            $formBuilder->add($this->id, Type\CollectionType::class, $options);
+            return;
+        }
+        $options['label'] = $this->keyword() ? $this->keyword() : false;
         switch ($this->property()->dataclass()) {
             case 'action':
                 $options['choices']['--- Select One ---'] = null;
@@ -222,8 +253,8 @@ class Field extends Element
             case 'string':
                 //TODO Only add null if allowed null
                 $options['choices']['--- Select One ---'] = null;
-                foreach ($this->property()->allowedValues() as $val) {
-                    $options['choices']['property.'.$this->property.'.'.$val] = $val;
+                foreach ($this->property()->allowedValues() as $val => $keyword) {
+                    $options['choices'][$keyword] = $val;
                 }
                 $formBuilder->add($this->id, Type\ChoiceType::class, $options);
                 break;
@@ -242,31 +273,26 @@ class Field extends Element
             case 'file':
                 $formBuilder->add($this->id, Type\FileType::class, $options);
                 break;
-            case 'itemkey':
-                $formBuilder->add($this->id, Type\TextType::class, $options);
-                break;
-            case 'modtype':
-                foreach ($this->property->allowedValues() as $val) {
-                    $options['choices'][$val] = $val;
-                }
-                $formBuilder->add($this->id, Type\ChoiceType::class, $options);
-                break;
             case 'number':
                 $formBuilder->add($this->id, Type\NumberType::class, $options);
                 break;
             case 'span':
-                $option['entry_type'] = Type\TextType::class;
-                $option['entry_options'] = array();
+                $options['entry_type'] = Type\TextType::class;
+                $options['entry_options'] = array();
                 $formBuilder->add($this->id, Type\CollectionType::class, $options);
                 break;
             case 'text':
-                $formBuilder->add($this->id, Type\TextareaType::class, $options);
+                if ($this->property()->input() == 'textarea') {
+                    $formBuilder->add($this->id, Type\TextareaType::class, $options);
+                } else {
+                    $formBuilder->add($this->id, Type\TextType::class, $options);
+                }
                 break;
             case 'xmi':
-                $option['entry_type'] = Type\TextType::class;
-                $option['allow_add'] = true;
-                $option['allow_delete'] = true;
-                $option['entry_options'] = array();
+                $options['entry_type'] = Type\TextType::class;
+                $options['allow_add'] = true;
+                $options['allow_delete'] = true;
+                $options['entry_options'] = array();
                 $formBuilder->add($this->id, Type\CollectionType::class, $options);
                 break;
         }

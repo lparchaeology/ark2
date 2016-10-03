@@ -38,7 +38,7 @@ namespace ARK\View;
 use Symfony\Component\Form\FormBuilder;
 use ARK\AbstractObject;
 use ARK\Database\Database;
-use ARK\Model\Item;
+use ARK\Model\AbstractResource;
 
 abstract class Element extends AbstractObject
 {
@@ -46,17 +46,17 @@ abstract class Element extends AbstractObject
     protected $alias = null;
     protected $options = array();
     protected $conditions = array();
-    protected $item = null;
+    protected $resource = null;
 
     protected function __construct(Database $db, string $element)
     {
         parent::__construct($db, $element);
     }
 
-    protected function init(array $config, Item $item = null)
+    protected function init(array $config, AbstractResource $resource = null)
     {
         parent::init($config);
-        $this->item = $item;
+        $this->resource = $resource;
         $this->type = $config['type'];
         $this->isGroup = $config['is_group'];
         $this->keyword = $config['keyword'];
@@ -116,12 +116,12 @@ abstract class Element extends AbstractObject
         return array();
     }
 
-    public static function get(Database $db, string $id, Item $item = null)
+    public static function get(Database $db, string $id, AbstractResource $resource = null)
     {
         $config =  $db->getElement($id);
         if (!empty($config['class'])) {
             $element = new $config['class']($db, $id);
-            $element->init($config, $item);
+            $element->init($config, $resource);
             return $element;
         }
         return new Layout($db, $id);

@@ -65,10 +65,21 @@ trait ObjectTrait
         if (isset($this->properties[$schemaId])) {
             return;
         }
-        $properties = Property::getAllSchema($this->db, $schemaId, $this->typeCode);
+
         $this->properties[$schemaId] = array();
         $this->required[$schemaId] = array();
         $this->definitions[$schemaId] = array();
+
+        $item = Property::get($this->db, 'item');
+        $this->properties[$schemaId][$this->typeCode]['item'] = $item;
+        $this->required[$schemaId][$this->typeCode][] = 'item';
+        if ($this->modtypes()) {
+            $modtype = Property::getModtype($this->db, $schemaId, $this->typeCode);
+            $this->properties[$schemaId][$this->typeCode]['modtype'] = $modtype;
+            $this->required[$schemaId][$this->typeCode][] = 'modtype';
+        }
+
+        $properties = Property::getAllSchema($this->db, $schemaId, $this->typeCode);
         foreach ($properties as $id => $config) {
             $property = $config['property'];
             $this->properties[$schemaId][$config['modtype']][$id] = $property;
@@ -163,7 +174,7 @@ trait ObjectTrait
                 $schema['anyOf'] = $anyof;
             }
         }
-        $this->schemas[$reference] = $schema;
+        $this->schemas[$schemaId][$reference] = $schema;
         return $schema;
     }
 }

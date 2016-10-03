@@ -44,6 +44,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\DBAL\Connection;
 use ARK\Database\Database;
+use ARK\Model\Collection;
 use ARK\Model\Item;
 use ARK\Model\Module;
 use ARK\Model\Site;
@@ -51,6 +52,16 @@ use ARK\View\Element;
 
 class ItemController
 {
+    private function loadFlashes(Application $app)
+    {
+        $app['session']->getFlashBag()->clear();
+        $flashes = $app['database']->getFlashes($app['locale']);
+        //$flashes = array();
+        foreach ($flashes as $flash) {
+            $app['session']->getFlashBag()->add($flash['type'], $flash['text']);
+        }
+    }
+
     public function getItemAction(Application $app, Request $request, $siteSlug, $moduleSlug, $itemSlug)
     {
         $uri = $request->getSchemeAndHttpHost().$request->getBaseUrl().$request->getPathInfo();
@@ -90,6 +101,29 @@ class ItemController
         return $response;
     }
 
+    public function putItemAction(Application $app, Request $request, $siteSlug, $moduleSlug)
+    {
+        $response = new JsonResponse(null);
+        $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
+
+        $root = Module::getRoot($app['database'], 'ark');
+        $site = $root->submodule($root->schemaId(), 'ste')->item($siteSlug);
+        $module = $site->submodule($moduleSlug);
+        $data = json_decode($request->getContent(), true);
+        $last = $app['database']->getLastItem($module->id(), $site->id());
+        $next = intval($last['idx']) + 1;
+        $res = $app['database']->addItem($parent, $index, $item, $modtype);
+
+        if ($res) {
+            $item = $site->submodule($moduleSlug)->itemFromIndex($site, $itemSlug);
+            $data = $item->attributes();
+        } else {
+            $data['error'] = 'Uh oh...';
+        }
+        $response->setData($data);
+        return $response;
+    }
+
     public function getItemsAction(Application $app, Request $request, $siteSlug, $moduleSlug)
     {
         $uri = $request->getSchemeAndHttpHost().$request->getBaseUrl().$request->getPathInfo();
@@ -122,6 +156,8 @@ class ItemController
 
     public function viewItemAction(Application $app, Request $request, $siteSlug, $moduleSlug, $itemSlug)
     {
+        $this->loadFlashes($app);
+
         $root = Module::getRoot($app['database'], 'ark');
         $site = $root->submodule($root->schemaId(), 'ste')->item($siteSlug);
         if (!$site->isValid()) {
@@ -152,6 +188,8 @@ class ItemController
 
     public function registerItemAction(Application $app, Request $request, $siteSlug, $moduleSlug)
     {
+        $this->loadFlashes($app);
+
         $arkMod = Module::get($app['database'], 'ark');
         $ark = $arkMod->item('ark');
         $siteMod = $ark->submodule('ste');
@@ -195,10 +233,10 @@ class ItemController
 
     public function listItemsAction(Application $app, Request $request, $siteSlug, $moduleSlug)
     {
-        $arkMod = Module::get($app['database'], 'ark');
-        $ark = $arkMod->item('ark');
-        $siteMod = $ark->submodule('ste');
-        $site = $siteMod->item($siteSlug);
+        $this->loadFlashes($app);
+
+        $root = Item::getRoot($app['database'], 'ark');
+        $site = $root->submodule('ste')->item($siteSlug);
         if (!$site->isValid()) {
             throw new NotFoundHttpException('Site Code '.$siteSlug.' is not valid.');
         }
@@ -207,27 +245,24 @@ class ItemController
         if (!$module->isValid()) {
             throw new NotFoundHttpException('Module '.$moduleSlug.' is not valid for Site Code '.$siteSlug);
         }
-
-        $layout = Layout::fetchLayout($app['database'], 'cor_layout_list', $module);
+        $coll = Collection::get($app['database'], $module, $site, 'items');
+        $layout = Element::get($app['database'], 'cor_layout_list', $coll);
 
         $fields = $layout->allFields();
-        $items = Item::getAll($app['database'], $module, $site->id());
+        $items = $coll->items();
         $rows = array();
         foreach ($items as $item) {
             $data = array();
-            foreach ($fields as $field) {
-                $data = array_merge($data, $field->formData($item, true));
-            }
-            $field = 'conf_field_'.$module->id().'_cd';
-            $data[$field] = $item->id();
             $data['item'] = $item->id();
             $data['parent'] = $item->parent();
             $data['idx'] = $item->index();
             $data['modtype'] = $item->modtype();
             $data['item'] = $item->id();
+            foreach ($fields as $field) {
+                $data = array_merge($data, $field->itemData($item, true));
+            }
             $rows[] = $data;
         }
-
         $options  = array(
             'items' => $rows,
         );

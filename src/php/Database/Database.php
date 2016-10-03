@@ -531,16 +531,16 @@ class Database
         return $this->config()->fetchAll($sql, $params);
     }
 
-    public function getItem(string $module, string $item)
+    public function getItem(string $module, string $id)
     {
         $table = $this->getModuleTable($module);
         $sql = "
             SELECT *
             FROM $table
-            WHERE item = :item
+            WHERE id = :id
         ";
         $params = array(
-            ':item' => $item,
+            ':id' => $id,
         );
         return $this->data()->fetchAssoc($sql, $params);
     }
@@ -576,7 +576,7 @@ class Database
             $params[':parent'] = $parent;
         }
         $sql .= "
-            ORDER BY LENGTH(item), item
+            ORDER BY LENGTH(id), id
         ";
         return $this->data()->fetchAll($sql, $params);
     }
@@ -621,6 +621,47 @@ class Database
         return $this->data()->fetchAll($sql, $params);
     }
 
+    public function getLastItem(string $module, string $parent)
+    {
+        $table = $this->getModuleTable($module);
+        $params = array();
+        $sql = "
+            SELECT *
+            FROM $table
+        ";
+        if ($parent) {
+            $sql .= "
+                WHERE parent = :parent
+            ";
+            $params[':parent'] = $parent;
+        }
+        $sql .= "
+            ORDER DESC BY LENGTH(idx), idx
+        ";
+        return $this->data()->fetchAssoc($sql, $params);
+    }
+
+    public function addItem(string $module, string $parent, string $index, string $modtype)
+    {
+        $table = $this->getModuleTable($module);
+        $sql = "
+            INSERT INTO $table
+            (id, parent, item, modtype)
+            VALUES (:id, :parent, :item, :modtype)
+        ";
+        $params = array();
+        if ($parent) {
+            $params[':id'] = $parent.'.'.$index;
+            $params[':item'] = $parent.'_'.$index;
+        } else {
+            $params[':id'] = $index;
+            $params[':item'] = $index;
+        }
+        $row[':parent'] = $parent;
+        $row[':modtype'] = $modtype;
+        return $this->data()->executeUpdate($sql, $params);
+    }
+
     public function getModule(string $module)
     {
         $sql = "
@@ -635,7 +676,20 @@ class Database
         return $this->config()->fetchAssoc($sql, $params);
     }
 
-    public function getModtypes(string $module, $schema)
+    public function getModuleSchemas(string $module)
+    {
+        $sql = "
+            SELECT *
+            FROM ark_model_schema
+            WHERE module = :module
+        ";
+        $params = array(
+            ':module' => strtolower($module),
+        );
+        return $this->config()->fetchAll($sql, $params);
+    }
+
+    public function getModtypes(string $module, string $schema)
     {
         $sql = "
             SELECT *
@@ -666,7 +720,7 @@ class Database
     public function getElement(string $element)
     {
         $sql = "
-            SELECT *, ark_view_element_type.class AS class, ark_view_layout.class AS layout_class
+            SELECT *, ark_view_element.type AS type, ark_view_element_type.class AS class, ark_view_layout.class AS layout_class
             FROM ark_view_element, ark_view_element_type
             LEFT JOIN ark_view_field ON ark_view_field.field = :element
             LEFT JOIN ark_view_layout ON ark_view_layout.layout = :element
@@ -962,6 +1016,21 @@ class Database
             ";
             $params[':domain'] = $domain;
         }
+        return $this->config()->fetchAll($sql, $params);
+    }
+
+    public function getFlashes(string $language)
+    {
+        $sql = "
+            SELECT *
+            FROM ark_config_flash
+            WHERE language = :language
+            AND active = :active
+        ";
+        $params = array(
+            ':language' => $language,
+            ':active' => true,
+        );
         return $this->config()->fetchAll($sql, $params);
     }
 }

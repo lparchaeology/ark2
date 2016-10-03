@@ -48,6 +48,7 @@ class Property extends AbstractObject
     private $uniqueValues = true;
     private $additionalValues = false;
     private $allowedValues = array();
+    private $literal = true;
     private $sortable = false;
     private $searchable = false;
     private $input = '';
@@ -72,22 +73,21 @@ class Property extends AbstractObject
         $this->maxValues = $config['max_values'];
         $this->uniqueValues = (bool)$config['unique_values'];
         $this->additionalValues = (bool)$config['additional_values'];
+        $this->literal = (bool)$config['literal'];
         $this->sortable = (bool)$config['sortable'];
         $this->searchable = (bool)$config['searchable'];
         $this->input = $config['input'];
         $this->keyword = ($config['keyword'] ? $config['keyword'] : $config['format_keyword']);
 
-        if ($this->dataclass == 'modtype') {
+        if ($this->id == 'modtype') {
             $modtypes = $this->db->getModtypes($config['module'], $config['schema_id']);
             foreach ($modtypes as $modtype) {
-                $this->allowedValues[] = $modtype['modtype'];
+                $this->allowedValues[$modtype['modtype']] = $modtype['keyword'];
             }
-        } elseif ($this->dataclass == 'module') {
-            $this->allowedValues[] = $config['module'];
         } else {
-            $allowedValues = $this->db->getallowedValues($this->id);
-            foreach ($allowedValues as $allowedValues) {
-                $this->allowedValues[] = $allowedValues['value'];
+            $allowedValues = $this->db->getAllowedValues($this->id);
+            foreach ($allowedValues as $allowedValue) {
+                $this->allowedValues[$allowedValue['value']] = $allowedValue['keyword'];
             }
         }
 
@@ -144,9 +144,14 @@ class Property extends AbstractObject
         return $this->allowedValues;
     }
 
+    public function literal()
+    {
+        return $this->literal;
+    }
+
     public function sortable()
     {
-        return $this-sortable;
+        return $this->sortable;
     }
 
     public function searchable()
@@ -182,11 +187,11 @@ class Property extends AbstractObject
             $attributes['title'] = $this->keyword.'.title';
             $attributes['description'] = $this->keyword.'.description';
         }
-        if ($this->default != null) {
+        if ($this->defaultValue != null) {
             $attributes['default'] = $this->default;
         }
         if ($this->hasallowedValues()) {
-            $attributes['allowedValues'] = $this->allowedValues();
+            $attributes['allowedValues'] = array_keys($this->allowedValues());
         }
         return $attributes;
     }
@@ -249,11 +254,20 @@ class Property extends AbstractObject
         return Property::createFromConfig($db, $property, $config);
     }
 
+    public static function getModtype(Database $db, string $schemaId, string $type, bool $enabled = true)
+    {
+        $config = $db->getProperty('modtype');
+        $config['module'] = $type;
+        $config['schema_id'] = $schemaId;
+        return Property::createFromConfig($db, 'modtype', $config);
+    }
+
     public static function getAllSchema(Database $db, string $schemaId, string $type, bool $enabled = true)
     {
         $properties = array();
         $configs = $db->getSchemaProperties($schemaId, $type);
         foreach ($configs as $config) {
+            $config['schema_id'] = $schemaId;
             $property = Property::createFromConfig($db, $config['property'], $config);
             if ($property->isValid() && ($config['enabled'] || !$enabled)) {
                 $element['property'] = $property;
@@ -272,6 +286,7 @@ class Property extends AbstractObject
         $properties = array();
         $configs = $db->getObjectProperties($object);
         foreach ($configs as $config) {
+            $config['schema_id'] = $schemaId;
             $property = Property::createFromConfig($db, $config['property'], $config);
             if ($property->isValid()) {
                 $element['property'] = $property;

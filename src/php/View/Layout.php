@@ -39,7 +39,7 @@ use Twig_Environment;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Type\FormType;
 use ARK\Database\Database;
-use ARK\Model\Item;
+use ARK\Model\AbstractResource;
 
 class Layout extends Group
 {
@@ -51,9 +51,9 @@ class Layout extends Group
         $this->template = 'layouts/layout.html.twig';
     }
 
-    protected function init(array $config, Item $item = null)
+    protected function init(array $config, AbstractResource $resource = null)
     {
-        parent::init($config, $item);
+        parent::init($config, $resource);
         if (!empty($config['template'])) {
             $this->template = $config['template'];
         }
@@ -72,7 +72,7 @@ class Layout extends Group
     ) {
         if ($this->template) {
             $options['layout'] = $this;
-            if ($factory && $this->item) {
+            if ($factory && $this->resource) {
                 $options['forms'] = $this->renderForms($factory);
             }
             return $twig->render($this->template, $options);

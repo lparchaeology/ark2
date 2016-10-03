@@ -54,12 +54,14 @@
                     {% for field in layout.fields %}
                         <td>
                             {% if field is defined and item[field.id] is defined %}
-                                {% if field.dataclass == 'date' %}
+                                {% if field.property.id == 'item' %}
+                                    {{ item[field.id]|raw }}
+                                {% elseif field.property.dataclass == 'datetime' %}
                                     {{ item[field.id].format('Y-m-d H:i:s') }}
-                                {% elseif field.dataclass in ['action', 'attribute', 'modtype'] %}
-                                    {{ item[field.id]|trans }}
-                                {% elseif field.dataclass == null %}
-                                    <a href="{{item.idx}}">{{ item[field.id] }}</a>
+                                {% elseif field.property.dataclass == 'date' %}
+                                    {{ item[field.id].format('Y-m-d') }}
+                                {% elseif field.property.dataclass == 'time' %}
+                                    {{ item[field.id].format('H:i:s') }}
                                 {% else %}
                                     {{ item[field.id]|trans }}
                                 {% endif %}
