@@ -158,6 +158,9 @@ class Field extends Element
             }
             return $data;
         }
+        if (!$this->property()) {
+            return array();
+        }
         $values = $item->attribute($this->property());
         if (is_array($values)) {
             $values = $values[0];
@@ -202,7 +205,7 @@ class Field extends Element
                         } else {
                             $data[$this->id()] = $item->modtype();
                         }
-                    } elseif ($trans && !$this->property()->literal()) {    
+                    } elseif ($trans && !$this->property()->literal()) {
                         $data[$this->id()] = $this->property()->keyword().'.'.$values;
                     } else {
                         $data[$this->id()] = $values;
@@ -238,6 +241,9 @@ class Field extends Element
             $options['entry_type'] = Type\TextType::class;
             $options['entry_options'] = array('label' => false, 'attr' => array('readonly' => true));
             $formBuilder->add($this->id, Type\CollectionType::class, $options);
+            return;
+        }
+        if (!$this->property()) {
             return;
         }
         $options['label'] = $this->keyword() ? $this->keyword() : false;

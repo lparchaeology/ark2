@@ -52,6 +52,11 @@ class Collection extends AbstractResource
         return $this->module->items($this->parent);
     }
 
+    public function recentItems(int $recent)
+    {
+        return $this->module->recentItems($this->parent, $recent);
+    }
+
     public static function get(Database $db, Module $module, Item $parent = null, string $id)
     {
         $coll = new Collection();

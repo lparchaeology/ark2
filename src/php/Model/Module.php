@@ -160,6 +160,11 @@ final class Module extends AbstractObject
         return Item::getAll($this->db, $this, $parent);
     }
 
+    public function recentItems(Item $parent = null, int $recent)
+    {
+        return Item::getRecent($this->db, $this, $parent, 5);
+    }
+
     public static function getRoot(Database $db, string $moduleId)
     {
         $module = new Module($db, $moduleId);

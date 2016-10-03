@@ -112,10 +112,10 @@ class ItemController
         $data = json_decode($request->getContent(), true);
         $last = $app['database']->getLastItem($module->id(), $site->id());
         $next = intval($last['idx']) + 1;
-        $res = $app['database']->addItem($parent, $index, $item, $modtype);
+        $res = $app['database']->addItem($module->id(), $site->index(), $next, $data['modtype']);
 
         if ($res) {
-            $item = $site->submodule($moduleSlug)->itemFromIndex($site, $itemSlug);
+            $item = $site->submodule($moduleSlug)->itemFromIndex($site, (string)$next);
             $data = $item->attributes();
         } else {
             $data['error'] = 'Uh oh...';
@@ -181,7 +181,12 @@ class ItemController
         $formBuilder->add('index', Type\TextType::class, array('label' => 'Item', 'attr' => array('readonly' => true)));
         $forms['item_form'] = $formBuilder->getForm()->createView();
 
-        $layout = Element::get($app['database'], 'cor_layout_item', $item);
+        $layout =  'cor_layout_item';
+        if ($request->get('layout')) {
+             $layout .= '_'.$request->get('layout');
+        }
+
+        $layout = Element::get($app['database'], $layout, $item);
         $options = array('item_form' => $forms['item_form']);
         return $layout->render($app['twig'], $options, $app['form.factory'], $item);
     }
@@ -190,10 +195,8 @@ class ItemController
     {
         $this->loadFlashes($app);
 
-        $arkMod = Module::get($app['database'], 'ark');
-        $ark = $arkMod->item('ark');
-        $siteMod = $ark->submodule('ste');
-        $site = $siteMod->item($siteSlug);
+        $root = Item::getRoot($app['database'], 'ark');
+        $site = $root->submodule('ste')->item($siteSlug);
         if (!$site->isValid()) {
             throw new NotFoundHttpException('Site Code '.$siteSlug.' is not valid.');
         }
@@ -202,16 +205,16 @@ class ItemController
         if (!$module->isValid()) {
             throw new NotFoundHttpException('Module '.$moduleSlug.' is not valid for Site Code '.$siteSlug);
         }
-
-        $layout = Layout::fetchLayout($app['database'], 'cor_layout_register', $module);
+        $coll = Collection::get($app['database'], $module, $site, 'items');
+        $layout = Element::get($app['database'], 'cor_layout_list', $coll);
 
         $fields = $layout->allFields();
-        $items = Item::getRecent($app['database'], $module, $site->id(), 5);
+        $items = $coll->recentItems(5);
         $rows = array();
         foreach ($items as $item) {
             $data = array();
             foreach ($fields as $field) {
-                $data = array_merge($data, $field->formData($item, true));
+                $data = array_merge($data, $field->itemData($item, true));
             }
             $data['item'] = $item->id();
             $data['parent'] = $item->parent();

@@ -601,7 +601,7 @@ class Database
     public function getRecentItems(string $module, string $parent, string $rows)
     {
         $table = $this->getModuleTable($module);
-        $count = $this->countItems($module, $parent, $moduleTable);
+        $count = $this->countItems($module, $parent, $table);
         $start = ($count > $rows) ? $count - $rows : 0;
         $params = array();
         $sql = "
@@ -636,7 +636,7 @@ class Database
             $params[':parent'] = $parent;
         }
         $sql .= "
-            ORDER DESC BY LENGTH(idx), idx
+            ORDER BY LENGTH(idx) DESC, idx DESC
         ";
         return $this->data()->fetchAssoc($sql, $params);
     }
@@ -646,8 +646,8 @@ class Database
         $table = $this->getModuleTable($module);
         $sql = "
             INSERT INTO $table
-            (id, parent, item, modtype)
-            VALUES (:id, :parent, :item, :modtype)
+            (id, parent, idx, item, modtype)
+            VALUES (:id, :parent, :idx, :item, :modtype)
         ";
         $params = array();
         if ($parent) {
@@ -657,8 +657,9 @@ class Database
             $params[':id'] = $index;
             $params[':item'] = $index;
         }
-        $row[':parent'] = $parent;
-        $row[':modtype'] = $modtype;
+        $params[':parent'] = $parent;
+        $params[':idx'] = $index;
+        $params[':modtype'] = $modtype;
         return $this->data()->executeUpdate($sql, $params);
     }
 

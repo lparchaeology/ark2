@@ -84,7 +84,7 @@ class Property extends AbstractObject
             foreach ($modtypes as $modtype) {
                 $this->allowedValues[$modtype['modtype']] = $modtype['keyword'];
             }
-        } else {
+        } elseif ($config['allowed_values']) {
             $allowedValues = $this->db->getAllowedValues($this->id);
             foreach ($allowedValues as $allowedValue) {
                 $this->allowedValues[$allowedValue['value']] = $allowedValue['keyword'];

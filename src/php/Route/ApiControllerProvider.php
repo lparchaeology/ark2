@@ -49,36 +49,29 @@ class ApiControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers
-            ->method('GET')
             ->get('/sites/{siteSlug}/{moduleSlug}/{itemSlug}', 'ARK\\Controller\\ItemController::getItemAction')
             ->bind('api.item.get');
 
         $controllers
-            ->method('PUT')
-            ->get('/sites/{siteSlug}/{moduleSlug}/{itemSlug}', 'ARK\\Controller\\ItemController::putItemAction')
-            ->bind('api.item.put');
-
-        $controllers
-            ->method('POST')
-            ->get('/sites/{siteSlug}/{moduleSlug}', 'ARK\\Controller\\ItemController::postItemAction')
-            ->bind('api.item.post');
-
-        $controllers
-            ->method('GET')
             ->get('/sites/{siteSlug}/{moduleSlug}', 'ARK\\Controller\\ItemController::getItemsAction')
             ->bind('api.items.get');
 
         $controllers
-            ->method('GET')
             ->get('/sites/{siteSlug}', 'ARK\\Controller\\SiteController::getSiteAction')
             ->bind('api.site.get');
 
         $controllers
-            ->method('GET')
             ->get('/sites', 'ARK\\Controller\\SiteController::getSitesAction')
             ->bind('api.sites.get');
 
+        $controllers
+            ->put('/sites/{siteSlug}/{moduleSlug}/{itemSlug}', 'ARK\\Controller\\ItemController::putItemAction')
+            ->bind('api.item.put');
+
+        $controllers
+            ->post('/sites/{siteSlug}/{moduleSlug}', 'ARK\\Controller\\ItemController::postItemAction')
+            ->bind('api.item.post');
+
         return $controllers;
     }
-
 }

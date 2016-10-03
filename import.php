@@ -15,7 +15,7 @@ $config = array(
     'port' => '8889',
     'dbname' => 'ark_data',
     'user' => 'ark_user',
-    'password' => 'arkpass',
+    'password' => 'ark_pass',
 );
 $new = \Doctrine\DBAL\DriverManager::getConnection($config);
 $new->connect();
@@ -26,7 +26,7 @@ $config = array(
     'port' => '8889',
     'dbname' => 'ark_config',
     'user' => 'ark_user',
-    'password' => 'arkpass',
+    'password' => 'ark_pass',
 );
 $config_db = \Doctrine\DBAL\DriverManager::getConnection($config);
 $config_db->connect();
@@ -36,13 +36,13 @@ $modules = array('act', 'cxt', 'grp', 'lus', 'pln', 'rgf', 'sec', 'sgr', 'smp', 
 // Standard dataclass list to import
 $classes = array(
     'action' => 'cor_tbl_action',
-    'attribute' => 'cor_tbl_attribute',
-    'date' => 'ark_data_date',
+    'attribute' => 'ark_dataclass_string',
+    'date' => 'ark_dataclass_date',
     'file' => 'cor_tbl_file',
-    'number' => 'ark_data_number',
+    'number' => 'ark_dataclass_integer',
     'span' => 'cor_tbl_span',
-    'txt' => 'ark_data_string',
-    'xmi' => 'ark_data_xmi',
+    'txt' => 'ark_dataclass_text',
+    'xmi' => 'ark_dataclass_xmi',
 );
 // classtypes to map to new property names
 $propertMap = array(
@@ -51,23 +51,21 @@ $propertMap = array(
 );
 
 // Purge new tables
-if (true && $update) {
-    print_r("===========================================================================================\n\n");
-    print_r("Purging Tables\n\n");
-    foreach ($modules as $module) {
-        clearTable($new, 'ark_module_'.$module);
-    }
-    foreach ($classes as $dataclass => $new_tbl) {
-        clearTable($new, $new_tbl);
-    }
-    clearTable($new, 'cor_lut_file');
+print_r("===========================================================================================\n\n");
+print_r("Purging Tables\n\n");
+foreach ($modules as $module) {
+    clearTable($new, 'ark_module_'.$module);
 }
+foreach ($classes as $dataclass => $new_tbl) {
+    clearTable($new, $new_tbl);
+}
+clearTable($new, 'cor_lut_file');
 
 // Import ARKs
 importArk('ark_minories', 'MNO12', '100 Minories', 'minories', false);
-importArk('ark_prescot', 'PCO06', 'Prescot Street', 'prescot');
-importArk('ark_stolaves', 'SOL13', 'St Olaves', 'olaves');
-importArk('ark_horsegroom', 'HGI13', 'Horse and Groom', 'horse');
+importArk('ark_prescot', 'PCO06', 'Prescot Street', 'prescot', false);
+importArk('ark_olaves', 'SOL13', 'St Olaves', 'olaves', false);
+importArk('ark_horsegroom', 'HGI13', 'Horse and Groom', 'horse', false);
 
 
 function importArk($dbname, $site, $name, $schema_id, $importSchema = true) {
@@ -83,7 +81,7 @@ function importArk($dbname, $site, $name, $schema_id, $importSchema = true) {
         'port' => '8889',
         'dbname' => $dbname,
         'user' => 'ark_user',
-        'password' => 'arkpass',
+        'password' => 'ark_pass',
     );
     $old = \Doctrine\DBAL\DriverManager::getConnection($config);
     $old->connect();
@@ -125,20 +123,21 @@ function importArk($dbname, $site, $name, $schema_id, $importSchema = true) {
             }
             $sql = "
                 INSERT INTO $new_tbl
-                (id, parent, item, modtype, cre_by, cre_on)
-                VALUES (:id, :parent, :item, :modtype, :cre_by, :cre_on)
+                (id, parent, idx, item, modtype, cre_by, cre_on)
+                VALUES (:id, :parent, :idx, :item, :modtype, :cre_by, :cre_on)
             ";
             $updates = 0;
             foreach ($items as $item) {
-                $id = $item['itemkey'];
                 $itemkey = explode('_', $item['itemkey']);
                 $parent = $itemkey[0];
                 $index = $itemkey[1];
+                $id = $parent.'.'.$index;
                 $modtype = (isset($item['modtype']) ? strtolower($item['modtype']) : '');
                 $params = array(
                     ':id' => $id,
                     ':parent' => $parent,
-                    ':item' => $index,
+                    ':idx' => $index,
+                    ':item' => $item['itemkey'],
                     ':modtype' => $modtype,
                     ':cre_by' => $item['cre_by'],
                     ':cre_on' => $item['cre_on'],
@@ -155,11 +154,12 @@ function importArk($dbname, $site, $name, $schema_id, $importSchema = true) {
     // Insert the Site Module entry and name
     $sql = "
         INSERT INTO ark_module_ste
-        (id, item, schema_id)
-        VALUES (:id, :item, :schema_id)
+        (id, idx, item, schema_id)
+        VALUES (:id, :idx, :item, :schema_id)
     ";
     $params = array(
         ':id' => $site,
+        ':idx' => $site,
         ':item' => $site,
         ':schema_id' => $schema_id,
     );
@@ -167,13 +167,13 @@ function importArk($dbname, $site, $name, $schema_id, $importSchema = true) {
         $new->executeUpdate($sql, $params);
     }
     $sql = "
-        INSERT INTO ark_data_string
-        (module, id, property, language, value)
-        VALUES (:module, :id, :property, :language, :value)
+        INSERT INTO ark_dataclass_text
+        (module, item, property, language, value)
+        VALUES (:module, :item, :property, :language, :value)
     ";
     $params = array(
         ':module' => 'ste',
-        ':id' => $site,
+        ':item' => $site,
         ':property' => 'name',
         ':language' => 'en',
         ':value' => $name,
@@ -218,6 +218,12 @@ function importArk($dbname, $site, $name, $schema_id, $importSchema = true) {
         $updates = 0;
         foreach ($frags as $frag) {
             if (substr($frag['itemkey'], 0, 11) == 'cor_tbl_map') {
+                print_r('Skipping map frag : '.$frag['id'].' : '.$frag['itemkey'].' : '.$frag['itemvalue']."\n");
+                continue;
+            }
+            // Skip if parent is a lut
+            if (substr($frag['itemkey'], 0, 8) == 'cor_lut_') {
+                print_r('Skipping lut frag : '.$frag['id'].' : '.$frag['itemkey'].' : '.$frag['itemvalue']."\n");
                 continue;
             }
             // If itemkey/itemvalue is a chain reference, replace with actual item
@@ -228,10 +234,13 @@ function importArk($dbname, $site, $name, $schema_id, $importSchema = true) {
             }
             // Skip if parent doesn't exist, i.e. orphaned frag!
             if ($frag['itemkey'] == null) {
+                print_r('Skipping orphan frag : '.$frag['id'].' : '.$frag['old_itemkey'].' : '.$frag['old_itemvalue']."\n");
                 continue;
             }
             if ($dataclass == 'attribute') {
-                $frag['attribute'] = fixAttribute($frag['attribute']);
+                $frag['value'] = fixAttribute($frag['attribute']);
+                unset($frag['attribute']);
+                unset($frag['boolean']);
             }
             if (isset($frag[$type])) {
                 $frag['property'] = $frag[$type];
@@ -255,7 +264,7 @@ function importArk($dbname, $site, $name, $schema_id, $importSchema = true) {
                 } else {
                     $frag['actor_module'] = substr($frag['actor_itemkey'], 0, 3);
                 }
-                $frag['actor_id'] = $frag['actor_itemvalue'];
+                $frag['actor_item'] = $frag['actor_itemvalue'];
                 unset($frag['actor_itemkey']);
                 unset($frag['actor_itemvalue']);
             }
@@ -265,11 +274,23 @@ function importArk($dbname, $site, $name, $schema_id, $importSchema = true) {
                 } else {
                     $frag['xmi_module'] = substr($frag['xmi_itemkey'], 0, 3);
                 }
-                $frag['xmi_id'] = $frag['xmi_itemvalue'];
+                $itemvalue = explode('_', $frag['xmi_itemvalue']);
+                $parent = $itemvalue[0];
+                if (!isset($itemvalue[1])) {
+                    print_r('Skipping XMI frag : '.$frag['old_id'].' : '.$frag['xmi_itemkey'].' : '.$frag['xmi_itemvalue']."\n");
+                    continue;
+                }
+                $index = $itemkey[1];
+                $id = $parent.'.'.$index;
+                $frag['xmi_item'] = $id;
                 unset($frag['xmi_itemkey']);
                 unset($frag['xmi_itemvalue']);
             }
-            $frag['id'] = $frag['itemvalue'];
+            $itemvalue = explode('_', $frag['itemvalue']);
+            $parent = $itemvalue[0];
+            $index = $itemvalue[1];
+            $id = $parent.'.'.$index;
+            $frag['item'] = $id;
             unset($frag['itemkey']);
             unset($frag['itemvalue']);
             if (isset($frag['date'])) {
@@ -296,8 +317,10 @@ function importArk($dbname, $site, $name, $schema_id, $importSchema = true) {
                 VALUES ($vl)
             ";
             $params = array_values($frag);
-            $new->executeUpdate($sql, $params);
-            $updates = $updates + 1;
+            if ($update) {
+                $new->executeUpdate($sql, $params);
+                $updates = $updates + 1;
+            }
         }
         print_r($new_tbl.' : '.$updates."\n\n");
     }
@@ -517,4 +540,3 @@ function fixAttribute($attr) {
             return $attr;
     }
 }
-
