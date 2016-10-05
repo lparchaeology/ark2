@@ -40,7 +40,7 @@ use ARK\Database\Database;
 class Item extends AbstractResource
 {
     private $index = null;
-    private $iitem = null;
+    private $name = null;
 
     protected function init(Database $db, Module $module, Item $parent = null, array $config)
     {
@@ -49,14 +49,14 @@ class Item extends AbstractResource
         $this->item = $config['item'];
     }
 
-    public function item()
-    {
-        return $this->item;
-    }
-
     public function index()
     {
         return $this->index;
+    }
+
+    public function name()
+    {
+        return $this->name;
     }
 
     public function attributes()

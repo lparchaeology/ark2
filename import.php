@@ -1,4 +1,6 @@
 <?php
+use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Schema\Comparator;
 
 // First modify cor_tbl_module table to add modtype column and populate with modtype field name, i.e. abkttype, cxttype, etc.
 // Run script and correct any incorrect data reported, duplicates, etc.
@@ -44,6 +46,16 @@ $classes = array(
     'txt' => 'ark_dataclass_text',
     'xmi' => 'ark_dataclass_xmi',
 );
+$dataclass_tables = array(
+    'cor_tbl_action' => 'cor_tbl_action',
+    'cor_tbl_attribute' => 'ark_dataclass_string',
+    'cor_tbl_date' => 'ark_dataclass_date',
+    'cor_tbl_file' => 'cor_tbl_file',
+    'cor_tbl_number' => 'ark_dataclass_integer',
+    'cor_tbl_span' => 'cor_tbl_span',
+    'cor_tbl_txt' => 'ark_dataclass_text',
+    'cor_tbl_xmi' => 'ark_dataclass_xmi',
+);
 // classtypes to map to new property names
 $propertMap = array(
     'cxtsheet' => 'sheet',
@@ -61,15 +73,53 @@ foreach ($classes as $dataclass => $new_tbl) {
 }
 clearTable($new, 'cor_lut_file');
 
+// Add temp chain fields
+$schema_new = $new->getSchemaManager()->createSchema();
+$schema = clone $schema_new;
+foreach ($classes as $dataclass => $new_tbl) {
+    if (!$schema->getTable($new_tbl)->hasColumn('old_id')) {
+        $schema->getTable($new_tbl)->addColumn('old_id', 'integer');
+    }
+    if (!$schema->getTable($new_tbl)->hasColumn('old_itemkey')) {
+        $schema->getTable($new_tbl)->addColumn('old_itemkey', 'string', array("length" => 50));
+    }
+    if (!$schema->getTable($new_tbl)->hasColumn('old_itemvalue')) {
+        $schema->getTable($new_tbl)->addColumn('old_itemvalue', 'string', array("length" => 50));
+    }
+}
+$changes = $schema_new->getMigrateToSql($schema, $new->getDatabasePlatform());
+foreach($changes as $sql) {
+    $new->executeUpdate($sql, array());
+}
+
 // Import ARKs
 importArk('ark_minories', 'MNO12', '100 Minories', 'minories', false);
 importArk('ark_prescot', 'PCO06', 'Prescot Street', 'prescot', false);
 importArk('ark_olaves', 'SOL13', 'St Olaves', 'olaves', false);
 importArk('ark_horsegroom', 'HGI13', 'Horse and Groom', 'horse', false);
 
+// Remove temp chain fields
+$schema_new = $new->getSchemaManager()->createSchema();
+$schema = clone $schema_new;
+foreach ($classes as $dataclass => $new_tbl) {
+    if ($schema->getTable($new_tbl)->hasColumn('old_id')) {
+        $schema->getTable($new_tbl)->dropColumn('old_id');
+    }
+    if ($schema->getTable($new_tbl)->hasColumn('old_itemkey')) {
+        $schema->getTable($new_tbl)->dropColumn('old_itemkey');
+    }
+    if ($schema->getTable($new_tbl)->hasColumn('old_itemvalue')) {
+        $schema->getTable($new_tbl)->dropColumn('old_itemvalue');
+    }
+}
+$changes = $schema_new->getMigrateToSql($schema, $new->getDatabasePlatform());
+foreach($changes as $sql) {
+    $new->executeUpdate($sql, array());
+}
+
 
 function importArk($dbname, $site, $name, $schema_id, $importSchema = true) {
-    global $new, $config_db, $classes, $update;
+    global $new, $config_db, $classes, $dataclass_tables, $update;
 
     print_r("===========================================================================================\n\n");
     print_r('Importing Site '.$site.' from Database '.$dbname."\n\n");
@@ -123,8 +173,8 @@ function importArk($dbname, $site, $name, $schema_id, $importSchema = true) {
             }
             $sql = "
                 INSERT INTO $new_tbl
-                (id, parent, idx, item, modtype, cre_by, cre_on)
-                VALUES (:id, :parent, :idx, :item, :modtype, :cre_by, :cre_on)
+                (id, parent, idx, name, modtype, cre_by, cre_on)
+                VALUES (:id, :parent, :idx, :name, :modtype, :cre_by, :cre_on)
             ";
             $updates = 0;
             foreach ($items as $item) {
@@ -137,7 +187,7 @@ function importArk($dbname, $site, $name, $schema_id, $importSchema = true) {
                     ':id' => $id,
                     ':parent' => $parent,
                     ':idx' => $index,
-                    ':item' => $item['itemkey'],
+                    ':name' => $item['itemkey'],
                     ':modtype' => $modtype,
                     ':cre_by' => $item['cre_by'],
                     ':cre_on' => $item['cre_on'],
@@ -154,13 +204,13 @@ function importArk($dbname, $site, $name, $schema_id, $importSchema = true) {
     // Insert the Site Module entry and name
     $sql = "
         INSERT INTO ark_module_ste
-        (id, idx, item, schema_id)
-        VALUES (:id, :idx, :item, :schema_id)
+        (id, idx, name, schema_id)
+        VALUES (:id, :idx, :name, :schema_id)
     ";
     $params = array(
         ':id' => $site,
         ':idx' => $site,
-        ':item' => $site,
+        ':name' => $site,
         ':schema_id' => $schema_id,
     );
     if ($update) {
@@ -323,6 +373,50 @@ function importArk($dbname, $site, $name, $schema_id, $importSchema = true) {
             }
         }
         print_r($new_tbl.' : '.$updates."\n\n");
+    }
+
+    // Update the chain links
+    foreach ($classes as $dataclass => $new_tbl) {
+        $updates = 0;
+        $sql = "
+            SELECT $new_tbl.*
+            FROM $new_tbl
+            WHERE NULLIF(old_itemkey, '') IS NOT NULL
+        ";
+        $frags = $new->fetchAll($sql, array());
+        $updates = 0;
+        foreach ($frags as $frag) {
+            if ($frag['old_itemkey'] && $frag['old_itemvalue']){
+                $tbl = $dataclass_tables[$frag['old_itemkey']];
+                $sql = "
+                    SELECT $tbl.*
+                    FROM $tbl
+                    WHERE module = :module
+                    AND item = :item
+                    AND old_id = :old_id
+                ";
+                $params = array(
+                    ':module' => $frag['module'],
+                    ':item' => $frag['item'],
+                    ':old_id' => $frag['old_itemvalue'],
+                );
+                $parent = $new->fetchAssoc($sql, $params);
+                $sql = "
+                    UPDATE $new_tbl
+                    SET parent = :parent
+                    WHERE fid = :fid
+                ";
+                $params = array(
+                    ':fid' => $frag['fid'],
+                    ':parent' => $tbl.'.'.$parent['fid'],
+                );
+                if ($update) {
+                    $new->executeUpdate($sql, $params);
+                    $updates = $updates + 1;
+                }
+            }
+        }
+        print_r($new_tbl.' : chained : '.$updates."\n\n");
     }
 
     // TODO Update enum table with all attribute values

@@ -192,9 +192,9 @@ class Field extends Element
                     if ($this->property()->id() == 'item') {
                         if ($trans) {
                             if ($item->parent()) {
-                                $data[$this->id()] = '<a href="'.$item->module()->type().'/'.$item->index().'">'.$item->item().'</a>';
+                                $data[$this->id()] = '<a href="'.$item->module()->type().'/'.$item->index().'">'.$item->name().'</a>';
                             } else {
-                                $data[$this->id()] = '<a href="'.$item->index().'">'.$item->item().'</a>';
+                                $data[$this->id()] = '<a href="'.$item->index().'">'.$item->name().'</a>';
                             }
                         } else {
                             $data[$this->id()] = $item->id();
