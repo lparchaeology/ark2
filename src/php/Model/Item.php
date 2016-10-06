@@ -46,7 +46,7 @@ class Item extends AbstractResource
     {
         parent::init($db, $module, $parent, $config);
         $this->index = $config['idx'];
-        $this->item = $config['item'];
+        $this->name = $config['name'];
     }
 
     public function index()
@@ -71,7 +71,7 @@ class Item extends AbstractResource
     public function attribute(Property $property)
     {
         if ($property->id() == 'item') {
-            return $this->item;
+            return $this->name;
         }
         if ($property->id() == 'modtype') {
             return $this->modtype;

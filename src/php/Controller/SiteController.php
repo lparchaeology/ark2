@@ -84,7 +84,7 @@ class SiteController
             $data['id'] = $item->id();
             $data['parent'] = $item->parent();
             $data['idx'] = $item->index();
-            $data['item'] = $item->item();
+            $data['name'] = $item->name();
             $data['modtype'] = $item->modtype();
             foreach ($fields as $field) {
                 $data = array_merge($data, $field->itemData($item, true));

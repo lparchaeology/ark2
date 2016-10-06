@@ -2,7 +2,6 @@
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Schema\Comparator;
 
-// First modify cor_tbl_module table to add modtype column and populate with modtype field name, i.e. abkttype, cxttype, etc.
 // Run script and correct any incorrect data reported, duplicates, etc.
 
 require_once 'vendor/autoload.php';
@@ -72,6 +71,7 @@ foreach ($classes as $dataclass => $new_tbl) {
     clearTable($new, $new_tbl);
 }
 clearTable($new, 'cor_lut_file');
+clearTable($new, 'ark_dataclass_graph');
 
 // Add temp chain fields
 $schema_new = $new->getSchemaManager()->createSchema();
@@ -88,7 +88,7 @@ foreach ($classes as $dataclass => $new_tbl) {
     }
 }
 $changes = $schema_new->getMigrateToSql($schema, $new->getDatabasePlatform());
-foreach($changes as $sql) {
+foreach ($changes as $sql) {
     $new->executeUpdate($sql, array());
 }
 
@@ -113,12 +113,13 @@ foreach ($classes as $dataclass => $new_tbl) {
     }
 }
 $changes = $schema_new->getMigrateToSql($schema, $new->getDatabasePlatform());
-foreach($changes as $sql) {
+foreach ($changes as $sql) {
     $new->executeUpdate($sql, array());
 }
 
 
-function importArk($dbname, $site, $name, $schema_id, $importSchema = true) {
+function importArk($dbname, $site, $name, $schema_id, $importSchema = true)
+{
     global $new, $config_db, $classes, $dataclass_tables, $update;
 
     print_r("===========================================================================================\n\n");
@@ -232,6 +233,7 @@ function importArk($dbname, $site, $name, $schema_id, $importSchema = true) {
         $new->executeUpdate($sql, $params);
     }
 
+    $parents = array();
     // Copy the standard data classes
     foreach ($classes as $dataclass => $new_tbl) {
         $type = $dataclass.'type';
@@ -375,7 +377,9 @@ function importArk($dbname, $site, $name, $schema_id, $importSchema = true) {
         print_r($new_tbl.' : '.$updates."\n\n");
     }
 
-    // Update the chain links
+    // Update the fragment chain graph
+
+    // Add children to the graph
     foreach ($classes as $dataclass => $new_tbl) {
         $updates = 0;
         $sql = "
@@ -386,7 +390,7 @@ function importArk($dbname, $site, $name, $schema_id, $importSchema = true) {
         $frags = $new->fetchAll($sql, array());
         $updates = 0;
         foreach ($frags as $frag) {
-            if ($frag['old_itemkey'] && $frag['old_itemvalue']){
+            if ($frag['old_itemkey'] && $frag['old_itemvalue']) {
                 $tbl = $dataclass_tables[$frag['old_itemkey']];
                 $sql = "
                     SELECT $tbl.*
@@ -400,19 +404,56 @@ function importArk($dbname, $site, $name, $schema_id, $importSchema = true) {
                     ':item' => $frag['item'],
                     ':old_id' => $frag['old_itemvalue'],
                 );
-                $parent = $new->fetchAssoc($sql, $params);
+                $head = $new->fetchAssoc($sql, $params);
+                $parent = $tbl.'.'.$head['fid'];
+                $child = $new_tbl.'.'.$frag['fid'];
                 $sql = "
                     UPDATE $new_tbl
-                    SET parent = :parent
+                    SET parent = :parent, old_id = '', old_itemkey = '', old_itemvalue = ''
                     WHERE fid = :fid
                 ";
                 $params = array(
                     ':fid' => $frag['fid'],
-                    ':parent' => $tbl.'.'.$parent['fid'],
+                    ':parent' => $parent,
                 );
                 if ($update) {
                     $new->executeUpdate($sql, $params);
                     $updates = $updates + 1;
+                }
+                // Add parent to the graph
+                try {
+                    $sql = "
+                        INSERT INTO ark_dataclass_graph(parent, child, depth)
+                        VALUES (:self, :self, 0)
+                    ";
+                    $params = array(
+                        'self' => $parent,
+                    );
+                    if ($update) {
+                        $new->executeUpdate($sql, $params);
+                    }
+                } catch (\Exception $e) {
+                }
+                // Add child to the graph
+                $params = array(
+                    'self' => $child,
+                );
+                if ($update) {
+                    $new->executeUpdate($sql, $params);
+                }
+                // Add links to the graph
+                $sql = "
+                    INSERT INTO ark_dataclass_graph(parent, child, depth)
+                        SELECT p.parent, c.child, p.depth+c.depth+1
+                        FROM ark_dataclass_graph p, ark_dataclass_graph c
+                        WHERE p.child = :parent and c.parent = :child
+                ";
+                $params = array(
+                    ':parent' => $parent,
+                    ':child' => $child,
+                );
+                if ($update) {
+                    $new->executeUpdate($sql, $params);
                 }
             }
         }
@@ -521,10 +562,10 @@ function importArk($dbname, $site, $name, $schema_id, $importSchema = true) {
             print_r("\n");
         }
     }
-
 }
 
-function insertRow($new_db, $row, $table) {
+function insertRow($new_db, $row, $table)
+{
     global $update;
     $fields = array_keys($row);
     $values = array_values($row);
@@ -544,7 +585,8 @@ function insertRow($new_db, $row, $table) {
     }
 }
 
-function getParent($db, $tbl, $id) {
+function getParent($db, $tbl, $id)
+{
     $sql = "
         SELECT *
         FROM $tbl
@@ -557,11 +599,13 @@ function getParent($db, $tbl, $id) {
     return array('itemkey' => $parent['itemkey'], 'itemvalue' => $parent['itemvalue']);
 }
 
-function isTable($itemkey) {
+function isTable($itemkey)
+{
     return (substr($itemkey, 0, 8) == 'cor_tbl_');
 }
 
-function clearTable($db, $table) {
+function clearTable($db, $table)
+{
     global $update;
     print_r("Clear table : $table");
     $sql = "TRUNCATE TABLE $table";
@@ -572,7 +616,8 @@ function clearTable($db, $table) {
     print_r("\n");
 }
 
-function fixAttribute($attr) {
+function fixAttribute($attr)
+{
     switch ($attr) {
         case '<5%':
             return 'lt5pcnt';

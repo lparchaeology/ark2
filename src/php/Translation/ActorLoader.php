@@ -47,7 +47,7 @@ class ActorLoader implements LoaderInterface
             SELECT *
             FROM ark_module_act, ark_dataclass_string
             WHERE ark_dataclass_string.module = :module
-            AND ark_dataclass_string.item = ark_module_act.item
+            AND ark_dataclass_string.item = ark_module_act.id
             AND ark_dataclass_string.property = :property
         ";
         $params = array(
