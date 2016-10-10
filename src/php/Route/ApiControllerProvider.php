@@ -35,11 +35,7 @@
 namespace ARK\Route;
 
 use Silex\Application;
-use Silex\ControllerCollection;
-use Silex\ServiceControllerResolver;
 use Silex\API\ControllerProviderInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ApiControllerProvider implements ControllerProviderInterface
 {
@@ -72,6 +68,7 @@ class ApiControllerProvider implements ControllerProviderInterface
             ->post('/sites/{siteSlug}/{moduleSlug}', 'ARK\\Controller\\ItemController::postItemAction')
             ->bind('api.item.post');
 
+        $controllers->after($app['psr7.response']);
         return $controllers;
     }
 }

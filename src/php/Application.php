@@ -35,12 +35,16 @@
 namespace ARK;
 
 use Psr\Log\LogLevel;
+use Psr\Http\Message\ResponseInterface;
+use Silex\Application as SilexApplication;
 use Symfony\Component\Debug\Debug;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use ARK\Translation\ActorLoader;
 use ARK\Translation\DatabaseLoader;
 use ARK\Translation\Profiler\TranslationProfilerServiceProvider;
 
-class Application extends \Silex\Application
+class Application extends SilexApplication
 {
     use \Silex\Application\TwigTrait;
     use \Silex\Application\MonologTrait;
@@ -86,6 +90,24 @@ class Application extends \Silex\Application
         $app->register(new \Silex\Provider\ServiceControllerServiceProvider());
         $app->register(new \Silex\Provider\SessionServiceProvider());
 
+        // Enable PSR-7 Interop
+        $app['psr7.http_message_factory'] = function () {
+            return new DiactorosFactory();
+        };
+        $app['psr7.request'] = $app->protect(
+            function (HttpFoundationRequest $request) use ($app) {
+                return $app['psr7.http_message_factory']->createRequest($request);
+            }
+        );
+        $app['psr7.http_foundation_factory'] = function () {
+            return new HttpFoundationFactory();
+        };
+        $app['psr7.response'] = $app->protect(
+            function (ResponseInterface $response) use ($app) {
+                return $app['psr7.http_foundation_factory']->createResponse($response);
+            }
+        );
+
         // Enable the Database
         $app->register(new \Silex\Provider\DoctrineServiceProvider());
         $app->register(new Database\Provider\ConfigurationServiceProvider());
@@ -108,7 +130,7 @@ class Application extends \Silex\Application
         // TODO Load from config
         $app['locale'] = 'en';
         $app['locale_fallbacks'] = array('en');
-        $app->extend('translator', function($translator, $app) {
+        $app->extend('translator', function ($translator, $app) {
             $translator->addLoader('database', new DatabaseLoader());
             $translator->addLoader('actor', new ActorLoader());
             // TODO Load translation files
@@ -173,7 +195,9 @@ class Application extends \Silex\Application
                 'logout' => array(
                     'logout_path' => '/users/logout',
                 ),
-                'users' => function($app) { return $app['user.manager']; },
+                'users' => function ($app) {
+                    return $app['user.manager'];
+                },
             ),
         );
 

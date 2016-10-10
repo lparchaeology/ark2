@@ -84,7 +84,8 @@
         "rootlogin/silex-userprovider": "dev-silex2",
         "justinrainbow/json-schema": "^3.0",
         "zendframework/zend-diactoros": "^1.3",
-        "woohoolabs/yin": "^0.11.0"
+        "woohoolabs/yin": "^0.11.0",
+        "symfony/psr-http-message-bridge": "^1.0"
     },
     "autoload": {
         "psr-4": {"ARK\\": "src/php/"}
