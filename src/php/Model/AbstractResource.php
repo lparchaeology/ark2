@@ -37,7 +37,7 @@ namespace ARK\Model;
 
 use ARK\Database\Database;
 
-class AbstractResource
+abstract class AbstractResource
 {
     protected $db = null;
     protected $module = null;
@@ -108,6 +108,8 @@ class AbstractResource
         }
         return null;
     }
+
+    abstract public function path();
 
     public function modtype()
     {

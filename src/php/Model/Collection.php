@@ -47,6 +47,14 @@ class Collection extends AbstractResource
         $this->id = $config['id'];
     }
 
+    public function path()
+    {
+        if ($this->parent) {
+            return $this->parent->path().'/'.$this->module()->type();
+        }
+        return '/'.$this->module()->type();
+    }
+
     public function items()
     {
         return $this->module->items($this->parent);

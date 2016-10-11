@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5110a657bdab364dabec17d15797778c",
-    "content-hash": "9d6cab8f22d5d9f87187adb21dc5bc48",
+    "hash": "ce6f2e3f5b2fe1c74d0e658db31f8348",
+    "content-hash": "cb3f94b53043e034da974cddae7c012c",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -837,40 +837,46 @@
             "time": "2014-01-12 16:20:24"
         },
         {
-            "name": "justinrainbow/json-schema",
-            "version": "3.0.1",
+            "name": "league/json-guard",
+            "version": "0.3.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/justinrainbow/json-schema.git",
-                "reference": "2128f9de8be4600c3394d94c3918faf67157b76b"
+                "url": "https://github.com/thephpleague/json-guard.git",
+                "reference": "eb6d7f32c570927bc21de90de0c91245084bf024"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/2128f9de8be4600c3394d94c3918faf67157b76b",
-                "reference": "2128f9de8be4600c3394d94c3918faf67157b76b",
+                "url": "https://api.github.com/repos/thephpleague/json-guard/zipball/eb6d7f32c570927bc21de90de0c91245084bf024",
+                "reference": "eb6d7f32c570927bc21de90de0c91245084bf024",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.5.0"
             },
             "require-dev": {
+                "ext-bcmath": "*",
+                "ext-curl": "*",
                 "json-schema/json-schema-test-suite": "1.2.0",
-                "phpdocumentor/phpdocumentor": "~2",
-                "phpunit/phpunit": "^4.8.22"
+                "phpunit/phpunit": "4.*",
+                "scrutinizer/ocular": "~1.1",
+                "squizlabs/php_codesniffer": "~2.3"
             },
-            "bin": [
-                "bin/validate-json"
-            ],
+            "suggest": {
+                "ext-bcmath": "Required to properly check constraints for numbers larger than PHP_INT_MAX."
+            },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0.x-dev"
+                    "dev-master": "1.0-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "JsonSchema\\": "src/JsonSchema/"
-                }
+                    "League\\JsonGuard\\": "src"
+                },
+                "files": [
+                    "src/functions.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -878,29 +884,22 @@
             ],
             "authors": [
                 {
-                    "name": "Bruno Prieto Reis",
-                    "email": "bruno.p.reis@gmail.com"
-                },
-                {
-                    "name": "Justin Rainbow",
-                    "email": "justin.rainbow@gmail.com"
-                },
-                {
-                    "name": "Igor Wiedler",
-                    "email": "igor@wiedler.ch"
-                },
-                {
-                    "name": "Robert Schönthal",
-                    "email": "seroscho@googlemail.com"
+                    "name": "Matthew Allan",
+                    "email": "matthew.james.allan@gmail.com",
+                    "homepage": "https://mattallan.org",
+                    "role": "Developer"
                 }
             ],
-            "description": "A library to validate a json schema.",
-            "homepage": "https://github.com/justinrainbow/json-schema",
+            "description": "A validator for JSON using json-schema.",
+            "homepage": "https://github.com/thephpleague/json-guard",
             "keywords": [
                 "json",
-                "schema"
+                "json-schema",
+                "json-schema.org",
+                "schema",
+                "validation"
             ],
-            "time": "2016-08-26 12:45:49"
+            "time": "2016-08-22 19:14:38"
         },
         {
             "name": "monolog/monolog",
@@ -1360,6 +1359,52 @@
                 "source": "https://github.com/lparchaeology/silex-userprovider/tree/silex2"
             },
             "time": "2016-08-15 11:12:38"
+        },
+        {
+            "name": "seld/jsonlint",
+            "version": "1.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Seldaek/jsonlint.git",
+                "reference": "e827b5254d3e58c736ea2c5616710983d80b0b70"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Seldaek/jsonlint/zipball/e827b5254d3e58c736ea2c5616710983d80b0b70",
+                "reference": "e827b5254d3e58c736ea2c5616710983d80b0b70",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3 || ^7.0"
+            },
+            "bin": [
+                "bin/jsonlint"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Seld\\JsonLint\\": "src/Seld/JsonLint/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be"
+                }
+            ],
+            "description": "JSON Linter",
+            "keywords": [
+                "json",
+                "linter",
+                "parser",
+                "validator"
+            ],
+            "time": "2016-09-14 15:17:56"
         },
         {
             "name": "silex/silex",

@@ -68,7 +68,6 @@ class ApiControllerProvider implements ControllerProviderInterface
             ->post('/sites/{siteSlug}/{moduleSlug}', 'ARK\\Controller\\ItemController::postItemAction')
             ->bind('api.item.post');
 
-        $controllers->after($app['psr7.response']);
         return $controllers;
     }
 }

@@ -59,6 +59,14 @@ class Item extends AbstractResource
         return $this->name;
     }
 
+    public function path()
+    {
+        if ($this->parent) {
+            return $this->parent->path().'/'.$this->index();
+        }
+        return '/'.$this->index();
+    }
+
     public function attributes()
     {
         $attributes = array();
