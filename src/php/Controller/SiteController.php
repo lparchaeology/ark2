@@ -40,6 +40,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Extension\Core\Type;
+use ARK\Api\ItemResourceDocument;
+use ARK\Api\ItemResourceTransformer;
+use ARK\Api\JsonApiAction;
 use ARK\Model\Collection;
 use ARK\Model\Item;
 use ARK\Model\Module;
@@ -100,6 +103,21 @@ class SiteController
 
     public function getSiteAction(Application $app, Request $request, $siteSlug)
     {
+        try {
+            $action = JsonApiAction($app, $request);
+            $action->validateRequest();
+            $root = Module::getRoot($app['database'], 'ark');
+            $item = $root->submodule($root->schemaId(), 'ste')->item($siteSlug);
+            $transformer = new ItemResourceTransformer($request->get('schema') == 'true');
+            $doc = new ItemResourceDocument($transformer);
+        } catch (JsonApiException $e) {
+            $response = $e->response();
+        } catch (\Exception $e) {
+            $error = new ApplicationError();
+            $response = $error->response();
+        }
+        return $action->getFoundationResponse();
+        /*
         $uri = $request->getSchemeAndHttpHost().$request->getBaseUrl().$request->getPathInfo();
         $response = new JsonResponse(null);
         $response->setEncodingOptions($response->getEncodingOptions() | JSON_PRETTY_PRINT);
@@ -126,6 +144,7 @@ class SiteController
 
         $response->setData($jsonapi);
         return $response;
+        */
     }
 
     public function getSitesAction(Application $app, Request $request)
