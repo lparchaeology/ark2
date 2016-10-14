@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Provider/JsonSchemaServiceProvider.php
+* src/php/Api/InvalidJsonApiError.php
 *
-* JSON Schema Service Provider
+* JSON:API Invalid JSON:API Error
 *
 * PHP versions 5 and 7
 *
@@ -28,27 +28,30 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Provider/JsonSchemaServiceProvider.php
+* @see        http://ark.lparchaeology.com/code/src/php/Api/InvalidJsonApiError.php
 * @since      2.0
 */
 
 namespace ARK\Api;
 
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
-use League\JsonGuard\Dereferencer;
-use Seld\JsonLint\JsonParser;
+use Exception;
+use NilPortugues\Api\JsonApi\Http\Response\BadRequest;
+use NilPortugues\Api\JsonApi\Server\Errors\ErrorBag;
 
-class JsonSchemaServiceProvider implements ServiceProviderInterface
+class InvalidJsonApiException extends Exception
 {
-    public function register(Container $app)
+    public function __construct()
     {
-        $app['json.linter'] = function () {
-            return new JsonParser();
-        };
+        parent::__construct('Invalid JSON:API document.', 400);
+    }
 
-        $app['jsonschema.dereferencer'] = function () {
-            return new Dereferencer();
-        };
+    public function getError()
+    {
+        return new InvalidJsonApiError();
+    }
+
+    public function getResponse(ErrorBag $errorBag)
+    {
+        return new BadRequest($errorBag);
     }
 }

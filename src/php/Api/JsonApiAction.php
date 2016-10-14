@@ -37,41 +37,23 @@ namespace ARK\Api;
 use ARK\Application;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
-use WoohooLabs\Yin\JsonApi\Request\Request as JsonApiRequest;
-use WoohooLabs\Yin\JsonApi\JsonApi;
-use WoohooLabs\Yin\JsonApi\Exception\ApplicationError;
-use WoohooLabs\Yin\JsonApi\Exception\RequestBodyInvalidJson;
-use WoohooLabs\Yin\JsonApi\Exception\ResponseBodyInvalidJson;
-use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
 use League\JsonGuard\Validator;
 
-class JsonApiAction extends JsonApi
+abstract class JsonApiAction
 {
     private $app = null;
     private $foundationRequest = null;
+    private $request = null;
+    private $errorBag = null;
     private $serializer = null;
     private $linter = null;
-    private $schema = null;
 
     public function __construct(Application $app, HttpFoundationRequest $request)
     {
         $this->app = $app;
         $this->foundationRequest = $request;
-        $this->serializer = new SimpleSerializer();
         $jsonApiRequest = JsonApiRequest($app['psr7.request']($request), $app['jsonapi.exception_factory']);
-        parent::__construct($jsonApiRequest, new JsonApiResponse(), $app['jsonapi.exception_factory'], $app['debug']);
-    }
-
-    public function getFoundationRequest()
-    {
-        return $this->$foundationRequest;
-    }
-
-    public function setFoundationRequest(HttpFoundationRequest $request)
-    {
-        $jsonApiRequest = JsonApiRequest($this->app['psr7.request']($request), $this->getExceptionFactory());
-        $this->setRequest($jsonApiRequest);
     }
 
     public function getFoundationResponse()
@@ -81,29 +63,18 @@ class JsonApiAction extends JsonApi
 
     private function lintMessage($message, $exception)
     {
-        if (!$this->linter) {
-            $this->linter = new JsonParser();
-        }
         try {
-            $this->linter->lint($json);
+            $this->app['json.linter']->lint($message);
         } catch (ParsingException $e) {
-            throw new $exception($message, $e->getMessage(), $this->app['debug']);
+            throw new InvalidJsonException($message, $e->getMessage(), $this->app['debug']);
         }
     }
 
-    private function initJsonApiSchema()
+    private function validateMessageSchema($message)
     {
-        if (!$this->schema) {
-            $this->schema = $this->app['jsonschema.dereferencer']->dereference('file://../../schema/json/jsonapi.json');
-        }
-    }
-
-    private function validateMessageSchema($message, $exception)
-    {
-        $this->initJsonApiSchema();
-        $validator = Validator($message->getBody(), $this->schema);
+        $validator = Validator($message->getBody(), $this->app['jsonapi.schema']);
         if ($validator->fails()) {
-            throw new $exception($message, $validator->errors(), $this->app['debug']);
+            throw new InvalidJsonApiException($message, $validator->errors(), $this->app['debug']);
         }
     }
 
@@ -113,86 +84,18 @@ class JsonApiAction extends JsonApi
             $this->request->validateContentTypeHeader();
             $this->request->validateAcceptHeader();
             $this->request->validateQueryParams();
-            $this->lintMessage($this->request, RequestBodyInvalidJson::class);
-            $this->validateMessageSchema($this->request, InvalidJsonApiRequestException::class);
+            $this->lintMessage($this->request);
+            $this->validateMessageSchema($this->request);
         } else {
             throw new ApplicationError();
         }
     }
 
-    public function vaidateResponse()
+    public function vaidateResponse($response)
     {
         if (!empty($this->app['debug'])) {
-            $this->lintMessage($this->response, ResponseBodyInvalidJson::class);
-            $this->validateMessageSchema($this->response, InvalidJsonApiResponseException::class);
+            $this->lintMessage($response, ResponseBodyInvalidJson::class);
+            $this->validateMessageSchema($response);
         }
-    }
-
-    public function transformResponse(
-        JsonApiResponse $response,
-        AbstractSuccessfulDocument $document,
-        $domainObject,
-        array $additionalMeta = []
-    ) {
-        return $document->getResponse(
-            $this->request,
-            $response,
-            $this->exceptionFactory,
-            $this->serializer,
-            $domainObject,
-            null,
-            $additionalMeta
-        );
-    }
-
-    public function transformMetaResponse(
-        JsonApiResponse $response,
-        AbstractSuccessfulDocument $document,
-        $domainObject,
-        array $additionalMeta = []
-    ) {
-        return $this->getMetaResponse(
-            $this->request,
-            $response,
-            $this->exceptionFactory,
-            $this->serializer,
-            $domainObject,
-            null,
-            $additionalMeta
-        );
-    }
-
-    public function transformRelationshipResponse(
-        $relationshipName,
-        JsonApiResponse $response,
-        AbstractSuccessfulDocument $document,
-        $domainObject,
-        array $additionalMeta = []
-    ) {
-        return $this->getRelationshipResponse(
-            $relationshipName,
-            $this->request,
-            $response,
-            $this->exceptionFactory,
-            $this->serializer,
-            $domainObject,
-            null,
-            $additionalMeta
-        );
-    }
-
-    public function transformErrorResponse(
-        JsonApiResponse $response,
-        array $errors = []
-    ) {
-        if (empty(errors)) {
-            $content['errors'][]['status'] = $response->getStatusCode();
-            $content['errors'][]['code'] = $response->getReasonPhrase();
-        } else {
-            foreach ($errors as $error) {
-                $content["errors"][] = $error->transform();
-            }
-        }
-        return $this->serializer->serialize($response, null, $content);
     }
 }
