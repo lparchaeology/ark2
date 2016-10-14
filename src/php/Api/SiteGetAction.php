@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Api/SimpleSerializer.php
+* src/php/Api/SiteGetAction.php
 *
-* JSON:API Simple Serializer
+* JSON:API Action
 *
 * PHP versions 5 and 7
 *
@@ -28,23 +28,31 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Api/SimpleSerializer.php
+* @see        http://ark.lparchaeology.com/code/src/php/Api/SiteGetAction.php
 * @since      2.0
 */
 
 namespace ARK\Api;
 
-use Psr\Http\Message\ResponseInterface;
-use WoohooLabs\Yin\JsonApi\Serializer\SerializerInterface;
+use ARK\Application;
+use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 
-class SimpleSerializer implements SerializerInterface
+class SiteGetAction extends JsonApiAction
 {
-    public function serialize(ResponseInterface $response, $responseCode, array $content)
+    public function __construct(Application $app, HttpFoundationRequest $request, string $site)
     {
-        if ($response->getBody()->isSeekable()) {
-            $response->getBody()->rewind();
+        parent::__construct($app, $request);
+        try {
+            $this->validateRequest();
+            $root = Module::getRoot($this->app['database'], 'ark');
+            $item = $root->submodule($root->schemaId(), 'ste')->item($site);
+            $additionalMeta = ($this->request->get('schema') == 'true') ? ['schema' => $item->schema()] : [];
+            $this->response = $this->transformResponse(new JsonApiResponse(200), new ItemResourceDocument(), $item, $additionalMeta);
+        } catch (JsonApiException $e) {
+            $this->response = $this->transformErrors($e->getErrors());
+        } catch (\Exception $e) {
+            $e = new ApplicationError();
+            $this->response = $this->transformErrors($e->getErrors());
         }
-        $response->getBody()->write(json_encode($content));
-        return $response;
     }
 }

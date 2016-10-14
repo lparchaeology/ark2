@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Provider/TransformTrait.php
+* src/php/Api/TransformTrait.php
 *
-* JSON:API Simple Serializer
+* JSON:API Document Transform Trait
 *
 * PHP versions 5 and 7
 *
@@ -28,7 +28,7 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Provider/TransformTrait.php
+* @see        http://ark.lparchaeology.com/code/src/php/Api/TransformTrait.php
 * @since      2.0
 */
 

@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Provider/ItemResourceTransformer.php
+* src/php/Api/ItemResourceTransformer.php
 *
 * JSON:API Item Resource Transformer
 *
@@ -44,13 +44,6 @@ use WoohooLabs\Yin\JsonApi\Transformer\AbstractResourceTransformer;
 
 class ItemResourceTransformer extends AbstractResourceTransformer
 {
-    private $schema = false;
-
-    public function __construct($includeSchema = false)
-    {
-        $this->schema = $includeSchema;
-    }
-
     public function getType(Item $item)
     {
         return $item->module()->type();
@@ -63,11 +56,7 @@ class ItemResourceTransformer extends AbstractResourceTransformer
 
     public function getMeta(Item $item)
     {
-        $meta = array();
-        if ($this->schema) {
-            $meta['schema'] = $item->schema();
-        }
-        return $meta;
+        return [];
     }
 
     public function getLinks(Item $item)

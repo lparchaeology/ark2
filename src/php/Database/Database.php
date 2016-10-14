@@ -407,11 +407,11 @@ class Database
             WHERE (ark_dataclass_xmi.module = :module
                    AND ark_dataclass_xmi.item = :item
                    AND ark_dataclass_xmi.xmi_module = :xmi_module
-                   AND $xmiTable.item = ark_dataclass_xmi.xmi_item)
+                   AND $xmiTable.id = ark_dataclass_xmi.xmi_item)
             OR (ark_dataclass_xmi.xmi_module = :module
                 AND ark_dataclass_xmi.xmi_item = :item
                 AND ark_dataclass_xmi.module = :xmi_module
-                AND $xmiTable.item = ark_dataclass_xmi.item)
+                AND $xmiTable.id = ark_dataclass_xmi.item)
         ";
         $params = array(
             ':module' => $module,

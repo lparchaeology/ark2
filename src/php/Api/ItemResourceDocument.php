@@ -38,9 +38,11 @@ use WoohooLabs\Yin\JsonApi\Document\AbstractSingleResourceDocument;
 
 class ItemResourceDocument extends AbstractSingleResourceDocument
 {
-    public function __construct(ItemResourceTransformer $transformer)
+    use TransformTrait;
+
+    public function __construct()
     {
-        parent::__construct($transformer);
+        parent::__construct(new ItemResourceTransformer());
     }
 
     public function getJsonApi()

@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Provider/JsonApiAction.php
+* src/php/Api/JsonApiAction.php
 *
 * JSON:API Action
 *
@@ -28,13 +28,13 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Provider/JsonApiAction.php
+* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApiAction.php
 * @since      2.0
 */
 
 namespace ARK\Api;
 
-use Pimple\Container;
+use ARK\Application;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 use WoohooLabs\Yin\JsonApi\Request\Request as JsonApiRequest;
@@ -42,7 +42,6 @@ use WoohooLabs\Yin\JsonApi\JsonApi;
 use WoohooLabs\Yin\JsonApi\Exception\ApplicationError;
 use WoohooLabs\Yin\JsonApi\Exception\RequestBodyInvalidJson;
 use WoohooLabs\Yin\JsonApi\Exception\ResponseBodyInvalidJson;
-use Zend\Diactoros\Response as Psr7Response;
 use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
 use League\JsonGuard\Validator;
@@ -51,15 +50,17 @@ class JsonApiAction extends JsonApi
 {
     private $app = null;
     private $foundationRequest = null;
+    private $serializer = null;
     private $linter = null;
     private $schema = null;
 
-    public function __construct(Container $app, HttpFoundationRequest $request)
+    public function __construct(Application $app, HttpFoundationRequest $request)
     {
         $this->app = $app;
         $this->foundationRequest = $request;
+        $this->serializer = new SimpleSerializer();
         $jsonApiRequest = JsonApiRequest($app['psr7.request']($request), $app['jsonapi.exception_factory']);
-        parent::__construct($jsonApiRequest, new Psr7Response(), $app['jsonapi.exception_factory'], $app['debug']);
+        parent::__construct($jsonApiRequest, new JsonApiResponse(), $app['jsonapi.exception_factory'], $app['debug']);
     }
 
     public function getFoundationRequest()
@@ -125,5 +126,73 @@ class JsonApiAction extends JsonApi
             $this->lintMessage($this->response, ResponseBodyInvalidJson::class);
             $this->validateMessageSchema($this->response, InvalidJsonApiResponseException::class);
         }
+    }
+
+    public function transformResponse(
+        JsonApiResponse $response,
+        AbstractSuccessfulDocument $document,
+        $domainObject,
+        array $additionalMeta = []
+    ) {
+        return $document->getResponse(
+            $this->request,
+            $response,
+            $this->exceptionFactory,
+            $this->serializer,
+            $domainObject,
+            null,
+            $additionalMeta
+        );
+    }
+
+    public function transformMetaResponse(
+        JsonApiResponse $response,
+        AbstractSuccessfulDocument $document,
+        $domainObject,
+        array $additionalMeta = []
+    ) {
+        return $this->getMetaResponse(
+            $this->request,
+            $response,
+            $this->exceptionFactory,
+            $this->serializer,
+            $domainObject,
+            null,
+            $additionalMeta
+        );
+    }
+
+    public function transformRelationshipResponse(
+        $relationshipName,
+        JsonApiResponse $response,
+        AbstractSuccessfulDocument $document,
+        $domainObject,
+        array $additionalMeta = []
+    ) {
+        return $this->getRelationshipResponse(
+            $relationshipName,
+            $this->request,
+            $response,
+            $this->exceptionFactory,
+            $this->serializer,
+            $domainObject,
+            null,
+            $additionalMeta
+        );
+    }
+
+    public function transformErrorResponse(
+        JsonApiResponse $response,
+        array $errors = []
+    ) {
+        if (empty(errors)) {
+            $content['errors'][]['status'] = $response->getStatusCode();
+            $content['errors'][]['code'] = $response->getReasonPhrase();
+        } else {
+            foreach ($errors as $error) {
+                $content["errors"][] = $error->transform();
+            }
+        }
+        return $this->serializer->serialize($response, null, $content);
     }
 }
