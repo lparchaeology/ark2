@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Api/InvalidJsonApiError.php
+* src/php/Api/JsonApi/Exception/InternalServerErrorException.php
 *
 * JSON:API Invalid JSON:API Error
 *
@@ -28,36 +28,18 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Api/InvalidJsonApiError.php
+* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApi/Exception/InternalServerErrorException.php
 * @since      2.0
 */
 
-namespace ARK\Api;
+namespace ARK\Api\JsonApi\Exception;
 
-use Exception;
-use NilPortugues\Api\JsonApi\Http\Response\BadRequest;
-use NilPortugues\Api\JsonApi\Server\Errors\ErrorBag;
+use ARK\Api\JsonApi\Response\InternalServerErrorResponse;
 
-abstract class JsonApiException extends Exception
+class InternalServerErrorException extends AbstractJsonApiException
 {
-    protected $errors = null;
-
-    public function __construct($message, $code)
+    public function __construct(string $message = 'Unknown Server Error', $code = null)
     {
-        parent::__construct($message, $code);
-        $this->errors = new ErrorBag();
-    }
-
-    public function getErrors()
-    {
-        return $this->errors;
-    }
-
-    public function getResponse(ErrorBag $errors = null)
-    {
-        if (!$errors) {
-            $errors = $this->getErrors();
-        }
-        return new BadRequest($errorBag);
+        parent::__construct($message, $code, InternalServerErrorResponse::class);
     }
 }

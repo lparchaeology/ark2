@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Api/SimpleSerializer.php
+* src/php/Api/JsonApiResponse.php
 *
-* JSON:API Simple Serializer
+* JSON:API Response
 *
 * PHP versions 5 and 7
 *
@@ -28,23 +28,28 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Api/SimpleSerializer.php
+* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApiResponse.php
 * @since      2.0
 */
 
-namespace ARK\Api;
+namespace ARK\Api\JsonApi\Response;
 
-use Psr\Http\Message\ResponseInterface;
-use WoohooLabs\Yin\JsonApi\Serializer\SerializerInterface;
+use NilPortugues\Api\JsonApi\Http\Response\AbstractErrorResponse;
+use NilPortugues\Api\JsonApi\Server\Errors\ErrorBag;
+use ARK\Api\JsonApi\Error\InternalServerError;
 
-class SimpleSerializer implements SerializerInterface
+abstract class AbstractJsonApiErrorResponse extends AbstractErrorResponse
 {
-    public function serialize(ResponseInterface $response, $responseCode, array $content)
+    protected $httpCode = null;
+    protected $errorCode = null;
+
+    public function __construct(int $status, string $code, ErrorBag $errors = null, string $defaultError = InternalServerError::class)
     {
-        if ($response->getBody()->isSeekable()) {
-            $response->getBody()->rewind();
+        $this->httpCode = $status;
+        $this->errorCode = $code;
+        if (!$errors) {
+            $errors = new ErrorBag([new $defaultError()]);
         }
-        $response->getBody()->write(json_encode($content));
-        return $response;
+        parent::__construct($errors);
     }
 }

@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Api/InvalidJsonApiError.php
+* src/php/Api/SiteGetAction.php
 *
-* JSON:API Invalid JSON:API Error
+* JSON:API Action
 *
 * PHP versions 5 and 7
 *
@@ -28,23 +28,31 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Api/InvalidJsonApiError.php
+* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApi/Action/SiteGetAction.php
 * @since      2.0
 */
 
-namespace ARK\Api;
+namespace ARK\Api\JsonApi\Action;
 
-use NilPortugues\Api\JsonApi\Server\Errors\Error;
+use ARK\Application;
+use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 
-class InvalidJsonApiError extends Error
+class SiteGetAction extends AbstractGetAction
 {
-    public function __construct()
+    public function __invoke(Application $app, HttpFoundationRequest $request, string $site)
     {
-        parent::__construct(
-            'Bad Request',
-            "Invalid JSON:API document.",
-            'bad_request'
-        );
-        $this->setSource('pointer', '');
+        $this->site = $site;
+        parent::__invoke($app, $request);
+    }
+
+    protected function getData()
+    {
+        $root = Module::getRoot($this->app['database'], 'ark');
+        $item = $root->submodule($root->schemaId(), 'ste')->item($this->site);
+        if (!$item->isValid()) {
+            $error = new NotFoundError('sites', $this->site());
+            throw new ResourceNotFoundException();
+        }
+        return $item;
     }
 }

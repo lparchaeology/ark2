@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Api/InvalidJsonApiError.php
+* src/php/Api/JsonValidationError.php
 *
 * JSON:API Invalid JSON:API Error
 *
@@ -28,30 +28,19 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Api/InvalidJsonApiError.php
+* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonValidationError.php
 * @since      2.0
 */
 
-namespace ARK\Api;
+namespace ARK\Api\JsonAPi\Error;
 
-use Exception;
-use NilPortugues\Api\JsonApi\Http\Response\BadRequest;
-use NilPortugues\Api\JsonApi\Server\Errors\ErrorBag;
+use NilPortugues\Api\JsonApi\Server\Errors\Error as JsonApiError;
 
-class InvalidJsonApiException extends Exception
+class InternalServerError extends JsonApiError
 {
-    public function __construct()
+    public function __construct(string $message = 'Unknown Server Error', $code = null)
     {
-        parent::__construct('Invalid JSON:API document.', 400);
-    }
-
-    public function getError()
-    {
-        return new InvalidJsonApiError();
-    }
-
-    public function getResponse(ErrorBag $errorBag)
-    {
-        return new BadRequest($errorBag);
+        parent::__construct('Internal Server Error', $message, $code);
+        $this->setStatus('500');
     }
 }

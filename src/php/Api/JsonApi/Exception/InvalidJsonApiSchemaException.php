@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Api/SiteGetAction.php
+* src/php/Api/JsonApi/Exception/InvalidJsonApiSchemaException.php
 *
-* JSON:API Action
+* JSON:API Invalid JSON:API Error
 *
 * PHP versions 5 and 7
 *
@@ -28,31 +28,21 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Api/SiteGetAction.php
+* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApi/Exception/InvalidJsonApiSchemaException.php
 * @since      2.0
 */
 
-namespace ARK\Api;
+namespace ARK\Api\JsonApi\Exception;
 
-use ARK\Application;
-use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
+use NilPortugues\Api\JsonApi\Http\Response\BadRequest;
 
-class SiteGetAction extends JsonApiAction
+class InvalidJsonApiSchemaException extends AbstractJsonApiException
 {
-    public function __construct(Application $app, HttpFoundationRequest $request, string $site)
+    public function __construct(array $errors, string $message = 'Invalid JSON:API document.', $code = 400)
     {
-        parent::__construct($app, $request);
-        try {
-            $this->validateRequest();
-            $root = Module::getRoot($this->app['database'], 'ark');
-            $item = $root->submodule($root->schemaId(), 'ste')->item($site);
-            $additionalMeta = ($this->request->get('schema') == 'true') ? ['schema' => $item->schema()] : [];
-            $this->response = $this->transformResponse(new JsonApiResponse(200), new ItemResourceDocument(), $item, $additionalMeta);
-        } catch (JsonApiException $e) {
-            $this->response = $this->transformErrors($e->getErrors());
-        } catch (\Exception $e) {
-            $e = new ApplicationError();
-            $this->response = $this->transformErrors($e->getErrors());
+        parent::__construct($message, $code, BadRequest::class);
+        foreach ($errors as $error) {
+            $this->addError(new JsonValidationError($error, $message));
         }
     }
 }

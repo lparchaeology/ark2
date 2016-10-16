@@ -40,26 +40,38 @@ use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 use Seld\JsonLint\ParsingException;
 use League\JsonGuard\Validator;
 
-abstract class JsonApiAction
+abstract class AbstractJsonApiAction
 {
     private $app = null;
     private $foundationRequest = null;
     private $request = null;
-    private $errorBag = null;
-    private $serializer = null;
-    private $linter = null;
+    private $response = null;
+    private $errors = null;
 
-    public function __construct(Application $app, HttpFoundationRequest $request)
+    public function __invoke(Application $app, HttpFoundationRequest $request)
     {
         $this->app = $app;
         $this->foundationRequest = $request;
-        $jsonApiRequest = JsonApiRequest($app['psr7.request']($request), $app['jsonapi.exception_factory']);
+        $this->request = JsonApiRequest($app['psr7.request']($request));
+        try {
+            $this->validateRequest();
+            $this->response = $this->getResponse();
+        } catch (JsonApiException $e) {
+            $e->addErrors($this->errors);
+            $this->response = $e->getResponse();
+        } catch (Exception $e) {
+            $this->errors[] = new InternalServerError($e->getMessage(), $e->code());
+            $this->response = new InternalServerErrorResponse($this->errorBag);
+        }
+        if ($this->app['debug']) {
+            $this->validateResponse();
+        }
+        return $this->app['psr7.response']($response);
     }
 
-    public function getFoundationResponse()
-    {
-        return $this->app['psr7.response']($this->request);
-    }
+    abstract protected function getResponse();
+
+    abstract protected function getData();
 
     private function lintMessage($message, $exception)
     {
@@ -74,28 +86,22 @@ abstract class JsonApiAction
     {
         $validator = Validator($message->getBody(), $this->app['jsonapi.schema']);
         if ($validator->fails()) {
-            throw new InvalidJsonApiException($message, $validator->errors(), $this->app['debug']);
+            throw new InvalidJsonApiSchemaException($message, $validator->errors(), $this->app['debug']);
         }
     }
 
-    public function validateRequest()
+    private function validateRequest()
     {
-        if ($this->request) {
-            $this->request->validateContentTypeHeader();
-            $this->request->validateAcceptHeader();
-            $this->request->validateQueryParams();
-            $this->lintMessage($this->request);
-            $this->validateMessageSchema($this->request);
-        } else {
-            throw new ApplicationError();
-        }
+        $this->request->validateContentTypeHeader();
+        $this->request->validateAcceptHeader();
+        $this->request->validateQueryParams();
+        $this->lintMessage($this->request);
+        $this->validateMessageSchema($this->request);
     }
 
-    public function vaidateResponse($response)
+    private function vaidateResponse()
     {
-        if (!empty($this->app['debug'])) {
-            $this->lintMessage($response, ResponseBodyInvalidJson::class);
-            $this->validateMessageSchema($response);
-        }
+        $this->lintMessage($this->response);
+        $this->validateMessageSchema($this->response);
     }
 }
