@@ -38,8 +38,14 @@ use NilPortugues\Api\JsonApi\Server\Errors\Error as JsonApiError;
 
 class InternalServerError extends JsonApiError
 {
-    public function __construct(string $message = 'Unknown Server Error', $code = null)
+    public function __construct(string $message = null, $code = null)
     {
+        if (!$message) {
+            $message = 'Unknown Server Error';
+        }
+        if (!$code) {
+            $code = 'InternalServerError';
+        }
         parent::__construct('Internal Server Error', $message, $code);
         $this->setStatus('500');
     }

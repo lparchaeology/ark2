@@ -40,9 +40,12 @@ use Silex\Application as SilexApplication;
 use Symfony\Component\Debug\Debug;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
+use ARK\Api\JsonApi\JsonApiServiceProvider;
 use ARK\Translation\ActorLoader;
 use ARK\Translation\DatabaseLoader;
 use ARK\Translation\Profiler\TranslationProfilerServiceProvider;
+use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
+use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class Application extends SilexApplication
 {
@@ -202,6 +205,7 @@ class Application extends SilexApplication
         );
 
         // Enable other providers
+        $app->register(new JsonApiServiceProvider());
         $app->register(new \Silex\Provider\AssetServiceProvider());
 
         // If debug mode also enable the profiler

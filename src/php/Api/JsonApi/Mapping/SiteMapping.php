@@ -49,72 +49,50 @@ class SiteMapping implements JsonApiMapping
         return $item->module()->type();
     }
 
-    public function getAliasedProperties() {
-        return [
-            'author' => 'author',
-            'title' => 'headline',
-            'content' => 'body',
-        ];
+    public function getAliasedProperties($item = null)
+    {
+        $attributes = array();
+        foreach ($item->properties() as $property) {
+            $attributes[$property->id()] = $property->id();
+        }
+        return $attributes;
     }
 
-    public function getHideProperties(){
+    public function getHideProperties($item = null)
+    {
         return [];
     }
 
-    public function getIdProperties() {
+    public function getIdProperties($item = null)
+    {
         return [
             'id',
         ];
     }
 
-    public function getUrls()
+    public function getUrls($item = null)
     {
         return [
             'self' => $item->path(),
         ];
     }
 
-    public function getRelationships()
+    public function getRelationships($item = null)
     {
         $relationships = array();
         foreach ($item->submodules() as $submodule) {
-            $relationships[$submodule->type()] = function (Item $item) {
-                $paths['self'] = new Link('/relationships/'.$submodule->type());
-                $paths['related'] = new Link('/'.$submodule->type());
-                return ToManyRelationship::create()
-                    ->setLinks(new Links($item->path(), $paths))
-                    ->setData($item[$submodule->type()], new ItemResourceTransformer());
-            };
+            $relationships[$submodule->type()]['self'] = '/relationships/'.$submodule->type();
+            $relationships[$submodule->type()]['related'] = '/'.$submodule->type();
         }
         foreach ($item->relationships() as $relationship) {
-            $relationships[$relationship->type()] = function (Item $item) {
-                $paths['self'] = new Link('/relationships/'.$relationship->type());
-                $paths['related'] = new Link('/'.$relationship->type());
-                ToManyRelationship::create()
-                    ->setLinks(new Links($item->path(), $paths))
-                    ->setData($item[$relationship->type()], new ItemResourceTransformer());
-            };
+            $relationships[$relationship->type()]['self'] = '/relationships/'.$relationship->type();
+            $relationships[$relationship->type()]['related'] = '/'.$relationship->type();
         }
         return $relationships;
     }
 
-    public function getRequiredProperties()
+    public function getRequiredProperties($item = null)
     {
-        return [];
-    }
-
-    public function getAttributes(Item $item)
-    {
-        $attributes = array();
-        foreach ($item->properties() as $property) {
-            $attributes[$property->id()] = function (Item $item) {
-                return $item->attribute($property);
-            };
-        }
-        return $attributes;
-    }
-
-    public function getRelationships(Item $item)
-    {
+        return $item->required();
     }
 }

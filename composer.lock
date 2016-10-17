@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ae7034fbef1e6aadf32a4bdd182e75b9",
-    "content-hash": "5361c840d2605f150598a26a1b24f8a7",
+    "hash": "86abefd52f9bf8a315aa9de30cb26436",
+    "content-hash": "4c27720b8ca84d70b73d7161958e02ca",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -4283,6 +4283,56 @@
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
             "time": "2016-09-25 08:27:07"
+        },
+        {
+            "name": "tobscure/json-api",
+            "version": "v0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tobscure/json-api.git",
+                "reference": "663d1c1299d4363758e8e440e5849134f218f45c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tobscure/json-api/zipball/663d1c1299d4363758e8e440e5849134f218f45c",
+                "reference": "663d1c1299d4363758e8e440e5849134f218f45c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8 || ^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Tobscure\\JsonApi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Toby Zerner",
+                    "email": "toby.zerner@gmail.com"
+                }
+            ],
+            "description": "JSON-API responses in PHP",
+            "keywords": [
+                "api",
+                "json",
+                "jsonapi",
+                "standard"
+            ],
+            "time": "2016-03-31 09:25:28"
         },
         {
             "name": "twig/twig",

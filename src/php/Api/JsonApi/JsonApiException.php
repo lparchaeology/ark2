@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Api/JsonApiResponse.php
+* src/php/Api/JsonApi/JsonApiException.php
 *
-* JSON:API Response
+* JSON:API Invalid JSON:API Error
 *
 * PHP versions 5 and 7
 *
@@ -28,28 +28,14 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApiResponse.php
+* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApi/JsonApiException.php
 * @since      2.0
 */
 
-namespace ARK\Api\JsonApi\Response;
+namespace ARK\Api\JsonApi;
 
-use NilPortugues\Api\JsonApi\Http\Response\AbstractErrorResponse;
-use NilPortugues\Api\JsonApi\Server\Errors\ErrorBag;
-use ARK\Api\JsonApi\Error\InternalServerError;
+use Exception;
 
-abstract class AbstractJsonApiErrorResponse extends AbstractErrorResponse
+class JsonApiException extends Exception
 {
-    protected $httpCode = null;
-    protected $errorCode = null;
-
-    public function __construct(int $status, string $code, ErrorBag $errors = null, string $defaultError = InternalServerError::class)
-    {
-        $this->httpCode = $status;
-        $this->errorCode = $code;
-        if (!$errors) {
-            $errors = new ErrorBag([new $defaultError()]);
-        }
-        parent::__construct($errors);
-    }
 }

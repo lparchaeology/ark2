@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Api/JsonApi/Exception/InvalidJsonApiSchemaException.php
+* src/php/Api/JsonApi/JsonApiErrorResponse.php
 *
-* JSON:API Invalid JSON:API Error
+* JSON:API Error Response
 *
 * PHP versions 5 and 7
 *
@@ -28,21 +28,31 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApi/Exception/InvalidJsonApiSchemaException.php
+* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApi/JsonApiErrorResponse.php
 * @since      2.0
 */
 
-namespace ARK\Api\JsonApi\Exception;
+namespace ARK\Api\JsonApi;
 
-use NilPortugues\Api\JsonApi\Http\Response\BadRequest;
+use NilPortugues\Api\JsonApi\Http\Response\AbstractErrorResponse;
+use ARK\Api\JsonApi\Error\InternalServerError;
+use ARK\Api\JsonApi\Error\JsonApiErrorBag;
 
-class InvalidJsonApiSchemaException extends AbstractJsonApiException
+abstract class JsonApiErrorResponse extends AbstractErrorResponse
 {
-    public function __construct(array $errors, string $message = 'Invalid JSON:API document.', $code = 400)
+    protected $httpCode = null;
+    protected $errorCode = null;
+
+    public function __construct(JsonApiErrorBag $errors = null)
     {
-        parent::__construct($message, $code, BadRequest::class);
-        foreach ($errors as $error) {
-            $this->addError(new JsonValidationError($error, $message));
+        if (!$errors || count($errors) === 0) {
+            $error = new InternalServerError();
+            $errors = new JsonApiErrorBag([new InternalServerError()]);
+            $errors->setHttpCode($error->status());
+            $errors->setErrorCode($error->code());
         }
+        $this->httpCode = $errors->getHttpCode();
+        $this->errorCode = $errors->getErrorCode();
+        parent::__construct($errors);
     }
 }

@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Api/JsonApiAction.php
+* src/php/AApi/JsonApi/Action/AbstractJsonApiAction.php
 *
-* JSON:API Action
+* JSON:API Abstract Get Action
 *
 * PHP versions 5 and 7
 *
@@ -28,18 +28,34 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApiAction.php
+* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApi/Action/AbstractJsonApiAction.php
 * @since      2.0
 */
 
-namespace ARK\Api;
+namespace ARK\Api\JsonApi\Action;
+
+use NilPortugues\Api\JsonApi\Http\Response\Response;
+use NilPortugues\Api\JsonApi\Server\Query\QueryObject;
+use NilPortugues\Api\JsonApi\Server\Query\QueryException;
 
 abstract class AbstractGetAction extends AbstractJsonApiAction
 {
-    protected function getResponse();
+    protected $fields = null;
+    protected $included = null;
+
+    protected function validateParams($data)
     {
-        QueryObject::assert($app['jsonapi.serializer'], $this->request->fields(), $this->request->included(), new Sorting(), $this->errors, $className);
-        $data = $this->getData();
-        return new Response($app['jsonapi.serializer']->serialize($data, $this->fields, $this->included));
+        $this->fields = $this->request->getFields();
+        $this->included = $this->request->getIncluded();
+        QueryObject::validateQueryParamsTypes($this->serializer, $this->fields, 'Fields', $this->errorBag);
+        QueryObject::validateIncludeParams($this->serializer, $this->included, 'include', $this->errorBag);
+        if ($this->errorBag->count() > 0) {
+            throw new QueryException();
+        }
+    }
+
+    protected function getResponse($data)
+    {
+        return new Response($this->serializer->serialize($this->data, $this->fields, $this->included));
     }
 }

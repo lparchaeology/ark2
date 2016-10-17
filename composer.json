@@ -85,7 +85,8 @@
         "zendframework/zend-diactoros": "^1.3",
         "seld/jsonlint": "^1.4",
         "league/json-guard": "^0.3.3",
-        "nilportugues/json-api": "^2.4"
+        "nilportugues/json-api": "^2.4",
+        "tobscure/json-api": "^0.3.0"
     },
     "autoload": {
         "psr-4": {"ARK\\": "src/php/"}

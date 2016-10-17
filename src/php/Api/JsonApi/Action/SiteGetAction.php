@@ -39,7 +39,7 @@ use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 
 class SiteGetAction extends AbstractGetAction
 {
-    public function __invoke(Application $app, HttpFoundationRequest $request, string $site)
+    public function __invoke(Application $app, HttpFoundationRequest $request, string $site = null)
     {
         $this->site = $site;
         parent::__invoke($app, $request);
@@ -50,8 +50,8 @@ class SiteGetAction extends AbstractGetAction
         $root = Module::getRoot($this->app['database'], 'ark');
         $item = $root->submodule($root->schemaId(), 'ste')->item($this->site);
         if (!$item->isValid()) {
-            $error = new NotFoundError('sites', $this->site());
-            throw new ResourceNotFoundException();
+            $this->addError(new NotFoundError('sites', $this->site));
+            throw new JsonApiException();
         }
         return $item;
     }

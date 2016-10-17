@@ -32,13 +32,14 @@
 * @since      2.0
 */
 
-namespace ARK\Api;
+namespace ARK\Api\JsonApi;
 
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
+use ARK\Api\JsonApi\Mapping\SiteMapping;
 use NilPortugues\Api\JsonApi\JsonApiSerializer;
 use NilPortugues\Api\JsonApi\JsonApiTransformer;
 use NilPortugues\Api\Mapping\Mapper;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 
 class JsonApiServiceProvider implements ServiceProviderInterface
 {
@@ -63,7 +64,7 @@ class JsonApiServiceProvider implements ServiceProviderInterface
         };
 
         $app['jsonapi.schema'] = function () use ($app) {
-            return $app['jsonschema.dereferencer']->dereference('file://../../schema/json/jsonapi.json');
+            return $app['jsonschema.dereferencer']->dereference('file://../../../schema/json/jsonapi.json');
         };
     }
 }

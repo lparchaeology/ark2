@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Api/JsonApi/Exception/InternalServerErrorException.php
+* src/php/Api/JsonApi/Error/JsonApiErrorBag.php
 *
 * JSON:API Invalid JSON:API Error
 *
@@ -28,18 +28,41 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApi/Exception/InternalServerErrorException.php
+* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApi/Error/JsonApiErrorBag.php
 * @since      2.0
 */
 
-namespace ARK\Api\JsonApi\Exception;
+namespace ARK\Api\JsonAPi\Error;
 
-use ARK\Api\JsonApi\Response\InternalServerErrorResponse;
+use NilPortugues\Api\JsonApi\Server\Errors\ErrorBag;
 
-class InternalServerErrorException extends AbstractJsonApiException
+class JsonApiErrorBag extends ErrorBag
 {
-    public function __construct(string $message = 'Unknown Server Error', $code = null)
+    protected $errorCode = null;
+
+    public function getHttpCode()
     {
-        parent::__construct($message, $code, InternalServerErrorResponse::class);
+        if ($this->httpCode) {
+            return $this->httpCode;
+        }
+        if (count($this->errors) === 1) {
+            return $this->errors[0]->getStatus();
+        }
+        foreach ($this->errors as $error) {
+            $status = $error->getStatus();
+            if ($status && $status >= 400 && $status < 500) {
+                return 400;
+            }
+        }
+        return 500;
+    }
+
+    public function setErrorCode(string $errorCode)
+    {
+        $this->errorCode = $errorCode;
+    }
+    public function getErrorCode()
+    {
+        return $this->errorCode;
     }
 }
