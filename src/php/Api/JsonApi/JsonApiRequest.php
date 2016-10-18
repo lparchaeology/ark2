@@ -38,61 +38,51 @@ use Symfony\Component\HttpFoundation\Request;
 
 class JsonApiRequest extends Request
 {
-    protected $queryParams = null;
+    protected $resourcePath = null;
+    protected $queryParameters = null;
 
-    protected $jsonApiHeaders = [
-        'Content-type' => 'application/vnd.api+json',
-        'Cache-Control' => 'protected, max-age=0, must-revalidate',
-    ];
-
-    public function __construct()
+    public function setResourcePath(string $resourcePath)
     {
-        parent::__construct();
+        $this->resourcePath = $resourcePath;
     }
 
-    public function getQueryParams()
+    public function getResourcePath()
     {
-        if (!$queryParams) {
-            $this->queryParams = new JsonApiParameters($this->query->all());
+        return $this->resourcePath;
+    }
+
+    public function getQueryParameters()
+    {
+        if (!$queryParameters) {
+            $this->queryParameters = new JsonApiParameters($this->query->all());
         }
-        return $this->queryParams;
+        return $this->queryParameters;
     }
 
     public function validateHeaders(JsonApiErrorBag $errors)
     {
     }
 
-    public function validateContentTypeHeader()
+    public function validateContentTypeHeader(JsonApiErrorBag $errors)
     {
-        if ($this->isValidMediaTypeHeader("Content-Type") === false) {
-            throw $this->exceptionFactory->createMediaTypeUnsupportedException(
-                $this,
-                $this->getHeaderLine("Content-Type")
-            );
+        if ($this->getBody() && $this->getContentType() != 'application/vnd.api+json') {
+            $errors->addError(new InvalidContentTypeError($this->getContentType()));
         }
     }
 
-    public function validateAcceptHeader()
+    public function validateAcceptHeader(JsonApiErrorBag $errors)
     {
-        if ($this->isValidMediaTypeHeader("Accept") === false) {
-            throw $this->exceptionFactory->createMediaTypeUnacceptableException($this, $this->getHeaderLine("Accept"));
+        if ($this->headers->get("Accept") != 'application/vnd.api+json') {
+            $errors->addError(new UnsupportedMediaTypeError($this->headers->get("Accept")));
         }
     }
 
-    public function validateQueryParams()
+    public function validateQueryParams(JsonApiErrorBag $errors)
     {
-        foreach ($this->getQueryParams() as $queryParamName => $queryParamValue) {
-            if (preg_match("/^([a-z]+)$/", $queryParamName) &&
-                in_array($queryParamName, ["fields", "include", "sort", "page", "filter"]) === false
-            ) {
-                throw $this->exceptionFactory->createQueryParamUnrecognizedException($this, $queryParamName);
+        foreach ($this->query->all() as $name => $value) {
+            if (in_array($name, ["fields", "include", "sort", "page", "filter"]) === false) {
+                $errors->addError(new UnrecognizedParamaterError($name));
             }
         }
-    }
-
-    protected function isValidMediaTypeHeader($headerName)
-    {
-        $header = $this->getHeaderLine($headerName);
-        return strpos($header, "application/vnd.api+json") === false || $header === "application/vnd.api+json";
     }
 }

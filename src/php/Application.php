@@ -34,18 +34,36 @@
 
 namespace ARK;
 
-use Psr\Log\LogLevel;
-use Psr\Http\Message\ResponseInterface;
-use Silex\Application as SilexApplication;
-use Symfony\Component\Debug\Debug;
-use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
-use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
+use ARK\Api\JsonApi\JsonApiRequest;
 use ARK\Api\JsonApi\JsonApiServiceProvider;
+use ARK\Database\Provider\ConfigurationServiceProvider;
 use ARK\Translation\ActorLoader;
 use ARK\Translation\DatabaseLoader;
 use ARK\Translation\Profiler\TranslationProfilerServiceProvider;
-use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
-use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
+use Psr\Log\LogLevel;
+use Psr\Http\Message\ResponseInterface;
+use rootLogin\UserProvider\Provider\UserProviderServiceProvider;
+use Silex\Application as SilexApplication;
+use Silex\Provider\AssetServiceProvider;
+use Silex\Provider\CsrfServiceProvider;
+use Silex\Provider\DoctrineServiceProvider;
+use Silex\Provider\FormServiceProvider;
+use Silex\Provider\HttpFragmentServiceProvider;
+use Silex\Provider\LocaleServiceProvider;
+use Silex\Provider\RememberMeServiceProvider;
+use Silex\Provider\SecurityServiceProvider;
+use Silex\Provider\ServiceControllerServiceProvider;
+use Silex\Provider\SessionServiceProvider;
+use Silex\Provider\SwiftmailerServiceProvider;
+use Silex\Provider\TranslationServiceProvider;
+use Silex\Provider\TwigServiceProvider;
+use Silex\Provider\ValidatorServiceProvider;
+use Silex\Provider\VarDumperServiceProvider;
+use Silex\Provider\WebProfilerServiceProvider;
+use Sorien\Provider\DoctrineProfilerServiceProvider;
+use Symfony\Component\Debug\Debug;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class Application extends SilexApplication
 {
@@ -88,35 +106,20 @@ class Application extends SilexApplication
         $app['dir.web'] = $app['dir.root'].'/web';
         $app['dir.theme'] = $app['dir.web'].'/themes/default';
 
-        // Enable core providers
-        $app->register(new \Silex\Provider\HttpFragmentServiceProvider());
-        $app->register(new \Silex\Provider\ServiceControllerServiceProvider());
-        $app->register(new \Silex\Provider\SessionServiceProvider());
+        // Configure paths
+        $app['path.api'] = '/api/v2';
 
-        // Enable PSR-7 Interop
-        $app['psr7.http_message_factory'] = function () {
-            return new DiactorosFactory();
-        };
-        $app['psr7.request'] = $app->protect(
-            function (HttpFoundationRequest $request) use ($app) {
-                return $app['psr7.http_message_factory']->createRequest($request);
-            }
-        );
-        $app['psr7.http_foundation_factory'] = function () {
-            return new HttpFoundationFactory();
-        };
-        $app['psr7.response'] = $app->protect(
-            function (ResponseInterface $response) use ($app) {
-                return $app['psr7.http_foundation_factory']->createResponse($response);
-            }
-        );
+        // Enable core providers
+        $app->register(new HttpFragmentServiceProvider());
+        $app->register(new ServiceControllerServiceProvider());
+        $app->register(new SessionServiceProvider());
 
         // Enable the Database
-        $app->register(new \Silex\Provider\DoctrineServiceProvider());
-        $app->register(new Database\Provider\ConfigurationServiceProvider());
+        $app->register(new DoctrineServiceProvider());
+        $app->register(new ConfigurationServiceProvider());
 
         // Enable the logger
-        $app->register(new \Silex\Provider\MonologServiceProvider());
+        $app->register(new MonologServiceProvider());
         $app['monolog.logfile'] = $app['dir.var'].'/logs/ark.log';
         $app['monolog.name'] = 'ark';
         if ($app['debug']) {
@@ -128,8 +131,8 @@ class Application extends SilexApplication
         }
 
         // Enable Locale/Translation
-        $app->register(new \Silex\Provider\LocaleServiceProvider());
-        $app->register(new \Silex\Provider\TranslationServiceProvider());
+        $app->register(new LocaleServiceProvider());
+        $app->register(new TranslationServiceProvider());
         // TODO Load from config
         $app['locale'] = 'en';
         $app['locale_fallbacks'] = array('en');
@@ -152,18 +155,18 @@ class Application extends SilexApplication
         $app['twig.options'] = array('cache' => $app['dir.var'].'/cache/twig');
 
         // Enable Forms and related providers
-        $app->register(new \Silex\Provider\ValidatorServiceProvider());
-        $app->register(new \Silex\Provider\FormServiceProvider());
-        $app->register(new \Silex\Provider\CsrfServiceProvider());
+        $app->register(new ValidatorServiceProvider());
+        $app->register(new FormServiceProvider());
+        $app->register(new CsrfServiceProvider());
 
         // Enable mail provider
-        $app->register(new \Silex\Provider\SwiftmailerServiceProvider());
+        $app->register(new SwiftmailerServiceProvider());
         $app['swiftmailer.options'] = array();
 
         // Enable Security and User providers
-        $app->register(new \Silex\Provider\SecurityServiceProvider());
-        $app->register(new \Silex\Provider\RememberMeServiceProvider());
-        $app->register(new \rootLogin\UserProvider\Provider\UserProviderServiceProvider());
+        $app->register(new SecurityServiceProvider());
+        $app->register(new RememberMeServiceProvider());
+        $app->register(new UserProviderServiceProvider());
         $app['user.options'] = array(
             'templates' => [
                 'layout' => 'pages/page.html.twig',
@@ -206,16 +209,29 @@ class Application extends SilexApplication
 
         // Enable other providers
         $app->register(new JsonApiServiceProvider());
-        $app->register(new \Silex\Provider\AssetServiceProvider());
+        $app->register(new AssetServiceProvider());
 
         // If debug mode also enable the profiler
         if ($app['debug']) {
-            $app->register(new \Silex\Provider\VarDumperServiceProvider());
-            $app->register(new \Silex\Provider\WebProfilerServiceProvider(), array(
+            $app->register(new VarDumperServiceProvider());
+            $app->register(new WebProfilerServiceProvider(), array(
                 'profiler.cache_dir' => $app['dir.var'].'/cache/profiler',
             ));
             $app->register(new TranslationProfilerServiceProvider());
-            $app->register(new \Sorien\Provider\DoctrineProfilerServiceProvider());
+            $app->register(new DoctrineProfilerServiceProvider());
         }
+    }
+
+    public function run(Request $request = null)
+    {
+        if ($request === null) {
+            $path = $_SERVER['PATH_INFO'];
+            $pos = strpos($path, $this['path.api']);
+            if ($pos === 0) {
+                $request = JsonApiRequest::createFromGlobals();
+                $request->setResourcePath(substr($path, strlen($path)));
+            }
+        }
+        parent::run($request);
     }
 }
