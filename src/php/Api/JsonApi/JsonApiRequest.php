@@ -34,6 +34,7 @@
 
 namespace ARK\Api\JsonApi;
 
+use ARK\Api\JsonAPi\Error\JsonApiErrorBag;
 use Symfony\Component\HttpFoundation\Request;
 
 class JsonApiRequest extends Request
@@ -54,13 +55,16 @@ class JsonApiRequest extends Request
     public function getQueryParameters()
     {
         if (!$queryParameters) {
-            $this->queryParameters = new JsonApiParameters($this->query->all());
+            $this->queryParameters = new JsonApiParameters($this->resourcePath, $this->query->all());
         }
         return $this->queryParameters;
     }
 
     public function validateHeaders(JsonApiErrorBag $errors)
     {
+        $this->validateContentTypeHeader($errors);
+        $this->validateAcceptHeader($errors);
+        $this->validateQueryParams($errors);
     }
 
     public function validateContentTypeHeader(JsonApiErrorBag $errors)
@@ -80,7 +84,7 @@ class JsonApiRequest extends Request
     public function validateQueryParams(JsonApiErrorBag $errors)
     {
         foreach ($this->query->all() as $name => $value) {
-            if (in_array($name, ["fields", "include", "sort", "page", "filter"]) === false) {
+            if (!in_array($name, ['fields', 'include', 'sort', 'page', 'filter'])) {
                 $errors->addError(new UnrecognizedParamaterError($name));
             }
         }

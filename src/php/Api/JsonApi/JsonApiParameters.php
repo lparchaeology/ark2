@@ -3,7 +3,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Api/JsonApiResponse.php
+* src/php/Api/JsonApi/JsonApiParameters.php
 *
 * JSON:API Response
 *
@@ -28,87 +28,146 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApiResponse.php
+* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApi/JsonApiParameters.php
 * @since      2.0
 */
 
 namespace ARK\Api\JsonApi;
 
+use ARK\Api\JsonAPi\Error\JsonApiErrorBag;
+
 class JsonApiParameters
 {
-    protected $params = null;
+    protected $paramaters = null;
+    protected $includedRelationships = null;
+    protected $sparseFieldset = null;
+    protected $sortFieldset = null;
+    protected $pagination = null;
+    protected $filters = null;
 
-    public function __construct(string $path, array $params)
+    public function __construct(string $path, array $paramaters)
     {
-        $this->params = $params;
+        $this->path = $path;
+        $this->paramaters = $paramaters;
     }
 
-    public function getInclude(array $available = [])
+    protected function getPath()
     {
-        if ($include = $this->getInput('include')) {
-            $relationships = explode(',', $include);
+        return $this->path;
+    }
 
-            $invalid = array_diff($relationships, $available);
+    protected function getParameter($key, $default = null)
+    {
+        return isset($this->paramaters[$key]) ? $this->paramaters[$key] : $default;
+    }
 
-            if (count($invalid)) {
-                throw new InvalidParameterException(
-                    'Invalid includes ['.implode(',', $invalid).']',
-                    1,
-                    null,
-                    'include'
-                );
+    protected function parseIncludedRelationships()
+    {
+        if ($this->includedRelationships !== null) {
+            return;
+        }
+        $this->includedRelationships = [];
+        $this->includedRelationshipTypes = [];
+        $include = $this->getParameter('include');
+        if (!is_string($include)) {
+            return;
+        }
+        $paths = explode(',', $include);
+        foreach ($paths as $path) {
+            if ($path && is_string($path)) {
+                $this->includedRelationship[] = $path;
+                $resources = explode('.', $path);
+                foreach ($resources as $resource) {
+                    if ($included && is_string($included)) {
+                        $this->includedRelationshipTypes[] = $resource;
+                    }
+                }
             }
-
-            return $relationships;
         }
-
-        return [];
     }
 
-    public function getOffset($perPage = null)
+    public function validateIncludedRelationships(array $availableRelationships, JsonApiErrorBag $errors)
     {
-        if ($perPage && ($offset = $this->getOffsetFromNumber($perPage))) {
-            return $offset;
+        $this->parseIncludedRelationships();
+        foreach ($this->includedRelationships as $relationship) {
+            if (!in_array($relationship, $availableRelationships)) {
+                $errors->addError(new InvalidIncludedRelationshipError($relationship));
+            }
         }
-
-        $offset = (int) $this->getPage('offset');
-
-        if ($offset < 0) {
-            throw new InvalidParameterException('page[offset] must be >=0', 2, null, 'page[offset]');
-        }
-
-        return $offset;
     }
 
-    protected function getOffsetFromNumber($perPage)
+    public function hasIncludedRelationships()
     {
-        $page = (int) $this->getPage('number');
-
-        if ($page <= 1) {
-            return 0;
-        }
-
-        return ($page - 1) * $perPage;
+        $this->parseIncludedRelationships();
+        return !empty($this->includedRelationships);
     }
 
-    public function getLimit($max = null)
+    public function isIncludedRelationship($relationship)
     {
-        $limit = $this->getPage('limit') ?: $this->getPage('size') ?: null;
-
-        if ($limit && $max) {
-            $limit = min($max, $limit);
-        }
-
-        return $limit;
+        $this->parseIncludedRelationships();
+        return in_array($relationship, $this->includedRelationships);
     }
 
-    public function getSort(array $available = [])
+    public function getIncludedRelationships()
     {
-        $sort = [];
+        $this->parseIncludedRelationships();
+        return $this->includedRelationships;
+    }
 
-        if ($input = $this->getInput('sort')) {
-            $fields = explode(',', $input);
+    protected function parseSparseFieldset()
+    {
+        if ($this->sparseFieldset !== null) {
+            return;
+        }
+        $this->sparseFieldset = [];
+        $fields = $this->getParameter('fields');
+        if (!is_array($fields)) {
+            return;
+        }
+        foreach ($fields as $resource => $included) {
+            if ($included && is_string($included)) {
+                $this->sparseFieldset[$resource] = explode(",", $included);
+            }
+        }
+    }
 
+    public function validateSparseFieldset($resource, array $resourceFields, JsonApiErrorBag $errors)
+    {
+        $this->parseSparseFieldset();
+        foreach ($this->sparseFieldset[$resource] as $field) {
+            if (!in_array($field, $resourceFields)) {
+                $errors->addError(new InvalidSparseFieldsetError($resource, $field, $resourceFields));
+            }
+        }
+    }
+
+    public function hasSparseFieldset($resource)
+    {
+        $this->parseSparseFieldset();
+        return isset($this->sparseFieldset[$resource]);
+    }
+
+    public function inSparseFieldset($resource, $field)
+    {
+        $this->parseSparseFieldset();
+        return (isset($this->sparseFieldset[$resource]) && isset($this->sparseFieldset[$resource][$field]));
+    }
+
+    public function getSparseFieldset($resource)
+    {
+        $this->parseSparseFieldset();
+        return isset($this->sparseFieldset[$resource]) ? array_keys($this->sparseFieldset[$resource]) : [];
+    }
+
+    protected function parseSortFieldset()
+    {
+        if ($this->sortFieldset !== null) {
+            return;
+        }
+        $this->sortFieldset = [];
+        $param = $this->getParameter('sort');
+        if ($param && is_string($param)) {
+            $fields = explode(',', $param);
             foreach ($fields as $field) {
                 if (substr($field, 0, 1) === '-') {
                     $field = substr($field, 1);
@@ -116,207 +175,132 @@ class JsonApiParameters
                 } else {
                     $order = 'asc';
                 }
-
-                $sort[$field] = $order;
-            }
-
-            $invalid = array_diff(array_keys($sort), $available);
-
-            if (count($invalid)) {
-                throw new InvalidParameterException(
-                    'Invalid sort fields ['.implode(',', $invalid).']',
-                    3,
-                    null,
-                    'sort'
-                );
-            }
-        }
-
-        return $sort;
-    }
-
-    public function getFields()
-    {
-        $fields = $this->getInput('fields');
-
-        if (! is_array($fields)) {
-            return [];
-        }
-
-        return array_map(function ($fields) {
-            return explode(',', $fields);
-        }, $fields);
-    }
-
-    public function getFilter()
-    {
-        return $this->getInput('filter');
-    }
-
-    protected function getInput($key, $default = null)
-    {
-        return isset($this->input[$key]) ? $this->input[$key] : $default;
-    }
-
-    protected function getPage($key)
-    {
-        $page = $this->getInput('page');
-
-        return isset($page[$key]) ? $page[$key] : '';
-    }
-}
-
-    protected $includedFields;
-    protected $includedRelationships;
-    protected $sorting;
-    protected $pagination;
-    protected $filtering;
-
-    protected function setIncludedFields()
-    {
-        $this->includedFields = [];
-        $fields = $this->getQueryParam("fields", []);
-        if (is_array($fields) === false) {
-            return;
-        }
-
-        foreach ($fields as $resourceType => $resourceFields) {
-            if (is_string($resourceFields)) {
-                $this->includedFields[$resourceType] = array_flip(explode(",", $resourceFields));
+                $this->sortFieldset[$field] = $order;
             }
         }
     }
 
-    public function getIncludedFields($resourceType)
+    public function validateSortFieldset(array $resourceFields, JsonApiErrorBag $errors)
     {
-        if ($this->includedFields === null) {
-            $this->setIncludedFields();
-        }
-
-        return isset($this->includedFields[$resourceType]) ? array_keys($this->includedFields[$resourceType]) : [];
-    }
-
-    public function isIncludedField($resourceType, $field)
-    {
-        if ($this->includedFields === null) {
-            $this->setIncludedFields();
-        }
-
-        if (array_key_exists($resourceType, $this->includedFields) === false) {
-            return true;
-        }
-
-        if (empty($this->includedFields[$resourceType]) === true) {
-            return false;
-        }
-
-        return isset($this->includedFields[$resourceType][$field]);
-    }
-
-    protected function setIncludedRelationships()
-    {
-        $this->includedRelationships = [];
-
-        $includeQueryParam = $this->getQueryParam("include", "");
-        if ($includeQueryParam === "") {
-            return;
-        }
-
-        $relationshipNames = explode(",", $includeQueryParam);
-        foreach ($relationshipNames as $relationship) {
-            $relationship = ".$relationship.";
-            $length = strlen($relationship);
-            $dot1 = 0;
-
-            while ($dot1 < $length - 1) {
-                $dot2 = strpos($relationship, ".", $dot1 + 1);
-                $path = substr($relationship, 1, $dot1 > 0 ? $dot1 - 1 : 0);
-                $name = substr($relationship, $dot1 + 1, $dot2 - $dot1 - 1);
-
-                if (isset($this->includedRelationships[$path]) === false) {
-                    $this->includedRelationships[$path] = [];
-                }
-                $this->includedRelationships[$path][$name] = $name;
-
-                $dot1 = $dot2;
-            };
+        $this->parseSortFieldset();
+        foreach ($this->sortFieldset as $field => $order) {
+            if (!in_array($field, $resourceFields)) {
+                $errors->addError(new InvalidSortFieldsetError($field, $resourceFields));
+            }
         }
     }
 
-    public function hasIncludedRelationships()
+    public function hasSortFieldset()
     {
-        if ($this->includedRelationships === null) {
-            $this->setIncludedRelationships();
-        }
-
-        return empty($this->includedRelationships) === false;
+        $this->parseSortFieldset();
+        return isset($this->sortFieldset);
     }
 
-    public function getIncludedRelationships($baseRelationshipPath)
+    public function inSortFieldset($field)
     {
-        if ($this->includedRelationships === null) {
-            $this->setIncludedRelationships();
-        }
-
-        if (isset($this->includedRelationships[$baseRelationshipPath])) {
-            return array_values($this->includedRelationships[$baseRelationshipPath]);
-        } else {
-            return [];
-        }
+        $this->parseSortFieldset();
+        return (isset($this->sortFieldset[$field]));
     }
 
-    public function isIncludedRelationship($baseRelationshipPath, $relationshipName, array $defaultRelationships)
+    public function getSortFieldset()
     {
-        if ($this->includedRelationships === null) {
-            $this->setIncludedRelationships();
-        }
-
-        if ($this->getQueryParam("include") === "") {
-            return false;
-        }
-
-        if (empty($this->includedRelationships) && array_key_exists($relationshipName, $defaultRelationships)) {
-            return true;
-        }
-
-        return isset($this->includedRelationships[$baseRelationshipPath][$relationshipName]);
+        $this->parseSortFieldset();
+        return $this->sortFieldset;
     }
 
-    protected function setSorting()
+    public function getSortOrder($field)
     {
-        $sortingQueryParam = $this->getQueryParam("sort", "");
-        if ($sortingQueryParam === "") {
-            $this->sorting = [];
-            return;
+        if ($this->inSortFieldset($field)) {
+            return $this->sortFieldset[$field];
         }
-
-        $sorting = explode(",", $sortingQueryParam);
-        $this->sorting = is_array($sorting) ? $sorting : [];
+        return null;
     }
 
-    public function getSorting()
+    protected function parsePagination()
     {
-        if ($this->sorting === null) {
-            $this->setSorting();
-        }
-
-        return $this->sorting;
-    }
-
-    protected function setPagination()
-    {
-        $pagination =  $this->getQueryParam("page", null);
+        $pagination =  $this->getParameter('page');
         $this->pagination = is_array($pagination) ? $pagination : [];
+    }
+
+    public function hasPagination()
+    {
+        $this->parsePagination();
+        return !empty($this->pagination);
     }
 
     public function getPagination()
     {
-        if ($this->pagination === null) {
-            $this->setPagination();
-        }
-
+        $this->parsePagination();
         return $this->pagination;
     }
+
+    protected function parseFilters()
+    {
+        if ($this->filters !== null) {
+            return;
+        }
+        $param = $this->getParameter('filter');
+        $this->filters = is_array($param) ? $param : explode(',', $param);
+    }
+
+    public function hasFilters()
+    {
+        $this->parseFilters();
+        return !empty($this->filters);
+    }
+
+    public function getFilters()
+    {
+        $this->parseFilters();
+        return $this->filters;
+    }
+}
+/*
+    TODO Pagination
+
+
+        protected function getPage($key)
+        {
+            $page = $this->getInput('page');
+            return isset($page[$key]) ? $page[$key] : '';
+        }
+
+        public function getOffset($perPage = null)
+        {
+            if ($perPage && ($offset = $this->getOffsetFromNumber($perPage))) {
+                return $offset;
+            }
+
+            $offset = (int) $this->getPage('offset');
+
+            if ($offset < 0) {
+                throw new InvalidParameterException('page[offset] must be >=0', 2, null, 'page[offset]');
+            }
+
+            return $offset;
+        }
+
+        protected function getOffsetFromNumber($perPage)
+        {
+            $page = (int) $this->getPage('number');
+
+            if ($page <= 1) {
+                return 0;
+            }
+
+            return ($page - 1) * $perPage;
+        }
+
+        public function getLimit($max = null)
+        {
+            $limit = $this->getPage('limit') ?: $this->getPage('size') ?: null;
+
+            if ($limit && $max) {
+                $limit = min($max, $limit);
+            }
+
+            return $limit;
+        }
 
     public function getFixedPageBasedPagination($defaultPage = null)
     {
@@ -338,53 +322,7 @@ class JsonApiParameters
         return CursorBasedPagination::fromPaginationQueryParams($this->getPagination(), $defaultCursor);
     }
 
-    protected function setFiltering()
-    {
-        $filtering = $this->getQueryParam("filter", []);
-        $this->filtering = is_array($filtering) ? $filtering : [];
-    }
-
-    public function getFiltering()
-    {
-        if ($this->filtering === null) {
-            $this->setFiltering();
-        }
-
-        return $this->filtering;
-    }
-
-    public function getFilteringParam($param, $default = null)
-    {
-        $filtering = $this->getFiltering();
-
-        return isset($filtering[$param]) ? $filtering[$param] : $default;
-    }
-
-    public function getQueryParam($name, $default = null)
-    {
-        $queryParams = $this->serverRequest->getQueryParams();
-
-        return isset($queryParams[$name]) ? $queryParams[$name] : $default;
-    }
-
-    public function withQueryParam($name, $value)
-    {
-        $self = clone $this;
-        $queryParams = $this->serverRequest->getQueryParams();
-        $queryParams[$name] = $value;
-        $self->serverRequest = $this->serverRequest->withQueryParams($queryParams);
-        $self->initializeParsedQueryParams();
-        return $self;
-    }
-
-    protected function initializeParsedQueryParams()
-    {
-        $this->includedFields = null;
-        $this->includedRelationships = null;
-        $this->sorting = null;
-        $this->pagination = null;
-        $this->filtering = null;
-    }
+    TODO Document Body
 
     public function getResource($default = null)
     {
@@ -456,3 +394,4 @@ class JsonApiParameters
         return new ToManyRelationship($resourceIdentifiers);
     }
 }
+*/
