@@ -70,7 +70,7 @@ class JsonApiRequest extends Request
         $this->validateContentTypeHeader($errors);
         $this->validateAcceptHeader($errors);
         $this->validateQueryParameters($errors);
-        $this->validateContents($errors);
+        $this->validateContent($errors);
         if (count($this->errors) > 0) {
             throw new JsonApiException();
         }

@@ -34,11 +34,14 @@
 
 namespace ARK\Api\JsonAPi\Error;
 
-use NilPortugues\Api\JsonApi\Server\Errors\ErrorBag;
+use ArrayIterator;
+use Countable;
+use IteratorAggregate;
 
-class JsonApiErrorBag extends ErrorBag
+class JsonApiErrorBag implements Countable, IteratorAggregate
 {
     protected $errorCode = null;
+    protected $errors = null;
 
     public function getHttpCode()
     {
@@ -61,8 +64,29 @@ class JsonApiErrorBag extends ErrorBag
     {
         $this->errorCode = $errorCode;
     }
+
     public function getErrorCode()
     {
         return $this->errorCode;
+    }
+
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    public function addError(Error $error)
+    {
+        $this->errors[] = $error;
+    }
+
+    public function count()
+    {
+        return count($this->errors);
+    }
+
+    public function getIterator()
+    {
+        return new ArrayIterator($this->errors);
     }
 }
