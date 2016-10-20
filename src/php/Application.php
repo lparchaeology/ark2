@@ -50,6 +50,7 @@ use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
 use Silex\Provider\LocaleServiceProvider;
+use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\RememberMeServiceProvider;
 use Silex\Provider\SecurityServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
@@ -149,7 +150,7 @@ class Application extends SilexApplication
         });
 
         // Enable Twig templates
-        $app->register(new \Silex\Provider\TwigServiceProvider());
+        $app->register(new TwigServiceProvider());
         $app['twig.path'] = array($app['dir.theme'].'/templates');
         $app['twig.form.templates'] = array('forms/layout.html.twig');
         $app['twig.options'] = array('cache' => $app['dir.var'].'/cache/twig');
@@ -225,7 +226,7 @@ class Application extends SilexApplication
     public function run(Request $request = null)
     {
         if ($request === null) {
-            $path = $_SERVER['PATH_INFO'];
+            $path = (isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '');
             $pos = strpos($path, $this['path.api']);
             if ($pos === 0) {
                 $request = JsonApiRequest::createFromGlobals();

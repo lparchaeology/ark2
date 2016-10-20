@@ -36,41 +36,31 @@ namespace ARK\Api\JsonApi\Action;
 
 use ARK\Application;
 use ARK\Api\JsonApi\JsonApiErrorResponse;
+use ARK\Api\JsonApi\JsonApiRequest;
 use ARK\Api\JsonAPi\Error\JsonApiErrorBag;
 use League\JsonGuard\Validator;
-use NilPortugues\Api\JsonApi\Http\Request\Request as JsonApiRequest;
-use NilPortugues\Api\JsonApi\Server\Data\DataException;
-use NilPortugues\Api\JsonApi\Server\Query\QueryException;
 use Seld\JsonLint\ParsingException;
-use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
-use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 abstract class AbstractJsonApiAction
 {
     protected $app = null;
-    protected $foundationRequest = null;
     protected $request = null;
+    protected $parameters = null;
     protected $response = null;
-    protected $serializer = null;
     protected $errors = null;
 
-    public function __invoke(Application $app, HttpFoundationRequest $request)
+    public function __invoke(Application $app, JsonApiRequest $request)
     {
         $this->app = $app;
-        $this->foundationRequest = $request;
-        $this->request = new JsonApiRequest($app['psr7.request']($request));
-        $this->serializer = $app['jsonapi.serializer'];
+        $this->request = $request;
         $this->errors = new JsonApiErrorBag();
         try {
-            $this->validateRequest();
+            $this->request->validate($this->errors);
+            $this->parameters = $request->getParameters();
             $data = $this->getData();
             $this->validateParams($data);
             $this->response = $this->getResponse($data);
         } catch (JsonApiException $e) {
-            $this->response = new JsonApiErrorResponse($this->errors);
-        } catch (QueryException $e) {
-            $this->response = new JsonApiErrorResponse($this->errors);
-        } catch (DataException $e) {
             $this->response = new JsonApiErrorResponse($this->errors);
         } catch (Exception $e) {
             $this->errors[] = new InternalServerError($e->getMessage(), $e->code());
@@ -79,7 +69,7 @@ abstract class AbstractJsonApiAction
         if ($app['debug']) {
             $this->validateResponse();
         }
-        return $app['psr7.response']($response);
+        return $this->response;
     }
 
     abstract protected function getData();
@@ -108,41 +98,10 @@ abstract class AbstractJsonApiAction
         $this->errors->addError($error);
     }
 
-    private function lintMessage($message)
-    {
-        try {
-            $this->app['json.linter']->lint($message);
-        } catch (ParsingException $e) {
-            $this->addError(new JsonLintError($e->message(), $e->code()));
-            throw new JsonApiException();
-        }
-    }
-
-    private function validateMessageSchema($message)
-    {
-        $validator = Validator($message->getBody(), $this->app['jsonapi.schema']);
-        if ($validator->fails()) {
-            foreach ($errors as $error) {
-                $this->addError(new JsonValidationError($error));
-            }
-            throw new JsonApiException();
-        }
-    }
-
-    private function validateRequest()
-    {
-        $this->request->validateContentTypeHeader();
-        $this->request->validateAcceptHeader();
-        $this->lintMessage($this->request);
-        $this->validateMessageSchema($this->request);
-        if (count($this->errors) > 0) {
-            throw new JsonApiException();
-        }
-    }
-
     private function vaidateResponse()
     {
-        $this->lintMessage($this->response);
-        $this->validateMessageSchema($this->response);
+        // TODO Move to Response?
+        //$this->lintMessage($this->response);
+        //$this->validateMessageSchema($this->response);
     }
 }

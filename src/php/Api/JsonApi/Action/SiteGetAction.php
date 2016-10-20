@@ -35,11 +35,11 @@
 namespace ARK\Api\JsonApi\Action;
 
 use ARK\Application;
-use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
+use ARK\Api\JsonApi\JsonApiRequest;
 
 class SiteGetAction extends AbstractGetAction
 {
-    public function __invoke(Application $app, HttpFoundationRequest $request, string $site = null)
+    public function __invoke(Application $app, JsonApiRequest $request, string $site = null)
     {
         $this->site = $site;
         parent::__invoke($app, $request);

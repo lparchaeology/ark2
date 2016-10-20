@@ -34,10 +34,6 @@
 
 namespace ARK\Api\JsonApi\Action;
 
-use NilPortugues\Api\JsonApi\Http\Response\Response;
-use NilPortugues\Api\JsonApi\Server\Query\QueryObject;
-use NilPortugues\Api\JsonApi\Server\Query\QueryException;
-
 abstract class AbstractGetAction extends AbstractJsonApiAction
 {
     protected $fields = null;

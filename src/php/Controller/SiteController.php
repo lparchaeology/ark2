@@ -105,7 +105,7 @@ class SiteController
     public function getSiteAction(Application $app, Request $request, $siteSlug)
     {
         $acton = new SiteGetAction($app, $request, $siteSlug);
-        return $action->getFoundationResponse();
+        return $action->getResponse();
         /*
         $uri = $request->getSchemeAndHttpHost().$request->getBaseUrl().$request->getPathInfo();
         $response = new JsonResponse(null);

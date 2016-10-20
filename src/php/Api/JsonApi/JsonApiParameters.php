@@ -44,6 +44,7 @@ class JsonApiParameters
     protected $sortFieldset = null;
     protected $pagination = null;
     protected $filters = null;
+    protected $schema = null;
 
     public function __construct(string $path, array $paramaters)
     {
@@ -253,6 +254,15 @@ class JsonApiParameters
     {
         $this->parseFilters();
         return $this->filters;
+    }
+
+    public function includeSchema()
+    {
+        if ($this->schema === null) {
+            $param = $this->getParameter('schema');
+            $this->schema = ($param == 'true' ? true : false);
+        }
+        return $this->schema;
     }
 }
 /*

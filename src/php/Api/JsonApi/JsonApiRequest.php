@@ -35,6 +35,9 @@
 namespace ARK\Api\JsonApi;
 
 use ARK\Api\JsonAPi\Error\JsonApiErrorBag;
+use League\JsonGuard\Dereferencer;
+use League\JsonGuard\Validator;
+use Seld\JsonLint\JsonParser;
 use Symfony\Component\HttpFoundation\Request;
 
 class JsonApiRequest extends Request
@@ -49,6 +52,7 @@ class JsonApiRequest extends Request
 
     public function getResourcePath()
     {
+        // TODO Try to derive internally
         return $this->resourcePath;
     }
 
@@ -60,16 +64,21 @@ class JsonApiRequest extends Request
         return $this->queryParameters;
     }
 
-    public function validateHeaders(JsonApiErrorBag $errors)
+    public function validate(JsonApiErrorBag $errors)
     {
+        // TODO Validate headers based on request type
         $this->validateContentTypeHeader($errors);
         $this->validateAcceptHeader($errors);
-        $this->validateQueryParams($errors);
+        $this->validateQueryParameters($errors);
+        $this->validateContents($errors);
+        if (count($this->errors) > 0) {
+            throw new JsonApiException();
+        }
     }
 
     public function validateContentTypeHeader(JsonApiErrorBag $errors)
     {
-        if ($this->getBody() && $this->getContentType() != 'application/vnd.api+json') {
+        if ($this->getContent() && $this->getContentType() != 'application/vnd.api+json') {
             $errors->addError(new InvalidContentTypeError($this->getContentType()));
         }
     }
@@ -81,12 +90,34 @@ class JsonApiRequest extends Request
         }
     }
 
-    public function validateQueryParams(JsonApiErrorBag $errors)
+    public function validateQueryParameters(JsonApiErrorBag $errors, array $customParameters = [])
     {
+        $valid = array_merge(['fields', 'include', 'sort', 'page', 'filter'], $customParameters);
         foreach ($this->query->all() as $name => $value) {
-            if (!in_array($name, ['fields', 'include', 'sort', 'page', 'filter'])) {
+            if (!in_array($name, $valid)) {
                 $errors->addError(new UnrecognizedParamaterError($name));
             }
+        }
+    }
+
+    public function validateContent(JsonApiErrorBag $errors)
+    {
+        // Lint JSON
+        try {
+            (new JsonParser())->lint($this->getContent());
+        } catch (ParsingException $e) {
+            $this->addError(new JsonLintError($e->message(), $e->code()));
+            throw new JsonApiException();
+        }
+
+        // Validate against JSON Schema
+        $schema = (new Dereferencer())->dereference('file://../../../schema/json/jsonapi.json');
+        $validator = new Validator($this->getContent(), $schema);
+        if ($validator->fails()) {
+            foreach ($errors as $error) {
+                $this->addError(new JsonValidationError($error));
+            }
+            throw new JsonApiException();
         }
     }
 }
