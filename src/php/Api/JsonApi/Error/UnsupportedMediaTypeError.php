@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Api/JsonApi/JsonApiErrorResponse.php
+* src/php/Api/JsonValidationError.php
 *
-* JSON:API Error Response
+* JSON:API Invalid JSON:API Schema Error
 *
 * PHP versions 5 and 7
 *
@@ -28,30 +28,16 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApi/JsonApiErrorResponse.php
+* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonValidationError.php
 * @since      2.0
 */
 
-namespace ARK\Api\JsonApi;
+namespace ARK\Api\JsonApi\Error;
 
-use ARK\Api\JsonApi\Error\ErrorBag;
-use ARK\Api\JsonApi\Error\InternalServerError;
-
-abstract class JsonApiErrorResponse extends JsonApiResponse
+class UnsupportedMediaTypeError extends Error
 {
-    protected $httpCode = null;
-    protected $errorCode = null;
-
-    public function __construct(JsonApiErrorBag $errors = null)
+    public function __construct(string $mediaType)
     {
-        if (!$errors || count($errors) === 0) {
-            $error = new InternalServerError();
-            $errors = new ErrorBag([new InternalServerError()]);
-            $errors->setHttpCode($error->status());
-            $errors->setErrorCode($error->code());
-        }
-        $this->httpCode = $errors->statusCode();
-        $this->errorCode = $errors->code();
-        parent::__construct($errors);
+        parent::__construct('unsupported_media_type', 'Unsupported Media Type', 'Provided Media Type = '.$mediaType);
     }
 }

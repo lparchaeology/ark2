@@ -37,7 +37,7 @@ namespace ARK\Api\JsonApi\Action;
 use ARK\Application;
 use ARK\Api\JsonApi\JsonApiErrorResponse;
 use ARK\Api\JsonApi\JsonApiRequest;
-use ARK\Api\JsonAPi\Error\JsonApiErrorBag;
+use ARK\Api\JsonApi\Error\ErrorBag;
 use League\JsonGuard\Validator;
 use Seld\JsonLint\ParsingException;
 
@@ -53,7 +53,7 @@ abstract class AbstractJsonApiAction
     {
         $this->app = $app;
         $this->request = $request;
-        $this->errors = new JsonApiErrorBag();
+        $this->errors = new ErrorBag();
         try {
             $this->request->validate($this->errors);
             $this->parameters = $request->getParameters();
@@ -61,6 +61,7 @@ abstract class AbstractJsonApiAction
             $this->validateParams($data);
             $this->response = $this->getResponse($data);
         } catch (JsonApiException $e) {
+            echo 'Caught Error';
             $this->response = new JsonApiErrorResponse($this->errors);
         } catch (Exception $e) {
             $this->errors[] = new InternalServerError($e->getMessage(), $e->code());
@@ -83,12 +84,12 @@ abstract class AbstractJsonApiAction
         return $this->errors;
     }
 
-    protected function setErrors(JsonApiErrorBag $errors)
+    protected function setErrors(ErrorBag $errors)
     {
         $this->errors->setErrors($errors->getErrors());
     }
 
-    protected function addErrors(JsonApiErrorBag $errors)
+    protected function addErrors(ErrorBag $errors)
     {
         $this->errors->addErrors($errors->getErrors());
     }

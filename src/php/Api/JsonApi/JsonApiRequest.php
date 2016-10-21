@@ -34,7 +34,8 @@
 
 namespace ARK\Api\JsonApi;
 
-use ARK\Api\JsonAPi\Error\JsonApiErrorBag;
+use ARK\Api\JsonApi\Error\ErrorBag;
+use ARK\Api\JsonApi\Error\UnsupportedMediaTypeError;
 use League\JsonGuard\Dereferencer;
 use League\JsonGuard\Validator;
 use Seld\JsonLint\JsonParser;
@@ -64,7 +65,7 @@ class JsonApiRequest extends Request
         return $this->queryParameters;
     }
 
-    public function validate(JsonApiErrorBag $errors)
+    public function validate(ErrorBag $errors)
     {
         // TODO Validate headers based on request type
         $this->validateContentTypeHeader($errors);
@@ -76,21 +77,21 @@ class JsonApiRequest extends Request
         }
     }
 
-    public function validateContentTypeHeader(JsonApiErrorBag $errors)
+    public function validateContentTypeHeader(ErrorBag $errors)
     {
         if ($this->getContent() && $this->getContentType() != 'application/vnd.api+json') {
             $errors->addError(new InvalidContentTypeError($this->getContentType()));
         }
     }
 
-    public function validateAcceptHeader(JsonApiErrorBag $errors)
+    public function validateAcceptHeader(ErrorBag $errors)
     {
         if ($this->headers->get("Accept") != 'application/vnd.api+json') {
             $errors->addError(new UnsupportedMediaTypeError($this->headers->get("Accept")));
         }
     }
 
-    public function validateQueryParameters(JsonApiErrorBag $errors, array $customParameters = [])
+    public function validateQueryParameters(ErrorBag $errors, array $customParameters = [])
     {
         $valid = array_merge(['fields', 'include', 'sort', 'page', 'filter'], $customParameters);
         foreach ($this->query->all() as $name => $value) {
@@ -100,7 +101,7 @@ class JsonApiRequest extends Request
         }
     }
 
-    public function validateContent(JsonApiErrorBag $errors)
+    public function validateContent(ErrorBag $errors)
     {
         // Lint JSON
         try {

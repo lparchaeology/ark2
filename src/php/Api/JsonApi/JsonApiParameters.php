@@ -34,7 +34,7 @@
 
 namespace ARK\Api\JsonApi;
 
-use ARK\Api\JsonAPi\Error\JsonApiErrorBag;
+use ARK\Api\JsonApi\Error\ErrorBag;
 
 class JsonApiParameters
 {
@@ -87,7 +87,7 @@ class JsonApiParameters
         }
     }
 
-    public function validateIncludedRelationships(array $availableRelationships, JsonApiErrorBag $errors)
+    public function validateIncludedRelationships(array $availableRelationships, ErrorBag $errors)
     {
         $this->parseIncludedRelationships();
         foreach ($this->includedRelationships as $relationship) {
@@ -132,7 +132,7 @@ class JsonApiParameters
         }
     }
 
-    public function validateSparseFieldset($resource, array $resourceFields, JsonApiErrorBag $errors)
+    public function validateSparseFieldset($resource, array $resourceFields, ErrorBag $errors)
     {
         $this->parseSparseFieldset();
         foreach ($this->sparseFieldset[$resource] as $field) {
@@ -181,7 +181,7 @@ class JsonApiParameters
         }
     }
 
-    public function validateSortFieldset(array $resourceFields, JsonApiErrorBag $errors)
+    public function validateSortFieldset(array $resourceFields, ErrorBag $errors)
     {
         $this->parseSortFieldset();
         foreach ($this->sortFieldset as $field => $order) {

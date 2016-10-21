@@ -5,7 +5,7 @@
 /**
 * src/php/Api/JsonValidationError.php
 *
-* JSON:API Invalid JSON:API Error
+* JSON:API Invalid JSON:API Schema Error
 *
 * PHP versions 5 and 7
 *
@@ -32,12 +32,11 @@
 * @since      2.0
 */
 
-namespace ARK\Api\JsonAPi\Error;
+namespace ARK\Api\JsonApi\Error;
 
 use League\JsonGuard\ValidationError;
-use NilPortugues\Api\JsonApi\Server\Errors\Error as JsonApiError;
 
-class JsonValidationError extends JsonApiError
+class JsonValidationError extends Error
 {
     private $codes = [
         22 => 'INVALID_NUMERIC',
@@ -80,8 +79,9 @@ class JsonValidationError extends JsonApiError
 
     public function __construct(ValidationError $error, string $title = 'JSON Validation Error')
     {
-        parent::__construct($title, $error->getMessage(), $this->codes[$error->getCode()]);
-        $this->setSource('pointer', $error->getPointer());
-        $this->setMeta(['value' => $error->getValue(), 'constraints', $error->getConstraints()]);
+        parent::__construct($this->codes[$error->getCode()], $title, $error->getMessage());
+        $this->setSource(ErrorSource::fromPointer($error->getPointer()));
+        $this->addMeta('value', $error->getValue());
+        $this->addMeta('constraints', $error->getConstraints());
     }
 }

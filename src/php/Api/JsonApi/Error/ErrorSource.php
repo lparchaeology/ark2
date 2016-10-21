@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Api/JsonApi/JsonApiErrorResponse.php
+* src/php/Api/JsonApi/Error/ErrorSource.php
 *
-* JSON:API Error Response
+* JSON:API Error Source
 *
 * PHP versions 5 and 7
 *
@@ -28,30 +28,55 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApi/JsonApiErrorResponse.php
+* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApi/Error/ErrorSource.php
 * @since      2.0
 */
 
-namespace ARK\Api\JsonApi;
+namespace ARK\Api\JsonApi\Error;
 
-use ARK\Api\JsonApi\Error\ErrorBag;
-use ARK\Api\JsonApi\Error\InternalServerError;
-
-abstract class JsonApiErrorResponse extends JsonApiResponse
+class ErrorSource
 {
-    protected $httpCode = null;
-    protected $errorCode = null;
+    private $pointer = null;
+    private $parameter = null;
 
-    public function __construct(JsonApiErrorBag $errors = null)
+    private function __construct()
     {
-        if (!$errors || count($errors) === 0) {
-            $error = new InternalServerError();
-            $errors = new ErrorBag([new InternalServerError()]);
-            $errors->setHttpCode($error->status());
-            $errors->setErrorCode($error->code());
+    }
+
+    public function pointer()
+    {
+        return $this->pointer;
+    }
+
+    public function parameter()
+    {
+        return $this->parameter;
+    }
+
+    public function toArray()
+    {
+        $data = null;
+        if ($this->pointer()) {
+            $data['pointer'] = $this->pointer();
         }
-        $this->httpCode = $errors->statusCode();
-        $this->errorCode = $errors->code();
-        parent::__construct($errors);
+        if ($this->parameter()) {
+            $data['parameter'] = $this->parameter();
+        }
+        return $data;
+    }
+
+    public static function fromPointer($pointer, $parameter = null)
+    {
+        $source = new ErrorSource();
+        $source->pointer = $pointer;
+        $source->paramater = $parameter;
+        return $source;
+    }
+
+    public static function fromParameter($parameter)
+    {
+        $source = new ErrorSource();
+        $source->paramater = $parameter;
+        return $source;
     }
 }

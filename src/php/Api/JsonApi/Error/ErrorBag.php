@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Api/JsonApi/Error/JsonApiErrorBag.php
+* src/php/Api/JsonApi/Error/ErrorBag.php
 *
-* JSON:API Invalid JSON:API Error
+* JSON:API Error Bag
 *
 * PHP versions 5 and 7
 *
@@ -28,25 +28,28 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApi/Error/JsonApiErrorBag.php
+* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApi/Error/ErrorBag.php
 * @since      2.0
 */
 
-namespace ARK\Api\JsonAPi\Error;
+namespace ARK\Api\JsonApi\Error;
 
-use ArrayIterator;
+use ARK\Http\StatusCodeTrait;
 use Countable;
 use IteratorAggregate;
+use JsonSerializable;
 
-class JsonApiErrorBag implements Countable, IteratorAggregate
+class ErrorBag implements Countable, IteratorAggregate, JsonSerializable
 {
-    protected $errorCode = null;
+    use StatusCodeTrait;
+
+    protected $code = null;
     protected $errors = null;
 
-    public function getHttpCode()
+    public function statusCode()
     {
-        if ($this->httpCode) {
-            return $this->httpCode;
+        if ($this->status) {
+            return $this->status;
         }
         if (count($this->errors) === 1) {
             return $this->errors[0]->getStatus();
@@ -60,17 +63,23 @@ class JsonApiErrorBag implements Countable, IteratorAggregate
         return 500;
     }
 
-    public function setErrorCode(string $errorCode)
+    public function setCode(string $code)
     {
-        $this->errorCode = $errorCode;
+        $this->errorCode = $code;
     }
 
-    public function getErrorCode()
+    public function code()
     {
-        return $this->errorCode;
+        if ($this->code) {
+            return $this->code;
+        }
+        if (count($this->errors) === 1) {
+            return $this->errors[0]->getCode();
+        }
+        return 'multiple_error_codes';
     }
 
-    public function getErrors()
+    public function errors()
     {
         return $this->errors;
     }
@@ -88,5 +97,19 @@ class JsonApiErrorBag implements Countable, IteratorAggregate
     public function getIterator()
     {
         return new ArrayIterator($this->errors);
+    }
+
+    public function toArray()
+    {
+        $data = null;
+        foreach ($this->errors as $error) {
+            $data['errors'][] = $error->toArray();
+        }
+        return $data;
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 }

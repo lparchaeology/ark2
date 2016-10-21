@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Api/JsonValidationError.php
+* src/php/Api/JsonApi/InternalServerError.php
 *
-* JSON:API Invalid JSON:API Error
+* JSON:API Internal Server Error
 *
 * PHP versions 5 and 7
 *
@@ -28,25 +28,22 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonValidationError.php
+* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApi/InternalServerError.php
 * @since      2.0
 */
 
-namespace ARK\Api\JsonAPi\Error;
+namespace ARK\Api\JsonApi\Error;
 
-use NilPortugues\Api\JsonApi\Server\Errors\Error as JsonApiError;
-
-class InternalServerError extends JsonApiError
+class InternalServerError extends Error
 {
-    public function __construct(string $message = null, $code = null)
+    public function __construct(string $title = null, string $detail = null)
     {
-        if (!$message) {
-            $message = 'Unknown Server Error';
+        if (!$title) {
+            $title = 'Internal Server Error';
         }
-        if (!$code) {
-            $code = 'InternalServerError';
+        if (!$detail) {
+            $detail = 'Unknown Internal Server Error';
         }
-        parent::__construct('Internal Server Error', $message, $code);
-        $this->setStatus('500');
+        parent::__construct('internal_server_error', $title, $detail, 500);
     }
 }
