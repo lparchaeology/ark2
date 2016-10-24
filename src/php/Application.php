@@ -230,7 +230,7 @@ class Application extends SilexApplication
             $pos = strpos($path, $this['path.api']);
             if ($pos === 0) {
                 $request = JsonApiRequest::createFromGlobals();
-                $request->setResourcePath(substr($path, strlen($path)));
+                $request->setResourcePath(substr($path, strlen($path) - $pos));
             }
         }
         parent::run($request);

@@ -147,7 +147,7 @@ abstract class AbstractResource
         if ($this->parent) {
             return $this->parent->module->xmis($this->parent->schemaId(), $this->module->id());
         }
-        return null;
+        return [];
     }
 
     public function submodules()

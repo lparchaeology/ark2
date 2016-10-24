@@ -38,6 +38,11 @@ class UnsupportedMediaTypeError extends Error
 {
     public function __construct(string $mediaType)
     {
-        parent::__construct('unsupported_media_type', 'Unsupported Media Type', 'Provided Media Type = '.$mediaType);
+        parent::__construct(
+            'UNSUPPORTED_MEDIA_TYPE',
+            'Unsupported Media Type',
+            "Required Media Type = application/vnd.api+json. Provided Media Type = ".$mediaType,
+            415
+        );
     }
 }

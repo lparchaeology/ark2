@@ -79,7 +79,7 @@ class JsonValidationError extends Error
 
     public function __construct(ValidationError $error, string $title = 'JSON Validation Error')
     {
-        parent::__construct($this->codes[$error->getCode()], $title, $error->getMessage());
+        parent::__construct($this->codes[$error->getCode()], $title, $error->getMessage(), 400);
         $this->setSource(ErrorSource::fromPointer($error->getPointer()));
         $this->addMeta('value', $error->getValue());
         $this->addMeta('constraints', $error->getConstraints());

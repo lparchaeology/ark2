@@ -35,6 +35,7 @@
 namespace ARK\Api\JsonApi\Error;
 
 use ARK\Http\StatusCodeTrait;
+use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use JsonSerializable;
@@ -48,15 +49,15 @@ class ErrorBag implements Countable, IteratorAggregate, JsonSerializable
 
     public function statusCode()
     {
-        if ($this->status) {
-            return $this->status;
+        if ($this->statusCode) {
+            return $this->statusCode;
         }
         if (count($this->errors) === 1) {
-            return $this->errors[0]->getStatus();
+            return $this->errors[0]->statusCode();
         }
         foreach ($this->errors as $error) {
-            $status = $error->getStatus();
-            if ($status && $status >= 400 && $status < 500) {
+            $statusCode = $error->statusCode();
+            if ($statusCode && $statusCode >= 400 && $statusCode < 500) {
                 return 400;
             }
         }
@@ -76,7 +77,7 @@ class ErrorBag implements Countable, IteratorAggregate, JsonSerializable
         if (count($this->errors) === 1) {
             return $this->errors[0]->getCode();
         }
-        return 'multiple_error_codes';
+        return 'MULTIPLE_ERROR_CODES';
     }
 
     public function errors()

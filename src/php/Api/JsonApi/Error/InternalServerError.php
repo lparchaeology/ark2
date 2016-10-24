@@ -44,6 +44,6 @@ class InternalServerError extends Error
         if (!$detail) {
             $detail = 'Unknown Internal Server Error';
         }
-        parent::__construct('internal_server_error', $title, $detail, 500);
+        parent::__construct('INTERNAL_SERVER_ERROR', $title, $detail, 500);
     }
 }

@@ -61,8 +61,12 @@ class ApiControllerProvider implements ControllerProviderInterface
             ->bind('api.sites.get');
 
         $controllers
-            ->put('/sites/{siteSlug}/{moduleSlug}/{itemSlug}', 'ARK\\Controller\\ItemController::putItemAction')
-            ->bind('api.item.put');
+            ->put('/sites/{siteSlug}/{moduleSlug}/{itemSlug}', 'ARK\\Controller\\ItemController::patchItemAction')
+            ->bind('api.item.patch');
+
+        $controllers
+            ->put('/sites/{siteSlug}/{moduleSlug}/{itemSlug}', 'ARK\\Controller\\ItemController::postItemAction')
+            ->bind('api.item.post');
 
         $controllers
             ->post('/sites/{siteSlug}/{moduleSlug}', 'ARK\\Controller\\ItemController::postItemAction')

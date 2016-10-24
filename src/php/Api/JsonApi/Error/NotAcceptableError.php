@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
-* src/php/Api/JsonApi/JsonApiErrorResponse.php
+* src/php/Api/JsonApi/Error/NotAcceptableError.php
 *
-* JSON:API Error Response
+* JSON:API Invalid JSON:API Schema Error
 *
 * PHP versions 5 and 7
 *
@@ -28,22 +28,21 @@
 * @author     John Layt <j.layt@lparchaeology.com>
 * @copyright  2016 L - P : Heritage LLP.
 * @license    GPL-3.0+
-* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApi/JsonApiErrorResponse.php
+* @see        http://ark.lparchaeology.com/code/src/php/Api/JsonApi/Error/NotAcceptableError.php
 * @since      2.0
 */
 
-namespace ARK\Api\JsonApi;
+namespace ARK\Api\JsonApi\Error;
 
-use ARK\Api\JsonApi\Error\ErrorBag;
-use ARK\Api\JsonApi\Error\InternalServerError;
-
-class JsonApiErrorResponse extends JsonApiResponse
+class NotAcceptableError extends Error
 {
-    public function __construct(ErrorBag $errors = null)
+    public function __construct(string $mediaType)
     {
-        if (!$errors || count($errors) === 0) {
-            $errors = new ErrorBag([new InternalServerError()]);
-        }
-        parent::__construct($errors, $errors->statusCode());
+        parent::__construct(
+            'NOT_ACCEPTABLE',
+            'Not Acceptable',
+            "Required Accept Header = application/vnd.api+json. Provided Accept Header = ".$mediaType,
+            406
+        );
     }
 }

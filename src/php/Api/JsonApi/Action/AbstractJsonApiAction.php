@@ -35,9 +35,12 @@
 namespace ARK\Api\JsonApi\Action;
 
 use ARK\Application;
+use ARK\Api\JsonApi\Error\Error;
+use ARK\Api\JsonApi\Error\ErrorBag;
+use ARK\Api\JsonApi\Error\InternalServerError;
 use ARK\Api\JsonApi\JsonApiErrorResponse;
 use ARK\Api\JsonApi\JsonApiRequest;
-use ARK\Api\JsonApi\Error\ErrorBag;
+use ARK\Api\JsonApi\JsonApiException;
 use League\JsonGuard\Validator;
 use Seld\JsonLint\ParsingException;
 
@@ -46,6 +49,7 @@ abstract class AbstractJsonApiAction
     protected $app = null;
     protected $request = null;
     protected $parameters = null;
+    protected $serializer = null;
     protected $response = null;
     protected $errors = null;
 
@@ -56,19 +60,22 @@ abstract class AbstractJsonApiAction
         $this->errors = new ErrorBag();
         try {
             $this->request->validate($this->errors);
-            $this->parameters = $request->getParameters();
+            $this->parameters = $request->getQueryParameters();
             $data = $this->getData();
             $this->validateParams($data);
             $this->response = $this->getResponse($data);
         } catch (JsonApiException $e) {
-            echo 'Caught Error';
             $this->response = new JsonApiErrorResponse($this->errors);
         } catch (Exception $e) {
             $this->errors[] = new InternalServerError($e->getMessage(), $e->code());
             $this->response = new JsonApiErrorResponse($this->errors);
         }
         if ($app['debug']) {
-            $this->validateResponse();
+            try {
+                $this->response->validate($this->errors);
+            } catch (JsonApiException $e) {
+                $this->response = new JsonApiErrorResponse($this->errors);
+            }
         }
         return $this->response;
     }
@@ -97,12 +104,5 @@ abstract class AbstractJsonApiAction
     protected function addError(Error $error)
     {
         $this->errors->addError($error);
-    }
-
-    private function vaidateResponse()
-    {
-        // TODO Move to Response?
-        //$this->lintMessage($this->response);
-        //$this->validateMessageSchema($this->response);
     }
 }

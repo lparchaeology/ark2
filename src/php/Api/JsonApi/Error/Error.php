@@ -116,7 +116,7 @@ class Error implements JsonSerializable
         return array_filter([
             'id' => $this->id(),
             'links' => $this->getLinks(),
-            'status' => $this->statusCode(),
+            'status' => (string)$this->statusCode(),
             'code' => $this->code(),
             'title' => $this->title(),
             'detail' => $this->detail(),

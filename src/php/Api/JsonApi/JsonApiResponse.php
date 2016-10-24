@@ -32,19 +32,33 @@
 * @since      2.0
 */
 
-namespace ARK\Api;
+namespace ARK\Api\JsonApi;
 
-use Zend\Diactoros\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use ARK\Api\JsonApi\Error\ErrorBag;
 
-class JsonApiResponse extends Response
+class JsonApiResponse extends JsonResponse
 {
+    use SchemaTrait;
+
     protected $jsonApiHeaders = [
         'Content-type' => 'application/vnd.api+json',
         'Cache-Control' => 'protected, max-age=0, must-revalidate',
     ];
 
-    public function __construct($status = 200, array $additionalHeaders = [])
+    public function __construct($data = null, $status = 200, $additionalHeaders = [])
     {
-        parent::__construct('php://memory', $status, array_merge($this->jsonApiHeaders, $additionalHeaders));
+        parent::__construct($data, $status, array_merge($this->jsonApiHeaders, $additionalHeaders));
+        $this->setEncodingOptions($this->getEncodingOptions() | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    }
+
+    public function validate(ErrorBag $errors)
+    {
+        // Lint JSON
+        $this->lintJson($this->getContent(), $errors);
+
+        // Validate against JSON Schema
+        $schema = $this->loadSchema('file://../src/schema/json/jsonapi.json', $errors);
+        $this->validateJsonSchema($this->getContent(), $schema, $errors);
     }
 }

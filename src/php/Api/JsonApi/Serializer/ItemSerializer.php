@@ -32,30 +32,31 @@
 * @since      2.0
 */
 
-namespace ARK\Api;
+namespace ARK\Api\JsonApi\Serializer;
 
 use ARK\Model\Item;
-use Tobscure\JsonApi\Relationship;
 use Tobscure\JsonApi\AbstractSerializer;
+use Tobscure\JsonApi\Collection;
+use Tobscure\JsonApi\Relationship;
 
 class ItemSerializer extends AbstractSerializer
 {
-    public function getType(Item $item)
+    public function getType($item)
     {
         return $item->module()->type();
     }
 
-    public function getId(Item $item)
+    public function getId($item)
     {
         return $item->id();
     }
 
-    public function getMeta(Item $item)
+    public function getMeta($item)
     {
         return [];
     }
 
-    public function getAttributes(Item $item, array $fields = null)
+    public function getAttributes($item, array $fields = null)
     {
         $attributes = [];
         foreach ($item->properties() as $property) {
@@ -66,12 +67,14 @@ class ItemSerializer extends AbstractSerializer
         return $attributes;
     }
 
-    public function getLinks(Item $item)
+    public function getLinks($item)
     {
+        return [];
+        // TODO Need proper URI path
         return ['self' => $item->path()];
     }
 
-    public function getRelationship(Item $item, string $name)
+    public function getRelationship($item, $name)
     {
         foreach ($item->submodules() as $submodule) {
             if ($submodule->type() == $name) {
@@ -85,16 +88,14 @@ class ItemSerializer extends AbstractSerializer
         }
     }
 
-    public function getRelationships(Item $item)
+    public function getRelationships($item)
     {
         $relationships = array();
         foreach ($item->submodules() as $submodule) {
             $relationships[] = new Relationship(new Collection($submodule->items(), new ItemSerializer()));
         }
         foreach ($item->relationships() as $relationship) {
-            if ($relationship->type() == $name) {
-                $relationships[] = new Relationship(new Collection($relationship->items(), new ItemSerializer()));
-            }
+            $relationships[] = new Relationship(new Collection($relationship->items(), new ItemSerializer()));
         }
         return $relationships;
     }

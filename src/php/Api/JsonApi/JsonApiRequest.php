@@ -35,14 +35,17 @@
 namespace ARK\Api\JsonApi;
 
 use ARK\Api\JsonApi\Error\ErrorBag;
+use ARK\Api\JsonApi\Error\InternalServerError;
+use ARK\Api\JsonApi\Error\JsonValidationError;
+use ARK\Api\JsonApi\Error\BadRequestError;
+use ARK\Api\JsonApi\Error\NotAcceptableError;
 use ARK\Api\JsonApi\Error\UnsupportedMediaTypeError;
-use League\JsonGuard\Dereferencer;
-use League\JsonGuard\Validator;
-use Seld\JsonLint\JsonParser;
 use Symfony\Component\HttpFoundation\Request;
 
 class JsonApiRequest extends Request
 {
+    use SchemaTrait;
+
     protected $resourcePath = null;
     protected $queryParameters = null;
 
@@ -59,7 +62,7 @@ class JsonApiRequest extends Request
 
     public function getQueryParameters()
     {
-        if (!$queryParameters) {
+        if (!$this->queryParameters) {
             $this->queryParameters = new JsonApiParameters($this->resourcePath, $this->query->all());
         }
         return $this->queryParameters;
@@ -67,14 +70,23 @@ class JsonApiRequest extends Request
 
     public function validate(ErrorBag $errors)
     {
-        // TODO Validate headers based on request type
+        $this->validateMethod($errors);
         $this->validateContentTypeHeader($errors);
         $this->validateAcceptHeader($errors);
         $this->validateQueryParameters($errors);
         $this->validateContent($errors);
-        if (count($this->errors) > 0) {
+        if (count($errors) > 0) {
             throw new JsonApiException();
         }
+    }
+
+    public function validateMethod(ErrorBag $errors)
+    {
+        $method = $this->getMethod();
+        if ($method == 'GET' || $method == 'POST' || $method == 'PATCH' || $method == 'DELETE') {
+            return;
+        }
+        $errors->addError(new MethodNotAllowedError($method));
     }
 
     public function validateContentTypeHeader(ErrorBag $errors)
@@ -87,7 +99,7 @@ class JsonApiRequest extends Request
     public function validateAcceptHeader(ErrorBag $errors)
     {
         if ($this->headers->get("Accept") != 'application/vnd.api+json') {
-            $errors->addError(new UnsupportedMediaTypeError($this->headers->get("Accept")));
+            $errors->addError(new NotAcceptableError($this->headers->get("Accept")));
         }
     }
 
@@ -103,22 +115,36 @@ class JsonApiRequest extends Request
 
     public function validateContent(ErrorBag $errors)
     {
-        // Lint JSON
-        try {
-            (new JsonParser())->lint($this->getContent());
-        } catch (ParsingException $e) {
-            $this->addError(new JsonLintError($e->message(), $e->code()));
-            throw new JsonApiException();
+        // Validate Content against Method
+        $method = $this->getMethod();
+        $content = $this->getContent();
+        if ($method == 'GET' || $method == 'DELETE') {
+            if ($content) {
+                $error = new BadRequestError(
+                    'Method / Content Mismatch',
+                    'A '.$method.' request should not have any content.'
+                );
+                $errors->addError($error);
+                throw new JsonApiException();
+            }
+            return;
+        }
+        if ($method == 'POST' || $method == 'PATCH') {
+            if ($content) {
+                $error = new BadRequestError(
+                    'Method / Content Mismatch',
+                    'A '.$method.' request must have content.'
+                );
+                $errors->addError($error);
+                throw new JsonApiException();
+            }
         }
 
+        // Lint JSON
+        $this->lintJson($content, $errors);
+
         // Validate against JSON Schema
-        $schema = (new Dereferencer())->dereference('file://../../../schema/json/jsonapi.json');
-        $validator = new Validator($this->getContent(), $schema);
-        if ($validator->fails()) {
-            foreach ($errors as $error) {
-                $this->addError(new JsonValidationError($error));
-            }
-            throw new JsonApiException();
-        }
+        $schema = $this->loadSchema('file://../src/schema/json/jsonapi_request.json', $errors);
+        $this->validateJsonSchema($content, $schema, $errors);
     }
 }

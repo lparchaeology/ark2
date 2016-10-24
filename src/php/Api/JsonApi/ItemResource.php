@@ -32,28 +32,28 @@
 * @since      2.0
 */
 
-namespace ARK\Api;
+namespace ARK\Api\JsonApi;
 
 use ARK\Model\Item;
 use ARK\Api\JsonApi\JsonApiParameters;
+use ARK\Api\JsonApi\Serializer\ItemSerializer;
 use Tobscure\JsonApi\Resource;
 
 class ItemResource extends Resource
 {
-    protected $paramaters;
+    protected $parameters;
 
-    public function __construct(Item $item, ItemSerializer $serializer, JsonApiParameters $parameters = null)
+    public function __construct(Item $item, JsonApiParameters $parameters = null)
     {
-        $this->data = $item;
-        $this->serializer = $serializer;
-        if ($paramaters) {
+        parent::__construct($item, new ItemSerializer());
+        if ($parameters) {
             $this->setParameters($parameters);
         }
     }
 
-    public function setParamaters(JsonApiParameters $paramaters)
+    public function setParamaters(JsonApiParameters $parameters)
     {
-        $this->paramaters = $paramaters;
+        $this->paramaters = $parameters;
         $this->includes = $parameters->getIncludedRelationships();
         $this->fields = $parameters->getIncludedFields();
         if ($parameters->includeSchema()) {
@@ -64,5 +64,10 @@ class ItemResource extends Resource
     public function getParamaters()
     {
         return $this->paramaters;
+    }
+
+    protected function buildRelationships()
+    {
+        return $this->serializer->getRelationships($this->data);
     }
 }

@@ -36,6 +36,7 @@
 namespace ARK\Model;
 
 use ARK\Database\Database;
+use Exception;
 
 class Item extends AbstractResource
 {
@@ -115,7 +116,7 @@ class Item extends AbstractResource
             case 'span':
                 return $this->keyedValues($data, $property->multipleValues(), 'beg', 'end');
             case 'text':
-                return $this->textValue($data);
+                return $this->value($data, true, 'value');
             default:
                 return 'TODO: dataclass '.$property->dataclass();
         }
@@ -126,7 +127,11 @@ class Item extends AbstractResource
         if ($multipleValues) {
             $values = null;
             foreach ($data as $row) {
-                $values[] = $row[$field];
+                if (isset($row['language'])) {
+                    $values[$row['language']] = $row[$field];
+                } else {
+                    $values[] = $row[$field];
+                }
             }
             return $values;
         }
@@ -134,16 +139,6 @@ class Item extends AbstractResource
             return $data[0][$field];
         }
         return null;
-    }
-
-    private function textValue(array $data)
-    {
-        // TODO Somewhere we need to prevent text fields being multipleValues!
-        $values = null;
-        foreach ($data as $row) {
-            $values[][$row['language']] = $row['value'];
-        }
-        return $values;
     }
 
     private function keyedValues(array $data, bool $multipleValues, string $field1, string $field2)
@@ -181,7 +176,7 @@ class Item extends AbstractResource
         if (!$config) {
             // Item not found
             //throw new Error(9999);
-            throw new \Exception();
+            throw new Exception();
         }
         // TODO check parent matches!
         $item->init($db, $module, $parent, $config);
@@ -195,7 +190,7 @@ class Item extends AbstractResource
         if (!$config) {
             // Item not found
             //throw new Error(9999);
-            throw new \Exception();
+            throw new Exception();
         }
         // TODO check parent matches!
         $item->init($db, $module, $parent, $config);

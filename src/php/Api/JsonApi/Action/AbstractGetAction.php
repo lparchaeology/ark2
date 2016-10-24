@@ -41,17 +41,12 @@ abstract class AbstractGetAction extends AbstractJsonApiAction
 
     protected function validateParams($data)
     {
-        $this->fields = $this->request->getFields();
-        $this->included = $this->request->getIncluded();
-        QueryObject::validateQueryParamsTypes($this->serializer, $this->fields, 'Fields', $this->errorBag);
-        QueryObject::validateIncludeParams($this->serializer, $this->included, 'include', $this->errorBag);
-        if ($this->errorBag->count() > 0) {
+        //$this->fields = $this->request->fields();
+        //$this->included = $this->request->included();
+        //QueryObject::validateQueryParamsTypes($this->serializer, $this->fields, 'Fields', $this->errorBag);
+        //QueryObject::validateIncludeParams($this->serializer, $this->included, 'include', $this->errorBag);
+        if (count($this->errors) > 0) {
             throw new QueryException();
         }
-    }
-
-    protected function getResponse($data)
-    {
-        return new Response($this->serializer->serialize($this->data, $this->fields, $this->included));
     }
 }

@@ -35,24 +35,44 @@
 namespace ARK\Api\JsonApi\Action;
 
 use ARK\Application;
+use ARK\Api\JsonApi\Error\NotFoundError;
+use ARK\Api\JsonApi\ItemResource;
+use ARK\Api\JsonApi\JsonApiException;
 use ARK\Api\JsonApi\JsonApiRequest;
+use ARK\Api\JsonApi\JsonApiResponse;
+use ARK\Api\JsonApi\Serializer\ItemSerializer;
+use ARK\Model\Module;
+use Exception;
+use Tobscure\JsonApi\Document;
+use Tobscure\JsonApi\Resource;
 
 class SiteGetAction extends AbstractGetAction
 {
-    public function __invoke(Application $app, JsonApiRequest $request, string $site = null)
+    public function __invoke(Application $app, JsonApiRequest $request, string $siteSlug = null)
     {
-        $this->site = $site;
-        parent::__invoke($app, $request);
+        $this->site = $siteSlug;
+        return parent::__invoke($app, $request);
     }
 
     protected function getData()
     {
-        $root = Module::getRoot($this->app['database'], 'ark');
-        $item = $root->submodule($root->schemaId(), 'ste')->item($this->site);
-        if (!$item->isValid()) {
+        try {
+            $root = Module::getRoot($this->app['database'], 'ark');
+            $item = $root->submodule($root->schemaId(), 'ste')->item($this->site);
+            if (!$item->isValid()) {
+                throw new Exception();
+            }
+        } catch (Exception $e) {
             $this->addError(new NotFoundError('sites', $this->site));
             throw new JsonApiException();
         }
         return $item;
+    }
+
+    protected function getResponse($data)
+    {
+        $resource = new ItemResource($data, $this->serializer);
+        $document = new Document($resource);
+        return new JsonApiResponse($document);
     }
 }
