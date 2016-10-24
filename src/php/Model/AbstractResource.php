@@ -45,6 +45,7 @@ abstract class AbstractResource
     protected $parent = null;
     protected $modtype = '';
     protected $valid = false;
+    protected $dirty = false;
 
     use SchemaTrait;
 
@@ -157,5 +158,15 @@ abstract class AbstractResource
     public function submodule(string $submodule)
     {
         return $this->module->submodule($this->schemaId, $submodule);
+    }
+
+    public function isDirty()
+    {
+        return $this->dirty;
+    }
+
+    protected function setDirty()
+    {
+        $this->dirty = true;
     }
 }

@@ -42,9 +42,11 @@ use Doctrine\DBAL\DBALException;
 class Database
 {
     private $app = null;
-    private $drivers = array('pdo_mysql', 'pdo_pgsql', 'pdo_sqlite');
-    private $modules = array();
-    private $classes = array();
+    private $drivers = ['pdo_mysql', 'pdo_pgsql', 'pdo_sqlite'];
+    private $modules = [];
+    private $classes = [];
+    private $fragmentTables = [];
+    private $scalarTables = [];
 
     public function __construct(Application $app)
     {
@@ -287,6 +289,25 @@ class Database
         }
     }
 
+    private function insertRows(Connection $connection, string $table, array $fields, array $rows)
+    {
+        $cols = count($fields);
+        $fl = implode(', ', $fields);
+        $vl = str_repeat('?, ', $cols - 1).'?';
+        $sql = "
+            INSERT INTO $table ($fl)
+            VALUES ($vl)
+        ";
+        $values = array_shift($rows);
+        foreach ($rows as $row) {
+            $values = array_merge($values, $row);
+            $sql .= "
+                , ($vl)
+            ";
+        }
+        $connection->executeUpdate($sql, $values);
+    }
+
     private function loadModules()
     {
         if ($this->modules) {
@@ -320,6 +341,10 @@ class Database
         $classes = $this->config()->fetchAll($sql, array());
         foreach ($classes as $class) {
             $this->classes[$class['dataclass']] = $class;
+            $this->fragmentTables[] = $class['tbl'];
+            if ($class['type'] = 'scalar') {
+                $this->scalarTables[] = $class['tbl'];
+            }
         }
     }
 
@@ -329,51 +354,114 @@ class Database
         return $this->classes[$dataclass]['tbl'];
     }
 
-    private function fragmentsSql(string $table)
+    public function getScalarTables()
     {
-        $sql = "
-            SELECT *
-            FROM $table
-            WHERE module = :module
-            AND item = :item
-        ";
-        return $sql;
+        $this->loadDataclasses();
+        return $this->scalarTables;
     }
 
-    private function fragmentsUnionSql(array $tables)
+    public function getFragmentTables()
     {
-        $sql = '';
-        foreach ($tables as $table) {
-            if ($sql) {
-                $sql .= "
-                    UNION ALL
-                ";
-            }
-            $sql .= $this->fragmentsSql($table);
+        $this->loadDataclasses();
+        return $this->fragmentTables;
+    }
+
+    public function addItem(string $module, string $parent, string $index, string $name, string $modtype)
+    {
+        $table = $this->getModuleTable($module);
+        $sql = "
+            INSERT INTO $table
+            (id, parent, idx, name, modtype)
+            VALUES (:id, :parent, :idx, :name, :modtype)
+        ";
+        $params = [
+            ':parent' => $parent,
+            ':idx' => $index,
+            ':name' => $name,
+            ':modtype' => $modtype,
+        ];
+        $params[':id'] = ($parent ? $parent.'.'.$index : $index);
+        return $this->data()->executeUpdate($sql, $params);
+    }
+
+    public function addItemFragments(string $module, string $item, array $dataclassFragments)
+    {
+        foreach ($dataclassFragments as $dataclass => $propertyFragments) {
+            $this->addDataclassFragments($module, $item, $dataclass, $propertyFragments);
         }
-        return $sql;
     }
 
-    public function getScalarFragments(string $module, string $item)
+    public function addDataclassFragments(string $module, string $item, string $dataclass, array $propertyFragments)
     {
-        $sql = "
-            SELECT tbl
-            FROM ark_model_dataclass
-            WHERE type = 'scalar'
+        $table = $this->getDataclassTable($dataclass);
+        $fields = array_merge(['module', 'item'], array_keys($propertyFragments[0]));
+        foreach ($propertyFragments as $fragment) {
+            $rows[] = array_merge([$module, $item], array_values($fragment));
+        }
+        $this->insertRows($this->data(), $table, $fields, $rows);
+    }
+
+    public function addPropertyFragments(string $module, string $item, string $property, string $dataclass, array $fragments)
+    {
+        $table = $this->getDataclassTable($dataclass);
+        $fields = array_merge(['module', 'item', 'property'], array_keys($fragments[0]));
+        foreach ($fragments as $fragment) {
+            $rows[] = array_merge([$module, $item, $property], array_values($fragment));
+        }
+        $this->insertRows($this->data(), $table, $fields, $rows);
+    }
+
+    public function deleteItem(string $module, string $item)
+    {
+        $sql = $this->deleteItemFragmentsSql();
+        $table = $this->getModuleTable($module);
+        $sql .= "
+            UNION
+            DELETE
+            FROM $table
+            WHERE id = :item
         ";
-        $tables = $this->data()->fetchAll($sql, array());
-        $sql = fragmentsUnionSql(array_column($tables, 'tbl'));
+        $params = array(
+            ':item' => $item,
+        );
+        return $this->data()->fetchAssoc($sql, $params);
+    }
+
+    public function deleteItemFragments(string $module, string $item)
+    {
+        $sql = $this->deleteItemFragmentsSql();
         $params = array(
             ':module' => $module,
             ':item' => $item,
         );
-        return $this->data()->fetchAll($sql, $params);
+        return $this->data()->executeUpdate($sql, $params);
     }
 
-    private function getTableFragments(string $table, string $module, string $item, string $property)
+    private function deleteItemFragmentsSql()
     {
+        $tables = $this->getFragmentTables();
+        $sql = '';
+        foreach ($tables as $table) {
+            if ($sql) {
+                $sql .= "
+                    UNION
+                ";
+            }
+            $sql = "
+                DELETE
+                FROM $table
+                WHERE module = :module
+                AND item = :item
+            ";
+        }
+        return $sql;
+    }
+
+    public function deletePropertyFragments(string $module, string $item, string $property, string $dataclass)
+    {
+        $table = $this->getDataclassTable($dataclass);
         $sql = "
-            SELECT *
+            DELETE
             FROM $table
             WHERE module = :module
             AND item = :item
@@ -384,14 +472,50 @@ class Database
             ':item' => $item,
             ':property' => $property,
         );
+        return $this->data()->executeUpdate($sql, $params);
+    }
+
+    public function getItemFragments(string $module, string $item)
+    {
+        $sql = '';
+        $tables = $this->getScalerTables();
+        foreach ($tables as $table) {
+            if ($sql) {
+                $sql .= "
+                    UNION ALL
+                ";
+            }
+            $sql = "
+                SELECT *
+                FROM $table
+                WHERE module = :module
+                AND item = :item
+            ";
+        }
+        $params = array(
+            ':module' => $module,
+            ':item' => $item,
+        );
         return $this->data()->fetchAll($sql, $params);
     }
 
-    public function getDataclassFragments(string $module, string $item, string $property, string $dataclass)
+    public function getPropertyFragments(string $module, string $item, string $property, string $dataclass)
     {
         $table = $this->getDataclassTable($dataclass);
         if ($table) {
-            return $this->getTableFragments($table, $module, $item, $property);
+            $sql = "
+                SELECT *
+                FROM $table
+                WHERE module = :module
+                AND item = :item
+                AND property = :property
+            ";
+            $params = array(
+                ':module' => $module,
+                ':item' => $item,
+                ':property' => $property,
+            );
+            return $this->data()->fetchAll($sql, $params);
         }
         return array();
     }
@@ -639,28 +763,6 @@ class Database
             ORDER BY LENGTH(idx) DESC, idx DESC
         ";
         return $this->data()->fetchAssoc($sql, $params);
-    }
-
-    public function addItem(string $module, string $parent, string $index, string $modtype)
-    {
-        $table = $this->getModuleTable($module);
-        $sql = "
-            INSERT INTO $table
-            (id, parent, idx, item, modtype)
-            VALUES (:id, :parent, :idx, :item, :modtype)
-        ";
-        $params = array();
-        if ($parent) {
-            $params[':id'] = $parent.'.'.$index;
-            $params[':item'] = $parent.'_'.$index;
-        } else {
-            $params[':id'] = $index;
-            $params[':item'] = $index;
-        }
-        $params[':parent'] = $parent;
-        $params[':idx'] = $index;
-        $params[':modtype'] = $modtype;
-        return $this->data()->executeUpdate($sql, $params);
     }
 
     public function getModule(string $module)

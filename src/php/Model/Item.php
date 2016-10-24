@@ -85,33 +85,39 @@ class Item extends AbstractResource
             return $this->modtype;
         }
         if ($property->dataclass()) {
-            $data = $this->db->getDataclassFragments(
+            $data = $this->db->getPropertyFragments(
                 $this->module()->id(),
                 $this->id(),
                 $property->id(),
                 $property->dataclass()
             );
-            switch ($property->dataclass()) {
-                case 'blob':
-                case 'boolean':
-                case 'date':
-                case 'datetime':
-                case 'float':
-                case 'integer':
-                case 'string':
-                case 'time':
-                    return $this->value($data, $property->multipleValues(), 'value');
-                case 'file':
-                    return $this->value($data, $property->multipleValues(), 'filename');
-                case 'action':
-                    return $this->keyedValues($data, $property->multipleValues(), 'actor_module', 'actor_item');
-                case 'span':
-                    return $this->keyedValues($data, $property->multipleValues(), 'beg', 'end');
-                case 'text':
-                    return $this->textValue($data);
-                default:
-                    return 'TODO: dataclass '.$property->dataclass();
-            }
+            return $this->propertyValue($property, $data);
+        }
+        return null;
+    }
+
+    private function propertyValue(Property $property, array $data)
+    {
+        switch ($property->dataclass()) {
+            case 'blob':
+            case 'boolean':
+            case 'date':
+            case 'datetime':
+            case 'float':
+            case 'integer':
+            case 'string':
+            case 'time':
+                return $this->value($data, $property->multipleValues(), 'value');
+            case 'file':
+                return $this->value($data, $property->multipleValues(), 'filename');
+            case 'action':
+                return $this->keyedValues($data, $property->multipleValues(), 'actor_module', 'actor_item');
+            case 'span':
+                return $this->keyedValues($data, $property->multipleValues(), 'beg', 'end');
+            case 'text':
+                return $this->textValue($data);
+            default:
+                return 'TODO: dataclass '.$property->dataclass();
         }
     }
 
