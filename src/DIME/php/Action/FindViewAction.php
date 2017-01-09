@@ -30,22 +30,45 @@
 
 namespace DIME\Action;
 
-use ARK\Application;
+use ARK\Service;
 use ARK\Error\ErrorException;
 use ARK\Http\Error\NotFoundError;
-use ARK\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class FindViewAction
 {
-    public function __invoke(Application $app, Request $request, $findSlug)
+    public function __invoke(Request $request, $findSlug)
     {
-        $em = new EntityManager($app['database'], 'data');
-        $item = $em->find('DIME\Model\Item\Find', $findSlug);
-        if (!$item || !$item->isValid()) {
+        $find = Service::repository('DIME\\Model\\Find')->find($findSlug);
+        if (!$find) {
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Item not found', "Item $findSlug not found"));
         }
-        return new Response(FindViewAction::class.'('.$findSlug.')');
+        $head = Service::translate('dime.find');
+        $html = "
+            <div>
+                <h3>$head</h3>
+        ";
+        foreach ($find->attributes() as $property => $value) {
+            $html .= $property.'  :  ';
+            if (is_array($value)) {
+                foreach ($value as $sub) {
+                    $html .= $sub.'  ';
+                }
+                $html .= '<br/><br/>';
+            } else {
+                $html .= $value.'<br/><br/>';
+            }
+        }
+        $html .= "
+            </div>
+        ";
+        return Service::render(
+            'pages/page.html.twig',
+            [
+                'contents' => 'Panel for details of find process, i.e. finder, location, etc',
+                'contents2' => 'Panel for details of find object, i.e. type, dimensions, materials, etc.<br/><br/>'.$html,
+                'find' => $find,
+            ]
+        );
     }
 }

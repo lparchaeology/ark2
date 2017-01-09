@@ -38,7 +38,7 @@ class ItemEntityPersister extends BasicEntityPersister
 {
     public function loadAttributes($id, Schema $schema, $subtype)
     {
-        $properties = $schema->properties();
+        $properties = $schema->properties($subtype);
         foreach ($properties as $prop) {
             $attributes[$prop->name()] = null;
             $props[$prop->name()] = $prop;

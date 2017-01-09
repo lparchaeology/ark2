@@ -30,18 +30,14 @@
 
 namespace DIME\Action;
 
-use ARK\Application;
-use ARK\Http\Error\NotFoundError;
-use ARK\ORM\EntityManager;
+use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ActorListAction
 {
-    public function __invoke(Application $app, Request $request)
+    public function __invoke(Request $request)
     {
-        $em = new EntityManager($app['database'], 'data');
-        $actors = $em->findAll('DIME\Model\Item\Actor');
         return new Response(ActorListAction::class);
     }
 }

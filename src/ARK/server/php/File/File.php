@@ -89,5 +89,6 @@ class File extends Item
     public static function loadMetadata(ClassMetadata $metadata)
     {
         $metadata->setTableName('ark_item_file');
+        $metadata->setItemEntity(true);
     }
 }

@@ -72,11 +72,11 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers
             ->method('GET')
             ->get('/finds/add', 'DIME\\Action\\FindAddAction')
-            ->bind('locations.list');
+            ->bind('finds.add');
 
         $controllers
             ->method('GET')
-            ->get('/locations/{findSlug}', 'DIME\\Action\\LocationViewAction')
+            ->get('/locations/{locationSlug}', 'DIME\\Action\\LocationViewAction')
             ->bind('locations.view');
 
         $controllers
@@ -87,7 +87,7 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers
             ->method('GET')
             ->get('/locations/add', 'DIME\\Action\\LocationAddAction')
-            ->bind('locations.list');
+            ->bind('locations.add');
 
         $controllers
             ->method('GET')

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 09, 2017 at 01:32 PM
+-- Generation Time: Jan 09, 2017 at 08:30 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -111,6 +111,7 @@ INSERT INTO `ark_format` (`format`, `type`, `input`, `object`, `array`, `sortabl
 ('date', 'date', 'date', 0, 0, 1, 1, 1, 0, 'format.date'),
 ('datetime', 'datetime', 'date', 0, 0, 1, 1, 1, 0, 'format.datetime'),
 ('decimal', 'decimal', 'text', 0, 0, 1, 1, 1, 0, 'format.decimal'),
+('distance', 'object', '', 0, 1, 1, 1, 1, 0, 'format.distance'),
 ('email', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.email'),
 ('float', 'float', 'text', 0, 0, 1, 1, 1, 0, 'format.float'),
 ('geometry', 'geometry', '', 0, 0, 0, 1, 1, 0, 'format.geometry'),
@@ -120,6 +121,7 @@ INSERT INTO `ark_format` (`format`, `type`, `input`, `object`, `array`, `sortabl
 ('item', 'item', 'select', 0, 0, 0, 0, 1, 0, 'format.item'),
 ('key', 'string', 'select', 0, 0, 1, 1, 1, 0, 'format.key'),
 ('markdown', 'text', 'textarea', 0, 0, 1, 1, 1, 0, 'format.markdown'),
+('mass', 'object', '', 0, 1, 1, 1, 1, 0, 'format.mass'),
 ('module', 'string', 'select', 0, 0, 0, 0, 1, 0, 'format.module'),
 ('money', 'decimal', 'date', 0, 0, 1, 1, 1, 0, 'format.money'),
 ('ordinaldate', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.ordinaldate'),
@@ -216,6 +218,7 @@ CREATE TABLE `ark_format_decimal` (
 --
 
 INSERT INTO `ark_format_decimal` (`format`, `prec`, `scale`, `minimum`, `exclusive_minimum`, `maximum`, `exclusive_maximum`, `multiple_of`) VALUES
+('decimal', 100, 100, NULL, 0, NULL, 0, '0.01'),
 ('money', 198, 2, NULL, 0, NULL, 0, '0.01');
 
 -- --------------------------------------------------------
@@ -314,7 +317,9 @@ CREATE TABLE `ark_format_object` (
 --
 
 INSERT INTO `ark_format_object` (`format`) VALUES
-('address');
+('address'),
+('distance'),
+('mass');
 
 -- --------------------------------------------------------
 
@@ -345,7 +350,11 @@ CREATE TABLE `ark_format_property` (
 INSERT INTO `ark_format_property` (`object`, `property`, `sequence`, `format`, `vocabulary`, `root`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`, `keyword`) VALUES
 ('address', 'city', 1, 'text', NULL, 0, 1, 1, 1, 0, 1, 0, 'property.city'),
 ('address', 'country', 2, 'identifier', 'country', 0, 1, 1, 1, 0, 1, 0, 'property.country'),
-('address', 'street', 0, 'text', NULL, 1, 1, 1, 1, 0, 1, 0, 'property.street');
+('address', 'street', 0, 'text', NULL, 1, 1, 1, 1, 0, 1, 0, 'property.street'),
+('length', 'measurement', 0, 'decimal', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.length.measurement'),
+('length', 'unit', 1, 'identifier', 'distance', 0, 1, 1, 1, 0, 1, 0, 'format.length.unit'),
+('mass', 'measurement', 0, 'decimal', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.mass.measurement'),
+('mass', 'unit', 1, 'identifier', 'mass', 0, 1, 1, 1, 0, 1, 0, 'format.mass.unit');
 
 -- --------------------------------------------------------
 
@@ -500,7 +509,7 @@ INSERT INTO `ark_schema` (`schma`, `module`, `entity`, `generator`, `sequence`, 
 ('core.actor', 'actor', 'ARK\\Model\\Actor', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 1, 1, 0, 'schema.actor'),
 ('core.file', 'file', 'ARK\\File\\File', 'ARK\\ORM\\Id\\IdentityGenerator', '', 1, 1, 0, 'schema.file'),
 ('dime.campaign', 'campaign', 'DIME\\Model\\Campaign', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 0, 1, 0, 'dime.campaign'),
-('dime.find', 'find', 'DIME\\Model\\Find', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 0, 1, 0, 'dime.schema.find'),
+('dime.find', 'find', 'DIME\\Model\\Find', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 1, 1, 0, 'dime.schema.find'),
 ('dime.image', 'image', 'DIME\\Model\\Image', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 0, 1, 0, 'dime.schema.image'),
 ('dime.location', 'location', 'DIME\\Model\\Location', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 0, 1, 0, 'dime.schema.location');
 
@@ -567,7 +576,16 @@ INSERT INTO `ark_schema_property` (`schma`, `subtype`, `property`, `format`, `vo
 ('core.file', '', 'description', 'text', NULL, 0, 1, 1, 0, 1, 0, 'property.description'),
 ('core.file', '', 'title', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'property.title'),
 ('dime.campaign', '', 'name', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
+('dime.find', '', 'description', 'text', NULL, 0, 1, 1, 0, 1, 0, 'property.description'),
+('dime.find', '', 'finddate', 'date', NULL, 0, 1, 1, 0, 1, 0, 'property.finddate'),
+('dime.find', '', 'length', 'distance', 'distance', 1, 1, 1, 0, 1, 0, 'property.length'),
+('dime.find', '', 'material', 'identifier', 'dime.material', 1, 1, 1, 0, 1, 0, 'property.material'),
 ('dime.find', '', 'name', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
+('dime.find', '', 'period_end', 'identifier', 'dime.period', 0, 1, 1, 0, 1, 0, 'dime.property.period.end'),
+('dime.find', '', 'period_start', 'identifier', 'dime.period', 0, 1, 1, 0, 1, 0, 'dime.property.period.start'),
+('dime.find', '', 'secondary', 'identifier', 'dime.material', 0, 0, 1, 0, 1, 0, 'property.material.secondary'),
+('dime.find', '', 'title', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'property.title'),
+('dime.find', '', 'weight', 'mass', 'mass', 0, 1, 1, 0, 1, 0, 'property.weight'),
 ('dime.image', '', 'name', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
 ('dime.location', '', 'name', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'property.name');
 
@@ -598,7 +616,24 @@ INSERT INTO `ark_schema_subtype` (`schma`, `subtype`, `entity`, `enabled`, `depr
 ('core.file', 'image', 'ARK\\File\\Image', 1, 0, 'file.type.image'),
 ('core.file', 'other', 'ARK\\File\\OtherFile', 1, 0, 'file.type.other'),
 ('core.file', 'text', 'ARK\\File\\TextFile', 1, 0, 'file.type.text'),
-('core.file', 'video', 'ARK\\File\\VideoFile', 1, 0, 'file.type.video');
+('core.file', 'video', 'ARK\\File\\VideoFile', 1, 0, 'file.type.video'),
+('dime.find', 'accessory', 'DIME\\Model\\Find', 1, 0, 'dime.find.accessory'),
+('dime.find', 'badge', 'DIME\\Model\\Find', 1, 0, 'dime.find.badge'),
+('dime.find', 'coin', 'DIME\\Model\\Find', 1, 0, 'dime.find.coin'),
+('dime.find', 'fibula', 'DIME\\Model\\Find', 1, 0, 'dime.find.fibula'),
+('dime.find', 'fragment', 'DIME\\Model\\Find', 1, 0, 'dime.find.fragment'),
+('dime.find', 'jewellery', 'DIME\\Model\\Find', 1, 0, 'dime.find.jewellery'),
+('dime.find', 'militaria', 'DIME\\Model\\Find', 1, 0, 'dime.find.militaria'),
+('dime.find', 'other', 'DIME\\Model\\Find', 1, 0, 'dime.find.other'),
+('dime.find', 'projectile', 'DIME\\Model\\Find', 1, 0, 'dime.find.projectile'),
+('dime.find', 'seal', 'DIME\\Model\\Find', 1, 0, 'dime.find.seal'),
+('dime.find', 'slag', 'DIME\\Model\\Find', 1, 0, 'dime.find.slag'),
+('dime.find', 'tack', 'DIME\\Model\\Find', 1, 0, 'dime.find.tack'),
+('dime.find', 'tool', 'DIME\\Model\\Find', 1, 0, 'dime.find.tool'),
+('dime.find', 'toy', 'DIME\\Model\\Find', 1, 0, 'dime.find.toy'),
+('dime.find', 'unidentified', 'DIME\\Model\\Find', 1, 0, 'dime.find.unidentified'),
+('dime.find', 'weapon', 'DIME\\Model\\Find', 1, 0, 'dime.find.weapon'),
+('dime.find', 'weight', 'DIME\\Model\\Find', 1, 0, 'dime.find.weight');
 
 -- --------------------------------------------------------
 
@@ -1008,8 +1043,12 @@ CREATE TABLE `ark_vocabulary` (
 
 INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('country', 'list', 'ISO3166', 1, 1, 0, 'vocabulary.country', 'ISO Country Codes'),
-('dime.period', 'taxonomy', 'DIME', 1, 1, 0, 'vocabulary.dime.period', 'DIME Period Taxonomy'),
-('language', 'list', 'ISO639', 1, 1, 0, 'vocabulary.language', 'ISO Language Codes');
+('dime.material', 'list', 'DIME', 1, 1, 0, 'vocabulary.dime.material', 'DIME Material List'),
+('dime.period', 'list', 'DIME', 1, 1, 0, 'vocabulary.dime.period', 'DIME Period Taxonomy'),
+('dime.treasure', 'list', 'DIME', 1, 1, 0, 'vocabulary.dime.treasure', 'DIME Treasure Status'),
+('distance', 'list', 'SI', 1, 1, 0, 'vocabulary.distance', 'SI Distance Units'),
+('language', 'list', 'ISO639', 1, 1, 0, 'vocabulary.language', 'ISO Language Codes'),
+('mass', 'list', 'SI', 1, 1, 0, 'vocabulary', 'SI Mass Units');
 
 -- --------------------------------------------------------
 
@@ -1757,6 +1796,20 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `depre
 ('country', 'ZA ', 'southafrica', 1, 0, 'country.southafrica', ''),
 ('country', 'ZM ', 'zambia', 1, 0, 'country.zambia', ''),
 ('country', 'ZW ', 'zimbabwe', 1, 0, 'country.zimbabwe', ''),
+('dime.material', 'ag', 'silver', 1, 0, 'dime.material.silver', ''),
+('dime.material', 'al', 'aluminium', 1, 0, 'dime.material.aluminium', ''),
+('dime.material', 'au', 'gold', 1, 0, 'dime.material.gold', ''),
+('dime.material', 'cu', 'copper', 1, 0, 'dime.material.copper', ''),
+('dime.material', 'cual', 'copperalloy', 1, 0, 'dime.material.copperalloy', ''),
+('dime.material', 'fe', 'iron', 1, 0, 'dime.material.iron', ''),
+('dime.material', 'gem', '', 1, 0, 'dime.material.gem', ''),
+('dime.material', 'glass', '', 1, 0, 'dime.material.glass', ''),
+('dime.material', 'niello', '', 1, 0, 'dime.material. niello', ''),
+('dime.material', 'pb', 'lead', 1, 0, 'dime.material.lead', ''),
+('dime.material', 'sa', 'tin', 1, 0, 'dime.material.tin', ''),
+('dime.material', 'stone', '', 1, 0, 'dime.material.stone', ''),
+('dime.material', 'xx', 'othermetal', 1, 0, 'dime.material.othermetal', ''),
+('dime.material', 'zz', 'other', 1, 0, 'dime.material.other', ''),
 ('dime.period', 'AÆAX', 'ahrensburg', 1, 0, 'dime.period.ahrensburg', 'Ahrensburgkultur'),
 ('dime.period', 'AÆBX', 'bromme', 1, 0, 'dime.period.bromme', 'Brommekultur'),
 ('dime.period', 'AÆEÆ', 'ertebølle.early', 1, 0, 'dime.period.ertebølle.early', 'Ældre Ertebøllekultur'),
@@ -1852,6 +1905,15 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `depre
 ('dime.period', 'TM1A', 'funnelbeaker.middle.ia', 1, 0, 'dime.period.funnelbeaker.middle.ia', 'Mellemneolitisk Tragtbægerkultur 1A'),
 ('dime.period', 'TM1B', 'funnelbeaker.middle.ib', 1, 0, 'dime.period.funnelbeaker.middle.ib', 'Mellemneolitisk Tragtbægerkultur 1B'),
 ('dime.period', 'XXXX', 'undated', 1, 0, 'dime.period.undated', 'Udateret'),
+('dime.treasure', 'assessing', '', 1, 0, 'dime.treasure.assesing', ''),
+('dime.treasure', 'not', '', 1, 0, 'dime.treasure.not', ''),
+('dime.treasure', 'pending', '', 1, 0, 'dime.treasure.pending', ''),
+('dime.treasure', 'treasure', '', 1, 0, 'dime.treasure.treasure', ''),
+('distance', 'km', 'kilometre', 1, 0, 'length.kilometre', ''),
+('distance', 'm', 'metre', 1, 0, 'length.metre', ''),
+('distance', 'mm', 'millimetre', 1, 0, 'length.millimetre', ''),
+('distance', 'nm', 'nanometre', 1, 0, 'length.nanometre', ''),
+('distance', 'µm', 'nanometre', 1, 0, 'length.micrometre', ''),
 ('language', 'aa', 'afar', 1, 0, 'language.afar', ''),
 ('language', 'ab', 'abkhazian', 1, 0, 'language.abkhazian', ''),
 ('language', 'ace', 'achinese', 1, 0, 'language.achinese', ''),
@@ -2232,7 +2294,8 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `depre
 ('language', 'nds', 'german.low', 1, 0, 'language.german.low', ''),
 ('language', 'nds-NL', 'saxon.low', 1, 0, 'language.saxon.low', ''),
 ('language', 'ne', 'nepali', 1, 0, 'language.nepali', ''),
-('language', 'new', 'newari', 1, 0, 'language.newari', ''),
+('language', 'new', 'newari', 1, 0, 'language.newari', '');
+INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('language', 'ng', 'ndonga', 1, 0, 'language.ndonga', ''),
 ('language', 'nia', 'nias', 1, 0, 'language.nias', ''),
 ('language', 'niu', 'niuean', 1, 0, 'language.niuean', ''),
@@ -2256,8 +2319,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `depre
 ('language', 'nym', 'nyamwezi', 1, 0, 'language.nyamwezi', ''),
 ('language', 'nyn', 'nyankole', 1, 0, 'language.nyankole', ''),
 ('language', 'nyo', 'nyoro', 1, 0, 'language.nyoro', ''),
-('language', 'nzi', 'nzima', 1, 0, 'language.nzima', '');
-INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('language', 'nzi', 'nzima', 1, 0, 'language.nzima', ''),
 ('language', 'oc', 'occitan', 1, 0, 'language.occitan', ''),
 ('language', 'oj', 'ojibwa', 1, 0, 'language.ojibwa', ''),
 ('language', 'om', 'oromo', 1, 0, 'language.oromo', ''),
@@ -2463,7 +2525,12 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `depre
 ('language', 'zu', 'zulu', 1, 0, 'language.zulu', ''),
 ('language', 'zun', 'zuni', 1, 0, 'language.zuni', ''),
 ('language', 'zxx', 'none', 1, 0, 'language.none', ''),
-('language', 'zza', 'zaza', 1, 0, 'language.zaza', '');
+('language', 'zza', 'zaza', 1, 0, 'language.zaza', ''),
+('mass', 'g', 'gram', 1, 0, 'mass.gram', ''),
+('mass', 'kg', 'kilogram', 1, 0, 'mass.kilogram', ''),
+('mass', 'mg', 'milligram', 1, 0, 'mass.milligram', ''),
+('mass', 't', 'tonne', 1, 0, 'mass.tonne', ''),
+('mass', 'µg', 'microgram', 1, 0, 'mass.microgram', '');
 
 -- --------------------------------------------------------
 
@@ -3997,8 +4064,8 @@ ALTER TABLE `ark_format_object`
 -- Constraints for table `ark_format_property`
 --
 ALTER TABLE `ark_format_property`
-  ADD CONSTRAINT `ark_format_property_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE,
-  ADD CONSTRAINT `ark_format_property_ibfk_2` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`);
+  ADD CONSTRAINT `ark_format_property_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_format_property_ibfk_2` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_string`
@@ -4092,16 +4159,16 @@ ALTER TABLE `ark_vocabulary_related`
 -- Constraints for table `ark_vocabulary_term`
 --
 ALTER TABLE `ark_vocabulary_term`
-  ADD CONSTRAINT `ark_vocabulary_term_ibfk_1` FOREIGN KEY (`concept`) REFERENCES `ark_vocabulary` (`concept`) ON DELETE CASCADE ON UPDATE NO ACTION;
+  ADD CONSTRAINT `ark_vocabulary_term_ibfk_1` FOREIGN KEY (`concept`) REFERENCES `ark_vocabulary` (`concept`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary_translation`
 --
 ALTER TABLE `ark_vocabulary_translation`
-  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_1` FOREIGN KEY (`keyword`) REFERENCES `ark_vocabulary_term` (`keyword`) ON DELETE CASCADE,
-  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_2` FOREIGN KEY (`language`) REFERENCES `ark_translation_language` (`language`),
-  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_3` FOREIGN KEY (`domain`) REFERENCES `ark_translation_domain` (`domain`),
-  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_4` FOREIGN KEY (`role`) REFERENCES `ark_translation_role` (`role`);
+  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_1` FOREIGN KEY (`keyword`) REFERENCES `ark_vocabulary_term` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_2` FOREIGN KEY (`language`) REFERENCES `ark_translation_language` (`language`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_3` FOREIGN KEY (`domain`) REFERENCES `ark_translation_domain` (`domain`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_4` FOREIGN KEY (`role`) REFERENCES `ark_translation_role` (`role`) ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

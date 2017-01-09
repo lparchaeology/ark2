@@ -36,11 +36,7 @@ trait StatusCodeTrait
 {
     protected $statusCode;
 
-<<<<<<< HEAD
-    public function setStatusCode(/*int*/ $statusCode)
-=======
     public function setStatusCode($statusCode)
->>>>>>> d6e7b28... dime2 is start of DIME frontend implementation
     {
         $this->statusCode = $statusCode;
     }

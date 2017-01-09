@@ -31,6 +31,7 @@
 namespace ARK\Schema;
 
 use ARK\EnabledTrait;
+use ARK\Error\Error;
 use ARK\Error\ErrorException;
 use ARK\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
@@ -84,19 +85,19 @@ class Schema
     {
         if (is_object($subtype)) {
             if (!$subtype instanceof SchemaSubtype) {
-                throw new ErrorException('SUBTYPE_EXPECTED', 'Subtype expected', 'Expected an instance of SchemaSubtype or a Subtype name.');
+                throw new ErrorException(new Error('SUBTYPE_EXPECTED', 'Subtype expected', 'Expected an instance of SchemaSubtype or a Subtype name.'));
             }
             $subtype = $subtype->name();
         }
         if ($subtype) {
             if (!$this->useSubtypes) {
-                throw new ErrorException('SURPLUS_SUBTYPE', 'Subtype not required', "The Schema '$schma' does not require a Subtype.");
+                throw new ErrorException(new Error('SURPLUS_SUBTYPE', 'Subtype not required', "The Schema '$this->schma' does not require a Subtype."));
             }
             if (!in_array($subtype, $this->subtypeNames())) {
-                throw new ErrorException('INVALID_SUBTYPE', 'Invalid Subtype', "The Subtype '$subtype' is invalid.");
+                throw new ErrorException(new Error('INVALID_SUBTYPE', 'Invalid Subtype', "The Subtype '$subtype' is invalid."));
             }
         } elseif ($this->useSubtypes) {
-            throw new ErrorException('MISSING_SUBTYPE', 'Missing Subtype', "The Subtype for Schema '$schma' is required.");
+            throw new ErrorException(new Error('MISSING_SUBTYPE', 'Missing Subtype', "The Subtype for Schema '$this->schma' is required."));
         }
         return $subtype;
     }

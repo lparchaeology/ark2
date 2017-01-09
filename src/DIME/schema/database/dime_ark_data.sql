@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 09, 2017 at 01:32 PM
+-- Generation Time: Jan 09, 2017 at 08:30 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -98,6 +98,13 @@ CREATE TABLE `ark_fragment_date` (
   `cre_by` int(11) NOT NULL,
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `ark_fragment_date`
+--
+
+INSERT INTO `ark_fragment_date` (`fid`, `module`, `item`, `property`, `parameter`, `value`, `object_fid`, `mod_by`, `mod_on`, `cre_by`, `cre_on`) VALUES
+(1, 'find', '1', 'finddate', NULL, '2017-01-01', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -259,6 +266,18 @@ CREATE TABLE `ark_fragment_string` (
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `ark_fragment_string`
+--
+
+INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `property`, `parameter`, `value`, `object_fid`, `mod_by`, `mod_on`, `cre_by`, `cre_on`) VALUES
+(1, 'find', '1', 'material', NULL, 'au', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(2, 'find', '1', 'secondary', NULL, 'fe', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(3, 'find', '1', 'secondary', NULL, 'pb', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(4, 'find', '1', 'secondary', NULL, 'al', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(5, 'find', '1', 'period_start', 'AYTX', '', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(6, 'find', '1', 'period_end', 'AYGX', '', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+
 -- --------------------------------------------------------
 
 --
@@ -285,11 +304,10 @@ CREATE TABLE `ark_fragment_text` (
 
 INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `property`, `parameter`, `value`, `object_fid`, `mod_by`, `mod_on`, `cre_by`, `cre_on`) VALUES
 (1, 'find', '1', 'name', 'en', 'My find number one', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(2, 'find', '1', 'name', 'da', 'Min fund nummer et', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (3, 'find', '2', 'name', 'en', 'My find number two', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(4, 'find', '2', 'name', 'da', 'Min fund nummer to', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (5, 'find', '3', 'name', 'en', 'My find number two', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(6, 'find', '3', 'name', 'da', 'Min fund nummer tre', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+(7, 'find', '1', 'description', 'en', 'A multiline description', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(8, 'find', '1', 'description', 'en', 'A singleline title', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -408,9 +426,9 @@ CREATE TABLE `ark_item_find` (
 --
 
 INSERT INTO `ark_item_find` (`id`, `parent_module`, `parent_id`, `idx`, `name`, `subtype`, `schma`, `mod_by`, `mod_on`, `cre_by`, `cre_on`) VALUES
-('1', NULL, NULL, '1', 'One', NULL, 'dime.find', 0, '2017-01-04 19:10:19', 0, '0000-00-00 00:00:00'),
-('2', NULL, NULL, '2', 'Two', NULL, 'dime.find', 0, '2017-01-04 19:10:31', 0, '0000-00-00 00:00:00'),
-('3', NULL, NULL, '3', 'Three', NULL, 'dime.find', 0, '2017-01-04 19:10:27', 0, '0000-00-00 00:00:00');
+('1', NULL, NULL, '1', 'One', 'coin', 'dime.find', 0, '2017-01-09 16:35:26', 0, '0000-00-00 00:00:00'),
+('2', NULL, NULL, '2', 'Two', 'fibula', 'dime.find', 0, '2017-01-09 17:17:00', 0, '0000-00-00 00:00:00'),
+('3', NULL, NULL, '3', 'Three', 'tack', 'dime.find', 0, '2017-01-09 17:17:09', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -740,7 +758,7 @@ ALTER TABLE `ark_fragment_boolean`
 -- AUTO_INCREMENT for table `ark_fragment_date`
 --
 ALTER TABLE `ark_fragment_date`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `ark_fragment_datetime`
 --
@@ -780,12 +798,12 @@ ALTER TABLE `ark_fragment_object`
 -- AUTO_INCREMENT for table `ark_fragment_string`
 --
 ALTER TABLE `ark_fragment_string`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `ark_fragment_text`
 --
 ALTER TABLE `ark_fragment_text`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `ark_fragment_time`
 --

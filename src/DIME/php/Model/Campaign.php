@@ -40,5 +40,6 @@ class Campaign extends Item
     public static function loadMetadata(ClassMetadata $metadata)
     {
         $metadata->setTableName('ark_item_campaign');
+        $metadata->setItemEntity(true);
     }
 }

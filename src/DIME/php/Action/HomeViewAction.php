@@ -30,27 +30,24 @@
 
 namespace DIME\Action;
 
-use ARK\Application;
-use ARK\Translation\Key;
 use ARK\ORM\EntityManager;
 use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
-use ARK\View\Element;
 
 class HomeViewAction
 {
     public function __invoke(Request $request)
     {
-        
+
         $page_config = array(
             "navlinks" => array (
                 array(
                     "name" => "dime.home",
-                    "target" => "/"
+                    "target" => "/dime"
                 ),
                 array(
-                    "name" => "dime.mnd",
-                    "target" => "mnd"
+                    "name" => "dime.finds",
+                    "target" => "finds"
                 ),
                 array(
                     "name" => "dime.research",
@@ -104,14 +101,14 @@ class HomeViewAction
                 ),
             )
         );
-        
-        //$layout = new ARK\Layout()
-        
-        
-        $layout = "Column1";
-        $contents2 = "Column2";
-        
-        
-        return Service::render('pages/page.html.twig', array( 'page_config' => $page_config, 'contents' => "Column1", 'contents2' => $contents2 ) );
+
+        return Service::render(
+            'pages/page.html.twig',
+            [
+                'page_config' => $page_config,
+                'contents' => 'A Left Panel.<br/><br/>Click on "dime.finds" in the header.',
+                'contents2' => 'A Right Panel.',
+            ]
+        );
     }
 }

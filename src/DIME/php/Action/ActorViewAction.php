@@ -39,10 +39,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ActorViewAction
 {
-    public function __invoke(Application $app, Request $request, $actorSlug)
+    public function __invoke(Request $request, $actorSlug)
     {
-        $em = new EntityManager($app['database'], 'data');
-        $item = $em->find('DIME\Model\Item\Actor', $actorSlug);
         if (!$item || !$item->isValid()) {
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Item not found', "Item $actorSlug not found"));
         }

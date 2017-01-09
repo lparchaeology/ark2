@@ -30,20 +30,52 @@
 
 namespace DIME\Action;
 
-use ARK\Application;
-use ARK\Http\Error\NotFoundError;
-use ARK\ORM\EntityManager;
+use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class FindListAction
 {
-    public function __invoke(Application $app, Request $request, $actorSlug = null)
+    public function __invoke(Request $request, $actorSlug = null)
     {
-        $this->actor = $actorSlug;
-        $em = new EntityManager($app['database'], 'data');
-        $finds = $em->findAll('DIME\Model\Item\Find');
-
-        return new Response(FindListAction::class);
+        $finds = Service::repository('DIME\\Model\\Find')->findAll();
+        $head = Service::translate('dime.finds.list');
+        $id = Service::translate('dime.find');
+        $type = Service::translate('dime.find.type');
+        $name = Service::translate('dime.find.name');
+        $table = "
+            <div>
+                <h3>$head</h3>
+                <table id=\"dime.finds.table\" class=\"table table-striped table-bordered table-hover\">
+                    <thead><tr>
+                        <th>$id</th>
+                        <th>$type</th>
+                        <th>$name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        ";
+        foreach ($finds as $find) {
+            $id = $find->id();
+            $type = $find->subtype()->keyword();
+            $name = $find->name();
+            $table .= "               <tr>";
+            $table .= "                   <td><a href=\"finds/$id\">$id</td>";
+            $table .= "                   <td>$type</td>";
+            $table .= "                   <td>$name</td>";
+            $table .= "               </tr>";
+        }
+        $table .= "
+                    </tbody>
+                </table>
+            </div>
+        ";
+        return Service::render(
+            'pages/page.html.twig',
+            [
+                'contents' => 'Panel for list/thumbnails of finds<br/><br/>'.$table,
+                'contents2' => 'Panel for map of all finds, or selected find summary<br/><br/>',
+                'finds' => $finds,
+            ]
+        );
     }
 }

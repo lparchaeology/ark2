@@ -39,7 +39,6 @@ class Domain
     use KeywordTrait;
 
     protected $domain = '';
-    protected $keyword = '';
 
     public function name()
     {

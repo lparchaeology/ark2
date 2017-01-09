@@ -40,5 +40,6 @@ class Location extends Item
     public static function loadMetadata(ClassMetadata $metadata)
     {
         $metadata->setTableName('ark_item_location');
+        $metadata->setItemEntity(true);
     }
 }

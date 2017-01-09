@@ -40,5 +40,6 @@ class Actor extends Item
     public static function loadMetadata(ClassMetadata $metadata)
     {
         $metadata->setTableName('ark_item_actor');
+        $metadata->setItemEntity(true);
     }
 }

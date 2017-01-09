@@ -30,9 +30,7 @@
 
 namespace DIME\Action;
 
-use ARK\Application;
 use ARK\Translation\Key;
-use ARK\ORM\EntityManager;
 use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
 

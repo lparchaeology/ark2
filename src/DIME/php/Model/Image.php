@@ -40,5 +40,6 @@ class Image extends Item
     public static function loadMetadata(ClassMetadata $metadata)
     {
         $metadata->setTableName('ark_item_image');
+        $metadata->setItemEntity(true);
     }
 }

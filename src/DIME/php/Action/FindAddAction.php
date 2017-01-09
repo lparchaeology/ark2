@@ -30,20 +30,14 @@
 
 namespace DIME\Action;
 
-use ARK\Application;
-use ARK\Http\Error\NotFoundError;
-use ARK\ORM\EntityManager;
+use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class FindListAction
+class FindAddAction
 {
-    public function __invoke(Application $app, Request $request, $actorSlug = null)
+    public function __invoke(Request $request, $actorSlug = null)
     {
-        $this->actor = $actorSlug;
-        $em = new EntityManager($app['database'], 'data');
-        $finds = $em->findAll('DIME\Model\Item\Find');
-
-        return new Response(FindListAction::class);
+        return new Response(FindAddAction::class);
     }
 }
