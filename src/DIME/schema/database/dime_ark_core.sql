@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 09, 2017 at 08:30 PM
+-- Generation Time: Jan 10, 2017 at 09:44 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -464,6 +464,7 @@ INSERT INTO `ark_fragment_type` (`type`, `format_class`, `tbl`, `enabled`, `depr
 CREATE TABLE `ark_module` (
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `resource` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `namespace` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `tbl` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `core` tinyint(1) NOT NULL DEFAULT '0',
   `enabled` tinyint(1) NOT NULL,
@@ -475,13 +476,13 @@ CREATE TABLE `ark_module` (
 -- Dumping data for table `ark_module`
 --
 
-INSERT INTO `ark_module` (`module`, `resource`, `tbl`, `core`, `enabled`, `deprecated`, `keyword`) VALUES
-('actor', 'actors', 'ark_item_actor', 1, 1, 0, 'module.actor'),
-('campaign', 'campaigns', 'ark_item_campaign', 0, 1, 0, 'module.campaign'),
-('file', 'files', 'ark_item_file', 1, 1, 0, 'module.file'),
-('find', 'finds', 'ark_item_find', 0, 1, 0, 'module.find'),
-('image', 'images', 'ark_item_image', 0, 1, 0, 'module.image'),
-('location', 'locations', 'ark_item_location', 0, 1, 0, 'module.location');
+INSERT INTO `ark_module` (`module`, `resource`, `namespace`, `tbl`, `core`, `enabled`, `deprecated`, `keyword`) VALUES
+('actor', 'actors', 'ARK', 'ark_item_actor', 1, 1, 0, 'module.actor'),
+('campaign', 'campaigns', 'DIME', 'ark_item_campaign', 0, 1, 0, 'module.campaign'),
+('file', 'files', 'ARK', 'ark_item_file', 1, 1, 0, 'module.file'),
+('find', 'finds', 'DIME', 'ark_item_find', 0, 1, 0, 'module.find'),
+('image', 'images', 'DIME', 'ark_item_image', 0, 1, 0, 'module.image'),
+('location', 'locations', 'DIME', 'ark_item_location', 0, 1, 0, 'module.location');
 
 -- --------------------------------------------------------
 
@@ -506,12 +507,12 @@ CREATE TABLE `ark_schema` (
 --
 
 INSERT INTO `ark_schema` (`schma`, `module`, `entity`, `generator`, `sequence`, `use_subtypes`, `enabled`, `deprecated`, `keyword`) VALUES
-('core.actor', 'actor', 'ARK\\Model\\Actor', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 1, 1, 0, 'schema.actor'),
+('core.actor', 'actor', 'ARK\\Entity\\Actor', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 1, 1, 0, 'schema.actor'),
 ('core.file', 'file', 'ARK\\File\\File', 'ARK\\ORM\\Id\\IdentityGenerator', '', 1, 1, 0, 'schema.file'),
-('dime.campaign', 'campaign', 'DIME\\Model\\Campaign', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 0, 1, 0, 'dime.campaign'),
-('dime.find', 'find', 'DIME\\Model\\Find', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 1, 1, 0, 'dime.schema.find'),
-('dime.image', 'image', 'DIME\\Model\\Image', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 0, 1, 0, 'dime.schema.image'),
-('dime.location', 'location', 'DIME\\Model\\Location', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 0, 1, 0, 'dime.schema.location');
+('dime.campaign', 'campaign', 'DIME\\Entity\\Campaign', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 0, 1, 0, 'dime.schema.campaign'),
+('dime.find', 'find', 'DIME\\Entity\\Find', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 1, 1, 0, 'dime.schema.find'),
+('dime.image', 'image', 'DIME\\Entity\\Image', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 0, 1, 0, 'dime.schema.image'),
+('dime.location', 'location', 'DIME\\Entity\\Location', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 0, 1, 0, 'dime.schema.location');
 
 -- --------------------------------------------------------
 
@@ -578,12 +579,15 @@ INSERT INTO `ark_schema_property` (`schma`, `subtype`, `property`, `format`, `vo
 ('dime.campaign', '', 'name', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
 ('dime.find', '', 'description', 'text', NULL, 0, 1, 1, 0, 1, 0, 'property.description'),
 ('dime.find', '', 'finddate', 'date', NULL, 0, 1, 1, 0, 1, 0, 'property.finddate'),
+('dime.find', '', 'finder_id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'property.finderid'),
 ('dime.find', '', 'length', 'distance', 'distance', 1, 1, 1, 0, 1, 0, 'property.length'),
 ('dime.find', '', 'material', 'identifier', 'dime.material', 1, 1, 1, 0, 1, 0, 'property.material'),
 ('dime.find', '', 'name', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
 ('dime.find', '', 'period_end', 'identifier', 'dime.period', 0, 1, 1, 0, 1, 0, 'dime.property.period.end'),
 ('dime.find', '', 'period_start', 'identifier', 'dime.period', 0, 1, 1, 0, 1, 0, 'dime.property.period.start'),
+('dime.find', '', 'registered_id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'property.registeredid'),
 ('dime.find', '', 'secondary', 'identifier', 'dime.material', 0, 0, 1, 0, 1, 0, 'property.material.secondary'),
+('dime.find', '', 'subtype', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'property.finderid'),
 ('dime.find', '', 'title', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'property.title'),
 ('dime.find', '', 'weight', 'mass', 'mass', 0, 1, 1, 0, 1, 0, 'property.weight'),
 ('dime.image', '', 'name', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
@@ -609,31 +613,31 @@ CREATE TABLE `ark_schema_subtype` (
 --
 
 INSERT INTO `ark_schema_subtype` (`schma`, `subtype`, `entity`, `enabled`, `deprecated`, `keyword`) VALUES
-('core.actor', 'institution', 'ARK\\Model\\Actor\\Institution', 1, 0, 'core.actor.institution'),
-('core.actor', 'person', 'ARK\\Model\\Actor\\Person', 1, 0, 'core.actor.person'),
-('core.file', 'audio', 'ARK\\File\\AudioFile', 1, 0, 'file.type.audio'),
-('core.file', 'document', 'ARK\\File\\DocumentFile', 1, 0, 'file.type.document'),
+('core.actor', 'institution', 'ARK\\Entity\\Actor\\Institution', 1, 0, 'core.actor.institution'),
+('core.actor', 'person', 'ARK\\Entity\\Actor\\Person', 1, 0, 'core.actor.person'),
+('core.file', 'audio', 'ARK\\File\\Audio', 1, 0, 'file.type.audio'),
+('core.file', 'document', 'ARK\\File\\Document', 1, 0, 'file.type.document'),
 ('core.file', 'image', 'ARK\\File\\Image', 1, 0, 'file.type.image'),
-('core.file', 'other', 'ARK\\File\\OtherFile', 1, 0, 'file.type.other'),
-('core.file', 'text', 'ARK\\File\\TextFile', 1, 0, 'file.type.text'),
-('core.file', 'video', 'ARK\\File\\VideoFile', 1, 0, 'file.type.video'),
-('dime.find', 'accessory', 'DIME\\Model\\Find', 1, 0, 'dime.find.accessory'),
-('dime.find', 'badge', 'DIME\\Model\\Find', 1, 0, 'dime.find.badge'),
-('dime.find', 'coin', 'DIME\\Model\\Find', 1, 0, 'dime.find.coin'),
-('dime.find', 'fibula', 'DIME\\Model\\Find', 1, 0, 'dime.find.fibula'),
-('dime.find', 'fragment', 'DIME\\Model\\Find', 1, 0, 'dime.find.fragment'),
-('dime.find', 'jewellery', 'DIME\\Model\\Find', 1, 0, 'dime.find.jewellery'),
-('dime.find', 'militaria', 'DIME\\Model\\Find', 1, 0, 'dime.find.militaria'),
-('dime.find', 'other', 'DIME\\Model\\Find', 1, 0, 'dime.find.other'),
-('dime.find', 'projectile', 'DIME\\Model\\Find', 1, 0, 'dime.find.projectile'),
-('dime.find', 'seal', 'DIME\\Model\\Find', 1, 0, 'dime.find.seal'),
-('dime.find', 'slag', 'DIME\\Model\\Find', 1, 0, 'dime.find.slag'),
-('dime.find', 'tack', 'DIME\\Model\\Find', 1, 0, 'dime.find.tack'),
-('dime.find', 'tool', 'DIME\\Model\\Find', 1, 0, 'dime.find.tool'),
-('dime.find', 'toy', 'DIME\\Model\\Find', 1, 0, 'dime.find.toy'),
-('dime.find', 'unidentified', 'DIME\\Model\\Find', 1, 0, 'dime.find.unidentified'),
-('dime.find', 'weapon', 'DIME\\Model\\Find', 1, 0, 'dime.find.weapon'),
-('dime.find', 'weight', 'DIME\\Model\\Find', 1, 0, 'dime.find.weight');
+('core.file', 'other', 'ARK\\File\\Other', 1, 0, 'file.type.other'),
+('core.file', 'text', 'ARK\\File\\Text', 1, 0, 'file.type.text'),
+('core.file', 'video', 'ARK\\File\\Video', 1, 0, 'file.type.video'),
+('dime.find', 'accessory', '', 1, 0, 'dime.find.accessory'),
+('dime.find', 'badge', '', 1, 0, 'dime.find.badge'),
+('dime.find', 'coin', '', 1, 0, 'dime.find.coin'),
+('dime.find', 'fibula', '', 1, 0, 'dime.find.fibula'),
+('dime.find', 'fragment', '', 1, 0, 'dime.find.fragment'),
+('dime.find', 'jewellery', '', 1, 0, 'dime.find.jewellery'),
+('dime.find', 'militaria', '', 1, 0, 'dime.find.militaria'),
+('dime.find', 'other', '', 1, 0, 'dime.find.other'),
+('dime.find', 'projectile', '', 1, 0, 'dime.find.projectile'),
+('dime.find', 'seal', '', 1, 0, 'dime.find.seal'),
+('dime.find', 'slag', '', 1, 0, 'dime.find.slag'),
+('dime.find', 'tack', '', 1, 0, 'dime.find.tack'),
+('dime.find', 'tool', '', 1, 0, 'dime.find.tool'),
+('dime.find', 'toy', '', 1, 0, 'dime.find.toy'),
+('dime.find', 'unidentified', '', 1, 0, 'dime.find.unidentified'),
+('dime.find', 'weapon', '', 1, 0, 'dime.find.weapon'),
+('dime.find', 'weight', '', 1, 0, 'dime.find.weight');
 
 -- --------------------------------------------------------
 
@@ -990,6 +994,28 @@ CREATE TABLE `ark_view_element` (
   `keyword` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `ark_view_element`
+--
+
+INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `subtype`, `property`, `class`, `template`, `form`, `editable`, `hidden`, `enabled`, `deprecated`, `keyword`) VALUES
+('dime_find_description', 'field', 'dime.find', '', 'description', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_details', 'form', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_event', 'form', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_finddate', 'field', 'dime.find', '', 'finddate', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_finder_id', 'field', 'dime.find', '', 'finder_id', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_length', 'field', 'dime.find', '', 'length', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_material', 'field', 'dime.find', '', 'material', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_name', 'field', 'dime.find', '', 'name', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_period_end', 'field', 'dime.find', '', 'period_end', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_period_start', 'field', 'dime.find', '', 'period_start', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_registered_id', 'field', 'dime.find', '', 'registered_id', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_secondary', 'field', 'dime.find', '', 'secondary', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_subtype', 'field', 'dime.find', '', 'subtype', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_title', 'field', 'dime.find', '', 'title', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_view', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_weight', 'field', 'dime.find', '', 'weight', '', '', '', 1, 0, 1, 0, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -999,10 +1025,20 @@ CREATE TABLE `ark_view_element` (
 CREATE TABLE `ark_view_element_type` (
   `type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `is_group` tinyint(1) NOT NULL DEFAULT '0',
-  `tbl` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `class` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `template` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `ark_view_element_type`
+--
+
+INSERT INTO `ark_view_element_type` (`type`, `is_group`, `template`, `keyword`) VALUES
+('field', 0, '', ''),
+('form', 1, 'layouts/form.html.twig', ''),
+('grid', 1, 'layouts/grid.html.twig', ''),
+('tabbed', 1, 'layouts/tabbed.html.twig', ''),
+('table', 1, 'layouts/table.html.twig', '');
 
 -- --------------------------------------------------------
 
@@ -1015,10 +1051,31 @@ CREATE TABLE `ark_view_group` (
   `row` int(11) NOT NULL,
   `col` int(11) NOT NULL,
   `seq` int(11) NOT NULL,
-  `modtype` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL,
+  `subtype` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `child` varchar(30) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `ark_view_group`
+--
+
+INSERT INTO `ark_view_group` (`element`, `row`, `col`, `seq`, `subtype`, `enabled`, `deprecated`, `child`) VALUES
+('dime_find_details', 0, 0, 0, '', 1, 0, 'dime_find_subtype'),
+('dime_find_details', 0, 0, 2, '', 1, 0, 'dime_find_period_start'),
+('dime_find_details', 0, 0, 3, '', 1, 0, 'dime_find_period_end'),
+('dime_find_details', 0, 0, 4, '', 1, 0, 'dime_find_material'),
+('dime_find_details', 0, 0, 5, '', 1, 0, 'dime_find_secondary'),
+('dime_find_details', 0, 0, 6, '', 1, 0, 'dime_find_weight'),
+('dime_find_details', 0, 0, 7, '', 1, 0, 'dime_find_length'),
+('dime_find_details', 0, 0, 8, '', 1, 0, 'dime_find_finddate'),
+('dime_find_details', 0, 0, 9, '', 1, 0, 'dime_find_description'),
+('dime_find_event', 0, 0, 0, '', 1, 0, 'dime_find_title'),
+('dime_find_event', 0, 0, 1, '', 1, 0, 'dime_find_name'),
+('dime_find_event', 0, 0, 2, '', 1, 0, 'dime_find_finder_id'),
+('dime_find_view', 0, 0, 0, '', 1, 0, 'dime_find_event'),
+('dime_find_view', 0, 1, 0, '', 1, 0, 'dime_find_details');
 
 -- --------------------------------------------------------
 
@@ -1181,22 +1238,22 @@ CREATE TABLE `ark_vocabulary_collection` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ark_vocabulary_meta`
+-- Table structure for table `ark_vocabulary_parameter`
 --
 
-CREATE TABLE `ark_vocabulary_meta` (
+CREATE TABLE `ark_vocabulary_parameter` (
   `concept` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `term` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `property` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `parameter` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `value` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
 
 --
--- Dumping data for table `ark_vocabulary_meta`
+-- Dumping data for table `ark_vocabulary_parameter`
 --
 
-INSERT INTO `ark_vocabulary_meta` (`concept`, `term`, `property`, `type`, `value`) VALUES
+INSERT INTO `ark_vocabulary_parameter` (`concept`, `term`, `parameter`, `type`, `value`) VALUES
 ('dime.period', 'AÆAX', 'year_from', 'int', '-10500'),
 ('dime.period', 'AÆAX', 'year_to', 'int', '-9000'),
 ('dime.period', 'AÆBX', 'year_from', 'int', '-11000'),
@@ -3897,7 +3954,8 @@ ALTER TABLE `ark_view_element_type`
 -- Indexes for table `ark_view_group`
 --
 ALTER TABLE `ark_view_group`
-  ADD PRIMARY KEY (`element`,`modtype`,`row`,`col`,`seq`);
+  ADD PRIMARY KEY (`element`,`subtype`,`row`,`col`,`seq`),
+  ADD KEY `child` (`child`);
 
 --
 -- Indexes for table `ark_vocabulary`
@@ -3919,10 +3977,10 @@ ALTER TABLE `ark_vocabulary_collection`
   ADD PRIMARY KEY (`concept`,`collection`);
 
 --
--- Indexes for table `ark_vocabulary_meta`
+-- Indexes for table `ark_vocabulary_parameter`
 --
-ALTER TABLE `ark_vocabulary_meta`
-  ADD PRIMARY KEY (`concept`,`term`,`property`),
+ALTER TABLE `ark_vocabulary_parameter`
+  ADD PRIMARY KEY (`concept`,`term`,`parameter`),
   ADD KEY `concept` (`concept`,`term`);
 
 --
@@ -4136,16 +4194,23 @@ ALTER TABLE `ark_view_element`
   ADD CONSTRAINT `ark_view_element_ibfk_2` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `ark_view_group`
+--
+ALTER TABLE `ark_view_group`
+  ADD CONSTRAINT `ark_view_group_ibfk_1` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_view_group_ibfk_2` FOREIGN KEY (`child`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `ark_vocabulary`
 --
 ALTER TABLE `ark_vocabulary`
   ADD CONSTRAINT `ark_vocabulary_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_vocabulary_type` (`type`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `ark_vocabulary_meta`
+-- Constraints for table `ark_vocabulary_parameter`
 --
-ALTER TABLE `ark_vocabulary_meta`
-  ADD CONSTRAINT `ark_vocabulary_meta_ibfk_1` FOREIGN KEY (`concept`,`term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE;
+ALTER TABLE `ark_vocabulary_parameter`
+  ADD CONSTRAINT `ark_vocabulary_parameter_ibfk_1` FOREIGN KEY (`concept`,`term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary_related`

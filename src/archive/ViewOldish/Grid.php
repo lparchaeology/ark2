@@ -34,53 +34,23 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 class Grid extends Group
 {
-    public function rowCount()
+    public function cols(/*int*/ $row)
     {
-        return count($this->rows());
-    }
-
-    public function columnCount($row)
-    {
-        return count($this->columns($row));
-    }
-
-    public function cellCount($row, $col)
-    {
-        return count($this->column($row, $col));
+        return $this->grid[$row];
     }
 
     public function rows()
     {
-        $this->init();
         return $this->grid;
     }
 
-    public function columns($row)
+    public function renderForms(FormFactoryInterface $factory)
     {
-        if ($row < 0 || $row >= count($this->rows())) {
-            return [];
-        }
-        return $this->grid[$row];
-    }
-
-    public function column($row, $col)
-    {
-        if ($row < 0 || $row >= count($this->rows())) {
-            return [];
-        }
-        if ($col < 0 || $col >= count($this->grid[$col])) {
-            return [];
-        }
-        return $this->grid[$row][$col];
-    }
-
-    public function renderForms(FormFactoryInterface $factory, $resource)
-    {
-        $forms = [];
+        $forms = array();
         foreach ($this->rows() as $rdx => $row) {
             foreach ($row as $cdx => $col) {
                 foreach ($col as $cell) {
-                    $forms[$rdx][$cdx][] = $cell->renderForms($factory, $resource);
+                    $forms[$rdx][$cdx][] = $cell->renderForms($factory, $this->resource);
                 }
             }
         }

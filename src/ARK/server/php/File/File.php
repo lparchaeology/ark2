@@ -90,5 +90,12 @@ class File extends Item
     {
         $metadata->setTableName('ark_item_file');
         $metadata->setItemEntity(true);
+        $builder->setSingleTableInheritance()->setDiscriminatorColumn('subtype', 'string', 30);
+        $builder->addDiscriminatorMapClass('audio', 'ARK\\File\\Audio');
+        $builder->addDiscriminatorMapClass('document', 'ARK\\File\\Document');
+        $builder->addDiscriminatorMapClass('image', 'ARK\\File\\Image');
+        $builder->addDiscriminatorMapClass('other', 'ARK\\File\\File');
+        $builder->addDiscriminatorMapClass('text', 'ARK\\File\\Text');
+        $builder->addDiscriminatorMapClass('video', 'ARK\\File\\Video');
     }
 }

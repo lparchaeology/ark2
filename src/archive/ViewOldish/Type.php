@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Image Entity
+ * ARK View Child
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,18 +28,38 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Model;
+namespace ARK\View;
 
-// TODO Will be automatically generated class!
-
-use ARK\Model\Item;
+use ARK\EnabledTrait;
+use ARK\KeywordTrait;
+use ARK\Model\Item\Item;
 use ARK\ORM\ClassMetadata;
+use ARK\ORM\ClassMetadataBuilder;
+use Symfony\Component\Form\FormBuilder;
 
-class Image extends Item
+class Type
 {
+    use KeywordTrait;
+
+    protected $type = '';
+    protected $isGroup = false;
+
+    public function name()
+    {
+        return $this->type;
+    }
+
+    public function isGroup()
+    {
+        return $this->isGroup;
+    }
+
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $metadata->setTableName('ark_item_image');
-        $metadata->setItemEntity(true);
+        $builder = new ClassMetadataBuilder($metadata, 'ark_view_element_type');
+        $builder->addStringKey('type', 30);
+        $builder->addField('isGroup', 'boolean', [], 'is_group');
+        KeywordTrait::buildKeywordMetadata($builder);
+        $builder->setReadOnly();
     }
 }

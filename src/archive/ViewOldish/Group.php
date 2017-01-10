@@ -51,15 +51,13 @@ abstract class Group extends Element
             return;
         }
         foreach ($this->children as $child) {
-            $this->grid[$child->row()][$child->col()][$child->seq()] = $child->element();
-        }
-        foreach ($this->grid as $rdx => $row) {
-            foreach ($row as $cdx => $col) {
-                foreach ($col as $cell) {
-                    $this->elements[] = $cell;
-                }
+            $element = Element::get($this->db, $child['child'], $resource);
+            if ($element->isValid()) {
+                $this->elements[] = $element;
+                $this->grid[$child['row']][$child['col']][$child['seq']] = $element;
             }
         }
+        $this->valid = true;
     }
 
     public function children()
@@ -73,46 +71,51 @@ abstract class Group extends Element
         return $this->elements;
     }
 
-    public function renderView(array $options = [], $resource = null)
+    public function render(Twig_Environment $twig, array $options = [], FormFactoryInterface $factory = null)
     {
-        if ($this->template()) {
+        if ($this->template) {
             $options['layout'] = $this;
-            $options['forms'] = $this->renderForms(Service::forms(), $resource);
-            return Service::templates()->render($this->template(), $options);
+            if ($factory && $this->resource) {
+                $options['forms'] = $this->renderForms($factory);
+            }
+            return $twig->render($this->template, $options);
         }
         return '';
     }
 
-    public function renderForms(FormFactoryInterface $factory, $resource)
+    public function renderForms(FormFactoryInterface $factory)
     {
         $forms = [];
         foreach ($this->elements() as $element) {
-            $forms[$element->name()] = $element->renderForms($factory, $resource);
+            $forms[$element->id()] = $element->renderForms($factory);
         }
         return $forms;
     }
 
-    public function formData($resource)
+    public function formData()
     {
-        $data = [];
-        foreach ($this->elements() as $element) {
-            $data = array_merge($data, $element->formData($resource));
+        $data = array();
+        foreach ($this->elements as $element) {
+            $data = array_merge($data, $element->formData());
         }
         return $data;
     }
 
     public function buildForm(FormBuilder $formBuilder, array $options = array())
     {
-        foreach ($this->elements() as $element) {
+        if (!$this->isValid()) {
+            return;
+        }
+        foreach ($this->elements as $element) {
             $element->buildForm($formBuilder, $options);
         }
     }
 
     public function allFields()
     {
-        $fields = [];
-        foreach ($this->elements() as $element) {
-            if ($element->type()->name() == 'field') {
+        $fields = array();
+        foreach ($this->elements as $element) {
+            if ($element->type() == 'field') {
                 $fields[] = $element;
             } else {
                 $fields = array_merge($fields, $element->allFields());

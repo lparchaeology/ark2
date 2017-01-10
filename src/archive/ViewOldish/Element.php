@@ -36,7 +36,6 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\FormFactoryInterface;
 
 abstract class Element
 {
@@ -75,6 +74,11 @@ abstract class Element
         return $this->schma;
     }
 
+    public function property()
+    {
+        return $this->property;
+    }
+
     public function class()
     {
         return $this->class;
@@ -82,10 +86,7 @@ abstract class Element
 
     public function template()
     {
-        if ($this->template) {
-            return $this->template;
-        }
-        return $this->type->template();
+        return $this->template;
     }
 
     public function form()
@@ -103,12 +104,7 @@ abstract class Element
         return $this->hidden;
     }
 
-    public function formData($resource)
-    {
-        return [];
-    }
-
-    public function renderForms(FormFactoryInterface $factory, $resource)
+    public function formData()
     {
         return [];
     }
@@ -162,6 +158,6 @@ abstract class Element
         $builder->addDiscriminatorMapClass('grid', 'Grid');
         //$builder->addDiscriminatorMapClass('tabbed', 'Tabbed');
         //$builder->addDiscriminatorMapClass('table', 'Table');
-        $builder->addDiscriminatorMapClass('form', 'Form');
+        //$builder->addDiscriminatorMapClass('subform', 'Subform');
     }
 }

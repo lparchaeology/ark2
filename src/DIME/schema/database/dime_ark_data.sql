@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 09, 2017 at 08:30 PM
+-- Generation Time: Jan 10, 2017 at 09:44 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -307,7 +307,7 @@ INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `property`, `parameter
 (3, 'find', '2', 'name', 'en', 'My find number two', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (5, 'find', '3', 'name', 'en', 'My find number two', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (7, 'find', '1', 'description', 'en', 'A multiline description', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(8, 'find', '1', 'description', 'en', 'A singleline title', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+(8, 'find', '1', 'title', 'en', 'A singleline title', NULL, 0, '2017-01-10 10:28:56', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 

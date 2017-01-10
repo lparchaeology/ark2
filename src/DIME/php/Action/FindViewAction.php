@@ -39,34 +39,22 @@ class FindViewAction
 {
     public function __invoke(Request $request, $findSlug)
     {
-        $find = Service::repository('DIME\\Model\\Find')->find($findSlug);
+        $find = Service::repository('DIME\\Entity\\Find')->find($findSlug);
         if (!$find) {
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Item not found', "Item $findSlug not found"));
         }
-        $head = Service::translate('dime.find');
-        $html = "
-            <div>
-                <h3>$head</h3>
-        ";
-        foreach ($find->attributes() as $property => $value) {
-            $html .= $property.'  :  ';
-            if (is_array($value)) {
-                foreach ($value as $sub) {
-                    $html .= $sub.'  ';
-                }
-                $html .= '<br/><br/>';
-            } else {
-                $html .= $value.'<br/><br/>';
-            }
-        }
-        $html .= "
-            </div>
-        ";
+
+        $eventLayout = Service::repository('ARK\\View\\Element')->find('dime_find_event');
+        $detailLayout = Service::repository('ARK\\View\\Element')->find('dime_find_details');
+
+        $contents = $eventLayout->renderView([], $find);
+        $contents2 = $detailLayout->renderView([], $find);
+
         return Service::render(
             'pages/page.html.twig',
             [
-                'contents' => 'Panel for details of find process, i.e. finder, location, etc',
-                'contents2' => 'Panel for details of find object, i.e. type, dimensions, materials, etc.<br/><br/>'.$html,
+                'contents' => $contents,
+                'contents2' => $contents2,
                 'find' => $find,
             ]
         );

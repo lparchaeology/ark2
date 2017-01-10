@@ -34,7 +34,7 @@ use ARK\EnabledTrait;
 use ARK\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 abstract class Vocabulary
 {
@@ -49,7 +49,7 @@ abstract class Vocabulary
 
     public function __construct()
     {
-        $this->terms = new Collection();
+        $this->terms = new ArrayCollection();
     }
 
     public function concept()

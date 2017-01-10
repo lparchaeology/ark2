@@ -108,6 +108,11 @@ class OrmServiceProvider implements ServiceProviderInterface
                         ],
                         [
                             'type' => 'php',
+                            'namespace' => 'ARK\\View',
+                            'path' => $srcDir.'/View',
+                        ],
+                        [
+                            'type' => 'php',
                             'namespace' => 'ARK\\Vocabulary',
                             'path' => $srcDir.'/Vocabulary',
                         ],
@@ -131,13 +136,18 @@ class OrmServiceProvider implements ServiceProviderInterface
                         ],
                         [
                             'type' => 'php',
+                            'namespace' => 'ARK\\Entity',
+                            'path' => $srcDir.'/Entity',
+                        ],
+                        [
+                            'type' => 'php',
                             'namespace' => 'ARK\\File',
                             'path' => $srcDir.'/File',
                         ],
                         [
                             'type' => 'php',
-                            'namespace' => 'DIME\\Model',
-                            'path' => $container['dir.install'].'/src/DIME/php/Model',
+                            'namespace' => 'DIME\\Entity',
+                            'path' => $container['dir.install'].'/src/DIME/php/Entity',
                         ],
                     ],
                 ]

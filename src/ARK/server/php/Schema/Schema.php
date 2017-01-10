@@ -149,7 +149,7 @@ class Schema
     public function subtype($subtype)
     {
         $this->init();
-        return (isset($this->model[$subtype]) ? $this->model[$subtype]['subtype'] : null);
+        return ($subtype && isset($this->model[$subtype]) ? $this->model[$subtype]['subtype'] : null);
     }
 
     public function properties($subtype = null, $all = true)

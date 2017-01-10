@@ -28,18 +28,20 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Model;
+namespace DIME\Entity;
 
 // TODO Will be automatically generated class!
 
 use ARK\Model\Item;
 use ARK\ORM\ClassMetadata;
+use ARK\ORM\ClassMetadataBuilder;
 
 class Campaign extends Item
 {
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $metadata->setTableName('ark_item_campaign');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_item_campaign');
+        $builder->addStringField('subtype', 30);
         $metadata->setItemEntity(true);
     }
 }

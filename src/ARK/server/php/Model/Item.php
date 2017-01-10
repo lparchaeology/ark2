@@ -49,7 +49,7 @@ abstract class Item
     protected $parent = null;
     protected $idx = null;
     protected $name = null;
-    protected $subtype = null;
+    protected $subtype = '';
     protected $schma = null;
     protected $schema = null;
     protected $attributes = null;
@@ -90,6 +90,7 @@ abstract class Item
 
     public function subtype()
     {
+        print_r($this->schma);
         return $this->schema()->subtype($this->subtype);
     }
 
@@ -183,7 +184,7 @@ abstract class Item
         $builder->addStringField('parentId', 30, 'parent_id');
         $builder->addStringField('idx', 30);
         $builder->addStringField('name', 30);
-        $builder->addStringField('subtype', 30);
+        //$builder->addStringField('subtype', 30);
         $builder->addStringField('schma', 30);
         $builder->addField('lastModifiedBy', 'integer', [], 'mod_by');
         $builder->addField('lastModifiedOn', 'datetime', [], 'mod_on');

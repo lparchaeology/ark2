@@ -43,7 +43,7 @@ class Service
         self::$app = $app;
     }
 
-    public static function template()
+    public static function templates()
     {
         return self::$app['twig'];
     }
@@ -56,6 +56,11 @@ class Service
     public static function renderView($view, array $parameters = [])
     {
         return self::$app->renderView($view, $parameters);
+    }
+
+    public static function forms()
+    {
+        return self::$app['form.factory'];
     }
 
     public static function logger()

@@ -114,6 +114,14 @@ class SchemaProperty
         return $this->additionalValues;
     }
 
+    public function keyword()
+    {
+        if ($this->keyword) {
+            return $this->keyword;
+        }
+        return $this->format()->keyword();
+    }
+
     public static function loadMetadata(ClassMetadata $metadata)
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_schema_property');

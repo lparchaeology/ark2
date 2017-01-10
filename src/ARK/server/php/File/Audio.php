@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Actor Entity
+ * ARK Audio File Entity
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,18 +28,14 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model;
+namespace ARK\File;
 
-// TODO Will be automatically generated class!
-
-use ARK\Model\Item;
+use ARK\File\File;
 use ARK\ORM\ClassMetadata;
 
-class Actor extends Item
+class Audio extends File
 {
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $metadata->setTableName('ark_item_actor');
-        $metadata->setItemEntity(true);
     }
 }

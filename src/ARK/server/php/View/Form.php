@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Find Entity
+ * ARK View Form
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,18 +28,26 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Model;
+namespace ARK\View;
 
-// TODO Will be automatically generated class!
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DBALException;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormBuilder;
+use ARK\Database\Database;
+use ARK\Model\Item\Item;
+use ARK\Form\Type\PanelType;
 
-use ARK\Model\Item;
-use ARK\ORM\ClassMetadata;
-
-class Find extends Item
+class Form extends Group
 {
-    public static function loadMetadata(ClassMetadata $metadata)
+    public function renderForms(FormFactoryInterface $factory, $resource)
     {
-        $metadata->setTableName('ark_item_find');
-        $metadata->setItemEntity(true);
+        $data = $this->formData($resource, $this->element);
+        $formBuilder = $factory->createNamedBuilder($this->element, FormType::class, $data);
+        foreach ($this->elements as $element) {
+            $element->buildForm($formBuilder);
+        }
+        return $formBuilder->getForm()->createView();
     }
 }

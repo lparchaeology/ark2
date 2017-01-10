@@ -40,7 +40,7 @@ class TestViewAction
     {
         $contents = Service::translate('site.welcome');
 
-        if ($finds = Service::repository('DIME\\Model\\Find')->findAll()) {
+        if ($finds = Service::repository('DIME\\Entity\\Find')->findAll()) {
             $contents .= '<br /><br />Finds<br /><br />';
             foreach ($finds as $find) {
                 $contents .= $find->id().'   '.$find->name().'   '.$find->schema()->name().'<br />';
@@ -54,10 +54,10 @@ class TestViewAction
             }
         }
 
-        if ($actors = Service::repository('ARK\\Model\\Actor')->findAll()) {
+        if ($actors = Service::repository('ARK\\Entity\\Actor')->findAll()) {
             $contents .= '<br /><br />Actors<br /><br />';
             foreach ($actors as $actor) {
-                $contents .= $actor->id().'   '.$actor->name().'   '.$actor->schema()->name().'   '.$actor->subtype()->name().'<br />';
+                $contents .= $actor->id().'   '.$actor->name().'   '.$actor->schema()->name().'<br />';
             }
         }
 
@@ -101,6 +101,19 @@ class TestViewAction
             }
         }
 
+        if ($vocabs = Service::repository('ARK\\Vocabulary\\Vocabulary')->findAll()) {
+            $contents .= '<br /><br />Vocabularies<br /><br />';
+            foreach ($vocabs as $vocab) {
+                $contents .= $vocab->concept().'   '.$vocab->keyword().'<br />';
+                foreach ($vocab->terms() as $term) {
+                    $contents .= '---- '.$term->name().'   '.$term->alias().'<br />';
+                    foreach ($term->parameters() as $parm) {
+                        $contents .= '-------- '.$parm->name().'   '.$parm->value().'<br />';
+                    }
+                }
+            }
+        }
+
         if ($formats = Service::repository('ARK\\Schema\\Format')->findAll()) {
             $contents2 = '<br /><br />Formats<br /><br />';
             foreach ($formats as $format) {
@@ -111,9 +124,6 @@ class TestViewAction
                         $contents2 .= '-------- '.$property->name().'   '.$property->format()->name().'<br />';
                         if ($property->vocabulary()) {
                             $contents .= '------------ '.$property->vocabulary()->concept().'<br />';
-                            foreach ($property->vocabulary()->terms() as $term) {
-                                $contents2 .= '---------------- '.$term->name().'   '.$term->alias().'<br />';
-                            }
                         }
                     }
                 }

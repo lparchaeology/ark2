@@ -35,57 +35,55 @@ use ARK\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
-class Term
+class Parameter
 {
-    use EnabledTrait;
-    use KeywordTrait;
+    protected $concept = '';
+    protected $termName = '';
+    protected $term = null;
+    protected $parameter = '';
+    protected $type = '';
+    protected $value = '';
 
-    protected $concept = null;
-    protected $term = '';
-    protected $alias = '';
-    protected $parameters = null;
-
-    public function __construct()
-    {
-        $this->parameters = new ArrayCollection();
-    }
-
-    public function concept()
-    {
-        return $this->concept;
-    }
-
-    public function name()
+    public function term()
     {
         return $this->term;
     }
 
-    public function alias()
+    public function name()
     {
-        return $this->alias;
+        return $this->parameter;
     }
 
-    public function parameters()
+    public function type()
     {
-        return $this->parameters;
+        return $this->type;
+    }
+
+    public function value()
+    {
+        return $this->value;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_vocabulary_term');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_vocabulary_parameter');
         $builder->setReadOnly();
 
         // Key
         $builder->addManyToOneKey('concept', 'Vocabulary', 'concept', 'concept', 'terms');
-        $builder->addStringKey('term', 30);
+        $builder->addStringKey('termName', 30, 'term');
+        $builder->addStringKey('parameter', 30);
 
         // Attributes
-        $builder->addStringField('alias', 10);
-        EnabledTrait::buildEnabledMetadata($builder);
-        KeywordTrait::buildKeywordMetadata($builder);
+        $builder->addStringField('type', 10);
+        $builder->addStringField('value', 1431655765);
 
         // Associations
-        $builder->addOneToMany('parameters', 'Parameter', 'term');
+        $builder->addCompoundManyToOneField(
+            'term',
+            'Term',
+            [['column' => 'concept', 'nullable' => false], ['column' => 'term', 'nullable' => false]]
+        );
     }
 }

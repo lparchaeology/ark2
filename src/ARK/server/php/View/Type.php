@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Vocabulary Term
+ * ARK View Child
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,64 +28,45 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Vocabulary;
+namespace ARK\View;
 
 use ARK\EnabledTrait;
 use ARK\KeywordTrait;
+use ARK\Model\Item\Item;
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use Doctrine\ORM\Mapping\ClassMetadata;
+use Symfony\Component\Form\FormBuilder;
 
-class Term
+class Type
 {
-    use EnabledTrait;
     use KeywordTrait;
 
-    protected $concept = null;
-    protected $term = '';
-    protected $alias = '';
-    protected $parameters = null;
-
-    public function __construct()
-    {
-        $this->parameters = new ArrayCollection();
-    }
-
-    public function concept()
-    {
-        return $this->concept;
-    }
+    protected $type = '';
+    protected $isGroup = false;
+    protected $template = '';
 
     public function name()
     {
-        return $this->term;
+        return $this->type;
     }
 
-    public function alias()
+    public function isGroup()
     {
-        return $this->alias;
+        return $this->isGroup;
     }
 
-    public function parameters()
+    public function template()
     {
-        return $this->parameters;
+        return $this->template;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_vocabulary_term');
-        $builder->setReadOnly();
-
-        // Key
-        $builder->addManyToOneKey('concept', 'Vocabulary', 'concept', 'concept', 'terms');
-        $builder->addStringKey('term', 30);
-
-        // Attributes
-        $builder->addStringField('alias', 10);
-        EnabledTrait::buildEnabledMetadata($builder);
+        $builder = new ClassMetadataBuilder($metadata, 'ark_view_element_type');
+        $builder->addStringKey('type', 30);
+        $builder->addField('isGroup', 'boolean', [], 'is_group');
+        $builder->addStringField('template', 100);
         KeywordTrait::buildKeywordMetadata($builder);
-
-        // Associations
-        $builder->addOneToMany('parameters', 'Parameter', 'term');
+        $builder->setReadOnly();
     }
 }
