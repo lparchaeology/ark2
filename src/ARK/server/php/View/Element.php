@@ -75,7 +75,7 @@ abstract class Element
         return $this->schma;
     }
 
-    public function class()
+    public function className()
     {
         return $this->class;
     }
