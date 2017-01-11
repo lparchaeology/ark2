@@ -30,19 +30,28 @@
 
 namespace DIME\Action;
 
-use ARK\Application;
-use ARK\Http\Error\NotFoundError;
-use ARK\ORM\EntityManager;
+use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class LocationListAction
 {
-    public function __invoke(Application $app, Request $request, $actorSlug = null)
+    public function __invoke(Request $request, $actorSlug = null)
     {
-        $this->actor = $actorSlug;
-        $em = new EntityManager($app['database'], 'data');
-        $locations = $em->findAll('DIME\Model\Item\Location');
-        return new Response(LocationListAction::class);
+        $locations = Service::repository('DIME\\Entity\\Location')->findAll();
+        $list = "<h3>dime.locations</h3>";
+        foreach ($locations as $location) {
+            $id = $location->id();
+            $type = $location->subtype() ? $type = $location->subtype()->keyword() : 'none';
+            $name = $location->name();
+            $list .= "<p><a href=\"locations/$id\">$id</a> : $type : $name</p>";
+        }
+        return Service::render(
+            'pages/page.html.twig',
+            [
+                'contents' => $list,
+                'contents2' => 'Panel for map of all locations, or selected find summary<br/><br/>',
+                'items' => $locations,
+            ]
+        );
     }
 }

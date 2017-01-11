@@ -28,7 +28,7 @@ gulp.task('core', function() {
 });
 
 var config = {
-    assetsDir: './assets',
+    frontendsDir: './frontends',
     srcDir: '../src',
     vendorDir: './vendor',
     bootstrapDir: './vendor/bootstrap-sass/assets',
@@ -39,8 +39,8 @@ var config = {
  */
 gulp.task('create', function() {
     var frontend = (util.env.frontend || 'core');
-    var src = [config.assetsDir + '/core/**/*', config.assetsDir + '/core/**/.*'];
-    var dest = config.assetsDir + '/' + frontend;
+    var src = [config.frontendsDir + '/core/**/*', config.frontendsDir + '/core/**/.*'];
+    var dest = config.frontendsDir + '/' + frontend;
     try {
         fs.statSync(dest);
         util.log('Frontend already exists!');
@@ -57,7 +57,7 @@ gulp.task('create', function() {
 gulp.task('web', function() {
     var frontend = (util.env.frontend || 'core');
     var namespace = (util.env.namespace || 'ARK');
-    var src = [config.assetsDir + '/' + frontend + '/web/**/*', config.assetsDir + '/' + frontend + '/web/**/.*'];
+    var src = [config.frontendsDir + '/' + frontend + '/web/**/*', config.frontendsDir + '/' + frontend + '/web/**/.*'];
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/web';
     return gulp.src(src)
                .pipe(gulp.dest(dest));
@@ -69,7 +69,7 @@ gulp.task('web', function() {
 gulp.task('config', function() {
     var frontend = (util.env.frontend || 'core');
     var namespace = (util.env.namespace || 'ARK');
-    var src = config.assetsDir + '/' + frontend + '/config/**/*';
+    var src = config.frontendsDir + '/' + frontend + '/config/**/*';
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/config';
     return gulp.src([src])
                .pipe(gulp.dest(dest));
@@ -81,7 +81,7 @@ gulp.task('config', function() {
 gulp.task('bin', function() {
     var frontend = (util.env.frontend || 'core');
     var namespace = (util.env.namespace || 'ARK');
-    var src = config.assetsDir + '/' + frontend + '/bin/**/*';
+    var src = config.frontendsDir + '/' + frontend + '/bin/**/*';
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/bin';
     return gulp.src([src])
                .pipe(gulp.dest(dest));
@@ -93,7 +93,7 @@ gulp.task('bin', function() {
 gulp.task('xliff', function() {
     var frontend = (util.env.frontend || 'core');
     var namespace = (util.env.namespace || 'ARK');
-    var src = config.assetsDir + '/' + frontend + '/xliff/**/*';
+    var src = config.frontendsDir + '/' + frontend + '/xliff/**/*';
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/translations';
     return gulp.src([src])
                .pipe(gulp.dest(dest));
@@ -119,7 +119,7 @@ gulp.task('images', function() {
     var namespace = (util.env.namespace || 'ARK');
     var src = [
         config.vendorDir + '/x-editable/dist/bootstrap3-editable/img/**/*',
-        config.assetsDir + '/' + frontend + '/images/**/*'
+        config.frontendsDir + '/' + frontend + '/images/**/*'
     ];
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/assets/images';
     return gulp.src(src)
@@ -132,7 +132,7 @@ gulp.task('images', function() {
 gulp.task('twig', function() {
     var frontend = (util.env.frontend || 'core');
     var namespace = (util.env.namespace || 'ARK');
-    var src = config.assetsDir + '/' + frontend + '/twig/**/*';
+    var src = config.frontendsDir + '/' + frontend + '/twig/**/*';
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/templates';
     return gulp.src([src])
                .pipe(gulp.dest(dest));
@@ -168,7 +168,7 @@ gulp.task('js', function() {
         config.vendorDir + '/bootstrap-table/dist/extensions/resizeable/bootstrap-table-resizeable.js',
         config.vendorDir + '/bootstrap-table/dist/extensions/select2-filter/bootstrap-table-select2-filter.js',
         config.vendorDir + '/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.js',
-        config.assetsDir + '/' + frontend + '/js/**/*'
+        config.frontendsDir + '/' + frontend + '/js/**/*'
     ];
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/assets/scripts';
     var conf = {
@@ -187,7 +187,7 @@ gulp.task('js', function() {
 gulp.task('css', function() {
     var frontend = (util.env.frontend || 'core');
     var namespace = (util.env.namespace || 'ARK');
-    var sassSrc = './assets/' + frontend + '/scss/ark.scss';
+    var sassSrc = './frontends/' + frontend + '/scss/ark.scss';
     var cssSrc = [
         config.vendorDir + '/select2/dist/css/select2.min.css',
         config.vendorDir + '/select2-bootstrap-frontend/dist/select2-bootstrap.min.css',

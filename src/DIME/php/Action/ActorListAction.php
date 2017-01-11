@@ -32,12 +32,17 @@ namespace DIME\Action;
 
 use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class ActorListAction
 {
     public function __invoke(Request $request)
     {
-        return new Response(ActorListAction::class);
+        return Service::render(
+            'pages/page.html.twig',
+            [
+                'contents' => ActorListAction::class,
+                'contents2' => 'This page is under construction',
+            ]
+        );
     }
 }

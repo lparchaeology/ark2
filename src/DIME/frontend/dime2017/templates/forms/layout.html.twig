@@ -9,7 +9,9 @@
 {%- endblock panel_row %}
 
 {% block submit_widget -%}
-    {% set attr = attr|merge({class: (attr.class|default('btn-default') ~ ' btn-xs btn')|trim}) %}
+    {% set attr = attr | merge({
+        class: (attr.class | default('btn-default') ~ ' btn-xs btn') | trim
+    }) %}
     {{- parent() -}}
 {%- endblock %}
 
@@ -58,6 +60,6 @@
     <a href="http://www.accuweather.com/en/gb/london/ec4a-2/weather-forecast/328328" class="aw-widget-legal">
         <!--By accessing and/or using this code snippet, you agree to AccuWeather’s terms and conditions (in English) which can be found at http://www.accuweather.com/en/free-weather-widgets/terms and AccuWeather’s Privacy Statement (in English) which can be found at http://www.accuweather.com/en/privacy.-->
     </a>
-    <div id="awcc1468847702258" class="aw-widget-current"  data-locationkey="" data-unit="c" data-language="en-gb" data-useip="true" data-uid="awcc1468847702258"></div>
+    <div id="awcc1468847702258" class="aw-widget-current" data-locationkey="" data-unit="c" data-language="en-gb" data-useip="true" data-uid="awcc1468847702258"></div>
     <script type="text/javascript" src="http://oap.accuweather.com/launch.js"></script>
 {%- endblock myweather_row %}

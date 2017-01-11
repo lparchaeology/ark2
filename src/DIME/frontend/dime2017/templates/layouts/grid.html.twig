@@ -5,9 +5,9 @@
     <div class="row">
 
         {# TODO: Make this driven from GridLayout object! #}
-        {% if row|length == 3 %}
+        {% if row | length == 3 %}
             {% set colclass = 'col-md-4' %}
-        {% elseif row|length == 2 %}
+        {% elseif row | length == 2 %}
             {% set colclass = 'col-md-8' %}
         {% else %}
             {% set colclass = 'col-md-12' %}
@@ -18,7 +18,10 @@
                 {% set colclass = 'col-md-4' %}
                 {% for idx, cell in col %}
                     {% if cell.type == 'layout' %}
-                        {% include cell.template with {'layout': cell, 'forms': forms[rdx][cdx][idx]} %}
+                        {% include cell.template with {
+                            'layout' : cell,
+                            'forms' : forms[rdx][cdx][idx]
+                        } %}
                     {% else %}
                         {{ form_row(forms[rdx][cdx][idx]) }}
                     {% endif %}

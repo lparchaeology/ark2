@@ -90,7 +90,6 @@ abstract class Item
 
     public function subtype()
     {
-        print_r($this->schma);
         return $this->schema()->subtype($this->subtype);
     }
 

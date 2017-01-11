@@ -54,8 +54,8 @@ class BuildFrontendCreateCommand extends Command
         $namespace = $input->getArgument('namespace');
         $frontend = $input->getArgument('frontend');
         $this->runProcess("npm run create -- --namespace $namespace --frontend $frontend", $output);
-        $config = json_decode(file_get_contents(ARK::installDir()."/build/assets/$frontend/config.json"), true);
+        $config = json_decode(file_get_contents(ARK::installDir()."/build/frontends/$frontend/config.json"), true);
         $config['namespace'] = $namespace;
-        file_put_contents(ARK::installDir()."/build/assets/$frontend/config.json", json_encode($config));
+        file_put_contents(ARK::installDir()."/build/frontends/$frontend/config.json", json_encode($config));
     }
 }

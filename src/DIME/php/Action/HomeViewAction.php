@@ -30,7 +30,6 @@
 
 namespace DIME\Action;
 
-use ARK\ORM\EntityManager;
 use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -38,31 +37,78 @@ class HomeViewAction
 {
     public function __invoke(Request $request)
     {
-
         $page_config = array(
             "navlinks" => array (
                 array(
                     "name" => "dime.home",
-                    "target" => "/dime"
+                    "dropdown" => false,
+                    "target" => ""
                 ),
                 array(
-                    "name" => "dime.finds",
-                    "target" => "finds"
+                    "name" => "dime.detector",
+                    "dropdown" => true,
+                    "target" => "detctor",
+                    "navlinks" => array (
+                        array(
+                            "name" => "dime.metaldetector",
+                            "target" => "detector"
+                        ),
+                        array(
+                            "name" => "dime.treasure",
+                            "target" => "detector"
+                        ),
+                    ),
                 ),
                 array(
                     "name" => "dime.research",
-                    "target" => "research"
+                    "target" => "research",
+                    "dropdown" => false,
                 ),
                 array(
                     "name" => "dime.about",
-                    "target" => "about"
+                    "dropdown" => true,
+                    "target" => "about",
+                    "navlinks" => array (
+                        array(
+                            "name" => "dime.about.groups",
+                            "target" => "about"
+                        ),
+                        array(
+                            "name" => "dime.about.background",
+                            "target" => "about"
+                        ),
+                        array(
+                            "name" => "dime.about.museums",
+                            "target" => "about"
+                        ),
+                        array(
+                            "name" => "dime.about.partners",
+                            "target" => "about"
+                        ),
+                        array(
+                            "name" => "dime.about.instructions",
+                            "target" => "about"
+                        ),
+                    ),
                 ),
                 array(
-                    "name" => "dime.digiexibit",
-                    "target" => "digiexibit"
+                    "name" => "dime.exhibits",
+                    "dropdown" => true,
+                    "target" => "",
+                    "navlinks" => array (
+                        array(
+                            "name" => "dime.exhibits.forests",
+                            "target" => "exhibits"
+                        ),
+                        array(
+                            "name" => "dime.exhibits.weapons",
+                            "target" => "exhibits"
+                        ),
+                    ),
                 ),
                 array(
                     "name" => "dime.news",
+                    "dropdown" => false,
                     "target" => "news"
                 )
             ),
@@ -72,13 +118,13 @@ class HomeViewAction
                     "active" => true,
                     "links" => array(
                         array(
-                            "name" => "dime.addfind",
-                            "active" => false,
+                            "name" => "dime.find.add",
+                            "active" => true,
                             "target" => "finds/add"
                         ),
                         array(
-                            "name" => "dime.addlocation",
-                            "active" => true,
+                            "name" => "dime.location.add",
+                            "active" => false,
                             "target" => "locations/add"
                         )
                     )
@@ -88,12 +134,12 @@ class HomeViewAction
                     "active" => false,
                     "links" => array(
                         array(
-                            "name" => "dime.searchfind",
+                            "name" => "dime.find.list",
                             "active" => false,
                             "target" => "finds"
                         ),
                         array(
-                            "name" => "dime.searchlocation",
+                            "name" => "dime.location.list",
                             "active" => false,
                             "target" => "locations"
                         )
@@ -102,12 +148,22 @@ class HomeViewAction
             )
         );
 
+        $lorem = "
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel mi eu nulla varius molestie. Integer pharetra dolor diam, in interdum diam iaculis a. Etiam nec finibus magna, non pulvinar est. Suspendisse maximus lacus eget mi laoreet, eget mattis est fermentum. Ut elit felis, iaculis non pellentesque ac, accumsan vitae sapien. Aenean blandit maximus ultrices. Morbi mattis iaculis eros nec volutpat. Donec fermentum felis ac purus ultricies, id varius magna ornare. Ut eget nisl non nisi egestas hendrerit ac id ligula. Pellentesque ac arcu quis diam venenatis ultricies in vitae diam.</p>
+            <p>Pellentesque porta risus felis, nec pharetra lacus tempus a. Vivamus tristique massa nec mauris maximus, id eleifend sem ultrices. Duis sollicitudin id neque vitae mollis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam rutrum cursus dui quis maximus. Aliquam a mauris viverra, facilisis eros id, suscipit tortor. Pellentesque ut congue orci. Nullam congue urna non leo bibendum, id tempus leo eleifend. Ut nibh leo, placerat a tempus ac, dapibus quis ante. Phasellus aliquam quam sed nisl gravida, sit amet varius eros suscipit. Aliquam elementum luctus vestibulum.</p>
+            <p>Vivamus iaculis eleifend metus sit amet vestibulum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In iaculis auctor purus, vel porttitor nibh ultrices sed. Sed lacus tellus, tristique sed ex eget, ultrices sagittis sem. Phasellus aliquet, mauris ut varius pretium, nunc mi vulputate mauris, et ornare dolor arcu at risus. Integer tristique magna sodales est venenatis maximus. Curabitur vitae tempus sem. In hac habitasse platea dictumst. Sed nec tellus sed eros euismod lacinia ut et enim.</p>
+        ";
+        $marius = "
+            <p>Mauris interdum justo vel libero tristique vestibulum. Quisque et iaculis risus. Praesent vel porttitor elit. Donec nec gravida magna, quis ultricies elit. Nam a dictum dolor. In vitae quam facilisis, varius nisl non, commodo tellus. Donec sagittis sed augue eget ultricies. Phasellus iaculis dictum suscipit. Sed congue lectus vel nisi finibus laoreet. Cras id risus eu tellus suscipit suscipit. Praesent et placerat eros. Vestibulum sit amet libero at ex facilisis tristique. Mauris eget tortor porttitor, mattis libero et, ullamcorper odio. Morbi dui tellus, mattis non sem pretium, convallis sodales velit.</p>
+            <p>Pellentesque molestie orci sem. Fusce sit amet tellus nulla. Curabitur accumsan tortor id laoreet pretium. Quisque ex lectus, tristique sit amet metus ac, volutpat semper nulla. Ut id commodo odio. Vivamus mattis ligula vitae urna mattis, non ornare nulla aliquet. In auctor, mauris at vestibulum luctus, ipsum nisi accumsan turpis, et dignissim dolor nulla vel ante. Nunc libero urna, tempor nec sem sed, euismod auctor neque. Proin tincidunt pellentesque venenatis. Nulla non magna sollicitudin, condimentum neque non, facilisis quam. Morbi id mattis nibh, nec sodales enim. Sed blandit euismod convallis. Praesent nec lorem eget leo fringilla volutpat. Mauris placerat tellus et augue imperdiet finibus. Sed accumsan nisl ex, at dictum libero dictum quis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.</p>
+        ";
+
         return Service::render(
             'pages/page.html.twig',
             [
                 'page_config' => $page_config,
-                'contents' => 'A Left Panel.<br/><br/>Click on "dime.finds" in the header.',
-                'contents2' => 'A Right Panel.',
+                'contents' => $lorem,
+                'contents2' => $marius,
             ]
         );
     }

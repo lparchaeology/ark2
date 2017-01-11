@@ -30,20 +30,19 @@
 
 namespace DIME\Action;
 
-use ARK\Application;
-use ARK\Error\ErrorException;
-use ARK\Http\Error\NotFoundError;
-use ARK\ORM\EntityManager;
+use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class ActorViewAction
 {
     public function __invoke(Request $request, $actorSlug)
     {
-        if (!$item || !$item->isValid()) {
-            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Item not found', "Item $actorSlug not found"));
-        }
-        return new Response(ActorViewAction::class.'('.$actorSlug.')');
+        return Service::render(
+            'pages/page.html.twig',
+            [
+                'contents' => ActorViewAction::class.'('.$actorSlug.')',
+                'contents2' => 'This page is under construction',
+            ]
+        );
     }
 }

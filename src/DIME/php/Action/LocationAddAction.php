@@ -30,19 +30,19 @@
 
 namespace DIME\Action;
 
-use ARK\Application;
-use ARK\Http\Error\NotFoundError;
-use ARK\ORM\EntityManager;
+use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
-class LocationListAction
+class LocationAddAction
 {
-    public function __invoke(Application $app, Request $request, $actorSlug = null)
+    public function __invoke(Request $request, $actorSlug = null)
     {
-        $this->actor = $actorSlug;
-        $em = new EntityManager($app['database'], 'data');
-        $locations = $em->findAll('DIME\Model\Item\Location');
-        return new Response(LocationListAction::class);
+        return Service::render(
+            'pages/page.html.twig',
+            [
+                'contents' => LocationAddAction::class,
+                'contents2' => 'This page is under construction',
+            ]
+        );
     }
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 10, 2017 at 09:44 PM
+-- Generation Time: Jan 11, 2017 at 12:52 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -475,7 +475,7 @@ CREATE TABLE `ark_item_location` (
 --
 
 INSERT INTO `ark_item_location` (`id`, `parent_module`, `parent_id`, `idx`, `name`, `subtype`, `schma`, `mod_by`, `mod_on`, `cre_by`, `cre_on`) VALUES
-('1', NULL, NULL, '1', '1', NULL, 'dime', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+('1', NULL, NULL, '1', '1', NULL, 'dime.location', 0, '2017-01-11 11:36:01', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 

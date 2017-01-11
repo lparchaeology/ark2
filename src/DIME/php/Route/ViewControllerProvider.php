@@ -41,6 +41,27 @@ class ViewControllerProvider implements ControllerProviderInterface
 
         $controllers
             ->method('GET')
+            ->get('/detector', 'DIME\\Action\\UnderConstructionAction')
+            ->bind('detector');
+        $controllers
+            ->method('GET')
+            ->get('/research', 'DIME\\Action\\UnderConstructionAction')
+            ->bind('research');
+        $controllers
+            ->method('GET')
+            ->get('/about', 'DIME\\Action\\UnderConstructionAction')
+            ->bind('about');
+        $controllers
+            ->method('GET')
+            ->get('/exhibits', 'DIME\\Action\\UnderConstructionAction')
+            ->bind('exhibits');
+        $controllers
+            ->method('GET')
+            ->get('/news', 'DIME\\Action\\UnderConstructionAction')
+            ->bind('news');
+
+        $controllers
+            ->method('GET')
             ->get('/actors/{actorSlug}/finds', 'DIME\\Action\\FindListAction')
             ->bind('actors.finds.list');
 
@@ -61,6 +82,11 @@ class ViewControllerProvider implements ControllerProviderInterface
 
         $controllers
             ->method('GET')
+            ->get('/finds/add', 'DIME\\Action\\FindAddAction')
+            ->bind('finds.add');
+
+        $controllers
+            ->method('GET')
             ->get('/finds/{findSlug}', 'DIME\\Action\\FindViewAction')
             ->bind('finds.view');
 
@@ -71,8 +97,8 @@ class ViewControllerProvider implements ControllerProviderInterface
 
         $controllers
             ->method('GET')
-            ->get('/finds/add', 'DIME\\Action\\FindAddAction')
-            ->bind('finds.add');
+            ->get('/locations/add', 'DIME\\Action\\LocationAddAction')
+            ->bind('locations.add');
 
         $controllers
             ->method('GET')
@@ -83,11 +109,6 @@ class ViewControllerProvider implements ControllerProviderInterface
             ->method('GET')
             ->get('/locations', 'DIME\\Action\\LocationListAction')
             ->bind('locations.list');
-
-        $controllers
-            ->method('GET')
-            ->get('/locations/add', 'DIME\\Action\\LocationAddAction')
-            ->bind('locations.add');
 
         $controllers
             ->method('GET')

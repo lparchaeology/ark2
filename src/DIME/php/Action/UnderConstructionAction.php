@@ -33,14 +33,14 @@ namespace DIME\Action;
 use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
 
-class FindAddAction
+class UnderConstructionAction
 {
-    public function __invoke(Request $request, $actorSlug = null)
+    public function __invoke(Request $request)
     {
         return Service::render(
             'pages/page.html.twig',
             [
-                'contents' => FindAddAction::class,
+                'contents' => 'This page is under construction',
                 'contents2' => 'This page is under construction',
             ]
         );

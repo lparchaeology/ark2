@@ -30,22 +30,19 @@
 
 namespace DIME\Action;
 
-use ARK\Application;
-use ARK\Error\ErrorException;
-use ARK\Http\Error\NotFoundError;
-use ARK\ORM\EntityManager;
+use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class LocationViewAction
 {
-    public function __invoke(Application $app, Request $request, $locationSlug)
+    public function __invoke(Request $request, $locationSlug)
     {
-        $em = new EntityManager($app['database'], 'data');
-        $item = $em->find('DIME\Model\Item\Actor', $locationSlug);
-        if (!$item || !$item->isValid()) {
-            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Item not found', "Item $locationSlug not found"));
-        }
-        return new Response(LocationViewAction::class.'('.$locationSlug.')');
+        return Service::render(
+            'pages/page.html.twig',
+            [
+                'contents' => LocationViewAction::class.'('.$locationSlug.')',
+                'contents2' => 'This page is under construction',
+            ]
+        );
     }
 }

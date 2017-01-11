@@ -5,10 +5,18 @@
 
     {% set table_class %}
         table
-        {%- if layout.striped %} table-striped {%- endif -%}
-        {%- if layout.bordered %} table-bordered {%- endif -%}
-        {%- if layout.hover %} table-hover {%- endif -%}
-        {%- if layout.condensed %} table-condensed {%- endif -%}
+        {%- if layout.striped %}
+            table-striped
+        {%- endif -%}
+        {%- if layout.bordered %}
+            table-bordered
+        {%- endif -%}
+        {%- if layout.hover %}
+            table-hover
+        {%- endif -%}
+        {%- if layout.condensed %}
+            table-condensed
+        {%- endif -%}
     {% endset %}
 
     <table id="{{layout.id}}" class="{{table_class}}">

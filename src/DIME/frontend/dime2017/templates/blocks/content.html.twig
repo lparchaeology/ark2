@@ -17,10 +17,13 @@
 
     {% if layout is defined %}
         {% for element in layout.elements %}
-            {% if forms is defined and forms[element.id] is defined %}
-                {% include element.template() with {'layout': element, 'forms': forms[element.id]} %}
+            {% if forms is defined and forms[element.id]is defined %}
+                {% include element.template()with {
+                    'layout': element,
+                    'forms': forms[element.id],
+                } %}
             {% else %}
-                {% include element.template() with {'layout': element} %}
+                {% include element.template()with {'layout': element} %}
             {% endif %}
         {% endfor %}
     {% endif %}

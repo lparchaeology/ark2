@@ -1,11 +1,13 @@
 {# Define the standard navbar block #}
 {% block usertool %}
+
     {% if global.user %}
-        <a href="#" >
+        <a href="#">
             <span class="dime-icon icon-user small"></span>
             {{ 'user.greeting' | trans({ '%name%': global.user.displayName }) }}
         </a>
     {% else %}
-    	<a href="{{ path('user.login') }}">{{ 'user.menu.login' | trans }}</a>
+        <a href="{{ path('user.login') }}">{{ 'user.menu.login' | trans }}</a>
     {% endif %}
+
 {% endblock usertool %}
