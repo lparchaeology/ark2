@@ -32,8 +32,8 @@ namespace ARK\Schema;
 
 use ARK\Schema\Format;
 use ARK\Schema\NumberTrait;
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use Doctrine\ORM\Mapping\ClassMetadata;
 
 class FloatFormat extends Format
 {

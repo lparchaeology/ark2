@@ -41,7 +41,7 @@ class ActorLoader implements LoaderInterface
         $catalogue = new MessageCatalogue($locale);
         $actors = $db->getActorNames();
         foreach ($actors as $actor) {
-            $key = 'actors.'.$actor['item'].'.'.$actor['property'];
+            $key = 'actors.'.$actor['item'].'.'.$actor['attribute'];
             $catalogue->set($key, $actor['value'], $domain);
         }
         return $catalogue;

@@ -41,9 +41,9 @@ use Symfony\Component\Form\Extension\Core\Type;
 
 class Field extends Element
 {
-    public function property()
+    public function attribute()
     {
-        return $this->property;
+        return $this->attribute;
     }
 
     public function keyword()
@@ -51,24 +51,24 @@ class Field extends Element
         if ($this->keyword) {
             return $this->keyword;
         }
-        return $this->property()->keyword();
+        return $this->attribute()->keyword();
     }
 
     public function formData($resource, $form = '')
     {
-        $property = $this->property()->name();
-        $value = $resource->attribute($property);
+        $value = $resource->property($this->attribute()->name());
         if (empty($value)) {
             return [];
         }
+        // TODO Fixme to work with new FormatAttribute
         if (is_array($value)) {
-            if ($this->property()->format()->type()->name() == 'text') {
+            if ($this->attribute()->format()->type()->name() == 'text') {
                 $value = $value[1];
             } else {
                 $value = $value[0];
             }
         }
-        if ($this->property()->format()->type()->name() == 'date') {
+        if ($this->attribute()->format()->type()->name() == 'date') {
             $value = new \DateTime($value);
         }
         return [$this->element => $value];
@@ -84,11 +84,11 @@ class Field extends Element
             $formBuilder->add($this->element, Type\CollectionType::class, $options);
             return;
         }
-        if (!$this->property()) {
+        if (!$this->attribute()) {
             return;
         }
         $options['label'] = $this->keyword() ? $this->keyword() : false;
-        switch ($this->property()->format()->type()->name()) {
+        switch ($this->attribute()->format()->type()->name()) {
             case 'action':
                 $options['choices']['--- Select One ---'] = null;
                 $actors = $this->db->getActors();
@@ -99,9 +99,9 @@ class Field extends Element
                 break;
             case 'string':
                 //TODO Only add null if allowed null
-                if ($this->property()->vocabulary()) {
+                if ($this->attribute()->vocabulary()) {
                     $options['choices']['--- Select One ---'] = null;
-                    foreach ($this->property()->vocabulary()->terms() as $term) {
+                    foreach ($this->attribute()->vocabulary()->terms() as $term) {
                         $options['choices'][$term->keyword()] = $term->name();
                     }
                     $formBuilder->add($this->element, Type\ChoiceType::class, $options);
@@ -133,7 +133,7 @@ class Field extends Element
                 $formBuilder->add($this->element, Type\CollectionType::class, $options);
                 break;
             case 'text':
-                if ($this->property()->format()->input() == 'textarea') {
+                if ($this->attribute()->format()->input() == 'textarea') {
                     $formBuilder->add($this->element, Type\TextareaType::class, $options);
                 } else {
                     $formBuilder->add($this->element, Type\TextType::class, $options);

@@ -32,9 +32,8 @@ namespace ARK\Schema;
 
 use ARK\EnabledTrait;
 use ARK\KeywordTrait;
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\ClassMetadata;
 
 class FragmentType
 {
@@ -42,18 +41,18 @@ class FragmentType
     use KeywordTrait;
 
     protected $type = '';
+    protected $compound = '';
     protected $formatClass = '';
     protected $table = '';
-    protected $properties = null;
-
-    public function __construct()
-    {
-        $this->properties = new Collection();
-    }
 
     public function name()
     {
         return $this->type;
+    }
+
+    public function isCompound()
+    {
+        return $this->compound;
     }
 
     public function formatClass()
@@ -66,35 +65,20 @@ class FragmentType
         return $this->table;
     }
 
-    public function hasProperties()
-    {
-        return !$this->properties->isEmpty();
-    }
-
-    public function properties()
-    {
-        return $this->properties;
-    }
-
-    public function property($name)
-    {
-        foreach ($this->properties as $property) {
-            if ($property->property() == $name || $property->field() == $name) {
-                return $property;
-            }
-        }
-        return null;
-    }
-
     public static function loadMetadata(ClassMetadata $metadata)
     {
+        // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_fragment_type');
+        $builder->setReadOnly();
+
+        // Key
         $builder->addStringKey('type', 20);
+
+        // Attributes
+        $builder->addField('compound', 'boolean');
         $builder->addStringField('formatClass', 100, 'format_class');
         $builder->addStringField('table', 50, 'tbl');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
-        $builder->addOneToMany('properties', 'FragmentProperty', 'type');
-        $builder->setReadOnly();
     }
 }

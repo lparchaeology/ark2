@@ -32,8 +32,8 @@ namespace ARK\Schema;
 
 use ARK\EnabledTrait;
 use ARK\KeywordTrait;
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use Doctrine\ORM\Mapping\ClassMetadata;
 
 class SchemaSubtype
 {

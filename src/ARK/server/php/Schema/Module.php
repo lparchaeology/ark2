@@ -32,9 +32,9 @@ namespace ARK\Schema;
 
 use ARK\EnabledTrait;
 use ARK\KeywordTrait;
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Module
 {
@@ -49,7 +49,7 @@ class Module
 
     public function __construct()
     {
-        $this->schemas = new Collection();
+        $this->schemas = new ArrayCollection();
     }
 
     public function name()

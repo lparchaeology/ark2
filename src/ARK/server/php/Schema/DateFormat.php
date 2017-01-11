@@ -32,8 +32,8 @@ namespace ARK\Schema;
 
 use ARK\Schema\DateTimeTrait;
 use ARK\Schema\Format;
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use Doctrine\ORM\Mapping\ClassMetadata;
 
 class DateFormat extends Format
 {

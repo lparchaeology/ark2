@@ -52,7 +52,7 @@ abstract class Item
     protected $subtype = '';
     protected $schma = null;
     protected $schema = null;
-    protected $attributes = null;
+    protected $properties = null;
     protected $valid = false;
 
     protected function makeIdentifier($parentId, $sep, $index)
@@ -109,38 +109,38 @@ abstract class Item
         return '/'.$this->index();
     }
 
-    private function loadAttributes()
+    private function loadProperties()
     {
-        if ($this->attributes) {
+        if ($this->properties) {
             return;
         }
         $repo = Service::repository($this->schema()->entity());
-        $this->attributes = $repo->findAttributes($this->id(), $this->schema(), $this->subtype);
+        $this->properties = $repo->findProperties($this->id(), $this->schema(), $this->subtype);
     }
 
-    public function attributes()
+    public function properties()
     {
-        $this->loadAttributes();
-        return $this->attributes;
+        $this->loadProperties();
+        return $this->properties;
     }
 
-    public function attribute(/*string*/ $property)
+    public function property(/*string*/ $key)
     {
-        $this->loadAttributes();
-        if (isset($this->attributes[$property])) {
-            return $this->attributes[$property];
+        $this->loadProperties();
+        if (isset($this->properties[$key])) {
+            return $this->properties[$key];
         }
         return null;
     }
 
-    public function setAttribute(/*string*/ $property, $value, $parameter = null)
+    public function setAttribute(/*string*/ $key, $value, $parameter = null)
     {
         // TODO validate is valid property
-        $this->loadAttributes();
-        $oldValue = (isset($this->attributes[$property]) ? $this->attributes[$property] : null);
+        $this->loadProperties();
+        $oldValue = (isset($this->properties[$key]) ? $this->properties[$key] : null);
         $newValue = ($parameter ? [$parameter, $value] : $value);
-        $this->registerModified($property, $oldValue, $newValue);
-        $this->attributes[$property] = $newValue;
+        $this->registerModified($key, $oldValue, $newValue);
+        $this->properties[$key] = $newValue;
     }
 
     private function loadRelated()

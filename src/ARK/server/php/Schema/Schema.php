@@ -34,10 +34,10 @@ use ARK\EnabledTrait;
 use ARK\Error\Error;
 use ARK\Error\ErrorException;
 use ARK\KeywordTrait;
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Schema\SchemaSubtype;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Schema
 {
@@ -52,28 +52,28 @@ class Schema
     protected $useSubtypes = false;
     protected $model = null;
     protected $subtypes = null;
-    protected $properties = null;
+    protected $attributes = null;
     protected $associations = null;
 
     public function __construct()
     {
-        $this->subtypes = new Collection();
-        $this->properties = new Collection();
-        $this->associations = new Collection();
+        $this->subtypes = new ArrayCollection();
+        $this->attributes = new ArrayCollection();
+        $this->associations = new ArrayCollection();
     }
 
     private function init()
     {
         if ($this->model === null) {
-            $this->model['']['properties'] = [];
+            $this->model['']['attributes'] = [];
             $this->model['']['associations'] = [];
             foreach ($this->subtypes as $subtype) {
                 $this->model[$subtype->name()]['subtype'] = $subtype;
-                $this->model[$subtype->name()]['properties'] = [];
+                $this->model[$subtype->name()]['attributes'] = [];
                 $this->model[$subtype->name()]['associations'] = [];
             }
-            foreach ($this->properties as $property) {
-                $this->model[$property->subtypeName()]['properties'][$property->name()] = $property;
+            foreach ($this->attributes as $attribute) {
+                $this->model[$attribute->subtypeName()]['attributes'][$attribute->name()] = $attribute;
             }
             foreach ($this->associations as $association) {
                 $this->model[$association->subtypeName()]['associations'][$association->name()] = $association;
@@ -152,32 +152,32 @@ class Schema
         return ($subtype && isset($this->model[$subtype]) ? $this->model[$subtype]['subtype'] : null);
     }
 
-    public function properties($subtype = null, $all = true)
+    public function attributes($subtype = null, $all = true)
     {
         $this->init();
         $this->checkSubtype($subtype);
-        $properties = array_values($this->model[$subtype]['properties']);
+        $attributes = array_values($this->model[$subtype]['attributes']);
         if ($subtype && $all) {
-            return array_merge(array_values($this->model['']['properties']), $properties);
+            return array_merge(array_values($this->model['']['attributes']), $attributes);
         }
-        return $properties;
+        return $attributes;
     }
 
-    public function propertyNames($subtype = '', $all = true)
+    public function attributeNames($subtype = '', $all = true)
     {
         $this->init();
         $subtype = $this->checkSubtype($subtype);
-        $names = array_keys($this->model[$subtype]['properties']);
+        $names = array_keys($this->model[$subtype]['attributes']);
         if ($subtype && $all) {
-            return array_merge(array_keys($this->model['']['properties']), $names);
+            return array_merge(array_keys($this->model['']['attributes']), $names);
         }
         return $names;
     }
 
-    public function property($property, $subtype = null)
+    public function attribute($attribute, $subtype = null)
     {
         $this->init();
-        return (isset($this->model[$subtype]['properties'][$property]) ? $this->model[$subtype]['properties'][$property] : null);
+        return (isset($this->model[$subtype]['attributes'][$attribute]) ? $this->model[$subtype]['attributes'][$attribute] : null);
     }
 
     public function associations($subtype = '', $all = true)
@@ -223,7 +223,7 @@ class Schema
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
         $builder->addOneToMany('subtypes', 'SchemaSubtype', 'schma');
-        $builder->addOneToMany('properties', 'SchemaProperty', 'schma');
+        $builder->addOneToMany('attributes', 'SchemaAttribute', 'schma');
         $builder->addOneToMany('associations', 'SchemaAssociation', 'schma');
         $builder->setReadOnly();
     }

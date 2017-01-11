@@ -35,9 +35,9 @@ use Doctrine\ORM\EntityRepository;
 
 class ItemEntityRepository extends EntityRepository
 {
-    public function findAttributes($id, Schema $schema, $subtype)
+    public function findProperties($id, Schema $schema, $subtype)
     {
         $persister = $this->_em->getUnitOfWork()->getEntityPersister($this->_entityName);
-        return $persister->loadAttributes($id, $schema, $subtype);
+        return $persister->findProperties($id, $schema, $subtype);
     }
 }

@@ -40,7 +40,6 @@ class Database
     private $modules = [];
     private $fragTypes = [];
     private $fragmentTables = [];
-    private $propertyFragTypes = [];
 
     public function __construct(Application $app)
     {
@@ -207,23 +206,6 @@ class Database
         return $this->modules;
     }
 
-    private function loadPropertyFragmentTypes()
-    {
-        if ($this->propertyFragTypes) {
-            return;
-        }
-        $this->loadFragmentTypes();
-        $sql = "
-            SELECT *
-            FROM ark_module_property, ark_format
-            WHERE ark_module_property.format = ark_format.format
-        ";
-        $properties = $this->core()->fetchAll($sql, []);
-        foreach ($properties as $property) {
-            $this->propertyFragTypes[$property['property']] = $property['fragment_type'];
-        }
-    }
-
     private function loadFragmentTypes()
     {
         if ($this->fragTypes) {
@@ -309,23 +291,23 @@ class Database
         $sql = "
             SELECT
                 ark_module.*,
-                ark_module_schema.*, ark_module_modtype.keyword AS modtype_keyword,
-                ark_module_modtype.*, ark_module_modtype.keyword AS modtype_keyword,
-                ark_module_property.property
+                ark_module_schema.*, ark_schema_subtype.keyword AS modtype_keyword,
+                ark_schema_subtype.*, ark_schema_subtype.keyword AS modtype_keyword,
+                ark_schema_attribute.attribute
             FROM ark_module
             INNER JOIN ark_module_schema
                 ON ark_module_schema.module = ark_module.module
                 AND ark_module_schema.schema_id = :schema_id
                 AND ark_module_schema.enabled = true
-            INNER JOIN ark_module_modtype
-                ON ark_module_modtype.module = ark_module_schema.module
-                AND ark_module_modtype.schema_id = ark_module_schema.schema_id
-                AND (ark_module_modtype.enabled = true OR ark_module_modtype.modtype = '')
-            LEFT JOIN ark_module_property
-                ON ark_module_property.module = ark_module_modtype.module
-                AND ark_module_property.schema_id = ark_module_modtype.schema_id
-                AND ark_module_property.modtype = ark_module_modtype.modtype
-                AND ark_module_property.enabled = true
+            INNER JOIN ark_schema_subtype
+                ON ark_schema_subtype.module = ark_module_schema.module
+                AND ark_schema_subtype.schema_id = ark_module_schema.schema_id
+                AND (ark_schema_subtype.enabled = true OR ark_schema_subtype.modtype = '')
+            LEFT JOIN ark_schema_attribute
+                ON ark_schema_attribute.module = ark_schema_subtype.module
+                AND ark_schema_attribute.schema_id = ark_schema_subtype.schema_id
+                AND ark_schema_attribute.modtype = ark_schema_subtype.modtype
+                AND ark_schema_attribute.enabled = true
             WHERE ark_module.module = :module
             AND ark_module.enabled = true
         ";
@@ -353,7 +335,7 @@ class Database
     {
         $sql = "
             SELECT *
-            FROM ark_module_modtype
+            FROM ark_schema_subtype
             WHERE module = :module
         ";
         $params[':module'] = $module;
@@ -413,9 +395,9 @@ class Database
     {
         $sql = "
             SELECT *
-            FROM ark_view_field, ark_module_property
+            FROM ark_view_field, ark_module_attribute
             WHERE field = :field
-            AND ark_view_field.property = ark_module_property.property
+            AND ark_view_field.attribute = ark_module_attribute.attribute
         ";
         $params = array(
             ':field' => $field,
@@ -592,15 +574,15 @@ class Database
     public function getModuleProperties($module, $schema)
     {
         $sql = "
-        SELECT *, ark_module_property.format, ark_module_property.keyword, ark_format.keyword as format_keyword
-        FROM ark_module_property
-        LEFT JOIN ark_format ON ark_format.format = ark_module_property.format
+        SELECT *, ark_schema_attribute.format, ark_schema_attribute.keyword, ark_format.keyword as format_keyword
+        FROM ark_schema_attribute
+        LEFT JOIN ark_format ON ark_format.format = ark_schema_attribute.format
         LEFT JOIN ark_format_float ON ark_format_float.format = ark_format.format_type
         LEFT JOIN ark_format_integer ON ark_format_integer.format = ark_format.format_type
         LEFT JOIN ark_format_string ON ark_format_string.format = ark_format.format_type
         LEFT JOIN ark_fragment_type ON ark_fragment_type.fragment_type = ark_format.fragment_type
-        WHERE ark_module_property.module = :module
-        AND ark_module_property.schema_id = :schema
+        WHERE ark_schema_attribute.module = :module
+        AND ark_schema_attribute.schema_id = :schema
         ";
         $params = array(
             ':module' => $module,
@@ -615,26 +597,26 @@ class Database
         return $results;
     }
 
-    public function getModuleProperty($module, $schema, $modtype, $property)
+    public function getModuleProperty($module, $schema, $modtype, $attribute)
     {
         $sql = "
-            SELECT *, ark_module_property.format, ark_module_property.keyword, ark_format.keyword as format_keyword
-            FROM ark_module_property
-            LEFT JOIN ark_format ON ark_format_float.format = ark_module_property.format
+            SELECT *, ark_schema_attribute.format, ark_schema_attribute.keyword, ark_format.keyword as format_keyword
+            FROM ark_schema_attribute
+            LEFT JOIN ark_format ON ark_format_float.format = ark_schema_attribute.format
             LEFT JOIN ark_format_float ON ark_format_float.format = ark_format.format_type
             LEFT JOIN ark_format_integer ON ark_format_integer.format = ark_format.format_type
             LEFT JOIN ark_format_string ON ark_format_string.format = ark_format.format_type
             LEFT JOIN ark_fragment_type ON ark_fragment_type.fragment_type = ark_format.fragment_type
-            WHERE ark_module_property.module = :module
-            AND ark_module_property.schema = :schema
-            AND (ark_module_property.modtype = :modtype OR ark_module_property.modtype = :module)
-            AND ark_module_property.property = :property
+            WHERE ark_schema_attribute.module = :module
+            AND ark_schema_attribute.schema = :schema
+            AND (ark_schema_attribute.modtype = :modtype OR ark_schema_attribute.modtype = :module)
+            AND ark_schema_attribute.attribute = :attribute
         ";
         $params = array(
             ':module' => $module,
             ':schema' => $schema,
             ':modtype' => $modtype,
-            ':property' => $property,
+            ':attribute' => $attribute,
         );
         $result = $this->core()->fetchAssoc($sql, $params);
         if ((!isset($result['keyword']) or !$result['keyword']) && isset($result['format_keyword'])) {
@@ -646,15 +628,15 @@ class Database
     public function getFormatProperties($format)
     {
         $sql = "
-            SELECT *, ark_format_property.format, ark_format_property.keyword, ark_format.keyword as format_keyword
-            FROM ark_format_property
-            LEFT JOIN ark_format ON ark_format.format = ark_format_property.format
+            SELECT *, ark_format_attribute.format, ark_format_attribute.keyword, ark_format.keyword as format_keyword
+            FROM ark_format_attribute
+            LEFT JOIN ark_format ON ark_format.format = ark_format_attribute.format
             LEFT JOIN ark_format_float ON ark_format_float.format = ark_format.format_type
             LEFT JOIN ark_format_integer ON ark_format_integer.format = ark_format.format_type
             LEFT JOIN ark_format_string ON ark_format_string.format = ark_format.format_type
             LEFT JOIN ark_fragment_type ON ark_fragment_type.fragment_type = ark_format.fragment_type
-            WHERE ark_format_property.parent_format = :format
-            ORDER BY ark_format_property.seq
+            WHERE ark_format_attribute.parent_format = :format
+            ORDER BY ark_format_attribute.seq
         ";
         $params = array(
             ':format' => $format,
@@ -668,22 +650,22 @@ class Database
         return $results;
     }
 
-    public function getFormatProperty($format, $property)
+    public function getFormatProperty($format, $attribute)
     {
         $sql = "
-            SELECT *, ark_format_property.format, ark_format_property.keyword, ark_format.keyword as format_keyword
-            FROM ark_format_property
-            LEFT JOIN ark_format ON ark_format.format = ark_format_property.format
+            SELECT *, ark_format_attribute.format, ark_format_attribute.keyword, ark_format.keyword as format_keyword
+            FROM ark_format_attribute
+            LEFT JOIN ark_format ON ark_format.format = ark_format_attribute.format
             LEFT JOIN ark_format_float ON ark_format_float.format = ark_format.format_type
             LEFT JOIN ark_format_integer ON ark_format_integer.format = ark_format.format_type
             LEFT JOIN ark_format_string ON ark_format_string.format = ark_format.format_type
             LEFT JOIN ark_fragment_type ON ark_fragment_type.fragment_type = ark_format.fragment_type
-            WHERE ark_format_property.parent_format = :format
-            AND ark_format_property.property = :property
+            WHERE ark_format_attribute.parent_format = :format
+            AND ark_format_attribute.attribute = :attribute
         ";
         $params = array(
             ':format' => $format,
-            ':property' => $property,
+            ':attribute' => $attribute,
         );
         $result = $this->core()->fetchAssoc($sql, $params);
         if ((!isset($result['keyword']) or !$result['keyword']) && isset($result['format_keyword'])) {
@@ -762,11 +744,11 @@ class Database
             FROM ark_item_actor, ark_fragment_string
             WHERE ark_fragment_string.module = :module
             AND ark_fragment_string.item = ark_item_actor.id
-            AND ark_fragment_string.property = :property
+            AND ark_fragment_string.attribute = :attribute
         ";
         $params = array(
             ':module' => 'act',
-            ':property' => 'name',
+            ':attribute' => 'name',
         );
         return $this->data()->fetchAll($sql, $params);
     }

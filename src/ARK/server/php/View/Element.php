@@ -46,7 +46,7 @@ abstract class Element
     protected $element = '';
     protected $type = '';
     protected $subtype = '';
-    protected $property = null;
+    protected $attribute = null;
     protected $class = '';
     protected $template = '';
     protected $form = '';
@@ -147,12 +147,12 @@ abstract class Element
         // Relationships
         $builder->addOneToMany('children', 'Child', 'parent');
         $builder->addCompoundManyToOneField(
-            'property',
-            'ARK\\Schema\\SchemaProperty',
+            'attribute',
+            'ARK\\Schema\\SchemaAttribute',
             [
                 ['column' => 'schma', 'nullable' => false],
                 ['column' => 'subtype', 'nullable' => false],
-                ['column' => 'property', 'nullable' => false]
+                ['column' => 'attribute', 'nullable' => false]
             ]
         );
 

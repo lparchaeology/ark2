@@ -31,31 +31,13 @@
 namespace ARK\Schema;
 
 use ARK\Schema\Format;
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use Doctrine\ORM\Mapping\ClassMetadata;
 
 class ObjectFormat extends Format
 {
-    protected $properties = null;
-
-    public function properties()
-    {
-        return $this->properties;
-    }
-
-    public function property($name)
-    {
-        foreach ($this->properties as $property) {
-            if ($property->property() == $name || $property->field() == $name) {
-                return $property;
-            }
-        }
-        return null;
-    }
-
     public static function loadMetadata(ClassMetadata $metadata)
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_format_object');
-        $builder->addOneToMany('properties', 'ObjectProperty', 'object');
     }
 }

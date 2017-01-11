@@ -44,7 +44,7 @@ class TestViewAction
             $contents .= '<br /><br />Finds<br /><br />';
             foreach ($finds as $find) {
                 $contents .= $find->id().'   '.$find->name().'   '.$find->schema()->name().'<br />';
-                foreach ($find->attributes() as $key => $value) {
+                foreach ($find->properties() as $key => $value) {
                     if (is_array($value)) {
                         $contents .= '---- '.$key.' = ['.$value[0].']  '.$value[1].'<br />';
                     } else {
@@ -69,16 +69,16 @@ class TestViewAction
                     $contents .= '---- '.$schema->name().'   '.$schema->entity().'<br />';
                     foreach ($schema->subtypes() as $subtype) {
                         $contents .= '-------- '.$subtype->name().'   '.$subtype->entity().'<br />';
-                        foreach ($schema->properties($subtype->name()) as $property) {
-                            $contents .= '------------ '.$property->name().'   '.$property->format()->name().'<br />';
+                        foreach ($schema->attributes($subtype->name()) as $attribute) {
+                            $contents .= '------------ '.$attribute->name().'   '.$attribute->format()->name().'<br />';
                         }
                         foreach ($schema->associations($subtype->name()) as $association) {
                             $contents .= '------------ '.$association->name().'   '.$association->inverseSchema()->name().'<br />';
                         }
                     }
                     if (!$schema->useSubtypes()) {
-                        foreach ($schema->properties() as $property) {
-                            $contents .= '-------- '.$property->name().'   '.$property->format()->name().'<br />';
+                        foreach ($schema->attributes() as $attribute) {
+                            $contents .= '-------- '.$attribute->name().'   '.$attribute->format()->name().'<br />';
                         }
                         foreach ($schema->associations() as $association) {
                             $contents .= '-------- '.$association->name().'   '.$association->inverseSchema()->name().'<br />';
@@ -101,45 +101,35 @@ class TestViewAction
             }
         }
 
-        if ($vocabs = Service::repository('ARK\\Vocabulary\\Vocabulary')->findAll()) {
-            $contents .= '<br /><br />Vocabularies<br /><br />';
-            foreach ($vocabs as $vocab) {
-                $contents .= $vocab->concept().'   '.$vocab->keyword().'<br />';
-                foreach ($vocab->terms() as $term) {
-                    $contents .= '---- '.$term->name().'   '.$term->alias().'<br />';
-                    foreach ($term->parameters() as $parm) {
-                        $contents .= '-------- '.$parm->name().'   '.$parm->value().'<br />';
-                    }
-                }
-            }
-        }
-
         if ($formats = Service::repository('ARK\\Schema\\Format')->findAll()) {
             $contents2 = '<br /><br />Formats<br /><br />';
             foreach ($formats as $format) {
                 $contents2 .= $format->name().'   '.get_class($format).'<br />';
                 $contents2 .= '---- '.$format->type()->name().'<br />';
-                if ($format->type()->hasProperties()) {
-                    foreach ($format->type()->properties() as $property) {
-                        $contents2 .= '-------- '.$property->name().'   '.$property->format()->name().'<br />';
-                        if ($property->vocabulary()) {
-                            $contents .= '------------ '.$property->vocabulary()->concept().'<br />';
-                        }
-                    }
-                }
-                if ($format->hasProperties()) {
-                    foreach ($format->properties() as $property) {
-                        $contents2 .= '-------- '.$property->name().'   '.$property->format()->name().'<br />';
-                        if ($property->vocabulary()) {
-                            $contents2 .= '------------ '.$property->vocabulary()->concept().'<br />';
-                            foreach ($property->vocabulary()->terms() as $term) {
-                                $contents2 .= '---------------- '.$term->name().'   '.$term->alias().'<br />';
-                            }
+                if ($format->hasAttributes()) {
+                    foreach ($format->attributes() as $attribute) {
+                        $contents2 .= '-------- '.$attribute->name().'   '.$attribute->format()->name().'<br />';
+                        if ($attribute->vocabulary()) {
+                            $contents2 .= '------------ '.$attribute->vocabulary()->concept().'<br />';
                         }
                     }
                 }
             }
         }
+
+        if ($vocabs = Service::repository('ARK\\Vocabulary\\Vocabulary')->findAll()) {
+            $contents2 .= '<br /><br />Vocabularies<br /><br />';
+            foreach ($vocabs as $vocab) {
+                $contents2 .= $vocab->concept().'   '.$vocab->keyword().'<br />';
+                foreach ($vocab->terms() as $term) {
+                    $contents2 .= '---- '.$term->name().'   '.$term->alias().'<br />';
+                    foreach ($term->parameters() as $parm) {
+                        $contents2 .= '-------- '.$parm->name().'   '.$parm->value().'<br />';
+                    }
+                }
+            }
+        }
+
         return Service::render('pages/page.html.twig', array('contents' => $contents, 'contents2' => $contents2));
     }
 }

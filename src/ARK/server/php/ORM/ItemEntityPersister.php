@@ -36,12 +36,12 @@ use Doctrine\ORM\Persisters\Entity\BasicEntityPersister;
 
 class ItemEntityPersister extends BasicEntityPersister
 {
-    public function loadAttributes($id, Schema $schema, $subtype)
+    public function findProperties($id, Schema $schema, $subtype)
     {
-        $properties = $schema->properties($subtype);
-        foreach ($properties as $prop) {
-            $attributes[$prop->name()] = null;
-            $props[$prop->name()] = $prop;
+        $attributes = $schema->attributes($subtype);
+        foreach ($attributes as $attribute) {
+            $properties[$attribute->name()] = null;
+            $attribs[$attribute->name()] = $attribute;
         }
         $frags = $this->getItemFragments($schema->module()->name(), $id);
         $members = [];
@@ -51,51 +51,48 @@ class ItemEntityPersister extends BasicEntityPersister
                 unset($frags[$key]);
             }
         }
-        $attributes = [];
+        $properties = [];
         foreach ($frags as $frag) {
-            $propertyId = $frag['property'];
-            $property = $props[$frag['property']];
-            $value = $this->buildAttributeValue($property, $frag, $members);
-            if ($property->hasMultipleOccurrences()) {
-                $attributes[$propertyId][] = $value;
+            $attributeId = $frag['attribute'];
+            $attribute = $attribs[$frag['attribute']];
+            $value = $this->buildAttributeValue($attribute, $frag, $members);
+            if ($attribute->hasMultipleOccurrences()) {
+                $properties[$attributeId][] = $value;
             } else {
-                $attributes[$propertyId] = $value;
+                $properties[$attributeId] = $value;
             }
         }
-        return $attributes;
+        return $properties;
     }
 
-    private function buildAttributeValue($property, $frag, array $members)
+    private function buildAttributeValue($attribute, $frag, array $members)
     {
-        if ($property->format()->type() == 'object') {
-            foreach ($property->properties() as $prop) {
-                $attributes[$prop->name()] = null;
-                $properties[$prop->name()] = $prop;
+        if ($attribute->format()->hasAttributes()) {
+            foreach ($attribute->format()->attributes() as $attr) {
+                $properties[$attr->name()] = null;
+                $attributes[$attr->name()] = $attr;
             }
-            foreach ($members[$frag['fid']] as $member) {
-                if (isset($member['object_fid']) && $member['object_fid'] === $frag['fid']) {
-                    $propertyId = $member['property'];
-                    $prop = $properties[$propertyId];
-                    $value = $this->buildAttributeValue($prop, $member, $members);
-                    if ($prop->hasMultipleOccurrences()) {
-                        $attributes[$propertyId][] = $value;
-                    } else {
-                        $attributes[$propertyId] = $value;
+            if ($attribute->format()->type()->isCompound()) {
+                foreach ($members[$frag['fid']] as $member) {
+                    if (isset($member['object_fid']) && $member['object_fid'] === $frag['fid']) {
+                        $attributeId = $member['attribute'];
+                        $attr = $attributes[$attributeId];
+                        $value = $this->buildAttributeValue($attr, $member, $members);
+                        if ($attr->hasMultipleOccurrences()) {
+                            $properties[$attributeId][] = $value;
+                        } else {
+                            $properties[$attributeId] = $value;
+                        }
                     }
                 }
+                return $properties;
             }
-            return $attributes;
+            foreach ($attribute->format()->attributes() as $attr) {
+                $properties[$attr->name()] = ($attr->isRoot() ? $frag['value'] : $frag['parameter']);
+            }
         } else {
-            return $this->buildFrag($frag);
+            return $frag['value'];
         }
-    }
-
-    private function buildFrag($frag)
-    {
-        if (!empty($frag['parameter'])) {
-            return [$frag['parameter'], $frag['value']];
-        }
-        return $frag['value'];
     }
 
     protected function getItemFragments($module, $item)

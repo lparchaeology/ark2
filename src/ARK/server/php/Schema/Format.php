@@ -32,8 +32,9 @@ namespace ARK\Schema;
 
 use ARK\EnabledTrait;
 use ARK\KeywordTrait;
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\Common\Collections\ArrayCollection;
 
 abstract class Format
 {
@@ -47,6 +48,12 @@ abstract class Format
     protected $array = false;
     protected $sortable = false;
     protected $searchable = false;
+    protected $attributes = null;
+
+    public function __construct()
+     {
+        $this->attributes = new ArrayCollection();
+     }
 
     public function name()
     {
@@ -63,17 +70,32 @@ abstract class Format
         return $this->input;
     }
 
-    public function hasProperties()
+    public function hasAttributes()
     {
-        return $this->object || $this->array;
+        return !$this->attributes->isEmpty();
     }
 
-    protected function isObject()
+    public function attributes()
+    {
+        return $this->attributes;
+    }
+
+    public function attribute($name)
+    {
+        foreach ($this->attributes as $attribute) {
+            if ($attribute->name() == $name) {
+                return $attribute;
+            }
+        }
+        return null;
+    }
+
+    protected function serializeAsObject()
     {
         return $this->object;
     }
 
-    protected function isArray()
+    protected function serializeAsArray()
     {
         return $this->array;
     }
@@ -90,16 +112,8 @@ abstract class Format
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
+        // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_format');
-        $builder->addStringKey('format', 30);
-        $builder->addManyToOneField('type', 'FragmentType', 'type', 'type', false);
-        $builder->addStringField('input', 30);
-        $builder->addField('object', 'boolean');
-        $builder->addField('array', 'boolean');
-        $builder->addField('sortable', 'boolean');
-        $builder->addField('searchable', 'boolean');
-        EnabledTrait::buildEnabledMetadata($builder);
-        KeywordTrait::buildKeywordMetadata($builder);
         $builder->setJoinedTableInheritance()->setDiscriminatorColumn('type', 'string', 10);
         $builder->addDiscriminatorMapClass('blob', 'BlobFormat');
         $builder->addDiscriminatorMapClass('boolean', 'BooleanFormat');
@@ -115,5 +129,21 @@ abstract class Format
         $builder->addDiscriminatorMapClass('text', 'TextFormat');
         $builder->addDiscriminatorMapClass('time', 'TimeFormat');
         $builder->setReadOnly();
+
+        // Key
+        $builder->addStringKey('format', 30);
+
+        // Attributes
+        $builder->addStringField('input', 30);
+        $builder->addField('object', 'boolean');
+        $builder->addField('array', 'boolean');
+        $builder->addField('sortable', 'boolean');
+        $builder->addField('searchable', 'boolean');
+        EnabledTrait::buildEnabledMetadata($builder);
+        KeywordTrait::buildKeywordMetadata($builder);
+
+        // Associations
+        $builder->addManyToOneField('type', 'FragmentType', 'type', 'type', false);
+        $builder->addOneToMany('attributes', 'FormatAttribute', 'parent');
     }
 }

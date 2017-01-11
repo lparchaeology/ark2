@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 11, 2017 at 12:52 PM
+-- Generation Time: Jan 11, 2017 at 10:10 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -49,7 +49,7 @@ CREATE TABLE `ark_fragment_blob` (
   `fid` int(11) NOT NULL,
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `property` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `parameter` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `value` longblob NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE `ark_fragment_boolean` (
   `fid` int(11) NOT NULL,
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `property` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `parameter` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `value` tinyint(1) NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
@@ -89,7 +89,7 @@ CREATE TABLE `ark_fragment_date` (
   `fid` int(11) NOT NULL,
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `property` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `parameter` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `value` date NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
@@ -103,7 +103,7 @@ CREATE TABLE `ark_fragment_date` (
 -- Dumping data for table `ark_fragment_date`
 --
 
-INSERT INTO `ark_fragment_date` (`fid`, `module`, `item`, `property`, `parameter`, `value`, `object_fid`, `mod_by`, `mod_on`, `cre_by`, `cre_on`) VALUES
+INSERT INTO `ark_fragment_date` (`fid`, `module`, `item`, `attribute`, `parameter`, `value`, `object_fid`, `mod_by`, `mod_on`, `cre_by`, `cre_on`) VALUES
 (1, 'find', '1', 'finddate', NULL, '2017-01-01', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
@@ -116,7 +116,7 @@ CREATE TABLE `ark_fragment_datetime` (
   `fid` int(11) NOT NULL,
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `property` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `parameter` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `value` datetime NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
@@ -136,7 +136,7 @@ CREATE TABLE `ark_fragment_decimal` (
   `fid` int(11) NOT NULL,
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `property` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `parameter` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `value` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
@@ -156,7 +156,7 @@ CREATE TABLE `ark_fragment_float` (
   `fid` int(11) NOT NULL,
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `property` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `parameter` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `value` double NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
@@ -176,7 +176,7 @@ CREATE TABLE `ark_fragment_geometry` (
   `fid` int(11) NOT NULL,
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `property` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `parameter` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `value` varchar(4000) COLLATE utf8_unicode_ci NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
@@ -196,7 +196,7 @@ CREATE TABLE `ark_fragment_integer` (
   `fid` int(11) NOT NULL,
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `property` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `parameter` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `value` bigint(20) NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
@@ -216,7 +216,7 @@ CREATE TABLE `ark_fragment_item` (
   `fid` int(11) NOT NULL,
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `property` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `parameter` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
   `value` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
@@ -236,7 +236,7 @@ CREATE TABLE `ark_fragment_object` (
   `fid` int(11) NOT NULL,
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `property` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `parameter` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `value` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `object_fid` int(11) DEFAULT NULL,
@@ -256,7 +256,7 @@ CREATE TABLE `ark_fragment_string` (
   `fid` int(11) NOT NULL,
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `property` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `parameter` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `value` varchar(4000) COLLATE utf8_unicode_ci NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
@@ -270,7 +270,7 @@ CREATE TABLE `ark_fragment_string` (
 -- Dumping data for table `ark_fragment_string`
 --
 
-INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `property`, `parameter`, `value`, `object_fid`, `mod_by`, `mod_on`, `cre_by`, `cre_on`) VALUES
+INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `parameter`, `value`, `object_fid`, `mod_by`, `mod_on`, `cre_by`, `cre_on`) VALUES
 (1, 'find', '1', 'material', NULL, 'au', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (2, 'find', '1', 'secondary', NULL, 'fe', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (3, 'find', '1', 'secondary', NULL, 'pb', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
@@ -288,7 +288,7 @@ CREATE TABLE `ark_fragment_text` (
   `fid` int(11) NOT NULL,
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `property` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `parameter` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `value` longtext COLLATE utf8_unicode_ci NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
@@ -302,7 +302,7 @@ CREATE TABLE `ark_fragment_text` (
 -- Dumping data for table `ark_fragment_text`
 --
 
-INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `property`, `parameter`, `value`, `object_fid`, `mod_by`, `mod_on`, `cre_by`, `cre_on`) VALUES
+INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `attribute`, `parameter`, `value`, `object_fid`, `mod_by`, `mod_on`, `cre_by`, `cre_on`) VALUES
 (1, 'find', '1', 'name', 'en', 'My find number one', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (3, 'find', '2', 'name', 'en', 'My find number two', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (5, 'find', '3', 'name', 'en', 'My find number two', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
@@ -319,7 +319,7 @@ CREATE TABLE `ark_fragment_time` (
   `fid` int(11) NOT NULL,
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `property` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `parameter` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `value` time NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
@@ -572,91 +572,91 @@ ALTER TABLE `ark_dataclass_member`
 --
 ALTER TABLE `ark_fragment_blob`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `property` (`module`,`item`,`property`);
+  ADD KEY `property` (`module`,`item`,`attribute`);
 
 --
 -- Indexes for table `ark_fragment_boolean`
 --
 ALTER TABLE `ark_fragment_boolean`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `module` (`module`,`item`,`property`);
+  ADD KEY `module` (`module`,`item`,`attribute`);
 
 --
 -- Indexes for table `ark_fragment_date`
 --
 ALTER TABLE `ark_fragment_date`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `module` (`module`,`item`,`property`);
+  ADD KEY `module` (`module`,`item`,`attribute`);
 
 --
 -- Indexes for table `ark_fragment_datetime`
 --
 ALTER TABLE `ark_fragment_datetime`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `module` (`module`,`item`,`property`);
+  ADD KEY `module` (`module`,`item`,`attribute`);
 
 --
 -- Indexes for table `ark_fragment_decimal`
 --
 ALTER TABLE `ark_fragment_decimal`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `property` (`module`,`item`,`property`);
+  ADD KEY `property` (`module`,`item`,`attribute`);
 
 --
 -- Indexes for table `ark_fragment_float`
 --
 ALTER TABLE `ark_fragment_float`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `module` (`module`,`item`,`property`);
+  ADD KEY `module` (`module`,`item`,`attribute`);
 
 --
 -- Indexes for table `ark_fragment_geometry`
 --
 ALTER TABLE `ark_fragment_geometry`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `property` (`module`,`item`,`property`);
+  ADD KEY `property` (`module`,`item`,`attribute`);
 
 --
 -- Indexes for table `ark_fragment_integer`
 --
 ALTER TABLE `ark_fragment_integer`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `module` (`module`,`item`,`property`);
+  ADD KEY `module` (`module`,`item`,`attribute`);
 
 --
 -- Indexes for table `ark_fragment_item`
 --
 ALTER TABLE `ark_fragment_item`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `module` (`module`,`item`,`property`);
+  ADD KEY `module` (`module`,`item`,`attribute`);
 
 --
 -- Indexes for table `ark_fragment_object`
 --
 ALTER TABLE `ark_fragment_object`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `item` (`module`,`item`,`property`);
+  ADD KEY `item` (`module`,`item`,`attribute`);
 
 --
 -- Indexes for table `ark_fragment_string`
 --
 ALTER TABLE `ark_fragment_string`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `module` (`module`,`item`,`property`);
+  ADD KEY `module` (`module`,`item`,`attribute`);
 
 --
 -- Indexes for table `ark_fragment_text`
 --
 ALTER TABLE `ark_fragment_text`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `module` (`module`,`item`,`property`);
+  ADD KEY `module` (`module`,`item`,`attribute`);
 
 --
 -- Indexes for table `ark_fragment_time`
 --
 ALTER TABLE `ark_fragment_time`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `module` (`module`,`item`,`property`);
+  ADD KEY `module` (`module`,`item`,`attribute`);
 
 --
 -- Indexes for table `ark_item_actor`

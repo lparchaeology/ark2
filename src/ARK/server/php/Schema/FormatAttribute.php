@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Schema Property
+ * ARK Schema Format Attribute
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -32,46 +32,39 @@ namespace ARK\Schema;
 
 use ARK\EnabledTrait;
 use ARK\KeywordTrait;
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use Doctrine\ORM\Mapping\ClassMetadata;
 
-class SchemaProperty
+class FormatAttribute
 {
     use EnabledTrait;
     use KeywordTrait;
 
-    protected $schma = null;
-    protected $subtypeName = '';
-    protected $subtype = null;
-    protected $property = '';
+    protected $parent = null;
+    protected $attribute = '';
+    protected $sequence = 0;
+    protected $field = '';
     protected $format = null;
     protected $vocabulary = null;
+    protected $root = false;
     protected $minimum = 0;
     protected $maximum = 1;
     protected $uniqueValues = false;
     protected $additionalValues = false;
 
-    public function schema()
+    public function parent()
     {
-        return $this->schma;
-    }
-
-    public function subtype()
-    {
-        if ($this->subtypeName) {
-            return $this->subtype;
-        }
-        return null;
-    }
-
-    public function subtypeName()
-    {
-        return $this->subtypeName;
+        return $this->parent;
     }
 
     public function name()
     {
-        return $this->property;
+        return $this->attribute;
+    }
+
+    public function sequence()
+    {
+        return $this->sequence;
     }
 
     public function format()
@@ -79,9 +72,24 @@ class SchemaProperty
         return $this->format;
     }
 
+    public function hasVocabulary()
+    {
+        return (bool) $this->vocabulary;
+    }
+
     public function vocabulary()
     {
         return $this->vocabulary;
+    }
+
+    public function isRoot()
+    {
+        return $this->root;
+    }
+
+    public function defaultValue()
+    {
+        //TODO Needs implementing!
     }
 
     public function isRequired()
@@ -114,33 +122,28 @@ class SchemaProperty
         return $this->additionalValues;
     }
 
-    public function keyword()
-    {
-        if ($this->keyword) {
-            return $this->keyword;
-        }
-        return $this->format()->keyword();
-    }
-
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_schema_property');
-        $builder->addManyToOneKey('schma', 'Schema');
-        $builder->addStringKey('subtypeName', 30, 'subtype');
-        $builder->addStringKey('property', 30);
-        $builder->addManyToOneField('format', 'Format', 'format', 'format', false);
-        $builder->addManyToOneField('vocabulary', 'ARK\\Vocabulary\\Vocabulary', 'vocabulary', 'concept');
+        // Table
+        $builder = new ClassMetadataBuilder($metadata, 'ark_format_attribute');
+        $builder->setReadOnly();
+
+        // Key
+        $builder->addManyToOneKey('parent', 'Format', 'format', 'format', false);
+        $builder->addStringKey('attribute', 30);
+
+        // Attributes
+        $builder->addField('sequence', 'integer');
+        $builder->addField('root', 'boolean');
         $builder->addField('minimum', 'integer');
         $builder->addField('maximum', 'integer');
         $builder->addField('uniqueValues', 'boolean', [], 'unique_values');
         $builder->addField('additionalValues', 'boolean', [], 'additional_values');
-        $builder->addCompoundManyToOneField(
-            'subtype',
-            'SchemaSubtype',
-            [['column' => 'schma', 'nullable' => false], ['column' => 'subtype', 'nullable' => false]]
-        );
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
-        $builder->setReadOnly();
+
+        // Associations
+        $builder->addManyToOneField('format', 'Format', 'attribute_format', 'format', false);
+        $builder->addManyToOneField('vocabulary', 'ARK\\Vocabulary\\Vocabulary', 'vocabulary', 'concept');
     }
 }
