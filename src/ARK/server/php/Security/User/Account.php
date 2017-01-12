@@ -30,11 +30,11 @@
 
 namespace ARK\Security\User;
 
-use ARK\ORM\EntityTrait;
+use ARK\VersionTrait;
 
 class Account
 {
-    use EntityTrait;
+    use VersionTrait;
 
     protected $id;
     protected $protocol;

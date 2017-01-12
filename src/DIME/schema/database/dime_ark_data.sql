@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 11, 2017 at 10:10 PM
+-- Generation Time: Jan 12, 2017 at 10:41 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -427,8 +427,8 @@ CREATE TABLE `ark_item_find` (
 
 INSERT INTO `ark_item_find` (`id`, `parent_module`, `parent_id`, `idx`, `name`, `subtype`, `schma`, `mod_by`, `mod_on`, `cre_by`, `cre_on`) VALUES
 ('1', NULL, NULL, '1', 'One', 'coin', 'dime.find', 0, '2017-01-09 16:35:26', 0, '0000-00-00 00:00:00'),
-('2', NULL, NULL, '2', 'Two', 'fibula', 'dime.find', 0, '2017-01-09 17:17:00', 0, '0000-00-00 00:00:00'),
-('3', NULL, NULL, '3', 'Three', 'tack', 'dime.find', 0, '2017-01-09 17:17:09', 0, '0000-00-00 00:00:00');
+('2', NULL, NULL, '2', 'Two', 'fibula', 'dime.find', 0, '2017-01-12 18:55:08', 0, '0000-00-00 00:00:00'),
+('3', NULL, NULL, '3', 'Three', 'coin', 'dime.find', 0, '2017-01-12 18:26:05', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 

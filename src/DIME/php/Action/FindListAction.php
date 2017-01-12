@@ -37,7 +37,8 @@ class FindListAction
 {
     public function __invoke(Request $request, $actorSlug = null)
     {
-        $finds = Service::repository('DIME\\Entity\\Find')->findAll();
+        $em = Service::entity('data');
+        $finds = Service::repository('DIME\Entity\Find')->findAll();
         $head = Service::translate('dime.finds.list');
         $id = Service::translate('dime.find');
         $type = Service::translate('dime.find.type');

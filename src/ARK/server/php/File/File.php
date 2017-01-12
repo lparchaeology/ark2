@@ -32,10 +32,13 @@ namespace ARK\File;
 
 use ARK\File\FileVersion;
 use ARK\Model\Item;
+use ARK\Model\ItemTrait;
 use ARK\ORM\ClassMetadata;
 
-class File extends Item
+class File implements Item
 {
+    use ItemTrait;
+
     const NEW_FILE = 0;
     const CHECKED_IN = 1;
     const CHECKED_OUT = 2;
@@ -88,14 +91,6 @@ class File extends Item
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $metadata->setTableName('ark_item_file');
-        $metadata->setItemEntity(true);
-        $builder->setSingleTableInheritance()->setDiscriminatorColumn('subtype', 'string', 30);
-        $builder->addDiscriminatorMapClass('audio', 'ARK\\File\\Audio');
-        $builder->addDiscriminatorMapClass('document', 'ARK\\File\\Document');
-        $builder->addDiscriminatorMapClass('image', 'ARK\\File\\Image');
-        $builder->addDiscriminatorMapClass('other', 'ARK\\File\\File');
-        $builder->addDiscriminatorMapClass('text', 'ARK\\File\\Text');
-        $builder->addDiscriminatorMapClass('video', 'ARK\\File\\Video');
+        ItemTrait::buildItemMetadata($metadata, 'file');
     }
 }

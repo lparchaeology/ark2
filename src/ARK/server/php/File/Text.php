@@ -35,7 +35,5 @@ use ARK\ORM\ClassMetadata;
 
 class Text extends File
 {
-    public static function loadMetadata(ClassMetadata $metadata)
-    {
-    }
+    public static function loadMetadata(ClassMetadata $metadata) {}
 }

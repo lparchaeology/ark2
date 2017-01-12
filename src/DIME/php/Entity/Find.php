@@ -33,15 +33,16 @@ namespace DIME\Entity;
 // TODO Will be automatically generated class!
 
 use ARK\Model\Item;
+use ARK\Model\ItemTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
-class Find extends Item
+class Find implements Item
 {
+    use ItemTrait;
+
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_item_find');
-        $builder->addStringField('subtype', 30);
-        $metadata->setItemEntity(true);
+        ItemTrait::buildItemMetadata($metadata, 'find');
     }
 }

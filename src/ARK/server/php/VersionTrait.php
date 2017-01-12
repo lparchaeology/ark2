@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Entity Trait
+ * ARK Version Trait
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,9 +28,11 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model;
+namespace ARK;
 
-trait EntityTrait
+use ARK\ORM\ClassMetadataBuilder;
+
+trait VersionTrait
 {
     protected $createdOn = null;
     protected $createdBy = null;
@@ -61,5 +63,14 @@ trait EntityTrait
     public function version()
     {
         return $this->version;
+    }
+
+    public static function buildVersionMetadata(ClassMetadataBuilder $builder)
+    {
+        $builder->addField('lastModifiedBy', 'integer', [], 'mod_by');
+        $builder->addField('lastModifiedOn', 'datetime', [], 'mod_on');
+        $builder->addField('createdBy', 'integer', [], 'cre_by');
+        $builder->addField('createdOn', 'datetime', [], 'cre_on');
+        //$builder->addStringField('version', 128);
     }
 }

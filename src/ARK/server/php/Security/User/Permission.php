@@ -30,11 +30,11 @@
 
 namespace ARK\Security\User;
 
-use ARK\ORM\EntityTrait;
+use ARK\VersionTrait;
 
 class Permission
 {
-    use EntityTrait;
+    use VersionTrait;
 
     protected $keyword;
 

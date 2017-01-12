@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 11, 2017 at 10:10 PM
+-- Generation Time: Jan 12, 2017 at 10:40 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -448,6 +448,7 @@ CREATE TABLE `ark_module` (
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `resource` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `namespace` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `entity` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `tbl` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `core` tinyint(1) NOT NULL DEFAULT '0',
   `enabled` tinyint(1) NOT NULL,
@@ -459,13 +460,13 @@ CREATE TABLE `ark_module` (
 -- Dumping data for table `ark_module`
 --
 
-INSERT INTO `ark_module` (`module`, `resource`, `namespace`, `tbl`, `core`, `enabled`, `deprecated`, `keyword`) VALUES
-('actor', 'actors', 'ARK', 'ark_item_actor', 1, 1, 0, 'module.actor'),
-('campaign', 'campaigns', 'DIME', 'ark_item_campaign', 0, 1, 0, 'module.campaign'),
-('file', 'files', 'ARK', 'ark_item_file', 1, 1, 0, 'module.file'),
-('find', 'finds', 'DIME', 'ark_item_find', 0, 1, 0, 'module.find'),
-('image', 'images', 'DIME', 'ark_item_image', 0, 1, 0, 'module.image'),
-('location', 'locations', 'DIME', 'ark_item_location', 0, 1, 0, 'module.location');
+INSERT INTO `ark_module` (`module`, `resource`, `namespace`, `entity`, `tbl`, `core`, `enabled`, `deprecated`, `keyword`) VALUES
+('actor', 'actors', 'ARK', 'ARK\\Entity\\Actor', 'ark_item_actor', 1, 1, 0, 'module.actor'),
+('campaign', 'campaigns', 'DIME', 'DIME\\Entity\\Campaign', 'ark_item_campaign', 0, 1, 0, 'module.campaign'),
+('file', 'files', 'ARK', 'ARK\\File\\File', 'ark_item_file', 1, 1, 0, 'module.file'),
+('find', 'finds', 'DIME', 'DIME\\Entity\\Find', 'ark_item_find', 0, 1, 0, 'module.find'),
+('image', 'images', 'DIME', 'DIME\\Entity\\Image', 'ark_item_image', 0, 1, 0, 'module.image'),
+('location', 'locations', 'DIME', 'DIME\\Entity\\Location', 'ark_item_location', 0, 1, 0, 'module.location');
 
 -- --------------------------------------------------------
 
@@ -476,10 +477,10 @@ INSERT INTO `ark_module` (`module`, `resource`, `namespace`, `tbl`, `core`, `ena
 CREATE TABLE `ark_schema` (
   `schma` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `entity` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `generator` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `sequence` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `use_subtypes` tinyint(1) NOT NULL DEFAULT '0',
+  `subtype_entities` tinyint(1) NOT NULL DEFAULT '0',
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `deprecated` tinyint(1) NOT NULL,
   `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL
@@ -489,13 +490,13 @@ CREATE TABLE `ark_schema` (
 -- Dumping data for table `ark_schema`
 --
 
-INSERT INTO `ark_schema` (`schma`, `module`, `entity`, `generator`, `sequence`, `use_subtypes`, `enabled`, `deprecated`, `keyword`) VALUES
-('core.actor', 'actor', 'ARK\\Entity\\Actor', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 1, 1, 0, 'schema.actor'),
-('core.file', 'file', 'ARK\\File\\File', 'ARK\\ORM\\Id\\IdentityGenerator', '', 1, 1, 0, 'schema.file'),
-('dime.campaign', 'campaign', 'DIME\\Entity\\Campaign', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 0, 1, 0, 'dime.schema.campaign'),
-('dime.find', 'find', 'DIME\\Entity\\Find', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 1, 1, 0, 'dime.schema.find'),
-('dime.image', 'image', 'DIME\\Entity\\Image', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 0, 1, 0, 'dime.schema.image'),
-('dime.location', 'location', 'DIME\\Entity\\Location', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 0, 1, 0, 'dime.schema.location');
+INSERT INTO `ark_schema` (`schma`, `module`, `generator`, `sequence`, `use_subtypes`, `subtype_entities`, `enabled`, `deprecated`, `keyword`) VALUES
+('core.actor', 'actor', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 1, 1, 1, 0, 'schema.actor'),
+('core.file', 'file', 'ARK\\ORM\\Id\\IdentityGenerator', '', 1, 1, 1, 0, 'schema.file'),
+('dime.campaign', 'campaign', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 0, 0, 1, 0, 'dime.schema.campaign'),
+('dime.find', 'find', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 1, 0, 1, 0, 'dime.schema.find'),
+('dime.image', 'image', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 0, 0, 1, 0, 'dime.schema.image'),
+('dime.location', 'location', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 0, 0, 1, 0, 'dime.schema.location');
 
 -- --------------------------------------------------------
 
@@ -602,7 +603,7 @@ INSERT INTO `ark_schema_subtype` (`schma`, `subtype`, `entity`, `enabled`, `depr
 ('core.file', 'audio', 'ARK\\File\\Audio', 1, 0, 'file.type.audio'),
 ('core.file', 'document', 'ARK\\File\\Document', 1, 0, 'file.type.document'),
 ('core.file', 'image', 'ARK\\File\\Image', 1, 0, 'file.type.image'),
-('core.file', 'other', 'ARK\\File\\Other', 1, 0, 'file.type.other'),
+('core.file', 'other', 'ARK\\File\\File', 1, 0, 'file.type.other'),
 ('core.file', 'text', 'ARK\\File\\Text', 1, 0, 'file.type.text'),
 ('core.file', 'video', 'ARK\\File\\Video', 1, 0, 'file.type.video'),
 ('dime.find', 'accessory', '', 1, 0, 'dime.find.accessory'),

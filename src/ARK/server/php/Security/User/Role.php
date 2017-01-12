@@ -30,12 +30,12 @@
 
 namespace ARK\Security\User;
 
-use ARK\ORM\EntityTrait;
+use ARK\VersionTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class Role
 {
-    use EntityTrait;
+    use VersionTrait;
 
     protected $keyword;
     protected $permissions;

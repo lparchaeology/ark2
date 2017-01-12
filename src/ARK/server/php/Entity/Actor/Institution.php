@@ -33,12 +33,9 @@ namespace ARK\Entity\Actor;
 // TODO Will be automatically generated class!
 
 use ARK\Entity\Actor;
-use ARK\Model\Item;
 use ARK\ORM\ClassMetadata;
 
 class Institution extends Actor
 {
-    public static function loadMetadata(ClassMetadata $metadata)
-    {
-    }
+    public static function loadMetadata(ClassMetadata $metadata) {}
 }

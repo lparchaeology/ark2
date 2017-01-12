@@ -46,7 +46,6 @@ class Schema
 
     protected $schma = '';
     protected $module = null;
-    protected $entity = '';
     protected $generator = '';
     protected $sequence = '';
     protected $useSubtypes = false;
@@ -110,11 +109,6 @@ class Schema
     public function module()
     {
         return $this->module;
-    }
-
-    public function entity()
-    {
-        return $this->entity;
     }
 
     public function generator()
@@ -216,7 +210,6 @@ class Schema
         $builder = new ClassMetadataBuilder($metadata, 'ark_schema');
         $builder->addStringKey('schma', 30);
         $builder->addManyToOneField('module', 'Module', null, null, false);
-        $builder->addStringField('entity', 100);
         $builder->addStringField('generator', 100);
         $builder->addStringField('sequence', 30);
         $builder->addField('useSubtypes', 'boolean', [], 'use_subtypes');

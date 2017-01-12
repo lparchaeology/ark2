@@ -35,6 +35,11 @@ use Doctrine\ORM\EntityRepository;
 
 class ItemEntityRepository extends EntityRepository
 {
+    public function metadata()
+    {
+        return $this->getClassMetadata();
+    }
+
     public function findProperties($id, Schema $schema, $subtype)
     {
         $persister = $this->_em->getUnitOfWork()->getEntityPersister($this->_entityName);

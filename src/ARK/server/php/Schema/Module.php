@@ -43,6 +43,7 @@ class Module
 
     protected $module = '';
     protected $resource = '';
+    protected $entity = '';
     protected $table = null;
     protected $core = false;
     protected $schemas = null;
@@ -60,6 +61,11 @@ class Module
     public function resource()
     {
         return $this->resource;
+    }
+
+    public function entity()
+    {
+        return $this->entity;
     }
 
     public function table()
@@ -82,6 +88,7 @@ class Module
         $builder = new ClassMetadataBuilder($metadata, 'ark_module');
         $builder->addStringKey('module', 30);
         $builder->addStringField('resource', 30);
+        $builder->addStringField('entity', 100);
         $builder->addStringField('table', 30, 'tbl');
         $builder->addField('core', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);

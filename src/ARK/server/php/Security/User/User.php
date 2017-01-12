@@ -30,7 +30,7 @@
 
 namespace ARK\Security\User;
 
-use ARK\ORM\EntityTrait;
+use ARK\VersionTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Serializable;
@@ -38,7 +38,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 class User implements AdvancedUserInterface, Serializable
 {
-    use EntityTrait;
+    use VersionTrait;
 
     const ROLE_DEFAULT = 'ROLE_ANON';
 

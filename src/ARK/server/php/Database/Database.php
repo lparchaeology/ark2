@@ -236,6 +236,23 @@ class Database
         return $this->fragmentTables;
     }
 
+    public function getSubtypeEntities($module)
+    {
+        $sql = "
+            SELECT ark_schema_subtype.subtype, ark_schema_subtype.entity
+            FROM ark_schema, ark_schema_subtype
+            WHERE ark_schema.module = :module
+            AND ark_schema.enabled = true
+            AND ark_schema.subtype_entities = true
+            AND ark_schema_subtype.schma = ark_schema.schma
+            AND ark_schema_subtype.enabled = true
+        ";
+        $params = array(
+            ':module' => $module,
+        );
+        return $this->core()->fetchAll($sql, $params);
+    }
+
     public function getSubmodules($module, $schemaId)
     {
         $sql = "

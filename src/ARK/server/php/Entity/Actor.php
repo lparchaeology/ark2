@@ -33,17 +33,15 @@ namespace ARK\Entity;
 // TODO Will be automatically generated class!
 
 use ARK\Model\Item;
+use ARK\Model\ItemTrait;
 use ARK\ORM\ClassMetadata;
-use ARK\ORM\ClassMetadataBuilder;
 
-abstract class Actor extends Item
+class Actor implements Item
 {
+    use ItemTrait;
+
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_item_actor');
-        $builder->setSingleTableInheritance()->setDiscriminatorColumn('subtype', 'string', 30);
-        $builder->addDiscriminatorMapClass('person', 'ARK\\Entity\\Actor\\Person');
-        $builder->addDiscriminatorMapClass('institution', 'ARK\\Entity\\Actor\\Institution');
-        $metadata->setItemEntity(true);
+        ItemTrait::buildItemMetadata($metadata, 'actor');
     }
 }

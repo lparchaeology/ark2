@@ -66,7 +66,7 @@ class TestViewAction
             foreach ($modules as $module) {
                 $contents .= $module->name().'   '.$module->resource().'<br />';
                 foreach ($module->schemas() as $schema) {
-                    $contents .= '---- '.$schema->name().'   '.$schema->entity().'<br />';
+                    $contents .= '---- '.$schema->name().'   '.$schema->module()->entity().'<br />';
                     foreach ($schema->subtypes() as $subtype) {
                         $contents .= '-------- '.$subtype->name().'   '.$subtype->entity().'<br />';
                         foreach ($schema->attributes($subtype->name()) as $attribute) {
