@@ -31,9 +31,11 @@
 namespace ARK\ORM;
 
 use ARK\Model\ItemFragmentTrait;
-use Doctrine\ORM\Persisters\Entity\BasicEntityPersister;
+use ARK\Schema\Schema;
+use ARK\Service;
+use Doctrine\ORM\Persisters\Entity\SingleTablePersister;
 
-class ItemEntityPersister extends BasicEntityPersister
+class ItemSingleTablePersister extends SingleTablePersister
 {
     use ItemFragmentTrait;
 }
