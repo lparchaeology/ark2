@@ -118,41 +118,9 @@ class Service
         return self::$app['database'];
     }
 
-    public static function entity($em)
+    public static function entityManager($em)
     {
         return self::$app['orm.ems'][$em];
-    }
-
-    public static function flush($em)
-    {
-        return self::$app['orm.ems'][$em]->flush();
-    }
-
-    public static function repository($class)
-    {
-        if (self::$app['orm.ems']['data']->manages($class)) {
-            return self::$app['orm.ems']['data']->getRepository($class);
-        }
-        if (self::$app['orm.ems']['core']->manages($class)) {
-            return self::$app['orm.ems']['core']->getRepository($class);
-        }
-        if (self::$app['orm.ems']['user']->manages($class)) {
-            return self::$app['orm.ems']['user']->getRepository($class);
-        }
-        return null;
-    }
-
-    public static function persist($entity)
-    {
-        if (self::$app['orm.ems']['data']->manages($entity)) {
-            self::$app['orm.ems']['data']->persist($entity);
-        }
-        if (self::$app['orm.ems']['core']->manages($entity)) {
-            self::$app['orm.ems']['core']->persist($entity);
-        }
-        if (self::$app['orm.ems']['user']->manages($entity)) {
-            self::$app['orm.ems']['user']->persist($entity);
-        }
     }
 
     public static function locale()

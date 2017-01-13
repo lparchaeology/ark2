@@ -30,8 +30,14 @@
 
 namespace DIME\Action;
 
+use ARK\Entity\Actor;
+use ARK\ORM\ORM;
 use ARK\Translation\Key;
+use ARK\Schema\Format;
+use ARK\Schema\Module;
 use ARK\Service;
+use ARK\Vocabulary\Vocabulary;
+use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
 class TestViewAction
@@ -40,7 +46,7 @@ class TestViewAction
     {
         $contents = Service::translate('site.welcome');
 
-        if ($finds = Service::repository('DIME\\Entity\\Find')->findAll()) {
+        if ($finds = ORM::findAll(Find::class)) {
             $contents .= '<br /><br />Finds<br /><br />';
             foreach ($finds as $find) {
                 $contents .= $find->id().'   '.$find->name().'   '.$find->schema()->name().'<br />';
@@ -51,17 +57,21 @@ class TestViewAction
                         $contents .= '---- '.$key.' = '.$value.'<br />';
                     }
                 }
+                foreach ($find->attributes() as $attribute) {
+                    print_r($find->property($attribute->name())->keyValue());
+                    print_r('<br>');
+                }
             }
         }
 
-        if ($actors = Service::repository('ARK\\Entity\\Actor')->findAll()) {
+        if ($actors = ORM::findAll(Actor::class)) {
             $contents .= '<br /><br />Actors<br /><br />';
             foreach ($actors as $actor) {
                 $contents .= $actor->id().'   '.$actor->name().'   '.$actor->schema()->name().'<br />';
             }
         }
 
-        if ($modules = Service::repository('ARK\\Schema\\Module')->findAll()) {
+        if ($modules = ORM::findAll(Module::class)) {
             $contents .= '<br /><br />Modules<br /><br />';
             foreach ($modules as $module) {
                 $contents .= $module->name().'   '.$module->resource().'<br />';
@@ -70,7 +80,7 @@ class TestViewAction
                     foreach ($schema->subtypes() as $subtype) {
                         $contents .= '-------- '.$subtype->name().'   '.$subtype->entity().'<br />';
                         foreach ($schema->attributes($subtype->name()) as $attribute) {
-                            $contents .= '------------ '.$attribute->name().'   '.$attribute->format()->name().'<br />';
+                            $contents .= '------------ '.$attribute->name().'   '.$attribute->format()->name().'   '.$attribute->format()->keyword().'<br />';
                         }
                         foreach ($schema->associations($subtype->name()) as $association) {
                             $contents .= '------------ '.$association->name().'   '.$association->inverseSchema()->name().'<br />';
@@ -88,7 +98,7 @@ class TestViewAction
             }
         }
 
-        if ($trans = Service::repository(Key::class)->findAll()) {
+        if ($trans = ORM::findAll(Key::class)) {
             $contents .= '<br /><br />Translations<br /><br />';
             foreach ($trans as $tran) {
                 $contents .= $tran->domain()->name().'   '.$tran->keyword().'<br />';
@@ -101,7 +111,7 @@ class TestViewAction
             }
         }
 
-        if ($formats = Service::repository('ARK\\Schema\\Format')->findAll()) {
+        if ($formats = ORM::findAll(Format::class)) {
             $contents2 = '<br /><br />Formats<br /><br />';
             foreach ($formats as $format) {
                 $contents2 .= $format->name().'   '.get_class($format).'<br />';
@@ -117,7 +127,7 @@ class TestViewAction
             }
         }
 
-        if ($vocabs = Service::repository('ARK\\Vocabulary\\Vocabulary')->findAll()) {
+        if ($vocabs = ORM::findAll(Vocabulary::class)) {
             $contents2 .= '<br /><br />Vocabularies<br /><br />';
             foreach ($vocabs as $vocab) {
                 $contents2 .= $vocab->concept().'   '.$vocab->keyword().'<br />';

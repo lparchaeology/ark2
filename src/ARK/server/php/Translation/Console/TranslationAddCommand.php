@@ -30,7 +30,7 @@
 
 namespace ARK\Translation\Console;
 
-use ARK\Service;
+use ARK\ORM\ORM;
 use ARK\Translation\Domain;
 use ARK\Translation\Key;
 use ARK\Translation\Language;
@@ -63,11 +63,11 @@ class TranslationAddCommand extends Command
 
         $keyword = $input->getArgument('keyword');
 
-        $key = Service::repository(Key::class)->find($keyword);
+        $key = ORM::find(Key::class, $keyword);
         if ($key) {
             $output->writeln("\nTranslation keyword exists in domain".$key->domain()->name());
         } else {
-            $domains = Service::repository(Domain::class)->findAll();
+            $domains = ORM::findAll(Domain::class);
             foreach ($domains as $domain) {
                 $domainNames[] = $domain->name();
                 $doms[$domain->name()] = $domain;
@@ -79,7 +79,8 @@ class TranslationAddCommand extends Command
             $key = new Key($keyword, $domain);
         }
 
-        $languages = Service::repository(Language::class)->findAll();
+        $languages = ORM::findAll(Language::class);
+        $langCodes = [];
         foreach ($languages as $language) {
             if ($language->usedForMarkup()) {
                 $langCodes[] = $language->code();
@@ -90,8 +91,8 @@ class TranslationAddCommand extends Command
         $langQuestion->setAutocompleterValues($langCodes);
         $langCode = $question->ask($input, $output, $langQuestion);
         $language = $langs[$langCode];
-echo ' selected '.$language->code();
-        $roles = Service::repository(Role::class)->findAll();
+
+        $roles = ORM::findAll(Role::class);
         foreach ($roles as $role) {
             $roleNames[] = $role->name();
             $rols[$role->name()] = $role;
@@ -101,16 +102,14 @@ echo ' selected '.$language->code();
         $roleName = $question->ask($input, $output, $roleQuestion);
         $role = $rols[$roleName];
 
-        $message = Service::repository(Message::class)->findBy(['language' => $language->code(), 'key' => $key->keyword(), 'role' => $role->name()]);
+        $message = ORM::findBy(Message::class, ['language' => $language->code(), 'key' => $key->keyword(), 'role' => $role->name()]);
         if ($message) {
             $output->writeln("\nMessage exists:");
             $output->writeln("  Text: ".$message->text());
             $output->writeln("  Notes: ".$message->notes());
             $output->writeln("Text and Notes will be replaced.");
         } else {
-            echo ' no message '.$language->code();
             $message = new Message($key, $language, $role);
-            echo ' in message '.$message->language()->code();
         }
 
         $textQuestion = new Question("Please enter the translation text: ");
@@ -121,10 +120,10 @@ echo ' selected '.$language->code();
 
         $message->setText($text);
         $message->setNotes($notes);
-        echo ' about to persist '.$language->code();
 
-        Service::persist($message);
-        Service::flush('core');
+        ORM::persist($key);
+        ORM::persist($message);
+        ORM::manager('core')->flush();
 
         $output->writeln("\nTranslation added.");
     }

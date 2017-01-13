@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 12, 2017 at 10:41 PM
+-- Generation Time: Jan 13, 2017 at 10:35 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -56,7 +56,8 @@ CREATE TABLE `ark_fragment_blob` (
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
-  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -76,7 +77,8 @@ CREATE TABLE `ark_fragment_boolean` (
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
-  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -96,15 +98,16 @@ CREATE TABLE `ark_fragment_date` (
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
-  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `ark_fragment_date`
 --
 
-INSERT INTO `ark_fragment_date` (`fid`, `module`, `item`, `attribute`, `parameter`, `value`, `object_fid`, `mod_by`, `mod_on`, `cre_by`, `cre_on`) VALUES
-(1, 'find', '1', 'finddate', NULL, '2017-01-01', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+INSERT INTO `ark_fragment_date` (`fid`, `module`, `item`, `attribute`, `parameter`, `value`, `object_fid`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+(1, 'find', '1', 'finddate', NULL, '2017-01-01', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -123,7 +126,8 @@ CREATE TABLE `ark_fragment_datetime` (
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
-  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -143,7 +147,8 @@ CREATE TABLE `ark_fragment_decimal` (
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
-  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -163,7 +168,8 @@ CREATE TABLE `ark_fragment_float` (
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
-  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -183,7 +189,8 @@ CREATE TABLE `ark_fragment_geometry` (
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
-  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -203,7 +210,8 @@ CREATE TABLE `ark_fragment_integer` (
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
-  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -223,7 +231,8 @@ CREATE TABLE `ark_fragment_item` (
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
-  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -243,7 +252,8 @@ CREATE TABLE `ark_fragment_object` (
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
-  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -263,20 +273,21 @@ CREATE TABLE `ark_fragment_string` (
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
-  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `ark_fragment_string`
 --
 
-INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `parameter`, `value`, `object_fid`, `mod_by`, `mod_on`, `cre_by`, `cre_on`) VALUES
-(1, 'find', '1', 'material', NULL, 'au', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(2, 'find', '1', 'secondary', NULL, 'fe', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(3, 'find', '1', 'secondary', NULL, 'pb', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(4, 'find', '1', 'secondary', NULL, 'al', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(5, 'find', '1', 'period_start', 'AYTX', '', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(6, 'find', '1', 'period_end', 'AYGX', '', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `parameter`, `value`, `object_fid`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+(1, 'find', '1', 'material', NULL, 'au', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+(2, 'find', '1', 'secondary', NULL, 'fe', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+(3, 'find', '1', 'secondary', NULL, 'pb', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+(4, 'find', '1', 'secondary', NULL, 'al', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+(5, 'find', '1', 'period_start', 'AYTX', '', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+(6, 'find', '1', 'period_end', 'AYGX', '', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -295,19 +306,20 @@ CREATE TABLE `ark_fragment_text` (
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
-  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `ark_fragment_text`
 --
 
-INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `attribute`, `parameter`, `value`, `object_fid`, `mod_by`, `mod_on`, `cre_by`, `cre_on`) VALUES
-(1, 'find', '1', 'name', 'en', 'My find number one', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(3, 'find', '2', 'name', 'en', 'My find number two', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(5, 'find', '3', 'name', 'en', 'My find number two', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(7, 'find', '1', 'description', 'en', 'A multiline description', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(8, 'find', '1', 'title', 'en', 'A singleline title', NULL, 0, '2017-01-10 10:28:56', 0, '0000-00-00 00:00:00');
+INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `attribute`, `parameter`, `value`, `object_fid`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+(1, 'find', '1', 'name', 'en', 'My find number one', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+(3, 'find', '2', 'name', 'en', 'My find number two', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+(5, 'find', '3', 'name', 'en', 'My find number two', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+(7, 'find', '1', 'description', 'en', 'A multiline description', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+(8, 'find', '1', 'title', 'en', 'A singleline title', NULL, 0, '2017-01-10 10:28:56', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -326,7 +338,8 @@ CREATE TABLE `ark_fragment_time` (
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
-  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -346,20 +359,21 @@ CREATE TABLE `ark_item_actor` (
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
-  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `v` varchar(36) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `ark_item_actor`
 --
 
-INSERT INTO `ark_item_actor` (`id`, `parent_module`, `parent_id`, `idx`, `name`, `subtype`, `schma`, `mod_by`, `mod_on`, `cre_by`, `cre_on`) VALUES
-('1', NULL, NULL, '1', 'John', 'person', 'core.actor', 0, '2017-01-04 19:18:35', 0, '0000-00-00 00:00:00'),
-('2', NULL, NULL, '2', 'Paul', 'person', 'core.actor', 0, '2017-01-04 19:18:39', 0, '0000-00-00 00:00:00'),
-('3', NULL, NULL, '3', 'George', 'person', 'core.actor', 0, '2017-01-04 19:17:18', 0, '0000-00-00 00:00:00'),
-('4', NULL, NULL, '4', 'Ringo', 'person', 'core.actor', 0, '2017-01-04 19:17:18', 0, '0000-00-00 00:00:00'),
-('5', NULL, NULL, '5', 'Beatles', 'institution', 'core.actor', 0, '2017-01-04 19:17:18', 0, '0000-00-00 00:00:00'),
-('6', NULL, NULL, '6', 'Apple', 'institution', 'core.actor', 0, '2017-01-04 19:17:18', 0, '0000-00-00 00:00:00');
+INSERT INTO `ark_item_actor` (`id`, `parent_module`, `parent_id`, `idx`, `name`, `subtype`, `schma`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `v`) VALUES
+('1', NULL, NULL, '1', 'John', 'person', 'core.actor', 0, '2017-01-04 19:18:35', 0, '0000-00-00 00:00:00', ''),
+('2', NULL, NULL, '2', 'Paul', 'person', 'core.actor', 0, '2017-01-04 19:18:39', 0, '0000-00-00 00:00:00', ''),
+('3', NULL, NULL, '3', 'George', 'person', 'core.actor', 0, '2017-01-04 19:17:18', 0, '0000-00-00 00:00:00', ''),
+('4', NULL, NULL, '4', 'Ringo', 'person', 'core.actor', 0, '2017-01-04 19:17:18', 0, '0000-00-00 00:00:00', ''),
+('5', NULL, NULL, '5', 'Beatles', 'institution', 'core.actor', 0, '2017-01-04 19:17:18', 0, '0000-00-00 00:00:00', ''),
+('6', NULL, NULL, '6', 'Apple', 'institution', 'core.actor', 0, '2017-01-04 19:17:18', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -378,7 +392,8 @@ CREATE TABLE `ark_item_campaign` (
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
-  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -398,7 +413,8 @@ CREATE TABLE `ark_item_file` (
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
-  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -418,17 +434,18 @@ CREATE TABLE `ark_item_find` (
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
-  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `ark_item_find`
 --
 
-INSERT INTO `ark_item_find` (`id`, `parent_module`, `parent_id`, `idx`, `name`, `subtype`, `schma`, `mod_by`, `mod_on`, `cre_by`, `cre_on`) VALUES
-('1', NULL, NULL, '1', 'One', 'coin', 'dime.find', 0, '2017-01-09 16:35:26', 0, '0000-00-00 00:00:00'),
-('2', NULL, NULL, '2', 'Two', 'fibula', 'dime.find', 0, '2017-01-12 18:55:08', 0, '0000-00-00 00:00:00'),
-('3', NULL, NULL, '3', 'Three', 'coin', 'dime.find', 0, '2017-01-12 18:26:05', 0, '0000-00-00 00:00:00');
+INSERT INTO `ark_item_find` (`id`, `parent_module`, `parent_id`, `idx`, `name`, `subtype`, `schma`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+('1', NULL, NULL, '1', 'One', 'coin', 'dime.find', 0, '2017-01-09 16:35:26', 0, '0000-00-00 00:00:00', ''),
+('2', NULL, NULL, '2', 'Two', 'fibula', 'dime.find', 0, '2017-01-12 18:55:08', 0, '0000-00-00 00:00:00', ''),
+('3', NULL, NULL, '3', 'Three', 'coin', 'dime.find', 0, '2017-01-12 18:26:05', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -447,7 +464,8 @@ CREATE TABLE `ark_item_image` (
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
-  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -467,15 +485,16 @@ CREATE TABLE `ark_item_location` (
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
-  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `ark_item_location`
 --
 
-INSERT INTO `ark_item_location` (`id`, `parent_module`, `parent_id`, `idx`, `name`, `subtype`, `schma`, `mod_by`, `mod_on`, `cre_by`, `cre_on`) VALUES
-('1', NULL, NULL, '1', '1', NULL, 'dime.location', 0, '2017-01-11 11:36:01', 0, '0000-00-00 00:00:00');
+INSERT INTO `ark_item_location` (`id`, `parent_module`, `parent_id`, `idx`, `name`, `subtype`, `schma`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+('1', NULL, NULL, '1', '1', NULL, 'dime.location', 0, '2017-01-11 11:36:01', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 

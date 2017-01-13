@@ -30,36 +30,20 @@
 
 namespace ARK\Schema;
 
-use ARK\EnabledTrait;
-use ARK\KeywordTrait;
+use ARK\Schema\Attribute;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\Vocabulary\Vocabulary;
 
-class FormatAttribute
+class FormatAttribute extends Attribute
 {
-    use EnabledTrait;
-    use KeywordTrait;
-
     protected $parent = null;
-    protected $attribute = '';
     protected $sequence = 0;
-    protected $field = '';
-    protected $format = null;
-    protected $vocabulary = null;
     protected $root = false;
-    protected $minimum = 0;
-    protected $maximum = 1;
-    protected $uniqueValues = false;
-    protected $additionalValues = false;
 
     public function parent()
     {
         return $this->parent;
-    }
-
-    public function name()
-    {
-        return $this->attribute;
     }
 
     public function sequence()
@@ -67,83 +51,21 @@ class FormatAttribute
         return $this->sequence;
     }
 
-    public function format()
-    {
-        return $this->format;
-    }
-
-    public function hasVocabulary()
-    {
-        return (bool) $this->vocabulary;
-    }
-
-    public function vocabulary()
-    {
-        return $this->vocabulary;
-    }
-
     public function isRoot()
     {
         return $this->root;
-    }
-
-    public function defaultValue()
-    {
-        //TODO Needs implementing!
-    }
-
-    public function isRequired()
-    {
-        return $this->minimum > 0;
-    }
-
-    public function hasMultipleOccurrences()
-    {
-        return ($this->maximum != 1);
-    }
-
-    public function minimumOccurrences()
-    {
-        return $this->minimum;
-    }
-
-    public function maximumOccurrences()
-    {
-        return $this->maximum;
-    }
-
-    public function uniqueValues()
-    {
-        return $this->uniqueValues;
-    }
-
-    public function additionalValues()
-    {
-        return $this->additionalValues;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_format_attribute');
-        $builder->setReadOnly();
 
         // Key
-        $builder->addManyToOneKey('parent', 'Format', 'format', 'format', false);
+        $builder->addManyToOneKey('parent', 'Format', 'parent', 'format', false);
         $builder->addStringKey('attribute', 30);
 
         // Attributes
         $builder->addField('sequence', 'integer');
         $builder->addField('root', 'boolean');
-        $builder->addField('minimum', 'integer');
-        $builder->addField('maximum', 'integer');
-        $builder->addField('uniqueValues', 'boolean', [], 'unique_values');
-        $builder->addField('additionalValues', 'boolean', [], 'additional_values');
-        EnabledTrait::buildEnabledMetadata($builder);
-        KeywordTrait::buildKeywordMetadata($builder);
-
-        // Associations
-        $builder->addManyToOneField('format', 'Format', 'attribute_format', 'format', false);
-        $builder->addManyToOneField('vocabulary', 'ARK\\Vocabulary\\Vocabulary', 'vocabulary', 'concept');
-    }
-}
+    }}

@@ -65,7 +65,7 @@ trait VersionTrait
         return $this->version;
     }
 
-    public static function buildVersionMetadata(ClassMetadataBuilder $builder)
+    public static function buildMetadata(ClassMetadataBuilder $builder)
     {
         $builder->addField('lastModifiedBy', 'integer', [], 'mod_by');
         $builder->addField('lastModifiedOn', 'datetime', [], 'mod_on');

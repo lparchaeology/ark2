@@ -31,6 +31,9 @@
 namespace ARK\Translation;
 
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\Translation\Key;
+use ARK\Translation\Language;
+use ARK\Translation\Role;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
@@ -42,7 +45,7 @@ class Message
     protected $text = '';
     protected $notes = '';
 
-    public function __create(Key $key, Language $language, Role $role = null)
+    public function __construct(Key $key, Language $language, Role $role = null)
     {
         $this->key = $key;
         $this->language = $language;

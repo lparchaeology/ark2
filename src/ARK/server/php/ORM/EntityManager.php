@@ -45,7 +45,7 @@ class EntityManager extends EntityManagerDecorator
         $refl = new ReflectionClass($em);
         $uow = $refl->getProperty('unitOfWork');
         $uow->setAccessible(true);
-        $uow->setValue($em, new UnitOfWork($this));
+        $uow->setValue($em, new UnitOfWork($em));
     }
 
     public function classNames()

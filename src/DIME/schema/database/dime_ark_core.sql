@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 12, 2017 at 10:40 PM
+-- Generation Time: Jan 13, 2017 at 10:35 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -148,10 +148,10 @@ INSERT INTO `ark_format` (`format`, `type`, `input`, `object`, `array`, `sortabl
 --
 
 CREATE TABLE `ark_format_attribute` (
-  `format` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `parent` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `sequence` int(11) NOT NULL,
-  `attribute_format` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `format` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `vocabulary` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `root` tinyint(1) NOT NULL DEFAULT '0',
   `minimum` int(11) NOT NULL DEFAULT '0',
@@ -167,7 +167,7 @@ CREATE TABLE `ark_format_attribute` (
 -- Dumping data for table `ark_format_attribute`
 --
 
-INSERT INTO `ark_format_attribute` (`format`, `attribute`, `sequence`, `attribute_format`, `vocabulary`, `root`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`, `keyword`) VALUES
+INSERT INTO `ark_format_attribute` (`parent`, `attribute`, `sequence`, `format`, `vocabulary`, `root`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`, `keyword`) VALUES
 ('address', 'city', 1, 'text', NULL, 0, 1, 1, 1, 0, 1, 0, 'format.address.city'),
 ('address', 'country', 2, 'identifier', 'country', 0, 1, 1, 1, 0, 1, 0, 'format.address.country'),
 ('address', 'street', 0, 'text', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.address.street'),
@@ -413,6 +413,7 @@ CREATE TABLE `ark_fragment_type` (
   `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `compound` tinyint(1) NOT NULL DEFAULT '0',
   `format_class` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `model_class` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `tbl` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `deprecated` tinyint(1) NOT NULL DEFAULT '0',
@@ -423,20 +424,20 @@ CREATE TABLE `ark_fragment_type` (
 -- Dumping data for table `ark_fragment_type`
 --
 
-INSERT INTO `ark_fragment_type` (`type`, `compound`, `format_class`, `tbl`, `enabled`, `deprecated`, `keyword`) VALUES
-('blob', 0, 'ARK\\Model\\Format\\BlobFormat', 'ark_fragment_blob', 1, 0, 'fragment.blob'),
-('boolean', 0, 'ARK\\Model\\Format\\BooleanFormat', 'ark_fragment_boolean', 1, 0, 'fragment.boolean'),
-('date', 0, 'ARK\\Model\\Format\\DateFormat', 'ark_fragment_date', 1, 0, 'fragment.date'),
-('datetime', 0, 'ARK\\Model\\Format\\DateTimeFormat', 'ark_fragment_datetime', 1, 0, 'fragment.datetime'),
-('decimal', 0, 'ARK\\Model\\Format\\DecimalFormat', 'ark_fragment_decimal', 1, 0, 'fragment.decimal'),
-('float', 0, 'ARK\\Model\\Format\\FloatFormat', 'ark_fragment_float', 1, 0, 'fragment.float'),
-('geometry', 0, 'ARK\\Model\\Format\\GeometryFormat', 'ark_fragment_geometry', 1, 0, 'fragment.geometry'),
-('integer', 0, 'ARK\\Model\\Format\\IntegerFormat', 'ark_fragment_integer', 1, 0, 'fragment.integer'),
-('item', 0, 'ARK\\Model\\Format\\ItemFormat', 'ark_fragment_item', 1, 0, 'fragment.item'),
-('object', 1, 'ARK\\Model\\Format\\ObjectFormat', 'ark_fragment_object', 1, 0, 'fragment.object'),
-('string', 0, 'ARK\\Model\\Format\\StringFormat', 'ark_fragment_string', 1, 0, 'fragment.string'),
-('text', 0, 'ARK\\Model\\Format\\TextFormat', 'ark_fragment_text', 1, 0, 'fragment.text'),
-('time', 0, 'ARK\\Model\\Format\\TimeFormat', 'ark_fragment_time', 1, 0, 'fragment.time');
+INSERT INTO `ark_fragment_type` (`type`, `compound`, `format_class`, `model_class`, `tbl`, `enabled`, `deprecated`, `keyword`) VALUES
+('blob', 0, 'ARK\\Schema\\BlobFormat', 'ARK\\Model\\BlobFragment', 'ark_fragment_blob', 1, 0, 'fragment.blob'),
+('boolean', 0, 'ARK\\Schema\\BooleanFormat', 'ARK\\Model\\BooleanFragment', 'ark_fragment_boolean', 1, 0, 'fragment.boolean'),
+('date', 0, 'ARK\\Schema\\DateFormat', 'ARK\\Model\\DateFragment', 'ark_fragment_date', 1, 0, 'fragment.date'),
+('datetime', 0, 'ARK\\Schema\\DateTimeFormat', 'ARK\\Model\\DateTimeFragment', 'ark_fragment_datetime', 1, 0, 'fragment.datetime'),
+('decimal', 0, 'ARK\\Schema\\DecimalFormat', 'ARK\\Model\\DecimalFragment', 'ark_fragment_decimal', 1, 0, 'fragment.decimal'),
+('float', 0, 'ARK\\Schema\\FloatFormat', 'ARK\\Model\\FloatFragment', 'ark_fragment_float', 1, 0, 'fragment.float'),
+('geometry', 0, 'ARK\\Schema\\GeometryFormat', 'ARK\\Model\\GeometryFragment', 'ark_fragment_geometry', 1, 0, 'fragment.geometry'),
+('integer', 0, 'ARK\\Schema\\IntegerFormat', 'ARK\\Model\\IntegerFragment', 'ark_fragment_integer', 1, 0, 'fragment.integer'),
+('item', 0, 'ARK\\Schema\\ItemFormat', 'ARK\\Model\\ItemFragment', 'ark_fragment_item', 1, 0, 'fragment.item'),
+('object', 1, 'ARK\\Schema\\ObjectFormat', 'ARK\\Model\\ObjectFragment', 'ark_fragment_object', 1, 0, 'fragment.object'),
+('string', 0, 'ARK\\Schema\\StringFormat', 'ARK\\Model\\StringFragment', 'ark_fragment_string', 1, 0, 'fragment.string'),
+('text', 0, 'ARK\\Schema\\TextFormat', 'ARK\\Model\\TextFragment', 'ark_fragment_text', 1, 0, 'fragment.text'),
+('time', 0, 'ARK\\Schema\\TimeFormat', 'ARK\\Model\\TimeFragment', 'ark_fragment_time', 1, 0, 'fragment.time');
 
 -- --------------------------------------------------------
 
@@ -728,6 +729,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('search.placeholder', 'core', 0, 0),
 ('site.brand', 'core', 0, 0),
 ('site.welcome', 'core', 0, 0),
+('test.test', 'dime', 0, 0),
 ('user.greeting', 'user', 0, 1),
 ('user.menu.edit', 'user', 0, 0),
 ('user.menu.list', 'user', 0, 0),
@@ -887,6 +889,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'search.placeholder', 'default', 'Search...', ''),
 ('en', 'site.brand', 'default', 'DIME', ''),
 ('en', 'site.welcome', 'default', 'Welcome to DIME.', ''),
+('en', 'test.test', 'default', 'text text', 'notes notes'),
 ('en', 'user.greeting', 'default', 'Hello, %name%!', ''),
 ('en', 'user.menu.edit', 'default', 'Edit your profile', ''),
 ('en', 'user.menu.list', 'default', 'List users', ''),
@@ -3769,9 +3772,9 @@ ALTER TABLE `ark_format`
 -- Indexes for table `ark_format_attribute`
 --
 ALTER TABLE `ark_format_attribute`
-  ADD PRIMARY KEY (`format`,`attribute`),
+  ADD PRIMARY KEY (`parent`,`attribute`),
   ADD KEY `vocabulary` (`vocabulary`),
-  ADD KEY `format` (`attribute_format`);
+  ADD KEY `format` (`format`);
 
 --
 -- Indexes for table `ark_format_blob`
@@ -4045,8 +4048,8 @@ ALTER TABLE `ark_format`
 --
 ALTER TABLE `ark_format_attribute`
   ADD CONSTRAINT `ark_format_attribute_ibfk_2` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_format_attribute_ibfk_3` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_format_attribute_ibfk_4` FOREIGN KEY (`attribute_format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_format_attribute_ibfk_3` FOREIGN KEY (`parent`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_format_attribute_ibfk_4` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_blob`

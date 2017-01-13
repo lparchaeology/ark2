@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Action
+ * ARK Model String Fragment
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,32 +28,18 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Action;
+namespace ARK\Model;
 
-use ARK\Service;
-use ARK\ORM\ORM;
-use DIME\Entity\Location;
-use Symfony\Component\HttpFoundation\Request;
+use ARK\Model\Property;
+use ARK\ORM\ClassMetadata;
+use ARK\ORM\ClassMetadataBuilder;
 
-class LocationListAction
+class StringFragment extends Fragment
 {
-    public function __invoke(Request $request, $actorSlug = null)
+    public static function loadMetadata(ClassMetadata $metadata)
     {
-        $locations = ORM::findAll(Location::class)->findAll();
-        $list = "<h3>dime.locations</h3>";
-        foreach ($locations as $location) {
-            $id = $location->id();
-            $type = $location->subtype() ? $type = $location->subtype()->keyword() : 'none';
-            $name = $location->name();
-            $list .= "<p><a href=\"locations/$id\">$id</a> : $type : $name</p>";
-        }
-        return Service::render(
-            'pages/page.html.twig',
-            [
-                'contents' => $list,
-                'contents2' => 'Panel for map of all locations, or selected find summary<br/><br/>',
-                'items' => $locations,
-            ]
-        );
+        $builder = new ClassMetadataBuilder($metadata, 'ark_fragment_string');
+        $builder->addKey('fid', 'integer');
+        $builder->addStringField('value', 4000);
     }
 }

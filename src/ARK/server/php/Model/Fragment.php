@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Schema Fragment Type
+ * ARK Schema Fragment
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,69 +28,72 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Schema;
+namespace ARK\Model;
 
-use ARK\EnabledTrait;
-use ARK\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\VersionTrait;
+use Doctrine\Common\Collections\ArrayCollection;
 
-class FragmentType
+abstract class Fragment
 {
-    use EnabledTrait;
-    use KeywordTrait;
+    use VersionTrait;
 
-    protected $type = '';
-    protected $compound = '';
-    protected $formatClass = '';
-    protected $modelClass = '';
-    protected $table = '';
+    protected $fid = 0;
+    protected $module = '';
+    protected $item = '';
+    protected $attribute = '';
+    protected $parameter = '';
+    protected $value = '';
+    protected $parent = 0;
 
-    public function name()
+    public function id()
     {
-        return $this->type;
+        return $this->fid;
     }
 
-    public function isCompound()
+    public function module()
     {
-        return $this->compound;
+        return $this->module;
     }
 
-    public function isAtomic()
+    public function item()
     {
-        return !$this->compound;
+        return $this->item;
     }
 
-    public function formatClass()
+    public function attribute()
     {
-        return $this->formatClass;
+        return $this->attribute;
     }
 
-    public function modelClass()
+    public function parameter()
     {
-        return $this->modelClass;
+        return $this->parameter;
     }
 
-    public function table()
+    public function value()
     {
-        return $this->table;
+        return $this->value;
+    }
+
+    public function parent()
+    {
+        return $this->parent;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_fragment_type');
-        $builder->setReadOnly();
-
-        // Key
-        $builder->addStringKey('type', 20);
+        $builder = new ClassMetadataBuilder($metadata);
+        $builder->setMappedSuperclass();
 
         // Attributes
-        $builder->addField('compound', 'boolean');
-        $builder->addStringField('formatClass', 100, 'format_class');
-        $builder->addStringField('modelClass', 100, 'model_class');
-        $builder->addStringField('table', 50, 'tbl');
-        EnabledTrait::buildEnabledMetadata($builder);
-        KeywordTrait::buildKeywordMetadata($builder);
+        $builder->addStringField('module', 30);
+        $builder->addStringField('item', 30);
+        $builder->addStringField('attribute', 30);
+        $builder->addStringField('parameter', 30);
+        $builder->addField('parent', 'integer', [], 'object_fid');
+        VersionTrait::buildMetadata($builder);
     }
 }

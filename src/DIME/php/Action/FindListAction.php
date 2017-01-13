@@ -30,15 +30,16 @@
 
 namespace DIME\Action;
 
+use ARK\ORM\ORM;
 use ARK\Service;
+use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
 class FindListAction
 {
     public function __invoke(Request $request, $actorSlug = null)
     {
-        $em = Service::entity('data');
-        $finds = Service::repository('DIME\Entity\Find')->findAll();
+        $finds = ORM::findAll(Find::class);
         $head = Service::translate('dime.finds.list');
         $id = Service::translate('dime.find');
         $type = Service::translate('dime.find.type');

@@ -33,19 +33,22 @@ namespace DIME\Action;
 use ARK\Service;
 use ARK\Error\ErrorException;
 use ARK\Http\Error\NotFoundError;
+use ARK\ORM\ORM;
+use ARK\View\Element;
+use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
 class FindViewAction
 {
     public function __invoke(Request $request, $findSlug)
     {
-        $find = Service::repository('DIME\\Entity\\Find')->find($findSlug);
+        $find = ORM::find(Find::class, $findSlug);
         if (!$find) {
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Item not found', "Item $findSlug not found"));
         }
 
-        $eventLayout = Service::repository('ARK\\View\\Element')->find('dime_find_event');
-        $detailLayout = Service::repository('ARK\\View\\Element')->find('dime_find_details');
+        $eventLayout = ORM::find(Element::class, 'dime_find_event');
+        $detailLayout = ORM::find(Element::class, 'dime_find_details');
 
         $contents = $eventLayout->renderView([], $find);
         $contents2 = $detailLayout->renderView([], $find);

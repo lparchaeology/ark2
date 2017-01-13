@@ -30,26 +30,17 @@
 
 namespace ARK\Schema;
 
-use ARK\EnabledTrait;
-use ARK\KeywordTrait;
+use ARK\Schema\Attribute;
+use ARK\Schema\Schema;
+use ARK\Schema\SchemaSubtype;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
-class SchemaAttribute
+class SchemaAttribute extends Attribute
 {
-    use EnabledTrait;
-    use KeywordTrait;
-
     protected $schma = null;
     protected $subtypeName = '';
     protected $subtype = null;
-    protected $attribute = '';
-    protected $format = null;
-    protected $vocabulary = null;
-    protected $minimum = 0;
-    protected $maximum = 1;
-    protected $uniqueValues = false;
-    protected $additionalValues = false;
 
     public function schema()
     {
@@ -69,78 +60,21 @@ class SchemaAttribute
         return $this->subtypeName;
     }
 
-    public function name()
-    {
-        return $this->attribute;
-    }
-
-    public function format()
-    {
-        return $this->format;
-    }
-
-    public function vocabulary()
-    {
-        return $this->vocabulary;
-    }
-
-    public function isRequired()
-    {
-        return $this->minimum > 0;
-    }
-
-    public function hasMultipleOccurrences()
-    {
-        return ($this->maximum != 1);
-    }
-
-    public function minimumOccurrences()
-    {
-        return $this->minimum;
-    }
-
-    public function maximumOccurrences()
-    {
-        return $this->maximum;
-    }
-
-    public function uniqueValues()
-    {
-        return $this->uniqueValues;
-    }
-
-    public function additionalValues()
-    {
-        return $this->additionalValues;
-    }
-
-    public function keyword()
-    {
-        if ($this->keyword) {
-            return $this->keyword;
-        }
-        return $this->format()->keyword();
-    }
-
     public static function loadMetadata(ClassMetadata $metadata)
     {
+        // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_schema_attribute');
-        $builder->addManyToOneKey('schma', 'Schema');
+
+        // Key
+        $builder->addManyToOneKey('schma', Schema::class);
         $builder->addStringKey('subtypeName', 30, 'subtype');
         $builder->addStringKey('attribute', 30);
-        $builder->addManyToOneField('format', 'Format', 'format', 'format', false);
-        $builder->addManyToOneField('vocabulary', 'ARK\\Vocabulary\\Vocabulary', 'vocabulary', 'concept');
-        $builder->addField('minimum', 'integer');
-        $builder->addField('maximum', 'integer');
-        $builder->addField('uniqueValues', 'boolean', [], 'unique_values');
-        $builder->addField('additionalValues', 'boolean', [], 'additional_values');
+
+        // Associations
         $builder->addCompoundManyToOneField(
             'subtype',
-            'SchemaSubtype',
+            SchemaSubtype::class,
             [['column' => 'schma', 'nullable' => false], ['column' => 'subtype', 'nullable' => false]]
         );
-        EnabledTrait::buildEnabledMetadata($builder);
-        KeywordTrait::buildKeywordMetadata($builder);
-        $builder->setReadOnly();
     }
 }

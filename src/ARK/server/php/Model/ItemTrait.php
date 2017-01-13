@@ -32,6 +32,7 @@ namespace ARK\Model;
 
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\ORM\ORM;
 use ARK\Schema\Schema;
 use ARK\VersionTrait;
 use ARK\Service;
@@ -65,7 +66,7 @@ trait ItemTrait
     public function parent()
     {
         if ($this->parentId && !$this->parent) {
-            $this->parent = Service::repository($this->schema()->parent()->entity(), $this->parentId);
+            $this->parent = ORM::find($this->schema()->parent()->entity(), $this->parentId);
         }
         return $this->parent;
     }
@@ -83,7 +84,7 @@ trait ItemTrait
     private function subtypeName()
     {
         if (!$this->meta) {
-            $this->meta = Service::repository(get_class())->metadata();
+            $this->meta = ORM::repository(get_class())->metadata();
             if ($this->meta->discriminatorValue) {
                 $this->subtype = $this->meta->discriminatorValue;
             }
@@ -99,9 +100,14 @@ trait ItemTrait
     public function schema()
     {
         if (!$this->schema) {
-            $this->schema = Service::repository(Schema::class)->find($this->schma);
+            $this->schema = ORM::find(Schema::class, $this->schma);
         }
         return $this->schema;
+    }
+
+    public function attributes()
+    {
+        return $this->schema()->attributes($this->subtypeName());
     }
 
     public function path()
@@ -117,8 +123,7 @@ trait ItemTrait
         if ($this->properties) {
             return;
         }
-        $repo = Service::repository(get_class());
-        $this->properties = $repo->findProperties($this->id(), $this->schema(), $this->subtypeName());
+        $this->properties = ORM::repository(get_class())->findProperties($this->id(), $this->schema(), $this->subtypeName());
     }
 
     public function properties()
@@ -130,6 +135,7 @@ trait ItemTrait
     public function property(/*string*/ $key)
     {
         $this->loadProperties();
+        return new Property($this, $this->schema()->attribute($key));
         if (isset($this->properties[$key])) {
             return $this->properties[$key];
         }
@@ -197,7 +203,7 @@ trait ItemTrait
             $builder->addStringField('subtype', 30);
         }
         $builder->addStringField('schma', 30);
-        VersionTrait::buildVersionMetadata($builder);
+        VersionTrait::buildMetadata($builder);
         $metadata->setItemEntity(true);
     }
 }

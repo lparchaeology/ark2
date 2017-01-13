@@ -32,8 +32,12 @@ namespace ARK\View;
 
 use ARK\EnabledTrait;
 use ARK\KeywordTrait;
+use ARK\View\Child;
+use ARK\View\Type;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
+use ARK\Schema\Schema;
+use ARK\Schema\SchemaAttribute;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -133,8 +137,8 @@ abstract class Element
         $builder->addStringKey('element', 30);
 
         // Fields
-        $builder->addManyToOneField('type', 'Type', 'type', 'type', false);
-        $builder->addManyToOneField('schma', 'ARK\\Schema\\Schema');
+        $builder->addManyToOneField('type', Type::class, 'type', 'type', false);
+        $builder->addManyToOneField('schma', Schema::class);
         $builder->addStringField('subtype', 30);
         $builder->addStringField('class', 100);
         $builder->addStringField('template', 100);
@@ -145,10 +149,10 @@ abstract class Element
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Relationships
-        $builder->addOneToMany('children', 'Child', 'parent');
+        $builder->addOneToMany('children', Child::class, 'parent');
         $builder->addCompoundManyToOneField(
             'attribute',
-            'ARK\\Schema\\SchemaAttribute',
+            SchemaAttribute::class,
             [
                 ['column' => 'schma', 'nullable' => false],
                 ['column' => 'subtype', 'nullable' => false],

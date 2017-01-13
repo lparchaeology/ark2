@@ -33,16 +33,23 @@ namespace ARK\ORM;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Builder\FieldBuilder;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder as DoctrineClassMetadataBuilder;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use RuntimeException;
 
 class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
 {
-    public function __construct($metadata, $table = '')
+    public function __construct($metadata, $table = '', $generator = ClassMetadataInfo::GENERATOR_TYPE_NONE)
     {
         parent::__construct($metadata);
+        $this->setIdGeneratorType($generator);
         if ($table) {
             $this->setTable($table);
         }
+    }
+
+    public function setIdGeneratorType($type)
+    {
+        $this->getClassMetadata()->setIdGeneratorType($type);
     }
 
     public function addManyToOneKey($name, $class, $column = null, $reference = null, $inverse = null)
