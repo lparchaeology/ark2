@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.1
+-- version 4.6.5.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 13, 2017 at 10:35 PM
--- Server version: 5.6.34
--- PHP Version: 7.1.0
+-- Generation Time: Jan 17, 2017 at 10:01 AM
+-- Server version: 10.0.22-MariaDB
+-- PHP Version: 7.0.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -121,6 +121,7 @@ INSERT INTO `ark_format` (`format`, `type`, `input`, `object`, `array`, `sortabl
 ('item', 'item', 'select', 0, 0, 0, 0, 1, 0, 'format.item'),
 ('key', 'string', 'select', 0, 0, 1, 1, 1, 0, 'format.key'),
 ('length', 'decimal', 'text', 1, 1, 1, 1, 1, 0, 'format.length'),
+('localtext', 'text', 'textarea', 0, 0, 1, 1, 1, 0, 'format.localtext'),
 ('markdown', 'text', 'textarea', 0, 0, 1, 1, 1, 0, 'format.markdown'),
 ('mass', 'decimal', 'text', 1, 1, 1, 1, 1, 0, 'format.mass'),
 ('module', 'string', 'select', 0, 0, 0, 0, 1, 0, 'format.module'),
@@ -130,11 +131,10 @@ INSERT INTO `ark_format` (`format`, `type`, `input`, `object`, `array`, `sortabl
 ('percent', 'float', 'text', 0, 0, 1, 1, 1, 0, 'format.percent'),
 ('richtext', 'text', 'textarea', 0, 0, 1, 1, 1, 0, 'format.richtext'),
 ('search', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.search'),
-('shorttext', 'text', 'text', 0, 0, 1, 1, 1, 0, 'format.shorttext'),
+('shortlocaltext', 'text', 'text', 0, 0, 1, 1, 1, 0, 'format.shortlocaltext'),
 ('string', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.string'),
 ('telephone', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.telephone'),
-('text', 'text', 'textarea', 0, 0, 1, 1, 1, 0, 'format.utf8'),
-('textblob', 'text', 'textarea', 0, 0, 1, 1, 1, 0, 'format.textblob'),
+('text', 'text', 'textarea', 0, 0, 1, 1, 1, 0, 'format.text'),
 ('time', 'time', 'date', 0, 0, 1, 1, 1, 0, 'format.time'),
 ('url', 'text', 'text', 0, 0, 1, 1, 1, 0, 'format.url'),
 ('weekdate', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.weekdate'),
@@ -168,17 +168,19 @@ CREATE TABLE `ark_format_attribute` (
 --
 
 INSERT INTO `ark_format_attribute` (`parent`, `attribute`, `sequence`, `format`, `vocabulary`, `root`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`, `keyword`) VALUES
-('address', 'city', 1, 'text', NULL, 0, 1, 1, 1, 0, 1, 0, 'format.address.city'),
+('address', 'city', 1, 'localtext', NULL, 0, 1, 1, 1, 0, 1, 0, 'format.address.city'),
 ('address', 'country', 2, 'identifier', 'country', 0, 1, 1, 1, 0, 1, 0, 'format.address.country'),
-('address', 'street', 0, 'text', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.address.street'),
+('address', 'street', 0, 'localtext', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.address.street'),
 ('item', 'id', 1, 'identifier', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.item.id'),
 ('item', 'module', 0, 'identifier', NULL, 0, 1, 1, 1, 0, 1, 0, 'format.item.module'),
 ('length', 'measurement', 0, 'decimal', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.length.measurement'),
 ('length', 'unit', 1, 'identifier', 'distance', 0, 1, 1, 1, 0, 1, 0, 'format.length.unit'),
+('localtext', 'content', 1, 'text', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.text.content'),
+('localtext', 'language', 0, 'identifier', 'language', 0, 1, 1, 1, 0, 1, 0, 'format.text.language'),
 ('mass', 'measurement', 0, 'decimal', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.mass.measurement'),
 ('mass', 'unit', 1, 'identifier', 'mass', 0, 1, 1, 1, 0, 1, 0, 'format.mass.unit'),
-('text', 'content', 1, 'textblob', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.text.content'),
-('text', 'language', 0, 'identifier', 'language', 0, 1, 1, 1, 0, 1, 0, 'format.text.language');
+('shortlocaltext', 'content', 1, 'text', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.text.content'),
+('shortlocaltext', 'language', 0, 'identifier', 'language', 0, 1, 1, 1, 0, 1, 0, 'format.text.language');
 
 -- --------------------------------------------------------
 
@@ -389,16 +391,16 @@ INSERT INTO `ark_format_string` (`format`, `pattern`, `min_length`, `max_length`
 ('html', '', 1, 1431655765, 30, 1),
 ('identifier', '^(\\w{1,30})$', 1, 30, 30, 0),
 ('key', '^(\\w{1,50})$', 1, 50, 50, 0),
+('localtext', '', 1, 1431655765, 30, 1),
 ('markdown', '', 1, 1431655765, 30, 1),
 ('module', '^(\\w{1,3})$', 3, 3, 3, 0),
 ('password', '', 1, 255, 30, 0),
 ('richtext', '', 1, 1431655765, 30, 1),
 ('search', '', 3, 100, 30, 0),
-('shorttext', '', 1, 100, 30, 1),
+('shortlocaltext', '', 1, 100, 30, 1),
 ('string', '', 1, 1431655765, 30, 1),
 ('telephone', '^([0-9+\\(\\)#\\.\\s\\/x-]+)$', 1, 30, 30, 0),
 ('text', '', 1, 1431655765, 30, 1),
-('textblob', '', 1, 1431655765, 30, 1),
 ('url', '', 1, 2083, 50, 0),
 ('yearmonth', '^([0-9]{4})-(1[0-2]|0[1-9])$', 6, 7, 7, 0),
 ('yearweek', '^([0-9]{4})-W(5[0-3]|[1-4][0-9]|0[1-9])$', 7, 8, 8, 0);
@@ -553,31 +555,31 @@ CREATE TABLE `ark_schema_attribute` (
 
 INSERT INTO `ark_schema_attribute` (`schma`, `subtype`, `attribute`, `format`, `vocabulary`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`, `keyword`) VALUES
 ('core.actor', '', 'address', 'address', NULL, 0, 0, 1, 0, 1, 0, 'property.address'),
-('core.actor', '', 'initials', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'property.initials'),
-('core.actor', '', 'name', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
+('core.actor', '', 'initials', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.initials'),
+('core.actor', '', 'name', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
 ('core.actor', '', 'telephone', 'telephone', NULL, 0, 1, 1, 0, 1, 0, 'property.phone'),
 ('core.actor', 'institution', 'logo', 'blob', NULL, 0, 1, 1, 0, 1, 0, 'property.logo'),
 ('core.actor', 'person', 'avatar', 'blob', NULL, 0, 1, 1, 0, 1, 0, 'property.avatar'),
 ('core.actor', 'person', 'dateofbirth', 'date', NULL, 0, 1, 1, 0, 1, 0, 'property.dateofbirth'),
-('core.file', '', 'description', 'text', NULL, 0, 1, 1, 0, 1, 0, 'property.description'),
-('core.file', '', 'title', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'property.title'),
-('dime.campaign', '', 'name', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
-('dime.find', '', 'description', 'text', NULL, 0, 1, 1, 0, 1, 0, 'property.description'),
+('core.file', '', 'description', 'localtext', NULL, 0, 1, 1, 0, 1, 0, 'property.description'),
+('core.file', '', 'title', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.title'),
+('dime.campaign', '', 'name', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
+('dime.find', '', 'description', 'localtext', NULL, 0, 1, 1, 0, 1, 0, 'property.description'),
 ('dime.find', '', 'finddate', 'date', NULL, 0, 1, 1, 0, 1, 0, 'property.finddate'),
 ('dime.find', '', 'finder_id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'property.finderid'),
 ('dime.find', '', 'length', 'distance', 'distance', 1, 1, 1, 0, 1, 0, 'property.length'),
 ('dime.find', '', 'material', 'identifier', 'dime.material', 1, 1, 1, 0, 1, 0, 'property.material'),
-('dime.find', '', 'name', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
+('dime.find', '', 'name', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
 ('dime.find', '', 'period_end', 'identifier', 'dime.period', 0, 1, 1, 0, 1, 0, 'dime.property.period.end'),
 ('dime.find', '', 'period_start', 'identifier', 'dime.period', 0, 1, 1, 0, 1, 0, 'dime.property.period.start'),
 ('dime.find', '', 'registered_id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'property.registeredid'),
 ('dime.find', '', 'secondary', 'identifier', 'dime.material', 0, 0, 1, 0, 1, 0, 'property.material.secondary'),
 ('dime.find', '', 'subtype', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'property.subtype'),
-('dime.find', '', 'title', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'property.title'),
+('dime.find', '', 'title', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.title'),
 ('dime.find', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'property.type'),
 ('dime.find', '', 'weight', 'mass', 'mass', 0, 1, 1, 0, 1, 0, 'property.weight'),
-('dime.image', '', 'name', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
-('dime.location', '', 'name', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'property.name');
+('dime.image', '', 'name', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
+('dime.location', '', 'name', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.name');
 
 -- --------------------------------------------------------
 
@@ -987,20 +989,20 @@ CREATE TABLE `ark_view_element` (
 --
 
 INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `subtype`, `attribute`, `class`, `template`, `form`, `editable`, `hidden`, `enabled`, `deprecated`, `keyword`) VALUES
-('dime_find_description', 'field', 'dime.find', '', 'description', '', '', '', 1, 0, 1, 0, NULL),
-('dime_find_details', 'form', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
-('dime_find_event', 'form', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_description', 'field', 'dime.find', '', 'description', '', '', 'ARK\\Form\\Type\\LocalMultilineTextType', 1, 0, 1, 0, NULL),
+('dime_find_details', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_event', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_finddate', 'field', 'dime.find', '', 'finddate', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_finder_id', 'field', 'dime.find', '', 'finder_id', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_length', 'field', 'dime.find', '', 'length', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_material', 'field', 'dime.find', '', 'material', '', '', '', 1, 0, 1, 0, NULL),
-('dime_find_name', 'field', 'dime.find', '', 'name', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_name', 'field', 'dime.find', '', 'name', '', '', 'ARK\\Form\\Type\\LocalTextType', 1, 0, 1, 0, NULL),
 ('dime_find_period_end', 'field', 'dime.find', '', 'period_end', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_period_start', 'field', 'dime.find', '', 'period_start', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_registered_id', 'field', 'dime.find', '', 'registered_id', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_secondary', 'field', 'dime.find', '', 'secondary', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_subtype', 'field', 'dime.find', '', 'subtype', '', '', '', 1, 0, 1, 0, NULL),
-('dime_find_title', 'field', 'dime.find', '', 'title', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_title', 'field', 'dime.find', '', 'title', '', '', 'ARK\\Form\\Type\\LocalTextType', 1, 0, 1, 0, NULL),
 ('dime_find_view', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_weight', 'field', 'dime.find', '', 'weight', '', '', '', 1, 0, 1, 0, NULL);
 
@@ -1023,7 +1025,7 @@ CREATE TABLE `ark_view_element_type` (
 
 INSERT INTO `ark_view_element_type` (`type`, `is_group`, `template`, `keyword`) VALUES
 ('field', 0, '', ''),
-('form', 1, 'layouts/form.html.twig', ''),
+('form', 1, 'layouts/grid.html.twig', ''),
 ('grid', 1, 'layouts/grid.html.twig', ''),
 ('tabbed', 1, 'layouts/tabbed.html.twig', ''),
 ('table', 1, 'layouts/table.html.twig', '');
