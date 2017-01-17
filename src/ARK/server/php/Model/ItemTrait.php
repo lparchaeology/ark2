@@ -118,38 +118,22 @@ trait ItemTrait
         return '/'.$this->index();
     }
 
-    private function loadProperties()
-    {
-        if ($this->properties) {
-            return;
-        }
-        $this->properties = ORM::repository(get_class())->findProperties($this->id(), $this->schema(), $this->subtypeName());
-    }
-
     public function properties()
     {
-        $this->loadProperties();
-        return $this->properties;
-    }
-
-    public function property(/*string*/ $key)
-    {
-        $this->loadProperties();
-        return new Property($this, $this->schema()->attribute($key));
-        if (isset($this->properties[$key])) {
-            return $this->properties[$key];
+        foreach ($this->attributes() as $attribute) {
+            if (!isset($this->properties[$attribute->name()])) {
+                $this->properties[$attribute->name()] = new Property($this, $attribute);
+            }
         }
-        return null;
+        return array_values($this->properties);
     }
 
-    public function setAttribute(/*string*/ $key, $value, $parameter = null)
+    public function property($attribute)
     {
-        // TODO validate is valid property
-        $this->loadProperties();
-        $oldValue = (isset($this->properties[$key]) ? $this->properties[$key] : null);
-        $newValue = ($parameter ? [$parameter, $value] : $value);
-        $this->registerModified($key, $oldValue, $newValue);
-        $this->properties[$key] = $newValue;
+        if (!isset($this->properties[$key])) {
+            $this->properties[$key] = new Property($this, $this->schema()->attribute($key, $this->subtypeName()));
+        }
+        return $this->properties[$key];
     }
 
     private function loadRelated()

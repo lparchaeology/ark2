@@ -50,16 +50,15 @@ class TestViewAction
             $contents .= '<br /><br />Finds<br /><br />';
             foreach ($finds as $find) {
                 $contents .= $find->id().'   '.$find->name().'   '.$find->schema()->name().'<br />';
-                foreach ($find->properties() as $key => $value) {
-                    if (is_array($value)) {
-                        $contents .= '---- '.$key.' = ['.$value[0].']  '.$value[1].'<br />';
+                foreach ($find->properties() as $property) {
+                    if (is_array($property->value())) {
+                        $value = '['.implode(', ', $property->value()).']';
+                    } elseif ($property->value() instanceof \DateTime) {
+                        $value = $property->value()->format('Y-m-d H:i:s');
                     } else {
-                        $contents .= '---- '.$key.' = '.$value.'<br />';
+                        $value = $property->value();
                     }
-                }
-                foreach ($find->attributes() as $attribute) {
-                    print_r($find->property($attribute->name())->keyValue());
-                    print_r('<br>');
+                    $contents .= '---- '.$property->name().' = '.$value.'<br />';
                 }
             }
         }

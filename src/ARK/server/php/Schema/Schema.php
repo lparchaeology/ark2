@@ -65,16 +65,20 @@ class Schema
     {
         if ($this->model === null) {
             $this->model['']['attributes'] = [];
+            $this->model['']['allattributes'] = [];
             $this->model['']['associations'] = [];
+            $this->model['']['allassociations'] = [];
             foreach ($this->subtypes as $subtype) {
                 $this->model[$subtype->name()]['subtype'] = $subtype;
                 $this->model[$subtype->name()]['attributes'] = [];
                 $this->model[$subtype->name()]['associations'] = [];
             }
             foreach ($this->attributes as $attribute) {
+                $this->model['']['allattributes'][$attribute->name()] = $attribute;
                 $this->model[$attribute->subtypeName()]['attributes'][$attribute->name()] = $attribute;
             }
             foreach ($this->associations as $association) {
+                $this->model['']['allassociations'][$association->name()] = $association;
                 $this->model[$association->subtypeName()]['associations'][$association->name()] = $association;
             }
         }
@@ -140,10 +144,10 @@ class Schema
         return [];
     }
 
-    public function subtype($subtype)
+    public function subtype($name)
     {
         $this->init();
-        return ($subtype && isset($this->model[$subtype]) ? $this->model[$subtype]['subtype'] : null);
+        return ($name && isset($this->model[$name]) ? $this->model[$name]['subtype'] : null);
     }
 
     public function attributes($subtype = null, $all = true)
@@ -168,10 +172,10 @@ class Schema
         return $names;
     }
 
-    public function attribute($attribute, $subtype = null)
+    public function attribute($attribute)
     {
         $this->init();
-        return (isset($this->model[$subtype]['attributes'][$attribute]) ? $this->model[$subtype]['attributes'][$attribute] : null);
+        return (isset($this->model['']['allattributes'][$attribute]) ? $this->model['']['allattributes'][$attribute] : null);
     }
 
     public function associations($subtype = '', $all = true)
@@ -196,11 +200,11 @@ class Schema
         return $names;
     }
 
-    public function association($association, $subtype = null)
+    public function association($association)
     {
         return (
-            isset($this->model[$subtype]['associations'][$association])
-            ? $this->model[$subtype]['associations'][$association]
+            isset($this->model[$subtype]['allassociations'][$association])
+            ? $this->model[$subtype]['allassociations'][$association]
             : null
         );
     }

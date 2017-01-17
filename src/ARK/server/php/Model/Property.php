@@ -84,6 +84,21 @@ class Property
         return $this->attribute;
     }
 
+    public function fragments()
+    {
+        return $this->fragments;
+    }
+
+    public function isAtomicValue()
+    {
+        return !$this->isCompoundValue();
+    }
+
+    public function isCompoundValue()
+    {
+        return $this->attribute->format()->hasAttributes() || $this->attribute->hasMultipleOccurrences();
+    }
+
     protected function fragmentValue(Fragment $fragment)
     {
         if ($this->attribute->format()->hasAttributes()) {

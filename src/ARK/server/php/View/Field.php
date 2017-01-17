@@ -38,6 +38,7 @@ use ARK\ORM\ClassMetadataBuilder;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\Extension\Core\Type;
+use Symfony\Component\Form\FormBuilderInterface;
 
 class Field extends Element
 {
@@ -54,28 +55,17 @@ class Field extends Element
         return $this->attribute()->keyword();
     }
 
-    public function formData($resource, $form = '')
+    public function buildForm(FormBuilderInterface $formBuilder, array $options = [])
     {
-        $value = $resource->property($this->attribute()->name());
-        if (empty($value)) {
-            return [];
+        // New Stuff
+        if ($this->form) {
+            $options['attribute'] = $this->attribute->name();
+            $factory = $formBuilder->getFormFactory();
+            $data = $formBuilder->getData()->property($this->attribute->name());
+            $fieldBuilder = $factory->createNamedBuilder($this->element, $this->formType(), $data);
+            $formBuilder->add($fieldBuilder, $this->formType(), $options);
+            return;
         }
-        // TODO Fixme to work with new FormatAttribute
-        if (is_array($value)) {
-            if ($this->attribute()->format()->type()->name() == 'text') {
-                $value = $value[1];
-            } else {
-                $value = $value[0];
-            }
-        }
-        if ($this->attribute()->format()->type()->name() == 'date') {
-            $value = new \DateTime($value);
-        }
-        return [$this->element => $value];
-    }
-
-    public function buildForm(FormBuilder $formBuilder, array $options = array())
-    {
         //HACK Do properly!
         if ($this->element == 'submodules') {
             $options['label'] = false;

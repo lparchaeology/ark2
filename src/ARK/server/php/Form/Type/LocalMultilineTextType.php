@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Action
+ * ARK Form Type
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,38 +28,30 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Action;
+namespace ARK\Form\Type;
 
 use ARK\Service;
-use ARK\Error\ErrorException;
-use ARK\Http\Error\NotFoundError;
-use ARK\ORM\ORM;
-use ARK\View\Element;
-use DIME\Entity\Find;
-use Symfony\Component\HttpFoundation\Request;
+use ARK\Form\Type\LocalTextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\LanguageType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-class FindViewAction
+class LocalMultilineTextType extends LocalTextType
 {
-    public function __invoke(Request $request, $findSlug)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $find = ORM::find(Find::class, $findSlug);
-        if (!$find) {
-            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Item not found', "Item $findSlug not found"));
-        }
+        $attribute = $options['attribute'];
+        $builder->add('language', LanguageType::class, ['property_path' => "property[$attribute].parameter"])
+                ->add('content', TextareaType::class, ['property_path' => "property[$attribute].value"]);
+    }
 
-        $eventLayout = ORM::find(Element::class, 'dime_find_event');
-        $detailLayout = ORM::find(Element::class, 'dime_find_details');
+    public function getBlockPrefix()
+    {
+        return 'localmultilinetext';
+    }
 
-        $contents = $eventLayout->renderView($find);
-        $contents2 = $detailLayout->renderView($find);
-
-        return Service::render(
-            'pages/page.html.twig',
-            [
-                'contents' => $contents,
-                'contents2' => $contents2,
-                'find' => $find,
-            ]
-        );
+    public function getParent()
+    {
+        return LocalTextType::class;
     }
 }
