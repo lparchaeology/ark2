@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
+-- version 4.6.5.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 17, 2017 at 10:02 AM
--- Server version: 10.0.22-MariaDB
--- PHP Version: 7.0.14
+-- Generation Time: Jan 17, 2017 at 09:10 PM
+-- Server version: 5.6.34
+-- PHP Version: 7.1.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -150,6 +150,14 @@ CREATE TABLE `ark_fragment_decimal` (
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `version` varchar(36) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `ark_fragment_decimal`
+--
+
+INSERT INTO `ark_fragment_decimal` (`fid`, `module`, `item`, `attribute`, `parameter`, `value`, `object_fid`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+(1, 'find', '1', 'weight', 'g', '123.4', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+(2, 'find', '1', 'length', 'm', '1.23', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -318,7 +326,7 @@ INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `attribute`, `paramete
 (1, 'find', '1', 'name', 'en', 'My find number one', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
 (3, 'find', '2', 'name', 'en', 'My find number two', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
 (5, 'find', '3', 'name', 'en', 'My find number two', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
-(7, 'find', '1', 'description', 'en', 'A multiline description', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+(7, 'find', '1', 'description', 'en', 'A multiline description\\n\\nA multiline description\\n\\nA multiline description\\n\\nA multiline description', NULL, 0, '2017-01-17 17:04:13', 0, '0000-00-00 00:00:00', ''),
 (8, 'find', '1', 'title', 'en', 'A singleline title', NULL, 0, '2017-01-10 10:28:56', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
@@ -787,7 +795,7 @@ ALTER TABLE `ark_fragment_datetime`
 -- AUTO_INCREMENT for table `ark_fragment_decimal`
 --
 ALTER TABLE `ark_fragment_decimal`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `ark_fragment_float`
 --

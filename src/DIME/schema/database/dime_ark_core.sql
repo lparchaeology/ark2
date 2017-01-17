@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
+-- version 4.6.5.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 17, 2017 at 10:01 AM
--- Server version: 10.0.22-MariaDB
--- PHP Version: 7.0.14
+-- Generation Time: Jan 17, 2017 at 09:09 PM
+-- Server version: 5.6.34
+-- PHP Version: 7.1.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -111,7 +111,7 @@ INSERT INTO `ark_format` (`format`, `type`, `input`, `object`, `array`, `sortabl
 ('date', 'date', 'date', 0, 0, 1, 1, 1, 0, 'format.date'),
 ('datetime', 'datetime', 'date', 0, 0, 1, 1, 1, 0, 'format.datetime'),
 ('decimal', 'decimal', 'text', 0, 0, 1, 1, 1, 0, 'format.decimal'),
-('distance', 'object', '', 0, 1, 1, 1, 1, 0, 'format.distance'),
+('distance', 'decimal', 'text', 1, 1, 1, 1, 1, 0, 'format.distance'),
 ('email', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.email'),
 ('float', 'float', 'text', 0, 0, 1, 1, 1, 0, 'format.float'),
 ('geometry', 'geometry', '', 0, 0, 0, 1, 1, 0, 'format.geometry'),
@@ -120,7 +120,6 @@ INSERT INTO `ark_format` (`format`, `type`, `input`, `object`, `array`, `sortabl
 ('integer', 'integer', 'text', 0, 0, 1, 1, 1, 0, 'format.integer'),
 ('item', 'item', 'select', 0, 0, 0, 0, 1, 0, 'format.item'),
 ('key', 'string', 'select', 0, 0, 1, 1, 1, 0, 'format.key'),
-('length', 'decimal', 'text', 1, 1, 1, 1, 1, 0, 'format.length'),
 ('localtext', 'text', 'textarea', 0, 0, 1, 1, 1, 0, 'format.localtext'),
 ('markdown', 'text', 'textarea', 0, 0, 1, 1, 1, 0, 'format.markdown'),
 ('mass', 'decimal', 'text', 1, 1, 1, 1, 1, 0, 'format.mass'),
@@ -171,10 +170,10 @@ INSERT INTO `ark_format_attribute` (`parent`, `attribute`, `sequence`, `format`,
 ('address', 'city', 1, 'localtext', NULL, 0, 1, 1, 1, 0, 1, 0, 'format.address.city'),
 ('address', 'country', 2, 'identifier', 'country', 0, 1, 1, 1, 0, 1, 0, 'format.address.country'),
 ('address', 'street', 0, 'localtext', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.address.street'),
+('distance', 'measurement', 0, 'decimal', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.length.measurement'),
+('distance', 'unit', 1, 'identifier', 'distance', 0, 1, 1, 1, 0, 1, 0, 'format.length.unit'),
 ('item', 'id', 1, 'identifier', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.item.id'),
 ('item', 'module', 0, 'identifier', NULL, 0, 1, 1, 1, 0, 1, 0, 'format.item.module'),
-('length', 'measurement', 0, 'decimal', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.length.measurement'),
-('length', 'unit', 1, 'identifier', 'distance', 0, 1, 1, 1, 0, 1, 0, 'format.length.unit'),
 ('localtext', 'content', 1, 'text', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.text.content'),
 ('localtext', 'language', 0, 'identifier', 'language', 0, 1, 1, 1, 0, 1, 0, 'format.text.language'),
 ('mass', 'measurement', 0, 'decimal', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.mass.measurement'),
@@ -262,7 +261,6 @@ CREATE TABLE `ark_format_decimal` (
 
 INSERT INTO `ark_format_decimal` (`format`, `prec`, `scale`, `minimum`, `exclusive_minimum`, `maximum`, `exclusive_maximum`, `multiple_of`) VALUES
 ('decimal', 100, 100, NULL, 0, NULL, 0, ''),
-('length', 100, 100, NULL, 0, NULL, 0, ''),
 ('mass', 100, 100, NULL, 0, NULL, 0, ''),
 ('money', 198, 2, NULL, 0, NULL, 0, '0.01');
 
@@ -414,9 +412,10 @@ INSERT INTO `ark_format_string` (`format`, `pattern`, `min_length`, `max_length`
 CREATE TABLE `ark_fragment_type` (
   `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `compound` tinyint(1) NOT NULL DEFAULT '0',
+  `tbl` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `format_class` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `model_class` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `tbl` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `form_class` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL
@@ -426,20 +425,20 @@ CREATE TABLE `ark_fragment_type` (
 -- Dumping data for table `ark_fragment_type`
 --
 
-INSERT INTO `ark_fragment_type` (`type`, `compound`, `format_class`, `model_class`, `tbl`, `enabled`, `deprecated`, `keyword`) VALUES
-('blob', 0, 'ARK\\Schema\\BlobFormat', 'ARK\\Model\\BlobFragment', 'ark_fragment_blob', 1, 0, 'fragment.blob'),
-('boolean', 0, 'ARK\\Schema\\BooleanFormat', 'ARK\\Model\\BooleanFragment', 'ark_fragment_boolean', 1, 0, 'fragment.boolean'),
-('date', 0, 'ARK\\Schema\\DateFormat', 'ARK\\Model\\DateFragment', 'ark_fragment_date', 1, 0, 'fragment.date'),
-('datetime', 0, 'ARK\\Schema\\DateTimeFormat', 'ARK\\Model\\DateTimeFragment', 'ark_fragment_datetime', 1, 0, 'fragment.datetime'),
-('decimal', 0, 'ARK\\Schema\\DecimalFormat', 'ARK\\Model\\DecimalFragment', 'ark_fragment_decimal', 1, 0, 'fragment.decimal'),
-('float', 0, 'ARK\\Schema\\FloatFormat', 'ARK\\Model\\FloatFragment', 'ark_fragment_float', 1, 0, 'fragment.float'),
-('geometry', 0, 'ARK\\Schema\\GeometryFormat', 'ARK\\Model\\GeometryFragment', 'ark_fragment_geometry', 1, 0, 'fragment.geometry'),
-('integer', 0, 'ARK\\Schema\\IntegerFormat', 'ARK\\Model\\IntegerFragment', 'ark_fragment_integer', 1, 0, 'fragment.integer'),
-('item', 0, 'ARK\\Schema\\ItemFormat', 'ARK\\Model\\ItemFragment', 'ark_fragment_item', 1, 0, 'fragment.item'),
-('object', 1, 'ARK\\Schema\\ObjectFormat', 'ARK\\Model\\ObjectFragment', 'ark_fragment_object', 1, 0, 'fragment.object'),
-('string', 0, 'ARK\\Schema\\StringFormat', 'ARK\\Model\\StringFragment', 'ark_fragment_string', 1, 0, 'fragment.string'),
-('text', 0, 'ARK\\Schema\\TextFormat', 'ARK\\Model\\TextFragment', 'ark_fragment_text', 1, 0, 'fragment.text'),
-('time', 0, 'ARK\\Schema\\TimeFormat', 'ARK\\Model\\TimeFragment', 'ark_fragment_time', 1, 0, 'fragment.time');
+INSERT INTO `ark_fragment_type` (`type`, `compound`, `tbl`, `format_class`, `model_class`, `form_class`, `enabled`, `deprecated`, `keyword`) VALUES
+('blob', 0, 'ark_fragment_blob', 'ARK\\Schema\\BlobFormat', 'ARK\\Model\\BlobFragment', '', 1, 0, 'fragment.blob'),
+('boolean', 0, 'ark_fragment_boolean', 'ARK\\Schema\\BooleanFormat', 'ARK\\Model\\BooleanFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', 1, 0, 'fragment.boolean'),
+('date', 0, 'ark_fragment_date', 'ARK\\Schema\\DateFormat', 'ARK\\Model\\DateFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateType', 1, 0, 'fragment.date'),
+('datetime', 0, 'ark_fragment_datetime', 'ARK\\Schema\\DateTimeFormat', 'ARK\\Model\\DateTimeFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateTimeType', 1, 0, 'fragment.datetime'),
+('decimal', 0, 'ark_fragment_decimal', 'ARK\\Schema\\DecimalFormat', 'ARK\\Model\\DecimalFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', 1, 0, 'fragment.decimal'),
+('float', 0, 'ark_fragment_float', 'ARK\\Schema\\FloatFormat', 'ARK\\Model\\FloatFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', 1, 0, 'fragment.float'),
+('geometry', 0, 'ark_fragment_geometry', 'ARK\\Schema\\GeometryFormat', 'ARK\\Model\\GeometryFragment', '', 1, 0, 'fragment.geometry'),
+('integer', 0, 'ark_fragment_integer', 'ARK\\Schema\\IntegerFormat', 'ARK\\Model\\IntegerFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\IntegerType', 1, 0, 'fragment.integer'),
+('item', 0, 'ark_fragment_item', 'ARK\\Schema\\ItemFormat', 'ARK\\Model\\ItemFragment', '', 1, 0, 'fragment.item'),
+('object', 1, 'ark_fragment_object', 'ARK\\Schema\\ObjectFormat', 'ARK\\Model\\ObjectFragment', '', 1, 0, 'fragment.object'),
+('string', 0, 'ark_fragment_string', 'ARK\\Schema\\StringFormat', 'ARK\\Model\\StringFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', 1, 0, 'fragment.string'),
+('text', 0, 'ark_fragment_text', 'ARK\\Schema\\TextFormat', 'ARK\\Model\\TextFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextAreaType', 1, 0, 'fragment.text'),
+('time', 0, 'ark_fragment_time', 'ARK\\Schema\\TimeFormat', 'ARK\\Model\\TimeFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', 1, 0, 'fragment.time');
 
 -- --------------------------------------------------------
 
@@ -990,21 +989,22 @@ CREATE TABLE `ark_view_element` (
 
 INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `subtype`, `attribute`, `class`, `template`, `form`, `editable`, `hidden`, `enabled`, `deprecated`, `keyword`) VALUES
 ('dime_find_description', 'field', 'dime.find', '', 'description', '', '', 'ARK\\Form\\Type\\LocalMultilineTextType', 1, 0, 1, 0, NULL),
-('dime_find_details', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
-('dime_find_event', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
-('dime_find_finddate', 'field', 'dime.find', '', 'finddate', '', '', '', 1, 0, 1, 0, NULL),
-('dime_find_finder_id', 'field', 'dime.find', '', 'finder_id', '', '', '', 1, 0, 1, 0, NULL),
-('dime_find_length', 'field', 'dime.find', '', 'length', '', '', '', 1, 0, 1, 0, NULL),
-('dime_find_material', 'field', 'dime.find', '', 'material', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_details', 'grid', 'dime.find', '', NULL, '', '', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FormType', 1, 0, 1, 0, NULL),
+('dime_find_event', 'grid', 'dime.find', '', NULL, '', '', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FormType', 1, 0, 1, 0, NULL),
+('dime_find_finddate', 'field', 'dime.find', '', 'finddate', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
+('dime_find_finder_id', 'field', 'dime.find', '', 'finder_id', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
+('dime_find_length', 'field', 'dime.find', '', 'length', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
+('dime_find_material', 'field', 'dime.find', '', 'material', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
 ('dime_find_name', 'field', 'dime.find', '', 'name', '', '', 'ARK\\Form\\Type\\LocalTextType', 1, 0, 1, 0, NULL),
-('dime_find_period_end', 'field', 'dime.find', '', 'period_end', '', '', '', 1, 0, 1, 0, NULL),
-('dime_find_period_start', 'field', 'dime.find', '', 'period_start', '', '', '', 1, 0, 1, 0, NULL),
-('dime_find_registered_id', 'field', 'dime.find', '', 'registered_id', '', '', '', 1, 0, 1, 0, NULL),
-('dime_find_secondary', 'field', 'dime.find', '', 'secondary', '', '', '', 1, 0, 1, 0, NULL),
-('dime_find_subtype', 'field', 'dime.find', '', 'subtype', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_period_end', 'field', 'dime.find', '', 'period_end', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
+('dime_find_period_start', 'field', 'dime.find', '', 'period_start', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
+('dime_find_registered_id', 'field', 'dime.find', '', 'registered_id', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
+('dime_find_secondary', 'field', 'dime.find', '', 'secondary', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
+('dime_find_subtype', 'field', 'dime.find', '', 'subtype', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
 ('dime_find_title', 'field', 'dime.find', '', 'title', '', '', 'ARK\\Form\\Type\\LocalTextType', 1, 0, 1, 0, NULL),
+('dime_find_type', 'field', 'dime.find', '', 'type', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
 ('dime_find_view', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
-('dime_find_weight', 'field', 'dime.find', '', 'weight', '', '', '', 1, 0, 1, 0, NULL);
+('dime_find_weight', 'field', 'dime.find', '', 'weight', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1025,7 +1025,7 @@ CREATE TABLE `ark_view_element_type` (
 
 INSERT INTO `ark_view_element_type` (`type`, `is_group`, `template`, `keyword`) VALUES
 ('field', 0, '', ''),
-('form', 1, 'layouts/grid.html.twig', ''),
+('form', 1, 'layouts/form.html.twig', ''),
 ('grid', 1, 'layouts/grid.html.twig', ''),
 ('tabbed', 1, 'layouts/tabbed.html.twig', ''),
 ('table', 1, 'layouts/table.html.twig', '');
@@ -1052,7 +1052,8 @@ CREATE TABLE `ark_view_group` (
 --
 
 INSERT INTO `ark_view_group` (`element`, `row`, `col`, `seq`, `subtype`, `enabled`, `deprecated`, `child`) VALUES
-('dime_find_details', 0, 0, 0, '', 1, 0, 'dime_find_subtype'),
+('dime_find_details', 0, 0, 0, '', 1, 0, 'dime_find_type'),
+('dime_find_details', 0, 0, 1, '', 1, 0, 'dime_find_subtype'),
 ('dime_find_details', 0, 0, 2, '', 1, 0, 'dime_find_period_start'),
 ('dime_find_details', 0, 0, 3, '', 1, 0, 'dime_find_period_end'),
 ('dime_find_details', 0, 0, 4, '', 1, 0, 'dime_find_material'),
