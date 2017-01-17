@@ -44,6 +44,7 @@ class FragmentType
     protected $compound = '';
     protected $formatClass = '';
     protected $modelClass = '';
+    protected $formClass = '';
     protected $table = '';
 
     public function name()
@@ -61,6 +62,11 @@ class FragmentType
         return !$this->compound;
     }
 
+    public function table()
+    {
+        return $this->table;
+    }
+
     public function formatClass()
     {
         return $this->formatClass;
@@ -71,9 +77,9 @@ class FragmentType
         return $this->modelClass;
     }
 
-    public function table()
+    public function formClass()
     {
-        return $this->table;
+        return $this->formClass;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
@@ -87,9 +93,10 @@ class FragmentType
 
         // Attributes
         $builder->addField('compound', 'boolean');
+        $builder->addStringField('table', 50, 'tbl');
         $builder->addStringField('formatClass', 100, 'format_class');
         $builder->addStringField('modelClass', 100, 'model_class');
-        $builder->addStringField('table', 50, 'tbl');
+        $builder->addStringField('formClass', 100, 'form_class');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
     }

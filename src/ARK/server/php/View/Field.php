@@ -57,86 +57,13 @@ class Field extends Element
 
     public function buildForm(FormBuilderInterface $formBuilder, array $options = [])
     {
-        // New Stuff
-        if ($this->form) {
-            $options['attribute'] = $this->attribute->name();
-            $factory = $formBuilder->getFormFactory();
-            $data = $formBuilder->getData()->property($this->attribute->name());
-            $fieldBuilder = $factory->createNamedBuilder($this->element, $this->formType(), $data);
-            $formBuilder->add($fieldBuilder, $this->formType(), $options);
-            return;
-        }
-        //HACK Do properly!
-        if ($this->element == 'submodules') {
-            $options['label'] = false;
-            $options['entry_type'] = Type\TextType::class;
-            $options['entry_options'] = array('label' => false, 'attr' => array('readonly' => true));
-            $formBuilder->add($this->element, Type\CollectionType::class, $options);
-            return;
-        }
-        if (!$this->attribute()) {
-            return;
-        }
-        $options['label'] = $this->keyword() ? $this->keyword() : false;
-        switch ($this->attribute()->format()->type()->name()) {
-            case 'action':
-                $options['choices']['--- Select One ---'] = null;
-                $actors = $this->db->getActors();
-                foreach ($actors as $actor) {
-                    $options['choices']['actors.'.$actor['item'].'.name'] = 'act.'.$actor['item'];
-                }
-                $formBuilder->add($this->element, Type\ChoiceType::class, $options);
-                break;
-            case 'string':
-                //TODO Only add null if allowed null
-                if ($this->attribute()->vocabulary()) {
-                    $options['choices']['--- Select One ---'] = null;
-                    foreach ($this->attribute()->vocabulary()->terms() as $term) {
-                        $options['choices'][$term->keyword()] = $term->name();
-                    }
-                    $formBuilder->add($this->element, Type\ChoiceType::class, $options);
-                } else {
-                    $formBuilder->add($this->element, Type\TextType::class, $options);
-                }
-                break;
-            case 'date':
-                //$options['date_widget'] = 'single_text';
-                $formBuilder->add($this->element, Type\DateType::class, $options);
-                break;
-            case 'time':
-                //$options['date_widget'] = 'single_text';
-                $formBuilder->add($this->element, Type\TimeType::class, $options);
-                break;
-            case 'datetime':
-                //$options['date_widget'] = 'single_text';
-                $formBuilder->add($this->element, Type\DateTimeType::class, $options);
-                break;
-            case 'file':
-                $formBuilder->add($this->element, Type\FileType::class, $options);
-                break;
-            case 'number':
-                $formBuilder->add($this->element, Type\NumberType::class, $options);
-                break;
-            case 'span':
-                $options['entry_type'] = Type\TextType::class;
-                $options['entry_options'] = array();
-                $formBuilder->add($this->element, Type\CollectionType::class, $options);
-                break;
-            case 'text':
-                if ($this->attribute()->format()->input() == 'textarea') {
-                    $formBuilder->add($this->element, Type\TextareaType::class, $options);
-                } else {
-                    $formBuilder->add($this->element, Type\TextType::class, $options);
-                }
-                break;
-            case 'xmi':
-                $options['entry_type'] = Type\TextType::class;
-                $options['allow_add'] = true;
-                $options['allow_delete'] = true;
-                $options['entry_options'] = array();
-                $formBuilder->add($this->element, Type\CollectionType::class, $options);
-                break;
-        }
+        $options['attribute'] = $this->attribute;
+        $options['mapped'] = false;
+        $options['label'] = $this->keyword();
+        $factory = $formBuilder->getFormFactory();
+        $data = $formBuilder->getData()->property($this->attribute->name());
+        $fieldBuilder = $factory->createNamedBuilder($this->element, $this->formType(), $data, $options);
+        $formBuilder->add($fieldBuilder);
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

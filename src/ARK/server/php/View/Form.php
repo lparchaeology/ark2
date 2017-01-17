@@ -43,9 +43,8 @@ class Form extends Group
 {
     public function renderForms(FormFactoryInterface $factory, $resource)
     {
-        $data = $this->formData($resource, $this->element);
-        $formBuilder = $factory->createNamedBuilder($this->element, FormType::class, $data);
-        foreach ($this->elements as $element) {
+        $formBuilder = $factory->createNamedBuilder($this->element, FormType::class, $resource);
+        foreach ($this->elements() as $element) {
             $element->buildForm($formBuilder);
         }
         return $formBuilder->getForm()->createView();

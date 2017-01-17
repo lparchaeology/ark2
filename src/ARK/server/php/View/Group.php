@@ -35,7 +35,7 @@ use ARK\Form\Type\PanelType;
 use ARK\Model\Item\Item;
 use ARK\ORM\ClassMetadata;
 use ARK\Service;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Type\FormType;
 use Twig_Environment;
@@ -73,52 +73,14 @@ abstract class Group extends Element
         return $this->elements;
     }
 
-    public function renderView(array $options = [], $resource = null)
+    public function renderView($resource, array $options = [])
     {
         if ($this->template()) {
             $options['layout'] = $this;
             $options['forms'] = $this->renderForms(Service::forms(), $resource);
-            return Service::templates()->render($this->template(), $options);
+            return Service::renderView($this->template(), $options);
         }
         return '';
-    }
-
-    public function renderForms(FormFactoryInterface $factory, $resource)
-    {
-        $forms = [];
-        foreach ($this->elements() as $element) {
-            $forms[$element->name()] = $element->renderForms($factory, $resource);
-        }
-        return $forms;
-    }
-
-    public function formData($resource)
-    {
-        $data = [];
-        foreach ($this->elements() as $element) {
-            $data = array_merge($data, $element->formData($resource));
-        }
-        return $data;
-    }
-
-    public function buildForm(FormBuilder $formBuilder, array $options = array())
-    {
-        foreach ($this->elements() as $element) {
-            $element->buildForm($formBuilder, $options);
-        }
-    }
-
-    public function allFields()
-    {
-        $fields = [];
-        foreach ($this->elements() as $element) {
-            if ($element->type()->name() == 'field') {
-                $fields[] = $element;
-            } else {
-                $fields = array_merge($fields, $element->allFields());
-            }
-        }
-        return $fields;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

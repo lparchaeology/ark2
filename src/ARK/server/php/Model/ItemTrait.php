@@ -130,10 +130,10 @@ trait ItemTrait
 
     public function property($attribute)
     {
-        if (!isset($this->properties[$key])) {
-            $this->properties[$key] = new Property($this, $this->schema()->attribute($key, $this->subtypeName()));
+        if (!isset($this->properties[$attribute])) {
+            $this->properties[$attribute] = new Property($this, $this->schema()->attribute($attribute, $this->subtypeName()));
         }
-        return $this->properties[$key];
+        return $this->properties[$attribute];
     }
 
     private function loadRelated()

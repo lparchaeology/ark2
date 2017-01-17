@@ -120,10 +120,22 @@ class Property
         return $values;
     }
 
+    protected function nullValue()
+    {
+        if ($this->attribute->format()->type()->isAtomic() && !$this->attribute->format()->hasAttributes()) {
+            return null;
+        }
+        $value = [];
+        foreach ($this->attribute->format()->attributes() as $attribute) {
+            $value[$attribute->name()] = null;
+        }
+        return $this->attribute->hasMultipleOccurrences() ? [$value] : $value;
+    }
+
     public function value()
     {
         if (!$this->fragments) {
-            return null;
+            return $this->nullValue();
         }
         if ($this->attribute->hasMultipleOccurrences()) {
             $values = [];

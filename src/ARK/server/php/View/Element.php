@@ -31,15 +31,16 @@
 namespace ARK\View;
 
 use ARK\EnabledTrait;
+use ARK\Form\Type\PropertyType;
 use ARK\KeywordTrait;
-use ARK\View\Child;
-use ARK\View\Type;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
 use ARK\Schema\Schema;
 use ARK\Schema\SchemaAttribute;
+use ARK\View\Child;
+use ARK\View\Type;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 abstract class Element
@@ -61,7 +62,7 @@ abstract class Element
 
     public function __construct()
     {
-        $this->children = new Collection();
+        $this->children = new ArrayCollection();
     }
 
     public function name()
@@ -92,9 +93,9 @@ abstract class Element
         return $this->type->template();
     }
 
-    public function form()
+    public function formType()
     {
-        return $this->form;
+        return $this->form ? $this->form : PropertyType::class;
     }
 
     public function isEditable()
@@ -117,7 +118,7 @@ abstract class Element
         return [];
     }
 
-    public function buildForm(FormBuilder $formBuilder, array $options = [])
+    public function buildForm(FormBuilderInterface $formBuilder, array $options = [])
     {
         return;
     }

@@ -34,22 +34,47 @@ use ARK\Service;
 use ARK\Model\Item;
 use ARK\Model\Property;
 use ARK\Model\TextFragment;
+use ARK\Vocabulary\Term;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\LanguageType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LocalTextType extends AbstractType
+class PropertyType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $attribute = $options['attribute']->name();
-        $fieldOptions['label'] = false;
-        $fieldOptions['property_path'] = "keyValue[$attribute][language]";
-        $builder->add('language', LanguageType::class, $fieldOptions);
-        $fieldOptions['property_path'] = "keyValue[$attribute][content]";
-        $builder->add('content', TextType::class, $fieldOptions);
+        $this->buildAttribute($builder, $options['attribute']);
+    }
+
+    protected function buildAttribute(FormBuilderInterface $builder, $attribute, $path = 'keyValue')
+    {
+        $name = $attribute->name();
+        $path = $path."[$name]";
+        if ($attribute->format()->hasAttributes()) {
+            foreach ($attribute->format()->attributes() as $child) {
+                $this->buildAttribute($builder, $child, $path);
+            }
+            return;
+        }
+        if ($attribute->vocabulary()) {
+            $class = ChoiceType::class;
+            foreach ($attribute->vocabulary()->terms() as $term) {
+                $options['choices'][$term->keyword()] = $term->name();
+            }
+            if (!$attribute->isRequired()) {
+                $options['placeholder'] = 'form.select.option';
+            }
+            if ($attribute->hasMultipleOccurrences()) {
+                $options['multiple'] = true;
+            }
+        } else {
+            $class = $attribute->format()->type()->formClass();
+        }
+        $options['property_path'] = $path;
+        $options['label'] = false;
+        $options['required'] = $attribute->isRequired();
+        $builder->add($name, $class, $options);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -63,6 +88,6 @@ class LocalTextType extends AbstractType
 
     public function getBlockPrefix()
     {
-        return 'localtext';
+        return 'property';
     }
 }
