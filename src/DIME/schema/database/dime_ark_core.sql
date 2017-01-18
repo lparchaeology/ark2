@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 18, 2017 at 04:29 PM
+-- Generation Time: Jan 18, 2017 at 09:27 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -989,8 +989,8 @@ CREATE TABLE `ark_view_element` (
 
 INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `subtype`, `attribute`, `class`, `template`, `form`, `editable`, `hidden`, `enabled`, `deprecated`, `keyword`) VALUES
 ('dime_find_description', 'field', 'dime.find', '', 'description', '', '', 'ARK\\Form\\Type\\LocalMultilineTextType', 1, 0, 1, 0, NULL),
-('dime_find_details', 'form', 'dime.find', '', NULL, '', '', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FormType', 1, 0, 1, 0, NULL),
-('dime_find_event', 'form', 'dime.find', '', NULL, '', '', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FormType', 1, 0, 1, 0, NULL),
+('dime_find_details', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_event', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_finddate', 'field', 'dime.find', '', 'finddate', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
 ('dime_find_finder_id', 'field', 'dime.find', '', 'finder_id', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
 ('dime_find_length', 'field', 'dime.find', '', 'length', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
@@ -1025,7 +1025,6 @@ CREATE TABLE `ark_view_element_type` (
 
 INSERT INTO `ark_view_element_type` (`type`, `is_group`, `template`, `keyword`) VALUES
 ('field', 0, '', ''),
-('form', 1, 'layouts/form.html.twig', ''),
 ('grid', 1, 'layouts/grid.html.twig', ''),
 ('tabbed', 1, 'layouts/tabbed.html.twig', ''),
 ('table', 1, 'layouts/table.html.twig', '');

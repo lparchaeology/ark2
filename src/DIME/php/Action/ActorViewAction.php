@@ -40,8 +40,7 @@ class ActorViewAction
         return Service::render(
             'pages/page.html.twig',
             [
-                'contents' => ActorViewAction::class.'('.$actorSlug.')',
-                'contents2' => 'This page is under construction',
+                'content' => ActorViewAction::class.'('.$actorSlug.')',
             ]
         );
     }

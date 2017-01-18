@@ -49,16 +49,17 @@ class FindViewAction
 
         $eventLayout = ORM::find(Element::class, 'dime_find_event');
         $detailLayout = ORM::find(Element::class, 'dime_find_details');
+        //$viewLayout = ORM::find(Element::class, 'dime_find_view');
 
-        $contents = $eventLayout->renderView($find);
-        $contents2 = $detailLayout->renderView($find);
+        $content[0] = $eventLayout->renderView($find);
+        $content[1] = $detailLayout->renderView($find);
 
         return Service::render(
             'pages/page.html.twig',
             [
-                'contents' => $contents,
-                'contents2' => $contents2,
-                'find' => $find,
+                //'layout' => $viewLayout,
+                'content' => $content,
+                'data' => $find,
             ]
         );
     }

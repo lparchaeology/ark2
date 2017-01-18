@@ -40,8 +40,7 @@ class FindAddAction
         return Service::render(
             'pages/page.html.twig',
             [
-                'contents' => FindAddAction::class,
-                'contents2' => 'This page is under construction',
+                'content' => FindAddAction::class,
             ]
         );
     }

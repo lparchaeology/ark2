@@ -30,8 +30,6 @@
 
 namespace ARK\View;
 
-use Symfony\Component\Form\FormFactoryInterface;
-
 class Grid extends Group
 {
     public function rowCount()
@@ -72,18 +70,5 @@ class Grid extends Group
             return [];
         }
         return $this->grid[$row][$col];
-    }
-
-    public function renderForms(FormFactoryInterface $factory, $resource)
-    {
-        $forms = [];
-        foreach ($this->rows() as $rdx => $row) {
-            foreach ($row as $cdx => $col) {
-                foreach ($col as $cell) {
-                    $forms[$rdx][$cdx][] = $cell->renderForms($factory, $resource);
-                }
-            }
-        }
-        return $forms;
     }
 }

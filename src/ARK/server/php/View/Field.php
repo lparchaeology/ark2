@@ -60,6 +60,11 @@ class Field extends Element
         return $this->form ? $this->form : PropertyType::class;
     }
 
+    public function renderView($resource, array $options = [], FormBuilderInterface $formBuilder = null)
+    {
+        return $this->element;
+    }
+
     public function buildForm(FormBuilderInterface $formBuilder, array $options = [])
     {
         $options['field'] = $this;

@@ -3,40 +3,51 @@
 
     {% block flash %}{% endblock %}
 
-    {% if item_form is defined %}
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="form-inline form-group">
-                    {{ form_start(item_form) }}
-                    {{ form_widget(item_form) }}
-                    {{ form_end(item_form) }}
-                </div>
+    {% if layout is defined %}
+
+        {{ layout.renderView(data)|raw }}
+
+    {% elseif content[2] is defined %}
+
+        <div class="row dime-content">
+            <div class="col-xs-4 content-col-1">
+                {{ content[0]|raw }}
+            </div>
+            <div class="col-xs-4 content-col-1">
+                {{ content[1]|raw }}
+            </div>
+            <div class="col-xs-4 content-col-2">
+                {{ content[2]|raw }}
             </div>
         </div>
-    {% endif %}
 
-    {% if layout is defined %}
-        {% for element in layout.elements %}
-            {% if forms is defined and forms[element.id]is defined %}
-                {% include element.template()with {
-                    'layout': element,
-                    'forms': forms[element.id],
-                } %}
-            {% else %}
-                {% include element.template()with {'layout': element} %}
-            {% endif %}
-        {% endfor %}
-    {% endif %}
+    {% elseif content[1] is defined %}
 
-    {% if contents is defined %}
         <div class="row dime-content">
             <div class="col-xs-6 content-col-1">
-                {{ contents|raw }}
+                {{ content[0]|raw }}
             </div>
             <div class="col-xs-6 content-col-2">
-                {{ contents2|raw }}
+                {{ content[1]|raw }}
             </div>
         </div>
+
+    {% elseif content[0] is defined %}
+
+        <div class="row dime-content">
+            <div class="col-xs-12 content-col-2">
+                {{ content[0]|raw }}
+            </div>
+        </div>
+
+    {% elseif content is defined %}
+
+        <div class="row dime-content">
+            <div class="col-xs-12 content-col-2">
+                {{ content|raw }}
+            </div>
+        </div>
+
     {% endif %}
 
 {% endblock content %}

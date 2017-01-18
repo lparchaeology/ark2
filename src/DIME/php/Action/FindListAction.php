@@ -185,11 +185,14 @@ class FindListAction
                 </table>
             </div>
         ";
+
+        $content[0] = 'Panel for list/thumbnails of finds<br/><br/>'.$table;
+        $content[1] = 'Panel for map of all finds, or selected find summary<br/><br/>';
+
         return Service::render(
             'pages/page.html.twig',
             [
-                'contents' => 'Panel for list/thumbnails of finds<br/><br/>'.$table,
-                'contents2' => 'Panel for map of all finds, or selected find summary<br/><br/>',
+                'content' => $content,
                 'finds' => $finds,
                 'page_config' => $page_config,
             ]

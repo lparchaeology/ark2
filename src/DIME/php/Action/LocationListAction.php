@@ -40,6 +40,7 @@ class LocationListAction
     public function __invoke(Request $request, $actorSlug = null)
     {
         $locations = ORM::findAll(Location::class);
+
         $list = "<h3>dime.locations</h3>";
         foreach ($locations as $location) {
             $id = $location->id();
@@ -47,11 +48,14 @@ class LocationListAction
             $name = $location->name();
             $list .= "<p><a href=\"locations/$id\">$id</a> : $type : $name</p>";
         }
+
+        $content[0] = $list;
+        $content[1] = 'Panel for map of all locations, or selected find summary<br/><br/>';
+
         return Service::render(
             'pages/page.html.twig',
             [
-                'contents' => $list,
-                'contents2' => 'Panel for map of all locations, or selected find summary<br/><br/>',
+                'content' => $content,
                 'items' => $locations,
             ]
         );

@@ -4,6 +4,10 @@
 
     <div class="row">
 
+        {% if forms[layout.name] is defined %}
+            {{ form_start(forms[layout.name]) }}
+        {% endif %}
+
         {# TODO: Make this driven from GridLayout object! #}
         {% if row | length == 3 %}
             {% set colclass = 'col-md-4' %}
@@ -17,17 +21,24 @@
             <div class="{{colclass}}">
                 {% set colclass = 'col-md-4' %}
                 {% for idx, cell in col %}
-                    {% if cell.type == 'layout' %}
+                    {% if cell.type.name == 'grid' %}
                         {% include cell.template with {
                             'layout' : cell,
-                            'forms' : forms[rdx][cdx][idx]
+                            'data' : data,
+                            'forms' : forms
                         } %}
+                    {% elseif forms[layout.name][cell.name] is defined %}
+                        {{ form_row(forms[layout.name][cell.name]) }}
                     {% else %}
-                        {{ form_row(forms[rdx][cdx][idx]) }}
+                        {{ cell.renderView(cell.type) }}
                     {% endif %}
                 {% endfor %}
             </div>
         {% endfor %}
+
+        {% if forms[layout.name] is defined %}
+            {{ form_end(forms[layout.name]) }}
+        {% endif %}
 
     </div>
 

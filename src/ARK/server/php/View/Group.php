@@ -37,7 +37,7 @@ use ARK\ORM\ClassMetadata;
 use ARK\Service;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\Type\FormType;
+use Symfony\Component\Form\FormFactoryBuilder;
 use Twig_Environment;
 
 abstract class Group extends Element
@@ -73,14 +73,24 @@ abstract class Group extends Element
         return $this->elements;
     }
 
-    public function renderView($resource, array $options = [])
+    public function renderView($resource, array $options = [], FormBuilderInterface $formBuilder = null)
     {
         if ($this->template()) {
             $options['layout'] = $this;
-            $options['forms'] = $this->renderForms(Service::forms(), $resource);
+            $options['data'] = $resource;
+            $formBuilder = Service::forms()->createNamedBuilder($this->element, $this->formType(), $resource);
+            $this->buildForm($formBuilder);
+            $options['forms'][$this->element] = $formBuilder->getForm()->createView();
             return Service::renderView($this->template(), $options);
         }
         return '';
+    }
+
+    public function buildForm(FormBuilderInterface $formBuilder, array $options = [])
+    {
+        foreach ($this->elements() as $element) {
+            $element->buildForm($formBuilder);
+        }
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

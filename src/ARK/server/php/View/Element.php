@@ -40,8 +40,8 @@ use ARK\Schema\SchemaAttribute;
 use ARK\View\Child;
 use ARK\View\Type;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 
 abstract class Element
 {
@@ -124,14 +124,10 @@ abstract class Element
         return $opts;
     }
 
-    public function renderForms(FormFactoryInterface $factory, $resource)
-    {
-        return [];
-    }
+    abstract public function renderView($resource, array $options = [], FormBuilderInterface $formBuilder = null);
 
     public function buildForm(FormBuilderInterface $formBuilder, array $options = [])
     {
-        return;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
@@ -174,6 +170,6 @@ abstract class Element
         $builder->addDiscriminatorMapClass('grid', 'Grid');
         //$builder->addDiscriminatorMapClass('tabbed', 'Tabbed');
         //$builder->addDiscriminatorMapClass('table', 'Table');
-        $builder->addDiscriminatorMapClass('form', 'Form');
+        //$builder->addDiscriminatorMapClass('form', 'Form');
     }
 }

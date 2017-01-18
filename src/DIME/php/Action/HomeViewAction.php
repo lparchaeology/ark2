@@ -160,12 +160,15 @@ class HomeViewAction
             <p>Pellentesque molestie orci sem. Fusce sit amet tellus nulla. Curabitur accumsan tortor id laoreet pretium. Quisque ex lectus, tristique sit amet metus ac, volutpat semper nulla. Ut id commodo odio. Vivamus mattis ligula vitae urna mattis, non ornare nulla aliquet. In auctor, mauris at vestibulum luctus, ipsum nisi accumsan turpis, et dignissim dolor nulla vel ante. Nunc libero urna, tempor nec sem sed, euismod auctor neque. Proin tincidunt pellentesque venenatis. Nulla non magna sollicitudin, condimentum neque non, facilisis quam. Morbi id mattis nibh, nec sodales enim. Sed blandit euismod convallis. Praesent nec lorem eget leo fringilla volutpat. Mauris placerat tellus et augue imperdiet finibus. Sed accumsan nisl ex, at dictum libero dictum quis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.</p>
         ";
 
+        $content[0] = $lorem;
+        $content[1] = $marius;
+        $content[2] = $lorem;
+
         return Service::render(
             'pages/page.html.twig',
             [
                 'page_config' => $page_config,
-                'contents' => $lorem,
-                'contents2' => $marius,
+                'content' => $content,
             ]
         );
     }

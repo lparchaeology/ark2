@@ -40,8 +40,7 @@ class LocationViewAction
         return Service::render(
             'pages/page.html.twig',
             [
-                'contents' => LocationViewAction::class.'('.$locationSlug.')',
-                'contents2' => 'This page is under construction',
+                'content' => LocationViewAction::class.'('.$locationSlug.')',
             ]
         );
     }

@@ -40,8 +40,7 @@ class UnderConstructionAction
         return Service::render(
             'pages/page.html.twig',
             [
-                'contents' => 'This page is under construction',
-                'contents2' => 'This page is under construction',
+                'content' => 'This page is under construction',
             ]
         );
     }

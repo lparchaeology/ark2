@@ -40,8 +40,7 @@ class ActorListAction
         return Service::render(
             'pages/page.html.twig',
             [
-                'contents' => ActorListAction::class,
-                'contents2' => 'This page is under construction',
+                'content' => ActorListAction::class,
             ]
         );
     }

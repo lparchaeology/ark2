@@ -139,6 +139,9 @@ class TestViewAction
             }
         }
 
-        return Service::render('pages/page.html.twig', array('contents' => $contents, 'contents2' => $contents2));
+        $content[0] = $contents;
+        $content[0] = $contents2;
+
+        return Service::render('pages/page.html.twig', ['content' => $content]);
     }
 }
