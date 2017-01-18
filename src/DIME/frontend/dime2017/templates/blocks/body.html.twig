@@ -13,6 +13,26 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog">
+                <div class="loginmodal-container dime">
+                    <span class="dime-title">
+                        &nbsp;
+                    </span>
+                    <form method="POST" action="{{ path('user.login_check') }}" data-async>
+                        <input id="inputEmail" class="form-control" name="_username" placeholder="{{ 'user.menu.email' | trans }}" required="" value="" type="text">
+                        <input id="inputPassword" class="form-control" name="_password" required="" placeholder="{{ 'user.menu.password.placeholder' | trans }}" type="password">
+                        <input type="submit" name="login" class="login loginmodal-submit" value="Login">
+                    </form>
+
+                    <div class="login-help">
+                        <a href="#">{{ 'user.menu.register' | trans }}</a>
+                        -
+                        <a href="#">{{ 'user.menu.forgotpassword' | trans }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 {% endblock body %}

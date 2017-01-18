@@ -11,7 +11,7 @@
  */
 
 $break-small: 767px;
-$break-large-tablet: 925px;
+$break-large-tablet: 926px;
 $break-tablet: 1199px;
 @media (min-width: $break-tablet) {
     .collapse {
@@ -101,11 +101,6 @@ body {}
     height: 120px;
     margin-bottom: 0;
 }
-@media (max-width: $break-small) {
-    .navbar {
-        height: 250px;
-    }
-}
 
 .dime-nav {
     position: absolute;
@@ -113,7 +108,16 @@ body {}
 }
 @media (max-width: $break-large-tablet) {
     .navbar {
-        margin-top: 15px;
+        height: 138px;
+    }
+}
+@media (max-width: $break-small) {
+    .navbar {
+        height: 250px;
+    }
+
+    .dime-nav {
+        top: 0;
     }
 }
 
@@ -277,6 +281,29 @@ body {}
     border: none;
     font-weight: 600;
     text-shadow: none;
+}
+
+/*
+* Login
+*/
+
+.loginmodal-container.dime {
+    border: 1px solid black;
+    background-image: linear-gradient(0deg, #f4f4f4, #c3c3c3);
+    text-align: center;
+    padding: 50px 10px;
+}
+
+.loginmodal-container.dime input {
+    border: 1px solid black;
+    display: block;
+    margin: 15px auto;
+    width: 250px;
+}
+
+.modal-dialog {
+    margin: 300px auto;
+    width: 400px;
 }
 
 /*

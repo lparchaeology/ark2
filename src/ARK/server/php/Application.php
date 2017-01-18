@@ -91,7 +91,7 @@ class Application extends SilexApplication
 
     public function __construct($configPath)
     {
-        $version = ARK::version();
+        self::$version = ARK::version();
 
         if (!$this['ark'] = json_decode(file_get_contents($configPath), true)) {
             // TODO One day, run the first-run wizard!
@@ -179,7 +179,7 @@ class Application extends SilexApplication
         $this->addSecurityFirewall(
             'secured_area',
             ['pattern' => '^.*$',
-             'anonymous' => false,
+             'anonymous' => $this['ark']['anonymous'],
              'remember_me' => [],
              'form' => [
                 'login_path' => '/users/login',

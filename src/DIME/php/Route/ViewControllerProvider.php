@@ -118,7 +118,7 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers
             ->method('GET')
             ->get('/', 'DIME\\Action\\HomeViewAction')
-            ->bind('homepage');
+            ->bind('home');
 
         return $controllers;
     }

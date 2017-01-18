@@ -42,12 +42,12 @@ class HomeViewAction
                 array(
                     "name" => "dime.home",
                     "dropdown" => false,
-                    "target" => ""
+                    "target" => "home"
                 ),
                 array(
                     "name" => "dime.detector",
                     "dropdown" => true,
-                    "target" => "detctor",
+                    "target" => "detector",
                     "navlinks" => array (
                         array(
                             "name" => "dime.metaldetector",
@@ -94,7 +94,7 @@ class HomeViewAction
                 array(
                     "name" => "dime.exhibits",
                     "dropdown" => true,
-                    "target" => "",
+                    "target" => "exhibits",
                     "navlinks" => array (
                         array(
                             "name" => "dime.exhibits.forests",
@@ -116,32 +116,34 @@ class HomeViewAction
                 array(
                     "name" => "add",
                     "active" => true,
+                    "role" => "ROLE_USER",
                     "links" => array(
                         array(
                             "name" => "dime.find.add",
                             "active" => true,
-                            "target" => "finds/add"
+                            "target" => "finds.add"
                         ),
                         array(
                             "name" => "dime.location.add",
                             "active" => false,
-                            "target" => "locations/add"
+                            "target" => "locations.add"
                         )
                     )
                 ),
                 array(
                     "name" => "search",
                     "active" => false,
+                    "role" => "IS_AUTHENTICATED_ANONYMOUSLY",
                     "links" => array(
                         array(
                             "name" => "dime.find.list",
                             "active" => false,
-                            "target" => "finds"
+                            "target" => "finds.list"
                         ),
                         array(
                             "name" => "dime.location.list",
                             "active" => false,
-                            "target" => "locations"
+                            "target" => "locations.list"
                         )
                     ),
                 ),

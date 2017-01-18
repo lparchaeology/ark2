@@ -39,6 +39,120 @@ class FindListAction
 {
     public function __invoke(Request $request, $actorSlug = null)
     {
+        $page_config = array(
+            "navlinks" => array (
+                array(
+                    "name" => "dime.home",
+                    "dropdown" => false,
+                    "target" => "home"
+                ),
+                array(
+                    "name" => "dime.detector",
+                    "dropdown" => true,
+                    "target" => "detector",
+                    "navlinks" => array (
+                        array(
+                            "name" => "dime.metaldetector",
+                            "target" => "detector"
+                        ),
+                        array(
+                            "name" => "dime.treasure",
+                            "target" => "detector"
+                        ),
+                    ),
+                ),
+                array(
+                    "name" => "dime.research",
+                    "target" => "research",
+                    "dropdown" => false,
+                ),
+                array(
+                    "name" => "dime.about",
+                    "dropdown" => true,
+                    "target" => "about",
+                    "navlinks" => array (
+                        array(
+                            "name" => "dime.about.groups",
+                            "target" => "about"
+                        ),
+                        array(
+                            "name" => "dime.about.background",
+                            "target" => "about"
+                        ),
+                        array(
+                            "name" => "dime.about.museums",
+                            "target" => "about"
+                        ),
+                        array(
+                            "name" => "dime.about.partners",
+                            "target" => "about"
+                        ),
+                        array(
+                            "name" => "dime.about.instructions",
+                            "target" => "about"
+                        ),
+                    ),
+                ),
+                array(
+                    "name" => "dime.exhibits",
+                    "dropdown" => true,
+                    "target" => "exhibits",
+                    "navlinks" => array (
+                        array(
+                            "name" => "dime.exhibits.forests",
+                            "target" => "exhibits"
+                        ),
+                        array(
+                            "name" => "dime.exhibits.weapons",
+                            "target" => "exhibits"
+                        ),
+                    ),
+                ),
+                array(
+                    "name" => "dime.news",
+                    "dropdown" => false,
+                    "target" => "news"
+                )
+            ),
+            "sidelinks" => array (
+                array(
+                    "name" => "add",
+                    "active" => false,
+                    "role" => "ROLE_USER",
+                    "links" => array(
+                        array(
+                            "name" => "dime.find.add",
+                            "active" => true,
+                            "target" => "finds.add"
+                        ),
+                        array(
+                            "name" => "dime.location.add",
+                            "active" => false,
+                            "target" => "locations.add"
+                        )
+                    )
+                ),
+                array(
+                    "name" => "search",
+                    "active" => true,
+                    "role" => "IS_AUTHENTICATED_ANONYMOUSLY",
+                    "links" => array(
+                        array(
+                            "name" => "dime.find.list",
+                            "active" => true,
+                            "target" => "finds.list"
+                        ),
+                        array(
+                            "name" => "dime.location.list",
+                            "active" => false,
+                            "target" => "locations.list"
+                        )
+                    ),
+                ),
+            )
+        );
+
+
         $finds = ORM::findAll(Find::class);
         $head = Service::translate('dime.finds.list');
         $id = Service::translate('dime.find');
@@ -77,6 +191,7 @@ class FindListAction
                 'contents' => 'Panel for list/thumbnails of finds<br/><br/>'.$table,
                 'contents2' => 'Panel for map of all finds, or selected find summary<br/><br/>',
                 'finds' => $finds,
+                'page_config' => $page_config,
             ]
         );
     }

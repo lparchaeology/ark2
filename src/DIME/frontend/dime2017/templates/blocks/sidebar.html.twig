@@ -12,26 +12,28 @@
         <ul class="list-group dime-navlist">
             {% if page_config.sidelinks is defined %}
                 {% for group in page_config.sidelinks %}
-                    {% if group.active %}
-                        <li class="list-group-item dime-listhead normal">
-                            <span class="dime-icon icon-{{ group.name }} normal"></span>
-                        </li>
-                    {% else %}
-                        <li class="list-group-item dime-listhead small">
-                            <span class="dime-icon icon-{{ group.name }} small"></span>
-                        </li>
-                    {% endif %}
-                    {% for link in group.links %}
-                        {% if link.active %}
-                            <li class="active list-group-item navlist">
-                                {% include "blocks/linkitem.html.twig" with {'link': link} %}
+                    {% if is_granted(group.role) %}
+                        {% if group.active %}
+                            <li class="list-group-item dime-listhead normal">
+                                <span class="dime-icon icon-{{ group.name }} normal"></span>
                             </li>
                         {% else %}
-                            <li class="list-group-item navlist">
-                                {% include "blocks/linkitem.html.twig" with {'link': link} %}
+                            <li class="list-group-item dime-listhead small">
+                                <span class="dime-icon icon-{{ group.name }} small"></span>
                             </li>
                         {% endif %}
-                    {% endfor %}
+                        {% for link in group.links %}
+                            {% if link.active %}
+                                <li class="active list-group-item navlist">
+                                    {% include "blocks/linkitem.html.twig" with {'link': link} %}
+                                </li>
+                            {% else %}
+                                <li class="list-group-item navlist">
+                                    {% include "blocks/linkitem.html.twig" with {'link': link} %}
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                 {% endfor %}
             {% endif %}
         </ul>

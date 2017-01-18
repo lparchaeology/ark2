@@ -2,6 +2,7 @@
     "site": "core",
     "debug": true,
     "locale": "en",
+    "anonymous": true,
     "api": {
         "enable": true,
         "path": "/api/v2"

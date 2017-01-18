@@ -39,7 +39,7 @@ class LocationListAction
 {
     public function __invoke(Request $request, $actorSlug = null)
     {
-        $locations = ORM::findAll(Location::class)->findAll();
+        $locations = ORM::findAll(Location::class);
         $list = "<h3>dime.locations</h3>";
         foreach ($locations as $location) {
             $id = $location->id();

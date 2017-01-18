@@ -28,7 +28,7 @@
                             {% for link in page_config.navlinks %}
                                 {% if link.dropdown == true %}
                                     <li class="dropdown">
-                                        <a data-toggle="dropdown" class="dropdown-toggle" href="{{ link.target }}">
+                                        <a data-toggle="dropdown" class="dropdown-toggle" href="{{ path(link.target) }}">
                                             {{ link.name | translate }}
                                         </a>
                                         <ul class="dropdown-menu">
