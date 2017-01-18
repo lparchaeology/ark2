@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.1
+-- version 4.6.5.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 17, 2017 at 09:09 PM
--- Server version: 5.6.34
--- PHP Version: 7.1.0
+-- Generation Time: Jan 18, 2017 at 08:22 AM
+-- Server version: 10.0.22-MariaDB
+-- PHP Version: 7.0.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -989,8 +989,8 @@ CREATE TABLE `ark_view_element` (
 
 INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `subtype`, `attribute`, `class`, `template`, `form`, `editable`, `hidden`, `enabled`, `deprecated`, `keyword`) VALUES
 ('dime_find_description', 'field', 'dime.find', '', 'description', '', '', 'ARK\\Form\\Type\\LocalMultilineTextType', 1, 0, 1, 0, NULL),
-('dime_find_details', 'grid', 'dime.find', '', NULL, '', '', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FormType', 1, 0, 1, 0, NULL),
-('dime_find_event', 'grid', 'dime.find', '', NULL, '', '', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FormType', 1, 0, 1, 0, NULL),
+('dime_find_details', 'form', 'dime.find', '', NULL, '', '', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FormType', 1, 0, 1, 0, NULL),
+('dime_find_event', 'form', 'dime.find', '', NULL, '', '', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FormType', 1, 0, 1, 0, NULL),
 ('dime_find_finddate', 'field', 'dime.find', '', 'finddate', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
 ('dime_find_finder_id', 'field', 'dime.find', '', 'finder_id', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
 ('dime_find_length', 'field', 'dime.find', '', 'length', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
