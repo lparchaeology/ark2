@@ -44,7 +44,7 @@ class LocalTextType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $attribute = $options['attribute']->name();
+        $attribute = $options['field']->attribute()->name();
         $fieldOptions['label'] = false;
         $fieldOptions['property_path'] = "keyValue[$attribute][language]";
         $builder->add('language', LanguageType::class, $fieldOptions);
@@ -55,7 +55,7 @@ class LocalTextType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'attribute' => '',
+            'field' => null,
             'data_class' => Property::class,
             'empty_data' => null,
         ));

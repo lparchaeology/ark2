@@ -40,7 +40,7 @@ class LocalMultilineTextType extends LocalTextType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $attribute = $options['attribute']->name();
+        $attribute = $options['field']->attribute()->name();
         $fieldOptions['label'] = false;
         $fieldOptions['property_path'] = "keyValue[$attribute][language]";
         $builder->add('language', LanguageType::class, $fieldOptions);

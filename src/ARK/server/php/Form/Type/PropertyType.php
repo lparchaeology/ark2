@@ -44,16 +44,17 @@ class PropertyType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->buildAttribute($builder, $options['attribute']);
+        $field = $options['field'];
+        $this->buildAttribute($builder, $field->attribute(), $field->optionsArray());
     }
 
-    protected function buildAttribute(FormBuilderInterface $builder, $attribute, $path = 'keyValue')
+    protected function buildAttribute(FormBuilderInterface $builder, $attribute, $options, $path = 'keyValue')
     {
         $name = $attribute->name();
         $path = $path."[$name]";
         if ($attribute->format()->hasAttributes()) {
             foreach ($attribute->format()->attributes() as $child) {
-                $this->buildAttribute($builder, $child, $path);
+                $this->buildAttribute($builder, $child, $options, $path);
             }
             return;
         }
@@ -65,9 +66,7 @@ class PropertyType extends AbstractType
             if (!$attribute->isRequired()) {
                 $options['placeholder'] = 'form.select.option';
             }
-            if ($attribute->hasMultipleOccurrences()) {
-                $options['multiple'] = true;
-            }
+            $options['multiple'] = $attribute->hasMultipleOccurrences();
         } else {
             $class = $attribute->format()->type()->formClass();
         }
@@ -79,11 +78,11 @@ class PropertyType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'attribute' => '',
+        $resolver->setDefaults([
+            'field' => null,
             'data_class' => Property::class,
             'empty_data' => null,
-        ));
+        ]);
     }
 
     public function getBlockPrefix()

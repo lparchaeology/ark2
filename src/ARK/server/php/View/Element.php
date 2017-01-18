@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -59,10 +59,12 @@ abstract class Element
     protected $hidden = false;
     protected $schma = null;
     protected $children = null;
+    protected $options = null;
 
     public function __construct()
     {
         $this->children = new ArrayCollection();
+        $this->options = new ArrayCollection();
     }
 
     public function name()
@@ -95,7 +97,7 @@ abstract class Element
 
     public function formType()
     {
-        return $this->form ? $this->form : PropertyType::class;
+        return $this->form ? $this->form : FormType::class;
     }
 
     public function isEditable()
@@ -108,9 +110,18 @@ abstract class Element
         return $this->hidden;
     }
 
-    public function formData($resource)
+    public function options()
     {
-        return [];
+        return $this->options;
+    }
+
+    public function optionsArray()
+    {
+        $opts = [];
+        foreach ($this->options as $option) {
+            $opts[$option->name()] = $option->value();
+        }
+        return $opts;
     }
 
     public function renderForms(FormFactoryInterface $factory, $resource)
@@ -121,11 +132,6 @@ abstract class Element
     public function buildForm(FormBuilderInterface $formBuilder, array $options = [])
     {
         return;
-    }
-
-    public function allFields()
-    {
-        return [];
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
@@ -151,6 +157,7 @@ abstract class Element
 
         // Relationships
         $builder->addOneToMany('children', Child::class, 'parent');
+        $builder->addOneToMany('options', Option::class, 'element');
         $builder->addCompoundManyToOneField(
             'attribute',
             SchemaAttribute::class,

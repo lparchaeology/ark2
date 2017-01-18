@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -32,32 +32,46 @@ namespace ARK\View;
 
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\View\Element;
 
 class Option
 {
-    protected $parent = null;
-    protected $option = '';
+    protected $element = null;
+    protected $name = '';
     protected $type = '';
-    protected $value = null;
+    protected $value = '';
+    protected $rawValue = null;
 
-    public function parent()
+    public function __construct(Element $element, $name, $value)
     {
-        return $this->parent;
+        $this->element = $element;
+        $this->name = $name;
+        $this->type = gettype($value);
+        $this->rawValue = $value;
+        $this->value = serialize($value);
+    }
+
+    public function element()
+    {
+        return $this->element;
     }
 
     public function name()
     {
-        return $this->option;
+        return $this->name;
     }
 
     public function type()
     {
-        return $this->option;
+        return $this->type;
     }
 
     public function value()
     {
-        return $this->value;
+        if (!$this->rawValue) {
+            $this->rawValue = unserialize($this->value);
+        }
+        return $this->rawValue;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
@@ -67,8 +81,8 @@ class Option
         $builder->setReadOnly();
 
         // Key
-        $builder->addManyToOneKey('parent', 'Element', 'element', 'element');
-        $builder->addStringKey('option', 30);
+        $builder->addManyToOneKey('element', 'Element');
+        $builder->addStringKey('name', 30);
 
         // Fields
         $builder->addStringField('type', 30);

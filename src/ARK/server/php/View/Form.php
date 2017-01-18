@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -43,7 +43,7 @@ class Form extends Group
 {
     public function renderForms(FormFactoryInterface $factory, $resource)
     {
-        $formBuilder = $factory->createNamedBuilder($this->element, FormType::class, $resource);
+        $formBuilder = $factory->createNamedBuilder($this->element, $this->formType(), $resource);
         foreach ($this->elements() as $element) {
             $element->buildForm($formBuilder);
         }

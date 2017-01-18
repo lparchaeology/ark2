@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -55,9 +55,14 @@ class Field extends Element
         return $this->attribute()->keyword();
     }
 
+    public function formType()
+    {
+        return $this->form ? $this->form : PropertyType::class;
+    }
+
     public function buildForm(FormBuilderInterface $formBuilder, array $options = [])
     {
-        $options['attribute'] = $this->attribute;
+        $options['field'] = $this;
         $options['mapped'] = false;
         $options['label'] = $this->keyword();
         $factory = $formBuilder->getFormFactory();
