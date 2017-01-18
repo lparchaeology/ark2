@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
+-- version 4.6.5.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 18, 2017 at 08:22 AM
--- Server version: 10.0.22-MariaDB
--- PHP Version: 7.0.14
+-- Generation Time: Jan 18, 2017 at 04:29 PM
+-- Server version: 5.6.34
+-- PHP Version: 7.1.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -1067,6 +1067,26 @@ INSERT INTO `ark_view_group` (`element`, `row`, `col`, `seq`, `subtype`, `enable
 ('dime_find_event', 0, 0, 2, '', 1, 0, 'dime_find_finder_id'),
 ('dime_find_view', 0, 0, 0, '', 1, 0, 'dime_find_event'),
 ('dime_find_view', 0, 1, 0, '', 1, 0, 'dime_find_details');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_view_option`
+--
+
+CREATE TABLE `ark_view_option` (
+  `element` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `value` varchar(4000) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `ark_view_option`
+--
+
+INSERT INTO `ark_view_option` (`element`, `name`, `type`, `value`) VALUES
+('dime_find_secondary', 'expanded', 'boolean', 'b:1;');
 
 -- --------------------------------------------------------
 
@@ -3941,6 +3961,12 @@ ALTER TABLE `ark_view_group`
   ADD KEY `child` (`child`);
 
 --
+-- Indexes for table `ark_view_option`
+--
+ALTER TABLE `ark_view_option`
+  ADD PRIMARY KEY (`element`,`name`);
+
+--
 -- Indexes for table `ark_vocabulary`
 --
 ALTER TABLE `ark_vocabulary`
@@ -4175,6 +4201,12 @@ ALTER TABLE `ark_view_element`
 ALTER TABLE `ark_view_group`
   ADD CONSTRAINT `ark_view_group_ibfk_1` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `ark_view_group_ibfk_2` FOREIGN KEY (`child`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_view_option`
+--
+ALTER TABLE `ark_view_option`
+  ADD CONSTRAINT `ark_view_option_ibfk_1` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary`
