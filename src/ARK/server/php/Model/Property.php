@@ -151,8 +151,19 @@ class Property
                 : $this->objectValue($this->children[$this->fragments[0]]);
     }
 
+    public function setValue($value)
+    {
+    }
+
     public function keyValue()
     {
         return [$this->name() => $this->value()];
+    }
+
+    public function setKeyValue($keyValue)
+    {
+        if (count($keyValue) === 1 && isset($keyValue[$this->name()])) {
+            $this->setValue($keyValue[$this->name()]);
+        }
     }
 }

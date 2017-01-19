@@ -30,17 +30,10 @@
 
 namespace ARK\View;
 
-use ARK\Database\Database;
-use ARK\Form\Type\PanelType;
-use ARK\Model\Item\Item;
 use ARK\ORM\ClassMetadata;
 use ARK\Service;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormFactoryBuilder;
-use Twig_Environment;
 
-abstract class Group extends Element
+abstract class Layout extends Element
 {
     protected $grid = null;
     protected $elements = null;
@@ -73,24 +66,20 @@ abstract class Group extends Element
         return $this->elements;
     }
 
-    public function renderView($resource, array $options = [], FormBuilderInterface $formBuilder = null)
+    public function formOptions()
+    {
+        $options['mapped'] = false;
+        return $options;
+    }
+
+    public function renderView($resource, array $options = [])
     {
         if ($this->template()) {
             $options['layout'] = $this;
             $options['data'] = $resource;
-            $formBuilder = Service::forms()->createNamedBuilder($this->element, $this->formType(), $resource);
-            $this->buildForm($formBuilder);
-            $options['forms'][$this->element] = $formBuilder->getForm()->createView();
             return Service::renderView($this->template(), $options);
         }
         return '';
-    }
-
-    public function buildForm(FormBuilderInterface $formBuilder, array $options = [])
-    {
-        foreach ($this->elements() as $element) {
-            $element->buildForm($formBuilder);
-        }
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

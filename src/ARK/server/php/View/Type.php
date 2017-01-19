@@ -42,7 +42,8 @@ class Type
     use KeywordTrait;
 
     protected $type = '';
-    protected $isGroup = false;
+    protected $layout = false;
+    protected $form = '';
     protected $template = '';
 
     public function name()
@@ -50,9 +51,19 @@ class Type
         return $this->type;
     }
 
-    public function isGroup()
+    public function isLayout()
     {
-        return $this->isGroup;
+        return $this->layout;
+    }
+
+    public function isField()
+    {
+        return !$this->isLayout;
+    }
+
+    public function formType()
+    {
+        return $this->form;
     }
 
     public function template()
@@ -62,9 +73,10 @@ class Type
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_view_element_type');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_view_type');
         $builder->addStringKey('type', 30);
-        $builder->addField('isGroup', 'boolean', [], 'is_group');
+        $builder->addField('layout', 'boolean');
+        $builder->addStringField('form', 100);
         $builder->addStringField('template', 100);
         KeywordTrait::buildKeywordMetadata($builder);
         $builder->setReadOnly();

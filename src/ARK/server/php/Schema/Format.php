@@ -65,6 +65,16 @@ abstract class Format
         return $this->type;
     }
 
+    public function isCompound()
+    {
+        return $this->hasAttributes() || $this->type->isCompound();
+    }
+
+    public function isAtomic()
+    {
+        return !$this->isCompound();
+    }
+
     public function input()
     {
         return $this->input;

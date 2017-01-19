@@ -37,6 +37,7 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
 use ARK\Schema\Schema;
 use ARK\Schema\SchemaAttribute;
+use ARK\Service;
 use ARK\View\Child;
 use ARK\View\Type;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -97,7 +98,20 @@ abstract class Element
 
     public function formType()
     {
-        return $this->form ? $this->form : FormType::class;
+        if ($this->form) {
+            return $this->form;
+        }
+        return $this->type->formType();
+    }
+
+    public function formOptions()
+    {
+        return [];
+    }
+
+    public function formData($resource)
+    {
+        return $resource;
     }
 
     public function isEditable()
@@ -124,11 +138,24 @@ abstract class Element
         return $opts;
     }
 
-    abstract public function renderView($resource, array $options = [], FormBuilderInterface $formBuilder = null);
-
-    public function buildForm(FormBuilderInterface $formBuilder, array $options = [])
+    public function buildForm($resource, FormBuilderInterface $formBuilder = null)
     {
+        $builder = Service::forms()->createNamedBuilder($this->name(),
+                                                        $this->formType(),
+                                                        $this->formData($resource),
+                                                        $this->formOptions());
+        if ($this->type->isLayout()) {
+            foreach ($this->elements() as $element) {
+                $element->buildForm($resource, $builder);
+            }
+        }
+        if ($formBuilder === null) {
+            return $builder->getForm();
+        }
+        $formBuilder->add($builder);
     }
+
+    abstract public function renderView($resource, array $options = []);
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
@@ -168,8 +195,7 @@ abstract class Element
         $builder->setSingleTableInheritance()->setDiscriminatorColumn('type', 'string', 10);
         $builder->addDiscriminatorMapClass('field', 'Field');
         $builder->addDiscriminatorMapClass('grid', 'Grid');
-        //$builder->addDiscriminatorMapClass('tabbed', 'Tabbed');
-        //$builder->addDiscriminatorMapClass('table', 'Table');
-        //$builder->addDiscriminatorMapClass('form', 'Form');
+        $builder->addDiscriminatorMapClass('tabbed', 'Tabbed');
+        $builder->addDiscriminatorMapClass('table', 'Table');
     }
 }

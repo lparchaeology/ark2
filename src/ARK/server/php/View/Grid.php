@@ -30,7 +30,7 @@
 
 namespace ARK\View;
 
-class Grid extends Group
+class Grid extends Layout
 {
     public function rowCount()
     {

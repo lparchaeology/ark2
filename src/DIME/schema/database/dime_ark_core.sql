@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 18, 2017 at 09:27 PM
+-- Generation Time: Jan 19, 2017 at 11:18 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -988,54 +988,35 @@ CREATE TABLE `ark_view_element` (
 --
 
 INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `subtype`, `attribute`, `class`, `template`, `form`, `editable`, `hidden`, `enabled`, `deprecated`, `keyword`) VALUES
+('dime_find_action', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_add', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_description', 'field', 'dime.find', '', 'description', '', '', 'ARK\\Form\\Type\\LocalMultilineTextType', 1, 0, 1, 0, NULL),
 ('dime_find_details', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_edit', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_event', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
-('dime_find_finddate', 'field', 'dime.find', '', 'finddate', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
-('dime_find_finder_id', 'field', 'dime.find', '', 'finder_id', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
-('dime_find_length', 'field', 'dime.find', '', 'length', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
-('dime_find_material', 'field', 'dime.find', '', 'material', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
+('dime_find_finddate', 'field', 'dime.find', '', 'finddate', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_finder_id', 'field', 'dime.find', '', 'finder_id', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_length', 'field', 'dime.find', '', 'length', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_material', 'field', 'dime.find', '', 'material', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_name', 'field', 'dime.find', '', 'name', '', '', 'ARK\\Form\\Type\\LocalTextType', 1, 0, 1, 0, NULL),
-('dime_find_period_end', 'field', 'dime.find', '', 'period_end', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
-('dime_find_period_start', 'field', 'dime.find', '', 'period_start', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
-('dime_find_registered_id', 'field', 'dime.find', '', 'registered_id', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
-('dime_find_secondary', 'field', 'dime.find', '', 'secondary', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
-('dime_find_subtype', 'field', 'dime.find', '', 'subtype', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
+('dime_find_period_end', 'field', 'dime.find', '', 'period_end', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_period_start', 'field', 'dime.find', '', 'period_start', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_registered_id', 'field', 'dime.find', '', 'registered_id', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_save', 'field', NULL, '', '', '', '', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', 1, 0, 1, 0, 'dime.find.save'),
+('dime_find_secondary', 'field', 'dime.find', '', 'secondary', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_subtype', 'field', 'dime.find', '', 'subtype', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_title', 'field', 'dime.find', '', 'title', '', '', 'ARK\\Form\\Type\\LocalTextType', 1, 0, 1, 0, NULL),
-('dime_find_type', 'field', 'dime.find', '', 'type', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL),
+('dime_find_type', 'field', 'dime.find', '', 'type', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_view', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
-('dime_find_weight', 'field', 'dime.find', '', 'weight', '', '', 'ARK\\Form\\Type\\PropertyType', 1, 0, 1, 0, NULL);
+('dime_find_weight', 'field', 'dime.find', '', 'weight', '', '', '', 1, 0, 1, 0, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ark_view_element_type`
+-- Table structure for table `ark_view_layout`
 --
 
-CREATE TABLE `ark_view_element_type` (
-  `type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `is_group` tinyint(1) NOT NULL DEFAULT '0',
-  `template` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `ark_view_element_type`
---
-
-INSERT INTO `ark_view_element_type` (`type`, `is_group`, `template`, `keyword`) VALUES
-('field', 0, '', ''),
-('grid', 1, 'layouts/grid.html.twig', ''),
-('tabbed', 1, 'layouts/tabbed.html.twig', ''),
-('table', 1, 'layouts/table.html.twig', '');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ark_view_group`
---
-
-CREATE TABLE `ark_view_group` (
+CREATE TABLE `ark_view_layout` (
   `element` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `row` int(11) NOT NULL,
   `col` int(11) NOT NULL,
@@ -1044,13 +1025,16 @@ CREATE TABLE `ark_view_group` (
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `child` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
 
 --
--- Dumping data for table `ark_view_group`
+-- Dumping data for table `ark_view_layout`
 --
 
-INSERT INTO `ark_view_group` (`element`, `row`, `col`, `seq`, `subtype`, `enabled`, `deprecated`, `child`) VALUES
+INSERT INTO `ark_view_layout` (`element`, `row`, `col`, `seq`, `subtype`, `enabled`, `deprecated`, `child`) VALUES
+('dime_find_action', 0, 0, 0, '', 1, 0, 'dime_find_save'),
+('dime_find_add', 0, 0, 0, '', 1, 0, 'dime_find_event'),
+('dime_find_add', 0, 1, 0, '', 1, 0, 'dime_find_details'),
 ('dime_find_details', 0, 0, 0, '', 1, 0, 'dime_find_type'),
 ('dime_find_details', 0, 0, 1, '', 1, 0, 'dime_find_subtype'),
 ('dime_find_details', 0, 0, 2, '', 1, 0, 'dime_find_period_start'),
@@ -1061,11 +1045,14 @@ INSERT INTO `ark_view_group` (`element`, `row`, `col`, `seq`, `subtype`, `enable
 ('dime_find_details', 0, 0, 7, '', 1, 0, 'dime_find_length'),
 ('dime_find_details', 0, 0, 8, '', 1, 0, 'dime_find_finddate'),
 ('dime_find_details', 0, 0, 9, '', 1, 0, 'dime_find_description'),
+('dime_find_edit', 0, 0, 0, '', 1, 0, 'dime_find_event'),
+('dime_find_edit', 0, 1, 0, '', 1, 0, 'dime_find_details'),
 ('dime_find_event', 0, 0, 0, '', 1, 0, 'dime_find_title'),
 ('dime_find_event', 0, 0, 1, '', 1, 0, 'dime_find_name'),
 ('dime_find_event', 0, 0, 2, '', 1, 0, 'dime_find_finder_id'),
 ('dime_find_view', 0, 0, 0, '', 1, 0, 'dime_find_event'),
-('dime_find_view', 0, 1, 0, '', 1, 0, 'dime_find_details');
+('dime_find_view', 0, 1, 0, '', 1, 0, 'dime_find_details'),
+('dime_find_view', 0, 1, 1, '', 1, 0, 'dime_find_save');
 
 -- --------------------------------------------------------
 
@@ -1086,6 +1073,30 @@ CREATE TABLE `ark_view_option` (
 
 INSERT INTO `ark_view_option` (`element`, `name`, `type`, `value`) VALUES
 ('dime_find_secondary', 'expanded', 'boolean', 'b:1;');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_view_type`
+--
+
+CREATE TABLE `ark_view_type` (
+  `type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `layout` tinyint(1) NOT NULL DEFAULT '0',
+  `form` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `template` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `ark_view_type`
+--
+
+INSERT INTO `ark_view_type` (`type`, `layout`, `form`, `template`, `keyword`) VALUES
+('field', 0, 'ARK\\Form\\Type\\PropertyType', '', ''),
+('grid', 1, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FormType', 'layouts/grid.html.twig', ''),
+('tabbed', 1, '', 'layouts/tabbed.html.twig', ''),
+('table', 1, '', 'layouts/table.html.twig', '');
 
 -- --------------------------------------------------------
 
@@ -3947,15 +3958,9 @@ ALTER TABLE `ark_view_element`
   ADD KEY `schma` (`schma`);
 
 --
--- Indexes for table `ark_view_element_type`
+-- Indexes for table `ark_view_layout`
 --
-ALTER TABLE `ark_view_element_type`
-  ADD PRIMARY KEY (`type`);
-
---
--- Indexes for table `ark_view_group`
---
-ALTER TABLE `ark_view_group`
+ALTER TABLE `ark_view_layout`
   ADD PRIMARY KEY (`element`,`subtype`,`row`,`col`,`seq`),
   ADD KEY `child` (`child`);
 
@@ -3964,6 +3969,12 @@ ALTER TABLE `ark_view_group`
 --
 ALTER TABLE `ark_view_option`
   ADD PRIMARY KEY (`element`,`name`);
+
+--
+-- Indexes for table `ark_view_type`
+--
+ALTER TABLE `ark_view_type`
+  ADD PRIMARY KEY (`type`);
 
 --
 -- Indexes for table `ark_vocabulary`
@@ -4191,15 +4202,15 @@ ALTER TABLE `ark_translation_parameter`
 -- Constraints for table `ark_view_element`
 --
 ALTER TABLE `ark_view_element`
-  ADD CONSTRAINT `ark_view_element_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_view_element_type` (`type`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_view_element_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_view_type` (`type`) ON UPDATE CASCADE,
   ADD CONSTRAINT `ark_view_element_ibfk_2` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `ark_view_group`
+-- Constraints for table `ark_view_layout`
 --
-ALTER TABLE `ark_view_group`
-  ADD CONSTRAINT `ark_view_group_ibfk_1` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_view_group_ibfk_2` FOREIGN KEY (`child`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `ark_view_layout`
+  ADD CONSTRAINT `ark_view_layout_ibfk_1` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_view_layout_ibfk_2` FOREIGN KEY (`child`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_option`

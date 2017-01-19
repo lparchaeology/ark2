@@ -45,10 +45,10 @@ class PropertyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $field = $options['field'];
-        $this->buildAttribute($builder, $field->attribute(), $field->optionsArray());
+        $this->buildAttribute($builder, $field->attribute(), $field->optionsArray(), 'keyValue');
     }
 
-    protected function buildAttribute(FormBuilderInterface $builder, $attribute, $options, $path = 'keyValue')
+    protected function buildAttribute(FormBuilderInterface $builder, $attribute, $options, $path)
     {
         $name = $attribute->name();
         $path = $path."[$name]";
@@ -72,7 +72,7 @@ class PropertyType extends AbstractType
         }
         $options['property_path'] = $path;
         $options['label'] = false;
-        $options['required'] = $attribute->isRequired();
+        //$options['required'] = $attribute->isRequired();
         $builder->add($name, $class, $options);
     }
 

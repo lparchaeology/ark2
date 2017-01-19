@@ -30,15 +30,7 @@
 
 namespace ARK\View;
 
-use ARK\Database\Database;
-use ARK\Model\Item\Item;
-use ARK\Model\Property\Property;
 use ARK\ORM\ClassMetadata;
-use ARK\ORM\ClassMetadataBuilder;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\Form\Extension\Core\Type;
-use Symfony\Component\Form\FormBuilderInterface;
 
 class Field extends Element
 {
@@ -55,25 +47,43 @@ class Field extends Element
         return $this->attribute()->keyword();
     }
 
-    public function formType()
+    public function formOptions()
     {
-        return $this->form ? $this->form : PropertyType::class;
-    }
-
-    public function renderView($resource, array $options = [], FormBuilderInterface $formBuilder = null)
-    {
-        return $this->element;
-    }
-
-    public function buildForm(FormBuilderInterface $formBuilder, array $options = [])
-    {
-        $options['field'] = $this;
-        $options['mapped'] = false;
         $options['label'] = $this->keyword();
-        $factory = $formBuilder->getFormFactory();
-        $data = $formBuilder->getData()->property($this->attribute->name());
-        $fieldBuilder = $factory->createNamedBuilder($this->element, $this->formType(), $data, $options);
-        $formBuilder->add($fieldBuilder);
+        if ($this->attribute) {
+            $options['field'] = $this;
+            $options['mapped'] = false;
+        }
+        return $options;
+    }
+
+    public function formData($resource)
+    {
+        if ($resource && $this->attribute) {
+            return $resource->property($this->attribute->name());;
+        }
+        return null;
+    }
+
+    public function renderView($resource, array $options = [])
+    {
+        // FIXME Should probably have some way to use FormTypes here to render 'flat' compond values
+        $value = 'FIXME: '.$this->element;
+        if ($this->attribute->isAtomic()) {
+            $value = $resource->property($this->attribute->name())->value();
+        } elseif ($this->attribute->format()->isAtomic()) {
+            $value = $resource->property($this->attribute->name())->value()[0];
+        } elseif ($this->attribute->format()->type()->isAtomic()) {
+            foreach ($this->attribute->format()->attributes() as $attribute) {
+                if ($attribute->isRoot()) {
+                    $value = $resource->property($this->attribute->name())->value()[$attribute->name()];
+                }
+            }
+        }
+        if ($value instanceof \DateTime) {
+            return $value->format('Y-m-d H:i:s');
+        }
+        return $value;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

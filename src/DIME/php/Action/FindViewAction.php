@@ -30,11 +30,11 @@
 
 namespace DIME\Action;
 
-use ARK\Service;
 use ARK\Error\ErrorException;
 use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
-use ARK\View\Element;
+use ARK\Service;
+use ARK\View\Layout;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -42,25 +42,22 @@ class FindViewAction
 {
     public function __invoke(Request $request, $findSlug)
     {
-        $find = ORM::find(Find::class, $findSlug);
-        if (!$find) {
+        if (!$find = ORM::find(Find::class, $findSlug)) {
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Item not found', "Item $findSlug not found"));
         }
 
-        $eventLayout = ORM::find(Element::class, 'dime_find_event');
-        $detailLayout = ORM::find(Element::class, 'dime_find_details');
-        //$viewLayout = ORM::find(Element::class, 'dime_find_view');
+        $layout = ORM::find(Layout::class, 'dime_find_view');
+        $form = $layout->buildForm($find);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Do updates
+            $data = $form->getData();
+            // Rebuild or redirect?
+        }
 
-        $content[0] = $eventLayout->renderView($find);
-        $content[1] = $detailLayout->renderView($find);
-
-        return Service::render(
-            'pages/page.html.twig',
-            [
-                //'layout' => $viewLayout,
-                'content' => $content,
-                'data' => $find,
-            ]
-        );
+        $options['layout'] = $layout;
+        $options['forms'][$layout->name()] = $form->createView();
+        $options['data'] = $find;
+        return Service::render('pages/page.html.twig', $options);
     }
 }

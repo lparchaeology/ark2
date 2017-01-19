@@ -39,45 +39,29 @@ class ApiControllerProvider implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
 
-        $controllers
-            ->method('GET')
-            ->get('/actors/{actorSlug}/finds', 'DIME\\Action\\JsonApi\\FindCollectionAction')
-            ->bind('api.actors.finds.collection');
+        $controllers->get('/actors/{actorSlug}/finds', 'DIME\\Action\\JsonApi\\FindCollectionAction')
+                    ->bind('api.actors.finds.collection');
 
-        $controllers
-            ->method('GET')
-            ->get('/actors/{actorSlug}/locations', 'DIME\\Action\\JsonApi\\LocationCollectionAction')
-            ->bind('api.actors.locations.collection');
+        $controllers->get('/actors/{actorSlug}/locations', 'DIME\\Action\\JsonApi\\LocationCollectionAction')
+                    ->bind('api.actors.locations.collection');
 
-        $controllers
-            ->method('GET')
-            ->get('/actors/{actorSlug}', 'DIME\\Action\\JsonApi\\ActorGetAction')
-            ->bind('api.actors.get');
+        $controllers->get('/actors/{actorSlug}', 'DIME\\Action\\JsonApi\\ActorGetAction')
+                    ->bind('api.actors.get');
 
-        $controllers
-            ->method('GET')
-            ->get('/actors', 'DIME\\Action\\JsonApi\\ActorCollectionAction')
-            ->bind('api.actors.collection');
+        $controllers->get('/actors', 'DIME\\Action\\JsonApi\\ActorCollectionAction')
+                    ->bind('api.actors.collection');
 
-        $controllers
-            ->method('GET')
-            ->get('/finds/{findSlug}', 'DIME\\Action\\JsonApi\\FindGetAction')
-            ->bind('api.finds.get');
+        $controllers->get('/finds/{findSlug}', 'DIME\\Action\\JsonApi\\FindGetAction')
+                    ->bind('api.finds.get');
 
-        $controllers
-            ->method('GET')
-            ->get('/finds', 'DIME\\Action\\JsonApi\\FindCollectionAction')
-            ->bind('api.finds.collection');
+        $controllers->get('/finds', 'DIME\\Action\\JsonApi\\FindCollectionAction')
+                    ->bind('api.finds.collection');
 
-        $controllers
-            ->method('GET')
-            ->get('/locations/{locationSlug}', 'DIME\\Action\\JsonApi\\LocationGetAction')
-            ->bind('api.locations.get');
+        $controllers->get('/locations/{locationSlug}', 'DIME\\Action\\JsonApi\\LocationGetAction')
+                    ->bind('api.locations.get');
 
-        $controllers
-            ->method('GET')
-            ->get('/locations', 'DIME\\Action\\JsonApi\\LocationCollectionAction')
-            ->bind('api.locations.collection');
+        $controllers->get('/locations', 'DIME\\Action\\JsonApi\\LocationCollectionAction')
+                    ->bind('api.locations.collection');
 
         return $controllers;
     }

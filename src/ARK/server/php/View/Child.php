@@ -95,7 +95,7 @@ class Child
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_view_group');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_view_layout');
         $builder->setReadOnly();
 
         // Key
