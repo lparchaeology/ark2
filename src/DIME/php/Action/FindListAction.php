@@ -32,6 +32,7 @@ namespace DIME\Action;
 
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\View\Element;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -122,7 +123,7 @@ class FindListAction
                     "links" => array(
                         array(
                             "name" => "dime.find.add",
-                            "active" => true,
+                            "active" => false,
                             "target" => "finds.add"
                         ),
                         array(
@@ -154,46 +155,16 @@ class FindListAction
 
 
         $finds = ORM::findAll(Find::class);
-        $head = Service::translate('dime.finds.list');
-        $id = Service::translate('dime.find');
-        $type = Service::translate('dime.find.type');
-        $name = Service::translate('dime.find.name');
-        $table = "
-            <div>
-                <h3>$head</h3>
-                <table id=\"dime.finds.table\" class=\"table table-striped table-bordered table-hover\">
-                    <thead><tr>
-                        <th>$id</th>
-                        <th>$type</th>
-                        <th>$name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-        ";
-        foreach ($finds as $find) {
-            $id = $find->id();
-            $type = $find->subtype()->keyword();
-            $name = $find->name();
-            $table .= "               <tr>";
-            $table .= "                   <td><a href=\"finds/$id\">$id</td>";
-            $table .= "                   <td>$type</td>";
-            $table .= "                   <td>$name</td>";
-            $table .= "               </tr>";
-        }
-        $table .= "
-                    </tbody>
-                </table>
-            </div>
-        ";
+        
+        $findsTableLayout = ORM::find(Element::class, 'dime_finds_table');
 
-        $content[0] = 'Panel for list/thumbnails of finds<br/><br/>'.$table;
+        $content[0] = $findsTableLayout->renderView($finds);
         $content[1] = 'Panel for map of all finds, or selected find summary<br/><br/>';
 
         return Service::render(
             'pages/page.html.twig',
             [
                 'content' => $content,
-                'finds' => $finds,
                 'page_config' => $page_config,
             ]
         );

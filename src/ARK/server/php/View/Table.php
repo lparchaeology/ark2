@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Grid View
+ * ARK Table View
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *

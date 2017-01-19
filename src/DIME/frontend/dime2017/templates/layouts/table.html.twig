@@ -1,42 +1,48 @@
 {# Standard table layout using only HTML5/Bootstrap #}
+
 <div>
 
-    <h3>Table Layout</h3>
-
     {% set table_class %}
-        table
-        {%- if layout.striped %}
-            table-striped
-        {%- endif -%}
-        {%- if layout.bordered %}
-            table-bordered
-        {%- endif -%}
-        {%- if layout.hover %}
-            table-hover
-        {%- endif -%}
-        {%- if layout.condensed %}
-            table-condensed
-        {%- endif -%}
+        table bootstrap-table table-hover
     {% endset %}
 
-    <table id="{{layout.id}}" class="{{table_class}}">
+    <table 
+    	id="{{layout.name}}"
+    	class="{{table_class}}"
+        data-toggle="table"
+        data-classes="{{table_class}}"
+        data-sort-name="{{layout.elements[0].name}}"
+        {#data-show-refresh="true"#}
+        data-show-toggle="true"
+        data-show-columns="true"
+        data-mobile-responsive="true"
+        data-switchcardview="true"
+    >
 
         <thead>
             <tr>
-                {% for field in layout.fields %}
-                    <th>
-                        {{field.title|trans}}
+                {% for field in layout.elements %}
+                    <th
+                    	data-field="{{field.name}}"
+                        data-title="{{field.keyword|trans}}"
+        				data-sortable="true"
+                    >
+                        {{field.keyword|trans}}
                     </th>
                 {% endfor %}
             </tr>
         </thead>
 
         <tbody>
-            {% for item in items %}
+            {% for item in data %}
                 <tr>
-                    {% for field in layout.fields %}
+                    {% for field in layout.elements %}
                         <td>
-                            {% block fieldvalue %}{% endblock %}
+                            {% if item.property(field.attribute.name).value is not null %}
+                                {{ item.property(field.attribute.name).value['content'] }}
+                            {% else %}
+                                {{ field.attribute.name }}
+                            {% endif %}
                         </td>
                     {% endfor %}
                 </tr>
