@@ -193,6 +193,7 @@ gulp.task('css', function() {
         config.vendorDir + '/select2-bootstrap-frontend/dist/select2-bootstrap.min.css',
         config.vendorDir + '/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.css',
         config.vendorDir + '/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css',
+        config.vendorDir + '/bootstrap-table/dist/bootstrap-table.css',
         config.vendorDir + '/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css'
     ];
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/assets/styles';
