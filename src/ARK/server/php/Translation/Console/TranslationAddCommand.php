@@ -31,6 +31,7 @@
 namespace ARK\Translation\Console;
 
 use ARK\ORM\ORM;
+use ARK\Service;
 use ARK\Translation\Domain;
 use ARK\Translation\Key;
 use ARK\Translation\Language;
@@ -72,7 +73,7 @@ class TranslationAddCommand extends Command
                 $domainNames[] = $domain->name();
                 $doms[$domain->name()] = $domain;
             }
-            $domainQuestion = new ChoiceQuestion("Please choose the domain (Default: 'TODO'): ", $domainNames);
+            $domainQuestion = new ChoiceQuestion("Please choose the domain (Default: 'dime'): ", $domainNames, 'dime');
             $domainQuestion->setAutocompleterValues($domainNames);
             $domainName = $question->ask($input, $output, $domainQuestion);
             $domain = $doms[$domainName];
@@ -87,7 +88,8 @@ class TranslationAddCommand extends Command
                 $langs[$language->code()] = $language;
             }
         }
-        $langQuestion = new ChoiceQuestion("Please choose the language (Default: 'TODO'): ", $langCodes, 'en');
+        $locale = Service::locale();
+        $langQuestion = new ChoiceQuestion("Please choose the language (Default: '$locale'): ", $langCodes, $locale);
         $langQuestion->setAutocompleterValues($langCodes);
         $langCode = $question->ask($input, $output, $langQuestion);
         $language = $langs[$langCode];

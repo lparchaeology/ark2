@@ -32,7 +32,7 @@ namespace DIME\Action;
 
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\View\Element;
+use ARK\View\Layout;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -155,8 +155,8 @@ class FindListAction
 
 
         $finds = ORM::findAll(Find::class);
-        
-        $findsTableLayout = ORM::find(Element::class, 'dime_finds_table');
+
+        $findsTableLayout = ORM::find(Layout::class, 'dime_find_table');
 
         $content[0] = $findsTableLayout->renderView($finds);
         $content[1] = 'Panel for map of all finds, or selected find summary<br/><br/>';

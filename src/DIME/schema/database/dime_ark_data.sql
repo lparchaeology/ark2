@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.1
+-- version 4.6.5.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 19, 2017 at 11:18 PM
--- Server version: 5.6.34
--- PHP Version: 7.1.0
+-- Generation Time: Jan 20, 2017 at 01:42 AM
+-- Server version: 10.0.22-MariaDB
+-- PHP Version: 7.0.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -294,8 +294,10 @@ INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `parame
 (2, 'find', '1', 'secondary', NULL, 'fe', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
 (3, 'find', '1', 'secondary', NULL, 'pb', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
 (4, 'find', '1', 'secondary', NULL, 'al', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
-(5, 'find', '1', 'period_start', 'AYTX', '', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
-(6, 'find', '1', 'period_end', 'AYGX', '', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '');
+(5, 'find', '1', 'period_start', NULL, 'AYTX', NULL, 0, '2017-01-20 00:40:58', 0, '0000-00-00 00:00:00', ''),
+(6, 'find', '1', 'period_end', NULL, 'AYGX', NULL, 0, '2017-01-20 00:41:08', 0, '0000-00-00 00:00:00', ''),
+(7, 'find', '2', 'material', NULL, 'fe', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+(8, 'find', '3', 'material', NULL, 'pb', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -327,7 +329,9 @@ INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `attribute`, `paramete
 (3, 'find', '2', 'name', 'en', 'My find number two', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
 (5, 'find', '3', 'name', 'en', 'My find number two', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
 (7, 'find', '1', 'description', 'en', 'A multiline description\\n\\nA multiline description\\n\\nA multiline description\\n\\nA multiline description', NULL, 0, '2017-01-17 17:04:13', 0, '0000-00-00 00:00:00', ''),
-(8, 'find', '1', 'title', 'en', 'A singleline title', NULL, 0, '2017-01-10 10:28:56', 0, '0000-00-00 00:00:00', '');
+(8, 'find', '1', 'title', 'en', 'Find 1 title', NULL, 0, '2017-01-20 00:39:58', 0, '0000-00-00 00:00:00', ''),
+(9, 'find', '2', 'title', 'en', 'Find 2 title', NULL, 0, '2017-01-20 00:40:07', 0, '0000-00-00 00:00:00', ''),
+(10, 'find', '3', 'title', 'en', 'Find 3 title', NULL, 0, '2017-01-10 10:28:56', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -825,12 +829,12 @@ ALTER TABLE `ark_fragment_object`
 -- AUTO_INCREMENT for table `ark_fragment_string`
 --
 ALTER TABLE `ark_fragment_string`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `ark_fragment_text`
 --
 ALTER TABLE `ark_fragment_text`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `ark_fragment_time`
 --

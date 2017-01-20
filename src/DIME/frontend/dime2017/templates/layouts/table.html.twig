@@ -3,12 +3,12 @@
 <div>
 
     {% set table_class %}
-        table bootstrap-table table-hover
+    table bootstrap-table table-hover
     {% endset %}
 
-    <table 
-    	id="{{layout.name}}"
-    	class="{{table_class}}"
+    <table
+        id="{{layout.name}}"
+        class="{{table_class}}"
         data-toggle="table"
         data-classes="{{table_class}}"
         data-sort-name="{{layout.elements[0].name}}"
@@ -16,17 +16,12 @@
         data-show-toggle="true"
         data-show-columns="true"
         data-mobile-responsive="true"
-        data-switchcardview="true"
-    >
+        data-switchcardview="true">
 
         <thead>
             <tr>
                 {% for field in layout.elements %}
-                    <th
-                    	data-field="{{field.name}}"
-                        data-title="{{field.keyword|trans}}"
-        				data-sortable="true"
-                    >
+                    <th data-field="{{field.name}}" data-title="{{field.keyword|trans}}" data-sortable="true">
                         {{field.keyword|trans}}
                     </th>
                 {% endfor %}
@@ -38,11 +33,7 @@
                 <tr>
                     {% for field in layout.elements %}
                         <td>
-                            {% if item.property(field.attribute.name).value is not null %}
-                                {{ item.property(field.attribute.name).value['content'] }}
-                            {% else %}
-                                {{ field.attribute.name }}
-                            {% endif %}
+                            {{ field.renderView(item) }}
                         </td>
                     {% endfor %}
                 </tr>
