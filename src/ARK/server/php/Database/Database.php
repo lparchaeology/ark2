@@ -236,16 +236,16 @@ class Database
         return $this->fragmentTables;
     }
 
-    public function getSubtypeEntities($module)
+    public function gettypeEntities($module)
     {
         $sql = "
-            SELECT ark_schema_subtype.subtype, ark_schema_subtype.entity
-            FROM ark_schema, ark_schema_subtype
+            SELECT ark_schema_type.type, ark_schema_type.entity
+            FROM ark_schema, ark_schema_type
             WHERE ark_schema.module = :module
             AND ark_schema.enabled = true
-            AND ark_schema.subtype_entities = true
-            AND ark_schema_subtype.schma = ark_schema.schma
-            AND ark_schema_subtype.enabled = true
+            AND ark_schema.type_entities = true
+            AND ark_schema_type.schma = ark_schema.schma
+            AND ark_schema_type.enabled = true
         ";
         $params = array(
             ':module' => $module,
@@ -308,22 +308,22 @@ class Database
         $sql = "
             SELECT
                 ark_module.*,
-                ark_module_schema.*, ark_schema_subtype.keyword AS modtype_keyword,
-                ark_schema_subtype.*, ark_schema_subtype.keyword AS modtype_keyword,
+                ark_module_schema.*, ark_schema_type.keyword AS modtype_keyword,
+                ark_schema_type.*, ark_schema_type.keyword AS modtype_keyword,
                 ark_schema_attribute.attribute
             FROM ark_module
             INNER JOIN ark_module_schema
                 ON ark_module_schema.module = ark_module.module
                 AND ark_module_schema.schema_id = :schema_id
                 AND ark_module_schema.enabled = true
-            INNER JOIN ark_schema_subtype
-                ON ark_schema_subtype.module = ark_module_schema.module
-                AND ark_schema_subtype.schema_id = ark_module_schema.schema_id
-                AND (ark_schema_subtype.enabled = true OR ark_schema_subtype.modtype = '')
+            INNER JOIN ark_schema_type
+                ON ark_schema_type.module = ark_module_schema.module
+                AND ark_schema_type.schema_id = ark_module_schema.schema_id
+                AND (ark_schema_type.enabled = true OR ark_schema_type.modtype = '')
             LEFT JOIN ark_schema_attribute
-                ON ark_schema_attribute.module = ark_schema_subtype.module
-                AND ark_schema_attribute.schema_id = ark_schema_subtype.schema_id
-                AND ark_schema_attribute.modtype = ark_schema_subtype.modtype
+                ON ark_schema_attribute.module = ark_schema_type.module
+                AND ark_schema_attribute.schema_id = ark_schema_type.schema_id
+                AND ark_schema_attribute.modtype = ark_schema_type.modtype
                 AND ark_schema_attribute.enabled = true
             WHERE ark_module.module = :module
             AND ark_module.enabled = true
@@ -352,7 +352,7 @@ class Database
     {
         $sql = "
             SELECT *
-            FROM ark_schema_subtype
+            FROM ark_schema_type
             WHERE module = :module
         ";
         $params[':module'] = $module;

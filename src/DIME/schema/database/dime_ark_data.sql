@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
+-- version 4.6.5.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 20, 2017 at 01:42 AM
--- Server version: 10.0.22-MariaDB
--- PHP Version: 7.0.14
+-- Generation Time: Jan 20, 2017 at 08:52 PM
+-- Server version: 5.6.34
+-- PHP Version: 7.1.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -50,7 +50,7 @@ CREATE TABLE `ark_fragment_blob` (
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `parameter` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `parameter` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `value` longblob NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
   `mod_by` int(11) NOT NULL,
@@ -71,7 +71,7 @@ CREATE TABLE `ark_fragment_boolean` (
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `parameter` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `parameter` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `value` tinyint(1) NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
   `mod_by` int(11) NOT NULL,
@@ -92,7 +92,7 @@ CREATE TABLE `ark_fragment_date` (
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `parameter` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `parameter` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `value` date NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
   `mod_by` int(11) NOT NULL,
@@ -120,7 +120,7 @@ CREATE TABLE `ark_fragment_datetime` (
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `parameter` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `parameter` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `value` datetime NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
   `mod_by` int(11) NOT NULL,
@@ -141,7 +141,7 @@ CREATE TABLE `ark_fragment_decimal` (
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `parameter` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `parameter` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `value` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
   `mod_by` int(11) NOT NULL,
@@ -170,7 +170,7 @@ CREATE TABLE `ark_fragment_float` (
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `parameter` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `parameter` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `value` double NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
   `mod_by` int(11) NOT NULL,
@@ -191,7 +191,7 @@ CREATE TABLE `ark_fragment_geometry` (
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `parameter` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `parameter` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `value` varchar(4000) COLLATE utf8_unicode_ci NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
   `mod_by` int(11) NOT NULL,
@@ -212,7 +212,7 @@ CREATE TABLE `ark_fragment_integer` (
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `parameter` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `parameter` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `value` bigint(20) NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
   `mod_by` int(11) NOT NULL,
@@ -233,7 +233,7 @@ CREATE TABLE `ark_fragment_item` (
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `parameter` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `parameter` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `value` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
   `mod_by` int(11) NOT NULL,
@@ -254,7 +254,7 @@ CREATE TABLE `ark_fragment_object` (
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `parameter` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `parameter` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `value` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `object_fid` int(11) DEFAULT NULL,
   `mod_by` int(11) NOT NULL,
@@ -275,7 +275,7 @@ CREATE TABLE `ark_fragment_string` (
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `parameter` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `parameter` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `value` varchar(4000) COLLATE utf8_unicode_ci NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
   `mod_by` int(11) NOT NULL,
@@ -290,14 +290,14 @@ CREATE TABLE `ark_fragment_string` (
 --
 
 INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `parameter`, `value`, `object_fid`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
-(1, 'find', '1', 'material', NULL, 'au', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
-(2, 'find', '1', 'secondary', NULL, 'fe', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
-(3, 'find', '1', 'secondary', NULL, 'pb', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
-(4, 'find', '1', 'secondary', NULL, 'al', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
-(5, 'find', '1', 'period_start', NULL, 'AYTX', NULL, 0, '2017-01-20 00:40:58', 0, '0000-00-00 00:00:00', ''),
-(6, 'find', '1', 'period_end', NULL, 'AYGX', NULL, 0, '2017-01-20 00:41:08', 0, '0000-00-00 00:00:00', ''),
-(7, 'find', '2', 'material', NULL, 'fe', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
-(8, 'find', '3', 'material', NULL, 'pb', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '');
+(1, 'find', '1', 'material', 'dime.material', 'au', NULL, 0, '2017-01-20 14:08:29', 0, '0000-00-00 00:00:00', ''),
+(2, 'find', '1', 'secondary', 'dime.material', 'fe', NULL, 0, '2017-01-20 14:08:36', 0, '0000-00-00 00:00:00', ''),
+(3, 'find', '1', 'secondary', 'dime.material', 'pb', NULL, 0, '2017-01-20 14:08:34', 0, '0000-00-00 00:00:00', ''),
+(4, 'find', '1', 'secondary', 'dime.material', 'al', NULL, 0, '2017-01-20 14:08:33', 0, '0000-00-00 00:00:00', ''),
+(5, 'find', '1', 'period_start', 'dime.period', 'AYTX', NULL, 0, '2017-01-20 14:07:53', 0, '0000-00-00 00:00:00', ''),
+(6, 'find', '1', 'period_end', 'dime.period', 'AYGX', NULL, 0, '2017-01-20 14:08:00', 0, '0000-00-00 00:00:00', ''),
+(7, 'find', '2', 'material', 'dime.material', 'fe', NULL, 0, '2017-01-20 14:08:22', 0, '0000-00-00 00:00:00', ''),
+(8, 'find', '3', 'material', 'dime.material', 'pb', NULL, 0, '2017-01-20 14:08:31', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -310,7 +310,7 @@ CREATE TABLE `ark_fragment_text` (
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `parameter` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `parameter` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `value` longtext COLLATE utf8_unicode_ci NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
   `mod_by` int(11) NOT NULL,
@@ -344,7 +344,7 @@ CREATE TABLE `ark_fragment_time` (
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `parameter` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `parameter` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `value` time NOT NULL,
   `object_fid` int(11) DEFAULT NULL,
   `mod_by` int(11) NOT NULL,
@@ -362,30 +362,30 @@ CREATE TABLE `ark_fragment_time` (
 
 CREATE TABLE `ark_item_actor` (
   `id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `schma` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `type` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `parent_module` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `parent_id` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `subtype` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `schma` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `label` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `v` varchar(36) COLLATE utf8_unicode_ci NOT NULL
+  `version` varchar(36) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `ark_item_actor`
 --
 
-INSERT INTO `ark_item_actor` (`id`, `parent_module`, `parent_id`, `idx`, `name`, `subtype`, `schma`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `v`) VALUES
-('1', NULL, NULL, '1', 'John', 'person', 'core.actor', 0, '2017-01-04 19:18:35', 0, '0000-00-00 00:00:00', ''),
-('2', NULL, NULL, '2', 'Paul', 'person', 'core.actor', 0, '2017-01-04 19:18:39', 0, '0000-00-00 00:00:00', ''),
-('3', NULL, NULL, '3', 'George', 'person', 'core.actor', 0, '2017-01-04 19:17:18', 0, '0000-00-00 00:00:00', ''),
-('4', NULL, NULL, '4', 'Ringo', 'person', 'core.actor', 0, '2017-01-04 19:17:18', 0, '0000-00-00 00:00:00', ''),
-('5', NULL, NULL, '5', 'Beatles', 'institution', 'core.actor', 0, '2017-01-04 19:17:18', 0, '0000-00-00 00:00:00', ''),
-('6', NULL, NULL, '6', 'Apple', 'institution', 'core.actor', 0, '2017-01-04 19:17:18', 0, '0000-00-00 00:00:00', '');
+INSERT INTO `ark_item_actor` (`id`, `schma`, `type`, `parent_module`, `parent_id`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+('1', 'core.actor', 'person', NULL, NULL, '1', '1', 0, '2017-01-20 14:01:52', 0, '0000-00-00 00:00:00', ''),
+('2', 'core.actor', 'person', NULL, NULL, '2', '2', 0, '2017-01-20 14:02:05', 0, '0000-00-00 00:00:00', ''),
+('3', 'core.actor', 'person', NULL, NULL, '3', '3', 0, '2017-01-20 14:02:09', 0, '0000-00-00 00:00:00', ''),
+('4', 'core.actor', 'person', NULL, NULL, '4', '4', 0, '2017-01-20 14:02:11', 0, '0000-00-00 00:00:00', ''),
+('5', 'core.actor', 'institution', NULL, NULL, '5', '5', 0, '2017-01-20 14:02:14', 0, '0000-00-00 00:00:00', ''),
+('6', 'core.actor', 'institution', NULL, NULL, '6', '6', 0, '2017-01-20 14:01:57', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -395,12 +395,12 @@ INSERT INTO `ark_item_actor` (`id`, `parent_module`, `parent_id`, `idx`, `name`,
 
 CREATE TABLE `ark_item_campaign` (
   `id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `schma` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `type` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `parent_module` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `parent_id` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `subtype` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `schma` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `label` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
@@ -416,12 +416,12 @@ CREATE TABLE `ark_item_campaign` (
 
 CREATE TABLE `ark_item_file` (
   `id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `schma` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `type` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `parent_module` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `parent_id` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `subtype` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `schma` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `label` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
@@ -437,12 +437,12 @@ CREATE TABLE `ark_item_file` (
 
 CREATE TABLE `ark_item_find` (
   `id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `schma` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `type` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `parent_module` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `parent_id` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `subtype` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `schma` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `label` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
@@ -454,10 +454,10 @@ CREATE TABLE `ark_item_find` (
 -- Dumping data for table `ark_item_find`
 --
 
-INSERT INTO `ark_item_find` (`id`, `parent_module`, `parent_id`, `idx`, `name`, `subtype`, `schma`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
-('1', NULL, NULL, '1', 'One', 'coin', 'dime.find', 0, '2017-01-09 16:35:26', 0, '0000-00-00 00:00:00', ''),
-('2', NULL, NULL, '2', 'Two', 'fibula', 'dime.find', 0, '2017-01-12 18:55:08', 0, '0000-00-00 00:00:00', ''),
-('3', NULL, NULL, '3', 'Three', 'coin', 'dime.find', 0, '2017-01-12 18:26:05', 0, '0000-00-00 00:00:00', '');
+INSERT INTO `ark_item_find` (`id`, `schma`, `type`, `parent_module`, `parent_id`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+('1', 'dime.find', 'coin', NULL, NULL, '1', '1', 0, '2017-01-20 13:58:46', 0, '0000-00-00 00:00:00', ''),
+('2', 'dime.find', 'fibula', NULL, NULL, '2', '2', 0, '2017-01-20 14:00:32', 0, '0000-00-00 00:00:00', ''),
+('3', 'dime.find', 'coin', NULL, NULL, '3', '3', 0, '2017-01-20 14:00:36', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -467,12 +467,12 @@ INSERT INTO `ark_item_find` (`id`, `parent_module`, `parent_id`, `idx`, `name`, 
 
 CREATE TABLE `ark_item_image` (
   `id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `schma` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `type` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `parent_module` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `parent_id` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `subtype` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `schma` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `label` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
@@ -488,12 +488,12 @@ CREATE TABLE `ark_item_image` (
 
 CREATE TABLE `ark_item_location` (
   `id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `schma` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `type` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `parent_module` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `parent_id` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `subtype` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `schma` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `label` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
@@ -505,8 +505,8 @@ CREATE TABLE `ark_item_location` (
 -- Dumping data for table `ark_item_location`
 --
 
-INSERT INTO `ark_item_location` (`id`, `parent_module`, `parent_id`, `idx`, `name`, `subtype`, `schma`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
-('1', NULL, NULL, '1', '1', NULL, 'dime.location', 0, '2017-01-11 11:36:01', 0, '0000-00-00 00:00:00', '');
+INSERT INTO `ark_item_location` (`id`, `schma`, `type`, `parent_module`, `parent_id`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+('1', 'dime.location', NULL, NULL, NULL, '1', '1', 0, '2017-01-11 11:36:01', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -694,7 +694,7 @@ ALTER TABLE `ark_fragment_time`
 --
 ALTER TABLE `ark_item_actor`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `name` (`name`) USING BTREE,
+  ADD KEY `name` (`label`) USING BTREE,
   ADD KEY `parent` (`parent_module`,`parent_id`) USING BTREE;
 
 --
@@ -702,7 +702,7 @@ ALTER TABLE `ark_item_actor`
 --
 ALTER TABLE `ark_item_campaign`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `name` (`name`) USING BTREE,
+  ADD KEY `name` (`label`) USING BTREE,
   ADD KEY `parent` (`parent_module`,`parent_id`) USING BTREE;
 
 --
@@ -711,14 +711,14 @@ ALTER TABLE `ark_item_campaign`
 ALTER TABLE `ark_item_file`
   ADD PRIMARY KEY (`id`),
   ADD KEY `parent` (`parent_module`,`parent_id`) USING BTREE,
-  ADD KEY `name` (`name`) USING BTREE;
+  ADD KEY `name` (`label`) USING BTREE;
 
 --
 -- Indexes for table `ark_item_find`
 --
 ALTER TABLE `ark_item_find`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `name` (`name`) USING BTREE,
+  ADD KEY `name` (`label`) USING BTREE,
   ADD KEY `parent` (`parent_module`,`parent_id`) USING BTREE;
 
 --
@@ -726,7 +726,7 @@ ALTER TABLE `ark_item_find`
 --
 ALTER TABLE `ark_item_image`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `name` (`name`) USING BTREE,
+  ADD KEY `name` (`label`) USING BTREE,
   ADD KEY `parent` (`parent_module`,`parent_id`) USING BTREE;
 
 --
@@ -734,7 +734,7 @@ ALTER TABLE `ark_item_image`
 --
 ALTER TABLE `ark_item_location`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `name` (`name`) USING BTREE,
+  ADD KEY `name` (`label`) USING BTREE,
   ADD KEY `parent` (`parent_module`,`parent_id`) USING BTREE;
 
 --

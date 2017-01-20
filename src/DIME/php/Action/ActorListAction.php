@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -30,18 +30,14 @@
 
 namespace DIME\Action;
 
-use ARK\Service;
+use ARK\Entity\Actor;
+use DIME\Action\EntityListAction;
 use Symfony\Component\HttpFoundation\Request;
 
-class ActorListAction
+class ActorListAction extends EntityListAction
 {
     public function __invoke(Request $request)
     {
-        return Service::render(
-            'pages/page.html.twig',
-            [
-                'content' => ActorListAction::class,
-            ]
-        );
+        return $this->render($request, Actor::class, 'core_actor_list');
     }
 }

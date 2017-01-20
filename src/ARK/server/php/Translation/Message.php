@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -34,7 +34,6 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\Translation\Key;
 use ARK\Translation\Language;
 use ARK\Translation\Role;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Message
@@ -108,9 +107,9 @@ class Message
     public static function loadMetadata(ClassMetadata $metadata)
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_translation_message');
-        $builder->addManyToOneKey('language', 'Language');
-        $builder->addManyToOneKey('key', 'Key', 'keyword');
-        $builder->addManyToOneKey('role', 'Role');
+        $builder->addManyToOneKey('language', 'ARK\Translation\Language');
+        $builder->addManyToOneKey('key', 'ARK\Translation\Key', 'keyword');
+        $builder->addManyToOneKey('role', 'ARK\Translation\Role');
         $builder->addStringField('text', 4294967295);
         $builder->addStringField('notes', 4294967295);
         $builder->setReadOnly();

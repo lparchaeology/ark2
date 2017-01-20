@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -30,34 +30,14 @@
 
 namespace DIME\Action;
 
-use ARK\Service;
-use ARK\ORM\ORM;
+use DIME\Action\EntityListAction;
 use DIME\Entity\Location;
 use Symfony\Component\HttpFoundation\Request;
 
-class LocationListAction
+class LocationListAction extends EntityListAction
 {
-    public function __invoke(Request $request, $actorSlug = null)
+    public function __invoke(Request $request)
     {
-        $locations = ORM::findAll(Location::class);
-
-        $list = "<h3>dime.locations</h3>";
-        foreach ($locations as $location) {
-            $id = $location->id();
-            $type = $location->subtype() ? $type = $location->subtype()->keyword() : 'none';
-            $name = $location->name();
-            $list .= "<p><a href=\"locations/$id\">$id</a> : $type : $name</p>";
-        }
-
-        $content[0] = $list;
-        $content[1] = 'Panel for map of all locations, or selected find summary<br/><br/>';
-
-        return Service::render(
-            'pages/page.html.twig',
-            [
-                'content' => $content,
-                'items' => $locations,
-            ]
-        );
+        return $this->render($request, Location::class, 'dime_location_list');
     }
 }

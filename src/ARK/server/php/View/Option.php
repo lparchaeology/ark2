@@ -81,7 +81,7 @@ class Option
         $builder->setReadOnly();
 
         // Key
-        $builder->addManyToOneKey('element', 'Element');
+        $builder->addManyToOneKey('element', 'ARK\View\Element');
         $builder->addStringKey('name', 30);
 
         // Fields

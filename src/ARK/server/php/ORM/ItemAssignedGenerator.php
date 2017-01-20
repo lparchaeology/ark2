@@ -21,19 +21,18 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model\Item;
+namespace ARK\ORM;
 
 use ARK\Error\ErrorException;
 use ARK\Http\Error\InternalServerError;
-use ARK\Model\Item\Item;
-use ARK\Model\Item\ItemSequenceGenerator;
+use ARK\ORM\ItemSequenceGenerator;
 use Doctrine\ORM\EntityManager;
 
 class ItemAssignedGenerator extends ItemSequenceGenerator

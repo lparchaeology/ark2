@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -30,8 +30,8 @@
 
 namespace ARK\Vocabulary;
 
-use ARK\EnabledTrait;
-use ARK\KeywordTrait;
+use ARK\Model\EnabledTrait;
+use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
@@ -77,7 +77,7 @@ class Term
         $builder->setReadOnly();
 
         // Key
-        $builder->addManyToOneKey('concept', 'Vocabulary', 'concept', 'concept', 'terms');
+        $builder->addManyToOneKey('concept', 'ARK\Vocabulary\Vocabulary', 'concept', 'concept', 'terms');
         $builder->addStringKey('term', 30);
 
         // Attributes
@@ -86,6 +86,6 @@ class Term
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations
-        $builder->addOneToMany('parameters', 'Parameter', 'term');
+        $builder->addOneToMany('parameters', 'ARK\Vocabulary\Parameter', 'term');
     }
 }

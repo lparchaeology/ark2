@@ -31,6 +31,7 @@
 namespace ARK\View;
 
 use ARK\ORM\ClassMetadata;
+use ARK\View\Element;
 use ARK\Service;
 
 abstract class Layout extends Element

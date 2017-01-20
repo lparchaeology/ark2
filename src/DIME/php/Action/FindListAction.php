@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -30,18 +30,16 @@
 
 namespace DIME\Action;
 
-use ARK\ORM\ORM;
-use ARK\Service;
-use ARK\View\Layout;
+use DIME\Action\EntityListAction;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
-class FindListAction
+class FindListAction extends EntityListAction
 {
     public function __invoke(Request $request, $actorSlug = null)
     {
-        $page_config = array(
-            "navlinks" => array (
+        $options['page_config'] = array(
+            "navlinks" => array(
                 array(
                     "name" => "dime.home",
                     "dropdown" => false,
@@ -51,7 +49,7 @@ class FindListAction
                     "name" => "dime.detector",
                     "dropdown" => true,
                     "target" => "detector",
-                    "navlinks" => array (
+                    "navlinks" => array(
                         array(
                             "name" => "dime.metaldetector",
                             "target" => "detector"
@@ -71,7 +69,7 @@ class FindListAction
                     "name" => "dime.about",
                     "dropdown" => true,
                     "target" => "about",
-                    "navlinks" => array (
+                    "navlinks" => array(
                         array(
                             "name" => "dime.about.groups",
                             "target" => "about"
@@ -98,7 +96,7 @@ class FindListAction
                     "name" => "dime.exhibits",
                     "dropdown" => true,
                     "target" => "exhibits",
-                    "navlinks" => array (
+                    "navlinks" => array(
                         array(
                             "name" => "dime.exhibits.forests",
                             "target" => "exhibits"
@@ -115,7 +113,7 @@ class FindListAction
                     "target" => "news"
                 )
             ),
-            "sidelinks" => array (
+            "sidelinks" => array(
                 array(
                     "name" => "add",
                     "active" => false,
@@ -153,20 +151,6 @@ class FindListAction
             )
         );
 
-
-        $finds = ORM::findAll(Find::class);
-
-        $findsTableLayout = ORM::find(Layout::class, 'dime_find_table');
-
-        $content[0] = $findsTableLayout->renderView($finds);
-        $content[1] = 'Panel for map of all finds, or selected find summary<br/><br/>';
-
-        return Service::render(
-            'pages/page.html.twig',
-            [
-                'content' => $content,
-                'page_config' => $page_config,
-            ]
-        );
+        return $this->render($request, Find::class, 'dime_find_list', $options);
     }
 }

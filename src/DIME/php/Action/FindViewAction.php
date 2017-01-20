@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -30,34 +30,14 @@
 
 namespace DIME\Action;
 
-use ARK\Error\ErrorException;
-use ARK\Http\Error\NotFoundError;
-use ARK\ORM\ORM;
-use ARK\Service;
-use ARK\View\Layout;
+use DIME\Action\EntityViewAction;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
-class FindViewAction
+class FindViewAction extends EntityViewAction
 {
     public function __invoke(Request $request, $findSlug)
     {
-        if (!$find = ORM::find(Find::class, $findSlug)) {
-            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Item not found', "Item $findSlug not found"));
-        }
-
-        $layout = ORM::find(Layout::class, 'dime_find_view');
-        $form = $layout->buildForm($find);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Do updates
-            $data = $form->getData();
-            // Rebuild or redirect?
-        }
-
-        $options['layout'] = $layout;
-        $options['forms'][$layout->name()] = $form->createView();
-        $options['data'] = $find;
-        return Service::render('pages/page.html.twig', $options);
+        return $this->render($request, $findSlug, Find::class, 'dime_find_item');
     }
 }

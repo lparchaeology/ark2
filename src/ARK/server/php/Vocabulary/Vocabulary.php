@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -30,8 +30,8 @@
 
 namespace ARK\Vocabulary;
 
-use ARK\EnabledTrait;
-use ARK\KeywordTrait;
+use ARK\Model\EnabledTrait;
+use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -81,17 +81,17 @@ abstract class Vocabulary
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_vocabulary');
         $builder->addStringKey('concept', 30);
-        $builder->addManyToOneField('type', 'Type', 'type', 'type', false);
+        $builder->addManyToOneField('type', 'ARK\Vocabulary\Type', 'type', 'type', false);
         $builder->addStringField('source', 30);
         $builder->addField('closed', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
         $builder->setSingleTableInheritance()->setDiscriminatorColumn('type', 'string', 10);
-        $builder->addDiscriminatorMapClass('taxonomy', 'Taxonomy');
-        $builder->addDiscriminatorMapClass('list', 'TermList');
-        $builder->addDiscriminatorMapClass('ring', 'TermRing');
-        $builder->addDiscriminatorMapClass('thesaurus', 'Thesaurus');
-        $builder->addOneToMany('terms', 'Term', 'concept');
+        $builder->addDiscriminatorMapClass('taxonomy', 'ARK\Vocabulary\Taxonomy');
+        $builder->addDiscriminatorMapClass('list', 'ARK\Vocabulary\TermList');
+        $builder->addDiscriminatorMapClass('ring', 'ARK\Vocabulary\TermRing');
+        $builder->addDiscriminatorMapClass('thesaurus', 'ARK\Vocabulary\Thesaurus');
+        $builder->addOneToMany('terms', 'ARK\Vocabulary\Term', 'concept');
         $builder->setReadOnly();
     }
 }

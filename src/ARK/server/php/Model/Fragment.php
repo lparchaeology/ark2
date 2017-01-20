@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Schema Fragment
+ * ARK Model Schema Fragment
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -32,7 +32,7 @@ namespace ARK\Model;
 
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\VersionTrait;
+use ARK\Model\VersionTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 
 abstract class Fragment
@@ -94,6 +94,6 @@ abstract class Fragment
         $builder->addStringField('attribute', 30);
         $builder->addStringField('parameter', 30);
         $builder->addField('parent', 'integer', [], 'object_fid');
-        VersionTrait::buildMetadata($builder);
+        VersionTrait::buildVersionMetadata($builder);
     }
 }

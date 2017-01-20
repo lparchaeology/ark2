@@ -30,8 +30,7 @@
 
 namespace ARK\View;
 
-use ARK\EnabledTrait;
-use ARK\Model\Item\Item;
+use ARK\Model\EnabledTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use Symfony\Component\Form\FormBuilder;
@@ -44,7 +43,7 @@ class Child
     protected $row = 0;
     protected $col = 0;
     protected $seq = 0;
-    protected $subtype = null;
+    protected $itemType = null;
     protected $child = null;
 
     public function parent()
@@ -67,9 +66,9 @@ class Child
         return $this->seq;
     }
 
-    public function subtype()
+    public function itemType()
     {
-        return $this->subtype;
+        return $this->itemType;
     }
 
     public function element()
@@ -99,16 +98,16 @@ class Child
         $builder->setReadOnly();
 
         // Key
-        $builder->addManyToOneKey('parent', 'Element', 'element', 'element');
+        $builder->addManyToOneKey('parent', 'ARK\View\Element', 'element', 'element');
         $builder->addKey('row', 'integer');
         $builder->addKey('col', 'integer');
         $builder->addKey('seq', 'integer');
-        $builder->addStringKey('subtype', 30);
+        $builder->addStringKey('itemType', 30, 'item_type');
 
         // Fields
         EnabledTrait::buildEnabledMetadata($builder);
 
         // Relationships
-        $builder->addManyToOneField('child', 'Element', 'child', 'element', false);
+        $builder->addManyToOneField('child', 'ARK\View\Element', 'child', 'element', false);
     }
 }

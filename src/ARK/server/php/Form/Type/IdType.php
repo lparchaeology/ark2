@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -33,7 +33,7 @@ namespace ARK\Form\Type;
 use ARK\Service;
 use ARK\Model\Item;
 use ARK\Model\Property;
-use ARK\Model\TextFragment;
+use ARK\Model\Fragment\TextFragment;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -45,7 +45,7 @@ class IdType extends AbstractType
     {
         $attribute = $options['field']->attribute()->name();
         $fieldOptions['label'] = false;
-        $fieldOptions['property_path'] = "id";
+        $fieldOptions['property_path'] = "keyValue[id]";
         $builder->add('id', TextType::class, $fieldOptions);
     }
 
@@ -53,7 +53,7 @@ class IdType extends AbstractType
     {
         $resolver->setDefaults(array(
             'field' => null,
-            'data_class' => Item::class,
+            'data_class' => Property::class,
             'empty_data' => null,
         ));
     }

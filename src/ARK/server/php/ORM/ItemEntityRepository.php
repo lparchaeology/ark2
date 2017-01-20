@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -30,7 +30,7 @@
 
 namespace ARK\ORM;
 
-use ARK\Schema\Schema;
+use ARK\Model\Schema;
 use Doctrine\ORM\EntityRepository;
 
 class ItemEntityRepository extends EntityRepository
@@ -40,9 +40,9 @@ class ItemEntityRepository extends EntityRepository
         return $this->getClassMetadata();
     }
 
-    public function findProperties($id, Schema $schema, $subtype)
+    public function findProperties($id, Schema $schema, $type)
     {
         $persister = $this->_em->getUnitOfWork()->getEntityPersister($this->_entityName);
-        return $persister->findProperties($id, $schema, $subtype);
+        return $persister->findProperties($id, $schema, $type);
     }
 }

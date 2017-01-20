@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -37,11 +37,11 @@ namespace ARK\ORM;
  */
 
 use ARK\ORM\EntityManager;
+use ARK\ORM\StaticPHPDriver;
 use ARK\ORM\UnitOfWork;
 use Closure;
 use Doctrine\Common\Cache\CacheProvider;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
-use Doctrine\Common\Persistence\Mapping\Driver\StaticPHPDriver;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager as DoctrineEntityManager;
@@ -78,12 +78,12 @@ class OrmServiceProvider implements ServiceProviderInterface
             'metadata_cache' => $container['orm.default_cache'],
             'result_cache' => $container['orm.default_cache'],
             'hydration_cache' => $container['orm.default_cache'],
-            'class_metadata_factory_name' => 'ARK\\ORM\\ClassMetadataFactory',
-            'entity_listener_resolver' => 'Doctrine\\ORM\Mapping\\DefaultEntityListenerResolver',
-            'naming_strategy' => 'Doctrine\\ORM\\Mapping\\DefaultNamingStrategy',
-            'quote_strategy' => 'Doctrine\\ORM\\Mapping\\DefaultQuoteStrategy',
-            'default_repository_class' => 'Doctrine\\ORM\\EntityRepository',
-            'repository_factory' => 'Doctrine\\ORM\\Repository\\DefaultRepositoryFactory',
+            'class_metadata_factory_name' => 'ARK\ORM\ClassMetadataFactory',
+            'entity_listener_resolver' => 'Doctrine\ORM\Mapping\DefaultEntityListenerResolver',
+            'naming_strategy' => 'Doctrine\ORM\Mapping\DefaultNamingStrategy',
+            'quote_strategy' => 'Doctrine\ORM\Mapping\DefaultQuoteStrategy',
+            'default_repository_class' => 'Doctrine\ORM\EntityRepository',
+            'repository_factory' => 'Doctrine\ORM\Repository\DefaultRepositoryFactory',
         ];
 
         $container['orm.ems.options.initializer'] = $container->protect(function () use ($container) {
@@ -95,7 +95,7 @@ class OrmServiceProvider implements ServiceProviderInterface
 
             $initialized = true;
 
-            $srcDir = $container['dir.install'].'/src/ARK/server/php/';
+            $srcDir = $container['dir.install'].'/src/ARK/server/php';
             $options['core'] = array_replace(
                 $container['orm.em.default_options'],
                 [
@@ -103,22 +103,38 @@ class OrmServiceProvider implements ServiceProviderInterface
                     'mappings' => [
                         [
                             'type' => 'php',
-                            'namespace' => 'ARK\\Schema',
-                            'path' => $srcDir.'/Schema',
+                            'namespace' => 'ARK\Model',
+                            'path' => [
+                                $srcDir.'/Model/Attribute.php',
+                                $srcDir.'/Model/Format.php',
+                                $srcDir.'/Model/FragmentType.php',
+                                $srcDir.'/Model/Module.php',
+                                $srcDir.'/Model/Schema.php',
+                            ]
                         ],
                         [
                             'type' => 'php',
-                            'namespace' => 'ARK\\View',
+                            'namespace' => 'ARK\Model\Format',
+                            'path' => $srcDir.'/Model/Format',
+                        ],
+                        [
+                            'type' => 'php',
+                            'namespace' => 'ARK\Model\Schema',
+                            'path' => $srcDir.'/Model/Schema',
+                        ],
+                        [
+                            'type' => 'php',
+                            'namespace' => 'ARK\View',
                             'path' => $srcDir.'/View',
                         ],
                         [
                             'type' => 'php',
-                            'namespace' => 'ARK\\Vocabulary',
+                            'namespace' => 'ARK\Vocabulary',
                             'path' => $srcDir.'/Vocabulary',
                         ],
                         [
                             'type' => 'php',
-                            'namespace' => 'ARK\\Translation',
+                            'namespace' => 'ARK\Translation',
                             'path' => $srcDir.'/Translation',
                         ],
                     ],
@@ -131,22 +147,27 @@ class OrmServiceProvider implements ServiceProviderInterface
                     'mappings' => [
                         [
                             'type' => 'php',
-                            'namespace' => 'ARK\\Model',
-                            'path' => $srcDir.'/Model',
+                            'namespace' => 'ARK\Model',
+                            'path' => $srcDir.'/Model/Fragment.php',
                         ],
                         [
                             'type' => 'php',
-                            'namespace' => 'ARK\\Entity',
+                            'namespace' => 'ARK\Model\Fragment',
+                            'path' => $srcDir.'/Model/Fragment',
+                        ],
+                        [
+                            'type' => 'php',
+                            'namespace' => 'ARK\Entity',
                             'path' => $srcDir.'/Entity',
                         ],
                         [
                             'type' => 'php',
-                            'namespace' => 'ARK\\File',
+                            'namespace' => 'ARK\File',
                             'path' => $srcDir.'/File',
                         ],
                         [
                             'type' => 'php',
-                            'namespace' => 'DIME\\Entity',
+                            'namespace' => 'DIME\Entity',
                             'path' => $container['dir.install'].'/src/DIME/php/Entity',
                         ],
                     ],

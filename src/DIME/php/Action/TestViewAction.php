@@ -33,8 +33,8 @@ namespace DIME\Action;
 use ARK\Entity\Actor;
 use ARK\ORM\ORM;
 use ARK\Translation\Key;
-use ARK\Schema\Format;
-use ARK\Schema\Module;
+use ARK\Model\Format;
+use ARK\Model\Module;
 use ARK\Service;
 use ARK\Vocabulary\Vocabulary;
 use DIME\Entity\Find;
@@ -49,7 +49,7 @@ class TestViewAction
         if ($finds = ORM::findAll(Find::class)) {
             $contents .= '<br /><br />Finds<br /><br />';
             foreach ($finds as $find) {
-                $contents .= $find->id().'   '.$find->name().'   '.$find->schema()->name().'<br />';
+                $contents .= $find->id().'   '.$find->label().'   '.$find->schema()->name().'<br />';
                 foreach ($find->properties() as $property) {
                     if (is_array($property->value())) {
                         $value = '['.implode(', ', $property->value()).']';
@@ -66,7 +66,7 @@ class TestViewAction
         if ($actors = ORM::findAll(Actor::class)) {
             $contents .= '<br /><br />Actors<br /><br />';
             foreach ($actors as $actor) {
-                $contents .= $actor->id().'   '.$actor->name().'   '.$actor->schema()->name().'<br />';
+                $contents .= $actor->id().'   '.$actor->label().'   '.$actor->schema()->name().'<br />';
             }
         }
 
@@ -76,16 +76,16 @@ class TestViewAction
                 $contents .= $module->name().'   '.$module->resource().'<br />';
                 foreach ($module->schemas() as $schema) {
                     $contents .= '---- '.$schema->name().'   '.$schema->module()->entity().'<br />';
-                    foreach ($schema->subtypes() as $subtype) {
-                        $contents .= '-------- '.$subtype->name().'   '.$subtype->entity().'<br />';
-                        foreach ($schema->attributes($subtype->name()) as $attribute) {
+                    foreach ($schema->types() as $type) {
+                        $contents .= '-------- '.$type->name().'   '.$type->entity().'<br />';
+                        foreach ($schema->attributes($type->name()) as $attribute) {
                             $contents .= '------------ '.$attribute->name().'   '.$attribute->format()->name().'   '.$attribute->format()->keyword().'<br />';
                         }
-                        foreach ($schema->associations($subtype->name()) as $association) {
+                        foreach ($schema->associations($type->name()) as $association) {
                             $contents .= '------------ '.$association->name().'   '.$association->inverseSchema()->name().'<br />';
                         }
                     }
-                    if (!$schema->useSubtypes()) {
+                    if (!$schema->useTypes()) {
                         foreach ($schema->attributes() as $attribute) {
                             $contents .= '-------- '.$attribute->name().'   '.$attribute->format()->name().'<br />';
                         }
@@ -140,7 +140,7 @@ class TestViewAction
         }
 
         $content[0] = $contents;
-        $content[0] = $contents2;
+        $content[1] = $contents2;
 
         return Service::render('pages/page.html.twig', ['content' => $content]);
     }

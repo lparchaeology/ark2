@@ -30,15 +30,11 @@
 
 namespace ARK\View;
 
-use ARK\EnabledTrait;
-use ARK\Form\Type\PropertyType;
-use ARK\KeywordTrait;
+use ARK\Model\EnabledTrait;
+use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
-use ARK\Schema\Schema;
-use ARK\Schema\SchemaAttribute;
 use ARK\Service;
-use ARK\View\Child;
 use ARK\View\Type;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -51,7 +47,7 @@ abstract class Element
 
     protected $element = '';
     protected $type = '';
-    protected $subtype = '';
+    protected $itemType = '';
     protected $attribute = null;
     protected $class = '';
     protected $template = '';
@@ -168,8 +164,8 @@ abstract class Element
 
         // Fields
         $builder->addManyToOneField('type', Type::class, 'type', 'type', false);
-        $builder->addManyToOneField('schma', Schema::class);
-        $builder->addStringField('subtype', 30);
+        $builder->addManyToOneField('schma', 'ARK\Model\Schema');
+        $builder->addStringField('itemType', 30, 'item_type');
         $builder->addStringField('class', 100);
         $builder->addStringField('template', 100);
         $builder->addStringField('form', 100);
@@ -179,23 +175,23 @@ abstract class Element
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Relationships
-        $builder->addOneToMany('children', Child::class, 'parent');
-        $builder->addOneToMany('options', Option::class, 'element');
+        $builder->addOneToMany('children', 'ARK\View\Child', 'parent');
+        $builder->addOneToMany('options', 'ARK\View\Option', 'element');
         $builder->addCompoundManyToOneField(
             'attribute',
-            SchemaAttribute::class,
+            'ARK\Model\Schema\SchemaAttribute',
             [
                 ['column' => 'schma', 'nullable' => false],
-                ['column' => 'subtype', 'nullable' => false],
+                ['column' => 'item_type', 'reference' => 'type', 'nullable' => false],
                 ['column' => 'attribute', 'nullable' => false]
             ]
         );
 
         // Inheritance
         $builder->setSingleTableInheritance()->setDiscriminatorColumn('type', 'string', 10);
-        $builder->addDiscriminatorMapClass('field', 'Field');
-        $builder->addDiscriminatorMapClass('grid', 'Grid');
-        $builder->addDiscriminatorMapClass('tabbed', 'Tabbed');
-        $builder->addDiscriminatorMapClass('table', 'Table');
+        $builder->addDiscriminatorMapClass('field', 'ARK\View\Field');
+        $builder->addDiscriminatorMapClass('grid', 'ARK\View\Grid');
+        $builder->addDiscriminatorMapClass('tabbed', 'ARK\View\Tabbed');
+        $builder->addDiscriminatorMapClass('table', 'ARK\View\Table');
     }
 }

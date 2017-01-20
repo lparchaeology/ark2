@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -87,11 +87,11 @@ class Key
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_translation');
         $builder->addStringKey('keyword', 100);
-        $builder->addManyToOneField('domain', 'Domain');
+        $builder->addManyToOneField('domain', 'ARK\Translation\Domain');
         $builder->addField('isPlural', 'boolean', [], 'is_plural');
         $builder->addField('hasParameters', 'boolean', [], 'has_parameters');
-        $builder->addOneToMany('parameters', 'Parameter', 'key');
-        $builder->addOneToMany('messages', 'Message', 'key');
+        $builder->addOneToMany('parameters', 'ARK\Translation\Parameter', 'key');
+        $builder->addOneToMany('messages', 'ARK\Translation\Message', 'key');
         $builder->setReadOnly();
     }
 }

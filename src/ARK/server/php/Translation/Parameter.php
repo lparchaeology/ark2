@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -51,7 +51,7 @@ class Parameter
     public static function loadMetadata(ClassMetadata $metadata)
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_translation_parameter');
-        $builder->addManyToOneKey('key', 'Key', 'keyword');
+        $builder->addManyToOneKey('key', 'ARK\Translation\Key', 'keyword');
         $builder->addStringKey('parameter', 30);
         $builder->setReadOnly();
     }

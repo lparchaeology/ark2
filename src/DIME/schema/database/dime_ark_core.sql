@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
+-- version 4.6.5.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 20, 2017 at 01:42 AM
--- Server version: 10.0.22-MariaDB
--- PHP Version: 7.0.14
+-- Generation Time: Jan 20, 2017 at 08:52 PM
+-- Server version: 5.6.34
+-- PHP Version: 7.1.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -426,19 +426,19 @@ CREATE TABLE `ark_fragment_type` (
 --
 
 INSERT INTO `ark_fragment_type` (`type`, `compound`, `tbl`, `format_class`, `model_class`, `form_class`, `enabled`, `deprecated`, `keyword`) VALUES
-('blob', 0, 'ark_fragment_blob', 'ARK\\Schema\\BlobFormat', 'ARK\\Model\\BlobFragment', '', 1, 0, 'fragment.blob'),
-('boolean', 0, 'ark_fragment_boolean', 'ARK\\Schema\\BooleanFormat', 'ARK\\Model\\BooleanFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', 1, 0, 'fragment.boolean'),
-('date', 0, 'ark_fragment_date', 'ARK\\Schema\\DateFormat', 'ARK\\Model\\DateFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateType', 1, 0, 'fragment.date'),
-('datetime', 0, 'ark_fragment_datetime', 'ARK\\Schema\\DateTimeFormat', 'ARK\\Model\\DateTimeFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateTimeType', 1, 0, 'fragment.datetime'),
-('decimal', 0, 'ark_fragment_decimal', 'ARK\\Schema\\DecimalFormat', 'ARK\\Model\\DecimalFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', 1, 0, 'fragment.decimal'),
-('float', 0, 'ark_fragment_float', 'ARK\\Schema\\FloatFormat', 'ARK\\Model\\FloatFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', 1, 0, 'fragment.float'),
-('geometry', 0, 'ark_fragment_geometry', 'ARK\\Schema\\GeometryFormat', 'ARK\\Model\\GeometryFragment', '', 1, 0, 'fragment.geometry'),
-('integer', 0, 'ark_fragment_integer', 'ARK\\Schema\\IntegerFormat', 'ARK\\Model\\IntegerFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\IntegerType', 1, 0, 'fragment.integer'),
-('item', 0, 'ark_fragment_item', 'ARK\\Schema\\ItemFormat', 'ARK\\Model\\ItemFragment', '', 1, 0, 'fragment.item'),
-('object', 1, 'ark_fragment_object', 'ARK\\Schema\\ObjectFormat', 'ARK\\Model\\ObjectFragment', '', 1, 0, 'fragment.object'),
-('string', 0, 'ark_fragment_string', 'ARK\\Schema\\StringFormat', 'ARK\\Model\\StringFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', 1, 0, 'fragment.string'),
-('text', 0, 'ark_fragment_text', 'ARK\\Schema\\TextFormat', 'ARK\\Model\\TextFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextAreaType', 1, 0, 'fragment.text'),
-('time', 0, 'ark_fragment_time', 'ARK\\Schema\\TimeFormat', 'ARK\\Model\\TimeFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', 1, 0, 'fragment.time');
+('blob', 0, 'ark_fragment_blob', 'ARK\\Model\\Format\\BlobFormat', 'ARK\\Model\\Fragment\\BlobFragment', '', 1, 0, 'fragment.blob'),
+('boolean', 0, 'ark_fragment_boolean', 'ARK\\Model\\Format\\BooleanFormat', 'ARK\\Model\\Fragment\\BooleanFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', 1, 0, 'fragment.boolean'),
+('date', 0, 'ark_fragment_date', 'ARK\\Model\\Format\\DateFormat', 'ARK\\Model\\Fragment\\DateFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateType', 1, 0, 'fragment.date'),
+('datetime', 0, 'ark_fragment_datetime', 'ARK\\Model\\Format\\DateTimeFormat', 'ARK\\Model\\Fragment\\DateTimeFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateTimeType', 1, 0, 'fragment.datetime'),
+('decimal', 0, 'ark_fragment_decimal', 'ARK\\Model\\Format\\DecimalFormat', 'ARK\\Model\\Fragment\\DecimalFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', 1, 0, 'fragment.decimal'),
+('float', 0, 'ark_fragment_float', 'ARK\\Model\\Format\\FloatFormat', 'ARK\\Model\\Fragment\\FloatFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', 1, 0, 'fragment.float'),
+('geometry', 0, 'ark_fragment_geometry', 'ARK\\Model\\Format\\GeometryFormat', 'ARK\\Model\\Fragment\\GeometryFragment', '', 1, 0, 'fragment.geometry'),
+('integer', 0, 'ark_fragment_integer', 'ARK\\Model\\Format\\IntegerFormat', 'ARK\\Model\\Fragment\\IntegerFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\IntegerType', 1, 0, 'fragment.integer'),
+('item', 0, 'ark_fragment_item', 'ARK\\Model\\Format\\ItemFormat', 'ARK\\Model\\Fragment\\ItemFragment', '', 1, 0, 'fragment.item'),
+('object', 1, 'ark_fragment_object', 'ARK\\Model\\Format\\ObjectFormat', 'ARK\\Model\\Fragment\\ObjectFragment', '', 1, 0, 'fragment.object'),
+('string', 0, 'ark_fragment_string', 'ARK\\Model\\Format\\StringFormat', 'ARK\\Model\\Fragment\\StringFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', 1, 0, 'fragment.string'),
+('text', 0, 'ark_fragment_text', 'ARK\\Model\\Format\\TextFormat', 'ARK\\Model\\Fragment\\TextFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextAreaType', 1, 0, 'fragment.text'),
+('time', 0, 'ark_fragment_time', 'ARK\\Model\\Format\\TimeFormat', 'ARK\\Model\\Fragment\\TimeFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', 1, 0, 'fragment.time');
 
 -- --------------------------------------------------------
 
@@ -481,8 +481,8 @@ CREATE TABLE `ark_schema` (
   `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `generator` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `sequence` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `use_subtypes` tinyint(1) NOT NULL DEFAULT '0',
-  `subtype_entities` tinyint(1) NOT NULL DEFAULT '0',
+  `type` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `type_entities` tinyint(1) NOT NULL DEFAULT '0',
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `deprecated` tinyint(1) NOT NULL,
   `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL
@@ -492,13 +492,13 @@ CREATE TABLE `ark_schema` (
 -- Dumping data for table `ark_schema`
 --
 
-INSERT INTO `ark_schema` (`schma`, `module`, `generator`, `sequence`, `use_subtypes`, `subtype_entities`, `enabled`, `deprecated`, `keyword`) VALUES
-('core.actor', 'actor', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 1, 1, 1, 0, 'schema.actor'),
-('core.file', 'file', 'ARK\\ORM\\Id\\IdentityGenerator', '', 1, 1, 1, 0, 'schema.file'),
-('dime.campaign', 'campaign', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 0, 0, 1, 0, 'dime.schema.campaign'),
-('dime.find', 'find', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 1, 0, 1, 0, 'dime.schema.find'),
-('dime.image', 'image', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 0, 0, 1, 0, 'dime.schema.image'),
-('dime.location', 'location', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 0, 0, 1, 0, 'dime.schema.location');
+INSERT INTO `ark_schema` (`schma`, `module`, `generator`, `sequence`, `type`, `type_entities`, `enabled`, `deprecated`, `keyword`) VALUES
+('core.actor', 'actor', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 'type', 1, 1, 0, 'schema.actor'),
+('core.file', 'file', 'ARK\\ORM\\Id\\IdentityGenerator', NULL, 'type', 1, 1, 0, 'schema.file'),
+('dime.campaign', 'campaign', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', NULL, 0, 1, 0, 'dime.schema.campaign'),
+('dime.find', 'find', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 'type', 0, 1, 0, 'dime.schema.find'),
+('dime.image', 'image', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', NULL, 0, 1, 0, 'dime.schema.image'),
+('dime.location', 'location', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', NULL, 0, 1, 0, 'dime.schema.location');
 
 -- --------------------------------------------------------
 
@@ -508,7 +508,7 @@ INSERT INTO `ark_schema` (`schma`, `module`, `generator`, `sequence`, `use_subty
 
 CREATE TABLE `ark_schema_association` (
   `schma` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `subtype` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `association` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `degree` int(11) NOT NULL,
   `inverse` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
@@ -523,7 +523,7 @@ CREATE TABLE `ark_schema_association` (
 -- Dumping data for table `ark_schema_association`
 --
 
-INSERT INTO `ark_schema_association` (`schma`, `subtype`, `association`, `degree`, `inverse`, `inverse_degree`, `bidirectional`, `enabled`, `deprecated`, `keyword`) VALUES
+INSERT INTO `ark_schema_association` (`schma`, `type`, `association`, `degree`, `inverse`, `inverse_degree`, `bidirectional`, `enabled`, `deprecated`, `keyword`) VALUES
 ('core.actor', 'institution', 'contact', 0, 'core.actor', 1, 0, 1, 0, 'association.contact'),
 ('dime.location', '', 'campaigns', 1, 'dime.campaign', 0, 1, 1, 0, 'dime.association.campaigns');
 
@@ -535,7 +535,7 @@ INSERT INTO `ark_schema_association` (`schma`, `subtype`, `association`, `degree
 
 CREATE TABLE `ark_schema_attribute` (
   `schma` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `subtype` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `format` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `vocabulary` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -552,16 +552,20 @@ CREATE TABLE `ark_schema_attribute` (
 -- Dumping data for table `ark_schema_attribute`
 --
 
-INSERT INTO `ark_schema_attribute` (`schma`, `subtype`, `attribute`, `format`, `vocabulary`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`, `keyword`) VALUES
+INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `vocabulary`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`, `keyword`) VALUES
 ('core.actor', '', 'address', 'address', NULL, 0, 0, 1, 0, 1, 0, 'property.address'),
+('core.actor', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.actor.id'),
 ('core.actor', '', 'initials', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.initials'),
 ('core.actor', '', 'name', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
 ('core.actor', '', 'telephone', 'telephone', NULL, 0, 1, 1, 0, 1, 0, 'property.phone'),
+('core.actor', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.actor.type'),
 ('core.actor', 'institution', 'logo', 'blob', NULL, 0, 1, 1, 0, 1, 0, 'property.logo'),
 ('core.actor', 'person', 'avatar', 'blob', NULL, 0, 1, 1, 0, 1, 0, 'property.avatar'),
 ('core.actor', 'person', 'dateofbirth', 'date', NULL, 0, 1, 1, 0, 1, 0, 'property.dateofbirth'),
 ('core.file', '', 'description', 'localtext', NULL, 0, 1, 1, 0, 1, 0, 'property.description'),
+('core.file', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.file.id'),
 ('core.file', '', 'title', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.title'),
+('core.file', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.file.type'),
 ('dime.campaign', '', 'name', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
 ('dime.find', '', 'description', 'localtext', NULL, 0, 1, 1, 0, 1, 0, 'property.description'),
 ('dime.find', '', 'finddate', 'date', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.finddate'),
@@ -579,28 +583,30 @@ INSERT INTO `ark_schema_attribute` (`schma`, `subtype`, `attribute`, `format`, `
 ('dime.find', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.type'),
 ('dime.find', '', 'weight', 'mass', 'mass', 0, 1, 1, 0, 1, 0, 'property.weight'),
 ('dime.image', '', 'name', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
-('dime.location', '', 'name', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.name');
+('dime.location', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.location.id'),
+('dime.location', '', 'name', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
+('dime.location', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.location.type');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ark_schema_subtype`
+-- Table structure for table `ark_schema_type`
 --
 
-CREATE TABLE `ark_schema_subtype` (
+CREATE TABLE `ark_schema_type` (
   `schma` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `subtype` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `entity` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `deprecated` tinyint(1) NOT NULL,
   `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
 
 --
--- Dumping data for table `ark_schema_subtype`
+-- Dumping data for table `ark_schema_type`
 --
 
-INSERT INTO `ark_schema_subtype` (`schma`, `subtype`, `entity`, `enabled`, `deprecated`, `keyword`) VALUES
+INSERT INTO `ark_schema_type` (`schma`, `type`, `entity`, `enabled`, `deprecated`, `keyword`) VALUES
 ('core.actor', 'institution', 'ARK\\Entity\\Actor\\Institution', 1, 0, 'core.actor.institution'),
 ('core.actor', 'person', 'ARK\\Entity\\Actor\\Person', 1, 0, 'core.actor.person'),
 ('core.file', 'audio', 'ARK\\File\\Audio', 1, 0, 'file.type.audio'),
@@ -996,7 +1002,7 @@ CREATE TABLE `ark_view_element` (
   `element` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `schma` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `subtype` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `item_type` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `attribute` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `class` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `template` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
@@ -1012,7 +1018,11 @@ CREATE TABLE `ark_view_element` (
 -- Dumping data for table `ark_view_element`
 --
 
-INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `subtype`, `attribute`, `class`, `template`, `form`, `editable`, `hidden`, `enabled`, `deprecated`, `keyword`) VALUES
+INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attribute`, `class`, `template`, `form`, `editable`, `hidden`, `enabled`, `deprecated`, `keyword`) VALUES
+('core_actor_id', 'field', 'core.actor', '', 'id', '', '', 'ARK\\Form\\Type\\IdType', 1, 0, 1, 0, NULL),
+('core_actor_item', 'grid', 'core.actor', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
+('core_actor_list', 'table', NULL, '', NULL, '', '', '', 1, 0, 1, 0, NULL),
+('core_actor_type', 'field', 'core.actor', '', 'type', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_action', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_add', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_description', 'field', 'dime.find', '', 'description', '', '', 'ARK\\Form\\Type\\LocalMultilineTextType', 1, 0, 1, 0, NULL),
@@ -1022,7 +1032,9 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `subtype`, `attribut
 ('dime_find_finddate', 'field', 'dime.find', '', 'finddate', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_finder_id', 'field', 'dime.find', '', 'finder_id', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_id', 'field', 'dime.find', '', 'id', '', '', 'ARK\\Form\\Type\\IdType', 1, 0, 1, 0, NULL),
+('dime_find_item', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_length', 'field', 'dime.find', '', 'length', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_list', 'table', NULL, '', NULL, '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_material', 'field', 'dime.find', '', 'material', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_name', 'field', 'dime.find', '', 'name', '', '', 'ARK\\Form\\Type\\LocalTextType', 1, 0, 1, 0, NULL),
 ('dime_find_period_end', 'field', 'dime.find', '', 'period_end', '', '', '', 1, 0, 1, 0, NULL),
@@ -1031,11 +1043,13 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `subtype`, `attribut
 ('dime_find_save', 'field', NULL, '', '', '', '', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', 1, 0, 1, 0, 'dime.find.save'),
 ('dime_find_secondary', 'field', 'dime.find', '', 'secondary', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_subtype', 'field', 'dime.find', '', 'subtype', '', '', '', 1, 0, 1, 0, NULL),
-('dime_find_table', 'table', NULL, '', NULL, '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_title', 'field', 'dime.find', '', 'title', '', '', 'ARK\\Form\\Type\\LocalTextType', 1, 0, 1, 0, NULL),
 ('dime_find_type', 'field', 'dime.find', '', 'type', '', '', '', 1, 0, 1, 0, NULL),
-('dime_find_view', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
-('dime_find_weight', 'field', 'dime.find', '', 'weight', '', '', '', 1, 0, 1, 0, NULL);
+('dime_find_weight', 'field', 'dime.find', '', 'weight', '', '', '', 1, 0, 1, 0, NULL),
+('dime_location_id', 'field', 'dime.location', '', 'id', '', '', 'ARK\\Form\\Type\\IdType', 1, 0, 1, 0, NULL),
+('dime_location_item', 'grid', 'dime.location', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
+('dime_location_list', 'table', NULL, '', NULL, '', '', '', 1, 0, 1, 0, NULL),
+('dime_location_type', 'field', 'dime.location', '', 'type', '', '', '', 1, 0, 1, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1048,7 +1062,7 @@ CREATE TABLE `ark_view_layout` (
   `row` int(11) NOT NULL,
   `col` int(11) NOT NULL,
   `seq` int(11) NOT NULL,
-  `subtype` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `item_type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `child` varchar(30) COLLATE utf8_unicode_ci NOT NULL
@@ -1058,7 +1072,11 @@ CREATE TABLE `ark_view_layout` (
 -- Dumping data for table `ark_view_layout`
 --
 
-INSERT INTO `ark_view_layout` (`element`, `row`, `col`, `seq`, `subtype`, `enabled`, `deprecated`, `child`) VALUES
+INSERT INTO `ark_view_layout` (`element`, `row`, `col`, `seq`, `item_type`, `enabled`, `deprecated`, `child`) VALUES
+('core_actor_item', 0, 0, 0, '', 1, 0, 'core_actor_id'),
+('core_actor_item', 0, 0, 2, '', 1, 0, 'core_actor_type'),
+('core_actor_list', 0, 0, 0, '', 1, 0, 'core_actor_id'),
+('core_actor_list', 0, 0, 2, '', 1, 0, 'core_actor_type'),
 ('dime_find_action', 0, 0, 0, '', 1, 0, 'dime_find_save'),
 ('dime_find_add', 0, 0, 0, '', 1, 0, 'dime_find_event'),
 ('dime_find_add', 0, 1, 0, '', 1, 0, 'dime_find_details'),
@@ -1077,14 +1095,18 @@ INSERT INTO `ark_view_layout` (`element`, `row`, `col`, `seq`, `subtype`, `enabl
 ('dime_find_event', 0, 0, 1, '', 1, 0, 'dime_find_name'),
 ('dime_find_event', 0, 0, 2, '', 1, 0, 'dime_find_finder_id'),
 ('dime_find_event', 0, 0, 3, '', 1, 0, 'dime_find_finddate'),
-('dime_find_table', 0, 0, 0, '', 1, 0, 'dime_find_id'),
-('dime_find_table', 0, 0, 1, '', 1, 0, 'dime_find_title'),
-('dime_find_table', 0, 0, 2, '', 1, 0, 'dime_find_type'),
-('dime_find_table', 0, 0, 3, '', 1, 0, 'dime_find_subtype'),
-('dime_find_table', 0, 0, 4, '', 1, 0, 'dime_find_material'),
-('dime_find_view', 0, 0, 0, '', 1, 0, 'dime_find_event'),
-('dime_find_view', 0, 1, 0, '', 1, 0, 'dime_find_details'),
-('dime_find_view', 0, 1, 1, '', 1, 0, 'dime_find_save');
+('dime_find_item', 0, 0, 0, '', 1, 0, 'dime_find_event'),
+('dime_find_item', 0, 1, 0, '', 1, 0, 'dime_find_details'),
+('dime_find_item', 0, 1, 1, '', 1, 0, 'dime_find_save'),
+('dime_find_list', 0, 0, 0, '', 1, 0, 'dime_find_id'),
+('dime_find_list', 0, 0, 1, '', 1, 0, 'dime_find_title'),
+('dime_find_list', 0, 0, 2, '', 1, 0, 'dime_find_type'),
+('dime_find_list', 0, 0, 3, '', 1, 0, 'dime_find_subtype'),
+('dime_find_list', 0, 0, 4, '', 1, 0, 'dime_find_material'),
+('dime_location_item', 0, 0, 0, '', 1, 0, 'dime_location_id'),
+('dime_location_item', 0, 0, 2, '', 1, 0, 'dime_location_type'),
+('dime_location_list', 0, 0, 0, '', 1, 0, 'dime_location_id'),
+('dime_location_list', 0, 0, 2, '', 1, 0, 'dime_location_type');
 
 -- --------------------------------------------------------
 
@@ -3925,22 +3947,22 @@ ALTER TABLE `ark_schema`
 -- Indexes for table `ark_schema_association`
 --
 ALTER TABLE `ark_schema_association`
-  ADD PRIMARY KEY (`schma`,`subtype`,`association`) USING BTREE,
+  ADD PRIMARY KEY (`schma`,`type`,`association`) USING BTREE,
   ADD KEY `inverse_schema` (`inverse`);
 
 --
 -- Indexes for table `ark_schema_attribute`
 --
 ALTER TABLE `ark_schema_attribute`
-  ADD PRIMARY KEY (`schma`,`subtype`,`attribute`) USING BTREE,
+  ADD PRIMARY KEY (`schma`,`type`,`attribute`) USING BTREE,
   ADD KEY `format` (`format`),
   ADD KEY `vocabulary` (`vocabulary`);
 
 --
--- Indexes for table `ark_schema_subtype`
+-- Indexes for table `ark_schema_type`
 --
-ALTER TABLE `ark_schema_subtype`
-  ADD PRIMARY KEY (`schma`,`subtype`);
+ALTER TABLE `ark_schema_type`
+  ADD PRIMARY KEY (`schma`,`type`);
 
 --
 -- Indexes for table `ark_translation`
@@ -3993,7 +4015,7 @@ ALTER TABLE `ark_view_element`
 -- Indexes for table `ark_view_layout`
 --
 ALTER TABLE `ark_view_layout`
-  ADD PRIMARY KEY (`element`,`subtype`,`row`,`col`,`seq`),
+  ADD PRIMARY KEY (`element`,`item_type`,`row`,`col`,`seq`),
   ADD KEY `child` (`child`);
 
 --
@@ -4205,10 +4227,10 @@ ALTER TABLE `ark_schema_attribute`
   ADD CONSTRAINT `ark_schema_attribute_ibfk_3` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `ark_schema_subtype`
+-- Constraints for table `ark_schema_type`
 --
-ALTER TABLE `ark_schema_subtype`
-  ADD CONSTRAINT `ark_schema_subtype_ibfk_1` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `ark_schema_type`
+  ADD CONSTRAINT `ark_schema_type_ibfk_1` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_translation`

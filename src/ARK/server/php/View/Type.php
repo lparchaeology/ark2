@@ -30,9 +30,7 @@
 
 namespace ARK\View;
 
-use ARK\EnabledTrait;
-use ARK\KeywordTrait;
-use ARK\Model\Item\Item;
+use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use Symfony\Component\Form\FormBuilder;

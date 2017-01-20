@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -40,57 +40,57 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         // Under Construction Routes
-        $controllers->get('/detector', 'DIME\\Action\\UnderConstructionAction')
+        $controllers->get('/detector', 'DIME\Action\UnderConstructionAction')
                     ->bind('detector');
-        $controllers->get('/research', 'DIME\\Action\\UnderConstructionAction')
+        $controllers->get('/research', 'DIME\Action\UnderConstructionAction')
                     ->bind('research');
-        $controllers->get('/about', 'DIME\\Action\\UnderConstructionAction')
+        $controllers->get('/about', 'DIME\Action\UnderConstructionAction')
                     ->bind('about');
-        $controllers->get('/exhibits', 'DIME\\Action\\UnderConstructionAction')
+        $controllers->get('/exhibits', 'DIME\Action\UnderConstructionAction')
                     ->bind('exhibits');
-        $controllers->get('/news', 'DIME\\Action\\UnderConstructionAction')
+        $controllers->get('/news', 'DIME\Action\UnderConstructionAction')
                     ->bind('news');
 
         // Dummy Routes
-        $controllers->get('/actors/{actorSlug}/finds', 'DIME\\Action\\FindListAction')
+        $controllers->get('/actors/{actorSlug}/finds', 'DIME\Action\FindListAction')
                     ->bind('actors.finds.list');
 
-        $controllers->get('/actors/{actorSlug}/locations', 'DIME\\Action\\LocationListAction')
+        $controllers->get('/actors/{actorSlug}/locations', 'DIME\Action\LocationListAction')
                     ->bind('actors.locations.list');
 
-        $controllers->get('/actors/{actorSlug}', 'DIME\\Action\\ActorViewAction')
+        $controllers->get('/actors/{actorSlug}', 'DIME\Action\ActorViewAction')
                     ->bind('actors.view');
 
-        $controllers->get('/actors', 'DIME\\Action\\ActorListAction')
+        $controllers->get('/actors', 'DIME\Action\ActorListAction')
                     ->bind('actors.list');
 
         // Find Routes
-        $controllers->get('/finds/add', 'DIME\\Action\\FindAddAction')
+        $controllers->get('/finds/add', 'DIME\Action\FindAddAction')
                     ->bind('finds.add');
 
-        $controllers->post('/finds/add', 'DIME\\Action\\FindAddAction');
+        $controllers->post('/finds/add', 'DIME\Action\FindAddAction');
 
-        $controllers->get('/finds/{findSlug}', 'DIME\\Action\\FindViewAction')
+        $controllers->get('/finds/{findSlug}', 'DIME\Action\FindViewAction')
                     ->bind('finds.view');
 
-        $controllers->post('/finds/{findSlug}', 'DIME\\Action\\FindViewAction');
+        $controllers->post('/finds/{findSlug}', 'DIME\Action\FindViewAction');
 
-        $controllers->get('/finds', 'DIME\\Action\\FindListAction')
+        $controllers->get('/finds', 'DIME\Action\FindListAction')
                     ->bind('finds.list');
 
-        $controllers->get('/locations/add', 'DIME\\Action\\LocationAddAction')
+        $controllers->get('/locations/add', 'DIME\Action\LocationAddAction')
                     ->bind('locations.add');
 
-        $controllers->get('/locations/{locationSlug}', 'DIME\\Action\\LocationViewAction')
+        $controllers->get('/locations/{locationSlug}', 'DIME\Action\LocationViewAction')
                     ->bind('locations.view');
 
-        $controllers->get('/locations', 'DIME\\Action\\LocationListAction')
+        $controllers->get('/locations', 'DIME\Action\LocationListAction')
                     ->bind('locations.list');
 
-        $controllers->get('/test', 'DIME\\Action\\TestViewAction')
+        $controllers->get('/test', 'DIME\Action\TestViewAction')
                     ->bind('test');
 
-        $controllers->get('/', 'DIME\\Action\\HomeViewAction')
+        $controllers->get('/', 'DIME\Action\HomeViewAction')
                     ->bind('home');
 
         return $controllers;

@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -41,7 +41,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class EventType extends AbstractType
 {
     // {{{ buildForm()
-    function buildForm(FormBuilderInterface $formBuilder, array $options)
+    public function buildForm(FormBuilderInterface $formBuilder, array $options)
     {
         $options['eventActions'][0]->buildForm($formBuilder);
         $options['eventDate']->buildForm($formBuilder);

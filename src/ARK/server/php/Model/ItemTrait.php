@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Item Entity
+ * ARK Model Item Trait
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -30,11 +30,11 @@
 
 namespace ARK\Model;
 
+use ARK\Model\Schema;
+use ARK\Model\VersionTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
-use ARK\Schema\Schema;
-use ARK\VersionTrait;
 use ARK\Service;
 
 trait ItemTrait
@@ -46,8 +46,8 @@ trait ItemTrait
     protected $parentId = null;
     protected $parent = null;
     protected $idx = null;
-    protected $subtype = '';
-    protected $name = null;
+    protected $type = '';
+    protected $label = null;
     protected $schma = null;
     protected $schema = null;
     protected $properties = null;
@@ -76,25 +76,25 @@ trait ItemTrait
         return $this->idx;
     }
 
-    public function name()
+    public function label()
     {
-        return $this->name;
+        return $this->label;
     }
 
-    private function subtypeName()
+    private function typeName()
     {
         if (!$this->meta) {
             $this->meta = ORM::repository(get_class())->metadata();
             if ($this->meta->discriminatorValue) {
-                $this->subtype = $this->meta->discriminatorValue;
+                $this->type = $this->meta->discriminatorValue;
             }
         }
-        return $this->subtype;
+        return $this->type;
     }
 
-    public function subtype()
+    public function type()
     {
-        return $this->schema()->subtype($this->subtypeName());
+        return $this->schema()->type($this->typeName());
     }
 
     public function schema()
@@ -107,7 +107,7 @@ trait ItemTrait
 
     public function attributes()
     {
-        return $this->schema()->attributes($this->subtypeName());
+        return $this->schema()->attributes($this->typeName());
     }
 
     public function path()
@@ -131,7 +131,7 @@ trait ItemTrait
     public function property($attribute)
     {
         if (!isset($this->properties[$attribute])) {
-            $this->properties[$attribute] = new Property($this, $this->schema()->attribute($attribute, $this->subtypeName()));
+            $this->properties[$attribute] = new Property($this, $this->schema()->attribute($attribute, $this->typeName()));
         }
         return $this->properties[$attribute];
     }
@@ -169,25 +169,25 @@ trait ItemTrait
     public static function buildItemMetadata($metadata, $module)
     {
         $mod = Service::database()->getModule($module);
-        $subtypeEntities = Service::database()->getSubtypeEntities($module);
+        $typeEntities = Service::database()->gettypeEntities($module);
         $builder = new ClassMetadataBuilder($metadata, $mod['tbl']);
         $builder->setCustomRepositoryClass('ARK\ORM\ItemEntityRepository');
         $builder->addStringKey('id', 30);
         $builder->addStringField('parentModule', 30, 'parent_module');
         $builder->addStringField('parentId', 30, 'parent_id');
         $builder->addStringField('idx', 30);
-        $builder->addStringField('name', 30);
-        if ($subtypeEntities) {
-            $builder->setSingleTableInheritance()->setDiscriminatorColumn('subtype', 'string', 30);
+        $builder->addStringField('label', 30);
+        if ($typeEntities) {
+            $builder->setSingleTableInheritance()->setDiscriminatorColumn('type', 'string', 30);
             $metadata->addDiscriminatorMapClass('', $mod['entity']);
-            foreach ($subtypeEntities as $type) {
-                $metadata->addDiscriminatorMapClass($type['subtype'], $type['entity']);
+            foreach ($typeEntities as $type) {
+                $metadata->addDiscriminatorMapClass($type['type'], $type['entity']);
             }
         } else {
-            $builder->addStringField('subtype', 30);
+            $builder->addStringField('type', 30);
         }
         $builder->addStringField('schma', 30);
-        VersionTrait::buildMetadata($builder);
+        VersionTrait::buildVersionMetadata($builder);
         $metadata->setItemEntity(true);
     }
 }
