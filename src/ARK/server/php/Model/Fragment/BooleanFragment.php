@@ -39,7 +39,7 @@ class BooleanFragment extends Fragment
     public static function loadMetadata(ClassMetadata $metadata)
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_fragment_boolean');
-        $builder->addKey('fid', 'integer');
+        $builder->addGeneratedKey('fid');
         $builder->addField('value', 'boolean');
     }
 }

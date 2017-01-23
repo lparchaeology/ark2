@@ -31,6 +31,7 @@
 namespace ARK\ORM;
 
 use ARK\Service;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class ORM
 {
@@ -54,12 +55,18 @@ class ORM
 
     public static function persist($entity)
     {
-        return self::manager($entity)->persist($entity);
+        self::manager($entity)->persist($entity);
     }
 
     public static function remove($entity)
     {
-        return self::manager($entity)->remove($entity);
+        if (is_array($entity) || $entity instanceof \Traversable) {
+            foreach ($entity as $ent) {
+                self::manager($ent)->remove($ent);
+            }
+            return;
+        }
+        self::manager($entity)->remove($entity);
     }
 
     public static function contains($entity)
@@ -69,12 +76,12 @@ class ORM
 
     public static function flush($class)
     {
-        return self::manager($class)->flush();
+        self::manager($class)->flush();
     }
 
     public static function clear($class)
     {
-        return self::repository($class)->clear();
+        self::repository($class)->clear();
     }
 
     public static function find($class, $id, $lockMode = null, $lockVersion = null)
@@ -84,12 +91,12 @@ class ORM
 
     public static function findAll($class)
     {
-        return self::repository($class)->findAll();
+        return new ArrayCollection(self::repository($class)->findAll());
     }
 
     public static function findBy($class, array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        return self::repository($class)->findBy($criteria, $orderBy, $limit, $offset);
+        return new ArrayCollection(self::repository($class)->findBy($criteria, $orderBy, $limit, $offset));
     }
 
     public static function findOneBy($class, array $criteria, array $orderBy = null)

@@ -31,7 +31,7 @@
 namespace ARK\ORM;
 
 /*
- * Simplified version of dflydev/doctrine-orm-service-provider.
+ * Simplified/Extended version of dflydev/doctrine-orm-service-provider.
  *
  * (c) Dragonfly Development Inc.
  */
@@ -39,7 +39,6 @@ namespace ARK\ORM;
 use ARK\ORM\EntityManager;
 use ARK\ORM\StaticPHPDriver;
 use ARK\ORM\UnitOfWork;
-use Closure;
 use Doctrine\Common\Cache\CacheProvider;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\DBAL\Types\Type;
@@ -70,6 +69,8 @@ class OrmServiceProvider implements ServiceProviderInterface
             'connection' => 'default',
             'mappings' => [],
             'types' => [],
+            'extensions' => [],
+            'listeners' => [],
             'alias' => null,
             'proxies_dir' => $container['orm.proxies_dir'],
             'proxies_namespace' => 'DoctrineProxy',
@@ -84,6 +85,26 @@ class OrmServiceProvider implements ServiceProviderInterface
             'quote_strategy' => 'Doctrine\ORM\Mapping\DefaultQuoteStrategy',
             'default_repository_class' => 'Doctrine\ORM\EntityRepository',
             'repository_factory' => 'Doctrine\ORM\Repository\DefaultRepositoryFactory',
+        ];
+
+        $gedmoDir = $container['dir.install'].'vendor/gedmo/doctrine-extensions/lib/Gedmo';
+        $container['orm.extensions'] = [
+            'tree' => [
+                'mapping' => [
+                    'type' => 'annotation',
+                    'namespace' => 'Gedmo\Tree\Entity',
+                    'path' => $gedmoDir.'/Tree/Entity',
+                ],
+                'listener' => 'Gedmo\Tree\TreeListener',
+            ],
+            'timestampable' => [
+                'mapping' => [
+                    'type' => 'annotation',
+                    'namespace' => 'Gedmo\Timestampable\Entity',
+                    'path' => $gedmoDir.'/Timestampable/Entity',
+                ],
+                'listener' => 'Gedmo\Timestampable\TimestampableListener',
+            ],
         ];
 
         $container['orm.ems.options.initializer'] = $container->protect(function () use ($container) {
@@ -144,6 +165,7 @@ class OrmServiceProvider implements ServiceProviderInterface
                 $container['orm.em.default_options'],
                 [
                     'connection' => 'data',
+                    'extensions' => ['tree'],
                     'mappings' => [
                         [
                             'type' => 'php',
@@ -186,6 +208,13 @@ class OrmServiceProvider implements ServiceProviderInterface
                     */
                 ]
             );
+
+            foreach ($options as $connection => $config) {
+                foreach ($config['extensions'] as $extension) {
+                    $config['mappings'][] = $container['orm.extensions'][$extension]['mapping'];
+                    $config['listeners'][] = $container['orm.extensions'][$extension]['listener'];
+                }
+            }
 
             $container['orm.ems.options'] = $options;
             $container['orm.ems.default'] = 'data';
@@ -257,6 +286,13 @@ class OrmServiceProvider implements ServiceProviderInterface
                         case 'php':
                             $driver = new StaticPHPDriver($entity['path']);
                             break;
+                        case 'annotation':
+                            $useSimpleAnnotationReader =
+                                isset($entity['use_simple_annotation_reader'])
+                                ? $entity['use_simple_annotation_reader']
+                                : true;
+                            $driver = $config->newDefaultAnnotationDriver((array) $entity['path'], $useSimpleAnnotationReader);
+                            break;
                         case 'yml':
                             $driver = new YamlDriver($entity['path']);
                             break;
@@ -309,6 +345,10 @@ class OrmServiceProvider implements ServiceProviderInterface
                         $config,
                         $container['dbs.event_manager'][$options['connection']]
                     );
+                    $eventManager = $em->getConnection()->getEventManager();
+                    foreach ($options['listeners'] as $listener) {
+                        $eventManager->addEventSubscriber(new $listener);
+                    }
                     return new EntityManager($em);
                 };
             }

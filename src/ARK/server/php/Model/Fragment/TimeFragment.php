@@ -39,7 +39,7 @@ class TimeFragment extends Fragment
     public static function loadMetadata(ClassMetadata $metadata)
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_fragment_time');
-        $builder->addKey('fid', 'integer');
+        $builder->addGeneratedKey('fid');
         $builder->addField('value', 'time');
     }
 }

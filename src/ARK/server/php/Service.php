@@ -129,6 +129,11 @@ class Service
         return self::$app['security'];
     }
 
+    public static function user()
+    {
+        return self::$app['user'];
+    }
+
     public static function database()
     {
         return self::$app['database'];

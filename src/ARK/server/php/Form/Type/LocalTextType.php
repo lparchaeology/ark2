@@ -38,27 +38,44 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\LanguageType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LocalTextType extends AbstractType
+class LocalTextType extends AbstractType implements DataMapperInterface
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $attribute = $options['field']->attribute()->name();
         $fieldOptions['label'] = false;
-        $fieldOptions['property_path'] = "keyValue[$attribute][language]";
+        $fieldOptions['mapped'] = false;
         $builder->add('language', LanguageType::class, $fieldOptions);
-        $fieldOptions['property_path'] = "keyValue[$attribute][content]";
         $builder->add('content', TextType::class, $fieldOptions);
+        $builder->setDataMapper($this);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'field' => null,
             'data_class' => Property::class,
             'empty_data' => null,
-        ));
+        ]);
+    }
+
+    public function mapDataToForms($property, $forms)
+    {
+        $forms = iterator_to_array($forms);
+        $value = $property ? $property->value() : ['language' => Service::locale(), 'content' => null];
+        $forms['language']->setData($value['language']);
+        $forms['content']->setData($value['content']);
+    }
+
+    public function mapFormsToData($forms, &$data)
+    {
+        $forms = iterator_to_array($forms);
+        $value['language'] = $forms['language']->getData();
+        $value['content'] = $forms['content']->getData();
+        $data->setValue($value);
     }
 
     public function getBlockPrefix()

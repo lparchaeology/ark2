@@ -39,7 +39,7 @@ class BlobFragment extends Fragment
     public static function loadMetadata(ClassMetadata $metadata)
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_fragment_blob');
-        $builder->addKey('fid', 'integer');
+        $builder->addGeneratedKey('fid');
         $builder->addField('value', 'blob');
     }
 }

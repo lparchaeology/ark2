@@ -76,6 +76,13 @@ trait ItemTrait
         return $this->idx;
     }
 
+    public function setIndex($index)
+    {
+        // TODO Do parent correctly!!!
+        $this->idx = $index;
+        $this->label = $this->makeIdentifier($this->parentId, '_', $index);
+    }
+
     public function label()
     {
         return $this->label;
@@ -95,6 +102,12 @@ trait ItemTrait
     public function type()
     {
         return $this->schema()->type($this->typeName());
+    }
+
+    public function setType($type)
+    {
+        // TODO Danger, Will Robinson!!!
+        $this->type = $type;
     }
 
     public function schema()
@@ -128,6 +141,16 @@ trait ItemTrait
         return array_values($this->properties);
     }
 
+    public function propertyArray()
+    {
+        foreach ($this->attributes() as $attribute) {
+            if (!isset($this->properties[$attribute->name()])) {
+                $this->properties[$attribute->name()] = new Property($this, $attribute);
+            }
+        }
+        return $this->properties;
+    }
+
     public function property($attribute)
     {
         if (!isset($this->properties[$attribute])) {
@@ -146,7 +169,7 @@ trait ItemTrait
         }
     }
 
-    public function related(/*string*/ $module = null)
+    public function related($module = null)
     {
         $this->loadRelated();
         if ($module) {
@@ -172,6 +195,8 @@ trait ItemTrait
         $mod = Service::database()->getModule($module);
         $builder = new ClassMetadataBuilder($metadata, $mod['tbl']);
         $builder->setCustomRepositoryClass('ARK\ORM\ItemEntityRepository');
+
+        // Key
         $builder->addStringKey('id', 30);
 
         // Fields
@@ -192,5 +217,9 @@ trait ItemTrait
         $builder->addStringField('label', 30);
         VersionTrait::buildVersionMetadata($builder);
         $metadata->setItemEntity(true);
+
+        // Set ID Generator TODO Move elsewhere, say ClassMetadata? Table driven?
+        $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_CUSTOM);
+        $metadata->setCustomGeneratorDefinition(['class' => 'ARK\ORM\ItemSequenceGenerator']);
     }
 }

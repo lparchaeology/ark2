@@ -41,6 +41,11 @@ class Find implements Item
 {
     use ItemTrait;
 
+    public function __construct($schema)
+    {
+        $this->schma = $schema;
+    }
+
     public static function loadMetadata(ClassMetadata $metadata)
     {
         ItemTrait::buildItemMetadata($metadata, 'find');

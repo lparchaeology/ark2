@@ -65,6 +65,18 @@ trait VersionTrait
         return $this->version;
     }
 
+    public function refreshVersion()
+    {
+        // TODO Auto-update behaviour
+        //$user = Service::user();
+        if (!$this->createdBy || !$this->createdOn) {
+            $this->createdBy = 0;//$user->id();
+            $this->createdOn = new \DateTime;
+        }
+        $this->lastModifiedBy = 0;//$user->id();
+        $this->lastModifiedOn = new \DateTime;
+    }
+
     public static function buildVersionMetadata(ClassMetadataBuilder $builder)
     {
         $builder->addField('lastModifiedBy', 'integer', [], 'mod_by');

@@ -33,28 +33,30 @@ namespace ARK\Form\Type;
 use ARK\Service;
 use ARK\Model\Item;
 use ARK\Model\Property;
+use ARK\Model\Attribute;
 use ARK\Model\TextFragment;
 use ARK\Vocabulary\Term;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PropertyType extends AbstractType
+class PropertyType extends AbstractType implements DataMapperInterface
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $field = $options['field'];
-        $this->buildAttribute($builder, $field->attribute(), $field->optionsArray(), 'keyValue');
+        $builder->setDataMapper($this);
+        $this->buildAttribute($builder, $field->attribute(), $field->optionsArray());
     }
 
-    protected function buildAttribute(FormBuilderInterface $builder, $attribute, $options, $path)
+    protected function buildAttribute(FormBuilderInterface $builder, Attribute $attribute, $options)
     {
         $name = $attribute->name();
-        $path = $path."[$name]";
         if ($attribute->format()->hasAttributes()) {
             foreach ($attribute->format()->attributes() as $child) {
-                $this->buildAttribute($builder, $child, $options, $path);
+                $this->buildAttribute($builder, $child, $options);
             }
             return;
         }
@@ -63,16 +65,14 @@ class PropertyType extends AbstractType
             foreach ($attribute->vocabulary()->terms() as $term) {
                 $options['choices'][$term->keyword()] = $term->name();
             }
-            if (!$attribute->isRequired()) {
-                $options['placeholder'] = 'form.select.option';
-            }
+            $options['placeholder'] = ($attribute->isRequired() ? 'form.select.required' : 'form.select.optional');
             $options['multiple'] = $attribute->hasMultipleOccurrences();
         } else {
             $class = $attribute->format()->type()->formClass();
         }
-        $options['property_path'] = $path;
+        $options['mapped'] = false;
         $options['label'] = false;
-        //$options['required'] = $attribute->isRequired();
+        $options['required'] = $attribute->isRequired();
         $builder->add($name, $class, $options);
     }
 
@@ -83,6 +83,36 @@ class PropertyType extends AbstractType
             'data_class' => Property::class,
             'empty_data' => null,
         ]);
+    }
+
+    public function mapDataToForms($property, $forms)
+    {
+        $forms = iterator_to_array($forms);
+        $attribute = $property->attribute();
+        $value = $property->value();
+        if ($attribute->format()->hasAttributes()) {
+            foreach ($attribute->format()->attributes() as $sub) {
+                $key = $sub->name();
+                $forms[$key]->setData($value[$key]);
+            }
+        } else {
+            $forms[$attribute->name()]->setData($value);
+        }
+    }
+
+    public function mapFormsToData($forms, &$property)
+    {
+        $forms = iterator_to_array($forms);
+        $attribute = $property->attribute();
+        if ($attribute->format()->hasAttributes()) {
+            $value = [];
+            foreach ($forms as $key => $form) {
+                $value[$key] = $forms[$key]->getData();
+            }
+        } else {
+            $value = $forms[$attribute->name()]->getData();
+        }
+        $property->setValue($value);
     }
 
     public function getBlockPrefix()

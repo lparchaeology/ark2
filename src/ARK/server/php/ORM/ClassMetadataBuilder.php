@@ -117,6 +117,15 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         $builder->build();
     }
 
+    public function addGeneratedKey($name, $column = '')
+    {
+        $builder = $this->createField($name, 'integer')->makePrimaryKey()->generatedValue('IDENTITY');
+        if ($column) {
+            $builder->columnName($column);
+        }
+        $builder->build();
+    }
+
     public function addField($name, $type, array $mapping = [], $column = '', $nullable = false)
     {
         if ($column) {
@@ -129,11 +138,34 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         parent::addField($name, $type, $mapping);
     }
 
-    public function addStringKey($name, $length, $column = '')
+    public function addTimestampableField($name, $type, $action, $column = '', $nullable = false, $trackedField = null, $trackedValue = null)
+    {
+        // $type = ['date','time', 'datetime', 'datetimetz', 'timestamp', 'zenddate', 'vardatetime', 'integer'];
+        // $action = ['update', 'create', 'change'];
+        $mapping['fieldName'] = $name;
+        $mapping['type'] = $type;
+        $builder = new FieldBuilder($this, $mapping);
+        $builder->nullable($nullable);
+        if ($column) {
+            $builder->columnName($column);
+        }
+        $field = array(
+            'field' => $name,
+            'trackedField' => $trackedField,
+            'value' => $trackedValue,
+        );
+        $config[$action][] = $field;
+        $builder->build();
+    }
+
+    public function addStringKey($name, $length, $column = '', $generator = null)
     {
         $builder = $this->createField($name, 'string')->length($length)->makePrimaryKey();
         if ($column) {
             $builder->columnName($column);
+        }
+        if ($generator) {
+            $builder->setCustomIdGenerator($generator);
         }
         $builder->build();
     }

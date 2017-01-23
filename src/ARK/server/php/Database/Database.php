@@ -68,7 +68,7 @@ class Database
 
     public function generateItemSequence($module, $parent, $sequence)
     {
-        $this->sequence()->startTransaction();
+        $this->data()->beginTransaction();
         // Check if there are any IDs to recycle first
         $sql = "
             SELECT *
@@ -77,7 +77,7 @@ class Database
             AND parent = :parent
             AND sequence = :sequence
             AND recycle = :recycle
-        ".$this->sequence()->getPlatform()->$getWriteLockSQL();
+        ".$this->data()->platform()->getWriteLockSQL();
         $params = [
             'module' => $module,
             'parent' => $parent,
@@ -97,13 +97,13 @@ class Database
                     'recycle' => false,
                     'id' => $recycle['id'],
                 ];
-                $this->sequence()->executeUpdate($sql, $reparams);
-                $this->sequence()->commit();
+                $this->data()->executeUpdate($sql, $reparams);
+                $this->data()->commit();
                 return $recycle['idx'];
             } catch (Exception $e) {
                 // If recycle fails, just try issue the next one
-                $this->sequence()->rollback();
-                $this->sequence()->startTransaction();
+                $this->data()->rollback();
+                $this->data()->startTransaction();
             }
         }
         $sql = "
@@ -112,7 +112,7 @@ class Database
             WHERE module = :module
             AND parent = :parent
             AND sequence = :sequence
-        ".$this->sequence()->getPlatform()->$getWriteLockSQL();
+        ".$this->data()->platform()->getWriteLockSQL();
         unset($params['recycle']);
         $seq = $this->data()->fetchAssoc($sql, $params);
         if (!$seq) {
@@ -120,12 +120,12 @@ class Database
             try {
                 $fields = ['module', 'parent', 'sequence', 'idx'];
                 $rows = [[$module, $parent, $sequence, 1]];
-                $this->insertRows($this->sequence(), 'ark_sequence', $fields, $rows);
-                $this->insertRows($this->sequence(), 'ark_sequence_lock', $fields, $rows);
-                $this->sequence()->commit();
+                $this->data()->insertRows('ark_sequence', $fields, $rows);
+                $this->data()->insertRows('ark_sequence_lock', $fields, $rows);
+                $this->data()->commit();
                 return 1;
             } catch (Exception $e) {
-                $this->sequence()->rollback();
+                $this->data()->rollback();
                 throw new ErrorException(new InternalServerError(
                     'DB_SEQUENCE_CREATE',
                     'Creating index sequence failed',
@@ -148,14 +148,14 @@ class Database
                 AND parent = :parent
                 AND sequence = :sequence
             ";
-            $this->sequence()->executeUpdate($sql, $params);
+            $this->data()->executeUpdate($sql, $params);
             $fields = ['module', 'parent', 'sequence', 'idx'];
             $rows = [[$module, $parent, $sequence, 1]];
-            $this->insertRows($this->sequence(), 'ark_sequence_lock', $fields, $rows);
-            $this->sequence()->commit();
+            $this->data()->insertRows('ark_sequence_lock', $fields, $rows);
+            $this->data()->commit();
             return $seq['idx'] + 1;
         } catch (Exception $e) {
-            $this->sequence()->rollback();
+            $this->data()->rollback();
             throw new ErrorException(new InternalServerError(
                 'DB_SEQUENCE_INCREMENT',
                 'Increment index sequence failed',

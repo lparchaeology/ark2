@@ -39,7 +39,7 @@ class DecimalFragment extends Fragment
     public static function loadMetadata(ClassMetadata $metadata)
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_fragment_decimal');
-        $builder->addKey('fid', 'integer');
+        $builder->addGeneratedKey('fid');
         $builder->addStringField('value', 200);
     }
 }

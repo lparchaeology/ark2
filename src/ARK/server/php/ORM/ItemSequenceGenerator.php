@@ -28,11 +28,12 @@
   * @php        >=5.6, >=7.0
   */
 
-namespace ARK\Model\Item;
+namespace ARK\ORM;
 
 use ARK\Error\ErrorException;
 use ARK\Http\Error\InternalServerError;
 use ARK\Model\Item;
+use ARK\Service;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Id\AbstractIdGenerator;
 
@@ -47,7 +48,10 @@ class ItemSequenceGenerator extends AbstractIdGenerator
                 'Only objects of class Item can use the ItemSequenceGenerator'
             ));
         }
-        $parent = ($entity->parent() ? $entity->parent()->id() : null);
-        return Service::database()->generateItemSequence($entity->schema()->module()->id(), $parent, $entity->sequence());
+        $parent = ($entity->parent() ? $entity->parent()->id() : '');
+        $seq = Service::database()->generateItemSequence($entity->schema()->module()->name(), $parent, $entity->schema()->sequence());
+        // TODO Do parent correctly!!!
+        $entity->setIndex($seq);
+        return $seq;
     }
 }

@@ -31,12 +31,15 @@
 namespace ARK\Model;
 
 use ARK\Model\Attribute;
+use ARK\Model\Fragment;
 use ARK\Model\Item;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
+use ARK\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 
+// TODO Think about extending from Attribute???
 class Property
 {
     protected $item = null;
@@ -99,6 +102,15 @@ class Property
         return $this->attribute->format()->hasAttributes() || $this->attribute->hasMultipleOccurrences();
     }
 
+    // TODO Is there a better way?
+    protected function updateItem()
+    {
+        if ($this->item->schema()->typeName() == $this->name()) {
+            $this->item->setType($this->fragments->get(0)->value());
+        }
+        $this->item->refreshVersion();
+    }
+
     protected function fragmentValue(Fragment $fragment)
     {
         if ($this->attribute->format()->hasAttributes()) {
@@ -109,6 +121,33 @@ class Property
             return $value;
         }
         return $fragment->value();
+    }
+
+    protected function setFragmentValue(Fragment $fragment, $value)
+    {
+        $val = null;
+        $parm = null;
+        if ($this->attribute->format()->hasAttributes()) {
+            foreach ($this->attribute->format()->attributes() as $attribute) {
+                if ($attribute->isRoot()) {
+                    $val = $value[$attribute->name()];
+                } else {
+                    $parm = $value[$attribute->name()];
+                }
+            }
+        } else {
+            $val = $value;
+            if ($this->attribute->vocabulary()) {
+                $parm = $this->attribute->vocabulary()->concept();
+            }
+        }
+        if ($val) {
+            $fragment->setValue($val, $parm);
+            ORM::persist($fragment);
+        } else {
+            ORM::remove($fragment);
+            $this->fragments->remove($this->fragments->indexOf($fragment));
+        }
     }
 
     protected function objectValue(Fragment $fragment)
@@ -122,19 +161,29 @@ class Property
 
     protected function nullValue()
     {
-        if ($this->attribute->format()->type()->isAtomic() && !$this->attribute->format()->hasAttributes()) {
+        if ($this->attribute->format()->isAtomic()) {
+            // TODO Come up with a proper default strategy!!!
+            $type = $this->attribute->format()->type()->name();
+            if (in_array($type, ['date', 'time', 'datetime'])) {
+                return new \DateTime;
+            }
             return null;
         }
         $value = [];
         foreach ($this->attribute->format()->attributes() as $attribute) {
-            $value[$attribute->name()] = null;
+            // TODO Come up with a proper default strategy!!!
+            if ($attribute->hasVocabulary() && $attribute->vocabulary()->concept() == 'language') {
+                $value[$attribute->name()] = Service::locale();
+            } else {
+                $value[$attribute->name()] = null;
+            }
         }
         return $this->attribute->hasMultipleOccurrences() ? [$value] : $value;
     }
 
     public function value()
     {
-        if (!$this->fragments) {
+        if ($this->fragments->isEmpty()) {
             return $this->nullValue();
         }
         if ($this->attribute->hasMultipleOccurrences()) {
@@ -147,15 +196,38 @@ class Property
             return $values;
         }
         return $this->attribute->format()->type()->isAtomic()
-                ? $this->fragmentValue($this->fragments[0])
-                : $this->objectValue($this->children[$this->fragments[0]]);
+                ? $this->fragmentValue($this->fragments->get(0))
+                : $this->objectValue($this->children[$this->fragments->get(0)]);
+    }
+
+    protected function addFragment()
+    {
+        $fragment = Fragment::create($this->item->schema()->module()->name(), $this->item->id(), $this->attribute);
+        $this->fragments->add($fragment);
+        return $fragment;
     }
 
     public function setValue($value)
     {
-        if ($this->attribute->format()->isAtomic()) {
-            $this->fragments[0]->setValue($value);
+        if ($this->attribute->format()->type()->isAtomic()) {
+            if ($this->attribute->hasMultipleOccurrences()) {
+                if (!$this->fragments->isEmpty()) {
+                    ORM::remove($this->fragments);
+                    $this->fragments->clear();
+                }
+                foreach ($value as $item) {
+                    $this->setFragmentValue($this->addFragment(), $item);
+                }
+            } else {
+                if ($this->fragments->isEmpty()) {
+                    $fragment = $this->addFragment();
+                } else {
+                    $fragment = $this->fragments->get(0);
+                }
+                $this->setFragmentValue($fragment, $value);
+            }
         }
+        $this->updateItem();
     }
 
     public function keyValue()

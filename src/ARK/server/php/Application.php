@@ -189,7 +189,7 @@ class Application extends SilexApplication
                 'logout_path' => '/users/logout',
              ],
              'users' => function ($app) {
-                return $app['user.manager'];
+                 return $app['user.manager'];
              },
             ]
         );
@@ -315,6 +315,7 @@ class Application extends SilexApplication
         }
         parent::run($request);
     }
+
     public function translate($id, $role = 'default', array $parameters = [], $domain = 'messages', $locale = null)
     {
         if ($role != null && $role != 'default') {

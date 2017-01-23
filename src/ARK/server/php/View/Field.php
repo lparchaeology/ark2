@@ -51,8 +51,10 @@ class Field extends Element
     {
         $options['label'] = $this->keyword();
         if ($this->attribute) {
+            $name = $this->attribute->name();
             $options['field'] = $this;
             $options['mapped'] = false;
+            //$options['property_path'] = "propertyArray[$name].value";
         }
         return $options;
     }
@@ -60,7 +62,8 @@ class Field extends Element
     public function formData($resource)
     {
         if ($resource && $this->attribute) {
-            return $resource->property($this->attribute->name());;
+            return $resource->property($this->attribute->name());
+            ;
         }
         return null;
     }

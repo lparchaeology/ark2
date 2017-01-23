@@ -33,19 +33,22 @@ namespace ARK\Model;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Model\VersionTrait;
+use ARK\Model\Fragment\BlobFragment;
+use ARK\Model\Attribute;
+use ARK\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 
 abstract class Fragment
 {
     use VersionTrait;
 
-    protected $fid = 0;
+    protected $fid = null;
     protected $module = '';
     protected $item = '';
     protected $attribute = '';
-    protected $parameter = '';
-    protected $value = '';
-    protected $parent = 0;
+    protected $parameter = null;
+    protected $value = null;
+    protected $parent = null;
 
     public function id()
     {
@@ -77,9 +80,27 @@ abstract class Fragment
         return $this->value;
     }
 
+    public function setValue($value, $parameter = null)
+    {
+        $this->value = $value;
+        $this->parameter = $parameter;
+    }
+
     public function parent()
     {
         return $this->parent;
+    }
+
+    public static function create($module, $item, Attribute $attribute, Fragment $parent = null)
+    {
+        $class = $attribute->format()->type()->modelClass();
+        $fragment = new $class;
+        $fragment->module = $module;
+        $fragment->item = $item;
+        $fragment->attribute = $attribute->name();
+        $fragment->parent = $parent;
+        $fragment->refreshVersion();
+        return $fragment;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

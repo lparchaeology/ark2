@@ -43,7 +43,7 @@ class FindAddAction
     public function __invoke(Request $request)
     {
         $layout = ORM::find(Layout::class, 'dime_find_item');
-        $form = $layout->buildForm(new Find());
+        $form = $layout->buildForm(new Find('dime.find'));
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $item = $form->getData();
