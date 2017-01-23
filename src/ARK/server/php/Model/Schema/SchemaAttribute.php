@@ -37,8 +37,7 @@ use ARK\ORM\ClassMetadataBuilder;
 class SchemaAttribute extends Attribute
 {
     protected $schma = null;
-    protected $typeName = '';
-    protected $type = null;
+    protected $type = '';
 
     public function schema()
     {
@@ -47,35 +46,18 @@ class SchemaAttribute extends Attribute
 
     public function type()
     {
-        if ($this->typeName) {
-            return $this->type;
-        }
-        return null;
-    }
-
-    public function typeName()
-    {
-        return $this->typeName;
+        return $this->type;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_schema_attribute');
+        $builder->setReadOnly();
 
         // Key
         $builder->addManyToOneKey('schma', 'ARK\Model\Schema');
-        $builder->addStringKey('typeName', 30, 'type');
+        $builder->addStringKey('type', 30);
         $builder->addStringKey('attribute', 30);
-
-        // Associations
-        $builder->addCompoundManyToOneField(
-            'type',
-            'SchemaType',
-            [
-                ['column' => 'schma', 'nullable' => false],
-                ['column' => 'type', 'nullable' => false],
-            ]
-        );
     }
 }

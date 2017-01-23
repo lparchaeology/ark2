@@ -38,7 +38,7 @@ class Parameter
     protected $concept = '';
     protected $termName = '';
     protected $term = null;
-    protected $parameter = '';
+    protected $name = '';
     protected $type = '';
     protected $value = '';
 
@@ -49,7 +49,7 @@ class Parameter
 
     public function name()
     {
-        return $this->parameter;
+        return $this->name;
     }
 
     public function type()
@@ -71,7 +71,7 @@ class Parameter
         // Key
         $builder->addManyToOneKey('concept', 'ARK\Vocabulary\Vocabulary', 'concept', 'concept', 'terms');
         $builder->addStringKey('termName', 30, 'term');
-        $builder->addStringKey('parameter', 30);
+        $builder->addStringKey('name', 30);
 
         // Attributes
         $builder->addStringField('type', 10);

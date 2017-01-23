@@ -41,22 +41,24 @@ class EntityViewAction
 {
     public function render(Request $request, $itemSlug, $class, $layout, $options = [], $template = 'pages/page.html.twig')
     {
-        if (!$find = ORM::find($class, $itemSlug)) {
+        if (!$item = ORM::find($class, $itemSlug)) {
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Item not found', "Item $itemSlug not found"));
         }
 
         $viewLayout = ORM::find(Layout::class, $layout);
-        $form = $viewLayout->buildForm($find);
+        $form = $viewLayout->buildForm($item);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // Do updates
-            $data = $form->getData();
-            // Rebuild or redirect?
+            $item = $form->getData();
+            ORM::persist($item);
+            ORM::flush('data');
+            $path = Service::path('finds.view', ['findSlug' => $item->id()]);
+            return Service::redirect($path);
         }
 
         $options['layout'] = $viewLayout;
         $options['forms'][$viewLayout->name()] = $form->createView();
-        $options['data'] = $find;
+        $options['data'] = $item;
         return Service::render($template, $options);
     }
 }

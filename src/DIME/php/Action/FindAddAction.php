@@ -42,15 +42,16 @@ class FindAddAction
 {
     public function __invoke(Request $request)
     {
-        $layout = ORM::find(Layout::class, 'dime_find_view');
-        $form = $layout->buildForm(null);
+        $layout = ORM::find(Layout::class, 'dime_find_item');
+        $form = $layout->buildForm(new Find());
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // Do updates
-            $data = $form->getData();
-            // Rebuild or redirect?
+            $item = $form->getData();
+            ORM::persist($item);
+            ORM::flush('data');
+            $path = Service::path('finds.view', ['findSlug' => $item->id()]);
+            return Service::redirect($path);
         }
-
         $options['layout'] = $layout;
         $options['forms'][$layout->name()] = $form->createView();
         $options['data'] = null;

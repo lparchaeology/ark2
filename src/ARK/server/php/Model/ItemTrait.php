@@ -168,15 +168,15 @@ trait ItemTrait
 
     public static function buildItemMetadata($metadata, $module)
     {
+        // Table
         $mod = Service::database()->getModule($module);
-        $typeEntities = Service::database()->gettypeEntities($module);
         $builder = new ClassMetadataBuilder($metadata, $mod['tbl']);
         $builder->setCustomRepositoryClass('ARK\ORM\ItemEntityRepository');
         $builder->addStringKey('id', 30);
-        $builder->addStringField('parentModule', 30, 'parent_module');
-        $builder->addStringField('parentId', 30, 'parent_id');
-        $builder->addStringField('idx', 30);
-        $builder->addStringField('label', 30);
+
+        // Fields
+        $builder->addStringField('schma', 30);
+        $typeEntities = Service::database()->getTypeEntities($module);
         if ($typeEntities) {
             $builder->setSingleTableInheritance()->setDiscriminatorColumn('type', 'string', 30);
             $metadata->addDiscriminatorMapClass('', $mod['entity']);
@@ -186,7 +186,10 @@ trait ItemTrait
         } else {
             $builder->addStringField('type', 30);
         }
-        $builder->addStringField('schma', 30);
+        $builder->addStringField('parentModule', 30, 'parent_module');
+        $builder->addStringField('parentId', 30, 'parent_id');
+        $builder->addStringField('idx', 30);
+        $builder->addStringField('label', 30);
         VersionTrait::buildVersionMetadata($builder);
         $metadata->setItemEntity(true);
     }

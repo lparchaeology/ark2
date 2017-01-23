@@ -33,6 +33,7 @@ namespace ARK;
 use ARK\Application;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class Service
 {
@@ -41,6 +42,16 @@ class Service
     public static function init(Application $app)
     {
         self::$app = $app;
+    }
+
+    public function path($name, $parameters = [], $relative = false)
+    {
+        return self::$app['url_generator']->generate($name, $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
+    }
+
+    public function url($name, $parameters = [], $schemeRelative = false)
+    {
+        return self::$app['url_generator']->generate($name, $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
     public static function templates()
@@ -56,6 +67,11 @@ class Service
     public static function renderView($view, array $parameters = [])
     {
         return self::$app->renderView($view, $parameters);
+    }
+
+    public static function redirect($url, $status = 302)
+    {
+        return self::$app->redirect($url, $status);
     }
 
     public static function forms()

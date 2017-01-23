@@ -47,15 +47,16 @@ class Schema
     protected $module = null;
     protected $generator = '';
     protected $sequence = '';
-    protected $type = false;
+    protected $type = '';
+    protected $typeVocabulary = null;
+    protected $typeEntities = false;
     protected $model = null;
-    protected $types = null;
+    protected $types = [];
     protected $attributes = null;
     protected $associations = null;
 
     public function __construct()
     {
-        $this->types = new ArrayCollection();
         $this->attributes = new ArrayCollection();
         $this->associations = new ArrayCollection();
     }
@@ -67,35 +68,33 @@ class Schema
             $this->model['']['allattributes'] = [];
             $this->model['']['associations'] = [];
             $this->model['']['allassociations'] = [];
-            foreach ($this->types as $type) {
-                $this->model[$type->name()]['type'] = $type;
-                $this->model[$type->name()]['attributes'] = [];
-                $this->model[$type->name()]['associations'] = [];
+            if ($this->typeVocabulary) {
+                foreach ($this->typeVocabulary->terms() as $term) {
+                    $type = $term->name();
+                    $this->types[] = $type;
+                    $this->model[$type]['type'] = $type;
+                    $this->model[$type]['attributes'] = [];
+                    $this->model[$type]['associations'] = [];
+                }
             }
             foreach ($this->attributes as $attribute) {
                 $this->model['']['allattributes'][$attribute->name()] = $attribute;
-                $this->model[$attribute->typeName()]['attributes'][$attribute->name()] = $attribute;
+                $this->model[$attribute->type()]['attributes'][$attribute->name()] = $attribute;
             }
             foreach ($this->associations as $association) {
                 $this->model['']['allassociations'][$association->name()] = $association;
-                $this->model[$association->typeName()]['associations'][$association->name()] = $association;
+                $this->model[$association->type()]['associations'][$association->name()] = $association;
             }
         }
     }
 
     public function checkType($type)
     {
-        if (is_object($type)) {
-            if (!$type instanceof SchemaType) {
-                throw new ErrorException(new Error('SUBTYPE_EXPECTED', 'Type expected', 'Expected an instance of SchemaType or a Type name.'));
-            }
-            $type = $type->name();
-        }
         if ($type) {
             if (!$this->useTypes()) {
                 throw new ErrorException(new Error('SURPLUS_SUBTYPE', 'Type not required', "The Schema '$this->schma' does not require a Type."));
             }
-            if (!in_array($type, $this->typeNames())) {
+            if (!in_array($type, $this->types)) {
                 throw new ErrorException(new Error('INVALID_SUBTYPE', 'Invalid Type', "The Type '$type' is invalid."));
             }
         } elseif ($this->useTypes()) {
@@ -134,24 +133,10 @@ class Schema
         return $this->type;
     }
 
-    public function types()
-    {
-        return $this->types;
-    }
-
     public function typeNames()
     {
         $this->init();
-        if ($this->useTypes()) {
-            return array_keys($this->model);
-        }
-        return [];
-    }
-
-    public function type($name)
-    {
-        $this->init();
-        return ($name && isset($this->model[$name]) ? $this->model[$name]['type'] : null);
+        return $this->types;
     }
 
     public function attributes($type = null, $all = true)
@@ -215,15 +200,23 @@ class Schema
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
+        // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_schema');
+
+        // Key
         $builder->addStringKey('schma', 30);
+
+        // Fields
         $builder->addManyToOneField('module', 'ARK\Model\Module', null, null, false);
         $builder->addStringField('generator', 100);
         $builder->addStringField('sequence', 30);
         $builder->addStringField('type', 30);
+        $builder->addField('typeEntities', 'boolean', [], 'type_entities');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
-        $builder->addOneToMany('types', 'ARK\Model\Schema\SchemaType', 'schma');
+
+        // Associations
+        $builder->addManyToOneField('typeVocabulary', 'ARK\Vocabulary\Vocabulary', 'type_vocabulary', 'concept');
         $builder->addOneToMany('attributes', 'ARK\Model\Schema\SchemaAttribute', 'schma');
         $builder->addOneToMany('associations', 'ARK\Model\Schema\SchemaAssociation', 'schma');
         $builder->setReadOnly();

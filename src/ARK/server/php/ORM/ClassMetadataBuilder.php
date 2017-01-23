@@ -52,6 +52,16 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         $this->getClassMetadata()->setIdGeneratorType($type);
     }
 
+    public function addOneToMany($name, $targetEntity, $mappedBy, $column = null, $reference = null, $nullable = true)
+    {
+        $builder = $this->createOneToMany($name, $targetEntity);
+        $builder->mappedBy($mappedBy);
+        if ($reference) {
+            $builder->addJoinColumn($column, $reference, $nullable);
+        }
+        return $builder->build();
+    }
+
     public function addManyToOneKey($name, $class, $column = null, $reference = null, $inverse = null)
     {
         if ($column === null) {

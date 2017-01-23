@@ -67,6 +67,11 @@ class ORM
         return self::manager($entity)->contains($entity);
     }
 
+    public static function flush($class)
+    {
+        return self::manager($class)->flush();
+    }
+
     public static function clear($class)
     {
         return self::repository($class)->clear();

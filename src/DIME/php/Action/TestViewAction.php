@@ -76,12 +76,12 @@ class TestViewAction
                 $contents .= $module->name().'   '.$module->resource().'<br />';
                 foreach ($module->schemas() as $schema) {
                     $contents .= '---- '.$schema->name().'   '.$schema->module()->entity().'<br />';
-                    foreach ($schema->types() as $type) {
-                        $contents .= '-------- '.$type->name().'   '.$type->entity().'<br />';
-                        foreach ($schema->attributes($type->name()) as $attribute) {
+                    foreach ($schema->typeNames() as $type) {
+                        $contents .= '-------- '.$type.'<br />';
+                        foreach ($schema->attributes($type) as $attribute) {
                             $contents .= '------------ '.$attribute->name().'   '.$attribute->format()->name().'   '.$attribute->format()->keyword().'<br />';
                         }
-                        foreach ($schema->associations($type->name()) as $association) {
+                        foreach ($schema->associations($type) as $association) {
                             $contents .= '------------ '.$association->name().'   '.$association->inverseSchema()->name().'<br />';
                         }
                     }

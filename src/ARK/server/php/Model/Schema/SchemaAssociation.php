@@ -41,8 +41,7 @@ class SchemaAssociation
     use KeywordTrait;
 
     protected $schma = null;
-    protected $typeName = '';
-    protected $type = null;
+    protected $type = '';
     protected $association = '';
     protected $degree = 0;
     protected $inverse = null;
@@ -56,15 +55,7 @@ class SchemaAssociation
 
     public function type()
     {
-        if ($this->typeName) {
-            return $this->type;
-        }
-        return null;
-    }
-
-    public function typeName()
-    {
-        return $this->typeName;
+        return $this->type;
     }
 
     public function name()
@@ -93,24 +84,23 @@ class SchemaAssociation
     }
     public static function loadMetadata(ClassMetadata $metadata)
     {
+        // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_schema_association');
+        $builder->setReadOnly();
+
+        // Key
         $builder->addManyToOneKey('schma', 'ARK\Model\Schema');
-        $builder->addStringKey('typeName', 30, 'type');
+        $builder->addStringKey('type', 30, 'type');
         $builder->addStringKey('association', 30);
+
+        // Fields
         $builder->addField('degree', 'integer');
-        $builder->addManyToOneField('inverse', 'ARK\Model\Schema', 'inverse', 'schma', false);
         $builder->addField('inverseDegree', 'integer', [], 'inverse_degree');
         $builder->addField('bidirectional', 'boolean');
-        $builder->addCompoundManyToOneField(
-            'type',
-            'SchemaType',
-            [
-                ['column' => 'schma', 'nullable' => false],
-                ['column' => 'type', 'nullable' => false],
-            ]
-        );
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
-        $builder->setReadOnly();
+
+        // Associations
+        $builder->addManyToOneField('inverse', 'ARK\Model\Schema', 'inverse', 'schma', false);
     }
 }

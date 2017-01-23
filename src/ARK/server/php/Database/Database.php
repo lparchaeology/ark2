@@ -236,19 +236,20 @@ class Database
         return $this->fragmentTables;
     }
 
-    public function gettypeEntities($module)
+    public function getTypeEntities($module)
     {
         $sql = "
-            SELECT ark_schema_type.type, ark_schema_type.entity
-            FROM ark_schema, ark_schema_type
+            SELECT ark_vocabulary_parameter.term as type, ark_vocabulary_parameter.value as entity
+            FROM ark_schema, ark_vocabulary_parameter
             WHERE ark_schema.module = :module
             AND ark_schema.enabled = true
             AND ark_schema.type_entities = true
-            AND ark_schema_type.schma = ark_schema.schma
-            AND ark_schema_type.enabled = true
+            AND ark_vocabulary_parameter.concept = ark_schema.type_vocabulary
+            AND ark_vocabulary_parameter.name = :parameter
         ";
         $params = array(
             ':module' => $module,
+            ':parameter' => 'entity',
         );
         return $this->core()->fetchAll($sql, $params);
     }

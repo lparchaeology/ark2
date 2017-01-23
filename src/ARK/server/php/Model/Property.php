@@ -153,6 +153,9 @@ class Property
 
     public function setValue($value)
     {
+        if ($this->attribute->format()->isAtomic()) {
+            $this->fragments[0]->setValue($value);
+        }
     }
 
     public function keyValue()

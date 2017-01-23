@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.1
+-- version 4.6.5.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 20, 2017 at 08:52 PM
--- Server version: 5.6.34
--- PHP Version: 7.1.0
+-- Generation Time: Jan 23, 2017 at 12:39 AM
+-- Server version: 10.0.22-MariaDB
+-- PHP Version: 7.0.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -297,7 +297,13 @@ INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `parame
 (5, 'find', '1', 'period_start', 'dime.period', 'AYTX', NULL, 0, '2017-01-20 14:07:53', 0, '0000-00-00 00:00:00', ''),
 (6, 'find', '1', 'period_end', 'dime.period', 'AYGX', NULL, 0, '2017-01-20 14:08:00', 0, '0000-00-00 00:00:00', ''),
 (7, 'find', '2', 'material', 'dime.material', 'fe', NULL, 0, '2017-01-20 14:08:22', 0, '0000-00-00 00:00:00', ''),
-(8, 'find', '3', 'material', 'dime.material', 'pb', NULL, 0, '2017-01-20 14:08:31', 0, '0000-00-00 00:00:00', '');
+(8, 'find', '3', 'material', 'dime.material', 'pb', NULL, 0, '2017-01-20 14:08:31', 0, '0000-00-00 00:00:00', ''),
+(9, 'find', '1', 'type', 'dime.find.type', 'coin', NULL, 0, '2017-01-20 14:08:29', 0, '0000-00-00 00:00:00', ''),
+(10, 'find', '2', 'type', 'dime.find.type', 'fibula', NULL, 0, '2017-01-20 14:08:29', 0, '0000-00-00 00:00:00', ''),
+(11, 'find', '3', 'type', 'dime.find.type', 'coin', NULL, 0, '2017-01-20 14:08:29', 0, '0000-00-00 00:00:00', ''),
+(12, 'find', '1', 'id', '', '1', NULL, 0, '2017-01-20 14:08:29', 0, '0000-00-00 00:00:00', ''),
+(13, 'find', '2', 'id', '', '2', NULL, 0, '2017-01-20 14:08:29', 0, '0000-00-00 00:00:00', ''),
+(14, 'find', '3', 'id', '', '3', NULL, 0, '2017-01-20 14:08:29', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -829,7 +835,7 @@ ALTER TABLE `ark_fragment_object`
 -- AUTO_INCREMENT for table `ark_fragment_string`
 --
 ALTER TABLE `ark_fragment_string`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `ark_fragment_text`
 --
