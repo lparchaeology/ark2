@@ -30,35 +30,29 @@
 
 namespace DIME\Action;
 
-use ARK\Error\ErrorException;
-use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Layout;
 use Symfony\Component\HttpFoundation\Request;
 
-class EntityViewAction
+class EntityAddAction
 {
-    public function render(Request $request, $itemSlug, $class, $layout, $options = [], $template = 'pages/page.html.twig')
+    public function render(Request $request, $class, $schema, $layout, $redirect, $slug, $options = [], $template = 'pages/page.html.twig')
     {
-        if (!$item = ORM::find($class, $itemSlug)) {
-            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Item not found', "Item $itemSlug not found"));
-        }
-
-        $viewLayout = ORM::find(Layout::class, $layout);
-        $form = $viewLayout->buildForm($item);
+        $layout = ORM::find(Layout::class, $layout);
+        $data = new $class($schema);
+        $form = $layout->buildForm($data);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $item = $form->getData();
             ORM::persist($item);
             ORM::flush('data');
-            $path = Service::path('finds.view', ['findSlug' => $item->id()]);
+            $path = Service::path($redirect, [$slug => $item->id()]);
             return Service::redirect($path);
         }
-
-        $options['layout'] = $viewLayout;
-        $options['forms'][$viewLayout->name()] = $form->createView();
-        $options['data'] = $item;
+        $options['layout'] = $layout;
+        $options['forms'][$layout->name()] = $form->createView();
+        $options['data'] = $data;
         $options['page_config'] = [
             "navlinks" => [
                 ["name" => "dime.home", "dropdown" => false, "target" => "home"],

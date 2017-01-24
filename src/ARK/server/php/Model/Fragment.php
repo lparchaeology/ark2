@@ -65,6 +65,11 @@ abstract class Fragment
         return $this->item;
     }
 
+    public function setItem($item)
+    {
+        $this->item = $item;
+    }
+
     public function attribute()
     {
         return $this->attribute;

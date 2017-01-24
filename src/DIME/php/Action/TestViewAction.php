@@ -141,6 +141,35 @@ class TestViewAction
 
         $content[0] = $contents;
         $content[1] = $contents2;
+        $options['page_config'] = [
+            "navlinks" => [
+                ["name" => "dime.home", "dropdown" => false, "target" => "home"],
+                ["name" => "dime.about", "dropdown" => false, "target" => "about"],
+                ["name" => "dime.treasure", "dropdown" => false, "target" => "treasure"],
+                ["name" => "dime.research", "dropdown" => false, "target" => "research"],
+                ["name" => "dime.background", "dropdown" => false, "target" => "background"],
+            ],
+            "sidelinks" => [
+                [
+                    "name" => "add",
+                    "active" => false,
+                    "role" => "IS_AUTHENTICATED_ANONYMOUSLY",
+                    "links" => [
+                        ["name" => "dime.find.add", "active" => false, "target" => "finds.add"],
+                        ["name" => "dime.location.add", "active" => false, "target" => "locations.add"],
+                    ],
+                ],
+                [
+                    "name" => "search",
+                    "active" => false,
+                    "role" => "IS_AUTHENTICATED_ANONYMOUSLY",
+                    "links" => [
+                        ["name" => "dime.find.list", "active" => false, "target" => "finds.list"],
+                        ["name" => "dime.location.list", "active" => false, "target" => "locations.list"],
+                    ],
+                ],
+            ]
+        ];
 
         return Service::render('pages/page.html.twig', ['content' => $content]);
     }

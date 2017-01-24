@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 23, 2017 at 11:22 PM
+-- Generation Time: Jan 24, 2017 at 01:44 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -499,7 +499,7 @@ CREATE TABLE `ark_schema` (
 INSERT INTO `ark_schema` (`schma`, `module`, `generator`, `sequence`, `type`, `type_vocabulary`, `type_entities`, `enabled`, `deprecated`, `keyword`) VALUES
 ('core.actor', 'actor', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 'type', 'core.actor.type', 1, 1, 0, 'core.schema.actor'),
 ('core.file', 'file', 'ARK\\ORM\\Id\\IdentityGenerator', NULL, 'type', 'core.file.type', 1, 1, 0, 'core.schema.file'),
-('core.page', 'actor', '', '', '', '', 0, 1, 0, 'core.schema.page'),
+('core.page', 'page', '', '', '', '', 0, 1, 0, 'core.schema.page'),
 ('dime.campaign', 'campaign', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', NULL, NULL, 0, 1, 0, 'dime.schema.campaign'),
 ('dime.find', 'find', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 'type', 'dime.find.type', 0, 1, 0, 'dime.schema.find'),
 ('dime.image', 'image', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', NULL, NULL, 0, 1, 0, 'dime.schema.image'),
@@ -1003,7 +1003,6 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attrib
 ('dime_find_period_end', 'field', 'dime.find', '', 'period_end', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_period_start', 'field', 'dime.find', '', 'period_start', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_registered_id', 'field', 'dime.find', '', 'registered_id', '', '', '', 1, 0, 1, 0, NULL),
-('dime_find_save', 'field', NULL, '', '', '', '', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', 1, 0, 1, 0, 'dime.find.save'),
 ('dime_find_secondary', 'field', 'dime.find', '', 'secondary', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_subtype', 'field', 'dime.find', '', 'subtype', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_title', 'field', 'dime.find', '', 'title', '', '', 'ARK\\Form\\Type\\LocalTextType', 1, 0, 1, 0, NULL),
@@ -1012,7 +1011,8 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attrib
 ('dime_location_id', 'field', 'dime.location', '', 'id', '', '', 'ARK\\Form\\Type\\IdType', 1, 0, 1, 0, NULL),
 ('dime_location_item', 'grid', 'dime.location', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
 ('dime_location_list', 'table', NULL, '', NULL, '', '', '', 1, 0, 1, 0, NULL),
-('dime_location_type', 'field', 'dime.location', '', 'type', '', '', '', 1, 0, 1, 0, NULL);
+('dime_location_type', 'field', 'dime.location', '', 'type', '', '', '', 1, 0, 1, 0, NULL),
+('dime_save', 'field', NULL, '', '', '', '', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', 1, 0, 1, 0, 'dime.save');
 
 -- --------------------------------------------------------
 
@@ -1041,7 +1041,7 @@ INSERT INTO `ark_view_layout` (`element`, `row`, `col`, `seq`, `item_type`, `ena
 ('core_actor_list', 0, 0, 0, '', 1, 0, 'core_actor_id'),
 ('core_actor_list', 0, 0, 2, '', 1, 0, 'core_actor_type'),
 ('core_page_view', 0, 0, 0, '', 1, 0, 'core_page_content'),
-('dime_find_action', 0, 0, 0, '', 1, 0, 'dime_find_save'),
+('dime_find_action', 0, 0, 0, '', 1, 0, 'dime_save'),
 ('dime_find_add', 0, 0, 0, '', 1, 0, 'dime_find_event'),
 ('dime_find_add', 0, 1, 0, '', 1, 0, 'dime_find_details'),
 ('dime_find_details', 0, 0, 0, '', 1, 0, 'dime_find_type'),
@@ -1061,7 +1061,7 @@ INSERT INTO `ark_view_layout` (`element`, `row`, `col`, `seq`, `item_type`, `ena
 ('dime_find_event', 0, 0, 3, '', 1, 0, 'dime_find_finddate'),
 ('dime_find_item', 0, 0, 0, '', 1, 0, 'dime_find_event'),
 ('dime_find_item', 0, 1, 0, '', 1, 0, 'dime_find_details'),
-('dime_find_item', 0, 1, 1, '', 1, 0, 'dime_find_save'),
+('dime_find_item', 0, 1, 1, '', 1, 0, 'dime_save'),
 ('dime_find_list', 0, 0, 0, '', 1, 0, 'dime_find_id'),
 ('dime_find_list', 0, 0, 1, '', 1, 0, 'dime_find_title'),
 ('dime_find_list', 0, 0, 2, '', 1, 0, 'dime_find_type'),
@@ -1069,6 +1069,7 @@ INSERT INTO `ark_view_layout` (`element`, `row`, `col`, `seq`, `item_type`, `ena
 ('dime_find_list', 0, 0, 4, '', 1, 0, 'dime_find_material'),
 ('dime_location_item', 0, 0, 0, '', 1, 0, 'dime_location_id'),
 ('dime_location_item', 0, 0, 2, '', 1, 0, 'dime_location_type'),
+('dime_location_item', 0, 1, 1, '', 1, 0, 'dime_save'),
 ('dime_location_list', 0, 0, 0, '', 1, 0, 'dime_location_id'),
 ('dime_location_list', 0, 0, 2, '', 1, 0, 'dime_location_type');
 

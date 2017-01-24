@@ -38,7 +38,7 @@ class HomeViewAction
     public function __invoke(Request $request)
     {
         $page_config = array(
-            "navlinks" => array (
+            "navlinks" => array(
                 array(
                     "name" => "dime.home",
                     "dropdown" => false,
@@ -48,14 +48,14 @@ class HomeViewAction
                     "name" => "dime.detector",
                     "dropdown" => true,
                     "target" => "detector",
-                    "navlinks" => array (
+                    "navlinks" => array(
                         array(
                             "name" => "dime.metaldetector",
                             "target" => "detector"
                         ),
                         array(
                             "name" => "dime.treasure",
-                            "target" => "detector"
+                            "target" => "treasure"
                         ),
                     ),
                 ),
@@ -68,7 +68,7 @@ class HomeViewAction
                     "name" => "dime.about",
                     "dropdown" => true,
                     "target" => "about",
-                    "navlinks" => array (
+                    "navlinks" => array(
                         array(
                             "name" => "dime.about.groups",
                             "target" => "about"
@@ -95,7 +95,7 @@ class HomeViewAction
                     "name" => "dime.exhibits",
                     "dropdown" => true,
                     "target" => "exhibits",
-                    "navlinks" => array (
+                    "navlinks" => array(
                         array(
                             "name" => "dime.exhibits.forests",
                             "target" => "exhibits"
@@ -112,7 +112,7 @@ class HomeViewAction
                     "target" => "news"
                 )
             ),
-            "sidelinks" => array (
+            "sidelinks" => array(
                 array(
                     "name" => "add",
                     "active" => true,
@@ -149,6 +149,36 @@ class HomeViewAction
                 ),
             )
         );
+
+        $page_config = [
+            "navlinks" => [
+                ["name" => "dime.home", "dropdown" => false, "target" => "home"],
+                ["name" => "dime.about", "dropdown" => false, "target" => "about"],
+                ["name" => "dime.treasure", "dropdown" => false, "target" => "treasure"],
+                ["name" => "dime.research", "dropdown" => false, "target" => "research"],
+                ["name" => "dime.background", "dropdown" => false, "target" => "background"],
+            ],
+            "sidelinks" => [
+                [
+                    "name" => "add",
+                    "active" => false,
+                    "role" => "IS_AUTHENTICATED_ANONYMOUSLY",
+                    "links" => [
+                        ["name" => "dime.find.add", "active" => false, "target" => "finds.add"],
+                        ["name" => "dime.location.add", "active" => false, "target" => "locations.add"],
+                    ],
+                ],
+                [
+                    "name" => "search",
+                    "active" => false,
+                    "role" => "IS_AUTHENTICATED_ANONYMOUSLY",
+                    "links" => [
+                        ["name" => "dime.find.list", "active" => false, "target" => "finds.list"],
+                        ["name" => "dime.location.list", "active" => false, "target" => "locations.list"],
+                    ],
+                ],
+            ]
+        ];
 
         $lorem = "
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel mi eu nulla varius molestie. Integer pharetra dolor diam, in interdum diam iaculis a. Etiam nec finibus magna, non pulvinar est. Suspendisse maximus lacus eget mi laoreet, eget mattis est fermentum. Ut elit felis, iaculis non pellentesque ac, accumsan vitae sapien. Aenean blandit maximus ultrices. Morbi mattis iaculis eros nec volutpat. Donec fermentum felis ac purus ultricies, id varius magna ornare. Ut eget nisl non nisi egestas hendrerit ac id ligula. Pellentesque ac arcu quis diam venenatis ultricies in vitae diam.</p>

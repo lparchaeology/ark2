@@ -111,6 +111,14 @@ class Property
         $this->item->refreshVersion();
     }
 
+    // TODO Is there a better way?
+    public function updateFragments()
+    {
+        foreach ($this->fragments as $fragment) {
+            $fragment->setItem($this->item->id());
+        }
+    }
+
     protected function fragmentValue(Fragment $fragment)
     {
         if ($this->attribute->format()->hasAttributes()) {

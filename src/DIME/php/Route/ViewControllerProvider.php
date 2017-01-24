@@ -39,16 +39,22 @@ class ViewControllerProvider implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
 
-        // Under Construction Routes
-        $controllers->get('/detector', 'DIME\Action\PageViewAction')
-                    ->bind('detector');
+        // Static Page Routes
         $controllers->get('/research', 'DIME\Action\PageViewAction')
                     ->bind('research');
         $controllers->get('/about', 'DIME\Action\PageViewAction')
                     ->bind('about');
-        $controllers->get('/exhibits', 'DIME\Action\PageViewAction')
+        $controllers->get('/background', 'DIME\Action\PageViewAction')
+                    ->bind('background');
+        $controllers->get('/treasure', 'DIME\Action\PageViewAction')
+                    ->bind('treasure');
+
+        // Under Construction Routes
+        $controllers->get('/detector', 'DIME\Action\UnderConstructionAction')
+                    ->bind('detector');
+        $controllers->get('/exhibits', 'DIME\Action\UnderConstructionAction')
                     ->bind('exhibits');
-        $controllers->get('/news', 'DIME\Action\PageViewAction')
+        $controllers->get('/news', 'DIME\Action\UnderConstructionAction')
                     ->bind('news');
 
         // Dummy Routes

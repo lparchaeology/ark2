@@ -33,7 +33,13 @@
                 <tr>
                     {% for field in layout.elements %}
                         <td>
-                            {{ field.renderView(item) }}
+                            {% if field.attribute.name == 'id' %}
+                                {% set basepath = path(global.request.attributes.get('_route')) %}
+                                {% set itempath = basepath ~ '/' ~ field.renderView(item) %}
+                                <a href="{{ itempath }}">{{ field.renderView(item) }}</a>
+                            {% else %}
+                                {{ field.renderView(item) }}
+                            {% endif %}
                         </td>
                     {% endfor %}
                 </tr>

@@ -30,31 +30,14 @@
 
 namespace DIME\Action;
 
-use ARK\Error\ErrorException;
-use ARK\Http\Error\NotFoundError;
-use ARK\ORM\ORM;
-use ARK\Service;
-use ARK\View\Layout;
+use DIME\Action\EntityAddAction;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
-class FindAddAction
+class FindAddAction extends EntityAddAction
 {
     public function __invoke(Request $request)
     {
-        $layout = ORM::find(Layout::class, 'dime_find_item');
-        $form = $layout->buildForm(new Find('dime.find'));
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $item = $form->getData();
-            ORM::persist($item);
-            ORM::flush('data');
-            $path = Service::path('finds.view', ['findSlug' => $item->id()]);
-            return Service::redirect($path);
-        }
-        $options['layout'] = $layout;
-        $options['forms'][$layout->name()] = $form->createView();
-        $options['data'] = null;
-        return Service::render('pages/page.html.twig', $options);
+        return $this->render($request, Find::class, 'dime.find', 'dime_find_item', 'finds.view', 'findSlug');
     }
 }

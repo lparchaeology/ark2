@@ -76,11 +76,18 @@ trait ItemTrait
         return $this->idx;
     }
 
-    public function setIndex($index)
+    // TODO Do this properly!!!
+    public function setIndex($id)
     {
-        // TODO Do parent correctly!!!
-        $this->idx = $index;
-        $this->label = $this->makeIdentifier($this->parentId, '_', $index);
+        $this->id = $id;
+        $this->idx = $id;
+        $this->label = $this->makeIdentifier($this->parentId, '_', $id);
+        foreach ($this->properties() as $property) {
+            $property->updateFragments();
+            if ($property->name() == 'id') {
+                $property->setValue($id);
+            }
+        }
     }
 
     public function label()

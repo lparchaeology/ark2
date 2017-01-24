@@ -30,18 +30,14 @@
 
 namespace DIME\Action;
 
-use ARK\Service;
+use DIME\Entity\Location;
+use DIME\Action\EntityAddAction;
 use Symfony\Component\HttpFoundation\Request;
 
-class LocationAddAction
+class LocationAddAction extends EntityAddAction
 {
-    public function __invoke(Request $request, $actorSlug = null)
+    public function __invoke(Request $request)
     {
-        return Service::render(
-            'pages/page.html.twig',
-            [
-                'content' => LocationAddAction::class,
-            ]
-        );
+        return $this->render($request, Location::class, 'dime.location', 'dime_location_item', 'locations.view', 'locationSlug');
     }
 }
