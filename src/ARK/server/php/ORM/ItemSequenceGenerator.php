@@ -34,12 +34,12 @@ use ARK\Error\ErrorException;
 use ARK\Http\Error\InternalServerError;
 use ARK\Model\Item;
 use ARK\Service;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManager as DoctrineEntityManager;
 use Doctrine\ORM\Id\AbstractIdGenerator;
 
 class ItemSequenceGenerator extends AbstractIdGenerator
 {
-    public function generate(EntityManager $em, $entity)
+    public function generate(DoctrineEntityManager $em, $entity)
     {
         if (!$entity instanceof Item) {
             throw new ErrorException(new InternalServerError(
