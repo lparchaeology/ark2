@@ -38,7 +38,7 @@ CREATE TABLE `ark_user` (
   `isEnabled` tinyint(1) NOT NULL DEFAULT '1',
   `confirmationToken` varchar(100) DEFAULT NULL,
   `timePasswordResetRequested` int(11) UNSIGNED DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `ark_user`
@@ -57,7 +57,7 @@ CREATE TABLE `ark_user_field` (
   `user_id` int(11) UNSIGNED NOT NULL,
   `attribute` varchar(50) NOT NULL DEFAULT '',
   `value` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Indexes for dumped tables

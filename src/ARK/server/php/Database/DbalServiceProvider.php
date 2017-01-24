@@ -55,6 +55,9 @@ class DbalServiceProvider implements ServiceProviderInterface
             $options['core'] = $this->mergeConfig($app['dbs.settings'], 'core');
             $options['data'] = $this->mergeConfig($app['dbs.settings'], 'data');
             $options['user'] = $this->mergeConfig($app['dbs.settings'], 'user');
+            if (isset($app['dbs.settings']['connections']['spatial'])) {
+                $options['spatial'] = $this->mergeConfig($app['dbs.settings'], 'spatial');
+            }
             $app['dbs.options'] = $options;
             $app['dbs.default'] = 'data';
         });

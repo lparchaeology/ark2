@@ -3,6 +3,7 @@
         "mamp": {
             "driver": "pdo_mysql",
             "host": "127.0.0.1",
+            "charset": "utf8mb4",
             "port": "8889",
             "user": "ark_user",
             "password": "ark_pass"

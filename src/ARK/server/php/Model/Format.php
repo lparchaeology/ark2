@@ -132,13 +132,13 @@ abstract class Format
         $builder->addDiscriminatorMapClass('datetime', 'ARK\Model\Format\DateTimeFormat');
         $builder->addDiscriminatorMapClass('decimal', 'ARK\Model\Format\DecimalFormat');
         $builder->addDiscriminatorMapClass('float', 'ARK\Model\Format\FloatFormat');
-        $builder->addDiscriminatorMapClass('geometry', 'ARK\Model\Format\GeometryFormat');
         $builder->addDiscriminatorMapClass('integer', 'ARK\Model\Format\IntegerFormat');
         $builder->addDiscriminatorMapClass('item', 'ARK\Model\Format\ItemFormat');
         $builder->addDiscriminatorMapClass('object', 'ARK\Model\Format\ObjectFormat');
         $builder->addDiscriminatorMapClass('string', 'ARK\Model\Format\StringFormat');
         $builder->addDiscriminatorMapClass('text', 'ARK\Model\Format\TextFormat');
         $builder->addDiscriminatorMapClass('time', 'ARK\Model\Format\TimeFormat');
+        $builder->addDiscriminatorMapClass('wkt', 'ARK\Model\Format\WktFormat');
         $builder->setReadOnly();
 
         // Key

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 24, 2017 at 01:44 PM
+-- Generation Time: Jan 24, 2017 at 11:11 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -27,10 +27,10 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `ark_config_error` (
-  `code` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `status` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
-  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `code` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -41,10 +41,10 @@ CREATE TABLE `ark_config_error` (
 CREATE TABLE `ark_config_flash` (
   `id` int(11) NOT NULL,
   `active` tinyint(1) NOT NULL,
-  `type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `language` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `text` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `text` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_config_flash`
@@ -63,13 +63,13 @@ INSERT INTO `ark_config_flash` (`id`, `active`, `type`, `language`, `text`) VALU
 --
 
 CREATE TABLE `ark_config_thumbnail` (
-  `profile` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `profile` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `max` int(11) NOT NULL,
   `min` int(11) DEFAULT NULL,
-  `mode` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `keyword` varchar(50) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `mode` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keyword` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_config_thumbnail`
@@ -86,17 +86,17 @@ INSERT INTO `ark_config_thumbnail` (`profile`, `max`, `min`, `mode`, `type`, `ke
 --
 
 CREATE TABLE `ark_format` (
-  `format` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `input` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `input` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `object` tinyint(1) NOT NULL DEFAULT '0',
   `array` tinyint(1) NOT NULL DEFAULT '0',
   `sortable` tinyint(1) NOT NULL DEFAULT '1',
   `searchable` tinyint(1) NOT NULL DEFAULT '1',
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `deprecated` tinyint(1) NOT NULL DEFAULT '0',
-  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_format`
@@ -114,7 +114,7 @@ INSERT INTO `ark_format` (`format`, `type`, `input`, `object`, `array`, `sortabl
 ('distance', 'decimal', 'text', 1, 1, 1, 1, 1, 0, 'format.distance'),
 ('email', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.email'),
 ('float', 'float', 'text', 0, 0, 1, 1, 1, 0, 'format.float'),
-('geometry', 'geometry', '', 0, 0, 0, 1, 1, 0, 'format.geometry'),
+('geometry', 'wkt', 'text', 0, 0, 1, 1, 1, 0, 'format.geometry'),
 ('html', 'text', 'textarea', 0, 0, 1, 1, 1, 0, 'format.html'),
 ('identifier', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.identifier'),
 ('integer', 'integer', 'text', 0, 0, 1, 1, 1, 0, 'format.integer'),
@@ -137,6 +137,7 @@ INSERT INTO `ark_format` (`format`, `type`, `input`, `object`, `array`, `sortabl
 ('time', 'time', 'date', 0, 0, 1, 1, 1, 0, 'format.time'),
 ('url', 'text', 'text', 0, 0, 1, 1, 1, 0, 'format.url'),
 ('weekdate', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.weekdate'),
+('wkt', 'wkt', 'text', 0, 0, 0, 1, 1, 0, 'format.wkt'),
 ('yearmonth', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.yearmonth'),
 ('yearweek', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.yearweek');
 
@@ -147,11 +148,11 @@ INSERT INTO `ark_format` (`format`, `type`, `input`, `object`, `array`, `sortabl
 --
 
 CREATE TABLE `ark_format_attribute` (
-  `parent` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `parent` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sequence` int(11) NOT NULL,
-  `format` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `vocabulary` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `root` tinyint(1) NOT NULL DEFAULT '0',
   `minimum` int(11) NOT NULL DEFAULT '0',
   `maximum` int(11) NOT NULL DEFAULT '1',
@@ -159,8 +160,8 @@ CREATE TABLE `ark_format_attribute` (
   `additional_values` int(11) NOT NULL DEFAULT '0',
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `deprecated` tinyint(1) NOT NULL DEFAULT '0',
-  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `ark_format_attribute`
@@ -172,6 +173,8 @@ INSERT INTO `ark_format_attribute` (`parent`, `attribute`, `sequence`, `format`,
 ('address', 'street', 0, 'localtext', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.address.street'),
 ('distance', 'measurement', 0, 'decimal', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.length.measurement'),
 ('distance', 'unit', 1, 'identifier', 'distance', 0, 1, 1, 1, 0, 1, 0, 'format.length.unit'),
+('geometry', 'coordinates', 0, 'wkt', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.geometry.wkt'),
+('geometry', 'srid', 1, 'identifier', 'crs', 0, 1, 1, 1, 0, 1, 0, 'format.geometry.crs'),
 ('html', 'content', 1, 'text', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.html.content'),
 ('html', 'language', 0, 'identifier', 'language', 0, 1, 1, 1, 0, 1, 0, 'format.html.language'),
 ('item', 'id', 1, 'identifier', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.item.id'),
@@ -190,8 +193,8 @@ INSERT INTO `ark_format_attribute` (`parent`, `attribute`, `sequence`, `format`,
 --
 
 CREATE TABLE `ark_format_blob` (
-  `format` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_format_blob`
@@ -207,8 +210,8 @@ INSERT INTO `ark_format_blob` (`format`) VALUES
 --
 
 CREATE TABLE `ark_format_boolean` (
-  `format` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_format_boolean`
@@ -224,10 +227,10 @@ INSERT INTO `ark_format_boolean` (`format`) VALUES
 --
 
 CREATE TABLE `ark_format_datetime` (
-  `format` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `pattern` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `unicode` varchar(50) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pattern` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unicode` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_format_datetime`
@@ -247,15 +250,15 @@ INSERT INTO `ark_format_datetime` (`format`, `pattern`, `unicode`) VALUES
 --
 
 CREATE TABLE `ark_format_decimal` (
-  `format` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `prec` int(11) NOT NULL DEFAULT '200',
   `scale` int(11) NOT NULL,
-  `minimum` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `minimum` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `exclusive_minimum` tinyint(1) NOT NULL,
-  `maximum` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `maximum` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `exclusive_maximum` tinyint(1) NOT NULL,
-  `multiple_of` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `multiple_of` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_format_decimal`
@@ -273,13 +276,13 @@ INSERT INTO `ark_format_decimal` (`format`, `prec`, `scale`, `minimum`, `exclusi
 --
 
 CREATE TABLE `ark_format_float` (
-  `format` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `minimum` double DEFAULT NULL,
   `exclusive_minimum` tinyint(1) NOT NULL,
   `maximum` double DEFAULT NULL,
   `exclusive_maximum` tinyint(1) NOT NULL,
   `multiple_of` double DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_format_float`
@@ -292,34 +295,17 @@ INSERT INTO `ark_format_float` (`format`, `minimum`, `exclusive_minimum`, `maxim
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ark_format_geometry`
---
-
-CREATE TABLE `ark_format_geometry` (
-  `format` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `ark_format_geometry`
---
-
-INSERT INTO `ark_format_geometry` (`format`) VALUES
-('geometry');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `ark_format_integer`
 --
 
 CREATE TABLE `ark_format_integer` (
-  `format` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `minimum` int(11) DEFAULT NULL,
   `exclusive_minimum` tinyint(1) NOT NULL,
   `maximum` int(11) DEFAULT NULL,
   `exclusive_maximum` tinyint(1) NOT NULL,
   `multiple_of` int(11) DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_format_integer`
@@ -335,9 +321,9 @@ INSERT INTO `ark_format_integer` (`format`, `minimum`, `exclusive_minimum`, `max
 --
 
 CREATE TABLE `ark_format_item` (
-  `format` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `module` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_format_item`
@@ -354,8 +340,8 @@ INSERT INTO `ark_format_item` (`format`, `module`) VALUES
 --
 
 CREATE TABLE `ark_format_object` (
-  `format` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_format_object`
@@ -373,13 +359,13 @@ INSERT INTO `ark_format_object` (`format`) VALUES
 --
 
 CREATE TABLE `ark_format_string` (
-  `format` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `pattern` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pattern` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `min_length` int(11) NOT NULL,
   `max_length` int(11) NOT NULL,
   `default_size` int(11) NOT NULL,
   `spellcheck` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_format_string`
@@ -408,20 +394,38 @@ INSERT INTO `ark_format_string` (`format`, `pattern`, `min_length`, `max_length`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ark_format_wkt`
+--
+
+CREATE TABLE `ark_format_wkt` (
+  `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `ark_format_wkt`
+--
+
+INSERT INTO `ark_format_wkt` (`format`) VALUES
+('geometry'),
+('wkt');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ark_fragment_type`
 --
 
 CREATE TABLE `ark_fragment_type` (
-  `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `compound` tinyint(1) NOT NULL DEFAULT '0',
-  `tbl` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `format_class` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `model_class` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `form_class` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `tbl` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `format_class` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `model_class` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `form_class` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `deprecated` tinyint(1) NOT NULL DEFAULT '0',
-  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_fragment_type`
@@ -434,13 +438,13 @@ INSERT INTO `ark_fragment_type` (`type`, `compound`, `tbl`, `format_class`, `mod
 ('datetime', 0, 'ark_fragment_datetime', 'ARK\\Model\\Format\\DateTimeFormat', 'ARK\\Model\\Fragment\\DateTimeFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateTimeType', 1, 0, 'fragment.datetime'),
 ('decimal', 0, 'ark_fragment_decimal', 'ARK\\Model\\Format\\DecimalFormat', 'ARK\\Model\\Fragment\\DecimalFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', 1, 0, 'fragment.decimal'),
 ('float', 0, 'ark_fragment_float', 'ARK\\Model\\Format\\FloatFormat', 'ARK\\Model\\Fragment\\FloatFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', 1, 0, 'fragment.float'),
-('geometry', 0, 'ark_fragment_geometry', 'ARK\\Model\\Format\\GeometryFormat', 'ARK\\Model\\Fragment\\GeometryFragment', '', 1, 0, 'fragment.geometry'),
 ('integer', 0, 'ark_fragment_integer', 'ARK\\Model\\Format\\IntegerFormat', 'ARK\\Model\\Fragment\\IntegerFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\IntegerType', 1, 0, 'fragment.integer'),
 ('item', 0, 'ark_fragment_item', 'ARK\\Model\\Format\\ItemFormat', 'ARK\\Model\\Fragment\\ItemFragment', '', 1, 0, 'fragment.item'),
 ('object', 1, 'ark_fragment_object', 'ARK\\Model\\Format\\ObjectFormat', 'ARK\\Model\\Fragment\\ObjectFragment', '', 1, 0, 'fragment.object'),
 ('string', 0, 'ark_fragment_string', 'ARK\\Model\\Format\\StringFormat', 'ARK\\Model\\Fragment\\StringFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', 1, 0, 'fragment.string'),
 ('text', 0, 'ark_fragment_text', 'ARK\\Model\\Format\\TextFormat', 'ARK\\Model\\Fragment\\TextFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextAreaType', 1, 0, 'fragment.text'),
-('time', 0, 'ark_fragment_time', 'ARK\\Model\\Format\\TimeFormat', 'ARK\\Model\\Fragment\\TimeFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', 1, 0, 'fragment.time');
+('time', 0, 'ark_fragment_time', 'ARK\\Model\\Format\\TimeFormat', 'ARK\\Model\\Fragment\\TimeFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', 1, 0, 'fragment.time'),
+('wkt', 0, 'ark_fragment_wkt', 'ARK\\Model\\Format\\WktFormat', 'ARK\\Model\\Fragment\\WktFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', 1, 0, 'fragment.geometry');
 
 -- --------------------------------------------------------
 
@@ -449,16 +453,16 @@ INSERT INTO `ark_fragment_type` (`type`, `compound`, `tbl`, `format_class`, `mod
 --
 
 CREATE TABLE `ark_module` (
-  `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `resource` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `namespace` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `entity` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `tbl` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `resource` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `namespace` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `entity` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tbl` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `core` tinyint(1) NOT NULL DEFAULT '0',
   `enabled` tinyint(1) NOT NULL,
   `deprecated` tinyint(1) NOT NULL,
-  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_module`
@@ -480,17 +484,17 @@ INSERT INTO `ark_module` (`module`, `resource`, `namespace`, `entity`, `tbl`, `c
 --
 
 CREATE TABLE `ark_schema` (
-  `schma` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `module` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `generator` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `sequence` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `type` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `type_vocabulary` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `generator` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sequence` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type_vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type_entities` tinyint(1) NOT NULL DEFAULT '0',
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `deprecated` tinyint(1) NOT NULL,
-  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_schema`
@@ -512,17 +516,17 @@ INSERT INTO `ark_schema` (`schma`, `module`, `generator`, `sequence`, `type`, `t
 --
 
 CREATE TABLE `ark_schema_association` (
-  `schma` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `association` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `association` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `degree` int(11) NOT NULL,
-  `inverse` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `inverse` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `inverse_degree` int(11) NOT NULL,
   `bidirectional` tinyint(1) NOT NULL DEFAULT '0',
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `deprecated` tinyint(1) NOT NULL,
-  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_schema_association`
@@ -539,19 +543,19 @@ INSERT INTO `ark_schema_association` (`schma`, `type`, `association`, `degree`, 
 --
 
 CREATE TABLE `ark_schema_attribute` (
-  `schma` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `attribute` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `format` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `vocabulary` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `minimum` int(11) NOT NULL DEFAULT '0',
   `maximum` int(11) NOT NULL DEFAULT '1',
   `unique_values` int(11) NOT NULL DEFAULT '1',
   `additional_values` int(11) NOT NULL DEFAULT '0',
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `deprecated` tinyint(1) NOT NULL DEFAULT '0',
-  `keyword` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `ark_schema_attribute`
@@ -577,10 +581,11 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('dime.find', '', 'description', 'localtext', NULL, 0, 1, 1, 0, 1, 0, 'property.description'),
 ('dime.find', '', 'finddate', 'date', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.finddate'),
 ('dime.find', '', 'finder_id', 'identifier', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.finderid'),
+('dime.find', '', 'findpoint', 'geometry', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.findpoint'),
 ('dime.find', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.id'),
-('dime.find', '', 'length', 'distance', 'distance', 1, 1, 1, 0, 1, 0, 'property.length'),
+('dime.find', '', 'length', 'distance', 'distance', 1, 1, 1, 0, 1, 0, 'dime.find.length'),
 ('dime.find', '', 'material', 'identifier', 'dime.material', 1, 1, 1, 0, 1, 0, 'dime.find.material'),
-('dime.find', '', 'name', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
+('dime.find', '', 'name', 'shortlocaltext', NULL, 0, 1, 1, 0, 1, 0, 'property.name'),
 ('dime.find', '', 'period_end', 'identifier', 'dime.period', 0, 1, 1, 0, 1, 0, 'dime.find.period.end'),
 ('dime.find', '', 'period_start', 'identifier', 'dime.period', 0, 1, 1, 0, 1, 0, 'dime.find.period.start'),
 ('dime.find', '', 'registered_id', 'identifier', NULL, 0, 1, 1, 0, 1, 0, 'property.registeredid'),
@@ -601,11 +606,11 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 --
 
 CREATE TABLE `ark_translation` (
-  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `domain` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `domain` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_plural` tinyint(1) NOT NULL DEFAULT '0',
   `has_parameters` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_translation`
@@ -727,9 +732,9 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 --
 
 CREATE TABLE `ark_translation_domain` (
-  `domain` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `domain` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_translation_domain`
@@ -750,11 +755,11 @@ INSERT INTO `ark_translation_domain` (`domain`, `keyword`) VALUES
 --
 
 CREATE TABLE `ark_translation_language` (
-  `language` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `markup` tinyint(1) NOT NULL,
   `vocabulary` tinyint(1) NOT NULL,
   `text` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_translation_language`
@@ -772,12 +777,12 @@ INSERT INTO `ark_translation_language` (`language`, `markup`, `vocabulary`, `tex
 --
 
 CREATE TABLE `ark_translation_message` (
-  `language` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `role` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `text` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `notes` longtext COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `text` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `notes` longtext COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_translation_message`
@@ -899,9 +904,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 --
 
 CREATE TABLE `ark_translation_parameter` (
-  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `parameter` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `parameter` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_translation_parameter`
@@ -917,10 +922,10 @@ INSERT INTO `ark_translation_parameter` (`keyword`, `parameter`) VALUES
 --
 
 CREATE TABLE `ark_translation_role` (
-  `role` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `description` varchar(50) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `role` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_translation_role`
@@ -960,20 +965,20 @@ INSERT INTO `ark_translation_role` (`role`, `keyword`, `description`) VALUES
 --
 
 CREATE TABLE `ark_view_element` (
-  `element` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `schma` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `item_type` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `attribute` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `class` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `template` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `form` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `item_type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `attribute` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `class` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `template` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `form` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `editable` tinyint(1) NOT NULL DEFAULT '1',
   `hidden` tinyint(1) NOT NULL DEFAULT '0',
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `deprecated` tinyint(1) NOT NULL DEFAULT '0',
-  `keyword` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_view_element`
@@ -994,6 +999,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attrib
 ('dime_find_event', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_finddate', 'field', 'dime.find', '', 'finddate', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_finder_id', 'field', 'dime.find', '', 'finder_id', '', '', '', 1, 0, 1, 0, NULL),
+('dime_find_findpoint', 'field', 'dime.find', '', 'findpoint', '', '', 'ARK\\Form\\Type\\WktType', 1, 0, 1, 0, NULL),
 ('dime_find_id', 'field', 'dime.find', '', 'id', '', '', 'ARK\\Form\\Type\\IdType', 1, 0, 1, 0, NULL),
 ('dime_find_item', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_length', 'field', 'dime.find', '', 'length', '', '', '', 1, 0, 1, 0, NULL),
@@ -1021,15 +1027,15 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attrib
 --
 
 CREATE TABLE `ark_view_layout` (
-  `element` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `row` int(11) NOT NULL,
   `col` int(11) NOT NULL,
   `seq` int(11) NOT NULL,
-  `item_type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `item_type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `deprecated` tinyint(1) NOT NULL DEFAULT '0',
-  `child` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
+  `child` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `ark_view_layout`
@@ -1059,6 +1065,7 @@ INSERT INTO `ark_view_layout` (`element`, `row`, `col`, `seq`, `item_type`, `ena
 ('dime_find_event', 0, 0, 1, '', 1, 0, 'dime_find_name'),
 ('dime_find_event', 0, 0, 2, '', 1, 0, 'dime_find_finder_id'),
 ('dime_find_event', 0, 0, 3, '', 1, 0, 'dime_find_finddate'),
+('dime_find_event', 0, 0, 4, '', 1, 0, 'dime_find_findpoint'),
 ('dime_find_item', 0, 0, 0, '', 1, 0, 'dime_find_event'),
 ('dime_find_item', 0, 1, 0, '', 1, 0, 'dime_find_details'),
 ('dime_find_item', 0, 1, 1, '', 1, 0, 'dime_save'),
@@ -1080,11 +1087,11 @@ INSERT INTO `ark_view_layout` (`element`, `row`, `col`, `seq`, `item_type`, `ena
 --
 
 CREATE TABLE `ark_view_option` (
-  `element` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `value` varchar(4000) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_view_option`
@@ -1100,12 +1107,12 @@ INSERT INTO `ark_view_option` (`element`, `name`, `type`, `value`) VALUES
 --
 
 CREATE TABLE `ark_view_type` (
-  `type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `layout` tinyint(1) NOT NULL DEFAULT '0',
-  `form` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `template` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
+  `form` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `template` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `ark_view_type`
@@ -1124,15 +1131,15 @@ INSERT INTO `ark_view_type` (`type`, `layout`, `form`, `template`, `keyword`) VA
 --
 
 CREATE TABLE `ark_vocabulary` (
-  `concept` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `source` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `source` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `closed` tinyint(1) NOT NULL DEFAULT '1',
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `deprecated` tinyint(1) NOT NULL DEFAULT '0',
-  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `description` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_vocabulary`
@@ -1142,6 +1149,7 @@ INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `enabled`, 
 ('core.actor.type', 'list', 'ARK Core', 1, 1, 0, 'vocabulary.actor.type', 'Actor Type'),
 ('core.file.type', 'list', 'ARK Core', 1, 1, 0, 'vocabulary.file.type', 'File Type'),
 ('country', 'list', 'ISO3166', 1, 1, 0, 'vocabulary.country', 'ISO Country Codes'),
+('crs', 'list', 'EPSG', 1, 1, 0, 'vocabulary.crs', 'Coordinate Reference System'),
 ('dime.find.type', 'list', 'DIME', 1, 1, 0, 'vocabulary.dime.type', 'DIME Find Type'),
 ('dime.material', 'list', 'DIME', 1, 1, 0, 'vocabulary.dime.material', 'DIME Material List'),
 ('dime.period', 'list', 'DIME', 1, 1, 0, 'vocabulary.dime.period', 'DIME Period Taxonomy'),
@@ -1157,11 +1165,11 @@ INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `enabled`, 
 --
 
 CREATE TABLE `ark_vocabulary_collected` (
-  `concept` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `collection` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `term` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `collection` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `seq` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_vocabulary_collected`
@@ -1271,12 +1279,12 @@ INSERT INTO `ark_vocabulary_collected` (`concept`, `collection`, `term`, `seq`) 
 --
 
 CREATE TABLE `ark_vocabulary_collection` (
-  `concept` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `collection` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `label` text COLLATE utf8_unicode_ci NOT NULL,
+  `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `collection` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `label` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `ordered` tinyint(1) NOT NULL,
-  `description` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1285,12 +1293,12 @@ CREATE TABLE `ark_vocabulary_collection` (
 --
 
 CREATE TABLE `ark_vocabulary_parameter` (
-  `concept` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `term` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `value` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
+  `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `ark_vocabulary_parameter`
@@ -1503,13 +1511,13 @@ INSERT INTO `ark_vocabulary_parameter` (`concept`, `term`, `name`, `type`, `valu
 --
 
 CREATE TABLE `ark_vocabulary_related` (
-  `from_concept` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `from_term` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `to_concept` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `to_term` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `relation` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `from_concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `from_term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `to_concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `to_term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `relation` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `depth` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_vocabulary_related`
@@ -1618,15 +1626,15 @@ INSERT INTO `ark_vocabulary_related` (`from_concept`, `from_term`, `to_concept`,
 --
 
 CREATE TABLE `ark_vocabulary_relation` (
-  `relation` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `code` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
-  `recipricol` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `recipricol_code` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
+  `relation` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `code` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `recipricol` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `recipricol_code` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
   `equivalence` tinyint(1) NOT NULL DEFAULT '0',
   `hierarchy` tinyint(1) NOT NULL DEFAULT '0',
   `associative` tinyint(1) NOT NULL DEFAULT '0',
-  `description` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_vocabulary_relation`
@@ -1646,14 +1654,14 @@ INSERT INTO `ark_vocabulary_relation` (`relation`, `code`, `recipricol`, `recipr
 --
 
 CREATE TABLE `ark_vocabulary_term` (
-  `concept` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `term` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `alias` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `alias` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `deprecated` tinyint(1) NOT NULL DEFAULT '0',
-  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `description` varchar(100) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_vocabulary_term`
@@ -1912,6 +1920,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `depre
 ('country', 'ZA ', 'southafrica', 1, 0, 'country.southafrica', ''),
 ('country', 'ZM ', 'zambia', 1, 0, 'country.zambia', ''),
 ('country', 'ZW ', 'zimbabwe', 1, 0, 'country.zimbabwe', ''),
+('crs', '4326', 'WGS84', 1, 0, 'crs.wgs84', ''),
 ('dime.find.type', 'accessory', '', 1, 0, 'dime.find.type.accessory', ''),
 ('dime.find.type', 'coin', '', 1, 0, 'dime.find.type.coin', ''),
 ('dime.find.type', 'fibula', '', 1, 0, 'dime.find.type.fibula', ''),
@@ -2400,9 +2409,9 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `depre
 ('language', 'mua', 'mundang', 1, 0, 'language.mundang', ''),
 ('language', 'mul', 'multiple', 1, 0, 'language.multiple', ''),
 ('language', 'mus', 'creek', 1, 0, 'language.creek', ''),
-('language', 'mwl', 'mirandese', 1, 0, 'language.mirandese', ''),
-('language', 'mwr', 'marwari', 1, 0, 'language.marwari', '');
+('language', 'mwl', 'mirandese', 1, 0, 'language.mirandese', '');
 INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('language', 'mwr', 'marwari', 1, 0, 'language.marwari', ''),
 ('language', 'mwv', 'mentawai', 1, 0, 'language.mentawai', ''),
 ('language', 'my', 'burmese', 1, 0, 'language.burmese', ''),
 ('language', 'mye', 'myene', 1, 0, 'language.myene', ''),
@@ -2661,13 +2670,13 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `depre
 --
 
 CREATE TABLE `ark_vocabulary_translation` (
-  `language` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `domain` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `role` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `text` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `notes` longtext COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `domain` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `text` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `notes` longtext COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_vocabulary_translation`
@@ -3633,15 +3642,15 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 --
 
 CREATE TABLE `ark_vocabulary_type` (
-  `type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `equivalence` tinyint(1) NOT NULL,
   `hierarchy` tinyint(1) NOT NULL,
   `association` tinyint(1) NOT NULL,
   `enabled` tinyint(1) NOT NULL,
   `deprecated` tinyint(1) NOT NULL,
-  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `description` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_vocabulary_type`
@@ -3660,9 +3669,9 @@ INSERT INTO `ark_vocabulary_type` (`type`, `equivalence`, `hierarchy`, `associat
 --
 
 CREATE TABLE `cor_conf_layout_role` (
-  `layout_role` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
-  `description` varchar(50) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `layout_role` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -3671,18 +3680,18 @@ CREATE TABLE `cor_conf_layout_role` (
 --
 
 CREATE TABLE `cor_conf_page` (
-  `page` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `title` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `page` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `enabled` tinyint(1) NOT NULL,
   `visible` tinyint(1) NOT NULL,
-  `sgrp` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `file` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `code_dir` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `sgrp` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `code_dir` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `nav_seq` int(11) NOT NULL,
-  `navname` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `nav_link_vars` varchar(20) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `navname` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nav_link_vars` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -3691,11 +3700,11 @@ CREATE TABLE `cor_conf_page` (
 --
 
 CREATE TABLE `cor_conf_page_layout` (
-  `page` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `module` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
-  `layout_role` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `layout` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `page` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `module` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `layout_role` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `layout` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -3704,16 +3713,16 @@ CREATE TABLE `cor_conf_page_layout` (
 --
 
 CREATE TABLE `dime_period` (
-  `concept` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `term` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `parent` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `parent` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `depth` int(11) NOT NULL,
   `from_year` int(11) NOT NULL,
   `to_year` int(11) NOT NULL,
-  `description` text COLLATE utf8_unicode_ci NOT NULL,
-  `alias` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `keyword` varchar(50) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `alias` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keyword` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `dime_period`
@@ -3884,12 +3893,6 @@ ALTER TABLE `ark_format_float`
   ADD PRIMARY KEY (`format`);
 
 --
--- Indexes for table `ark_format_geometry`
---
-ALTER TABLE `ark_format_geometry`
-  ADD PRIMARY KEY (`format`);
-
---
 -- Indexes for table `ark_format_integer`
 --
 ALTER TABLE `ark_format_integer`
@@ -3912,6 +3915,12 @@ ALTER TABLE `ark_format_object`
 -- Indexes for table `ark_format_string`
 --
 ALTER TABLE `ark_format_string`
+  ADD PRIMARY KEY (`format`);
+
+--
+-- Indexes for table `ark_format_wkt`
+--
+ALTER TABLE `ark_format_wkt`
   ADD PRIMARY KEY (`format`);
 
 --
@@ -4118,7 +4127,7 @@ ALTER TABLE `ark_config_flash`
 -- Constraints for table `ark_format`
 --
 ALTER TABLE `ark_format`
-  ADD CONSTRAINT `ark_format_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_fragment_type` (`type`) ON DELETE CASCADE;
+  ADD CONSTRAINT `ark_format_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_fragment_type` (`type`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_attribute`
@@ -4159,12 +4168,6 @@ ALTER TABLE `ark_format_float`
   ADD CONSTRAINT `ark_format_float_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `ark_format_geometry`
---
-ALTER TABLE `ark_format_geometry`
-  ADD CONSTRAINT `ark_format_geometry_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Constraints for table `ark_format_integer`
 --
 ALTER TABLE `ark_format_integer`
@@ -4188,6 +4191,12 @@ ALTER TABLE `ark_format_object`
 --
 ALTER TABLE `ark_format_string`
   ADD CONSTRAINT `ark_format_string_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_format_wkt`
+--
+ALTER TABLE `ark_format_wkt`
+  ADD CONSTRAINT `ark_format_wkt_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_schema`

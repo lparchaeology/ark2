@@ -35,6 +35,7 @@ use ARK\Api\JsonApi\Http\JsonApiRequest;
 use ARK\Api\JsonApi\JsonApiServiceProvider;
 use ARK\Database\DbalServiceProvider;
 use ARK\ORM\OrmServiceProvider;
+use ARK\Provider\SpatialServiceProvider;
 use ARK\Provider\JsonSchemaServiceProvider;
 use ARK\Translation\Loader\ActorLoader;
 use ARK\Translation\Loader\DatabaseLoader;
@@ -160,6 +161,12 @@ class Application extends SilexApplication
         $this->register(new DbalServiceProvider());
         // - Optional on Use: DBAL, Cache
         $this->register(new OrmServiceProvider());
+
+        // Enable the Spatial functions
+        // - Required on boot: DBAL
+        if (isset($app['ark']['spatial'])) {
+            $this->register(new SpatialServiceProvider());
+        }
 
         $this->register(new SerializerServiceProvider());
         $this->register(new ValidatorServiceProvider());

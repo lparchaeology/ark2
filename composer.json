@@ -103,7 +103,9 @@
         "egulias/email-validator": "^2.1",
         "symfony/expression-language": "^3.2",
         "gedmo/doctrine-extensions": "^2.4",
-        "ramsey/uuid-doctrine": "^1.2"
+        "ramsey/uuid-doctrine": "^1.2",
+        "brick/geo": "dev-master",
+        "php-coord/php-coord": "^2.1"
     },
     "autoload": {
         "psr-4": {
