@@ -40,15 +40,15 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         // Under Construction Routes
-        $controllers->get('/detector', 'DIME\Action\UnderConstructionAction')
+        $controllers->get('/detector', 'DIME\Action\PageViewAction')
                     ->bind('detector');
-        $controllers->get('/research', 'DIME\Action\UnderConstructionAction')
+        $controllers->get('/research', 'DIME\Action\PageViewAction')
                     ->bind('research');
-        $controllers->get('/about', 'DIME\Action\UnderConstructionAction')
+        $controllers->get('/about', 'DIME\Action\PageViewAction')
                     ->bind('about');
-        $controllers->get('/exhibits', 'DIME\Action\UnderConstructionAction')
+        $controllers->get('/exhibits', 'DIME\Action\PageViewAction')
                     ->bind('exhibits');
-        $controllers->get('/news', 'DIME\Action\UnderConstructionAction')
+        $controllers->get('/news', 'DIME\Action\PageViewAction')
                     ->bind('news');
 
         // Dummy Routes

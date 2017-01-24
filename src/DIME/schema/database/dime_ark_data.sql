@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 23, 2017 at 12:39 AM
+-- Generation Time: Jan 24, 2017 at 01:49 AM
 -- Server version: 10.0.22-MariaDB
 -- PHP Version: 7.0.14
 
@@ -337,7 +337,8 @@ INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `attribute`, `paramete
 (7, 'find', '1', 'description', 'en', 'A multiline description\\n\\nA multiline description\\n\\nA multiline description\\n\\nA multiline description', NULL, 0, '2017-01-17 17:04:13', 0, '0000-00-00 00:00:00', ''),
 (8, 'find', '1', 'title', 'en', 'Find 1 title', NULL, 0, '2017-01-20 00:39:58', 0, '0000-00-00 00:00:00', ''),
 (9, 'find', '2', 'title', 'en', 'Find 2 title', NULL, 0, '2017-01-20 00:40:07', 0, '0000-00-00 00:00:00', ''),
-(10, 'find', '3', 'title', 'en', 'Find 3 title', NULL, 0, '2017-01-10 10:28:56', 0, '0000-00-00 00:00:00', '');
+(10, 'find', '3', 'title', 'en', 'Find 3 title', NULL, 0, '2017-01-10 10:28:56', 0, '0000-00-00 00:00:00', ''),
+(11, 'page', 'about', 'content', 'da', '<h2>Om DIME</h2>\r\n\r\n<p>DIME står for ”Digitale Metaldetektorfund” og er en brugerdrevet platform til registrering af metaldetektorfund til brug i formidling, forskning og forvaltning.</p>\r\n\r\n<p>Ideen bag DIME er, at den skal:\r\n<ul><li>øge inddragelse af metaldetektorbrugerne i det museale arbejde</li>\r\n<li>øge og skærpe samarbejdet mellem metaldetektorbrugere og museer</li>\r\n<li>lette arbejdsbyrden vedr. fundregistrering og danefæbehandling på museerne</li>\r\n<li>muliggøre en hurtig behandling af Danefæ</li>\r\n<li>muliggøre en ensartet registreringspraksis landet over</li>\r\n<li>optimere tilgængeligheden af information om metaldetektorfundene til forskningsbrug</li>\r\n<li>fungere som indgang for indberetning af fund til centrale, museale databaser (SARA mfl.)</li></ul>\r\n</p>\r\n\r\n<h3>Baggrunden for DIME</h3>\r\n\r\n<p>Hvert år finder frivillige metaldetektorbrugere på danske marker i 1000vis af fund af stor kulturhistorisk betydning. De bidrager løbende til fremkomsten af nogle af de mest opsigtsvækkende fund i dansk arkæologi, og metaldetektorfundene har i mange henseender revolutioneret vor forståelse af de forhistoriske og historiske samfund fra bronzealder til nyere tid. Dansk metaldetektorarkæologi har på den baggrund udviklet sig til en unik og internationalt anerkendt succeshistorie, som forener de bedste sider af den danske model med en bred folkelig involvering i det arkæologiske arbejde og en decentral museumsstruktur. Men den kolossale tilvækst af indkomne fund har i stigende grad tydeliggjort behovet for en samlet registrering af metaldetektorfundene, idet kun en brøkdel af de mange fund er tilgængelige for offentligheden, museerne og for forskningen. DIME er udviklet med henblik på at muliggøre optimal udnyttelse af metaldetektorfundenes store formidlings- og forskningsmæssige potentiale.</p>\r\n\r\n<h3>Udviklingen af DIME</h3>\r\n\r\n<p>DIME-databasen blev udviklet i 2016-2017 af en gruppe museumsfolk og universitetsarkæologer i tæt samarbejde med detektorbrugere og et bredt panel fagfolk fra museer landet over. DIME er således udviklet af brugere for brugere, og under udformning af databasen har udviklerne bl.a. kunne støtte sig til:\r\n<ul><li>Interview af 27 museumsmedarbejder (fra 27 forskellige museer) om praksis og erfaringer med fundregistrering og krav til en evt. databaseløsning</li>\r\n<li>Online spørgeskema blandt detektorfolk om praksis og ønsker til fundregistrering (168 besvarelser)</li>\r\n<li>Fokusgruppeinterview med udvalgte detektorfolk</li></ul>\r\n</p>\r\n\r\n<p>DIME er udviklet af følgende institutioner:\r\n<li>Aarhus Universitet</li>\r\n<li>Moesgaard Museum</li>\r\n<li>Nordjyllands Historiske Museum</li>\r\n<li>Odense Bys Museer</li>\r\n</p>\r\n\r\n<p>Udvikling af DIME blev muliggjort med økonomisk støtte fra KROGAGERFONDEN</p>\r\n', NULL, 0, '2017-01-10 10:28:56', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -513,6 +514,38 @@ CREATE TABLE `ark_item_location` (
 
 INSERT INTO `ark_item_location` (`id`, `schma`, `type`, `parent_module`, `parent_id`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
 ('1', 'dime.location', NULL, NULL, NULL, '1', '1', 0, '2017-01-11 11:36:01', 0, '0000-00-00 00:00:00', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_item_page`
+--
+
+CREATE TABLE `ark_item_page` (
+  `id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `schma` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `type` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `parent_module` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `parent_id` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `idx` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `label` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `mod_by` int(11) NOT NULL,
+  `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `cre_by` int(11) NOT NULL,
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `ark_item_page`
+--
+
+INSERT INTO `ark_item_page` (`id`, `schma`, `type`, `parent_module`, `parent_id`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+('about', 'core.page', '', NULL, NULL, 'about', 'about', 0, '2017-01-24 01:39:34', 0, '0000-00-00 00:00:00', ''),
+('detector', 'core.page', '', NULL, NULL, 'detector', 'detector', 0, '2017-01-24 01:39:44', 0, '0000-00-00 00:00:00', ''),
+('exhibits', 'core.page', NULL, NULL, NULL, 'exhibits', 'exhibits', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+('news', 'core.page', NULL, NULL, NULL, 'news', 'news', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+('research', 'core.page', NULL, NULL, NULL, 'research', 'research', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -744,6 +777,14 @@ ALTER TABLE `ark_item_location`
   ADD KEY `parent` (`parent_module`,`parent_id`) USING BTREE;
 
 --
+-- Indexes for table `ark_item_page`
+--
+ALTER TABLE `ark_item_page`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `name` (`label`) USING BTREE,
+  ADD KEY `parent` (`parent_module`,`parent_id`) USING BTREE;
+
+--
 -- Indexes for table `ark_relation_xmi`
 --
 ALTER TABLE `ark_relation_xmi`
@@ -840,7 +881,7 @@ ALTER TABLE `ark_fragment_string`
 -- AUTO_INCREMENT for table `ark_fragment_text`
 --
 ALTER TABLE `ark_fragment_text`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `ark_fragment_time`
 --

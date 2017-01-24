@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 23, 2017 at 12:39 AM
+-- Generation Time: Jan 24, 2017 at 01:49 AM
 -- Server version: 10.0.22-MariaDB
 -- PHP Version: 7.0.14
 
@@ -172,6 +172,8 @@ INSERT INTO `ark_format_attribute` (`parent`, `attribute`, `sequence`, `format`,
 ('address', 'street', 0, 'localtext', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.address.street'),
 ('distance', 'measurement', 0, 'decimal', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.length.measurement'),
 ('distance', 'unit', 1, 'identifier', 'distance', 0, 1, 1, 1, 0, 1, 0, 'format.length.unit'),
+('html', 'content', 1, 'text', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.html.content'),
+('html', 'language', 0, 'identifier', 'language', 0, 1, 1, 1, 0, 1, 0, 'format.html.language'),
 ('item', 'id', 1, 'identifier', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.item.id'),
 ('item', 'module', 0, 'identifier', NULL, 0, 1, 1, 1, 0, 1, 0, 'format.item.module'),
 ('localtext', 'content', 1, 'text', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.text.content'),
@@ -468,7 +470,8 @@ INSERT INTO `ark_module` (`module`, `resource`, `namespace`, `entity`, `tbl`, `c
 ('file', 'files', 'ARK', 'ARK\\File\\File', 'ark_item_file', 1, 1, 0, 'module.file'),
 ('find', 'finds', 'DIME', 'DIME\\Entity\\Find', 'ark_item_find', 0, 1, 0, 'module.find'),
 ('image', 'images', 'DIME', 'DIME\\Entity\\Image', 'ark_item_image', 0, 1, 0, 'module.image'),
-('location', 'locations', 'DIME', 'DIME\\Entity\\Location', 'ark_item_location', 0, 1, 0, 'module.location');
+('location', 'locations', 'DIME', 'DIME\\Entity\\Location', 'ark_item_location', 0, 1, 0, 'module.location'),
+('page', '', 'ARK', 'ARK\\Entity\\Page', 'ark_item_page', 1, 1, 0, 'module.page');
 
 -- --------------------------------------------------------
 
@@ -496,6 +499,7 @@ CREATE TABLE `ark_schema` (
 INSERT INTO `ark_schema` (`schma`, `module`, `generator`, `sequence`, `type`, `type_vocabulary`, `type_entities`, `enabled`, `deprecated`, `keyword`) VALUES
 ('core.actor', 'actor', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 'type', 'core.actor.type', 1, 1, 0, 'core.schema.actor'),
 ('core.file', 'file', 'ARK\\ORM\\Id\\IdentityGenerator', NULL, 'type', 'core.file.type', 1, 1, 0, 'core.schema.file'),
+('core.page', 'actor', '', '', '', '', 0, 1, 0, 'core.schema.page'),
 ('dime.campaign', 'campaign', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', NULL, NULL, 0, 1, 0, 'dime.schema.campaign'),
 ('dime.find', 'find', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 'type', 'dime.find.type', 0, 1, 0, 'dime.schema.find'),
 ('dime.image', 'image', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', NULL, NULL, 0, 1, 0, 'dime.schema.image'),
@@ -567,6 +571,8 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('core.file', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.file.id'),
 ('core.file', '', 'title', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.title'),
 ('core.file', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.file.type'),
+('core.page', '', 'content', 'html', NULL, 1, 1, 1, 0, 1, 0, 'property.content'),
+('core.page', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.page.id'),
 ('dime.campaign', '', 'name', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
 ('dime.find', '', 'description', 'localtext', NULL, 0, 1, 1, 0, 1, 0, 'property.description'),
 ('dime.find', '', 'finddate', 'date', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.finddate'),
@@ -978,6 +984,8 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attrib
 ('core_actor_item', 'grid', 'core.actor', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
 ('core_actor_list', 'table', NULL, '', NULL, '', '', '', 1, 0, 1, 0, NULL),
 ('core_actor_type', 'field', 'core.actor', '', 'type', '', '', '', 1, 0, 1, 0, NULL),
+('core_page_content', 'field', 'core.page', '', 'content', '', '', '', 0, 0, 1, 0, 'property.content'),
+('core_page_view', 'grid', 'core.page', '', NULL, '', '', '', 0, 0, 1, 0, NULL),
 ('dime_find_action', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_add', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_description', 'field', 'dime.find', '', 'description', '', '', 'ARK\\Form\\Type\\LocalMultilineTextType', 1, 0, 1, 0, NULL),
@@ -1032,6 +1040,7 @@ INSERT INTO `ark_view_layout` (`element`, `row`, `col`, `seq`, `item_type`, `ena
 ('core_actor_item', 0, 0, 2, '', 1, 0, 'core_actor_type'),
 ('core_actor_list', 0, 0, 0, '', 1, 0, 'core_actor_id'),
 ('core_actor_list', 0, 0, 2, '', 1, 0, 'core_actor_type'),
+('core_page_view', 0, 0, 0, '', 1, 0, 'core_page_content'),
 ('dime_find_action', 0, 0, 0, '', 1, 0, 'dime_find_save'),
 ('dime_find_add', 0, 0, 0, '', 1, 0, 'dime_find_event'),
 ('dime_find_add', 0, 1, 0, '', 1, 0, 'dime_find_details'),
