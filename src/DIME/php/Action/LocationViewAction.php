@@ -36,8 +36,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class LocationViewAction extends EntityViewAction
 {
-    public function __invoke(Request $request, $locationSlug)
+    public function __invoke(Request $request, $itemSlug)
     {
-        return $this->render($request, $locationSlug, Location::class, 'dime_location_item');
+        return $this->render($request, $itemSlug, Location::class, 'dime_location_item');
     }
 }

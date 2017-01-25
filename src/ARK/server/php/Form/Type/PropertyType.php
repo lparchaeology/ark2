@@ -48,15 +48,15 @@ class PropertyType extends AbstractType implements DataMapperInterface
     {
         $field = $options['field'];
         $builder->setDataMapper($this);
-        $this->buildAttribute($builder, $field->attribute(), $field->optionsArray());
+        $this->buildAttribute($builder, $field->attribute(), $field->optionsArray(), $field->attribute()->isRequired());
     }
 
-    protected function buildAttribute(FormBuilderInterface $builder, Attribute $attribute, $options)
+    protected function buildAttribute(FormBuilderInterface $builder, Attribute $attribute, $options, $required)
     {
         $name = $attribute->name();
         if ($attribute->format()->hasAttributes()) {
             foreach ($attribute->format()->attributes() as $child) {
-                $this->buildAttribute($builder, $child, $options);
+                $this->buildAttribute($builder, $child, $options, $required);
             }
             return;
         }
@@ -65,14 +65,14 @@ class PropertyType extends AbstractType implements DataMapperInterface
             foreach ($attribute->vocabulary()->terms() as $term) {
                 $options['choices'][$term->keyword()] = $term->name();
             }
-            $options['placeholder'] = ($attribute->isRequired() ? 'form.select.required' : 'form.select.optional');
+            $options['placeholder'] = ($required ? 'form.select.required' : 'form.select.optional');
             $options['multiple'] = $attribute->hasMultipleOccurrences();
         } else {
             $class = $attribute->format()->type()->formClass();
         }
         $options['mapped'] = false;
         $options['label'] = false;
-        $options['required'] = $attribute->isRequired();
+        $options['required'] = $required;
         $builder->add($name, $class, $options);
     }
 

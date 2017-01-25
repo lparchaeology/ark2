@@ -40,7 +40,7 @@ use ARK\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 
 // TODO Think about extending from Attribute??? Or move serializing *into* attribute/format? Or separate serializers?
-class Property
+class Object
 {
     protected $item = null;
     protected $attribute = null;
@@ -92,7 +92,7 @@ class Property
         return $this->fragments;
     }
 
-    public function properties()
+    public function children()
     {
         return $this->children;
     }

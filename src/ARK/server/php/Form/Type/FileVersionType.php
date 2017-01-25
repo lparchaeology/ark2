@@ -34,26 +34,29 @@ use ARK\Service;
 use ARK\Model\Item;
 use ARK\Model\Property;
 use ARK\Model\Fragment\TextFragment;
+use ARK\Form\Type\EventType;
+use ARK\Form\Type\LocalTextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 // TODO Port to PropertyType and using the object!
-class LocalTextType extends AbstractType implements DataMapperInterface
+class FileVersionType extends AbstractType implements DataMapperInterface
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $textType = isset($options['text_type']) ? $options['text_type']: TextType::class;
-        $attribute = $options['field']->attribute()->name();
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
-        $builder->add('previous', HiddenType::class, $fieldOptions);
-        $builder->add('language', HiddenType::class, $fieldOptions);
-        // TODO Generate from Format default types?
-        $builder->add('content', $textType, $fieldOptions);
+        $builder->add('sequence', HiddenType::class, $fieldOptions);
+        $builder->add('name', LocalTextType::class, $fieldOptions);
+        $builder->add('version', TextType::class, $fieldOptions);
+        $builder->add('created', EventType::class, $fieldOptions);
+        $builder->add('modified', EventType::class, $fieldOptions);
+        $builder->add('expires', DateTimeType::class, $fieldOptions);
         $builder->setDataMapper($this);
     }
 

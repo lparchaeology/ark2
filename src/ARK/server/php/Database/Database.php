@@ -755,6 +755,17 @@ class Database
         return $this->core()->fetchAll($sql, $params);
     }
 
+    public function getVocabularyMessages($language)
+    {
+        $sql = "
+            SELECT *
+            FROM ark_translation_message
+            WHERE language = :language
+        ";
+        $params[':language'] = $language;
+        return $this->core()->fetchAll($sql, $params);
+    }
+
     public function getActorNames()
     {
         $sql = "

@@ -79,12 +79,17 @@ class SiteFrontendCommand extends Command
             $fs->mkdir($siteDir);
             $fs->mkdir($siteDir.'/bin');
             $fs->mkdir($siteDir.'/files');
+            $fs->mkdir($siteDir.'/files/download');
+            $fs->mkdir($siteDir.'/files/upload');
+            $fs->mkdir($siteDir.'/files/tmp');
+            $fs->mkdir($siteDir.'/files/data');
+            $fs->mkdir($siteDir.'/files/thumbs');
             $fs->mkdir($siteDir.'/schema');
             $fs->mirror($srcDir.'/bin', $siteDir.'/bin');
             $fs->mirror($srcDir.'/config', $siteDir.'/config');
             $fs->mirror($srcDir.'/web', $siteDir.'/web');
         } else {
-            $refreshQuestion = new ConfirmationQuestion('Site folder already exists, replace the index.php? (default: n):', false);
+            $refreshQuestion = new ConfirmationQuestion('Site folder already exists, refresh the site? (default: n):', false);
             $refresh = $question->ask($input, $output, $refreshQuestion);
             if ($refresh) {
                 $fs->mirror($srcDir.'/bin', $siteDir.'/bin');
@@ -102,7 +107,7 @@ class SiteFrontendCommand extends Command
             $fs->remove($assetsDir);
         }
 
-        $linkQuestion = new Question('Do you want to copy or link the frontend source folder? (link) ', 'link');
+        $linkQuestion = new Question('Do you want to copy or link the frontend source folder? (default: link) ', 'link');
         $symlink = strtolower($question->ask($input, $output, $linkQuestion));
         if ($symlink == 'copy') {
             $fs->mirror($srcDir.'/templates', $templatesDir);

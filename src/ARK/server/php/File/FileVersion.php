@@ -33,20 +33,26 @@ namespace ARK\File;
 use ARK\Service;
 use DateTime;
 use DateTimeZone;
+use ARK\Model\Property;
 use League\Flysystem\File as FileHandler;
 use League\Flysystem\FilesystemInterface;
 
 class FileVersion extends FileHandler
 {
-    private $file = null;
-    private $version = null;
-    private $created = null;
-    private $modified = null;
-    private $expires = null;
+    protected $file = null;
+    protected $path = null;
+    protected $sequence = null;
+    protected $name = null;
+    protected $version = null;
+    protected $createdOn = null;
+    protected $createdBy = null;
+    protected $modifiedOn = null;
+    protected $modifiedBy = null;
+    protected $expires = null;
 
     public function __construct(File $file, DateTime $created = null, $version = null)
     {
-        $this->file = $file->id();
+        $this->file = $file;
         $this->suffix = $file->suffix();
         //TODO Check is UTC!
         if (!$created) {
@@ -54,41 +60,78 @@ class FileVersion extends FileHandler
         }
         $this->created = $created;
         $this->modified = $created;
-        if (!$version) {
-            $version = $created->format('YmdHis');
-        }
-        $this->version = $version;
+        $this->version = ($version ? $version : $created->format('YmdHis'));
         $filepath = Service::filesystem()->dataPath().'/'.$file->mediaPath().'.'.$this->version.$file->suffix();
         parent::__construct(Service::filesystem(), $filepath);
     }
 
-    public function version()
+    public function originalName()
+    {
+        return $this->name;
+    }
+
+    public function name()
     {
         return $this->version;
     }
 
-    public function created()
+    public function createdOn()
     {
-        return $this->created;
+        return $this->createdOn;
     }
 
-    public function modified()
+    public function createdBy()
     {
-        return $this->modified;
+        return $this->createdBy;
     }
 
-    public function setModified(DateTime $modifiedAt, $modifiedBy)
+    public function modifiedOn()
     {
-        $this->modified = $modified;
+        return $this->modifiedOn;
     }
 
-    public function expires()
+    public function modifiedBy()
+    {
+        return $this->modifiedBy;
+    }
+
+    public function setModified(DateTime $modifiedOn, $modifiedBy)
+    {
+        $this->modifiedOn = $modifiedOn;
+        $this->modifiedBy = $modifiedBy;
+    }
+
+    public function expiresOn()
     {
         return $this->expires;
     }
 
-    public function setExpiry(DateTime $expiresAt)
+    public function setExpiry(DateTime $expiresOn)
     {
-        $this->expires = $expiresAt;
+        $this->expires = $expiresOn;
+    }
+
+    private function makePath()
+    {
+        $id = (int) $this->file->id();
+        $mod = $id - ($id % 1000);
+        $this->path = $this->file->mediatype()."/$mod/$id/$id.".$this->sequence.'.'.$this->suffix;
+    }
+
+    public static function fromProperty(Property $property)
+    {
+        $version = new FileVersion();
+        $version->file = $property->item();
+        $config = $property->value();
+        $version->sequence = $config['sequence'];
+        $version->name = $config['name'];
+        $version->version = $config['version'];
+        $version->createdOn = $config['created']['on'];
+        $version->createdBy = $config['created']['by'];
+        $version->modifiedOn = $config['modified']['on'];
+        $version->modifiedBy = $config['modified']['by'];
+        $version->expires = $config['expires'];
+        $version->makePath();
+        return $version;
     }
 }

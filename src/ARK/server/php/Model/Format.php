@@ -100,12 +100,12 @@ abstract class Format
         return null;
     }
 
-    protected function serializeAsObject()
+    public function serializeAsObject()
     {
         return $this->object;
     }
 
-    protected function serializeAsArray()
+    public function serializeAsArray()
     {
         return $this->array;
     }

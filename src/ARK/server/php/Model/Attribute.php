@@ -85,6 +85,7 @@ abstract class Attribute
 
     public function isRequired()
     {
+        // TODO Should inherit from parent???
         return $this->minimum > 0;
     }
 

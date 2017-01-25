@@ -149,6 +149,11 @@ class Service
         return self::$app['locale'];
     }
 
+    public static function localeFallbacks()
+    {
+        return self::$app['locale_fallbacks'];
+    }
+
     public static function serializer()
     {
         return self::$app['serializer'];

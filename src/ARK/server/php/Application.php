@@ -34,15 +34,16 @@ use ARK\ARK;
 use ARK\Api\JsonApi\Http\JsonApiRequest;
 use ARK\Api\JsonApi\JsonApiServiceProvider;
 use ARK\Database\DbalServiceProvider;
+use ARK\Http\Error\InternalServerError;
 use ARK\ORM\OrmServiceProvider;
 use ARK\Provider\SpatialServiceProvider;
 use ARK\Provider\JsonSchemaServiceProvider;
 use ARK\Translation\Loader\ActorLoader;
 use ARK\Translation\Loader\DatabaseLoader;
 use ARK\Translation\Twig\TranslateExtension;
+use Bernard\Serializer;
 use Psr\Log\LogLevel;
 use Psr\Http\Message\ResponseInterface;
-use ARK\Http\Error\InternalServerError;
 use rootLogin\UserProvider\Provider\UserProviderServiceProvider;
 use Silex\Application as SilexApplication;
 use Silex\Application\TwigTrait;
@@ -76,7 +77,7 @@ use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Bernard\Serializer;
+use WyriHaximus\SliFly\FlysystemServiceProvider;
 
 class Application extends SilexApplication
 {
@@ -94,12 +95,13 @@ class Application extends SilexApplication
     {
         self::$version = ARK::version();
 
-        if (!$this['ark'] = json_decode(file_get_contents($configPath), true)) {
+        if (!$config = json_decode(file_get_contents($configPath), true)) {
             // TODO One day, run the first-run wizard!
             throw new \Exception('No valid site configuration found.');
         }
+        $this['ark'] = $config;
 
-        self::$debug = $this['ark']['debug'];
+        self::$debug = $config['debug'];
         if (self::$debug) {
             error_reporting(E_ALL);
             ini_set('display_errors', 1);
@@ -122,10 +124,20 @@ class Application extends SilexApplication
         $this['dir.var'] = $this['dir.install'].'/var';
         $this['dir.cache'] = $this['dir.var'].'/cache';
         $this['dir.sites'] = $this['dir.install'].'/sites';
-        $this['dir.site'] = $this['dir.sites'].'/'.$this['ark']['site'];
+        $this['dir.site'] = $this['dir.sites'].'/'.$config['site'];
         $this['dir.config'] = $this['dir.site'].'/config';
         $this['dir.files'] = $this['dir.site'].'/files';
         $this['dir.web'] = $this['dir.site'].'/web';
+
+        // Configure the File System
+        $this->register(new FlysystemServiceProvider());
+        $this['flysystem.filesystems'] = [
+            'tmp' => ['adapter' => 'League\Flysystem\Adapter\Local', 'args' => [$this['dir.files'].'/tmp']],
+            'download' => ['adapter' => 'League\Flysystem\Adapter\Local', 'args' => [$this['dir.files'].'/download']],
+            'upload' => ['adapter' => 'League\Flysystem\Adapter\Local', 'args' => [$this['dir.files'].'/upload']],
+            'data' => ['adapter' => 'League\Flysystem\Adapter\Local', 'args' => [$this['dir.files'].'/data']],
+            'thumbs' => ['adapter' => 'League\Flysystem\Adapter\Local', 'args' => [$this['dir.files'].'/thumbs']],
+        ];
 
         // Enable core providers
         $this->register(new HttpFragmentServiceProvider());
@@ -134,10 +146,9 @@ class Application extends SilexApplication
 
         // Enable the Locale
         $this->register(new LocaleServiceProvider());
-        date_default_timezone_set('UTC');
-        $this['locale'] = $this['ark']['locale'];
-        // TODO From ark_translation_language???
-        $this['locale_fallbacks'] = [$this['locale']];
+        date_default_timezone_set(isset($config['timezone']) ? $config['timezone'] : 'UTC');
+        $this['locale'] = (isset($config['locale']) ? $config['locale'] : 'en');
+        $this['locale_fallbacks'] = (isset($config['locales']) ? $config['locales'] : [$this['locale']]);
 
         // Enable the mailer
         $this->register(new SwiftmailerServiceProvider());
@@ -146,8 +157,8 @@ class Application extends SilexApplication
 
         // Enable the logger
         $this->register(new MonologServiceProvider());
-        $this['monolog.logfile'] = $this['dir.var'].'/logs/'.$this['ark']['site'].'.log';
-        $this['monolog.name'] = $this['ark']['site'];
+        $this['monolog.logfile'] = $this['dir.var'].'/logs/'.$config['site'].'.log';
+        $this['monolog.name'] = $config['site'];
         if (self::$debug) {
             $this['monolog.level'] = 'DEBUG';
             $this['logger.level'] = LogLevel::DEBUG;
@@ -186,7 +197,7 @@ class Application extends SilexApplication
         $this->addSecurityFirewall(
             'secured_area',
             ['pattern' => '^.*$',
-             'anonymous' => $this['ark']['anonymous'],
+             'anonymous' => $config['anonymous'],
              'remember_me' => [],
              'form' => [
                 'login_path' => '/users/login',
@@ -234,8 +245,8 @@ class Application extends SilexApplication
         ];
 
         // Enable the Assets
-        $this['dir.assets'] = $this['dir.web'].'/assets/'.$this['ark']['web']['frontend'];
-        $this['path.assets'] = '/assets/'.$this['ark']['web']['frontend'];
+        $this['dir.assets'] = $this['dir.web'].'/assets/'.$config['web']['frontend'];
+        $this['path.assets'] = '/assets/'.$config['web']['frontend'];
         $this->register(
             new AssetServiceProvider(),
             [
@@ -259,7 +270,7 @@ class Application extends SilexApplication
             return $twig;
         });
         $this['twig.path'] = [
-            $this['dir.site'].'/templates/'.$this['ark']['web']['frontend'],
+            $this['dir.site'].'/templates/'.$config['web']['frontend'],
         ];
         $this['twig.form.templates'] = [
             'forms/layout.html.twig',
@@ -269,7 +280,7 @@ class Application extends SilexApplication
         ];
 
         // Configure API
-        $path = $this['ark']['api']['path'];
+        $path = $config['api']['path'];
         $this['path.api'] = $path;
         $this->register(new JsonSchemaServiceProvider());
         $this->register(new JsonApiServiceProvider());

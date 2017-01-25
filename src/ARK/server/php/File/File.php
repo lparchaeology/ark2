@@ -53,6 +53,11 @@ class File implements Item
         $this->versions[] = new FileVersion(Service::filesystem(), $path);
     }
 
+    public function originalName()
+    {
+        return $this->currentVersion()->sequence();
+    }
+
     public function mediatype()
     {
         return $this->type()->name();
@@ -61,14 +66,22 @@ class File implements Item
     public function versions()
     {
         if (!$this->versions) {
-            $this->versions[] = new FileVersion(Service::filesystem(), $path);
+            foreach ($this->properties('versions') as $version) {
+                $file = FileVersion::fromProperty($this);
+                $this->versions[$file->sequence] = $file;
+            }
+            if (!$this->versions) {
+                $this->versions[0] = new FileVersion($this);
+            }
         }
         return $this->versions;
     }
 
-    public function currentVersion()
+    public function version($sequence = null)
     {
-        return end($this->versions());
+        if ($sequence = null) {
+            return end($this->versions());
+        }
     }
 
     public function mimetype()
@@ -79,14 +92,9 @@ class File implements Item
         return $this->mimetype;
     }
 
-    public function filepath()
+    public function storagePath()
     {
-        return $this->currentVersion()->path();
-    }
-
-    public function size()
-    {
-        return $this->currentVersion()->getSize();
+        return $this->currentVersion()->storagePath();
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

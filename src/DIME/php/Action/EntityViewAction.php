@@ -52,7 +52,8 @@ class EntityViewAction
             $item = $form->getData();
             ORM::persist($item);
             ORM::flush('data');
-            $path = Service::path('finds.view', ['findSlug' => $item->id()]);
+            $page = $request->attributes->get('_route');
+            $path = Service::path($page, ['itemSlug' => $item->id()]);
             return Service::redirect($path);
         }
 

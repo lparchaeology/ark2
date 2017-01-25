@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Action
+ * ARK Hidden Choice Form Type
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,16 +28,20 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Action;
+namespace ARK\Form\Type;
 
-use DIME\Action\EntityViewAction;
-use DIME\Entity\Find;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
-class FindViewAction extends EntityViewAction
+class HiddenChoiceType extends ChoiceType
 {
-    public function __invoke(Request $request, $itemSlug)
+    public function getName()
     {
-        return $this->render($request, $itemSlug, Find::class, 'dime_find_item');
+        return 'hiddenchoice';
+    }
+
+    public function getParent()
+    {
+        return HiddenType::class;
     }
 }

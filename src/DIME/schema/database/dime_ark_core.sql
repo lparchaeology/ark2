@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 24, 2017 at 11:11 PM
+-- Generation Time: Jan 25, 2017 at 09:57 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -111,26 +111,28 @@ INSERT INTO `ark_format` (`format`, `type`, `input`, `object`, `array`, `sortabl
 ('date', 'date', 'date', 0, 0, 1, 1, 1, 0, 'format.date'),
 ('datetime', 'datetime', 'date', 0, 0, 1, 1, 1, 0, 'format.datetime'),
 ('decimal', 'decimal', 'text', 0, 0, 1, 1, 1, 0, 'format.decimal'),
-('distance', 'decimal', 'text', 1, 1, 1, 1, 1, 0, 'format.distance'),
+('distance', 'decimal', 'text', 0, 0, 1, 1, 1, 0, 'format.distance'),
 ('email', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.email'),
+('event', 'object', '', 1, 0, 0, 1, 1, 0, 'format.event'),
+('fileversion', 'object', '', 1, 0, 0, 1, 1, 0, 'format.fileversion'),
 ('float', 'float', 'text', 0, 0, 1, 1, 1, 0, 'format.float'),
 ('geometry', 'wkt', 'text', 0, 0, 1, 1, 1, 0, 'format.geometry'),
-('html', 'text', 'textarea', 0, 0, 1, 1, 1, 0, 'format.html'),
+('html', 'text', 'textarea', 1, 0, 1, 1, 1, 0, 'format.html'),
 ('identifier', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.identifier'),
 ('integer', 'integer', 'text', 0, 0, 1, 1, 1, 0, 'format.integer'),
 ('item', 'item', 'select', 0, 0, 0, 0, 1, 0, 'format.item'),
 ('key', 'string', 'select', 0, 0, 1, 1, 1, 0, 'format.key'),
-('localtext', 'text', 'textarea', 0, 0, 1, 1, 1, 0, 'format.localtext'),
-('markdown', 'text', 'textarea', 0, 0, 1, 1, 1, 0, 'format.markdown'),
-('mass', 'decimal', 'text', 1, 1, 1, 1, 1, 0, 'format.mass'),
+('localtext', 'text', 'textarea', 1, 0, 1, 1, 1, 0, 'format.localtext'),
+('markdown', 'text', 'textarea', 1, 0, 1, 1, 1, 0, 'format.markdown'),
+('mass', 'decimal', 'text', 0, 0, 1, 1, 1, 0, 'format.mass'),
 ('module', 'string', 'select', 0, 0, 0, 0, 1, 0, 'format.module'),
 ('money', 'decimal', 'date', 0, 0, 1, 1, 1, 0, 'format.money'),
 ('ordinaldate', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.ordinaldate'),
 ('password', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.password'),
 ('percent', 'float', 'text', 0, 0, 1, 1, 1, 0, 'format.percent'),
-('richtext', 'text', 'textarea', 0, 0, 1, 1, 1, 0, 'format.richtext'),
+('richtext', 'text', 'textarea', 1, 0, 1, 1, 1, 0, 'format.richtext'),
 ('search', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.search'),
-('shortlocaltext', 'text', 'text', 0, 0, 1, 1, 1, 0, 'format.shortlocaltext'),
+('shortlocaltext', 'text', 'text', 1, 0, 1, 1, 1, 0, 'format.shortlocaltext'),
 ('string', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.string'),
 ('telephone', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.telephone'),
 ('text', 'text', 'textarea', 0, 0, 1, 1, 1, 0, 'format.text'),
@@ -173,6 +175,14 @@ INSERT INTO `ark_format_attribute` (`parent`, `attribute`, `sequence`, `format`,
 ('address', 'street', 0, 'localtext', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.address.street'),
 ('distance', 'measurement', 0, 'decimal', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.length.measurement'),
 ('distance', 'unit', 1, 'identifier', 'distance', 0, 1, 1, 1, 0, 1, 0, 'format.length.unit'),
+('event', 'by', 0, 'actor', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.event.by'),
+('event', 'on', 1, 'datetime', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.event.on'),
+('fileversion', 'created', 3, 'event', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.created'),
+('fileversion', 'expires', 5, 'datetime', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.expires'),
+('fileversion', 'modified', 4, 'event', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.modified'),
+('fileversion', 'name', 1, 'string', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.name'),
+('fileversion', 'sequence', 0, 'integer', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.sequence'),
+('fileversion', 'version', 2, 'string', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.string'),
 ('geometry', 'coordinates', 0, 'wkt', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.geometry.wkt'),
 ('geometry', 'srid', 1, 'identifier', 'crs', 0, 1, 1, 1, 0, 1, 0, 'format.geometry.crs'),
 ('html', 'content', 1, 'text', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.html.content'),
@@ -501,9 +511,9 @@ CREATE TABLE `ark_schema` (
 --
 
 INSERT INTO `ark_schema` (`schma`, `module`, `generator`, `sequence`, `type`, `type_vocabulary`, `type_entities`, `enabled`, `deprecated`, `keyword`) VALUES
-('core.actor', 'actor', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 'type', 'core.actor.type', 1, 1, 0, 'core.schema.actor'),
 ('core.file', 'file', 'ARK\\ORM\\Id\\IdentityGenerator', NULL, 'type', 'core.file.type', 1, 1, 0, 'core.schema.file'),
 ('core.page', 'page', '', '', '', '', 0, 1, 0, 'core.schema.page'),
+('dime.actor', 'actor', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 'type', 'dime.actor.type', 1, 1, 0, 'dime.schema.actor'),
 ('dime.campaign', 'campaign', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', NULL, NULL, 0, 1, 0, 'dime.schema.campaign'),
 ('dime.find', 'find', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 'type', 'dime.find.type', 0, 1, 0, 'dime.schema.find'),
 ('dime.image', 'image', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', NULL, NULL, 0, 1, 0, 'dime.schema.image'),
@@ -533,7 +543,6 @@ CREATE TABLE `ark_schema_association` (
 --
 
 INSERT INTO `ark_schema_association` (`schma`, `type`, `association`, `degree`, `inverse`, `inverse_degree`, `bidirectional`, `enabled`, `deprecated`, `keyword`) VALUES
-('core.actor', 'institution', 'contact', 0, 'core.actor', 1, 0, 1, 0, 'association.contact'),
 ('dime.location', '', 'campaigns', 1, 'dime.campaign', 0, 1, 1, 0, 'dime.association.campaigns');
 
 -- --------------------------------------------------------
@@ -562,21 +571,20 @@ CREATE TABLE `ark_schema_attribute` (
 --
 
 INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `vocabulary`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`, `keyword`) VALUES
-('core.actor', '', 'address', 'address', NULL, 0, 0, 1, 0, 1, 0, 'property.address'),
-('core.actor', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.actor.id'),
-('core.actor', '', 'initials', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.initials'),
-('core.actor', '', 'name', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
-('core.actor', '', 'telephone', 'telephone', NULL, 0, 1, 1, 0, 1, 0, 'property.phone'),
-('core.actor', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.actor.type'),
-('core.actor', 'institution', 'logo', 'blob', NULL, 0, 1, 1, 0, 1, 0, 'property.logo'),
-('core.actor', 'person', 'avatar', 'blob', NULL, 0, 1, 1, 0, 1, 0, 'property.avatar'),
-('core.actor', 'person', 'dateofbirth', 'date', NULL, 0, 1, 1, 0, 1, 0, 'property.dateofbirth'),
 ('core.file', '', 'description', 'localtext', NULL, 0, 1, 1, 0, 1, 0, 'property.description'),
 ('core.file', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.file.id'),
+('core.file', '', 'mediatype', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.file.mediatype'),
+('core.file', '', 'status', 'identifier', 'core.file.status', 1, 1, 1, 0, 1, 0, 'core.file.status'),
 ('core.file', '', 'title', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.title'),
-('core.file', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.file.type'),
+('core.file', '', 'type', 'identifier', 'core.file.type', 1, 1, 1, 0, 1, 0, 'core.file.type'),
+('core.file', '', 'versions', 'fileversion', NULL, 1, 0, 1, 0, 1, 0, 'core.file.versions'),
 ('core.page', '', 'content', 'html', NULL, 1, 1, 1, 0, 1, 0, 'property.content'),
 ('core.page', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.page.id'),
+('dime.actor', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.id'),
+('dime.actor', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.type'),
+('dime.actor', 'museum', 'area', 'geometry', NULL, 0, 1, 1, 0, 1, 0, 'dime.actor.museum.area'),
+('dime.actor', 'museum', 'fullname', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.fullname'),
+('dime.actor', 'museum', 'shortname', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.shortname'),
 ('dime.campaign', '', 'name', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
 ('dime.find', '', 'description', 'localtext', NULL, 0, 1, 1, 0, 1, 0, 'property.description'),
 ('dime.find', '', 'finddate', 'date', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.finddate'),
@@ -985,12 +993,24 @@ CREATE TABLE `ark_view_element` (
 --
 
 INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attribute`, `class`, `template`, `form`, `editable`, `hidden`, `enabled`, `deprecated`, `keyword`) VALUES
-('core_actor_id', 'field', 'core.actor', '', 'id', '', '', 'ARK\\Form\\Type\\IdType', 1, 0, 1, 0, NULL),
-('core_actor_item', 'grid', 'core.actor', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
-('core_actor_list', 'table', NULL, '', NULL, '', '', '', 1, 0, 1, 0, NULL),
-('core_actor_type', 'field', 'core.actor', '', 'type', '', '', '', 1, 0, 1, 0, NULL),
+('core_file_description', 'field', 'core.file', '', 'description', '', '', 'ARK\\Form\\Type\\LocalMultilineTextType', 1, 0, 1, 0, NULL),
+('core_file_id', 'field', 'core.file', '', 'id', '', '', 'ARK\\Form\\Type\\IdType', 1, 0, 1, 0, NULL),
+('core_file_item', 'grid', 'core.file', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
+('core_file_list', 'table', NULL, '', NULL, '', '', '', 1, 0, 1, 0, NULL),
+('core_file_mediatype', 'field', 'core.file', '', 'mediatype', '', '', '', 1, 0, 1, 0, NULL),
+('core_file_status', 'field', 'core.file', '', 'status', '', '', '', 1, 0, 1, 0, NULL),
+('core_file_title', 'field', 'core.file', '', 'title', '', '', 'ARK\\Form\\Type\\LocalTextType', 1, 0, 1, 0, NULL),
+('core_file_type', 'field', 'core.file', '', 'type', '', '', '', 1, 0, 1, 0, NULL),
+('core_file_versions', 'field', 'core.file', '', 'versions', '', '', 'ARK\\Form\\Type\\FileVersionType', 1, 0, 1, 0, NULL),
 ('core_page_content', 'field', 'core.page', '', 'content', '', '', '', 0, 0, 1, 0, 'property.content'),
 ('core_page_view', 'grid', 'core.page', '', NULL, '', '', '', 0, 0, 1, 0, NULL),
+('dime_actor_area', 'field', 'dime.actor', 'museum', 'area', '', '', 'ARK\\Form\\Type\\MapType', 1, 0, 1, 0, NULL),
+('dime_actor_fullname', 'field', 'dime.actor', 'museum', 'fullname', '', '', 'ARK\\Form\\Type\\LocalTextType', 1, 0, 1, 0, NULL),
+('dime_actor_id', 'field', 'dime.actor', '', 'id', '', '', 'ARK\\Form\\Type\\IdType', 1, 0, 1, 0, NULL),
+('dime_actor_item', 'grid', 'dime.actor', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
+('dime_actor_list', 'table', NULL, '', NULL, '', '', '', 1, 0, 1, 0, NULL),
+('dime_actor_shortname', 'field', 'dime.actor', 'museum', 'shortname', '', '', 'ARK\\Form\\Type\\LocalTextType', 1, 0, 1, 0, NULL),
+('dime_actor_type', 'field', 'dime.actor', '', 'type', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_action', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_add', 'grid', 'dime.find', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_description', 'field', 'dime.find', '', 'description', '', '', 'ARK\\Form\\Type\\LocalMultilineTextType', 1, 0, 1, 0, NULL),
@@ -1042,11 +1062,22 @@ CREATE TABLE `ark_view_layout` (
 --
 
 INSERT INTO `ark_view_layout` (`element`, `row`, `col`, `seq`, `item_type`, `enabled`, `deprecated`, `child`) VALUES
-('core_actor_item', 0, 0, 0, '', 1, 0, 'core_actor_id'),
-('core_actor_item', 0, 0, 2, '', 1, 0, 'core_actor_type'),
-('core_actor_list', 0, 0, 0, '', 1, 0, 'core_actor_id'),
-('core_actor_list', 0, 0, 2, '', 1, 0, 'core_actor_type'),
+('core_file_item', 0, 0, 0, '', 1, 0, 'core_file_id'),
+('core_file_item', 0, 0, 1, '', 1, 0, 'core_file_type'),
+('core_file_item', 0, 0, 2, '', 1, 0, 'core_file_mediatype'),
+('core_file_item', 0, 0, 3, '', 1, 0, 'core_file_title'),
+('core_file_item', 0, 0, 4, '', 1, 0, 'core_file_status'),
+('core_file_item', 0, 0, 5, '', 1, 0, 'core_file_description'),
+('core_file_item', 0, 1, 1, '', 1, 0, 'dime_save'),
+('core_file_list', 0, 0, 0, '', 1, 0, 'core_file_id'),
+('core_file_list', 0, 0, 2, '', 1, 0, 'core_file_type'),
 ('core_page_view', 0, 0, 0, '', 1, 0, 'core_page_content'),
+('dime_actor_item', 0, 0, 0, '', 1, 0, 'dime_actor_id'),
+('dime_actor_item', 0, 0, 1, '', 1, 0, 'dime_actor_fullname'),
+('dime_actor_item', 0, 0, 2, '', 1, 0, 'dime_actor_shortname'),
+('dime_actor_list', 0, 0, 0, '', 1, 0, 'dime_actor_id'),
+('dime_actor_list', 0, 0, 1, '', 1, 0, 'dime_actor_type'),
+('dime_actor_list', 0, 0, 2, '', 1, 0, 'dime_actor_fullname'),
 ('dime_find_action', 0, 0, 0, '', 1, 0, 'dime_save'),
 ('dime_find_add', 0, 0, 0, '', 1, 0, 'dime_find_event'),
 ('dime_find_add', 0, 1, 0, '', 1, 0, 'dime_find_details'),
@@ -1146,10 +1177,11 @@ CREATE TABLE `ark_vocabulary` (
 --
 
 INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
-('core.actor.type', 'list', 'ARK Core', 1, 1, 0, 'vocabulary.actor.type', 'Actor Type'),
+('core.file.status', 'list', 'ARK Core', 1, 1, 0, 'vocabulary.file.status', 'File Status'),
 ('core.file.type', 'list', 'ARK Core', 1, 1, 0, 'vocabulary.file.type', 'File Type'),
 ('country', 'list', 'ISO3166', 1, 1, 0, 'vocabulary.country', 'ISO Country Codes'),
 ('crs', 'list', 'EPSG', 1, 1, 0, 'vocabulary.crs', 'Coordinate Reference System'),
+('dime.actor.type', 'list', 'DIME', 1, 1, 0, 'dime.actor.type', 'DIME Actor Type'),
 ('dime.find.type', 'list', 'DIME', 1, 1, 0, 'vocabulary.dime.type', 'DIME Find Type'),
 ('dime.material', 'list', 'DIME', 1, 1, 0, 'vocabulary.dime.material', 'DIME Material List'),
 ('dime.period', 'list', 'DIME', 1, 1, 0, 'vocabulary.dime.period', 'DIME Period Taxonomy'),
@@ -1305,8 +1337,6 @@ CREATE TABLE `ark_vocabulary_parameter` (
 --
 
 INSERT INTO `ark_vocabulary_parameter` (`concept`, `term`, `name`, `type`, `value`) VALUES
-('core.actor.type', 'institution', 'entity', 'string', 'ARK\\Entity\\Actor\\Institution'),
-('core.actor.type', 'person', 'entity', 'string', 'ARK\\Entity\\Actor\\Person'),
 ('core.file.type', 'audio', 'entity', 'string', 'ARK\\File\\Audio'),
 ('core.file.type', 'document', 'entity', 'string', 'ARK\\File\\Document'),
 ('core.file.type', 'image', 'entity', 'string', 'ARK\\File\\Image'),
@@ -1668,8 +1698,11 @@ CREATE TABLE `ark_vocabulary_term` (
 --
 
 INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
-('core.actor.type', 'institution', '', 1, 0, 'core.actor.type.institution', ''),
-('core.actor.type', 'person', '', 1, 0, 'core.actor.type.person', ''),
+('core.file.status', 'checkedin', '', 1, 0, 'core.file.status.checkedin', ''),
+('core.file.status', 'checkedout', '', 1, 0, 'core.file.status.checkedout', ''),
+('core.file.status', 'expired', '', 1, 0, 'core.file.status.expired', ''),
+('core.file.status', 'locked', '', 1, 0, 'core.file.status.locked', ''),
+('core.file.status', 'new', '', 1, 0, 'core.file.status.new', ''),
 ('core.file.type', 'audio', '', 1, 0, 'core.file.type.audio', ''),
 ('core.file.type', 'document', '', 1, 0, 'core.file.type.document', ''),
 ('core.file.type', 'image', '', 1, 0, 'core.file.type.image', ''),
@@ -1921,6 +1954,9 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `depre
 ('country', 'ZM ', 'zambia', 1, 0, 'country.zambia', ''),
 ('country', 'ZW ', 'zimbabwe', 1, 0, 'country.zimbabwe', ''),
 ('crs', '4326', 'WGS84', 1, 0, 'crs.wgs84', ''),
+('dime.actor.type', 'institution', '', 1, 0, 'dime.actor.type.institution', ''),
+('dime.actor.type', 'museum', '', 1, 0, 'dime.actor.type.museum', ''),
+('dime.actor.type', 'person', '', 1, 0, 'dime.actor.type.person', ''),
 ('dime.find.type', 'accessory', '', 1, 0, 'dime.find.type.accessory', ''),
 ('dime.find.type', 'coin', '', 1, 0, 'dime.find.type.coin', ''),
 ('dime.find.type', 'fibula', '', 1, 0, 'dime.find.type.fibula', ''),
@@ -2402,15 +2438,15 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `depre
 ('language', 'mni', 'manipuri', 1, 0, 'language.manipuri', ''),
 ('language', 'moh', 'mohawk', 1, 0, 'language.mohawk', ''),
 ('language', 'mos', 'mossi', 1, 0, 'language.mossi', ''),
-('language', 'mr', 'marathi', 1, 0, 'language.marathi', ''),
+('language', 'mr', 'marathi', 1, 0, 'language.marathi', '');
+INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('language', 'mrj', 'mari.western', 1, 0, 'language.mari.western', ''),
 ('language', 'ms', 'malay', 1, 0, 'language.malay', ''),
 ('language', 'mt', 'maltese', 1, 0, 'language.maltese', ''),
 ('language', 'mua', 'mundang', 1, 0, 'language.mundang', ''),
 ('language', 'mul', 'multiple', 1, 0, 'language.multiple', ''),
 ('language', 'mus', 'creek', 1, 0, 'language.creek', ''),
-('language', 'mwl', 'mirandese', 1, 0, 'language.mirandese', '');
-INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('language', 'mwl', 'mirandese', 1, 0, 'language.mirandese', ''),
 ('language', 'mwr', 'marwari', 1, 0, 'language.marwari', ''),
 ('language', 'mwv', 'mentawai', 1, 0, 'language.mentawai', ''),
 ('language', 'my', 'burmese', 1, 0, 'language.burmese', ''),
@@ -2683,6 +2719,12 @@ CREATE TABLE `ark_vocabulary_translation` (
 --
 
 INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role`, `text`, `notes`) VALUES
+('da', 'vocabulary', 'dime.find.type.accessory', 'default', 'Smykke / Dragttilbehør', ''),
+('da', 'vocabulary', 'dime.find.type.coin', 'default', 'Mønt', ''),
+('da', 'vocabulary', 'dime.find.type.fibula', 'default', 'Fibula / Dragtspænde', ''),
+('da', 'vocabulary', 'dime.find.type.military', 'default', 'Våben / Militaria', ''),
+('da', 'vocabulary', 'dime.find.type.tool', 'default', 'Redskab / Værktøj', ''),
+('da', 'vocabulary', 'dime.find.type.waste', 'default', 'Produktionsaffald / Metalskrot', ''),
 ('da', 'vocabulary', 'dime.period.ahrensburg', 'default', 'Ahrensburgkultur', ''),
 ('da', 'vocabulary', 'dime.period.bellbeaker', 'default', 'Klokkebægerkultur', ''),
 ('da', 'vocabulary', 'dime.period.bromme', 'default', 'Brommekultur', ''),
@@ -3022,6 +3064,12 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'country.yemen', 'default', 'Yemen ', ''),
 ('en', 'vocabulary', 'country.zambia', 'default', 'Zambia ', ''),
 ('en', 'vocabulary', 'country.zimbabwe', 'default', 'Zimbabwe ', ''),
+('en', 'vocabulary', 'dime.find.type.accessory', 'default', 'Jewelery / Costume Accessories', ''),
+('en', 'vocabulary', 'dime.find.type.coin', 'default', 'Coin', ''),
+('en', 'vocabulary', 'dime.find.type.fibula', 'default', 'Fibula / Suit Buckle', ''),
+('en', 'vocabulary', 'dime.find.type.military', 'default', 'Weapons / Militaria', ''),
+('en', 'vocabulary', 'dime.find.type.tool', 'default', 'Equipment / Tools', ''),
+('en', 'vocabulary', 'dime.find.type.waste', 'default', 'Production Waste / Scrap Metal', ''),
 ('en', 'vocabulary', 'language.abkhazian', 'default', 'Abkhazian', ''),
 ('en', 'vocabulary', 'language.achinese', 'default', 'Achinese', ''),
 ('en', 'vocabulary', 'language.acoli', 'default', 'Acoli', ''),
@@ -3357,7 +3405,8 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'language.machame', 'default', 'Machame', ''),
 ('en', 'vocabulary', 'language.madurese', 'default', 'Madurese', ''),
 ('en', 'vocabulary', 'language.mafa', 'default', 'Mafa', ''),
-('en', 'vocabulary', 'language.magahi', 'default', 'Magahi', ''),
+('en', 'vocabulary', 'language.magahi', 'default', 'Magahi', '');
+INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'vocabulary', 'language.maithili', 'default', 'Maithili', ''),
 ('en', 'vocabulary', 'language.makasar', 'default', 'Makasar', ''),
 ('en', 'vocabulary', 'language.makhuwameetto', 'default', 'Makhuwa-Meetto', ''),
@@ -3372,8 +3421,7 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'language.manipuri', 'default', 'Manipuri', ''),
 ('en', 'vocabulary', 'language.manx', 'default', 'Manx', ''),
 ('en', 'vocabulary', 'language.maori', 'default', 'Maori', ''),
-('en', 'vocabulary', 'language.mapuche', 'default', 'Mapuche', '');
-INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'vocabulary', 'language.mapuche', 'default', 'Mapuche', ''),
 ('en', 'vocabulary', 'language.marathi', 'default', 'Marathi', ''),
 ('en', 'vocabulary', 'language.mari', 'default', 'Mari', ''),
 ('en', 'vocabulary', 'language.mari.western', 'default', 'Western Mari', ''),

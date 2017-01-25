@@ -105,7 +105,8 @@
         "gedmo/doctrine-extensions": "^2.4",
         "ramsey/uuid-doctrine": "^1.2",
         "brick/geo": "dev-master",
-        "php-coord/php-coord": "^2.1"
+        "php-coord/php-coord": "^2.1",
+        "wyrihaximus/sli-fly": "^3.0"
     },
     "autoload": {
         "psr-4": {

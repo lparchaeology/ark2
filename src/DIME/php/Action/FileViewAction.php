@@ -30,14 +30,14 @@
 
 namespace DIME\Action;
 
+use ARK\File\File;
 use DIME\Action\EntityViewAction;
-use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
-class FindViewAction extends EntityViewAction
+class FileViewAction extends EntityViewAction
 {
     public function __invoke(Request $request, $itemSlug)
     {
-        return $this->render($request, $itemSlug, Find::class, 'dime_find_item');
+        return $this->render($request, $itemSlug, File::class, 'core_file_item');
     }
 }

@@ -40,12 +40,8 @@ class LocalMultilineTextType extends LocalTextType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $attribute = $options['field']->attribute()->name();
-        $fieldOptions['label'] = false;
-        $fieldOptions['property_path'] = "keyValue[$attribute][language]";
-        $builder->add('language', LanguageType::class, $fieldOptions);
-        $fieldOptions['property_path'] = "keyValue[$attribute][content]";
-        $builder->add('content', TextareaType::class, $fieldOptions);
+        $options['text_type'] = TextareaType::class;
+        parent::buildForm($builder, $options);
     }
 
     public function getBlockPrefix()

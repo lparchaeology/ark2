@@ -57,14 +57,21 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers->get('/news', 'DIME\Action\UnderConstructionAction')
                     ->bind('news');
 
-        // Dummy Routes
-        $controllers->get('/actors/{actorSlug}/finds', 'DIME\Action\FindListAction')
+        // Temp Routes?
+        $controllers->post('/files/{itemSlug}', 'DIME\Action\FileViewAction');
+        $controllers->get('/files/{itemSlug}', 'DIME\Action\FileViewAction')
+                    ->bind('files.view');
+
+        $controllers->get('/files', 'DIME\Action\FileListAction')
+                    ->bind('files.list');
+
+        $controllers->get('/actors/{itemSlug}/finds', 'DIME\Action\FindListAction')
                     ->bind('actors.finds.list');
 
-        $controllers->get('/actors/{actorSlug}/locations', 'DIME\Action\LocationListAction')
+        $controllers->get('/actors/{itemSlug}/locations', 'DIME\Action\LocationListAction')
                     ->bind('actors.locations.list');
 
-        $controllers->get('/actors/{actorSlug}', 'DIME\Action\ActorViewAction')
+        $controllers->get('/actors/{itemSlug}', 'DIME\Action\ActorViewAction')
                     ->bind('actors.view');
 
         $controllers->get('/actors', 'DIME\Action\ActorListAction')
@@ -76,10 +83,10 @@ class ViewControllerProvider implements ControllerProviderInterface
 
         $controllers->post('/finds/add', 'DIME\Action\FindAddAction');
 
-        $controllers->get('/finds/{findSlug}', 'DIME\Action\FindViewAction')
+        $controllers->get('/finds/{itemSlug}', 'DIME\Action\FindViewAction')
                     ->bind('finds.view');
 
-        $controllers->post('/finds/{findSlug}', 'DIME\Action\FindViewAction');
+        $controllers->post('/finds/{itemSlug}', 'DIME\Action\FindViewAction');
 
         $controllers->get('/finds', 'DIME\Action\FindListAction')
                     ->bind('finds.list');
@@ -87,7 +94,7 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers->get('/locations/add', 'DIME\Action\LocationAddAction')
                     ->bind('locations.add');
 
-        $controllers->get('/locations/{locationSlug}', 'DIME\Action\LocationViewAction')
+        $controllers->get('/locations/{itemSlug}', 'DIME\Action\LocationViewAction')
                     ->bind('locations.view');
 
         $controllers->get('/locations', 'DIME\Action\LocationListAction')

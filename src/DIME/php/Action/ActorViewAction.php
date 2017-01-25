@@ -36,8 +36,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ActorViewAction extends EntityViewAction
 {
-    public function __invoke(Request $request, $actorSlug)
+    public function __invoke(Request $request, $itemSlug)
     {
-        return $this->render($request, $actorSlug, Actor::class, 'dime_actor_item');
+        return $this->render($request, $itemSlug, Actor::class, 'dime_actor_item');
     }
 }

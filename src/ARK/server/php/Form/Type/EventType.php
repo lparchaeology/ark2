@@ -30,46 +30,48 @@
 
 namespace ARK\Form\Type;
 
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EventType extends AbstractType
+class EventType extends AbstractType implements DataMapperInterface
 {
-    // {{{ buildForm()
-    public function buildForm(FormBuilderInterface $formBuilder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $options['eventActions'][0]->buildForm($formBuilder);
-        $options['eventDate']->buildForm($formBuilder);
-        $formBuilder->add('save', SubmitType::class);
+        $fieldOptions['label'] = false;
+        $fieldOptions['mapped'] = false;
+        $builder->add('on', DateTimeType::class, $fieldOptions);
+        $builder->add('by', TextType::class, $fieldOptions);
+        $builder->setDataMapper($this);
     }
-    // }}}
-    // {{{ buildView()
-    public function buildView(FormView $view, FormInterface $form, array $options)
-    {
-        $view->vars['title'] = $options['title'];
-        $view->vars['eventActions'] = $options['eventActions'];
-        $view->vars['eventDate'] = $options['eventDate'];
-    }
-    // {{{ configureOptions()
-    // }}}
+
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'title' => '',
-            'eventActions' => null,
-            'eventDate' => null,
-        ));
+        $resolver->setDefaults([
+            'field' => null,
+            'empty_data' => ['on' => new \DateTime, 'by' => ''],
+        ]);
     }
-    // }}}
-    // {{{ getParent()
-    public function getParent()
+
+    public function mapDataToForms($data, $forms)
     {
-        return FormType::class;
+        $forms = iterator_to_array($forms);
+        $forms['on']->setData($data['on']);
+        $forms['by']->setData($data['by']);
     }
-    // }}}
+
+    public function mapFormsToData($forms, &$data)
+    {
+        $forms = iterator_to_array($forms);
+        $data['on'] = $forms['on']->getData();
+        $data['by'] = $forms['by']->getData();
+    }
+
+    public function getBlockPrefix()
+    {
+        return 'event';
+    }
 }

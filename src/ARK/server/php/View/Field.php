@@ -77,9 +77,13 @@ class Field extends Element
         } elseif ($this->attribute->format()->isAtomic()) {
             $value = $resource->property($this->attribute->name())->value()[0];
         } elseif ($this->attribute->format()->type()->isAtomic()) {
-            foreach ($this->attribute->format()->attributes() as $attribute) {
-                if ($attribute->isRoot()) {
-                    $value = $resource->property($this->attribute->name())->value()[$attribute->name()];
+            if ($this->attribute->format()->serializeAsObject()) {
+                //
+            } else {
+                foreach ($this->attribute->format()->attributes() as $attribute) {
+                    if ($attribute->isRoot()) {
+                        $value = $resource->property($this->attribute->name())->value()[$attribute->name()];
+                    }
                 }
             }
         }
