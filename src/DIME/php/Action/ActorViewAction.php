@@ -38,6 +38,6 @@ class ActorViewAction extends EntityViewAction
 {
     public function __invoke(Request $request, $actorSlug)
     {
-        return $this->render($request, $actorSlug, Actor::class, 'core_actor_item');
+        return $this->render($request, $actorSlug, Actor::class, 'dime_actor_item');
     }
 }
