@@ -20,15 +20,15 @@
                         &nbsp;
                     </span>
                     <form method="POST" action="{{ path('user.login_check') }}" data-async>
-                        <input id="inputEmail" class="form-control" name="_username" placeholder="{{ 'user.menu.email' | trans }}" required="" value="" type="text">
-                        <input id="inputPassword" class="form-control" name="_password" required="" placeholder="{{ 'user.menu.password.placeholder' | trans }}" type="password">
+                        <input id="inputEmail" class="form-control" name="_username" placeholder="{{ 'dime.user.name' | translate }}" required="" value="" type="text">
+                        <input id="inputPassword" class="form-control" name="_password" required="" placeholder="{{ 'dime.user.password' | translate }}" type="password">
                         <input type="submit" name="login" class="login loginmodal-submit" value="Login">
                     </form>
 
                     <div class="login-help">
-                        <a href="#">{{ 'user.menu.register' | trans }}</a>
+                        <a href="{{ path('user.forgot-password') }}">{{ 'dime.user.password.forgot' | translate }}</a>
                         -
-                        <a href="#">{{ 'user.menu.forgotpassword' | trans }}</a>
+                        <a href="{{ path('user.register') }}">{{ 'dime.user.register' | translate }}</a>
                     </div>
                 </div>
             </div>

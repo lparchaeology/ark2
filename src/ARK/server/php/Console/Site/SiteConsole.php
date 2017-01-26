@@ -33,6 +33,7 @@ namespace ARK\Console\Site;
 use ARK\ARK;
 use ARK\Application;
 use ARK\Translation\Console\TranslationAddCommand;
+use ARK\Translation\Console\TranslationDimeCommand;
 use Doctrine\DBAL\Tools\Console\Command\ImportCommand;
 use Doctrine\DBAL\Tools\Console\Command\RunSqlCommand;
 use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
@@ -59,6 +60,7 @@ class SiteConsole extends Console
 
         // Translation Commands
         $this->add(new TranslationAddCommand());
+        $this->add(new TranslationDimeCommand());
 
         // User Commands
         $this->add(new UserCreateCommand($this->app));

@@ -7,7 +7,7 @@
             {{ 'user.greeting' | trans({ '%name%': global.user.displayName }) }}
         </a>
     {% else %}
-        <a href="#" data-toggle="modal" data-target="#login-modal">{{ 'user.menu.login' | trans }}</a>
+        <a href="#" data-toggle="modal" data-target="#login-modal">{{ 'dime.user.login' | trans }}</a>
     {% endif %}
 
 {% endblock usertool %}

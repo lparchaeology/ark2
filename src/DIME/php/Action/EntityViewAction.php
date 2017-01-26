@@ -63,9 +63,9 @@ class EntityViewAction
         $options['page_config'] = [
             "navlinks" => [
                 ["name" => "dime.home", "dropdown" => false, "target" => "home"],
-                ["name" => "dime.about", "dropdown" => false, "target" => "about"],
                 ["name" => "dime.treasure", "dropdown" => false, "target" => "treasure"],
                 ["name" => "dime.research", "dropdown" => false, "target" => "research"],
+                ["name" => "dime.about", "dropdown" => false, "target" => "about"],
                 ["name" => "dime.background", "dropdown" => false, "target" => "background"],
             ],
             "sidelinks" => [
@@ -75,7 +75,7 @@ class EntityViewAction
                     "role" => "IS_AUTHENTICATED_ANONYMOUSLY",
                     "links" => [
                         ["name" => "dime.find.add", "active" => false, "target" => "finds.add"],
-                        ["name" => "dime.location.add", "active" => false, "target" => "locations.add"],
+                        ["name" => "dime.locality.add", "active" => false, "target" => "localities.add"],
                     ],
                 ],
                 [
@@ -83,8 +83,8 @@ class EntityViewAction
                     "active" => false,
                     "role" => "IS_AUTHENTICATED_ANONYMOUSLY",
                     "links" => [
-                        ["name" => "dime.find.list", "active" => false, "target" => "finds.list"],
-                        ["name" => "dime.location.list", "active" => false, "target" => "locations.list"],
+                        ["name" => "dime.find.search", "active" => false, "target" => "finds.list"],
+                        ["name" => "dime.locality.search", "active" => false, "target" => "localities.list"],
                     ],
                 ],
             ]

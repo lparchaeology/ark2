@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Action
+ * DIME Location Entity
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,16 +28,26 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Action;
+namespace DIME\Entity;
 
-use DIME\Action\EntityViewAction;
-use DIME\Entity\Location;
-use Symfony\Component\HttpFoundation\Request;
+// TODO Will be automatically generated class!
 
-class LocationViewAction extends EntityViewAction
+use ARK\Model\Item;
+use ARK\Model\ItemTrait;
+use ARK\ORM\ClassMetadata;
+use ARK\ORM\ClassMetadataBuilder;
+
+class Locality implements Item
 {
-    public function __invoke(Request $request, $itemSlug)
+    use ItemTrait;
+
+    public function __construct($schema)
     {
-        return $this->render($request, $itemSlug, Location::class, 'dime_location_item');
+        $this->schma = $schema;
+    }
+
+    public static function loadMetadata(ClassMetadata $metadata)
+    {
+        ItemTrait::buildItemMetadata($metadata, 'locality');
     }
 }

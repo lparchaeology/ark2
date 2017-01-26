@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 25, 2017 at 09:57 PM
+-- Generation Time: Jan 26, 2017 at 12:56 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -730,6 +730,27 @@ CREATE TABLE `ark_item_image` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ark_item_locality`
+--
+
+CREATE TABLE `ark_item_locality` (
+  `id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parent_id` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `mod_by` int(11) NOT NULL,
+  `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `cre_by` int(11) NOT NULL,
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ark_item_location`
 --
 
@@ -753,7 +774,7 @@ CREATE TABLE `ark_item_location` (
 --
 
 INSERT INTO `ark_item_location` (`id`, `schma`, `type`, `parent_module`, `parent_id`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
-('1', 'dime.location', NULL, NULL, NULL, '1', '1', 0, '2017-01-11 11:36:01', 0, '0000-00-00 00:00:00', '');
+('1', 'dime.locality', NULL, NULL, NULL, '1', '1', 0, '2017-01-26 10:29:28', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -1047,6 +1068,14 @@ ALTER TABLE `ark_item_find`
 -- Indexes for table `ark_item_image`
 --
 ALTER TABLE `ark_item_image`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `name` (`label`) USING BTREE,
+  ADD KEY `parent` (`parent_module`,`parent_id`) USING BTREE;
+
+--
+-- Indexes for table `ark_item_locality`
+--
+ALTER TABLE `ark_item_locality`
   ADD PRIMARY KEY (`id`),
   ADD KEY `name` (`label`) USING BTREE,
   ADD KEY `parent` (`parent_module`,`parent_id`) USING BTREE;

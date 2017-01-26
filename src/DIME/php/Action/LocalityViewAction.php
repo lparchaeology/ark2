@@ -30,14 +30,14 @@
 
 namespace DIME\Action;
 
-use DIME\Action\EntityListAction;
-use DIME\Entity\Location;
+use DIME\Action\EntityViewAction;
+use DIME\Entity\Locality;
 use Symfony\Component\HttpFoundation\Request;
 
-class LocationListAction extends EntityListAction
+class LocalityViewAction extends EntityViewAction
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, $itemSlug)
     {
-        return $this->render($request, Location::class, 'dime_location_list');
+        return $this->render($request, $itemSlug, Locality::class, 'dime_locality_item');
     }
 }

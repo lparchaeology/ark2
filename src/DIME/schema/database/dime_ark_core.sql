@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 25, 2017 at 09:57 PM
+-- Generation Time: Jan 26, 2017 at 12:56 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -479,12 +479,12 @@ CREATE TABLE `ark_module` (
 --
 
 INSERT INTO `ark_module` (`module`, `resource`, `namespace`, `entity`, `tbl`, `core`, `enabled`, `deprecated`, `keyword`) VALUES
-('actor', 'actors', 'ARK', 'ARK\\Entity\\Actor', 'ark_item_actor', 1, 1, 0, 'module.actor'),
-('campaign', 'campaigns', 'DIME', 'DIME\\Entity\\Campaign', 'ark_item_campaign', 0, 1, 0, 'module.campaign'),
-('file', 'files', 'ARK', 'ARK\\File\\File', 'ark_item_file', 1, 1, 0, 'module.file'),
-('find', 'finds', 'DIME', 'DIME\\Entity\\Find', 'ark_item_find', 0, 1, 0, 'module.find'),
-('image', 'images', 'DIME', 'DIME\\Entity\\Image', 'ark_item_image', 0, 1, 0, 'module.image'),
-('location', 'locations', 'DIME', 'DIME\\Entity\\Location', 'ark_item_location', 0, 1, 0, 'module.location'),
+('actor', 'aktører', 'ARK', 'ARK\\Entity\\Actor', 'ark_item_actor', 1, 1, 0, 'module.actor'),
+('campaign', 'campaigns', 'DIME', 'DIME\\Entity\\Campaign', 'ark_item_campaign', 0, 1, 0, 'dime.campaign'),
+('file', 'filer', 'ARK', 'ARK\\File\\File', 'ark_item_file', 1, 1, 0, 'module.file'),
+('find', 'fund', 'DIME', 'DIME\\Entity\\Find', 'ark_item_find', 0, 1, 0, 'dime.find'),
+('image', 'images', 'DIME', 'DIME\\Entity\\Image', 'ark_item_image', 0, 1, 0, 'dime.image'),
+('locality', 'lokalitet', 'DIME', 'DIME\\Entity\\Locality', 'ark_item_locality', 0, 1, 0, 'dime.locality'),
 ('page', '', 'ARK', 'ARK\\Entity\\Page', 'ark_item_page', 1, 1, 0, 'module.page');
 
 -- --------------------------------------------------------
@@ -517,7 +517,7 @@ INSERT INTO `ark_schema` (`schma`, `module`, `generator`, `sequence`, `type`, `t
 ('dime.campaign', 'campaign', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', NULL, NULL, 0, 1, 0, 'dime.schema.campaign'),
 ('dime.find', 'find', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 'type', 'dime.find.type', 0, 1, 0, 'dime.schema.find'),
 ('dime.image', 'image', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', NULL, NULL, 0, 1, 0, 'dime.schema.image'),
-('dime.location', 'location', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', NULL, NULL, 0, 1, 0, 'dime.schema.location');
+('dime.locality', 'locality', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', NULL, NULL, 0, 1, 0, 'dime.schema.locality');
 
 -- --------------------------------------------------------
 
@@ -543,7 +543,7 @@ CREATE TABLE `ark_schema_association` (
 --
 
 INSERT INTO `ark_schema_association` (`schma`, `type`, `association`, `degree`, `inverse`, `inverse_degree`, `bidirectional`, `enabled`, `deprecated`, `keyword`) VALUES
-('dime.location', '', 'campaigns', 1, 'dime.campaign', 0, 1, 1, 0, 'dime.association.campaigns');
+('dime.locality', '', 'campaigns', 1, 'dime.campaign', 0, 1, 1, 0, 'dime.association.campaigns');
 
 -- --------------------------------------------------------
 
@@ -571,11 +571,11 @@ CREATE TABLE `ark_schema_attribute` (
 --
 
 INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `vocabulary`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`, `keyword`) VALUES
-('core.file', '', 'description', 'localtext', NULL, 0, 1, 1, 0, 1, 0, 'property.description'),
+('core.file', '', 'description', 'localtext', NULL, 0, 1, 1, 0, 1, 0, 'core.file.description'),
 ('core.file', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.file.id'),
 ('core.file', '', 'mediatype', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.file.mediatype'),
 ('core.file', '', 'status', 'identifier', 'core.file.status', 1, 1, 1, 0, 1, 0, 'core.file.status'),
-('core.file', '', 'title', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.title'),
+('core.file', '', 'title', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'core.file.title'),
 ('core.file', '', 'type', 'identifier', 'core.file.type', 1, 1, 1, 0, 1, 0, 'core.file.type'),
 ('core.file', '', 'versions', 'fileversion', NULL, 1, 0, 1, 0, 1, 0, 'core.file.versions'),
 ('core.page', '', 'content', 'html', NULL, 1, 1, 1, 0, 1, 0, 'property.content'),
@@ -603,9 +603,9 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('dime.find', '', 'type', 'identifier', 'dime.find.type', 1, 1, 1, 0, 1, 0, 'dime.find.type'),
 ('dime.find', '', 'weight', 'mass', 'mass', 0, 1, 1, 0, 1, 0, 'property.weight'),
 ('dime.image', '', 'name', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
-('dime.location', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.location.id'),
-('dime.location', '', 'name', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
-('dime.location', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.location.type');
+('dime.locality', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.locality.id'),
+('dime.locality', '', 'name', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'dime.locality.name'),
+('dime.locality', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.locality.type');
 
 -- --------------------------------------------------------
 
@@ -628,8 +628,12 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('association.contact', 'core', 0, 0),
 ('core.actor.institution', 'core', 0, 0),
 ('core.actor.person', 'core', 0, 0),
+('dime.about', 'dime', 0, 0),
 ('dime.association.campaigns', 'dime', 0, 0),
+('dime.background', 'dime', 0, 0),
 ('dime.campaign', 'dime', 0, 0),
+('dime.find', 'dime', 0, 0),
+('dime.find.add', 'dime', 0, 0),
 ('dime.find.finddate', 'dime', 0, 0),
 ('dime.find.finderid', 'dime', 0, 0),
 ('dime.find.id', 'dime', 0, 0),
@@ -638,11 +642,23 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.find.period.end', 'dime', 0, 0),
 ('dime.find.period.start', 'dime', 0, 0),
 ('dime.find.save', 'dime', 0, 0),
+('dime.find.search', 'dime', 0, 0),
 ('dime.find.subtype', 'dime', 0, 0),
 ('dime.find.type', 'dime', 0, 0),
+('dime.home', 'dime', 0, 0),
+('dime.locality', 'dime', 0, 0),
+('dime.locality.add', 'dime', 0, 0),
+('dime.locality.search', 'dime', 0, 0),
+('dime.research', 'dime', 0, 0),
 ('dime.schema.find', 'dime', 0, 0),
 ('dime.schema.image', 'dime', 0, 0),
 ('dime.schema.location', 'dime', 0, 0),
+('dime.treasure', 'dime', 0, 0),
+('dime.user.login', 'dime', 0, 0),
+('dime.user.name', 'dime', 0, 0),
+('dime.user.password', 'dime', 0, 0),
+('dime.user.password.forgot', 'dime', 0, 0),
+('dime.user.register', 'dime', 0, 0),
 ('file.type.audio', 'core', 0, 0),
 ('file.type.document', 'core', 0, 0),
 ('file.type.image', 'core', 0, 0),
@@ -797,11 +813,34 @@ CREATE TABLE `ark_translation_message` (
 --
 
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('da', 'dime.about', 'default', 'Om DIME', ''),
+('da', 'dime.background', 'default', 'Baggrund', ''),
+('da', 'dime.find', 'default', 'Fund', ''),
+('da', 'dime.find.add', 'default', 'Opret Fund', ''),
+('da', 'dime.find.search', 'default', 'Søg Fund', ''),
+('da', 'dime.home', 'default', 'Hjem', ''),
+('da', 'dime.locality', 'default', 'Lokalitet', ''),
+('da', 'dime.locality.add', 'default', 'Opret Lokalitet', ''),
+('da', 'dime.locality.search', 'default', 'Søg Lokalitet', ''),
+('da', 'dime.research', 'default', 'Forskning', ''),
+('da', 'dime.treasure', 'default', 'Danefæ', ''),
+('da', 'dime.user.login', 'default', 'Login', ''),
+('da', 'dime.user.name', 'default', 'Brugernavn', ''),
+('da', 'dime.user.password', 'default', 'Password', ''),
+('da', 'dime.user.password.forgot', 'default', 'Glemt Password?', ''),
+('da', 'dime.user.register', 'default', 'Ny Bruger?', ''),
+('da', 'module.actor', 'default', 'Aktører', ''),
+('da', 'module.file', 'default', 'Filer', ''),
+('da', 'user.greeting', 'default', 'Hej, %name%!', ''),
 ('en', 'association.contact', 'default', 'Contact', ''),
 ('en', 'core.actor.institution', 'default', 'Institution', ''),
 ('en', 'core.actor.person', 'default', 'Person', ''),
+('en', 'dime.about', 'default', 'About DIME', ''),
 ('en', 'dime.association.campaigns', 'default', 'Campaigns', ''),
+('en', 'dime.background', 'default', 'Background', ''),
 ('en', 'dime.campaign', 'default', 'Campaign', ''),
+('en', 'dime.find', 'default', 'Find', ''),
+('en', 'dime.find.add', 'default', 'Add Find', ''),
 ('en', 'dime.find.finddate', 'default', 'Find Date', 'DIME Find Find Date'),
 ('en', 'dime.find.finderid', 'default', 'Finder ID', 'DIME Find Finder\'s ID'),
 ('en', 'dime.find.id', 'default', 'ID', 'DIME Find ID'),
@@ -810,11 +849,23 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.period.end', 'default', 'End Period', 'DIME Find Period End'),
 ('en', 'dime.find.period.start', 'default', 'Start Period', 'DIME Find Period Start'),
 ('en', 'dime.find.save', 'default', 'Save', 'DIME Find Save button'),
+('en', 'dime.find.search', 'default', 'Search Finds', ''),
 ('en', 'dime.find.subtype', 'default', 'Subtype', 'DIME Find Subtype'),
 ('en', 'dime.find.type', 'default', 'Type', 'DIME Find Type'),
+('en', 'dime.home', 'default', 'Home', ''),
+('en', 'dime.locality', 'default', 'Locality', ''),
+('en', 'dime.locality.add', 'default', 'Add Locality', ''),
+('en', 'dime.locality.search', 'default', 'Search Localities', ''),
+('en', 'dime.research', 'default', 'Research', ''),
 ('en', 'dime.schema.find', 'default', 'Find', ''),
 ('en', 'dime.schema.image', 'default', 'Image', ''),
 ('en', 'dime.schema.location', 'default', 'Location', ''),
+('en', 'dime.treasure', 'default', 'Treasure Trove', ''),
+('en', 'dime.user.login', 'default', 'Login', ''),
+('en', 'dime.user.name', 'default', 'User Name', ''),
+('en', 'dime.user.password', 'default', 'Password', ''),
+('en', 'dime.user.password.forgot', 'default', 'Forgotten Password?', ''),
+('en', 'dime.user.register', 'default', 'New User?', ''),
 ('en', 'file.type.audio', 'default', 'Audio File', ''),
 ('en', 'file.type.document', 'default', 'Document File', ''),
 ('en', 'file.type.image', 'default', 'Image File', ''),
@@ -1034,10 +1085,10 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attrib
 ('dime_find_title', 'field', 'dime.find', '', 'title', '', '', 'ARK\\Form\\Type\\LocalTextType', 1, 0, 1, 0, NULL),
 ('dime_find_type', 'field', 'dime.find', '', 'type', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_find_weight', 'field', 'dime.find', '', 'weight', '', '', '', 1, 0, 1, 0, NULL),
-('dime_location_id', 'field', 'dime.location', '', 'id', '', '', 'ARK\\Form\\Type\\IdType', 1, 0, 1, 0, NULL),
-('dime_location_item', 'grid', 'dime.location', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
-('dime_location_list', 'table', NULL, '', NULL, '', '', '', 1, 0, 1, 0, NULL),
-('dime_location_type', 'field', 'dime.location', '', 'type', '', '', '', 1, 0, 1, 0, NULL),
+('dime_locality_id', 'field', 'dime.locality', '', 'id', '', '', 'ARK\\Form\\Type\\IdType', 1, 0, 1, 0, NULL),
+('dime_locality_item', 'grid', 'dime.locality', '', NULL, '', '', '', 1, 0, 1, 0, NULL),
+('dime_locality_list', 'table', NULL, '', NULL, '', '', '', 1, 0, 1, 0, NULL),
+('dime_locality_type', 'field', 'dime.locality', '', 'type', '', '', '', 1, 0, 1, 0, NULL),
 ('dime_save', 'field', NULL, '', '', '', '', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', 1, 0, 1, 0, 'dime.save');
 
 -- --------------------------------------------------------
@@ -1105,11 +1156,11 @@ INSERT INTO `ark_view_layout` (`element`, `row`, `col`, `seq`, `item_type`, `ena
 ('dime_find_list', 0, 0, 2, '', 1, 0, 'dime_find_type'),
 ('dime_find_list', 0, 0, 3, '', 1, 0, 'dime_find_subtype'),
 ('dime_find_list', 0, 0, 4, '', 1, 0, 'dime_find_material'),
-('dime_location_item', 0, 0, 0, '', 1, 0, 'dime_location_id'),
-('dime_location_item', 0, 0, 2, '', 1, 0, 'dime_location_type'),
-('dime_location_item', 0, 1, 1, '', 1, 0, 'dime_save'),
-('dime_location_list', 0, 0, 0, '', 1, 0, 'dime_location_id'),
-('dime_location_list', 0, 0, 2, '', 1, 0, 'dime_location_type');
+('dime_locality_item', 0, 0, 0, '', 1, 0, 'dime_locality_id'),
+('dime_locality_item', 0, 0, 2, '', 1, 0, 'dime_locality_type'),
+('dime_locality_item', 0, 1, 1, '', 1, 0, 'dime_save'),
+('dime_locality_list', 0, 0, 0, '', 1, 0, 'dime_locality_id'),
+('dime_locality_list', 0, 0, 2, '', 1, 0, 'dime_locality_type');
 
 -- --------------------------------------------------------
 

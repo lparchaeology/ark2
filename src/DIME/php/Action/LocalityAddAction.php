@@ -30,14 +30,14 @@
 
 namespace DIME\Action;
 
-use DIME\Entity\Location;
+use DIME\Entity\Locality;
 use DIME\Action\EntityAddAction;
 use Symfony\Component\HttpFoundation\Request;
 
-class LocationAddAction extends EntityAddAction
+class LocalityAddAction extends EntityAddAction
 {
     public function __invoke(Request $request)
     {
-        return $this->render($request, Location::class, 'dime.location', 'dime_location_item', 'locations.view', 'locationSlug');
+        return $this->render($request, Locality::class, 'dime.locality', 'dime_locality_item', 'locality.view');
     }
 }

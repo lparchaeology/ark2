@@ -37,68 +37,77 @@ class ViewControllerProvider implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
+        // HACK
+        $finds = 'fund';
+        $localities = 'lokalitet';
+        $actors = 'aktører';
+        $files = 'filer';
+        $research = 'forskning';
+        $about = 'om';
+        $background = 'baggrund';
+        $treasure = 'danefae';
+        $detector = 'detektor';
+        $exhibits = 'udstiller';
+        $news = 'nyheder';
+
         $controllers = $app['controllers_factory'];
 
         // Static Page Routes
-        $controllers->get('/research', 'DIME\Action\PageViewAction')
+        $controllers->get("/$research", 'DIME\Action\PageViewAction')
                     ->bind('research');
-        $controllers->get('/about', 'DIME\Action\PageViewAction')
+        $controllers->get("/$about", 'DIME\Action\PageViewAction')
                     ->bind('about');
-        $controllers->get('/background', 'DIME\Action\PageViewAction')
+        $controllers->get("/$background", 'DIME\Action\PageViewAction')
                     ->bind('background');
-        $controllers->get('/treasure', 'DIME\Action\PageViewAction')
+        $controllers->get("/$treasure", 'DIME\Action\PageViewAction')
                     ->bind('treasure');
 
         // Under Construction Routes
-        $controllers->get('/detector', 'DIME\Action\UnderConstructionAction')
+        $controllers->get("/$detector", 'DIME\Action\UnderConstructionAction')
                     ->bind('detector');
-        $controllers->get('/exhibits', 'DIME\Action\UnderConstructionAction')
+        $controllers->get("/$exhibits", 'DIME\Action\UnderConstructionAction')
                     ->bind('exhibits');
-        $controllers->get('/news', 'DIME\Action\UnderConstructionAction')
+        $controllers->get("/$news", 'DIME\Action\UnderConstructionAction')
                     ->bind('news');
 
         // Temp Routes?
-        $controllers->post('/files/{itemSlug}', 'DIME\Action\FileViewAction');
-        $controllers->get('/files/{itemSlug}', 'DIME\Action\FileViewAction')
+        $controllers->post("/$files/{itemSlug}", 'DIME\Action\FileViewAction');
+        $controllers->get("/$files/{itemSlug}", 'DIME\Action\FileViewAction')
                     ->bind('files.view');
-
-        $controllers->get('/files', 'DIME\Action\FileListAction')
+        $controllers->get("/$files", 'DIME\Action\FileListAction')
                     ->bind('files.list');
 
-        $controllers->get('/actors/{itemSlug}/finds', 'DIME\Action\FindListAction')
+        $controllers->get("/$actors/{itemSlug}/finds", 'DIME\Action\FindListAction')
                     ->bind('actors.finds.list');
-
-        $controllers->get('/actors/{itemSlug}/locations', 'DIME\Action\LocationListAction')
-                    ->bind('actors.locations.list');
-
-        $controllers->get('/actors/{itemSlug}', 'DIME\Action\ActorViewAction')
+        $controllers->get("/$actors/{itemSlug}/localities", 'DIME\Action\LocalityListAction')
+                    ->bind('actors.localities.list');
+        $controllers->get("/$actors/{itemSlug}", 'DIME\Action\ActorViewAction')
                     ->bind('actors.view');
-
-        $controllers->get('/actors', 'DIME\Action\ActorListAction')
+        $controllers->get("/$actors", 'DIME\Action\ActorListAction')
                     ->bind('actors.list');
 
         // Find Routes
-        $controllers->get('/finds/add', 'DIME\Action\FindAddAction')
+        $controllers->get("/$finds/add", 'DIME\Action\FindAddAction')
                     ->bind('finds.add');
 
-        $controllers->post('/finds/add', 'DIME\Action\FindAddAction');
+        $controllers->post("/$finds/add", 'DIME\Action\FindAddAction');
 
-        $controllers->get('/finds/{itemSlug}', 'DIME\Action\FindViewAction')
+        $controllers->get("/$finds/{itemSlug}", 'DIME\Action\FindViewAction')
                     ->bind('finds.view');
 
-        $controllers->post('/finds/{itemSlug}', 'DIME\Action\FindViewAction');
+        $controllers->post("/$finds/{itemSlug}", 'DIME\Action\FindViewAction');
 
-        $controllers->get('/finds', 'DIME\Action\FindListAction')
+        $controllers->get("/$finds", 'DIME\Action\FindListAction')
                     ->bind('finds.list');
 
-        $controllers->get('/locations/add', 'DIME\Action\LocationAddAction')
-                    ->bind('locations.add');
+        $controllers->get("/$localities/add", 'DIME\Action\LocalityAddAction')
+                    ->bind('localities.add');
 
-        $controllers->get('/locations/{itemSlug}', 'DIME\Action\LocationViewAction')
-                    ->bind('locations.view');
+        $controllers->get("/$localities/{itemSlug}", 'DIME\Action\LocalityViewAction')
+                    ->bind('localities.view');
 
-        $controllers->get('/locations', 'DIME\Action\LocationListAction')
-                    ->bind('locations.list');
+        $controllers->get("/$localities", 'DIME\Action\LocalityListAction')
+                    ->bind('localities.list');
 
         $controllers->get('/test', 'DIME\Action\TestViewAction')
                     ->bind('test');

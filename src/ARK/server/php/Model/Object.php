@@ -67,7 +67,7 @@ class Object
         }
         foreach ($this->fragments as $fragment) {
             foreach ($attribute->format()->attributes() as $child) {
-                $this->children[$fragment->id()] = new Property($item, $child, $fragment);
+                $this->children[] = new Property($item, $child, $fragment);
             }
         }
     }
