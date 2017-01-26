@@ -36,13 +36,44 @@ use ARK\View\Layout;
 use DIME\Action\DimeAction;
 use Symfony\Component\HttpFoundation\Request;
 
-class EntityListAction extends DimeAction
+abstract class DimeFormAction extends DimeAction
 {
-    public function render(Request $request, $data, $layout, $options = [], $template = 'pages/page.html.twig')
+    public function render(Request $request, $data, $layout, $redirect = null, $options = [], $template = 'pages/page.html.twig')
     {
+        $viewLayout = ORM::find(Layout::class, $layout);
+        $forms = $viewLayout->buildForms($data);
+        if ($request->getMethod() == 'POST') {
+            $form = null;
+            foreach ($forms as $name => $fm) {
+                if ($request->request->has($name)) {
+                    $form = $fm;
+                    continue;
+                }
+            }
+            if ($form) {
+                $form->handleRequest($request);
+                if ($form->isSubmitted() && $form->isValid()) {
+                    if (!$redirect) {
+                        $redirect = $request->attributes->get('_route');
+                    }
+                    return $this->processForm($request, $form, $redirect);
+                }
+            }
+        }
+        $options['forms'] = null;
+        if ($forms) {
+            foreach ($forms as $name => $form) {
+                $options['forms'][$name] = $form->createView();
+            }
+        }
+        $options['layout'] = $viewLayout;
         $options['data'] = $data;
-        $options['layout'] = ORM::find(Layout::class, $layout);
         $options['page_config'] = $this->pageConfig($request->attributes->get('_route'));
         return Service::render($template, $options);
+    }
+
+    public function processForm(Request $request, $form, $redirect)
+    {
+        return Service::redirect(Service::path($redirect));
     }
 }

@@ -30,14 +30,17 @@
 
 namespace DIME\Action;
 
-use DIME\Action\EntityAddAction;
+use DIME\Action\EntityAction;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
-class FindAddAction extends EntityAddAction
+class FindAddAction extends EntityAction
 {
     public function __invoke(Request $request)
     {
-        return $this->render($request, Find::class, 'dime.find', 'dime_find_item', 'finds.view');
+        $layout = 'dime_find_item';
+        $data[$layout] = new Find('dime.find');
+        $redirect = 'finds.view';
+        return $this->render($request, $data, $layout, $redirect);
     }
 }

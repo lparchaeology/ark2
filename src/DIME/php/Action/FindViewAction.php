@@ -30,14 +30,21 @@
 
 namespace DIME\Action;
 
-use DIME\Action\EntityViewAction;
+use ARK\Error\ErrorException;
+use ARK\Http\Error\NotFoundError;
+use ARK\ORM\ORM;
+use DIME\Action\EntityAction;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
-class FindViewAction extends EntityViewAction
+class FindViewAction extends EntityAction
 {
     public function __invoke(Request $request, $itemSlug)
     {
-        return $this->render($request, $itemSlug, Find::class, 'dime_find_item');
+        $layout = 'dime_find_item';
+        if (!$data[$layout] = ORM::find(Find::class, $itemSlug)) {
+            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Find not found', "Find $itemSlug not found"));
+        }
+        return $this->render($request, $data, $layout);
     }
 }

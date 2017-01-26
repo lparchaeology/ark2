@@ -51,7 +51,9 @@ abstract class Element
     protected $attribute = null;
     protected $class = '';
     protected $template = '';
-    protected $form = '';
+    protected $form = false;
+    protected $formRoot = false;
+    protected $formType = '';
     protected $editable = true;
     protected $hidden = false;
     protected $schma = null;
@@ -92,17 +94,23 @@ abstract class Element
         return $this->type->template();
     }
 
+    public function formRoot()
+    {
+        return $this->formRoot;
+    }
+
     public function formType()
     {
-        if ($this->form) {
-            return $this->form;
+        if ($this->formType) {
+            return $this->formType;
         }
         return $this->type->formType();
     }
 
     public function formOptions()
     {
-        return [];
+        $options['label'] = false;
+        return $options;
     }
 
     public function formData($resource)
@@ -134,24 +142,41 @@ abstract class Element
         return $opts;
     }
 
-    public function buildForm($resource, FormBuilderInterface $formBuilder = null)
+    public function buildForms($data)
     {
-        $builder = Service::forms()->createNamedBuilder($this->name(),
-                                                        $this->formType(),
-                                                        $this->formData($resource),
-                                                        $this->formOptions());
+        if ($this->formRoot) {
+            $builder = $this->formBuilder($data);
+            $this->buildForm($data[$this->element], $builder);
+            return [$this->element => $builder->getForm()];
+        }
+        $forms = [];
         if ($this->type->isLayout()) {
             foreach ($this->elements() as $element) {
-                $element->buildForm($resource, $builder);
+                $forms = array_merge($forms, $element->buildForms($data));
             }
         }
-        if ($formBuilder === null) {
-            return $builder->getForm();
-        }
-        $formBuilder->add($builder);
+        return $forms;
     }
 
-    abstract public function renderView($resource, array $options = []);
+    public function buildForm($data, FormBuilderInterface $builder)
+    {
+        if ($this->type->isLayout()) {
+            foreach ($this->elements() as $element) {
+                $element->buildForm($data, $builder);
+            }
+            return;
+        }
+    }
+
+    protected function formBuilder($data)
+    {
+        return Service::forms()->createNamedBuilder($this->name(),
+                                                    $this->formType(),
+                                                    $this->formData($data),
+                                                    $this->formOptions());
+    }
+
+    abstract public function renderView($resource, $forms = null, $form = null, array $options = []);
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
@@ -168,7 +193,9 @@ abstract class Element
         $builder->addStringField('itemType', 30, 'item_type');
         $builder->addStringField('class', 100);
         $builder->addStringField('template', 100);
-        $builder->addStringField('form', 100);
+        $builder->addField('form', 'boolean');
+        $builder->addField('formRoot', 'boolean', [], 'form_root');
+        $builder->addStringField('formType', 100, 'form_type');
         $builder->addField('editable', 'boolean');
         $builder->addField('hidden', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);

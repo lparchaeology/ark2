@@ -69,15 +69,18 @@ abstract class Layout extends Element
 
     public function formOptions()
     {
+        $options['label'] = false;
         $options['mapped'] = false;
         return $options;
     }
 
-    public function renderView($resource, array $options = [])
+    public function renderView($data, $forms = null, $form = null, array $options = [])
     {
         if ($this->template()) {
             $options['layout'] = $this;
-            $options['data'] = $resource;
+            $options['data'] = $data;
+            $options['forms'] = $forms;
+            $options['form'] = $form;
             return Service::renderView($this->template(), $options);
         }
         return '';

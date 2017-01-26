@@ -30,7 +30,12 @@
 
 namespace ARK\View;
 
+use ARK\ORM\ORM;
+use ARK\Model\Item;
 use ARK\ORM\ClassMetadata;
+use ARK\Service;
+use ARK\Vocabulary\Vocabulary;
+use Symfony\Component\Form\FormBuilderInterface;
 
 class Field extends Element
 {
@@ -44,12 +49,27 @@ class Field extends Element
         if ($this->keyword) {
             return $this->keyword;
         }
-        return $this->attribute()->keyword();
+        if ($this->attribute) {
+            return $this->attribute()->keyword();
+        }
+        return '';
     }
 
     public function formOptions()
     {
-        $options['label'] = $this->keyword();
+        if ($this->name() == 'dime_find_filter_type') {
+            $options['vocabulary'] = ORM::find(Vocabulary::class, 'dime.find.type');
+            $options['required'] = false;
+        }
+        if ($this->name() == 'dime_find_filter_material') {
+            $options['vocabulary'] = ORM::find(Vocabulary::class, 'dime.material');
+            $options['required'] = false;
+        }
+        if ($this->name() == 'dime_find_filter_period') {
+            $options['vocabulary'] = ORM::find(Vocabulary::class, 'dime.period');
+            $options['required'] = false;
+        }
+        $options['label'] = ($this->keyword() ? $this->keyword() : false);
         if ($this->attribute) {
             $name = $this->attribute->name();
             $options['field'] = $this;
@@ -59,36 +79,56 @@ class Field extends Element
         return $options;
     }
 
-    public function formData($resource)
+    public function formData($data)
     {
-        if ($resource && $this->attribute) {
-            return $resource->property($this->attribute->name());
-            ;
+        if ($data instanceof Item && $this->attribute) {
+            return $data->property($this->attribute->name());
+        }
+        if (is_array($data) && isset($data[$this->name()])) {
+            return $data[$this->name()];
         }
         return null;
     }
 
-    public function renderView($resource, array $options = [])
+    public function buildForm($data, FormBuilderInterface $builder)
+    {
+        $fieldBuilder = $this->formBuilder($data);
+        $builder->add($fieldBuilder);
+    }
+
+    public function renderView($resource, $forms = null, $form = null, array $options = [])
     {
         // FIXME Should probably have some way to use FormTypes here to render 'flat' compond values
-        $value = 'FIXME: '.$this->element;
-        if ($this->attribute->isAtomic()) {
-            $value = $resource->property($this->attribute->name())->value();
-        } elseif ($this->attribute->format()->isAtomic()) {
-            $value = $resource->property($this->attribute->name())->value()[0];
-        } elseif ($this->attribute->format()->type()->isAtomic()) {
-            if ($this->attribute->format()->serializeAsObject()) {
-                //
-            } else {
-                foreach ($this->attribute->format()->attributes() as $attribute) {
-                    if ($attribute->isRoot()) {
-                        $value = $resource->property($this->attribute->name())->value()[$attribute->name()];
+        $value = null;
+        if ($resource instanceof Item and $this->attribute) {
+            $value = 'FIXME: '.$this->element;
+            if ($this->attribute->isAtomic()) {
+                $value = $resource->property($this->attribute->name())->value();
+            } elseif ($this->attribute->format()->isAtomic()) {
+                $value = $resource->property($this->attribute->name())->value()[0];
+            } elseif ($this->attribute->format()->type()->isAtomic()) {
+                if ($this->attribute->format()->name() == 'shortlocaltext') {
+                    $language = Service::locale();
+                    $values = $resource->property($this->attribute->name())->value();
+                    foreach ($values as $trans) {
+                        if ($trans['language'] == $language) {
+                            return $trans['content'];
+                        }
+                    }
+                    return $values[0]['content'];
+                } elseif ($this->attribute->format()->serializeAsObject()) {
+                    //
+                } else {
+                    foreach ($this->attribute->format()->attributes() as $attribute) {
+                        if ($attribute->isRoot()) {
+                            $value = $resource->property($this->attribute->name())->value()[$attribute->name()];
+                        }
                     }
                 }
             }
-        }
-        if ($value instanceof \DateTime) {
-            return $value->format('Y-m-d H:i:s');
+            if ($value instanceof \DateTime) {
+                return $value->format('Y-m-d H:i:s');
+            }
         }
         return $value;
     }

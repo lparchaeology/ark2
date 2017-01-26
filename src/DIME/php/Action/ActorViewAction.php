@@ -38,6 +38,10 @@ class ActorViewAction extends EntityViewAction
 {
     public function __invoke(Request $request, $itemSlug)
     {
-        return $this->render($request, $itemSlug, Actor::class, 'dime_actor_item');
+        $layout = 'dime_actor_item';
+        if (!$data[$layout] = ORM::find(Actor::class, $itemSlug)) {
+            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Actor not found', "Actor $itemSlug not found"));
+        }
+        return $this->render($request, $data, $layout);
     }
 }

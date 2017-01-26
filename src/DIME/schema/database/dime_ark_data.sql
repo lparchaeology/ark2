@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 26, 2017 at 12:56 PM
+-- Generation Time: Jan 26, 2017 at 11:40 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -109,7 +109,11 @@ CREATE TABLE `ark_fragment_date` (
 INSERT INTO `ark_fragment_date` (`fid`, `module`, `item`, `attribute`, `parameter`, `value`, `object_fid`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
 (12, 'find', '15', 'finddate', NULL, '2017-01-24', NULL, 0, '2017-01-24 11:45:37', 0, '2017-01-24 11:45:37', ''),
 (13, 'find', '16', 'finddate', NULL, '2017-01-24', NULL, 0, '2017-01-24 12:01:29', 0, '2017-01-24 12:01:29', ''),
-(14, 'find', '17', 'finddate', NULL, '2017-01-25', NULL, 0, '2017-01-25 14:53:46', 0, '2017-01-25 14:53:46', '');
+(14, 'find', '17', 'finddate', NULL, '2017-01-25', NULL, 0, '2017-01-25 14:53:46', 0, '2017-01-25 14:53:46', ''),
+(15, 'find', '18', 'finddate', NULL, '2017-01-26', NULL, 0, '2017-01-26 18:29:51', 0, '2017-01-26 18:29:51', ''),
+(16, 'find', '19', 'finddate', NULL, '2017-01-26', NULL, 0, '2017-01-26 18:46:13', 0, '2017-01-26 18:46:13', ''),
+(17, 'find', '20', 'finddate', NULL, '2017-01-26', NULL, 0, '2017-01-26 18:48:12', 0, '2017-01-26 18:48:12', ''),
+(18, 'find', '21', 'finddate', NULL, '2017-01-26', NULL, 0, '2017-01-26 22:20:48', 0, '2017-01-26 22:20:48', '');
 
 -- --------------------------------------------------------
 
@@ -162,7 +166,14 @@ INSERT INTO `ark_fragment_decimal` (`fid`, `module`, `item`, `attribute`, `param
 (25, 'find', '16', 'weight', 'g', '2', NULL, 0, '2017-01-24 12:01:29', 0, '2017-01-24 12:01:29', ''),
 (26, 'find', '16', 'length', 'm', '2', NULL, 0, '2017-01-24 12:01:29', 0, '2017-01-24 12:01:29', ''),
 (27, 'find', '15', 'weight', 't', '2', NULL, 0, '2017-01-25 14:46:27', 0, '2017-01-25 14:46:27', ''),
-(28, 'find', '17', 'length', 'km', '1', NULL, 0, '2017-01-25 14:53:46', 0, '2017-01-25 14:53:46', '');
+(28, 'find', '17', 'length', 'km', '1', NULL, 0, '2017-01-25 14:53:46', 0, '2017-01-25 14:53:46', ''),
+(29, 'find', '18', 'weight', 'g', '1', NULL, 0, '2017-01-26 18:29:51', 0, '2017-01-26 18:29:51', ''),
+(30, 'find', '18', 'length', 'nm', '1', NULL, 0, '2017-01-26 18:29:51', 0, '2017-01-26 18:29:51', ''),
+(31, 'find', '19', 'weight', 'kg', '1', NULL, 0, '2017-01-26 18:46:13', 0, '2017-01-26 18:46:13', ''),
+(32, 'find', '19', 'length', 'µm', '1', NULL, 0, '2017-01-26 18:46:13', 0, '2017-01-26 18:46:13', ''),
+(33, 'find', '20', 'weight', 'kg', '1', NULL, 0, '2017-01-26 18:48:12', 0, '2017-01-26 18:48:12', ''),
+(34, 'find', '20', 'length', 'µm', '1', NULL, 0, '2017-01-26 18:48:12', 0, '2017-01-26 18:48:12', ''),
+(35, 'find', '21', 'length', 'm', '1', NULL, 0, '2017-01-26 22:20:48', 0, '2017-01-26 22:20:48', '');
 
 -- --------------------------------------------------------
 
@@ -346,8 +357,6 @@ INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `parame
 (225, 'actor', 'VKH', 'type', 'dime.actor.type', 'museum', 0, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
 (226, 'actor', 'VMÅ', 'type', 'dime.actor.type', 'museum', 0, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
 (227, 'actor', 'VSM', 'type', 'dime.actor.type', 'museum', 0, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
-(238, 'find', '15', 'secondary', 'dime.material', 'cu', NULL, 0, '2017-01-25 14:46:35', 0, '2017-01-25 14:46:35', ''),
-(239, 'find', '15', 'secondary', 'dime.material', 'niello', NULL, 0, '2017-01-25 14:46:35', 0, '2017-01-25 14:46:35', ''),
 (240, 'find', '17', 'type', 'dime.find.type', 'fibula', NULL, 0, '2017-01-25 14:53:46', 0, '2017-01-25 14:53:46', ''),
 (241, 'find', '17', 'subtype', NULL, 'aaa', NULL, 0, '2017-01-25 14:53:46', 0, '2017-01-25 14:53:46', ''),
 (242, 'find', '17', 'material', 'dime.material', 'au', NULL, 0, '2017-01-25 14:53:46', 0, '2017-01-25 14:53:46', ''),
@@ -355,7 +364,36 @@ INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `parame
 (244, 'file', '1', 'id', NULL, '1', NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
 (245, 'file', '1', 'type', 'core.file.type', 'text', NULL, 0, '2017-01-25 19:46:09', 0, '0000-00-00 00:00:00', ''),
 (246, 'file', '1', 'mediatype', NULL, 'text/plain', NULL, 0, '2017-01-25 19:46:09', 0, '2017-01-25 19:46:09', ''),
-(247, 'file', '1', 'status', 'core.file.status', 'new', NULL, 0, '2017-01-25 19:46:09', 0, '2017-01-25 19:46:09', '');
+(247, 'file', '1', 'status', 'core.file.status', 'new', NULL, 0, '2017-01-25 19:46:09', 0, '2017-01-25 19:46:09', ''),
+(250, 'locality', '1', 'id', NULL, '1', NULL, 0, '2017-01-26 14:33:48', 0, '2017-01-26 14:33:48', ''),
+(251, 'locality', '1', 'type', NULL, 'testxxx', NULL, 0, '2017-01-26 22:19:51', 0, '2017-01-26 14:33:48', ''),
+(252, 'locality', '2', 'id', NULL, '2', NULL, 0, '2017-01-26 14:34:15', 0, '2017-01-26 14:34:15', ''),
+(253, 'locality', '2', 'type', NULL, 'test', NULL, 0, '2017-01-26 14:34:15', 0, '2017-01-26 14:34:15', ''),
+(256, 'find', '18', 'finder_id', NULL, '678', NULL, 0, '2017-01-26 18:29:51', 0, '2017-01-26 18:29:51', ''),
+(257, 'find', '18', 'type', 'dime.find.type', 'accessory', NULL, 0, '2017-01-26 18:29:51', 0, '2017-01-26 18:29:51', ''),
+(258, 'find', '18', 'subtype', NULL, '111', NULL, 0, '2017-01-26 18:29:51', 0, '2017-01-26 18:29:51', ''),
+(259, 'find', '18', 'material', 'dime.material', 'cu', NULL, 0, '2017-01-26 18:29:51', 0, '2017-01-26 18:29:51', ''),
+(260, 'find', '18', 'id', NULL, '18', NULL, 0, '2017-01-26 18:29:51', 0, '2017-01-26 18:29:51', ''),
+(261, 'find', '19', 'finder_id', NULL, 'sfgsdfg', NULL, 0, '2017-01-26 18:46:13', 0, '2017-01-26 18:46:13', ''),
+(262, 'find', '19', 'type', 'dime.find.type', 'fibula', NULL, 0, '2017-01-26 18:46:13', 0, '2017-01-26 18:46:13', ''),
+(263, 'find', '19', 'subtype', NULL, '333', NULL, 0, '2017-01-26 18:46:13', 0, '2017-01-26 18:46:13', ''),
+(264, 'find', '19', 'material', 'dime.material', 'au', NULL, 0, '2017-01-26 18:46:13', 0, '2017-01-26 18:46:13', ''),
+(265, 'find', '19', 'id', NULL, '19', NULL, 0, '2017-01-26 18:46:13', 0, '2017-01-26 18:46:13', ''),
+(266, 'find', '20', 'finder_id', NULL, 'sfgsdfg', NULL, 0, '2017-01-26 18:48:12', 0, '2017-01-26 18:48:12', ''),
+(267, 'find', '20', 'type', 'dime.find.type', 'fibula', NULL, 0, '2017-01-26 18:48:12', 0, '2017-01-26 18:48:12', ''),
+(268, 'find', '20', 'subtype', NULL, '333', NULL, 0, '2017-01-26 18:48:12', 0, '2017-01-26 18:48:12', ''),
+(269, 'find', '20', 'material', 'dime.material', 'au', NULL, 0, '2017-01-26 18:48:12', 0, '2017-01-26 18:48:12', ''),
+(270, 'find', '20', 'id', NULL, '20', NULL, 0, '2017-01-26 18:48:12', 0, '2017-01-26 18:48:12', ''),
+(273, 'find', '15', 'secondary', 'dime.material', 'cu', NULL, 0, '2017-01-26 22:18:34', 0, '2017-01-26 22:18:34', ''),
+(274, 'find', '15', 'secondary', 'dime.material', 'niello', NULL, 0, '2017-01-26 22:18:34', 0, '2017-01-26 22:18:34', ''),
+(275, 'find', '21', 'finder_id', NULL, 'fhjfhgj', NULL, 0, '2017-01-26 22:20:48', 0, '2017-01-26 22:20:48', ''),
+(276, 'find', '21', 'type', 'dime.find.type', 'coin', NULL, 0, '2017-01-26 22:20:48', 0, '2017-01-26 22:20:48', ''),
+(277, 'find', '21', 'subtype', NULL, 'fhgjfghj', NULL, 0, '2017-01-26 22:20:48', 0, '2017-01-26 22:20:48', ''),
+(278, 'find', '21', 'material', 'dime.material', 'al', NULL, 0, '2017-01-26 22:20:48', 0, '2017-01-26 22:20:48', ''),
+(279, 'find', '21', 'secondary', 'dime.material', 'sa', NULL, 0, '2017-01-26 22:20:48', 0, '2017-01-26 22:20:48', ''),
+(280, 'find', '21', 'id', NULL, '21', NULL, 0, '2017-01-26 22:20:48', 0, '2017-01-26 22:20:48', ''),
+(281, 'locality', '3', 'id', NULL, '3', NULL, 0, '2017-01-26 22:21:34', 0, '2017-01-26 22:21:34', ''),
+(282, 'locality', '3', 'type', NULL, 'hgfdhdg', NULL, 0, '2017-01-26 22:21:34', 0, '2017-01-26 22:21:34', '');
 
 -- --------------------------------------------------------
 
@@ -510,15 +548,29 @@ INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `attribute`, `paramete
 (166, 'actor', 'VKH', 'fullname', 'en', 'Vejle Museum', NULL, 0, '2017-01-25 13:01:03', 0, '0000-00-00 00:00:00', ''),
 (167, 'actor', 'VMÅ', 'fullname', 'en', 'Vesthimmerlands Museum', NULL, 0, '2017-01-25 13:01:03', 0, '0000-00-00 00:00:00', ''),
 (168, 'actor', 'VSM', 'fullname', 'en', 'Viborg Museum', NULL, 0, '2017-01-25 13:01:03', 0, '0000-00-00 00:00:00', ''),
-(169, 'find', '15', 'title', 'en', 'Find 1', NULL, 0, '2017-01-25 14:25:23', 0, '2017-01-25 14:25:23', ''),
 (172, 'find', '15', 'name', 'en', 'Find1', NULL, 0, '2017-01-25 14:25:35', 0, '2017-01-25 14:25:35', ''),
 (174, 'find', '15', 'name', 'da', 'Dette er ikke et rør', NULL, 0, '2017-01-25 14:25:35', 0, '2017-01-25 14:25:35', ''),
-(176, 'find', '15', 'description', 'en', 'Find number 1!', NULL, 0, '2017-01-25 14:46:35', 0, '2017-01-25 14:46:35', ''),
 (177, 'find', '17', 'title', 'en', 'test again', NULL, 0, '2017-01-25 14:53:46', 0, '2017-01-25 14:53:46', ''),
 (178, 'find', '17', 'name', 'en', 'again', NULL, 0, '2017-01-25 14:53:46', 0, '2017-01-25 14:53:46', ''),
 (179, 'find', '17', 'description', 'en', 'dddddddd', NULL, 0, '2017-01-25 14:53:46', 0, '2017-01-25 14:53:46', ''),
 (180, 'file', '1', 'title', 'en', 'A File', NULL, 0, '2017-01-25 19:46:09', 0, '2017-01-25 19:46:09', ''),
-(181, 'file', '1', 'description', 'en', 'A test file', NULL, 0, '2017-01-25 19:46:09', 0, '2017-01-25 19:46:09', '');
+(181, 'file', '1', 'description', 'en', 'A test file', NULL, 0, '2017-01-25 19:46:09', 0, '2017-01-25 19:46:09', ''),
+(186, 'find', '15', 'title', 'en', 'Find 1', NULL, 0, '2017-01-26 15:25:03', 0, '2017-01-26 15:25:03', ''),
+(187, 'find', '15', 'title', 'da', 'Find 11111', NULL, 0, '2017-01-26 15:25:03', 0, '2017-01-26 15:25:03', ''),
+(188, 'find', '18', 'title', 'da', '123', NULL, 0, '2017-01-26 18:29:51', 0, '2017-01-26 18:29:51', ''),
+(189, 'find', '18', 'name', 'da', '456', NULL, 0, '2017-01-26 18:29:51', 0, '2017-01-26 18:29:51', ''),
+(190, 'find', '18', 'description', 'da', 'qqq', NULL, 0, '2017-01-26 18:29:51', 0, '2017-01-26 18:29:51', ''),
+(191, 'find', '19', 'title', 'da', 'fgsdf', NULL, 0, '2017-01-26 18:46:13', 0, '2017-01-26 18:46:13', ''),
+(192, 'find', '19', 'name', 'da', 'sfgsdfg', NULL, 0, '2017-01-26 18:46:13', 0, '2017-01-26 18:46:13', ''),
+(193, 'find', '19', 'description', 'da', 'ddddd', NULL, 0, '2017-01-26 18:46:13', 0, '2017-01-26 18:46:13', ''),
+(194, 'find', '20', 'title', 'da', 'fgsdf', NULL, 0, '2017-01-26 18:48:12', 0, '2017-01-26 18:48:12', ''),
+(195, 'find', '20', 'name', 'da', 'sfgsdfg', NULL, 0, '2017-01-26 18:48:12', 0, '2017-01-26 18:48:12', ''),
+(196, 'find', '20', 'description', 'da', 'ddddd', NULL, 0, '2017-01-26 18:48:12', 0, '2017-01-26 18:48:12', ''),
+(199, 'find', '15', 'description', 'en', 'Find number 1!', NULL, 0, '2017-01-26 22:18:34', 0, '2017-01-26 22:18:34', ''),
+(200, 'find', '15', 'description', 'da', 'Find number 1!xxx', NULL, 0, '2017-01-26 22:18:34', 0, '2017-01-26 22:18:34', ''),
+(201, 'find', '21', 'title', 'da', 'hjghfj', NULL, 0, '2017-01-26 22:20:48', 0, '2017-01-26 22:20:48', ''),
+(202, 'find', '21', 'name', 'da', 'fhjfghj', NULL, 0, '2017-01-26 22:20:48', 0, '2017-01-26 22:20:48', ''),
+(203, 'find', '21', 'description', 'da', 'dfjfghj', NULL, 0, '2017-01-26 22:20:48', 0, '2017-01-26 22:20:48', '');
 
 -- --------------------------------------------------------
 
@@ -568,7 +620,11 @@ CREATE TABLE `ark_fragment_wkt` (
 
 INSERT INTO `ark_fragment_wkt` (`fid`, `module`, `item`, `attribute`, `parameter`, `value`, `object_fid`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
 (1, 'find', '15', 'findpoint', '4326', 'POINT (56.16294 10.20392)', NULL, 0, '2017-01-24 22:27:18', 0, '2017-01-24 21:28:32', ''),
-(2, 'find', '17', 'findpoint', '4326', 'POINT (1 2)', NULL, 0, '2017-01-25 14:53:46', 0, '2017-01-25 14:53:46', '');
+(2, 'find', '17', 'findpoint', '4326', 'POINT (1 2)', NULL, 0, '2017-01-25 14:53:46', 0, '2017-01-25 14:53:46', ''),
+(3, 'find', '18', 'findpoint', '4326', 'POINT (1 2)', NULL, 0, '2017-01-26 18:29:51', 0, '2017-01-26 18:29:51', ''),
+(4, 'find', '19', 'findpoint', '4326', 'POINT (3 3)', NULL, 0, '2017-01-26 18:46:13', 0, '2017-01-26 18:46:13', ''),
+(5, 'find', '20', 'findpoint', '4326', 'POINT (3 3)', NULL, 0, '2017-01-26 18:48:12', 0, '2017-01-26 18:48:12', ''),
+(6, 'find', '21', 'findpoint', '4326', 'POINT (5 5)', NULL, 0, '2017-01-26 22:20:48', 0, '2017-01-26 22:20:48', '');
 
 -- --------------------------------------------------------
 
@@ -702,9 +758,13 @@ CREATE TABLE `ark_item_find` (
 --
 
 INSERT INTO `ark_item_find` (`id`, `schma`, `type`, `parent_module`, `parent_id`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
-('15', 'dime.find', 'accessory', NULL, NULL, '15', '15', 0, '2017-01-25 14:46:35', 0, '2017-01-25 14:46:35', ''),
+('15', 'dime.find', 'accessory', NULL, NULL, '15', '15', 0, '2017-01-26 22:18:34', 0, '2017-01-26 22:18:34', ''),
 ('16', 'dime.find', 'fibula', NULL, NULL, '16', '16', 0, '2017-01-24 12:01:29', 0, '2017-01-24 12:01:29', ''),
-('17', 'dime.find', 'fibula', NULL, NULL, '17', '17', 0, '2017-01-25 14:53:46', 0, '2017-01-25 14:53:46', '');
+('17', 'dime.find', 'fibula', NULL, NULL, '17', '17', 0, '2017-01-25 14:53:46', 0, '2017-01-25 14:53:46', ''),
+('18', 'dime.find', 'accessory', NULL, NULL, '18', '18', 0, '2017-01-26 18:29:51', 0, '2017-01-26 18:29:51', ''),
+('19', 'dime.find', 'fibula', NULL, NULL, '19', '19', 0, '2017-01-26 18:46:13', 0, '2017-01-26 18:46:13', ''),
+('20', 'dime.find', 'fibula', NULL, NULL, '20', '20', 0, '2017-01-26 18:48:12', 0, '2017-01-26 18:48:12', ''),
+('21', 'dime.find', 'coin', NULL, NULL, '21', '21', 0, '2017-01-26 22:20:48', 0, '2017-01-26 22:20:48', '');
 
 -- --------------------------------------------------------
 
@@ -747,6 +807,15 @@ CREATE TABLE `ark_item_locality` (
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_item_locality`
+--
+
+INSERT INTO `ark_item_locality` (`id`, `schma`, `type`, `parent_module`, `parent_id`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+('1', 'dime.locality', '', NULL, NULL, '1', '1', 0, '2017-01-26 22:19:51', 0, '2017-01-26 22:19:51', ''),
+('2', 'dime.locality', '', NULL, NULL, '2', '2', 0, '2017-01-26 14:34:15', 0, '2017-01-26 14:34:15', ''),
+('3', 'dime.locality', '', NULL, NULL, '3', '3', 0, '2017-01-26 22:21:34', 0, '2017-01-26 22:21:34', '');
 
 -- --------------------------------------------------------
 
@@ -848,7 +917,8 @@ CREATE TABLE `ark_sequence` (
 --
 
 INSERT INTO `ark_sequence` (`module`, `parent`, `sequence`, `idx`, `min`, `max`) VALUES
-('find', '', 'id', 17, NULL, NULL);
+('find', '', 'id', 21, NULL, NULL),
+('locality', '', 'id', 3, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -884,7 +954,14 @@ INSERT INTO `ark_sequence_lock` (`id`, `module`, `parent`, `sequence`, `idx`, `r
 (11, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
 (12, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
 (13, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
-(14, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00');
+(14, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(15, 'locality', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(16, 'locality', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(17, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(18, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(19, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(20, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(21, 'locality', '', 'id', 1, 0, 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -1148,7 +1225,7 @@ ALTER TABLE `ark_fragment_boolean`
 -- AUTO_INCREMENT for table `ark_fragment_date`
 --
 ALTER TABLE `ark_fragment_date`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `ark_fragment_datetime`
 --
@@ -1158,7 +1235,7 @@ ALTER TABLE `ark_fragment_datetime`
 -- AUTO_INCREMENT for table `ark_fragment_decimal`
 --
 ALTER TABLE `ark_fragment_decimal`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 --
 -- AUTO_INCREMENT for table `ark_fragment_float`
 --
@@ -1183,12 +1260,12 @@ ALTER TABLE `ark_fragment_object`
 -- AUTO_INCREMENT for table `ark_fragment_string`
 --
 ALTER TABLE `ark_fragment_string`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=248;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=283;
 --
 -- AUTO_INCREMENT for table `ark_fragment_text`
 --
 ALTER TABLE `ark_fragment_text`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=182;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=204;
 --
 -- AUTO_INCREMENT for table `ark_fragment_time`
 --
@@ -1198,7 +1275,7 @@ ALTER TABLE `ark_fragment_time`
 -- AUTO_INCREMENT for table `ark_fragment_wkt`
 --
 ALTER TABLE `ark_fragment_wkt`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `ark_relation_xmi`
 --
@@ -1208,7 +1285,7 @@ ALTER TABLE `ark_relation_xmi`
 -- AUTO_INCREMENT for table `ark_sequence_lock`
 --
 ALTER TABLE `ark_sequence_lock`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

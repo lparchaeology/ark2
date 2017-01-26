@@ -97,12 +97,15 @@ class ViewControllerProvider implements ControllerProviderInterface
 
         $controllers->post("/$finds/{itemSlug}", 'DIME\Action\FindViewAction');
 
+        $controllers->post("/$finds", 'DIME\Action\FindListAction');
         $controllers->get("/$finds", 'DIME\Action\FindListAction')
                     ->bind('finds.list');
 
+        $controllers->post("/$localities/add", 'DIME\Action\LocalityAddAction');
         $controllers->get("/$localities/add", 'DIME\Action\LocalityAddAction')
                     ->bind('localities.add');
 
+        $controllers->post("/$localities/{itemSlug}", 'DIME\Action\LocalityViewAction');
         $controllers->get("/$localities/{itemSlug}", 'DIME\Action\LocalityViewAction')
                     ->bind('localities.view');
 

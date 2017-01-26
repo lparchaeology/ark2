@@ -31,9 +31,10 @@
 namespace DIME\Action;
 
 use ARK\Service;
+use DIME\Action\DimeAction;
 use Symfony\Component\HttpFoundation\Request;
 
-class HomeViewAction
+class HomeViewAction extends DimeAction
 {
     public function __invoke(Request $request)
     {
@@ -150,36 +151,6 @@ class HomeViewAction
             )
         );
 
-        $page_config = [
-            "navlinks" => [
-                ["name" => "dime.home", "dropdown" => false, "target" => "home"],
-                ["name" => "dime.treasure", "dropdown" => false, "target" => "treasure"],
-                ["name" => "dime.research", "dropdown" => false, "target" => "research"],
-                ["name" => "dime.about", "dropdown" => false, "target" => "about"],
-                ["name" => "dime.background", "dropdown" => false, "target" => "background"],
-            ],
-            "sidelinks" => [
-                [
-                    "name" => "add",
-                    "active" => false,
-                    "role" => "IS_AUTHENTICATED_ANONYMOUSLY",
-                    "links" => [
-                        ["name" => "dime.find.add", "active" => false, "target" => "finds.add"],
-                        ["name" => "dime.locality.add", "active" => false, "target" => "localities.add"],
-                    ],
-                ],
-                [
-                    "name" => "search",
-                    "active" => false,
-                    "role" => "IS_AUTHENTICATED_ANONYMOUSLY",
-                    "links" => [
-                        ["name" => "dime.find.search", "active" => false, "target" => "finds.list"],
-                        ["name" => "dime.locality.search", "active" => false, "target" => "localities.list"],
-                    ],
-                ],
-            ]
-        ];
-
         $lorem = "
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel mi eu nulla varius molestie. Integer pharetra dolor diam, in interdum diam iaculis a. Etiam nec finibus magna, non pulvinar est. Suspendisse maximus lacus eget mi laoreet, eget mattis est fermentum. Ut elit felis, iaculis non pellentesque ac, accumsan vitae sapien. Aenean blandit maximus ultrices. Morbi mattis iaculis eros nec volutpat. Donec fermentum felis ac purus ultricies, id varius magna ornare. Ut eget nisl non nisi egestas hendrerit ac id ligula. Pellentesque ac arcu quis diam venenatis ultricies in vitae diam.</p>
             <p>Pellentesque porta risus felis, nec pharetra lacus tempus a. Vivamus tristique massa nec mauris maximus, id eleifend sem ultrices. Duis sollicitudin id neque vitae mollis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam rutrum cursus dui quis maximus. Aliquam a mauris viverra, facilisis eros id, suscipit tortor. Pellentesque ut congue orci. Nullam congue urna non leo bibendum, id tempus leo eleifend. Ut nibh leo, placerat a tempus ac, dapibus quis ante. Phasellus aliquam quam sed nisl gravida, sit amet varius eros suscipit. Aliquam elementum luctus vestibulum.</p>
@@ -197,7 +168,7 @@ class HomeViewAction
         return Service::render(
             'pages/page.html.twig',
             [
-                'page_config' => $page_config,
+                'page_config' => $this->pageConfig(),
                 'content' => $content,
             ]
         );

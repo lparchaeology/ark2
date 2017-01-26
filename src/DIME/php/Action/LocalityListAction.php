@@ -30,14 +30,17 @@
 
 namespace DIME\Action;
 
-use DIME\Action\EntityListAction;
+use ARK\ORM\ORM;
+use DIME\Action\DimeFormAction;
 use DIME\Entity\Locality;
 use Symfony\Component\HttpFoundation\Request;
 
-class LocalityListAction extends EntityListAction
+class LocalityListAction extends DimeFormAction
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, $actorSlug = null)
     {
-        return $this->render($request, Locality::class, 'dime_locality_list');
+        $layout = 'dime_locality_list';
+        $data[$layout] = ORM::findAll(Locality::class);
+        return $this->render($request, $data, $layout);
     }
 }

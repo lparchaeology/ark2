@@ -37,10 +37,11 @@ use ARK\Model\Format;
 use ARK\Model\Module;
 use ARK\Service;
 use ARK\Vocabulary\Vocabulary;
+use DIME\Action\DimeAction;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
-class TestViewAction
+class TestViewAction extends DimeAction
 {
     public function __invoke(Request $request)
     {
@@ -141,35 +142,7 @@ class TestViewAction
 
         $content[0] = $contents;
         $content[1] = $contents2;
-        $options['page_config'] = [
-            "navlinks" => [
-                ["name" => "dime.home", "dropdown" => false, "target" => "home"],
-                ["name" => "dime.treasure", "dropdown" => false, "target" => "treasure"],
-                ["name" => "dime.research", "dropdown" => false, "target" => "research"],
-                ["name" => "dime.about", "dropdown" => false, "target" => "about"],
-                ["name" => "dime.background", "dropdown" => false, "target" => "background"],
-            ],
-            "sidelinks" => [
-                [
-                    "name" => "add",
-                    "active" => false,
-                    "role" => "IS_AUTHENTICATED_ANONYMOUSLY",
-                    "links" => [
-                        ["name" => "dime.find.add", "active" => false, "target" => "finds.add"],
-                        ["name" => "dime.locality.add", "active" => false, "target" => "localities.add"],
-                    ],
-                ],
-                [
-                    "name" => "search",
-                    "active" => false,
-                    "role" => "IS_AUTHENTICATED_ANONYMOUSLY",
-                    "links" => [
-                        ["name" => "dime.find.search", "active" => false, "target" => "finds.list"],
-                        ["name" => "dime.locality.search", "active" => false, "target" => "localities.list"],
-                    ],
-                ],
-            ]
-        ];
+        $options['page_config'] = $this->pageConfig();
 
         return Service::render('pages/page.html.twig', ['content' => $content]);
     }

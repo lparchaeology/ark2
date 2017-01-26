@@ -30,30 +30,11 @@
 
 namespace DIME\Action;
 
-use ARK\ORM\ORM;
-use ARK\Service;
-use ARK\View\Layout;
-use Symfony\Component\HttpFoundation\Request;
-
-class EntityAddAction
+abstract class DimeAction
 {
-    public function render(Request $request, $class, $schema, $layout, $redirect, $options = [], $template = 'pages/page.html.twig')
+    public function pageConfig($route = null)
     {
-        $layout = ORM::find(Layout::class, $layout);
-        $data = new $class($schema);
-        $form = $layout->buildForm($data);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $item = $form->getData();
-            ORM::persist($item);
-            ORM::flush('data');
-            $path = Service::path($redirect, ['itemSlug' => $item->id()]);
-            return Service::redirect($path);
-        }
-        $options['layout'] = $layout;
-        $options['forms'][$layout->name()] = $form->createView();
-        $options['data'] = $data;
-        $options['page_config'] = [
+        $config = [
             "navlinks" => [
                 ["name" => "dime.home", "dropdown" => false, "target" => "home"],
                 ["name" => "dime.treasure", "dropdown" => false, "target" => "treasure"],
@@ -65,7 +46,7 @@ class EntityAddAction
                 [
                     "name" => "add",
                     "active" => false,
-                    "role" => "IS_AUTHENTICATED_ANONYMOUSLY",
+                    "role" => "ROLE_USER",
                     "links" => [
                         ["name" => "dime.find.add", "active" => false, "target" => "finds.add"],
                         ["name" => "dime.locality.add", "active" => false, "target" => "localities.add"],
@@ -82,6 +63,16 @@ class EntityAddAction
                 ],
             ]
         ];
-        return Service::render($template, $options);
+        if ($route) {
+            foreach ($config['sidelinks'] as &$section) {
+                foreach ($section['links'] as &$link) {
+                    if ($link['target'] == $route) {
+                        $section['active'] = true;
+                        $link['active'] = true;
+                    }
+                }
+            }
+        }
+        return $config;
     }
 }

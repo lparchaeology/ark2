@@ -30,14 +30,22 @@
 
 namespace DIME\Action;
 
-use DIME\Action\EntityViewAction;
+use ARK\ORM\ORM;
+use ARK\Error\ErrorException;
+use ARK\Http\Error\NotFoundError;
+use DIME\Action\EntityAction;
 use DIME\Entity\Locality;
 use Symfony\Component\HttpFoundation\Request;
 
-class LocalityViewAction extends EntityViewAction
+class LocalityViewAction extends EntityAction
 {
     public function __invoke(Request $request, $itemSlug)
     {
-        return $this->render($request, $itemSlug, Locality::class, 'dime_locality_item');
+        $layout = 'dime_locality_item';
+        if (!$data[$layout] = ORM::find(Locality::class, $itemSlug)) {
+            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Locality not found', "Locality $itemSlug not found"));
+        }
+        $redirect = 'localities.view';
+        return $this->render($request, $data, $layout, $redirect);
     }
 }

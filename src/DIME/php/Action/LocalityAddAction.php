@@ -31,13 +31,16 @@
 namespace DIME\Action;
 
 use DIME\Entity\Locality;
-use DIME\Action\EntityAddAction;
+use DIME\Action\EntityAction;
 use Symfony\Component\HttpFoundation\Request;
 
-class LocalityAddAction extends EntityAddAction
+class LocalityAddAction extends EntityAction
 {
     public function __invoke(Request $request)
     {
-        return $this->render($request, Locality::class, 'dime.locality', 'dime_locality_item', 'locality.view');
+        $layout = 'dime_locality_item';
+        $data[$layout] = new Locality('dime.locality');
+        $redirect = 'localities.view';
+        return $this->render($request, $data, $layout, $redirect);
     }
 }

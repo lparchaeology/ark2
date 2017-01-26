@@ -31,13 +31,15 @@
 namespace DIME\Action;
 
 use ARK\File\File;
-use DIME\Action\EntityListAction;
+use DIME\Action\DimeFormAction;
 use Symfony\Component\HttpFoundation\Request;
 
-class FileListAction extends EntityListAction
+class FileListAction extends DimeFormAction
 {
     public function __invoke(Request $request)
     {
-        return $this->render($request, File::class, 'core_file_list');
+        $layout = 'core_file_list';
+        $data[$layout] = ORM::findAll(File::class);
+        return $this->render($request, $data, $layout);
     }
 }

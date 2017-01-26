@@ -30,18 +30,22 @@
 
 namespace DIME\Action;
 
-use ARK\File\File;
-use DIME\Action\EntityAction;
+use ARK\Model\Item;
+use ARK\ORM\ORM;
+use ARK\Service;
+use DIME\Action\DimeFormAction;
 use Symfony\Component\HttpFoundation\Request;
 
-class FileViewAction extends EntityAction
+class EntityAction extends DimeFormAction
 {
-    public function __invoke(Request $request, $itemSlug)
+    public function processForm(Request $request, $form, $redirect)
     {
-        $layout = 'core_file_item';
-        if (!$data[$layout] = ORM::find(File::class, $itemSlug)) {
-            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'File not found', "File $itemSlug not found"));
-        }
-        return $this->render($request, $data, $layout);
+        $id = 0;
+        $data = $form->getData();
+        $item = $data[$form->getName()];
+        ORM::persist($item);
+        ORM::flush('data');
+        $path = Service::path($redirect, ['itemSlug' => $item->id()]);
+        return Service::redirect($path);
     }
 }

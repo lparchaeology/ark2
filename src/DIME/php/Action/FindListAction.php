@@ -30,14 +30,29 @@
 
 namespace DIME\Action;
 
-use DIME\Action\EntityListAction;
+use ARK\ORM\ORM;
+use ARK\Service;
+use ARK\View\Layout;
+use ARK\Vocabulary\Vocabulary;
+use DIME\Action\DimeFormAction;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
-class FindListAction extends EntityListAction
+class FindListAction extends DimeFormAction
 {
     public function __invoke(Request $request, $actorSlug = null)
     {
-        return $this->render($request, Find::class, 'dime_find_list');
+        $layout = 'dime_find_search';
+        $data[$layout] = ORM::findAll(Find::class);
+        $data['dime_find_list'] = $data[$layout];
+        $data['dime_find_filter'] = null;
+        return $this->render($request, $data, $layout);
+    }
+
+    public function processForm(Request $request, $form, $redirect)
+    {
+        $item = $form->getData();
+        $path = Service::path($redirect);
+        return Service::redirect($path);
     }
 }

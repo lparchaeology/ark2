@@ -38,6 +38,8 @@ class ActorListAction extends EntityListAction
 {
     public function __invoke(Request $request)
     {
-        return $this->render($request, Actor::class, 'dime_actor_list');
+        $layout = 'dime_actor_list';
+        $data[$layout] = ORM::findAll(Actor::class);
+        return $this->render($request, $data, $layout);
     }
 }

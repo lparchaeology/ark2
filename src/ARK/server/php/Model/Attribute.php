@@ -119,7 +119,10 @@ abstract class Attribute
         if ($this->keyword) {
             return $this->keyword;
         }
-        return $this->format()->keyword();
+        if ($this->format) {
+            return $this->format()->keyword();
+        }
+        return '';
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

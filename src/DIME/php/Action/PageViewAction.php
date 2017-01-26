@@ -35,9 +35,10 @@ use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Layout;
+use DIME\Action\DimeAction;
 use Symfony\Component\HttpFoundation\Request;
 
-class PageViewAction
+class PageViewAction extends DimeAction
 {
     public function __invoke(Request $request)
     {
@@ -50,37 +51,7 @@ class PageViewAction
         $options['content'][0] = $value[0]['content'];
         //$options['data'] = $item;
         //$options['layout'] = ORM::find(Layout::class, 'core_page_view');
-
-        $options['page_config'] = [
-            "navlinks" => [
-                ["name" => "dime.home", "dropdown" => false, "target" => "home"],
-                ["name" => "dime.treasure", "dropdown" => false, "target" => "treasure"],
-                ["name" => "dime.research", "dropdown" => false, "target" => "research"],
-                ["name" => "dime.about", "dropdown" => false, "target" => "about"],
-                ["name" => "dime.background", "dropdown" => false, "target" => "background"],
-            ],
-            "sidelinks" => [
-                [
-                    "name" => "add",
-                    "active" => false,
-                    "role" => "IS_AUTHENTICATED_ANONYMOUSLY",
-                    "links" => [
-                        ["name" => "dime.find.add", "active" => false, "target" => "finds.add"],
-                        ["name" => "dime.locality.add", "active" => false, "target" => "localities.add"],
-                    ],
-                ],
-                [
-                    "name" => "search",
-                    "active" => false,
-                    "role" => "IS_AUTHENTICATED_ANONYMOUSLY",
-                    "links" => [
-                        ["name" => "dime.find.search", "active" => false, "target" => "finds.list"],
-                        ["name" => "dime.locality.search", "active" => false, "target" => "localities.list"],
-                    ],
-                ],
-            ]
-        ];
-
+        $options['page_config'] = $this->pageConfig();
         return Service::render('pages/page.html.twig', $options);
     }
 }
