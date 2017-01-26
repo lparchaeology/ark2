@@ -38,6 +38,6 @@ class FindAddAction extends EntityAddAction
 {
     public function __invoke(Request $request)
     {
-        return $this->render($request, Find::class, 'dime.find', 'dime_find_item', 'finds.view', 'findSlug');
+        return $this->render($request, Find::class, 'dime.find', 'dime_find_item', 'finds.view');
     }
 }

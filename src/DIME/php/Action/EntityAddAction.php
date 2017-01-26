@@ -37,7 +37,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class EntityAddAction
 {
-    public function render(Request $request, $class, $schema, $layout, $redirect, $slug, $options = [], $template = 'pages/page.html.twig')
+    public function render(Request $request, $class, $schema, $layout, $redirect, $options = [], $template = 'pages/page.html.twig')
     {
         $layout = ORM::find(Layout::class, $layout);
         $data = new $class($schema);
@@ -47,7 +47,7 @@ class EntityAddAction
             $item = $form->getData();
             ORM::persist($item);
             ORM::flush('data');
-            $path = Service::path($redirect, [$slug => $item->id()]);
+            $path = Service::path($redirect, ['itemSlug' => $item->id()]);
             return Service::redirect($path);
         }
         $options['layout'] = $layout;
