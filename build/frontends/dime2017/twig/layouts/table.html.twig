@@ -31,7 +31,7 @@
         </thead>
 
         <tbody>
-            {% for item in data %}
+            {% for item in data[layout.name] %}
                 <tr>
                     {% for field in layout.elements %}
                         <td>

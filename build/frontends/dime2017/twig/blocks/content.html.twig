@@ -5,15 +5,7 @@
 
     {% if layout is defined %}
 
-        {% if forms[layout.name] is defined %}
-            {{ form_start(forms[layout.name]) }}
-            {% endif %}
-
-        {{ layout.renderView(data, {'forms': forms})|raw }}
-
-        {% if forms[layout.name] is defined %}
-            {{ form_end(forms[layout.name]) }}
-        {% endif %}
+        {{ layout.renderView(data, forms)|raw }}
 
     {% elseif content[2] is defined %}
 
