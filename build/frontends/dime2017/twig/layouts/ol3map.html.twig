@@ -1,13 +1,17 @@
 <div class = "mapview">
 <link rel="stylesheet" href="https://openlayers.org/en/v3.20.1/css/ol.css" type="text/css">
-<select id="layer-select">
-       <option value="Aerial">Aerial</option>
-       <option value="AerialWithLabels" selected>Aerial with labels</option>
-       <option value="Road">Road</option>
-       <option value="collinsBart">Collins Bart</option>
-       <option value="ordnanceSurvey">Ordnance Survey</option>
-     </select>
-     <div id="map" class="map"></div>
+<div id="map" class="map"></div>
+ <div>
+    <button class="btn btn-default dropdown-toggle layer-select" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <span class="dime-icon icon-map small"></span>
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu layer-select" aria-labelledby="dropdownMenu1">
+    <li><a class="layer-select" value="Aerial">Aerial</a></li>
+    <li><a class="layer-select" value="AerialWithLabels" selected>Aerial with labels</a></li>
+    <li><a class="layer-select" value="Road">Road</a></li>
+  </ul>
+</div>
      <script src="https://openlayers.org/en/v3.20.1/build/ol.js"></script>
 
 </div>

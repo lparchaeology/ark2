@@ -104,13 +104,11 @@ var theirs = new ol.layer.Vector({
         }),
  });
  map.addInteraction(select);
+ layers[2].setVisible(true);
+ $('a.layer-select').on('click',function(){
+	 var style = $(this).attr('value');
+	 for (var i = 0, ii = layers.length; i < ii; ++i) {
+	     layers[i].setVisible(styles[i] === style);
+	   }
+ });
 
- var select = document.getElementById('layer-select');
- function onChange() {
-   var style = select.value;
-   for (var i = 0, ii = layers.length; i < ii; ++i) {
-     layers[i].setVisible(styles[i] === style);
-   }
- }
- select.addEventListener('change', onChange);
-onChange();

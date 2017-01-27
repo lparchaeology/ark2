@@ -90,6 +90,10 @@ body {}
     background-image: url("../images/search_find.png");
 }
 
+.dime-icon.icon-map {
+    background-image: url("../images/map.png");
+}
+
 /*
  * Top navigation
  * Hide default border to remove 1px line.
@@ -335,6 +339,27 @@ body {}
 .content-col-1,
 .content-col-2 {
     padding: 20px;
+}
+
+.form-horizontal .form-group label {
+    height: 1.4em;
+    padding: 0;
+}
+
+.form-group input {
+	border: 1px solid black;
+    border-radius: 20px;
+    height: 1.4em;
+    line-height: 1.4em;
+    vertical-align: middle;
+}
+	
+#dime_find_item_dime_find_finddate_finddate {
+	display:inline-flex;
+}
+
+.select2-container {
+	margin: 5px;	
 }
 
 /*
