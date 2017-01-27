@@ -759,7 +759,7 @@ class Database
     {
         $sql = "
             SELECT *
-            FROM ark_translation_message
+            FROM ark_vocabulary_translation
             WHERE language = :language
         ";
         $params[':language'] = $language;
