@@ -44,12 +44,12 @@ class Service
         self::$app = $app;
     }
 
-    public function path($name, $parameters = [], $relative = false)
+    public static function path($name, $parameters = [], $relative = false)
     {
         return self::$app['url_generator']->generate($name, $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
     }
 
-    public function url($name, $parameters = [], $schemeRelative = false)
+    public static function url($name, $parameters = [], $schemeRelative = false)
     {
         return self::$app['url_generator']->generate($name, $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
     }
@@ -76,7 +76,7 @@ class Service
 
     public static function redirectPath($path, $parmameters = null, $status = 302)
     {
-        return self::$app->redirect(Service::path($path, $parmameters), $status);
+        return self::$app->redirect(self::path($path, $parmameters), $status);
     }
 
     public static function forms()
