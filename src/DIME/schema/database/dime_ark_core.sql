@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 27, 2017 at 08:37 PM
+-- Generation Time: Jan 27, 2017 at 09:46 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -627,6 +627,10 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('core.actor.institution', 'core', 0, 0),
 ('core.actor.person', 'core', 0, 0),
 ('dime.about', 'dime', 0, 0),
+('dime.actor.id', 'dime', 0, 0),
+('dime.actor.kommuner', 'dime', 0, 0),
+('dime.actor.shortname', 'dime', 0, 0),
+('dime.actor.type', 'dime', 0, 0),
 ('dime.association.campaigns', 'dime', 0, 0),
 ('dime.background', 'dime', 0, 0),
 ('dime.campaign', 'dime', 0, 0),
@@ -827,6 +831,10 @@ CREATE TABLE `ark_translation_message` (
 
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('da', 'dime.about', 'default', 'Om DIME', ''),
+('da', 'dime.actor.id', 'default', 'Aktører ID', ''),
+('da', 'dime.actor.kommuner', 'default', 'Kommuner', ''),
+('da', 'dime.actor.shortname', 'default', 'Kort Navn', ''),
+('da', 'dime.actor.type', 'default', 'Type', ''),
 ('da', 'dime.background', 'default', 'Baggrund', ''),
 ('da', 'dime.find', 'default', 'Fund', ''),
 ('da', 'dime.find.add', 'default', 'Opret Fund', ''),
@@ -878,6 +886,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'core.actor.institution', 'default', 'Institution', ''),
 ('en', 'core.actor.person', 'default', 'Person', ''),
 ('en', 'dime.about', 'default', 'About DIME', ''),
+('en', 'dime.actor.id', 'default', 'Actor ID', ''),
+('en', 'dime.actor.kommuner', 'default', 'Municipalities', ''),
+('en', 'dime.actor.shortname', 'default', 'Short Name', ''),
+('en', 'dime.actor.type', 'default', 'Type', ''),
 ('en', 'dime.association.campaigns', 'default', 'Campaigns', ''),
 ('en', 'dime.background', 'default', 'Background', ''),
 ('en', 'dime.campaign', 'default', 'Campaign', ''),
