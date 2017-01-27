@@ -1,6 +1,6 @@
 <div class = "mapview">
 <link rel="stylesheet" href="https://openlayers.org/en/v3.20.1/css/ol.css" type="text/css">
-<div id="map" class="map"></div>
+<div id="map" class="map search_map"></div>
  <div>
     <button class="btn btn-default dropdown-toggle layer-select" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
     <span class="dime-icon icon-map small"></span>
@@ -12,6 +12,25 @@
     <li><a class="layer-select" value="Road">Road</a></li>
   </ul>
 </div>
-     <script src="https://openlayers.org/en/v3.20.1/build/ol.js"></script>
+<script src="https://openlayers.org/en/v3.20.1/build/ol.js"></script>
+<script>
+
+    ywkts = [];
+    {% for item in data[layout.name] %}
+        {% for field in layout.elements %}
+            {% if field.name == 'dime_find_findpoint' %}
+                {% if field.renderView(item) %}
+                    ywkts[{{ item.id }}] = '{{ field.renderView(item) }}',
+        		{% else %}
+        		  	'POINT (0 0)',
+        		{% endif %}
+        	{% endif %}
+        {% endfor %}
+    {% endfor %}
+    
+    twkts = [];
+    
+</script>
+     
 
 </div>

@@ -35,32 +35,8 @@ use ARK\View\Element;
 use ARK\Service;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class Map extends Element
+class Map extends Layout
 {
-    public function formData($data)
-    {
-        return null;
-    }
-
-    public function buildForms($data)
-    {
-        return [];
-    }
-
-    public function buildForm($data, FormBuilderInterface $builder)
-    {
-    }
-
-    public function renderView($resource, $forms = null, $form = null, array $options = [])
-    {
-        if ($this->template()) {
-            $options['layout'] = $this;
-            $options['data'] = $resource;
-            return Service::renderView($this->template(), $options);
-        }
-        return '';
-    }
-
     public static function loadMetadata(ClassMetadata $metadata)
     {
     }

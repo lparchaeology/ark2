@@ -20,6 +20,22 @@ $(document).ready(function() {
     $(".select2.select2-container").css("width", "100%");
     // FIXME Hide Bootstrap Table loading animation as is a bit broken
     $('.table-bootstrap-table').bootstrapTable('hideLoading');
+
+    $(".carouselextratext_0").show();
+    
+    $('#carousel-custom').bind('slide.bs.carousel', function (e) {
+        var slideFrom = $(this).find('.active').index();
+        console.log(slideFrom);
+        var slideTo = $(e.relatedTarget).index();
+        console.log(slideTo);
+        console.log(slideFrom+' => '+slideTo);
+        $(".carouselextratext_"+slideFrom.toString()).hide();
+        $(".carouselextratext_"+slideTo.toString()).show();
+    });
+    
+	$("span.thumbimage").hide();
+    
+    
 });
 
 jQuery(function($) {
@@ -43,3 +59,5 @@ jQuery(function($) {
         event.preventDefault();
     });
 });
+
+

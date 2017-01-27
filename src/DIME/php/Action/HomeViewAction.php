@@ -30,8 +30,12 @@
 
 namespace DIME\Action;
 
+use ARK\ORM\ORM;
 use ARK\Service;
-use DIME\Action\DimeAction;
+use ARK\View\Layout;
+use ARK\Vocabulary\Vocabulary;
+use DIME\Action\DimeFormAction;
+use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
 class HomeViewAction extends DimeAction
@@ -151,25 +155,21 @@ class HomeViewAction extends DimeAction
             )
         );
 
-        $lorem = "
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel mi eu nulla varius molestie. Integer pharetra dolor diam, in interdum diam iaculis a. Etiam nec finibus magna, non pulvinar est. Suspendisse maximus lacus eget mi laoreet, eget mattis est fermentum. Ut elit felis, iaculis non pellentesque ac, accumsan vitae sapien. Aenean blandit maximus ultrices. Morbi mattis iaculis eros nec volutpat. Donec fermentum felis ac purus ultricies, id varius magna ornare. Ut eget nisl non nisi egestas hendrerit ac id ligula. Pellentesque ac arcu quis diam venenatis ultricies in vitae diam.</p>
-            <p>Pellentesque porta risus felis, nec pharetra lacus tempus a. Vivamus tristique massa nec mauris maximus, id eleifend sem ultrices. Duis sollicitudin id neque vitae mollis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Etiam rutrum cursus dui quis maximus. Aliquam a mauris viverra, facilisis eros id, suscipit tortor. Pellentesque ut congue orci. Nullam congue urna non leo bibendum, id tempus leo eleifend. Ut nibh leo, placerat a tempus ac, dapibus quis ante. Phasellus aliquam quam sed nisl gravida, sit amet varius eros suscipit. Aliquam elementum luctus vestibulum.</p>
-            <p>Vivamus iaculis eleifend metus sit amet vestibulum. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In iaculis auctor purus, vel porttitor nibh ultrices sed. Sed lacus tellus, tristique sed ex eget, ultrices sagittis sem. Phasellus aliquet, mauris ut varius pretium, nunc mi vulputate mauris, et ornare dolor arcu at risus. Integer tristique magna sodales est venenatis maximus. Curabitur vitae tempus sem. In hac habitasse platea dictumst. Sed nec tellus sed eros euismod lacinia ut et enim.</p>
-        ";
-        $marius = "
-            <p>Mauris interdum justo vel libero tristique vestibulum. Quisque et iaculis risus. Praesent vel porttitor elit. Donec nec gravida magna, quis ultricies elit. Nam a dictum dolor. In vitae quam facilisis, varius nisl non, commodo tellus. Donec sagittis sed augue eget ultricies. Phasellus iaculis dictum suscipit. Sed congue lectus vel nisi finibus laoreet. Cras id risus eu tellus suscipit suscipit. Praesent et placerat eros. Vestibulum sit amet libero at ex facilisis tristique. Mauris eget tortor porttitor, mattis libero et, ullamcorper odio. Morbi dui tellus, mattis non sem pretium, convallis sodales velit.</p>
-            <p>Pellentesque molestie orci sem. Fusce sit amet tellus nulla. Curabitur accumsan tortor id laoreet pretium. Quisque ex lectus, tristique sit amet metus ac, volutpat semper nulla. Ut id commodo odio. Vivamus mattis ligula vitae urna mattis, non ornare nulla aliquet. In auctor, mauris at vestibulum luctus, ipsum nisi accumsan turpis, et dignissim dolor nulla vel ante. Nunc libero urna, tempor nec sem sed, euismod auctor neque. Proin tincidunt pellentesque venenatis. Nulla non magna sollicitudin, condimentum neque non, facilisis quam. Morbi id mattis nibh, nec sodales enim. Sed blandit euismod convallis. Praesent nec lorem eget leo fringilla volutpat. Mauris placerat tellus et augue imperdiet finibus. Sed accumsan nisl ex, at dictum libero dictum quis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae.</p>
-        ";
-
-        $content[0] = $lorem;
-        $content[1] = $marius;
-        $content[2] = $lorem;
-
+        
+        $data['dime_find_home'] = ORM::findAll(Find::class);
+        
+        $layout =  ORM::find(Layout::class, 'dime_find_home');
+        
+        $maplayout = ORM::find(Layout::class, 'dime_find_map');
+        
         return Service::render(
             'pages/page.html.twig',
             [
+                'forms' => NULL,
                 'page_config' => $this->pageConfig(),
-                'content' => $content,
+                'layout' => $layout,
+                'data' => $data,
+                'maplayout' => $maplayout
             ]
         );
     }

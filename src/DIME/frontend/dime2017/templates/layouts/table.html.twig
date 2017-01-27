@@ -3,7 +3,7 @@
 <div>
 
     {% set table_class %}
-    table bootstrap-table table-hover
+    table bootstrap-table table-hover dime-table
     {% endset %}
 
     <table
@@ -22,6 +22,9 @@
 
         <thead>
             <tr>
+            <th class="thumbimagehead" data-field="image" data-title="image" data-sortable="false">
+                
+             </th>
                 {% for field in layout.elements %}
                     <th data-field="{{field.name}}" data-title="{{field.keyword|trans}}" data-sortable="true">
                         {{field.keyword|trans}}
@@ -32,7 +35,10 @@
 
         <tbody>
             {% for item in data[layout.name] %}
-                <tr>
+                <tr data-unique-id = "{{ item.id }}" >
+                	<td class="thumbimage">
+                       	<img src="{{ asset('/images/find_example/'~item.id~'_thumb.jpg', 'frontend') }}" alt='' />
+                    </td>
                     {% for field in layout.elements %}
                         <td>
                             {% if field.attribute.name == 'id' %}

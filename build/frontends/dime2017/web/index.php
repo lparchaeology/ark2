@@ -33,7 +33,6 @@ require_once __DIR__.'/../../../vendor/autoload.php';
 use ARK\Application;
 use DIME\Route\ApiControllerProvider;
 use DIME\Route\ViewControllerProvider;
-use Exception;
 use rootLogin\UserProvider\Provider\UserProviderControllerProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
