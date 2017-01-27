@@ -46,14 +46,14 @@ class VocabularyChoiceType extends AbstractType implements DataMapperInterface
     {
         $builder->setDataMapper($this);
         $vocabulary = $options['vocabulary'];
-        foreach ($vocabulary->terms() as $term) {
-            $fieldOptions['choices'][$term->keyword()] = $term->name();
-        }
+        $fieldOptions['choices'] = $vocabulary->terms();
+        $fieldOptions['choice_value'] = 'name';
+        $fieldOptions['choice_name'] = 'name';
+        $fieldOptions['choice_label'] = 'keyword';
         $fieldOptions['placeholder'] = $vocabulary->concept();
         $fieldOptions['mapped'] = false;
         $fieldOptions['label'] = false;
-        $builder->add('concept', HiddenType::class, []);
-        $builder->add('name', ChoiceType::class, $fieldOptions);
+        $builder->add('term', ChoiceType::class, $fieldOptions);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -70,18 +70,16 @@ class VocabularyChoiceType extends AbstractType implements DataMapperInterface
     {
         $forms = iterator_to_array($forms);
         if ($term instanceof Term) {
-            $forms['name']->setData($term->name());
-            $forms['concept']->setData($term->vocabulary()->concept());
+            $forms['term']->setData($term);
         }
     }
 
     public function mapFormsToData($forms, &$term)
     {
         $forms = iterator_to_array($forms);
-        $concept = $forms['concept']->getData();
-        $name = $forms['name']->getData();
-        if ($name) {
-            $term = ORM::find(Term::class, ['concept' => $concept, 'term' => $name]);
+        $new = $forms['term']->getData();
+        if ($new instanceof Term) {
+            $term = $new;
         }
     }
 
