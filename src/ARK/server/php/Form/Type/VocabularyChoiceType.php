@@ -77,10 +77,7 @@ class VocabularyChoiceType extends AbstractType implements DataMapperInterface
     public function mapFormsToData($forms, &$term)
     {
         $forms = iterator_to_array($forms);
-        $new = $forms['term']->getData();
-        if ($new instanceof Term) {
-            $term = $new;
-        }
+        $term = $forms['term']->getData();
     }
 
     public function getName()

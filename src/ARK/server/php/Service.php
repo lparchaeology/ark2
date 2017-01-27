@@ -74,6 +74,11 @@ class Service
         return self::$app->redirect($url, $status);
     }
 
+    public static function redirectPath($path, $parmameters = null, $status = 302)
+    {
+        return self::$app->redirect(self::path($path, $parmameters), $status);
+    }
+
     public static function forms()
     {
         return self::$app['form.factory'];

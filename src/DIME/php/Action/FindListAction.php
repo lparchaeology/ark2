@@ -33,6 +33,7 @@ namespace DIME\Action;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Layout;
+use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 use DIME\Action\DimeFormAction;
 use DIME\Entity\Find;
@@ -42,8 +43,24 @@ class FindListAction extends DimeFormAction
 {
     public function __invoke(Request $request, $actorSlug = null)
     {
+        $query = $request->query->all();
+        $criteria = null;
+        if (isset($query['type'])) {
+            $type = ORM::find(Term::class, ['concept' => 'dime.find.type', 'term' => $query['type']]);
+            $data['dime_find_filter_type'] = $type;
+            $criteria['type'] = $type->name();
+        }
+        if (isset($query['period'])) {
+            $period = ORM::find(Term::class, ['concept' => 'dime.period', 'term' => $query['period']]);
+            $data['dime_find_filter_period'] = $period;
+        }
+        if (isset($query['material'])) {
+            $material = ORM::find(Term::class, ['concept' => 'dime.material', 'term' => $query['material']]);
+            $data['dime_find_filter_material'] = $material;
+        }
+
         $layout = 'dime_find_search';
-        $data[$layout] = ORM::findAll(Find::class);
+        $data[$layout] = ORM::findBy(Find::class, $criteria);
         $data['dime_find_list'] = $data[$layout];
         $data['dime_find_filter'] = null;
         return $this->render($request, $data, $layout);
@@ -51,8 +68,26 @@ class FindListAction extends DimeFormAction
 
     public function processForm(Request $request, $form, $redirect)
     {
-        $item = $form->getData();
-        $path = Service::path($redirect);
-        return Service::redirect($path);
+        $data = $form->getData();
+        $type = $data['dime_find_filter_type'];
+        $period = $data['dime_find_filter_period'];
+        $material = $data['dime_find_filter_material'];
+        $query = $request->query->all();
+        if ($type) {
+            $query['type'] = $type->name();
+        } else {
+            unset($query['type']);
+        }
+        if ($period) {
+            $query['period'] = $period->name();
+        } else {
+            unset($query['period']);
+        }
+        if ($material) {
+            $query['material'] = $material->name();
+        } else {
+            unset($query['material']);
+        }
+        return Service::redirectPath($redirect, $query);
     }
 }
