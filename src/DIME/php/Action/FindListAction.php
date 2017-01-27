@@ -44,7 +44,7 @@ class FindListAction extends DimeFormAction
     public function __invoke(Request $request, $actorSlug = null)
     {
         $query = $request->query->all();
-        $criteria = null;
+        $criteria = [];
         if (isset($query['type'])) {
             $type = ORM::find(Term::class, ['concept' => 'dime.find.type', 'term' => $query['type']]);
             $data['dime_find_filter_type'] = $type;
