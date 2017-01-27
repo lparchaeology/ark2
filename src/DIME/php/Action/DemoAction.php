@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2017 L - P : Heritage LLP.
+ * @copyright  2016 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -30,19 +30,24 @@
 
 namespace DIME\Action;
 
+use ARK\Entity\Actor;
 use ARK\ORM\ORM;
+use ARK\Translation\Key;
+use ARK\Model\Format;
+use ARK\Model\Module;
 use ARK\Service;
-use ARK\View\Layout;
+use ARK\Vocabulary\Vocabulary;
 use DIME\Action\DimeAction;
+use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
-class EntityListAction extends DimeAction
+class DemoAction extends DimeAction
 {
-    public function render(Request $request, $data, $layout, $options = [], $template = 'pages/page.html.twig')
+    public function __invoke(Request $request)
     {
-        $options['data'] = $data;
-        $options['layout'] = ORM::find(Layout::class, $layout);
-        $options['page_config'] = $this->pageConfig($request->attributes->get('_route'));
-        return Service::render($template, $options);
+        $content = '<h2>Demonstration Links</h2>';
+        $content .= '<p>List of Museums in Actors module <a href="/dime/aktører">http://www.lparchaeology.com/dime/aktører</a>.
+            Click through to a museum to see their responsible Municipalities.</p>';
+        return Service::render('pages/page.html.twig', ['content' => $content, 'page_config' => $this->pageConfig()]);
     }
 }

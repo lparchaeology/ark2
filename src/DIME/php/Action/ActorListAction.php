@@ -31,10 +31,11 @@
 namespace DIME\Action;
 
 use ARK\Entity\Actor;
-use DIME\Action\EntityListAction;
+use ARK\ORM\ORM;
+use DIME\Action\DimeFormAction;
 use Symfony\Component\HttpFoundation\Request;
 
-class ActorListAction extends EntityListAction
+class ActorListAction extends DimeFormAction
 {
     public function __invoke(Request $request)
     {

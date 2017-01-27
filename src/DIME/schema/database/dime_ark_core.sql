@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.12deb2+deb8u2
--- http://www.phpmyadmin.net
+-- version 4.6.5.1
+-- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 27, 2017 at 12:53 PM
--- Server version: 5.5.52-0+deb8u1
--- PHP Version: 5.6.29-0+deb8u1
+-- Generation Time: Jan 27, 2017 at 08:37 PM
+-- Server version: 5.6.34
+-- PHP Version: 7.1.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `dime_ark_core`
@@ -26,7 +26,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `ark_config_error`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_config_error` (
+CREATE TABLE `ark_config_error` (
   `code` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
@@ -38,13 +38,13 @@ CREATE TABLE IF NOT EXISTS `ark_config_error` (
 -- Table structure for table `ark_config_flash`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_config_flash` (
-`id` int(11) NOT NULL,
+CREATE TABLE `ark_config_flash` (
+  `id` int(11) NOT NULL,
   `active` tinyint(1) NOT NULL,
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `text` text COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_config_flash`
@@ -62,7 +62,7 @@ INSERT INTO `ark_config_flash` (`id`, `active`, `type`, `language`, `text`) VALU
 -- Table structure for table `ark_config_thumbnail`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_config_thumbnail` (
+CREATE TABLE `ark_config_thumbnail` (
   `profile` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `max` int(11) NOT NULL,
   `min` int(11) DEFAULT NULL,
@@ -85,7 +85,7 @@ INSERT INTO `ark_config_thumbnail` (`profile`, `max`, `min`, `mode`, `type`, `ke
 -- Table structure for table `ark_format`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_format` (
+CREATE TABLE `ark_format` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `input` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -149,7 +149,7 @@ INSERT INTO `ark_format` (`format`, `type`, `input`, `object`, `array`, `sortabl
 -- Table structure for table `ark_format_attribute`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_format_attribute` (
+CREATE TABLE `ark_format_attribute` (
   `parent` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sequence` int(11) NOT NULL,
@@ -202,7 +202,7 @@ INSERT INTO `ark_format_attribute` (`parent`, `attribute`, `sequence`, `format`,
 -- Table structure for table `ark_format_blob`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_format_blob` (
+CREATE TABLE `ark_format_blob` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -219,7 +219,7 @@ INSERT INTO `ark_format_blob` (`format`) VALUES
 -- Table structure for table `ark_format_boolean`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_format_boolean` (
+CREATE TABLE `ark_format_boolean` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -236,7 +236,7 @@ INSERT INTO `ark_format_boolean` (`format`) VALUES
 -- Table structure for table `ark_format_datetime`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_format_datetime` (
+CREATE TABLE `ark_format_datetime` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `pattern` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `unicode` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
@@ -259,7 +259,7 @@ INSERT INTO `ark_format_datetime` (`format`, `pattern`, `unicode`) VALUES
 -- Table structure for table `ark_format_decimal`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_format_decimal` (
+CREATE TABLE `ark_format_decimal` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `prec` int(11) NOT NULL DEFAULT '200',
   `scale` int(11) NOT NULL,
@@ -285,7 +285,7 @@ INSERT INTO `ark_format_decimal` (`format`, `prec`, `scale`, `minimum`, `exclusi
 -- Table structure for table `ark_format_float`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_format_float` (
+CREATE TABLE `ark_format_float` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `minimum` double DEFAULT NULL,
   `exclusive_minimum` tinyint(1) NOT NULL,
@@ -308,7 +308,7 @@ INSERT INTO `ark_format_float` (`format`, `minimum`, `exclusive_minimum`, `maxim
 -- Table structure for table `ark_format_integer`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_format_integer` (
+CREATE TABLE `ark_format_integer` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `minimum` int(11) DEFAULT NULL,
   `exclusive_minimum` tinyint(1) NOT NULL,
@@ -330,7 +330,7 @@ INSERT INTO `ark_format_integer` (`format`, `minimum`, `exclusive_minimum`, `max
 -- Table structure for table `ark_format_item`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_format_item` (
+CREATE TABLE `ark_format_item` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -349,7 +349,7 @@ INSERT INTO `ark_format_item` (`format`, `module`) VALUES
 -- Table structure for table `ark_format_object`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_format_object` (
+CREATE TABLE `ark_format_object` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -368,7 +368,7 @@ INSERT INTO `ark_format_object` (`format`) VALUES
 -- Table structure for table `ark_format_string`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_format_string` (
+CREATE TABLE `ark_format_string` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `pattern` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `min_length` int(11) NOT NULL,
@@ -407,7 +407,7 @@ INSERT INTO `ark_format_string` (`format`, `pattern`, `min_length`, `max_length`
 -- Table structure for table `ark_format_wkt`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_format_wkt` (
+CREATE TABLE `ark_format_wkt` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
@@ -425,7 +425,7 @@ INSERT INTO `ark_format_wkt` (`format`) VALUES
 -- Table structure for table `ark_fragment_type`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_fragment_type` (
+CREATE TABLE `ark_fragment_type` (
   `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `compound` tinyint(1) NOT NULL DEFAULT '0',
   `tbl` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -462,7 +462,7 @@ INSERT INTO `ark_fragment_type` (`type`, `compound`, `tbl`, `format_class`, `mod
 -- Table structure for table `ark_module`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_module` (
+CREATE TABLE `ark_module` (
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `resource` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `namespace` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -493,7 +493,7 @@ INSERT INTO `ark_module` (`module`, `resource`, `namespace`, `entity`, `tbl`, `c
 -- Table structure for table `ark_schema`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_schema` (
+CREATE TABLE `ark_schema` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `generator` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -525,7 +525,7 @@ INSERT INTO `ark_schema` (`schma`, `module`, `generator`, `sequence`, `type`, `t
 -- Table structure for table `ark_schema_association`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_schema_association` (
+CREATE TABLE `ark_schema_association` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `association` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -551,7 +551,7 @@ INSERT INTO `ark_schema_association` (`schma`, `type`, `association`, `degree`, 
 -- Table structure for table `ark_schema_attribute`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_schema_attribute` (
+CREATE TABLE `ark_schema_attribute` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -582,10 +582,9 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('core.page', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.page.id'),
 ('dime.actor', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.id'),
 ('dime.actor', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.type'),
-('dime.actor', 'museum', 'area', 'geometry', NULL, 0, 1, 1, 0, 1, 0, 'dime.actor.museum.area'),
 ('dime.actor', 'museum', 'fullname', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.fullname'),
+('dime.actor', 'museum', 'kommuner', 'identifier', 'dime.denmark.kommune', 0, 0, 1, 0, 1, 0, 'dime.actor.kommuner'),
 ('dime.actor', 'museum', 'shortname', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.shortname'),
-('dime.campaign', '', 'name', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
 ('dime.find', '', 'condition', 'identifier', 'dime.find.condition', 1, 1, 1, 0, 1, 0, 'dime.find.condition'),
 ('dime.find', '', 'description', 'localtext', NULL, 0, 1, 1, 0, 1, 0, 'property.description'),
 ('dime.find', '', 'finddate', 'date', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.finddate'),
@@ -612,7 +611,7 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 -- Table structure for table `ark_translation`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_translation` (
+CREATE TABLE `ark_translation` (
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `domain` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_plural` tinyint(1) NOT NULL DEFAULT '0',
@@ -769,7 +768,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 -- Table structure for table `ark_translation_domain`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_translation_domain` (
+CREATE TABLE `ark_translation_domain` (
   `domain` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -792,7 +791,7 @@ INSERT INTO `ark_translation_domain` (`domain`, `keyword`) VALUES
 -- Table structure for table `ark_translation_language`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_translation_language` (
+CREATE TABLE `ark_translation_language` (
   `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `markup` tinyint(1) NOT NULL,
   `vocabulary` tinyint(1) NOT NULL,
@@ -814,7 +813,7 @@ INSERT INTO `ark_translation_language` (`language`, `markup`, `vocabulary`, `tex
 -- Table structure for table `ark_translation_message`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_translation_message` (
+CREATE TABLE `ark_translation_message` (
   `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -886,7 +885,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.add', 'default', 'Add Find', ''),
 ('en', 'dime.find.condition', 'default', 'Condition', ''),
 ('en', 'dime.find.finddate', 'default', 'Find Date', 'DIME Find Find Date'),
-('en', 'dime.find.finderid', 'default', 'Finder ID', 'DIME Find Finder''s ID'),
+('en', 'dime.find.finderid', 'default', 'Finder ID', 'DIME Find Finder\'s ID'),
 ('en', 'dime.find.findpoint', 'default', 'Coordinates', ''),
 ('en', 'dime.find.id', 'default', 'ID', 'DIME Find ID'),
 ('en', 'dime.find.length', 'default', 'Maximun Length / Diameter', ''),
@@ -1020,7 +1019,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 -- Table structure for table `ark_translation_parameter`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_translation_parameter` (
+CREATE TABLE `ark_translation_parameter` (
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `parameter` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1038,7 +1037,7 @@ INSERT INTO `ark_translation_parameter` (`keyword`, `parameter`) VALUES
 -- Table structure for table `ark_translation_role`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_translation_role` (
+CREATE TABLE `ark_translation_role` (
   `role` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
@@ -1059,6 +1058,7 @@ INSERT INTO `ark_translation_role` (`role`, `keyword`, `description`) VALUES
 ('listbox', '', 'UI List Box'),
 ('menu', '', 'UI Menu'),
 ('negative', 'translation.role.negative', 'The negative of the keyword'),
+('official', 'translation.role.official', 'The official name or title'),
 ('opposite', 'translation.role.opposite', 'The opposite of the keyword'),
 ('positive', 'translation.role.positive', 'The positive of the keyword'),
 ('progress', '', 'UI Progress Bar'),
@@ -1081,7 +1081,7 @@ INSERT INTO `ark_translation_role` (`role`, `keyword`, `description`) VALUES
 -- Table structure for table `ark_view_element`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_view_element` (
+CREATE TABLE `ark_view_element` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1115,11 +1115,11 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attrib
 ('core_file_versions', 'field', 'core.file', '', 'versions', '', '', 0, 0, 'ARK\\Form\\Type\\FileVersionType', 1, 0, 1, 0, NULL),
 ('core_page_content', 'field', 'core.page', '', 'content', '', '', 0, 0, '', 0, 0, 1, 0, 'property.content'),
 ('core_page_view', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', 0, 0, 1, 0, NULL),
-('dime_actor_area', 'field', 'dime.actor', 'museum', 'area', '', '', 0, 0, 'ARK\\Form\\Type\\MapType', 1, 0, 1, 0, NULL),
 ('dime_actor_fullname', 'field', 'dime.actor', 'museum', 'fullname', '', '', 0, 0, 'ARK\\Form\\Type\\LocalTextType', 1, 0, 1, 0, NULL),
 ('dime_actor_id', 'field', 'dime.actor', '', 'id', '', '', 0, 0, 'ARK\\Form\\Type\\IdType', 1, 0, 1, 0, NULL),
-('dime_actor_item', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
-('dime_actor_list', 'table', NULL, NULL, NULL, '', '', 0, 1, '', 1, 0, 1, 0, NULL),
+('dime_actor_item', 'grid', NULL, NULL, NULL, '', '', 0, 1, '', 1, 0, 1, 0, NULL),
+('dime_actor_kommuner', 'field', 'dime.actor', 'museum', 'kommuner', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_actor_list', 'table', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_actor_shortname', 'field', 'dime.actor', 'museum', 'shortname', '', '', 0, 0, 'ARK\\Form\\Type\\LocalTextType', 1, 0, 1, 0, NULL),
 ('dime_actor_type', 'field', 'dime.actor', '', 'type', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_action', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
@@ -1164,7 +1164,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attrib
 -- Table structure for table `ark_view_layout`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_view_layout` (
+CREATE TABLE `ark_view_layout` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `row` int(11) NOT NULL,
   `col` int(11) NOT NULL,
@@ -1193,6 +1193,7 @@ INSERT INTO `ark_view_layout` (`element`, `row`, `col`, `seq`, `item_type`, `ena
 ('dime_actor_item', 0, 0, 0, '', 1, 0, 'dime_actor_id'),
 ('dime_actor_item', 0, 0, 1, '', 1, 0, 'dime_actor_fullname'),
 ('dime_actor_item', 0, 0, 2, '', 1, 0, 'dime_actor_shortname'),
+('dime_actor_item', 0, 0, 3, '', 1, 0, 'dime_actor_kommuner'),
 ('dime_actor_list', 0, 0, 0, '', 1, 0, 'dime_actor_id'),
 ('dime_actor_list', 0, 0, 1, '', 1, 0, 'dime_actor_type'),
 ('dime_actor_list', 0, 0, 2, '', 1, 0, 'dime_actor_fullname'),
@@ -1238,7 +1239,7 @@ INSERT INTO `ark_view_layout` (`element`, `row`, `col`, `seq`, `item_type`, `ena
 -- Table structure for table `ark_view_option`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_view_option` (
+CREATE TABLE `ark_view_option` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1259,7 +1260,7 @@ INSERT INTO `ark_view_option` (`element`, `name`, `type`, `value`) VALUES
 -- Table structure for table `ark_view_type`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_view_type` (
+CREATE TABLE `ark_view_type` (
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `class` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `layout` tinyint(1) NOT NULL DEFAULT '0',
@@ -1285,7 +1286,7 @@ INSERT INTO `ark_view_type` (`type`, `class`, `layout`, `form`, `template`, `key
 -- Table structure for table `ark_vocabulary`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_vocabulary` (
+CREATE TABLE `ark_vocabulary` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `source` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1306,11 +1307,14 @@ INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `enabled`, 
 ('country', 'list', 'ISO3166', 1, 1, 0, 'vocabulary.country', 'ISO Country Codes'),
 ('crs', 'list', 'EPSG', 1, 1, 0, 'vocabulary.crs', 'Coordinate Reference System'),
 ('dime.actor.type', 'list', 'DIME', 1, 1, 0, 'dime.actor.type', 'DIME Actor Type'),
+('dime.denmark.admin', 'taxonomy', 'DIME', 1, 1, 0, 'vocabulary.dime.denmark.admin', 'Danish NUTS and LAU Administrative Unit Hierarchy'),
+('dime.denmark.kommune', 'list', 'DIME', 1, 1, 0, 'vocabulary.dime.denmark.kommune', 'Danish LAU-1 Kommune (Municipality) List'),
+('dime.denmark.region', 'list', 'DIME', 1, 1, 0, 'vocabulary.dime.denmark.region', 'Danish NUTS2 Region List'),
 ('dime.find.condition', 'list', 'DIME', 1, 1, 0, 'vocabulary.dime.find.condition', 'DIME Find Condition'),
 ('dime.find.secondary', 'list', 'DIME', 1, 1, 0, 'vocabulary.dime.find.secondary', 'DIME Secondary Materials List'),
 ('dime.find.type', 'list', 'DIME', 1, 1, 0, 'vocabulary.dime.type', 'DIME Find Type'),
 ('dime.material', 'list', 'DIME', 1, 1, 0, 'vocabulary.dime.material', 'DIME Material List'),
-('dime.period', 'list', 'DIME', 1, 1, 0, 'vocabulary.dime.period', 'DIME Period Taxonomy'),
+('dime.period', 'taxonomy', 'DIME', 1, 1, 0, 'vocabulary.dime.period', 'DIME Period Taxonomy'),
 ('dime.treasure', 'list', 'DIME', 1, 1, 0, 'vocabulary.dime.treasure', 'DIME Treasure Status'),
 ('distance', 'list', 'SI', 1, 1, 0, 'vocabulary.distance', 'SI Distance Units'),
 ('language', 'list', 'ISO639', 1, 1, 0, 'vocabulary.language', 'ISO Language Codes'),
@@ -1322,7 +1326,7 @@ INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `enabled`, 
 -- Table structure for table `ark_vocabulary_collected`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_vocabulary_collected` (
+CREATE TABLE `ark_vocabulary_collected` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `collection` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1436,7 +1440,7 @@ INSERT INTO `ark_vocabulary_collected` (`concept`, `collection`, `term`, `seq`) 
 -- Table structure for table `ark_vocabulary_collection`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_vocabulary_collection` (
+CREATE TABLE `ark_vocabulary_collection` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `collection` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `label` text COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1450,7 +1454,7 @@ CREATE TABLE IF NOT EXISTS `ark_vocabulary_collection` (
 -- Table structure for table `ark_vocabulary_parameter`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_vocabulary_parameter` (
+CREATE TABLE `ark_vocabulary_parameter` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1666,7 +1670,7 @@ INSERT INTO `ark_vocabulary_parameter` (`concept`, `term`, `name`, `type`, `valu
 -- Table structure for table `ark_vocabulary_related`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_vocabulary_related` (
+CREATE TABLE `ark_vocabulary_related` (
   `from_concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `from_term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `to_concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1680,6 +1684,109 @@ CREATE TABLE IF NOT EXISTS `ark_vocabulary_related` (
 --
 
 INSERT INTO `ark_vocabulary_related` (`from_concept`, `from_term`, `to_concept`, `to_term`, `relation`, `depth`) VALUES
+('dime.denmark.admin', 'DK', 'dime.denmark.region', 'DK01', 'broader', 2),
+('dime.denmark.admin', 'DK', 'dime.denmark.region', 'DK02', 'broader', 2),
+('dime.denmark.admin', 'DK', 'dime.denmark.region', 'DK03', 'broader', 2),
+('dime.denmark.admin', 'DK', 'dime.denmark.region', 'DK04', 'broader', 2),
+('dime.denmark.admin', 'DK', 'dime.denmark.region', 'DK05', 'broader', 2),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '101', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '147', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '151', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '153', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '155', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '157', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '159', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '161', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '163', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '165', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '167', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '169', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '173', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '175', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '183', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '185', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '187', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '190', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '201', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '210', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '217', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '219', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '223', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '230', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '240', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '250', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '260', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '270', 'broader', 3),
+('dime.denmark.region', 'DK01', 'dime.denmark.kommune', '400', 'broader', 3),
+('dime.denmark.region', 'DK02', 'dime.denmark.kommune', '253', 'broader', 3),
+('dime.denmark.region', 'DK02', 'dime.denmark.kommune', '259', 'broader', 3),
+('dime.denmark.region', 'DK02', 'dime.denmark.kommune', '265', 'broader', 3),
+('dime.denmark.region', 'DK02', 'dime.denmark.kommune', '269', 'broader', 3),
+('dime.denmark.region', 'DK02', 'dime.denmark.kommune', '306', 'broader', 3),
+('dime.denmark.region', 'DK02', 'dime.denmark.kommune', '316', 'broader', 3),
+('dime.denmark.region', 'DK02', 'dime.denmark.kommune', '320', 'broader', 3),
+('dime.denmark.region', 'DK02', 'dime.denmark.kommune', '326', 'broader', 3),
+('dime.denmark.region', 'DK02', 'dime.denmark.kommune', '329', 'broader', 3),
+('dime.denmark.region', 'DK02', 'dime.denmark.kommune', '330', 'broader', 3),
+('dime.denmark.region', 'DK02', 'dime.denmark.kommune', '336', 'broader', 3),
+('dime.denmark.region', 'DK02', 'dime.denmark.kommune', '340', 'broader', 3),
+('dime.denmark.region', 'DK02', 'dime.denmark.kommune', '350', 'broader', 3),
+('dime.denmark.region', 'DK02', 'dime.denmark.kommune', '360', 'broader', 3),
+('dime.denmark.region', 'DK02', 'dime.denmark.kommune', '370', 'broader', 3),
+('dime.denmark.region', 'DK02', 'dime.denmark.kommune', '376', 'broader', 3),
+('dime.denmark.region', 'DK02', 'dime.denmark.kommune', '390', 'broader', 3),
+('dime.denmark.region', 'DK03', 'dime.denmark.kommune', '410', 'broader', 3),
+('dime.denmark.region', 'DK03', 'dime.denmark.kommune', '420', 'broader', 3),
+('dime.denmark.region', 'DK03', 'dime.denmark.kommune', '430', 'broader', 3),
+('dime.denmark.region', 'DK03', 'dime.denmark.kommune', '440', 'broader', 3),
+('dime.denmark.region', 'DK03', 'dime.denmark.kommune', '450', 'broader', 3),
+('dime.denmark.region', 'DK03', 'dime.denmark.kommune', '461', 'broader', 3),
+('dime.denmark.region', 'DK03', 'dime.denmark.kommune', '479', 'broader', 3),
+('dime.denmark.region', 'DK03', 'dime.denmark.kommune', '480', 'broader', 3),
+('dime.denmark.region', 'DK03', 'dime.denmark.kommune', '482', 'broader', 3),
+('dime.denmark.region', 'DK03', 'dime.denmark.kommune', '492', 'broader', 3),
+('dime.denmark.region', 'DK03', 'dime.denmark.kommune', '510', 'broader', 3),
+('dime.denmark.region', 'DK03', 'dime.denmark.kommune', '530', 'broader', 3),
+('dime.denmark.region', 'DK03', 'dime.denmark.kommune', '540', 'broader', 3),
+('dime.denmark.region', 'DK03', 'dime.denmark.kommune', '550', 'broader', 3),
+('dime.denmark.region', 'DK03', 'dime.denmark.kommune', '561', 'broader', 3),
+('dime.denmark.region', 'DK03', 'dime.denmark.kommune', '563', 'broader', 3),
+('dime.denmark.region', 'DK03', 'dime.denmark.kommune', '573', 'broader', 3),
+('dime.denmark.region', 'DK03', 'dime.denmark.kommune', '575', 'broader', 3),
+('dime.denmark.region', 'DK03', 'dime.denmark.kommune', '580', 'broader', 3),
+('dime.denmark.region', 'DK03', 'dime.denmark.kommune', '607', 'broader', 3),
+('dime.denmark.region', 'DK03', 'dime.denmark.kommune', '621', 'broader', 3),
+('dime.denmark.region', 'DK03', 'dime.denmark.kommune', '630', 'broader', 3),
+('dime.denmark.region', 'DK04', 'dime.denmark.kommune', '615', 'broader', 3),
+('dime.denmark.region', 'DK04', 'dime.denmark.kommune', '657', 'broader', 3),
+('dime.denmark.region', 'DK04', 'dime.denmark.kommune', '661', 'broader', 3),
+('dime.denmark.region', 'DK04', 'dime.denmark.kommune', '665', 'broader', 3),
+('dime.denmark.region', 'DK04', 'dime.denmark.kommune', '671', 'broader', 3),
+('dime.denmark.region', 'DK04', 'dime.denmark.kommune', '706', 'broader', 3),
+('dime.denmark.region', 'DK04', 'dime.denmark.kommune', '707', 'broader', 3),
+('dime.denmark.region', 'DK04', 'dime.denmark.kommune', '710', 'broader', 3),
+('dime.denmark.region', 'DK04', 'dime.denmark.kommune', '727', 'broader', 3),
+('dime.denmark.region', 'DK04', 'dime.denmark.kommune', '730', 'broader', 3),
+('dime.denmark.region', 'DK04', 'dime.denmark.kommune', '740', 'broader', 3),
+('dime.denmark.region', 'DK04', 'dime.denmark.kommune', '741', 'broader', 3),
+('dime.denmark.region', 'DK04', 'dime.denmark.kommune', '746', 'broader', 3),
+('dime.denmark.region', 'DK04', 'dime.denmark.kommune', '751', 'broader', 3),
+('dime.denmark.region', 'DK04', 'dime.denmark.kommune', '756', 'broader', 3),
+('dime.denmark.region', 'DK04', 'dime.denmark.kommune', '760', 'broader', 3),
+('dime.denmark.region', 'DK04', 'dime.denmark.kommune', '766', 'broader', 3),
+('dime.denmark.region', 'DK04', 'dime.denmark.kommune', '779', 'broader', 3),
+('dime.denmark.region', 'DK04', 'dime.denmark.kommune', '791', 'broader', 3),
+('dime.denmark.region', 'DK05', 'dime.denmark.kommune', '773', 'broader', 3),
+('dime.denmark.region', 'DK05', 'dime.denmark.kommune', '787', 'broader', 3),
+('dime.denmark.region', 'DK05', 'dime.denmark.kommune', '810', 'broader', 3),
+('dime.denmark.region', 'DK05', 'dime.denmark.kommune', '813', 'broader', 3),
+('dime.denmark.region', 'DK05', 'dime.denmark.kommune', '820', 'broader', 3),
+('dime.denmark.region', 'DK05', 'dime.denmark.kommune', '825', 'broader', 3),
+('dime.denmark.region', 'DK05', 'dime.denmark.kommune', '840', 'broader', 3),
+('dime.denmark.region', 'DK05', 'dime.denmark.kommune', '846', 'broader', 3),
+('dime.denmark.region', 'DK05', 'dime.denmark.kommune', '849', 'broader', 3),
+('dime.denmark.region', 'DK05', 'dime.denmark.kommune', '851', 'broader', 3),
+('dime.denmark.region', 'DK05', 'dime.denmark.kommune', '860', 'broader', 3),
 ('dime.period', 'AÆEX', 'dime.period', 'AÆEÆ', 'broader', 6),
 ('dime.period', 'AÆEX', 'dime.period', 'AÆEM', 'broader', 6),
 ('dime.period', 'AÆEX', 'dime.period', 'AÆEY', 'broader', 6),
@@ -1781,7 +1888,7 @@ INSERT INTO `ark_vocabulary_related` (`from_concept`, `from_term`, `to_concept`,
 -- Table structure for table `ark_vocabulary_relation`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_vocabulary_relation` (
+CREATE TABLE `ark_vocabulary_relation` (
   `relation` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `code` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
   `recipricol` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1797,11 +1904,11 @@ CREATE TABLE IF NOT EXISTS `ark_vocabulary_relation` (
 --
 
 INSERT INTO `ark_vocabulary_relation` (`relation`, `code`, `recipricol`, `recipricol_code`, `equivalence`, `hierarchy`, `associative`, `description`) VALUES
-('broader', 'BT', 'narrower', 'NT', 0, 1, 0, 'The ''Has A'' parent/child hierarchy relationship'),
-('class', 'BTI', 'instance', 'NTI', 0, 1, 0, 'The ''Is A'' class/instance hierarchy relationship.'),
+('broader', 'BT', 'narrower', 'NT', 0, 1, 0, 'The \'Has A\' parent/child hierarchy relationship'),
+('class', 'BTI', 'instance', 'NTI', 0, 1, 0, 'The \'Is A\' class/instance hierarchy relationship.'),
 ('related', 'RT', 'related', 'RT', 0, 0, 1, 'Related terms that are neither equivalent or hierarchical.'),
 ('usedfor', 'UF', 'use', 'U', 1, 0, 0, 'Leads from the preferred entry term to the\\nnon-preferred term(s).'),
-('whole', 'BTP', 'part', 'NTP', 0, 1, 0, 'The ''Part Of'' whole/part hierarchy relationship.');
+('whole', 'BTP', 'part', 'NTP', 0, 1, 0, 'The \'Part Of\' whole/part hierarchy relationship.');
 
 -- --------------------------------------------------------
 
@@ -1809,7 +1916,7 @@ INSERT INTO `ark_vocabulary_relation` (`relation`, `code`, `recipricol`, `recipr
 -- Table structure for table `ark_vocabulary_term`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_vocabulary_term` (
+CREATE TABLE `ark_vocabulary_term` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `alias` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2083,6 +2190,110 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `depre
 ('dime.actor.type', 'institution', '', 1, 0, 'dime.actor.type.institution', ''),
 ('dime.actor.type', 'museum', '', 1, 0, 'dime.actor.type.museum', ''),
 ('dime.actor.type', 'person', '', 1, 0, 'dime.actor.type.person', ''),
+('dime.denmark.admin', 'DK', 'denmark', 1, 0, 'dime.denmark.admin.denmark', ''),
+('dime.denmark.kommune', '101', 'kobenhavn', 1, 0, 'dime.kommune.kobenhavn', ''),
+('dime.denmark.kommune', '147', 'frederiksbeg', 1, 0, 'dime.kommune.frederiksbeg', ''),
+('dime.denmark.kommune', '151', 'ballerup', 1, 0, 'dime.kommune.ballerup', ''),
+('dime.denmark.kommune', '153', 'brondby', 1, 0, 'dime.kommune.brondby', ''),
+('dime.denmark.kommune', '155', 'dragor', 1, 0, 'dime.kommune.dragor', ''),
+('dime.denmark.kommune', '157', 'gentofte', 1, 0, 'dime.kommune.gentofte', ''),
+('dime.denmark.kommune', '159', 'gladsaxe', 1, 0, 'dime.kommune.gladsaxe', ''),
+('dime.denmark.kommune', '161', 'glostrup', 1, 0, 'dime.kommune.glostrup', ''),
+('dime.denmark.kommune', '163', 'herlev', 1, 0, 'dime.kommune.herlev', ''),
+('dime.denmark.kommune', '165', 'albertslund', 1, 0, 'dime.kommune.albertslund', ''),
+('dime.denmark.kommune', '167', 'hvidovre', 1, 0, 'dime.kommune.hvidovre', ''),
+('dime.denmark.kommune', '169', 'hojetaastrup', 1, 0, 'dime.kommune.hojetaastrup', ''),
+('dime.denmark.kommune', '173', 'lyngbytaarbaek', 1, 0, 'dime.kommune.lyngbytaarbaek', ''),
+('dime.denmark.kommune', '175', 'rodovre', 1, 0, 'dime.kommune.rodovre', ''),
+('dime.denmark.kommune', '183', 'ishoj', 1, 0, 'dime.kommune.ishoj', ''),
+('dime.denmark.kommune', '185', 'tarnby', 1, 0, 'dime.kommune.tarnby', ''),
+('dime.denmark.kommune', '187', 'vallensbaek', 1, 0, 'dime.kommune.vallensbaek', ''),
+('dime.denmark.kommune', '190', 'fureso', 1, 0, 'dime.kommune.fureso', ''),
+('dime.denmark.kommune', '201', 'allerod', 1, 0, 'dime.kommune.allerod', ''),
+('dime.denmark.kommune', '210', 'fredensborg', 1, 0, 'dime.kommune.fredensborg', ''),
+('dime.denmark.kommune', '217', 'helsingor', 1, 0, 'dime.kommune.helsingor', ''),
+('dime.denmark.kommune', '219', 'hillerod', 1, 0, 'dime.kommune.hillerod', ''),
+('dime.denmark.kommune', '223', 'horsholm', 1, 0, 'dime.kommune.horsholm', ''),
+('dime.denmark.kommune', '230', 'rudersdal', 1, 0, 'dime.kommune.rudersdal', ''),
+('dime.denmark.kommune', '240', 'egedal', 1, 0, 'dime.kommune.egedal', ''),
+('dime.denmark.kommune', '250', 'frederikssund', 1, 0, 'dime.kommune.frederikssund', ''),
+('dime.denmark.kommune', '253', 'greve', 1, 0, 'dime.kommune.greve', ''),
+('dime.denmark.kommune', '259', 'koge', 1, 0, 'dime.kommune.koge', ''),
+('dime.denmark.kommune', '260', 'halsnaes', 1, 0, 'dime.kommune.halsnaes', ''),
+('dime.denmark.kommune', '265', 'roskilde', 1, 0, 'dime.kommune.roskilde', ''),
+('dime.denmark.kommune', '269', 'solrod', 1, 0, 'dime.kommune.solrod', ''),
+('dime.denmark.kommune', '270', 'gribskov', 1, 0, 'dime.kommune.gribskov', ''),
+('dime.denmark.kommune', '306', 'odsherred', 1, 0, 'dime.kommune.odsherred', ''),
+('dime.denmark.kommune', '316', 'holbaek', 1, 0, 'dime.kommune.holbaek', ''),
+('dime.denmark.kommune', '320', 'faxe', 1, 0, 'dime.kommune.faxe', ''),
+('dime.denmark.kommune', '326', 'kalundborg', 1, 0, 'dime.kommune.kalundborg', ''),
+('dime.denmark.kommune', '329', 'ringsted', 1, 0, 'dime.kommune.ringsted', ''),
+('dime.denmark.kommune', '330', 'slagelse', 1, 0, 'dime.kommune.slagelse', ''),
+('dime.denmark.kommune', '336', 'stevns', 1, 0, 'dime.kommune.stevns', ''),
+('dime.denmark.kommune', '340', 'soro', 1, 0, 'dime.kommune.soro', ''),
+('dime.denmark.kommune', '350', 'lejre', 1, 0, 'dime.kommune.lejre', ''),
+('dime.denmark.kommune', '360', 'lolland', 1, 0, 'dime.kommune.lolland', ''),
+('dime.denmark.kommune', '370', 'naestved', 1, 0, 'dime.kommune.naestved', ''),
+('dime.denmark.kommune', '376', 'guldborgsund', 1, 0, 'dime.kommune.guldborgsund', ''),
+('dime.denmark.kommune', '390', 'vordingborg', 1, 0, 'dime.kommune.vordingborg', ''),
+('dime.denmark.kommune', '400', 'bornholm', 1, 0, 'dime.kommune.bornholm', ''),
+('dime.denmark.kommune', '410', 'middelfart', 1, 0, 'dime.kommune.middelfart', ''),
+('dime.denmark.kommune', '420', 'assens', 1, 0, 'dime.kommune.assens', ''),
+('dime.denmark.kommune', '430', 'faaborgmidtfyn', 1, 0, 'dime.kommune.faaborgmidtfyn', ''),
+('dime.denmark.kommune', '440', 'kerteminde', 1, 0, 'dime.kommune.kerteminde', ''),
+('dime.denmark.kommune', '450', 'nyborg', 1, 0, 'dime.kommune.nyborg', ''),
+('dime.denmark.kommune', '461', 'odense', 1, 0, 'dime.kommune.odense', ''),
+('dime.denmark.kommune', '479', 'svendborg', 1, 0, 'dime.kommune.svendborg', ''),
+('dime.denmark.kommune', '480', 'nordfyns', 1, 0, 'dime.kommune.nordfyns', ''),
+('dime.denmark.kommune', '482', 'langeland', 1, 0, 'dime.kommune.langeland', ''),
+('dime.denmark.kommune', '492', 'aero', 1, 0, 'dime.kommune.aero', ''),
+('dime.denmark.kommune', '510', 'haderslev', 1, 0, 'dime.kommune.haderslev', ''),
+('dime.denmark.kommune', '530', 'billund', 1, 0, 'dime.kommune.billund', ''),
+('dime.denmark.kommune', '540', 'sonderborg', 1, 0, 'dime.kommune.sonderborg', ''),
+('dime.denmark.kommune', '550', 'tonder', 1, 0, 'dime.kommune.tonder', ''),
+('dime.denmark.kommune', '561', 'esbjerg', 1, 0, 'dime.kommune.esbjerg', ''),
+('dime.denmark.kommune', '563', 'fano', 1, 0, 'dime.kommune.fano', ''),
+('dime.denmark.kommune', '573', 'varde', 1, 0, 'dime.kommune.varde', ''),
+('dime.denmark.kommune', '575', 'vejen', 1, 0, 'dime.kommune.vejen', ''),
+('dime.denmark.kommune', '580', 'aabenraa', 1, 0, 'dime.kommune.aabenraa', ''),
+('dime.denmark.kommune', '607', 'fredericia', 1, 0, 'dime.kommune.fredericia', ''),
+('dime.denmark.kommune', '615', 'horsens', 1, 0, 'dime.kommune.horsens', ''),
+('dime.denmark.kommune', '621', 'kolding', 1, 0, 'dime.kommune.kolding', ''),
+('dime.denmark.kommune', '630', 'vejle', 1, 0, 'dime.kommune.vejle', ''),
+('dime.denmark.kommune', '657', 'herning', 1, 0, 'dime.kommune.herning', ''),
+('dime.denmark.kommune', '661', 'holstebro', 1, 0, 'dime.kommune.holstebro', ''),
+('dime.denmark.kommune', '665', 'lemvig', 1, 0, 'dime.kommune.lemvig', ''),
+('dime.denmark.kommune', '671', 'struer', 1, 0, 'dime.kommune.struer', ''),
+('dime.denmark.kommune', '706', 'syddjurs', 1, 0, 'dime.kommune.syddjurs', ''),
+('dime.denmark.kommune', '707', 'norddjurs', 1, 0, 'dime.kommune.norddjurs', ''),
+('dime.denmark.kommune', '710', 'favrskov', 1, 0, 'dime.kommune.favrskov', ''),
+('dime.denmark.kommune', '727', 'odder', 1, 0, 'dime.kommune.odder', ''),
+('dime.denmark.kommune', '730', 'randers', 1, 0, 'dime.kommune.randers', ''),
+('dime.denmark.kommune', '740', 'silkeborg', 1, 0, 'dime.kommune.silkeborg', ''),
+('dime.denmark.kommune', '741', 'samso', 1, 0, 'dime.kommune.samso', ''),
+('dime.denmark.kommune', '746', 'skanderborg', 1, 0, 'dime.kommune.skanderborg', ''),
+('dime.denmark.kommune', '751', 'arhus', 1, 0, 'dime.kommune.arhus', ''),
+('dime.denmark.kommune', '756', 'ikastbrande', 1, 0, 'dime.kommune.ikastbrande', ''),
+('dime.denmark.kommune', '760', 'ringkobingskjern', 1, 0, 'dime.kommune.ringkobingskjern', ''),
+('dime.denmark.kommune', '766', 'hedensted', 1, 0, 'dime.kommune.hedensted', ''),
+('dime.denmark.kommune', '773', 'morso', 1, 0, 'dime.kommune.morso', ''),
+('dime.denmark.kommune', '779', 'skive', 1, 0, 'dime.kommune.skive', ''),
+('dime.denmark.kommune', '787', 'thisted', 1, 0, 'dime.kommune.thisted', ''),
+('dime.denmark.kommune', '791', 'viborg', 1, 0, 'dime.kommune.viborg', ''),
+('dime.denmark.kommune', '810', 'bronderslev', 1, 0, 'dime.kommune.bronderslev', ''),
+('dime.denmark.kommune', '813', 'frederikshavn', 1, 0, 'dime.kommune.frederikshavn', ''),
+('dime.denmark.kommune', '820', 'vesthimmerland', 1, 0, 'dime.kommune.vesthimmerland', ''),
+('dime.denmark.kommune', '825', 'laeso', 1, 0, 'dime.kommune.laeso', ''),
+('dime.denmark.kommune', '840', 'rebild', 1, 0, 'dime.kommune.rebild', ''),
+('dime.denmark.kommune', '846', 'mariagerfjord', 1, 0, 'dime.kommune.mariagerfjord', ''),
+('dime.denmark.kommune', '849', 'jammerbugt', 1, 0, 'dime.kommune.jammerbugt', ''),
+('dime.denmark.kommune', '851', 'aalborg', 1, 0, 'dime.kommune.aalborg', ''),
+('dime.denmark.kommune', '860', 'hjorring', 1, 0, 'dime.kommune.hjorring', ''),
+('dime.denmark.region', 'DK01', 'hovedstaden', 1, 0, 'dime.region.hovedstaden', ''),
+('dime.denmark.region', 'DK02', 'sjaelland', 1, 0, 'dime.region.sjaelland', ''),
+('dime.denmark.region', 'DK03', 'syddanmark', 1, 0, 'dime.region.syddanmark', ''),
+('dime.denmark.region', 'DK04', 'midtjylland', 1, 0, 'dime.region.midtjylland', ''),
+('dime.denmark.region', 'DK05', 'nordjylland', 1, 0, 'dime.region.nordjylland', ''),
 ('dime.find.condition', 'fragmented', '', 1, 0, 'dime.find.condition.fragmented', ''),
 ('dime.find.condition', 'whole', '', 1, 0, 'dime.find.condition.whole', ''),
 ('dime.find.secondary', 'gilded', '', 1, 0, 'dime.find.secondary.gilded', ''),
@@ -2427,7 +2638,8 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `depre
 ('language', 'hit', 'hittite', 1, 0, 'language.hittite', ''),
 ('language', 'hmn', 'hmong', 1, 0, 'language.hmong', ''),
 ('language', 'ho', 'motu.hiri', 1, 0, 'language.motu.hiri', ''),
-('language', 'hr', 'croatian', 1, 0, 'language.croatian', ''),
+('language', 'hr', 'croatian', 1, 0, 'language.croatian', '');
+INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('language', 'hsb', 'sorbian.upper', 1, 0, 'language.sorbian.upper', ''),
 ('language', 'hsn', 'chinese.xiang', 1, 0, 'language.chinese.xiang', ''),
 ('language', 'ht', 'creole.haitian', 1, 0, 'language.creole.haitian', ''),
@@ -2560,8 +2772,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `depre
 ('language', 'mgo', 'meta', 1, 0, 'language.meta', ''),
 ('language', 'mh', 'marshallese', 1, 0, 'language.marshallese', ''),
 ('language', 'mi', 'maori', 1, 0, 'language.maori', ''),
-('language', 'mic', 'micmac', 1, 0, 'language.micmac', '');
-INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('language', 'mic', 'micmac', 1, 0, 'language.micmac', ''),
 ('language', 'min', 'minangkabau', 1, 0, 'language.minangkabau', ''),
 ('language', 'mk', 'macedonian', 1, 0, 'language.macedonian', ''),
 ('language', 'ml', 'malayalam', 1, 0, 'language.malayalam', ''),
@@ -2836,7 +3047,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `depre
 -- Table structure for table `ark_vocabulary_translation`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_vocabulary_translation` (
+CREATE TABLE `ark_vocabulary_translation` (
   `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `domain` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2881,6 +3092,202 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('da', 'vocabulary', 'dime.find.type.military', 'default', 'Våben / Militaria', ''),
 ('da', 'vocabulary', 'dime.find.type.tool', 'default', 'Redskab / Værktøj', ''),
 ('da', 'vocabulary', 'dime.find.type.waste', 'default', 'Produktionsaffald / Metalskrot', ''),
+('da', 'vocabulary', 'dime.kommune.aabenraa', 'default', 'Aabenraa', ''),
+('da', 'vocabulary', 'dime.kommune.aabenraa', 'official', 'Aabenraa Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.aalborg', 'default', 'Aalborg', ''),
+('da', 'vocabulary', 'dime.kommune.aalborg', 'official', 'Aalborg Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.aero', 'default', 'Ærø', ''),
+('da', 'vocabulary', 'dime.kommune.aero', 'official', 'Ærø Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.albertslund', 'default', 'Albertslund', ''),
+('da', 'vocabulary', 'dime.kommune.albertslund', 'official', 'Albertslund Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.allerod', 'default', 'Allerød', ''),
+('da', 'vocabulary', 'dime.kommune.allerod', 'official', 'Allerød Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.arhus', 'default', 'Århus', ''),
+('da', 'vocabulary', 'dime.kommune.arhus', 'official', 'Århus Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.assens', 'default', 'Assens', ''),
+('da', 'vocabulary', 'dime.kommune.assens', 'official', 'Assens Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.ballerup', 'default', 'Ballerup', ''),
+('da', 'vocabulary', 'dime.kommune.ballerup', 'official', 'Ballerup Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.billund', 'default', 'Billund', ''),
+('da', 'vocabulary', 'dime.kommune.billund', 'official', 'Billund Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.bornholm', 'default', 'Bornholm', ''),
+('da', 'vocabulary', 'dime.kommune.bornholm', 'official', 'Bornholms Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.brondby', 'default', 'Brøndby', ''),
+('da', 'vocabulary', 'dime.kommune.brondby', 'official', 'Brøndby Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.bronderslev', 'default', 'Brønderslev', ''),
+('da', 'vocabulary', 'dime.kommune.bronderslev', 'official', 'Brønderslev Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.dragor', 'default', 'Dragør', ''),
+('da', 'vocabulary', 'dime.kommune.dragor', 'official', 'Dragør Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.egedal', 'default', 'Egedal', ''),
+('da', 'vocabulary', 'dime.kommune.egedal', 'official', 'Egedal Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.esbjerg', 'default', 'Esbjerg', ''),
+('da', 'vocabulary', 'dime.kommune.esbjerg', 'official', 'Esbjerg Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.faaborgmidtfyn', 'default', 'Faaborg-Midtfyn', ''),
+('da', 'vocabulary', 'dime.kommune.faaborgmidtfyn', 'official', 'Faaborg-Midtfyn Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.fano', 'default', 'Fanø', ''),
+('da', 'vocabulary', 'dime.kommune.fano', 'official', 'Fanø Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.favrskov', 'default', 'Favrskov', ''),
+('da', 'vocabulary', 'dime.kommune.favrskov', 'official', 'Favrskov Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.faxe', 'default', 'Faxe', ''),
+('da', 'vocabulary', 'dime.kommune.faxe', 'official', 'Faxe Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.fredensborg', 'default', 'Fredensborg', ''),
+('da', 'vocabulary', 'dime.kommune.fredensborg', 'official', 'Fredensborg Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.fredericia', 'default', 'Fredericia', ''),
+('da', 'vocabulary', 'dime.kommune.fredericia', 'official', 'Fredericia Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.frederiksbeg', 'default', 'Frederiksbeg', ''),
+('da', 'vocabulary', 'dime.kommune.frederiksbeg', 'official', 'Frederiksberg Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.frederikshavn', 'default', 'Frederikshavn', ''),
+('da', 'vocabulary', 'dime.kommune.frederikshavn', 'official', 'Frederikshavn Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.frederikssund', 'default', 'Frederikssund', ''),
+('da', 'vocabulary', 'dime.kommune.frederikssund', 'official', 'Frederikssund Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.fureso', 'default', 'Furesø', ''),
+('da', 'vocabulary', 'dime.kommune.fureso', 'official', 'Furesø Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.gentofte', 'default', 'Gentofte', ''),
+('da', 'vocabulary', 'dime.kommune.gentofte', 'official', 'Gentofte Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.gladsaxe', 'default', 'Gladsaxe', ''),
+('da', 'vocabulary', 'dime.kommune.gladsaxe', 'official', 'Gladsaxe Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.glostrup', 'default', 'Glostrup', ''),
+('da', 'vocabulary', 'dime.kommune.glostrup', 'official', 'Glostrup Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.greve', 'default', 'Greve', ''),
+('da', 'vocabulary', 'dime.kommune.greve', 'official', 'Greve Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.gribskov', 'default', 'Gribskov', ''),
+('da', 'vocabulary', 'dime.kommune.gribskov', 'official', 'Gribskov Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.guldborgsund', 'default', 'Guldborgsund', ''),
+('da', 'vocabulary', 'dime.kommune.guldborgsund', 'official', 'Guldborgsund Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.haderslev', 'default', 'Haderslev', ''),
+('da', 'vocabulary', 'dime.kommune.haderslev', 'official', 'Haderslev Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.halsnaes', 'default', 'Halsnæs', ''),
+('da', 'vocabulary', 'dime.kommune.halsnaes', 'official', 'Halsnæs Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.hedensted', 'default', 'Hedensted', ''),
+('da', 'vocabulary', 'dime.kommune.hedensted', 'official', 'Hedensted Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.helsingor', 'default', 'Helsingør', ''),
+('da', 'vocabulary', 'dime.kommune.helsingor', 'official', 'Helsingør Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.herlev', 'default', 'Herlev', ''),
+('da', 'vocabulary', 'dime.kommune.herlev', 'official', 'Herlev Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.herning', 'default', 'Herning', ''),
+('da', 'vocabulary', 'dime.kommune.herning', 'official', 'Herning Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.hillerod', 'default', 'Hillerød', ''),
+('da', 'vocabulary', 'dime.kommune.hillerod', 'official', 'Hillerød Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.hjorring', 'default', 'Hjørring', ''),
+('da', 'vocabulary', 'dime.kommune.hjorring', 'official', 'Hjørring Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.hojetaastrup', 'default', 'Høje-Taastrup', ''),
+('da', 'vocabulary', 'dime.kommune.hojetaastrup', 'official', 'Høje-Taastrup Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.holbaek', 'default', 'Holbæk', ''),
+('da', 'vocabulary', 'dime.kommune.holbaek', 'official', 'Holbæk Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.holstebro', 'default', 'Holstebro', ''),
+('da', 'vocabulary', 'dime.kommune.holstebro', 'official', 'Holstebro Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.horsens', 'default', 'Horsens', ''),
+('da', 'vocabulary', 'dime.kommune.horsens', 'official', 'Horsens Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.horsholm', 'default', 'Hørsholm', ''),
+('da', 'vocabulary', 'dime.kommune.horsholm', 'official', 'Hørsholm Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.hvidovre', 'default', 'Hvidovre', ''),
+('da', 'vocabulary', 'dime.kommune.hvidovre', 'official', 'Hvidovre Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.ikastbrande', 'default', 'Ikast-Brande', ''),
+('da', 'vocabulary', 'dime.kommune.ikastbrande', 'official', 'Ikast-Brande Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.ishoj', 'default', 'Ishøj', ''),
+('da', 'vocabulary', 'dime.kommune.ishoj', 'official', 'Ishøj Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.jammerbugt', 'default', 'Jammerbugt', ''),
+('da', 'vocabulary', 'dime.kommune.jammerbugt', 'official', 'Jammerbugt Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.kalundborg', 'default', 'Kalundborg', ''),
+('da', 'vocabulary', 'dime.kommune.kalundborg', 'official', 'Kalundborg Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.kerteminde', 'default', 'Kerteminde', ''),
+('da', 'vocabulary', 'dime.kommune.kerteminde', 'official', 'Kerteminde Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.kobenhavn', 'default', 'København', ''),
+('da', 'vocabulary', 'dime.kommune.kobenhavn', 'official', 'Københavns Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.koge', 'default', 'Køge', ''),
+('da', 'vocabulary', 'dime.kommune.koge', 'official', 'Køge Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.kolding', 'default', 'Kolding', ''),
+('da', 'vocabulary', 'dime.kommune.kolding', 'official', 'Kolding Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.laeso', 'default', 'Læsø', ''),
+('da', 'vocabulary', 'dime.kommune.laeso', 'official', 'Læsø Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.langeland', 'default', 'Langeland', ''),
+('da', 'vocabulary', 'dime.kommune.langeland', 'official', 'Langeland Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.lejre', 'default', 'Lejre', ''),
+('da', 'vocabulary', 'dime.kommune.lejre', 'official', 'Lejre Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.lemvig', 'default', 'Lemvig', ''),
+('da', 'vocabulary', 'dime.kommune.lemvig', 'official', 'Lemvig Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.lolland', 'default', 'Lolland', ''),
+('da', 'vocabulary', 'dime.kommune.lolland', 'official', 'Lolland Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.lyngbytaarbaek', 'default', 'Lyngby-Taarbæk', ''),
+('da', 'vocabulary', 'dime.kommune.lyngbytaarbaek', 'official', 'Lyngby-Taarbæk Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.mariagerfjord', 'default', 'Mariagerfjord', ''),
+('da', 'vocabulary', 'dime.kommune.mariagerfjord', 'official', 'Mariagerfjord Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.middelfart', 'default', 'Middelfart', ''),
+('da', 'vocabulary', 'dime.kommune.middelfart', 'official', 'Middelfart Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.morso', 'default', 'Morsø', ''),
+('da', 'vocabulary', 'dime.kommune.morso', 'official', 'Morsø Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.naestved', 'default', 'Næstved', ''),
+('da', 'vocabulary', 'dime.kommune.naestved', 'official', 'Næstved Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.norddjurs', 'default', 'Norddjurs', ''),
+('da', 'vocabulary', 'dime.kommune.norddjurs', 'official', 'Norddjurs Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.nordfyns', 'default', 'Nordfyns', ''),
+('da', 'vocabulary', 'dime.kommune.nordfyns', 'official', 'Nordfyns Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.nyborg', 'default', 'Nyborg', ''),
+('da', 'vocabulary', 'dime.kommune.nyborg', 'official', 'Nyborg Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.odder', 'default', 'Odder', ''),
+('da', 'vocabulary', 'dime.kommune.odder', 'official', 'Odder Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.odense', 'default', 'Odense', ''),
+('da', 'vocabulary', 'dime.kommune.odense', 'official', 'Odense Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.odsherred', 'default', 'Odsherred', ''),
+('da', 'vocabulary', 'dime.kommune.odsherred', 'official', 'Odsherred Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.randers', 'default', 'Randers', ''),
+('da', 'vocabulary', 'dime.kommune.randers', 'official', 'Randers Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.rebild', 'default', 'Rebild', ''),
+('da', 'vocabulary', 'dime.kommune.rebild', 'official', 'Rebild Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.ringkobingskjern', 'default', 'Ringkøbing-Skjern', ''),
+('da', 'vocabulary', 'dime.kommune.ringkobingskjern', 'official', 'Ringkøbing-Skjern Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.ringsted', 'default', 'Ringsted', ''),
+('da', 'vocabulary', 'dime.kommune.ringsted', 'official', 'Ringsted Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.rodovre', 'default', 'Rødovre', ''),
+('da', 'vocabulary', 'dime.kommune.rodovre', 'official', 'Rødovre Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.roskilde', 'default', 'Roskilde', ''),
+('da', 'vocabulary', 'dime.kommune.roskilde', 'official', 'Roskilde Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.rudersdal', 'default', 'Rudersdal', ''),
+('da', 'vocabulary', 'dime.kommune.rudersdal', 'official', 'Rudersdal Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.samso', 'default', 'Samsø', ''),
+('da', 'vocabulary', 'dime.kommune.samso', 'official', 'Samsø Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.silkeborg', 'default', 'Silkeborg', ''),
+('da', 'vocabulary', 'dime.kommune.silkeborg', 'official', 'Silkeborg Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.skanderborg', 'default', 'Skanderborg', ''),
+('da', 'vocabulary', 'dime.kommune.skanderborg', 'official', 'Skanderborg Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.skive', 'default', 'Skive', ''),
+('da', 'vocabulary', 'dime.kommune.skive', 'official', 'Skive Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.slagelse', 'default', 'Slagelse', ''),
+('da', 'vocabulary', 'dime.kommune.slagelse', 'official', 'Slagelse Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.solrod', 'default', 'Solrød', ''),
+('da', 'vocabulary', 'dime.kommune.solrod', 'official', 'Solrød Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.sonderborg', 'default', 'Sønderborg', ''),
+('da', 'vocabulary', 'dime.kommune.sonderborg', 'official', 'Sønderborg Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.soro', 'default', 'Sorø', ''),
+('da', 'vocabulary', 'dime.kommune.soro', 'official', 'Sorø Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.stevns', 'default', 'Stevns', ''),
+('da', 'vocabulary', 'dime.kommune.stevns', 'official', 'Stevns Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.struer', 'default', 'Struer', ''),
+('da', 'vocabulary', 'dime.kommune.struer', 'official', 'Struer Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.svendborg', 'default', 'Svendborg', ''),
+('da', 'vocabulary', 'dime.kommune.svendborg', 'official', 'Svendborg Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.syddjurs', 'default', 'Syddjurs', ''),
+('da', 'vocabulary', 'dime.kommune.syddjurs', 'official', 'Syddjurs Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.tarnby', 'default', 'Tårnby', ''),
+('da', 'vocabulary', 'dime.kommune.tarnby', 'official', 'Tårnby Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.thisted', 'default', 'Thisted', ''),
+('da', 'vocabulary', 'dime.kommune.thisted', 'official', 'Thisted Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.tonder', 'default', 'Tønder', ''),
+('da', 'vocabulary', 'dime.kommune.tonder', 'official', 'Tønder Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.vallensbaek', 'default', 'Vallensbæk', ''),
+('da', 'vocabulary', 'dime.kommune.vallensbaek', 'official', 'Vallensbæk Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.varde', 'default', 'Varde', ''),
+('da', 'vocabulary', 'dime.kommune.varde', 'official', 'Varde Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.vejen', 'default', 'Vejen', ''),
+('da', 'vocabulary', 'dime.kommune.vejen', 'official', 'Vejen Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.vejle', 'default', 'Vejle', ''),
+('da', 'vocabulary', 'dime.kommune.vejle', 'official', 'Vejle Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.vesthimmerland', 'default', 'Vesthimmerland', ''),
+('da', 'vocabulary', 'dime.kommune.vesthimmerland', 'official', 'Vesthimmerlands Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.viborg', 'default', 'Viborg', ''),
+('da', 'vocabulary', 'dime.kommune.viborg', 'official', 'Viborg Kommune', ''),
+('da', 'vocabulary', 'dime.kommune.vordingborg', 'default', 'Vordingborg', ''),
+('da', 'vocabulary', 'dime.kommune.vordingborg', 'official', 'Vordingborg Kommune', ''),
 ('da', 'vocabulary', 'dime.material.aluminium', 'default', 'Aluminium', ''),
 ('da', 'vocabulary', 'dime.material.copper', 'default', 'Kobber', ''),
 ('da', 'vocabulary', 'dime.material.copperalloy', 'default', 'Kobberlegering', ''),
@@ -2985,6 +3392,16 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('da', 'vocabulary', 'dime.period.viking', 'default', 'Vikingetid', ''),
 ('da', 'vocabulary', 'dime.period.viking.early', 'default', 'Ældre Vikingetid', ''),
 ('da', 'vocabulary', 'dime.period.viking.late', 'default', 'Yngre Vikingetid', ''),
+('da', 'vocabulary', 'dime.region.hovedstaden', 'default', 'Hovedstaden', ''),
+('da', 'vocabulary', 'dime.region.hovedstaden', 'official', 'Region Hovedstaden', ''),
+('da', 'vocabulary', 'dime.region.midtjylland', 'default', 'Midtjylland', ''),
+('da', 'vocabulary', 'dime.region.midtjylland', 'official', 'Region Midtjylland', ''),
+('da', 'vocabulary', 'dime.region.nordjylland', 'default', 'Nordjylland', ''),
+('da', 'vocabulary', 'dime.region.nordjylland', 'official', 'Region Nordjylland', ''),
+('da', 'vocabulary', 'dime.region.sjaelland', 'default', 'Sjælland', ''),
+('da', 'vocabulary', 'dime.region.sjaelland', 'official', 'Region Sjælland', ''),
+('da', 'vocabulary', 'dime.region.syddanmark', 'default', 'Syddanmark', ''),
+('da', 'vocabulary', 'dime.region.syddanmark', 'official', 'Region Syddanmark', ''),
 ('da', 'vocabulary', 'dime.treasure.assesing', 'default', 'dime.treasure.assesing', ''),
 ('da', 'vocabulary', 'dime.treasure.not', 'default', 'dime.treasure.not', ''),
 ('da', 'vocabulary', 'dime.treasure.pending', 'default', 'dime.treasure.pending', ''),
@@ -3062,7 +3479,7 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'country.congo', 'default', 'Congo ', ''),
 ('en', 'vocabulary', 'country.cookislands', 'default', 'Cook Islands ', ''),
 ('en', 'vocabulary', 'country.costarica', 'default', 'Costa Rica ', ''),
-('en', 'vocabulary', 'country.cotedivoire', 'default', 'Côte d''Ivoire ', ''),
+('en', 'vocabulary', 'country.cotedivoire', 'default', 'Côte d\'Ivoire ', ''),
 ('en', 'vocabulary', 'country.croatia', 'default', 'Croatia ', ''),
 ('en', 'vocabulary', 'country.cuba', 'default', 'Cuba ', ''),
 ('en', 'vocabulary', 'country.curacao', 'default', 'Curaçao ', ''),
@@ -3274,6 +3691,203 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'dime.find.type.military', 'default', 'Weapons / Militaria', ''),
 ('en', 'vocabulary', 'dime.find.type.tool', 'default', 'Equipment / Tools', ''),
 ('en', 'vocabulary', 'dime.find.type.waste', 'default', 'Production Waste / Scrap Metal', ''),
+('en', 'vocabulary', 'dime.kommune.aabenraa', 'default', 'Aabenraa', ''),
+('en', 'vocabulary', 'dime.kommune.aabenraa', 'official', 'Aabenraa Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.aalborg', 'default', 'Aalborg', ''),
+('en', 'vocabulary', 'dime.kommune.aalborg', 'official', 'Aalborg Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.aero', 'default', 'Ærø', ''),
+('en', 'vocabulary', 'dime.kommune.aero', 'official', 'Ærø Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.albertslund', 'default', 'Albertslund', ''),
+('en', 'vocabulary', 'dime.kommune.albertslund', 'official', 'Albertslund Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.allerod', 'default', 'Allerød', ''),
+('en', 'vocabulary', 'dime.kommune.allerod', 'official', 'Allerød Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.arhus', 'default', 'Århus', ''),
+('en', 'vocabulary', 'dime.kommune.arhus', 'official', 'Århus Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.assens', 'default', 'Assens', ''),
+('en', 'vocabulary', 'dime.kommune.assens', 'official', 'Assens Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.ballerup', 'default', 'Ballerup', ''),
+('en', 'vocabulary', 'dime.kommune.ballerup', 'official', 'Ballerup Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.billund', 'default', 'Billund', ''),
+('en', 'vocabulary', 'dime.kommune.billund', 'official', 'Billund Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.bornholm', 'default', 'Bornholm', '');
+INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'vocabulary', 'dime.kommune.bornholm', 'official', 'Bornholms Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.brondby', 'default', 'Brøndby', ''),
+('en', 'vocabulary', 'dime.kommune.brondby', 'official', 'Brøndby Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.bronderslev', 'default', 'Brønderslev', ''),
+('en', 'vocabulary', 'dime.kommune.bronderslev', 'official', 'Brønderslev Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.dragor', 'default', 'Dragør', ''),
+('en', 'vocabulary', 'dime.kommune.dragor', 'official', 'Dragør Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.egedal', 'default', 'Egedal', ''),
+('en', 'vocabulary', 'dime.kommune.egedal', 'official', 'Egedal Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.esbjerg', 'default', 'Esbjerg', ''),
+('en', 'vocabulary', 'dime.kommune.esbjerg', 'official', 'Esbjerg Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.faaborgmidtfyn', 'default', 'Faaborg-Midtfyn', ''),
+('en', 'vocabulary', 'dime.kommune.faaborgmidtfyn', 'official', 'Faaborg-Midtfyn Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.fano', 'default', 'Fanø', ''),
+('en', 'vocabulary', 'dime.kommune.fano', 'official', 'Fanø Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.favrskov', 'default', 'Favrskov', ''),
+('en', 'vocabulary', 'dime.kommune.favrskov', 'official', 'Favrskov Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.faxe', 'default', 'Faxe', ''),
+('en', 'vocabulary', 'dime.kommune.faxe', 'official', 'Faxe Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.fredensborg', 'default', 'Fredensborg', ''),
+('en', 'vocabulary', 'dime.kommune.fredensborg', 'official', 'Fredensborg Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.fredericia', 'default', 'Fredericia', ''),
+('en', 'vocabulary', 'dime.kommune.fredericia', 'official', 'Fredericia Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.frederiksbeg', 'default', 'Frederiksbeg', ''),
+('en', 'vocabulary', 'dime.kommune.frederiksbeg', 'official', 'Frederiksberg Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.frederikshavn', 'default', 'Frederikshavn', ''),
+('en', 'vocabulary', 'dime.kommune.frederikshavn', 'official', 'Frederikshavn Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.frederikssund', 'default', 'Frederikssund', ''),
+('en', 'vocabulary', 'dime.kommune.frederikssund', 'official', 'Frederikssund Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.fureso', 'default', 'Furesø', ''),
+('en', 'vocabulary', 'dime.kommune.fureso', 'official', 'Furesø Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.gentofte', 'default', 'Gentofte', ''),
+('en', 'vocabulary', 'dime.kommune.gentofte', 'official', 'Gentofte Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.gladsaxe', 'default', 'Gladsaxe', ''),
+('en', 'vocabulary', 'dime.kommune.gladsaxe', 'official', 'Gladsaxe Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.glostrup', 'default', 'Glostrup', ''),
+('en', 'vocabulary', 'dime.kommune.glostrup', 'official', 'Glostrup Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.greve', 'default', 'Greve', ''),
+('en', 'vocabulary', 'dime.kommune.greve', 'official', 'Greve Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.gribskov', 'default', 'Gribskov', ''),
+('en', 'vocabulary', 'dime.kommune.gribskov', 'official', 'Gribskov Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.guldborgsund', 'default', 'Guldborgsund', ''),
+('en', 'vocabulary', 'dime.kommune.guldborgsund', 'official', 'Guldborgsund Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.haderslev', 'default', 'Haderslev', ''),
+('en', 'vocabulary', 'dime.kommune.haderslev', 'official', 'Haderslev Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.halsnaes', 'default', 'Halsnæs', ''),
+('en', 'vocabulary', 'dime.kommune.halsnaes', 'official', 'Halsnæs Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.hedensted', 'default', 'Hedensted', ''),
+('en', 'vocabulary', 'dime.kommune.hedensted', 'official', 'Hedensted Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.helsingor', 'default', 'Helsingør', ''),
+('en', 'vocabulary', 'dime.kommune.helsingor', 'official', 'Helsingør Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.herlev', 'default', 'Herlev', ''),
+('en', 'vocabulary', 'dime.kommune.herlev', 'official', 'Herlev Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.herning', 'default', 'Herning', ''),
+('en', 'vocabulary', 'dime.kommune.herning', 'official', 'Herning Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.hillerod', 'default', 'Hillerød', ''),
+('en', 'vocabulary', 'dime.kommune.hillerod', 'official', 'Hillerød Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.hjorring', 'default', 'Hjørring', ''),
+('en', 'vocabulary', 'dime.kommune.hjorring', 'official', 'Hjørring Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.hojetaastrup', 'default', 'Høje-Taastrup', ''),
+('en', 'vocabulary', 'dime.kommune.hojetaastrup', 'official', 'Høje-Taastrup Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.holbaek', 'default', 'Holbæk', ''),
+('en', 'vocabulary', 'dime.kommune.holbaek', 'official', 'Holbæk Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.holstebro', 'default', 'Holstebro', ''),
+('en', 'vocabulary', 'dime.kommune.holstebro', 'official', 'Holstebro Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.horsens', 'default', 'Horsens', ''),
+('en', 'vocabulary', 'dime.kommune.horsens', 'official', 'Horsens Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.horsholm', 'default', 'Hørsholm', ''),
+('en', 'vocabulary', 'dime.kommune.horsholm', 'official', 'Hørsholm Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.hvidovre', 'default', 'Hvidovre', ''),
+('en', 'vocabulary', 'dime.kommune.hvidovre', 'official', 'Hvidovre Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.ikastbrande', 'default', 'Ikast-Brande', ''),
+('en', 'vocabulary', 'dime.kommune.ikastbrande', 'official', 'Ikast-Brande Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.ishoj', 'default', 'Ishøj', ''),
+('en', 'vocabulary', 'dime.kommune.ishoj', 'official', 'Ishøj Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.jammerbugt', 'default', 'Jammerbugt', ''),
+('en', 'vocabulary', 'dime.kommune.jammerbugt', 'official', 'Jammerbugt Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.kalundborg', 'default', 'Kalundborg', ''),
+('en', 'vocabulary', 'dime.kommune.kalundborg', 'official', 'Kalundborg Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.kerteminde', 'default', 'Kerteminde', ''),
+('en', 'vocabulary', 'dime.kommune.kerteminde', 'official', 'Kerteminde Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.kobenhavn', 'default', 'Copenhagen', ''),
+('en', 'vocabulary', 'dime.kommune.kobenhavn', 'official', 'Copenhagen Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.koge', 'default', 'Køge', ''),
+('en', 'vocabulary', 'dime.kommune.koge', 'official', 'Køge Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.kolding', 'default', 'Kolding', ''),
+('en', 'vocabulary', 'dime.kommune.kolding', 'official', 'Kolding Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.laeso', 'default', 'Læsø', ''),
+('en', 'vocabulary', 'dime.kommune.laeso', 'official', 'Læsø Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.langeland', 'default', 'Langeland', ''),
+('en', 'vocabulary', 'dime.kommune.langeland', 'official', 'Langeland Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.lejre', 'default', 'Lejre', ''),
+('en', 'vocabulary', 'dime.kommune.lejre', 'official', 'Lejre Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.lemvig', 'default', 'Lemvig', ''),
+('en', 'vocabulary', 'dime.kommune.lemvig', 'official', 'Lemvig Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.lolland', 'default', 'Lolland', ''),
+('en', 'vocabulary', 'dime.kommune.lolland', 'official', 'Lolland Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.lyngbytaarbaek', 'default', 'Lyngby-Taarbæk', ''),
+('en', 'vocabulary', 'dime.kommune.lyngbytaarbaek', 'official', 'Lyngby-Taarbæk Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.mariagerfjord', 'default', 'Mariagerfjord', ''),
+('en', 'vocabulary', 'dime.kommune.mariagerfjord', 'official', 'Mariagerfjord Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.middelfart', 'default', 'Middelfart', ''),
+('en', 'vocabulary', 'dime.kommune.middelfart', 'official', 'Middelfart Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.morso', 'default', 'Morsø', ''),
+('en', 'vocabulary', 'dime.kommune.morso', 'official', 'Morsø Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.naestved', 'default', 'Næstved', ''),
+('en', 'vocabulary', 'dime.kommune.naestved', 'official', 'Næstved Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.norddjurs', 'default', 'Norddjurs', ''),
+('en', 'vocabulary', 'dime.kommune.norddjurs', 'official', 'Norddjurs Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.nordfyns', 'default', 'Nordfyns', ''),
+('en', 'vocabulary', 'dime.kommune.nordfyns', 'official', 'Nordfyns Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.nyborg', 'default', 'Nyborg', ''),
+('en', 'vocabulary', 'dime.kommune.nyborg', 'official', 'Nyborg Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.odder', 'default', 'Odder', ''),
+('en', 'vocabulary', 'dime.kommune.odder', 'official', 'Odder Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.odense', 'default', 'Odense', ''),
+('en', 'vocabulary', 'dime.kommune.odense', 'official', 'Odense Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.odsherred', 'default', 'Odsherred', ''),
+('en', 'vocabulary', 'dime.kommune.odsherred', 'official', 'Odsherred Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.randers', 'default', 'Randers', ''),
+('en', 'vocabulary', 'dime.kommune.randers', 'official', 'Randers Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.rebild', 'default', 'Rebild', ''),
+('en', 'vocabulary', 'dime.kommune.rebild', 'official', 'Rebild Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.ringkobingskjern', 'default', 'Ringkøbing-Skjern', ''),
+('en', 'vocabulary', 'dime.kommune.ringkobingskjern', 'official', 'Ringkøbing-Skjern Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.ringsted', 'default', 'Ringsted', ''),
+('en', 'vocabulary', 'dime.kommune.ringsted', 'official', 'Ringsted Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.rodovre', 'default', 'Rødovre', ''),
+('en', 'vocabulary', 'dime.kommune.rodovre', 'official', 'Rødovre Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.roskilde', 'default', 'Roskilde', ''),
+('en', 'vocabulary', 'dime.kommune.roskilde', 'official', 'Roskilde Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.rudersdal', 'default', 'Rudersdal', ''),
+('en', 'vocabulary', 'dime.kommune.rudersdal', 'official', 'Rudersdal Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.samso', 'default', 'Samsø', ''),
+('en', 'vocabulary', 'dime.kommune.samso', 'official', 'Samsø Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.silkeborg', 'default', 'Silkeborg', ''),
+('en', 'vocabulary', 'dime.kommune.silkeborg', 'official', 'Silkeborg Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.skanderborg', 'default', 'Skanderborg', ''),
+('en', 'vocabulary', 'dime.kommune.skanderborg', 'official', 'Skanderborg Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.skive', 'default', 'Skive', ''),
+('en', 'vocabulary', 'dime.kommune.skive', 'official', 'Skive Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.slagelse', 'default', 'Slagelse', ''),
+('en', 'vocabulary', 'dime.kommune.slagelse', 'official', 'Slagelse Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.solrod', 'default', 'Solrød', ''),
+('en', 'vocabulary', 'dime.kommune.solrod', 'official', 'Solrød Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.sonderborg', 'default', 'Sønderborg', ''),
+('en', 'vocabulary', 'dime.kommune.sonderborg', 'official', 'Sønderborg Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.soro', 'default', 'Sorø', ''),
+('en', 'vocabulary', 'dime.kommune.soro', 'official', 'Sorø Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.stevns', 'default', 'Stevns', ''),
+('en', 'vocabulary', 'dime.kommune.stevns', 'official', 'Stevns Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.struer', 'default', 'Struer', ''),
+('en', 'vocabulary', 'dime.kommune.struer', 'official', 'Struer Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.svendborg', 'default', 'Svendborg', ''),
+('en', 'vocabulary', 'dime.kommune.svendborg', 'official', 'Svendborg Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.syddjurs', 'default', 'Syddjurs', ''),
+('en', 'vocabulary', 'dime.kommune.syddjurs', 'official', 'Syddjurs Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.tarnby', 'default', 'Tårnby', ''),
+('en', 'vocabulary', 'dime.kommune.tarnby', 'official', 'Tårnby Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.thisted', 'default', 'Thisted', ''),
+('en', 'vocabulary', 'dime.kommune.thisted', 'official', 'Thisted Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.tonder', 'default', 'Tønder', ''),
+('en', 'vocabulary', 'dime.kommune.tonder', 'official', 'Tønder Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.vallensbaek', 'default', 'Vallensbæk', ''),
+('en', 'vocabulary', 'dime.kommune.vallensbaek', 'official', 'Vallensbæk Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.varde', 'default', 'Varde', ''),
+('en', 'vocabulary', 'dime.kommune.varde', 'official', 'Varde Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.vejen', 'default', 'Vejen', ''),
+('en', 'vocabulary', 'dime.kommune.vejen', 'official', 'Vejen Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.vejle', 'default', 'Vejle', ''),
+('en', 'vocabulary', 'dime.kommune.vejle', 'official', 'Vejle Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.vesthimmerland', 'default', 'Vesthimmerland', ''),
+('en', 'vocabulary', 'dime.kommune.vesthimmerland', 'official', 'Vesthimmerlands Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.viborg', 'default', 'Viborg', ''),
+('en', 'vocabulary', 'dime.kommune.viborg', 'official', 'Viborg Municipality', ''),
+('en', 'vocabulary', 'dime.kommune.vordingborg', 'default', 'Vordingborg', ''),
+('en', 'vocabulary', 'dime.kommune.vordingborg', 'official', 'Vordingborg Municipality', ''),
 ('en', 'vocabulary', 'dime.material.aluminium', 'default', 'Aluminium', ''),
 ('en', 'vocabulary', 'dime.material.copper', 'default', 'Copper', ''),
 ('en', 'vocabulary', 'dime.material.copperalloy', 'default', 'Copper Alloy', ''),
@@ -3283,6 +3897,16 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'dime.material.othermetal', 'default', 'Other Metal', ''),
 ('en', 'vocabulary', 'dime.material.silver', 'default', 'Silver', ''),
 ('en', 'vocabulary', 'dime.material.tin', 'default', 'Tin', ''),
+('en', 'vocabulary', 'dime.region.hovedstaden', 'default', 'Capital', ''),
+('en', 'vocabulary', 'dime.region.hovedstaden', 'official', 'Capital Region', ''),
+('en', 'vocabulary', 'dime.region.midtjylland', 'default', 'Central', ''),
+('en', 'vocabulary', 'dime.region.midtjylland', 'official', 'Central Region', ''),
+('en', 'vocabulary', 'dime.region.nordjylland', 'default', 'North', ''),
+('en', 'vocabulary', 'dime.region.nordjylland', 'official', 'North Region', ''),
+('en', 'vocabulary', 'dime.region.sjaelland', 'default', 'Zealand', ''),
+('en', 'vocabulary', 'dime.region.sjaelland', 'official', 'Zealand Region', ''),
+('en', 'vocabulary', 'dime.region.syddanmark', 'default', 'South', ''),
+('en', 'vocabulary', 'dime.region.syddanmark', 'official', 'South Region', ''),
 ('en', 'vocabulary', 'dime.treasure.assesing', 'default', 'Assesing', ''),
 ('en', 'vocabulary', 'dime.treasure.not', 'default', 'Not Treasure Trove', ''),
 ('en', 'vocabulary', 'dime.treasure.pending', 'default', 'Pending', ''),
@@ -3523,8 +4147,7 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'language.ingush', 'default', 'Ingush', ''),
 ('en', 'vocabulary', 'language.interlingua', 'default', 'Interlingua', ''),
 ('en', 'vocabulary', 'language.interlingue', 'default', 'Interlingue', ''),
-('en', 'vocabulary', 'language.inuktitut', 'default', 'Inuktitut', '');
-INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'vocabulary', 'language.inuktitut', 'default', 'Inuktitut', ''),
 ('en', 'vocabulary', 'language.inupiaq', 'default', 'Inupiaq', ''),
 ('en', 'vocabulary', 'language.irish', 'default', 'Irish', ''),
 ('en', 'vocabulary', 'language.irish.middle', 'default', 'Middle Irish', ''),
@@ -3789,7 +4412,8 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'language.slovak', 'default', 'Slovak', ''),
 ('en', 'vocabulary', 'language.slovenian', 'default', 'Slovenian', ''),
 ('en', 'vocabulary', 'language.soga', 'default', 'Soga', ''),
-('en', 'vocabulary', 'language.sogdien', 'default', 'Sogdien', ''),
+('en', 'vocabulary', 'language.sogdien', 'default', 'Sogdien', '');
+INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'vocabulary', 'language.somali', 'default', 'Somali', ''),
 ('en', 'vocabulary', 'language.soninke', 'default', 'Soninke', ''),
 ('en', 'vocabulary', 'language.sorbian.lower', 'default', 'Lower Sorbian', ''),
@@ -3916,7 +4540,7 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 -- Table structure for table `ark_vocabulary_type`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_vocabulary_type` (
+CREATE TABLE `ark_vocabulary_type` (
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `equivalence` tinyint(1) NOT NULL,
   `hierarchy` tinyint(1) NOT NULL,
@@ -3943,7 +4567,7 @@ INSERT INTO `ark_vocabulary_type` (`type`, `equivalence`, `hierarchy`, `associat
 -- Table structure for table `cor_conf_layout_role`
 --
 
-CREATE TABLE IF NOT EXISTS `cor_conf_layout_role` (
+CREATE TABLE `cor_conf_layout_role` (
   `layout_role` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -3954,7 +4578,7 @@ CREATE TABLE IF NOT EXISTS `cor_conf_layout_role` (
 -- Table structure for table `cor_conf_page`
 --
 
-CREATE TABLE IF NOT EXISTS `cor_conf_page` (
+CREATE TABLE `cor_conf_page` (
   `page` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `title` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -3974,7 +4598,7 @@ CREATE TABLE IF NOT EXISTS `cor_conf_page` (
 -- Table structure for table `cor_conf_page_layout`
 --
 
-CREATE TABLE IF NOT EXISTS `cor_conf_page_layout` (
+CREATE TABLE `cor_conf_page_layout` (
   `page` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
   `layout_role` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -3987,7 +4611,7 @@ CREATE TABLE IF NOT EXISTS `cor_conf_page_layout` (
 -- Table structure for table `dime_period`
 --
 
-CREATE TABLE IF NOT EXISTS `dime_period` (
+CREATE TABLE `dime_period` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `parent` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -4108,259 +4732,282 @@ INSERT INTO `dime_period` (`concept`, `term`, `parent`, `depth`, `from_year`, `t
 -- Indexes for table `ark_config_error`
 --
 ALTER TABLE `ark_config_error`
- ADD PRIMARY KEY (`code`);
+  ADD PRIMARY KEY (`code`);
 
 --
 -- Indexes for table `ark_config_flash`
 --
 ALTER TABLE `ark_config_flash`
- ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `ark_config_thumbnail`
 --
 ALTER TABLE `ark_config_thumbnail`
- ADD PRIMARY KEY (`profile`);
+  ADD PRIMARY KEY (`profile`);
 
 --
 -- Indexes for table `ark_format`
 --
 ALTER TABLE `ark_format`
- ADD PRIMARY KEY (`format`), ADD KEY `fragment_type` (`type`);
+  ADD PRIMARY KEY (`format`),
+  ADD KEY `fragment_type` (`type`);
 
 --
 -- Indexes for table `ark_format_attribute`
 --
 ALTER TABLE `ark_format_attribute`
- ADD PRIMARY KEY (`parent`,`attribute`), ADD KEY `vocabulary` (`vocabulary`), ADD KEY `format` (`format`);
+  ADD PRIMARY KEY (`parent`,`attribute`),
+  ADD KEY `vocabulary` (`vocabulary`),
+  ADD KEY `format` (`format`);
 
 --
 -- Indexes for table `ark_format_blob`
 --
 ALTER TABLE `ark_format_blob`
- ADD PRIMARY KEY (`format`);
+  ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_boolean`
 --
 ALTER TABLE `ark_format_boolean`
- ADD PRIMARY KEY (`format`);
+  ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_datetime`
 --
 ALTER TABLE `ark_format_datetime`
- ADD PRIMARY KEY (`format`);
+  ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_decimal`
 --
 ALTER TABLE `ark_format_decimal`
- ADD PRIMARY KEY (`format`);
+  ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_float`
 --
 ALTER TABLE `ark_format_float`
- ADD PRIMARY KEY (`format`);
+  ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_integer`
 --
 ALTER TABLE `ark_format_integer`
- ADD PRIMARY KEY (`format`);
+  ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_item`
 --
 ALTER TABLE `ark_format_item`
- ADD PRIMARY KEY (`format`), ADD KEY `module` (`module`);
+  ADD PRIMARY KEY (`format`),
+  ADD KEY `module` (`module`);
 
 --
 -- Indexes for table `ark_format_object`
 --
 ALTER TABLE `ark_format_object`
- ADD PRIMARY KEY (`format`);
+  ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_string`
 --
 ALTER TABLE `ark_format_string`
- ADD PRIMARY KEY (`format`);
+  ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_wkt`
 --
 ALTER TABLE `ark_format_wkt`
- ADD PRIMARY KEY (`format`);
+  ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_fragment_type`
 --
 ALTER TABLE `ark_fragment_type`
- ADD PRIMARY KEY (`type`);
+  ADD PRIMARY KEY (`type`);
 
 --
 -- Indexes for table `ark_module`
 --
 ALTER TABLE `ark_module`
- ADD PRIMARY KEY (`module`);
+  ADD PRIMARY KEY (`module`);
 
 --
 -- Indexes for table `ark_schema`
 --
 ALTER TABLE `ark_schema`
- ADD PRIMARY KEY (`schma`), ADD KEY `module` (`module`);
+  ADD PRIMARY KEY (`schma`),
+  ADD KEY `module` (`module`);
 
 --
 -- Indexes for table `ark_schema_association`
 --
 ALTER TABLE `ark_schema_association`
- ADD PRIMARY KEY (`schma`,`type`,`association`) USING BTREE, ADD KEY `inverse_schema` (`inverse`);
+  ADD PRIMARY KEY (`schma`,`type`,`association`) USING BTREE,
+  ADD KEY `inverse_schema` (`inverse`);
 
 --
 -- Indexes for table `ark_schema_attribute`
 --
 ALTER TABLE `ark_schema_attribute`
- ADD PRIMARY KEY (`schma`,`type`,`attribute`) USING BTREE, ADD KEY `format` (`format`), ADD KEY `vocabulary` (`vocabulary`);
+  ADD PRIMARY KEY (`schma`,`type`,`attribute`) USING BTREE,
+  ADD KEY `format` (`format`),
+  ADD KEY `vocabulary` (`vocabulary`);
 
 --
 -- Indexes for table `ark_translation`
 --
 ALTER TABLE `ark_translation`
- ADD PRIMARY KEY (`keyword`), ADD KEY `domain` (`domain`);
+  ADD PRIMARY KEY (`keyword`),
+  ADD KEY `domain` (`domain`);
 
 --
 -- Indexes for table `ark_translation_domain`
 --
 ALTER TABLE `ark_translation_domain`
- ADD PRIMARY KEY (`domain`);
+  ADD PRIMARY KEY (`domain`);
 
 --
 -- Indexes for table `ark_translation_language`
 --
 ALTER TABLE `ark_translation_language`
- ADD PRIMARY KEY (`language`);
+  ADD PRIMARY KEY (`language`);
 
 --
 -- Indexes for table `ark_translation_message`
 --
 ALTER TABLE `ark_translation_message`
- ADD PRIMARY KEY (`language`,`keyword`,`role`), ADD KEY `keyword` (`keyword`), ADD KEY `role` (`role`);
+  ADD PRIMARY KEY (`language`,`keyword`,`role`),
+  ADD KEY `keyword` (`keyword`),
+  ADD KEY `role` (`role`);
 
 --
 -- Indexes for table `ark_translation_parameter`
 --
 ALTER TABLE `ark_translation_parameter`
- ADD PRIMARY KEY (`keyword`,`parameter`);
+  ADD PRIMARY KEY (`keyword`,`parameter`);
 
 --
 -- Indexes for table `ark_translation_role`
 --
 ALTER TABLE `ark_translation_role`
- ADD PRIMARY KEY (`role`);
+  ADD PRIMARY KEY (`role`);
 
 --
 -- Indexes for table `ark_view_element`
 --
 ALTER TABLE `ark_view_element`
- ADD PRIMARY KEY (`element`), ADD KEY `type` (`type`), ADD KEY `schma` (`schma`);
+  ADD PRIMARY KEY (`element`),
+  ADD KEY `type` (`type`),
+  ADD KEY `schma` (`schma`);
 
 --
 -- Indexes for table `ark_view_layout`
 --
 ALTER TABLE `ark_view_layout`
- ADD PRIMARY KEY (`element`,`item_type`,`row`,`col`,`seq`), ADD KEY `child` (`child`);
+  ADD PRIMARY KEY (`element`,`item_type`,`row`,`col`,`seq`),
+  ADD KEY `child` (`child`);
 
 --
 -- Indexes for table `ark_view_option`
 --
 ALTER TABLE `ark_view_option`
- ADD PRIMARY KEY (`element`,`name`);
+  ADD PRIMARY KEY (`element`,`name`);
 
 --
 -- Indexes for table `ark_view_type`
 --
 ALTER TABLE `ark_view_type`
- ADD PRIMARY KEY (`type`);
+  ADD PRIMARY KEY (`type`);
 
 --
 -- Indexes for table `ark_vocabulary`
 --
 ALTER TABLE `ark_vocabulary`
- ADD PRIMARY KEY (`concept`), ADD KEY `type` (`type`);
+  ADD PRIMARY KEY (`concept`),
+  ADD KEY `type` (`type`);
 
 --
 -- Indexes for table `ark_vocabulary_collected`
 --
 ALTER TABLE `ark_vocabulary_collected`
- ADD PRIMARY KEY (`concept`,`collection`,`term`);
+  ADD PRIMARY KEY (`concept`,`collection`,`term`);
 
 --
 -- Indexes for table `ark_vocabulary_collection`
 --
 ALTER TABLE `ark_vocabulary_collection`
- ADD PRIMARY KEY (`concept`,`collection`);
+  ADD PRIMARY KEY (`concept`,`collection`);
 
 --
 -- Indexes for table `ark_vocabulary_parameter`
 --
 ALTER TABLE `ark_vocabulary_parameter`
- ADD PRIMARY KEY (`concept`,`term`,`name`), ADD KEY `concept` (`concept`,`term`);
+  ADD PRIMARY KEY (`concept`,`term`,`name`),
+  ADD KEY `concept` (`concept`,`term`);
 
 --
 -- Indexes for table `ark_vocabulary_related`
 --
 ALTER TABLE `ark_vocabulary_related`
- ADD PRIMARY KEY (`from_concept`,`from_term`,`to_concept`,`to_term`), ADD KEY `relation` (`relation`), ADD KEY `from_term` (`from_concept`,`from_term`) USING BTREE, ADD KEY `to_term` (`to_concept`,`to_term`) USING BTREE;
+  ADD PRIMARY KEY (`from_concept`,`from_term`,`to_concept`,`to_term`),
+  ADD KEY `relation` (`relation`),
+  ADD KEY `from_term` (`from_concept`,`from_term`) USING BTREE,
+  ADD KEY `to_term` (`to_concept`,`to_term`) USING BTREE;
 
 --
 -- Indexes for table `ark_vocabulary_relation`
 --
 ALTER TABLE `ark_vocabulary_relation`
- ADD PRIMARY KEY (`relation`);
+  ADD PRIMARY KEY (`relation`);
 
 --
 -- Indexes for table `ark_vocabulary_term`
 --
 ALTER TABLE `ark_vocabulary_term`
- ADD PRIMARY KEY (`concept`,`term`), ADD UNIQUE KEY `keyword` (`keyword`);
+  ADD PRIMARY KEY (`concept`,`term`),
+  ADD UNIQUE KEY `keyword` (`keyword`);
 
 --
 -- Indexes for table `ark_vocabulary_translation`
 --
 ALTER TABLE `ark_vocabulary_translation`
- ADD PRIMARY KEY (`language`,`domain`,`keyword`,`role`), ADD KEY `keyword` (`keyword`), ADD KEY `domain` (`domain`), ADD KEY `role` (`role`);
+  ADD PRIMARY KEY (`language`,`domain`,`keyword`,`role`),
+  ADD KEY `keyword` (`keyword`),
+  ADD KEY `domain` (`domain`),
+  ADD KEY `role` (`role`);
 
 --
 -- Indexes for table `ark_vocabulary_type`
 --
 ALTER TABLE `ark_vocabulary_type`
- ADD PRIMARY KEY (`type`);
+  ADD PRIMARY KEY (`type`);
 
 --
 -- Indexes for table `cor_conf_layout_role`
 --
 ALTER TABLE `cor_conf_layout_role`
- ADD PRIMARY KEY (`layout_role`);
+  ADD PRIMARY KEY (`layout_role`);
 
 --
 -- Indexes for table `cor_conf_page`
 --
 ALTER TABLE `cor_conf_page`
- ADD PRIMARY KEY (`page`);
+  ADD PRIMARY KEY (`page`);
 
 --
 -- Indexes for table `cor_conf_page_layout`
 --
 ALTER TABLE `cor_conf_page_layout`
- ADD PRIMARY KEY (`page`,`module`,`layout_role`);
+  ADD PRIMARY KEY (`page`,`module`,`layout_role`);
 
 --
 -- Indexes for table `dime_period`
 --
 ALTER TABLE `dime_period`
- ADD PRIMARY KEY (`concept`,`term`);
+  ADD PRIMARY KEY (`concept`,`term`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -4370,7 +5017,7 @@ ALTER TABLE `dime_period`
 -- AUTO_INCREMENT for table `ark_config_flash`
 --
 ALTER TABLE `ark_config_flash`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- Constraints for dumped tables
 --
@@ -4379,172 +5026,172 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 -- Constraints for table `ark_format`
 --
 ALTER TABLE `ark_format`
-ADD CONSTRAINT `ark_format_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_fragment_type` (`type`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_format_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_fragment_type` (`type`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_attribute`
 --
 ALTER TABLE `ark_format_attribute`
-ADD CONSTRAINT `ark_format_attribute_ibfk_2` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
-ADD CONSTRAINT `ark_format_attribute_ibfk_3` FOREIGN KEY (`parent`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `ark_format_attribute_ibfk_4` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_format_attribute_ibfk_2` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_format_attribute_ibfk_3` FOREIGN KEY (`parent`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_format_attribute_ibfk_4` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_blob`
 --
 ALTER TABLE `ark_format_blob`
-ADD CONSTRAINT `ark_format_blob_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_format_blob_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_boolean`
 --
 ALTER TABLE `ark_format_boolean`
-ADD CONSTRAINT `ark_format_boolean_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_format_boolean_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_datetime`
 --
 ALTER TABLE `ark_format_datetime`
-ADD CONSTRAINT `ark_format_datetime_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_format_datetime_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_decimal`
 --
 ALTER TABLE `ark_format_decimal`
-ADD CONSTRAINT `ark_format_decimal_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_format_decimal_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_float`
 --
 ALTER TABLE `ark_format_float`
-ADD CONSTRAINT `ark_format_float_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_format_float_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_integer`
 --
 ALTER TABLE `ark_format_integer`
-ADD CONSTRAINT `ark_format_integer_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_format_integer_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_item`
 --
 ALTER TABLE `ark_format_item`
-ADD CONSTRAINT `ark_format_item_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `ark_format_item_ibfk_2` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_format_item_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_format_item_ibfk_2` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_object`
 --
 ALTER TABLE `ark_format_object`
-ADD CONSTRAINT `ark_format_object_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_format_object_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_string`
 --
 ALTER TABLE `ark_format_string`
-ADD CONSTRAINT `ark_format_string_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_format_string_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_wkt`
 --
 ALTER TABLE `ark_format_wkt`
-ADD CONSTRAINT `ark_format_wkt_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_format_wkt_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_schema`
 --
 ALTER TABLE `ark_schema`
-ADD CONSTRAINT `ark_schema_ibfk_1` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_schema_ibfk_1` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_schema_association`
 --
 ALTER TABLE `ark_schema_association`
-ADD CONSTRAINT `ark_schema_association_ibfk_1` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `ark_schema_association_ibfk_2` FOREIGN KEY (`inverse`) REFERENCES `ark_schema` (`schma`);
+  ADD CONSTRAINT `ark_schema_association_ibfk_1` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_schema_association_ibfk_2` FOREIGN KEY (`inverse`) REFERENCES `ark_schema` (`schma`);
 
 --
 -- Constraints for table `ark_schema_attribute`
 --
 ALTER TABLE `ark_schema_attribute`
-ADD CONSTRAINT `ark_schema_attribute_ibfk_1` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `ark_schema_attribute_ibfk_2` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON UPDATE CASCADE,
-ADD CONSTRAINT `ark_schema_attribute_ibfk_3` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_schema_attribute_ibfk_1` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_schema_attribute_ibfk_2` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_schema_attribute_ibfk_3` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_translation`
 --
 ALTER TABLE `ark_translation`
-ADD CONSTRAINT `ark_translation_ibfk_1` FOREIGN KEY (`domain`) REFERENCES `ark_translation_domain` (`domain`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_translation_ibfk_1` FOREIGN KEY (`domain`) REFERENCES `ark_translation_domain` (`domain`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_translation_message`
 --
 ALTER TABLE `ark_translation_message`
-ADD CONSTRAINT `ark_translation_message_ibfk_1` FOREIGN KEY (`language`) REFERENCES `ark_translation_language` (`language`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `ark_translation_message_ibfk_2` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `ark_translation_message_ibfk_3` FOREIGN KEY (`role`) REFERENCES `ark_translation_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_translation_message_ibfk_1` FOREIGN KEY (`language`) REFERENCES `ark_translation_language` (`language`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_translation_message_ibfk_2` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_translation_message_ibfk_3` FOREIGN KEY (`role`) REFERENCES `ark_translation_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_translation_parameter`
 --
 ALTER TABLE `ark_translation_parameter`
-ADD CONSTRAINT `ark_translation_parameter_ibfk_1` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_translation_parameter_ibfk_1` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_element`
 --
 ALTER TABLE `ark_view_element`
-ADD CONSTRAINT `ark_view_element_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_view_type` (`type`) ON UPDATE CASCADE,
-ADD CONSTRAINT `ark_view_element_ibfk_2` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_view_element_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_view_type` (`type`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_view_element_ibfk_2` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_layout`
 --
 ALTER TABLE `ark_view_layout`
-ADD CONSTRAINT `ark_view_layout_ibfk_1` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `ark_view_layout_ibfk_2` FOREIGN KEY (`child`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_view_layout_ibfk_1` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_view_layout_ibfk_2` FOREIGN KEY (`child`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_option`
 --
 ALTER TABLE `ark_view_option`
-ADD CONSTRAINT `ark_view_option_ibfk_1` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_view_option_ibfk_1` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary`
 --
 ALTER TABLE `ark_vocabulary`
-ADD CONSTRAINT `ark_vocabulary_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_vocabulary_type` (`type`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_vocabulary_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_vocabulary_type` (`type`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary_parameter`
 --
 ALTER TABLE `ark_vocabulary_parameter`
-ADD CONSTRAINT `ark_vocabulary_parameter_ibfk_1` FOREIGN KEY (`concept`, `term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_vocabulary_parameter_ibfk_1` FOREIGN KEY (`concept`,`term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary_related`
 --
 ALTER TABLE `ark_vocabulary_related`
-ADD CONSTRAINT `ark_vocabulary_related_ibfk_1` FOREIGN KEY (`from_concept`, `from_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE,
-ADD CONSTRAINT `ark_vocabulary_related_ibfk_2` FOREIGN KEY (`to_concept`, `to_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE,
-ADD CONSTRAINT `ark_vocabulary_related_ibfk_3` FOREIGN KEY (`relation`) REFERENCES `ark_vocabulary_relation` (`relation`);
+  ADD CONSTRAINT `ark_vocabulary_related_ibfk_1` FOREIGN KEY (`from_concept`,`from_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE,
+  ADD CONSTRAINT `ark_vocabulary_related_ibfk_2` FOREIGN KEY (`to_concept`,`to_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE,
+  ADD CONSTRAINT `ark_vocabulary_related_ibfk_3` FOREIGN KEY (`relation`) REFERENCES `ark_vocabulary_relation` (`relation`);
 
 --
 -- Constraints for table `ark_vocabulary_term`
 --
 ALTER TABLE `ark_vocabulary_term`
-ADD CONSTRAINT `ark_vocabulary_term_ibfk_1` FOREIGN KEY (`concept`) REFERENCES `ark_vocabulary` (`concept`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_vocabulary_term_ibfk_1` FOREIGN KEY (`concept`) REFERENCES `ark_vocabulary` (`concept`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary_translation`
 --
 ALTER TABLE `ark_vocabulary_translation`
-ADD CONSTRAINT `ark_vocabulary_translation_ibfk_1` FOREIGN KEY (`keyword`) REFERENCES `ark_vocabulary_term` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `ark_vocabulary_translation_ibfk_2` FOREIGN KEY (`language`) REFERENCES `ark_translation_language` (`language`) ON UPDATE CASCADE,
-ADD CONSTRAINT `ark_vocabulary_translation_ibfk_3` FOREIGN KEY (`domain`) REFERENCES `ark_translation_domain` (`domain`) ON UPDATE CASCADE,
-ADD CONSTRAINT `ark_vocabulary_translation_ibfk_4` FOREIGN KEY (`role`) REFERENCES `ark_translation_role` (`role`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_1` FOREIGN KEY (`keyword`) REFERENCES `ark_vocabulary_term` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_2` FOREIGN KEY (`language`) REFERENCES `ark_translation_language` (`language`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_3` FOREIGN KEY (`domain`) REFERENCES `ark_translation_domain` (`domain`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_4` FOREIGN KEY (`role`) REFERENCES `ark_translation_role` (`role`) ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

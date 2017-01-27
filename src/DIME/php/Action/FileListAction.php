@@ -31,6 +31,7 @@
 namespace DIME\Action;
 
 use ARK\File\File;
+use ARK\ORM\ORM;
 use DIME\Action\DimeFormAction;
 use Symfony\Component\HttpFoundation\Request;
 

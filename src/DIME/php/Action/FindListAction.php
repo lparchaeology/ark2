@@ -53,10 +53,12 @@ class FindListAction extends DimeFormAction
         if (isset($query['period'])) {
             $period = ORM::find(Term::class, ['concept' => 'dime.period', 'term' => $query['period']]);
             $data['dime_find_filter_period'] = $period;
+            $criteria['period'] = $period->name();
         }
         if (isset($query['material'])) {
             $material = ORM::find(Term::class, ['concept' => 'dime.material', 'term' => $query['material']]);
             $data['dime_find_filter_material'] = $material;
+            $criteria['type'] = $type->name();
         }
 
         $layout = 'dime_find_search';

@@ -112,6 +112,8 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers->get("/$localities", 'DIME\Action\LocalityListAction')
                     ->bind('localities.list');
 
+        $controllers->get('/demo', 'DIME\Action\DemoAction')
+                    ->bind('demo');
         $controllers->get('/test', 'DIME\Action\TestViewAction')
                     ->bind('test');
 
