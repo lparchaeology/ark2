@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.1
--- https://www.phpmyadmin.net/
+-- version 4.2.12deb2+deb8u2
+-- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 27, 2017 at 11:53 AM
--- Server version: 5.6.34
--- PHP Version: 7.1.0
+-- Generation Time: Jan 27, 2017 at 12:53 PM
+-- Server version: 5.5.52-0+deb8u1
+-- PHP Version: 5.6.29-0+deb8u1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `dime_ark_core`
@@ -26,7 +26,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `ark_config_error`
 --
 
-CREATE TABLE `ark_config_error` (
+CREATE TABLE IF NOT EXISTS `ark_config_error` (
   `code` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
@@ -38,13 +38,13 @@ CREATE TABLE `ark_config_error` (
 -- Table structure for table `ark_config_flash`
 --
 
-CREATE TABLE `ark_config_flash` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `ark_config_flash` (
+`id` int(11) NOT NULL,
   `active` tinyint(1) NOT NULL,
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `text` text COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_config_flash`
@@ -62,7 +62,7 @@ INSERT INTO `ark_config_flash` (`id`, `active`, `type`, `language`, `text`) VALU
 -- Table structure for table `ark_config_thumbnail`
 --
 
-CREATE TABLE `ark_config_thumbnail` (
+CREATE TABLE IF NOT EXISTS `ark_config_thumbnail` (
   `profile` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `max` int(11) NOT NULL,
   `min` int(11) DEFAULT NULL,
@@ -85,7 +85,7 @@ INSERT INTO `ark_config_thumbnail` (`profile`, `max`, `min`, `mode`, `type`, `ke
 -- Table structure for table `ark_format`
 --
 
-CREATE TABLE `ark_format` (
+CREATE TABLE IF NOT EXISTS `ark_format` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `input` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -149,7 +149,7 @@ INSERT INTO `ark_format` (`format`, `type`, `input`, `object`, `array`, `sortabl
 -- Table structure for table `ark_format_attribute`
 --
 
-CREATE TABLE `ark_format_attribute` (
+CREATE TABLE IF NOT EXISTS `ark_format_attribute` (
   `parent` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sequence` int(11) NOT NULL,
@@ -202,7 +202,7 @@ INSERT INTO `ark_format_attribute` (`parent`, `attribute`, `sequence`, `format`,
 -- Table structure for table `ark_format_blob`
 --
 
-CREATE TABLE `ark_format_blob` (
+CREATE TABLE IF NOT EXISTS `ark_format_blob` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -219,7 +219,7 @@ INSERT INTO `ark_format_blob` (`format`) VALUES
 -- Table structure for table `ark_format_boolean`
 --
 
-CREATE TABLE `ark_format_boolean` (
+CREATE TABLE IF NOT EXISTS `ark_format_boolean` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -236,7 +236,7 @@ INSERT INTO `ark_format_boolean` (`format`) VALUES
 -- Table structure for table `ark_format_datetime`
 --
 
-CREATE TABLE `ark_format_datetime` (
+CREATE TABLE IF NOT EXISTS `ark_format_datetime` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `pattern` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `unicode` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
@@ -259,7 +259,7 @@ INSERT INTO `ark_format_datetime` (`format`, `pattern`, `unicode`) VALUES
 -- Table structure for table `ark_format_decimal`
 --
 
-CREATE TABLE `ark_format_decimal` (
+CREATE TABLE IF NOT EXISTS `ark_format_decimal` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `prec` int(11) NOT NULL DEFAULT '200',
   `scale` int(11) NOT NULL,
@@ -285,7 +285,7 @@ INSERT INTO `ark_format_decimal` (`format`, `prec`, `scale`, `minimum`, `exclusi
 -- Table structure for table `ark_format_float`
 --
 
-CREATE TABLE `ark_format_float` (
+CREATE TABLE IF NOT EXISTS `ark_format_float` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `minimum` double DEFAULT NULL,
   `exclusive_minimum` tinyint(1) NOT NULL,
@@ -308,7 +308,7 @@ INSERT INTO `ark_format_float` (`format`, `minimum`, `exclusive_minimum`, `maxim
 -- Table structure for table `ark_format_integer`
 --
 
-CREATE TABLE `ark_format_integer` (
+CREATE TABLE IF NOT EXISTS `ark_format_integer` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `minimum` int(11) DEFAULT NULL,
   `exclusive_minimum` tinyint(1) NOT NULL,
@@ -330,7 +330,7 @@ INSERT INTO `ark_format_integer` (`format`, `minimum`, `exclusive_minimum`, `max
 -- Table structure for table `ark_format_item`
 --
 
-CREATE TABLE `ark_format_item` (
+CREATE TABLE IF NOT EXISTS `ark_format_item` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -349,7 +349,7 @@ INSERT INTO `ark_format_item` (`format`, `module`) VALUES
 -- Table structure for table `ark_format_object`
 --
 
-CREATE TABLE `ark_format_object` (
+CREATE TABLE IF NOT EXISTS `ark_format_object` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -368,7 +368,7 @@ INSERT INTO `ark_format_object` (`format`) VALUES
 -- Table structure for table `ark_format_string`
 --
 
-CREATE TABLE `ark_format_string` (
+CREATE TABLE IF NOT EXISTS `ark_format_string` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `pattern` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `min_length` int(11) NOT NULL,
@@ -407,7 +407,7 @@ INSERT INTO `ark_format_string` (`format`, `pattern`, `min_length`, `max_length`
 -- Table structure for table `ark_format_wkt`
 --
 
-CREATE TABLE `ark_format_wkt` (
+CREATE TABLE IF NOT EXISTS `ark_format_wkt` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
@@ -425,7 +425,7 @@ INSERT INTO `ark_format_wkt` (`format`) VALUES
 -- Table structure for table `ark_fragment_type`
 --
 
-CREATE TABLE `ark_fragment_type` (
+CREATE TABLE IF NOT EXISTS `ark_fragment_type` (
   `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `compound` tinyint(1) NOT NULL DEFAULT '0',
   `tbl` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -462,7 +462,7 @@ INSERT INTO `ark_fragment_type` (`type`, `compound`, `tbl`, `format_class`, `mod
 -- Table structure for table `ark_module`
 --
 
-CREATE TABLE `ark_module` (
+CREATE TABLE IF NOT EXISTS `ark_module` (
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `resource` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `namespace` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -493,7 +493,7 @@ INSERT INTO `ark_module` (`module`, `resource`, `namespace`, `entity`, `tbl`, `c
 -- Table structure for table `ark_schema`
 --
 
-CREATE TABLE `ark_schema` (
+CREATE TABLE IF NOT EXISTS `ark_schema` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `generator` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -525,7 +525,7 @@ INSERT INTO `ark_schema` (`schma`, `module`, `generator`, `sequence`, `type`, `t
 -- Table structure for table `ark_schema_association`
 --
 
-CREATE TABLE `ark_schema_association` (
+CREATE TABLE IF NOT EXISTS `ark_schema_association` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `association` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -551,7 +551,7 @@ INSERT INTO `ark_schema_association` (`schma`, `type`, `association`, `degree`, 
 -- Table structure for table `ark_schema_attribute`
 --
 
-CREATE TABLE `ark_schema_attribute` (
+CREATE TABLE IF NOT EXISTS `ark_schema_attribute` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -612,7 +612,7 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 -- Table structure for table `ark_translation`
 --
 
-CREATE TABLE `ark_translation` (
+CREATE TABLE IF NOT EXISTS `ark_translation` (
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `domain` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_plural` tinyint(1) NOT NULL DEFAULT '0',
@@ -633,9 +633,12 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.campaign', 'dime', 0, 0),
 ('dime.find', 'dime', 0, 0),
 ('dime.find.add', 'dime', 0, 0),
+('dime.find.condition', 'dime', 0, 0),
 ('dime.find.finddate', 'dime', 0, 0),
 ('dime.find.finderid', 'dime', 0, 0),
+('dime.find.findpoint', 'dime', 0, 0),
 ('dime.find.id', 'dime', 0, 0),
+('dime.find.length', 'dime', 0, 0),
 ('dime.find.material', 'dime', 0, 0),
 ('dime.find.material.secondary', 'dime', 0, 0),
 ('dime.find.period.end', 'dime', 0, 0),
@@ -647,8 +650,12 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.home', 'dime', 0, 0),
 ('dime.locality', 'dime', 0, 0),
 ('dime.locality.add', 'dime', 0, 0),
+('dime.locality.id', 'dime', 0, 0),
 ('dime.locality.search', 'dime', 0, 0),
+('dime.locality.type', 'dime', 0, 0),
+('dime.material', 'dime', 0, 0),
 ('dime.material.silver', 'dime', 0, 0),
+('dime.period', 'dime', 0, 0),
 ('dime.research', 'dime', 0, 0),
 ('dime.save', 'dime', 0, 0),
 ('dime.schema.find', 'dime', 0, 0),
@@ -667,6 +674,8 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('file.type.other', 'core', 0, 0),
 ('file.type.text', 'core', 0, 0),
 ('file.type.video', 'core', 0, 0),
+('form.select.optional', 'dime', 0, 0),
+('form.select.required', 'dime', 0, 0),
 ('format.actor', 'core', 0, 0),
 ('format.address', 'core', 0, 0),
 ('format.blob', 'core', 0, 0),
@@ -712,6 +721,8 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('fragment.string', 'core', 0, 0),
 ('fragment.text', 'core', 0, 0),
 ('fragment.time', 'core', 0, 0),
+('lat', 'dime', 0, 0),
+('lon', 'dime', 0, 0),
 ('module.actor', 'core', 0, 0),
 ('module.campaign', 'core', 0, 0),
 ('module.file', 'core', 0, 0),
@@ -744,6 +755,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('test.test', 'dime', 0, 0),
 ('user.greeting', 'user', 0, 1),
 ('user.menu.edit', 'user', 0, 0),
+('user.menu.home', 'dime', 0, 0),
 ('user.menu.list', 'user', 0, 0),
 ('user.menu.login', 'user', 0, 0),
 ('user.menu.logout', 'user', 0, 0),
@@ -757,7 +769,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 -- Table structure for table `ark_translation_domain`
 --
 
-CREATE TABLE `ark_translation_domain` (
+CREATE TABLE IF NOT EXISTS `ark_translation_domain` (
   `domain` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -780,7 +792,7 @@ INSERT INTO `ark_translation_domain` (`domain`, `keyword`) VALUES
 -- Table structure for table `ark_translation_language`
 --
 
-CREATE TABLE `ark_translation_language` (
+CREATE TABLE IF NOT EXISTS `ark_translation_language` (
   `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `markup` tinyint(1) NOT NULL,
   `vocabulary` tinyint(1) NOT NULL,
@@ -802,7 +814,7 @@ INSERT INTO `ark_translation_language` (`language`, `markup`, `vocabulary`, `tex
 -- Table structure for table `ark_translation_message`
 --
 
-CREATE TABLE `ark_translation_message` (
+CREATE TABLE IF NOT EXISTS `ark_translation_message` (
   `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -819,12 +831,27 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.background', 'default', 'Baggrund', ''),
 ('da', 'dime.find', 'default', 'Fund', ''),
 ('da', 'dime.find.add', 'default', 'Opret Fund', ''),
+('da', 'dime.find.condition', 'default', 'Bevaring', ''),
+('da', 'dime.find.finddate', 'default', 'Vælg Dato', ''),
+('da', 'dime.find.finderid', 'default', 'Fund Nummer / ID', ''),
+('da', 'dime.find.findpoint', 'default', 'Koordinater', ''),
+('da', 'dime.find.id', 'default', 'DIME ID', ''),
+('da', 'dime.find.length', 'default', 'Maximal Længde / Diameter', ''),
+('da', 'dime.find.material', 'default', 'Materiale', ''),
+('da', 'dime.find.material.secondary', 'default', 'Sekundært Materiale(r)', ''),
+('da', 'dime.find.period.end', 'default', 'Periode Slut', ''),
+('da', 'dime.find.period.start', 'default', 'Periode Start', ''),
 ('da', 'dime.find.search', 'default', 'Søg Fund', ''),
+('da', 'dime.find.type', 'default', 'Type', ''),
 ('da', 'dime.home', 'default', 'Hjem', ''),
 ('da', 'dime.locality', 'default', 'Lokalitet', ''),
 ('da', 'dime.locality.add', 'default', 'Opret Lokalitet', ''),
+('da', 'dime.locality.id', 'default', 'DIME ID', ''),
 ('da', 'dime.locality.search', 'default', 'Søg Lokalitet', ''),
+('da', 'dime.locality.type', 'default', 'Type', ''),
+('da', 'dime.material', 'default', 'Materiale', ''),
 ('da', 'dime.material.silver', 'default', 'Silver Test', ''),
+('da', 'dime.period', 'default', 'Periode', ''),
 ('da', 'dime.research', 'default', 'Forskning', ''),
 ('da', 'dime.save', 'default', 'Gem', ''),
 ('da', 'dime.search', 'default', 'Søg', ''),
@@ -834,11 +861,20 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.user.password', 'default', 'Password', ''),
 ('da', 'dime.user.password.forgot', 'default', 'Glemt Password?', ''),
 ('da', 'dime.user.register', 'default', 'Ny Bruger?', ''),
+('da', 'form.select.optional', 'default', 'valgfri', ''),
+('da', 'form.select.required', 'default', 'påkrævet', ''),
+('da', 'lat', 'default', 'Breddegrad', ''),
+('da', 'lon', 'default', 'Længde', ''),
 ('da', 'module.actor', 'default', 'Aktører', ''),
 ('da', 'module.file', 'default', 'Filer', ''),
+('da', 'property.description', 'default', 'Beskrivelse', ''),
+('da', 'property.weight', 'default', 'Vægt', ''),
 ('da', 'search.placeholder', 'default', 'Fritekstsøgning', ''),
 ('da', 'site.brand', 'default', 'DIME', ''),
 ('da', 'user.greeting', 'default', 'Hej, %name%!', ''),
+('da', 'user.menu.edit', 'default', 'Rediger Bruger', ''),
+('da', 'user.menu.home', 'default', 'Min Side', ''),
+('da', 'user.menu.login', 'default', 'Login', ''),
 ('en', 'association.contact', 'default', 'Contact', ''),
 ('en', 'core.actor.institution', 'default', 'Institution', ''),
 ('en', 'core.actor.person', 'default', 'Person', ''),
@@ -848,9 +884,12 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.campaign', 'default', 'Campaign', ''),
 ('en', 'dime.find', 'default', 'Find', ''),
 ('en', 'dime.find.add', 'default', 'Add Find', ''),
+('en', 'dime.find.condition', 'default', 'Condition', ''),
 ('en', 'dime.find.finddate', 'default', 'Find Date', 'DIME Find Find Date'),
-('en', 'dime.find.finderid', 'default', 'Finder ID', 'DIME Find Finder\'s ID'),
+('en', 'dime.find.finderid', 'default', 'Finder ID', 'DIME Find Finder''s ID'),
+('en', 'dime.find.findpoint', 'default', 'Coordinates', ''),
 ('en', 'dime.find.id', 'default', 'ID', 'DIME Find ID'),
+('en', 'dime.find.length', 'default', 'Maximun Length / Diameter', ''),
 ('en', 'dime.find.material', 'default', 'Material', 'DIME Find Material'),
 ('en', 'dime.find.material.secondary', 'default', 'Secondary Material(s)', 'DIME Find Secondary Material(s)'),
 ('en', 'dime.find.period.end', 'default', 'End Period', 'DIME Find Period End'),
@@ -862,8 +901,12 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.home', 'default', 'Home', ''),
 ('en', 'dime.locality', 'default', 'Locality', ''),
 ('en', 'dime.locality.add', 'default', 'Add Locality', ''),
+('en', 'dime.locality.id', 'default', 'DIME ID', ''),
 ('en', 'dime.locality.search', 'default', 'Search Localities', ''),
+('en', 'dime.locality.type', 'default', 'Type', ''),
+('en', 'dime.material', 'default', 'Material', ''),
 ('en', 'dime.material.silver', 'default', 'Silver Test1', ''),
+('en', 'dime.period', 'default', 'Period', ''),
 ('en', 'dime.research', 'default', 'Research', ''),
 ('en', 'dime.save', 'default', 'Save', ''),
 ('en', 'dime.schema.find', 'default', 'Find', ''),
@@ -882,6 +925,8 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'file.type.other', 'default', 'Other File', ''),
 ('en', 'file.type.text', 'default', 'Text File', ''),
 ('en', 'file.type.video', 'default', 'Video File', ''),
+('en', 'form.select.optional', 'default', 'optional', ''),
+('en', 'form.select.required', 'default', 'required', ''),
 ('en', 'format.actor', 'default', 'Actor Format', ''),
 ('en', 'format.address', 'default', 'Address Format', ''),
 ('en', 'format.blob', 'default', 'Blob Format', ''),
@@ -927,6 +972,8 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'fragment.string', 'default', 'String Fragment', ''),
 ('en', 'fragment.text', 'default', 'Text Fragment', ''),
 ('en', 'fragment.time', 'default', 'Time Fragment', ''),
+('en', 'lat', 'default', 'Latitude', ''),
+('en', 'lon', 'default', 'Longitude', ''),
 ('en', 'module.actor', 'default', 'Actor', ''),
 ('en', 'module.campaign', 'default', 'Campaign', ''),
 ('en', 'module.file', 'default', 'File', ''),
@@ -959,6 +1006,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'test.test', 'default', 'text text', 'notes notes'),
 ('en', 'user.greeting', 'default', 'Hello, %name%!', ''),
 ('en', 'user.menu.edit', 'default', 'Edit your profile', ''),
+('en', 'user.menu.home', 'default', 'My Home', ''),
 ('en', 'user.menu.list', 'default', 'List users', ''),
 ('en', 'user.menu.login', 'default', 'Sign in', ''),
 ('en', 'user.menu.logout', 'default', 'Sign out', ''),
@@ -972,7 +1020,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 -- Table structure for table `ark_translation_parameter`
 --
 
-CREATE TABLE `ark_translation_parameter` (
+CREATE TABLE IF NOT EXISTS `ark_translation_parameter` (
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `parameter` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -990,7 +1038,7 @@ INSERT INTO `ark_translation_parameter` (`keyword`, `parameter`) VALUES
 -- Table structure for table `ark_translation_role`
 --
 
-CREATE TABLE `ark_translation_role` (
+CREATE TABLE IF NOT EXISTS `ark_translation_role` (
   `role` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
@@ -1033,7 +1081,7 @@ INSERT INTO `ark_translation_role` (`role`, `keyword`, `description`) VALUES
 -- Table structure for table `ark_view_element`
 --
 
-CREATE TABLE `ark_view_element` (
+CREATE TABLE IF NOT EXISTS `ark_view_element` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1116,7 +1164,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attrib
 -- Table structure for table `ark_view_layout`
 --
 
-CREATE TABLE `ark_view_layout` (
+CREATE TABLE IF NOT EXISTS `ark_view_layout` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `row` int(11) NOT NULL,
   `col` int(11) NOT NULL,
@@ -1190,7 +1238,7 @@ INSERT INTO `ark_view_layout` (`element`, `row`, `col`, `seq`, `item_type`, `ena
 -- Table structure for table `ark_view_option`
 --
 
-CREATE TABLE `ark_view_option` (
+CREATE TABLE IF NOT EXISTS `ark_view_option` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1211,7 +1259,7 @@ INSERT INTO `ark_view_option` (`element`, `name`, `type`, `value`) VALUES
 -- Table structure for table `ark_view_type`
 --
 
-CREATE TABLE `ark_view_type` (
+CREATE TABLE IF NOT EXISTS `ark_view_type` (
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `class` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `layout` tinyint(1) NOT NULL DEFAULT '0',
@@ -1237,7 +1285,7 @@ INSERT INTO `ark_view_type` (`type`, `class`, `layout`, `form`, `template`, `key
 -- Table structure for table `ark_vocabulary`
 --
 
-CREATE TABLE `ark_vocabulary` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `source` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1274,7 +1322,7 @@ INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `enabled`, 
 -- Table structure for table `ark_vocabulary_collected`
 --
 
-CREATE TABLE `ark_vocabulary_collected` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_collected` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `collection` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1388,7 +1436,7 @@ INSERT INTO `ark_vocabulary_collected` (`concept`, `collection`, `term`, `seq`) 
 -- Table structure for table `ark_vocabulary_collection`
 --
 
-CREATE TABLE `ark_vocabulary_collection` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_collection` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `collection` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `label` text COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1402,7 +1450,7 @@ CREATE TABLE `ark_vocabulary_collection` (
 -- Table structure for table `ark_vocabulary_parameter`
 --
 
-CREATE TABLE `ark_vocabulary_parameter` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_parameter` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1618,7 +1666,7 @@ INSERT INTO `ark_vocabulary_parameter` (`concept`, `term`, `name`, `type`, `valu
 -- Table structure for table `ark_vocabulary_related`
 --
 
-CREATE TABLE `ark_vocabulary_related` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_related` (
   `from_concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `from_term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `to_concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1733,7 +1781,7 @@ INSERT INTO `ark_vocabulary_related` (`from_concept`, `from_term`, `to_concept`,
 -- Table structure for table `ark_vocabulary_relation`
 --
 
-CREATE TABLE `ark_vocabulary_relation` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_relation` (
   `relation` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `code` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
   `recipricol` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1749,11 +1797,11 @@ CREATE TABLE `ark_vocabulary_relation` (
 --
 
 INSERT INTO `ark_vocabulary_relation` (`relation`, `code`, `recipricol`, `recipricol_code`, `equivalence`, `hierarchy`, `associative`, `description`) VALUES
-('broader', 'BT', 'narrower', 'NT', 0, 1, 0, 'The \'Has A\' parent/child hierarchy relationship'),
-('class', 'BTI', 'instance', 'NTI', 0, 1, 0, 'The \'Is A\' class/instance hierarchy relationship.'),
+('broader', 'BT', 'narrower', 'NT', 0, 1, 0, 'The ''Has A'' parent/child hierarchy relationship'),
+('class', 'BTI', 'instance', 'NTI', 0, 1, 0, 'The ''Is A'' class/instance hierarchy relationship.'),
 ('related', 'RT', 'related', 'RT', 0, 0, 1, 'Related terms that are neither equivalent or hierarchical.'),
 ('usedfor', 'UF', 'use', 'U', 1, 0, 0, 'Leads from the preferred entry term to the\\nnon-preferred term(s).'),
-('whole', 'BTP', 'part', 'NTP', 0, 1, 0, 'The \'Part Of\' whole/part hierarchy relationship.');
+('whole', 'BTP', 'part', 'NTP', 0, 1, 0, 'The ''Part Of'' whole/part hierarchy relationship.');
 
 -- --------------------------------------------------------
 
@@ -1761,7 +1809,7 @@ INSERT INTO `ark_vocabulary_relation` (`relation`, `code`, `recipricol`, `recipr
 -- Table structure for table `ark_vocabulary_term`
 --
 
-CREATE TABLE `ark_vocabulary_term` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_term` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `alias` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2512,9 +2560,9 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `depre
 ('language', 'mgo', 'meta', 1, 0, 'language.meta', ''),
 ('language', 'mh', 'marshallese', 1, 0, 'language.marshallese', ''),
 ('language', 'mi', 'maori', 1, 0, 'language.maori', ''),
-('language', 'mic', 'micmac', 1, 0, 'language.micmac', ''),
-('language', 'min', 'minangkabau', 1, 0, 'language.minangkabau', '');
+('language', 'mic', 'micmac', 1, 0, 'language.micmac', '');
 INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('language', 'min', 'minangkabau', 1, 0, 'language.minangkabau', ''),
 ('language', 'mk', 'macedonian', 1, 0, 'language.macedonian', ''),
 ('language', 'ml', 'malayalam', 1, 0, 'language.malayalam', ''),
 ('language', 'mn', 'mongolian', 1, 0, 'language.mongolian', ''),
@@ -2788,7 +2836,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `depre
 -- Table structure for table `ark_vocabulary_translation`
 --
 
-CREATE TABLE `ark_vocabulary_translation` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_translation` (
   `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `domain` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2941,16 +2989,16 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('da', 'vocabulary', 'dime.treasure.not', 'default', 'dime.treasure.not', ''),
 ('da', 'vocabulary', 'dime.treasure.pending', 'default', 'dime.treasure.pending', ''),
 ('da', 'vocabulary', 'dime.treasure.treasure', 'default', 'Danefæ', ''),
-('da', 'vocabulary', 'length.kilometre', 'default', 'length.kilometre', ''),
-('da', 'vocabulary', 'length.metre', 'default', 'length.metre', ''),
-('da', 'vocabulary', 'length.micrometre', 'default', 'length.micrometre', ''),
-('da', 'vocabulary', 'length.millimetre', 'default', 'length.millimetre', ''),
-('da', 'vocabulary', 'length.nanometre', 'default', 'length.nanometre', ''),
-('da', 'vocabulary', 'mass.gram', 'default', 'mass.gram', ''),
-('da', 'vocabulary', 'mass.kilogram', 'default', 'mass.kilogram', ''),
-('da', 'vocabulary', 'mass.microgram', 'default', 'mass.microgram', ''),
-('da', 'vocabulary', 'mass.milligram', 'default', 'mass.milligram', ''),
-('da', 'vocabulary', 'mass.tonne', 'default', 'mass.tonne', ''),
+('da', 'vocabulary', 'length.kilometre', 'default', 'kilometer', ''),
+('da', 'vocabulary', 'length.metre', 'default', 'meter', ''),
+('da', 'vocabulary', 'length.micrometre', 'default', 'mikrometer', ''),
+('da', 'vocabulary', 'length.millimetre', 'default', 'millimeter', ''),
+('da', 'vocabulary', 'length.nanometre', 'default', 'nanometer', ''),
+('da', 'vocabulary', 'mass.gram', 'default', 'gram', ''),
+('da', 'vocabulary', 'mass.kilogram', 'default', 'kilogram', ''),
+('da', 'vocabulary', 'mass.microgram', 'default', 'mikrogram', ''),
+('da', 'vocabulary', 'mass.milligram', 'default', 'milligram', ''),
+('da', 'vocabulary', 'mass.tonne', 'default', 'ton', ''),
 ('en', 'vocabulary', 'core.file.status.checkedin', 'default', 'core.file.status.checkedin', ''),
 ('en', 'vocabulary', 'core.file.status.checkedout', 'default', 'core.file.status.checkedout', ''),
 ('en', 'vocabulary', 'core.file.status.expired', 'default', 'core.file.status.expired', ''),
@@ -3014,7 +3062,7 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'country.congo', 'default', 'Congo ', ''),
 ('en', 'vocabulary', 'country.cookislands', 'default', 'Cook Islands ', ''),
 ('en', 'vocabulary', 'country.costarica', 'default', 'Costa Rica ', ''),
-('en', 'vocabulary', 'country.cotedivoire', 'default', 'Côte d\'Ivoire ', ''),
+('en', 'vocabulary', 'country.cotedivoire', 'default', 'Côte d''Ivoire ', ''),
 ('en', 'vocabulary', 'country.croatia', 'default', 'Croatia ', ''),
 ('en', 'vocabulary', 'country.cuba', 'default', 'Cuba ', ''),
 ('en', 'vocabulary', 'country.curacao', 'default', 'Curaçao ', ''),
@@ -3851,16 +3899,16 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'language.zhuang', 'default', 'Zhuang', ''),
 ('en', 'vocabulary', 'language.zulu', 'default', 'Zulu', ''),
 ('en', 'vocabulary', 'language.zuni', 'default', 'Zuni', ''),
-('en', 'vocabulary', 'length.kilometre', 'default', 'length.kilometre', ''),
-('en', 'vocabulary', 'length.metre', 'default', 'length.metre', ''),
-('en', 'vocabulary', 'length.micrometre', 'default', 'length.micrometre', ''),
-('en', 'vocabulary', 'length.millimetre', 'default', 'length.millimetre', ''),
-('en', 'vocabulary', 'length.nanometre', 'default', 'length.nanometre', ''),
-('en', 'vocabulary', 'mass.gram', 'default', 'mass.gram', ''),
-('en', 'vocabulary', 'mass.kilogram', 'default', 'mass.kilogram', ''),
-('en', 'vocabulary', 'mass.microgram', 'default', 'mass.microgram', ''),
-('en', 'vocabulary', 'mass.milligram', 'default', 'mass.milligram', ''),
-('en', 'vocabulary', 'mass.tonne', 'default', 'mass.tonne', '');
+('en', 'vocabulary', 'length.kilometre', 'default', 'kilometre', ''),
+('en', 'vocabulary', 'length.metre', 'default', 'metre', ''),
+('en', 'vocabulary', 'length.micrometre', 'default', 'micrometre', ''),
+('en', 'vocabulary', 'length.millimetre', 'default', 'millimetre', ''),
+('en', 'vocabulary', 'length.nanometre', 'default', 'nanometre', ''),
+('en', 'vocabulary', 'mass.gram', 'default', 'gram', ''),
+('en', 'vocabulary', 'mass.kilogram', 'default', 'kilogram', ''),
+('en', 'vocabulary', 'mass.microgram', 'default', 'microgram', ''),
+('en', 'vocabulary', 'mass.milligram', 'default', 'milligram', ''),
+('en', 'vocabulary', 'mass.tonne', 'default', 'tonne', '');
 
 -- --------------------------------------------------------
 
@@ -3868,7 +3916,7 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 -- Table structure for table `ark_vocabulary_type`
 --
 
-CREATE TABLE `ark_vocabulary_type` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_type` (
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `equivalence` tinyint(1) NOT NULL,
   `hierarchy` tinyint(1) NOT NULL,
@@ -3895,7 +3943,7 @@ INSERT INTO `ark_vocabulary_type` (`type`, `equivalence`, `hierarchy`, `associat
 -- Table structure for table `cor_conf_layout_role`
 --
 
-CREATE TABLE `cor_conf_layout_role` (
+CREATE TABLE IF NOT EXISTS `cor_conf_layout_role` (
   `layout_role` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -3906,7 +3954,7 @@ CREATE TABLE `cor_conf_layout_role` (
 -- Table structure for table `cor_conf_page`
 --
 
-CREATE TABLE `cor_conf_page` (
+CREATE TABLE IF NOT EXISTS `cor_conf_page` (
   `page` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `title` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -3926,7 +3974,7 @@ CREATE TABLE `cor_conf_page` (
 -- Table structure for table `cor_conf_page_layout`
 --
 
-CREATE TABLE `cor_conf_page_layout` (
+CREATE TABLE IF NOT EXISTS `cor_conf_page_layout` (
   `page` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
   `layout_role` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -3939,7 +3987,7 @@ CREATE TABLE `cor_conf_page_layout` (
 -- Table structure for table `dime_period`
 --
 
-CREATE TABLE `dime_period` (
+CREATE TABLE IF NOT EXISTS `dime_period` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `parent` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -4060,282 +4108,259 @@ INSERT INTO `dime_period` (`concept`, `term`, `parent`, `depth`, `from_year`, `t
 -- Indexes for table `ark_config_error`
 --
 ALTER TABLE `ark_config_error`
-  ADD PRIMARY KEY (`code`);
+ ADD PRIMARY KEY (`code`);
 
 --
 -- Indexes for table `ark_config_flash`
 --
 ALTER TABLE `ark_config_flash`
-  ADD PRIMARY KEY (`id`);
+ ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `ark_config_thumbnail`
 --
 ALTER TABLE `ark_config_thumbnail`
-  ADD PRIMARY KEY (`profile`);
+ ADD PRIMARY KEY (`profile`);
 
 --
 -- Indexes for table `ark_format`
 --
 ALTER TABLE `ark_format`
-  ADD PRIMARY KEY (`format`),
-  ADD KEY `fragment_type` (`type`);
+ ADD PRIMARY KEY (`format`), ADD KEY `fragment_type` (`type`);
 
 --
 -- Indexes for table `ark_format_attribute`
 --
 ALTER TABLE `ark_format_attribute`
-  ADD PRIMARY KEY (`parent`,`attribute`),
-  ADD KEY `vocabulary` (`vocabulary`),
-  ADD KEY `format` (`format`);
+ ADD PRIMARY KEY (`parent`,`attribute`), ADD KEY `vocabulary` (`vocabulary`), ADD KEY `format` (`format`);
 
 --
 -- Indexes for table `ark_format_blob`
 --
 ALTER TABLE `ark_format_blob`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_boolean`
 --
 ALTER TABLE `ark_format_boolean`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_datetime`
 --
 ALTER TABLE `ark_format_datetime`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_decimal`
 --
 ALTER TABLE `ark_format_decimal`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_float`
 --
 ALTER TABLE `ark_format_float`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_integer`
 --
 ALTER TABLE `ark_format_integer`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_item`
 --
 ALTER TABLE `ark_format_item`
-  ADD PRIMARY KEY (`format`),
-  ADD KEY `module` (`module`);
+ ADD PRIMARY KEY (`format`), ADD KEY `module` (`module`);
 
 --
 -- Indexes for table `ark_format_object`
 --
 ALTER TABLE `ark_format_object`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_string`
 --
 ALTER TABLE `ark_format_string`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_wkt`
 --
 ALTER TABLE `ark_format_wkt`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_fragment_type`
 --
 ALTER TABLE `ark_fragment_type`
-  ADD PRIMARY KEY (`type`);
+ ADD PRIMARY KEY (`type`);
 
 --
 -- Indexes for table `ark_module`
 --
 ALTER TABLE `ark_module`
-  ADD PRIMARY KEY (`module`);
+ ADD PRIMARY KEY (`module`);
 
 --
 -- Indexes for table `ark_schema`
 --
 ALTER TABLE `ark_schema`
-  ADD PRIMARY KEY (`schma`),
-  ADD KEY `module` (`module`);
+ ADD PRIMARY KEY (`schma`), ADD KEY `module` (`module`);
 
 --
 -- Indexes for table `ark_schema_association`
 --
 ALTER TABLE `ark_schema_association`
-  ADD PRIMARY KEY (`schma`,`type`,`association`) USING BTREE,
-  ADD KEY `inverse_schema` (`inverse`);
+ ADD PRIMARY KEY (`schma`,`type`,`association`) USING BTREE, ADD KEY `inverse_schema` (`inverse`);
 
 --
 -- Indexes for table `ark_schema_attribute`
 --
 ALTER TABLE `ark_schema_attribute`
-  ADD PRIMARY KEY (`schma`,`type`,`attribute`) USING BTREE,
-  ADD KEY `format` (`format`),
-  ADD KEY `vocabulary` (`vocabulary`);
+ ADD PRIMARY KEY (`schma`,`type`,`attribute`) USING BTREE, ADD KEY `format` (`format`), ADD KEY `vocabulary` (`vocabulary`);
 
 --
 -- Indexes for table `ark_translation`
 --
 ALTER TABLE `ark_translation`
-  ADD PRIMARY KEY (`keyword`),
-  ADD KEY `domain` (`domain`);
+ ADD PRIMARY KEY (`keyword`), ADD KEY `domain` (`domain`);
 
 --
 -- Indexes for table `ark_translation_domain`
 --
 ALTER TABLE `ark_translation_domain`
-  ADD PRIMARY KEY (`domain`);
+ ADD PRIMARY KEY (`domain`);
 
 --
 -- Indexes for table `ark_translation_language`
 --
 ALTER TABLE `ark_translation_language`
-  ADD PRIMARY KEY (`language`);
+ ADD PRIMARY KEY (`language`);
 
 --
 -- Indexes for table `ark_translation_message`
 --
 ALTER TABLE `ark_translation_message`
-  ADD PRIMARY KEY (`language`,`keyword`,`role`),
-  ADD KEY `keyword` (`keyword`),
-  ADD KEY `role` (`role`);
+ ADD PRIMARY KEY (`language`,`keyword`,`role`), ADD KEY `keyword` (`keyword`), ADD KEY `role` (`role`);
 
 --
 -- Indexes for table `ark_translation_parameter`
 --
 ALTER TABLE `ark_translation_parameter`
-  ADD PRIMARY KEY (`keyword`,`parameter`);
+ ADD PRIMARY KEY (`keyword`,`parameter`);
 
 --
 -- Indexes for table `ark_translation_role`
 --
 ALTER TABLE `ark_translation_role`
-  ADD PRIMARY KEY (`role`);
+ ADD PRIMARY KEY (`role`);
 
 --
 -- Indexes for table `ark_view_element`
 --
 ALTER TABLE `ark_view_element`
-  ADD PRIMARY KEY (`element`),
-  ADD KEY `type` (`type`),
-  ADD KEY `schma` (`schma`);
+ ADD PRIMARY KEY (`element`), ADD KEY `type` (`type`), ADD KEY `schma` (`schma`);
 
 --
 -- Indexes for table `ark_view_layout`
 --
 ALTER TABLE `ark_view_layout`
-  ADD PRIMARY KEY (`element`,`item_type`,`row`,`col`,`seq`),
-  ADD KEY `child` (`child`);
+ ADD PRIMARY KEY (`element`,`item_type`,`row`,`col`,`seq`), ADD KEY `child` (`child`);
 
 --
 -- Indexes for table `ark_view_option`
 --
 ALTER TABLE `ark_view_option`
-  ADD PRIMARY KEY (`element`,`name`);
+ ADD PRIMARY KEY (`element`,`name`);
 
 --
 -- Indexes for table `ark_view_type`
 --
 ALTER TABLE `ark_view_type`
-  ADD PRIMARY KEY (`type`);
+ ADD PRIMARY KEY (`type`);
 
 --
 -- Indexes for table `ark_vocabulary`
 --
 ALTER TABLE `ark_vocabulary`
-  ADD PRIMARY KEY (`concept`),
-  ADD KEY `type` (`type`);
+ ADD PRIMARY KEY (`concept`), ADD KEY `type` (`type`);
 
 --
 -- Indexes for table `ark_vocabulary_collected`
 --
 ALTER TABLE `ark_vocabulary_collected`
-  ADD PRIMARY KEY (`concept`,`collection`,`term`);
+ ADD PRIMARY KEY (`concept`,`collection`,`term`);
 
 --
 -- Indexes for table `ark_vocabulary_collection`
 --
 ALTER TABLE `ark_vocabulary_collection`
-  ADD PRIMARY KEY (`concept`,`collection`);
+ ADD PRIMARY KEY (`concept`,`collection`);
 
 --
 -- Indexes for table `ark_vocabulary_parameter`
 --
 ALTER TABLE `ark_vocabulary_parameter`
-  ADD PRIMARY KEY (`concept`,`term`,`name`),
-  ADD KEY `concept` (`concept`,`term`);
+ ADD PRIMARY KEY (`concept`,`term`,`name`), ADD KEY `concept` (`concept`,`term`);
 
 --
 -- Indexes for table `ark_vocabulary_related`
 --
 ALTER TABLE `ark_vocabulary_related`
-  ADD PRIMARY KEY (`from_concept`,`from_term`,`to_concept`,`to_term`),
-  ADD KEY `relation` (`relation`),
-  ADD KEY `from_term` (`from_concept`,`from_term`) USING BTREE,
-  ADD KEY `to_term` (`to_concept`,`to_term`) USING BTREE;
+ ADD PRIMARY KEY (`from_concept`,`from_term`,`to_concept`,`to_term`), ADD KEY `relation` (`relation`), ADD KEY `from_term` (`from_concept`,`from_term`) USING BTREE, ADD KEY `to_term` (`to_concept`,`to_term`) USING BTREE;
 
 --
 -- Indexes for table `ark_vocabulary_relation`
 --
 ALTER TABLE `ark_vocabulary_relation`
-  ADD PRIMARY KEY (`relation`);
+ ADD PRIMARY KEY (`relation`);
 
 --
 -- Indexes for table `ark_vocabulary_term`
 --
 ALTER TABLE `ark_vocabulary_term`
-  ADD PRIMARY KEY (`concept`,`term`),
-  ADD UNIQUE KEY `keyword` (`keyword`);
+ ADD PRIMARY KEY (`concept`,`term`), ADD UNIQUE KEY `keyword` (`keyword`);
 
 --
 -- Indexes for table `ark_vocabulary_translation`
 --
 ALTER TABLE `ark_vocabulary_translation`
-  ADD PRIMARY KEY (`language`,`domain`,`keyword`,`role`),
-  ADD KEY `keyword` (`keyword`),
-  ADD KEY `domain` (`domain`),
-  ADD KEY `role` (`role`);
+ ADD PRIMARY KEY (`language`,`domain`,`keyword`,`role`), ADD KEY `keyword` (`keyword`), ADD KEY `domain` (`domain`), ADD KEY `role` (`role`);
 
 --
 -- Indexes for table `ark_vocabulary_type`
 --
 ALTER TABLE `ark_vocabulary_type`
-  ADD PRIMARY KEY (`type`);
+ ADD PRIMARY KEY (`type`);
 
 --
 -- Indexes for table `cor_conf_layout_role`
 --
 ALTER TABLE `cor_conf_layout_role`
-  ADD PRIMARY KEY (`layout_role`);
+ ADD PRIMARY KEY (`layout_role`);
 
 --
 -- Indexes for table `cor_conf_page`
 --
 ALTER TABLE `cor_conf_page`
-  ADD PRIMARY KEY (`page`);
+ ADD PRIMARY KEY (`page`);
 
 --
 -- Indexes for table `cor_conf_page_layout`
 --
 ALTER TABLE `cor_conf_page_layout`
-  ADD PRIMARY KEY (`page`,`module`,`layout_role`);
+ ADD PRIMARY KEY (`page`,`module`,`layout_role`);
 
 --
 -- Indexes for table `dime_period`
 --
 ALTER TABLE `dime_period`
-  ADD PRIMARY KEY (`concept`,`term`);
+ ADD PRIMARY KEY (`concept`,`term`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -4345,7 +4370,7 @@ ALTER TABLE `dime_period`
 -- AUTO_INCREMENT for table `ark_config_flash`
 --
 ALTER TABLE `ark_config_flash`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- Constraints for dumped tables
 --
@@ -4354,172 +4379,172 @@ ALTER TABLE `ark_config_flash`
 -- Constraints for table `ark_format`
 --
 ALTER TABLE `ark_format`
-  ADD CONSTRAINT `ark_format_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_fragment_type` (`type`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_fragment_type` (`type`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_attribute`
 --
 ALTER TABLE `ark_format_attribute`
-  ADD CONSTRAINT `ark_format_attribute_ibfk_2` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_format_attribute_ibfk_3` FOREIGN KEY (`parent`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_format_attribute_ibfk_4` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_attribute_ibfk_2` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_format_attribute_ibfk_3` FOREIGN KEY (`parent`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_format_attribute_ibfk_4` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_blob`
 --
 ALTER TABLE `ark_format_blob`
-  ADD CONSTRAINT `ark_format_blob_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_blob_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_boolean`
 --
 ALTER TABLE `ark_format_boolean`
-  ADD CONSTRAINT `ark_format_boolean_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_boolean_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_datetime`
 --
 ALTER TABLE `ark_format_datetime`
-  ADD CONSTRAINT `ark_format_datetime_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_datetime_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_decimal`
 --
 ALTER TABLE `ark_format_decimal`
-  ADD CONSTRAINT `ark_format_decimal_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_decimal_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_float`
 --
 ALTER TABLE `ark_format_float`
-  ADD CONSTRAINT `ark_format_float_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_float_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_integer`
 --
 ALTER TABLE `ark_format_integer`
-  ADD CONSTRAINT `ark_format_integer_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_integer_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_item`
 --
 ALTER TABLE `ark_format_item`
-  ADD CONSTRAINT `ark_format_item_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_format_item_ibfk_2` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_item_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_format_item_ibfk_2` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_object`
 --
 ALTER TABLE `ark_format_object`
-  ADD CONSTRAINT `ark_format_object_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_object_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_string`
 --
 ALTER TABLE `ark_format_string`
-  ADD CONSTRAINT `ark_format_string_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_string_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_wkt`
 --
 ALTER TABLE `ark_format_wkt`
-  ADD CONSTRAINT `ark_format_wkt_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_wkt_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_schema`
 --
 ALTER TABLE `ark_schema`
-  ADD CONSTRAINT `ark_schema_ibfk_1` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_schema_ibfk_1` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_schema_association`
 --
 ALTER TABLE `ark_schema_association`
-  ADD CONSTRAINT `ark_schema_association_ibfk_1` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_schema_association_ibfk_2` FOREIGN KEY (`inverse`) REFERENCES `ark_schema` (`schma`);
+ADD CONSTRAINT `ark_schema_association_ibfk_1` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_schema_association_ibfk_2` FOREIGN KEY (`inverse`) REFERENCES `ark_schema` (`schma`);
 
 --
 -- Constraints for table `ark_schema_attribute`
 --
 ALTER TABLE `ark_schema_attribute`
-  ADD CONSTRAINT `ark_schema_attribute_ibfk_1` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_schema_attribute_ibfk_2` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_schema_attribute_ibfk_3` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_schema_attribute_ibfk_1` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_schema_attribute_ibfk_2` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_schema_attribute_ibfk_3` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_translation`
 --
 ALTER TABLE `ark_translation`
-  ADD CONSTRAINT `ark_translation_ibfk_1` FOREIGN KEY (`domain`) REFERENCES `ark_translation_domain` (`domain`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_translation_ibfk_1` FOREIGN KEY (`domain`) REFERENCES `ark_translation_domain` (`domain`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_translation_message`
 --
 ALTER TABLE `ark_translation_message`
-  ADD CONSTRAINT `ark_translation_message_ibfk_1` FOREIGN KEY (`language`) REFERENCES `ark_translation_language` (`language`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_translation_message_ibfk_2` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_translation_message_ibfk_3` FOREIGN KEY (`role`) REFERENCES `ark_translation_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_translation_message_ibfk_1` FOREIGN KEY (`language`) REFERENCES `ark_translation_language` (`language`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_translation_message_ibfk_2` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_translation_message_ibfk_3` FOREIGN KEY (`role`) REFERENCES `ark_translation_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_translation_parameter`
 --
 ALTER TABLE `ark_translation_parameter`
-  ADD CONSTRAINT `ark_translation_parameter_ibfk_1` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_translation_parameter_ibfk_1` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_element`
 --
 ALTER TABLE `ark_view_element`
-  ADD CONSTRAINT `ark_view_element_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_view_type` (`type`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_view_element_ibfk_2` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_view_element_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_view_type` (`type`) ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_view_element_ibfk_2` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_layout`
 --
 ALTER TABLE `ark_view_layout`
-  ADD CONSTRAINT `ark_view_layout_ibfk_1` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_view_layout_ibfk_2` FOREIGN KEY (`child`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_view_layout_ibfk_1` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_view_layout_ibfk_2` FOREIGN KEY (`child`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_option`
 --
 ALTER TABLE `ark_view_option`
-  ADD CONSTRAINT `ark_view_option_ibfk_1` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_view_option_ibfk_1` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary`
 --
 ALTER TABLE `ark_vocabulary`
-  ADD CONSTRAINT `ark_vocabulary_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_vocabulary_type` (`type`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_vocabulary_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_vocabulary_type` (`type`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary_parameter`
 --
 ALTER TABLE `ark_vocabulary_parameter`
-  ADD CONSTRAINT `ark_vocabulary_parameter_ibfk_1` FOREIGN KEY (`concept`,`term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_vocabulary_parameter_ibfk_1` FOREIGN KEY (`concept`, `term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary_related`
 --
 ALTER TABLE `ark_vocabulary_related`
-  ADD CONSTRAINT `ark_vocabulary_related_ibfk_1` FOREIGN KEY (`from_concept`,`from_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE,
-  ADD CONSTRAINT `ark_vocabulary_related_ibfk_2` FOREIGN KEY (`to_concept`,`to_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE,
-  ADD CONSTRAINT `ark_vocabulary_related_ibfk_3` FOREIGN KEY (`relation`) REFERENCES `ark_vocabulary_relation` (`relation`);
+ADD CONSTRAINT `ark_vocabulary_related_ibfk_1` FOREIGN KEY (`from_concept`, `from_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE,
+ADD CONSTRAINT `ark_vocabulary_related_ibfk_2` FOREIGN KEY (`to_concept`, `to_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE,
+ADD CONSTRAINT `ark_vocabulary_related_ibfk_3` FOREIGN KEY (`relation`) REFERENCES `ark_vocabulary_relation` (`relation`);
 
 --
 -- Constraints for table `ark_vocabulary_term`
 --
 ALTER TABLE `ark_vocabulary_term`
-  ADD CONSTRAINT `ark_vocabulary_term_ibfk_1` FOREIGN KEY (`concept`) REFERENCES `ark_vocabulary` (`concept`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_vocabulary_term_ibfk_1` FOREIGN KEY (`concept`) REFERENCES `ark_vocabulary` (`concept`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary_translation`
 --
 ALTER TABLE `ark_vocabulary_translation`
-  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_1` FOREIGN KEY (`keyword`) REFERENCES `ark_vocabulary_term` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_2` FOREIGN KEY (`language`) REFERENCES `ark_translation_language` (`language`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_3` FOREIGN KEY (`domain`) REFERENCES `ark_translation_domain` (`domain`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_4` FOREIGN KEY (`role`) REFERENCES `ark_translation_role` (`role`) ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_vocabulary_translation_ibfk_1` FOREIGN KEY (`keyword`) REFERENCES `ark_vocabulary_term` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_vocabulary_translation_ibfk_2` FOREIGN KEY (`language`) REFERENCES `ark_translation_language` (`language`) ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_vocabulary_translation_ibfk_3` FOREIGN KEY (`domain`) REFERENCES `ark_translation_domain` (`domain`) ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_vocabulary_translation_ibfk_4` FOREIGN KEY (`role`) REFERENCES `ark_translation_role` (`role`) ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
