@@ -71,6 +71,21 @@ class PropertyType extends AbstractType implements DataMapperInterface
         } else {
             $class = $attribute->format()->type()->formClass();
         }
+        if ($attribute->format()->type()->name() == 'datetime') {
+            $options['widget'] = 'single_text';
+            $options['html5'] = false;
+            $options['attr'] = ['class' => 'datetimepicker'];
+        }
+        if ($attribute->format()->type()->name() == 'date') {
+            $options['widget'] = 'single_text';
+            $options['html5'] = false;
+            $options['attr'] = ['class' => 'datepicker'];
+        }
+        if ($attribute->format()->type()->name() == 'time') {
+            $options['widget'] = 'single_text';
+            $options['html5'] = false;
+            $options['attr'] = ['class' => 'timepicker'];
+        }
         $options['mapped'] = false;
         $options['label'] = false;
         $options['required'] = $required;

@@ -1,6 +1,20 @@
 $(document).ready(function() {
     // Replace all select tags with Select2
     $("select").select2();
+    //$("date").datetimepicker();
+    //$("time").datetimepicker();
+    //$("datetime").datetimepicker();
+    $('.datetimepicker').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii'
+    });
+    $('.datepicker').datetimepicker({
+        format: 'yyyy-mm-dd',
+        minView: 2
+    });
+    $('.timepicker').datetimepicker({
+        format: 'hh:ii',
+        maxView: 0
+    });
     // HACK To fix Select2 not being responsive
     // See https://github.com/select2/select2/issues/3278 and http://stackoverflow.com/a/41429176
     $(".select2.select2-container").css("width", "100%");
