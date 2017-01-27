@@ -76,7 +76,7 @@ class Service
 
     public static function redirectPath($path, $parmameters = null, $status = 302)
     {
-        return self::$app->redirect(self::path($path, $parmameters), $status);
+        return self::$app->redirect(Service::path($path, $parmameters), $status);
     }
 
     public static function forms()
