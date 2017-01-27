@@ -76,6 +76,12 @@ body {}
     margin-right: 1em;
 }
 
+.dime-icon.icon-user-edit {
+    background-image: url("../images/edit_user.png");
+    margin: 0 25px;
+    float: none;
+}
+
 .dime-icon.icon-add {
     background-image: url("../images/add_find.png");
 }
@@ -246,6 +252,7 @@ body {}
     padding: 20px;
     min-height: 120px;
     text-transform: uppercase;
+    text-align: center;
 }
 
 .dime-listhead {

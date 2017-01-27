@@ -2,12 +2,27 @@
 {% block usertool %}
 
     {% if global.user %}
-        <a href="{{ path('user.logout') }}">
-            <span class="dime-icon icon-user small"></span>
-            {{ 'user.greeting' | trans({ '%name%': global.user.displayName }) }}
-        </a>
+        <div class="row usertool">
+            <a href="{{ path('user.logout') }}">
+                <span class="dime-icon icon-user small"></span>
+                {{ 'user.greeting' | trans({ '%name%': global.user.displayName }) }}
+            </a>
+        </div>
+        <div class="row usertool">
+                <a href="{{ path('user.view', {'id': global.user.id}) }}">
+                    {{ 'user.menu.home' | trans }}
+                </a>
+
+            <span class="dime-icon icon-user-edit small"> </span>
+
+            <a href="{{ path('user.edit', {'id': global.user.id})  }}">
+                    {{ 'user.menu.edit' | trans }}
+                </a></li>
+            </div>
     {% else %}
-        <a href="#" data-toggle="modal" data-target="#login-modal">{{ 'dime.user.login' | trans }}</a>
+        <div class="row usertool">
+            <a href="#" data-toggle="modal" data-target="#login-modal">{{ 'user.menu.login' | trans }}</a>
+        </div>
     {% endif %}
 
 {% endblock usertool %}

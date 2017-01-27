@@ -4,6 +4,7 @@
             "driver": "pdo_mysql",
             "host": "127.0.0.1",
             "port": "8889",
+            "charset": "utf8mb4",
             "user": "dime_ark_user",
             "password": "dime_ark_pass"
         }
@@ -16,6 +17,10 @@
         "core": {
             "server":   "mamp",
             "dbname": "dime_ark_core"
+        },
+        "spatial": {
+            "server":   "mamp",
+            "dbname": "dime_ark_data"
         },
         "user": {
             "server":   "mamp",

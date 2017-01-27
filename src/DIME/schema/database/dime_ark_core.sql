@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 27, 2017 at 11:15 AM
+-- Generation Time: Jan 27, 2017 at 11:53 AM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -1093,7 +1093,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attrib
 ('dime_find_item', 'grid', NULL, NULL, NULL, '', '', 1, 1, '', 1, 0, 1, 0, NULL),
 ('dime_find_length', 'field', 'dime.find', '', 'length', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_list', 'table', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
-('dime_find_map', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_map', 'map', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_material', 'field', 'dime.find', '', 'material', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_period_end', 'field', 'dime.find', '', 'period_end', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_period_start', 'field', 'dime.find', '', 'period_start', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
@@ -1175,7 +1175,6 @@ INSERT INTO `ark_view_layout` (`element`, `row`, `col`, `seq`, `item_type`, `ena
 ('dime_find_list', 0, 0, 0, '', 1, 0, 'dime_find_id'),
 ('dime_find_list', 0, 0, 2, '', 1, 0, 'dime_find_type'),
 ('dime_find_list', 0, 0, 4, '', 1, 0, 'dime_find_material'),
-('dime_find_map', 0, 0, 0, '', 1, 0, 'dime_find_blank'),
 ('dime_find_search', 0, 0, 0, '', 1, 0, 'dime_find_filter'),
 ('dime_find_search', 1, 0, 0, '', 1, 0, 'dime_find_list'),
 ('dime_find_search', 1, 1, 0, '', 1, 0, 'dime_find_map'),
@@ -1214,6 +1213,7 @@ INSERT INTO `ark_view_option` (`element`, `name`, `type`, `value`) VALUES
 
 CREATE TABLE `ark_view_type` (
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `class` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `layout` tinyint(1) NOT NULL DEFAULT '0',
   `form` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `template` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1224,11 +1224,12 @@ CREATE TABLE `ark_view_type` (
 -- Dumping data for table `ark_view_type`
 --
 
-INSERT INTO `ark_view_type` (`type`, `layout`, `form`, `template`, `keyword`) VALUES
-('field', 0, 'ARK\\Form\\Type\\PropertyType', '', ''),
-('grid', 1, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FormType', 'layouts/grid.html.twig', ''),
-('tabbed', 1, '', 'layouts/tabbed.html.twig', ''),
-('table', 1, '', 'layouts/table.html.twig', '');
+INSERT INTO `ark_view_type` (`type`, `class`, `layout`, `form`, `template`, `keyword`) VALUES
+('field', 'ARK\\View\\Field', 0, 'ARK\\Form\\Type\\PropertyType', '', ''),
+('grid', 'ARK\\View\\Grid', 1, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FormType', 'layouts/grid.html.twig', ''),
+('map', 'ARK\\View\\Map', 1, '', 'layouts/ol3map.html.twig', ''),
+('tabbed', 'ARK\\View\\Tabbed', 1, '', 'layouts/tabbed.html.twig', ''),
+('table', 'ARK\\View\\Table', 1, '', 'layouts/table.html.twig', '');
 
 -- --------------------------------------------------------
 
