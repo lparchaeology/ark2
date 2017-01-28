@@ -53,6 +53,9 @@ class VocabularyChoiceType extends AbstractType implements DataMapperInterface
         $fieldOptions['placeholder'] = $vocabulary->concept();
         $fieldOptions['mapped'] = false;
         $fieldOptions['label'] = false;
+        if (isset($options['multiple'])) {
+            $fieldOptions['multiple'] = $options['multiple'];
+        }
         $builder->add('term', ChoiceType::class, $fieldOptions);
     }
 

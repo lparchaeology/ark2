@@ -1,6 +1,12 @@
 $(document).ready(function() {
     // Replace all select tags with Select2
-    $("select").select2();
+    $("select").select2({
+        minimumResultsForSearch: 11,
+        width: 'resolve'
+    });
+    // HACK To fix Select2 not being responsive
+    // See https://github.com/select2/select2/issues/3278 and http://stackoverflow.com/a/41429176
+    $(".select2.select2-container").css("width", "100%");
     //$("date").datetimepicker();
     //$("time").datetimepicker();
     //$("datetime").datetimepicker();
@@ -15,14 +21,11 @@ $(document).ready(function() {
         format: 'hh:ii',
         maxView: 0
     });
-    // HACK To fix Select2 not being responsive
-    // See https://github.com/select2/select2/issues/3278 and http://stackoverflow.com/a/41429176
-    $(".select2.select2-container").css("width", "100%");
     // FIXME Hide Bootstrap Table loading animation as is a bit broken
     $('.table-bootstrap-table').bootstrapTable('hideLoading');
 
     $(".carouselextratext_0").show();
-    
+
     $('#carousel-custom').bind('slide.bs.carousel', function (e) {
         var slideFrom = $(this).find('.active').index();
         console.log(slideFrom);
@@ -32,10 +35,10 @@ $(document).ready(function() {
         $(".carouselextratext_"+slideFrom.toString()).hide();
         $(".carouselextratext_"+slideTo.toString()).show();
     });
-    
-	$("span.thumbimage").hide();
-    
-    
+
+    $("span.thumbimage").hide();
+
+
 });
 
 jQuery(function($) {
@@ -59,5 +62,3 @@ jQuery(function($) {
         event.preventDefault();
     });
 });
-
-

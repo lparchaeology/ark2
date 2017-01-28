@@ -45,11 +45,23 @@ class FindListAction extends DimeFormAction
     {
         $query = $request->query->all();
         $criteria = [];
+        if (isset($query['kommune'])) {
+            $kommune = ORM::find(Term::class, ['concept' => 'dime.denmark.kommune', 'term' => $query['kommune']]);
+            $data['dime_find_filter_kommune'] = $kommune;
+            $criteria['kommune'] = $kommune->name();
+        }
         if (isset($query['type'])) {
             $type = ORM::find(Term::class, ['concept' => 'dime.find.type', 'term' => $query['type']]);
             $data['dime_find_filter_type'] = $type;
             $criteria['type'] = $type->name();
         }
+        /*
+        if (isset($query['subtype'])) {
+            $subtype = ORM::find(Term::class, ['concept' => 'dime.find.subtype', 'term' => $query['subtype']]);
+            $data['dime_find_filter_subtype'] = $type;
+            $criteria['subtype'] = $subtype->name();
+        }
+        */
         if (isset($query['period'])) {
             $period = ORM::find(Term::class, ['concept' => 'dime.period', 'term' => $query['period']]);
             $data['dime_find_filter_period'] = $period;
@@ -73,7 +85,7 @@ class FindListAction extends DimeFormAction
     {
         $data = $form->getData();
         $type = $data['dime_find_filter_type'];
-        $period = $data['dime_find_filter_period'];
+        $periods = $data['dime_find_filter_period'];
         $material = $data['dime_find_filter_material'];
         $query = $request->query->all();
         if ($type) {
@@ -81,8 +93,19 @@ class FindListAction extends DimeFormAction
         } else {
             unset($query['type']);
         }
-        if ($period) {
-            $query['period'] = $period->name();
+        if ($periods) {
+            foreach ($periods as $period) {
+                $list[] = $period->name();
+            }
+            $query['period'] = implode(', ', $list);
+        } else {
+            unset($query['period']);
+        }
+        if ($periods) {
+            foreach ($periods as $period) {
+                $list[] = $period->name();
+            }
+            $query['period'] = implode(', ', $list);
         } else {
             unset($query['period']);
         }

@@ -195,22 +195,24 @@ class Application extends SilexApplication
             ['pattern' => '(^/users/login$)|(^/users/register$)|(^/users/forgot-password$)']
         );
         $this->addSecurityFirewall(
-            'secured_area',
-            ['pattern' => '^.*$',
-             'anonymous' => $config['anonymous'],
-             'remember_me' => [],
-             'form' => [
-                'login_path' => '/users/login',
-                'check_path' => '/users/login_check',
-             ],
-             'logout' => [
-                'logout_path' => '/users/logout',
-             ],
-             'users' => function ($app) {
-                 return $app['user.manager'];
-             },
+            'default',
+            [
+                'pattern' => '^/.*$',
+                'anonymous' => true,
+                'remember_me' => [],
+                'form' => [
+                   'login_path' => '/users/login',
+                   'check_path' => '/users/login_check',
+                ],
+                'logout' => [
+                   'logout_path' => '/users/logout',
+                ],
+                'users' => function ($app) {
+                    return $app['user.manager'];
+                },
             ]
         );
+        $this['security.access_rules'] = $config['security']['access_rules'];
 
         // - On Register: Intl
         // - Optional on Use: Translation, CSRF, Validator

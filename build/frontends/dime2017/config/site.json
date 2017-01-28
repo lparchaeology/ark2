@@ -1,8 +1,10 @@
 {
     "site": "dime",
     "debug": true,
-    "locale": "en",
-    "anonymous": true,
+    "timezone": "UTC",
+    "locale": "da",
+    "locales": ["en", "da"],
+    "spatial": "mysql",
     "api": {
         "enable": true,
         "path": "/api/v2"
@@ -10,5 +12,11 @@
     "web": {
         "enable": true,
         "frontend": "dime2017"
+    },
+    "security": {
+        "access_rules": [
+            ["(^/users)|(^/fund/add$)|(^/lokalitet/add$)", "ROLE_USER"],
+            ["^/.+$", "IS_AUTHENTICATED_ANONYMOUSLY"]
+        ]
     }
 }

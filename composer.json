@@ -106,7 +106,10 @@
         "ramsey/uuid-doctrine": "^1.2",
         "brick/geo": "dev-master",
         "php-coord/php-coord": "^2.1",
-        "wyrihaximus/sli-fly": "^3.0"
+        "wyrihaximus/sli-fly": "^3.0",
+        "league/glide": "^1.2",
+        "league/glide-symfony": "^1.0",
+        "intervention/image": "^2.3"
     },
     "autoload": {
         "psr-4": {

@@ -7,9 +7,9 @@
         {# TODO: Make this driven from GridLayout object! #}
         {% if row | length > 12 %}
             {% set colclass = 'col-md-12' %}
-        {% elseif row | length > 6 %}
+        {% elseif row | length >= 6 %}
             {% set colclass = 'col-md-1' %}
-        {% elseif row | length > 5 %}
+        {% elseif row | length >= 5 %}
             {% set colclass = 'col-md-2' %}
         {% elseif row | length == 4 %}
             {% set colclass = 'col-md-3' %}

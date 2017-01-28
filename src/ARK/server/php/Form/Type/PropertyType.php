@@ -65,7 +65,6 @@ class PropertyType extends AbstractType implements DataMapperInterface
             foreach ($attribute->vocabulary()->terms() as $term) {
                 $options['choices'][$term->keyword()] = $term->name();
             }
-            $options['choice_translation_domain'] = 'messages';
             $options['placeholder'] = ($required ? 'form.select.required' : 'form.select.optional');
             $options['multiple'] = $attribute->hasMultipleOccurrences();
         } else {
