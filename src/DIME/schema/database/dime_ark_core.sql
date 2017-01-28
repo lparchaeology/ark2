@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 27, 2017 at 09:46 PM
+-- Generation Time: Jan 28, 2017 at 03:47 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -627,6 +627,8 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('core.actor.institution', 'core', 0, 0),
 ('core.actor.person', 'core', 0, 0),
 ('dime.about', 'dime', 0, 0),
+('dime.about.hevn', 'dime', 0, 0),
+('dime.about.hevntext', 'dime', 0, 0),
 ('dime.actor.id', 'dime', 0, 0),
 ('dime.actor.kommuner', 'dime', 0, 0),
 ('dime.actor.shortname', 'dime', 0, 0),
@@ -651,6 +653,8 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.find.subtype', 'dime', 0, 0),
 ('dime.find.type', 'dime', 0, 0),
 ('dime.home', 'dime', 0, 0),
+('dime.home.faq', 'dime', 0, 0),
+('dime.home.hvert', 'dime', 0, 0),
 ('dime.locality', 'dime', 0, 0),
 ('dime.locality.add', 'dime', 0, 0),
 ('dime.locality.id', 'dime', 0, 0),
@@ -831,6 +835,8 @@ CREATE TABLE `ark_translation_message` (
 
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('da', 'dime.about', 'default', 'Om DIME', ''),
+('da', 'dime.about.hevn', 'default', 'Hvem Er DIME?', ''),
+('da', 'dime.about.hevntext', 'default', 'DIME er en fællesportal for detektorbrugere og Danske museer, der kan bruges af alle.', ''),
 ('da', 'dime.actor.id', 'default', 'Aktører ID', ''),
 ('da', 'dime.actor.kommuner', 'default', 'Kommuner', ''),
 ('da', 'dime.actor.shortname', 'default', 'Kort Navn', ''),
@@ -851,6 +857,8 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.find.search', 'default', 'Søg Fund', ''),
 ('da', 'dime.find.type', 'default', 'Type', ''),
 ('da', 'dime.home', 'default', 'Hjem', ''),
+('da', 'dime.home.faq', 'default', '<dl>\\n\\n<dt>Hvem Er DIME?</dt>\\n\\n<dd>DIME er en fællesportal for detektorbrugere og Danske museer, der kan bruges af alle.</dd>\\n<dd>&nbsp;</dd>\\n\\n<dt>Hvorfor skal jeg bruge dime?</dt><dt></dt>\\n\\n<dd>DIME muliggør en hurtigere behandling af dine\\nfund i samarbejde med museet og giver dig\\noverblik over dine fund og fundpladser.</dd>\\n<dd>&nbsp;</dd>\\n\\n<dt>Hvilke fund skal/kan uploades i DIME?</dt>\\n\\n<dd>Aalle detektorfund (ikke kun Danefæ) kan \\nuploades i DIME.</dd>\\n<dd>&nbsp;</dd>\\n\\n<dt>Kan andre se mine fundsteder?</dt><dt></dt>\\n\\n<dd>Nej! Fundsteder og privatoplysninger er kun\\nsynlige for museumsarkæologer og forskere\\nmed særlig adgang.</dd>\\n<dd>&nbsp;</dd>\\n\\n<dt>Findes der en dime-app?</dt>\\n\\n<dd>En app-løsning til registrering i marken er\\nunder udvikling.</dd>\\n\\n</dl>\\n', ''),
+('da', 'dime.home.hvert', 'default', 'Hvert år finder metaldetektorbrugere landet over tusindevis af genstande fra oldtid, middelal-der og senere perioder. Metalgenstandene er en del af vores fælles kulturarv og vigtige brikker i Danmarkshistorien. DIME sikrer oplysninger om fundene til gavn for nulevende og efterføl- gende generatione', ''),
 ('da', 'dime.locality', 'default', 'Lokalitet', ''),
 ('da', 'dime.locality.add', 'default', 'Opret Lokalitet', ''),
 ('da', 'dime.locality.id', 'default', 'DIME ID', ''),
@@ -886,6 +894,8 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'core.actor.institution', 'default', 'Institution', ''),
 ('en', 'core.actor.person', 'default', 'Person', ''),
 ('en', 'dime.about', 'default', 'About DIME', ''),
+('en', 'dime.about.hevn', 'default', 'What is DIME?', ''),
+('en', 'dime.about.hevntext', 'default', 'DIME is a shared portal for detectorists and Danish museums that can be accessed by everyone.', ''),
 ('en', 'dime.actor.id', 'default', 'Actor ID', ''),
 ('en', 'dime.actor.kommuner', 'default', 'Municipalities', ''),
 ('en', 'dime.actor.shortname', 'default', 'Short Name', ''),
@@ -910,6 +920,8 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.subtype', 'default', 'Subtype', 'DIME Find Subtype'),
 ('en', 'dime.find.type', 'default', 'Type', 'DIME Find Type'),
 ('en', 'dime.home', 'default', 'Home', ''),
+('en', 'dime.home.faq', 'default', '<dl>\\n\\n<dt>What is DIME?</dt>\\n<dd>DIME is a shared portal for detectorists and Danish museums that can be accessed by everyone.</dd>\\n<dd>&nbsp;</dd>\\n\\n<dt>Why should I use DIME?</dt>\\n<dd>DIME allows faster processing of your finds in cooperation with the museum, and gives you an overview of your finds and collection.</dd>\\n<dd>&nbsp;</dd>\\n\\n<dt>What finds can be added to DIME? </dt>\\n<dd>All detector finds (not only Danefæ) can added to DIME.</dd>\\n<dd>&nbsp;</dd>\\n\\n<dt>Can others see my find locations?</dt>\\n<dd>No! Find locations and other private information are only visible for museum archaeologists and researchers with special access.</dd>\\n<dd>&nbsp;</dd>\\n\\n<dt>Is there a DIME app?</dt>\\n<dd>An app for recording in the field is under development.</dd>\\n\\n</dl>', ''),
+('en', 'dime.home.hvert', 'default', 'Every year, the metal detector users across the country thousands of objects from antiquity, middelal-there and later periods. Metal objects are part of our common cultural heritage and important pieces in the history of Denmark. DIME provides information about the finds for the benefit of present and subsequent generatione', ''),
 ('en', 'dime.locality', 'default', 'Locality', ''),
 ('en', 'dime.locality.add', 'default', 'Add Locality', ''),
 ('en', 'dime.locality.id', 'default', 'DIME ID', ''),
@@ -1138,6 +1150,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attrib
 ('dime_find_add', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_blank', 'field', 'dime.find', '', '', '', '', 0, 0, '', 0, 0, 1, 0, NULL),
 ('dime_find_condition', 'field', 'dime.find', '', 'condition', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_coordinates', 'field', 'dime.find', '', 'coordinates', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_description', 'field', 'dime.find', '', 'description', '', '', 0, 0, 'ARK\\Form\\Type\\LocalMultilineTextType', 1, 0, 1, 0, NULL),
 ('dime_find_details', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_edit', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
@@ -1149,6 +1162,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attrib
 ('dime_find_finddate', 'field', 'dime.find', '', 'finddate', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_finder_id', 'field', 'dime.find', '', 'finder_id', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_findpoint', 'field', 'dime.find', '', 'findpoint', '', '', 0, 0, 'ARK\\Form\\Type\\WktType', 1, 0, 1, 0, NULL),
+('dime_find_home', 'grid', 'dime.find', NULL, NULL, '', 'layouts/home.html.twig', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_id', 'field', 'dime.find', '', 'id', '', '', 0, 0, 'ARK\\Form\\Type\\IdType', 1, 0, 1, 0, NULL),
 ('dime_find_item', 'grid', NULL, NULL, NULL, '', '', 1, 1, '', 1, 0, 1, 0, NULL),
 ('dime_find_length', 'field', 'dime.find', '', 'length', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
@@ -1230,12 +1244,17 @@ INSERT INTO `ark_view_layout` (`element`, `row`, `col`, `seq`, `item_type`, `ena
 ('dime_find_filter', 0, 2, 0, '', 1, 0, 'dime_find_filter_period'),
 ('dime_find_filter', 0, 3, 0, '', 1, 0, 'dime_find_filter_material'),
 ('dime_find_filter', 0, 4, 0, '', 1, 0, 'dime_search'),
+('dime_find_home', 0, 0, 1, '', 1, 0, 'dime_find_findpoint'),
+('dime_find_home', 0, 0, 2, '', 1, 0, 'dime_find_type'),
+('dime_find_home', 0, 0, 4, '', 1, 0, 'dime_find_material'),
 ('dime_find_item', 0, 0, 0, '', 1, 0, 'dime_find_event'),
 ('dime_find_item', 0, 1, 0, '', 1, 0, 'dime_find_details'),
 ('dime_find_item', 0, 1, 1, '', 1, 0, 'dime_save'),
 ('dime_find_list', 0, 0, 0, '', 1, 0, 'dime_find_id'),
 ('dime_find_list', 0, 0, 2, '', 1, 0, 'dime_find_type'),
 ('dime_find_list', 0, 0, 4, '', 1, 0, 'dime_find_material'),
+('dime_find_map', 0, 0, 0, '', 1, 0, 'dime_find_id'),
+('dime_find_map', 0, 0, 1, '', 1, 0, 'dime_find_findpoint'),
 ('dime_find_search', 0, 0, 0, '', 1, 0, 'dime_find_filter'),
 ('dime_find_search', 1, 0, 0, '', 1, 0, 'dime_find_list'),
 ('dime_find_search', 1, 1, 0, '', 1, 0, 'dime_find_map'),
