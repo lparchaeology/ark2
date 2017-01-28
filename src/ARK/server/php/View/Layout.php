@@ -38,27 +38,28 @@ abstract class Layout extends Element
 {
     protected $grid = null;
     protected $elements = null;
+    protected $parentCells = null;
 
     protected function init()
     {
         if ($this->grid !== null) {
             return;
         }
-        foreach ($this->children as $child) {
-            $this->grid[$child->row()][$child->col()][$child->seq()] = $child->element();
+        foreach ($this->cells as $cell) {
+            $this->grid[$cell->row()][$cell->col()][$cell->seq()] = $cell;
         }
         foreach ($this->grid as $rdx => $row) {
             foreach ($row as $cdx => $col) {
                 foreach ($col as $cell) {
-                    $this->elements[] = $cell;
+                    $this->elements[] = $cell->element();
                 }
             }
         }
     }
 
-    public function children()
+    public function cells()
     {
-        return $this->children;
+        return $this->cells;
     }
 
     public function elements()
@@ -74,7 +75,7 @@ abstract class Layout extends Element
         return $options;
     }
 
-    public function renderView($data, $forms = null, $form = null, array $options = [])
+    public function renderView($data, $forms = null, $form = null, Cell $cell = null, array $options = [])
     {
         if ($this->template()) {
             $options['layout'] = $this;

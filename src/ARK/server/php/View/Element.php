@@ -36,6 +36,7 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
 use ARK\Service;
 use ARK\View\Type;
+use ARK\View\Cell;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -57,12 +58,12 @@ abstract class Element
     protected $editable = true;
     protected $hidden = false;
     protected $schma = null;
-    protected $children = null;
+    protected $cells = null;
     protected $options = null;
 
     public function __construct()
     {
-        $this->children = new ArrayCollection();
+        $this->cells = new ArrayCollection();
         $this->options = new ArrayCollection();
     }
 
@@ -176,7 +177,7 @@ abstract class Element
                                                     $this->formOptions());
     }
 
-    abstract public function renderView($resource, $forms = null, $form = null, array $options = []);
+    abstract public function renderView($data, $forms = null, $form = null, Cell $cell = null, array $options = []);
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
@@ -202,7 +203,7 @@ abstract class Element
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Relationships
-        $builder->addOneToMany('children', 'ARK\View\Child', 'parent');
+        $builder->addOneToMany('cells', 'ARK\View\Cell', 'layout');
         $builder->addOneToMany('options', 'ARK\View\Option', 'element');
         $builder->addCompoundManyToOneField(
             'attribute',

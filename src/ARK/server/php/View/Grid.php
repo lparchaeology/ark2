@@ -47,6 +47,12 @@ class Grid extends Layout
         return count($this->column($row, $col));
     }
 
+    public function grid()
+    {
+        $this->init();
+        return $this->grid;
+    }
+
     public function rows()
     {
         $this->init();

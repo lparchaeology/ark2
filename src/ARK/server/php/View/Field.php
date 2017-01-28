@@ -100,20 +100,28 @@ class Field extends Element
         $builder->add($fieldBuilder);
     }
 
-    public function renderView($resource, $forms = null, $form = null, array $options = [])
+    public function renderView($data, $forms = null, $form = null, Cell $cell = null, array $options = [])
     {
+        if ($forms && $form && $this->template()) {
+            $options['field'] = $this;
+            $options['data'] = $this->formData($data);
+            $options['forms'] = $forms;
+            $options['form'] = $form;
+            $options['formLabel'] = $cell->formLabel();
+            return Service::renderView($this->template(), $options);
+        }
         // FIXME Should probably have some way to use FormTypes here to render 'flat' compond values
         $value = null;
-        if ($resource instanceof Item and $this->attribute) {
+        if ($data instanceof Item and $this->attribute) {
             $value = 'FIXME: '.$this->element;
             if ($this->attribute->isAtomic()) {
-                $value = $resource->property($this->attribute->name())->value();
+                $value = $data->property($this->attribute->name())->value();
             } elseif ($this->attribute->format()->isAtomic()) {
-                $value = $resource->property($this->attribute->name())->value()[0];
+                $value = $data->property($this->attribute->name())->value()[0];
             } elseif ($this->attribute->format()->type()->isAtomic()) {
                 if ($this->attribute->format()->name() == 'shortlocaltext') {
                     $language = Service::locale();
-                    $values = $resource->property($this->attribute->name())->value();
+                    $values = $data->property($this->attribute->name())->value();
                     foreach ($values as $trans) {
                         if ($trans['language'] == $language) {
                             return $trans['content'];
@@ -125,7 +133,7 @@ class Field extends Element
                 } else {
                     foreach ($this->attribute->format()->attributes() as $attribute) {
                         if ($attribute->isRoot()) {
-                            $value = $resource->property($this->attribute->name())->value()[$attribute->name()];
+                            $value = $data->property($this->attribute->name())->value()[$attribute->name()];
                         }
                     }
                 }

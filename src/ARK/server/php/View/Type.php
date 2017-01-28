@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK View Child
+ * ARK View Element Type
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
