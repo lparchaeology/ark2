@@ -43,6 +43,6 @@ class FileViewAction extends EntityAction
         if (!$data[$layout] = ORM::find(File::class, $itemSlug)) {
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'File not found', "File $itemSlug not found"));
         }
-        return $this->render($request, $data, $layout);
+        return $this->renderResponse($request, $data, $layout);
     }
 }

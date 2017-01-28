@@ -41,6 +41,6 @@ class FileListAction extends DimeFormAction
     {
         $layout = 'core_file_list';
         $data[$layout] = ORM::findAll(File::class);
-        return $this->render($request, $data, $layout);
+        return $this->renderResponse($request, $data, $layout);
     }
 }

@@ -41,6 +41,6 @@ class FindAddAction extends EntityAction
         $layout = 'dime_find_item';
         $data[$layout] = new Find('dime.find');
         $redirect = 'finds.view';
-        return $this->render($request, $data, $layout, $redirect);
+        return $this->renderResponse($request, $data, $layout, $redirect);
     }
 }

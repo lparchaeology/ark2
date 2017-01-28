@@ -38,8 +38,8 @@ class UnderConstructionAction extends DimeAction
 {
     public function __invoke(Request $request)
     {
+        $options = $this->defaultOptions();
         $options['content'] = 'This page is under construction';
-        $options['page_config'] = $this->pageConfig();
-        return Service::render('pages/page.html.twig', $options);
+        return Service::renderResponse('pages/page.html.twig', $options);
     }
 }

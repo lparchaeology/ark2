@@ -30,8 +30,18 @@
 
 namespace DIME\Action;
 
+use ARK\Service;
+
 abstract class DimeAction
 {
+    public function defaultOptions($route = null)
+    {
+        $options['data'] = null;
+        $options['forms'] = null;
+        $options['page_config'] = $this->pageConfig($route);
+        return $options;
+    }
+
     public function pageConfig($route = null)
     {
         $config = [
@@ -74,5 +84,119 @@ abstract class DimeAction
             }
         }
         return $config;
+
+        // TODO Full config, restore when have more content, move to View table/class
+        $page_config = array(
+            "navlinks" => array(
+                array(
+                    "name" => "dime.home",
+                    "dropdown" => false,
+                    "target" => "home"
+                ),
+                array(
+                    "name" => "dime.detector",
+                    "dropdown" => true,
+                    "target" => "detector",
+                    "navlinks" => array(
+                        array(
+                            "name" => "dime.metaldetector",
+                            "target" => "detector"
+                        ),
+                        array(
+                            "name" => "dime.treasure",
+                            "target" => "treasure"
+                        ),
+                    ),
+                ),
+                array(
+                    "name" => "dime.research",
+                    "target" => "research",
+                    "dropdown" => false,
+                ),
+                array(
+                    "name" => "dime.about",
+                    "dropdown" => true,
+                    "target" => "about",
+                    "navlinks" => array(
+                        array(
+                            "name" => "dime.about.groups",
+                            "target" => "about"
+                        ),
+                        array(
+                            "name" => "dime.about.background",
+                            "target" => "about"
+                        ),
+                        array(
+                            "name" => "dime.about.museums",
+                            "target" => "about"
+                        ),
+                        array(
+                            "name" => "dime.about.partners",
+                            "target" => "about"
+                        ),
+                        array(
+                            "name" => "dime.about.instructions",
+                            "target" => "about"
+                        ),
+                    ),
+                ),
+                array(
+                    "name" => "dime.exhibits",
+                    "dropdown" => true,
+                    "target" => "exhibits",
+                    "navlinks" => array(
+                        array(
+                            "name" => "dime.exhibits.forests",
+                            "target" => "exhibits"
+                        ),
+                        array(
+                            "name" => "dime.exhibits.weapons",
+                            "target" => "exhibits"
+                        ),
+                    ),
+                ),
+                array(
+                    "name" => "dime.news",
+                    "dropdown" => false,
+                    "target" => "news"
+                )
+            ),
+            "sidelinks" => array(
+                array(
+                    "name" => "add",
+                    "active" => true,
+                    "role" => "ROLE_USER",
+                    "links" => array(
+                        array(
+                            "name" => "dime.find.add",
+                            "active" => true,
+                            "target" => "finds.add"
+                        ),
+                        array(
+                            "name" => "dime.locality.add",
+                            "active" => false,
+                            "target" => "localities.add"
+                        )
+                    )
+                ),
+                array(
+                    "name" => "search",
+                    "active" => false,
+                    "role" => "IS_AUTHENTICATED_ANONYMOUSLY",
+                    "links" => array(
+                        array(
+                            "name" => "dime.find.list",
+                            "active" => false,
+                            "target" => "finds.list"
+                        ),
+                        array(
+                            "name" => "dime.locality.list",
+                            "active" => false,
+                            "target" => "localities.list"
+                        )
+                    ),
+                ),
+            )
+        );
     }
 }

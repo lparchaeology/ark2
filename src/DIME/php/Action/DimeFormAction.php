@@ -32,15 +32,15 @@ namespace DIME\Action;
 
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\View\Layout;
 use DIME\Action\DimeAction;
 use Symfony\Component\HttpFoundation\Request;
 
 abstract class DimeFormAction extends DimeAction
 {
-    public function render(Request $request, $data, $layout, $redirect = null, $options = [], $template = 'pages/page.html.twig')
+    public function renderResponse(Request $request, $data, $layout, $redirect = null, $options = [], $template = 'pages/page.html.twig')
     {
-        $viewLayout = ORM::find(Layout::class, $layout);
+        $options = $this->defaultOptions($request->attributes->get('_route'));
+        $viewLayout =  Service::layout($layout);
         $forms = $viewLayout->buildForms($data);
         if ($request->getMethod() == 'POST') {
             $form = null;
@@ -68,12 +68,11 @@ abstract class DimeFormAction extends DimeAction
         }
         $options['layout'] = $viewLayout;
         $options['data'] = $data;
-        $options['page_config'] = $this->pageConfig($request->attributes->get('_route'));
-        return Service::render($template, $options);
+        return Service::renderResponse($template, $options);
     }
 
     public function processForm(Request $request, $form, $redirect)
     {
-        return Service::redirect(Service::path($redirect));
+        return Service::redirectPath($redirect);
     }
 }

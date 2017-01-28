@@ -43,6 +43,6 @@ class ActorViewAction extends DimeFormAction
         if (!$data[$layout] = ORM::find(Actor::class, $itemSlug)) {
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Actor not found', "Actor $itemSlug not found"));
         }
-        return $this->render($request, $data, $layout);
+        return $this->renderResponse($request, $data, $layout);
     }
 }

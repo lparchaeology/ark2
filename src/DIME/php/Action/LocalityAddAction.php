@@ -41,6 +41,6 @@ class LocalityAddAction extends EntityAction
         $layout = 'dime_locality_item';
         $data[$layout] = new Locality('dime.locality');
         $redirect = 'localities.view';
-        return $this->render($request, $data, $layout, $redirect);
+        return $this->renderResponse($request, $data, $layout, $redirect);
     }
 }

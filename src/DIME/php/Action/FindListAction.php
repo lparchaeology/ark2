@@ -66,7 +66,7 @@ class FindListAction extends DimeFormAction
         $data['dime_find_list'] = $data[$layout];
         $data['dime_find_map'] = $data[$layout];
         $data['dime_find_filter'] = null;
-        return $this->render($request, $data, $layout);
+        return $this->renderResponse($request, $data, $layout);
     }
 
     public function processForm(Request $request, $form, $redirect)

@@ -45,6 +45,6 @@ class FindViewAction extends EntityAction
         if (!$data[$layout] = ORM::find(Find::class, $itemSlug)) {
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Find not found', "Find $itemSlug not found"));
         }
-        return $this->render($request, $data, $layout);
+        return $this->renderResponse($request, $data, $layout);
     }
 }

@@ -41,6 +41,6 @@ class ActorListAction extends DimeFormAction
     {
         $layout = 'dime_actor_list';
         $data[$layout] = ORM::findAll(Actor::class);
-        return $this->render($request, $data, $layout);
+        return $this->renderResponse($request, $data, $layout);
     }
 }

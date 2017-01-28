@@ -34,7 +34,6 @@ use ARK\Error\ErrorException;
 use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\View\Layout;
 use DIME\Action\DimeAction;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -46,12 +45,10 @@ class PageViewAction extends DimeAction
         if (!$item = ORM::find('ARK\Entity\Page', $page)) {
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Item not found', "Item $page not found"));
         }
+        $options = $this->defaultOptions();
         $value = $item->property('content')->value();
         // TODO Language Switching!!!
         $options['content'][0] = $value[0]['content'];
-        //$options['data'] = $item;
-        //$options['layout'] = ORM::find(Layout::class, 'core_page_view');
-        $options['page_config'] = $this->pageConfig();
-        return Service::render('pages/page.html.twig', $options);
+        return Service::renderResponse('pages/page.html.twig', $options);
     }
 }

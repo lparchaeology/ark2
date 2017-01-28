@@ -144,6 +144,6 @@ class TestViewAction extends DimeAction
         $content[1] = $contents2;
         $options['page_config'] = $this->pageConfig();
 
-        return Service::render('pages/page.html.twig', ['content' => $content]);
+        return Service::renderResponse('pages/page.html.twig', ['content' => $content]);
     }
 }

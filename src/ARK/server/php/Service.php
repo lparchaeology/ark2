@@ -31,6 +31,10 @@
 namespace ARK;
 
 use ARK\Application;
+use ARK\Error\Error;
+use ARK\Error\ErrorException;
+use ARK\View\Layout;
+use ARK\ORM\ORM;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -59,7 +63,16 @@ class Service
         return self::$app['twig'];
     }
 
-    public function render($view, array $parameters = [], Response $response = null)
+    public static function layout($name)
+    {
+        $layout =  ORM::find(Layout::class, $name);
+        if ($layout) {
+            return $layout;
+        }
+        throw new ErrorException(new Error('INVALID_LAYOUT_NAME', "Invalid Layout Name: $name", "Layout $name does not exist"));
+    }
+
+    public function renderResponse($view, array $parameters = [], Response $response = null)
     {
         return self::$app->render($view, $parameters, $response);
     }

@@ -46,6 +46,6 @@ class LocalityViewAction extends EntityAction
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Locality not found', "Locality $itemSlug not found"));
         }
         $redirect = 'localities.view';
-        return $this->render($request, $data, $layout, $redirect);
+        return $this->renderResponse($request, $data, $layout, $redirect);
     }
 }

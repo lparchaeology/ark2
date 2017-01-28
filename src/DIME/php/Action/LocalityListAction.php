@@ -41,6 +41,6 @@ class LocalityListAction extends DimeFormAction
     {
         $layout = 'dime_locality_list';
         $data[$layout] = ORM::findAll(Locality::class);
-        return $this->render($request, $data, $layout);
+        return $this->renderResponse($request, $data, $layout);
     }
 }
