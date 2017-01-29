@@ -46,7 +46,8 @@ class DemoAction extends DimeAction
     public function __invoke(Request $request)
     {
         $content = '<h2>Demonstration Links</h2>';
-        $content .= '<p>List of Museums in Actors module <a href="/dime/aktører">http://www.lparchaeology.com/dime/aktører</a>.
+        $path = Service::path('actors.list');
+        $content .= '<p>List of Museums in <a href="'.$path.'">Actors module</a>.
             Click through to a museum to see their responsible Municipalities.</p>';
         return Service::renderResponse('pages/page.html.twig', ['content' => $content, 'page_config' => $this->pageConfig()]);
     }
