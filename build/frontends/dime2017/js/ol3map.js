@@ -1,4 +1,54 @@
-console.log(ywkts.length);
+  var styles = [
+    'Road',
+'Aerial',
+'AerialWithLabels',
+  ];
+  var layers = [];
+  var i, ii;
+  for (i = 0, ii = styles.length; i < ii; ++i) {
+    layers.push(new ol.layer.Tile({
+      visible: false,
+      preload: Infinity,
+      source: new ol.source.BingMaps({
+        key: 'Ak5AqjsEQ44KtAl7jHhrjGuzNshN1fZv3MOx2MUi0p4zFmq6XeWLKmyqeP2UgJK3',
+    imagerySet: styles[i]
+    // use maxZoom 19 to see stretched tiles instead of the BingMaps
+    // "no photos at this zoom level" tiles
+    // maxZoom: 19
+      })
+    }));
+  }
+  var map = new ol.Map({
+    layers: layers,
+    controls: [],
+    // Improve user experience by loading tiles while dragging/zooming. Will make
+// zooming choppy on mobile or slow devices.
+loadTilesWhileInteracting: true,
+target: 'map',
+    view: new ol.View({
+            center: [1155972, 7580813],
+            zoom: 7,
+            maxZoom: 16,
+    })
+  });
+
+layers[2].setVisible(true);
+
+map.on('moveend',function(){
+	console.log('wha');
+      var center = map.getView().get('center');
+      var extents = map.getView().calculateExtent(map.getSize());
+      centerstring = '['+center.toString()+']';
+      var zoom = map.getView().getZoom();
+      console.log(zoom);
+  });
+
+$('a.layer-select').on('click',function(){
+	var style = $(this).attr('value');
+ 	for (var i = 0, ii = layers.length; i < ii; ++i) {
+ 		layers[i].setVisible(styles[i] === style);
+ 	}
+});
 
 if(ywkts.length!=0){
 
@@ -55,48 +105,14 @@ var format = new ol.format.WKT();
    style:dimestyles['theirs']
  });
 
-  var styles = [
-    'Road',
-'Aerial',
-'AerialWithLabels',
-  ];
-  var layers = [];
-  var i, ii;
-  for (i = 0, ii = styles.length; i < ii; ++i) {
-    layers.push(new ol.layer.Tile({
-      visible: false,
-      preload: Infinity,
-      source: new ol.source.BingMaps({
-        key: 'Ak5AqjsEQ44KtAl7jHhrjGuzNshN1fZv3MOx2MUi0p4zFmq6XeWLKmyqeP2UgJK3',
-    imagerySet: styles[i]
-    // use maxZoom 19 to see stretched tiles instead of the BingMaps
-    // "no photos at this zoom level" tiles
-    // maxZoom: 19
-      })
-    }));
-  }
-  var map = new ol.Map({
-    layers: layers,
-    controls: [],
-    // Improve user experience by loading tiles while dragging/zooming. Will make
-// zooming choppy on mobile or slow devices.
-loadTilesWhileInteracting: true,
-target: 'map',
-    view: new ol.View({
-            center: [965972, 7580813],
-            zoom: 12
-    })
-  });
-
 yours.set('name','yours');
   
 map.addLayer(theirs);
 map.addLayer(yours);
-  
+
 view = map.getView();
 extent = yours.getSource().getExtent();
 view.fit(extent, map.getSize());
-layers[2].setVisible(true);
 
 var select = new ol.interaction.Select({
 	style: new ol.style.Style({
@@ -168,10 +184,5 @@ $(document).ready(function(){
     });
 });
 
-$('a.layer-select').on('click',function(){
-	var style = $(this).attr('value');
- 	for (var i = 0, ii = layers.length; i < ii; ++i) {
- 		layers[i].setVisible(styles[i] === style);
- 	}
-});
+
 }
