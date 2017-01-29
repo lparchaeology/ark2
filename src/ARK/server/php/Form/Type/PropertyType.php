@@ -47,8 +47,14 @@ class PropertyType extends AbstractType implements DataMapperInterface
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $field = $options['field'];
+        unset($options['field']);
+        $fieldOptions = $field->optionsArray();
+        if ($field->attribute()->vocabulary() && isset($options['attr']['readonly'])) {
+            $fieldOptions['disabled'] = true;
+        }
+        $options = array_merge($options, $field->optionsArray());
         $builder->setDataMapper($this);
-        $this->buildAttribute($builder, $field->attribute(), $field->optionsArray(), $field->attribute()->isRequired());
+        $this->buildAttribute($builder, $field->attribute(), $fieldOptions, $field->attribute()->isRequired());
     }
 
     protected function buildAttribute(FormBuilderInterface $builder, Attribute $attribute, $options, $required)
@@ -73,17 +79,17 @@ class PropertyType extends AbstractType implements DataMapperInterface
         if ($attribute->format()->type()->name() == 'datetime') {
             $options['widget'] = 'single_text';
             $options['html5'] = false;
-            $options['attr'] = ['class' => 'datetimepicker'];
+            $options['attr']['class'] = 'datetimepicker';
         }
         if ($attribute->format()->type()->name() == 'date') {
             $options['widget'] = 'single_text';
             $options['html5'] = false;
-            $options['attr'] = ['class' => 'datepicker'];
+            $options['attr']['class'] = 'datepicker';
         }
         if ($attribute->format()->type()->name() == 'time') {
             $options['widget'] = 'single_text';
             $options['html5'] = false;
-            $options['attr'] = ['class' => 'timepicker'];
+            $options['attr']['class'] = 'timepicker';
         }
         $options['mapped'] = false;
         $options['label'] = false;

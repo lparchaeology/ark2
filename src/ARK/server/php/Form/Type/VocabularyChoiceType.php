@@ -31,6 +31,7 @@
 namespace ARK\Form\Type;
 
 use ARK\ORM\ORM;
+use ARK\Service;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 use Symfony\Component\Form\AbstractType;
