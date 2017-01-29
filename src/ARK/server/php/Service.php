@@ -152,6 +152,12 @@ class Service
         return self::$app['user'];
     }
 
+    public static function isGranted($permission)
+    {
+        return self::$app['security.authorization_checker']->isGranted($permission);
+    }
+
+
     public static function database()
     {
         return self::$app['database'];

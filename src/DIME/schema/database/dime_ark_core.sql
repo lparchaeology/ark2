@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.1
+-- version 4.6.5.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 28, 2017 at 09:31 PM
--- Server version: 5.6.34
--- PHP Version: 7.1.0
+-- Generation Time: Jan 29, 2017 at 02:11 AM
+-- Server version: 10.0.22-MariaDB
+-- PHP Version: 7.0.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -859,7 +859,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.find.search', 'default', 'Søg Fund', ''),
 ('da', 'dime.find.type', 'default', 'Type', ''),
 ('da', 'dime.home', 'default', 'Hjem', ''),
-('da', 'dime.home.faq', 'default', '<dl><dt>Hvem Er DIME?</dt><dd>DIME er en fællesportal for detektorbrugere og Danske museer, der kan bruges af alle.</dd><dd>&nbsp;</dd><dt>Hvorfor skal jeg bruge dime?</dt><dd>DIME muliggør en hurtigere behandling af dinefund i samarbejde med museet og giver dig overblik over dine fund og fundpladser.</dd><dd>&nbsp;</dd><dt>Hvilke fund skal/kan uploades i DIME?</dt><dd>Aalle detektorfund (ikke kun Danefæ) kan uploades i DIME.</dd><dd>&nbsp;</dd><dt>Kan andre se mine fundsteder?</dt><dd>Nej! Fundsteder og privatoplysninger er kunsynlige for museumsarkæologer og forskere\\nmed særlig adgang</dd><dd>&nbsp;</dd><dt>Findes der en dime-app?</dt><dd>En app-løsning til registrering i marken er under udvikling.</dd></dl>', ''),
+('da', 'dime.home.faq', 'default', '<dl>\n\n<dt>Hvem Er DIME?</dt>\n<dd>DIME er en fællesportal for detektorbrugere og Danske museer, der kan bruges af alle.</dd>\n<dd>&nbsp;</dd>\n\n<dt>Hvorfor skal jeg bruge dime?</dt>\n<dd>DIME muliggør en hurtigere behandling af dinefund i samarbejde med museet og giver dig overblik over dine fund og fundpladser.</dd>\n<dd>&nbsp;</dd>\n\n<dt>Hvilke fund skal/kan uploades i DIME?</dt>\n<dd>Aalle detektorfund (ikke kun Danefæ) kan uploades i DIME.</dd>\n<dd>&nbsp;</dd>\n\n<dt>Kan andre se mine fundsteder?</dt>\n<dd>Nej! Fundsteder og privatoplysninger er kunsynlige for museumsarkæologer og forskere med særlig adgang</dd>\n<dd>&nbsp;</dd>\n\n<dt>Findes der en dime-app?</dt>\n<dd>En app-løsning til registrering i marken er under udvikling.</dd>\n\n</dl>', ''),
 ('da', 'dime.home.hvert', 'default', 'Hvert år finder metaldetektorbrugere landet over tusindevis af genstande fra oldtid, middelal-der og senere perioder. Metalgenstandene er en del af vores fælles kulturarv og vigtige brikker i Danmarkshistorien. DIME sikrer oplysninger om fundene til gavn for nulevende og efterføl- gende generatione', ''),
 ('da', 'dime.locality', 'default', 'Lokalitet', ''),
 ('da', 'dime.locality.add', 'default', 'Opret Lokalitet', ''),

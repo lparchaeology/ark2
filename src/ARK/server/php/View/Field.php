@@ -79,6 +79,9 @@ class Field extends Element
             $options['field'] = $this;
             $options['mapped'] = false;
             //$options['property_path'] = "propertyArray[$name].value";
+            if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+                $options['attr']['readonly'] = true;
+            }
         }
         return $options;
     }
@@ -102,6 +105,13 @@ class Field extends Element
 
     public function renderView($data, $forms = null, $form = null, Cell $cell = null, array $options = [])
     {
+        $attributeName = ($this->attribute ? $this->attribute->name() : '');
+        if (($attributeName == 'findpoint' || $this->element == 'dime_save') && !Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            if ($form) {
+                $form[$this->element]->setRendered();
+            }
+            return '';
+        }
         if ($forms && $form && $this->template()) {
             $options['field'] = $this;
             $options['data'] = $this->formData($data);

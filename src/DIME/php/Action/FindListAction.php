@@ -48,7 +48,7 @@ class FindListAction extends DimeFormAction
         if (isset($query['kommune'])) {
             $kommune = ORM::find(Term::class, ['concept' => 'dime.denmark.kommune', 'term' => $query['kommune']]);
             $data['dime_find_filter_kommune'] = $kommune;
-            $criteria['kommune'] = $kommune->name();
+            //$criteria['kommune'] = $kommune->name();
         }
         if (isset($query['type'])) {
             $type = ORM::find(Term::class, ['concept' => 'dime.find.type', 'term' => $query['type']]);
@@ -65,12 +65,12 @@ class FindListAction extends DimeFormAction
         if (isset($query['period'])) {
             $period = ORM::find(Term::class, ['concept' => 'dime.period', 'term' => $query['period']]);
             $data['dime_find_filter_period'] = $period;
-            $criteria['period'] = $period->name();
+            //$criteria['period'] = $period->name();
         }
         if (isset($query['material'])) {
             $material = ORM::find(Term::class, ['concept' => 'dime.material', 'term' => $query['material']]);
             $data['dime_find_filter_material'] = $material;
-            $criteria['type'] = $type->name();
+            //$criteria['material'] = $material->name();
         }
 
         $layout = 'dime_find_search';
@@ -84,28 +84,23 @@ class FindListAction extends DimeFormAction
     public function processForm(Request $request, $form, $redirect)
     {
         $data = $form->getData();
+        $kommune = $data['dime_find_filter_kommune'];
         $type = $data['dime_find_filter_type'];
-        $periods = $data['dime_find_filter_period'];
+        $period = $data['dime_find_filter_period'];
         $material = $data['dime_find_filter_material'];
         $query = $request->query->all();
+        if ($kommune) {
+            $query['kommune'] = $kommune->name();
+        } else {
+            unset($query['kommune']);
+        }
         if ($type) {
             $query['type'] = $type->name();
         } else {
             unset($query['type']);
         }
-        if ($periods) {
-            foreach ($periods as $period) {
-                $list[] = $period->name();
-            }
-            $query['period'] = implode(', ', $list);
-        } else {
-            unset($query['period']);
-        }
-        if ($periods) {
-            foreach ($periods as $period) {
-                $list[] = $period->name();
-            }
-            $query['period'] = implode(', ', $list);
+        if ($period) {
+            $query['period'] = $period->name();
         } else {
             unset($query['period']);
         }
