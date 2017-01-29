@@ -26,7 +26,11 @@
                 
              </th>
                 {% for field in layout.elements %}
+                    {% if field.attribute.name == 'id' %}
                     <th data-field="{{field.name}}" data-title="{{field.keyword|trans}}" data-sortable="true">
+                    {% else %}
+                    <th data-field="{{field.name}}" data-title="{{field.keyword|trans}}" data-sortable="true" data-card-visible="false">
+                    {% endif %}
                         {{field.keyword|trans}}
                     </th>
                 {% endfor %}

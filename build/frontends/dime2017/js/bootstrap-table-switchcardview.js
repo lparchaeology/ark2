@@ -39,7 +39,6 @@
         	var listActive = " active";
         	
         }
-        	
         
         $($btnGroup.find('[name="toggle"]')).remove();
 
@@ -63,20 +62,114 @@
 	                '</button>',
 	            '</div>'].join('')).prependTo($btnGroup);
 
-        
+	    $(window).resize(function() {
+
+	    	  if ($(this).width() < 563) {
+      			$('#dime_find_list').addClass("cardViewTable");
+      			$($btnGroup.find('[name="cardView"]')).addClass("active");
+      			$($btnGroup.find('[name="tableView"]')).removeClass("active");
+      			
+      			$('tr').click(function(evt) {
+			        self = $(this);
+			        console.log(self);
+			        ark_id = self.attr('data-unique-id');
+			        map.getLayers().forEach(function(i,e,a){
+			            if (i.get('name')=='yours'){
+			                console.log(evt.shiftKey);
+			                if(!evt.shiftKey){
+			                    collection.clear();
+			                }
+			                if (typeof i.getSource().getFeatures == 'function') {
+			                    i.getSource().getFeatures().forEach(function(i,e,a){
+			                        if(i.get('ark_id').toUpperCase()==ark_id){
+			                            if(self.hasClass('selected')){
+			                                collection.remove(i);
+			                            } else {
+			                                collection.push(i);
+			                            }
+			                        }
+			                    });
+			                }
+			            }
+			        });
+			    });
+      			
+	    	  }
+
+	    	  if ($(this).width() > 563) {
+				$('#dime_find_list').removeClass("cardViewTable");
+				$($btnGroup.find('[name="cardView"]')).removeClass("active");
+				$($btnGroup.find('[name="tableView"]')).addClass("active");
+				
+				$('tr').click(function(evt) {
+			        self = $(this);
+			        console.log(self);
+			        ark_id = self.attr('data-unique-id');
+			        map.getLayers().forEach(function(i,e,a){
+			            if (i.get('name')=='yours'){
+			                console.log(evt.shiftKey);
+			                if(!evt.shiftKey){
+			                    collection.clear();
+			                }
+			                if (typeof i.getSource().getFeatures == 'function') {
+			                    i.getSource().getFeatures().forEach(function(i,e,a){
+			                        if(i.get('ark_id').toUpperCase()==ark_id){
+			                            if(self.hasClass('selected')){
+			                                collection.remove(i);
+			                            } else {
+			                                collection.push(i);
+			                            }
+			                        }
+			                    });
+			                }
+			            }
+			        });
+			    });
+				
+	    	  }
+
+	    });
         
         that.$toolbar.find('button[name="tableView"]')
             .on('click', function() {
         		if (that.options.cardView){
+        			$('#dime_find_list').removeClass("cardViewTable");
+        			
         			$($btnGroup.find('[name="cardView"]')).removeClass("active");
         			$($btnGroup.find('[name="tableView"]')).addClass("active");
                     that.toggleView();
+                    $('tr').click(function(evt) {
+                        self = $(this);
+                        console.log(self);
+                        ark_id = self.attr('data-unique-id');
+                        map.getLayers().forEach(function(i,e,a){
+                            if (i.get('name')=='yours'){
+                                console.log(evt.shiftKey);
+                                if(!evt.shiftKey){
+                                    collection.clear();
+                                }
+                                if (typeof i.getSource().getFeatures == 'function') {
+                                    i.getSource().getFeatures().forEach(function(i,e,a){
+                                        if(i.get('ark_id').toUpperCase()==ark_id){
+                                            if(self.hasClass('selected')){
+                                                collection.remove(i);
+                                            } else {
+                                                collection.push(i);
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    });
         		}
             });
         
         that.$toolbar.find('button[name="cardView"]')
         	.on('click', function() {
         		if (! that.options.cardView){
+        			$('#dime_find_list').addClass("cardViewTable");
+        		    
         			$($btnGroup.find('[name="cardView"]')).addClass("active");
         			$($btnGroup.find('[name="tableView"]')).removeClass("active");
                     that.toggleView();

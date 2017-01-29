@@ -157,11 +157,10 @@ collection.on('remove', function(evt) {
 });
 
 $(document).ready(function(){
-    $('#dime_find_list tr').click(function(evt) {
+    $('tr').click(function(evt) {
         self = $(this);
         console.log(self);
         ark_id = self.attr('data-unique-id');
-        console.log(ark_id);
         map.getLayers().forEach(function(i,e,a){
             if (i.get('name')=='yours'){
                 console.log(evt.shiftKey);
