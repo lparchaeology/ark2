@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
--- https://www.phpmyadmin.net/
+-- version 4.2.12deb2+deb8u2
+-- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 29, 2017 at 02:11 AM
--- Server version: 10.0.22-MariaDB
--- PHP Version: 7.0.14
+-- Generation Time: Jan 29, 2017 at 05:25 PM
+-- Server version: 5.5.52-0+deb8u1
+-- PHP Version: 5.6.29-0+deb8u1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `dime_ark_core`
@@ -26,7 +26,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `ark_config_error`
 --
 
-CREATE TABLE `ark_config_error` (
+CREATE TABLE IF NOT EXISTS `ark_config_error` (
   `code` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
@@ -38,13 +38,13 @@ CREATE TABLE `ark_config_error` (
 -- Table structure for table `ark_config_flash`
 --
 
-CREATE TABLE `ark_config_flash` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `ark_config_flash` (
+`id` int(11) NOT NULL,
   `active` tinyint(1) NOT NULL,
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `text` text COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_config_flash`
@@ -62,7 +62,7 @@ INSERT INTO `ark_config_flash` (`id`, `active`, `type`, `language`, `text`) VALU
 -- Table structure for table `ark_config_thumbnail`
 --
 
-CREATE TABLE `ark_config_thumbnail` (
+CREATE TABLE IF NOT EXISTS `ark_config_thumbnail` (
   `profile` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `max` int(11) NOT NULL,
   `min` int(11) DEFAULT NULL,
@@ -85,7 +85,7 @@ INSERT INTO `ark_config_thumbnail` (`profile`, `max`, `min`, `mode`, `type`, `ke
 -- Table structure for table `ark_format`
 --
 
-CREATE TABLE `ark_format` (
+CREATE TABLE IF NOT EXISTS `ark_format` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `input` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -149,7 +149,7 @@ INSERT INTO `ark_format` (`format`, `type`, `input`, `object`, `array`, `sortabl
 -- Table structure for table `ark_format_attribute`
 --
 
-CREATE TABLE `ark_format_attribute` (
+CREATE TABLE IF NOT EXISTS `ark_format_attribute` (
   `parent` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sequence` int(11) NOT NULL,
@@ -202,7 +202,7 @@ INSERT INTO `ark_format_attribute` (`parent`, `attribute`, `sequence`, `format`,
 -- Table structure for table `ark_format_blob`
 --
 
-CREATE TABLE `ark_format_blob` (
+CREATE TABLE IF NOT EXISTS `ark_format_blob` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -219,7 +219,7 @@ INSERT INTO `ark_format_blob` (`format`) VALUES
 -- Table structure for table `ark_format_boolean`
 --
 
-CREATE TABLE `ark_format_boolean` (
+CREATE TABLE IF NOT EXISTS `ark_format_boolean` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -236,7 +236,7 @@ INSERT INTO `ark_format_boolean` (`format`) VALUES
 -- Table structure for table `ark_format_datetime`
 --
 
-CREATE TABLE `ark_format_datetime` (
+CREATE TABLE IF NOT EXISTS `ark_format_datetime` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `pattern` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `unicode` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
@@ -259,7 +259,7 @@ INSERT INTO `ark_format_datetime` (`format`, `pattern`, `unicode`) VALUES
 -- Table structure for table `ark_format_decimal`
 --
 
-CREATE TABLE `ark_format_decimal` (
+CREATE TABLE IF NOT EXISTS `ark_format_decimal` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `prec` int(11) NOT NULL DEFAULT '200',
   `scale` int(11) NOT NULL,
@@ -285,7 +285,7 @@ INSERT INTO `ark_format_decimal` (`format`, `prec`, `scale`, `minimum`, `exclusi
 -- Table structure for table `ark_format_float`
 --
 
-CREATE TABLE `ark_format_float` (
+CREATE TABLE IF NOT EXISTS `ark_format_float` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `minimum` double DEFAULT NULL,
   `exclusive_minimum` tinyint(1) NOT NULL,
@@ -308,7 +308,7 @@ INSERT INTO `ark_format_float` (`format`, `minimum`, `exclusive_minimum`, `maxim
 -- Table structure for table `ark_format_integer`
 --
 
-CREATE TABLE `ark_format_integer` (
+CREATE TABLE IF NOT EXISTS `ark_format_integer` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `minimum` int(11) DEFAULT NULL,
   `exclusive_minimum` tinyint(1) NOT NULL,
@@ -330,7 +330,7 @@ INSERT INTO `ark_format_integer` (`format`, `minimum`, `exclusive_minimum`, `max
 -- Table structure for table `ark_format_item`
 --
 
-CREATE TABLE `ark_format_item` (
+CREATE TABLE IF NOT EXISTS `ark_format_item` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -349,7 +349,7 @@ INSERT INTO `ark_format_item` (`format`, `module`) VALUES
 -- Table structure for table `ark_format_object`
 --
 
-CREATE TABLE `ark_format_object` (
+CREATE TABLE IF NOT EXISTS `ark_format_object` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -368,7 +368,7 @@ INSERT INTO `ark_format_object` (`format`) VALUES
 -- Table structure for table `ark_format_string`
 --
 
-CREATE TABLE `ark_format_string` (
+CREATE TABLE IF NOT EXISTS `ark_format_string` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `pattern` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `min_length` int(11) NOT NULL,
@@ -407,7 +407,7 @@ INSERT INTO `ark_format_string` (`format`, `pattern`, `min_length`, `max_length`
 -- Table structure for table `ark_format_wkt`
 --
 
-CREATE TABLE `ark_format_wkt` (
+CREATE TABLE IF NOT EXISTS `ark_format_wkt` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
@@ -425,7 +425,7 @@ INSERT INTO `ark_format_wkt` (`format`) VALUES
 -- Table structure for table `ark_fragment_type`
 --
 
-CREATE TABLE `ark_fragment_type` (
+CREATE TABLE IF NOT EXISTS `ark_fragment_type` (
   `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `compound` tinyint(1) NOT NULL DEFAULT '0',
   `tbl` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -462,7 +462,7 @@ INSERT INTO `ark_fragment_type` (`type`, `compound`, `tbl`, `format_class`, `mod
 -- Table structure for table `ark_module`
 --
 
-CREATE TABLE `ark_module` (
+CREATE TABLE IF NOT EXISTS `ark_module` (
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `resource` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `namespace` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -493,7 +493,7 @@ INSERT INTO `ark_module` (`module`, `resource`, `namespace`, `entity`, `tbl`, `c
 -- Table structure for table `ark_schema`
 --
 
-CREATE TABLE `ark_schema` (
+CREATE TABLE IF NOT EXISTS `ark_schema` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `generator` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -525,7 +525,7 @@ INSERT INTO `ark_schema` (`schma`, `module`, `generator`, `sequence`, `type`, `t
 -- Table structure for table `ark_schema_association`
 --
 
-CREATE TABLE `ark_schema_association` (
+CREATE TABLE IF NOT EXISTS `ark_schema_association` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `association` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -551,7 +551,7 @@ INSERT INTO `ark_schema_association` (`schma`, `type`, `association`, `degree`, 
 -- Table structure for table `ark_schema_attribute`
 --
 
-CREATE TABLE `ark_schema_attribute` (
+CREATE TABLE IF NOT EXISTS `ark_schema_attribute` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -611,7 +611,7 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 -- Table structure for table `ark_translation`
 --
 
-CREATE TABLE `ark_translation` (
+CREATE TABLE IF NOT EXISTS `ark_translation` (
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `domain` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_plural` tinyint(1) NOT NULL DEFAULT '0',
@@ -777,7 +777,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 -- Table structure for table `ark_translation_domain`
 --
 
-CREATE TABLE `ark_translation_domain` (
+CREATE TABLE IF NOT EXISTS `ark_translation_domain` (
   `domain` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -800,7 +800,7 @@ INSERT INTO `ark_translation_domain` (`domain`, `keyword`) VALUES
 -- Table structure for table `ark_translation_language`
 --
 
-CREATE TABLE `ark_translation_language` (
+CREATE TABLE IF NOT EXISTS `ark_translation_language` (
   `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `markup` tinyint(1) NOT NULL,
   `vocabulary` tinyint(1) NOT NULL,
@@ -822,7 +822,7 @@ INSERT INTO `ark_translation_language` (`language`, `markup`, `vocabulary`, `tex
 -- Table structure for table `ark_translation_message`
 --
 
-CREATE TABLE `ark_translation_message` (
+CREATE TABLE IF NOT EXISTS `ark_translation_message` (
   `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -910,7 +910,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.add', 'default', 'Add Find', ''),
 ('en', 'dime.find.condition', 'default', 'Condition', ''),
 ('en', 'dime.find.finddate', 'default', 'Find Date', 'DIME Find Find Date'),
-('en', 'dime.find.finderid', 'default', 'Finder ID', 'DIME Find Finder\'s ID'),
+('en', 'dime.find.finderid', 'default', 'Finder ID', 'DIME Find Finder''s ID'),
 ('en', 'dime.find.findpoint', 'default', 'Coordinates', ''),
 ('en', 'dime.find.id', 'default', 'ID', 'DIME Find ID'),
 ('en', 'dime.find.length', 'default', 'Maximun Length / Diameter', ''),
@@ -1046,7 +1046,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 -- Table structure for table `ark_translation_parameter`
 --
 
-CREATE TABLE `ark_translation_parameter` (
+CREATE TABLE IF NOT EXISTS `ark_translation_parameter` (
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `parameter` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1064,7 +1064,7 @@ INSERT INTO `ark_translation_parameter` (`keyword`, `parameter`) VALUES
 -- Table structure for table `ark_translation_role`
 --
 
-CREATE TABLE `ark_translation_role` (
+CREATE TABLE IF NOT EXISTS `ark_translation_role` (
   `role` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
@@ -1108,7 +1108,7 @@ INSERT INTO `ark_translation_role` (`role`, `keyword`, `description`) VALUES
 -- Table structure for table `ark_view_element`
 --
 
-CREATE TABLE `ark_view_element` (
+CREATE TABLE IF NOT EXISTS `ark_view_element` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1194,7 +1194,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attrib
 -- Table structure for table `ark_view_layout`
 --
 
-CREATE TABLE `ark_view_layout` (
+CREATE TABLE IF NOT EXISTS `ark_view_layout` (
   `layout` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `row` int(11) NOT NULL,
   `col` int(11) NOT NULL,
@@ -1277,7 +1277,7 @@ INSERT INTO `ark_view_layout` (`layout`, `row`, `col`, `seq`, `item_type`, `cell
 -- Table structure for table `ark_view_option`
 --
 
-CREATE TABLE `ark_view_option` (
+CREATE TABLE IF NOT EXISTS `ark_view_option` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1303,7 +1303,7 @@ INSERT INTO `ark_view_option` (`element`, `name`, `type`, `value`) VALUES
 -- Table structure for table `ark_view_type`
 --
 
-CREATE TABLE `ark_view_type` (
+CREATE TABLE IF NOT EXISTS `ark_view_type` (
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `class` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `layout` tinyint(1) NOT NULL DEFAULT '0',
@@ -1329,7 +1329,7 @@ INSERT INTO `ark_view_type` (`type`, `class`, `layout`, `form`, `template`, `key
 -- Table structure for table `ark_vocabulary`
 --
 
-CREATE TABLE `ark_vocabulary` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `source` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1369,7 +1369,7 @@ INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `enabled`, 
 -- Table structure for table `ark_vocabulary_collected`
 --
 
-CREATE TABLE `ark_vocabulary_collected` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_collected` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `collection` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1483,7 +1483,7 @@ INSERT INTO `ark_vocabulary_collected` (`concept`, `collection`, `term`, `seq`) 
 -- Table structure for table `ark_vocabulary_collection`
 --
 
-CREATE TABLE `ark_vocabulary_collection` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_collection` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `collection` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `label` text COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1497,7 +1497,7 @@ CREATE TABLE `ark_vocabulary_collection` (
 -- Table structure for table `ark_vocabulary_parameter`
 --
 
-CREATE TABLE `ark_vocabulary_parameter` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_parameter` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1516,196 +1516,99 @@ INSERT INTO `ark_vocabulary_parameter` (`concept`, `term`, `name`, `type`, `valu
 ('core.file.type', 'other', 'entity', 'string', 'ARK\\File\\File'),
 ('core.file.type', 'text', 'entity', 'string', 'ARK\\File\\Text'),
 ('core.file.type', 'video', 'entity', 'string', 'ARK\\File\\Video'),
-('dime.period', 'AÆAX', 'year_from', 'int', '-10500'),
-('dime.period', 'AÆAX', 'year_to', 'int', '-9000'),
-('dime.period', 'AÆBX', 'year_from', 'int', '-11000'),
-('dime.period', 'AÆBX', 'year_to', 'int', '-10500'),
-('dime.period', 'AÆEÆ', 'year_from', 'int', '-5400'),
-('dime.period', 'AÆEÆ', 'year_to', 'int', '-4800'),
-('dime.period', 'AÆEM', 'year_from', 'int', '-4800'),
-('dime.period', 'AÆEM', 'year_to', 'int', '-4300'),
-('dime.period', 'AÆEX', 'year_from', 'int', '-5400'),
-('dime.period', 'AÆEX', 'year_to', 'int', '-3900'),
-('dime.period', 'AÆEY', 'year_from', 'int', '-4300'),
-('dime.period', 'AÆEY', 'year_to', 'int', '-3900'),
-('dime.period', 'AÆFX', 'year_from', 'int', '-12000'),
-('dime.period', 'AÆFX', 'year_to', 'int', '-11000'),
-('dime.period', 'AÆHX', 'year_from', 'int', '-12800'),
-('dime.period', 'AÆHX', 'year_to', 'int', '-12000'),
-('dime.period', 'AÆKÆ', 'year_from', 'int', '-6400'),
-('dime.period', 'AÆKÆ', 'year_to', 'int', '-6000'),
-('dime.period', 'AÆKM', 'year_from', 'int', '-6000'),
-('dime.period', 'AÆKM', 'year_to', 'int', '-5700'),
-('dime.period', 'AÆKX', 'year_from', 'int', '-6400'),
-('dime.period', 'AÆKX', 'year_to', 'int', '-5400'),
-('dime.period', 'AÆKY', 'year_from', 'int', '-5700'),
-('dime.period', 'AÆKY', 'year_to', 'int', '-5400'),
-('dime.period', 'AÆMÆ', 'year_from', 'int', '-9000'),
-('dime.period', 'AÆMÆ', 'year_to', 'int', '-7800'),
-('dime.period', 'AÆMM', 'year_from', 'int', '-7800'),
-('dime.period', 'AÆMM', 'year_to', 'int', '-7000'),
-('dime.period', 'AÆMX', 'year_from', 'int', '-9000'),
-('dime.period', 'AÆMX', 'year_to', 'int', '-6400'),
-('dime.period', 'AÆMY', 'year_from', 'int', '-7000'),
-('dime.period', 'AÆMY', 'year_to', 'int', '-6400'),
-('dime.period', 'AÆPÆ', 'year_from', 'int', '-250000'),
-('dime.period', 'AÆPÆ', 'year_to', 'int', '-150000'),
-('dime.period', 'AÆPM', 'year_from', 'int', '-150000'),
-('dime.period', 'AÆPM', 'year_to', 'int', '-70000'),
-('dime.period', 'AÆPY', 'year_from', 'int', '-70000'),
-('dime.period', 'AÆPY', 'year_to', 'int', '-9000'),
-('dime.period', 'AMXX', 'year_from', 'int', '-9000'),
-('dime.period', 'AMXX', 'year_to', 'int', '-3900'),
-('dime.period', 'ATM1', 'year_from', 'int', '-3300'),
-('dime.period', 'ATM1', 'year_to', 'int', '-3100'),
-('dime.period', 'ATM2', 'year_from', 'int', '-3100'),
-('dime.period', 'ATM2', 'year_to', 'int', '-3000'),
-('dime.period', 'ATM3', 'year_from', 'int', '-3000'),
-('dime.period', 'ATM3', 'year_to', 'int', '-2900'),
-('dime.period', 'ATM4', 'year_from', 'int', '-3000'),
-('dime.period', 'ATM4', 'year_to', 'int', '-2900'),
-('dime.period', 'ATM5', 'year_from', 'int', '-2900'),
-('dime.period', 'ATM5', 'year_to', 'int', '-2800'),
-('dime.period', 'ATNA', 'year_from', 'int', '-3900'),
-('dime.period', 'ATNA', 'year_to', 'int', '-3700'),
-('dime.period', 'ATNB', 'year_from', 'int', '-3700'),
-('dime.period', 'ATNB', 'year_to', 'int', '-3500'),
-('dime.period', 'ATNC', 'year_from', 'int', '-3500'),
-('dime.period', 'ATNC', 'year_to', 'int', '-3300'),
-('dime.period', 'AXXX', 'year_from', 'int', '-250000'),
-('dime.period', 'AXXX', 'year_to', 'int', '-1700'),
-('dime.period', 'AYEÆ', 'year_from', 'int', '-2800'),
-('dime.period', 'AYEÆ', 'year_to', 'int', '-2600'),
-('dime.period', 'AYEM', 'year_from', 'int', '-2600'),
-('dime.period', 'AYEM', 'year_to', 'int', '-2450'),
-('dime.period', 'AYEX', 'year_from', 'int', '-2800'),
-('dime.period', 'AYEX', 'year_to', 'int', '-2350'),
-('dime.period', 'AYEY', 'year_from', 'int', '-2450'),
-('dime.period', 'AYEY', 'year_to', 'int', '-2350'),
-('dime.period', 'AYGX', 'year_from', 'int', '-2900'),
-('dime.period', 'AYGX', 'year_to', 'int', '-2600'),
-('dime.period', 'AYKX', 'year_from', 'int', '-2350'),
-('dime.period', 'AYKX', 'year_to', 'int', '-1950'),
-('dime.period', 'AYSÆ', 'year_from', 'int', '-2350'),
-('dime.period', 'AYSÆ', 'year_to', 'int', '-1950'),
-('dime.period', 'AYSX', 'year_from', 'int', '-2350'),
-('dime.period', 'AYSX', 'year_to', 'int', '-1700'),
-('dime.period', 'AYSY', 'year_from', 'int', '-1950'),
-('dime.period', 'AYSY', 'year_to', 'int', '-1700'),
-('dime.period', 'AYTÆ', 'year_from', 'int', '-3900'),
-('dime.period', 'AYTÆ', 'year_to', 'int', '-3300'),
-('dime.period', 'AYTM', 'year_from', 'int', '-3300'),
-('dime.period', 'AYTM', 'year_to', 'int', '-2800'),
-('dime.period', 'AYTX', 'year_from', 'int', '-3900'),
-('dime.period', 'AYTX', 'year_to', 'int', '-2800'),
-('dime.period', 'AYXX', 'year_from', 'int', '-3900'),
-('dime.period', 'AYXX', 'year_to', 'int', '-1700'),
-('dime.period', 'BÆX1', 'year_from', 'int', '-1700'),
-('dime.period', 'BÆX1', 'year_to', 'int', '-1500'),
-('dime.period', 'BÆX2', 'year_from', 'int', '-1500'),
-('dime.period', 'BÆX2', 'year_to', 'int', '-1300'),
-('dime.period', 'BÆX3', 'year_from', 'int', '-1300'),
-('dime.period', 'BÆX3', 'year_to', 'int', '-1100'),
-('dime.period', 'BÆXX', 'year_from', 'int', '-1700'),
-('dime.period', 'BÆXX', 'year_to', 'int', '-1100'),
-('dime.period', 'BXXX', 'year_from', 'int', '-1700'),
-('dime.period', 'BXXX', 'year_to', 'int', '-500'),
-('dime.period', 'BYX4', 'year_from', 'int', '-1100'),
-('dime.period', 'BYX4', 'year_to', 'int', '-900'),
-('dime.period', 'BYX5', 'year_from', 'int', '-900'),
-('dime.period', 'BYX5', 'year_to', 'int', '-700'),
-('dime.period', 'BYX6', 'year_from', 'int', '-700'),
-('dime.period', 'BYX6', 'year_to', 'int', '-500'),
-('dime.period', 'BYXX', 'year_from', 'int', '-1100'),
-('dime.period', 'BYXX', 'year_to', 'int', '-500'),
-('dime.period', 'CÆFÆ', 'year_from', 'int', '-500'),
-('dime.period', 'CÆFÆ', 'year_to', 'int', '-400'),
-('dime.period', 'CÆFM', 'year_from', 'int', '-400'),
-('dime.period', 'CÆFM', 'year_to', 'int', '-100'),
-('dime.period', 'CÆFX', 'year_from', 'int', '-500'),
-('dime.period', 'CÆFX', 'year_to', 'int', '0'),
-('dime.period', 'CÆFY', 'year_from', 'int', '-100'),
-('dime.period', 'CÆFY', 'year_to', 'int', '0'),
-('dime.period', 'CÆRA', 'year_from', 'int', '1'),
-('dime.period', 'CÆRA', 'year_to', 'int', '70'),
-('dime.period', 'CÆRÆ', 'year_from', 'int', '1'),
-('dime.period', 'CÆRÆ', 'year_to', 'int', '175'),
-('dime.period', 'CÆRB', 'year_from', 'int', '70'),
-('dime.period', 'CÆRB', 'year_to', 'int', '175'),
-('dime.period', 'CÆRC', 'year_from', 'int', '175'),
-('dime.period', 'CÆRC', 'year_to', 'int', '250'),
-('dime.period', 'CÆRD', 'year_from', 'int', '250'),
-('dime.period', 'CÆRD', 'year_to', 'int', '310'),
-('dime.period', 'CÆRE', 'year_from', 'int', '310'),
-('dime.period', 'CÆRE', 'year_to', 'int', '375'),
-('dime.period', 'CÆRX', 'year_from', 'int', '1'),
-('dime.period', 'CÆRX', 'year_to', 'int', '375'),
-('dime.period', 'CÆRY', 'year_from', 'int', '175'),
-('dime.period', 'CÆRY', 'year_to', 'int', '375'),
-('dime.period', 'CÆXX', 'year_from', 'int', '-500'),
-('dime.period', 'CÆXX', 'year_to', 'int', '375'),
-('dime.period', 'CXXX', 'year_from', 'int', '-500'),
-('dime.period', 'CXXX', 'year_to', 'int', '1066'),
-('dime.period', 'CYGÆ', 'year_from', 'int', '375'),
-('dime.period', 'CYGÆ', 'year_to', 'int', '600'),
-('dime.period', 'CYGX', 'year_from', 'int', '375'),
-('dime.period', 'CYGX', 'year_to', 'int', '750'),
-('dime.period', 'CYGY', 'year_from', 'int', '600'),
-('dime.period', 'CYGY', 'year_to', 'int', '750'),
-('dime.period', 'CYVÆ', 'year_from', 'int', '750'),
-('dime.period', 'CYVÆ', 'year_to', 'int', '900'),
-('dime.period', 'CYVX', 'year_from', 'int', '750'),
-('dime.period', 'CYVX', 'year_to', 'int', '1066'),
-('dime.period', 'CYVY', 'year_from', 'int', '900'),
-('dime.period', 'CYVY', 'year_to', 'int', '1066'),
-('dime.period', 'CYXX', 'year_from', 'int', '375'),
-('dime.period', 'CYXX', 'year_to', 'int', '1066'),
-('dime.period', 'DÆX1', 'year_from', 'int', '1067'),
-('dime.period', 'DÆX1', 'year_to', 'int', '1199'),
-('dime.period', 'DÆX2', 'year_from', 'int', '1200'),
-('dime.period', 'DÆX2', 'year_to', 'int', '1299'),
-('dime.period', 'DÆXX', 'year_from', 'int', '1067'),
-('dime.period', 'DÆXX', 'year_to', 'int', '1299'),
-('dime.period', 'DXXX', 'year_from', 'int', '1067'),
-('dime.period', 'DXXX', 'year_to', 'int', '1535'),
-('dime.period', 'DYX3', 'year_from', 'int', '1300'),
-('dime.period', 'DYX3', 'year_to', 'int', '1399'),
-('dime.period', 'DYX4', 'year_from', 'int', '1400'),
-('dime.period', 'DYX4', 'year_to', 'int', '1499'),
-('dime.period', 'DYX5', 'year_from', 'int', '1500'),
-('dime.period', 'DYX5', 'year_to', 'int', '1535'),
-('dime.period', 'DYXX', 'year_from', 'int', '1300'),
-('dime.period', 'DYXX', 'year_to', 'int', '1535'),
-('dime.period', 'EXXX', 'year_from', 'int', '1536'),
-('dime.period', 'EXXX', 'year_to', 'int', '1660'),
-('dime.period', 'FÆXX', 'year_from', 'int', '1661'),
-('dime.period', 'FÆXX', 'year_to', 'int', '1799'),
-('dime.period', 'FMIN', 'year_from', 'int', '1800'),
-('dime.period', 'FMIN', 'year_to', 'int', '1913'),
-('dime.period', 'FMV1', 'year_from', 'int', '1914'),
-('dime.period', 'FMV1', 'year_to', 'int', '1918'),
-('dime.period', 'FMV2', 'year_from', 'int', '1940'),
-('dime.period', 'FMV2', 'year_to', 'int', '1945'),
-('dime.period', 'FMVM', 'year_from', 'int', '1919'),
-('dime.period', 'FMVM', 'year_to', 'int', '1939'),
-('dime.period', 'FXXX', 'year_from', 'int', '1661'),
-('dime.period', 'FXXX', 'year_to', 'int', '2100'),
-('dime.period', 'FYDI', 'year_from', 'int', '1990'),
-('dime.period', 'FYDI', 'year_to', 'int', '2100'),
-('dime.period', 'FYEL', 'year_from', 'int', '1960'),
-('dime.period', 'FYEL', 'year_to', 'int', '1989'),
-('dime.period', 'FYVE', 'year_from', 'int', '1946'),
-('dime.period', 'FYVE', 'year_to', 'int', '1959'),
-('dime.period', 'HXXX', 'year_from', 'int', '1067'),
-('dime.period', 'HXXX', 'year_to', 'int', '0'),
-('dime.period', 'OXXX', 'year_from', 'int', '-250000'),
-('dime.period', 'OXXX', 'year_to', 'int', '1066'),
-('dime.period', 'TM1A', 'year_from', 'int', '-3300'),
-('dime.period', 'TM1A', 'year_to', 'int', '-3200'),
-('dime.period', 'TM1B', 'year_from', 'int', '-3200'),
-('dime.period', 'TM1B', 'year_to', 'int', '-3100'),
-('dime.period', 'XXXX', 'year_from', 'int', '-250000'),
-('dime.period', 'XXXX', 'year_to', 'int', '2100');
+('dime.period', 'AMXX', 'year_end', 'integer', '-3951'),
+('dime.period', 'AMXX', 'year_start', 'integer', '-9000'),
+('dime.period', 'AXXX', 'year_end', 'integer', '-1701'),
+('dime.period', 'AXXX', 'year_start', 'integer', '-250000'),
+('dime.period', 'AYXX', 'year_end', 'integer', '-1701'),
+('dime.period', 'AYXX', 'year_start', 'integer', '-3950'),
+('dime.period', 'BÆX1', 'year_end', 'integer', '-1501'),
+('dime.period', 'BÆX1', 'year_start', 'integer', '-1700'),
+('dime.period', 'BÆX2', 'year_end', 'integer', '-1301'),
+('dime.period', 'BÆX2', 'year_start', 'integer', '-1500'),
+('dime.period', 'BÆX3', 'year_end', 'integer', '-1101'),
+('dime.period', 'BÆX3', 'year_start', 'integer', '-1300'),
+('dime.period', 'BÆXX', 'year_end', 'integer', '-1101'),
+('dime.period', 'BÆXX', 'year_start', 'integer', '-1700'),
+('dime.period', 'BXXX', 'year_end', 'integer', '-501'),
+('dime.period', 'BXXX', 'year_start', 'integer', '-1700'),
+('dime.period', 'BYX4', 'year_end', 'integer', '-901'),
+('dime.period', 'BYX4', 'year_start', 'integer', '-1100'),
+('dime.period', 'BYX5', 'year_end', 'integer', '-701'),
+('dime.period', 'BYX5', 'year_start', 'integer', '-900'),
+('dime.period', 'BYX6', 'year_end', 'integer', '-501'),
+('dime.period', 'BYX6', 'year_start', 'integer', '-700'),
+('dime.period', 'BYXX', 'year_end', 'integer', '-501'),
+('dime.period', 'BYXX', 'year_start', 'integer', '-1100'),
+('dime.period', 'CÆFÆ', 'year_end', 'integer', '-401'),
+('dime.period', 'CÆFÆ', 'year_start', 'integer', '-500'),
+('dime.period', 'CÆFM', 'year_end', 'integer', '-101'),
+('dime.period', 'CÆFM', 'year_start', 'integer', '-400'),
+('dime.period', 'CÆFX', 'year_end', 'integer', '0'),
+('dime.period', 'CÆFX', 'year_start', 'integer', '-500'),
+('dime.period', 'CÆFY', 'year_end', 'integer', '0'),
+('dime.period', 'CÆFY', 'year_start', 'integer', '-100'),
+('dime.period', 'CÆRA', 'year_end', 'integer', '69'),
+('dime.period', 'CÆRA', 'year_start', 'integer', '1'),
+('dime.period', 'CÆRÆ', 'year_end', 'integer', '174'),
+('dime.period', 'CÆRÆ', 'year_start', 'integer', '1'),
+('dime.period', 'CÆRB', 'year_end', 'integer', '174'),
+('dime.period', 'CÆRB', 'year_start', 'integer', '70'),
+('dime.period', 'CÆRC', 'year_end', 'integer', '249'),
+('dime.period', 'CÆRC', 'year_start', 'integer', '175'),
+('dime.period', 'CÆRD', 'year_end', 'integer', '309'),
+('dime.period', 'CÆRD', 'year_start', 'integer', '250'),
+('dime.period', 'CÆRE', 'year_end', 'integer', '374'),
+('dime.period', 'CÆRE', 'year_start', 'integer', '310'),
+('dime.period', 'CÆRX', 'year_end', 'integer', '374'),
+('dime.period', 'CÆRX', 'year_start', 'integer', '1'),
+('dime.period', 'CÆRY', 'year_end', 'integer', '374'),
+('dime.period', 'CÆRY', 'year_start', 'integer', '175'),
+('dime.period', 'CÆXX', 'year_end', 'integer', '374'),
+('dime.period', 'CÆXX', 'year_start', 'integer', '-500'),
+('dime.period', 'CXXX', 'year_end', 'integer', '1066'),
+('dime.period', 'CXXX', 'year_start', 'integer', '-500'),
+('dime.period', 'CYGÆ', 'year_end', 'integer', '549'),
+('dime.period', 'CYGÆ', 'year_start', 'integer', '375'),
+('dime.period', 'CYGX', 'year_end', 'integer', '749'),
+('dime.period', 'CYGX', 'year_start', 'integer', '375'),
+('dime.period', 'CYGY', 'year_end', 'integer', '749'),
+('dime.period', 'CYGY', 'year_start', 'integer', '549'),
+('dime.period', 'CYVÆ', 'year_end', 'integer', '899'),
+('dime.period', 'CYVÆ', 'year_start', 'integer', '750'),
+('dime.period', 'CYVX', 'year_end', 'integer', '1066'),
+('dime.period', 'CYVX', 'year_start', 'integer', '750'),
+('dime.period', 'CYVY', 'year_end', 'integer', '1066'),
+('dime.period', 'CYVY', 'year_start', 'integer', '900'),
+('dime.period', 'CYXX', 'year_end', 'integer', '1066'),
+('dime.period', 'CYXX', 'year_start', 'integer', '375'),
+('dime.period', 'DÆXX', 'year_end', 'integer', '1199'),
+('dime.period', 'DÆXX', 'year_start', 'integer', '1067'),
+('dime.period', 'DXXX', 'year_end', 'integer', '1535'),
+('dime.period', 'DXXX', 'year_start', 'integer', '1067'),
+('dime.period', 'DYX3', 'year_end', 'integer', '1399'),
+('dime.period', 'DYX3', 'year_start', 'integer', '1200'),
+('dime.period', 'DYX4', 'year_end', 'integer', '1535'),
+('dime.period', 'DYX4', 'year_start', 'integer', '1400'),
+('dime.period', 'EXXX', 'year_end', 'integer', '1660'),
+('dime.period', 'EXXX', 'year_start', 'integer', '1536'),
+('dime.period', 'FÆXX', 'year_end', 'integer', '1848'),
+('dime.period', 'FÆXX', 'year_start', 'integer', '1661'),
+('dime.period', 'FMIN', 'year_end', 'integer', '1913'),
+('dime.period', 'FMIN', 'year_start', 'integer', '1849'),
+('dime.period', 'FMV1', 'year_end', 'integer', '1918'),
+('dime.period', 'FMV1', 'year_start', 'integer', '1914'),
+('dime.period', 'FMV2', 'year_end', 'integer', '1945'),
+('dime.period', 'FMV2', 'year_start', 'integer', '1940'),
+('dime.period', 'FMVM', 'year_end', 'integer', '1939'),
+('dime.period', 'FMVM', 'year_start', 'integer', '1919'),
+('dime.period', 'FXXX', 'year_start', 'integer', '1661'),
+('dime.period', 'FYXX', 'year_start', 'integer', '1946'),
+('dime.period', 'HXXX', 'year_start', 'integer', '1067'),
+('dime.period', 'PALEO', 'year_end', 'integer', '-9001'),
+('dime.period', 'PALEO', 'year_start', 'integer', '-250000'),
+('dime.period', 'VEM', 'year_end', 'integer', '1199'),
+('dime.period', 'VEM', 'year_start', 'integer', '750');
 
 -- --------------------------------------------------------
 
@@ -1713,7 +1616,7 @@ INSERT INTO `ark_vocabulary_parameter` (`concept`, `term`, `name`, `type`, `valu
 -- Table structure for table `ark_vocabulary_related`
 --
 
-CREATE TABLE `ark_vocabulary_related` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_related` (
   `from_concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `from_term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `to_concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1830,100 +1733,54 @@ INSERT INTO `ark_vocabulary_related` (`from_concept`, `from_term`, `to_concept`,
 ('dime.denmark.region', 'DK05', 'dime.denmark.kommune', '849', 'broader', 3),
 ('dime.denmark.region', 'DK05', 'dime.denmark.kommune', '851', 'broader', 3),
 ('dime.denmark.region', 'DK05', 'dime.denmark.kommune', '860', 'broader', 3),
-('dime.period', 'AÆEX', 'dime.period', 'AÆEÆ', 'broader', 6),
-('dime.period', 'AÆEX', 'dime.period', 'AÆEM', 'broader', 6),
-('dime.period', 'AÆEX', 'dime.period', 'AÆEY', 'broader', 6),
-('dime.period', 'AÆKX', 'dime.period', 'AÆKÆ', 'broader', 6),
-('dime.period', 'AÆKX', 'dime.period', 'AÆKM', 'broader', 6),
-('dime.period', 'AÆKX', 'dime.period', 'AÆKY', 'broader', 6),
-('dime.period', 'AÆMX', 'dime.period', 'AÆMÆ', 'broader', 6),
-('dime.period', 'AÆMX', 'dime.period', 'AÆMM', 'broader', 6),
-('dime.period', 'AÆMX', 'dime.period', 'AÆMY', 'broader', 6),
-('dime.period', 'AÆPY', 'dime.period', 'AÆAX', 'broader', 5),
-('dime.period', 'AÆPY', 'dime.period', 'AÆBX', 'broader', 5),
-('dime.period', 'AÆPY', 'dime.period', 'AÆFX', 'broader', 5),
-('dime.period', 'AÆPY', 'dime.period', 'AÆHX', 'broader', 5),
-('dime.period', 'AMXX', 'dime.period', 'AÆEX', 'broader', 5),
-('dime.period', 'AMXX', 'dime.period', 'AÆKX', 'broader', 5),
-('dime.period', 'AMXX', 'dime.period', 'AÆMX', 'broader', 5),
-('dime.period', 'ATM1', 'dime.period', 'TM1A', 'broader', 8),
-('dime.period', 'ATM1', 'dime.period', 'TM1B', 'broader', 8),
-('dime.period', 'AYEX', 'dime.period', 'AYEÆ', 'broader', 6),
-('dime.period', 'AYEX', 'dime.period', 'AYEM', 'broader', 6),
-('dime.period', 'AYEX', 'dime.period', 'AYEY', 'broader', 6),
-('dime.period', 'AYSÆ', 'dime.period', 'AYSÆ', 'broader', 6),
-('dime.period', 'AYSÆ', 'dime.period', 'AYSY', 'broader', 6),
-('dime.period', 'AYTÆ', 'dime.period', 'ATNA', 'broader', 7),
-('dime.period', 'AYTÆ', 'dime.period', 'ATNB', 'broader', 7),
-('dime.period', 'AYTÆ', 'dime.period', 'ATNC', 'broader', 7),
-('dime.period', 'AYTM', 'dime.period', 'ATM1', 'broader', 7),
-('dime.period', 'AYTM', 'dime.period', 'ATM2', 'broader', 7),
-('dime.period', 'AYTM', 'dime.period', 'ATM3', 'broader', 7),
-('dime.period', 'AYTM', 'dime.period', 'ATM4', 'broader', 7),
-('dime.period', 'AYTM', 'dime.period', 'ATM5', 'broader', 7),
-('dime.period', 'AYTX', 'dime.period', 'AYTÆ', 'broader', 6),
-('dime.period', 'AYTX', 'dime.period', 'AYTM', 'broader', 6),
-('dime.period', 'AYXX', 'dime.period', 'AYEX', 'broader', 5),
-('dime.period', 'AYXX', 'dime.period', 'AYGX', 'broader', 5),
-('dime.period', 'AYXX', 'dime.period', 'AYKX', 'broader', 5),
-('dime.period', 'AYXX', 'dime.period', 'AYSX', 'broader', 5),
-('dime.period', 'AYXX', 'dime.period', 'AYTX', 'broader', 5),
-('dime.period', 'BÆXX', 'dime.period', 'BÆX1', 'broader', 5),
-('dime.period', 'BÆXX', 'dime.period', 'BÆX2', 'broader', 5),
-('dime.period', 'BÆXX', 'dime.period', 'BÆX3', 'broader', 5),
-('dime.period', 'BXXX', 'dime.period', 'BÆXX', 'broader', 4),
-('dime.period', 'BXXX', 'dime.period', 'BYXX', 'broader', 4),
-('dime.period', 'BYXX', 'dime.period', 'BYX4', 'broader', 5),
-('dime.period', 'BYXX', 'dime.period', 'BYX5', 'broader', 5),
-('dime.period', 'BYXX', 'dime.period', 'BYX6', 'broader', 5),
-('dime.period', 'CÆFX', 'dime.period', 'CÆFÆ', 'broader', 6),
-('dime.period', 'CÆFX', 'dime.period', 'CÆFM', 'broader', 6),
-('dime.period', 'CÆFX', 'dime.period', 'CÆFY', 'broader', 6),
-('dime.period', 'CÆRÆ', 'dime.period', 'CÆRA', 'broader', 7),
-('dime.period', 'CÆRÆ', 'dime.period', 'CÆRB', 'broader', 7),
-('dime.period', 'CÆRX', 'dime.period', 'CÆRÆ', 'broader', 6),
-('dime.period', 'CÆRX', 'dime.period', 'CÆRY', 'broader', 6),
-('dime.period', 'CÆRY', 'dime.period', 'CÆRC', 'broader', 7),
-('dime.period', 'CÆRY', 'dime.period', 'CÆRD', 'broader', 7),
-('dime.period', 'CÆRY', 'dime.period', 'CÆRE', 'broader', 7),
-('dime.period', 'CÆXX', 'dime.period', 'CÆFX', 'broader', 5),
-('dime.period', 'CÆXX', 'dime.period', 'CÆRX', 'broader', 5),
-('dime.period', 'CXXX', 'dime.period', 'CÆXX', 'broader', 4),
-('dime.period', 'CXXX', 'dime.period', 'CYXX', 'broader', 4),
-('dime.period', 'CYGX', 'dime.period', 'CYGÆ', 'broader', 6),
-('dime.period', 'CYGX', 'dime.period', 'CYGY', 'broader', 6),
-('dime.period', 'CYVX', 'dime.period', 'CYVÆ', 'broader', 6),
-('dime.period', 'CYVX', 'dime.period', 'CYVY', 'broader', 6),
-('dime.period', 'CYXX', 'dime.period', 'CYGX', 'broader', 5),
-('dime.period', 'CYXX', 'dime.period', 'CYVX', 'broader', 5),
-('dime.period', 'DÆXX', 'dime.period', 'DÆX1', 'broader', 5),
-('dime.period', 'DÆXX', 'dime.period', 'DÆX2', 'broader', 5),
-('dime.period', 'DXXX', 'dime.period', 'DÆXX', 'broader', 4),
-('dime.period', 'DXXX', 'dime.period', 'DYXX', 'broader', 4),
-('dime.period', 'DYXX', 'dime.period', 'DYX3', 'broader', 5),
-('dime.period', 'DYXX', 'dime.period', 'DYX4', 'broader', 5),
-('dime.period', 'DYXX', 'dime.period', 'DYX5', 'broader', 5),
-('dime.period', 'FXXX', 'dime.period', 'FÆXX', 'broader', 4),
-('dime.period', 'FXXX', 'dime.period', 'FMIN', 'broader', 4),
-('dime.period', 'FXXX', 'dime.period', 'FMV1', 'broader', 4),
-('dime.period', 'FXXX', 'dime.period', 'FMV2', 'broader', 4),
-('dime.period', 'FXXX', 'dime.period', 'FMVM', 'broader', 4),
-('dime.period', 'FXXX', 'dime.period', 'FYDI', 'broader', 4),
-('dime.period', 'FXXX', 'dime.period', 'FYEL', 'broader', 4),
-('dime.period', 'FXXX', 'dime.period', 'FYVE', 'broader', 4),
-('dime.period', 'HXXX', 'dime.period', 'FXXX', 'broader', 3),
-('dime.period', 'OXXX', 'dime.period', 'AÆPÆ', 'broader', 4),
-('dime.period', 'OXXX', 'dime.period', 'AÆPM', 'broader', 4),
-('dime.period', 'OXXX', 'dime.period', 'AÆPY', 'broader', 4),
-('dime.period', 'OXXX', 'dime.period', 'AMXX', 'broader', 4),
-('dime.period', 'OXXX', 'dime.period', 'AXXX', 'broader', 3),
-('dime.period', 'OXXX', 'dime.period', 'AYXX', 'broader', 4),
-('dime.period', 'OXXX', 'dime.period', 'BXXX', 'broader', 3),
-('dime.period', 'OXXX', 'dime.period', 'CXXX', 'broader', 3),
-('dime.period', 'OXXX', 'dime.period', 'DXXX', 'broader', 3),
-('dime.period', 'OXXX', 'dime.period', 'EXXX', 'broader', 3),
-('dime.period', 'XXXX', 'dime.period', 'HXXX', 'broader', 2),
-('dime.period', 'XXXX', 'dime.period', 'OXXX', 'broader', 2);
+('dime.period', 'AXXX', 'dime.period', 'AMXX', 'broader', 2),
+('dime.period', 'AXXX', 'dime.period', 'AXXX', 'broader', 1),
+('dime.period', 'AXXX', 'dime.period', 'AYXX', 'broader', 2),
+('dime.period', 'AXXX', 'dime.period', 'PALEO', 'broader', 2),
+('dime.period', 'BÆXX', 'dime.period', 'BÆX1', 'broader', 3),
+('dime.period', 'BÆXX', 'dime.period', 'BÆX2', 'broader', 3),
+('dime.period', 'BÆXX', 'dime.period', 'BÆX3', 'broader', 3),
+('dime.period', 'BXXX', 'dime.period', 'BÆXX', 'broader', 2),
+('dime.period', 'BXXX', 'dime.period', 'BXXX', 'broader', 1),
+('dime.period', 'BXXX', 'dime.period', 'BYXX', 'broader', 2),
+('dime.period', 'BYXX', 'dime.period', 'BYX4', 'broader', 3),
+('dime.period', 'BYXX', 'dime.period', 'BYX5', 'broader', 3),
+('dime.period', 'BYXX', 'dime.period', 'BYX6', 'broader', 3),
+('dime.period', 'CÆFX', 'dime.period', 'CÆFÆ', 'broader', 4),
+('dime.period', 'CÆFX', 'dime.period', 'CÆFM', 'broader', 4),
+('dime.period', 'CÆFX', 'dime.period', 'CÆFY', 'broader', 4),
+('dime.period', 'CÆRÆ', 'dime.period', 'CÆRA', 'broader', 5),
+('dime.period', 'CÆRÆ', 'dime.period', 'CÆRB', 'broader', 5),
+('dime.period', 'CÆRX', 'dime.period', 'CÆRÆ', 'broader', 4),
+('dime.period', 'CÆRX', 'dime.period', 'CÆRY', 'broader', 4),
+('dime.period', 'CÆRY', 'dime.period', 'CÆRC', 'broader', 5),
+('dime.period', 'CÆRY', 'dime.period', 'CÆRD', 'broader', 5),
+('dime.period', 'CÆRY', 'dime.period', 'CÆRE', 'broader', 5),
+('dime.period', 'CÆXX', 'dime.period', 'CÆFX', 'broader', 3),
+('dime.period', 'CÆXX', 'dime.period', 'CÆRX', 'broader', 3),
+('dime.period', 'CXXX', 'dime.period', 'CÆXX', 'broader', 2),
+('dime.period', 'CXXX', 'dime.period', 'CXXX', 'broader', 1),
+('dime.period', 'CXXX', 'dime.period', 'CYVX', 'broader', 2),
+('dime.period', 'CXXX', 'dime.period', 'CYXX', 'broader', 2),
+('dime.period', 'CYGX', 'dime.period', 'CYGÆ', 'broader', 4),
+('dime.period', 'CYGX', 'dime.period', 'CYGY', 'broader', 4),
+('dime.period', 'CYVX', 'dime.period', 'CYVÆ', 'broader', 4),
+('dime.period', 'CYVX', 'dime.period', 'CYVY', 'broader', 4),
+('dime.period', 'CYXX', 'dime.period', 'CYGX', 'broader', 3),
+('dime.period', 'DXXX', 'dime.period', 'DÆXX', 'broader', 3),
+('dime.period', 'DXXX', 'dime.period', 'DYX3', 'broader', 3),
+('dime.period', 'DXXX', 'dime.period', 'DYX4', 'broader', 3),
+('dime.period', 'FXXX', 'dime.period', 'FÆXX', 'broader', 3),
+('dime.period', 'FXXX', 'dime.period', 'FMIN', 'broader', 3),
+('dime.period', 'FXXX', 'dime.period', 'FMV1', 'broader', 3),
+('dime.period', 'FXXX', 'dime.period', 'FMV2', 'broader', 3),
+('dime.period', 'FXXX', 'dime.period', 'FMVM', 'broader', 3),
+('dime.period', 'FXXX', 'dime.period', 'FYXX', 'broader', 3),
+('dime.period', 'HXXX', 'dime.period', 'DXXX', 'broader', 2),
+('dime.period', 'HXXX', 'dime.period', 'EXXX', 'broader', 2),
+('dime.period', 'HXXX', 'dime.period', 'FXXX', 'broader', 2),
+('dime.period', 'HXXX', 'dime.period', 'HXXX', 'broader', 1),
+('dime.period', 'XXXX', 'dime.period', 'XXXX', 'broader', 1);
 
 -- --------------------------------------------------------
 
@@ -1931,7 +1788,7 @@ INSERT INTO `ark_vocabulary_related` (`from_concept`, `from_term`, `to_concept`,
 -- Table structure for table `ark_vocabulary_relation`
 --
 
-CREATE TABLE `ark_vocabulary_relation` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_relation` (
   `relation` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `code` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
   `recipricol` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1947,11 +1804,11 @@ CREATE TABLE `ark_vocabulary_relation` (
 --
 
 INSERT INTO `ark_vocabulary_relation` (`relation`, `code`, `recipricol`, `recipricol_code`, `equivalence`, `hierarchy`, `associative`, `description`) VALUES
-('broader', 'BT', 'narrower', 'NT', 0, 1, 0, 'The \'Has A\' parent/child hierarchy relationship'),
-('class', 'BTI', 'instance', 'NTI', 0, 1, 0, 'The \'Is A\' class/instance hierarchy relationship.'),
+('broader', 'BT', 'narrower', 'NT', 0, 1, 0, 'The ''Has A'' parent/child hierarchy relationship'),
+('class', 'BTI', 'instance', 'NTI', 0, 1, 0, 'The ''Is A'' class/instance hierarchy relationship.'),
 ('related', 'RT', 'related', 'RT', 0, 0, 1, 'Related terms that are neither equivalent or hierarchical.'),
 ('usedfor', 'UF', 'use', 'U', 1, 0, 0, 'Leads from the preferred entry term to the\\nnon-preferred term(s).'),
-('whole', 'BTP', 'part', 'NTP', 0, 1, 0, 'The \'Part Of\' whole/part hierarchy relationship.');
+('whole', 'BTP', 'part', 'NTP', 0, 1, 0, 'The ''Part Of'' whole/part hierarchy relationship.');
 
 -- --------------------------------------------------------
 
@@ -1959,7 +1816,7 @@ INSERT INTO `ark_vocabulary_relation` (`relation`, `code`, `recipricol`, `recipr
 -- Table structure for table `ark_vocabulary_term`
 --
 
-CREATE TABLE `ark_vocabulary_term` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_term` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `alias` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2362,101 +2219,55 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `depre
 ('dime.material', 'pb', 'lead', 1, 0, 'dime.material.lead', ''),
 ('dime.material', 'sa', 'tin', 1, 0, 'dime.material.tin', ''),
 ('dime.material', 'xx', 'othermetal', 1, 0, 'dime.material.othermetal', ''),
-('dime.period', 'AÆAX', 'ahrensburg', 1, 0, 'dime.period.ahrensburg', 'Ahrensburgkultur'),
-('dime.period', 'AÆBX', 'bromme', 1, 0, 'dime.period.bromme', 'Brommekultur'),
-('dime.period', 'AÆEÆ', 'ertebølle.early', 1, 0, 'dime.period.ertebølle.early', 'Ældre Ertebøllekultur'),
-('dime.period', 'AÆEM', 'ertebølle.middle', 1, 0, 'dime.period.ertebølle.middle', 'Mell. Ertebøllekultur'),
-('dime.period', 'AÆEX', 'ertebølle', 1, 0, 'dime.period.ertebølle', 'Ertebøllekultur'),
-('dime.period', 'AÆEY', 'ertebølle.late', 1, 0, 'dime.period.ertebølle.late', 'Yngre Ertebøllekultur'),
-('dime.period', 'AÆFX', 'feder', 1, 0, 'dime.period.feder', 'Federmesser'),
-('dime.period', 'AÆHX', 'hamburg', 1, 0, 'dime.period.hamburg', 'Hamburgkultur'),
-('dime.period', 'AÆKÆ', 'kongemose.early', 1, 0, 'dime.period.kongemose.early', 'Ældre Kongemosekultur'),
-('dime.period', 'AÆKM', 'kongemose.middle', 1, 0, 'dime.period.kongemose.middle', 'Mell. Kongemosekultur'),
-('dime.period', 'AÆKX', 'kongemose', 1, 0, 'dime.period.kongemose', 'Kongemosekultur'),
-('dime.period', 'AÆKY', 'kongemose.late', 1, 0, 'dime.period.kongemose.late', 'Yngre Kongemosekultur'),
-('dime.period', 'AÆMÆ', 'maglemosian.early', 1, 0, 'dime.period.maglemosian.early', 'Ældre Maglemosekultur'),
-('dime.period', 'AÆMM', 'maglemosian.middle', 1, 0, 'dime.period.maglemosian.middle', 'Mell. Maglemosekultur'),
-('dime.period', 'AÆMX', 'maglemosian', 1, 0, 'dime.period.maglemosian', 'Maglemosekultur'),
-('dime.period', 'AÆMY', 'maglemosian.late', 1, 0, 'dime.period.maglemosian.late', 'Yngre Maglemosekultur'),
-('dime.period', 'AÆPÆ', 'palaeolithic.early', 1, 0, 'dime.period.palaeolithic.early', 'Ældre Palæolitikum'),
-('dime.period', 'AÆPM', 'palaeolithic.middle', 1, 0, 'dime.period.palaeolithic.middle', 'Mellempalæolitikum'),
-('dime.period', 'AÆPY', 'palaeolithic.late', 1, 0, 'dime.period.palaeolithic.late', 'Yngre-sen Palæolitikum'),
-('dime.period', 'AMXX', 'mesolithic', 1, 0, 'dime.period.mesolithic', 'Mesolitikum'),
-('dime.period', 'ATM1', 'funnelbeaker.middle.i', 1, 0, 'dime.period.funnelbeaker.middle.i', 'Mellemneolitisk Tragtbægerkultur I'),
-('dime.period', 'ATM2', 'funnelbeaker.middle.ii', 1, 0, 'dime.period.funnelbeaker.middle.ii', 'Mellemneolitisk Tragtbægerkultur II'),
-('dime.period', 'ATM3', 'funnelbeaker.middle.iii', 1, 0, 'dime.period.funnelbeaker.middle.iii', 'Mellemneolitisk Tragtbægerkultur III'),
-('dime.period', 'ATM4', 'funnelbeaker.middle.iv', 1, 0, 'dime.period.funnelbeaker.middle.iv', 'Mellemneolitisk Tragtbægerkultur IV'),
-('dime.period', 'ATM5', 'funnelbeaker.middle.v', 1, 0, 'dime.period.funnelbeaker.middle.v', 'Mellemneolitisk Tragtbægerkultur V'),
-('dime.period', 'ATNA', 'funnelbeaker.early.a', 1, 0, 'dime.period.funnelbeaker.early.a', 'Tidligneolitisk Tragtbægerkultur A'),
-('dime.period', 'ATNB', 'funnelbeaker.early.b', 1, 0, 'dime.period.funnelbeaker.early.b', 'Tidligneolitisk Tragtbægerkultur B'),
-('dime.period', 'ATNC', 'funnelbeaker.early.c', 1, 0, 'dime.period.funnelbeaker.early.c', 'Tidligneolitisk Tragtbægerkultur C'),
-('dime.period', 'AXXX', 'stoneage', 1, 0, 'dime.period.stoneage', 'Stenalder'),
-('dime.period', 'AYEÆ', 'cordedware.early', 1, 0, 'dime.period.cordedware.early', 'Ældre Enkeltgravskultur'),
-('dime.period', 'AYEM', 'cordedware.middle', 1, 0, 'dime.period.cordedware.middle', 'Mell. Enkeltgravskultur'),
-('dime.period', 'AYEX', 'cordedware', 1, 0, 'dime.period.cordedware', 'Enkeltgravskultur'),
-('dime.period', 'AYEY', 'cordedware.late', 1, 0, 'dime.period.cordedware.late', 'Yngre Enkeltgravskultur'),
-('dime.period', 'AYGX', 'pittedware', 1, 0, 'dime.period.pittedware', 'Grubekeramisk kultur'),
-('dime.period', 'AYKX', 'bellbeaker', 1, 0, 'dime.period.bellbeaker', 'Klokkebægerkultur'),
-('dime.period', 'AYSÆ', 'lateneolithic.early', 1, 0, 'dime.period.lateneolithic.early', 'Ældre Senneolitikum'),
-('dime.period', 'AYSX', 'lateneolithic', 1, 0, 'dime.period.lateneolithic', 'Senneolitikum'),
-('dime.period', 'AYSY', 'lateneolithic.late', 1, 0, 'dime.period.lateneolithic.late', 'Yngre Senneolitikum'),
-('dime.period', 'AYTÆ', 'funnelbeaker.early', 1, 0, 'dime.period.funnelbeaker.early', 'Ældre Tragtbægerkultur'),
-('dime.period', 'AYTM', 'funnelbeaker.middle', 1, 0, 'dime.period.funnelbeaker.middle', 'Mellemneolitisk Tragtbægerkultur'),
-('dime.period', 'AYTX', 'funnelbeaker', 1, 0, 'dime.period.funnelbeaker', 'Tragtbægerkultur'),
-('dime.period', 'AYXX', 'stoneage.early', 1, 0, 'dime.period.stoneage.early', 'Yngre Stenalder'),
-('dime.period', 'BÆX1', 'bronze.early.1', 1, 0, 'dime.period.bronze.early.1', 'Ældre Bronzealder per.1'),
-('dime.period', 'BÆX2', 'bronze.early.2', 1, 0, 'dime.period.bronze.early.2', 'Ældre Bronzealder per.2'),
-('dime.period', 'BÆX3', 'bronze.early.3', 1, 0, 'dime.period.bronze.early.3', 'Ældre Bronzealder per.3'),
-('dime.period', 'BÆXX', 'bronze.early', 1, 0, 'dime.period.bronze.early', 'Ældre Bronzealder'),
-('dime.period', 'BXXX', 'bronze', 1, 0, 'dime.period.bronze', 'Bronzealder'),
-('dime.period', 'BYX4', 'bronze.late.4', 1, 0, 'dime.period.bronze.late.4', 'Yngre Bronzealder per.4'),
-('dime.period', 'BYX5', 'bronze.late.5', 1, 0, 'dime.period.bronze.late.5', 'Yngre Bronzealder per.5'),
-('dime.period', 'BYX6', 'bronze.late.6', 1, 0, 'dime.period.bronze.late.6', 'Yngre Bronzealder per.6'),
-('dime.period', 'BYXX', 'bronze.late', 1, 0, 'dime.period.bronze.late', 'Yngre Bronzealder'),
-('dime.period', 'CÆFÆ', 'ironage.preroman.early', 1, 0, 'dime.period.ironage.preroman.early', 'Ældre Førromersk Jernalder (per.1)'),
-('dime.period', 'CÆFM', 'ironage.preroman.middle', 1, 0, 'dime.period.ironage.preroman.middle', 'Mell. Førromersk Jernalder (per.2)'),
-('dime.period', 'CÆFX', 'ironage.preroman', 1, 0, 'dime.period.ironage.preroman', 'Førromersk Jernalder'),
-('dime.period', 'CÆFY', 'ironage.preroman.late', 1, 0, 'dime.period.ironage.preroman.late', 'Yngre Førromersk Jernalder (per.3A)'),
-('dime.period', 'CÆRA', 'ironage.roman.early.b1', 1, 0, 'dime.period.ironage.roman.early.b1', 'Ældre Romersk Jernalder, B1'),
-('dime.period', 'CÆRÆ', 'ironage.roman.early', 1, 0, 'dime.period.ironage.roman.early', 'Ældre Romersk Jernalder'),
-('dime.period', 'CÆRB', 'ironage.roman.early.b2', 1, 0, 'dime.period.ironage.roman.early.b2', 'Ældre Romersk Jernalder, B2'),
-('dime.period', 'CÆRC', 'ironage.roman.late.c1', 1, 0, 'dime.period.ironage.roman.late.c1', 'Yngre Romersk Jernalder, C1'),
-('dime.period', 'CÆRD', 'ironage.roman.late.c2', 1, 0, 'dime.period.ironage.roman.late.c2', 'Yngre Romersk Jernalder, C2'),
-('dime.period', 'CÆRE', 'ironage.roman.late.c3', 1, 0, 'dime.period.ironage.roman.late.c3', 'Yngre Romersk Jernalder, C3'),
-('dime.period', 'CÆRX', 'ironage.roman', 1, 0, 'dime.period.ironage.roman', 'Romersk Jernalder'),
-('dime.period', 'CÆRY', 'ironage.roman.late', 1, 0, 'dime.period.ironage.roman.late', 'Yngre Romersk Jernalder'),
-('dime.period', 'CÆXX', 'ironage.early', 1, 0, 'dime.period.ironage.early', 'Ældre Jernalder'),
-('dime.period', 'CXXX', 'ironage', 1, 0, 'dime.period.ironage', 'Jernalder'),
-('dime.period', 'CYGÆ', 'ironage.germanic.early', 1, 0, 'dime.period.ironage.germanic.early', 'Ældre Germansk Jernalder'),
-('dime.period', 'CYGX', 'ironage.germanic', 1, 0, 'dime.period.ironage.germanic', 'Germansk Jernalder'),
-('dime.period', 'CYGY', 'ironage.germanic.late', 1, 0, 'dime.period.ironage.germanic.late', 'Yngre Germansk Jernalder'),
-('dime.period', 'CYVÆ', 'viking.early', 1, 0, 'dime.period.viking.early', 'Ældre Vikingetid'),
-('dime.period', 'CYVX', 'viking', 1, 0, 'dime.period.viking', 'Vikingetid'),
-('dime.period', 'CYVY', 'viking.late', 1, 0, 'dime.period.viking.late', 'Yngre Vikingetid'),
-('dime.period', 'CYXX', 'ironage.late', 1, 0, 'dime.period.ironage.late', 'Yngre Jernalder (Germansk jernalder og Vikingetid)'),
-('dime.period', 'DÆX1', 'medieval.early.c12th', 1, 0, 'dime.period.medieval.early.c12th', 'Ældre middelalder (1067 - 1100-tal)'),
-('dime.period', 'DÆX2', 'medieval.early.c13th', 1, 0, 'dime.period.medieval.early.c13th', 'Ældre middelalder (1200-tal)'),
-('dime.period', 'DÆXX', 'medieval.early', 1, 0, 'dime.period.medieval.early', 'Ældre Middelalder (1066 - 1300)'),
-('dime.period', 'DXXX', 'medieval', 1, 0, 'dime.period.medieval', 'Middelalder'),
-('dime.period', 'DYX3', 'medieval.late.c14th', 1, 0, 'dime.period.medieval.late.c14th', 'Yngre middelalder (1300-tal)'),
-('dime.period', 'DYX4', 'medieval.late.c15th', 1, 0, 'dime.period.medieval.late.c15th', 'Yngre middelalder (1400-tal)'),
-('dime.period', 'DYX5', 'medieval.late.c16th', 1, 0, 'dime.period.medieval.late.c16th', 'Yngre middelalder (1500-tal)'),
-('dime.period', 'DYXX', 'medieval.late', 1, 0, 'dime.period.medieval.late', 'Yngre Middelalder (1250 - 1535)'),
-('dime.period', 'EXXX', 'reformation', 1, 0, 'dime.period.reformation', 'Efterreformatorisk tid (1536-1660)'),
-('dime.period', 'FÆXX', 'modern.c17th', 1, 0, 'dime.period.modern.c17th', 'Nyere tid, 1600-1700 tallet'),
-('dime.period', 'FMIN', 'modern.industrial', 1, 0, 'dime.period.modern.industrial', 'Nyere tid, industrialismen'),
-('dime.period', 'FMV1', 'modern.ww1', 1, 0, 'dime.period.modern.ww1', '1914-18, 1. Verdenskrig'),
-('dime.period', 'FMV2', 'modern.ww2', 1, 0, 'dime.period.modern.ww2', '1940-45, 2. Verdenskrig'),
-('dime.period', 'FMVM', 'modern.interwar', 1, 0, 'dime.period.modern.interwar', '1919-39, Mellemskrigstiden'),
-('dime.period', 'FXXX', 'modern', 1, 0, 'dime.period.modern', 'Nyere tid (1661 - )'),
-('dime.period', 'FYDI', 'modern.digital', 1, 0, 'dime.period.modern.digital', 'Nyere tid, digital gennembrud'),
-('dime.period', 'FYEL', 'modern.electronic', 1, 0, 'dime.period.modern.electronic', 'Nyere tid, elektronisk gennembrud'),
-('dime.period', 'FYVE', 'modern.postwar', 1, 0, 'dime.period.modern.postwar', 'Nyere tid, efterkrigstiden'),
-('dime.period', 'HXXX', 'historic', 1, 0, 'dime.period.historic', 'Historisk tid (1067 -)'),
-('dime.period', 'OXXX', 'prehistoric', 1, 0, 'dime.period.prehistoric', 'Oldtid'),
-('dime.period', 'TM1A', 'funnelbeaker.middle.ia', 1, 0, 'dime.period.funnelbeaker.middle.ia', 'Mellemneolitisk Tragtbægerkultur 1A'),
-('dime.period', 'TM1B', 'funnelbeaker.middle.ib', 1, 0, 'dime.period.funnelbeaker.middle.ib', 'Mellemneolitisk Tragtbægerkultur 1B'),
-('dime.period', 'XXXX', 'undated', 1, 0, 'dime.period.undated', 'Udateret'),
+('dime.period', 'AMXX', 'mesolithic', 1, 0, 'dime.period.mesolithic', 'Mesolithic'),
+('dime.period', 'AXXX', 'stone', 1, 0, 'dime.period.stone', 'Stone Age'),
+('dime.period', 'AYXX', 'neolithic', 1, 0, 'dime.period.neolithic', 'Neolithic'),
+('dime.period', 'BÆX1', 'bronze.1', 1, 0, 'dime.period.bronze.1', 'Bronze Age Period 1'),
+('dime.period', 'BÆX2', 'bronze.2', 1, 0, 'dime.period.bronze.2', 'Bronze Age Period 2'),
+('dime.period', 'BÆX3', 'bronze.3', 1, 0, 'dime.period.bronze.3', 'Bronze Age Period 3'),
+('dime.period', 'BÆXX', 'bronze.early', 1, 0, 'dime.period.bronze.early', 'Early Bronze Age'),
+('dime.period', 'BXXX', 'bronze', 1, 0, 'dime.period.bronze', 'Bronze Age'),
+('dime.period', 'BYX4', 'bronze.4', 1, 0, 'dime.period.bronze.4', 'Bronze Age Period 4'),
+('dime.period', 'BYX5', 'bronze.5', 1, 0, 'dime.period.bronze.5', 'Bronze Age Period 5'),
+('dime.period', 'BYX6', 'bronze.6', 1, 0, 'dime.period.bronze.6', 'Bronze Age Period 6'),
+('dime.period', 'BYXX', 'bronze.late', 1, 0, 'dime.period.bronze.late', 'Late Bronze Age'),
+('dime.period', 'CÆFÆ', 'iron.preroman.early', 1, 0, 'dime.period.iron.preroman.early', 'Early Pre-Roman Iron Age'),
+('dime.period', 'CÆFM', 'iron.preroman.middle', 1, 0, 'dime.period.iron.preroman.middle', 'Middle Pre-Roman Iron Age'),
+('dime.period', 'CÆFX', 'iron.preroman', 1, 0, 'dime.period.iron.preroman', 'Pre-Roman Iron Age'),
+('dime.period', 'CÆFY', 'iron.preroman.late', 1, 0, 'dime.period.iron.preroman.late', 'Late Pre-Roman Iron Age'),
+('dime.period', 'CÆRA', 'iron.roman.early.b1', 1, 0, 'dime.period.iron.roman.early.b1', 'Early Roman Iron Age B1'),
+('dime.period', 'CÆRÆ', 'iron.roman.early', 1, 0, 'dime.period.iron.roman.early', 'Early Roman Iron Age'),
+('dime.period', 'CÆRB', 'iron.roman.early.b2', 1, 0, 'dime.period.iron.roman.early.b2', 'Early Roman Iron Age B2'),
+('dime.period', 'CÆRC', 'iron.roman.late.c1', 1, 0, 'dime.period.iron.roman.late.c1', 'Late Roman Iron Age C1'),
+('dime.period', 'CÆRD', 'iron.roman.late.c2', 1, 0, 'dime.period.iron.roman.late.c2', 'Late Roman Iron Age C2'),
+('dime.period', 'CÆRE', 'iron.roman.late.c3', 1, 0, 'dime.period.iron.roman.late.c3', 'Late Roman Iron Age C3'),
+('dime.period', 'CÆRX', 'iron.roman', 1, 0, 'dime.period.iron.roman', 'Roman Iron Age'),
+('dime.period', 'CÆRY', 'iron.roman.late', 1, 0, 'dime.period.iron.roman.late', 'Late Roman Iron Age'),
+('dime.period', 'CÆXX', 'iron.early', 1, 0, 'dime.period.iron.early', 'Early Iron Age'),
+('dime.period', 'CXXX', 'iron', 1, 0, 'dime.period.iron', 'Iron Age'),
+('dime.period', 'CYGÆ', 'iron.germainic.early', 1, 0, 'dime.period.iron.germainic.early', 'Early Germanic Iron Age'),
+('dime.period', 'CYGX', 'iron.germainic', 1, 0, 'dime.period.iron.germainic', 'Germanic Iron Age'),
+('dime.period', 'CYGY', 'iron.germainic.late', 1, 0, 'dime.period.iron.germainic.late', 'Late Germanic Iron Age'),
+('dime.period', 'CYVÆ', 'viking.early', 1, 0, 'dime.period.viking.early', 'Early Viking Age'),
+('dime.period', 'CYVX', 'viking', 1, 0, 'dime.period.viking', 'Viking Age'),
+('dime.period', 'CYVY', 'viking.late', 1, 0, 'dime.period.viking.late', 'Late Viking Age'),
+('dime.period', 'CYXX', 'iron.late', 1, 0, 'dime.period.iron.late', 'Late Iron Age'),
+('dime.period', 'DÆXX', 'medieval.early', 1, 0, 'dime.period.medieval.early', 'Early Medieval'),
+('dime.period', 'DXXX', 'medieval', 1, 0, 'dime.period.medieval', 'Medieval'),
+('dime.period', 'DYX3', 'medieval.high', 1, 0, 'dime.period.medieval.high', 'High Medieval'),
+('dime.period', 'DYX4', 'medieval.late', 1, 0, 'dime.period.medieval.late', 'Late Medieval'),
+('dime.period', 'EXXX', 'reformation', 1, 0, 'dime.period.reformation', 'Reformation'),
+('dime.period', 'FÆXX', 'absolutism', 1, 0, 'dime.period.absolutism', 'Absolutism'),
+('dime.period', 'FMIN', 'industrial', 1, 0, 'dime.period.industrial', 'Industrial Age'),
+('dime.period', 'FMV1', 'ww1', 1, 0, 'dime.period.ww1', 'First World War'),
+('dime.period', 'FMV2', 'ww2', 1, 0, 'dime.period.ww2', 'Second World War'),
+('dime.period', 'FMVM', 'interwar', 1, 0, 'dime.period.interwar', 'Interwar Years'),
+('dime.period', 'FXXX', 'modern', 1, 0, 'dime.period.modern', 'Modern Age'),
+('dime.period', 'FYXX', 'welfare', 1, 0, 'dime.period.welfare', 'Welfare Age'),
+('dime.period', 'HXXX', 'historic', 1, 0, 'dime.period.historic', 'Historic Age'),
+('dime.period', 'PALEO', 'palaeolithic', 1, 0, 'dime.period.palaeolithic', 'Palaeolithic'),
+('dime.period', 'VEM', 'viking.medieval', 1, 0, 'dime.period.viking.medieval', 'Viking / Early Medieval '),
+('dime.period', 'XXXX', 'undated', 1, 0, 'dime.period.undated', 'Undated'),
 ('dime.treasure', 'assessing', '', 1, 0, 'dime.treasure.assesing', ''),
 ('dime.treasure', 'not', '', 1, 0, 'dime.treasure.not', ''),
 ('dime.treasure', 'pending', '', 1, 0, 'dime.treasure.pending', ''),
@@ -2681,8 +2492,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `depre
 ('language', 'hit', 'hittite', 1, 0, 'language.hittite', ''),
 ('language', 'hmn', 'hmong', 1, 0, 'language.hmong', ''),
 ('language', 'ho', 'motu.hiri', 1, 0, 'language.motu.hiri', ''),
-('language', 'hr', 'croatian', 1, 0, 'language.croatian', '');
-INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('language', 'hr', 'croatian', 1, 0, 'language.croatian', ''),
 ('language', 'hsb', 'sorbian.upper', 1, 0, 'language.sorbian.upper', ''),
 ('language', 'hsn', 'chinese.xiang', 1, 0, 'language.chinese.xiang', ''),
 ('language', 'ht', 'creole.haitian', 1, 0, 'language.creole.haitian', ''),
@@ -2773,7 +2583,8 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `depre
 ('language', 'lb', 'luxembourgish', 1, 0, 'language.luxembourgish', ''),
 ('language', 'lez', 'lezghian', 1, 0, 'language.lezghian', ''),
 ('language', 'lfn', 'linguafranca.nova', 1, 0, 'language.linguafranca.nova', ''),
-('language', 'lg', 'ganda', 1, 0, 'language.ganda', ''),
+('language', 'lg', 'ganda', 1, 0, 'language.ganda', '');
+INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('language', 'li', 'limburgish', 1, 0, 'language.limburgish', ''),
 ('language', 'lij', 'ligurian', 1, 0, 'language.ligurian', ''),
 ('language', 'liv', 'livonian', 1, 0, 'language.livonian', ''),
@@ -3090,7 +2901,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `enabled`, `depre
 -- Table structure for table `ark_vocabulary_translation`
 --
 
-CREATE TABLE `ark_vocabulary_translation` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_translation` (
   `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `domain` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -3340,101 +3151,55 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('da', 'vocabulary', 'dime.material.othermetal', 'default', 'Andet Metal', ''),
 ('da', 'vocabulary', 'dime.material.silver', 'default', 'Sølv', ''),
 ('da', 'vocabulary', 'dime.material.tin', 'default', 'Tin', ''),
-('da', 'vocabulary', 'dime.period.ahrensburg', 'default', 'Ahrensburgkultur', ''),
-('da', 'vocabulary', 'dime.period.bellbeaker', 'default', 'Klokkebægerkultur', ''),
-('da', 'vocabulary', 'dime.period.bromme', 'default', 'Brommekultur', ''),
-('da', 'vocabulary', 'dime.period.bronze', 'default', 'Bronzealder', ''),
-('da', 'vocabulary', 'dime.period.bronze.early', 'default', 'Ældre Bronzealder', ''),
-('da', 'vocabulary', 'dime.period.bronze.early.1', 'default', 'Ældre Bronzealder per.1', ''),
-('da', 'vocabulary', 'dime.period.bronze.early.2', 'default', 'Ældre Bronzealder per.2', ''),
-('da', 'vocabulary', 'dime.period.bronze.early.3', 'default', 'Ældre Bronzealder per.3', ''),
-('da', 'vocabulary', 'dime.period.bronze.late', 'default', 'Yngre Bronzealder', ''),
-('da', 'vocabulary', 'dime.period.bronze.late.4', 'default', 'Yngre Bronzealder per.4', ''),
-('da', 'vocabulary', 'dime.period.bronze.late.5', 'default', 'Yngre Bronzealder per.5', ''),
-('da', 'vocabulary', 'dime.period.bronze.late.6', 'default', 'Yngre Bronzealder per.6', ''),
-('da', 'vocabulary', 'dime.period.cordedware', 'default', 'Enkeltgravskultur', ''),
-('da', 'vocabulary', 'dime.period.cordedware.early', 'default', 'Ældre Enkeltgravskultur', ''),
-('da', 'vocabulary', 'dime.period.cordedware.late', 'default', 'Yngre Enkeltgravskultur', ''),
-('da', 'vocabulary', 'dime.period.cordedware.middle', 'default', 'Mell. Enkeltgravskultur', ''),
-('da', 'vocabulary', 'dime.period.ertebølle', 'default', 'Ertebøllekultur', ''),
-('da', 'vocabulary', 'dime.period.ertebølle.early', 'default', 'Ældre Ertebøllekultur', ''),
-('da', 'vocabulary', 'dime.period.ertebølle.late', 'default', 'Yngre Ertebøllekultur', ''),
-('da', 'vocabulary', 'dime.period.ertebølle.middle', 'default', 'Mell. Ertebøllekultur', ''),
-('da', 'vocabulary', 'dime.period.feder', 'default', 'Federmesser', ''),
-('da', 'vocabulary', 'dime.period.funnelbeaker', 'default', 'Tragtbægerkultur', ''),
-('da', 'vocabulary', 'dime.period.funnelbeaker.early', 'default', 'Ældre Tragtbægerkultur', ''),
-('da', 'vocabulary', 'dime.period.funnelbeaker.early.a', 'default', 'Tidligneolitisk Tragtbægerkultur A', ''),
-('da', 'vocabulary', 'dime.period.funnelbeaker.early.b', 'default', 'Tidligneolitisk Tragtbægerkultur B', ''),
-('da', 'vocabulary', 'dime.period.funnelbeaker.early.c', 'default', 'Tidligneolitisk Tragtbægerkultur C', ''),
-('da', 'vocabulary', 'dime.period.funnelbeaker.middle', 'default', 'Mellemneolitisk Tragtbægerkultur', ''),
-('da', 'vocabulary', 'dime.period.funnelbeaker.middle.i', 'default', 'Mellemneolitisk Tragtbægerkultur I', ''),
-('da', 'vocabulary', 'dime.period.funnelbeaker.middle.ia', 'default', 'Mellemneolitisk Tragtbægerkultur 1A', ''),
-('da', 'vocabulary', 'dime.period.funnelbeaker.middle.ib', 'default', 'Mellemneolitisk Tragtbægerkultur 1B', ''),
-('da', 'vocabulary', 'dime.period.funnelbeaker.middle.ii', 'default', 'Mellemneolitisk Tragtbægerkultur II', ''),
-('da', 'vocabulary', 'dime.period.funnelbeaker.middle.iii', 'default', 'Mellemneolitisk Tragtbægerkultur III', ''),
-('da', 'vocabulary', 'dime.period.funnelbeaker.middle.iv', 'default', 'Mellemneolitisk Tragtbægerkultur IV', ''),
-('da', 'vocabulary', 'dime.period.funnelbeaker.middle.v', 'default', 'Mellemneolitisk Tragtbægerkultur V', ''),
-('da', 'vocabulary', 'dime.period.hamburg', 'default', 'Hamburgkultur', ''),
-('da', 'vocabulary', 'dime.period.historic', 'default', 'Historisk tid (1067 -)', ''),
-('da', 'vocabulary', 'dime.period.ironage', 'default', 'Jernalder', ''),
-('da', 'vocabulary', 'dime.period.ironage.early', 'default', 'Ældre Jernalder', ''),
-('da', 'vocabulary', 'dime.period.ironage.germanic', 'default', 'Germansk Jernalder', ''),
-('da', 'vocabulary', 'dime.period.ironage.germanic.early', 'default', 'Ældre Germansk Jernalder', ''),
-('da', 'vocabulary', 'dime.period.ironage.germanic.late', 'default', 'Yngre Germansk Jernalder', ''),
-('da', 'vocabulary', 'dime.period.ironage.late', 'default', 'Yngre Jernalder (Germansk jernalder og Vikingetid)', ''),
-('da', 'vocabulary', 'dime.period.ironage.preroman', 'default', 'Førromersk Jernalder', ''),
-('da', 'vocabulary', 'dime.period.ironage.preroman.early', 'default', 'Ældre Førromersk Jernalder (per.1)', ''),
-('da', 'vocabulary', 'dime.period.ironage.preroman.late', 'default', 'Yngre Førromersk Jernalder (per.3A)', ''),
-('da', 'vocabulary', 'dime.period.ironage.preroman.middle', 'default', 'Mell. Førromersk Jernalder (per.2)', ''),
-('da', 'vocabulary', 'dime.period.ironage.roman', 'default', 'Romersk Jernalder', ''),
-('da', 'vocabulary', 'dime.period.ironage.roman.early', 'default', 'Ældre Romersk Jernalder', ''),
-('da', 'vocabulary', 'dime.period.ironage.roman.early.b1', 'default', 'Ældre Romersk Jernalder, B1', ''),
-('da', 'vocabulary', 'dime.period.ironage.roman.early.b2', 'default', 'Ældre Romersk Jernalder, B2', ''),
-('da', 'vocabulary', 'dime.period.ironage.roman.late', 'default', 'Yngre Romersk Jernalder', ''),
-('da', 'vocabulary', 'dime.period.ironage.roman.late.c1', 'default', 'Yngre Romersk Jernalder, C1', ''),
-('da', 'vocabulary', 'dime.period.ironage.roman.late.c2', 'default', 'Yngre Romersk Jernalder, C2', ''),
-('da', 'vocabulary', 'dime.period.ironage.roman.late.c3', 'default', 'Yngre Romersk Jernalder, C3', ''),
-('da', 'vocabulary', 'dime.period.kongemose', 'default', 'Kongemosekultur', ''),
-('da', 'vocabulary', 'dime.period.kongemose.early', 'default', 'Ældre Kongemosekultur', ''),
-('da', 'vocabulary', 'dime.period.kongemose.late', 'default', 'Yngre Kongemosekultur', ''),
-('da', 'vocabulary', 'dime.period.kongemose.middle', 'default', 'Mell. Kongemosekultur', ''),
-('da', 'vocabulary', 'dime.period.lateneolithic', 'default', 'Senneolitikum', ''),
-('da', 'vocabulary', 'dime.period.lateneolithic.early', 'default', 'Ældre Senneolitikum', ''),
-('da', 'vocabulary', 'dime.period.lateneolithic.late', 'default', 'Yngre Senneolitikum', ''),
-('da', 'vocabulary', 'dime.period.maglemosian', 'default', 'Maglemosekultur', ''),
-('da', 'vocabulary', 'dime.period.maglemosian.early', 'default', 'Ældre Maglemosekultur', ''),
-('da', 'vocabulary', 'dime.period.maglemosian.late', 'default', 'Yngre Maglemosekultur', ''),
-('da', 'vocabulary', 'dime.period.maglemosian.middle', 'default', 'Mell. Maglemosekultur', ''),
-('da', 'vocabulary', 'dime.period.medieval', 'default', 'Middelalder', ''),
-('da', 'vocabulary', 'dime.period.medieval.early', 'default', 'Ældre Middelalder (1066 - 1300)', ''),
-('da', 'vocabulary', 'dime.period.medieval.early.c12th', 'default', 'Ældre middelalder (1067 - 1100-tal)', ''),
-('da', 'vocabulary', 'dime.period.medieval.early.c13th', 'default', 'Ældre middelalder (1200-tal)', ''),
-('da', 'vocabulary', 'dime.period.medieval.late', 'default', 'Yngre Middelalder (1250 - 1535)', ''),
-('da', 'vocabulary', 'dime.period.medieval.late.c14th', 'default', 'Yngre middelalder (1300-tal)', ''),
-('da', 'vocabulary', 'dime.period.medieval.late.c15th', 'default', 'Yngre middelalder (1400-tal)', ''),
-('da', 'vocabulary', 'dime.period.medieval.late.c16th', 'default', 'Yngre middelalder (1500-tal)', ''),
-('da', 'vocabulary', 'dime.period.mesolithic', 'default', 'Mesolitikum', ''),
-('da', 'vocabulary', 'dime.period.modern', 'default', 'Nyere tid (1661 - )', ''),
-('da', 'vocabulary', 'dime.period.modern.c17th', 'default', 'Nyere tid, 1600-1700 tallet', ''),
-('da', 'vocabulary', 'dime.period.modern.digital', 'default', 'Nyere tid, digital gennembrud', ''),
-('da', 'vocabulary', 'dime.period.modern.electronic', 'default', 'Nyere tid, elektronisk gennembrud', ''),
-('da', 'vocabulary', 'dime.period.modern.industrial', 'default', 'Nyere tid, industrialismen', ''),
-('da', 'vocabulary', 'dime.period.modern.interwar', 'default', '1919-39, Mellemskrigstiden', ''),
-('da', 'vocabulary', 'dime.period.modern.postwar', 'default', 'Nyere tid, efterkrigstiden', ''),
-('da', 'vocabulary', 'dime.period.modern.ww1', 'default', '1914-18, 1. Verdenskrig', ''),
-('da', 'vocabulary', 'dime.period.modern.ww2', 'default', '1940-45, 2. Verdenskrig', ''),
-('da', 'vocabulary', 'dime.period.palaeolithic.early', 'default', 'Ældre Palæolitikum', ''),
-('da', 'vocabulary', 'dime.period.palaeolithic.late', 'default', 'Yngre-sen Palæolitikum', ''),
-('da', 'vocabulary', 'dime.period.palaeolithic.middle', 'default', 'Mellempalæolitikum', ''),
-('da', 'vocabulary', 'dime.period.pittedware', 'default', 'Grubekeramisk kultur', ''),
-('da', 'vocabulary', 'dime.period.prehistoric', 'default', 'Oldtid', ''),
-('da', 'vocabulary', 'dime.period.reformation', 'default', 'Efterreformatorisk tid (1536-1660)', ''),
-('da', 'vocabulary', 'dime.period.stoneage', 'default', 'Stenalder', ''),
-('da', 'vocabulary', 'dime.period.stoneage.early', 'default', 'Yngre Stenalder', ''),
-('da', 'vocabulary', 'dime.period.undated', 'default', 'Udateret', ''),
-('da', 'vocabulary', 'dime.period.viking', 'default', 'Vikingetid', ''),
-('da', 'vocabulary', 'dime.period.viking.early', 'default', 'Ældre Vikingetid', ''),
-('da', 'vocabulary', 'dime.period.viking.late', 'default', 'Yngre Vikingetid', ''),
+('da', 'vocabulary', 'dime.period.absolutism', 'default', 'Enevælde', 'Absolutism'),
+('da', 'vocabulary', 'dime.period.bronze', 'default', 'Bronzealder', 'Bronze Age'),
+('da', 'vocabulary', 'dime.period.bronze.1', 'default', 'Bronzealder Per. 1', 'Bronze Age Period 1'),
+('da', 'vocabulary', 'dime.period.bronze.2', 'default', 'Bronzealder Per. 2', 'Bronze Age Period 2'),
+('da', 'vocabulary', 'dime.period.bronze.3', 'default', 'Bronzealder Per 3', 'Bronze Age Period 3'),
+('da', 'vocabulary', 'dime.period.bronze.4', 'default', 'Bronzealder Per. 4', 'Bronze Age Period 4'),
+('da', 'vocabulary', 'dime.period.bronze.5', 'default', 'Bronzealder Per. 5', 'Bronze Age Period 5'),
+('da', 'vocabulary', 'dime.period.bronze.6', 'default', 'Bronzealder Per. 6', 'Bronze Age Period 6'),
+('da', 'vocabulary', 'dime.period.bronze.early', 'default', 'Ældre Bronzealder', 'Early Bronze Age'),
+('da', 'vocabulary', 'dime.period.bronze.late', 'default', 'Yngre Bronzealder', 'Late Bronze Age'),
+('da', 'vocabulary', 'dime.period.historic', 'default', 'Historisk tid', 'Historic Age'),
+('da', 'vocabulary', 'dime.period.industrial', 'default', 'Industritid', 'Industrial Age'),
+('da', 'vocabulary', 'dime.period.interwar', 'default', 'Mellemskrigstiden', 'Interwar Years'),
+('da', 'vocabulary', 'dime.period.iron', 'default', 'Jernalder', 'Iron Age'),
+('da', 'vocabulary', 'dime.period.iron.early', 'default', 'Ældre Jernalder', 'Early Iron Age'),
+('da', 'vocabulary', 'dime.period.iron.germainic', 'default', 'Germansk Jernalder', 'Germanic Iron Age'),
+('da', 'vocabulary', 'dime.period.iron.germainic.early', 'default', 'Ældre Germansk Jernalder', 'Early Germanic Iron Age'),
+('da', 'vocabulary', 'dime.period.iron.germainic.late', 'default', 'Yngre Germansk Jernalder', 'Late Germanic Iron Age'),
+('da', 'vocabulary', 'dime.period.iron.late', 'default', 'Yngre Jernalder', 'Late Iron Age'),
+('da', 'vocabulary', 'dime.period.iron.preroman', 'default', 'Førromersk Jernalder', 'Pre-Roman Iron Age'),
+('da', 'vocabulary', 'dime.period.iron.preroman.early', 'default', 'Ældre Førromersk Jernalder', 'Early Pre-Roman Iron Age'),
+('da', 'vocabulary', 'dime.period.iron.preroman.late', 'default', 'Yngre Førromersk Jernalder', 'Late Pre-Roman Iron Age'),
+('da', 'vocabulary', 'dime.period.iron.preroman.middle', 'default', 'Melllemste Førromersk Jernalder', 'Middle Pre-Roman Iron Age'),
+('da', 'vocabulary', 'dime.period.iron.roman', 'default', 'Romersk Jernalder', 'Roman Iron Age'),
+('da', 'vocabulary', 'dime.period.iron.roman.early', 'default', 'Ældre Romersk Jernalder', 'Early Roman Iron Age'),
+('da', 'vocabulary', 'dime.period.iron.roman.early.b1', 'default', 'Ældre Romersk Jernalder B1', 'Early Roman Iron Age B1'),
+('da', 'vocabulary', 'dime.period.iron.roman.early.b2', 'default', 'Ældre Romersk Jernalder B2', 'Early Roman Iron Age B2'),
+('da', 'vocabulary', 'dime.period.iron.roman.late', 'default', 'Yngre Romersk Jernalder', 'Late Roman Iron Age'),
+('da', 'vocabulary', 'dime.period.iron.roman.late.c1', 'default', 'Yngre Romersk Jernalder C1', 'Late Roman Iron Age C1'),
+('da', 'vocabulary', 'dime.period.iron.roman.late.c2', 'default', 'Yngre Romersk Jernalder C2', 'Late Roman Iron Age C2'),
+('da', 'vocabulary', 'dime.period.iron.roman.late.c3', 'default', 'Yngre Romersk Jernalder C3', 'Late Roman Iron Age C3'),
+('da', 'vocabulary', 'dime.period.medieval', 'default', 'Middelalder', 'Medieval'),
+('da', 'vocabulary', 'dime.period.medieval.early', 'default', 'Tidlig Middelalder', 'Early Medieval'),
+('da', 'vocabulary', 'dime.period.medieval.high', 'default', 'Højmiddelalder', 'High Medieval'),
+('da', 'vocabulary', 'dime.period.medieval.late', 'default', 'Senmiddelalder', 'Late Medieval'),
+('da', 'vocabulary', 'dime.period.mesolithic', 'default', 'Mesolitikum', 'Mesolithic'),
+('da', 'vocabulary', 'dime.period.modern', 'default', 'Nyere tid', 'Modern Age'),
+('da', 'vocabulary', 'dime.period.neolithic', 'default', 'Neolitikum', 'Neolithic'),
+('da', 'vocabulary', 'dime.period.palaeolithic', 'default', 'Pælæolitikum', 'Palaeolithic'),
+('da', 'vocabulary', 'dime.period.reformation', 'default', 'Efterreformatorisk tid', 'Reformation'),
+('da', 'vocabulary', 'dime.period.stone', 'default', 'Stenalder', 'Stone Age'),
+('da', 'vocabulary', 'dime.period.undated', 'default', 'Udateret', 'Undated'),
+('da', 'vocabulary', 'dime.period.viking', 'default', 'Vikingetid', 'Viking Age'),
+('da', 'vocabulary', 'dime.period.viking.early', 'default', 'Ældre Vikingetid', 'Early Viking Age'),
+('da', 'vocabulary', 'dime.period.viking.late', 'default', 'Yngre Vikingetid', 'Late Viking Age'),
+('da', 'vocabulary', 'dime.period.viking.medieval', 'default', 'Vikingetid / Tidlig Middelalder', 'Viking / Early Medieval '),
+('da', 'vocabulary', 'dime.period.welfare', 'default', 'Velfærdssamfundet', 'Welfare Age'),
+('da', 'vocabulary', 'dime.period.ww1', 'default', '1. Verdenskrig', 'First World War'),
+('da', 'vocabulary', 'dime.period.ww2', 'default', '2. Verdenskrig', 'Second World War'),
 ('da', 'vocabulary', 'dime.region.hovedstaden', 'default', 'Hovedstaden', ''),
 ('da', 'vocabulary', 'dime.region.hovedstaden', 'official', 'Region Hovedstaden', ''),
 ('da', 'vocabulary', 'dime.region.midtjylland', 'default', 'Midtjylland', ''),
@@ -3522,7 +3287,7 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'country.congo', 'default', 'Congo ', ''),
 ('en', 'vocabulary', 'country.cookislands', 'default', 'Cook Islands ', ''),
 ('en', 'vocabulary', 'country.costarica', 'default', 'Costa Rica ', ''),
-('en', 'vocabulary', 'country.cotedivoire', 'default', 'Côte d\'Ivoire ', ''),
+('en', 'vocabulary', 'country.cotedivoire', 'default', 'Côte d''Ivoire ', ''),
 ('en', 'vocabulary', 'country.croatia', 'default', 'Croatia ', ''),
 ('en', 'vocabulary', 'country.cuba', 'default', 'Cuba ', ''),
 ('en', 'vocabulary', 'country.curacao', 'default', 'Curaçao ', ''),
@@ -3752,8 +3517,7 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'dime.kommune.ballerup', 'official', 'Ballerup Municipality', ''),
 ('en', 'vocabulary', 'dime.kommune.billund', 'default', 'Billund', ''),
 ('en', 'vocabulary', 'dime.kommune.billund', 'official', 'Billund Municipality', ''),
-('en', 'vocabulary', 'dime.kommune.bornholm', 'default', 'Bornholm', '');
-INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'vocabulary', 'dime.kommune.bornholm', 'default', 'Bornholm', ''),
 ('en', 'vocabulary', 'dime.kommune.bornholm', 'official', 'Bornholms Municipality', ''),
 ('en', 'vocabulary', 'dime.kommune.brondby', 'default', 'Brøndby', ''),
 ('en', 'vocabulary', 'dime.kommune.brondby', 'official', 'Brøndby Municipality', ''),
@@ -3801,7 +3565,8 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'dime.kommune.haderslev', 'official', 'Haderslev Municipality', ''),
 ('en', 'vocabulary', 'dime.kommune.halsnaes', 'default', 'Halsnæs', ''),
 ('en', 'vocabulary', 'dime.kommune.halsnaes', 'official', 'Halsnæs Municipality', ''),
-('en', 'vocabulary', 'dime.kommune.hedensted', 'default', 'Hedensted', ''),
+('en', 'vocabulary', 'dime.kommune.hedensted', 'default', 'Hedensted', '');
+INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'vocabulary', 'dime.kommune.hedensted', 'official', 'Hedensted Municipality', ''),
 ('en', 'vocabulary', 'dime.kommune.helsingor', 'default', 'Helsingør', ''),
 ('en', 'vocabulary', 'dime.kommune.helsingor', 'official', 'Helsingør Municipality', ''),
@@ -3940,6 +3705,55 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'dime.material.othermetal', 'default', 'Other Metal', ''),
 ('en', 'vocabulary', 'dime.material.silver', 'default', 'Silver', ''),
 ('en', 'vocabulary', 'dime.material.tin', 'default', 'Tin', ''),
+('en', 'vocabulary', 'dime.period.absolutism', 'default', 'Absolutism', ''),
+('en', 'vocabulary', 'dime.period.bronze', 'default', 'Bronze Age', ''),
+('en', 'vocabulary', 'dime.period.bronze.1', 'default', 'Bronze Age Period 1', ''),
+('en', 'vocabulary', 'dime.period.bronze.2', 'default', 'Bronze Age Period 2', ''),
+('en', 'vocabulary', 'dime.period.bronze.3', 'default', 'Bronze Age Period 3', ''),
+('en', 'vocabulary', 'dime.period.bronze.4', 'default', 'Bronze Age Period 4', ''),
+('en', 'vocabulary', 'dime.period.bronze.5', 'default', 'Bronze Age Period 5', ''),
+('en', 'vocabulary', 'dime.period.bronze.6', 'default', 'Bronze Age Period 6', ''),
+('en', 'vocabulary', 'dime.period.bronze.early', 'default', 'Early Bronze Age', ''),
+('en', 'vocabulary', 'dime.period.bronze.late', 'default', 'Late Bronze Age', ''),
+('en', 'vocabulary', 'dime.period.historic', 'default', 'Historic Age', ''),
+('en', 'vocabulary', 'dime.period.industrial', 'default', 'Industrial Age', ''),
+('en', 'vocabulary', 'dime.period.interwar', 'default', 'Interwar Years', ''),
+('en', 'vocabulary', 'dime.period.iron', 'default', 'Iron Age', ''),
+('en', 'vocabulary', 'dime.period.iron.early', 'default', 'Early Iron Age', ''),
+('en', 'vocabulary', 'dime.period.iron.germainic', 'default', 'Germanic Iron Age', ''),
+('en', 'vocabulary', 'dime.period.iron.germainic.early', 'default', 'Early Germanic Iron Age', ''),
+('en', 'vocabulary', 'dime.period.iron.germainic.late', 'default', 'Late Germanic Iron Age', ''),
+('en', 'vocabulary', 'dime.period.iron.late', 'default', 'Late Iron Age', ''),
+('en', 'vocabulary', 'dime.period.iron.preroman', 'default', 'Pre-Roman Iron Age', ''),
+('en', 'vocabulary', 'dime.period.iron.preroman.early', 'default', 'Early Pre-Roman Iron Age', ''),
+('en', 'vocabulary', 'dime.period.iron.preroman.late', 'default', 'Late Pre-Roman Iron Age', ''),
+('en', 'vocabulary', 'dime.period.iron.preroman.middle', 'default', 'Middle Pre-Roman Iron Age', ''),
+('en', 'vocabulary', 'dime.period.iron.roman', 'default', 'Roman Iron Age', ''),
+('en', 'vocabulary', 'dime.period.iron.roman.early', 'default', 'Early Roman Iron Age', ''),
+('en', 'vocabulary', 'dime.period.iron.roman.early.b1', 'default', 'Early Roman Iron Age B1', ''),
+('en', 'vocabulary', 'dime.period.iron.roman.early.b2', 'default', 'Early Roman Iron Age B2', ''),
+('en', 'vocabulary', 'dime.period.iron.roman.late', 'default', 'Late Roman Iron Age', ''),
+('en', 'vocabulary', 'dime.period.iron.roman.late.c1', 'default', 'Late Roman Iron Age C1', ''),
+('en', 'vocabulary', 'dime.period.iron.roman.late.c2', 'default', 'Late Roman Iron Age C2', ''),
+('en', 'vocabulary', 'dime.period.iron.roman.late.c3', 'default', 'Late Roman Iron Age C3', ''),
+('en', 'vocabulary', 'dime.period.medieval', 'default', 'Medieval', ''),
+('en', 'vocabulary', 'dime.period.medieval.early', 'default', 'Early Medieval', ''),
+('en', 'vocabulary', 'dime.period.medieval.high', 'default', 'High Medieval', ''),
+('en', 'vocabulary', 'dime.period.medieval.late', 'default', 'Late Medieval', ''),
+('en', 'vocabulary', 'dime.period.mesolithic', 'default', 'Mesolithic', ''),
+('en', 'vocabulary', 'dime.period.modern', 'default', 'Modern Age', ''),
+('en', 'vocabulary', 'dime.period.neolithic', 'default', 'Neolithic', ''),
+('en', 'vocabulary', 'dime.period.palaeolithic', 'default', 'Palaeolithic', ''),
+('en', 'vocabulary', 'dime.period.reformation', 'default', 'Reformation', ''),
+('en', 'vocabulary', 'dime.period.stone', 'default', 'Stone Age', ''),
+('en', 'vocabulary', 'dime.period.undated', 'default', 'Undated', ''),
+('en', 'vocabulary', 'dime.period.viking', 'default', 'Viking Age', ''),
+('en', 'vocabulary', 'dime.period.viking.early', 'default', 'Early Viking Age', ''),
+('en', 'vocabulary', 'dime.period.viking.late', 'default', 'Late Viking Age', ''),
+('en', 'vocabulary', 'dime.period.viking.medieval', 'default', 'Viking / Early Medieval ', ''),
+('en', 'vocabulary', 'dime.period.welfare', 'default', 'Welfare Age', ''),
+('en', 'vocabulary', 'dime.period.ww1', 'default', 'First World War', ''),
+('en', 'vocabulary', 'dime.period.ww2', 'default', 'Second World War', ''),
 ('en', 'vocabulary', 'dime.region.hovedstaden', 'default', 'Capital', ''),
 ('en', 'vocabulary', 'dime.region.hovedstaden', 'official', 'Capital Region', ''),
 ('en', 'vocabulary', 'dime.region.midtjylland', 'default', 'Central', ''),
@@ -4451,12 +4265,12 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'language.sindhi', 'default', 'Sindhi', ''),
 ('en', 'vocabulary', 'language.sinhala', 'default', 'Sinhala', ''),
 ('en', 'vocabulary', 'language.slave', 'default', 'Slave', ''),
-('en', 'vocabulary', 'language.slavic.church', 'default', 'Church Slavic', ''),
+('en', 'vocabulary', 'language.slavic.church', 'default', 'Church Slavic', '');
+INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'vocabulary', 'language.slovak', 'default', 'Slovak', ''),
 ('en', 'vocabulary', 'language.slovenian', 'default', 'Slovenian', ''),
 ('en', 'vocabulary', 'language.soga', 'default', 'Soga', ''),
-('en', 'vocabulary', 'language.sogdien', 'default', 'Sogdien', '');
-INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'vocabulary', 'language.sogdien', 'default', 'Sogdien', ''),
 ('en', 'vocabulary', 'language.somali', 'default', 'Somali', ''),
 ('en', 'vocabulary', 'language.soninke', 'default', 'Soninke', ''),
 ('en', 'vocabulary', 'language.sorbian.lower', 'default', 'Lower Sorbian', ''),
@@ -4583,7 +4397,7 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 -- Table structure for table `ark_vocabulary_type`
 --
 
-CREATE TABLE `ark_vocabulary_type` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_type` (
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `equivalence` tinyint(1) NOT NULL,
   `hierarchy` tinyint(1) NOT NULL,
@@ -4610,7 +4424,7 @@ INSERT INTO `ark_vocabulary_type` (`type`, `equivalence`, `hierarchy`, `associat
 -- Table structure for table `cor_conf_layout_role`
 --
 
-CREATE TABLE `cor_conf_layout_role` (
+CREATE TABLE IF NOT EXISTS `cor_conf_layout_role` (
   `layout_role` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -4621,7 +4435,7 @@ CREATE TABLE `cor_conf_layout_role` (
 -- Table structure for table `cor_conf_page`
 --
 
-CREATE TABLE `cor_conf_page` (
+CREATE TABLE IF NOT EXISTS `cor_conf_page` (
   `page` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `title` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -4641,7 +4455,7 @@ CREATE TABLE `cor_conf_page` (
 -- Table structure for table `cor_conf_page_layout`
 --
 
-CREATE TABLE `cor_conf_page_layout` (
+CREATE TABLE IF NOT EXISTS `cor_conf_page_layout` (
   `page` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
   `layout_role` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -4654,7 +4468,7 @@ CREATE TABLE `cor_conf_page_layout` (
 -- Table structure for table `dime_period`
 --
 
-CREATE TABLE `dime_period` (
+CREATE TABLE IF NOT EXISTS `dime_period` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `parent` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -4775,282 +4589,259 @@ INSERT INTO `dime_period` (`concept`, `term`, `parent`, `depth`, `from_year`, `t
 -- Indexes for table `ark_config_error`
 --
 ALTER TABLE `ark_config_error`
-  ADD PRIMARY KEY (`code`);
+ ADD PRIMARY KEY (`code`);
 
 --
 -- Indexes for table `ark_config_flash`
 --
 ALTER TABLE `ark_config_flash`
-  ADD PRIMARY KEY (`id`);
+ ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `ark_config_thumbnail`
 --
 ALTER TABLE `ark_config_thumbnail`
-  ADD PRIMARY KEY (`profile`);
+ ADD PRIMARY KEY (`profile`);
 
 --
 -- Indexes for table `ark_format`
 --
 ALTER TABLE `ark_format`
-  ADD PRIMARY KEY (`format`),
-  ADD KEY `fragment_type` (`type`);
+ ADD PRIMARY KEY (`format`), ADD KEY `fragment_type` (`type`);
 
 --
 -- Indexes for table `ark_format_attribute`
 --
 ALTER TABLE `ark_format_attribute`
-  ADD PRIMARY KEY (`parent`,`attribute`),
-  ADD KEY `vocabulary` (`vocabulary`),
-  ADD KEY `format` (`format`);
+ ADD PRIMARY KEY (`parent`,`attribute`), ADD KEY `vocabulary` (`vocabulary`), ADD KEY `format` (`format`);
 
 --
 -- Indexes for table `ark_format_blob`
 --
 ALTER TABLE `ark_format_blob`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_boolean`
 --
 ALTER TABLE `ark_format_boolean`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_datetime`
 --
 ALTER TABLE `ark_format_datetime`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_decimal`
 --
 ALTER TABLE `ark_format_decimal`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_float`
 --
 ALTER TABLE `ark_format_float`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_integer`
 --
 ALTER TABLE `ark_format_integer`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_item`
 --
 ALTER TABLE `ark_format_item`
-  ADD PRIMARY KEY (`format`),
-  ADD KEY `module` (`module`);
+ ADD PRIMARY KEY (`format`), ADD KEY `module` (`module`);
 
 --
 -- Indexes for table `ark_format_object`
 --
 ALTER TABLE `ark_format_object`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_string`
 --
 ALTER TABLE `ark_format_string`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_wkt`
 --
 ALTER TABLE `ark_format_wkt`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_fragment_type`
 --
 ALTER TABLE `ark_fragment_type`
-  ADD PRIMARY KEY (`type`);
+ ADD PRIMARY KEY (`type`);
 
 --
 -- Indexes for table `ark_module`
 --
 ALTER TABLE `ark_module`
-  ADD PRIMARY KEY (`module`);
+ ADD PRIMARY KEY (`module`);
 
 --
 -- Indexes for table `ark_schema`
 --
 ALTER TABLE `ark_schema`
-  ADD PRIMARY KEY (`schma`),
-  ADD KEY `module` (`module`);
+ ADD PRIMARY KEY (`schma`), ADD KEY `module` (`module`);
 
 --
 -- Indexes for table `ark_schema_association`
 --
 ALTER TABLE `ark_schema_association`
-  ADD PRIMARY KEY (`schma`,`type`,`association`) USING BTREE,
-  ADD KEY `inverse_schema` (`inverse`);
+ ADD PRIMARY KEY (`schma`,`type`,`association`) USING BTREE, ADD KEY `inverse_schema` (`inverse`);
 
 --
 -- Indexes for table `ark_schema_attribute`
 --
 ALTER TABLE `ark_schema_attribute`
-  ADD PRIMARY KEY (`schma`,`type`,`attribute`) USING BTREE,
-  ADD KEY `format` (`format`),
-  ADD KEY `vocabulary` (`vocabulary`);
+ ADD PRIMARY KEY (`schma`,`type`,`attribute`) USING BTREE, ADD KEY `format` (`format`), ADD KEY `vocabulary` (`vocabulary`);
 
 --
 -- Indexes for table `ark_translation`
 --
 ALTER TABLE `ark_translation`
-  ADD PRIMARY KEY (`keyword`),
-  ADD KEY `domain` (`domain`);
+ ADD PRIMARY KEY (`keyword`), ADD KEY `domain` (`domain`);
 
 --
 -- Indexes for table `ark_translation_domain`
 --
 ALTER TABLE `ark_translation_domain`
-  ADD PRIMARY KEY (`domain`);
+ ADD PRIMARY KEY (`domain`);
 
 --
 -- Indexes for table `ark_translation_language`
 --
 ALTER TABLE `ark_translation_language`
-  ADD PRIMARY KEY (`language`);
+ ADD PRIMARY KEY (`language`);
 
 --
 -- Indexes for table `ark_translation_message`
 --
 ALTER TABLE `ark_translation_message`
-  ADD PRIMARY KEY (`language`,`keyword`,`role`),
-  ADD KEY `keyword` (`keyword`),
-  ADD KEY `role` (`role`);
+ ADD PRIMARY KEY (`language`,`keyword`,`role`), ADD KEY `keyword` (`keyword`), ADD KEY `role` (`role`);
 
 --
 -- Indexes for table `ark_translation_parameter`
 --
 ALTER TABLE `ark_translation_parameter`
-  ADD PRIMARY KEY (`keyword`,`parameter`);
+ ADD PRIMARY KEY (`keyword`,`parameter`);
 
 --
 -- Indexes for table `ark_translation_role`
 --
 ALTER TABLE `ark_translation_role`
-  ADD PRIMARY KEY (`role`);
+ ADD PRIMARY KEY (`role`);
 
 --
 -- Indexes for table `ark_view_element`
 --
 ALTER TABLE `ark_view_element`
-  ADD PRIMARY KEY (`element`),
-  ADD KEY `type` (`type`),
-  ADD KEY `schma` (`schma`);
+ ADD PRIMARY KEY (`element`), ADD KEY `type` (`type`), ADD KEY `schma` (`schma`);
 
 --
 -- Indexes for table `ark_view_layout`
 --
 ALTER TABLE `ark_view_layout`
-  ADD PRIMARY KEY (`layout`,`item_type`,`row`,`col`,`seq`),
-  ADD KEY `child` (`cell`);
+ ADD PRIMARY KEY (`layout`,`item_type`,`row`,`col`,`seq`), ADD KEY `child` (`cell`);
 
 --
 -- Indexes for table `ark_view_option`
 --
 ALTER TABLE `ark_view_option`
-  ADD PRIMARY KEY (`element`,`name`);
+ ADD PRIMARY KEY (`element`,`name`);
 
 --
 -- Indexes for table `ark_view_type`
 --
 ALTER TABLE `ark_view_type`
-  ADD PRIMARY KEY (`type`);
+ ADD PRIMARY KEY (`type`);
 
 --
 -- Indexes for table `ark_vocabulary`
 --
 ALTER TABLE `ark_vocabulary`
-  ADD PRIMARY KEY (`concept`),
-  ADD KEY `type` (`type`);
+ ADD PRIMARY KEY (`concept`), ADD KEY `type` (`type`);
 
 --
 -- Indexes for table `ark_vocabulary_collected`
 --
 ALTER TABLE `ark_vocabulary_collected`
-  ADD PRIMARY KEY (`concept`,`collection`,`term`);
+ ADD PRIMARY KEY (`concept`,`collection`,`term`);
 
 --
 -- Indexes for table `ark_vocabulary_collection`
 --
 ALTER TABLE `ark_vocabulary_collection`
-  ADD PRIMARY KEY (`concept`,`collection`);
+ ADD PRIMARY KEY (`concept`,`collection`);
 
 --
 -- Indexes for table `ark_vocabulary_parameter`
 --
 ALTER TABLE `ark_vocabulary_parameter`
-  ADD PRIMARY KEY (`concept`,`term`,`name`),
-  ADD KEY `concept` (`concept`,`term`);
+ ADD PRIMARY KEY (`concept`,`term`,`name`), ADD KEY `concept` (`concept`,`term`);
 
 --
 -- Indexes for table `ark_vocabulary_related`
 --
 ALTER TABLE `ark_vocabulary_related`
-  ADD PRIMARY KEY (`from_concept`,`from_term`,`to_concept`,`to_term`),
-  ADD KEY `relation` (`relation`),
-  ADD KEY `from_term` (`from_concept`,`from_term`) USING BTREE,
-  ADD KEY `to_term` (`to_concept`,`to_term`) USING BTREE;
+ ADD PRIMARY KEY (`from_concept`,`from_term`,`to_concept`,`to_term`), ADD KEY `relation` (`relation`), ADD KEY `from_term` (`from_concept`,`from_term`) USING BTREE, ADD KEY `to_term` (`to_concept`,`to_term`) USING BTREE;
 
 --
 -- Indexes for table `ark_vocabulary_relation`
 --
 ALTER TABLE `ark_vocabulary_relation`
-  ADD PRIMARY KEY (`relation`);
+ ADD PRIMARY KEY (`relation`);
 
 --
 -- Indexes for table `ark_vocabulary_term`
 --
 ALTER TABLE `ark_vocabulary_term`
-  ADD PRIMARY KEY (`concept`,`term`),
-  ADD UNIQUE KEY `keyword` (`keyword`);
+ ADD PRIMARY KEY (`concept`,`term`), ADD UNIQUE KEY `keyword` (`keyword`);
 
 --
 -- Indexes for table `ark_vocabulary_translation`
 --
 ALTER TABLE `ark_vocabulary_translation`
-  ADD PRIMARY KEY (`language`,`domain`,`keyword`,`role`),
-  ADD KEY `keyword` (`keyword`),
-  ADD KEY `domain` (`domain`),
-  ADD KEY `role` (`role`);
+ ADD PRIMARY KEY (`language`,`domain`,`keyword`,`role`), ADD KEY `keyword` (`keyword`), ADD KEY `domain` (`domain`), ADD KEY `role` (`role`);
 
 --
 -- Indexes for table `ark_vocabulary_type`
 --
 ALTER TABLE `ark_vocabulary_type`
-  ADD PRIMARY KEY (`type`);
+ ADD PRIMARY KEY (`type`);
 
 --
 -- Indexes for table `cor_conf_layout_role`
 --
 ALTER TABLE `cor_conf_layout_role`
-  ADD PRIMARY KEY (`layout_role`);
+ ADD PRIMARY KEY (`layout_role`);
 
 --
 -- Indexes for table `cor_conf_page`
 --
 ALTER TABLE `cor_conf_page`
-  ADD PRIMARY KEY (`page`);
+ ADD PRIMARY KEY (`page`);
 
 --
 -- Indexes for table `cor_conf_page_layout`
 --
 ALTER TABLE `cor_conf_page_layout`
-  ADD PRIMARY KEY (`page`,`module`,`layout_role`);
+ ADD PRIMARY KEY (`page`,`module`,`layout_role`);
 
 --
 -- Indexes for table `dime_period`
 --
 ALTER TABLE `dime_period`
-  ADD PRIMARY KEY (`concept`,`term`);
+ ADD PRIMARY KEY (`concept`,`term`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -5060,7 +4851,7 @@ ALTER TABLE `dime_period`
 -- AUTO_INCREMENT for table `ark_config_flash`
 --
 ALTER TABLE `ark_config_flash`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- Constraints for dumped tables
 --
@@ -5069,172 +4860,172 @@ ALTER TABLE `ark_config_flash`
 -- Constraints for table `ark_format`
 --
 ALTER TABLE `ark_format`
-  ADD CONSTRAINT `ark_format_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_fragment_type` (`type`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_fragment_type` (`type`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_attribute`
 --
 ALTER TABLE `ark_format_attribute`
-  ADD CONSTRAINT `ark_format_attribute_ibfk_2` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_format_attribute_ibfk_3` FOREIGN KEY (`parent`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_format_attribute_ibfk_4` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_attribute_ibfk_2` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_format_attribute_ibfk_3` FOREIGN KEY (`parent`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_format_attribute_ibfk_4` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_blob`
 --
 ALTER TABLE `ark_format_blob`
-  ADD CONSTRAINT `ark_format_blob_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_blob_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_boolean`
 --
 ALTER TABLE `ark_format_boolean`
-  ADD CONSTRAINT `ark_format_boolean_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_boolean_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_datetime`
 --
 ALTER TABLE `ark_format_datetime`
-  ADD CONSTRAINT `ark_format_datetime_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_datetime_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_decimal`
 --
 ALTER TABLE `ark_format_decimal`
-  ADD CONSTRAINT `ark_format_decimal_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_decimal_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_float`
 --
 ALTER TABLE `ark_format_float`
-  ADD CONSTRAINT `ark_format_float_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_float_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_integer`
 --
 ALTER TABLE `ark_format_integer`
-  ADD CONSTRAINT `ark_format_integer_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_integer_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_item`
 --
 ALTER TABLE `ark_format_item`
-  ADD CONSTRAINT `ark_format_item_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_format_item_ibfk_2` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_item_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_format_item_ibfk_2` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_object`
 --
 ALTER TABLE `ark_format_object`
-  ADD CONSTRAINT `ark_format_object_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_object_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_string`
 --
 ALTER TABLE `ark_format_string`
-  ADD CONSTRAINT `ark_format_string_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_string_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_wkt`
 --
 ALTER TABLE `ark_format_wkt`
-  ADD CONSTRAINT `ark_format_wkt_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_wkt_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_schema`
 --
 ALTER TABLE `ark_schema`
-  ADD CONSTRAINT `ark_schema_ibfk_1` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_schema_ibfk_1` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_schema_association`
 --
 ALTER TABLE `ark_schema_association`
-  ADD CONSTRAINT `ark_schema_association_ibfk_1` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_schema_association_ibfk_2` FOREIGN KEY (`inverse`) REFERENCES `ark_schema` (`schma`);
+ADD CONSTRAINT `ark_schema_association_ibfk_1` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_schema_association_ibfk_2` FOREIGN KEY (`inverse`) REFERENCES `ark_schema` (`schma`);
 
 --
 -- Constraints for table `ark_schema_attribute`
 --
 ALTER TABLE `ark_schema_attribute`
-  ADD CONSTRAINT `ark_schema_attribute_ibfk_1` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_schema_attribute_ibfk_2` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_schema_attribute_ibfk_3` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_schema_attribute_ibfk_1` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_schema_attribute_ibfk_2` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_schema_attribute_ibfk_3` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_translation`
 --
 ALTER TABLE `ark_translation`
-  ADD CONSTRAINT `ark_translation_ibfk_1` FOREIGN KEY (`domain`) REFERENCES `ark_translation_domain` (`domain`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_translation_ibfk_1` FOREIGN KEY (`domain`) REFERENCES `ark_translation_domain` (`domain`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_translation_message`
 --
 ALTER TABLE `ark_translation_message`
-  ADD CONSTRAINT `ark_translation_message_ibfk_1` FOREIGN KEY (`language`) REFERENCES `ark_translation_language` (`language`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_translation_message_ibfk_2` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_translation_message_ibfk_3` FOREIGN KEY (`role`) REFERENCES `ark_translation_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_translation_message_ibfk_1` FOREIGN KEY (`language`) REFERENCES `ark_translation_language` (`language`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_translation_message_ibfk_2` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_translation_message_ibfk_3` FOREIGN KEY (`role`) REFERENCES `ark_translation_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_translation_parameter`
 --
 ALTER TABLE `ark_translation_parameter`
-  ADD CONSTRAINT `ark_translation_parameter_ibfk_1` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_translation_parameter_ibfk_1` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_element`
 --
 ALTER TABLE `ark_view_element`
-  ADD CONSTRAINT `ark_view_element_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_view_type` (`type`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_view_element_ibfk_2` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_view_element_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_view_type` (`type`) ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_view_element_ibfk_2` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_layout`
 --
 ALTER TABLE `ark_view_layout`
-  ADD CONSTRAINT `ark_view_layout_ibfk_1` FOREIGN KEY (`layout`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_view_layout_ibfk_2` FOREIGN KEY (`cell`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_view_layout_ibfk_1` FOREIGN KEY (`layout`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_view_layout_ibfk_2` FOREIGN KEY (`cell`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_option`
 --
 ALTER TABLE `ark_view_option`
-  ADD CONSTRAINT `ark_view_option_ibfk_1` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_view_option_ibfk_1` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary`
 --
 ALTER TABLE `ark_vocabulary`
-  ADD CONSTRAINT `ark_vocabulary_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_vocabulary_type` (`type`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_vocabulary_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_vocabulary_type` (`type`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary_parameter`
 --
 ALTER TABLE `ark_vocabulary_parameter`
-  ADD CONSTRAINT `ark_vocabulary_parameter_ibfk_1` FOREIGN KEY (`concept`,`term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_vocabulary_parameter_ibfk_1` FOREIGN KEY (`concept`, `term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary_related`
 --
 ALTER TABLE `ark_vocabulary_related`
-  ADD CONSTRAINT `ark_vocabulary_related_ibfk_1` FOREIGN KEY (`from_concept`,`from_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE,
-  ADD CONSTRAINT `ark_vocabulary_related_ibfk_2` FOREIGN KEY (`to_concept`,`to_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE,
-  ADD CONSTRAINT `ark_vocabulary_related_ibfk_3` FOREIGN KEY (`relation`) REFERENCES `ark_vocabulary_relation` (`relation`);
+ADD CONSTRAINT `ark_vocabulary_related_ibfk_1` FOREIGN KEY (`from_concept`, `from_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE,
+ADD CONSTRAINT `ark_vocabulary_related_ibfk_2` FOREIGN KEY (`to_concept`, `to_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE,
+ADD CONSTRAINT `ark_vocabulary_related_ibfk_3` FOREIGN KEY (`relation`) REFERENCES `ark_vocabulary_relation` (`relation`);
 
 --
 -- Constraints for table `ark_vocabulary_term`
 --
 ALTER TABLE `ark_vocabulary_term`
-  ADD CONSTRAINT `ark_vocabulary_term_ibfk_1` FOREIGN KEY (`concept`) REFERENCES `ark_vocabulary` (`concept`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_vocabulary_term_ibfk_1` FOREIGN KEY (`concept`) REFERENCES `ark_vocabulary` (`concept`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary_translation`
 --
 ALTER TABLE `ark_vocabulary_translation`
-  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_1` FOREIGN KEY (`keyword`) REFERENCES `ark_vocabulary_term` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_2` FOREIGN KEY (`language`) REFERENCES `ark_translation_language` (`language`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_3` FOREIGN KEY (`domain`) REFERENCES `ark_translation_domain` (`domain`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_4` FOREIGN KEY (`role`) REFERENCES `ark_translation_role` (`role`) ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_vocabulary_translation_ibfk_1` FOREIGN KEY (`keyword`) REFERENCES `ark_vocabulary_term` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_vocabulary_translation_ibfk_2` FOREIGN KEY (`language`) REFERENCES `ark_translation_language` (`language`) ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_vocabulary_translation_ibfk_3` FOREIGN KEY (`domain`) REFERENCES `ark_translation_domain` (`domain`) ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_vocabulary_translation_ibfk_4` FOREIGN KEY (`role`) REFERENCES `ark_translation_role` (`role`) ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

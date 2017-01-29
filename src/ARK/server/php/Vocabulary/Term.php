@@ -44,10 +44,13 @@ class Term
     protected $term = '';
     protected $alias = '';
     protected $parameters = null;
+    protected $related = null;
+    protected $descendents = null;
 
     public function __construct()
     {
         $this->parameters = new ArrayCollection();
+        $this->related = new ArrayCollection();
     }
 
     public function concept()
@@ -70,6 +73,24 @@ class Term
         return $this->parameters;
     }
 
+    public function related()
+    {
+        return $this->related;
+    }
+
+    public function descendents()
+    {
+        if (!$this->descendents) {
+            $this->descendents = [];
+            foreach ($this->related as $relation) {
+                if ($relation->fromTerm()->name() != $relation->toTerm()->name() && $relation->type() == 'broader') {
+                    $this->descendents[] = $relation->toTerm();
+                }
+            }
+        }
+        return $this->descendents;
+    }
+
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
@@ -87,5 +108,6 @@ class Term
 
         // Associations
         $builder->addOneToMany('parameters', 'ARK\Vocabulary\Parameter', 'term');
+        $builder->addOneToMany('related', 'ARK\Vocabulary\Related', 'fromTerm');
     }
 }

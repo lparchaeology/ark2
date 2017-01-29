@@ -34,6 +34,22 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Taxonomy extends Vocabulary
 {
+    protected $taxons = null;
+
+    public function taxons()
+    {
+        if (!$this->taxons) {
+            foreach ($this->terms() as $term) {
+                foreach ($term->related() as $related) {
+                    if ($related->depth() == 1) {
+                        $this->taxons[] = $term;
+                    }
+                }
+            }
+        }
+        return $this->taxons;
+    }
+
     public static function loadMetadata(ClassMetadata $metadata)
     {
     }

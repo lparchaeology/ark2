@@ -42,6 +42,7 @@ use ARK\Translation\Loader\ActorLoader;
 use ARK\Translation\Loader\DatabaseLoader;
 use ARK\Translation\Twig\TranslateExtension;
 use Bernard\Serializer;
+use Fuz\Jordan\Twig\Extension\TreeExtension;
 use Psr\Log\LogLevel;
 use Psr\Http\Message\ResponseInterface;
 use rootLogin\UserProvider\Provider\UserProviderServiceProvider;
@@ -269,6 +270,7 @@ class Application extends SilexApplication
         $this->register(new TwigServiceProvider());
         $this->extend('twig', function ($twig, $app) {
             $twig->addExtension(new TranslateExtension($app['translator']));
+            $twig->addExtension(new TreeExtension());
             return $twig;
         });
         $this['twig.path'] = [
