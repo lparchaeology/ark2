@@ -45,6 +45,6 @@ class EntityAction extends DimeFormAction
         $item = $data[$form->getName()];
         ORM::persist($item);
         ORM::flush('data');
-        return Service::redirect($redirect, ['itemSlug' => $item->id()]);
+        return Service::redirectPath($redirect, ['itemSlug' => $item->id()]);
     }
 }

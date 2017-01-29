@@ -94,6 +94,10 @@ class PropertyType extends AbstractType implements DataMapperInterface
         $options['mapped'] = false;
         $options['label'] = false;
         $options['required'] = $required;
+        // HACK
+        if ($name == 'treasure') {
+            $options['disabled'] = true;
+        }
         $builder->add($name, $class, $options);
     }
 
