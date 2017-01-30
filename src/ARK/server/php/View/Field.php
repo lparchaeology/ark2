@@ -148,6 +148,15 @@ class Field extends Element
                     }
                 }
             }
+            if ($this->attribute->hasVocabulary()) {
+                $vocab = $this->attribute->vocabulary();
+                foreach ($vocab->terms() as $term) {
+                    if ($term->name() == $value) {
+                        $value = Service::translate($term->keyword());
+                        continue;
+                    }
+                }
+            }
             if ($value instanceof \DateTime) {
                 return $value->format('Y-m-d H:i:s');
             }

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 29, 2017 at 11:01 PM
+-- Generation Time: Jan 30, 2017 at 12:35 AM
 -- Server version: 5.5.52-0+deb8u1
 -- PHP Version: 5.6.29-0+deb8u1
 
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `ark_fragment_date` (
   `cre_by` int(11) NOT NULL,
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_fragment_date`
@@ -116,7 +116,8 @@ INSERT INTO `ark_fragment_date` (`fid`, `module`, `item`, `attribute`, `paramete
 (36, 'find', '7', 'finddate', NULL, '2017-01-29', NULL, 0, '2017-01-29 21:00:51', 0, '2017-01-29 21:00:51', ''),
 (37, 'find', '8', 'finddate', NULL, '2017-01-29', NULL, 0, '2017-01-29 21:03:54', 0, '2017-01-29 21:03:54', ''),
 (38, 'find', '9', 'finddate', NULL, '2017-01-29', NULL, 0, '2017-01-29 21:07:02', 0, '2017-01-29 21:07:02', ''),
-(39, 'find', '10', 'finddate', NULL, '2017-01-29', NULL, 0, '2017-01-29 21:09:38', 0, '2017-01-29 21:09:38', '');
+(39, 'find', '10', 'finddate', NULL, '2017-01-29', NULL, 0, '2017-01-29 21:09:38', 0, '2017-01-29 21:09:38', ''),
+(40, 'find', '11', 'finddate', NULL, '2017-01-29', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', '');
 
 -- --------------------------------------------------------
 
@@ -158,7 +159,7 @@ CREATE TABLE IF NOT EXISTS `ark_fragment_decimal` (
   `cre_by` int(11) NOT NULL,
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_fragment_decimal`
@@ -174,7 +175,8 @@ INSERT INTO `ark_fragment_decimal` (`fid`, `module`, `item`, `attribute`, `param
 (56, 'find', '7', 'length', 'mm', '36', NULL, 0, '2017-01-29 21:00:51', 0, '2017-01-29 21:00:51', ''),
 (57, 'find', '8', 'length', 'mm', '60', NULL, 0, '2017-01-29 21:03:54', 0, '2017-01-29 21:03:54', ''),
 (58, 'find', '9', 'length', 'mm', '19', NULL, 0, '2017-01-29 21:07:02', 0, '2017-01-29 21:07:02', ''),
-(59, 'find', '10', 'length', 'mm', '30', NULL, 0, '2017-01-29 21:09:38', 0, '2017-01-29 21:09:38', '');
+(59, 'find', '10', 'length', 'mm', '30', NULL, 0, '2017-01-29 21:09:38', 0, '2017-01-29 21:09:38', ''),
+(60, 'find', '11', 'length', 'm', '1', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', '');
 
 -- --------------------------------------------------------
 
@@ -295,7 +297,7 @@ CREATE TABLE IF NOT EXISTS `ark_fragment_string` (
   `cre_by` int(11) NOT NULL,
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=540 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=558 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_fragment_string`
@@ -542,7 +544,25 @@ INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `parame
 (536, 'find', '7', 'treasure', 'dime.treasure', 'assessing', NULL, 0, '2017-01-29 22:37:39', 0, '2017-01-29 22:37:39', ''),
 (537, 'find', '8', 'treasure', 'dime.treasure', 'assessing', NULL, 0, '2017-01-29 22:37:39', 0, '2017-01-29 22:37:39', ''),
 (538, 'find', '9', 'treasure', 'dime.treasure', 'assessing', NULL, 0, '2017-01-29 22:37:39', 0, '2017-01-29 22:37:39', ''),
-(539, 'find', '10', 'treasure', 'dime.treasure', 'assessing', NULL, 0, '2017-01-29 22:37:39', 0, '2017-01-29 22:37:39', '');
+(539, 'find', '10', 'treasure', 'dime.treasure', 'assessing', NULL, 0, '2017-01-29 22:37:39', 0, '2017-01-29 22:37:39', ''),
+(540, 'find', '11', 'finder_id', NULL, 'qqqqq', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(541, 'find', '11', 'type', 'dime.find.type', 'accessory', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(542, 'find', '11', 'material', 'dime.material', 'ag', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(543, 'find', '11', 'condition', 'dime.find.condition', 'fragmented', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(544, 'find', '11', 'id', NULL, '11', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(545, 'find', '1', 'image', NULL, '5178K189-1.jpg', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(546, 'find', '2', 'image', NULL, '5182K117-3.jpg', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(547, 'find', '3', 'image', NULL, '5595K024-1.jpg', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(548, 'find', '4', 'image', NULL, '5923K002-1.bagside.jpg', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(549, 'find', '4', 'image', NULL, '5923K002-1.forside.jpg', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(550, 'find', '5', 'image', NULL, '5924K016-1.bagside.jpg', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(551, 'find', '5', 'image', NULL, '5924K016-1.forside.jpg', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(552, 'find', '6', 'image', NULL, '6128K002-3.jpg', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(553, 'find', '7', 'image', NULL, '6300K004-1.jpg', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(554, 'find', '8', 'image', NULL, '6309K027-1.jpg', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(555, 'find', '9', 'image', NULL, '6309K028-1.jpg', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(556, 'find', '10', 'image', NULL, '6400K002-14.bagside.jpg', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(557, 'find', '10', 'image', NULL, '6400K002-14.forside.jpg', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', '');
 
 -- --------------------------------------------------------
 
@@ -563,7 +583,7 @@ CREATE TABLE IF NOT EXISTS `ark_fragment_text` (
   `cre_by` int(11) NOT NULL,
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=227 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=228 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_fragment_text`
@@ -705,7 +725,8 @@ INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `attribute`, `paramete
 (223, 'find', '7', 'description', 'da', 'Angelsaksiske-sydskandinavisk celleemaljefibel. Cirkulær med perlet rand - Frick type 1 var. 2. Stjerneformet motiv i celleemalje. Emaljen kun delvist bevaret. Cirkulært felt i centrum i rødt, stjernestrålerne i gult og halvbueformede felter langs rand i blåt?', NULL, 0, '2017-01-29 21:00:51', 0, '2017-01-29 21:00:51', ''),
 (224, 'find', '8', 'description', 'da', 'Hel velbevaret fuglefibel med fliget fiskehale og flot fortinning. På nær hovedet er fiblen flad i profil. Langs kanten er fiblen prydet med en række stempler og på kroppen ses ridser, som muligvis har været del af indridset ornamentik.', NULL, 0, '2017-01-29 21:03:54', 0, '2017-01-29 21:03:54', ''),
 (225, 'find', '9', 'description', 'da', 'Hel lille, let hvælvet blikfibel med delvist bevaret forgyldning. Cirkulær med afsat kant og et øsken ved randen. I centrum ses et lidt skævt ligebenet kors eller en blomst med fire spidse kronblade samlet i et uregelmæssigt, næsten kvadratisk midterfelt.', NULL, 0, '2017-01-29 21:07:02', 0, '2017-01-29 21:07:02', ''),
-(226, 'find', '10', 'description', 'da', 'Hel lille pladefibel.\r\n\r\nForside: Lettere korroderet overflade. Fiblen er prydet af støbt, fladedækkende slyngbånd indrammet af en markant, glat ramme. \r\n\r\nBagside: Meget korroderet. Nåleholderen, i form af en støbt, ombøjet flig placeret parallelt med fiblens længderetning, er helt bevaret. I modsatte ende ses de sidste rester af nålefæstet. Omkring sidstnævnte er overfladen rustfarvet.', NULL, 0, '2017-01-29 21:09:38', 0, '2017-01-29 21:09:38', '');
+(226, 'find', '10', 'description', 'da', 'Hel lille pladefibel.\r\n\r\nForside: Lettere korroderet overflade. Fiblen er prydet af støbt, fladedækkende slyngbånd indrammet af en markant, glat ramme. \r\n\r\nBagside: Meget korroderet. Nåleholderen, i form af en støbt, ombøjet flig placeret parallelt med fiblens længderetning, er helt bevaret. I modsatte ende ses de sidste rester af nålefæstet. Omkring sidstnævnte er overfladen rustfarvet.', NULL, 0, '2017-01-29 21:09:38', 0, '2017-01-29 21:09:38', ''),
+(227, 'find', '11', 'description', 'da', 'qqqqq', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', '');
 
 -- --------------------------------------------------------
 
@@ -747,7 +768,7 @@ CREATE TABLE IF NOT EXISTS `ark_fragment_wkt` (
   `cre_by` int(11) NOT NULL,
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `ark_fragment_wkt`
@@ -763,7 +784,8 @@ INSERT INTO `ark_fragment_wkt` (`fid`, `module`, `item`, `attribute`, `parameter
 (24, 'find', '7', 'findpoint', '4326', 'POINT (10.044265 56.959717)', NULL, 0, '2017-01-29 21:00:51', 0, '2017-01-29 21:00:51', ''),
 (25, 'find', '8', 'findpoint', '4326', 'POINT (9.740236 57.028384)', NULL, 0, '2017-01-29 21:03:54', 0, '2017-01-29 21:03:54', ''),
 (26, 'find', '9', 'findpoint', '4326', 'POINT (9.740109 57.03276)', NULL, 0, '2017-01-29 21:07:02', 0, '2017-01-29 21:07:02', ''),
-(27, 'find', '10', 'findpoint', '4326', 'POINT (10.012489 56.958308)', NULL, 0, '2017-01-29 21:09:38', 0, '2017-01-29 21:09:38', '');
+(27, 'find', '10', 'findpoint', '4326', 'POINT (10.012489 56.958308)', NULL, 0, '2017-01-29 21:09:38', 0, '2017-01-29 21:09:38', ''),
+(28, 'find', '11', 'findpoint', '4326', 'POINT (1 1)', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', '');
 
 -- --------------------------------------------------------
 
@@ -1067,23 +1089,7 @@ CREATE TABLE IF NOT EXISTS `ark_sequence_lock` (
   `recycle` tinyint(1) NOT NULL DEFAULT '0',
   `locked_by` int(11) NOT NULL,
   `locked_on` datetime NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_sequence_lock`
---
-
-INSERT INTO `ark_sequence_lock` (`id`, `module`, `parent`, `sequence`, `idx`, `recycle`, `locked_by`, `locked_on`) VALUES
-(33, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
-(34, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
-(35, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
-(36, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
-(37, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
-(38, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
-(39, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
-(40, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
-(41, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
-(42, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00');
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1314,7 +1320,7 @@ MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `ark_fragment_date`
 --
 ALTER TABLE `ark_fragment_date`
-MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=40;
+MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=41;
 --
 -- AUTO_INCREMENT for table `ark_fragment_datetime`
 --
@@ -1324,7 +1330,7 @@ MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `ark_fragment_decimal`
 --
 ALTER TABLE `ark_fragment_decimal`
-MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=60;
+MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=61;
 --
 -- AUTO_INCREMENT for table `ark_fragment_float`
 --
@@ -1349,12 +1355,12 @@ MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `ark_fragment_string`
 --
 ALTER TABLE `ark_fragment_string`
-MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=540;
+MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=558;
 --
 -- AUTO_INCREMENT for table `ark_fragment_text`
 --
 ALTER TABLE `ark_fragment_text`
-MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=227;
+MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=228;
 --
 -- AUTO_INCREMENT for table `ark_fragment_time`
 --
@@ -1364,7 +1370,7 @@ MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `ark_fragment_wkt`
 --
 ALTER TABLE `ark_fragment_wkt`
-MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=28;
+MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=29;
 --
 -- AUTO_INCREMENT for table `ark_relation_xmi`
 --
@@ -1374,7 +1380,7 @@ MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `ark_sequence_lock`
 --
 ALTER TABLE `ark_sequence_lock`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=43;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=44;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

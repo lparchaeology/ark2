@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 29, 2017 at 10:53 PM
+-- Generation Time: Jan 30, 2017 at 12:35 AM
 -- Server version: 5.5.52-0+deb8u1
 -- PHP Version: 5.6.29-0+deb8u1
 
@@ -591,6 +591,7 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('dime.find', '', 'finder_id', 'identifier', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.finderid'),
 ('dime.find', '', 'findpoint', 'geometry', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.findpoint'),
 ('dime.find', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.id'),
+('dime.find', '', 'images', 'string', NULL, 0, 0, 1, 1, 1, 0, 'dime.find.images'),
 ('dime.find', '', 'length', 'distance', 'distance', 1, 1, 1, 0, 1, 0, 'dime.find.length'),
 ('dime.find', '', 'material', 'identifier', 'dime.material', 1, 1, 1, 0, 1, 0, 'dime.find.material'),
 ('dime.find', '', 'museum', 'item', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.type.museum'),
@@ -1191,7 +1192,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attrib
 ('dime_find_list', 'table', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_map', 'map', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_material', 'field', 'dime.find', '', 'material', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
-('dime_find_museum', 'field', 'dime.find', '', 'museum', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_museum', 'field', 'dime.find', '', 'museum', '', '', 0, 0, 'ARK\\Form\\Type\\ItemType', 1, 0, 1, 0, NULL),
 ('dime_find_period_end', 'field', 'dime.find', '', 'period_end', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_period_start', 'field', 'dime.find', '', 'period_start', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_registered_id', 'field', 'dime.find', '', 'registered_id', '', '', 0, 0, '', 1, 0, 1, 0, NULL),

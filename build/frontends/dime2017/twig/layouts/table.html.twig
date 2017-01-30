@@ -23,7 +23,7 @@
         <thead>
             <tr>
             <th class="thumbimagehead" data-field="image" data-title="image" data-sortable="false">
-                
+
              </th>
                 {% for field in layout.elements %}
                     {% if field.attribute.name == 'id' %}
@@ -46,7 +46,7 @@
                     {% for field in layout.elements %}
                         <td>
                             {% if field.attribute.name == 'id' %}
-                                {% set basepath = path(global.request.attributes.get('_route')) %}
+                                {% set basepath = path('finds.list') %}
                                 {% set itempath = basepath ~ '/' ~ field.renderView(item) %}
                                 <a href="{{ itempath }}">{{ field.renderView(item) }}</a>
                             {% else %}
