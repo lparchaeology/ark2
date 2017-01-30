@@ -12,7 +12,8 @@
             '>
             {% set images = item.property('image').value() %}
             {% if images is not empty %}
-                <img src="{{path('img', {'image': images[0]})}}?p=preview" alt='' />
+                {% set itempath = path('finds.view', {'itemSlug': item.id}) %}
+                <a href="{{itempath}}"><img src="{{path('img', {'image': 'preview.'~images[0]})}}" alt='' /></a>
             {% endif %}
             </div>
         {% endfor %}
@@ -37,7 +38,7 @@
              >
              {% set images = item.property('image').value() %}
              {% if images is not empty %}
-                 <img src="{{path('img', {'image': images[0]})}}?p=thumb" alt='' />
+                 <img src="{{path('img', {'image': 'thumb.'~images[0]})}}" alt='' />
              {% endif %}
             </li>
         {% endfor %}

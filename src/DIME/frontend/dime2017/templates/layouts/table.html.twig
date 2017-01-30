@@ -41,15 +41,15 @@
             {% for item in data[layout.name] %}
                 <tr data-unique-id = "{{ item.id }}" >
                     <td class="thumbimage">
-                           {% set images = item.property('image').value() %}
-                           {% if images is not empty %}
-                               <img src="{{path('img', {'image': images[0]})}}?p=thumb" alt='' />
-                           {% endif %}
+                            {% set images = item.property('image').value() %}
+                            {% if images is not empty %}
+                                <img src="{{path('img', {'image': 'thumb.'~images[0]})}}" alt='' />
+                            {% endif %}
                     </td>
                     {% for field in layout.elements %}
                         <td>
                             {% if field.attribute.name == 'id' %}
-                                {% set itempath = path('finds.list') ~ '/' ~ field.renderView(item) %}
+                                {% set itempath = path('finds.view', {'itemSlug': item.id}) %}
                                 <a href="{{ itempath }}">{{ field.renderView(item) }}</a>
                             {% else %}
                                 {{ field.renderView(item) }}
