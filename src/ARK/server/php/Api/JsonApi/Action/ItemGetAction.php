@@ -45,12 +45,12 @@ use Tobscure\JsonApi\Resource;
 
 class ItemGetAction extends AbstractJsonApiAction
 {
-    public function __invoke(Application $app, JsonApiRequest $request, $siteSlug = null, $moduleSlug = null, $itemSlug = null)
+    public function __invoke(JsonApiRequest $request, $siteSlug = null, $moduleSlug = null, $itemSlug = null)
     {
         $this->site = $siteSlug;
         $this->module = $moduleSlug;
         $this->item = $itemSlug;
-        return parent::__invoke($app, $request);
+        return parent::__invoke($request);
     }
 
     protected function fetchData()

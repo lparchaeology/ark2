@@ -32,7 +32,7 @@ namespace ARK\Api\JsonApi\Resource;
 
 use ARK\Api\JsonApi\Http\JsonApiParameters;
 use ARK\Api\JsonApi\Serializer\ItemSerializer;
-use ARK\Model\Item\Item;
+use ARK\Model\Item;
 use Symfony\Component\Serializer\Serializer;
 use Tobscure\JsonApi\Resource;
 
@@ -55,7 +55,7 @@ class ItemResource extends Resource
     {
         $this->parameters = $parameters;
         $this->includes = $parameters->getIncludedRelationships();
-        $this->fields = $parameters->getSparseFieldset($this->data->schema()->resource());
+        $this->fields = $parameters->getSparseFieldset($this->data->schema()->module()->resource());
     }
 
     public function getParameters()

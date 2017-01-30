@@ -46,9 +46,17 @@ class DemoAction extends DimeAction
     public function __invoke(Request $request)
     {
         $content = '<h2>Demonstration Links</h2>';
+
         $path = Service::path('actors.list');
         $content .= '<p>List of Museums in <a href="'.$path.'">Actors module</a>.
             Click through to a museum to see their responsible Municipalities.</p>';
+
+        $path = Service::path('api.finds.collection');
+        $content .= '<p>API call for <a href="'.$path.'">list of Finds</a>';
+
+        $path = Service::path('api.finds.get', ['findSlug' => 1]);
+        $content .= '<p>API call for <a href="'.$path.'">Find 1</a>';
+
         $vocab = ORM::find(Vocabulary::class, 'dime.period');
         $content .= Service::renderView('blocks/vocabulary.html.twig', ['vocabulary' => $vocab]);
         return Service::renderResponse('pages/page.html.twig', ['content' => $content, 'page_config' => $this->pageConfig()]);

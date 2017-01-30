@@ -39,7 +39,7 @@ class ItemSerializer extends AbstractSerializer
 {
     public function getType($item)
     {
-        return $item->schema()->resource();
+        return $item->schema()->module()->resource();
     }
 
     public function getId($item)
@@ -55,9 +55,9 @@ class ItemSerializer extends AbstractSerializer
     public function getAttributes($item, array $fields = null)
     {
         $attributes = [];
-        foreach ($item->schema()->properties() as $property) {
-            if (!$fields or in_array($property->id(), $fields)) {
-                $attributes[$property->id()] = $item->attribute($property->id());
+        foreach ($item->properties() as $property) {
+            if (!$fields or in_array($property->name(), $fields)) {
+                $attributes[$property->name()] = $property->value();
             }
         }
         return $attributes;

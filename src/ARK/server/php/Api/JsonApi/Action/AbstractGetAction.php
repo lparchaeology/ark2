@@ -34,7 +34,8 @@ use ARK\Api\JsonApi\Http\JsonApiResponse;
 use ARK\Api\JsonApi\JsonApiException;
 use ARK\Api\JsonApi\Resource\ItemResource;
 use ARK\Http\Error\NotFoundError;
-use ARK\ORM\EntityManager;
+use ARK\ORM\ORM;
+use ARK\Service;
 use Tobscure\JsonApi\Document;
 
 class AbstractGetAction extends AbstractJsonApiAction
@@ -45,9 +46,8 @@ class AbstractGetAction extends AbstractJsonApiAction
 
     protected function fetchData()
     {
-        $em = new EntityManager($this->app['database'], 'data');
-        $item = $em->find($this->class, $this->id);
-        if (!$item || !$item->isValid()) {
+        $item = ORM::find($this->class, $this->id);
+        if (!$item) {
             $this->addError(new NotFoundError($this->resource, $this->id));
             throw new JsonApiException();
         }
@@ -61,7 +61,7 @@ class AbstractGetAction extends AbstractJsonApiAction
 
     protected function createResponse()
     {
-        $resource = new ItemResource($this->data, $this->parameters, $this->app['serializer']);
+        $resource = new ItemResource($this->data, $this->parameters, Service::serializer());
         $document = new Document($resource);
         $this->response = new JsonApiResponse($document);
     }

@@ -44,18 +44,17 @@ use Tobscure\JsonApi\Resource;
 
 class ItemDeleteAction extends AbstractJsonApiAction
 {
-    public function __invoke(Application $app, JsonApiRequest $request, $siteSlug = null, $moduleSlug = null, $itemSlug = null)
+    public function __invoke(JsonApiRequest $request, $siteSlug = null, $moduleSlug = null, $itemSlug = null)
     {
         $this->site = $siteSlug;
         $this->module = $moduleSlug;
         $this->item = $itemSlug;
-        return parent::__invoke($app, $request);
+        return parent::__invoke($request);
     }
 
     protected function fetchData()
     {
-        $em = new EntityManager($this->app['database'], 'data');
-        $site = $em->find('ARK\Model\Item\Site', $this->site);
+        $site = ORM::find('ARK\Model\Item\Site', $this->site);
         if (!$site || !$site->isValid()) {
             $this->addError(new NotFoundError('sites', $this->site));
             throw new JsonApiException();

@@ -38,13 +38,13 @@ use ARK\Api\JsonApi\JsonApiException;
 use ARK\Error\Error;
 use ARK\Error\ErrorBag;
 use ARK\Http\Error\InternalServerError;
+use ARK\Service;
 use Exception;
 use League\JsonGuard\Validator;
 use Seld\JsonLint\ParsingException;
 
 abstract class AbstractJsonApiAction
 {
-    protected $app = null;
     protected $request = null;
     protected $parameters = null;
     protected $data = null;
@@ -52,9 +52,8 @@ abstract class AbstractJsonApiAction
     protected $response = null;
     protected $errors = null;
 
-    public function __invoke(Application $app, JsonApiRequest $request)
+    public function __invoke(JsonApiRequest $request)
     {
-        $this->app = $app;
         $this->request = $request;
         $this->errors = new ErrorBag();
         try {
@@ -66,11 +65,11 @@ abstract class AbstractJsonApiAction
             $this->performAction();
             $this->createResponse();
         } catch (JsonApiException $e) {
-            $this->response = new JsonApiErrorResponse($this->app['serializer'], $this->errors);
+            $this->response = new JsonApiErrorResponse(Service::serializer(), $this->errors);
         }
-        if ($app['debug']) {
+        if (Application::debug()) {
             try {
-                //$this->response->validate($this->errors);
+                $this->response->validate($this->errors);
             } catch (JsonApiException $e) {
                 $this->prependError(new InternalServerError('DEBUG: Invalid Response', 'The response is not valid JSON:API format.'));
                 $this->response = new JsonApiErrorResponse($this->app['serializer'], $this->errors, 500);

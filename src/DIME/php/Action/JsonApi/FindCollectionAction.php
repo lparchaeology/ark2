@@ -30,32 +30,26 @@
 
 namespace DIME\Action\JsonApi;
 
-use ARK\Application;
 use ARK\Api\JsonApi\Action\AbstractJsonApiAction;
 use ARK\Api\JsonApi\Http\JsonApiRequest;
 use ARK\Api\JsonApi\Http\JsonApiResponse;
 use ARK\Api\JsonApi\JsonApiException;
 use ARK\Api\JsonApi\Resource\ItemResource;
-use ARK\Api\JsonApi\Serializer\ItemSerializer;
-use ARK\Http\Error\NotFoundError;
-use ARK\Model\Module\Module;
-use ARK\ORM\EntityManager;
-use Exception;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use ARK\ORM\ORM;
+use DIME\Entity\Find;
 use Tobscure\JsonApi\Document;
 use Tobscure\JsonApi\Resource;
 
 class FindCollectionAction extends AbstractJsonApiAction
 {
-    public function __invoke(Application $app, JsonApiRequest $request)
+    public function __invoke(JsonApiRequest $request)
     {
-        return parent::__invoke($app, $request);
+        return parent::__invoke($request);
     }
 
     protected function fetchData()
     {
-        $em = new EntityManager($this->app['database'], 'data');
-        $this->data = $em->findAll('DIME\Model\Item\Find');
+        $this->data = ORM::findAll(Find::class);
     }
 
     protected function createResponse()
@@ -66,7 +60,7 @@ class FindCollectionAction extends AbstractJsonApiAction
         $uri = $this->request->getSchemeAndHttpHost().$this->request->getBaseUrl().$this->request->getPathInfo();
         $jsonapi['jsonapi']['version'] = '1.0';
         foreach ($this->data as $item) {
-            $resource['type'] = $item->schema()->resource();
+            $resource['type'] = $item->schema()->module()->resource();
             $resource['id'] = $item->id();
             $resource['links']['self'] = $uri.'/'.$item->index();
             $jsonapi['data'][] = $resource;

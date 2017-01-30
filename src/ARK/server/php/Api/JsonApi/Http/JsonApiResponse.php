@@ -30,6 +30,7 @@
 
 namespace ARK\Api\JsonApi\Http;
 
+use ARK\ARK;
 use ARK\Api\JsonApi\JsonSchemaTrait;
 use ARK\Error\ErrorBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -60,7 +61,7 @@ class JsonApiResponse extends JsonResponse
         // Validate against JSON Schema
         $content = $this->getContent();
         if ($content) {
-            $schema = $this->loadSchema('file://../src/schema/json/jsonapi.json', $errors);
+            $schema = $this->loadSchema('file://'.ARK::installDir().'/src/ARK/server/schema/json/jsonapi.json', $errors);
             $this->validateJsonString($content, $schema, $errors);
         }
     }

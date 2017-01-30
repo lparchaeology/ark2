@@ -30,17 +30,17 @@
 
 namespace DIME\Action\JsonApi;
 
-use ARK\Application;
 use ARK\Api\JsonApi\Action\AbstractGetAction;
 use ARK\Api\JsonApi\Http\JsonApiRequest;
+use DIME\Entity\Find;
 
 class FindGetAction extends AbstractGetAction
 {
-    public function __invoke(Application $app, JsonApiRequest $request, $findSlug = null)
+    public function __invoke(JsonApiRequest $request, $findSlug = null)
     {
         $this->id = $findSlug;
-        $this->class = 'DIME\Model\Item\Find';
+        $this->class = Find::class;
         $this->resource = 'finds';
-        return parent::__invoke($app, $request);
+        return parent::__invoke($request);
     }
 }
