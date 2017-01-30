@@ -117,6 +117,9 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers->get('/test', 'DIME\Action\TestViewAction')
                     ->bind('test');
 
+        $controllers->get("/img/{image}", 'DIME\Action\ImageAction')
+                    ->bind('img');
+
         $controllers->get('/', 'DIME\Action\HomeViewAction')
                     ->bind('home');
 

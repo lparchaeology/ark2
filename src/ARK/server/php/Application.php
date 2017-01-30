@@ -43,6 +43,8 @@ use ARK\Translation\Loader\DatabaseLoader;
 use ARK\Translation\Twig\TranslateExtension;
 use Bernard\Serializer;
 use Fuz\Jordan\Twig\Extension\TreeExtension;
+use League\Glide\ServerFactory;
+use League\Glide\Responses\SymfonyResponseFactory;
 use Psr\Log\LogLevel;
 use Psr\Http\Message\ResponseInterface;
 use rootLogin\UserProvider\Provider\UserProviderServiceProvider;
@@ -139,6 +141,27 @@ class Application extends SilexApplication
             'data' => ['adapter' => 'League\Flysystem\Adapter\Local', 'args' => [$this['dir.files'].'/data']],
             'thumbs' => ['adapter' => 'League\Flysystem\Adapter\Local', 'args' => [$this['dir.files'].'/thumbs']],
         ];
+        $this['glide.server'] = function ($app) {
+            return ServerFactory::create([
+                'source' => $app['flysystems']['data'],
+                'cache' =>  $app['flysystems']['thumbs'],
+                'driver' => $app['ark']['image'],
+                'max_image_size' => $app['ark']['max_image_size'],
+                //'defaults' =>                // Default image manipulations
+                'presets' => [
+                    'thumb' => [
+                        'w' => 100,
+                        'h' => 100,
+                    ],
+                    'preview' => [
+                        'w' => 500,
+                        'h' => 500,
+                    ],
+                ],
+                'base_url' => '/img/',
+                'response' => new SymfonyResponseFactory(),
+            ]);
+        };
 
         // Enable core providers
         $this->register(new HttpFragmentServiceProvider());

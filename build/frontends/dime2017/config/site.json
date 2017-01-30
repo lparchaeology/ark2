@@ -5,6 +5,8 @@
     "locale": "da",
     "locales": ["en", "da"],
     "spatial": "mysql",
+    "image": "gd",
+    "max_image_size": 4000000,
     "api": {
         "enable": true,
         "path": "/api/v2"

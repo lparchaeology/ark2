@@ -92,6 +92,16 @@ class Service
         return self::$app->redirect(self::path($path, $parmameters), $status);
     }
 
+    public static function imageServer()
+    {
+        return self::$app['glide.server'];
+    }
+
+    public static function imageResponse($path, array $parameters = [])
+    {
+        return self::$app['glide.server']->getImageResponse($path, $parameters);
+    }
+
     public static function forms()
     {
         return self::$app['form.factory'];
