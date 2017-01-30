@@ -35,11 +35,6 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class HiddenChoiceType extends ChoiceType
 {
-    public function getName()
-    {
-        return 'hiddenchoice';
-    }
-
     public function getParent()
     {
         return HiddenType::class;

@@ -35,11 +35,10 @@ use ARK\Service;
 use ARK\Model\Item;
 use ARK\Model\Property;
 use ARK\Entity\Actor;
-use ARK\Form\Type\HiddenChoiceType;
+use ARK\Form\Type\HiddenCollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -48,11 +47,10 @@ class CarouselType extends AbstractType implements DataMapperInterface
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $field = $options['field'];
-        $attribute = $field->attribute()->name();
         $fieldOptions = $field->optionsArray();
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
-        $builder->add('images', ChoiceType::class, $fieldOptions);
+        $builder->add('image', CollectionType::class, $fieldOptions);
         $builder->setDataMapper($this);
     }
 
@@ -68,17 +66,11 @@ class CarouselType extends AbstractType implements DataMapperInterface
     public function mapDataToForms($property, $forms)
     {
         $forms = iterator_to_array($forms);
-        $attribute = $property->attribute();
         $value = $property->value();
-        $forms['images']->setData($value);
+        $forms['image']->setData($value);
     }
 
     public function mapFormsToData($forms, &$property)
     {
-    }
-
-    public function getBlockPrefix()
-    {
-        return 'carousel';
     }
 }
