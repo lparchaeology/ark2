@@ -40,7 +40,8 @@ class JsonApiResponse extends JsonResponse
     use JsonSchemaTrait;
 
     protected $jsonApiHeaders = [
-        'Content-type' => 'application/vnd.api+json',
+        // FIXME Allow for web browers for now...
+        //'Content-type' => 'application/vnd.api+json',
         'Cache-Control' => 'protected, max-age=0, must-revalidate',
     ];
 
