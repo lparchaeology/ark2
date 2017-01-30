@@ -16,21 +16,19 @@
 <script>
 
     ywkts = [];
+
     {% for item in data[layout.name] %}
-        {% for field in layout.elements %}
-            {% if field.name == 'dime_find_findpoint' %}
-                {% if field.renderView(item) %}
-                    ywkts[{{ item.id }}] = '{{ field.renderView(item) }}',
-        		{% else %}
-        		  	'POINT (0 0)',
-        		{% endif %}
-        	{% endif %}
-        {% endfor %}
+        {% set findpoint = item.property('findpoint').value() %}
+        {% if findpoint['coordinates'] is defined %}
+            ywkts[{{ item.id }}] = '{{ findpoint['coordinates'] }}',
+        {% else %}
+              'POINT (0 0)',
+        {% endif %}
     {% endfor %}
-    
+
     twkts = [];
-    
+
 </script>
-     
+
 
 </div>
