@@ -1,0 +1,46 @@
+{% block carousel -%}
+
+<div id='carousel-custom' class='carousel slide' data-ride='carousel'>
+     <div class='carousel-outer'>
+        <!-- Wrapper for slides -->
+        <div class='carousel-inner'>
+
+        {% set images = field.formData(data) %}
+        {% for key, image in images %}
+            <div class='item
+                {% if key == 0 %}
+                     active
+                 {% endif %}
+            '>
+                <img src="{{path('img', {'image': 'preview.'~images[0]})}}" alt='' />
+            </div>
+        {% endfor %}
+        </div>
+
+        <!-- Controls -->
+        <a class='left carousel-control' href='#carousel-custom' data-slide='prev'>
+            <span class='glyphicon glyphicon-chevron-left'></span>
+        </a>
+        <a class='right carousel-control' href='#carousel-custom' data-slide='next'>
+            <span class='glyphicon glyphicon-chevron-right'></span>
+        </a>
+    </div>
+
+    <!-- Indicators -->
+    <ol class='carousel-indicators mCustomScrollbar'>
+        {% set images = field.formData(data) %}
+        {% for key, image in images %}
+            <li data-target='#carousel-custom' data-slide-to='{{ key }}'
+                {% if key == 0 %}
+                      class='active'
+                 {% endif %}
+             >
+                 <img src="{{path('img', {'image': 'thumb.'~images[0]})}}" alt='' />
+            </li>
+        {% endfor %}
+    </ol>
+</div>
+
+</script>
+
+{%- endblock carousel %}

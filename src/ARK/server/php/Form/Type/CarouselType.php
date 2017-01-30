@@ -35,26 +35,24 @@ use ARK\Service;
 use ARK\Model\Item;
 use ARK\Model\Property;
 use ARK\Entity\Actor;
+use ARK\Form\Type\HiddenChoiceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ItemType extends AbstractType implements DataMapperInterface
+class CarouselType extends AbstractType implements DataMapperInterface
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $field = $options['field'];
         $attribute = $field->attribute()->name();
         $fieldOptions = $field->optionsArray();
-        $fieldOptions['attr']['readonly'] = true;
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
-        $builder->add('module', HiddenType::class, $fieldOptions);
-        $builder->add('id', HiddenType::class, $fieldOptions);
-        $builder->add('name', TextType::class, $fieldOptions);
+        $builder->add('images', ChoiceType::class, $fieldOptions);
         $builder->setDataMapper($this);
     }
 
@@ -70,39 +68,17 @@ class ItemType extends AbstractType implements DataMapperInterface
     public function mapDataToForms($property, $forms)
     {
         $forms = iterator_to_array($forms);
+        $attribute = $property->attribute();
         $value = $property->value();
-        $module = $value['module'];
-        $id = $value['id'];
-        if ($id) {
-            $item = ORM::find(Actor::class, $id);
-            $forms['module']->setData($value['module']);
-            $forms['id']->setData($value['id']);
-            if ($item) {
-                $name = $item->property('fullname');
-                $value = $name->value();
-                $forms['name']->setData($value[0]['content']);
-            }
-        }
+        $forms['images']->setData($value);
     }
 
     public function mapFormsToData($forms, &$property)
     {
-        $forms = iterator_to_array($forms);
-        $module = $forms['module']->getData();
-        $id = $forms['id']->getData();
-        if ($id) {
-            $item = ORM::find(Actor::class, $id);
-            if (!$item) {
-                return;
-            }
-            $values['module'] = $module;
-            $values['id'] = $id;
-            $property->setValue($values);
-        }
     }
 
     public function getBlockPrefix()
     {
-        return 'item';
+        return 'carousel';
     }
 }
