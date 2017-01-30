@@ -30,17 +30,17 @@
 
 namespace DIME\Action\JsonApi;
 
-use ARK\Application;
 use ARK\Api\JsonApi\Action\AbstractGetAction;
 use ARK\Api\JsonApi\Http\JsonApiRequest;
+use ARK\Entity\Actor;
 
 class ActorGetAction extends AbstractGetAction
 {
-    public function __invoke(Application $app, JsonApiRequest $request, $actorSlug = null)
+    public function __invoke(JsonApiRequest $request, $actorSlug = null)
     {
         $this->id = $actorSlug;
-        $this->class = 'DIME\Model\Item\Actor';
+        $this->class = Actor::class;
         $this->resource = 'actors';
-        return parent::__invoke($app, $request);
+        return parent::__invoke($request);
     }
 }

@@ -57,11 +57,11 @@ class ApiControllerProvider implements ControllerProviderInterface
         $controllers->get('/finds', 'DIME\\Action\\JsonApi\\FindCollectionAction')
                     ->bind('api.finds.collection');
 
-        $controllers->get('/locations/{locationSlug}', 'DIME\\Action\\JsonApi\\LocationGetAction')
-                    ->bind('api.locations.get');
+        $controllers->get('/localities/{locationSlug}', 'DIME\\Action\\JsonApi\\LocalityGetAction')
+                    ->bind('api.localities.get');
 
-        $controllers->get('/locations', 'DIME\\Action\\JsonApi\\LocationCollectionAction')
-                    ->bind('api.locations.collection');
+        $controllers->get('/localities', 'DIME\\Action\\JsonApi\\LocalityCollectionAction')
+                    ->bind('api.localities.collection');
 
         return $controllers;
     }
