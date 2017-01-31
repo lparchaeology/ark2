@@ -105,9 +105,12 @@ gulp.task('xliff', function() {
 gulp.task('fonts', function() {
     var frontend = (util.env.frontend || 'core');
     var namespace = (util.env.namespace || 'ARK');
-    var src = config.bootstrapDir + '/fonts/**/*';
+    var src = [
+        config.bootstrapDir + '/fonts/**/*',
+        config.vendorDir + '/summernote/dist/font/**/*'
+    ];
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/assets/fonts';
-    return gulp.src([src])
+    return gulp.src(src)
                .pipe(gulp.dest(dest));
 });
 
@@ -147,6 +150,7 @@ gulp.task('js', function() {
     var src = [
         config.vendorDir + '/jquery/dist/jquery.js',
         config.bootstrapDir + '/javascripts/bootstrap.js',
+        config.vendorDir + '/summernote/dist/summernote.js',
         config.vendorDir + '/select2/dist/js/select2.js',
         config.vendorDir + '/file-saver.js/FileSaver.js',
         config.vendorDir + '/tableExport.jquery.plugin/tableExport.min.js',
@@ -189,6 +193,7 @@ gulp.task('css', function() {
     var namespace = (util.env.namespace || 'ARK');
     var sassSrc = './frontends/' + frontend + '/scss/ark.scss';
     var cssSrc = [
+        config.vendorDir + '/summernote/dist/summernote.css',
         config.vendorDir + '/select2/dist/css/select2.min.css',
         config.vendorDir + '/select2-bootstrap-frontend/dist/select2-bootstrap.min.css',
         config.vendorDir + '/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.css',

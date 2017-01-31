@@ -30,6 +30,7 @@
     "x-editable": "^1.5.1",
     "tableExport.jquery.plugin": "^1.5.1",
     "smalot-bootstrap-datetimepicker": "^2.3.11",
-    "moment": "^2.14.1"
+    "moment": "^2.14.1",
+    "summernote": "^0.8.2"
   }
 }

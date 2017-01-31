@@ -36,6 +36,8 @@ use ARK\ORM\ORM;
 use ARK\Service;
 use DIME\Action\DimeAction;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class PageViewAction extends DimeAction
 {
@@ -45,10 +47,29 @@ class PageViewAction extends DimeAction
         if (!$item = ORM::find('ARK\Entity\Page', $page)) {
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Item not found', "Item $page not found"));
         }
+
+        if ($request->getMethod() == 'POST') {
+            $value = $item->property('content')->value();
+            $value[0]['content'] = $request->getContent();
+            $item->property('content')->setValue($value);
+            ORM::flush('data');
+            return new Response('', 203);
+        }
+
         $options = $this->defaultOptions();
         $value = $item->property('content')->value();
         // TODO Language Switching!!!
-        $options['content'][0] = $value[0]['content'];
+        $content = '';
+
+        if (Service::isGranted('ROLE_ADMIN')) {
+            $content .= '<button id="pageedit" type="button" class="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">Edit</button>';
+            $content .= '<div class="inlineedit">';
+        }
+        $content .= $value[0]['content'];
+        if (Service::isGranted('ROLE_ADMIN')) {
+            $content .= '</div>';
+        }
+        $options['content'][0] = $content;
         return Service::renderResponse('pages/page.html.twig', $options);
     }
 }

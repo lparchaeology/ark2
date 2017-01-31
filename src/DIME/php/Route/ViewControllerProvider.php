@@ -53,13 +53,17 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         // Static Page Routes
-        $controllers->get("/$research", 'DIME\Action\PageViewAction')
+        $controllers->match("/$research", 'DIME\Action\PageViewAction')
+                    ->method('GET|POST')
                     ->bind('research');
-        $controllers->get("/$about", 'DIME\Action\PageViewAction')
+        $controllers->match("/$about", 'DIME\Action\PageViewAction')
+                    ->method('GET|POST')
                     ->bind('about');
-        $controllers->get("/$background", 'DIME\Action\PageViewAction')
+        $controllers->match("/$background", 'DIME\Action\PageViewAction')
+                    ->method('GET|POST')
                     ->bind('background');
-        $controllers->get("/$treasure", 'DIME\Action\PageViewAction')
+        $controllers->match("/$treasure", 'DIME\Action\PageViewAction')
+                    ->method('GET|POST')
                     ->bind('treasure');
 
         // Under Construction Routes

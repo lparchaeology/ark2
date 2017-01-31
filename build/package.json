@@ -6,6 +6,7 @@
   "scripts": {
     "test": "test",
     "bower": "bower",
+    "bower-require": "bower install --save",
     "gulp": "gulp",
     "help": "gulp",
     "create": "gulp create",
