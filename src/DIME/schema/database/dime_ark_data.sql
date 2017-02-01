@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 30, 2017 at 12:35 AM
+-- Generation Time: Feb 01, 2017 at 01:40 PM
 -- Server version: 5.5.52-0+deb8u1
 -- PHP Version: 5.6.29-0+deb8u1
 
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `ark_fragment_date` (
   `cre_by` int(11) NOT NULL,
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_fragment_date`
@@ -117,7 +117,11 @@ INSERT INTO `ark_fragment_date` (`fid`, `module`, `item`, `attribute`, `paramete
 (37, 'find', '8', 'finddate', NULL, '2017-01-29', NULL, 0, '2017-01-29 21:03:54', 0, '2017-01-29 21:03:54', ''),
 (38, 'find', '9', 'finddate', NULL, '2017-01-29', NULL, 0, '2017-01-29 21:07:02', 0, '2017-01-29 21:07:02', ''),
 (39, 'find', '10', 'finddate', NULL, '2017-01-29', NULL, 0, '2017-01-29 21:09:38', 0, '2017-01-29 21:09:38', ''),
-(40, 'find', '11', 'finddate', NULL, '2017-01-29', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', '');
+(40, 'find', '11', 'finddate', NULL, '2017-01-29', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(41, 'find', '11', 'finddate', NULL, '2017-01-30', NULL, 0, '2017-01-30 10:34:16', 0, '2017-01-30 10:34:16', ''),
+(42, 'find', '12', 'finddate', NULL, '2017-01-30', NULL, 0, '2017-01-30 10:35:09', 0, '2017-01-30 10:35:09', ''),
+(43, 'find', '13', 'finddate', NULL, '2017-01-30', NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
+(44, 'find', '14', 'finddate', NULL, '2017-01-31', NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', '');
 
 -- --------------------------------------------------------
 
@@ -159,7 +163,7 @@ CREATE TABLE IF NOT EXISTS `ark_fragment_decimal` (
   `cre_by` int(11) NOT NULL,
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_fragment_decimal`
@@ -176,7 +180,14 @@ INSERT INTO `ark_fragment_decimal` (`fid`, `module`, `item`, `attribute`, `param
 (57, 'find', '8', 'length', 'mm', '60', NULL, 0, '2017-01-29 21:03:54', 0, '2017-01-29 21:03:54', ''),
 (58, 'find', '9', 'length', 'mm', '19', NULL, 0, '2017-01-29 21:07:02', 0, '2017-01-29 21:07:02', ''),
 (59, 'find', '10', 'length', 'mm', '30', NULL, 0, '2017-01-29 21:09:38', 0, '2017-01-29 21:09:38', ''),
-(60, 'find', '11', 'length', 'm', '1', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', '');
+(60, 'find', '11', 'length', 'm', '1', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(61, 'find', '11', 'length', 'mm', '34', NULL, 0, '2017-01-30 10:34:16', 0, '2017-01-30 10:34:16', ''),
+(62, 'find', '12', 'weight', 't', '10', NULL, 0, '2017-01-30 10:36:35', 0, '2017-01-30 10:35:09', ''),
+(63, 'find', '12', 'length', 'm', '15.2', NULL, 0, '2017-01-30 10:35:09', 0, '2017-01-30 10:35:09', ''),
+(64, 'find', '13', 'weight', 'g', '34', NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
+(65, 'find', '13', 'length', 'mm', '123', NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
+(66, 'find', '14', 'weight', 'g', '10', NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
+(67, 'find', '14', 'length', 'mm', '70', NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', '');
 
 -- --------------------------------------------------------
 
@@ -297,7 +308,7 @@ CREATE TABLE IF NOT EXISTS `ark_fragment_string` (
   `cre_by` int(11) NOT NULL,
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=558 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=588 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_fragment_string`
@@ -562,7 +573,35 @@ INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `parame
 (554, 'find', '8', 'image', NULL, '6309K027-1.jpg', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
 (555, 'find', '9', 'image', NULL, '6309K028-1.jpg', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
 (556, 'find', '10', 'image', NULL, '6400K002-14.bagside.jpg', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
-(557, 'find', '10', 'image', NULL, '6400K002-14.forside.jpg', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', '');
+(557, 'find', '10', 'image', NULL, '6400K002-14.forside.jpg', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(558, 'find', '11', 'finder_id', NULL, 'MYFIND-1', NULL, 0, '2017-01-30 10:34:16', 0, '2017-01-30 10:34:16', ''),
+(559, 'find', '11', 'type', 'dime.find.type', 'fibula', NULL, 0, '2017-01-30 10:34:16', 0, '2017-01-30 10:34:16', ''),
+(560, 'find', '11', 'period_start', 'dime.period', 'CÆRÆ', NULL, 0, '2017-01-30 10:34:16', 0, '2017-01-30 10:34:16', ''),
+(561, 'find', '11', 'material', 'dime.material', 'al', NULL, 0, '2017-01-30 10:34:16', 0, '2017-01-30 10:34:16', ''),
+(562, 'find', '11', 'condition', 'dime.find.condition', 'fragmented', NULL, 0, '2017-01-30 10:34:16', 0, '2017-01-30 10:34:16', ''),
+(563, 'find', '12', 'finder_id', NULL, 'KurtRavnErGud', NULL, 0, '2017-01-30 10:35:09', 0, '2017-01-30 10:35:09', ''),
+(564, 'find', '12', 'type', 'dime.find.type', 'military', NULL, 0, '2017-01-30 10:35:09', 0, '2017-01-30 10:35:09', ''),
+(565, 'find', '12', 'period_start', 'dime.period', 'CÆRÆ', NULL, 0, '2017-01-30 10:35:09', 0, '2017-01-30 10:35:09', ''),
+(566, 'find', '12', 'material', 'dime.material', 'fe', NULL, 0, '2017-01-30 10:35:09', 0, '2017-01-30 10:35:09', ''),
+(568, 'find', '12', 'condition', 'dime.find.condition', 'whole', NULL, 0, '2017-01-30 10:35:09', 0, '2017-01-30 10:35:09', ''),
+(569, 'find', '12', 'id', NULL, '12', NULL, 0, '2017-01-30 10:35:09', 0, '2017-01-30 10:35:09', ''),
+(571, 'find', '12', 'secondary', 'dime.find.secondary', 'zz', NULL, 0, '2017-01-30 10:37:24', 0, '2017-01-30 10:37:24', ''),
+(572, 'find', '13', 'finder_id', NULL, 'myfind', NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
+(573, 'find', '13', 'type', 'dime.find.type', 'fibula', NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
+(574, 'find', '13', 'period_start', 'dime.period', 'AXXX', NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
+(575, 'find', '13', 'material', 'dime.material', 'cu', NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
+(576, 'find', '13', 'secondary', 'dime.find.secondary', 'glass', NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
+(577, 'find', '13', 'secondary', 'dime.find.secondary', 'organic', NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
+(578, 'find', '13', 'condition', 'dime.find.condition', 'whole', NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
+(579, 'find', '13', 'id', NULL, '13', NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
+(580, 'locality', '1', 'id', NULL, '1', NULL, 0, '2017-01-31 07:56:30', 0, '2017-01-31 07:56:30', ''),
+(581, 'locality', '1', 'type', NULL, 'Sted', NULL, 0, '2017-01-31 07:56:30', 0, '2017-01-31 07:56:30', ''),
+(582, 'find', '14', 'finder_id', NULL, 'NytNummer', NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
+(583, 'find', '14', 'type', 'dime.find.type', 'fibula', NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
+(584, 'find', '14', 'period_start', 'dime.period', 'BÆX1', NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
+(585, 'find', '14', 'material', 'dime.material', 'cual', NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
+(586, 'find', '14', 'condition', 'dime.find.condition', 'fragmented', NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
+(587, 'find', '14', 'id', NULL, '14', NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', '');
 
 -- --------------------------------------------------------
 
@@ -583,7 +622,7 @@ CREATE TABLE IF NOT EXISTS `ark_fragment_text` (
   `cre_by` int(11) NOT NULL,
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=228 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=233 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_fragment_text`
@@ -591,7 +630,6 @@ CREATE TABLE IF NOT EXISTS `ark_fragment_text` (
 
 INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `attribute`, `parameter`, `value`, `object_fid`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
 (41, 'page', 'about', 'content', 'da', '<h2>Om DIME</h2><p>DIME står for ”Digitale Metaldetektorfund” og er en brugerdrevet platform til registrering af metaldetektorfund til brug i formidling, forskning og forvaltning.</p><p>Ideen bag DIME er, at den skal:<ul><li>øge inddragelse af metaldetektorbrugerne i det museale arbejde</li><li>øge og skærpe samarbejdet mellem metaldetektorbrugere og museer</li><li>lette arbejdsbyrden vedr. fundregistrering og danefæbehandling på museerne</li><li>muliggøre en hurtig behandling af Danefæ</li><li>muliggøre en ensartet registreringspraksis landet over</li><li>optimere tilgængeligheden af information om metaldetektorfundene til forskningsbrug</li><li>fungere som indgang for indberetning af fund til centrale, museale databaser (SARA mfl.)</li></ul></p><h3>Baggrunden for DIME</h3><p>Hvert år finder frivillige metaldetektorbrugere på danske marker i 1000vis af fund af stor kulturhistorisk betydning. De bidrager løbende til fremkomsten af nogle af de mest opsigtsvækkende fund i dansk arkæologi, og metaldetektorfundene har i mange henseender revolutioneret vor forståelse af de forhistoriske og historiske samfund fra bronzealder til nyere tid. Dansk metaldetektorarkæologi har på den baggrund udviklet sig til en unik og internationalt anerkendt succeshistorie, som forener de bedste sider af den danske model med en bred folkelig involvering i det arkæologiske arbejde og en decentral museumsstruktur. Men den kolossale tilvækst af indkomne fund har i stigende grad tydeliggjort behovet for en samlet registrering af metaldetektorfundene, idet kun en brøkdel af de mange fund er tilgængelige for offentligheden, museerne og for forskningen. DIME er udviklet med henblik på at muliggøre optimal udnyttelse af metaldetektorfundenes store formidlings- og forskningsmæssige potentiale.</p><h3>Udviklingen af DIME</h3><p>DIME-databasen blev udviklet i 2016-2017 af en gruppe museumsfolk og universitetsarkæologer i tæt samarbejde med detektorbrugere og et bredt panel fagfolk fra museer landet over. DIME er således udviklet af brugere for brugere, og under udformning af databasen har udviklerne bl.a. kunne støtte sig til:<ul><li>Interview af 27 museumsmedarbejder (fra 27 forskellige museer) om praksis og erfaringer med fundregistrering og krav til en evt. databaseløsning</li><li>Online spørgeskema blandt detektorfolk om praksis og ønsker til fundregistrering (168 besvarelser)</li><li>Fokusgruppeinterview med udvalgte detektorfolk</li></ul></p><p>DIME er udviklet af følgende institutioner:<ul><li>Aarhus Universitet</li><li>Moesgaard Museum</li><li>Nordjyllands Historiske Museum</li><li>Odense Bys Museer</li></ul></p><p>Udvikling af DIME blev muliggjort med økonomisk støtte fra KROGAGERFONDEN</p>', NULL, 0, '2017-01-24 14:06:45', 0, '0000-00-00 00:00:00', ''),
-(42, 'page', 'treasure', 'content', 'da', '<h2>Danefæ</h2><p>Danefæ er genstande fra fortiden, der kommer til veje som jordfund i Danmark, og som er forarbejdet af ædelt metal eller i øvrigt er af kulturhistorisk værdi, herunder mønter. Den, der finder danefæ eller får danefæ i sin besiddelse, skal aflevere det, idet danefæ tilhører staten.<p>Loven om danefæ kan spores tilbage til middelalderen. Nationalmuseet administrerer denne lov, der sikrer, at vigtige fund fra Danmarks fortid bliver bevaret for kommende generationer.<h3>Indlevering af Danefæ</h3><p>Oldsager og andre betydningsfulde genstande fra fortiden, som skønnes at være danefæ, skal indleveres til staten. Det foregår i praksis ved, at finderen indleverer fundet til det lokale museum, der har ansvaret for arkæologiske fund i området - <a href="http://slks.dk/fortidsminder-diger/arkaeologi-paa-land/museernes-arkaeologiske-arbejde/ansvarsomraader-og-kontakt/">se fordelingen af ansvarsområder her</a>.<p>Den endelige vurdering af fundets danefæ-status foretages på Nationalmuseet. Den faglige bestemmelse af fundene foretages af medarbejdere fra tre af Nationalmuseets enheder: Den Kgl. Mønt- og Medaillesamling, Danmarks Middelalder og Renæssance og Danmarks Oldtid.<p>Nationalmuseet har fra 2013 indført en transportordning for danefæ og ikke-danefæ. Ordningen indebærer, at Nationalmuseet en gang årligt transporterer danefæ til uddeponering samt ikke-danefæ retur til lokalmuseerne. Transporten kan også medtage danefæ til vurdering fra lokalmuseet til Nationalmuseet. Det er dog stadig muligt for lokalmuseerne, at indlevere genstande til danefævurdering direkte til Nationalmuseet.<h3>Jeg har fundet danefæ - hvad gør jeg?</h3><p>Du skal i første omgang henvende dig på dit lokale museum. Det er dit lokale museum, der skal tage imod dit fund og kontakte Nationalmuseet. Her kan du printe <a href="http://natmus.dk/fileadmin/user_upload/natmus/Danefae/Kvitteringsseddel.pdf">et kvitteringsskema, du afleverer sammen med dit fund</a>(PDF).<p>Hvis du alligevel ønsker at indlevere til Nationalmuseet, tager vi kontakten til det lokale museum. Derved kan danefævurderingen trække ud, da vi skal afvente, at det lokale museum indberetter fundet. Nationalmuseet anmoder herefter det lokale museum om at indsende en danefæanmeldelse ud fra de oplysninger, som du har indleveret sammen med genstanden. Den indleverede genstand bliver på Nationalmuseet og afventer fundanmeldelse fra det lokale museum. Herefter fortsætter danefæsagen efter sædvanlig procedure.<h3>Sådan udviser man omhu ved fund af danefæ</h3><p><strong>Forskellige udtryk for omhu i forbindelse med danefæfund:</strong><p><strong>Ved tilfældige fund</strong>, dvs. ikke-detektorfund kan finderen udvises særlig omhu ved:<ol><li>Forsigtig håndtering.<li>Forsvarlig emballering.<li>Hurtig kontakt til antikvariske myndigheder.<li>Opmærksomhed på forekomsten af relevante kulturspor: skår, lerklining, trækul, sten, knoglestumper, sortjord, etc.</ol><p><strong>Ved detektorfund</strong> kan finderen i øvrigt udvises særlig omhu ved:<ol><li>Nøjagtig ”on-site” lokalisering af fundsted – ved indmåling af GPS-koordinater.</li><li>Øjeblikkelig ”on-site” fotodokumentation af fundenes tilstand og GPS-målingernes troværdighed</li><li>Tilsvarende omhyggelig indsamling af ”ikke danefæ”- fund, til belysning af konteksten for de regulære danefæ-stykker, dvs. til sikring af danefæets videnskabelige værdi. Ligeledes at finder har indgået aftale med det lokale museum om at overdrage ikke-danefæ til lokalmuseet. Kvitteringsblanket skal være underskrevet.</li><li>Elektronisk fundrapportering til lokalmuseet (med foreløbige betegnelser, eventuelle løbenumre, koordinater, fotos).  </li><li>I tvivlstilfælde og ved mulighed for dybereliggende grav- eller skattefund kontaktes lokalmuseet  straks. Ingen gravning under pløjedybde!</li><li>Der gives løbende orientering om eventuelle fund til lodsejer og lokalmuseum.</li><li>Fund udsættes ikke for afrensning, imprægnering eller afstøbning</li><li>Fund udsættes ikke for skader eller informations-tab som følge af uhensigtsmæssig (eller langvarig) opbevaring.</li></ol><p><em>Ved grundig registrering af fundene i DIME opfyldes en række af ovenstående punkter udpeget af Nationalmuseet som særligt væsentlige for omhyggelig behandling af potentielt danefæ.</em><h3>Hvad kan være danefæ?</h3><p>Som udgangspunkt er fragmenter lige så vigtige som hele genstande i detektorsammenhæng, idet de(t) resterende fragment(er) oftest dukker op med tiden. Det afgørende for om noget bør erklæres for danefæ er altså typen af genstand - ikke genstandens tilstand. Hittegods er aldrig danefæ.<h4>Guld</h4><p>Alle genstande af guld er danefæ.<h4>Sølv</h4><p>+ Genstande af sølv fra før 1700 samt sølvklip og -fragmenter<p>- Sølv fra tiden efter 1700 med mindre det er af ekstraordinær karakter<h4>Bronze</h4><p>+ Bronzegenstande fra oldtid og vikingetid er danefæ<p>+ Genstande af bronze med særlig ornamentik eller udsmykning - f.eks. inskription eller emalje fra middelalder<p>+ Hele eller tilnærmelsesvis hele malmgryder<p>+ Vægtlodder<p>+ Seglstamper fra før 1700<p>- Simple genstande af bronze fra middelalder og renæssance<p>- Fragmenter af malmgryder<p>- Taphaner<p>- Nøgler eller hængelåse uden kunstnerisk udsmykning.<h4>Bly</h4><p>+ Vægtlodder<p>+ Støbemodeller<p>+ Tenvægte med særlig udsmykning fra middelalder<p>+ Klædeplomber med ornamentik og/eller skrift<p>+ Genstande med runer eller anden skrift<p>- Musketkugler<p>- Udaterbare smelteklumper og simple blygenstande fra tiden efter 1536<h4>Jern</h4><p>+ Ekstraordinære jerngenstande og genstande med f.eks. tauschering, indlægning, ornamentik; eksempelvis sværd fra oldtiden og middelalderen<p>- Andre genstande af jern fra oldtid og middelalder, våben som værktøj o.a.<h4>Mønter</h4><p>+ Mønter fra oldtid, vikingetid og middelalder (fra 1536 og før)<p>+ Mønter i skattefund - flere mønter nedlagt sammen<p>+ Guldmønter og større sølvmønter, f.eks. dalermønter fra tiden efter 1536.<p>- Småmønter af sølv og kobber fra tiden efter 1536<h4>Figurer</h4><p>+ Figurer og plastiske fremstillinger i sten, metal, ben, rav og træ<p>+ Figurer i keramik og tegl fra oldtid og middelalder<h4>Runer og anden indskrift</h4><p>+ Sten og andre genstande med runer og anden indskrift<p><p>Desuden omfatter listen af muligt Danefæ også en række ikke-metalliske genstande. For nærmere herom <a href="http://natmus.dk/salg-og-ydelser/museumsfaglige-ydelser/danefae/hvad-kan-vaere-danefae/">se Nationalmuseets hjemmeside</a>.<p>(Kilde: Nationalmuseet)', NULL, 0, '2017-01-24 14:06:25', 0, '0000-00-00 00:00:00', ''),
 (43, 'page', 'background', 'content', 'da', '<h2>Metaldetektorbrug i Danmark</h2><p>Siden 1970erne har metaldetektering vundet stor popularitet blandt private brugere i Danmark. Hvert år bruger entusiastiske detektorbrugere i tusindvis af timer på at afsøge marker over hele landet og bidrager alle på denne vis til at redde vigtige arkæologiske fund fra gradvis nedbrydning som følge af dyrkning, vind og vejr.<p>Tabt, ofret til guderne eller gemt til senere brug. De mange genstande, som bliver fundet med metaldetektor, er endt i jorden af vidt forskellige årsager igennem tiderne. De fleste er dog små enkeltliggende genstande, f.eks. mønter og smykker, som øjensynligt er blevet tabt under brug. Mange fund i et område indikerer derfor, at her har været høj aktivitet. Men mængden af fund afspejler i høj grad også, hvor udbredt brugen af metaller har været. Der er således betydeligt længere mellem fundene fra bronzealderen og de tidligste dele af jernalderen, hvor metaller udgjorde kostbare sjældenheder, end mellem fundene fra yngre jernalder og ikke mindst fra middelalderen og fremefter. På sammen vis er genstande af jern, bronze, bly og aluminium almindelige mens fund af sølv og i særdeleshed fund af guld naturligvis er anderledes sjældne.<p>Metaldetektorens effektive søgedybde afhænger af metalgenstandens karakter og markens overflade og udgør oftest kun nogle kun få cm, hvorfor dyrkede marker, hvor ploven jævnligt vender de dybere dele af muldlaget op til overfladen, opbyder de mest optimale ”jagtmarker”. Højsæsonen for metaldetektering er derfor ikke overraskende forår og efterår, hvor markerne står uden afgrøder.<h3>Regler</h3><p>I Danmark er det lovligt at gå med metaldetektor i de fleste områder. Der er dog nogle enkle regler, som skal overholdes, og Kulturstyrelsen har udarbejdet følgende vejledning til, hvordan man som detektorbruger skal og bør forholde sig.<p>Du skal:<ul><li>Du  skal sørge for at få tilladelse til at gå på det areal du ønsker, hos ejeren af jorden. Er ejeren offentlig, skal du henvende dig til den relevante myndighed, f.eks. en kommunes tekniske forvaltning. <a href="http://svana.dk/natur/friluftsliv/hvad-maa-jeg-i-naturen/">For statens arealer, der forvaltes af Naturstyrelsen, gælder der særlige regler</a>.</li><li>Du skal aflevere de fundne genstande til det lokale museum (eller Nationalmuseet), såfremt du mener at der kan være tale om danefæ.</li></ul><p>Du må ikke:<ul><li>Du må ikke gå med detektor på fredede fortidsminder, eller nærmere end to meter fra fredningsgrænsen. Se om et fortidsminde er fredet på Kulturstyrelsens database <a href="http://www.kulturarv.dk/fundogfortidsminder/">Fund og Fortidsminder</a></li><li>Du må ikke foretage en udgravning af et fundområde, herunder grave dybere end pløjelaget.</li></ul><p>Du må gerne:<ul><li>Du må gerne gå med detektor på <a href="http://www.kulturstyrelsen.dk/index.php?id=13240">kulturarvsarealer</a>, dog ikke på fredede fortidsminder indenfor arealerne, se <a href="http://www.kulturarv.dk/fundogfortidsminder/">Fund og Fortidsminder</a>, og du skal stadig spørge ejeren om lov.</li></ul><p>Om selve genstandene (danefæ):<ul><li>En række af de genstande du kan finde med en metaldetektor kan være danefæ (se menupunktet ”danefæ”). Danefæ tilhører staten, og er du det mindste i tvivl, om det du har fundet evt. kan være danefæ, skal du kontakte det lokale museum eller Nationalmuseet, der kan vejlede dig om det videre forløb.</li><li>Du må ikke sælge genstande/danefæ.</li><li>Du må ikke videregive genstande/danefæ.</li><li>Du bør behandle genstandene med omhu og forsigtighed, de er sårbare.</li><li>Du bør ikke rengøre, børste eller vaske genstande da informationer kan gå tabt.</li><li>Du bør opbevare genstande i en plastpose og æske med låg.</li><li>Du bør anvende en GPS til at måle dine fund ind med – også dem du er i tvivl om er noget.</li><li>Du bør notere findernavn, sted, dato og GPS-koordinater sammen med fundet. Hvis du skriver på en seddel der lægges i posen, så brug en blyant – aldrig kuglepen eller filtpen da skriftes let flyder ud hvis papiret bliver fugtigt.</li><li>Du bør markere fundområdet på et kort.</li></ul><p>Om fundstedet:<li>Du må ikke påbegynde en udgravning af fundstedet. Grav aldrig dybere end pløjelagets dybde.</li><p>Det er en god idé:<ul><li>At have god kontakt med lokalmuseet.</li><li>At have god kontakt med lodsejere.</li><li>At orientere sig i <a href="http://www.kulturarv.dk/fundogfortidsminder/">Fund & Fortidsminder-databasen</a>.</li><li>At være medlem af den lokale detektorklub eller amatørarkæologiske forening.</li><li>At være to eller flere, der går sammen.</li><li>At have indbyrdes klare aftaler med hinanden og med lodsejer.</li><li>At være systematisk i sin søgen.</li><li>At føre dagbog over sin søgen.</li><li>At diskutere fundne genstande og afsøgningsmetoder i detektorklubben.</li></ul><h3>Metaldetektorfund og arkæologiske udgravninger</h3><p>Grundejere, der skal give lov til, at der må anvendes metaldetektor på ens ejendom – typisk landmænd – er indimellem usikre omkring, hvorvidt fund gjort med metaldetektor kan medføre udgravninger, som skal betales af ejeren af jorden. Fremkomsten af detektorfund vil i sig selv ikke medføre, at en jordejer påføres udgifter til en evt. efterfølgende arkæologisk udgravning.<p>De fleste detektorfund indgår i museernes samlinger - enten som danefæ på Nationalmuseet eller på det lokale museum som almindelige genstande, der indlemmes i museets samling. Enkelte fund, typisk fra nyere tid, kan beholdes af detektorføreren selv.<p>I de sjældne tilfælde, hvor der gøres et skattefund, f.eks. mønter eller værdifuldt metal, er museerne ofte interesserede i at gennemføre en begrænset undersøgelse af fundstedet. Formålet vil være at sikre de dele af skatten, der muligvis endnu er bevaret under pløjelaget. Herved kan man sikre en række væsentlige oplysninger om deponeringsmåden (i et lerkar, en læderpung eller lignende) og ofte også årsagen til deponeringen (til gudernes gunst eller i ufredstider). Samtidig sikrer man, at alle dele af skatten kommer til syne – og dermed er den videnskabelige værdi af fundet væsentligt større.<p>Når en skat i første omgang findes, skyldes det, at nogle af genstandene allerede ligger oppe i pløjelaget. De kan være ført derop af markredskaber for både 10, 50 eller 100 år siden. Altså som følge af ”jordarbejde i forbindelse med erosion eller jordarbejde udført som led i dyrkning af almindelige landbrugsafgrøder eller som led i almindelig skovdrift,” som det hedder i lovteksten (<a href="https://www.retsinformation.dk/forms/r0710.aspx?id=12017">Museumslovens § 27, stk. 5. pind 1</a>). Arkæologiske undersøgelser af denne type skal ikke betales af jordejeren, men bekostes typisk af midler fra en pulje, som Slots- og Kulturstyrelsen råder over, efter ansøgning fra det lokale museum. Afhængig af undersøgelsens omfang og tidspunkt på året kan jordejeren kompenseres for eventuelle tab efter gældende regler for afgrødeerstatning.<h3>Fra landmand til bygherre</h3><p>Der kan dog opstå situationer, hvor detektorfund på længere sigt kan være en medvirkende årsag til, at der skal gennemføres en arkæologisk undersøgelse for landmandens regning – nemlig i det tilfælde, hvor han går fra at dyrke marken til at være bygherre. Et eksempel:<p>Hvis man forestiller sig, at der bliver gået med metaldetektor tæt ind til en eksisterende gård, og der på hele den vestlige side fremkommer spredte metalfund, f.eks. fra en bebyggelse fra vikingetid og ældre middelalder, vil det i første omgang ikke medføre en udgravning. Metaldetektorfundene er naturligvis med til at forøge vores viden om placeringen af landsbyer, bopladser og gravpladser rundt omkring i landskabet. På den måde er detektorfundene med til at give et mere detaljeret indblik i den forhistoriske udnyttelse af landskabet, end hvis vi ikke havde disse fund. Det svarer til fund af potteskår eller flintredskaber som f.eks. økser eller dolke.<p>Hvis landmanden på et senere tidspunkt ønsker at udvide sin gård, f.eks. med en ny løsdriftsstald med tilhørende gylletank og plansilo, vil metaldetektorfundene - på lige fod med alle andre oplysninger, som museet kender til (f.eks. overpløjede gravhøje, løsfundne stenoldsager, spor set fra luften eller som fremgår af såkaldte LiDAR-scanninger) - danne baggrund for den rådgivning, som museet vil tilbyde landmanden i forbindelse med hans byggeprojekt.<p>Landmanden kan i den forbindelse vælge at få gennemført en forundersøgelse af arealet (<a href="http://slks.dk/fortidsminder-diger/arkaeologi-paa-land/museernes-arkaeologiske-arbejde/vejledning-om-arkaeologiske-undersoegelser/">se mere i Vejledning om arkæologiske undersøgelser</a>), og hvis det herefter viser sig, at der på det areal, hvor han ønsker at udvide gården, fremkommer væsentlige fortidsminder, er det museumslovens bestemmelse, at han som bygherre skal betale for den nødvendige arkæologiske undersøgelse før byggestart. En bygherre - i dette eksempel en landmand - kan i den forbindelse godt have den opfattelse, at det er metaldetektor-fundenes skyld, at han kommer til at betale for en arkæologisk undersøgelse. Det er dog ikke korrekt, for uanset om der er gjort metalfund eller ej, ville en arkæologisk forundersøgelse afsløre, at der er væsentlige fortidsminder bevaret under muldjorden i form af eksempelvis stolpehuller efter huse, brønde, hegnsspor og affaldsgruber. Museumsloven bestemmer herefter, at den nødvendige arkæologiske undersøgelse skal betales af bygherre, med mindre det er muligt at bevare fortidsminderne på stedet ved at ændre eller flytte anlægsarbejdet.  (Kilde: Kulturstyrelsen - http://slks.dk/fortidsminder-diger/metaldetektor-og-danefae/)', NULL, 0, '2017-01-24 14:05:44', 0, '0000-00-00 00:00:00', ''),
 (44, 'page', 'research', 'content', 'da', '<h2>Vidensdeling via DIME</h2><p>Gennem vidensdeling bliver vi alle klogere. DIME hylder og søger aktivt at understøtte dette princip, hvorfor vi ikke kun opfordrer detektorbrugerne til at levere deres unikke viden i form af fundindberetninger, men også tilskynder, at forskere her på hjemmesiden offentliggør nye forskningsresultater vedrørende metaldetektorfundene. For at stimulere denne ”delingskultur” bliver alle med forskeradgang til databasen afkrævet et kort resumé af deres arbejde, når de publicerer forskning med afsæt i DIME. Disse resuméer kan i lighed med anden relevant forskning og henvisninger til andre forskningsarbejder findes ved at følgende de forskellige nedenstående links.', NULL, 0, '2017-01-24 14:04:03', 0, '0000-00-00 00:00:00', ''),
 (46, 'actor', 'ARV', 'shortname', 'da', 'ARKVEST', NULL, 0, '2017-01-25 13:01:03', 0, '0000-00-00 00:00:00', ''),
@@ -726,7 +764,12 @@ INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `attribute`, `paramete
 (224, 'find', '8', 'description', 'da', 'Hel velbevaret fuglefibel med fliget fiskehale og flot fortinning. På nær hovedet er fiblen flad i profil. Langs kanten er fiblen prydet med en række stempler og på kroppen ses ridser, som muligvis har været del af indridset ornamentik.', NULL, 0, '2017-01-29 21:03:54', 0, '2017-01-29 21:03:54', ''),
 (225, 'find', '9', 'description', 'da', 'Hel lille, let hvælvet blikfibel med delvist bevaret forgyldning. Cirkulær med afsat kant og et øsken ved randen. I centrum ses et lidt skævt ligebenet kors eller en blomst med fire spidse kronblade samlet i et uregelmæssigt, næsten kvadratisk midterfelt.', NULL, 0, '2017-01-29 21:07:02', 0, '2017-01-29 21:07:02', ''),
 (226, 'find', '10', 'description', 'da', 'Hel lille pladefibel.\r\n\r\nForside: Lettere korroderet overflade. Fiblen er prydet af støbt, fladedækkende slyngbånd indrammet af en markant, glat ramme. \r\n\r\nBagside: Meget korroderet. Nåleholderen, i form af en støbt, ombøjet flig placeret parallelt med fiblens længderetning, er helt bevaret. I modsatte ende ses de sidste rester af nålefæstet. Omkring sidstnævnte er overfladen rustfarvet.', NULL, 0, '2017-01-29 21:09:38', 0, '2017-01-29 21:09:38', ''),
-(227, 'find', '11', 'description', 'da', 'qqqqq', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', '');
+(227, 'find', '11', 'description', 'da', 'qqqqq', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(228, 'find', '11', 'description', 'da', 'Aluminioumnfind', NULL, 0, '2017-01-30 10:34:16', 0, '2017-01-30 10:34:16', ''),
+(229, 'find', '12', 'description', 'da', 'Kedelig', NULL, 0, '2017-01-30 10:35:09', 0, '2017-01-30 10:35:09', ''),
+(230, 'find', '13', 'description', 'da', 'test find', NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
+(231, 'find', '14', 'description', 'da', 'En ting', NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
+(232, 'page', 'treasure', 'content', 'da', '<h2>Danefæ</h2><p>Danefæ er genstande fra fortiden, der kommer til veje som jordfund i Danmark, og som er forarbejdet af ædelt metal eller i øvrigt er af kulturhistorisk værdi, herunder mønter. Den, der finder danefæ eller får danefæ i sin besiddelse, skal aflevere det, idet danefæ tilhører staten.</p><p>Loven om danefæ kan spores tilbage til middelalderen. Nationalmuseet administrerer denne lov, der sikrer, at vigtige fund fra Danmarks fortid bliver bevaret for kommende generationer.</p><h3>Indlevering af Danefæ</h3><p>Oldsager og andre betydningsfulde genstande fra fortiden, som skønnes at være danefæ, skal indleveres til staten. Det foregår i praksis ved, at finderen indleverer fundet til det lokale museum, der har ansvaret for arkæologiske fund i området - <a href="http://slks.dk/fortidsminder-diger/arkaeologi-paa-land/museernes-arkaeologiske-arbejde/ansvarsomraader-og-kontakt/">se fordelingen af ansvarsområder her</a>.</p><p>Den endelige vurdering af fundets danefæ-status foretages på Nationalmuseet. Den faglige bestemmelse af fundene foretages af medarbejdere fra tre af Nationalmuseets enheder: Den Kgl. Mønt- og Medaillesamling, Danmarks Middelalder og Renæssance og Danmarks Oldtid.</p><p>Nationalmuseet har fra 2013 indført en transportordning for danefæ og ikke-danefæ. Ordningen indebærer, at Nationalmuseet en gang årligt transporterer danefæ til uddeponering samt ikke-danefæ retur til lokalmuseerne. Transporten kan også medtage danefæ til vurdering fra lokalmuseet til Nationalmuseet. Det er dog stadig muligt for lokalmuseerne, at indlevere genstande til danefævurdering direkte til Nationalmuseet.</p><h3>Jeg har fundet danefæ - hvad gør jeg?</h3><p>Du skal i første omgang henvende dig på dit lokale museum. Det er dit lokale museum, der skal tage imod dit fund og kontakte Nationalmuseet. Her kan du printe <a href="http://natmus.dk/fileadmin/user_upload/natmus/Danefae/Kvitteringsseddel.pdf">et kvitteringsskema, du afleverer sammen med dit fund</a>(PDF).</p><p>Hvis du alligevel ønsker at indlevere til Nationalmuseet, tager vi kontakten til det lokale museum. Derved kan danefævurderingen trække ud, da vi skal afvente, at det lokale museum indberetter fundet. Nationalmuseet anmoder herefter det lokale museum om at indsende en danefæanmeldelse ud fra de oplysninger, som du har indleveret sammen med genstanden. Den indleverede genstand bliver på Nationalmuseet og afventer fundanmeldelse fra det lokale museum. Herefter fortsætter danefæsagen efter sædvanlig procedure.</p><h3>Sådan udviser man omhu ved fund af danefæ</h3><p><strong>Forskellige udtryk for omhu i forbindelse med danefæfund:</strong></p><p><strong>Ved tilfældige fund</strong>, dvs. ikke-detektorfund kan finderen udvises særlig omhu ved:</p><ol><li>Forsigtig håndtering.</li><li>Forsvarlig emballering.</li><li>Hurtig kontakt til antikvariske myndigheder.</li><li>Opmærksomhed på forekomsten af relevante kulturspor: skår, lerklining, trækul, sten, knoglestumper, sortjord, etc.</li></ol><p><strong>Ved detektorfund</strong> kan finderen i øvrigt udvises særlig omhu ved:</p><ol><li>Nøjagtig ”on-site” lokalisering af fundsted – ved indmåling af GPS-koordinater.</li><li>Øjeblikkelig ”on-site” fotodokumentation af fundenes tilstand og GPS-målingernes troværdighed</li><li>Tilsvarende omhyggelig indsamling af ”ikke danefæ”- fund, til belysning af konteksten for de regulære danefæ-stykker, dvs. til sikring af danefæets videnskabelige værdi. Ligeledes at finder har indgået aftale med det lokale museum om at overdrage ikke-danefæ til lokalmuseet. Kvitteringsblanket skal være underskrevet.</li><li>Elektronisk fundrapportering til lokalmuseet (med foreløbige betegnelser, eventuelle løbenumre, koordinater, fotos).  </li><li>I tvivlstilfælde og ved mulighed for dybereliggende grav- eller skattefund kontaktes lokalmuseet  straks. Ingen gravning under pløjedybde!</li><li>Der gives løbende orientering om eventuelle fund til lodsejer og lokalmuseum.</li><li>Fund udsættes ikke for afrensning, imprægnering eller afstøbning</li><li>Fund udsættes ikke for skader eller informations-tab som følge af uhensigtsmæssig (eller langvarig) opbevaring.</li></ol><p><em>Ved grundig registrering af fundene i DIME opfyldes en række af ovenstående punkter udpeget af Nationalmuseet som særligt væsentlige for omhyggelig behandling af potentielt danefæ.</em></p><h3>Hvad kan være danefæ?</h3><p>Som udgangspunkt er fragmenter lige så vigtige som hele genstande i detektorsammenhæng, idet de(t) resterende fragment(er) oftest dukker op med tiden. Det afgørende for om noget bør erklæres for danefæ er altså typen af genstand - ikke genstandens tilstand. Hittegods er aldrig danefæ.</p><h4>Guld</h4><p>Alle genstande af guld er danefæ.</p><h4>Sølv</h4><p>+ Genstande af sølv fra før 1700 samt sølvklip og -fragmenter</p><p>- Sølv fra tiden efter 1700 med mindre det er af ekstraordinær karakter</p><h4>Bronze</h4><p>+ Bronzegenstande fra oldtid og vikingetid er danefæ</p><p>+ Genstande af bronze med særlig ornamentik eller udsmykning - f.eks. inskription eller emalje fra middelalder</p><p>+ Hele eller tilnærmelsesvis hele malmgryder</p><p>+ Vægtlodder</p><p>+ Seglstamper fra før 1700</p><p>- Simple genstande af bronze fra middelalder og renæssance</p><p>- Fragmenter af malmgryder</p><p>- Taphaner</p><p>- Nøgler eller hængelåse uden kunstnerisk udsmykning.</p><h4>Bly</h4><p>+ Vægtlodder</p><p>+ Støbemodeller</p><p>+ Tenvægte med særlig udsmykning fra middelalder</p><p>+ Klædeplomber med ornamentik og/eller skrift</p><p>+ Genstande med runer eller anden skrift</p><p>- Musketkugler</p><p>- Udaterbare smelteklumper og simple blygenstande fra tiden efter 1536</p><h4>Jern</h4><p>+ Ekstraordinære jerngenstande og genstande med f.eks. tauschering, indlægning, ornamentik; eksempelvis sværd fra oldtiden og middelalderen</p><p>- Andre genstande af jern fra oldtid og middelalder, våben som værktøj o.a.</p><h4>Mønter</h4><p>+ Mønter fra oldtid, vikingetid og middelalder (fra 1536 og før)</p><p>+ Mønter i skattefund - flere mønter nedlagt sammen</p><p>+ Guldmønter og større sølvmønter, f.eks. dalermønter fra tiden efter 1536.</p><p>- Småmønter af sølv og kobber fra tiden efter 1536</p><h4>Figurer</h4><p>+ Figurer og plastiske fremstillinger i sten, metal, ben, rav og træ</p><p>+ Figurer i keramik og tegl fra oldtid og middelalder</p><h4>Runer og anden indskrift</h4><p>+ Sten og andre genstande med runer og anden indskrift</p><p></p><p>Desuden omfatter listen af muligt Danefæ også en række ikke-metalliske genstande. For nærmere herom <a href="http://natmus.dk/salg-og-ydelser/museumsfaglige-ydelser/danefae/hvad-kan-vaere-danefae/">se Nationalmuseets hjemmeside</a>.</p><p>(Kilde: Nationalmuseet)</p>', NULL, 0, '2017-01-31 23:12:14', 0, '2017-01-31 23:12:14', '');
 
 -- --------------------------------------------------------
 
@@ -768,7 +811,7 @@ CREATE TABLE IF NOT EXISTS `ark_fragment_wkt` (
   `cre_by` int(11) NOT NULL,
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `ark_fragment_wkt`
@@ -785,7 +828,11 @@ INSERT INTO `ark_fragment_wkt` (`fid`, `module`, `item`, `attribute`, `parameter
 (25, 'find', '8', 'findpoint', '4326', 'POINT (9.740236 57.028384)', NULL, 0, '2017-01-29 21:03:54', 0, '2017-01-29 21:03:54', ''),
 (26, 'find', '9', 'findpoint', '4326', 'POINT (9.740109 57.03276)', NULL, 0, '2017-01-29 21:07:02', 0, '2017-01-29 21:07:02', ''),
 (27, 'find', '10', 'findpoint', '4326', 'POINT (10.012489 56.958308)', NULL, 0, '2017-01-29 21:09:38', 0, '2017-01-29 21:09:38', ''),
-(28, 'find', '11', 'findpoint', '4326', 'POINT (1 1)', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', '');
+(28, 'find', '11', 'findpoint', '4326', 'POINT (1 1)', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(29, 'find', '11', 'findpoint', '4326', 'POINT (9.87 45.77)', NULL, 0, '2017-01-30 10:34:16', 0, '2017-01-30 10:34:16', ''),
+(30, 'find', '12', 'findpoint', '4326', 'POINT (10 56)', NULL, 0, '2017-01-30 10:37:24', 0, '2017-01-30 10:35:09', ''),
+(31, 'find', '13', 'findpoint', '4326', 'POINT (9.456 45.876)', NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
+(32, 'find', '14', 'findpoint', '4326', 'POINT (10.2227087 56.0887224)', NULL, 0, '2017-01-31 08:00:54', 0, '2017-01-31 07:59:45', '');
 
 -- --------------------------------------------------------
 
@@ -921,6 +968,10 @@ CREATE TABLE IF NOT EXISTS `ark_item_find` (
 INSERT INTO `ark_item_find` (`id`, `schma`, `type`, `parent_module`, `parent_id`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
 ('1', 'dime.find', 'accessory', NULL, NULL, '1', '1', 0, '2017-01-29 22:37:39', 0, '2017-01-29 22:37:39', ''),
 ('10', 'dime.find', 'fibula', NULL, NULL, '10', '10', 0, '2017-01-29 21:09:38', 0, '2017-01-29 21:09:38', ''),
+('11', 'dime.find', 'fibula', NULL, NULL, '11', '11', 0, '2017-01-30 10:34:16', 0, '2017-01-30 10:34:16', ''),
+('12', 'dime.find', 'military', NULL, NULL, '12', '12', 0, '2017-01-30 10:37:24', 0, '2017-01-30 10:37:24', ''),
+('13', 'dime.find', 'fibula', NULL, NULL, '13', '13', 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
+('14', 'dime.find', 'fibula', NULL, NULL, '14', '14', 0, '2017-01-31 08:00:54', 0, '2017-01-31 08:00:54', ''),
 ('2', 'dime.find', 'fibula', NULL, NULL, '2', '2', 0, '2017-01-29 20:45:58', 0, '2017-01-29 20:45:58', ''),
 ('3', 'dime.find', 'coin', NULL, NULL, '3', '3', 0, '2017-01-29 22:46:48', 0, '2017-01-29 22:46:48', ''),
 ('4', 'dime.find', 'coin', NULL, NULL, '4', '4', 0, '2017-01-29 22:48:31', 0, '2017-01-29 22:48:31', ''),
@@ -971,6 +1022,13 @@ CREATE TABLE IF NOT EXISTS `ark_item_locality` (
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_item_locality`
+--
+
+INSERT INTO `ark_item_locality` (`id`, `schma`, `type`, `parent_module`, `parent_id`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+('1', 'dime.locality', '', NULL, NULL, '1', '1', 0, '2017-01-31 07:56:37', 0, '2017-01-31 07:56:37', '');
 
 -- --------------------------------------------------------
 
@@ -1032,7 +1090,7 @@ INSERT INTO `ark_item_page` (`id`, `schma`, `type`, `parent_module`, `parent_id`
 ('exhibits', 'core.page', '', NULL, NULL, 'exhibits', 'exhibits', 0, '2017-01-24 09:06:29', 0, '0000-00-00 00:00:00', ''),
 ('news', 'core.page', '', NULL, NULL, 'news', 'news', 0, '2017-01-24 09:06:32', 0, '0000-00-00 00:00:00', ''),
 ('research', 'core.page', '', NULL, NULL, 'research', 'research', 0, '2017-01-24 09:06:35', 0, '0000-00-00 00:00:00', ''),
-('treasure', 'core.page', '', NULL, NULL, 'treasure', 'treasure', 0, '2017-01-24 09:06:35', 0, '0000-00-00 00:00:00', '');
+('treasure', 'core.page', '', NULL, NULL, 'treasure', 'treasure', 0, '2017-01-31 23:12:14', 0, '2017-01-31 23:12:14', '');
 
 -- --------------------------------------------------------
 
@@ -1072,7 +1130,8 @@ CREATE TABLE IF NOT EXISTS `ark_sequence` (
 --
 
 INSERT INTO `ark_sequence` (`module`, `parent`, `sequence`, `idx`, `min`, `max`) VALUES
-('find', '', 'id', 10, NULL, NULL);
+('find', '', 'id', 14, NULL, NULL),
+('locality', '', 'id', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1089,7 +1148,18 @@ CREATE TABLE IF NOT EXISTS `ark_sequence_lock` (
   `recycle` tinyint(1) NOT NULL DEFAULT '0',
   `locked_by` int(11) NOT NULL,
   `locked_on` datetime NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_sequence_lock`
+--
+
+INSERT INTO `ark_sequence_lock` (`id`, `module`, `parent`, `sequence`, `idx`, `recycle`, `locked_by`, `locked_on`) VALUES
+(44, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(45, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(46, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(47, 'locality', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(48, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -1320,7 +1390,7 @@ MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `ark_fragment_date`
 --
 ALTER TABLE `ark_fragment_date`
-MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=41;
+MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=45;
 --
 -- AUTO_INCREMENT for table `ark_fragment_datetime`
 --
@@ -1330,7 +1400,7 @@ MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `ark_fragment_decimal`
 --
 ALTER TABLE `ark_fragment_decimal`
-MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=61;
+MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=68;
 --
 -- AUTO_INCREMENT for table `ark_fragment_float`
 --
@@ -1355,12 +1425,12 @@ MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `ark_fragment_string`
 --
 ALTER TABLE `ark_fragment_string`
-MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=558;
+MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=588;
 --
 -- AUTO_INCREMENT for table `ark_fragment_text`
 --
 ALTER TABLE `ark_fragment_text`
-MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=228;
+MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=233;
 --
 -- AUTO_INCREMENT for table `ark_fragment_time`
 --
@@ -1370,7 +1440,7 @@ MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `ark_fragment_wkt`
 --
 ALTER TABLE `ark_fragment_wkt`
-MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=29;
+MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
 --
 -- AUTO_INCREMENT for table `ark_relation_xmi`
 --
@@ -1380,7 +1450,7 @@ MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `ark_sequence_lock`
 --
 ALTER TABLE `ark_sequence_lock`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=44;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=49;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

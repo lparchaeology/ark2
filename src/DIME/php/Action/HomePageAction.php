@@ -37,7 +37,7 @@ use DIME\Action\DimeFormAction;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
-class HomeViewAction extends DimeAction
+class HomePageAction extends DimeAction
 {
     public function __invoke(Request $request)
     {

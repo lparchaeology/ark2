@@ -39,8 +39,8 @@ class ApiControllerProvider implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/actors/{actorSlug}/finds', 'DIME\\Action\\JsonApi\\FindCollectionAction')
-                    ->bind('api.actors.finds.collection');
+        $controllers->get('/geo/find', 'DIME\\Action\\GeoFindAction')
+                    ->bind('api.geo.find');
 
         $controllers->get('/actors/{actorSlug}/locations', 'DIME\\Action\\JsonApi\\LocationCollectionAction')
                     ->bind('api.actors.locations.collection');
