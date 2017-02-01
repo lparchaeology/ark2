@@ -17,7 +17,7 @@
     },
     "security": {
         "access_rules": [
-            ["(^/users)|(^/fund/add$)|(^/lokalitet/add$)", "ROLE_USER"],
+            ["(^/home)|(^/users)|(^/fund/add$)|(^/lokalitet/add$)", "ROLE_USER"],
             ["^/.+$", "IS_AUTHENTICATED_ANONYMOUSLY"]
         ]
     }

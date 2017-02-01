@@ -44,9 +44,10 @@ abstract class DimeAction
 
     public function pageConfig($route = null)
     {
+        $homeTarget = (Service::isGranted('ROLE_USER') ? 'home' : 'front');
         $config = [
             "navlinks" => [
-                ["name" => "dime.home", "dropdown" => false, "target" => "home"],
+                ["name" => "dime.home", "dropdown" => false, "target" => $homeTarget],
                 ["name" => "dime.treasure", "dropdown" => false, "target" => "treasure"],
                 ["name" => "dime.research", "dropdown" => false, "target" => "research"],
                 ["name" => "dime.about", "dropdown" => false, "target" => "about"],
