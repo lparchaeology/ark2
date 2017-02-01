@@ -37,6 +37,13 @@ $(document).ready(function() {
     });
 
     $("span.thumbimage").hide();
+    
+    $('.sidebar').on('show.bs.collapse', function(){
+    	var $div = $("<div>", {id: "navbar-fade", "class": "modal-backdrop fade in"});
+    	$div.click(function(){  $('.sidebar').collapse('toggle'); $('#navbar-fade').hide(); });
+    	$(this).css('z-index', 9999);
+    	$("body").append($div);
+    });
 });
 
 // Summernote Editor

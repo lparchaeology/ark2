@@ -129,59 +129,52 @@ map.addInteraction(select);
 var collection = select.getFeatures();
 
 collection.on('add', function(evt) {
-    var elements = $('#dime_find_list tr');
+    var elements = $('.dime-table tr');
     for (var i = 0; i < elements.length; i++) {
         $(elements[i]).removeClass('selected');
     }
+
     collection.forEach(function(e,i,a) {
         var ark_id = e.get('ark_id');
-        var item = $("#dime_find_list tr[data-unique-id='"+ark_id.toString()+"']");
-        if(item){
-            $(item).addClass('selected');
-        }
+
+        $(".dime-table tr[data-unique-id='"+ark_id.toString()+"']").addClass('selected');
     })
 });
 
 collection.on('remove', function(evt) {
-	var elements = $('#dime_find_list tr');
+	var elements = $('.dime-table tr');
     for (var i = 0; i < elements.length; i++) {
         $(elements[i]).removeClass('selected');
     }
     collection.forEach(function(e,i,a) {
         var ark_id = e.get('ark_id');
-        var item = $("#dime_find_list tr[data-unique-id='"+ark_id.toString()+"']");
-        if(item){
-            $(item).addClass('selected');
-        }
+
+        $(".dime-table tr[data-unique-id='"+ark_id.toString()+"']").addClass('selected');
     })
 });
 
-$(document).ready(function(){
-    $('tr').click(function(evt) {
-        self = $(this);
-        console.log(self);
-        ark_id = self.attr('data-unique-id');
-        map.getLayers().forEach(function(i,e,a){
-            if (i.get('name')=='yours'){
-                console.log(evt.shiftKey);
-                if(!evt.shiftKey){
-                    collection.clear();
-                }
-                if (typeof i.getSource().getFeatures == 'function') {
-                    i.getSource().getFeatures().forEach(function(i,e,a){
-                        if(i.get('ark_id').toUpperCase()==ark_id){
-                            if(self.hasClass('selected')){
-                                collection.remove(i);
-                            } else {
-                                collection.push(i);
-                            }
-                        }
-                    });
-                }
-            }
-        });
-    });
+$('table.dime-table').on('click-row.bs.table', function (evt, row, element, field) {
+	ark_id = element.attr('data-unique-id');
+	map.getLayers().forEach(function(i,e,a){
+	    if (i.get('name')=='yours'){
+	        console.log(evt.shiftKey);
+	        if(!evt.shiftKey){
+	            collection.clear();
+	        }
+	        if (typeof i.getSource().getFeatures == 'function') {
+	            i.getSource().getFeatures().forEach(function(i,e,a){
+	                if(i.get('ark_id').toUpperCase()==ark_id){
+	                    if(element.hasClass('selected')){
+	                            collection.remove(i);
+	                        } else {
+	                            collection.push(i);
+	                        }
+	                    }
+	                });
+	        }
+	    }
+	});
 });
 
-
 }
+

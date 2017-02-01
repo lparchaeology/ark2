@@ -189,6 +189,7 @@ body {}
 @media (max-width: $break-tablet) {
     .dime-banner .navbar-toggle {
         display: block;
+        float:none;
     }
 }
 
@@ -317,6 +318,20 @@ body {}
     width: 400px;
 }
 
+.usertool a {
+	color:#c3c3c3;
+	weight:100;
+
+}
+
+a.loginbutton {
+    background-image: url("../images/login_button.png");
+    background-size: contain;
+    display: block;
+    height: 2em;
+    width: 5.75em;
+}
+
 /*
  * Main content
  */
@@ -409,9 +424,10 @@ body {}
 }
 
 .bootstrap-table .table:not(.table-condensed).dime-table.cardViewTable tbody td,
-.bootstrap-table .table:not(.table-condensed).dime-table.cardViewTable thead th {
-    border-bottom: none;
-    border-top: none;
+.bootstrap-table .table:not(.table-condensed).dime-table.cardViewTable thead th	 {
+	border-bottom: none;
+	border-top: none;
+	padding: 5px;
 }
 
 .fixed-table-container {
