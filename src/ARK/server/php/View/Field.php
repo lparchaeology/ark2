@@ -113,7 +113,7 @@ class Field extends Element
             return '';
         }
 
-        if ($forms && $form && $this->template()) {
+        if ($form && $this->template()) {
             $options['field'] = $this;
             $options['data'] = $this->formData($data[$form->vars['id']]);
             $options['forms'] = $forms;

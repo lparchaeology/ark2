@@ -796,4 +796,37 @@ class Database
         );
         return $this->core()->fetchAll($sql, $params);
     }
+
+    // Spatial
+    public function getTermSpatialContains($concept, $wkt)
+    {
+        $sql = "
+            SELECT term
+            FROM ark_spatial_term
+            WHERE concept = :concept
+            AND ST_Contains(geometry, ST_GeometryFromText(:point, 4326))
+        ";
+        $params = array(
+            ':concept' => $concept,
+            ':point' => $wkt,
+        );
+        return $this->data()->fetchColumn($sql, $params);
+    }
+
+    public function getKommuneMuseum($kommune)
+    {
+        $sql = "
+            SELECT item
+            FROM ark_fragment_string
+            WHERE module = :module
+            AND parameter = :parameter
+            AND value = :value
+        ";
+        $params = array(
+            ':module' => 'actor',
+            ':parameter' => 'dime.denmark.kommune',
+            ':value' => $kommune,
+        );
+        return $this->data()->fetchColumn($sql, $params);
+    }
 }

@@ -47,6 +47,77 @@ abstract class DimeAction
         $homeTarget = (Service::isGranted('ROLE_USER') ? 'home' : 'front');
         $config = [
             "navlinks" => [
+                ["name" => "dime.home", "dropdown" => false, "target" => "home"],
+                [
+                    "name" => "dime.detector",
+                    "dropdown" => true,
+                    "target" => "detector",
+                    "navlinks" => [
+                        [
+                            "name" => "dime.metaldetector",
+                            "target" => "detector",
+                        ],
+                        [
+                            "name" => "dime.treasure",
+                            "target" => "treasure",
+                        ],
+                    ],
+                ],
+                array(
+                    "name" => "dime.research",
+                    "target" => "research",
+                    "dropdown" => false,
+                ),
+                array(
+                    "name" => "dime.about",
+                    "dropdown" => true,
+                    "target" => "about",
+                    "navlinks" => array(
+                        array(
+                            "name" => "dime.about.groups",
+                            "target" => "about"
+                        ),
+                        array(
+                            "name" => "dime.about.background",
+                            "target" => "about"
+                        ),
+                        array(
+                            "name" => "dime.about.museums",
+                            "target" => "about"
+                        ),
+                        array(
+                            "name" => "dime.about.partners",
+                            "target" => "about"
+                        ),
+                        array(
+                            "name" => "dime.about.instructions",
+                            "target" => "about"
+                        ),
+                    ),
+                ),
+                array(
+                    "name" => "dime.exhibits",
+                    "dropdown" => true,
+                    "target" => "exhibits",
+                    "navlinks" => array(
+                        array(
+                            "name" => "dime.exhibits.forests",
+                            "target" => "exhibits"
+                        ),
+                        array(
+                            "name" => "dime.exhibits.weapons",
+                            "target" => "exhibits"
+                        ),
+                    ),
+                ),
+                array(
+                    "name" => "dime.news",
+                    "dropdown" => false,
+                    "target" => "news"
+                )
+            ],
+
+            "navlinks" => [
                 ["name" => "dime.home", "dropdown" => false, "target" => $homeTarget],
                 ["name" => "dime.treasure", "dropdown" => false, "target" => "treasure"],
                 ["name" => "dime.research", "dropdown" => false, "target" => "research"],

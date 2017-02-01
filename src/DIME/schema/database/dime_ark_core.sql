@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 01, 2017 at 03:07 PM
+-- Generation Time: Feb 01, 2017 at 08:53 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -1169,6 +1169,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attrib
 ('dime_actor_list', 'table', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_actor_shortname', 'field', 'dime.actor', 'museum', 'shortname', '', '', 0, 0, 'ARK\\Form\\Type\\LocalTextType', 1, 0, 1, 0, NULL),
 ('dime_actor_type', 'field', 'dime.actor', '', 'type', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_fetch', 'field', NULL, NULL, NULL, '', '', 0, 0, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', 1, 0, 1, 0, 'dime.fetch'),
 ('dime_find_action', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_add', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_blank', 'field', 'dime.find', '', '', '', '', 0, 0, '', 0, 0, 1, 0, NULL),
@@ -1273,9 +1274,10 @@ INSERT INTO `ark_view_layout` (`layout`, `row`, `col`, `seq`, `item_type`, `cell
 ('dime_find_event', 0, 0, 2, '', 'dime_find_finder_id', NULL, 1, 1, 0, 1, 0),
 ('dime_find_event', 0, 0, 3, '', 'dime_find_finddate', NULL, 1, 1, 0, 1, 0),
 ('dime_find_event', 0, 0, 4, '', 'dime_find_findpoint', NULL, 1, 1, 0, 1, 0),
-('dime_find_event', 0, 0, 5, '', 'dime_find_kommune', NULL, 1, 0, 0, 1, 0),
-('dime_find_event', 0, 0, 6, '', 'dime_find_museum', NULL, 1, 0, 0, 1, 0),
-('dime_find_event', 0, 0, 7, '', 'dime_find_treasure', NULL, 1, 0, 0, 1, 0),
+('dime_find_event', 0, 0, 5, '', 'dime_fetch', NULL, 1, 1, 0, 1, 0),
+('dime_find_event', 0, 0, 6, '', 'dime_find_kommune', NULL, 1, 0, 0, 1, 0),
+('dime_find_event', 0, 0, 7, '', 'dime_find_museum', NULL, 1, 0, 0, 1, 0),
+('dime_find_event', 0, 0, 8, '', 'dime_find_treasure', NULL, 1, 0, 0, 1, 0),
 ('dime_find_filter', 0, 0, 0, '', 'dime_find_filter_kommune', NULL, 0, 1, 0, 1, 0),
 ('dime_find_filter', 0, 1, 0, '', 'dime_find_filter_type', NULL, 0, 1, 0, 1, 0),
 ('dime_find_filter', 0, 2, 0, '', 'dime_find_filter_period', NULL, 0, 1, 0, 1, 0),

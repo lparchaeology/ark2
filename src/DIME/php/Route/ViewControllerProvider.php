@@ -120,6 +120,8 @@ class ViewControllerProvider implements ControllerProviderInterface
                     ->bind('demo');
         $controllers->get('/test', 'DIME\Action\TestViewAction')
                     ->bind('test');
+        $controllers->post('/api/geo/find', 'DIME\Action\GeoFindAction')
+                    ->bind('api.geo.find');
 
         $controllers->get("/img/{image}", 'DIME\Action\ImageAction')
                     ->bind('img');

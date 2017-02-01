@@ -52,6 +52,7 @@ class WktType extends AbstractType implements DataMapperInterface
         $builder->add('easting', TextType::class, $fieldOptions);
         $fieldOptions['label'] = 'lon';
         $builder->add('northing', TextType::class, $fieldOptions);
+        $fieldOptions['label'] = false;
         $builder->add('srid', HiddenType::class, $fieldOptions);
         $builder->setDataMapper($this);
     }
@@ -79,13 +80,13 @@ class WktType extends AbstractType implements DataMapperInterface
         }
     }
 
-    public function mapFormsToData($forms, &$data)
+    public function mapFormsToData($forms, &$property)
     {
         $forms = iterator_to_array($forms);
         $point = Point::xy($forms['easting']->getData(), $forms['northing']->getData(), $forms['srid']->getData());
         $value['coordinates'] = $point->asText();
         $value['srid'] = $point->SRID();
-        $data->setValue($value);
+        $property->setValue($value);
     }
 
     public function getBlockPrefix()
