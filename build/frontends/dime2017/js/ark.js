@@ -50,7 +50,7 @@ $('#dime_find_item_dime_fetch').on('click', function () {
     var easting = $('#dime_find_item_dime_find_findpoint_easting').val();
     var northing = $('#dime_find_item_dime_find_findpoint_northing').val();
     var wkt = 'POINT(' + easting + ' ' + northing + ')';
-    $.post('/dime/api/geo/find', wkt, function(result){
+    $.post('/ark2/sites/dime/web/api/geo/find', wkt, function(result){
         $('#dime_find_item_dime_find_kommune_kommune').val(result['kommune']).trigger("change");
         $('#dime_find_item_dime_find_museum_name').val(result['museum']).trigger("change");
     });
