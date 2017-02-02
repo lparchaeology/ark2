@@ -829,4 +829,31 @@ class Database
         );
         return $this->data()->fetchColumn($sql, $params);
     }
+
+    public function getKommune()
+    {
+        $sql = "
+            SELECT b.fid, asText(b.geometry) as geometry
+            FROM ark_spatial_term b
+        ";
+        $params = array(
+    
+        );
+        return $this->data()->fetchAll($sql, $params);
+    }
+    
+    public function getHeatmap()
+    {
+        $sql = "
+            SELECT b.fid, count(*) as count 
+            FROM ark_fragment_wkt a, ark_spatial_term b 
+            WHERE contains(b.geometry, GeomFromText(a.value)) 
+            group by b.fid
+        ";
+        $params = array(
+            
+        );
+        return $this->data()->fetchAll($sql, $params);
+    }
+    
 }
