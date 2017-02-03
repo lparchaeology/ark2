@@ -1,0 +1,13 @@
+{# Define the footer block #}
+{% block footer %}
+
+    <div class="row footer">
+        <div class= "credits col-md-6 col-md-push-3">
+            {{ 'dime.copyright' | translate }} <br> {{ 'dime.credits' | translate }}
+        </div>
+        <div class="footer-right col-md-push-3 col-md-2">
+            {{ 'dime.supportedby' | translate }} <span class="funder">{{ 'dime.krogager' | translate }}</span>
+        </div>
+    </div>
+
+{% endblock footer %}

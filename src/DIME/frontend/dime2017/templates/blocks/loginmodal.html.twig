@@ -1,0 +1,26 @@
+{# Define the modal login block #}
+{% block loginmodal %}
+
+
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="loginmodal-container dime">
+                <span class="dime-title">
+                    &nbsp;
+                </span>
+                <form method="POST" action="{{ path('user.login_check') }}" data-async>
+                    <input id="inputEmail" class="form-control" name="_username" placeholder="{{ 'dime.user.name' | translate }}" required="" value="" type="text">
+                    <input id="inputPassword" class="form-control" name="_password" required="" placeholder="{{ 'dime.user.password' | translate }}" type="password">
+                    <input type="submit" name="login" class="login loginmodal-submit" value="Login">
+                </form>
+
+                <div class="login-help">
+                    <a href="{{ path('user.forgot-password') }}">{{ 'dime.user.password.forgot' | translate }}</a>
+                        -
+                    <a href="{{ path('user.register') }}">{{ 'dime.user.register' | translate }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock loginmodal %}

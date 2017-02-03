@@ -37,12 +37,12 @@ $(document).ready(function() {
     });
 
     $("span.thumbimage").hide();
-    
+
     $('.sidebar').on('show.bs.collapse', function(){
-    	var $div = $("<div>", {id: "navbar-fade", "class": "modal-backdrop fade in"});
-    	$div.click(function(){  $('.sidebar').collapse('toggle'); $('.modal-backdrop').detach(); });
-    	$(this).css('z-index', 9999);
-    	$("body").append($div);
+        var $div = $("<div>", {id: "navbar-fade", "class": "modal-backdrop fade in"});
+        $div.click(function(){  $('.sidebar').collapse('toggle'); $('.modal-backdrop').detach(); });
+        $(this).css('z-index', 9999);
+        $("body").append($div);
     });
 });
 
@@ -50,7 +50,7 @@ $('#dime_find_item_dime_fetch').on('click', function () {
     var easting = $('#dime_find_item_dime_find_findpoint_easting').val();
     var northing = $('#dime_find_item_dime_find_findpoint_northing').val();
     var wkt = 'POINT(' + easting + ' ' + northing + ')';
-    $.post('/ark2/sites/dime/web/api/geo/find', wkt, function(result){
+    $.post('/dime/api/geo/find', wkt, function(result){
         $('#dime_find_item_dime_find_kommune_kommune').val(result['kommune']).trigger("change");
         $('#dime_find_item_dime_find_museum_name').val(result['museum']).trigger("change");
     });
