@@ -31,9 +31,10 @@
 namespace ARK\Database;
 
 use ARK\Database\Database;
+use Doctrine\Common\EventManager;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Configuration as DbalConfiguration;
-use Doctrine\Common\EventManager;
+use Doctrine\DBAL\Types\Type;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 // TODO See if we want to use the Bridge instead or Sorien?
@@ -89,6 +90,8 @@ class DbalServiceProvider implements ServiceProviderInterface
             return $managers;
         };
 
+        $app['dbs.types'] = [];
+
         $app['dbs'] = function ($app) {
             $app['dbs.options.initializer']();
 
@@ -99,6 +102,14 @@ class DbalServiceProvider implements ServiceProviderInterface
                 $dbs[$name] = function ($dbs) use ($options, $config, $manager) {
                     return DriverManager::getConnection($options, $config, $manager);
                 };
+            }
+
+            foreach ((array) $app['dbs.types'] as $typeName => $typeClass) {
+                if (Type::hasType($typeName)) {
+                    Type::overrideType($typeName, $typeClass);
+                } else {
+                    Type::addType($typeName, $typeClass);
+                }
             }
 
             return $dbs;

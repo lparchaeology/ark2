@@ -47,82 +47,39 @@ abstract class DimeAction
         $homeTarget = (Service::isGranted('ROLE_USER') ? 'home' : 'front');
         $config = [
             "navlinks" => [
-                ["name" => "dime.home", "dropdown" => false, "target" => "home"],
+                ["name" => "dime.home", "dropdown" => false, "target" => $homeTarget],
                 [
                     "name" => "dime.detector",
                     "dropdown" => true,
                     "target" => "detector",
                     "navlinks" => [
-                        [
-                            "name" => "dime.metaldetector",
-                            "target" => "detector",
-                        ],
-                        [
-                            "name" => "dime.treasure",
-                            "target" => "treasure",
-                        ],
+                        ["name" => "dime.metaldetector", "target" => "detector"],
+                        ["name" => "dime.treasure", "target" => "treasure"],
                     ],
                 ],
-                array(
-                    "name" => "dime.research",
-                    "target" => "research",
-                    "dropdown" => false,
-                ),
-                array(
+                ["name" => "dime.research", "target" => "research", "dropdown" => false],
+                [
                     "name" => "dime.about",
                     "dropdown" => true,
                     "target" => "about",
-                    "navlinks" => array(
-                        array(
-                            "name" => "dime.about.groups",
-                            "target" => "about"
-                        ),
-                        array(
-                            "name" => "dime.about.background",
-                            "target" => "about"
-                        ),
-                        array(
-                            "name" => "dime.about.museums",
-                            "target" => "about"
-                        ),
-                        array(
-                            "name" => "dime.about.partners",
-                            "target" => "about"
-                        ),
-                        array(
-                            "name" => "dime.about.instructions",
-                            "target" => "about"
-                        ),
-                    ),
-                ),
-                array(
+                    "navlinks" => [
+                        ["name" => "dime.about.groups", "target" => "about"],
+                        ["name" => "dime.about.background", "target" => "about"],
+                        ["name" => "dime.about.museums", "target" => "about"],
+                        ["name" => "dime.about.partners", "target" => "about"],
+                        ["name" => "dime.about.instructions", "target" => "about"],
+                    ],
+                ],
+                [
                     "name" => "dime.exhibits",
                     "dropdown" => true,
                     "target" => "exhibits",
-                    "navlinks" => array(
-                        array(
-                            "name" => "dime.exhibits.forests",
-                            "target" => "exhibits"
-                        ),
-                        array(
-                            "name" => "dime.exhibits.weapons",
-                            "target" => "exhibits"
-                        ),
-                    ),
-                ),
-                array(
-                    "name" => "dime.news",
-                    "dropdown" => false,
-                    "target" => "news"
-                )
-            ],
-
-            "navlinks" => [
-                ["name" => "dime.home", "dropdown" => false, "target" => $homeTarget],
-                ["name" => "dime.treasure", "dropdown" => false, "target" => "treasure"],
-                ["name" => "dime.research", "dropdown" => false, "target" => "research"],
-                ["name" => "dime.about", "dropdown" => false, "target" => "about"],
-                ["name" => "dime.background", "dropdown" => false, "target" => "background"],
+                    "navlinks" => [
+                        ["name" => "dime.exhibits.forests", "target" => "exhibits"],
+                        ["name" => "dime.exhibits.weapons", "target" => "exhibits"],
+                    ],
+                ],
+                ["name" => "dime.news", "dropdown" => false, "target" => "news"],
             ],
             "sidelinks" => [
                 [
@@ -156,119 +113,5 @@ abstract class DimeAction
             }
         }
         return $config;
-
-        // TODO Full config, restore when have more content, move to View table/class
-        $page_config = array(
-            "navlinks" => array(
-                array(
-                    "name" => "dime.home",
-                    "dropdown" => false,
-                    "target" => "home"
-                ),
-                array(
-                    "name" => "dime.detector",
-                    "dropdown" => true,
-                    "target" => "detector",
-                    "navlinks" => array(
-                        array(
-                            "name" => "dime.metaldetector",
-                            "target" => "detector"
-                        ),
-                        array(
-                            "name" => "dime.treasure",
-                            "target" => "treasure"
-                        ),
-                    ),
-                ),
-                array(
-                    "name" => "dime.research",
-                    "target" => "research",
-                    "dropdown" => false,
-                ),
-                array(
-                    "name" => "dime.about",
-                    "dropdown" => true,
-                    "target" => "about",
-                    "navlinks" => array(
-                        array(
-                            "name" => "dime.about.groups",
-                            "target" => "about"
-                        ),
-                        array(
-                            "name" => "dime.about.background",
-                            "target" => "about"
-                        ),
-                        array(
-                            "name" => "dime.about.museums",
-                            "target" => "about"
-                        ),
-                        array(
-                            "name" => "dime.about.partners",
-                            "target" => "about"
-                        ),
-                        array(
-                            "name" => "dime.about.instructions",
-                            "target" => "about"
-                        ),
-                    ),
-                ),
-                array(
-                    "name" => "dime.exhibits",
-                    "dropdown" => true,
-                    "target" => "exhibits",
-                    "navlinks" => array(
-                        array(
-                            "name" => "dime.exhibits.forests",
-                            "target" => "exhibits"
-                        ),
-                        array(
-                            "name" => "dime.exhibits.weapons",
-                            "target" => "exhibits"
-                        ),
-                    ),
-                ),
-                array(
-                    "name" => "dime.news",
-                    "dropdown" => false,
-                    "target" => "news"
-                )
-            ),
-            "sidelinks" => array(
-                array(
-                    "name" => "add",
-                    "active" => true,
-                    "role" => "ROLE_USER",
-                    "links" => array(
-                        array(
-                            "name" => "dime.find.add",
-                            "active" => true,
-                            "target" => "finds.add"
-                        ),
-                        array(
-                            "name" => "dime.locality.add",
-                            "active" => false,
-                            "target" => "localities.add"
-                        )
-                    )
-                ),
-                array(
-                    "name" => "search",
-                    "active" => false,
-                    "role" => "IS_AUTHENTICATED_ANONYMOUSLY",
-                    "links" => array(
-                        array(
-                            "name" => "dime.find.list",
-                            "active" => false,
-                            "target" => "finds.list"
-                        ),
-                        array(
-                            "name" => "dime.locality.list",
-                            "active" => false,
-                            "target" => "localities.list"
-                        )
-                    ),
-                ),
-            )
-        );
     }
 }

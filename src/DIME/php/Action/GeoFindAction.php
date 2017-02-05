@@ -36,20 +36,25 @@ use ARK\Database\Database;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Brick\Geo\Point;
+use Exception;
 
 class GeoFindAction
 {
     public function __invoke(Request $request)
     {
         $wkt = $request->getContent();
-        $point = Point::fromText($wkt);
-        $kommune = Service::database()->getTermSpatialContains('dime.denmark.kommune', $wkt);
-        $museum = Service::database()->getKommuneMuseum($kommune);
-        $data['in'] = $wkt;
-        $data['x'] = $point->x();
-        $data['y'] = $point->y();
-        $data['kommune'] = $kommune;
-        $data['museum'] = $museum;
+        try {
+            $point = Point::fromText($wkt);
+            $kommune = Service::database()->getTermSpatialContains('dime.denmark.kommune', $wkt);
+            $museum = Service::database()->getKommuneMuseum($kommune);
+            $data['in'] = $wkt;
+            $data['x'] = $point->x();
+            $data['y'] = $point->y();
+            $data['kommune'] = $kommune;
+            $data['museum'] = $museum;
+        } catch (Exception $e) {
+            $data = [$e->getMessage()];
+        }
         return new JsonResponse($data);
     }
 }

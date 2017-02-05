@@ -118,13 +118,13 @@ class ViewControllerProvider implements ControllerProviderInterface
 
         $controllers->get('/demo', 'DIME\Action\DemoAction')
                     ->bind('demo');
-        
+
         $controllers->get('/test', 'DIME\Action\TestViewAction')
                     ->bind('test');
-        
+
         $controllers->post('/api/geo/find', 'DIME\Action\GeoFindAction')
                     ->bind('api.geo.find');
-        
+
         $controllers->get('/api/geo/heatmap', 'DIME\Action\GeoHeatmapAction')
                     ->bind('api.geo.heatmap');
 

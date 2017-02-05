@@ -11,19 +11,19 @@
     },
     "connections": {
         "data": {
-            "server":   "mamp",
+            "server": "mamp",
             "dbname": "dime_ark_data"
         },
         "core": {
-            "server":   "mamp",
+            "server": "mamp",
             "dbname": "dime_ark_core"
         },
         "spatial": {
-            "server":   "mamp",
-            "dbname": "dime_ark_data"
+            "server": "mamp",
+            "dbname": "dime_ark_spatial"
         },
         "user": {
-            "server":   "mamp",
+            "server": "mamp",
             "dbname": "dime_ark_user"
         }
     }
