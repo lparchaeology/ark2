@@ -5,25 +5,106 @@
 
     <link rel="stylesheet" href="https://openlayers.org/en/v3.20.1/css/ol.css" type="text/css">
 
-    <div id="map" class="map search_map"></div>
+    <div class="btn-group dropdown map layer-select">
+        <button class="btn btn-default dropdown-toggle layer-select" type="button" id="mapLayerMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <span class="dime-icon icon-map small"></span>
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu layer-select" aria-labelledby="mapLayerMenu">
+            <li><a class="layer-select" value="aerialwithlabels" selected>{{ 'map.layer.aerial.labels' | translate }}</a></li>
+            <li><a class="layer-select" value="aerial">{{ 'map.layer.aerial' | translate }}</a></li>
+            <li><a class="layer-select" value="road">{{ 'map.layer.road' | translate }}</a></li>
+            <li><a class="layer-select" value="foraar">{{ 'map.layer.foraar' | translate }}</a></li>
+            <li><a class="layer-select" value="skaermkort">{{ 'map.layer.skaermkort' | translate }}</a></li>
+        </ul>
+    </div>
+    <div class="btn-group dropdown map style-select">
+        <button class="btn btn-default dropdown-toggle style-select" type="button" id="mapStyleMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <span class="dime-icon icon-heatmap small"></span>
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu style-select" aria-labelledby="mapStyleMenu">
+            <li><a class="style-select" value="distribution">{{ 'map.style.distribution' | translate }}</a></li>
+            <li><a class="style-select" value="choropleth">{{ 'map.style.choropleth' | translate }}</a></li>
+        </ul>
+    </div>
 
-        <div>
-            <button class="btn btn-default dropdown-toggle layer-select" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <span class="dime-icon icon-map small"></span>
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu layer-select" aria-labelledby="dropdownMenu1">
-                <li><a class="layer-select" value="Aerial">{{ 'map.layer.aerial' | translate }}</a></li>
-                <li><a class="layer-select" value="AerialWithLabels" selected>{{ 'map.layer.aerial.labels' | translate }}</a></li>
-                <li><a class="layer-select" value="Road">{{ 'map.layer.road' | translate }}</a></li>
-                <li><a class="layer-select" value="orto_foraar">{{ 'map.layer.orto_foraar' | translate }}</a></li>
-                <li><a class="layer-select" value="topo_skaermkort">{{ 'map.layer.topo_skaermkort' | translate }}</a></li>
-            </ul>
-        </div>
+    <div id="map" class="map search_map"></div>
 
         <script src="https://openlayers.org/en/v3.20.1/build/ol.js"></script>
 
         <script>
+
+            var layerConfig = [
+
+                {
+                    name: 'aerialwithlabels',
+                    visible: true,
+                    preload: Infinity,
+                    type: 'BingMaps',
+                    source: {
+                        key: 'Ak5AqjsEQ44KtAl7jHhrjGuzNshN1fZv3MOx2MUi0p4zFmq6XeWLKmyqeP2UgJK3',
+                        imagerySet: 'AerialWithLabels'
+                    }
+                },
+
+                {
+                    name: 'aerial',
+                    visible: false,
+                    preload: Infinity,
+                    type: 'BingMaps',
+                    source: {
+                        key: 'Ak5AqjsEQ44KtAl7jHhrjGuzNshN1fZv3MOx2MUi0p4zFmq6XeWLKmyqeP2UgJK3',
+                        imagerySet: 'Aerial'
+                    }
+                },
+
+                {
+                    name: 'road',
+                    visible: false,
+                    preload: Infinity,
+                    type: 'BingMaps',
+                    source: {
+                        key: 'Ak5AqjsEQ44KtAl7jHhrjGuzNshN1fZv3MOx2MUi0p4zFmq6XeWLKmyqeP2UgJK3',
+                        imagerySet: 'Road'
+                    }
+                },
+
+                //http://kortforsyningen.kms.dk/service?request=GetCapabilities&version=1.1.1&ticket=5e1b579892dc719ede8e82528bde1ff8&servicename=orto_foraar&service=WMS
+                {
+                    name: 'foraar',
+                    visible: false,
+                    preload: Infinity,
+                    type: 'TileWMS',
+                    source: {
+                        url: 'http://kortforsyningen.kms.dk/service?servicename=orto_foraar&service=WMS&ticket=5e1b579892dc719ede8e82528bde1ff8&',
+                        params: {
+                            'LAYERS': 'foraar',
+                            'VERSION': '1.1.1',
+                            'FORMAT': 'image/png',
+                            'TILED': true
+                        }
+                    }
+                },
+
+                //http://kortforsyningen.kms.dk/service?request=GetCapabilities&version=1.1.1&ticket=2afbc1eca7a5cb1d8c315a229b1f1307&servicename=topo_skaermkort&service=WMS
+                {
+                    name: 'skaermkort',
+                    visible: false,
+                    preload: Infinity,
+                    type: 'TileWMS',
+                    source: {
+                        url: 'http://kortforsyningen.kms.dk/service?ticket=2afbc1eca7a5cb1d8c315a229b1f1307&servicename=topo_skaermkort&',
+                        params: {
+                            'LAYERS': 'skaermkort',
+                            'VERSION': '1.1.1',
+                            'FORMAT': 'image/png',
+                            'TILED': true
+                        }
+                    }
+                }
+
+            ];
 
             ywkts = [];
 

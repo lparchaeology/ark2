@@ -32,8 +32,7 @@ namespace DIME\Action;
 
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\Vocabulary\Vocabulary;
-use DIME\Action\DimeFormAction;
+use DIME\Action\DimeAction;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 

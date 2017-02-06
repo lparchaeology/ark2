@@ -1,56 +1,24 @@
-if(ywkts.length!=0){
-
-var styles = [
-    'Road',
-    'Aerial',
-    'AerialWithLabels',
-    'districtLayer'
-];
+function source(source, config) {
+    if (source == 'BingMaps') {
+        return new ol.source.BingMaps(config)
+    }
+    if (source == 'TileWMS') {
+        return new ol.source.TileWMS(config)
+    }
+}
 
 var layers = [];
-var i, ii;
-for (i = 0, ii = styles.length; i < ii; ++i) {
-    layers.push(
-        new ol.layer.Tile({
-            visible: false,
-            preload: Infinity,
-            source: new ol.source.BingMaps({
-                key: 'Ak5AqjsEQ44KtAl7jHhrjGuzNshN1fZv3MOx2MUi0p4zFmq6XeWLKmyqeP2UgJK3',
-                imagerySet: styles[i]
-            })
-        })
-    );
+for (var i = 0; i < layerConfig.length; ++i) {
+    var config = layerConfig[i];
+    layer = new ol.layer.Tile({
+        name: config.name,
+        visible: config.visible,
+        preload: config.preload,
+        source: source(config.type, config.source)
+    });
+    layer.set('name', config.name);
+    layers.push(layer);
 }
-//http://kortforsyningen.kms.dk/service?request=GetCapabilities&version=1.1.1&ticket=5e1b579892dc719ede8e82528bde1ff8&servicename=orto_foraar&service=WMS
-var orto_foraar = new ol.layer.Tile({
-    source: new ol.source.TileWMS({
-        url: 'http://kortforsyningen.kms.dk/service?servicename=orto_foraar&service=WMS&ticket=5e1b579892dc719ede8e82528bde1ff8&',
-        params: {
-            'LAYERS': 'orto_foraar',
-            'VERSION': '1.1.1',
-            'FORMAT': 'image/png',
-            'TILED': true
-        },
-    })
-});
-
-layers.push(orto_foraar);
-
-//http://kortforsyningen.kms.dk/service?request=GetCapabilities&version=1.1.1&ticket=2afbc1eca7a5cb1d8c315a229b1f1307&servicename=topo_skaermkort&service=WMS
-
-var topo_skaermkort = new ol.layer.Tile({
-    source: new ol.source.TileWMS({
-        url: 'http://kortforsyningen.kms.dk/service?ticket=2afbc1eca7a5cb1d8c315a229b1f1307&servicename=topo_skaermkort&',
-        params: {
-            'LAYERS': 'topo_skaermkort',
-            'VERSION': '1.1.1',
-            'FORMAT': 'image/png',
-            'TILED': true
-        },
-    })
-});
-
-layers.push(topo_skaermkort);
 
 var map = new ol.Map({
     layers: layers,
@@ -64,8 +32,6 @@ var map = new ol.Map({
     })
 });
 
-layers[2].setVisible(true);
-
 map.on('moveend', function() {
     console.log('wha');
     var center = map.getView().get('center');
@@ -76,17 +42,15 @@ map.on('moveend', function() {
 });
 
 $('a.layer-select').on('click', function() {
-    var style = $(this).attr('value');
-    for (var i = 0, ii = layers.length; i < ii; ++i) {
-        layers[i].setVisible(styles[i] === style);
+    var name = $(this).attr('value');
+    for (var i = 0; i < layers.length; ++i) {
+        var layer = layers[i];
+        layer.setVisible(layer.get('name') === name);
     }
 });
 
-<<<<<<< HEAD
-=======
 if (ywkts.length != 0) {
 
->>>>>>> 167aebf05b8a416c1406e99c77c33f2438215ac6
     yourfeatures = [];
 
     theirfeatures = [];

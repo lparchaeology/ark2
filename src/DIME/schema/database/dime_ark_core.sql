@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 05, 2017 at 11:31 PM
--- Server version: 10.0.22-MariaDB
+-- Generation Time: Feb 06, 2017 at 02:14 PM
+-- Server version: 10.1.20-MariaDB
 -- PHP Version: 7.0.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -755,6 +755,13 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('fragment.time', 'core', 0, 0),
 ('lat', 'dime', 0, 0),
 ('lon', 'dime', 0, 0),
+('map.layer.aerial', 'dime', 0, 0),
+('map.layer.aerial.labels', 'dime', 0, 0),
+('map.layer.foraar', 'dime', 0, 0),
+('map.layer.road', 'dime', 0, 0),
+('map.layer.skaermkort', 'dime', 0, 0),
+('map.style.choropleth', 'dime', 0, 0),
+('map.style.distribution', 'dime', 0, 0),
 ('module.actor', 'core', 0, 0),
 ('module.campaign', 'core', 0, 0),
 ('module.file', 'core', 0, 0),
@@ -897,7 +904,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.find.type', 'default', 'Type', ''),
 ('da', 'dime.home', 'default', 'Hjem', ''),
 ('da', 'dime.home.alarm', 'default', 'Underretninger', ''),
-('da', 'dime.home.faq', 'default', '<dl>\n\n<dt>Hvem Er DIME?</dt>\n<dd>DIME er en fællesportal for detektorbrugere og Danske museer, der kan bruges af alle.</dd>\n<dd>&nbsp;</dd>\n\n<dt>Hvorfor skal jeg bruge dime?</dt>\n<dd>DIME muliggør en hurtigere behandling af dinefund i samarbejde med museet og giver dig overblik over dine fund og fundpladser.</dd>\n<dd>&nbsp;</dd>\n\n<dt>Hvilke fund skal/kan uploades i DIME?</dt>\n<dd>Aalle detektorfund (ikke kun Danefæ) kan uploades i DIME.</dd>\n<dd>&nbsp;</dd>\n<dt>Kan andre se mine fundsteder?</dt>\n<dd>Nej! Fundsteder og privatoplysninger er kunsynlige for museumsarkæologer og forskere med særlig adgang</dd>\n<dd>&nbsp;</dd>\n\n<dt>Findes der en dime-app?</dt>\n<dd>En app-løsning til registrering i marken er under udvikling.</dd>\n\n</dl>', ''),
+('da', 'dime.home.faq', 'default', '<dl>\n\n<dt>Hvem Er DIME?</dt>\n<dd>DIME er en fællesportal for detektorbrugere og Danske museer, der kan bruges af alle.</dd>\n<dd>&nbsp;</dd>\n\n<dt>Hvorfor skal jeg bruge dime?</dt>\n<dd>DIME muliggør en hurtigere behandling af dinefund i samarbejde med museet og giver dig overblik over dine fund og fundpladser.</dd>\n<dd>&nbsp;</dd>\n\n<dt>Hvilke fund skal/kan uploades i DIME?</dt>\n<dd>Alle detektorfund (ikke kun Danefæ) kan uploades i DIME.</dd>\n<dd>&nbsp;</dd>\n<dt>Kan andre se mine fundsteder?</dt>\n<dd>Nej! Fundsteder og privatoplysninger er kunsynlige for museumsarkæologer og forskere med særlig adgang</dd>\n<dd>&nbsp;</dd>\n\n<dt>Findes der en dime-app?</dt>\n<dd>En app-løsning til registrering i marken er under udvikling.</dd>\n\n</dl>', ''),
 ('da', 'dime.home.hvert', 'default', 'Hvert år finder metaldetektorbrugere landet over tusindevis af genstande fra oldtid, middelal-der og senere perioder. Metalgenstandene er en del af vores fælles kulturarv og vigtige brikker i Danmarkshistorien. DIME sikrer oplysninger om fundene til gavn for nulevende og efterføl- gende generatione', ''),
 ('da', 'dime.home.welcome', 'default', 'Velkommen %name%', ''),
 ('da', 'dime.krogager', 'default', 'KrogagerFonden', ''),
@@ -926,6 +933,13 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'form.select.required', 'default', 'påkrævet', ''),
 ('da', 'lat', 'default', 'Breddegrad', ''),
 ('da', 'lon', 'default', 'Længde', ''),
+('da', 'map.layer.aerial', 'default', 'Satellit', ''),
+('da', 'map.layer.aerial.labels', 'default', 'Satellit med etiketter', ''),
+('da', 'map.layer.foraar', 'default', 'Foraar', ''),
+('da', 'map.layer.road', 'default', 'Vej', ''),
+('da', 'map.layer.skaermkort', 'default', 'Skærmkort', ''),
+('da', 'map.style.choropleth', 'default', 'Choropleth', ''),
+('da', 'map.style.distribution', 'default', 'Fordeling', ''),
 ('da', 'module.actor', 'default', 'Aktører', ''),
 ('da', 'module.file', 'default', 'Filer', ''),
 ('da', 'property.description', 'default', 'Beskrivelse', ''),
@@ -1064,6 +1078,13 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'fragment.time', 'default', 'Time Fragment', ''),
 ('en', 'lat', 'default', 'Latitude', ''),
 ('en', 'lon', 'default', 'Longitude', ''),
+('en', 'map.layer.aerial', 'default', 'Satellite', ''),
+('en', 'map.layer.aerial.labels', 'default', 'Satellite with labels', ''),
+('en', 'map.layer.foraar', 'default', 'Spring', ''),
+('en', 'map.layer.road', 'default', 'Road', ''),
+('en', 'map.layer.skaermkort', 'default', 'Display Card', ''),
+('en', 'map.style.choropleth', 'default', 'Choropleth', ''),
+('en', 'map.style.distribution', 'default', 'Distribution', ''),
 ('en', 'module.actor', 'default', 'Actor', ''),
 ('en', 'module.campaign', 'default', 'Campaign', ''),
 ('en', 'module.file', 'default', 'File', ''),
@@ -1231,14 +1252,13 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attrib
 ('dime_find_finddate', 'field', 'dime.find', '', 'finddate', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_finder_id', 'field', 'dime.find', '', 'finder_id', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_findpoint', 'field', 'dime.find', '', 'findpoint', '', '', 0, 0, 'ARK\\Form\\Type\\WktType', 1, 0, 1, 0, NULL),
-('dime_find_home', 'grid', 'dime.find', NULL, NULL, '', 'layouts/home.html.twig', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_id', 'field', 'dime.find', '', 'id', '', '', 0, 0, 'ARK\\Form\\Type\\IdType', 1, 0, 1, 0, NULL),
 ('dime_find_image', 'field', 'dime.find', '', 'image', '', 'blocks/carouselfield.html.twig', 0, 0, 'ARK\\Form\\Type\\CarouselType', 1, 0, 1, 0, NULL),
 ('dime_find_item', 'grid', NULL, NULL, NULL, '', '', 1, 1, '', 1, 0, 1, 0, NULL),
 ('dime_find_kommune', 'field', 'dime.find', '', 'kommune', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_length', 'field', 'dime.find', '', 'length', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_list', 'table', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
-('dime_find_map', 'map', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_map', 'grid', NULL, NULL, NULL, '', 'blocks/map.html.twig', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_material', 'field', 'dime.find', '', 'material', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_museum', 'field', 'dime.find', '', 'museum', '', '', 0, 0, 'ARK\\Form\\Type\\ItemType', 1, 0, 1, 0, NULL),
 ('dime_find_period_end', 'field', 'dime.find', '', 'period_end', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
@@ -1251,6 +1271,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attrib
 ('dime_find_type', 'field', 'dime.find', '', 'type', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_weight', 'field', 'dime.find', '', 'weight', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_front_page', 'grid', 'dime.find', NULL, NULL, '', 'layouts/front.html.twig', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_home_page', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_locality_id', 'field', 'dime.locality', '', 'id', '', '', 0, 0, 'ARK\\Form\\Type\\IdType', 1, 0, 1, 0, NULL),
 ('dime_locality_item', 'grid', NULL, NULL, NULL, '', '', 0, 1, '', 1, 0, 1, 0, NULL),
 ('dime_locality_list', 'table', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
@@ -1326,10 +1347,6 @@ INSERT INTO `ark_view_layout` (`layout`, `row`, `col`, `seq`, `item_type`, `cell
 ('dime_find_filter', 0, 2, 0, '', 'dime_find_filter_period', NULL, 0, 1, 0, 1, 0),
 ('dime_find_filter', 0, 3, 0, '', 'dime_find_filter_material', NULL, 0, 1, 0, 1, 0),
 ('dime_find_filter', 0, 4, 0, '', 'dime_search', NULL, 0, 1, 0, 1, 0),
-('dime_find_home', 0, 0, 0, '', 'dime_find_id', NULL, 1, 1, 0, 1, 0),
-('dime_find_home', 0, 0, 1, '', 'dime_find_finder_id', NULL, 1, 1, 0, 1, 0),
-('dime_find_home', 0, 0, 2, '', 'dime_find_type', NULL, 1, 1, 0, 1, 0),
-('dime_find_home', 0, 0, 4, '', 'dime_find_material', NULL, 1, 1, 0, 1, 0),
 ('dime_find_item', 0, 0, 0, '', 'dime_find_event', NULL, 0, 1, 0, 1, 0),
 ('dime_find_item', 0, 0, 1, '', 'dime_find_image', NULL, 0, 1, 0, 1, 0),
 ('dime_find_item', 0, 1, 0, '', 'dime_find_details', NULL, 0, 1, 0, 1, 0),
@@ -1347,6 +1364,9 @@ INSERT INTO `ark_view_layout` (`layout`, `row`, `col`, `seq`, `item_type`, `cell
 ('dime_front_page', 0, 0, 1, '', 'dime_find_finder_id', NULL, 1, 1, 0, 1, 0),
 ('dime_front_page', 0, 0, 2, '', 'dime_find_type', NULL, 1, 1, 0, 1, 0),
 ('dime_front_page', 0, 0, 4, '', 'dime_find_material', NULL, 1, 1, 0, 1, 0),
+('dime_home_page', 0, 0, 0, '', 'dime_find_filter', NULL, 1, 1, 0, 1, 0),
+('dime_home_page', 1, 0, 0, '', 'dime_find_list', NULL, 1, 1, 0, 1, 0),
+('dime_home_page', 1, 1, 0, '', 'dime_find_map', NULL, 1, 1, 0, 1, 0),
 ('dime_locality_item', 0, 0, 0, '', 'dime_locality_id', NULL, 1, 1, 0, 1, 0),
 ('dime_locality_item', 0, 0, 1, '', 'dime_locality_type', NULL, 1, 1, 0, 1, 0),
 ('dime_locality_item', 0, 1, 1, '', 'dime_save', NULL, 1, 1, 0, 1, 0),
@@ -1401,7 +1421,6 @@ CREATE TABLE `ark_view_type` (
 INSERT INTO `ark_view_type` (`type`, `class`, `layout`, `form`, `template`, `keyword`) VALUES
 ('field', 'ARK\\View\\Field', 0, 'ARK\\Form\\Type\\PropertyType', 'layouts/field.html.twig', ''),
 ('grid', 'ARK\\View\\Grid', 1, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FormType', 'layouts/grid.html.twig', ''),
-('map', 'ARK\\View\\Map', 1, '', 'layouts/ol3map.html.twig', ''),
 ('tabbed', 'ARK\\View\\Tabbed', 1, '', 'layouts/tabbed.html.twig', ''),
 ('table', 'ARK\\View\\Table', 1, '', 'layouts/table.html.twig', '');
 

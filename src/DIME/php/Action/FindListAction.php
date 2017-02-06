@@ -76,7 +76,7 @@ class FindListAction extends DimeFormAction
         $layout = 'dime_find_search';
         $data[$layout] = ORM::findBy(Find::class, $criteria);
         $data['dime_find_list'] = $data[$layout];
-        $data['dime_find_map'] = $data[$layout];
+        $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $data[$layout] : []);
         $data['dime_find_filter'] = null;
         return $this->renderResponse($request, $data, $layout);
     }

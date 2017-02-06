@@ -32,8 +32,7 @@ namespace DIME\Action;
 
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\Vocabulary\Vocabulary;
-use DIME\Action\DimeFormAction;
+use DIME\Action\DimeAction;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -41,10 +40,9 @@ class HomePageAction extends DimeAction
 {
     public function __invoke(Request $request)
     {
-        $layout = 'dime_find_home';
+        $layout = 'dime_home_page';
         $options = $this->defaultOptions();
         $options['layout'] =  Service::layout($layout);
-        $options['maplayout'] =  Service::layout('dime_find_map');
         $options['data'][$layout] = ORM::findAll(Find::class);
         return Service::renderResponse('pages/page.html.twig', $options);
     }

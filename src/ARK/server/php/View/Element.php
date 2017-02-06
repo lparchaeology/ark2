@@ -220,7 +220,6 @@ abstract class Element
         // TODO Make table driven from ark_view_type
         $builder->addDiscriminatorMapClass('field', 'ARK\View\Field');
         $builder->addDiscriminatorMapClass('grid', 'ARK\View\Grid');
-        $builder->addDiscriminatorMapClass('map', 'ARK\View\Map');
         $builder->addDiscriminatorMapClass('tabbed', 'ARK\View\Tabbed');
         $builder->addDiscriminatorMapClass('table', 'ARK\View\Table');
     }
