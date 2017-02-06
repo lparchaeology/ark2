@@ -1,3 +1,5 @@
+if(ywkts.length!=0){
+
 var styles = [
     'Road',
     'Aerial',
@@ -79,8 +81,6 @@ $('a.layer-select').on('click',function(){
          layers[i].setVisible(styles[i] === style);
      }
 });
-
-if(ywkts.length!=0){
 
     yourfeatures = [];
 
