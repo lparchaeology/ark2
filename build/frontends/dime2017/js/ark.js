@@ -26,78 +26,82 @@ $(document).ready(function() {
 
     $(".carouselextratext_0").show();
 
-    $('#carousel-custom').bind('slide.bs.carousel', function (e) {
+    $('#carousel-custom').bind('slide.bs.carousel', function(e) {
         var slideFrom = $(this).find('.active').index();
         console.log(slideFrom);
         var slideTo = $(e.relatedTarget).index();
         console.log(slideTo);
-        console.log(slideFrom+' => '+slideTo);
-        $(".carouselextratext_"+slideFrom.toString()).hide();
-        $(".carouselextratext_"+slideTo.toString()).show();
+        console.log(slideFrom + ' => ' + slideTo);
+        $(".carouselextratext_" + slideFrom.toString()).hide();
+        $(".carouselextratext_" + slideTo.toString()).show();
     });
 
     $("span.thumbimage").hide();
 
-    $('.sidebar').on('show.bs.collapse', function(){
-        var $div = $("<div>", {id: "navbar-fade", "class": "modal-backdrop fade in"});
-        $div.click(function(){  $('.sidebar').collapse('toggle'); $('.modal-backdrop').detach(); });
+    $('.sidebar').on('show.bs.collapse', function() {
+        var $div = $("<div>", {
+            id: "navbar-fade",
+            "class": "modal-backdrop fade in"
+        });
+        $div.click(function() {
+            $('.sidebar').collapse('toggle');
+            $('.modal-backdrop').detach();
+        });
         $(this).css('z-index', 9999);
         $("body").append($div);
     });
 });
 
-$('#dime_find_item_dime_fetch').on('click', function () {
+$('#dime_find_item_dime_find_findpoint_northing').focusout(function() {
     var easting = $('#dime_find_item_dime_find_findpoint_easting').val();
     var northing = $('#dime_find_item_dime_find_findpoint_northing').val();
     var wkt = 'POINT(' + easting + ' ' + northing + ')';
-    $.post('/dime/api/geo/find', wkt, function(result){
+    $.post(path + 'api/geo/find', wkt, function(result) {
         $('#dime_find_item_dime_find_kommune_kommune').val(result['kommune']).trigger("change");
         $('#dime_find_item_dime_find_museum_name').val(result['museum']).trigger("change");
     });
 });
 
 // Summernote Editor
-var NoteSaveButton = function (context) {
-  var ui = $.summernote.ui;
+var NoteSaveButton = function(context) {
+    var ui = $.summernote.ui;
 
-  // create button
-  var button = ui.button({
-    contents: '<i class="fa fa-child"/>Save',
-    tooltip: 'save',
-    click: function () {
-      $.post(window.location.pathname, context.invoke('code'));
-    }
-  });
+    // create button
+    var button = ui.button({
+        contents: '<i class="fa fa-child"/>Save',
+        tooltip: 'save',
+        click: function() {
+            $.post(window.location.pathname, context.invoke('code'));
+        }
+    });
 
-  return button.render();   // return button as jquery object
+    return button.render(); // return button as jquery object
 }
 
-$('#pageedit').on('click', function () {
-    if ($(this).hasClass('active'))  {
+$('#pageedit').on('click', function() {
+    if ($(this).hasClass('active')) {
         $('.inlineedit').summernote('destroy');
     } else {
-        $('.inlineedit').summernote(
-            {
-                focus: true,
-                buttons: {
-                  save: NoteSaveButton
-                },
-                toolbar: [
-                    ['style', ['style']],
-                    ['font', ['fontname', 'fontsize']],
-                    ['textstyle', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph', 'height']],
-                    ['insert', ['picture', 'link', 'video']],
-                    ['table', ['table']],
-                    ['hr', ['hr']],
-                    ['view', ['fullscreen', 'codeview']],
-                    ['edit', ['undo', 'redo']],
-                    ['help', ['help']],
-                    ['save', ['save']]
-                ]
-            }
-        );
+        $('.inlineedit').summernote({
+            focus: true,
+            buttons: {
+                save: NoteSaveButton
+            },
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['fontname', 'fontsize']],
+                ['textstyle', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph', 'height']],
+                ['insert', ['picture', 'link', 'video']],
+                ['table', ['table']],
+                ['hr', ['hr']],
+                ['view', ['fullscreen', 'codeview']],
+                ['edit', ['undo', 'redo']],
+                ['help', ['help']],
+                ['save', ['save']]
+            ]
+        });
     }
 });
 

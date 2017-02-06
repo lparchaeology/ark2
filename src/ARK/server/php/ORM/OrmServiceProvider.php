@@ -65,6 +65,11 @@ class OrmServiceProvider implements ServiceProviderInterface
 
         $container['orm.default_cache'] = ['driver' => 'array'];
 
+        $container['orm.custom.functions.string'] = [];
+        $container['orm.custom.functions.numeric'] = [];
+        $container['orm.custom.functions.datetime'] = [];
+        $container['orm.custom.hydration_modes'] = [];
+
         $container['orm.em.default_options'] = [
             'connection' => 'default',
             'mappings' => [],
@@ -253,12 +258,10 @@ class OrmServiceProvider implements ServiceProviderInterface
                 $config->setProxyNamespace($options['proxies_namespace']);
                 $config->setAutoGenerateProxyClasses($options['auto_generate_proxies']);
 
-                /*
-                $config->setCustomStringFunctions([]);
-                $config->setCustomNumericFunctions([]);
-                $config->setCustomDatetimeFunctions([]);
-                $config->setCustomHydrationModes([]);
-                */
+                $config->setCustomStringFunctions($container['orm.custom.functions.string']);
+                $config->setCustomNumericFunctions($container['orm.custom.functions.numeric']);
+                $config->setCustomDatetimeFunctions($container['orm.custom.functions.datetime']);
+                $config->setCustomHydrationModes($container['orm.custom.hydration_modes']);
 
                 $config->setClassMetadataFactoryName($options['class_metadata_factory_name']);
                 $config->setDefaultRepositoryClassName($options['default_repository_class']);

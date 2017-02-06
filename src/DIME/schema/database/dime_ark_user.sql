@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.12deb2+deb8u2
--- http://www.phpmyadmin.net
+-- version 4.6.6
+-- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 01, 2017 at 01:40 PM
--- Server version: 5.5.52-0+deb8u1
--- PHP Version: 5.6.29-0+deb8u1
+-- Generation Time: Feb 05, 2017 at 11:32 PM
+-- Server version: 10.0.22-MariaDB
+-- PHP Version: 7.0.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `dime_ark_user`
@@ -26,19 +26,19 @@ SET time_zone = "+00:00";
 -- Table structure for table `ark_user`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_user` (
-`id` int(11) unsigned NOT NULL,
+CREATE TABLE `ark_user` (
+  `id` int(11) UNSIGNED NOT NULL,
   `email` varchar(100) NOT NULL DEFAULT '',
   `password` varchar(255) DEFAULT NULL,
   `salt` varchar(255) NOT NULL DEFAULT '',
   `roles` varchar(255) NOT NULL DEFAULT '',
   `name` varchar(100) DEFAULT NULL,
-  `time_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `time_created` int(11) UNSIGNED NOT NULL DEFAULT '0',
   `username` varchar(100) DEFAULT NULL,
   `isEnabled` tinyint(1) NOT NULL DEFAULT '1',
   `confirmationToken` varchar(100) DEFAULT NULL,
-  `timePasswordResetRequested` int(11) unsigned DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  `timePasswordResetRequested` int(11) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ark_user`
@@ -60,8 +60,8 @@ INSERT INTO `ark_user` (`id`, `email`, `password`, `salt`, `roles`, `name`, `tim
 -- Table structure for table `ark_user_field`
 --
 
-CREATE TABLE IF NOT EXISTS `ark_user_field` (
-  `user_id` int(11) unsigned NOT NULL,
+CREATE TABLE `ark_user_field` (
+  `user_id` int(11) UNSIGNED NOT NULL,
   `attribute` varchar(50) NOT NULL DEFAULT '',
   `value` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -74,13 +74,15 @@ CREATE TABLE IF NOT EXISTS `ark_user_field` (
 -- Indexes for table `ark_user`
 --
 ALTER TABLE `ark_user`
- ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `unique_email` (`email`), ADD UNIQUE KEY `username` (`username`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_email` (`email`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- Indexes for table `ark_user_field`
 --
 ALTER TABLE `ark_user_field`
- ADD PRIMARY KEY (`user_id`,`attribute`);
+  ADD PRIMARY KEY (`user_id`,`attribute`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -90,7 +92,7 @@ ALTER TABLE `ark_user_field`
 -- AUTO_INCREMENT for table `ark_user`
 --
 ALTER TABLE `ark_user`
-MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

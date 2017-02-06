@@ -61,6 +61,11 @@ class Database
         return $this->app['dbs']['core'];
     }
 
+    public function spatial()
+    {
+        return $this->app['dbs']['spatial'];
+    }
+
     public function user()
     {
         return $this->app['dbs']['user'];
@@ -810,7 +815,7 @@ class Database
             ':concept' => $concept,
             ':point' => $wkt,
         );
-        return $this->data()->fetchColumn($sql, $params);
+        return $this->spatial()->fetchColumn($sql, $params);
     }
 
     public function getKommuneMuseum($kommune)
@@ -837,23 +842,23 @@ class Database
             FROM ark_spatial_term b
         ";
         $params = array(
-    
+
         );
-        return $this->data()->fetchAll($sql, $params);
+        return $this->spatial()->fetchAll($sql, $params);
     }
-    
+
     public function getHeatmap()
     {
         $sql = "
-            SELECT b.fid, count(*) as count 
-            FROM ark_fragment_wkt a, ark_spatial_term b 
-            WHERE contains(b.geometry, GeomFromText(a.value)) 
+            SELECT b.fid, count(*) as count
+            FROM ark_fragment_wkt a, ark_spatial_term b
+            WHERE contains(b.geometry, GeomFromText(a.value))
             group by b.fid
         ";
         $params = array(
-            
+
         );
-        return $this->data()->fetchAll($sql, $params);
+        return $this->spatial()->fetchAll($sql, $params);
     }
-    
+
 }

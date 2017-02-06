@@ -5,7 +5,7 @@ var styles = [
     'Aerial',
     'AerialWithLabels',
     'districtLayer'
-  ];
+];
 
 var layers = [];
 var i, ii;
@@ -58,30 +58,35 @@ var map = new ol.Map({
     loadTilesWhileInteracting: true,
     target: 'map',
     view: new ol.View({
-            center: [1155972, 7580813],
-            zoom: 7,
-            maxZoom: 16,
+        center: [1155972, 7580813],
+        zoom: 7,
+        maxZoom: 16,
     })
 });
 
 layers[2].setVisible(true);
 
-map.on('moveend',function(){
+map.on('moveend', function() {
     console.log('wha');
-        var center = map.getView().get('center');
-        var extents = map.getView().calculateExtent(map.getSize());
-        centerstring = '['+center.toString()+']';
-        var zoom = map.getView().getZoom();
-        console.log(zoom);
+    var center = map.getView().get('center');
+    var extents = map.getView().calculateExtent(map.getSize());
+    centerstring = '[' + center.toString() + ']';
+    var zoom = map.getView().getZoom();
+    console.log(zoom);
 });
 
-$('a.layer-select').on('click',function(){
+$('a.layer-select').on('click', function() {
     var style = $(this).attr('value');
-     for (var i = 0, ii = layers.length; i < ii; ++i) {
-         layers[i].setVisible(styles[i] === style);
-     }
+    for (var i = 0, ii = layers.length; i < ii; ++i) {
+        layers[i].setVisible(styles[i] === style);
+    }
 });
 
+<<<<<<< HEAD
+=======
+if (ywkts.length != 0) {
+
+>>>>>>> 167aebf05b8a416c1406e99c77c33f2438215ac6
     yourfeatures = [];
 
     theirfeatures = [];
@@ -90,35 +95,45 @@ $('a.layer-select').on('click',function(){
         'yours': new ol.style.Style({
             image: new ol.style.Circle({
                 radius: 5,
-                fill: new ol.style.Fill({color: '#f00'}),
-                stroke: new ol.style.Stroke({color: '#000', width: 1})
+                fill: new ol.style.Fill({
+                    color: '#f00'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#000',
+                    width: 1
+                })
             })
         }),
         'theirs': new ol.style.Style({
             image: new ol.style.Circle({
                 radius: 5,
-                fill: new ol.style.Fill({color: '#00f'}),
-                stroke: new ol.style.Stroke({color: '#000', width: 1})
+                fill: new ol.style.Fill({
+                    color: '#00f'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#000',
+                    width: 1
+                })
             })
         })
     };
 
     var format = new ol.format.WKT();
 
-    for(wkt in ywkts){
+    for (wkt in ywkts) {
         feature = format.readFeature(ywkts[wkt], {
             dataProjection: 'EPSG:4326',
             featureProjection: 'EPSG:3857'
         });
-        feature.set('ark_id',wkt);
+        feature.set('ark_id', wkt);
         yourfeatures.push(feature);
     }
 
-    for(wkt in twkts){
+    for (wkt in twkts) {
         theirfeatures.push(format.readFeature(twkts[wkt], {
             dataProjection: 'EPSG:4326',
             featureProjection: 'EPSG:3857'
-        }).set('ark_id',wkt));
+        }).set('ark_id', wkt));
     }
 
     var yours = new ol.layer.Vector({
@@ -132,10 +147,10 @@ $('a.layer-select').on('click',function(){
         source: new ol.source.Vector({
             features: theirfeatures
         }),
-        style:dimestyles['theirs']
+        style: dimestyles['theirs']
     });
 
-    yours.set('name','yours');
+    yours.set('name', 'yours');
 
     map.addLayer(theirs);
     map.addLayer(yours);
@@ -148,8 +163,13 @@ $('a.layer-select').on('click',function(){
         style: new ol.style.Style({
             image: new ol.style.Circle({
                 radius: 8,
-                fill: new ol.style.Fill({color: '#f00'}),
-                stroke: new ol.style.Stroke({color: '#000', width: 1})
+                fill: new ol.style.Fill({
+                    color: '#f00'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#000',
+                    width: 1
+                })
             })
         }),
     });
@@ -165,10 +185,10 @@ $('a.layer-select').on('click',function(){
             $(elements[i]).removeClass('selected');
         }
 
-        collection.forEach(function(e,i,a) {
+        collection.forEach(function(e, i, a) {
             var ark_id = e.get('ark_id');
 
-            $(".dime-table tr[data-unique-id='"+ark_id.toString()+"']").addClass('selected');
+            $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
         })
     });
 
@@ -177,25 +197,25 @@ $('a.layer-select').on('click',function(){
         for (var i = 0; i < elements.length; i++) {
             $(elements[i]).removeClass('selected');
         }
-        collection.forEach(function(e,i,a) {
+        collection.forEach(function(e, i, a) {
             var ark_id = e.get('ark_id');
 
-            $(".dime-table tr[data-unique-id='"+ark_id.toString()+"']").addClass('selected');
+            $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
         })
     });
 
-    $('table.dime-table').on('click-row.bs.table', function (evt, row, element, field) {
+    $('table.dime-table').on('click-row.bs.table', function(evt, row, element, field) {
         ark_id = element.attr('data-unique-id');
-        map.getLayers().forEach(function(i,e,a){
-            if (i.get('name')=='yours'){
+        map.getLayers().forEach(function(i, e, a) {
+            if (i.get('name') == 'yours') {
                 console.log(evt.shiftKey);
-                if(!evt.shiftKey){
+                if (!evt.shiftKey) {
                     collection.clear();
                 }
                 if (typeof i.getSource().getFeatures == 'function') {
-                    i.getSource().getFeatures().forEach(function(i,e,a){
-                        if(i.get('ark_id').toUpperCase()==ark_id){
-                            if(element.hasClass('selected')){
+                    i.getSource().getFeatures().forEach(function(i, e, a) {
+                        if (i.get('ark_id').toUpperCase() == ark_id) {
+                            if (element.hasClass('selected')) {
                                 collection.remove(i);
                             } else {
                                 collection.push(i);
@@ -207,68 +227,90 @@ $('a.layer-select').on('click',function(){
         });
     });
 
-    $('.layer-select').on('click', function(){
-        map.getLayers().forEach(function(e,i,a) {
-            if(e.get("name") === "kommunelayer"){
+    $('.layer-select').on('click', function() {
+        map.getLayers().forEach(function(e, i, a) {
+            if (e.get("name") === "kommunelayer") {
                 e.setVisible(false);
-             }
+            }
         });
     });
 
+    $('.heatmap-select').on('click', function() {
 
-    $('.heatmap-select').on('click', function(){
-
-        var $div = $("<div>", {id: "navbar-fade", "class": "modal-backdrop fade in"});
+        var $div = $("<div>", {
+            id: "navbar-fade",
+            "class": "modal-backdrop fade in"
+        });
         $("#map").append($div);
 
-        map.getLayers().forEach(function(e,i,a) {
-            if(e.get("name") === "kommunelayer"){
+        map.getLayers().forEach(function(e, i, a) {
+            if (e.get("name") === "kommunelayer") {
                 e.setVisible(true);
                 $('.modal-backdrop').detach();
-             }
+            }
         });
 
-        $.get('/dime/api/geo/heatmap', wkt, function(result){
+        $.get(path + 'api/geo/heatmap', wkt, function(result) {
             var kommunesource = [];
             var kommunes = result['kommune'];
-            for(kommune in kommunes){
+            for (kommune in kommunes) {
                 feature = format.readFeature(kommunes[kommune]['geometry'], {
                     dataProjection: 'EPSG:4326',
                     featureProjection: 'EPSG:3857'
                 });
-                feature.set('count',kommunes[kommune]['count']);
-                feature.set('band',kommunes[kommune]['band']);
+                feature.set('count', kommunes[kommune]['count']);
+                feature.set('band', kommunes[kommune]['band']);
                 kommunesource.push(feature);
             }
             var kommunelayer = new ol.layer.Vector({
                 source: new ol.source.Vector({
                     features: kommunesource
                 }),
-                style: function(feature, resolution){
+                style: function(feature, resolution) {
                     var styles = {
-                          "4":new ol.style.Style({
-                                fill: new ol.style.Fill({color: '#68b038'}),
-                                stroke: new ol.style.Stroke({color: '#000', width: 1})
+                        "4": new ol.style.Style({
+                            fill: new ol.style.Fill({
+                                color: '#68b038'
                             }),
-                          "3": new ol.style.Style({
-                                fill: new ol.style.Fill({color: '#eb6f4d'}),
-                                stroke: new ol.style.Stroke({color: '#000', width: 1})
-                            }),
-                          "2": new ol.style.Style({
-                                fill: new ol.style.Fill({color: '#f1e332'}),
-                                stroke: new ol.style.Stroke({color: '#000', width: 1})
-                            }),
-                          "1": new ol.style.Style({
-                                fill: new ol.style.Fill({color: '#e1262a'}),
-                                stroke: new ol.style.Stroke({color: '#000', width: 1})
+                            stroke: new ol.style.Stroke({
+                                color: '#000',
+                                width: 1
                             })
+                        }),
+                        "3": new ol.style.Style({
+                            fill: new ol.style.Fill({
+                                color: '#eb6f4d'
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: '#000',
+                                width: 1
+                            })
+                        }),
+                        "2": new ol.style.Style({
+                            fill: new ol.style.Fill({
+                                color: '#f1e332'
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: '#000',
+                                width: 1
+                            })
+                        }),
+                        "1": new ol.style.Style({
+                            fill: new ol.style.Fill({
+                                color: '#e1262a'
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: '#000',
+                                width: 1
+                            })
+                        })
                     };
 
                     return [styles[feature.get('band')]];
                 }
 
             });
-            kommunelayer.set('name',"kommunelayer");
+            kommunelayer.set('name', "kommunelayer");
             map.addLayer(kommunelayer);
             view = map.getView();
             extent = kommunelayer.getSource().getExtent();
