@@ -1,0 +1,76 @@
+{# ARK default page layout with default navbar, sidebar, and content sections #}
+
+{% use "blocks/carousel.html.twig" %}
+{% use "blocks/linkitem.html.twig" %}
+
+{% block homepage %}
+
+    <div class="row">
+        <div class="col-md-3 dimehome dimehometool" >
+            {{ 'dime.home.welcome' | translate }}
+        </div>
+        <div class="col-md-3 dimehome dimehometool" >
+            {{ 'dime.home.alarm' | translate }}
+        </div>
+        <div class="col-md-3 dimehome dimehometool" >
+            <ul class="list-group dime-navlist">
+                <li class="list-group-item dime-listhead normal">
+                    <span class="dime-icon icon-add normal"></span>
+                    {% include "blocks/linkitem.html.twig"
+                        with {'link': {"name": "dime.find.add", "active": true, "target": "finds.add"} } %}
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-3 dimehome dimehometool" >
+            {% include "blocks/linkitem.html.twig" with {'link':
+                           {"name": "dime.search.finds.mine",
+                           "active": true,
+                           "target": "finds.list"} } %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            {% include "layouts/table.html.twig" with {'data': data } %}
+        </div>
+        <div class="col-md-6">
+            <link rel="stylesheet" href="https://openlayers.org/en/v3.20.1/css/ol.css" type="text/css">
+            <div id="map" class="map search_map"></div>
+                <div>
+                    <button class="btn btn-default dropdown-toggle layer-select" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <span class="dime-icon icon-map small"></span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu layer-select" aria-labelledby="dropdownMenu1">
+                        <li><a class="layer-select" value="Aerial">{{ 'map.layer.aerial' | translate }}</a></li>
+                        <li><a class="layer-select" value="AerialWithLabels" selected>{{ 'map.layer.aerial.labels' | translate }}</a></li>
+                        <li><a class="layer-select" value="Road">{{ 'map.layer.road' | translate }}</a></li>
+                        <li><a class="layer-select" value="orto_foraar">{{ 'map.layer.orto_foraar' | translate }}</a></li>
+                        <li><a class="layer-select" value="topo_skaermkort">{{ 'map.layer.topo_skaermkort' | translate }}</a></li>
+                    </ul>
+                    <button class="btn btn-default heatmap-select" type="button" id="heatmapSelece">
+    					<span class="dime-icon icon-heatmap small"></span>
+  					</button>
+                </div>
+                <script src="https://openlayers.org/en/v3.20.1/build/ol.js"></script>
+                <script>
+
+                    ywkts = [];
+
+                    {% for item in data[layout.name] %}
+                        {% set findpoint = item.property('findpoint').value() %}
+                        {% if findpoint['coordinates'] is defined %}
+                            ywkts[{{ item.id }}] = '{{ findpoint['coordinates'] }}',
+                        {% else %}
+                              'POINT (0 0)',
+                        {% endif %}
+                    {% endfor %}
+
+                    twkts = [];
+
+                </script>
+            </div>
+        </div>
+    </div>
+
+{% endblock homepage %}

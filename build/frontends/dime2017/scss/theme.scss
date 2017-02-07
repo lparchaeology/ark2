@@ -197,6 +197,7 @@ body {
     .dime-banner .navbar-toggle {
         display: block;
         float: none;
+        z-index:1;
     }
 }
 
@@ -642,7 +643,7 @@ Carousel Stuff
 
 .mappick {
 
-height:100px;
+	height:100px;
 
 }
 
@@ -655,6 +656,33 @@ height:100px;
     height: 60px;
     background-color: #fff;
 }
+
+
+@media (max-width: 992px) {
+	.footer{
+		height:80px;
+	}
+	body {
+    	margin-bottom:80px;
+	}
+}
+@media (max-width: 640px) {
+	.footer{
+		height:100px;
+	}
+	body {
+    	margin-bottom:100px;
+	}
+}
+@media (max-width: 359px) {
+	.footer{
+		position:relative;
+	}
+	body {
+    	margin-bottom:0;
+	}
+}
+
 
 .footer .credits {
     font-weight: 100;

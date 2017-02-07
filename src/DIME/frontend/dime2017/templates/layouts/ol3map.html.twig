@@ -1,0 +1,39 @@
+<div class = "mapview">
+<link rel="stylesheet" href="https://openlayers.org/en/v3.20.1/css/ol.css" type="text/css">
+<div id="map" class="map search_map"></div>
+ <div>
+    <button class="btn btn-default dropdown-toggle layer-select" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <span class="dime-icon icon-map small"></span>
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu layer-select" aria-labelledby="dropdownMenu1">
+    <li><a class="layer-select" value="Aerial">Aerial</a></li>
+    <li><a class="layer-select" value="AerialWithLabels" selected>Aerial with labels</a></li>
+    <li><a class="layer-select" value="Road">Road</a></li>
+    <li><a class="layer-select" value="orto_foraar">orto_foraar</a></li>
+    <li><a class="layer-select" value="topo_skaermkort">topo_skaermkort</a></li>
+  </ul>
+  <button class="btn btn-default heatmap-select" type="button" id="heatmapSelece">
+    <span class="dime-icon icon-heatmap small"></span>
+  </button>
+</div>
+<script src="https://openlayers.org/en/v3.20.1/build/ol.js"></script>
+<script>
+
+    ywkts = [];
+
+    {% for item in data[layout.name] %}
+        {% set findpoint = item.property('findpoint').value() %}
+        {% if findpoint['coordinates'] is defined %}
+            ywkts[{{ item.id }}] = '{{ findpoint['coordinates'] }}',
+        {% else %}
+              'POINT (0 0)',
+        {% endif %}
+    {% endfor %}
+
+    twkts = [];
+
+</script>
+
+
+</div>
