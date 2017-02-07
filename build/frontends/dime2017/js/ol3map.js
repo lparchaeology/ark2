@@ -1,199 +1,201 @@
-function source(source, config) {
-    if (source == 'BingMaps') {
-        return new ol.source.BingMaps(config)
-    }
-    if (source == 'TileWMS') {
-        return new ol.source.TileWMS(config)
-    }
-}
+$(document).ready(function(){
+	
+	function source(source, config) {
+	    if (source == 'BingMaps') {
+	        return new ol.source.BingMaps(config)
+	    }
+	    if (source == 'TileWMS') {
+	        return new ol.source.TileWMS(config)
+	    }
+	}
 
-var layers = [];
-for (var i = 0; i < layerConfig.length; ++i) {
-    var config = layerConfig[i];
-    layer = new ol.layer.Tile({
-        name: config.name,
-        visible: config.visible,
-        preload: config.preload,
-        source: source(config.type, config.source)
-    });
-    layer.set('name', config.name);
-    layers.push(layer);
-}
+	var layers = [];
+	for (var i = 0; i < layerConfig.length; ++i) {
+	    var config = layerConfig[i];
+	    layer = new ol.layer.Tile({
+	        name: config.name,
+	        visible: config.visible,
+	        preload: config.preload,
+	        source: source(config.type, config.source)
+	    });
+	    layer.set('name', config.name);
+	    layers.push(layer);
+	}
 
-var map = new ol.Map({
-    layers: layers,
-    controls: [],
-    loadTilesWhileInteracting: true,
-    target: 'map',
-    view: new ol.View({
-        center: [1155972, 7580813],
-        zoom: 7,
-        maxZoom: 16,
-    })
-});
+	var map = new ol.Map({
+	    layers: layers,
+	    controls: [],
+	    loadTilesWhileInteracting: true,
+	    target: 'map',
+	    view: new ol.View({
+	        center: [1155972, 7580813],
+	        zoom: 7,
+	        maxZoom: 16,
+	    })
+	});
 
-map.on('moveend', function() {
-    console.log('wha');
-    var center = map.getView().get('center');
-    var extents = map.getView().calculateExtent(map.getSize());
-    centerstring = '[' + center.toString() + ']';
-    var zoom = map.getView().getZoom();
-    console.log(zoom);
-});
+	map.on('moveend', function() {
+	    console.log('wha');
+	    var center = map.getView().get('center');
+	    var extents = map.getView().calculateExtent(map.getSize());
+	    centerstring = '[' + center.toString() + ']';
+	    var zoom = map.getView().getZoom();
+	    console.log(zoom);
+	});
 
-$('a.layer-select').on('click', function() {
-    var name = $(this).attr('value');
-    for (var i = 0; i < layers.length; ++i) {
-        var layer = layers[i];
-        layer.setVisible(layer.get('name') === name);
-    }
-});
+	$('a.layer-select').on('click', function() {
+	    var name = $(this).attr('value');
+	    for (var i = 0; i < layers.length; ++i) {
+	        var layer = layers[i];
+	        layer.setVisible(layer.get('name') === name);
+	    }
+	});
 
-if (ywkts.length != 0) {
+	if (ywkts.length != 0) {
 
-    yourfeatures = [];
+	    yourfeatures = [];
 
-    theirfeatures = [];
+	    theirfeatures = [];
 
-    var dimestyles = {
-        'yours': new ol.style.Style({
-            image: new ol.style.Circle({
-                radius: 5,
-                fill: new ol.style.Fill({
-                    color: '#f00'
-                }),
-                stroke: new ol.style.Stroke({
-                    color: '#000',
-                    width: 1
-                })
-            })
-        }),
-        'theirs': new ol.style.Style({
-            image: new ol.style.Circle({
-                radius: 5,
-                fill: new ol.style.Fill({
-                    color: '#00f'
-                }),
-                stroke: new ol.style.Stroke({
-                    color: '#000',
-                    width: 1
-                })
-            })
-        })
-    };
+	    var dimestyles = {
+	        'yours': new ol.style.Style({
+	            image: new ol.style.Circle({
+	                radius: 5,
+	                fill: new ol.style.Fill({
+	                    color: '#f00'
+	                }),
+	                stroke: new ol.style.Stroke({
+	                    color: '#000',
+	                    width: 1
+	                })
+	            })
+	        }),
+	        'theirs': new ol.style.Style({
+	            image: new ol.style.Circle({
+	                radius: 5,
+	                fill: new ol.style.Fill({
+	                    color: '#00f'
+	                }),
+	                stroke: new ol.style.Stroke({
+	                    color: '#000',
+	                    width: 1
+	                })
+	            })
+	        })
+	    };
 
-    var format = new ol.format.WKT();
+	    var format = new ol.format.WKT();
 
-    for (wkt in ywkts) {
-        feature = format.readFeature(ywkts[wkt], {
-            dataProjection: 'EPSG:4326',
-            featureProjection: 'EPSG:3857'
-        });
-        feature.set('ark_id', wkt);
-        yourfeatures.push(feature);
-    }
+	    for (wkt in ywkts) {
+	        feature = format.readFeature(ywkts[wkt], {
+	            dataProjection: 'EPSG:4326',
+	            featureProjection: 'EPSG:3857'
+	        });
+	        feature.set('ark_id', wkt);
+	        yourfeatures.push(feature);
+	    }
 
-    for (wkt in twkts) {
-        theirfeatures.push(format.readFeature(twkts[wkt], {
-            dataProjection: 'EPSG:4326',
-            featureProjection: 'EPSG:3857'
-        }).set('ark_id', wkt));
-    }
+	    for (wkt in twkts) {
+	        theirfeatures.push(format.readFeature(twkts[wkt], {
+	            dataProjection: 'EPSG:4326',
+	            featureProjection: 'EPSG:3857'
+	        }).set('ark_id', wkt));
+	    }
 
-    var yours = new ol.layer.Vector({
-        source: new ol.source.Vector({
-            features: yourfeatures
-        }),
-        style: dimestyles['yours']
-    });
+	    var yours = new ol.layer.Vector({
+	        source: new ol.source.Vector({
+	            features: yourfeatures
+	        }),
+	        style: dimestyles['yours']
+	    });
 
-    var theirs = new ol.layer.Vector({
-        source: new ol.source.Vector({
-            features: theirfeatures
-        }),
-        style: dimestyles['theirs']
-    });
+	    var theirs = new ol.layer.Vector({
+	        source: new ol.source.Vector({
+	            features: theirfeatures
+	        }),
+	        style: dimestyles['theirs']
+	    });
 
-    yours.set('name', 'yours');
+	    yours.set('name', 'yours');
 
-    map.addLayer(theirs);
-    map.addLayer(yours);
+	    map.addLayer(theirs);
+	    map.addLayer(yours);
 
-    view = map.getView();
-    extent = yours.getSource().getExtent();
-    view.fit(extent, map.getSize());
+	    view = map.getView();
+	    extent = yours.getSource().getExtent();
+	    view.fit(extent, map.getSize());
 
-    var select = new ol.interaction.Select({
-        style: new ol.style.Style({
-            image: new ol.style.Circle({
-                radius: 8,
-                fill: new ol.style.Fill({
-                    color: '#f00'
-                }),
-                stroke: new ol.style.Stroke({
-                    color: '#000',
-                    width: 1
-                })
-            })
-        }),
-    });
+	    var select = new ol.interaction.Select({
+	        style: new ol.style.Style({
+	            image: new ol.style.Circle({
+	                radius: 8,
+	                fill: new ol.style.Fill({
+	                    color: '#f00'
+	                }),
+	                stroke: new ol.style.Stroke({
+	                    color: '#000',
+	                    width: 1
+	                })
+	            })
+	        }),
+	    });
 
-    map.addInteraction(select);
+	    map.addInteraction(select);
 
-    var collection = select.getFeatures();
+	    var collection = select.getFeatures();
 
-    collection.on('add', function(evt) {
-        var elements = $('.dime-table tr');
+	    collection.on('add', function(evt) {
+	        var elements = $('.dime-table tr');
 
-        for (var i = 0; i < elements.length; i++) {
-            $(elements[i]).removeClass('selected');
-        }
+	        for (var i = 0; i < elements.length; i++) {
+	            $(elements[i]).removeClass('selected');
+	        }
 
-        collection.forEach(function(e, i, a) {
-            var ark_id = e.get('ark_id');
+	        collection.forEach(function(e, i, a) {
+	            var ark_id = e.get('ark_id');
 
-            $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
-        })
-    });
+	            $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
+	        })
+	    });
 
-    collection.on('remove', function(evt) {
-        var elements = $('.dime-table tr');
-        for (var i = 0; i < elements.length; i++) {
-            $(elements[i]).removeClass('selected');
-        }
-        collection.forEach(function(e, i, a) {
-            var ark_id = e.get('ark_id');
+	    collection.on('remove', function(evt) {
+	        var elements = $('.dime-table tr');
+	        for (var i = 0; i < elements.length; i++) {
+	            $(elements[i]).removeClass('selected');
+	        }
+	        collection.forEach(function(e, i, a) {
+	            var ark_id = e.get('ark_id');
 
-            $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
-        })
-    });
+	            $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
+	        })
+	    });
 
-    $('table.dime-table').on('click-row.bs.table', function(evt, row, element, field) {
-        ark_id = element.attr('data-unique-id');
-        map.getLayers().forEach(function(i, e, a) {
-            if (i.get('name') == 'yours') {
-                console.log(evt.shiftKey);
-                if (!evt.shiftKey) {
-                    collection.clear();
-                }
-                if (typeof i.getSource().getFeatures == 'function') {
-                    i.getSource().getFeatures().forEach(function(i, e, a) {
-                        if (i.get('ark_id').toUpperCase() == ark_id) {
-                            if (element.hasClass('selected')) {
-                                collection.remove(i);
-                            } else {
-                                collection.push(i);
-                            }
-                        }
-                    });
-                }
-            }
-        });
-    });
+	    $('table.dime-table').on('click-row.bs.table', function(evt, row, element, field) {
+	        ark_id = element.attr('data-unique-id');
+	        map.getLayers().forEach(function(i, e, a) {
+	            if (i.get('name') == 'yours') {
+	                console.log(evt.shiftKey);
+	                if (!evt.shiftKey) {
+	                    collection.clear();
+	                }
+	                if (typeof i.getSource().getFeatures == 'function') {
+	                    i.getSource().getFeatures().forEach(function(i, e, a) {
+	                        if (i.get('ark_id').toUpperCase() == ark_id) {
+	                            if (element.hasClass('selected')) {
+	                                collection.remove(i);
+	                            } else {
+	                                collection.push(i);
+	                            }
+	                        }
+	                    });
+	                }
+	            }
+	        });
+	    });
 
-    
-
-    $('.style-select-option').on('click', function() {
+	}
+	
+	$('.style-select-option').on('click', function() {
     	
     	if( $(this).attr("value") == 'choropleth') {
     		
@@ -298,5 +300,6 @@ if (ywkts.length != 0) {
 
         
     });
+	
+});
 
-}

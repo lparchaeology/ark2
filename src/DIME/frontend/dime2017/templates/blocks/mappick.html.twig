@@ -3,14 +3,27 @@
 
 {% do form[field.name].setRendered %}
 
-<div class="mappick-group row">
+<div class="mappick-group form-group row">
 {% for subform in form %}
     
     {% if subform.easting is defined %}
         <div class="mappick_fields col-sm-9">
-            {{ form_row(subform.easting, {'attr': {'class': 'mappick_field'}}) }}
-
-            {{ form_row(subform.northing, {'attr': {'class': 'mappick_field'}}) }}
+        	<div class="row form-group">
+            	<div class="col-sm-4">
+            	    {{ form_label(subform.easting, null, {'label_attr': {'class': 'col-md-12'}}) }}
+            	</div>
+            	<div class="col-sm-8">
+                    {{ form_widget(subform.easting, {'attr': {'class': 'mappick_field'}}) }}
+                </div>
+			</div>
+        	<div class="row form-group">
+				<div class="col-sm-4">
+            	    {{ form_label(subform.northing, null, {'label_attr': {'class': 'col-md-12'}}) }}
+            	</div>
+            	<div class="col-sm-8">
+                    {{ form_widget(subform.northing, {'attr': {'class': 'mappick_field'}}) }}
+                </div>
+            </div>
         </div>
         <div id="mappick" class="mappick col-sm-3"></div>
     
@@ -82,8 +95,8 @@
           source.on('addfeature', function(){
               source.forEachFeature(function(feature) {
                   coords = ol.proj.transform(feature.getGeometry().getCoordinates(),'EPSG:3857','EPSG:4326');
-                  $('#dime_find_item_dime_find_findpoint_easting').val(coords[1]);
-                  $('#dime_find_item_dime_find_findpoint_northing').val(coords[0]);
+                  $('#dime_find_item_dime_find_findpoint_easting').val(coords[0]);
+                  $('#dime_find_item_dime_find_findpoint_northing').val(coords[1]);
                   map.getView().setCenter(feature.getGeometry().getCoordinates());
               });
           } );

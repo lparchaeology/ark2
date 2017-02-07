@@ -44,7 +44,7 @@ class ChoroplethAction
         //get all the kommune
         $kommunes = Service::database()->getKommune();
         // get the counts of finds in kommune
-        $findCounts = Service::database()->getHeatmap();
+        $findCounts = Service::database()->getChoropleth();
         //create a blank array to return
         $data = [];
         $curmax = 0;
