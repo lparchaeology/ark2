@@ -847,12 +847,12 @@ class Database
         return $this->spatial()->fetchAll($sql, $params);
     }
 
-    public function getHeatmap()
+    public function getChoropleth()
     {
         $sql = "
             SELECT b.fid, count(*) as count
-            FROM ark_spatial_fragment a, ark_spatial_term b
-            WHERE contains(b.geometry, a.geometry)
+            FROM dime_ark_spatial.ark_fragment_wkt a, dime_ark_spatial.ark_spatial_term b
+            WHERE contains(b.geometry, GeomFromText(a.value))
             group by b.fid
         ";
         $params = array(
