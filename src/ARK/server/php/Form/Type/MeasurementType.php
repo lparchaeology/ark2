@@ -36,6 +36,7 @@ use ARK\Model\Item;
 use ARK\Model\Property;
 use ARK\Entity\Actor;
 use ARK\Form\Type\VocabularyChoiceType;
+use ARK\Form\Type\ReadonlyVocabularyType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -49,19 +50,12 @@ class MeasurementType extends AbstractType implements DataMapperInterface
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $field = $options['field'];
-        unset($options['field']);
-        $fieldOptions = $field->optionsArray();
-        if ($field->attribute()->vocabulary() && isset($options['attr']['readonly'])) {
-            $fieldOptions['disabled'] = true;
-        }
-        $options = array_merge($options, $field->optionsArray());
         $builder->setDataMapper($this);
-        $options['label'] = false;
-        $options['mapped'] = false;
-        $builder->add('measurement', NumberType::class, $options);
-        $builder->add('unit', HiddenType::class, $options);
-        $builder->setDataMapper($this);
+        $fieldOptions['mapped'] = false;
+        $fieldOptions['label'] = false;
+        $builder->add('measurement', NumberType::class, $fieldOptions);
+        //$builder->add('unit', ChoiceType::class, $fieldOptions);
+        print_r(' built ok ');
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -71,23 +65,30 @@ class MeasurementType extends AbstractType implements DataMapperInterface
             'data_class' => Property::class,
             'empty_data' => null,
         ]);
+        print_r(' resolved ok ');
     }
 
     public function mapDataToForms($property, $forms)
     {
+        print_r(' mapping ');
         $forms = iterator_to_array($forms);
-        $value = $property->value();
-        $forms['measurement']->setData($value['measurement']);
-        $forms['unit']->setData($value['unit']);
+        if ($property) {
+            $value = $property->value();
+            if ($value) {
+                $forms['measurement']->setData($value['measurement']);
+                //$forms['unit']->setData($value['unit']);
+            }
+        }
+        print_r(' mapped ok ');
     }
 
     public function mapFormsToData($forms, &$data)
     {
         $forms = iterator_to_array($forms);
         $values['measurement'] = $forms['measurement']->getData();
-        $values['unit'] = $forms['unit']->getData();
+        //$values['unit'] = $forms['unit']->getData();
         if ($data instanceof Property) {
-            $property->setValue($values);
+            $data->setValue($values);
         } else {
             $data = $values;
         }

@@ -8,6 +8,19 @@
     </div>
 {%- endblock panel_row %}
 
+{% block measurement_widget -%}
+    <div class="input-group">
+        {{- form_widget(form['measurement']) -}}
+        <div class="input-group-btn">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Units <span class="caret"></span></button>
+            <ul class="dropdown-menu dropdown-menu-right">
+                <li "value" = "g">Grams</li>
+                <li "value" = "kg">Kilgrams</li>
+            </ul>
+         </div>
+    </div>
+{%- endblock measurement_widget %}
+
 {% block submit_widget -%}
     {% set attr = attr | merge({
         class: (attr.class | default('btn-default') ~ ' btn-xs btn') | trim

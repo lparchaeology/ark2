@@ -72,7 +72,7 @@ class Service
         throw new ErrorException(new Error('INVALID_LAYOUT_NAME', "Invalid Layout Name: $name", "Layout $name does not exist"));
     }
 
-    public function renderResponse($view, array $parameters = [], Response $response = null)
+    public static function renderResponse($view, array $parameters = [], Response $response = null)
     {
         return self::$app->render($view, $parameters, $response);
     }
@@ -112,22 +112,22 @@ class Service
         return self::$app['logger'];
     }
 
-    public function log($message, array $context = [], $level = Logger::INFO)
+    public static function log($message, array $context = [], $level = Logger::INFO)
     {
         return self::$app->log($message, $context, $level);
     }
 
-    public function logError($message, array $context = [])
+    public static function logError($message, array $context = [])
     {
         return self::$app->log($message, $context, Logger::ERROR);
     }
 
-    public function logInfo($message, array $context = [])
+    public static function logInfo($message, array $context = [])
     {
         return self::$app->log($message, $context, Logger::INFO);
     }
 
-    public function logDebug($message, array $context = [])
+    public static function logDebug($message, array $context = [])
     {
         return self::$app->log($message, $context, Logger::DEBUG);
     }
@@ -142,12 +142,12 @@ class Service
         return self::$app['mailer'];
     }
 
-    public function translate($id, $role = 'default', array $parameters = [], $domain = 'messages', $locale = null)
+    public static function translate($id, $role = 'default', array $parameters = [], $domain = 'messages', $locale = null)
     {
         return self::$app->translate($id, $role, $parameters, $domain, $locale);
     }
 
-    public function translateChoice($id, $number, $role = 'default', array $parameters = [], $domain = 'messages', $locale = null)
+    public static function translateChoice($id, $number, $role = 'default', array $parameters = [], $domain = 'messages', $locale = null)
     {
         return self::$app->translateChoice($id, $number, $role, $parameters, $domain, $locale);
     }
@@ -166,7 +166,6 @@ class Service
     {
         return self::$app['security.authorization_checker']->isGranted($permission);
     }
-
 
     public static function database()
     {
