@@ -65,13 +65,14 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers->match("/$treasure", 'DIME\Action\PageViewAction')
                     ->method('GET|POST')
                     ->bind('treasure');
-
-        // Under Construction Routes
-        $controllers->get("/$detector", 'DIME\Action\UnderConstructionAction')
+        $controllers->match("/$detector", 'DIME\Action\PageViewAction')
+                    ->method('GET|POST')
                     ->bind('detector');
-        $controllers->get("/$exhibits", 'DIME\Action\UnderConstructionAction')
+        $controllers->match("/$exhibits", 'DIME\Action\PageViewAction')
+                    ->method('GET|POST')
                     ->bind('exhibits');
-        $controllers->get("/$news", 'DIME\Action\UnderConstructionAction')
+        $controllers->match("/$news", 'DIME\Action\PageViewAction')
+                    ->method('GET|POST')
                     ->bind('news');
 
         // Temp Routes?
