@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Event Form Type
+ * ARK Item Form Type
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,28 +30,37 @@
 
 namespace ARK\Form\Type;
 
+use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Model\Item;
 use ARK\Model\Property;
-use ARK\Model\Fragment\TextFragment;
-use Brick\Geo\Point;
+use ARK\Entity\Actor;
+use ARK\Form\Type\VocabularyChoiceType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\DataMapperInterface;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class WktType extends AbstractType implements DataMapperInterface
+class MeasurementType extends AbstractType implements DataMapperInterface
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $attribute = $options['field']->attribute()->name();
-        $fieldOptions['mapped'] = false;
-        $fieldOptions['label'] = false;
-        $builder->add('easting', TextType::class, $fieldOptions);
-        $builder->add('northing', TextType::class, $fieldOptions);
-        $builder->add('srid', HiddenType::class, $fieldOptions);
+        $field = $options['field'];
+        unset($options['field']);
+        $fieldOptions = $field->optionsArray();
+        if ($field->attribute()->vocabulary() && isset($options['attr']['readonly'])) {
+            $fieldOptions['disabled'] = true;
+        }
+        $options = array_merge($options, $field->optionsArray());
+        $builder->setDataMapper($this);
+        $options['label'] = false;
+        $options['mapped'] = false;
+        $builder->add('measurement', NumberType::class, $options);
+        $builder->add('unit', HiddenType::class, $options);
         $builder->setDataMapper($this);
     }
 
@@ -68,27 +77,24 @@ class WktType extends AbstractType implements DataMapperInterface
     {
         $forms = iterator_to_array($forms);
         $value = $property->value();
-        if ($value['coordinates']) {
-            $point = Point::fromText($value['coordinates'], (int)$value['srid']);
-            $forms['easting']->setData($point->x());
-            $forms['northing']->setData($point->y());
-            $forms['srid']->setData($point->SRID());
-        } else {
-            $forms['srid']->setData(4326);
-        }
+        $forms['measurement']->setData($value['measurement']);
+        $forms['unit']->setData($value['unit']);
     }
 
-    public function mapFormsToData($forms, &$property)
+    public function mapFormsToData($forms, &$data)
     {
         $forms = iterator_to_array($forms);
-        $point = Point::xy($forms['easting']->getData(), $forms['northing']->getData(), $forms['srid']->getData());
-        $value['coordinates'] = $point->asText();
-        $value['srid'] = $point->SRID();
-        $property->setValue($value);
+        $values['measurement'] = $forms['measurement']->getData();
+        $values['unit'] = $forms['unit']->getData();
+        if ($data instanceof Property) {
+            $property->setValue($values);
+        } else {
+            $data = $values;
+        }
     }
 
     public function getBlockPrefix()
     {
-        return 'wkt';
+        return 'measurement';
     }
 }

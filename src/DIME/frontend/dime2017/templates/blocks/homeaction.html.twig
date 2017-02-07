@@ -1,0 +1,31 @@
+{# ARK default page layout with default navbar, sidebar, and content sections #}
+
+{% use "blocks/linkitem.html.twig" %}
+
+{% block homeaction %}
+
+    <div class="row">
+        <div class="col-md-3 dimehome dimehometool" >
+            {{ 'dime.home.welcome' | translate }}
+        </div>
+        <div class="col-md-3 dimehome dimehometool" >
+            {{ 'dime.home.alarm' | translate }}
+        </div>
+        <div class="col-md-3 dimehome dimehometool" >
+            <ul class="list-group dime-navlist">
+                <li class="list-group-item dime-listhead normal">
+                    <span class="dime-icon icon-add normal"></span>
+                    {% include "blocks/linkitem.html.twig"
+                        with {'link': {"name": "dime.find.add", "active": true, "target": "finds.add"} } %}
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-3 dimehome dimehometool" >
+            {% include "blocks/linkitem.html.twig" with {'link':
+                           {"name": "dime.search.finds.mine",
+                           "active": true,
+                           "target": "finds.list"} } %}
+        </div>
+    </div>
+
+{% endblock homeaction %}

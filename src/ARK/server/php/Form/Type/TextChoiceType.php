@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Action
+ * ARK Hidden Choice Form Type
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,26 +28,15 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Action;
+namespace ARK\Form\Type;
 
-use ARK\ORM\ORM;
-use ARK\Service;
-use DIME\Action\DimeAction;
-use DIME\Entity\Find;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class HomePageAction extends DimeAction
+class TextChoiceType extends ChoiceType
 {
-    public function __invoke(Request $request)
+    public function getParent()
     {
-        $layout = 'dime_home_page';
-        $options = $this->defaultOptions();
-        $options['layout'] =  Service::layout($layout);
-        $data[$layout] = ORM::findAll(Find::class);
-        $data['dime_find_list'] = $data[$layout];
-        $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $data[$layout] : []);
-        $data['dime_home_action'] = null;
-        $options['data'] = $data;
-        return Service::renderResponse('pages/page.html.twig', $options);
+        return TextType::class;
     }
 }

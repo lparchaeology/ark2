@@ -35,6 +35,7 @@ use ARK\Model\Item;
 use ARK\ORM\ClassMetadata;
 use ARK\Service;
 use ARK\Vocabulary\Vocabulary;
+use ARK\Form\Type\PropertyType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class Field extends Element
@@ -76,11 +77,17 @@ class Field extends Element
         $options['label'] = ($this->keyword() ? $this->keyword() : false);
         if ($this->attribute) {
             $name = $this->attribute->name();
-            $options['field'] = $this;
+            if ($this->formType || $this->formType() == PropertyType::class) {
+                $options['field'] = $this;
+            }
             $options['mapped'] = false;
+            $options['required'] = $this->attribute->isRequired();
             //$options['property_path'] = "propertyArray[$name].value";
-            if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED') || $this->name() == 'dime_find_id') {
                 $options['attr']['readonly'] = true;
+                if ($this->attribute()->vocabulary()) {
+                    $options['disabled'] = true;
+                }
             }
         }
         return $options;

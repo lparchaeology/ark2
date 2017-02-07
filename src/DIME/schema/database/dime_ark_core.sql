@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 06, 2017 at 02:14 PM
+-- Generation Time: Feb 07, 2017 at 03:57 AM
 -- Server version: 10.1.20-MariaDB
 -- PHP Version: 7.0.15
 
@@ -585,15 +585,15 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('dime.actor', 'museum', 'fullname', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.fullname'),
 ('dime.actor', 'museum', 'kommuner', 'identifier', 'dime.denmark.kommune', 0, 0, 1, 0, 1, 0, 'dime.actor.kommuner'),
 ('dime.actor', 'museum', 'shortname', 'shortlocaltext', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.shortname'),
-('dime.find', '', 'condition', 'identifier', 'dime.find.condition', 1, 1, 1, 0, 1, 0, 'dime.find.condition'),
+('dime.find', '', 'condition', 'identifier', 'dime.find.condition', 0, 1, 1, 0, 1, 0, 'dime.find.condition'),
 ('dime.find', '', 'description', 'localtext', NULL, 0, 1, 1, 0, 1, 0, 'property.description'),
 ('dime.find', '', 'finddate', 'date', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.finddate'),
 ('dime.find', '', 'finder_id', 'identifier', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.finderid'),
-('dime.find', '', 'findpoint', 'geometry', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.findpoint'),
+('dime.find', '', 'findpoint', 'geometry', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.findpoint'),
 ('dime.find', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.id'),
-('dime.find', '', 'image', 'string', NULL, 0, 0, 1, 1, 1, 0, 'dime.find.images'),
+('dime.find', '', 'image', 'string', NULL, 1, 0, 1, 1, 1, 0, 'dime.find.images'),
 ('dime.find', '', 'kommune', 'identifier', 'dime.denmark.kommune', 1, 1, 1, 0, 1, 0, 'dime.find.kommune'),
-('dime.find', '', 'length', 'distance', 'distance', 1, 1, 1, 0, 1, 0, 'dime.find.length'),
+('dime.find', '', 'length', 'distance', 'distance', 0, 1, 1, 0, 1, 0, 'dime.find.length'),
 ('dime.find', '', 'material', 'identifier', 'dime.material', 1, 1, 1, 0, 1, 0, 'dime.find.material'),
 ('dime.find', '', 'museum', 'item', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.type.museum'),
 ('dime.find', '', 'period_end', 'identifier', 'dime.period', 0, 1, 1, 0, 1, 0, 'dime.find.period.end'),
@@ -660,6 +660,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.find.finderid', 'dime', 0, 0),
 ('dime.find.findpoint', 'dime', 0, 0),
 ('dime.find.id', 'dime', 0, 0),
+('dime.find.kommune', 'dime', 0, 0),
 ('dime.find.length', 'dime', 0, 0),
 ('dime.find.material', 'dime', 0, 0),
 ('dime.find.material.secondary', 'dime', 0, 0),
@@ -894,6 +895,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.find.finderid', 'default', 'Fund ID', ''),
 ('da', 'dime.find.findpoint', 'default', 'Koordinater', ''),
 ('da', 'dime.find.id', 'default', 'DIME ID', ''),
+('da', 'dime.find.kommune', 'default', 'Kommune', ''),
 ('da', 'dime.find.length', 'default', 'Maximal Længde / Diameter', ''),
 ('da', 'dime.find.material', 'default', 'Materiale', ''),
 ('da', 'dime.find.material.secondary', 'default', 'Sekundært Materiale(r)', ''),
@@ -983,6 +985,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.finderid', 'default', 'Find ID', 'DIME Find Finder\'s ID'),
 ('en', 'dime.find.findpoint', 'default', 'Coordinates', ''),
 ('en', 'dime.find.id', 'default', 'ID', 'DIME Find ID'),
+('en', 'dime.find.kommune', 'default', 'Municipality', ''),
 ('en', 'dime.find.length', 'default', 'Maximum Dimension', ''),
 ('en', 'dime.find.material', 'default', 'Material', 'DIME Find Material'),
 ('en', 'dime.find.material.secondary', 'default', 'Secondary Material(s)', 'DIME Find Secondary Material(s)'),
@@ -1271,6 +1274,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attrib
 ('dime_find_type', 'field', 'dime.find', '', 'type', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_find_weight', 'field', 'dime.find', '', 'weight', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_front_page', 'grid', 'dime.find', NULL, NULL, '', 'layouts/front.html.twig', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_home_action', 'grid', NULL, NULL, NULL, '', 'blocks/homeaction.html.twig', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_home_page', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
 ('dime_locality_id', 'field', 'dime.locality', '', 'id', '', '', 0, 0, 'ARK\\Form\\Type\\IdType', 1, 0, 1, 0, NULL),
 ('dime_locality_item', 'grid', NULL, NULL, NULL, '', '', 0, 1, '', 1, 0, 1, 0, NULL),
@@ -1364,7 +1368,7 @@ INSERT INTO `ark_view_layout` (`layout`, `row`, `col`, `seq`, `item_type`, `cell
 ('dime_front_page', 0, 0, 1, '', 'dime_find_finder_id', NULL, 1, 1, 0, 1, 0),
 ('dime_front_page', 0, 0, 2, '', 'dime_find_type', NULL, 1, 1, 0, 1, 0),
 ('dime_front_page', 0, 0, 4, '', 'dime_find_material', NULL, 1, 1, 0, 1, 0),
-('dime_home_page', 0, 0, 0, '', 'dime_find_filter', NULL, 1, 1, 0, 1, 0),
+('dime_home_page', 0, 0, 0, '', 'dime_home_action', NULL, 1, 1, 0, 1, 0),
 ('dime_home_page', 1, 0, 0, '', 'dime_find_list', NULL, 1, 1, 0, 1, 0),
 ('dime_home_page', 1, 1, 0, '', 'dime_find_map', NULL, 1, 1, 0, 1, 0),
 ('dime_locality_item', 0, 0, 0, '', 'dime_locality_id', NULL, 1, 1, 0, 1, 0),

@@ -63,6 +63,7 @@ class VocabularyChoiceType extends AbstractType implements DataMapperInterface
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'field' => null,
             'compound' => true,
             'vocabulary' => null,
             'data_class' => Term::class,

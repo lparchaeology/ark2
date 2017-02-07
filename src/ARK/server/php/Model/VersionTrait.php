@@ -38,7 +38,7 @@ trait VersionTrait
     protected $createdBy = null;
     protected $lastModifiedBy = null;
     protected $lastModifiedOn = null;
-    protected $version = null;
+    protected $version = '';
 
     public function createdOn()
     {
@@ -83,6 +83,6 @@ trait VersionTrait
         $builder->addField('lastModifiedOn', 'datetime', [], 'mod_on');
         $builder->addField('createdBy', 'integer', [], 'cre_by');
         $builder->addField('createdOn', 'datetime', [], 'cre_on');
-        //$builder->addStringField('version', 128);
+        $builder->addStringField('version', 128);
     }
 }
