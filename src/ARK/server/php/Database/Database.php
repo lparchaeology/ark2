@@ -806,7 +806,7 @@ class Database
     public function getSpatialTerms($concept, $type = null)
     {
         $sql = "
-            SELECT term, ST_AsText(geometry) as wkt
+            SELECT term, ST_AsText(geometry) as geometry, srid
             FROM ark_spatial_term
             WHERE concept = :concept
         ";

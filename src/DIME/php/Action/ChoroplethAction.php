@@ -30,12 +30,9 @@
 
 namespace DIME\Action;
 
-use ARK\ORM\ORM;
+use ARK\Http\JsonResponse;
 use ARK\Service;
-use ARK\Database\Database;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Brick\Geo\Point;
 
 class ChoroplethAction
 {

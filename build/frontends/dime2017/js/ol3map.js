@@ -220,7 +220,7 @@ $(document).ready(function() {
                     var kommunesource = [];
                     var kommunes = result['kommune'];
                     for (kommune in kommunes) {
-                        feature = format.readFeature(kommunes[kommune]['wkt'], {
+                        feature = format.readFeature(kommunes[kommune]['geometry'], {
                             dataProjection: 'EPSG:4326',
                             featureProjection: 'EPSG:3857'
                         });
