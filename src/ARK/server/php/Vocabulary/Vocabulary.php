@@ -77,6 +77,16 @@ abstract class Vocabulary
         return $this->terms;
     }
 
+    public function term($name)
+    {
+        foreach ($this->terms as $term) {
+            if ($term->name() == $name) {
+                return $term;
+            }
+        }
+        return null;
+    }
+
     public static function loadMetadata(ClassMetadata $metadata)
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_vocabulary');
