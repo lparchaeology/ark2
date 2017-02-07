@@ -191,96 +191,112 @@ if (ywkts.length != 0) {
         });
     });
 
-    $('.layer-select').on('click', function() {
-        map.getLayers().forEach(function(e, i, a) {
-            if (e.get("name") === "kommunelayer") {
-                e.setVisible(false);
-            }
-        });
-    });
+    
 
-    $('.heatmap-select').on('click', function() {
-
-        var $div = $("<div>", {
-            id: "navbar-fade",
-            "class": "modal-backdrop fade in"
-        });
-        $("#map").append($div);
-
-        map.getLayers().forEach(function(e, i, a) {
-            if (e.get("name") === "kommunelayer") {
-                e.setVisible(true);
-                $('.modal-backdrop').detach();
-            }
-        });
-
-        $.get(path + 'api/geo/heatmap', wkt, function(result) {
-            var kommunesource = [];
-            var kommunes = result['kommune'];
-            for (kommune in kommunes) {
-                feature = format.readFeature(kommunes[kommune]['geometry'], {
-                    dataProjection: 'EPSG:4326',
-                    featureProjection: 'EPSG:3857'
-                });
-                feature.set('count', kommunes[kommune]['count']);
-                feature.set('band', kommunes[kommune]['band']);
-                kommunesource.push(feature);
-            }
-            var kommunelayer = new ol.layer.Vector({
-                source: new ol.source.Vector({
-                    features: kommunesource
-                }),
-                style: function(feature, resolution) {
-                    var styles = {
-                        "4": new ol.style.Style({
-                            fill: new ol.style.Fill({
-                                color: '#68b038'
-                            }),
-                            stroke: new ol.style.Stroke({
-                                color: '#000',
-                                width: 1
-                            })
-                        }),
-                        "3": new ol.style.Style({
-                            fill: new ol.style.Fill({
-                                color: '#eb6f4d'
-                            }),
-                            stroke: new ol.style.Stroke({
-                                color: '#000',
-                                width: 1
-                            })
-                        }),
-                        "2": new ol.style.Style({
-                            fill: new ol.style.Fill({
-                                color: '#f1e332'
-                            }),
-                            stroke: new ol.style.Stroke({
-                                color: '#000',
-                                width: 1
-                            })
-                        }),
-                        "1": new ol.style.Style({
-                            fill: new ol.style.Fill({
-                                color: '#e1262a'
-                            }),
-                            stroke: new ol.style.Stroke({
-                                color: '#000',
-                                width: 1
-                            })
-                        })
-                    };
-
-                    return [styles[feature.get('band')]];
-                }
-
+    $('.style-select-option').on('click', function() {
+    	
+    	if( $(this).attr("value") == 'choropleth') {
+    		
+    		var $div = $("<div>", {
+                id: "navbar-fade",
+                "class": "modal-backdrop fade in"
             });
-            kommunelayer.set('name', "kommunelayer");
-            map.addLayer(kommunelayer);
-            view = map.getView();
-            extent = kommunelayer.getSource().getExtent();
-            view.fit(extent, map.getSize());
-            $('.modal-backdrop').detach();
-        });
+            $("#map").append($div);
+            var prerun = false;
+            map.getLayers().forEach(function(e, i, a) {
+                if (e.get("name") === "kommunelayer") {
+                    e.setVisible(true);
+                    $('.modal-backdrop').detach();
+            	    view = map.getView();
+            	    extent = e.getSource().getExtent();
+            	    view.fit(extent, map.getSize());
+            	    prerun = true;
+                }
+            });
+            if ( !prerun ){
+            	$.get(path + 'api/geo/choropleth', wkt, function(result) {
+                    var kommunesource = [];
+                    var kommunes = result['kommune'];
+                    for (kommune in kommunes) {
+                        feature = format.readFeature(kommunes[kommune]['geometry'], {
+                            dataProjection: 'EPSG:4326',
+                            featureProjection: 'EPSG:3857'
+                        });
+                        feature.set('count', kommunes[kommune]['count']);
+                        feature.set('band', kommunes[kommune]['band']);
+                        kommunesource.push(feature);
+                    }
+                    var kommunelayer = new ol.layer.Vector({
+                        source: new ol.source.Vector({
+                            features: kommunesource
+                        }),
+                        style: function(feature, resolution) {
+                            var styles = {
+                                "4": new ol.style.Style({
+                                    fill: new ol.style.Fill({
+                                        color: '#68b038'
+                                    }),
+                                    stroke: new ol.style.Stroke({
+                                        color: '#000',
+                                        width: 1
+                                    })
+                                }),
+                                "3": new ol.style.Style({
+                                    fill: new ol.style.Fill({
+                                        color: '#eb6f4d'
+                                    }),
+                                    stroke: new ol.style.Stroke({
+                                        color: '#000',
+                                        width: 1
+                                    })
+                                }),
+                                "2": new ol.style.Style({
+                                    fill: new ol.style.Fill({
+                                        color: '#f1e332'
+                                    }),
+                                    stroke: new ol.style.Stroke({
+                                        color: '#000',
+                                        width: 1
+                                    })
+                                }),
+                                "1": new ol.style.Style({
+                                    fill: new ol.style.Fill({
+                                        color: '#e1262a'
+                                    }),
+                                    stroke: new ol.style.Stroke({
+                                        color: '#000',
+                                        width: 1
+                                    })
+                                })
+                            };
+
+                            return [styles[feature.get('band')]];
+                        }
+
+                    });
+                    kommunelayer.set('name', "kommunelayer");
+                    map.addLayer(kommunelayer);
+                    view = map.getView();
+                    extent = kommunelayer.getSource().getExtent();
+                    view.fit(extent, map.getSize());
+                    $('.modal-backdrop').detach();
+                });
+            }
+            
+    	} else {
+    		map.getLayers().forEach(function(e, i, a) {
+	            if (e.get("name") === "kommunelayer") {
+	                e.setVisible(false);
+	            }
+	        });
+
+    	    view = map.getView();
+    	    extent = yours.getSource().getExtent();
+    	    view.fit(extent, map.getSize());
+    		
+    	}
+
+        
     });
 
 }

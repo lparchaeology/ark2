@@ -37,7 +37,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Brick\Geo\Point;
 
-class GeoHeatmapAction
+class ChoroplethAction
 {
     public function __invoke(Request $request)
     {

@@ -125,8 +125,8 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers->post('/api/geo/find', 'DIME\Action\GeoFindAction')
                     ->bind('api.geo.find');
 
-        $controllers->get('/api/geo/heatmap', 'DIME\Action\GeoHeatmapAction')
-                    ->bind('api.geo.heatmap');
+        $controllers->get('/api/geo/choropleth', 'DIME\Action\ChoroplethAction')
+                    ->bind('api.geo.choropleth');
 
         $controllers->get("/img/{image}", 'DIME\Action\ImageAction')
                     ->bind('img');
