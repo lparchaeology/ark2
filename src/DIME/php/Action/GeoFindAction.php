@@ -47,7 +47,7 @@ class GeoFindAction
         $wkt = $request->getContent();
         try {
             $point = Point::fromText($wkt);
-            $id = Service::database()->getTermSpatialContains('dime.denmark.kommune', $wkt);
+            $id = Service::database()->getSpatialTermsContain('dime.denmark.kommune', $wkt, '4326');
             $kommune = ORM::find(Term::class, ['concept' => 'dime.denmark.kommune', 'term' => $id]);
             $id = Service::database()->getKommuneMuseum($id);
             $museum = ORM::find(Actor::class, $id);

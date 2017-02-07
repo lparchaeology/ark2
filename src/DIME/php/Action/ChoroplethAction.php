@@ -42,18 +42,18 @@ class ChoroplethAction
     public function __invoke(Request $request)
     {
         //get all the kommune
-        $kommunes = Service::database()->getKommune();
+        $kommunes = Service::database()->getSpatialTerms('dime.denmark.kommune');
         // get the counts of finds in kommune
-        $findCounts = Service::database()->getChoropleth();
+        $findCounts = Service::database()->getSpatialTermChoropleth('dime.denmark.kommune', 'find', 'findpoint');
         //create a blank array to return
         $data = [];
         $curmax = 0;
         $curmin = INF;
 
         //this turns the 2D array of find counts into an array with keys
-        $findCounts = array_column ( $findCounts , "count" , "fid" );
-        
-        foreach( $findCounts as $fid => $count ){
+        $findCounts = array_column ( $findCounts , "count" , "term" );
+
+        foreach( $findCounts as $term => $count ){
             if( $count < $curmin ){
                 $curmin = $count;
             }
@@ -61,20 +61,20 @@ class ChoroplethAction
                 $curmax = $count;
             }
         }
-        
+
         $band = ($curmax - $curmin)/3;
-        
+
         foreach( $kommunes as $kommune ){
             // if the kommune has a count associate that with the geometry
-            if (array_key_exists($kommune['fid'],$findCounts)){
-                $kommune['count'] = $findCounts[$kommune['fid']];
+            if (array_key_exists($kommune['term'], $findCounts)) {
+                $kommune['count'] = $findCounts[$kommune['term']];
                 if( $kommune['count'] == $curmin ){
                     $kommune['band'] = 1;
-                } else if( $kommune['count'] < $curmin+$band ){
+                } else if( $kommune['count'] < $curmin + $band ) {
                     $kommune['band'] = 2;
-                } else if ( $kommune['count'] < $curmin+$band*2 ){
+                } else if ( $kommune['count'] < $curmin + $band * 2 ) {
                     $kommune['band'] = 3;
-                } else if ( $kommune['count'] < $curmin+$band*3 ){
+                } else if ( $kommune['count'] < $curmin + $band * 3 ) {
                     $kommune['band'] = 4;
                 } else {
                     $kommune['band'] = 4;
@@ -87,10 +87,10 @@ class ChoroplethAction
             // fill return array with these new kommune arrays
             $data['kommune'][] = $kommune;
         }
-        
+
         $data['max'] = $curmax;
         $data['min'] = $curmin;
-        
+
         //return it as json
         return new JsonResponse($data);
     }

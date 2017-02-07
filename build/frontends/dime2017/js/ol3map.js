@@ -1,205 +1,205 @@
-$(document).ready(function(){
-	
-	function source(source, config) {
-	    if (source == 'BingMaps') {
-	        return new ol.source.BingMaps(config)
-	    }
-	    if (source == 'TileWMS') {
-	        return new ol.source.TileWMS(config)
-	    }
-	}
+$(document).ready(function() {
 
-	var layers = [];
-	for (var i = 0; i < layerConfig.length; ++i) {
-	    var config = layerConfig[i];
-	    layer = new ol.layer.Tile({
-	        name: config.name,
-	        visible: config.visible,
-	        preload: config.preload,
-	        source: source(config.type, config.source)
-	    });
-	    layer.set('name', config.name);
-	    layers.push(layer);
-	}
+    function source(source, config) {
+        if (source == 'BingMaps') {
+            return new ol.source.BingMaps(config)
+        }
+        if (source == 'TileWMS') {
+            return new ol.source.TileWMS(config)
+        }
+    }
 
-	var map = new ol.Map({
-	    layers: layers,
-	    controls: [],
-	    loadTilesWhileInteracting: true,
-	    target: 'map',
-	    view: new ol.View({
-	        center: [1155972, 7580813],
-	        zoom: 7,
-	        maxZoom: 16,
-	    })
-	});
+    var layers = [];
+    for (var i = 0; i < layerConfig.length; ++i) {
+        var config = layerConfig[i];
+        layer = new ol.layer.Tile({
+            name: config.name,
+            visible: config.visible,
+            preload: config.preload,
+            source: source(config.type, config.source)
+        });
+        layer.set('name', config.name);
+        layers.push(layer);
+    }
 
-	map.on('moveend', function() {
-	    console.log('wha');
-	    var center = map.getView().get('center');
-	    var extents = map.getView().calculateExtent(map.getSize());
-	    centerstring = '[' + center.toString() + ']';
-	    var zoom = map.getView().getZoom();
-	    console.log(zoom);
-	});
+    var map = new ol.Map({
+        layers: layers,
+        controls: [],
+        loadTilesWhileInteracting: true,
+        target: 'map',
+        view: new ol.View({
+            center: [1155972, 7580813],
+            zoom: 7,
+            maxZoom: 16,
+        })
+    });
 
-	$('a.layer-select').on('click', function() {
-	    var name = $(this).attr('value');
-	    for (var i = 0; i < layers.length; ++i) {
-	        var layer = layers[i];
-	        layer.setVisible(layer.get('name') === name);
-	    }
-	});
+    map.on('moveend', function() {
+        console.log('wha');
+        var center = map.getView().get('center');
+        var extents = map.getView().calculateExtent(map.getSize());
+        centerstring = '[' + center.toString() + ']';
+        var zoom = map.getView().getZoom();
+        console.log(zoom);
+    });
 
-	if (ywkts.length != 0) {
+    $('a.layer-select').on('click', function() {
+        var name = $(this).attr('value');
+        for (var i = 0; i < layers.length; ++i) {
+            var layer = layers[i];
+            layer.setVisible(layer.get('name') === name);
+        }
+    });
 
-	    yourfeatures = [];
+    if (ywkts.length != 0) {
 
-	    theirfeatures = [];
+        yourfeatures = [];
 
-	    var dimestyles = {
-	        'yours': new ol.style.Style({
-	            image: new ol.style.Circle({
-	                radius: 5,
-	                fill: new ol.style.Fill({
-	                    color: '#f00'
-	                }),
-	                stroke: new ol.style.Stroke({
-	                    color: '#000',
-	                    width: 1
-	                })
-	            })
-	        }),
-	        'theirs': new ol.style.Style({
-	            image: new ol.style.Circle({
-	                radius: 5,
-	                fill: new ol.style.Fill({
-	                    color: '#00f'
-	                }),
-	                stroke: new ol.style.Stroke({
-	                    color: '#000',
-	                    width: 1
-	                })
-	            })
-	        })
-	    };
+        theirfeatures = [];
 
-	    var format = new ol.format.WKT();
+        var dimestyles = {
+            'yours': new ol.style.Style({
+                image: new ol.style.Circle({
+                    radius: 5,
+                    fill: new ol.style.Fill({
+                        color: '#f00'
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: '#000',
+                        width: 1
+                    })
+                })
+            }),
+            'theirs': new ol.style.Style({
+                image: new ol.style.Circle({
+                    radius: 5,
+                    fill: new ol.style.Fill({
+                        color: '#00f'
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: '#000',
+                        width: 1
+                    })
+                })
+            })
+        };
 
-	    for (wkt in ywkts) {
-	        feature = format.readFeature(ywkts[wkt], {
-	            dataProjection: 'EPSG:4326',
-	            featureProjection: 'EPSG:3857'
-	        });
-	        feature.set('ark_id', wkt);
-	        yourfeatures.push(feature);
-	    }
+        var format = new ol.format.WKT();
 
-	    for (wkt in twkts) {
-	        theirfeatures.push(format.readFeature(twkts[wkt], {
-	            dataProjection: 'EPSG:4326',
-	            featureProjection: 'EPSG:3857'
-	        }).set('ark_id', wkt));
-	    }
+        for (wkt in ywkts) {
+            feature = format.readFeature(ywkts[wkt], {
+                dataProjection: 'EPSG:4326',
+                featureProjection: 'EPSG:3857'
+            });
+            feature.set('ark_id', wkt);
+            yourfeatures.push(feature);
+        }
 
-	    var yours = new ol.layer.Vector({
-	        source: new ol.source.Vector({
-	            features: yourfeatures
-	        }),
-	        style: dimestyles['yours']
-	    });
+        for (wkt in twkts) {
+            theirfeatures.push(format.readFeature(twkts[wkt], {
+                dataProjection: 'EPSG:4326',
+                featureProjection: 'EPSG:3857'
+            }).set('ark_id', wkt));
+        }
 
-	    var theirs = new ol.layer.Vector({
-	        source: new ol.source.Vector({
-	            features: theirfeatures
-	        }),
-	        style: dimestyles['theirs']
-	    });
+        var yours = new ol.layer.Vector({
+            source: new ol.source.Vector({
+                features: yourfeatures
+            }),
+            style: dimestyles['yours']
+        });
 
-	    yours.set('name', 'yours');
+        var theirs = new ol.layer.Vector({
+            source: new ol.source.Vector({
+                features: theirfeatures
+            }),
+            style: dimestyles['theirs']
+        });
 
-	    map.addLayer(theirs);
-	    map.addLayer(yours);
+        yours.set('name', 'yours');
 
-	    view = map.getView();
-	    extent = yours.getSource().getExtent();
-	    view.fit(extent, map.getSize());
+        map.addLayer(theirs);
+        map.addLayer(yours);
 
-	    var select = new ol.interaction.Select({
-	        style: new ol.style.Style({
-	            image: new ol.style.Circle({
-	                radius: 8,
-	                fill: new ol.style.Fill({
-	                    color: '#f00'
-	                }),
-	                stroke: new ol.style.Stroke({
-	                    color: '#000',
-	                    width: 1
-	                })
-	            })
-	        }),
-	    });
+        view = map.getView();
+        extent = yours.getSource().getExtent();
+        view.fit(extent, map.getSize());
 
-	    map.addInteraction(select);
+        var select = new ol.interaction.Select({
+            style: new ol.style.Style({
+                image: new ol.style.Circle({
+                    radius: 8,
+                    fill: new ol.style.Fill({
+                        color: '#f00'
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: '#000',
+                        width: 1
+                    })
+                })
+            }),
+        });
 
-	    var collection = select.getFeatures();
+        map.addInteraction(select);
 
-	    collection.on('add', function(evt) {
-	        var elements = $('.dime-table tr');
+        var collection = select.getFeatures();
 
-	        for (var i = 0; i < elements.length; i++) {
-	            $(elements[i]).removeClass('selected');
-	        }
+        collection.on('add', function(evt) {
+            var elements = $('.dime-table tr');
 
-	        collection.forEach(function(e, i, a) {
-	            var ark_id = e.get('ark_id');
+            for (var i = 0; i < elements.length; i++) {
+                $(elements[i]).removeClass('selected');
+            }
 
-	            $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
-	        })
-	    });
+            collection.forEach(function(e, i, a) {
+                var ark_id = e.get('ark_id');
 
-	    collection.on('remove', function(evt) {
-	        var elements = $('.dime-table tr');
-	        for (var i = 0; i < elements.length; i++) {
-	            $(elements[i]).removeClass('selected');
-	        }
-	        collection.forEach(function(e, i, a) {
-	            var ark_id = e.get('ark_id');
+                $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
+            })
+        });
 
-	            $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
-	        })
-	    });
+        collection.on('remove', function(evt) {
+            var elements = $('.dime-table tr');
+            for (var i = 0; i < elements.length; i++) {
+                $(elements[i]).removeClass('selected');
+            }
+            collection.forEach(function(e, i, a) {
+                var ark_id = e.get('ark_id');
 
-	    $('table.dime-table').on('click-row.bs.table', function(evt, row, element, field) {
-	        ark_id = element.attr('data-unique-id');
-	        map.getLayers().forEach(function(i, e, a) {
-	            if (i.get('name') == 'yours') {
-	                console.log(evt.shiftKey);
-	                if (!evt.shiftKey) {
-	                    collection.clear();
-	                }
-	                if (typeof i.getSource().getFeatures == 'function') {
-	                    i.getSource().getFeatures().forEach(function(i, e, a) {
-	                        if (i.get('ark_id').toUpperCase() == ark_id) {
-	                            if (element.hasClass('selected')) {
-	                                collection.remove(i);
-	                            } else {
-	                                collection.push(i);
-	                            }
-	                        }
-	                    });
-	                }
-	            }
-	        });
-	    });
+                $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
+            })
+        });
 
-	}
-	
-	$('.style-select-option').on('click', function() {
-    	
-    	if( $(this).attr("value") == 'choropleth') {
-    		
-    		var $div = $("<div>", {
+        $('table.dime-table').on('click-row.bs.table', function(evt, row, element, field) {
+            ark_id = element.attr('data-unique-id');
+            map.getLayers().forEach(function(i, e, a) {
+                if (i.get('name') == 'yours') {
+                    console.log(evt.shiftKey);
+                    if (!evt.shiftKey) {
+                        collection.clear();
+                    }
+                    if (typeof i.getSource().getFeatures == 'function') {
+                        i.getSource().getFeatures().forEach(function(i, e, a) {
+                            if (i.get('ark_id').toUpperCase() == ark_id) {
+                                if (element.hasClass('selected')) {
+                                    collection.remove(i);
+                                } else {
+                                    collection.push(i);
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        });
+
+    }
+
+    $('.style-select-option').on('click', function() {
+
+        if ($(this).attr("value") == 'choropleth') {
+
+            var $div = $("<div>", {
                 id: "navbar-fade",
                 "class": "modal-backdrop fade in"
             });
@@ -209,18 +209,18 @@ $(document).ready(function(){
                 if (e.get("name") === "kommunelayer") {
                     e.setVisible(true);
                     $('.modal-backdrop').detach();
-            	    view = map.getView();
-            	    extent = e.getSource().getExtent();
-            	    view.fit(extent, map.getSize());
-            	    prerun = true;
+                    view = map.getView();
+                    extent = e.getSource().getExtent();
+                    view.fit(extent, map.getSize());
+                    prerun = true;
                 }
             });
-            if ( !prerun ){
-            	$.get(path + 'api/geo/choropleth', wkt, function(result) {
+            if (!prerun) {
+                $.get(path + 'api/geo/choropleth', wkt, function(result) {
                     var kommunesource = [];
                     var kommunes = result['kommune'];
                     for (kommune in kommunes) {
-                        feature = format.readFeature(kommunes[kommune]['geometry'], {
+                        feature = format.readFeature(kommunes[kommune]['wkt'], {
                             dataProjection: 'EPSG:4326',
                             featureProjection: 'EPSG:3857'
                         });
@@ -284,22 +284,21 @@ $(document).ready(function(){
                     $('.modal-backdrop').detach();
                 });
             }
-            
-    	} else {
-    		map.getLayers().forEach(function(e, i, a) {
-	            if (e.get("name") === "kommunelayer") {
-	                e.setVisible(false);
-	            }
-	        });
 
-    	    view = map.getView();
-    	    extent = yours.getSource().getExtent();
-    	    view.fit(extent, map.getSize());
-    		
-    	}
+        } else {
+            map.getLayers().forEach(function(e, i, a) {
+                if (e.get("name") === "kommunelayer") {
+                    e.setVisible(false);
+                }
+            });
 
-        
+            view = map.getView();
+            extent = yours.getSource().getExtent();
+            view.fit(extent, map.getSize());
+
+        }
+
+
     });
-	
-});
 
+});

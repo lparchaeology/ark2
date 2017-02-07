@@ -803,19 +803,52 @@ class Database
     }
 
     // Spatial
-    public function getTermSpatialContains($concept, $wkt)
+    public function getSpatialTerms($concept, $type = null)
+    {
+        $sql = "
+            SELECT term, ST_AsText(geometry) as wkt
+            FROM ark_spatial_term
+            WHERE concept = :concept
+        ";
+        $params[':concept'] = $concept;
+        if ($type) {
+            $sql .= "AND type = :type";
+            $params[':type'] = $type;
+        }
+        return $this->spatial()->fetchAll($sql, $params);
+    }
+
+    public function getSpatialTermsContain($concept, $wkt, $srid)
     {
         $sql = "
             SELECT term
             FROM ark_spatial_term
             WHERE concept = :concept
-            AND ST_Contains(geometry, ST_GeometryFromText(:point, 4326))
+            AND ST_Contains(geometry, ST_GeometryFromText(:point, :srid))
         ";
         $params = array(
             ':concept' => $concept,
             ':point' => $wkt,
+            ':srid' => $srid,
         );
         return $this->spatial()->fetchColumn($sql, $params);
+    }
+
+    public function getSpatialTermChoropleth($concept, $module, $attribute)
+    {
+        $sql = "
+            SELECT ark_spatial_term.term, count(*) as count
+            FROM ark_spatial_fragment, ark_spatial_term
+            WHERE ST_Contains(ark_spatial_term.geometry, ark_spatial_fragment.geometry)
+            AND ark_spatial_term.concept = :concept
+            AND ark_spatial_fragment.module = :module
+            AND ark_spatial_fragment.attribute = :attribute
+            GROUP BY ark_spatial_term.term
+        ";
+        $params[':concept'] = $concept;
+        $params[':module'] = $module;
+        $params[':attribute'] = $attribute;
+        return $this->spatial()->fetchAll($sql, $params);
     }
 
     public function getKommuneMuseum($kommune)
@@ -834,31 +867,4 @@ class Database
         );
         return $this->data()->fetchColumn($sql, $params);
     }
-
-    public function getKommune()
-    {
-        $sql = "
-            SELECT b.fid, asText(b.geometry) as geometry
-            FROM ark_spatial_term b
-        ";
-        $params = array(
-
-        );
-        return $this->spatial()->fetchAll($sql, $params);
-    }
-
-    public function getChoropleth()
-    {
-        $sql = "
-            SELECT b.fid, count(*) as count
-            FROM dime_ark_spatial.ark_fragment_wkt a, dime_ark_spatial.ark_spatial_term b
-            WHERE contains(b.geometry, GeomFromText(a.value))
-            group by b.fid
-        ";
-        $params = array(
-
-        );
-        return $this->spatial()->fetchAll($sql, $params);
-    }
-
 }
