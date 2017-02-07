@@ -57,7 +57,9 @@ $('#dime_find_item_dime_find_findpoint_northing').focusout(function() {
     var northing = $('#dime_find_item_dime_find_findpoint_northing').val();
     var wkt = 'POINT(' + easting + ' ' + northing + ')';
     $.post(path + 'api/geo/find', wkt, function(result) {
-        $('#dime_find_item_dime_find_kommune_kommune').val(result['kommune']).trigger("change");
+        $('#dime_find_item_dime_find_kommune_concept').val(result['kommune']['concept']);
+        $('#dime_find_item_dime_find_kommune_term').val(result['kommune']['term']);
+        $('#dime_find_item_dime_find_kommune_text').val(result['kommune']['text']).trigger("change");
         $('#dime_find_item_dime_find_museum_id').val(result['museum']['id']);
         $('#dime_find_item_dime_find_museum_module').val(result['museum']['module']);
         $('#dime_find_item_dime_find_museum_name').val(result['museum']['name']).trigger("change");

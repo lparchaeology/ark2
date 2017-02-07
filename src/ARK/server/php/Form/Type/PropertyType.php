@@ -67,11 +67,7 @@ class PropertyType extends AbstractType implements DataMapperInterface
             return;
         }
         if ($attribute->vocabulary()) {
-            if ($name == 'treasure' || $name == 'museum'  || $name == 'kommune') {
-                $class = TextChoiceType::class;
-            } else {
-                $class = ChoiceType::class;
-            }
+            $class = ChoiceType::class;
             foreach ($attribute->vocabulary()->terms() as $term) {
                 $options['choices'][$term->keyword()] = $term->name();
             }
@@ -99,8 +95,7 @@ class PropertyType extends AbstractType implements DataMapperInterface
         $options['label'] = false;
         $options['required'] = $required;
         // HACK
-        if ($name == 'treasure' || $name == 'museum'  || $name == 'kommune') {
-            $options['disabled'] = true;
+        if ($name == 'museum') {
             $options['attr']['readonly'] = true;
         }
         $builder->add($name, $class, $options);

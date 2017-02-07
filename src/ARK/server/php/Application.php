@@ -315,6 +315,7 @@ class Application extends SilexApplication
         $this->addSecurityFirewall('api_area', ['pattern' => "(^$path)"]);
 
         // Enable the Profiler
+        /* TODO Disable in prod as setting debug off is broken???
         if ($this['debug']) {
             $this->register(new WebProfilerServiceProvider(), [
                 'profiler.cache_dir' => $this['dir.var'].'/cache/profiler',
@@ -322,6 +323,7 @@ class Application extends SilexApplication
             $this->register(new DoctrineProfilerServiceProvider());
             $this->addSecurityFirewall('dev_area', ['pattern' => '^/(_(profiler|wdt)|css|images|js)/']);
         }
+        */
 
         // Set up the Service Provider
         Service::init($this);

@@ -30,65 +30,62 @@
 
 namespace ARK\Form\Type;
 
-use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\Vocabulary\Term;
-use ARK\Vocabulary\Vocabulary;
+use ARK\Model\Property;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class VocabularyChoiceType extends AbstractType implements DataMapperInterface
+class ReadonlyVocabularyType extends AbstractType implements DataMapperInterface
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->setDataMapper($this);
-        if (isset($options['vocabulary'])) {
-            $vocabulary = $options['vocabulary'];
-        } else {
-            $vocabulary = $options['field']->attribute()->vocabulary();
-        }
-        $fieldOptions['choices'] = $vocabulary->terms();
-        $fieldOptions['choice_value'] = 'name';
-        $fieldOptions['choice_name'] = 'name';
-        $fieldOptions['choice_label'] = 'keyword';
-        $fieldOptions['placeholder'] = $vocabulary->concept();
         $fieldOptions['mapped'] = false;
         $fieldOptions['label'] = false;
-        if (isset($options['multiple'])) {
-            $fieldOptions['multiple'] = $options['multiple'];
-        }
-        $builder->add('term', ChoiceType::class, $fieldOptions);
+        $fieldOptions['attr']['readonly'] = true;
+        $builder->add('concept', HiddenType::class, $fieldOptions);
+        $builder->add('term', HiddenType::class, $fieldOptions);
+        $builder->add('text', TextType::class, $fieldOptions);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'field' => null,
-            'compound' => true,
             'vocabulary' => null,
-            'data_class' => Term::class,
+            'data_class' => Property::class,
             'empty_data' => null,
         ]);
     }
 
-    public function mapDataToForms($term, $forms)
+    public function mapDataToForms($property, $forms)
     {
         $forms = iterator_to_array($forms);
-        $forms['term']->setData($term);
+        if ($property) {
+            $value = $property->value();
+            if ($value) {
+                $term = $property->attribute()->vocabulary()->term($value);
+                if ($term) {
+                    $forms['concept']->setData($term->concept()->concept());
+                    $forms['term']->setData($term->name());
+                    $forms['text']->setData(Service::translate($term->keyword()));
+                }
+            }
+        }
     }
 
-    public function mapFormsToData($forms, &$term)
+    public function mapFormsToData($forms, &$property)
     {
         $forms = iterator_to_array($forms);
-        $term = $forms['term']->getData();
+        $property->setValue($forms['term']->getData());
     }
 
     public function getName()
     {
-        return 'vocabularychoice';
+        return 'readonlyvocabulary';
     }
 }

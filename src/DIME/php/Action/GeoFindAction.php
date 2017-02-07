@@ -38,6 +38,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Brick\Geo\Point;
 use Exception;
 use ARK\Entity\Actor;
+use ARK\Vocabulary\Term;
 
 class GeoFindAction
 {
@@ -46,13 +47,16 @@ class GeoFindAction
         $wkt = $request->getContent();
         try {
             $point = Point::fromText($wkt);
-            $kommune = Service::database()->getTermSpatialContains('dime.denmark.kommune', $wkt);
-            $id = Service::database()->getKommuneMuseum($kommune);
+            $id = Service::database()->getTermSpatialContains('dime.denmark.kommune', $wkt);
+            $kommune = ORM::find(Term::class, ['concept' => 'dime.denmark.kommune', 'term' => $id]);
+            $id = Service::database()->getKommuneMuseum($id);
             $museum = ORM::find(Actor::class, $id);
             $data['in'] = $wkt;
             $data['x'] = $point->x();
             $data['y'] = $point->y();
-            $data['kommune'] = $kommune;
+            $data['kommune']['concept'] = $kommune->concept()->concept();
+            $data['kommune']['term'] = $kommune->name();
+            $data['kommune']['text'] = Service::translate($kommune->keyword());
             $data['museum']['id'] = $museum->id();
             $data['museum']['module'] = $museum->schema()->module()->name();
             $data['museum']['name'] = $museum->property('fullname')->value()[0]['content'];
