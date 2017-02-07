@@ -851,8 +851,8 @@ class Database
     {
         $sql = "
             SELECT b.fid, count(*) as count
-            FROM ark_fragment_wkt a, ark_spatial_term b
-            WHERE contains(b.geometry, GeomFromText(a.value))
+            FROM ark_spatial_fragment a, ark_spatial_term b
+            WHERE contains(b.geometry, a.geometry)
             group by b.fid
         ";
         $params = array(
