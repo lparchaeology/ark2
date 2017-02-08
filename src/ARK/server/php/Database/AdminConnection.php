@@ -31,6 +31,7 @@
 namespace ARK\Database;
 
 use ARK\Database\Connection;
+use ARK\Database\SchemaWriter;
 use Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Schema\Schema;
 use DoctrineXml\Parser;
@@ -42,7 +43,7 @@ class AdminConnection extends Connection
         $this->getSchemaManager()->createDatabase($database);
         // Set MySQL default charset and collation to utf8
         if ($this->platform()->getName() == 'mysql') {
-            $this->query("ALTER DATABASE $database CHARACTER SET utf8 COLLATE utf8_unicode_ci");
+            $this->query("ALTER DATABASE $database CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
         }
     }
 
@@ -64,6 +65,11 @@ class AdminConnection extends Connection
         foreach ($queries as $query) {
             $this->query($query);
         }
+    }
+
+    public function extractSchema($schemaPath, $overwrite = true)
+    {
+        SchemaWriter::fromConnection($this, $schemaPath, $overwrite);
     }
 
     public function listUsers($identity = false)

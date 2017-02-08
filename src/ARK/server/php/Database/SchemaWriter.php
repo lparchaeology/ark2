@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -119,7 +119,7 @@ class SchemaWriter
             $element->addAttribute('comment', $options['comment']);
             unset($options['comment']);
         }
-       $options = static::tableOptions($table, $options, $connection, $platform);
+        $options = static::tableOptions($table, $options, $connection, $platform);
         // Primary Key
         if ($table->hasPrimaryKey()) {
             $primaryKey = $table->getPrimaryKey();
@@ -230,7 +230,7 @@ class SchemaWriter
         }
     }
 
-    protected static function addForeignKey(SimpleXMLElement $element, ForeignKeyConstraint $foreignKey)
+    protected static function addForeignKey(SimpleXMLElement $parent, ForeignKeyConstraint $foreignKey)
     {
         $element = $parent->addChild('references');
         static::addNameAttribute($element, $foreignKey);
@@ -287,6 +287,14 @@ class SchemaWriter
             }
             if (!isset($options['collate'])) {
                 $options['collate'] = $data['TABLE_COLLATION'];
+            }
+            if (!isset($options['character set'])) {
+                $sql = 'SELECT * FROM information_schema.COLLATIONS WHERE COLLATION_NAME = :collate';
+                $stmt = $connection->prepare($sql);
+                $stmt->bindValue('collate', $options['collate']);
+                $stmt->execute();
+                $data = $stmt->fetch();
+                $options['charset'] = $data['CHARACTER_SET_NAME'];
             }
         }
         return $options;

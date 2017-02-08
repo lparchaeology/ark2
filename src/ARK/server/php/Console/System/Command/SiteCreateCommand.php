@@ -172,7 +172,7 @@ class SiteCreateCommand extends Command
 
         $actions = [];
         // Create the databases
-        foreach (['core', 'data', 'user'] as $db) {
+        foreach (['core', 'data', 'spatial', 'user'] as $db) {
             $dbname = $dbprefix.$db;
             $action = 'new';
 
@@ -213,6 +213,7 @@ class SiteCreateCommand extends Command
         }
 
         // Load the schemas, not done above as need to connect to db itself
+        // TODO add spatial when working
         foreach (['core', 'data', 'user'] as $db) {
             if ($actions[$db] != 'keep') {
                 $admin->close();

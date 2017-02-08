@@ -30,79 +30,82 @@
 
 namespace ARK\Database\Command;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Statement;
-use Symfony\Component\Console\Input\InputArgument;
+use ARK\ARK;
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\DriverManager;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
-use ARK\Database\SchemaWriter;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 
-class ReverseCommand extends \Symfony\Component\Console\Command\Command
+class ReverseCommand extends Command
 {
     protected function configure()
     {
         $this->setName('database:reverse')
-             ->setDescription('Reverse engineer an existing database as DoctrineXML')
-             ->addArgument('database', InputArgument::REQUIRED, 'The database')
-             ->addOption('filename', null, InputOption::VALUE_OPTIONAL, 'The file to write the DoctrineXML')
-             ->addOption('overwrite', null, InputOption::VALUE_NONE, 'Overwrite the file if it already exists');
+             ->setDescription('Reverse engineer an existing database as DoctrineXML');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $database = $input->getArgument('database');
-        $filename = $input->getOption('filename');
-        $overwrite = $input->getOption('overwrite');
-
-        $userQuestion = new Question('Please enter the root database user: (root) ', 'root');
-        $passwordQuestion = new Question('Please enter the root password: ', '');
-        $passwordQuestion->setHidden(true);
-
         $question = $this->getHelper('question');
-        $user = $question->ask($input, $output, $userQuestion);
+
+        $siteQuestion = new Question('Please enter the site to reverse engineer: ', '');
+        $site = $question->ask($input, $output, $siteQuestion);
+
+        $servers = array_keys(ARK::servers());
+        $defaultServer = ARK::defaultServerName();
+        $serverQuestion = new ChoiceQuestion("Please enter the database server to use (default: $defaultServer): ", $servers, $defaultServer);
+        $serverQuestion->setAutocompleterValues($servers);
+        $server = $question->ask($input, $output, $serverQuestion);
+        $config = ARK::server($server);
+
+        $passwordQuestion = new Question('Please enter the root database password: ', '');
+        $passwordQuestion->setHidden(true);
+        $passwordQuestion->setHiddenFallback(false);
+        $passwordQuestion->setMaxAttempts(3);
         $password = $question->ask($input, $output, $passwordQuestion);
+        $config['password'] = $password;
 
-        if ($filename && !$overwrite && is_file($filename)) {
-            $overwriteQuestion = new ConfirmationQuestion('File already exists, do you want to overwrite this file? (n) ', false);
-            $overwrite = $question->ask($input, $output, $overwriteQuestion);
-            if (!$overwrite) {
-                return;
-            }
-        }
+        $config['wrapperClass'] = 'ARK\Database\AdminConnection';
+        $dbprefix = $site.'_ark_';
+        $this->reverse($dbprefix, 'core', $config, $output);
+        $this->reverse($dbprefix, 'data', $config, $output);
+        $this->reverse($dbprefix, 'spatial', $config, $output);
+        $this->reverse($dbprefix, 'user', $config, $output);
+    }
 
-        $config = array(
-            'driver' => 'pdo_mysql',
-            'host' => '127.0.0.1',
-            'port' => '8889',
-            'dbname' => $database,
-            'charset' => 'utf8',
-            'user' => $user,
-            'password' => $password,
-        );
+    private function reverse($prefix, $name, $config, $output)
+    {
+        // Get the Admin Connection
+        $dbname = $prefix.$name;
+        $config['dbname'] = $dbname;
         try {
-            $conn = \Doctrine\DBAL\DriverManager::getConnection($config);
+            $admin = DriverManager::getConnection($config);
         } catch (DBALException $e) {
-            // DBALException: driverRequired, unknownDriver, invalidDriverClass, invalidWrapperClass(wrapperClass)
-            echo 'Admin configuration failed: '.$e->getCode().' - '.$e->getMessage();
+            $output->writeln("Admin configuration failed for $dbname : ".$e->getCode().' - '.$e->getMessage());
             return false;
         }
+
         // Test the Admin connection
         try {
-            $conn->connect();
+            $admin->connect();
         } catch (DBALException $e) {
-            // PDOException: SQL92 SQLSTATE code
-            echo 'Admin connection failed: '.$e->getCode().' - '.$e->getMessage();
+            $output->writeln("Admin connection failed for $dbname : ".$e->getCode().' - '.$e->getMessage());
             return false;
         }
 
-        if ($filename) {
-            SchemaWriter::fromConnection($conn, $filename, $overwrite);
-            $output->writeln('Schema written to file '.$filename);
-        } else {
-            $output->writeln(SchemaWriter::fromConnection($conn));
+        $path = "../src/ARK/server/schema/database/$name.xml";
+        try {
+            $admin->extractSchema($path, true);
+        } catch (DBALException $e) {
+            $output->writeln("FAILED: Extract Schema from database $dbname failed: ".$e->getCode().' - '.$e->getMessage());
+            return false;
         }
+
+        $output->writeln("SUCCESS: Schema for $dbname extracted to file $path");
+        $admin->close();
+        return true;
     }
 }

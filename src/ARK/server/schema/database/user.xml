@@ -40,7 +40,7 @@
       <unique/>
       <col>username</col>
     </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8_general_ci"/>
+    <opt for="mysql" engine="InnoDB" collate="utf8_general_ci" charset="utf8"/>
   </table>
   <table name="ark_user_field">
     <field name="user_id" type="integer">
@@ -53,6 +53,6 @@
       <notnull/>
     </field>
     <field name="value" type="string" size="255"/>
-    <opt for="mysql" engine="InnoDB" collate="utf8_general_ci"/>
+    <opt for="mysql" engine="InnoDB" collate="utf8_general_ci" charset="utf8"/>
   </table>
 </schema>
