@@ -30,9 +30,9 @@
 
 namespace DIME\Action;
 
-use ARK\Http\JsonResponse;
 use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ChoroplethAction
 {

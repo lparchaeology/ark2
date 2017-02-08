@@ -646,7 +646,21 @@ Carousel Stuff
 	height:100px;
 
 }
+/* map overlay */
 
+.mapview .btn-group {
+	margin: 10px 0;	
+}
+
+.mapview .btn-group .style-select-option {
+	cursor:pointer;	
+}
+
+.map-cover {
+	background: rgba(0, 0, 0, 1) url("../images/loading.gif") no-repeat scroll center center;
+    position: absolute;
+    z-index: 1;
+}
 
 
 /*  Footer */

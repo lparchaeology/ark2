@@ -192,7 +192,6 @@ $(document).ready(function() {
                 }
             });
         });
-
     }
 
     $('.style-select-option').on('click', function() {
@@ -201,9 +200,9 @@ $(document).ready(function() {
 
             var $div = $("<div>", {
                 id: "navbar-fade",
-                "class": "modal-backdrop fade in"
+                "class": "modal-backdrop fade in map-cover"
             });
-            $("#map").append($div);
+            $(".ol-viewport").append($div);
             var prerun = false;
             map.getLayers().forEach(function(e, i, a) {
                 if (e.get("name") === "kommunelayer") {
@@ -215,8 +214,8 @@ $(document).ready(function() {
                     prerun = true;
                 }
             });
-            if (!prerun) {
-                $.get(path + 'api/geo/choropleth', wkt, function(result) {
+            if (prerun == false) {
+                $.get(path + 'api/geo/choropleth', false, function(result) {
                     var kommunesource = [];
                     var kommunes = result['kommune'];
                     for (kommune in kommunes) {

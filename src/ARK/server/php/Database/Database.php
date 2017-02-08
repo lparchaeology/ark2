@@ -822,7 +822,7 @@ class Database
     {
         $sql = "
             SELECT term
-            FROM ark_spatial_term
+            FROM dime_ark_spatial.ark_spatial_term
             WHERE concept = :concept
             AND ST_Contains(geometry, ST_GeometryFromText(:point, :srid))
         ";
