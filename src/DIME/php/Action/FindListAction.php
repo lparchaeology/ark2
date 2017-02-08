@@ -78,9 +78,8 @@ class FindListAction extends DimeFormAction
         $data['dime_find_list'] = $data[$layout];
         $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $data[$layout] : []);
         $data['dime_find_filter'] = null;
-        $data['kortforsyningenticket'] = "16633bcfde22706e77cb4c737172ecd3";
+        $data['kortforsyningenticket'] = file_get_contents("http://services.kortforsyningen.dk/service?request=GetTicket&login=login&password=password");
         return $this->renderResponse($request, $data, $layout);
-        
     }
 
     public function processForm(Request $request, $form, $redirect)

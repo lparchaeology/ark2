@@ -47,6 +47,7 @@ class HomePageAction extends DimeAction
         $data['dime_find_list'] = $data[$layout];
         $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $data[$layout] : []);
         $data['dime_home_action'] = null;
+        $data['kortforsyningenticket'] = file_get_contents("http://services.kortforsyningen.dk/service?request=GetTicket&login=login&password=password");
         $options['data'] = $data;
         return Service::renderResponse('pages/page.html.twig', $options);
     }
