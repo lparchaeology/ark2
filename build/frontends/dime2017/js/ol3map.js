@@ -212,7 +212,10 @@ $(document).ready(function() {
                     view = map.getView();
                     extent = e.getSource().getExtent();
                     view.fit(extent, map.getSize());
+                    $('.map-legend').show();
                     prerun = true;
+                } else if (e.get("name") === "yours" || e.get("name") === "theirs") {
+                    e.setVisible(false);
                 }
             });
             if (prerun == false) {
@@ -222,57 +225,67 @@ $(document).ready(function() {
                     var kommunes = result['kommune'];
                     for (kommune in kommunes) {
                         feature = format.readFeature(kommunes[kommune]['geometry'], {
-                            dataProjection: 'EPSG:4326',
+                            dataProjection: 'EPSG:'+kommunes[kommune]['srid'],
                             featureProjection: 'EPSG:3857'
                         });
                         feature.set('count', kommunes[kommune]['count']);
                         feature.set('band', kommunes[kommune]['band']);
                         kommunesource.push(feature);
                     }
+                    
+                    var bands = {
+                    		"4" : [225,38,42],
+                    		"3" : [235,111,77],
+                    		"2" : [241,227,50],
+                    		"1" : [104,176,56],
+                    };
+                    
+                    var height = 200;
+                    var width = 10;
+                    var opacity = 0.5;
+                    
+                    bandslength = Object.keys(bands).length;
+                    
+                    var bandheight = height/bandslength;
+                    
+                    var styles = {};
+                	
+                    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                    svg.setAttribute('width', width);
+                    svg.setAttribute('height', height);
+                    svg.setAttribute('style', "border: 1px solid black");
+                    for (band in bands) {
+                    	rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    	style = "fill:rgb("+bands[band][0]+","+bands[band][1]+","+bands[band][2]+")"
+                    	rect.setAttribute('style', style);
+                    	rect.setAttribute('height', bandheight);
+                    	rect.setAttribute('width', width);
+                    	rect.setAttribute('fill-opacity', opacity);
+                    	rect.setAttribute('y',bandheight*(bandslength-band));
+                    	svg.append(rect);
+                    	bands[band].push(opacity);
+                    	styles[band] = new ol.style.Style({
+                            fill: new ol.style.Fill({
+                                color: bands[band]
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: '#000',
+                                width: 1
+                            })
+                        })
+                    }
+                    
+                    svg.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
+                    
+                    $('.legend-image').append(svg);
+                    
+                    $('.map-legend').show();
+                    
                     var kommunelayer = new ol.layer.Vector({
                         source: new ol.source.Vector({
                             features: kommunesource
                         }),
                         style: function(feature, resolution) {
-                            var styles = {
-                                "4": new ol.style.Style({
-                                    fill: new ol.style.Fill({
-                                        color: [104,176,56,0.5]
-                                    }),
-                                    stroke: new ol.style.Stroke({
-                                        color: '#000',
-                                        width: 1
-                                    })
-                                }),
-                                "3": new ol.style.Style({
-                                    fill: new ol.style.Fill({
-                                        color: [235,111,77,0.5]
-                                    }),
-                                    stroke: new ol.style.Stroke({
-                                        color: '#000',
-                                        width: 1
-                                    })
-                                }),
-                                "2": new ol.style.Style({
-                                    fill: new ol.style.Fill({
-                                        color: [241,227,50,0.5]
-                                    }),
-                                    stroke: new ol.style.Stroke({
-                                        color: '#000',
-                                        width: 1
-                                    })
-                                }),
-                                "1": new ol.style.Style({
-                                    fill: new ol.style.Fill({
-                                        color: [225,38,42,0.5]
-                                    }),
-                                    stroke: new ol.style.Stroke({
-                                        color: '#000',
-                                        width: 1
-                                    })
-                                })
-                            };
-
                             return [styles[feature.get('band')]];
                         }
 
@@ -289,19 +302,47 @@ $(document).ready(function() {
             }
 
         } else {
+            view = map.getView();
+            
+            //[minx,miny,maxx,maxy]
+            
+            extent = [Infinity, Infinity, -Infinity, -Infinity];
+            
             map.getLayers().forEach(function(e, i, a) {
                 if (e.get("name") === "kommunelayer") {
                     e.setVisible(false);
+                } else {
+                    if (e.get("name") === "yours" || e.get("name") === "theirs") {
+                        e.setVisible(true);
+                        newextent = e.getSource().getExtent();
+                        extent = [
+                                  Math.min(newextent[0],extent[0]),
+                                  Math.min(newextent[1],extent[1]),
+                                  Math.max(newextent[2],extent[2]),
+                                  Math.max(newextent[3],extent[3])
+                                  ];
+                        
+                        view.fit(extent, map.getSize());
+                    }
                 }
             });
-
-            view = map.getView();
-            extent = yours.getSource().getExtent();
-            view.fit(extent, map.getSize());
+            
+            $('.map-legend').hide();
 
         }
 
-
     });
+    
+    switch(default_overlay) {
+	    case "distribution":
+	        $('.style-select-option[value="distribution"]').click();
+	        break;
+	    case "choropleth":
+	        $('.style-select-option[value="choropleth"]').click();
+	        break;
+	    default:
+            
+    } 
+    
 
 });

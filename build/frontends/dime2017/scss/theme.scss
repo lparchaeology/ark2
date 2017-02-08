@@ -662,6 +662,25 @@ Carousel Stuff
     z-index: 1;
 }
 
+.map-legend {
+    padding: 60px 20px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    text-align: center;
+    display:none;
+}
+
+.map-legend .map-legend-label{
+    text-transform: uppercase;
+    background-color: #f9f9f9;
+    display:block;
+    padding: 0 5px;
+}
+
+.map-legend .legend-image {
+	margin:5px;
+}
 
 /*  Footer */
 

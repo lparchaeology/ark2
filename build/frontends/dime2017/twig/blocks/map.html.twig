@@ -29,6 +29,12 @@
     </div>
 
     <div id="map" class="map search_map"></div>
+    
+    <div id="map-legend" class="map-legend">
+    <span class="map-legend-label">{{ 'map.legend.max' | translate }}</span>
+    <div class="legend-image"></div>
+    <span class="map-legend-label">{{ 'map.legend.min' | translate }}</span>
+    </div>
 
         <script src="https://openlayers.org/en/v3.20.1/build/ol.js"></script>
 
@@ -107,16 +113,27 @@
 
             ywkts = [];
 
-            {% for item in data[layout.name] %}
-                {% set findpoint = item.property('findpoint').value() %}
-                {% if findpoint['coordinates'] is defined %}
-                    ywkts[{{ item.id }}] = '{{ findpoint['coordinates'] }}',
-                {% else %}
-                    'POINT (0 0)',
-                {% endif %}
-            {% endfor %}
-
             twkts = [];
+
+            {% if global.user %}
+
+				var default_overlay = "distribution";
+        	
+                {% for item in data[layout.name] %}
+                    {% set findpoint = item.property('findpoint').value() %}
+                    {% if findpoint['coordinates'] is defined %}
+                        ywkts[{{ item.id }}] = '{{ findpoint['coordinates'] }}';
+                    {% else %}
+                        'POINT (0 0)';
+                    {% endif %}
+                {% endfor %}
+
+            {% else %}
+            
+				var default_overlay = "choropleth";
+
+            {% endif %}
+
 
         </script>
 
