@@ -27,7 +27,6 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-
 namespace DIME\Action;
 
 use ARK\ORM\ORM;
@@ -39,23 +38,24 @@ use ARK\Application;
 
 class HomePageAction extends DimeAction
 {
+
     public function __invoke(Request $request)
     {
         $layout = 'dime_home_page';
         $options = $this->defaultOptions();
-        $options['layout'] =  Service::layout($layout);
+        $options['layout'] = Service::layout($layout);
         $data[$layout] = ORM::findAll(Find::class);
         $data['dime_find_list'] = $data[$layout];
         $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $data[$layout] : []);
         $data['dime_home_action'] = null;
         $kortforsyningenticket = false;
-        $passPath = __DIR__.'/../../../../sites/dime/config/passwords.json';
+        $passPath = __DIR__ . '/../../../../sites/dime/config/passwords.json';
         if ($passwords = json_decode(file_get_contents($passPath), true)) {
-            $user = $passwords['kortforsyningen']['password'];
+            $user = $passwords['kortforsyningen']['user'];
             $password = $passwords['kortforsyningen']['password'];
             $kortforsyningenticket = file_get_contents("http://services.kortforsyningen.dk/service?request=GetTicket&login=$user&password=$password");
         }
-        if ( strlen($kortforsyningenticket) ==32 ){
+        if (strlen($kortforsyningenticket) == 32) {
             $data['kortforsyningenticket'] = $kortforsyningenticket;
         } else {
             $data['kortforsyningenticket'] = false;

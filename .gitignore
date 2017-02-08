@@ -5,6 +5,7 @@
 /build/frontends/*/config/passwords.json
 /sites/**/
 !/sites/*.json
+/src/DIME/frontend/*/config/passwords.json
 /vendor/
 .settings/
 .buildpath
