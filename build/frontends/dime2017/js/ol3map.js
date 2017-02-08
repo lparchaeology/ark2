@@ -202,6 +202,7 @@ $(document).ready(function() {
                 id: "navbar-fade",
                 "class": "modal-backdrop fade in map-cover"
             });
+            
             $(".ol-viewport").append($div);
             var prerun = false;
             map.getLayers().forEach(function(e, i, a) {
@@ -216,6 +217,7 @@ $(document).ready(function() {
             });
             if (prerun == false) {
                 $.get(path + 'api/geo/choropleth', false, function(result) {
+                    var format = new ol.format.WKT();
                     var kommunesource = [];
                     var kommunes = result['kommune'];
                     for (kommune in kommunes) {
@@ -235,7 +237,7 @@ $(document).ready(function() {
                             var styles = {
                                 "4": new ol.style.Style({
                                     fill: new ol.style.Fill({
-                                        color: '#68b038'
+                                        color: [104,176,56,0.5]
                                     }),
                                     stroke: new ol.style.Stroke({
                                         color: '#000',
@@ -244,7 +246,7 @@ $(document).ready(function() {
                                 }),
                                 "3": new ol.style.Style({
                                     fill: new ol.style.Fill({
-                                        color: '#eb6f4d'
+                                        color: [235,111,77,0.5]
                                     }),
                                     stroke: new ol.style.Stroke({
                                         color: '#000',
@@ -253,7 +255,7 @@ $(document).ready(function() {
                                 }),
                                 "2": new ol.style.Style({
                                     fill: new ol.style.Fill({
-                                        color: '#f1e332'
+                                        color: [241,227,50,0.5]
                                     }),
                                     stroke: new ol.style.Stroke({
                                         color: '#000',
@@ -262,7 +264,7 @@ $(document).ready(function() {
                                 }),
                                 "1": new ol.style.Style({
                                     fill: new ol.style.Fill({
-                                        color: '#e1262a'
+                                        color: [225,38,42,0.5]
                                     }),
                                     stroke: new ol.style.Stroke({
                                         color: '#000',
@@ -280,6 +282,8 @@ $(document).ready(function() {
                     view = map.getView();
                     extent = kommunelayer.getSource().getExtent();
                     view.fit(extent, map.getSize());
+                    $('.modal-backdrop').detach();
+                }).fail(function() {
                     $('.modal-backdrop').detach();
                 });
             }
