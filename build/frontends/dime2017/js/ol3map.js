@@ -329,14 +329,15 @@ $(document).ready(function() {
                     if (e.get("name") === "yours" || e.get("name") === "theirs") {
                         e.setVisible(true);
                         newextent = e.getSource().getExtent();
-                        extent = [
-                                  Math.min(newextent[0],extent[0]),
-                                  Math.min(newextent[1],extent[1]),
-                                  Math.max(newextent[2],extent[2]),
-                                  Math.max(newextent[3],extent[3])
-                                  ];
-                        
-                        view.fit(extent, map.getSize());
+                        if(newextent[0] != Infinity){
+                            extent = [
+                                      Math.min(newextent[0],extent[0]),
+                                      Math.min(newextent[1],extent[1]),
+                                      Math.max(newextent[2],extent[2]),
+                                      Math.max(newextent[3],extent[3])
+                                      ];
+                            view.fit(extent, map.getSize());
+                        }
                     }
                 }
             });
