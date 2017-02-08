@@ -27,7 +27,6 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-
 namespace DIME\Action;
 
 use ARK\ORM\ORM;
@@ -41,36 +40,49 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FindListAction extends DimeFormAction
 {
+
     public function __invoke(Request $request, $actorSlug = null)
     {
         $query = $request->query->all();
         $criteria = [];
         if (isset($query['kommune'])) {
-            $kommune = ORM::find(Term::class, ['concept' => 'dime.denmark.kommune', 'term' => $query['kommune']]);
+            $kommune = ORM::find(Term::class, [
+                'concept' => 'dime.denmark.kommune',
+                'term' => $query['kommune']
+            ]);
             $data['dime_find_filter_kommune'] = $kommune;
-            //$criteria['kommune'] = $kommune->name();
+            // $criteria['kommune'] = $kommune->name();
         }
         if (isset($query['type'])) {
-            $type = ORM::find(Term::class, ['concept' => 'dime.find.type', 'term' => $query['type']]);
+            $type = ORM::find(Term::class, [
+                'concept' => 'dime.find.type',
+                'term' => $query['type']
+            ]);
             $data['dime_find_filter_type'] = $type;
             $criteria['type'] = $type->name();
         }
         /*
-        if (isset($query['subtype'])) {
-            $subtype = ORM::find(Term::class, ['concept' => 'dime.find.subtype', 'term' => $query['subtype']]);
-            $data['dime_find_filter_subtype'] = $type;
-            $criteria['subtype'] = $subtype->name();
-        }
-        */
+         * if (isset($query['subtype'])) {
+         * $subtype = ORM::find(Term::class, ['concept' => 'dime.find.subtype', 'term' => $query['subtype']]);
+         * $data['dime_find_filter_subtype'] = $type;
+         * $criteria['subtype'] = $subtype->name();
+         * }
+         */
         if (isset($query['period'])) {
-            $period = ORM::find(Term::class, ['concept' => 'dime.period', 'term' => $query['period']]);
+            $period = ORM::find(Term::class, [
+                'concept' => 'dime.period',
+                'term' => $query['period']
+            ]);
             $data['dime_find_filter_period'] = $period;
-            //$criteria['period'] = $period->name();
+            // $criteria['period'] = $period->name();
         }
         if (isset($query['material'])) {
-            $material = ORM::find(Term::class, ['concept' => 'dime.material', 'term' => $query['material']]);
+            $material = ORM::find(Term::class, [
+                'concept' => 'dime.material',
+                'term' => $query['material']
+            ]);
             $data['dime_find_filter_material'] = $material;
-            //$criteria['material'] = $material->name();
+            // $criteria['material'] = $material->name();
         }
 
         $layout = 'dime_find_search';
@@ -78,7 +90,19 @@ class FindListAction extends DimeFormAction
         $data['dime_find_list'] = $data[$layout];
         $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $data[$layout] : []);
         $data['dime_find_filter'] = null;
-        $data['kortforsyningenticket'] = file_get_contents("http://services.kortforsyningen.dk/service?request=GetTicket&login=login&password=password");
+
+        $passPath = __DIR__ . '/../../../../sites/dime/config/passwords.json';
+        if ($passwords = json_decode(file_get_contents($passPath), true)) {
+            $user = $passwords['kortforsyningen']['user'];
+            $password = $passwords['kortforsyningen']['password'];
+            $kortforsyningenticket = file_get_contents("http://services.kortforsyningen.dk/service?request=GetTicket&login=$user&password=$password");
+        }
+        if (strlen($kortforsyningenticket) == 32) {
+            $data['kortforsyningenticket'] = $kortforsyningenticket;
+        } else {
+            $data['kortforsyningenticket'] = false;
+        }
+
         return $this->renderResponse($request, $data, $layout);
     }
 

@@ -35,6 +35,7 @@ use ARK\Service;
 use DIME\Action\DimeAction;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
+use ARK\Application;
 
 class HomePageAction extends DimeAction
 {
@@ -47,7 +48,18 @@ class HomePageAction extends DimeAction
         $data['dime_find_list'] = $data[$layout];
         $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $data[$layout] : []);
         $data['dime_home_action'] = null;
-        $data['kortforsyningenticket'] = file_get_contents("http://services.kortforsyningen.dk/service?request=GetTicket&login=login&password=password");
+        $kortforsyningenticket = false;
+        $passPath = __DIR__.'/../../../../sites/dime/config/passwords.json';
+        if ($passwords = json_decode(file_get_contents($passPath), true)) {
+            $user = $passwords['kortforsyningen']['password'];
+            $password = $passwords['kortforsyningen']['password'];
+            $kortforsyningenticket = file_get_contents("http://services.kortforsyningen.dk/service?request=GetTicket&login=$user&password=$password");
+        }
+        if ( strlen($kortforsyningenticket) ==32 ){
+            $data['kortforsyningenticket'] = $kortforsyningenticket;
+        } else {
+            $data['kortforsyningenticket'] = false;
+        }
         $options['data'] = $data;
         return Service::renderResponse('pages/page.html.twig', $options);
     }
