@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6
+-- version 4.6.5.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 05, 2017 at 11:32 PM
--- Server version: 10.0.22-MariaDB
--- PHP Version: 7.0.15
+-- Generation Time: Feb 08, 2017 at 10:13 PM
+-- Server version: 5.6.34
+-- PHP Version: 7.1.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -755,15 +755,15 @@ INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `attribute`, `paramete
 (180, 'file', '1', 'title', 'en', 'A File', NULL, 0, '2017-01-25 19:46:09', 0, '2017-01-25 19:46:09', ''),
 (181, 'file', '1', 'description', 'en', 'A test file', NULL, 0, '2017-01-25 19:46:09', 0, '2017-01-25 19:46:09', ''),
 (217, 'find', '1', 'description', 'da', 'Velbevaret, skjoldformet, orientalsk bæltebeslag med planteslyngsornamentik.', NULL, 0, '2017-01-29 20:23:17', 0, '2017-01-29 20:23:17', ''),
-(218, 'find', '2', 'description', 'da', 'Hel pladefibel i gennembrudt arbejde med støbt, slynget, etfodet dyr i Mammen/ Ringerike stil. Over ryggen ses desuden en bladlignende vinge?\r\n\r\nForside: lettere korroderet\r\n\r\nBagside: ukendt', NULL, 0, '2017-01-29 20:29:28', 0, '2017-01-29 20:29:28', ''),
+(218, 'find', '2', 'description', 'da', 'Hel pladefibel i gennembrudt arbejde med støbt, slynget, etfodet dyr i Mammen/ Ringerike stil. Over ryggen ses desuden en bladlignende vinge?\\r\\n\\r\\nForside: lettere korroderet\\r\\n\\r\\nBagside: ukendt', NULL, 0, '2017-01-29 20:29:28', 0, '2017-01-29 20:29:28', ''),
 (219, 'find', '3', 'description', 'da', 'Hel, let bøjet men ellers velbevaret dirhem', NULL, 0, '2017-01-29 20:39:17', 0, '2017-01-29 20:39:17', ''),
 (220, 'find', '4', 'description', 'da', 'Hel,velbevaret siliqua. RIC 102/133', NULL, 0, '2017-01-29 20:44:41', 0, '2017-01-29 20:44:41', ''),
-(221, 'find', '5', 'description', 'da', 'Hel pladefibel i gennembrudt arbejde. Overflade lettere korroderet, men motivet fremstår nogenlunde tydeligt. \r\n\r\nForside: Smykket viser en spydbevæbnet rytter til hest og en skjoldbærende, langskørtet person stående foran hesten, alle figurer i profil. Den stående figur rækker noget frem mod hest eller rytter og under hestens bug ses et ternet klæde? Herudover er der på både hest og begge figurer en række detaljer - bl.a. personernes påklædning og hår er meget detaljeret.\r\n\r\nBagside: Lokalt ses blanke områder som muligvis er fortinning. Øverst på fiblen på bagsiden af rytterens hoved ses et lodretstående øsken, som må have udgjort nålefæstet. Modsat ses de sidste rester af nåleholderen på bagsiden af hovedet af den stående kvinde. \r\n\r\nLignende men ikke helt identiske stykker kendes bl.a. fra flere nordjyske lokaliteter men også fra resten af landet bl.a. ved Tissø er der fundet et meget velbevaret eksemplar http://scienceblogs.com/aardvarchaeology/2013/01/07/valkyrie-figurine-from-harby/', NULL, 0, '2017-01-29 20:50:43', 0, '2017-01-29 20:50:43', ''),
-(222, 'find', '6', 'description', 'da', 'Rektangulær plade fra spænde som mangler. I venstre side af plade er noget knækket af – formentlig de flige som har holdt bøjlen. Pladen er smukt dekoreret med et bredt ansigt i velbevaret emalje. Huden er hvid, pupiller, læber og øre i rødt og de mandelformede øjne er i lighed med hår og tøjkraven i blåt.\r\n\r\nBagside: ukendt\r\n\r\nRef.: Næsten identisk parallel fundet i Lincolnshire – se PAS https://finds.org.uk/database/search/results/q/LIN_E64986', NULL, 0, '2017-01-29 20:53:52', 0, '2017-01-29 20:53:52', ''),
+(221, 'find', '5', 'description', 'da', 'Hel pladefibel i gennembrudt arbejde. Overflade lettere korroderet, men motivet fremstår nogenlunde tydeligt. \\r\\n\\r\\nForside: Smykket viser en spydbevæbnet rytter til hest og en skjoldbærende, langskørtet person stående foran hesten, alle figurer i profil. Den stående figur rækker noget frem mod hest eller rytter og under hestens bug ses et ternet klæde? Herudover er der på både hest og begge figurer en række detaljer - bl.a. personernes påklædning og hår er meget detaljeret.\\r\\n\\r\\nBagside: Lokalt ses blanke områder som muligvis er fortinning. Øverst på fiblen på bagsiden af rytterens hoved ses et lodretstående øsken, som må have udgjort nålefæstet. Modsat ses de sidste rester af nåleholderen på bagsiden af hovedet af den stående kvinde. \\r\\n\\r\\nLignende men ikke helt identiske stykker kendes bl.a. fra flere nordjyske lokaliteter men også fra resten af landet bl.a. ved Tissø er der fundet et meget velbevaret eksemplar http://scienceblogs.com/aardvarchaeology/2013/01/07/valkyrie-figurine-from-harby/', NULL, 0, '2017-01-29 20:50:43', 0, '2017-01-29 20:50:43', ''),
+(222, 'find', '6', 'description', 'da', 'Rektangulær plade fra spænde som mangler. I venstre side af plade er noget knækket af – formentlig de flige som har holdt bøjlen. Pladen er smukt dekoreret med et bredt ansigt i velbevaret emalje. Huden er hvid, pupiller, læber og øre i rødt og de mandelformede øjne er i lighed med hår og tøjkraven i blåt.\\r\\n\\r\\nBagside: ukendt\\r\\n\\r\\nRef.: Næsten identisk parallel fundet i Lincolnshire – se PAS https://finds.org.uk/database/search/results/q/LIN_E64986', NULL, 0, '2017-01-29 20:53:52', 0, '2017-01-29 20:53:52', ''),
 (223, 'find', '7', 'description', 'da', 'Angelsaksiske-sydskandinavisk celleemaljefibel. Cirkulær med perlet rand - Frick type 1 var. 2. Stjerneformet motiv i celleemalje. Emaljen kun delvist bevaret. Cirkulært felt i centrum i rødt, stjernestrålerne i gult og halvbueformede felter langs rand i blåt?', NULL, 0, '2017-01-29 21:00:51', 0, '2017-01-29 21:00:51', ''),
 (224, 'find', '8', 'description', 'da', 'Hel velbevaret fuglefibel med fliget fiskehale og flot fortinning. På nær hovedet er fiblen flad i profil. Langs kanten er fiblen prydet med en række stempler og på kroppen ses ridser, som muligvis har været del af indridset ornamentik.', NULL, 0, '2017-01-29 21:03:54', 0, '2017-01-29 21:03:54', ''),
 (225, 'find', '9', 'description', 'da', 'Hel lille, let hvælvet blikfibel med delvist bevaret forgyldning. Cirkulær med afsat kant og et øsken ved randen. I centrum ses et lidt skævt ligebenet kors eller en blomst med fire spidse kronblade samlet i et uregelmæssigt, næsten kvadratisk midterfelt.', NULL, 0, '2017-01-29 21:07:02', 0, '2017-01-29 21:07:02', ''),
-(226, 'find', '10', 'description', 'da', 'Hel lille pladefibel.\r\n\r\nForside: Lettere korroderet overflade. Fiblen er prydet af støbt, fladedækkende slyngbånd indrammet af en markant, glat ramme. \r\n\r\nBagside: Meget korroderet. Nåleholderen, i form af en støbt, ombøjet flig placeret parallelt med fiblens længderetning, er helt bevaret. I modsatte ende ses de sidste rester af nålefæstet. Omkring sidstnævnte er overfladen rustfarvet.', NULL, 0, '2017-01-29 21:09:38', 0, '2017-01-29 21:09:38', ''),
+(226, 'find', '10', 'description', 'da', 'Hel lille pladefibel.\\r\\n\\r\\nForside: Lettere korroderet overflade. Fiblen er prydet af støbt, fladedækkende slyngbånd indrammet af en markant, glat ramme. \\r\\n\\r\\nBagside: Meget korroderet. Nåleholderen, i form af en støbt, ombøjet flig placeret parallelt med fiblens længderetning, er helt bevaret. I modsatte ende ses de sidste rester af nålefæstet. Omkring sidstnævnte er overfladen rustfarvet.', NULL, 0, '2017-01-29 21:09:38', 0, '2017-01-29 21:09:38', ''),
 (227, 'find', '11', 'description', 'da', 'qqqqq', NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
 (228, 'find', '11', 'description', 'da', 'Aluminioumnfind', NULL, 0, '2017-01-30 10:34:16', 0, '2017-01-30 10:34:16', ''),
 (229, 'find', '12', 'description', 'da', 'Kedelig', NULL, 0, '2017-01-30 10:35:09', 0, '2017-01-30 10:35:09', ''),
@@ -1426,7 +1426,7 @@ ALTER TABLE `ark_fragment_time`
 -- AUTO_INCREMENT for table `ark_fragment_wkt`
 --
 ALTER TABLE `ark_fragment_wkt`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 --
 -- AUTO_INCREMENT for table `ark_relation_xmi`
 --

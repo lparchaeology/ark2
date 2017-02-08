@@ -21,13 +21,14 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
 
+use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Schema\Comparator;
 
@@ -47,7 +48,7 @@ $config = array(
     'user' => 'ark_user',
     'password' => 'ark_pass',
 );
-$new = \Doctrine\DBAL\DriverManager::getConnection($config);
+$new = DriverManager::getConnection($config);
 $new->connect();
 
 $config = array(
@@ -58,7 +59,7 @@ $config = array(
     'user' => 'ark_user',
     'password' => 'ark_pass',
 );
-$config_db = \Doctrine\DBAL\DriverManager::getConnection($config);
+$config_db = DriverManager::getConnection($config);
 $config_db->connect();
 
 // New modules to clear
