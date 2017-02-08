@@ -48,6 +48,11 @@ class Service
         self::$app = $app;
     }
 
+    public static function configDir()
+    {
+        return self::$app['dir.config'];
+    }
+
     public static function path($name, $parameters = [], $relative = false)
     {
         return self::$app['url_generator']->generate($name, $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);

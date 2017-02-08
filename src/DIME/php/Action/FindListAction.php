@@ -91,7 +91,7 @@ class FindListAction extends DimeFormAction
         $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $data[$layout] : []);
         $data['dime_find_filter'] = null;
 
-        $passPath = __DIR__ . '/../../../../sites/dime/config/passwords.json';
+        $passPath = Service::configDir().'/passwords.json';
         if ($passwords = json_decode(file_get_contents($passPath), true)) {
             $user = $passwords['kortforsyningen']['user'];
             $password = $passwords['kortforsyningen']['password'];

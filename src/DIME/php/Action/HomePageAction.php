@@ -49,7 +49,7 @@ class HomePageAction extends DimeAction
         $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $data[$layout] : []);
         $data['dime_home_action'] = null;
         $kortforsyningenticket = false;
-        $passPath = __DIR__ . '/../../../../sites/dime/config/passwords.json';
+        $passPath = Service::configDir().'/passwords.json';
         if ($passwords = json_decode(file_get_contents($passPath), true)) {
             $user = $passwords['kortforsyningen']['user'];
             $password = $passwords['kortforsyningen']['password'];
