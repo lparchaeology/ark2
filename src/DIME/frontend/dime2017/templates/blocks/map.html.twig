@@ -10,7 +10,7 @@
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu layer-select" aria-labelledby="mapLayerMenu">
-            <li><a class="layer-select" value="aerialwithlabels" selected>{{ 'map.layer.aerial.labels' | translate }}</a></li>
+            <li><a class="layer-select selected" value="aerialwithlabels" selected>{{ 'map.layer.aerial.labels' | translate }}</a></li>
             <li><a class="layer-select" value="aerial">{{ 'map.layer.aerial' | translate }}</a></li>
             <li><a class="layer-select" value="road">{{ 'map.layer.road' | translate }}</a></li>
             <li><a class="layer-select" value="foraar">{{ 'map.layer.foraar' | translate }}</a></li>
@@ -23,7 +23,9 @@
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu style-select" aria-labelledby="mapStyleMenu">
-            <li><a class="style-select-option" value="distribution">{{ 'map.style.distribution' | translate }}</a></li>
+            {% if global.user %}
+                <li><a class="style-select-option" value="distribution">{{ 'map.style.distribution' | translate }}</a></li>
+            {% endif %}
             <li><a class="style-select-option" value="choropleth">{{ 'map.style.choropleth' | translate }}</a></li>
         </ul>
     </div>
@@ -82,9 +84,9 @@
                     preload: Infinity,
                     type: 'TileWMS',
                     source: {
-                        url: 'http://kortforsyningen.kms.dk/service?servicename=orto_foraar&service=WMS&ticket=5e1b579892dc719ede8e82528bde1ff8&',
+                        url: 'http://kortforsyningen.kms.dk/service?servicename=orto_foraar&service=WMS&ticket={{ data['kortforsyningenticket'] | raw }}&',
                         params: {
-                            'LAYERS': 'foraar',
+                            'LAYERS': 'orto_foraar',
                             'VERSION': '1.1.1',
                             'FORMAT': 'image/png',
                             'TILED': true
@@ -99,9 +101,9 @@
                     preload: Infinity,
                     type: 'TileWMS',
                     source: {
-                        url: 'http://kortforsyningen.kms.dk/service?ticket=2afbc1eca7a5cb1d8c315a229b1f1307&servicename=topo_skaermkort&',
+                        url: 'http://kortforsyningen.kms.dk/service?ticket={{  data['kortforsyningenticket'] | raw }}&servicename=topo_skaermkort&',
                         params: {
-                            'LAYERS': 'skaermkort',
+                            'LAYERS': 'topo_skaermkort',
                             'VERSION': '1.1.1',
                             'FORMAT': 'image/png',
                             'TILED': true

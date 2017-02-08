@@ -662,6 +662,15 @@ Carousel Stuff
     z-index: 1;
 }
 
+a.layer-select:hover{
+	cursor:pointer;	
+}
+
+a.layer-select.selected,
+a.layer-select.selected:hover {
+	background-color: #999999;
+}
+
 .map-legend {
     padding: 60px 20px;
     position: absolute;

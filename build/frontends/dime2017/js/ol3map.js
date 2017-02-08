@@ -45,6 +45,8 @@ $(document).ready(function() {
 
     $('a.layer-select').on('click', function() {
         var name = $(this).attr('value');
+        $('a.layer-select').removeClass('selected');
+        $(this).addClass('selected');
         for (var i = 0; i < layers.length; ++i) {
             var layer = layers[i];
             layer.setVisible(layer.get('name') === name);
@@ -118,6 +120,14 @@ $(document).ready(function() {
 
         yours.set('name', 'yours');
 
+        yours.set('selectable', true);
+        
+
+        theirs.set('name', 'theirs');
+
+        theirs.set('selectable', true);
+
+
         map.addLayer(theirs);
         map.addLayer(yours);
 
@@ -126,6 +136,9 @@ $(document).ready(function() {
         view.fit(extent, map.getSize());
 
         var select = new ol.interaction.Select({
+        	layers: function(layer) {
+                return layer.get('selectable');
+            },
             style: new ol.style.Style({
                 image: new ol.style.Circle({
                     radius: 8,
@@ -291,6 +304,7 @@ $(document).ready(function() {
 
                     });
                     kommunelayer.set('name', "kommunelayer");
+                    kommunelayer.set('selectable', false);
                     map.addLayer(kommunelayer);
                     view = map.getView();
                     extent = kommunelayer.getSource().getExtent();
