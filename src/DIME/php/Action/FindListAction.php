@@ -36,11 +36,11 @@ use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 use DIME\Action\DimeFormAction;
 use DIME\Entity\Find;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 
 class FindListAction extends DimeFormAction
 {
-
     public function __invoke(Request $request, $actorSlug = null)
     {
         $query = $request->query->all();
@@ -91,15 +91,20 @@ class FindListAction extends DimeFormAction
         $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $data[$layout] : []);
         $data['dime_find_filter'] = null;
 
-        $passPath = Service::configDir().'/passwords.json';
-        if ($passwords = json_decode(file_get_contents($passPath), true)) {
-            $user = $passwords['kortforsyningen']['user'];
-            $password = $passwords['kortforsyningen']['password'];
-            $kortforsyningenticket = file_get_contents("http://services.kortforsyningen.dk/service?request=GetTicket&login=$user&password=$password");
-        }
-        if (strlen($kortforsyningenticket) == 32) {
-            $data['kortforsyningenticket'] = $kortforsyningenticket;
-        } else {
+        try {
+            $passPath = Service::configDir().'/passwords.json';
+            if ($passwords = json_decode(file_get_contents($passPath), true)) {
+                $user = $passwords['kortforsyningen']['user'];
+                $password = $passwords['kortforsyningen']['password'];
+                $kortforsyningenticket = file_get_contents("http://services.kortforsyningen.dk/service?request=GetTicket&login=$user&password=$password");
+            }
+            if (strlen($kortforsyningenticket) == 32) {
+                $data['kortforsyningenticket'] = $kortforsyningenticket;
+            } else {
+                $data['kortforsyningenticket'] = false;
+            }
+        } catch (Exception $e) {
+            // Nothing to see here, move along now...
             $data['kortforsyningenticket'] = false;
         }
 

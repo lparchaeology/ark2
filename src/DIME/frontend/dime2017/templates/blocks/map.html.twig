@@ -10,11 +10,13 @@
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu layer-select" aria-labelledby="mapLayerMenu">
-            <li><a class="layer-select selected" value="aerialwithlabels" selected>{{ 'map.layer.aerial.labels' | translate }}</a></li>
-            <li><a class="layer-select" value="aerial">{{ 'map.layer.aerial' | translate }}</a></li>
-            <li><a class="layer-select" value="road">{{ 'map.layer.road' | translate }}</a></li>
-            <li><a class="layer-select" value="foraar">{{ 'map.layer.foraar' | translate }}</a></li>
-            <li><a class="layer-select" value="skaermkort">{{ 'map.layer.skaermkort' | translate }}</a></li>
+            {% for layer in layout.map.layers %}
+                {% if layer.isDefault %}
+                    <li><a class="layer-select selected" value="{{ layer.name }}">{{ layer.keyword | translate }}</a></li>
+                {% else %}
+                    <li><a class="layer-select" value="{{ layer.name }}">{{ layer.keyword | translate }}</a></li>
+                {% endif %}
+            {% endfor %}
         </ul>
     </div>
     <div class="btn-group dropdown map style-select">
@@ -31,7 +33,7 @@
     </div>
 
     <div id="map" class="map search_map"></div>
-    
+
     <div id="map-legend" class="map-legend">
     <span class="map-legend-label">{{ 'map.legend.max' | translate }}</span>
     <div class="legend-image"></div>
@@ -44,73 +46,25 @@
 
             var layerConfig = [
 
-                {
-                    name: 'aerialwithlabels',
-                    visible: true,
-                    preload: Infinity,
-                    type: 'BingMaps',
-                    source: {
-                        key: 'Ak5AqjsEQ44KtAl7jHhrjGuzNshN1fZv3MOx2MUi0p4zFmq6XeWLKmyqeP2UgJK3',
-                        imagerySet: 'AerialWithLabels'
-                    }
-                },
-
-                {
-                    name: 'aerial',
-                    visible: false,
-                    preload: Infinity,
-                    type: 'BingMaps',
-                    source: {
-                        key: 'Ak5AqjsEQ44KtAl7jHhrjGuzNshN1fZv3MOx2MUi0p4zFmq6XeWLKmyqeP2UgJK3',
-                        imagerySet: 'Aerial'
-                    }
-                },
-
-                {
-                    name: 'road',
-                    visible: false,
-                    preload: Infinity,
-                    type: 'BingMaps',
-                    source: {
-                        key: 'Ak5AqjsEQ44KtAl7jHhrjGuzNshN1fZv3MOx2MUi0p4zFmq6XeWLKmyqeP2UgJK3',
-                        imagerySet: 'Road'
-                    }
-                },
-
-                //http://kortforsyningen.kms.dk/service?request=GetCapabilities&version=1.1.1&ticket=5e1b579892dc719ede8e82528bde1ff8&servicename=orto_foraar&service=WMS
-                {
-                    name: 'foraar',
-                    visible: false,
-                    preload: Infinity,
-                    type: 'TileWMS',
-                    source: {
-                        url: 'http://kortforsyningen.kms.dk/service?servicename=orto_foraar&service=WMS&ticket={{ data['kortforsyningenticket'] | raw }}&',
-                        params: {
-                            'LAYERS': 'orto_foraar',
-                            'VERSION': '1.1.1',
-                            'FORMAT': 'image/png',
-                            'TILED': true
+                {% for layer in layout.map.layers %}
+                    {
+                        name: {{ layer.name }},
+                        visible: {{ layer.isVisible }},
+                        preload: Infinity,
+                        class: {{ layer.viewClass }},
+                        source: {
+                            {% if layer.viewClass == 'BingMaps' %}
+                                key: {{ layer.source.ticket }},
+                                imagerySet: {{ layer.sourceName }}
+                            {% endif %}
+                            {% if layer.viewClass == 'TileWMS' %}
+                                url: '{{ layer.source.url }}&ticket={{ data['kortforsyningenticket'] | raw }}&',
+                                parameters: {{ layer.source.parameters }},
+                                imagerySet: {{ layer.sourceName }}
+                            {% endif %}
                         }
-                    }
-                },
-
-                //http://kortforsyningen.kms.dk/service?request=GetCapabilities&version=1.1.1&ticket=2afbc1eca7a5cb1d8c315a229b1f1307&servicename=topo_skaermkort&service=WMS
-                {
-                    name: 'skaermkort',
-                    visible: false,
-                    preload: Infinity,
-                    type: 'TileWMS',
-                    source: {
-                        url: 'http://kortforsyningen.kms.dk/service?ticket={{  data['kortforsyningenticket'] | raw }}&servicename=topo_skaermkort&',
-                        params: {
-                            'LAYERS': 'topo_skaermkort',
-                            'VERSION': '1.1.1',
-                            'FORMAT': 'image/png',
-                            'TILED': true
-                        }
-                    }
-                }
-
+                    },
+                {% endfor %}
             ];
 
             ywkts = [];
@@ -119,8 +73,8 @@
 
             {% if global.user %}
 
-				var default_overlay = "distribution";
-        	
+                var default_overlay = "distribution";
+
                 {% for item in data[layout.name] %}
                     {% set findpoint = item.property('findpoint').value() %}
                     {% if findpoint['coordinates'] is defined %}
@@ -131,8 +85,8 @@
                 {% endfor %}
 
             {% else %}
-            
-				var default_overlay = "choropleth";
+
+                var default_overlay = "choropleth";
 
             {% endif %}
 

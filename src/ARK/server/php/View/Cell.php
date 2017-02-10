@@ -46,6 +46,7 @@ class Cell
     protected $itemType = null;
     protected $label = true;
     protected $element = null;
+    protected $map = null;
 
     public function layout()
     {
@@ -77,6 +78,11 @@ class Cell
         return $this->element;
     }
 
+    public function map()
+    {
+        return $this->map;
+    }
+
     public function formLabel()
     {
         return $this->label;
@@ -101,5 +107,6 @@ class Cell
 
         // Relationships
         $builder->addManyToOneField('element', 'ARK\View\Element', 'cell', 'element', false);
+        $builder->addManyToOneField('map', 'ARK\Map\Map');
     }
 }

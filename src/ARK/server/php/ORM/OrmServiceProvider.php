@@ -129,6 +129,11 @@ class OrmServiceProvider implements ServiceProviderInterface
                     'mappings' => [
                         [
                             'type' => 'php',
+                            'namespace' => 'ARK\Map',
+                            'path' => $srcDir.'/Map',
+                        ],
+                        [
+                            'type' => 'php',
                             'namespace' => 'ARK\Model',
                             'path' => [
                                 $srcDir.'/Model/Attribute.php',
@@ -145,8 +150,18 @@ class OrmServiceProvider implements ServiceProviderInterface
                         ],
                         [
                             'type' => 'php',
+                            'namespace' => 'ARK\Translation',
+                            'path' => $srcDir.'/Translation',
+                        ],
+                        [
+                            'type' => 'php',
                             'namespace' => 'ARK\Model\Schema',
                             'path' => $srcDir.'/Model/Schema',
+                        ],
+                        [
+                            'type' => 'php',
+                            'namespace' => 'ARK\Translation',
+                            'path' => $srcDir.'/Translation',
                         ],
                         [
                             'type' => 'php',
@@ -157,11 +172,6 @@ class OrmServiceProvider implements ServiceProviderInterface
                             'type' => 'php',
                             'namespace' => 'ARK\Vocabulary',
                             'path' => $srcDir.'/Vocabulary',
-                        ],
-                        [
-                            'type' => 'php',
-                            'namespace' => 'ARK\Translation',
-                            'path' => $srcDir.'/Translation',
                         ],
                     ],
                 ]
