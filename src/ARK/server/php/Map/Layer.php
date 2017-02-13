@@ -39,14 +39,14 @@ class Layer implements LayerInterface
 {
     use KeywordTrait;
 
-    protected $source = '';
+    protected $source = null;
     protected $layer = '';
-    protected $subtype = '';
-    protected $format = '';
-    protected $viewClass = '';
-    protected $ticket = '';
-    protected $ticketExpiry = null;
+    protected $sourceName = '';
+    protected $url = '';
     protected $options = '';
+    protected $optionsArray = null;
+    protected $parameters = '';
+    protected $parametersArray = null;
 
     public function id()
     {
@@ -75,11 +75,18 @@ class Layer implements LayerInterface
 
     public function options()
     {
-        return json_decode($this->options);
+        if ($this->optionsArray === null) {
+            $this->optionsArray = json_decode($this->options, true);
+        }
+        return $this->optionsArray;
     }
 
     public function parameters()
     {
+        if ($this->parametersArray === null) {
+            $this->parametersArray = json_decode($this->parameters, true);
+        }
+        return $this->parametersArray;
         return $this->parameters;
     }
 

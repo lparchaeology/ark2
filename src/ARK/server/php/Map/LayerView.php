@@ -40,7 +40,9 @@ class LayerView implements LayerInterface
     use KeywordTrait;
 
     protected $map = null;
-    protected $layer = null;
+    protected $source = '';
+    protected $layer = '';
+    protected $layerClass = null;
     protected $seq = 0;
     protected $isDefault = false;
     protected $enabled = true;
@@ -51,38 +53,39 @@ class LayerView implements LayerInterface
     {
         return [
             'map' => $this->map->id(),
-            'source' => $this->layer->source()->id(),
-            'layer' => $this->layer->name()];
+            'source' => $this->source,
+            'layer' => $this->layer,
+        ];
     }
 
     public function source()
     {
-        return $this->layer->source();
+        return $this->layerClass->source();
     }
 
     public function name()
     {
-        return $this->layer->name();
+        return $this->layer;
     }
 
     public function sourceName()
     {
-        return $this->layer->sourceName();
+        return $this->layerClass->sourceName();
     }
 
     public function url()
     {
-        return $this->layer->url();
+        return $this->layerClass->url();
     }
 
     public function options()
     {
-        return array_merge($this->layer->options(), json_decode($this->options));
+        return array_merge($this->layerClass->options(), json_decode($this->options));
     }
 
     public function parameters()
     {
-        return $this->layer->parameters();
+        return $this->layerClass->parameters();
     }
 
     public function sequence()
@@ -107,24 +110,34 @@ class LayerView implements LayerInterface
 
     public function keyword()
     {
-        return ($this->keyword ? $this->keyword : $this->layer->keyword());
+        return ($this->keyword ? $this->keyword : $this->layerClass->keyword());
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_map_layer');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_map_legend');
         $builder->setReadOnly();
 
         // Key
         $builder->addManyToOneKey('map', 'ARK\Map\Map');
-        $builder->addManyToOneKey('layer', 'ARK\Map\Layer');
+        $builder->addStringKey('source', 30);
+        $builder->addStringKey('layer', 30);
 
         // Attributes
-        $builder->addStringField('sourceName', 50, 'source_name');
-        $builder->addStringField('url', 2000);
+        $builder->addCompoundManyToOneField(
+            'layerClass',
+            'ARK\Map\Layer',
+            [
+                ['column' => 'source', 'nullable' => false],
+                ['column' => 'layer', 'nullable' => false],
+            ]
+        );
+        $builder->addField('seq', 'integer');
+        $builder->addField('isDefault', 'boolean', [], 'is_default');
+        $builder->addField('enabled', 'boolean');
+        $builder->addField('visible', 'boolean');
         $builder->addStringField('options', 4000);
-        $builder->addStringField('parameters', 4000);
         KeywordTrait::buildKeywordMetadata($builder);
     }
 }

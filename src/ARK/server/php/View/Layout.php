@@ -82,6 +82,7 @@ abstract class Layout extends Element
             $options['data'] = $data;
             $options['forms'] = $forms;
             $options['form'] = $form;
+            $options['cell'] = $cell;
             return Service::renderView($this->template(), $options);
         }
         return '';

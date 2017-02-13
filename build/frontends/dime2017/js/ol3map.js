@@ -16,7 +16,7 @@ $(document).ready(function() {
             name: config.name,
             visible: config.visible,
             preload: config.preload,
-            source: source(config.type, config.source)
+            source: source(config.class, config.source)
         });
         layer.set('name', config.name);
         layers.push(layer);
@@ -121,7 +121,7 @@ $(document).ready(function() {
         yours.set('name', 'yours');
 
         yours.set('selectable', true);
-        
+
 
         theirs.set('name', 'theirs');
 
@@ -136,7 +136,7 @@ $(document).ready(function() {
         view.fit(extent, map.getSize());
 
         var select = new ol.interaction.Select({
-        	layers: function(layer) {
+            layers: function(layer) {
                 return layer.get('selectable');
             },
             style: new ol.style.Style({
@@ -215,7 +215,7 @@ $(document).ready(function() {
                 id: "navbar-fade",
                 "class": "modal-backdrop fade in map-cover"
             });
-            
+
             $(".ol-viewport").append($div);
             var prerun = false;
             map.getLayers().forEach(function(e, i, a) {
@@ -245,39 +245,39 @@ $(document).ready(function() {
                         feature.set('band', kommunes[kommune]['band']);
                         kommunesource.push(feature);
                     }
-                    
+
                     var bands = {
-                    		"4" : [225,38,42],
-                    		"3" : [235,111,77],
-                    		"2" : [241,227,50],
-                    		"1" : [104,176,56],
+                            "4" : [225,38,42],
+                            "3" : [235,111,77],
+                            "2" : [241,227,50],
+                            "1" : [104,176,56],
                     };
-                    
+
                     var height = 200;
                     var width = 10;
                     var opacity = 0.5;
-                    
+
                     bandslength = Object.keys(bands).length;
-                    
+
                     var bandheight = height/bandslength;
-                    
+
                     var styles = {};
-                	
+
                     var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
                     svg.setAttribute('width', width);
                     svg.setAttribute('height', height);
                     svg.setAttribute('style', "border: 1px solid black");
                     for (band in bands) {
-                    	rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-                    	style = "fill:rgb("+bands[band][0]+","+bands[band][1]+","+bands[band][2]+")"
-                    	rect.setAttribute('style', style);
-                    	rect.setAttribute('height', bandheight);
-                    	rect.setAttribute('width', width);
-                    	rect.setAttribute('fill-opacity', opacity);
-                    	rect.setAttribute('y',bandheight*(bandslength-band));
-                    	svg.append(rect);
-                    	bands[band].push(opacity);
-                    	styles[band] = new ol.style.Style({
+                        rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                        style = "fill:rgb("+bands[band][0]+","+bands[band][1]+","+bands[band][2]+")"
+                        rect.setAttribute('style', style);
+                        rect.setAttribute('height', bandheight);
+                        rect.setAttribute('width', width);
+                        rect.setAttribute('fill-opacity', opacity);
+                        rect.setAttribute('y',bandheight*(bandslength-band));
+                        svg.append(rect);
+                        bands[band].push(opacity);
+                        styles[band] = new ol.style.Style({
                             fill: new ol.style.Fill({
                                 color: bands[band]
                             }),
@@ -287,13 +287,13 @@ $(document).ready(function() {
                             })
                         })
                     }
-                    
+
                     svg.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
-                    
+
                     $('.legend-image').append(svg);
-                    
+
                     $('.map-legend').show();
-                    
+
                     var kommunelayer = new ol.layer.Vector({
                         source: new ol.source.Vector({
                             features: kommunesource
@@ -317,11 +317,11 @@ $(document).ready(function() {
 
         } else {
             view = map.getView();
-            
+
             //[minx,miny,maxx,maxy]
-            
+
             extent = [Infinity, Infinity, -Infinity, -Infinity];
-            
+
             map.getLayers().forEach(function(e, i, a) {
                 if (e.get("name") === "kommunelayer") {
                     e.setVisible(false);
@@ -341,23 +341,23 @@ $(document).ready(function() {
                     }
                 }
             });
-            
+
             $('.map-legend').hide();
 
         }
 
     });
-    
+
     switch(default_overlay) {
-	    case "distribution":
-	        $('.style-select-option[value="distribution"]').click();
-	        break;
-	    case "choropleth":
-	        $('.style-select-option[value="choropleth"]').click();
-	        break;
-	    default:
-            
-    } 
-    
+        case "distribution":
+            $('.style-select-option[value="distribution"]').click();
+            break;
+        case "choropleth":
+            $('.style-select-option[value="choropleth"]').click();
+            break;
+        default:
+
+    }
+
 
 });

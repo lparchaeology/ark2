@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 08, 2017 at 10:13 PM
+-- Generation Time: Feb 13, 2017 at 03:01 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -455,6 +455,116 @@ INSERT INTO `ark_fragment_type` (`type`, `compound`, `tbl`, `format_class`, `mod
 ('text', 0, 'ark_fragment_text', 'ARK\\Model\\Format\\TextFormat', 'ARK\\Model\\Fragment\\TextFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextAreaType', 1, 0, 'fragment.text'),
 ('time', 0, 'ark_fragment_time', 'ARK\\Model\\Format\\TimeFormat', 'ARK\\Model\\Fragment\\TimeFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', 1, 0, 'fragment.time'),
 ('wkt', 0, 'ark_fragment_wkt', 'ARK\\Model\\Format\\WktFormat', 'ARK\\Model\\Fragment\\WktFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', 1, 0, 'fragment.geometry');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_map`
+--
+
+CREATE TABLE `ark_map` (
+  `map` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `draggable` tinyint(1) NOT NULL DEFAULT '1',
+  `zoomable` tinyint(1) NOT NULL DEFAULT '1',
+  `clickable` tinyint(1) NOT NULL DEFAULT '1',
+  `options` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_map`
+--
+
+INSERT INTO `ark_map` (`map`, `draggable`, `zoomable`, `clickable`, `options`, `keyword`) VALUES
+('dime_map_public', 1, 1, 1, '', 'dime.map.public'),
+('dime_map_user', 1, 1, 1, '', 'dime.map.user');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_map_layer`
+--
+
+CREATE TABLE `ark_map_layer` (
+  `source` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `layer` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `source_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `url` varchar(2000) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `options` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `parameters` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_map_layer`
+--
+
+INSERT INTO `ark_map_layer` (`source`, `layer`, `source_name`, `url`, `options`, `parameters`, `keyword`) VALUES
+('bing', 'aerial', 'Aerial', '', '', '', 'map.layer.bing.aerial'),
+('bing', 'aerialwithlabels', 'AerialWithLabels', '', '', '', 'map.layer.bing.aerialwithlabels'),
+('bing', 'road', 'Road', '', '', '', 'map.layer.bing.road'),
+('kortforsyningen', 'foraar', 'orto_foraar', 'http://kortforsyningen.kms.dk/service?servicename=orto_foraar&service=WMS', '', '{\"LAYERS\": \"orto_foraar\", \"VERSION\": \"1.1.1\", \"FORMAT\": \"image/png\", \"TILED\": true}', 'dime.map.layer.foraar'),
+('kortforsyningen', 'skaermkort', 'topo_skaermkort', 'http://kortforsyningen.kms.dk/service?servicename=topo_skaermkort&service=WMS', '', '{\"LAYERS\": \"topo_skaermkort\", \"VERSION\": \"1.1.1\", \"FORMAT\": \"image/png\", \"TILED\": true }', 'dime.map.layer.skaermkort');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_map_legend`
+--
+
+CREATE TABLE `ark_map_legend` (
+  `map` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `source` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `layer` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `seq` int(11) NOT NULL,
+  `is_default` tinyint(1) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `visible` tinyint(1) NOT NULL DEFAULT '0',
+  `options` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_map_legend`
+--
+
+INSERT INTO `ark_map_legend` (`map`, `source`, `layer`, `seq`, `is_default`, `enabled`, `visible`, `options`, `keyword`) VALUES
+('dime_map_public', 'bing', 'aerial', 2, 0, 1, 0, '', ''),
+('dime_map_public', 'bing', 'aerialwithlabels', 1, 1, 1, 1, '', ''),
+('dime_map_public', 'bing', 'road', 3, 0, 1, 0, '', ''),
+('dime_map_public', 'kortforsyningen', 'foraar', 4, 0, 1, 0, '', ''),
+('dime_map_public', 'kortforsyningen', 'skaermkort', 5, 0, 1, 0, '', ''),
+('dime_map_user', 'bing', 'aerial', 2, 0, 1, 0, '', ''),
+('dime_map_user', 'bing', 'aerialwithlabels', 1, 1, 1, 1, '', ''),
+('dime_map_user', 'bing', 'road', 3, 0, 1, 0, '', ''),
+('dime_map_user', 'kortforsyningen', 'foraar', 4, 0, 1, 0, '', ''),
+('dime_map_user', 'kortforsyningen', 'skaermkort', 5, 0, 1, 0, '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_map_source`
+--
+
+CREATE TABLE `ark_map_source` (
+  `source` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `subtype` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `view_class` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ticket` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ticket_expiry` timestamp NULL DEFAULT NULL,
+  `options` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_map_source`
+--
+
+INSERT INTO `ark_map_source` (`source`, `type`, `subtype`, `format`, `view_class`, `ticket`, `ticket_expiry`, `options`, `keyword`) VALUES
+('bing', 'raster', 'tile', 'bing', 'BingMaps', 'Ak5AqjsEQ44KtAl7jHhrjGuzNshN1fZv3MOx2MUi0p4zFmq6XeWLKmyqeP2UgJK3', NULL, '', 'map.source.bing'),
+('kortforsyningen', 'raster', 'tile', 'wms', 'TileWMS', '', NULL, '', 'map.source.kfs');
 
 -- --------------------------------------------------------
 
@@ -1303,6 +1413,7 @@ CREATE TABLE `ark_view_layout` (
   `seq` int(11) NOT NULL,
   `item_type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cell` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `map` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `width` int(11) DEFAULT NULL,
   `label` tinyint(1) NOT NULL DEFAULT '1',
   `editable` tinyint(1) NOT NULL DEFAULT '1',
@@ -1315,75 +1426,75 @@ CREATE TABLE `ark_view_layout` (
 -- Dumping data for table `ark_view_layout`
 --
 
-INSERT INTO `ark_view_layout` (`layout`, `row`, `col`, `seq`, `item_type`, `cell`, `width`, `label`, `editable`, `hidden`, `enabled`, `deprecated`) VALUES
-('core_file_item', 0, 0, 0, '', 'core_file_id', NULL, 1, 1, 0, 1, 0),
-('core_file_item', 0, 0, 1, '', 'core_file_type', NULL, 1, 1, 0, 1, 0),
-('core_file_item', 0, 0, 2, '', 'core_file_mediatype', NULL, 1, 1, 0, 1, 0),
-('core_file_item', 0, 0, 3, '', 'core_file_title', NULL, 1, 1, 0, 1, 0),
-('core_file_item', 0, 0, 4, '', 'core_file_status', NULL, 1, 1, 0, 1, 0),
-('core_file_item', 0, 0, 5, '', 'core_file_description', NULL, 1, 1, 0, 1, 0),
-('core_file_item', 0, 1, 1, '', 'dime_save', NULL, 1, 1, 0, 1, 0),
-('core_file_list', 0, 0, 0, '', 'core_file_id', NULL, 1, 1, 0, 1, 0),
-('core_file_list', 0, 0, 2, '', 'core_file_type', NULL, 1, 1, 0, 1, 0),
-('core_page_view', 0, 0, 0, '', 'core_page_content', NULL, 1, 1, 0, 1, 0),
-('dime_actor_item', 0, 0, 0, '', 'dime_actor_id', NULL, 1, 1, 0, 1, 0),
-('dime_actor_item', 0, 0, 1, '', 'dime_actor_fullname', NULL, 1, 1, 0, 1, 0),
-('dime_actor_item', 0, 0, 2, '', 'dime_actor_shortname', NULL, 1, 1, 0, 1, 0),
-('dime_actor_item', 0, 0, 3, '', 'dime_actor_kommuner', NULL, 1, 1, 0, 1, 0),
-('dime_actor_list', 0, 0, 0, '', 'dime_actor_id', NULL, 1, 1, 0, 1, 0),
-('dime_actor_list', 0, 0, 1, '', 'dime_actor_type', NULL, 1, 1, 0, 1, 0),
-('dime_actor_list', 0, 0, 2, '', 'dime_actor_fullname', NULL, 1, 1, 0, 1, 0),
-('dime_find_action', 0, 0, 0, '', 'dime_save', NULL, 1, 1, 0, 1, 0),
-('dime_find_add', 0, 0, 0, '', 'dime_find_event', NULL, 1, 1, 0, 1, 0),
-('dime_find_add', 0, 1, 0, '', 'dime_find_details', NULL, 1, 1, 0, 1, 0),
-('dime_find_details', 0, 0, 0, '', 'dime_find_type', NULL, 1, 1, 0, 1, 0),
-('dime_find_details', 0, 0, 2, '', 'dime_find_period_start', NULL, 1, 1, 0, 1, 0),
-('dime_find_details', 0, 0, 4, '', 'dime_find_material', NULL, 1, 1, 0, 1, 0),
-('dime_find_details', 0, 0, 5, '', 'dime_find_secondary', NULL, 1, 1, 0, 1, 0),
-('dime_find_details', 0, 0, 6, '', 'dime_find_condition', NULL, 1, 1, 0, 1, 0),
-('dime_find_details', 0, 0, 7, '', 'dime_find_weight', NULL, 1, 1, 0, 1, 0),
-('dime_find_details', 0, 0, 8, '', 'dime_find_length', NULL, 1, 1, 0, 1, 0),
-('dime_find_details', 0, 0, 9, '', 'dime_find_description', NULL, 1, 1, 0, 1, 0),
-('dime_find_edit', 0, 0, 0, '', 'dime_find_event', NULL, 1, 1, 0, 1, 0),
-('dime_find_edit', 0, 1, 0, '', 'dime_find_details', NULL, 1, 1, 0, 1, 0),
-('dime_find_event', 0, 0, 0, '', 'dime_find_id', NULL, 1, 0, 0, 1, 0),
-('dime_find_event', 0, 0, 2, '', 'dime_find_finder_id', NULL, 1, 1, 0, 1, 0),
-('dime_find_event', 0, 0, 3, '', 'dime_find_finddate', NULL, 1, 1, 0, 1, 0),
-('dime_find_event', 0, 0, 4, '', 'dime_find_mappick', NULL, 1, 1, 0, 1, 0),
-('dime_find_event', 0, 0, 6, '', 'dime_find_kommune', NULL, 1, 0, 0, 1, 0),
-('dime_find_event', 0, 0, 7, '', 'dime_find_museum', NULL, 1, 0, 0, 1, 0),
-('dime_find_event', 0, 0, 8, '', 'dime_find_treasure', NULL, 1, 0, 0, 1, 0),
-('dime_find_filter', 0, 0, 0, '', 'dime_find_filter_kommune', NULL, 0, 1, 0, 1, 0),
-('dime_find_filter', 0, 1, 0, '', 'dime_find_filter_type', NULL, 0, 1, 0, 1, 0),
-('dime_find_filter', 0, 2, 0, '', 'dime_find_filter_period', NULL, 0, 1, 0, 1, 0),
-('dime_find_filter', 0, 3, 0, '', 'dime_find_filter_material', NULL, 0, 1, 0, 1, 0),
-('dime_find_filter', 0, 4, 0, '', 'dime_search', NULL, 0, 1, 0, 1, 0),
-('dime_find_item', 0, 0, 0, '', 'dime_find_event', NULL, 0, 1, 0, 1, 0),
-('dime_find_item', 0, 0, 1, '', 'dime_find_image', NULL, 0, 1, 0, 1, 0),
-('dime_find_item', 0, 1, 0, '', 'dime_find_details', NULL, 0, 1, 0, 1, 0),
-('dime_find_item', 0, 1, 1, '', 'dime_save', NULL, 1, 1, 0, 1, 0),
-('dime_find_list', 0, 0, 0, '', 'dime_find_id', NULL, 1, 1, 0, 1, 0),
-('dime_find_list', 0, 0, 1, '', 'dime_find_finder_id', NULL, 1, 1, 0, 1, 0),
-('dime_find_list', 0, 0, 2, '', 'dime_find_type', NULL, 1, 1, 0, 1, 0),
-('dime_find_list', 0, 0, 4, '', 'dime_find_material', NULL, 1, 1, 0, 1, 0),
-('dime_find_map', 0, 0, 0, '', 'dime_find_id', NULL, 1, 1, 0, 1, 0),
-('dime_find_map', 0, 0, 1, '', 'dime_find_findpoint', NULL, 1, 1, 0, 1, 0),
-('dime_find_mappick', 0, 0, 0, '', 'dime_find_findpoint', NULL, 1, 1, 0, 1, 0),
-('dime_find_search', 0, 0, 0, '', 'dime_find_filter', NULL, 1, 1, 0, 1, 0),
-('dime_find_search', 1, 0, 0, '', 'dime_find_list', NULL, 1, 1, 0, 1, 0),
-('dime_find_search', 1, 1, 0, '', 'dime_find_map', NULL, 1, 1, 0, 1, 0),
-('dime_front_page', 0, 0, 0, '', 'dime_find_id', NULL, 1, 1, 0, 1, 0),
-('dime_front_page', 0, 0, 1, '', 'dime_find_finder_id', NULL, 1, 1, 0, 1, 0),
-('dime_front_page', 0, 0, 2, '', 'dime_find_type', NULL, 1, 1, 0, 1, 0),
-('dime_front_page', 0, 0, 4, '', 'dime_find_material', NULL, 1, 1, 0, 1, 0),
-('dime_home_page', 0, 0, 0, '', 'dime_home_action', NULL, 1, 1, 0, 1, 0),
-('dime_home_page', 1, 0, 0, '', 'dime_find_list', NULL, 1, 1, 0, 1, 0),
-('dime_home_page', 1, 1, 0, '', 'dime_find_map', NULL, 1, 1, 0, 1, 0),
-('dime_locality_item', 0, 0, 0, '', 'dime_locality_id', NULL, 1, 1, 0, 1, 0),
-('dime_locality_item', 0, 0, 1, '', 'dime_locality_type', NULL, 1, 1, 0, 1, 0),
-('dime_locality_item', 0, 1, 1, '', 'dime_save', NULL, 1, 1, 0, 1, 0),
-('dime_locality_list', 0, 0, 0, '', 'dime_locality_id', NULL, 1, 1, 0, 1, 0),
-('dime_locality_list', 0, 0, 1, '', 'dime_locality_type', NULL, 1, 1, 0, 1, 0);
+INSERT INTO `ark_view_layout` (`layout`, `row`, `col`, `seq`, `item_type`, `cell`, `map`, `width`, `label`, `editable`, `hidden`, `enabled`, `deprecated`) VALUES
+('core_file_item', 0, 0, 0, '', 'core_file_id', NULL, NULL, 1, 1, 0, 1, 0),
+('core_file_item', 0, 0, 1, '', 'core_file_type', NULL, NULL, 1, 1, 0, 1, 0),
+('core_file_item', 0, 0, 2, '', 'core_file_mediatype', NULL, NULL, 1, 1, 0, 1, 0),
+('core_file_item', 0, 0, 3, '', 'core_file_title', NULL, NULL, 1, 1, 0, 1, 0),
+('core_file_item', 0, 0, 4, '', 'core_file_status', NULL, NULL, 1, 1, 0, 1, 0),
+('core_file_item', 0, 0, 5, '', 'core_file_description', NULL, NULL, 1, 1, 0, 1, 0),
+('core_file_item', 0, 1, 1, '', 'dime_save', NULL, NULL, 1, 1, 0, 1, 0),
+('core_file_list', 0, 0, 0, '', 'core_file_id', NULL, NULL, 1, 1, 0, 1, 0),
+('core_file_list', 0, 0, 2, '', 'core_file_type', NULL, NULL, 1, 1, 0, 1, 0),
+('core_page_view', 0, 0, 0, '', 'core_page_content', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_actor_item', 0, 0, 0, '', 'dime_actor_id', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_actor_item', 0, 0, 1, '', 'dime_actor_fullname', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_actor_item', 0, 0, 2, '', 'dime_actor_shortname', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_actor_item', 0, 0, 3, '', 'dime_actor_kommuner', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_actor_list', 0, 0, 0, '', 'dime_actor_id', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_actor_list', 0, 0, 1, '', 'dime_actor_type', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_actor_list', 0, 0, 2, '', 'dime_actor_fullname', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_action', 0, 0, 0, '', 'dime_save', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_add', 0, 0, 0, '', 'dime_find_event', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_add', 0, 1, 0, '', 'dime_find_details', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_details', 0, 0, 0, '', 'dime_find_type', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_details', 0, 0, 2, '', 'dime_find_period_start', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_details', 0, 0, 4, '', 'dime_find_material', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_details', 0, 0, 5, '', 'dime_find_secondary', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_details', 0, 0, 6, '', 'dime_find_condition', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_details', 0, 0, 7, '', 'dime_find_weight', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_details', 0, 0, 8, '', 'dime_find_length', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_details', 0, 0, 9, '', 'dime_find_description', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_edit', 0, 0, 0, '', 'dime_find_event', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_edit', 0, 1, 0, '', 'dime_find_details', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_event', 0, 0, 0, '', 'dime_find_id', NULL, NULL, 1, 0, 0, 1, 0),
+('dime_find_event', 0, 0, 2, '', 'dime_find_finder_id', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_event', 0, 0, 3, '', 'dime_find_finddate', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_event', 0, 0, 4, '', 'dime_find_mappick', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_event', 0, 0, 6, '', 'dime_find_kommune', NULL, NULL, 1, 0, 0, 1, 0),
+('dime_find_event', 0, 0, 7, '', 'dime_find_museum', NULL, NULL, 1, 0, 0, 1, 0),
+('dime_find_event', 0, 0, 8, '', 'dime_find_treasure', NULL, NULL, 1, 0, 0, 1, 0),
+('dime_find_filter', 0, 0, 0, '', 'dime_find_filter_kommune', NULL, NULL, 0, 1, 0, 1, 0),
+('dime_find_filter', 0, 1, 0, '', 'dime_find_filter_type', NULL, NULL, 0, 1, 0, 1, 0),
+('dime_find_filter', 0, 2, 0, '', 'dime_find_filter_period', NULL, NULL, 0, 1, 0, 1, 0),
+('dime_find_filter', 0, 3, 0, '', 'dime_find_filter_material', NULL, NULL, 0, 1, 0, 1, 0),
+('dime_find_filter', 0, 4, 0, '', 'dime_search', NULL, NULL, 0, 1, 0, 1, 0),
+('dime_find_item', 0, 0, 0, '', 'dime_find_event', NULL, NULL, 0, 1, 0, 1, 0),
+('dime_find_item', 0, 0, 1, '', 'dime_find_image', NULL, NULL, 0, 1, 0, 1, 0),
+('dime_find_item', 0, 1, 0, '', 'dime_find_details', NULL, NULL, 0, 1, 0, 1, 0),
+('dime_find_item', 0, 1, 1, '', 'dime_save', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_list', 0, 0, 0, '', 'dime_find_id', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_list', 0, 0, 1, '', 'dime_find_finder_id', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_list', 0, 0, 2, '', 'dime_find_type', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_list', 0, 0, 4, '', 'dime_find_material', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_map', 0, 0, 0, '', 'dime_find_id', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_map', 0, 0, 1, '', 'dime_find_findpoint', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_mappick', 0, 0, 0, '', 'dime_find_findpoint', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_search', 0, 0, 0, '', 'dime_find_filter', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_search', 1, 0, 0, '', 'dime_find_list', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_search', 1, 1, 0, '', 'dime_find_map', 'dime_map_public', NULL, 1, 1, 0, 1, 0),
+('dime_front_page', 0, 0, 0, '', 'dime_find_id', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_front_page', 0, 0, 1, '', 'dime_find_finder_id', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_front_page', 0, 0, 2, '', 'dime_find_type', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_front_page', 0, 0, 4, '', 'dime_find_material', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_home_page', 0, 0, 0, '', 'dime_home_action', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_home_page', 1, 0, 0, '', 'dime_find_list', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_home_page', 1, 1, 0, '', 'dime_find_map', 'dime_map_user', NULL, 1, 1, 0, 1, 0),
+('dime_locality_item', 0, 0, 0, '', 'dime_locality_id', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_locality_item', 0, 0, 1, '', 'dime_locality_type', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_locality_item', 0, 1, 1, '', 'dime_save', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_locality_list', 0, 0, 0, '', 'dime_locality_id', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_locality_list', 0, 0, 1, '', 'dime_locality_type', NULL, NULL, 1, 1, 0, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -4804,6 +4915,32 @@ ALTER TABLE `ark_fragment_type`
   ADD PRIMARY KEY (`type`);
 
 --
+-- Indexes for table `ark_map`
+--
+ALTER TABLE `ark_map`
+  ADD PRIMARY KEY (`map`);
+
+--
+-- Indexes for table `ark_map_layer`
+--
+ALTER TABLE `ark_map_layer`
+  ADD PRIMARY KEY (`source`,`layer`);
+
+--
+-- Indexes for table `ark_map_legend`
+--
+ALTER TABLE `ark_map_legend`
+  ADD PRIMARY KEY (`map`,`source`,`layer`),
+  ADD UNIQUE KEY `sequence` (`map`,`source`,`layer`,`seq`) USING BTREE,
+  ADD KEY `legend_layer` (`source`,`layer`);
+
+--
+-- Indexes for table `ark_map_source`
+--
+ALTER TABLE `ark_map_source`
+  ADD PRIMARY KEY (`source`);
+
+--
 -- Indexes for table `ark_module`
 --
 ALTER TABLE `ark_module`
@@ -4883,7 +5020,8 @@ ALTER TABLE `ark_view_element`
 --
 ALTER TABLE `ark_view_layout`
   ADD PRIMARY KEY (`layout`,`item_type`,`row`,`col`,`seq`),
-  ADD KEY `child` (`cell`);
+  ADD KEY `child` (`cell`),
+  ADD KEY `map` (`map`);
 
 --
 -- Indexes for table `ark_view_option`
@@ -5073,6 +5211,19 @@ ALTER TABLE `ark_format_wkt`
   ADD CONSTRAINT `ark_format_wkt_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `ark_map_layer`
+--
+ALTER TABLE `ark_map_layer`
+  ADD CONSTRAINT `ark_map_layer_ibfk_1` FOREIGN KEY (`source`) REFERENCES `ark_map_source` (`source`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_map_legend`
+--
+ALTER TABLE `ark_map_legend`
+  ADD CONSTRAINT `legend_layer` FOREIGN KEY (`source`,`layer`) REFERENCES `ark_map_layer` (`source`, `layer`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `legend_map` FOREIGN KEY (`map`) REFERENCES `ark_map` (`map`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `ark_schema`
 --
 ALTER TABLE `ark_schema`
@@ -5125,7 +5276,8 @@ ALTER TABLE `ark_view_element`
 --
 ALTER TABLE `ark_view_layout`
   ADD CONSTRAINT `ark_view_layout_ibfk_1` FOREIGN KEY (`layout`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_view_layout_ibfk_2` FOREIGN KEY (`cell`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_view_layout_ibfk_2` FOREIGN KEY (`cell`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_view_layout_ibfk_3` FOREIGN KEY (`map`) REFERENCES `ark_map` (`map`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_option`

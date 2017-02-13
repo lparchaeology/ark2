@@ -10,7 +10,8 @@
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu layer-select" aria-labelledby="mapLayerMenu">
-            {% for layer in layout.map.layers %}
+            {% set config = [] %}
+            {% for layer in cell.map.layers %}
                 {% if layer.isDefault %}
                     <li><a class="layer-select selected" value="{{ layer.name }}">{{ layer.keyword | translate }}</a></li>
                 {% else %}
@@ -34,38 +35,29 @@
 
     <div id="map" class="map search_map"></div>
 
-    <div id="map-legend" class="map-legend">
-    <span class="map-legend-label">{{ 'map.legend.max' | translate }}</span>
-    <div class="legend-image"></div>
-    <span class="map-legend-label">{{ 'map.legend.min' | translate }}</span>
-    </div>
+        <div id="map-legend" class="map-legend">
+            <span class="map-legend-label">{{ 'map.legend.max' | translate }}</span>
+            <div class="legend-image"></div>
+            <span class="map-legend-label">{{ 'map.legend.min' | translate }}</span>
+        </div>
+
+        {# Convert the ARK map config into OpenLayers json #}
+        {% set config = [] %}
+        {% for layer in cell.map.layers %}
+            {% if layer.source.viewClass == 'BingMaps' %}
+                {% set source = {'key': layer.source.ticket, 'imagerySet': layer.sourceName} %}
+            {% endif %}
+            {% if layer.source.viewClass == 'TileWMS' %}
+                {% set source = {'url': layer.url ~ '&ticket=' ~ data['kortforsyningenticket'] | raw, 'parameters': layer.parameters} %}
+            {% endif %}
+            {% set conf = {'name': layer.name, 'visible': layer.isVisible, 'class': layer.source.viewClass, 'source': source} %}
+            {% set config = config | merge([conf]) %}
+        {% endfor %}
 
         <script src="https://openlayers.org/en/v3.20.1/build/ol.js"></script>
 
         <script>
-
-            var layerConfig = [
-
-                {% for layer in layout.map.layers %}
-                    {
-                        name: {{ layer.name }},
-                        visible: {{ layer.isVisible }},
-                        preload: Infinity,
-                        class: {{ layer.viewClass }},
-                        source: {
-                            {% if layer.viewClass == 'BingMaps' %}
-                                key: {{ layer.source.ticket }},
-                                imagerySet: {{ layer.sourceName }}
-                            {% endif %}
-                            {% if layer.viewClass == 'TileWMS' %}
-                                url: '{{ layer.source.url }}&ticket={{ data['kortforsyningenticket'] | raw }}&',
-                                parameters: {{ layer.source.parameters }},
-                                imagerySet: {{ layer.sourceName }}
-                            {% endif %}
-                        }
-                    },
-                {% endfor %}
-            ];
+            var layerConfig = JSON.parse("{{ config | json_encode() | escape('js') }}");
 
             ywkts = [];
 

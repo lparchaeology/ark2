@@ -77,6 +77,22 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         $builder->build();
     }
 
+    public function addCompoundManyToOneKey($name, $class, $joins, $inverse = null)
+    {
+        $builder = $this->createManyToOne($name, $class)->makePrimaryKey();
+        foreach ($joins as $join) {
+            $builder->addJoinColumn(
+                $join['column'],
+                isset($join['reference']) ? $join['reference'] : $join['column'],
+                isset($join['nullable']) ? $join['nullable'] : true
+            );
+        }
+        if ($inverse) {
+            $builder->inversedBy($inverse);
+        }
+        $builder->build();
+    }
+
     public function addManyToOneField($name, $class, $column = null, $reference = null, $nullable = true, $inverse = null)
     {
         if ($column === null) {

@@ -46,6 +46,7 @@ class Source
     protected $ticket = '';
     protected $ticketExpiry = null;
     protected $options = '';
+    protected $optionsArray = null;
 
     public function id()
     {
@@ -84,7 +85,10 @@ class Source
 
     public function options()
     {
-        return json_decode($this->options);
+        if ($this->optionsArray === null) {
+            $this->optionsArray = json_decode($this->options);
+        }
+        return $this->optionsArray;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
@@ -102,7 +106,7 @@ class Source
         $builder->addStringField('format', 30);
         $builder->addStringField('viewClass', 100, 'view_class');
         $builder->addStringField('ticket', 100);
-        $builder->addField('ticketExpiry', 'timestamp');
+        $builder->addField('ticketExpiry', 'datetime', [], 'ticket_expiry');
         $builder->addStringField('options', 4000);
         KeywordTrait::buildKeywordMetadata($builder);
     }

@@ -125,6 +125,7 @@ class Field extends Element
             $options['data'] = $this->formData($data[$form->vars['id']]);
             $options['forms'] = $forms;
             $options['form'] = $form;
+            $options['cell'] = $cell;
             $options['formLabel'] = $cell->formLabel();
             return Service::renderView($this->template(), $options);
         }
