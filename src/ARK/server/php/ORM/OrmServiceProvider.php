@@ -214,13 +214,11 @@ class OrmServiceProvider implements ServiceProviderInterface
                 $container['orm.em.default_options'],
                 [
                     'connection' => 'user',
-                    /*
-                    'mappings' => [[
-                        'type' => 'yml',
-                        'namespace' => 'rootLogin\UserProvider\Entity',
-                        'path' => $container['dir.install'].'vendor/rootLogin/silex-userprovider/src/rootLogin/UserProvider/Resources/mappings',
-                    ]],
-                    */
+                    [
+                        'type' => 'php',
+                        'namespace' => 'ARK\Security\RBAC',
+                        'path' => $srcDir.'/Security/RBAC',
+                    ]
                 ]
             );
 
