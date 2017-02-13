@@ -47,12 +47,10 @@ class PropertyType extends AbstractType implements DataMapperInterface
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $field = $options['field'];
-        unset($options['field']);
-        $fieldOptions = $field->optionsArray();
+        $fieldOptions = [];
         if ($field->attribute()->vocabulary() && isset($options['attr']['readonly'])) {
             $fieldOptions['disabled'] = true;
         }
-        $options = array_merge($options, $field->optionsArray());
         $builder->setDataMapper($this);
         $this->buildAttribute($builder, $field->attribute(), $fieldOptions, $field->attribute()->isRequired());
     }
@@ -105,6 +103,7 @@ class PropertyType extends AbstractType implements DataMapperInterface
     {
         $resolver->setDefaults([
             'field' => null,
+            'expanded' => null,
             'data_class' => Property::class,
             'empty_data' => null,
         ]);

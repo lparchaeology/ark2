@@ -48,7 +48,6 @@ class ItemType extends AbstractType implements DataMapperInterface
     {
         $field = $options['field'];
         $attribute = $field->attribute()->name();
-        $fieldOptions = $field->optionsArray();
         $fieldOptions['attr']['readonly'] = true;
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;

@@ -47,7 +47,6 @@ class LocalTextType extends AbstractType implements DataMapperInterface
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $textType = isset($options['text_type']) ? $options['text_type']: TextType::class;
-        $attribute = $options['field']->attribute()->name();
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
         $builder->add('previous', HiddenType::class, $fieldOptions);

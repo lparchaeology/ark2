@@ -56,7 +56,7 @@ class Field extends Element
         return '';
     }
 
-    public function formOptions()
+    public function formDefaults()
     {
         if ($this->name() == 'dime_find_filter_kommune') {
             $options['vocabulary'] = ORM::find(Vocabulary::class, 'dime.denmark.kommune');

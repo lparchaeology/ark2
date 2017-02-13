@@ -47,6 +47,8 @@ class Cell
     protected $label = true;
     protected $element = null;
     protected $map = null;
+    protected $formOptions = '';
+    protected $formOptionsArray = null;
 
     public function layout()
     {
@@ -88,6 +90,14 @@ class Cell
         return $this->label;
     }
 
+    public function formOptions()
+    {
+        if ($this->formOptionsArray === null) {
+            $this->formOptionsArray = json_decode($this->formOptions, true);
+        }
+        return $this->formOptionsArray;
+    }
+
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
@@ -103,6 +113,7 @@ class Cell
 
         // Fields
         $builder->addField('label', 'boolean');
+        $builder->addStringField('formOptions', 4000, 'form_options');
         EnabledTrait::buildEnabledMetadata($builder);
 
         // Relationships

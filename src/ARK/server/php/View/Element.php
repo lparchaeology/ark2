@@ -59,12 +59,12 @@ abstract class Element
     protected $hidden = false;
     protected $schma = null;
     protected $cells = null;
-    protected $options = null;
+    protected $formOptions = '';
+    protected $formOptionsArray = null;
 
     public function __construct()
     {
         $this->cells = new ArrayCollection();
-        $this->options = new ArrayCollection();
     }
 
     public function name()
@@ -95,6 +95,16 @@ abstract class Element
         return $this->type->template();
     }
 
+    public function isEditable()
+    {
+        return $this->editable;
+    }
+
+    public function isHidden()
+    {
+        return $this->hidden;
+    }
+
     public function formRoot()
     {
         return $this->formRoot;
@@ -108,39 +118,27 @@ abstract class Element
         return $this->type->formType();
     }
 
-    public function formOptions()
-    {
-        $options['label'] = false;
-        return $options;
-    }
-
     public function formData($resource)
     {
         return $resource;
     }
 
-    public function isEditable()
+    public function formDefaults()
     {
-        return $this->editable;
+        $options['label'] = false;
+        return $options;
     }
 
-    public function isHidden()
+    public function formOptions()
     {
-        return $this->hidden;
-    }
-
-    public function options()
-    {
-        return $this->options;
-    }
-
-    public function optionsArray()
-    {
-        $opts = [];
-        foreach ($this->options as $option) {
-            $opts[$option->name()] = $option->value();
+        if ($this->formOptionsArray === null) {
+            if ($this->formOptions) {
+                $this->formOptionsArray = array_merge($this->formDefaults(), json_decode($this->formOptions, true));
+            } else {
+                $this->formOptionsArray = $this->formDefaults();
+            }
         }
-        return $opts;
+        return $this->formOptionsArray;
     }
 
     public function buildForms($data)
@@ -197,6 +195,7 @@ abstract class Element
         $builder->addField('form', 'boolean');
         $builder->addField('formRoot', 'boolean', [], 'form_root');
         $builder->addStringField('formType', 100, 'form_type');
+        $builder->addStringField('formOptions', 4000, 'form_options');
         $builder->addField('editable', 'boolean');
         $builder->addField('hidden', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
@@ -204,7 +203,6 @@ abstract class Element
 
         // Relationships
         $builder->addOneToMany('cells', 'ARK\View\Cell', 'layout');
-        $builder->addOneToMany('options', 'ARK\View\Option', 'element');
         $builder->addCompoundManyToOneField(
             'attribute',
             'ARK\Model\Schema\SchemaAttribute',

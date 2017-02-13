@@ -68,7 +68,7 @@ abstract class Layout extends Element
         return $this->elements;
     }
 
-    public function formOptions()
+    public function formDefaults()
     {
         $options['label'] = false;
         $options['mapped'] = false;

@@ -47,7 +47,6 @@ class CarouselType extends AbstractType implements DataMapperInterface
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $field = $options['field'];
-        $fieldOptions = $field->optionsArray();
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
         $builder->add('image', CollectionType::class, $fieldOptions);

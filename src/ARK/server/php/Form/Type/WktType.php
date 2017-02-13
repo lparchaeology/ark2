@@ -46,7 +46,6 @@ class WktType extends AbstractType implements DataMapperInterface
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $attribute = $options['field']->attribute()->name();
         $fieldOptions['mapped'] = false;
         $fieldOptions['label'] = false;
         $builder->add('easting', TextType::class, $fieldOptions);
