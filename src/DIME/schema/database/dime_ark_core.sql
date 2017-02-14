@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6
+-- version 4.6.5.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 13, 2017 at 11:11 PM
--- Server version: 10.1.20-MariaDB
--- PHP Version: 7.0.15
+-- Generation Time: Feb 14, 2017 at 11:01 PM
+-- Server version: 5.6.34
+-- PHP Version: 7.1.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -596,6 +596,103 @@ INSERT INTO `ark_module` (`module`, `resource`, `namespace`, `entity`, `tbl`, `c
 ('image', 'images', 'DIME', 'DIME\\Entity\\Image', 'ark_item_image', 0, 1, 0, 'dime.image'),
 ('locality', 'lokalitet', 'DIME', 'DIME\\Entity\\Locality', 'ark_item_locality', 0, 1, 0, 'dime.locality'),
 ('page', '', 'ARK', 'ARK\\Entity\\Page', 'ark_item_page', 1, 1, 0, 'module.page');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_rbac_permission`
+--
+
+CREATE TABLE `ark_rbac_permission` (
+  `permission` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `ark_rbac_permission`
+--
+
+INSERT INTO `ark_rbac_permission` (`permission`, `enabled`, `keyword`) VALUES
+('can_add_find', 1, 'dime.permission.find.add'),
+('can_delete_find', 1, 'dime.permission.find.delete'),
+('can_edit_find', 1, 'dime.permission.find.edit'),
+('can_search_find', 1, 'dime.permission.find.search'),
+('can_view_find', 1, 'dime.permission.find.view');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_rbac_role`
+--
+
+CREATE TABLE `ark_rbac_role` (
+  `role` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `ark_rbac_role`
+--
+
+INSERT INTO `ark_rbac_role` (`role`, `enabled`, `keyword`) VALUES
+('admin', 1, 'dime.role.admin'),
+('curator', 1, 'dime.role.curator'),
+('detectorist', 1, 'dime.role.detectorist'),
+('researcher', 1, 'dime.role.reasearcher');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_rbac_role_permission`
+--
+
+CREATE TABLE `ark_rbac_role_permission` (
+  `role` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `permission` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `ark_rbac_role_permission`
+--
+
+INSERT INTO `ark_rbac_role_permission` (`role`, `permission`) VALUES
+('detectorist', 'can_add_find'),
+('curator', 'can_delete_find'),
+('curator', 'can_edit_find'),
+('detectorist', 'can_edit_find'),
+('curator', 'can_search_find'),
+('detectorist', 'can_search_find'),
+('curator', 'can_view_find'),
+('detectorist', 'can_view_find');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_rbac_user_role`
+--
+
+CREATE TABLE `ark_rbac_user_role` (
+  `user` int(11) UNSIGNED NOT NULL,
+  `role` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `verified` tinyint(1) NOT NULL DEFAULT '0',
+  `locked` tinyint(1) NOT NULL DEFAULT '0',
+  `expired` tinyint(1) NOT NULL DEFAULT '0',
+  `expires_at` timestamp NULL DEFAULT NULL,
+  `verification_token` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `verification_requested_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `ark_rbac_user_role`
+--
+
+INSERT INTO `ark_rbac_user_role` (`user`, `role`, `enabled`, `verified`, `locked`, `expired`, `expires_at`, `verification_token`, `verification_requested_at`) VALUES
+(6, 'detectorist', 1, 0, 0, 0, NULL, '', NULL),
+(7, 'detectorist', 1, 0, 0, 0, NULL, '', NULL),
+(8, 'curator', 1, 0, 0, 0, NULL, '', NULL);
 
 -- --------------------------------------------------------
 
@@ -1324,7 +1421,6 @@ CREATE TABLE `ark_view_element` (
   `form` tinyint(1) NOT NULL DEFAULT '0',
   `form_root` tinyint(1) NOT NULL DEFAULT '0',
   `form_type` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `form_options` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL,
   `editable` tinyint(1) NOT NULL DEFAULT '1',
   `hidden` tinyint(1) NOT NULL DEFAULT '0',
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
@@ -1336,70 +1432,70 @@ CREATE TABLE `ark_view_element` (
 -- Dumping data for table `ark_view_element`
 --
 
-INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attribute`, `class`, `template`, `form`, `form_root`, `form_type`, `form_options`, `editable`, `hidden`, `enabled`, `deprecated`, `keyword`) VALUES
-('core_file_description', 'field', 'core.file', '', 'description', '', '', 0, 0, 'ARK\\Form\\Type\\LocalMultilineTextType', '', 1, 0, 1, 0, NULL),
-('core_file_id', 'field', 'core.file', '', 'id', '', '', 0, 0, 'ARK\\Form\\Type\\IdType', '', 1, 0, 1, 0, NULL),
-('core_file_item', 'grid', NULL, NULL, NULL, '', '', 0, 1, '', '', 1, 0, 1, 0, NULL),
-('core_file_list', 'table', NULL, NULL, NULL, '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('core_file_mediatype', 'field', 'core.file', '', 'mediatype', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('core_file_status', 'field', 'core.file', '', 'status', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('core_file_title', 'field', 'core.file', '', 'title', '', '', 0, 0, 'ARK\\Form\\Type\\LocalTextType', '', 1, 0, 1, 0, NULL),
-('core_file_type', 'field', 'core.file', '', 'type', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('core_file_versions', 'field', 'core.file', '', 'versions', '', '', 0, 0, 'ARK\\Form\\Type\\FileVersionType', '', 1, 0, 1, 0, NULL),
-('core_page_content', 'field', 'core.page', '', 'content', '', '', 0, 0, '', '', 0, 0, 1, 0, 'property.content'),
-('core_page_view', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', '', 0, 0, 1, 0, NULL),
-('dime_actor_fullname', 'field', 'dime.actor', 'museum', 'fullname', '', '', 0, 0, 'ARK\\Form\\Type\\LocalTextType', '', 1, 0, 1, 0, NULL),
-('dime_actor_id', 'field', 'dime.actor', '', 'id', '', '', 0, 0, 'ARK\\Form\\Type\\IdType', '', 1, 0, 1, 0, NULL),
-('dime_actor_item', 'grid', NULL, NULL, NULL, '', '', 0, 1, '', '', 1, 0, 1, 0, NULL),
-('dime_actor_kommuner', 'field', 'dime.actor', 'museum', 'kommuner', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_actor_list', 'table', NULL, NULL, NULL, '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_actor_shortname', 'field', 'dime.actor', 'museum', 'shortname', '', '', 0, 0, 'ARK\\Form\\Type\\LocalTextType', '', 1, 0, 1, 0, NULL),
-('dime_actor_type', 'field', 'dime.actor', '', 'type', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_find_action', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_find_add', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_find_blank', 'field', 'dime.find', '', '', '', '', 0, 0, '', '', 0, 0, 1, 0, NULL),
-('dime_find_condition', 'field', 'dime.find', '', 'condition', '', '', 0, 0, '', '{\"expanded\":true}', 1, 0, 1, 0, NULL),
-('dime_find_coordinates', 'field', 'dime.find', '', 'coordinates', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_find_description', 'field', 'dime.find', '', 'description', '', '', 0, 0, 'ARK\\Form\\Type\\LocalMultilineTextType', '', 1, 0, 1, 0, NULL),
-('dime_find_details', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_find_edit', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_find_event', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_find_filter', 'grid', NULL, NULL, NULL, '', '', 1, 1, '', '', 1, 0, 1, 0, 'dime.find.filter'),
-('dime_find_filter_kommune', 'field', NULL, NULL, NULL, '', '', 0, 0, 'ARK\\Form\\Type\\VocabularyChoiceType', '{\"multiple\":true, \"label_class\": null}', 1, 0, 1, 0, NULL),
-('dime_find_filter_material', 'field', NULL, NULL, NULL, '', '', 0, 0, 'ARK\\Form\\Type\\VocabularyChoiceType', '{\"multiple\":true}', 1, 0, 1, 0, NULL),
-('dime_find_filter_period', 'field', NULL, NULL, NULL, '', '', 0, 0, 'ARK\\Form\\Type\\VocabularyChoiceType', '{\"multiple\":true}', 1, 0, 1, 0, NULL),
-('dime_find_filter_type', 'field', NULL, NULL, NULL, '', '', 0, 0, 'ARK\\Form\\Type\\VocabularyChoiceType', '{\"multiple\":true}', 1, 0, 1, 0, NULL),
-('dime_find_finddate', 'field', 'dime.find', '', 'finddate', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_find_finder_id', 'field', 'dime.find', '', 'finder_id', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_find_findpoint', 'field', 'dime.find', '', 'findpoint', '', '', 0, 0, 'ARK\\Form\\Type\\WktType', '', 1, 0, 1, 0, NULL),
-('dime_find_id', 'field', 'dime.find', '', 'id', '', '', 0, 0, 'ARK\\Form\\Type\\IdType', '', 1, 0, 1, 0, NULL),
-('dime_find_image', 'field', 'dime.find', '', 'image', '', 'blocks/carouselfield.html.twig', 0, 0, 'ARK\\Form\\Type\\CarouselType', '', 1, 0, 1, 0, NULL),
-('dime_find_item', 'grid', NULL, NULL, NULL, '', '', 1, 1, '', '', 1, 0, 1, 0, NULL),
-('dime_find_kommune', 'field', 'dime.find', '', 'kommune', '', '', 0, 0, 'ARK\\Form\\Type\\ReadonlyVocabularyType', '', 1, 0, 1, 0, NULL),
-('dime_find_length', 'field', 'dime.find', '', 'length', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_find_list', 'table', NULL, NULL, NULL, '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_find_map', 'grid', NULL, NULL, NULL, '', 'blocks/map.html.twig', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_find_mappick', 'grid', NULL, NULL, NULL, '', 'blocks/mappick.html.twig', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_find_material', 'field', 'dime.find', '', 'material', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_find_museum', 'field', 'dime.find', '', 'museum', '', '', 0, 0, 'ARK\\Form\\Type\\ItemType', '', 1, 0, 1, 0, NULL),
-('dime_find_period_end', 'field', 'dime.find', '', 'period_end', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_find_period_start', 'field', 'dime.find', '', 'period_start', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_find_registered_id', 'field', 'dime.find', '', 'registered_id', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_find_search', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_find_secondary', 'field', 'dime.find', '', 'secondary', '', '', 0, 0, '', '{\"expanded\":true}', 1, 0, 1, 0, NULL),
-('dime_find_subtype', 'field', 'dime.find', '', 'subtype', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_find_treasure', 'field', 'dime.find', '', 'treasure', '', '', 0, 0, 'ARK\\Form\\Type\\ReadonlyVocabularyType', '', 1, 0, 1, 0, NULL),
-('dime_find_type', 'field', 'dime.find', '', 'type', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_find_weight', 'field', 'dime.find', '', 'weight', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_front_page', 'grid', 'dime.find', NULL, NULL, '', 'layouts/front.html.twig', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_home_action', 'grid', NULL, NULL, NULL, '', 'blocks/homeaction.html.twig', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_home_page', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_locality_id', 'field', 'dime.locality', '', 'id', '', '', 0, 0, 'ARK\\Form\\Type\\IdType', '', 1, 0, 1, 0, NULL),
-('dime_locality_item', 'grid', NULL, NULL, NULL, '', '', 0, 1, '', '', 1, 0, 1, 0, NULL),
-('dime_locality_list', 'table', NULL, NULL, NULL, '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_locality_type', 'field', 'dime.locality', '', 'type', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_save', 'field', NULL, NULL, NULL, '', '', 0, 0, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', '', 1, 0, 1, 0, 'dime.save'),
-('dime_search', 'field', NULL, NULL, NULL, '', '', 0, 0, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', '', 1, 0, 1, 0, 'dime.search');
+INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attribute`, `class`, `template`, `form`, `form_root`, `form_type`, `editable`, `hidden`, `enabled`, `deprecated`, `keyword`) VALUES
+('core_file_description', 'field', 'core.file', '', 'description', '', '', 0, 0, 'ARK\\Form\\Type\\LocalMultilineTextType', 1, 0, 1, 0, NULL),
+('core_file_id', 'field', 'core.file', '', 'id', '', '', 0, 0, 'ARK\\Form\\Type\\IdType', 1, 0, 1, 0, NULL),
+('core_file_item', 'grid', NULL, NULL, NULL, '', '', 0, 1, '', 1, 0, 1, 0, NULL),
+('core_file_list', 'table', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('core_file_mediatype', 'field', 'core.file', '', 'mediatype', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('core_file_status', 'field', 'core.file', '', 'status', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('core_file_title', 'field', 'core.file', '', 'title', '', '', 0, 0, 'ARK\\Form\\Type\\LocalTextType', 1, 0, 1, 0, NULL),
+('core_file_type', 'field', 'core.file', '', 'type', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('core_file_versions', 'field', 'core.file', '', 'versions', '', '', 0, 0, 'ARK\\Form\\Type\\FileVersionType', 1, 0, 1, 0, NULL),
+('core_page_content', 'field', 'core.page', '', 'content', '', '', 0, 0, '', 0, 0, 1, 0, 'property.content'),
+('core_page_view', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', 0, 0, 1, 0, NULL),
+('dime_actor_fullname', 'field', 'dime.actor', 'museum', 'fullname', '', '', 0, 0, 'ARK\\Form\\Type\\LocalTextType', 1, 0, 1, 0, NULL),
+('dime_actor_id', 'field', 'dime.actor', '', 'id', '', '', 0, 0, 'ARK\\Form\\Type\\IdType', 1, 0, 1, 0, NULL),
+('dime_actor_item', 'grid', NULL, NULL, NULL, '', '', 0, 1, '', 1, 0, 1, 0, NULL),
+('dime_actor_kommuner', 'field', 'dime.actor', 'museum', 'kommuner', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_actor_list', 'table', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_actor_shortname', 'field', 'dime.actor', 'museum', 'shortname', '', '', 0, 0, 'ARK\\Form\\Type\\LocalTextType', 1, 0, 1, 0, NULL),
+('dime_actor_type', 'field', 'dime.actor', '', 'type', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_action', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_add', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_blank', 'field', 'dime.find', '', '', '', '', 0, 0, '', 0, 0, 1, 0, NULL),
+('dime_find_condition', 'field', 'dime.find', '', 'condition', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_coordinates', 'field', 'dime.find', '', 'coordinates', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_description', 'field', 'dime.find', '', 'description', '', '', 0, 0, 'ARK\\Form\\Type\\LocalMultilineTextType', 1, 0, 1, 0, NULL),
+('dime_find_details', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_edit', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_event', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_filter', 'grid', NULL, NULL, NULL, '', '', 1, 1, '', 1, 0, 1, 0, 'dime.find.filter'),
+('dime_find_filter_kommune', 'field', NULL, NULL, NULL, '', '', 0, 0, 'ARK\\Form\\Type\\VocabularyChoiceType', 1, 0, 1, 0, NULL),
+('dime_find_filter_material', 'field', NULL, NULL, NULL, '', '', 0, 0, 'ARK\\Form\\Type\\VocabularyChoiceType', 1, 0, 1, 0, NULL),
+('dime_find_filter_period', 'field', NULL, NULL, NULL, '', '', 0, 0, 'ARK\\Form\\Type\\VocabularyChoiceType', 1, 0, 1, 0, NULL),
+('dime_find_filter_type', 'field', NULL, NULL, NULL, '', '', 0, 0, 'ARK\\Form\\Type\\VocabularyChoiceType', 1, 0, 1, 0, NULL),
+('dime_find_finddate', 'field', 'dime.find', '', 'finddate', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_finder_id', 'field', 'dime.find', '', 'finder_id', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_findpoint', 'field', 'dime.find', '', 'findpoint', '', '', 0, 0, 'ARK\\Form\\Type\\WktType', 1, 0, 1, 0, NULL),
+('dime_find_id', 'field', 'dime.find', '', 'id', '', '', 0, 0, 'ARK\\Form\\Type\\IdType', 1, 0, 1, 0, NULL),
+('dime_find_image', 'field', 'dime.find', '', 'image', '', 'blocks/carouselfield.html.twig', 0, 0, 'ARK\\Form\\Type\\CarouselType', 1, 0, 1, 0, NULL),
+('dime_find_item', 'grid', NULL, NULL, NULL, '', '', 1, 1, '', 1, 0, 1, 0, NULL),
+('dime_find_kommune', 'field', 'dime.find', '', 'kommune', '', '', 0, 0, 'ARK\\Form\\Type\\ReadonlyVocabularyType', 1, 0, 1, 0, NULL),
+('dime_find_length', 'field', 'dime.find', '', 'length', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_list', 'table', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_map', 'grid', NULL, NULL, NULL, '', 'blocks/map.html.twig', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_mappick', 'grid', NULL, NULL, NULL, '', 'blocks/mappick.html.twig', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_material', 'field', 'dime.find', '', 'material', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_museum', 'field', 'dime.find', '', 'museum', '', '', 0, 0, 'ARK\\Form\\Type\\ItemType', 1, 0, 1, 0, NULL),
+('dime_find_period_end', 'field', 'dime.find', '', 'period_end', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_period_start', 'field', 'dime.find', '', 'period_start', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_registered_id', 'field', 'dime.find', '', 'registered_id', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_search', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_secondary', 'field', 'dime.find', '', 'secondary', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_subtype', 'field', 'dime.find', '', 'subtype', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_treasure', 'field', 'dime.find', '', 'treasure', '', '', 0, 0, 'ARK\\Form\\Type\\ReadonlyVocabularyType', 1, 0, 1, 0, NULL),
+('dime_find_type', 'field', 'dime.find', '', 'type', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_find_weight', 'field', 'dime.find', '', 'weight', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_front_page', 'grid', 'dime.find', NULL, NULL, '', 'layouts/front.html.twig', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_home_action', 'grid', NULL, NULL, NULL, '', 'blocks/homeaction.html.twig', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_home_page', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_locality_id', 'field', 'dime.locality', '', 'id', '', '', 0, 0, 'ARK\\Form\\Type\\IdType', 1, 0, 1, 0, NULL),
+('dime_locality_item', 'grid', NULL, NULL, NULL, '', '', 0, 1, '', 1, 0, 1, 0, NULL),
+('dime_locality_list', 'table', NULL, NULL, NULL, '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_locality_type', 'field', 'dime.locality', '', 'type', '', '', 0, 0, '', 1, 0, 1, 0, NULL),
+('dime_save', 'field', NULL, NULL, NULL, '', '', 0, 0, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', 1, 0, 1, 0, 'dime.save'),
+('dime_search', 'field', NULL, NULL, NULL, '', '', 0, 0, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', 1, 0, 1, 0, 'dime.search');
 
 -- --------------------------------------------------------
 
@@ -1420,83 +1516,108 @@ CREATE TABLE `ark_view_layout` (
   `editable` tinyint(1) NOT NULL DEFAULT '1',
   `hidden` tinyint(1) NOT NULL DEFAULT '0',
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
-  `form_options` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `ark_view_layout`
 --
 
-INSERT INTO `ark_view_layout` (`layout`, `row`, `col`, `seq`, `item_type`, `cell`, `map`, `width`, `label`, `editable`, `hidden`, `enabled`, `deprecated`, `form_options`) VALUES
-('core_file_item', 0, 0, 0, '', 'core_file_id', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('core_file_item', 0, 0, 1, '', 'core_file_type', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('core_file_item', 0, 0, 2, '', 'core_file_mediatype', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('core_file_item', 0, 0, 3, '', 'core_file_title', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('core_file_item', 0, 0, 4, '', 'core_file_status', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('core_file_item', 0, 0, 5, '', 'core_file_description', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('core_file_item', 0, 1, 1, '', 'dime_save', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('core_file_list', 0, 0, 0, '', 'core_file_id', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('core_file_list', 0, 0, 2, '', 'core_file_type', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('core_page_view', 0, 0, 0, '', 'core_page_content', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_actor_item', 0, 0, 0, '', 'dime_actor_id', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_actor_item', 0, 0, 1, '', 'dime_actor_fullname', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_actor_item', 0, 0, 2, '', 'dime_actor_shortname', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_actor_item', 0, 0, 3, '', 'dime_actor_kommuner', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_actor_list', 0, 0, 0, '', 'dime_actor_id', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_actor_list', 0, 0, 1, '', 'dime_actor_type', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_actor_list', 0, 0, 2, '', 'dime_actor_fullname', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_action', 0, 0, 0, '', 'dime_save', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_add', 0, 0, 0, '', 'dime_find_event', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_add', 0, 1, 0, '', 'dime_find_details', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_details', 0, 0, 0, '', 'dime_find_type', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_details', 0, 0, 2, '', 'dime_find_period_start', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_details', 0, 0, 4, '', 'dime_find_material', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_details', 0, 0, 5, '', 'dime_find_secondary', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_details', 0, 0, 6, '', 'dime_find_condition', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_details', 0, 0, 7, '', 'dime_find_weight', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_details', 0, 0, 8, '', 'dime_find_length', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_details', 0, 0, 9, '', 'dime_find_description', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_edit', 0, 0, 0, '', 'dime_find_event', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_edit', 0, 1, 0, '', 'dime_find_details', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_event', 0, 0, 0, '', 'dime_find_id', NULL, NULL, 1, 0, 0, 1, 0, ''),
-('dime_find_event', 0, 0, 2, '', 'dime_find_finder_id', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_event', 0, 0, 3, '', 'dime_find_finddate', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_event', 0, 0, 4, '', 'dime_find_mappick', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_event', 0, 0, 6, '', 'dime_find_kommune', NULL, NULL, 1, 0, 0, 1, 0, ''),
-('dime_find_event', 0, 0, 7, '', 'dime_find_museum', NULL, NULL, 1, 0, 0, 1, 0, ''),
-('dime_find_event', 0, 0, 8, '', 'dime_find_treasure', NULL, NULL, 1, 0, 0, 1, 0, ''),
-('dime_find_filter', 0, 0, 0, '', 'dime_find_filter_kommune', NULL, NULL, 0, 1, 0, 1, 0, ''),
-('dime_find_filter', 0, 1, 0, '', 'dime_find_filter_type', NULL, NULL, 0, 1, 0, 1, 0, ''),
-('dime_find_filter', 0, 2, 0, '', 'dime_find_filter_period', NULL, NULL, 0, 1, 0, 1, 0, ''),
-('dime_find_filter', 0, 3, 0, '', 'dime_find_filter_material', NULL, NULL, 0, 1, 0, 1, 0, ''),
-('dime_find_filter', 0, 4, 0, '', 'dime_search', NULL, NULL, 0, 1, 0, 1, 0, ''),
-('dime_find_item', 0, 0, 0, '', 'dime_find_event', NULL, NULL, 0, 1, 0, 1, 0, ''),
-('dime_find_item', 0, 0, 1, '', 'dime_find_image', NULL, NULL, 0, 1, 0, 1, 0, ''),
-('dime_find_item', 0, 1, 0, '', 'dime_find_details', NULL, NULL, 0, 1, 0, 1, 0, ''),
-('dime_find_item', 0, 1, 1, '', 'dime_save', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_list', 0, 0, 0, '', 'dime_find_id', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_list', 0, 0, 1, '', 'dime_find_finder_id', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_list', 0, 0, 2, '', 'dime_find_type', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_list', 0, 0, 4, '', 'dime_find_material', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_map', 0, 0, 0, '', 'dime_find_id', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_map', 0, 0, 1, '', 'dime_find_findpoint', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_mappick', 0, 0, 0, '', 'dime_find_findpoint', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_search', 0, 0, 0, '', 'dime_find_filter', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_search', 1, 0, 0, '', 'dime_find_list', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_find_search', 1, 1, 0, '', 'dime_find_map', 'dime_map_public', NULL, 1, 1, 0, 1, 0, ''),
-('dime_front_page', 0, 0, 0, '', 'dime_find_id', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_front_page', 0, 0, 1, '', 'dime_find_finder_id', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_front_page', 0, 0, 2, '', 'dime_find_type', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_front_page', 0, 0, 4, '', 'dime_find_material', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_home_page', 0, 0, 0, '', 'dime_home_action', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_home_page', 1, 0, 0, '', 'dime_find_list', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_home_page', 1, 1, 0, '', 'dime_find_map', 'dime_map_user', NULL, 1, 1, 0, 1, 0, ''),
-('dime_locality_item', 0, 0, 0, '', 'dime_locality_id', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_locality_item', 0, 0, 1, '', 'dime_locality_type', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_locality_item', 0, 1, 1, '', 'dime_save', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_locality_list', 0, 0, 0, '', 'dime_locality_id', NULL, NULL, 1, 1, 0, 1, 0, ''),
-('dime_locality_list', 0, 0, 1, '', 'dime_locality_type', NULL, NULL, 1, 1, 0, 1, 0, '');
+INSERT INTO `ark_view_layout` (`layout`, `row`, `col`, `seq`, `item_type`, `cell`, `map`, `width`, `label`, `editable`, `hidden`, `enabled`, `deprecated`) VALUES
+('core_file_item', 0, 0, 0, '', 'core_file_id', NULL, NULL, 1, 1, 0, 1, 0),
+('core_file_item', 0, 0, 1, '', 'core_file_type', NULL, NULL, 1, 1, 0, 1, 0),
+('core_file_item', 0, 0, 2, '', 'core_file_mediatype', NULL, NULL, 1, 1, 0, 1, 0),
+('core_file_item', 0, 0, 3, '', 'core_file_title', NULL, NULL, 1, 1, 0, 1, 0),
+('core_file_item', 0, 0, 4, '', 'core_file_status', NULL, NULL, 1, 1, 0, 1, 0),
+('core_file_item', 0, 0, 5, '', 'core_file_description', NULL, NULL, 1, 1, 0, 1, 0),
+('core_file_item', 0, 1, 1, '', 'dime_save', NULL, NULL, 1, 1, 0, 1, 0),
+('core_file_list', 0, 0, 0, '', 'core_file_id', NULL, NULL, 1, 1, 0, 1, 0),
+('core_file_list', 0, 0, 2, '', 'core_file_type', NULL, NULL, 1, 1, 0, 1, 0),
+('core_page_view', 0, 0, 0, '', 'core_page_content', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_actor_item', 0, 0, 0, '', 'dime_actor_id', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_actor_item', 0, 0, 1, '', 'dime_actor_fullname', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_actor_item', 0, 0, 2, '', 'dime_actor_shortname', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_actor_item', 0, 0, 3, '', 'dime_actor_kommuner', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_actor_list', 0, 0, 0, '', 'dime_actor_id', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_actor_list', 0, 0, 1, '', 'dime_actor_type', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_actor_list', 0, 0, 2, '', 'dime_actor_fullname', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_action', 0, 0, 0, '', 'dime_save', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_add', 0, 0, 0, '', 'dime_find_event', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_add', 0, 1, 0, '', 'dime_find_details', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_details', 0, 0, 0, '', 'dime_find_type', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_details', 0, 0, 2, '', 'dime_find_period_start', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_details', 0, 0, 4, '', 'dime_find_material', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_details', 0, 0, 5, '', 'dime_find_secondary', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_details', 0, 0, 6, '', 'dime_find_condition', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_details', 0, 0, 7, '', 'dime_find_weight', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_details', 0, 0, 8, '', 'dime_find_length', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_details', 0, 0, 9, '', 'dime_find_description', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_edit', 0, 0, 0, '', 'dime_find_event', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_edit', 0, 1, 0, '', 'dime_find_details', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_event', 0, 0, 0, '', 'dime_find_id', NULL, NULL, 1, 0, 0, 1, 0),
+('dime_find_event', 0, 0, 2, '', 'dime_find_finder_id', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_event', 0, 0, 3, '', 'dime_find_finddate', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_event', 0, 0, 4, '', 'dime_find_mappick', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_event', 0, 0, 6, '', 'dime_find_kommune', NULL, NULL, 1, 0, 0, 1, 0),
+('dime_find_event', 0, 0, 7, '', 'dime_find_museum', NULL, NULL, 1, 0, 0, 1, 0),
+('dime_find_event', 0, 0, 8, '', 'dime_find_treasure', NULL, NULL, 1, 0, 0, 1, 0),
+('dime_find_filter', 0, 0, 0, '', 'dime_find_filter_kommune', NULL, NULL, 0, 1, 0, 1, 0),
+('dime_find_filter', 0, 1, 0, '', 'dime_find_filter_type', NULL, NULL, 0, 1, 0, 1, 0),
+('dime_find_filter', 0, 2, 0, '', 'dime_find_filter_period', NULL, NULL, 0, 1, 0, 1, 0),
+('dime_find_filter', 0, 3, 0, '', 'dime_find_filter_material', NULL, NULL, 0, 1, 0, 1, 0),
+('dime_find_filter', 0, 4, 0, '', 'dime_search', NULL, NULL, 0, 1, 0, 1, 0),
+('dime_find_item', 0, 0, 0, '', 'dime_find_event', NULL, NULL, 0, 1, 0, 1, 0),
+('dime_find_item', 0, 0, 1, '', 'dime_find_image', NULL, NULL, 0, 1, 0, 1, 0),
+('dime_find_item', 0, 1, 0, '', 'dime_find_details', NULL, NULL, 0, 1, 0, 1, 0),
+('dime_find_item', 0, 1, 1, '', 'dime_save', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_list', 0, 0, 0, '', 'dime_find_id', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_list', 0, 0, 1, '', 'dime_find_finder_id', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_list', 0, 0, 2, '', 'dime_find_type', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_list', 0, 0, 4, '', 'dime_find_material', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_map', 0, 0, 0, '', 'dime_find_id', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_map', 0, 0, 1, '', 'dime_find_findpoint', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_mappick', 0, 0, 0, '', 'dime_find_findpoint', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_search', 0, 0, 0, '', 'dime_find_filter', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_search', 1, 0, 0, '', 'dime_find_list', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_find_search', 1, 1, 0, '', 'dime_find_map', 'dime_map_public', NULL, 1, 1, 0, 1, 0),
+('dime_front_page', 0, 0, 0, '', 'dime_find_id', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_front_page', 0, 0, 1, '', 'dime_find_finder_id', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_front_page', 0, 0, 2, '', 'dime_find_type', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_front_page', 0, 0, 4, '', 'dime_find_material', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_home_page', 0, 0, 0, '', 'dime_home_action', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_home_page', 1, 0, 0, '', 'dime_find_list', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_home_page', 1, 1, 0, '', 'dime_find_map', 'dime_map_user', NULL, 1, 1, 0, 1, 0),
+('dime_locality_item', 0, 0, 0, '', 'dime_locality_id', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_locality_item', 0, 0, 1, '', 'dime_locality_type', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_locality_item', 0, 1, 1, '', 'dime_save', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_locality_list', 0, 0, 0, '', 'dime_locality_id', NULL, NULL, 1, 1, 0, 1, 0),
+('dime_locality_list', 0, 0, 1, '', 'dime_locality_type', NULL, NULL, 1, 1, 0, 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_view_option`
+--
+
+CREATE TABLE `ark_view_option` (
+  `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_view_option`
+--
+
+INSERT INTO `ark_view_option` (`element`, `name`, `type`, `value`) VALUES
+('dime_find_condition', 'expanded', 'boolean', 'b:1;'),
+('dime_find_filter_kommune', 'label_class', 'null', 'N;'),
+('dime_find_filter_kommune', 'multiple', 'boolean', 'b:1;'),
+('dime_find_filter_material', 'multiple', 'boolean', 'b:1;'),
+('dime_find_filter_period', 'multiple', 'boolean', 'b:1;'),
+('dime_find_filter_type', 'multiple', 'boolean', 'b:1;'),
+('dime_find_secondary', 'expanded', 'boolean', 'b:1;');
 
 -- --------------------------------------------------------
 
@@ -1980,7 +2101,10 @@ INSERT INTO `ark_vocabulary_related` (`from_concept`, `from_term`, `to_concept`,
 ('dime.period', 'HXXX', 'dime.period', 'EXXX', 'broader', 2),
 ('dime.period', 'HXXX', 'dime.period', 'FXXX', 'broader', 2),
 ('dime.period', 'HXXX', 'dime.period', 'HXXX', 'broader', 1),
-('dime.period', 'XXXX', 'dime.period', 'XXXX', 'broader', 1);
+('dime.period', 'XXXX', 'dime.period', 'XXXX', 'broader', 1),
+('dime.treasure', 'assessing', 'dime.treasure', 'not', 'transition', 0),
+('dime.treasure', 'assessing', 'dime.treasure', 'treasure', 'transition', 0),
+('dime.treasure', 'pending', 'dime.treasure', 'assessing', 'transition', 0);
 
 -- --------------------------------------------------------
 
@@ -1990,9 +2114,9 @@ INSERT INTO `ark_vocabulary_related` (`from_concept`, `from_term`, `to_concept`,
 
 CREATE TABLE `ark_vocabulary_relation` (
   `relation` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `code` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `notation` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
   `recipricol` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `recipricol_code` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `recipricol_notation` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
   `equivalence` tinyint(1) NOT NULL DEFAULT '0',
   `hierarchy` tinyint(1) NOT NULL DEFAULT '0',
   `associative` tinyint(1) NOT NULL DEFAULT '0',
@@ -2003,10 +2127,12 @@ CREATE TABLE `ark_vocabulary_relation` (
 -- Dumping data for table `ark_vocabulary_relation`
 --
 
-INSERT INTO `ark_vocabulary_relation` (`relation`, `code`, `recipricol`, `recipricol_code`, `equivalence`, `hierarchy`, `associative`, `description`) VALUES
+INSERT INTO `ark_vocabulary_relation` (`relation`, `notation`, `recipricol`, `recipricol_notation`, `equivalence`, `hierarchy`, `associative`, `description`) VALUES
 ('broader', 'BT', 'narrower', 'NT', 0, 1, 0, 'The \'Has A\' parent/child hierarchy relationship'),
 ('class', 'BTI', 'instance', 'NTI', 0, 1, 0, 'The \'Is A\' class/instance hierarchy relationship.'),
 ('related', 'RT', 'related', 'RT', 0, 0, 1, 'Related terms that are neither equivalent or hierarchical.'),
+('sequence', 'RTS', '', '', 0, 0, 1, 'Related terms where one term follows another in a list.'),
+('transition', 'RTT', '', '', 0, 0, 1, 'Related terms where one term follows another, i.e. a sequence or change of state.'),
 ('usedfor', 'UF', 'use', 'U', 1, 0, 0, 'Leads from the preferred entry term to the\\nnon-preferred term(s).'),
 ('whole', 'BTP', 'part', 'NTP', 0, 1, 0, 'The \'Part Of\' whole/part hierarchy relationship.');
 
@@ -4923,6 +5049,32 @@ ALTER TABLE `ark_module`
   ADD PRIMARY KEY (`module`);
 
 --
+-- Indexes for table `ark_rbac_permission`
+--
+ALTER TABLE `ark_rbac_permission`
+  ADD PRIMARY KEY (`permission`);
+
+--
+-- Indexes for table `ark_rbac_role`
+--
+ALTER TABLE `ark_rbac_role`
+  ADD PRIMARY KEY (`role`);
+
+--
+-- Indexes for table `ark_rbac_role_permission`
+--
+ALTER TABLE `ark_rbac_role_permission`
+  ADD PRIMARY KEY (`role`,`permission`),
+  ADD KEY `permission` (`permission`);
+
+--
+-- Indexes for table `ark_rbac_user_role`
+--
+ALTER TABLE `ark_rbac_user_role`
+  ADD PRIMARY KEY (`user`,`role`),
+  ADD KEY `role` (`role`);
+
+--
 -- Indexes for table `ark_schema`
 --
 ALTER TABLE `ark_schema`
@@ -4998,6 +5150,12 @@ ALTER TABLE `ark_view_layout`
   ADD PRIMARY KEY (`layout`,`item_type`,`row`,`col`,`seq`),
   ADD KEY `child` (`cell`),
   ADD KEY `map` (`map`);
+
+--
+-- Indexes for table `ark_view_option`
+--
+ALTER TABLE `ark_view_option`
+  ADD PRIMARY KEY (`element`,`name`);
 
 --
 -- Indexes for table `ark_view_type`
@@ -5194,6 +5352,19 @@ ALTER TABLE `ark_map_legend`
   ADD CONSTRAINT `legend_map` FOREIGN KEY (`map`) REFERENCES `ark_map` (`map`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `ark_rbac_role_permission`
+--
+ALTER TABLE `ark_rbac_role_permission`
+  ADD CONSTRAINT `ark_rbac_role_permission_ibfk_1` FOREIGN KEY (`role`) REFERENCES `ark_rbac_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_rbac_role_permission_ibfk_2` FOREIGN KEY (`permission`) REFERENCES `ark_rbac_permission` (`permission`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_rbac_user_role`
+--
+ALTER TABLE `ark_rbac_user_role`
+  ADD CONSTRAINT `ark_rbac_user_role_ibfk_2` FOREIGN KEY (`role`) REFERENCES `ark_rbac_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `ark_schema`
 --
 ALTER TABLE `ark_schema`
@@ -5248,6 +5419,12 @@ ALTER TABLE `ark_view_layout`
   ADD CONSTRAINT `ark_view_layout_ibfk_1` FOREIGN KEY (`layout`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `ark_view_layout_ibfk_2` FOREIGN KEY (`cell`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `ark_view_layout_ibfk_3` FOREIGN KEY (`map`) REFERENCES `ark_map` (`map`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_view_option`
+--
+ALTER TABLE `ark_view_option`
+  ADD CONSTRAINT `ark_view_option_ibfk_1` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary`

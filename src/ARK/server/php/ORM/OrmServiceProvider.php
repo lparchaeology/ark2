@@ -160,6 +160,11 @@ class OrmServiceProvider implements ServiceProviderInterface
                         ],
                         [
                             'type' => 'php',
+                            'namespace' => 'ARK\Security\RBAC',
+                            'path' => $srcDir.'/Security/RBAC',
+                        ],
+                        [
+                            'type' => 'php',
                             'namespace' => 'ARK\Translation',
                             'path' => $srcDir.'/Translation',
                         ],
@@ -216,8 +221,8 @@ class OrmServiceProvider implements ServiceProviderInterface
                     'connection' => 'user',
                     [
                         'type' => 'php',
-                        'namespace' => 'ARK\Security\RBAC',
-                        'path' => $srcDir.'/Security/RBAC',
+                        'namespace' => 'ARK\Security\User',
+                        'path' => $srcDir.'/Security/User',
                     ]
                 ]
             );

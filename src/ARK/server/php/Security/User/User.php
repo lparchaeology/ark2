@@ -46,8 +46,6 @@ class User implements AdvancedUserInterface, Serializable
 {
     use KeywordTrait;
 
-    const ROLE_DEFAULT = 'ROLE_ANON';
-
     protected $user = null;
     protected $username = '';
     protected $usernameCanonical = '';
@@ -56,6 +54,7 @@ class User implements AdvancedUserInterface, Serializable
     protected $password = null;
     protected $plainPassword = '';
     protected $name = '';
+    protected $role = 'ROLE_ANON';
     protected $enabled = false;
     protected $verified = false;
     protected $locked = false;
@@ -68,7 +67,6 @@ class User implements AdvancedUserInterface, Serializable
     protected $passwordRequestToken = '';
     protected $passwordRequestedAt = null;
     protected $lastLogin = null;
-    protected $roles = null;
     protected $accounts = null;
 
     public function __construct($user)
@@ -344,39 +342,28 @@ class User implements AdvancedUserInterface, Serializable
 
     public function getRoles()
     {
-        // TODO Do these need to be the string keys?
-        return $this->roles;
-    }
-
-    public function roles()
-    {
-        return $this->roles;
-    }
-
-    public function hasRole(Role $role)
-    {
-        return $this->roles->contains($role);
-    }
-
-    public function addRoles(array $roles)
-    {
-        foreach ($roles as $role) {
-            $this->addRole($role);
+        if ($this->role == 'ROLE_ANON') {
+            return ['ROLE_ANON'];
+        }
+        if ($this->role == 'ROLE_USER') {
+            return ['ROLE_ANON', 'ROLE_USER'];
+        }
+        if ($this->role == 'ROLE_ADMIN') {
+            return ['ROLE_ANON', 'ROLE_USER', 'ROLE_ADMIN'];
+        }
+        if ($this->role == 'ROLE_SYSADMIN') {
+            return ['ROLE_ANON', 'ROLE_USER', 'ROLE_ADMIN', 'ROLE_SYSADMIN'];
         }
     }
 
-    public function addRole(Role $role)
+    public function hasRole($role)
     {
-        if (!$this->hasRole($role)) {
-            $this->roles->add($role);
-        }
+        return in_array($role, $this->getRoles());
     }
 
-    public function removeRole(Role $role)
+    public function setRole($role)
     {
-        if ($this->hasRole($role)) {
-            $this->roles->removeElement($role);
-        }
+        $this->role = $role;
     }
 
     public function accounts()
@@ -446,6 +433,7 @@ class User implements AdvancedUserInterface, Serializable
         $builder->addStringField('email', 100);
         $builder->addStringField('password', 255);
         $builder->addStringField('name', 100);
+        $builder->addStringField('role', 20);
         $builder->addField('enabled', 'boolean');
         $builder->addField('verified', 'boolean');
         $builder->addField('locked', 'boolean');
@@ -461,7 +449,6 @@ class User implements AdvancedUserInterface, Serializable
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Relationships
-        $builder->addManyToMany('roles', User::class, 'ark_rbac_user_role');
         $builder->addManyToMany('accounts', Permission::class, 'ark_rbac_user_account');
     }
 }

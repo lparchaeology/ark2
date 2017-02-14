@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 13, 2017 at 09:59 PM
+-- Generation Time: Feb 14, 2017 at 11:01 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -23,41 +23,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ark_rbac_permission`
---
-
-CREATE TABLE `ark_rbac_permission` (
-  `permission` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ark_rbac_role`
---
-
-CREATE TABLE `ark_rbac_role` (
-  `role` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ark_rbac_role_permission`
---
-
-CREATE TABLE `ark_rbac_role_permission` (
-  `role` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `permission` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `ark_rbac_user`
 --
 
@@ -67,6 +32,7 @@ CREATE TABLE `ark_rbac_user` (
   `email` varchar(100) NOT NULL DEFAULT '',
   `password` varchar(255) DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
+  `role` varchar(20) NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `verified` tinyint(1) NOT NULL DEFAULT '0',
   `locked` tinyint(1) NOT NULL DEFAULT '0',
@@ -85,15 +51,15 @@ CREATE TABLE `ark_rbac_user` (
 -- Dumping data for table `ark_rbac_user`
 --
 
-INSERT INTO `ark_rbac_user` (`user`, `username`, `email`, `password`, `name`, `enabled`, `verified`, `locked`, `expired`, `expires_at`, `credentials_expired`, `credentials_expire_at`, `verification_token`, `verification_requested_at`, `password_request_token`, `password_requested_at`, `last_login`) VALUES
-(1, NULL, 'john@layt.net', '$2y$13$5bDc.gpJTrnpJmfQt.7MZOz.QaKH/c8blMJtjJAxuoBwju.P88x2q', 'John Layt', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL),
-(2, NULL, 'stuarteve@gmail.com', '$2y$13$F70UAv8DPo7LFJSm4y0h.eacYGcJuubZRSSYBUqUbgwl4bBq3w.IK', 'Stuart Eve', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL),
-(3, NULL, 'm.johnson@lparchaeology.com', '$2y$13$cVYlJ12yc1dA6CTedS1HtuACE7sbD.gsc5/zHnXCk.ddDOEvRtIiK', 'Mike Johnson', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL),
-(4, NULL, 'test@example.com', '$2y$13$v1mS2heom1llh8dttBrbaOKdQ7PfuWHnTpEHvsIqiRWD0RgFbz5Yu', NULL, 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL),
-(5, NULL, 'stuarteve@lparchaeology.com', '$2y$13$CqYm4IE8GNonBHigXw4Rp.ZA.PhMRXIPtddsbMOVyU/RKmrZ2IGLO', 'Stuart Eve', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL),
-(6, NULL, 'farkado@cas.au.dk', '$2y$13$ZFjnuxJZWENioCLj4pP.Puha05uLX7rTMFENBhbI20TUoBSSRbfuO', NULL, 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL),
-(7, NULL, 'peter.jensen@cas.au.dk', '$2y$13$AbwjnZFu31LNjhmovB61y.QGDfisf.kaLmCBxOVVmjCNiQCmGytoq', 'Peter Jensen', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL),
-(8, NULL, 'crisager@cas.au.dk', '$2y$13$g/617vGuc3U7CWI8xMhuxulEsqwtaHVMgfG8/MQX1fdXsftGaV6F.', 'Carsten Risager', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL);
+INSERT INTO `ark_rbac_user` (`user`, `username`, `email`, `password`, `name`, `role`, `enabled`, `verified`, `locked`, `expired`, `expires_at`, `credentials_expired`, `credentials_expire_at`, `verification_token`, `verification_requested_at`, `password_request_token`, `password_requested_at`, `last_login`) VALUES
+(1, NULL, 'john@layt.net', '$2y$13$5bDc.gpJTrnpJmfQt.7MZOz.QaKH/c8blMJtjJAxuoBwju.P88x2q', 'John Layt', 'ROLE_SYSADMIN', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL),
+(2, NULL, 'stuarteve@gmail.com', '$2y$13$F70UAv8DPo7LFJSm4y0h.eacYGcJuubZRSSYBUqUbgwl4bBq3w.IK', 'Stuart Eve', 'ROLE_ADMIN', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL),
+(3, NULL, 'm.johnson@lparchaeology.com', '$2y$13$cVYlJ12yc1dA6CTedS1HtuACE7sbD.gsc5/zHnXCk.ddDOEvRtIiK', 'Mike Johnson', 'ROLE_ADMIN', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL),
+(4, NULL, 'test@example.com', '$2y$13$v1mS2heom1llh8dttBrbaOKdQ7PfuWHnTpEHvsIqiRWD0RgFbz5Yu', NULL, 'ROLE_USER', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL),
+(5, NULL, 'stuarteve@lparchaeology.com', '$2y$13$CqYm4IE8GNonBHigXw4Rp.ZA.PhMRXIPtddsbMOVyU/RKmrZ2IGLO', 'Stuart Eve', 'ROLE_USER', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL),
+(6, NULL, 'farkado@cas.au.dk', '$2y$13$ZFjnuxJZWENioCLj4pP.Puha05uLX7rTMFENBhbI20TUoBSSRbfuO', NULL, 'ROLE_USER', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL),
+(7, NULL, 'peter.jensen@cas.au.dk', '$2y$13$AbwjnZFu31LNjhmovB61y.QGDfisf.kaLmCBxOVVmjCNiQCmGytoq', 'Peter Jensen', 'ROLE_USER', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL),
+(8, NULL, 'crisager@cas.au.dk', '$2y$13$g/617vGuc3U7CWI8xMhuxulEsqwtaHVMgfG8/MQX1fdXsftGaV6F.', 'Carsten Risager', 'ROLE_USER', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -111,17 +77,6 @@ CREATE TABLE `ark_rbac_user_account` (
   `refresh_token` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ark_rbac_user_role`
---
-
-CREATE TABLE `ark_rbac_user_role` (
-  `user` int(11) UNSIGNED NOT NULL,
-  `role` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -174,25 +129,6 @@ CREATE TABLE `ark_user_field` (
 --
 
 --
--- Indexes for table `ark_rbac_permission`
---
-ALTER TABLE `ark_rbac_permission`
-  ADD PRIMARY KEY (`permission`);
-
---
--- Indexes for table `ark_rbac_role`
---
-ALTER TABLE `ark_rbac_role`
-  ADD PRIMARY KEY (`role`);
-
---
--- Indexes for table `ark_rbac_role_permission`
---
-ALTER TABLE `ark_rbac_role_permission`
-  ADD PRIMARY KEY (`role`,`permission`),
-  ADD KEY `permission` (`permission`);
-
---
 -- Indexes for table `ark_rbac_user`
 --
 ALTER TABLE `ark_rbac_user`
@@ -205,13 +141,6 @@ ALTER TABLE `ark_rbac_user`
 --
 ALTER TABLE `ark_rbac_user_account`
   ADD PRIMARY KEY (`user`,`account`);
-
---
--- Indexes for table `ark_rbac_user_role`
---
-ALTER TABLE `ark_rbac_user_role`
-  ADD PRIMARY KEY (`user`,`role`),
-  ADD KEY `role` (`role`);
 
 --
 -- Indexes for table `ark_user`
@@ -246,24 +175,10 @@ ALTER TABLE `ark_user`
 --
 
 --
--- Constraints for table `ark_rbac_role_permission`
---
-ALTER TABLE `ark_rbac_role_permission`
-  ADD CONSTRAINT `ark_rbac_role_permission_ibfk_1` FOREIGN KEY (`role`) REFERENCES `ark_rbac_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_rbac_role_permission_ibfk_2` FOREIGN KEY (`permission`) REFERENCES `ark_rbac_permission` (`permission`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Constraints for table `ark_rbac_user_account`
 --
 ALTER TABLE `ark_rbac_user_account`
   ADD CONSTRAINT `ark_rbac_user_account_ibfk_1` FOREIGN KEY (`user`) REFERENCES `ark_rbac_user` (`user`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `ark_rbac_user_role`
---
-ALTER TABLE `ark_rbac_user_role`
-  ADD CONSTRAINT `ark_rbac_user_role_ibfk_1` FOREIGN KEY (`user`) REFERENCES `ark_rbac_user` (`user`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_rbac_user_role_ibfk_2` FOREIGN KEY (`role`) REFERENCES `ark_rbac_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
