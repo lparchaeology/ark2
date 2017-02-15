@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Fragment Type
+ * ARK Model Datatype
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -35,19 +35,25 @@ use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
-class FragmentType
+class Datatype
 {
     use EnabledTrait;
     use KeywordTrait;
 
-    protected $type = '';
-    protected $compound = '';
-    protected $formatClass = '';
+    protected $datatype = '';
+    protected $compound = false;
+    protected $formatName = '';
+    protected $formatRequired = false;
+    protected $parameterName = '';
+    protected $parameterRequired = false;
+    protected $valueName = '';
+    protected $modelTable = '';
     protected $modelClass = '';
+    protected $dataTable = '';
+    protected $dataClass = '';
     protected $formClass = '';
-    protected $table = '';
 
-    public function name()
+    public function id()
     {
         return $this->type;
     }
@@ -57,24 +63,49 @@ class FragmentType
         return $this->compound;
     }
 
-    public function isAtomic()
+    public function formatName()
     {
-        return !$this->compound;
+        return ($this->formatName ? $this->formatName : 'format');
     }
 
-    public function table()
+    public function formatRequired()
     {
-        return $this->table;
+        return $this->formatRequired;
     }
 
-    public function formatClass()
+    public function parameterName()
     {
-        return $this->formatClass;
+        return ($this->parameterName ? $this->parameterName : 'parameter');
+    }
+
+    public function parameterRequired()
+    {
+        return $this->parameterRequired;
+    }
+
+    public function valueName()
+    {
+        return ($this->value ? $this->value : 'value');
+    }
+
+    public function modelTable()
+    {
+        return $this->modelTable;
     }
 
     public function modelClass()
     {
         return $this->modelClass;
+    }
+
+    public function dataTable()
+    {
+        return $this->dataTable;
+    }
+
+    public function dataClass()
+    {
+        return $this->dataClass;
     }
 
     public function formClass()
@@ -85,17 +116,24 @@ class FragmentType
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_fragment_type');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype');
         $builder->setReadOnly();
 
         // Key
-        $builder->addStringKey('type', 20);
+        $builder->addStringKey('datatype', 30);
 
         // Attributes
         $builder->addField('compound', 'boolean');
-        $builder->addStringField('table', 50, 'tbl');
-        $builder->addStringField('formatClass', 100, 'format_class');
+        $builder->addStringField('formatName', 30, 'format_name');
+        $builder->addField('formatRequired', 'boolean');
+        $builder->addStringField('parameterName', 30, 'parameter_name');
+        $builder->addField('parameterRequired', 'boolean');
+        $builder->addStringField('valueName', 30, 'value_name');
+        $builder->addField('valueRequired', 'boolean');
+        $builder->addStringField('modelTable', 50, 'model_table');
         $builder->addStringField('modelClass', 100, 'model_class');
+        $builder->addStringField('dataTable', 50, 'data_table');
+        $builder->addStringField('dataClass', 100, 'data_class');
         $builder->addStringField('formClass', 100, 'form_class');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);

@@ -43,6 +43,7 @@ class Term
     protected $concept = null;
     protected $term = '';
     protected $alias = '';
+    protected $root = false;
     protected $parameters = null;
     protected $related = null;
     protected $descendents = null;
@@ -66,6 +67,11 @@ class Term
     public function alias()
     {
         return $this->alias;
+    }
+
+    public function isRoot()
+    {
+        return $this->root;
     }
 
     public function parameters()
@@ -103,6 +109,7 @@ class Term
 
         // Attributes
         $builder->addStringField('alias', 10);
+        $builder->addField('root', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
 

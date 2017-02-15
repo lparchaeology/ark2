@@ -42,6 +42,7 @@ trait ItemTrait
     use VersionTrait;
 
     protected $id = '';
+    protected $module = null;
     protected $parentModule = null;
     protected $parentId = null;
     protected $parent = null;
@@ -207,6 +208,7 @@ trait ItemTrait
         $builder->addStringKey('id', 30);
 
         // Fields
+        $builder->addStringField('module', 30);
         $builder->addStringField('schma', 30);
         $typeEntities = Service::database()->getTypeEntities($module);
         if ($typeEntities) {

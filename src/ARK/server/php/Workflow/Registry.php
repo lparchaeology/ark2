@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Decimal Fragment
+ * ARK Workflow Registry
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,15 +28,25 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model\Fragment;
+namespace ARK\Workflow;
 
-use ARK\Model\Fragment;
-use ARK\ORM\ClassMetadata;
+use Symfony\Component\Workflow\Exception\InvalidArgumentException;
+use Symfony\Component\Workflow\Registry as SymfonyRegistry;
+use Symfony\Component\Workflow\Workflow;
 
-class DecimalFragment extends Fragment
+class Registry extends SymfonyRegistry
 {
-    public static function loadMetadata(ClassMetadata $metadata)
+    public function get($subject, $workflowName = null)
     {
-        return self::buildSubclassMetadata($metadata, self::class);
+        $workflow = null;
+        try {
+            $workflow = parent::get($subject, $workflowName);
+        } catch (InvalidArgumentException $e) {
+            if (!$workflow = ORM::find(Workflow::class, $workflowName)) {
+                throw new InvalidArgumentException(sprintf('Unable to find a workflow for class "%s".', get_class($subject)));
+            }
+            $this->add($workflow, get_class($subject));
+        }
+        return $workflow;
     }
 }

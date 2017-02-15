@@ -32,17 +32,50 @@ namespace ARK\Model\Format;
 
 use ARK\Model\Format;
 use ARK\Model\Format\StringFormat;
-use ARK\Model\Format\StringTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
 class StringFormat extends Format
 {
-    use StringTrait;
+    protected $pattern = '';
+    protected $minimumLength = 0;
+    protected $maximumLength = 0;
+    protected $defaultSize = 0;
+
+    public function pattern()
+    {
+        return $this->pattern;
+    }
+
+    public function minimumLength()
+    {
+        return $this->minimumLength;
+    }
+
+    public function maximumLength()
+    {
+        return $this->maximumLength;
+    }
+
+    public function defaultSize()
+    {
+        return $this->defaultSize;
+    }
+
+    public static function buildStringMetadata(ClassMetadataBuilder $builder)
+    {
+    }
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
+        // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_format_string');
+
+        // Attributes
+        $builder->addStringField('pattern', 100);
+        $builder->addField('minimumLength', 'integer', [], 'min_length');
+        $builder->addField('maximumLength', 'integer', [], 'max_length');
+        $builder->addField('defaultSize', 'integer', [], 'default_size');
         StringTrait::buildStringMetadata($builder);
     }
 }

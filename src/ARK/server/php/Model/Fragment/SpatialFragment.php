@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Geometry Format
+ * ARK Model Geometry Fragment
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,16 +28,15 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model\Format;
+namespace ARK\Model\Fragment;
 
-use ARK\Model\Format;
+use ARK\Model\Fragment;
 use ARK\ORM\ClassMetadata;
-use ARK\ORM\ClassMetadataBuilder;
 
-class WktFormat extends Format
+class SpatialFragment extends Fragment
 {
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_format_wkt');
+        return self::buildSubclassMetadata($metadata, self::class);
     }
 }

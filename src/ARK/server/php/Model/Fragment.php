@@ -32,11 +32,10 @@ namespace ARK\Model;
 
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\Model\VersionTrait;
-use ARK\Model\Fragment\BlobFragment;
+use ARK\ORM\ORM;
 use ARK\Model\Attribute;
-use ARK\Service;
-use Doctrine\Common\Collections\ArrayCollection;
+use ARK\Model\Datatype;
+use ARK\Model\VersionTrait;
 
 abstract class Fragment
 {
@@ -44,11 +43,19 @@ abstract class Fragment
 
     protected $fid = null;
     protected $module = '';
-    protected $item = '';
+    protected $id = '';
     protected $attribute = '';
-    protected $parameter = null;
+    protected $datatypeId = '';
+    protected $datatype = null;
+    protected $format = '';
+    protected $parameter = '';
     protected $value = null;
     protected $parent = null;
+
+    public function __toString()
+    {
+        return $this->value;
+    }
 
     public function id()
     {
@@ -75,6 +82,19 @@ abstract class Fragment
         return $this->attribute;
     }
 
+    public function datatype()
+    {
+        if (!$this->datatype) {
+            $this->datatype = ORM::find(Datatype::class, $this->datatypeId);
+        }
+        return $this->datatype;
+    }
+
+    public function format()
+    {
+        return $this->format;
+    }
+
     public function parameter()
     {
         return $this->parameter;
@@ -85,15 +105,39 @@ abstract class Fragment
         return $this->value;
     }
 
-    public function setValue($value, $parameter = null)
+    public function setValue($value, $parameter = null, $format = null)
     {
         $this->value = $value;
         $this->parameter = $parameter;
+        $this->format = $format;
     }
 
     public function parent()
     {
         return $this->parent;
+    }
+
+    public function toArray()
+    {
+        $array = [];
+        if ($this->format || $this->datatype()->formatRequired()) {
+            $array[$this->datatype()->formatName()] = $this->format;
+        }
+        if ($this->parameter || $this->datatype()->parameterRequired()) {
+            $array[$this->datatype()->parameterName()] = $this->parameter;
+        }
+        $array[$this->datatype()->valueName()] = $this->value;
+        return $array;
+    }
+
+    public function fromArray(array $array)
+    {
+        $format = $this->datatype()->formatName();
+        $this->format = (isset($array[$format]) ? $array[$format] : null);
+        $parameter = $this->datatype()->parameterName();
+        $this->parameter = (isset($array[$parameter]) ? $array[$parameter] : null);
+        $value = $this->datatype()->valueName();
+        $this->format = (isset($array[$format]) ? $array[$format] : null);
     }
 
     public static function create($module, $item, Attribute $attribute, Fragment $parent = null)
@@ -103,6 +147,7 @@ abstract class Fragment
         $fragment->module = $module;
         $fragment->item = $item;
         $fragment->attribute = $attribute->name();
+        $fragment->datatypeId = $attribute->datatype()->id();
         $fragment->parent = $parent;
         $fragment->refreshVersion();
         return $fragment;
@@ -116,10 +161,24 @@ abstract class Fragment
 
         // Attributes
         $builder->addStringField('module', 30);
-        $builder->addStringField('item', 30);
+        $builder->addStringField('id', 30);
         $builder->addStringField('attribute', 30);
+        $builder->addStringField('datatypeId', 30, 'datatype');
+        $builder->addStringField('format', 30);
         $builder->addStringField('parameter', 30);
         $builder->addField('parent', 'integer', [], 'object_fid');
         VersionTrait::buildVersionMetadata($builder);
+    }
+
+    public static function buildSubclassMetadata(ClassMetadata $metadata, $class)
+    {
+        $datatype = Service::database()->getFragmantDatatype($class);
+        $builder = new ClassMetadataBuilder($metadata, $datatype['data_table']);
+        $builder->addGeneratedKey('fid');
+        if ($datatype['doctrine'] == 'string') {
+            $builder->addStringField('value', $datatype['size']);
+        } else {
+            $builder->addField('value', $datatype['doctrine']);
+        }
     }
 }

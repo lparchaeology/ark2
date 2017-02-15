@@ -32,14 +32,11 @@ namespace ARK\Model\Fragment;
 
 use ARK\Model\Fragment;
 use ARK\ORM\ClassMetadata;
-use ARK\ORM\ClassMetadataBuilder;
 
 class DateFragment extends Fragment
 {
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_fragment_date');
-        $builder->addGeneratedKey('fid');
-        $builder->addField('value', 'date');
+        return self::buildSubclassMetadata($metadata, self::class);
     }
 }

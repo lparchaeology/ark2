@@ -38,7 +38,7 @@ class Database
 {
     private $app = null;
     private $modules = [];
-    private $fragTypes = [];
+    private $datatypes = [];
     private $fragmentTables = [];
 
     public function __construct(Application $app)
@@ -211,33 +211,51 @@ class Database
         return $this->modules;
     }
 
-    private function loadFragmentTypes()
+    private function loadDatatypes()
     {
-        if ($this->fragTypes) {
+        if ($this->datatypes) {
             return;
         }
         $sql = "
             SELECT *
-            FROM ark_fragment_type
+            FROM ark_datatype
+            WHERE enabled = true
         ";
-        $fragTypes = $this->core()->fetchAll($sql, []);
-        foreach ($fragTypes as $fragType) {
-            $this->fragTypes[$fragType['type']] = $fragType;
-            if ($fragType['tbl']) {
-                $this->fragmentTables[] = $fragType['tbl'];
+        $datatypes = $this->core()->fetchAll($sql, []);
+        foreach ($datatypes as $datatype) {
+            $this->datatypes[$datatype['type']] = $datatype;
+            if ($datatype['tbl']) {
+                $this->fragmentTables[] = $datatype['data_table'];
             }
         }
     }
 
-    private function getFragmentTable($fragType)
+    private function getDatatypes()
     {
-        $this->loadFragmentTypes();
-        return $this->fragTypes[$fragType]['tbl'];
+        $this->loadDatatypes();
+        return $this->datatypes;
+    }
+
+    private function getFragmentTable($datatype)
+    {
+        $this->loadDatatypes();
+        return $this->datatypes[$datatype]['data_table'];
+    }
+
+    private function getFragmentDatatype($class)
+    {
+        $this->loadDatatypes();
+        foreach ($this->datatypes as $datatype => $attributes) {
+            if ($attributes['data_class'] === $class) {
+                return $attributes;
+            }
+        }
+        return [];
     }
 
     public function getFragmentTables()
     {
-        $this->loadFragmentTypes();
+        $this->loadDatatypes();
         return $this->fragmentTables;
     }
 

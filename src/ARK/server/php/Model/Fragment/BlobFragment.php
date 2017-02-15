@@ -32,14 +32,16 @@ namespace ARK\Model\Fragment;
 
 use ARK\Model\Fragment;
 use ARK\ORM\ClassMetadata;
-use ARK\ORM\ClassMetadataBuilder;
 
 class BlobFragment extends Fragment
 {
+    public function __toString()
+    {
+        return 'BLOB';
+    }
+
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_fragment_blob');
-        $builder->addGeneratedKey('fid');
-        $builder->addField('value', 'blob');
+        return self::buildSubclassMetadata($metadata, self::class);
     }
 }

@@ -571,7 +571,7 @@
     </index>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
   </table>
-  <table name="ark_fragment_wkt">
+  <table name="ark_fragment_spatial">
     <field name="fid" type="integer">
       <autoincrement/>
       <key/>

@@ -32,14 +32,11 @@ namespace ARK\Model\Fragment;
 
 use ARK\Model\Fragment;
 use ARK\ORM\ClassMetadata;
-use ARK\ORM\ClassMetadataBuilder;
 
 class TextFragment extends Fragment
 {
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_fragment_text');
-        $builder->addGeneratedKey('fid');
-        $builder->addStringField('value', 1431655765);
+        return self::buildSubclassMetadata($metadata, self::class);
     }
 }

@@ -78,6 +78,22 @@ abstract class Attribute
         return $this->vocabulary;
     }
 
+    public function hasWorkflow()
+    {
+        if ($this->vocabulary) {
+            return (bool) $this->vocabulary->hasWorkflow();
+        }
+        return false;
+    }
+
+    public function workflow()
+    {
+        if ($this->vocabulary) {
+            return $this->vocabulary->workflow();
+        }
+        return null;
+    }
+
     public function defaultValue()
     {
         //TODO Needs implementing!

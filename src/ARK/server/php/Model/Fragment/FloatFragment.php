@@ -32,14 +32,11 @@ namespace ARK\Model\Fragment;
 
 use ARK\Model\Fragment;
 use ARK\ORM\ClassMetadata;
-use ARK\ORM\ClassMetadataBuilder;
 
 class FloatFragment extends Fragment
 {
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_fragment_float');
-        $builder->addGeneratedKey('fid');
-        $builder->addField('value', 'float');
+        return self::buildSubclassMetadata($metadata, self::class);
     }
 }

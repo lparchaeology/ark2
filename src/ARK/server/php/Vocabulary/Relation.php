@@ -33,7 +33,7 @@ namespace ARK\Vocabulary;
 use ARK\ORM\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
-class Related
+class Relation
 {
     protected $relation = '';
     protected $notation = '';

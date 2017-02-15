@@ -55,24 +55,19 @@ abstract class Format
         $this->attributes = new ArrayCollection();
     }
 
-    public function name()
+    public function id()
     {
         return $this->format;
     }
 
-    public function type()
+    public function datatype()
     {
-        return $this->type;
+        return $this->datatype;
     }
 
     public function isCompound()
     {
-        return $this->hasAttributes() || $this->type->isCompound();
-    }
-
-    public function isAtomic()
-    {
-        return !$this->isCompound();
+        return $this->hasAttributes() || $this->datatype->isCompound();
     }
 
     public function input()
@@ -124,22 +119,13 @@ abstract class Format
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_format');
-        $builder->setJoinedTableInheritance()->setDiscriminatorColumn('type', 'string', 10);
-        // TODO Build from database table?
-        $builder->addDiscriminatorMapClass('blob', 'ARK\Model\Format\BlobFormat');
-        $builder->addDiscriminatorMapClass('boolean', 'ARK\Model\Format\BooleanFormat');
-        $builder->addDiscriminatorMapClass('date', 'ARK\Model\Format\DateFormat');
-        $builder->addDiscriminatorMapClass('datetime', 'ARK\Model\Format\DateTimeFormat');
-        $builder->addDiscriminatorMapClass('decimal', 'ARK\Model\Format\DecimalFormat');
-        $builder->addDiscriminatorMapClass('float', 'ARK\Model\Format\FloatFormat');
-        $builder->addDiscriminatorMapClass('integer', 'ARK\Model\Format\IntegerFormat');
-        $builder->addDiscriminatorMapClass('item', 'ARK\Model\Format\ItemFormat');
-        $builder->addDiscriminatorMapClass('object', 'ARK\Model\Format\ObjectFormat');
-        $builder->addDiscriminatorMapClass('string', 'ARK\Model\Format\StringFormat');
-        $builder->addDiscriminatorMapClass('text', 'ARK\Model\Format\TextFormat');
-        $builder->addDiscriminatorMapClass('time', 'ARK\Model\Format\TimeFormat');
-        $builder->addDiscriminatorMapClass('wkt', 'ARK\Model\Format\WktFormat');
         $builder->setReadOnly();
+        $builder->setJoinedTableInheritance()->setDiscriminatorColumn('datatype', 'string', 30);
+        // TODO Build from ark_datatype?
+        $datatypes = Database::getDatatypes();
+        foreach ($datatypes as $datatype => $attributes) {
+            $builder->addDiscriminatorMapClass($datatype, $attributes['model_class']);
+        }
 
         // Key
         $builder->addStringKey('format', 30);
@@ -154,7 +140,7 @@ abstract class Format
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations
-        $builder->addManyToOneField('type', 'ARK\Model\FragmentType', 'type', 'type', false);
+        $builder->addManyToOneField('datatype', 'ARK\Model\Datatype', 'datatype', 'datatype', false);
         $builder->addOneToMany('attributes', 'ARK\Model\Format\FormatAttribute', 'parent');
     }
 }

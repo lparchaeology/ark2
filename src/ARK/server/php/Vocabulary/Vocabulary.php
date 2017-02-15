@@ -35,6 +35,8 @@ use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Workflow\DefinitionBuilder;
+use Symfony\Component\Workflow\Transition;
 
 abstract class Vocabulary
 {
@@ -45,6 +47,8 @@ abstract class Vocabulary
     protected $type = null;
     protected $source = '';
     protected $closed = true;
+    protected $workflow = false;
+    protected $workflowDefinition = null;
     protected $terms = null;
 
     public function __construct()
@@ -87,21 +91,57 @@ abstract class Vocabulary
         return null;
     }
 
+    public function hasWorkflow()
+    {
+        return $this->workflow;
+    }
+
+    public function workflowDefinition()
+    {
+        if (!$this->workflowDefinition && $this->workflow) {
+            $builder = new DefinitionBuilder();
+            foreach ($this->terms as $term) {
+                $builder->addPlace($term->name());
+                if ($term->isRoot()) {
+                    $builder->setInitialPlace($term->name());
+                }
+            }
+            foreach ($this->terms as $term) {
+                foreach ($term->related() as $related) {
+                    if ($related->type() == 'transition') {
+                        $trans = new Transition($related->parameter(), $related->fromTerm()->name(), $related->toTerm()->name());
+                        $builder->addTransition($trans);
+                    }
+                }
+            }
+            $this->workflowDefinition = $builder->build();
+        }
+        return $this->workflowDefinition;
+    }
+
     public static function loadMetadata(ClassMetadata $metadata)
     {
+        // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_vocabulary');
-        $builder->addStringKey('concept', 30);
-        $builder->addManyToOneField('type', 'ARK\Vocabulary\Type', 'type', 'type', false);
-        $builder->addStringField('source', 30);
-        $builder->addField('closed', 'boolean');
-        EnabledTrait::buildEnabledMetadata($builder);
-        KeywordTrait::buildKeywordMetadata($builder);
+        $builder->setReadOnly();
         $builder->setSingleTableInheritance()->setDiscriminatorColumn('type', 'string', 10);
         $builder->addDiscriminatorMapClass('taxonomy', 'ARK\Vocabulary\Taxonomy');
         $builder->addDiscriminatorMapClass('list', 'ARK\Vocabulary\TermList');
         $builder->addDiscriminatorMapClass('ring', 'ARK\Vocabulary\TermRing');
         $builder->addDiscriminatorMapClass('thesaurus', 'ARK\Vocabulary\Thesaurus');
+
+        // Key
+        $builder->addStringKey('concept', 30);
+
+        // Attributes
+        $builder->addManyToOneField('type', 'ARK\Vocabulary\Type', 'type', 'type', false);
+        $builder->addStringField('source', 30);
+        $builder->addField('closed', 'boolean');
+        $builder->addField('workflow', 'boolean');
+        EnabledTrait::buildEnabledMetadata($builder);
+        KeywordTrait::buildKeywordMetadata($builder);
+
+        // Associations
         $builder->addOneToMany('terms', 'ARK\Vocabulary\Term', 'concept');
-        $builder->setReadOnly();
     }
 }

@@ -32,14 +32,11 @@ namespace ARK\Model\Fragment;
 
 use ARK\Model\Fragment;
 use ARK\ORM\ClassMetadata;
-use ARK\ORM\ClassMetadataBuilder;
 
 class TimeFragment extends Fragment
 {
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_fragment_time');
-        $builder->addGeneratedKey('fid');
-        $builder->addField('value', 'time');
+        return self::buildSubclassMetadata($metadata, self::class);
     }
 }
