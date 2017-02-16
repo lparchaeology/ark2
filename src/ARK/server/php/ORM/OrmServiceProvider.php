@@ -138,7 +138,7 @@ class OrmServiceProvider implements ServiceProviderInterface
                             'path' => [
                                 $srcDir.'/Model/Attribute.php',
                                 $srcDir.'/Model/Format.php',
-                                $srcDir.'/Model/FragmentType.php',
+                                $srcDir.'/Model/Datatype.php',
                                 $srcDir.'/Model/Module.php',
                                 $srcDir.'/Model/Schema.php',
                             ]
