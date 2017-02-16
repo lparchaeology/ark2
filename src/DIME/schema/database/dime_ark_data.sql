@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 15, 2017 at 11:12 PM
+-- Generation Time: Feb 16, 2017 at 11:25 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -843,12 +843,12 @@ CREATE TABLE `ark_fragment_time` (
 --
 
 CREATE TABLE `ark_item_actor` (
-  `id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'actor',
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `parent_id` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `mod_by` int(11) NOT NULL,
@@ -862,7 +862,7 @@ CREATE TABLE `ark_item_actor` (
 -- Dumping data for table `ark_item_actor`
 --
 
-INSERT INTO `ark_item_actor` (`id`, `module`, `schma`, `type`, `parent_module`, `parent_id`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+INSERT INTO `ark_item_actor` (`item`, `module`, `schma`, `type`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
 ('ARV', 'actor', 'dime.actor', 'institution', '', '', 'ARV', 'ARV', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
 ('BMR', 'actor', 'dime.actor', 'institution', '', '', 'BMR', 'BMR', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
 ('DKM', 'actor', 'dime.actor', 'institution', '', '', 'DKM', 'DKM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
@@ -901,12 +901,12 @@ INSERT INTO `ark_item_actor` (`id`, `module`, `schma`, `type`, `parent_module`, 
 --
 
 CREATE TABLE `ark_item_campaign` (
-  `id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'campaign',
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `parent_id` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `mod_by` int(11) NOT NULL,
@@ -923,12 +923,12 @@ CREATE TABLE `ark_item_campaign` (
 --
 
 CREATE TABLE `ark_item_file` (
-  `id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'file',
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `parent_id` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `label` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `mod_by` int(11) NOT NULL,
@@ -942,7 +942,7 @@ CREATE TABLE `ark_item_file` (
 -- Dumping data for table `ark_item_file`
 --
 
-INSERT INTO `ark_item_file` (`id`, `module`, `schma`, `type`, `parent_module`, `parent_id`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+INSERT INTO `ark_item_file` (`item`, `module`, `schma`, `type`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
 ('1', 'file', 'core.file', 'document', NULL, NULL, '1', '1', 0, '2017-02-15 15:51:08', 0, '2017-01-25 19:46:09', '');
 
 -- --------------------------------------------------------
@@ -952,12 +952,12 @@ INSERT INTO `ark_item_file` (`id`, `module`, `schma`, `type`, `parent_module`, `
 --
 
 CREATE TABLE `ark_item_find` (
-  `id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'find',
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `parent_id` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `mod_by` int(11) NOT NULL,
@@ -971,7 +971,7 @@ CREATE TABLE `ark_item_find` (
 -- Dumping data for table `ark_item_find`
 --
 
-INSERT INTO `ark_item_find` (`id`, `module`, `schma`, `type`, `parent_module`, `parent_id`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+INSERT INTO `ark_item_find` (`item`, `module`, `schma`, `type`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
 ('1', 'find', 'dime.find', 'accessory', NULL, NULL, '1', '1', 0, '2017-02-15 15:52:17', 0, '2017-01-29 22:37:39', ''),
 ('10', 'find', 'dime.find', 'fibula', NULL, NULL, '10', '10', 0, '2017-02-15 15:52:17', 0, '2017-01-29 21:09:38', ''),
 ('2', 'find', 'dime.find', 'fibula', NULL, NULL, '2', '2', 0, '2017-02-15 15:52:17', 0, '2017-01-29 20:45:58', ''),
@@ -990,12 +990,12 @@ INSERT INTO `ark_item_find` (`id`, `module`, `schma`, `type`, `parent_module`, `
 --
 
 CREATE TABLE `ark_item_image` (
-  `id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'image',
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `parent_id` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `mod_by` int(11) NOT NULL,
@@ -1012,12 +1012,12 @@ CREATE TABLE `ark_item_image` (
 --
 
 CREATE TABLE `ark_item_locality` (
-  `id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'locality',
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `parent_id` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `mod_by` int(11) NOT NULL,
@@ -1031,7 +1031,7 @@ CREATE TABLE `ark_item_locality` (
 -- Dumping data for table `ark_item_locality`
 --
 
-INSERT INTO `ark_item_locality` (`id`, `module`, `schma`, `type`, `parent_module`, `parent_id`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+INSERT INTO `ark_item_locality` (`item`, `module`, `schma`, `type`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
 ('1', '', 'dime.locality', '', NULL, NULL, '1', '1', 0, '2017-01-31 07:56:37', 0, '2017-01-31 07:56:37', '');
 
 -- --------------------------------------------------------
@@ -1041,12 +1041,12 @@ INSERT INTO `ark_item_locality` (`id`, `module`, `schma`, `type`, `parent_module
 --
 
 CREATE TABLE `ark_item_page` (
-  `id` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'page',
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `parent_id` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `mod_by` int(11) NOT NULL,
@@ -1060,7 +1060,7 @@ CREATE TABLE `ark_item_page` (
 -- Dumping data for table `ark_item_page`
 --
 
-INSERT INTO `ark_item_page` (`id`, `module`, `schma`, `type`, `parent_module`, `parent_id`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+INSERT INTO `ark_item_page` (`item`, `module`, `schma`, `type`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
 ('about', 'page', 'core.page', '', NULL, NULL, 'about', 'about', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
 ('background', 'page', 'core.page', '', NULL, NULL, 'background', 'background', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
 ('detector', 'page', 'core.page', '', NULL, NULL, 'detector', 'detector', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
@@ -1234,57 +1234,57 @@ ALTER TABLE `ark_fragment_time`
 -- Indexes for table `ark_item_actor`
 --
 ALTER TABLE `ark_item_actor`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`item`),
   ADD KEY `name` (`label`) USING BTREE,
-  ADD KEY `parent` (`parent_module`,`parent_id`) USING BTREE;
+  ADD KEY `parent` (`parent_module`,`parent_item`) USING BTREE;
 
 --
 -- Indexes for table `ark_item_campaign`
 --
 ALTER TABLE `ark_item_campaign`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`item`),
   ADD KEY `name` (`label`) USING BTREE,
-  ADD KEY `parent` (`parent_module`,`parent_id`) USING BTREE;
+  ADD KEY `parent` (`parent_module`,`parent_item`) USING BTREE;
 
 --
 -- Indexes for table `ark_item_file`
 --
 ALTER TABLE `ark_item_file`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `parent` (`parent_module`,`parent_id`) USING BTREE,
+  ADD PRIMARY KEY (`item`),
+  ADD KEY `parent` (`parent_module`,`parent_item`) USING BTREE,
   ADD KEY `name` (`label`(191)) USING BTREE;
 
 --
 -- Indexes for table `ark_item_find`
 --
 ALTER TABLE `ark_item_find`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`item`),
   ADD KEY `name` (`label`) USING BTREE,
-  ADD KEY `parent` (`parent_module`,`parent_id`) USING BTREE;
+  ADD KEY `parent` (`parent_module`,`parent_item`) USING BTREE;
 
 --
 -- Indexes for table `ark_item_image`
 --
 ALTER TABLE `ark_item_image`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`item`),
   ADD KEY `name` (`label`) USING BTREE,
-  ADD KEY `parent` (`parent_module`,`parent_id`) USING BTREE;
+  ADD KEY `parent` (`parent_module`,`parent_item`) USING BTREE;
 
 --
 -- Indexes for table `ark_item_locality`
 --
 ALTER TABLE `ark_item_locality`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`item`),
   ADD KEY `name` (`label`) USING BTREE,
-  ADD KEY `parent` (`parent_module`,`parent_id`) USING BTREE;
+  ADD KEY `parent` (`parent_module`,`parent_item`) USING BTREE;
 
 --
 -- Indexes for table `ark_item_page`
 --
 ALTER TABLE `ark_item_page`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`item`),
   ADD KEY `name` (`label`) USING BTREE,
-  ADD KEY `parent` (`parent_module`,`parent_id`) USING BTREE;
+  ADD KEY `parent` (`parent_module`,`parent_item`) USING BTREE;
 
 --
 -- Indexes for table `ark_sequence`

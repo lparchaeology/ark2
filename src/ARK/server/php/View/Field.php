@@ -119,7 +119,6 @@ class Field extends Element
             }
             return '';
         }
-
         if ($form && $this->template()) {
             $options['field'] = $this;
             $options['data'] = $this->formData($data[$form->vars['id']]);
@@ -129,16 +128,17 @@ class Field extends Element
             $options['formLabel'] = $cell->formLabel();
             return Service::renderView($this->template(), $options);
         }
+
         // FIXME Should probably have some way to use FormTypes here to render 'flat' compond values
         $value = null;
         if ($data instanceof Item and $this->attribute) {
             $value = 'FIXME: '.$this->element;
             if ($this->attribute->isAtomic()) {
                 $value = $data->property($this->attribute->name())->value();
-            } elseif ($this->attribute->format()->isAtomic()) {
+            } elseif (!$this->attribute->format()->isCompound()) {
                 $value = $data->property($this->attribute->name())->value()[0];
-            } elseif ($this->attribute->format()->type()->isAtomic()) {
-                if ($this->attribute->format()->name() == 'shortlocaltext') {
+            } elseif (!$this->attribute->format()->datatype()->isObject()) {
+                if ($this->attribute->format()->name() == 'shorttext') {
                     $language = Service::locale();
                     $values = $data->property($this->attribute->name())->value();
                     foreach ($values as $trans) {
@@ -160,9 +160,8 @@ class Field extends Element
             if ($this->attribute->hasVocabulary()) {
                 $vocab = $this->attribute->vocabulary();
                 foreach ($vocab->terms() as $term) {
-                    if ($term->name() == $value) {
-                        $value = Service::translate($term->keyword());
-                        continue;
+                    if ($term->name() == $value['value']) {
+                        return Service::translate($term->keyword());
                     }
                 }
             }

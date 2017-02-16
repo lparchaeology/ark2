@@ -31,7 +31,7 @@
 namespace DIME\Route;
 
 use Silex\Application;
-use Silex\API\ControllerProviderInterface;
+use Silex\Api\ControllerProviderInterface;
 
 class ViewControllerProvider implements ControllerProviderInterface
 {

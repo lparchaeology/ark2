@@ -71,7 +71,7 @@ trait ItemFragmentTrait
                 $properties[$attr->name()] = null;
                 $attributes[$attr->name()] = $attr;
             }
-            if ($attribute->format()->type()->isCompound()) {
+            if ($attribute->format()->datatype()->isObject()) {
                 foreach ($members[$frag['fid']] as $member) {
                     if (isset($member['object_fid']) && $member['object_fid'] === $frag['fid']) {
                         $attributeId = $member['attribute'];
@@ -94,6 +94,7 @@ trait ItemFragmentTrait
         }
     }
 
+    // TODO Move to ORM persister
     protected function getItemFragments($module, $item)
     {
         $sql = '';

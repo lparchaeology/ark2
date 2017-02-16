@@ -41,7 +41,7 @@ class Datatype
     use KeywordTrait;
 
     protected $datatype = '';
-    protected $compound = false;
+    protected $object = false;
     protected $formatName = '';
     protected $formatRequired = false;
     protected $parameterName = '';
@@ -55,12 +55,12 @@ class Datatype
 
     public function id()
     {
-        return $this->type;
+        return $this->datatype;
     }
 
-    public function isCompound()
+    public function isObject()
     {
-        return $this->compound;
+        return $this->object;
     }
 
     public function formatName()
@@ -85,7 +85,7 @@ class Datatype
 
     public function valueName()
     {
-        return ($this->value ? $this->value : 'value');
+        return ($this->valueName ? $this->valueName : 'value');
     }
 
     public function modelTable()
@@ -123,13 +123,12 @@ class Datatype
         $builder->addStringKey('datatype', 30);
 
         // Attributes
-        $builder->addField('compound', 'boolean');
+        $builder->addField('object', 'boolean');
         $builder->addStringField('formatName', 30, 'format_name');
-        $builder->addField('formatRequired', 'boolean');
+        $builder->addField('formatRequired', 'boolean', [], 'format_required');
         $builder->addStringField('parameterName', 30, 'parameter_name');
-        $builder->addField('parameterRequired', 'boolean');
+        $builder->addField('parameterRequired', 'boolean', [], 'parameter_required');
         $builder->addStringField('valueName', 30, 'value_name');
-        $builder->addField('valueRequired', 'boolean');
         $builder->addStringField('modelTable', 50, 'model_table');
         $builder->addStringField('modelClass', 100, 'model_class');
         $builder->addStringField('dataTable', 50, 'data_table');

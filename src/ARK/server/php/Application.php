@@ -36,8 +36,8 @@ use ARK\Api\JsonApi\JsonApiServiceProvider;
 use ARK\Database\DbalServiceProvider;
 use ARK\Http\Error\InternalServerError;
 use ARK\ORM\OrmServiceProvider;
-use ARK\Provider\SpatialServiceProvider;
 use ARK\Provider\JsonSchemaServiceProvider;
+use ARK\Provider\SpatialServiceProvider;
 use ARK\Translation\Loader\ActorLoader;
 use ARK\Translation\Loader\DatabaseLoader;
 use ARK\Translation\Twig\TranslateExtension;
@@ -104,11 +104,9 @@ class Application extends SilexApplication
         }
         $this['ark'] = $config;
 
-        self::$debug = $config['debug'];
-        if (self::$debug) {
-            error_reporting(E_ALL);
-            ini_set('display_errors', 1);
-            Debug::enable();
+        static::$debug = $config['debug'];
+        if (static::$debug) {
+            Debug::enable(E_ALL, true);
         } else {
             error_reporting(E_ERROR | E_WARNING | E_PARSE);
             ini_set('display_errors', 0);
@@ -120,7 +118,7 @@ class Application extends SilexApplication
         parent::__construct();
 
         // Enable the debug mode
-        $this['debug'] = self::$debug;
+        $this['debug'] = static::$debug;
 
         // Configure directories
         $this['dir.install'] = ARK::installDir();
@@ -183,7 +181,7 @@ class Application extends SilexApplication
         $this->register(new MonologServiceProvider());
         $this['monolog.logfile'] = $this['dir.var'].'/logs/'.$config['site'].'.log';
         $this['monolog.name'] = $config['site'];
-        if (self::$debug) {
+        if (static::$debug) {
             $this['monolog.level'] = 'DEBUG';
             $this['logger.level'] = LogLevel::DEBUG;
         } else {
@@ -199,7 +197,7 @@ class Application extends SilexApplication
 
         // Enable the Spatial functions
         // - Required on boot: DBAL
-        if (isset($app['ark']['spatial'])) {
+        if (isset($config['ark']['spatial'])) {
             $this->register(new SpatialServiceProvider());
         }
 
@@ -216,7 +214,7 @@ class Application extends SilexApplication
         $this['security.firewalls'] = [];
         $this->addSecurityFirewall(
             'login_area',
-            ['pattern' => '(^/users/login$)|(^/users/register$)|(^/users/forgot-password$)']
+            ['pattern' => '(^/users/login$)|(^/users/register$)|(^/users/forgot-password$)', 'anonymous' => true]
         );
         $this->addSecurityFirewall(
             'default',
@@ -286,8 +284,6 @@ class Application extends SilexApplication
             ]
         );
 
-        $this->register(new VarDumperServiceProvider());
-
         // Enable Twig templates
         // - Optional on Use: Security, Translation, Fragment, Assets, Form, Dumper
         $this->register(new TwigServiceProvider());
@@ -309,21 +305,26 @@ class Application extends SilexApplication
         // Configure API
         $path = $config['api']['path'];
         $this['path.api'] = $path;
+
         $this->register(new JsonSchemaServiceProvider());
         $this->register(new JsonApiServiceProvider());
         // FIXME Unsecured API access, secure with OAUTH2
-        $this->addSecurityFirewall('api_area', ['pattern' => "(^$path)"]);
+        $this->addSecurityFirewall('api_area', ['pattern' => "(^$path)", 'anonymous' => true]);
 
         // Enable the Profiler
-        /* TODO Disable in prod as setting debug off is broken???
         if ($this['debug']) {
+            $this->register(new VarDumperServiceProvider());
             $this->register(new WebProfilerServiceProvider(), [
                 'profiler.cache_dir' => $this['dir.var'].'/cache/profiler',
             ]);
+            // HACK Fix to work-around bug in the profiler not finding the dump template
+            $this['profiler.templates_path.debug'] = function () {
+                $r = new \ReflectionClass('Symfony\Bundle\DebugBundle\DependencyInjection\Configuration');
+                return dirname(dirname($r->getFileName())).'/Resources/views';
+            };
             $this->register(new DoctrineProfilerServiceProvider());
-            $this->addSecurityFirewall('dev_area', ['pattern' => '^/(_(profiler|wdt)|css|images|js)/']);
+            $this->addSecurityFirewall('dev_area', ['pattern' => '^/(_(profiler|wdt)|css|images|js)/', 'anonymous' => true]);
         }
-        */
 
         // Set up the Service Provider
         Service::init($this);
@@ -350,8 +351,19 @@ class Application extends SilexApplication
         }
     }
 
+    public function boot()
+    {
+        if ($this->booted) {
+            return;
+        }
+        parent::boot();
+        // HACK Workaround the listener not firing for some reason
+        $this['var_dumper.dump_listener']->configure();
+    }
+
     public function run(Request $request = null)
     {
+        // TODO Use kernel event instead???
         if ($request === null) {
             $path = (isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '');
             $pos = strpos($path, $this['path.api']);
@@ -387,6 +399,6 @@ class Application extends SilexApplication
 
     public static function debug()
     {
-        return self::$debug;
+        return static::$debug;
     }
 }

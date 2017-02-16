@@ -41,10 +41,10 @@ class Type
 
     protected $type = '';
     protected $layout = false;
-    protected $form = '';
+    protected $formType = '';
     protected $template = '';
 
-    public function name()
+    public function id()
     {
         return $this->type;
     }
@@ -54,14 +54,9 @@ class Type
         return $this->layout;
     }
 
-    public function isField()
-    {
-        return !$this->isLayout;
-    }
-
     public function formType()
     {
-        return $this->form;
+        return $this->formType;
     }
 
     public function template()
@@ -71,12 +66,17 @@ class Type
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
+        // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_type');
+        $builder->setReadOnly();
+
+        // Key
         $builder->addStringKey('type', 30);
+
+        // Attributes
         $builder->addField('layout', 'boolean');
-        $builder->addStringField('form', 100);
+        $builder->addStringField('formType', 100, 'form_type');
         $builder->addStringField('template', 100);
         KeywordTrait::buildKeywordMetadata($builder);
-        $builder->setReadOnly();
     }
 }

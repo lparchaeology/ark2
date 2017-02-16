@@ -61,8 +61,8 @@ class Object
         if ($parent) {
             $key['parent'] = $parent->id();
         }
-        $this->fragments = ORM::findBy($attribute->format()->type()->modelClass(), $key);
-        if ($attribute->format()->type()->isAtomic()) {
+        $this->fragments = ORM::findBy($attribute->format()->datatype()->dataClass(), $key);
+        if (!$attribute->format()->datatype()->isObject()) {
             return;
         }
         foreach ($this->fragments as $fragment) {
@@ -95,16 +95,6 @@ class Object
     public function children()
     {
         return $this->children;
-    }
-
-    public function isAtomicValue()
-    {
-        return !$this->isCompoundValue();
-    }
-
-    public function isCompoundValue()
-    {
-        return $this->attribute->format()->hasAttributes() || $this->attribute->hasMultipleOccurrences();
     }
 
     // TODO Is there a better way?
@@ -176,7 +166,7 @@ class Object
     {
         if ($this->attribute->format()->isAtomic()) {
             // TODO Come up with a proper default strategy!!!
-            $type = $this->attribute->format()->type()->name();
+            $type = $this->attribute->format()->datatype()->id();
             if (in_array($type, ['date', 'time', 'datetime'])) {
                 return new \DateTime;
             }
@@ -202,13 +192,13 @@ class Object
         if ($this->attribute->hasMultipleOccurrences()) {
             $values = [];
             foreach ($this->fragments as $fragment) {
-                $values[] = $this->attribute->format()->type()->isAtomic()
-                            ? $this->fragmentValue($fragment)
-                            : $values[] = $this->objectValue($fragment);
+                $values[] = $this->attribute->format()->datatype()->isObject()
+                            ? $values[] = $this->objectValue($fragment)
+                            : $this->fragmentValue($fragment);
             }
             return $values;
         }
-        if ($this->attribute->format()->type()->isCompound()) {
+        if ($this->attribute->format()->datatype()->isObject()) {
             return $this->objectValue($this->children[$this->fragments->get(0)]);
         }
         if ($this->attribute->format()->serializeAsObject()) {
@@ -231,7 +221,7 @@ class Object
     public function setValue($value)
     {
         // TODO Compound types
-        if ($this->attribute->format()->type()->isAtomic()) {
+        if (!$this->attribute->format()->datatype()->isObject()) {
             // TODO Nasty Hack! Better to track the fid and update the right frag object!
             if ($this->attribute->hasMultipleOccurrences() || $this->attribute->format()->serializeAsObject()) {
                 if (!$this->fragments->isEmpty()) {

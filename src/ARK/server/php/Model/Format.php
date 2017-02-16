@@ -30,10 +30,13 @@
 
 namespace ARK\Model;
 
+use ARK\Model\Datatype;
 use ARK\Model\EnabledTrait;
+use ARK\Model\Format\FormatAttribute;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 
 abstract class Format
@@ -42,7 +45,7 @@ abstract class Format
     use KeywordTrait;
 
     protected $format = '';
-    protected $type = null;
+    protected $datatype = null;
     protected $input = '';
     protected $object = false;
     protected $array = false;
@@ -63,11 +66,6 @@ abstract class Format
     public function datatype()
     {
         return $this->datatype;
-    }
-
-    public function isCompound()
-    {
-        return $this->hasAttributes() || $this->datatype->isCompound();
     }
 
     public function input()
@@ -122,7 +120,7 @@ abstract class Format
         $builder->setReadOnly();
         $builder->setJoinedTableInheritance()->setDiscriminatorColumn('datatype', 'string', 30);
         // TODO Build from ark_datatype?
-        $datatypes = Database::getDatatypes();
+        $datatypes = Service::database()->getDatatypes();
         foreach ($datatypes as $datatype => $attributes) {
             $builder->addDiscriminatorMapClass($datatype, $attributes['model_class']);
         }
@@ -140,7 +138,7 @@ abstract class Format
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations
-        $builder->addManyToOneField('datatype', 'ARK\Model\Datatype', 'datatype', 'datatype', false);
-        $builder->addOneToMany('attributes', 'ARK\Model\Format\FormatAttribute', 'parent');
+        $builder->addManyToOneField('datatype', Datatype::class, 'datatype', 'datatype', false);
+        $builder->addOneToMany('attributes', FormatAttribute::class, 'parent');
     }
 }

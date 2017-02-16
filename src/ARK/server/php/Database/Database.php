@@ -223,14 +223,14 @@ class Database
         ";
         $datatypes = $this->core()->fetchAll($sql, []);
         foreach ($datatypes as $datatype) {
-            $this->datatypes[$datatype['type']] = $datatype;
-            if ($datatype['tbl']) {
+            $this->datatypes[$datatype['datatype']] = $datatype;
+            if ($datatype['data_table']) {
                 $this->fragmentTables[] = $datatype['data_table'];
             }
         }
     }
 
-    private function getDatatypes()
+    public function getDatatypes()
     {
         $this->loadDatatypes();
         return $this->datatypes;
@@ -242,7 +242,7 @@ class Database
         return $this->datatypes[$datatype]['data_table'];
     }
 
-    private function getFragmentDatatype($class)
+    public function getFragmentDatatype($class)
     {
         $this->loadDatatypes();
         foreach ($this->datatypes as $datatype => $attributes) {
@@ -795,7 +795,7 @@ class Database
             SELECT *
             FROM ark_item_actor, ark_fragment_string
             WHERE ark_fragment_string.module = :module
-            AND ark_fragment_string.item = ark_item_actor.id
+            AND ark_fragment_string.item = ark_item_actor.item
             AND ark_fragment_string.attribute = :attribute
         ";
         $params = array(

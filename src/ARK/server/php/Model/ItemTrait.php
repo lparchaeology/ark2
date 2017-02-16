@@ -41,10 +41,10 @@ trait ItemTrait
 {
     use VersionTrait;
 
-    protected $id = '';
+    protected $item = '';
     protected $module = null;
-    protected $parentModule = null;
-    protected $parentId = null;
+    protected $parentModule = '';
+    protected $parentItem = '';
     protected $parent = null;
     protected $idx = null;
     protected $type = '';
@@ -61,13 +61,13 @@ trait ItemTrait
 
     public function id()
     {
-        return $this->id;
+        return $this->item;
     }
 
     public function parent()
     {
-        if ($this->parentId && !$this->parent) {
-            $this->parent = ORM::find($this->schema()->parent()->entity(), $this->parentId);
+        if ($this->parentItem && !$this->parent) {
+            $this->parent = ORM::find($this->schema()->parent()->entity(), $this->parentItem);
         }
         return $this->parent;
     }
@@ -205,7 +205,7 @@ trait ItemTrait
         $builder->setCustomRepositoryClass('ARK\ORM\ItemEntityRepository');
 
         // Key
-        $builder->addStringKey('id', 30);
+        $builder->addStringKey('item', 30);
 
         // Fields
         $builder->addStringField('module', 30);
@@ -221,7 +221,7 @@ trait ItemTrait
             $builder->addStringField('type', 30);
         }
         $builder->addStringField('parentModule', 30, 'parent_module');
-        $builder->addStringField('parentId', 30, 'parent_id');
+        $builder->addStringField('parentItem', 30, 'parent_item');
         $builder->addStringField('idx', 30);
         $builder->addStringField('label', 30);
         VersionTrait::buildVersionMetadata($builder);

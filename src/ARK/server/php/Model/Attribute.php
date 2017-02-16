@@ -55,7 +55,7 @@ abstract class Attribute
 
     public function isCompound()
     {
-        return $this->hasMultipleOccurrences() || $this->format->isCompound();
+        return $this->hasMultipleOccurrences() || $this->format->hasAttributes();
     }
 
     public function isAtomic()

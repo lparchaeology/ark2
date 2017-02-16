@@ -36,6 +36,7 @@ use ARK\ORM\ORM;
 use ARK\Model\Attribute;
 use ARK\Model\Datatype;
 use ARK\Model\VersionTrait;
+use ARK\Service;
 
 abstract class Fragment
 {
@@ -43,7 +44,7 @@ abstract class Fragment
 
     protected $fid = null;
     protected $module = '';
-    protected $id = '';
+    protected $item = '';
     protected $attribute = '';
     protected $datatypeId = '';
     protected $datatype = null;
@@ -105,6 +106,15 @@ abstract class Fragment
         return $this->value;
     }
 
+    public function isAtomic()
+    {
+        return !($this->format
+                || $this->parameter
+                || $this->datatype()->isObject()
+                || $this->datatype()->formatRequired()
+                || $this->datatype()->formatRequired());
+    }
+
     public function setValue($value, $parameter = null, $format = null)
     {
         $this->value = $value;
@@ -142,7 +152,7 @@ abstract class Fragment
 
     public static function create($module, $item, Attribute $attribute, Fragment $parent = null)
     {
-        $class = $attribute->format()->type()->modelClass();
+        $class = $attribute->format()->datatype()->modelClass();
         $fragment = new $class;
         $fragment->module = $module;
         $fragment->item = $item;
@@ -161,7 +171,7 @@ abstract class Fragment
 
         // Attributes
         $builder->addStringField('module', 30);
-        $builder->addStringField('id', 30);
+        $builder->addStringField('item', 30);
         $builder->addStringField('attribute', 30);
         $builder->addStringField('datatypeId', 30, 'datatype');
         $builder->addStringField('format', 30);
@@ -172,7 +182,7 @@ abstract class Fragment
 
     public static function buildSubclassMetadata(ClassMetadata $metadata, $class)
     {
-        $datatype = Service::database()->getFragmantDatatype($class);
+        $datatype = Service::database()->getFragmentDatatype($class);
         $builder = new ClassMetadataBuilder($metadata, $datatype['data_table']);
         $builder->addGeneratedKey('fid');
         if ($datatype['doctrine'] == 'string') {

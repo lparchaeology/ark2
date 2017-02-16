@@ -61,8 +61,8 @@ class Property
         if ($parent) {
             $key['parent'] = $parent->id();
         }
-        $this->fragments = ORM::findBy($attribute->format()->type()->modelClass(), $key);
-        if ($attribute->format()->type()->isAtomic()) {
+        $this->fragments = ORM::findBy($attribute->format()->datatype()->dataClass(), $key);
+        if (!$attribute->format()->datatype()->isObject()) {
             return;
         }
         foreach ($this->fragments as $fragment) {
@@ -97,16 +97,6 @@ class Property
         return $this->children;
     }
 
-    public function isAtomicValue()
-    {
-        return !$this->isCompoundValue();
-    }
-
-    public function isCompoundValue()
-    {
-        return $this->attribute->format()->hasAttributes() || $this->attribute->hasMultipleOccurrences();
-    }
-
     // TODO Is there a better way?
     protected function updateItem()
     {
@@ -126,14 +116,10 @@ class Property
 
     protected function fragmentValue(Fragment $fragment)
     {
-        if ($this->attribute->format()->hasAttributes()) {
-            $value = [];
-            foreach ($this->attribute->format()->attributes() as $attribute) {
-                $value[$attribute->name()] = ($attribute->isRoot() ? $fragment->value() : $fragment->parameter());
-            }
-            return $value;
+        if ($fragment->isAtomic()) {
+            return $fragment->value();
         }
-        return $fragment->value();
+        return $fragment->toArray();
     }
 
     protected function setFragmentValue(Fragment $fragment, $value)
@@ -174,10 +160,10 @@ class Property
 
     protected function nullValue()
     {
-        if ($this->attribute->format()->isAtomic()) {
+        if (!$this->attribute->format()->datatype()->isObject()) {
             // TODO Come up with a proper default strategy!!!
-            $type = $this->attribute->format()->type()->name();
-            if (in_array($type, ['date', 'time', 'datetime'])) {
+            $datatype = $this->attribute->format()->datatype()->id();
+            if (in_array($datatype, ['date', 'time', 'datetime'])) {
                 return new \DateTime;
             }
             return null;
@@ -202,13 +188,13 @@ class Property
         if ($this->attribute->hasMultipleOccurrences()) {
             $values = [];
             foreach ($this->fragments as $fragment) {
-                $values[] = $this->attribute->format()->type()->isAtomic()
-                            ? $this->fragmentValue($fragment)
-                            : $values[] = $this->objectValue($fragment);
+                $values[] = $this->attribute->format()->datatype()->isObject()
+                            ? $this->objectValue($fragment)
+                            : $this->fragmentValue($fragment);
             }
             return $values;
         }
-        if ($this->attribute->format()->type()->isCompound()) {
+        if ($this->attribute->format()->datatype()->isObject()) {
             return $this->objectValue($this->children[$this->fragments->get(0)]);
         }
         if ($this->attribute->format()->serializeAsObject()) {
@@ -231,7 +217,7 @@ class Property
     public function setValue($value)
     {
         // TODO Compound types
-        if ($this->attribute->format()->type()->isAtomic()) {
+        if (!$this->attribute->format()->datatype()->isObject()) {
             // TODO Nasty Hack! Better to track the fid and update the right frag object!
             if ($this->attribute->hasMultipleOccurrences() || $this->attribute->format()->serializeAsObject()) {
                 if (!$this->fragments->isEmpty()) {
