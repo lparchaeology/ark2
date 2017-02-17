@@ -67,8 +67,8 @@ class WktType extends AbstractType implements DataMapperInterface
     {
         $forms = iterator_to_array($forms);
         $value = $property->value();
-        if ($value['coordinates']) {
-            $point = Point::fromText($value['coordinates'], (int)$value['srid']);
+        if ($value['geometry']) {
+            $point = Point::fromText($value['geometry'], (int)$value['srid']);
             $forms['easting']->setData($point->x());
             $forms['northing']->setData($point->y());
             $forms['srid']->setData($point->SRID());
@@ -81,7 +81,7 @@ class WktType extends AbstractType implements DataMapperInterface
     {
         $forms = iterator_to_array($forms);
         $point = Point::xy($forms['easting']->getData(), $forms['northing']->getData(), $forms['srid']->getData());
-        $value['coordinates'] = $point->asText();
+        $value['geometry'] = $point->asText();
         $value['srid'] = $point->SRID();
         $property->setValue($value);
     }

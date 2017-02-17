@@ -30,61 +30,36 @@
 
 namespace ARK\Form\Type;
 
-use ARK\ORM\ORM;
-use ARK\Service;
-use ARK\Vocabulary\Term;
-use ARK\Vocabulary\Vocabulary;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class VocabularyChoiceType extends AbstractType implements DataMapperInterface
+class VocabularyChoiceType extends ChoiceType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->setDataMapper($this);
-        if (isset($options['vocabulary'])) {
-            $vocabulary = $options['vocabulary'];
-        } else {
-            $vocabulary = $options['field']->attribute()->vocabulary();
+        if (!isset($options['vocabulary'])) {
+            $options['vocabulary'] = $options['field']->attribute()->vocabulary();
         }
-        $fieldOptions['choices'] = $vocabulary->terms();
-        $fieldOptions['choice_value'] = 'name';
-        $fieldOptions['choice_name'] = 'name';
-        $fieldOptions['choice_label'] = 'keyword';
-        $fieldOptions['placeholder'] = $vocabulary->concept();
-        $fieldOptions['mapped'] = false;
-        $fieldOptions['label'] = false;
-        if (isset($options['multiple'])) {
-            $fieldOptions['multiple'] = $options['multiple'];
-        }
-        $builder->add('term', ChoiceType::class, $fieldOptions);
+        dump($options['vocabulary']->terms()[0]->keyword());
+        $options['choices'] = $options['vocabulary']->terms()->getValues();
+        $options['choice_value'] = 'name';
+        $options['choice_name'] = 'name';
+        $options['choice_label'] = 'keyword';
+        $options['placeholder'] = $options['vocabulary']->concept();
+        //$options['label'] = false;
+        $options['placeholder_in_choices'] = false;
+        //dump($options);
+        parent::buildForm($builder, $options);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
+        parent::configureOptions($resolver);
         $resolver->setDefaults([
             'field' => null,
-            'compound' => true,
             'vocabulary' => null,
-            'data_class' => Term::class,
-            'empty_data' => null,
         ]);
-    }
-
-    public function mapDataToForms($term, $forms)
-    {
-        $forms = iterator_to_array($forms);
-        $forms['term']->setData($term);
-    }
-
-    public function mapFormsToData($forms, &$term)
-    {
-        $forms = iterator_to_array($forms);
-        $term = $forms['term']->getData();
     }
 
     public function getName()

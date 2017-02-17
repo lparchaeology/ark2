@@ -117,8 +117,15 @@ class PropertyType extends AbstractType implements DataMapperInterface
         if ($attribute->format()->hasAttributes()) {
             foreach ($attribute->format()->attributes() as $sub) {
                 $key = $sub->name();
-                $forms[$key]->setData($value[$key]);
+                if ($key && isset($value[$key])) {
+                    $forms[$key]->setData($value[$key]);
+                } else {
+                    dump($sub);
+                    dump($value);
+                }
             }
+        } elseif ($attribute->format()->datatype()->isAtomic() && is_array($value)) {
+            $forms[$attribute->name()]->setData($value[$attribute->format()->datatype()->valueName()]);
         } else {
             $forms[$attribute->name()]->setData($value);
         }

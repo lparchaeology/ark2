@@ -63,6 +63,11 @@ class Datatype
         return $this->object;
     }
 
+    public function isAtomic()
+    {
+        return !($this->formatRequired || $this->parameterRequired);
+    }
+
     public function formatName()
     {
         return ($this->formatName ? $this->formatName : 'format');
