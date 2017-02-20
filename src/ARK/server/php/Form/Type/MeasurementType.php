@@ -68,7 +68,6 @@ class MeasurementType extends AbstractType implements DataMapperInterface
 
     public function mapDataToForms($property, $forms)
     {
-        print_r(' mapping ');
         $forms = iterator_to_array($forms);
         if ($property) {
             $value = $property->value();

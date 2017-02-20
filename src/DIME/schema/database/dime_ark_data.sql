@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 16, 2017 at 11:25 PM
+-- Generation Time: Feb 20, 2017 at 10:42 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -847,6 +847,7 @@ CREATE TABLE `ark_item_actor` (
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'actor',
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'registered',
   `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -862,37 +863,37 @@ CREATE TABLE `ark_item_actor` (
 -- Dumping data for table `ark_item_actor`
 --
 
-INSERT INTO `ark_item_actor` (`item`, `module`, `schma`, `type`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
-('ARV', 'actor', 'dime.actor', 'institution', '', '', 'ARV', 'ARV', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('BMR', 'actor', 'dime.actor', 'institution', '', '', 'BMR', 'BMR', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('DKM', 'actor', 'dime.actor', 'institution', '', '', 'DKM', 'DKM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('FHM', 'actor', 'dime.actor', 'institution', '', '', 'FHM', 'FHM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('HBV', 'actor', 'dime.actor', 'institution', '', '', 'HBV', 'HBV', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('HEM', 'actor', 'dime.actor', 'institution', '', '', 'HEM', 'HEM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('HOM', 'actor', 'dime.actor', 'institution', '', '', 'HOM', 'HOM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('KBM', 'actor', 'dime.actor', 'institution', '', '', 'KBM', 'KBM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('KNV', 'actor', 'dime.actor', 'institution', '', '', 'KNV', 'KNV', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('MKH', 'actor', 'dime.actor', 'institution', '', '', 'MKH', 'MKH', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('MLF', 'actor', 'dime.actor', 'institution', '', '', 'MLF', 'MLF', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('MNS', 'actor', 'dime.actor', 'institution', '', '', 'MNS', 'MNS', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('MOE', 'actor', 'dime.actor', 'institution', '', '', 'MOE', 'MOE', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('MSA', 'actor', 'dime.actor', 'institution', '', '', 'MSA', 'MSA', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('MSJ', 'actor', 'dime.actor', 'institution', '', '', 'MSJ', 'MSJ', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('MVE', 'actor', 'dime.actor', 'institution', '', '', 'MVE', 'MVE', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('NJM', 'actor', 'dime.actor', 'institution', '', '', 'NJM', 'NJM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('OBM', 'actor', 'dime.actor', 'institution', '', '', 'OBM', 'OBM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('ØFM', 'actor', 'dime.actor', 'institution', '', '', 'ØFM', 'ØFM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('ØHM', 'actor', 'dime.actor', 'institution', '', '', 'ØHM', 'ØHM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('ROM', 'actor', 'dime.actor', 'institution', '', '', 'ROM', 'ROM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('SBM', 'actor', 'dime.actor', 'institution', '', '', 'SBM', 'SBM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('SJM', 'actor', 'dime.actor', 'institution', '', '', 'SJM', 'SJM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('SKH', 'actor', 'dime.actor', 'institution', '', '', 'SKH', 'SKH', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('TAK', 'actor', 'dime.actor', 'institution', '', '', 'TAK', 'TAK', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('THY', 'actor', 'dime.actor', 'institution', '', '', 'THY', 'THY', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('VHM', 'actor', 'dime.actor', 'institution', '', '', 'VHM', 'VHM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('VKH', 'actor', 'dime.actor', 'institution', '', '', 'VKH', 'VKH', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('VMÅ', 'actor', 'dime.actor', 'institution', '', '', 'VMÅ', 'VMÅ', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('VSM', 'actor', 'dime.actor', 'institution', '', '', 'VSM', 'VSM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', '');
+INSERT INTO `ark_item_actor` (`item`, `module`, `schma`, `type`, `status`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+('ARV', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'ARV', 'ARV', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('BMR', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'BMR', 'BMR', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('DKM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'DKM', 'DKM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('FHM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'FHM', 'FHM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('HBV', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'HBV', 'HBV', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('HEM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'HEM', 'HEM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('HOM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'HOM', 'HOM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('KBM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'KBM', 'KBM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('KNV', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'KNV', 'KNV', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('MKH', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'MKH', 'MKH', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('MLF', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'MLF', 'MLF', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('MNS', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'MNS', 'MNS', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('MOE', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'MOE', 'MOE', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('MSA', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'MSA', 'MSA', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('MSJ', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'MSJ', 'MSJ', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('MVE', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'MVE', 'MVE', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('NJM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'NJM', 'NJM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('OBM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'OBM', 'OBM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('ØFM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'ØFM', 'ØFM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('ØHM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'ØHM', 'ØHM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('ROM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'ROM', 'ROM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('SBM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'SBM', 'SBM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('SJM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'SJM', 'SJM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('SKH', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'SKH', 'SKH', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('TAK', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'TAK', 'TAK', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('THY', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'THY', 'THY', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('VHM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'VHM', 'VHM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('VKH', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'VKH', 'VKH', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('VMÅ', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'VMÅ', 'VMÅ', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
+('VSM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'VSM', 'VSM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -905,6 +906,7 @@ CREATE TABLE `ark_item_campaign` (
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'campaign',
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'registered',
   `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -927,6 +929,7 @@ CREATE TABLE `ark_item_file` (
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'file',
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'registered',
   `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -942,8 +945,8 @@ CREATE TABLE `ark_item_file` (
 -- Dumping data for table `ark_item_file`
 --
 
-INSERT INTO `ark_item_file` (`item`, `module`, `schma`, `type`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
-('1', 'file', 'core.file', 'document', NULL, NULL, '1', '1', 0, '2017-02-15 15:51:08', 0, '2017-01-25 19:46:09', '');
+INSERT INTO `ark_item_file` (`item`, `module`, `schma`, `type`, `status`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+('1', 'file', 'core.file', 'document', 'registered', NULL, NULL, '1', '1', 0, '2017-02-15 15:51:08', 0, '2017-01-25 19:46:09', '');
 
 -- --------------------------------------------------------
 
@@ -956,6 +959,7 @@ CREATE TABLE `ark_item_find` (
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'find',
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'registered',
   `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -971,17 +975,17 @@ CREATE TABLE `ark_item_find` (
 -- Dumping data for table `ark_item_find`
 --
 
-INSERT INTO `ark_item_find` (`item`, `module`, `schma`, `type`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
-('1', 'find', 'dime.find', 'accessory', NULL, NULL, '1', '1', 0, '2017-02-15 15:52:17', 0, '2017-01-29 22:37:39', ''),
-('10', 'find', 'dime.find', 'fibula', NULL, NULL, '10', '10', 0, '2017-02-15 15:52:17', 0, '2017-01-29 21:09:38', ''),
-('2', 'find', 'dime.find', 'fibula', NULL, NULL, '2', '2', 0, '2017-02-15 15:52:17', 0, '2017-01-29 20:45:58', ''),
-('3', 'find', 'dime.find', 'coin', NULL, NULL, '3', '3', 0, '2017-02-15 15:52:17', 0, '2017-01-29 22:46:48', ''),
-('4', 'find', 'dime.find', 'coin', NULL, NULL, '4', '4', 0, '2017-02-15 15:52:17', 0, '2017-01-29 22:48:31', ''),
-('5', 'find', 'dime.find', 'fibula', NULL, NULL, '5', '5', 0, '2017-02-15 15:52:17', 0, '2017-01-29 20:50:43', ''),
-('6', 'find', 'dime.find', 'accessory', NULL, NULL, '6', '6', 0, '2017-02-15 15:52:17', 0, '2017-01-29 20:53:52', ''),
-('7', 'find', 'dime.find', 'fibula', NULL, NULL, '7', '7', 0, '2017-02-15 15:52:17', 0, '2017-01-29 21:01:00', ''),
-('8', 'find', 'dime.find', 'fibula', NULL, NULL, '8', '8', 0, '2017-02-15 15:52:17', 0, '2017-01-29 21:03:54', ''),
-('9', 'find', 'dime.find', 'fibula', NULL, NULL, '9', '9', 0, '2017-02-15 15:52:17', 0, '2017-01-29 21:07:02', '');
+INSERT INTO `ark_item_find` (`item`, `module`, `schma`, `type`, `status`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+('1', 'find', 'dime.find', 'accessory', 'registered', NULL, NULL, '1', '1', 0, '2017-02-15 15:52:17', 0, '2017-01-29 22:37:39', ''),
+('10', 'find', 'dime.find', 'fibula', 'registered', NULL, NULL, '10', '10', 0, '2017-02-15 15:52:17', 0, '2017-01-29 21:09:38', ''),
+('2', 'find', 'dime.find', 'fibula', 'registered', NULL, NULL, '2', '2', 0, '2017-02-15 15:52:17', 0, '2017-01-29 20:45:58', ''),
+('3', 'find', 'dime.find', 'coin', 'registered', NULL, NULL, '3', '3', 0, '2017-02-15 15:52:17', 0, '2017-01-29 22:46:48', ''),
+('4', 'find', 'dime.find', 'coin', 'registered', NULL, NULL, '4', '4', 0, '2017-02-15 15:52:17', 0, '2017-01-29 22:48:31', ''),
+('5', 'find', 'dime.find', 'fibula', 'registered', NULL, NULL, '5', '5', 0, '2017-02-15 15:52:17', 0, '2017-01-29 20:50:43', ''),
+('6', 'find', 'dime.find', 'accessory', 'registered', NULL, NULL, '6', '6', 0, '2017-02-15 15:52:17', 0, '2017-01-29 20:53:52', ''),
+('7', 'find', 'dime.find', 'fibula', 'registered', NULL, NULL, '7', '7', 0, '2017-02-15 15:52:17', 0, '2017-01-29 21:01:00', ''),
+('8', 'find', 'dime.find', 'fibula', 'registered', NULL, NULL, '8', '8', 0, '2017-02-15 15:52:17', 0, '2017-01-29 21:03:54', ''),
+('9', 'find', 'dime.find', 'fibula', 'registered', NULL, NULL, '9', '9', 0, '2017-02-15 15:52:17', 0, '2017-01-29 21:07:02', '');
 
 -- --------------------------------------------------------
 
@@ -994,6 +998,7 @@ CREATE TABLE `ark_item_image` (
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'image',
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'registered',
   `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1016,6 +1021,7 @@ CREATE TABLE `ark_item_locality` (
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'locality',
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'registered',
   `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1031,8 +1037,8 @@ CREATE TABLE `ark_item_locality` (
 -- Dumping data for table `ark_item_locality`
 --
 
-INSERT INTO `ark_item_locality` (`item`, `module`, `schma`, `type`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
-('1', '', 'dime.locality', '', NULL, NULL, '1', '1', 0, '2017-01-31 07:56:37', 0, '2017-01-31 07:56:37', '');
+INSERT INTO `ark_item_locality` (`item`, `module`, `schma`, `type`, `status`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+('1', '', 'dime.locality', '', 'registered', NULL, NULL, '1', '1', 0, '2017-01-31 07:56:37', 0, '2017-01-31 07:56:37', '');
 
 -- --------------------------------------------------------
 
@@ -1045,6 +1051,7 @@ CREATE TABLE `ark_item_page` (
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'page',
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'registered',
   `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1060,14 +1067,14 @@ CREATE TABLE `ark_item_page` (
 -- Dumping data for table `ark_item_page`
 --
 
-INSERT INTO `ark_item_page` (`item`, `module`, `schma`, `type`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
-('about', 'page', 'core.page', '', NULL, NULL, 'about', 'about', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
-('background', 'page', 'core.page', '', NULL, NULL, 'background', 'background', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
-('detector', 'page', 'core.page', '', NULL, NULL, 'detector', 'detector', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
-('exhibits', 'page', 'core.page', '', NULL, NULL, 'exhibits', 'exhibits', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
-('news', 'page', 'core.page', '', NULL, NULL, 'news', 'news', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
-('research', 'page', 'core.page', '', NULL, NULL, 'research', 'research', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
-('treasure', 'page', 'core.page', '', NULL, NULL, 'treasure', 'treasure', 0, '2017-02-15 15:53:46', 0, '2017-01-31 23:12:14', '');
+INSERT INTO `ark_item_page` (`item`, `module`, `schma`, `type`, `status`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+('about', 'page', 'core.page', '', 'registered', NULL, NULL, 'about', 'about', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
+('background', 'page', 'core.page', '', 'registered', NULL, NULL, 'background', 'background', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
+('detector', 'page', 'core.page', '', 'registered', NULL, NULL, 'detector', 'detector', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
+('exhibits', 'page', 'core.page', '', 'registered', NULL, NULL, 'exhibits', 'exhibits', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
+('news', 'page', 'core.page', '', 'registered', NULL, NULL, 'news', 'news', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
+('research', 'page', 'core.page', '', 'registered', NULL, NULL, 'research', 'research', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
+('treasure', 'page', 'core.page', '', 'registered', NULL, NULL, 'treasure', 'treasure', 0, '2017-02-15 15:53:46', 0, '2017-01-31 23:12:14', '');
 
 -- --------------------------------------------------------
 

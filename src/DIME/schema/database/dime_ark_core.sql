@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6
+-- version 4.6.5.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 20, 2017 at 09:37 AM
--- Server version: 10.1.20-MariaDB
--- PHP Version: 7.0.15
+-- Generation Time: Feb 20, 2017 at 10:42 PM
+-- Server version: 5.6.34
+-- PHP Version: 7.1.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -672,13 +672,13 @@ CREATE TABLE `ark_rbac_role_permission` (
 --
 
 INSERT INTO `ark_rbac_role_permission` (`role`, `permission`) VALUES
+('detectorist', 'can_add_find'),
 ('curator', 'can_delete_find'),
 ('curator', 'can_edit_find'),
-('curator', 'can_search_find'),
-('curator', 'can_view_find'),
-('detectorist', 'can_add_find'),
 ('detectorist', 'can_edit_find'),
+('curator', 'can_search_find'),
 ('detectorist', 'can_search_find'),
+('curator', 'can_view_find'),
 ('detectorist', 'can_view_find');
 
 -- --------------------------------------------------------
@@ -829,6 +829,38 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('dime.locality', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.locality.id'),
 ('dime.locality', '', 'name', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'dime.locality.name'),
 ('dime.locality', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.locality.type');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_schema_item`
+--
+
+CREATE TABLE `ark_schema_item` (
+  `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `minimum` int(11) NOT NULL DEFAULT '0',
+  `maximum` int(11) NOT NULL DEFAULT '1',
+  `unique_values` int(11) NOT NULL DEFAULT '1',
+  `additional_values` int(11) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `ark_schema_item`
+--
+
+INSERT INTO `ark_schema_item` (`attribute`, `format`, `vocabulary`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`, `keyword`) VALUES
+('id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.item.id'),
+('index', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.item.index'),
+('label', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.item.label'),
+('module', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.item.module'),
+('schema', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.item.module'),
+('status', 'identifier', 'core.item.status', 1, 1, 1, 0, 1, 0, 'core.item.status'),
+('type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.item.type');
 
 -- --------------------------------------------------------
 
@@ -1476,7 +1508,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attrib
 ('dime_find_edit', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
 ('dime_find_event', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
 ('dime_find_filter', 'grid', NULL, NULL, NULL, '', '', 1, 1, '', '', 1, 0, 1, 0, 'dime.find.filter'),
-('dime_find_filter_kommune', 'field', NULL, NULL, NULL, '', '', 0, 0, 'ARK\\Form\\Type\\VocabularyChoiceType', '{\"label_class\":null,\"multiple\":true}', 1, 0, 1, 0, NULL),
+('dime_find_filter_kommune', 'field', NULL, NULL, NULL, '', '', 0, 0, 'ARK\\Form\\Type\\VocabularyChoiceType', '{\"multiple\":true}', 1, 0, 1, 0, NULL),
 ('dime_find_filter_material', 'field', NULL, NULL, NULL, '', '', 0, 0, 'ARK\\Form\\Type\\VocabularyChoiceType', '{\"multiple\":true}', 1, 0, 1, 0, NULL),
 ('dime_find_filter_period', 'field', NULL, NULL, NULL, '', '', 0, 0, 'ARK\\Form\\Type\\VocabularyChoiceType', '{\"multiple\":true}', 1, 0, 1, 0, NULL),
 ('dime_find_filter_type', 'field', NULL, NULL, NULL, '', '', 0, 0, 'ARK\\Form\\Type\\VocabularyChoiceType', '{\"multiple\":true}', 1, 0, 1, 0, NULL),
@@ -1659,6 +1691,7 @@ CREATE TABLE `ark_vocabulary` (
 INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `workflow`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('core.file.status', 'list', 'ARK Core', 1, 0, 1, 0, 'vocabulary.file.status', 'File Status'),
 ('core.file.type', 'list', 'ARK Core', 1, 0, 1, 0, 'vocabulary.file.type', 'File Type'),
+('core.item.status', 'list', 'ARK Core', 1, 0, 1, 0, 'core.item.status', 'Item Status'),
 ('country', 'list', 'ISO3166', 1, 0, 1, 0, 'vocabulary.country', 'ISO Country Codes'),
 ('dime.actor.type', 'list', 'DIME', 1, 0, 1, 0, 'dime.actor.type', 'DIME Actor Type'),
 ('dime.denmark.admin', 'taxonomy', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.denmark.admin', 'Danish NUTS and LAU Administrative Unit Hierarchy'),
@@ -1945,6 +1978,14 @@ CREATE TABLE `ark_vocabulary_related` (
 --
 
 INSERT INTO `ark_vocabulary_related` (`from_concept`, `from_term`, `to_concept`, `to_term`, `relation`, `parameter`, `depth`) VALUES
+('core.item.status', 'allocated', 'core.item.status', 'deleted', 'transition', 'delete', 0),
+('core.item.status', 'allocated', 'core.item.status', 'registered', 'transition', 'register', 0),
+('core.item.status', 'allocated', 'core.item.status', 'void', 'transition', 'void', 0),
+('core.item.status', 'registered', 'core.item.status', 'deleted', 'transition', 'delete', 0),
+('core.item.status', 'registered', 'core.item.status', 'void', 'transition', 'void', 0),
+('core.item.status', 'void', 'core.item.status', 'allocated', 'transition', 'allocate', 0),
+('core.item.status', 'void', 'core.item.status', 'deleted', 'transition', 'delete', 0),
+('core.item.status', 'void', 'core.item.status', 'registered', 'transition', 'register', 0),
 ('dime.denmark.admin', 'DK', 'dime.denmark.region', 'DK01', 'broader', '', 2),
 ('dime.denmark.admin', 'DK', 'dime.denmark.region', 'DK02', 'broader', '', 2),
 ('dime.denmark.admin', 'DK', 'dime.denmark.region', 'DK03', 'broader', '', 2),
@@ -2163,6 +2204,10 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('core.file.type', 'other', '', 0, 1, 0, 'core.file.type.other', ''),
 ('core.file.type', 'text', '', 0, 1, 0, 'core.file.type.text', ''),
 ('core.file.type', 'video', '', 0, 1, 0, 'core.file.type.video', ''),
+('core.item.status', 'allocated', '', 0, 1, 0, 'core.item.status.allocated', ''),
+('core.item.status', 'deleted', '', 0, 1, 0, 'core.item.status.deleted', ''),
+('core.item.status', 'registered', '', 0, 1, 0, 'core.item.status.registered', ''),
+('core.item.status', 'void', '', 0, 1, 0, 'core.item.status.void', ''),
 ('country', 'AD ', 'andorra', 0, 1, 0, 'country.andorra', ''),
 ('country', 'AE ', 'unitedarabemirates', 0, 1, 0, 'country.unitedarabemirates', ''),
 ('country', 'AF ', 'afghanistan', 0, 1, 0, 'country.afghanistan', ''),
@@ -2863,13 +2908,13 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('language', 'kfo', 'koro', 0, 1, 0, 'language.koro', ''),
 ('language', 'kg', 'kongo', 0, 1, 0, 'language.kongo', ''),
 ('language', 'kgp', 'kaingang', 0, 1, 0, 'language.kaingang', ''),
-('language', 'kha', 'khasi', 0, 1, 0, 'language.khasi', ''),
+('language', 'kha', 'khasi', 0, 1, 0, 'language.khasi', '');
+INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('language', 'kho', 'khotanese', 0, 1, 0, 'language.khotanese', ''),
 ('language', 'khq', 'chiini.koyra', 0, 1, 0, 'language.chiini.koyra', ''),
 ('language', 'khw', 'khowar', 0, 1, 0, 'language.khowar', ''),
 ('language', 'ki', 'kikuyu', 0, 1, 0, 'language.kikuyu', ''),
-('language', 'kiu', 'kirmanjki', 0, 1, 0, 'language.kirmanjki', '');
-INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('language', 'kiu', 'kirmanjki', 0, 1, 0, 'language.kirmanjki', ''),
 ('language', 'kj', 'kuanyama', 0, 1, 0, 'language.kuanyama', ''),
 ('language', 'kk', 'kazakh', 0, 1, 0, 'language.kazakh', ''),
 ('language', 'kkj', 'kako', 0, 1, 0, 'language.kako', ''),
@@ -3219,7 +3264,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('mass', 'µg', 'microgram', 0, 1, 0, 'mass.microgram', ''),
 ('mediatype', 'text/html', '', 0, 1, 0, 'mediatype.text.html', ''),
 ('mediatype', 'text/plain', 'plain', 0, 1, 0, 'mediatype.text.plain', ''),
-('spatial.crs', '4326', 'WGS84', 0, 1, 0, 'crs.wgs84', ''),
+('spatial.crs', 'EPSG:4326', 'WGS84', 0, 1, 0, 'crs.wgs84', ''),
 ('spatial.format', 'geojson', '', 0, 1, 0, 'spatial.format.geojson', ''),
 ('spatial.format', 'gpx', '', 0, 1, 0, 'spatial.format.gpx', ''),
 ('spatial.format', 'wkt', '', 0, 1, 0, 'spatial.format.wkt', '');
@@ -5059,6 +5104,14 @@ ALTER TABLE `ark_schema_association`
 --
 ALTER TABLE `ark_schema_attribute`
   ADD PRIMARY KEY (`schma`,`type`,`attribute`) USING BTREE,
+  ADD KEY `format` (`format`),
+  ADD KEY `vocabulary` (`vocabulary`);
+
+--
+-- Indexes for table `ark_schema_item`
+--
+ALTER TABLE `ark_schema_item`
+  ADD PRIMARY KEY (`attribute`) USING BTREE,
   ADD KEY `format` (`format`),
   ADD KEY `vocabulary` (`vocabulary`);
 

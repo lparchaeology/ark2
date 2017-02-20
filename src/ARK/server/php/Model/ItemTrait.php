@@ -43,14 +43,16 @@ trait ItemTrait
 
     protected $item = '';
     protected $module = null;
+    protected $schma = null;
+    protected $schema = null;
+    protected $type = '';
+    protected $status = '';
+    protected $statusTerm = null;
     protected $parentModule = '';
     protected $parentItem = '';
     protected $parent = null;
     protected $idx = null;
-    protected $type = '';
     protected $label = null;
-    protected $schma = null;
-    protected $schema = null;
     protected $properties = null;
     protected $meta = null;
 
@@ -124,6 +126,14 @@ trait ItemTrait
             $this->schema = ORM::find(Schema::class, $this->schma);
         }
         return $this->schema;
+    }
+
+    public function status()
+    {
+        if ($this->statusTerm === null) {
+            $this->statusTerm = ORM::find(Term::class, ['concept' => 'core.item.status', 'term' => $this->status]);
+        }
+        return $this->statusTerm;
     }
 
     public function attributes()
@@ -206,6 +216,9 @@ trait ItemTrait
 
         // Key
         $builder->addStringKey('item', 30);
+        // Set ID Generator TODO Move elsewhere, say ClassMetadata? Table driven?
+        $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_CUSTOM);
+        $metadata->setCustomGeneratorDefinition(['class' => 'ARK\ORM\ItemSequenceGenerator']);
 
         // Fields
         $builder->addStringField('module', 30);
@@ -220,15 +233,12 @@ trait ItemTrait
         } else {
             $builder->addStringField('type', 30);
         }
+        $builder->addStringField('status', 30);
         $builder->addStringField('parentModule', 30, 'parent_module');
         $builder->addStringField('parentItem', 30, 'parent_item');
         $builder->addStringField('idx', 30);
         $builder->addStringField('label', 30);
         VersionTrait::buildVersionMetadata($builder);
         $metadata->setItemEntity(true);
-
-        // Set ID Generator TODO Move elsewhere, say ClassMetadata? Table driven?
-        $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_CUSTOM);
-        $metadata->setCustomGeneratorDefinition(['class' => 'ARK\ORM\ItemSequenceGenerator']);
     }
 }

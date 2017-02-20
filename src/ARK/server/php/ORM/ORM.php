@@ -32,6 +32,7 @@ namespace ARK\ORM;
 
 use ARK\Service;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 
 class ORM
 {
@@ -102,5 +103,10 @@ class ORM
     public static function findOneBy($class, array $criteria, array $orderBy = null)
     {
         return self::repository($class)->findOneBy($criteria, $orderBy);
+    }
+
+    public static function matching($class, Criteria $criteria)
+    {
+        return self::repository($class)->matching($criteria);
     }
 }
