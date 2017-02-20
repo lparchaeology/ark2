@@ -54,8 +54,7 @@ class MeasurementType extends AbstractType implements DataMapperInterface
         $fieldOptions['mapped'] = false;
         $fieldOptions['label'] = false;
         $builder->add('measurement', NumberType::class, $fieldOptions);
-        //$builder->add('unit', ChoiceType::class, $fieldOptions);
-        print_r(' built ok ');
+        $builder->add('unit', ChoiceType::class, $fieldOptions);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -65,7 +64,6 @@ class MeasurementType extends AbstractType implements DataMapperInterface
             'data_class' => Property::class,
             'empty_data' => null,
         ]);
-        print_r(' resolved ok ');
     }
 
     public function mapDataToForms($property, $forms)
@@ -76,17 +74,16 @@ class MeasurementType extends AbstractType implements DataMapperInterface
             $value = $property->value();
             if ($value) {
                 $forms['measurement']->setData($value['measurement']);
-                //$forms['unit']->setData($value['unit']);
+                $forms['unit']->setData($value['unit']);
             }
         }
-        print_r(' mapped ok ');
     }
 
     public function mapFormsToData($forms, &$data)
     {
         $forms = iterator_to_array($forms);
         $values['measurement'] = $forms['measurement']->getData();
-        //$values['unit'] = $forms['unit']->getData();
+        $values['unit'] = $forms['unit']->getData();
         if ($data instanceof Property) {
             $data->setValue($values);
         } else {

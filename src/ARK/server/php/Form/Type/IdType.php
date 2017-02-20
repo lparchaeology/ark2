@@ -35,17 +35,17 @@ use ARK\Model\Item;
 use ARK\Model\Property;
 use ARK\Model\Fragment\TextFragment;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class IdType extends AbstractType
+class IdType extends AbstractType implements DataMapperInterface
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $attribute = $options['field']->attribute()->name();
+        $builder->setDataMapper($this);
         $fieldOptions['label'] = false;
-        $fieldOptions['property_path'] = "keyValue[id]";
         $builder->add('id', TextType::class, $fieldOptions);
     }
 
@@ -56,6 +56,18 @@ class IdType extends AbstractType
             'data_class' => Property::class,
             'empty_data' => null,
         ));
+    }
+
+    public function mapDataToForms($property, $forms)
+    {
+        $forms = iterator_to_array($forms);
+        $forms['id']->setData($property->value());
+    }
+
+    public function mapFormsToData($forms, &$property)
+    {
+        $forms = iterator_to_array($forms);
+        $property->setValue($forms['id']->getData());
     }
 
     public function getBlockPrefix()

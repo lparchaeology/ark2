@@ -133,34 +133,24 @@ class Field extends Element
         $value = null;
         if ($data instanceof Item and $this->attribute) {
             $value = 'FIXME: '.$this->element;
-            if ($this->attribute->isAtomic()) {
-                $value = $data->property($this->attribute->name())->value();
-            } elseif (!$this->attribute->format()->isCompound()) {
-                $value = $data->property($this->attribute->name())->value()[0];
-            } elseif (!$this->attribute->format()->datatype()->isObject()) {
-                if ($this->attribute->format()->name() == 'shorttext') {
-                    $language = Service::locale();
-                    $values = $data->property($this->attribute->name())->value();
-                    foreach ($values as $trans) {
-                        if ($trans['language'] == $language) {
-                            return $trans['content'];
-                        }
-                    }
-                    return $values[0]['content'];
-                } elseif ($this->attribute->format()->serializeAsObject()) {
-                    //
-                } else {
-                    foreach ($this->attribute->format()->attributes() as $attribute) {
-                        if ($attribute->isRoot()) {
-                            $value = $data->property($this->attribute->name())->value()[$attribute->name()];
-                        }
+            $value = $data->property($this->attribute()->name())->value();
+            if ($this->attribute->format()->id() == 'shorttext') {
+                $language = Service::locale();
+                $values = $data->property($this->attribute->name())->value();
+                foreach ($values as $trans) {
+                    if ($trans['language'] == $language) {
+                        return $trans['content'];
                     }
                 }
+                return $values[0]['content'];
+            }
+            if (is_array($value)) {
+                $value = $value[$this->attribute->format()->valueName()];
             }
             if ($this->attribute->hasVocabulary()) {
                 $vocab = $this->attribute->vocabulary();
                 foreach ($vocab->terms() as $term) {
-                    if ($term->name() == $value['value']) {
+                    if ($term->name() == $value) {
                         return Service::translate($term->keyword());
                     }
                 }

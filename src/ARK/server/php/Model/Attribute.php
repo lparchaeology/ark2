@@ -34,6 +34,7 @@ use ARK\Model\EnabledTrait;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use Doctrine\Common\Collections\ArrayCollection;
 
 abstract class Attribute
 {
@@ -53,16 +54,6 @@ abstract class Attribute
         return $this->attribute;
     }
 
-    public function isCompound()
-    {
-        return $this->hasMultipleOccurrences() || $this->format->hasAttributes();
-    }
-
-    public function isAtomic()
-    {
-        return !$this->isCompound();
-    }
-
     public function format()
     {
         return $this->format;
@@ -70,7 +61,7 @@ abstract class Attribute
 
     public function hasVocabulary()
     {
-        return (bool) $this->vocabulary;
+        return $this->vocabulary !== null;
     }
 
     public function vocabulary()
@@ -139,6 +130,29 @@ abstract class Attribute
             return $this->format()->keyword();
         }
         return '';
+    }
+
+    public function nullValue()
+    {
+        if ($this->hasMultipleOccurrences()) {
+            return [];
+        }
+        return $this->format()->nullValue();
+    }
+
+    public function fragmentsToData(ArrayCollection $fragments)
+    {
+        if ($fragments->isEmpty()) {
+            return $this->nullValue();
+        }
+        if ($this->hasMultipleOccurrences()) {
+            $data = [];
+            foreach ($fragments as $fragment) {
+                $data[] = $this->format()->fragmentsToData(new ArrayCollection([$fragment]));
+            }
+            return $data;
+        }
+        return $this->format()->fragmentsToData($fragments);
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

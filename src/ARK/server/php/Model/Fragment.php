@@ -46,8 +46,7 @@ abstract class Fragment
     protected $module = '';
     protected $item = '';
     protected $attribute = '';
-    protected $datatypeId = '';
-    protected $datatype = null;
+    protected $datatype = '';
     protected $format = '';
     protected $parameter = '';
     protected $value = null;
@@ -85,9 +84,6 @@ abstract class Fragment
 
     public function datatype()
     {
-        if (!$this->datatype) {
-            $this->datatype = ORM::find(Datatype::class, $this->datatypeId);
-        }
         return $this->datatype;
     }
 
@@ -106,15 +102,6 @@ abstract class Fragment
         return $this->value;
     }
 
-    public function isAtomic()
-    {
-        return !($this->format
-                || $this->parameter
-                || $this->datatype()->isObject()
-                || $this->datatype()->formatRequired()
-                || $this->datatype()->formatRequired());
-    }
-
     public function setValue($value, $parameter = null, $format = null)
     {
         $this->value = $value;
@@ -127,29 +114,6 @@ abstract class Fragment
         return $this->parent;
     }
 
-    public function toArray()
-    {
-        $array = [];
-        if ($this->format || $this->datatype()->formatRequired()) {
-            $array[$this->datatype()->formatName()] = $this->format;
-        }
-        if ($this->parameter || $this->datatype()->parameterRequired()) {
-            $array[$this->datatype()->parameterName()] = $this->parameter;
-        }
-        $array[$this->datatype()->valueName()] = $this->value;
-        return $array;
-    }
-
-    public function fromArray(array $array)
-    {
-        $format = $this->datatype()->formatName();
-        $this->format = (isset($array[$format]) ? $array[$format] : null);
-        $parameter = $this->datatype()->parameterName();
-        $this->parameter = (isset($array[$parameter]) ? $array[$parameter] : null);
-        $value = $this->datatype()->valueName();
-        $this->format = (isset($array[$format]) ? $array[$format] : null);
-    }
-
     public static function create($module, $item, Attribute $attribute, Fragment $parent = null)
     {
         $class = $attribute->format()->datatype()->modelClass();
@@ -157,8 +121,8 @@ abstract class Fragment
         $fragment->module = $module;
         $fragment->item = $item;
         $fragment->attribute = $attribute->name();
-        $fragment->datatypeId = $attribute->datatype()->id();
-        $fragment->parent = $parent;
+        $fragment->datatype = $attribute->datatype()->id();
+        $fragment->parent = $parent->id();
         $fragment->refreshVersion();
         return $fragment;
     }
@@ -173,7 +137,7 @@ abstract class Fragment
         $builder->addStringField('module', 30);
         $builder->addStringField('item', 30);
         $builder->addStringField('attribute', 30);
-        $builder->addStringField('datatypeId', 30, 'datatype');
+        $builder->addStringField('datatype', 30, 'datatype');
         $builder->addStringField('format', 30);
         $builder->addStringField('parameter', 30);
         $builder->addField('parent', 'integer', [], 'object_fid');
@@ -185,10 +149,10 @@ abstract class Fragment
         $datatype = Service::database()->getFragmentDatatype($class);
         $builder = new ClassMetadataBuilder($metadata, $datatype['data_table']);
         $builder->addGeneratedKey('fid');
-        if ($datatype['doctrine'] == 'string') {
-            $builder->addStringField('value', $datatype['size']);
+        if ($datatype['storage_type'] == 'string') {
+            $builder->addStringField('value', $datatype['storage_size']);
         } else {
-            $builder->addField('value', $datatype['doctrine']);
+            $builder->addField('value', $datatype['storage_type']);
         }
     }
 }

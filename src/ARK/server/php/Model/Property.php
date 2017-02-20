@@ -97,6 +97,16 @@ class Property
         return $this->children;
     }
 
+    protected function nullValue()
+    {
+        return $this->attribute->nullValue();
+    }
+
+    public function value()
+    {
+        return $this->attribute->fragmentsToData($this->fragments);
+    }
+
     // TODO Is there a better way?
     protected function updateItem()
     {
@@ -112,14 +122,6 @@ class Property
         foreach ($this->fragments as $fragment) {
             $fragment->setItem($this->item->id());
         }
-    }
-
-    protected function fragmentValue(Fragment $fragment)
-    {
-        if ($fragment->isAtomic()) {
-            return $fragment->value();
-        }
-        return $fragment->toArray();
     }
 
     protected function setFragmentValue(Fragment $fragment, $value)
@@ -147,64 +149,6 @@ class Property
             ORM::remove($fragment);
             $this->fragments->remove($this->fragments->indexOf($fragment));
         }
-    }
-
-    protected function objectValue(Fragment $fragment)
-    {
-        $values = [];
-        foreach ($this->children[$fragment->id()] as $child) {
-            $values[$child->name()] = $child->value();
-        }
-        return $values;
-    }
-
-    protected function nullValue()
-    {
-        if (!$this->attribute->format()->datatype()->isObject()) {
-            // TODO Come up with a proper default strategy!!!
-            $datatype = $this->attribute->format()->datatype()->id();
-            if (in_array($datatype, ['date', 'time', 'datetime'])) {
-                return new \DateTime;
-            }
-            return null;
-        }
-        $value = [];
-        foreach ($this->attribute->format()->attributes() as $attribute) {
-            // TODO Come up with a proper default strategy!!!
-            if ($attribute->hasVocabulary() && $attribute->vocabulary()->concept() == 'language') {
-                $value[$attribute->name()] = Service::locale();
-            } else {
-                $value[$attribute->name()] = null;
-            }
-        }
-        return $this->attribute->hasMultipleOccurrences() || $this->attribute->format()->serializeAsObject()? [$value] : $value;
-    }
-
-    public function value()
-    {
-        if ($this->fragments->isEmpty()) {
-            return $this->nullValue();
-        }
-        if ($this->attribute->hasMultipleOccurrences()) {
-            $values = [];
-            foreach ($this->fragments as $fragment) {
-                $values[] = $this->attribute->format()->datatype()->isObject()
-                            ? $this->objectValue($fragment)
-                            : $this->fragmentValue($fragment);
-            }
-            return $values;
-        }
-        if ($this->attribute->format()->datatype()->isObject()) {
-            return $this->objectValue($this->children[$this->fragments->get(0)]);
-        }
-        if ($this->attribute->format()->serializeAsObject()) {
-            $values = [];
-            foreach ($this->fragments as $fragment) {
-                $values[] = $this->fragmentValue($fragment);
-            }
-            return $values;
-        }
-        return $this->fragmentValue($this->fragments->get(0));
     }
 
     protected function addFragment()
@@ -237,17 +181,5 @@ class Property
             }
         }
         $this->updateItem();
-    }
-
-    public function keyValue()
-    {
-        return [$this->name() => $this->value()];
-    }
-
-    public function setKeyValue($keyValue)
-    {
-        if (count($keyValue) === 1 && isset($keyValue[$this->name()])) {
-            $this->setValue($keyValue[$this->name()]);
-        }
     }
 }

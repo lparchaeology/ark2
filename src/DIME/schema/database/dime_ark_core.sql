@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.1
+-- version 4.6.6
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 16, 2017 at 11:25 PM
--- Server version: 5.6.34
--- PHP Version: 7.1.0
+-- Generation Time: Feb 20, 2017 at 09:37 AM
+-- Server version: 10.1.20-MariaDB
+-- PHP Version: 7.0.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -87,14 +87,15 @@ INSERT INTO `ark_config_thumbnail` (`profile`, `max`, `min`, `mode`, `type`, `ke
 
 CREATE TABLE `ark_datatype` (
   `datatype` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `doctrine` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `size` int(11) DEFAULT NULL,
   `object` tinyint(1) NOT NULL DEFAULT '0',
-  `format_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `format_required` tinyint(1) NOT NULL DEFAULT '0',
-  `parameter_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `parameter_required` tinyint(1) NOT NULL DEFAULT '0',
-  `value_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `compound` tinyint(1) NOT NULL DEFAULT '1',
+  `storage_type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `storage_size` int(11) DEFAULT NULL,
+  `value_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `format_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `format_vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parameter_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parameter_vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `model_table` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `model_class` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `data_table` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -109,20 +110,20 @@ CREATE TABLE `ark_datatype` (
 -- Dumping data for table `ark_datatype`
 --
 
-INSERT INTO `ark_datatype` (`datatype`, `doctrine`, `size`, `object`, `format_name`, `format_required`, `parameter_name`, `parameter_required`, `value_name`, `model_table`, `model_class`, `data_table`, `data_class`, `form_class`, `enabled`, `deprecated`, `keyword`) VALUES
-('blob', 'blob', NULL, 0, 'mimetype', 0, '', 0, '', 'ark_format_blob', 'ARK\\Model\\Format\\BlobFormat', 'ark_fragment_blob', 'ARK\\Model\\Fragment\\BlobFragment', '', 0, 0, 'core.datatype.blob'),
-('boolean', 'boolean', NULL, 0, '', 0, '', 0, '', 'ark_format_boolean', 'ARK\\Model\\Format\\BooleanFormat', 'ark_fragment_boolean', 'ARK\\Model\\Fragment\\BooleanFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', 1, 0, 'core.datatype.boolean'),
-('date', 'date', NULL, 0, '', 0, '', 0, '', 'ark_format_datetime', 'ARK\\Model\\Format\\DateFormat', 'ark_fragment_date', 'ARK\\Model\\Fragment\\DateFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateType', 1, 0, 'core.datatype.date'),
-('datetime', 'datetime', NULL, 0, '', 0, 'timezone', 0, '', 'ark_format_datetime', 'ARK\\Model\\Format\\DateTimeFormat', 'ark_fragment_datetime', 'ARK\\Model\\Fragment\\DateTimeFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateTimeType', 1, 0, 'core.datatype.datetime'),
-('decimal', 'string', 200, 0, '', 0, '', 0, '', 'ark_format_decimal', 'ARK\\Model\\Format\\DecimalFormat', 'ark_fragment_decimal', 'ARK\\Model\\Fragment\\DecimalFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', 1, 0, 'core.datatype.decimal'),
-('float', 'float', NULL, 0, '', 0, '', 0, '', 'ark_format_float', 'ARK\\Model\\Format\\FloatFormat', 'ark_fragment_float', 'ARK\\Model\\Fragment\\FloatFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', 1, 0, 'core.datatype.float'),
-('integer', 'integer', NULL, 0, '', 0, '', 0, '', 'ark_format_integer', 'ARK\\Model\\Format\\IntegerFormat', 'ark_fragment_integer', 'ARK\\Model\\Fragment\\IntegerFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\IntegerType', 1, 0, 'core.datatype.integer'),
-('item', 'string', 30, 0, '', 0, 'module', 0, 'id', 'ark_format_item', 'ARK\\Model\\Format\\ItemFormat', 'ark_fragment_item', 'ARK\\Model\\Fragment\\ItemFragment', '', 1, 0, 'core.datatype.item'),
-('object', 'integer', 0, 1, '', 0, '', 0, '', 'ark_format_object', 'ARK\\Model\\Format\\ObjectFormat', 'ark_fragment_object', 'ARK\\Model\\Fragment\\ObjectFragment', '', 1, 0, 'core.datatype.object'),
-('spatial', 'string', 1431655765, 0, 'format', 0, 'srid', 0, 'geometry', 'ark_format_spatial', 'ARK\\Model\\Format\\SpatialFormat', 'ark_fragment_spatial', 'ARK\\Model\\Fragment\\SpatialFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', 1, 0, 'core.datatype.spatial'),
-('string', 'string', 4000, 0, '', 0, '', 0, '', 'ark_format_string', 'ARK\\Model\\Format\\StringFormat', 'ark_fragment_string', 'ARK\\Model\\Fragment\\StringFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', 1, 0, 'core.datatype.string'),
-('text', 'string', 1431655765, 0, 'mimetype', 0, 'language', 0, 'content', 'ark_format_text', 'ARK\\Model\\Format\\TextFormat', 'ark_fragment_text', 'ARK\\Model\\Fragment\\TextFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextAreaType', 1, 0, 'core.datatype.text'),
-('time', 'time', NULL, 0, '', 0, '', 0, '', 'ark_format_datetime', 'ARK\\Model\\Format\\TimeFormat', 'ark_fragment_time', 'ARK\\Model\\Fragment\\TimeFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', 0, 0, 'core.datatype.time');
+INSERT INTO `ark_datatype` (`datatype`, `object`, `compound`, `storage_type`, `storage_size`, `value_name`, `format_name`, `format_vocabulary`, `parameter_name`, `parameter_vocabulary`, `model_table`, `model_class`, `data_table`, `data_class`, `form_class`, `enabled`, `deprecated`, `keyword`) VALUES
+('blob', 0, 1, 'blob', NULL, 'blob', 'mediatype', 'mediatype', NULL, NULL, 'ark_format_blob', 'ARK\\Model\\Format\\BlobFormat', 'ark_fragment_blob', 'ARK\\Model\\Fragment\\BlobFragment', '', 0, 0, 'core.datatype.blob'),
+('boolean', 0, 0, 'boolean', NULL, NULL, NULL, NULL, NULL, NULL, 'ark_format_boolean', 'ARK\\Model\\Format\\BooleanFormat', 'ark_fragment_boolean', 'ARK\\Model\\Fragment\\BooleanFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', 1, 0, 'core.datatype.boolean'),
+('date', 0, 0, 'date', NULL, NULL, NULL, NULL, NULL, NULL, 'ark_format_datetime', 'ARK\\Model\\Format\\DateFormat', 'ark_fragment_date', 'ARK\\Model\\Fragment\\DateFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateType', 1, 0, 'core.datatype.date'),
+('datetime', 0, 0, 'datetime', NULL, NULL, NULL, NULL, NULL, NULL, 'ark_format_datetime', 'ARK\\Model\\Format\\DateTimeFormat', 'ark_fragment_datetime', 'ARK\\Model\\Fragment\\DateTimeFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateTimeType', 1, 0, 'core.datatype.datetime'),
+('decimal', 0, 0, 'string', 200, NULL, NULL, NULL, NULL, NULL, 'ark_format_decimal', 'ARK\\Model\\Format\\DecimalFormat', 'ark_fragment_decimal', 'ARK\\Model\\Fragment\\DecimalFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', 1, 0, 'core.datatype.decimal'),
+('float', 0, 0, 'float', NULL, NULL, NULL, NULL, NULL, NULL, 'ark_format_float', 'ARK\\Model\\Format\\FloatFormat', 'ark_fragment_float', 'ARK\\Model\\Fragment\\FloatFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', 1, 0, 'core.datatype.float'),
+('integer', 0, 0, 'integer', NULL, NULL, NULL, NULL, NULL, NULL, 'ark_format_integer', 'ARK\\Model\\Format\\IntegerFormat', 'ark_fragment_integer', 'ARK\\Model\\Fragment\\IntegerFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\IntegerType', 1, 0, 'core.datatype.integer'),
+('item', 0, 1, 'string', 30, 'item', NULL, NULL, 'module', NULL, 'ark_format_item', 'ARK\\Model\\Format\\ItemFormat', 'ark_fragment_item', 'ARK\\Model\\Fragment\\ItemFragment', '', 1, 0, 'core.datatype.item'),
+('object', 1, 0, 'integer', 0, NULL, NULL, NULL, NULL, NULL, 'ark_format_object', 'ARK\\Model\\Format\\ObjectFormat', 'ark_fragment_object', 'ARK\\Model\\Fragment\\ObjectFragment', '', 1, 0, 'core.datatype.object'),
+('spatial', 0, 1, 'string', 1431655765, 'geometry', 'format', 'spatial.format', 'srid', 'spatial.crs', 'ark_format_spatial', 'ARK\\Model\\Format\\SpatialFormat', 'ark_fragment_spatial', 'ARK\\Model\\Fragment\\SpatialFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', 1, 0, 'core.datatype.spatial'),
+('string', 0, 0, 'string', 4000, NULL, NULL, NULL, NULL, NULL, 'ark_format_string', 'ARK\\Model\\Format\\StringFormat', 'ark_fragment_string', 'ARK\\Model\\Fragment\\StringFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', 1, 0, 'core.datatype.string'),
+('text', 0, 1, 'string', 1431655765, 'content', 'mimetype', 'mediatype', 'language', 'language', 'ark_format_text', 'ARK\\Model\\Format\\TextFormat', 'ark_fragment_text', 'ARK\\Model\\Fragment\\TextFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextAreaType', 1, 0, 'core.datatype.text'),
+('time', 0, 0, 'time', NULL, NULL, NULL, NULL, NULL, NULL, 'ark_format_datetime', 'ARK\\Model\\Format\\TimeFormat', 'ark_fragment_time', 'ARK\\Model\\Fragment\\TimeFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', 0, 0, 'core.datatype.time');
 
 -- --------------------------------------------------------
 
@@ -133,9 +134,15 @@ INSERT INTO `ark_datatype` (`datatype`, `doctrine`, `size`, `object`, `format_na
 CREATE TABLE `ark_format` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `datatype` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parameter_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parameter_vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `format_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `format_vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `input` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `object` tinyint(1) NOT NULL DEFAULT '0',
   `array` tinyint(1) NOT NULL DEFAULT '0',
+  `multiple` tinyint(1) NOT NULL DEFAULT '0',
   `sortable` tinyint(1) NOT NULL DEFAULT '1',
   `searchable` tinyint(1) NOT NULL DEFAULT '1',
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
@@ -147,44 +154,44 @@ CREATE TABLE `ark_format` (
 -- Dumping data for table `ark_format`
 --
 
-INSERT INTO `ark_format` (`format`, `datatype`, `input`, `object`, `array`, `sortable`, `searchable`, `enabled`, `deprecated`, `keyword`) VALUES
-('actor', 'item', 'select', 0, 0, 0, 0, 1, 0, 'format.actor'),
-('address', 'object', '', 1, 0, 0, 1, 1, 0, 'format.address'),
-('blob', 'blob', '', 0, 0, 0, 0, 1, 0, 'format.blob'),
-('boolean', 'boolean', '', 0, 0, 1, 1, 1, 0, 'format.boolean'),
-('color', 'string', 'color', 0, 0, 1, 1, 1, 0, 'format.colour'),
-('date', 'date', 'date', 0, 0, 1, 1, 1, 0, 'format.date'),
-('datetime', 'datetime', 'date', 0, 0, 1, 1, 1, 0, 'format.datetime'),
-('decimal', 'decimal', 'text', 0, 0, 1, 1, 1, 0, 'format.decimal'),
-('distance', 'decimal', 'text', 0, 0, 1, 1, 1, 0, 'format.distance'),
-('email', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.email'),
-('event', 'object', '', 1, 0, 0, 1, 1, 0, 'format.event'),
-('fileversion', 'object', '', 1, 0, 0, 1, 1, 0, 'format.fileversion'),
-('float', 'float', 'text', 0, 0, 1, 1, 1, 0, 'format.float'),
-('geometry', 'spatial', 'text', 0, 0, 1, 1, 1, 0, 'format.geometry'),
-('html', 'text', 'textarea', 1, 0, 1, 1, 1, 0, 'format.html'),
-('identifier', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.identifier'),
-('integer', 'integer', 'text', 0, 0, 1, 1, 1, 0, 'format.integer'),
-('item', 'item', 'select', 0, 0, 0, 0, 1, 0, 'format.item'),
-('key', 'string', 'select', 0, 0, 1, 1, 1, 0, 'format.key'),
-('markdown', 'text', 'textarea', 1, 0, 1, 1, 1, 0, 'format.markdown'),
-('mass', 'decimal', 'text', 0, 0, 1, 1, 1, 0, 'format.mass'),
-('module', 'string', 'select', 0, 0, 0, 0, 1, 0, 'format.module'),
-('money', 'decimal', 'date', 0, 0, 1, 1, 1, 0, 'format.money'),
-('ordinaldate', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.ordinaldate'),
-('password', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.password'),
-('percent', 'float', 'text', 0, 0, 1, 1, 1, 0, 'format.percent'),
-('plaintext', 'text', 'textarea', 1, 0, 1, 1, 1, 0, 'format.localtext'),
-('richtext', 'text', 'textarea', 1, 0, 1, 1, 1, 0, 'format.richtext'),
-('shorttext', 'text', 'text', 1, 0, 1, 1, 1, 0, 'format.shortlocaltext'),
-('string', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.string'),
-('telephone', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.telephone'),
-('time', 'time', 'date', 0, 0, 1, 1, 1, 0, 'format.time'),
-('url', 'text', 'text', 0, 0, 1, 1, 1, 0, 'format.url'),
-('weekdate', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.weekdate'),
-('wkt', 'spatial', 'text', 0, 0, 0, 1, 1, 0, 'format.wkt'),
-('yearmonth', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.yearmonth'),
-('yearweek', 'string', 'text', 0, 0, 1, 1, 1, 0, 'format.yearweek');
+INSERT INTO `ark_format` (`format`, `datatype`, `value_name`, `parameter_name`, `parameter_vocabulary`, `format_name`, `format_vocabulary`, `input`, `object`, `array`, `multiple`, `sortable`, `searchable`, `enabled`, `deprecated`, `keyword`) VALUES
+('actor', 'item', NULL, NULL, NULL, NULL, NULL, 'select', 0, 0, 0, 0, 0, 1, 0, 'format.actor'),
+('address', 'object', NULL, NULL, NULL, NULL, NULL, '', 1, 0, 0, 0, 1, 1, 0, 'format.address'),
+('blob', 'blob', NULL, NULL, NULL, NULL, NULL, '', 0, 0, 0, 0, 0, 1, 0, 'format.blob'),
+('boolean', 'boolean', NULL, NULL, NULL, NULL, NULL, '', 0, 0, 0, 1, 1, 1, 0, 'format.boolean'),
+('color', 'string', NULL, NULL, NULL, NULL, NULL, 'color', 0, 0, 0, 1, 1, 1, 0, 'format.colour'),
+('date', 'date', NULL, NULL, NULL, NULL, NULL, 'date', 0, 0, 0, 1, 1, 1, 0, 'format.date'),
+('datetime', 'datetime', NULL, NULL, NULL, NULL, NULL, 'date', 0, 0, 0, 1, 1, 1, 0, 'format.datetime'),
+('decimal', 'decimal', NULL, NULL, NULL, NULL, NULL, 'text', 0, 0, 0, 1, 1, 1, 0, 'format.decimal'),
+('distance', 'decimal', 'measurement', 'unit', 'distance', NULL, NULL, 'text', 0, 0, 0, 1, 1, 1, 0, 'format.distance'),
+('email', 'string', NULL, NULL, NULL, NULL, NULL, 'text', 0, 0, 0, 1, 1, 1, 0, 'format.email'),
+('event', 'object', NULL, NULL, NULL, NULL, NULL, '', 1, 0, 0, 0, 1, 1, 0, 'format.event'),
+('fileversion', 'object', NULL, NULL, NULL, NULL, NULL, '', 1, 0, 0, 0, 1, 1, 0, 'format.fileversion'),
+('float', 'float', NULL, NULL, NULL, NULL, NULL, 'text', 0, 0, 0, 1, 1, 1, 0, 'format.float'),
+('html', 'text', NULL, NULL, NULL, NULL, NULL, 'textarea', 1, 0, 1, 1, 1, 1, 0, 'format.html'),
+('identifier', 'string', NULL, NULL, NULL, NULL, NULL, 'text', 0, 0, 0, 1, 1, 1, 0, 'format.identifier'),
+('integer', 'integer', NULL, NULL, NULL, NULL, NULL, 'text', 0, 0, 0, 1, 1, 1, 0, 'format.integer'),
+('item', 'item', NULL, NULL, NULL, NULL, NULL, 'select', 0, 0, 0, 0, 0, 1, 0, 'format.item'),
+('key', 'string', NULL, NULL, NULL, NULL, NULL, 'select', 0, 0, 0, 1, 1, 1, 0, 'format.key'),
+('markdown', 'text', NULL, NULL, NULL, NULL, NULL, 'textarea', 1, 0, 1, 1, 1, 1, 0, 'format.markdown'),
+('mass', 'decimal', 'measurement', 'unit', 'mass', NULL, NULL, 'text', 0, 0, 0, 1, 1, 1, 0, 'format.mass'),
+('module', 'string', NULL, NULL, NULL, NULL, NULL, 'select', 0, 0, 0, 0, 0, 1, 0, 'format.module'),
+('money', 'decimal', NULL, NULL, NULL, NULL, NULL, 'date', 0, 0, 0, 1, 1, 1, 0, 'format.money'),
+('ordinaldate', 'string', NULL, NULL, NULL, NULL, NULL, 'text', 0, 0, 0, 1, 1, 1, 0, 'format.ordinaldate'),
+('password', 'string', NULL, NULL, NULL, NULL, NULL, 'text', 0, 0, 0, 1, 1, 1, 0, 'format.password'),
+('percent', 'float', NULL, NULL, NULL, NULL, NULL, 'text', 0, 0, 0, 1, 1, 1, 0, 'format.percent'),
+('plaintext', 'text', NULL, NULL, NULL, NULL, NULL, 'textarea', 1, 0, 1, 1, 1, 1, 0, 'format.localtext'),
+('richtext', 'text', NULL, NULL, NULL, NULL, NULL, 'textarea', 1, 0, 1, 1, 1, 1, 0, 'format.richtext'),
+('shorttext', 'text', NULL, NULL, NULL, NULL, NULL, 'text', 1, 0, 1, 1, 1, 1, 0, 'format.shortlocaltext'),
+('spatial', 'spatial', NULL, NULL, NULL, NULL, NULL, 'text', 0, 0, 0, 1, 1, 1, 0, 'format.geometry'),
+('string', 'string', NULL, NULL, NULL, NULL, NULL, 'text', 0, 0, 0, 1, 1, 1, 0, 'format.string'),
+('telephone', 'string', NULL, NULL, NULL, NULL, NULL, 'text', 0, 0, 0, 1, 1, 1, 0, 'format.telephone'),
+('time', 'time', NULL, NULL, NULL, NULL, NULL, 'date', 0, 0, 0, 1, 1, 1, 0, 'format.time'),
+('url', 'text', NULL, NULL, NULL, NULL, NULL, 'text', 0, 0, 1, 1, 1, 1, 0, 'format.url'),
+('weekdate', 'string', NULL, NULL, NULL, NULL, NULL, 'text', 0, 0, 0, 1, 1, 1, 0, 'format.weekdate'),
+('wkt', 'spatial', NULL, NULL, NULL, NULL, NULL, 'text', 0, 0, 0, 0, 1, 1, 0, 'format.wkt'),
+('yearmonth', 'string', NULL, NULL, NULL, NULL, NULL, 'text', 0, 0, 0, 1, 1, 1, 0, 'format.yearmonth'),
+('yearweek', 'string', NULL, NULL, NULL, NULL, NULL, 'text', 0, 0, 0, 1, 1, 1, 0, 'format.yearweek');
 
 -- --------------------------------------------------------
 
@@ -216,8 +223,6 @@ INSERT INTO `ark_format_attribute` (`parent`, `attribute`, `sequence`, `format`,
 ('address', 'city', 1, 'plaintext', NULL, 0, 1, 1, 1, 0, 1, 0, 'format.address.city'),
 ('address', 'country', 2, 'identifier', 'country', 0, 1, 1, 1, 0, 1, 0, 'format.address.country'),
 ('address', 'street', 0, 'plaintext', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.address.street'),
-('distance', 'measurement', 0, 'decimal', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.length.measurement'),
-('distance', 'unit', 1, 'identifier', 'distance', 0, 1, 1, 1, 0, 1, 0, 'format.length.unit'),
 ('event', 'by', 0, 'actor', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.event.by'),
 ('event', 'on', 1, 'datetime', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.event.on'),
 ('fileversion', 'created', 3, 'event', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.created'),
@@ -225,11 +230,7 @@ INSERT INTO `ark_format_attribute` (`parent`, `attribute`, `sequence`, `format`,
 ('fileversion', 'modified', 4, 'event', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.modified'),
 ('fileversion', 'name', 1, 'string', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.name'),
 ('fileversion', 'sequence', 0, 'integer', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.sequence'),
-('fileversion', 'version', 2, 'string', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.string'),
-('geometry', 'coordinates', 0, 'wkt', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.geometry.wkt'),
-('geometry', 'srid', 1, 'identifier', 'crs', 0, 1, 1, 1, 0, 1, 0, 'format.geometry.crs'),
-('mass', 'measurement', 0, 'decimal', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.mass.measurement'),
-('mass', 'unit', 1, 'identifier', 'mass', 0, 1, 1, 1, 0, 1, 0, 'format.mass.unit');
+('fileversion', 'version', 2, 'string', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.string');
 
 -- --------------------------------------------------------
 
@@ -412,7 +413,7 @@ CREATE TABLE `ark_format_spatial` (
 --
 
 INSERT INTO `ark_format_spatial` (`format`) VALUES
-('geometry'),
+('spatial'),
 ('wkt');
 
 -- --------------------------------------------------------
@@ -671,13 +672,13 @@ CREATE TABLE `ark_rbac_role_permission` (
 --
 
 INSERT INTO `ark_rbac_role_permission` (`role`, `permission`) VALUES
-('detectorist', 'can_add_find'),
 ('curator', 'can_delete_find'),
 ('curator', 'can_edit_find'),
-('detectorist', 'can_edit_find'),
 ('curator', 'can_search_find'),
-('detectorist', 'can_search_find'),
 ('curator', 'can_view_find'),
+('detectorist', 'can_add_find'),
+('detectorist', 'can_edit_find'),
+('detectorist', 'can_search_find'),
 ('detectorist', 'can_view_find');
 
 -- --------------------------------------------------------
@@ -809,7 +810,7 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('dime.find', '', 'description', 'plaintext', NULL, 0, 1, 1, 0, 1, 0, 'property.description'),
 ('dime.find', '', 'finddate', 'date', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.finddate'),
 ('dime.find', '', 'finder_id', 'identifier', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.finderid'),
-('dime.find', '', 'findpoint', 'geometry', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.findpoint'),
+('dime.find', '', 'findpoint', 'spatial', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.findpoint'),
 ('dime.find', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.id'),
 ('dime.find', '', 'image', 'string', NULL, 1, 0, 1, 1, 1, 0, 'dime.find.images'),
 ('dime.find', '', 'kommune', 'identifier', 'dime.denmark.kommune', 1, 1, 1, 0, 1, 0, 'dime.find.kommune'),
@@ -1486,7 +1487,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attrib
 ('dime_find_image', 'field', 'dime.find', '', 'image', '', 'blocks/carouselfield.html.twig', 0, 0, 'ARK\\Form\\Type\\CarouselType', '', 1, 0, 1, 0, NULL),
 ('dime_find_item', 'grid', NULL, NULL, NULL, '', '', 1, 1, '', '', 1, 0, 1, 0, NULL),
 ('dime_find_kommune', 'field', 'dime.find', '', 'kommune', '', '', 0, 0, 'ARK\\Form\\Type\\ReadonlyVocabularyType', '', 1, 0, 1, 0, NULL),
-('dime_find_length', 'field', 'dime.find', '', 'length', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
+('dime_find_length', 'field', 'dime.find', '', 'length', '', '', 0, 0, 'ARK\\Form\\Type\\MeasurementType', '', 1, 0, 1, 0, NULL),
 ('dime_find_list', 'table', NULL, NULL, NULL, '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
 ('dime_find_map', 'grid', NULL, NULL, NULL, '', 'blocks/map.html.twig', 0, 0, '', '', 1, 0, 1, 0, NULL),
 ('dime_find_mappick', 'grid', NULL, NULL, NULL, '', 'blocks/mappick.html.twig', 0, 0, '', '', 1, 0, 1, 0, NULL),
@@ -1500,7 +1501,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attrib
 ('dime_find_subtype', 'field', 'dime.find', '', 'subtype', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
 ('dime_find_treasure', 'field', 'dime.find', '', 'treasure', '', '', 0, 0, 'ARK\\Form\\Type\\ReadonlyVocabularyType', '', 1, 0, 1, 0, NULL),
 ('dime_find_type', 'field', 'dime.find', '', 'type', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_find_weight', 'field', 'dime.find', '', 'weight', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
+('dime_find_weight', 'field', 'dime.find', '', 'weight', '', '', 0, 0, 'ARK\\Form\\Type\\MeasurementType', '', 1, 0, 1, 0, NULL),
 ('dime_front_page', 'grid', 'dime.find', NULL, NULL, '', 'layouts/front.html.twig', 0, 0, '', '', 1, 0, 1, 0, NULL),
 ('dime_home_action', 'grid', NULL, NULL, NULL, '', 'blocks/homeaction.html.twig', 0, 0, '', '', 1, 0, 1, 0, NULL),
 ('dime_home_page', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
@@ -1644,7 +1645,7 @@ CREATE TABLE `ark_vocabulary` (
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `source` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `closed` tinyint(1) NOT NULL DEFAULT '1',
-  `workflow` tinyint(1) NOT NULL,
+  `workflow` tinyint(1) NOT NULL DEFAULT '0',
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1659,7 +1660,6 @@ INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `workflow`,
 ('core.file.status', 'list', 'ARK Core', 1, 0, 1, 0, 'vocabulary.file.status', 'File Status'),
 ('core.file.type', 'list', 'ARK Core', 1, 0, 1, 0, 'vocabulary.file.type', 'File Type'),
 ('country', 'list', 'ISO3166', 1, 0, 1, 0, 'vocabulary.country', 'ISO Country Codes'),
-('crs', 'list', 'EPSG', 1, 0, 1, 0, 'vocabulary.crs', 'Coordinate Reference System'),
 ('dime.actor.type', 'list', 'DIME', 1, 0, 1, 0, 'dime.actor.type', 'DIME Actor Type'),
 ('dime.denmark.admin', 'taxonomy', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.denmark.admin', 'Danish NUTS and LAU Administrative Unit Hierarchy'),
 ('dime.denmark.kommune', 'list', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.denmark.kommune', 'Danish LAU-1 Kommune (Municipality) List'),
@@ -1672,7 +1672,10 @@ INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `workflow`,
 ('dime.treasure', 'list', 'DIME', 1, 1, 1, 0, 'vocabulary.dime.treasure', 'DIME Treasure Status'),
 ('distance', 'list', 'SI', 1, 0, 1, 0, 'vocabulary.distance', 'SI Distance Units'),
 ('language', 'list', 'ISO639', 1, 0, 1, 0, 'vocabulary.language', 'ISO Language Codes'),
-('mass', 'list', 'SI', 1, 0, 1, 0, 'vocabulary.mass', 'SI Mass Units');
+('mass', 'list', 'SI', 1, 0, 1, 0, 'vocabulary.mass', 'SI Mass Units'),
+('mediatype', 'list', 'IANA', 1, 0, 1, 0, 'vocabulary.mediatype', 'IANA Medittypes as defined by RFC'),
+('spatial.crs', 'list', 'EPSG', 1, 0, 1, 0, 'vocabulary.spatial.crs', 'Coordinate Reference System'),
+('spatial.format', 'list', 'ARK Core', 1, 0, 1, 0, 'vocabulary.spatial.format', 'Spatial data formats');
 
 -- --------------------------------------------------------
 
@@ -2404,7 +2407,6 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('country', 'ZA ', 'southafrica', 0, 1, 0, 'country.southafrica', ''),
 ('country', 'ZM ', 'zambia', 0, 1, 0, 'country.zambia', ''),
 ('country', 'ZW ', 'zimbabwe', 0, 1, 0, 'country.zimbabwe', ''),
-('crs', '4326', 'WGS84', 0, 1, 0, 'crs.wgs84', ''),
 ('dime.actor.type', 'institution', '', 0, 1, 0, 'dime.actor.type.institution', ''),
 ('dime.actor.type', 'museum', '', 0, 1, 0, 'dime.actor.type.museum', ''),
 ('dime.actor.type', 'person', '', 0, 1, 0, 'dime.actor.type.person', ''),
@@ -2865,9 +2867,9 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('language', 'kho', 'khotanese', 0, 1, 0, 'language.khotanese', ''),
 ('language', 'khq', 'chiini.koyra', 0, 1, 0, 'language.chiini.koyra', ''),
 ('language', 'khw', 'khowar', 0, 1, 0, 'language.khowar', ''),
-('language', 'ki', 'kikuyu', 0, 1, 0, 'language.kikuyu', '');
+('language', 'ki', 'kikuyu', 0, 1, 0, 'language.kikuyu', ''),
+('language', 'kiu', 'kirmanjki', 0, 1, 0, 'language.kirmanjki', '');
 INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
-('language', 'kiu', 'kirmanjki', 0, 1, 0, 'language.kirmanjki', ''),
 ('language', 'kj', 'kuanyama', 0, 1, 0, 'language.kuanyama', ''),
 ('language', 'kk', 'kazakh', 0, 1, 0, 'language.kazakh', ''),
 ('language', 'kkj', 'kako', 0, 1, 0, 'language.kako', ''),
@@ -3214,7 +3216,13 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('mass', 'kg', 'kilogram', 0, 1, 0, 'mass.kilogram', ''),
 ('mass', 'mg', 'milligram', 0, 1, 0, 'mass.milligram', ''),
 ('mass', 't', 'tonne', 0, 1, 0, 'mass.tonne', ''),
-('mass', 'µg', 'microgram', 0, 1, 0, 'mass.microgram', '');
+('mass', 'µg', 'microgram', 0, 1, 0, 'mass.microgram', ''),
+('mediatype', 'text/html', '', 0, 1, 0, 'mediatype.text.html', ''),
+('mediatype', 'text/plain', 'plain', 0, 1, 0, 'mediatype.text.plain', ''),
+('spatial.crs', '4326', 'WGS84', 0, 1, 0, 'crs.wgs84', ''),
+('spatial.format', 'geojson', '', 0, 1, 0, 'spatial.format.geojson', ''),
+('spatial.format', 'gpx', '', 0, 1, 0, 'spatial.format.gpx', ''),
+('spatial.format', 'wkt', '', 0, 1, 0, 'spatial.format.wkt', '');
 
 -- --------------------------------------------------------
 
@@ -4886,14 +4894,18 @@ ALTER TABLE `ark_config_thumbnail`
 -- Indexes for table `ark_datatype`
 --
 ALTER TABLE `ark_datatype`
-  ADD PRIMARY KEY (`datatype`);
+  ADD PRIMARY KEY (`datatype`),
+  ADD KEY `format_vocabulary` (`format_vocabulary`),
+  ADD KEY `parameter_vocabulary` (`parameter_vocabulary`);
 
 --
 -- Indexes for table `ark_format`
 --
 ALTER TABLE `ark_format`
   ADD PRIMARY KEY (`format`),
-  ADD KEY `fragment_type` (`datatype`);
+  ADD KEY `fragment_type` (`datatype`),
+  ADD KEY `parameter_vocabulary` (`parameter_vocabulary`),
+  ADD KEY `format_vocabulary` (`format_vocabulary`);
 
 --
 -- Indexes for table `ark_format_attribute`
@@ -5194,10 +5206,19 @@ ALTER TABLE `ark_config_flash`
 --
 
 --
+-- Constraints for table `ark_datatype`
+--
+ALTER TABLE `ark_datatype`
+  ADD CONSTRAINT `ark_datatype_ibfk_1` FOREIGN KEY (`format_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_datatype_ibfk_2` FOREIGN KEY (`parameter_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
+
+--
 -- Constraints for table `ark_format`
 --
 ALTER TABLE `ark_format`
-  ADD CONSTRAINT `ark_format_ibfk_1` FOREIGN KEY (`datatype`) REFERENCES `ark_datatype` (`datatype`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_format_ibfk_1` FOREIGN KEY (`datatype`) REFERENCES `ark_datatype` (`datatype`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_format_ibfk_2` FOREIGN KEY (`parameter_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_format_ibfk_3` FOREIGN KEY (`format_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_attribute`

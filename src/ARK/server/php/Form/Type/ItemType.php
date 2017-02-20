@@ -52,7 +52,7 @@ class ItemType extends AbstractType implements DataMapperInterface
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
         $builder->add('module', HiddenType::class, $fieldOptions);
-        $builder->add('id', HiddenType::class, $fieldOptions);
+        $builder->add('item', HiddenType::class, $fieldOptions);
         $builder->add('name', TextType::class, $fieldOptions);
         $builder->setDataMapper($this);
     }
@@ -70,16 +70,14 @@ class ItemType extends AbstractType implements DataMapperInterface
     {
         $forms = iterator_to_array($forms);
         $value = $property->value();
-        $module = $value['module'];
-        $id = $value['id'];
-        if ($id) {
-            $item = ORM::find(Actor::class, $id);
+        if ($value['item']) {
             $forms['module']->setData($value['module']);
-            $forms['id']->setData($value['id']);
-            if ($item) {
+            $forms['item']->setData($value['item']);
+            // TODO Make generic using module!
+            if ($item = ORM::find(Actor::class, $value['item'])) {
                 $name = $item->property('fullname');
-                $value = $name->value();
-                $forms['name']->setData($value[0]['content']);
+                $value = $name->value()[0];
+                $forms['name']->setData($value['content']);
             }
         }
     }
@@ -88,14 +86,11 @@ class ItemType extends AbstractType implements DataMapperInterface
     {
         $forms = iterator_to_array($forms);
         $module = $forms['module']->getData();
-        $id = $forms['id']->getData();
-        if ($id) {
-            $item = ORM::find(Actor::class, $id);
-            if (!$item) {
-                return;
-            }
+        $item = $forms['item']->getData();
+        if ($item) {
+            // TODO Generic test exists
             $values['module'] = $module;
-            $values['id'] = $id;
+            $values['item'] = $item;
             $property->setValue($values);
         }
     }

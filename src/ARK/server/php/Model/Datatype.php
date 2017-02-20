@@ -34,6 +34,7 @@ use ARK\Model\EnabledTrait;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\Vocabulary\Vocabulary;
 
 class Datatype
 {
@@ -42,11 +43,16 @@ class Datatype
 
     protected $datatype = '';
     protected $object = false;
-    protected $formatName = '';
-    protected $formatRequired = false;
-    protected $parameterName = '';
-    protected $parameterRequired = false;
-    protected $valueName = '';
+    protected $compound = false;
+    protected $storageType = '';
+    protected $storageSize = 0;
+    protected $valueName = null;
+    protected $formatName = null;
+    protected $formatVocabulary = null;
+    protected $format = null;
+    protected $parameterName = null;
+    protected $parameterVocabulary = null;
+    protected $parameter = null;
     protected $modelTable = '';
     protected $modelClass = '';
     protected $dataTable = '';
@@ -63,34 +69,44 @@ class Datatype
         return $this->object;
     }
 
-    public function isAtomic()
+    public function isCompound()
     {
-        return !($this->formatRequired || $this->parameterRequired);
+        return $this->compound;
     }
 
-    public function formatName()
+    public function storageType()
     {
-        return ($this->formatName ? $this->formatName : 'format');
+        return $this->storageType;
     }
 
-    public function formatRequired()
+    public function storageSize()
     {
-        return $this->formatRequired;
-    }
-
-    public function parameterName()
-    {
-        return ($this->parameterName ? $this->parameterName : 'parameter');
-    }
-
-    public function parameterRequired()
-    {
-        return $this->parameterRequired;
+        return $this->storageSize;
     }
 
     public function valueName()
     {
         return ($this->valueName ? $this->valueName : 'value');
+    }
+
+    public function formatName()
+    {
+        return $this->formatName;
+    }
+
+    public function formatVocabulary()
+    {
+        return $this->format;
+    }
+
+    public function parameterName()
+    {
+        return $this->parameterName;
+    }
+
+    public function parameterVocabulary()
+    {
+        return $this->parameter;
     }
 
     public function modelTable()
@@ -118,6 +134,14 @@ class Datatype
         return $this->formClass;
     }
 
+    public function nullValue()
+    {
+        if (in_array($this->datatype, ['date', 'time', 'datetime'])) {
+            return new \DateTime;
+        }
+        return null;
+    }
+
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
@@ -129,11 +153,14 @@ class Datatype
 
         // Attributes
         $builder->addField('object', 'boolean');
-        $builder->addStringField('formatName', 30, 'format_name');
-        $builder->addField('formatRequired', 'boolean', [], 'format_required');
-        $builder->addStringField('parameterName', 30, 'parameter_name');
-        $builder->addField('parameterRequired', 'boolean', [], 'parameter_required');
+        $builder->addField('compound', 'boolean');
+        $builder->addStringField('storageType', 30, 'storage_type');
+        $builder->addField('storageSize', 'integer', [], 'storage_size');
         $builder->addStringField('valueName', 30, 'value_name');
+        $builder->addStringField('formatName', 30, 'format_name');
+        $builder->addStringField('formatVocabulary', 30, 'format_vocabulary');
+        $builder->addStringField('parameterName', 30, 'parameter_name');
+        $builder->addStringField('parameterVocabulary', 30, 'parameter_vocabulary');
         $builder->addStringField('modelTable', 50, 'model_table');
         $builder->addStringField('modelClass', 100, 'model_class');
         $builder->addStringField('dataTable', 50, 'data_table');
@@ -141,5 +168,9 @@ class Datatype
         $builder->addStringField('formClass', 100, 'form_class');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
+
+        // Associations
+        $builder->addManyToOneField('format', Vocabulary::class, 'format_vocabulary', 'concept');
+        $builder->addManyToOneField('parameter', Vocabulary::class, 'parameter_vocabulary', 'concept');
     }
 }

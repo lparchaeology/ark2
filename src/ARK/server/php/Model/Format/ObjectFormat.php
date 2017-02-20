@@ -31,13 +31,60 @@
 namespace ARK\Model\Format;
 
 use ARK\Model\Format;
+use ARK\Model\Format\FormatAttribute;
+use ARK\Model\Fragment;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class ObjectFormat extends Format
 {
+    protected $attributes = null;
+
+    public function __construct()
+    {
+        $this->attributes = new ArrayCollection();
+    }
+
+    public function attributes()
+    {
+        return $this->attributes;
+    }
+
+    public function attribute($name)
+    {
+        foreach ($this->attributes as $attribute) {
+            if ($attribute->name() == $name) {
+                return $attribute;
+            }
+        }
+        return null;
+    }
+
+    public function nullValue()
+    {
+        $data = [];
+        foreach ($this->attributes as $attribute) {
+            $value[$attribute->name()] = $attribute->nullValue();
+        }
+        return $data;
+    }
+
+    public function fragmentsToData(ArrayCollection $fragments)
+    {
+        $data = [];
+        foreach ($this->attributes as $attribute) {
+            $value[$attribute->name()] = $attribute->fragmentsToData($fragments);
+        }
+        return $data;
+    }
+
     public static function loadMetadata(ClassMetadata $metadata)
     {
+        // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_format_object');
+
+        // Associations
+        $builder->addOneToMany('attributes', FormatAttribute::class, 'parent');
     }
 }

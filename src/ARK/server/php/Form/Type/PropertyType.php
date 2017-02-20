@@ -58,7 +58,7 @@ class PropertyType extends AbstractType implements DataMapperInterface
     protected function buildAttribute(FormBuilderInterface $builder, Attribute $attribute, $options, $required)
     {
         $name = $attribute->name();
-        if ($attribute->format()->hasAttributes()) {
+        if ($attribute->format()->datatype()->isObject()) {
             foreach ($attribute->format()->attributes() as $child) {
                 $this->buildAttribute($builder, $child, $options, $required);
             }
@@ -114,7 +114,7 @@ class PropertyType extends AbstractType implements DataMapperInterface
         $forms = iterator_to_array($forms);
         $attribute = $property->attribute();
         $value = $property->value();
-        if ($attribute->format()->hasAttributes()) {
+        if ($attribute->format()->datatype()->isObject()) {
             foreach ($attribute->format()->attributes() as $sub) {
                 $key = $sub->name();
                 if ($key && isset($value[$key])) {
@@ -124,8 +124,18 @@ class PropertyType extends AbstractType implements DataMapperInterface
                     dump($value);
                 }
             }
-        } elseif ($attribute->format()->datatype()->isAtomic() && is_array($value)) {
-            $forms[$attribute->name()]->setData($value[$attribute->format()->datatype()->valueName()]);
+        } elseif (is_array($value) && $value) {
+            dump($value);
+            $parameter = $attribute->format()->parameterName();
+            if (isset($value[$parameter])) {
+                $forms[$parameter]->setData($value[$parameter]);
+            }
+            $format = $attribute->format()->formatName();
+            if (isset($value[$format])) {
+                $forms[$format]->setData($value[$format]);
+            }
+            $name = $attribute->format()->valueName();
+            $forms[$name]->setData($value[$name]);
         } else {
             $forms[$attribute->name()]->setData($value);
         }

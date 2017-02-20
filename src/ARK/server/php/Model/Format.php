@@ -46,17 +46,17 @@ abstract class Format
 
     protected $format = '';
     protected $datatype = null;
+    protected $valueName = null;
+    protected $formatName = null;
+    protected $formatVocabulary = null;
+    protected $parameterName = null;
+    protected $parameterVocabulary = null;
     protected $input = '';
     protected $object = false;
     protected $array = false;
+    protected $multiple = false;
     protected $sortable = false;
     protected $searchable = false;
-    protected $attributes = null;
-
-    public function __construct()
-    {
-        $this->attributes = new ArrayCollection();
-    }
 
     public function id()
     {
@@ -68,39 +68,34 @@ abstract class Format
         return $this->datatype;
     }
 
+    public function valueName()
+    {
+        return ($this->valueName ? $this->valueName : $this->datatype->valueName());
+    }
+
+    public function formatName()
+    {
+        return ($this->formatName ? $this->formatName : $this->datatype->formatName());
+    }
+
+    public function formatVocabulary()
+    {
+        return ($this->formatVocabulary ? $this->formatVocabulary : $this->datatype->formatVocabulary());
+    }
+
+    public function parameterName()
+    {
+        return ($this->parameterName ? $this->parameterName : $this->datatype->parameterName());
+    }
+
+    public function parameterVocabulary()
+    {
+        return ($this->parameterVocabulary ? $this->parameterVocabulary : $this->datatype->parameterVocabulary());
+    }
+
     public function input()
     {
         return $this->input;
-    }
-
-    public function hasAttributes()
-    {
-        return !$this->attributes->isEmpty();
-    }
-
-    public function attributes()
-    {
-        return $this->attributes;
-    }
-
-    public function attribute($name)
-    {
-        foreach ($this->attributes as $attribute) {
-            if ($attribute->name() == $name) {
-                return $attribute;
-            }
-        }
-        return null;
-    }
-
-    public function serializeAsObject()
-    {
-        return $this->object;
-    }
-
-    public function serializeAsArray()
-    {
-        return $this->array;
     }
 
     public function isSortable()
@@ -113,13 +108,72 @@ abstract class Format
         return $this->searchable;
     }
 
+    public function hasMultipleValues()
+    {
+        return $this->multiple;
+    }
+
+    public function isAtomic()
+    {
+        return $this->formatName() === null && $this->parameterName() === null;
+    }
+
+    public function nullValue()
+    {
+        if ($this->isAtomic()) {
+            return null;
+        }
+        if ($this->hasMultipleValues()) {
+            return [];
+        }
+        $data = [];
+        if ($this->formatName()) {
+            $data[$this->formatName()] = null;
+        }
+        if ($this->parameterName()) {
+            $data[$this->parameterName()] = null;
+        }
+        $data[$this->valueName()] = $this->datatype->nullValue();
+        return $data;
+    }
+
+    public function fragmentsToData(ArrayCollection $fragments)
+    {
+        if ($fragments->isEmpty()) {
+            return $this->nullValue();
+        }
+        if ($this->hasMultipleValues()) {
+            $data = [];
+            foreach ($fragments as $fragment) {
+                $data[] = $this->fragmentToData($fragment);
+            }
+            return $data;
+        }
+        return $this->fragmentToData($fragments->first());
+    }
+
+    protected function fragmentToData(Fragment $fragment)
+    {
+        if ($this->isAtomic()) {
+            return $fragment->value();
+        }
+        $data = [];
+        if ($this->formatName()) {
+            $data[$this->formatName()] = $fragment->format();
+        }
+        if ($this->parameterName()) {
+            $data[$this->parameterName()] = $fragment->parameter();
+        }
+        $data[$this->valueName()] = $fragment->value();
+        return $data;
+    }
+
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_format');
         $builder->setReadOnly();
         $builder->setJoinedTableInheritance()->setDiscriminatorColumn('datatype', 'string', 30);
-        // TODO Build from ark_datatype?
         $datatypes = Service::database()->getDatatypes();
         foreach ($datatypes as $datatype => $attributes) {
             $builder->addDiscriminatorMapClass($datatype, $attributes['model_class']);
@@ -129,9 +183,15 @@ abstract class Format
         $builder->addStringKey('format', 30);
 
         // Attributes
+        $builder->addStringField('valueName', 30, 'value_name');
+        $builder->addStringField('formatName', 30, 'format_name');
+        $builder->addStringField('formatVocabulary', 30, 'format_vocabulary');
+        $builder->addStringField('parameterName', 30, 'parameter_name');
+        $builder->addStringField('parameterVocabulary', 30, 'parameter_vocabulary');
         $builder->addStringField('input', 30);
         $builder->addField('object', 'boolean');
         $builder->addField('array', 'boolean');
+        $builder->addField('multiple', 'boolean');
         $builder->addField('sortable', 'boolean');
         $builder->addField('searchable', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
@@ -139,6 +199,5 @@ abstract class Format
 
         // Associations
         $builder->addManyToOneField('datatype', Datatype::class, 'datatype', 'datatype', false);
-        $builder->addOneToMany('attributes', FormatAttribute::class, 'parent');
     }
 }
