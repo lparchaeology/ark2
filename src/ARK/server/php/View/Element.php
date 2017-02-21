@@ -32,6 +32,8 @@ namespace ARK\View;
 
 use ARK\Model\EnabledTrait;
 use ARK\Model\KeywordTrait;
+use ARK\Model\Schema\SchemaAttribute;
+use ARK\Model\ItemAttribute;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
 use ARK\Service;
@@ -48,8 +50,7 @@ abstract class Element
 
     protected $element = '';
     protected $type = '';
-    protected $itemType = '';
-    protected $attribute = null;
+    protected $schma = null;
     protected $class = '';
     protected $template = '';
     protected $form = false;
@@ -57,7 +58,6 @@ abstract class Element
     protected $formType = '';
     protected $editable = true;
     protected $hidden = false;
-    protected $schma = null;
     protected $cells = null;
     protected $formOptions = '';
     protected $formOptionsArray = null;
@@ -182,14 +182,17 @@ abstract class Element
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_element');
         $builder->setReadOnly();
+        $builder->setSingleTableInheritance()->setDiscriminatorColumn('type', 'string', 10);
+        // TODO Make table driven from ark_view_type
+        $builder->addDiscriminatorMapClass('field', 'ARK\View\Field');
+        $builder->addDiscriminatorMapClass('grid', 'ARK\View\Grid');
+        $builder->addDiscriminatorMapClass('tabbed', 'ARK\View\Tabbed');
+        $builder->addDiscriminatorMapClass('table', 'ARK\View\Table');
 
         // Key
         $builder->addStringKey('element', 30);
 
         // Fields
-        $builder->addManyToOneField('type', Type::class, 'type', 'type', false);
-        $builder->addManyToOneField('schma', 'ARK\Model\Schema');
-        $builder->addStringField('itemType', 30, 'item_type');
         $builder->addStringField('class', 100);
         $builder->addStringField('template', 100);
         $builder->addField('form', 'boolean');
@@ -202,23 +205,8 @@ abstract class Element
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Relationships
+        $builder->addManyToOneField('type', Type::class, 'type', 'type', false);
+        $builder->addManyToOneField('schma', 'ARK\Model\Schema');
         $builder->addOneToMany('cells', 'ARK\View\Cell', 'layout');
-        $builder->addCompoundManyToOneField(
-            'attribute',
-            'ARK\Model\Schema\SchemaAttribute',
-            [
-                ['column' => 'schma', 'nullable' => false],
-                ['column' => 'item_type', 'reference' => 'type', 'nullable' => false],
-                ['column' => 'attribute', 'nullable' => false]
-            ]
-        );
-
-        // Inheritance
-        $builder->setSingleTableInheritance()->setDiscriminatorColumn('type', 'string', 10);
-        // TODO Make table driven from ark_view_type
-        $builder->addDiscriminatorMapClass('field', 'ARK\View\Field');
-        $builder->addDiscriminatorMapClass('grid', 'ARK\View\Grid');
-        $builder->addDiscriminatorMapClass('tabbed', 'ARK\View\Tabbed');
-        $builder->addDiscriminatorMapClass('table', 'ARK\View\Table');
     }
 }

@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Console\System\Command;
+namespace ARK\Database\Command;
 
 use ARK\ARK;
 use ARK\Console\ProcessTrait;

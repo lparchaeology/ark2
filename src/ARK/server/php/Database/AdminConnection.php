@@ -47,7 +47,7 @@ class AdminConnection extends Connection
         }
     }
 
-    public function listDatabases($database)
+    public function listDatabases()
     {
         return $this->getSchemaManager()->listDatabases();
     }
@@ -57,9 +57,19 @@ class AdminConnection extends Connection
         return in_array($database, $this->getSchemaManager()->listDatabases());
     }
 
+    public function schema()
+    {
+        return $this->getSchemaManager()->createSchema();
+    }
+
     public function loadSchema($schemaPath)
     {
         $schema = Parser::fromFile($schemaPath, $this->platform());
+        $this->createSchema($schema);
+    }
+
+    public function createSchema($schema)
+    {
         $diff = Comparator::compareSchemas(new Schema(), $schema);
         $queries = $diff->toSaveSql($this->platform());
         foreach ($queries as $query) {

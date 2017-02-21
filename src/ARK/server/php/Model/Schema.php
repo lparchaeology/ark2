@@ -34,9 +34,12 @@ use ARK\Error\Error;
 use ARK\Error\ErrorException;
 use ARK\Model\EnabledTrait;
 use ARK\Model\KeywordTrait;
+use ARK\Model\ItemAttribute;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\ORM\ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 
 class Schema
 {
@@ -69,6 +72,7 @@ class Schema
             $this->model['']['associations'] = [];
             $this->model['']['allassociations'] = [];
             if ($this->typeVocabulary) {
+                $this->model['']['item'] = ORM::findAll(ItemAttribute::class);
                 foreach ($this->typeVocabulary->terms() as $term) {
                     $type = $term->name();
                     $this->types[] = $type;
@@ -76,6 +80,13 @@ class Schema
                     $this->model[$type]['attributes'] = [];
                     $this->model[$type]['associations'] = [];
                 }
+            } else {
+                $criteria = Criteria::create()->where(Criteria::expr()->neq('attribute', 'type'));
+                $this->model['']['item'] = ORM::matching(ItemAttribute::class, $criteria);
+            }
+            foreach ($this->model['']['item'] as $attribute) {
+                $this->model['']['allattributes'][$attribute->name()] = $attribute;
+                $this->model['']['attributes'][$attribute->name()] = $attribute;
             }
             foreach ($this->attributes as $attribute) {
                 $this->model['']['allattributes'][$attribute->name()] = $attribute;

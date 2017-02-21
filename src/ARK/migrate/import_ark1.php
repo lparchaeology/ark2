@@ -37,7 +37,7 @@ use Doctrine\DBAL\Schema\Comparator;
 require_once 'vendor/autoload.php';
 
 // Run in update
-$update = true;
+$update = false;
 
 // Get new DB
 $config = array(

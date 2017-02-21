@@ -32,9 +32,10 @@ namespace ARK\Console\System;
 
 use ARK\ARK;
 use ARK\Console\SystemApplication;
-use ARK\Console\System\Command\DatabaseServerAddCommand;
 use ARK\Console\System\Command\SiteCreateCommand;
 use ARK\Console\System\Command\SiteFrontendCommand;
+use ARK\Database\Command\DatabaseServerAddCommand;
+use ARK\Database\Command\DatabaseCloneCommand;
 use Symfony\Component\Console\Application as Console;
 
 class SystemConsole extends Console
@@ -48,6 +49,7 @@ class SystemConsole extends Console
 
         // Database Commands
         $this->add(new DatabaseServerAddCommand());
+        $this->add(new DatabaseCloneCommand());
 
         // Site Commands
         $this->add(new SiteCreateCommand());

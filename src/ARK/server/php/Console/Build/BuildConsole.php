@@ -39,7 +39,7 @@ use ARK\Console\Build\Command\BuildFrontendCreateCommand;
 use ARK\Console\Build\Command\BuildFrontendCssCommand;
 use ARK\Console\Build\Command\BuildFrontendJsCommand;
 use ARK\Console\Build\Command\BuildFrontendTwigCommand;
-use ARK\Database\Command\ReverseCommand;
+use ARK\Database\Command\DatabaseReverseCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand;
 use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
@@ -66,7 +66,7 @@ class BuildConsole extends Console
         $this->add(new BuildFrontendTwigCommand());
 
         // Database Commands
-        $this->add(new ReverseCommand());
+        $this->add(new DatabaseReverseCommand());
 
         // Doctrine DBAL Helper
         //$this->getHelperSet()->set(new ConnectionHelper($this->app['db']), 'db');

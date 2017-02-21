@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 20, 2017 at 10:42 PM
+-- Generation Time: Feb 21, 2017 at 10:53 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -469,6 +469,51 @@ INSERT INTO `ark_format_text` (`format`, `mimetype`, `min_length`, `max_length`,
 ('richtext', 'text/richtext', 1, 1431655765, 30),
 ('shorttext', 'text/plain', 1, 100, 30),
 ('url', 'text/url', 1, 2083, 50);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_instance`
+--
+
+CREATE TABLE `ark_instance` (
+  `instance` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_instance`
+--
+
+INSERT INTO `ark_instance` (`instance`, `enabled`, `deprecated`) VALUES
+('dime', 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_instance_schema`
+--
+
+CREATE TABLE `ark_instance_schema` (
+  `instance` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `deprecated` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_instance_schema`
+--
+
+INSERT INTO `ark_instance_schema` (`instance`, `schma`, `enabled`, `deprecated`) VALUES
+('dime', 'core.file', 1, 0),
+('dime', 'core.page', 1, 0),
+('dime', 'dime.actor', 1, 0),
+('dime', 'dime.campaign', 1, 0),
+('dime', 'dime.find', 1, 0),
+('dime', 'dime.image', 1, 0),
+('dime', 'dime.locality', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -1698,6 +1743,8 @@ INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `workflow`,
 ('dime.denmark.kommune', 'list', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.denmark.kommune', 'Danish LAU-1 Kommune (Municipality) List'),
 ('dime.denmark.region', 'list', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.denmark.region', 'Danish NUTS2 Region List'),
 ('dime.find.condition', 'list', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.find.condition', 'DIME Find Condition'),
+('dime.find.custody', 'list', 'DIME', 1, 0, 1, 0, 'dime.find.custody', 'DIME Find Custody'),
+('dime.find.process', 'list', 'DIME', 1, 0, 1, 0, 'dime.find.process', 'DIME Find Process'),
 ('dime.find.secondary', 'list', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.find.secondary', 'DIME Secondary Materials List'),
 ('dime.find.type', 'list', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.type', 'DIME Find Type'),
 ('dime.material', 'list', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.material', 'DIME Material List'),
@@ -1706,7 +1753,7 @@ INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `workflow`,
 ('distance', 'list', 'SI', 1, 0, 1, 0, 'vocabulary.distance', 'SI Distance Units'),
 ('language', 'list', 'ISO639', 1, 0, 1, 0, 'vocabulary.language', 'ISO Language Codes'),
 ('mass', 'list', 'SI', 1, 0, 1, 0, 'vocabulary.mass', 'SI Mass Units'),
-('mediatype', 'list', 'IANA', 1, 0, 1, 0, 'vocabulary.mediatype', 'IANA Medittypes as defined by RFC'),
+('mediatype', 'list', 'IANA', 1, 0, 1, 0, 'vocabulary.mediatype', 'IANA Mediatypes as defined by RFC'),
 ('spatial.crs', 'list', 'EPSG', 1, 0, 1, 0, 'vocabulary.spatial.crs', 'Coordinate Reference System'),
 ('spatial.format', 'list', 'ARK Core', 1, 0, 1, 0, 'vocabulary.spatial.format', 'Spatial data formats');
 
@@ -2089,6 +2136,30 @@ INSERT INTO `ark_vocabulary_related` (`from_concept`, `from_term`, `to_concept`,
 ('dime.denmark.region', 'DK05', 'dime.denmark.kommune', '849', 'broader', '', 3),
 ('dime.denmark.region', 'DK05', 'dime.denmark.kommune', '851', 'broader', '', 3),
 ('dime.denmark.region', 'DK05', 'dime.denmark.kommune', '860', 'broader', '', 3),
+('dime.find.custody', 'destroyed', 'dime.find.custody', 'held', 'transition', 'recover', 0),
+('dime.find.custody', 'discarded', 'dime.find.custody', 'held', 'transition', 'recover', 0),
+('dime.find.custody', 'held', 'dime.find.custody', 'destroyed', 'transition', 'destroy', 0),
+('dime.find.custody', 'held', 'dime.find.custody', 'discarded', 'transition', 'discard', 0),
+('dime.find.custody', 'held', 'dime.find.custody', 'lost', 'transition', 'lose', 0),
+('dime.find.custody', 'held', 'dime.find.custody', 'requested', 'transition', 'request', 0),
+('dime.find.custody', 'held', 'dime.find.custody', 'sent', 'transition', 'send', 0),
+('dime.find.custody', 'lost', 'dime.find.custody', 'held', 'transition', 'recover', 0),
+('dime.find.custody', 'requested', 'dime.find.custody', 'held', 'transition', 'decline', 0),
+('dime.find.custody', 'requested', 'dime.find.custody', 'sent', 'transition', 'send', 0),
+('dime.find.custody', 'sent', 'dime.find.custody', 'held', 'transition', 'receive', 0),
+('dime.find.process', 'assessed', 'dime.find.process', 'accessioned', 'transition', 'accession', 0),
+('dime.find.process', 'assessed', 'dime.find.process', 'released', 'transition', 'release', 0),
+('dime.find.process', 'evaluated', 'dime.find.process', 'accessioned', 'transition', 'accession', 0),
+('dime.find.process', 'evaluated', 'dime.find.process', 'assessed', 'transition', 'assess', 0),
+('dime.find.process', 'evaluated', 'dime.find.process', 'released', 'transition', 'release', 0),
+('dime.find.process', 'recorded', 'dime.find.process', 'deleted', 'transition', 'delete', 0),
+('dime.find.process', 'recorded', 'dime.find.process', 'inactive', 'transition', 'report', 0),
+('dime.find.process', 'recorded', 'dime.find.process', 'reported', 'transition', 'report', 0),
+('dime.find.process', 'rejected', 'dime.find.process', 'deleted', 'transition', 'delete', 0),
+('dime.find.process', 'reported', 'dime.find.process', 'deleted', 'transition', 'delete', 0),
+('dime.find.process', 'reported', 'dime.find.process', 'rejected', 'transition', 'reject', 0),
+('dime.find.process', 'reported', 'dime.find.process', 'validated', 'transition', 'validate', 0),
+('dime.find.process', 'validated', 'dime.find.process', 'evaluated', 'transition', 'evaluate', 0),
 ('dime.period', 'AXXX', 'dime.period', 'AMXX', 'broader', '', 2),
 ('dime.period', 'AXXX', 'dime.period', 'AXXX', 'broader', '', 1),
 ('dime.period', 'AXXX', 'dime.period', 'AYXX', 'broader', '', 2),
@@ -2137,9 +2208,10 @@ INSERT INTO `ark_vocabulary_related` (`from_concept`, `from_term`, `to_concept`,
 ('dime.period', 'HXXX', 'dime.period', 'FXXX', 'broader', '', 2),
 ('dime.period', 'HXXX', 'dime.period', 'HXXX', 'broader', '', 1),
 ('dime.period', 'XXXX', 'dime.period', 'XXXX', 'broader', '', 1),
-('dime.treasure', 'assessing', 'dime.treasure', 'not', 'transition', 'not_treasure', 0),
-('dime.treasure', 'assessing', 'dime.treasure', 'treasure', 'transition', 'treasure', 0),
-('dime.treasure', 'pending', 'dime.treasure', 'assessing', 'transition', 'submit', 0);
+('dime.treasure', 'assessing', 'dime.treasure', 'not', 'transition', 'assess', 0),
+('dime.treasure', 'assessing', 'dime.treasure', 'treasure', 'transition', 'assess', 0),
+('dime.treasure', 'pending', 'dime.treasure', 'assessing', 'transition', 'evaluate', 0),
+('dime.treasure', 'pending', 'dime.treasure', 'not', 'transition', 'evaluate', 0);
 
 -- --------------------------------------------------------
 
@@ -2563,6 +2635,22 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('dime.find.condition', 'modified', '', 0, 1, 0, 'dime.find.condition.modified', ''),
 ('dime.find.condition', 'unfinished', '', 0, 1, 0, 'dime.find.condition.unfinished', ''),
 ('dime.find.condition', 'whole', '', 0, 1, 0, 'dime.find.condition.whole', ''),
+('dime.find.custody', 'destroyed', '', 0, 1, 0, 'dime.find.custody.destroyed', ''),
+('dime.find.custody', 'discarded', '', 0, 1, 0, 'dime.find.custody.discarded', ''),
+('dime.find.custody', 'held', '', 1, 1, 0, 'dime.find.custody.held', ''),
+('dime.find.custody', 'lost', '', 0, 1, 0, 'dime.find.custody.lost', ''),
+('dime.find.custody', 'requested', '', 0, 1, 0, 'dime.find.custody.requested', ''),
+('dime.find.custody', 'sent', '', 0, 1, 0, 'dime.find.custody.sent', ''),
+('dime.find.process', 'accessioned', '', 0, 1, 0, 'dime.find.process.accessioned', ''),
+('dime.find.process', 'assessed', '', 0, 1, 0, 'dime.find.process.assessed', ''),
+('dime.find.process', 'deleted', '', 0, 1, 0, 'dime.find.process.deleted', ''),
+('dime.find.process', 'evaluated', '', 0, 1, 0, 'dime.find.process.evaluated', ''),
+('dime.find.process', 'inactive', '', 0, 1, 0, 'dime.find.process.inactive', ''),
+('dime.find.process', 'recorded', '', 1, 1, 0, 'dime.find.process.recorded', ''),
+('dime.find.process', 'rejected', '', 0, 1, 0, 'dime.find.process.rejected', ''),
+('dime.find.process', 'released', '', 0, 1, 0, 'dime.find.process.released', ''),
+('dime.find.process', 'reported', '', 0, 1, 0, 'dime.find.process.reported', ''),
+('dime.find.process', 'validated', '', 0, 1, 0, 'dime.find.process.validated', ''),
 ('dime.find.secondary', 'enamel', '', 0, 1, 0, 'dime.find.secondary.enamel', ''),
 ('dime.find.secondary', 'gilded', '', 0, 1, 0, 'dime.find.secondary.gilded', ''),
 ('dime.find.secondary', 'glass', '', 0, 1, 0, 'dime.find.secondary.glass', ''),
@@ -2888,7 +2976,8 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('language', 'jbo', 'lojban', 0, 1, 0, 'language.lojban', ''),
 ('language', 'jgo', 'ngomba', 0, 1, 0, 'language.ngomba', ''),
 ('language', 'jmc', 'machame', 0, 1, 0, 'language.machame', ''),
-('language', 'jpr', 'judeopersian', 0, 1, 0, 'language.judeopersian', ''),
+('language', 'jpr', 'judeopersian', 0, 1, 0, 'language.judeopersian', '');
+INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('language', 'jrb', 'judeoarabic', 0, 1, 0, 'language.judeoarabic', ''),
 ('language', 'jut', 'jutish', 0, 1, 0, 'language.jutish', ''),
 ('language', 'jv', 'javanese', 0, 1, 0, 'language.javanese', ''),
@@ -2908,8 +2997,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('language', 'kfo', 'koro', 0, 1, 0, 'language.koro', ''),
 ('language', 'kg', 'kongo', 0, 1, 0, 'language.kongo', ''),
 ('language', 'kgp', 'kaingang', 0, 1, 0, 'language.kaingang', ''),
-('language', 'kha', 'khasi', 0, 1, 0, 'language.khasi', '');
-INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('language', 'kha', 'khasi', 0, 1, 0, 'language.khasi', ''),
 ('language', 'kho', 'khotanese', 0, 1, 0, 'language.khotanese', ''),
 ('language', 'khq', 'chiini.koyra', 0, 1, 0, 'language.chiini.koyra', ''),
 ('language', 'khw', 'khowar', 0, 1, 0, 'language.khowar', ''),
@@ -5028,6 +5116,19 @@ ALTER TABLE `ark_format_text`
   ADD PRIMARY KEY (`format`);
 
 --
+-- Indexes for table `ark_instance`
+--
+ALTER TABLE `ark_instance`
+  ADD PRIMARY KEY (`instance`);
+
+--
+-- Indexes for table `ark_instance_schema`
+--
+ALTER TABLE `ark_instance_schema`
+  ADD PRIMARY KEY (`instance`,`schma`),
+  ADD KEY `schma` (`schma`);
+
+--
 -- Indexes for table `ark_map`
 --
 ALTER TABLE `ark_map`
@@ -5347,6 +5448,13 @@ ALTER TABLE `ark_format_string`
 --
 ALTER TABLE `ark_format_text`
   ADD CONSTRAINT `ark_format_text_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_instance_schema`
+--
+ALTER TABLE `ark_instance_schema`
+  ADD CONSTRAINT `ark_instance_schema_ibfk_1` FOREIGN KEY (`instance`) REFERENCES `ark_instance` (`instance`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_instance_schema_ibfk_2` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_map_layer`

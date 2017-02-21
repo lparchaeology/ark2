@@ -39,7 +39,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
-class ReverseCommand extends Command
+class DatabaseReverseCommand extends Command
 {
     protected function configure()
     {

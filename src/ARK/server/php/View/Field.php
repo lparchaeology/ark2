@@ -32,7 +32,10 @@ namespace ARK\View;
 
 use ARK\ORM\ORM;
 use ARK\Model\Item;
+use ARK\Model\ItemAttribute;
+use ARK\Model\Schema\SchemaAttribute;
 use ARK\ORM\ClassMetadata;
+use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
 use ARK\Vocabulary\Vocabulary;
 use ARK\Form\Type\PropertyType;
@@ -40,8 +43,25 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class Field extends Element
 {
+    protected $itemType = '';
+    protected $attributeName = '';
+    protected $attribute = null;
+
     public function attribute()
     {
+        if ($this->attribute === null && $this->attributeName) {
+            $this->attribute = ORM::find(ItemAttribute::class, $this->attributeName);
+            if ($this->attribute === null) {
+                $this->attribute = ORM::find(
+                    SchemaAttribute::class,
+                    [
+                        'schma' => $this->schma->name(),
+                        'type' => $this->itemType,
+                        'attribute' => $this->attributeName,
+                    ]
+                );
+            }
+        }
         return $this->attribute;
     }
 
@@ -50,7 +70,7 @@ class Field extends Element
         if ($this->keyword) {
             return $this->keyword;
         }
-        if ($this->attribute) {
+        if ($this->attribute()) {
             return $this->attribute()->keyword();
         }
         return '';
@@ -75,13 +95,13 @@ class Field extends Element
             $options['required'] = false;
         }
         $options['label'] = ($this->keyword() ? $this->keyword() : false);
-        if ($this->attribute) {
-            $name = $this->attribute->name();
+        if ($this->attribute()) {
+            $name = $this->attribute()->name();
             if ($this->formType || $this->formType() == PropertyType::class) {
                 $options['field'] = $this;
             }
             $options['mapped'] = false;
-            $options['required'] = $this->attribute->isRequired();
+            $options['required'] = $this->attribute()->isRequired();
             //$options['property_path'] = "propertyArray[$name].value";
             if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED') || $this->name() == 'dime_find_id') {
                 $options['attr']['readonly'] = true;
@@ -95,8 +115,9 @@ class Field extends Element
 
     public function formData($data)
     {
-        if ($data instanceof Item && $this->attribute) {
-            return $data->property($this->attribute->name());
+        dump($this->attribute());
+        if ($data instanceof Item && $this->attribute()) {
+            return $data->property($this->attribute()->name());
         }
         if (is_array($data) && isset($data[$this->name()])) {
             return $data[$this->name()];
@@ -112,7 +133,7 @@ class Field extends Element
 
     public function renderView($data, $forms = null, $form = null, Cell $cell = null, array $options = [])
     {
-        $attributeName = ($this->attribute ? $this->attribute->name() : '');
+        $attributeName = ($this->attribute() ? $this->attribute()->name() : '');
         if (($attributeName == 'findpoint' || $this->element == 'dime_save') && !Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             if ($form) {
                 $form[$this->element]->setRendered();
@@ -131,10 +152,10 @@ class Field extends Element
 
         // FIXME Should probably have some way to use FormTypes here to render 'flat' compond values
         $value = null;
-        if ($data instanceof Item and $this->attribute) {
+        if ($data instanceof Item and $this->attribute()) {
             $value = 'FIXME: '.$this->element;
             $value = $data->property($this->attribute()->name())->value();
-            if ($this->attribute->format()->id() == 'shorttext') {
+            if ($this->attribute()->format()->id() == 'shorttext') {
                 $language = Service::locale();
                 $values = $data->property($this->attribute->name())->value();
                 foreach ($values as $trans) {
@@ -145,10 +166,10 @@ class Field extends Element
                 return $values[0]['content'];
             }
             if (is_array($value)) {
-                $value = $value[$this->attribute->format()->valueName()];
+                $value = $value[$this->attribute()->format()->valueName()];
             }
-            if ($this->attribute->hasVocabulary()) {
-                $vocab = $this->attribute->vocabulary();
+            if ($this->attribute()->hasVocabulary()) {
+                $vocab = $this->attribute()->vocabulary();
                 foreach ($vocab->terms() as $term) {
                     if ($term->name() == $value) {
                         return Service::translate($term->keyword());
@@ -164,5 +185,8 @@ class Field extends Element
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
+        $builder = new ClassMetadataBuilder($metadata);
+        $builder->addStringField('itemType', 30, 'item_type');
+        $builder->addStringField('attributeName', 30, 'attribute');
     }
 }
