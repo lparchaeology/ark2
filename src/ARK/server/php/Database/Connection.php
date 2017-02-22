@@ -39,10 +39,26 @@ class Connection extends DBALConnection
         return $this->getDriver()->getDatabasePlatform();
     }
 
+    public function config()
+    {
+        return $this->getParams();
+    }
+
     public function generateGuid()
     {
         $sql = 'SELECT '.$this->platform()->getGuidExpression();
         return $this->query($sql)->fetchColumn(0);
+    }
+
+
+    public function countRows($table)
+    {
+        return $this->executeQuery("SELECT COUNT(*) FROM $table")->fetch()["COUNT(*)"];
+    }
+
+    public function fetchAllTable($table)
+    {
+        return $this->fetchAll("SELECT * FROM $table");
     }
 
     public function fetchAllColumn($sql, $column, array $params = [], array $types = [])

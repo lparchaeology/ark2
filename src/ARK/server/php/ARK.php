@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Globals
+ * ARK Installation Globals
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -34,7 +34,7 @@ class ARK
 {
     public static function version()
     {
-        return '2.0.0';
+        return '1.9.80';
     }
 
     public static function installDir()
@@ -44,36 +44,113 @@ class ARK
 
     public static function varDir()
     {
-        return realpath(__DIR__.'/../../../../var');
+        return self::installDir().'/var';
     }
 
     public static function cacheDir()
     {
-        return realpath(__DIR__.'/../../../../cache');
+        return self::varDir().'/cache';
+    }
+
+    public static function srcDir()
+    {
+        return self::installDir().'/src';
+    }
+
+    public static function namespaceDir($namespace)
+    {
+        return self::srcDir().'/'.$namespace;
+    }
+
+    public static function frontendDir($namespace, $frontend)
+    {
+        return self::namespaceDir().'/'.$frontend;
     }
 
     public static function sitesDir()
     {
-        return realpath(__DIR__.'/../../../../sites');
+        return self::installDir().'/sites';
+    }
+
+    public static function siteDir($site)
+    {
+        return $self::sitesDir().'/'.$site;
+    }
+
+    public static function templatesDir($site, $frontend)
+    {
+        return $self::siteDir($site).'/templates/'.$frontend;
+    }
+
+    public static function translationsDir($site, $frontend)
+    {
+        return $self::siteDir($site).'/translations/'.$frontend;
+    }
+
+    public static function assetsDir($site, $frontend)
+    {
+        return $self::siteDir($site).'/web/assets/'.$frontend;
+    }
+
+    public static function namespaces()
+    {
+        $namespaces = [];
+        foreach (scandir(self::srcDir()) as $namespace) {
+            if ($namespace != '.' && $namespace != '..' && is_dir(self::namespaceDir($namespace))) {
+                $namespaces[] = $namespace;
+            }
+        }
+        return $namespaces;
+    }
+
+    public static function frontends()
+    {
+        $frontends = [];
+        foreach (self::namespaces() as $namespace) {
+            if (is_dir(self::namespaceDir($namespace).'/frontend')) {
+                foreach (scandir(self::namespaceDir($namespace).'/frontend') as $frontend) {
+                    if ($frontend != '.' && $frontend != '..' && is_dir(self::frontendDir($namespace, $frontend))) {
+                        $frontends[] = $frontend;
+                    }
+                }
+            }
+        }
+        return $frontends;
     }
 
     public static function sites()
     {
-        return json_decode(file_get_contents(self::sitesDir().'/sites.json'), true)['sites'];
+        $sites = [];
+        foreach (scandir(self::sitesDir()) as $site) {
+            if ($site != '.' && $site != '..' && is_dir(self::siteDir($site))) {
+                $sites[] = $site;
+            }
+        }
+        return $sites;
     }
 
-    public static function defaultSite()
+    public static function serversPath()
     {
-        return json_decode(file_get_contents(self::sitesDir().'/sites.json'), true)['default'];
+        return self::sitesDir().'/servers.json';
+    }
+
+    public static function serversConfig()
+    {
+        return json_decode(file_get_contents(self::serversPath()), true);
     }
 
     public static function servers()
     {
-        $config = json_decode(file_get_contents(self::sitesDir().'/servers.json'), true);
+        $config = self::serversConfig();
         if (isset($config['servers'])) {
             return $config['servers'];
         }
         return [];
+    }
+
+    public static function serverNames()
+    {
+        return array_keys(self::servers());
     }
 
     public static function server($server)
@@ -87,7 +164,7 @@ class ARK
 
     public static function defaultServer()
     {
-        $config = json_decode(file_get_contents(self::sitesDir().'/servers.json'), true);
+        $config = self::serversConfig();
         if (isset($config['default']) && isset($config['servers'][$config['default']])) {
             return $config['servers'][$config['default']];
         }
@@ -99,7 +176,7 @@ class ARK
 
     public static function defaultServerName()
     {
-        $config = json_decode(file_get_contents(self::sitesDir().'/servers.json'), true);
+        $config = self::serversConfig();
         if (isset($config['default']) && isset($config['servers'][$config['default']])) {
             return $config['default'];
         }

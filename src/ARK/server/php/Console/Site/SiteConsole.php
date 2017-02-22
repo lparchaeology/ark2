@@ -32,6 +32,7 @@ namespace ARK\Console\Site;
 
 use ARK\ARK;
 use ARK\Application;
+use ARK\Console\Console;
 use ARK\Translation\Console\TranslationAddCommand;
 use ARK\Translation\Console\TranslationDimeCommand;
 use Doctrine\DBAL\Tools\Console\Command\ImportCommand;
@@ -47,15 +48,12 @@ use rootLogin\UserProvider\Command\UserListCommand;
 use rootLogin\UserProvider\Command\UserRoleAddCommand;
 use rootLogin\UserProvider\Command\UserRoleListCommand;
 use rootLogin\UserProvider\Command\UserRoleRemoveCommand;
-use Symfony\Component\Console\Application as Console;
 
 class SiteConsole extends Console
 {
-    protected $app;
-
     public function __construct()
     {
-        parent::__construct('ARK Site Admin Console', ARK::version());
+        parent::__construct('ARK Site Admin Console');
         $this->app = new Application('../config/site.json');
 
         // Translation Commands

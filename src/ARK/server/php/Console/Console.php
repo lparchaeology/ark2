@@ -28,27 +28,30 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Console\System;
+namespace ARK\Console;
 
-use ARK\Console\Console;
 use ARK\Console\SystemApplication;
-use ARK\Console\System\Command\SiteCreateCommand;
-use ARK\Console\System\Command\SiteFrontendCommand;
-use ARK\Database\Command\DatabaseServerAddCommand;
-use ARK\Database\Command\DatabaseCloneCommand;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
-class SystemConsole extends Console
+abstract class Console extends Application
 {
-    public function __construct()
+    protected $app = null;
+
+    public function __construct($name)
     {
-        parent::__construct('ARK System Admin Console');
+        parent::__construct($name, ARK::version());
+        $this->app = new SystemApplication;
+    }
 
-        // Database Commands
-        $this->add(new DatabaseServerAddCommand());
-        $this->add(new DatabaseCloneCommand());
-
-        // Site Commands
-        $this->add(new SiteCreateCommand());
-        $this->add(new SiteFrontendCommand());
+    protected function runProcess($command, OutputInterface $output)
+    {
+        $process = new Process($command);
+        $process->run();
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+        $output->writeln($process->getOutput());
     }
 }

@@ -68,22 +68,13 @@ class SiteCreateCommand extends Command
 
         $site = $this->input->getArgument('site');
 
-        $frontends = [];
-        foreach (scandir(ARK::installDir().'/src') as $namespace) {
-            if ($namespace != '.' && $namespace != '..' && is_dir(ARK::installDir()."/src/$namespace/frontend")) {
-                foreach (scandir(ARK::installDir()."/src/$namespace/frontend") as $dir) {
-                    if ($dir != '.' && $dir != '..' && is_dir(ARK::installDir()."/src/$namespace/frontend/$dir")) {
-                        $frontends[] = $dir;
-                    }
-                }
-            }
-        }
+        $frontends = ARK::frontends();
 
         $frontendQuestion = new ChoiceQuestion("Please enter the frontend to use (default: core): ", $frontends, 'core');
         $frontendQuestion->setAutocompleterValues($frontends);
         $frontend = $this->question->ask($this->input, $this->output, $frontendQuestion);
 
-        $servers = array_keys(ARK::servers());
+        $servers = ARK::serversNames();
         $defaultServer = ARK::defaultServerName();
 
         $serverQuestion = new ChoiceQuestion("Please enter the database server to use (default: $defaultServer): ", $servers, $defaultServer);
@@ -130,7 +121,7 @@ class SiteCreateCommand extends Command
     // TODO Make a Command via the Command Bus
     private function createInstance($site, $config)
     {
-        $config['wrapperClass'] = 'ARK\\Database\\AdminConnection';
+        $config['wrapperClass'] = 'ARK\Database\AdminConnection';
         $dbprefix = $site.'_ark_';
         $dbuser = $dbprefix.'user';
         // TODO And change the password!

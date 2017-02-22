@@ -31,6 +31,7 @@
 namespace ARK\Console\Build;
 
 use ARK\ARK;
+use ARK\Console\Console;
 use ARK\Console\SystemApplication;
 use ARK\Console\Build\Command\BuildInstallCommand;
 use ARK\Console\Build\Command\BuildUpdateCommand;
@@ -43,16 +44,12 @@ use ARK\Database\Command\DatabaseReverseCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand;
 use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
-use Symfony\Component\Console\Application as Console;
 
 class BuildConsole extends Console
 {
-    protected $app;
-
     public function __construct()
     {
-        parent::__construct('ARK Build Console', ARK::version());
-        $this->app = new SystemApplication();
+        parent::__construct('ARK Build Console');
 
         // Build Environment Commands
         $this->add(new BuildInstallCommand());

@@ -55,17 +55,28 @@ class SiteFrontendCommand extends Command
         $site = $input->getArgument('site');
         $frontend= $input->getArgument('frontend');
         $namespace = null;
-        $question = $this->getHelper('question');
+        $query = $this->getHelper('question');
 
-        foreach (scandir('../src') as $dir) {
-            if ($dir != '.' && $dir != '..' && is_dir("../src/$dir/frontend/$frontend")) {
-                $namespace = $dir;
-                break;
+        $frontends = [];
+        foreach (scandir(ARK::installDir().'/src') as $namespace) {
+            if ($namespace != '.' && $namespace != '..' && is_dir(ARK::installDir()."/src/$namespace/frontend")) {
+                foreach (scandir(ARK::installDir()."/src/$namespace/frontend") as $dir) {
+                    if ($dir != '.' && $dir != '..' && is_dir(ARK::installDir()."/src/$namespace/frontend/$dir")) {
+                        $frontends[] = $dir;
+                    }
+                }
             }
         }
-        if (!$namespace) {
-            $output->writeln("\nFAILED: Frontend $frontend not found, are you sure you built it?");
-            return;
+
+        if ($frontend) {
+            if (!in_array($frontend, $frontends)) {
+                $output->writeln("\nFAILED: Frontend $frontend not found, are you sure you built it?");
+                return false;
+            }
+        } else {
+            $question = new ChoiceQuestion("Please enter the frontend to use (default: core): ", $frontends, 'core');
+            $question->setAutocompleterValues($frontends);
+            $frontend = $query->ask($input, $output, $question);
         }
 
         $siteDir = ARK::sitesDir().'/'.$site;
@@ -90,7 +101,7 @@ class SiteFrontendCommand extends Command
             $fs->mirror($srcDir.'/web', $siteDir.'/web');
         } else {
             $refreshQuestion = new ConfirmationQuestion('Site folder already exists, refresh the site? (default: n):', false);
-            $refresh = $question->ask($input, $output, $refreshQuestion);
+            $refresh = $query->ask($input, $output, $refreshQuestion);
             if ($refresh) {
                 $fs->mirror($srcDir.'/bin', $siteDir.'/bin');
                 $fs->mirror($srcDir.'/config', $siteDir.'/config');
@@ -108,7 +119,7 @@ class SiteFrontendCommand extends Command
         }
 
         $linkQuestion = new Question('Do you want to copy or link the frontend source folder? (default: link) ', 'link');
-        $symlink = strtolower($question->ask($input, $output, $linkQuestion));
+        $symlink = strtolower($query->ask($input, $output, $linkQuestion));
         if ($symlink == 'copy') {
             $fs->mirror($srcDir.'/templates', $templatesDir);
             $fs->mirror($srcDir.'/translations', $translationsDir);
