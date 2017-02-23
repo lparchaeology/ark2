@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -32,13 +32,14 @@ namespace ARK\Console;
 
 use Exception;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
-class ConsoleCommand extends Command
+abstract class ConsoleCommand extends Command
 {
     protected $query = null;
     protected $input = null;
@@ -56,7 +57,7 @@ class ConsoleCommand extends Command
         return $this->addArgument($argument, InputArgument::REQUIRED, $description);
     }
 
-    protected function addOptionsArgument($argument, $description)
+    protected function addOptionalArgument($argument, $description)
     {
         return $this->addArgument($argument, InputArgument::OPTIONAL, $description);
     }
@@ -76,7 +77,7 @@ class ConsoleCommand extends Command
         $this->write($message.' : '.$e->getCode().' - '.$e->getMessage());
     }
 
-    protected function ask($question)
+    protected function ask(Question $question)
     {
         return $this->query->ask($this->input, $this->output, $question);
     }

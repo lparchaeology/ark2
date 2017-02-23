@@ -34,8 +34,8 @@ use ARK\Console\Console;
 use ARK\Console\SystemApplication;
 use ARK\Console\System\Command\SiteCreateCommand;
 use ARK\Console\System\Command\SiteFrontendCommand;
-use ARK\Database\Command\DatabaseServerAddCommand;
-use ARK\Database\Command\DatabaseCloneCommand;
+use ARK\Database\Console\DatabaseServerAddCommand;
+use ARK\Database\Console\DatabaseCloneCommand;
 
 class SystemConsole extends Console
 {

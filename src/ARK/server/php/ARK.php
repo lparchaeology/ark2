@@ -74,22 +74,22 @@ class ARK
 
     public static function siteDir($site)
     {
-        return $self::sitesDir().'/'.$site;
+        return self::sitesDir().'/'.$site;
     }
 
     public static function templatesDir($site, $frontend)
     {
-        return $self::siteDir($site).'/templates/'.$frontend;
+        return self::siteDir($site).'/templates/'.$frontend;
     }
 
     public static function translationsDir($site, $frontend)
     {
-        return $self::siteDir($site).'/translations/'.$frontend;
+        return self::siteDir($site).'/translations/'.$frontend;
     }
 
     public static function assetsDir($site, $frontend)
     {
-        return $self::siteDir($site).'/web/assets/'.$frontend;
+        return self::siteDir($site).'/web/assets/'.$frontend;
     }
 
     public static function namespaces()

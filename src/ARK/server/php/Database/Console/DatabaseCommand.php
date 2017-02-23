@@ -67,7 +67,7 @@ abstract class DatabaseCommand extends ConsoleCommand
     protected function chooseServerConfig($text = null, $user = null)
     {
         $server = $this->chooseServer($text);
-        $config = $this->getServerConnection($server, $user);
+        return $this->getServerConfig($server, $user);
     }
 
     protected function getServerConfig($server, $user = null)
@@ -77,12 +77,15 @@ abstract class DatabaseCommand extends ConsoleCommand
         if ($user) {
             $config['user'] = $user;
         }
-        $config['password'] = $this->askPassword($user);
+        $config['password'] = $this->askPassword($config['user']);
         return $config;
     }
 
-    protected function chooseServer($text = 'Please choose the database server to use')
+    protected function chooseServer($text = null)
     {
+        if (!$text) {
+            $text = 'Please choose the database server to use';
+        }
         $server = ARK::defaultServerName();
         $text = "$text (default: $server) : ";
         $servers = ARK::serverNames();

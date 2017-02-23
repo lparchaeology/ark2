@@ -31,13 +31,11 @@
 namespace ARK\Database\Console;
 
 use ARK\ARK;
-use ARK\Database\Command\DatabaseCommand;
+use ARK\Database\Console\DatabaseCommand;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Console\Question\ChoiceQuestion;
 
 class DatabaseReverseCommand extends DatabaseCommand
 {
@@ -50,9 +48,7 @@ class DatabaseReverseCommand extends DatabaseCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         parent::execute($input, $output);
-
-        $site = $this->askQuestion('Please enter the site to reverse engineer');
-
+        $site = $this->askChoice('Please choose the site to reverse engineer', ARK::sites());
         $config = $this->chooseServerConfig();
         $dbprefix = $site.'_ark_';
         $this->reverse($dbprefix, 'core', $config);
@@ -61,36 +57,23 @@ class DatabaseReverseCommand extends DatabaseCommand
         $this->reverse($dbprefix, 'user', $config);
     }
 
-    private function reverse($prefix, $name, $config, $output)
+    private function reverse($prefix, $name, $config)
     {
         // Get the Admin Connection
         $dbname = $prefix.$name;
         $config['dbname'] = $dbname;
-        try {
-            $admin = DriverManager::getConnection($config);
-        } catch (DBALException $e) {
-            $output->writeln("Admin configuration failed for $dbname : ".$e->getCode().' - '.$e->getMessage());
-            return false;
-        }
+        $admin = $this->getConnection($config);
 
-        // Test the Admin connection
-        try {
-            $admin->connect();
-        } catch (DBALException $e) {
-            $output->writeln("Admin connection failed for $dbname : ".$e->getCode().' - '.$e->getMessage());
-            return false;
-        }
-
-        $path = "../src/ARK/server/schema/database/$name.xml";
+        $path = ARK::namespaceDir('ARK')."/server/schema/database/$name.xml";
         try {
             $admin->extractSchema($path, true);
         } catch (DBALException $e) {
-            $output->writeln("FAILED: Extract Schema from database $dbname failed: ".$e->getCode().' - '.$e->getMessage());
+            $this->writeException("FAILED: Extract Schema from database $dbname failed", $e);
             return false;
         }
 
-        $output->writeln("SUCCESS: Schema for $dbname extracted to file $path");
         $admin->close();
+        $this->write("SUCCESS: Schema for $dbname extracted to file $path");
         return true;
     }
 }

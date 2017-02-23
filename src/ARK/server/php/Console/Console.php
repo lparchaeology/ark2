@@ -30,6 +30,7 @@
 
 namespace ARK\Console;
 
+use ARK\ARK;
 use ARK\Console\SystemApplication;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Process\Process;

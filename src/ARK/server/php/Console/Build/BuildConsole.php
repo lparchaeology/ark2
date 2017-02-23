@@ -40,7 +40,7 @@ use ARK\Console\Build\Command\BuildFrontendCreateCommand;
 use ARK\Console\Build\Command\BuildFrontendCssCommand;
 use ARK\Console\Build\Command\BuildFrontendJsCommand;
 use ARK\Console\Build\Command\BuildFrontendTwigCommand;
-use ARK\Database\Command\DatabaseReverseCommand;
+use ARK\Database\Console\DatabaseReverseCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand;
 use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;

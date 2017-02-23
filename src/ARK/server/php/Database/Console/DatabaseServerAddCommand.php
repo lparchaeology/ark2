@@ -32,7 +32,7 @@ namespace ARK\Database\Console;
 
 use ARK\ARK;
 use ARK\Console\ProcessTrait;
-use ARK\Database\Command\DatabaseCommand;
+use ARK\Database\Console\DatabaseCommand;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
 use Symfony\Component\Console\Input\InputInterface;
@@ -61,8 +61,8 @@ class DatabaseServerAddCommand extends DatabaseCommand
         }
 
         // Check the current servers
-        $config = ARK::serversConfig();
-        if (!$config) {
+        $servers = ARK::serversConfig();
+        if (!$servers) {
             $servers['default'] = $server;
             $servers['servers']['sqlite']['driver'] = 'pdo_sqlite';
         } elseif (isset($servers['servers'][$server])) {
@@ -88,7 +88,7 @@ class DatabaseServerAddCommand extends DatabaseCommand
             'password' => $password,
             'wrapperClass' => 'ARK\Database\AdminConnection',
         ];
-        $admin = $this->getConnection($test);
+        $admin = $this->getConnection($config);
         // TODO Check have root permissions
         $admin->close();
 

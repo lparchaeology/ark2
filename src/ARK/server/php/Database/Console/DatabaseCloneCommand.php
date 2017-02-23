@@ -31,7 +31,7 @@
 namespace ARK\Database\Console;
 
 use ARK\ARK;
-use ARK\Database\Command\DatabaseCommand;
+use ARK\Database\Console\DatabaseCommand;
 use Doctrine\DBAL\DBALException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -59,7 +59,7 @@ class DatabaseCloneCommand extends DatabaseCommand
 
         // Get the Source Server Connection
         if (!$sourceServer) {
-            $sourceServer = $this->chooseServer('Please enter the database server to copy from');
+            $sourceServer = $this->chooseServer('Please choose the database server to copy from');
         }
         $source = $this->getServerConnection($sourceServer);
 
@@ -75,7 +75,7 @@ class DatabaseCloneCommand extends DatabaseCommand
 
         // Get the Destination Server Connection
         if (!$destinationServer) {
-            $destinationServer = $this->chooseServer('Please enter the database server to copy to');
+            $destinationServer = $this->chooseServer('Please choose the database server to copy to');
         }
         if ($sourceServer === $destinationServer) {
             $config = $source->config();
@@ -126,7 +126,7 @@ class DatabaseCloneCommand extends DatabaseCommand
         $this->write("Database schema created.");
 
         // Copy the data
-        $this-->write("Copying data, please wait...");
+        $this->write("Copying data, please wait...");
         $source->beginTransaction();
         $destination->executeQuery("SET FOREIGN_KEY_CHECKS=0");
         $destination->beginTransaction();
