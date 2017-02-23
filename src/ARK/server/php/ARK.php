@@ -64,7 +64,7 @@ class ARK
 
     public static function frontendDir($namespace, $frontend)
     {
-        return self::namespaceDir().'/'.$frontend;
+        return self::namespaceDir($namespace).'/frontend/'.$frontend;
     }
 
     public static function sitesDir()
@@ -110,7 +110,7 @@ class ARK
             if (is_dir(self::namespaceDir($namespace).'/frontend')) {
                 foreach (scandir(self::namespaceDir($namespace).'/frontend') as $frontend) {
                     if ($frontend != '.' && $frontend != '..' && is_dir(self::frontendDir($namespace, $frontend))) {
-                        $frontends[] = $frontend;
+                        $frontends[$frontend] = $namespace;
                     }
                 }
             }
@@ -127,6 +127,16 @@ class ARK
             }
         }
         return $sites;
+    }
+
+    public static function siteConfig($site)
+    {
+        return json_decode(file_get_contents(self::siteDir($site).'/config/site.json'), true);
+    }
+
+    public static function siteDatabaseConfig($site)
+    {
+        return json_decode(file_get_contents(self::siteDir($site).'/config/database.json'), true);
     }
 
     public static function serversPath()

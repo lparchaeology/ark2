@@ -32,6 +32,7 @@ namespace ARK\Console;
 
 use Exception;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -50,6 +51,14 @@ abstract class ConsoleCommand extends Command
         $this->query = $this->getHelper('question');
         $this->input = $input;
         $this->output = $output;
+    }
+
+    protected function runCommand($command, array $arguments)
+    {
+        $command = $this->getApplication()->find($command);
+        $input = new ArrayInput($arguments);
+        $returnCode = $command->run($arguments, $this->output);
+        return $returnCode;
     }
 
     protected function addRequiredArgument($argument, $description)

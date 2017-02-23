@@ -33,61 +33,37 @@ namespace ARK\Console\System\Command;
 use ARK\ARK;
 use ARK\ConsoleApplication;
 use ARK\Console\ProcessTrait;
+use ARK\Database\Console\DatabaseCommand;
 use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\DriverManager;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ChoiceQuestion;
-use Symfony\Component\Console\Question\Question;
 
-class SiteCreateCommand extends Command
+class SiteCreateCommand extends DatabaseCommand
 {
     use ProcessTrait;
 
-    private $input = null;
-    private $output = null;
-    private $question = null;
     private $drivers = ['pdo_mysql', 'pdo_pgsql', 'pdo_sqlite'];
 
     protected function configure()
     {
         $this->setName('site:create')
              ->setDescription('Create a new site')
-             ->addArgument('site', InputArgument::REQUIRED, 'The site key');
+             ->addOptionalArgument('site', 'The site key');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->input = $input;
-        $this->output = $output;
-        $this->question = $this->getHelper('question');
+        parent::execute($input, $output);
 
-        $site = $this->input->getArgument('site');
+        $site = $this->getArgument('site');
+        if (!$site) {
+            $site = $this->askQuestion("Please enter the new site key (e.g. 'mysite')");
+        }
 
-        $frontends = ARK::frontends();
-
-        $frontendQuestion = new ChoiceQuestion("Please enter the frontend to use (default: core): ", $frontends, 'core');
-        $frontendQuestion->setAutocompleterValues($frontends);
-        $frontend = $this->question->ask($this->input, $this->output, $frontendQuestion);
-
-        $servers = ARK::serversNames();
-        $defaultServer = ARK::defaultServerName();
-
-        $serverQuestion = new ChoiceQuestion("Please enter the database server to use (default: $defaultServer): ", $servers, $defaultServer);
-        $serverQuestion->setAutocompleterValues($servers);
-        $server = $this->question->ask($this->input, $this->output, $serverQuestion);
-        $config = ARK::server($server);
-
-        $passwordQuestion = new Question('Please enter the root database password: ', '');
-        $passwordQuestion->setHidden(true);
-        $passwordQuestion->setHiddenFallback(false);
-        $passwordQuestion->setMaxAttempts(3);
-        $password = $this->question->ask($this->input, $this->output, $passwordQuestion);
-        $config['password'] = $password;
+        $frontends = array_keys(ARK::frontends());
+        $frontend = $this->askChoice('Please choose the frontend to use', $frontends, 'core');
+        $config = $this->chooseServerConfig();
 
         //$adminEmailQuestion = new Question('Please enter the Site Admin User email: ', '');
         //$adminPasswordQuestion = new Question('Please enter the Site Admin User password: ', '');
@@ -96,15 +72,10 @@ class SiteCreateCommand extends Command
         //$adminPassword = $this->question->ask($this->input, $this->output, $adminPasswordQuestion);
 
         if ($this->createInstance($site, $config)) {
-            $this->output->writeln('Site database created.');
-            $command = $this->getApplication()->find('site:frontend');
-            $arguments = new ArrayInput([
-                'site' => $site,
-                'frontend' => $frontend,
-            ]);
-            $returnCode = $command->run($arguments, $this->output);
-            $this->output->writeln('Site folder created.');
-            $this->output->writeln('Please add an Admin User from the Site Admin Console.');
+            $this->write('Site database created.');
+            $returnCode = $this->runCommand('site:frontend', ['site' => $site, 'frontend' => $frontend]);
+            $this->write('Site folder created.');
+            $this->write('Please add an Admin User from the Site Admin Console.');
 
             /* TODO Need new Application with full DB comnnection created to do this, use Command Bus?
             $admin = $this->app['user.manager']->create($adminEmail, $adminPassword);
@@ -114,40 +85,23 @@ class SiteCreateCommand extends Command
             $this->output->writeln('ARK admin user created.');
             */
         } else {
-            $this->output->writeln("\nFAILED: ARK site database not created.");
+            $this->write("\nFAILED: ARK site database not created.");
+            return false;
         }
+        dump('created');
+        dump($site);
+        return $site;
     }
 
     // TODO Make a Command via the Command Bus
     private function createInstance($site, $config)
     {
-        $config['wrapperClass'] = 'ARK\Database\AdminConnection';
         $dbprefix = $site.'_ark_';
-        $dbuser = $dbprefix.'user';
+        $dbuser = 'ark_user';
         // TODO And change the password!
-        $dbpass = $dbprefix.'pass';
+        $dbpass = 'ark_pass';
 
-        // Check only supported platfroms
-        if (!in_array($config['driver'], $this->drivers)) {
-            $this->output->writeln('Invalid or unsupported DBAL driver '.$config['driver']);
-            return false;
-        }
-
-        // Get the Admin Connection
-        try {
-            $admin = DriverManager::getConnection($config);
-        } catch (DBALException $e) {
-            $this->output->writeln('Admin configuration failed: '.$e->getCode().' - '.$e->getMessage());
-            return false;
-        }
-
-        // Test the Admin connection
-        try {
-            $admin->connect();
-        } catch (DBALException $e) {
-            $this->output->writeln('Admin connection failed: '.$e->getCode().' - '.$e->getMessage());
-            return false;
-        }
+        $admin = $this->getConnection($config);
 
         // Add the restricted database user to server
         if ($admin->userExists($dbuser)) {
@@ -156,7 +110,7 @@ class SiteCreateCommand extends Command
             try {
                 $admin->createUser($dbuser, $dbpass);
             } catch (DBALException $e) {
-                $this->output->writeln('Add user to database server failed: '.$e->getCode().' - '.$e->getMessage());
+                $this->writeException('Add user to database server failed', $e);
                 return false;
             }
         }
@@ -176,7 +130,11 @@ class SiteCreateCommand extends Command
                     'keep'
                 );
                 $keepQuestion->setAutocompleterValues($options);
-                $action = $this->question->ask($this->input, $this->output, $keepQuestion);
+                $action = $this->askChoice(
+                    "The database $dbname already exists on server, do you want to do with it?",
+                    ['keep', 'drop', 'stop'],
+                    'keep'
+                );
                 if ($action != 'keep') {
                     return false;
                 }
@@ -188,7 +146,7 @@ class SiteCreateCommand extends Command
                 try {
                     $admin->createDatabase($dbname);
                 } catch (DBALException $e) {
-                    $this->output->writeln("Create database $dbname failed: ".$e->getCode().' - '.$e->getMessage());
+                    $this->writeException("Create database $dbname failed", $e);
                     return false;
                 }
             }
@@ -197,7 +155,7 @@ class SiteCreateCommand extends Command
             try {
                 $admin->grantUser($dbuser, $dbname);
             } catch (DBALException $e) {
-                $this->output->writeln("Add user to database $dbname failed: ".$e->getCode().' - '.$e->getMessage());
+                $this->writeException("Add user to database $dbname failed: ", $e);
                 return false;
             }
             $actions[$db] = $action;
@@ -210,12 +168,12 @@ class SiteCreateCommand extends Command
                 $admin->close();
                 $dbname = $dbprefix.$db;
                 $config['dbname'] = $dbname;
-                $admin = DriverManager::getConnection($config);
+                $admin = $this->getConnection($config);
                 $admin->connect();
                 try {
                     $admin->loadSchema("../src/ARK/server/schema/database/$db.xml");
                 } catch (DBALException $e) {
-                    $this->output->writeln("Load Schema to database $dbname failed: ".$e->getCode().' - '.$e->getMessage());
+                    $this->writeException("Load Schema to database $dbname failed", $e);
                     return false;
                 }
             }
@@ -224,7 +182,6 @@ class SiteCreateCommand extends Command
         // Termiate the admin connection
         $admin->close();
         // TODO Write out config file?
-        $admin->close();
         return true;
     }
 }

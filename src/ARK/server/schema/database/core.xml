@@ -53,14 +53,81 @@
     </field>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
   </table>
+  <table name="ark_datatype">
+    <field name="datatype" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="format_vocabulary" type="string" size="30"/>
+    <field name="parameter_vocabulary" type="string" size="30"/>
+    <field name="object" type="boolean">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="compound" type="boolean">
+      <default value="1"/>
+      <notnull/>
+    </field>
+    <field name="storage_type" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="storage_size" type="integer"/>
+    <field name="value_name" type="string" size="30"/>
+    <field name="format_name" type="string" size="30"/>
+    <field name="parameter_name" type="string" size="30"/>
+    <field name="model_table" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="model_class" type="string" size="100">
+      <notnull/>
+    </field>
+    <field name="data_table" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="data_class" type="string" size="100">
+      <notnull/>
+    </field>
+    <field name="form_class" type="string" size="100">
+      <notnull/>
+    </field>
+    <field name="enabled" type="boolean">
+      <default value="1"/>
+      <notnull/>
+    </field>
+    <field name="deprecated" type="boolean">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="keyword" type="string" size="100">
+      <notnull/>
+    </field>
+    <index name="format_vocabulary">
+      <col>format_vocabulary</col>
+    </index>
+    <index name="parameter_vocabulary">
+      <col>parameter_vocabulary</col>
+    </index>
+    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    <references name="ark_datatype_ibfk_1" table="ark_vocabulary" onupdate="cascade">
+      <column local="format_vocabulary" foreign="concept"/>
+    </references>
+    <references name="ark_datatype_ibfk_2" table="ark_vocabulary" onupdate="cascade">
+      <column local="parameter_vocabulary" foreign="concept"/>
+    </references>
+  </table>
   <table name="ark_format">
     <field name="format" type="string" size="30">
       <key/>
       <notnull/>
     </field>
-    <field name="type" type="string" size="10">
+    <field name="datatype" type="string" size="10">
       <notnull/>
     </field>
+    <field name="parameter_vocabulary" type="string" size="30"/>
+    <field name="format_vocabulary" type="string" size="30"/>
+    <field name="value_name" type="string" size="30"/>
+    <field name="parameter_name" type="string" size="30"/>
+    <field name="format_name" type="string" size="30"/>
     <field name="input" type="string" size="20">
       <notnull/>
     </field>
@@ -69,6 +136,10 @@
       <notnull/>
     </field>
     <field name="array" type="boolean">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="multiple" type="boolean">
       <default value="0"/>
       <notnull/>
     </field>
@@ -92,11 +163,23 @@
       <notnull/>
     </field>
     <index name="fragment_type">
-      <col>type</col>
+      <col>datatype</col>
+    </index>
+    <index name="parameter_vocabulary">
+      <col>parameter_vocabulary</col>
+    </index>
+    <index name="format_vocabulary">
+      <col>format_vocabulary</col>
     </index>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    <references name="ark_format_ibfk_1" table="ark_fragment_type" onupdate="cascade" ondelete="cascade">
-      <column local="type" foreign="type"/>
+    <references name="ark_format_ibfk_1" table="ark_datatype" onupdate="cascade" ondelete="cascade">
+      <column local="datatype" foreign="datatype"/>
+    </references>
+    <references name="ark_format_ibfk_2" table="ark_vocabulary" onupdate="cascade">
+      <column local="parameter_vocabulary" foreign="concept"/>
+    </references>
+    <references name="ark_format_ibfk_3" table="ark_vocabulary" onupdate="cascade">
+      <column local="format_vocabulary" foreign="concept"/>
     </references>
   </table>
   <table name="ark_format_attribute">
@@ -295,6 +378,16 @@
       <column local="format" foreign="format"/>
     </references>
   </table>
+  <table name="ark_format_spatial">
+    <field name="format" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    <references name="ark_format_spatial_ibfk_1" table="ark_format" onupdate="cascade" ondelete="cascade">
+      <column local="format" foreign="format"/>
+    </references>
+  </table>
   <table name="ark_format_string">
     <field name="format" type="string" size="30">
       <key/>
@@ -312,43 +405,36 @@
     <field name="default_size" type="integer">
       <notnull/>
     </field>
-    <field name="spellcheck" type="boolean">
-      <notnull/>
-    </field>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     <references name="ark_format_string_ibfk_1" table="ark_format" onupdate="cascade" ondelete="cascade">
       <column local="format" foreign="format"/>
     </references>
   </table>
-  <table name="ark_format_wkt">
+  <table name="ark_format_text">
     <field name="format" type="string" size="30">
       <key/>
       <notnull/>
     </field>
+    <field name="mimetype" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="min_length" type="integer">
+      <notnull/>
+    </field>
+    <field name="max_length" type="integer">
+      <notnull/>
+    </field>
+    <field name="default_size" type="integer">
+      <notnull/>
+    </field>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    <references name="ark_format_wkt_ibfk_1" table="ark_format" onupdate="cascade" ondelete="cascade">
+    <references name="ark_format_text_ibfk_1" table="ark_format" onupdate="cascade" ondelete="cascade">
       <column local="format" foreign="format"/>
     </references>
   </table>
-  <table name="ark_fragment_type">
-    <field name="type" type="string" size="20">
+  <table name="ark_instance">
+    <field name="instance" type="string" size="30">
       <key/>
-      <notnull/>
-    </field>
-    <field name="compound" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="tbl" type="string" size="50">
-      <notnull/>
-    </field>
-    <field name="format_class" type="string" size="100">
-      <notnull/>
-    </field>
-    <field name="model_class" type="string" size="100">
-      <notnull/>
-    </field>
-    <field name="form_class" type="string" size="100">
       <notnull/>
     </field>
     <field name="enabled" type="boolean">
@@ -357,6 +443,177 @@
     </field>
     <field name="deprecated" type="boolean">
       <default value="0"/>
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+  </table>
+  <table name="ark_instance_schema">
+    <field name="instance" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="schma" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="enabled" type="boolean">
+      <default value="1"/>
+      <notnull/>
+    </field>
+    <field name="deprecated" type="boolean">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <index name="schma">
+      <col>schma</col>
+    </index>
+    <index name="IDX_63EF5444230B1DE">
+      <col>instance</col>
+    </index>
+    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    <references name="ark_instance_schema_ibfk_1" table="ark_instance" onupdate="cascade" ondelete="cascade">
+      <column local="instance" foreign="instance"/>
+    </references>
+    <references name="ark_instance_schema_ibfk_2" table="ark_schema" onupdate="cascade">
+      <column local="schma" foreign="schma"/>
+    </references>
+  </table>
+  <table name="ark_map">
+    <field name="map" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="draggable" type="boolean">
+      <default value="1"/>
+      <notnull/>
+    </field>
+    <field name="zoomable" type="boolean">
+      <default value="1"/>
+      <notnull/>
+    </field>
+    <field name="clickable" type="boolean">
+      <default value="1"/>
+      <notnull/>
+    </field>
+    <field name="options" type="string" size="4000">
+      <notnull/>
+    </field>
+    <field name="keyword" type="string" size="100">
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+  </table>
+  <table name="ark_map_layer">
+    <field name="source" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="layer" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="source_name" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="url" type="string" size="2000">
+      <notnull/>
+    </field>
+    <field name="options" type="string" size="4000">
+      <notnull/>
+    </field>
+    <field name="parameters" type="string" size="4000">
+      <notnull/>
+    </field>
+    <field name="keyword" type="string" size="100">
+      <notnull/>
+    </field>
+    <index name="IDX_ADAEEC535F8A7F73">
+      <col>source</col>
+    </index>
+    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    <references name="ark_map_layer_ibfk_1" table="ark_map_source" onupdate="cascade" ondelete="cascade">
+      <column local="source" foreign="source"/>
+    </references>
+  </table>
+  <table name="ark_map_legend">
+    <field name="map" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="source" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="layer" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="seq" type="integer">
+      <notnull/>
+    </field>
+    <field name="is_default" type="boolean">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="enabled" type="boolean">
+      <default value="1"/>
+      <notnull/>
+    </field>
+    <field name="visible" type="boolean">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="options" type="string" size="4000">
+      <notnull/>
+    </field>
+    <field name="keyword" type="string" size="100">
+      <notnull/>
+    </field>
+    <index name="sequence">
+      <unique/>
+      <col>map</col>
+      <col>source</col>
+      <col>layer</col>
+      <col>seq</col>
+    </index>
+    <index name="legend_layer">
+      <col>source</col>
+      <col>layer</col>
+    </index>
+    <index name="IDX_C9233F5F93ADAABB">
+      <col>map</col>
+    </index>
+    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    <references name="legend_layer" table="ark_map_layer" onupdate="cascade" ondelete="cascade">
+      <column local="source" foreign="source"/>
+      <column local="layer" foreign="layer"/>
+    </references>
+    <references name="legend_map" table="ark_map" onupdate="cascade" ondelete="cascade">
+      <column local="map" foreign="map"/>
+    </references>
+  </table>
+  <table name="ark_map_source">
+    <field name="source" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="type" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="subtype" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="format" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="view_class" type="string" size="100">
+      <notnull/>
+    </field>
+    <field name="ticket" type="string" size="100">
+      <notnull/>
+    </field>
+    <field name="ticket_expiry" type="datetime"/>
+    <field name="options" type="string" size="4000">
       <notnull/>
     </field>
     <field name="keyword" type="string" size="100">
@@ -395,6 +652,96 @@
       <notnull/>
     </field>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+  </table>
+  <table name="ark_rbac_permission">
+    <field name="permission" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="enabled" type="boolean">
+      <default value="1"/>
+      <notnull/>
+    </field>
+    <field name="keyword" type="string" size="100">
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci" charset="utf8"/>
+  </table>
+  <table name="ark_rbac_role">
+    <field name="role" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="enabled" type="boolean">
+      <default value="1"/>
+      <notnull/>
+    </field>
+    <field name="keyword" type="string" size="100">
+      <notnull/>
+    </field>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci" charset="utf8"/>
+  </table>
+  <table name="ark_rbac_role_permission">
+    <field name="role" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="permission" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <index name="permission">
+      <col>permission</col>
+    </index>
+    <index name="IDX_EC1096CF57698A6A">
+      <col>role</col>
+    </index>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci" charset="utf8"/>
+    <references name="ark_rbac_role_permission_ibfk_1" table="ark_rbac_role" onupdate="cascade" ondelete="cascade">
+      <column local="role" foreign="role"/>
+    </references>
+    <references name="ark_rbac_role_permission_ibfk_2" table="ark_rbac_permission" onupdate="cascade" ondelete="cascade">
+      <column local="permission" foreign="permission"/>
+    </references>
+  </table>
+  <table name="ark_rbac_user_role">
+    <field name="user" type="integer">
+      <unsigned/>
+      <key/>
+      <notnull/>
+    </field>
+    <field name="role" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="enabled" type="boolean">
+      <default value="1"/>
+      <notnull/>
+    </field>
+    <field name="verified" type="boolean">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="locked" type="boolean">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="expired" type="boolean">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="expires_at" type="datetime"/>
+    <field name="verification_token" type="string" size="100">
+      <notnull/>
+    </field>
+    <field name="verification_requested_at" type="datetime"/>
+    <index name="role">
+      <col>role</col>
+    </index>
+    <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci" charset="utf8"/>
+    <references name="ark_rbac_user_role_ibfk_2" table="ark_rbac_role" onupdate="cascade" ondelete="cascade">
+      <column local="role" foreign="role"/>
+    </references>
   </table>
   <table name="ark_schema">
     <field name="schma" type="string" size="30">
@@ -544,6 +891,48 @@
       <column local="vocabulary" foreign="concept"/>
     </references>
   </table>
+  <table name="ark_schema_item">
+    <field name="attribute" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="format" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="vocabulary" type="string" size="30"/>
+    <field name="minimum" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="maximum" type="integer">
+      <default value="1"/>
+      <notnull/>
+    </field>
+    <field name="unique_values" type="integer">
+      <default value="1"/>
+      <notnull/>
+    </field>
+    <field name="additional_values" type="integer">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="enabled" type="boolean">
+      <default value="1"/>
+      <notnull/>
+    </field>
+    <field name="deprecated" type="boolean">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <field name="keyword" type="string" size="100"/>
+    <index name="format">
+      <col>format</col>
+    </index>
+    <index name="vocabulary">
+      <col>vocabulary</col>
+    </index>
+    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+  </table>
   <table name="ark_translation">
     <field name="keyword" type="string" size="100">
       <key/>
@@ -691,6 +1080,9 @@
     <field name="form_type" type="string" size="100">
       <notnull/>
     </field>
+    <field name="form_options" type="string" size="4000">
+      <notnull/>
+    </field>
     <field name="editable" type="boolean">
       <default value="1"/>
       <notnull/>
@@ -746,6 +1138,10 @@
     <field name="cell" type="string" size="30">
       <notnull/>
     </field>
+    <field name="map" type="string" size="30"/>
+    <field name="form_options" type="string" size="4000">
+      <notnull/>
+    </field>
     <field name="width" type="integer"/>
     <field name="label" type="boolean">
       <default value="1"/>
@@ -770,6 +1166,9 @@
     <index name="child">
       <col>cell</col>
     </index>
+    <index name="map">
+      <col>map</col>
+    </index>
     <index name="IDX_55A3F2F33A3A6BE2">
       <col>layout</col>
     </index>
@@ -780,28 +1179,8 @@
     <references name="ark_view_layout_ibfk_2" table="ark_view_element" onupdate="cascade" ondelete="cascade">
       <column local="cell" foreign="element"/>
     </references>
-  </table>
-  <table name="ark_view_option">
-    <field name="element" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="name" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="type" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="value" type="string" size="4000">
-      <notnull/>
-    </field>
-    <index name="IDX_351F99A141405E39">
-      <col>element</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    <references name="ark_view_option_ibfk_1" table="ark_view_element" onupdate="cascade" ondelete="cascade">
-      <column local="element" foreign="element"/>
+    <references name="ark_view_layout_ibfk_3" table="ark_map" onupdate="cascade" ondelete="set null">
+      <column local="map" foreign="map"/>
     </references>
   </table>
   <table name="ark_view_type">
@@ -816,7 +1195,7 @@
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="form" type="string" size="100">
+    <field name="form_type" type="string" size="100">
       <notnull/>
     </field>
     <field name="template" type="string" size="100">
@@ -840,6 +1219,10 @@
     </field>
     <field name="closed" type="boolean">
       <default value="1"/>
+      <notnull/>
+    </field>
+    <field name="workflow" type="boolean">
+      <default value="0"/>
       <notnull/>
     </field>
     <field name="enabled" type="boolean">
@@ -951,6 +1334,9 @@
     <field name="relation" type="string" size="30">
       <notnull/>
     </field>
+    <field name="parameter" type="string" size="30">
+      <notnull/>
+    </field>
     <field name="depth" type="integer">
       <notnull/>
     </field>
@@ -983,13 +1369,13 @@
       <key/>
       <notnull/>
     </field>
-    <field name="code" type="string" size="3">
+    <field name="notation" type="string" size="3">
       <notnull/>
     </field>
     <field name="recipricol" type="string" size="10">
       <notnull/>
     </field>
-    <field name="recipricol_code" type="string" size="3">
+    <field name="recipricol_notation" type="string" size="3">
       <notnull/>
     </field>
     <field name="equivalence" type="boolean">
@@ -1019,6 +1405,10 @@
       <notnull/>
     </field>
     <field name="alias" type="string" size="50">
+      <notnull/>
+    </field>
+    <field name="root" type="boolean">
+      <default value="0"/>
       <notnull/>
     </field>
     <field name="enabled" type="boolean">
@@ -1120,71 +1510,6 @@
       <notnull/>
     </field>
     <field name="description" type="text" size="65535">
-      <notnull/>
-    </field>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-  </table>
-  <table name="cor_conf_layout_role">
-    <field name="layout_role" type="string" size="15">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="description" type="string" size="50">
-      <notnull/>
-    </field>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-  </table>
-  <table name="cor_conf_page">
-    <field name="page" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="name" type="string" size="50">
-      <notnull/>
-    </field>
-    <field name="title" type="string" size="50">
-      <notnull/>
-    </field>
-    <field name="enabled" type="boolean">
-      <notnull/>
-    </field>
-    <field name="visible" type="boolean">
-      <notnull/>
-    </field>
-    <field name="sgrp" type="string" size="10">
-      <notnull/>
-    </field>
-    <field name="file" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="code_dir" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="nav_seq" type="integer">
-      <notnull/>
-    </field>
-    <field name="navname" type="string" size="20">
-      <notnull/>
-    </field>
-    <field name="nav_link_vars" type="string" size="20">
-      <notnull/>
-    </field>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-  </table>
-  <table name="cor_conf_page_layout">
-    <field name="page" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="module" type="string" size="3">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="layout_role" type="string" size="10">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="layout" type="string" size="30">
       <notnull/>
     </field>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>

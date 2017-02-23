@@ -34,6 +34,7 @@ use ARK\Console\Console;
 use ARK\Console\SystemApplication;
 use ARK\Console\System\Command\SiteCreateCommand;
 use ARK\Console\System\Command\SiteFrontendCommand;
+use ARK\Console\System\Command\SiteMigrateCommand;
 use ARK\Database\Console\DatabaseServerAddCommand;
 use ARK\Database\Console\DatabaseCloneCommand;
 
@@ -50,5 +51,6 @@ class SystemConsole extends Console
         // Site Commands
         $this->add(new SiteCreateCommand());
         $this->add(new SiteFrontendCommand());
+        $this->add(new SiteMigrateCommand());
     }
 }

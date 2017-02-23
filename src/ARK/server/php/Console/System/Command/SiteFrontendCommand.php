@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -31,59 +31,52 @@
 namespace ARK\Console\System\Command;
 
 use ARK\ARK;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
+use ARK\Console\ConsoleCommand;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
-use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Filesystem\Filesystem;
 
-class SiteFrontendCommand extends Command
+class SiteFrontendCommand extends ConsoleCommand
 {
     protected function configure()
     {
         $this->setName('site:frontend')
              ->setDescription('Install or replace a frontend. WARNING: Will delete the old frontend!')
-             ->addArgument('site', InputArgument::REQUIRED, 'The site key')
-             ->addArgument('frontend', InputArgument::OPTIONAL, 'The site frontend (default: core)', 'core');
+             ->addRequiredArgument('site', 'The site key')
+             ->addOptionalArgument('frontend', 'The site frontend (default: core)', 'core');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        parent::execute($input, $output);
+
         $site = $input->getArgument('site');
         $frontend= $input->getArgument('frontend');
         $namespace = null;
-        $query = $this->getHelper('question');
 
-        $frontends = [];
-        foreach (scandir(ARK::installDir().'/src') as $namespace) {
-            if ($namespace != '.' && $namespace != '..' && is_dir(ARK::installDir()."/src/$namespace/frontend")) {
-                foreach (scandir(ARK::installDir()."/src/$namespace/frontend") as $dir) {
-                    if ($dir != '.' && $dir != '..' && is_dir(ARK::installDir()."/src/$namespace/frontend/$dir")) {
-                        $frontends[] = $dir;
-                    }
-                }
-            }
-        }
-
+        $frontends = ARK::frontends();
         if ($frontend) {
-            if (!in_array($frontend, $frontends)) {
-                $output->writeln("\nFAILED: Frontend $frontend not found, are you sure you built it?");
+            if (!in_array($frontend, array_keys($frontends))) {
+                $this->write("\nFAILED: Frontend $frontend not found, are you sure you built it?");
                 return false;
             }
         } else {
-            $question = new ChoiceQuestion("Please enter the frontend to use (default: core): ", $frontends, 'core');
-            $question->setAutocompleterValues($frontends);
-            $frontend = $query->ask($input, $output, $question);
+            $frontend = $this->askChoice('Please enter the frontend to use', array_keys($frontends), 'core');
         }
 
-        $siteDir = ARK::sitesDir().'/'.$site;
-        $templatesDir = $siteDir.'/templates/'.$frontend;
-        $translationsDir = $siteDir.'/translations/'.$frontend;
-        $assetsDir = $siteDir.'/web/assets/'.$frontend;
-        $srcDir = ARK::installDir().'/src/'.$namespace.'/frontend/'.$frontend;
+        $symlink = $this->askChoice('Do you want to link or copy the frontend source folder?', ['link', 'copy'], 'link');
+
+        if (is_dir(ARK::siteDir($site))) {
+            $refresh = $this->askConfirmation('Site folder already exists, refresh the site?', false);
+        }
+
+        // TODO Move to Bus Command
+        // Inputs: Site, Frontend, Symlink = link, Refresh = false
+        $siteDir = ARK::siteDir($site);
+        $templatesDir = ARK::templatesDir($site, $frontend);
+        $translationsDir = ARK::translationsDir($site, $frontend);
+        $assetsDir = ARK::assetsDir($site, $frontend);
+        $srcDir = ARK::frontendDir($frontends[$frontend], $frontend);
 
         $fs = new Filesystem();
         if (!$fs->exists($siteDir)) {
@@ -99,14 +92,10 @@ class SiteFrontendCommand extends Command
             $fs->mirror($srcDir.'/bin', $siteDir.'/bin');
             $fs->mirror($srcDir.'/config', $siteDir.'/config');
             $fs->mirror($srcDir.'/web', $siteDir.'/web');
-        } else {
-            $refreshQuestion = new ConfirmationQuestion('Site folder already exists, refresh the site? (default: n):', false);
-            $refresh = $query->ask($input, $output, $refreshQuestion);
-            if ($refresh) {
-                $fs->mirror($srcDir.'/bin', $siteDir.'/bin');
-                $fs->mirror($srcDir.'/config', $siteDir.'/config');
-                $fs->mirror($srcDir.'/web', $siteDir.'/web');
-            }
+        } elseif ($refresh) {
+            $fs->mirror($srcDir.'/bin', $siteDir.'/bin');
+            $fs->mirror($srcDir.'/config', $siteDir.'/config');
+            $fs->mirror($srcDir.'/web', $siteDir.'/web');
         }
         if ($fs->exists($templatesDir)) {
             $fs->remove($templatesDir);
@@ -118,9 +107,7 @@ class SiteFrontendCommand extends Command
             $fs->remove($assetsDir);
         }
 
-        $linkQuestion = new Question('Do you want to copy or link the frontend source folder? (default: link) ', 'link');
-        $symlink = strtolower($query->ask($input, $output, $linkQuestion));
-        if ($symlink == 'copy') {
+        if (strtolower($symlink) == 'copy') {
             $fs->mirror($srcDir.'/templates', $templatesDir);
             $fs->mirror($srcDir.'/translations', $translationsDir);
             $fs->mirror($srcDir.'/assets', $assetsDir);

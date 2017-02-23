@@ -154,6 +154,6 @@ class DatabaseCloneCommand extends DatabaseCommand
         $source->close();
         $destination->close();
         $this->write("SUCCESS: Database $sourceDatabase cloned.");
-        return true;
+        return $config;
     }
 }

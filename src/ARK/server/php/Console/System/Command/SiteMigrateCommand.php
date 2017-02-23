@@ -32,15 +32,12 @@ namespace ARK\Console\System\Command;
 
 use ARK\ARK;
 use ARK\Console\ProcessTrait;
-use ARK\Database\Command\DatabaseCommand;
+use ARK\Database\Console\DatabaseCommand;
 use Doctrine\DBAL\DBALException;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ChoiceQuestion;
-use Symfony\Component\Console\Question\Question;
 
 class SiteMigrateCommand extends DatabaseCommand
 {
@@ -56,37 +53,101 @@ class SiteMigrateCommand extends DatabaseCommand
     {
         parent::execute($input, $output);
 
-        // Ask if into new or existing
-        $choices = ['New', 'Existing'];
-        $question = new ChoiceQuestion("Do you want to migrate to a new site or an existing site?", $choices, null);
-        $question->setAutocompleterValues($choices);
-        $migrate = $this->query->ask($this->input, $this->output, $question);
+        // Ask if migrate to new or existing site
+        $migrate = $this->askChoice('Do you want to migrate to a new site or an existing site?', ['New', 'Existing'], 'New');
 
         // If new, create by calling create
         if (strtolower($migrate) == 'new') {
-            $question = new Question("Please enter the new site name (e.g. 'mysite'): ", '');
-            $site = $this->query->ask($this->input, $this->output, $question);
             $command = $this->getApplication()->find('site:create');
+            $site = $command->run(new ArrayInput([]), $this->output);
+        } else {
+            $site = $this->askChoice('Please choose the site to migrate into', ARK::sites());
+        }
+        dump('site');
+        dump($site);
+        if ($site === false) {
+            return false;
+        }
+        $destinationConfig = ARK::siteDatabaseConfig($site);
+
+        // Clone old database and get clone connection
+        $clone = $this->askChoice('Do you want to clone the database or an use an existing clone?', ['New', 'Existing'], 'New');
+        if (strtolower($migrate) == 'new') {
+            $command = $this->getApplication()->find('database:clone');
             $arguments = new ArrayInput([
                 'site' => strtolower($site),
             ]);
-            $returnCode = $command->run($arguments, $this->output);
-            // get the site
+            $sourceConfig = $command->run($arguments, $this->output);
         } else {
-            // get the site
+            $sourceConfig = $this->chooseServerConfig();
         }
-
-        // Clone old database
-        $command = $this->getApplication()->find('database:clone');
-        $arguments = new ArrayInput([
-            'site' => strtolower($site),
-        ]);
-        $returnCode = $command->run($arguments, $this->output);
+        if (!$sourceConfig) {
+            return false;
+        }
+        $source = $this->getConnection($sourceConfig);
 
         // Do any fixes?
 
-        // Get clone and new database connections
         // Set up modules in new, loop through list asking required details, choose schema, etc, create data tables
+        $newModChoice = 'Create new module';
+        $skipModChoice = 'Skip module';
+        $destModChoices = [$newModChoice, $skipModChoice];
+
+        $destination = $this->getConnection($destinationConfig['core']);
+        $modRows = $destination->fetchAllTable('ark_module');
+        foreach ($modRows as $mod) {
+            if (!$mod['core']) {
+                $destModChoices[] = $mod['module'];
+            }
+            $destMod[$mod['module']] = $mod;
+        }
+
+        $srcMods = $source->fetchAllTable('cor_tbl_module');
+        $this->write("\nConfigure the modules to be imported.");
+        $mapping = [];
+        foreach ($srcMods as $srcMod) {
+            $mod = $srcMod['shortform'];
+            $descr = $srcMod['description'];
+            $this->write("\nModule $mod - $descr");
+            if ($mod == 'abk') {
+                $mapping['abk'] = 'actor';
+                $this->write(" - Auto-mapped to Actor module");
+            } else {
+                $choice = $this->askChoice('Please choose a module to migrate to', $destModChoices, 0);
+                if ($choice == $newModChoice) {
+                    // TODO repeat until not a current module
+                    $module['module'] = $this->askQuestion('Please enter the new module code as a singular noun, e.g. context or image');
+                    $module['resource'] = $this->askQuestion('Please enter the resource code as a plural noun, e.g. contexts or images');
+                    $module['namespace'] = $this->askQuestion('Please enter the sourcecode namespace, e.g. ARK or MyProject', 'ARK');
+                    $module['entity'] = $module['namespace'].'\\Entity\\'.$module['module'];
+                    $module['tbl'] = 'ark_item_'.$module['module'];
+                    $module['core'] = false;
+                    $module['enabled'] = true;
+                    $module['deprecated'] = false;
+                    $module['keyword'] = 'module.'.$module['module'];
+                    // TODO Schema
+                    $mapping[$mod] = $module;
+                } elseif ($choice != $skipModChoice) {
+                    $mapping[$mod] = $choice;
+                    // TODO Schema
+                }
+            }
+        }
+
+        $this->write("\nThe following modules will be migrated:");
+        $table = new Table($this->output);
+        $table->setHeaders(['Old', 'New', 'Entity', 'Table']);
+        foreach ($mapping as $mod => $module) {
+            if (is_array($module)) {
+                $table->addRow([$mod, $module['module'], $module['entity'], $module['table']]);
+            } else {
+                $table->setRows([$mod, $module, $destMod[$module]['entity'], $destMod[$module]['table']]);
+            }
+        }
+        $table->render();
+        if (!$this->askConfirmation('Please confirm you want to use this mapping', false)) {
+            return false;
+        }
 
         // Copy items
         // Copy fragments
