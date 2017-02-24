@@ -36,6 +36,7 @@ use ARK\Console\ConsoleCommand;
 use ARK\Database\Console\DatabaseCommand;
 use Doctrine\DBAL\DBALException;
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -60,20 +61,22 @@ class SiteMigrateCommand extends DatabaseCommand
         // If new, create by calling create
         if (strtolower($migrate) == 'new') {
             $site = $this->runCommand('site:create');
+            $key = $site;
         } else {
             $site = $this->askChoice('Please choose the site to migrate into', ARK::sites());
+            $key = $this->askQuestion('Please enter a unique key for the site being migrated');
         }
         if ($site === ConsoleCommand::ERROR_CODE) {
             return ConsoleCommand::ERROR_CODE;
         }
-        $destinationConfig = ARK::siteDatabaseConfig($site);
+        $destinationConfig = ARK::siteDatabaseConfig($site, true);
 
         // Clone old database and get clone connection
-        $clone = $this->askChoice('Do you want to clone the database or an use an existing clone?', ['New', 'Existing'], 'New');
-        if (strtolower($migrate) == 'new') {
+        $clone = $this->askChoice('Do you want to clone the database or an use an existing clone?', ['Clone', 'Existing'], 'Clone');
+        if (strtolower($clone) == 'new') {
             $sourceConfig = $this->runCommand('database:clone');
         } else {
-            $sourceConfig = $this->chooseServerConfig();
+            $sourceConfig = $this->chooseDatabaseConfig();
         }
         if (!is_array($sourceConfig)) {
             return ConsoleCommand::ERROR_CODE;
@@ -83,10 +86,9 @@ class SiteMigrateCommand extends DatabaseCommand
         // Do any fixes?
 
         // Set up modules in new, loop through list asking required details, choose schema, etc, create data tables
-        $newModChoice = 'Create new module';
-        $skipModChoice = 'Skip module';
-        $destModChoices = [$newModChoice, $skipModChoice];
-
+        $newChoice = 'Create New Module';
+        $skipChoice = 'Skip This Module';
+        $destModChoices = [$newChoice, $skipChoice];
         $destination = $this->getConnection($destinationConfig['core']);
         $modRows = $destination->fetchAllTable('ark_module');
         foreach ($modRows as $mod) {
@@ -104,45 +106,62 @@ class SiteMigrateCommand extends DatabaseCommand
             $descr = $srcMod['description'];
             $this->write("\nModule $mod - $descr");
             if ($mod == 'abk') {
-                $mapping['abk'] = 'actor';
+                $mapping['abk']['module'] = 'actor';
+                // TODO Schema
+                $mapping['abk']['schema'] = $key.'.actor';
                 $this->write(" - Auto-mapped to Actor module");
             } else {
-                $choice = $this->askChoice('Please choose a module to migrate to', $destModChoices, 0);
-                if ($choice == $newModChoice) {
+                $choice = $this->askChoice('Please choose a module to migrate to', $destModChoices, $newChoice);
+                if ($choice == $newChoice) {
                     // TODO repeat until not a current module
                     $module['module'] = $this->askQuestion('Please enter the new module code as a singular noun, e.g. context or image');
                     $module['resource'] = $this->askQuestion('Please enter the resource code as a plural noun, e.g. contexts or images');
                     $module['namespace'] = $this->askQuestion('Please enter the sourcecode namespace, e.g. ARK or MyProject', 'ARK');
-                    $module['entity'] = $module['namespace'].'\\Entity\\'.$module['module'];
+                    $module['entity'] = ucfirst($module['namespace']).'\\Entity\\'.ucfirst($module['module']);
                     $module['tbl'] = 'ark_item_'.$module['module'];
                     $module['core'] = false;
                     $module['enabled'] = true;
                     $module['deprecated'] = false;
                     $module['keyword'] = 'module.'.$module['module'];
+                    $mapping[$mod]['module'] = $module;
                     // TODO Schema
-                    $mapping[$mod] = $module;
-                } elseif ($choice != $skipModChoice) {
-                    $mapping[$mod] = $choice;
+                    $mapping[$mod]['schema'] = $key.'.'.$module['module'];
+                } elseif ($choice != $skipChoice) {
+                    $mapping[$mod]['module'] = $choice;
                     // TODO Schema
+                    $schemaRows = $destination->executeQuery("SELECT * FROM ark_schema WHERE module = ?", [$choice])->fetchAll();
+                    $schemaChoices[] = $key.'.'.$choice;
+                    foreach ($schemaRows as $schema) {
+                        $schemaChoices[] = $schema['schma'];
+                    }
+                    $schema = $this->askChoice('Please choose a schema to use', $schemaChoices, $schemaChoices[0]);
+                    $mapping[$mod]['schema'] = $schema;
                 }
             }
         }
 
         $this->write("\nThe following modules will be migrated:");
         $table = new Table($this->output);
-        $table->setHeaders(['Old', 'New', 'Entity', 'Table']);
-        foreach ($mapping as $mod => $module) {
-            if (is_array($module)) {
-                $table->addRow([$mod, $module['module'], $module['entity'], $module['table']]);
+        $table->setHeaders(['Old', 'New', 'Schema', 'Entity', 'Table']);
+        foreach ($mapping as $mod => $config) {
+            if (is_array($config['module'])) {
+                // New Module
+                $module = $config['module'];
+                $table->addRow([$mod, $module['module'], $config['schema'], $module['entity'], $module['tbl']]);
             } else {
-                $table->setRows([$mod, $module, $destMod[$module]['entity'], $destMod[$module]['table']]);
+                // Existing Module
+                $module = $config['module'];
+                $table->addRow([$mod, $module, $config['schema'], $destMod[$module]['entity'], $destMod[$module]['tbl']]);
             }
+            //$table->addRow(new TableSeparator());
         }
         $table->render();
         if (!$this->askConfirmation('Please confirm you want to use this mapping', false)) {
             return ConsoleCommand::ERROR_CODE;
         }
 
+        // Insert Module/Schema entries
+        // Set-up chains on mods to import
         // Copy items
         // Copy fragments
 

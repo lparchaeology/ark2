@@ -134,9 +134,16 @@ class ARK
         return json_decode(file_get_contents(self::siteDir($site).'/config/site.json'), true);
     }
 
-    public static function siteDatabaseConfig($site)
+    public static function siteDatabaseConfig($site, $admin = false)
     {
-        return json_decode(file_get_contents(self::siteDir($site).'/config/database.json'), true);
+        $settings = json_decode(file_get_contents(self::siteDir($site).'/config/database.json'), true);
+        $conns = [];
+        foreach ($settings['connections'] as $name => $config) {
+            $config['wrapperClass'] = ($admin ? 'ARK\Database\AdminConnection' : 'ARK\Database\Connection');
+            $server =  $settings['servers'][$config['server']];
+            $conns[$name] = array_merge($server, $config);
+        }
+        return $conns;
     }
 
     public static function serversPath()

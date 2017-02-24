@@ -95,8 +95,26 @@ abstract class DatabaseCommand extends ConsoleCommand
         return $server;
     }
 
-    protected function chooseDatabase(AdminConnection $conn, $text = 'Please choose a database')
+    protected function chooseDatabaseConnection($text = null, $user = null)
     {
+        $config = $this->chooseDatabaseConfig($text, $user);
+        return $this->getConnection($config);
+    }
+
+    protected function chooseDatabaseConfig($text = null, $user = null)
+    {
+        $conn = $this->chooseServerConnection(null, $user);
+        $config = $conn->config();
+        $config['dbname'] = $this->chooseDatabase($conn, $text);
+        $conn->close();
+        return $config;
+    }
+
+    protected function chooseDatabase(AdminConnection $conn, $text = null)
+    {
+        if (!$text) {
+            $text = 'Please choose a database';
+        }
         return $this->askChoice("$text : ", $conn->listDatabases());
     }
 }
