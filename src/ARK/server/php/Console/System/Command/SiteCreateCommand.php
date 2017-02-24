@@ -33,6 +33,7 @@ namespace ARK\Console\System\Command;
 use ARK\ARK;
 use ARK\ConsoleApplication;
 use ARK\Console\ProcessTrait;
+use ARK\Console\ConsoleCommand;
 use ARK\Database\Console\DatabaseCommand;
 use Doctrine\DBAL\DBALException;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -60,6 +61,7 @@ class SiteCreateCommand extends DatabaseCommand
         if (!$site) {
             $site = $this->askQuestion("Please enter the new site key (e.g. 'mysite')");
         }
+        $site = strtolower($site);
 
         $frontends = array_keys(ARK::frontends());
         $frontend = $this->askChoice('Please choose the frontend to use', $frontends, 'core');
@@ -72,10 +74,12 @@ class SiteCreateCommand extends DatabaseCommand
         //$adminPassword = $this->question->ask($this->input, $this->output, $adminPasswordQuestion);
 
         if ($this->createInstance($site, $config)) {
-            $this->write('Site database created.');
+            $this->write("Database created for $site.");
             $returnCode = $this->runCommand('site:frontend', ['site' => $site, 'frontend' => $frontend]);
             $this->write('Site folder created.');
             $this->write('Please add an Admin User from the Site Admin Console.');
+            $this->result = $site;
+            return ConsoleCommand::SUCCESS_CODE;
 
             /* TODO Need new Application with full DB comnnection created to do this, use Command Bus?
             $admin = $this->app['user.manager']->create($adminEmail, $adminPassword);
@@ -84,13 +88,9 @@ class SiteCreateCommand extends DatabaseCommand
             $this->app['user.manager']->save($admin);
             $this->output->writeln('ARK admin user created.');
             */
-        } else {
-            $this->write("\nFAILED: ARK site database not created.");
-            return false;
         }
-        dump('created');
-        dump($site);
-        return $site;
+        $this->write("\nFAILED: ARK site database not created.");
+        return ConsoleCommand::ERROR_CODE;
     }
 
     // TODO Make a Command via the Command Bus
@@ -105,38 +105,35 @@ class SiteCreateCommand extends DatabaseCommand
 
         // Add the restricted database user to server
         if ($admin->userExists($dbuser)) {
-            $this->output->writeln('User already exists, continuing...');
+            $this->write('User already exists, continuing...');
         } else {
             try {
                 $admin->createUser($dbuser, $dbpass);
             } catch (DBALException $e) {
                 $this->writeException('Add user to database server failed', $e);
-                return false;
+                $admin->close();
+                return ConsoleCommand::ERROR_CODE;
             }
         }
 
         $actions = [];
         // Create the databases
         foreach (['core', 'data', 'spatial', 'user'] as $db) {
+            $this->write("Creating the $db database");
             $dbname = $dbprefix.$db;
             $action = 'new';
 
             // Check database doesn't already exist
             if ($admin->databaseExists($dbname)) {
                 $options = ['keep', 'drop', 'stop'];
-                $keepQuestion = new ChoiceQuestion(
-                    "The database $dbname already exists on server, do you want to do with it? (default: keep): ",
-                    $options,
-                    'keep'
-                );
-                $keepQuestion->setAutocompleterValues($options);
                 $action = $this->askChoice(
-                    "The database $dbname already exists on server, do you want to do with it?",
+                    "The $db database $dbname already exists on server, do you want to do with it?",
                     ['keep', 'drop', 'stop'],
                     'keep'
                 );
                 if ($action != 'keep') {
-                    return false;
+                    $admin->close();
+                    return ConsoleCommand::ERROR_CODE;
                 }
             }
 
@@ -147,7 +144,8 @@ class SiteCreateCommand extends DatabaseCommand
                     $admin->createDatabase($dbname);
                 } catch (DBALException $e) {
                     $this->writeException("Create database $dbname failed", $e);
-                    return false;
+                    $admin->close();
+                    return ConsoleCommand::ERROR_CODE;
                 }
             }
 
@@ -156,7 +154,8 @@ class SiteCreateCommand extends DatabaseCommand
                 $admin->grantUser($dbuser, $dbname);
             } catch (DBALException $e) {
                 $this->writeException("Add user to database $dbname failed: ", $e);
-                return false;
+                $admin->close();
+                return ConsoleCommand::ERROR_CODE;
             }
             $actions[$db] = $action;
         }
@@ -170,11 +169,19 @@ class SiteCreateCommand extends DatabaseCommand
                 $config['dbname'] = $dbname;
                 $admin = $this->getConnection($config);
                 $admin->connect();
+                $this->write("Loading $db schema into database $dbname...");
+                $admin->executeQuery("SET FOREIGN_KEY_CHECKS=0");
+                $admin->beginTransaction();
                 try {
                     $admin->loadSchema("../src/ARK/server/schema/database/$db.xml");
+                    $admin->commit();
+                    $admin->executeQuery("SET FOREIGN_KEY_CHECKS=1");
                 } catch (DBALException $e) {
                     $this->writeException("Load Schema to database $dbname failed", $e);
-                    return false;
+                    $admin->rollBack();
+                    $admin->executeQuery("SET FOREIGN_KEY_CHECKS=1");
+                    $admin->close();
+                    return ConsoleCommand::ERROR_CODE;
                 }
             }
         }
@@ -182,6 +189,6 @@ class SiteCreateCommand extends DatabaseCommand
         // Termiate the admin connection
         $admin->close();
         // TODO Write out config file?
-        return true;
+        return ConsoleCommand::SUCCESS_CODE;
     }
 }

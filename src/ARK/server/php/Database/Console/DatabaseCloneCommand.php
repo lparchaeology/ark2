@@ -31,6 +31,7 @@
 namespace ARK\Database\Console;
 
 use ARK\ARK;
+use ARK\Console\ConsoleCommand;
 use ARK\Database\Console\DatabaseCommand;
 use Doctrine\DBAL\DBALException;
 use Symfony\Component\Console\Input\InputInterface;
@@ -67,7 +68,7 @@ class DatabaseCloneCommand extends DatabaseCommand
         if ($sourceDatabase) {
             if (!$source->databaseExists($sourceDatabase)) {
                 $this->write('Source database does not exist!');
-                return false;
+                return ConsoleCommand::ERROR_CODE;
             }
         } else {
             $sourceDatabase = $this->chooseDatabase($source, 'Please choose the database to clone');
@@ -90,7 +91,7 @@ class DatabaseCloneCommand extends DatabaseCommand
         }
         if ($destination->databaseExists($destinationDatabase)) {
             $this->write('Destination database already exists!');
-            return false;
+            return ConsoleCommand::ERROR_CODE;
         }
 
         // Create the Destination Database
@@ -98,7 +99,7 @@ class DatabaseCloneCommand extends DatabaseCommand
             $destination->createDatabase($destinationDatabase);
         } catch (DBALException $e) {
             $this->writeException("Create database $destinationDatabase failed", $e);
-            return false;
+            return ConsoleCommand::ERROR_CODE;
         }
         $this->write("Destination database $destinationDatabase created.");
 
@@ -121,7 +122,7 @@ class DatabaseCloneCommand extends DatabaseCommand
             $destination->createSchema($schema);
         } catch (DBALException $e) {
             $this->writeException('Create database schema failed', $e);
-            return false;
+            return ConsoleCommand::ERROR_CODE;
         }
         $this->write("Database schema created.");
 
@@ -147,13 +148,14 @@ class DatabaseCloneCommand extends DatabaseCommand
         } catch (DBALException $e) {
             $destination->rollBack();
             $this->writeException('Copy database failed', $e);
-            return false;
+            return ConsoleCommand::ERROR_CODE;
         }
 
         // Done!
         $source->close();
         $destination->close();
         $this->write("SUCCESS: Database $sourceDatabase cloned.");
-        return $config;
+        $this->result = $config;
+        return ConsoleCommand::SUCCESS_CODE;
     }
 }

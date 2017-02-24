@@ -31,6 +31,7 @@
 namespace ARK\Database\Console;
 
 use ARK\ARK;
+use ARK\Console\ConsoleCommand;
 use ARK\Console\ProcessTrait;
 use ARK\Database\Console\DatabaseCommand;
 use Doctrine\DBAL\DBALException;
@@ -67,7 +68,7 @@ class DatabaseServerAddCommand extends DatabaseCommand
             $servers['servers']['sqlite']['driver'] = 'pdo_sqlite';
         } elseif (isset($servers['servers'][$server])) {
             $output->writeln("\nFAILED: Server already exists, please choose a new name.");
-            return;
+            return ConsoleCommand::ERROR_CODE;
         }
 
         // Get the new server details
@@ -100,6 +101,8 @@ class DatabaseServerAddCommand extends DatabaseCommand
             $servers['default'] = $server;
         }
         file_put_contents(ARK::serversPath(), json_encode($servers));
+        $this->result = $server;
         $this->write("\nServer $server created.");
+        return ConsoleCommand::SUCCESS_CODE;
     }
 }

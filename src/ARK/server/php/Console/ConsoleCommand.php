@@ -42,7 +42,10 @@ use Symfony\Component\Console\Question\Question;
 
 abstract class ConsoleCommand extends Command
 {
+    const SUCCESS_CODE = 1;
+    const ERROR_CODE = 1;
     protected $query = null;
+    protected $result = null;
     protected $input = null;
     protected $output = null;
 
@@ -53,12 +56,19 @@ abstract class ConsoleCommand extends Command
         $this->output = $output;
     }
 
-    protected function runCommand($command, array $arguments)
+    protected function runCommand($command, array $arguments = [])
     {
         $command = $this->getApplication()->find($command);
-        $input = new ArrayInput($arguments);
-        $returnCode = $command->run($arguments, $this->output);
+        $returnCode = $command->run(new ArrayInput($arguments), $this->output);
+        if ($returnCode && $command->result() !== null) {
+            return $command->result();
+        }
         return $returnCode;
+    }
+
+    protected function result()
+    {
+        return $this->result;
     }
 
     protected function addRequiredArgument($argument, $description)

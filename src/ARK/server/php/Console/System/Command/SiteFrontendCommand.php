@@ -58,7 +58,7 @@ class SiteFrontendCommand extends ConsoleCommand
         if ($frontend) {
             if (!in_array($frontend, array_keys($frontends))) {
                 $this->write("\nFAILED: Frontend $frontend not found, are you sure you built it?");
-                return false;
+                return ConsoleCommand::ERROR_CODE;
             }
         } else {
             $frontend = $this->askChoice('Please enter the frontend to use', array_keys($frontends), 'core');
@@ -116,5 +116,6 @@ class SiteFrontendCommand extends ConsoleCommand
             $fs->symlink($srcDir.'/translations', $translationsDir, true);
             $fs->symlink($srcDir.'/assets', $assetsDir, true);
         }
+        return ConsoleCommand::SUCCESS_CODE;
     }
 }

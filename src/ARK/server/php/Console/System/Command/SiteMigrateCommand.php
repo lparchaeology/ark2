@@ -32,6 +32,7 @@ namespace ARK\Console\System\Command;
 
 use ARK\ARK;
 use ARK\Console\ProcessTrait;
+use ARK\Console\ConsoleCommand;
 use ARK\Database\Console\DatabaseCommand;
 use Doctrine\DBAL\DBALException;
 use Symfony\Component\Console\Helper\Table;
@@ -58,31 +59,24 @@ class SiteMigrateCommand extends DatabaseCommand
 
         // If new, create by calling create
         if (strtolower($migrate) == 'new') {
-            $command = $this->getApplication()->find('site:create');
-            $site = $command->run(new ArrayInput([]), $this->output);
+            $site = $this->runCommand('site:create');
         } else {
             $site = $this->askChoice('Please choose the site to migrate into', ARK::sites());
         }
-        dump('site');
-        dump($site);
-        if ($site === false) {
-            return false;
+        if ($site === ConsoleCommand::ERROR_CODE) {
+            return ConsoleCommand::ERROR_CODE;
         }
         $destinationConfig = ARK::siteDatabaseConfig($site);
 
         // Clone old database and get clone connection
         $clone = $this->askChoice('Do you want to clone the database or an use an existing clone?', ['New', 'Existing'], 'New');
         if (strtolower($migrate) == 'new') {
-            $command = $this->getApplication()->find('database:clone');
-            $arguments = new ArrayInput([
-                'site' => strtolower($site),
-            ]);
-            $sourceConfig = $command->run($arguments, $this->output);
+            $sourceConfig = $this->runCommand('database:clone');
         } else {
             $sourceConfig = $this->chooseServerConfig();
         }
-        if (!$sourceConfig) {
-            return false;
+        if (!is_array($sourceConfig)) {
+            return ConsoleCommand::ERROR_CODE;
         }
         $source = $this->getConnection($sourceConfig);
 
@@ -146,7 +140,7 @@ class SiteMigrateCommand extends DatabaseCommand
         }
         $table->render();
         if (!$this->askConfirmation('Please confirm you want to use this mapping', false)) {
-            return false;
+            return ConsoleCommand::ERROR_CODE;
         }
 
         // Copy items

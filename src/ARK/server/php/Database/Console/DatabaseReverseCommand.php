@@ -31,6 +31,7 @@
 namespace ARK\Database\Console;
 
 use ARK\ARK;
+use ARK\Console\ConsoleCommand;
 use ARK\Database\Console\DatabaseCommand;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
@@ -69,11 +70,11 @@ class DatabaseReverseCommand extends DatabaseCommand
             $admin->extractSchema($path, true);
         } catch (DBALException $e) {
             $this->writeException("FAILED: Extract Schema from database $dbname failed", $e);
-            return false;
+            return ConsoleCommand::ERROR_CODE;
         }
 
         $admin->close();
         $this->write("SUCCESS: Schema for $dbname extracted to file $path");
-        return true;
+        return ConsoleCommand::SUCCESS_CODE;
     }
 }
