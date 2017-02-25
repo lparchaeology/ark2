@@ -63,6 +63,8 @@ class SystemApplication extends Application
         $this['monolog.level'] = 'DEBUG';
         $this['logger.level'] = LogLevel::DEBUG;
 
+        $this->register(new SimpleBusServiceProvider);
+
         $this->register(new SwiftmailerServiceProvider());
         $this['swiftmailer.options'] = [];
 

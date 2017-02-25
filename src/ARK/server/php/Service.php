@@ -147,6 +147,36 @@ class Service
         return self::$app['mailer'];
     }
 
+    public static function commandBus()
+    {
+        return self::$app['bus.command'];
+    }
+
+    public static function eventBus()
+    {
+        return self::$app['bus.event'];
+    }
+
+    public static function eventRecorder()
+    {
+        return self::$app['bus.event.recorder'];
+    }
+
+    public static function handleCommand($message)
+    {
+        return self::$app['bus.command']->handle($message);
+    }
+
+    public static function handleEvent($message)
+    {
+        return self::$app['bus.event']->handle($message);
+    }
+
+    public static function recordEvent($message)
+    {
+        return self::$app['bus.event.recorder']->record($message);
+    }
+
     public static function translate($id, $role = 'default', array $parameters = [], $domain = 'messages', $locale = null)
     {
         return self::$app->translate($id, $role, $parameters, $domain, $locale);

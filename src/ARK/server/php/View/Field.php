@@ -32,7 +32,6 @@ namespace ARK\View;
 
 use ARK\ORM\ORM;
 use ARK\Model\Item;
-use ARK\Model\ItemAttribute;
 use ARK\Model\Schema\SchemaAttribute;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
@@ -50,17 +49,14 @@ class Field extends Element
     public function attribute()
     {
         if ($this->attribute === null && $this->attributeName) {
-            $this->attribute = ORM::find(ItemAttribute::class, $this->attributeName);
-            if ($this->attribute === null) {
-                $this->attribute = ORM::find(
-                    SchemaAttribute::class,
-                    [
-                        'schma' => $this->schma->name(),
-                        'type' => $this->itemType,
-                        'attribute' => $this->attributeName,
-                    ]
-                );
-            }
+            $this->attribute = ORM::find(
+                SchemaAttribute::class,
+                [
+                    'schma' => $this->schma->name(),
+                    'type' => $this->itemType,
+                    'attribute' => $this->attributeName,
+                ]
+            );
         }
         return $this->attribute;
     }

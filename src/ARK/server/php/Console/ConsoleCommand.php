@@ -42,8 +42,9 @@ use Symfony\Component\Console\Question\Question;
 
 abstract class ConsoleCommand extends Command
 {
-    const SUCCESS_CODE = 1;
+    const SUCCESS_CODE = 0;
     const ERROR_CODE = 1;
+
     protected $query = null;
     protected $result = null;
     protected $input = null;

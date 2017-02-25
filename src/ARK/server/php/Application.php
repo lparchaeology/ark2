@@ -33,6 +33,7 @@ namespace ARK;
 use ARK\ARK;
 use ARK\Api\JsonApi\Http\JsonApiRequest;
 use ARK\Api\JsonApi\JsonApiServiceProvider;
+use ARK\Bus\SimpleBusServiceProvider;
 use ARK\Database\DbalServiceProvider;
 use ARK\Http\Error\InternalServerError;
 use ARK\ORM\OrmServiceProvider;
@@ -161,6 +162,22 @@ class Application extends SilexApplication
             ]);
         };
 
+        // Enable the logger
+        $this->register(new MonologServiceProvider);
+        $this['monolog.logfile'] = $this['dir.var'].'/logs/'.$config['site'].'.log';
+        $this['monolog.name'] = $config['site'];
+        if (static::$debug) {
+            $this['monolog.level'] = 'DEBUG';
+            $this['logger.level'] = LogLevel::DEBUG;
+        } else {
+            $this['monolog.level'] = 'WARNING';
+            $this['logger.level'] = LogLevel::WARNING;
+        }
+
+        // Enable the Message Bus and Event Bus
+        // - Required on Use: Logger
+        $this->register(new SimpleBusServiceProvider);
+
         // Enable core providers
         $this->register(new HttpFragmentServiceProvider());
         $this->register(new ServiceControllerServiceProvider());
@@ -176,18 +193,6 @@ class Application extends SilexApplication
         $this->register(new SwiftmailerServiceProvider());
         // TODO Configure mailer!
         $this['swiftmailer.options'] = [];
-
-        // Enable the logger
-        $this->register(new MonologServiceProvider());
-        $this['monolog.logfile'] = $this['dir.var'].'/logs/'.$config['site'].'.log';
-        $this['monolog.name'] = $config['site'];
-        if (static::$debug) {
-            $this['monolog.level'] = 'DEBUG';
-            $this['logger.level'] = LogLevel::DEBUG;
-        } else {
-            $this['monolog.level'] = 'WARNING';
-            $this['logger.level'] = LogLevel::WARNING;
-        }
 
         // Enable the Database
         // - Optional on Use: Logger, Stopwatch
