@@ -198,19 +198,16 @@ class OrmServiceProvider implements ServiceProviderInterface
                             'path' => $srcDir.'/Model/Fragment',
                         ],
                         [
-                            'type' => 'php',
+                            'type' => 'item',
                             'namespace' => 'ARK\Entity',
-                            'path' => $srcDir.'/Entity',
                         ],
                         [
-                            'type' => 'php',
+                            'type' => 'item',
                             'namespace' => 'ARK\File',
-                            'path' => $srcDir.'/File',
                         ],
                         [
-                            'type' => 'php',
+                            'type' => 'item',
                             'namespace' => 'DIME\Entity',
-                            'path' => $container['dir.install'].'/src/DIME/php/Entity',
                         ],
                     ],
                 ]
@@ -299,6 +296,9 @@ class OrmServiceProvider implements ServiceProviderInterface
                     }
 
                     switch ($entity['type']) {
+                        case 'item':
+                            $driver = new ItemDriver($entity['namespace']);
+                            break;
                         case 'php':
                             $driver = new StaticPHPDriver($entity['path']);
                             break;

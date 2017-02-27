@@ -31,9 +31,7 @@
 namespace ARK\File;
 
 use ARK\File\File;
-use ARK\ORM\ClassMetadata;
 
 class Text extends File
 {
-    public static function loadMetadata(ClassMetadata $metadata) {}
 }

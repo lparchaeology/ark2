@@ -205,6 +205,17 @@ class Database
         return null;
     }
 
+    public function getModuleForClassName($className)
+    {
+        $this->loadModules();
+        foreach ($this->modules as $module) {
+            if ($module['classname'] == $className) {
+                return $module;
+            }
+        }
+        return null;
+    }
+
     public function getModules()
     {
         $this->loadModules();

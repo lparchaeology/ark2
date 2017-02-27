@@ -33,9 +33,7 @@ namespace ARK\Entity\Actor;
 // TODO Will be automatically generated class!
 
 use ARK\Entity\Actor;
-use ARK\ORM\ClassMetadata;
 
 class Person extends Actor
 {
-    public static function loadMetadata(ClassMetadata $metadata) {}
 }

@@ -31,9 +31,7 @@
 namespace ARK\File;
 
 use ARK\File\File;
-use ARK\ORM\ClassMetadata;
 
 class Image extends File
 {
-    public static function loadMetadata(ClassMetadata $metadata) {}
 }

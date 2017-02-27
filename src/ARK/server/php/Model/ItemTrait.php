@@ -32,8 +32,6 @@ namespace ARK\Model;
 
 use ARK\Model\Schema;
 use ARK\Model\VersionTrait;
-use ARK\ORM\ClassMetadata;
-use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Service;
 
@@ -205,40 +203,5 @@ trait ItemTrait
             return $this->parent->schema->xmis($this->parent->schemaId(), $this->module());
         }
         return [];
-    }
-
-    public static function buildItemMetadata($metadata, $module)
-    {
-        // Table
-        $mod = Service::database()->getModule($module);
-        $builder = new ClassMetadataBuilder($metadata, $mod['tbl']);
-        $builder->setCustomRepositoryClass('ARK\ORM\ItemEntityRepository');
-
-        // Key
-        $builder->addStringKey('item', 30);
-        // Set ID Generator TODO Move elsewhere, say ClassMetadata? Table driven?
-        $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_CUSTOM);
-        $metadata->setCustomGeneratorDefinition(['class' => 'ARK\ORM\ItemSequenceGenerator']);
-
-        // Fields
-        $builder->addStringField('module', 30);
-        $builder->addStringField('schma', 30);
-        $typeEntities = Service::database()->getTypeEntities($module);
-        if ($typeEntities) {
-            $builder->setSingleTableInheritance()->setDiscriminatorColumn('type', 'string', 30);
-            $metadata->addDiscriminatorMapClass('', $mod['entity']);
-            foreach ($typeEntities as $type) {
-                $metadata->addDiscriminatorMapClass($type['type'], $type['entity']);
-            }
-        } else {
-            $builder->addStringField('type', 30);
-        }
-        $builder->addStringField('status', 30);
-        $builder->addStringField('parentModule', 30, 'parent_module');
-        $builder->addStringField('parentItem', 30, 'parent_item');
-        $builder->addStringField('idx', 30);
-        $builder->addStringField('label', 30);
-        VersionTrait::buildVersionMetadata($builder);
-        $metadata->setItemEntity(true);
     }
 }

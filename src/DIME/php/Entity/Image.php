@@ -34,8 +34,6 @@ namespace DIME\Entity;
 
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
-use ARK\ORM\ClassMetadata;
-use ARK\ORM\ClassMetadataBuilder;
 
 class Image implements Item
 {
@@ -44,10 +42,5 @@ class Image implements Item
     public function __construct($schema)
     {
         $this->schma = $schema;
-    }
-
-    public static function loadMetadata(ClassMetadata $metadata)
-    {
-        ItemTrait::buildItemMetadata($metadata, 'image');
     }
 }

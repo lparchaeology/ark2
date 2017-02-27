@@ -34,14 +34,8 @@ namespace ARK\Entity;
 
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
-use ARK\ORM\ClassMetadata;
 
 class Actor implements Item
 {
     use ItemTrait;
-
-    public static function loadMetadata(ClassMetadata $metadata)
-    {
-        ItemTrait::buildItemMetadata($metadata, 'actor');
-    }
 }

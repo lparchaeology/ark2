@@ -43,7 +43,10 @@ class Module
 
     protected $module = '';
     protected $resource = '';
+    protected $project = '';
+    protected $namespace = '';
     protected $entity = '';
+    protected $classname = '';
     protected $table = null;
     protected $core = false;
     protected $schemas = null;
@@ -63,9 +66,24 @@ class Module
         return $this->resource;
     }
 
+    public function project()
+    {
+        return $this->project;
+    }
+
+    public function namespace()
+    {
+        return $this->namespace;
+    }
+
     public function entity()
     {
         return $this->entity;
+    }
+
+    public function className()
+    {
+        return $this->classname;
     }
 
     public function table()
@@ -88,7 +106,10 @@ class Module
         $builder = new ClassMetadataBuilder($metadata, 'ark_module');
         $builder->addStringKey('module', 30);
         $builder->addStringField('resource', 30);
-        $builder->addStringField('entity', 100);
+        $builder->addStringField('project', 30);
+        $builder->addStringField('namespace', 100);
+        $builder->addStringField('entity', 30);
+        $builder->addStringField('classname', 100);
         $builder->addStringField('table', 30, 'tbl');
         $builder->addField('core', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
