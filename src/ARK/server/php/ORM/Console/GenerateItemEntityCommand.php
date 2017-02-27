@@ -28,17 +28,15 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Console\System\Command;
+namespace ARK\ORM\Console;
 
-use ARK\ARK;
 use ARK\Console\ConsoleCommand;
-use ARK\ORM\ClassMetadata;
-use ARK\ORM\ItemEntityGenerator;
+use ARK\ORM\Command\GenerateItemEntityMessage;
+use ARK\Service;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Filesystem;
 
-class SiteFrontendCommand extends ConsoleCommand
+class GenerateItemEntityCommand extends ConsoleCommand
 {
     protected function configure()
     {
@@ -50,13 +48,10 @@ class SiteFrontendCommand extends ConsoleCommand
     {
         parent::execute($input, $output);
 
-        $generator = new ItemEntityGenerator;
         $modules = Service::database()->getModules();
         foreach ($modules as $module) {
-            $metadata = new ClassMetadata($module['classname']);
-            $driver = new ItemDriver($module['namespace']);
-            $driver->loadMetadataForClass($module['classname'], $metadata);
-            $generator->writeEntityClass($metadata);
+            $this->write('Generating '.$module['classname']);
+            Service::handleCommand(new GenerateItemEntityMessage($module['project'], $module['namespace'], $module['classname']));
         }
 
         return ConsoleCommand::SUCCESS_CODE;

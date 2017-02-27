@@ -33,6 +33,7 @@ namespace ARK\Console\Site;
 use ARK\ARK;
 use ARK\Application;
 use ARK\Console\Console;
+use ARK\ORM\Console\GenerateItemEntityCommand;
 use ARK\Translation\Console\TranslationAddCommand;
 use ARK\Translation\Console\TranslationDimeCommand;
 use Doctrine\DBAL\Tools\Console\Command\ImportCommand;
@@ -81,5 +82,8 @@ class SiteConsole extends Console
         $this->add(new MigrateCommand());
         $this->add(new StatusCommand());
         $this->add(new VersionCommand());
+
+        // ORM Commands
+        $this->add(new GenerateItemEntityCommand());
     }
 }

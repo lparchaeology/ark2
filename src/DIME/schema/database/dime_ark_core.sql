@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 21, 2017 at 10:53 PM
+-- Generation Time: Feb 27, 2017 at 08:44 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -507,9 +507,9 @@ CREATE TABLE `ark_instance_schema` (
 --
 
 INSERT INTO `ark_instance_schema` (`instance`, `schma`, `enabled`, `deprecated`) VALUES
+('dime', 'core.actor', 1, 0),
 ('dime', 'core.file', 1, 0),
 ('dime', 'core.page', 1, 0),
-('dime', 'dime.actor', 1, 0),
 ('dime', 'dime.campaign', 1, 0),
 ('dime', 'dime.find', 1, 0),
 ('dime', 'dime.image', 1, 0),
@@ -634,8 +634,10 @@ INSERT INTO `ark_map_source` (`source`, `type`, `subtype`, `format`, `view_class
 CREATE TABLE `ark_module` (
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `resource` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `project` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `namespace` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `entity` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `entity` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `classname` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tbl` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `core` tinyint(1) NOT NULL DEFAULT '0',
   `enabled` tinyint(1) NOT NULL,
@@ -647,14 +649,14 @@ CREATE TABLE `ark_module` (
 -- Dumping data for table `ark_module`
 --
 
-INSERT INTO `ark_module` (`module`, `resource`, `namespace`, `entity`, `tbl`, `core`, `enabled`, `deprecated`, `keyword`) VALUES
-('actor', 'aktører', 'ARK', 'ARK\\Entity\\Actor', 'ark_item_actor', 1, 1, 0, 'module.actor'),
-('campaign', 'campaigns', 'DIME', 'DIME\\Entity\\Campaign', 'ark_item_campaign', 0, 1, 0, 'dime.campaign'),
-('file', 'filer', 'ARK', 'ARK\\File\\File', 'ark_item_file', 1, 1, 0, 'module.file'),
-('find', 'fund', 'DIME', 'DIME\\Entity\\Find', 'ark_item_find', 0, 1, 0, 'dime.find'),
-('image', 'images', 'DIME', 'DIME\\Entity\\Image', 'ark_item_image', 0, 1, 0, 'dime.image'),
-('locality', 'lokalitet', 'DIME', 'DIME\\Entity\\Locality', 'ark_item_locality', 0, 1, 0, 'dime.locality'),
-('page', '', 'ARK', 'ARK\\Entity\\Page', 'ark_item_page', 1, 1, 0, 'module.page');
+INSERT INTO `ark_module` (`module`, `resource`, `project`, `namespace`, `entity`, `classname`, `tbl`, `core`, `enabled`, `deprecated`, `keyword`) VALUES
+('actor', 'aktører', 'ARK', 'ARK\\Entity', 'Actor', 'ARK\\Entity\\Actor', 'ark_item_actor', 1, 1, 0, 'module.actor'),
+('campaign', 'campaigns', 'DIME', 'DIME\\Entity', 'Campaign', 'DIME\\Entity\\Campaign', 'ark_item_campaign', 0, 1, 0, 'dime.campaign'),
+('file', 'filer', 'ARK', 'ARK\\File', 'File', 'ARK\\File\\File', 'ark_item_file', 1, 1, 0, 'module.file'),
+('find', 'fund', 'DIME', 'DIME\\Entity', 'Find', 'DIME\\Entity\\Find', 'ark_item_find', 0, 1, 0, 'dime.find'),
+('image', 'images', 'DIME', 'DIME\\Entity', 'Image', 'DIME\\Entity\\Image', 'ark_item_image', 0, 1, 0, 'dime.image'),
+('locality', 'lokalitet', 'DIME', 'DIME\\Entity', 'Locality', 'DIME\\Entity\\Locality', 'ark_item_locality', 0, 1, 0, 'dime.locality'),
+('page', '', 'ARK', 'ARK\\Entity', 'Page', 'ARK\\Entity\\Page', 'ark_item_page', 1, 1, 0, 'module.page');
 
 -- --------------------------------------------------------
 
@@ -777,9 +779,9 @@ CREATE TABLE `ark_schema` (
 --
 
 INSERT INTO `ark_schema` (`schma`, `module`, `generator`, `sequence`, `type`, `type_vocabulary`, `type_entities`, `enabled`, `deprecated`, `keyword`) VALUES
+('core.actor', 'actor', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 'type', 'core.actor.type', 1, 1, 0, 'core.schema.actor'),
 ('core.file', 'file', 'ARK\\ORM\\Id\\IdentityGenerator', NULL, 'type', 'core.file.type', 1, 1, 0, 'core.schema.file'),
 ('core.page', 'page', '', '', '', '', 0, 1, 0, 'core.schema.page'),
-('dime.actor', 'actor', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 'type', 'dime.actor.type', 1, 1, 0, 'dime.schema.actor'),
 ('dime.campaign', 'campaign', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', NULL, NULL, 0, 1, 0, 'dime.schema.campaign'),
 ('dime.find', 'find', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 'type', 'dime.find.type', 0, 1, 0, 'dime.schema.find'),
 ('dime.image', 'image', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', NULL, NULL, 0, 1, 0, 'dime.schema.image'),
@@ -837,6 +839,11 @@ CREATE TABLE `ark_schema_attribute` (
 --
 
 INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `vocabulary`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`, `keyword`) VALUES
+('core.actor', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.id'),
+('core.actor', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.type'),
+('core.actor', 'museum', 'fullname', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.fullname'),
+('core.actor', 'museum', 'kommuner', 'identifier', 'dime.denmark.kommune', 0, 0, 1, 0, 1, 0, 'dime.actor.kommuner'),
+('core.actor', 'museum', 'shortname', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.shortname'),
 ('core.file', '', 'description', 'plaintext', NULL, 0, 1, 1, 0, 1, 0, 'core.file.description'),
 ('core.file', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.file.id'),
 ('core.file', '', 'mediatype', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.file.mediatype'),
@@ -846,11 +853,6 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('core.file', '', 'versions', 'fileversion', NULL, 1, 0, 1, 0, 1, 0, 'core.file.versions'),
 ('core.page', '', 'content', 'html', NULL, 1, 1, 1, 0, 1, 0, 'property.content'),
 ('core.page', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.page.id'),
-('dime.actor', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.id'),
-('dime.actor', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.type'),
-('dime.actor', 'museum', 'fullname', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.fullname'),
-('dime.actor', 'museum', 'kommuner', 'identifier', 'dime.denmark.kommune', 0, 0, 1, 0, 1, 0, 'dime.actor.kommuner'),
-('dime.actor', 'museum', 'shortname', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.shortname'),
 ('dime.find', '', 'condition', 'identifier', 'dime.find.condition', 0, 1, 1, 0, 1, 0, 'dime.find.condition'),
 ('dime.find', '', 'description', 'plaintext', NULL, 0, 1, 1, 0, 1, 0, 'property.description'),
 ('dime.find', '', 'finddate', 'date', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.finddate'),
@@ -1536,13 +1538,13 @@ INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attrib
 ('core_file_versions', 'field', 'core.file', '', 'versions', '', '', 0, 0, 'ARK\\Form\\Type\\FileVersionType', '', 1, 0, 1, 0, NULL),
 ('core_page_content', 'field', 'core.page', '', 'content', '', '', 0, 0, '', '', 0, 0, 1, 0, 'property.content'),
 ('core_page_view', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', '', 0, 0, 1, 0, NULL),
-('dime_actor_fullname', 'field', 'dime.actor', 'museum', 'fullname', '', '', 0, 0, 'ARK\\Form\\Type\\LocalTextType', '', 1, 0, 1, 0, NULL),
-('dime_actor_id', 'field', 'dime.actor', '', 'id', '', '', 0, 0, 'ARK\\Form\\Type\\IdType', '', 1, 0, 1, 0, NULL),
+('dime_actor_fullname', 'field', 'core.actor', 'museum', 'fullname', '', '', 0, 0, 'ARK\\Form\\Type\\LocalTextType', '', 1, 0, 1, 0, NULL),
+('dime_actor_id', 'field', 'core.actor', '', 'id', '', '', 0, 0, 'ARK\\Form\\Type\\IdType', '', 1, 0, 1, 0, NULL),
 ('dime_actor_item', 'grid', NULL, NULL, NULL, '', '', 0, 1, '', '', 1, 0, 1, 0, NULL),
-('dime_actor_kommuner', 'field', 'dime.actor', 'museum', 'kommuner', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
+('dime_actor_kommuner', 'field', 'core.actor', 'museum', 'kommuner', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
 ('dime_actor_list', 'table', NULL, NULL, NULL, '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('dime_actor_shortname', 'field', 'dime.actor', 'museum', 'shortname', '', '', 0, 0, 'ARK\\Form\\Type\\LocalTextType', '', 1, 0, 1, 0, NULL),
-('dime_actor_type', 'field', 'dime.actor', '', 'type', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
+('dime_actor_shortname', 'field', 'core.actor', 'museum', 'shortname', '', '', 0, 0, 'ARK\\Form\\Type\\LocalTextType', '', 1, 0, 1, 0, NULL),
+('dime_actor_type', 'field', 'core.actor', '', 'type', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
 ('dime_find_action', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
 ('dime_find_add', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
 ('dime_find_blank', 'field', 'dime.find', '', '', '', '', 0, 0, '', '', 0, 0, 1, 0, NULL),
@@ -1734,11 +1736,11 @@ CREATE TABLE `ark_vocabulary` (
 --
 
 INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `workflow`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('core.actor.type', 'list', 'DIME', 1, 0, 1, 0, 'core.actor.type', 'Actor Type'),
 ('core.file.status', 'list', 'ARK Core', 1, 0, 1, 0, 'vocabulary.file.status', 'File Status'),
 ('core.file.type', 'list', 'ARK Core', 1, 0, 1, 0, 'vocabulary.file.type', 'File Type'),
 ('core.item.status', 'list', 'ARK Core', 1, 0, 1, 0, 'core.item.status', 'Item Status'),
 ('country', 'list', 'ISO3166', 1, 0, 1, 0, 'vocabulary.country', 'ISO Country Codes'),
-('dime.actor.type', 'list', 'DIME', 1, 0, 1, 0, 'dime.actor.type', 'DIME Actor Type'),
 ('dime.denmark.admin', 'taxonomy', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.denmark.admin', 'Danish NUTS and LAU Administrative Unit Hierarchy'),
 ('dime.denmark.kommune', 'list', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.denmark.kommune', 'Danish LAU-1 Kommune (Municipality) List'),
 ('dime.denmark.region', 'list', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.denmark.region', 'Danish NUTS2 Region List'),
@@ -1904,12 +1906,15 @@ CREATE TABLE `ark_vocabulary_parameter` (
 --
 
 INSERT INTO `ark_vocabulary_parameter` (`concept`, `term`, `name`, `type`, `value`) VALUES
-('core.file.type', 'audio', 'entity', 'string', 'ARK\\File\\Audio'),
-('core.file.type', 'document', 'entity', 'string', 'ARK\\File\\Document'),
-('core.file.type', 'image', 'entity', 'string', 'ARK\\File\\Image'),
-('core.file.type', 'other', 'entity', 'string', 'ARK\\File\\File'),
-('core.file.type', 'text', 'entity', 'string', 'ARK\\File\\Text'),
-('core.file.type', 'video', 'entity', 'string', 'ARK\\File\\Video'),
+('core.actor.type', 'institution', 'classname', 'string', 'ARK\\Entity\\Actor\\Institution'),
+('core.actor.type', 'museum', 'classname', 'string', 'ARK\\Entity\\Actor\\Museum'),
+('core.actor.type', 'person', 'classname', 'string', 'ARK\\Entity\\Actor\\Person'),
+('core.file.type', 'audio', 'classname', 'string', 'ARK\\File\\Audio'),
+('core.file.type', 'document', 'classname', 'string', 'ARK\\File\\Document'),
+('core.file.type', 'image', 'classname', 'string', 'ARK\\File\\Image'),
+('core.file.type', 'other', 'classname', 'string', 'ARK\\File\\File'),
+('core.file.type', 'text', 'classname', 'string', 'ARK\\File\\Text'),
+('core.file.type', 'video', 'classname', 'string', 'ARK\\File\\Video'),
 ('dime.period', 'AMXX', 'year_end', 'integer', '-3951'),
 ('dime.period', 'AMXX', 'year_start', 'integer', '-9000'),
 ('dime.period', 'AXXX', 'year_end', 'integer', '-1701'),
@@ -2265,6 +2270,9 @@ CREATE TABLE `ark_vocabulary_term` (
 --
 
 INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('core.actor.type', 'institution', '', 0, 1, 0, 'dime.actor.type.institution', ''),
+('core.actor.type', 'museum', '', 0, 1, 0, 'dime.actor.type.museum', ''),
+('core.actor.type', 'person', '', 0, 1, 0, 'dime.actor.type.person', ''),
 ('core.file.status', 'checkedin', '', 0, 1, 0, 'core.file.status.checkedin', ''),
 ('core.file.status', 'checkedout', '', 0, 1, 0, 'core.file.status.checkedout', ''),
 ('core.file.status', 'expired', '', 0, 1, 0, 'core.file.status.expired', ''),
@@ -2524,9 +2532,6 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('country', 'ZA ', 'southafrica', 0, 1, 0, 'country.southafrica', ''),
 ('country', 'ZM ', 'zambia', 0, 1, 0, 'country.zambia', ''),
 ('country', 'ZW ', 'zimbabwe', 0, 1, 0, 'country.zimbabwe', ''),
-('dime.actor.type', 'institution', '', 0, 1, 0, 'dime.actor.type.institution', ''),
-('dime.actor.type', 'museum', '', 0, 1, 0, 'dime.actor.type.museum', ''),
-('dime.actor.type', 'person', '', 0, 1, 0, 'dime.actor.type.person', ''),
 ('dime.denmark.admin', 'DK', 'denmark', 0, 1, 0, 'dime.denmark.admin.denmark', ''),
 ('dime.denmark.kommune', '101', 'kobenhavn', 0, 1, 0, 'dime.kommune.kobenhavn', ''),
 ('dime.denmark.kommune', '147', 'frederiksbeg', 0, 1, 0, 'dime.kommune.frederiksbeg', ''),

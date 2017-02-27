@@ -31,6 +31,7 @@
 namespace ARK\Console;
 
 use ARK\ARK;
+use ARK\Bus\SimpleBusServiceProvider;
 use Psr\Log\LogLevel;
 use Silex\Application;
 use Silex\Application\MonologTrait;

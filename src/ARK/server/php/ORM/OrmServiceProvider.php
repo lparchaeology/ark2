@@ -36,23 +36,26 @@ namespace ARK\ORM;
  * (c) Dragonfly Development Inc.
  */
 
-use ARK\ORM\EntityManager;
-use ARK\ORM\StaticPHPDriver;
-use ARK\ORM\UnitOfWork;
-use Doctrine\Common\Cache\CacheProvider;
-use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
-use Doctrine\DBAL\Types\Type;
-use Doctrine\ORM\Configuration;
-use Doctrine\ORM\EntityManager as DoctrineEntityManager;
-use Doctrine\ORM\Mapping\Driver\Driver;
-use Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver;
-use Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver;
-use Doctrine\ORM\Mapping\Driver\XmlDriver;
-use Doctrine\ORM\Mapping\Driver\YamlDriver;
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
+ use ARK\ORM\Command\GenerateItemEntityMessage;
+ use ARK\ORM\Command\GenerateItemEntityHandler;
+ use ARK\ORM\EntityManager;
+ use ARK\ORM\ItemEntityMappingDriver;
+ use ARK\ORM\StaticPHPDriver;
+ use ARK\ORM\UnitOfWork;
+ use Doctrine\Common\Cache\CacheProvider;
+ use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
+ use Doctrine\DBAL\Types\Type;
+ use Doctrine\ORM\Configuration;
+ use Doctrine\ORM\EntityManager as DoctrineEntityManager;
+ use Doctrine\ORM\Mapping\Driver\Driver;
+ use Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver;
+ use Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver;
+ use Doctrine\ORM\Mapping\Driver\XmlDriver;
+ use Doctrine\ORM\Mapping\Driver\YamlDriver;
+ use Pimple\Container;
+ use Pimple\ServiceProviderInterface;
 
-/**
+ /**
  * Doctrine ORM Pimple Service Provider.
  *
  * @author Beau Simensen <beau@dflydev.com>
@@ -61,6 +64,11 @@ class OrmServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container)
     {
+        $commands = [
+            GenerateItemEntityMessage::class => GenerateItemEntityHandler::class,
+        ];
+        $container['bus.command.handlers'] = array_merge($container['bus.command.handlers'], $commands);
+
         $container['orm.proxies_dir'] = $container['dir.cache'].'/doctrine/proxies';
 
         $container['orm.default_cache'] = ['driver' => 'array'];
@@ -297,7 +305,7 @@ class OrmServiceProvider implements ServiceProviderInterface
 
                     switch ($entity['type']) {
                         case 'item':
-                            $driver = new ItemDriver($entity['namespace']);
+                            $driver = new ItemEntityMappingDriver($entity['namespace']);
                             break;
                         case 'php':
                             $driver = new StaticPHPDriver($entity['path']);

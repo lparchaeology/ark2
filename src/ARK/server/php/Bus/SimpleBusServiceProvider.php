@@ -34,17 +34,18 @@ use Exception;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use SimpleBus\Message\Bus\Middleware\FinishesHandlingMessageBeforeHandlingNext;
-use SimpleBus\Message\Bus\Middleware\LoggingMiddleware;
 use SimpleBus\Message\Bus\Middleware\MessageBusSupportingMiddleware;
 use SimpleBus\Message\CallableResolver\CallableCollection;
 use SimpleBus\Message\CallableResolver\CallableMap;
 use SimpleBus\Message\CallableResolver\ServiceLocatorAwareCallableResolver;
 use SimpleBus\Message\Handler\DelegatesToMessageHandlerMiddleware;
 use SimpleBus\Message\Handler\Resolver\NameBasedMessageHandlerResolver;
+use SimpleBus\Message\Logging\LoggingMiddleware;
 use SimpleBus\Message\Name\ClassBasedNameResolver;
+use SimpleBus\Message\Recorder\HandlesRecordedMessagesMiddleware;
+use SimpleBus\Message\Recorder\PublicMessageRecorder;
 use SimpleBus\Message\Subscriber\NotifiesMessageSubscribersMiddleware;
 use SimpleBus\Message\Subscriber\Resolver\NameBasedMessageSubscriberResolver;
-use SimpleBus\Message\Recorder\PublicMessageRecorder;
 
 class SimpleBusServiceProvider implements ServiceProviderInterface
 {
@@ -59,7 +60,7 @@ class SimpleBusServiceProvider implements ServiceProviderInterface
             return new MessageBusSupportingMiddleware($app['bus.command.middleware']);
         };
 
-        $app['bus.command.middleware'] = function () {
+        $app['bus.command.middleware'] = function () use ($app) {
             return [
                 new HandlesRecordedMessagesMiddleware($app['bus.event.recorder'], $app['bus.event']),
                 new FinishesHandlingMessageBeforeHandlingNext(),
@@ -87,7 +88,7 @@ class SimpleBusServiceProvider implements ServiceProviderInterface
             return new MessageBusSupportingMiddleware($app['bus.event.middleware']);
         };
 
-        $app['bus.event.middleware'] = function () {
+        $app['bus.event.middleware'] = function () use ($app) {
             return [
                 new FinishesHandlingMessageBeforeHandlingNext(),
                 new LoggingMiddleware($app['logger'], $app['logger.level']),
@@ -97,7 +98,7 @@ class SimpleBusServiceProvider implements ServiceProviderInterface
 
         $app['bus.event.resolver'] = function () use ($app) {
             return new NameBasedMessageSubscriberResolver(
-                $app['bus.resolver.callable'],
+                $app['bus.resolver.name'],
                 $app['bus.event.callables']
             );
         };
@@ -122,6 +123,9 @@ class SimpleBusServiceProvider implements ServiceProviderInterface
             return new ServiceLocatorAwareCallableResolver(function ($serviceId) use ($app) {
                 if ($app->offsetExists($serviceId)) {
                     return $app[$serviceId];
+                }
+                if (class_exists($serviceId)) {
+                    return new $serviceId;
                 }
                 throw new Exception("Service $serviceId to handle message could not be located.");
             });

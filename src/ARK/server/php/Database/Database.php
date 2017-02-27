@@ -273,7 +273,7 @@ class Database
     public function getTypeEntities($module)
     {
         $sql = "
-            SELECT ark_vocabulary_parameter.term as type, ark_vocabulary_parameter.value as entity
+            SELECT ark_vocabulary_parameter.term as type, ark_vocabulary_parameter.value as classname
             FROM ark_schema, ark_vocabulary_parameter
             WHERE ark_schema.module = :module
             AND ark_schema.enabled = true
@@ -283,7 +283,7 @@ class Database
         ";
         $params = array(
             ':module' => $module,
-            ':parameter' => 'entity',
+            ':parameter' => 'classname',
         );
         return $this->core()->fetchAll($sql, $params);
     }

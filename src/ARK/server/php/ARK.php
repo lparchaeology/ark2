@@ -62,6 +62,14 @@ class ARK
         return self::srcDir().'/'.$namespace;
     }
 
+    public static function autoloadDir($project = 'ARK')
+    {
+        if ($project == 'ARK') {
+            return self::srcDir().'/'.'ARK/server/php';
+        }
+        return self::srcDir().'/'.$project.'/php';
+    }
+
     public static function frontendDir($namespace, $frontend)
     {
         return self::namespaceDir($namespace).'/frontend/'.$frontend;

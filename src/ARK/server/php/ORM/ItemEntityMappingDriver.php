@@ -38,7 +38,7 @@ use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
-class ItemDriver implements MappingDriver
+class ItemEntityMappingDriver implements MappingDriver
 {
     private $namespace = '';
     private $classNames = null;
@@ -99,5 +99,12 @@ class ItemDriver implements MappingDriver
     public function isTransient($className)
     {
         return Service::database()->getModuleForClassName($className) === null;
+    }
+
+    public function loadMetadataForGenerator($className, ClassMetadata $metadata)
+    {
+        // Table
+        $module = Service::database()->getModuleForClassName($className);
+        $builder = new ClassMetadataBuilder($metadata, $module['tbl']);
     }
 }
