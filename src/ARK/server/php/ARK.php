@@ -207,4 +207,17 @@ class ARK
         }
         return '';
     }
+
+    public static function jsonEncodeWrite(array $data, $path, $pretty = true)
+    {
+        file_put_contents($path, self::jsonEncode($data, $pretty));
+    }
+
+    public static function jsonEncode(array $data, $pretty = true)
+    {
+        if ($pretty) {
+            return json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        }
+        return json_encode($data);
+    }
 }

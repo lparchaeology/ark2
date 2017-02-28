@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 27, 2017 at 08:44 PM
+-- Generation Time: Feb 28, 2017 at 11:50 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -656,7 +656,8 @@ INSERT INTO `ark_module` (`module`, `resource`, `project`, `namespace`, `entity`
 ('find', 'fund', 'DIME', 'DIME\\Entity', 'Find', 'DIME\\Entity\\Find', 'ark_item_find', 0, 1, 0, 'dime.find'),
 ('image', 'images', 'DIME', 'DIME\\Entity', 'Image', 'DIME\\Entity\\Image', 'ark_item_image', 0, 1, 0, 'dime.image'),
 ('locality', 'lokalitet', 'DIME', 'DIME\\Entity', 'Locality', 'DIME\\Entity\\Locality', 'ark_item_locality', 0, 1, 0, 'dime.locality'),
-('page', '', 'ARK', 'ARK\\Entity', 'Page', 'ARK\\Entity\\Page', 'ark_item_page', 1, 1, 0, 'module.page');
+('page', '', 'ARK', 'ARK\\Entity', 'Page', 'ARK\\Entity\\Page', 'ark_item_page', 1, 1, 0, 'module.page'),
+('site', 'sites', '', 'ARK', 'ARK\\Entity\\Site', '', 'ark_item_site', 1, 0, 0, 'module.site');
 
 -- --------------------------------------------------------
 

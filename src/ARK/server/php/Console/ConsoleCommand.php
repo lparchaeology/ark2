@@ -61,7 +61,7 @@ abstract class ConsoleCommand extends Command
     {
         $command = $this->getApplication()->find($command);
         $returnCode = $command->run(new ArrayInput($arguments), $this->output);
-        if ($returnCode && $command->result() !== null) {
+        if ($returnCode == self::SUCCESS_CODE && $command->result() !== null) {
             return $command->result();
         }
         return $returnCode;

@@ -629,10 +629,16 @@
     <field name="resource" type="string" size="30">
       <notnull/>
     </field>
+    <field name="project" type="string" size="30">
+      <notnull/>
+    </field>
     <field name="namespace" type="string" size="100">
       <notnull/>
     </field>
-    <field name="entity" type="string" size="100">
+    <field name="entity" type="string" size="30">
+      <notnull/>
+    </field>
+    <field name="classname" type="string" size="100">
       <notnull/>
     </field>
     <field name="tbl" type="string" size="50">

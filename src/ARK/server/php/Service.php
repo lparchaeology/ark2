@@ -227,9 +227,9 @@ class Service
         return self::$app['serializer'];
     }
 
-    public static function jsonLint()
+    public static function jsonLinter()
     {
-        return self::$app['json.lint'];
+        return self::$app['json.linter'];
     }
 
     public static function jsonSchema()

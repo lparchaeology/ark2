@@ -30,6 +30,7 @@
 
 namespace ARK\Database;
 
+use ARK\ARK;
 use ARK\Database\Connection;
 use ARK\Database\SchemaWriter;
 use Doctrine\DBAL\Schema\Comparator;
@@ -38,6 +39,18 @@ use DoctrineXml\Parser;
 
 class AdminConnection extends Connection
 {
+    public function disableForeignKeyChecks()
+    {
+        // TODO Check Postgres and SQLite
+        $this->executeQuery("SET FOREIGN_KEY_CHECKS=0");
+    }
+
+    public function enableForeignKeyChecks()
+    {
+        // TODO Check Postgres and SQLite
+        $this->executeQuery("SET FOREIGN_KEY_CHECKS=1");
+    }
+
     public function createDatabase($database)
     {
         $this->getSchemaManager()->createDatabase($database);
@@ -62,6 +75,13 @@ class AdminConnection extends Connection
         return $this->getSchemaManager()->createSchema();
     }
 
+    public function loadSql($sqlPath)
+    {
+        $this->disableForeignKeyChecks();
+        $this->executeUpdate(file_get_contents($sqlPath));
+        $this->enableForeignKeyChecks();
+    }
+
     public function loadSchema($schemaPath)
     {
         $schema = Parser::fromFile($schemaPath, $this->platform());
@@ -70,16 +90,36 @@ class AdminConnection extends Connection
 
     public function createSchema($schema)
     {
+        $this->disableForeignKeyChecks();
+        // TODO More efficient way???
         $diff = Comparator::compareSchemas(new Schema(), $schema);
         $queries = $diff->toSaveSql($this->platform());
         foreach ($queries as $query) {
             $this->query($query);
         }
+        $this->enableForeignKeyChecks();
     }
 
     public function extractSchema($schemaPath, $overwrite = true)
     {
         SchemaWriter::fromConnection($this, $schemaPath, $overwrite);
+    }
+
+    public function tableExists($table)
+    {
+        return $this->getSchemaManager()->tablesExist([$table]);
+    }
+
+    public function createItemTable($module)
+    {
+        $table = 'ark_item_'.$module;
+        $sm = $this->getSchemaManager();
+        if ($sm->tablesExist([$table])) {
+            throw new \Exception('Table exists!');
+        }
+        $schema = Parser::fromFile(ARK::namespaceDir('ARK').'/server/schema/database/ark_item_table.xml', $this->platform());
+        $schema->renameTable('ark_item_table', $table);
+        $sm->createTable($schema->getTable($table));
     }
 
     public function listUsers($identity = false)

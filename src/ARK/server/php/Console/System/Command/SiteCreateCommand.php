@@ -36,6 +36,7 @@ use ARK\Console\ProcessTrait;
 use ARK\Console\ConsoleCommand;
 use ARK\Database\Console\DatabaseCommand;
 use Doctrine\DBAL\DBALException;
+use Exception;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -65,18 +66,23 @@ class SiteCreateCommand extends DatabaseCommand
 
         $frontends = array_keys(ARK::frontends());
         $frontend = $this->askChoice('Please choose the frontend to use', $frontends, 'core');
-        $config = $this->chooseServerConfig();
-
-        //$adminEmailQuestion = new Question('Please enter the Site Admin User email: ', '');
-        //$adminPasswordQuestion = new Question('Please enter the Site Admin User password: ', '');
-        //$adminEmail = $this->question->ask($this->input, $this->output, $adminEmailQuestion);
-        //$adminPasswordQuestion->setHidden(true);
-        //$adminPassword = $this->question->ask($this->input, $this->output, $adminPasswordQuestion);
+        $config['admin'] = $this->chooseServerConfig();
+        $config['server'] = $config['admin'];
+        unset($config['server']['wrapperClass']);
+        $config['server']['user'] = $this->askQuestion("Please enter the site database user");
+        $config['server']['password'] = $this->askPassword($config['server']['user']);
+        foreach (['core', 'data', 'spatial', 'user'] as $db) {
+            $config['connections'][$db]['dbname'] = $site.'_ark_'.$db;
+            $config['connections'][$db]['server'] = $config['server']['server'];
+        }
 
         if ($this->createInstance($site, $config)) {
             $this->write("Database created for $site.");
             $returnCode = $this->runCommand('site:frontend', ['site' => $site, 'frontend' => $frontend]);
-            $this->write('Site folder created.');
+            $database['servers'][$config['server']['server']] = $config['server'];
+            $database['connections'] = $config['connections'];
+            ARK::jsonEncodeWrite($database, ARK::siteDir($site).'/config/database.json');
+            $this->write('Site created.');
             $this->write('Please add an Admin User from the Site Admin Console.');
             $this->result = $site;
             return ConsoleCommand::SUCCESS_CODE;
@@ -96,31 +102,26 @@ class SiteCreateCommand extends DatabaseCommand
     // TODO Make a Command via the Command Bus
     private function createInstance($site, $config)
     {
-        $dbprefix = $site.'_ark_';
-        $dbuser = 'ark_user';
-        // TODO And change the password!
-        $dbpass = 'ark_pass';
-
-        $admin = $this->getConnection($config);
+        $admin = $this->getConnection($config['admin']);
 
         // Add the restricted database user to server
-        if ($admin->userExists($dbuser)) {
+        if ($admin->userExists($config['server']['user'])) {
             $this->write('User already exists, continuing...');
         } else {
             try {
-                $admin->createUser($dbuser, $dbpass);
+                $admin->createUser($config['server']['user'], $config['server']['password']);
             } catch (DBALException $e) {
                 $this->writeException('Add user to database server failed', $e);
                 $admin->close();
-                return ConsoleCommand::ERROR_CODE;
+                return false;
             }
         }
 
         $actions = [];
         // Create the databases
-        foreach (['core', 'data', 'spatial', 'user'] as $db) {
+        foreach ($config['connections'] as $db => $conn) {
             $this->write("Creating the $db database");
-            $dbname = $dbprefix.$db;
+            $dbname = $conn['dbname'];
             $action = 'new';
 
             // Check database doesn't already exist
@@ -133,7 +134,7 @@ class SiteCreateCommand extends DatabaseCommand
                 );
                 if ($action != 'keep') {
                     $admin->close();
-                    return ConsoleCommand::ERROR_CODE;
+                    return false;
                 }
             }
 
@@ -145,43 +146,51 @@ class SiteCreateCommand extends DatabaseCommand
                 } catch (DBALException $e) {
                     $this->writeException("Create database $dbname failed", $e);
                     $admin->close();
-                    return ConsoleCommand::ERROR_CODE;
+                    return false;
                 }
             }
 
             // Add the user to database
             try {
-                $admin->grantUser($dbuser, $dbname);
+                $admin->grantUser($config['server']['user'], $dbname);
             } catch (DBALException $e) {
                 $this->writeException("Add user to database $dbname failed: ", $e);
                 $admin->close();
-                return ConsoleCommand::ERROR_CODE;
+                return false;
             }
             $actions[$db] = $action;
         }
 
         // Load the schemas, not done above as need to connect to db itself
-        // TODO add spatial when working
-        foreach (['core', 'data', 'user'] as $db) {
+        foreach ($config['connections'] as $db => $conn) {
+            if ($db == 'spatial') {
+                // TODO add spatial when working
+                continue;
+            }
             if ($actions[$db] != 'keep') {
                 $admin->close();
-                $dbname = $dbprefix.$db;
-                $config['dbname'] = $dbname;
-                $admin = $this->getConnection($config);
+                $dbname = $conn['dbname'];
+                $config['admin']['dbname'] = $dbname;
+                $admin = $this->getConnection($config['admin']);
                 $admin->connect();
                 $this->write("Loading $db schema into database $dbname...");
-                $admin->executeQuery("SET FOREIGN_KEY_CHECKS=0");
                 $admin->beginTransaction();
                 try {
-                    $admin->loadSchema("../src/ARK/server/schema/database/$db.xml");
+                    $admin->loadSchema(ARK::namespaceDir('ARK')."/server/schema/database/$db.xml");
                     $admin->commit();
-                    $admin->executeQuery("SET FOREIGN_KEY_CHECKS=1");
                 } catch (DBALException $e) {
                     $this->writeException("Load Schema to database $dbname failed", $e);
                     $admin->rollBack();
                     $admin->executeQuery("SET FOREIGN_KEY_CHECKS=1");
                     $admin->close();
-                    return ConsoleCommand::ERROR_CODE;
+                    return false;
+                }
+                try {
+                    $admin->beginTransaction();
+                    $admin->loadSql(ARK::namespaceDir('ARK')."/server/schema/database/$db.sql");
+                    $admin->commit();
+                } catch (Exception $e) {
+                    $admin->rollBack();
                 }
             }
         }
@@ -189,6 +198,6 @@ class SiteCreateCommand extends DatabaseCommand
         // Termiate the admin connection
         $admin->close();
         // TODO Write out config file?
-        return ConsoleCommand::SUCCESS_CODE;
+        return true;
     }
 }

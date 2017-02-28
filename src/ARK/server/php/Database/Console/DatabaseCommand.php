@@ -54,6 +54,9 @@ abstract class DatabaseCommand extends ConsoleCommand
 
     protected function getConnection($config)
     {
+        if (!isset($config['password'])) {
+            $config['password'] = $this->askPassword($config['user']);
+        }
         try {
             $connection = DriverManager::getConnection($config);
             $connection->connect();
