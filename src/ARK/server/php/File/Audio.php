@@ -8,20 +8,8 @@
 
 namespace ARK\File;
 
-use ARK\Model\Item;
-use ARK\Model\ItemTrait;
+use ARK\File\File;
 
-class Audio implements Item
+class Audio extends File
 {
-    use ItemTrait;
-
-    /**
-    * Constructor
-    */
-    public function __construct($schema)
-    {
-        $this->schma = $schema;
-    }
-
 }
-

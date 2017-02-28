@@ -57,8 +57,8 @@ class ItemEntityGenerator extends EntityGenerator
 
     protected static $constructorMethodTemplate =
 '/**
-* Constructor
-*/
+ * Constructor
+ */
 public function __construct($schema)
 {
 <spaces>$this->schma = $schema;

@@ -8,15 +8,8 @@
 
 namespace ARK\File;
 
-use ARK\Model\Item;
-use ARK\Model\ItemTrait;
+use ARK\File\File;
 
-class File implements Item
+class File extends File
 {
-    use ItemTrait;
-
-    public function __construct($schema)
-    {
-        $this->schma = $schema;
-    }
 }
