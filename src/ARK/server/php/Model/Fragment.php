@@ -50,6 +50,7 @@ abstract class Fragment
     protected $format = '';
     protected $parameter = '';
     protected $value = null;
+    protected $span = null;
     protected $parent = null;
 
     public function __toString()
@@ -102,6 +103,16 @@ abstract class Fragment
         return $this->value;
     }
 
+    public function isSpan()
+    {
+        return $this->value !== null;
+    }
+
+    public function span()
+    {
+        return $this->span;
+    }
+
     public function setValue($value, $parameter = null, $format = null)
     {
         $this->value = $value;
@@ -151,8 +162,10 @@ abstract class Fragment
         $builder->addGeneratedKey('fid');
         if ($datatype['storage_type'] == 'string') {
             $builder->addStringField('value', $datatype['storage_size']);
+            $builder->addStringField('span', $datatype['storage_size']);
         } else {
             $builder->addField('value', $datatype['storage_type']);
+            $builder->addField('span', $datatype['storage_type']);
         }
     }
 }

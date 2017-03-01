@@ -19,13 +19,12 @@
             <default value="blob"/>
             <notnull/>
         </field>
-        <field name="format" type="string" size="30">
-            <notnull/>
-        </field>
+        <field name="format" type="string" size="30"/>
         <field name="parameter" type="string" size="30"/>
         <field name="value" type="blob">
             <notnull/>
         </field>
+        <field name="span" type="blob"/>
         <field name="object_fid" type="integer"/>
         <field name="mod_by" type="integer">
             <default value="0"/>
@@ -43,9 +42,7 @@
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="version" type="string" size="36">
-            <notnull/>
-        </field>
+        <field name="version" type="string" size="36"/>
         <index name="property">
             <col>module</col>
             <col>item</col>
@@ -72,13 +69,12 @@
             <default value="boolean"/>
             <notnull/>
         </field>
-        <field name="format" type="string" size="30">
-            <notnull/>
-        </field>
+        <field name="format" type="string" size="30"/>
         <field name="parameter" type="string" size="30"/>
         <field name="value" type="boolean">
             <notnull/>
         </field>
+        <field name="span" type="boolean"/>
         <field name="object_fid" type="integer"/>
         <field name="mod_by" type="integer">
             <default value="0"/>
@@ -96,9 +92,7 @@
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="version" type="string" size="36">
-            <notnull/>
-        </field>
+        <field name="version" type="string" size="36"/>
         <index name="module">
             <col>module</col>
             <col>item</col>
@@ -125,13 +119,12 @@
             <default value="date"/>
             <notnull/>
         </field>
-        <field name="format" type="string" size="30">
-            <notnull/>
-        </field>
+        <field name="format" type="string" size="30"/>
         <field name="parameter" type="string" size="30"/>
         <field name="value" type="date">
             <notnull/>
         </field>
+        <field name="span" type="date"/>
         <field name="object_fid" type="integer"/>
         <field name="mod_by" type="integer">
             <default value="0"/>
@@ -149,9 +142,7 @@
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="version" type="string" size="36">
-            <notnull/>
-        </field>
+        <field name="version" type="string" size="36"/>
         <index name="module">
             <col>module</col>
             <col>item</col>
@@ -178,13 +169,12 @@
             <default value="datetime"/>
             <notnull/>
         </field>
-        <field name="format" type="string" size="30">
-            <notnull/>
-        </field>
+        <field name="format" type="string" size="30"/>
         <field name="parameter" type="string" size="30"/>
         <field name="value" type="datetime">
             <notnull/>
         </field>
+        <field name="span" type="datetime"/>
         <field name="object_fid" type="integer"/>
         <field name="mod_by" type="integer">
             <default value="0"/>
@@ -202,9 +192,7 @@
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="version" type="string" size="36">
-            <notnull/>
-        </field>
+        <field name="version" type="string" size="36"/>
         <index name="module">
             <col>module</col>
             <col>item</col>
@@ -231,13 +219,12 @@
             <default value="decimal"/>
             <notnull/>
         </field>
-        <field name="format" type="string" size="30">
-            <notnull/>
-        </field>
+        <field name="format" type="string" size="30"/>
         <field name="parameter" type="string" size="30"/>
         <field name="value" type="string" size="200">
             <notnull/>
         </field>
+        <field name="span" type="string" size="200"/>
         <field name="object_fid" type="integer"/>
         <field name="mod_by" type="integer">
             <default value="0"/>
@@ -255,9 +242,7 @@
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="version" type="string" size="36">
-            <notnull/>
-        </field>
+        <field name="version" type="string" size="36"/>
         <index name="property">
             <col>module</col>
             <col>item</col>
@@ -284,13 +269,12 @@
             <default value="float"/>
             <notnull/>
         </field>
-        <field name="format" type="string" size="30">
-            <notnull/>
-        </field>
+        <field name="format" type="string" size="30"/>
         <field name="parameter" type="string" size="30"/>
         <field name="value" type="float" size="10.0">
             <notnull/>
         </field>
+        <field name="span" type="float" size="10.0"/>
         <field name="object_fid" type="integer"/>
         <field name="mod_by" type="integer">
             <default value="0"/>
@@ -308,9 +292,7 @@
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="version" type="string" size="36">
-            <notnull/>
-        </field>
+        <field name="version" type="string" size="36"/>
         <index name="module">
             <col>module</col>
             <col>item</col>
@@ -337,13 +319,12 @@
             <default value="integer"/>
             <notnull/>
         </field>
-        <field name="format" type="string" size="30">
-            <notnull/>
-        </field>
+        <field name="format" type="string" size="30"/>
         <field name="parameter" type="string" size="30"/>
         <field name="value" type="bigint">
             <notnull/>
         </field>
+        <field name="span" type="bigint"/>
         <field name="object_fid" type="integer"/>
         <field name="mod_by" type="integer">
             <default value="0"/>
@@ -361,9 +342,7 @@
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="version" type="string" size="36">
-            <notnull/>
-        </field>
+        <field name="version" type="string" size="36"/>
         <index name="module">
             <col>module</col>
             <col>item</col>
@@ -390,15 +369,12 @@
             <default value="item"/>
             <notnull/>
         </field>
-        <field name="format" type="string" size="30">
-            <notnull/>
-        </field>
-        <field name="parameter" type="string" size="30">
-            <notnull/>
-        </field>
+        <field name="format" type="string" size="30"/>
+        <field name="parameter" type="string" size="30"/>
         <field name="value" type="string" size="30">
             <notnull/>
         </field>
+        <field name="span" type="string" size="30"/>
         <field name="object_fid" type="integer"/>
         <field name="mod_by" type="integer">
             <default value="0"/>
@@ -416,9 +392,7 @@
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="version" type="string" size="36">
-            <notnull/>
-        </field>
+        <field name="version" type="string" size="36"/>
         <index name="module">
             <col>module</col>
             <col>item</col>
@@ -445,11 +419,12 @@
             <default value="object"/>
             <notnull/>
         </field>
-        <field name="format" type="string" size="30">
+        <field name="format" type="string" size="30"/>
+        <field name="parameter" type="string" size="30"/>
+        <field name="value" type="string" size="30">
             <notnull/>
         </field>
-        <field name="parameter" type="string" size="30"/>
-        <field name="value" type="string" size="30"/>
+        <field name="span" type="string" size="30"/>
         <field name="object_fid" type="integer"/>
         <field name="mod_by" type="integer">
             <default value="0"/>
@@ -467,9 +442,7 @@
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="version" type="string" size="36">
-            <notnull/>
-        </field>
+        <field name="version" type="string" size="36"/>
         <index name="item">
             <col>module</col>
             <col>item</col>
@@ -496,15 +469,12 @@
             <default value="spatial"/>
             <notnull/>
         </field>
-        <field name="format" type="string" size="30">
-            <notnull/>
-        </field>
-        <field name="parameter" type="string" size="30">
-            <notnull/>
-        </field>
+        <field name="format" type="string" size="30"/>
+        <field name="parameter" type="string" size="30"/>
         <field name="value" type="text">
             <notnull/>
         </field>
+        <field name="span" type="text"/>
         <field name="object_fid" type="integer"/>
         <field name="mod_by" type="integer">
             <default value="0"/>
@@ -522,9 +492,7 @@
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="version" type="string" size="36">
-            <notnull/>
-        </field>
+        <field name="version" type="string" size="36"/>
         <index name="property">
             <col>module</col>
             <col>item</col>
@@ -551,13 +519,12 @@
             <default value="string"/>
             <notnull/>
         </field>
-        <field name="format" type="string" size="30">
-            <notnull/>
-        </field>
+        <field name="format" type="string" size="30"/>
         <field name="parameter" type="string" size="30"/>
         <field name="value" type="string" size="4000">
             <notnull/>
         </field>
+        <field name="span" type="string" size="4000"/>
         <field name="object_fid" type="integer"/>
         <field name="mod_by" type="integer">
             <default value="0"/>
@@ -575,9 +542,7 @@
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="version" type="string" size="36">
-            <notnull/>
-        </field>
+        <field name="version" type="string" size="36"/>
         <index name="module">
             <col>module</col>
             <col>item</col>
@@ -608,9 +573,7 @@
             <default value="text/plain"/>
             <notnull/>
         </field>
-        <field name="parameter" type="string" size="30">
-            <notnull/>
-        </field>
+        <field name="parameter" type="string" size="30"/>
         <field name="value" type="text">
             <notnull/>
         </field>
@@ -631,9 +594,7 @@
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="version" type="string" size="36">
-            <notnull/>
-        </field>
+        <field name="version" type="string" size="36"/>
         <index name="module">
             <col>module</col>
             <col>item</col>
@@ -660,13 +621,12 @@
             <default value="time"/>
             <notnull/>
         </field>
-        <field name="format" type="string" size="30">
-            <notnull/>
-        </field>
+        <field name="format" type="string" size="30"/>
         <field name="parameter" type="string" size="30"/>
         <field name="value" type="time">
             <notnull/>
         </field>
+        <field name="span" type="time"/>
         <field name="object_fid" type="integer"/>
         <field name="mod_by" type="integer">
             <default value="0"/>
@@ -684,9 +644,7 @@
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="version" type="string" size="36">
-            <notnull/>
-        </field>
+        <field name="version" type="string" size="36"/>
         <index name="module">
             <col>module</col>
             <col>item</col>
@@ -703,7 +661,9 @@
             <default value="actor"/>
             <notnull/>
         </field>
-        <field name="schma" type="string" size="30"/>
+        <field name="schma" type="string" size="30">
+            <notnull/>
+        </field>
         <field name="type" type="string" size="30"/>
         <field name="status" type="string" size="30">
             <default value="registered"/>
@@ -711,7 +671,9 @@
         </field>
         <field name="parent_module" type="string" size="30"/>
         <field name="parent_item" type="string" size="30"/>
-        <field name="idx" type="string" size="30"/>
+        <field name="idx" type="string" size="30">
+            <notnull/>
+        </field>
         <field name="label" type="string" size="30">
             <notnull/>
         </field>
@@ -731,9 +693,7 @@
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="version" type="string" size="36">
-            <notnull/>
-        </field>
+        <field name="version" type="string" size="36"/>
         <index name="name">
             <col>label</col>
         </index>
@@ -762,56 +722,9 @@
         </field>
         <field name="parent_module" type="string" size="30"/>
         <field name="parent_item" type="string" size="30"/>
-        <field name="idx" type="string" size="30"/>
-        <field name="label" type="string" size="255">
+        <field name="idx" type="string" size="30">
             <notnull/>
         </field>
-        <field name="mod_by" type="integer">
-            <default value="0"/>
-            <notnull/>
-        </field>
-        <field name="mod_on" type="datetime">
-            <deftimestamp/>
-            <notnull/>
-        </field>
-        <field name="cre_by" type="integer">
-            <default value="0"/>
-            <notnull/>
-        </field>
-        <field name="cre_on" type="datetime">
-            <deftimestamp/>
-            <notnull/>
-        </field>
-        <field name="version" type="string" size="36">
-            <notnull/>
-        </field>
-        <index name="parent">
-            <col>parent_module</col>
-            <col>parent_item</col>
-        </index>
-        <index name="name">
-            <col>label</col>
-        </index>
-        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    </table>
-    <table name="ark_item_page">
-        <field name="item" type="string" size="30">
-            <key/>
-            <notnull/>
-        </field>
-        <field name="module" type="string" size="30">
-            <default value="page"/>
-            <notnull/>
-        </field>
-        <field name="schma" type="string" size="30"/>
-        <field name="type" type="string" size="30"/>
-        <field name="status" type="string" size="30">
-            <default value="registered"/>
-            <notnull/>
-        </field>
-        <field name="parent_module" type="string" size="30"/>
-        <field name="parent_item" type="string" size="30"/>
-        <field name="idx" type="string" size="30"/>
         <field name="label" type="string" size="30">
             <notnull/>
         </field>
@@ -831,9 +744,58 @@
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="version" type="string" size="36">
+        <field name="version" type="string" size="36"/>
+        <index name="name">
+            <col>label</col>
+        </index>
+        <index name="parent">
+            <col>parent_module</col>
+            <col>parent_item</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    </table>
+    <table name="ark_item_page">
+        <field name="item" type="string" size="30">
+            <key/>
             <notnull/>
         </field>
+        <field name="module" type="string" size="30">
+            <default value="page"/>
+            <notnull/>
+        </field>
+        <field name="schma" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30"/>
+        <field name="status" type="string" size="30">
+            <default value="registered"/>
+            <notnull/>
+        </field>
+        <field name="parent_module" type="string" size="30"/>
+        <field name="parent_item" type="string" size="30"/>
+        <field name="idx" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="label" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="mod_by" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="mod_on" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="cre_by" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="cre_on" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="version" type="string" size="36"/>
         <index name="name">
             <col>label</col>
         </index>

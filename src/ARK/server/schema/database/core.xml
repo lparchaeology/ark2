@@ -75,6 +75,10 @@
         <field name="value_name" type="string" size="30"/>
         <field name="format_name" type="string" size="30"/>
         <field name="parameter_name" type="string" size="30"/>
+        <field name="spanable" type="boolean">
+            <default value="1"/>
+            <notnull/>
+        </field>
         <field name="model_table" type="string" size="50">
             <notnull/>
         </field>
@@ -295,14 +299,17 @@
             <notnull/>
         </field>
         <field name="scale" type="integer">
+            <default value="0"/>
             <notnull/>
         </field>
         <field name="minimum" type="string" size="200"/>
         <field name="exclusive_minimum" type="boolean">
+            <default value="0"/>
             <notnull/>
         </field>
         <field name="maximum" type="string" size="200"/>
         <field name="exclusive_maximum" type="boolean">
+            <default value="0"/>
             <notnull/>
         </field>
         <field name="multiple_of" type="string" size="200"/>
@@ -318,10 +325,12 @@
         </field>
         <field name="minimum" type="float" size="10.0"/>
         <field name="exclusive_minimum" type="boolean">
+            <default value="0"/>
             <notnull/>
         </field>
         <field name="maximum" type="float" size="10.0"/>
         <field name="exclusive_maximum" type="boolean">
+            <default value="0"/>
             <notnull/>
         </field>
         <field name="multiple_of" type="float" size="10.0"/>
@@ -337,10 +346,12 @@
         </field>
         <field name="minimum" type="integer"/>
         <field name="exclusive_minimum" type="boolean">
+            <default value="0"/>
             <notnull/>
         </field>
         <field name="maximum" type="integer"/>
         <field name="exclusive_maximum" type="boolean">
+            <default value="0"/>
             <notnull/>
         </field>
         <field name="multiple_of" type="integer">
@@ -983,12 +994,15 @@
             <notnull/>
         </field>
         <field name="markup" type="boolean">
+            <default value="0"/>
             <notnull/>
         </field>
         <field name="vocabulary" type="boolean">
+            <default value="0"/>
             <notnull/>
         </field>
         <field name="text" type="boolean">
+            <default value="0"/>
             <notnull/>
         </field>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
@@ -1288,6 +1302,7 @@
             <notnull/>
         </field>
         <field name="ordered" type="boolean">
+            <default value="0"/>
             <notnull/>
         </field>
         <field name="description" type="text" size="65535">
@@ -1502,16 +1517,19 @@
             <notnull/>
         </field>
         <field name="equivalence" type="boolean">
+            <default value="0"/>
             <notnull/>
         </field>
         <field name="hierarchy" type="boolean">
+            <default value="0"/>
             <notnull/>
         </field>
         <field name="association" type="boolean">
+            <default value="0"/>
             <notnull/>
         </field>
         <field name="enabled" type="boolean">
-            <default value="1"/>
+            <default value="0"/>
             <notnull/>
         </field>
         <field name="deprecated" type="boolean">
@@ -1522,38 +1540,6 @@
             <notnull/>
         </field>
         <field name="description" type="text" size="65535">
-            <notnull/>
-        </field>
-        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    </table>
-    <table name="dime_period">
-        <field name="concept" type="string" size="30">
-            <key/>
-            <notnull/>
-        </field>
-        <field name="term" type="string" size="30">
-            <key/>
-            <notnull/>
-        </field>
-        <field name="parent" type="string" size="30">
-            <notnull/>
-        </field>
-        <field name="depth" type="integer">
-            <notnull/>
-        </field>
-        <field name="from_year" type="integer">
-            <notnull/>
-        </field>
-        <field name="to_year" type="integer">
-            <notnull/>
-        </field>
-        <field name="description" type="text" size="65535">
-            <notnull/>
-        </field>
-        <field name="alias" type="string" size="100">
-            <notnull/>
-        </field>
-        <field name="keyword" type="string" size="50">
             <notnull/>
         </field>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
