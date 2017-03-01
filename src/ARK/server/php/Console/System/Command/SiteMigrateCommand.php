@@ -222,8 +222,10 @@ class SiteMigrateCommand extends DatabaseCommand
         if (!$hasSiteMod) {
             $module['module'] = 'site';
             $module['resource'] = 'sites';
-            $module['namespace'] = 'ARK';
-            $module['entity'] = 'ARK\\Entity\\Site';
+            $module['project'] = 'ARK';
+            $module['namespace'] = 'ARK\Entity';
+            $module['entity'] = 'Site';
+            $module['classname'] = 'ARK\Entity\Site';
             $module['tbl'] = 'ark_item_site';
             $module['core'] = true;
             $module['keyword'] = 'module.site';
@@ -244,6 +246,7 @@ class SiteMigrateCommand extends DatabaseCommand
                     'label' => $site['id'],
                     'cre_by' => $site['cre_by'],
                     'cre_on' => $site['cre_on'],
+                    'version' => '',
                 ];
                 $data->insert('ark_item_site', $item);
                 $text = [
@@ -252,6 +255,7 @@ class SiteMigrateCommand extends DatabaseCommand
                     'attribute' => 'name',
                     'parameter' => 'en',
                     'value' => $site['id'],
+                    'version' => '',
                 ];
                 $data->insert('ark_fragment_text', $text);
             }
@@ -348,6 +352,7 @@ class SiteMigrateCommand extends DatabaseCommand
                     'label' => $item['itemkey'],
                     'cre_by' => $item['cre_by'],
                     'cre_on' => $item['cre_on'],
+                    'version' => '',
                 ];
                 $data->insert($module['config']['tbl'], $newItem);
                 $updates = $updates + 1;
@@ -524,6 +529,7 @@ class SiteMigrateCommand extends DatabaseCommand
                     unset($frag['txt']);
                     unset($frag['language']);
                 }
+                $frag['version'] = '';
                 $data->insert($new_tbl, $frag);
                 $updates = $updates + 1;
             }
