@@ -120,6 +120,14 @@ abstract class Fragment
         $this->format = $format;
     }
 
+    public function setSpan($fromValue, $toValue, $parameter = null, $format = null)
+    {
+        $this->value = $fromValue;
+        $this->value = $toValue;
+        $this->parameter = $parameter;
+        $this->format = $format;
+    }
+
     public function parent()
     {
         return $this->parent;

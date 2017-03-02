@@ -153,6 +153,11 @@ class Schema
         return $attributes;
     }
 
+    public function hasAttribute($attribute, $type = '')
+    {
+        return in_array($attribute, $this->attributeNames($type));
+    }
+
     public function attributeNames($type = '', $all = true)
     {
         $this->init();
@@ -179,6 +184,11 @@ class Schema
             return array_merge(array_values($this->model['']['associations']), $associations);
         }
         return $associations;
+    }
+
+    public function hasAssociation($association, $type = '')
+    {
+        return in_array($association, $this->associationNames($type));
     }
 
     public function associationNames($type = '', $all = true)

@@ -134,6 +134,11 @@ trait ItemTrait
         return $this->statusTerm;
     }
 
+    public function hasAttribute($attribute)
+    {
+        return $this->schema()->hasAttribute($attribute, $this->typeName());
+    }
+
     public function attributes()
     {
         return $this->schema()->attributes($this->typeName());
