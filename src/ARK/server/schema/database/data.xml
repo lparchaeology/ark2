@@ -1,5 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema xmlns="http://www.concrete5.org/doctrine-xml/0.5">
+    <table name="ark_association">
+        <field name="fid" type="integer">
+            <autoincrement/>
+            <key/>
+            <notnull/>
+        </field>
+        <field name="module1" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="item1" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="association" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="module2" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="item2" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="mod_by" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="mod_on" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="cre_by" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="cre_on" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="version" type="string" size="36"/>
+        <index name="item1">
+            <col>module1</col>
+            <col>item1</col>
+        </index>
+        <index name="item2">
+            <col>module2</col>
+            <col>item2</col>
+        </index>
+        <index name="association">
+            <col>association</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    </table>
     <table name="ark_fragment_blob">
         <field name="fid" type="integer">
             <autoincrement/>

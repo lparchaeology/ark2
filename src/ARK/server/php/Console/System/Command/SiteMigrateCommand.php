@@ -37,7 +37,6 @@ use ARK\Database\Console\DatabaseCommand;
 use Doctrine\DBAL\DBALException;
 use Exception;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -50,14 +49,17 @@ class SiteMigrateCommand extends DatabaseCommand
     protected static $defaults = [
         'cxt' => 'context',
         'grp' => 'group',
+        'lus' => 'landuse',
         'pln' => 'plan',
         'rgf' => 'find',
         'sec' => 'section',
         'sgr' => 'subgroup',
         'smp' => 'sample',
+        'spf' => 'find',
         'sph' => 'photo',
         'tmb' => 'timber',
     ];
+
     protected static $attributes = [
         '<5%' => 'lt5pcnt',
         '5-20%' => '5to20pcnt',
@@ -94,6 +96,7 @@ class SiteMigrateCommand extends DatabaseCommand
     protected $core = null;
     protected $data = null;
     protected $user = null;
+    protected $admin = null;
 
     protected function configure()
     {
@@ -114,7 +117,7 @@ class SiteMigrateCommand extends DatabaseCommand
             $this->siteKey = $this->site;
         } else {
             $this->site = strtolower($this->askChoice('Please choose the site to migrate into', ARK::sites()));
-            $this->siteKey = strtolower($this->askQuestion('Please enter a unique key for the site being migrated'));
+            $this->siteKey = strtolower($this->askQuestion('Please enter a unique key for the site being migrated', $this->site));
         }
         if ($this->site === ConsoleCommand::ERROR_CODE) {
             return ConsoleCommand::ERROR_CODE;
@@ -143,6 +146,9 @@ class SiteMigrateCommand extends DatabaseCommand
         $this->core = $this->getConnection($destinationConfig['core']);
         $this->data = $this->getConnection($destinationConfig['data']);
         $this->user = $this->getConnection($destinationConfig['user']);
+        $admin = ARK::server($destinationConfig['data']['server']);
+        $admin['dbname'] = $destinationConfig['data']['dbname'];
+        $this->admin = $this->getConnection($admin);
         $this->core->beginTransaction();
         $this->data->beginTransaction();
         $this->user->beginTransaction();
@@ -394,20 +400,21 @@ class SiteMigrateCommand extends DatabaseCommand
             $updates = 0;
             $count = count($items);
             $this->write($old_tbl.' : '.$count);
-            $progress = new ProgressBar($this->output, $count);
-            $progress->start();
-            foreach ($items as $item) {
-                $progress->advance();
-                $newItem = $this->makeItemKey($item['itemkey']);
-                $newItem['module'] = $module['module'];
-                $newItem['schma'] = $module['schema'];
-                $newItem['type'] = (isset($item['modtype']) ? strtolower($item['modtype']) : '');
-                $newItem['cre_by'] = $item['cre_by'];
-                $newItem['cre_on'] = $item['cre_on'];
-                $this->data->insert($module['config']['tbl'], $newItem);
-                $updates = $updates + 1;
+            if ($count > 0) {
+                $this->progress->start($count);
+                foreach ($items as $item) {
+                    $this->progress->advance();
+                    $newItem = $this->makeItemKey($item['itemkey']);
+                    $newItem['module'] = $module['module'];
+                    $newItem['schma'] = $module['schema'];
+                    $newItem['type'] = (isset($item['modtype']) ? strtolower($item['modtype']) : '');
+                    $newItem['cre_by'] = $item['cre_by'];
+                    $newItem['cre_on'] = $item['cre_on'];
+                    $this->data->insert($module['config']['tbl'], $newItem);
+                    $updates = $updates + 1;
+                }
+                $this->progress->finish();
             }
-            $progress->finish();
             $this->write("\n".$module['config']['tbl']." : $updates\n");
         }
         unset($module);
@@ -421,11 +428,10 @@ class SiteMigrateCommand extends DatabaseCommand
         $rows = $this->source->fetchAllTable('cor_lut_file');
         $count = count($rows);
         $this->write('cor_lut_file : '.$count);
-        $progress = new ProgressBar($this->output, $count);
-        $progress->start();
+        $this->progress->start($count);
         $updates = 0;
         foreach ($rows as $row) {
-            $progress->advance();
+            $this->progress->advance();
             $item = [
                 'item' => $row['id'],
                 'module' => 'file',
@@ -445,7 +451,7 @@ class SiteMigrateCommand extends DatabaseCommand
             $this->data->insert('ark_item_file', $item);
             $updates = $updates + 1;
         }
-        $progress->finish();
+        $this->progress->finish();
         $this->write("\nark_item_file : $updates\n");
         $updates = 0;
         $sql = "
@@ -457,10 +463,9 @@ class SiteMigrateCommand extends DatabaseCommand
         $rows = $this->source->fetchAll($sql, array());
         $count = count($rows);
         $this->write('cor_tbl_file : '.$count);
-        $progress = new ProgressBar($this->output, $count);
-        $progress->start();
+        $this->progress->start($count);
         foreach ($rows as $row) {
-            $progress->advance();
+            $this->progress->advance();
             if (!in_array($row['itemkey'], $modCodes)) {
                 continue;
             }
@@ -478,7 +483,7 @@ class SiteMigrateCommand extends DatabaseCommand
             $this->data->insert('ark_fragment_item', $frag);
             $updates = $updates + 1;
         }
-        $progress->finish();
+        $this->progress->finish();
         $this->write("\nark_fragment_item : $updates\n");
 
         // * COPY FRAGMENTS * //
@@ -490,36 +495,13 @@ class SiteMigrateCommand extends DatabaseCommand
             'number' => 'ark_fragment_integer',
             'txt' => 'ark_fragment_text',
         );
-        $special = array(
-            'xmi' => 'ark_related',
-        );
-        $admin = ARK::server($destinationConfig['data']['server']);
-        $admin['dbname'] = $destinationConfig['data']['dbname'];
-        $admin = $this->getConnection($admin);
         foreach ($classes as $dataclass => $new_tbl) {
             if ($new_tbl == '') {
                 continue;
             }
 
             // Add temp chain fields
-            $schema_new = $admin->getSchemaManager()->createSchema();
-            $schema = clone $schema_new;
-            if (!$schema->getTable($new_tbl)->hasColumn('old_table')) {
-                $schema->getTable($new_tbl)->addColumn('old_table', 'string', ["length" => 50, 'notnull' => false]);
-            }
-            if (!$schema->getTable($new_tbl)->hasColumn('old_id')) {
-                $schema->getTable($new_tbl)->addColumn('old_id', 'integer', ['notnull' => false]);
-            }
-            if (!$schema->getTable($new_tbl)->hasColumn('old_parent_table')) {
-                $schema->getTable($new_tbl)->addColumn('old_parent_table', 'string', ["length" => 50, 'notnull' => false]);
-            }
-            if (!$schema->getTable($new_tbl)->hasColumn('old_parent_id')) {
-                $schema->getTable($new_tbl)->addColumn('old_parent_id', 'integer', ['notnull' => false]);
-            }
-            $changes = $schema_new->getMigrateToSql($schema, $admin->getDatabasePlatform());
-            foreach ($changes as $sql) {
-                $admin->executeUpdate($sql, array());
-            }
+            $this->addChainFields($new_tbl);
 
             $type = $dataclass.'type';
             $old_tbl = 'cor_tbl_'.$dataclass;
@@ -537,11 +519,6 @@ class SiteMigrateCommand extends DatabaseCommand
                     FROM cor_tbl_action, cor_lut_actiontype
                     WHERE cor_tbl_action.actiontype = cor_lut_actiontype.id
                 ";
-            } elseif ($dataclass == 'xmi') {
-                $sql = "
-                    SELECT $old_tbl.*
-                    FROM $old_tbl
-                ";
             } else {
                 $sql = "
                     SELECT $old_tbl.*, $lut.$type AS $type
@@ -553,21 +530,16 @@ class SiteMigrateCommand extends DatabaseCommand
             $count = count($frags);
             $this->write($old_tbl.' : '.$count);
             $updates = 0;
-            $progress = new ProgressBar($this->output, $count);
-            $progress->start();
+            $this->progress->start($count);
             foreach ($frags as $frag) {
-                $progress->advance();
+                $this->progress->advance();
                 if (substr($frag['itemkey'], 0, 11) == 'cor_tbl_map') {
-                    $progress->clear();
                     $this->write('Skipping map frag : '.$frag['id'].' : '.$frag['itemkey'].' : '.$frag['itemvalue']);
-                    $progress->display();
                     continue;
                 }
                 // Skip if parent is a lut
                 if (substr($frag['itemkey'], 0, 8) == 'cor_lut_') {
-                    $progress->clear();
                     $this->write('Skipping lut frag : '.$frag['id'].' : '.$frag['itemkey'].' : '.$frag['itemvalue']);
-                    $progress->display();
                     continue;
                 }
                 // If itemkey/itemvalue is a chain reference, replace with actual item
@@ -578,9 +550,7 @@ class SiteMigrateCommand extends DatabaseCommand
                 }
                 // Skip if parent doesn't exist, i.e. orphaned frag!
                 if ($frag['itemkey'] == null) {
-                    $progress->clear();
                     $this->write('Skipping orphan frag : '.$frag['id'].' : '.$frag['old_parent_table'].' : '.$frag['old_parent_id']);
-                    $progress->display();
                     continue;
                 }
                 if (!in_array($frag['itemkey'], $modCodes)) {
@@ -614,19 +584,6 @@ class SiteMigrateCommand extends DatabaseCommand
                     unset($frag['actor_itemkey']);
                     unset($frag['actor_itemvalue']);
                 }
-                if (isset($frag['xmi_itemkey'])) {
-                    $frag['xmi_module'] = $mapping[substr($frag['xmi_itemkey'], 0, 3)]['module'];
-                    $key = $this->makeItemKey($frag['xmi_itemvalue']);
-                    if (!isset($key['parent_module'])) {
-                        $progress->clear();
-                        $this->write('Skipping XMI frag : '.$frag['old_id'].' : '.$frag['xmi_itemkey'].' : '.$frag['xmi_itemvalue']);
-                        $progress->display();
-                        continue;
-                    }
-                    $frag['xmi_item'] = $key['item'];
-                    unset($frag['xmi_itemkey']);
-                    unset($frag['xmi_itemvalue']);
-                }
                 $key = $this->makeItemKey($frag['itemvalue']);
                 $frag['item'] = $key['item'];
                 unset($frag['itemkey']);
@@ -648,7 +605,7 @@ class SiteMigrateCommand extends DatabaseCommand
                 $this->data->insert($new_tbl, $frag);
                 $updates = $updates + 1;
             }
-            $progress->finish();
+            $this->progress->finish();
             $this->write("\n$new_tbl : $updates\n");
         }
 
@@ -664,10 +621,9 @@ class SiteMigrateCommand extends DatabaseCommand
         $rows = $this->source->fetchAll($sql, array());
         $count = count($rows);
         $this->write('cor_tbl_span : '.$count);
-        $progress = new ProgressBar($this->output, $count);
-        $progress->start();
+        $this->progress->start($count);
         foreach ($rows as $row) {
-            $progress->advance();
+            $this->progress->advance();
             if (!in_array($row['itemkey'], $modCodes)) {
                 continue;
             }
@@ -689,8 +645,43 @@ class SiteMigrateCommand extends DatabaseCommand
             $this->data->insert('ark_fragment_item', $frag);
             $updates = $updates + 1;
         }
-        $progress->finish();
+        $this->progress->finish();
         $this->write("\nark_fragment_item : $updates\n");
+
+        // * COPY XMIS * //
+        // TODO Chains?
+        $updates = 0;
+        $sql = "
+            SELECT *
+            FROM $old_tbl
+        ";
+        $rows = $this->source->fetchAllTable('cor_tbl_xmi');
+        $count = count($rows);
+        $this->write('cor_tbl_xmi : '.$count);
+        $this->progress->start($count);
+        foreach ($rows as $row) {
+            $this->progress->advance();
+            if (!in_array($row['itemkey'], $modCodes) || !in_array($row['xmi_itemkey'], $modCodes)) {
+                continue;
+            }
+            $module1 = $mapping[substr($row['itemkey'], 0, 3)]['module'];
+            $key = $this->makeItemKey($row['itemvalue']);
+            $item1 = $key['item'];
+            $module2 = $mapping[substr($row['xmi_itemkey'], 0, 3)]['module'];
+            $key = $this->makeItemKey($row['xmi_itemvalue']);
+            $item2 = $key['item'];
+            $association = [
+                'module1' => $module1,
+                'item1' => $item1,
+                'association' => 'xmi',
+                'module2' => $module2,
+                'item2' => $item2,
+            ];
+            $this->data->insert('ark_association', $association);
+            $updates = $updates + 1;
+        }
+        $this->progress->finish();
+        $this->write("\nark_association : $updates\n");
 
         // Commit now so available for chaining
         $this->data->commit();
@@ -698,6 +689,7 @@ class SiteMigrateCommand extends DatabaseCommand
         $this->user->commit();
 
         // * CHAIN, CHAIN, CHAIN, CHAIN 'O FOOLS * //
+        $this->write("\n* Linking Chains *\n");
         $fragmentTables = [
             'ark_fragment_date',
             'ark_fragment_integer',
@@ -705,26 +697,21 @@ class SiteMigrateCommand extends DatabaseCommand
             'ark_fragment_string',
             'ark_fragment_text',
         ];
-        $dataclass_tables = array(
+        $chainTables = array(
             'cor_tbl_action' => 'ark_fragment_item',
             'cor_tbl_attribute' => 'ark_fragment_string',
             'cor_tbl_date' => 'ark_fragment_date',
-            //'cor_tbl_file' => 'cor_tbl_file',
             'cor_tbl_number' => 'ark_fragment_integer',
-            //'cor_tbl_span' => 'cor_tbl_span',
             'cor_tbl_txt' => 'ark_fragment_text',
-            //'cor_tbl_xmi' => 'ark_fragment_xmi',
+        );
+        $chainMap = array(
+            'interp' => ['object' => 'interpretation', 'parent' => 'interpretedas'],
+            'sgrnarrative' => ['object' => 'narrative', 'parent' => 'narratedas'],
         );
         // Add temp chain fields
-        $schema_new = $admin->getSchemaManager()->createSchema();
-        $schema = clone $schema_new;
-        if (!$schema->getTable('ark_fragment_object')->hasColumn('old_table')) {
-            $schema->getTable('ark_fragment_object')->addColumn('old_table', 'string', ["length" => 50, 'notnull' => false]);
-        }
-        if (!$schema->getTable('ark_fragment_object')->hasColumn('old_id')) {
-            $schema->getTable('ark_fragment_object')->addColumn('old_id', 'integer', ['notnull' => false]);
-        }
+        $this->addChainFields('ark_fragment_object');
         $this->data->beginTransaction();
+        $objects = [];
         foreach ($fragmentTables as $fragmentTable) {
             $sql = "
                 SELECT *
@@ -732,15 +719,14 @@ class SiteMigrateCommand extends DatabaseCommand
                 WHERE NULLIF(old_parent_table, '') IS NOT NULL
             ";
             $frags = $this->data->fetchAll($sql);
-            $objects = [];
+            $this->write("$fragmentTable chained fragments : ".count($frags));
             foreach ($frags as $frag) {
-                if ($frag['old_parent_table'] && $frag['old_parent_id']) {
-                    $objects[$frag['old_parent_table']][$frag['old_parent_id']] = true;
-                }
+                $objects[$frag['old_parent_table']][$frag['old_parent_id']] = true;
             }
         }
         foreach ($objects as $old_parent_table => $parents) {
-            $fragTable = $dataclass_tables[$old_parent_table];
+            $this->write("\n$old_parent_table chains : ".count($parents));
+            $fragTable = $chainTables[$old_parent_table];
             $sql = "
                 SELECT *
                 FROM $fragTable
@@ -759,7 +745,6 @@ class SiteMigrateCommand extends DatabaseCommand
                 $object = $this->data->fetchAssoc($sql, $params);
                 $this->data->executeUpdate($upd, ['fid' => $object['fid']]);
                 unset($object['fid']);
-                $object['attribute'] = $object['attribute'].'_obj';
                 $object['datatype'] = 'object';
                 unset($object['format']);
                 unset($object['parameter']);
@@ -786,11 +771,62 @@ class SiteMigrateCommand extends DatabaseCommand
                     ':old_table' => $object['old_table'],
                     ':old_id' => $object['old_id'],
                 ];
-                $this->data->executeUpdate($upd, []);
+                $this->data->executeUpdate($upd, $params);
             }
         }
         $this->data->commit();
-        $this->write("\n$new_tbl : chained : $updates\n");
+
+        // Update the old parent attribute if mapped
+        $this->data->beginTransaction();
+        foreach ($objects as $object) {
+            $fragTable = $chainTables[$object['old_table']];
+            if (isset($chainMap[$object['attribute']])) {
+                $attribute = $chainMap[$object['attribute']]['object'];
+                $parent = $chainMap[$object['attribute']]['parent'];
+            } else {
+                $attribute = $object['attribute'].'_obj';
+                $parent = null;
+            }
+            if ($parent) {
+                $sql = "
+                    SELECT *
+                    FROM $fragTable
+                    WHERE old_table = :old_table
+                    AND old_id = :old_id
+                ";
+                $params = [
+                    ':old_table' => $object['old_table'],
+                    ':old_id' => $object['old_id'],
+                ];
+                $frag = $this->data->fetchAssoc($sql, $params);
+                $upd = "
+                    UPDATE $fragTable
+                    SET attribute = :attribute
+                    WHERE fid = :fid
+                ";
+                $params = [
+                    ':fid' => $frag['fid'],
+                    ':attribute' => $parent,
+                ];
+                $this->data->executeUpdate($upd, $params);
+            }
+            $upd = "
+                UPDATE ark_fragment_object
+                SET attribute = :attribute
+                WHERE fid = :fid
+            ";
+            $params = [
+                ':fid' => $object['fid'],
+                ':attribute' => $attribute,
+            ];
+            $this->data->executeUpdate($upd, $params);
+        }
+        $this->data->commit();
+        foreach ($fragmentTables as $fragmentTable) {
+            $this->removeChainFields($fragmentTable);
+        }
+        $this->removeChainFields('ark_fragment_object');
+        $this->write("\nTotal chains migrated : ".count($objects));
 
         // * DONE! * //
         $this->write("\nMigration Complete!");
@@ -847,5 +883,52 @@ class SiteMigrateCommand extends DatabaseCommand
             return $this->getParent($conn, $parent['itemkey'], $parent['itemvalue']);
         }
         return ['itemkey' => $parent['itemkey'], 'itemvalue' => $parent['itemvalue']];
+    }
+
+    private function addChainFields($table)
+    {
+        // Add temp chain fields
+        $schema_new = $this->admin->getSchemaManager()->createSchema();
+        $schema = clone $schema_new;
+        if (!$schema->getTable($table)->hasColumn('old_table')) {
+            $schema->getTable($table)->addColumn('old_table', 'string', ["length" => 50, 'notnull' => false]);
+        }
+        if (!$schema->getTable($table)->hasColumn('old_id')) {
+            $schema->getTable($table)->addColumn('old_id', 'integer', ['notnull' => false]);
+            $schema->getTable($table)->addIndex(['old_table', 'old_id'], 'old_child');
+        }
+        if (!$schema->getTable($table)->hasColumn('old_parent_table')) {
+            $schema->getTable($table)->addColumn('old_parent_table', 'string', ["length" => 50, 'notnull' => false]);
+        }
+        if (!$schema->getTable($table)->hasColumn('old_parent_id')) {
+            $schema->getTable($table)->addColumn('old_parent_id', 'integer', ['notnull' => false]);
+            $schema->getTable($table)->addIndex(['old_parent_table', 'old_parent_id'], 'old_parent');
+        }
+        $changes = $schema_new->getMigrateToSql($schema, $this->admin->getDatabasePlatform());
+        foreach ($changes as $sql) {
+            $this->admin->executeUpdate($sql, []);
+        }
+    }
+
+    private function removeChainFields($table)
+    {
+        $schema_new = $this->admin->getSchemaManager()->createSchema();
+        $schema = clone $schema_new;
+        if ($schema->getTable($table)->hasColumn('old_table')) {
+            $schema->getTable($table)->dropColumn('old_table');
+        }
+        if ($schema->getTable($table)->hasColumn('old_id')) {
+            $schema->getTable($table)->dropColumn('old_id');
+        }
+        if ($schema->getTable($table)->hasColumn('old_parent_table')) {
+            $schema->getTable($table)->dropColumn('old_parent_table');
+        }
+        if ($schema->getTable($table)->hasColumn('old_parent_id')) {
+            $schema->getTable($table)->dropColumn('old_parent_id');
+        }
+        $changes = $schema_new->getMigrateToSql($schema, $this->admin->getDatabasePlatform());
+        foreach ($changes as $sql) {
+            $this->admin->executeUpdate($sql, []);
+        }
     }
 }

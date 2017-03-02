@@ -1,5 +1,5 @@
 {
-    "default": "mamp",
+    "default": "mysql",
     "servers": {
         "sqlite": {
             "server": "sqlite",

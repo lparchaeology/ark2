@@ -17,6 +17,26 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
+-- Table structure for table `ark_association`
+--
+
+CREATE TABLE `ark_association` (
+  `fid` int(11) NOT NULL,
+  `module1` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `item1` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `association` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `module2` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `item2` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mod_by` int(11) NOT NULL,
+  `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `cre_by` int(11) NOT NULL,
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Database: `dime_ark_data`
 --
 

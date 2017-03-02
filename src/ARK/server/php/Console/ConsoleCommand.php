@@ -32,6 +32,7 @@ namespace ARK\Console;
 
 use Exception;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -46,6 +47,7 @@ abstract class ConsoleCommand extends Command
     const ERROR_CODE = 1;
 
     protected $query = null;
+    protected $progress = null;
     protected $result = null;
     protected $input = null;
     protected $output = null;
@@ -55,6 +57,8 @@ abstract class ConsoleCommand extends Command
         $this->query = $this->getHelper('question');
         $this->input = $input;
         $this->output = $output;
+        $this->progress = new ProgressBar($this->output);
+        $this->progress->setOverwrite(true);
     }
 
     protected function runCommand($command, array $arguments = [])
@@ -89,7 +93,13 @@ abstract class ConsoleCommand extends Command
 
     protected function write($message)
     {
-        $this->output->writeln($message);
+        if ($this->progress->getProgress() != $this->progress->getMaxSteps()) {
+            $this->progress->clear();
+            $this->output->writeln($message);
+            $this->progress->display();
+        } else {
+            $this->output->writeln($message);
+        }
     }
 
     protected function writeException($message, Exception $e)
