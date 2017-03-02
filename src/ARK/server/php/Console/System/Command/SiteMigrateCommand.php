@@ -505,16 +505,16 @@ class SiteMigrateCommand extends DatabaseCommand
             $schema_new = $admin->getSchemaManager()->createSchema();
             $schema = clone $schema_new;
             if (!$schema->getTable($new_tbl)->hasColumn('old_table')) {
-                $schema->getTable($new_tbl)->addColumn('old_table', 'string', array("length" => 50));
+                $schema->getTable($new_tbl)->addColumn('old_table', 'string', ["length" => 50, 'notnull' => false]);
             }
             if (!$schema->getTable($new_tbl)->hasColumn('old_id')) {
-                $schema->getTable($new_tbl)->addColumn('old_id', 'integer');
+                $schema->getTable($new_tbl)->addColumn('old_id', 'integer', ['notnull' => false]);
             }
             if (!$schema->getTable($new_tbl)->hasColumn('old_parent_table')) {
-                $schema->getTable($new_tbl)->addColumn('old_parent_table', 'string', array("length" => 50));
+                $schema->getTable($new_tbl)->addColumn('old_parent_table', 'string', ["length" => 50, 'notnull' => false]);
             }
             if (!$schema->getTable($new_tbl)->hasColumn('old_parent_id')) {
-                $schema->getTable($new_tbl)->addColumn('old_parent_id', 'integer');
+                $schema->getTable($new_tbl)->addColumn('old_parent_id', 'integer', ['notnull' => false]);
             }
             $changes = $schema_new->getMigrateToSql($schema, $admin->getDatabasePlatform());
             foreach ($changes as $sql) {
@@ -719,10 +719,10 @@ class SiteMigrateCommand extends DatabaseCommand
         $schema_new = $admin->getSchemaManager()->createSchema();
         $schema = clone $schema_new;
         if (!$schema->getTable('ark_fragment_object')->hasColumn('old_table')) {
-            $schema->getTable('ark_fragment_object')->addColumn('old_table', 'string', array("length" => 50));
+            $schema->getTable('ark_fragment_object')->addColumn('old_table', 'string', ["length" => 50, 'notnull' => false]);
         }
         if (!$schema->getTable('ark_fragment_object')->hasColumn('old_id')) {
-            $schema->getTable('ark_fragment_object')->addColumn('old_id', 'integer');
+            $schema->getTable('ark_fragment_object')->addColumn('old_id', 'integer', ['notnull' => false]);
         }
         $this->data->beginTransaction();
         foreach ($fragmentTables as $fragmentTable) {
@@ -772,71 +772,25 @@ class SiteMigrateCommand extends DatabaseCommand
         $this->data->commit();
 
         $this->data->beginTransaction();
-        if (false) {
-            {
-                if ($frag['old_parent_table'] && $frag['old_parent_id']) {
-                    $tbl = $dataclass_tables[$frag['old_parent_table']];
-                    $sql = "
-                        SELECT $tbl.*
-                        FROM $tbl
-                        WHERE module = :module
-                        AND item = :item
-                        AND old_id = :old_id
-                    ";
-                    $params = [
-                        ':module' => $frag['module'],
-                        ':item' => $frag['item'],
-                        ':old_id' => $frag['old_parent_id'],
-                    ];
-                    $head = $this->data->fetchAssoc($sql, $params);
-                    $parent = $tbl.'.'.$head['fid'];
-                    $child = $new_tbl.'.'.$frag['fid'];
-                    $sql = "
-                        UPDATE $new_tbl
-                        SET parent = :parent, old_id = '', old_parent_table = '', old_parent_id = ''
-                        WHERE fid = :fid
-                    ";
-                    $params = array(
-                        ':fid' => $frag['fid'],
-                        ':parent' => $parent,
-                    );
-                    $this->data->executeUpdate($sql, $params);
-                    $updates = $updates + 1;
-                    // Add parent to the graph
-                    try {
-                        $sql = "
-                            INSERT INTO ark_fragment_object(parent, child, depth)
-                            VALUES (:self, :self, 0)
-                        ";
-                        $params = array(
-                            'self' => $parent,
-                        );
-                        $this->data->executeUpdate($sql, $params);
-                    } catch (\Exception $e) {
-                    }
-                    // Add child to the graph
-                    $params = array(
-                        'self' => $child,
-                    );
-                    $this->data->executeUpdate($sql, $params);
-                    // Add links to the graph
-                    $sql = "
-                        INSERT INTO ark_dataclass_graph(parent, child, depth)
-                            SELECT p.parent, c.child, p.depth+c.depth+1
-                            FROM ark_dataclass_graph p, ark_dataclass_graph c
-                            WHERE p.child = :parent and c.parent = :child
-                    ";
-                    $params = array(
-                        ':parent' => $parent,
-                        ':child' => $child,
-                    );
-                    if ($update) {
-                        $new->executeUpdate($sql, $params);
-                    }
-                }
+        $objects = $this->data->fetchAllTable('ark_fragment_object');
+        foreach ($objects as $object) {
+            foreach ($fragmentTables as $fragmentTable) {
+                $upd = "
+                    UPDATE $fragmentTable
+                    SET object_fid = :fid
+                    WHERE old_parent_table = :old_table
+                    AND old_parent_id = :old_id
+                ";
+                $params = [
+                    ':fid' => $object['fid'],
+                    ':old_table' => $object['old_table'],
+                    ':old_id' => $object['old_id'],
+                ];
+                $this->data->executeUpdate($upd, []);
             }
-            $this->write("\n$new_tbl : chained : $updates\n");
         }
+        $this->data->commit();
+        $this->write("\n$new_tbl : chained : $updates\n");
 
         // * DONE! * //
         $this->write("\nMigration Complete!");
