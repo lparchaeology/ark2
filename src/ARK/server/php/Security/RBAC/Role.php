@@ -34,7 +34,7 @@ use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Security\RBAC\Permission;
-use ARK\Security\RBAC\User;
+use ARK\Security\RBAC\Actor;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -44,13 +44,13 @@ class Role
 
     protected $role = '';
     protected $enabled = true;
-    protected $users = null;
+    protected $actors = null;
     protected $permissions = null;
 
     public function __construct($role)
     {
         $this->role = $role;
-        $this->users = new ArrayCollection();
+        $this->actors = new ArrayCollection();
         $this->permissions = new ArrayCollection();
     }
 
@@ -64,36 +64,36 @@ class Role
         return $this->enabled;
     }
 
-    public function users()
+    public function actors()
     {
-        return $this->users;
+        return $this->actors;
     }
 
-    public function hasUser(User $user)
+    public function hasActor(Actor $user)
     {
-        return $this->users->contains($user);
+        return $this->actors->contains($user);
     }
 
-    public function addUsers(array $users)
+    public function addActors(array $actors)
     {
-        foreach ($users as $user) {
-            $this->addUser($user);
+        foreach ($actors as $user) {
+            $this->addActor($user);
         }
     }
 
-    public function addUser(User $user)
+    public function addActor(Actor $user)
     {
-        if (!$this->hasUser($user)) {
-            $this->users->add($user);
-            ORM::persist(Role::class, $this);
+        if (!$this->hasActor($user)) {
+            $this->actors->add($user);
+            ORM::persist($this);
         }
     }
 
-    public function removeUser(User $user)
+    public function removeActor(Actor $user)
     {
-        if ($this->hasUser($user)) {
-            $this->users->removeElement($user);
-            ORM::persist(Role::class, $this);
+        if ($this->hasActor($user)) {
+            $this->actors->removeElement($user);
+            ORM::persist($this);
         }
     }
 
@@ -111,7 +111,7 @@ class Role
     {
         if (!$this->hasPermission($permission)) {
             $this->permissions->add($permission);
-            ORM::persist(Role::class, $this);
+            ORM::persist($this);
         }
     }
 
@@ -119,7 +119,7 @@ class Role
     {
         if ($this->hasPermission($permission)) {
             $this->permissions->removeElement($permission);
-            ORM::persist(Role::class, $this);
+            ORM::persist($this);
         }
     }
 
@@ -137,7 +137,7 @@ class Role
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Relationships
-        $builder->addManyToMany('users', User::class, 'ark_rbac_user_role');
+        $builder->addManyToMany('actors', Actor::class, 'ark_rbac_actor_role');
         $builder->addManyToMany('permissions', Permission::class, 'ark_rbac_role_permission');
     }
 }

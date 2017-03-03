@@ -39,9 +39,7 @@ use ARK\Http\Error\InternalServerError;
 use ARK\ORM\OrmServiceProvider;
 use ARK\Provider\JsonSchemaServiceProvider;
 use ARK\Provider\SpatialServiceProvider;
-use ARK\Translation\Loader\ActorLoader;
-use ARK\Translation\Loader\DatabaseLoader;
-use ARK\Translation\Twig\TranslateExtension;
+use ARK\Translation\TranslationServiceProvider;
 use Bernard\Serializer;
 use Fuz\Jordan\Twig\Extension\TreeExtension;
 use League\Glide\ServerFactory;
@@ -69,7 +67,6 @@ use Silex\Provider\SerializerServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\SwiftmailerServiceProvider;
-use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\VarDumperServiceProvider;
@@ -249,16 +246,6 @@ class Application extends SilexApplication
         // - Required on Use: Locale
         // - Optional on Use: Validator, Form
         $this->register(new TranslationServiceProvider());
-        $this->extend('translator', function ($translator, $app) {
-            $translator->addLoader('database', new DatabaseLoader());
-            $translator->addLoader('actor', new ActorLoader());
-            $translator->addResource('database', $app['database'], 'en');
-            $translator->addResource('database', $app['database'], 'da');
-            $translator->addResource('actor', $app['database'], 'en');
-            $app->loadTranslationFiles($translator, $app['locale_fallbacks'], $this['dir.site'].'/translations');
-            $app->loadTranslationFiles($translator, $app['locale_fallbacks'], $this['dir.site'].'/translations/'.$app['ark']['web']['frontend']);
-            return $translator;
-        });
 
         // Enable User Manager
         // - On Register: Security, Validator, Mailer, DBAL
@@ -340,20 +327,6 @@ class Application extends SilexApplication
         $firewalls = (isset($this['security.firewalls'])) ? $this['security.firewalls'] : [];
         $firewalls[$area] = $firewall;
         $this['security.firewalls'] = $firewalls;
-    }
-
-    private function loadTranslationFiles($translator, $languages, $dir)
-    {
-        try {
-            $files = new \DirectoryIterator($dir);
-            foreach ($files as $file) {
-                $parts = explode('.', $file->getFilename());
-                if ($file->getExtension() == 'xlf' && in_array($parts[1], $languages)) {
-                    $translator->addResource('xliff', $file->getPathname(), $parts[1], $parts[0]);
-                }
-            }
-        } catch (\Exception $e) {
-        }
     }
 
     public function boot()

@@ -40,9 +40,9 @@ use DateTime;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class UserRole
+class ActorRole
 {
-    protected $user = null;
+    protected $actor = null;
     protected $enabled = false;
     protected $verified = false;
     protected $locked = false;
@@ -51,20 +51,20 @@ class UserRole
     protected $verificationToken = '';
     protected $verificationRequestedAt = null;
 
-    public function __construct($user, $role)
+    public function __construct($actor, $role)
     {
-        $this->user = $user;
-        $this->accounts = new ArrayCollection();
+        $this->actor = $actor;
+        $this->roles = new ArrayCollection();
     }
 
     public function id()
     {
-        return $this->user;
+        return $this->actor;
     }
 
     public function getUser()
     {
-        return $this->user;
+        return $this->actor;
     }
 
     public function isVerified()
@@ -171,10 +171,10 @@ class UserRole
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_rbac_user_role');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_rbac_actor_role');
 
         // Key
-        $builder->addKey('user', 'integer');
+        $builder->addKey('actor', 'integer');
         $builder->addStringKey('role', 30);
 
         // Attributes

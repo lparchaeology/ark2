@@ -33,10 +33,11 @@ namespace ARK\Translation\Console;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Translation\Domain;
-use ARK\Translation\Key;
 use ARK\Translation\Language;
 use ARK\Translation\Message;
 use ARK\Translation\Role;
+use ARK\Translation\Translation;
+use ARK\Translation\Command\TranslationAddMessage;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
 use Symfony\Component\Console\Command\Command;
@@ -64,20 +65,18 @@ class TranslationAddCommand extends Command
 
         $keyword = $input->getArgument('keyword');
 
-        $key = ORM::find(Key::class, $keyword);
+        $key = ORM::find(Translation::class, $keyword);
         if ($key) {
-            $output->writeln("\nTranslation keyword exists in domain".$key->domain()->name());
+            $domain = $key->domain()->name();
+            $output->writeln("\nTranslation keyword exists in domain".$domain);
         } else {
             $domains = ORM::findAll(Domain::class);
             foreach ($domains as $domain) {
                 $domainNames[] = $domain->name();
-                $doms[$domain->name()] = $domain;
             }
-            $domainQuestion = new ChoiceQuestion("Please choose the domain (Default: 'dime'): ", $domainNames, 'dime');
+            $domainQuestion = new ChoiceQuestion("Please choose the domain (Default: 'core'): ", $domainNames, 'core');
             $domainQuestion->setAutocompleterValues($domainNames);
-            $domainName = $question->ask($input, $output, $domainQuestion);
-            $domain = $doms[$domainName];
-            $key = new Key($keyword, $domain);
+            $domain = $question->ask($input, $output, $domainQuestion);
         }
 
         $languages = ORM::findAll(Language::class);
@@ -85,33 +84,27 @@ class TranslationAddCommand extends Command
         foreach ($languages as $language) {
             if ($language->usedForMarkup()) {
                 $langCodes[] = $language->code();
-                $langs[$language->code()] = $language;
             }
         }
         $locale = Service::locale();
         $langQuestion = new ChoiceQuestion("Please choose the language (Default: '$locale'): ", $langCodes, $locale);
         $langQuestion->setAutocompleterValues($langCodes);
-        $langCode = $question->ask($input, $output, $langQuestion);
-        $language = $langs[$langCode];
+        $language = $question->ask($input, $output, $langQuestion);
 
         $roles = ORM::findAll(Role::class);
         foreach ($roles as $role) {
             $roleNames[] = $role->name();
-            $rols[$role->name()] = $role;
         }
         $roleQuestion = new ChoiceQuestion("Please choose the role (Default: 'default'): ", $roleNames, 'default');
         $roleQuestion->setAutocompleterValues($roleNames);
-        $roleName = $question->ask($input, $output, $roleQuestion);
-        $role = $rols[$roleName];
+        $role = $question->ask($input, $output, $roleQuestion);
 
-        $message = ORM::findBy(Message::class, ['language' => $language->code(), 'key' => $key->keyword(), 'role' => $role->name()]);
+        $message = ORM::findOneBy(Message::class, ['language' => $language, 'parent' => $keyword, 'role' => $role]);
         if ($message) {
             $output->writeln("\nMessage exists:");
             $output->writeln("  Text: ".$message->text());
             $output->writeln("  Notes: ".$message->notes());
             $output->writeln("Text and Notes will be replaced.");
-        } else {
-            $message = new Message($key, $language, $role);
         }
 
         $textQuestion = new Question("Please enter the translation text: ");
@@ -120,12 +113,8 @@ class TranslationAddCommand extends Command
         $notesQuestion = new Question("Please enter any translation notes: ");
         $notes = $question->ask($input, $output, $notesQuestion);
 
-        $message->setText($text);
-        $message->setNotes($notes);
-
-        ORM::persist($key);
-        ORM::persist($message);
-        ORM::manager('core')->flush();
+        $message = new TranslationAddMessage($keyword, $domain, $role, $language, $text, $notes);
+        Service::handleCommand($message);
 
         $output->writeln("\nTranslation added.");
     }

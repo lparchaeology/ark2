@@ -69,6 +69,19 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         return $builder->build();
     }
 
+    public function addOneToManyCascade($name, $targetEntity, $mappedBy, $persist = true, $delete = false)
+    {
+        $builder = $this->createOneToMany($name, $targetEntity);
+        $builder->mappedBy($mappedBy);
+        if ($persist) {
+            $builder->cascadePersist();
+        }
+        if ($delete) {
+            $builder->cascadeDelete();
+        }
+        return $builder->build();
+    }
+
     public function addManyToOneKey($name, $class, $column = null, $reference = null, $inverse = null)
     {
         if ($column === null) {

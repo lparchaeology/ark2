@@ -50,6 +50,5 @@ class Domain
         $builder = new ClassMetadataBuilder($metadata, 'ark_translation_domain');
         $builder->addStringKey('domain', 30);
         KeywordTrait::buildKeywordMetadata($builder);
-        $builder->setReadOnly();
     }
 }

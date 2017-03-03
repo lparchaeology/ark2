@@ -31,7 +31,7 @@
 namespace ARK\Translation;
 
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\Translation\Key;
+use ARK\Translation\Translation;
 use ARK\Translation\Language;
 use ARK\Translation\Role;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -39,14 +39,14 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 class Message
 {
     protected $language = null;
-    protected $key = null;
+    protected $parent = null;
     protected $role = null;
     protected $text = '';
     protected $notes = '';
 
-    public function __construct(Key $key, Language $language, Role $role = null)
+    public function __construct(Translation $parent, Language $language, Role $role = null)
     {
-        $this->key = $key;
+        $this->parent = $parent;
         $this->language = $language;
         if (!$role) {
             $role = new Role();
@@ -54,9 +54,14 @@ class Message
         $this->role = $role;
     }
 
-    public function key()
+    public function keyword()
     {
-        return $this->key;
+        return $this->parent->keyword();
+    }
+
+    public function domain()
+    {
+        return $this->parent->domain();
     }
 
     public function language()
@@ -108,10 +113,9 @@ class Message
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_translation_message');
         $builder->addManyToOneKey('language', 'ARK\Translation\Language');
-        $builder->addManyToOneKey('key', 'ARK\Translation\Key', 'keyword');
+        $builder->addManyToOneKey('parent', 'ARK\Translation\Translation', 'keyword');
         $builder->addManyToOneKey('role', 'ARK\Translation\Role');
         $builder->addStringField('text', 4294967295);
         $builder->addStringField('notes', 4294967295);
-        $builder->setReadOnly();
     }
 }

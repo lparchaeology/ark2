@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 14, 2017 at 11:01 PM
+-- Generation Time: Mar 03, 2017 at 09:54 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -23,16 +23,54 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ark_rbac_user`
+-- Table structure for table `ark_auth_account`
 --
 
-CREATE TABLE `ark_rbac_user` (
+CREATE TABLE `ark_auth_account` (
+  `user` int(10) UNSIGNED NOT NULL,
+  `account` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `protocol` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `provider` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `identifier` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `access_token` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `refresh_token` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_auth_level`
+--
+
+CREATE TABLE `ark_auth_level` (
+  `level` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_auth_level`
+--
+
+INSERT INTO `ark_auth_level` (`level`, `enabled`) VALUES
+('ROLE_ADMIN', 1),
+('ROLE_ANON', 1),
+('ROLE_SYSADMIN', 1),
+('ROLE_USER', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_auth_user`
+--
+
+CREATE TABLE `ark_auth_user` (
   `user` int(11) UNSIGNED NOT NULL,
   `username` varchar(100) DEFAULT NULL,
   `email` varchar(100) NOT NULL DEFAULT '',
   `password` varchar(255) DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
-  `role` varchar(20) NOT NULL,
+  `level` varchar(30) NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `verified` tinyint(1) NOT NULL DEFAULT '0',
   `locked` tinyint(1) NOT NULL DEFAULT '0',
@@ -45,13 +83,13 @@ CREATE TABLE `ark_rbac_user` (
   `password_request_token` varchar(100) NOT NULL,
   `password_requested_at` timestamp NULL DEFAULT NULL,
   `last_login` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
 
 --
--- Dumping data for table `ark_rbac_user`
+-- Dumping data for table `ark_auth_user`
 --
 
-INSERT INTO `ark_rbac_user` (`user`, `username`, `email`, `password`, `name`, `role`, `enabled`, `verified`, `locked`, `expired`, `expires_at`, `credentials_expired`, `credentials_expire_at`, `verification_token`, `verification_requested_at`, `password_request_token`, `password_requested_at`, `last_login`) VALUES
+INSERT INTO `ark_auth_user` (`user`, `username`, `email`, `password`, `name`, `level`, `enabled`, `verified`, `locked`, `expired`, `expires_at`, `credentials_expired`, `credentials_expire_at`, `verification_token`, `verification_requested_at`, `password_request_token`, `password_requested_at`, `last_login`) VALUES
 (1, NULL, 'john@layt.net', '$2y$13$5bDc.gpJTrnpJmfQt.7MZOz.QaKH/c8blMJtjJAxuoBwju.P88x2q', 'John Layt', 'ROLE_SYSADMIN', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL),
 (2, NULL, 'stuarteve@gmail.com', '$2y$13$F70UAv8DPo7LFJSm4y0h.eacYGcJuubZRSSYBUqUbgwl4bBq3w.IK', 'Stuart Eve', 'ROLE_ADMIN', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL),
 (3, NULL, 'm.johnson@lparchaeology.com', '$2y$13$cVYlJ12yc1dA6CTedS1HtuACE7sbD.gsc5/zHnXCk.ddDOEvRtIiK', 'Mike Johnson', 'ROLE_ADMIN', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL),
@@ -60,23 +98,6 @@ INSERT INTO `ark_rbac_user` (`user`, `username`, `email`, `password`, `name`, `r
 (6, NULL, 'farkado@cas.au.dk', '$2y$13$ZFjnuxJZWENioCLj4pP.Puha05uLX7rTMFENBhbI20TUoBSSRbfuO', NULL, 'ROLE_USER', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL),
 (7, NULL, 'peter.jensen@cas.au.dk', '$2y$13$AbwjnZFu31LNjhmovB61y.QGDfisf.kaLmCBxOVVmjCNiQCmGytoq', 'Peter Jensen', 'ROLE_USER', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL),
 (8, NULL, 'crisager@cas.au.dk', '$2y$13$g/617vGuc3U7CWI8xMhuxulEsqwtaHVMgfG8/MQX1fdXsftGaV6F.', 'Carsten Risager', 'ROLE_USER', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ark_rbac_user_account`
---
-
-CREATE TABLE `ark_rbac_user_account` (
-  `user` int(10) UNSIGNED NOT NULL,
-  `account` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `protocol` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `provider` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `identifier` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `access_token` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `refresh_token` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
 
 -- --------------------------------------------------------
 
@@ -129,18 +150,24 @@ CREATE TABLE `ark_user_field` (
 --
 
 --
--- Indexes for table `ark_rbac_user`
+-- Indexes for table `ark_auth_account`
 --
-ALTER TABLE `ark_rbac_user`
+ALTER TABLE `ark_auth_account`
+  ADD PRIMARY KEY (`user`,`account`);
+
+--
+-- Indexes for table `ark_auth_level`
+--
+ALTER TABLE `ark_auth_level`
+  ADD PRIMARY KEY (`level`);
+
+--
+-- Indexes for table `ark_auth_user`
+--
+ALTER TABLE `ark_auth_user`
   ADD PRIMARY KEY (`user`),
   ADD UNIQUE KEY `unique_email` (`email`),
   ADD UNIQUE KEY `username` (`username`);
-
---
--- Indexes for table `ark_rbac_user_account`
---
-ALTER TABLE `ark_rbac_user_account`
-  ADD PRIMARY KEY (`user`,`account`);
 
 --
 -- Indexes for table `ark_user`
@@ -161,9 +188,9 @@ ALTER TABLE `ark_user_field`
 --
 
 --
--- AUTO_INCREMENT for table `ark_rbac_user`
+-- AUTO_INCREMENT for table `ark_auth_user`
 --
-ALTER TABLE `ark_rbac_user`
+ALTER TABLE `ark_auth_user`
   MODIFY `user` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `ark_user`
@@ -175,10 +202,10 @@ ALTER TABLE `ark_user`
 --
 
 --
--- Constraints for table `ark_rbac_user_account`
+-- Constraints for table `ark_auth_account`
 --
-ALTER TABLE `ark_rbac_user_account`
-  ADD CONSTRAINT `ark_rbac_user_account_ibfk_1` FOREIGN KEY (`user`) REFERENCES `ark_rbac_user` (`user`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `ark_auth_account`
+  ADD CONSTRAINT `ark_auth_account_ibfk_1` FOREIGN KEY (`user`) REFERENCES `ark_auth_user` (`user`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

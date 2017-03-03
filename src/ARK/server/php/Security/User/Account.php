@@ -32,7 +32,6 @@ namespace ARK\Security\RBAC;
 
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
-use ARK\Security\RBAC\Role;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Account
@@ -94,7 +93,7 @@ class Account
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_rbac_user_account');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_auth_account');
 
         // Key
         $builder->addManyToOneKey('user', User::class);

@@ -31,11 +31,35 @@
 namespace ARK\Workflow;
 
 use Symfony\Component\Workflow\Exception\InvalidArgumentException;
+use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Registry as SymfonyRegistry;
 use Symfony\Component\Workflow\Workflow;
+use ARK\Workflow\ItemPropertyMarkingStore;
+use ARK\Workflow\VocabularyBuilder;
+use ARK\Model\Attribute;
 
 class Registry extends SymfonyRegistry
 {
+    public function getVocabularyDefinition($concept)
+    {
+        if (!isset($this->vocabulary[$concept])) {
+            $builder = new VocabularyBuilder($concept);
+            $this->vocabulary[$concept] = $builder->build();
+        }
+        return $this->vocabulary[$concept];
+    }
+
+    public function getAttributeWorkflow(Attribute $attribute)
+    {
+        if (!$attribute->hasVocabulary() || !$attribute->vocabulary()) {
+            throw new InvalidArgumentException(sprintf('Unable to find a workflow for attribute "%s".', $attribute->name()));
+        }
+        $definition = $this->getVocabularyDefinition($concept);
+        $markingStore = new ItemPropertyMarkingStore($attribute);
+        $workflow = new StateMachine($definition, $markingStore);
+        return $workflow;
+    }
+
     public function get($subject, $workflowName = null)
     {
         $workflow = null;

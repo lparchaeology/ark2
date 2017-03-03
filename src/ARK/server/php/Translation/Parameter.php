@@ -31,16 +31,18 @@
 namespace ARK\Translation;
 
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\Translation\Translation;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Parameter
 {
-    protected $key = null;
+    protected $parent = null;
     protected $parameter = '';
 
-    public function key()
+    public function __construct(Translation $parent, $name)
     {
-        return $this->key;
+        $this->parent = $parent;
+        $this->parameter = $name;
     }
 
     public function name()
@@ -51,8 +53,7 @@ class Parameter
     public static function loadMetadata(ClassMetadata $metadata)
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_translation_parameter');
-        $builder->addManyToOneKey('key', 'ARK\Translation\Key', 'keyword');
+        $builder->addManyToOneKey('parent', 'ARK\Translation\Translation', 'keyword');
         $builder->addStringKey('parameter', 30);
-        $builder->setReadOnly();
     }
 }

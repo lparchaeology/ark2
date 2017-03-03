@@ -75,6 +75,5 @@ class Language
         $builder->addField('markup', 'boolean');
         $builder->addField('vocabulary', 'boolean');
         $builder->addField('text', 'boolean');
-        $builder->setReadOnly();
     }
 }

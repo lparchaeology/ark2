@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Translation Domain Entity
+ * ARK Security Permission
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,32 +28,62 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Translation;
+namespace ARK\Security\RBAC;
 
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\ORM\ORM;
+use ARK\Security\RBAC\Permission;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\Common\Collections\ArrayCollection;
 
-class Role
+class Action
 {
     use KeywordTrait;
 
-    protected $name = '';
+    protected $action = '';
+    protected $permissions = null;
 
-    public function __construct($name = 'default')
+    public function __construct($action)
     {
-        $this->name = $name;
+        $this->action = $action;
+        $this->permissions = new ArrayCollection();
     }
 
-    public function name()
+    public function id()
     {
-        return $this->name;
+        return $this->action;
+    }
+
+    public function isEnabled()
+    {
+        return $this->enabled;
+    }
+
+    public function permissions()
+    {
+        return $this->permissions;
+    }
+
+    public function isPermitted(Permission $permission)
+    {
+        return $this->permissions->contains($permission);
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_translation_role');
-        $builder->addStringKey('name', 30, 'role');
+        // Table
+        $builder = new ClassMetadataBuilder($metadata, 'ark_rbac_action');
+        $builder->setReadOnly();
+
+        // Key
+        $builder->addStringKey('action', 30);
+
+        // Attributes
+        $builder->addField('enabled', 'boolean');
         KeywordTrait::buildKeywordMetadata($builder);
+
+        // Relationships
+        $builder->addManyToMany('permissions', Permission::class, 'ark_rbac_role_action');
     }
 }

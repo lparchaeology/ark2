@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 02, 2017 at 12:12 AM
+-- Generation Time: Mar 03, 2017 at 09:54 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -663,14 +663,79 @@ INSERT INTO `ark_module` (`module`, `resource`, `project`, `namespace`, `entity`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ark_rbac_action`
+--
+
+CREATE TABLE `ark_rbac_action` (
+  `action` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `event` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `ark_rbac_action`
+--
+
+INSERT INTO `ark_rbac_action` (`action`, `event`, `enabled`, `keyword`) VALUES
+('accession', 'accessioned', 1, 'dime.action.accession'),
+('activate', 'activated', 1, 'dime.action.activate'),
+('agree', 'agreed', 1, 'dime.action.agree'),
+('annotate', 'annotated', 1, 'dime.action.annotate'),
+('appraise', 'appraised', 1, 'dime.action.appraise'),
+('approve', 'approved', 1, 'dime.action.approve'),
+('assess', 'assessed', 1, 'dime.action.assess'),
+('cancel', 'cancelled', 1, 'dime.action.cancel'),
+('cite', 'cited', 1, 'dime.action.cite'),
+('comment', 'commented', 1, 'dime.action.comment'),
+('conserve', 'conserved', 1, 'dime.action.conserve'),
+('contact', 'contacted', 1, 'dime.action.contact'),
+('decline', 'declined', 1, 'dime.action.decline'),
+('delete', 'deleted', 1, 'dime.action.delete'),
+('destroy', 'destroyed', 1, 'dime.action.destroy'),
+('disagree', 'disagreed', 1, 'dime.action.disagree'),
+('discard', 'discarded', 1, 'dime.action.discard'),
+('edit', 'edited', 1, 'dime.action.edit'),
+('evaluate', 'evaluated', 1, 'dime.action.evaluate'),
+('export', 'exported', 1, 'dime.action.export'),
+('follow', 'followed', 1, 'dime.action.follow'),
+('identify', 'identified', 1, 'dime.action.identify'),
+('like', 'liked', 1, 'dime.action.like'),
+('loan', 'loaned', 1, 'dime.action.loan'),
+('lose', 'lost', 1, 'dime.action.lose'),
+('notify', 'notified', 1, 'dime.action.notify'),
+('publish', 'published', 1, 'dime.action.publish'),
+('receive', 'received', 1, 'dime.action.receive'),
+('record', 'recorded', 1, 'dime.action.record'),
+('recover', 'recovered', 1, 'dime.action.recover'),
+('redact', 'redacted', 1, 'dime.action.redact'),
+('refer', 'referred', 1, 'dime.action.refer'),
+('register', 'registered', 1, 'dime.action.register'),
+('reject', 'rejected', 1, 'dime.action.reject'),
+('release', 'released', 1, 'dime.action.release'),
+('report', 'reported', 1, 'dime.action.report'),
+('request', 'requested', 1, 'dime.action.request'),
+('restore', 'restored', 1, 'dime.action.restore'),
+('reward', 'rewarded', 1, 'dime.action.reward'),
+('send', 'sent', 1, 'dime.action.send'),
+('share', 'shared', 1, 'dime.action.share'),
+('subscribe', 'subscribed', 1, 'dime.action.subscribe'),
+('suppress', 'suppressed', 1, 'dime.action.suppress'),
+('suspend', 'suspended', 1, 'dime.action.suspend'),
+('transfer', 'transferred', 1, 'dime.action.transfer'),
+('validate', 'validated', 1, 'dime.action.validate');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ark_rbac_permission`
 --
 
 CREATE TABLE `ark_rbac_permission` (
-  `permission` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `permission` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `ark_rbac_permission`
@@ -690,10 +755,10 @@ INSERT INTO `ark_rbac_permission` (`permission`, `enabled`, `keyword`) VALUES
 --
 
 CREATE TABLE `ark_rbac_role` (
-  `role` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `role` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `keyword` varchar(100) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `ark_rbac_role`
@@ -708,13 +773,24 @@ INSERT INTO `ark_rbac_role` (`role`, `enabled`, `keyword`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ark_rbac_role_action`
+--
+
+CREATE TABLE `ark_rbac_role_action` (
+  `role` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `action` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ark_rbac_role_permission`
 --
 
 CREATE TABLE `ark_rbac_role_permission` (
-  `role` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `permission` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `role` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `permission` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `ark_rbac_role_permission`
@@ -729,33 +805,6 @@ INSERT INTO `ark_rbac_role_permission` (`role`, `permission`) VALUES
 ('detectorist', 'can_search_find'),
 ('curator', 'can_view_find'),
 ('detectorist', 'can_view_find');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ark_rbac_user_role`
---
-
-CREATE TABLE `ark_rbac_user_role` (
-  `user` int(11) UNSIGNED NOT NULL,
-  `role` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `verified` tinyint(1) NOT NULL DEFAULT '0',
-  `locked` tinyint(1) NOT NULL DEFAULT '0',
-  `expired` tinyint(1) NOT NULL DEFAULT '0',
-  `expires_at` timestamp NULL DEFAULT NULL,
-  `verification_token` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `verification_requested_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `ark_rbac_user_role`
---
-
-INSERT INTO `ark_rbac_user_role` (`user`, `role`, `enabled`, `verified`, `locked`, `expired`, `expires_at`, `verification_token`, `verification_requested_at`) VALUES
-(6, 'detectorist', 1, 0, 0, 0, NULL, '', NULL),
-(7, 'detectorist', 1, 0, 0, 0, NULL, '', NULL),
-(8, 'curator', 1, 0, 0, 0, NULL, '', NULL);
 
 -- --------------------------------------------------------
 
@@ -5168,6 +5217,12 @@ ALTER TABLE `ark_module`
   ADD PRIMARY KEY (`module`);
 
 --
+-- Indexes for table `ark_rbac_action`
+--
+ALTER TABLE `ark_rbac_action`
+  ADD PRIMARY KEY (`action`);
+
+--
 -- Indexes for table `ark_rbac_permission`
 --
 ALTER TABLE `ark_rbac_permission`
@@ -5180,18 +5235,18 @@ ALTER TABLE `ark_rbac_role`
   ADD PRIMARY KEY (`role`);
 
 --
+-- Indexes for table `ark_rbac_role_action`
+--
+ALTER TABLE `ark_rbac_role_action`
+  ADD PRIMARY KEY (`role`,`action`),
+  ADD KEY `permission` (`action`);
+
+--
 -- Indexes for table `ark_rbac_role_permission`
 --
 ALTER TABLE `ark_rbac_role_permission`
   ADD PRIMARY KEY (`role`,`permission`),
   ADD KEY `permission` (`permission`);
-
---
--- Indexes for table `ark_rbac_user_role`
---
-ALTER TABLE `ark_rbac_user_role`
-  ADD PRIMARY KEY (`user`,`role`),
-  ADD KEY `role` (`role`);
 
 --
 -- Indexes for table `ark_schema`
@@ -5477,17 +5532,18 @@ ALTER TABLE `ark_map_legend`
   ADD CONSTRAINT `legend_map` FOREIGN KEY (`map`) REFERENCES `ark_map` (`map`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `ark_rbac_role_action`
+--
+ALTER TABLE `ark_rbac_role_action`
+  ADD CONSTRAINT `ark_rbac_role_action_ibfk_1` FOREIGN KEY (`role`) REFERENCES `ark_rbac_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_rbac_role_action_ibfk_2` FOREIGN KEY (`action`) REFERENCES `ark_rbac_action` (`action`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `ark_rbac_role_permission`
 --
 ALTER TABLE `ark_rbac_role_permission`
   ADD CONSTRAINT `ark_rbac_role_permission_ibfk_1` FOREIGN KEY (`role`) REFERENCES `ark_rbac_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `ark_rbac_role_permission_ibfk_2` FOREIGN KEY (`permission`) REFERENCES `ark_rbac_permission` (`permission`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `ark_rbac_user_role`
---
-ALTER TABLE `ark_rbac_user_role`
-  ADD CONSTRAINT `ark_rbac_user_role_ibfk_2` FOREIGN KEY (`role`) REFERENCES `ark_rbac_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_schema`

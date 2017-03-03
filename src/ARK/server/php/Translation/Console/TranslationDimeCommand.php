@@ -33,10 +33,10 @@ namespace ARK\Translation\Console;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Translation\Domain;
-use ARK\Translation\Key;
 use ARK\Translation\Language;
 use ARK\Translation\Message;
 use ARK\Translation\Role;
+use ARK\Translation\Translation;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
 use Symfony\Component\Console\Command\Command;
@@ -68,7 +68,7 @@ class TranslationDimeCommand extends Command
             $keyword = $question->ask($input, $output, $keywordQuestion);
         }
 
-        $key = ORM::find(Key::class, $keyword);
+        $key = ORM::find(Translation::class, $keyword);
         if ($key) {
             $output->writeln("\nTranslation keyword exists in domain ".$key->domain()->name());
             $messages = ORM::findBy(Message::class, ['key' => $keyword]);
@@ -78,7 +78,7 @@ class TranslationDimeCommand extends Command
             $output->writeln("");
         } else {
             $domain = ORM::findOneBy(Domain::class, ['domain' => 'dime']);
-            $key = new Key($keyword, $domain);
+            $key = new Translation($keyword, $domain);
         }
 
         $da = ORM::findOneBy(Language::class, ['language' => 'da']);

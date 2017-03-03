@@ -28,14 +28,12 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Security\RBAC;
+namespace ARK\Security\User;
 
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
-use ARK\Security\RBAC\Account;
-use ARK\Security\RBAC\Role;
-use ARK\Security\RBAC\User;
+use ARK\Security\User\Account;
 use DateTime;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -54,7 +52,7 @@ class User implements AdvancedUserInterface, Serializable
     protected $password = null;
     protected $plainPassword = '';
     protected $name = '';
-    protected $role = 'ROLE_ANON';
+    protected $level = 'ROLE_ANON';
     protected $enabled = false;
     protected $verified = false;
     protected $locked = false;
@@ -72,7 +70,6 @@ class User implements AdvancedUserInterface, Serializable
     public function __construct($user)
     {
         $this->user = $user;
-        $this->roles = new ArrayCollection();
         $this->accounts = new ArrayCollection();
     }
 
@@ -340,30 +337,45 @@ class User implements AdvancedUserInterface, Serializable
         return $this;
     }
 
+    public function level($level)
+    {
+        return $this->level;
+    }
+
+    private function initLevels()
+    {
+        if ($this->levels) {
+            return;
+        }
+        if ($this->level == 'ROLE_ANON' || !$this->level) {
+            $this->levels = ['ROLE_ANON'];
+        }
+        if ($this->level == 'ROLE_USER') {
+            $this->levels = ['ROLE_ANON', 'ROLE_USER'];
+        }
+        if ($this->level == 'ROLE_ADMIN') {
+            $this->levels = ['ROLE_ANON', 'ROLE_USER', 'ROLE_ADMIN'];
+        }
+        if ($this->level == 'ROLE_SYSADMIN') {
+            $this->levels = ['ROLE_ANON', 'ROLE_USER', 'ROLE_ADMIN', 'ROLE_SYSADMIN'];
+        }
+    }
+
+    // Required by UserInterface
     public function getRoles()
     {
-        if ($this->role == 'ROLE_ANON') {
-            return ['ROLE_ANON'];
-        }
-        if ($this->role == 'ROLE_USER') {
-            return ['ROLE_ANON', 'ROLE_USER'];
-        }
-        if ($this->role == 'ROLE_ADMIN') {
-            return ['ROLE_ANON', 'ROLE_USER', 'ROLE_ADMIN'];
-        }
-        if ($this->role == 'ROLE_SYSADMIN') {
-            return ['ROLE_ANON', 'ROLE_USER', 'ROLE_ADMIN', 'ROLE_SYSADMIN'];
-        }
+        $this->initLevels();
+        return $this->levels;
     }
 
-    public function hasRole($role)
+    public function hasLevel($level)
     {
-        return in_array($role, $this->getRoles());
+        return in_array($level, $this->getRoles());
     }
 
-    public function setRole($role)
+    public function setLevel($level)
     {
-        $this->role = $role;
+        $this->level = $level;
     }
 
     public function accounts()
@@ -423,7 +435,7 @@ class User implements AdvancedUserInterface, Serializable
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_rbac_user');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_auth_user');
 
         // Key
         $builder->addKey('user', 'integer');
@@ -433,7 +445,7 @@ class User implements AdvancedUserInterface, Serializable
         $builder->addStringField('email', 100);
         $builder->addStringField('password', 255);
         $builder->addStringField('name', 100);
-        $builder->addStringField('role', 20);
+        $builder->addStringField('level', 30);
         $builder->addField('enabled', 'boolean');
         $builder->addField('verified', 'boolean');
         $builder->addField('locked', 'boolean');
@@ -449,6 +461,6 @@ class User implements AdvancedUserInterface, Serializable
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Relationships
-        $builder->addManyToMany('accounts', Permission::class, 'ark_rbac_user_account');
+        $builder->addManyToMany('accounts', Account::class, 'ark_auth_account');
     }
 }
