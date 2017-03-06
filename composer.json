@@ -6,8 +6,7 @@
     "type": "project",
     "keywords": ["archaeology", "heritage", "database"],
     "homepage": "http://www.lparchaeology.com",
-    "authors": [
-        {
+    "authors": [{
             "name": "L ~ P : Heritage LLP",
             "email": "ark@lparchaeology.com",
             "homepage": "http://www.lparchaeology.com",
@@ -29,13 +28,13 @@
             "name": "Mike Johnson",
             "email": "m.johnson@lparchaeology.com",
             "homepage": "http://www.lparchaeology.com",
-            "role": "Developer"
+            "role": "Frontend Developer"
         },
         {
             "name": "John Layt",
             "email": "john@layt.net",
             "homepage": "http://www.lparchaeology.com",
-            "role": "Architect, Developer"
+            "role": "Backend Developer"
         }
     ],
     "support": {

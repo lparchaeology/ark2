@@ -30,12 +30,17 @@
 
 namespace ARK\View;
 
+use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
 use ARK\View\Element;
 use ARK\Service;
+use Symfony\Component\Form\FormBuilderInterface;
 
 abstract class Layout extends Element
 {
+    protected $schma = null;
+    protected $formRoot = false;
+    protected $cells = null;
     protected $grid = null;
     protected $elements = null;
     protected $parentCells = null;
@@ -57,6 +62,16 @@ abstract class Layout extends Element
         }
     }
 
+    public function schema()
+    {
+        return $this->schma;
+    }
+
+    public function formRoot()
+    {
+        return $this->formRoot;
+    }
+
     public function cells()
     {
         return $this->cells;
@@ -75,6 +90,27 @@ abstract class Layout extends Element
         return $options;
     }
 
+    public function buildForms($data)
+    {
+        if ($this->formRoot) {
+            $builder = $this->formBuilder($data);
+            $this->buildForm($data[$this->element], $builder);
+            return [$this->element => $builder->getForm()];
+        }
+        $forms = [];
+        foreach ($this->elements() as $element) {
+            $forms = array_merge($forms, $element->buildForms($data));
+        }
+        return $forms;
+    }
+
+    public function buildForm($data, FormBuilderInterface $builder)
+    {
+        foreach ($this->elements() as $element) {
+            $element->buildForm($data, $builder);
+        }
+    }
+
     public function renderView($data, $forms = null, $form = null, Cell $cell = null, array $options = [])
     {
         if ($this->template()) {
@@ -90,5 +126,14 @@ abstract class Layout extends Element
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
+        // Joined Table Inheritance
+        $builder = new ClassMetadataBuilder($metadata, 'ark_view_layout');
+
+        // Fields
+        $builder->addField('formRoot', 'boolean', [], 'form_root');
+
+        // Associations
+        $builder->addManyToOneField('schma', 'ARK\Model\Schema');
+        $builder->addOneToMany('cells', 'ARK\View\Cell', 'layout');
     }
 }

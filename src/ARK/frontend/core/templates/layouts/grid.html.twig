@@ -5,26 +5,38 @@
     <div class="row">
 
         {# TODO: Make this driven from GridLayout object! #}
-        {% if row|length == 3 %}
+        {% if row | length > 12 %}
+            {% set colclass = 'col-md-12' %}
+        {% elseif row | length > 6 %}
+            {% set colclass = 'col-md-1' %}
+        {% elseif row | length >= 5 %}
+            {% set colclass = 'col-md-2' %}
+        {% elseif row | length == 4 %}
+            {% set colclass = 'col-md-3' %}
+        {% elseif row | length == 3 %}
             {% set colclass = 'col-md-4' %}
-        {% elseif row|length == 2 %}
-            {% set colclass = 'col-md-8' %}
+        {% elseif row | length == 2 %}
+            {% set colclass = 'col-md-6' %}
         {% else %}
             {% set colclass = 'col-md-12' %}
         {% endif %}
 
+        {% if layout.formRoot %}
+            {{ form_start(forms[layout.name]) }}
+            {% set form = forms[layout.name] %}
+        {% endif %}
+
         {% for cdx, col in row %}
             <div class="{{colclass}}">
-                {% set colclass = 'col-md-4' %}
                 {% for idx, cell in col %}
-                    {% if cell.type == 'layout' %}
-                        {% include cell.template with {'layout': cell, 'forms': forms[rdx][cdx][idx]} %}
-                    {% else %}
-                        {{ form_row(forms[rdx][cdx][idx]) }}
-                    {% endif %}
+                    {{ cell.element.renderView(data, forms, form, cell)|raw }}
                 {% endfor %}
             </div>
         {% endfor %}
+
+        {% if layout.formRoot %}
+            {{ form_end(forms[layout.name]) }}
+        {% endif %}
 
     </div>
 

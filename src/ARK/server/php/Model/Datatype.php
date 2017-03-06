@@ -167,7 +167,7 @@ class Datatype
         $builder->addStringField('formatVocabulary', 30, 'format_vocabulary');
         $builder->addStringField('parameterName', 30, 'parameter_name');
         $builder->addStringField('parameterVocabulary', 30, 'parameter_vocabulary');
-        $builder->addField('modelTable', 'boolean');
+        $builder->addField('spanable', 'boolean');
         $builder->addStringField('modelTable', 50, 'model_table');
         $builder->addStringField('modelClass', 100, 'model_class');
         $builder->addStringField('dataTable', 50, 'data_table');

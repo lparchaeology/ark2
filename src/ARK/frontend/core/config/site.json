@@ -1,14 +1,24 @@
 {
-    "site": "core",
+    "site": "dime",
     "debug": true,
+    "timezone": "UTC",
     "locale": "en",
-    "anonymous": true,
+    "locales": ["en"],
+    "spatial": "mysql",
+    "image": "gd",
+    "max_image_size": 4000000,
     "api": {
         "enable": true,
         "path": "/api/v2"
     },
     "web": {
         "enable": true,
-        "frontend": "core"
+        "frontend": "dime2017"
+    },
+    "security": {
+        "access_rules": [
+            ["(^/users)", "ROLE_USER"],
+            ["^/.+$", "IS_AUTHENTICATED_ANONYMOUSLY"]
+        ]
     }
 }

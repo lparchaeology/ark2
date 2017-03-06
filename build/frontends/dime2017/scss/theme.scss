@@ -22,10 +22,10 @@ $break-tablet: 1199px;
 /*
  * Base structure
  */
-html {
-}
+html {}
+
 body {
-    margin-bottom:60px;
+    margin-bottom: 60px;
 }
 
 /*
@@ -75,30 +75,30 @@ body {
 }
 
 .dime-icon.icon-user {
-    background-image: url("../images/logged_in_.png");
+    background-image: url("../images/icons/logged_in_.png");
     margin-right: 1em;
 }
 
 .dime-icon.icon-user-edit {
-    background-image: url("../images/edit_user.png");
+    background-image: url("../images/icons/edit_user.png");
     margin: 0 25px;
     float: none;
 }
 
 .dime-icon.icon-add {
-    background-image: url("../images/add_find.png");
+    background-image: url("../images/icons/add_find.png");
 }
 
 .dime-icon.icon-search {
-    background-image: url("../images/search_find.png");
+    background-image: url("../images/icons/search_find.png");
 }
 
 .dime-icon.icon-map {
-    background-image: url("../images/map.png");
+    background-image: url("../images/icons/map.png");
 }
 
 .dime-icon.icon-heatmap {
-    background-image: url("../images/heatmap.png");
+    background-image: url("../images/icons/heatmap.png");
 }
 
 /*
@@ -111,7 +111,7 @@ body {
 }
 
 .navbar {
-    background: url("../images/Header.png") no-repeat;
+    background: url("../images/brand/header.png") no-repeat;
     background-size: cover;
     border-radius: 0;
     border: none;
@@ -197,7 +197,7 @@ body {
     .dime-banner .navbar-toggle {
         display: block;
         float: none;
-        z-index:1;
+        z-index: 1;
     }
 }
 
@@ -206,7 +206,7 @@ body {
 }
 
 .dime-title {
-    background: url("../images/DimeLogo.png");
+    background: url("../images/brand/logo.png");
     display: inline-flex;
     background-size: contain;
     line-height: 64px;
@@ -333,7 +333,7 @@ body {
 }
 
 a.loginbutton {
-    background-image: url("../images/login_button.png");
+    background-image: url("../images/icons/login_button.png");
     background-size: contain;
     display: block;
     height: 2em;
@@ -629,46 +629,40 @@ Carousel Stuff
 
 /* mappick */
 
-.mappick-group div {
-    
-}
+.mappick-group div {}
 
-.mappick_fields {
-    
-}
+.mappick_fields {}
 
-.mappick_fields label{
-    
-}
+.mappick_fields label {}
 
 .mappick {
 
-	height:100px;
+    height: 100px;
 
 }
 /* map overlay */
 
 .mapview .btn-group {
-	margin: 10px 0;	
+    margin: 10px 0;
 }
 
 .mapview .btn-group .style-select-option {
-	cursor:pointer;	
+    cursor: pointer;
 }
 
 .map-cover {
-	background: rgba(0, 0, 0, 1) url("../images/loading.gif") no-repeat scroll center center;
+    background: rgba(0, 0, 0, 1) url("../images/icons/loading.gif") no-repeat scroll center center;
     position: absolute;
     z-index: 1;
 }
 
-a.layer-select:hover{
-	cursor:pointer;	
+a.layer-select:hover {
+    cursor: pointer;
 }
 
 a.layer-select.selected,
 a.layer-select.selected:hover {
-	background-color: #999999;
+    background-color: #999999;
 }
 
 .map-legend {
@@ -677,18 +671,18 @@ a.layer-select.selected:hover {
     right: 0;
     top: 0;
     text-align: center;
-    display:none;
+    display: none;
 }
 
-.map-legend .map-legend-label{
+.map-legend .map-legend-label {
     text-transform: uppercase;
     background-color: #f9f9f9;
-    display:block;
+    display: block;
     padding: 0 5px;
 }
 
 .map-legend .legend-image {
-	margin:5px;
+    margin: 5px;
 }
 
 /*  Footer */
@@ -698,33 +692,33 @@ a.layer-select.selected:hover {
     height: 60px;
     background-color: #fff;
 }
-
-
 @media (max-width: 992px) {
-	.footer{
-		height:80px;
-	}
-	body {
-    	margin-bottom:80px;
-	}
+    .footer {
+        height: 80px;
+    }
+
+    body {
+        margin-bottom: 80px;
+    }
 }
 @media (max-width: 640px) {
-	.footer{
-		height:100px;
-	}
-	body {
-    	margin-bottom:100px;
-	}
+    .footer {
+        height: 100px;
+    }
+
+    body {
+        margin-bottom: 100px;
+    }
 }
 @media (max-width: 359px) {
-	.footer{
-		position:relative;
-	}
-	body {
-    	margin-bottom:0;
-	}
-}
+    .footer {
+        position: relative;
+    }
 
+    body {
+        margin-bottom: 0;
+    }
+}
 
 .footer .credits {
     font-weight: 100;

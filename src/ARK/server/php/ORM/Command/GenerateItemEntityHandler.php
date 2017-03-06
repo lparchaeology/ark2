@@ -57,6 +57,8 @@ class <entity> implements Item
 {
     use ItemTrait;
 
+    protected $type = \'<type>\';
+
     public function __construct($schema)
     {
         $this->schma = $schema;
@@ -79,6 +81,7 @@ use <parent>;
 
 class <entity> extends <extends>
 {
+    protected $type = \'<type>\';
 }
 ';
 
@@ -88,13 +91,14 @@ class <entity> extends <extends>
         $class = $this->generateEntityClass($message->namespace(), $module['entity']);
         $this->writeEntityClass($message->project(), $message->classname(), $class);
         $types = Service::database()->getTypeEntities($module['module']);
+        // TODO File base type
         foreach ($types as $type) {
             $classname = $type['classname'];
             $pos = strrpos($classname, '\\');
             $namespace = substr($classname, 0, $pos);
             $entity = substr($classname, $pos + 1);
             $subclass = $this->generateEntitySubclass($namespace, $entity, $message->classname(), $module['entity']);
-            $this->writeEntityClass($message->project(), $type['classname'], $subclass);
+            $this->writeEntityClass($message->project(), $type['classname'], $subclass, $type);
         }
         /*
         TODO Make this work properly!!!
@@ -118,17 +122,21 @@ class <entity> extends <extends>
         chmod($path, 0664);
     }
 
-    private function generateEntityClass($namespace, $entity)
+    private function generateEntityClass($namespace, $entity, $type = '')
     {
         $body = str_replace('<namespace>', $namespace, self::$classTemplate);
-        return str_replace('<entity>', $entity, $body);
+        $body = str_replace('<entity>', $entity, $body);
+        $body = str_replace('<type>', $type, $body);
+        return $body;
     }
 
-    private function generateEntitySubclass($namespace, $entity, $parent, $extends)
+    private function generateEntitySubclass($namespace, $entity, $parent, $extends, $type)
     {
         $body = str_replace('<namespace>', $namespace, self::$subclassTemplate);
         $body = str_replace('<entity>', $entity, $body);
         $body = str_replace('<parent>', $parent, $body);
-        return str_replace('<extends>', $extends, $body);
+        $body = str_replace('<extends>', $extends, $body);
+        $body = str_replace('<type>', $type, $body);
+        return $body;
     }
 }

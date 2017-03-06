@@ -12,4 +12,5 @@ use ARK\File\File;
 
 class Document extends File
 {
+    protected $type = 'document';
 }

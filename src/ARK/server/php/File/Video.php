@@ -12,4 +12,5 @@ use ARK\File\File;
 
 class Video extends File
 {
+    protected $type = 'video';
 }

@@ -12,4 +12,5 @@ use ARK\Entity\Actor;
 
 class Museum extends Actor
 {
+    protected $type = 'museum';
 }

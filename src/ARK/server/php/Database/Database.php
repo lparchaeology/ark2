@@ -400,6 +400,11 @@ class Database
         return $this->core()->fetchAll($sql, $params);
     }
 
+    public function getViewTypes()
+    {
+        return $this->core()->fetchAllTable('ark_view_type');
+    }
+
     public function getLayout($layout)
     {
         $sql = "

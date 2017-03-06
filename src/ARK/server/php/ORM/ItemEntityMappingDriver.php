@@ -52,6 +52,9 @@ class ItemEntityMappingDriver implements MappingDriver
     {
         // Table
         $module = Service::database()->getModuleForClassName($className);
+        if (!$module) {
+            return;
+        }
         $builder = new ClassMetadataBuilder($metadata, $module['tbl']);
         $builder->setCustomRepositoryClass('ARK\ORM\ItemEntityRepository');
 

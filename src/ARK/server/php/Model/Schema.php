@@ -93,6 +93,7 @@ class Schema
 
     public function checkType($type)
     {
+        $this->init();
         if ($type) {
             if (!$this->useTypes()) {
                 throw new ErrorException(new Error('SURPLUS_SUBTYPE', 'Type not required', "The Schema '$this->schma' does not require a Type."));

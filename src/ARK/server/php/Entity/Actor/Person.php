@@ -12,4 +12,5 @@ use ARK\Entity\Actor;
 
 class Person extends Actor
 {
+    protected $type = 'person';
 }

@@ -12,4 +12,5 @@ use ARK\Entity\Actor;
 
 class Institution extends Actor
 {
+    protected $type = 'institution';
 }

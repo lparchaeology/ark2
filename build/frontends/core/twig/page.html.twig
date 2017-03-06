@@ -9,7 +9,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- The above 3 meta tags *must* come first in the head, any other head content must come *after* these tags -->
 
-        {% block head %}{% endblock %}
+        {% use page.head %}
 
         <!-- Combined Bootstrap and ARK CSS -->
         <link href="{{ asset('/styles/ark.min.css', 'frontend') }}" rel="stylesheet" type="text/css" />
@@ -26,7 +26,7 @@
 
     <body>
 
-        {% block body %}{% endblock %}
+        {% use page.body %}
 
         <!-- Combined jQuery, Bootstrap and ARK js -->
         <script src="{{ asset('/scripts/ark.min.js', 'frontend') }}"></script>

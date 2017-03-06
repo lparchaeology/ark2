@@ -1,0 +1,27 @@
+// Brand/project name
+
+.navbar-brand {
+  padding: 8px 15px;;
+}
+.navbar-inverse {
+  .navbar-nav {
+    > li > a {
+      &:hover,
+      &:focus {
+        color: $navbar-inverse-link-active-color;
+        background-color: $brand-primary;
+      }
+    }
+    > .active > a {
+      &,
+      &:hover,
+      &:focus {
+        color: $navbar-inverse-link-active-color;
+        background-color: $gray-darker;
+      }
+    }
+  }
+}
+.navbar-fixed-top {
+  border: none;
+}

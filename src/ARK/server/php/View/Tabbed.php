@@ -30,11 +30,13 @@
 
 namespace ARK\View;
 
+use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
 
 class Tabbed extends Layout
 {
     public static function loadMetadata(ClassMetadata $metadata)
     {
+        $builder = new ClassMetadataBuilder($metadata, 'ark_view_layout');
     }
 }

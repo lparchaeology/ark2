@@ -49,17 +49,9 @@ abstract class Element
 
     protected $element = '';
     protected $type = '';
-    protected $schma = null;
     protected $class = '';
     protected $template = '';
-    protected $form = false;
-    protected $formRoot = false;
-    protected $formType = '';
-    protected $editable = true;
     protected $hidden = false;
-    protected $cells = null;
-    protected $formOptions = '';
-    protected $formOptionsArray = null;
 
     public function __construct()
     {
@@ -76,11 +68,6 @@ abstract class Element
         return $this->type;
     }
 
-    public function schema()
-    {
-        return $this->schma;
-    }
-
     public function className()
     {
         return $this->class;
@@ -94,27 +81,9 @@ abstract class Element
         return $this->type->template();
     }
 
-    public function isEditable()
-    {
-        return $this->editable;
-    }
-
     public function isHidden()
     {
         return $this->hidden;
-    }
-
-    public function formRoot()
-    {
-        return $this->formRoot;
-    }
-
-    public function formType()
-    {
-        if ($this->formType) {
-            return $this->formType;
-        }
-        return $this->type->formType();
     }
 
     public function formData($resource)
@@ -128,42 +97,23 @@ abstract class Element
         return $options;
     }
 
-    public function formOptions()
+    public function formType()
     {
-        if ($this->formOptionsArray === null) {
-            if ($this->formOptions) {
-                $this->formOptionsArray = array_merge($this->formDefaults(), json_decode($this->formOptions, true));
-            } else {
-                $this->formOptionsArray = $this->formDefaults();
-            }
-        }
-        return $this->formOptionsArray;
+        return $this->type->formType();
     }
 
-    public function buildForms($data)
+    public function formOptions()
     {
-        if ($this->formRoot) {
-            $builder = $this->formBuilder($data);
-            $this->buildForm($data[$this->element], $builder);
-            return [$this->element => $builder->getForm()];
-        }
-        $forms = [];
-        if ($this->type->isLayout()) {
-            foreach ($this->elements() as $element) {
-                $forms = array_merge($forms, $element->buildForms($data));
-            }
-        }
-        return $forms;
+        return $this->formDefaults();
     }
 
     public function buildForm($data, FormBuilderInterface $builder)
     {
-        if ($this->type->isLayout()) {
-            foreach ($this->elements() as $element) {
-                $element->buildForm($data, $builder);
-            }
-            return;
-        }
+    }
+
+    public function buildForms($data)
+    {
+        return [];
     }
 
     protected function formBuilder($data)
@@ -181,12 +131,11 @@ abstract class Element
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_element');
         $builder->setReadOnly();
-        $builder->setSingleTableInheritance()->setDiscriminatorColumn('type', 'string', 10);
-        // TODO Make table driven from ark_view_type
-        $builder->addDiscriminatorMapClass('field', 'ARK\View\Field');
-        $builder->addDiscriminatorMapClass('grid', 'ARK\View\Grid');
-        $builder->addDiscriminatorMapClass('tabbed', 'ARK\View\Tabbed');
-        $builder->addDiscriminatorMapClass('table', 'ARK\View\Table');
+        $builder->setJoinedTableInheritance()->setDiscriminatorColumn('type', 'string', 10);
+        $viewTypes = Service::database()->getViewTypes();
+        foreach ($viewTypes as $type) {
+            $metadata->addDiscriminatorMapClass($type['type'], $type['class']);
+        }
 
         // Key
         $builder->addStringKey('element', 30);
@@ -194,18 +143,11 @@ abstract class Element
         // Fields
         $builder->addStringField('class', 100);
         $builder->addStringField('template', 100);
-        $builder->addField('form', 'boolean');
-        $builder->addField('formRoot', 'boolean', [], 'form_root');
-        $builder->addStringField('formType', 100, 'form_type');
-        $builder->addStringField('formOptions', 4000, 'form_options');
-        $builder->addField('editable', 'boolean');
         $builder->addField('hidden', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Relationships
         $builder->addManyToOneField('type', Type::class, 'type', 'type', false);
-        $builder->addManyToOneField('schma', 'ARK\Model\Schema');
-        $builder->addOneToMany('cells', 'ARK\View\Cell', 'layout');
     }
 }

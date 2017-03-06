@@ -96,20 +96,9 @@ trait ItemTrait
         return $this->label;
     }
 
-    private function typeName()
-    {
-        if (!$this->meta) {
-            $this->meta = ORM::repository(get_class())->metadata();
-            if ($this->meta->discriminatorValue) {
-                $this->type = $this->meta->discriminatorValue;
-            }
-        }
-        return $this->type;
-    }
-
     public function type()
     {
-        return $this->schema()->type($this->typeName());
+        return $this->schema()->checkType($this->type);
     }
 
     public function setType($type)
@@ -136,12 +125,12 @@ trait ItemTrait
 
     public function hasAttribute($attribute)
     {
-        return $this->schema()->hasAttribute($attribute, $this->typeName());
+        return $this->schema()->hasAttribute($attribute, $this->type);
     }
 
     public function attributes()
     {
-        return $this->schema()->attributes($this->typeName());
+        return $this->schema()->attributes($this->type);
     }
 
     public function path()
@@ -175,7 +164,7 @@ trait ItemTrait
     public function property($attribute)
     {
         if (!isset($this->properties[$attribute])) {
-            $this->properties[$attribute] = new Property($this, $this->schema()->attribute($attribute, $this->typeName()));
+            $this->properties[$attribute] = new Property($this, $this->schema()->attribute($attribute, $this->type));
         }
         return $this->properties[$attribute];
     }

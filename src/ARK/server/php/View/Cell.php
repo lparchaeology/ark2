@@ -101,7 +101,7 @@ class Cell
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_view_layout');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_view_grid');
         $builder->setReadOnly();
 
         // Key

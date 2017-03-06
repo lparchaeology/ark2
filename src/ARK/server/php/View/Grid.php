@@ -30,6 +30,9 @@
 
 namespace ARK\View;
 
+use ARK\ORM\ClassMetadataBuilder;
+use ARK\ORM\ClassMetadata;
+
 class Grid extends Layout
 {
     public function rowCount()
@@ -76,5 +79,10 @@ class Grid extends Layout
             return [];
         }
         return $this->grid[$row][$col];
+    }
+
+    public static function loadMetadata(ClassMetadata $metadata)
+    {
+        $builder = new ClassMetadataBuilder($metadata, 'ark_view_layout');
     }
 }

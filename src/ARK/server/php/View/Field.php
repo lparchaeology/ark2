@@ -42,23 +42,45 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class Field extends Element
 {
-    protected $itemType = '';
-    protected $attributeName = '';
+    protected $formType = '';
+    protected $formOptions = '';
+    protected $formOptionsArray = null;
+    protected $editable = true;
     protected $attribute = null;
+
+    public function hasAttribute()
+    {
+        return $this->attribute !== null;
+    }
 
     public function attribute()
     {
-        if ($this->attribute === null && $this->attributeName) {
-            $this->attribute = ORM::find(
-                SchemaAttribute::class,
-                [
-                    'schma' => $this->schma->name(),
-                    'type' => $this->itemType,
-                    'attribute' => $this->attributeName,
-                ]
-            );
-        }
         return $this->attribute;
+    }
+
+    public function isEditable()
+    {
+        return $this->editable;
+    }
+
+    public function formType()
+    {
+        if ($this->formType) {
+            return $this->formType;
+        }
+        return parent::formType();
+    }
+
+    public function formOptions()
+    {
+        if ($this->formOptionsArray === null) {
+            if ($this->formOptions) {
+                $this->formOptionsArray = array_merge($this->formDefaults(), json_decode($this->formOptions, true));
+            } else {
+                $this->formOptionsArray = $this->formDefaults();
+            }
+        }
+        return $this->formOptionsArray;
     }
 
     public function keyword()
@@ -66,8 +88,8 @@ class Field extends Element
         if ($this->keyword) {
             return $this->keyword;
         }
-        if ($this->attribute()) {
-            return $this->attribute()->keyword();
+        if ($this->attribute) {
+            return $this->attribute->keyword();
         }
         return '';
     }
@@ -111,9 +133,8 @@ class Field extends Element
 
     public function formData($data)
     {
-        dump($this->attribute());
-        if ($data instanceof Item && $this->attribute()) {
-            return $data->property($this->attribute()->name());
+        if ($data instanceof Item && $this->hasAttribute()) {
+            return $data->property($this->attribute->name());
         }
         if (is_array($data) && isset($data[$this->name()])) {
             return $data[$this->name()];
@@ -181,8 +202,23 @@ class Field extends Element
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $builder = new ClassMetadataBuilder($metadata);
-        $builder->addStringField('itemType', 30, 'item_type');
-        $builder->addStringField('attributeName', 30, 'attribute');
+        // Joined Table Inheritance
+        $builder = new ClassMetadataBuilder($metadata, 'ark_view_field');
+
+        // Fields
+        $builder->addStringField('formType', 100, 'form_type');
+        $builder->addStringField('formOptions', 4000, 'form_options');
+        $builder->addField('editable', 'boolean');
+
+        // Associations
+        $builder->addCompoundManyToOneField(
+            'attribute',
+            'ARK\Model\Schema\SchemaAttribute',
+            [
+                ['column' => 'schma', 'nullable' => true],
+                ['column' => 'item_type', 'reference' => 'type', 'nullable' => true],
+                ['column' => 'attribute', 'nullable' => true],
+            ]
+        );
     }
 }

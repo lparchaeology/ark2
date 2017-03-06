@@ -12,4 +12,5 @@ use ARK\File\File;
 
 class Image extends File
 {
+    protected $type = 'image';
 }

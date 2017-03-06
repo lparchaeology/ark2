@@ -1,11 +1,31 @@
 {# Define the standard sidebar block #}
+
+{% use "blocks/link.html.twig" %}
+
 {% block sidebar %}
 
-    <ul class="nav nav-sidebar">
-        <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">Add</a></li>
-        <li><a href="#">View</a></li>
-        <li><a href="#">Edit</a></li>
-    </ul>
+    {% block usertool %}{% endblock %}
+
+    <div class="row">
+        <ul class="list-group">
+            {% if page.sidebar is defined %}
+                {% for group in page.sidebar %}
+                    {% if is_granted(group.role) %}
+                        {% for link in group.links %}
+                            {% if link.active %}
+                                <li class="active list-group-item navlist">
+                                    {% include "blocks/link.html.twig" with {'link': link} %}
+                                </li>
+                            {% else %}
+                                <li class="list-group-item navlist">
+                                    {% include "blocks/link.html.twig" with {'link': link} %}
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </ul>
+    </div>
 
 {% endblock sidebar %}

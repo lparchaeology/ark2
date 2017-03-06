@@ -5,44 +5,82 @@
 
     {% set table_class %}
         table table-bootstrap-table
-        {% if layout.striped %} table-striped {%- endif %}
-        {% if layout.bordered %} table-bordered {%- endif %}
-        {% if layout.hover %} table-hover {%- endif %}
-        {% if layout.condensed %} table-condensed {%- endif %}
+        {% if layout.striped %}
+            table-striped
+        {%- endif %}
+        {% if layout.bordered %}
+            table-bordered
+        {%- endif %}
+        {% if layout.hover %}
+            table-hover
+        {%- endif %}
+        {% if layout.condensed %}
+            table-condensed
+        {%- endif %}
     {% endset %}
 
-    <table id="{{layout.id}}"
-           class="{{table_class}}"
-           data-toggle="table"
-           data-classes="{{table_class}}"
-           data-sort-name="{{layout.fields[0].id}}"
-           {#data-show-refresh="true"#}
-           data-show-toggle="true"
-           data-show-columns="true"
-           {% if layout.pagination -%} data-pagination="true" {%- endif %}
-           {% if layout.search -%} data-search="true" {%- endif %}
-           {% if not layout.header -%} data-show-header="false" {%- endif %}
-           {% if layout.footer -%} data-show-footer="true" {%- endif %}
-           {% if layout.export -%} data-show-export="true" {%- endif %}
-           >
+    <table
+        id="{{layout.id}}"
+        class="{{table_class}}"
+        data-toggle="table"
+        data-classes="{{table_class}}"
+        data-sort-name="{{layout.fields[0].id}}"
+        {#data-show-refresh="true"#}
+        data-show-toggle="true"
+        data-show-columns="true"
+        {% if layout.pagination -%}
+            data-pagination="true"
+        {%- endif %}
+        {% if layout.search -%}
+            data-search="true"
+        {%- endif %}
+        {% if not layout.header -%}
+            data-show-header="false"
+        {%- endif %}
+        {% if layout.footer -%}
+            data-show-footer="true"
+        {%- endif %}
+        {% if layout.export -%}
+            data-show-export="true"
+        {%- endif %}>
 
         <thead>
             <tr>
                 {% for field in layout.fields %}
-                    <th data-field="{{field.id}}"
-                        data-title="{{field.keyword|translate}}"
-                        {% if field.tooltip -%} data-titleTooltip="{{field.tooltip|translate}}" {%- endif %}
-                        {% if field.widget == 'radio' -%} data-radio {%- endif %}
-                        {% if field.widget == 'checkbox' -%} data-checkbox {%- endif %}
-                        {% if field.align -%} data-align="{{field.align}}" {%- endif %}
-                        {% if field.rowSpan > 1 -%} data-rowspan="field.rowSpan" {%- endif %}
-                        {% if field.colSpan > 1 -%} data-colspan="field.colSpan" {%- endif %}
-                        {% if field.sortable -%} data-sortable="true" {%- endif %}
-                        {% if field.sortable and field.sortOrder != 'asc' -%} data-sort-order="{{field.sortOrder}}" {%- endif %}
-                        {% if field.hidden -%} data-visible="false" {%- endif %}
-                        {% if not field.searchable -%} data-searchable="false" {%- endif %}
-                    >
-                        {{field.keyword|translate}}
+                    <th
+                        data-field="{{field.id}}"
+                        data-title="{{field.keyword|trans}}"
+                        {% if field.tooltip -%}
+                            data-titleTooltip="{{field.tooltip|trans}}"
+                        {%- endif %}
+                        {% if field.widget == 'radio' -%}
+                            data-radio
+                        {%- endif %}
+                        {% if field.widget == 'checkbox' -%}
+                            data-checkbox
+                        {%- endif %}
+                        {% if field.align -%}
+                            data-align="{{field.align}}"
+                        {%- endif %}
+                        {% if field.rowSpan > 1 -%}
+                            data-rowspan="field.rowSpan"
+                        {%- endif %}
+                        {% if field.colSpan > 1 -%}
+                            data-colspan="field.colSpan"
+                        {%- endif %}
+                        {% if field.sortable -%}
+                            data-sortable="true"
+                        {%- endif %}
+                        {% if field.sortable and field.sortOrder != 'asc' -%}
+                            data-sort-order="{{field.sortOrder}}"
+                        {%- endif %}
+                        {% if field.hidden -%}
+                            data-visible="false"
+                        {%- endif %}
+                        {% if not field.searchable -%}
+                            data-searchable="false"
+                        {%- endif %}>
+                        {{field.keyword|trans}}
                     </th>
                 {% endfor %}
             </tr>
@@ -53,7 +91,7 @@
                 <tr>
                     {% for field in layout.fields %}
                         <td>
-                            {% if field is defined and item[field.id] is defined %}
+                            {% if field is defined and item[field.id]is defined %}
                                 {% if field.property.id == 'item' %}
                                     {{ item[field.id]|raw }}
                                 {% elseif field.property.type == 'datetime' %}
@@ -63,7 +101,7 @@
                                 {% elseif field.property.type == 'time' %}
                                     {{ item[field.id].format('H:i:s') }}
                                 {% else %}
-                                    {{ item[field.id]|translate }}
+                                    {{ item[field.id]|trans }}
                                 {% endif %}
                             {% endif %}
                         </td>

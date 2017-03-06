@@ -28,17 +28,39 @@
  * @php        >=5.6, >=7.0
  */
 
-// Assume we are in <install>/sites/<site>/web/
-$installDir = __DIR__.'/../../..';
-$siteDir = __DIR__.'/..';
+require_once __DIR__.'/../../../vendor/autoload.php';
 
-require_once $installDir.'/vendor/autoload.php';
+use ARK\Application;
+use ARK\Route\ApiControllerProvider;
+use ARK\Route\ViewControllerProvider;
+use rootLogin\UserProvider\Provider\UserProviderControllerProvider;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-$app = new ARK\Application($siteDir.'/config/site.json');
+$app = new Application('../config/site.json');
 
-// TODO Get rid of this!
-require $installDir.'/src/ARK/server/php/controllers.php';
+// TODO Proper Route mounting
+if ($app['ark']['api']['enable']) {
+    $app->mount($app['path.api'], new ApiControllerProvider());
+}
+
+if ($app['ark']['web']['enable']) {
+    $app->mount('/users', new UserProviderControllerProvider());
+    $app->mount('/', new ViewControllerProvider());
+    // TODO Proper error handling
+    $app->error(function (Exception $e, Request $request, $code) use ($app) {
+        if ($app['debug']) {
+            return;
+        }
+        // 404.html, or 40x.html, or 4xx.html, or error.html
+        $templates = array(
+            'errors/'.$code.'.html.twig',
+            'errors/'.substr($code, 0, 2).'x.html.twig',
+            'errors/'.substr($code, 0, 1).'xx.html.twig',
+            'errors/default.html.twig',
+        );
+        return new Response($app['twig']->resolveTemplate($templates)->render(array('code' => $code)), $code);
+    });
+}
 
 $app->run();
-
-// TODO 500 Error

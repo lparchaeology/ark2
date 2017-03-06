@@ -1,26 +1,28 @@
 {
     "servers": {
-        "mamp": {
-            "driver": "pdo_mysql",
-            "host": "127.0.0.1",
-            "charset": "utf8mb4",
-            "port": "8889",
-            "user": "ark_user",
-            "password": "ark_pass"
+        "server": {
+            "server": "server",
+            "driver": "",
+            "user": "",
+            "password": ""
         }
     },
     "connections": {
-        "data": {
-            "server":   "mamp",
-            "dbname": "ark_data"
-        },
         "core": {
-            "server":   "mamp",
-            "dbname": "ark_core"
+            "server": "server",
+            "dbname": "core"
+        },
+        "data": {
+            "server": "server",
+            "dbname": "data"
+        },
+        "spatial": {
+            "server": "server",
+            "dbname": "spatial"
         },
         "user": {
-            "server":   "mamp",
-            "dbname": "ark_user"
+            "server": "server",
+            "dbname": "user"
         }
     }
 }
