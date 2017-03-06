@@ -89,6 +89,7 @@ class ItemEntityMappingDriver implements MappingDriver
     public function getAllClassNames()
     {
         if ($this->classNames === null) {
+            $this->classNames = [];
             $modules = Service::database()->getModules();
             foreach ($modules as $module) {
                 if ($module['namespace'] == $this->namespace) {

@@ -1,0 +1,48 @@
+{# Define the standard page layout, extend the base Bootstrap page #}
+{% extends "pages/bootstrap.html.twig" %}
+
+{% block head -%}
+
+    <title> {{- 'site.brand' | translate -}} </title>
+
+{%- endblock head %}
+
+{% block body -%}
+
+<div class="container-fluid" role="main">
+
+    <div class="row">
+        {{ page.navbar.renderView(data)|raw }}
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-1 sidebar">
+            {% if page.sidebar is null %}
+                {% include "blocks/sidebar.html.twig" %}
+            {% else %}
+                {{ page.sidebar.renderView(data)|raw }}
+            {% endif %}
+        </div>
+
+        <div class="col-xs-12 col-md-12 col-lg-10">
+            {% if page.content is null %}
+                {% include "blocks/content.html.twig" %}
+            {% else %}
+                {{ page.content.renderView(data, form)|raw }}
+            {% endif %}
+        </div>
+
+    </div>
+
+    <div class="row">
+        {% if page.footer is null %}
+            {% include "blocks/footer.html.twig" %}
+        {% else %}
+            {{ page.footer.renderView(data)|raw }}
+        {% endif %}
+    </div>
+
+</div>
+
+{%- endblock body %}

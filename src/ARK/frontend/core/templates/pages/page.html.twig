@@ -1,37 +1,48 @@
-{# ARK default page layout with default navbar, sidebar, and content sections #}
+{# Define the standard page layout, extend the base Bootstrap page #}
+{% extends "pages/bootstrap.html.twig" %}
 
-{# Extend the standard ARK Bootstrap page #}
-{% extends "pages/doc.html.twig" %}
+{% block head -%}
 
-{# Include the standard head block #}
-{% use "blocks/head.html.twig" %}
+    <title> {{- 'site.brand' | translate -}} </title>
 
-{# Include the standard body block #}
-{% use "blocks/body.html.twig" %}
+{%- endblock head %}
 
-{# Include the standard navbar block #}
-{% use "blocks/navbar.html.twig" %}
+{% block body -%}
 
-{# Include the standard sidebar block #}
-{% use "blocks/sidebar.html.twig" %}
+<div class="container-fluid" role="main">
 
-{# Include the standard content block #}
-{% use "blocks/content.html.twig" %}
+    <div class="row">
+        {{ page.navbar.renderView(data)|raw }}
+    </div>
 
-{# Include the standard flash block #}
-{% use "blocks/flash.html.twig" %}
+    <div class="row">
 
-{# Include the standard fieldvalue block #}
-{% use "blocks/fieldvalue.html.twig" %}
+        <div class="col-md-1 sidebar">
+            {% if page.sidebar is null %}
+                {% include "blocks/sidebar.html.twig" %}
+            {% else %}
+                {{ page.sidebar.renderView(data)|raw }}
+            {% endif %}
+        </div>
 
-{# Include the standard sidebar block #}
-{% use "blocks/footer.html.twig" %}
+        <div class="col-xs-12 col-md-12 col-lg-10">
+            {% if page.content is null %}
+                {% include "blocks/content.html.twig" %}
+            {% else %}
+                {{ page.content.renderView(data, form)|raw }}
+            {% endif %}
+        </div>
 
-{# Include the standard vocabulary block #}
-{% use "blocks/vocabulary.html.twig" %}
+    </div>
 
-{# Include the standard link block #}
-{% use "blocks/link.html.twig" %}
+    <div class="row">
+        {% if page.footer is null %}
+            {% include "blocks/footer.html.twig" %}
+        {% else %}
+            {{ page.footer.renderView(data)|raw }}
+        {% endif %}
+    </div>
 
-{# Include the standard link block #}
-{% use "blocks/map.html.twig" %}
+</div>
+
+{%- endblock body %}

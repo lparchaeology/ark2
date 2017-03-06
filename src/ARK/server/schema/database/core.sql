@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 28, 2017 at 10:34 PM
+-- Generation Time: Mar 06, 2017 at 02:07 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -17,35 +17,27 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `aa_ark_core`
+-- Database: `ark_core`
 --
-
---
--- Dumping data for table `ark_config_thumbnail`
---
-
-INSERT INTO `ark_config_thumbnail` (`profile`, `max`, `min`, `mode`, `type`, `keyword`) VALUES
-('gallery', 100, 100, 'aspect', 'jpg', 'thumbnail.gallery'),
-('preview', 300, NULL, 'aspect', 'jpg', 'thumbnail.preview');
 
 --
 -- Dumping data for table `ark_datatype`
 --
 
-INSERT INTO `ark_datatype` (`datatype`, `object`, `compound`, `storage_type`, `storage_size`, `value_name`, `format_name`, `format_vocabulary`, `parameter_name`, `parameter_vocabulary`, `model_table`, `model_class`, `data_table`, `data_class`, `form_class`, `enabled`, `deprecated`, `keyword`) VALUES
-('blob', 0, 1, 'blob', NULL, 'blob', 'mediatype', 'mediatype', NULL, NULL, 'ark_format_blob', 'ARK\\Model\\Format\\BlobFormat', 'ark_fragment_blob', 'ARK\\Model\\Fragment\\BlobFragment', '', 0, 0, 'core.datatype.blob'),
-('boolean', 0, 0, 'boolean', NULL, NULL, NULL, NULL, NULL, NULL, 'ark_format_boolean', 'ARK\\Model\\Format\\BooleanFormat', 'ark_fragment_boolean', 'ARK\\Model\\Fragment\\BooleanFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', 1, 0, 'core.datatype.boolean'),
-('date', 0, 0, 'date', NULL, NULL, NULL, NULL, NULL, NULL, 'ark_format_datetime', 'ARK\\Model\\Format\\DateFormat', 'ark_fragment_date', 'ARK\\Model\\Fragment\\DateFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateType', 1, 0, 'core.datatype.date'),
-('datetime', 0, 0, 'datetime', NULL, NULL, NULL, NULL, NULL, NULL, 'ark_format_datetime', 'ARK\\Model\\Format\\DateTimeFormat', 'ark_fragment_datetime', 'ARK\\Model\\Fragment\\DateTimeFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateTimeType', 1, 0, 'core.datatype.datetime'),
-('decimal', 0, 0, 'string', 200, NULL, NULL, NULL, NULL, NULL, 'ark_format_decimal', 'ARK\\Model\\Format\\DecimalFormat', 'ark_fragment_decimal', 'ARK\\Model\\Fragment\\DecimalFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', 1, 0, 'core.datatype.decimal'),
-('float', 0, 0, 'float', NULL, NULL, NULL, NULL, NULL, NULL, 'ark_format_float', 'ARK\\Model\\Format\\FloatFormat', 'ark_fragment_float', 'ARK\\Model\\Fragment\\FloatFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', 1, 0, 'core.datatype.float'),
-('integer', 0, 0, 'integer', NULL, NULL, NULL, NULL, NULL, NULL, 'ark_format_integer', 'ARK\\Model\\Format\\IntegerFormat', 'ark_fragment_integer', 'ARK\\Model\\Fragment\\IntegerFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\IntegerType', 1, 0, 'core.datatype.integer'),
-('item', 0, 1, 'string', 30, 'item', NULL, NULL, 'module', NULL, 'ark_format_item', 'ARK\\Model\\Format\\ItemFormat', 'ark_fragment_item', 'ARK\\Model\\Fragment\\ItemFragment', '', 1, 0, 'core.datatype.item'),
-('object', 1, 0, 'integer', 0, NULL, NULL, NULL, NULL, NULL, 'ark_format_object', 'ARK\\Model\\Format\\ObjectFormat', 'ark_fragment_object', 'ARK\\Model\\Fragment\\ObjectFragment', '', 1, 0, 'core.datatype.object'),
-('spatial', 0, 1, 'string', 1431655765, 'geometry', 'format', 'spatial.format', 'srid', 'spatial.crs', 'ark_format_spatial', 'ARK\\Model\\Format\\SpatialFormat', 'ark_fragment_spatial', 'ARK\\Model\\Fragment\\SpatialFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', 1, 0, 'core.datatype.spatial'),
-('string', 0, 0, 'string', 4000, NULL, NULL, NULL, NULL, NULL, 'ark_format_string', 'ARK\\Model\\Format\\StringFormat', 'ark_fragment_string', 'ARK\\Model\\Fragment\\StringFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', 1, 0, 'core.datatype.string'),
-('text', 0, 1, 'string', 1431655765, 'content', 'mimetype', 'mediatype', 'language', 'language', 'ark_format_text', 'ARK\\Model\\Format\\TextFormat', 'ark_fragment_text', 'ARK\\Model\\Fragment\\TextFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextAreaType', 1, 0, 'core.datatype.text'),
-('time', 0, 0, 'time', NULL, NULL, NULL, NULL, NULL, NULL, 'ark_format_datetime', 'ARK\\Model\\Format\\TimeFormat', 'ark_fragment_time', 'ARK\\Model\\Fragment\\TimeFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', 0, 0, 'core.datatype.time');
+INSERT INTO `ark_datatype` (`datatype`, `object`, `compound`, `storage_type`, `storage_size`, `value_name`, `format_name`, `format_vocabulary`, `parameter_name`, `parameter_vocabulary`, `spanable`, `model_table`, `model_class`, `data_table`, `data_class`, `form_class`, `enabled`, `deprecated`, `keyword`) VALUES
+('blob', 0, 1, 'blob', NULL, 'blob', 'mediatype', 'mediatype', NULL, NULL, 0, 'ark_format_blob', 'ARK\\Model\\Format\\BlobFormat', 'ark_fragment_blob', 'ARK\\Model\\Fragment\\BlobFragment', '', 0, 0, 'core.datatype.blob'),
+('boolean', 0, 0, 'boolean', NULL, NULL, NULL, NULL, NULL, NULL, 0, 'ark_format_boolean', 'ARK\\Model\\Format\\BooleanFormat', 'ark_fragment_boolean', 'ARK\\Model\\Fragment\\BooleanFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', 1, 0, 'core.datatype.boolean'),
+('date', 0, 0, 'date', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_format_datetime', 'ARK\\Model\\Format\\DateFormat', 'ark_fragment_date', 'ARK\\Model\\Fragment\\DateFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateType', 1, 0, 'core.datatype.date'),
+('datetime', 0, 0, 'datetime', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_format_datetime', 'ARK\\Model\\Format\\DateTimeFormat', 'ark_fragment_datetime', 'ARK\\Model\\Fragment\\DateTimeFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateTimeType', 1, 0, 'core.datatype.datetime'),
+('decimal', 0, 0, 'string', 200, NULL, NULL, NULL, NULL, NULL, 1, 'ark_format_decimal', 'ARK\\Model\\Format\\DecimalFormat', 'ark_fragment_decimal', 'ARK\\Model\\Fragment\\DecimalFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', 1, 0, 'core.datatype.decimal'),
+('float', 0, 0, 'float', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_format_float', 'ARK\\Model\\Format\\FloatFormat', 'ark_fragment_float', 'ARK\\Model\\Fragment\\FloatFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', 1, 0, 'core.datatype.float'),
+('integer', 0, 0, 'integer', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_format_integer', 'ARK\\Model\\Format\\IntegerFormat', 'ark_fragment_integer', 'ARK\\Model\\Fragment\\IntegerFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\IntegerType', 1, 0, 'core.datatype.integer'),
+('item', 0, 1, 'string', 30, 'item', NULL, NULL, 'module', NULL, 1, 'ark_format_item', 'ARK\\Model\\Format\\ItemFormat', 'ark_fragment_item', 'ARK\\Model\\Fragment\\ItemFragment', '', 1, 0, 'core.datatype.item'),
+('object', 1, 0, 'integer', 0, NULL, NULL, NULL, NULL, NULL, 0, 'ark_format_object', 'ARK\\Model\\Format\\ObjectFormat', 'ark_fragment_object', 'ARK\\Model\\Fragment\\ObjectFragment', '', 1, 0, 'core.datatype.object'),
+('spatial', 0, 1, 'string', 1431655765, 'geometry', 'format', 'spatial.format', 'srid', 'spatial.crs', 0, 'ark_format_spatial', 'ARK\\Model\\Format\\SpatialFormat', 'ark_fragment_spatial', 'ARK\\Model\\Fragment\\SpatialFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', 1, 0, 'core.datatype.spatial'),
+('string', 0, 0, 'string', 4000, NULL, NULL, NULL, NULL, NULL, 1, 'ark_format_string', 'ARK\\Model\\Format\\StringFormat', 'ark_fragment_string', 'ARK\\Model\\Fragment\\StringFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', 1, 0, 'core.datatype.string'),
+('text', 0, 1, 'string', 1431655765, 'content', 'mimetype', 'mediatype', 'language', 'language', 0, 'ark_format_text', 'ARK\\Model\\Format\\TextFormat', 'ark_fragment_text', 'ARK\\Model\\Fragment\\TextFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextAreaType', 1, 0, 'core.datatype.text'),
+('time', 0, 0, 'time', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_format_datetime', 'ARK\\Model\\Format\\TimeFormat', 'ark_fragment_time', 'ARK\\Model\\Fragment\\TimeFragment', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', 0, 0, 'core.datatype.time');
 
 --
 -- Dumping data for table `ark_format`
@@ -217,13 +209,6 @@ INSERT INTO `ark_map_layer` (`source`, `layer`, `source_name`, `url`, `options`,
 ('bing', 'road', 'Road', '', '', '', 'map.layer.bing.road');
 
 --
--- Dumping data for table `ark_map_source`
---
-
-INSERT INTO `ark_map_source` (`source`, `type`, `subtype`, `format`, `view_class`, `ticket`, `ticket_expiry`, `options`, `keyword`) VALUES
-('bing', 'raster', 'tile', 'bing', 'BingMaps', 'Ak5AqjsEQ44KtAl7jHhrjGuzNshN1fZv3MOx2MUi0p4zFmq6XeWLKmyqeP2UgJK3', NULL, '', 'map.source.bing');
-
---
 -- Dumping data for table `ark_module`
 --
 
@@ -231,24 +216,21 @@ INSERT INTO `ark_module` (`module`, `resource`, `project`, `namespace`, `entity`
 ('actor', 'actors', 'ARK', 'ARK\\Entity', 'Actor', 'ARK\\Entity\\Actor', 'ark_item_actor', 1, 1, 0, 'module.actor'),
 ('file', 'files', 'ARK', 'ARK\\File', 'File', 'ARK\\File\\File', 'ark_item_file', 1, 1, 0, 'module.file'),
 ('page', '', 'ARK', 'ARK\\Entity', 'Page', 'ARK\\Entity\\Page', 'ark_item_page', 1, 1, 0, 'module.page');
+
 --
 -- Dumping data for table `ark_schema`
 --
 
 INSERT INTO `ark_schema` (`schma`, `module`, `generator`, `sequence`, `type`, `type_vocabulary`, `type_entities`, `enabled`, `deprecated`, `keyword`) VALUES
-('core.actor', 'actor', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 'type', 'core.actor.type', 1, 1, 0, 'core.schema.actor'),
-('core.file', 'file', 'ARK\\ORM\\Id\\IdentityGenerator', NULL, 'type', 'core.file.type', 1, 1, 0, 'core.schema.file'),
-('core.page', 'page', '', '', '', '', 0, 1, 0, 'core.schema.page');
+('core.actor', 'actor', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 'type', 'core.actor.type', 1, 1, 0, 'core.actor'),
+('core.file', 'file', 'ARK\\ORM\\Id\\IdentityGenerator', NULL, 'type', 'core.file.type', 1, 1, 0, 'core.file'),
+('core.page', 'page', '', '', '', '', 0, 1, 0, 'core.page');
 
 --
 -- Dumping data for table `ark_schema_attribute`
 --
 
 INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `vocabulary`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`, `keyword`) VALUES
-('core.actor', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.actor.id'),
-('core.actor', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.actor.type'),
-('core.actor', 'museum', 'fullname', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'core.actor.fullname'),
-('core.actor', 'museum', 'shortname', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'core.actor.shortname'),
 ('core.file', '', 'description', 'plaintext', NULL, 0, 1, 1, 0, 1, 0, 'core.file.description'),
 ('core.file', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.file.id'),
 ('core.file', '', 'mediatype', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.file.mediatype'),
@@ -257,7 +239,9 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('core.file', '', 'type', 'identifier', 'core.file.type', 1, 1, 1, 0, 1, 0, 'core.file.type'),
 ('core.file', '', 'versions', 'fileversion', NULL, 1, 0, 1, 0, 1, 0, 'core.file.versions'),
 ('core.page', '', 'content', 'html', NULL, 1, 1, 1, 0, 1, 0, 'property.content'),
-('core.page', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.page.id');
+('core.page', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.page.id'),
+('core.actor', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.actor.id'),
+('core.actor', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.actor.type');
 
 --
 -- Dumping data for table `ark_schema_item`
@@ -286,6 +270,8 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('file.type.other', 'core', 0, 0),
 ('file.type.text', 'core', 0, 0),
 ('file.type.video', 'core', 0, 0),
+('form.select.optional', 'core', 0, 0),
+('form.select.required', 'core', 0, 0),
 ('format.actor', 'core', 0, 0),
 ('format.address', 'core', 0, 0),
 ('format.blob', 'core', 0, 0),
@@ -331,12 +317,14 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('fragment.string', 'core', 0, 0),
 ('fragment.text', 'core', 0, 0),
 ('fragment.time', 'core', 0, 0),
+('map.layer.aerial', 'core', 0, 0),
+('map.layer.aerial.labels', 'core', 0, 0),
+('map.layer.road', 'core', 0, 0),
+('map.style.choropleth', 'core', 0, 0),
+('map.style.distribution', 'core', 0, 0),
 ('module.actor', 'core', 0, 0),
-('module.campaign', 'core', 0, 0),
 ('module.file', 'core', 0, 0),
-('module.find', 'core', 0, 0),
-('module.image', 'core', 0, 0),
-('module.location', 'core', 0, 0),
+('module.page', 'core', 0, 0),
 ('property.address', 'core', 0, 0),
 ('property.avatar', 'core', 0, 0),
 ('property.city', 'core', 0, 0),
@@ -357,11 +345,13 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('property.weight', 'core', 0, 0),
 ('schema.actor', 'core', 0, 0),
 ('schema.file', 'core', 0, 0),
+('schema.page', 'core', 0, 0),
 ('search.placeholder', 'core', 0, 0),
 ('site.brand', 'core', 0, 0),
 ('site.welcome', 'core', 0, 0),
 ('user.greeting', 'user', 0, 1),
 ('user.menu.edit', 'user', 0, 0),
+('user.menu.home', 'user', 0, 0),
 ('user.menu.list', 'user', 0, 0),
 ('user.menu.login', 'user', 0, 0),
 ('user.menu.logout', 'user', 0, 0),
@@ -401,6 +391,8 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'file.type.other', 'default', 'Other File', ''),
 ('en', 'file.type.text', 'default', 'Text File', ''),
 ('en', 'file.type.video', 'default', 'Video File', ''),
+('en', 'form.select.optional', 'default', 'optional', ''),
+('en', 'form.select.required', 'default', 'required', ''),
 ('en', 'format.actor', 'default', 'Actor Format', ''),
 ('en', 'format.address', 'default', 'Address Format', ''),
 ('en', 'format.blob', 'default', 'Blob Format', ''),
@@ -446,12 +438,14 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'fragment.string', 'default', 'String Fragment', ''),
 ('en', 'fragment.text', 'default', 'Text Fragment', ''),
 ('en', 'fragment.time', 'default', 'Time Fragment', ''),
+('en', 'map.layer.aerial', 'default', 'Satellite', ''),
+('en', 'map.layer.aerial.labels', 'default', 'Satellite with labels', ''),
+('en', 'map.layer.road', 'default', 'Road', ''),
+('en', 'map.style.choropleth', 'default', 'Choropleth', ''),
+('en', 'map.style.distribution', 'default', 'Distribution', ''),
 ('en', 'module.actor', 'default', 'Actor', ''),
-('en', 'module.campaign', 'default', 'Campaign', ''),
 ('en', 'module.file', 'default', 'File', ''),
-('en', 'module.find', 'default', 'Find', ''),
-('en', 'module.image', 'default', 'Image', ''),
-('en', 'module.location', 'default', 'Location', ''),
+('en', 'module.page', 'default', 'Page', ''),
 ('en', 'property.address', 'default', 'Address', ''),
 ('en', 'property.avatar', 'default', 'Avatar', ''),
 ('en', 'property.city', 'default', 'City', ''),
@@ -472,11 +466,13 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'property.weight', 'default', 'Weight', 'Core Property Weight'),
 ('en', 'schema.actor', 'default', 'Actor', ''),
 ('en', 'schema.file', 'default', 'File', ''),
+('en', 'schema.page', 'default', 'Page', ''),
 ('en', 'search.placeholder', 'default', 'Free Text Search', ''),
 ('en', 'site.brand', 'default', 'ARK', ''),
 ('en', 'site.welcome', 'default', 'Welcome to ARK.', ''),
 ('en', 'user.greeting', 'default', 'Logged In as %name%', ''),
 ('en', 'user.menu.edit', 'default', 'Edit your profile', ''),
+('en', 'user.menu.home', 'default', 'My Home', ''),
 ('en', 'user.menu.list', 'default', 'List users', ''),
 ('en', 'user.menu.login', 'default', 'Sign in', ''),
 ('en', 'user.menu.logout', 'default', 'Sign out', ''),
@@ -527,24 +523,45 @@ INSERT INTO `ark_translation_role` (`role`, `keyword`, `description`) VALUES
 -- Dumping data for table `ark_view_element`
 --
 
-INSERT INTO `ark_view_element` (`element`, `type`, `schma`, `item_type`, `attribute`, `class`, `template`, `form`, `form_root`, `form_type`, `form_options`, `editable`, `hidden`, `enabled`, `deprecated`, `keyword`) VALUES
-('core_file_description', 'field', 'core.file', '', 'description', '', '', 0, 0, 'ARK\\Form\\Type\\LocalMultilineTextType', '', 1, 0, 1, 0, NULL),
-('core_file_id', 'field', 'core.file', '', 'id', '', '', 0, 0, 'ARK\\Form\\Type\\IdType', '', 1, 0, 1, 0, NULL),
-('core_file_item', 'grid', NULL, NULL, NULL, '', '', 0, 1, '', '', 1, 0, 1, 0, NULL),
-('core_file_list', 'table', NULL, NULL, NULL, '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('core_file_mediatype', 'field', 'core.file', '', 'mediatype', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('core_file_status', 'field', 'core.file', '', 'status', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('core_file_title', 'field', 'core.file', '', 'title', '', '', 0, 0, 'ARK\\Form\\Type\\LocalTextType', '', 1, 0, 1, 0, NULL),
-('core_file_type', 'field', 'core.file', '', 'type', '', '', 0, 0, '', '', 1, 0, 1, 0, NULL),
-('core_file_versions', 'field', 'core.file', '', 'versions', '', '', 0, 0, 'ARK\\Form\\Type\\FileVersionType', '', 1, 0, 1, 0, NULL),
-('core_page_content', 'field', 'core.page', '', 'content', '', '', 0, 0, '', '', 0, 0, 1, 0, 'property.content'),
-('core_page_view', 'grid', NULL, NULL, NULL, '', '', 0, 0, '', '', 0, 0, 1, 0, NULL);
+INSERT INTO `ark_view_element` (`element`, `type`, `class`, `template`, `hidden`, `enabled`, `deprecated`, `keyword`) VALUES
+('core_actor_id', 'field', '', '', 0, 1, 0, NULL),
+('core_actor_type', 'field', '', '', 0, 1, 0, NULL),
+('core_file_description', 'field', '', '', 0, 1, 0, NULL),
+('core_file_id', 'field', '', '', 0, 1, 0, NULL),
+('core_file_item', 'grid', '', '', 0, 1, 0, NULL),
+('core_file_list', 'table', '', '', 0, 1, 0, NULL),
+('core_file_mediatype', 'field', '', '', 0, 1, 0, NULL),
+('core_file_status', 'field', '', '', 0, 1, 0, NULL),
+('core_file_title', 'field', '', '', 0, 1, 0, NULL),
+('core_file_type', 'field', '', '', 0, 1, 0, NULL),
+('core_file_versions', 'field', '', '', 0, 1, 0, NULL),
+('core_page_content', 'field', '', '', 0, 1, 0, 'property.content'),
+('core_page_static', 'page', '', '', 0, 1, 0, ''),
+('core_page_view', 'grid', '', '', 0, 1, 0, NULL);
 
 --
--- Dumping data for table `ark_view_layout`
+-- Dumping data for table `ark_view_field`
 --
 
-INSERT INTO `ark_view_layout` (`layout`, `row`, `col`, `seq`, `item_type`, `cell`, `map`, `form_options`, `width`, `label`, `editable`, `hidden`, `enabled`, `deprecated`) VALUES
+INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `form_type`, `form_options`, `editable`) VALUES
+('core_actor_id', 'core.actor', '', 'id', 'ARK\\Form\\Type\\IdType', '', 1),
+('core_actor_type', 'core.actor', '', 'type', '', '', 1),
+('core_file_description', 'core.file', '', 'description', 'ARK\\Form\\Type\\LocalMultilineTextType', '', 1),
+('core_file_id', 'core.file', '', 'id', 'ARK\\Form\\Type\\IdType', '', 1),
+('core_file_mediatype', 'core.file', '', 'mediatype', '', '', 1),
+('core_file_status', 'core.file', '', 'status', '', '', 1),
+('core_file_title', 'core.file', '', 'title', 'ARK\\Form\\Type\\LocalTextType', '', 1),
+('core_file_type', 'core.file', '', 'type', '', '', 1),
+('core_file_versions', 'core.file', '', 'versions', 'ARK\\Form\\Type\\FileVersionType', '', 1),
+('core_page_content', 'core.page', '', 'content', '', '', 0);
+
+--
+-- Dumping data for table `ark_view_grid`
+--
+
+INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `cell`, `map`, `form_options`, `width`, `label`, `editable`, `hidden`, `enabled`, `deprecated`) VALUES
+('core_actor_item', 0, 0, 0, '', 'core_actor_id', NULL, '', NULL, 1, 1, 0, 1, 0),
+('core_actor_list', 0, 0, 0, '', 'core_actor_id', NULL, '', NULL, 1, 1, 0, 1, 0),
 ('core_file_item', 0, 0, 0, '', 'core_file_id', NULL, '', NULL, 1, 1, 0, 1, 0),
 ('core_file_item', 0, 0, 1, '', 'core_file_type', NULL, '', NULL, 1, 1, 0, 1, 0),
 ('core_file_item', 0, 0, 2, '', 'core_file_mediatype', NULL, '', NULL, 1, 1, 0, 1, 0),
@@ -556,12 +573,31 @@ INSERT INTO `ark_view_layout` (`layout`, `row`, `col`, `seq`, `item_type`, `cell
 ('core_page_view', 0, 0, 0, '', 'core_page_content', NULL, '', NULL, 1, 1, 0, 1, 0);
 
 --
+-- Dumping data for table `ark_view_layout`
+--
+
+INSERT INTO `ark_view_layout` (`element`, `schma`, `item_type`, `form_root`) VALUES
+('core_actor_item', NULL, NULL, 1),
+('core_actor_list', NULL, NULL, 0),
+('core_file_item', NULL, NULL, 1),
+('core_file_list', NULL, NULL, 0),
+('core_page_view', NULL, NULL, 0);
+
+--
+-- Dumping data for table `ark_view_page`
+--
+
+INSERT INTO `ark_view_page` (`element`, `head_block`, `body_block`, `navbar`, `sidebar`, `content`, `footer`) VALUES
+('core_page_static', 'block/head.html.twig', 'block/body.html.twig', NULL, NULL, NULL, NULL);
+
+--
 -- Dumping data for table `ark_view_type`
 --
 
 INSERT INTO `ark_view_type` (`type`, `class`, `layout`, `form_type`, `template`, `keyword`) VALUES
 ('field', 'ARK\\View\\Field', 0, 'ARK\\Form\\Type\\PropertyType', 'layouts/field.html.twig', ''),
 ('grid', 'ARK\\View\\Grid', 1, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FormType', 'layouts/grid.html.twig', ''),
+('page', 'ARK\\View\\Page', 0, '', 'page.html.twig', ''),
 ('tabbed', 'ARK\\View\\Tabbed', 1, '', 'layouts/tabbed.html.twig', ''),
 ('table', 'ARK\\View\\Table', 1, '', 'layouts/table.html.twig', '');
 
@@ -588,6 +624,7 @@ INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `workflow`,
 
 INSERT INTO `ark_vocabulary_parameter` (`concept`, `term`, `name`, `type`, `value`) VALUES
 ('core.actor.type', 'institution', 'classname', 'string', 'ARK\\Entity\\Actor\\Institution'),
+('core.actor.type', 'museum', 'classname', 'string', 'ARK\\Entity\\Actor\\Museum'),
 ('core.actor.type', 'person', 'classname', 'string', 'ARK\\Entity\\Actor\\Person'),
 ('core.file.type', 'audio', 'classname', 'string', 'ARK\\File\\Audio'),
 ('core.file.type', 'document', 'classname', 'string', 'ARK\\File\\Document'),
@@ -629,7 +666,6 @@ INSERT INTO `ark_vocabulary_relation` (`relation`, `notation`, `recipricol`, `re
 
 INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('core.actor.type', 'institution', '', 0, 1, 0, 'core.actor.type.institution', ''),
-('core.actor.type', 'museum', '', 0, 1, 0, 'core.actor.type.museum', ''),
 ('core.actor.type', 'person', '', 0, 1, 0, 'core.actor.type.person', ''),
 ('core.file.status', 'checkedin', '', 0, 1, 0, 'core.file.status.checkedin', ''),
 ('core.file.status', 'checkedout', '', 0, 1, 0, 'core.file.status.checkedout', ''),
@@ -1138,7 +1174,8 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('language', 'jbo', 'lojban', 0, 1, 0, 'language.lojban', ''),
 ('language', 'jgo', 'ngomba', 0, 1, 0, 'language.ngomba', ''),
 ('language', 'jmc', 'machame', 0, 1, 0, 'language.machame', ''),
-('language', 'jpr', 'judeopersian', 0, 1, 0, 'language.judeopersian', ''),
+('language', 'jpr', 'judeopersian', 0, 1, 0, 'language.judeopersian', '');
+INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('language', 'jrb', 'judeoarabic', 0, 1, 0, 'language.judeoarabic', ''),
 ('language', 'jut', 'jutish', 0, 1, 0, 'language.jutish', ''),
 ('language', 'jv', 'javanese', 0, 1, 0, 'language.javanese', ''),
@@ -1397,8 +1434,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('language', 'so', 'somali', 0, 1, 0, 'language.somali', ''),
 ('language', 'sog', 'sogdien', 0, 1, 0, 'language.sogdien', ''),
 ('language', 'sq', 'albanian', 0, 1, 0, 'language.albanian', ''),
-('language', 'sr', 'serbian', 0, 1, 0, 'language.serbian', '');
-INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('language', 'sr', 'serbian', 0, 1, 0, 'language.serbian', ''),
 ('language', 'srn', 'tongo.sranan', 0, 1, 0, 'language.tongo.sranan', ''),
 ('language', 'srr', 'serer', 0, 1, 0, 'language.serer', ''),
 ('language', 'ss', 'swati', 0, 1, 0, 'language.swati', ''),
@@ -1781,7 +1817,6 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'country.zimbabwe', 'default', 'Zimbabwe ', ''),
 ('en', 'vocabulary', 'crs.wgs84', 'default', 'crs.wgs84', ''),
 ('en', 'vocabulary', 'core.actor.type.institution', 'default', 'core.actor.type.institution', ''),
-('en', 'vocabulary', 'core.actor.type.museum', 'default', 'Museum', ''),
 ('en', 'vocabulary', 'core.actor.type.person', 'default', 'core.actor.type.person', ''),
 ('en', 'vocabulary', 'language.abkhazian', 'default', 'Abkhazian', ''),
 ('en', 'vocabulary', 'language.achinese', 'default', 'Achinese', ''),
@@ -2244,8 +2279,7 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'language.sakha', 'default', 'Sakha', ''),
 ('en', 'vocabulary', 'language.samburu', 'default', 'Samburu', ''),
 ('en', 'vocabulary', 'language.sami.inari', 'default', 'Inari Sami', ''),
-('en', 'vocabulary', 'language.sami.lule', 'default', 'Lule Sami', '');
-INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'vocabulary', 'language.sami.lule', 'default', 'Lule Sami', ''),
 ('en', 'vocabulary', 'language.sami.skolt', 'default', 'Skolt Sami', ''),
 ('en', 'vocabulary', 'language.sami.southern', 'default', 'Southern Sami', ''),
 ('en', 'vocabulary', 'language.samoan', 'default', 'Samoan', ''),
@@ -2282,7 +2316,8 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'language.sinhala', 'default', 'Sinhala', ''),
 ('en', 'vocabulary', 'language.slave', 'default', 'Slave', ''),
 ('en', 'vocabulary', 'language.slavic.church', 'default', 'Church Slavic', ''),
-('en', 'vocabulary', 'language.slovak', 'default', 'Slovak', ''),
+('en', 'vocabulary', 'language.slovak', 'default', 'Slovak', '');
+INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'vocabulary', 'language.slovenian', 'default', 'Slovenian', ''),
 ('en', 'vocabulary', 'language.soga', 'default', 'Soga', ''),
 ('en', 'vocabulary', 'language.sogdien', 'default', 'Sogdien', ''),

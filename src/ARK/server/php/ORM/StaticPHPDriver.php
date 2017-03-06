@@ -62,6 +62,11 @@ class StaticPHPDriver implements MappingDriver
         $className::loadMetadata($metadata);
     }
 
+    public function readExtendedMetadata($className, array &$config)
+    {
+        $className::readExtendedMetadata($config);
+    }
+
     public function getAllClassNames()
     {
         if ($this->classNames !== null) {

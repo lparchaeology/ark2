@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6
+-- version 4.6.5.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 06, 2017 at 09:59 AM
--- Server version: 10.1.21-MariaDB
--- PHP Version: 7.1.2
+-- Generation Time: Mar 07, 2017 at 12:15 AM
+-- Server version: 5.6.34
+-- PHP Version: 7.1.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -33,11 +33,11 @@ CREATE TABLE `ark_association` (
   `association` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module2` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `item2` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mod_by` int(11) NOT NULL,
+  `mod_by` int(11) NOT NULL DEFAULT '0',
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  `cre_by` int(11) NOT NULL,
+  `cre_by` int(11) NOT NULL DEFAULT '0',
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
+  `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -967,11 +967,11 @@ CREATE TABLE `ark_item_file` (
   `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `label` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `mod_by` int(11) NOT NULL,
+  `mod_by` int(11) NOT NULL DEFAULT '0',
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  `cre_by` int(11) NOT NULL,
+  `cre_by` int(11) NOT NULL DEFAULT '0',
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
+  `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -1089,11 +1089,11 @@ CREATE TABLE `ark_item_page` (
   `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `mod_by` int(11) NOT NULL,
+  `mod_by` int(11) NOT NULL DEFAULT '0',
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  `cre_by` int(11) NOT NULL,
+  `cre_by` int(11) NOT NULL DEFAULT '0',
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
+  `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -1215,6 +1215,15 @@ CREATE TABLE `ark_sequence_reserve` (
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `ark_association`
+--
+ALTER TABLE `ark_association`
+  ADD PRIMARY KEY (`fid`),
+  ADD KEY `association` (`association`),
+  ADD KEY `item1` (`module1`,`item1`) USING BTREE,
+  ADD KEY `item2` (`module2`,`item2`) USING BTREE;
 
 --
 -- Indexes for table `ark_fragment_blob`
@@ -1397,6 +1406,11 @@ ALTER TABLE `ark_sequence_reserve`
 -- AUTO_INCREMENT for dumped tables
 --
 
+--
+-- AUTO_INCREMENT for table `ark_association`
+--
+ALTER TABLE `ark_association`
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `ark_fragment_blob`
 --

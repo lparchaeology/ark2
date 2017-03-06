@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6
+-- version 4.6.5.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 06, 2017 at 09:59 AM
--- Server version: 10.1.21-MariaDB
--- PHP Version: 7.1.2
+-- Generation Time: Mar 07, 2017 at 12:15 AM
+-- Server version: 5.6.34
+-- PHP Version: 7.1.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -797,13 +797,13 @@ CREATE TABLE `ark_rbac_role_permission` (
 --
 
 INSERT INTO `ark_rbac_role_permission` (`role`, `permission`) VALUES
+('detectorist', 'can_add_find'),
 ('curator', 'can_delete_find'),
 ('curator', 'can_edit_find'),
-('curator', 'can_search_find'),
-('curator', 'can_view_find'),
-('detectorist', 'can_add_find'),
 ('detectorist', 'can_edit_find'),
+('curator', 'can_search_find'),
 ('detectorist', 'can_search_find'),
+('curator', 'can_view_find'),
 ('detectorist', 'can_view_find');
 
 -- --------------------------------------------------------
@@ -1881,7 +1881,7 @@ CREATE TABLE `ark_view_type` (
 INSERT INTO `ark_view_type` (`type`, `class`, `layout`, `form_type`, `template`, `keyword`) VALUES
 ('field', 'ARK\\View\\Field', 0, 'ARK\\Form\\Type\\PropertyType', 'layouts/field.html.twig', ''),
 ('grid', 'ARK\\View\\Grid', 1, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FormType', 'layouts/grid.html.twig', ''),
-('page', 'ARK\\View\\Page', 0, '', 'page.html.twig', ''),
+('page', 'ARK\\View\\Page', 0, '', 'pages/page.html.twig', ''),
 ('tabbed', 'ARK\\View\\Tabbed', 1, '', 'layouts/tabbed.html.twig', ''),
 ('table', 'ARK\\View\\Table', 1, '', 'layouts/table.html.twig', '');
 

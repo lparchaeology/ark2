@@ -43,10 +43,10 @@ class StaticPageController
     public function __invoke(Request $request)
     {
         $route = $request->attributes->get('_route');
-        if (!$view = ORM::find('ARK\View\Page', $route)) {
+        if (!$view = ORM::find('ARK\View\Page', 'core_page_static')) {
             throw new ErrorException(new NotFoundError('VIEW_NOT_FOUND', 'View not found', "Item $route not found"));
         }
-        if (!$item = ORM::find('ARK\Entity\Page', $page)) {
+        if (!$item = ORM::find('ARK\Entity\Page', $route)) {
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Item not found', "Item $route not found"));
         }
 

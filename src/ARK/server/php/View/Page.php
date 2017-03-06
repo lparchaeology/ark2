@@ -32,45 +32,34 @@ namespace ARK\View;
 
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
+use ARK\Service;
 use ARK\View\Element;
 
 class Page extends Element
 {
-    protected $headBlock = '';
-    protected $bodyBlock = '';
     protected $navbar = null;
     protected $sidebar = null;
     protected $content = null;
     protected $footer = null;
 
-    public function head()
-    {
-        return $headBlock;
-    }
-
-    public function body()
-    {
-        return $bodyBlock;
-    }
-
     public function navbar()
     {
-        return $navbar;
+        return $this->navbar;
     }
 
     public function sidebar()
     {
-        return $sidebar;
+        return $this->sidebar;
     }
 
     public function content()
     {
-        return $content;
+        return $this->content;
     }
 
     public function footer()
     {
-        return $footer;
+        return $this->footer;
     }
 
     public function defaultOptions($route = null)
@@ -98,8 +87,10 @@ class Page extends Element
         // Joined Table Inheritance
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_page');
 
-        // Fields
-        $builder->addStringField('headBlock', 30, 'head_block');
-        $builder->addStringField('bodyBlock', 50, 'body_block');
+        // Associations
+        $builder->addManyToOneField('navbar', Nav::class, 'navbar', 'element');
+        $builder->addManyToOneField('sidebar', Nav::class, 'sidebar', 'element');
+        $builder->addManyToOneField('content', Layout::class, 'content', 'element');
+        $builder->addManyToOneField('footer', Nav::class, 'footer', 'element');
     }
 }

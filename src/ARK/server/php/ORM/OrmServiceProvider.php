@@ -108,7 +108,7 @@ class OrmServiceProvider implements ServiceProviderInterface
                     'namespace' => 'Gedmo\Tree\Entity',
                     'path' => $gedmoDir.'/Tree/Entity',
                 ],
-                'listener' => 'Gedmo\Tree\TreeListener',
+                'listener' => 'ARK\ORM\TreeListener',
             ],
             'timestampable' => [
                 'mapping' => [

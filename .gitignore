@@ -2,10 +2,8 @@
 .kdev4
 /build/node_modules
 /build/vendor
-/build/frontends/*/config/passwords.json
 /sites/**/
 !/sites/*.json
-/src/DIME/frontend/*/config/passwords.json
 /vendor/
 .settings/
 .buildpath
