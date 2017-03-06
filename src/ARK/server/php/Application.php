@@ -40,6 +40,7 @@ use ARK\ORM\OrmServiceProvider;
 use ARK\Provider\JsonSchemaServiceProvider;
 use ARK\Provider\SpatialServiceProvider;
 use ARK\Translation\TranslationServiceProvider;
+use ARK\Translation\Twig\TranslateExtension;
 use Bernard\Serializer;
 use Fuz\Jordan\Twig\Extension\TreeExtension;
 use League\Glide\ServerFactory;

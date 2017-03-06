@@ -672,6 +672,23 @@
         </field>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     </table>
+    <table name="ark_rbac_action">
+        <field name="action" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="event" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="enabled" type="boolean">
+            <default value="1"/>
+            <notnull/>
+        </field>
+        <field name="keyword" type="string" size="100">
+            <notnull/>
+        </field>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    </table>
     <table name="ark_rbac_permission">
         <field name="permission" type="string" size="30">
             <key/>
@@ -684,7 +701,7 @@
         <field name="keyword" type="string" size="100">
             <notnull/>
         </field>
-        <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci" charset="utf8"/>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     </table>
     <table name="ark_rbac_role">
         <field name="role" type="string" size="30">
@@ -698,7 +715,30 @@
         <field name="keyword" type="string" size="100">
             <notnull/>
         </field>
-        <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci" charset="utf8"/>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    </table>
+    <table name="ark_rbac_role_action">
+        <field name="role" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="action" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <index name="permission">
+            <col>action</col>
+        </index>
+        <index name="IDX_652200657698A6A">
+            <col>role</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_rbac_role_action_ibfk_1" table="ark_rbac_role" onupdate="cascade" ondelete="cascade">
+            <column local="role" foreign="role"/>
+        </references>
+        <references name="ark_rbac_role_action_ibfk_2" table="ark_rbac_action" onupdate="cascade" ondelete="cascade">
+            <column local="action" foreign="action"/>
+        </references>
     </table>
     <table name="ark_rbac_role_permission">
         <field name="role" type="string" size="30">
@@ -715,51 +755,12 @@
         <index name="IDX_EC1096CF57698A6A">
             <col>role</col>
         </index>
-        <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci" charset="utf8"/>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
         <references name="ark_rbac_role_permission_ibfk_1" table="ark_rbac_role" onupdate="cascade" ondelete="cascade">
             <column local="role" foreign="role"/>
         </references>
         <references name="ark_rbac_role_permission_ibfk_2" table="ark_rbac_permission" onupdate="cascade" ondelete="cascade">
             <column local="permission" foreign="permission"/>
-        </references>
-    </table>
-    <table name="ark_rbac_user_role">
-        <field name="user" type="integer">
-            <unsigned/>
-            <key/>
-            <notnull/>
-        </field>
-        <field name="role" type="string" size="30">
-            <key/>
-            <notnull/>
-        </field>
-        <field name="enabled" type="boolean">
-            <default value="1"/>
-            <notnull/>
-        </field>
-        <field name="verified" type="boolean">
-            <default value="0"/>
-            <notnull/>
-        </field>
-        <field name="locked" type="boolean">
-            <default value="0"/>
-            <notnull/>
-        </field>
-        <field name="expired" type="boolean">
-            <default value="0"/>
-            <notnull/>
-        </field>
-        <field name="expires_at" type="datetime"/>
-        <field name="verification_token" type="string" size="100">
-            <notnull/>
-        </field>
-        <field name="verification_requested_at" type="datetime"/>
-        <index name="role">
-            <col>role</col>
-        </index>
-        <opt for="mysql" engine="InnoDB" collate="utf8_unicode_ci" charset="utf8"/>
-        <references name="ark_rbac_user_role_ibfk_2" table="ark_rbac_role" onupdate="cascade" ondelete="cascade">
-            <column local="role" foreign="role"/>
         </references>
     </table>
     <table name="ark_schema">
@@ -1084,31 +1085,10 @@
         <field name="type" type="string" size="10">
             <notnull/>
         </field>
-        <field name="schma" type="string" size="30"/>
-        <field name="item_type" type="string" size="30"/>
-        <field name="attribute" type="string" size="30"/>
         <field name="class" type="string" size="100">
             <notnull/>
         </field>
         <field name="template" type="string" size="100">
-            <notnull/>
-        </field>
-        <field name="form" type="boolean">
-            <default value="0"/>
-            <notnull/>
-        </field>
-        <field name="form_root" type="boolean">
-            <default value="0"/>
-            <notnull/>
-        </field>
-        <field name="form_type" type="string" size="100">
-            <notnull/>
-        </field>
-        <field name="form_options" type="string" size="4000">
-            <notnull/>
-        </field>
-        <field name="editable" type="boolean">
-            <default value="1"/>
             <notnull/>
         </field>
         <field name="hidden" type="boolean">
@@ -1127,18 +1107,35 @@
         <index name="type">
             <col>type</col>
         </index>
-        <index name="schma">
-            <col>schma</col>
-        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
         <references name="ark_view_element_ibfk_1" table="ark_view_type" onupdate="cascade">
             <column local="type" foreign="type"/>
         </references>
-        <references name="ark_view_element_ibfk_2" table="ark_schema" onupdate="cascade" ondelete="cascade">
-            <column local="schma" foreign="schma"/>
-        </references>
     </table>
-    <table name="ark_view_layout">
+    <table name="ark_view_field">
+        <field name="element" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="schma" type="string" size="30"/>
+        <field name="item_type" type="string" size="30"/>
+        <field name="attribute" type="string" size="30"/>
+        <field name="form_type" type="string" size="100">
+            <notnull/>
+        </field>
+        <field name="form_options" type="string" size="4000">
+            <notnull/>
+        </field>
+        <field name="editable" type="boolean">
+            <default value="1"/>
+            <notnull/>
+        </field>
+        <index name="schma">
+            <col>schma</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    </table>
+    <table name="ark_view_grid">
         <field name="layout" type="string" size="30">
             <key/>
             <notnull/>
@@ -1193,18 +1190,74 @@
         <index name="map">
             <col>map</col>
         </index>
-        <index name="IDX_55A3F2F33A3A6BE2">
+        <index name="IDX_1919974E3A3A6BE2">
             <col>layout</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="ark_view_layout_ibfk_1" table="ark_view_element" onupdate="cascade" ondelete="cascade">
+        <references name="ark_view_grid_ibfk_1" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="layout" foreign="element"/>
         </references>
-        <references name="ark_view_layout_ibfk_2" table="ark_view_element" onupdate="cascade" ondelete="cascade">
+        <references name="ark_view_grid_ibfk_2" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="cell" foreign="element"/>
         </references>
-        <references name="ark_view_layout_ibfk_3" table="ark_map" onupdate="cascade" ondelete="set null">
+        <references name="ark_view_grid_ibfk_3" table="ark_map" onupdate="cascade" ondelete="set null">
             <column local="map" foreign="map"/>
+        </references>
+    </table>
+    <table name="ark_view_layout">
+        <field name="element" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="schma" type="string" size="30"/>
+        <field name="item_type" type="string" size="30"/>
+        <field name="form_root" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <index name="schma">
+            <col>schma</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    </table>
+    <table name="ark_view_page">
+        <field name="element" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="content" type="string" size="30"/>
+        <field name="footer" type="string" size="30"/>
+        <field name="navbar" type="string" size="30"/>
+        <field name="sidebar" type="string" size="30"/>
+        <field name="head_block" type="string" size="50"/>
+        <field name="body_block" type="string" size="50"/>
+        <index name="navbar_element">
+            <col>navbar</col>
+        </index>
+        <index name="sidebar_element">
+            <col>sidebar</col>
+        </index>
+        <index name="content_element">
+            <col>content</col>
+        </index>
+        <index name="footer_element">
+            <col>footer</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="content_element" table="ark_view_element" onupdate="cascade" ondelete="cascade">
+            <column local="content" foreign="element"/>
+        </references>
+        <references name="element" table="ark_view_element" onupdate="cascade" ondelete="cascade">
+            <column local="element" foreign="element"/>
+        </references>
+        <references name="footer_element" table="ark_view_element" onupdate="cascade" ondelete="cascade">
+            <column local="footer" foreign="element"/>
+        </references>
+        <references name="navbar_element" table="ark_view_element" onupdate="cascade" ondelete="cascade">
+            <column local="navbar" foreign="element"/>
+        </references>
+        <references name="sidebar_element" table="ark_view_element" onupdate="cascade" ondelete="cascade">
+            <column local="sidebar" foreign="element"/>
         </references>
     </table>
     <table name="ark_view_type">

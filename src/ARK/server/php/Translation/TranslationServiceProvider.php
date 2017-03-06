@@ -46,12 +46,12 @@ class TranslationServiceProvider implements ServiceProviderInterface
         $container->extend('translator', function ($translator, $container) {
             $translator->addLoader('database', new DatabaseLoader());
             $translator->addLoader('actor', new ActorLoader());
-            foreach ($app['locale_fallbacks'] as $language) {
-                $translator->addResource('database', $app['database'], $language);
-                $translator->addResource('actor', $app['database'], $language);
+            foreach ($container['locale_fallbacks'] as $language) {
+                $translator->addResource('database', $container['database'], $language);
+                $translator->addResource('actor', $container['database'], $language);
             }
-            $app->loadTranslationFiles($translator, $app['locale_fallbacks'], $app['dir.site'].'/translations');
-            $app->loadTranslationFiles($translator, $app['locale_fallbacks'], $app['dir.site'].'/translations/'.$app['ark']['web']['frontend']);
+            $this->loadTranslationFiles($translator, $container['locale_fallbacks'], $container['dir.site'].'/translations');
+            $this->loadTranslationFiles($translator, $container['locale_fallbacks'], $container['dir.site'].'/translations/'.$container['ark']['web']['frontend']);
             return $translator;
         });
         $commands = [
