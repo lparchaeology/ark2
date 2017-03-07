@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 07, 2017 at 12:15 AM
+-- Generation Time: Mar 07, 2017 at 11:59 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -897,36 +897,36 @@ CREATE TABLE `ark_item_actor` (
 --
 
 INSERT INTO `ark_item_actor` (`item`, `module`, `schma`, `type`, `status`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
-('ARV', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'ARV', 'ARV', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('BMR', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'BMR', 'BMR', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('DKM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'DKM', 'DKM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('FHM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'FHM', 'FHM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('HBV', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'HBV', 'HBV', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('HEM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'HEM', 'HEM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('HOM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'HOM', 'HOM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('KBM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'KBM', 'KBM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('KNV', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'KNV', 'KNV', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('MKH', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'MKH', 'MKH', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('MLF', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'MLF', 'MLF', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('MNS', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'MNS', 'MNS', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('MOE', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'MOE', 'MOE', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('MSA', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'MSA', 'MSA', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('MSJ', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'MSJ', 'MSJ', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('MVE', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'MVE', 'MVE', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('NJM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'NJM', 'NJM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('OBM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'OBM', 'OBM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('ØFM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'ØFM', 'ØFM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('ØHM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'ØHM', 'ØHM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('ROM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'ROM', 'ROM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('SBM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'SBM', 'SBM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('SJM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'SJM', 'SJM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('SKH', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'SKH', 'SKH', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('TAK', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'TAK', 'TAK', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('THY', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'THY', 'THY', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('VHM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'VHM', 'VHM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('VKH', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'VKH', 'VKH', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('VMÅ', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'VMÅ', 'VMÅ', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', ''),
-('VSM', 'actor', 'dime.actor', 'institution', 'registered', '', '', 'VSM', 'VSM', 0, '2017-02-15 15:47:33', 0, '0000-00-00 00:00:00', '');
+('ARV', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'ARV', 'ARV', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('BMR', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'BMR', 'BMR', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('DKM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'DKM', 'DKM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('FHM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'FHM', 'FHM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('HBV', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'HBV', 'HBV', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('HEM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'HEM', 'HEM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('HOM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'HOM', 'HOM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('KBM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'KBM', 'KBM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('KNV', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'KNV', 'KNV', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('MKH', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'MKH', 'MKH', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('MLF', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'MLF', 'MLF', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('MNS', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'MNS', 'MNS', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('MOE', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'MOE', 'MOE', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('MSA', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'MSA', 'MSA', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('MSJ', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'MSJ', 'MSJ', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('MVE', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'MVE', 'MVE', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('NJM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'NJM', 'NJM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('OBM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'OBM', 'OBM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('ØFM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'ØFM', 'ØFM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('ØHM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'ØHM', 'ØHM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('ROM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'ROM', 'ROM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('SBM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'SBM', 'SBM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('SJM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'SJM', 'SJM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('SKH', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'SKH', 'SKH', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('TAK', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'TAK', 'TAK', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('THY', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'THY', 'THY', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('VHM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'VHM', 'VHM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('VKH', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'VKH', 'VKH', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('VMÅ', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'VMÅ', 'VMÅ', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
+('VSM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'VSM', 'VSM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -950,6 +950,37 @@ CREATE TABLE `ark_item_campaign` (
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_item_event`
+--
+
+CREATE TABLE `ark_item_event` (
+  `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'event',
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'registered',
+  `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `mod_by` int(11) NOT NULL DEFAULT '0',
+  `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `cre_by` int(11) NOT NULL DEFAULT '0',
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_item_event`
+--
+
+INSERT INTO `ark_item_event` (`item`, `module`, `schma`, `type`, `status`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+('actor.morty.1', 'event', 'core.event.actor', 'approved', 'registered', 'actor', 'morty', '1', '1', 0, '2017-03-07 22:15:29', 0, '0000-00-00 00:00:00', NULL),
+('find.1.1', 'event', 'core.event.find', 'assessed', 'registered', 'find', '1', '1', '1', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -1072,6 +1103,29 @@ CREATE TABLE `ark_item_locality` (
 
 INSERT INTO `ark_item_locality` (`item`, `module`, `schma`, `type`, `status`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
 ('1', '', 'dime.locality', '', 'registered', NULL, NULL, '1', '1', 0, '2017-01-31 07:56:37', 0, '2017-01-31 07:56:37', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_item_message`
+--
+
+CREATE TABLE `ark_item_message` (
+  `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'message',
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'registered',
+  `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `mod_by` int(11) NOT NULL DEFAULT '0',
+  `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `cre_by` int(11) NOT NULL DEFAULT '0',
+  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1333,6 +1387,14 @@ ALTER TABLE `ark_item_campaign`
   ADD KEY `parent` (`parent_module`,`parent_item`) USING BTREE;
 
 --
+-- Indexes for table `ark_item_event`
+--
+ALTER TABLE `ark_item_event`
+  ADD PRIMARY KEY (`item`),
+  ADD KEY `name` (`label`) USING BTREE,
+  ADD KEY `parent` (`parent_module`,`parent_item`) USING BTREE;
+
+--
 -- Indexes for table `ark_item_file`
 --
 ALTER TABLE `ark_item_file`
@@ -1360,6 +1422,14 @@ ALTER TABLE `ark_item_image`
 -- Indexes for table `ark_item_locality`
 --
 ALTER TABLE `ark_item_locality`
+  ADD PRIMARY KEY (`item`),
+  ADD KEY `name` (`label`) USING BTREE,
+  ADD KEY `parent` (`parent_module`,`parent_item`) USING BTREE;
+
+--
+-- Indexes for table `ark_item_message`
+--
+ALTER TABLE `ark_item_message`
   ADD PRIMARY KEY (`item`),
   ADD KEY `name` (`label`) USING BTREE,
   ADD KEY `parent` (`parent_module`,`parent_item`) USING BTREE;
