@@ -116,9 +116,9 @@ class Action
 
     public function hasPermission(Actor $actor)
     {
-        $vote === Permission::GRANT;
+        $vote = Permission::GRANT;
         foreach ($this->permissions as $permission) {
-            $vote = $permission->isGranted($actor, $item);
+            $vote = $permission->isGranted($actor);
             if ($vote !== Permission::ABSTAIN) {
                 return ($vote === Permission::GRANT);
             }
@@ -128,7 +128,8 @@ class Action
 
     public function hasAgency(Actor $actor, Item $item)
     {
-        $vote === Agency::GRANT;
+        // Check if Actor is one of the permitted agents
+        $vote = Agency::GRANT;
         foreach ($this->agencies as $agency) {
             $vote = $agency->isGranted($actor, $item);
             if ($vote !== Agency::ABSTAIN) {

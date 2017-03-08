@@ -35,7 +35,6 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
 use ARK\Security\RBAC\Role;
 use ARK\Workflow\Action;
-use ARK\Workflow\Permission;
 use ARK\Model\Schema\SchemaAttribute;
 use ARK\Model\Item;
 
@@ -54,12 +53,12 @@ class Agency
         $property = $item->property($this->attribute->name());
         $isAgent = ($property->value() == $actor->id());
         if ($this->operation == 'not' && $isAgent) {
-            return Permission::DENY;
+            return self::DENY;
         }
         if ($isAgent) {
-            return Permission::GRANT;
+            return self::GRANT;
         }
-        return Permission::ABSTAIN;
+        return self::ABSTAIN;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
