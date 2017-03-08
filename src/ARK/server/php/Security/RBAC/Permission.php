@@ -41,6 +41,10 @@ class Permission
 {
     use KeywordTrait;
 
+    const GRANT = true;
+    const DENY = false;
+    const ABSTAIN = null;
+
     protected $permission = '';
     protected $roles = null;
 

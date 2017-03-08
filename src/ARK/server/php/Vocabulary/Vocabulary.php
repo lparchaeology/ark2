@@ -35,6 +35,8 @@ use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Workflow\DefinitionBuilder;
+use Symfony\Component\Workflow\Transition;
 
 abstract class Vocabulary
 {
@@ -92,6 +94,29 @@ abstract class Vocabulary
     public function hasWorkflow()
     {
         return $this->workflow;
+    }
+
+    public function workflow()
+    {
+        if ($this->hasWorkflow() && $this->workflowDefinition === null) {
+            $builder = new DefinitionBuilder;
+            foreach ($this->terms() as $term) {
+                $builder->addPlace($term->name());
+                if ($term->isRoot()) {
+                    $builder->setInitialPlace($term->name());
+                }
+            }
+            foreach ($this->terms() as $term) {
+                foreach ($term->related() as $related) {
+                    if ($related->type() == 'transition') {
+                        $trans = new Transition($related->parameter(), $related->fromTerm()->name(), $related->toTerm()->name());
+                        $builder>addTransition($trans);
+                    }
+                }
+            }
+            $this->workflowDefinition = $builder->build();
+        }
+        return $this->workflowDefinition;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

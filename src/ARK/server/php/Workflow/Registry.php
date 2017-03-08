@@ -35,18 +35,22 @@ use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Registry as SymfonyRegistry;
 use Symfony\Component\Workflow\Workflow;
 use ARK\Workflow\ItemPropertyMarkingStore;
-use ARK\Workflow\VocabularyBuilder;
+use ARK\Model\Schema;
 use ARK\Model\Attribute;
+use ARK\Entity\Actor;
 
 class Registry extends SymfonyRegistry
 {
-    public function getVocabularyDefinition($concept)
+    public function actions(Schema $schema)
     {
-        if (!isset($this->vocabulary[$concept])) {
-            $builder = new VocabularyBuilder($concept);
-            $this->vocabulary[$concept] = $builder->build();
-        }
-        return $this->vocabulary[$concept];
+    }
+
+    public function possibleActions(Item $item)
+    {
+    }
+
+    public function permittedActions(Actor $actor, Item $item)
+    {
     }
 
     public function getAttributeWorkflow(Attribute $attribute)
@@ -54,7 +58,7 @@ class Registry extends SymfonyRegistry
         if (!$attribute->hasVocabulary() || !$attribute->vocabulary()) {
             throw new InvalidArgumentException(sprintf('Unable to find a workflow for attribute "%s".', $attribute->name()));
         }
-        $definition = $this->getVocabularyDefinition($concept);
+        $definition = $attribute->vocabulary()->workflow($concept);
         $markingStore = new ItemPropertyMarkingStore($attribute);
         $workflow = new StateMachine($definition, $markingStore);
         return $workflow;

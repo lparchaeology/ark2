@@ -672,22 +672,28 @@
         </field>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     </table>
-    <table name="ark_rbac_action">
-        <field name="action" type="string" size="30">
+    <table name="ark_rbac_access">
+        <field name="role" type="string" size="30">
             <key/>
             <notnull/>
         </field>
-        <field name="event" type="string" size="30">
+        <field name="permission" type="string" size="30">
+            <key/>
             <notnull/>
         </field>
-        <field name="enabled" type="boolean">
-            <default value="1"/>
-            <notnull/>
-        </field>
-        <field name="keyword" type="string" size="100">
-            <notnull/>
-        </field>
+        <index name="permission">
+            <col>permission</col>
+        </index>
+        <index name="IDX_84D454ED57698A6A">
+            <col>role</col>
+        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_rbac_access_ibfk_1" table="ark_rbac_role" onupdate="cascade" ondelete="cascade">
+            <column local="role" foreign="role"/>
+        </references>
+        <references name="ark_rbac_access_ibfk_2" table="ark_rbac_permission" onupdate="cascade" ondelete="cascade">
+            <column local="permission" foreign="permission"/>
+        </references>
     </table>
     <table name="ark_rbac_permission">
         <field name="permission" type="string" size="30">
@@ -717,52 +723,6 @@
         </field>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     </table>
-    <table name="ark_rbac_role_action">
-        <field name="role" type="string" size="30">
-            <key/>
-            <notnull/>
-        </field>
-        <field name="action" type="string" size="30">
-            <key/>
-            <notnull/>
-        </field>
-        <index name="permission">
-            <col>action</col>
-        </index>
-        <index name="IDX_652200657698A6A">
-            <col>role</col>
-        </index>
-        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="ark_rbac_role_action_ibfk_1" table="ark_rbac_role" onupdate="cascade" ondelete="cascade">
-            <column local="role" foreign="role"/>
-        </references>
-        <references name="ark_rbac_role_action_ibfk_2" table="ark_rbac_action" onupdate="cascade" ondelete="cascade">
-            <column local="action" foreign="action"/>
-        </references>
-    </table>
-    <table name="ark_rbac_role_permission">
-        <field name="role" type="string" size="30">
-            <key/>
-            <notnull/>
-        </field>
-        <field name="permission" type="string" size="30">
-            <key/>
-            <notnull/>
-        </field>
-        <index name="permission">
-            <col>permission</col>
-        </index>
-        <index name="IDX_EC1096CF57698A6A">
-            <col>role</col>
-        </index>
-        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="ark_rbac_role_permission_ibfk_1" table="ark_rbac_role" onupdate="cascade" ondelete="cascade">
-            <column local="role" foreign="role"/>
-        </references>
-        <references name="ark_rbac_role_permission_ibfk_2" table="ark_rbac_permission" onupdate="cascade" ondelete="cascade">
-            <column local="permission" foreign="permission"/>
-        </references>
-    </table>
     <table name="ark_schema">
         <field name="schma" type="string" size="30">
             <key/>
@@ -771,12 +731,12 @@
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
+        <field name="type_vocabulary" type="string" size="30"/>
         <field name="generator" type="string" size="100">
             <notnull/>
         </field>
         <field name="sequence" type="string" size="30"/>
         <field name="type" type="string" size="30"/>
-        <field name="type_vocabulary" type="string" size="30"/>
         <field name="type_entities" type="boolean">
             <default value="0"/>
             <notnull/>
@@ -795,9 +755,15 @@
         <index name="module">
             <col>module</col>
         </index>
+        <index name="type_vocabulary">
+            <col>type_vocabulary</col>
+        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
         <references name="ark_schema_ibfk_1" table="ark_module" onupdate="cascade">
             <column local="module" foreign="module"/>
+        </references>
+        <references name="ark_schema_ibfk_2" table="ark_vocabulary">
+            <column local="type_vocabulary" foreign="concept"/>
         </references>
     </table>
     <table name="ark_schema_association">
@@ -1220,6 +1186,36 @@
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     </table>
+    <table name="ark_view_nav">
+        <field name="element" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="parent" type="string" size="30"/>
+        <field name="icon" type="string" size="50">
+            <notnull/>
+        </field>
+        <field name="route" type="string" size="50"/>
+        <field name="uri" type="string" size="2038"/>
+        <field name="seperator" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="enabled" type="boolean">
+            <default value="1"/>
+            <notnull/>
+        </field>
+        <index name="ark_view_nav_ibfk_2">
+            <col>parent</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_view_nav_ibfk_1" table="ark_view_element" onupdate="cascade" ondelete="cascade">
+            <column local="element" foreign="element"/>
+        </references>
+        <references name="ark_view_nav_ibfk_2" table="ark_view_nav" onupdate="cascade" ondelete="cascade">
+            <column local="parent" foreign="element"/>
+        </references>
+    </table>
     <table name="ark_view_page">
         <field name="element" type="string" size="30">
             <key/>
@@ -1229,8 +1225,6 @@
         <field name="footer" type="string" size="30"/>
         <field name="navbar" type="string" size="30"/>
         <field name="sidebar" type="string" size="30"/>
-        <field name="head_block" type="string" size="50"/>
-        <field name="body_block" type="string" size="50"/>
         <index name="navbar_element">
             <col>navbar</col>
         </index>
@@ -1258,6 +1252,38 @@
         </references>
         <references name="sidebar_element" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="sidebar" foreign="element"/>
+        </references>
+    </table>
+    <table name="ark_view_tree">
+        <field name="id" type="integer">
+            <autoincrement/>
+            <key/>
+            <notnull/>
+        </field>
+        <field name="ancestor" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="descendent" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="depth" type="integer">
+            <notnull/>
+        </field>
+        <index name="depth">
+            <col>depth</col>
+        </index>
+        <index name="ancestor">
+            <col>ancestor</col>
+        </index>
+        <index name="descendent">
+            <col>descendent</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_view_tree_ibfk_1" table="ark_view_element" onupdate="cascade" ondelete="cascade">
+            <column local="ancestor" foreign="element"/>
+        </references>
+        <references name="ark_view_tree_ibfk_2" table="ark_view_element" onupdate="cascade" ondelete="cascade">
+            <column local="descendent" foreign="element"/>
         </references>
     </table>
     <table name="ark_view_type">
@@ -1430,15 +1456,15 @@
             <col>to_term</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="ark_vocabulary_related_ibfk_1" table="ark_vocabulary_term" ondelete="cascade">
+        <references name="ark_vocabulary_related_ibfk_1" table="ark_vocabulary_term" onupdate="cascade" ondelete="cascade">
             <column local="from_concept" foreign="concept"/>
             <column local="from_term" foreign="term"/>
         </references>
-        <references name="ark_vocabulary_related_ibfk_2" table="ark_vocabulary_term" ondelete="cascade">
+        <references name="ark_vocabulary_related_ibfk_2" table="ark_vocabulary_term" onupdate="cascade" ondelete="cascade">
             <column local="to_concept" foreign="concept"/>
             <column local="to_term" foreign="term"/>
         </references>
-        <references name="ark_vocabulary_related_ibfk_3" table="ark_vocabulary_relation">
+        <references name="ark_vocabulary_related_ibfk_3" table="ark_vocabulary_relation" ondelete="cascade">
             <column local="relation" foreign="relation"/>
         </references>
     </table>
@@ -1596,5 +1622,284 @@
             <notnull/>
         </field>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    </table>
+    <table name="ark_workflow_action">
+        <field name="schma" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="action" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="event_vocabulary" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="event_term" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="agent" type="string" size="30"/>
+        <field name="default_permission" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="enabled" type="boolean">
+            <default value="1"/>
+            <notnull/>
+        </field>
+        <field name="keyword" type="string" size="100">
+            <notnull/>
+        </field>
+        <index name="event_vocabulary">
+            <col>event_vocabulary</col>
+            <col>event_term</col>
+        </index>
+        <index name="IDX_9B1CF53CFDE1EB53">
+            <col>schma</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_workflow_action_ibfk_1" table="ark_schema" onupdate="cascade" ondelete="cascade">
+            <column local="schma" foreign="schma"/>
+        </references>
+        <references name="ark_workflow_action_ibfk_2" table="ark_vocabulary_term" onupdate="cascade">
+            <column local="event_vocabulary" foreign="concept"/>
+            <column local="event_term" foreign="term"/>
+        </references>
+    </table>
+    <table name="ark_workflow_agent">
+        <field name="schma" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="action" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="attribute" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="operator" type="string" size="10">
+            <default value="eq"/>
+            <notnull/>
+        </field>
+        <index name="schma">
+            <col>schma</col>
+            <col>type</col>
+            <col>attribute</col>
+        </index>
+        <index name="IDX_20FFFDB3FDE1EB5347CC8C92">
+            <col>schma</col>
+            <col>action</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_workflow_agent_ibfk_1" table="ark_workflow_action" onupdate="cascade" ondelete="cascade">
+            <column local="schma" foreign="schma"/>
+            <column local="action" foreign="action"/>
+        </references>
+        <references name="ark_workflow_agent_ibfk_2" table="ark_schema_attribute" onupdate="cascade" ondelete="cascade">
+            <column local="schma" foreign="schma"/>
+            <column local="type" foreign="type"/>
+            <column local="attribute" foreign="attribute"/>
+        </references>
+    </table>
+    <table name="ark_workflow_condition">
+        <field name="schma" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="action" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="attribute" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="grp" type="integer">
+            <key/>
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="operator" type="string" size="10">
+            <default value="eq"/>
+            <notnull/>
+        </field>
+        <field name="value" type="string" size="4000"/>
+        <index name="schma">
+            <col>schma</col>
+            <col>type</col>
+            <col>attribute</col>
+        </index>
+        <index name="IDX_161EE89EFDE1EB5347CC8C92">
+            <col>schma</col>
+            <col>action</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_workflow_condition_ibfk_1" table="ark_workflow_action" onupdate="cascade" ondelete="cascade">
+            <column local="schma" foreign="schma"/>
+            <column local="action" foreign="action"/>
+        </references>
+        <references name="ark_workflow_condition_ibfk_2" table="ark_schema_attribute">
+            <column local="schma" foreign="schma"/>
+            <column local="type" foreign="type"/>
+            <column local="attribute" foreign="attribute"/>
+        </references>
+    </table>
+    <table name="ark_workflow_notify">
+        <field name="schma" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="action" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="attribute" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <index name="schma">
+            <col>schma</col>
+            <col>type</col>
+            <col>attribute</col>
+        </index>
+        <index name="IDX_FDAB9466FDE1EB5347CC8C92">
+            <col>schma</col>
+            <col>action</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_workflow_notify_ibfk_1" table="ark_workflow_action" onupdate="cascade" ondelete="cascade">
+            <column local="schma" foreign="schma"/>
+            <column local="action" foreign="action"/>
+        </references>
+        <references name="ark_workflow_notify_ibfk_2" table="ark_schema_attribute" onupdate="cascade" ondelete="cascade">
+            <column local="schma" foreign="schma"/>
+            <column local="type" foreign="type"/>
+            <column local="attribute" foreign="attribute"/>
+        </references>
+    </table>
+    <table name="ark_workflow_permission">
+        <field name="schma" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="action" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="role" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="operation" type="string" size="10">
+            <default value="is"/>
+            <notnull/>
+        </field>
+        <index name="schma">
+            <col>schma</col>
+        </index>
+        <index name="role">
+            <col>role</col>
+        </index>
+        <index name="IDX_1880F4A3FDE1EB5347CC8C92">
+            <col>schma</col>
+            <col>action</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_workflow_permission_ibfk_1" table="ark_workflow_action" onupdate="cascade" ondelete="cascade">
+            <column local="schma" foreign="schma"/>
+            <column local="action" foreign="action"/>
+        </references>
+        <references name="ark_workflow_permission_ibfk_2" table="ark_rbac_role" onupdate="cascade" ondelete="cascade">
+            <column local="role" foreign="role"/>
+        </references>
+    </table>
+    <table name="ark_workflow_trigger">
+        <field name="schma" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="action" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="trigger_schma" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="trigger_action" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <index name="schma">
+            <col>schma</col>
+        </index>
+        <index name="trigger_schma">
+            <col>trigger_schma</col>
+            <col>trigger_action</col>
+        </index>
+        <index name="IDX_2BD951CBFDE1EB5347CC8C92">
+            <col>schma</col>
+            <col>action</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_workflow_trigger_ibfk_1" table="ark_workflow_action" onupdate="cascade" ondelete="cascade">
+            <column local="schma" foreign="schma"/>
+            <column local="action" foreign="action"/>
+        </references>
+        <references name="ark_workflow_trigger_ibfk_2" table="ark_workflow_action" onupdate="cascade" ondelete="cascade">
+            <column local="trigger_schma" foreign="schma"/>
+            <column local="trigger_action" foreign="action"/>
+        </references>
+    </table>
+    <table name="ark_workflow_update">
+        <field name="schma" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="action" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="attribute" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <index name="schma">
+            <col>schma</col>
+            <col>type</col>
+            <col>attribute</col>
+        </index>
+        <index name="IDX_44F54CD6FDE1EB5347CC8C92">
+            <col>schma</col>
+            <col>action</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_workflow_update_ibfk_1" table="ark_workflow_action" onupdate="cascade" ondelete="cascade">
+            <column local="schma" foreign="schma"/>
+            <column local="action" foreign="action"/>
+        </references>
+        <references name="ark_workflow_update_ibfk_2" table="ark_schema_attribute" onupdate="cascade" ondelete="cascade">
+            <column local="schma" foreign="schma"/>
+            <column local="type" foreign="type"/>
+            <column local="attribute" foreign="attribute"/>
+        </references>
     </table>
 </schema>

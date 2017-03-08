@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Security Permission
+ * ARK Workflow Action
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,62 +28,46 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Security\RBAC;
+namespace ARK\Workflow;
 
-use ARK\Model\KeywordTrait;
+use ARK\Entity\Actor;
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\ORM\ORM;
-use ARK\Security\RBAC\Permission;
-use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\Common\Collections\ArrayCollection;
+use ARK\ORM\ClassMetadata;
+use ARK\Security\RBAC\Role;
+use ARK\Workflow\Action;
 
-class Action
+class Permission
 {
     use KeywordTrait;
 
-    protected $action = '';
-    protected $permissions = null;
+    const GRANT = true;
+    const DENY = false;
+    const ABSTAIN = null;
 
-    public function __construct($action)
-    {
-        $this->action = $action;
-        $this->permissions = new ArrayCollection();
-    }
+    protected $action = null;
+    protected $role = null;
+    protected $operation = 'is';
 
-    public function id()
+    public function isGranted(Actor $actor)
     {
-        return $this->action;
-    }
-
-    public function isEnabled()
-    {
-        return $this->enabled;
-    }
-
-    public function permissions()
-    {
-        return $this->permissions;
-    }
-
-    public function isPermitted(Permission $permission)
-    {
-        return $this->permissions->contains($permission);
+        $hasRole = $this->role->hasActor($actor);
+        if ($hasRole) {
+            return ($this->operation == 'not' ? self::DENY : self::GRANT);
+        }
+        return self::ABSTAIN;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_rbac_action');
+        // Joined Table Inheritance
+        $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_permission');
         $builder->setReadOnly();
 
         // Key
-        $builder->addStringKey('action', 30);
+        $builder->addManyToOneKey('action', Action::class);
+        $builder->addManyToOneKey('role', Role::class);
 
-        // Attributes
-        $builder->addField('enabled', 'boolean');
-        KeywordTrait::buildKeywordMetadata($builder);
-
-        // Relationships
-        $builder->addManyToMany('permissions', Permission::class, 'ark_rbac_role_action');
+        // Fields
+        $builder->addStringField('operation', 10);
     }
 }
