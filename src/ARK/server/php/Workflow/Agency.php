@@ -39,8 +39,12 @@ use ARK\Workflow\Permission;
 use ARK\Model\Schema\SchemaAttribute;
 use ARK\Model\Item;
 
-class Agent
+class Agency
 {
+    const GRANT = true;
+    const DENY = false;
+    const ABSTAIN = null;
+
     protected $action = null;
     protected $attribute = null;
     protected $operation = 'is';
@@ -61,7 +65,7 @@ class Agent
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Joined Table Inheritance
-        $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_agent');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_agency');
         $builder->setReadOnly();
 
         // Key

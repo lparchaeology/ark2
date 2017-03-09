@@ -38,7 +38,6 @@ use ARK\Application;
 
 class HomePageAction extends DimeAction
 {
-
     public function __invoke(Request $request)
     {
         $layout = 'dime_home_page';
@@ -49,8 +48,8 @@ class HomePageAction extends DimeAction
         $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $data[$layout] : []);
         $data['dime_home_action'] = null;
         $kortforsyningenticket = false;
-        $passPath = Service::configDir().'/passwords.json';
-        if ($passwords = json_decode(file_get_contents($passPath), true)) {
+        $passPath = Service::configDir().'/credentials.json';
+        if ($passwords = json_decode(file_get_contents($passPath), true) && isset($passwords['kortforsyningen'])) {
             $user = $passwords['kortforsyningen']['user'];
             $password = $passwords['kortforsyningen']['password'];
             $kortforsyningenticket = file_get_contents("http://services.kortforsyningen.dk/service?request=GetTicket&login=$user&password=$password");

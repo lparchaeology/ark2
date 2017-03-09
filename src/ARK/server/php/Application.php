@@ -30,24 +30,24 @@
 
 namespace ARK;
 
-use ARK\ARK;
+use ARK\Api\ApiServiceProvider;
 use ARK\Api\JsonApi\Http\JsonApiRequest;
-use ARK\Api\JsonApi\JsonApiServiceProvider;
-use ARK\Bus\SimpleBusServiceProvider;
+use ARK\ARK;
+use ARK\Bus\BusServiceProvider;
 use ARK\Database\DbalServiceProvider;
+use ARK\File\FileServiceProvider;
 use ARK\Http\Error\InternalServerError;
 use ARK\ORM\OrmServiceProvider;
+use ARK\Provider\DebugServiceProvider;
+use ARK\Provider\LoggerServiceProvider;
+use ARK\Provider\MailerServiceProvider;
 use ARK\Provider\JsonSchemaServiceProvider;
+use ARK\Provider\LocaleServiceProvider;
 use ARK\Provider\SpatialServiceProvider;
+use ARK\Security\SecurityServiceProvider;
 use ARK\Translation\TranslationServiceProvider;
-use ARK\Translation\Twig\TranslateExtension;
-use Bernard\Serializer;
-use Fuz\Jordan\Twig\Extension\TreeExtension;
-use League\Glide\ServerFactory;
-use League\Glide\Responses\SymfonyResponseFactory;
-use Psr\Log\LogLevel;
-use Psr\Http\Message\ResponseInterface;
-use rootLogin\UserProvider\Provider\UserProviderServiceProvider;
+use ARK\View\ViewServiceProvider;
+use ARK\Workflow\WorkflowServiceProvider;
 use Silex\Application as SilexApplication;
 use Silex\Application\TwigTrait;
 use Silex\Application\MonologTrait;
@@ -55,31 +55,16 @@ use Silex\Application\TranslationTrait;
 use Silex\Application\FormTrait;
 use Silex\Application\SecurityTrait;
 use Silex\Application\SwiftmailerTrait;
-use Silex\Provider\AssetServiceProvider;
-use Silex\Provider\CsrfServiceProvider;
-use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
-use Silex\Provider\LocaleServiceProvider;
-use Silex\Provider\MonologServiceProvider;
-use Silex\Provider\RememberMeServiceProvider;
-use Silex\Provider\SecurityServiceProvider;
 use Silex\Provider\SerializerServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
-use Silex\Provider\SwiftmailerServiceProvider;
-use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
-use Silex\Provider\VarDumperServiceProvider;
-use Silex\Provider\WebProfilerServiceProvider;
-use Sorien\Provider\DoctrineProfilerServiceProvider;
 use Symfony\Component\Debug\Debug;
-use Symfony\Component\Debug\BufferingLogger;
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use WyriHaximus\SliFly\FlysystemServiceProvider;
 
 class Application extends SilexApplication
 {
@@ -90,13 +75,10 @@ class Application extends SilexApplication
     use SecurityTrait;
     use SwiftmailerTrait;
 
-    private static $version = '';
     private static $debug = false;
 
     public function __construct($configPath)
     {
-        self::$version = ARK::version();
-
         if (!$config = json_decode(file_get_contents($configPath), true)) {
             // TODO One day, run the first-run wizard!
             throw new \Exception('No valid site configuration found.');
@@ -119,78 +101,19 @@ class Application extends SilexApplication
         // Enable the debug mode
         $this['debug'] = static::$debug;
 
-        // Configure directories
-        $this['dir.install'] = ARK::installDir();
-        $this['dir.var'] = $this['dir.install'].'/var';
-        $this['dir.cache'] = $this['dir.var'].'/cache';
-        $this['dir.sites'] = $this['dir.install'].'/sites';
-        $this['dir.site'] = $this['dir.sites'].'/'.$config['site'];
-        $this['dir.config'] = $this['dir.site'].'/config';
-        $this['dir.files'] = $this['dir.site'].'/files';
-        $this['dir.web'] = $this['dir.site'].'/web';
-
-        // Configure the File System
-        $this->register(new FlysystemServiceProvider());
-        $this['flysystem.filesystems'] = [
-            'tmp' => ['adapter' => 'League\Flysystem\Adapter\Local', 'args' => [$this['dir.files'].'/tmp']],
-            'download' => ['adapter' => 'League\Flysystem\Adapter\Local', 'args' => [$this['dir.files'].'/download']],
-            'upload' => ['adapter' => 'League\Flysystem\Adapter\Local', 'args' => [$this['dir.files'].'/upload']],
-            'data' => ['adapter' => 'League\Flysystem\Adapter\Local', 'args' => [$this['dir.files'].'/data']],
-            'thumbs' => ['adapter' => 'League\Flysystem\Adapter\Local', 'args' => [$this['dir.files'].'/thumbs']],
-        ];
-        $this['glide.server'] = function ($app) {
-            return ServerFactory::create([
-                'source' => $app['flysystems']['data'],
-                'cache' =>  $app['flysystems']['thumbs'],
-                'driver' => $app['ark']['image'],
-                'max_image_size' => $app['ark']['max_image_size'],
-                //'defaults' =>                // Default image manipulations
-                'presets' => [
-                    'thumb' => [
-                        'w' => 100,
-                        'h' => 100,
-                    ],
-                    'preview' => [
-                        'w' => 500,
-                        'h' => 500,
-                    ],
-                ],
-                'base_url' => '/img/',
-                'response' => new SymfonyResponseFactory(),
-            ]);
-        };
-
-        // Enable the logger
-        $this->register(new MonologServiceProvider);
-        $this['monolog.logfile'] = $this['dir.var'].'/logs/'.$config['site'].'.log';
-        $this['monolog.name'] = $config['site'];
-        if (static::$debug) {
-            $this['monolog.level'] = 'DEBUG';
-            $this['logger.level'] = LogLevel::DEBUG;
-        } else {
-            $this['monolog.level'] = 'WARNING';
-            $this['logger.level'] = LogLevel::WARNING;
-        }
-
-        // Enable the Message Bus and Event Bus
-        // - Required on Use: Logger
-        $this->register(new SimpleBusServiceProvider);
-
         // Enable core providers
+        // - No required on register
+        $this->register(new FileServiceProvider());
         $this->register(new HttpFragmentServiceProvider());
+        $this->register(new LocaleServiceProvider());
+        $this->register(new LoggerServiceProvider($this['ark']['site']));
+        $this->register(new MailerServiceProvider());
         $this->register(new ServiceControllerServiceProvider());
         $this->register(new SessionServiceProvider());
 
-        // Enable the Locale
-        $this->register(new LocaleServiceProvider());
-        date_default_timezone_set(isset($config['timezone']) ? $config['timezone'] : 'UTC');
-        $this['locale'] = (isset($config['locale']) ? $config['locale'] : 'en');
-        $this['locale_fallbacks'] = (isset($config['locales']) ? $config['locales'] : [$this['locale']]);
-
-        // Enable the mailer
-        $this->register(new SwiftmailerServiceProvider());
-        // TODO Configure mailer!
-        $this['swiftmailer.options'] = [];
+        // Enable the Message Bus and Event Bus
+        // - Required on Use: Logger
+        $this->register(new BusServiceProvider);
 
         // Enable the Database
         // - Optional on Use: Logger, Stopwatch
@@ -200,45 +123,18 @@ class Application extends SilexApplication
 
         // Enable the Spatial functions
         // - Required on boot: DBAL
-        if (isset($config['ark']['spatial'])) {
-            $this->register(new SpatialServiceProvider());
-        }
+        $this->register(new SpatialServiceProvider());
 
         $this->register(new SerializerServiceProvider());
         $this->register(new ValidatorServiceProvider());
 
         // Enable Security
+        // - On Register: Validator, Mailer, DBAL/ORM
         // - Required on Use: Logger
+        // - Optional on Use: Session, Twig, Mailer, URL Generator, Translator, Forms, Console, ORM
         $this->register(new SecurityServiceProvider());
-        // - Required on Use: Security, Logger
-        $this->register(new RememberMeServiceProvider());
-        // - Optional on Use: Session
-        $this->register(new CsrfServiceProvider());
-        $this['security.firewalls'] = [];
-        $this->addSecurityFirewall(
-            'login_area',
-            ['pattern' => '(^/users/login$)|(^/users/register$)|(^/users/forgot-password$)', 'anonymous' => true]
-        );
-        $this->addSecurityFirewall(
-            'default',
-            [
-                'pattern' => '^/.*$',
-                'anonymous' => true,
-                'remember_me' => [],
-                'form' => [
-                   'login_path' => '/users/login',
-                   'check_path' => '/users/login_check',
-                ],
-                'logout' => [
-                   'logout_path' => '/users/logout',
-                ],
-                'users' => function ($app) {
-                    return $app['user.manager'];
-                },
-            ]
-        );
-        $this['security.access_rules'] = $config['security']['access_rules'];
 
+        // Enable Forms
         // - On Register: Intl
         // - Optional on Use: Translation, CSRF, Validator
         $this->register(new FormServiceProvider());
@@ -248,86 +144,24 @@ class Application extends SilexApplication
         // - Optional on Use: Validator, Form
         $this->register(new TranslationServiceProvider());
 
-        // Enable User Manager
-        // - On Register: Security, Validator, Mailer, DBAL
-        // - Optional on Use: Twig, Mailer, URL Generator, Translator, Forms, Console, ORM
-        $this->register(new UserProviderServiceProvider(true));
-        $this['user.options'] = [
-            'userConnection' => 'user',
-            'userClass' => 'rootLogin\UserProvider\Entity\LegacyUser',
-            'userTableName' => 'ark_user',
-            'userCustomFieldsTableName' => 'ark_user_field',
-            'editCustomFields' => [],
-            'templates'=> ['layout' => 'pages/page.html.twig'],
-        ];
-
-        // Enable the Assets
-        $this['dir.assets'] = $this['dir.web'].'/assets/'.$config['web']['frontend'];
-        $this['path.assets'] = '/assets/'.$config['web']['frontend'];
-        $this->register(
-            new AssetServiceProvider(),
-            [
-                'assets.version' => self::$version,
-                'assets.version_format' => '%s?version=%s',
-                'assets.named_packages' => [
-                    'frontend' => [
-                        'base_path' => $this['path.assets'],
-                    ],
-                ],
-            ]
-        );
-
-        // Enable Twig templates
+        // Enable View
         // - Optional on Use: Security, Translation, Fragment, Assets, Form, Dumper
-        $this->register(new TwigServiceProvider());
-        $this->extend('twig', function ($twig, $app) {
-            $twig->addExtension(new TranslateExtension($app['translator']));
-            $twig->addExtension(new TreeExtension());
-            return $twig;
-        });
-        $this['twig.path'] = [
-            $this['dir.site'].'/templates/'.$config['web']['frontend'],
-        ];
-        $this['twig.form.templates'] = [
-            'forms/layout.html.twig',
-        ];
-        $this['twig.options'] = [
-            'cache' => $this['dir.var'].'/cache/twig',
-        ];
+        $this->register(new ViewServiceProvider());
 
-        // Configure API
-        $path = $config['api']['path'];
-        $this['path.api'] = $path;
+        // Enable Workflow
+        // - On Register: Twig
+        $this->register(new WorkflowServiceProvider());
 
         $this->register(new JsonSchemaServiceProvider());
-        $this->register(new JsonApiServiceProvider());
-        // FIXME Unsecured API access, secure with OAUTH2
-        $this->addSecurityFirewall('api_area', ['pattern' => "(^$path)", 'anonymous' => true]);
 
-        // Enable the Profiler
-        if ($this['debug']) {
-            $this->register(new VarDumperServiceProvider());
-            $this->register(new WebProfilerServiceProvider(), [
-                'profiler.cache_dir' => $this['dir.var'].'/cache/profiler',
-            ]);
-            // HACK Fix to work-around bug in the profiler not finding the dump template
-            $this['profiler.templates_path.debug'] = function () {
-                $r = new \ReflectionClass('Symfony\Bundle\DebugBundle\DependencyInjection\Configuration');
-                return dirname(dirname($r->getFileName())).'/Resources/views';
-            };
-            $this->register(new DoctrineProfilerServiceProvider());
-            $this->addSecurityFirewall('dev_area', ['pattern' => '^/(_(profiler|wdt)|css|images|js)/', 'anonymous' => true]);
-        }
+        // Configure API
+        $this->register(new ApiServiceProvider());
+
+        // Enable the Debug Profiler
+        $this->register(new DebugServiceProvider());
 
         // Set up the Service Provider
         Service::init($this);
-    }
-
-    private function addSecurityFirewall($area, $firewall)
-    {
-        $firewalls = (isset($this['security.firewalls'])) ? $this['security.firewalls'] : [];
-        $firewalls[$area] = $firewall;
-        $this['security.firewalls'] = $firewalls;
     }
 
     public function boot()
@@ -336,7 +170,7 @@ class Application extends SilexApplication
             return;
         }
         parent::boot();
-        // HACK Workaround the listener not firing for some reason
+        // FIXME HACK Workaround the listener not firing for some reason
         $this['var_dumper.dump_listener']->configure();
     }
 
@@ -352,6 +186,13 @@ class Application extends SilexApplication
             }
         }
         parent::run($request);
+    }
+
+    public function extendArray($id, $key, $value)
+    {
+        $array = (isset($this[$id])) ? $this[$id] : [];
+        $array[$key] = $value;
+        $this[$id] = $array;
     }
 
     public function translate($id, $role = 'default', array $parameters = [], $domain = 'messages', $locale = null)

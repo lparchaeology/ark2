@@ -21,7 +21,7 @@
 * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
 *
 * @author     John Layt <j.layt@lparchaeology.com>
-* @copyright  2016 L - P : Heritage LLP.
+* @copyright  2017 L - P : Heritage LLP.
 * @license    GPL-3.0+
 * @see        http://ark.lparchaeology.com/
 * @since      2.0
@@ -61,19 +61,22 @@ use Pimple\ServiceProviderInterface;
 
 class SpatialServiceProvider implements ServiceProviderInterface
 {
-    public function register(Container $app)
+    public function register(Container $container)
     {
-        if ($app['ark']['spatial'] == 'geos') {
+        if (!isset($container['ark']['spatial'])) {
+            return;
+        }
+        if ($container['ark']['spatial'] == 'geos') {
             GeometryEngineRegistry::set(new GEOSEngine());
         } else {
-            GeometryEngineRegistry::set(new PDOEngine($pdo));
+            GeometryEngineRegistry::set(new PDOEngine($container['dbs']['spatial']->getWrappedConnection()));
         }
         // TODO Make connection specific?
-        $app['dbs.types']['geometry'] = GeometryType::class;
-        $app['dbs.types']['geometrycollection'] = GeometryCollectionType::class;
+        $container->extendArray('dbs.types', 'geometry', GeometryType::class);
+        $container->extendArray('dbs.types', 'geometrycollection', GeometryCollectionType::class);
         // TODO Make connection specific?
         // Note: Only uses functions common to all supported 3 platforms.
-        $app['orm.custom.functions.numeric'] = [
+        $container['orm.custom.functions.numeric'] = [
             'st_area' => AreaFunction::class,
             'st_buffer' => BufferFunction::class,
             'st_centroid' => CentroidFunction::class,

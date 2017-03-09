@@ -47,7 +47,7 @@ use SimpleBus\Message\Recorder\PublicMessageRecorder;
 use SimpleBus\Message\Subscriber\NotifiesMessageSubscribersMiddleware;
 use SimpleBus\Message\Subscriber\Resolver\NameBasedMessageSubscriberResolver;
 
-class SimpleBusServiceProvider implements ServiceProviderInterface
+class BusServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $app)
     {

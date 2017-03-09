@@ -1,5 +1,5 @@
 {
-    "site": "dime",
+    "site": "",
     "debug": true,
     "timezone": "UTC",
     "locale": "en",
@@ -13,7 +13,7 @@
     },
     "web": {
         "enable": true,
-        "frontend": "dime2017"
+        "frontend": "core"
     },
     "security": {
         "access_rules": [

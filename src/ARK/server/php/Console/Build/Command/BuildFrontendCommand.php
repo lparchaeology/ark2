@@ -57,6 +57,7 @@ class BuildFrontendCommand extends Command
         $frontend = $input->getArgument('frontend');
         $config = json_decode(file_get_contents(ARK::installDir()."/build/frontends/$frontend/config.json"), true);
         $namespace = $config['namespace'];
+        $output->writeln('Runnning build, please wait...');
         $this->runProcess("npm run $this->command -- --namespace $namespace --frontend $frontend", $output);
     }
 }

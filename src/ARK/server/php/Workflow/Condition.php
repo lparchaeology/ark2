@@ -41,6 +41,9 @@ use ARK\Model\Item;
 
 class Condition
 {
+    const PASS = true;
+    const FAIL = false;
+
     protected $action = null;
     protected $attribute = null;
     protected $operation = 'eq';
@@ -54,7 +57,7 @@ class Condition
         if ($this->operation == 'not') {
             $isValue = !$isvalue;
         }
-        return ($isValue ? Permission::GRANT : Permission::DENY);
+        return ($isValue ? Permission::PASS : Permission::FAIL);
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

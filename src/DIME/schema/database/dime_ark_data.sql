@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 07, 2017 at 11:59 PM
+-- Generation Time: Mar 09, 2017 at 07:25 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -897,36 +897,36 @@ CREATE TABLE `ark_item_actor` (
 --
 
 INSERT INTO `ark_item_actor` (`item`, `module`, `schma`, `type`, `status`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
-('ARV', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'ARV', 'ARV', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('BMR', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'BMR', 'BMR', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('DKM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'DKM', 'DKM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('FHM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'FHM', 'FHM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('HBV', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'HBV', 'HBV', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('HEM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'HEM', 'HEM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('HOM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'HOM', 'HOM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('KBM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'KBM', 'KBM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('KNV', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'KNV', 'KNV', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('MKH', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'MKH', 'MKH', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('MLF', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'MLF', 'MLF', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('MNS', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'MNS', 'MNS', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('MOE', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'MOE', 'MOE', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('MSA', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'MSA', 'MSA', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('MSJ', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'MSJ', 'MSJ', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('MVE', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'MVE', 'MVE', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('NJM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'NJM', 'NJM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('OBM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'OBM', 'OBM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('ØFM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'ØFM', 'ØFM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('ØHM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'ØHM', 'ØHM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('ROM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'ROM', 'ROM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('SBM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'SBM', 'SBM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('SJM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'SJM', 'SJM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('SKH', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'SKH', 'SKH', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('TAK', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'TAK', 'TAK', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('THY', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'THY', 'THY', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('VHM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'VHM', 'VHM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('VKH', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'VKH', 'VKH', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('VMÅ', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'VMÅ', 'VMÅ', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', ''),
-('VSM', 'actor', 'dime.actor', 'museum', 'registered', '', '', 'VSM', 'VSM', 0, '2017-03-07 20:46:21', 0, '0000-00-00 00:00:00', '');
+('ARV', 'actor', 'core.actor', 'museum', 'registered', '', '', 'ARV', 'ARV', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('BMR', 'actor', 'core.actor', 'museum', 'registered', '', '', 'BMR', 'BMR', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('DKM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'DKM', 'DKM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('FHM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'FHM', 'FHM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('HBV', 'actor', 'core.actor', 'museum', 'registered', '', '', 'HBV', 'HBV', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('HEM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'HEM', 'HEM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('HOM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'HOM', 'HOM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('KBM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'KBM', 'KBM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('KNV', 'actor', 'core.actor', 'museum', 'registered', '', '', 'KNV', 'KNV', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('MKH', 'actor', 'core.actor', 'museum', 'registered', '', '', 'MKH', 'MKH', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('MLF', 'actor', 'core.actor', 'museum', 'registered', '', '', 'MLF', 'MLF', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('MNS', 'actor', 'core.actor', 'museum', 'registered', '', '', 'MNS', 'MNS', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('MOE', 'actor', 'core.actor', 'museum', 'registered', '', '', 'MOE', 'MOE', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('MSA', 'actor', 'core.actor', 'museum', 'registered', '', '', 'MSA', 'MSA', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('MSJ', 'actor', 'core.actor', 'museum', 'registered', '', '', 'MSJ', 'MSJ', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('MVE', 'actor', 'core.actor', 'museum', 'registered', '', '', 'MVE', 'MVE', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('NJM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'NJM', 'NJM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('OBM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'OBM', 'OBM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('ØFM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'ØFM', 'ØFM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('ØHM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'ØHM', 'ØHM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('ROM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'ROM', 'ROM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('SBM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'SBM', 'SBM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('SJM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'SJM', 'SJM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('SKH', 'actor', 'core.actor', 'museum', 'registered', '', '', 'SKH', 'SKH', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('TAK', 'actor', 'core.actor', 'museum', 'registered', '', '', 'TAK', 'TAK', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('THY', 'actor', 'core.actor', 'museum', 'registered', '', '', 'THY', 'THY', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('VHM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'VHM', 'VHM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('VKH', 'actor', 'core.actor', 'museum', 'registered', '', '', 'VKH', 'VKH', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('VMÅ', 'actor', 'core.actor', 'museum', 'registered', '', '', 'VMÅ', 'VMÅ', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
+('VSM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'VSM', 'VSM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 

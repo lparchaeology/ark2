@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK System Application
+ * ARK Debug Service Provider
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,49 +21,26 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Console;
+namespace ARK\Provider;
 
-use ARK\ARK;
-use ARK\Bus\BusServiceProvider;
-use ARK\Provider\LoggerServiceProvider;
-use ARK\Provider\MailerServiceProvider;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Psr\Log\LogLevel;
-use Silex\Application;
-use Silex\Application\MonologTrait;
-use Silex\Application\SwiftmailerTrait;
-use Silex\Provider\VarDumperServiceProvider;
-use Symfony\Component\Debug\Debug;
+use Silex\Provider\SwiftmailerServiceProvider;
 
-class SystemApplication extends Application
+class MailerServiceProvider implements ServiceProviderInterface
 {
-    use MonologTrait;
-    use SwiftmailerTrait;
-
-    public function __construct()
+    public function register(Container $container)
     {
-        error_reporting(E_ALL);
-        ini_set('display_errors', 1);
-        Debug::enable();
-
-        parent::__construct();
-
-        $this['debug'] = true;
-
-        date_default_timezone_set('UTC');
-
-        $this->register(new LoggerServiceProvider('console'));
-
-        $this->register(new BusServiceProvider);
-
-        $this->register(new MailerServiceProvider());
-
-        $this->register(new VarDumperServiceProvider());
+        $container->register(new SwiftmailerServiceProvider());
+        // TODO Configure mailer!
+        $container['swiftmailer.options'] = [];
     }
 }

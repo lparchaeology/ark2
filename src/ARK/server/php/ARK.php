@@ -52,6 +52,11 @@ class ARK
         return self::varDir().'/cache';
     }
 
+    public static function logDir()
+    {
+        return self::varDir().'/log';
+    }
+
     public static function srcDir()
     {
         return self::installDir().'/src';

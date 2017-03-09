@@ -1666,7 +1666,7 @@
             <column local="event_term" foreign="term"/>
         </references>
     </table>
-    <table name="ark_workflow_agent">
+    <table name="ark_workflow_agency">
         <field name="schma" type="string" size="30">
             <key/>
             <notnull/>
@@ -1697,11 +1697,11 @@
             <col>action</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="ark_workflow_agent_ibfk_1" table="ark_workflow_action" onupdate="cascade" ondelete="cascade">
+        <references name="ark_workflow_agency_ibfk_1" table="ark_workflow_action" onupdate="cascade" ondelete="cascade">
             <column local="schma" foreign="schma"/>
             <column local="action" foreign="action"/>
         </references>
-        <references name="ark_workflow_agent_ibfk_2" table="ark_schema_attribute" onupdate="cascade" ondelete="cascade">
+        <references name="ark_workflow_agency_ibfk_2" table="ark_schema_attribute" onupdate="cascade" ondelete="cascade">
             <column local="schma" foreign="schma"/>
             <column local="type" foreign="type"/>
             <column local="attribute" foreign="attribute"/>

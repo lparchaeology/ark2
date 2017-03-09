@@ -30,27 +30,66 @@
 
 namespace ARK\Workflow;
 
-use Symfony\Component\Workflow\Exception\InvalidArgumentException;
-use Symfony\Component\Workflow\StateMachine;
-use Symfony\Component\Workflow\Registry as SymfonyRegistry;
-use Symfony\Component\Workflow\Workflow;
-use ARK\Workflow\ItemPropertyMarkingStore;
+use ARK\Entity\Actor;
 use ARK\Model\Schema;
 use ARK\Model\Attribute;
-use ARK\Entity\Actor;
+use ARK\ORM\ORM;
+use ARK\Workflow\ItemPropertyMarkingStore;
+use Symfony\Component\Workflow\Exception\InvalidArgumentException;
+use Symfony\Component\Workflow\Registry as SymfonyRegistry;
+use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\Workflow;
 
 class Registry extends SymfonyRegistry
 {
-    public function actions(Schema $schema)
+    protected $actions = [];
+
+    protected function init($schema)
+    {
+        if (isset($this->actions[$schema])) {
+            return;
+        }
+        $this->actions[$schema] = [];
+        $this->actions[$schema] = ORM::fetchAllBy(Action::class, ['schma' => $schema->name()]);
+    }
+
+    public function schemaActions(Schema $schema)
+    {
+        $this->init($schema->name());
+        return $this->actions[$schema->name()];
+    }
+
+    public function actions(Actor $actor, Item $item)
+    {
+        $schema = $item->schema()->name();
+        $this->init($schema);
+        foreach ($this->actions[$schema] as $action) {
+            if ($action->isGranted($actor, $item)) {
+                $action[$action->name()] = $action;
+            }
+        }
+        return $actions;
+    }
+
+    public function can(Actor $actor, $action, Item $item)
+    {
+        if ($action = $this->action($item->schema()->name(), $action)) {
+            return $action->isGranted($actor, $item);
+        }
+        return false;
+    }
+
+    public function apply(Actor $actor, $action, Item $item)
     {
     }
 
-    public function possibleActions(Item $item)
+    private function action($schema, $action)
     {
-    }
-
-    public function permittedActions(Actor $actor, Item $item)
-    {
+        $this->init($schema);
+        if (isset($this->actions[$schema][$action])) {
+            return $this->actions[$schema][$action];
+        }
+        return null;
     }
 
     public function getAttributeWorkflow(Attribute $attribute)

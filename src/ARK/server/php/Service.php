@@ -222,6 +222,11 @@ class Service
         return self::$app['locale_fallbacks'];
     }
 
+    public static function workflow()
+    {
+        return self::$app['workflow.registry'];
+    }
+
     public static function serializer()
     {
         return self::$app['serializer'];
