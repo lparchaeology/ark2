@@ -81,7 +81,7 @@ class Related
         $builder->addField('depth', 'integer');
 
         // Associations
-        $builder->addCompoundManyToOneField(
+        $builder->addCompositeManyToOneField(
             'fromTerm',
             'ARK\Vocabulary\Term',
             [
@@ -89,7 +89,7 @@ class Related
                 ['column' => 'from_term', 'reference' => 'term', 'nullable' => false],
             ]
         );
-        $builder->addCompoundManyToOneField(
+        $builder->addCompositeManyToOneField(
             'toTerm',
             'ARK\Vocabulary\Term',
             [

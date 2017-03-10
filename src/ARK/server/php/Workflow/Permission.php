@@ -31,6 +31,7 @@
 namespace ARK\Workflow;
 
 use ARK\Entity\Actor;
+use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
 use ARK\Security\RBAC\Role;
@@ -44,15 +45,22 @@ class Permission
     const DENY = false;
     const ABSTAIN = null;
 
+    protected $schma = '';
+    protected $actionName = '';
     protected $action = null;
     protected $role = null;
-    protected $operation = 'is';
+    protected $operator = 'is';
+
+    public function role()
+    {
+        return $this->role;
+    }
 
     public function isGranted(Actor $actor)
     {
         $hasRole = $this->role->hasActor($actor);
         if ($hasRole) {
-            return ($this->operation == 'not' ? self::DENY : self::GRANT);
+            return ($this->operator == 'not' ? self::DENY : self::GRANT);
         }
         return self::ABSTAIN;
     }
@@ -64,10 +72,22 @@ class Permission
         $builder->setReadOnly();
 
         // Key
-        $builder->addManyToOneKey('action', Action::class);
+        $builder->addStringKey('schma', 30);
+        $builder->addStringKey('actionName', 30, 'action');
         $builder->addManyToOneKey('role', Role::class);
 
         // Fields
-        $builder->addStringField('operation', 10);
+        $builder->addStringField('operator', 10);
+
+        // Associations
+        $builder->addCompositeManyToOneField(
+            'action',
+            Action::class,
+            [
+                ['column' => 'schma', 'nullable' => true],
+                ['column' => 'action', 'nullable' => true],
+            ],
+            'permissions'
+        );
     }
 }

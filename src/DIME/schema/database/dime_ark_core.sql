@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 09, 2017 at 08:27 PM
+-- Generation Time: Mar 10, 2017 at 06:06 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -802,11 +802,11 @@ CREATE TABLE `ark_schema_attribute` (
 --
 
 INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `vocabulary`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`, `keyword`) VALUES
+('core.actor', '', 'fullname', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.fullname'),
 ('core.actor', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.id'),
+('core.actor', '', 'shortname', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.shortname'),
 ('core.actor', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.type'),
-('core.actor', 'museum', 'fullname', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.fullname'),
 ('core.actor', 'museum', 'kommuner', 'identifier', 'dime.denmark.kommune', 0, 0, 1, 0, 1, 0, 'dime.actor.kommuner'),
-('core.actor', 'museum', 'shortname', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.shortname'),
 ('core.actor.event', '', 'agent', 'actor', NULL, 1, 1, 1, 0, 1, 0, NULL),
 ('core.actor.event', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, NULL),
 ('core.actor.event', '', 'occurred', 'datetime', NULL, 1, 1, 1, 0, 1, 0, NULL),
@@ -1709,6 +1709,7 @@ INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `cell`,
 ('dime_find_item', 0, 0, 1, '', 'dime_find_image', NULL, '', NULL, 0, 1, 0, 1, 0),
 ('dime_find_item', 0, 1, 0, '', 'dime_find_details', NULL, '', NULL, 0, 1, 0, 1, 0),
 ('dime_find_item', 0, 1, 1, '', 'dime_save', NULL, '', NULL, 1, 1, 0, 1, 0),
+('dime_find_item', 0, 1, 2, '', 'dime_find_actions', NULL, '', NULL, 1, 1, 0, 1, 0),
 ('dime_find_list', 0, 0, 0, '', 'dime_find_id', NULL, '', NULL, 1, 1, 0, 1, 0),
 ('dime_find_list', 0, 0, 1, '', 'dime_find_finder_id', NULL, '', NULL, 1, 1, 0, 1, 0),
 ('dime_find_list', 0, 0, 2, '', 'dime_find_type', NULL, '', NULL, 1, 1, 0, 1, 0),
@@ -5130,7 +5131,7 @@ INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event
 ('dime.find', 'refer', 'dime.find.event', 'referred', NULL, 0, 0, 0, 1, 'dime.action.refer'),
 ('dime.find', 'reject', 'dime.find.event', 'rejected', NULL, 0, 0, 0, 1, 'dime.action.reject'),
 ('dime.find', 'release', 'dime.find.event', 'released', NULL, 0, 0, 0, 1, 'dime.action.release'),
-('dime.find', 'report', 'dime.find.event', 'reported', 'reporter', 0, 0, 0, 1, 'dime.action.report'),
+('dime.find', 'report', 'dime.find.event', 'reported', 'reporter', 1, 0, 0, 1, 'dime.action.report'),
 ('dime.find', 'request', 'dime.find.event', 'requested', NULL, 0, 0, 0, 1, 'dime.action.request'),
 ('dime.find', 'reward', 'dime.find.event', 'rewarded', NULL, 0, 0, 0, 1, 'dime.action.reward'),
 ('dime.find', 'send', 'dime.find.event', 'sent', NULL, 0, 0, 0, 1, 'dime.action.send'),
@@ -5310,14 +5311,14 @@ CREATE TABLE `ark_workflow_permission` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `action` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `operation` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'is'
+  `operator` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'is'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `ark_workflow_permission`
 --
 
-INSERT INTO `ark_workflow_permission` (`schma`, `action`, `role`, `operation`) VALUES
+INSERT INTO `ark_workflow_permission` (`schma`, `action`, `role`, `operator`) VALUES
 ('core.actor', 'activate', 'admin', 'is'),
 ('core.actor', 'activate', 'registrar', 'is'),
 ('core.actor', 'approve', 'admin', 'is'),

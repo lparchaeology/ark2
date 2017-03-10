@@ -46,6 +46,7 @@ class Permission
     const ABSTAIN = null;
 
     protected $permission = '';
+    protected $enabled = true;
     protected $roles = null;
 
     public function __construct($permission)

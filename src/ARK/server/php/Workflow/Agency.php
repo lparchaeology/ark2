@@ -44,15 +44,19 @@ class Agency
     const DENY = false;
     const ABSTAIN = null;
 
+    protected $schma = '';
+    protected $actionName = '';
     protected $action = null;
+    protected $type = '';
+    protected $attributeName = '';
     protected $attribute = null;
-    protected $operation = 'is';
+    protected $operator = 'is';
 
     public function isGranted(Actor $actor, Item $item)
     {
-        $property = $item->property($this->attribute->name());
-        $isAgent = ($property->value() == $actor->id());
-        if ($this->operation == 'not' && $isAgent) {
+        $value = $item->property($this->attributeName)->value();
+        $isAgent = (isset($value['item']) && $value['item'] == $actor->id()) ;
+        if ($this->operator == 'not' && $isAgent) {
             return self::DENY;
         }
         if ($isAgent) {
@@ -68,10 +72,32 @@ class Agency
         $builder->setReadOnly();
 
         // Key
-        $builder->addManyToOneKey('action', Action::class);
-        $builder->addManyToOneKey('attribute', SchemaAttribute::class);
+        $builder->addStringKey('schma', 30);
+        $builder->addStringKey('actionName', 30, 'action');
+        $builder->addStringKey('type', 30);
+        $builder->addStringKey('attributeName', 30, 'attribute');
 
         // Fields
-        $builder->addStringField('operation', 10);
+        $builder->addStringField('operator', 10);
+
+        // Associations
+        $builder->addCompositeManyToOneField(
+            'action',
+            Action::class,
+            [
+                ['column' => 'schma', 'nullable' => true],
+                ['column' => 'action', 'nullable' => true],
+            ],
+            'agencies'
+        );
+        $builder->addCompositeManyToOneField(
+            'attribute',
+            SchemaAttribute::class,
+            [
+                ['column' => 'schma'],
+                ['column' => 'type'],
+                ['column' => 'attribute'],
+            ]
+        );
     }
 }

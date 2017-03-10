@@ -31,8 +31,9 @@
 namespace ARK\Workflow;
 
 use ARK\Entity\Actor;
-use ARK\Model\Schema;
 use ARK\Model\Attribute;
+use ARK\Model\Item;
+use ARK\Model\Schema;
 use ARK\ORM\ORM;
 use ARK\Workflow\ItemPropertyMarkingStore;
 use Symfony\Component\Workflow\Exception\InvalidArgumentException;
@@ -50,7 +51,7 @@ class Registry extends SymfonyRegistry
             return;
         }
         $this->actions[$schema] = [];
-        $this->actions[$schema] = ORM::fetchAllBy(Action::class, ['schma' => $schema->name()]);
+        $this->actions[$schema] = ORM::findBy(Action::class, ['schma' => $schema]);
     }
 
     public function schemaActions(Schema $schema)
@@ -63,9 +64,10 @@ class Registry extends SymfonyRegistry
     {
         $schema = $item->schema()->name();
         $this->init($schema);
+        $actions = [];
         foreach ($this->actions[$schema] as $action) {
             if ($action->isGranted($actor, $item)) {
-                $action[$action->name()] = $action;
+                $actions[$action->name()] = $action;
             }
         }
         return $actions;

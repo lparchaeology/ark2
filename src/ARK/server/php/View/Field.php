@@ -38,6 +38,7 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
 use ARK\Vocabulary\Vocabulary;
 use ARK\Form\Type\PropertyType;
+use ARK\Entity\Actor;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class Field extends Element
@@ -71,13 +72,13 @@ class Field extends Element
         return parent::formType();
     }
 
-    public function formOptions()
+    public function formOptions($data)
     {
         if ($this->formOptionsArray === null) {
             if ($this->formOptions) {
-                $this->formOptionsArray = array_merge($this->formDefaults(), json_decode($this->formOptions, true));
+                $this->formOptionsArray = array_merge($this->formDefaults($data), json_decode($this->formOptions, true));
             } else {
-                $this->formOptionsArray = $this->formDefaults();
+                $this->formOptionsArray = $this->formDefaults($data);
             }
         }
         return $this->formOptionsArray;
@@ -94,8 +95,14 @@ class Field extends Element
         return '';
     }
 
-    public function formDefaults()
+    public function formDefaults($data)
     {
+        // FIXME HACK Need to find a better way to build custom fields!
+        if ($this->name() == 'dime_find_actions') {
+            $actor = ORM::find(Actor::class, 'ahavfrue');
+            $options['actions'] = Service::workflow()->actions($actor, $data);
+            $options['required'] = false;
+        }
         if ($this->name() == 'dime_find_filter_kommune') {
             $options['vocabulary'] = ORM::find(Vocabulary::class, 'dime.denmark.kommune');
             $options['required'] = false;
@@ -211,7 +218,7 @@ class Field extends Element
         $builder->addField('editable', 'boolean');
 
         // Associations
-        $builder->addCompoundManyToOneField(
+        $builder->addCompositeManyToOneField(
             'attribute',
             'ARK\Model\Schema\SchemaAttribute',
             [

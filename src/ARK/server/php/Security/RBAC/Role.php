@@ -30,11 +30,11 @@
 
 namespace ARK\Security\RBAC;
 
+use ARK\Entity\Actor;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Security\RBAC\Permission;
-use ARK\Security\RBAC\Actor;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -66,12 +66,15 @@ class Role
 
     public function actors()
     {
+        if ($this->actors === null) {
+            $this->actors = ORM::findAll(Actor::class);
+        }
         return $this->actors;
     }
 
     public function hasActor(Actor $user)
     {
-        return $this->actors->contains($user);
+        return $this->actors()->contains($user);
     }
 
     public function addActors(array $actors)
@@ -84,16 +87,16 @@ class Role
     public function addActor(Actor $user)
     {
         if (!$this->hasActor($user)) {
-            $this->actors->add($user);
-            ORM::persist($this);
+            $this->actors()->add($user);
+            ORM::persist($this->actors);
         }
     }
 
     public function removeActor(Actor $user)
     {
         if ($this->hasActor($user)) {
-            $this->actors->removeElement($user);
-            ORM::persist($this);
+            $this->actors()->removeElement($user);
+            ORM::persist($this->actors);
         }
     }
 
@@ -137,7 +140,6 @@ class Role
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Relationships
-        $builder->addManyToMany('actors', Actor::class, 'ark_rbac_actor_role');
         $builder->addManyToMany('permissions', Permission::class, 'ark_rbac_role_permission');
     }
 }

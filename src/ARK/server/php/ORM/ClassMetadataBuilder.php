@@ -69,6 +69,20 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         return $builder->build();
     }
 
+    public function addCompositeOneToMany($name, $targetEntity, $mappedBy, $joins)
+    {
+        $builder = $this->createOneToMany($name, $targetEntity);
+        $builder->mappedBy($mappedBy);
+        foreach ($joins as $join) {
+            $builder->addJoinColumn(
+                $join['column'],
+                isset($join['reference']) ? $join['reference'] : $join['column'],
+                isset($join['nullable']) ? $join['nullable'] : true
+            );
+        }
+        return $builder->build();
+    }
+
     public function addOneToManyCascade($name, $targetEntity, $mappedBy, $persist = true, $delete = false)
     {
         $builder = $this->createOneToMany($name, $targetEntity);
@@ -97,7 +111,7 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         $builder->build();
     }
 
-    public function addCompoundManyToOneKey($name, $class, $joins, $inverse = null)
+    public function addCompositeManyToOneKey($name, $class, $joins, $inverse = null)
     {
         $builder = $this->createManyToOne($name, $class)->makePrimaryKey();
         foreach ($joins as $join) {
@@ -128,7 +142,7 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         $builder->build();
     }
 
-    public function addCompoundManyToOneField($name, $class, $joins, $inverse = null)
+    public function addCompositeManyToOneField($name, $class, $joins, $inverse = null)
     {
         $builder = $this->createManyToOne($name, $class);
         foreach ($joins as $join) {

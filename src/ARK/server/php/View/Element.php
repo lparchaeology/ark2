@@ -91,7 +91,7 @@ abstract class Element
         return $resource;
     }
 
-    public function formDefaults()
+    public function formDefaults($data)
     {
         $options['label'] = false;
         return $options;
@@ -102,9 +102,9 @@ abstract class Element
         return $this->type->formType();
     }
 
-    public function formOptions()
+    public function formOptions($data)
     {
-        return $this->formDefaults();
+        return $this->formDefaults($data);
     }
 
     public function buildForm($data, FormBuilderInterface $builder)
@@ -121,7 +121,7 @@ abstract class Element
         return Service::forms()->createNamedBuilder($this->name(),
                                                     $this->formType(),
                                                     $this->formData($data),
-                                                    $this->formOptions());
+                                                    $this->formOptions($data));
     }
 
     abstract public function renderView($data, $forms = null, $form = null, Cell $cell = null, array $options = []);

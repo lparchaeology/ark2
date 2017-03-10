@@ -125,7 +125,7 @@ class LayerView implements LayerInterface
         $builder->addStringKey('layer', 30);
 
         // Attributes
-        $builder->addCompoundManyToOneField(
+        $builder->addCompositeManyToOneField(
             'layerClass',
             'ARK\Map\Layer',
             [

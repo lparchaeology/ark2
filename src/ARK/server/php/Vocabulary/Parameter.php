@@ -78,7 +78,7 @@ class Parameter
         $builder->addStringField('value', 1431655765);
 
         // Associations
-        $builder->addCompoundManyToOneField(
+        $builder->addCompositeManyToOneField(
             'term',
             'ARK\Vocabulary\Term',
             [

@@ -186,6 +186,11 @@ class OrmServiceProvider implements ServiceProviderInterface
                             'namespace' => 'ARK\Vocabulary',
                             'path' => $srcDir.'/Vocabulary',
                         ],
+                        [
+                            'type' => 'php',
+                            'namespace' => 'ARK\Workflow',
+                            'path' => $srcDir.'/Workflow',
+                        ],
                     ],
                 ]
             );

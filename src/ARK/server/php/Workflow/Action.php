@@ -30,6 +30,7 @@
 
 namespace ARK\Workflow;
 
+use ARK\Entity\Actor;
 use ARK\Model\Item;
 use ARK\Model\Schema;
 use ARK\Model\Attribute;
@@ -38,6 +39,7 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
 use ARK\Vocabulary\Term;
 use ARK\Workflow\Agency;
+use ARK\Workflow\Condition;
 use ARK\Workflow\Permission;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -46,6 +48,7 @@ class Action
     use KeywordTrait;
 
     protected $schma = null;
+    protected $event = null;
     protected $action = '';
     protected $agent = '';
     protected $defaultPermission = false;
@@ -92,6 +95,7 @@ class Action
         if ($this->conditions->isEmpty()) {
             return $this->defaultCondition;
         }
+
         // Sort the groups
         if ($this->groups === null) {
             foreach ($this->conditions as $condition) {
@@ -116,12 +120,20 @@ class Action
 
     public function hasPermission(Actor $actor)
     {
-        $vote = Permission::GRANT;
         foreach ($this->permissions as $permission) {
             $vote = $permission->isGranted($actor);
+            if ($this->action == 'accession') {
+                dump('vote');
+                dump($permission->role()->id());
+                dump($vote);
+            }
             if ($vote !== Permission::ABSTAIN) {
                 return ($vote === Permission::GRANT);
             }
+        }
+        if ($this->action == 'accession') {
+            dump('default');
+            dump($this->defaultPermission);
         }
         return $this->defaultPermission;
     }
@@ -141,6 +153,15 @@ class Action
 
     public function isGranted(Actor $actor, Item $item)
     {
+        if ($this->action == 'accession') {
+            dump('Action : '.$this->action);
+            dump($this->permissions);
+            dump($this->hasPermission($actor));
+            dump($this->agencies);
+            dump($this->hasAgency($actor, $item));
+            dump($this->conditions);
+            dump($this->meetsConditions($item));
+        }
         return $this->hasPermission($actor) && $this->hasAgency($actor, $item) && $this->meetsConditions($item);
     }
 
@@ -163,9 +184,40 @@ class Action
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations
-        $builder->addCompoundManyToOneField('event', Term::class, ['event_vocabulary' => 'concept', 'event_term' => 'term']);
-        $builder->addOneToMany('permissions', Permission::class, ['schma', 'action']);
-        $builder->addOneToMany('agencies', Agency::class, ['schma', 'action']);
-        $builder->addOneToMany('conditions', Condition::class, ['schma', 'action']);
+        $builder->addCompositeManyToOneField(
+            'event',
+            Term::class,
+            [
+                ['column' => 'event_vocabulary', 'reference' => 'concept'],
+                ['column' => 'event_term', 'reference' => 'term'],
+            ]
+        );
+        $builder->addCompositeOneToMany(
+            'permissions',
+            Permission::class,
+            'action',
+            [
+                ['column' => 'schma', 'nullable' => true],
+                ['column' => 'action', 'nullable' => true],
+            ]
+        );
+        $builder->addCompositeOneToMany(
+            'agencies',
+            Agency::class,
+            'action',
+            [
+                ['column' => 'schma', 'nullable' => true],
+                ['column' => 'action', 'nullable' => true],
+            ]
+        );
+        $builder->addCompositeOneToMany(
+            'conditions',
+            Condition::class,
+            'action',
+            [
+                ['column' => 'schma', 'nullable' => true],
+                ['column' => 'action', 'nullable' => true],
+            ]
+        );
     }
 }

@@ -55,7 +55,7 @@ class ActionChoiceType extends ChoiceType
         parent::configureOptions($resolver);
         $resolver->setDefaults([
             'field' => null,
-            'vocabulary' => null,
+            'actions' => null,
         ]);
     }
 

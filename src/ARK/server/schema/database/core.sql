@@ -587,8 +587,8 @@ INSERT INTO `ark_view_layout` (`element`, `schma`, `item_type`, `form_root`) VAL
 -- Dumping data for table `ark_view_page`
 --
 
-INSERT INTO `ark_view_page` (`element`, `head_block`, `body_block`, `navbar`, `sidebar`, `content`, `footer`) VALUES
-('core_page_static', 'block/head.html.twig', 'block/body.html.twig', NULL, NULL, NULL, NULL);
+INSERT INTO `ark_view_page` (`element`, `navbar`, `sidebar`, `content`, `footer`) VALUES
+('core_page_static', NULL, NULL, NULL, NULL);
 
 --
 -- Dumping data for table `ark_view_type`
