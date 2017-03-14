@@ -77,6 +77,11 @@ class Nav extends Element
         return $this->icon;
     }
 
+    public function route()
+    {
+        return $this->route;
+    }
+
     public function uri()
     {
         if ($this->route) {
@@ -104,6 +109,9 @@ class Nav extends Element
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_nav');
         $builder->setCustomRepositoryClass('Gedmo\Tree\Entity\Repository\ClosureTreeRepository');
 
+        $builder->addStringField('icon', 50);
+        $builder->addStringField('route', 50);
+        $builder->addStringField('uri', 50);
         $builder->addField('seperator', 'boolean');
 
         $builder->addManyToOneField('parent', Nav::class, 'parent', 'element', true, 'children');

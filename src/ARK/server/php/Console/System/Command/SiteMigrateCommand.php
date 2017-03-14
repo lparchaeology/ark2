@@ -51,7 +51,7 @@ class SiteMigrateCommand extends DatabaseCommand
         'grp' => 'group',
         'lus' => 'landuse',
         'pln' => 'plan',
-        'rgf' => 'find',
+        'rgf' => 'rfind',
         'sec' => 'section',
         'sgr' => 'subgroup',
         'smp' => 'sample',
@@ -428,7 +428,9 @@ class SiteMigrateCommand extends DatabaseCommand
         $rows = $this->source->fetchAllTable('cor_lut_file');
         $count = count($rows);
         $this->write('cor_lut_file : '.$count);
-        $this->progress->start($count);
+        if ($count) {
+            $this->progress->start($count);
+        }
         $updates = 0;
         foreach ($rows as $row) {
             $this->progress->advance();
@@ -463,7 +465,9 @@ class SiteMigrateCommand extends DatabaseCommand
         $rows = $this->source->fetchAll($sql, array());
         $count = count($rows);
         $this->write('cor_tbl_file : '.$count);
-        $this->progress->start($count);
+        if ($count) {
+            $this->progress->start($count);
+        }
         foreach ($rows as $row) {
             $this->progress->advance();
             if (!in_array($row['itemkey'], $modCodes)) {
@@ -513,12 +517,14 @@ class SiteMigrateCommand extends DatabaseCommand
                     WHERE cor_tbl_attribute.attribute = cor_lut_attribute.id
                     AND cor_lut_attribute.attributetype = cor_lut_attributetype.id
                 ";
+                $attributes['format'] = 'identifier';
             } elseif ($dataclass == 'action') {
                 $sql = "
                     SELECT cor_tbl_action.*, cor_lut_actiontype.actiontype
                     FROM cor_tbl_action, cor_lut_actiontype
                     WHERE cor_tbl_action.actiontype = cor_lut_actiontype.id
                 ";
+                $attributes['format'] = 'actor';
             } else {
                 $sql = "
                     SELECT $old_tbl.*, $lut.$type AS $type
@@ -530,7 +536,9 @@ class SiteMigrateCommand extends DatabaseCommand
             $count = count($frags);
             $this->write($old_tbl.' : '.$count);
             $updates = 0;
-            $this->progress->start($count);
+            if ($count) {
+                $this->progress->start($count);
+            }
             foreach ($frags as $frag) {
                 $this->progress->advance();
                 if (substr($frag['itemkey'], 0, 11) == 'cor_tbl_map') {
@@ -561,6 +569,7 @@ class SiteMigrateCommand extends DatabaseCommand
                 if ($dataclass == 'attribute') {
                     $frag['parameter'] = $this->siteKey.'.'.$frag['attributetype'];
                     $frag['value'] = $this->makeAttribute($frag['attribute']);
+                    $attribute['vocabulary'] = $frag['parameter'];
                     unset($frag['attribute']);
                     unset($frag['boolean']);
                 }
@@ -621,7 +630,9 @@ class SiteMigrateCommand extends DatabaseCommand
         $rows = $this->source->fetchAll($sql, array());
         $count = count($rows);
         $this->write('cor_tbl_span : '.$count);
-        $this->progress->start($count);
+        if ($count) {
+            $this->progress->start($count);
+        }
         foreach ($rows as $row) {
             $this->progress->advance();
             if (!in_array($row['itemkey'], $modCodes)) {
@@ -658,7 +669,9 @@ class SiteMigrateCommand extends DatabaseCommand
         $rows = $this->source->fetchAllTable('cor_tbl_xmi');
         $count = count($rows);
         $this->write('cor_tbl_xmi : '.$count);
-        $this->progress->start($count);
+        if ($count) {
+            $this->progress->start($count);
+        }
         foreach ($rows as $row) {
             $this->progress->advance();
             if (!in_array($row['itemkey'], $modCodes) || !in_array($row['xmi_itemkey'], $modCodes)) {
