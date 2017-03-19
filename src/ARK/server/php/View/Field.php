@@ -176,12 +176,19 @@ class Field extends Element
 
         // FIXME Should probably have some way to use FormTypes here to render 'flat' compond values
         $value = null;
-        if ($data instanceof Item and $this->attribute()) {
+        $item = null;
+        if ($data instanceof Item) {
+            $item = $data;
+        } elseif (is_array($data) && isset($data['data'])) {
+            $item = $data['data'];
+        }
+
+        if ($item and $this->attribute()) {
             $value = 'FIXME: '.$this->element;
-            $value = $data->property($this->attribute()->name())->value();
-            if ($this->attribute()->format()->id() == 'shorttext') {
+            $value = $item->property($this->attribute()->name())->value();
+            if ($this->attribute()->format()->datatype()->id() == 'text') {
                 $language = Service::locale();
-                $values = $data->property($this->attribute->name())->value();
+                $values = $item->property($this->attribute->name())->value();
                 foreach ($values as $trans) {
                     if ($trans['language'] == $language) {
                         return $trans['content'];

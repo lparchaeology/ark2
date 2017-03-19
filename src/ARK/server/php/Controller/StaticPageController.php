@@ -40,13 +40,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class StaticPageController
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, $view, $item)
     {
-        $route = $request->attributes->get('_route');
-        if (!$view = ORM::find('ARK\View\Page', 'core_page_static')) {
-            throw new ErrorException(new NotFoundError('VIEW_NOT_FOUND', 'View not found', "Item $route not found"));
+        if (!$view = ORM::find('ARK\View\Page', $page)) {
+            throw new ErrorException(new NotFoundError('VIEW_NOT_FOUND', 'View not found', "Page view for $view not found"));
         }
-        if (!$item = ORM::find('ARK\Entity\Page', $route)) {
+        if (!$item = ORM::find('ARK\Entity\Page', $item)) {
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Item not found', "Item $route not found"));
         }
 
@@ -58,10 +57,8 @@ class StaticPageController
             return new Response('', 203);
         }
 
-        $options['page'] = $view;
-        $value = $item->property('content')->value();
-        // TODO Language Switching!!!
-        $content = '';
+        $options['page'] = $page;
+        $options['data'] = $item;
 
         if (Service::isGranted('ROLE_ADMIN')) {
             $content .= '<button id="pageedit" type="button" class="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">Edit</button>';
@@ -73,7 +70,6 @@ class StaticPageController
         if (Service::isGranted('ROLE_ADMIN')) {
             $content .= '</div>';
         }
-        $options['content'][0] = $content;
 
         $page = $view->renderView($options);
         return new Response($page);

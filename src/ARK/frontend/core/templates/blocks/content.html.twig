@@ -6,7 +6,6 @@
     {% block flash %}{% endblock %}
 
     {% if layout is defined %}
-
         {{ layout.renderView(data, forms)|raw }}
 
     {% elseif content[2] is defined %}

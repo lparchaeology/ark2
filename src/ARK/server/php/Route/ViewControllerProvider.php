@@ -43,10 +43,29 @@ class ViewControllerProvider implements ControllerProviderInterface
     {
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
+        $routes = ORM::fetchAll(Route::class);
+        $pages = ORM::fetchAll(Page::class);
+        $pages = ORM::fetchAll(Instance::class);
 
-        $controllers->method('GET')->get('/', 'ARK\Controller\StaticPageController')
-            ->bind('core.home');
+        foreach ($routes as $route) {
+            $this->addRoute($controllers, $route);
+        }
+
+        $controllers
+            ->get("/{parent}/{collection}", 'ARK\Controller\ItemListController')
+            ->bind('core.item.list');
+
+        $controllers
+            ->get("/{parent}/{collection}/{item}", 'ARK\Controller\ItemViewController')
+            ->bind('core.item.view');
 
         return $controllers;
+    }
+
+    public function addRoute($controllers, Route $route)
+    {
+        $controller = $controllers->match($route->pattern(), $route->controller());
+        $controller->method($route->method);
+        $controller->bind($route->id());
     }
 }

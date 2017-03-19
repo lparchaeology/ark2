@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.1
+-- version 4.6.6
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 07, 2017 at 12:16 AM
--- Server version: 5.6.34
--- PHP Version: 7.1.0
+-- Generation Time: Mar 19, 2017 at 10:24 PM
+-- Server version: 10.1.21-MariaDB
+-- PHP Version: 7.1.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -655,6 +655,29 @@ CREATE TABLE `ark_rbac_role_permission` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ark_route`
+--
+
+CREATE TABLE `ark_route` (
+  `route` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `method` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `path` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `controller` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `page` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `enabled` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_route`
+--
+
+INSERT INTO `ark_route` (`route`, `method`, `path`, `controller`, `page`, `enabled`) VALUES
+('core.about', 'GET', '/about', 'ARK\\Controller\\StaticPageController', 'core_page_static', 1),
+('core.home', 'GET', '/', 'ARK\\Controller\\StaticPageController', 'core_page_static', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ark_schema`
 --
 
@@ -799,6 +822,9 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('association.contact', 'core', 0, 0),
 ('core.actor.institution', 'core', 0, 0),
 ('core.actor.person', 'core', 0, 0),
+('core.nav.dashboard', 'core', 0, 0),
+('core.nav.records', 'core', 0, 0),
+('core.nav.user.login', 'core', 0, 0),
 ('file.type.audio', 'core', 0, 0),
 ('file.type.document', 'core', 0, 0),
 ('file.type.image', 'core', 0, 0),
@@ -947,7 +973,7 @@ CREATE TABLE `ark_translation_message` (
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `text` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `notes` longtext COLLATE utf8mb4_unicode_ci NOT NULL
+  `notes` longtext COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -958,6 +984,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'association.contact', 'default', 'Contact', ''),
 ('en', 'core.actor.institution', 'default', 'Institution', ''),
 ('en', 'core.actor.person', 'default', 'Person', ''),
+('en', 'core.nav.dashboard', 'default', 'Dashboard', NULL),
+('en', 'core.nav.records', 'default', 'Records', NULL),
+('en', 'core.nav.user.login', 'default', 'Login', NULL),
 ('en', 'file.type.audio', 'default', 'Audio File', ''),
 ('en', 'file.type.document', 'default', 'Document File', ''),
 ('en', 'file.type.image', 'default', 'Image File', ''),
@@ -1302,7 +1331,7 @@ CREATE TABLE `ark_view_page` (
 --
 
 INSERT INTO `ark_view_page` (`element`, `content`, `footer`, `navbar`, `sidebar`) VALUES
-('core_page_static', NULL, NULL, 'core_nav_navbar', NULL);
+('core_page_static', 'core_page_view', NULL, 'core_nav_navbar', NULL);
 
 -- --------------------------------------------------------
 
@@ -3925,6 +3954,13 @@ ALTER TABLE `ark_rbac_role_permission`
   ADD KEY `IDX_EC1096CF57698A6A` (`role`);
 
 --
+-- Indexes for table `ark_route`
+--
+ALTER TABLE `ark_route`
+  ADD PRIMARY KEY (`route`),
+  ADD KEY `page` (`page`);
+
+--
 -- Indexes for table `ark_schema`
 --
 ALTER TABLE `ark_schema`
@@ -4265,6 +4301,12 @@ ALTER TABLE `ark_rbac_role_action`
 ALTER TABLE `ark_rbac_role_permission`
   ADD CONSTRAINT `ark_rbac_role_permission_ibfk_1` FOREIGN KEY (`role`) REFERENCES `ark_rbac_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `ark_rbac_role_permission_ibfk_2` FOREIGN KEY (`permission`) REFERENCES `ark_rbac_permission` (`permission`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_route`
+--
+ALTER TABLE `ark_route`
+  ADD CONSTRAINT `ark_route_ibfk_1` FOREIGN KEY (`page`) REFERENCES `ark_view_page` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_schema`
