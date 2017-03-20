@@ -83,6 +83,10 @@ class Registry extends SymfonyRegistry
 
     public function apply(Actor $actor, $action, Item $item)
     {
+        if ($action = $this->action($item->schema()->name(), $action)) {
+            return $action->apply($actor, $item);
+        }
+        return false;
     }
 
     private function action($schema, $action)
