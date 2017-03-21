@@ -36,6 +36,7 @@ use ARK\Model\Property;
 use ARK\Model\Attribute;
 use ARK\Model\TextFragment;
 use ARK\Vocabulary\Term;
+use ARK\Form\Type\VocabularyChoiceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\DataMapperInterface;
@@ -64,12 +65,9 @@ class PropertyType extends AbstractType implements DataMapperInterface
             }
             return;
         }
-        if ($attribute->vocabulary()) {
-            $class = ChoiceType::class;
-            foreach ($attribute->vocabulary()->terms() as $term) {
-                $options['choices'][$term->keyword()] = $term->name();
-            }
-            $options['placeholder'] = '';
+        if ($attribute->hasVocabulary()) {
+            $class = VocabularyChoiceType::class;
+            $options['choices'] = $attribute->vocabulary()->terms();
             $options['multiple'] = $attribute->hasMultipleOccurrences();
         } else {
             $class = $attribute->format()->datatype()->formClass();
@@ -104,6 +102,7 @@ class PropertyType extends AbstractType implements DataMapperInterface
         $resolver->setDefaults([
             'field' => null,
             'expanded' => null,
+            'multiple' => null,
             'data_class' => Property::class,
             'empty_data' => null,
         ]);
@@ -125,7 +124,6 @@ class PropertyType extends AbstractType implements DataMapperInterface
                 }
             }
         } elseif (is_array($value) && $value) {
-            dump($value);
             $parameter = $attribute->format()->parameterName();
             if (isset($value[$parameter])) {
                 $forms[$parameter]->setData($value[$parameter]);

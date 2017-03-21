@@ -30,15 +30,17 @@
 
 namespace ARK\View;
 
-use ARK\ORM\ORM;
+use ARK\Entity\Actor;
+use ARK\Form\Type\PropertyType;
+use ARK\Form\Type\ActionChoiceType;
+use ARK\Form\Type\VocabularyChoiceType;
 use ARK\Model\Item;
 use ARK\Model\Schema\SchemaAttribute;
+use ARK\ORM\ORM;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
 use ARK\Vocabulary\Vocabulary;
-use ARK\Form\Type\PropertyType;
-use ARK\Entity\Actor;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class Field extends Element
@@ -98,36 +100,42 @@ class Field extends Element
     public function formDefaults($data)
     {
         // FIXME HACK Need to find a better way to build custom fields!
-        if ($this->name() == 'dime_find_actions') {
+        if ($this->formType() == ActionChoiceType::class) {
+            // TODO Current Actor
             $actor = ORM::find(Actor::class, 'ahavfrue');
-            $options['actions'] = Service::workflow()->actions($actor, $data);
-            $options['required'] = false;
+            $options['choices'] = Service::workflow()->actions($actor, $data);
         }
         if ($this->name() == 'dime_find_filter_kommune') {
-            $options['vocabulary'] = ORM::find(Vocabulary::class, 'dime.denmark.kommune');
-            $options['required'] = false;
+            $vocabulary = ORM::find(Vocabulary::class, 'dime.denmark.kommune');
+            $options['choices'] = $vocabulary->terms();
         }
         if ($this->name() == 'dime_find_filter_type') {
-            $options['vocabulary'] = ORM::find(Vocabulary::class, 'dime.find.type');
-            $options['required'] = false;
+            $vocabulary = ORM::find(Vocabulary::class, 'dime.find.type');
+            $options['choices'] = $vocabulary->terms();
         }
         if ($this->name() == 'dime_find_filter_material') {
-            $options['vocabulary'] = ORM::find(Vocabulary::class, 'dime.material');
-            $options['required'] = false;
+            $vocabulary = ORM::find(Vocabulary::class, 'dime.material');
+            $options['choices'] = $vocabulary->terms();
         }
         if ($this->name() == 'dime_find_filter_period') {
-            $options['vocabulary'] = ORM::find(Vocabulary::class, 'dime.period');
-            $options['required'] = false;
+            $vocabulary = ORM::find(Vocabulary::class, 'dime.period');
+            $options['choices'] = $vocabulary->terms();
         }
-        $options['label'] = ($this->keyword() ? $this->keyword() : false);
+        $options['label'] = ($this->keyword() ?: false);
         if ($this->attribute()) {
-            $name = $this->attribute()->name();
-            if ($this->formType || $this->formType() == PropertyType::class) {
+            if ($this->formType()) {
                 $options['field'] = $this;
             }
-            $options['mapped'] = false;
+            if ($this->formType() == PropertyType::class) {
+                $options['mapped'] = false;
+            }
             $options['required'] = $this->attribute()->isRequired();
-            //$options['property_path'] = "propertyArray[$name].value";
+            if ($this->formType() == VocabularyChoiceType::class) {
+                $options['choices'] = $this->attribute()->vocabulary()->terms();
+            }
+            if ($this->attribute()->hasMultipleOccurrences()) {
+                $options['multiple'] = true;
+            }
             if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED') || $this->name() == 'dime_find_id') {
                 $options['attr']['readonly'] = true;
                 if ($this->attribute()->vocabulary()) {

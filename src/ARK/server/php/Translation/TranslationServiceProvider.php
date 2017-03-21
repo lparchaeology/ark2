@@ -60,7 +60,7 @@ class TranslationServiceProvider implements ServiceProviderInterface
         $container['bus.command.handlers'] = array_merge($container['bus.command.handlers'], $commands);
     }
 
-    private function loadTranslationFiles($translator, $languages, $dir)
+    private function loadTranslationFiles($translator, array $languages, $dir)
     {
         try {
             $files = new \DirectoryIterator($dir);

@@ -57,6 +57,7 @@ class CarouselType extends AbstractType implements DataMapperInterface
     {
         $resolver->setDefaults([
             'field' => null,
+            'multiple' => true,
             'data_class' => Property::class,
             'empty_data' => null,
         ]);

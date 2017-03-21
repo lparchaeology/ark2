@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Hidden Choice Form Type
+ * ARK Event Form Type
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -31,56 +31,46 @@
 namespace ARK\Form\Type;
 
 use ARK\Model\Property;
-use ARK\Vocabulary\Term;
-use ARK\Form\Type\PropertyDataMapper;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class VocabularyChoiceType extends AbstractType implements DataMapperInterface
+class PropertyDataMapper implements DataMapperInterface
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->setDataMapper(new PropertyDataMapper);
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        parent::configureOptions($resolver);
-        $resolver->setDefaults([
-            'field' => null,
-            'choice_value' => 'name',
-            'choice_name' => 'name',
-            'choice_label' => 'keyword',
-            'placeholder' => false,
-            'placeholder_in_choices' => false,
-        ]);
-    }
-
     public function mapDataToForms($property, $forms)
     {
         $forms = iterator_to_array($forms);
-        dump($property);
-        dump($forms);
-        if ($property instanceof Property) {
-            $name = $property->attribute()->name();
-            $value = $property->value();
-            $forms[$name]->setData($value);
+        if (!$property instanceof Property) {
+            return;
+        }
+        $attribute = $property->attribute();
+        $value = $property->value();
+        if (is_array($value) && $value) {
+            $parameter = $attribute->format()->parameterName();
+            if (isset($value[$parameter])) {
+                $forms[$parameter]->setData($value[$parameter]);
+            }
+            $format = $attribute->format()->formatName();
+            if (isset($value[$format])) {
+                $forms[$format]->setData($value[$format]);
+            }
+            $name = $attribute->format()->valueName();
+            $forms[$name]->setData($value[$name]);
+        } else {
+            $forms[$attribute->name()]->setData($value);
         }
     }
 
     public function mapFormsToData($forms, &$property)
     {
         $forms = iterator_to_array($forms);
-        $name = $property->attribute()->name();
-        $value = $forms[$$name]->getData();
+        $attribute = $property->attribute();
+        if ($attribute->format()->hasAttributes()) {
+            $value = [];
+            foreach ($forms as $key => $form) {
+                $value[$key] = $forms[$key]->getData();
+            }
+        } else {
+            $value = $forms[$attribute->name()]->getData();
+        }
         $property->setValue($value);
-    }
-
-    public function getParent()
-    {
-        return ChoiceType::class;
     }
 }

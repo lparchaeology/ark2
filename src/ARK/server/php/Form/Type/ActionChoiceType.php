@@ -30,37 +30,28 @@
 
 namespace ARK\Form\Type;
 
+use ARK\Workflow\Action;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ActionChoiceType extends ChoiceType
+class ActionChoiceType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        dump($options['actions']);
-        $options['choices'][] = $options['actions'];
-        $options['choice_value'] = 'name';
-        $options['choice_name'] = 'name';
-        $options['choice_label'] = 'keyword';
-        $options['placeholder'] = 'core.action.choose';
-        //$options['label'] = false;
-        $options['placeholder_in_choices'] = false;
-        dump($options);
-        parent::buildForm($builder, $options);
-    }
-
     public function configureOptions(OptionsResolver $resolver)
     {
-        parent::configureOptions($resolver);
         $resolver->setDefaults([
-            'field' => null,
-            'actions' => null,
+            'choice_value' => 'name',
+            'choice_name' => 'name',
+            'choice_label' => 'keyword',
+            'placeholder' => false,
+            'placeholder_in_choices' => false,
         ]);
     }
 
-    public function getName()
+    public function getParent()
     {
-        return 'actions';
+        return ChoiceType::class;
     }
 }

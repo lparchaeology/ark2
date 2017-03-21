@@ -135,7 +135,7 @@ class DbalServiceProvider implements ServiceProviderInterface
         };
     }
 
-    private function mergeConfig($settings, $conn)
+    private function mergeConfig(array $settings, $conn)
     {
         $connection = $settings['connections'][$conn];
         $connection['wrapperClass'] = 'ARK\\Database\\Connection';

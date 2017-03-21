@@ -165,6 +165,13 @@ class Action
         return $this->hasPermission($actor) && $this->hasAgency($actor, $item) && $this->meetsConditions($item);
     }
 
+    public function apply(Actor $actor, Item $item)
+    {
+        if (!$this->isGranted($actor, $item)) {
+            return;
+        }
+    }
+
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Joined Table Inheritance

@@ -68,6 +68,7 @@ abstract class DimeFormAction extends DimeAction
         }
         $options['layout'] = $viewLayout;
         $options['data'] = $data;
+        dump($options);
         return Service::renderResponse($template, $options);
     }
 
