@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Hidden Choice Form Type
+ * ARK Event Form Type
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,13 +30,19 @@
 
 namespace ARK\Form\Type;
 
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use ARK\Form\Type\AbstractFormType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
-class TextChoiceType extends ChoiceType
+class NumberFormType extends AbstractFormType
 {
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->setDataMapper($this);
+    }
+
     public function getParent()
     {
-        return TextType::class;
+        return NumberType::class;
     }
 }

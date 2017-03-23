@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Item Form Type
+ * ARK Carousel Form Type
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,42 +30,36 @@
 
 namespace ARK\Form\Type;
 
-use ARK\ORM\ORM;
-use ARK\Service;
-use ARK\Model\Item;
 use ARK\Model\Property;
-use ARK\Entity\Actor;
-use ARK\Form\Type\HiddenCollectionType;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\DataMapperInterface;
+use ARK\Form\Type\AbstractFormType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CarouselType extends AbstractType implements DataMapperInterface
+class CarouselType extends AbstractFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $field = $options['field'];
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
         $builder->add('image', CollectionType::class, $fieldOptions);
         $builder->setDataMapper($this);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    protected function options()
     {
-        $resolver->setDefaults([
-            'field' => null,
+        return [
+            'compound' => true,
             'multiple' => true,
-            'data_class' => Property::class,
-            'empty_data' => null,
-        ]);
+        ];
     }
 
     public function mapDataToForms($property, $forms)
     {
+        if (!$property) {
+            return;
+        }
         $forms = iterator_to_array($forms);
+        $name = $property->attribute()->name();
         $value = $property->value();
         $forms['image']->setData($value);
     }

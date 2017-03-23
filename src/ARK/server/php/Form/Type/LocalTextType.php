@@ -30,44 +30,39 @@
 
 namespace ARK\Form\Type;
 
+use ARK\Form\Type\AbstractFormType;
 use ARK\Service;
-use ARK\Model\Item;
-use ARK\Model\Property;
-use ARK\Model\Fragment\TextFragment;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\DataMapperInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
-// TODO Port to PropertyType and using the object!
-class LocalTextType extends AbstractType implements DataMapperInterface
+class LocalTextType extends AbstractFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $textType = isset($options['text_type']) ? $options['text_type']: TextType::class;
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
         $builder->add('previous', HiddenType::class, $fieldOptions);
         $builder->add('language', HiddenType::class, $fieldOptions);
         // TODO Generate from Format default types?
-        $builder->add('content', $textType, $fieldOptions);
+        $builder->add('content', $this->getParent(), $fieldOptions);
         $builder->setDataMapper($this);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    protected function options()
     {
-        $resolver->setDefaults([
-            'field' => null,
-            'data_class' => Property::class,
-            'empty_data' => null,
-        ]);
+        return [
+            'compound' => true,
+        ];
     }
 
     public function mapDataToForms($property, $forms)
     {
+        if (!$property) {
+            return;
+        }
         $forms = iterator_to_array($forms);
+        $name = $property->attribute()->name();
         $language = Service::locale();
         $values = $property->value();
         $text = [];
@@ -94,6 +89,7 @@ class LocalTextType extends AbstractType implements DataMapperInterface
     public function mapFormsToData($forms, &$property)
     {
         $forms = iterator_to_array($forms);
+        $name = $property->attribute()->name();
         $text = unserialize($forms['previous']->getData());
         $language = $forms['language']->getData();
         $content = $forms['content']->getData();
@@ -111,8 +107,8 @@ class LocalTextType extends AbstractType implements DataMapperInterface
         $property->setValue($values);
     }
 
-    public function getBlockPrefix()
+    public function getParent()
     {
-        return 'localtext';
+        return TextType::class;
     }
 }

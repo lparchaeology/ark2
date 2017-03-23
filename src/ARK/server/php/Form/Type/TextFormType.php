@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Item Form Type
+ * ARK Event Form Type
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -31,46 +31,19 @@
 namespace ARK\Form\Type;
 
 use ARK\Form\Type\AbstractFormType;
-use ARK\Form\Type\VocabularyChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class MeasurementType extends AbstractFormType
+class TextFormType extends AbstractFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->setDataMapper($this);
-        $fieldOptions['mapped'] = false;
-        $fieldOptions['label'] = false;
-        $builder->add('measurement', NumberType::class, $fieldOptions);
-        $builder->add('unit', VocabularyChoiceType::class, $fieldOptions);
+        //$builder->addModelTransformer($this);
     }
 
-    protected function options()
+    public function getParent()
     {
-        return [
-            'compound' => true,
-        ];
-    }
-
-    public function mapDataToForms($property, $forms)
-    {
-        $forms = iterator_to_array($forms);
-        if ($property) {
-            $value = $property->value();
-            if ($value) {
-                $forms['measurement']->setData($value['measurement']);
-                $forms['unit']->setData($value['unit']);
-            }
-        }
-    }
-
-    public function mapFormsToData($forms, &$property)
-    {
-        $forms = iterator_to_array($forms);
-        $value['measurement'] = $forms['measurement']->getData();
-        $value['unit'] = $forms['unit']->getData();
-        $property->setValue($value);
+        return TextType::class;
     }
 }

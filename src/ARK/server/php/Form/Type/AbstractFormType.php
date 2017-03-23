@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Hidden Choice Form Type
+ * ARK Abstract Form Type
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,62 +30,59 @@
 
 namespace ARK\Form\Type;
 
-use ARK\Service;
 use ARK\Model\Property;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\DataMapperInterface;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ReadonlyVocabularyType extends AbstractType implements DataMapperInterface
+abstract class AbstractFormType extends AbstractType implements DataMapperInterface, DataTransformerInterface
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    private const OPTIONS = [
+        'data_class' => Property::class,
+        'empty_data' => null,
+        'field' => null,
+    ];
+
+    protected function options()
     {
-        $builder->setDataMapper($this);
-        $fieldOptions['mapped'] = false;
-        $fieldOptions['label'] = false;
-        $fieldOptions['attr']['readonly'] = true;
-        $builder->add('concept', HiddenType::class, $fieldOptions);
-        $builder->add('term', HiddenType::class, $fieldOptions);
-        $builder->add('text', TextType::class, $fieldOptions);
+        return [];
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'field' => null,
-            'vocabulary' => null,
-            'data_class' => Property::class,
-            'empty_data' => null,
-        ]);
+        $resolver->setDefaults(array_merge(self::OPTIONS, $this->options()));
+    }
+
+    public function transform($value)
+    {
+        if ($value instanceof Property) {
+            $name = $value->attribute()->name();
+            $value = $value->value();
+        }
+        return $value;
+    }
+
+    public function reverseTransform($value)
+    {
+        return $value;
     }
 
     public function mapDataToForms($property, $forms)
     {
         $forms = iterator_to_array($forms);
-        if ($property) {
+        if ($property instanceof Property) {
+            $name = $property->attribute()->name();
             $value = $property->value();
-            if ($value) {
-                $term = $property->attribute()->vocabulary()->term($value);
-                if ($term) {
-                    $forms['concept']->setData($term->concept()->concept());
-                    $forms['term']->setData($term->name());
-                    $forms['text']->setData(Service::translate($term->keyword()));
-                }
-            }
+            $forms[$name]->setData($value);
         }
     }
 
     public function mapFormsToData($forms, &$property)
     {
         $forms = iterator_to_array($forms);
-        $property->setValue($forms['term']->getData());
-    }
-
-    public function getName()
-    {
-        return 'readonlyvocabulary';
+        $name = $property->attribute()->name();
+        $value = $forms[$$name]->getData();
+        $property->setValue($value);
     }
 }

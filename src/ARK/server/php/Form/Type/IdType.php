@@ -30,48 +30,27 @@
 
 namespace ARK\Form\Type;
 
-use ARK\Service;
-use ARK\Model\Item;
-use ARK\Model\Property;
-use ARK\Model\Fragment\TextFragment;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\DataMapperInterface;
+use ARK\Form\Type\AbstractFormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class IdType extends AbstractType implements DataMapperInterface
+class IdType extends AbstractFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->setDataMapper($this);
-        $fieldOptions['label'] = false;
-        $builder->add('id', TextType::class, $fieldOptions);
+        //$builder->addModelTransformer($this);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    protected function options()
     {
-        $resolver->setDefaults(array(
-            'field' => null,
-            'data_class' => Property::class,
-            'empty_data' => null,
-        ));
+        return [
+            //'data_class' => null,
+        ];
     }
 
-    public function mapDataToForms($property, $forms)
+    public function getParent()
     {
-        $forms = iterator_to_array($forms);
-        $forms['id']->setData($property->value());
-    }
-
-    public function mapFormsToData($forms, &$property)
-    {
-        $forms = iterator_to_array($forms);
-        $property->setValue($forms['id']->getData());
-    }
-
-    public function getBlockPrefix()
-    {
-        return 'id';
+        return TextType::class;
     }
 }

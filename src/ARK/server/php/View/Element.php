@@ -97,9 +97,9 @@ abstract class Element
         return $options;
     }
 
-    public function formType()
+    public function formTypeClass()
     {
-        return $this->type->formType();
+        return $this->type->formTypeClass();
     }
 
     public function formOptions($data)
@@ -119,7 +119,7 @@ abstract class Element
     protected function formBuilder($data)
     {
         return Service::forms()->createNamedBuilder($this->name(),
-                                                    $this->formType(),
+                                                    $this->formTypeClass(),
                                                     $this->formData($data),
                                                     $this->formOptions($data));
     }

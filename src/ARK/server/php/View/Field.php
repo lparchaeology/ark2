@@ -45,7 +45,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class Field extends Element
 {
-    protected $formType = '';
+    protected $formTypeClass = '';
     protected $formOptions = '';
     protected $formOptionsArray = null;
     protected $editable = true;
@@ -66,12 +66,20 @@ class Field extends Element
         return $this->editable;
     }
 
-    public function formType()
+    public function formName()
     {
-        if ($this->formType) {
-            return $this->formType;
+        return $this->hasAttribute() ? $this->attribute->name() : $this->name();
+    }
+
+    public function formTypeClass()
+    {
+        if ($this->formTypeClass) {
+            return $this->formTypeClass;
         }
-        return parent::formType();
+        if ($this->attribute()->format()->formTypeClass()) {
+            return $this->attribute()->format()->formTypeClass();
+        }
+        return parent::formTypeClass();
     }
 
     public function formOptions($data)
@@ -100,7 +108,7 @@ class Field extends Element
     public function formDefaults($data)
     {
         // FIXME HACK Need to find a better way to build custom fields!
-        if ($this->formType() == ActionChoiceType::class) {
+        if ($this->formTypeClass() == ActionChoiceType::class) {
             // TODO Current Actor
             $actor = ORM::find(Actor::class, 'ahavfrue');
             $options['choices'] = Service::workflow()->actions($actor, $data);
@@ -123,14 +131,14 @@ class Field extends Element
         }
         $options['label'] = ($this->keyword() ?: false);
         if ($this->attribute()) {
-            if ($this->formType()) {
+            if ($this->formTypeClass()) {
                 $options['field'] = $this;
             }
-            if ($this->formType() == PropertyType::class) {
+            if ($this->formTypeClass() == PropertyType::class) {
                 $options['mapped'] = false;
             }
             $options['required'] = $this->attribute()->isRequired();
-            if ($this->formType() == VocabularyChoiceType::class) {
+            if ($this->formTypeClass() == VocabularyChoiceType::class) {
                 $options['choices'] = $this->attribute()->vocabulary()->terms();
             }
             if ($this->attribute()->hasMultipleOccurrences()) {
@@ -159,16 +167,16 @@ class Field extends Element
 
     public function buildForm($data, FormBuilderInterface $builder)
     {
-        $fieldBuilder = $this->formBuilder($data);
-        $builder->add($fieldBuilder);
+        $builder->add($this->formName(), $this->formTypeClass(), $this->formOptions($data));
+        //$fieldBuilder = $this->formBuilder($data);
+        //$builder->add($fieldBuilder);
     }
 
     public function renderView($data, $forms = null, $form = null, Cell $cell = null, array $options = [])
     {
-        $attributeName = ($this->attribute() ? $this->attribute()->name() : '');
-        if (($attributeName == 'findpoint' || $this->element == 'dime_save') && !Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+        if (($this->formName() == 'findpoint' || $this->formName() == 'dime_save') && !Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             if ($form) {
-                $form[$this->element]->setRendered();
+                $form[$this->formName()]->setRendered();
             }
             return '';
         }
@@ -228,7 +236,7 @@ class Field extends Element
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_field');
 
         // Fields
-        $builder->addStringField('formType', 100, 'form_type');
+        $builder->addStringField('formTypeClass', 100, 'form_type_class');
         $builder->addStringField('formOptions', 4000, 'form_options');
         $builder->addField('editable', 'boolean');
 

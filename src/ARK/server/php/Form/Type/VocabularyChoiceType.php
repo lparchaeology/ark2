@@ -30,40 +30,35 @@
 
 namespace ARK\Form\Type;
 
+use ARK\Form\Type\AbstractFormType;
 use ARK\Model\Property;
-use ARK\Vocabulary\Term;
 use ARK\Form\Type\PropertyDataMapper;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class VocabularyChoiceType extends AbstractType implements DataMapperInterface
+class VocabularyChoiceType extends AbstractFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->setDataMapper(new PropertyDataMapper);
+        $builder->setDataMapper($this);
+        $builder->addModelTransformer($this);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    protected function options()
     {
-        parent::configureOptions($resolver);
-        $resolver->setDefaults([
-            'field' => null,
+        return [
+            'data_class' => null,
             'choice_value' => 'name',
             'choice_name' => 'name',
             'choice_label' => 'keyword',
             'placeholder' => false,
             'placeholder_in_choices' => false,
-        ]);
+        ];
     }
 
     public function mapDataToForms($property, $forms)
     {
         $forms = iterator_to_array($forms);
-        dump($property);
-        dump($forms);
         if ($property instanceof Property) {
             $name = $property->attribute()->name();
             $value = $property->value();
@@ -75,7 +70,7 @@ class VocabularyChoiceType extends AbstractType implements DataMapperInterface
     {
         $forms = iterator_to_array($forms);
         $name = $property->attribute()->name();
-        $value = $forms[$$name]->getData();
+        $value = $forms[$name]->getData();
         $property->setValue($value);
     }
 

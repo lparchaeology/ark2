@@ -191,15 +191,19 @@ gulp.task('js', function() {
 gulp.task('css', function() {
     var frontend = (util.env.frontend || 'core');
     var namespace = (util.env.namespace || 'ARK');
-    var sassSrc = './frontends/' + frontend + '/scss/ark.scss';
     var cssSrc = [
         config.vendorDir + '/summernote/dist/summernote.css',
         config.vendorDir + '/select2/dist/css/select2.min.css',
-        config.vendorDir + '/select2-bootstrap-frontend/dist/select2-bootstrap.min.css',
+    ];
+    var sassSrc = [
+        './frontends/' + frontend + '/scss/ark.scss',
+    ];
+    var bootCssSrc = [
         config.vendorDir + '/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.css',
         config.vendorDir + '/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css',
         config.vendorDir + '/bootstrap-table/dist/bootstrap-table.css',
-        config.vendorDir + '/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css'
+        config.vendorDir + '/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css',
+        config.vendorDir + '/select2-bootstrap-frontend/dist/select2-bootstrap.css',
     ];
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/assets/styles';
     var mapsConf = {
@@ -223,14 +227,17 @@ gulp.task('css', function() {
             "Safari >= 6"
         ]
     };
+    var cssStream = gulp.src(cssSrc)
+                        .pipe(concat('tmp.css'));
+
     var sassStream = gulp.src(sassSrc)
                          .pipe(sourcemaps.init(mapsConf))
                          .pipe(sass(sassConf).on('error', sass.logError));
 
-    var cssStream = gulp.src(cssSrc)
-                        .pipe(concat('tmp.css'));
+    var bootCssStream = gulp.src(bootCssSrc)
+                        .pipe(concat('boot.tmp.css'));
 
-    return merge(sassStream, cssStream)
+    return merge(cssStream, sassStream, bootCssStream)
             .pipe(concat('ark.min.css'))
             .pipe(autoprefixer(prefixConf))
             .pipe(sourcemaps.write('.'))

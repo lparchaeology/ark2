@@ -30,17 +30,11 @@
 
 namespace ARK\Form\Type;
 
-use ARK\Service;
-use ARK\Model\Item;
-use ARK\Model\Property;
-use ARK\Model\Fragment\TextFragment;
+use ARK\Form\Type\AbstractFormType;
 use Brick\Geo\Point;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\DataMapperInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MapPickType extends AbstractType implements DataMapperInterface
 {
@@ -56,13 +50,11 @@ class MapPickType extends AbstractType implements DataMapperInterface
         $builder->setDataMapper($this);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    protected function options()
     {
-        $resolver->setDefaults([
-            'field' => null,
-            'data_class' => Property::class,
-            'empty_data' => null,
-        ]);
+        return [
+            'compound' => true,
+        ];
     }
 
     public function mapDataToForms($property, $forms)
@@ -90,10 +82,5 @@ class MapPickType extends AbstractType implements DataMapperInterface
         $value['coordinates'] = $point->asText();
         $value['srid'] = $point->SRID();
         $property->setValue($value);
-    }
-
-    public function getBlockPrefix()
-    {
-        return 'wkt';
     }
 }

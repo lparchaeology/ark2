@@ -51,6 +51,7 @@ abstract class Format
     protected $formatVocabulary = null;
     protected $parameterName = null;
     protected $parameterVocabulary = null;
+    protected $formTypeClass = '';
     protected $input = '';
     protected $object = false;
     protected $array = false;
@@ -70,27 +71,32 @@ abstract class Format
 
     public function valueName()
     {
-        return ($this->valueName ? $this->valueName : $this->datatype->valueName());
+        return ($this->valueName ?: $this->datatype->valueName());
     }
 
     public function formatName()
     {
-        return ($this->formatName ? $this->formatName : $this->datatype->formatName());
+        return ($this->formatName ?: $this->datatype->formatName());
     }
 
     public function formatVocabulary()
     {
-        return ($this->formatVocabulary ? $this->formatVocabulary : $this->datatype->formatVocabulary());
+        return ($this->formatVocabulary ?: $this->datatype->formatVocabulary());
     }
 
     public function parameterName()
     {
-        return ($this->parameterName ? $this->parameterName : $this->datatype->parameterName());
+        return ($this->parameterName ?: $this->datatype->parameterName());
     }
 
     public function parameterVocabulary()
     {
-        return ($this->parameterVocabulary ? $this->parameterVocabulary : $this->datatype->parameterVocabulary());
+        return ($this->parameterVocabulary ?: $this->datatype->parameterVocabulary());
+    }
+
+    public function formTypeClass()
+    {
+        return ($this->formTypeClass ?: $this->datatype->formTypeClass());
     }
 
     public function input()
@@ -188,6 +194,7 @@ abstract class Format
         $builder->addStringField('formatVocabulary', 30, 'format_vocabulary');
         $builder->addStringField('parameterName', 30, 'parameter_name');
         $builder->addStringField('parameterVocabulary', 30, 'parameter_vocabulary');
+        $builder->addStringField('formTypeClass', 100, 'form_type_class');
         $builder->addStringField('input', 30);
         $builder->addField('object', 'boolean');
         $builder->addField('array', 'boolean');

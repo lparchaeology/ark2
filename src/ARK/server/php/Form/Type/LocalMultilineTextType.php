@@ -30,27 +30,14 @@
 
 namespace ARK\Form\Type;
 
-use ARK\Service;
 use ARK\Form\Type\LocalTextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\LanguageType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class LocalMultilineTextType extends LocalTextType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $options['text_type'] = TextareaType::class;
-        parent::buildForm($builder, $options);
-    }
-
-    public function getBlockPrefix()
-    {
-        return 'localmultilinetext';
-    }
-
     public function getParent()
     {
-        return LocalTextType::class;
+        return TextareaType::class;
     }
 }

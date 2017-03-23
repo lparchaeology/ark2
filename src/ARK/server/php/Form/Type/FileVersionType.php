@@ -31,21 +31,15 @@
 namespace ARK\Form\Type;
 
 use ARK\Service;
-use ARK\Model\Item;
-use ARK\Model\Property;
-use ARK\Model\Fragment\TextFragment;
+use ARK\Form\Type\AbstractFormType;
 use ARK\Form\Type\EventType;
 use ARK\Form\Type\LocalTextType;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\DataMapperInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
-// TODO Port to PropertyType and using the object!
-class FileVersionType extends AbstractType implements DataMapperInterface
+class FileVersionType extends AbstractFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -60,13 +54,11 @@ class FileVersionType extends AbstractType implements DataMapperInterface
         $builder->setDataMapper($this);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    protected function options()
     {
-        $resolver->setDefaults([
-            'field' => null,
-            'data_class' => Property::class,
-            'empty_data' => null,
-        ]);
+        return [
+            'compound' => true,
+        ];
     }
 
     public function mapDataToForms($property, $forms)
@@ -113,10 +105,5 @@ class FileVersionType extends AbstractType implements DataMapperInterface
             $values[] = ['language' => $lang, 'content' => $cont];
         }
         $property->setValue($values);
-    }
-
-    public function getBlockPrefix()
-    {
-        return 'localtext';
     }
 }

@@ -30,54 +30,48 @@
 
 namespace ARK\Form\Type;
 
-use ARK\ORM\ORM;
-use ARK\Service;
-use ARK\Model\Item;
-use ARK\Model\Property;
 use ARK\Entity\Actor;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\DataMapperInterface;
+use ARK\Form\Type\AbstractFormType;
+use ARK\ORM\ORM;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ItemType extends AbstractType implements DataMapperInterface
+class ItemType extends AbstractFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $field = $options['field'];
-        $attribute = $field->attribute()->name();
         $fieldOptions['attr']['readonly'] = true;
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
         $builder->add('module', HiddenType::class, $fieldOptions);
         $builder->add('item', HiddenType::class, $fieldOptions);
-        $builder->add('name', TextType::class, $fieldOptions);
         $builder->setDataMapper($this);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    protected function options()
     {
-        $resolver->setDefaults([
-            'field' => null,
-            'data_class' => Property::class,
-            'empty_data' => null,
-        ]);
+        return [
+            'compound' => true,
+        ];
     }
 
     public function mapDataToForms($property, $forms)
     {
+        if (!$property) {
+            return;
+        }
         $forms = iterator_to_array($forms);
+        $name = $property->attribute()->name();
         $value = $property->value();
         if ($value['item']) {
             $forms['module']->setData($value['module']);
             $forms['item']->setData($value['item']);
             // TODO Make generic using module!
             if ($item = ORM::find(Actor::class, $value['item'])) {
-                $name = $item->property('fullname');
-                $value = $name->value()[0];
-                $forms['name']->setData($value['content']);
+                $fullname = $item->property('fullname');
+                $value = $fullname->value()[0];
+                //$forms[$name]->setData($value['content']);
             }
         }
     }
@@ -95,8 +89,8 @@ class ItemType extends AbstractType implements DataMapperInterface
         }
     }
 
-    public function getBlockPrefix()
+    public function getParent()
     {
-        return 'item';
+        return TextType::class;
     }
 }

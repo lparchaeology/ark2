@@ -41,7 +41,7 @@ class Type
 
     protected $type = '';
     protected $layout = false;
-    protected $formType = '';
+    protected $formTypeClass = '';
     protected $template = '';
 
     public function id()
@@ -54,9 +54,9 @@ class Type
         return $this->layout;
     }
 
-    public function formType()
+    public function formTypeClass()
     {
-        return $this->formType;
+        return $this->formTypeClass;
     }
 
     public function template()
@@ -75,7 +75,7 @@ class Type
 
         // Attributes
         $builder->addField('layout', 'boolean');
-        $builder->addStringField('formType', 100, 'form_type');
+        $builder->addStringField('formTypeClass', 100, 'form_type_class');
         $builder->addStringField('template', 100);
         KeywordTrait::buildKeywordMetadata($builder);
     }

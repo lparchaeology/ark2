@@ -30,14 +30,13 @@
 
 namespace ARK\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
+use ARK\Form\Type\AbstractFormType;
+use DateTime;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\DataMapperInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EventType extends AbstractType implements DataMapperInterface
+class EventType extends AbstractFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -48,12 +47,12 @@ class EventType extends AbstractType implements DataMapperInterface
         $builder->setDataMapper($this);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    protected function options()
     {
-        $resolver->setDefaults([
-            'field' => null,
-            'empty_data' => ['on' => new \DateTime, 'by' => ''],
-        ]);
+        return [
+            'compound' => true,
+            'empty_data' => ['on' => new DateTime, 'by' => ''],
+        ];
     }
 
     public function mapDataToForms($data, $forms)
@@ -68,10 +67,5 @@ class EventType extends AbstractType implements DataMapperInterface
         $forms = iterator_to_array($forms);
         $data['on'] = $forms['on']->getData();
         $data['by'] = $forms['by']->getData();
-    }
-
-    public function getBlockPrefix()
-    {
-        return 'event';
     }
 }

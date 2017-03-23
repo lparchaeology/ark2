@@ -58,7 +58,7 @@ class Datatype
     protected $modelClass = '';
     protected $dataTable = '';
     protected $dataClass = '';
-    protected $formClass = '';
+    protected $formTypeClass = '';
 
     public function id()
     {
@@ -135,9 +135,9 @@ class Datatype
         return $this->dataClass;
     }
 
-    public function formClass()
+    public function formTypeClass()
     {
-        return $this->formClass;
+        return $this->formTypeClass;
     }
 
     public function nullValue()
@@ -172,7 +172,7 @@ class Datatype
         $builder->addStringField('modelClass', 100, 'model_class');
         $builder->addStringField('dataTable', 50, 'data_table');
         $builder->addStringField('dataClass', 100, 'data_class');
-        $builder->addStringField('formClass', 100, 'form_class');
+        $builder->addStringField('formTypeClass', 100, 'form_type_class');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
 

@@ -31,9 +31,11 @@
 namespace ARK\Model;
 
 use ARK\Model\EnabledTrait;
+use ARK\Model\Format;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\Vocabulary\Vocabulary;
 use Doctrine\Common\Collections\ArrayCollection;
 
 abstract class Attribute
@@ -171,7 +173,7 @@ abstract class Attribute
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations
-        $builder->addManyToOneField('format', 'ARK\Model\Format', 'format', 'format', false);
-        $builder->addManyToOneField('vocabulary', 'ARK\Vocabulary\Vocabulary', 'vocabulary', 'concept');
+        $builder->addManyToOneField('format', Format::class, 'format', 'format', false);
+        $builder->addManyToOneField('vocabulary', Vocabulary::class, 'vocabulary', 'concept');
     }
 }
