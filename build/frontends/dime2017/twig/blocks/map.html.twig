@@ -1,9 +1,8 @@
 {# Define the map block #}
 {% block map %}
 
-<div class = "mapview">
+<div id="mapview" class="mapview">
 
-    <link rel="stylesheet" href="https://openlayers.org/en/v3.20.1/css/ol.css" type="text/css">
     <div class="btn-group dropdown map layer-select">
         <button class="btn btn-default dropdown-toggle layer-select" type="button" id="mapLayerMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             <span class="dime-icon icon-map small"></span>
@@ -11,7 +10,7 @@
         </button>
         <ul class="dropdown-menu layer-select" aria-labelledby="mapLayerMenu">
             {% set config = [] %}
-            {% for layer in cell.map.layers %}
+            {% for layer in map.layers %}
                 {% if layer.isDefault %}
                     <li><a class="layer-select selected" value="{{ layer.name }}">{{ layer.keyword | translate }}</a></li>
                 {% else %}
@@ -20,6 +19,7 @@
             {% endfor %}
         </ul>
     </div>
+
     <div class="btn-group dropdown map style-select">
         <button class="btn btn-default dropdown-toggle style-select" type="button" id="mapStyleMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             <span class="dime-icon icon-heatmap small"></span>
@@ -43,7 +43,7 @@
 
         {# Convert the ARK map config into OpenLayers json #}
         {% set config = [] %}
-        {% for layer in cell.map.layers %}
+        {% for layer in map.layers %}
             {% if layer.source.viewClass == 'BingMaps' %}
                 {% set source = {'key': layer.source.ticket, 'imagerySet': layer.sourceName} %}
             {% endif %}
@@ -53,8 +53,6 @@
             {% set conf = {'name': layer.name, 'visible': layer.isVisible, 'class': layer.source.viewClass, 'source': source} %}
             {% set config = config | merge([conf]) %}
         {% endfor %}
-
-        <script src="https://openlayers.org/en/v3.20.1/build/ol.js"></script>
 
         <script>
             var layerConfig = JSON.parse("{{ config | json_encode() | escape('js') }}");
@@ -81,8 +79,6 @@
                 var default_overlay = "choropleth";
 
             {% endif %}
-
-
         </script>
 
     </div>

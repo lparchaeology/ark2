@@ -112,7 +112,7 @@ abstract class Element
         return $this->formDefaults($data);
     }
 
-    public function buildForm($data, FormBuilderInterface $builder)
+    public function buildForm(FormBuilderInterface $builder, $data, $options = [])
     {
     }
 
@@ -121,15 +121,15 @@ abstract class Element
         return [];
     }
 
-    protected function formBuilder($data)
+    protected function formBuilder($data, $options = [])
     {
         return Service::forms()->createNamedBuilder($this->formName(),
                                                     $this->formTypeClass(),
                                                     $this->formData($data),
-                                                    $this->formOptions($data));
+                                                    $options);
     }
 
-    abstract public function renderView($data, $forms = null, $form = null, Cell $cell = null, array $options = []);
+    abstract public function renderView($data, $forms = null, $form = null, array $options = []);
 
     public static function loadMetadata(ClassMetadata $metadata)
     {

@@ -1,5 +1,8 @@
-{% if formLabel %}
-    {{ form_row(form[field.formName]) }}
+{% set fieldForm = form[field.formName] %}
+{% if fieldForm.vars['compound_label'] is defined and fieldForm.vars['compound_label'] == false %}
+    {% for child in fieldForm.children %}
+        {{ form_row(fieldForm) }}
+    {% endfor %}
 {% else %}
-    {{ form_widget(form[field.formName]) }}
+    {{ form_row(fieldForm) }}
 {% endif %}

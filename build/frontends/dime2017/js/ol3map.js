@@ -1,13 +1,10 @@
 $(document).ready(function() {
-
-    function source(source, config) {
-        if (source == 'BingMaps') {
-            return new ol.source.BingMaps(config)
-        }
-        if (source == 'TileWMS') {
-            return new ol.source.TileWMS(config)
-        }
+    if ($('#mapview').length) {
+        initialiseMapView();
     }
+});
+
+function initialiseMapView() {
 
     var layers = [];
     for (var i = 0; i < layerConfig.length; ++i) {
@@ -16,7 +13,7 @@ $(document).ready(function() {
             name: config.name,
             visible: config.visible,
             preload: config.preload,
-            source: source(config.class, config.source)
+            source: mapSource(config.class, config.source)
         });
         layer.set('name', config.name);
         layers.push(layer);
@@ -358,6 +355,13 @@ $(document).ready(function() {
         default:
 
     }
+}
 
-
-});
+function mapSource(source, config) {
+    if (source == 'BingMaps') {
+        return new ol.source.BingMaps(config)
+    }
+    if (source == 'TileWMS') {
+        return new ol.source.TileWMS(config)
+    }
+}

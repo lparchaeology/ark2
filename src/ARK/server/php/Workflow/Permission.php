@@ -58,14 +58,7 @@ class Permission
 
     public function isGranted(Actor $actor)
     {
-        if ($this->actionName == 'accession') {
-            dump('action permission');
-            dump($this);
-        }
         $hasRole = $this->role->hasActor($actor);
-        if ($this->actionName == 'accession') {
-            dump('has role = '.(string)$hasRole);
-        }
         if ($hasRole) {
             return ($this->operator == 'not' ? self::DENY : self::GRANT);
         }

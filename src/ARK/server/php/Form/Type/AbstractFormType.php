@@ -42,7 +42,11 @@ abstract class AbstractFormType extends AbstractType implements DataMapperInterf
         //'compound' => false,
         'data_class' => null,
         'empty_data' => null,
+        'mapped' => true,
         'field' => null,
+        'disabled' => true,
+        'hidden' => false,
+        'required' => false,
     ];
 
     protected function options()

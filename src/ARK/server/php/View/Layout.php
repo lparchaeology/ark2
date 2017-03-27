@@ -74,6 +74,7 @@ abstract class Layout extends Element
 
     public function cells()
     {
+        $this->init();
         return $this->cells;
     }
 
@@ -92,39 +93,32 @@ abstract class Layout extends Element
 
     public function buildForms($data)
     {
-        dump('buildForms '.$this->name().' root = '.(string)$this->formRoot);
-        dump($this->schema());
-        dump($this->formRoot);
         if ($this->formRoot) {
-            dump('root');
-            $builder = $this->formBuilder($data);
-            $this->buildForm($data[$this->element], $builder);
+            $builder = $this->formBuilder($data, $this->formOptions($data));
+            $this->buildForm($builder, $data[$this->element], $this->formOptions($data));
             return [$this->element => $builder->getForm()];
         }
-        dump('not root');
         $forms = [];
-        foreach ($this->elements() as $element) {
-            dump('element '.$element->name());
-            $forms = array_merge($forms, $element->buildForms($data));
+        foreach ($this->cells() as $cell) {
+            $forms = array_merge($forms, $cell->buildForms($data));
         }
         return $forms;
     }
 
-    public function buildForm($data, FormBuilderInterface $builder)
+    public function buildForm(FormBuilderInterface $builder, $data, $options = [])
     {
-        foreach ($this->elements() as $element) {
-            $element->buildForm($data, $builder);
+        foreach ($this->cells() as $cell) {
+            $cell->buildForm($builder, $data, $options);
         }
     }
 
-    public function renderView($data, $forms = null, $form = null, Cell $cell = null, array $options = [])
+    public function renderView($data, $forms = null, $form = null, array $options = [])
     {
         if ($this->template()) {
             $options['layout'] = $this;
             $options['data'] = $data;
             $options['forms'] = $forms;
             $options['form'] = $form;
-            $options['cell'] = $cell;
             return Service::renderView($this->template(), $options);
         }
         return '';

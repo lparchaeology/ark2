@@ -57,7 +57,7 @@ class GeoFindAction
             $data['kommune']['concept'] = $kommune->concept()->concept();
             $data['kommune']['term'] = $kommune->name();
             $data['kommune']['text'] = Service::translate($kommune->keyword());
-            $data['museum']['id'] = $museum->id();
+            $data['museum']['item'] = $museum->id();
             $data['museum']['module'] = $museum->schema()->module()->name();
             $data['museum']['name'] = $museum->property('fullname')->value()[0]['content'];
         } catch (Exception $e) {

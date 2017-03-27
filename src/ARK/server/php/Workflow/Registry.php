@@ -67,10 +67,7 @@ class Registry extends SymfonyRegistry
         $actions = [];
         foreach ($this->actions[$schema] as $action) {
             if ($action->isGranted($actor, $item)) {
-                dump('granted');
                 $actions[$action->name()] = $action;
-            } else {
-                dump('denied');
             }
         }
         return $actions;

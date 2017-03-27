@@ -135,13 +135,15 @@ abstract class Fragment
 
     public static function create($module, $item, Attribute $attribute, Fragment $parent = null)
     {
-        $class = $attribute->format()->datatype()->modelClass();
+        $class = $attribute->format()->datatype()->dataClass();
         $fragment = new $class;
         $fragment->module = $module;
         $fragment->item = $item;
         $fragment->attribute = $attribute->name();
-        $fragment->datatype = $attribute->datatype()->id();
-        $fragment->parent = $parent->id();
+        $fragment->datatype = $attribute->format()->datatype()->id();
+        if ($parent) {
+            $fragment->parent = $parent->id();
+        }
         $fragment->refreshVersion();
         return $fragment;
     }

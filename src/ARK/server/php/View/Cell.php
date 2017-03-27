@@ -33,7 +33,7 @@ namespace ARK\View;
 use ARK\Model\EnabledTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 
 class Cell
 {
@@ -45,6 +45,8 @@ class Cell
     protected $seq = 0;
     protected $itemType = null;
     protected $label = true;
+    protected $editable = true;
+    protected $hidden = false;
     protected $element = null;
     protected $map = null;
     protected $formOptions = '';
@@ -90,12 +92,45 @@ class Cell
         return $this->label;
     }
 
-    public function formOptions()
+    public function editable()
+    {
+        return $this->editable;
+    }
+
+    public function hidden()
+    {
+        return $this->hidden;
+    }
+
+    public function formOptions($data)
     {
         if ($this->formOptionsArray === null) {
             $this->formOptionsArray = json_decode($this->formOptions, true);
+            if (!is_array($this->formOptionsArray)) {
+                $this->formOptionsArray = [];
+            }
+            $this->formOptionsArray['label'] = $this->label;
+            $this->formOptionsArray['disabled'] = !$this->editable;
+            $this->formOptionsArray['hidden'] = $this->hidden;
         }
         return $this->formOptionsArray;
+    }
+
+    public function buildForms($data)
+    {
+        return $this->element->buildForms($data);
+    }
+
+    public function buildForm(FormBuilderInterface $builder, $data, $options = [])
+    {
+        $options = array_merge($options, $this->formOptions($data));
+        $this->element->buildForm($builder, $data, $options);
+    }
+
+    public function renderView($data, $forms = null, $form = null, array $options = [])
+    {
+        $options['map'] = $this->map;
+        return $this->element->renderView($data, $forms, $form, $options);
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
@@ -112,8 +147,10 @@ class Cell
         $builder->addStringKey('itemType', 30, 'item_type');
 
         // Fields
-        $builder->addField('label', 'boolean');
         $builder->addStringField('formOptions', 4000, 'form_options');
+        $builder->addField('label', 'boolean');
+        $builder->addField('editable', 'boolean');
+        $builder->addField('hidden', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
 
         // Relationships

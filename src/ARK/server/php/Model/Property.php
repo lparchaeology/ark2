@@ -128,7 +128,7 @@ class Property
     {
         $val = null;
         $parm = null;
-        if ($this->attribute->format()->hasAttributes()) {
+        if (!$this->attribute->format()->isAtomic()) {
             foreach ($this->attribute->format()->attributes() as $attribute) {
                 if ($attribute->isRoot()) {
                     $val = $value[$attribute->name()];

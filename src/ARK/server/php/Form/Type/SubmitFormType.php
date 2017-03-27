@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Action Choice Form Type
+ * ARK Event Form Type
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -31,45 +31,13 @@
 namespace ARK\Form\Type;
 
 use ARK\Form\Type\AbstractFormType;
-use ARK\Model\Property;
-use ARK\Workflow\Action;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class ActionChoiceType extends AbstractFormType
+class SubmitFormType extends AbstractFormType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->addModelTransformer($this);
-    }
-
-    protected function options()
-    {
-        return [
-            'data_class' => null,
-            'choice_value' => 'name',
-            'choice_name' => 'name',
-            'choice_label' => 'keyword',
-            'placeholder' => 'core.action.choose',
-            'placeholder_in_choices' => false,
-        ];
-    }
-
-    public function transform($value)
-    {
-        if ($value instanceof Property) {
-            return $value->value();
-        }
-        return $value;
-    }
-
-    public function reverseTransform($value)
-    {
-        return $value;
-    }
-
     public function getParent()
     {
-        return ChoiceType::class;
+        return SubmitType::class;
     }
 }

@@ -41,6 +41,7 @@ use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
 use ARK\Vocabulary\Vocabulary;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class Field extends Element
@@ -165,14 +166,20 @@ class Field extends Element
         return null;
     }
 
-    public function buildForm($data, FormBuilderInterface $builder)
+    public function buildForm(FormBuilderInterface $builder, $data, $options = [])
     {
+        if ($this->formTypeClass() == SubmitType::class) {
+            $options = [];
+            $options['label'] = ($this->keyword() ?: false);
+        } else {
+            $options = array_merge($options, $this->formOptions($data));
+        }
         //$builder->add($this->formName(), $this->formTypeClass(), $this->formOptions($data));
-        $fieldBuilder = $this->formBuilder($data);
+        $fieldBuilder = $this->formBuilder($data, $options);
         $builder->add($fieldBuilder);
     }
 
-    public function renderView($data, $forms = null, $form = null, Cell $cell = null, array $options = [])
+    public function renderView($data, $forms = null, $form = null, array $options = [])
     {
         if (($this->formName() == 'findpoint' || $this->formName() == 'dime_save') && !Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             if ($form) {
@@ -185,7 +192,6 @@ class Field extends Element
             $options['data'] = $this->formData($data[$form->vars['id']]);
             $options['forms'] = $forms;
             $options['form'] = $form;
-            $options['cell'] = $cell;
             return Service::renderView($this->template(), $options);
         }
 

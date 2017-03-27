@@ -41,7 +41,6 @@ class VocabularyChoiceType extends AbstractFormType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         //$builder->setDataMapper($this);
-        dump($options);
         $builder->addModelTransformer($this);
     }
 
@@ -59,8 +58,6 @@ class VocabularyChoiceType extends AbstractFormType
 
     public function transform($value)
     {
-        dump('transform');
-        dump($value);
         if ($value instanceof Property) {
             return $value->value();
         }

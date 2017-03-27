@@ -69,14 +69,13 @@ class Page extends Element
         return $options;
     }
 
-    public function renderView($data, $forms = null, $form = null, Cell $cell = null, array $options = [])
+    public function renderView($data, $forms = null, $form = null, array $options = [])
     {
         if ($this->template()) {
             $options['page'] = $this;
             $options['data'] = $data;
             $options['forms'] = $forms;
             $options['form'] = $form;
-            $options['cell'] = $cell;
             return Service::renderView($this->template(), $options);
         }
         return '';

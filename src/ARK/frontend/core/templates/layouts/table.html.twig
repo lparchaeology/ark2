@@ -54,7 +54,6 @@
                                 {% set itempath = path('finds.view', {'itemSlug': item.id}) %}
                                 <a href="{{ itempath }}">{{ field.renderView(item) }}</a>
                             {% else %}
-                                {% dump(field) %}
                                 {{ field.renderView(item) }}
                             {% endif %}
                         </td>

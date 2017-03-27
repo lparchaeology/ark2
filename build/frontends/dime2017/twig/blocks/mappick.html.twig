@@ -1,133 +1,19 @@
 {# Block to write out correctly formatted field value #}
 {% block mappick %}
-
 <div class="mappick-group form-group row">
-{% for subform in form %}
 
-    {% if subform.easting is defined %}
-        <div class="mappick_fields col-sm-9">
-            <div class="row form-group">
-                <div class="col-sm-4">
-                    {{ form_label(subform.easting, null, {'label_attr': {'class': 'col-md-12'}}) }}
-                </div>
-                <div class="col-sm-8">
-                    {{ form_widget(subform.easting, {'attr': {'class': 'mappick_field'}}) }}
-                </div>
-            </div>
-            <div class="row form-group">
-                <div class="col-sm-4">
-                    {{ form_label(subform.northing, null, {'label_attr': {'class': 'col-md-12'}}) }}
-                </div>
-                <div class="col-sm-8">
-                    {{ form_widget(subform.northing, {'attr': {'class': 'mappick_field'}}) }}
-                </div>
-            </div>
-        </div>
-        <div id="mappick" class="mappick col-sm-3"></div>
+    {% set fieldForm = form[field.formName] %}
 
-    {% endif %}
+    {{ form_label(fieldForm) }}
 
-{% endfor %}
-    <script src="https://openlayers.org/en/v3.20.1/build/ol.js"></script>
+    <div class="mappick_fields col-sm-4">
+        {{ form_widget(fieldForm.easting, {'attr': {'class': 'mappick_field mappick_easting'}}) }}
+        {{ form_widget(fieldForm.northing, {'attr': {'class': 'mappick_field mappick_northing'}}) }}
+    </div>
+    <div id="mappick" class="mappick col-sm-6"></div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>var mapPin = "{{ asset('/images/icons/pin.png', 'frontend') }}"</script>
 
-        <script>
-
-          var layers = [
-              new ol.layer.Tile({
-                        visible: true,
-                        preload: Infinity,
-                        source: new ol.source.BingMaps({
-                          key: 'Ak5AqjsEQ44KtAl7jHhrjGuzNshN1fZv3MOx2MUi0p4zFmq6XeWLKmyqeP2UgJK3',
-                          imagerySet: 'AerialWithLabels',
-                          maxZoom: 19
-                        })
-                      })
-          ];
-
-
-          var source = new ol.source.Vector({wrapX: false});
-
-
-          var iconStyle = new ol.style.Style({
-            image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
-              anchor: [0.5, 44],
-              anchorXUnits: 'fraction',
-              anchorYUnits: 'pixels',
-                src: "{{ asset('assets/dime2017/images/pin.png') }}"
-            }))
-          });
-
-
-          var vector = new ol.layer.Vector({
-              source: source,
-              style: iconStyle
-          });
-
-          layers.push(vector);
-
-          var map = new ol.Map({
-            layers: layers,
-            loadTilesWhileInteracting: true,
-            target: 'mappick',
-            view: new ol.View({
-                    center: [965972, 7575813],
-                    zoom: 12
-            }),
-            controls:[],
-          });
-
-
-          var draw = new ol.interaction.Draw({
-              source: source,
-              type: "Point"
-          });
-
-          draw.on('drawstart', function(){
-
-              source.clear();
-
-          } );
-
-          source.on('addfeature', function(){
-              source.forEachFeature(function(feature) {
-                  coords = ol.proj.transform(feature.getGeometry().getCoordinates(),'EPSG:3857','EPSG:4326');
-                  $('#dime_find_item_dime_find_findpoint_easting').val(coords[0]);
-                  $('#dime_find_item_dime_find_findpoint_northing').val(coords[1]);
-                  map.getView().setCenter(feature.getGeometry().getCoordinates());
-              });
-          } );
-
-          function updateMappoint(){
-
-              source.clear();
-              lat = $('#dime_find_item_dime_find_findpoint_easting').val();
-              lon = $('#dime_find_item_dime_find_findpoint_northing').val();
-
-              coords = ol.proj.transform([parseFloat(lat),parseFloat(lon)],'EPSG:4326','EPSG:3857');
-
-              source.addFeature(new ol.Feature({
-                  geometry:new ol.geom.Point(coords),
-              }));
-
-          }
-
-          $('#dime_find_item_dime_find_findpoint_easting').on('change', function(){
-              updateMappoint()
-          });
-
-          $('#dime_find_item_dime_find_findpoint_northing').on('change', function(){
-             updateMappoint()
-          });
-
-          map.addInteraction(draw);
-
-          $(document).ready(function (){
-              updateMappoint();
-          })
-
-    </script>
 </div>
 
 {% endblock mappick %}
