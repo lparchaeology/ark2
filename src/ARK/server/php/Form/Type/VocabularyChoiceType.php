@@ -40,7 +40,8 @@ class VocabularyChoiceType extends AbstractFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->setDataMapper($this);
+        //$builder->setDataMapper($this);
+        dump($options);
         $builder->addModelTransformer($this);
     }
 
@@ -56,14 +57,23 @@ class VocabularyChoiceType extends AbstractFormType
         ];
     }
 
+    public function transform($value)
+    {
+        dump('transform');
+        dump($value);
+        if ($value instanceof Property) {
+            return $value->value();
+        }
+        return $value;
+    }
+
+    public function reverseTransform($value)
+    {
+        return $value;
+    }
+
     public function mapDataToForms($property, $forms)
     {
-        $forms = iterator_to_array($forms);
-        if ($property instanceof Property) {
-            $name = $property->attribute()->name();
-            $value = $property->value();
-            $forms[$name]->setData($value);
-        }
     }
 
     public function mapFormsToData($forms, &$property)

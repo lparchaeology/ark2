@@ -46,6 +46,7 @@ class ItemType extends AbstractFormType
         $fieldOptions['mapped'] = false;
         $builder->add('module', HiddenType::class, $fieldOptions);
         $builder->add('item', HiddenType::class, $fieldOptions);
+        $builder->add('content', TextType::class, $fieldOptions);
         $builder->setDataMapper($this);
     }
 
@@ -71,7 +72,7 @@ class ItemType extends AbstractFormType
             if ($item = ORM::find(Actor::class, $value['item'])) {
                 $fullname = $item->property('fullname');
                 $value = $fullname->value()[0];
-                //$forms[$name]->setData($value['content']);
+                $forms['content']->setData($value['content']);
             }
         }
     }

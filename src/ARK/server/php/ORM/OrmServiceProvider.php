@@ -169,7 +169,10 @@ class OrmServiceProvider implements ServiceProviderInterface
                         [
                             'type' => 'php',
                             'namespace' => 'ARK\Security\RBAC',
-                            'path' => $srcDir.'/Security/RBAC',
+                            'path' => [
+                                $srcDir.'/Security/RBAC/Role.php',
+                                $srcDir.'/Security/RBAC/Permission.php',
+                            ],
                         ],
                         [
                             'type' => 'php',
@@ -217,6 +220,13 @@ class OrmServiceProvider implements ServiceProviderInterface
                         [
                             'type' => 'item',
                             'namespace' => 'ARK\File',
+                        ],
+                        [
+                            'type' => 'php',
+                            'namespace' => 'ARK\Security\RBAC',
+                            'path' => [
+                                $srcDir.'/Security/RBAC/ActorRole.php',
+                            ],
                         ],
                         [
                             'type' => 'item',

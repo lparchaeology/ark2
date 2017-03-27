@@ -67,7 +67,7 @@ class Role
     public function actors()
     {
         if ($this->actors === null) {
-            $this->actors = ORM::findAll(Actor::class);
+            $this->actors = ORM::findBy(ActorRole::class, ['role' => $this->role]);
         }
         return $this->actors;
     }

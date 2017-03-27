@@ -39,7 +39,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 abstract class AbstractFormType extends AbstractType implements DataMapperInterface, DataTransformerInterface
 {
     private const OPTIONS = [
-        'data_class' => Property::class,
+        //'compound' => false,
+        'data_class' => null,
         'empty_data' => null,
         'field' => null,
     ];
@@ -54,13 +55,12 @@ abstract class AbstractFormType extends AbstractType implements DataMapperInterf
         $resolver->setDefaults(array_merge(self::OPTIONS, $this->options()));
     }
 
-    public function transform($value)
+    public function transform($property)
     {
-        if ($value instanceof Property) {
-            $name = $value->attribute()->name();
-            $value = $value->value();
+        if ($property instanceof Property) {
+            return $property->value();
         }
-        return $value;
+        return $property;
     }
 
     public function reverseTransform($value)

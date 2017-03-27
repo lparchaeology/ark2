@@ -97,7 +97,7 @@ class Property
         return $this->children;
     }
 
-    protected function nullValue()
+    public function nullValue()
     {
         return $this->attribute->nullValue();
     }
@@ -163,7 +163,7 @@ class Property
         // TODO Compound types
         if (!$this->attribute->format()->datatype()->isObject()) {
             // TODO Nasty Hack! Better to track the fid and update the right frag object!
-            if ($this->attribute->hasMultipleOccurrences() || $this->attribute->format()->serializeAsObject()) {
+            if ($this->attribute->hasMultipleOccurrences()) {
                 if (!$this->fragments->isEmpty()) {
                     ORM::remove($this->fragments);
                     $this->fragments->clear();

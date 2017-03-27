@@ -30,6 +30,7 @@
 
 namespace ARK\Security\RBAC;
 
+use ARK\Entity\Actor;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
@@ -43,6 +44,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 class ActorRole
 {
     protected $actor = null;
+    protected $role = null;
+    protected $roleName = '';
     protected $enabled = false;
     protected $verified = false;
     protected $locked = false;
@@ -54,17 +57,20 @@ class ActorRole
     public function __construct($actor, $role)
     {
         $this->actor = $actor;
-        $this->roles = new ArrayCollection();
+        $this->role = $role;
     }
 
-    public function id()
+    public function actor()
     {
         return $this->actor;
     }
 
-    public function getUser()
+    public function role()
     {
-        return $this->actor;
+        if ($this->role === null) {
+            ORM::find(Role::class, $this->roleName);
+        }
+        return $this->role;
     }
 
     public function isVerified()
@@ -174,7 +180,7 @@ class ActorRole
         $builder = new ClassMetadataBuilder($metadata, 'ark_rbac_actor_role');
 
         // Key
-        $builder->addKey('actor', 'integer');
+        $builder->addManyToOneKey('actor', Actor::class, 'actor', 'item');
         $builder->addStringKey('role', 30);
 
         // Attributes
@@ -185,8 +191,5 @@ class ActorRole
         $builder->addField('expiresAt', 'datetime', [], 'expires_at');
         $builder->addStringField('verificationToken', 100, 'verification_token');
         $builder->addField('verificationRequestedAt', 'datetime', [], 'verification_requested_at');
-
-        // Relationships
-        $builder->addManyToMany('roles', Role::class, 'ark_rbac_role');
     }
 }

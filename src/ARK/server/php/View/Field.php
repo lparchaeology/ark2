@@ -167,9 +167,9 @@ class Field extends Element
 
     public function buildForm($data, FormBuilderInterface $builder)
     {
-        $builder->add($this->formName(), $this->formTypeClass(), $this->formOptions($data));
-        //$fieldBuilder = $this->formBuilder($data);
-        //$builder->add($fieldBuilder);
+        //$builder->add($this->formName(), $this->formTypeClass(), $this->formOptions($data));
+        $fieldBuilder = $this->formBuilder($data);
+        $builder->add($fieldBuilder);
     }
 
     public function renderView($data, $forms = null, $form = null, Cell $cell = null, array $options = [])
@@ -186,7 +186,6 @@ class Field extends Element
             $options['forms'] = $forms;
             $options['form'] = $form;
             $options['cell'] = $cell;
-            $options['formLabel'] = $cell->formLabel();
             return Service::renderView($this->template(), $options);
         }
 
@@ -216,12 +215,7 @@ class Field extends Element
                 $value = $value[$this->attribute()->format()->valueName()];
             }
             if ($this->attribute()->hasVocabulary()) {
-                $vocab = $this->attribute()->vocabulary();
-                foreach ($vocab->terms() as $term) {
-                    if ($term->name() == $value) {
-                        return Service::translate($term->keyword());
-                    }
-                }
+                return Service::translate($value->keyword());
             }
             if ($value instanceof \DateTime) {
                 return $value->format('Y-m-d H:i:s');

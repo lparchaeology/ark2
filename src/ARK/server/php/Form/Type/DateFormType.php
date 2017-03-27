@@ -31,6 +31,8 @@
 namespace ARK\Form\Type;
 
 use ARK\Form\Type\AbstractFormType;
+use ARK\Model\Property;
+use DateTime;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
@@ -50,6 +52,31 @@ class DateFormType extends AbstractFormType
             'html5' => false,
             'attr' => ['class' => 'datepicker'],
         ];
+    }
+
+    public function transform($property)
+    {
+        if (!$property) {
+            return new DateTime;
+        }
+        return ($property->value() ?: new DateTime);
+    }
+
+    public function reverseTransform($value)
+    {
+        return $value;
+    }
+
+    public function mapDataToForms($property, $forms)
+    {
+    }
+
+    public function mapFormsToData($forms, &$property)
+    {
+        $forms = iterator_to_array($forms);
+        $name = $property->attribute()->name();
+        $value = $forms[$$name]->getData();
+        $property->setValue($value);
     }
 
     public function getParent()

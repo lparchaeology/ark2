@@ -31,12 +31,11 @@
 namespace ARK\Form\Type;
 
 use ARK\Form\Type\LocalTextType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class LocalMultilineTextType extends LocalTextType
 {
-    public function getParent()
+    protected function textType()
     {
         return TextareaType::class;
     }

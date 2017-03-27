@@ -33,21 +33,42 @@ namespace ARK\Form\Type;
 use ARK\Workflow\Action;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
+use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ActionChoiceType extends AbstractType
+class ActionChoiceType extends AbstractType implements DataTransformerInterface
 {
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        dump('build');
+        dump($options);
+        $builder->addModelTransformer($this);
+    }
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'choice_value' => 'name',
             'choice_name' => 'name',
             'choice_label' => 'keyword',
-            'placeholder' => false,
+            'placeholder' => 'core.action.choose',
             'placeholder_in_choices' => false,
         ]);
+    }
+
+    public function transform($value)
+    {
+        if ($value instanceof Property) {
+            return $value->value();
+        }
+        return $value;
+    }
+
+    public function reverseTransform($value)
+    {
+        return $value;
     }
 
     public function getParent()

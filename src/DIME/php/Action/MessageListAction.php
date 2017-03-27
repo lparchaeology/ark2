@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Event Form Type
+ * DIME Action
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,23 +27,20 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
+namespace DIME\Action;
 
-namespace ARK\Form\Type;
+use ARK\ORM\ORM;
+use ARK\Entity\Message;
+use DIME\Action\DimeFormAction;
+use Symfony\Component\HttpFoundation\Request;
 
-use ARK\Form\Type\AbstractFormType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-
-class IdType extends AbstractFormType
+class MessageListAction extends DimeFormAction
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function __invoke(Request $request, $actorSlug = null)
     {
-        $builder->setDataMapper($this);
-        $builder->addModelTransformer($this);
-    }
-
-    public function getParent()
-    {
-        return TextType::class;
+        $layout = 'dime_mesage_list';
+        // TODO Just for current Actor
+        $data[$layout] = ORM::findAll(Message::class);
+        return $this->renderResponse($request, $data, $layout);
     }
 }

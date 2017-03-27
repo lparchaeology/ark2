@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.1
+-- version 4.6.6
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 23, 2017 at 10:59 PM
--- Server version: 5.6.34
--- PHP Version: 7.1.0
+-- Generation Time: Mar 27, 2017 at 12:47 AM
+-- Server version: 10.1.21-MariaDB
+-- PHP Version: 7.1.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -516,7 +516,9 @@ CREATE TABLE `ark_instance_schema` (
 
 INSERT INTO `ark_instance_schema` (`instance`, `schma`, `enabled`, `deprecated`) VALUES
 ('dime', 'core.actor', 1, 0),
+('dime', 'core.event', 1, 0),
 ('dime', 'core.file', 1, 0),
+('dime', 'core.message', 1, 0),
 ('dime', 'core.page', 1, 0),
 ('dime', 'dime.campaign', 1, 0),
 ('dime', 'dime.find', 1, 0),
@@ -761,8 +763,12 @@ CREATE TABLE `ark_schema_association` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `association` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `module1` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `schema1` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `degree` int(11) NOT NULL,
   `inverse` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `module2` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `schema2` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `inverse_degree` int(11) NOT NULL,
   `bidirectional` tinyint(1) NOT NULL DEFAULT '0',
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
@@ -774,8 +780,14 @@ CREATE TABLE `ark_schema_association` (
 -- Dumping data for table `ark_schema_association`
 --
 
-INSERT INTO `ark_schema_association` (`schma`, `type`, `association`, `degree`, `inverse`, `inverse_degree`, `bidirectional`, `enabled`, `deprecated`, `keyword`) VALUES
-('dime.locality', '', 'campaigns', 1, 'dime.campaign', 0, 1, 1, 0, 'dime.association.campaigns');
+INSERT INTO `ark_schema_association` (`schma`, `type`, `association`, `module1`, `schema1`, `degree`, `inverse`, `module2`, `schema2`, `inverse_degree`, `bidirectional`, `enabled`, `deprecated`, `keyword`) VALUES
+('core.actor', '', 'messages', 'actor', 'core.actor', 0, 'recipients', 'message', 'core.message', 0, 0, 1, 0, ''),
+('core.event', '', 'finds', 'event', 'core.event', 0, 'events', 'find', 'dime.find', 0, 0, 1, 0, ''),
+('core.event', '', 'messages', 'event', 'core.event', 0, 'events', 'message', 'core.message', 0, 0, 1, 0, ''),
+('core.message', '', 'finds', 'message', 'core.message', 0, 'messages', 'actor', 'core.actor', 0, 1, 1, 0, ''),
+('core.message', '', 'recipients', 'message', 'core.message', 0, 'messages', 'actor', 'core.actor', 0, 1, 1, 0, ''),
+('dime.find', '', 'events', 'find', 'dime.find', 0, 'finds', 'event', 'core.event', 0, 1, 1, 0, ''),
+('dime.find', '', 'messages', 'find', 'dime.find', 0, 'finds', 'message', 'core.message', 0, 0, 1, 0, '');
 
 -- --------------------------------------------------------
 
@@ -5242,65 +5254,66 @@ CREATE TABLE `ark_workflow_notify` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `action` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+  `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keyword` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `ark_workflow_notify`
 --
 
-INSERT INTO `ark_workflow_notify` (`schma`, `action`, `type`, `attribute`) VALUES
-('dime.find', 'assess', '', 'custodian'),
-('dime.find', 'destroy', '', 'custodian'),
-('dime.find', 'discard', '', 'custodian'),
-('dime.find', 'loan', '', 'custodian'),
-('dime.find', 'lose', '', 'custodian'),
-('dime.find', 'receive', '', 'custodian'),
-('dime.find', 'recover', '', 'custodian'),
-('dime.find', 'reject', '', 'custodian'),
-('dime.find', 'report', '', 'custodian'),
-('dime.find', 'request', '', 'custodian'),
-('dime.find', 'transfer', '', 'custodian'),
-('dime.find', 'validate', '', 'custodian'),
-('dime.find', 'withdraw', '', 'custodian'),
-('dime.find', 'accession', '', 'finder'),
-('dime.find', 'appraise', '', 'finder'),
-('dime.find', 'assess', '', 'finder'),
-('dime.find', 'conserve', '', 'finder'),
-('dime.find', 'delete', '', 'finder'),
-('dime.find', 'record', '', 'finder'),
-('dime.find', 'reject', '', 'finder'),
-('dime.find', 'release', '', 'finder'),
-('dime.find', 'report', '', 'finder'),
-('dime.find', 'reward', '', 'finder'),
-('dime.find', 'validate', '', 'finder'),
-('dime.find', 'accession', '', 'museum'),
-('dime.find', 'appraise', '', 'museum'),
-('dime.find', 'release', '', 'museum'),
-('dime.find', 'report', '', 'museum'),
-('dime.find', 'reward', '', 'museum'),
-('dime.find', 'accession', '', 'owner'),
-('dime.find', 'appraise', '', 'owner'),
-('dime.find', 'assess', '', 'owner'),
-('dime.find', 'conserve', '', 'owner'),
-('dime.find', 'decline', '', 'owner'),
-('dime.find', 'delete', '', 'owner'),
-('dime.find', 'destroy', '', 'owner'),
-('dime.find', 'discard', '', 'owner'),
-('dime.find', 'loan', '', 'owner'),
-('dime.find', 'lose', '', 'owner'),
-('dime.find', 'receive', '', 'owner'),
-('dime.find', 'recover', '', 'owner'),
-('dime.find', 'reject', '', 'owner'),
-('dime.find', 'release', '', 'owner'),
-('dime.find', 'report', '', 'owner'),
-('dime.find', 'request', '', 'owner'),
-('dime.find', 'send', '', 'owner'),
-('dime.find', 'transfer', '', 'owner'),
-('dime.find', 'validate', '', 'owner'),
-('dime.find', 'withdraw', '', 'owner'),
-('dime.find', 'decline', '', 'recipient'),
-('dime.find', 'send', '', 'recipient');
+INSERT INTO `ark_workflow_notify` (`schma`, `action`, `type`, `attribute`, `keyword`) VALUES
+('dime.find', 'accession', '', 'finder', ''),
+('dime.find', 'accession', '', 'museum', ''),
+('dime.find', 'accession', '', 'owner', ''),
+('dime.find', 'appraise', '', 'finder', ''),
+('dime.find', 'appraise', '', 'museum', ''),
+('dime.find', 'appraise', '', 'owner', ''),
+('dime.find', 'assess', '', 'custodian', ''),
+('dime.find', 'assess', '', 'finder', ''),
+('dime.find', 'assess', '', 'owner', ''),
+('dime.find', 'conserve', '', 'finder', ''),
+('dime.find', 'conserve', '', 'owner', ''),
+('dime.find', 'decline', '', 'owner', ''),
+('dime.find', 'decline', '', 'recipient', ''),
+('dime.find', 'delete', '', 'finder', ''),
+('dime.find', 'delete', '', 'owner', ''),
+('dime.find', 'destroy', '', 'custodian', ''),
+('dime.find', 'destroy', '', 'owner', ''),
+('dime.find', 'discard', '', 'custodian', ''),
+('dime.find', 'discard', '', 'owner', ''),
+('dime.find', 'loan', '', 'custodian', ''),
+('dime.find', 'loan', '', 'owner', ''),
+('dime.find', 'lose', '', 'custodian', ''),
+('dime.find', 'lose', '', 'owner', ''),
+('dime.find', 'receive', '', 'custodian', ''),
+('dime.find', 'receive', '', 'owner', ''),
+('dime.find', 'record', '', 'finder', ''),
+('dime.find', 'recover', '', 'custodian', ''),
+('dime.find', 'recover', '', 'owner', ''),
+('dime.find', 'reject', '', 'custodian', ''),
+('dime.find', 'reject', '', 'finder', ''),
+('dime.find', 'reject', '', 'owner', ''),
+('dime.find', 'release', '', 'finder', ''),
+('dime.find', 'release', '', 'museum', ''),
+('dime.find', 'release', '', 'owner', ''),
+('dime.find', 'report', '', 'custodian', ''),
+('dime.find', 'report', '', 'finder', ''),
+('dime.find', 'report', '', 'museum', ''),
+('dime.find', 'report', '', 'owner', ''),
+('dime.find', 'request', '', 'custodian', ''),
+('dime.find', 'request', '', 'owner', ''),
+('dime.find', 'reward', '', 'finder', ''),
+('dime.find', 'reward', '', 'museum', ''),
+('dime.find', 'send', '', 'owner', ''),
+('dime.find', 'send', '', 'recipient', ''),
+('dime.find', 'transfer', '', 'custodian', ''),
+('dime.find', 'transfer', '', 'owner', ''),
+('dime.find', 'validate', '', 'custodian', ''),
+('dime.find', 'validate', '', 'finder', ''),
+('dime.find', 'validate', '', 'owner', ''),
+('dime.find', 'withdraw', '', 'custodian', ''),
+('dime.find', 'withdraw', '', 'owner', '');
 
 -- --------------------------------------------------------
 
@@ -5387,39 +5400,39 @@ CREATE TABLE `ark_workflow_update` (
 --
 
 INSERT INTO `ark_workflow_update` (`schma`, `action`, `type`, `attribute`) VALUES
-('dime.find', 'receive', '', 'custodian'),
-('dime.find', 'record', '', 'custodian'),
+('dime.find', 'accession', '', 'owner'),
+('dime.find', 'accession', '', 'process'),
+('dime.find', 'appraise', '', 'process'),
+('dime.find', 'appraise', '', 'treasure'),
+('dime.find', 'assess', '', 'process'),
+('dime.find', 'assess', '', 'treasure'),
 ('dime.find', 'decline', '', 'custody'),
+('dime.find', 'decline', '', 'recipient'),
+('dime.find', 'delete', '', 'process'),
 ('dime.find', 'destroy', '', 'custody'),
 ('dime.find', 'discard', '', 'custody'),
 ('dime.find', 'lose', '', 'custody'),
+('dime.find', 'receive', '', 'custodian'),
 ('dime.find', 'receive', '', 'custody'),
+('dime.find', 'receive', '', 'recipient'),
+('dime.find', 'record', '', 'custodian'),
 ('dime.find', 'record', '', 'custody'),
-('dime.find', 'recover', '', 'custody'),
-('dime.find', 'request', '', 'custody'),
-('dime.find', 'send', '', 'custody'),
-('dime.find', 'withdraw', '', 'custody'),
 ('dime.find', 'record', '', 'finder'),
-('dime.find', 'accession', '', 'owner'),
 ('dime.find', 'record', '', 'owner'),
-('dime.find', 'transfer', '', 'owner'),
-('dime.find', 'accession', '', 'process'),
-('dime.find', 'appraise', '', 'process'),
-('dime.find', 'assess', '', 'process'),
-('dime.find', 'delete', '', 'process'),
 ('dime.find', 'record', '', 'process'),
+('dime.find', 'record', '', 'treasure'),
+('dime.find', 'recover', '', 'custody'),
 ('dime.find', 'reject', '', 'process'),
 ('dime.find', 'release', '', 'process'),
 ('dime.find', 'report', '', 'process'),
-('dime.find', 'validate', '', 'process'),
-('dime.find', 'decline', '', 'recipient'),
-('dime.find', 'receive', '', 'recipient'),
+('dime.find', 'request', '', 'custody'),
 ('dime.find', 'request', '', 'recipient'),
+('dime.find', 'send', '', 'custody'),
 ('dime.find', 'send', '', 'recipient'),
-('dime.find', 'withdraw', '', 'recipient'),
-('dime.find', 'appraise', '', 'treasure'),
-('dime.find', 'assess', '', 'treasure'),
-('dime.find', 'record', '', 'treasure');
+('dime.find', 'transfer', '', 'owner'),
+('dime.find', 'validate', '', 'process'),
+('dime.find', 'withdraw', '', 'custody'),
+('dime.find', 'withdraw', '', 'recipient');
 
 -- --------------------------------------------------------
 
@@ -5731,7 +5744,9 @@ ALTER TABLE `ark_schema`
 --
 ALTER TABLE `ark_schema_association`
   ADD PRIMARY KEY (`schma`,`type`,`association`) USING BTREE,
-  ADD KEY `inverse_schema` (`inverse`);
+  ADD KEY `inverse_schema` (`inverse`),
+  ADD KEY `module1` (`module1`,`schema1`),
+  ADD KEY `module2` (`module2`,`schema2`);
 
 --
 -- Indexes for table `ark_schema_attribute`
@@ -6116,7 +6131,8 @@ ALTER TABLE `ark_schema`
 --
 ALTER TABLE `ark_schema_association`
   ADD CONSTRAINT `ark_schema_association_ibfk_1` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_schema_association_ibfk_2` FOREIGN KEY (`inverse`) REFERENCES `ark_schema` (`schma`);
+  ADD CONSTRAINT `ark_schema_association_ibfk_3` FOREIGN KEY (`module1`,`schema1`) REFERENCES `ark_schema` (`module`, `schma`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_schema_association_ibfk_4` FOREIGN KEY (`module2`,`schema2`) REFERENCES `ark_schema` (`module`, `schma`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_schema_attribute`

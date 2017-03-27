@@ -147,6 +147,16 @@ abstract class Attribute
         if ($fragments->isEmpty()) {
             return $this->nullValue();
         }
+        if ($this->hasVocabulary()) {
+            if ($this->hasMultipleOccurrences()) {
+                $data = [];
+                foreach ($fragments as $fragment) {
+                    $data[] = $this->vocabulary->term($fragment->value());
+                }
+                return $data;
+            }
+            return $this->vocabulary->term($fragments[0]->value());
+        }
         if ($this->hasMultipleOccurrences()) {
             $data = [];
             foreach ($fragments as $fragment) {

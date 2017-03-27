@@ -97,10 +97,9 @@ class ViewControllerProvider implements ControllerProviderInterface
 
         $controllers->post("/$finds/add", 'DIME\Action\FindAddAction');
 
+        $controllers->post("/$finds/{itemSlug}", 'DIME\Action\FindViewAction');
         $controllers->get("/$finds/{itemSlug}", 'DIME\Action\FindViewAction')
                     ->bind('finds.view');
-
-        $controllers->post("/$finds/{itemSlug}", 'DIME\Action\FindViewAction');
 
         $controllers->post("/$finds", 'DIME\Action\FindListAction');
         $controllers->get("/$finds", 'DIME\Action\FindListAction')
@@ -131,6 +130,12 @@ class ViewControllerProvider implements ControllerProviderInterface
 
         $controllers->get("/img/{image}", 'DIME\Action\ImageAction')
                     ->bind('img');
+
+        $controllers->get('/home/messages', 'DIME\Action\MessagesListAction')
+                    ->bind('home.messages');
+
+        $controllers->get('/home/events', 'DIME\Action\EventsListAction')
+                    ->bind('home.events');
 
         $controllers->get('/home', 'DIME\Action\HomePageAction')
                     ->bind('home');

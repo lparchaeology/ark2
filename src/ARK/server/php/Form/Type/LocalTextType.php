@@ -35,17 +35,20 @@ use ARK\Service;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 
 class LocalTextType extends AbstractFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $fieldOptions['label'] = false;
+        //$fieldOptions['formLabel'] = false;
         $fieldOptions['mapped'] = false;
         $builder->add('previous', HiddenType::class, $fieldOptions);
         $builder->add('language', HiddenType::class, $fieldOptions);
         // TODO Generate from Format default types?
-        $builder->add('content', $this->getParent(), $fieldOptions);
+        $builder->add('content', $this->textType(), $fieldOptions);
         $builder->setDataMapper($this);
     }
 
@@ -53,6 +56,7 @@ class LocalTextType extends AbstractFormType
     {
         return [
             'compound' => true,
+            'compound_label' => false,
         ];
     }
 
@@ -107,7 +111,7 @@ class LocalTextType extends AbstractFormType
         $property->setValue($values);
     }
 
-    public function getParent()
+    protected function textType()
     {
         return TextType::class;
     }

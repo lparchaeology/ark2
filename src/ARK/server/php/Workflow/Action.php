@@ -120,20 +120,14 @@ class Action
 
     public function hasPermission(Actor $actor)
     {
+        if ($this->permissions->isEmpty()) {
+            return $this->defaultPermission;
+        }
         foreach ($this->permissions as $permission) {
             $vote = $permission->isGranted($actor);
-            if ($this->action == 'accession') {
-                dump('vote');
-                dump($permission->role()->id());
-                dump($vote);
-            }
             if ($vote !== Permission::ABSTAIN) {
                 return ($vote === Permission::GRANT);
             }
-        }
-        if ($this->action == 'accession') {
-            dump('default');
-            dump($this->defaultPermission);
         }
         return $this->defaultPermission;
     }
@@ -153,15 +147,6 @@ class Action
 
     public function isGranted(Actor $actor, Item $item)
     {
-        if ($this->action == 'accession') {
-            dump('Action : '.$this->action);
-            dump($this->permissions);
-            dump($this->hasPermission($actor));
-            dump($this->agencies);
-            dump($this->hasAgency($actor, $item));
-            dump($this->conditions);
-            dump($this->meetsConditions($item));
-        }
         return $this->hasPermission($actor) && $this->hasAgency($actor, $item) && $this->meetsConditions($item);
     }
 

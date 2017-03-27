@@ -32,6 +32,7 @@ namespace ARK\Model\Schema;
 
 use ARK\Model\EnabledTrait;
 use ARK\Model\KeywordTrait;
+use ARK\Model\Schema;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
@@ -43,8 +44,14 @@ class SchemaAssociation
     protected $schma = null;
     protected $type = '';
     protected $association = '';
+    protected $module1 = '';
+    protected $schema1 = '';
+    protected $owningSchema = null;
+    protected $module2 = '';
+    protected $schema2 = '';
     protected $degree = 0;
     protected $inverse = null;
+    protected $inverseSchema = null;
     protected $inverseDegree = 1;
     protected $bidirectional = false;
 
@@ -63,6 +70,11 @@ class SchemaAssociation
         return $this->association;
     }
 
+    public function owningSchema()
+    {
+        return $this->inverseSchma;
+    }
+
     public function degree()
     {
         return $this->degree;
@@ -70,7 +82,7 @@ class SchemaAssociation
 
     public function inverseSchema()
     {
-        return $this->inverse;
+        return $this->inverseSchma;
     }
 
     public function inverseDegree()
@@ -94,13 +106,33 @@ class SchemaAssociation
         $builder->addStringKey('association', 30);
 
         // Fields
+        $builder->addStringField('module1', 30);
+        $builder->addStringField('schema1', 30);
         $builder->addField('degree', 'integer');
+        $builder->addStringField('inverse', 30);
+        $builder->addStringField('module2', 30);
+        $builder->addStringField('schema2', 30);
         $builder->addField('inverseDegree', 'integer', [], 'inverse_degree');
         $builder->addField('bidirectional', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations
-        $builder->addManyToOneField('inverse', 'ARK\Model\Schema', 'inverse', 'schma', false);
+        $builder->addCompositeManyToOneField(
+            'owningSchema',
+            Schema::class,
+            [
+                ['column' => 'schema1', 'reference' => 'schma'],
+            ],
+            $inverse = 'schma'
+        );
+        $builder->addCompositeManyToOneField(
+            'inverseSchema',
+            Schema::class,
+            [
+                ['column' => 'schema2', 'reference' => 'schma'],
+            ],
+            $inverse = 'schma'
+        );
     }
 }

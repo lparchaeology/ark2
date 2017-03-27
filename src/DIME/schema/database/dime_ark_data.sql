@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.1
+-- version 4.6.6
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 10, 2017 at 06:06 PM
--- Server version: 5.6.34
--- PHP Version: 7.1.0
+-- Generation Time: Mar 27, 2017 at 12:47 AM
+-- Server version: 10.1.21-MariaDB
+-- PHP Version: 7.1.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -1202,7 +1202,7 @@ CREATE TABLE `ark_rbac_actor_role` (
 --
 
 INSERT INTO `ark_rbac_actor_role` (`actor`, `role`, `enabled`, `verified`, `locked`, `expired`, `expires_at`, `verification_token`, `verification_requested_at`) VALUES
-('ahavfrue', 'detectorist', 1, 0, 0, 0, NULL, '', NULL),
+('ahavfrue', 'detectorist', 1, 1, 0, 0, NULL, '', NULL),
 ('bnchristensen', 'appraiser', 1, 0, 0, 0, NULL, '', NULL),
 ('dsvendson', 'researcher', 1, 0, 0, 0, NULL, '', NULL),
 ('slund', 'registrar', 1, 0, 0, 0, NULL, '', NULL);
@@ -1224,6 +1224,13 @@ CREATE TABLE `ark_rbac_actor_user` (
   `verification_token` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `verification_requested_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_rbac_actor_user`
+--
+
+INSERT INTO `ark_rbac_actor_user` (`actor`, `user`, `enabled`, `verified`, `locked`, `expired`, `expires_at`, `verification_token`, `verification_requested_at`) VALUES
+('ahavfrue', 1, 1, 1, 0, 0, NULL, '', NULL);
 
 -- --------------------------------------------------------
 
