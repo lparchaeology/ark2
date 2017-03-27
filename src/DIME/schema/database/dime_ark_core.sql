@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6
+-- version 4.6.5.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 27, 2017 at 12:47 AM
--- Server version: 10.1.21-MariaDB
--- PHP Version: 7.1.2
+-- Generation Time: Mar 27, 2017 at 04:47 PM
+-- Server version: 5.6.34
+-- PHP Version: 7.1.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -113,18 +113,18 @@ CREATE TABLE `ark_datatype` (
 
 INSERT INTO `ark_datatype` (`datatype`, `object`, `compound`, `storage_type`, `storage_size`, `value_name`, `format_name`, `format_vocabulary`, `parameter_name`, `parameter_vocabulary`, `spanable`, `model_table`, `model_class`, `data_table`, `data_class`, `form_type_class`, `enabled`, `deprecated`, `keyword`) VALUES
 ('blob', 0, 1, 'blob', NULL, 'blob', 'mediatype', 'mediatype', NULL, NULL, 0, 'ark_format_blob', 'ARK\\Model\\Format\\BlobFormat', 'ark_fragment_blob', 'ARK\\Model\\Fragment\\BlobFragment', NULL, 0, 0, 'core.datatype.blob'),
-('boolean', 0, 0, 'boolean', NULL, NULL, NULL, NULL, NULL, NULL, 0, 'ark_format_boolean', 'ARK\\Model\\Format\\BooleanFormat', 'ark_fragment_boolean', 'ARK\\Model\\Fragment\\BooleanFragment', 'ARK\\Form\\Type\\CheckboxType', 1, 0, 'core.datatype.boolean'),
+('boolean', 0, 0, 'boolean', NULL, NULL, NULL, NULL, NULL, NULL, 0, 'ark_format_boolean', 'ARK\\Model\\Format\\BooleanFormat', 'ark_fragment_boolean', 'ARK\\Model\\Fragment\\BooleanFragment', 'ARK\\Form\\Type\\CheckboxFormType', 1, 0, 'core.datatype.boolean'),
 ('date', 0, 0, 'date', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_format_datetime', 'ARK\\Model\\Format\\DateFormat', 'ark_fragment_date', 'ARK\\Model\\Fragment\\DateFragment', 'ARK\\Form\\Type\\DateFormType', 1, 0, 'core.datatype.date'),
-('datetime', 0, 0, 'datetime', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_format_datetime', 'ARK\\Model\\Format\\DateTimeFormat', 'ark_fragment_datetime', 'ARK\\Model\\Fragment\\DateTimeFragment', 'ARK\\Form\\Type\\DateTimeType', 1, 0, 'core.datatype.datetime'),
-('decimal', 0, 0, 'string', 200, NULL, NULL, NULL, NULL, NULL, 1, 'ark_format_decimal', 'ARK\\Model\\Format\\DecimalFormat', 'ark_fragment_decimal', 'ARK\\Model\\Fragment\\DecimalFragment', 'ARK\\Form\\Type\\NumberType', 1, 0, 'core.datatype.decimal'),
-('float', 0, 0, 'float', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_format_float', 'ARK\\Model\\Format\\FloatFormat', 'ark_fragment_float', 'ARK\\Model\\Fragment\\FloatFragment', 'ARK\\Form\\Type\\NumberType', 1, 0, 'core.datatype.float'),
-('integer', 0, 0, 'integer', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_format_integer', 'ARK\\Model\\Format\\IntegerFormat', 'ark_fragment_integer', 'ARK\\Model\\Fragment\\IntegerFragment', 'ARK\\Form\\Type\\IntegerType', 1, 0, 'core.datatype.integer'),
+('datetime', 0, 0, 'datetime', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_format_datetime', 'ARK\\Model\\Format\\DateTimeFormat', 'ark_fragment_datetime', 'ARK\\Model\\Fragment\\DateTimeFragment', 'ARK\\Form\\Type\\DateTimeFormType', 1, 0, 'core.datatype.datetime'),
+('decimal', 0, 0, 'string', 200, NULL, NULL, NULL, NULL, NULL, 1, 'ark_format_decimal', 'ARK\\Model\\Format\\DecimalFormat', 'ark_fragment_decimal', 'ARK\\Model\\Fragment\\DecimalFragment', 'ARK\\Form\\Type\\NumberFormType', 1, 0, 'core.datatype.decimal'),
+('float', 0, 0, 'float', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_format_float', 'ARK\\Model\\Format\\FloatFormat', 'ark_fragment_float', 'ARK\\Model\\Fragment\\FloatFragment', 'ARK\\Form\\Type\\NumberFormType', 1, 0, 'core.datatype.float'),
+('integer', 0, 0, 'integer', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_format_integer', 'ARK\\Model\\Format\\IntegerFormat', 'ark_fragment_integer', 'ARK\\Model\\Fragment\\IntegerFragment', 'ARK\\Form\\Type\\IntegerFormType', 1, 0, 'core.datatype.integer'),
 ('item', 0, 1, 'string', 30, 'item', NULL, NULL, 'module', NULL, 1, 'ark_format_item', 'ARK\\Model\\Format\\ItemFormat', 'ark_fragment_item', 'ARK\\Model\\Fragment\\ItemFragment', 'ARK\\Form\\Type\\ItemType', 1, 0, 'core.datatype.item'),
 ('object', 1, 0, 'integer', 0, NULL, NULL, NULL, NULL, NULL, 0, 'ark_format_object', 'ARK\\Model\\Format\\ObjectFormat', 'ark_fragment_object', 'ARK\\Model\\Fragment\\ObjectFragment', 'ARK\\Form\\Type\\PropertyType', 1, 0, 'core.datatype.object'),
 ('spatial', 0, 1, 'string', 1431655765, 'geometry', 'format', 'spatial.format', 'srid', 'spatial.crs', 0, 'ark_format_spatial', 'ARK\\Model\\Format\\SpatialFormat', 'ark_fragment_spatial', 'ARK\\Model\\Fragment\\SpatialFragment', 'ARK\\Form\\Type\\WktType', 1, 0, 'core.datatype.spatial'),
-('string', 0, 0, 'string', 4000, NULL, NULL, NULL, NULL, NULL, 1, 'ark_format_string', 'ARK\\Model\\Format\\StringFormat', 'ark_fragment_string', 'ARK\\Model\\Fragment\\StringFragment', 'ARK\\Form\\Type\\TextType', 1, 0, 'core.datatype.string'),
+('string', 0, 0, 'string', 4000, NULL, NULL, NULL, NULL, NULL, 1, 'ark_format_string', 'ARK\\Model\\Format\\StringFormat', 'ark_fragment_string', 'ARK\\Model\\Fragment\\StringFragment', 'ARK\\Form\\Type\\TextFormType', 1, 0, 'core.datatype.string'),
 ('text', 0, 1, 'string', 1431655765, 'content', 'mimetype', 'mediatype', 'language', 'language', 0, 'ark_format_text', 'ARK\\Model\\Format\\TextFormat', 'ark_fragment_text', 'ARK\\Model\\Fragment\\TextFragment', 'ARK\\Form\\Type\\LocalMultilineTextType', 1, 0, 'core.datatype.text'),
-('time', 0, 0, 'time', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_format_datetime', 'ARK\\Model\\Format\\TimeFormat', 'ark_fragment_time', 'ARK\\Model\\Fragment\\TimeFragment', 'ARK\\Form\\Type\\TimeType', 0, 0, 'core.datatype.time');
+('time', 0, 0, 'time', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_format_datetime', 'ARK\\Model\\Format\\TimeFormat', 'ark_fragment_time', 'ARK\\Model\\Fragment\\TimeFragment', 'ARK\\Form\\Type\\TimeFormType', 0, 0, 'core.datatype.time');
 
 -- --------------------------------------------------------
 
@@ -831,14 +831,16 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('core.file', '', 'title', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'core.file.title'),
 ('core.file', '', 'type', 'identifier', 'core.file.type', 1, 1, 1, 0, 1, 0, 'core.file.type'),
 ('core.file', '', 'versions', 'fileversion', NULL, 1, 0, 1, 0, 1, 0, 'core.file.versions'),
-('core.message', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.id'),
-('core.message', '', 'recipients', 'recipient', NULL, 1, 0, 1, 0, 1, 0, 'dime.message.recipients'),
-('core.message', '', 'sender', 'actor', NULL, 1, 1, 1, 0, 1, 0, 'dime.message.sender'),
-('core.message', '', 'sent_at', 'datetime', NULL, 1, 0, 1, 0, 1, 0, 'dime.message.sent_at'),
-('core.message', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.type'),
-('core.message', 'mail', 'attachments', 'file', NULL, 0, 0, 1, 0, 1, 0, 'dime.message.mail.attachments'),
-('core.message', 'mail', 'body', 'plaintext', NULL, 1, 1, 1, 0, 1, 0, 'dime.message.mail.body'),
-('core.message', 'mail', 'subject', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'dime.message.mail.subject'),
+('core.message', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.message.id'),
+('core.message', '', 'recipients', 'recipient', NULL, 1, 0, 1, 0, 1, 0, 'core.message.recipients'),
+('core.message', '', 'sender', 'actor', NULL, 1, 1, 1, 0, 1, 0, 'core.message.sender'),
+('core.message', '', 'sent_at', 'datetime', NULL, 1, 1, 1, 0, 1, 0, 'core.message.sent_at'),
+('core.message', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.message.type'),
+('core.message', 'mail', 'attachments', 'file', NULL, 0, 0, 1, 0, 1, 0, 'core.message.mail.attachments'),
+('core.message', 'mail', 'body', 'plaintext', NULL, 1, 1, 1, 0, 1, 0, 'core.message.mail.body'),
+('core.message', 'mail', 'subject', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'core.message.mail.subject'),
+('core.message', 'notification', 'body', 'plaintext', NULL, 1, 1, 1, 0, 1, 0, 'core.message.notification.body'),
+('core.message', 'notification', 'event', 'item', NULL, 1, 1, 1, 0, 1, 0, 'core.message.notification.event'),
 ('core.page', '', 'content', 'html', NULL, 1, 1, 1, 0, 1, 0, 'property.content'),
 ('core.page', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.page.id'),
 ('dime.find', '', 'condition', 'identifier', 'dime.find.condition', 0, 1, 1, 0, 1, 0, 'dime.find.condition'),
@@ -929,6 +931,10 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('association.contact', 'core', 0, 0),
 ('core.actor.institution', 'core', 0, 0),
 ('core.actor.person', 'core', 0, 0),
+('core.message.notification.body', 'core', 0, 0),
+('core.message.sender', 'core', 0, 0),
+('core.message.sent_at', 'core', 0, 0),
+('core.message.type', 'core', 0, 0),
 ('dime.about', 'dime', 0, 0),
 ('dime.about.background', 'dime', 0, 0),
 ('dime.about.groups', 'dime', 0, 0),
@@ -1160,7 +1166,7 @@ CREATE TABLE `ark_translation_message` (
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `text` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `notes` longtext COLLATE utf8mb4_unicode_ci NOT NULL
+  `notes` longtext COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -1168,6 +1174,10 @@ CREATE TABLE `ark_translation_message` (
 --
 
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('da', 'core.message.notification.body', 'default', 'Notifikation', 'Notifikation'),
+('da', 'core.message.sender', 'default', 'Fra', 'Fra'),
+('da', 'core.message.sent_at', 'default', 'Dato', 'Dato'),
+('da', 'core.message.type', 'default', 'Type', 'Type'),
 ('da', 'dime.about', 'default', 'Om DIME', ''),
 ('da', 'dime.about.background', 'default', 'Baggrund for DIME', ''),
 ('da', 'dime.about.groups', 'default', 'Detektorforeninger', ''),
@@ -1258,6 +1268,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'association.contact', 'default', 'Contact', ''),
 ('en', 'core.actor.institution', 'default', 'Institution', ''),
 ('en', 'core.actor.person', 'default', 'Person', ''),
+('en', 'core.message.notification.body', 'default', 'Notification', ''),
+('en', 'core.message.sender', 'default', 'From', 'Fra'),
+('en', 'core.message.sent_at', 'default', 'Date', ''),
+('en', 'core.message.type', 'default', 'Type', ''),
 ('en', 'dime.about', 'default', 'About DIME', ''),
 ('en', 'dime.about.background', 'default', 'Background for DIME', ''),
 ('en', 'dime.about.groups', 'default', 'Detectorist Associations', ''),
@@ -1527,8 +1541,15 @@ INSERT INTO `ark_view_element` (`element`, `type`, `class`, `template`, `hidden`
 ('core_file_title', 'field', '', '', 0, 1, 0, NULL),
 ('core_file_type', 'field', '', '', 0, 1, 0, NULL),
 ('core_file_versions', 'field', '', '', 0, 1, 0, NULL),
+('core_message_body', 'field', '', '', 0, 1, 0, NULL),
+('core_message_id', 'field', '', '', 0, 1, 0, NULL),
+('core_message_item', 'grid', '', '', 0, 1, 0, NULL),
+('core_message_list', 'table', '', '', 0, 1, 0, NULL),
+('core_message_sender', 'field', '', '', 0, 1, 0, NULL),
+('core_message_sent_at', 'field', '', '', 0, 1, 0, NULL),
+('core_message_type', 'field', '', '', 0, 1, 0, NULL),
 ('core_page_content', 'field', '', '', 0, 1, 0, 'property.content'),
-('core_page_static', 'page', '', '', 0, 1, 0, ''),
+('core_page_static', 'page', '', '', 0, 1, 0, NULL),
 ('core_page_view', 'grid', '', '', 0, 1, 0, NULL),
 ('dime_actor_fullname', 'field', '', '', 0, 1, 0, NULL),
 ('dime_actor_id', 'field', '', '', 0, 1, 0, NULL),
@@ -1581,6 +1602,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `class`, `template`, `hidden`
 ('dime_locality_item', 'grid', '', '', 0, 1, 0, NULL),
 ('dime_locality_list', 'table', '', '', 0, 1, 0, NULL),
 ('dime_locality_type', 'field', '', '', 0, 1, 0, NULL),
+('dime_message_page', 'grid', '', '', 0, 1, 0, NULL),
 ('dime_save', 'field', '', '', 0, 1, 0, 'dime.save'),
 ('dime_search', 'field', '', '', 0, 1, 0, 'dime.search');
 
@@ -1612,6 +1634,11 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `for
 ('core_file_title', 'core.file', '', 'title', '', '', 1),
 ('core_file_type', 'core.file', '', 'type', '', '', 1),
 ('core_file_versions', 'core.file', '', 'versions', '', '', 1),
+('core_message_body', 'core.message', 'notification', 'body', '', '', 1),
+('core_message_id', 'core.message', '', 'id', 'ARK\\Form\\Type\\IdType', '', 1),
+('core_message_sender', 'core.message', '', 'sender', 'ARK\\Form\\Type\\ItemType', '', 1),
+('core_message_sent_at', 'core.message', '', 'sent_at', '', '', 1),
+('core_message_type', 'core.message', '', 'type', '', '', 1),
 ('core_page_content', 'core.page', '', 'content', '', '', 0),
 ('dime_actor_fullname', 'dime.actor', 'museum', 'fullname', '', '', 1),
 ('dime_actor_id', 'dime.actor', '', 'id', '', '', 1),
@@ -1685,7 +1712,14 @@ INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `cell`,
 ('core_file_item', 0, 0, 5, '', 'core_file_description', NULL, '', NULL, 1, 1, 0, 1, 0),
 ('core_file_item', 0, 1, 1, '', 'dime_save', NULL, '', NULL, 1, 1, 0, 1, 0),
 ('core_file_list', 0, 0, 0, '', 'core_file_id', NULL, '', NULL, 1, 1, 0, 1, 0),
-('core_file_list', 0, 0, 2, '', 'core_file_type', NULL, '', NULL, 1, 1, 0, 1, 0),
+('core_file_list', 0, 0, 1, '', 'core_file_type', NULL, '', NULL, 1, 1, 0, 1, 0),
+('core_message_item', 0, 0, 0, '', 'core_message_type', NULL, '', NULL, 1, 0, 0, 1, 0),
+('core_message_item', 0, 0, 1, '', 'core_message_sender', NULL, '', NULL, 1, 0, 0, 1, 0),
+('core_message_item', 0, 0, 2, '', 'core_message_sent_at', NULL, '', NULL, 1, 0, 0, 1, 0),
+('core_message_item', 0, 0, 3, '', 'core_message_body', NULL, '', NULL, 1, 0, 0, 1, 0),
+('core_message_list', 0, 0, 0, '', 'core_message_type', NULL, '', NULL, 1, 0, 0, 1, 0),
+('core_message_list', 0, 0, 1, '', 'core_message_sender', NULL, '', NULL, 1, 0, 0, 1, 0),
+('core_message_list', 0, 0, 2, '', 'core_message_sent_at', NULL, '', NULL, 1, 0, 0, 1, 0),
 ('core_page_view', 0, 0, 0, '', 'core_page_content', NULL, '', NULL, 1, 1, 0, 1, 0),
 ('dime_actor_item', 0, 0, 0, '', 'dime_actor_id', NULL, '', NULL, 1, 1, 0, 1, 0),
 ('dime_actor_item', 0, 0, 1, '', 'dime_actor_fullname', NULL, '', NULL, 1, 1, 0, 1, 0),
@@ -1746,7 +1780,9 @@ INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `cell`,
 ('dime_locality_item', 0, 0, 1, '', 'dime_locality_type', NULL, '', NULL, 1, 1, 0, 1, 0),
 ('dime_locality_item', 0, 1, 1, '', 'dime_save', NULL, '', NULL, 1, 1, 0, 1, 0),
 ('dime_locality_list', 0, 0, 0, '', 'dime_locality_id', NULL, '', NULL, 1, 1, 0, 1, 0),
-('dime_locality_list', 0, 0, 1, '', 'dime_locality_type', NULL, '', NULL, 1, 1, 0, 1, 0);
+('dime_locality_list', 0, 0, 1, '', 'dime_locality_type', NULL, '', NULL, 1, 1, 0, 1, 0),
+('dime_message_page', 0, 0, 0, '', 'core_message_list', NULL, '', NULL, 1, 1, 0, 1, 0),
+('dime_message_page', 0, 1, 0, '', 'core_message_item', NULL, '', NULL, 1, 1, 0, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -1768,6 +1804,8 @@ CREATE TABLE `ark_view_layout` (
 INSERT INTO `ark_view_layout` (`element`, `schma`, `item_type`, `form_root`) VALUES
 ('core_file_item', NULL, NULL, 1),
 ('core_file_list', NULL, NULL, 0),
+('core_message_item', 'core.message', NULL, 1),
+('core_message_list', NULL, NULL, 0),
 ('core_page_view', NULL, NULL, 0),
 ('dime_actor_item', NULL, NULL, 1),
 ('dime_actor_list', NULL, NULL, 0),
@@ -1786,7 +1824,8 @@ INSERT INTO `ark_view_layout` (`element`, `schma`, `item_type`, `form_root`) VAL
 ('dime_home_action', NULL, NULL, 0),
 ('dime_home_page', NULL, NULL, 0),
 ('dime_locality_item', NULL, NULL, 1),
-('dime_locality_list', NULL, NULL, 0);
+('dime_locality_list', NULL, NULL, 0),
+('dime_message_page', NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -5400,39 +5439,39 @@ CREATE TABLE `ark_workflow_update` (
 --
 
 INSERT INTO `ark_workflow_update` (`schma`, `action`, `type`, `attribute`) VALUES
-('dime.find', 'accession', '', 'owner'),
-('dime.find', 'accession', '', 'process'),
-('dime.find', 'appraise', '', 'process'),
-('dime.find', 'appraise', '', 'treasure'),
-('dime.find', 'assess', '', 'process'),
-('dime.find', 'assess', '', 'treasure'),
+('dime.find', 'receive', '', 'custodian'),
+('dime.find', 'record', '', 'custodian'),
 ('dime.find', 'decline', '', 'custody'),
-('dime.find', 'decline', '', 'recipient'),
-('dime.find', 'delete', '', 'process'),
 ('dime.find', 'destroy', '', 'custody'),
 ('dime.find', 'discard', '', 'custody'),
 ('dime.find', 'lose', '', 'custody'),
-('dime.find', 'receive', '', 'custodian'),
 ('dime.find', 'receive', '', 'custody'),
-('dime.find', 'receive', '', 'recipient'),
-('dime.find', 'record', '', 'custodian'),
 ('dime.find', 'record', '', 'custody'),
-('dime.find', 'record', '', 'finder'),
-('dime.find', 'record', '', 'owner'),
-('dime.find', 'record', '', 'process'),
-('dime.find', 'record', '', 'treasure'),
 ('dime.find', 'recover', '', 'custody'),
+('dime.find', 'request', '', 'custody'),
+('dime.find', 'send', '', 'custody'),
+('dime.find', 'withdraw', '', 'custody'),
+('dime.find', 'record', '', 'finder'),
+('dime.find', 'accession', '', 'owner'),
+('dime.find', 'record', '', 'owner'),
+('dime.find', 'transfer', '', 'owner'),
+('dime.find', 'accession', '', 'process'),
+('dime.find', 'appraise', '', 'process'),
+('dime.find', 'assess', '', 'process'),
+('dime.find', 'delete', '', 'process'),
+('dime.find', 'record', '', 'process'),
 ('dime.find', 'reject', '', 'process'),
 ('dime.find', 'release', '', 'process'),
 ('dime.find', 'report', '', 'process'),
-('dime.find', 'request', '', 'custody'),
-('dime.find', 'request', '', 'recipient'),
-('dime.find', 'send', '', 'custody'),
-('dime.find', 'send', '', 'recipient'),
-('dime.find', 'transfer', '', 'owner'),
 ('dime.find', 'validate', '', 'process'),
-('dime.find', 'withdraw', '', 'custody'),
-('dime.find', 'withdraw', '', 'recipient');
+('dime.find', 'decline', '', 'recipient'),
+('dime.find', 'receive', '', 'recipient'),
+('dime.find', 'request', '', 'recipient'),
+('dime.find', 'send', '', 'recipient'),
+('dime.find', 'withdraw', '', 'recipient'),
+('dime.find', 'appraise', '', 'treasure'),
+('dime.find', 'assess', '', 'treasure'),
+('dime.find', 'record', '', 'treasure');
 
 -- --------------------------------------------------------
 

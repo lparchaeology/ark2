@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6
+-- version 4.6.5.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 27, 2017 at 12:47 AM
--- Server version: 10.1.21-MariaDB
--- PHP Version: 7.1.2
+-- Generation Time: Mar 27, 2017 at 04:47 PM
+-- Server version: 5.6.34
+-- PHP Version: 7.1.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -157,6 +157,14 @@ CREATE TABLE `ark_fragment_datetime` (
   `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `ark_fragment_datetime`
+--
+
+INSERT INTO `ark_fragment_datetime` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `object_fid`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+(1, 'message', '1', 'sent_at', 'datetime', NULL, NULL, '2017-03-14 00:00:00', NULL, NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', NULL),
+(2, 'message', '2', 'sent_at', 'datetime', NULL, NULL, '2017-03-02 00:00:00', NULL, NULL, 0, '2017-03-27 11:58:35', 0, '0000-00-00 00:00:00', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -294,7 +302,9 @@ INSERT INTO `ark_fragment_item` (`fid`, `module`, `item`, `attribute`, `datatype
 (10, 'find', '10', 'museum', 'item', '', 'actor', 'NJM', '', NULL, 0, '2017-01-29 22:41:15', 0, '2017-01-29 22:37:39', ''),
 (11, 'find', '1', 'custodian', 'item', '', 'actor', 'ahavfrue', '', NULL, 0, '2017-01-29 22:41:12', 0, '2017-01-29 22:37:39', ''),
 (12, 'find', '1', 'owner', 'item', '', 'actor', 'ahavfrue', '', NULL, 0, '2017-01-29 22:41:12', 0, '2017-01-29 22:37:39', ''),
-(13, 'find', '1', 'finder', 'item', '', 'actor', 'ahavfrue', '', NULL, 0, '2017-01-29 22:41:12', 0, '2017-01-29 22:37:39', '');
+(13, 'find', '1', 'finder', 'item', '', 'actor', 'ahavfrue', '', NULL, 0, '2017-01-29 22:41:12', 0, '2017-01-29 22:37:39', ''),
+(14, 'message', '1', 'sender', 'item', '', 'actor', 'ahavfrue', '', NULL, 0, '2017-01-29 22:41:12', 0, '2017-01-29 22:37:39', ''),
+(15, 'message', '2', 'sender', 'item', '', 'actor', 'ahavfrue', '', NULL, 0, '2017-01-29 22:41:12', 0, '2017-01-29 22:37:39', '');
 
 -- --------------------------------------------------------
 
@@ -675,7 +685,11 @@ INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `dataty
 (584, 'find', '14', 'period_start', 'string', '', 'dime.period', 'BÆX1', NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
 (585, 'find', '14', 'material', 'string', '', 'dime.material', 'cual', NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
 (586, 'find', '14', 'condition', 'string', '', 'dime.find.condition', 'fragmented', NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
-(587, 'find', '14', 'id', 'string', '', NULL, '14', NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', '');
+(587, 'find', '14', 'id', 'string', '', NULL, '14', NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
+(588, 'message', '1', 'id', 'string', '', NULL, '1', NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
+(589, 'message', '2', 'id', 'string', '', NULL, '2', NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
+(590, 'message', '1', 'type', 'string', '', 'core.message.type', 'notification', NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
+(591, 'message', '2', 'type', 'string', '', 'core.message.type', 'notification', NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', '');
 
 -- --------------------------------------------------------
 
@@ -854,7 +868,9 @@ INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `attribute`, `datatype
 (237, 'actor', 'bnchristensen', 'shortname', 'text', 'text/plain', 'da', 'Birgitte', NULL, NULL, 0, '2017-02-15 14:12:03', 0, '0000-00-00 00:00:00', ''),
 (238, 'actor', 'bnchristensen', 'fullname', 'text', 'text/plain', 'da', 'Birgitte Nyborg Christensen', NULL, NULL, 0, '2017-02-15 14:12:03', 0, '0000-00-00 00:00:00', ''),
 (239, 'actor', 'slund', 'shortname', 'text', 'text/plain', 'da', 'Sarah', NULL, NULL, 0, '2017-02-15 14:12:03', 0, '0000-00-00 00:00:00', ''),
-(240, 'actor', 'slund', 'fullname', 'text', 'text/plain', 'da', 'Sarah Lund', NULL, NULL, 0, '2017-02-15 14:12:03', 0, '0000-00-00 00:00:00', '');
+(240, 'actor', 'slund', 'fullname', 'text', 'text/plain', 'da', 'Sarah Lund', NULL, NULL, 0, '2017-02-15 14:12:03', 0, '0000-00-00 00:00:00', ''),
+(241, 'message', '1', 'body', 'text', 'text/plain', 'en', 'This is a test message.', NULL, NULL, 0, '2017-03-27 10:40:35', 0, '0000-00-00 00:00:00', NULL),
+(242, 'message', '2', 'body', 'text', 'text/plain', 'en', 'This is a second message', NULL, NULL, 0, '2017-03-27 10:40:35', 0, '0000-00-00 00:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -1141,6 +1157,14 @@ CREATE TABLE `ark_item_message` (
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_item_message`
+--
+
+INSERT INTO `ark_item_message` (`item`, `module`, `schma`, `type`, `status`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+('1', 'message', 'core.message', 'notification', 'registered', NULL, NULL, '1', '1', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', NULL),
+('2', 'message', 'core.message', 'notification', 'registered', NULL, NULL, '2', '2', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -1532,7 +1556,7 @@ ALTER TABLE `ark_fragment_date`
 -- AUTO_INCREMENT for table `ark_fragment_datetime`
 --
 ALTER TABLE `ark_fragment_datetime`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `ark_fragment_decimal`
 --
@@ -1552,7 +1576,7 @@ ALTER TABLE `ark_fragment_integer`
 -- AUTO_INCREMENT for table `ark_fragment_item`
 --
 ALTER TABLE `ark_fragment_item`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT for table `ark_fragment_object`
 --
@@ -1567,12 +1591,12 @@ ALTER TABLE `ark_fragment_spatial`
 -- AUTO_INCREMENT for table `ark_fragment_string`
 --
 ALTER TABLE `ark_fragment_string`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=588;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=592;
 --
 -- AUTO_INCREMENT for table `ark_fragment_text`
 --
 ALTER TABLE `ark_fragment_text`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=241;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=243;
 --
 -- AUTO_INCREMENT for table `ark_fragment_time`
 --

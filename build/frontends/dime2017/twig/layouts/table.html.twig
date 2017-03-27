@@ -22,9 +22,9 @@
 
         <thead>
             <tr>
-            <th class="thumbimagehead" data-field="image" data-title="image" data-sortable="false">
-
-             </th>
+                {% if data[layout.name][0] is defined and data[layout.name][0].hasAttribute('image') %}
+                    <th class="thumbimagehead" data-field="image" data-title="image" data-sortable="false"></th>
+                {% endif %}
                 {% for field in layout.elements %}
                     {% if field.attribute.name == 'id' %}
                     <th data-field="{{field.name}}" data-title="{{field.keyword|trans}}" data-sortable="true">
@@ -40,18 +40,21 @@
         <tbody>
             {% for item in data[layout.name] %}
                 <tr data-unique-id = "{{ item.id }}" >
-                    <td class="thumbimage">
+                    {% if item.hasAttribute('image') %}
+                        <td class="thumbimage">
                             {% set images = item.property('image').value() %}
                             {% if images is not empty %}
                                 <img src="{{path('img', {'image': 'thumb.'~images[0]})}}" alt='' />
                             {% endif %}
-                    </td>
+                        </td>
+                    {% endif %}
                     {% for field in layout.elements %}
                         <td>
                             {% if field.attribute.name == 'id' %}
                                 {% set itempath = path('finds.view', {'itemSlug': item.id}) %}
                                 <a href="{{ itempath }}">{{ field.renderView(item) }}</a>
                             {% else %}
+                                {% dump(field) %}
                                 {{ field.renderView(item) }}
                             {% endif %}
                         </td>

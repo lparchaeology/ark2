@@ -27,20 +27,26 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
+
 namespace DIME\Action;
 
-use ARK\ORM\ORM;
 use ARK\Entity\Message;
-use DIME\Action\DimeFormAction;
+use ARK\ORM\ORM;
+use ARK\Service;
+use DIME\Action\DimeAction;
 use Symfony\Component\HttpFoundation\Request;
 
-class MessageListAction extends DimeFormAction
+class MessagePageAction extends DimeFormAction
 {
-    public function __invoke(Request $request, $actorSlug = null)
+    public function __invoke(Request $request)
     {
-        $layout = 'core_message_list';
-        // TODO Just for current Actor
-        $data[$layout] = ORM::findAll(Message::class);
+        $layout = 'dime_message_page';
+        $data['core_message_list'] = ORM::findAll(Message::class);
+        if (!$data['core_message_list']->isEmpty()) {
+            dump('fill item');
+            $data['core_message_item'] = $data['core_message_list'][0];
+            dump($data['core_message_item']);
+        }
         return $this->renderResponse($request, $data, $layout);
     }
 }

@@ -38,6 +38,6 @@ class Table extends Layout
 {
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_view_layout');
+        self::layoutMetadata($metadata);
     }
 }

@@ -42,6 +42,8 @@ abstract class DimeFormAction extends DimeAction
         $options = $this->defaultOptions($request->attributes->get('_route'));
         $viewLayout =  Service::layout($layout);
         $forms = $viewLayout->buildForms($data);
+        dump('forms');
+        dump($forms);
         if ($request->getMethod() == 'POST') {
             $form = null;
             foreach ($forms as $name => $fm) {
@@ -68,6 +70,7 @@ abstract class DimeFormAction extends DimeAction
         }
         $options['layout'] = $viewLayout;
         $options['data'] = $data;
+        dump('options');
         dump($options);
         return Service::renderResponse($template, $options);
     }

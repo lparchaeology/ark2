@@ -131,7 +131,7 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers->get("/img/{image}", 'DIME\Action\ImageAction')
                     ->bind('img');
 
-        $controllers->get('/home/messages', 'DIME\Action\MessagesListAction')
+        $controllers->get('/home/messages', 'DIME\Action\MessagePageAction')
                     ->bind('home.messages');
 
         $controllers->get('/home/events', 'DIME\Action\EventsListAction')

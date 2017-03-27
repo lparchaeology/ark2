@@ -92,13 +92,19 @@ abstract class Layout extends Element
 
     public function buildForms($data)
     {
+        dump('buildForms '.$this->name().' root = '.(string)$this->formRoot);
+        dump($this->schema());
+        dump($this->formRoot);
         if ($this->formRoot) {
+            dump('root');
             $builder = $this->formBuilder($data);
             $this->buildForm($data[$this->element], $builder);
             return [$this->element => $builder->getForm()];
         }
+        dump('not root');
         $forms = [];
         foreach ($this->elements() as $element) {
+            dump('element '.$element->name());
             $forms = array_merge($forms, $element->buildForms($data));
         }
         return $forms;
@@ -125,6 +131,11 @@ abstract class Layout extends Element
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
+    {
+        $builder = new ClassMetadataBuilder($metadata, 'ark_view_layout');
+    }
+
+    public static function layoutMetadata(ClassMetadata $metadata)
     {
         // Joined Table Inheritance
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_layout');
