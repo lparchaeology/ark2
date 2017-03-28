@@ -31,12 +31,15 @@
 namespace ARK\Model;
 
 use ARK\Model\Datatype;
+use ARK\Model\Fragment;
 use ARK\Model\EnabledTrait;
 use ARK\Model\Format\FormatAttribute;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
+use ARK\Vocabulary\Term;
+use ARK\Vocabulary\Vocabulary;
 use Doctrine\Common\Collections\ArrayCollection;
 
 abstract class Format
@@ -139,26 +142,29 @@ abstract class Format
         if ($this->parameterName()) {
             $data[$this->parameterName()] = null;
         }
-        $data[$this->valueName()] = $this->datatype->nullValue();
+        $data[$this->valueName()] = null;
         return $data;
     }
 
-    public function fragmentsToData(ArrayCollection $fragments)
+    public function serialize($model)
     {
-        if ($fragments->isEmpty()) {
+        if ($model instanceof Fragment) {
+            return $this->serializeFragment($model);
+        }
+        if (!$model instanceof ArrayCollection || $model->isEmpty()) {
             return $this->nullValue();
         }
         if ($this->hasMultipleValues()) {
             $data = [];
-            foreach ($fragments as $fragment) {
-                $data[] = $this->fragmentToData($fragment);
+            foreach ($model as $fragment) {
+                $data[] = $this->serializeFragment($fragment);
             }
             return $data;
         }
-        return $this->fragmentToData($fragments->first());
+        return $this->serializeFragment($model->first());
     }
 
-    protected function fragmentToData(Fragment $fragment)
+    protected function serializeFragment(Fragment $fragment)
     {
         if ($this->isAtomic()) {
             return $fragment->value();
@@ -172,6 +178,46 @@ abstract class Format
         }
         $data[$this->valueName()] = $fragment->value();
         return $data;
+    }
+
+    public function hydrate($data, $model, Vocabulary $vocabulary = null)
+    {
+        if ($model instanceof Fragment) {
+            $this->hydrateFragment($data, $model);
+            return;
+        }
+        if (!is_array($model) || $model = []) {
+            return;
+        }
+        if ($data === [] || $data === null) {
+            return;
+        }
+        if ($this->hasMultipleValues()) {
+            for ($i = 0; $i < count($data); $i++) {
+                $this->hydrateFragment($data[i], $fragments[i], $vocabulary);
+            }
+            return;
+        }
+        $data = (is_array($data) ? $data[0] : $data);
+        $fragment = (is_array($fragments) ? $fragments[0] : $fragments);
+        $this->dataToFragment($data, $fragment, $vocabulary);
+    }
+
+    protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null)
+    {
+        if ($vocabulary instanceof Vocabulary) {
+            $data = ($data instanceof Term ? $data->name() : $data);
+            $fragment->setValue($data, $vocabulary->concept());
+            return;
+        }
+        if ($this->isAtomic()) {
+            $fragment->setValue($data);
+            return;
+        }
+        $format = ($this->formatName() ? $data[$this->formatName()] : null);
+        $parameter = ($this->parameterName() ? $data[$this->parameterName()] : null);
+        $value = ($this->valueName() ? $data[$this->valueName()] : null);
+        $fragment->setValue($value, $parameter, $format);
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

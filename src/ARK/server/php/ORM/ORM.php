@@ -56,6 +56,12 @@ class ORM
 
     public static function persist($entity)
     {
+        if (is_array($entity) || $entity instanceof \Traversable) {
+            foreach ($entity as $ent) {
+                self::manager($ent)->persist($ent);
+            }
+            return;
+        }
         self::manager($entity)->persist($entity);
     }
 

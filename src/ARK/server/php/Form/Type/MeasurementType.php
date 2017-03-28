@@ -60,6 +60,7 @@ class MeasurementType extends AbstractFormType
         if ($property) {
             $value = $property->value();
             if ($value) {
+                dump($value);
                 $forms['measurement']->setData($value['measurement']);
                 $forms['unit']->setData($value['unit']);
             }
@@ -69,8 +70,11 @@ class MeasurementType extends AbstractFormType
     public function mapFormsToData($forms, &$property)
     {
         $forms = iterator_to_array($forms);
-        $value['measurement'] = $forms['measurement']->getData();
-        $value['unit'] = $forms['unit']->getData();
-        $property->setValue($value);
+        if ($forms['measurement']->getData()) {
+            $value['measurement'] = $forms['measurement']->getData();
+            $value['unit'] = $forms['unit']->getData();
+            dump($value);
+            $property->setValue($value);
+        }
     }
 }

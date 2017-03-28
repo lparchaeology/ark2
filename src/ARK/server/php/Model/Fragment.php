@@ -35,6 +35,7 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Model\Attribute;
 use ARK\Model\Datatype;
+use ARK\Model\Item;
 use ARK\Model\VersionTrait;
 use ARK\Service;
 
@@ -73,9 +74,10 @@ abstract class Fragment
         return $this->item;
     }
 
-    public function setItem($item)
+    public function setItem(Item $item)
     {
-        $this->item = $item;
+        $this->item = $item->id();
+        $this->module = $item->schema()->module()->name();
     }
 
     public function attribute()
@@ -123,7 +125,7 @@ abstract class Fragment
     public function setSpan($fromValue, $toValue, $parameter = null, $format = null)
     {
         $this->value = $fromValue;
-        $this->value = $toValue;
+        $this->span = $toValue;
         $this->parameter = $parameter;
         $this->format = $format;
     }
@@ -139,6 +141,19 @@ abstract class Fragment
         $fragment = new $class;
         $fragment->module = $module;
         $fragment->item = $item;
+        $fragment->attribute = $attribute->name();
+        $fragment->datatype = $attribute->format()->datatype()->id();
+        if ($parent) {
+            $fragment->parent = $parent->id();
+        }
+        $fragment->refreshVersion();
+        return $fragment;
+    }
+
+    public static function createFromAttribute(Attribute $attribute, Fragment $parent = null)
+    {
+        $class = $attribute->format()->datatype()->dataClass();
+        $fragment = new $class;
         $fragment->attribute = $attribute->name();
         $fragment->datatype = $attribute->format()->datatype()->id();
         if ($parent) {

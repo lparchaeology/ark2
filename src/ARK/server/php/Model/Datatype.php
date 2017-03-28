@@ -140,14 +140,6 @@ class Datatype
         return $this->formTypeClass;
     }
 
-    public function nullValue()
-    {
-        if (in_array($this->datatype, ['date', 'time', 'datetime'])) {
-            return new \DateTime;
-        }
-        return null;
-    }
-
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table

@@ -102,9 +102,28 @@ class Property
         return $this->attribute->nullValue();
     }
 
+    // TODO Look into returning 'natural' objects instead, offer serialize separately
     public function value()
     {
-        return $this->attribute->fragmentsToData($this->fragments);
+        return $this->attribute->serialize($this->fragments);
+    }
+
+    public function setValue($value)
+    {
+        // TODO Nasty Hack! Better to track the fid and update the right frag object to keep history!
+        // OTOH is more efficient look-ups if in block together, and simpler update code
+        if (!$this->fragments->isEmpty()) {
+            ORM::remove($this->fragments);
+            $this->fragments->clear();
+        }
+        $model = $this->attribute->hydrate($value);
+        $this->fragments = new ArrayCollection(is_array($model) ? $model : [$model]);
+        if (!$this->fragments->isEmpty()) {
+            $this->updateFragments();
+            dump($this->fragments);
+            ORM::persist($this->fragments);
+            $this->updateItem();
+        }
     }
 
     // TODO Is there a better way?
@@ -120,66 +139,7 @@ class Property
     public function updateFragments()
     {
         foreach ($this->fragments as $fragment) {
-            $fragment->setItem($this->item->id());
+            $fragment->setItem($this->item);
         }
-    }
-
-    protected function setFragmentValue(Fragment $fragment, $value)
-    {
-        $val = null;
-        $parm = null;
-        if (!$this->attribute->format()->isAtomic()) {
-            foreach ($this->attribute->format()->attributes() as $attribute) {
-                if ($attribute->isRoot()) {
-                    $val = $value[$attribute->name()];
-                } else {
-                    $parm = $value[$attribute->name()];
-                }
-            }
-        } else {
-            $val = $value;
-            if ($this->attribute->vocabulary()) {
-                $parm = $this->attribute->vocabulary()->concept();
-            }
-        }
-        if ($val) {
-            $fragment->setValue($val, $parm);
-            ORM::persist($fragment);
-        } else {
-            ORM::remove($fragment);
-            $this->fragments->remove($this->fragments->indexOf($fragment));
-        }
-    }
-
-    protected function addFragment()
-    {
-        $fragment = Fragment::create($this->item->schema()->module()->name(), $this->item->id(), $this->attribute);
-        $this->fragments->add($fragment);
-        return $fragment;
-    }
-
-    public function setValue($value)
-    {
-        // TODO Compound types
-        if (!$this->attribute->format()->datatype()->isObject()) {
-            // TODO Nasty Hack! Better to track the fid and update the right frag object!
-            if ($this->attribute->hasMultipleOccurrences()) {
-                if (!$this->fragments->isEmpty()) {
-                    ORM::remove($this->fragments);
-                    $this->fragments->clear();
-                }
-                foreach ($value as $item) {
-                    $this->setFragmentValue($this->addFragment(), $item);
-                }
-            } else {
-                if ($this->fragments->isEmpty()) {
-                    $fragment = $this->addFragment();
-                } else {
-                    $fragment = $this->fragments->get(0);
-                }
-                $this->setFragmentValue($fragment, $value);
-            }
-        }
-        $this->updateItem();
     }
 }

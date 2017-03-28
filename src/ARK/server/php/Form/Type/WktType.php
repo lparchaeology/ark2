@@ -45,6 +45,7 @@ class WktType extends AbstractFormType
         $builder->add('easting', TextType::class, $fieldOptions);
         $builder->add('northing', TextType::class, $fieldOptions);
         $builder->add('srid', HiddenType::class, $fieldOptions);
+        $builder->add('format', HiddenType::class, $fieldOptions);
         $builder->setDataMapper($this);
     }
 
@@ -67,8 +68,10 @@ class WktType extends AbstractFormType
             $forms['easting']->setData($point->x());
             $forms['northing']->setData($point->y());
             $forms['srid']->setData($point->SRID());
+            $forms['format']->setData($value['format']);
         } else {
             $forms['srid']->setData(4326);
+            $forms['format']->setData('wkt');
         }
     }
 
@@ -78,6 +81,7 @@ class WktType extends AbstractFormType
         $point = Point::xy($forms['easting']->getData(), $forms['northing']->getData(), $forms['srid']->getData());
         $value['geometry'] = $point->asText();
         $value['srid'] = $point->SRID();
+        $value['format'] = $forms['format']->getData();
         $property->setValue($value);
     }
 }

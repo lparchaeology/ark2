@@ -32,6 +32,7 @@ namespace ARK\Model;
 
 use ARK\Model\EnabledTrait;
 use ARK\Model\Format;
+use ARK\Model\Fragment;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
@@ -142,7 +143,7 @@ abstract class Attribute
         return $this->format()->nullValue();
     }
 
-    public function fragmentsToData(ArrayCollection $fragments)
+    public function serialize(ArrayCollection $fragments)
     {
         if ($fragments->isEmpty()) {
             return $this->nullValue();
@@ -160,11 +161,32 @@ abstract class Attribute
         if ($this->hasMultipleOccurrences()) {
             $data = [];
             foreach ($fragments as $fragment) {
-                $data[] = $this->format()->fragmentsToData(new ArrayCollection([$fragment]));
+                $data[] = $this->format()->serialize(new ArrayCollection([$fragment]));
             }
             return $data;
         }
-        return $this->format()->fragmentsToData($fragments);
+        return $this->format()->serialize($fragments);
+    }
+
+    public function hydrate($data)
+    {
+        if ($data === null || $data === [] || $value = $this->nullValue()) {
+            return [];
+        }
+        // TODO Objects/Chains
+        if ($this->hasMultipleOccurrences()) {
+            $fragments = [];
+            foreach ($data as $datum) {
+                $fragments[] = Fragment::createFromAttribute($this);
+            }
+            for ($i = 0; $i < count($data); $i++) {
+                $this->format()->hydrate($data[i], $fragments[i]);
+            }
+            return $fragments;
+        }
+        $fragment = Fragment::createFromAttribute($this);
+        $this->format()->hydrate($data, $fragment);
+        return $fragment;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
