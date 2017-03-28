@@ -181,7 +181,8 @@ class Field extends Element
 
     public function renderView($data, $forms = null, $form = null, array $options = [])
     {
-        if (($this->formName() == 'findpoint' || $this->formName() == 'dime_save') && !Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+        if (($this->formName() == 'findpoint' || $this->formName() == 'dime_save' || $this->formName() == 'dime_find_actions')
+            && !Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             if ($form) {
                 $form[$this->formName()]->setRendered();
             }

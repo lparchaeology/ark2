@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 28, 2017 at 10:43 AM
+-- Generation Time: Mar 28, 2017 at 12:26 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -1650,7 +1650,7 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `for
 ('dime_actor_type', 'dime.actor', '', 'type', '', '', 1),
 ('dime_find_actions', NULL, NULL, NULL, 'ARK\\Form\\Type\\ActionChoiceType', '', 1),
 ('dime_find_blank', 'dime.find', '', '', '', '', 0),
-('dime_find_condition', 'dime.find', '', 'condition', 'ARK\\Form\\Type\\VocabularyChoiceType', '{\"expanded\":true}', 1),
+('dime_find_condition', 'dime.find', '', 'condition', 'ARK\\Form\\Type\\VocabularyChoiceType', '', 1),
 ('dime_find_coordinates', 'dime.find', '', 'coordinates', '', '', 1),
 ('dime_find_description', 'dime.find', '', 'description', '', '', 1),
 ('dime_find_filter_kommune', NULL, NULL, NULL, 'ARK\\Form\\Type\\VocabularyChoiceType', '{\"multiple\":true, \"placeholder\": \"dime.filter.bycommune\"}', 1),

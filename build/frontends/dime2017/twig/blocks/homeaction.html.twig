@@ -6,7 +6,7 @@
 
     <div class="row">
         <div class="col-md-3 dimehome dimehometool" >
-            {{ 'dime.home.welcome' | trans({ '%user%': global.user.displayName }) }}
+            {{ 'dime.home.welcome' | trans({ '%name%': global.user.displayName }) }}
         </div>
         <div class="col-md-3 dimehome dimehometool" >
             {% include "blocks/linkitem.html.twig" with {'link':
