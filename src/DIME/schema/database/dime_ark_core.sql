@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 28, 2017 at 12:11 AM
+-- Generation Time: Mar 28, 2017 at 10:43 AM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -943,6 +943,8 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.about.instructions', 'dime', 0, 0),
 ('dime.about.museums', 'dime', 0, 0),
 ('dime.about.partners', 'dime', 0, 0),
+('dime.action.record', 'dime', 0, 0),
+('dime.action.report', 'dime', 0, 0),
 ('dime.actor.fullname', 'dime', 0, 0),
 ('dime.actor.id', 'dime', 0, 0),
 ('dime.actor.kommuner', 'dime', 0, 0),
@@ -1186,6 +1188,8 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.about.instructions', 'default', 'Vejledning', ''),
 ('da', 'dime.about.museums', 'default', 'Deltagende Museer', ''),
 ('da', 'dime.about.partners', 'default', 'Samarbejdspartnere', ''),
+('da', 'dime.action.record', 'default', 'Optage', 'Optage'),
+('da', 'dime.action.report', 'default', 'Berette', 'berette'),
 ('da', 'dime.actor.fullname', 'default', 'Navn', ''),
 ('da', 'dime.actor.id', 'default', 'Aktører ID', ''),
 ('da', 'dime.actor.kommuner', 'default', 'Kommuner', ''),
@@ -5164,7 +5168,7 @@ INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event
 ('dime.find', 'destroy', 'dime.find.event', 'destroyed', NULL, 0, 0, 0, 1, 'dime.action.destroy'),
 ('dime.find', 'disagree', 'dime.find.event', 'disagreed', NULL, 0, 0, 0, 1, 'dime.action.disagree'),
 ('dime.find', 'discard', 'dime.find.event', 'discarded', NULL, 0, 0, 0, 1, 'dime.action.discard'),
-('dime.find', 'edit', 'dime.find.event', 'edited', NULL, 0, 0, 0, 1, 'dime.action.edit'),
+('dime.find', 'edit', 'dime.find.event', 'edited', NULL, 0, 1, 1, 1, 'dime.action.edit'),
 ('dime.find', 'evaluate', 'dime.find.event', 'evaluated', NULL, 0, 0, 0, 1, 'dime.action.evaluate'),
 ('dime.find', 'export', 'dime.find.event', 'exported', NULL, 0, 0, 0, 1, 'dime.action.export'),
 ('dime.find', 'follow', 'dime.find.event', 'followed', NULL, 0, 0, 0, 1, 'dime.action.follow'),
@@ -5175,7 +5179,7 @@ INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event
 ('dime.find', 'notify', 'dime.find.event', 'notified', NULL, 0, 0, 0, 1, 'dime.action.notify'),
 ('dime.find', 'publish', 'dime.find.event', 'published', NULL, 0, 0, 0, 1, 'dime.action.publish'),
 ('dime.find', 'receive', 'dime.find.event', 'received', NULL, 0, 0, 0, 1, 'dime.action.receive'),
-('dime.find', 'record', 'dime.find.event', 'recorded', 'recorder', 0, 0, 0, 1, 'dime.action.record'),
+('dime.find', 'record', 'dime.find.event', 'recorded', 'recorder', 1, 1, 1, 1, 'dime.action.record'),
 ('dime.find', 'recover', 'dime.find.event', 'recovered', NULL, 0, 0, 0, 1, 'dime.action.recover'),
 ('dime.find', 'redact', 'dime.find.event', 'redacted', NULL, 0, 0, 0, 1, 'dime.action.redact'),
 ('dime.find', 'refer', 'dime.find.event', 'referred', NULL, 0, 0, 0, 1, 'dime.action.refer'),
@@ -5392,6 +5396,9 @@ INSERT INTO `ark_workflow_permission` (`schma`, `action`, `role`, `operator`) VA
 ('dime.find', 'delete', 'admin', 'is'),
 ('dime.find', 'delete', 'detectorist', 'is'),
 ('dime.find', 'delete', 'registrar', 'is'),
+('dime.find', 'edit', 'admin', 'is'),
+('dime.find', 'edit', 'detectorist', 'is'),
+('dime.find', 'edit', 'registrar', 'is'),
 ('dime.find', 'reject', 'registrar', 'is'),
 ('dime.find', 'release', 'appraiser', 'is'),
 ('dime.find', 'release', 'registrar', 'is'),

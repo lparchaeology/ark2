@@ -50,8 +50,9 @@ class ActionChoiceType extends AbstractFormType
             'choice_value' => 'name',
             'choice_name' => 'name',
             'choice_label' => 'keyword',
-            'placeholder' => 'core.action.choose',
+            'placeholder' => false,
             'placeholder_in_choices' => false,
+            'required' => true,
         ];
     }
 
