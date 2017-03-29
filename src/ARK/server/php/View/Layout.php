@@ -84,13 +84,6 @@ abstract class Layout extends Element
         return $this->elements;
     }
 
-    public function formDefaults($data)
-    {
-        $options['label'] = false;
-        $options['mapped'] = false;
-        return $options;
-    }
-
     public function buildForms($data)
     {
         if ($this->formRoot) {

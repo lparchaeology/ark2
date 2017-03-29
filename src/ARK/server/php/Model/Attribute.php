@@ -180,21 +180,21 @@ abstract class Attribute
             return [];
         }
         // TODO Objects/Chains
-        if ($this->hasMultipleOccurrences()) {
+        if ($this->hasMultipleOccurrences() || $this->format()->hasMultipleValues()) {
             dump('has multiples');
             $fragments = [];
             foreach ($data as $datum) {
                 $fragment = Fragment::createFromAttribute($this);
-                $this->format()->hydrate($datum, $fragment);
+                $this->format()->hydrate($datum, $fragment, $this->vocabulary);
                 dump('hydrated');
                 dump($fragment);
-                $fragemnts[] = $fragment;
+                $fragments[] = $fragment;
             }
             return $fragments;
         }
         dump('single');
         $fragment = Fragment::createFromAttribute($this);
-        $this->format()->hydrate($data, $fragment);
+        $this->format()->hydrate($data, $fragment, $this->vocabulary);
         dump('hydrated');
         dump($fragment);
         return $fragment;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Event Form Type
+ * ARK Form Type
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,19 +30,25 @@
 
 namespace ARK\Form\Type;
 
-use ARK\Form\Type\AbstractFormType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class NumberFormType extends AbstractFormType
+class TermChoiceType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $builder->setDataMapper($this);
+        return [
+            'choice_value' => 'name',
+            'choice_name' => 'name',
+            'choice_label' => 'keyword',
+            'placeholder' => false,
+            'placeholder_in_choices' => false,
+        ];
     }
 
     public function getParent()
     {
-        return NumberType::class;
+        return ChoiceType::class;
     }
 }

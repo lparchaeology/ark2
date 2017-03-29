@@ -38,8 +38,8 @@ class IdType extends AbstractFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->setDataMapper($this);
         $builder->addModelTransformer($this);
+        $builder->setDataMapper($this);
     }
 
     public function getParent()

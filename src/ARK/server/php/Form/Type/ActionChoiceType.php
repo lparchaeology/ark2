@@ -46,6 +46,7 @@ class ActionChoiceType extends AbstractFormType
     protected function options()
     {
         return [
+            'label' => '',
             'data_class' => null,
             'choice_value' => 'name',
             'choice_name' => 'name',

@@ -55,7 +55,9 @@ abstract class Format
     protected $parameterName = null;
     protected $parameterVocabulary = null;
     protected $formTypeClass = '';
-    protected $input = '';
+    protected $valueFormType = '';
+    protected $formatFormType = '';
+    protected $parameterFormType = '';
     protected $object = false;
     protected $array = false;
     protected $multiple = false;
@@ -102,9 +104,19 @@ abstract class Format
         return ($this->formTypeClass ?: $this->datatype->formTypeClass());
     }
 
-    public function input()
+    public function valueFormType()
     {
-        return $this->input;
+        return ($this->valueFormType ?: $this->datatype->valueFormType());
+    }
+
+    public function parameterFormType()
+    {
+        return ($this->parameterFormType ?: $this->datatype->parameterFormType());
+    }
+
+    public function formatFormType()
+    {
+        return ($this->formatFormType ?: $this->datatype->formatFormType());
     }
 
     public function isSortable()
@@ -183,7 +195,7 @@ abstract class Format
     public function hydrate($data, $model, Vocabulary $vocabulary = null)
     {
         if ($model instanceof Fragment) {
-            $this->hydrateFragment($data, $model);
+            $this->hydrateFragment($data, $model, $vocabulary);
             return;
         }
         if (!is_array($model) || $model = []) {
@@ -200,7 +212,7 @@ abstract class Format
         }
         $data = (is_array($data) ? $data[0] : $data);
         $fragment = (is_array($fragments) ? $fragments[0] : $fragments);
-        $this->dataToFragment($data, $fragment, $vocabulary);
+        $this->hydrateFragment($data, $fragment, $vocabulary);
     }
 
     protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null)
@@ -241,7 +253,9 @@ abstract class Format
         $builder->addStringField('parameterName', 30, 'parameter_name');
         $builder->addStringField('parameterVocabulary', 30, 'parameter_vocabulary');
         $builder->addStringField('formTypeClass', 100, 'form_type_class');
-        $builder->addStringField('input', 30);
+        $builder->addStringField('valueFormType', 100, 'value_form_class');
+        $builder->addStringField('formatFormType', 100, 'format_form_class');
+        $builder->addStringField('parameterFormType', 100, 'parameter_form_class');
         $builder->addField('object', 'boolean');
         $builder->addField('array', 'boolean');
         $builder->addField('multiple', 'boolean');

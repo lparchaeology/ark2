@@ -42,6 +42,8 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
 use ARK\Vocabulary\Vocabulary;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class Field extends Element
@@ -49,7 +51,11 @@ class Field extends Element
     protected $formTypeClass = '';
     protected $formOptions = '';
     protected $formOptionsArray = null;
-    protected $editable = true;
+    protected $label = true;
+    protected $disabled = false;
+    protected $hidden = false;
+    protected $parameter = false;
+    protected $format = false;
     protected $attribute = null;
 
     public function hasAttribute()
@@ -62,9 +68,29 @@ class Field extends Element
         return $this->attribute;
     }
 
-    public function isEditable()
+    public function showLabel()
     {
-        return $this->editable;
+        return $this->label;
+    }
+
+    public function isDisabled()
+    {
+        return $this->disabled;
+    }
+
+    public function isHidden()
+    {
+        return $this->hidden;
+    }
+
+    public function showParameter()
+    {
+        return $this->parameter;
+    }
+
+    public function showFormat()
+    {
+        return $this->format;
     }
 
     public function formName()
@@ -83,16 +109,31 @@ class Field extends Element
         return parent::formTypeClass();
     }
 
-    public function formOptions($data)
+    public function valueFormType()
     {
-        if ($this->formOptionsArray === null) {
-            if ($this->formOptions) {
-                $this->formOptionsArray = array_merge($this->formDefaults($data), json_decode($this->formOptions, true));
-            } else {
-                $this->formOptionsArray = $this->formDefaults($data);
-            }
+        if ($this->isHidden()) {
+            return HiddenType::class;
         }
-        return $this->formOptionsArray;
+        if ($this->hasAttribute()) {
+            return $this->attribute()->format()->valueFormType();
+        }
+        return TextType::class;
+    }
+
+    public function parameterFormType()
+    {
+        if ($this->showParameter() && $this->hasAttribute()) {
+            return $this->attribute()->format()->parameterFormType();
+        }
+        return HiddenType::class;
+    }
+
+    public function formatFormType()
+    {
+        if ($this->showFormat() && $this->hasAttribute()) {
+            return $this->attribute()->format()->formatFormType();
+        }
+        return HiddenType::class;
     }
 
     public function keyword()
@@ -106,7 +147,7 @@ class Field extends Element
         return '';
     }
 
-    public function formDefaults($data)
+    public function formOptions($data)
     {
         // FIXME HACK Need to find a better way to build custom fields!
         if ($this->formTypeClass() == ActionChoiceType::class) {
@@ -130,24 +171,37 @@ class Field extends Element
             $vocabulary = ORM::find(Vocabulary::class, 'dime.period');
             $options['choices'] = $vocabulary->terms();
         }
+
+        $options['field'] = $this;
         $options['label'] = ($this->keyword() ?: false);
         if ($this->attribute()) {
-            if ($this->formTypeClass()) {
-                $options['field'] = $this;
-            }
-            if ($this->formTypeClass() == PropertyType::class) {
-                $options['mapped'] = false;
-            }
             $options['required'] = $this->attribute()->isRequired();
-            if ($this->formTypeClass() == VocabularyChoiceType::class) {
+            if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+                $options['attr']['readonly'] = true;
+            }
+        }
+        $options['field_options'] = $this->fieldOptions($data);
+        return $options;
+    }
+
+    public function fieldOptions($data)
+    {
+        if ($this->formOptionsArray === null) {
+            $this->formOptionsArray = ($this->formOptions ? json_decode($this->formOptions, true) : []);
+        }
+        $options = $this->formOptionsArray;
+
+        $options['mapped'] = false;
+        $options['label'] = false;
+        if ($this->attribute()) {
+            if ($this->attribute()->hasVocabulary()) {
                 $options['choices'] = $this->attribute()->vocabulary()->terms();
             }
             if ($this->attribute()->hasMultipleOccurrences()) {
                 $options['multiple'] = true;
             }
-            if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED') || $this->name() == 'dime_find_id') {
-                $options['attr']['readonly'] = true;
-                if ($this->attribute()->vocabulary()) {
+            if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+                if ($this->attribute()->hasVocabulary()) {
                     $options['disabled'] = true;
                 }
             }
@@ -168,12 +222,15 @@ class Field extends Element
 
     public function buildForm(FormBuilderInterface $builder, $data, $options = [])
     {
+        dump($this->name());
         if ($this->formTypeClass() == SubmitType::class) {
+            // HACK Cleanup along with other standalone elements
             $options = [];
             $options['label'] = ($this->keyword() ?: false);
         } else {
-            $options = array_merge($options, $this->formOptions($data));
+            $options = array_replace_recursive($this->formOptions($data), $options);
         }
+        dump($options);
         //$builder->add($this->formName(), $this->formTypeClass(), $this->formOptions($data));
         $fieldBuilder = $this->formBuilder($data, $options);
         $builder->add($fieldBuilder);
@@ -239,7 +296,11 @@ class Field extends Element
         // Fields
         $builder->addStringField('formTypeClass', 100, 'form_type_class');
         $builder->addStringField('formOptions', 4000, 'form_options');
-        $builder->addField('editable', 'boolean');
+        $builder->addField('label', 'boolean');
+        $builder->addField('disabled', 'boolean');
+        $builder->addField('hidden', 'boolean');
+        $builder->addField('parameter', 'boolean');
+        $builder->addField('format', 'boolean');
 
         // Associations
         $builder->addCompositeManyToOneField(

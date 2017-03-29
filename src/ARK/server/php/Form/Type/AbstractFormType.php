@@ -31,22 +31,24 @@
 namespace ARK\Form\Type;
 
 use ARK\Model\Property;
+use ARK\Vocabulary\Term;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractFormType extends AbstractType implements DataMapperInterface, DataTransformerInterface
 {
+    protected $value;
+
     private const OPTIONS = [
-        //'compound' => false,
         'data_class' => null,
         'empty_data' => null,
-        'mapped' => true,
         'field' => null,
-        'disabled' => true,
+        'field_options' => [],
         'hidden' => false,
-        'required' => false,
     ];
 
     protected function options()
@@ -54,39 +56,58 @@ abstract class AbstractFormType extends AbstractType implements DataMapperInterf
         return [];
     }
 
+    // Configure the *build* options only, not passed to view!
     public function configureOptions(OptionsResolver $resolver)
     {
+        dump('configure options');
         $resolver->setDefaults(array_merge(self::OPTIONS, $this->options()));
     }
 
-    public function transform($property)
+    // Use to transform data from the model to this form element
+    public function transform($value)
     {
-        if ($property instanceof Property) {
-            return $property->value();
+        if ($value instanceof Property) {
+            return $value->value();
         }
-        return $property;
+        if ($value instanceof Term) {
+            return $value->name();
+        }
+        return $value;
     }
 
+    // Use to transform data from this form element to the model
     public function reverseTransform($value)
     {
         return $value;
     }
 
-    public function mapDataToForms($property, $forms)
+    // Use to map parent model data to child form elements
+    public function mapDataToForms($value, $forms)
     {
         $forms = iterator_to_array($forms);
-        if ($property instanceof Property) {
-            $name = $property->attribute()->name();
-            $value = $property->value();
+        if ($value instanceof Property) {
+            $name = $value->attribute()->name();
+            $value = $value->value();
             $forms[$name]->setData($value);
         }
     }
 
+    // Use to map child form elements to parent data model
     public function mapFormsToData($forms, &$property)
     {
         $forms = iterator_to_array($forms);
         $name = $property->attribute()->name();
-        $value = $forms[$$name]->getData();
+        $value = $forms[$name]->getData();
         $property->setValue($value);
+    }
+
+    // Use to modify FormView to use during render
+    public function buildView(FormView $view, FormInterface $form, array $viewOptions)
+    {
+    }
+
+    // Use to modify child FormViews to use during render
+    public function finishView(FormView $view, FormInterface $form, array $viewOptions)
+    {
     }
 }

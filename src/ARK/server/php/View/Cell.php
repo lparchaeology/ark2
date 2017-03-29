@@ -44,9 +44,11 @@ class Cell
     protected $col = 0;
     protected $seq = 0;
     protected $itemType = null;
-    protected $label = true;
-    protected $editable = true;
-    protected $hidden = false;
+    protected $label = null;
+    protected $disabled = null;
+    protected $hidden = null;
+    protected $parameter = null;
+    protected $format = null;
     protected $element = null;
     protected $map = null;
     protected $formOptions = '';
@@ -87,31 +89,54 @@ class Cell
         return $this->map;
     }
 
-    public function formLabel()
+    public function showLabel()
     {
         return $this->label;
     }
 
-    public function editable()
+    public function isDisabled()
     {
-        return $this->editable;
+        return $this->disabled;
     }
 
-    public function hidden()
+    public function isHidden()
     {
         return $this->hidden;
     }
 
+    public function showParameter()
+    {
+        return $this->parameter;
+    }
+
+    public function showFormat()
+    {
+        return $this->format;
+    }
+
     public function formOptions($data)
     {
+        dump($this);
         if ($this->formOptionsArray === null) {
             $this->formOptionsArray = json_decode($this->formOptions, true);
             if (!is_array($this->formOptionsArray)) {
                 $this->formOptionsArray = [];
             }
-            $this->formOptionsArray['label'] = $this->label;
-            $this->formOptionsArray['disabled'] = !$this->editable;
-            $this->formOptionsArray['hidden'] = $this->hidden;
+            if ($this->label !== null) {
+                $this->formOptionsArray['label'] = $this->label;
+            }
+            if ($this->disabled !== null) {
+                $this->formOptionsArray['disabled'] = !$this->disabled;
+            }
+            if ($this->hidden !== null) {
+                $this->formOptionsArray['hidden'] = !$this->hidden;
+            }
+            if ($this->parameter !== null) {
+                $this->formOptionsArray['field_options']['parameter'] = !$this->parameter;
+            }
+            if ($this->format !== null) {
+                $this->formOptionsArray['field_options']['format'] = !$this->format;
+            }
         }
         return $this->formOptionsArray;
     }
@@ -149,8 +174,10 @@ class Cell
         // Fields
         $builder->addStringField('formOptions', 4000, 'form_options');
         $builder->addField('label', 'boolean');
-        $builder->addField('editable', 'boolean');
+        $builder->addField('disabled', 'boolean');
         $builder->addField('hidden', 'boolean');
+        $builder->addField('parameter', 'boolean');
+        $builder->addField('format', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
 
         // Relationships

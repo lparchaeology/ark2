@@ -30,35 +30,19 @@
 
 namespace ARK\Form\Type;
 
-use ARK\Form\Type\AbstractFormType;
+use ARK\Form\Type\ScalarFormType;
 use ARK\Service;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 
-class LocalTextType extends AbstractFormType
+class LocalTextType extends ScalarFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        dump('build text');
         $fieldOptions['label'] = false;
-        //$fieldOptions['formLabel'] = false;
         $fieldOptions['mapped'] = false;
         $builder->add('previous', HiddenType::class, $fieldOptions);
-        $builder->add('mimetype', HiddenType::class, $fieldOptions);
-        $builder->add('language', HiddenType::class, $fieldOptions);
-        // TODO Generate from Format default types?
-        $builder->add('content', $this->textType(), $fieldOptions);
-        $builder->setDataMapper($this);
-    }
-
-    protected function options()
-    {
-        return [
-            'compound' => true,
-            'compound_label' => false,
-        ];
     }
 
     public function mapDataToForms($property, $forms)
@@ -115,9 +99,8 @@ class LocalTextType extends AbstractFormType
         }
         $property->setValue($values);
     }
-
-    protected function textType()
+    public function getParent()
     {
-        return TextType::class;
+        return ScalarFormType::class;
     }
 }

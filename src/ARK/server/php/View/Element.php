@@ -51,7 +51,6 @@ abstract class Element
     protected $type = '';
     protected $class = '';
     protected $template = '';
-    protected $hidden = false;
 
     public function __construct()
     {
@@ -86,20 +85,9 @@ abstract class Element
         return $this->type->template();
     }
 
-    public function isHidden()
-    {
-        return $this->hidden;
-    }
-
     public function formData($resource)
     {
         return $resource;
-    }
-
-    public function formDefaults($data)
-    {
-        $options['label'] = false;
-        return $options;
     }
 
     public function formTypeClass()
@@ -109,7 +97,7 @@ abstract class Element
 
     public function formOptions($data)
     {
-        return $this->formDefaults($data);
+        return [];
     }
 
     public function buildForm(FormBuilderInterface $builder, $data, $options = [])
@@ -148,7 +136,6 @@ abstract class Element
         // Fields
         $builder->addStringField('class', 100);
         $builder->addStringField('template', 100);
-        $builder->addField('hidden', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
 

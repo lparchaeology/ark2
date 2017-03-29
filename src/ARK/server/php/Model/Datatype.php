@@ -59,6 +59,9 @@ class Datatype
     protected $dataTable = '';
     protected $dataClass = '';
     protected $formTypeClass = '';
+    protected $valueFormType = '';
+    protected $formatFormType = '';
+    protected $parameterFormType = '';
 
     public function id()
     {
@@ -140,6 +143,21 @@ class Datatype
         return $this->formTypeClass;
     }
 
+    public function valueFormType()
+    {
+        return $this->valueFormType;
+    }
+
+    public function formatFormType()
+    {
+        return $this->formatFormType;
+    }
+
+    public function parameterFormType()
+    {
+        return $this->parameterFormType;
+    }
+
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
@@ -165,6 +183,9 @@ class Datatype
         $builder->addStringField('dataTable', 50, 'data_table');
         $builder->addStringField('dataClass', 100, 'data_class');
         $builder->addStringField('formTypeClass', 100, 'form_type_class');
+        $builder->addStringField('valueFormType', 100, 'value_form_class');
+        $builder->addStringField('formatFormType', 100, 'format_form_class');
+        $builder->addStringField('parameterFormType', 100, 'parameter_form_class');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
 

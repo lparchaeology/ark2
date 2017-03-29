@@ -112,8 +112,6 @@ class Property
     {
         dump('setValue '.$this->name());
         dump($value);
-        dump('before');
-        dump($this->fragments);
         // TODO Nasty Hack! Better to track the fid and update the right frag object to keep history!
         // OTOH is more efficient look-ups if in block together, and simpler update code
         if (!$this->fragments->isEmpty()) {
@@ -121,17 +119,14 @@ class Property
             $this->fragments->clear();
         }
         $model = $this->attribute->hydrate($value);
-        dump('model');
+        dump('returned model for '.$this->name());
         dump($model);
         $this->fragments = new ArrayCollection(is_array($model) ? $model : [$model]);
         if (!$this->fragments->isEmpty()) {
             $this->updateFragments();
-            dump($this->fragments);
             ORM::persist($this->fragments);
             $this->updateItem();
         }
-        dump('after');
-        dump($this->fragments);
     }
 
     // TODO Is there a better way?

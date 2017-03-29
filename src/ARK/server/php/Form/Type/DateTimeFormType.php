@@ -53,31 +53,6 @@ class DateTimeFormType extends AbstractFormType
         ];
     }
 
-    public function transform($property)
-    {
-        if (!$property) {
-            return new DateTime;
-        }
-        return ($property->value() ?: new DateTime);
-    }
-
-    public function reverseTransform($value)
-    {
-        return $value;
-    }
-
-    public function mapDataToForms($property, $forms)
-    {
-    }
-
-    public function mapFormsToData($forms, &$property)
-    {
-        $forms = iterator_to_array($forms);
-        $name = $property->attribute()->name();
-        $value = $forms[$$name]->getData();
-        $property->setValue($value);
-    }
-
     public function getParent()
     {
         return DateTimeType::class;
