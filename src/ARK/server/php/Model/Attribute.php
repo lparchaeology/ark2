@@ -170,22 +170,33 @@ abstract class Attribute
 
     public function hydrate($data)
     {
-        if ($data === null || $data === [] || $value = $this->nullValue()) {
+        if ($data === null || $data === [] || $data === $this->nullValue()) {
+            dump('fails null check');
+            dump($data);
+            dump($data === null);
+            dump($data === []);
+            dump($data === $this->nullValue());
+            dump($this->nullValue());
             return [];
         }
         // TODO Objects/Chains
         if ($this->hasMultipleOccurrences()) {
+            dump('has multiples');
             $fragments = [];
             foreach ($data as $datum) {
-                $fragments[] = Fragment::createFromAttribute($this);
-            }
-            for ($i = 0; $i < count($data); $i++) {
-                $this->format()->hydrate($data[i], $fragments[i]);
+                $fragment = Fragment::createFromAttribute($this);
+                $this->format()->hydrate($datum, $fragment);
+                dump('hydrated');
+                dump($fragment);
+                $fragemnts[] = $fragment;
             }
             return $fragments;
         }
+        dump('single');
         $fragment = Fragment::createFromAttribute($this);
         $this->format()->hydrate($data, $fragment);
+        dump('hydrated');
+        dump($fragment);
         return $fragment;
     }
 

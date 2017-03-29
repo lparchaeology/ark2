@@ -46,6 +46,7 @@ class LocalTextType extends AbstractFormType
         //$fieldOptions['formLabel'] = false;
         $fieldOptions['mapped'] = false;
         $builder->add('previous', HiddenType::class, $fieldOptions);
+        $builder->add('mimetype', HiddenType::class, $fieldOptions);
         $builder->add('language', HiddenType::class, $fieldOptions);
         // TODO Generate from Format default types?
         $builder->add('content', $this->textType(), $fieldOptions);
@@ -68,10 +69,12 @@ class LocalTextType extends AbstractFormType
         $forms = iterator_to_array($forms);
         $name = $property->attribute()->name();
         $language = Service::locale();
+        $mimetype = 'text/plain';
         $values = $property->value();
         $text = [];
         foreach ($values as $value) {
             $text[$value['language']] = $value['content'];
+            $mimetype = $value['mimetype'];
         }
         $content = '';
         if (isset($text[$language])) {
@@ -86,6 +89,7 @@ class LocalTextType extends AbstractFormType
         }
         // Shouldn't need this once using Property object instead
         $forms['previous']->setData(serialize($text));
+        $forms['mimetype']->setData($mimetype);
         $forms['language']->setData($language);
         $forms['content']->setData($content);
     }
@@ -95,6 +99,7 @@ class LocalTextType extends AbstractFormType
         $forms = iterator_to_array($forms);
         $name = $property->attribute()->name();
         $text = unserialize($forms['previous']->getData());
+        $mimetype = $forms['mimetype']->getData();
         $language = $forms['language']->getData();
         $content = $forms['content']->getData();
         if (isset($text[$language]) && $text[$language] == $content) {
@@ -106,7 +111,7 @@ class LocalTextType extends AbstractFormType
         $text[$language] = $content;
         $values = [];
         foreach ($text as $lang => $cont) {
-            $values[] = ['language' => $lang, 'content' => $cont];
+            $values[] = ['mimetype' => $mimetype, 'language' => $lang, 'content' => $cont];
         }
         $property->setValue($values);
     }
