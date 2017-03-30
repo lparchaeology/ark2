@@ -116,7 +116,6 @@ class Cell
 
     public function formOptions($data)
     {
-        dump($this);
         if ($this->formOptionsArray === null) {
             $this->formOptionsArray = json_decode($this->formOptions, true);
             if (!is_array($this->formOptionsArray)) {
@@ -148,6 +147,7 @@ class Cell
 
     public function buildForm(FormBuilderInterface $builder, $data, $options = [])
     {
+        unset($options['label']);
         $options = array_merge($options, $this->formOptions($data));
         $this->element->buildForm($builder, $data, $options);
     }

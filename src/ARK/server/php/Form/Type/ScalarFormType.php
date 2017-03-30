@@ -31,19 +31,20 @@
 namespace ARK\Form\Type;
 
 use ARK\Form\Type\AbstractFormType;
+use ARK\Model\Property;
+use ARK\Vocabulary\Term;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class ScalarFormType extends AbstractFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        dump('build scalar');
-        dump($options);
+        // TODO Get format/parm options properly
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
         $field = $options['field'];
         $format = $field->attribute()->format();
-        $builder->add($format->valueName(), $field->valueFormType(), $fieldOptions);
+        $builder->add($format->valueName(), $field->valueFormType(), $options['field_options']);
         if ($format->formatName()) {
             $builder->add($format->formatName(), $field->formatFormType(), $fieldOptions);
         }
@@ -55,7 +56,6 @@ class ScalarFormType extends AbstractFormType
 
     protected function options()
     {
-        dump('options scalar');
         return [
             'compound' => true,
         ];
@@ -65,18 +65,18 @@ class ScalarFormType extends AbstractFormType
     {
         $forms = iterator_to_array($forms);
         if ($value instanceof Property) {
-            $value = $value->value();
+            $val = $value->value();
             $format = $value->attribute()->format();
             if ($format->isAtomic()) {
-                $forms[$format->valueName()]->setData($value);
+                $forms[$format->valueName()]->setData($val);
                 return;
             }
-            $forms[$format->valueName()]->setData($value[$format->formatName()]);
+            $forms[$format->valueName()]->setData($val[$format->valueName()]);
             if ($format->formatName()) {
-                $forms[$format->formatName()]->setData($value[$format->formatName()]);
+                $forms[$format->formatName()]->setData($val[$format->formatName()]);
             }
             if ($format->parameterName()) {
-                $forms[$format->parameterName()]->setData($value[$format->parameterName()]);
+                $forms[$format->parameterName()]->setData($val[$format->parameterName()]);
             }
         }
     }
@@ -95,6 +95,6 @@ class ScalarFormType extends AbstractFormType
                 }
             }
         }
-        $value->setValue($value);
+        $value->setValue($val);
     }
 }

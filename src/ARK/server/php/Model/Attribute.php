@@ -140,6 +140,9 @@ abstract class Attribute
         if ($this->hasMultipleOccurrences()) {
             return [];
         }
+        if ($this->hasVocabulary()) {
+            return null;
+        }
         return $this->format()->nullValue();
     }
 
@@ -152,6 +155,7 @@ abstract class Attribute
             if ($this->hasMultipleOccurrences()) {
                 $data = [];
                 foreach ($fragments as $fragment) {
+                    dump($fragment->value());
                     $data[] = $this->vocabulary->term($fragment->value());
                 }
                 return $data;

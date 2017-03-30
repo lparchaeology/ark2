@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Event Form Type
+ * ARK Form Type
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,27 +30,8 @@
 
 namespace ARK\Form\Type;
 
-use ARK\Form\Type\AbstractFormType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\AbstractType;
 
-class TimeFormType extends AbstractFormType
+class StaticType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->setDataMapper($this);
-    }
-
-    protected function options()
-    {
-        return [
-            'widget' => 'single_text',
-            'html5' => false,
-            'attr' => ['class' => 'timepicker'],
-        ];
-    }
-    public function getParent()
-    {
-        return TimeType::class;
-    }
 }

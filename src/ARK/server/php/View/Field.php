@@ -149,38 +149,31 @@ class Field extends Element
 
     public function formOptions($data)
     {
-        // FIXME HACK Need to find a better way to build custom fields!
-        if ($this->formTypeClass() == ActionChoiceType::class) {
-            // TODO Current Actor
-            $actor = ORM::find(Actor::class, 'ahavfrue');
-            $options['choices'] = Service::workflow()->actions($actor, $data);
-        }
-        if ($this->name() == 'dime_find_filter_kommune') {
-            $vocabulary = ORM::find(Vocabulary::class, 'dime.denmark.kommune');
-            $options['choices'] = $vocabulary->terms();
-        }
-        if ($this->name() == 'dime_find_filter_type') {
-            $vocabulary = ORM::find(Vocabulary::class, 'dime.find.type');
-            $options['choices'] = $vocabulary->terms();
-        }
-        if ($this->name() == 'dime_find_filter_material') {
-            $vocabulary = ORM::find(Vocabulary::class, 'dime.material');
-            $options['choices'] = $vocabulary->terms();
-        }
-        if ($this->name() == 'dime_find_filter_period') {
-            $vocabulary = ORM::find(Vocabulary::class, 'dime.period');
-            $options['choices'] = $vocabulary->terms();
-        }
-
         $options['field'] = $this;
         $options['label'] = ($this->keyword() ?: false);
+        $options['field_options'] = $this->fieldOptions($data);
         if ($this->attribute()) {
             $options['required'] = $this->attribute()->isRequired();
             if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
                 $options['attr']['readonly'] = true;
             }
+        } else {
+            // FIXME HACK Need to find a better way to build custom fields!
+            if ($this->name() == 'dime_find_actions') {
+                // TODO Current Actor
+                $actor = ORM::find(Actor::class, 'ahavfrue');
+                $options['choices'] = Service::workflow()->actions($actor, $data);
+                $options['choice_value'] = 'name';
+                $options['choice_name'] = 'name';
+                $options['choice_label'] = 'keyword';
+                $options['placeholder'] = null;
+            }
+            if (isset($options['field_options']['vocabulary'])) {
+                $vocabulary = ORM::find(Vocabulary::class, $options['field_options']['vocabulary']);
+                $options = $this->vocabularyOptions($vocabulary, $options);
+                unset($options['field_options']['vocabulary']);
+            }
         }
-        $options['field_options'] = $this->fieldOptions($data);
         return $options;
     }
 
@@ -194,8 +187,19 @@ class Field extends Element
         $options['mapped'] = false;
         $options['label'] = false;
         if ($this->attribute()) {
+            // TODO Nicer way to set js date pickers?
+            if (isset($options['widget']) && $options['widget'] == 'picker') {
+                $options['widget'] = 'single_text';
+                $options['html5'] = false;
+                $picker = $this->attribute()->format()->datatype()->id().'picker';
+                if (isset($options['attr']['class'])) {
+                    $options['attr']['class'] = $options['attr']['class'].' '.$picker;
+                } else {
+                    $options['attr']['class'] = $picker;
+                }
+            }
             if ($this->attribute()->hasVocabulary()) {
-                $options['choices'] = $this->attribute()->vocabulary()->terms();
+                $options = $this->vocabularyOptions($this->attribute()->vocabulary(), $options);
             }
             if ($this->attribute()->hasMultipleOccurrences()) {
                 $options['multiple'] = true;
@@ -205,6 +209,20 @@ class Field extends Element
                     $options['disabled'] = true;
                 }
             }
+        }
+        return $options;
+    }
+
+    protected function vocabularyOptions($vocabulary, $options = [])
+    {
+        $options['choices'] = $vocabulary->terms();
+        $options['choice_value'] = 'name';
+        $options['choice_name'] = 'name';
+        $options['choice_label'] = 'keyword';
+        if (!$this->attribute() || $this->attribute()->isRequired()) {
+            $options['placeholder'] = null;
+        } else {
+            $options['placeholder'] = $vocabulary->keyword().'.placeholder';
         }
         return $options;
     }
@@ -222,7 +240,6 @@ class Field extends Element
 
     public function buildForm(FormBuilderInterface $builder, $data, $options = [])
     {
-        dump($this->name());
         if ($this->formTypeClass() == SubmitType::class) {
             // HACK Cleanup along with other standalone elements
             $options = [];
@@ -230,8 +247,6 @@ class Field extends Element
         } else {
             $options = array_replace_recursive($this->formOptions($data), $options);
         }
-        dump($options);
-        //$builder->add($this->formName(), $this->formTypeClass(), $this->formOptions($data));
         $fieldBuilder = $this->formBuilder($data, $options);
         $builder->add($fieldBuilder);
     }

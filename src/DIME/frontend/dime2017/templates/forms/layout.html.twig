@@ -1,5 +1,6 @@
 {% use "bootstrap_3_horizontal_layout.html.twig" %}
 
+{# Fix nested blank labels, see https://github.com/symfony/symfony/pull/19247 #}
 {% block form_label -%}
     {% spaceless %}
         {% if label is not same as(false) %}
@@ -9,6 +10,7 @@
     {% endspaceless %}
 {%- endblock form_label %}
 
+{# Fix nested blank labels, see https://github.com/symfony/symfony/pull/19247 #}
 {% block form_group_class -%}
     {%- if label is same as(false) -%}
         col-sm-12
@@ -17,13 +19,17 @@
     {%- endif -%}
 {%- endblock form_group_class %}
 
-{% block panel_row -%}
-    <div class="form-group">
-        <div class="{{ block('form_panel_class') }}">
-            {{- form_widget(form) -}}
-        </div>
-    </div>
-{%- endblock panel_row %}
+{# Custom blocks #}
+
+{% block scalar_form_widget -%}
+    {#<div class="input-group">#}
+        {{- form_widget(form) -}}
+    {#</div>#}
+{%- endblock scalar_form_widget %}
+
+{% block static_widget -%}
+    <p class="form-control-static"></p>
+{%- endblock static_widget %}
 
 {% block measurement_widget -%}
     <div class="input-group">
@@ -37,59 +43,3 @@
          </div>
     </div>
 {%- endblock measurement_widget %}
-
-{% block submit_widget -%}
-    {% set attr = attr | merge({
-        class: (attr.class | default('btn-default') ~ ' btn-xs btn') | trim
-    }) %}
-    {{- parent() -}}
-{%- endblock %}
-
-{% block panel_widget %}
-
-    <div class="panel panel-default">
-
-        <div class="panel-heading">
-            <div class="row">
-                <div class="col col-xs-6">
-                    <h3 class="panel-title">{{ keyword|trans }}</h3>
-                </div>
-                <div class="col col-xs-6 text-right">
-                    {{ form_widget(form.lock) }}
-                </div>
-            </div>
-        </div>
-
-        <div class="panel-body">
-            {% for child in form.children if child.vars.id != form.save.vars.id %}
-                {{ form_row(child) }}
-            {% endfor %}
-        </div>
-        <div class="panel-footer text-right">
-            {{ form_widget(form.save) }}
-        </div>
-
-    </div>
-
-{% endblock panel_widget %}
-
-{% block event_row -%}
-    <div class="form-group">
-        <div class="form-inline">
-            {{- form_widget(form) -}}
-        </div>
-    </div>
-{%- endblock event_row %}
-
-{% block embed_row -%}
-    {{ embed|raw }}
-{%- endblock embed_row %}
-
-{% block myweather_row -%}
-    <h3>{{ title }}</h3>
-    <a href="http://www.accuweather.com/en/gb/london/ec4a-2/weather-forecast/328328" class="aw-widget-legal">
-        <!--By accessing and/or using this code snippet, you agree to AccuWeather’s terms and conditions (in English) which can be found at http://www.accuweather.com/en/free-weather-widgets/terms and AccuWeather’s Privacy Statement (in English) which can be found at http://www.accuweather.com/en/privacy.-->
-    </a>
-    <div id="awcc1468847702258" class="aw-widget-current" data-locationkey="" data-unit="c" data-language="en-gb" data-useip="true" data-uid="awcc1468847702258"></div>
-    <script type="text/javascript" src="http://oap.accuweather.com/launch.js"></script>
-{%- endblock myweather_row %}

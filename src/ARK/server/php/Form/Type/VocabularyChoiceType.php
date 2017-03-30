@@ -30,29 +30,23 @@
 
 namespace ARK\Form\Type;
 
-use ARK\Form\Type\AbstractFormType;
-use ARK\Model\Property;
-use ARK\Form\Type\PropertyDataMapper;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class VocabularyChoiceType extends AbstractFormType
+class VocabularyChoiceType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $builder->addModelTransformer($this);
-    }
-
-    protected function options()
-    {
-        return [
-            'data_class' => null,
+        $resolver->setDefaults([
             'choice_value' => 'name',
             'choice_name' => 'name',
             'choice_label' => 'keyword',
+            'field' => null,
+            'field_options' => [],
             'placeholder' => false,
-            'placeholder_in_choices' => false,
-        ];
+        ]);
     }
 
     public function getParent()

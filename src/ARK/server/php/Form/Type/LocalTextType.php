@@ -39,10 +39,10 @@ class LocalTextType extends ScalarFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        dump('build text');
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
         $builder->add('previous', HiddenType::class, $fieldOptions);
+        $builder->setDataMapper($this);
     }
 
     public function mapDataToForms($property, $forms)
@@ -99,6 +99,7 @@ class LocalTextType extends ScalarFormType
         }
         $property->setValue($values);
     }
+
     public function getParent()
     {
         return ScalarFormType::class;

@@ -89,7 +89,8 @@ function updateMunicipality() {
     var northing = $('.mappick_northing').val();
     var wkt = 'POINT(' + easting + ' ' + northing + ')';
     $.post(path + 'api/geo/find', wkt, function(result) {
-        $('#dime_find_item_kommune').val(result['kommune']['term']).trigger("change");
+        // TODO Find way without using actual form IDs
+        $('#dime_find_item_kommune_term').val(result['kommune']['term']).trigger("change");
         $('#dime_find_item_museum_module').val(result['museum']['module']);
         $('#dime_find_item_museum_item').val(result['museum']['item']);
         $('#dime_find_item_museum_content').val(result['museum']['name']).trigger("change");

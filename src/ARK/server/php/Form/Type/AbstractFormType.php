@@ -59,7 +59,6 @@ abstract class AbstractFormType extends AbstractType implements DataMapperInterf
     // Configure the *build* options only, not passed to view!
     public function configureOptions(OptionsResolver $resolver)
     {
-        dump('configure options');
         $resolver->setDefaults(array_merge(self::OPTIONS, $this->options()));
     }
 

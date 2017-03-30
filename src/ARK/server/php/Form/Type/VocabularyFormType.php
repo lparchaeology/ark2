@@ -30,31 +30,50 @@
 
 namespace ARK\Form\Type;
 
-use ARK\Form\Type\AbstractFormType;
-use DateTime;
+use ARK\Form\Type\ScalarFormType;
+use ARK\Model\Property;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
-class DateTimeFormType extends AbstractFormType
+class VocabularyFormType extends ScalarFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        dump('build');
         $builder->setDataMapper($this);
-        $builder->addModelTransformer($this);
     }
 
-    protected function options()
+    public function mapDataToForms($data, $forms)
     {
-        return [
-            'widget' => 'single_text',
-            'html5' => false,
-            'attr' => ['class' => 'datetimepicker'],
-        ];
+        $forms = iterator_to_array($forms);
+        if ($data instanceof Property) {
+            $value = $data->value();
+            $format = $data->attribute()->format();
+            $forms[$format->valueName()]->setData($value);
+            if ($format->parameterName() == 'concept') {
+                $forms[$format->parameterName()]->setData($data->attribute()->vocabulary()->concept());
+            }
+        }
+    }
+
+    public function mapFormsToData($forms, &$data)
+    {
+        $forms = iterator_to_array($forms);
+        if ($data instanceof Property) {
+            $format = $data->attribute()->format();
+            $value = null;
+            if ($format->isAtomic()) {
+                $value = $forms[$format->valueName()]->getData();
+            } else {
+                foreach ($forms as $key => $form) {
+                    $value[$key] = $forms[$key]->getData();
+                }
+            }
+        }
+        $data->setValue($value);
     }
 
     public function getParent()
     {
-        return DateTimeType::class;
+        return ScalarFormType::class;
     }
 }
