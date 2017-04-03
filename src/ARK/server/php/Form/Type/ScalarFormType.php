@@ -39,18 +39,14 @@ class ScalarFormType extends AbstractFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // TODO Get format/parm options properly
-        $fieldOptions['label'] = false;
-        $fieldOptions['mapped'] = false;
-        $field = $options['field'];
-        dump($options);
+        $field = $options['field']['object'];
         $format = $field->attribute()->format();
-        $builder->add($format->valueName(), $field->valueFormType(), $options['field_options']);
-        if ($format->formatName()) {
-            $builder->add($format->formatName(), $field->formatFormType(), $fieldOptions);
+        $builder->add($format->valueName(), $options['field']['value']['type'], $options['field']['value']['options']);
+        if ($options['field']['parameter'] !== null) {
+            $builder->add($format->parameterName(), $options['field']['parameter']['type'], $options['field']['parameter']['options']);
         }
-        if ($format->parameterName()) {
-            $builder->add($format->parameterName(), $field->parameterFormType(), $fieldOptions);
+        if ($options['field']['format'] !== null) {
+            $builder->add($format->formatName(), $options['field']['format']['type'], $options['field']['format']['options']);
         }
         $builder->setDataMapper($this);
     }

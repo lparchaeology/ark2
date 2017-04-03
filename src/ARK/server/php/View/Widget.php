@@ -72,13 +72,18 @@ class Widget extends Element
         return parent::formTypeClass();
     }
 
-    public function formOptions($data, $options = [])
+    public function formOptions($data, $options)
     {
         if ($this->formOptionsArray === null) {
             $this->formOptionsArray = ($this->formOptions ? json_decode($this->formOptions, true) : []);
         }
-        $options = $this->formOptionsArray;
-        $options['label'] = ($this->showLabel() ? $this->keyword() : false);
+        $cellOptions = $options['cell'];
+        unset($options['cell']);
+        unset($options['required']);
+        $options = array_merge_recursive($this->formOptionsArray, $options);
+        if ($options['label'] === null) {
+            $options['label'] = ($this->showLabel() ? $this->keyword() : false);
+        }
         // FIXME HACK Need to find a better way to build custom fields!
         if ($this->name() == 'dime_find_actions') {
             // TODO Current Actor
@@ -97,22 +102,16 @@ class Widget extends Element
 
     public function formData($data)
     {
-        if ($data instanceof Item && $this->hasAttribute()) {
-            return $data->property($this->attribute->name());
-        }
-        if (is_array($data) && isset($data[$this->name()])) {
-            return $data[$this->name()];
-        }
         return null;
     }
 
     public function buildForm(FormBuilderInterface $builder, $data, $options = [])
     {
         // TODO Only show widgets if allowed
-        if ($options['display_mode'] == 'edit' && !Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            return;
-        }
-        $options = array_replace_recursive($this->formOptions($data), $options);
+        //if ($options['display_mode'] == 'edit' && !Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+        //    return;
+        //}
+        $options = $this->formOptions($data, $options);
         $fieldBuilder = $this->formBuilder($data, $options);
         $builder->add($fieldBuilder);
     }
@@ -121,7 +120,7 @@ class Widget extends Element
     {
         $options['data'] = $this->formData($data[$form->vars['id']]);
         $options['forms'] = $forms;
-        $options['form'] = $form;
+        $options['form'] = $form[$this->formName()];
         return Service::renderView($this->template(), $options);
     }
 

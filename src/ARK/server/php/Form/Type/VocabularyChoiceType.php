@@ -44,7 +44,6 @@ class VocabularyChoiceType extends AbstractType
             'choice_name' => 'name',
             'choice_label' => 'keyword',
             'field' => null,
-            'field_options' => [],
             'placeholder' => false,
         ]);
     }

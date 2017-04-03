@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6
+-- version 4.6.5.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 03, 2017 at 06:26 AM
--- Server version: 10.1.22-MariaDB
--- PHP Version: 7.1.3
+-- Generation Time: Apr 03, 2017 at 09:30 PM
+-- Server version: 5.6.34
+-- PHP Version: 7.1.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -195,7 +195,7 @@ INSERT INTO `ark_format` (`format`, `datatype`, `value_name`, `value_form_class`
 ('spatial', 'spatial', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'format.geometry'),
 ('string', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'format.string'),
 ('telephone', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'format.telephone'),
-('term', 'string', 'term', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', 'concept', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, 'ARK\\Form\\Type\\VocabularyFormType', 0, 0, 0, 1, 1, 1, 0, 'format.identifier'),
+('term', 'string', 'term', 'ARK\\Form\\Type\\VocabularyChoiceType', 'concept', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, 'ARK\\Form\\Type\\VocabularyFormType', 0, 0, 0, 1, 1, 1, 0, 'format.identifier'),
 ('time', 'time', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'format.time'),
 ('url', 'text', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 1, 1, 1, 0, 'format.url'),
 ('weekdate', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'format.weekdate'),
@@ -5467,39 +5467,39 @@ CREATE TABLE `ark_workflow_update` (
 --
 
 INSERT INTO `ark_workflow_update` (`schma`, `action`, `type`, `attribute`) VALUES
-('dime.find', 'accession', '', 'owner'),
-('dime.find', 'accession', '', 'process'),
-('dime.find', 'appraise', '', 'process'),
-('dime.find', 'appraise', '', 'treasure'),
-('dime.find', 'assess', '', 'process'),
-('dime.find', 'assess', '', 'treasure'),
+('dime.find', 'receive', '', 'custodian'),
+('dime.find', 'record', '', 'custodian'),
 ('dime.find', 'decline', '', 'custody'),
-('dime.find', 'decline', '', 'recipient'),
-('dime.find', 'delete', '', 'process'),
 ('dime.find', 'destroy', '', 'custody'),
 ('dime.find', 'discard', '', 'custody'),
 ('dime.find', 'lose', '', 'custody'),
-('dime.find', 'receive', '', 'custodian'),
 ('dime.find', 'receive', '', 'custody'),
-('dime.find', 'receive', '', 'recipient'),
-('dime.find', 'record', '', 'custodian'),
 ('dime.find', 'record', '', 'custody'),
-('dime.find', 'record', '', 'finder'),
-('dime.find', 'record', '', 'owner'),
-('dime.find', 'record', '', 'process'),
-('dime.find', 'record', '', 'treasure'),
 ('dime.find', 'recover', '', 'custody'),
+('dime.find', 'request', '', 'custody'),
+('dime.find', 'send', '', 'custody'),
+('dime.find', 'withdraw', '', 'custody'),
+('dime.find', 'record', '', 'finder'),
+('dime.find', 'accession', '', 'owner'),
+('dime.find', 'record', '', 'owner'),
+('dime.find', 'transfer', '', 'owner'),
+('dime.find', 'accession', '', 'process'),
+('dime.find', 'appraise', '', 'process'),
+('dime.find', 'assess', '', 'process'),
+('dime.find', 'delete', '', 'process'),
+('dime.find', 'record', '', 'process'),
 ('dime.find', 'reject', '', 'process'),
 ('dime.find', 'release', '', 'process'),
 ('dime.find', 'report', '', 'process'),
-('dime.find', 'request', '', 'custody'),
-('dime.find', 'request', '', 'recipient'),
-('dime.find', 'send', '', 'custody'),
-('dime.find', 'send', '', 'recipient'),
-('dime.find', 'transfer', '', 'owner'),
 ('dime.find', 'validate', '', 'process'),
-('dime.find', 'withdraw', '', 'custody'),
-('dime.find', 'withdraw', '', 'recipient');
+('dime.find', 'decline', '', 'recipient'),
+('dime.find', 'receive', '', 'recipient'),
+('dime.find', 'request', '', 'recipient'),
+('dime.find', 'send', '', 'recipient'),
+('dime.find', 'withdraw', '', 'recipient'),
+('dime.find', 'appraise', '', 'treasure'),
+('dime.find', 'assess', '', 'treasure'),
+('dime.find', 'record', '', 'treasure');
 
 -- --------------------------------------------------------
 

@@ -70,17 +70,23 @@ class Field extends Element
 
     public function valueMode()
     {
-        return $this->parameter;
+        return $this->value;
     }
 
     public function parameterMode()
     {
-        return $this->parameter;
+        if (!$this->attribute()->format()->parameterName()) {
+            return null;
+        }
+        return ($this->parameter ?: 'hidden');
     }
 
     public function formatMode()
     {
-        return $this->format;
+        if (!$this->attribute()->format()->formatName()) {
+            return null;
+        }
+        return ($this->format ?: 'hidden');
     }
 
     public function formName()
@@ -130,64 +136,32 @@ class Field extends Element
         return ($this->keyword ?: $this->attribute->keyword());
     }
 
-    public function formOptions($data, $options = [])
+    public function formOptions($data, $options)
     {
-        if (isset($options['cell'])) {
-            $cell = $options['cell'];
-            unset($options['cell']);
-        } else {
-            $cell = [];
-        }
-        $options['field']['object'] = $this;
-        $options['field_options'] = $this->fieldOptions($data);
-        if (!isset($options['label'])) {
+        $cellOptions = $options['cell'];
+        unset($options['cell']);
+        if ($options['label'] === null) {
             $options['label'] = ($this->keyword() ?: false);
         }
-        if (!isset($options['required']) || !$options['required']) {
+        if (!$options['required']) {
             $options['required'] = $this->attribute()->isRequired();
         }
         if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $options['attr']['readonly'] = true;
         }
-        $options['field']['value'] = $this->valueOptions($cell);
-        dump('formOptions');
-        dump($options);
+        $options['field']['object'] = $this;
+        $options['field']['value'] = $this->valueOptions($cellOptions['value']);
+        $options['field']['parameter'] = $this->parameterOptions($cellOptions['parameter']);
+        $options['field']['format'] = $this->formatOptions($cellOptions['format']);
         return $options;
     }
 
-    protected function valueOptions($cell = [])
-    {
-        $options['mode'] = (isset($cell['value']['mode']) ? $cell['value']['mode'] : $this->valueMode());
-        $options['type'] = $this->modeToType($options['mode'], $this->valueFormType());
-        $options['options'] = $this->fieldOptions($data);
-    }
-
-    protected function parameterOptions($cell = [])
-    {
-        $options['mode'] = (isset($cell['parameter']['mode']) ? $cell['parameter']['mode'] : $this->parameterMode());
-        $options['type'] = $this->modeToType($options['mode'], $this->parameterFormType());
-        $options['options']['mapped'] = false;
-        $options['options']['label'] = false;
-    }
-
-    protected function formatOptions($cell = [])
-    {
-        $options['mode'] = (isset($cell['value']['mode']) ? $cell['value']['mode'] : $this->valueMode());
-        $options['type'] = $this->modeToType($options['mode'], $this->valueFormType());
-        $options['options'] = $this->fieldOptions($data);
-        $options['options']['mapped'] = false;
-        $options['options']['label'] = false;
-    }
-
-    public function fieldOptions($data)
+    protected function valueOptions($cellOptions)
     {
         if ($this->formOptionsArray === null) {
             $this->formOptionsArray = ($this->formOptions ? json_decode($this->formOptions, true) : []);
         }
         $options = $this->formOptionsArray;
-
-        $options['mapped'] = false;
-        $options['label'] = false;
         // TODO Nicer way to set js date pickers?
         if (isset($options['widget']) && $options['widget'] == 'picker') {
             $options['widget'] = 'single_text';
@@ -210,9 +184,30 @@ class Field extends Element
                 $options['disabled'] = true;
             }
         }
-        dump('fieldOptions');
-        dump($options);
-        return $options;
+        return $this->baseOptions($cellOptions, $options, $this->valueMode(), $this->valueFormType());
+    }
+
+    protected function parameterOptions($cellOptions)
+    {
+        return $this->baseOptions($cellOptions, [], $this->parameterMode(), $this->parameterFormType());
+    }
+
+    protected function formatOptions($cellOptions)
+    {
+        return $this->baseOptions($cellOptions, [], $this->formatMode(), $this->formatFormType());
+    }
+
+    protected function baseOptions($cellOptions, $subOptions, $fieldMode, $formType)
+    {
+        if (!$fieldMode) {
+            return null;
+        }
+        $base['mode'] = ($cellOptions['mode'] ?: $fieldMode);
+        $base['type'] = $this->modeToType($base['mode'], $formType);
+        $base['options'] = $subOptions;
+        $base['options']['mapped'] = false;
+        $base['options']['label'] = false;
+        return $base;
     }
 
     protected function vocabularyOptions(Vocabulary $vocabulary, $options = [])
@@ -221,8 +216,6 @@ class Field extends Element
         if ($this->attribute()->isRequired()) {
             $options['placeholder'] = null;
         }
-        dump('vocabOptions');
-        dump($options);
         return $options;
     }
 
@@ -239,8 +232,6 @@ class Field extends Element
 
     public function buildForm(FormBuilderInterface $builder, $data, $options = [])
     {
-        dump('buildForm');
-        dump($options);
         // TODO Do this properly
         if ($this->formName() == 'findpoint' && !Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             return;
@@ -248,8 +239,8 @@ class Field extends Element
         //if (!Service::security()->hasVisibility($actor, $this->attribute())) {
         //    return;
         //}
-        $options = array_replace_recursive($this->formOptions($data), $options);
-        dump('merged');
+        $options = $this->formOptions($data, $options);
+        dump($this->formName());
         dump($options);
         $fieldBuilder = $this->formBuilder($data, $options);
         $builder->add($fieldBuilder);
@@ -257,6 +248,10 @@ class Field extends Element
 
     public function renderView($data, $forms = null, $form = null, array $options = [])
     {
+        // TODO Do this properly
+        if ($this->formName() == 'findpoint' && !Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            return;
+        }
         if ($form && $this->template()) {
             $options['field'] = $this;
             $options['data'] = $this->formData($data[$form->vars['id']]);

@@ -87,8 +87,8 @@ abstract class Layout extends Element
     public function buildForms($data)
     {
         if ($this->formRoot) {
-            $builder = $this->formBuilder($data, $this->formOptions($data));
-            $this->buildForm($builder, $data[$this->element], $this->formOptions($data));
+            $builder = $this->formBuilder($data, $this->formOptions($data, []));
+            $this->buildForm($builder, $data[$this->element], $this->formOptions($data, []));
             return [$this->element => $builder->getForm()];
         }
         $forms = [];

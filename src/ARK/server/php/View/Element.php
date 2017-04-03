@@ -96,7 +96,7 @@ abstract class Element
         return $this->type->formTypeClass();
     }
 
-    public function formOptions($data, $options = [])
+    public function formOptions($data, $options)
     {
         return $options;
     }

@@ -49,9 +49,7 @@ class VocabularyFormType extends ScalarFormType
             $value = $data->value();
             $format = $data->attribute()->format();
             $forms[$format->valueName()]->setData($value);
-            if ($format->parameterName() == 'concept') {
-                $forms[$format->parameterName()]->setData($data->attribute()->vocabulary()->concept());
-            }
+            $forms[$format->parameterName()]->setData($data->attribute()->vocabulary()->concept());
         }
     }
 

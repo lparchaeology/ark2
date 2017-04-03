@@ -33,6 +33,7 @@ namespace ARK\View;
 use ARK\Model\EnabledTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\Service;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class Cell
@@ -95,6 +96,9 @@ class Cell
 
     public function valueMode()
     {
+        if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            return 'static';
+        }
         return $this->value;
     }
 
@@ -115,22 +119,14 @@ class Cell
             if (!is_array($this->formOptionsArray)) {
                 $this->formOptionsArray = [];
             }
-            if ($this->label !== null) {
-                $this->formOptionsArray['label'] = $this->label;
-            }
-            if ($this->value !== null) {
-                $this->formOptionsArray['cell']['value']['mode'] = $this->value;
-            }
-            if ($this->parameter !== null) {
-                $this->formOptionsArray['cell']['parameter']['mode'] = $this->parameter;
-            }
-            if ($this->format !== null) {
-                $this->formOptionsArray['cell']['format']['mode'] = $this->format;
-            }
+            $this->formOptionsArray['label'] = $this->showLabel();
+            $this->formOptionsArray['required'] = null;
+            $this->formOptionsArray['cell']['value']['mode'] = $this->valueMode();
+            $this->formOptionsArray['cell']['parameter']['mode'] = $this->parameterMode();
+            $this->formOptionsArray['cell']['format']['mode'] = $this->formatMode();
         }
-        unset($options['label']);
         $options = array_merge($options, $this->formOptionsArray);
-        return $this->formOptionsArray;
+        return $options;
     }
 
     public function buildForms($data)

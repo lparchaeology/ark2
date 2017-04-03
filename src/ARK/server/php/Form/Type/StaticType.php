@@ -30,8 +30,49 @@
 
 namespace ARK\Form\Type;
 
+use DateTime;
+use ARK\Vocabulary\Term;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class StaticType extends AbstractType
+class StaticType extends AbstractType implements DataTransformerInterface
 {
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->addModelTransformer($this);
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'html5' => null,
+            'widget' => null,
+            'choices' => null,
+            'choice_value' => 'name',
+            'choice_name' => 'name',
+            'choice_label' => 'keyword',
+            'field' => null,
+            'placeholder' => false,
+            'expanded' => false,
+            'multiple' => false,
+        ]);
+    }
+
+    public function transform($value)
+    {
+        if ($value instanceof DateTime) {
+            return $value->format('Y-m-d H:i:s');
+        }
+        if ($value instanceof Term) {
+            return $value->keyword();
+        }
+        return $value;
+    }
+
+    public function reverseTransform($value)
+    {
+        return $value;
+    }
 }
