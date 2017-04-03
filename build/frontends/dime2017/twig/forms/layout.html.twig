@@ -28,7 +28,7 @@
 {%- endblock scalar_form_widget %}
 
 {% block static_widget -%}
-    <p class="form-control-static"></p>
+    <p class="form-control-static">{% if value is not empty %}{{ value }}{% endif %}</p>
 {%- endblock static_widget %}
 
 {% block measurement_widget -%}
