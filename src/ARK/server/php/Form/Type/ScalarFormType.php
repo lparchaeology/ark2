@@ -43,6 +43,7 @@ class ScalarFormType extends AbstractFormType
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
         $field = $options['field'];
+        dump($options);
         $format = $field->attribute()->format();
         $builder->add($format->valueName(), $field->valueFormType(), $options['field_options']);
         if ($format->formatName()) {

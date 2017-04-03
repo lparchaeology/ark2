@@ -45,8 +45,7 @@ class Cell
     protected $seq = 0;
     protected $itemType = null;
     protected $label = null;
-    protected $disabled = null;
-    protected $hidden = null;
+    protected $value = null;
     protected $parameter = null;
     protected $format = null;
     protected $element = null;
@@ -94,27 +93,22 @@ class Cell
         return $this->label;
     }
 
-    public function isDisabled()
+    public function valueMode()
     {
-        return $this->disabled;
+        return $this->value;
     }
 
-    public function isHidden()
-    {
-        return $this->hidden;
-    }
-
-    public function showParameter()
+    public function parameterMode()
     {
         return $this->parameter;
     }
 
-    public function showFormat()
+    public function formatMode()
     {
         return $this->format;
     }
 
-    public function formOptions($data)
+    public function formOptions($data, $options = [])
     {
         if ($this->formOptionsArray === null) {
             $this->formOptionsArray = json_decode($this->formOptions, true);
@@ -124,19 +118,18 @@ class Cell
             if ($this->label !== null) {
                 $this->formOptionsArray['label'] = $this->label;
             }
-            if ($this->disabled !== null) {
-                $this->formOptionsArray['disabled'] = !$this->disabled;
-            }
-            if ($this->hidden !== null) {
-                $this->formOptionsArray['hidden'] = !$this->hidden;
+            if ($this->value !== null) {
+                $this->formOptionsArray['cell']['value']['mode'] = $this->value;
             }
             if ($this->parameter !== null) {
-                $this->formOptionsArray['field_options']['parameter'] = !$this->parameter;
+                $this->formOptionsArray['cell']['parameter']['mode'] = $this->parameter;
             }
             if ($this->format !== null) {
-                $this->formOptionsArray['field_options']['format'] = !$this->format;
+                $this->formOptionsArray['cell']['format']['mode'] = $this->format;
             }
         }
+        unset($options['label']);
+        $options = array_merge($options, $this->formOptionsArray);
         return $this->formOptionsArray;
     }
 
@@ -147,9 +140,7 @@ class Cell
 
     public function buildForm(FormBuilderInterface $builder, $data, $options = [])
     {
-        unset($options['label']);
-        $options = array_merge($options, $this->formOptions($data));
-        $this->element->buildForm($builder, $data, $options);
+        $this->element->buildForm($builder, $data, $this->formOptions($data, $options));
     }
 
     public function renderView($data, $forms = null, $form = null, array $options = [])
@@ -172,16 +163,15 @@ class Cell
         $builder->addStringKey('itemType', 30, 'item_type');
 
         // Fields
-        $builder->addStringField('formOptions', 4000, 'form_options');
         $builder->addField('label', 'boolean');
-        $builder->addField('disabled', 'boolean');
-        $builder->addField('hidden', 'boolean');
-        $builder->addField('parameter', 'boolean');
-        $builder->addField('format', 'boolean');
+        $builder->addStringField('value', 10);
+        $builder->addStringField('parameter', 10);
+        $builder->addStringField('format', 10);
+        $builder->addStringField('formOptions', 4000, 'form_options');
         EnabledTrait::buildEnabledMetadata($builder);
 
         // Relationships
-        $builder->addManyToOneField('element', 'ARK\View\Element', 'cell', 'element', false);
+        $builder->addManyToOneField('element', 'ARK\View\Element', 'element', 'element', false);
         $builder->addManyToOneField('map', 'ARK\Map\Map');
     }
 }

@@ -31,6 +31,7 @@
 namespace ARK\View;
 
 use ARK\Entity\Actor;
+use ARK\Form\Type\StaticType;
 use ARK\Form\Type\PropertyType;
 use ARK\Form\Type\ActionChoiceType;
 use ARK\Form\Type\VocabularyChoiceType;
@@ -52,16 +53,10 @@ class Field extends Element
     protected $formOptions = '';
     protected $formOptionsArray = null;
     protected $label = true;
-    protected $disabled = false;
-    protected $hidden = false;
-    protected $parameter = false;
-    protected $format = false;
+    protected $value = 'excluded';
+    protected $parameter = null;
+    protected $format = null;
     protected $attribute = null;
-
-    public function hasAttribute()
-    {
-        return $this->attribute !== null;
-    }
 
     public function attribute()
     {
@@ -73,29 +68,24 @@ class Field extends Element
         return $this->label;
     }
 
-    public function isDisabled()
-    {
-        return $this->disabled;
-    }
-
-    public function isHidden()
-    {
-        return $this->hidden;
-    }
-
-    public function showParameter()
+    public function valueMode()
     {
         return $this->parameter;
     }
 
-    public function showFormat()
+    public function parameterMode()
+    {
+        return $this->parameter;
+    }
+
+    public function formatMode()
     {
         return $this->format;
     }
 
     public function formName()
     {
-        return $this->hasAttribute() ? $this->attribute->name() : $this->name();
+        return $this->attribute->name();
     }
 
     public function formTypeClass()
@@ -109,72 +99,84 @@ class Field extends Element
         return parent::formTypeClass();
     }
 
+    private function modeToType($mode, $default = null)
+    {
+        switch ($mode) {
+            case 'hidden':
+                return HiddenType::class;
+            case 'static':
+                return StaticType::class;
+        }
+        return $default;
+    }
+
     public function valueFormType()
     {
-        if ($this->isHidden()) {
-            return HiddenType::class;
-        }
-        if ($this->hasAttribute()) {
-            return $this->attribute()->format()->valueFormType();
-        }
-        return TextType::class;
+        return $this->modeToType($this->value, $this->attribute()->format()->valueFormType());
     }
 
     public function parameterFormType()
     {
-        if ($this->showParameter() && $this->hasAttribute()) {
-            return $this->attribute()->format()->parameterFormType();
-        }
-        return HiddenType::class;
+        return $this->modeToType($this->parameter, $this->attribute()->format()->parameterFormType());
     }
 
     public function formatFormType()
     {
-        if ($this->showFormat() && $this->hasAttribute()) {
-            return $this->attribute()->format()->formatFormType();
-        }
-        return HiddenType::class;
+        return $this->modeToType($this->format, $this->attribute()->format()->formatFormType());
     }
 
     public function keyword()
     {
-        if ($this->keyword) {
-            return $this->keyword;
-        }
-        if ($this->attribute) {
-            return $this->attribute->keyword();
-        }
-        return '';
+        return ($this->keyword ?: $this->attribute->keyword());
     }
 
-    public function formOptions($data)
+    public function formOptions($data, $options = [])
     {
-        $options['field'] = $this;
-        $options['label'] = ($this->keyword() ?: false);
-        $options['field_options'] = $this->fieldOptions($data);
-        if ($this->attribute()) {
-            $options['required'] = $this->attribute()->isRequired();
-            if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-                $options['attr']['readonly'] = true;
-            }
+        if (isset($options['cell'])) {
+            $cell = $options['cell'];
+            unset($options['cell']);
         } else {
-            // FIXME HACK Need to find a better way to build custom fields!
-            if ($this->name() == 'dime_find_actions') {
-                // TODO Current Actor
-                $actor = ORM::find(Actor::class, 'ahavfrue');
-                $options['choices'] = Service::workflow()->actions($actor, $data);
-                $options['choice_value'] = 'name';
-                $options['choice_name'] = 'name';
-                $options['choice_label'] = 'keyword';
-                $options['placeholder'] = null;
-            }
-            if (isset($options['field_options']['vocabulary'])) {
-                $vocabulary = ORM::find(Vocabulary::class, $options['field_options']['vocabulary']);
-                $options = $this->vocabularyOptions($vocabulary, $options);
-                unset($options['field_options']['vocabulary']);
-            }
+            $cell = [];
         }
+        $options['field']['object'] = $this;
+        $options['field_options'] = $this->fieldOptions($data);
+        if (!isset($options['label'])) {
+            $options['label'] = ($this->keyword() ?: false);
+        }
+        if (!isset($options['required']) || !$options['required']) {
+            $options['required'] = $this->attribute()->isRequired();
+        }
+        if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $options['attr']['readonly'] = true;
+        }
+        $options['field']['value'] = $this->valueOptions($cell);
+        dump('formOptions');
+        dump($options);
         return $options;
+    }
+
+    protected function valueOptions($cell = [])
+    {
+        $options['mode'] = (isset($cell['value']['mode']) ? $cell['value']['mode'] : $this->valueMode());
+        $options['type'] = $this->modeToType($options['mode'], $this->valueFormType());
+        $options['options'] = $this->fieldOptions($data);
+    }
+
+    protected function parameterOptions($cell = [])
+    {
+        $options['mode'] = (isset($cell['parameter']['mode']) ? $cell['parameter']['mode'] : $this->parameterMode());
+        $options['type'] = $this->modeToType($options['mode'], $this->parameterFormType());
+        $options['options']['mapped'] = false;
+        $options['options']['label'] = false;
+    }
+
+    protected function formatOptions($cell = [])
+    {
+        $options['mode'] = (isset($cell['value']['mode']) ? $cell['value']['mode'] : $this->valueMode());
+        $options['type'] = $this->modeToType($options['mode'], $this->valueFormType());
+        $options['options'] = $this->fieldOptions($data);
+        $options['options']['mapped'] = false;
+        $options['options']['label'] = false;
     }
 
     public function fieldOptions($data)
@@ -186,50 +188,47 @@ class Field extends Element
 
         $options['mapped'] = false;
         $options['label'] = false;
-        if ($this->attribute()) {
-            // TODO Nicer way to set js date pickers?
-            if (isset($options['widget']) && $options['widget'] == 'picker') {
-                $options['widget'] = 'single_text';
-                $options['html5'] = false;
-                $picker = $this->attribute()->format()->datatype()->id().'picker';
-                if (isset($options['attr']['class'])) {
-                    $options['attr']['class'] = $options['attr']['class'].' '.$picker;
-                } else {
-                    $options['attr']['class'] = $picker;
-                }
-            }
-            if ($this->attribute()->hasVocabulary()) {
-                $options = $this->vocabularyOptions($this->attribute()->vocabulary(), $options);
-            }
-            if ($this->attribute()->hasMultipleOccurrences()) {
-                $options['multiple'] = true;
-            }
-            if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-                if ($this->attribute()->hasVocabulary()) {
-                    $options['disabled'] = true;
-                }
+        // TODO Nicer way to set js date pickers?
+        if (isset($options['widget']) && $options['widget'] == 'picker') {
+            $options['widget'] = 'single_text';
+            $options['html5'] = false;
+            $picker = $this->attribute()->format()->datatype()->id().'picker';
+            if (isset($options['attr']['class'])) {
+                $options['attr']['class'] = $options['attr']['class'].' '.$picker;
+            } else {
+                $options['attr']['class'] = $picker;
             }
         }
+        if ($this->attribute()->hasVocabulary()) {
+            $options = $this->vocabularyOptions($this->attribute()->vocabulary(), $options);
+        }
+        if ($this->attribute()->hasMultipleOccurrences()) {
+            $options['multiple'] = true;
+        }
+        if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            if ($this->attribute()->hasVocabulary()) {
+                $options['disabled'] = true;
+            }
+        }
+        dump('fieldOptions');
+        dump($options);
         return $options;
     }
 
-    protected function vocabularyOptions($vocabulary, $options = [])
+    protected function vocabularyOptions(Vocabulary $vocabulary, $options = [])
     {
-        $options['choices'] = $vocabulary->terms();
-        $options['choice_value'] = 'name';
-        $options['choice_name'] = 'name';
-        $options['choice_label'] = 'keyword';
-        if (!$this->attribute() || $this->attribute()->isRequired()) {
+        $options = parent::vocabularyOptions($vocabulary, $options);
+        if ($this->attribute()->isRequired()) {
             $options['placeholder'] = null;
-        } else {
-            $options['placeholder'] = $vocabulary->keyword().'.placeholder';
         }
+        dump('vocabOptions');
+        dump($options);
         return $options;
     }
 
     public function formData($data)
     {
-        if ($data instanceof Item && $this->hasAttribute()) {
+        if ($data instanceof Item) {
             return $data->property($this->attribute->name());
         }
         if (is_array($data) && isset($data[$this->name()])) {
@@ -240,26 +239,24 @@ class Field extends Element
 
     public function buildForm(FormBuilderInterface $builder, $data, $options = [])
     {
-        if ($this->formTypeClass() == SubmitType::class) {
-            // HACK Cleanup along with other standalone elements
-            $options = [];
-            $options['label'] = ($this->keyword() ?: false);
-        } else {
-            $options = array_replace_recursive($this->formOptions($data), $options);
+        dump('buildForm');
+        dump($options);
+        // TODO Do this properly
+        if ($this->formName() == 'findpoint' && !Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            return;
         }
+        //if (!Service::security()->hasVisibility($actor, $this->attribute())) {
+        //    return;
+        //}
+        $options = array_replace_recursive($this->formOptions($data), $options);
+        dump('merged');
+        dump($options);
         $fieldBuilder = $this->formBuilder($data, $options);
         $builder->add($fieldBuilder);
     }
 
     public function renderView($data, $forms = null, $form = null, array $options = [])
     {
-        if (($this->formName() == 'findpoint' || $this->formName() == 'dime_save' || $this->formName() == 'dime_find_actions')
-            && !Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            if ($form) {
-                $form[$this->formName()]->setRendered();
-            }
-            return '';
-        }
         if ($form && $this->template()) {
             $options['field'] = $this;
             $options['data'] = $this->formData($data[$form->vars['id']]);
@@ -277,7 +274,7 @@ class Field extends Element
             $item = $data['data'];
         }
 
-        if ($item and $this->attribute()) {
+        if ($item) {
             $value = 'FIXME: '.$this->element;
             $value = $item->property($this->attribute()->name())->value();
             if ($this->attribute()->format()->datatype()->id() == 'text') {
@@ -312,10 +309,9 @@ class Field extends Element
         $builder->addStringField('formTypeClass', 100, 'form_type_class');
         $builder->addStringField('formOptions', 4000, 'form_options');
         $builder->addField('label', 'boolean');
-        $builder->addField('disabled', 'boolean');
-        $builder->addField('hidden', 'boolean');
-        $builder->addField('parameter', 'boolean');
-        $builder->addField('format', 'boolean');
+        $builder->addStringField('value', 10);
+        $builder->addStringField('parameter', 10);
+        $builder->addStringField('format', 10);
 
         // Associations
         $builder->addCompositeManyToOneField(

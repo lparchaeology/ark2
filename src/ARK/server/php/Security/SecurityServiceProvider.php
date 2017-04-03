@@ -30,6 +30,7 @@
 
 namespace ARK\Security;
 
+use ARK\Security\Security;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use rootLogin\UserProvider\Entity\LegacyUser as User;
@@ -46,6 +47,9 @@ class SecurityServiceProvider implements ServiceProviderInterface
         $container->register(new RememberMeServiceProvider());
         $container->register(new CsrfServiceProvider());
 
+        $container['security'] = function ($app) {
+            return new Security();
+        };
         $container['security.firewalls'] = [];
         $container->extendArray(
             'security.firewalls',

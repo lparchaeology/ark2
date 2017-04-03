@@ -38,6 +38,7 @@ use ARK\ORM\ClassMetadata;
 use ARK\Service;
 use ARK\View\Type;
 use ARK\View\Cell;
+use ARK\Vocabulary\Vocabulary;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -95,9 +96,19 @@ abstract class Element
         return $this->type->formTypeClass();
     }
 
-    public function formOptions($data)
+    public function formOptions($data, $options = [])
     {
-        return [];
+        return $options;
+    }
+
+    protected function vocabularyOptions(Vocabulary $vocabulary, $options = [])
+    {
+        $options['choices'] = $vocabulary->terms();
+        $options['choice_value'] = 'name';
+        $options['choice_name'] = 'name';
+        $options['choice_label'] = 'keyword';
+        $options['placeholder'] = $vocabulary->keyword();
+        return $options;
     }
 
     public function buildForm(FormBuilderInterface $builder, $data, $options = [])
