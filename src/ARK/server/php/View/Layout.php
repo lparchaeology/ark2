@@ -39,7 +39,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 abstract class Layout extends Element
 {
     protected $schma = null;
-    protected $formRoot = false;
+    protected $formMode = null;
     protected $cells = null;
     protected $grid = null;
     protected $elements = null;
@@ -67,9 +67,17 @@ abstract class Layout extends Element
         return $this->schma;
     }
 
-    public function formRoot()
+    public function formMode()
     {
-        return $this->formRoot;
+        return $this->formMode;
+    }
+
+    public function formOptions($data, $options)
+    {
+        if ($options['mode'] == 'edit' && $this->formMode) {
+            $options['mode'] = $this->formMode;
+        }
+        return $options;
     }
 
     public function cells()
@@ -84,10 +92,10 @@ abstract class Layout extends Element
         return $this->elements;
     }
 
-    public function buildForms($data)
+    public function buildForms($data, $options)
     {
-        if ($this->formRoot) {
-            $builder = $this->formBuilder($data, $this->formOptions($data, []));
+        if ($this->formMode) {
+            $builder = $this->formBuilder($data, $options);
             $this->buildForm($builder, $data[$this->element], $this->formOptions($data, []));
             return [$this->element => $builder->getForm()];
         }
@@ -128,7 +136,7 @@ abstract class Layout extends Element
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_layout');
 
         // Fields
-        $builder->addField('formRoot', 'boolean', [], 'form_root');
+        $builder->addStringField('formMode', 10, 'form_mode');
 
         // Associations
         $builder->addManyToOneField('schma', 'ARK\Model\Schema');

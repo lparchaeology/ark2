@@ -37,10 +37,16 @@ use ARK\View\Element;
 
 class Page extends Element
 {
+    protected $mode = 'view';
     protected $navbar = null;
     protected $sidebar = null;
     protected $content = null;
     protected $footer = null;
+
+    public function mode()
+    {
+        return $this->mode;
+    }
 
     public function navbar()
     {
@@ -66,6 +72,7 @@ class Page extends Element
     {
         $options['data'] = null;
         $options['forms'] = null;
+        $options['mode'] = $this->mode();
         return $options;
     }
 

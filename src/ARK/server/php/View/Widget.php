@@ -107,21 +107,22 @@ class Widget extends Element
 
     public function buildForm(FormBuilderInterface $builder, $data, $options = [])
     {
-        // TODO Only show widgets if allowed
-        //if ($options['display_mode'] == 'edit' && !Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-        //    return;
-        //}
-        $options = $this->formOptions($data, $options);
-        $fieldBuilder = $this->formBuilder($data, $options);
-        $builder->add($fieldBuilder);
+        if ($options['mode'] == 'edit' && Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $options = $this->formOptions($data, $options);
+            $fieldBuilder = $this->formBuilder($data, $options);
+            $builder->add($fieldBuilder);
+        }
     }
 
     public function renderView($data, $forms = null, $form = null, array $options = [])
     {
-        $options['data'] = $this->formData($data[$form->vars['id']]);
-        $options['forms'] = $forms;
-        $options['form'] = $form[$this->formName()];
-        return Service::renderView($this->template(), $options);
+        if (isset($form[$this->formName()])) {
+            $options['data'] = $this->formData($data[$form->vars['id']]);
+            $options['forms'] = $forms;
+            $options['form'] = $form[$this->formName()];
+            return Service::renderView($this->template(), $options);
+        }
+        return '';
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

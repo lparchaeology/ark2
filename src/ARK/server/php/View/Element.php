@@ -115,7 +115,7 @@ abstract class Element
     {
     }
 
-    public function buildForms($data)
+    public function buildForms($data, $options)
     {
         return [];
     }

@@ -70,6 +70,9 @@ class Field extends Element
 
     public function valueMode()
     {
+        if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            return 'static';
+        }
         return $this->value;
     }
 
@@ -143,7 +146,9 @@ class Field extends Element
         if ($options['label'] === null) {
             $options['label'] = ($this->keyword() ?: false);
         }
-        if (!$options['required']) {
+        if ($options['mode'] == 'view') {
+            unset($options['required']);
+        } elseif (!$options['required']) {
             $options['required'] = $this->attribute()->isRequired();
         }
         if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {

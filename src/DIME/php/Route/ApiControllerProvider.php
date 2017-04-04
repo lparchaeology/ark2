@@ -39,25 +39,25 @@ class ApiControllerProvider implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/actors/{actorSlug}/locations', 'DIME\\Action\\JsonApi\\LocationCollectionAction')
+        $controllers->get('/actors/{actorSlug}/locations', 'DIME\\Controller\\JsonApi\\LocationCollectionController')
                     ->bind('api.actors.locations.collection');
 
-        $controllers->get('/actors/{actorSlug}', 'DIME\\Action\\JsonApi\\ActorGetAction')
+        $controllers->get('/actors/{actorSlug}', 'DIME\\Controller\\JsonApi\\ActorGetController')
                     ->bind('api.actors.get');
 
-        $controllers->get('/actors', 'DIME\\Action\\JsonApi\\ActorCollectionAction')
+        $controllers->get('/actors', 'DIME\\Controller\\JsonApi\\ActorCollectionController')
                     ->bind('api.actors.collection');
 
-        $controllers->get('/finds/{findSlug}', 'DIME\\Action\\JsonApi\\FindGetAction')
+        $controllers->get('/finds/{findSlug}', 'DIME\\Controller\\JsonApi\\FindGetController')
                     ->bind('api.finds.get');
 
-        $controllers->get('/finds', 'DIME\\Action\\JsonApi\\FindCollectionAction')
+        $controllers->get('/finds', 'DIME\\Controller\\JsonApi\\FindCollectionController')
                     ->bind('api.finds.collection');
 
-        $controllers->get('/localities/{locationSlug}', 'DIME\\Action\\JsonApi\\LocalityGetAction')
+        $controllers->get('/localities/{locationSlug}', 'DIME\\Controller\\JsonApi\\LocalityGetController')
                     ->bind('api.localities.get');
 
-        $controllers->get('/localities', 'DIME\\Action\\JsonApi\\LocalityCollectionAction')
+        $controllers->get('/localities', 'DIME\\Controller\\JsonApi\\LocalityCollectionController')
                     ->bind('api.localities.collection');
 
         return $controllers;

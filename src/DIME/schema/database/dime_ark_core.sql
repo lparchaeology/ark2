@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 03, 2017 at 09:30 PM
+-- Generation Time: Apr 04, 2017 at 10:01 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -1609,6 +1609,29 @@ INSERT INTO `ark_view_element` (`element`, `type`, `class`, `template`, `enabled
 ('dime_locality_list', 'table', '', '', 1, 0, NULL),
 ('dime_locality_type', 'field', '', '', 1, 0, NULL),
 ('dime_message_page', 'grid', '', '', 1, 0, NULL),
+('dime_nav_about', 'nav', '', '', 1, 0, NULL),
+('dime_nav_add', 'nav', '', '', 1, 0, NULL),
+('dime_nav_add_find', 'nav', '', '', 1, 0, NULL),
+('dime_nav_add_locality', 'nav', '', '', 1, 0, NULL),
+('dime_nav_background', 'nav', '', '', 1, 0, NULL),
+('dime_nav_detector', 'nav', '', '', 1, 0, NULL),
+('dime_nav_exhibits', 'nav', '', '', 1, 0, NULL),
+('dime_nav_forests', 'nav', '', '', 1, 0, NULL),
+('dime_nav_front', 'nav', '', '', 1, 0, NULL),
+('dime_nav_groups', 'nav', '', '', 1, 0, NULL),
+('dime_nav_home', 'nav', '', '', 1, 0, NULL),
+('dime_nav_instructions', 'nav', '', '', 1, 0, NULL),
+('dime_nav_list', 'nav', '', '', 1, 0, NULL),
+('dime_nav_list_find', 'nav', '', '', 1, 0, NULL),
+('dime_nav_list_locality', 'nav', '', '', 1, 0, NULL),
+('dime_nav_museums', 'nav', '', '', 1, 0, NULL),
+('dime_nav_navbar', 'nav', '', '', 1, 0, NULL),
+('dime_nav_news', 'nav', '', '', 1, 0, NULL),
+('dime_nav_partners', 'nav', '', '', 1, 0, NULL),
+('dime_nav_research', 'nav', '', '', 1, 0, NULL),
+('dime_nav_sidebar', 'nav', '', '', 1, 0, NULL),
+('dime_nav_treasure', 'nav', '', '', 1, 0, NULL),
+('dime_nav_weapons', 'nav', '', '', 1, 0, NULL),
 ('dime_save', 'widget', '', '', 1, 0, 'dime.save'),
 ('dime_search', 'widget', '', '', 1, 0, 'dime.search');
 
@@ -1792,37 +1815,37 @@ CREATE TABLE `ark_view_layout` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `item_type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `form_root` tinyint(1) NOT NULL DEFAULT '0'
+  `form_mode` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_view_layout`
 --
 
-INSERT INTO `ark_view_layout` (`element`, `schma`, `item_type`, `form_root`) VALUES
-('core_file_item', NULL, NULL, 1),
-('core_file_list', NULL, NULL, 0),
-('core_message_item', 'core.message', NULL, 1),
-('core_message_list', NULL, NULL, 0),
-('core_page_view', NULL, NULL, 0),
-('dime_actor_item', NULL, NULL, 1),
-('dime_actor_list', NULL, NULL, 0),
-('dime_find_add', NULL, NULL, 0),
-('dime_find_details', NULL, NULL, 0),
-('dime_find_edit', NULL, NULL, 0),
-('dime_find_event', NULL, NULL, 0),
-('dime_find_filter', NULL, NULL, 1),
-('dime_find_item', NULL, NULL, 1),
-('dime_find_list', NULL, NULL, 0),
-('dime_find_map', NULL, NULL, 0),
-('dime_find_process', NULL, NULL, 0),
-('dime_find_search', NULL, NULL, 0),
-('dime_front_page', 'dime.find', NULL, 0),
-('dime_home_action', NULL, NULL, 0),
-('dime_home_page', NULL, NULL, 0),
-('dime_locality_item', NULL, NULL, 1),
-('dime_locality_list', NULL, NULL, 0),
-('dime_message_page', NULL, NULL, 0);
+INSERT INTO `ark_view_layout` (`element`, `schma`, `item_type`, `form_mode`) VALUES
+('core_file_item', NULL, NULL, 'edit'),
+('core_file_list', NULL, NULL, NULL),
+('core_message_item', 'core.message', NULL, 'edit'),
+('core_message_list', NULL, NULL, NULL),
+('core_page_view', NULL, NULL, NULL),
+('dime_actor_item', NULL, NULL, 'edit'),
+('dime_actor_list', NULL, NULL, 'view'),
+('dime_find_add', NULL, NULL, NULL),
+('dime_find_details', NULL, NULL, NULL),
+('dime_find_edit', NULL, NULL, NULL),
+('dime_find_event', NULL, NULL, NULL),
+('dime_find_filter', NULL, NULL, 'edit'),
+('dime_find_item', NULL, NULL, 'edit'),
+('dime_find_list', NULL, NULL, NULL),
+('dime_find_map', NULL, NULL, NULL),
+('dime_find_process', NULL, NULL, NULL),
+('dime_find_search', NULL, NULL, NULL),
+('dime_front_page', 'dime.find', NULL, NULL),
+('dime_home_action', NULL, NULL, NULL),
+('dime_home_page', NULL, NULL, NULL),
+('dime_locality_item', NULL, NULL, 'edit'),
+('dime_locality_list', NULL, NULL, 'view'),
+('dime_message_page', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1840,6 +1863,35 @@ CREATE TABLE `ark_view_nav` (
   `enabled` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `ark_view_nav`
+--
+
+INSERT INTO `ark_view_nav` (`element`, `parent`, `icon`, `route`, `uri`, `seperator`, `enabled`) VALUES
+('dime_nav_about', NULL, '', NULL, NULL, 0, 1),
+('dime_nav_add', 'dime_nav_sidebar', '', NULL, NULL, 0, 1),
+('dime_nav_add_find', 'dime_nav_add', '', NULL, NULL, 0, 1),
+('dime_nav_add_locality', 'dime_nav_add', '', NULL, NULL, 0, 1),
+('dime_nav_background', NULL, '', NULL, NULL, 0, 1),
+('dime_nav_detector', NULL, '', NULL, NULL, 0, 1),
+('dime_nav_exhibits', NULL, '', NULL, NULL, 0, 1),
+('dime_nav_forests', NULL, '', NULL, NULL, 0, 1),
+('dime_nav_front', NULL, '', NULL, NULL, 0, 1),
+('dime_nav_groups', NULL, '', NULL, NULL, 0, 1),
+('dime_nav_home', NULL, '', NULL, NULL, 0, 1),
+('dime_nav_instructions', NULL, '', NULL, NULL, 0, 1),
+('dime_nav_list', 'dime_nav_sidebar', '', NULL, NULL, 0, 1),
+('dime_nav_list_find', 'dime_nav_list', '', NULL, NULL, 0, 1),
+('dime_nav_list_locality', 'dime_nav_list', '', NULL, NULL, 0, 1),
+('dime_nav_museums', NULL, '', NULL, NULL, 0, 1),
+('dime_nav_navbar', NULL, '', NULL, NULL, 0, 1),
+('dime_nav_news', NULL, '', NULL, NULL, 0, 1),
+('dime_nav_partners', NULL, '', NULL, NULL, 0, 1),
+('dime_nav_research', NULL, '', NULL, NULL, 0, 1),
+('dime_nav_sidebar', NULL, '', NULL, NULL, 0, 1),
+('dime_nav_treasure', NULL, '', NULL, NULL, 0, 1),
+('dime_nav_weapons', NULL, '', NULL, NULL, 0, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -1848,6 +1900,7 @@ CREATE TABLE `ark_view_nav` (
 
 CREATE TABLE `ark_view_page` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mode` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'view',
   `content` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `footer` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `navbar` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1888,7 +1941,7 @@ CREATE TABLE `ark_view_type` (
 
 INSERT INTO `ark_view_type` (`type`, `class`, `layout`, `form_type_class`, `template`, `keyword`) VALUES
 ('field', 'ARK\\View\\Field', 0, 'ARK\\Form\\Type\\PropertyType', 'layouts/field.html.twig', ''),
-('grid', 'ARK\\View\\Grid', 1, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FormType', 'layouts/grid.html.twig', ''),
+('grid', 'ARK\\View\\Grid', 1, 'ARK\\Form\\Type\\SimpleFormType', 'layouts/grid.html.twig', ''),
 ('nav', 'ARK\\View\\Nav', 0, NULL, 'blocks/nav.html.twig', ''),
 ('page', 'ARK\\View\\Page', 0, NULL, 'pages/page.html.twig', ''),
 ('tabbed', 'ARK\\View\\Tabbed', 1, NULL, 'layouts/tabbed.html.twig', ''),
@@ -5905,7 +5958,7 @@ ALTER TABLE `ark_view_layout`
 --
 ALTER TABLE `ark_view_nav`
   ADD PRIMARY KEY (`element`),
-  ADD KEY `ark_view_nav_ibfk_2` (`parent`);
+  ADD KEY `parent` (`parent`);
 
 --
 -- Indexes for table `ark_view_page`

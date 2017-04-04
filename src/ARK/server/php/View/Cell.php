@@ -129,9 +129,9 @@ class Cell
         return $options;
     }
 
-    public function buildForms($data)
+    public function buildForms($data, $options)
     {
-        return $this->element->buildForms($data);
+        return $this->element->buildForms($data, $options);
     }
 
     public function buildForm(FormBuilderInterface $builder, $data, $options = [])
