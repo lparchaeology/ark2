@@ -30,35 +30,10 @@
 
 namespace ARK\View;
 
-class Tree
+use Gedmo\Tree\Entity\MappedSuperclass\AbstractClosure;
+
+class Tree extends AbstractClosure
 {
-    // Mapped by driver
-    protected $id;
-    protected $depth;
-    // Mapped by listener
-    protected $ancestor;
-    protected $descendant;
-
-    public function id()
-    {
-        return $this->id;
-    }
-
-    public function ancestor()
-    {
-        return $this->ancestor;
-    }
-
-    public function descendant()
-    {
-        return $this->descendant;
-    }
-
-    public function depth()
-    {
-        return $this->depth;
-    }
-
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table

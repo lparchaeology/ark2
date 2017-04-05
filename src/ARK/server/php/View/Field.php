@@ -147,7 +147,7 @@ class Field extends Element
             $options['label'] = ($this->keyword() ?: false);
         }
         if ($options['mode'] == 'view') {
-            unset($options['required']);
+            $options['required'] = false;
         } elseif (!$options['required']) {
             $options['required'] = $this->attribute()->isRequired();
         }
@@ -245,8 +245,6 @@ class Field extends Element
         //    return;
         //}
         $options = $this->formOptions($data, $options);
-        dump($this->formName());
-        dump($options);
         $fieldBuilder = $this->formBuilder($data, $options);
         $builder->add($fieldBuilder);
     }

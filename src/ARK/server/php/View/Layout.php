@@ -74,9 +74,6 @@ abstract class Layout extends Element
 
     public function formOptions($data, $options)
     {
-        if ($options['mode'] == 'edit' && $this->formMode) {
-            $options['mode'] = $this->formMode;
-        }
         return $options;
     }
 
@@ -95,8 +92,9 @@ abstract class Layout extends Element
     public function buildForms($data, $options)
     {
         if ($this->formMode) {
-            $builder = $this->formBuilder($data, $options);
-            $this->buildForm($builder, $data[$this->element], $this->formOptions($data, []));
+            $opts['mode'] = ($options['mode'] == 'edit' ? $this->formMode : $options['mode']);
+            $builder = $this->formBuilder($data, $opts);
+            $this->buildForm($builder, $data[$this->element], $this->formOptions($data, $opts));
             return [$this->element => $builder->getForm()];
         }
         $forms = [];

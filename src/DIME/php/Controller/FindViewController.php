@@ -33,6 +33,7 @@ namespace DIME\Controller;
 use ARK\Error\ErrorException;
 use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
+use ARK\View\Page;
 use DIME\Controller\EntityController;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,6 +45,13 @@ class FindViewController extends EntityController
         $layout = 'dime_find_item';
         if (!$data[$layout] = ORM::find(Find::class, $itemSlug)) {
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Find not found', "Find $itemSlug not found"));
+        }
+        $page = ORM::find(Page::class, 'dime_page_find');
+        dump($page);
+        dump($page->sidebar());
+        dump($page->sidebar()->children());
+        foreach ($page->sidebar()->children() as $child) {
+            dump($child);
         }
         return $this->renderResponse($request, $data, $layout);
     }

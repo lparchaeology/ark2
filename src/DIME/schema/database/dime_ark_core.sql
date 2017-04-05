@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 04, 2017 at 10:01 PM
+-- Generation Time: Apr 05, 2017 at 08:21 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -1632,6 +1632,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `class`, `template`, `enabled
 ('dime_nav_sidebar', 'nav', '', '', 1, 0, NULL),
 ('dime_nav_treasure', 'nav', '', '', 1, 0, NULL),
 ('dime_nav_weapons', 'nav', '', '', 1, 0, NULL),
+('dime_page_find', 'page', '', '', 1, 0, NULL),
 ('dime_save', 'widget', '', '', 1, 0, 'dime.save'),
 ('dime_search', 'widget', '', '', 1, 0, 'dime.search');
 
@@ -1856,6 +1857,8 @@ INSERT INTO `ark_view_layout` (`element`, `schma`, `item_type`, `form_mode`) VAL
 CREATE TABLE `ark_view_nav` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `parent` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `seq` int(11) NOT NULL DEFAULT '0',
+  `level` int(11) DEFAULT NULL,
   `icon` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `route` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `uri` varchar(2038) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1867,30 +1870,30 @@ CREATE TABLE `ark_view_nav` (
 -- Dumping data for table `ark_view_nav`
 --
 
-INSERT INTO `ark_view_nav` (`element`, `parent`, `icon`, `route`, `uri`, `seperator`, `enabled`) VALUES
-('dime_nav_about', NULL, '', NULL, NULL, 0, 1),
-('dime_nav_add', 'dime_nav_sidebar', '', NULL, NULL, 0, 1),
-('dime_nav_add_find', 'dime_nav_add', '', NULL, NULL, 0, 1),
-('dime_nav_add_locality', 'dime_nav_add', '', NULL, NULL, 0, 1),
-('dime_nav_background', NULL, '', NULL, NULL, 0, 1),
-('dime_nav_detector', NULL, '', NULL, NULL, 0, 1),
-('dime_nav_exhibits', NULL, '', NULL, NULL, 0, 1),
-('dime_nav_forests', NULL, '', NULL, NULL, 0, 1),
-('dime_nav_front', NULL, '', NULL, NULL, 0, 1),
-('dime_nav_groups', NULL, '', NULL, NULL, 0, 1),
-('dime_nav_home', NULL, '', NULL, NULL, 0, 1),
-('dime_nav_instructions', NULL, '', NULL, NULL, 0, 1),
-('dime_nav_list', 'dime_nav_sidebar', '', NULL, NULL, 0, 1),
-('dime_nav_list_find', 'dime_nav_list', '', NULL, NULL, 0, 1),
-('dime_nav_list_locality', 'dime_nav_list', '', NULL, NULL, 0, 1),
-('dime_nav_museums', NULL, '', NULL, NULL, 0, 1),
-('dime_nav_navbar', NULL, '', NULL, NULL, 0, 1),
-('dime_nav_news', NULL, '', NULL, NULL, 0, 1),
-('dime_nav_partners', NULL, '', NULL, NULL, 0, 1),
-('dime_nav_research', NULL, '', NULL, NULL, 0, 1),
-('dime_nav_sidebar', NULL, '', NULL, NULL, 0, 1),
-('dime_nav_treasure', NULL, '', NULL, NULL, 0, 1),
-('dime_nav_weapons', NULL, '', NULL, NULL, 0, 1);
+INSERT INTO `ark_view_nav` (`element`, `parent`, `seq`, `level`, `icon`, `route`, `uri`, `seperator`, `enabled`) VALUES
+('dime_nav_about', NULL, 0, NULL, '', NULL, NULL, 0, 1),
+('dime_nav_add', 'dime_nav_sidebar', 0, NULL, '', NULL, NULL, 0, 1),
+('dime_nav_add_find', 'dime_nav_add', 0, NULL, '', NULL, NULL, 0, 1),
+('dime_nav_add_locality', 'dime_nav_add', 1, NULL, '', NULL, NULL, 0, 1),
+('dime_nav_background', NULL, 0, NULL, '', NULL, NULL, 0, 1),
+('dime_nav_detector', NULL, 0, NULL, '', NULL, NULL, 0, 1),
+('dime_nav_exhibits', NULL, 0, NULL, '', NULL, NULL, 0, 1),
+('dime_nav_forests', NULL, 0, NULL, '', NULL, NULL, 0, 1),
+('dime_nav_front', NULL, 0, NULL, '', NULL, NULL, 0, 1),
+('dime_nav_groups', NULL, 0, NULL, '', NULL, NULL, 0, 1),
+('dime_nav_home', 'dime_nav_navbar', 0, NULL, '', NULL, NULL, 0, 1),
+('dime_nav_instructions', NULL, 0, NULL, '', NULL, NULL, 0, 1),
+('dime_nav_list', 'dime_nav_sidebar', 1, NULL, '', NULL, NULL, 0, 1),
+('dime_nav_list_find', 'dime_nav_list', 0, NULL, '', NULL, NULL, 0, 1),
+('dime_nav_list_locality', 'dime_nav_list', 1, NULL, '', NULL, NULL, 0, 1),
+('dime_nav_museums', NULL, 0, NULL, '', NULL, NULL, 0, 1),
+('dime_nav_navbar', NULL, 0, NULL, '', NULL, NULL, 0, 1),
+('dime_nav_news', NULL, 0, NULL, '', NULL, NULL, 0, 1),
+('dime_nav_partners', NULL, 0, NULL, '', NULL, NULL, 0, 1),
+('dime_nav_research', NULL, 0, NULL, '', NULL, NULL, 0, 1),
+('dime_nav_sidebar', NULL, 0, NULL, '', NULL, NULL, 0, 1),
+('dime_nav_treasure', NULL, 0, NULL, '', NULL, NULL, 0, 1),
+('dime_nav_weapons', NULL, 0, NULL, '', NULL, NULL, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -1907,6 +1910,13 @@ CREATE TABLE `ark_view_page` (
   `sidebar` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `ark_view_page`
+--
+
+INSERT INTO `ark_view_page` (`element`, `mode`, `content`, `footer`, `navbar`, `sidebar`) VALUES
+('dime_page_find', 'view', 'dime_find_item', NULL, 'dime_nav_navbar', 'dime_nav_sidebar');
+
 -- --------------------------------------------------------
 
 --
@@ -1915,9 +1925,9 @@ CREATE TABLE `ark_view_page` (
 
 CREATE TABLE `ark_view_tree` (
   `id` int(11) NOT NULL,
-  `depth` int(11) NOT NULL,
   `ancestor` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `descendent` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
+  `descendent` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `depth` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------

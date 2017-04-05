@@ -35,12 +35,14 @@ use ARK\ORM\ClassMetadata;
 use ARK\Service;
 use ARK\View\Element;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Tree\Entity\Repository\ClosureTreeRepository;
 
 class Nav extends Element
 {
     protected $parent = null;
     protected $children = null;
     protected $level = 0;
+    protected $seq = 0;
     protected $icon = '';
     protected $route = '';
     protected $uri = '';
@@ -70,6 +72,11 @@ class Nav extends Element
     public function level()
     {
         return $this->level;
+    }
+
+    public function sequence()
+    {
+        return $this->seq;
     }
 
     public function icon()
@@ -107,8 +114,10 @@ class Nav extends Element
     {
         // Joined Table Inheritance
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_nav');
-        $builder->setCustomRepositoryClass('Gedmo\Tree\Entity\Repository\ClosureTreeRepository');
+        $builder->setCustomRepositoryClass(ClosureTreeRepository::class);
 
+        $builder->addField('seq', 'integer');
+        $builder->addField('level', 'integer');
         $builder->addStringField('icon', 50);
         $builder->addStringField('route', 50);
         $builder->addStringField('uri', 50);
@@ -123,6 +132,7 @@ class Nav extends Element
         $config['type'] = 'closure';
         $config['closure'] = 'ARK\View\Tree';
         $config['parent'] = 'parent';
+        $config['sortByField'] = 'seq';
         //$config['level'] = 'level';
     }
 }

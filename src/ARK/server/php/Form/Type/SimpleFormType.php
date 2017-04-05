@@ -34,4 +34,12 @@ use ARK\Form\Type\AbstractFormType;
 
 class SimpleFormType extends AbstractFormType
 {
+    protected function options()
+    {
+        return [
+            'forms' => null,
+            'page' => null,
+            'page_config' => null,
+        ];
+    }
 }

@@ -68,8 +68,6 @@ abstract class DimeFormController extends DimeController
         }
         $options['layout'] = $viewLayout;
         $options['data'] = $data;
-        dump('Render Response:');
-        dump($options);
         return Service::renderResponse($template, $options);
     }
 
