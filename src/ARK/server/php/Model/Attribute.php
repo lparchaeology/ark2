@@ -155,7 +155,6 @@ abstract class Attribute
             if ($this->hasMultipleOccurrences()) {
                 $data = [];
                 foreach ($fragments as $fragment) {
-                    dump($fragment->value());
                     $data[] = $this->vocabulary->term($fragment->value());
                 }
                 return $data;

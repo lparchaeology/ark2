@@ -28,7 +28,17 @@
 {%- endblock scalar_form_widget %}
 
 {% block static_widget -%}
-    <p class="form-control-static">{% if value is not empty %}{{ value|translate }}{% endif %}</p>
+    {% if value is empty %}
+        &nbsp;
+    {% elseif value is iterable %}
+        {% set sep = '' %}
+        {% for val in value %}
+            {{ sep ~ val|translate }}
+            {% set sep = '<br />' %}
+        {% endfor %}
+    {% else %}
+        {{ value|translate }}
+    {% endif %}
 {%- endblock static_widget %}
 
 {% block measurement_widget -%}

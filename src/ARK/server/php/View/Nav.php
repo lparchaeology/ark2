@@ -40,17 +40,24 @@ use Gedmo\Tree\Entity\Repository\ClosureTreeRepository;
 class Nav extends Element
 {
     protected $parent = null;
-    protected $children = null;
     protected $level = 0;
     protected $seq = 0;
     protected $icon = '';
     protected $route = '';
     protected $uri = '';
     protected $seperator = false;
+    protected $children = null;
 
-    public function __construct()
+    public function __construct($element, $parent = null, $seq = 0, $separator = false, $route = null, $uri = null, $icon = null)
     {
         parent::__construct();
+        $this->element = $element;
+        $this->parent = $parent;
+        $this->seq = $seq;
+        $this->separator = $separator;
+        $this->route = $route;
+        $this->uri = $uri;
+        $this->icon = $icon;
         $this->children = new ArrayCollection();
     }
 
@@ -92,7 +99,6 @@ class Nav extends Element
     public function uri()
     {
         if ($this->route) {
-            return $this->route;
             return Service::path($this->route);
         }
         return $this->uri;

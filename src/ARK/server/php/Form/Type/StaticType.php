@@ -60,7 +60,7 @@ class StaticType extends AbstractType implements DataTransformerInterface
         ]);
     }
 
-    public function transform($value)
+    private function transformValue($value)
     {
         if ($value instanceof DateTime) {
             return $value->format('Y-m-d H:i:s');
@@ -69,6 +69,18 @@ class StaticType extends AbstractType implements DataTransformerInterface
             return $value->keyword();
         }
         return $value;
+    }
+
+    public function transform($value)
+    {
+        if (is_array($value)) {
+            $transformed = [];
+            foreach ($value as $val) {
+                $transformed[] = $this->transformValue($val);
+            }
+            return $transformed;
+        }
+        return $this->transformValue($value);
     }
 
     public function reverseTransform($value)

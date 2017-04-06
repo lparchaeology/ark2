@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 05, 2017 at 08:21 PM
+-- Generation Time: Apr 06, 2017 at 04:54 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -177,7 +177,7 @@ INSERT INTO `ark_format` (`format`, `datatype`, `value_name`, `value_form_class`
 ('fileversion', 'object', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ARK\\Form\\Type\\FileVersionType', 1, 0, 0, 0, 1, 1, 0, 'format.fileversion'),
 ('float', 'float', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'format.float'),
 ('html', 'text', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 1, 1, 1, 1, 0, 'format.html'),
-('identifier', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ARK\\Form\\Type\\IdType', 0, 0, 0, 1, 1, 1, 0, 'format.identifier'),
+('identifier', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'format.identifier'),
 ('integer', 'integer', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'format.integer'),
 ('item', 'item', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 1, 0, 'format.item'),
 ('key', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'format.key'),
@@ -195,7 +195,7 @@ INSERT INTO `ark_format` (`format`, `datatype`, `value_name`, `value_form_class`
 ('spatial', 'spatial', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'format.geometry'),
 ('string', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'format.string'),
 ('telephone', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'format.telephone'),
-('term', 'string', 'term', 'ARK\\Form\\Type\\VocabularyChoiceType', 'concept', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, 'ARK\\Form\\Type\\VocabularyFormType', 0, 0, 0, 1, 1, 1, 0, 'format.identifier'),
+('term', 'string', 'term', 'ARK\\Form\\Type\\TermChoiceType', 'concept', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, 'ARK\\Form\\Type\\VocabularyFormType', 0, 0, 0, 1, 1, 1, 0, 'format.identifier'),
 ('time', 'time', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'format.time'),
 ('url', 'text', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 1, 1, 1, 0, 'format.url'),
 ('weekdate', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'format.weekdate'),
@@ -1219,7 +1219,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.find.findpoint', 'default', 'Koordinater', ''),
 ('da', 'dime.find.id', 'default', 'DIME ID', ''),
 ('da', 'dime.find.kommune', 'default', 'Kommune', ''),
-('da', 'dime.find.length', 'default', 'Maximal Længde / Diameter', ''),
+('da', 'dime.find.length', 'default', 'Maksimal Dimension', ''),
 ('da', 'dime.find.material', 'default', 'Materiale', ''),
 ('da', 'dime.find.material.secondary', 'default', 'Sekundært Materiale(r)', ''),
 ('da', 'dime.find.period.end', 'default', 'Periode Slut', ''),
@@ -1686,7 +1686,7 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `lab
 ('dime_find_id', 'dime.find', '', 'id', 1, 'readonly', NULL, NULL, NULL, ''),
 ('dime_find_image', 'dime.find', '', 'image', 1, 'active', NULL, NULL, 'ARK\\Form\\Type\\CarouselType', ''),
 ('dime_find_kommune', 'dime.find', '', 'kommune', 1, 'active', NULL, NULL, NULL, ''),
-('dime_find_length', 'dime.find', '', 'length', 1, 'active', 'active', NULL, NULL, ''),
+('dime_find_length', 'dime.find', '', 'length', 1, 'active', 'hidden', NULL, NULL, ''),
 ('dime_find_material', 'dime.find', '', 'material', 1, 'active', NULL, NULL, NULL, ''),
 ('dime_find_museum', 'dime.find', '', 'museum', 1, 'active', NULL, NULL, NULL, ''),
 ('dime_find_period_end', 'dime.find', '', 'period_end', 1, 'active', NULL, NULL, NULL, ''),
@@ -1696,7 +1696,7 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `lab
 ('dime_find_subtype', 'dime.find', '', 'subtype', 1, 'active', NULL, NULL, NULL, ''),
 ('dime_find_treasure', 'dime.find', '', 'treasure', 1, 'active', NULL, NULL, NULL, ''),
 ('dime_find_type', 'dime.find', '', 'type', 1, 'active', NULL, NULL, NULL, ''),
-('dime_find_weight', 'dime.find', '', 'weight', 1, 'active', 'active', NULL, NULL, ''),
+('dime_find_weight', 'dime.find', '', 'weight', 1, 'active', 'hidden', NULL, NULL, ''),
 ('dime_locality_id', 'dime.locality', '', 'id', 1, 'readonliy', NULL, NULL, NULL, ''),
 ('dime_locality_type', 'dime.locality', '', 'type', 1, 'active', NULL, NULL, NULL, '');
 
@@ -1859,7 +1859,7 @@ CREATE TABLE `ark_view_nav` (
   `parent` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `seq` int(11) NOT NULL DEFAULT '0',
   `level` int(11) DEFAULT NULL,
-  `icon` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `icon` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `route` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `uri` varchar(2038) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `seperator` tinyint(1) NOT NULL DEFAULT '0',

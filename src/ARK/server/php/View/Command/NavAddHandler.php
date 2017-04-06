@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Event Form Type
+ * ARK Translation Add Command
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,29 +21,40 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2017 L - P : Heritage LLP.
+ * @copyright  2016 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Form\Type;
+namespace ARK\View\Command;
 
-use ARK\Form\Type\AbstractFormType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use ARK\ORM\ORM;
+use ARK\Service;
+use ARK\View\Command\NavAddMessage;
+use ARK\View\Nav;
 
-class IdType extends AbstractFormType
+class NavAddHandler
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function __invoke(NavAddMessage $msg)
     {
-        $builder->addModelTransformer($this);
-        $builder->setDataMapper($this);
-    }
+        // Validate / Defaults
+        $parent = $msg->parent();
+        if ($parent) {
+            $parent = ORM::find(Nav::class, $msg->parent());
+            if (!$parent) {
+                // TODO Proper error
+                throw new \Exception;
+            }
+        }
+        if ($msg->route()) {
+            // TODO Route object
+        }
 
-    public function getParent()
-    {
-        return TextType::class;
+        // Create
+        $nav = new Nav($msg->nav(), $parent, $msg->seq(), $msg->separator(), $msg->route(), $msg->uri(), $msg->icon());
+        ORM::persist($nav);
+        ORM::flush($nav);
     }
 }
