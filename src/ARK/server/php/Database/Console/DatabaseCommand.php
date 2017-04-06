@@ -31,14 +31,14 @@
 namespace ARK\Database\Console;
 
 use ARK\ARK;
-use ARK\Console\ConsoleCommand;
+use ARK\Console\AbstractCommand;
 use ARK\Database\AdminConnection;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
 
-abstract class DatabaseCommand extends ConsoleCommand
+abstract class DatabaseCommand extends AbstractCommand
 {
     protected function chooseServerConnection($text = null, $user = null)
     {

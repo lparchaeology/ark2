@@ -31,15 +31,12 @@
 namespace ARK\Database\Console;
 
 use ARK\ARK;
-use ARK\Console\ConsoleCommand;
 use ARK\Console\ProcessTrait;
 use ARK\Database\Console\DatabaseCommand;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class DatabaseServerAddCommand extends DatabaseCommand
 {
@@ -52,10 +49,8 @@ class DatabaseServerAddCommand extends DatabaseCommand
              ->addOptionalArgument('server', 'The server key');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function do()
     {
-        parent::execute($input, $output);
-
         $server = $this->getArgument('server');
         if (!$server) {
             $server = $this->askQuestion('Please enter the new server key');
@@ -68,7 +63,7 @@ class DatabaseServerAddCommand extends DatabaseCommand
             $servers['servers']['sqlite']['driver'] = 'pdo_sqlite';
         } elseif (isset($servers['servers'][$server])) {
             $output->writeln("\nFAILED: Server already exists, please choose a new name.");
-            return ConsoleCommand::ERROR_CODE;
+            return $this->errorCode();
         }
 
         // Get the new server details
@@ -103,6 +98,6 @@ class DatabaseServerAddCommand extends DatabaseCommand
         file_put_contents(ARK::serversPath(), json_encode($servers));
         $this->result = $server;
         $this->write("\nServer $server created.");
-        return ConsoleCommand::SUCCESS_CODE;
+        return $this->successCode();
     }
 }

@@ -1,8 +1,7 @@
-#!/usr/bin/env php
 <?php
 
 /**
- * Ark Admin Console
+ * ARK System Console
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -29,11 +28,33 @@
  * @php        >=5.6, >=7.0
  */
 
-ini_set('display_errors', 1);
+namespace ARK\System;
 
-require_once __DIR__.'/../vendor/autoload.php';
+use ARK\Console\AbstractConsole;
+use ARK\System\Application;
+use ARK\System\Console\SystemAboutCommand;
+use ARK\Site\Console\SiteCreateCommand;
+use ARK\Site\Console\SiteFrontendCommand;
+use ARK\Site\Console\SiteMigrateCommand;
+use ARK\Database\Console\DatabaseCloneCommand;
+use ARK\Database\Console\DatabaseServerAddCommand;
 
-set_time_limit(0);
+class Console extends AbstractConsole
+{
+    public function __construct()
+    {
+        parent::__construct('ARK System Admin Console', new Application);
 
-$console = new ARK\System\Console();
-$console->run();
+        // Database Commands
+        $this->add(new DatabaseServerAddCommand());
+        $this->add(new DatabaseCloneCommand());
+
+        // Site Commands
+        $this->add(new SiteCreateCommand());
+        $this->add(new SiteFrontendCommand());
+        $this->add(new SiteMigrateCommand());
+
+        // System Commands
+        $this->add(new SystemAboutCommand());
+    }
+}

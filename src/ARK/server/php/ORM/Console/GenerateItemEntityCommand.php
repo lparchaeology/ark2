@@ -30,13 +30,11 @@
 
 namespace ARK\ORM\Console;
 
-use ARK\Console\ConsoleCommand;
+use ARK\Console\AbstractCommand;
 use ARK\ORM\Command\GenerateItemEntityMessage;
 use ARK\Service;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
-class GenerateItemEntityCommand extends ConsoleCommand
+class GenerateItemEntityCommand extends AbstractCommand
 {
     protected function configure()
     {
@@ -44,16 +42,14 @@ class GenerateItemEntityCommand extends ConsoleCommand
              ->setDescription('Generate ORM Entities for ARK Modules');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function do()
     {
-        parent::execute($input, $output);
-
         $modules = Service::database()->getModules();
         foreach ($modules as $module) {
             $this->write('Generating '.$module['classname']);
             Service::handleCommand(new GenerateItemEntityMessage($module['project'], $module['namespace'], $module['classname']));
         }
 
-        return ConsoleCommand::SUCCESS_CODE;
+        return $this->successCode();
     }
 }

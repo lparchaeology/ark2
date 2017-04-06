@@ -1,8 +1,7 @@
-#!/usr/bin/env php
 <?php
 
 /**
- * Ark Admin Console
+ * ARK Build Console Command
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -29,11 +28,25 @@
  * @php        >=5.6, >=7.0
  */
 
-ini_set('display_errors', 1);
+namespace ARK\Build\Console;
 
-require_once __DIR__.'/../vendor/autoload.php';
+use ARK\Console\ProcessTrait;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
-set_time_limit(0);
+class BuildUpdateCommand extends Command
+{
+    use ProcessTrait;
 
-$console = new ARK\System\Console();
-$console->run();
+    protected function configure()
+    {
+        $this->setName('env:update')
+             ->setDescription('Update the build environment.');
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $this->runProcess('npm run update-env', $output);
+    }
+}

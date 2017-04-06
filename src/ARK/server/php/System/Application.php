@@ -1,8 +1,7 @@
-#!/usr/bin/env php
 <?php
 
 /**
- * Ark Admin Console
+ * ARK System Application
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -29,11 +28,42 @@
  * @php        >=5.6, >=7.0
  */
 
-ini_set('display_errors', 1);
+namespace ARK\System;
 
-require_once __DIR__.'/../vendor/autoload.php';
+use ARK\ARK;
+use ARK\Bus\BusServiceProvider;
+use ARK\Provider\LoggerServiceProvider;
+use ARK\Provider\MailerServiceProvider;
+use Psr\Log\LogLevel;
+use Silex\Application as SilexApplication;
+use Silex\Application\MonologTrait;
+use Silex\Application\SwiftmailerTrait;
+use Silex\Provider\VarDumperServiceProvider;
+use Symfony\Component\Debug\Debug;
 
-set_time_limit(0);
+class Application extends SilexApplication
+{
+    use MonologTrait;
+    use SwiftmailerTrait;
 
-$console = new ARK\System\Console();
-$console->run();
+    public function __construct()
+    {
+        error_reporting(E_ALL);
+        ini_set('display_errors', 1);
+        Debug::enable();
+
+        parent::__construct();
+
+        $this['debug'] = true;
+
+        date_default_timezone_set('UTC');
+
+        $this->register(new LoggerServiceProvider('console'));
+
+        $this->register(new BusServiceProvider);
+
+        $this->register(new MailerServiceProvider());
+
+        $this->register(new VarDumperServiceProvider());
+    }
+}

@@ -1,8 +1,7 @@
-#!/usr/bin/env php
 <?php
 
 /**
- * Ark Admin Console
+ * ARK Build Console Command
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -29,11 +28,20 @@
  * @php        >=5.6, >=7.0
  */
 
-ini_set('display_errors', 1);
+namespace ARK\Build\Console;
 
-require_once __DIR__.'/../vendor/autoload.php';
+use ARK\Build\Console\BuildFrontendCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Output\OutputInterface;
 
-set_time_limit(0);
-
-$console = new ARK\System\Console();
-$console->run();
+class BuildFrontendJsCommand extends BuildFrontendCommand
+{
+    protected function configure()
+    {
+        $this->name = 'js';
+        $this->command = 'js';
+        $this->description = 'Build an ARK frontend JavaScript. (Args: frontend)';
+        parent::configure();
+    }
+}

@@ -31,11 +31,8 @@
 namespace ARK\Database\Console;
 
 use ARK\ARK;
-use ARK\Console\ConsoleCommand;
 use ARK\Database\Console\DatabaseCommand;
 use Doctrine\DBAL\DBALException;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class DatabaseCloneCommand extends DatabaseCommand
 {
@@ -49,10 +46,8 @@ class DatabaseCloneCommand extends DatabaseCommand
              ->addOptionalArgument('new_database', 'The new database');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function do()
     {
-        parent::execute($input, $output);
-
         $sourceServer = $this->getArgument('source');
         $destinationServer = $this->getArgument('destination');
         $sourceDatabase = $this->getArgument('database');
@@ -68,7 +63,7 @@ class DatabaseCloneCommand extends DatabaseCommand
         if ($sourceDatabase) {
             if (!$source->databaseExists($sourceDatabase)) {
                 $this->write('Source database does not exist!');
-                return ConsoleCommand::ERROR_CODE;
+                return $this->errorCode();
             }
         } else {
             $sourceDatabase = $this->chooseDatabase($source, 'Please choose the database to clone');
@@ -91,7 +86,7 @@ class DatabaseCloneCommand extends DatabaseCommand
         }
         if ($destination->databaseExists($destinationDatabase)) {
             $this->write('Destination database already exists!');
-            return ConsoleCommand::ERROR_CODE;
+            return $this->errorCode();
         }
 
         // Create the Destination Database
@@ -99,7 +94,7 @@ class DatabaseCloneCommand extends DatabaseCommand
             $destination->createDatabase($destinationDatabase);
         } catch (DBALException $e) {
             $this->writeException("Create database $destinationDatabase failed", $e);
-            return ConsoleCommand::ERROR_CODE;
+            return $this->errorCode();
         }
         $this->write("Destination database $destinationDatabase created.");
 
@@ -122,7 +117,7 @@ class DatabaseCloneCommand extends DatabaseCommand
             $destination->createSchema($schema);
         } catch (DBALException $e) {
             $this->writeException('Create database schema failed', $e);
-            return ConsoleCommand::ERROR_CODE;
+            return $this->errorCode();
         }
         $this->write("Database schema created.");
 
@@ -148,7 +143,7 @@ class DatabaseCloneCommand extends DatabaseCommand
         } catch (DBALException $e) {
             $destination->rollBack();
             $this->writeException('Copy database failed', $e);
-            return ConsoleCommand::ERROR_CODE;
+            return $this->errorCode();
         }
 
         // Done!
@@ -156,6 +151,6 @@ class DatabaseCloneCommand extends DatabaseCommand
         $destination->close();
         $this->write("SUCCESS: Database $sourceDatabase cloned.");
         $this->result = $config;
-        return ConsoleCommand::SUCCESS_CODE;
+        return $this->successCode();
     }
 }

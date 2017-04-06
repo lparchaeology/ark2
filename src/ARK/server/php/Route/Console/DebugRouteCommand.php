@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Nav Add Command
+ * ARK Debug Route Command
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,28 +28,25 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\View\Console;
+namespace ARK\Route\Console;
 
 use ARK\Console\AbstractCommand;
 use ARK\Service;
-use ARK\View\Command\NavAddMessage;
 
-class GenerateItemEntityCommand extends AbstractCommand
+class DebugRouteCommand extends AbstractCommand
 {
     protected function configure()
     {
-        $this->setName('view:nav:add')
-             ->setDescription('Add a new Nav view element')
-             ->addOptionalArgument('element', 'The Nav view element key');
+        $this->setName('debug:route')
+             ->setDescription('Dump configured route(s)')
+             ->addOptionalArgument('name', 'A specific route name')
+             ->addOption('controller', 'Print out the controller a route is mapped to')
+             ->addOption('raw', 'A route name');
     }
 
     protected function do()
     {
-        $element = $this->getArgument('element');
-        if (!$element) {
-            $element = $this->askQuestion("Please enter the new Nav view element key (e.g. 'site_nav_home')");
-        }
-        $element = strtolower($element);
+        $route = $this->getArgument('route');
 
         $parent = $this->askQuestion("Please enter the parent Nav view element key (e.g. 'site_nav_home', default none)");
 

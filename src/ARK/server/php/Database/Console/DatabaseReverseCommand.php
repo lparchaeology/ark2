@@ -31,12 +31,9 @@
 namespace ARK\Database\Console;
 
 use ARK\ARK;
-use ARK\Console\ConsoleCommand;
 use ARK\Database\Console\DatabaseCommand;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class DatabaseReverseCommand extends DatabaseCommand
 {
@@ -46,9 +43,8 @@ class DatabaseReverseCommand extends DatabaseCommand
              ->setDescription('Reverse engineer an existing database as DoctrineXML');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function do()
     {
-        parent::execute($input, $output);
         $site = $this->askChoice('Please choose the site to reverse engineer', ARK::sites());
         $config = $this->chooseServerConfig();
         $dbprefix = $site.'_ark_';
@@ -70,11 +66,11 @@ class DatabaseReverseCommand extends DatabaseCommand
             $admin->extractSchema($path, true);
         } catch (DBALException $e) {
             $this->writeException("FAILED: Extract Schema from database $dbname failed", $e);
-            return ConsoleCommand::ERROR_CODE;
+            return $this->errorCode();
         }
 
         $admin->close();
         $this->write("SUCCESS: Schema for $dbname extracted to file $path");
-        return ConsoleCommand::SUCCESS_CODE;
+        return $this->successCode();
     }
 }
