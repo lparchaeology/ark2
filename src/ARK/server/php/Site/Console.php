@@ -34,6 +34,7 @@ use ARK\ARK;
 use ARK\Application;
 use ARK\Console\AbstractConsole;
 use ARK\ORM\Console\GenerateItemEntityCommand;
+use ARK\Route\Console\RouteDumpCommand;
 use ARK\Translation\Console\TranslationAddCommand;
 use ARK\Translation\Console\TranslationDimeCommand;
 use Doctrine\DBAL\Tools\Console\Command\ImportCommand;
@@ -55,6 +56,9 @@ class Console extends AbstractConsole
     public function __construct()
     {
         parent::__construct('ARK Site Admin Console', new Application('../config/site.json'));
+
+        // Route Commands
+        $this->add(new RouteDumpCommand);
 
         // Translation Commands
         $this->add(new TranslationAddCommand());

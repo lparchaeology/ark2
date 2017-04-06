@@ -32,6 +32,7 @@ namespace ARK\Console;
 
 use Exception;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
@@ -117,6 +118,14 @@ abstract class AbstractCommand extends Command
         } else {
             $this->output->writeln($message);
         }
+    }
+
+    protected function writeTable($headers, $rows)
+    {
+        $table = new Table($this->output);
+        $table->setHeaders($headers);
+        $table->setRows($rows);
+        $table->render();
     }
 
     protected function writeException($message, Exception $e)
