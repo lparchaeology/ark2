@@ -129,16 +129,16 @@ class Application extends SilexApplication
         $this->register(new SerializerServiceProvider());
         $this->register(new ValidatorServiceProvider());
 
-        // Enable Security
-        // - On Register: Validator, Mailer, DBAL/ORM
-        // - Required on Use: Logger
-        // - Optional on Use: Session, Twig, Mailer, URL Generator, Translator, Forms, Console, ORM
-        $this->register(new SecurityServiceProvider());
-
         // Enable Forms
         // - On Register: Intl
         // - Optional on Use: Translation, CSRF, Validator
         $this->register(new FormServiceProvider());
+
+        // Enable Security
+        // - On Register: Forms, Validator, Mailer, DBAL/ORM
+        // - Required on Use: Logger
+        // - Optional on Use: Session, Twig, Mailer, URL Generator, Translator, Console, ORM
+        $this->register(new SecurityServiceProvider());
 
         // Enable Translation
         // - Required on Use: Locale

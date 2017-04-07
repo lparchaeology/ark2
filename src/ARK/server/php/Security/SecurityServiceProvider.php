@@ -78,7 +78,14 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 },
             ]
         );
-        $container['security.access_rules'] = $container['ark']['security']['access_rules'];
+        $container['security.access_rules'] = [
+            ["(^/users/login$)|(^/users/register$)|(^/users/forgot-password$)|(^/users/login_check$)", "IS_AUTHENTICATED_ANONYMOUSLY"],
+            ["(^/users)", "ROLE_USER"],
+            ["^/.+$", "IS_AUTHENTICATED_ANONYMOUSLY"]
+        ];
+        if (isset($container['ark']['security']['access_rules'])) {
+            $container['security.access_rules'] = array_merge($container['ark']['security']['access_rules']);
+        }
 
         $container->register(new UserProviderServiceProvider(true));
         $container['user.options'] = [
