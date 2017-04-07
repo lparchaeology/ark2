@@ -46,8 +46,8 @@ class SiteFrontendCommand extends AbstractCommand
 
     protected function do()
     {
-        $site = $input->getArgument('site');
-        $frontend= $input->getArgument('frontend');
+        $site = $this->getArgument('site');
+        $frontend= $this->getArgument('frontend');
         $namespace = null;
 
         $frontends = ARK::frontends();
