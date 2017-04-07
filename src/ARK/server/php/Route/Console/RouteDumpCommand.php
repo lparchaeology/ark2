@@ -32,6 +32,8 @@ namespace ARK\Route\Console;
 
 use ARK\Console\AbstractCommand;
 use ARK\Service;
+use Silex\Route;
+use Symfony\Component\Routing\RouteCollection;
 
 class RouteDumpCommand extends AbstractCommand
 {
@@ -44,6 +46,7 @@ class RouteDumpCommand extends AbstractCommand
 
     protected function do()
     {
+        $this->app()->flush();
         $routes = $this->app('routes');
         if (!$routes->count()) {
             $this->write('No routes defined');
@@ -59,7 +62,7 @@ class RouteDumpCommand extends AbstractCommand
             $this->writeRoute($name, $route);
             return;
         }
-        $this->describeRouteCollection($routes);
+        $this->writeRouteCollection($routes);
     }
 
     protected function writeRouteCollection(RouteCollection $routes)

@@ -53,9 +53,9 @@ use rootLogin\UserProvider\Command\UserRoleRemoveCommand;
 
 class Console extends AbstractConsole
 {
-    public function __construct()
+    public function __construct($site)
     {
-        parent::__construct('ARK Site Admin Console', new Application('../config/site.json'));
+        parent::__construct('ARK Site Admin Console', new Application($site));
 
         // Route Commands
         $this->add(new RouteDumpCommand);

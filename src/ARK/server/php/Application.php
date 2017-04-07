@@ -44,6 +44,7 @@ use ARK\Provider\MailerServiceProvider;
 use ARK\Provider\JsonSchemaServiceProvider;
 use ARK\Provider\LocaleServiceProvider;
 use ARK\Provider\SpatialServiceProvider;
+use ARK\Route\RouteServiceProvider;
 use ARK\Security\SecurityServiceProvider;
 use ARK\Translation\TranslationServiceProvider;
 use ARK\View\ViewServiceProvider;
@@ -77,15 +78,20 @@ class Application extends SilexApplication
 
     private static $debug = false;
 
-    public function __construct($configPath)
+    public function __construct($site)
     {
-        if (!$config = json_decode(file_get_contents($configPath), true)) {
+        parent::__construct();
+
+        // Set up the Service Provider
+        Service::init($this);
+
+        if (!$this['ark'] = ARK::siteConfig($site)) {
             // TODO One day, run the first-run wizard!
             throw new \Exception('No valid site configuration found.');
         }
-        $this['ark'] = $config;
 
-        static::$debug = $config['debug'];
+        // Enable the debug mode
+        static::$debug = $this['debug'] = $this['ark']['debug'];
         if (static::$debug) {
             Debug::enable(E_ALL, true);
         } else {
@@ -95,11 +101,6 @@ class Application extends SilexApplication
             ErrorHandler::register();
             ExceptionHandler::register(false);
         }
-
-        parent::__construct();
-
-        // Enable the debug mode
-        $this['debug'] = static::$debug;
 
         // Enable core providers
         // - No required on register
@@ -160,8 +161,8 @@ class Application extends SilexApplication
         // Enable the Debug Profiler
         $this->register(new DebugServiceProvider());
 
-        // Set up the Service Provider
-        Service::init($this);
+        // Define the routes
+        $this->register(new RouteServiceProvider());
     }
 
     public function boot()

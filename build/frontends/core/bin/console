@@ -35,5 +35,6 @@ require_once __DIR__.'/../../../vendor/autoload.php';
 
 set_time_limit(0);
 
-$console = new ARK\Site\Console();
+$site = basename(realpath(__DIR__.'/..'));
+$console = new ARK\Site\Console($site);
 $console->run();

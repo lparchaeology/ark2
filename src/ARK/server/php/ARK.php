@@ -142,9 +142,14 @@ class ARK
         return $sites;
     }
 
+    public static function siteConfigPath($site)
+    {
+        return self::siteDir($site).'/config/site.json';
+    }
+
     public static function siteConfig($site)
     {
-        return json_decode(file_get_contents(self::siteDir($site).'/config/site.json'), true);
+        return json_decode(file_get_contents(self::siteConfigPath($site)), true);
     }
 
     public static function siteDatabaseConfig($site, $admin = false)
