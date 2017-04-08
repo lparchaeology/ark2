@@ -15,6 +15,10 @@
         "enable": true,
         "frontend": "dime2017"
     },
+    "routes": {
+        "/api/v2": "DIME\\Route\\ApiControllerProvider",
+        "/": "DIME\\Route\\ViewControllerProvider"
+    },
     "security": {
         "access_rules": [
             ["(^/home)|(^/users)|(^/fund/add$)|(^/lokalitet/add$)", "ROLE_USER"],
