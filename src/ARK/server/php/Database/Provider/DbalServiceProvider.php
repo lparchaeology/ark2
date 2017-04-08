@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Database;
+namespace ARK\Database\Provider;
 
 use ARK\Database\Database;
 use Doctrine\Common\EventManager;

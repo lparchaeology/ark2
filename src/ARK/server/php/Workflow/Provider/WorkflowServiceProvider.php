@@ -28,7 +28,7 @@
 * @php        >=5.6, >=7.0
 */
 
-namespace ARK\Workflow;
+namespace ARK\Workflow\Provider;
 
 use ARK\Workflow\Registry;
 use Pimple\Container;

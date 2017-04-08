@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\ORM\Command;
+namespace ARK\ORM\Bus;
 
 class GenerateItemEntityMessage
 {

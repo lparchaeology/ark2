@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\View\Command;
+namespace ARK\View\Bus;
 
 class NavAddMessage
 {

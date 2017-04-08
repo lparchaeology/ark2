@@ -34,6 +34,7 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
 use ARK\Service;
 use ARK\View\Element;
+use ARK\View\Command\NavAddMessage;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Tree\Entity\Repository\ClosureTreeRepository;
 
@@ -114,6 +115,11 @@ class Nav extends Element
         $options['nav'] = $this;
         $options['data'] = $data;
         return Service::renderView($this->template(), $options);
+    }
+
+    public static function fromMessage(NavAddMessage $msg)
+    {
+        return new Nav($msg->nav(), $parent, $msg->seq(), $msg->separator(), $msg->route(), $msg->uri(), $msg->icon());
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

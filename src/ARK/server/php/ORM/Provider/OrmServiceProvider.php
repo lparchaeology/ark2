@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\ORM;
+namespace ARK\ORM\Provider;
 
 /*
  * Simplified/Extended version of dflydev/doctrine-orm-service-provider.

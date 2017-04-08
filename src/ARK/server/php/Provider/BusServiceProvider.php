@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Bus;
+namespace ARK\Provider;
 
 use Exception;
 use Pimple\Container;

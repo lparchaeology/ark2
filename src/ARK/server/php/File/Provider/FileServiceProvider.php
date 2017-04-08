@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\File;
+namespace ARK\File\Provider;
 
 use ARK\ARK;
 use Pimple\Container;

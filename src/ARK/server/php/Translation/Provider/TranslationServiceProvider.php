@@ -28,13 +28,13 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Translation;
+namespace ARK\Translation\Provider;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Provider\TranslationServiceProvider as CoreTranslationServiceProvider;
-use ARK\Translation\Command\TranslationAddHandler;
-use ARK\Translation\Command\TranslationAddMessage;
+use ARK\Translation\Bus\TranslationAddHandler;
+use ARK\Translation\Bus\TranslationAddMessage;
 use ARK\Translation\Loader\ActorLoader;
 use ARK\Translation\Loader\DatabaseLoader;
 

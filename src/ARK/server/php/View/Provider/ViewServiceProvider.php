@@ -28,10 +28,12 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\View;
+namespace ARK\View\Provider;
 
 use ARK\ARK;
 use ARK\Translation\Twig\TranslateExtension;
+use ARK\View\Bus\NavAddMessage;
+use ARK\View\Bus\NavAddHandler;
 use Fuz\Jordan\Twig\Extension\TreeExtension;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -44,6 +46,11 @@ class ViewServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container)
     {
+        $commands = [
+            NavAddMessage::class => NavAddHandler::class,
+        ];
+        $container['bus.command.handlers'] = array_merge($container['bus.command.handlers'], $commands);
+
         // Enable the Assets
         $container['dir.assets'] = $container['dir.web'].'/assets/'.$container['ark']['web']['frontend'];
         $container['path.assets'] = '/assets/'.$container['ark']['web']['frontend'];

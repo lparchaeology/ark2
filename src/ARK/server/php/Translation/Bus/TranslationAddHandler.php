@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Translation\Command;
+namespace ARK\Translation\Bus;
 
 use ARK\ORM\ORM;
 use ARK\Service;

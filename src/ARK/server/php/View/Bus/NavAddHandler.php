@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\View\Command;
+namespace ARK\View\Bus;
 
 use ARK\ORM\ORM;
 use ARK\Service;
@@ -40,6 +40,10 @@ class NavAddHandler
     public function __invoke(NavAddMessage $msg)
     {
         // Validate / Defaults
+        if ($nav = ORM::find(Nav::class, $msg->nav())) {
+            // TODO Proper error
+            throw new \Exception;
+        }
         $parent = $msg->parent();
         if ($parent) {
             $parent = ORM::find(Nav::class, $msg->parent());
@@ -53,7 +57,7 @@ class NavAddHandler
         }
 
         // Create
-        $nav = new Nav($msg->nav(), $parent, $msg->seq(), $msg->separator(), $msg->route(), $msg->uri(), $msg->icon());
+        $nav = Nav::fromMessage($msg);
         ORM::persist($nav);
         ORM::flush($nav);
     }
