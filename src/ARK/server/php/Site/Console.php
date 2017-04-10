@@ -37,6 +37,7 @@ use ARK\ORM\Console\GenerateItemEntityCommand;
 use ARK\Route\Console\RouteDumpCommand;
 use ARK\Translation\Console\TranslationAddCommand;
 use ARK\Translation\Console\TranslationDimeCommand;
+use ARK\View\Console\NavAddCommand;
 use Doctrine\DBAL\Tools\Console\Command\ImportCommand;
 use Doctrine\DBAL\Tools\Console\Command\RunSqlCommand;
 use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
@@ -71,6 +72,9 @@ class Console extends AbstractConsole
         $this->add(new UserRoleAddCommand($this->app));
         $this->add(new UserRoleListCommand($this->app));
         $this->add(new UserRoleRemoveCommand($this->app));
+
+        // View Commands
+        $this->add(new NavAddCommand);
 
         // Doctrine DBAL Commands
         $this->add(new ImportCommand());

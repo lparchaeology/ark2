@@ -49,10 +49,10 @@ class FindViewController extends EntityController
         $page = ORM::find(Page::class, 'dime_page_find');
         dump($page);
         dump($page->sidebar());
-        dump($page->sidebar()->children());
-        foreach ($page->sidebar()->children() as $child) {
-            dump($child);
-        }
+        //dump($page->sidebar()->children());
+        //foreach ($page->sidebar()->children() as $child) {
+        //    dump($child);
+        //}
         return $this->renderResponse($request, $data, $layout);
     }
 }

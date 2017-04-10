@@ -28,44 +28,51 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\ORM;
+namespace ARK\ORM\Extension;
 
+use ARK\ORM\Extension\ExtensionMetadataFactory;
+use Doctrine\Common\Persistence\ObjectManager;
 use Gedmo\Tree\TreeListener as GedmoTreeListener;
+use ReflectionClass;
 
 class TreeListener extends GedmoTreeListener
 {
     private $refl;
     private $emfRefl;
     private $arRefl;
+    private $darRefl;
 
     public function __construct()
     {
         parent::__construct();
-        $this->refl = new ReflectionClass('Gedmo\Tree\TreeListener');
+        $this->refl = new ReflectionClass('Gedmo\Mapping\MappedEventSubscriber');
         $this->emfRefl = $this->refl->getProperty('extensionMetadataFactory');
         $this->emfRefl->setAccessible(true);
-        $this->$arRefl = $this->refl->getProperty('annotationReader');
-        $this->$arRefl->setAccessible(true);
+        $this->arRefl = $this->refl->getProperty('annotationReader');
+        $this->arRefl->setAccessible(true);
+        $this->darRefl = $this->refl->getMethod('getDefaultAnnotationReader');
+        $this->darRefl->setAccessible(true);
     }
 
     public function getExtensionMetadataFactory(ObjectManager $objectManager)
     {
         $extensionMetadataFactory = $this->emfRefl->getValue($this);
-        $annotationReader = $this->$arRefl->getValue($this);
+        $annotationReader = $this->arRefl->getValue($this);
+        $getDefaultAnnotationReader = $this->darRefl;
 
         $oid = spl_object_hash($objectManager);
         if (!isset($extensionMetadataFactory[$oid])) {
             if (is_null($annotationReader)) {
                 // create default annotation reader for extensions
-                $annotationReader = $this->getDefaultAnnotationReader();
-                $this->$arRefl->setValue($annotationReader);
+                $annotationReader = $getDefaultAnnotationReader->invoke($this);
+                $this->arRefl->setValue($this, $annotationReader);
             }
             $extensionMetadataFactory[$oid] = new ExtensionMetadataFactory(
                 $objectManager,
                 $this->getNamespace(),
                 $annotationReader
             );
-            $this->$emfRefl->setValue($extensionMetadataFactory);
+            $this->emfRefl->setValue($this, $extensionMetadataFactory);
         }
         return $extensionMetadataFactory[$oid];
     }

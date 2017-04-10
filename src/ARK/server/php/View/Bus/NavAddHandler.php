@@ -32,7 +32,7 @@ namespace ARK\View\Bus;
 
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\View\Command\NavAddMessage;
+use ARK\View\Bus\NavAddMessage;
 use ARK\View\Nav;
 
 class NavAddHandler

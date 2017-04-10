@@ -32,9 +32,10 @@ namespace ARK\View;
 
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
+use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\View\Bus\NavAddMessage;
 use ARK\View\Element;
-use ARK\View\Command\NavAddMessage;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Tree\Entity\Repository\ClosureTreeRepository;
 
@@ -51,9 +52,8 @@ class Nav extends Element
 
     public function __construct($element, $parent = null, $seq = 0, $separator = false, $route = null, $uri = null, $icon = null)
     {
-        parent::__construct();
-        $this->element = $element;
-        $this->parent = $parent;
+        parent::__construct($element, 'nav');
+        $this->parent = (is_string($parent) ? ORM::find(Nav::class, $parent) : $parent);
         $this->seq = $seq;
         $this->separator = $separator;
         $this->route = $route;
@@ -119,7 +119,7 @@ class Nav extends Element
 
     public static function fromMessage(NavAddMessage $msg)
     {
-        return new Nav($msg->nav(), $parent, $msg->seq(), $msg->separator(), $msg->route(), $msg->uri(), $msg->icon());
+        return new Nav($msg->nav(), $msg->parent(), $msg->sequence(), $msg->separator(), $msg->route(), $msg->uri(), $msg->icon());
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
@@ -141,10 +141,10 @@ class Nav extends Element
 
     public static function readExtendedMetadata(array &$config)
     {
-        $config['type'] = 'closure';
+        $config['strategy'] = 'closure';
         $config['closure'] = 'ARK\View\Tree';
         $config['parent'] = 'parent';
         $config['sortByField'] = 'seq';
-        //$config['level'] = 'level';
+        $config['level'] = 'level';
     }
 }

@@ -34,6 +34,7 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
 use ARK\View\Element;
 use ARK\Service;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormBuilderInterface;
 
 abstract class Layout extends Element
@@ -44,6 +45,11 @@ abstract class Layout extends Element
     protected $grid = null;
     protected $elements = null;
     protected $parentCells = null;
+
+    public function __construct()
+    {
+        $this->cells = new ArrayCollection();
+    }
 
     protected function init()
     {

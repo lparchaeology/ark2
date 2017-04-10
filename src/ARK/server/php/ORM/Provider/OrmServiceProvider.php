@@ -36,24 +36,25 @@ namespace ARK\ORM\Provider;
  * (c) Dragonfly Development Inc.
  */
 
- use ARK\ORM\Command\GenerateItemEntityMessage;
- use ARK\ORM\Command\GenerateItemEntityHandler;
- use ARK\ORM\EntityManager;
- use ARK\ORM\ItemEntityMappingDriver;
- use ARK\ORM\StaticPHPDriver;
- use ARK\ORM\UnitOfWork;
- use Doctrine\Common\Cache\CacheProvider;
- use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
- use Doctrine\DBAL\Types\Type;
- use Doctrine\ORM\Configuration;
- use Doctrine\ORM\EntityManager as DoctrineEntityManager;
- use Doctrine\ORM\Mapping\Driver\Driver;
- use Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver;
- use Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver;
- use Doctrine\ORM\Mapping\Driver\XmlDriver;
- use Doctrine\ORM\Mapping\Driver\YamlDriver;
- use Pimple\Container;
- use Pimple\ServiceProviderInterface;
+use ARK\ORM\Command\GenerateItemEntityMessage;
+use ARK\ORM\Command\GenerateItemEntityHandler;
+use ARK\ORM\Driver\StaticPHPDriver;
+use ARK\ORM\EntityManager;
+use ARK\ORM\ItemEntityMappingDriver;
+use ARK\ORM\UnitOfWork;
+use Doctrine\Common\Cache\CacheProvider;
+use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
+use Doctrine\DBAL\Types\Type;
+use Doctrine\ORM\Configuration;
+use Doctrine\ORM\EntityManager as DoctrineEntityManager;
+use Doctrine\ORM\Mapping\Driver\Driver;
+use Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver;
+use Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver;
+use Doctrine\ORM\Mapping\Driver\XmlDriver;
+use Doctrine\ORM\Mapping\Driver\YamlDriver;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
+use Gedmo\DoctrineExtensions;
 
  /**
  * Doctrine ORM Pimple Service Provider.
@@ -100,23 +101,23 @@ class OrmServiceProvider implements ServiceProviderInterface
             'repository_factory' => 'Doctrine\ORM\Repository\DefaultRepositoryFactory',
         ];
 
-        $gedmoDir = $container['dir.install'].'vendor/gedmo/doctrine-extensions/lib/Gedmo';
+        $gedmoDir = $container['dir.install'].'/vendor/gedmo/doctrine-extensions/lib/Gedmo';
         $container['orm.extensions'] = [
             'tree' => [
                 'mapping' => [
-                    'type' => 'annotation',
+                    'type' => 'php',
                     'namespace' => 'Gedmo\Tree\Entity',
                     'path' => $gedmoDir.'/Tree/Entity',
                 ],
-                'listener' => 'ARK\ORM\TreeListener',
+                'listener' => 'ARK\ORM\Extension\TreeListener',
             ],
             'timestampable' => [
                 'mapping' => [
-                    'type' => 'annotation',
+                    'type' => 'php',
                     'namespace' => 'Gedmo\Timestampable\Entity',
                     'path' => $gedmoDir.'/Timestampable/Entity',
                 ],
-                'listener' => 'Gedmo\Timestampable\TimestampableListener',
+                'listener' => 'ARK\ORM\Extension\TimestampableListener',
             ],
         ];
 
@@ -134,6 +135,7 @@ class OrmServiceProvider implements ServiceProviderInterface
                 $container['orm.em.default_options'],
                 [
                     'connection' => 'core',
+                    'extensions' => ['tree'],
                     'mappings' => [
                         [
                             'type' => 'php',
@@ -247,7 +249,7 @@ class OrmServiceProvider implements ServiceProviderInterface
                 ]
             );
 
-            foreach ($options as $connection => $config) {
+            foreach ($options as $connection => &$config) {
                 foreach ($config['extensions'] as $extension) {
                     $config['mappings'][] = $container['orm.extensions'][$extension]['mapping'];
                     $config['listeners'][] = $container['orm.extensions'][$extension]['listener'];
@@ -350,6 +352,7 @@ class OrmServiceProvider implements ServiceProviderInterface
                     }
                     $chain->addDriver($driver, $entity['namespace']);
                 }
+                //DoctrineExtensions::registerAnnotations();
                 $config->setMetadataDriverImpl($chain);
 
                 foreach ((array) $options['types'] as $typeName => $typeClass) {

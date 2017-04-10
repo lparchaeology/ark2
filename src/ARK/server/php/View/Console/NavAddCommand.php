@@ -32,9 +32,9 @@ namespace ARK\View\Console;
 
 use ARK\Console\AbstractCommand;
 use ARK\Service;
-use ARK\View\Command\NavAddMessage;
+use ARK\View\Bus\NavAddMessage;
 
-class GenerateItemEntityCommand extends AbstractCommand
+class NavAddCommand extends AbstractCommand
 {
     protected function configure()
     {
@@ -58,16 +58,16 @@ class GenerateItemEntityCommand extends AbstractCommand
         $separator = false;
         $route = null;
         $uri = null;
-        $type = $this->askChoice("Please choose the Nav type (Default: route)", ['route', 'uri', 'separator'], 'route');
+        $type = $this->askChoice("Please choose the Nav type (Default: route)", ['route', 'uri', 'separator', 'root'], 'route');
         if ($type == 'route') {
             $route = $this->askQuestion("Please enter the route (e.g. 'site.home')");
         } elseif ($type == 'uri') {
             $uri = $this->askQuestion("Please enter the URI (e.g. 'http://www.example.com/here')");
-        } else {
+        } elseif ($type == 'separator') {
             $separator = true;
         }
 
-        $parent = $this->askQuestion("Please enter the icon key (e.g. 'home.png', default none)");
+        $icon = $this->askQuestion("Please enter the icon key (e.g. 'home.png', default none)");
 
         Service::handleCommand(new NavAddMessage($element, $parent, $seq, $separator, $route, $uri, $icon));
 

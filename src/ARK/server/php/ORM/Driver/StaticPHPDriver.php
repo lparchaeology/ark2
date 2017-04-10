@@ -28,11 +28,14 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\ORM;
+namespace ARK\ORM\Driver;
 
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\Common\Persistence\Mapping\MappingException;
+use Exception;
+use Gedmo\Mapping\Driver;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 /**
  * The StaticPHPDriver calls a static loadMetadata() method on your entity
@@ -42,7 +45,7 @@ use Doctrine\Common\Persistence\Mapping\MappingException;
  * @author Jonathan H. Wage <jonwage@gmail.com>
  * @author Roman Borschel <roman@code-factory.org>
  */
-class StaticPHPDriver implements MappingDriver
+class StaticPHPDriver implements MappingDriver, Driver
 {
     private $paths = [];
     private $classNames;
@@ -62,9 +65,11 @@ class StaticPHPDriver implements MappingDriver
         $className::loadMetadata($metadata);
     }
 
-    public function readExtendedMetadata($className, array &$config)
+    public function readExtendedMetadata($meta, array &$config)
     {
-        $className::readExtendedMetadata($config);
+        if ($meta->getReflectionClass()->hasMethod('readExtendedMetadata')) {
+            $meta->name::readExtendedMetadata($config);
+        }
     }
 
     public function getAllClassNames()
@@ -121,5 +126,9 @@ class StaticPHPDriver implements MappingDriver
     public function isTransient($className)
     {
         return !method_exists($className, 'loadMetadata');
+    }
+
+    public function setOriginalDriver($driver)
+    {
     }
 }

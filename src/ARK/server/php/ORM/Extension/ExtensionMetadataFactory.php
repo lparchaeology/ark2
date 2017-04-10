@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK View Tree
+ * ARK ORM Extension Metadata Factory
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,30 +28,18 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\View;
+namespace ARK\ORM\Extension;
 
-use ARK\ORM\ClassMetadata;
-use ARK\ORM\ClassMetadataBuilder;
-use ARK\View\Nav;
-use ARK\View\Element;
-use Gedmo\Tree\Entity\MappedSuperclass\AbstractClosure;
+use Gedmo\Mapping\ExtensionMetadataFactory as GedmoExtensionMetadataFactory;
+use ARK\ORM\Driver\StaticPHPDriver;
 
-class Tree extends AbstractClosure
+class ExtensionMetadataFactory extends GedmoExtensionMetadataFactory
 {
-    public static function loadMetadata(ClassMetadata $metadata)
+    protected function getDriver($omDriver)
     {
-        // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_view_tree');
-        $builder->setReadOnly();
-
-        // Key
-        $builder->addGeneratedKey('id');
-
-        // Fields
-        $builder->addField('depth', 'integer');
-
-        // Associations
-        $builder->addManyToOneField('ancestor', Nav::class, 'ancestor', 'element', false);
-        $builder->addManyToOneField('descendant', Nav::class, 'descendant', 'element', false);
+        if (get_class($omDriver) == StaticPHPDriver::class) {
+            return $omDriver;
+        }
+        return parent::getDriver($omDriver);
     }
 }

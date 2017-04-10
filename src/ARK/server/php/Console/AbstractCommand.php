@@ -140,7 +140,7 @@ abstract class AbstractCommand extends Command
 
     protected function askQuestion($text, $default = null)
     {
-        if ($default) {
+        if ($default !== null) {
             return $this->ask(new Question("$text (default: $default): ", $default));
         }
         return $this->ask(new Question("$text : "));

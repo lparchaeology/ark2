@@ -35,6 +35,7 @@ use ARK\Model\KeywordTrait;
 use ARK\Model\Schema\SchemaAttribute;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
+use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Type;
 use ARK\View\Cell;
@@ -53,9 +54,12 @@ abstract class Element
     protected $class = '';
     protected $template = '';
 
-    public function __construct()
+    public function __construct($element, $type, $class = '', $template = '')
     {
-        $this->cells = new ArrayCollection();
+        $this->element = $element;
+        $this->type = (is_string($type) ? ORM::find(Type::class, $type) : $type);
+        $this->class = $class;
+        $this->template = $template;
     }
 
     public function name()
