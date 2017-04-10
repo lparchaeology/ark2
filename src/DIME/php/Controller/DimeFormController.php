@@ -72,7 +72,7 @@ abstract class DimeFormController extends DimeController
         $options['page'] = $page;
         $options['layout'] = $page->content();
         $options['data'] = $data;
-        return Service::renderResponse($template, $options);
+        return Service::renderResponse($page->template(), $options);
     }
 
     public function processForm(Request $request, $form, $redirect)
