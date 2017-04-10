@@ -77,6 +77,11 @@ class Nav extends Element
         return $this->children && $this->children->count() > 0;
     }
 
+    public function hierarchy()
+    {
+        return ORM::repository(Nav::class)->getChildren($this, false, 'seq');
+    }
+
     public function level()
     {
         return $this->level;

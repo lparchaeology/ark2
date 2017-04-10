@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 06, 2017 at 04:54 PM
+-- Generation Time: Apr 10, 2017 at 09:15 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -722,6 +722,30 @@ INSERT INTO `ark_rbac_role` (`role`, `enabled`, `keyword`) VALUES
 ('detectorist', 1, 'dime.role.detectorist'),
 ('registrar', 1, 'dime.role.registrar'),
 ('researcher', 1, 'dime.role.reasearcher');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_route`
+--
+
+CREATE TABLE `ark_route` (
+  `route` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `path` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `can_get` tinyint(1) NOT NULL DEFAULT '1',
+  `can_post` tinyint(1) NOT NULL DEFAULT '0',
+  `controller` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `page` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_route`
+--
+
+INSERT INTO `ark_route` (`route`, `path`, `can_get`, `can_post`, `controller`, `page`) VALUES
+('find.list', '/fund', 1, 0, 'DIME\\Controller\\FindListController', NULL),
+('find.view', '/fund/{itemSlug}', 1, 1, 'DIME\\Controller\\FindViewController', 'dime_page_find'),
+('front', '/', 1, 0, 'DIME\\Controller\\FrontPageController', NULL);
 
 -- --------------------------------------------------------
 
@@ -1609,29 +1633,13 @@ INSERT INTO `ark_view_element` (`element`, `type`, `class`, `template`, `enabled
 ('dime_locality_list', 'table', '', '', 1, 0, NULL),
 ('dime_locality_type', 'field', '', '', 1, 0, NULL),
 ('dime_message_page', 'grid', '', '', 1, 0, NULL),
-('dime_nav_about', 'nav', '', '', 1, 0, NULL),
 ('dime_nav_add', 'nav', '', '', 1, 0, NULL),
 ('dime_nav_add_find', 'nav', '', '', 1, 0, NULL),
 ('dime_nav_add_locality', 'nav', '', '', 1, 0, NULL),
-('dime_nav_background', 'nav', '', '', 1, 0, NULL),
-('dime_nav_detector', 'nav', '', '', 1, 0, NULL),
-('dime_nav_exhibits', 'nav', '', '', 1, 0, NULL),
-('dime_nav_forests', 'nav', '', '', 1, 0, NULL),
-('dime_nav_front', 'nav', '', '', 1, 0, NULL),
-('dime_nav_groups', 'nav', '', '', 1, 0, NULL),
-('dime_nav_home', 'nav', '', '', 1, 0, NULL),
-('dime_nav_instructions', 'nav', '', '', 1, 0, NULL),
 ('dime_nav_list', 'nav', '', '', 1, 0, NULL),
 ('dime_nav_list_find', 'nav', '', '', 1, 0, NULL),
 ('dime_nav_list_locality', 'nav', '', '', 1, 0, NULL),
-('dime_nav_museums', 'nav', '', '', 1, 0, NULL),
-('dime_nav_navbar', 'nav', '', '', 1, 0, NULL),
-('dime_nav_news', 'nav', '', '', 1, 0, NULL),
-('dime_nav_partners', 'nav', '', '', 1, 0, NULL),
-('dime_nav_research', 'nav', '', '', 1, 0, NULL),
 ('dime_nav_sidebar', 'nav', '', '', 1, 0, NULL),
-('dime_nav_treasure', 'nav', '', '', 1, 0, NULL),
-('dime_nav_weapons', 'nav', '', '', 1, 0, NULL),
 ('dime_page_find', 'page', '', '', 1, 0, NULL),
 ('dime_save', 'widget', '', '', 1, 0, 'dime.save'),
 ('dime_search', 'widget', '', '', 1, 0, 'dime.search');
@@ -1871,29 +1879,13 @@ CREATE TABLE `ark_view_nav` (
 --
 
 INSERT INTO `ark_view_nav` (`element`, `parent`, `seq`, `level`, `icon`, `route`, `uri`, `seperator`, `enabled`) VALUES
-('dime_nav_about', NULL, 0, NULL, '', NULL, NULL, 0, 1),
-('dime_nav_add', 'dime_nav_sidebar', 0, NULL, '', NULL, NULL, 0, 1),
-('dime_nav_add_find', 'dime_nav_add', 0, NULL, '', NULL, NULL, 0, 1),
-('dime_nav_add_locality', 'dime_nav_add', 1, NULL, '', NULL, NULL, 0, 1),
-('dime_nav_background', NULL, 0, NULL, '', NULL, NULL, 0, 1),
-('dime_nav_detector', NULL, 0, NULL, '', NULL, NULL, 0, 1),
-('dime_nav_exhibits', NULL, 0, NULL, '', NULL, NULL, 0, 1),
-('dime_nav_forests', NULL, 0, NULL, '', NULL, NULL, 0, 1),
-('dime_nav_front', NULL, 0, NULL, '', NULL, NULL, 0, 1),
-('dime_nav_groups', NULL, 0, NULL, '', NULL, NULL, 0, 1),
-('dime_nav_home', 'dime_nav_navbar', 0, NULL, '', NULL, NULL, 0, 1),
-('dime_nav_instructions', NULL, 0, NULL, '', NULL, NULL, 0, 1),
-('dime_nav_list', 'dime_nav_sidebar', 1, NULL, '', NULL, NULL, 0, 1),
-('dime_nav_list_find', 'dime_nav_list', 0, NULL, '', NULL, NULL, 0, 1),
-('dime_nav_list_locality', 'dime_nav_list', 1, NULL, '', NULL, NULL, 0, 1),
-('dime_nav_museums', NULL, 0, NULL, '', NULL, NULL, 0, 1),
-('dime_nav_navbar', NULL, 0, NULL, '', NULL, NULL, 0, 1),
-('dime_nav_news', NULL, 0, NULL, '', NULL, NULL, 0, 1),
-('dime_nav_partners', NULL, 0, NULL, '', NULL, NULL, 0, 1),
-('dime_nav_research', NULL, 0, NULL, '', NULL, NULL, 0, 1),
-('dime_nav_sidebar', NULL, 0, NULL, '', NULL, NULL, 0, 1),
-('dime_nav_treasure', NULL, 0, NULL, '', NULL, NULL, 0, 1),
-('dime_nav_weapons', NULL, 0, NULL, '', NULL, NULL, 0, 1);
+('dime_nav_add', 'dime_nav_sidebar', 0, 2, NULL, NULL, NULL, 0, 1),
+('dime_nav_add_find', 'dime_nav_add', 0, 3, NULL, 'find.add', NULL, 0, 1),
+('dime_nav_add_locality', 'dime_nav_add', 1, 3, NULL, 'locality.add', NULL, 0, 1),
+('dime_nav_list', 'dime_nav_sidebar', 1, 2, NULL, NULL, NULL, 0, 1),
+('dime_nav_list_find', 'dime_nav_list', 0, 3, NULL, 'find.list', NULL, 0, 1),
+('dime_nav_list_locality', 'dime_nav_list', 1, 3, NULL, 'locality.list', NULL, 0, 1),
+('dime_nav_sidebar', NULL, 0, 1, NULL, NULL, NULL, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -1907,15 +1899,16 @@ CREATE TABLE `ark_view_page` (
   `content` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `footer` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `navbar` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `sidebar` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `sidebar` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `template` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_view_page`
 --
 
-INSERT INTO `ark_view_page` (`element`, `mode`, `content`, `footer`, `navbar`, `sidebar`) VALUES
-('dime_page_find', 'view', 'dime_find_item', NULL, 'dime_nav_navbar', 'dime_nav_sidebar');
+INSERT INTO `ark_view_page` (`element`, `mode`, `content`, `footer`, `navbar`, `sidebar`, `template`) VALUES
+('dime_page_find', 'edit', 'dime_find_item', NULL, NULL, 'dime_nav_sidebar', NULL);
 
 -- --------------------------------------------------------
 
@@ -1926,9 +1919,32 @@ INSERT INTO `ark_view_page` (`element`, `mode`, `content`, `footer`, `navbar`, `
 CREATE TABLE `ark_view_tree` (
   `id` int(11) NOT NULL,
   `ancestor` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `descendent` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descendant` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `depth` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_view_tree`
+--
+
+INSERT INTO `ark_view_tree` (`id`, `ancestor`, `descendant`, `depth`) VALUES
+(1, 'dime_nav_sidebar', 'dime_nav_sidebar', 0),
+(2, 'dime_nav_add', 'dime_nav_add', 0),
+(3, 'dime_nav_sidebar', 'dime_nav_add', 1),
+(4, 'dime_nav_list', 'dime_nav_list', 0),
+(5, 'dime_nav_sidebar', 'dime_nav_list', 1),
+(6, 'dime_nav_add_find', 'dime_nav_add_find', 0),
+(7, 'dime_nav_add', 'dime_nav_add_find', 1),
+(8, 'dime_nav_sidebar', 'dime_nav_add_find', 2),
+(9, 'dime_nav_add_locality', 'dime_nav_add_locality', 0),
+(10, 'dime_nav_add', 'dime_nav_add_locality', 1),
+(11, 'dime_nav_sidebar', 'dime_nav_add_locality', 2),
+(12, 'dime_nav_list_locality', 'dime_nav_list_locality', 0),
+(13, 'dime_nav_list', 'dime_nav_list_locality', 1),
+(14, 'dime_nav_sidebar', 'dime_nav_list_locality', 2),
+(15, 'dime_nav_list_find', 'dime_nav_list_find', 0),
+(16, 'dime_nav_list', 'dime_nav_list_find', 1),
+(17, 'dime_nav_sidebar', 'dime_nav_list_find', 2);
 
 -- --------------------------------------------------------
 
@@ -5862,6 +5878,13 @@ ALTER TABLE `ark_rbac_role`
   ADD PRIMARY KEY (`role`);
 
 --
+-- Indexes for table `ark_route`
+--
+ALTER TABLE `ark_route`
+  ADD PRIMARY KEY (`route`),
+  ADD KEY `page` (`page`);
+
+--
 -- Indexes for table `ark_schema`
 --
 ALTER TABLE `ark_schema`
@@ -5968,7 +5991,7 @@ ALTER TABLE `ark_view_layout`
 --
 ALTER TABLE `ark_view_nav`
   ADD PRIMARY KEY (`element`),
-  ADD KEY `parent` (`parent`);
+  ADD UNIQUE KEY `parent` (`parent`,`seq`);
 
 --
 -- Indexes for table `ark_view_page`
@@ -5987,7 +6010,7 @@ ALTER TABLE `ark_view_tree`
   ADD PRIMARY KEY (`id`),
   ADD KEY `depth` (`depth`),
   ADD KEY `ancestor` (`ancestor`),
-  ADD KEY `descendent` (`descendent`);
+  ADD KEY `descendent` (`descendant`);
 
 --
 -- Indexes for table `ark_view_type`
@@ -6135,7 +6158,7 @@ ALTER TABLE `ark_config_flash`
 -- AUTO_INCREMENT for table `ark_view_tree`
 --
 ALTER TABLE `ark_view_tree`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- Constraints for dumped tables
 --
@@ -6258,6 +6281,12 @@ ALTER TABLE `ark_rbac_access`
   ADD CONSTRAINT `ark_rbac_access_ibfk_2` FOREIGN KEY (`permission`) REFERENCES `ark_rbac_permission` (`permission`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `ark_route`
+--
+ALTER TABLE `ark_route`
+  ADD CONSTRAINT `ark_route_ibfk_1` FOREIGN KEY (`page`) REFERENCES `ark_view_page` (`element`);
+
+--
 -- Constraints for table `ark_schema`
 --
 ALTER TABLE `ark_schema`
@@ -6339,18 +6368,18 @@ ALTER TABLE `ark_view_nav`
 -- Constraints for table `ark_view_page`
 --
 ALTER TABLE `ark_view_page`
-  ADD CONSTRAINT `content_element` FOREIGN KEY (`content`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `content_element` FOREIGN KEY (`content`) REFERENCES `ark_view_layout` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `element` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `footer_element` FOREIGN KEY (`footer`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `navbar_element` FOREIGN KEY (`navbar`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `sidebar_element` FOREIGN KEY (`sidebar`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `footer_element` FOREIGN KEY (`footer`) REFERENCES `ark_view_layout` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `navbar_element` FOREIGN KEY (`navbar`) REFERENCES `ark_view_nav` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `sidebar_element` FOREIGN KEY (`sidebar`) REFERENCES `ark_view_nav` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_tree`
 --
 ALTER TABLE `ark_view_tree`
   ADD CONSTRAINT `ark_view_tree_ibfk_1` FOREIGN KEY (`ancestor`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_view_tree_ibfk_2` FOREIGN KEY (`descendent`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_view_tree_ibfk_2` FOREIGN KEY (`descendant`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_widget`

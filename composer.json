@@ -110,7 +110,8 @@
         "league/glide": "^1.2",
         "league/glide-symfony": "^1.0",
         "intervention/image": "^2.3",
-        "ninsuo/jordan-tree": "^1.0"
+        "ninsuo/jordan-tree": "^1.0",
+        "symfony-cmf/routing": "^2.0"
     },
     "autoload": {
         "psr-4": {

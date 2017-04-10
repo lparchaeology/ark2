@@ -44,7 +44,7 @@ use ARK\Provider\MailerServiceProvider;
 use ARK\Provider\JsonSchemaServiceProvider;
 use ARK\Provider\LocaleServiceProvider;
 use ARK\Provider\SpatialServiceProvider;
-use ARK\Route\RouteServiceProvider;
+use ARK\Routing\Provider\RoutingServiceProvider;
 use ARK\Security\SecurityServiceProvider;
 use ARK\Translation\Provider\TranslationServiceProvider;
 use ARK\View\Provider\ViewServiceProvider;
@@ -162,7 +162,7 @@ class Application extends SilexApplication
         $this->register(new DebugServiceProvider());
 
         // Define the routes
-        $this->register(new RouteServiceProvider());
+        $this->register(new RoutingServiceProvider());
     }
 
     public function boot()

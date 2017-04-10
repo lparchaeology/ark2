@@ -32,16 +32,19 @@ namespace DIME\Controller;
 
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\View\Page;
 use DIME\Controller\DimeController;
 use Symfony\Component\HttpFoundation\Request;
 
 abstract class DimeFormController extends DimeController
 {
-    public function renderResponse(Request $request, $data, $layout, $redirect = null, $options = [], $template = 'pages/page.html.twig')
+    public function renderResponse(Request $request, $page, $resource, $redirect = null, $options = [])
     {
-        $options = $this->defaultOptions($request->attributes->get('_route'));
-        $viewLayout =  Service::layout($layout);
-        $forms = $viewLayout->buildForms($data, $options);
+        $route = $request->attributes->get('_route');
+        $options = $this->defaultOptions($route);
+        $page = ORM::find(Page::class, $page);
+        $data[$page->content()->name()] = $resource;
+        $forms = $page->content()->buildForms($data, $options);
         if ($request->getMethod() == 'POST') {
             $form = null;
             foreach ($forms as $name => $fm) {
@@ -54,7 +57,7 @@ abstract class DimeFormController extends DimeController
                 $form->handleRequest($request);
                 if ($form->isSubmitted() && $form->isValid()) {
                     if (!$redirect) {
-                        $redirect = $request->attributes->get('_route');
+                        $redirect = $route;
                     }
                     return $this->processForm($request, $form, $redirect);
                 }
@@ -66,7 +69,8 @@ abstract class DimeFormController extends DimeController
                 $options['forms'][$name] = $form->createView();
             }
         }
-        $options['layout'] = $viewLayout;
+        $options['page'] = $page;
+        $options['layout'] = $page->content();
         $options['data'] = $data;
         return Service::renderResponse($template, $options);
     }

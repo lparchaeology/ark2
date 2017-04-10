@@ -42,17 +42,9 @@ class FindViewController extends EntityController
 {
     public function __invoke(Request $request, $itemSlug)
     {
-        $layout = 'dime_find_item';
-        if (!$data[$layout] = ORM::find(Find::class, $itemSlug)) {
+        if (!$data = ORM::find(Find::class, $itemSlug)) {
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Find not found', "Find $itemSlug not found"));
         }
-        $page = ORM::find(Page::class, 'dime_page_find');
-        dump($page);
-        dump($page->sidebar());
-        //dump($page->sidebar()->children());
-        //foreach ($page->sidebar()->children() as $child) {
-        //    dump($child);
-        //}
-        return $this->renderResponse($request, $data, $layout);
+        return $this->renderResponse($request, 'dime_page_find', $data);
     }
 }

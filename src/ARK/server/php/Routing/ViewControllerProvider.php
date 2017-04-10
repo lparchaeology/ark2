@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Route;
+namespace ARK\Routing;
 
 use Silex\Application;
 use Silex\ControllerCollection;
@@ -37,41 +37,35 @@ use Silex\API\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class SiteControllerProvider implements ControllerProviderInterface
+class ViewControllerProvider implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
+        $routes = ORM::fetchAll(Route::class);
+        $pages = ORM::fetchAll(Page::class);
+        $pages = ORM::fetchAll(Instance::class);
+
+        foreach ($routes as $route) {
+            $this->addRoute($controllers, $route);
+        }
 
         $controllers
-            ->method('GET')
-            ->get('/{siteSlug}/{moduleSlug}/register', 'ARK\\Controller\\ItemController::registerItemAction')
-            ->bind('sites.item.register');
+            ->get("/{parent}/{collection}", 'ARK\Controller\ItemListController')
+            ->bind('core.item.list');
 
         $controllers
-            ->method('GET')
-            ->get('/{siteSlug}/{moduleSlug}', 'ARK\\Controller\\ItemController::listItemsAction')
-            ->bind('sites.item.list');
-
-        $controllers
-            ->method('GET')
-            ->get('/{siteSlug}/{moduleSlug}/{itemSlug}', 'ARK\\Controller\\ItemController::viewItemAction')
-            ->bind('sites.item.view');
-
-        $controllers
-            ->method('GET')
-            ->get('/{siteSlug}/{moduleSlug}', 'ARK\\Controller\\ModuleController::viewModuleAction')
-            ->bind('sites.module.view');
-
-        $controllers
-            ->method('GET')
-            ->get('/{siteSlug}', 'ARK\\Controller\\SiteController::viewSiteAction')
-            ->bind('sites.view');
-
-        $controllers->method('GET')->get('/', 'ARK\\Controller\\SiteController::listSitesAction')
-            ->bind('sites.list');
+            ->get("/{parent}/{collection}/{item}", 'ARK\Controller\ItemViewController')
+            ->bind('core.item.view');
 
         return $controllers;
+    }
+
+    public function addRoute($controllers, Route $route)
+    {
+        $controller = $controllers->match($route->pattern(), $route->controller());
+        $controller->method($route->method);
+        $controller->bind($route->id());
     }
 }

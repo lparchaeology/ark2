@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Route;
+namespace ARK\Routing;
 
 use Silex\Application;
 use Silex\API\ControllerProviderInterface;

@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Route\Console;
+namespace ARK\Routing\Console;
 
 use ARK\Console\AbstractCommand;
 use ARK\Service;

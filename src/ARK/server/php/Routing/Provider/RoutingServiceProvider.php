@@ -28,29 +28,50 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Route;
+namespace ARK\Routing\Provider;
 
+use ARK\Routing\Router\SilexRouter;
 use Exception;
-use rootLogin\UserProvider\Provider\UserProviderControllerProvider;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use rootLogin\UserProvider\Provider\UserProviderControllerProvider;
+use Silex\Provider\RoutingServiceProvider as SilexRoutingServiceProvider;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Cmf\Component\Routing\ChainRouter;
 
-class RouteServiceProvider implements ServiceProviderInterface
+class RoutingServiceProvider extends SilexRoutingServiceProvider
 {
-    public function register(Container $app)
+    public function register(Container $container)
     {
-        // Mount standard routes
-        $app->mount('/users', new UserProviderControllerProvider());
+        parent::register($container);
 
-        foreach ($app['ark']['routes'] as $path => $provider) {
-            $app->mount($path, new $provider);
+        $container['url_matcher'] = function (Container $container) {
+            $chain = $container['routers'];
+            $chain->setContext($container['request_context']);
+            return $chain;
+        };
+
+        $container['url_generator'] = function (Container $container) {
+            $container->flush();
+            return $container['routers'];
+        };
+
+        $container['routers'] = function (Container $container) {
+            $chain = new ChainRouter($container['logger']);
+            $chain->add(new SilexRouter($container));
+            return $chain;
+        };
+
+        // Mount standard routes
+        $container->mount('/users', new UserProviderControllerProvider());
+        foreach ($container['ark']['routes'] as $path => $provider) {
+            $container->mount($path, new $provider);
         }
 
         // TODO Proper error handling
-        $app->error(function (Exception $e, Request $request, $code) use ($app) {
-            if ($app['debug']) {
+        $container->error(function (Exception $e, Request $request, $code) use ($container) {
+            if ($container['debug']) {
                 return;
             }
             // 404.html, or 40x.html, or 4xx.html, or error.html
@@ -60,7 +81,7 @@ class RouteServiceProvider implements ServiceProviderInterface
                 'errors/'.substr($code, 0, 1).'xx.html.twig',
                 'errors/default.html.twig',
             );
-            return new Response($app['twig']->resolveTemplate($templates)->render(array('code' => $code)), $code);
+            return new Response($container['twig']->resolveTemplate($templates)->render(array('code' => $code)), $code);
         });
     }
 }
