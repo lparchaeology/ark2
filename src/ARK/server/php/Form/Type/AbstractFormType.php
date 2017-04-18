@@ -43,7 +43,7 @@ abstract class AbstractFormType extends AbstractType implements DataMapperInterf
 {
     protected $value;
 
-    private const OPTIONS = [
+    private $options = [
         'data_class' => null,
         'empty_data' => null,
         'field' => null,
@@ -59,7 +59,7 @@ abstract class AbstractFormType extends AbstractType implements DataMapperInterf
     // Configure the *build* options only, not passed to view!
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array_merge(self::OPTIONS, $this->options()));
+        $resolver->setDefaults(array_merge($this->options, $this->options()));
     }
 
     // Use to transform data from the model to this form element
