@@ -43,7 +43,7 @@ class DatabaseReverseCommand extends DatabaseCommand
              ->setDescription('Reverse engineer an existing database as DoctrineXML');
     }
 
-    protected function do()
+    protected function doExecute()
     {
         $site = $this->askChoice('Please choose the site to reverse engineer', ARK::sites());
         $config = $this->chooseServerConfig();

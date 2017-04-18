@@ -44,7 +44,7 @@ class SiteFrontendCommand extends AbstractCommand
              ->addOptionalArgument('frontend', 'The site frontend (default: core)', 'core');
     }
 
-    protected function do()
+    protected function doExecute()
     {
         $site = $this->getArgument('site');
         $frontend= $this->getArgument('frontend');

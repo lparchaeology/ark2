@@ -55,7 +55,7 @@ class SystemAboutCommand extends AbstractCommand
              ->setDescription('Display information about the system');
     }
 
-    protected function do()
+    protected function doExecute()
     {
         $io = new SymfonyStyle($this->input, $this->output);
 

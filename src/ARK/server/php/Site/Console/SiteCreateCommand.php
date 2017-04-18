@@ -50,7 +50,7 @@ class SiteCreateCommand extends DatabaseCommand
              ->addOptionalArgument('site', 'The site key');
     }
 
-    protected function do()
+    protected function doExecute()
     {
         $site = $this->getArgument('site');
         if (!$site) {

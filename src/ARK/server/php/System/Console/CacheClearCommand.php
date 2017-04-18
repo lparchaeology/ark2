@@ -55,7 +55,7 @@ class CacheClearCommand extends AbstractCommand
              ->setDescription('Clear the system cache');
     }
 
-    protected function do()
+    protected function doExecute()
     {
         $app = $this->app();
 

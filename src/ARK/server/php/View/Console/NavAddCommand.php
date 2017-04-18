@@ -43,7 +43,7 @@ class NavAddCommand extends AbstractCommand
              ->addOptionalArgument('element', 'The Nav view element key');
     }
 
-    protected function do()
+    protected function doExecute()
     {
         $element = $this->getArgument('element');
         if (!$element) {

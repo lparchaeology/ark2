@@ -101,7 +101,7 @@ class SiteMigrateCommand extends DatabaseCommand
              ->setDescription('Migrate an ARK 1.2 site');
     }
 
-    protected function do()
+    protected function doExecute()
     {
         // Ask if migrate to new or existing site
         $migrate = $this->askChoice('Do you want to migrate to a new site or an existing site?', ['New', 'Existing'], 'New');

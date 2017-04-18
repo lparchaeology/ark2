@@ -49,7 +49,7 @@ class DatabaseServerAddCommand extends DatabaseCommand
              ->addOptionalArgument('server', 'The server key');
     }
 
-    protected function do()
+    protected function doExecute()
     {
         $server = $this->getArgument('server');
         if (!$server) {

@@ -46,7 +46,7 @@ class DatabaseCloneCommand extends DatabaseCommand
              ->addOptionalArgument('new_database', 'The new database');
     }
 
-    protected function do()
+    protected function doExecute()
     {
         $sourceServer = $this->getArgument('source');
         $destinationServer = $this->getArgument('destination');

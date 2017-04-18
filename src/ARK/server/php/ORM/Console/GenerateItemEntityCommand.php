@@ -42,7 +42,7 @@ class GenerateItemEntityCommand extends AbstractCommand
              ->setDescription('Generate ORM Entities for ARK Modules');
     }
 
-    protected function do()
+    protected function doExecute()
     {
         $modules = Service::database()->getModules();
         foreach ($modules as $module) {

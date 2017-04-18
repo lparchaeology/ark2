@@ -71,7 +71,7 @@ class Module
         return $this->project;
     }
 
-    public function namespace()
+    public function sourceNamespace()
     {
         return $this->namespace;
     }

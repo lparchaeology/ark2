@@ -60,10 +60,10 @@ abstract class AbstractCommand extends Command
         $this->output = $output;
         $this->progress = new ProgressBar($this->output);
         $this->progress->setOverwrite(true);
-        $this->do();
+        $this->doExecute();
     }
 
-    abstract protected function do();
+    abstract protected function doExecute();
 
     protected function runCommand($command, array $arguments = [])
     {
@@ -75,7 +75,8 @@ abstract class AbstractCommand extends Command
         return $returnCode;
     }
 
-    protected function app($key = null) {
+    protected function app($key = null)
+    {
         return $this->getApplication()->app($key);
     }
 

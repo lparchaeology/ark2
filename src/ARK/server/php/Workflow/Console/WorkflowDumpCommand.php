@@ -45,7 +45,7 @@ class WorkflowDumpCommand extends AbstractCommand
              ->addOptionalArgument('name', 'The Workflow name');
     }
 
-    protected function do()
+    protected function doExecute()
     {
         $workflow = Service::workflow();
 

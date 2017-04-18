@@ -44,7 +44,7 @@ class RouteDumpCommand extends AbstractCommand
              ->addOptionalArgument('name', 'A specific route name');
     }
 
-    protected function do()
+    protected function doExecute()
     {
         $this->app()->flush();
         $routes = $this->app('routes');

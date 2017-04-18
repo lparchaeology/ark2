@@ -68,7 +68,8 @@ class StaticPHPDriver implements MappingDriver, Driver
     public function readExtendedMetadata($meta, array &$config)
     {
         if ($meta->getReflectionClass()->hasMethod('readExtendedMetadata')) {
-            $meta->name::readExtendedMetadata($config);
+            $className = $meta->name;
+            $className::readExtendedMetadata($config);
         }
     }
 
