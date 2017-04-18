@@ -31,8 +31,8 @@
 namespace ARK\System;
 
 use ARK\ARK;
-use ARK\Bus\BusServiceProvider;
 use ARK\Provider\LoggerServiceProvider;
+use ARK\Provider\BusServiceProvider;
 use ARK\Provider\MailerServiceProvider;
 use Psr\Log\LogLevel;
 use Silex\Application as SilexApplication;
