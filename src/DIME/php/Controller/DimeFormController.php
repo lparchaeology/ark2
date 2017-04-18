@@ -41,8 +41,9 @@ abstract class DimeFormController extends DimeController
     public function renderResponse(Request $request, $page, $redirect = null, $options = [])
     {
         $route = $request->attributes->get('_route');
-        $options = $this->defaultOptions($route);
         $page = ORM::find(Page::class, $page);
+        $options = $page->defaultOptions();
+        $options['page_config'] = $this->pageConfig($route);
         $data = $this->buildData($request, $page);
         $forms = $page->content()->buildForms($data, $options);
         if ($request->getMethod() == 'POST') {
@@ -72,7 +73,6 @@ abstract class DimeFormController extends DimeController
         $options['page'] = $page;
         $options['layout'] = $page->content();
         $options['data'] = $data;
-        dump($options);
         return Service::renderResponse($page->template(), $options);
     }
 

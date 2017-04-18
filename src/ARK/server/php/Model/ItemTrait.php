@@ -82,7 +82,7 @@ trait ItemTrait
     {
         $this->id = $id;
         $this->idx = $id;
-        $this->label = $this->makeIdentifier($this->parentId, '_', $id);
+        $this->label = $this->makeIdentifier($this->parentItem, '_', $id);
         foreach ($this->properties() as $property) {
             $property->updateFragments();
             if ($property->name() == 'id') {

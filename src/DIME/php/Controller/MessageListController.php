@@ -31,16 +31,23 @@ namespace DIME\Controller;
 
 use ARK\ORM\ORM;
 use ARK\Entity\Message;
+use ARK\View\Page;
 use DIME\Controller\DimeFormController;
 use Symfony\Component\HttpFoundation\Request;
 
 class MessageListController extends DimeFormController
 {
+    private $actorSlug = null;
+
     public function __invoke(Request $request, $actorSlug = null)
     {
-        $layout = 'core_message_list';
-        // TODO Just for current Actor
-        $data[$layout] = ORM::findAll(Message::class);
-        return $this->renderResponse($request, $data, $layout);
+        $this->actorSlug = $actorSlug;
+        return $this->renderResponse($request, 'dime_page_messages');
+    }
+
+    public function buildData(Request $request, Page $page)
+    {
+        $data[$page->content()->name()] = ORM::findAll(Message::class);
+        return $data;
     }
 }

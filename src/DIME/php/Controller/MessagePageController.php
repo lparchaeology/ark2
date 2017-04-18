@@ -33,6 +33,7 @@ namespace DIME\Controller;
 use ARK\Entity\Message;
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\View\Page;
 use DIME\Controller\DimeController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -40,13 +41,16 @@ class MessagePageController extends DimeFormController
 {
     public function __invoke(Request $request)
     {
-        $layout = 'dime_message_page';
-        $data['core_message_list'] = ORM::findAll(Message::class);
-        if (!$data['core_message_list']->isEmpty()) {
-            dump('fill item');
-            $data['core_message_item'] = $data['core_message_list'][0];
-            dump($data['core_message_item']);
+        return $this->renderResponse($request, 'dime_page_messages');
+    }
+
+    public function buildData(Request $request, Page $page)
+    {
+        $messages = ORM::findAll(Message::class);
+        $data['core_message_list'] = $messages;
+        if (!$messages->isEmpty()) {
+            $data['core_message_item'] = $messages[0];
         }
-        return $this->renderResponse($request, $data, $layout);
+        return $data;
     }
 }

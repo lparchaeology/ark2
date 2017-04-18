@@ -33,6 +33,7 @@ namespace ARK\Model\Fragment;
 use ARK\Model\Fragment;
 use ARK\ORM\ClassMetadata;
 use DateTime;
+use DateTimeZone;
 
 class DateTimeFragment extends Fragment
 {
@@ -47,7 +48,7 @@ class DateTimeFragment extends Fragment
     protected function makeDate($date)
     {
         $dt =  ($date instanceof DateTime ? $date->format(DateTime::ATOM) : $date);
-        $tz = new DateTimeZone($this->parameter);
+        $tz = new DateTimeZone(($this->parameter ?: 'UTC'));
         return new DateTime($dt, $tz);
     }
 

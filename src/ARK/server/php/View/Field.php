@@ -148,7 +148,7 @@ class Field extends Element
         }
         if ($options['mode'] == 'view') {
             $options['required'] = false;
-        } elseif (!$options['required']) {
+        } elseif ($options['required'] === null) {
             $options['required'] = $this->attribute()->isRequired();
         }
         if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
@@ -212,7 +212,25 @@ class Field extends Element
         $base['options'] = $subOptions;
         $base['options']['mapped'] = false;
         $base['options']['label'] = false;
+        if ($base['mode'] == 'disabled') {
+            $base['options']['disabled'] = true;
+        }
+        if ($base['mode'] == 'readonly') {
+            if ($this->attribute()->hasVocabulary()) {
+                $base['options']['attr']['class'] = $this->concatOption($base, 'attr', 'class', 'readonly-select');
+            } else {
+                $base['options']['attr']['readonly'] = true;
+            }
+        }
         return $base;
+    }
+
+    protected function concatOption($options, $option, $attr, $value)
+    {
+        if (isset($options[$option][$attr])) {
+            return $options[$option][$attr].' '.$value;
+        }
+        return $value;
     }
 
     protected function vocabularyOptions(Vocabulary $vocabulary, $options = [])

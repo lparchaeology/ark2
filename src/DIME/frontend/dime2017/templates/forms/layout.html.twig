@@ -31,11 +31,13 @@
     {% if value is empty %}
         &nbsp;
     {% elseif value is iterable %}
+        {% set out = '' %}
         {% set sep = '' %}
         {% for val in value %}
-            {{ sep ~ val|translate }}
+            {% set out = out ~ sep ~ val|translate %}
             {% set sep = '<br />' %}
         {% endfor %}
+        {{ out|raw }}
     {% else %}
         {{ value|translate }}
     {% endif %}

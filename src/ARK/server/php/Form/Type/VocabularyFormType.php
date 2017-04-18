@@ -32,6 +32,7 @@ namespace ARK\Form\Type;
 
 use ARK\Form\Type\ScalarFormType;
 use ARK\Model\Property;
+use ARK\Vocabulary\Term;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
@@ -57,17 +58,10 @@ class VocabularyFormType extends ScalarFormType
     {
         $forms = iterator_to_array($forms);
         if ($data instanceof Property) {
-            $format = $data->attribute()->format();
-            $value = null;
-            if ($format->isAtomic()) {
-                $value = $forms[$format->valueName()]->getData();
-            } else {
-                foreach ($forms as $key => $form) {
-                    $value[$key] = $forms[$key]->getData();
-                }
-            }
+            dump($forms[$data->attribute()->format()->valueName()]);
+            dump($forms[$data->attribute()->format()->valueName()]->getData());
+            $data->setValue($forms[$data->attribute()->format()->valueName()]->getData());
         }
-        $data->setValue($value);
     }
 
     public function getParent()

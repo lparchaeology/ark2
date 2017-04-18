@@ -80,6 +80,7 @@ class Widget extends Element
         $cellOptions = $options['cell'];
         unset($options['cell']);
         unset($options['required']);
+        unset($options['mode']);
         $options = array_merge_recursive($this->formOptionsArray, $options);
         if ($options['label'] === null) {
             $options['label'] = ($this->showLabel() ? $this->keyword() : false);

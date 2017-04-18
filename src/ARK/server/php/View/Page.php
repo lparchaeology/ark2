@@ -93,6 +93,9 @@ class Page extends Element
         // Joined Table Inheritance
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_page');
 
+        // Fields
+        $builder->addStringField('mode', 10, 'mode');
+
         // Associations
         $builder->addManyToOneField('navbar', Nav::class, 'navbar', 'element');
         $builder->addManyToOneField('sidebar', Nav::class, 'sidebar', 'element');

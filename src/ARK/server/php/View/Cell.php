@@ -46,6 +46,7 @@ class Cell
     protected $seq = 0;
     protected $itemType = null;
     protected $label = null;
+    protected $required = null;
     protected $value = null;
     protected $parameter = null;
     protected $format = null;
@@ -94,6 +95,11 @@ class Cell
         return $this->label;
     }
 
+    public function isRequired()
+    {
+        return $this->required;
+    }
+
     public function valueMode()
     {
         if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
@@ -120,7 +126,7 @@ class Cell
                 $this->formOptionsArray = [];
             }
             $this->formOptionsArray['label'] = $this->showLabel();
-            $this->formOptionsArray['required'] = null;
+            $this->formOptionsArray['required'] = $this->isRequired();
             $this->formOptionsArray['cell']['value']['mode'] = $this->valueMode();
             $this->formOptionsArray['cell']['parameter']['mode'] = $this->parameterMode();
             $this->formOptionsArray['cell']['format']['mode'] = $this->formatMode();
@@ -164,6 +170,7 @@ class Cell
         $builder->addStringField('parameter', 10);
         $builder->addStringField('format', 10);
         $builder->addStringField('formOptions', 4000, 'form_options');
+        $builder->addField('required', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
 
         // Relationships

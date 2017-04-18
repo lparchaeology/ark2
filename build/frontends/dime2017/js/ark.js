@@ -7,6 +7,8 @@ $(document).ready(function() {
     // HACK To fix Select2 not being responsive
     // See https://github.com/select2/select2/issues/3278 and http://stackoverflow.com/a/41429176
     $(".select2.select2-container").css("width", "100%");
+    // Fake readonly mode
+    $('.readonly-select').prop('disabled', true);
     //$("date").datetimepicker();
     //$("time").datetimepicker();
     //$("datetime").datetimepicker();
@@ -67,6 +69,11 @@ var NoteSaveButton = function(context) {
 
     return button.render(); // return button as jquery object
 }
+
+// Undo fake readonly mode
+$('form').submit(function() {
+    $('.readonly-select').prop('disabled', false);
+});
 
 $('#pageedit').on('click', function() {
     if ($(this).hasClass('active')) {

@@ -32,6 +32,7 @@ namespace ARK\Form\Type;
 
 use ARK\Entity\Actor;
 use ARK\Form\Type\AbstractFormType;
+use ARK\Form\Type\StaticType;
 use ARK\ORM\ORM;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -46,7 +47,11 @@ class ItemType extends AbstractFormType
         $fieldOptions['mapped'] = false;
         $builder->add('module', HiddenType::class, $fieldOptions);
         $builder->add('item', HiddenType::class, $fieldOptions);
-        $builder->add('content', TextType::class, $fieldOptions);
+        if ($options['field']['value']['mode'] == 'static') {
+            $builder->add('content', StaticType::class, $fieldOptions);
+        } else {
+            $builder->add('content', TextType::class, $fieldOptions);
+        }
         $builder->setDataMapper($this);
     }
 

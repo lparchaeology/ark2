@@ -18,5 +18,6 @@ class Find implements Item
     public function __construct($schema)
     {
         $this->schma = $schema;
+        $this->module = $this->schema()->module()->name();
     }
 }
