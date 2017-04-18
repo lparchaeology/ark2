@@ -38,12 +38,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class DimeFormController extends DimeController
 {
-    public function renderResponse(Request $request, $page, $resource, $redirect = null, $options = [])
+    public function renderResponse(Request $request, $page, $redirect = null, $options = [])
     {
         $route = $request->attributes->get('_route');
         $options = $this->defaultOptions($route);
         $page = ORM::find(Page::class, $page);
-        $data[$page->content()->name()] = $resource;
+        $data = $this->buildData($request, $page);
         $forms = $page->content()->buildForms($data, $options);
         if ($request->getMethod() == 'POST') {
             $form = null;
@@ -72,7 +72,14 @@ abstract class DimeFormController extends DimeController
         $options['page'] = $page;
         $options['layout'] = $page->content();
         $options['data'] = $data;
+        dump($options);
         return Service::renderResponse($page->template(), $options);
+    }
+
+    public function buildData(Request $request, Page $page)
+    {
+        $data[$page->content()->name()] = null;
+        return $data;
     }
 
     public function processForm(Request $request, $form, $redirect)

@@ -31,16 +31,24 @@
 namespace DIME\Controller;
 
 use ARK\ORM\ORM;
+use ARK\View\Page;
 use DIME\Controller\DimeFormController;
 use DIME\Entity\Locality;
 use Symfony\Component\HttpFoundation\Request;
 
 class LocalityListController extends DimeFormController
 {
+    private $actorSlug = null;
+
     public function __invoke(Request $request, $actorSlug = null)
     {
-        $layout = 'dime_locality_list';
-        $data[$layout] = ORM::findAll(Locality::class);
-        return $this->renderResponse($request, $data, $layout);
+        $this->actorSlug = $actorSlug;
+        return $this->renderResponse($request, 'dime_page_locality_list');
+    }
+
+    public function buildData(Request $request, Page $page)
+    {
+        $data[$page->content()->name()] = ORM::findAll(Locality::class);
+        return $data;
     }
 }

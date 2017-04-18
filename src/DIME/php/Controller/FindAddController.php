@@ -30,6 +30,7 @@
 
 namespace DIME\Controller;
 
+use ARK\View\Page;
 use DIME\Controller\EntityController;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,9 +39,12 @@ class FindAddController extends EntityController
 {
     public function __invoke(Request $request)
     {
-        $layout = 'dime_find_item';
-        $data[$layout] = new Find('dime.find');
-        $redirect = 'finds.view';
-        return $this->renderResponse($request, $data, $layout, $redirect);
+        return $this->renderResponse($request, 'dime_page_find', 'finds.view');
+    }
+
+    public function buildData(Request $request, Page $page)
+    {
+        $data[$page->content()->name()] = new Find('dime.find');
+        return $data;
     }
 }

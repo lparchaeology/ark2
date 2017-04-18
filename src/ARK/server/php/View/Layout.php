@@ -105,7 +105,7 @@ abstract class Layout extends Element
         }
         $forms = [];
         foreach ($this->cells() as $cell) {
-            $forms = array_merge($forms, $cell->buildForms($data));
+            $forms = array_merge($forms, $cell->buildForms($data, $options));
         }
         return $forms;
     }

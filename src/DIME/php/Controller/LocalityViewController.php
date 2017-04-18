@@ -30,22 +30,30 @@
 
 namespace DIME\Controller;
 
-use ARK\ORM\ORM;
 use ARK\Error\ErrorException;
 use ARK\Http\Error\NotFoundError;
+use ARK\ORM\ORM;
+use ARK\View\Page;
 use DIME\Controller\EntityController;
 use DIME\Entity\Locality;
 use Symfony\Component\HttpFoundation\Request;
 
 class LocalityViewController extends EntityController
 {
+    private $itemSlug = null;
+
     public function __invoke(Request $request, $itemSlug)
     {
-        $layout = 'dime_locality_item';
-        if (!$data[$layout] = ORM::find(Locality::class, $itemSlug)) {
-            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Locality not found', "Locality $itemSlug not found"));
+        $this->itemSlug = $itemSlug;
+        return $this->renderResponse($request, 'dime_page_locality', 'localities.view');
+    }
+
+    public function buildData(Request $request, Page $page)
+    {
+        if (!$resource = ORM::find(Locality::class, $this->itemSlug)) {
+            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Locality not found', "Locality $this->itemSlug not found"));
         }
-        $redirect = 'localities.view';
-        return $this->renderResponse($request, $data, $layout, $redirect);
+        $data[$page->content()->name()] = $resource;
+        return $data;
     }
 }

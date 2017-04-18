@@ -30,6 +30,7 @@
 
 namespace DIME\Controller;
 
+use ARK\View\Page;
 use DIME\Entity\Locality;
 use DIME\Controller\EntityController;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,9 +39,12 @@ class LocalityAddController extends EntityController
 {
     public function __invoke(Request $request)
     {
-        $layout = 'dime_locality_item';
-        $data[$layout] = new Locality('dime.locality');
-        $redirect = 'localities.view';
-        return $this->renderResponse($request, $data, $layout, $redirect);
+        return $this->renderResponse($request, 'dime_page_locality', 'localities.view');
+    }
+
+    public function buildData(Request $request, Page $page)
+    {
+        $data[$page->content()->name()] = new Locality('dime.locality');
+        return $data;
     }
 }

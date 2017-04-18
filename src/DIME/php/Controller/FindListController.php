@@ -31,7 +31,7 @@ namespace DIME\Controller;
 
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\View\Layout;
+use ARK\View\Page;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 use DIME\Controller\DimeFormController;
@@ -41,7 +41,15 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FindListController extends DimeFormController
 {
+    private $actorSlug = null;
+
     public function __invoke(Request $request, $actorSlug = null)
+    {
+        $this->actorSlug = $actorSlug;
+        return $this->renderResponse($request, 'dime_page_find_search');
+    }
+
+    public function buildData(Request $request, Page $page)
     {
         $query = $request->query->all();
         $criteria = [];
@@ -85,10 +93,10 @@ class FindListController extends DimeFormController
             // $criteria['material'] = $material->name();
         }
 
-        $layout = 'dime_find_search';
-        $data[$layout] = ORM::findBy(Find::class, $criteria);
-        $data['dime_find_list'] = $data[$layout];
-        $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $data[$layout] : []);
+        $resource = ORM::findBy(Find::class, $criteria);
+        $data[$page->content()->name()] = $resource;
+        $data['dime_find_list'] = $resource;
+        $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $resource : []);
         $data['dime_find_filter'] = null;
 
         try {
@@ -107,8 +115,7 @@ class FindListController extends DimeFormController
             // Nothing to see here, move along now...
             $data['kortforsyningenticket'] = false;
         }
-
-        return $this->renderResponse($request, $data, $layout);
+        return $data;
     }
 
     public function processForm(Request $request, $form, $redirect)

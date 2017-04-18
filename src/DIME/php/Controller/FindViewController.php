@@ -40,11 +40,20 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FindViewController extends EntityController
 {
+    private $itemSlug = null;
+
     public function __invoke(Request $request, $itemSlug)
     {
-        if (!$data = ORM::find(Find::class, $itemSlug)) {
-            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Find not found', "Find $itemSlug not found"));
+        $this->itemSlug = $itemSlug;
+        return $this->renderResponse($request, 'dime_page_find');
+    }
+
+    public function buildData(Request $request, Page $page)
+    {
+        if (!$resource = ORM::find(Find::class, $this->itemSlug)) {
+            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Find not found', "Find $this->itemSlug not found"));
         }
-        return $this->renderResponse($request, 'dime_page_find', $data);
+        $data[$page->content()->name()] = $resource;
+        return $data;
     }
 }

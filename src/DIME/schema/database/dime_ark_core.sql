@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 18, 2017 at 02:07 PM
+-- Generation Time: Apr 18, 2017 at 04:40 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -1619,7 +1619,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `class`, `template`, `enabled
 ('dime_find_period_start', 'field', '', '', 1, 0, NULL),
 ('dime_find_process', 'grid', '', '', 1, 0, NULL),
 ('dime_find_registered_id', 'field', '', '', 1, 0, NULL),
-('dime_find_search', 'widget', '', '', 1, 0, NULL),
+('dime_find_search', 'grid', '', '', 1, 0, NULL),
 ('dime_find_secondary', 'field', '', '', 1, 0, NULL),
 ('dime_find_subtype', 'field', '', '', 1, 0, NULL),
 ('dime_find_treasure', 'field', '', '', 1, 0, NULL),
@@ -1641,6 +1641,9 @@ INSERT INTO `ark_view_element` (`element`, `type`, `class`, `template`, `enabled
 ('dime_nav_list_locality', 'nav', '', '', 1, 0, NULL),
 ('dime_nav_sidebar', 'nav', '', '', 1, 0, NULL),
 ('dime_page_find', 'page', '', '', 1, 0, NULL),
+('dime_page_find_search', 'page', '', '', 1, 0, NULL),
+('dime_page_locality', 'page', '', '', 1, 0, NULL),
+('dime_page_locality_list', 'page', '', '', 1, 0, NULL),
 ('dime_save', 'widget', '', '', 1, 0, 'dime.save'),
 ('dime_search', 'widget', '', '', 1, 0, 'dime.search');
 
@@ -1908,7 +1911,10 @@ CREATE TABLE `ark_view_page` (
 --
 
 INSERT INTO `ark_view_page` (`element`, `mode`, `content`, `footer`, `navbar`, `sidebar`, `template`) VALUES
-('dime_page_find', 'edit', 'dime_find_item', NULL, NULL, 'dime_nav_sidebar', NULL);
+('dime_page_find', 'edit', 'dime_find_item', NULL, NULL, 'dime_nav_sidebar', NULL),
+('dime_page_find_search', 'view', 'dime_find_search', NULL, NULL, 'dime_nav_sidebar', NULL),
+('dime_page_locality', 'edit', 'dime_locality_item', NULL, NULL, 'dime_nav_sidebar', NULL),
+('dime_page_locality_list', 'view', 'dime_locality_list', NULL, NULL, 'dime_nav_sidebar', NULL);
 
 -- --------------------------------------------------------
 
@@ -1970,8 +1976,8 @@ INSERT INTO `ark_view_type` (`type`, `class`, `layout`, `form_type_class`, `temp
 ('grid', 'ARK\\View\\Grid', 1, 'ARK\\Form\\Type\\SimpleFormType', 'layouts/grid.html.twig', ''),
 ('nav', 'ARK\\View\\Nav', 0, NULL, 'blocks/nav.html.twig', ''),
 ('page', 'ARK\\View\\Page', 0, NULL, 'pages/page.html.twig', ''),
-('tabbed', 'ARK\\View\\Tabbed', 1, NULL, 'layouts/tabbed.html.twig', ''),
-('table', 'ARK\\View\\Table', 1, NULL, 'layouts/table.html.twig', ''),
+('tabbed', 'ARK\\View\\Tabbed', 1, 'ARK\\Form\\Type\\SimpleFormType', 'layouts/tabbed.html.twig', ''),
+('table', 'ARK\\View\\Table', 1, 'ARK\\Form\\Type\\SimpleFormType', 'layouts/table.html.twig', ''),
 ('widget', 'ARK\\View\\Widget', 1, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', 'layouts/field.html.twig', '');
 
 -- --------------------------------------------------------
