@@ -64,7 +64,13 @@ class PageViewController extends DimeController
             $content .= '<button id="pageedit" type="button" class="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">Edit</button>';
             $content .= '<div class="inlineedit">';
         }
-        $content .= $value[0]['content'];
+        dump($page);
+        dump($item);
+        dump($item->property('content'));
+        dump($value);
+        if ($value && isset($value[0]['content'])) {
+            $content .= $value[0]['content'];
+        }
         if (Service::isGranted('ROLE_ADMIN')) {
             $content .= '</div>';
         }
