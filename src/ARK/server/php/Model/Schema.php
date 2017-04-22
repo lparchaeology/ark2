@@ -67,10 +67,11 @@ class Schema
     private function init()
     {
         if ($this->model === null) {
-            $this->model['']['attributes'] = [];
-            $this->model['']['allattributes'] = [];
-            $this->model['']['associations'] = [];
-            $this->model['']['allassociations'] = [];
+            $module = $this->module->name();
+            $this->model[$module]['attributes'] = [];
+            $this->model[$module]['allattributes'] = [];
+            $this->model[$module]['associations'] = [];
+            $this->model[$module]['allassociations'] = [];
             if ($this->typeVocabulary) {
                 foreach ($this->typeVocabulary->terms() as $term) {
                     $type = $term->name();
@@ -81,11 +82,11 @@ class Schema
                 }
             }
             foreach ($this->attributes as $attribute) {
-                $this->model['']['allattributes'][$attribute->name()] = $attribute;
+                $this->model[$module]['allattributes'][$attribute->name()] = $attribute;
                 $this->model[$attribute->type()]['attributes'][$attribute->name()] = $attribute;
             }
             foreach ($this->associations as $association) {
-                $this->model['']['allassociations'][$association->name()] = $association;
+                $this->model[$module]['allassociations'][$association->name()] = $association;
                 $this->model[$association->type()]['associations'][$association->name()] = $association;
             }
         }
@@ -96,13 +97,13 @@ class Schema
         $this->init();
         if ($type) {
             if (!$this->useTypes()) {
-                throw new ErrorException(new Error('SURPLUS_SUBTYPE', 'Type not required', "The Schema '$this->schma' does not require a Type."));
+                throw new ErrorException(new Error('SURPLUS_TYPE', 'Type not required', "The Schema '$this->schma' does not require a Type."));
             }
             if (!in_array($type, $this->types)) {
-                throw new ErrorException(new Error('INVALID_SUBTYPE', 'Invalid Type', "The Type '$type' is invalid."));
+                throw new ErrorException(new Error('INVALID_TYPE', 'Invalid Type', "The Type '$type' is invalid."));
             }
         } elseif ($this->useTypes()) {
-            throw new ErrorException(new Error('MISSING_SUBTYPE', 'Missing Type', "The Type for Schema '$this->schma' is required."));
+            throw new ErrorException(new Error('MISSING_TYPE', 'Missing Type', "The Type for Schema '$this->schma' is required."));
         }
         return $type;
     }
@@ -149,7 +150,7 @@ class Schema
         $this->checkType($type);
         $attributes = array_values($this->model[$type]['attributes']);
         if ($type && $all) {
-            return array_merge(array_values($this->model['']['attributes']), $attributes);
+            return array_merge(array_values($this->model[$this->module->name()]['attributes']), $attributes);
         }
         return $attributes;
     }
@@ -165,7 +166,7 @@ class Schema
         $type = $this->checkType($type);
         $names = array_keys($this->model[$type]['attributes']);
         if ($type && $all) {
-            return array_merge(array_keys($this->model['']['attributes']), $names);
+            return array_merge(array_keys($this->model[$this->module->name()]['attributes']), $names);
         }
         return $names;
     }
@@ -173,7 +174,11 @@ class Schema
     public function attribute($attribute)
     {
         $this->init();
-        return (isset($this->model['']['allattributes'][$attribute]) ? $this->model['']['allattributes'][$attribute] : null);
+        return (
+            isset($this->model[$this->module->name()]['allattributes'][$attribute])
+            ? $this->model[$this->module->name()]['allattributes'][$attribute]
+            : null
+        );
     }
 
     public function associations($type = '', $all = true)
@@ -182,7 +187,7 @@ class Schema
         $type = $this->checkType($type);
         $associations = array_values($this->model[$type]['associations']);
         if ($type && $all) {
-            return array_merge(array_values($this->model['']['associations']), $associations);
+            return array_merge(array_values($this->model[$this->module->name()]['associations']), $associations);
         }
         return $associations;
     }
@@ -198,7 +203,7 @@ class Schema
         $type = $this->checkType($type);
         $names = array_keys($this->model[$type]['associations']);
         if ($type && $all) {
-            return array_merge(array_keys($this->model['']['associations']), $names);
+            return array_merge(array_keys($this->model[$this->module->name()]['associations']), $names);
         }
         return $names;
     }

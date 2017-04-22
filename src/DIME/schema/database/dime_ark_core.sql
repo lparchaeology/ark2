@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 19, 2017 at 12:24 AM
+-- Generation Time: Apr 22, 2017 at 11:08 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -687,6 +687,31 @@ CREATE TABLE `ark_rbac_access` (
   `permission` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
+--
+-- Dumping data for table `ark_rbac_access`
+--
+
+INSERT INTO `ark_rbac_access` (`role`, `permission`) VALUES
+('admin', 'dime_view_find'),
+('anon', 'dime_view_find'),
+('appraiser', 'dime_view_find'),
+('curator', 'dime_view_find'),
+('detectorist', 'dime_view_find'),
+('registrar', 'dime_view_find'),
+('researcher', 'dime_view_find'),
+('admin', 'dime_view_finder'),
+('appraiser', 'dime_view_finder'),
+('curator', 'dime_view_finder'),
+('detectorist', 'dime_view_finder'),
+('registrar', 'dime_view_finder'),
+('researcher', 'dime_view_finder'),
+('admin', 'dime_view_location'),
+('appraiser', 'dime_view_location'),
+('curator', 'dime_view_location'),
+('detectorist', 'dime_view_location'),
+('registrar', 'dime_view_location'),
+('researcher', 'dime_view_location');
+
 -- --------------------------------------------------------
 
 --
@@ -698,6 +723,15 @@ CREATE TABLE `ark_rbac_permission` (
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `ark_rbac_permission`
+--
+
+INSERT INTO `ark_rbac_permission` (`permission`, `enabled`, `keyword`) VALUES
+('dime_view_find', 1, ''),
+('dime_view_finder', 1, ''),
+('dime_view_location', 1, '');
 
 -- --------------------------------------------------------
 
@@ -717,6 +751,7 @@ CREATE TABLE `ark_rbac_role` (
 
 INSERT INTO `ark_rbac_role` (`role`, `enabled`, `keyword`) VALUES
 ('admin', 1, 'dime.role.admin'),
+('anon', 1, 'dime.role.anon'),
 ('appraiser', 1, 'dime.role.appraiser'),
 ('curator', 1, 'dime.role.curator'),
 ('detectorist', 1, 'dime.role.detectorist'),
@@ -811,13 +846,13 @@ CREATE TABLE `ark_schema_association` (
 --
 
 INSERT INTO `ark_schema_association` (`schma`, `type`, `association`, `module1`, `schema1`, `degree`, `inverse`, `module2`, `schema2`, `inverse_degree`, `bidirectional`, `enabled`, `deprecated`, `keyword`) VALUES
-('core.actor', '', 'messages', 'actor', 'core.actor', 0, 'recipients', 'message', 'core.message', 0, 0, 1, 0, ''),
-('core.event', '', 'finds', 'event', 'core.event', 0, 'events', 'find', 'dime.find', 0, 0, 1, 0, ''),
-('core.event', '', 'messages', 'event', 'core.event', 0, 'events', 'message', 'core.message', 0, 0, 1, 0, ''),
-('core.message', '', 'finds', 'message', 'core.message', 0, 'messages', 'actor', 'core.actor', 0, 1, 1, 0, ''),
-('core.message', '', 'recipients', 'message', 'core.message', 0, 'messages', 'actor', 'core.actor', 0, 1, 1, 0, ''),
-('dime.find', '', 'events', 'find', 'dime.find', 0, 'finds', 'event', 'core.event', 0, 1, 1, 0, ''),
-('dime.find', '', 'messages', 'find', 'dime.find', 0, 'finds', 'message', 'core.message', 0, 0, 1, 0, '');
+('core.actor', 'actor', 'messages', 'actor', 'core.actor', 0, 'recipients', 'message', 'core.message', 0, 0, 1, 0, ''),
+('core.event', 'event', 'finds', 'event', 'core.event', 0, 'events', 'find', 'dime.find', 0, 0, 1, 0, ''),
+('core.event', 'event', 'messages', 'event', 'core.event', 0, 'events', 'message', 'core.message', 0, 0, 1, 0, ''),
+('core.message', 'message', 'finds', 'message', 'core.message', 0, 'messages', 'actor', 'core.actor', 0, 1, 1, 0, ''),
+('core.message', 'message', 'recipients', 'message', 'core.message', 0, 'messages', 'actor', 'core.actor', 0, 1, 1, 0, ''),
+('dime.find', 'find', 'events', 'find', 'dime.find', 0, 'finds', 'event', 'core.event', 0, 1, 1, 0, ''),
+('dime.find', 'find', 'messages', 'find', 'dime.find', 0, 'finds', 'message', 'core.message', 0, 0, 1, 0, '');
 
 -- --------------------------------------------------------
 
@@ -845,68 +880,68 @@ CREATE TABLE `ark_schema_attribute` (
 --
 
 INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `vocabulary`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`, `keyword`) VALUES
-('core.actor', '', 'fullname', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.fullname'),
-('core.actor', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.id'),
-('core.actor', '', 'shortname', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.shortname'),
-('core.actor', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.type'),
+('core.actor', 'actor', 'fullname', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.fullname'),
+('core.actor', 'actor', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.id'),
+('core.actor', 'actor', 'shortname', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.shortname'),
+('core.actor', 'actor', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.type'),
 ('core.actor', 'museum', 'kommuner', 'term', 'dime.denmark.kommune', 0, 0, 1, 0, 1, 0, 'dime.actor.kommuner'),
-('core.actor.event', '', 'agent', 'actor', NULL, 1, 1, 1, 0, 1, 0, NULL),
-('core.actor.event', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, NULL),
-('core.actor.event', '', 'occurred', 'datetime', NULL, 1, 1, 1, 0, 1, 0, NULL),
-('core.actor.event', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, NULL),
-('core.file', '', 'description', 'plaintext', NULL, 0, 1, 1, 0, 1, 0, 'core.file.description'),
-('core.file', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.file.id'),
-('core.file', '', 'mediatype', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.file.mediatype'),
-('core.file', '', 'status', 'term', 'core.file.status', 1, 1, 1, 0, 1, 0, 'core.file.status'),
-('core.file', '', 'title', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'core.file.title'),
-('core.file', '', 'type', 'term', 'core.file.type', 1, 1, 1, 0, 1, 0, 'core.file.type'),
-('core.file', '', 'versions', 'fileversion', NULL, 1, 0, 1, 0, 1, 0, 'core.file.versions'),
-('core.message', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.message.id'),
-('core.message', '', 'recipients', 'recipient', NULL, 1, 0, 1, 0, 1, 0, 'core.message.recipients'),
-('core.message', '', 'sender', 'actor', NULL, 1, 1, 1, 0, 1, 0, 'core.message.sender'),
-('core.message', '', 'sent_at', 'datetime', NULL, 1, 1, 1, 0, 1, 0, 'core.message.sent_at'),
-('core.message', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.message.type'),
+('core.actor.event', 'actor', 'agent', 'actor', NULL, 1, 1, 1, 0, 1, 0, NULL),
+('core.actor.event', 'actor', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, NULL),
+('core.actor.event', 'actor', 'occurred', 'datetime', NULL, 1, 1, 1, 0, 1, 0, NULL),
+('core.actor.event', 'actor', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, NULL),
+('core.file', 'file', 'description', 'plaintext', NULL, 0, 1, 1, 0, 1, 0, 'core.file.description'),
+('core.file', 'file', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.file.id'),
+('core.file', 'file', 'mediatype', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.file.mediatype'),
+('core.file', 'file', 'status', 'term', 'core.file.status', 1, 1, 1, 0, 1, 0, 'core.file.status'),
+('core.file', 'file', 'title', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'core.file.title'),
+('core.file', 'file', 'type', 'term', 'core.file.type', 1, 1, 1, 0, 1, 0, 'core.file.type'),
+('core.file', 'file', 'versions', 'fileversion', NULL, 1, 0, 1, 0, 1, 0, 'core.file.versions'),
 ('core.message', 'mail', 'attachments', 'file', NULL, 0, 0, 1, 0, 1, 0, 'core.message.mail.attachments'),
 ('core.message', 'mail', 'body', 'plaintext', NULL, 1, 1, 1, 0, 1, 0, 'core.message.mail.body'),
 ('core.message', 'mail', 'subject', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'core.message.mail.subject'),
+('core.message', 'message', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.message.id'),
+('core.message', 'message', 'recipients', 'recipient', NULL, 1, 0, 1, 0, 1, 0, 'core.message.recipients'),
+('core.message', 'message', 'sender', 'actor', NULL, 1, 1, 1, 0, 1, 0, 'core.message.sender'),
+('core.message', 'message', 'sent_at', 'datetime', NULL, 1, 1, 1, 0, 1, 0, 'core.message.sent_at'),
+('core.message', 'message', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.message.type'),
 ('core.message', 'notification', 'body', 'plaintext', NULL, 1, 1, 1, 0, 1, 0, 'core.message.notification.body'),
 ('core.message', 'notification', 'event', 'item', NULL, 1, 1, 1, 0, 1, 0, 'core.message.notification.event'),
-('core.page', '', 'content', 'html', NULL, 1, 1, 1, 0, 1, 0, 'property.content'),
-('core.page', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.page.id'),
-('dime.find', '', 'condition', 'term', 'dime.find.condition', 0, 1, 1, 0, 1, 0, 'dime.find.condition'),
-('dime.find', '', 'custodian', 'actor', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.custodian'),
-('dime.find', '', 'custody', 'term', 'dime.find.custody', 1, 1, 1, 0, 1, 0, 'dime.find.custody'),
-('dime.find', '', 'description', 'plaintext', NULL, 0, 1, 1, 0, 1, 0, 'property.description'),
-('dime.find', '', 'finddate', 'date', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.finddate'),
-('dime.find', '', 'finder', 'actor', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.finder'),
-('dime.find', '', 'finder_id', 'identifier', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.finderid'),
-('dime.find', '', 'findpoint', 'spatial', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.findpoint'),
-('dime.find', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.id'),
-('dime.find', '', 'image', 'string', NULL, 1, 0, 1, 1, 1, 0, 'dime.find.images'),
-('dime.find', '', 'kommune', 'term', 'dime.denmark.kommune', 1, 1, 1, 0, 1, 0, 'dime.find.kommune'),
-('dime.find', '', 'length', 'distance', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.length'),
-('dime.find', '', 'material', 'term', 'dime.material', 1, 1, 1, 0, 1, 0, 'dime.find.material'),
-('dime.find', '', 'museum', 'item', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.type.museum'),
-('dime.find', '', 'owner', 'actor', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.owner'),
-('dime.find', '', 'period_end', 'term', 'dime.period', 0, 1, 1, 0, 1, 0, 'dime.find.period.end'),
-('dime.find', '', 'period_start', 'term', 'dime.period', 0, 1, 1, 0, 1, 0, 'dime.find.period.start'),
-('dime.find', '', 'process', 'term', 'dime.find.process', 1, 1, 1, 0, 1, 0, 'dime.find.process'),
-('dime.find', '', 'recipient', 'actor', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.recipient'),
-('dime.find', '', 'recorder', 'actor', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.recorder'),
-('dime.find', '', 'registered_id', 'identifier', NULL, 0, 1, 1, 0, 1, 0, 'property.registeredid'),
-('dime.find', '', 'secondary', 'term', 'dime.find.secondary', 0, 0, 1, 0, 1, 0, 'dime.find.material.secondary'),
-('dime.find', '', 'subtype', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.subtype'),
-('dime.find', '', 'treasure', 'term', 'dime.treasure', 1, 1, 1, 0, 1, 0, 'dime.find.treasure'),
+('core.page', 'page', 'content', 'html', NULL, 1, 1, 1, 0, 1, 0, 'property.content'),
+('core.page', 'page', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.page.id'),
 ('dime.find', '', 'type', 'term', 'dime.find.type', 1, 1, 1, 0, 1, 0, 'dime.find.type'),
 ('dime.find', '', 'weight', 'mass', NULL, 0, 1, 1, 0, 1, 0, 'property.weight'),
-('dime.find.event', '', 'agent', 'actor', NULL, 1, 1, 1, 0, 1, 0, NULL),
-('dime.find.event', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, NULL),
-('dime.find.event', '', 'occurred', 'datetime', NULL, 1, 1, 1, 0, 1, 0, NULL),
-('dime.find.event', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, NULL),
-('dime.image', '', 'name', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
-('dime.locality', '', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.locality.id'),
-('dime.locality', '', 'name', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'dime.locality.name'),
-('dime.locality', '', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.locality.type');
+('dime.find', 'find', 'condition', 'term', 'dime.find.condition', 0, 1, 1, 0, 1, 0, 'dime.find.condition'),
+('dime.find', 'find', 'custodian', 'actor', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.custodian'),
+('dime.find', 'find', 'custody', 'term', 'dime.find.custody', 1, 1, 1, 0, 1, 0, 'dime.find.custody'),
+('dime.find', 'find', 'description', 'plaintext', NULL, 0, 1, 1, 0, 1, 0, 'property.description'),
+('dime.find', 'find', 'finddate', 'date', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.finddate'),
+('dime.find', 'find', 'finder', 'actor', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.finder'),
+('dime.find', 'find', 'finder_id', 'identifier', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.finderid'),
+('dime.find', 'find', 'findpoint', 'spatial', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.findpoint'),
+('dime.find', 'find', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.id'),
+('dime.find', 'find', 'image', 'string', NULL, 1, 0, 1, 1, 1, 0, 'dime.find.images'),
+('dime.find', 'find', 'kommune', 'term', 'dime.denmark.kommune', 1, 1, 1, 0, 1, 0, 'dime.find.kommune'),
+('dime.find', 'find', 'length', 'distance', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.length'),
+('dime.find', 'find', 'material', 'term', 'dime.material', 1, 1, 1, 0, 1, 0, 'dime.find.material'),
+('dime.find', 'find', 'museum', 'item', NULL, 1, 1, 1, 0, 1, 0, 'dime.actor.type.museum'),
+('dime.find', 'find', 'owner', 'actor', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.owner'),
+('dime.find', 'find', 'period_end', 'term', 'dime.period', 0, 1, 1, 0, 1, 0, 'dime.find.period.end'),
+('dime.find', 'find', 'period_start', 'term', 'dime.period', 0, 1, 1, 0, 1, 0, 'dime.find.period.start'),
+('dime.find', 'find', 'process', 'term', 'dime.find.process', 1, 1, 1, 0, 1, 0, 'dime.find.process'),
+('dime.find', 'find', 'recipient', 'actor', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.recipient'),
+('dime.find', 'find', 'recorder', 'actor', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.recorder'),
+('dime.find', 'find', 'registered_id', 'identifier', NULL, 0, 1, 1, 0, 1, 0, 'property.registeredid'),
+('dime.find', 'find', 'secondary', 'term', 'dime.find.secondary', 0, 0, 1, 0, 1, 0, 'dime.find.material.secondary'),
+('dime.find', 'find', 'subtype', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.subtype'),
+('dime.find', 'find', 'treasure', 'term', 'dime.treasure', 1, 1, 1, 0, 1, 0, 'dime.find.treasure'),
+('dime.find.event', 'find', 'agent', 'actor', NULL, 1, 1, 1, 0, 1, 0, NULL),
+('dime.find.event', 'find', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, NULL),
+('dime.find.event', 'find', 'occurred', 'datetime', NULL, 1, 1, 1, 0, 1, 0, NULL),
+('dime.find.event', 'find', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, NULL),
+('dime.image', 'image', 'name', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
+('dime.locality', 'locality', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.locality.id'),
+('dime.locality', 'locality', 'name', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'dime.locality.name'),
+('dime.locality', 'locality', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.locality.type');
 
 -- --------------------------------------------------------
 
@@ -939,6 +974,28 @@ INSERT INTO `ark_schema_item` (`attribute`, `format`, `vocabulary`, `minimum`, `
 ('schema', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.item.module'),
 ('status', 'identifier', 'core.item.status', 1, 1, 1, 0, 1, 0, 'core.item.status'),
 ('type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.item.type');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_schema_permission`
+--
+
+CREATE TABLE `ark_schema_permission` (
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `permission` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `ark_schema_permission`
+--
+
+INSERT INTO `ark_schema_permission` (`schma`, `type`, `attribute`, `permission`) VALUES
+('dime.find', 'find', 'finder', 'dime_view_finder'),
+('dime.find', 'find', 'finder_id', 'dime_view_finder'),
+('dime.find', 'find', 'findpoint', 'dime_view_location');
 
 -- --------------------------------------------------------
 
@@ -1672,45 +1729,45 @@ CREATE TABLE `ark_view_field` (
 --
 
 INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `label`, `value`, `parameter`, `format`, `form_type_class`, `form_options`) VALUES
-('core_file_description', 'core.file', '', 'description', 1, 'active', NULL, NULL, '', ''),
-('core_file_id', 'core.file', '', 'id', 1, 'readonly', NULL, NULL, '', ''),
-('core_file_mediatype', 'core.file', '', 'mediatype', 1, 'active', NULL, NULL, '', ''),
-('core_file_status', 'core.file', '', 'status', 1, 'active', NULL, NULL, '', ''),
-('core_file_title', 'core.file', '', 'title', 1, 'active', NULL, NULL, '', ''),
-('core_file_type', 'core.file', '', 'type', 1, 'active', NULL, NULL, '', ''),
-('core_file_versions', 'core.file', '', 'versions', 1, 'active', NULL, NULL, '', ''),
+('core_file_description', 'core.file', 'file', 'description', 1, 'active', NULL, NULL, '', ''),
+('core_file_id', 'core.file', 'file', 'id', 1, 'readonly', NULL, NULL, '', ''),
+('core_file_mediatype', 'core.file', 'file', 'mediatype', 1, 'active', NULL, NULL, '', ''),
+('core_file_status', 'core.file', 'file', 'status', 1, 'active', NULL, NULL, '', ''),
+('core_file_title', 'core.file', 'file', 'title', 1, 'active', NULL, NULL, '', ''),
+('core_file_type', 'core.file', 'file', 'type', 1, 'active', NULL, NULL, '', ''),
+('core_file_versions', 'core.file', 'file', 'versions', 1, 'active', NULL, NULL, '', ''),
 ('core_message_body', 'core.message', 'notification', 'body', 1, 'active', NULL, NULL, '', ''),
-('core_message_id', 'core.message', '', 'id', 1, 'active', NULL, NULL, NULL, ''),
-('core_message_sender', 'core.message', '', 'sender', 1, 'active', NULL, NULL, NULL, ''),
-('core_message_sent_at', 'core.message', '', 'sent_at', 1, 'active', NULL, NULL, '', ''),
-('core_message_type', 'core.message', '', 'type', 1, 'active', NULL, NULL, '', ''),
-('core_page_content', 'core.page', '', 'content', 1, 'active', NULL, NULL, '', ''),
-('dime_actor_fullname', 'core.actor', '', 'fullname', 1, 'active', NULL, NULL, '', ''),
-('dime_actor_id', 'core.actor', '', 'id', 1, 'active', NULL, NULL, '', ''),
+('core_message_id', 'core.message', 'message', 'id', 1, 'active', NULL, NULL, NULL, ''),
+('core_message_sender', 'core.message', 'message', 'sender', 1, 'active', NULL, NULL, NULL, ''),
+('core_message_sent_at', 'core.message', 'message', 'sent_at', 1, 'active', NULL, NULL, '', ''),
+('core_message_type', 'core.message', 'message', 'type', 1, 'active', NULL, NULL, '', ''),
+('core_page_content', 'core.page', 'page', 'content', 1, 'active', NULL, NULL, '', ''),
+('dime_actor_fullname', 'core.actor', 'actor', 'fullname', 1, 'active', NULL, NULL, '', ''),
+('dime_actor_id', 'core.actor', 'actor', 'id', 1, 'active', NULL, NULL, '', ''),
 ('dime_actor_kommuner', 'core.actor', 'museum', 'kommuner', 1, 'active', NULL, NULL, '', ''),
-('dime_actor_shortname', 'core.actor', '', 'shortname', 1, 'active', NULL, NULL, '', ''),
-('dime_actor_type', 'core.actor', '', 'type', 1, 'active', NULL, NULL, '', ''),
-('dime_find_condition', 'dime.find', '', 'condition', 1, 'active', NULL, NULL, '', ''),
-('dime_find_description', 'dime.find', '', 'description', 1, 'active', NULL, NULL, '', ''),
-('dime_find_finddate', 'dime.find', '', 'finddate', 1, 'active', NULL, NULL, NULL, '{\"widget\": \"picker\"}'),
-('dime_find_finder_id', 'dime.find', '', 'finder_id', 1, 'active', NULL, NULL, NULL, ''),
-('dime_find_findpoint', 'dime.find', '', 'findpoint', 1, 'active', NULL, NULL, NULL, ''),
-('dime_find_id', 'dime.find', '', 'id', 1, 'readonly', NULL, NULL, NULL, ''),
-('dime_find_image', 'dime.find', '', 'image', 1, 'active', NULL, NULL, 'ARK\\Form\\Type\\CarouselType', ''),
-('dime_find_kommune', 'dime.find', '', 'kommune', 1, 'active', NULL, NULL, NULL, ''),
-('dime_find_length', 'dime.find', '', 'length', 1, 'active', 'hidden', NULL, NULL, ''),
-('dime_find_material', 'dime.find', '', 'material', 1, 'active', NULL, NULL, NULL, ''),
-('dime_find_museum', 'dime.find', '', 'museum', 1, 'active', NULL, NULL, NULL, ''),
-('dime_find_period_end', 'dime.find', '', 'period_end', 1, 'active', NULL, NULL, NULL, ''),
-('dime_find_period_start', 'dime.find', '', 'period_start', 1, 'active', NULL, NULL, NULL, ''),
-('dime_find_registered_id', 'dime.find', '', 'registered_id', 1, 'active', NULL, NULL, NULL, ''),
-('dime_find_secondary', 'dime.find', '', 'secondary', 1, 'active', NULL, NULL, NULL, '{\"multiple\":true, \"expanded\": \"true\"}'),
-('dime_find_subtype', 'dime.find', '', 'subtype', 1, 'active', NULL, NULL, NULL, ''),
-('dime_find_treasure', 'dime.find', '', 'treasure', 1, 'active', NULL, NULL, NULL, ''),
+('dime_actor_shortname', 'core.actor', 'actor', 'shortname', 1, 'active', NULL, NULL, '', ''),
+('dime_actor_type', 'core.actor', 'actor', 'type', 1, 'active', NULL, NULL, '', ''),
+('dime_find_condition', 'dime.find', 'find', 'condition', 1, 'active', NULL, NULL, '', ''),
+('dime_find_description', 'dime.find', 'find', 'description', 1, 'active', NULL, NULL, '', ''),
+('dime_find_finddate', 'dime.find', 'find', 'finddate', 1, 'active', NULL, NULL, NULL, '{\"widget\": \"picker\"}'),
+('dime_find_finder_id', 'dime.find', 'find', 'finder_id', 1, 'active', NULL, NULL, NULL, ''),
+('dime_find_findpoint', 'dime.find', 'find', 'findpoint', 1, 'active', NULL, NULL, NULL, ''),
+('dime_find_id', 'dime.find', 'find', 'id', 1, 'readonly', NULL, NULL, NULL, ''),
+('dime_find_image', 'dime.find', 'find', 'image', 1, 'active', NULL, NULL, 'ARK\\Form\\Type\\CarouselType', ''),
+('dime_find_kommune', 'dime.find', 'find', 'kommune', 1, 'active', NULL, NULL, NULL, ''),
+('dime_find_length', 'dime.find', 'find', 'length', 1, 'active', 'hidden', NULL, NULL, ''),
+('dime_find_material', 'dime.find', 'find', 'material', 1, 'active', NULL, NULL, NULL, ''),
+('dime_find_museum', 'dime.find', 'find', 'museum', 1, 'active', NULL, NULL, NULL, ''),
+('dime_find_period_end', 'dime.find', 'find', 'period_end', 1, 'active', NULL, NULL, NULL, ''),
+('dime_find_period_start', 'dime.find', 'find', 'period_start', 1, 'active', NULL, NULL, NULL, ''),
+('dime_find_registered_id', 'dime.find', 'find', 'registered_id', 1, 'active', NULL, NULL, NULL, ''),
+('dime_find_secondary', 'dime.find', 'find', 'secondary', 1, 'active', NULL, NULL, NULL, '{\"multiple\":true, \"expanded\": \"true\"}'),
+('dime_find_subtype', 'dime.find', 'find', 'subtype', 1, 'active', NULL, NULL, NULL, ''),
+('dime_find_treasure', 'dime.find', 'find', 'treasure', 1, 'active', NULL, NULL, NULL, ''),
 ('dime_find_type', 'dime.find', '', 'type', 1, 'active', NULL, NULL, NULL, ''),
 ('dime_find_weight', 'dime.find', '', 'weight', 1, 'active', 'hidden', NULL, NULL, ''),
-('dime_locality_id', 'dime.locality', '', 'id', 1, 'readonliy', NULL, NULL, NULL, ''),
-('dime_locality_type', 'dime.locality', '', 'type', 1, 'active', NULL, NULL, NULL, '');
+('dime_locality_id', 'dime.locality', 'locality', 'id', 1, 'readonliy', NULL, NULL, NULL, ''),
+('dime_locality_type', 'dime.locality', 'locality', 'type', 1, 'active', NULL, NULL, NULL, '');
 
 -- --------------------------------------------------------
 
@@ -5328,26 +5385,26 @@ CREATE TABLE `ark_workflow_agency` (
 --
 
 INSERT INTO `ark_workflow_agency` (`schma`, `action`, `type`, `attribute`, `operator`) VALUES
-('dime.find', 'accession', '', 'custodian', 'is'),
-('dime.find', 'conserve', '', 'custodian', 'is'),
-('dime.find', 'decline', '', 'custodian', 'is'),
-('dime.find', 'destroy', '', 'custodian', 'is'),
-('dime.find', 'discard', '', 'owner', 'is'),
-('dime.find', 'loan', '', 'owner', 'is'),
-('dime.find', 'lose', '', 'custodian', 'is'),
-('dime.find', 'publish', '', 'owner', 'is'),
-('dime.find', 'receive', '', 'recipient', 'is'),
-('dime.find', 'recover', '', 'custodian', 'is'),
-('dime.find', 'recover', '', 'owner', 'is'),
-('dime.find', 'redact', '', 'owner', 'is'),
-('dime.find', 'report', '', 'custodian', 'is'),
-('dime.find', 'report', '', 'finder', 'is'),
-('dime.find', 'report', '', 'owner', 'is'),
-('dime.find', 'request', '', 'custodian', 'not'),
-('dime.find', 'send', '', 'custodian', 'is'),
-('dime.find', 'suppress', '', 'owner', 'is'),
-('dime.find', 'transfer', '', 'owner', 'is'),
-('dime.find', 'withdraw', '', 'recipient', 'is');
+('dime.find', 'accession', 'find', 'custodian', 'is'),
+('dime.find', 'conserve', 'find', 'custodian', 'is'),
+('dime.find', 'decline', 'find', 'custodian', 'is'),
+('dime.find', 'destroy', 'find', 'custodian', 'is'),
+('dime.find', 'discard', 'find', 'owner', 'is'),
+('dime.find', 'loan', 'find', 'owner', 'is'),
+('dime.find', 'lose', 'find', 'custodian', 'is'),
+('dime.find', 'publish', 'find', 'owner', 'is'),
+('dime.find', 'receive', 'find', 'recipient', 'is'),
+('dime.find', 'recover', 'find', 'custodian', 'is'),
+('dime.find', 'recover', 'find', 'owner', 'is'),
+('dime.find', 'redact', 'find', 'owner', 'is'),
+('dime.find', 'report', 'find', 'custodian', 'is'),
+('dime.find', 'report', 'find', 'finder', 'is'),
+('dime.find', 'report', 'find', 'owner', 'is'),
+('dime.find', 'request', 'find', 'custodian', 'not'),
+('dime.find', 'send', 'find', 'custodian', 'is'),
+('dime.find', 'suppress', 'find', 'owner', 'is'),
+('dime.find', 'transfer', 'find', 'owner', 'is'),
+('dime.find', 'withdraw', 'find', 'recipient', 'is');
 
 -- --------------------------------------------------------
 
@@ -5370,33 +5427,33 @@ CREATE TABLE `ark_workflow_condition` (
 --
 
 INSERT INTO `ark_workflow_condition` (`schma`, `action`, `type`, `attribute`, `grp`, `operator`, `value`) VALUES
-('dime.find', 'accession', '', 'process', 0, 'eq', 'dime.process.assessed'),
-('dime.find', 'accession', '', 'process', 1, 'eq', 'dime.process.appraised'),
-('dime.find', 'appraise', '', 'process', 0, 'eq', 'dime.process.assessed'),
-('dime.find', 'appraise', '', 'treasure', 0, 'eq', 'dime.treasure.appraisal'),
-('dime.find', 'assess', '', 'process', 0, 'eq', 'dime.process.validated'),
-('dime.find', 'assess', '', 'treasure', 0, 'eq', 'dime.treasure.pending'),
-('dime.find', 'conserve', '', 'custody', 0, 'eq', 'dime.custody.held'),
-('dime.find', 'decline', '', 'custody', 0, 'eq', 'dime.custody.requested'),
-('dime.find', 'discard', '', 'process', 0, 'eq', 'dime.process.recorded'),
-('dime.find', 'discard', '', 'process', 1, 'eq', 'dime.process.accessioned'),
-('dime.find', 'discard', '', 'process', 2, 'eq', 'dime.process.released'),
-('dime.find', 'loan', '', 'process', 1, 'eq', 'dime.process.accessioned'),
-('dime.find', 'loan', '', 'process', 2, 'eq', 'dime.process.released'),
-('dime.find', 'receive', '', 'custody', 0, 'eq', 'dime.custody.sent'),
-('dime.find', 'recover', '', 'custody', 0, 'eq', 'dime.custody.lost'),
-('dime.find', 'recover', '', 'custody', 1, 'eq', 'dime.custody.discarded'),
-('dime.find', 'recover', '', 'custody', 3, 'eq', 'dime.custody.destroyed'),
-('dime.find', 'reject', '', 'process', 0, 'eq', 'dime.process.reported'),
-('dime.find', 'release', '', 'process', 0, 'eq', 'dime.process.assessed'),
-('dime.find', 'release', '', 'process', 1, 'eq', 'dime.process.appraised'),
-('dime.find', 'report', '', 'process', 0, 'eq', 'dime.process.recorded'),
-('dime.find', 'request', '', 'custody', 0, 'eq', 'dime.custody.held'),
-('dime.find', 'reward', '', 'process', 0, 'eq', 'dime.process.appraised'),
-('dime.find', 'reward', '', 'treasure', 0, 'eq', 'dime.treasure.treasure'),
-('dime.find', 'send', '', 'custody', 0, 'eq', 'dime.custody.held'),
-('dime.find', 'validate', '', 'process', 0, 'eq', 'dime.process.reported'),
-('dime.find', 'withdraw', '', 'custody', 0, 'eq', 'dime.custody.requested');
+('dime.find', 'accession', 'find', 'process', 0, 'eq', 'dime.process.assessed'),
+('dime.find', 'accession', 'find', 'process', 1, 'eq', 'dime.process.appraised'),
+('dime.find', 'appraise', 'find', 'process', 0, 'eq', 'dime.process.assessed'),
+('dime.find', 'appraise', 'find', 'treasure', 0, 'eq', 'dime.treasure.appraisal'),
+('dime.find', 'assess', 'find', 'process', 0, 'eq', 'dime.process.validated'),
+('dime.find', 'assess', 'find', 'treasure', 0, 'eq', 'dime.treasure.pending'),
+('dime.find', 'conserve', 'find', 'custody', 0, 'eq', 'dime.custody.held'),
+('dime.find', 'decline', 'find', 'custody', 0, 'eq', 'dime.custody.requested'),
+('dime.find', 'discard', 'find', 'process', 0, 'eq', 'dime.process.recorded'),
+('dime.find', 'discard', 'find', 'process', 1, 'eq', 'dime.process.accessioned'),
+('dime.find', 'discard', 'find', 'process', 2, 'eq', 'dime.process.released'),
+('dime.find', 'loan', 'find', 'process', 1, 'eq', 'dime.process.accessioned'),
+('dime.find', 'loan', 'find', 'process', 2, 'eq', 'dime.process.released'),
+('dime.find', 'receive', 'find', 'custody', 0, 'eq', 'dime.custody.sent'),
+('dime.find', 'recover', 'find', 'custody', 0, 'eq', 'dime.custody.lost'),
+('dime.find', 'recover', 'find', 'custody', 1, 'eq', 'dime.custody.discarded'),
+('dime.find', 'recover', 'find', 'custody', 3, 'eq', 'dime.custody.destroyed'),
+('dime.find', 'reject', 'find', 'process', 0, 'eq', 'dime.process.reported'),
+('dime.find', 'release', 'find', 'process', 0, 'eq', 'dime.process.assessed'),
+('dime.find', 'release', 'find', 'process', 1, 'eq', 'dime.process.appraised'),
+('dime.find', 'report', 'find', 'process', 0, 'eq', 'dime.process.recorded'),
+('dime.find', 'request', 'find', 'custody', 0, 'eq', 'dime.custody.held'),
+('dime.find', 'reward', 'find', 'process', 0, 'eq', 'dime.process.appraised'),
+('dime.find', 'reward', 'find', 'treasure', 0, 'eq', 'dime.treasure.treasure'),
+('dime.find', 'send', 'find', 'custody', 0, 'eq', 'dime.custody.held'),
+('dime.find', 'validate', 'find', 'process', 0, 'eq', 'dime.process.reported'),
+('dime.find', 'withdraw', 'find', 'custody', 0, 'eq', 'dime.custody.requested');
 
 -- --------------------------------------------------------
 
@@ -5417,57 +5474,57 @@ CREATE TABLE `ark_workflow_notify` (
 --
 
 INSERT INTO `ark_workflow_notify` (`schma`, `action`, `type`, `attribute`, `keyword`) VALUES
-('dime.find', 'accession', '', 'finder', ''),
-('dime.find', 'accession', '', 'museum', ''),
-('dime.find', 'accession', '', 'owner', ''),
-('dime.find', 'appraise', '', 'finder', ''),
-('dime.find', 'appraise', '', 'museum', ''),
-('dime.find', 'appraise', '', 'owner', ''),
-('dime.find', 'assess', '', 'custodian', ''),
-('dime.find', 'assess', '', 'finder', ''),
-('dime.find', 'assess', '', 'owner', ''),
-('dime.find', 'conserve', '', 'finder', ''),
-('dime.find', 'conserve', '', 'owner', ''),
-('dime.find', 'decline', '', 'owner', ''),
-('dime.find', 'decline', '', 'recipient', ''),
-('dime.find', 'delete', '', 'finder', ''),
-('dime.find', 'delete', '', 'owner', ''),
-('dime.find', 'destroy', '', 'custodian', ''),
-('dime.find', 'destroy', '', 'owner', ''),
-('dime.find', 'discard', '', 'custodian', ''),
-('dime.find', 'discard', '', 'owner', ''),
-('dime.find', 'loan', '', 'custodian', ''),
-('dime.find', 'loan', '', 'owner', ''),
-('dime.find', 'lose', '', 'custodian', ''),
-('dime.find', 'lose', '', 'owner', ''),
-('dime.find', 'receive', '', 'custodian', ''),
-('dime.find', 'receive', '', 'owner', ''),
-('dime.find', 'record', '', 'finder', ''),
-('dime.find', 'recover', '', 'custodian', ''),
-('dime.find', 'recover', '', 'owner', ''),
-('dime.find', 'reject', '', 'custodian', ''),
-('dime.find', 'reject', '', 'finder', ''),
-('dime.find', 'reject', '', 'owner', ''),
-('dime.find', 'release', '', 'finder', ''),
-('dime.find', 'release', '', 'museum', ''),
-('dime.find', 'release', '', 'owner', ''),
-('dime.find', 'report', '', 'custodian', ''),
-('dime.find', 'report', '', 'finder', ''),
-('dime.find', 'report', '', 'museum', ''),
-('dime.find', 'report', '', 'owner', ''),
-('dime.find', 'request', '', 'custodian', ''),
-('dime.find', 'request', '', 'owner', ''),
-('dime.find', 'reward', '', 'finder', ''),
-('dime.find', 'reward', '', 'museum', ''),
-('dime.find', 'send', '', 'owner', ''),
-('dime.find', 'send', '', 'recipient', ''),
-('dime.find', 'transfer', '', 'custodian', ''),
-('dime.find', 'transfer', '', 'owner', ''),
-('dime.find', 'validate', '', 'custodian', ''),
-('dime.find', 'validate', '', 'finder', ''),
-('dime.find', 'validate', '', 'owner', ''),
-('dime.find', 'withdraw', '', 'custodian', ''),
-('dime.find', 'withdraw', '', 'owner', '');
+('dime.find', 'accession', 'find', 'finder', ''),
+('dime.find', 'accession', 'find', 'museum', ''),
+('dime.find', 'accession', 'find', 'owner', ''),
+('dime.find', 'appraise', 'find', 'finder', ''),
+('dime.find', 'appraise', 'find', 'museum', ''),
+('dime.find', 'appraise', 'find', 'owner', ''),
+('dime.find', 'assess', 'find', 'custodian', ''),
+('dime.find', 'assess', 'find', 'finder', ''),
+('dime.find', 'assess', 'find', 'owner', ''),
+('dime.find', 'conserve', 'find', 'finder', ''),
+('dime.find', 'conserve', 'find', 'owner', ''),
+('dime.find', 'decline', 'find', 'owner', ''),
+('dime.find', 'decline', 'find', 'recipient', ''),
+('dime.find', 'delete', 'find', 'finder', ''),
+('dime.find', 'delete', 'find', 'owner', ''),
+('dime.find', 'destroy', 'find', 'custodian', ''),
+('dime.find', 'destroy', 'find', 'owner', ''),
+('dime.find', 'discard', 'find', 'custodian', ''),
+('dime.find', 'discard', 'find', 'owner', ''),
+('dime.find', 'loan', 'find', 'custodian', ''),
+('dime.find', 'loan', 'find', 'owner', ''),
+('dime.find', 'lose', 'find', 'custodian', ''),
+('dime.find', 'lose', 'find', 'owner', ''),
+('dime.find', 'receive', 'find', 'custodian', ''),
+('dime.find', 'receive', 'find', 'owner', ''),
+('dime.find', 'record', 'find', 'finder', ''),
+('dime.find', 'recover', 'find', 'custodian', ''),
+('dime.find', 'recover', 'find', 'owner', ''),
+('dime.find', 'reject', 'find', 'custodian', ''),
+('dime.find', 'reject', 'find', 'finder', ''),
+('dime.find', 'reject', 'find', 'owner', ''),
+('dime.find', 'release', 'find', 'finder', ''),
+('dime.find', 'release', 'find', 'museum', ''),
+('dime.find', 'release', 'find', 'owner', ''),
+('dime.find', 'report', 'find', 'custodian', ''),
+('dime.find', 'report', 'find', 'finder', ''),
+('dime.find', 'report', 'find', 'museum', ''),
+('dime.find', 'report', 'find', 'owner', ''),
+('dime.find', 'request', 'find', 'custodian', ''),
+('dime.find', 'request', 'find', 'owner', ''),
+('dime.find', 'reward', 'find', 'finder', ''),
+('dime.find', 'reward', 'find', 'museum', ''),
+('dime.find', 'send', 'find', 'owner', ''),
+('dime.find', 'send', 'find', 'recipient', ''),
+('dime.find', 'transfer', 'find', 'custodian', ''),
+('dime.find', 'transfer', 'find', 'owner', ''),
+('dime.find', 'validate', 'find', 'custodian', ''),
+('dime.find', 'validate', 'find', 'finder', ''),
+('dime.find', 'validate', 'find', 'owner', ''),
+('dime.find', 'withdraw', 'find', 'custodian', ''),
+('dime.find', 'withdraw', 'find', 'owner', '');
 
 -- --------------------------------------------------------
 
@@ -5557,39 +5614,39 @@ CREATE TABLE `ark_workflow_update` (
 --
 
 INSERT INTO `ark_workflow_update` (`schma`, `action`, `type`, `attribute`) VALUES
-('dime.find', 'receive', '', 'custodian'),
-('dime.find', 'record', '', 'custodian'),
-('dime.find', 'decline', '', 'custody'),
-('dime.find', 'destroy', '', 'custody'),
-('dime.find', 'discard', '', 'custody'),
-('dime.find', 'lose', '', 'custody'),
-('dime.find', 'receive', '', 'custody'),
-('dime.find', 'record', '', 'custody'),
-('dime.find', 'recover', '', 'custody'),
-('dime.find', 'request', '', 'custody'),
-('dime.find', 'send', '', 'custody'),
-('dime.find', 'withdraw', '', 'custody'),
-('dime.find', 'record', '', 'finder'),
-('dime.find', 'accession', '', 'owner'),
-('dime.find', 'record', '', 'owner'),
-('dime.find', 'transfer', '', 'owner'),
-('dime.find', 'accession', '', 'process'),
-('dime.find', 'appraise', '', 'process'),
-('dime.find', 'assess', '', 'process'),
-('dime.find', 'delete', '', 'process'),
-('dime.find', 'record', '', 'process'),
-('dime.find', 'reject', '', 'process'),
-('dime.find', 'release', '', 'process'),
-('dime.find', 'report', '', 'process'),
-('dime.find', 'validate', '', 'process'),
-('dime.find', 'decline', '', 'recipient'),
-('dime.find', 'receive', '', 'recipient'),
-('dime.find', 'request', '', 'recipient'),
-('dime.find', 'send', '', 'recipient'),
-('dime.find', 'withdraw', '', 'recipient'),
-('dime.find', 'appraise', '', 'treasure'),
-('dime.find', 'assess', '', 'treasure'),
-('dime.find', 'record', '', 'treasure');
+('dime.find', 'receive', 'find', 'custodian'),
+('dime.find', 'record', 'find', 'custodian'),
+('dime.find', 'decline', 'find', 'custody'),
+('dime.find', 'destroy', 'find', 'custody'),
+('dime.find', 'discard', 'find', 'custody'),
+('dime.find', 'lose', 'find', 'custody'),
+('dime.find', 'receive', 'find', 'custody'),
+('dime.find', 'record', 'find', 'custody'),
+('dime.find', 'recover', 'find', 'custody'),
+('dime.find', 'request', 'find', 'custody'),
+('dime.find', 'send', 'find', 'custody'),
+('dime.find', 'withdraw', 'find', 'custody'),
+('dime.find', 'record', 'find', 'finder'),
+('dime.find', 'accession', 'find', 'owner'),
+('dime.find', 'record', 'find', 'owner'),
+('dime.find', 'transfer', 'find', 'owner'),
+('dime.find', 'accession', 'find', 'process'),
+('dime.find', 'appraise', 'find', 'process'),
+('dime.find', 'assess', 'find', 'process'),
+('dime.find', 'delete', 'find', 'process'),
+('dime.find', 'record', 'find', 'process'),
+('dime.find', 'reject', 'find', 'process'),
+('dime.find', 'release', 'find', 'process'),
+('dime.find', 'report', 'find', 'process'),
+('dime.find', 'validate', 'find', 'process'),
+('dime.find', 'decline', 'find', 'recipient'),
+('dime.find', 'receive', 'find', 'recipient'),
+('dime.find', 'request', 'find', 'recipient'),
+('dime.find', 'send', 'find', 'recipient'),
+('dime.find', 'withdraw', 'find', 'recipient'),
+('dime.find', 'appraise', 'find', 'treasure'),
+('dime.find', 'assess', 'find', 'treasure'),
+('dime.find', 'record', 'find', 'treasure');
 
 -- --------------------------------------------------------
 
@@ -5927,6 +5984,13 @@ ALTER TABLE `ark_schema_item`
   ADD PRIMARY KEY (`attribute`) USING BTREE,
   ADD KEY `format` (`format`),
   ADD KEY `vocabulary` (`vocabulary`);
+
+--
+-- Indexes for table `ark_schema_permission`
+--
+ALTER TABLE `ark_schema_permission`
+  ADD PRIMARY KEY (`schma`,`type`,`attribute`,`permission`),
+  ADD KEY `permission` (`permission`);
 
 --
 -- Indexes for table `ark_translation`
@@ -6321,6 +6385,13 @@ ALTER TABLE `ark_schema_attribute`
   ADD CONSTRAINT `ark_schema_attribute_ibfk_3` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
 
 --
+-- Constraints for table `ark_schema_permission`
+--
+ALTER TABLE `ark_schema_permission`
+  ADD CONSTRAINT `ark_schema_permission_ibfk_1` FOREIGN KEY (`schma`,`type`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `type`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_schema_permission_ibfk_2` FOREIGN KEY (`permission`) REFERENCES `ark_rbac_permission` (`permission`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `ark_translation`
 --
 ALTER TABLE `ark_translation`
@@ -6453,7 +6524,7 @@ ALTER TABLE `ark_workflow_agency`
 --
 ALTER TABLE `ark_workflow_condition`
   ADD CONSTRAINT `ark_workflow_condition_ibfk_1` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_workflow_condition_ibfk_2` FOREIGN KEY (`schma`,`type`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `type`, `attribute`);
+  ADD CONSTRAINT `ark_workflow_condition_ibfk_2` FOREIGN KEY (`schma`,`type`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `type`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_notify`
