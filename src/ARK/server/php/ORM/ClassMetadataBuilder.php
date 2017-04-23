@@ -220,11 +220,14 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         $builder->build();
     }
 
-    public function addStringField($name, $length, $column = '', $nullable = false)
+    public function addStringField($name, $length, $column = '', $nullable = false, $options = [])
     {
         $builder = $this->createField($name, 'string')->length($length)->nullable($nullable);
         if ($column) {
             $builder->columnName($column);
+        }
+        foreach ($options as $name => $value) {
+            $builder->option($name, $value);
         }
         $builder->build();
     }

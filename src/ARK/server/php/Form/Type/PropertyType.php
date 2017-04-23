@@ -118,9 +118,6 @@ class PropertyType extends AbstractType implements DataMapperInterface
                 $key = $sub->name();
                 if ($key && isset($value[$key])) {
                     $forms[$key]->setData($value[$key]);
-                } else {
-                    dump($sub);
-                    dump($value);
                 }
             }
         } elseif (is_array($value) && $value) {

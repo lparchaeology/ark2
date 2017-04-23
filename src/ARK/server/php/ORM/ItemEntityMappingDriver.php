@@ -77,9 +77,9 @@ class ItemEntityMappingDriver implements MappingDriver
         } else {
             $builder->addStringField('type', 30);
         }
-        $builder->addStringField('status', 30);
-        $builder->addStringField('parentModule', 30, 'parent_module');
-        $builder->addStringField('parentItem', 30, 'parent_item');
+        $builder->addStringField('status', 30, 'status', false, ['default' => 'registered']);
+        $builder->addStringField('parentModule', 30, 'parent_module', true);
+        $builder->addStringField('parentItem', 30, 'parent_item', true);
         $builder->addStringField('idx', 30);
         $builder->addStringField('label', 30);
         VersionTrait::buildVersionMetadata($builder);

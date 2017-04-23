@@ -58,8 +58,6 @@ class VocabularyFormType extends ScalarFormType
     {
         $forms = iterator_to_array($forms);
         if ($data instanceof Property) {
-            dump($forms[$data->attribute()->format()->valueName()]);
-            dump($forms[$data->attribute()->format()->valueName()]->getData());
             $data->setValue($forms[$data->attribute()->format()->valueName()]->getData());
         }
     }

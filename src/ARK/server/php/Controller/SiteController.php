@@ -58,14 +58,12 @@ class SiteController
 
     public function viewSiteAction(Application $app, Request $request, $siteSlug)
     {
-        dump('why???');
         $this->loadFlashes($app);
         $root = Item::getRoot($app['database'], 'ark');
         $item = $root->submodule('ste')->item($siteSlug);
         if (!$item->isValid()) {
             throw new NotFoundHttpException('Site Code '.$siteSlug.' is not valid.');
         }
-        dump($item);
         $layout = Element::get($app['database'], 'cor_layout_item', $item);
         return $layout->render($app['twig'], array(), $app['form.factory'], $item);
     }

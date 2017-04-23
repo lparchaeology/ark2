@@ -39,15 +39,15 @@ trait ItemTrait
 {
     use VersionTrait;
 
-    protected $item = '';
+    protected $item = null;
     protected $module = null;
     protected $schma = null;
     protected $schema = null;
-    protected $type = '';
-    protected $status = '';
+    protected $type = null;
+    protected $status = 'registered';
     protected $statusTerm = null;
-    protected $parentModule = '';
-    protected $parentItem = '';
+    protected $parentModule = null;
+    protected $parentItem = null;
     protected $parent = null;
     protected $idx = null;
     protected $label = null;
@@ -80,7 +80,7 @@ trait ItemTrait
     // TODO Do this properly!!!
     public function setIndex($id)
     {
-        $this->id = $id;
+        $this->item = $id;
         $this->idx = $id;
         $this->label = $this->makeIdentifier($this->parentItem, '_', $id);
         foreach ($this->properties() as $property) {
