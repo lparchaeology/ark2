@@ -6,37 +6,12 @@
 
         <thead>
             <tr>
-                <th data-field="id"
-                    data-editable="true"
-                    data-editable-mode="inline"
-                    data-editable-onblur="ignore"
-                    data-editable-showbuttons="false"
-                    data-editable-send="never"
-                    data-editable-toggle="manual"
-                >Item</th>
+                <th data-field="id" data-editable="true" data-editable-mode="inline" data-editable-onblur="ignore" data-editable-showbuttons="false" data-editable-send="never" data-editable-toggle="manual">Item</th>
                 {% if item.modtype is defined %}
-                    <th data-editable="true"
-                        data-editable-mode="inline"
-                        data-editable-onblur="ignore"
-                        data-editable-showbuttons="false"
-                        data-editable-send="never"
-                        data-editable-toggle="manual"
-                    >Type</th>
+                    <th data-editable="true" data-editable-mode="inline" data-editable-onblur="ignore" data-editable-showbuttons="false" data-editable-send="never" data-editable-toggle="manual">Type</th>
                 {% endif %}
-                <th data-editable="true"
-                    data-editable-mode="inline"
-                    data-editable-onblur="ignore"
-                    data-editable-showbuttons="false"
-                    data-editable-send="never"
-                    data-editable-toggle="manual"
-                >Created By</th>
-                <th data-editable="true"
-                    data-editable-mode="inline"
-                    data-editable-onblur="ignore"
-                    data-editable-showbuttons="false"
-                    data-editable-send="never"
-                    data-editable-toggle="manual"
-                >Created On</th>
+                <th data-editable="true" data-editable-mode="inline" data-editable-onblur="ignore" data-editable-showbuttons="false" data-editable-send="never" data-editable-toggle="manual">Created By</th>
+                <th data-editable="true" data-editable-mode="inline" data-editable-onblur="ignore" data-editable-showbuttons="false" data-editable-send="never" data-editable-toggle="manual">Created On</th>
                 <th data-events="registerEvents">Actions</th>
             </tr>
         </thead>
@@ -50,9 +25,17 @@
                     {% endif %}
                     <td>{{ item.cre_by }}</td>
                     <td>{{ item.cre_on }}</td>
-                    <td><a class="row-view" href="javascript:void(0)" title="View"><i class="glyphicon glyphicon-eye-open"></i></a><nbsp/><nbsp/>
-                        <a class="row-edit" href="javascript:void(0)" title="Edit"><i class="glyphicon glyphicon-edit"></i></a><nbsp/><nbsp/>
-                        <a class="row-delete" href="javascript:void(0)" title="Delete"><i class="glyphicon glyphicon-trash"></i></a></td>
+                    <td>
+                        <a class="row-view" href="javascript:void(0)" title="View">
+                            <i class="glyphicon glyphicon-eye-open"></i>
+                        </a><nbsp/><nbsp/>
+                        <a class="row-edit" href="javascript:void(0)" title="Edit">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a><nbsp/><nbsp/>
+                        <a class="row-delete" href="javascript:void(0)" title="Delete">
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </a>
+                    </td>
                 </tr>
             {% endfor %}
             <tr id="register-new">
@@ -62,8 +45,14 @@
                 {% endif %}
                 <td></td>
                 <td></td>
-                <td><a class="row-save" href="javascript:void(0)" title="Save"><i class="glyphicon glyphicon-ok"></i></a><nbsp/><nbsp/>
-                    <a class="row-cancel" href="javascript:void(0)" title="Cancel"><i class="glyphicon glyphicon-remove"></i></a></td>
+                <td>
+                    <a class="row-save" href="javascript:void(0)" title="Save">
+                        <i class="glyphicon glyphicon-ok"></i>
+                    </a><nbsp/><nbsp/>
+                    <a class="row-cancel" href="javascript:void(0)" title="Cancel">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </a>
+                </td>
             </tr>
         </tbody>
 

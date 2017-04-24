@@ -1,12 +1,12 @@
 {# Block to write out correctly formatted field value #}
 {% block fieldvalue -%}
 
-{{ item.name }}
+    {{ item.name }}
 
     {% if item.property(field.attribute.name).value is not null %}
-         {{ item.property(field.attribute.name).value['content'] }}
-     {% else %}
-         {{ field.attribute.name }}
-     {% endif %}
+        {{ item.property(field.attribute.name).value['content'] }}
+    {% else %}
+        {{ field.attribute.name }}
+    {% endif %}
 
 {%- endblock fieldvalue %}

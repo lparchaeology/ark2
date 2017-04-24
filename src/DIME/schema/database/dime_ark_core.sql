@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6
+-- version 4.6.5.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 23, 2017 at 10:00 PM
--- Server version: 10.1.22-MariaDB
--- PHP Version: 7.1.3
+-- Generation Time: Apr 24, 2017 at 08:41 PM
+-- Server version: 5.6.34
+-- PHP Version: 7.1.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -693,23 +693,23 @@ CREATE TABLE `ark_rbac_access` (
 
 INSERT INTO `ark_rbac_access` (`role`, `permission`) VALUES
 ('admin', 'dime_view_find'),
-('admin', 'dime_view_finder'),
-('admin', 'dime_view_location'),
 ('anon', 'dime_view_find'),
 ('appraiser', 'dime_view_find'),
-('appraiser', 'dime_view_finder'),
-('appraiser', 'dime_view_location'),
 ('curator', 'dime_view_find'),
-('curator', 'dime_view_finder'),
-('curator', 'dime_view_location'),
 ('detectorist', 'dime_view_find'),
-('detectorist', 'dime_view_finder'),
-('detectorist', 'dime_view_location'),
 ('registrar', 'dime_view_find'),
-('registrar', 'dime_view_finder'),
-('registrar', 'dime_view_location'),
 ('researcher', 'dime_view_find'),
+('admin', 'dime_view_finder'),
+('appraiser', 'dime_view_finder'),
+('curator', 'dime_view_finder'),
+('detectorist', 'dime_view_finder'),
+('registrar', 'dime_view_finder'),
 ('researcher', 'dime_view_finder'),
+('admin', 'dime_view_location'),
+('appraiser', 'dime_view_location'),
+('curator', 'dime_view_location'),
+('detectorist', 'dime_view_location'),
+('registrar', 'dime_view_location'),
 ('researcher', 'dime_view_location');
 
 -- --------------------------------------------------------
@@ -908,8 +908,6 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('core.message', 'notification', 'event', 'item', NULL, 1, 1, 1, 0, 1, 0, 'core.message.notification.event'),
 ('core.page', 'page', 'content', 'html', NULL, 1, 1, 1, 0, 1, 0, 'property.content'),
 ('core.page', 'page', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.page.id'),
-('dime.find', '', 'type', 'term', 'dime.find.type', 1, 1, 1, 0, 1, 0, 'dime.find.type'),
-('dime.find', '', 'weight', 'mass', NULL, 0, 1, 1, 0, 1, 0, 'property.weight'),
 ('dime.find', 'find', 'condition', 'term', 'dime.find.condition', 0, 1, 1, 0, 1, 0, 'dime.find.condition'),
 ('dime.find', 'find', 'custodian', 'actor', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.custodian'),
 ('dime.find', 'find', 'custody', 'term', 'dime.find.custody', 1, 1, 1, 0, 1, 0, 'dime.find.custody'),
@@ -934,6 +932,9 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('dime.find', 'find', 'secondary', 'term', 'dime.find.secondary', 0, 0, 1, 0, 1, 0, 'dime.find.material.secondary'),
 ('dime.find', 'find', 'subtype', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.subtype'),
 ('dime.find', 'find', 'treasure', 'term', 'dime.treasure', 1, 1, 1, 0, 1, 0, 'dime.find.treasure'),
+('dime.find', 'find', 'type', 'term', 'dime.find.type', 1, 1, 1, 0, 1, 0, 'dime.find.type'),
+('dime.find', 'find', 'visibility', 'term', 'dime.find.visibility', 1, 1, 1, 0, 1, 0, 'dime.find.visibility'),
+('dime.find', 'find', 'weight', 'mass', NULL, 0, 1, 1, 0, 1, 0, 'property.weight'),
 ('dime.find.event', 'find', 'agent', 'actor', NULL, 1, 1, 1, 0, 1, 0, NULL),
 ('dime.find.event', 'find', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, NULL),
 ('dime.find.event', 'find', 'occurred', 'datetime', NULL, 1, 1, 1, 0, 1, 0, NULL),
@@ -1032,6 +1033,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.about.partners', 'dime', 0, 0),
 ('dime.action.record', 'dime', 0, 0),
 ('dime.action.report', 'dime', 0, 0),
+('dime.actions', 'dime', 0, 0),
 ('dime.actor.fullname', 'dime', 0, 0),
 ('dime.actor.id', 'dime', 0, 0),
 ('dime.actor.kommuner', 'dime', 0, 0),
@@ -1277,6 +1279,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.about.partners', 'default', 'Samarbejdspartnere', ''),
 ('da', 'dime.action.record', 'default', 'Optage', 'Optage'),
 ('da', 'dime.action.report', 'default', 'Berette', 'berette'),
+('da', 'dime.actions', 'default', 'Handling', 'Handling'),
 ('da', 'dime.actor.fullname', 'default', 'Navn', ''),
 ('da', 'dime.actor.id', 'default', 'Aktører ID', ''),
 ('da', 'dime.actor.kommuner', 'default', 'Kommuner', ''),
@@ -1371,6 +1374,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.about.instructions', 'default', 'Instructions', ''),
 ('en', 'dime.about.museums', 'default', 'Participating Museums', ''),
 ('en', 'dime.about.partners', 'default', 'Partners', ''),
+('en', 'dime.action.record', 'default', 'Record', 'Record'),
+('en', 'dime.action.report', 'default', 'Report', 'Report'),
+('en', 'dime.actions', 'default', 'Action', 'Action'),
 ('en', 'dime.actor.fullname', 'default', 'Name', ''),
 ('en', 'dime.actor.id', 'default', 'Actor ID', ''),
 ('en', 'dime.actor.kommuner', 'default', 'Municipalities', ''),
@@ -1764,8 +1770,8 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `lab
 ('dime_find_secondary', 'dime.find', 'find', 'secondary', 1, 'active', NULL, NULL, NULL, '{\"multiple\":true, \"expanded\": \"true\"}'),
 ('dime_find_subtype', 'dime.find', 'find', 'subtype', 1, 'active', NULL, NULL, NULL, ''),
 ('dime_find_treasure', 'dime.find', 'find', 'treasure', 1, 'active', NULL, NULL, NULL, ''),
-('dime_find_type', 'dime.find', '', 'type', 1, 'active', NULL, NULL, NULL, ''),
-('dime_find_weight', 'dime.find', '', 'weight', 1, 'active', 'hidden', NULL, NULL, ''),
+('dime_find_type', 'dime.find', 'find', 'type', 1, 'active', NULL, NULL, NULL, ''),
+('dime_find_weight', 'dime.find', 'find', 'weight', 1, 'active', 'hidden', NULL, NULL, ''),
 ('dime_locality_id', 'dime.locality', 'locality', 'id', 1, 'readonliy', NULL, NULL, NULL, ''),
 ('dime_locality_type', 'dime.locality', 'locality', 'type', 1, 'active', NULL, NULL, NULL, '');
 
@@ -2107,6 +2113,7 @@ INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `workflow`,
 ('dime.find.process', 'list', 'DIME', 1, 0, 1, 0, 'dime.find.process', 'DIME Find Process'),
 ('dime.find.secondary', 'list', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.find.secondary', 'DIME Secondary Materials List'),
 ('dime.find.type', 'list', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.type', 'DIME Find Type'),
+('dime.find.visibility', 'list', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.find.visibility', 'DIME Find Visibility'),
 ('dime.material', 'list', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.material', 'DIME Material List'),
 ('dime.period', 'taxonomy', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.period', 'DIME Period Taxonomy'),
 ('dime.treasure', 'list', 'DIME', 1, 1, 1, 0, 'vocabulary.dime.treasure', 'DIME Treasure Status'),
@@ -3078,6 +3085,9 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('dime.find.type', 'military', '', 0, 1, 0, 'dime.find.type.military', ''),
 ('dime.find.type', 'tool', '', 0, 1, 0, 'dime.find.type.tool', ''),
 ('dime.find.type', 'waste', '', 0, 1, 0, 'dime.find.type.waste', ''),
+('dime.find.visibility', 'private', '', 0, 1, 0, 'dime.find.visibility.private', ''),
+('dime.find.visibility', 'public', '', 0, 1, 0, 'dime.find.visibility.public', ''),
+('dime.find.visibility', 'restricted', '', 0, 1, 0, 'dime.find.visibility.restricted', ''),
 ('dime.material', 'ag', 'silver', 0, 1, 0, 'dime.material.silver', ''),
 ('dime.material', 'al', 'aluminium', 0, 1, 0, 'dime.material.aluminium', ''),
 ('dime.material', 'au', 'gold', 0, 1, 0, 'dime.material.gold', ''),
@@ -3326,12 +3336,12 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('language', 'gag', 'gagauz', 0, 1, 0, 'language.gagauz', ''),
 ('language', 'gan', 'chinese.gan', 0, 1, 0, 'language.chinese.gan', ''),
 ('language', 'gay', 'gayo', 0, 1, 0, 'language.gayo', ''),
-('language', 'gba', 'gbaya', 0, 1, 0, 'language.gbaya', ''),
+('language', 'gba', 'gbaya', 0, 1, 0, 'language.gbaya', '');
+INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('language', 'gbz', 'dari.zoroastrian', 0, 1, 0, 'language.dari.zoroastrian', ''),
 ('language', 'gd', 'gaelic.scottish', 0, 1, 0, 'language.gaelic.scottish', ''),
 ('language', 'gez', 'geez', 0, 1, 0, 'language.geez', ''),
-('language', 'gil', 'gilbertese', 0, 1, 0, 'language.gilbertese', '');
-INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('language', 'gil', 'gilbertese', 0, 1, 0, 'language.gilbertese', ''),
 ('language', 'gl', 'galician', 0, 1, 0, 'language.galician', ''),
 ('language', 'glk', 'gilaki', 0, 1, 0, 'language.gilaki', ''),
 ('language', 'gmh', 'german.middlehigh', 0, 1, 0, 'language.german.middlehigh', ''),
@@ -5614,39 +5624,39 @@ CREATE TABLE `ark_workflow_update` (
 --
 
 INSERT INTO `ark_workflow_update` (`schma`, `action`, `type`, `attribute`) VALUES
-('dime.find', 'accession', 'find', 'owner'),
-('dime.find', 'accession', 'find', 'process'),
-('dime.find', 'appraise', 'find', 'process'),
-('dime.find', 'appraise', 'find', 'treasure'),
-('dime.find', 'assess', 'find', 'process'),
-('dime.find', 'assess', 'find', 'treasure'),
+('dime.find', 'receive', 'find', 'custodian'),
+('dime.find', 'record', 'find', 'custodian'),
 ('dime.find', 'decline', 'find', 'custody'),
-('dime.find', 'decline', 'find', 'recipient'),
-('dime.find', 'delete', 'find', 'process'),
 ('dime.find', 'destroy', 'find', 'custody'),
 ('dime.find', 'discard', 'find', 'custody'),
 ('dime.find', 'lose', 'find', 'custody'),
-('dime.find', 'receive', 'find', 'custodian'),
 ('dime.find', 'receive', 'find', 'custody'),
-('dime.find', 'receive', 'find', 'recipient'),
-('dime.find', 'record', 'find', 'custodian'),
 ('dime.find', 'record', 'find', 'custody'),
-('dime.find', 'record', 'find', 'finder'),
-('dime.find', 'record', 'find', 'owner'),
-('dime.find', 'record', 'find', 'process'),
-('dime.find', 'record', 'find', 'treasure'),
 ('dime.find', 'recover', 'find', 'custody'),
+('dime.find', 'request', 'find', 'custody'),
+('dime.find', 'send', 'find', 'custody'),
+('dime.find', 'withdraw', 'find', 'custody'),
+('dime.find', 'record', 'find', 'finder'),
+('dime.find', 'accession', 'find', 'owner'),
+('dime.find', 'record', 'find', 'owner'),
+('dime.find', 'transfer', 'find', 'owner'),
+('dime.find', 'accession', 'find', 'process'),
+('dime.find', 'appraise', 'find', 'process'),
+('dime.find', 'assess', 'find', 'process'),
+('dime.find', 'delete', 'find', 'process'),
+('dime.find', 'record', 'find', 'process'),
 ('dime.find', 'reject', 'find', 'process'),
 ('dime.find', 'release', 'find', 'process'),
 ('dime.find', 'report', 'find', 'process'),
-('dime.find', 'request', 'find', 'custody'),
-('dime.find', 'request', 'find', 'recipient'),
-('dime.find', 'send', 'find', 'custody'),
-('dime.find', 'send', 'find', 'recipient'),
-('dime.find', 'transfer', 'find', 'owner'),
 ('dime.find', 'validate', 'find', 'process'),
-('dime.find', 'withdraw', 'find', 'custody'),
-('dime.find', 'withdraw', 'find', 'recipient');
+('dime.find', 'decline', 'find', 'recipient'),
+('dime.find', 'receive', 'find', 'recipient'),
+('dime.find', 'request', 'find', 'recipient'),
+('dime.find', 'send', 'find', 'recipient'),
+('dime.find', 'withdraw', 'find', 'recipient'),
+('dime.find', 'appraise', 'find', 'treasure'),
+('dime.find', 'assess', 'find', 'treasure'),
+('dime.find', 'record', 'find', 'treasure');
 
 -- --------------------------------------------------------
 

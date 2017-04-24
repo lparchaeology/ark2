@@ -72,13 +72,16 @@
             <notnull/>
         </field>
         <field name="storage_size" type="integer"/>
-        <field name="value_name" type="string" size="30"/>
-        <field name="format_name" type="string" size="30"/>
-        <field name="parameter_name" type="string" size="30"/>
         <field name="spanable" type="boolean">
             <default value="1"/>
             <notnull/>
         </field>
+        <field name="value_name" type="string" size="30"/>
+        <field name="value_form_class" type="string" size="100"/>
+        <field name="parameter_name" type="string" size="30"/>
+        <field name="parameter_form_class" type="string" size="100"/>
+        <field name="format_name" type="string" size="30"/>
+        <field name="format_form_class" type="string" size="100"/>
         <field name="model_table" type="string" size="50">
             <notnull/>
         </field>
@@ -91,9 +94,7 @@
         <field name="data_class" type="string" size="100">
             <notnull/>
         </field>
-        <field name="form_class" type="string" size="100">
-            <notnull/>
-        </field>
+        <field name="form_type_class" type="string" size="100"/>
         <field name="enabled" type="boolean">
             <default value="1"/>
             <notnull/>
@@ -130,11 +131,12 @@
         <field name="parameter_vocabulary" type="string" size="30"/>
         <field name="format_vocabulary" type="string" size="30"/>
         <field name="value_name" type="string" size="30"/>
+        <field name="value_form_class" type="string" size="100"/>
         <field name="parameter_name" type="string" size="30"/>
+        <field name="parameter_form_class" type="string" size="100"/>
         <field name="format_name" type="string" size="30"/>
-        <field name="input" type="string" size="20">
-            <notnull/>
-        </field>
+        <field name="format_form_class" type="string" size="100"/>
+        <field name="form_type_class" type="string" size="100"/>
         <field name="object" type="boolean">
             <default value="0"/>
             <notnull/>
@@ -723,6 +725,34 @@
         </field>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     </table>
+    <table name="ark_route">
+        <field name="route" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="page" type="string" size="30"/>
+        <field name="path" type="string" size="50">
+            <notnull/>
+        </field>
+        <field name="can_get" type="boolean">
+            <default value="1"/>
+            <notnull/>
+        </field>
+        <field name="can_post" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="controller" type="string" size="50">
+            <notnull/>
+        </field>
+        <index name="page">
+            <col>page</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_route_ibfk_1" table="ark_view_page">
+            <column local="page" foreign="element"/>
+        </references>
+    </table>
     <table name="ark_schema">
         <field name="schma" type="string" size="30">
             <key/>
@@ -779,10 +809,22 @@
             <key/>
             <notnull/>
         </field>
-        <field name="inverse" type="string" size="30">
+        <field name="module1" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="schema1" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="module2" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="schema2" type="string" size="30">
             <notnull/>
         </field>
         <field name="degree" type="integer">
+            <notnull/>
+        </field>
+        <field name="inverse" type="string" size="30">
             <notnull/>
         </field>
         <field name="inverse_degree" type="integer">
@@ -806,6 +848,14 @@
         <index name="inverse_schema">
             <col>inverse</col>
         </index>
+        <index name="module1">
+            <col>module1</col>
+            <col>schema1</col>
+        </index>
+        <index name="module2">
+            <col>module2</col>
+            <col>schema2</col>
+        </index>
         <index name="IDX_39AF30E1FDE1EB53">
             <col>schma</col>
         </index>
@@ -813,8 +863,13 @@
         <references name="ark_schema_association_ibfk_1" table="ark_schema" onupdate="cascade" ondelete="cascade">
             <column local="schma" foreign="schma"/>
         </references>
-        <references name="ark_schema_association_ibfk_2" table="ark_schema">
-            <column local="inverse" foreign="schma"/>
+        <references name="ark_schema_association_ibfk_3" table="ark_schema" onupdate="cascade" ondelete="cascade">
+            <column local="module1" foreign="module"/>
+            <column local="schema1" foreign="schma"/>
+        </references>
+        <references name="ark_schema_association_ibfk_4" table="ark_schema" onupdate="cascade" ondelete="cascade">
+            <column local="module2" foreign="module"/>
+            <column local="schema2" foreign="schma"/>
         </references>
     </table>
     <table name="ark_schema_attribute">
@@ -921,6 +976,41 @@
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     </table>
+    <table name="ark_schema_permission">
+        <field name="schma" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="attribute" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="permission" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <index name="permission">
+            <col>permission</col>
+        </index>
+        <index name="IDX_AB120753FDE1EB538CDE5729FA7AEFFB">
+            <col>schma</col>
+            <col>type</col>
+            <col>attribute</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_schema_permission_ibfk_1" table="ark_schema_attribute" onupdate="cascade" ondelete="cascade">
+            <column local="schma" foreign="schma"/>
+            <column local="type" foreign="type"/>
+            <column local="attribute" foreign="attribute"/>
+        </references>
+        <references name="ark_schema_permission_ibfk_2" table="ark_rbac_permission" onupdate="cascade" ondelete="cascade">
+            <column local="permission" foreign="permission"/>
+        </references>
+    </table>
     <table name="ark_translation">
         <field name="keyword" type="string" size="100">
             <key/>
@@ -990,9 +1080,7 @@
         <field name="text" type="text">
             <notnull/>
         </field>
-        <field name="notes" type="text">
-            <notnull/>
-        </field>
+        <field name="notes" type="text"/>
         <index name="keyword">
             <col>keyword</col>
         </index>
@@ -1057,10 +1145,6 @@
         <field name="template" type="string" size="100">
             <notnull/>
         </field>
-        <field name="hidden" type="boolean">
-            <default value="0"/>
-            <notnull/>
-        </field>
         <field name="enabled" type="boolean">
             <default value="1"/>
             <notnull/>
@@ -1083,23 +1167,46 @@
             <key/>
             <notnull/>
         </field>
-        <field name="schma" type="string" size="30"/>
-        <field name="item_type" type="string" size="30"/>
-        <field name="attribute" type="string" size="30"/>
-        <field name="form_type" type="string" size="100">
+        <field name="schma" type="string" size="30">
             <notnull/>
         </field>
-        <field name="form_options" type="string" size="4000">
+        <field name="item_type" type="string" size="30">
             <notnull/>
         </field>
-        <field name="editable" type="boolean">
+        <field name="attribute" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="label" type="boolean">
             <default value="1"/>
+            <notnull/>
+        </field>
+        <field name="value" type="string" size="10">
+            <default value="active"/>
+            <notnull/>
+        </field>
+        <field name="parameter" type="string" size="10"/>
+        <field name="format" type="string" size="10"/>
+        <field name="form_type_class" type="string" size="100"/>
+        <field name="form_options" type="string" size="4000">
             <notnull/>
         </field>
         <index name="schma">
             <col>schma</col>
         </index>
+        <index name="schma_2">
+            <col>schma</col>
+            <col>item_type</col>
+            <col>attribute</col>
+        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_view_field_ibfk_1" table="ark_view_element" onupdate="cascade" ondelete="cascade">
+            <column local="element" foreign="element"/>
+        </references>
+        <references name="ark_view_field_ibfk_2" table="ark_schema_attribute" onupdate="cascade" ondelete="cascade">
+            <column local="schma" foreign="schma"/>
+            <column local="item_type" foreign="type"/>
+            <column local="attribute" foreign="attribute"/>
+        </references>
     </table>
     <table name="ark_view_grid">
         <field name="layout" type="string" size="30">
@@ -1122,26 +1229,15 @@
             <key/>
             <notnull/>
         </field>
-        <field name="cell" type="string" size="30">
+        <field name="element" type="string" size="30">
             <notnull/>
         </field>
         <field name="map" type="string" size="30"/>
-        <field name="form_options" type="string" size="4000">
-            <notnull/>
-        </field>
-        <field name="width" type="integer"/>
-        <field name="label" type="boolean">
-            <default value="1"/>
-            <notnull/>
-        </field>
-        <field name="editable" type="boolean">
-            <default value="1"/>
-            <notnull/>
-        </field>
-        <field name="hidden" type="boolean">
-            <default value="0"/>
-            <notnull/>
-        </field>
+        <field name="label" type="boolean"/>
+        <field name="value" type="string" size="30"/>
+        <field name="parameter" type="string" size="30"/>
+        <field name="format" type="string" size="30"/>
+        <field name="required" type="boolean"/>
         <field name="enabled" type="boolean">
             <default value="1"/>
             <notnull/>
@@ -1150,8 +1246,9 @@
             <default value="0"/>
             <notnull/>
         </field>
+        <field name="form_options" type="string" size="4000"/>
         <index name="child">
-            <col>cell</col>
+            <col>element</col>
         </index>
         <index name="map">
             <col>map</col>
@@ -1164,7 +1261,7 @@
             <column local="layout" foreign="element"/>
         </references>
         <references name="ark_view_grid_ibfk_2" table="ark_view_element" onupdate="cascade" ondelete="cascade">
-            <column local="cell" foreign="element"/>
+            <column local="element" foreign="element"/>
         </references>
         <references name="ark_view_grid_ibfk_3" table="ark_map" onupdate="cascade" ondelete="set null">
             <column local="map" foreign="map"/>
@@ -1177,14 +1274,17 @@
         </field>
         <field name="schma" type="string" size="30"/>
         <field name="item_type" type="string" size="30"/>
-        <field name="form_root" type="boolean">
-            <default value="0"/>
-            <notnull/>
-        </field>
+        <field name="form_mode" type="string" size="10"/>
         <index name="schma">
             <col>schma</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_view_layout_ibfk_1" table="ark_view_element" onupdate="cascade" ondelete="cascade">
+            <column local="element" foreign="element"/>
+        </references>
+        <references name="ark_view_layout_ibfk_2" table="ark_schema" onupdate="cascade" ondelete="cascade">
+            <column local="schma" foreign="schma"/>
+        </references>
     </table>
     <table name="ark_view_nav">
         <field name="element" type="string" size="30">
@@ -1192,9 +1292,12 @@
             <notnull/>
         </field>
         <field name="parent" type="string" size="30"/>
-        <field name="icon" type="string" size="50">
+        <field name="seq" type="integer">
+            <default value="0"/>
             <notnull/>
         </field>
+        <field name="level" type="integer"/>
+        <field name="icon" type="string" size="50"/>
         <field name="route" type="string" size="50"/>
         <field name="uri" type="string" size="2038"/>
         <field name="seperator" type="boolean">
@@ -1205,7 +1308,12 @@
             <default value="1"/>
             <notnull/>
         </field>
-        <index name="ark_view_nav_ibfk_2">
+        <index name="parent">
+            <unique/>
+            <col>parent</col>
+            <col>seq</col>
+        </index>
+        <index name="IDX_99FD383C3D8E604F">
             <col>parent</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
@@ -1225,6 +1333,11 @@
         <field name="footer" type="string" size="30"/>
         <field name="navbar" type="string" size="30"/>
         <field name="sidebar" type="string" size="30"/>
+        <field name="mode" type="string" size="10">
+            <default value="view"/>
+            <notnull/>
+        </field>
+        <field name="template" type="string" size="100"/>
         <index name="navbar_element">
             <col>navbar</col>
         </index>
@@ -1238,19 +1351,19 @@
             <col>footer</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="content_element" table="ark_view_element" onupdate="cascade" ondelete="cascade">
+        <references name="content_element" table="ark_view_layout" onupdate="cascade" ondelete="cascade">
             <column local="content" foreign="element"/>
         </references>
         <references name="element" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="element" foreign="element"/>
         </references>
-        <references name="footer_element" table="ark_view_element" onupdate="cascade" ondelete="cascade">
+        <references name="footer_element" table="ark_view_layout" onupdate="cascade" ondelete="cascade">
             <column local="footer" foreign="element"/>
         </references>
-        <references name="navbar_element" table="ark_view_element" onupdate="cascade" ondelete="cascade">
+        <references name="navbar_element" table="ark_view_nav" onupdate="cascade" ondelete="cascade">
             <column local="navbar" foreign="element"/>
         </references>
-        <references name="sidebar_element" table="ark_view_element" onupdate="cascade" ondelete="cascade">
+        <references name="sidebar_element" table="ark_view_nav" onupdate="cascade" ondelete="cascade">
             <column local="sidebar" foreign="element"/>
         </references>
     </table>
@@ -1263,7 +1376,7 @@
         <field name="ancestor" type="string" size="30">
             <notnull/>
         </field>
-        <field name="descendent" type="string" size="30">
+        <field name="descendant" type="string" size="30">
             <notnull/>
         </field>
         <field name="depth" type="integer">
@@ -1276,14 +1389,14 @@
             <col>ancestor</col>
         </index>
         <index name="descendent">
-            <col>descendent</col>
+            <col>descendant</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
         <references name="ark_view_tree_ibfk_1" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="ancestor" foreign="element"/>
         </references>
         <references name="ark_view_tree_ibfk_2" table="ark_view_element" onupdate="cascade" ondelete="cascade">
-            <column local="descendent" foreign="element"/>
+            <column local="descendant" foreign="element"/>
         </references>
     </table>
     <table name="ark_view_type">
@@ -1298,9 +1411,7 @@
             <default value="0"/>
             <notnull/>
         </field>
-        <field name="form_type" type="string" size="100">
-            <notnull/>
-        </field>
+        <field name="form_type_class" type="string" size="100"/>
         <field name="template" type="string" size="100">
             <notnull/>
         </field>
@@ -1308,6 +1419,31 @@
             <notnull/>
         </field>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    </table>
+    <table name="ark_view_widget">
+        <field name="element" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="vocabulary" type="string" size="30"/>
+        <field name="label" type="boolean">
+            <default value="1"/>
+            <notnull/>
+        </field>
+        <field name="form_type_class" type="string" size="100"/>
+        <field name="form_options" type="string" size="4000">
+            <notnull/>
+        </field>
+        <index name="ark_view_widget_ibfk_1">
+            <col>vocabulary</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_view_widget_ibfk_1" table="ark_vocabulary" onupdate="cascade" ondelete="cascade">
+            <column local="vocabulary" foreign="concept"/>
+        </references>
+        <references name="ark_view_widget_ibfk_2" table="ark_view_element" onupdate="cascade" ondelete="cascade">
+            <column local="element" foreign="element"/>
+        </references>
     </table>
     <table name="ark_vocabulary">
         <field name="concept" type="string" size="30">
@@ -1643,6 +1779,13 @@
             <default value="0"/>
             <notnull/>
         </field>
+        <field name="default_agency" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="default_condition" type="boolean">
+            <notnull/>
+        </field>
         <field name="enabled" type="boolean">
             <default value="1"/>
             <notnull/>
@@ -1692,7 +1835,7 @@
             <col>type</col>
             <col>attribute</col>
         </index>
-        <index name="IDX_20FFFDB3FDE1EB5347CC8C92">
+        <index name="IDX_AC10BF48FDE1EB5347CC8C92">
             <col>schma</col>
             <col>action</col>
         </index>
@@ -1748,7 +1891,7 @@
             <column local="schma" foreign="schma"/>
             <column local="action" foreign="action"/>
         </references>
-        <references name="ark_workflow_condition_ibfk_2" table="ark_schema_attribute">
+        <references name="ark_workflow_condition_ibfk_2" table="ark_schema_attribute" onupdate="cascade" ondelete="cascade">
             <column local="schma" foreign="schma"/>
             <column local="type" foreign="type"/>
             <column local="attribute" foreign="attribute"/>
@@ -1769,6 +1912,9 @@
         </field>
         <field name="attribute" type="string" size="30">
             <key/>
+            <notnull/>
+        </field>
+        <field name="keyword" type="string" size="30">
             <notnull/>
         </field>
         <index name="schma">
@@ -1804,7 +1950,7 @@
             <key/>
             <notnull/>
         </field>
-        <field name="operation" type="string" size="10">
+        <field name="operator" type="string" size="10">
             <default value="is"/>
             <notnull/>
         </field>

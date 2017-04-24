@@ -4,34 +4,48 @@
 
     {%- set table_class -%}
         table table-bootstrap-table
-        {%- if layout.striped %} table-striped {%- endif -%}
-        {%- if layout.bordered %} table-bordered {%- endif -%}
-        {%- if layout.hover %} table-hover {%- endif -%}
-        {%- if layout.condensed %} table-condensed {%- endif -%}
+        {%- if layout.striped %}
+            table-striped
+        {%- endif -%}
+        {%- if layout.bordered %}
+            table-bordered
+        {%- endif -%}
+        {%- if layout.hover %}
+            table-hover
+        {%- endif -%}
+        {%- if layout.condensed %}
+            table-condensed
+        {%- endif -%}
     {%- endset -%}
 
-    <table id="register-table"
-           class="{{table_class}}"
-           data-toggle="table"
-           data-classes="{{table_class}}"
-           >
+    <table id="register-table" class="{{table_class}}" data-toggle="table" data-classes="{{table_class}}">
 
         <thead>
             <tr>
                 {%- for field in layout.fields -%}
-                    <th data-title="{{field.title|translate}}"
+                    <th
+                        data-title="{{field.title|trans}}"
                         data-editable="true"
                         data-editable-mode="inline"
                         data-editable-onblur="ignore"
                         data-editable-showbuttons="false"
                         data-editable-send="never"
                         data-editable-toggle="manual"
-                        {%- if field.id == keyfield %} data-field="id" {%- else -%} data-field="{{field.id}}" {%- endif -%}
-                        {%- if field.tooltip %} data-titleTooltip="{{field.tooltip|translate}}" {%- endif -%}
-                        {%- if field.align %} data-align="{{field.align}}" {%- endif -%}
-                        {%- if field.hidden %} data-visible="false" {%- endif -%}
-                    >
-                        {{field.title|translate}}
+                        {%- if field.id == keyfield %}
+                            data-field="id"
+                        {%- else -%}
+                            data-field="{{field.id}}"
+                        {%- endif -%}
+                        {%- if field.tooltip %}
+                            data-titleTooltip="{{field.tooltip|trans}}"
+                        {%- endif -%}
+                        {%- if field.align %}
+                            data-align="{{field.align}}"
+                        {%- endif -%}
+                        {%- if field.hidden %}
+                            data-visible="false"
+                        {%- endif -%}>
+                        {{field.title|trans}}
                     </th>
                 {% endfor %}
                 <th>Actions</th>
@@ -47,16 +61,23 @@
                                 {%- if field.type == 'date' -%}
                                     {{- item[field.id].format('Y-m-d H:i:s') -}}
                                 {%- elseif field.type in ['action', 'attribute', 'modtype'] -%}
-                                    {{- item[field.id]|translate -}}
+                                    {{- item[field.id]|trans -}}
                                 {%- else -%}
                                     {{- item[field.id] -}}
                                 {%- endif -%}
                             {%- endif -%}
                         </td>
                     {%- endfor -%}
-                    <td><a class="row-view" href="javascript:void(0)" title="View"><i class="glyphicon glyphicon-eye-open"></i></a><nbsp/><nbsp/>
-                        <a class="row-edit" href="javascript:void(0)" title="Edit"><i class="glyphicon glyphicon-edit"></i></a><nbsp/><nbsp/>
-                        <a class="row-delete" href="javascript:void(0)" title="Delete"><i class="glyphicon glyphicon-trash"></i></a>
+                    <td>
+                        <a class="row-view" href="javascript:void(0)" title="View">
+                            <i class="glyphicon glyphicon-eye-open"></i>
+                        </a><nbsp/><nbsp/>
+                        <a class="row-edit" href="javascript:void(0)" title="Edit">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a><nbsp/><nbsp/>
+                        <a class="row-delete" href="javascript:void(0)" title="Delete">
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </a>
                     </td>
                 </tr>
             {%- endfor -%}
@@ -64,8 +85,13 @@
                 {% for field in layout.fields %}
                     <td></td>
                 {% endfor %}
-                <td><a class="row-save" href="javascript:void(0)" title="Save"><i class="glyphicon glyphicon-ok"></i></a><nbsp/><nbsp/>
-                    <a class="row-cancel" href="javascript:void(0)" title="Cancel"><i class="glyphicon glyphicon-remove"></i></a>
+                <td>
+                    <a class="row-save" href="javascript:void(0)" title="Save">
+                        <i class="glyphicon glyphicon-ok"></i>
+                    </a><nbsp/><nbsp/>
+                    <a class="row-cancel" href="javascript:void(0)" title="Cancel">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </a>
                 </td>
             </tr>
         </tbody>

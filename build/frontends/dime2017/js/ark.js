@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
     // Replace all select tags with Select2
     $("select").select2({
         minimumResultsForSearch: 11,
@@ -9,6 +10,7 @@ $(document).ready(function() {
     $(".select2.select2-container").css("width", "100%");
     // Fake readonly mode
     $('.readonly-select').prop('disabled', true);
+
     //$("date").datetimepicker();
     //$("time").datetimepicker();
     //$("datetime").datetimepicker();

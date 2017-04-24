@@ -1,30 +1,27 @@
 {# Define the standard sidebar block #}
 
-{% use "blocks/link.html.twig" %}
-
 {% block sidebar %}
 
-    {% block usertool %}{% endblock %}
-
     <div class="row">
-        <ul class="list-group">
-            {% if page.sidebar is defined %}
-                {% for group in page.sidebar %}
-                    {% if is_granted(group.role) %}
-                        {% for link in group.links %}
-                            {% if link.active %}
-                                <li class="active list-group-item navlist">
-                                    {% include "blocks/link.html.twig" with {'link': link} %}
-                                </li>
-                            {% else %}
-                                <li class="list-group-item navlist">
-                                    {% include "blocks/link.html.twig" with {'link': link} %}
-                                </li>
-                            {% endif %}
-                        {% endfor %}
+        {% if page.sidebar.keyword %}
+            {{ vocabulary.keyword|translate }}
+        {% endif %}
+        <ul class="list-group" role="menu" aria-labelledby="menu">
+            {% set children = page.sidebar.children %}
+            {% tree nav in children %}
+                {% if is_granted(nav.route) %}
+                    {% if nav.children %}
+                        <li>{% include "blocks/nav.html.twig" %}
+                        <ul class="list-group">
+                    {% else %}
+                        <li>{% include "blocks/nav.html.twig" %}</li>
                     {% endif %}
-                {% endfor %}
-            {% endif %}
+                    {% subtree nav.children %}
+                    {% if nav.children %}
+                        </ul></li>
+                    {% endif %}
+                {% endif %}
+            {% endtree %}
         </ul>
     </div>
 

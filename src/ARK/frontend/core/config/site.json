@@ -15,6 +15,10 @@
         "enable": true,
         "frontend": "core"
     },
+    "routes": {
+        "/api/v2": "ARK\\Route\\ApiControllerProvider",
+        "/": "ARK\\Route\\ViewControllerProvider"
+    },
     "security": {
         "access_rules": [
             ["(^/users)", "ROLE_USER"],

@@ -1,13 +1,10 @@
 $(document).ready(function() {
-
-    function source(source, config) {
-        if (source == 'BingMaps') {
-            return new ol.source.BingMaps(config)
-        }
-        if (source == 'TileWMS') {
-            return new ol.source.TileWMS(config)
-        }
+    if ($('#mapview').length) {
+        initialiseMapView();
     }
+});
+
+function initialiseMapView() {
 
     var layers = [];
     for (var i = 0; i < layerConfig.length; ++i) {
@@ -16,7 +13,7 @@ $(document).ready(function() {
             name: config.name,
             visible: config.visible,
             preload: config.preload,
-            source: source(config.class, config.source)
+            source: mapSource(config.class, config.source)
         });
         layer.set('name', config.name);
         layers.push(layer);
@@ -53,30 +50,16 @@ $(document).ready(function() {
         }
     });
 
-    if (ywkts.length != 0) {
+    if (wkts.length != 0) {
 
-        yourfeatures = [];
+        features = [];
 
-        theirfeatures = [];
-
-        var dimestyles = {
-            'yours': new ol.style.Style({
+        var styles = {
+            'features': new ol.style.Style({
                 image: new ol.style.Circle({
                     radius: 5,
                     fill: new ol.style.Fill({
                         color: '#f00'
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: '#000',
-                        width: 1
-                    })
-                })
-            }),
-            'theirs': new ol.style.Style({
-                image: new ol.style.Circle({
-                    radius: 5,
-                    fill: new ol.style.Fill({
-                        color: '#00f'
                     }),
                     stroke: new ol.style.Stroke({
                         color: '#000',
@@ -88,51 +71,29 @@ $(document).ready(function() {
 
         var format = new ol.format.WKT();
 
-        for (wkt in ywkts) {
-            feature = format.readFeature(ywkts[wkt], {
+        for (wkt in wkts) {
+            feature = format.readFeature(wkts[wkt], {
                 dataProjection: 'EPSG:4326',
                 featureProjection: 'EPSG:3857'
             });
             feature.set('ark_id', wkt);
-            yourfeatures.push(feature);
+            features.push(feature);
         }
 
-        for (wkt in twkts) {
-            theirfeatures.push(format.readFeature(twkts[wkt], {
-                dataProjection: 'EPSG:4326',
-                featureProjection: 'EPSG:3857'
-            }).set('ark_id', wkt));
-        }
-
-        var yours = new ol.layer.Vector({
+        var featureLayer = new ol.layer.Vector({
             source: new ol.source.Vector({
-                features: yourfeatures
+                features: features
             }),
-            style: dimestyles['yours']
+            style: dimestyles['features']
         });
 
-        var theirs = new ol.layer.Vector({
-            source: new ol.source.Vector({
-                features: theirfeatures
-            }),
-            style: dimestyles['theirs']
-        });
+        featureLayer.set('name', 'features');
+        featureLayer.set('selectable', true);
 
-        yours.set('name', 'yours');
-
-        yours.set('selectable', true);
-
-
-        theirs.set('name', 'theirs');
-
-        theirs.set('selectable', true);
-
-
-        map.addLayer(theirs);
-        map.addLayer(yours);
+        map.addLayer(featureLayer);
 
         view = map.getView();
-        extent = yours.getSource().getExtent();
+        extent = featureLayer.getSource().getExtent();
         view.fit(extent, map.getSize());
 
         var select = new ol.interaction.Select({
@@ -158,7 +119,7 @@ $(document).ready(function() {
         var collection = select.getFeatures();
 
         collection.on('add', function(evt) {
-            var elements = $('.dime-table tr');
+            var elements = $('.table tr');
 
             for (var i = 0; i < elements.length; i++) {
                 $(elements[i]).removeClass('selected');
@@ -167,23 +128,23 @@ $(document).ready(function() {
             collection.forEach(function(e, i, a) {
                 var ark_id = e.get('ark_id');
 
-                $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
+                $(".table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
             })
         });
 
         collection.on('remove', function(evt) {
-            var elements = $('.dime-table tr');
+            var elements = $('.table tr');
             for (var i = 0; i < elements.length; i++) {
                 $(elements[i]).removeClass('selected');
             }
             collection.forEach(function(e, i, a) {
                 var ark_id = e.get('ark_id');
 
-                $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
+                $(".table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
             })
         });
 
-        $('table.dime-table').on('click-row.bs.table', function(evt, row, element, field) {
+        $('table.table').on('click-row.bs.table', function(evt, row, element, field) {
             ark_id = element.attr('data-unique-id');
             map.getLayers().forEach(function(i, e, a) {
                 if (i.get('name') == 'yours') {
@@ -219,7 +180,7 @@ $(document).ready(function() {
             $(".ol-viewport").append($div);
             var prerun = false;
             map.getLayers().forEach(function(e, i, a) {
-                if (e.get("name") === "kommunelayer") {
+                if (e.get("name") === "chorplethlayer") {
                     e.setVisible(true);
                     $('.modal-backdrop').detach();
                     view = map.getView();
@@ -227,7 +188,7 @@ $(document).ready(function() {
                     view.fit(extent, map.getSize());
                     $('.map-legend').show();
                     prerun = true;
-                } else if (e.get("name") === "yours" || e.get("name") === "theirs") {
+                } else if (e.get("name") === "features") {
                     e.setVisible(false);
                 }
             });
@@ -238,7 +199,7 @@ $(document).ready(function() {
                     var kommunes = result['kommune'];
                     for (kommune in kommunes) {
                         feature = format.readFeature(kommunes[kommune]['geometry'], {
-                            dataProjection: 'EPSG:' + kommunes[kommune]['srid'],
+                            dataProjection: 'EPSG:'+kommunes[kommune]['srid'],
                             featureProjection: 'EPSG:3857'
                         });
                         feature.set('count', kommunes[kommune]['count']);
@@ -247,10 +208,10 @@ $(document).ready(function() {
                     }
 
                     var bands = {
-                        "4": [225, 38, 42],
-                        "3": [235, 111, 77],
-                        "2": [241, 227, 50],
-                        "1": [104, 176, 56],
+                            "4" : [225,38,42],
+                            "3" : [235,111,77],
+                            "2" : [241,227,50],
+                            "1" : [104,176,56],
                     };
 
                     var height = 200;
@@ -259,7 +220,7 @@ $(document).ready(function() {
 
                     bandslength = Object.keys(bands).length;
 
-                    var bandheight = height / bandslength;
+                    var bandheight = height/bandslength;
 
                     var styles = {};
 
@@ -269,12 +230,12 @@ $(document).ready(function() {
                     svg.setAttribute('style', "border: 1px solid black");
                     for (band in bands) {
                         rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-                        style = "fill:rgb(" + bands[band][0] + "," + bands[band][1] + "," + bands[band][2] + ")"
+                        style = "fill:rgb("+bands[band][0]+","+bands[band][1]+","+bands[band][2]+")"
                         rect.setAttribute('style', style);
                         rect.setAttribute('height', bandheight);
                         rect.setAttribute('width', width);
                         rect.setAttribute('fill-opacity', opacity);
-                        rect.setAttribute('y', bandheight * (bandslength - band));
+                        rect.setAttribute('y',bandheight*(bandslength-band));
                         svg.append(rect);
                         bands[band].push(opacity);
                         styles[band] = new ol.style.Style({
@@ -329,13 +290,13 @@ $(document).ready(function() {
                     if (e.get("name") === "yours" || e.get("name") === "theirs") {
                         e.setVisible(true);
                         newextent = e.getSource().getExtent();
-                        if (newextent[0] != Infinity) {
+                        if(newextent[0] != Infinity){
                             extent = [
-                                Math.min(newextent[0], extent[0]),
-                                Math.min(newextent[1], extent[1]),
-                                Math.max(newextent[2], extent[2]),
-                                Math.max(newextent[3], extent[3])
-                            ];
+                                      Math.min(newextent[0],extent[0]),
+                                      Math.min(newextent[1],extent[1]),
+                                      Math.max(newextent[2],extent[2]),
+                                      Math.max(newextent[3],extent[3])
+                                      ];
                             view.fit(extent, map.getSize());
                         }
                     }
@@ -348,7 +309,7 @@ $(document).ready(function() {
 
     });
 
-    switch (default_overlay) {
+    switch(default_overlay) {
         case "distribution":
             $('.style-select-option[value="distribution"]').click();
             break;
@@ -358,6 +319,13 @@ $(document).ready(function() {
         default:
 
     }
+}
 
-
-});
+function mapSource(source, config) {
+    if (source == 'BingMaps') {
+        return new ol.source.BingMaps(config)
+    }
+    if (source == 'TileWMS') {
+        return new ol.source.TileWMS(config)
+    }
+}

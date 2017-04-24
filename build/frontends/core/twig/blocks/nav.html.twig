@@ -1,34 +1,15 @@
 {# Define the standard navbar block #}
 {% block nav %}
 
-{% if navs is not defined %}
-    {% set navs = [nav] %}
-{% endif %}
-
-{% tree nav in navs %}
-    {% if nav.hasChildren %}
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                {% if nav.icon %}
-                    <img src="{{ asset(nav.icon, 'frontend') }}" alt="" width="15">
-                {% endif %}
-                <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-    {% elseif nav.isSeperator %}
-        <li role="separator" class="divider"></li>
-    {% elseif not nav.uri %}
-        <li class="dropdown-header">{{ nav.keyword | translate }}</li>
-    {% else %}
-        <li{% if global.request.attributes.get('_route') == nav.route %} class="active"{% endif %}>
-            <a href="{{ nav.uri }}">{{ nav.keyword | translate }}</a>
-        </li>
+    {% set active = (nav.route and nav.route == path.route) ? "active" : "" %}
+    {% if nav.icon %}
+        {% set size = (active ? "normal" : "small" )%}
+        <span class="icon-{{ nav.icon }} {{ size }}"></span>
     {% endif %}
-    {% subtree nav.children %}
-    {% if nav.hasChildren %}
-            </ul>
-        </li>
+    {% if nav.route %}
+        <a class="{{ active }}" href="{{ path(nav.route) }}">
+            {{ nav.keyword | translate }}
+        </a>
     {% endif %}
-{% endtree %}
 
 {% endblock nav %}

@@ -1,17 +1,19 @@
 <div class="row col-xs-12">
 
-    {% if layout.tabs|length > 1 or layout.showSingleTab %}
+    {% if layout.tabs | length > 1 or layout.showSingleTab %}
 
-        {% set just = (layout.justified ? ' nav-justified') %}
+        {% set just = (layout.justified
+            ? ' nav-justified') %}
 
         <ul class="nav nav-{{layout.toggle}}s{{just}}" role="tablist">
 
-        {% for tab in layout.tabs %}
-            {% set active = (tab.id == layout.defaultTab ? ' class=active') %}
-            <li role="presentation"{{active}}>
-                <a href="#{{tab.id}}" aria-controls="{{tab.id}}" role="tab" data-toggle="{{layout.toggle}}">{{tab.keyword|translate}}</a>
-            </li>
-        {% endfor %}
+            {% for tab in layout.tabs %}
+                {% set active = (tab.id == layout.defaultTab
+                    ? ' class=active') %}
+                <li role="presentation" {{active}}>
+                    <a href="#{{tab.id}}" aria-controls="{{tab.id}}" role="tab" data-toggle="{{layout.toggle}}">{{tab.keyword|trans}}</a>
+                </li>
+            {% endfor %}
 
         </ul>
 
@@ -22,15 +24,21 @@
         {% for tab in layout.tabs %}
 
             {% if layout.fade %}
-                {% set fade =  (tab.id == layout.defaultTab ? ' fade in' : ' fade') %}
+                {% set fade = (tab.id == layout.defaultTab
+                    ? ' fade in'
+                    : ' fade') %}
             {% else %}
                 {% set fade = '' %}
             {% endif %}
 
-            {% set active = (tab.id == layout.defaultTab ? ' active') %}
+            {% set active = (tab.id == layout.defaultTab
+                ? ' active') %}
 
             <div role="tabpanel" class="tab-pane{{fade}}{{active}}" id="{{tab.id}}">
-                {% include tab.template() with {'layout': tab, 'forms': forms[tab.id]} %}
+                {% include tab.template() with {
+                    'layout': tab,
+                    'forms': forms[tab.id]
+                } %}
             </div>
 
         {% endfor %}

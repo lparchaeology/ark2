@@ -172,6 +172,7 @@ class SiteCreateCommand extends DatabaseCommand
                 try {
                     $admin->loadSchema(ARK::namespaceDir('ARK')."/server/schema/database/$db.xml");
                     $admin->commit();
+                    $this->write(" * Loaded $db schema...");
                 } catch (DBALException $e) {
                     $this->writeException("Load Schema to database $dbname failed", $e);
                     $admin->rollBack();
@@ -183,6 +184,7 @@ class SiteCreateCommand extends DatabaseCommand
                     $admin->beginTransaction();
                     $admin->loadSql(ARK::namespaceDir('ARK')."/server/schema/database/$db.sql");
                     $admin->commit();
+                    $this->write(" * Loaded $db data...");
                 } catch (Exception $e) {
                     $admin->rollBack();
                 }
