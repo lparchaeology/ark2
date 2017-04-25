@@ -34,60 +34,57 @@ use ARK\Model\Module\Module;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
-class ModuleNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
+class SchemaNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
 {
     private $schemas = [];
 
-    public function supportsNormalization($module, $format = null)
+    public function supportsNormalization($schema, $format = null)
     {
-        return (get_class($module) === Module::class);
+        return (get_class($schema) === Schema::class);
     }
 
-    public function normalize($module, $format = null, array $context = [])
+    public function normalize($schema, $format = null, array $context = [])
     {
-        if (!isset($context['schemaId'])) {
-            $context['schemaId'] = $module->id();
-        }
-        $schemaId = $context['schemaId'];
-        if (isset($this->schemas[$schemaId])) {
-            return $this->schemas[$schemaId];
+        if (isset($this->schemas[$schema->name()])) {
+            return $this->schemas[$schema->name()];
         }
         $schema['$schema'] = 'http://json-schema.org/draft-04/schema#';
-        $schema['schema_id'] = $schemaId;
+        $schema['schema_id'] = $schema->name();
         $schema['definitions'] = [];
         $context['definitions'] = true;
-        $modtypes = array_merge([$module->id()], $module->modtypes($schemaId));
-        foreach ($modtypes as $modtype) {
-            foreach ($module->properties($schemaId, $modtype) as $property) {
+        $types = array_merge([$schema->module->name()], $schema->typeNames());
+        foreach ($types as $type) {
+            foreach ($schema->attributes($type, false) as $attribute) {
                 $schema['definitions'] =
-                    array_merge($schema['definitions'], $this->serializer->normalize($property, $format, $context));
+                    array_merge($schema['definitions'], $this->serializer->normalize($attribute, $format, $context));
             }
         }
         unset($context['definitions']);
         $schema['type'] = 'object';
         $schema['properties'] = [];
-        foreach ($module->properties($schemaId, $module->id(), false) as $property) {
-            $schema['properties'][$property->id()] = $this->serializer->normalize($property, $format, $context);
+        foreach ($schema->attributes($schema->module->name(), false) as $attribute) {
+            $schema['properties'][$attribute->name()] = $this->serializer->normalize($attribute, $format, $context);
+            if ($attribute->isRequired()) {
+                $schema['required'] = $attribute->name();
+            }
         }
-        $schema['required'] = $module->required($schemaId, $module->id(), false);
         $schema['additionalProperties'] = false;
         $anyof = [];
-        foreach ($module->modtypes($schemaId) as $modtype) {
+        foreach ($schema->typeNames() as $type) {
             $subschema = null;
-            foreach ($module->properties($schemaId, $modtype, false) as $property) {
-                $subschema['properties'][$property->id()] =
-                    $this->serializer->normalize($property, $format, $context);
+            foreach ($schema->attributes($type, false) as $attribute) {
+                $subschema['properties'][$attribute->name()] =
+                    $this->serializer->normalize($attribute, $format, $context);
+                if ($attribute->isRequired()) {
+                    $subschema['required'] = $attribute->name();
+                }
             }
             if ($subschema) {
-                $subschema['properties'][$modtype]['enum'] = [$modtype];
-                $required = $module->required($schemaId, $modtype, false);
-                if ($required) {
-                    $subschema['required'] = $required;
-                }
+                $subschema['properties'][$type]['enum'] = [$type];
                 $schema['anyOf'][] = $subschema;
             }
         }
-        $this->schemas[$schemaId] = $schema;
+        $this->schemas[$schema->name()] = $schema;
         return $schema;
     }
 }

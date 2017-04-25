@@ -47,7 +47,7 @@ class ItemResource extends Resource
             $this->setParameters($parameters);
         }
         if ($parameters->includeSchema()) {
-            $this->meta['schema'] = $serializer->normalize($item->module(), 'json', ['schemaId' => $item->schemaId()]);
+            $this->meta['schema'] = $serializer->normalize($item->schema()->module(), 'json', ['schemaId' => $item->schema()->name()]);
         }
     }
 

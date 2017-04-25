@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 24, 2017 at 08:41 PM
+-- Generation Time: Apr 25, 2017 at 10:13 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -526,7 +526,6 @@ INSERT INTO `ark_instance_schema` (`instance`, `schma`, `enabled`, `deprecated`)
 ('dime', 'core.file', 1, 0),
 ('dime', 'core.message', 1, 0),
 ('dime', 'core.page', 1, 0),
-('dime', 'dime.campaign', 1, 0),
 ('dime', 'dime.find', 1, 0),
 ('dime', 'dime.image', 1, 0),
 ('dime', 'dime.locality', 1, 0);
@@ -666,15 +665,14 @@ CREATE TABLE `ark_module` (
 --
 
 INSERT INTO `ark_module` (`module`, `resource`, `project`, `namespace`, `entity`, `classname`, `tbl`, `core`, `enabled`, `deprecated`, `keyword`) VALUES
-('actor', '', 'ARK', 'ARK\\Entity', 'Actor', 'ARK\\Entity\\Actor', 'ark_item_actor', 1, 1, 0, 'module.actor'),
-('campaign', 'campaigns', 'DIME', 'DIME\\Entity', 'Campaign', 'DIME\\Entity\\Campaign', 'ark_item_campaign', 0, 1, 0, 'dime.campaign'),
-('event', '', 'ARK', 'ARK\\Entity', 'Event', 'ARK\\Entity\\Event', 'ark_item_event', 1, 1, 0, 'module.event'),
-('file', '', 'ARK', 'ARK\\File', 'File', 'ARK\\File\\File', 'ark_item_file', 1, 1, 0, 'module.file'),
-('find', 'fund', 'DIME', 'DIME\\Entity', 'Find', 'DIME\\Entity\\Find', 'ark_item_find', 0, 1, 0, 'dime.find'),
+('actor', 'actors', 'ARK', 'ARK\\Entity', 'Actor', 'ARK\\Entity\\Actor', 'ark_item_actor', 1, 1, 0, 'module.actor'),
+('event', 'events', 'ARK', 'ARK\\Entity', 'Event', 'ARK\\Entity\\Event', 'ark_item_event', 1, 1, 0, 'module.event'),
+('file', 'files', 'ARK', 'ARK\\File', 'File', 'ARK\\File\\File', 'ark_item_file', 1, 1, 0, 'module.file'),
+('find', 'finds', 'DIME', 'DIME\\Entity', 'Find', 'DIME\\Entity\\Find', 'ark_item_find', 0, 1, 0, 'dime.find'),
 ('image', 'images', 'DIME', 'DIME\\Entity', 'Image', 'DIME\\Entity\\Image', 'ark_item_image', 0, 1, 0, 'dime.image'),
-('locality', 'lokalitet', 'DIME', 'DIME\\Entity', 'Locality', 'DIME\\Entity\\Locality', 'ark_item_locality', 0, 1, 0, 'dime.locality'),
-('message', '', 'ARK', 'ARK\\Entity', 'Message', 'ARK\\Entity\\Message', 'ark_item_message', 1, 1, 0, 'module.message'),
-('page', '', 'ARK', 'ARK\\Entity', 'Page', 'ARK\\Entity\\Page', 'ark_item_page', 1, 1, 0, 'module.page');
+('locality', 'localities', 'DIME', 'DIME\\Entity', 'Locality', 'DIME\\Entity\\Locality', 'ark_item_locality', 0, 1, 0, 'dime.locality'),
+('message', 'messages', 'ARK', 'ARK\\Entity', 'Message', 'ARK\\Entity\\Message', 'ark_item_message', 1, 1, 0, 'module.message'),
+('page', 'page', 'ARK', 'ARK\\Entity', 'Page', 'ARK\\Entity\\Page', 'ark_item_page', 1, 1, 0, 'module.page');
 
 -- --------------------------------------------------------
 
@@ -812,7 +810,6 @@ INSERT INTO `ark_schema` (`schma`, `module`, `generator`, `sequence`, `type`, `t
 ('core.file', 'file', 'ARK\\ORM\\Id\\IdentityGenerator', NULL, 'type', 'core.file.type', 1, 1, 0, 'core.file'),
 ('core.message', 'message', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 'type', 'core.message.type', 0, 1, 0, 'core.message'),
 ('core.page', 'page', '', NULL, NULL, NULL, 0, 1, 0, 'core.page'),
-('dime.campaign', 'campaign', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', NULL, NULL, 0, 1, 0, 'dime.campaign'),
 ('dime.find', 'find', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 'type', 'dime.find.type', 0, 1, 0, 'dime.find'),
 ('dime.find.event', 'event', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 'type', 'dime.find.event', 0, 1, 0, 'dime.find.event'),
 ('dime.image', 'image', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', NULL, NULL, 0, 1, 0, 'dime.image'),
@@ -1017,8 +1014,12 @@ CREATE TABLE `ark_translation` (
 
 INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
 ('association.contact', 'core', 0, 0),
+('core.actor', 'dime', 0, 0),
 ('core.actor.institution', 'core', 0, 0),
 ('core.actor.person', 'core', 0, 0),
+('core.events', 'dime', 0, 0),
+('core.file', 'dime', 0, 0),
+('core.message', 'dime', 0, 0),
 ('core.message.notification.body', 'core', 0, 0),
 ('core.message.sender', 'core', 0, 0),
 ('core.message.sent_at', 'core', 0, 0),
@@ -1265,6 +1266,10 @@ CREATE TABLE `ark_translation_message` (
 --
 
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('da', 'core.actor', 'resource', 'aktører', ''),
+('da', 'core.events', 'resource', 'begivenheder', ''),
+('da', 'core.file', 'resource', 'filer', ''),
+('da', 'core.message', 'resource', 'beskeder', ''),
 ('da', 'core.message.notification.body', 'default', 'Notifikation', 'Notifikation'),
 ('da', 'core.message.sender', 'default', 'Fra', 'Fra'),
 ('da', 'core.message.sent_at', 'default', 'Dato', 'Dato'),
@@ -1286,14 +1291,18 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.actor.shortname', 'default', 'Kort Navn', ''),
 ('da', 'dime.actor.type', 'default', 'Type', ''),
 ('da', 'dime.background', 'default', 'Baggrund', ''),
+('da', 'dime.background', 'resource', 'baggrund', ''),
 ('da', 'dime.copyright', 'default', 'Copyright © 2013-2017 Arkæologisk IT, Aarhus Universitet', ''),
 ('da', 'dime.credits', 'default', 'Datastruktur og support: Carsten Risager | Design: Casper Skaaning Andersen | Udvikling: L ~ P Archaeology', ''),
 ('da', 'dime.denmark.kommune', 'default', 'Kommune', ''),
 ('da', 'dime.detector', 'default', 'Metaldetektorbrug & Danefæ', ''),
+('da', 'dime.detector', 'resource', 'detektering', ''),
 ('da', 'dime.exhibits', 'default', 'Digitale Udstillinger', ''),
+('da', 'dime.exhibits', 'resource', 'udstiller', ''),
 ('da', 'dime.exhibits.forests', 'default', 'Guld og Grønne Skove', ''),
 ('da', 'dime.exhibits.weapons', 'default', 'Våben i Bronzealder', ''),
 ('da', 'dime.find', 'default', 'Fund', ''),
+('da', 'dime.find', 'resource', 'fund', ''),
 ('da', 'dime.find.add', 'default', 'Opret Fund', ''),
 ('da', 'dime.find.condition', 'default', 'Bevaring', ''),
 ('da', 'dime.find.condition.modified', 'default', 'Modificeret', ''),
@@ -1312,12 +1321,14 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.find.treasure', 'default', 'Danefæ', ''),
 ('da', 'dime.find.type', 'default', 'Type', ''),
 ('da', 'dime.home', 'default', 'Hjem', ''),
+('da', 'dime.home', 'resource', 'hjem', ''),
 ('da', 'dime.home.alarm', 'default', 'Underretninger', ''),
 ('da', 'dime.home.faq', 'default', '<dl>\\n<dt>Hvem Er DIME?</dt>\\n<dd>DIME er en fællesportal for detektorbrugere og Danske museer, der kan bruges af alle.</dd>\\n<dd>&nbsp;</dd>\\n<dt>Hvorfor skal jeg bruge dime?</dt>\\n<dd>DIME muliggør en hurtigere behandling af dinefund i samarbejde med museet og giver dig overblik over dine fund og fundpladser.</dd>\\n<dd>&nbsp;</dd>\\n<dt>Hvilke fund skal/kan uploades i DIME?</dt>\\n<dd>Alle detektorfund (ikke kun Danefæ) kan uploades i DIME.</dd>\\n<dd>&nbsp;</dd>\\n<dt>Kan andre se mine fundsteder?</dt>\\n<dd>Nej! Fundsteder og privatoplysninger er kunsynlige for museumsarkæologer og forskere med særlig adgang</dd>\\n<dd>&nbsp;</dd>\\n<dt>Findes der en dime-app?</dt>\\n<dd>En app-løsning til registrering i marken er under udvikling.</dd>\\n</dl>', ''),
 ('da', 'dime.home.hvert', 'default', 'Hvert år finder metaldetektorbrugere landet over tusindevis af genstande fra oldtid, middelal-der og senere perioder. Metalgenstandene er en del af vores fælles kulturarv og vigtige brikker i Danmarkshistorien. DIME sikrer oplysninger om fundene til gavn for nulevende og efterføl- gende generatione', ''),
 ('da', 'dime.home.welcome', 'default', 'Velkommen %name%', ''),
 ('da', 'dime.krogager', 'default', 'KrogagerFonden', ''),
 ('da', 'dime.locality', 'default', 'Lokalitet', ''),
+('da', 'dime.locality', 'resource', 'lokalitet', ''),
 ('da', 'dime.locality.add', 'default', 'Opret Lokalitet', ''),
 ('da', 'dime.locality.id', 'default', 'DIME ID', ''),
 ('da', 'dime.locality.search', 'default', 'Søg Lokalitet', ''),
@@ -1326,8 +1337,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.material.silver', 'default', 'Silver Test', ''),
 ('da', 'dime.metaldetector', 'default', 'Metaldetektorbrug I Danmark', ''),
 ('da', 'dime.news', 'default', 'Nyheder', ''),
+('da', 'dime.news', 'resource', 'nyheder', ''),
 ('da', 'dime.period', 'default', 'Periode', ''),
 ('da', 'dime.research', 'default', 'Forskning', ''),
+('da', 'dime.research', 'resource', 'forskning', ''),
 ('da', 'dime.save', 'default', 'Gem', ''),
 ('da', 'dime.search', 'default', 'Søg', ''),
 ('da', 'dime.search.finds.mine', 'default', 'Mine Fund', ''),
@@ -1360,13 +1373,18 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'user.menu.home', 'default', 'Min Side', ''),
 ('da', 'user.menu.login', 'default', 'Login', ''),
 ('en', 'association.contact', 'default', 'Contact', ''),
+('en', 'core.actor', 'resource', 'actors', ''),
 ('en', 'core.actor.institution', 'default', 'Institution', ''),
 ('en', 'core.actor.person', 'default', 'Person', ''),
+('en', 'core.events', 'resource', 'events', ''),
+('en', 'core.file', 'resource', 'files', ''),
+('en', 'core.message', 'resource', 'messages', ''),
 ('en', 'core.message.notification.body', 'default', 'Notification', ''),
 ('en', 'core.message.sender', 'default', 'From', 'Fra'),
 ('en', 'core.message.sent_at', 'default', 'Date', ''),
 ('en', 'core.message.type', 'default', 'Type', ''),
-('en', 'dime.about', 'default', 'About DIME', ''),
+('en', 'dime.about', 'default', 'About', ''),
+('en', 'dime.about', 'resource', 'about', ''),
 ('en', 'dime.about.background', 'default', 'Background for DIME', ''),
 ('en', 'dime.about.groups', 'default', 'Detectorist Associations', ''),
 ('en', 'dime.about.hevn', 'default', 'What is DIME?', ''),
@@ -1384,15 +1402,19 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.actor.type', 'default', 'Type', ''),
 ('en', 'dime.association.campaigns', 'default', 'Campaigns', ''),
 ('en', 'dime.background', 'default', 'Background', ''),
+('en', 'dime.background', 'resource', 'background', ''),
 ('en', 'dime.campaign', 'default', 'Campaign', ''),
 ('en', 'dime.copyright', 'default', 'Copyright © 2013-2017 Arkæologisk IT, Aarhus University', ''),
 ('en', 'dime.credits', 'default', 'Data modelling and support: Carsten Risager | Design: Casper Skaaning Anderson | Implementation: L ~ P Archaeology', ''),
 ('en', 'dime.denmark.kommune', 'default', 'Municipalities', ''),
-('en', 'dime.detector', 'default', 'Detectorists & Treasure Trove', ''),
-('en', 'dime.exhibits', 'default', 'Digital Exhibits', ''),
+('en', 'dime.detector', 'default', 'Detecting', ''),
+('en', 'dime.detector', 'resource', 'detecting', ''),
+('en', 'dime.exhibits', 'default', 'Exhibits', ''),
+('en', 'dime.exhibits', 'resource', 'exhibits', ''),
 ('en', 'dime.exhibits.forests', 'default', 'Gold and Green Forests', ''),
 ('en', 'dime.exhibits.weapons', 'default', 'Weapons in the Bronze Age', ''),
 ('en', 'dime.find', 'default', 'Find', ''),
+('en', 'dime.find', 'resource', 'finds', ''),
 ('en', 'dime.find.add', 'default', 'Add Find', ''),
 ('en', 'dime.find.condition', 'default', 'Condition', ''),
 ('en', 'dime.find.condition.modified', 'default', 'Modified', ''),
@@ -1413,12 +1435,14 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.treasure', 'default', 'Treasure', ''),
 ('en', 'dime.find.type', 'default', 'Type', 'DIME Find Type'),
 ('en', 'dime.home', 'default', 'Home', ''),
+('en', 'dime.home', 'resource', 'home', ''),
 ('en', 'dime.home.alarm', 'default', 'Notifications', ''),
 ('en', 'dime.home.faq', 'default', '<dl>\\n\\n<dt>What is DIME?</dt>\\n<dd>DIME is a shared portal for detectorists and Danish museums that can be accessed by everyone.</dd>\\n<dd>&nbsp;</dd>\\n\\n<dt>Why should I use DIME?</dt>\\n<dd>DIME allows faster processing of your finds in cooperation with the museum, and gives you an overview of your finds and collection.</dd>\\n<dd>&nbsp;</dd>\\n\\n<dt>What finds can be added to DIME? </dt>\\n<dd>All detector finds (not only Danefæ) can added to DIME.</dd>\\n<dd>&nbsp;</dd>\\n\\n<dt>Can others see my find locations?</dt>\\n<dd>No! Find locations and other private information are only visible for museum archaeologists and researchers with special access.</dd>\\n<dd>&nbsp;</dd>\\n\\n<dt>Is there a DIME app?</dt>\\n<dd>An app for recording in the field is under development.</dd>\\n\\n</dl>', ''),
 ('en', 'dime.home.hvert', 'default', 'Every year, the metal detector users across the country thousands of objects from antiquity, middelal-there and later periods. Metal objects are part of our common cultural heritage and important pieces in the history of Denmark. DIME provides information about the finds for the benefit of present and subsequent generatione', ''),
 ('en', 'dime.home.welcome', 'default', 'Welcome %user%', ''),
 ('en', 'dime.krogager', 'default', 'KrogagerFonden', ''),
 ('en', 'dime.locality', 'default', 'Locality', ''),
+('en', 'dime.locality', 'resource', 'localities', ''),
 ('en', 'dime.locality.add', 'default', 'Add Locality', ''),
 ('en', 'dime.locality.id', 'default', 'DIME ID', ''),
 ('en', 'dime.locality.search', 'default', 'Search Localities', ''),
@@ -1427,8 +1451,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.material.silver', 'default', 'Silver Test1', ''),
 ('en', 'dime.metaldetector', 'default', 'Metal Detecting In Denmark', ''),
 ('en', 'dime.news', 'default', 'News', ''),
+('en', 'dime.news', 'resource', 'news', ''),
 ('en', 'dime.period', 'default', 'Period', ''),
 ('en', 'dime.research', 'default', 'Research', ''),
+('en', 'dime.research', 'resource', 'research', ''),
 ('en', 'dime.save', 'default', 'Save', ''),
 ('en', 'dime.schema.find', 'default', 'Find', ''),
 ('en', 'dime.schema.image', 'default', 'Image', ''),
@@ -1437,6 +1463,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.search.finds.mine', 'default', 'My Finds', ''),
 ('en', 'dime.supportedby', 'default', 'supported by', ''),
 ('en', 'dime.treasure', 'default', 'Treasure Trove', ''),
+('en', 'dime.treasure', 'resource', 'treasure', ''),
 ('en', 'dime.user.login', 'default', 'Login', ''),
 ('en', 'dime.user.name', 'default', 'User Name', ''),
 ('en', 'dime.user.password', 'default', 'Password', ''),
@@ -1596,6 +1623,7 @@ INSERT INTO `ark_translation_role` (`role`, `keyword`, `description`) VALUES
 ('progress', '', 'UI Progress Bar'),
 ('radio', '', 'Ui Radio Button'),
 ('range', '', 'Name of a range'),
+('resource', 'translation.role.resource', 'URL Resource translation'),
 ('row', '', 'UI Row'),
 ('slider', '', 'UI Slider'),
 ('spinbox', '', 'UI Spin Box'),
@@ -6343,7 +6371,7 @@ ALTER TABLE `ark_format_text`
 --
 ALTER TABLE `ark_instance_schema`
   ADD CONSTRAINT `ark_instance_schema_ibfk_1` FOREIGN KEY (`instance`) REFERENCES `ark_instance` (`instance`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_instance_schema_ibfk_2` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_instance_schema_ibfk_2` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_map_layer`
@@ -6375,8 +6403,8 @@ ALTER TABLE `ark_route`
 -- Constraints for table `ark_schema`
 --
 ALTER TABLE `ark_schema`
-  ADD CONSTRAINT `ark_schema_ibfk_1` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_schema_ibfk_2` FOREIGN KEY (`type_vocabulary`) REFERENCES `ark_vocabulary` (`concept`);
+  ADD CONSTRAINT `ark_schema_ibfk_1` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ark_schema_ibfk_2` FOREIGN KEY (`type_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_schema_association`

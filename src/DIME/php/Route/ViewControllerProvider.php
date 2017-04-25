@@ -37,18 +37,23 @@ class ViewControllerProvider implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        // HACK
-        $finds = 'fund';
-        $localities = 'lokalitet';
-        $actors = 'aktører';
-        $files = 'filer';
-        $research = 'forskning';
-        $about = 'om';
-        $background = 'baggrund';
-        $treasure = 'danefae';
-        $detector = 'detektor';
-        $exhibits = 'udstiller';
-        $news = 'nyheder';
+        // HACK for translated routing, replace later with DynamicRouter
+        // Module Resources
+        $finds = $app->translate('dime.find', 'resource');
+        $localities = $app->translate('dime.locality', 'resource');
+        $actors = $app->translate('core.actor', 'resource');
+        $files = $app->translate('core.file', 'resource');
+        $events = $app->translate('core.event', 'resource');
+        $messages = $app->translate('core.message', 'resource');
+        // Static pages
+        $research = $app->translate('dime.research', 'resource');
+        $about = $app->translate('dime.about', 'resource');
+        $background = $app->translate('dime.background', 'resource');
+        $treasure = $app->translate('dime.treasure', 'resource');
+        $detector = $app->translate('dime.detector', 'resource');
+        $exhibits = $app->translate('dime.exhibits', 'resource');
+        $news = $app->translate('dime.news', 'resource');
+        $home = $app->translate('dime.home', 'resource');
 
         $controllers = $app['controllers_factory'];
 
@@ -116,12 +121,6 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers->get("/$localities", 'DIME\Controller\LocalityListController')
                     ->bind('localities.list');
 
-        $controllers->get('/demo', 'DIME\Controller\DemoController')
-                    ->bind('demo');
-
-        $controllers->get('/test', 'DIME\Controller\TestViewController')
-                    ->bind('test');
-
         $controllers->post('/api/geo/find', 'DIME\Controller\GeoFindController')
                     ->bind('api.geo.find');
 
@@ -131,13 +130,13 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers->get("/img/{image}", 'DIME\Controller\ImageController')
                     ->bind('img');
 
-        $controllers->get('/home/messages', 'DIME\Controller\MessagePageController')
+        $controllers->get("/$home/$messages", 'DIME\Controller\MessagePageController')
                     ->bind('home.messages');
 
-        $controllers->get('/home/events', 'DIME\Controller\EventsListController')
+        $controllers->get("/$home/$events", 'DIME\Controller\EventsListController')
                     ->bind('home.events');
 
-        $controllers->get('/home', 'DIME\Controller\HomePageController')
+        $controllers->get("/$home", 'DIME\Controller\HomePageController')
                     ->bind('home');
 
         $controllers->get('/', 'DIME\Controller\FrontPageController')

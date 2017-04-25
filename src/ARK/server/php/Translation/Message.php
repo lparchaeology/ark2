@@ -41,6 +41,7 @@ class Message
     protected $language = null;
     protected $parent = null;
     protected $role = null;
+    protected $keyword = '';
     protected $text = '';
     protected $notes = '';
 
@@ -115,6 +116,7 @@ class Message
         $builder->addManyToOneKey('language', 'ARK\Translation\Language');
         $builder->addManyToOneKey('parent', 'ARK\Translation\Translation', 'keyword');
         $builder->addManyToOneKey('role', 'ARK\Translation\Role');
+        $builder->addStringField('keyword', 100);
         $builder->addStringField('text', 4294967295);
         $builder->addStringField('notes', 4294967295);
     }

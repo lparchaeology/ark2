@@ -50,7 +50,7 @@ class Schema
     protected $module = null;
     protected $generator = '';
     protected $sequence = '';
-    protected $type = '';
+    protected $type = null;
     protected $typeVocabulary = null;
     protected $typeEntities = false;
     protected $model = null;
@@ -105,7 +105,7 @@ class Schema
         } elseif ($this->useTypes()) {
             throw new ErrorException(new Error('MISSING_TYPE', 'Missing Type', "The Type for Schema '$this->schma' is required."));
         }
-        return $type;
+        return ($type ?: $this->module->name());
     }
 
     public function name()
@@ -147,25 +147,25 @@ class Schema
     public function attributes($type = null, $all = true)
     {
         $this->init();
-        $this->checkType($type);
+        $type = $this->checkType($type);
         $attributes = array_values($this->model[$type]['attributes']);
-        if ($type && $all) {
+        if ($type != $this->module->name() && $all) {
             return array_merge(array_values($this->model[$this->module->name()]['attributes']), $attributes);
         }
         return $attributes;
     }
 
-    public function hasAttribute($attribute, $type = '')
+    public function hasAttribute($attribute, $type = null)
     {
         return in_array($attribute, $this->attributeNames($type));
     }
 
-    public function attributeNames($type = '', $all = true)
+    public function attributeNames($type = null, $all = true)
     {
         $this->init();
         $type = $this->checkType($type);
         $names = array_keys($this->model[$type]['attributes']);
-        if ($type && $all) {
+        if ($type != $this->module->name() && $all) {
             return array_merge(array_keys($this->model[$this->module->name()]['attributes']), $names);
         }
         return $names;
@@ -181,28 +181,28 @@ class Schema
         );
     }
 
-    public function associations($type = '', $all = true)
+    public function associations($type = null, $all = true)
     {
         $this->init();
         $type = $this->checkType($type);
         $associations = array_values($this->model[$type]['associations']);
-        if ($type && $all) {
+        if ($type != $this->module->name() && $all) {
             return array_merge(array_values($this->model[$this->module->name()]['associations']), $associations);
         }
         return $associations;
     }
 
-    public function hasAssociation($association, $type = '')
+    public function hasAssociation($association, $type = null)
     {
         return in_array($association, $this->associationNames($type));
     }
 
-    public function associationNames($type = '', $all = true)
+    public function associationNames($type = null, $all = true)
     {
         $this->init();
         $type = $this->checkType($type);
         $names = array_keys($this->model[$type]['associations']);
-        if ($type && $all) {
+        if ($type != $this->module->name() && $all) {
             return array_merge(array_keys($this->model[$this->module->name()]['associations']), $names);
         }
         return $names;

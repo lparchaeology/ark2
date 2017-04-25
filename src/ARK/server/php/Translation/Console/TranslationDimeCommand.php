@@ -71,7 +71,7 @@ class TranslationDimeCommand extends Command
         $key = ORM::find(Translation::class, $keyword);
         if ($key) {
             $output->writeln("\nTranslation keyword exists in domain ".$key->domain()->name());
-            $messages = ORM::findBy(Message::class, ['key' => $keyword]);
+            $messages = ORM::findBy(Message::class, ['keyword' => $keyword]);
             foreach ($messages as $message) {
                 $output->writeln($message->language()->code()." = ".$message->text());
             }
@@ -84,7 +84,14 @@ class TranslationDimeCommand extends Command
         $da = ORM::findOneBy(Language::class, ['language' => 'da']);
         $en = ORM::findOneBy(Language::class, ['language' => 'en']);
 
-        $role = ORM::findOneBy(Role::class, ['name' => 'default']);
+        $roles = ORM::findAll(Role::class);
+        foreach ($roles as $role) {
+            $roleNames[] = $role->name();
+        }
+        $roleQuestion = new ChoiceQuestion("Please choose the role (Default: 'default'): ", $roleNames, 'default');
+        $roleQuestion->setAutocompleterValues($roleNames);
+        $role = $question->ask($input, $output, $roleQuestion);
+        $role = ORM::findOneBy(Role::class, ['name' => $role]);
 
         $daQuestion = new Question("Please enter the Danish text: ");
         $daText = $question->ask($input, $output, $daQuestion);
@@ -97,7 +104,7 @@ class TranslationDimeCommand extends Command
         }
 
         if ($daText) {
-            $daMsg = ORM::findOneBy(Message::class, ['language' => 'da', 'key' => $keyword, 'role' => 'default']);
+            $daMsg = ORM::findOneBy(Message::class, ['language' => 'da', 'keyword' => $keyword, 'role' => $role->name()]);
             if (!$daMsg) {
                 $daMsg = new Message($key, $da, $role);
             }
@@ -106,7 +113,7 @@ class TranslationDimeCommand extends Command
         }
 
         if ($enText) {
-            $enMsg = ORM::findOneBy(Message::class, ['language' => 'en', 'key' => $keyword, 'role' => 'default']);
+            $enMsg = ORM::findOneBy(Message::class, ['language' => 'en', 'keyword' => $keyword, 'role' => $role->name()]);
             if (!$enMsg) {
                 $enMsg = new Message($key, $en, $role);
             }

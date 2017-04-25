@@ -30,7 +30,7 @@
 
 namespace ARK\Provider;
 
-use ARK\Serializer\JsonSchema\ModuleNormalizer;
+use ARK\Serializer\JsonSchema\SchemaNormalizer;
 use ARK\Serializer\JsonSchema\BooleanPropertyNormalizer;
 use ARK\Serializer\JsonSchema\NumberPropertyNormalizer;
 use ARK\Serializer\JsonSchema\ObjectPropertyNormalizer;
@@ -58,7 +58,7 @@ class JsonSchemaServiceProvider implements ServiceProviderInterface
         // Add the JSON Schema Serializer
         $app->extend('serializer.normalizers', function ($normalizers, $app) {
             $schemaNormalizers = [
-                new ModuleNormalizer(),
+                new SchemaNormalizer(),
                 new BooleanPropertyNormalizer(),
                 new NumberPropertyNormalizer(),
                 new ObjectPropertyNormalizer(),
