@@ -7,10 +7,14 @@ $(document).ready(function() {
     });
     // HACK To fix Select2 not being responsive
     // See https://github.com/select2/select2/issues/3278 and http://stackoverflow.com/a/41429176
+<<<<<<< HEAD
     $(".select2.select2-container").css("width", "100%");
     // Fake readonly mode
     $('.readonly-select').prop('disabled', true);
 
+=======
+   // $(".select2.select2-container").css("width", "50%");
+>>>>>>> progress on style for 'opret fund' page
     //$("date").datetimepicker();
     //$("time").datetimepicker();
     //$("datetime").datetimepicker();

@@ -7,7 +7,10 @@ $(document).ready(function() {
     });
     // HACK To fix Select2 not being responsive
     // See https://github.com/select2/select2/issues/3278 and http://stackoverflow.com/a/41429176
-    $(".select2.select2-container").css("width", "100%");
+    //$(".select2.select2-container").css("width", "100%");
+    // HACK To add columns of checkboxes
+   // $("#dime_find_item_secondary_term").addClass("row");
+    $(".checkbox").addClass("col-lg-4");
     // Fake readonly mode
     $('.readonly-select').prop('disabled', true);
 

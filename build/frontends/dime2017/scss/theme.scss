@@ -11,7 +11,10 @@
  */
 
 $break-small: 767px;
+//Danish word wrapping:
 $break-large-tablet: 926px;
+//English word wrapping 
+$break-large-tablet: 1439px;
 $break-tablet: 1199px;
 @media (min-width: $break-tablet) {
     .collapse {
@@ -348,7 +351,7 @@ a.loginbutton {
     padding: 20px;
     background-color: #f9f9f9;
 }
-@media (min-width: 768px) {
+@media (min-width: $break-small) {
     .main {
         padding-right: 40px;
         padding-left: 40px;
@@ -363,27 +366,39 @@ a.loginbutton {
 .content-col-2 {
     padding: 20px;
 }
-
-.form-horizontal .form-group label {
-    height: 1.4em;
-    padding: 0;
+.form-group {
+	margin-bottom: 5px;
 }
 
-.form-group input {
+.select2-container--default .select2-selection--single,
+.form-group input[type=text] {
     border: 1px solid black;
     border-radius: 20px;
     height: 1.4em;
     line-height: 1.4em;
     vertical-align: middle;
     padding: 0 10px;
+    margin-top:7px;
 }
 
-#dime_find_item_dime_find_finddate_finddate {
-    display: inline-flex;
+.form-group input[type=text] {
+    width: 50%;
+    }
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 1em;
+    overflow: visible;
 }
 
-.select2-container {
-    margin: 5px;
+.form-group input[type=text].mappick_field {
+    width:100%;
+}
+
+
+@media (min-width: $break-small){
+    .form-horizontal .control-label {
+        margin-top:0;
+    }
 }
 
 .dime-table tbody,
@@ -637,7 +652,7 @@ Carousel Stuff
 
 .mappick {
 
-    height: 100px;
+    height: 250px;
 
 }
 /* map overlay */
