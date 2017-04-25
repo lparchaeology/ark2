@@ -27,7 +27,6 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-
 namespace ARK\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -36,6 +35,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TermChoiceType extends AbstractType
 {
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -44,6 +44,9 @@ class TermChoiceType extends AbstractType
             'choice_label' => 'keyword',
             'field' => null,
             'placeholder' => false,
+            'attr' => array(
+                'style' => 'width: 50%'
+            )
         ]);
     }
 
