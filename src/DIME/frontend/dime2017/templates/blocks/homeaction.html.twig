@@ -1,6 +1,6 @@
 {# ARK default page layout with default navbar, sidebar, and content sections #}
 
-{% use "blocks/linkitem.html.twig" %}
+{% use "blocks/link.html.twig" %}
 
 {% block homeaction %}
 
@@ -9,7 +9,7 @@
             {{ 'dime.home.welcome' | trans({ '%name%': global.user.displayName }) }}
         </div>
         <div class="col-md-3 dimehome dimehometool" >
-            {% include "blocks/linkitem.html.twig" with {'link':
+            {% include "blocks/link.html.twig" with {'link':
                            {"name": "dime.home.alarm",
                            "active": true,
                            "target": "home.messages"} } %}
@@ -18,13 +18,13 @@
             <ul class="list-group dime-navlist">
                 <li class="list-group-item dime-listhead normal">
                     <span class="dime-icon icon-add normal"></span>
-                    {% include "blocks/linkitem.html.twig"
+                    {% include "blocks/link.html.twig"
                         with {'link': {"name": "dime.find.add", "active": true, "target": "finds.add"} } %}
                 </li>
             </ul>
         </div>
         <div class="col-md-3 dimehome dimehometool" >
-            {% include "blocks/linkitem.html.twig" with {'link':
+            {% include "blocks/link.html.twig" with {'link':
                            {"name": "dime.search.finds.mine",
                            "active": true,
                            "target": "finds.list"} } %}

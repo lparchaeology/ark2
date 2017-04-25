@@ -1,6 +1,6 @@
 {# Define the standard navbar block #}
 
-{% use "blocks/linkitem.html.twig" %}
+{% use "blocks/link.html.twig" %}
 
 {% block navbar %}
 
@@ -36,14 +36,14 @@
                                         <ul class="dropdown-menu">
                                             {% for sublink in link.navlinks %}
                                                 <li>
-                                                    {% include "blocks/linkitem.html.twig" with {'link': sublink} %}
+                                                    {% include "blocks/link.html.twig" with {'link': sublink} %}
                                                 </li>
                                             {% endfor %}
                                         </ul>
                                     </li>
                                 {% else %}
                                     <li role="presentation">
-                                        {% include "blocks/linkitem.html.twig" with {'link': link} %}
+                                        {% include "blocks/link.html.twig" with {'link': link} %}
                                     </li>
                                 {% endif %}
 

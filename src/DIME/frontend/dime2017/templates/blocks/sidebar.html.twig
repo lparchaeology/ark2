@@ -1,6 +1,6 @@
 {# Define the standard sidebar block #}
 
-{% use "blocks/linkitem.html.twig" %}
+{% use "blocks/link.html.twig" %}
 
 {% block sidebar %}
 
@@ -23,11 +23,11 @@
                         {% for link in group.links %}
                             {% if link.active %}
                                 <li class="active list-group-item navlist">
-                                    {% include "blocks/linkitem.html.twig" with {'link': link} %}
+                                    {% include "blocks/link.html.twig" with {'link': link} %}
                                 </li>
                             {% else %}
                                 <li class="list-group-item navlist">
-                                    {% include "blocks/linkitem.html.twig" with {'link': link} %}
+                                    {% include "blocks/link.html.twig" with {'link': link} %}
                                 </li>
                             {% endif %}
                         {% endfor %}
