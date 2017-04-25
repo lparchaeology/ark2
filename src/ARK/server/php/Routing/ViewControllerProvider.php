@@ -30,6 +30,7 @@
 
 namespace ARK\Routing;
 
+use ARK\ORM\ORM;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ServiceControllerResolver;
@@ -43,9 +44,9 @@ class ViewControllerProvider implements ControllerProviderInterface
     {
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
-        $routes = ORM::fetchAll(Route::class);
-        $pages = ORM::fetchAll(Page::class);
-        $pages = ORM::fetchAll(Instance::class);
+        $routes = ORM::findAll(Route::class);
+        $pages = ORM::findAll(Page::class);
+        $instances = ORM::findAll(Instance::class);
 
         foreach ($routes as $route) {
             $this->addRoute($controllers, $route);

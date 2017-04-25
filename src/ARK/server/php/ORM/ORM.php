@@ -30,6 +30,8 @@
 
 namespace ARK\ORM;
 
+use ARK\Error\Error;
+use ARK\Error\ErrorException;
 use ARK\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
@@ -47,6 +49,8 @@ class ORM
         if ($class === 'user' || Service::entityManager('user')->manages($class)) {
             return Service::entityManager('user');
         }
+        // TODO Proper error strategy?
+        throw new ErrorException(new Error('ENTITY_NOT_MANAGED', 'Entity Not Managed', "Entity $class not managed by ORM"));
     }
 
     public static function repository($class)
