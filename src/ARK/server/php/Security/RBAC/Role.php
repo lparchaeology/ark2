@@ -30,7 +30,7 @@
 
 namespace ARK\Security\RBAC;
 
-use ARK\Entity\Actor;
+use ARK\Actor\Actor;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;

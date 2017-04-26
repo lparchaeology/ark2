@@ -31,7 +31,7 @@
 namespace DIME\Controller\JsonApi;
 
 use ARK\Application;
-use ARK\Entity\Actor;
+use ARK\Actor\Actor;
 use ARK\Api\JsonApi\Action\AbstractJsonApiAction;
 use ARK\Api\JsonApi\Http\JsonApiRequest;
 use ARK\Api\JsonApi\Http\JsonApiResponse;

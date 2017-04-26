@@ -15,10 +15,8 @@ class File implements Item
 {
     use ItemTrait;
 
-    protected $type = 'other';
-
-    public function __construct($schema)
+    public function __construct($schema = 'core.file')
     {
-        $this->schma = $schema;
+        $this->construct($schema);
     }
 }

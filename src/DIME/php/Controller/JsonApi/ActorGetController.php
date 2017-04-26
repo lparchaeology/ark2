@@ -32,7 +32,7 @@ namespace DIME\Controller\JsonApi;
 
 use ARK\Api\JsonApi\Action\AbstractGetAction;
 use ARK\Api\JsonApi\Http\JsonApiRequest;
-use ARK\Entity\Actor;
+use ARK\Actor\Actor;
 
 class ActorGetController extends AbstractGetAction
 {

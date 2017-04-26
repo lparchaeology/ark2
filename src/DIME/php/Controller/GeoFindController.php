@@ -30,15 +30,15 @@
 
 namespace DIME\Controller;
 
+use ARK\Actor\Actor;
+use ARK\Database\Database;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\Database\Database;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use ARK\Vocabulary\Term;
 use Brick\Geo\Point;
 use Exception;
-use ARK\Entity\Actor;
-use ARK\Vocabulary\Term;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class GeoFindController
 {

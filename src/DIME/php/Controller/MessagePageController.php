@@ -30,7 +30,7 @@
 
 namespace DIME\Controller;
 
-use ARK\Entity\Message;
+use ARK\Message\Message;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Page;

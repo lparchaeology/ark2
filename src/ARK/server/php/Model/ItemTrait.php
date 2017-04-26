@@ -30,6 +30,7 @@
 
 namespace ARK\Model;
 
+use ARK\Model\Module;
 use ARK\Model\Schema;
 use ARK\Model\VersionTrait;
 use ARK\ORM\ORM;
@@ -54,6 +55,16 @@ trait ItemTrait
     protected $properties = null;
     protected $meta = null;
 
+    protected function construct($schema, $type = null)
+    {
+        $this->schma = $schema;
+        $this->module = $this->schema()->module()->name();
+        if ($this->schema()->useTypes()) {
+            $this->type = ($type ?: get_class($this));
+            $this->property('type')->setValue($this->type);
+        }
+    }
+
     protected function makeIdentifier($parentId, $sep, $index)
     {
         return ($parentId && $index ? $parentId.$sep.$index : $index);
@@ -67,9 +78,17 @@ trait ItemTrait
     public function parent()
     {
         if ($this->parentItem && !$this->parent) {
-            $this->parent = ORM::find($this->schema()->parent()->entity(), $this->parentItem);
+            $module = ORM::find(Module::class, $this->parentModule);
+            $this->parent = ORM::find($module->entity(), $this->parentItem);
         }
         return $this->parent;
+    }
+
+    public function setParent(Item $parent)
+    {
+        $this->parent = $parent;
+        $this->parentModule = $parent->schema()->module()->name();
+        $this->parentItem = $parent->id();
     }
 
     public function index()
@@ -80,7 +99,7 @@ trait ItemTrait
     // TODO Do this properly!!!
     public function setIndex($id)
     {
-        $this->item = $id;
+        $this->label = $this->makeIdentifier($this->parentItem, '.', $id);
         $this->idx = $id;
         $this->label = $this->makeIdentifier($this->parentItem, '_', $id);
         foreach ($this->properties() as $property) {
@@ -164,6 +183,8 @@ trait ItemTrait
     public function property($attribute)
     {
         if (!isset($this->properties[$attribute])) {
+            dump($attribute);
+            dump($this);
             $this->properties[$attribute] = new Property($this, $this->schema()->attribute($attribute, $this->type));
         }
         return $this->properties[$attribute];
@@ -175,7 +196,7 @@ trait ItemTrait
             return;
         }
         foreach ($this->relationships() as $module) {
-            $this->related[$module->id()] = $this->em->repository($module->id())->getRelated($this->module(), $this->id());
+            $this->related[$module->id()] = $this->em->repository($module->id())->getRelated($this->schema()->module(), $this->id());
         }
     }
 
@@ -194,7 +215,7 @@ trait ItemTrait
     public function relationships()
     {
         if ($this->parent) {
-            return $this->parent->schema->xmis($this->parent->schemaId(), $this->module());
+            return $this->parent->schema->xmis($this->parent->schemaId(), $this->schema()->module());
         }
         return [];
     }

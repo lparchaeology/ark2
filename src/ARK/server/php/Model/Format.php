@@ -34,6 +34,7 @@ use ARK\Model\Datatype;
 use ARK\Model\Fragment;
 use ARK\Model\EnabledTrait;
 use ARK\Model\Format\FormatAttribute;
+use ARK\Model\Item;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
@@ -49,6 +50,7 @@ abstract class Format
 
     protected $format = '';
     protected $datatype = null;
+    protected $entity = null;
     protected $valueName = null;
     protected $formatName = null;
     protected $formatVocabulary = null;
@@ -72,6 +74,11 @@ abstract class Format
     public function datatype()
     {
         return $this->datatype;
+    }
+
+    public function entity()
+    {
+        return $this->entity;
     }
 
     public function valueName()
@@ -141,11 +148,11 @@ abstract class Format
 
     public function nullValue()
     {
-        if ($this->isAtomic()) {
-            return null;
-        }
         if ($this->hasMultipleValues()) {
             return [];
+        }
+        if ($this->isAtomic()) {
+            return null;
         }
         $data = [];
         if ($this->formatName()) {
@@ -222,9 +229,25 @@ abstract class Format
             $fragment->setValue($data, $vocabulary->concept());
             return;
         }
+        if ($data instanceof Term) {
+            $fragment->setValue($data->name(), $data->concept()->concept());
+            return;
+        }
+        if ($data instanceof Item) {
+            $format = ($this->formatName() ? $data->property($this->formatName())->getValue() : null);
+            $parameter = ($this->parameterName() ? $data->property($this->parameterName())->getValue() : null);
+            dump($this);
+            dump($data);
+            $value = ($this->valueName() ? $data->property($this->valueName())->getValue() : null);
+            $fragment->setValue($value, $parameter, $format);
+            return;
+        }
         if ($this->isAtomic()) {
             $fragment->setValue($data);
             return;
+        }
+        if (!is_array($data)) {
+            // TODO throw error
         }
         $format = ($this->formatName() ? $data[$this->formatName()] : null);
         $parameter = ($this->parameterName() ? $data[$this->parameterName()] : null);
@@ -247,6 +270,7 @@ abstract class Format
         $builder->addStringKey('format', 30);
 
         // Attributes
+        $builder->addStringField('entity', 100);
         $builder->addStringField('valueName', 30, 'value_name');
         $builder->addStringField('formatName', 30, 'format_name');
         $builder->addStringField('formatVocabulary', 30, 'format_vocabulary');

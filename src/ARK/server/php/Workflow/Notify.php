@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Workflow Condition
+ * ARK Workflow Notification
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -35,45 +35,28 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
 use ARK\Security\RBAC\Role;
 use ARK\Workflow\Action;
-use ARK\Workflow\Permission;
 use ARK\Model\Schema\SchemaAttribute;
 use ARK\Model\Item;
 
-class Condition
+class Notify
 {
-    const PASS = true;
-    const FAIL = false;
-
     protected $schma = '';
     protected $actionName = '';
     protected $action = null;
     protected $type = '';
     protected $attributeName = '';
     protected $attribute = null;
-    protected $operator = 'is';
-    protected $grp = 0;
-    protected $value = '';
 
-    public function group()
+    public function recipient(Item $item)
     {
-        return $this->grp;
-    }
-
-    public function isGranted(Item $item)
-    {
-        return self::PASS;
-        $property = $item->property($this->attribute->name());
-        $isValue = ($property->value() == $this->value);
-        if ($this->operator == 'not') {
-            $isValue = !$isvalue;
-        }
-        return ($isValue ? self::PASS : self::FAIL);
+        $item->property($this->attributeName)->getValue();
+        return ORM::find(Actor::class, 1);
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Joined Table Inheritance
-        $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_condition');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_notify');
         $builder->setReadOnly();
 
         // Key
@@ -81,11 +64,6 @@ class Condition
         $builder->addStringKey('actionName', 30, 'action');
         $builder->addStringKey('type', 30);
         $builder->addStringKey('attributeName', 30, 'attribute');
-        $builder->addKey('grp', 'integer');
-
-        // Fields
-        $builder->addStringField('operator', 10);
-        $builder->addStringField('value', 4000);
 
         // Associations
         $builder->addCompositeManyToOneField(
@@ -95,7 +73,7 @@ class Condition
                 ['column' => 'schma', 'nullable' => true],
                 ['column' => 'action', 'nullable' => true],
             ],
-            'conditions'
+            'agencies'
         );
         $builder->addCompositeManyToOneField(
             'attribute',

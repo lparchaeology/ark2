@@ -30,7 +30,7 @@
 
 namespace ARK\Workflow;
 
-use ARK\Entity\Actor;
+use ARK\Actor\Actor;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;

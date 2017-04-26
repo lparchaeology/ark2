@@ -30,6 +30,7 @@
 
 namespace DIME\Controller;
 
+use ARK\Actor\Actor;
 use ARK\Model\Item;
 use ARK\ORM\ORM;
 use ARK\Service;
@@ -42,9 +43,16 @@ class EntityController extends DimeFormController
     {
         $id = 0;
         $data = $form->getData();
+        dump($form);
+        dump($data);
         $item = $data[$form->getName()];
+        if (isset($data['dime_find_actions'])) {
+            $action = $data['dime_find_actions'];
+            $actor = ORM::find(Actor::class, 'ahavfrue');
+            $action->apply($actor, $item);
+        }
         ORM::persist($item);
-        ORM::flush('data');
+        ORM::flush($item);
         return Service::redirectPath($redirect, ['itemSlug' => $item->id()]);
     }
 }

@@ -30,7 +30,7 @@
 
 namespace ARK\Workflow;
 
-use ARK\Entity\Actor;
+use ARK\Actor\Actor;
 use ARK\Model\Item;
 use ARK\Model\Schema;
 use ARK\Model\Attribute;
@@ -40,6 +40,8 @@ use ARK\ORM\ClassMetadata;
 use ARK\Vocabulary\Term;
 use ARK\Workflow\Agency;
 use ARK\Workflow\Condition;
+use ARK\Workflow\Event;
+use ARK\Workflow\Notify;
 use ARK\Workflow\Permission;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -58,6 +60,7 @@ class Action
     protected $permissions = null;
     protected $agencies = null;
     protected $conditions = null;
+    protected $notifications = null;
     protected $groups = null;
 
     public function __construct()
@@ -150,10 +153,26 @@ class Action
         return $this->hasPermission($actor) && $this->hasAgency($actor, $item) && $this->meetsConditions($item);
     }
 
+    public function notify(Item $item)
+    {
+        $recipients = [];
+        foreach ($this->notifications as $notify) {
+            $recipients[] = $notify->recipient($item);
+        }
+        return $recipients;
+    }
+
     public function apply(Actor $actor, Item $item)
     {
-        if (!$this->isGranted($actor, $item)) {
-            return;
+        if ($this->isGranted($actor, $item)) {
+            // Create Event
+            $event = new Event($actor, $this, $item);
+            // Apply Updates
+            // Trigger Actions
+            // Send Notifications
+            $notification = new Notification($actor, $this->notify(), $event);
+            ORM::persist($event);
+            ORM::persist($notification);
         }
     }
 
@@ -205,6 +224,15 @@ class Action
         $builder->addCompositeOneToMany(
             'conditions',
             Condition::class,
+            'action',
+            [
+                ['column' => 'schma', 'nullable' => true],
+                ['column' => 'action', 'nullable' => true],
+            ]
+        );
+        $builder->addCompositeOneToMany(
+            'notifications',
+            Notify::class,
             'action',
             [
                 ['column' => 'schma', 'nullable' => true],

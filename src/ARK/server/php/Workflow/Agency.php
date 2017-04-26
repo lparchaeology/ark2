@@ -30,7 +30,7 @@
 
 namespace ARK\Workflow;
 
-use ARK\Entity\Actor;
+use ARK\Actor\Actor;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
 use ARK\Security\RBAC\Role;

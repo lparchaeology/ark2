@@ -30,7 +30,7 @@
 
 namespace DIME\Controller;
 
-use ARK\Entity\Actor;
+use ARK\Actor\Actor;
 use ARK\ORM\ORM;
 use DIME\Controller\DimeFormController;
 use Symfony\Component\HttpFoundation\Request;

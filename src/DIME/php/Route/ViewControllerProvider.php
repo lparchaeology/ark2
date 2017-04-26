@@ -81,12 +81,13 @@ class ViewControllerProvider implements ControllerProviderInterface
                     ->bind('news');
 
         // Temp Routes?
-        $controllers->post("/$files/{itemSlug}", 'DIME\Controller\FileViewController');
-        $controllers->get("/$files/{itemSlug}", 'DIME\Controller\FileViewController')
+        $controllers->match("/$files/{itemSlug}", 'DIME\Controller\FileViewController')
+                    ->method('GET|POST')
                     ->bind('files.view');
         $controllers->get("/$files", 'DIME\Controller\FileListController')
                     ->bind('files.list');
 
+        // Actor Routes
         $controllers->get("/$actors/{itemSlug}/finds", 'DIME\Controller\FindListController')
                     ->bind('actors.finds.list');
         $controllers->get("/$actors/{itemSlug}/localities", 'DIME\Controller\LocalityListController')
@@ -97,25 +98,28 @@ class ViewControllerProvider implements ControllerProviderInterface
                     ->bind('actors.list');
 
         // Find Routes
-        $controllers->get("/$finds/add", 'DIME\Controller\FindAddController')
+        $controllers->match("/$finds/add", 'DIME\Controller\FindAddController')
+                    ->method('GET|POST')
                     ->bind('finds.add');
 
-        $controllers->post("/$finds/add", 'DIME\Controller\FindAddController');
+        $controllers->match("/$finds/{itemSlug}/$events", 'DIME\Controller\EventListController')
+                    ->method('GET')
+                    ->bind('finds.events.list');
 
-        $controllers->post("/$finds/{itemSlug}", 'DIME\Controller\FindViewController');
-        $controllers->get("/$finds/{itemSlug}", 'DIME\Controller\FindViewController')
+        $controllers->match("/$finds/{itemSlug}", 'DIME\Controller\FindViewController')
+                    ->method('GET|POST')
                     ->bind('finds.view');
 
-        $controllers->post("/$finds", 'DIME\Controller\FindListController');
-        $controllers->get("/$finds", 'DIME\Controller\FindListController')
+        $controllers->match("/$finds", 'DIME\Controller\FindListController')
+                    ->method('GET')
                     ->bind('finds.list');
 
-        $controllers->post("/$localities/add", 'DIME\Controller\LocalityAddController');
-        $controllers->get("/$localities/add", 'DIME\Controller\LocalityAddController')
+        $controllers->match("/$localities/add", 'DIME\Controller\LocalityAddController')
+                    ->method('GET|POST')
                     ->bind('localities.add');
 
-        $controllers->post("/$localities/{itemSlug}", 'DIME\Controller\LocalityViewController');
-        $controllers->get("/$localities/{itemSlug}", 'DIME\Controller\LocalityViewController')
+        $controllers->match("/$localities/{itemSlug}", 'DIME\Controller\LocalityViewController')
+                    ->method('GET|POST')
                     ->bind('localities.view');
 
         $controllers->get("/$localities", 'DIME\Controller\LocalityListController')
@@ -132,9 +136,6 @@ class ViewControllerProvider implements ControllerProviderInterface
 
         $controllers->get("/$home/$messages", 'DIME\Controller\MessagePageController')
                     ->bind('home.messages');
-
-        $controllers->get("/$home/$events", 'DIME\Controller\EventsListController')
-                    ->bind('home.events');
 
         $controllers->get("/$home", 'DIME\Controller\HomePageController')
                     ->bind('home');

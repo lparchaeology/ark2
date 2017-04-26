@@ -181,9 +181,9 @@ class SiteMigrateCommand extends DatabaseCommand
                     $module['module'] = 'actor';
                     $module['resource'] = 'actors';
                     $module['project'] = 'ARK';
-                    $module['namespace'] = 'ARK\Entity';
+                    $module['namespace'] = 'ARK\Actor';
                     $module['entity'] = 'Actor';
-                    $module['classname'] = 'ARK\Entity\Actor';
+                    $module['classname'] = 'ARK\Actor\Actor';
                     $module['tbl'] = 'ark_item_actor';
                     $module['core'] = true;
                     $module['keyword'] = 'module.actor';

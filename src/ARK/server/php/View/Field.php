@@ -30,7 +30,7 @@
 
 namespace ARK\View;
 
-use ARK\Entity\Actor;
+use ARK\Actor\Actor;
 use ARK\Form\Type\StaticType;
 use ARK\Form\Type\PropertyType;
 use ARK\Form\Type\ActionChoiceType;

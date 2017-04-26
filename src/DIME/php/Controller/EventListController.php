@@ -30,7 +30,7 @@
 namespace DIME\Controller;
 
 use ARK\ORM\ORM;
-use ARK\Entity\Event;
+use ARK\Workflow\Event;
 use DIME\Controller\DimeFormController;
 use Symfony\Component\HttpFoundation\Request;
 

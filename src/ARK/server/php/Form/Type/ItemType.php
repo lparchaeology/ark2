@@ -30,7 +30,7 @@
 
 namespace ARK\Form\Type;
 
-use ARK\Entity\Actor;
+use ARK\Actor\Actor;
 use ARK\Form\Type\AbstractFormType;
 use ARK\Form\Type\StaticType;
 use ARK\ORM\ORM;

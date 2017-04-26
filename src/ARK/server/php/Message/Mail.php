@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * ARK Mail Entity
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,27 +27,12 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-namespace DIME\Controller;
 
-use ARK\ORM\ORM;
+namespace ARK\Message;
+
 use ARK\Message\Message;
-use ARK\View\Page;
-use DIME\Controller\DimeFormController;
-use Symfony\Component\HttpFoundation\Request;
 
-class MessageListController extends DimeFormController
+class Mail extends Message
 {
-    private $actorSlug = null;
-
-    public function __invoke(Request $request, $actorSlug = null)
-    {
-        $this->actorSlug = $actorSlug;
-        return $this->renderResponse($request, 'dime_page_messages');
-    }
-
-    public function buildData(Request $request, Page $page)
-    {
-        $data[$page->content()->name()] = ORM::findAll(Message::class);
-        return $data;
-    }
+    protected $type = 'mail';
 }

@@ -56,7 +56,7 @@ use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Gedmo\DoctrineExtensions;
 
- /**
+/**
  * Doctrine ORM Pimple Service Provider.
  *
  * @author Beau Simensen <beau@dflydev.com>
@@ -206,6 +206,21 @@ class OrmServiceProvider implements ServiceProviderInterface
                     'extensions' => ['tree'],
                     'mappings' => [
                         [
+                            'type' => 'item',
+                            'namespace' => 'ARK\Actor',
+                            'path' => $srcDir.'/Actor',
+                        ],
+                        [
+                            'type' => 'item',
+                            'namespace' => 'ARK\Message',
+                            'path' => $srcDir.'/Message',
+                        ],
+                        [
+                            'type' => 'php',
+                            'namespace' => 'ARK\Model\Fragment',
+                            'path' => $srcDir.'/Model/Fragment',
+                        ],
+                        [
                             'type' => 'php',
                             'namespace' => 'ARK\Model',
                             'path' => $srcDir.'/Model/Fragment.php',
@@ -229,6 +244,11 @@ class OrmServiceProvider implements ServiceProviderInterface
                             'path' => [
                                 $srcDir.'/Security/RBAC/ActorRole.php',
                             ],
+                        ],
+                        [
+                            'type' => 'item',
+                            'namespace' => 'ARK\Workflow',
+                            'path' => $srcDir.'/Workflow',
                         ],
                         [
                             'type' => 'item',

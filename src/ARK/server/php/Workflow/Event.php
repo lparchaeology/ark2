@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * ARK Event Entity
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,27 +27,39 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-namespace DIME\Controller;
 
-use ARK\ORM\ORM;
-use ARK\Message\Message;
-use ARK\View\Page;
-use DIME\Controller\DimeFormController;
-use Symfony\Component\HttpFoundation\Request;
+namespace ARK\Workflow;
 
-class MessageListController extends DimeFormController
+use ARK\Actor\Actor;
+use ARK\Model\Item;
+use ARK\Model\ItemTrait;
+
+class Event implements Item
 {
-    private $actorSlug = null;
+    use ItemTrait;
 
-    public function __invoke(Request $request, $actorSlug = null)
+    public function __construct(Actor $agent, Action $action, Item $item)
     {
-        $this->actorSlug = $actorSlug;
-        return $this->renderResponse($request, 'dime_page_messages');
+        $this->construct('core.event');
+        $this->setParent($item);
+        $this->property('type')->setValue($action->event()->concept()->concept());
+        $this->property('agent')->setValue($agent);
+        $this->property('event')->setValue($action->event());
+        $this->property('occurred')->setValue(new DateTimeZone('UTC'));
     }
 
-    public function buildData(Request $request, Page $page)
+    public function name()
     {
-        $data[$page->content()->name()] = ORM::findAll(Message::class);
-        return $data;
+        return $this->property('event')->value();
+    }
+
+    public function agent()
+    {
+        return $this->property('agent')->value();
+    }
+
+    public function occurredAt()
+    {
+        return $this->property('occurred')->value();
     }
 }

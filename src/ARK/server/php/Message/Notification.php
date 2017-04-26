@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * ARK Notification Entity
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,27 +27,25 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-namespace DIME\Controller;
 
-use ARK\ORM\ORM;
+namespace ARK\Message;
+
+use ARK\Actor\Actor;
 use ARK\Message\Message;
-use ARK\View\Page;
-use DIME\Controller\DimeFormController;
-use Symfony\Component\HttpFoundation\Request;
+use ARK\Workflow\Event;
 
-class MessageListController extends DimeFormController
+class Notification extends Message
 {
-    private $actorSlug = null;
+    protected $type = 'notification';
 
-    public function __invoke(Request $request, $actorSlug = null)
+    public function __construct(Actor $sender, array $recipients, Event $event)
     {
-        $this->actorSlug = $actorSlug;
-        return $this->renderResponse($request, 'dime_page_messages');
+        parent::__construct($sender, $recipients, new DateTimeZone('UTC'));
+        $this->property('event')->setValue($event);
     }
 
-    public function buildData(Request $request, Page $page)
+    public function event()
     {
-        $data[$page->content()->name()] = ORM::findAll(Message::class);
-        return $data;
+        return $this->property('event')->value();
     }
 }
