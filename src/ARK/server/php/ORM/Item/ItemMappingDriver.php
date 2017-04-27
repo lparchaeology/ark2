@@ -28,17 +28,19 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\ORM;
+namespace ARK\ORM\Item;
 
 use ARK\Service;
 use ARK\Model\VersionTrait;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\ORM\Item\ItemRepository;
+use ARK\ORM\Item\ItemIdGenerator;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
-class ItemEntityMappingDriver implements MappingDriver
+class ItemMappingDriver implements MappingDriver
 {
     private $namespace = '';
     private $classNames = null;
@@ -56,13 +58,12 @@ class ItemEntityMappingDriver implements MappingDriver
             return;
         }
         $builder = new ClassMetadataBuilder($metadata, $module['tbl']);
-        $builder->setCustomRepositoryClass('ARK\ORM\ItemEntityRepository');
+        $builder->setCustomRepositoryClass(ItemRepository::class);
 
         // Key
         $builder->addStringKey('item', 30);
-        // Set ID Generator TODO Is drven by Schema, how to do???
         $metadata->setIdGeneratorType(ClassMetadataInfo::GENERATOR_TYPE_CUSTOM);
-        $metadata->setCustomGeneratorDefinition(['class' => 'ARK\ORM\ItemSequenceGenerator']);
+        $metadata->setCustomGeneratorDefinition(['class' => ItemIdGenerator::class]);
 
         // Fields
         $builder->addStringField('module', 30);

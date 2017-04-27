@@ -40,7 +40,7 @@ use ARK\ORM\Command\GenerateItemEntityMessage;
 use ARK\ORM\Command\GenerateItemEntityHandler;
 use ARK\ORM\Driver\StaticPHPDriver;
 use ARK\ORM\EntityManager;
-use ARK\ORM\ItemEntityMappingDriver;
+use ARK\ORM\Item\ItemMappingDriver;
 use ARK\ORM\UnitOfWork;
 use Doctrine\Common\Cache\CacheProvider;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
@@ -217,11 +217,6 @@ class OrmServiceProvider implements ServiceProviderInterface
                         ],
                         [
                             'type' => 'php',
-                            'namespace' => 'ARK\Model\Fragment',
-                            'path' => $srcDir.'/Model/Fragment',
-                        ],
-                        [
-                            'type' => 'php',
                             'namespace' => 'ARK\Model',
                             'path' => $srcDir.'/Model/Fragment.php',
                         ],
@@ -342,7 +337,7 @@ class OrmServiceProvider implements ServiceProviderInterface
 
                     switch ($entity['type']) {
                         case 'item':
-                            $driver = new ItemEntityMappingDriver($entity['namespace']);
+                            $driver = new ItemMappingDriver($entity['namespace']);
                             break;
                         case 'php':
                             $driver = new StaticPHPDriver($entity['path']);

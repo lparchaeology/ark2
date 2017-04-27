@@ -30,9 +30,9 @@
 
 namespace ARK\File;
 
+use ARK\ARK;
 use ARK\Service;
 use DateTime;
-use DateTimeZone;
 use ARK\Model\Property;
 use League\Flysystem\File as FileHandler;
 use League\Flysystem\FilesystemInterface;
@@ -56,7 +56,7 @@ class FileVersion extends FileHandler
         $this->suffix = $file->suffix();
         //TODO Check is UTC!
         if (!$created) {
-            $created = new DateTime(null, new DateTimeZone("UTC"));
+            $created = ARK::timestamp();
         }
         $this->created = $created;
         $this->modified = $created;

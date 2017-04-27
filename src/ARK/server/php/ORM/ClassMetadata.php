@@ -30,8 +30,9 @@
 
 namespace ARK\ORM;
 
-use ARK\ORM\ItemEntityRepository;
-use ARK\ORM\ItemSingleTablePersister;
+use ARK\ORM\Item\ItemPersister;
+use ARK\ORM\Item\ItemRepository;
+use ARK\ORM\Item\ItemSingleTablePersister;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata as DoctrineClassMetadata;
 use Doctrine\ORM\Persisters\Entity\BasicEntityPersister;
@@ -52,7 +53,7 @@ class ClassMetadata extends DoctrineClassMetadata
     {
         if ($this->isInheritanceTypeNone()) {
             if ($this->isItemEntity) {
-                return new ItemEntityPersister($em, $this);
+                return new ItemPersister($em, $this);
             }
             return new BasicEntityPersister($em, $this);
         }

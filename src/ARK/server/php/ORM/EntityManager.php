@@ -55,7 +55,8 @@ class EntityManager extends EntityManagerDecorator
     public function manages($class)
     {
         if (is_object($class)) {
-            $class = get_class($class);
+            $parent = get_parent_class($class);
+            $class = ($parent ?: get_class($class));
         }
         return $this->getMetadataFactory()->hasClass($class);
     }

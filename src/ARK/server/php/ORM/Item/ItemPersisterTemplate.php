@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\ORM;
+namespace ARK\ORM\Item;
 
 use Doctrine\ORM\Persisters\Entity\BasicEntityPersister;
 

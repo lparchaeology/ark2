@@ -51,8 +51,8 @@ class Schema
     protected $generator = '';
     protected $sequence = '';
     protected $type = null;
-    protected $typeVocabulary = null;
-    protected $typeEntities = false;
+    protected $vocabulary = null;
+    protected $entities = false;
     protected $model = null;
     protected $types = [];
     protected $attributes = null;
@@ -72,8 +72,8 @@ class Schema
             $this->model[$module]['allattributes'] = [];
             $this->model[$module]['associations'] = [];
             $this->model[$module]['allassociations'] = [];
-            if ($this->typeVocabulary) {
-                foreach ($this->typeVocabulary->terms() as $term) {
+            if ($this->vocabulary) {
+                foreach ($this->vocabulary->terms() as $term) {
                     $type = $term->name();
                     $this->types[] = $type;
                     $this->model[$type]['type'] = $type;
@@ -92,7 +92,7 @@ class Schema
         }
     }
 
-    public function checkType($type)
+    protected function checkType($type)
     {
         $this->init();
         if ($type) {
@@ -131,6 +131,11 @@ class Schema
     public function useTypes()
     {
         return (bool) $this->type;
+    }
+
+    public function useTypeEntities()
+    {
+        return $this->entities;
     }
 
     public function typeName()
@@ -227,15 +232,15 @@ class Schema
 
         // Fields
         $builder->addManyToOneField('module', 'ARK\Model\Module', null, null, false);
-        $builder->addStringField('generator', 100);
+        $builder->addStringField('generator', 30);
         $builder->addStringField('sequence', 30);
         $builder->addStringField('type', 30);
-        $builder->addField('typeEntities', 'boolean', [], 'type_entities');
+        $builder->addField('entities', 'boolean', [], 'entities');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations
-        $builder->addManyToOneField('typeVocabulary', 'ARK\Vocabulary\Vocabulary', 'type_vocabulary', 'concept');
+        $builder->addManyToOneField('vocabulary', 'ARK\Vocabulary\Vocabulary', 'vocabulary', 'concept');
         $builder->addOneToMany('attributes', 'ARK\Model\Schema\SchemaAttribute', 'schma');
         $builder->addOneToMany('associations', 'ARK\Model\Schema\SchemaAssociation', 'schma');
         $builder->setReadOnly();

@@ -59,10 +59,16 @@ trait ItemTrait
     {
         $this->schma = $schema;
         $this->module = $this->schema()->module()->name();
-        if ($this->schema()->useTypes()) {
-            $this->type = ($type ?: get_class($this));
+        // TODO Is this really needed?
+        if ($this->schema()->useTypeEntities()) {
+            $this->type = ($type ?: $this->makeType());
             $this->property('type')->setValue($this->type);
         }
+    }
+
+    protected function makeType()
+    {
+        return strtolower(substr(strrchr(get_class($this), '\\'), 1));
     }
 
     protected function makeIdentifier($parentId, $sep, $index)
@@ -96,16 +102,16 @@ trait ItemTrait
         return $this->idx;
     }
 
-    // TODO Do this properly!!!
-    public function setIndex($id)
+    // TODO Should this be here? Or use reflection?
+    public function setItem($id, $index, $name)
     {
-        $this->label = $this->makeIdentifier($this->parentItem, '.', $id);
-        $this->idx = $id;
-        $this->label = $this->makeIdentifier($this->parentItem, '_', $id);
+        $this->item = $id;
+        $this->idx = $index;
+        $this->label = $name;
         foreach ($this->properties() as $property) {
             $property->updateFragments();
             if ($property->name() == 'id') {
-                $property->setValue($id);
+                $property->setValue($this->item);
             }
         }
     }
@@ -117,7 +123,10 @@ trait ItemTrait
 
     public function type()
     {
-        return $this->schema()->checkType($this->type);
+        if ($this->type === null && $this->schema()->useTypeEntities()) {
+            $this->type = $this->makeType();
+        }
+        return $this->type;
     }
 
     public function setType($type)
@@ -144,12 +153,12 @@ trait ItemTrait
 
     public function hasAttribute($attribute)
     {
-        return $this->schema()->hasAttribute($attribute, $this->type);
+        return $this->schema()->hasAttribute($attribute, $this->type());
     }
 
     public function attributes()
     {
-        return $this->schema()->attributes($this->type);
+        return $this->schema()->attributes($this->type());
     }
 
     public function path()
@@ -183,9 +192,7 @@ trait ItemTrait
     public function property($attribute)
     {
         if (!isset($this->properties[$attribute])) {
-            dump($attribute);
-            dump($this);
-            $this->properties[$attribute] = new Property($this, $this->schema()->attribute($attribute, $this->type));
+            $this->properties[$attribute] = new Property($this, $this->schema()->attribute($attribute, $this->type()));
         }
         return $this->properties[$attribute];
     }

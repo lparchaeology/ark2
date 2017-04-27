@@ -41,6 +41,7 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 
 abstract class Format
@@ -233,12 +234,14 @@ abstract class Format
             $fragment->setValue($data->name(), $data->concept()->concept());
             return;
         }
+        if ($data instanceof DateTime) {
+            $fragment->setValue($data);
+            return;
+        }
         if ($data instanceof Item) {
-            $format = ($this->formatName() ? $data->property($this->formatName())->getValue() : null);
-            $parameter = ($this->parameterName() ? $data->property($this->parameterName())->getValue() : null);
-            dump($this);
-            dump($data);
-            $value = ($this->valueName() ? $data->property($this->valueName())->getValue() : null);
+            $format = null;
+            $parameter = ($this->parameterName() ? $data->schema()->module()->name() : null);
+            $value = ($this->parameterName() ? $data->id() : null);
             $fragment->setValue($value, $parameter, $format);
             return;
         }

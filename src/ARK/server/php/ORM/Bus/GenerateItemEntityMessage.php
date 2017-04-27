@@ -34,13 +34,17 @@ class GenerateItemEntityMessage
 {
     protected $project = '';
     protected $namespace = '';
+    protected $entity = '';
     protected $classname = '';
+    protected $schema = '';
 
-    public function __construct($project, $namespace, $classname)
+    public function __construct($project, $namespace, $entity, $classname, $schema)
     {
         $this->project = $project;
         $this->namespace = $namespace;
+        $this->entity = $entity;
         $this->classname = $classname;
+        $this->schema = $schema;
     }
 
     public function project()
@@ -53,8 +57,18 @@ class GenerateItemEntityMessage
         return $this->namespace;
     }
 
+    public function entity()
+    {
+        return $this->entity;
+    }
+
     public function classname()
     {
         return $this->classname;
+    }
+
+    public function schema()
+    {
+        return $this->schema;
     }
 }

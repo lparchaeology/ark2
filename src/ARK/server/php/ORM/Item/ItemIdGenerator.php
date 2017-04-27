@@ -28,7 +28,7 @@
   * @php        >=5.6, >=7.0
   */
 
-namespace ARK\ORM;
+namespace ARK\ORM\Item;
 
 use ARK\Error\ErrorException;
 use ARK\Http\Error\InternalServerError;
@@ -37,7 +37,7 @@ use ARK\Service;
 use Doctrine\ORM\EntityManager as DoctrineEntityManager;
 use Doctrine\ORM\Id\AbstractIdGenerator;
 
-class ItemSequenceGenerator extends AbstractIdGenerator
+class ItemIdGenerator extends AbstractIdGenerator
 {
     public function generate(DoctrineEntityManager $em, $entity)
     {
@@ -48,10 +48,26 @@ class ItemSequenceGenerator extends AbstractIdGenerator
                 'Only objects of class Item can use the ItemSequenceGenerator'
             ));
         }
-        $parent = ($entity->parent() ? $entity->parent()->id() : '');
-        $seq = Service::database()->generateItemSequence($entity->schema()->module()->name(), $parent, $entity->schema()->sequence());
-        // TODO Do parent correctly!!!
-        $entity->setIndex($seq);
-        return $seq;
+        $strategy = $entity->schema()->generator();
+        if ($strategy == 'assigned') {
+            return $entity->property('id');
+        }
+        $parentItem = '';
+        $parent = '';
+        if ($strategy == 'hierarchy' && $entity->parent()) {
+            $parentModule = $entity->parent()->schema()->module()->name();
+            $parentItem = $entity->parent()->id();
+            $parent = $this->makeIdentifier($parentModule, '.', $parentItem);
+        };
+        $index = Service::database()->generateItemSequence($entity->schema()->module()->name(), $parent, $entity->schema()->sequence());
+        $item = $this->makeIdentifier($parent, '.', $index);
+        $label = $this->makeIdentifier($parentItem, '_', $index);
+        $entity->setItem($item, $index, $label);
+        return $item;
+    }
+
+    protected function makeIdentifier($parentId, $sep, $index)
+    {
+        return ($parentId && $index ? $parentId.$sep.$index : $index);
     }
 }

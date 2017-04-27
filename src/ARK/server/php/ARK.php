@@ -37,6 +37,11 @@ class ARK
         return '1.9.80';
     }
 
+    public static function timestamp()
+    {
+        return new \DateTime(null, new \DateTimeZone("UTC"));
+    }
+
     public static function installDir()
     {
         return realpath(__DIR__.'/../../../..');

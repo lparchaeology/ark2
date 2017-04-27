@@ -277,8 +277,8 @@ class Database
             FROM ark_schema, ark_vocabulary_parameter
             WHERE ark_schema.module = :module
             AND ark_schema.enabled = true
-            AND ark_schema.type_entities = true
-            AND ark_vocabulary_parameter.concept = ark_schema.type_vocabulary
+            AND ark_schema.entities = true
+            AND ark_vocabulary_parameter.concept = ark_schema.vocabulary
             AND ark_vocabulary_parameter.name = :parameter
         ";
         $params = array(

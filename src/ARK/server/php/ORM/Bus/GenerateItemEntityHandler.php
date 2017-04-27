@@ -57,11 +57,9 @@ class <entity> implements Item
 {
     use ItemTrait;
 
-    protected $type = \'<type>\';
-
-    public function __construct($schema)
+    public function __construct($schema = \'<schema>\')
     {
-        $this->schma = $schema;
+        $this->construct($schema);
     }
 }
 ';
@@ -81,15 +79,14 @@ use <parent>;
 
 class <entity> extends <extends>
 {
-    protected $type = \'<type>\';
 }
 ';
 
     public function __invoke(GenerateItemEntityMessage $message)
     {
         $module = Service::database()->getModuleForClassName($message->classname());
-        $class = $this->generateEntityClass($message->namespace(), $module['entity']);
-        $this->writeEntityClass($message->project(), $message->classname(), $class);
+        $class = $this->generateEntityClass($message->namespace(), $message->entity(), $message->schema());
+        $this->writeEntityFile($message->project(), $message->classname(), $class);
         $types = Service::database()->getTypeEntities($module['module']);
         // TODO File base type
         foreach ($types as $type) {
@@ -97,8 +94,8 @@ class <entity> extends <extends>
             $pos = strrpos($classname, '\\');
             $namespace = substr($classname, 0, $pos);
             $entity = substr($classname, $pos + 1);
-            $subclass = $this->generateEntitySubclass($namespace, $entity, $message->classname(), $module['entity']);
-            $this->writeEntityClass($message->project(), $type['classname'], $subclass, $type);
+            $subclass = $this->generateEntitySubclass($namespace, $entity, $message->classname(), $message->entity());
+            $this->writeEntityFile($message->project(), $type['classname'], $subclass, $type);
         }
         /*
         TODO Make this work properly!!!
@@ -110,7 +107,7 @@ class <entity> extends <extends>
         */
     }
 
-    private function writeEntityClass($project, $classname, $class)
+    private function writeEntityFile($project, $classname, $class)
     {
         $path = str_replace('\\', DIRECTORY_SEPARATOR, $classname);
         $path = str_replace($project, ARK::autoloadDir($project), $path).'.php';
@@ -122,21 +119,20 @@ class <entity> extends <extends>
         chmod($path, 0664);
     }
 
-    private function generateEntityClass($namespace, $entity, $type = '')
+    private function generateEntityClass($namespace, $entity, $schema)
     {
         $body = str_replace('<namespace>', $namespace, self::$classTemplate);
         $body = str_replace('<entity>', $entity, $body);
-        $body = str_replace('<type>', $type, $body);
+        $body = str_replace('<schema>', $schema, $body);
         return $body;
     }
 
-    private function generateEntitySubclass($namespace, $entity, $parent, $extends, $type)
+    private function generateEntitySubclass($namespace, $entity, $parent, $extends)
     {
         $body = str_replace('<namespace>', $namespace, self::$subclassTemplate);
         $body = str_replace('<entity>', $entity, $body);
         $body = str_replace('<parent>', $parent, $body);
         $body = str_replace('<extends>', $extends, $body);
-        $body = str_replace('<type>', $type, $body);
         return $body;
     }
 }

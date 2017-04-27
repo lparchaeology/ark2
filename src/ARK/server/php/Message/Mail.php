@@ -34,5 +34,4 @@ use ARK\Message\Message;
 
 class Mail extends Message
 {
-    protected $type = 'mail';
 }

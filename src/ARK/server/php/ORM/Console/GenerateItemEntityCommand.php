@@ -39,15 +39,27 @@ class GenerateItemEntityCommand extends AbstractCommand
     protected function configure()
     {
         $this->setName('orm:entity:generate')
-             ->setDescription('Generate ORM Entities for ARK Modules');
+             ->setDescription('Generate ORM Entities for Custom ARK Modules');
     }
 
     protected function doExecute()
     {
         $modules = Service::database()->getModules();
         foreach ($modules as $module) {
-            $this->write('Generating '.$module['classname']);
-            Service::handleCommand(new GenerateItemEntityMessage($module['project'], $module['namespace'], $module['classname']));
+            if ($module['core']) {
+                $this->write('Skipping Core '.$module['classname']);
+            } else {
+                $this->write('Generating '.$module['classname']);
+                // TODO get default schema
+                $msg = new GenerateItemEntityMessage(
+                    $module['project'],
+                    $module['namespace'],
+                    $module['entity'],
+                    $module['classname'],
+                    ''
+                );
+                Service::handleCommand($msg);
+            }
         }
 
         return $this->successCode();

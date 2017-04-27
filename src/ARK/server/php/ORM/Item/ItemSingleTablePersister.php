@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Item Repository
+ * ARK ORM Item Persister
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,21 +28,14 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\ORM;
+namespace ARK\ORM\Item;
 
+use ARK\Model\Fragment\ItemFragmentTrait;
 use ARK\Model\Schema;
-use Doctrine\ORM\EntityRepository;
+use ARK\Service;
+use Doctrine\ORM\Persisters\Entity\SingleTablePersister;
 
-class ItemEntityRepository extends EntityRepository
+class ItemSingleTablePersister extends SingleTablePersister
 {
-    public function metadata()
-    {
-        return $this->getClassMetadata();
-    }
-
-    public function findProperties($id, Schema $schema, $type)
-    {
-        $persister = $this->_em->getUnitOfWork()->getEntityPersister($this->_entityName);
-        return $persister->findProperties($id, $schema, $type);
-    }
+    use ItemFragmentTrait;
 }

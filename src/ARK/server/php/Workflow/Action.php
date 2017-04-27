@@ -31,12 +31,14 @@
 namespace ARK\Workflow;
 
 use ARK\Actor\Actor;
+use ARK\Message\Notification;
 use ARK\Model\Item;
 use ARK\Model\Schema;
 use ARK\Model\Attribute;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
+use ARK\ORM\ORM;
 use ARK\Vocabulary\Term;
 use ARK\Workflow\Agency;
 use ARK\Workflow\Condition;
@@ -159,6 +161,7 @@ class Action
         foreach ($this->notifications as $notify) {
             $recipients[] = $notify->recipient($item);
         }
+        dump($recipients);
         return $recipients;
     }
 
@@ -167,12 +170,15 @@ class Action
         if ($this->isGranted($actor, $item)) {
             // Create Event
             $event = new Event($actor, $this, $item);
+            ORM::persist($event);
             // Apply Updates
             // Trigger Actions
             // Send Notifications
-            $notification = new Notification($actor, $this->notify(), $event);
-            ORM::persist($event);
+            $notification = new Notification($actor, $this->notify($item), $event);
             ORM::persist($notification);
+            dump($this);
+            dump($event);
+            dump($notification);
         }
     }
 

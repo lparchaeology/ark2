@@ -30,20 +30,21 @@
 
 namespace ARK\Message;
 
+use ARK\Actor\Actor;
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
+use DateTime;
 
 class Message implements Item
 {
     use ItemTrait;
 
-    public function __construct(Actor $sender, array $recipients, DateTimeZone $sentAt)
+    public function __construct(Actor $sender, array $recipients, DateTime $sentAt)
     {
         $this->construct('core.message');
-        $this->property('type')->setValue($this->type);
         $this->property('sender')->setValue($sender);
         $this->property('recipients')->setValue($recipients);
-        $this->property('sent_at')->setValue($sentAt);
+        $this->property('sent')->setValue($sentAt);
     }
 
     public function sender()
@@ -58,7 +59,7 @@ class Message implements Item
 
     public function sentAt()
     {
-        return $this->property('sent_at')->value();
+        return $this->property('sent')->value();
     }
 
     public function isRecipient(Actor $actor)

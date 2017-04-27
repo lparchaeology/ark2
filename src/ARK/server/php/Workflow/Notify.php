@@ -33,6 +33,7 @@ namespace ARK\Workflow;
 use ARK\Actor\Actor;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
+use ARK\ORM\ORM;
 use ARK\Security\RBAC\Role;
 use ARK\Workflow\Action;
 use ARK\Model\Schema\SchemaAttribute;
@@ -49,8 +50,8 @@ class Notify
 
     public function recipient(Item $item)
     {
-        $item->property($this->attributeName)->getValue();
-        return ORM::find(Actor::class, 1);
+        $item->property($this->attributeName)->value();
+        return ORM::find(Actor::class, 'ahavfrue');
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

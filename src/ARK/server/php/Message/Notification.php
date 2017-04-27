@@ -30,17 +30,16 @@
 
 namespace ARK\Message;
 
+use ARK\ARK;
 use ARK\Actor\Actor;
 use ARK\Message\Message;
 use ARK\Workflow\Event;
 
 class Notification extends Message
 {
-    protected $type = 'notification';
-
     public function __construct(Actor $sender, array $recipients, Event $event)
     {
-        parent::__construct($sender, $recipients, new DateTimeZone('UTC'));
+        parent::__construct($sender, $recipients, ARK::timestamp());
         $this->property('event')->setValue($event);
     }
 

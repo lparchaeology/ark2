@@ -30,6 +30,7 @@
 
 namespace ARK\Workflow;
 
+use ARK\ARK;
 use ARK\Actor\Actor;
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
@@ -42,10 +43,9 @@ class Event implements Item
     {
         $this->construct('core.event');
         $this->setParent($item);
-        $this->property('type')->setValue($action->event()->concept()->concept());
         $this->property('agent')->setValue($agent);
         $this->property('event')->setValue($action->event());
-        $this->property('occurred')->setValue(new DateTimeZone('UTC'));
+        $this->property('occurred')->setValue(ARK::timestamp());
     }
 
     public function name()

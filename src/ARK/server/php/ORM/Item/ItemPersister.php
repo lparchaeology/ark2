@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK ORM Item Assigned ID Generator
+ * ARK ORM Item Persister
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,28 +28,12 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\ORM;
+namespace ARK\ORM\Item;
 
-use ARK\Error\ErrorException;
-use ARK\Http\Error\InternalServerError;
-use ARK\ORM\ItemSequenceGenerator;
-use Doctrine\ORM\EntityManager;
+use ARK\Model\Fragment\ItemFragmentTrait;
+use Doctrine\ORM\Persisters\Entity\BasicEntityPersister;
 
-class ItemAssignedGenerator extends ItemSequenceGenerator
+class ItemPersister extends BasicEntityPersister
 {
-    public function generate(EntityManager $em, $entity)
-    {
-        if (!$entity instanceof Item) {
-            throw new ErrorException(new InternalServerError(
-                'ORM_INVALID_ENTITY',
-                'Invalid Entity for Generator',
-                'Only objects of class Item can use the ItemSequenceGenerator'
-            ));
-        }
-        if ($entity->id()) {
-            // TODO Do I need to check here if exists?
-            return $entity->id();
-        }
-        return parent::generate($em, $entity);
-    }
+    use ItemFragmentTrait;
 }

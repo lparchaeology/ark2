@@ -50,6 +50,7 @@ class ORM
             return Service::entityManager('user');
         }
         // TODO Proper error strategy?
+        $class = (is_object($class) ? get_class($class) : $class);
         throw new ErrorException(new Error('ENTITY_NOT_MANAGED', 'Entity Not Managed', "Entity $class not managed by ORM"));
     }
 

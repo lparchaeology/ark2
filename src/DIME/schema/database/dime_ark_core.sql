@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 26, 2017 at 10:55 PM
+-- Generation Time: Apr 27, 2017 at 10:26 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -523,7 +523,6 @@ CREATE TABLE `ark_instance_schema` (
 
 INSERT INTO `ark_instance_schema` (`instance`, `schma`, `enabled`, `deprecated`) VALUES
 ('dime', 'core.actor', 1, 0),
-('dime', 'core.event', 1, 0),
 ('dime', 'core.file', 1, 0),
 ('dime', 'core.message', 1, 0),
 ('dime', 'core.page', 1, 0),
@@ -790,11 +789,11 @@ INSERT INTO `ark_route` (`route`, `path`, `can_get`, `can_post`, `controller`, `
 CREATE TABLE `ark_schema` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `generator` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `generator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sequence` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `type_vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `type_entities` tinyint(1) NOT NULL DEFAULT '0',
+  `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `entities` tinyint(1) NOT NULL DEFAULT '0',
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
@@ -804,15 +803,15 @@ CREATE TABLE `ark_schema` (
 -- Dumping data for table `ark_schema`
 --
 
-INSERT INTO `ark_schema` (`schma`, `module`, `generator`, `sequence`, `type`, `type_vocabulary`, `type_entities`, `enabled`, `deprecated`, `keyword`) VALUES
-('core.actor', 'actor', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 'type', 'core.actor.type', 1, 1, 0, 'core.actor'),
-('core.event', 'event', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 'type', 'core.event.type', 0, 1, 0, 'core.event'),
-('core.file', 'file', 'ARK\\ORM\\Id\\IdentityGenerator', NULL, 'type', 'core.file.type', 1, 1, 0, 'core.file'),
-('core.message', 'message', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 'type', 'core.message.type', 1, 1, 0, 'core.message'),
-('core.page', 'page', '', NULL, NULL, NULL, 0, 1, 0, 'core.page'),
-('dime.find', 'find', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', 'type', 'dime.find.type', 0, 1, 0, 'dime.find'),
-('dime.image', 'image', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', NULL, NULL, 0, 1, 0, 'dime.image'),
-('dime.locality', 'locality', 'ARK\\Model\\Entity\\ItemSequenceGenerator', 'id', NULL, NULL, 0, 1, 0, 'dime.locality');
+INSERT INTO `ark_schema` (`schma`, `module`, `generator`, `sequence`, `type`, `vocabulary`, `entities`, `enabled`, `deprecated`, `keyword`) VALUES
+('core.actor', 'actor', 'sequence', 'id', 'type', 'core.actor.type', 1, 1, 0, 'core.actor'),
+('core.event', 'event', 'sequence', 'id', NULL, NULL, 0, 1, 0, 'core.event'),
+('core.file', 'file', 'sequence', NULL, 'type', 'core.file.type', 1, 1, 0, 'core.file'),
+('core.message', 'message', 'sequence', 'id', 'type', 'core.message.type', 1, 1, 0, 'core.message'),
+('core.page', 'page', 'sequence', NULL, NULL, NULL, 0, 1, 0, 'core.page'),
+('dime.find', 'find', 'sequence', 'id', 'type', 'dime.find.type', 0, 1, 0, 'dime.find'),
+('dime.image', 'image', 'sequence', 'id', NULL, NULL, 0, 1, 0, 'dime.image'),
+('dime.locality', 'locality', 'sequence', 'id', NULL, NULL, 0, 1, 0, 'dime.locality');
 
 -- --------------------------------------------------------
 
@@ -843,11 +842,8 @@ CREATE TABLE `ark_schema_association` (
 
 INSERT INTO `ark_schema_association` (`schma`, `type`, `association`, `module1`, `schema1`, `degree`, `inverse`, `module2`, `schema2`, `inverse_degree`, `bidirectional`, `enabled`, `deprecated`, `keyword`) VALUES
 ('core.actor', 'actor', 'messages', 'actor', 'core.actor', 0, 'recipients', 'message', 'core.message', 0, 0, 1, 0, ''),
-('core.event', 'event', 'finds', 'event', 'core.event', 0, 'events', 'find', 'dime.find', 0, 0, 1, 0, ''),
-('core.event', 'event', 'messages', 'event', 'core.event', 0, 'events', 'message', 'core.message', 0, 0, 1, 0, ''),
 ('core.message', 'message', 'finds', 'message', 'core.message', 0, 'messages', 'actor', 'core.actor', 0, 1, 1, 0, ''),
 ('core.message', 'message', 'recipients', 'message', 'core.message', 0, 'messages', 'actor', 'core.actor', 0, 1, 1, 0, ''),
-('dime.find', 'find', 'events', 'find', 'dime.find', 0, 'finds', 'event', 'core.event', 0, 1, 1, 0, ''),
 ('dime.find', 'find', 'messages', 'find', 'dime.find', 0, 'finds', 'message', 'core.message', 0, 0, 1, 0, '');
 
 -- --------------------------------------------------------
@@ -885,7 +881,7 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('core.event', 'event', 'event', 'term', NULL, 1, 1, 1, 0, 1, 0, 'core.event.event'),
 ('core.event', 'event', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.event.id'),
 ('core.event', 'event', 'occurred', 'datetime', NULL, 1, 1, 1, 0, 1, 0, 'core.event.occurred'),
-('core.event', 'event', 'type', 'term', 'core.event.type', 1, 1, 1, 0, 1, 0, 'core.event.type'),
+('core.event', 'event', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.event.type'),
 ('core.file', 'file', 'description', 'plaintext', NULL, 0, 1, 1, 0, 1, 0, 'core.file.description'),
 ('core.file', 'file', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.file.id'),
 ('core.file', 'file', 'mediatype', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.file.mediatype'),
@@ -897,10 +893,10 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('core.message', 'mail', 'body', 'plaintext', NULL, 1, 1, 1, 0, 1, 0, 'core.message.mail.body'),
 ('core.message', 'mail', 'subject', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'core.message.mail.subject'),
 ('core.message', 'message', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.message.id'),
-('core.message', 'message', 'recipients', 'recipient', NULL, 1, 0, 1, 0, 1, 0, 'core.message.recipients'),
+('core.message', 'message', 'recipients', 'actor', NULL, 1, 0, 1, 0, 1, 0, 'core.message.recipients'),
 ('core.message', 'message', 'sender', 'actor', NULL, 1, 1, 1, 0, 1, 0, 'core.message.sender'),
-('core.message', 'message', 'sent_at', 'datetime', NULL, 1, 1, 1, 0, 1, 0, 'core.message.sent_at'),
-('core.message', 'message', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.message.type'),
+('core.message', 'message', 'sent', 'datetime', NULL, 1, 1, 1, 0, 1, 0, 'core.message.sent_at'),
+('core.message', 'message', 'type', 'identifier', 'core.message.type', 1, 1, 1, 0, 1, 0, 'core.message.type'),
 ('core.message', 'notification', 'event', 'item', NULL, 1, 1, 1, 0, 1, 0, 'core.message.notification.event'),
 ('core.page', 'page', 'content', 'html', NULL, 1, 1, 1, 0, 1, 0, 'property.content'),
 ('core.page', 'page', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.page.id'),
@@ -1020,6 +1016,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('core.message.sender', 'core', 0, 0),
 ('core.message.sent_at', 'core', 0, 0),
 ('core.message.type', 'core', 0, 0),
+('core.message.type.notification', 'dime', 0, 0),
 ('dime.about', 'dime', 0, 0),
 ('dime.about.background', 'dime', 0, 0),
 ('dime.about.groups', 'dime', 0, 0),
@@ -1271,6 +1268,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'core.message.sender', 'default', 'Fra', 'Fra'),
 ('da', 'core.message.sent_at', 'default', 'Dato', 'Dato'),
 ('da', 'core.message.type', 'default', 'Type', 'Type'),
+('da', 'core.message.type.notification', 'default', 'Notifikation', ''),
 ('da', 'dime.about', 'default', 'Om DIME', ''),
 ('da', 'dime.about.background', 'default', 'Baggrund for DIME', ''),
 ('da', 'dime.about.groups', 'default', 'Detektorforeninger', ''),
@@ -1381,6 +1379,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'core.message.sender', 'default', 'From', 'Fra'),
 ('en', 'core.message.sent_at', 'default', 'Date', ''),
 ('en', 'core.message.type', 'default', 'Type', ''),
+('en', 'core.message.type.notification', 'default', 'Notification', ''),
 ('en', 'dime.about', 'default', 'About', ''),
 ('en', 'dime.about', 'resource', 'about', ''),
 ('en', 'dime.about.background', 'default', 'Background for DIME', ''),
@@ -1771,7 +1770,7 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `lab
 ('core_message_event', 'core.message', 'notification', 'event', 1, 'active', NULL, NULL, NULL, ''),
 ('core_message_id', 'core.message', 'message', 'id', 1, 'active', NULL, NULL, NULL, ''),
 ('core_message_sender', 'core.message', 'message', 'sender', 1, 'active', NULL, NULL, NULL, ''),
-('core_message_sent_at', 'core.message', 'message', 'sent_at', 1, 'active', NULL, NULL, NULL, ''),
+('core_message_sent_at', 'core.message', 'message', 'sent', 1, 'active', NULL, NULL, NULL, ''),
 ('core_message_type', 'core.message', 'message', 'type', 1, 'active', NULL, NULL, NULL, ''),
 ('core_page_content', 'core.page', 'page', 'content', 1, 'active', NULL, NULL, NULL, ''),
 ('dime_actor_fullname', 'core.actor', 'actor', 'fullname', 1, 'active', NULL, NULL, NULL, ''),
@@ -2125,7 +2124,6 @@ CREATE TABLE `ark_vocabulary` (
 INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `workflow`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('core.actor.event', 'list', 'ARK Core', 1, 0, 1, 0, 'core.actor.event', 'Actor Event'),
 ('core.actor.type', 'list', 'ARK Core', 1, 0, 1, 0, 'core.actor.type', 'Actor Type'),
-('core.event.type', 'list', 'ARK Core', 1, 0, 1, 0, 'core.event.type', 'Event Type'),
 ('core.file.status', 'list', 'ARK Core', 1, 0, 1, 0, 'core.file.status', 'File Status'),
 ('core.file.type', 'list', 'ARK Core', 1, 0, 1, 0, 'core.file.type', 'File Type'),
 ('core.item.status', 'list', 'ARK Core', 1, 0, 1, 0, 'core.item.status', 'Item Status'),
@@ -2308,6 +2306,8 @@ INSERT INTO `ark_vocabulary_parameter` (`concept`, `term`, `name`, `type`, `valu
 ('core.file.type', 'other', 'classname', 'string', 'ARK\\File\\File'),
 ('core.file.type', 'text', 'classname', 'string', 'ARK\\File\\Text'),
 ('core.file.type', 'video', 'classname', 'string', 'ARK\\File\\Video'),
+('core.message.type', 'mail', 'classname', 'string', 'ARK\\Message\\Mail'),
+('core.message.type', 'notification', 'classname', 'string', 'ARK\\Message\\Notification'),
 ('dime.period', 'AMXX', 'year_end', 'integer', '-3951'),
 ('dime.period', 'AMXX', 'year_start', 'integer', '-9000'),
 ('dime.period', 'AXXX', 'year_end', 'integer', '-1701'),
@@ -5965,7 +5965,11 @@ ALTER TABLE `ark_map_source`
 -- Indexes for table `ark_module`
 --
 ALTER TABLE `ark_module`
-  ADD PRIMARY KEY (`module`);
+  ADD PRIMARY KEY (`module`),
+  ADD UNIQUE KEY `tbl` (`tbl`),
+  ADD UNIQUE KEY `classname` (`classname`),
+  ADD UNIQUE KEY `resource` (`resource`),
+  ADD UNIQUE KEY `entity` (`entity`);
 
 --
 -- Indexes for table `ark_rbac_access`
@@ -5999,7 +6003,7 @@ ALTER TABLE `ark_route`
 ALTER TABLE `ark_schema`
   ADD PRIMARY KEY (`schma`),
   ADD KEY `module` (`module`),
-  ADD KEY `type_vocabulary` (`type_vocabulary`);
+  ADD KEY `type_vocabulary` (`vocabulary`);
 
 --
 -- Indexes for table `ark_schema_association`
@@ -6407,7 +6411,7 @@ ALTER TABLE `ark_route`
 --
 ALTER TABLE `ark_schema`
   ADD CONSTRAINT `ark_schema_ibfk_1` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_schema_ibfk_2` FOREIGN KEY (`type_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_schema_ibfk_2` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_schema_association`
