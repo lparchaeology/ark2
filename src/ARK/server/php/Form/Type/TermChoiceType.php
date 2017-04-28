@@ -45,7 +45,7 @@ class TermChoiceType extends AbstractType
             'field' => null,
             'placeholder' => false,
             'attr' => array(
-                'style' => 'width: 50%'
+                'style' => 'width: 100%'
             )
         ]);
     }
