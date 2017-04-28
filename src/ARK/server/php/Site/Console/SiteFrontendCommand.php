@@ -83,7 +83,7 @@ class SiteFrontendCommand extends AbstractCommand
             $fs->mkdir($siteDir.'/files/upload');
             $fs->mkdir($siteDir.'/files/tmp');
             $fs->mkdir($siteDir.'/files/data');
-            $fs->mkdir($siteDir.'/files/thumbs');
+            $fs->mkdir($siteDir.'/files/cache');
             $fs->mkdir($siteDir.'/schema');
             $fs->mirror($srcDir.'/bin', $siteDir.'/bin');
             $fs->mirror($srcDir.'/config', $siteDir.'/config');

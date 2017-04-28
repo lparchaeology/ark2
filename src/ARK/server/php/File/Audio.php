@@ -12,5 +12,4 @@ use ARK\File\File;
 
 class Audio extends File
 {
-    protected $type = 'audio';
 }

@@ -66,7 +66,7 @@ class SpatialServiceProvider implements ServiceProviderInterface
         if (!isset($container['ark']['spatial'])) {
             return;
         }
-        if ($container['ark']['spatial'] == 'geos') {
+        if ($container['ark']['spatial']['driver'] == 'geos') {
             GeometryEngineRegistry::set(new GEOSEngine());
         } else {
             GeometryEngineRegistry::set(new PDOEngine($container['dbs']['spatial']->getWrappedConnection()));

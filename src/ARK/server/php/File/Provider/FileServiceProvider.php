@@ -35,6 +35,7 @@ use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use League\Glide\ServerFactory;
 use League\Glide\Responses\SymfonyResponseFactory;
+use League\Flysystem\Adapter;
 use WyriHaximus\SliFly\FlysystemServiceProvider;
 
 class FileServiceProvider implements ServiceProviderInterface
@@ -48,38 +49,31 @@ class FileServiceProvider implements ServiceProviderInterface
         $container['dir.sites'] = ARK::sitesDir();
         $container['dir.site'] = ARK::siteDir($container['ark']['site']);
         $container['dir.config'] = $container['dir.site'].'/config';
-        $container['dir.files'] = $container['dir.site'].'/files';
+        $container['dir.files'] = $container['dir.site'].$container['ark']['file']['root'];
         $container['dir.web'] = $container['dir.site'].'/web';
 
         $container->register(new FlysystemServiceProvider());
+        $data = $container['ark']['file']['data'];
+        $data['adapter'] = 'League\\Flysystem\\Adapter\\'.$data['adapter'];
+        $data['path'] = ($data['adapter'] == 'Local' ? $container['dir.files'].$data['path'] : $data['path']);
+        $cache = $container['ark']['file']['cache'];
+        $cache['adapter'] = 'League\\Flysystem\\Adapter\\'.$cache['adapter'];
+        $cache['path'] = ($cache['adapter'] == 'Local' ? $container['dir.files'].$cache['path'] : $cache['path']);
         $container['flysystem.filesystems'] = [
-            'tmp' => ['adapter' => 'League\Flysystem\Adapter\Local', 'args' => [$container['dir.files'].'/tmp']],
-            'download' => ['adapter' => 'League\Flysystem\Adapter\Local', 'args' => [$container['dir.files'].'/download']],
-            'upload' => ['adapter' => 'League\Flysystem\Adapter\Local', 'args' => [$container['dir.files'].'/upload']],
-            'data' => ['adapter' => 'League\Flysystem\Adapter\Local', 'args' => [$container['dir.files'].'/data']],
-            'thumbs' => ['adapter' => 'League\Flysystem\Adapter\Local', 'args' => [$container['dir.files'].'/thumbs']],
+            'tmp' => ['adapter' => Local::class, 'args' => [$container['dir.files'].'/tmp']],
+            'download' => ['adapter' => Local::class, 'args' => [$container['dir.files'].'/download']],
+            'upload' => ['adapter' => Local::class, 'args' => [$container['dir.files'].'/upload']],
+            'data' => ['adapter' => $data['adapter'], 'args' => [$data['path']]],
+            'cache' => ['adapter' => $cache['adapter'], 'args' => [$cache['path']]],
         ];
 
         $container['glide.server'] = function ($app) {
-            return ServerFactory::create([
-                'source' => $app['flysystems']['data'],
-                'cache' =>  $app['flysystems']['thumbs'],
-                'driver' => $app['ark']['image'],
-                'max_image_size' => $app['ark']['max_image_size'],
-                //'defaults' =>                // Default image manipulations
-                'presets' => [
-                    'thumb' => [
-                        'w' => 100,
-                        'h' => 100,
-                    ],
-                    'preview' => [
-                        'w' => 500,
-                        'h' => 500,
-                    ],
-                ],
-                'base_url' => '/img/',
-                'response' => new SymfonyResponseFactory(),
-            ]);
+            $config = $app['ark']['image'];
+            $config['source'] = $app['flysystems']['data'];
+            $config['cache'] =  $app['flysystems']['cache'];
+            $config['base_url'] = '/img/';
+            $config['response'] = new SymfonyResponseFactory();
+            return ServerFactory::create($config);
         };
     }
 }
