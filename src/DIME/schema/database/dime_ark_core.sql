@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 27, 2017 at 10:26 PM
+-- Generation Time: Apr 28, 2017 at 10:15 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -55,29 +55,6 @@ INSERT INTO `ark_config_flash` (`id`, `active`, `type`, `language`, `text`) VALU
 (2, 0, 'warning', 'en', 'This is a site Warning flash message stored in the database.'),
 (3, 0, 'danger', 'en', 'This is a site Danger flash message stored in the database.'),
 (4, 0, 'success', 'en', 'This is a site Success flash message stored in the database.');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ark_config_thumbnail`
---
-
-CREATE TABLE `ark_config_thumbnail` (
-  `profile` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `max` int(11) NOT NULL,
-  `min` int(11) DEFAULT NULL,
-  `mode` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `keyword` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_config_thumbnail`
---
-
-INSERT INTO `ark_config_thumbnail` (`profile`, `max`, `min`, `mode`, `type`, `keyword`) VALUES
-('gallery', 100, 100, 'aspect', 'jpg', 'thumbnail.gallery'),
-('preview', 300, NULL, 'aspect', 'jpg', 'thumbnail.preview');
 
 -- --------------------------------------------------------
 
@@ -175,10 +152,10 @@ INSERT INTO `ark_format` (`format`, `datatype`, `entity`, `value_name`, `value_f
 ('email', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'format.email'),
 ('event', 'object', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 1, 1, 0, 'format.event'),
 ('file', 'item', 'ARK\\File\\File', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 1, 0, 'format.file'),
-('fileversion', 'object', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ARK\\Form\\Type\\FileVersionType', 1, 0, 0, 0, 1, 1, 0, 'format.fileversion'),
 ('float', 'float', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'format.float'),
 ('html', 'text', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 1, 1, 1, 1, 0, 'format.html'),
 ('identifier', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'format.identifier'),
+('image', 'item', 'ARK\\File\\Image', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 1, 0, 'format.image'),
 ('integer', 'integer', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'format.integer'),
 ('item', 'item', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 1, 0, 'format.item'),
 ('key', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'format.key'),
@@ -199,6 +176,7 @@ INSERT INTO `ark_format` (`format`, `datatype`, `entity`, `value_name`, `value_f
 ('term', 'string', 'ARK\\Vocabulary\\Term', 'term', 'ARK\\Form\\Type\\TermChoiceType', 'concept', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, 'ARK\\Form\\Type\\VocabularyFormType', 0, 0, 0, 1, 1, 1, 0, 'format.identifier'),
 ('time', 'time', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'format.time'),
 ('url', 'text', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 1, 1, 1, 0, 'format.url'),
+('version', 'object', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ARK\\Form\\Type\\FileVersionType', 1, 0, 0, 0, 1, 1, 0, 'format.fileversion'),
 ('weekdate', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'format.weekdate'),
 ('wkt', 'spatial', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 0, 'format.wkt'),
 ('yearmonth', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'format.yearmonth'),
@@ -236,14 +214,16 @@ INSERT INTO `ark_format_attribute` (`parent`, `attribute`, `sequence`, `format`,
 ('address', 'street', 0, 'plaintext', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.address.street'),
 ('event', 'by', 0, 'actor', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.event.by'),
 ('event', 'on', 1, 'datetime', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.event.on'),
-('fileversion', 'created', 3, 'event', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.created'),
-('fileversion', 'expires', 5, 'datetime', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.expires'),
-('fileversion', 'modified', 4, 'event', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.modified'),
-('fileversion', 'name', 1, 'string', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.name'),
-('fileversion', 'sequence', 0, 'integer', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.sequence'),
-('fileversion', 'version', 2, 'string', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.string'),
 ('recipient', 'read_on', 1, 'datetime', NULL, 0, 1, 1, 1, 0, 1, 0, 'format.recipient.read_on'),
-('recipient', 'sent_to', 0, 'actor', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.recipient.sent_to');
+('recipient', 'sent_to', 0, 'actor', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.recipient.sent_to'),
+('version', 'created', 3, 'datetime', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.created'),
+('version', 'creator', 3, 'actor', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.creator'),
+('version', 'expires', 5, 'datetime', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.expires'),
+('version', 'modified', 4, 'datetime', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.modified'),
+('version', 'modifier', 4, 'actor', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.modifier'),
+('version', 'name', 1, 'string', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.name'),
+('version', 'sequence', 0, 'integer', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.sequence'),
+('version', 'version', 2, 'string', NULL, 1, 1, 1, 1, 0, 1, 0, 'format.fileversion.string');
 
 -- --------------------------------------------------------
 
@@ -527,7 +507,6 @@ INSERT INTO `ark_instance_schema` (`instance`, `schma`, `enabled`, `deprecated`)
 ('dime', 'core.message', 1, 0),
 ('dime', 'core.page', 1, 0),
 ('dime', 'dime.find', 1, 0),
-('dime', 'dime.image', 1, 0),
 ('dime', 'dime.locality', 1, 0);
 
 -- --------------------------------------------------------
@@ -806,11 +785,10 @@ CREATE TABLE `ark_schema` (
 INSERT INTO `ark_schema` (`schma`, `module`, `generator`, `sequence`, `type`, `vocabulary`, `entities`, `enabled`, `deprecated`, `keyword`) VALUES
 ('core.actor', 'actor', 'sequence', 'id', 'type', 'core.actor.type', 1, 1, 0, 'core.actor'),
 ('core.event', 'event', 'sequence', 'id', NULL, NULL, 0, 1, 0, 'core.event'),
-('core.file', 'file', 'sequence', NULL, 'type', 'core.file.type', 1, 1, 0, 'core.file'),
+('core.file', 'file', 'sequence', 'id', 'type', 'core.file.type', 1, 1, 0, 'core.file'),
 ('core.message', 'message', 'sequence', 'id', 'type', 'core.message.type', 1, 1, 0, 'core.message'),
-('core.page', 'page', 'sequence', NULL, NULL, NULL, 0, 1, 0, 'core.page'),
+('core.page', 'page', 'sequence', 'id', NULL, NULL, 0, 1, 0, 'core.page'),
 ('dime.find', 'find', 'sequence', 'id', 'type', 'dime.find.type', 0, 1, 0, 'dime.find'),
-('dime.image', 'image', 'sequence', 'id', NULL, NULL, 0, 1, 0, 'dime.image'),
 ('dime.locality', 'locality', 'sequence', 'id', NULL, NULL, 0, 1, 0, 'dime.locality');
 
 -- --------------------------------------------------------
@@ -882,13 +860,15 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('core.event', 'event', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.event.id'),
 ('core.event', 'event', 'occurred', 'datetime', NULL, 1, 1, 1, 0, 1, 0, 'core.event.occurred'),
 ('core.event', 'event', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.event.type'),
+('core.file', 'file', 'copyright', 'actor', NULL, 1, 1, 1, 0, 1, 0, 'core.file.copyright'),
 ('core.file', 'file', 'description', 'plaintext', NULL, 0, 1, 1, 0, 1, 0, 'core.file.description'),
 ('core.file', 'file', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.file.id'),
+('core.file', 'file', 'license', 'term', 'core.file.license', 1, 1, 1, 0, 1, 0, 'core.file.status'),
 ('core.file', 'file', 'mediatype', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.file.mediatype'),
 ('core.file', 'file', 'status', 'term', 'core.file.status', 1, 1, 1, 0, 1, 0, 'core.file.status'),
 ('core.file', 'file', 'title', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'core.file.title'),
 ('core.file', 'file', 'type', 'term', 'core.file.type', 1, 1, 1, 0, 1, 0, 'core.file.type'),
-('core.file', 'file', 'versions', 'fileversion', NULL, 1, 0, 1, 0, 1, 0, 'core.file.versions'),
+('core.file', 'file', 'versions', 'version', NULL, 1, 0, 1, 0, 1, 0, 'core.file.versions'),
 ('core.message', 'mail', 'attachments', 'file', NULL, 0, 0, 1, 0, 1, 0, 'core.message.mail.attachments'),
 ('core.message', 'mail', 'body', 'plaintext', NULL, 1, 1, 1, 0, 1, 0, 'core.message.mail.body'),
 ('core.message', 'mail', 'subject', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'core.message.mail.subject'),
@@ -909,7 +889,7 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('dime.find', 'find', 'finder_id', 'identifier', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.finderid'),
 ('dime.find', 'find', 'findpoint', 'spatial', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.findpoint'),
 ('dime.find', 'find', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.find.id'),
-('dime.find', 'find', 'image', 'string', NULL, 1, 0, 1, 1, 1, 0, 'dime.find.images'),
+('dime.find', 'find', 'images', 'image', NULL, 1, 0, 1, 1, 1, 0, 'dime.find.images'),
 ('dime.find', 'find', 'kommune', 'term', 'dime.denmark.kommune', 1, 1, 1, 0, 1, 0, 'dime.find.kommune'),
 ('dime.find', 'find', 'length', 'distance', NULL, 0, 1, 1, 0, 1, 0, 'dime.find.length'),
 ('dime.find', 'find', 'material', 'term', 'dime.material', 1, 1, 1, 0, 1, 0, 'dime.find.material'),
@@ -927,7 +907,6 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('dime.find', 'find', 'type', 'term', 'dime.find.type', 1, 1, 1, 0, 1, 0, 'dime.find.type'),
 ('dime.find', 'find', 'visibility', 'term', 'dime.find.visibility', 1, 1, 1, 0, 1, 0, 'dime.find.visibility'),
 ('dime.find', 'find', 'weight', 'mass', NULL, 0, 1, 1, 0, 1, 0, 'property.weight'),
-('dime.image', 'image', 'name', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'property.name'),
 ('dime.locality', 'locality', 'id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.locality.id'),
 ('dime.locality', 'locality', 'name', 'shorttext', NULL, 1, 1, 1, 0, 1, 0, 'dime.locality.name'),
 ('dime.locality', 'locality', 'type', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'dime.locality.type');
@@ -1784,7 +1763,7 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `lab
 ('dime_find_finder_id', 'dime.find', 'find', 'finder_id', 1, 'active', NULL, NULL, NULL, ''),
 ('dime_find_findpoint', 'dime.find', 'find', 'findpoint', 1, 'active', NULL, NULL, NULL, ''),
 ('dime_find_id', 'dime.find', 'find', 'id', 1, 'readonly', NULL, NULL, NULL, ''),
-('dime_find_image', 'dime.find', 'find', 'image', 1, 'active', NULL, NULL, 'ARK\\Form\\Type\\CarouselType', ''),
+('dime_find_image', 'dime.find', 'find', 'images', 1, 'active', NULL, NULL, 'ARK\\Form\\Type\\CarouselType', ''),
 ('dime_find_kommune', 'dime.find', 'find', 'kommune', 1, 'active', NULL, NULL, NULL, ''),
 ('dime_find_length', 'dime.find', 'find', 'length', 1, 'active', 'hidden', NULL, NULL, ''),
 ('dime_find_material', 'dime.find', 'find', 'material', 1, 'active', NULL, NULL, NULL, ''),
@@ -2124,6 +2103,7 @@ CREATE TABLE `ark_vocabulary` (
 INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `workflow`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('core.actor.event', 'list', 'ARK Core', 1, 0, 1, 0, 'core.actor.event', 'Actor Event'),
 ('core.actor.type', 'list', 'ARK Core', 1, 0, 1, 0, 'core.actor.type', 'Actor Type'),
+('core.file.license', 'list', 'ARK Core', 1, 0, 1, 0, 'core.file.type', 'File License'),
 ('core.file.status', 'list', 'ARK Core', 1, 0, 1, 0, 'core.file.status', 'File Status'),
 ('core.file.type', 'list', 'ARK Core', 1, 0, 1, 0, 'core.file.type', 'File Type'),
 ('core.item.status', 'list', 'ARK Core', 1, 0, 1, 0, 'core.item.status', 'Item Status'),
@@ -2300,6 +2280,9 @@ INSERT INTO `ark_vocabulary_parameter` (`concept`, `term`, `name`, `type`, `valu
 ('core.actor.type', 'institution', 'classname', 'string', 'ARK\\Actor\\Institution'),
 ('core.actor.type', 'museum', 'classname', 'string', 'ARK\\Actor\\Museum'),
 ('core.actor.type', 'person', 'classname', 'string', 'ARK\\Actor\\Person'),
+('core.file.license', 'cc0', 'url', 'string', 'https://creativecommons.org/publicdomain/zero/1.0/'),
+('core.file.license', 'ccbyncsa', 'url', 'string', 'https://creativecommons.org/licenses/by-nc-sa/4.0/'),
+('core.file.license', 'ccbysa', 'url', 'string', 'https://creativecommons.org/licenses/by-sa/4.0/'),
 ('core.file.type', 'audio', 'classname', 'string', 'ARK\\File\\Audio'),
 ('core.file.type', 'document', 'classname', 'string', 'ARK\\File\\Document'),
 ('core.file.type', 'image', 'classname', 'string', 'ARK\\File\\Image'),
@@ -2672,6 +2655,9 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('core.actor.type', 'institution', '', 0, 1, 0, 'dime.actor.type.institution', ''),
 ('core.actor.type', 'museum', '', 0, 1, 0, 'dime.actor.type.museum', ''),
 ('core.actor.type', 'person', '', 0, 1, 0, 'dime.actor.type.person', ''),
+('core.file.license', 'cc0', 'CC0', 0, 1, 0, 'core.file.license.cc0', ''),
+('core.file.license', 'ccbyncsa', 'CC BY-NC-SA', 0, 1, 0, 'core.file.license.ccbyncsa', ''),
+('core.file.license', 'ccbysa', 'CC BY-SA', 0, 1, 0, 'core.file.license.ccbysa', ''),
 ('core.file.status', 'checkedin', '', 0, 1, 0, 'core.file.status.checkedin', ''),
 ('core.file.status', 'checkedout', '', 0, 1, 0, 'core.file.status.checkedout', ''),
 ('core.file.status', 'expired', '', 0, 1, 0, 'core.file.status.expired', ''),
@@ -3360,12 +3346,12 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('language', 'frp', 'arpitan', 0, 1, 0, 'language.arpitan', ''),
 ('language', 'frr', 'frisian.northern', 0, 1, 0, 'language.frisian.northern', ''),
 ('language', 'frs', 'frisian.eastern', 0, 1, 0, 'language.frisian.eastern', ''),
-('language', 'fur', 'friulian', 0, 1, 0, 'language.friulian', ''),
+('language', 'fur', 'friulian', 0, 1, 0, 'language.friulian', '');
+INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('language', 'fy', 'frisian.western', 0, 1, 0, 'language.frisian.western', ''),
 ('language', 'ga', 'irish', 0, 1, 0, 'language.irish', ''),
 ('language', 'gaa', 'ga', 0, 1, 0, 'language.ga', ''),
-('language', 'gag', 'gagauz', 0, 1, 0, 'language.gagauz', '');
-INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('language', 'gag', 'gagauz', 0, 1, 0, 'language.gagauz', ''),
 ('language', 'gan', 'chinese.gan', 0, 1, 0, 'language.chinese.gan', ''),
 ('language', 'gay', 'gayo', 0, 1, 0, 'language.gayo', ''),
 ('language', 'gba', 'gbaya', 0, 1, 0, 'language.gbaya', ''),
@@ -5823,12 +5809,6 @@ ALTER TABLE `ark_config_error`
 --
 ALTER TABLE `ark_config_flash`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `ark_config_thumbnail`
---
-ALTER TABLE `ark_config_thumbnail`
-  ADD PRIMARY KEY (`profile`);
 
 --
 -- Indexes for table `ark_datatype`
