@@ -10,7 +10,7 @@ $(document).ready(function() {
     //$(".select2.select2-container").css("width", "100%");
     // HACK To add columns of checkboxes
     $("#dime_find_item_secondary_term").css("width", "100%");
-    $(".checkbox").addClass("col-lg-4");
+    $(".checkbox").addClass("col-xs-4 col-sm-4 col-lg-3");
     // Fake readonly mode
     $('.readonly-select').prop('disabled', true);
 

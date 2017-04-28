@@ -55,3 +55,13 @@
          </div>
     </div>
 {%- endblock measurement_widget %}
+
+{% block checkbox_widget %}
+    {% spaceless %}
+        <div class="checkbox">
+            <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+            <label for="{{ id }}"><span class="checkboxlabel">{{ label|trans({}, translation_domain) }}</span></label>
+        </div>
+    {% endspaceless %}
+{% endblock checkbox_widget %}
+

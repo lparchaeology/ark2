@@ -1,0 +1,164 @@
+
+.form-group {
+    margin-bottom: 5px;
+}
+
+.select2-container--default .select2-selection--single,
+.form-group input[type=text] {
+    border: 1px solid black;
+    border-radius: 10px;
+    height: 1.4em;
+    line-height: 1.4em;
+    vertical-align: middle;
+    padding: 0 10px;
+}
+
+.select2-container--open .select2-dropdown--below {
+    border: 1px solid black;
+    border-radius: 0 0 10px 10px;
+}
+
+.form-group input[type=text] {
+    width: 50%;
+    }
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 1em;
+    overflow: visible;
+}
+
+@media (min-width: $break-small){
+    .form-horizontal .control-label {
+        margin-top:0;
+    }
+}
+
+/* BTN */
+
+.btn {
+    border: black 1px solid;
+    padding: 0 10px;
+    text-transform: uppercase;
+    border-radius: 0;
+}
+
+/* CHECKBOXES */
+
+input[type=checkbox] {
+    visibility: hidden;
+}
+
+.checkbox {
+    position: relative;
+}
+
+.checkbox label {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid black;
+    border-radius: 3px;
+    cursor: pointer;
+    height: 1.6em;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 1.6em;
+}
+
+/**
+ * Display the tick inside the checkbox
+ */
+.checkbox label:after {
+    content: "X";
+    font-weight: 800;
+    left: 0.4em;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+}
+
+/**
+ * Create the hover event of the tick
+ */
+.checkbox label:hover::after {
+    opacity: 0.5;
+}
+
+/**
+ * Create the checkbox state for the tick
+ */
+.checkbox input[type=checkbox]:checked + label:after {
+    opacity: 1;
+}
+
+.checkboxlabel {
+    margin-left: 5px;
+}
+
+.checkboxlist {
+    margin-top:7px;
+}
+
+/* RADIO BUTTON */
+
+.radio {
+    width: 100%;
+}
+
+input[type=radio] {
+    visibility: hidden;
+}
+
+.radio label{
+  display: block;
+  position: absolute;
+  border: 1px solid #AAAAAA;
+  border-radius: 100%;
+  height: 17px;
+  width: 17px;
+  padding-left:0;
+  min-height:0;
+  font-weight:normal;
+}
+
+.radio label::before {
+  display: block;
+  background: white;
+  position: absolute;
+  content: '';
+  border-radius: 100%;
+  height: 11px;
+  width: 11px;
+  top: 2px;
+  left: 2px;
+}
+
+.radio label:hover::before{
+  background: #aaaaaa;
+}
+input[type=radio]:checked ~ label {
+  border: 1px solid black;
+  font-weight: bold;
+}
+
+input[type=radio]:checked ~ label::before{
+  background: black;
+}
+
+.radiolabel {
+    display: block;
+    margin-left: 20px;
+    position: absolute;
+    top: -5px;
+    width: 9vw;
+}
+
+/* READONLY */
+
+[readonly="readonly"] {
+    padding: 5px 5px 0;
+}
+.dime-table tbody,
+.dime-table thead {
+    text-transform: uppercase;
+    border: 1px black solid;
+}

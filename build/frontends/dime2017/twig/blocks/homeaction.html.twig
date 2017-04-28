@@ -4,24 +4,30 @@
 
 {% block homeaction %}
 
-    <div class="row">
+    <div class="row dimehometoolbar">
         <div class="col-md-3 dimehome dimehometool" >
             {{ 'dime.home.welcome' | trans({ '%user%': global.user.displayName }) }}
         </div>
         <div class="col-md-3 dimehome dimehometool" >
-            {% include "blocks/link.html.twig" with {'link':
-                           {"name": "dime.home.alarm",
-                           "active": true,
-                           "target": "home.messages"} } %}
+        {%  set notification = 'false'  %}
+        
+        {% if notification == 'true' %}
+            {%  set notificationicon = 'icon-new-notification small wide' %}
+        {% endif %}
+        {% if notification == 'false' %}
+            {%  set notificationicon = 'icon-notification small' %}
+        {% endif %}
+        
+            <a href="{{ path("home.messages") }}">
+                {{ "dime.home.alarm" | translate }}
+                <span class="dime-icon dimehometool-icon {{ notificationicon }} "></span>
+            </a>
         </div>
         <div class="col-md-3 dimehome dimehometool" >
-            <ul class="list-group dime-navlist">
-                <li class="list-group-item dime-listhead normal">
-                    <span class="dime-icon icon-add normal"></span>
-                    {% include "blocks/link.html.twig"
-                        with {'link': {"name": "dime.find.add", "active": true, "target": "finds.add"} } %}
-                </li>
-            </ul>
+            <a href="{{ path("finds.add") }}">
+                {{ "dime.find.add" | translate }}
+                <span class="dime-icon dimehometool-icon icon-add small"></span>
+            </a>
         </div>
         <div class="col-md-3 dimehome dimehometool" >
             {% include "blocks/link.html.twig" with {'link':

@@ -1,0 +1,56 @@
+/*
+Dime Home Stuff
+*/
+
+.dimehome {
+    text-align: center;
+}
+
+.dimehome.banner {
+    text-align: center;
+    font-weight: 800;
+}
+
+.dimehome .search {
+    display: inline-flex;
+    margin: auto;
+    width: 200px;
+}
+
+.dimehome .search button {}
+
+.redtext {
+    border: 1px solid red;
+    border-radius: 5px;
+    color: #f00;
+    margin-top: 20px;
+    padding: 20px;
+    text-transform: uppercase;
+    font-size: 0.8em;
+}
+
+.search_map {
+    height: 600px;
+}
+
+.dimehometoolbar {
+    border-bottom: 1px solid #333;
+    font-weight: 300;
+    font-size:1.2em;
+    text-transform: uppercase;
+    padding-bottom:20px;
+}
+
+.dimehometoolbar a {
+    text-decoration: none;
+    color: black;
+}
+
+.dimehometool-icon {
+    float:none;
+    margin: auto;
+}
+
+.controlshead a {
+    position:relative;
+}

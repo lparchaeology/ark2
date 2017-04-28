@@ -1,0 +1,221 @@
+/*
+ * ARK Bootstrap Theme
+ *
+ * This file can be used to theme Bootstrap after it has been built.
+ *
+ * Bootstrap examples/dashboard/dashboard.css
+ */
+
+/*
+ * Resposive settings
+ */
+
+$break-small: 767px;
+//Danish word wrapping:
+$break-large-tablet: 926px;
+//English word wrapping 
+$break-large-tablet: 1439px;
+$break-tablet: 1199px;
+@media (min-width: $break-tablet) {
+    .collapse {
+        display: block;
+    }
+}
+
+/*
+ * Base structure
+ */
+html {}
+
+body {
+    margin-bottom: 60px;
+}
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/*
+* Icons
+*/
+
+.dime-icon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    float: left;
+    background-size: cover;
+    display: block;
+    /* This is required */
+}
+
+.dime-icon.normal {
+    width: 32px;
+    height: 32px;
+}
+
+.dime-icon.normal.wide {
+    width: 64px;
+}
+
+.dime-icon.small {
+    width: 16px;
+    height: 16px;
+}
+
+.dime-icon.small.wide {
+    width: 32px;
+}
+
+.dime-icon.medium {
+    width: 64px;
+    height: 64px;
+}
+
+.dime-icon.medium.wide {
+    width: 128px;
+}
+
+.dime-icon.large {
+    width: 128px;
+    height: 128px;
+}
+
+.dime-icon.large.wide {
+    width: 256px;
+}
+
+.dime-icon.icon-user {
+    background-image: url("../images/icons/logged_in_.png");
+    margin-right: 1em;
+}
+
+.dime-icon.icon-user-edit {
+    background-image: url("../images/icons/edit_user.png");
+    margin: 0 25px;
+    float: none;
+}
+
+.dime-icon.icon-add {
+    background-image: url("../images/icons/add_find.png");
+}
+
+.dime-icon.icon-search {
+    background-image: url("../images/icons/search_find.png");
+}
+
+.dime-icon.icon-map {
+    background-image: url("../images/icons/map.png");
+}
+
+.dime-icon.icon-heatmap {
+    background-image: url("../images/icons/heatmap.png");
+}
+
+.dime-icon.icon-notification {
+    background-image: url("../images/icons/notifications.png");
+}
+
+.dime-icon.icon-new-notification {
+    background-image: url("../images/icons/new_notifications.png");
+}
+
+/*
+ * Main content
+ */
+
+.main {
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+@media (min-width: $break-small) {
+    .main {
+        padding-right: 40px;
+        padding-left: 40px;
+    }
+}
+
+.content-col-1 {
+    border-right: 1px #cecece solid;
+}
+
+.content-col-1,
+.content-col-2 {
+    padding: 20px;
+}
+
+
+/*
+ * Placeholder dashboard ideas
+ */
+
+.placeholders {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.placeholders h4 {
+    margin-bottom: 0;
+}
+
+.placeholder {
+    margin-bottom: 20px;
+}
+
+.placeholder img {
+    display: inline-block;
+    border-radius: 50%;
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu > a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover > a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left > .dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    border-radius: 6px 0 6px 6px;
+}
+

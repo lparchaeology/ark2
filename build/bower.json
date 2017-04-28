@@ -32,6 +32,7 @@
     "smalot-bootstrap-datetimepicker": "^2.3.11",
     "moment": "^2.14.1",
     "summernote": "^0.8.2",
+    "proj4": "^2.4.3",
     "notosans-fontface": "^1.0.1"
   },
   "resolutions": {

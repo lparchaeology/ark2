@@ -11,4 +11,10 @@
 // Import Bootstrap extensions
 
 // Import other Sass
-@import "theme";
+@import "theme/core";
+@import "theme/form";
+@import "theme/map";
+@import "theme/carousel";
+@import "theme/table";
+@import "theme/frame";
+@import "theme/home";

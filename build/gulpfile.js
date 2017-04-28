@@ -165,13 +165,13 @@ gulp.task('js', function() {
         config.vendorDir + '/bootstrap-table/dist/extensions/editable/bootstrap-table-editable.js',
         config.vendorDir + '/bootstrap-table/dist/extensions/export/bootstrap-table-export.js',
         config.vendorDir + '/bootstrap-table/dist/extensions/flat-json/bootstrap-table-flat-json.js',
-        config.vendorDir + '/bootstrap-table/dist/extensions/mobile/bootstrap-table-mobile.js',
         config.vendorDir + '/bootstrap-table/dist/extensions/multiple-search/bootstrap-table-multiple-search.js',
         config.vendorDir + '/bootstrap-table/dist/extensions/multiple-sort/bootstrap-table-multiple-sort.js',
-        config.vendorDir + '/bootstrap-table/dist/extensions/natural-sort/bootstrap-table-natural-sort.js',
+        config.vendorDir + '/bootstrap-table/dist/extensions/natural-sorting/bootstrap-table-natural-sorting.js',
         config.vendorDir + '/bootstrap-table/dist/extensions/resizeable/bootstrap-table-resizeable.js',
         config.vendorDir + '/bootstrap-table/dist/extensions/select2-filter/bootstrap-table-select2-filter.js',
         config.vendorDir + '/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.js',
+        config.vendorDir + '/proj4/dist/proj4.js',
         config.frontendsDir + '/' + frontend + '/js/**/*'
     ];
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/assets/scripts';

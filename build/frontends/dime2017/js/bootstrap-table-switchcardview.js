@@ -14,7 +14,8 @@
     });
 
     $.extend($.fn.bootstrapTable.defaults.icons, {
-        thumbIcon: 'glyphicon-th-large',
+        cardIcon: 'glyphicon-th-large',
+        thumbIcon: 'glyphicon-th',
         listIcon: 'glyphicon-menu-hamburger'
     });
 
@@ -37,7 +38,6 @@
         } else {
             var cardActive = "";
             var listActive = " active";
-
         }
 
         $($btnGroup.find('[name="toggle"]')).remove();
@@ -58,128 +58,152 @@
             cardActive +
             '" name="cardView" ' +
             ' type="button">',
+            sprintf('<i class="%s %s"></i> ', this.options.iconsPrefix, this.options.icons.cardIcon),
+            '</button>',
+            '<button class="btn' +
+            sprintf(' btn-%s', this.options.buttonsClass) +
+            sprintf(' btn-%s', this.options.iconSize) +
+            cardActive +
+            '" name="thumbView" ' +
+            ' type="button">',
             sprintf('<i class="%s %s"></i> ', this.options.iconsPrefix, this.options.icons.thumbIcon),
             '</button>',
             '</div>'
         ].join('')).prependTo($btnGroup);
-
-        $(window).resize(function() {
-
-            if ($(this).width() < 563) {
-                $('#dime_find_list').addClass("cardViewTable");
-                $('#dime_find_home').addClass("cardViewTable");
-                $($btnGroup.find('[name="cardView"]')).addClass("active");
-                $($btnGroup.find('[name="tableView"]')).removeClass("active");
-
-                $('tr').click(function(evt) {
-                    self = $(this);
-                    console.log(self);
-                    ark_id = self.attr('data-unique-id');
-                    map.getLayers().forEach(function(i, e, a) {
-                        if (i.get('name') == 'yours') {
-                            console.log(evt.shiftKey);
-                            if (!evt.shiftKey) {
-                                collection.clear();
-                            }
-                            if (typeof i.getSource().getFeatures == 'function') {
-                                i.getSource().getFeatures().forEach(function(i, e, a) {
-                                    if (i.get('ark_id').toUpperCase() == ark_id) {
-                                        if (self.hasClass('selected')) {
-                                            collection.remove(i);
-                                        } else {
-                                            collection.push(i);
-                                        }
-                                    }
-                                });
-                            }
+        
+        var mapclick = function(target) {
+            alert("click");
+                console.log(target);
+                //ark_id = self.attr('data-unique-id');
+                map.getLayers().forEach(function(i, e, a) {
+                    if (i.get('name') == 'yours') {
+                        console.log(evt.shiftKey);
+                        if (!evt.shiftKey) {
+                            collection.clear();
                         }
-                    });
-                });
-
-            }
-
-            if ($(this).width() > 563) {
-                $('#dime_find_list').removeClass("cardViewTable");
-                $('#dime_find_home').removeClass("cardViewTable");
-                $($btnGroup.find('[name="cardView"]')).removeClass("active");
-                $($btnGroup.find('[name="tableView"]')).addClass("active");
-
-                $('tr').click(function(evt) {
-                    self = $(this);
-                    console.log(self);
-                    ark_id = self.attr('data-unique-id');
-                    map.getLayers().forEach(function(i, e, a) {
-                        if (i.get('name') == 'yours') {
-                            console.log(evt.shiftKey);
-                            if (!evt.shiftKey) {
-                                collection.clear();
-                            }
-                            if (typeof i.getSource().getFeatures == 'function') {
-                                i.getSource().getFeatures().forEach(function(i, e, a) {
-                                    if (i.get('ark_id').toUpperCase() == ark_id) {
-                                        if (self.hasClass('selected')) {
-                                            collection.remove(i);
-                                        } else {
-                                            collection.push(i);
-                                        }
+                        if (typeof i.getSource().getFeatures == 'function') {
+                            i.getSource().getFeatures().forEach(function(i, e, a) {
+                                if (i.get('ark_id').toUpperCase() == ark_id) {
+                                    if (self.hasClass('selected')) {
+                                        collection.remove(i);
+                                    } else {
+                                        collection.push(i);
                                     }
-                                });
-                            }
-                        }
-                    });
-                });
-
-            }
-
-        });
-
-        that.$toolbar.find('button[name="tableView"]')
-            .on('click', function() {
-                if (that.options.cardView) {
-                    $('#dime_find_list').removeClass("cardViewTable");
-                    $('#dime_find_home').removeClass("cardViewTable");
-
-                    $($btnGroup.find('[name="cardView"]')).removeClass("active");
-                    $($btnGroup.find('[name="tableView"]')).addClass("active");
-                    that.toggleView();
-                    $('tr').click(function(evt) {
-                        self = $(this);
-                        console.log(self);
-                        ark_id = self.attr('data-unique-id');
-                        map.getLayers().forEach(function(i, e, a) {
-                            if (i.get('name') == 'yours') {
-                                console.log(evt.shiftKey);
-                                if (!evt.shiftKey) {
-                                    collection.clear();
                                 }
-                                if (typeof i.getSource().getFeatures == 'function') {
-                                    i.getSource().getFeatures().forEach(function(i, e, a) {
-                                        if (i.get('ark_id').toUpperCase() == ark_id) {
-                                            if (self.hasClass('selected')) {
-                                                collection.remove(i);
-                                            } else {
-                                                collection.push(i);
-                                            }
-                                        }
-                                    });
+                            });
+                        }
+                    }
+                });
+        };
+        
+        var thumbclick = function(target) {
+            
+            console.log(target);
+            self = $(target);
+            console.log(self);
+            //ark_id = self.attr('data-unique-id');
+            map.getLayers().forEach(function(i, e, a) {
+                if (i.get('name') == 'yours') {
+                    console.log(evt.shiftKey);
+                    if (!evt.shiftKey) {
+                        collection.clear();
+                    }
+                    if (typeof i.getSource().getFeatures == 'function') {
+                        i.getSource().getFeatures().forEach(function(i, e, a) {
+                            if (i.get('ark_id').toUpperCase() == ark_id) {
+                                if (self.hasClass('selected')) {
+                                    collection.remove(i);
+                                } else {
+                                    collection.push(i);
                                 }
                             }
                         });
-                    });
+                    }
+                }
+            });
+    };
+
+        that.$toolbar.find('button[name="tableView"]')
+            .on('click', function() {
+                $(this).blur();
+                var width = $('.bootstrap-table').width();
+                
+                if(width < that.options.minWidth){
+                    return false;
+                }
+                
+                if ( $($btnGroup.find('[name="tableView"]')).hasClass("active") == false ) {
+                    $('#dime_find_list').removeClass("cardViewTable");
+                    $('#dime_find_home').removeClass("cardViewTable");
+                    $('#dime_find_list').removeClass("thumbViewTable");
+                    $('#dime_find_home').removeClass("thumbViewTable");
+
+                    if( $($btnGroup.find('[name="thumbView"]')).hasClass("active") ){
+                        that.toggleView();
+                    }
+
+                    $($btnGroup.find('[name="cardView"]')).removeClass("active");
+                    $($btnGroup.find('[name="thumbView"]')).removeClass("active");
+                    $($btnGroup.find('[name="tableView"]')).addClass("active");
+
+                    $('tr').on("click", {"target":this}, mapclick );
+                }
+            });
+
+        that.$toolbar.find('button[name="thumbView"]')
+            .on('click', function() {
+                $(this).blur();
+                if( $($btnGroup.find('[name="thumbView"]')).hasClass("active") == false ){
+
+                    that.toggleView();
+
+                    $('#dime_find_list').addClass("thumbViewTable");
+                    $('#dime_find_home').addClass("thumbViewTable");
+                    $('#dime_find_list').removeClass("cardViewTable");
+                    $('#dime_find_home').removeClass("cardViewTable");
+
+                    $($btnGroup.find('[name="thumbView"]')).addClass("active");
+                    $($btnGroup.find('[name="cardView"]')).removeClass("active");
+                    $($btnGroup.find('[name="tableView"]')).removeClass("active");
+                    
+                    $('tr').on("click", {"target":this}, thumbclick );
+
                 }
             });
 
         that.$toolbar.find('button[name="cardView"]')
-            .on('click', function() {
-                if (!that.options.cardView) {
-                    $('#dime_find_list').addClass("cardViewTable");
-                    $('#dime_find_home').addClass("cardViewTable");
+        .on('click', function() {
+            $(this).blur();
+            that.$toolbar.find('button[name="tableView"]').blur();
+            that.$toolbar.find('button[name="thumbView"]').blur();
+            
+            if( $($btnGroup.find('[name="cardView"]')).hasClass("active") == false ){
 
-                    $($btnGroup.find('[name="cardView"]')).addClass("active");
-                    $($btnGroup.find('[name="tableView"]')).removeClass("active");
+                if( $($btnGroup.find('[name="thumbView"]')).hasClass("active") ){
                     that.toggleView();
                 }
-            });
+
+                $('#dime_find_list').addClass("cardViewTable");
+                $('#dime_find_home').addClass("cardViewTable");
+                $('#dime_find_list').removeClass("thumbViewTable");
+                $('#dime_find_home').removeClass("thumbViewTable");
+
+                $($btnGroup.find('[name="cardView"]')).addClass("active");
+                $($btnGroup.find('[name="thumbView"]')).removeClass("active");
+                $($btnGroup.find('[name="tableView"]')).removeClass("active");
+                
+
+                $('tr').on("click", {"target":this}, mapclick );
+                
+            }
+        });
+        
+        $(document).ready(function (){
+            that.$toolbar.find('button[name="tableView"]').click();
+            that.$toolbar.find('button[name="cardView"]').click();
+        });
+        
+
     };
 
 }(jQuery);

@@ -1,0 +1,89 @@
+
+/* mappick */
+
+.mappick-group div {}
+
+.mappick_fields {
+    padding-right:0;
+}
+
+.mappick_fields label {}
+
+.form-group input[type=text].mappick_field {
+    padding: 0 0 0 5px;
+    width: 100%;
+    border-radius:0;
+}
+
+.mappick {
+    height: 250px;
+}
+
+.mappick-options {
+    margin: 40px 0;
+}
+
+.mappick-options .col-sm-6 {
+    padding-right:0;
+}
+
+@media (max-width: $break-small) {
+	.mappick-options .radiolabel {width: 100vw}
+}
+/* map overlay */
+
+.mapview .btn-group {
+    margin: 10px 0;
+}
+
+.mapview .btn-group .style-select-option {
+    cursor: pointer;
+}
+
+.map-cover {
+    background: rgba(0, 0, 0, 1) url("../images/icons/loading.gif") no-repeat scroll center center;
+    position: absolute;
+    z-index: 1;
+}
+
+a.layer-select:hover {
+    cursor: pointer;
+}
+
+a.layer-select.selected,
+a.layer-select.selected:hover {
+    background-color: #999999;
+}
+
+.map-legend {
+    padding: 60px 20px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    text-align: center;
+    display: none;
+}
+
+.map-legend .map-legend-label {
+    text-transform: uppercase;
+    background-color: #f9f9f9;
+    display: block;
+    padding: 0 5px;
+}
+
+.map-legend .legend-image {
+    margin: 5px;
+}
+
+.control-label.required:after {
+    content: " *";
+    color: red;
+}
+
+.form-horizontal .control-label { 
+    padding-top: 0;
+}
+
+.form-horizontal .form-control {
+   margin-top: 0;
+}

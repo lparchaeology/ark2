@@ -4,13 +4,38 @@
 
     {% set fieldForm = form[field.formName] %}
 
-    {{ form_label(fieldForm) }}
+   {# {{ form_label(fieldForm) }} #}
 
-    <div class="mappick_fields col-sm-4 col-lg-3">
-        {{ form_widget(fieldForm.easting, {'attr': {'class': 'mappick_field mappick_easting'}}) }}
-        {{ form_widget(fieldForm.northing, {'attr': {'class': 'mappick_field mappick_northing'}}) }}
+    <div class="mappick_fields col-sm-7">
+        <div class="row mappick-options mappick_utm">
+            <div class="col-sm-6">
+                <div class="radio">
+                    <input type="radio" name="koordinater" id="mappick_utm" checked="checked" />
+                    <label for="mappick_utm"><span class="radiolabel">Universal Transverse Mercator</span></label>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <input id="mappick-utm" class="mappick_field mappick-utm form-control" type="text" >
+            {# 
+                <input id="mappick-utm-easting" class="mappick_field mappick-utm-easting form-control" type="text" >
+                <input id="mappick-utm-northing" class="mappick_field mappick-utm-northing form-control" type="text" >
+            #}
+            </div>
+        </div>
+        <div class="row mappick-options decimalgrader">
+            <div class="col-sm-6">
+                <div class="radio">
+                    <input type="radio" name="koordinater" id="decimalgrader" />
+                    <label for="decimalgrader"><span class="radiolabel">Decimalgrader</span></label>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                {{ form_widget(fieldForm.easting, {'attr': {'class': 'mappick_field mappick_easting', 'readonly':'readonly'}}) }}
+                {{ form_widget(fieldForm.northing, {'attr': {'class': 'mappick_field mappick_northing', 'readonly':'readonly'}}) }}
+            </div>
+        </div>
     </div>
-    <div id="mappick" class="mappick col-sm-6"></div>
+    <div id="mappick" class="mappick col-sm-5"></div>
 
     <script>var mapPin = "{{ asset('/images/icons/pin.png', 'frontend') }}"</script>
 
