@@ -35,6 +35,8 @@ use Doctrine\ORM\Mapping\Builder\FieldBuilder;
 use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder as DoctrineClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use RuntimeException;
+use ARK\Vocabulary\Vocabulary;
+use ARK\Security\RBAC\Permission;
 
 class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
 {
@@ -125,6 +127,16 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
             $builder->inversedBy($inverse);
         }
         $builder->build();
+    }
+
+    public function addVocabularyField($name, $column = null, $nullable = true)
+    {
+        $this->addManyToOneField($name, Vocabulary::class, $column, 'concept', $nullable);
+    }
+
+    public function addPermissionField($name, $column = null, $nullable = true)
+    {
+        $this->addManyToOneField($name, Permission::class, $column, 'permission', $nullable);
     }
 
     public function addManyToOneField($name, $class, $column = null, $reference = null, $nullable = true, $inverse = null)

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 03, 2017 at 09:54 PM
+-- Generation Time: Apr 29, 2017 at 09:07 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -23,10 +23,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ark_auth_account`
+-- Table structure for table `ark_security_account`
 --
 
-CREATE TABLE `ark_auth_account` (
+CREATE TABLE `ark_security_account` (
   `user` int(10) UNSIGNED NOT NULL,
   `account` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `protocol` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -40,19 +40,19 @@ CREATE TABLE `ark_auth_account` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ark_auth_level`
+-- Table structure for table `ark_security_level`
 --
 
-CREATE TABLE `ark_auth_level` (
+CREATE TABLE `ark_security_level` (
   `level` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
 --
--- Dumping data for table `ark_auth_level`
+-- Dumping data for table `ark_security_level`
 --
 
-INSERT INTO `ark_auth_level` (`level`, `enabled`) VALUES
+INSERT INTO `ark_security_level` (`level`, `enabled`) VALUES
 ('ROLE_ADMIN', 1),
 ('ROLE_ANON', 1),
 ('ROLE_SYSADMIN', 1),
@@ -61,16 +61,16 @@ INSERT INTO `ark_auth_level` (`level`, `enabled`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ark_auth_user`
+-- Table structure for table `ark_security_user`
 --
 
-CREATE TABLE `ark_auth_user` (
+CREATE TABLE `ark_security_user` (
   `user` int(11) UNSIGNED NOT NULL,
-  `username` varchar(100) DEFAULT NULL,
-  `email` varchar(100) NOT NULL DEFAULT '',
-  `password` varchar(255) DEFAULT NULL,
-  `name` varchar(100) DEFAULT NULL,
-  `level` varchar(30) NOT NULL,
+  `username` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `level` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `verified` tinyint(1) NOT NULL DEFAULT '0',
   `locked` tinyint(1) NOT NULL DEFAULT '0',
@@ -78,18 +78,18 @@ CREATE TABLE `ark_auth_user` (
   `expires_at` timestamp NULL DEFAULT NULL,
   `credentials_expired` tinyint(1) NOT NULL DEFAULT '0',
   `credentials_expire_at` timestamp NULL DEFAULT NULL,
-  `verification_token` varchar(100) NOT NULL,
+  `verification_token` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `verification_requested_at` timestamp NULL DEFAULT NULL,
-  `password_request_token` varchar(100) NOT NULL,
+  `password_request_token` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password_requested_at` timestamp NULL DEFAULT NULL,
   `last_login` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
 --
--- Dumping data for table `ark_auth_user`
+-- Dumping data for table `ark_security_user`
 --
 
-INSERT INTO `ark_auth_user` (`user`, `username`, `email`, `password`, `name`, `level`, `enabled`, `verified`, `locked`, `expired`, `expires_at`, `credentials_expired`, `credentials_expire_at`, `verification_token`, `verification_requested_at`, `password_request_token`, `password_requested_at`, `last_login`) VALUES
+INSERT INTO `ark_security_user` (`user`, `username`, `email`, `password`, `name`, `level`, `enabled`, `verified`, `locked`, `expired`, `expires_at`, `credentials_expired`, `credentials_expire_at`, `verification_token`, `verification_requested_at`, `password_request_token`, `password_requested_at`, `last_login`) VALUES
 (1, NULL, 'john@layt.net', '$2y$13$5bDc.gpJTrnpJmfQt.7MZOz.QaKH/c8blMJtjJAxuoBwju.P88x2q', 'John Layt', 'ROLE_SYSADMIN', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL),
 (2, NULL, 'stuarteve@gmail.com', '$2y$13$F70UAv8DPo7LFJSm4y0h.eacYGcJuubZRSSYBUqUbgwl4bBq3w.IK', 'Stuart Eve', 'ROLE_ADMIN', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL),
 (3, NULL, 'm.johnson@lparchaeology.com', '$2y$13$cVYlJ12yc1dA6CTedS1HtuACE7sbD.gsc5/zHnXCk.ddDOEvRtIiK', 'Mike Johnson', 'ROLE_ADMIN', 1, 0, 0, 0, NULL, 0, NULL, '', NULL, '', NULL, NULL),
@@ -107,17 +107,17 @@ INSERT INTO `ark_auth_user` (`user`, `username`, `email`, `password`, `name`, `l
 
 CREATE TABLE `ark_user` (
   `id` int(11) UNSIGNED NOT NULL,
-  `email` varchar(100) NOT NULL DEFAULT '',
-  `password` varchar(255) DEFAULT NULL,
-  `salt` varchar(255) NOT NULL DEFAULT '',
-  `roles` varchar(255) NOT NULL DEFAULT '',
-  `name` varchar(100) DEFAULT NULL,
+  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `salt` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `roles` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `time_created` int(11) UNSIGNED NOT NULL DEFAULT '0',
-  `username` varchar(100) DEFAULT NULL,
+  `username` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `isEnabled` tinyint(1) NOT NULL DEFAULT '1',
-  `confirmationToken` varchar(100) DEFAULT NULL,
+  `confirmationToken` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `timePasswordResetRequested` int(11) UNSIGNED DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `ark_user`
@@ -141,30 +141,30 @@ INSERT INTO `ark_user` (`id`, `email`, `password`, `salt`, `roles`, `name`, `tim
 
 CREATE TABLE `ark_user_field` (
   `user_id` int(11) UNSIGNED NOT NULL,
-  `attribute` varchar(50) NOT NULL DEFAULT '',
-  `value` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `attribute` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `value` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `ark_auth_account`
+-- Indexes for table `ark_security_account`
 --
-ALTER TABLE `ark_auth_account`
+ALTER TABLE `ark_security_account`
   ADD PRIMARY KEY (`user`,`account`);
 
 --
--- Indexes for table `ark_auth_level`
+-- Indexes for table `ark_security_level`
 --
-ALTER TABLE `ark_auth_level`
+ALTER TABLE `ark_security_level`
   ADD PRIMARY KEY (`level`);
 
 --
--- Indexes for table `ark_auth_user`
+-- Indexes for table `ark_security_user`
 --
-ALTER TABLE `ark_auth_user`
+ALTER TABLE `ark_security_user`
   ADD PRIMARY KEY (`user`),
   ADD UNIQUE KEY `unique_email` (`email`),
   ADD UNIQUE KEY `username` (`username`);
@@ -188,9 +188,9 @@ ALTER TABLE `ark_user_field`
 --
 
 --
--- AUTO_INCREMENT for table `ark_auth_user`
+-- AUTO_INCREMENT for table `ark_security_user`
 --
-ALTER TABLE `ark_auth_user`
+ALTER TABLE `ark_security_user`
   MODIFY `user` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `ark_user`
@@ -202,10 +202,10 @@ ALTER TABLE `ark_user`
 --
 
 --
--- Constraints for table `ark_auth_account`
+-- Constraints for table `ark_security_account`
 --
-ALTER TABLE `ark_auth_account`
-  ADD CONSTRAINT `ark_auth_account_ibfk_1` FOREIGN KEY (`user`) REFERENCES `ark_auth_user` (`user`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `ark_security_account`
+  ADD CONSTRAINT `ark_security_account_ibfk_1` FOREIGN KEY (`user`) REFERENCES `ark_security_user` (`user`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

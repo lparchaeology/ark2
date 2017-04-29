@@ -78,7 +78,8 @@ class ItemMappingDriver implements MappingDriver
         } else {
             $builder->addStringField('type', 30);
         }
-        $builder->addStringField('status', 30, 'status', false, ['default' => 'registered']);
+        $builder->addStringField('status', 30, 'status', false, ['default' => 'allocated']);
+        $builder->addStringField('visibility', 30, 'visibility', false, ['default' => 'restricted']);
         $builder->addStringField('parentModule', 30, 'parent_module', true);
         $builder->addStringField('parentItem', 30, 'parent_item', true);
         $builder->addStringField('idx', 30);

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Workflow Action
+ * ARK Security Permission
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,12 +30,12 @@
 
 namespace ARK\Workflow;
 
-use ARK\Actor\Actor;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\ORM\ClassMetadata;
-use ARK\Security\RBAC\Role;
-use ARK\Workflow\Action;
+use ARK\ORM\ORM;
+use ARK\Workflow\Role;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Permission
 {
@@ -45,49 +45,50 @@ class Permission
     const DENY = false;
     const ABSTAIN = null;
 
-    protected $schma = '';
-    protected $actionName = '';
-    protected $action = null;
-    protected $role = null;
-    protected $operator = 'is';
+    protected $permission = '';
+    protected $enabled = true;
+    protected $roles = null;
 
-    public function role()
+    public function __construct($permission)
     {
-        return $this->role;
+        $this->permission = $permission;
+        $this->roles = new ArrayCollection();
     }
 
-    public function isGranted(Actor $actor)
+    public function id()
     {
-        $hasRole = $this->role->hasActor($actor);
-        if ($hasRole) {
-            return ($this->operator == 'not' ? self::DENY : self::GRANT);
-        }
-        return self::ABSTAIN;
+        return $this->permission;
+    }
+
+    public function isEnabled()
+    {
+        return $this->enabled;
+    }
+
+    public function roles()
+    {
+        return $this->roles;
+    }
+
+    public function inRole(Role $role)
+    {
+        return $this->roles->contains($role);
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        // Joined Table Inheritance
+        // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_permission');
         $builder->setReadOnly();
 
         // Key
-        $builder->addStringKey('schma', 30);
-        $builder->addStringKey('actionName', 30, 'action');
-        $builder->addManyToOneKey('role', Role::class);
+        $builder->addStringKey('permission', 30);
 
-        // Fields
-        $builder->addStringField('operator', 10);
+        // Attributes
+        $builder->addField('enabled', 'boolean');
+        KeywordTrait::buildKeywordMetadata($builder);
 
-        // Associations
-        $builder->addCompositeManyToOneField(
-            'action',
-            Action::class,
-            [
-                ['column' => 'schma', 'nullable' => true],
-                ['column' => 'action', 'nullable' => true],
-            ],
-            'permissions'
-        );
+        // Relationships
+        $builder->addManyToMany('roles', Role::class, 'ark_workflow_grant');
     }
 }

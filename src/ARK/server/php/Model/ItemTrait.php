@@ -45,8 +45,10 @@ trait ItemTrait
     protected $schma = null;
     protected $schema = null;
     protected $type = null;
-    protected $status = 'registered';
+    protected $status = 'allocated';
     protected $statusTerm = null;
+    protected $visibility = 'restricted';
+    protected $visibilityTerm = null;
     protected $parentModule = null;
     protected $parentItem = null;
     protected $parent = null;
@@ -149,6 +151,14 @@ trait ItemTrait
             $this->statusTerm = ORM::find(Term::class, ['concept' => 'core.item.status', 'term' => $this->status]);
         }
         return $this->statusTerm;
+    }
+
+    public function visibility()
+    {
+        if ($this->visibilityTerm === null) {
+            $this->visibilityTerm = ORM::find(Term::class, ['concept' => 'core.visibility', 'term' => $this->visibility]);
+        }
+        return $this->visibilityTerm;
     }
 
     public function hasAttribute($attribute)

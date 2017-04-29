@@ -47,6 +47,10 @@ abstract class Attribute
     protected $attribute = '';
     protected $format = null;
     protected $vocabulary = null;
+    protected $visibility = 'restricted';
+    protected $visibilityTerm = null;
+    protected $read = null;
+    protected $update = null;
     protected $minimum = 0;
     protected $maximum = 1;
     protected $uniqueValues = false;
@@ -72,20 +76,38 @@ abstract class Attribute
         return $this->vocabulary;
     }
 
-    public function hasWorkflow()
+    public function hasTransitions()
     {
         if ($this->vocabulary) {
-            return (bool) $this->vocabulary->hasWorkflow();
+            return (bool) $this->vocabulary->hasTransitions();
         }
         return false;
     }
 
-    public function workflow()
+    public function transitions()
     {
         if ($this->vocabulary) {
-            return $this->vocabulary->workflow();
+            return $this->vocabulary->transitions();
         }
         return null;
+    }
+
+    public function visibility()
+    {
+        if ($this->visibilityTerm === null) {
+            $this->visibilityTerm = ORM::find(Term::class, ['concept' => 'core.visibility', 'term' => $this->visibility]);
+        }
+        return $this->visibilityTerm;
+    }
+
+    public function readPermission()
+    {
+        return $this->read;
+    }
+
+    public function updatePermission()
+    {
+        return $this->update;
     }
 
     public function defaultValue()
@@ -199,6 +221,7 @@ abstract class Attribute
         $builder->setReadOnly();
 
         // Attributes
+        $builder->addStringField('visibility', 30);
         $builder->addField('minimum', 'integer');
         $builder->addField('maximum', 'integer');
         $builder->addField('uniqueValues', 'boolean', [], 'unique_values');
@@ -208,6 +231,8 @@ abstract class Attribute
 
         // Associations
         $builder->addManyToOneField('format', Format::class, 'format', 'format', false);
-        $builder->addManyToOneField('vocabulary', Vocabulary::class, 'vocabulary', 'concept');
+        $builder->addVocabularyField('vocabulary');
+        $builder->addPermissionField('read', 'view');
+        $builder->addPermissionField('update', 'edit');
     }
 }

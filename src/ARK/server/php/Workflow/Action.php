@@ -59,7 +59,7 @@ class Action
     protected $defaultAgency = false;
     protected $defaultCondition = false;
     protected $enabled = true;
-    protected $permissions = null;
+    protected $allowances = null;
     protected $agencies = null;
     protected $conditions = null;
     protected $notifications = null;
@@ -123,18 +123,24 @@ class Action
         return $this->defaultCondition;
     }
 
-    public function hasPermission(Actor $actor)
+    public function hasPermission(Actor $actor, $item)
     {
-        if ($this->permissions->isEmpty()) {
-            return $this->defaultPermission;
+        // TODO Check permissions!
+        return $this->defaultPermission;
+    }
+
+    public function isAllowed(Actor $actor)
+    {
+        if ($this->allowances->isEmpty()) {
+            return $this->defaultAllowence;
         }
-        foreach ($this->permissions as $permission) {
-            $vote = $permission->isGranted($actor);
-            if ($vote !== Permission::ABSTAIN) {
-                return ($vote === Permission::GRANT);
+        foreach ($this->allowances as $allow) {
+            $vote = $allow->isAllowed($actor);
+            if ($vote !== Allow::ABSTAIN) {
+                return ($vote === Allow::GRANT);
             }
         }
-        return $this->defaultPermission;
+        return $this->defaultAllowence;
     }
 
     public function hasAgency(Actor $actor, Item $item)
@@ -152,7 +158,10 @@ class Action
 
     public function isGranted(Actor $actor, Item $item)
     {
-        return $this->hasPermission($actor) && $this->hasAgency($actor, $item) && $this->meetsConditions($item);
+        return $this->hasPermission($actor, $item)
+            && $this->isAllowed($actor)
+            && $this->hasAgency($actor, $item)
+            && $this->meetsConditions($item);
     }
 
     public function notify(Item $item)
@@ -195,7 +204,7 @@ class Action
         // Fields
         $builder->addStringField('agent', 30);
         $builder->addField('enabled', 'boolean');
-        $builder->addField('defaultPermission', 'boolean', [], 'default_permission');
+        $builder->addField('defaultAllowence', 'boolean', [], 'default_allowance');
         $builder->addField('defaultAgency', 'boolean', [], 'default_agency');
         $builder->addField('defaultCondition', 'boolean', [], 'default_condition');
         KeywordTrait::buildKeywordMetadata($builder);
@@ -210,8 +219,8 @@ class Action
             ]
         );
         $builder->addCompositeOneToMany(
-            'permissions',
-            Permission::class,
+            'allowances',
+            Allow::class,
             'action',
             [
                 ['column' => 'schma', 'nullable' => true],

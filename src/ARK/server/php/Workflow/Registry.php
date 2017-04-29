@@ -33,10 +33,10 @@ namespace ARK\Workflow;
 use ARK\Actor\Actor;
 use ARK\Model\Attribute;
 use ARK\Model\Item;
+use ARK\Model\ItemPropertyMarkingStore;
 use ARK\Model\Schema;
 use ARK\ORM\ORM;
 use ARK\Workflow\Action;
-use ARK\Workflow\ItemPropertyMarkingStore;
 use Symfony\Component\Workflow\Exception\InvalidArgumentException;
 use Symfony\Component\Workflow\Registry as SymfonyRegistry;
 use Symfony\Component\Workflow\StateMachine;
@@ -99,15 +99,15 @@ class Registry extends SymfonyRegistry
         return null;
     }
 
-    public function getAttributeWorkflow(Attribute $attribute)
+    public function getStateMachine(Attribute $attribute)
     {
-        if (!$attribute->hasVocabulary() || !$attribute->vocabulary()) {
-            throw new InvalidArgumentException(sprintf('Unable to find a workflow for attribute "%s".', $attribute->name()));
+        if (!$attribute->hasVocabulary() || !$attribute->vocabulary() || !$attribute->vocabulary()->hasTransitions()) {
+            throw new InvalidArgumentException(sprintf('Unable to find transitions for attribute "%s".', $attribute->name()));
         }
-        $definition = $attribute->vocabulary()->workflow($concept);
+        $definition = $attribute->vocabulary()->transitions($concept);
         $markingStore = new ItemPropertyMarkingStore($attribute);
-        $workflow = new StateMachine($definition, $markingStore);
-        return $workflow;
+        $machine = new StateMachine($definition, $markingStore);
+        return $machine;
     }
 
     public function get($subject, $workflowName = null)

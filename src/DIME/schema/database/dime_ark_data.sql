@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 28, 2017 at 12:11 AM
+-- Generation Time: Apr 29, 2017 at 09:07 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -854,7 +854,7 @@ INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `attribute`, `datatype
 (223, 'find', '7', 'description', 'text', 'text/plain', 'da', 'Angelsaksiske-sydskandinavisk celleemaljefibel. Cirkulær med perlet rand - Frick type 1 var. 2. Stjerneformet motiv i celleemalje. Emaljen kun delvist bevaret. Cirkulært felt i centrum i rødt, stjernestrålerne i gult og halvbueformede felter langs rand i blåt?', NULL, NULL, 0, '2017-02-15 14:12:03', 0, '2017-01-29 21:00:51', ''),
 (224, 'find', '8', 'description', 'text', 'text/plain', 'da', 'Hel velbevaret fuglefibel med fliget fiskehale og flot fortinning. På nær hovedet er fiblen flad i profil. Langs kanten er fiblen prydet med en række stempler og på kroppen ses ridser, som muligvis har været del af indridset ornamentik.', NULL, NULL, 0, '2017-02-15 14:12:03', 0, '2017-01-29 21:03:54', ''),
 (225, 'find', '9', 'description', 'text', 'text/plain', 'da', 'Hel lille, let hvælvet blikfibel med delvist bevaret forgyldning. Cirkulær med afsat kant og et øsken ved randen. I centrum ses et lidt skævt ligebenet kors eller en blomst med fire spidse kronblade samlet i et uregelmæssigt, næsten kvadratisk midterfelt.', NULL, NULL, 0, '2017-02-15 14:12:03', 0, '2017-01-29 21:07:02', ''),
-(226, 'find', '10', 'description', 'text', 'text/plain', 'da', 'Hel lille pladefibel.\\r\\n\\r\\nForside: Lettere korroderet overflade. Fiblen er prydet af støbt, fladedækkende slyngbånd indrammet af en markant, glat ramme. \\r\\n\\r\\nBagside: Meget korroderet. Nåleholderen, i form af en støbt, ombøjet flig placeret parallelt med fiblens længderetning, er helt bevaret. I modsatte ende ses de sidste rester af nålefæstet. Omkring sidstnævnte er overfladen rustfarvet.', NULL, NULL, 0, '2017-02-15 14:12:03', 0, '2017-01-29 21:09:38', ''),
+(226, 'find', '10', 'description', 'text', 'text/plain', 'da', 'Hel lille pladefibel.Forside: Lettere korroderet overflade. Fiblen er prydet af støbt, fladedækkende slyngbånd indrammet af en markant, glat ramme.Bagside: Meget korroderet. Nåleholderen, i form af en støbt, ombøjet flig placeret parallelt med fiblens længderetning, er helt bevaret. I modsatte ende ses de sidste rester af nålefæstet. Omkring sidstnævnte er overfladen rustfarvet.', NULL, NULL, 0, '2017-03-28 09:10:05', 0, '2017-01-29 21:09:38', ''),
 (227, 'find', '11', 'description', 'text', 'text/plain', 'da', 'qqqqq', NULL, NULL, 0, '2017-02-15 14:12:03', 0, '2017-01-30 00:00:07', ''),
 (228, 'find', '11', 'description', 'text', 'text/plain', 'da', 'Aluminioumnfind', NULL, NULL, 0, '2017-02-15 14:12:03', 0, '2017-01-30 10:34:16', ''),
 (229, 'find', '12', 'description', 'text', 'text/plain', 'da', 'Kedelig', NULL, NULL, 0, '2017-02-15 14:12:03', 0, '2017-01-30 10:35:09', ''),
@@ -905,9 +905,10 @@ CREATE TABLE `ark_fragment_time` (
 CREATE TABLE `ark_item_actor` (
   `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'actor',
-  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'core.actor',
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'registered',
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'allocated',
+  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'restricted',
   `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -916,71 +917,48 @@ CREATE TABLE `ark_item_actor` (
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL DEFAULT '0',
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_item_actor`
 --
 
-INSERT INTO `ark_item_actor` (`item`, `module`, `schma`, `type`, `status`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
-('ahavfrue', 'actor', 'core.actor', 'person', 'registered', NULL, NULL, 'ahavfrue', 'ahavfrue', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', NULL),
-('ARV', 'actor', 'core.actor', 'museum', 'registered', '', '', 'ARV', 'ARV', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('BMR', 'actor', 'core.actor', 'museum', 'registered', '', '', 'BMR', 'BMR', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('bnchristensen', 'actor', 'core.actor', 'person', 'registered', NULL, NULL, 'bnchristensen', 'bnchristensen', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', NULL),
-('DKM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'DKM', 'DKM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('dsvendson', 'actor', 'core.actor', 'person', 'registered', NULL, NULL, 'dsvendson', 'dsvendson', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', NULL),
-('FHM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'FHM', 'FHM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('HBV', 'actor', 'core.actor', 'museum', 'registered', '', '', 'HBV', 'HBV', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('HEM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'HEM', 'HEM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('HOM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'HOM', 'HOM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('KBM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'KBM', 'KBM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('KNV', 'actor', 'core.actor', 'museum', 'registered', '', '', 'KNV', 'KNV', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('MKH', 'actor', 'core.actor', 'museum', 'registered', '', '', 'MKH', 'MKH', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('MLF', 'actor', 'core.actor', 'museum', 'registered', '', '', 'MLF', 'MLF', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('MNS', 'actor', 'core.actor', 'museum', 'registered', '', '', 'MNS', 'MNS', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('MOE', 'actor', 'core.actor', 'museum', 'registered', '', '', 'MOE', 'MOE', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('MSA', 'actor', 'core.actor', 'museum', 'registered', '', '', 'MSA', 'MSA', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('MSJ', 'actor', 'core.actor', 'museum', 'registered', '', '', 'MSJ', 'MSJ', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('MVE', 'actor', 'core.actor', 'museum', 'registered', '', '', 'MVE', 'MVE', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('NJM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'NJM', 'NJM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('OBM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'OBM', 'OBM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('ØFM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'ØFM', 'ØFM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('ØHM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'ØHM', 'ØHM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('ROM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'ROM', 'ROM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('SBM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'SBM', 'SBM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('SJM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'SJM', 'SJM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('SKH', 'actor', 'core.actor', 'museum', 'registered', '', '', 'SKH', 'SKH', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('slund', 'actor', 'core.actor', 'person', 'registered', '', '', 'slund', 'slund', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('TAK', 'actor', 'core.actor', 'museum', 'registered', '', '', 'TAK', 'TAK', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('THY', 'actor', 'core.actor', 'museum', 'registered', '', '', 'THY', 'THY', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('VHM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'VHM', 'VHM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('VKH', 'actor', 'core.actor', 'museum', 'registered', '', '', 'VKH', 'VKH', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('VMÅ', 'actor', 'core.actor', 'museum', 'registered', '', '', 'VMÅ', 'VMÅ', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', ''),
-('VSM', 'actor', 'core.actor', 'museum', 'registered', '', '', 'VSM', 'VSM', 0, '2017-03-08 18:18:20', 0, '0000-00-00 00:00:00', '');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ark_item_campaign`
---
-
-CREATE TABLE `ark_item_campaign` (
-  `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'campaign',
-  `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'registered',
-  `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `mod_by` int(11) NOT NULL,
-  `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  `cre_by` int(11) NOT NULL,
-  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO `ark_item_actor` (`item`, `module`, `schma`, `type`, `status`, `visibility`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+('ahavfrue', 'actor', 'core.actor', 'person', 'registered', 'restricted', NULL, NULL, 'ahavfrue', 'ahavfrue', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+('ARV', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'ARV', 'ARV', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('BMR', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'BMR', 'BMR', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('bnchristensen', 'actor', 'core.actor', 'person', 'registered', 'restricted', NULL, NULL, 'bnchristensen', 'bnchristensen', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+('DKM', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'DKM', 'DKM', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('dsvendson', 'actor', 'core.actor', 'person', 'registered', 'restricted', NULL, NULL, 'dsvendson', 'dsvendson', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+('FHM', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'FHM', 'FHM', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('HBV', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'HBV', 'HBV', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('HEM', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'HEM', 'HEM', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('HOM', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'HOM', 'HOM', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('KBM', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'KBM', 'KBM', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('KNV', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'KNV', 'KNV', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('MKH', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'MKH', 'MKH', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('MLF', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'MLF', 'MLF', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('MNS', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'MNS', 'MNS', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('MOE', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'MOE', 'MOE', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('MSA', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'MSA', 'MSA', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('MSJ', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'MSJ', 'MSJ', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('MVE', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'MVE', 'MVE', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('NJM', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'NJM', 'NJM', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('OBM', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'OBM', 'OBM', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('ØFM', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'ØFM', 'ØFM', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('ØHM', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'ØHM', 'ØHM', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('ROM', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'ROM', 'ROM', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('SBM', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'SBM', 'SBM', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('SJM', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'SJM', 'SJM', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('SKH', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'SKH', 'SKH', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('slund', 'actor', 'core.actor', 'person', 'registered', 'restricted', NULL, NULL, 'slund', 'slund', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('TAK', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'TAK', 'TAK', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('THY', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'THY', 'THY', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('VHM', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'VHM', 'VHM', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('VKH', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'VKH', 'VKH', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('VMÅ', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'VMÅ', 'VMÅ', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
+('VSM', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'VSM', 'VSM', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -991,27 +969,20 @@ CREATE TABLE `ark_item_campaign` (
 CREATE TABLE `ark_item_event` (
   `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'event',
-  `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'core.event',
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'registered',
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'allocated',
+  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'restricted',
   `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `idx` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mod_by` int(11) NOT NULL DEFAULT '0',
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL DEFAULT '0',
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_item_event`
---
-
-INSERT INTO `ark_item_event` (`item`, `module`, `schma`, `type`, `status`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
-('actor.morty.1', 'event', 'core.event.actor', 'approved', 'registered', 'actor', 'morty', '1', '1', 0, '2017-03-07 22:15:29', 0, '0000-00-00 00:00:00', NULL),
-('find.1.1', 'event', 'core.event.find', 'assessed', 'registered', 'find', '1', '1', '1', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -1022,26 +993,20 @@ INSERT INTO `ark_item_event` (`item`, `module`, `schma`, `type`, `status`, `pare
 CREATE TABLE `ark_item_file` (
   `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'file',
-  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'core.file',
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'registered',
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'allocated',
+  `visibilty` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'restricted',
   `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `label` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `idx` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `label` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mod_by` int(11) NOT NULL DEFAULT '0',
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL DEFAULT '0',
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_item_file`
---
-
-INSERT INTO `ark_item_file` (`item`, `module`, `schma`, `type`, `status`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
-('1', 'file', 'core.file', 'document', 'registered', NULL, NULL, '1', '1', 0, '2017-02-15 15:51:08', 0, '2017-01-25 19:46:09', '');
 
 -- --------------------------------------------------------
 
@@ -1052,13 +1017,14 @@ INSERT INTO `ark_item_file` (`item`, `module`, `schma`, `type`, `status`, `paren
 CREATE TABLE `ark_item_find` (
   `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'find',
-  `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'dime.find',
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'registered',
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'allocated',
+  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'restricted',
   `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `idx` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
@@ -1070,40 +1036,17 @@ CREATE TABLE `ark_item_find` (
 -- Dumping data for table `ark_item_find`
 --
 
-INSERT INTO `ark_item_find` (`item`, `module`, `schma`, `type`, `status`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
-('1', 'find', 'dime.find', 'accessory', 'registered', NULL, NULL, '1', '1', 0, '2017-02-15 15:52:17', 0, '2017-01-29 22:37:39', ''),
-('10', 'find', 'dime.find', 'fibula', 'registered', NULL, NULL, '10', '10', 0, '2017-02-15 15:52:17', 0, '2017-01-29 21:09:38', ''),
-('2', 'find', 'dime.find', 'fibula', 'registered', NULL, NULL, '2', '2', 0, '2017-02-15 15:52:17', 0, '2017-01-29 20:45:58', ''),
-('3', 'find', 'dime.find', 'coin', 'registered', NULL, NULL, '3', '3', 0, '2017-02-15 15:52:17', 0, '2017-01-29 22:46:48', ''),
-('4', 'find', 'dime.find', 'coin', 'registered', NULL, NULL, '4', '4', 0, '2017-02-15 15:52:17', 0, '2017-01-29 22:48:31', ''),
-('5', 'find', 'dime.find', 'fibula', 'registered', NULL, NULL, '5', '5', 0, '2017-02-15 15:52:17', 0, '2017-01-29 20:50:43', ''),
-('6', 'find', 'dime.find', 'accessory', 'registered', NULL, NULL, '6', '6', 0, '2017-02-15 15:52:17', 0, '2017-01-29 20:53:52', ''),
-('7', 'find', 'dime.find', 'fibula', 'registered', NULL, NULL, '7', '7', 0, '2017-02-15 15:52:17', 0, '2017-01-29 21:01:00', ''),
-('8', 'find', 'dime.find', 'fibula', 'registered', NULL, NULL, '8', '8', 0, '2017-02-15 15:52:17', 0, '2017-01-29 21:03:54', ''),
-('9', 'find', 'dime.find', 'fibula', 'registered', NULL, NULL, '9', '9', 0, '2017-02-15 15:52:17', 0, '2017-01-29 21:07:02', '');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ark_item_image`
---
-
-CREATE TABLE `ark_item_image` (
-  `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'image',
-  `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'registered',
-  `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `mod_by` int(11) NOT NULL,
-  `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  `cre_by` int(11) NOT NULL,
-  `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO `ark_item_find` (`item`, `module`, `schma`, `type`, `status`, `visibility`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+('1', 'find', 'dime.find', 'accessory', 'registered', 'restricted', NULL, NULL, '1', '1', 0, '2017-04-27 18:59:35', 0, '2017-04-27 18:59:35', ''),
+('10', 'find', 'dime.find', 'fibula', 'registered', 'restricted', NULL, NULL, '10', '10', 0, '2017-02-15 15:52:17', 0, '2017-01-29 21:09:38', ''),
+('2', 'find', 'dime.find', 'fibula', 'registered', 'restricted', NULL, NULL, '2', '2', 0, '2017-02-15 15:52:17', 0, '2017-01-29 20:45:58', ''),
+('3', 'find', 'dime.find', 'coin', 'registered', 'restricted', NULL, NULL, '3', '3', 0, '2017-02-15 15:52:17', 0, '2017-01-29 22:46:48', ''),
+('4', 'find', 'dime.find', 'coin', 'registered', 'restricted', NULL, NULL, '4', '4', 0, '2017-02-15 15:52:17', 0, '2017-01-29 22:48:31', ''),
+('5', 'find', 'dime.find', 'fibula', 'registered', 'restricted', NULL, NULL, '5', '5', 0, '2017-02-15 15:52:17', 0, '2017-01-29 20:50:43', ''),
+('6', 'find', 'dime.find', 'accessory', 'registered', 'restricted', NULL, NULL, '6', '6', 0, '2017-02-15 15:52:17', 0, '2017-01-29 20:53:52', ''),
+('7', 'find', 'dime.find', 'fibula', 'registered', 'restricted', NULL, NULL, '7', '7', 0, '2017-02-15 15:52:17', 0, '2017-01-29 21:01:00', ''),
+('8', 'find', 'dime.find', 'fibula', 'registered', 'restricted', NULL, NULL, '8', '8', 0, '2017-02-15 15:52:17', 0, '2017-01-29 21:03:54', ''),
+('9', 'find', 'dime.find', 'fibula', 'registered', 'restricted', NULL, NULL, '9', '9', 0, '2017-02-15 15:52:17', 0, '2017-01-29 21:07:02', '');
 
 -- --------------------------------------------------------
 
@@ -1114,26 +1057,20 @@ CREATE TABLE `ark_item_image` (
 CREATE TABLE `ark_item_locality` (
   `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'locality',
-  `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'dime.locality',
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'registered',
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'allocated',
+  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'restricted',
   `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `idx` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mod_by` int(11) NOT NULL,
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL,
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_item_locality`
---
-
-INSERT INTO `ark_item_locality` (`item`, `module`, `schma`, `type`, `status`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
-('1', '', 'dime.locality', '', 'registered', NULL, NULL, '1', '1', 0, '2017-01-31 07:56:37', 0, '2017-01-31 07:56:37', '');
 
 -- --------------------------------------------------------
 
@@ -1144,27 +1081,20 @@ INSERT INTO `ark_item_locality` (`item`, `module`, `schma`, `type`, `status`, `p
 CREATE TABLE `ark_item_message` (
   `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'message',
-  `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'core.message',
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'registered',
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'allocated',
+  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'restricted',
   `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `idx` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mod_by` int(11) NOT NULL DEFAULT '0',
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL DEFAULT '0',
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_item_message`
---
-
-INSERT INTO `ark_item_message` (`item`, `module`, `schma`, `type`, `status`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
-('1', 'message', 'core.message', 'notification', 'registered', NULL, NULL, '1', '1', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', NULL),
-('2', 'message', 'core.message', 'notification', 'registered', NULL, NULL, '2', '2', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -1175,33 +1105,34 @@ INSERT INTO `ark_item_message` (`item`, `module`, `schma`, `type`, `status`, `pa
 CREATE TABLE `ark_item_page` (
   `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'page',
-  `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'core.page',
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'registered',
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'allocated',
+  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'restricted',
   `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `idx` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `idx` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `label` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mod_by` int(11) NOT NULL DEFAULT '0',
   `mod_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `cre_by` int(11) NOT NULL DEFAULT '0',
   `cre_on` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_item_page`
 --
 
-INSERT INTO `ark_item_page` (`item`, `module`, `schma`, `type`, `status`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
-('about', 'page', 'core.page', '', 'registered', NULL, NULL, 'about', 'about', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
-('background', 'page', 'core.page', '', 'registered', NULL, NULL, 'background', 'background', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
-('core.home', 'page', 'core.page', '', 'registered', NULL, NULL, 'core.home', 'core.home', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
-('detector', 'page', 'core.page', '', 'registered', NULL, NULL, 'detector', 'detector', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
-('exhibits', 'page', 'core.page', '', 'registered', NULL, NULL, 'exhibits', 'exhibits', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
-('news', 'page', 'core.page', '', 'registered', NULL, NULL, 'news', 'news', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
-('research', 'page', 'core.page', '', 'registered', NULL, NULL, 'research', 'research', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
-('treasure', 'page', 'core.page', '', 'registered', NULL, NULL, 'treasure', 'treasure', 0, '2017-02-15 15:53:46', 0, '2017-01-31 23:12:14', '');
+INSERT INTO `ark_item_page` (`item`, `module`, `schma`, `type`, `status`, `visibility`, `parent_module`, `parent_item`, `idx`, `label`, `mod_by`, `mod_on`, `cre_by`, `cre_on`, `version`) VALUES
+('about', 'page', 'core.page', '', 'registered', 'restricted', NULL, NULL, 'about', 'about', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
+('background', 'page', 'core.page', '', 'registered', 'restricted', NULL, NULL, 'background', 'background', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
+('core.home', 'page', 'core.page', '', 'registered', 'restricted', NULL, NULL, 'core.home', 'core.home', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
+('detector', 'page', 'core.page', '', 'registered', 'restricted', NULL, NULL, 'detector', 'detector', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
+('exhibits', 'page', 'core.page', '', 'registered', 'restricted', NULL, NULL, 'exhibits', 'exhibits', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
+('news', 'page', 'core.page', '', 'registered', 'restricted', NULL, NULL, 'news', 'news', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
+('research', 'page', 'core.page', '', 'registered', 'restricted', NULL, NULL, 'research', 'research', 0, '2017-02-15 15:53:46', 0, '0000-00-00 00:00:00', ''),
+('treasure', 'page', 'core.page', '', 'registered', 'restricted', NULL, NULL, 'treasure', 'treasure', 0, '2017-02-15 15:53:46', 0, '2017-01-31 23:12:14', '');
 
 -- --------------------------------------------------------
 
@@ -1276,8 +1207,7 @@ CREATE TABLE `ark_sequence` (
 --
 
 INSERT INTO `ark_sequence` (`module`, `parent`, `sequence`, `idx`, `min`, `max`) VALUES
-('find', '', 'id', 14, NULL, NULL),
-('locality', '', 'id', 1, NULL, NULL);
+('find', '', 'id', 10, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1295,17 +1225,6 @@ CREATE TABLE `ark_sequence_lock` (
   `locked_by` int(11) NOT NULL,
   `locked_on` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_sequence_lock`
---
-
-INSERT INTO `ark_sequence_lock` (`id`, `module`, `parent`, `sequence`, `idx`, `recycle`, `locked_by`, `locked_on`) VALUES
-(44, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
-(45, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
-(46, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
-(47, 'locality', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
-(48, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -1435,14 +1354,6 @@ ALTER TABLE `ark_item_actor`
   ADD KEY `parent` (`parent_module`,`parent_item`) USING BTREE;
 
 --
--- Indexes for table `ark_item_campaign`
---
-ALTER TABLE `ark_item_campaign`
-  ADD PRIMARY KEY (`item`),
-  ADD KEY `name` (`label`) USING BTREE,
-  ADD KEY `parent` (`parent_module`,`parent_item`) USING BTREE;
-
---
 -- Indexes for table `ark_item_event`
 --
 ALTER TABLE `ark_item_event`
@@ -1462,14 +1373,6 @@ ALTER TABLE `ark_item_file`
 -- Indexes for table `ark_item_find`
 --
 ALTER TABLE `ark_item_find`
-  ADD PRIMARY KEY (`item`),
-  ADD KEY `name` (`label`) USING BTREE,
-  ADD KEY `parent` (`parent_module`,`parent_item`) USING BTREE;
-
---
--- Indexes for table `ark_item_image`
---
-ALTER TABLE `ark_item_image`
   ADD PRIMARY KEY (`item`),
   ADD KEY `name` (`label`) USING BTREE,
   ADD KEY `parent` (`parent_module`,`parent_item`) USING BTREE;
@@ -1606,7 +1509,7 @@ ALTER TABLE `ark_fragment_time`
 -- AUTO_INCREMENT for table `ark_sequence_lock`
 --
 ALTER TABLE `ark_sequence_lock`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 --
 -- Constraints for dumped tables
 --

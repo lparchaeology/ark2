@@ -28,13 +28,14 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Security\RBAC;
+namespace ARK\Workflow;
 
 use ARK\Actor\Actor;
+use ARK\Actor\ActorRole;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
-use ARK\Security\RBAC\Permission;
+use ARK\Workflow\Permission;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -129,7 +130,7 @@ class Role
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_rbac_role');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_role');
         $builder->setReadOnly();
 
         // Key
@@ -140,6 +141,6 @@ class Role
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Relationships
-        $builder->addManyToMany('permissions', Permission::class, 'ark_rbac_role_permission');
+        $builder->addManyToMany('permissions', Permission::class, 'ark_workflow_grant');
     }
 }

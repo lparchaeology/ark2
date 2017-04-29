@@ -32,9 +32,12 @@ namespace ARK\Model;
 
 use ARK\Error\Error;
 use ARK\Error\ErrorException;
+use ARK\Model\Attribute;
 use ARK\Model\EnabledTrait;
 use ARK\Model\KeywordTrait;
-use ARK\Model\Attribute;
+use ARK\Model\Module;
+use ARK\Model\Schema\SchemaAssociation;
+use ARK\Model\Schema\SchemaAttribute;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
@@ -52,6 +55,12 @@ class Schema
     protected $sequence = '';
     protected $type = null;
     protected $vocabulary = null;
+    protected $visibility = 'restricted';
+    protected $visibilityTerm = null;
+    protected $create = null;
+    protected $read = null;
+    protected $update = null;
+    protected $delete = null;
     protected $entities = false;
     protected $model = null;
     protected $types = [];
@@ -149,6 +158,34 @@ class Schema
         return $this->types;
     }
 
+    public function visibility()
+    {
+        if ($this->visibilityTerm === null) {
+            $this->visibilityTerm = ORM::find(Term::class, ['concept' => 'core.visibility', 'term' => $this->visibility]);
+        }
+        return $this->visibilityTerm;
+    }
+
+    public function createPermission()
+    {
+        return $this->create;
+    }
+
+    public function readPermission()
+    {
+        return $this->read;
+    }
+
+    public function updatePermission()
+    {
+        return $this->update;
+    }
+
+    public function deletePermission()
+    {
+        return $this->delete;
+    }
+
     public function attributes($type = null, $all = true)
     {
         $this->init();
@@ -231,18 +268,23 @@ class Schema
         $builder->addStringKey('schma', 30);
 
         // Fields
-        $builder->addManyToOneField('module', 'ARK\Model\Module', null, null, false);
+        $builder->addManyToOneField('module', Module::class, null, null, false);
         $builder->addStringField('generator', 30);
         $builder->addStringField('sequence', 30);
         $builder->addStringField('type', 30);
+        $builder->addStringField('visibility', 30);
         $builder->addField('entities', 'boolean', [], 'entities');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations
-        $builder->addManyToOneField('vocabulary', 'ARK\Vocabulary\Vocabulary', 'vocabulary', 'concept');
-        $builder->addOneToMany('attributes', 'ARK\Model\Schema\SchemaAttribute', 'schma');
-        $builder->addOneToMany('associations', 'ARK\Model\Schema\SchemaAssociation', 'schma');
+        $builder->addVocabularyField('vocabulary');
+        $builder->addPermissionField('create', 'new');
+        $builder->addPermissionField('read', 'view');
+        $builder->addPermissionField('update', 'edit');
+        $builder->addPermissionField('delete', 'remove');
+        $builder->addOneToMany('attributes', SchemaAttribute::class, 'schma');
+        $builder->addOneToMany('associations', SchemaAssociation, 'schma');
         $builder->setReadOnly();
     }
 }

@@ -47,8 +47,8 @@ abstract class Vocabulary
     protected $type = null;
     protected $source = '';
     protected $closed = true;
-    protected $workflow = false;
-    protected $workflowDefinition = null;
+    protected $transitions = false;
+    protected $definition = null;
     protected $terms = null;
 
     public function __construct()
@@ -91,14 +91,14 @@ abstract class Vocabulary
         return null;
     }
 
-    public function hasWorkflow()
+    public function hasTransitions()
     {
-        return $this->workflow;
+        return $this->transitions;
     }
 
-    public function workflow()
+    public function transitions()
     {
-        if ($this->hasWorkflow() && $this->workflowDefinition === null) {
+        if ($this->hasTransitions() && $this->$definition === null) {
             $builder = new DefinitionBuilder;
             foreach ($this->terms() as $term) {
                 $builder->addPlace($term->name());
@@ -114,9 +114,9 @@ abstract class Vocabulary
                     }
                 }
             }
-            $this->workflowDefinition = $builder->build();
+            $this->$definition = $builder->build();
         }
-        return $this->workflowDefinition;
+        return $this->$definition;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
@@ -137,7 +137,7 @@ abstract class Vocabulary
         $builder->addManyToOneField('type', 'ARK\Vocabulary\Type', 'type', 'type', false);
         $builder->addStringField('source', 30);
         $builder->addField('closed', 'boolean');
-        $builder->addField('workflow', 'boolean');
+        $builder->addField('transitions', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
 

@@ -45,7 +45,7 @@ use ARK\Provider\JsonSchemaServiceProvider;
 use ARK\Provider\LocaleServiceProvider;
 use ARK\Provider\SpatialServiceProvider;
 use ARK\Routing\Provider\RoutingServiceProvider;
-use ARK\Security\SecurityServiceProvider;
+use ARK\Security\Provider\SecurityServiceProvider;
 use ARK\Translation\Provider\TranslationServiceProvider;
 use ARK\View\Provider\ViewServiceProvider;
 use ARK\Workflow\Provider\WorkflowServiceProvider;

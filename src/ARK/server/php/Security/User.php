@@ -435,7 +435,7 @@ class User implements AdvancedUserInterface, Serializable
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_auth_user');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_security_user');
 
         // Key
         $builder->addKey('user', 'integer');
