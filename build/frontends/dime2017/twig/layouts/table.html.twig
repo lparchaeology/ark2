@@ -18,6 +18,7 @@
         data-mobile-responsive="true"
         data-show-export="true"
         data-switchcardview="true"
+        data-click-to-select="true"
     >
 
         <thead>
@@ -34,7 +35,7 @@
                         {{field.keyword|trans}}
                     </th>
                 {% endfor %}
-                    <th class="controlshead" data-field="controls" data-sortable="false" ></th>
+                    <th class="controlshead" data-field="controls" data-sortable="false" data-card-visible="false"></th>
             </tr>
         </thead>
 
@@ -67,3 +68,4 @@
     </table>
 
 </div>
+<div id = "thumbModal"></div>

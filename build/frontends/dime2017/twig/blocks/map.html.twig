@@ -66,11 +66,9 @@
                 var default_overlay = "distribution";
 
                 {% for item in data[layout.name] %}
-                    {% set location = item.property('location').value() %}
-                    {% if location['coordinates'] is defined %}
-                        ywkts[{{ item.id }}] = '{{ location['coordinates'] }}';
-                    {% else %}
-                        'POINT (0 0)';
+                    {% set findpoint = item.property('location').value() %}
+                    {% if findpoint['geometry'] is defined %}
+                        ywkts[{{ item.id }}] = '{{ findpoint['geometry'] }}';
                     {% endif %}
                 {% endfor %}
 

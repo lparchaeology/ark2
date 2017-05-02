@@ -70,11 +70,103 @@
             '</button>',
             '</div>'
         ].join('')).prependTo($btnGroup);
-        
-        var mapclick = function(target) {
-            alert("click");
-                console.log(target);
-                //ark_id = self.attr('data-unique-id');
+
+        $(document).ready(function (){
+            
+            window.removeTextSelection = function (){
+                var sel = window.getSelection ? window.getSelection() : document.selection;
+                if (sel) {
+                    if (sel.removeAllRanges) {
+                        sel.removeAllRanges();
+                    } else if (sel.empty) {
+                        sel.empty();
+                    }
+                }
+            }
+            
+            window.createItemModal = function( item, fields ) {
+                {
+                    var html =  '<div id="modalWindow" class="modal fade in" style="display:none;" data-backdrop="false">';
+                    html += '<div class="modal-dialog thumbmodal-container dime">';
+                   // html += '<div class="modal-header">';
+                    html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close">';
+                    html += '<span aria-hidden="true">&times;</span>';
+                    html += '</button>';
+                    html += '<div class="modal-body thumbModal">';
+                    for ( var field in fields ){
+                        html += '<div class="field">';
+                        if(fields[field].field == 'image' ) {
+                            //html += item[fields[field].field].replace('/img/thumb.','/img/');
+                            html += item[fields[field].field];
+                        } else {
+                            html += item[fields[field].field];
+                        }
+                        html += '</div>';
+                    }
+                    html += '</div>';
+                    html += '</div>';  // modalWindow
+                    $("#thumbModal").html(html);
+                    $("#modalWindow").modal();
+                    $('.modal-body img').load(function() {
+                        $('.thumbmodal-container').width(this.naturalWidth+70);
+                    });
+                }
+            }
+            
+            var mapclick = function(evt) {
+                removeTextSelection();
+                if($(evt.target).is('a')){
+                    return true;
+                }
+
+                if($(evt.target).is('tr')){
+                    var self = $(evt.target);
+                } else {
+                    var self = $(evt.target).closest('tr');
+                }
+                var ark_id = self.attr('data-unique-id');
+ 
+                if (!evt.shiftKey) {
+                    $('tr').removeClass('selected');
+                }
+
+                if ( self.hasClass('selected') == false ) {
+                    self.addClass('selected')
+                } else if (evt.shiftKey){
+                    $('tr').removeClass('selected');
+                }
+
+                map.getLayers().forEach(function(i, e, a) {
+                    console.log(i.get('name'));
+                    if (i.get('name') == 'yours') {
+                        if (!evt.shiftKey) {
+                            mapcollection.clear();
+                        }
+                        if (typeof i.getSource().getFeatures == 'function') {
+                            i.getSource().getFeatures().forEach(function(i, e, a) {
+                                if (i.get('ark_id').toUpperCase() == ark_id) {
+                                    if (self.hasClass('selected')) {
+                                        mapcollection.remove(i);
+                                    } else {
+                                        mapcollection.push(i);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            };
+            
+            var thumbclick = function(evt) {
+
+                if($(evt.target).is('tr')){
+                    var self = $(evt.target);
+                } else {
+                    var self = $(evt.target).closest('tr');
+                }
+
+                createItemModal(that.data[self[0].rowIndex-1], that.columns);
+
                 map.getLayers().forEach(function(i, e, a) {
                     if (i.get('name') == 'yours') {
                         console.log(evt.shiftKey);
@@ -96,112 +188,88 @@
                 });
         };
         
-        var thumbclick = function(target) {
-            
-            console.log(target);
-            self = $(target);
-            console.log(self);
-            //ark_id = self.attr('data-unique-id');
-            map.getLayers().forEach(function(i, e, a) {
-                if (i.get('name') == 'yours') {
-                    console.log(evt.shiftKey);
-                    if (!evt.shiftKey) {
-                        collection.clear();
-                    }
-                    if (typeof i.getSource().getFeatures == 'function') {
-                        i.getSource().getFeatures().forEach(function(i, e, a) {
-                            if (i.get('ark_id').toUpperCase() == ark_id) {
-                                if (self.hasClass('selected')) {
-                                    collection.remove(i);
-                                } else {
-                                    collection.push(i);
-                                }
-                            }
-                        });
-                    }
-                }
-            });
-    };
-
         that.$toolbar.find('button[name="tableView"]')
-            .on('click', function() {
-                $(this).blur();
-                
-                if($(this).hasClass('disabled')){
-                    return false;
-                }
-                
-                if ( $($btnGroup.find('[name="tableView"]')).hasClass("active") == false ) {
-                    $('#dime_find_list').removeClass("cardViewTable");
-                    $('#dime_find_home').removeClass("cardViewTable");
-                    $('#dime_find_list').removeClass("thumbViewTable");
-                    $('#dime_find_home').removeClass("thumbViewTable");
-
-                    console.log(that.options.cardView);
-                    
-                    if( $($btnGroup.find('[name="thumbView"]')).hasClass("active") ){
-                        that.toggleView();
-                    }
-
-                    $($btnGroup.find('[name="cardView"]')).removeClass("active");
-                    $($btnGroup.find('[name="thumbView"]')).removeClass("active");
-                    $($btnGroup.find('[name="tableView"]')).addClass("active");
-
-                    $('tr').on("click", {"target":this}, mapclick );
-                }
-            });
-
-        that.$toolbar.find('button[name="thumbView"]')
-            .on('click', function() {
-                $(this).blur();
-                if( $($btnGroup.find('[name="thumbView"]')).hasClass("active") == false ){
-
-                    that.toggleView();
-
-                    $('#dime_find_list').addClass("thumbViewTable");
-                    $('#dime_find_home').addClass("thumbViewTable");
-                    $('#dime_find_list').removeClass("cardViewTable");
-                    $('#dime_find_home').removeClass("cardViewTable");
-
-                    $($btnGroup.find('[name="thumbView"]')).addClass("active");
-                    $($btnGroup.find('[name="cardView"]')).removeClass("active");
-                    $($btnGroup.find('[name="tableView"]')).removeClass("active");
-                    
-                    $('tr').on("click", {"target":this}, thumbclick );
-
-                }
-            });
-
-        that.$toolbar.find('button[name="cardView"]')
         .on('click', function() {
             $(this).blur();
-            that.$toolbar.find('button[name="tableView"]').blur();
-            that.$toolbar.find('button[name="thumbView"]').blur();
             
-            if( $($btnGroup.find('[name="cardView"]')).hasClass("active") == false ){
+            if($(this).hasClass('disabled')){
+                return false;
+            }
+            
+            if ( $($btnGroup.find('[name="tableView"]')).hasClass("active") == false ) {
+                $('#dime_find_list').removeClass("cardViewTable");
+                $('#dime_find_home').removeClass("cardViewTable");
+                $('#dime_find_list').removeClass("thumbViewTable");
+                $('#dime_find_home').removeClass("thumbViewTable");
 
+                console.log(that.options.cardView);
+                
                 if( $($btnGroup.find('[name="thumbView"]')).hasClass("active") ){
                     that.toggleView();
                 }
 
-                $('#dime_find_list').addClass("cardViewTable");
-                $('#dime_find_home').addClass("cardViewTable");
-                $('#dime_find_list').removeClass("thumbViewTable");
-                $('#dime_find_home').removeClass("thumbViewTable");
-
-                $($btnGroup.find('[name="cardView"]')).addClass("active");
+                $($btnGroup.find('[name="cardView"]')).removeClass("active");
                 $($btnGroup.find('[name="thumbView"]')).removeClass("active");
-                $($btnGroup.find('[name="tableView"]')).removeClass("active");
+                $($btnGroup.find('[name="tableView"]')).addClass("active");
                 
-
+                $('tr').off("click");
                 $('tr').on("click", {"target":this}, mapclick );
-                
             }
         });
+
+    that.$toolbar.find('button[name="thumbView"]')
+        .on('click', function() {
+            $(this).blur();
+            if( $($btnGroup.find('[name="thumbView"]')).hasClass("active") == false ){
+
+                that.toggleView();
+
+                $('#dime_find_list').addClass("thumbViewTable");
+                $('#dime_find_home').addClass("thumbViewTable");
+                $('#dime_find_list').removeClass("cardViewTable");
+                $('#dime_find_home').removeClass("cardViewTable");
+
+                $($btnGroup.find('[name="thumbView"]')).addClass("active");
+                $($btnGroup.find('[name="cardView"]')).removeClass("active");
+                $($btnGroup.find('[name="tableView"]')).removeClass("active");
+                
+                $('tr').off("click");
+                $('tr').on("click", {"target":this}, thumbclick );
+
+            }
+        });
+
+    that.$toolbar.find('button[name="cardView"]')
+    .on('click', function() {
+        $(this).blur();
+        that.$toolbar.find('button[name="tableView"]').blur();
+        that.$toolbar.find('button[name="thumbView"]').blur();
         
-        $(document).ready(function (){
-            that.$toolbar.find('button[name="tableView"]').click();
-            that.$toolbar.find('button[name="cardView"]').click();
+        if( $($btnGroup.find('[name="cardView"]')).hasClass("active") == false ){
+
+            if( $($btnGroup.find('[name="thumbView"]')).hasClass("active") ){
+                that.toggleView();
+            }
+
+            $('#dime_find_list').addClass("cardViewTable");
+            $('#dime_find_home').addClass("cardViewTable");
+            $('#dime_find_list').removeClass("thumbViewTable");
+            $('#dime_find_home').removeClass("thumbViewTable");
+
+            $($btnGroup.find('[name="cardView"]')).addClass("active");
+            $($btnGroup.find('[name="thumbView"]')).removeClass("active");
+            $($btnGroup.find('[name="tableView"]')).removeClass("active");
+            
+
+            $('tr').off("click");
+
+            $('tr').on("click", {"target":this}, mapclick );
+            
+        }
+    });
+            $('td').off("click");
+            
+            that.$toolbar.find('button[name="thumbView"]').click();
         });
         
 

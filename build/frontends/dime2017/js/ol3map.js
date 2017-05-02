@@ -1,6 +1,6 @@
 $(document).ready(function() {
     if ($('#mapview').length) {
-        initialiseMapView();
+        window.map = initialiseMapView();
     }
 });
 
@@ -152,6 +152,8 @@ function initialiseMapView() {
 
         var collection = select.getFeatures();
 
+        window.mapcollection = collection;
+
         collection.on('add', function(evt) {
             var elements = $('.dime-table tr');
 
@@ -178,28 +180,6 @@ function initialiseMapView() {
             })
         });
 
-        $('table.dime-table').on('click-row.bs.table', function(evt, row, element, field) {
-            ark_id = element.attr('data-unique-id');
-            map.getLayers().forEach(function(i, e, a) {
-                if (i.get('name') == 'yours') {
-                    console.log(evt.shiftKey);
-                    if (!evt.shiftKey) {
-                        collection.clear();
-                    }
-                    if (typeof i.getSource().getFeatures == 'function') {
-                        i.getSource().getFeatures().forEach(function(i, e, a) {
-                            if (i.get('ark_id').toUpperCase() == ark_id) {
-                                if (element.hasClass('selected')) {
-                                    collection.remove(i);
-                                } else {
-                                    collection.push(i);
-                                }
-                            }
-                        });
-                    }
-                }
-            });
-        });
     }
 
     $('.style-select-option').on('click', function() {
@@ -353,6 +333,8 @@ function initialiseMapView() {
         default:
 
     }
+    
+    return map;
 }
 
 function mapSource(source, config) {

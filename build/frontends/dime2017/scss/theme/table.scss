@@ -3,10 +3,6 @@
     line-height: 1.2em;
 }
 
-.dime-table tbody tr.selected td {
-    background-color: #999999;
-}
-
 .dime-table .card-views {
     text-align: center;
 }
@@ -40,6 +36,10 @@
     position: relative;
     width: 30%;
     z-index: 0;
+}
+
+.dime-table.cardViewTable tr a {
+    position: relative;
 }
 
 
@@ -98,6 +98,24 @@
     border: 2px solid black;
 }
 
+.dime-table tr.selected {
+    background: #ccc;
+    border: 2px solid blue;
+}
+
+.dime-table.cardViewTable tr.selected {
+    -webkit-box-shadow: 0px 2px 5px 5px rgba(0,0,0,0.3);
+    -moz-box-shadow: 0px 2px 5px 5px rgba(0,0,0,0.3);
+    box-shadow: 0px 2px 5px 5px rgba(0,0,0,0.3);
+    background: white;
+    border: 2px solid blue;
+}
+
+
+.dime-table.cardViewTable tr.selected td {
+    background: white;
+}
+
 .dime-table.thumbViewTable tr {
     display: inline-table;
     width: 16%;
@@ -107,10 +125,46 @@
     padding:5px 2%;
 }
 
+.thumbModal #modalWindow {
+    background: rgba(0,0,0,0);
+}
+
+.thumbmodal-container.dime {
+    border: 1px solid black;
+    background-image: linear-gradient(0deg, #f4f4f4, #c3c3c3);
+    text-align: center;
+    padding: 20px;
+    margin: 250px 20vw;
+}
+
+.thumbmodal-container.dime input {
+    border: 1px solid black;
+    display: block;
+    margin: 15px auto;
+    width: 0;
+}
+
+.thumbmodal-container.dime button.close {
+    position: relative;
+    z-index:1;
+}
+
+@media screen and (max-width: 991px) {
+
+    .thumbmodal-container.dime {
+        margin: 100px auto;
+    }
+
+}
+
+
+.thumbmodal-container .cell-label,
 .bootstrap-table .table.dime-table.cardViewTable:not(.table-condensed) tbody td .cell-label {
     display:inline;
     font-weight: 200;
 }
+
+.thumbmodal-container .cell-label:after,
 .bootstrap-table .table.dime-table.cardViewTable:not(.table-condensed) tbody td .cell-label:after {
     content:':';
 }
@@ -183,4 +237,8 @@ th.thumbimagehead {
 .btn.disabled:focus,
 .btn.disabled:hover {
     border: 1px solid black;
+}
+
+.dropdown-menu input[type="checkbox"]{
+    visibility: visible;
 }

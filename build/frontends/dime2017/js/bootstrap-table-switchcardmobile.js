@@ -219,5 +219,15 @@
                 height: height
             };
         }
+        
+        $('.bootstrap-table').on('column-switch.bs.table', function(){
+            var height = $('.bootstrap-table').height(),
+            width = $('.bootstrap-table').width();
+
+            changeView(that, width, height);
+            return true;
+        });
+        
+        
     };
 }(jQuery);
