@@ -61,20 +61,14 @@ class ObjectFormat extends Format
         return null;
     }
 
-    public function nullValue()
+    protected function serializeFragment(Fragment $fragment, ArrayCollection $properties = null)
     {
-        $data = [];
-        foreach ($this->attributes as $attribute) {
-            $value[$attribute->name()] = $attribute->nullValue();
+        if ($properties === null || $properties->isEmpty()) {
+            return null;
         }
-        return $data;
-    }
-
-    public function fragmentsToData(ArrayCollection $fragments)
-    {
         $data = [];
         foreach ($this->attributes as $attribute) {
-            $value[$attribute->name()] = $attribute->fragmentsToData($fragments);
+            $data[$attribute->name()] = $properties->get($attribute->name())->serialize();
         }
         return $data;
     }

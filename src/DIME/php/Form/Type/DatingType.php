@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Item Format
+ * ARK Carousel Form Type
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,39 +28,43 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model\Format;
+ namespace DIME\Form\Type;
 
-use ARK\Model\Format;
-use ARK\Model\Module;
-use ARK\Model\Fragment;
-use ARK\ORM\ClassMetadata;
-use ARK\ORM\ClassMetadataBuilder;
-use ARK\ORM\ORM;
-use Doctrine\Common\Collections\ArrayCollection;
+use ARK\Form\Type\AbstractFormType;
+use ARK\Model\Property;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\FormBuilderInterface;
 
-class ItemFormat extends Format
+class DatingType extends AbstractFormType
 {
-    protected $module = null;
-
-    public function module()
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        return $this->module;
+        $fieldOptions['label'] = false;
+        $fieldOptions['mapped'] = false;
+        $builder->add('datings', CollectionType::class, $fieldOptions);
+        $builder->setDataMapper($this);
     }
 
-    protected function fragmentValue($fragment, ArrayCollection $properties = null)
+    protected function options()
     {
-        $module = ORM::find(Module::class, $fragment->parameter());
-        return ORM::find($module->classname(), $fragment->value());
+        return [
+             'compound' => true,
+             'multiple' => true,
+         ];
     }
 
-    protected function serializeFragment(Fragment $fragment, ArrayCollection $properties = null)
+    public function mapDataToForms($property, $forms)
     {
-        return $fragment->value();
+        if (!$property) {
+            return;
+        }
+        $forms = iterator_to_array($forms);
+        $name = $property->attribute()->name();
+        $value = $property->value();
+        $forms['datings']->setData($value);
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public function mapFormsToData($forms, &$property)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_format_item');
-        $builder->addStringField('module', 30, 'module', true);
     }
 }

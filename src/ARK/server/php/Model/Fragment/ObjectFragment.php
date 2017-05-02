@@ -35,6 +35,23 @@ use ARK\ORM\ClassMetadata;
 
 class ObjectFragment extends Fragment
 {
+    protected $children = null;
+
+    public function children(Attribute $attribute)
+    {
+        if ($this->children->isEmpty()) {
+            $this->children = new ArrayCollection();
+            $key = [
+               'module' => $this->module,
+               'item' => $this->item,
+               'attribute' => $attribute->name(),
+               'parent' => $this->parent,
+            ];
+            $this->children = ORM::findBy($attribute->format()->datatype()->dataClass(), $key);
+        }
+        return $this->children;
+    }
+
     public static function loadMetadata(ClassMetadata $metadata)
     {
         return self::buildSubclassMetadata($metadata, self::class);

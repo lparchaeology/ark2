@@ -34,6 +34,7 @@ use ARK\Actor\Actor;
 use ARK\Form\Type\AbstractFormType;
 use ARK\Form\Type\StaticType;
 use ARK\ORM\ORM;
+use ARK\Model\Item;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -59,6 +60,7 @@ class ItemType extends AbstractFormType
     {
         return [
             'compound' => true,
+            'display_property' => 'id',
         ];
     }
 
@@ -68,17 +70,19 @@ class ItemType extends AbstractFormType
             return;
         }
         $forms = iterator_to_array($forms);
-        $name = $property->attribute()->name();
         $value = $property->value();
-        if ($value['item']) {
+        if ($value instanceof Item) {
+            $forms['module']->setData($value->schema()->module()->name());
+            $forms['item']->setData($value->id());
+            // TODO Make generic using module!
+            $options = $forms['module']->getParent()->getConfig()->getOptions();
+            $display = $options['field']['value']['options']['display_property'];
+            $fullname = $value->property($display)->value()[0]['content'];
+            $forms['content']->setData($fullname);
+        } elseif (isset($value['item'])) {
             $forms['module']->setData($value['module']);
             $forms['item']->setData($value['item']);
-            // TODO Make generic using module!
-            if ($item = ORM::find(Actor::class, $value['item'])) {
-                $fullname = $item->property('fullname');
-                $value = $fullname->value()[0];
-                $forms['content']->setData($value['content']);
-            }
+            $forms['content']->setData('');
         }
     }
 

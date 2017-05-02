@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Security\RBAC;
+namespace ARK\Security;
 
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
@@ -93,7 +93,7 @@ class Account
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_auth_account');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_security_account');
 
         // Key
         $builder->addManyToOneKey('user', User::class);

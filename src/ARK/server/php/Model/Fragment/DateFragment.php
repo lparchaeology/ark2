@@ -31,10 +31,15 @@
 namespace ARK\Model\Fragment;
 
 use ARK\Model\Fragment;
+use ARK\Model\Fragment\DateTimeTrait;
 use ARK\ORM\ClassMetadata;
 
 class DateFragment extends Fragment
 {
+    protected $pattern = 'Y-m-d';
+
+    use DateTimeTrait;
+
     public static function loadMetadata(ClassMetadata $metadata)
     {
         return self::buildSubclassMetadata($metadata, self::class);

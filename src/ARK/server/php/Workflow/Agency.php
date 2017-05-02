@@ -31,12 +31,12 @@
 namespace ARK\Workflow;
 
 use ARK\Actor\Actor;
+use ARK\Model\Item;
+use ARK\Model\Schema\SchemaAttribute;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
-use ARK\Security\RBAC\Role;
 use ARK\Workflow\Action;
-use ARK\Model\Schema\SchemaAttribute;
-use ARK\Model\Item;
+use ARK\Workflow\Role;
 
 class Agency
 {

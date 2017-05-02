@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Route;
+namespace DIME\Routing;
 
 use Silex\Application;
 use Silex\Api\ControllerProviderInterface;
@@ -48,7 +48,7 @@ class ApiControllerProvider implements ControllerProviderInterface
         $controllers->get('/events/{eventSlug}', 'DIME\\Controller\\JsonApi\\MessageGetController')
                     ->bind('api.events.get');
 
-        $controllers->get('/events', 'DIME\\Controller\\JsonApi\\EventsCollectionController')
+        $controllers->get('/events', 'DIME\\Controller\\JsonApi\\EventCollectionController')
                     ->bind('api.events.collection');
 
         $controllers->get('/actors/{actorSlug}/messages', 'DIME\\Controller\\JsonApi\\MessageCollectionController')

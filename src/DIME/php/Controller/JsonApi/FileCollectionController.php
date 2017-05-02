@@ -34,12 +34,12 @@ use ARK\Api\JsonApi\Action\AbstractJsonApiAction;
 use ARK\Api\JsonApi\Http\JsonApiRequest;
 use ARK\Api\JsonApi\Http\JsonApiResponse;
 use ARK\Api\JsonApi\Resource\ItemResource;
+use ARK\File\File;
 use ARK\ORM\ORM;
-use DIME\Entity\Locality;
 use Tobscure\JsonApi\Document;
 use Tobscure\JsonApi\Resource;
 
-class LocalityCollectionController extends AbstractJsonApiAction
+class FileCollectionController extends AbstractJsonApiAction
 {
     public function __invoke(JsonApiRequest $request)
     {
@@ -48,7 +48,7 @@ class LocalityCollectionController extends AbstractJsonApiAction
 
     protected function fetchData()
     {
-        $this->data = ORM::findAll(Locality::class);
+        $this->data = ORM::findAll(File::class);
     }
 
     protected function createResponse()

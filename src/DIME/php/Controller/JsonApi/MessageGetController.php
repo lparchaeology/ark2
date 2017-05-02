@@ -32,15 +32,15 @@ namespace DIME\Controller\JsonApi;
 
 use ARK\Api\JsonApi\Action\AbstractGetAction;
 use ARK\Api\JsonApi\Http\JsonApiRequest;
-use DIME\Entity\Locality;
+use ARK\Message\Message;
 
-class LocalityGetController extends AbstractGetAction
+class MessageGetController extends AbstractGetAction
 {
-    public function __invoke(JsonApiRequest $request, $localitySlug = null)
+    public function __invoke(JsonApiRequest $request, $findSlug = null)
     {
-        $this->id = $localitySlug;
-        $this->class = Locality::class;
-        $this->resource = 'localities';
+        $this->id = $findSlug;
+        $this->class = Message::class;
+        $this->resource = 'messages';
         return parent::__invoke($request);
     }
 }

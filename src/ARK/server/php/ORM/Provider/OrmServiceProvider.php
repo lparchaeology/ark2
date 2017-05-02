@@ -160,21 +160,8 @@ class OrmServiceProvider implements ServiceProviderInterface
                         ],
                         [
                             'type' => 'php',
-                            'namespace' => 'ARK\Translation',
-                            'path' => $srcDir.'/Translation',
-                        ],
-                        [
-                            'type' => 'php',
                             'namespace' => 'ARK\Model\Schema',
                             'path' => $srcDir.'/Model/Schema',
-                        ],
-                        [
-                            'type' => 'php',
-                            'namespace' => 'ARK\Security\RBAC',
-                            'path' => [
-                                $srcDir.'/Security/RBAC/Role.php',
-                                $srcDir.'/Security/RBAC/Permission.php',
-                            ],
                         ],
                         [
                             'type' => 'php',
@@ -234,13 +221,6 @@ class OrmServiceProvider implements ServiceProviderInterface
                             'namespace' => 'ARK\File',
                         ],
                         [
-                            'type' => 'php',
-                            'namespace' => 'ARK\Security\RBAC',
-                            'path' => [
-                                $srcDir.'/Security/RBAC/ActorRole.php',
-                            ],
-                        ],
-                        [
                             'type' => 'item',
                             'namespace' => 'ARK\Workflow',
                             'path' => $srcDir.'/Workflow',
@@ -258,8 +238,8 @@ class OrmServiceProvider implements ServiceProviderInterface
                     'connection' => 'user',
                     [
                         'type' => 'php',
-                        'namespace' => 'ARK\Security\User',
-                        'path' => $srcDir.'/Security/User',
+                        'namespace' => 'ARK\Security',
+                        'path' => $srcDir.'/Security',
                     ]
                 ]
             );

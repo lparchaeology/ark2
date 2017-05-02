@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Route;
+namespace DIME\Routing;
 
 use Silex\Application;
 use Silex\Api\ControllerProviderInterface;
@@ -40,42 +40,37 @@ class ViewControllerProvider implements ControllerProviderInterface
         // HACK for translated routing, replace later with DynamicRouter
         // Module Resources
         $finds = $app->translate('dime.find', 'resource');
-        $localities = $app->translate('dime.locality', 'resource');
         $actors = $app->translate('core.actor', 'resource');
         $files = $app->translate('core.file', 'resource');
         $events = $app->translate('core.event', 'resource');
         $messages = $app->translate('core.message', 'resource');
         // Static pages
+        $home = $app->translate('dime.home', 'resource');
+        $detector = $app->translate('dime.detector', 'resource');
         $research = $app->translate('dime.research', 'resource');
         $about = $app->translate('dime.about', 'resource');
-        $background = $app->translate('dime.background', 'resource');
-        $treasure = $app->translate('dime.treasure', 'resource');
-        $detector = $app->translate('dime.detector', 'resource');
-        $exhibits = $app->translate('dime.exhibits', 'resource');
         $news = $app->translate('dime.news', 'resource');
-        $home = $app->translate('dime.home', 'resource');
 
         $controllers = $app['controllers_factory'];
 
+        // Temp APi routes
+        $controllers->post('/api/geo/find', 'DIME\Controller\GeoFindController')
+                    ->bind('api.geo.find');
+        $controllers->get('/api/geo/choropleth', 'DIME\Controller\ChoroplethController')
+                    ->bind('api.geo.choropleth');
+        $controllers->get("/img/{image}", 'DIME\Controller\ImageController')
+                    ->bind('img');
+
         // Static Page Routes
+        $controllers->match("/$detector", 'DIME\Controller\PageViewController')
+                    ->method('GET|POST')
+                    ->bind('detector');
         $controllers->match("/$research", 'DIME\Controller\PageViewController')
                     ->method('GET|POST')
                     ->bind('research');
         $controllers->match("/$about", 'DIME\Controller\PageViewController')
                     ->method('GET|POST')
                     ->bind('about');
-        $controllers->match("/$background", 'DIME\Controller\PageViewController')
-                    ->method('GET|POST')
-                    ->bind('background');
-        $controllers->match("/$treasure", 'DIME\Controller\PageViewController')
-                    ->method('GET|POST')
-                    ->bind('treasure');
-        $controllers->match("/$detector", 'DIME\Controller\PageViewController')
-                    ->method('GET|POST')
-                    ->bind('detector');
-        $controllers->match("/$exhibits", 'DIME\Controller\PageViewController')
-                    ->method('GET|POST')
-                    ->bind('exhibits');
         $controllers->match("/$news", 'DIME\Controller\PageViewController')
                     ->method('GET|POST')
                     ->bind('news');
@@ -90,8 +85,6 @@ class ViewControllerProvider implements ControllerProviderInterface
         // Actor Routes
         $controllers->get("/$actors/{itemSlug}/finds", 'DIME\Controller\FindListController')
                     ->bind('actors.finds.list');
-        $controllers->get("/$actors/{itemSlug}/localities", 'DIME\Controller\LocalityListController')
-                    ->bind('actors.localities.list');
         $controllers->get("/$actors/{itemSlug}", 'DIME\Controller\ActorViewController')
                     ->bind('actors.view');
         $controllers->get("/$actors", 'DIME\Controller\ActorListController')
@@ -101,45 +94,18 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers->match("/$finds/add", 'DIME\Controller\FindAddController')
                     ->method('GET|POST')
                     ->bind('finds.add');
-
-        $controllers->match("/$finds/{itemSlug}/$events", 'DIME\Controller\EventListController')
-                    ->method('GET')
-                    ->bind('finds.events.list');
-
         $controllers->match("/$finds/{itemSlug}", 'DIME\Controller\FindViewController')
                     ->method('GET|POST')
                     ->bind('finds.view');
-
         $controllers->match("/$finds", 'DIME\Controller\FindListController')
                     ->method('GET')
                     ->bind('finds.list');
 
-        $controllers->match("/$localities/add", 'DIME\Controller\LocalityAddController')
-                    ->method('GET|POST')
-                    ->bind('localities.add');
-
-        $controllers->match("/$localities/{itemSlug}", 'DIME\Controller\LocalityViewController')
-                    ->method('GET|POST')
-                    ->bind('localities.view');
-
-        $controllers->get("/$localities", 'DIME\Controller\LocalityListController')
-                    ->bind('localities.list');
-
-        $controllers->post('/api/geo/find', 'DIME\Controller\GeoFindController')
-                    ->bind('api.geo.find');
-
-        $controllers->get('/api/geo/choropleth', 'DIME\Controller\ChoroplethController')
-                    ->bind('api.geo.choropleth');
-
-        $controllers->get("/img/{image}", 'DIME\Controller\ImageController')
-                    ->bind('img');
-
+        // Home routes
         $controllers->get("/$home/$messages", 'DIME\Controller\MessagePageController')
                     ->bind('home.messages');
-
         $controllers->get("/$home", 'DIME\Controller\HomePageController')
                     ->bind('home');
-
         $controllers->get('/', 'DIME\Controller\FrontPageController')
                     ->bind('front');
 

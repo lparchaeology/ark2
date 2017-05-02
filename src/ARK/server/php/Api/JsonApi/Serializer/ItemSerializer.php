@@ -57,7 +57,7 @@ class ItemSerializer extends AbstractSerializer
         $attributes = [];
         foreach ($item->properties() as $property) {
             if (!$fields or in_array($property->name(), $fields)) {
-                $attributes[$property->name()] = $property->value();
+                $attributes[$property->name()] = $property->serialize();
             }
         }
         return $attributes;

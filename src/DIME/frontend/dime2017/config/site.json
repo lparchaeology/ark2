@@ -35,8 +35,8 @@
         "frontend": "dime2017"
     },
     "routes": {
-        "/api/v2": "DIME\\Route\\ApiControllerProvider",
-        "/": "DIME\\Route\\ViewControllerProvider"
+        "/api/v2": "DIME\\Routing\\ApiControllerProvider",
+        "/": "DIME\\Routing\\ViewControllerProvider"
     },
     "security": {
         "access_rules": [

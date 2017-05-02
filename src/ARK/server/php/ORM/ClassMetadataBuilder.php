@@ -36,7 +36,7 @@ use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder as DoctrineClassMetadataBu
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use RuntimeException;
 use ARK\Vocabulary\Vocabulary;
-use ARK\Security\RBAC\Permission;
+use ARK\Workflow\Permission;
 
 class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
 {

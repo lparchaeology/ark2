@@ -51,6 +51,7 @@ abstract class Attribute
     protected $visibilityTerm = null;
     protected $read = null;
     protected $update = null;
+    protected $span = false;
     protected $minimum = 0;
     protected $maximum = 1;
     protected $uniqueValues = false;
@@ -115,6 +116,11 @@ abstract class Attribute
         //TODO Needs implementing!
     }
 
+    public function isSpan()
+    {
+        return $this->span;
+    }
+
     public function isRequired()
     {
         // TODO Should inherit from parent???
@@ -168,7 +174,7 @@ abstract class Attribute
         return $this->format()->nullValue();
     }
 
-    public function serialize(ArrayCollection $fragments)
+    public function value(ArrayCollection $fragments, ArrayCollection $properties)
     {
         if ($fragments->isEmpty()) {
             return $this->nullValue();
@@ -186,11 +192,36 @@ abstract class Attribute
         if ($this->hasMultipleOccurrences()) {
             $data = [];
             foreach ($fragments as $fragment) {
-                $data[] = $this->format()->serialize(new ArrayCollection([$fragment]));
+                $data[] = $this->format()->value(new ArrayCollection([$fragment]), $properties->get($fragment->id()));
             }
             return $data;
         }
-        return $this->format()->serialize($fragments);
+        return $this->format()->value($fragments, $properties);
+    }
+
+    public function serialize(ArrayCollection $fragments, ArrayCollection $properties)
+    {
+        if ($fragments->isEmpty()) {
+            return null;
+        }
+        if ($this->hasVocabulary()) {
+            if ($this->hasMultipleOccurrences()) {
+                $data = [];
+                foreach ($fragments as $fragment) {
+                    $data[] = $fragment->value();
+                }
+                return $data;
+            }
+            return $fragments[0]->value();
+        }
+        if ($this->hasMultipleOccurrences()) {
+            $data = [];
+            foreach ($fragments as $fragment) {
+                $data[] = $this->format()->serialize(new ArrayCollection([$fragment]), $properties->get($fragment->id()));
+            }
+            return $data;
+        }
+        return $this->format()->serialize($fragments, $properties);
     }
 
     public function hydrate($data)
@@ -222,6 +253,7 @@ abstract class Attribute
 
         // Attributes
         $builder->addStringField('visibility', 30);
+        $builder->addField('span', 'boolean');
         $builder->addField('minimum', 'integer');
         $builder->addField('maximum', 'integer');
         $builder->addField('uniqueValues', 'boolean', [], 'unique_values');

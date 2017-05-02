@@ -49,37 +49,9 @@ abstract class DimeController
         $config = [
             "navlinks" => [
                 ["name" => "dime.home", "dropdown" => false, "target" => $homeTarget],
-                [
-                    "name" => "dime.detector",
-                    "dropdown" => true,
-                    "target" => "detector",
-                    "navlinks" => [
-                        ["name" => "dime.detector", "target" => "detector"],
-                        ["name" => "dime.treasure", "target" => "treasure"],
-                    ],
-                ],
-                ["name" => "dime.research", "target" => "research", "dropdown" => false],
-                [
-                    "name" => "dime.about",
-                    "dropdown" => true,
-                    "target" => "about",
-                    "navlinks" => [
-                        ["name" => "dime.about.groups", "target" => "about"],
-                        ["name" => "dime.about.background", "target" => "about"],
-                        ["name" => "dime.about.museums", "target" => "about"],
-                        ["name" => "dime.about.partners", "target" => "about"],
-                        ["name" => "dime.about.instructions", "target" => "about"],
-                    ],
-                ],
-                [
-                    "name" => "dime.exhibits",
-                    "dropdown" => true,
-                    "target" => "exhibits",
-                    "navlinks" => [
-                        ["name" => "dime.exhibits.forests", "target" => "exhibits"],
-                        ["name" => "dime.exhibits.weapons", "target" => "exhibits"],
-                    ],
-                ],
+                ["name" => "dime.detector", "dropdown" => false, "target" => "detector"],
+                ["name" => "dime.research", "dropdown" => false, "target" => "research"],
+                ["name" => "dime.about", "dropdown" => false, "target" => "about"],
                 ["name" => "dime.news", "dropdown" => false, "target" => "news"],
             ],
             "sidelinks" => [
@@ -89,7 +61,6 @@ abstract class DimeController
                     "role" => "ROLE_USER",
                     "links" => [
                         ["name" => "dime.find.add", "active" => false, "target" => "finds.add"],
-                        ["name" => "dime.locality.add", "active" => false, "target" => "localities.add"],
                     ],
                 ],
                 [
@@ -98,7 +69,6 @@ abstract class DimeController
                     "role" => "IS_AUTHENTICATED_ANONYMOUSLY",
                     "links" => [
                         ["name" => "dime.find.search", "active" => false, "target" => "finds.list"],
-                        ["name" => "dime.locality.search", "active" => false, "target" => "localities.list"],
                     ],
                 ],
             ]

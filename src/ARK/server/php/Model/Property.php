@@ -46,13 +46,14 @@ class Property
     protected $attribute = null;
     protected $fragments = null;
     protected $parent = null;
-    protected $children = [];
+    protected $children = null;
 
     public function __construct(Item $item, Attribute $attribute, Fragment $parent = null)
     {
         $this->item = $item;
         $this->attribute = $attribute;
         $this->parent = $parent;
+        $this->children = new ArrayCollection();
         $key = [
            'module' => $item->schema()->module()->name(),
            'item' => $item->id(),
@@ -66,9 +67,11 @@ class Property
             return;
         }
         foreach ($this->fragments as $fragment) {
+            $properties = new ArrayCollection();
             foreach ($attribute->format()->attributes() as $child) {
-                $this->children[$fragment->id()] = new Property($item, $child, $fragment);
+                $properties->set($child->name(), new Property($item, $child, $fragment));
             }
+            $this->children->set($fragment->id(), $properties);
         }
     }
 
@@ -102,10 +105,14 @@ class Property
         return $this->attribute->nullValue();
     }
 
-    // TODO Look into returning 'natural' objects instead, offer serialize separately
     public function value()
     {
-        return $this->attribute->serialize($this->fragments);
+        return $this->attribute->value($this->fragments, $this->children);
+    }
+
+    public function serialize()
+    {
+        return $this->attribute->serialize($this->fragments, $this->children);
     }
 
     public function setValue($value)

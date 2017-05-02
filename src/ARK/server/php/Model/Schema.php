@@ -284,7 +284,7 @@ class Schema
         $builder->addPermissionField('update', 'edit');
         $builder->addPermissionField('delete', 'remove');
         $builder->addOneToMany('attributes', SchemaAttribute::class, 'schma');
-        $builder->addOneToMany('associations', SchemaAssociation, 'schma');
+        $builder->addOneToMany('associations', SchemaAssociation::class, 'schma');
         $builder->setReadOnly();
     }
 }

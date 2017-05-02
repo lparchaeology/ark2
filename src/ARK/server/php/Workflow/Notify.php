@@ -31,13 +31,13 @@
 namespace ARK\Workflow;
 
 use ARK\Actor\Actor;
-use ARK\ORM\ClassMetadataBuilder;
-use ARK\ORM\ClassMetadata;
-use ARK\ORM\ORM;
-use ARK\Security\RBAC\Role;
-use ARK\Workflow\Action;
-use ARK\Model\Schema\SchemaAttribute;
 use ARK\Model\Item;
+use ARK\Model\Schema\SchemaAttribute;
+use ARK\ORM\ClassMetadata;
+use ARK\ORM\ClassMetadataBuilder;
+use ARK\ORM\ORM;
+use ARK\Workflow\Action;
+use ARK\Workflow\Role;
 
 class Notify
 {

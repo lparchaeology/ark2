@@ -31,65 +31,20 @@
 namespace ARK\Model\Fragment;
 
 use ARK\Model\Fragment;
+use ARK\Model\Fragment\DateTimeTrait;
 use ARK\ORM\ClassMetadata;
-use DateTime;
-use DateTimeZone;
 
 class DateTimeFragment extends Fragment
 {
-    protected $realValue = null;
-    protected $realSpan = null;
+    protected $pattern = DateTime::ATOM;
 
-    public function __toString()
-    {
-        return $this->value()->format(DateTime::ATOM);
-    }
+    use DateTimeTrait;
 
     protected function makeDate($date)
     {
-        $dt =  ($date instanceof DateTime ? $date->format(DateTime::ATOM) : $date);
+        $dt =  ($date instanceof DateTime ? $date->format($this->pattern) : $date);
         $tz = new DateTimeZone(($this->parameter ?: 'UTC'));
         return new DateTime($dt, $tz);
-    }
-
-    public function value()
-    {
-        if ($this->realValue === null && $this->value !== null) {
-            $this->realValue = $this->makeDate($this->value);
-        }
-        return $this->realValue;
-    }
-
-    public function span()
-    {
-        if ($this->realSpan === null && $this->span !== null) {
-            $this->realSpan = $this->makeDate($this->span);
-        }
-        return $this->realSpan;
-    }
-
-    public function setValue($value, $parameter = null, $format = null)
-    {
-        if (!$value instanceof DateTime) {
-            $value = new DateTime($value);
-        }
-        // TODO Convert if $parameter set?
-        parent::setValue($value, $value->getTimeZone()->getName(), $format);
-        $this->realValue = $value;
-    }
-
-    public function setSpan($fromValue, $toValue, $parameter = null, $format = null)
-    {
-        if (!$fromValue instanceof DateTime) {
-            $fromValue = new DateTime($fromValue);
-        }
-        if (!$toValue instanceof DateTime) {
-            $toValue = new DateTime($toValue);
-        }
-        $toValue.setTimeZone($value->getTimeZone());
-        parent::setValue($fromValue, $toValue, $value->getTimeZone()->getName(), $format);
-        $this->realValue = $fromValue;
-        $this->realSpan = $toValue;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

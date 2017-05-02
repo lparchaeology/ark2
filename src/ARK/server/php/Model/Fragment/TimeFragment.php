@@ -32,9 +32,14 @@ namespace ARK\Model\Fragment;
 
 use ARK\Model\Fragment;
 use ARK\ORM\ClassMetadata;
+use ARK\Model\Fragment\DateTimeTrait;
 
 class TimeFragment extends Fragment
 {
+    protected $pattern = 'H:i:s';
+
+    use DateTimeTrait;
+
     public static function loadMetadata(ClassMetadata $metadata)
     {
         return self::buildSubclassMetadata($metadata, self::class);

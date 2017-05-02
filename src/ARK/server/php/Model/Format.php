@@ -63,6 +63,7 @@ abstract class Format
     protected $parameterFormType = '';
     protected $object = false;
     protected $array = false;
+    protected $span = false;
     protected $multiple = false;
     protected $sortable = false;
     protected $searchable = false;
@@ -127,6 +128,11 @@ abstract class Format
         return ($this->formatFormType ?: $this->datatype->formatFormType());
     }
 
+    public function isSpan()
+    {
+        return $this->span;
+    }
+
     public function isSortable()
     {
         return $this->sortable;
@@ -166,10 +172,10 @@ abstract class Format
         return $data;
     }
 
-    public function serialize($model)
+    public function value($model, ArrayCollection $properties = null)
     {
         if ($model instanceof Fragment) {
-            return $this->serializeFragment($model);
+            return $this->fragmentValue($model);
         }
         if (!$model instanceof ArrayCollection || $model->isEmpty()) {
             return $this->nullValue();
@@ -177,16 +183,42 @@ abstract class Format
         if ($this->hasMultipleValues()) {
             $data = [];
             foreach ($model as $fragment) {
-                $data[] = $this->serializeFragment($fragment);
+                $data[] = $this->fragmentValue($fragment);
             }
             return $data;
         }
-        return $this->serializeFragment($model->first());
+        return $this->fragmentValue($model->first());
     }
 
-    protected function serializeFragment(Fragment $fragment)
+    protected function fragmentValue($fragment, ArrayCollection $properties = null)
+    {
+        return $this->serializeFragment($fragment);
+    }
+
+    public function serialize($model, ArrayCollection $properties = null)
+    {
+        if ($model instanceof Fragment) {
+            return $this->serializeFragment($model, $properties);
+        }
+        if (!$model instanceof ArrayCollection || $model->isEmpty()) {
+            return null;
+        }
+        if ($this->hasMultipleValues()) {
+            $data = [];
+            foreach ($model as $fragment) {
+                $data[] = $this->serializeFragment($fragment, $properties);
+            }
+            return $data;
+        }
+        return $this->serializeFragment($model->first(), $properties);
+    }
+
+    protected function serializeFragment(Fragment $fragment, ArrayCollection $properties = null)
     {
         if ($this->isAtomic()) {
+            if ($fragment->isSpan() || $this->isSpan()) {
+                return [$fragment->value(), $fragment->span()];
+            }
             return $fragment->value();
         }
         $data = [];
@@ -196,7 +228,11 @@ abstract class Format
         if ($this->parameterName()) {
             $data[$this->parameterName()] = $fragment->parameter();
         }
-        $data[$this->valueName()] = $fragment->value();
+        if ($fragment->isSpan() || $this->isSpan()) {
+            $data[$this->valueName()] = [$fragment->value(), $fragment->span()];
+        } else {
+            $data[$this->valueName()] = $fragment->value();
+        }
         return $data;
     }
 
@@ -285,6 +321,7 @@ abstract class Format
         $builder->addStringField('parameterFormType', 100, 'parameter_form_class');
         $builder->addField('object', 'boolean');
         $builder->addField('array', 'boolean');
+        $builder->addField('span', 'boolean');
         $builder->addField('multiple', 'boolean');
         $builder->addField('sortable', 'boolean');
         $builder->addField('searchable', 'boolean');

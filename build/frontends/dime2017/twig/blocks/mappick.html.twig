@@ -16,7 +16,7 @@
             </div>
             <div class="col-sm-6">
                 <input id="mappick-utm" class="mappick_field mappick-utm form-control" type="text" >
-            {# 
+            {#
                 <input id="mappick-utm-easting" class="mappick_field mappick-utm-easting form-control" type="text" >
                 <input id="mappick-utm-northing" class="mappick_field mappick-utm-northing form-control" type="text" >
             #}
@@ -38,6 +38,8 @@
     <div id="mappick" class="mappick col-sm-5"></div>
 
     <script>var mapPin = "{{ asset('/images/icons/pin.png', 'frontend') }}"</script>
+
+    {% do fieldForm.setRendered %}
 
 </div>
 

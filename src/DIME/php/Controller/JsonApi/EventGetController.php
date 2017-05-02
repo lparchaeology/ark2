@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * ARK JSON:API Controller
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,34 +21,26 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2017 L - P : Heritage LLP.
+ * @copyright  2016 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Controller;
+namespace DIME\Controller\JsonApi;
 
-use ARK\ORM\ORM;
-use ARK\View\Page;
-use DIME\Controller\DimeFormController;
-use DIME\Entity\Locality;
-use Symfony\Component\HttpFoundation\Request;
+use ARK\Api\JsonApi\Action\AbstractGetAction;
+use ARK\Api\JsonApi\Http\JsonApiRequest;
+use ARK\Workflow\Event;
 
-class LocalityListController extends DimeFormController
+class EventGetController extends AbstractGetAction
 {
-    private $actorSlug = null;
-
-    public function __invoke(Request $request, $actorSlug = null)
+    public function __invoke(JsonApiRequest $request, $findSlug = null)
     {
-        $this->actorSlug = $actorSlug;
-        return $this->renderResponse($request, 'dime_page_locality_list');
-    }
-
-    public function buildData(Request $request, Page $page)
-    {
-        $data[$page->content()->name()] = ORM::findAll(Locality::class);
-        return $data;
+        $this->id = $findSlug;
+        $this->class = Event::class;
+        $this->resource = 'events';
+        return parent::__invoke($request);
     }
 }

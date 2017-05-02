@@ -28,15 +28,13 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Security\RBAC;
+namespace ARK\Actor;
 
 use ARK\Actor\Actor;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
-use ARK\Security\RBAC\Account;
-use ARK\Security\RBAC\Role;
-use ARK\Security\RBAC\User;
+use ARK\Workflow\Role;
 use DateTime;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -68,7 +66,7 @@ class ActorRole
     public function role()
     {
         if ($this->role === null) {
-            ORM::find(Role::class, $this->roleName);
+            $this->roleName = ORM::find(Role::class, $this->roleName);
         }
         return $this->role;
     }
