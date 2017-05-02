@@ -43,10 +43,34 @@
     };
 
     var changeView = function (that, width, height) {
+        
+        
+        var oldView = currentView( that );
+        
+        console.log(oldView);
+
+        if (oldView != 'tableView'){
+            $('#dime_find_list').removeClass("cardViewTable");
+            $('#dime_find_home').removeClass("cardViewTable");
+            $('#dime_find_list').removeClass("thumbViewTable");
+            $('#dime_find_home').removeClass("thumbViewTable");
+            if (oldView == 'thumbView'){
+                that.toggleView();
+            }
+            that.$toolbar.find('button').removeClass('active');
+        }
+        
+        var thatClientWidth = $('.table-wrapper-div .fixed-table-body')[0].clientWidth;
+        var thatScrollWidth = $('.table-wrapper-div .fixed-table-body')[0].scrollWidth;
+        
+        var overflowWide = (thatClientWidth < thatScrollWidth);
+        
+        console.log(overflowWide);
+        
         if (that.options.minHeight) {
             if ((width <= that.options.minWidth) && (height <= that.options.minHeight)) {
                 that.$toolbar.find('button[name="tableView"]').addClass('disabled');
-                switch (currentView( that )) {
+                switch (oldView) {
                     case 'tableView':
                         conditionCardView(that);
                         break;
@@ -59,7 +83,7 @@
                 }
             } else if ((width > that.options.minWidth) && (height > that.options.minHeight)) {
                 that.$toolbar.find('button[name="tableView"]').removeClass('disabled');
-                switch (currentView( that )) {
+                switch (oldView) {
                     case 'tableView':
                         conditionTableView(that);
                         break;
@@ -72,9 +96,9 @@
                 }
             }
         } else {
-            if (width <= that.options.minWidth) {
+            if (overflowWide) {
                 that.$toolbar.find('button[name="tableView"]').addClass('disabled');
-                switch (currentView( that )) {
+                switch (oldView) {
                     case 'tableView':
                         conditionCardView(that);
                         break;
@@ -82,12 +106,12 @@
                         conditionCardView(that);
                         break;
                     case 'thumbView':
-                        conditionthumbView(that);
+                        conditionThumbView(that);
                         break;
                 }
-            } else if (width > that.options.minWidth) {
+            } else {
                 that.$toolbar.find('button[name="tableView"]').removeClass('disabled');
-                switch (currentView( that )) {
+                switch (oldView) {
                     case 'tableView':
                         conditionTableView(that);
                         break;

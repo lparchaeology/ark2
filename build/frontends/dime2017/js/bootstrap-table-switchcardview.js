@@ -126,9 +126,8 @@
         that.$toolbar.find('button[name="tableView"]')
             .on('click', function() {
                 $(this).blur();
-                var width = $('.bootstrap-table').width();
                 
-                if(width < that.options.minWidth){
+                if($(this).hasClass('disabled')){
                     return false;
                 }
                 
@@ -138,6 +137,8 @@
                     $('#dime_find_list').removeClass("thumbViewTable");
                     $('#dime_find_home').removeClass("thumbViewTable");
 
+                    console.log(that.options.cardView);
+                    
                     if( $($btnGroup.find('[name="thumbView"]')).hasClass("active") ){
                         that.toggleView();
                     }

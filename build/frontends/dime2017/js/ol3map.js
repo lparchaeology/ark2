@@ -32,12 +32,10 @@ function initialiseMapView() {
     });
 
     map.on('moveend', function() {
-        console.log('wha');
         var center = map.getView().get('center');
         var extents = map.getView().calculateExtent(map.getSize());
         centerstring = '[' + center.toString() + ']';
         var zoom = map.getView().getZoom();
-        console.log(zoom);
     });
 
     $('a.layer-select').on('click', function() {

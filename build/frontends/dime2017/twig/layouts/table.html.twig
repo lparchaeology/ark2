@@ -1,6 +1,6 @@
 {# Standard table layout using only HTML5/Bootstrap #}
 
-<div>
+<div class='table-wrapper-div'>
 
     {% set table_class %}
     table bootstrap-table table-hover dime-table
@@ -27,14 +27,14 @@
                 {% endif %}
                 {% for field in layout.elements %}
                     {% if field.attribute.name == 'id' %}
-                    <th data-field="{{field.name}}" data-title="{{field.keyword|trans}}" data-sortable="true" data-sorter="alphanum">
+                    <th data-field="{{field.name}}" data-title="{{field.keyword|trans}}" data-sortable="true" data-sorter="alphanum" data-card-visible="false">
                     {% else %}
                     <th data-field="{{field.name}}" data-title="{{field.keyword|trans}}" data-sortable="true" data-sorter="alphanum" data-card-visible="false">
                     {% endif %}
                         {{field.keyword|trans}}
                     </th>
                 {% endfor %}
-                    <th class="controlshead" data-field="controls" data-sortable="false" data-card-visible="false"></th>
+                    <th class="controlshead" data-field="controls" data-sortable="false" ></th>
             </tr>
         </thead>
 
