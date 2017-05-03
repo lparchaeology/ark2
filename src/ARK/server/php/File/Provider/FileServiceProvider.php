@@ -35,7 +35,7 @@ use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use League\Glide\ServerFactory;
 use League\Glide\Responses\SymfonyResponseFactory;
-use League\Flysystem\Adapter;
+use League\Flysystem\Adapter\Local;
 use WyriHaximus\SliFly\FlysystemServiceProvider;
 
 class FileServiceProvider implements ServiceProviderInterface
@@ -54,11 +54,11 @@ class FileServiceProvider implements ServiceProviderInterface
 
         $container->register(new FlysystemServiceProvider());
         $data = $container['ark']['file']['data'];
-        $data['adapter'] = 'League\\Flysystem\\Adapter\\'.$data['adapter'];
         $data['path'] = ($data['adapter'] == 'Local' ? $container['dir.files'].$data['path'] : $data['path']);
+        $data['adapter'] = 'League\\Flysystem\\Adapter\\'.$data['adapter'];
         $cache = $container['ark']['file']['cache'];
-        $cache['adapter'] = 'League\\Flysystem\\Adapter\\'.$cache['adapter'];
         $cache['path'] = ($cache['adapter'] == 'Local' ? $container['dir.files'].$cache['path'] : $cache['path']);
+        $cache['adapter'] = 'League\\Flysystem\\Adapter\\'.$cache['adapter'];
         $container['flysystem.filesystems'] = [
             'tmp' => ['adapter' => Local::class, 'args' => [$container['dir.files'].'/tmp']],
             'download' => ['adapter' => Local::class, 'args' => [$container['dir.files'].'/download']],
@@ -66,7 +66,6 @@ class FileServiceProvider implements ServiceProviderInterface
             'data' => ['adapter' => $data['adapter'], 'args' => [$data['path']]],
             'cache' => ['adapter' => $cache['adapter'], 'args' => [$cache['path']]],
         ];
-
         $container['glide.server'] = function ($app) {
             $config = $app['ark']['image'];
             $config['source'] = $app['flysystems']['data'];
