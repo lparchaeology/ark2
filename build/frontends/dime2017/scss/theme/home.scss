@@ -101,3 +101,15 @@ Dime Home Stuff
     vertical-align: top;
     cursor: pointer;
 }
+
+.messages .list-group {
+    margin-bottom:0;
+}
+
+.messages .notification-dropdown-info{
+    padding: 0 20px 10px;
+    width: 100%;
+    display: block;
+    text-align: center;
+    font-weight: 100;
+}

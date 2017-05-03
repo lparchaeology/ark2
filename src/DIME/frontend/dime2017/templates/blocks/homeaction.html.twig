@@ -36,13 +36,8 @@
             <div class="dropdown-menu messages">
                 <span class="notification-dropdown-header">
                     <span class="count">
-                        {% if notifications.notifications|length < 6 %}
                             {{ notifications.notifications|length }}
                     </span>
-                        {% else %}
-                            5
-                    </span>+
-                        {% endif %}
                     {{ "core.message.newmessages" | translate }}
                 </span>
                 <ul class="list-group">
@@ -52,6 +47,13 @@
                         </li>
                     {% endfor %}
                 </ul>
+                {% if notifications.notifications|length > 5 %}
+                    <div class="notification-dropdown-info">
+                        <a href = " {{ path( 'home.messages' ) }}">
+                            {{ notifications.notifications|length-5 }} {{ 'core.message.notshown' | translate }} 
+                        </a>
+                    </div>
+                {% endif %}
                 <span class="notification-dropdown-footer">
                     <a href = " {{ path( 'home.messages' ) }}">
                         {{ "core.message.allmessages" | translate }}

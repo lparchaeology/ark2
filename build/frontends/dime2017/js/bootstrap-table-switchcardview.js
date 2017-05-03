@@ -87,7 +87,7 @@
             window.createItemModal = function( item, fields ) {
                 {
                     var html =  '<div id="modalWindow" class="modal fade in" style="display:none;" data-backdrop="false">';
-                    html += '<div class="modal-dialog thumbmodal-container dime">';
+                    html += '<div class="modal-dialog thumbmodal-container dime" tabindex="-1" >';
                    // html += '<div class="modal-header">';
                     html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close">';
                     html += '<span aria-hidden="true">&times;</span>';
