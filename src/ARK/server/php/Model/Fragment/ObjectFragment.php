@@ -45,7 +45,7 @@ class ObjectFragment extends Fragment
                'module' => $this->module,
                'item' => $this->item,
                'attribute' => $attribute->name(),
-               'parent' => $this->parent,
+               'object' => $this->object,
             ];
             $this->children = ORM::findBy($attribute->format()->datatype()->dataClass(), $key);
         }

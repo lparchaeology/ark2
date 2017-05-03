@@ -34,30 +34,30 @@ use ARK\ORM\ClassMetadataBuilder;
 
 trait VersionTrait
 {
-    protected $createdOn = null;
-    protected $createdBy = null;
-    protected $lastModifiedBy = null;
-    protected $lastModifiedOn = null;
+    protected $creator = null;
+    protected $created = null;
+    protected $modifier = null;
+    protected $modified = null;
     protected $version = '';
 
     public function createdOn()
     {
-        return $this->createdOn;
+        return $this->created;
     }
 
     public function createdBy()
     {
-        return $this->createdBy;
+        return $this->creator;
     }
 
     public function lastModifiedOn()
     {
-        return $this->lastModifiedOn;
+        return $this->modified;
     }
 
     public function lastModifiedBy()
     {
-        return $this->lastModifiedBy;
+        return $this->modifier;
     }
 
     public function version()
@@ -69,20 +69,20 @@ trait VersionTrait
     {
         // TODO Auto-update behaviour
         //$user = Service::user();
-        if (!$this->createdBy || !$this->createdOn) {
-            $this->createdBy = 0;//$user->id();
-            $this->createdOn = new \DateTime;
+        if (!$this->creator || !$this->created) {
+            $this->creator = 0;//$user->id();
+            $this->created = new \DateTime;
         }
-        $this->lastModifiedBy = 0;//$user->id();
-        $this->lastModifiedOn = new \DateTime;
+        $this->modifier = 0;//$user->id();
+        $this->modified = new \DateTime;
     }
 
     public static function buildVersionMetadata(ClassMetadataBuilder $builder)
     {
-        $builder->addField('lastModifiedBy', 'integer', [], 'mod_by');
-        $builder->addField('lastModifiedOn', 'datetime', [], 'mod_on');
-        $builder->addField('createdBy', 'integer', [], 'cre_by');
-        $builder->addField('createdOn', 'datetime', [], 'cre_on');
+        $builder->addField('modifier', 'integer');
+        $builder->addField('modified', 'datetime');
+        $builder->addField('creator', 'integer');
+        $builder->addField('created', 'datetime');
         $builder->addStringField('version', 128);
     }
 }

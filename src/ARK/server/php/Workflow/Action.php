@@ -58,6 +58,7 @@ class Action
     protected $defaultPermission = false;
     protected $defaultAgency = false;
     protected $defaultCondition = false;
+    protected $defaultAllowence = false;
     protected $enabled = true;
     protected $allowances = null;
     protected $agencies = null;

@@ -256,7 +256,7 @@ class Field extends Element
     public function buildForm(FormBuilderInterface $builder, $data, $options = [])
     {
         // TODO Do this properly
-        if ($this->formName() == 'findpoint' && !Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+        if ($this->formName() == 'location' && !Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             return;
         }
         //if (!Service::security()->hasVisibility($actor, $this->attribute())) {
@@ -270,7 +270,7 @@ class Field extends Element
     public function renderView($data, $forms = null, $form = null, array $options = [])
     {
         // TODO Do this properly
-        if ($this->formName() == 'findpoint' && !Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+        if ($this->formName() == 'location' && !Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             return;
         }
         if ($form && $this->template()) {

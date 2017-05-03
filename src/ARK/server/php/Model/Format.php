@@ -217,7 +217,7 @@ abstract class Format
     {
         if ($this->isAtomic()) {
             if ($fragment->isSpan() || $this->isSpan()) {
-                return [$fragment->value(), $fragment->span()];
+                return [$fragment->value(), $fragment->extent()];
             }
             return $fragment->value();
         }
@@ -229,7 +229,7 @@ abstract class Format
             $data[$this->parameterName()] = $fragment->parameter();
         }
         if ($fragment->isSpan() || $this->isSpan()) {
-            $data[$this->valueName()] = [$fragment->value(), $fragment->span()];
+            $data[$this->valueName()] = [$fragment->value(), $fragment->extent()];
         } else {
             $data[$this->valueName()] = $fragment->value();
         }

@@ -60,7 +60,7 @@ class Property
            'attribute' => $attribute->name(),
         ];
         if ($parent) {
-            $key['parent'] = $parent->id();
+            $key['object'] = $parent->id();
         }
         $this->fragments = ORM::findBy($attribute->format()->datatype()->dataClass(), $key);
         if (!$attribute->format()->datatype()->isObject()) {

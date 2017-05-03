@@ -50,7 +50,7 @@
 {% for key,item in data %}
     <div class="carouselextratext_{{ key }}">
     {% for field in layout.elements %}
-      {% if field.name == 'dime_find_findpoint' %}
+      {% if field.name == 'dime_find_location' %}
       {% else %}
           <div class="homefield">{{field.keyword|trans}}: {{ field.renderView(item) }}</div>
       {% endif %}

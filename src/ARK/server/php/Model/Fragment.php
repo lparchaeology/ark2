@@ -51,11 +51,15 @@ abstract class Fragment
     protected $format = '';
     protected $parameter = '';
     protected $value = null;
-    protected $span = null;
-    protected $parent = null;
+    protected $span = false;
+    protected $extent = null;
+    protected $object = null;
 
     public function __toString()
     {
+        if ($this->span) {
+            return '['.$this->value.' -> '.$this->extent.']';
+        }
         return $this->value;
     }
 
@@ -107,35 +111,37 @@ abstract class Fragment
 
     public function isSpan()
     {
-        return $this->value !== null;
+        return $this->span;
     }
 
-    public function span()
+    public function extent()
     {
-        return $this->span;
+        return $this->extent;
     }
 
     public function setValue($value, $parameter = null, $format = null)
     {
         $this->value = $value;
+        $this->span = false;
         $this->parameter = $parameter;
         $this->format = $format;
     }
 
-    public function setSpan($fromValue, $toValue, $parameter = null, $format = null)
+    public function setSpan($value, $extent, $parameter = null, $format = null)
     {
-        $this->value = $fromValue;
-        $this->span = $toValue;
+        $this->value = $value;
+        $this->span = true;
+        $this->extent = $extent;
         $this->parameter = $parameter;
         $this->format = $format;
     }
 
-    public function parent()
+    public function object()
     {
-        return $this->parent;
+        return $this->object;
     }
 
-    public static function create($module, $item, Attribute $attribute, Fragment $parent = null)
+    public static function create($module, $item, Attribute $attribute, Fragment $object = null)
     {
         $class = $attribute->format()->datatype()->dataClass();
         $fragment = new $class;
@@ -143,21 +149,21 @@ abstract class Fragment
         $fragment->item = $item;
         $fragment->attribute = $attribute->name();
         $fragment->datatype = $attribute->format()->datatype()->id();
-        if ($parent) {
-            $fragment->parent = $parent->id();
+        if ($object) {
+            $fragment->object = $object->id();
         }
         $fragment->refreshVersion();
         return $fragment;
     }
 
-    public static function createFromAttribute(Attribute $attribute, Fragment $parent = null)
+    public static function createFromAttribute(Attribute $attribute, Fragment $object = null)
     {
         $class = $attribute->format()->datatype()->dataClass();
         $fragment = new $class;
         $fragment->attribute = $attribute->name();
         $fragment->datatype = $attribute->format()->datatype()->id();
-        if ($parent) {
-            $fragment->parent = $parent->id();
+        if ($object) {
+            $fragment->object = $object->id();
         }
         $fragment->refreshVersion();
         return $fragment;
@@ -176,7 +182,8 @@ abstract class Fragment
         $builder->addStringField('datatype', 30, 'datatype');
         $builder->addStringField('format', 30);
         $builder->addStringField('parameter', 30);
-        $builder->addField('parent', 'integer', [], 'object_fid');
+        $builder->addField('span', 'boolean');
+        $builder->addField('object', 'integer', [], 'object');
         VersionTrait::buildVersionMetadata($builder);
     }
 
@@ -187,10 +194,10 @@ abstract class Fragment
         $builder->addGeneratedKey('fid');
         if ($datatype['storage_type'] == 'string') {
             $builder->addStringField('value', $datatype['storage_size']);
-            $builder->addStringField('span', $datatype['storage_size']);
+            $builder->addStringField('extent', $datatype['storage_size']);
         } else {
             $builder->addField('value', $datatype['storage_type']);
-            $builder->addField('span', $datatype['storage_type']);
+            $builder->addField('extent', $datatype['storage_type']);
         }
     }
 }
