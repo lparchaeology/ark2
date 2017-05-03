@@ -155,24 +155,30 @@ function initialiseMapView() {
         window.mapcollection = collection;
 
         collection.on('add', function(evt) {
-            var elements = $('.dime-table tr');
-
-            for (var i = 0; i < elements.length; i++) {
-                $(elements[i]).removeClass('selected');
+            
+            if (!evt.shiftKey) {
+                var elements = $('.dime-table tr');
+                
+                for (var i = 0; i < elements.length; i++) {
+                    $(elements[i]).removeClass('selected');
+                }
+                
             }
 
             collection.forEach(function(e, i, a) {
                 var ark_id = e.get('ark_id');
-
                 $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
             })
         });
 
         collection.on('remove', function(evt) {
+
             var elements = $('.dime-table tr');
+            
             for (var i = 0; i < elements.length; i++) {
                 $(elements[i]).removeClass('selected');
             }
+            
             collection.forEach(function(e, i, a) {
                 var ark_id = e.get('ark_id');
 

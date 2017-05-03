@@ -125,36 +125,43 @@
                     var self = $(evt.target).closest('tr');
                 }
                 var ark_id = self.attr('data-unique-id');
- 
+
+                
+                console.log(self.hasClass('selected') );
+                
                 if (!evt.shiftKey) {
                     $('tr').removeClass('selected');
-                }
-
-                if ( self.hasClass('selected') == false ) {
-                    self.addClass('selected')
-                } else if (evt.shiftKey){
-                    $('tr').removeClass('selected');
+                    mapcollection.clear();
+                } else if ( self.hasClass('selected') ){
+                    var deselect = true;
+                    self.removeClass('selected');
+                } else {
+                    var deselect = false;
                 }
 
                 map.getLayers().forEach(function(i, e, a) {
-                    console.log(i.get('name'));
                     if (i.get('name') == 'yours') {
-                        if (!evt.shiftKey) {
-                            mapcollection.clear();
-                        }
+                        console.log(mapcollection);
                         if (typeof i.getSource().getFeatures == 'function') {
                             i.getSource().getFeatures().forEach(function(i, e, a) {
                                 if (i.get('ark_id').toUpperCase() == ark_id) {
-                                    if (self.hasClass('selected')) {
-                                        mapcollection.remove(i);
-                                    } else {
+                                    if (!evt.shiftKey) {
                                         mapcollection.push(i);
+                                    } else {
+                                        console.log(deselect);
+                                        if (deselect) {
+                                            mapcollection.remove(i);
+                                        } else {
+                                            mapcollection.push(i);
+                                        }
                                     }
                                 }
                             });
                         }
                     }
                 });
+
+
             };
             
             var thumbclick = function(evt) {
@@ -165,9 +172,10 @@
                     var self = $(evt.target).closest('tr');
                 }
 
+                mapclick(evt);
+
                 createItemModal(that.data[self[0].rowIndex-1], that.columns);
 
-                mapclick(evt);
         };
         
         that.$toolbar.find('button[name="tableView"]')
@@ -196,6 +204,12 @@
                 
                 $('tr').off("click");
                 $('tr').on("click", {"target":this}, mapclick );
+                
+                mapcollection.forEach(function(e, i, a) {
+                    var ark_id = e.get('ark_id');
+
+                    $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
+                });
             }
         });
 
@@ -217,6 +231,12 @@
                 
                 $('tr').off("click");
                 $('tr').on("click", {"target":this}, thumbclick );
+
+                mapcollection.forEach(function(e, i, a) {
+                    var ark_id = e.get('ark_id');
+
+                    $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
+                });
 
             }
         });
@@ -247,11 +267,17 @@
 
             $('tr').on("click", {"target":this}, mapclick );
             
+            mapcollection.forEach(function(e, i, a) {
+                var ark_id = e.get('ark_id');
+
+                $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
+            });
+            
         }
     });
             $('td').off("click");
             
-            that.$toolbar.find('button[name="thumbView"]').click();
+            that.$toolbar.find('button[name="cardView"]').click();
         });
         
 
