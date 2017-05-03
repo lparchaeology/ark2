@@ -46,7 +46,8 @@ class MessagePageController extends DimeFormController
 
     public function buildData(Request $request, Page $page)
     {
-        $messages = ORM::findAll(Message::class);
+        $items = Service::database()->getActorMessages('ahavfrue');
+        $messages = ORM::findBy(Message::class, ['item' => $items], ['created' => 'DESC']);
         $data['core_message_list'] = $messages;
         $data['core_message_item'] = ($messages->isEmpty() ? null : $messages[0]);
         return $data;

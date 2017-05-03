@@ -912,4 +912,62 @@ class Database
         );
         return $this->data()->fetchColumn($sql, $params);
     }
+
+    public function getActorMessages($actor)
+    {
+        $sql = "
+            SELECT item
+            FROM ark_fragment_item
+            WHERE module = :module
+            AND attribute = :attribute
+            AND value = :value
+        ";
+        $params = array(
+            ':module' => 'message',
+            ':attribute' => 'recipient',
+            ':value' => $actor,
+        );
+        return $this->data()->fetchAllColumn($sql, 'item', $params);
+    }
+
+    // TODO Optimise!!!
+    public function getUnreadMessages($actor)
+    {
+        $sql = "
+            SELECT item
+            FROM ark_fragment_item
+            WHERE module = :module
+            AND attribute = :attribute
+            AND value = :value
+        ";
+        $params = array(
+            ':module' => 'message',
+            ':attribute' => 'recipient',
+            ':value' => $actor,
+        );
+        $all = $this->data()->fetchAllColumn($sql, 'item', $params);
+        $sql = "
+            SELECT item
+            FROM ark_fragment_datetime
+            WHERE module = :module
+            AND item IN (:items)
+            AND attribute = :attribute
+            AND value = :value
+        ";
+        $params = array(
+            ':module' => 'message',
+            ':items' => $all,
+            ':attribute' => 'read',
+            ':value' => $actor,
+        );
+        $types = array(
+            \PDO::PARAM_STR,
+            \Doctrine\DBAL\Connection::PARAM_STR_ARRAY,
+            \PDO::PARAM_STR,
+            \PDO::PARAM_STR,
+        );
+        dump($types);
+        $read = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
+        return array_diff($all, $read);
+    }
 }

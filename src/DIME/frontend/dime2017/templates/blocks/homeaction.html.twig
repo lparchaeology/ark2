@@ -7,22 +7,22 @@
 
     <div class="row dimehometoolbar">
         <div class="col-md-3 dimehome dimehometool" >
-            {{ 'dime.home.welcome' | trans({ '%user%': global.user.displayName }) }}
+            {{ 'dime.home.welcome' | trans({ '%name%': global.user.displayName }) }}
         </div>
         <div class="col-md-3 dimehome dimehometool" >
         {%  set notifications = {'notifications': [
-        
-        {'message':'message1 goes on and on and on and on and on and on with 
-        
+
+        {'message':'message1 goes on and on and on and on and on and on with
+
         a newline','path':'home.messages','id':'1'},
         {'message':'message2','path':'home.messages','id':'2'},
         {'message':'messagethree','path':'home.messages','id':'3'},
         {'message':'messagephoar','path':'home.messages','id':'4'},
         {'message':'messagefyv','path':'home.messages','id':'5'},
         {'message':'messagesicks','path':'home.messages','id':'6'}
-        
+
         ]}  %}
-        
+
         {% if notifications.notifications|length %}
             {%  set notificationicon = 'icon-new-notification small wide' %}
         {% else %}
@@ -50,7 +50,7 @@
                 {% if notifications.notifications|length > 5 %}
                     <div class="notification-dropdown-info">
                         <a href = " {{ path( 'home.messages' ) }}">
-                            {{ notifications.notifications|length-5 }} {{ 'core.message.notshown' | translate }} 
+                            {{ notifications.notifications|length-5 }} {{ 'core.message.notshown' | translate }}
                         </a>
                     </div>
                 {% endif %}
