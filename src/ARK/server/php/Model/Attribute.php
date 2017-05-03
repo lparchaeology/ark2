@@ -208,11 +208,12 @@ abstract class Attribute
             if ($this->hasMultipleOccurrences()) {
                 $data = [];
                 foreach ($fragments as $fragment) {
-                    $data[] = $fragment->value();
+                    $data[] = ($fragment->isSpan()? [$fragment->value(), $fragment->extent()] : $fragment->value());
                 }
                 return $data;
             }
-            return $fragments[0]->value();
+            $fragment = $fragments[0];
+            return ($fragment->isSpan()? [$fragment->value(), $fragment->extent()] : $fragment->value());
         }
         if ($this->hasMultipleOccurrences()) {
             $data = [];

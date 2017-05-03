@@ -36,9 +36,9 @@ use ARK\File\File;
 
 class FileGetController extends AbstractGetAction
 {
-    public function __invoke(JsonApiRequest $request, $findSlug = null)
+    public function __invoke(JsonApiRequest $request, $fileSlug = null)
     {
-        $this->id = $findSlug;
+        $this->id = $fileSlug;
         $this->class = File::class;
         $this->resource = 'files';
         return parent::__invoke($request);

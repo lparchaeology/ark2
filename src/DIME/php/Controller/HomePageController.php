@@ -29,24 +29,29 @@
  */
 namespace DIME\Controller;
 
+use ARK\Message\Notification;
 use ARK\ORM\ORM;
 use ARK\Service;
 use DIME\Controller\DimeController;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
-use ARK\Application;
 
 class HomePageController extends DimeController
 {
     public function __invoke(Request $request)
     {
-        $layout = 'dime_home_page';
         $options = $this->defaultOptions();
+
+        $layout = 'dime_home_page';
         $options['layout'] = Service::layout($layout);
+
+        $data['notifications'] = ORM::findAll(Notification::class);
+        dump($data['notifications']);
         $data[$layout] = ORM::findAll(Find::class);
         $data['dime_find_list'] = $data[$layout];
         $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $data[$layout] : []);
         $data['dime_home_action'] = null;
+
         $kortforsyningenticket = false;
         $passPath = Service::configDir().'/credentials.json';
         if ($passwords = json_decode(file_get_contents($passPath), true) && isset($passwords['kortforsyningen'])) {
@@ -59,6 +64,7 @@ class HomePageController extends DimeController
         } else {
             $data['kortforsyningenticket'] = false;
         }
+
         $options['data'] = $data;
         return Service::renderResponse('pages/page.html.twig', $options);
     }

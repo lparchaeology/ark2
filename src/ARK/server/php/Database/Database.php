@@ -216,6 +216,17 @@ class Database
         return null;
     }
 
+    public function getModuleForNamespace($namespace)
+    {
+        $this->loadModules();
+        foreach ($this->modules as $module) {
+            if ($module['namespace'] == $namespace) {
+                return $module;
+            }
+        }
+        return null;
+    }
+
     public function getModules()
     {
         $this->loadModules();

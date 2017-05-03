@@ -48,9 +48,7 @@ class MessagePageController extends DimeFormController
     {
         $messages = ORM::findAll(Message::class);
         $data['core_message_list'] = $messages;
-        if (!$messages->isEmpty()) {
-            $data['core_message_item'] = $messages[0];
-        }
+        $data['core_message_item'] = ($messages->isEmpty() ? null : $messages[0]);
         return $data;
     }
 }
