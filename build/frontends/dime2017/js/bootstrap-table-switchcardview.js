@@ -167,25 +167,7 @@
 
                 createItemModal(that.data[self[0].rowIndex-1], that.columns);
 
-                map.getLayers().forEach(function(i, e, a) {
-                    if (i.get('name') == 'yours') {
-                        console.log(evt.shiftKey);
-                        if (!evt.shiftKey) {
-                            collection.clear();
-                        }
-                        if (typeof i.getSource().getFeatures == 'function') {
-                            i.getSource().getFeatures().forEach(function(i, e, a) {
-                                if (i.get('ark_id').toUpperCase() == ark_id) {
-                                    if (self.hasClass('selected')) {
-                                        collection.remove(i);
-                                    } else {
-                                        collection.push(i);
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
+                mapclick(evt);
         };
         
         that.$toolbar.find('button[name="tableView"]')

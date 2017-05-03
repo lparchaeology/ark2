@@ -1,6 +1,7 @@
 {# ARK default page layout with default navbar, sidebar, and content sections #}
 
 {% use "blocks/link.html.twig" %}
+{% use "blocks/notification.html.twig" %}
 
 {% block homeaction %}
 
@@ -9,19 +10,36 @@
             {{ 'dime.home.welcome' | trans({ '%user%': global.user.displayName }) }}
         </div>
         <div class="col-md-3 dimehome dimehometool" >
-        {%  set notification = 'false'  %}
+        {%  set notifications = {'notifications': [{'message':'message1 goes on and on and on and on and on and on with 
         
-        {% if notification == 'true' %}
+        a newline','path':'home.messages','id':'1'}, {'message':'message2','path':'home.messages','id':'2'}]}  %}
+        
+        {% if notifications.notifications|length %}
             {%  set notificationicon = 'icon-new-notification small wide' %}
-        {% endif %}
-        {% if notification == 'false' %}
+        {% else %}
             {%  set notificationicon = 'icon-notification small' %}
         {% endif %}
-        
-            <a href="{{ path("home.messages") }}">
-                {{ "dime.home.alarm" | translate }}
+            <a data-toggle="dropdown" class="dropdown-toggle" href="">
+                {{ "core.message.messages" | translate }}
                 <span class="dime-icon dimehometool-icon {{ notificationicon }} "></span>
             </a>
+            <div class="dropdown-menu messages">
+                <span class="notification-dropdown-header">
+                    <span class="count">{{ notifications.notifications|length }}</span> {{ "core.message.newmessages" | translate }}
+                </span>
+                <ul class="list-group">
+                    {% for notification in notifications.notifications %}
+                        <li>
+                            {% include "blocks/notification.html.twig" with {'notification': notification} %}
+                        </li>
+                    {% endfor %}
+                </ul>
+                <span class="notification-dropdown-footer">
+                    <a href = " {{ path( 'home.messages' ) }}">
+                        {{ "core.message.allmessages" | translate }}
+                   </a>
+                </span>
+            </div>
         </div>
         <div class="col-md-3 dimehome dimehometool" >
             <a href="{{ path("finds.add") }}">

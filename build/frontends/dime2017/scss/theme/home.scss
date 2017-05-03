@@ -54,3 +54,50 @@ Dime Home Stuff
 .controlshead a {
     position:relative;
 }
+
+.messages {
+    padding: 0;
+    width: 300px;
+}
+
+.messages .notification-dropdown-footer,
+.messages .notification-dropdown-header{
+    background: #555;
+    color: white;
+    padding: 20px;
+    width: 100%;
+    display: block;
+    text-align: center;
+    font-weight: 100;
+}
+
+.messages .notification-dropdown-footer a {
+    color: white;
+}
+
+.messages ul {
+    padding: 20px;
+}
+
+.messages li {
+    margin: 10px auto;
+    border: 1px solid black;
+    list-style-type: none;
+    padding: 5px;
+}
+
+.messages li a.messagetext {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 221px;
+    display: inline-block;
+    padding: 5px;
+    vertical-align: bottom;
+}
+
+.messages .markasread {
+    font-weight: bold;
+    vertical-align: top;
+    cursor: pointer;
+}
