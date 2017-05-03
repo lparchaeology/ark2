@@ -10,25 +10,43 @@
             {{ 'dime.home.welcome' | trans({ '%user%': global.user.displayName }) }}
         </div>
         <div class="col-md-3 dimehome dimehometool" >
-        {%  set notifications = {'notifications': [{'message':'message1 goes on and on and on and on and on and on with 
+        {%  set notifications = {'notifications': [
         
-        a newline','path':'home.messages','id':'1'}, {'message':'message2','path':'home.messages','id':'2'}]}  %}
+        {'message':'message1 goes on and on and on and on and on and on with 
+        
+        a newline','path':'home.messages','id':'1'},
+        {'message':'message2','path':'home.messages','id':'2'},
+        {'message':'messagethree','path':'home.messages','id':'3'},
+        {'message':'messagephoar','path':'home.messages','id':'4'},
+        {'message':'messagefyv','path':'home.messages','id':'5'},
+        {'message':'messagesicks','path':'home.messages','id':'6'}
+        
+        ]}  %}
         
         {% if notifications.notifications|length %}
             {%  set notificationicon = 'icon-new-notification small wide' %}
         {% else %}
             {%  set notificationicon = 'icon-notification small' %}
         {% endif %}
+
             <a data-toggle="dropdown" class="dropdown-toggle" href="">
                 {{ "core.message.messages" | translate }}
                 <span class="dime-icon dimehometool-icon {{ notificationicon }} "></span>
             </a>
             <div class="dropdown-menu messages">
                 <span class="notification-dropdown-header">
-                    <span class="count">{{ notifications.notifications|length }}</span> {{ "core.message.newmessages" | translate }}
+                    <span class="count">
+                        {% if notifications.notifications|length < 6 %}
+                            {{ notifications.notifications|length }}
+                    </span>
+                        {% else %}
+                            5
+                    </span>+
+                        {% endif %}
+                    {{ "core.message.newmessages" | translate }}
                 </span>
                 <ul class="list-group">
-                    {% for notification in notifications.notifications %}
+                    {% for notification in notifications.notifications[0:5] %}
                         <li>
                             {% include "blocks/notification.html.twig" with {'notification': notification} %}
                         </li>
