@@ -1,0 +1,35 @@
+{# ARK Message template for standard Bootstrap grid #}
+
+<script>
+    
+window.message_vocabulary = [];
+
+{%  for term in data.message_vocabulary.terms %}
+    message_vocabulary['{{ term.keyword }}'] = "{{ term.keyword | translate }}";
+{% endfor %}
+
+window.eventtranslation = "{{ 'core.message.notification.event' | translate }}";
+
+window.datetranslation = "{{ 'core.message.sent_at' | translate }}";
+
+window.sendertranslation = "{{ 'core.message.sender' | translate }}";
+
+window.eventinitial = "";
+
+window.dateinitial = "";
+
+window.senderinitial = "";
+
+{% if data.message %}
+    window.message_id = {{ data.message.id }};
+    
+    window.eventinitial = "{{ data.message.event.name.keyword | translate }}";
+
+    window.dateinitial = "{{ data.message.sentAt.datetime.date }}";
+
+    window.senderinitial = "{{ data.message.sender.fullname }}";
+{% endif %}
+
+</script>
+
+<div class="dime-messages"></div>

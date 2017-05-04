@@ -176,7 +176,7 @@
 
                 createItemModal(that.data[self[0].rowIndex-1], that.columns);
 
-        };
+            };
         
         that.$toolbar.find('button[name="tableView"]')
         .on('click', function() {

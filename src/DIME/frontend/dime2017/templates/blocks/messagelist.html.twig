@@ -1,0 +1,56 @@
+{# Standard table layout using only HTML5/Bootstrap #}
+
+<div class='table-wrapper-div'>
+
+    {% set table_class %}
+    table bootstrap-table table-hover dime-table message-table
+    {% endset %}
+
+    <table
+        id="{{layout.name}}"
+        class="{{table_class}}"
+        data-toggle="table"
+        data-classes="{{table_class}}"
+        data-sort-name="sent_at"
+        data-sort-order="desc"
+        data-click-to-select="true"
+        data-message="true"
+    >
+
+        <thead>
+            <tr>
+                <th data-field="type" data-title="{{"core.message.type"|trans}}">
+                <th data-field="sent_at" data-title="{{"core.message.sent_at"|trans}}">
+                <th data-field="sender" data-title="{{"core.message.sender"|trans}}">
+                <th data-field="notification" data-title="{{"core.message.notification.event"|trans}}">
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for item in data.messages %}
+                <tr data-unique-id = "{{ item.id }}" 
+                {# {% if item.wasReadBy(global.user.actor) %} #}
+                {% if false %}
+                    class = "read"
+                {% endif %}
+                >
+                        <td>
+                            {{ item.type }}
+                        </td>
+                        <td>
+                            {{ item.sentAt.datetime.date }}
+                        </td>
+                        <td>
+                            {{ item.sender.fullname }}
+                        </td>
+                        <td>
+                            {{ item.event.name.keyword | translate }}
+                        </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
+<div id = "thumbModal"></div>

@@ -158,7 +158,6 @@
 
 }
 
-
 .thumbmodal-container .cell-label,
 .bootstrap-table .table.dime-table.cardViewTable:not(.table-condensed) tbody td .cell-label {
     display:inline;
@@ -231,8 +230,16 @@ th.thumbimagehead {
     display: none;
 }
 
-.card-views .thumbimage {
-    display: block;
+
+.placeholder-img {
+    line-height: 100px;
+    width: 100px;
+    background: #eee;
+}
+
+.card-view .placeholder-img {
+    line-height: 60px;
+    width: 60px;
 }
 
 .btn.disabled:focus,

@@ -47,6 +47,8 @@
                             {% set images = item.property('image').value() %}
                             {% if images is not empty %}
                                 <img src="{{path('img', {'image': 'thumb.'~images[0]})}}" alt='' />
+                            {% else %}
+                                <span class="glyphicon glyphicon-picture placeholder-img"></span>
                             {% endif %}
                         </td>
                     {% endif %}

@@ -1,0 +1,35 @@
+table#core_message_list thead tr {
+    border:2px black solid;
+}
+
+table#core_message_list tr.read {
+    background:#ccc;
+}
+
+table#core_message_list tr.selected td {
+    background:#fffdce;
+}
+
+.dime-messages {
+    padding:20px 50px;
+    border: 1px black solid;
+    background: #fff;
+    min-height: 300px;
+}
+
+.dime-messages dt{
+    border-bottom: 1px lightgrey solid;
+    width: 50%;
+}
+
+.dime-messages dd{
+    margin-bottom: 10px;
+}
+
+.dime-messages button{
+    position: relative;
+    left: 50%;
+    background: #fff;
+    text-align: center;
+    padding: 0;
+}
