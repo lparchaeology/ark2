@@ -76,11 +76,9 @@ class ViewControllerProvider implements ControllerProviderInterface
                     ->bind('news');
 
         // Temp Routes?
-        $controllers->match("/$files/{itemSlug}", 'DIME\Controller\FileViewController')
+        $controllers->match("/$files/{fileId}", 'DIME\Controller\FileController')
                     ->method('GET|POST')
                     ->bind('files.view');
-        $controllers->get("/$files", 'DIME\Controller\FileListController')
-                    ->bind('files.list');
 
         // Actor Routes
         $controllers->get("/$actors/{itemSlug}/finds", 'DIME\Controller\FindListController')

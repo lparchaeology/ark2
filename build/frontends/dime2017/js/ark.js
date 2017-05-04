@@ -14,6 +14,11 @@ $(document).ready(function() {
     // Fake readonly mode
     $('.readonly-select').prop('disabled', true);
 
+    $("file").fileinput({
+        'showUpload':true,
+        'previewFileType':'any'
+    });
+
     //$("date").datetimepicker();
     //$("time").datetimepicker();
     //$("datetime").datetimepicker();

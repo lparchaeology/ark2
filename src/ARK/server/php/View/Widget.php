@@ -112,7 +112,6 @@ class Widget extends Element
             return ;
         }
         $options = $this->formOptions($data, $options);
-        dump($options);
         $fieldBuilder = $this->formBuilder($data, $options);
         $builder->add($fieldBuilder);
     }

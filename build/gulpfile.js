@@ -122,7 +122,8 @@ gulp.task('images', function() {
     var namespace = (util.env.namespace || 'ARK');
     var src = [
         config.vendorDir + '/x-editable/dist/bootstrap3-editable/img/**/*',
-        config.frontendsDir + '/' + frontend + '/images/**/*'
+        config.vendorDir + '/bootstrap-fileinput/img/**/*',
+        config.frontendsDir + '/' + frontend + '/images/**/*',
     ];
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/assets/images';
     return gulp.src(src)
@@ -156,6 +157,12 @@ gulp.task('js', function() {
         config.vendorDir + '/tableExport.jquery.plugin/tableExport.min.js',
         config.vendorDir + '/col-resizable/colResizable-1.6.js',
         config.vendorDir + '/moment/moment.js',
+        config.vendorDir + '/bootstrap-fileinput/js/plugins/canvas-to-blob.js',
+        config.vendorDir + '/bootstrap-fileinput/js/plugins/purify.js',
+        config.vendorDir + '/bootstrap-fileinput/js/plugins/sortable.js',
+        config.vendorDir + '/bootstrap-fileinput/js/fileinput.js',
+        config.vendorDir + '/bootstrap-fileinput/js/fileinput.js',
+        config.vendorDir + '/bootstrap-fileinput/themes/gly/theme.js',
         config.vendorDir + '/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.js',
         config.vendorDir + '/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.js',
         config.vendorDir + '/bootstrap-table/dist/bootstrap-table.js',
@@ -204,6 +211,7 @@ gulp.task('css', function() {
         config.vendorDir + '/bootstrap-table/dist/bootstrap-table.css',
         config.vendorDir + '/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css',
         config.vendorDir + '/select2-bootstrap-frontend/dist/select2-bootstrap.css',
+        config.vendorDir + '/bootstrap-fileinput/css/fileinput.css',
     ];
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/assets/styles';
     var mapsConf = {

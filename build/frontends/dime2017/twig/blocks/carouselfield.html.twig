@@ -14,7 +14,7 @@
                             active
                             {% endif %}
                     '>
-                        <img src="{{path('img', {'image': 'preview.'~image})}}" alt='' />
+                        <img src="{{path('img', {'image': image.id}) ~ '?p=preview'}}" alt='' />
                     </div>
                 {% endfor %}
             </div>
@@ -36,7 +36,7 @@
                           class='active'
                      {% endif %}
                 >
-                    <img src="{{path('img', {'image': 'thumb.'~image})}}" alt='' />
+                    <img src="{{path('img', {'image': image.id}) ~ '?p=thumb'}}" alt='' />
                 </li>
             {% endfor %}
         </ol>
