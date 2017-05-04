@@ -18,13 +18,14 @@ $(document).ready(function() {
     //$("time").datetimepicker();
     //$("datetime").datetimepicker();
     $('.datetimepicker').datetimepicker({
-        format: 'yyyy-mm-dd hh:ii'
+        locale: applocale
     });
     $('.datepicker').datetimepicker({
-        format: 'yyyy-mm-dd',
+        locale: applocale,
         minView: 2
     });
     $('.timepicker').datetimepicker({
+        locale: applocale,
         format: 'hh:ii',
         maxView: 0
     });

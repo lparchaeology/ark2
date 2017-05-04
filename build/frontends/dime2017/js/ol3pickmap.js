@@ -180,6 +180,8 @@ function updateDecimalgrader() {
 function updateUtmpoint() {
     lat = $('.mappick_easting').val();
     lon = $('.mappick_northing').val();
-    coords = ol.proj.transform([parseFloat(lat), parseFloat(lon)], 'EPSG:4326', 'EPSG:32632');
-    $('#mappick-utm').val(coords[0].toFixed(0)+', '+coords[1].toFixed(0));
+    if ( lat && lon) {
+        coords = ol.proj.transform([parseFloat(lat), parseFloat(lon)], 'EPSG:4326', 'EPSG:32632');
+        $('#mappick-utm').val(coords[0].toFixed(0)+', '+coords[1].toFixed(0));
+    }
 }
