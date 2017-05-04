@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 04, 2017 at 12:12 AM
+-- Generation Time: May 04, 2017 at 10:58 AM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -740,8 +740,8 @@ INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `dataty
 (595, 'find', '1', 'process', 'string', '', 'dime.find.process', 'reported', 0, NULL, NULL, 0, '2017-05-02 15:31:06', 0, '2017-01-29 20:23:17', ''),
 (596, 'find', '1', 'visibility', 'string', '', 'core.visibility', 'public', 0, NULL, NULL, 0, '2017-01-29 20:23:17', 0, '2017-01-29 20:23:17', ''),
 (597, 'event', '1', 'type', 'string', '', 'core.event.type', 'classified', 0, NULL, NULL, 0, '2017-01-29 20:23:17', 0, '2017-01-29 20:23:17', ''),
-(598, 'event', '1', 'type', 'string', '', 'core.event.type', 'dated', 0, NULL, NULL, 0, '2017-01-29 20:23:17', 0, '2017-01-29 20:23:17', ''),
-(599, 'event', '1', 'type', 'string', '', 'core.event.type', 'described', 0, NULL, NULL, 0, '2017-01-29 20:23:17', 0, '2017-01-29 20:23:17', ''),
+(598, 'event', '2', 'type', 'string', '', 'core.event.type', 'dated', 0, NULL, NULL, 0, '2017-05-04 08:50:13', 0, '2017-01-29 20:23:17', ''),
+(599, 'event', '3', 'type', 'string', '', 'core.event.type', 'described', 0, NULL, NULL, 0, '2017-05-04 08:50:17', 0, '2017-01-29 20:23:17', ''),
 (600, 'event', '1', 'id', 'string', '', NULL, '1', 0, NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
 (601, 'event', '2', 'id', 'string', NULL, NULL, '2', 0, NULL, NULL, 0, '2017-05-02 16:20:24', 0, '2017-01-31 07:59:45', ''),
 (602, 'event', '3', 'id', 'string', NULL, NULL, '3', 0, NULL, NULL, 0, '2017-05-02 16:20:20', 0, '2017-01-31 07:59:45', ''),
