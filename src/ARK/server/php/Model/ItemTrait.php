@@ -173,10 +173,11 @@ trait ItemTrait
 
     public function path()
     {
-        if ($this->parent()) {
-            return $this->parent()->path().'/'.$this->index();
+        $resource = $this->schema()->module()->resource();
+        if ($this->schema()->generator() == 'hierarchy') {
+            return $this->parent()->path().'/'.$resource.'/'.$this->index();
         }
-        return '/'.$this->schema()->module()->resource().'/'.$this->index();
+        return '/'.$resource.'/'.$this->index();
     }
 
     public function properties()
