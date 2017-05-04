@@ -87,7 +87,7 @@ trait ItemTrait
     {
         if ($this->parentItem && !$this->parent) {
             $module = ORM::find(Module::class, $this->parentModule);
-            $this->parent = ORM::find($module->entity(), $this->parentItem);
+            $this->parent = ORM::find($module->classname(), $this->parentItem);
         }
         return $this->parent;
     }
@@ -176,7 +176,7 @@ trait ItemTrait
         if ($this->parent()) {
             return $this->parent()->path().'/'.$this->index();
         }
-        return '/'.$this->index();
+        return '/'.$this->schema()->module()->resource().'/'.$this->index();
     }
 
     public function properties()

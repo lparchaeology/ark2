@@ -29,7 +29,7 @@
  */
 namespace DIME\Controller;
 
-use ARK\Message\Notification;
+use ARK\Message\Message;
 use ARK\ORM\ORM;
 use ARK\Service;
 use DIME\Controller\DimeController;
@@ -46,8 +46,7 @@ class HomePageController extends DimeController
         $options['layout'] = Service::layout($layout);
 
         $items = Service::database()->getUnreadMessages('ahavfrue');
-        $messages = ORM::findBy(Message::class, ['item' => $items], ['created' => 'DESC']);
-        $data['notifications'] = ORM::findAll(Notification::class);
+        $data['notifications'] = ORM::findBy(Message::class, ['item' => $items], ['created' => 'DESC']);
         $data[$layout] = ORM::findAll(Find::class);
         $data['dime_find_list'] = $data[$layout];
         $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $data[$layout] : []);

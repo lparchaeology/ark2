@@ -10,20 +10,8 @@
             {{ 'dime.home.welcome' | trans({ '%name%': global.user.displayName }) }}
         </div>
         <div class="col-md-3 dimehome dimehometool" >
-        {%  set notifications = {'notifications': [
 
-        {'message':'message1 goes on and on and on and on and on and on with
-
-        a newline','path':'home.messages','id':'1'},
-        {'message':'message2','path':'home.messages','id':'2'},
-        {'message':'messagethree','path':'home.messages','id':'3'},
-        {'message':'messagephoar','path':'home.messages','id':'4'},
-        {'message':'messagefyv','path':'home.messages','id':'5'},
-        {'message':'messagesicks','path':'home.messages','id':'6'}
-
-        ]}  %}
-
-        {% if notifications.notifications|length %}
+        {% if data.notifications|length %}
             {%  set notificationicon = 'icon-new-notification small wide' %}
         {% else %}
             {%  set notificationicon = 'icon-notification small' %}
@@ -36,21 +24,21 @@
             <div class="dropdown-menu messages">
                 <span class="notification-dropdown-header">
                     <span class="count">
-                            {{ notifications.notifications|length }}
+                            {{ data.notifications|length }}
                     </span>
                     {{ "core.message.newmessages" | translate }}
                 </span>
                 <ul class="list-group">
-                    {% for notification in notifications.notifications[0:5] %}
+                    {% for notification in data.notifications[0:5] %}
                         <li>
                             {% include "blocks/notification.html.twig" with {'notification': notification} %}
                         </li>
                     {% endfor %}
                 </ul>
-                {% if notifications.notifications|length > 5 %}
+                {% if data.notifications|length > 5 %}
                     <div class="notification-dropdown-info">
                         <a href = " {{ path( 'home.messages' ) }}">
-                            {{ notifications.notifications|length-5 }} {{ 'core.message.notshown' | translate }}
+                            {{ data.notifications|length-5 }} {{ 'core.message.notshown' | translate }}
                         </a>
                     </div>
                 {% endif %}

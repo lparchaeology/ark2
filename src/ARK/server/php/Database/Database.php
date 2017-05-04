@@ -936,37 +936,25 @@ class Database
         $sql = "
             SELECT item
             FROM ark_fragment_item
-            WHERE module = :module
-            AND attribute = :attribute
-            AND value = :value
+            WHERE module = 'message'
+            AND attribute = 'recipient'
+            AND value = :actor
         ";
         $params = array(
-            ':module' => 'message',
-            ':attribute' => 'recipient',
-            ':value' => $actor,
+            ':actor' => $actor,
         );
         $all = $this->data()->fetchAllColumn($sql, 'item', $params);
         $sql = "
             SELECT item
             FROM ark_fragment_datetime
-            WHERE module = :module
-            AND item IN (:items)
-            AND attribute = :attribute
-            AND value = :value
+            WHERE module = 'message'
+            AND attribute = 'read'
+            AND item IN (?)
         ";
-        $params = array(
-            ':module' => 'message',
-            ':items' => $all,
-            ':attribute' => 'read',
-            ':value' => $actor,
-        );
+        $params = array($all);
         $types = array(
-            \PDO::PARAM_STR,
             \Doctrine\DBAL\Connection::PARAM_STR_ARRAY,
-            \PDO::PARAM_STR,
-            \PDO::PARAM_STR,
         );
-        dump($types);
         $read = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
         return array_diff($all, $read);
     }
