@@ -48,8 +48,17 @@ class MessagePageController extends DimeFormController
     {
         $items = Service::database()->getActorMessages('ahavfrue');
         $messages = ORM::findBy(Message::class, ['item' => $items], ['created' => 'DESC']);
+        $data['messages'] = $messages;
         $data['core_message_list'] = $messages;
-        $data['core_message_item'] = ($messages->isEmpty() ? null : $messages[0]);
+        $msg = $request->query->get('id');
+        $data['core_message_item'] = null;
+        if ($msg) {
+            $message = ORM::find(Message::class, $msg);
+            if ($messages->contains($message)) {
+                $data['core_message_item'] = $message;
+                $data['message'] = $message;
+            }
+        }
         return $data;
     }
 }

@@ -35,7 +35,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TermChoiceType extends AbstractType
 {
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -44,6 +43,7 @@ class TermChoiceType extends AbstractType
             'choice_label' => 'keyword',
             'field' => null,
             'placeholder' => false,
+            'required' => false,
             'attr' => array(
                 'style' => 'width: 100%'
             )

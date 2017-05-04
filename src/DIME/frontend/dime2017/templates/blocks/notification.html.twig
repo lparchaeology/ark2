@@ -1,7 +1,7 @@
 {# Define the standard notification block #}
 {% block notification %}
 
-    <a class = "messagetext" href="{{ notification.path }}">
+    <a class = "messagetext" href="{{ path('home.messages',  {'id': notification.id}) }}">
         {{ notification.event.name.keyword | trans }}
     </a>
     <span class="markasread" href="{{ path('api.messages.collection',  {'id' : notification.id, 'user' : global.user.id }) }}">

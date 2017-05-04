@@ -98,7 +98,7 @@ class ViewControllerProvider implements ControllerProviderInterface
                     ->method('GET|POST')
                     ->bind('finds.view');
         $controllers->match("/$finds", 'DIME\Controller\FindListController')
-                    ->method('GET')
+                    ->method('GET|POST')
                     ->bind('finds.list');
 
         // Home routes
