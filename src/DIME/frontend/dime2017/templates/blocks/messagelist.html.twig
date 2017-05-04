@@ -38,7 +38,7 @@
                             {{ item.type }}
                         </td>
                         <td>
-                            {{ item.sentAt.datetime.date }}
+                            {{ item.sentAt.datetime.date | localizeddate('full', 'short' ) }}
                         </td>
                         <td>
                             {{ item.sender.fullname }}

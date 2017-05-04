@@ -14,18 +14,9 @@ var padString = function (string) {
 
 var formatDate = function(datestring) {
     
-    var datems = Date.parse(datestring);
+    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
     
-    date = new Date(datems);
-    
-    var hour = date.getHours();
-    var minute = date.getMinutes();
-    
-    var day = date.getDate();
-    var month = date.getMonth()+1;
-    var year = date.getFullYear();
-    
-    return  padString(hour) + ':' + padString(minute) + ' ' + day + '/' + month + '/' + year;
+    return new Intl.DateTimeFormat(applocale, options).format(new Date(datestring));
     
 };
 
@@ -48,9 +39,7 @@ var getMessage = function(id) {
     var button = $("<button>&#10004;</button>").addClass('dime-icon btn normal').attr('id', id).click(function(e){
             alert($(e.target).attr('id'));
         });
-    
 
-    
     var definitionlist = $("<dl><dt>"+
             sendertranslation+"</dt><dd class=\"message-from\">"+
             senderinitial+"</dd><dt>"+

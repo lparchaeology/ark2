@@ -136,7 +136,10 @@
 .usertool a {
     color: #c3c3c3;
     weight: 100;
+}
 
+.usertool span {
+    display: inline-flex;
 }
 
 a.loginbutton {
@@ -204,6 +207,7 @@ a.loginbutton {
 .dime-listhead {
     display: inline-flex;
     position: relative;
+    margin-top:10px;
 }
 
 .dime-listhead.normal {
@@ -221,6 +225,7 @@ a.loginbutton {
 
 .dime-navlist li {
     border: medium none;
+    padding: 2px 15px;
 }
 
 .dime-navlist li a {
