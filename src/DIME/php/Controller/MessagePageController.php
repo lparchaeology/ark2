@@ -50,7 +50,7 @@ class MessagePageController extends DimeFormController
         $messages = ORM::findBy(Message::class, ['item' => $items], ['created' => 'DESC']);
         $data['messages'] = $messages;
         $data['core_message_list'] = $messages;
-        $msg = $request->query->get('message');
+        $msg = $request->query->get('id');
         $data['core_message_item'] = null;
         if ($msg) {
             $message = ORM::find(Message::class, $msg);
