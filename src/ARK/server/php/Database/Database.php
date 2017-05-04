@@ -216,6 +216,17 @@ class Database
         return null;
     }
 
+    public function getModuleForNamespace($namespace)
+    {
+        $this->loadModules();
+        foreach ($this->modules as $module) {
+            if ($module['namespace'] == $namespace) {
+                return $module;
+            }
+        }
+        return null;
+    }
+
     public function getModules()
     {
         $this->loadModules();
@@ -900,5 +911,51 @@ class Database
             ':value' => $kommune,
         );
         return $this->data()->fetchColumn($sql, $params);
+    }
+
+    public function getActorMessages($actor)
+    {
+        $sql = "
+            SELECT item
+            FROM ark_fragment_item
+            WHERE module = :module
+            AND attribute = :attribute
+            AND value = :value
+        ";
+        $params = array(
+            ':module' => 'message',
+            ':attribute' => 'recipient',
+            ':value' => $actor,
+        );
+        return $this->data()->fetchAllColumn($sql, 'item', $params);
+    }
+
+    // TODO Optimise!!!
+    public function getUnreadMessages($actor)
+    {
+        $sql = "
+            SELECT item
+            FROM ark_fragment_item
+            WHERE module = 'message'
+            AND attribute = 'recipient'
+            AND value = :actor
+        ";
+        $params = array(
+            ':actor' => $actor,
+        );
+        $all = $this->data()->fetchAllColumn($sql, 'item', $params);
+        $sql = "
+            SELECT item
+            FROM ark_fragment_datetime
+            WHERE module = 'message'
+            AND attribute = 'read'
+            AND item IN (?)
+        ";
+        $params = array($all);
+        $types = array(
+            \Doctrine\DBAL\Connection::PARAM_STR_ARRAY,
+        );
+        $read = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
+        return array_diff($all, $read);
     }
 }

@@ -159,7 +159,7 @@ abstract class Format
             return [];
         }
         if ($this->isAtomic()) {
-            return null;
+            return ($this->isSpan() ? [null, null] : null);
         }
         $data = [];
         if ($this->formatName()) {
@@ -168,7 +168,10 @@ abstract class Format
         if ($this->parameterName()) {
             $data[$this->parameterName()] = null;
         }
-        $data[$this->valueName()] = null;
+        if ($this->isSpan()) {
+            return [null, null];
+        }
+        $data[$this->valueName()] = ($this->isSpan() ? [null, null] : null);
         return $data;
     }
 

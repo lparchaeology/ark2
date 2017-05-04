@@ -41,7 +41,9 @@ use ARK\ORM\ORM;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
+use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
+use ARK\Workflow\Event;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -284,15 +286,38 @@ class Field extends Element
         // FIXME Should probably have some way to use FormTypes here to render 'flat' compond values
         $value = null;
         $item = null;
+        $options = $this->valueOptions(['mode' => 'view']);
         if ($data instanceof Item) {
             $item = $data;
         } elseif (is_array($data) && isset($data['data'])) {
             $item = $data['data'];
         }
 
-        if ($item) {
+        if ($item instanceof Item) {
             $value = 'FIXME: '.$this->element;
             $value = $item->property($this->attribute()->name())->value();
+            if ($value === null) {
+                return null;
+            }
+            if ($value instanceof Actor) {
+                return $value->property('fullname')->serialize()[0]['content'];
+            }
+            if ($value instanceof Event) {
+                $type = $value->property('type')->value();
+                if ($type instanceof Term) {
+                    return Service::translate($type->keyword());
+                }
+                return $type;
+            }
+            if ($value instanceof Item) {
+                if (isset($options['options']['display_property'])) {
+                    return $value->property($options['options']['display_property'])->serialize()[0]['content'];
+                }
+                return $value->property('id')->serialize();
+            }
+            if ($value instanceof Term) {
+                return Service::translate($value->keyword());
+            }
             if ($this->attribute()->format()->datatype()->id() == 'text') {
                 $language = Service::locale();
                 $values = $item->property($this->attribute->name())->value();

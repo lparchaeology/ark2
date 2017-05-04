@@ -35,6 +35,7 @@ use ARK\Form\Type\AbstractFormType;
 use ARK\Form\Type\StaticType;
 use ARK\ORM\ORM;
 use ARK\Model\Item;
+use ARK\Vocabulary\Term;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -76,9 +77,23 @@ class ItemType extends AbstractFormType
             $forms['item']->setData($value->id());
             // TODO Make generic using module!
             $options = $forms['module']->getParent()->getConfig()->getOptions();
-            $display = $options['field']['value']['options']['display_property'];
-            $fullname = $value->property($display)->value()[0]['content'];
-            $forms['content']->setData($fullname);
+            if (isset($options['field']['value']['options']['display_property'])) {
+                $display = $options['field']['value']['options']['display_property'];
+                $val = $value->property($display)->value();
+                if ($val instanceof Term) {
+                    $name = $val->keyword();
+                } elseif (isset($val[0]['content'])) {
+                    $name = $val[0]['content'];
+                } else {
+                    $name = $val;
+                }
+            } elseif (isset($options['display_property'])) {
+                $display = $options['display_property'];
+                $name = $value->property($display)->serialize();
+            } else {
+                $name = $value->property('id')->serialize();
+            }
+            $forms['content']->setData($name);
         } elseif (isset($value['item'])) {
             $forms['module']->setData($value['module']);
             $forms['item']->setData($value['item']);

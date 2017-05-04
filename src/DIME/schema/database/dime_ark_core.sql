@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 03, 2017 at 01:51 PM
+-- Generation Time: May 04, 2017 at 10:58 AM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -152,6 +152,7 @@ INSERT INTO `ark_format` (`format`, `datatype`, `entity`, `value_name`, `value_f
 ('dating', 'object', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 0, 1, 1, 0, 'format.dating'),
 ('decimal', 'decimal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.decimal'),
 ('description', 'object', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 0, 1, 1, 0, 'format.address'),
+('dispatch', 'object', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 0, 1, 1, 0, 'format.recipient'),
 ('distance', 'decimal', NULL, NULL, NULL, 'unit', 'distance', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.distance'),
 ('email', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.email'),
 ('event', 'item', 'ARK\\Workflow\\Event', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 0, 1, 1, 0, 'format.event'),
@@ -172,7 +173,6 @@ INSERT INTO `ark_format` (`format`, `datatype`, `entity`, `value_name`, `value_f
 ('password', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.password'),
 ('percent', 'float', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.percent'),
 ('plaintext', 'text', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 1, 1, 1, 1, 0, 'format.localtext'),
-('recipient', 'object', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 0, 1, 1, 0, 'format.recipient'),
 ('richtext', 'text', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 1, 1, 1, 1, 0, 'format.richtext'),
 ('shorttext', 'text', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 1, 1, 1, 1, 0, 'format.shortlocaltext'),
 ('spatial', 'spatial', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.geometry'),
@@ -225,14 +225,14 @@ INSERT INTO `ark_format_attribute` (`parent`, `attribute`, `sequence`, `format`,
 ('address', 'street', 0, 'plaintext', NULL, 'public', NULL, NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.address.street'),
 ('classification', 'class', 0, 'term', 'dime.find.type', 'public', NULL, NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.classification.class'),
 ('classification', 'event', 1, 'event', NULL, 'public', NULL, NULL, 0, 0, 1, 1, 1, 0, 1, 0, 'format.classification.classified'),
+('dating', 'entered', 0, 'identifier', NULL, 'public', NULL, NULL, 0, 0, 1, 1, 1, 0, 1, 0, 'format.dating.type'),
 ('dating', 'event', 5, 'event', NULL, 'public', NULL, NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.dating.dated'),
 ('dating', 'period', 3, 'term', 'dime.period', 'public', NULL, NULL, 0, 1, 1, 1, 1, 0, 1, 0, 'format.dating.period'),
-('dating', 'type', 0, 'identifier', NULL, 'public', NULL, NULL, 0, 0, 1, 1, 1, 0, 1, 0, 'format.dating.type'),
 ('dating', 'year', 1, 'integer', NULL, 'public', NULL, NULL, 1, 1, 1, 1, 1, 0, 1, 0, 'format.dating.year'),
 ('description', 'event', 1, 'event', NULL, 'public', NULL, NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.description.described'),
 ('description', 'text', 0, 'plaintext', NULL, 'public', NULL, NULL, 0, 0, 1, 1, 1, 0, 1, 0, 'format.description.text'),
-('recipient', 'read', 1, 'datetime', NULL, 'public', NULL, NULL, 0, 0, 1, 1, 1, 0, 1, 0, 'format.recipient.read_on'),
-('recipient', 'sent_to', 0, 'actor', NULL, 'public', NULL, NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.recipient.sent_to'),
+('dispatch', 'read', 1, 'datetime', NULL, 'public', NULL, NULL, 0, 0, 1, 1, 1, 0, 1, 0, 'format.recipient.read_on'),
+('dispatch', 'recipient', 0, 'actor', NULL, 'public', NULL, NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.recipient.sent_to'),
 ('version', 'created', 3, 'datetime', NULL, 'public', NULL, NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.fileversion.created'),
 ('version', 'creator', 3, 'actor', NULL, 'public', NULL, NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.fileversion.creator'),
 ('version', 'expires', 5, 'datetime', NULL, 'public', NULL, NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.fileversion.expires'),
@@ -407,9 +407,9 @@ CREATE TABLE `ark_format_object` (
 
 INSERT INTO `ark_format_object` (`format`) VALUES
 ('address'),
+('dispatch'),
 ('distance'),
-('mass'),
-('recipient');
+('mass');
 
 -- --------------------------------------------------------
 
@@ -813,7 +813,7 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('core.message', 'mail', 'body', 'plaintext', NULL, 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'core.message.mail.body'),
 ('core.message', 'mail', 'subject', 'shorttext', NULL, 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'core.message.mail.subject'),
 ('core.message', 'message', 'id', 'identifier', NULL, 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'core.message.id'),
-('core.message', 'message', 'recipients', 'actor', NULL, 'public', NULL, NULL, 0, 1, 0, 1, 0, 1, 0, 'core.message.recipients'),
+('core.message', 'message', 'recipients', 'dispatch', NULL, 'public', NULL, NULL, 0, 1, 0, 1, 0, 1, 0, 'core.message.recipients'),
 ('core.message', 'message', 'sender', 'actor', NULL, 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'core.message.sender'),
 ('core.message', 'message', 'sent', 'datetime', NULL, 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'core.message.sent_at'),
 ('core.message', 'message', 'type', 'term', 'core.message.type', 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'core.message.type'),
@@ -944,6 +944,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.find.custody', 'dime', 0, 0),
 ('dime.find.dating', 'dime', 0, 0),
 ('dime.find.description', 'core', 0, 0),
+('dime.find.event.classified', 'dime', 0, 0),
 ('dime.find.finddate', 'dime', 0, 0),
 ('dime.find.finder_id', 'dime', 0, 0),
 ('dime.find.id', 'dime', 0, 0),
@@ -1199,6 +1200,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.find.custody', 'default', 'Forvaring', ''),
 ('da', 'dime.find.dating', 'default', 'Dating', ''),
 ('da', 'dime.find.description', 'default', 'Beskrivelse', ''),
+('da', 'dime.find.event.classified', 'default', 'Klassificeret', ''),
 ('da', 'dime.find.finddate', 'default', 'Vælg Dato', ''),
 ('da', 'dime.find.finder_id', 'default', 'Fund ID', ''),
 ('da', 'dime.find.id', 'default', 'DIME ID', ''),
@@ -1311,6 +1313,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.custody', 'default', 'Custody', ''),
 ('en', 'dime.find.dating', 'default', 'Dating', ''),
 ('en', 'dime.find.description', 'default', 'Description', ''),
+('en', 'dime.find.event.classified', 'default', 'Classified', ''),
 ('en', 'dime.find.finddate', 'default', 'Find Date', 'DIME Find Find Date'),
 ('en', 'dime.find.finder_id', 'default', 'Find ID', 'DIME Find Finder\'s ID'),
 ('en', 'dime.find.id', 'default', 'ID', 'DIME Find ID'),
@@ -1659,7 +1662,7 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `lab
 ('core_file_title', 'core.file', 'file', 'title', 1, 'active', NULL, NULL, NULL, ''),
 ('core_file_type', 'core.file', 'file', 'type', 1, 'active', NULL, NULL, NULL, ''),
 ('core_file_versions', 'core.file', 'file', 'versions', 1, 'active', NULL, NULL, NULL, ''),
-('core_message_event', 'core.message', 'notification', 'event', 1, 'active', NULL, NULL, NULL, ''),
+('core_message_event', 'core.message', 'notification', 'event', 1, 'active', NULL, NULL, NULL, '{\"display_property\": \"type\"}'),
 ('core_message_id', 'core.message', 'message', 'id', 1, 'active', NULL, NULL, NULL, ''),
 ('core_message_sender', 'core.message', 'message', 'sender', 1, 'active', NULL, NULL, NULL, '{\"display_property\": \"fullname\"}'),
 ('core_message_sent_at', 'core.message', 'message', 'sent', 1, 'active', NULL, NULL, NULL, ''),
@@ -1739,10 +1742,10 @@ INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `elemen
 ('core_message_item', 0, 0, 1, '', 'core_message_sender', NULL, NULL, 'static', NULL, NULL, NULL, 1, 0, NULL),
 ('core_message_item', 0, 0, 2, '', 'core_message_sent_at', NULL, NULL, 'static', NULL, NULL, NULL, 1, 0, NULL),
 ('core_message_item', 0, 0, 3, '', 'core_message_event', NULL, NULL, 'static', NULL, NULL, NULL, 1, 0, NULL),
-('core_message_list', 0, 0, 0, '', 'core_message_type', NULL, NULL, 'static', NULL, NULL, NULL, 1, 0, NULL),
-('core_message_list', 0, 0, 1, '', 'core_message_sender', NULL, NULL, 'static', NULL, NULL, NULL, 1, 0, NULL),
-('core_message_list', 0, 0, 2, '', 'core_message_sent_at', NULL, NULL, 'static', NULL, NULL, NULL, 1, 0, NULL),
-('core_message_list', 0, 0, 3, '', 'core_message_event', NULL, NULL, 'static', NULL, NULL, NULL, 1, 0, NULL),
+('core_message_list', 0, 0, 0, '', 'core_message_type', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('core_message_list', 0, 0, 1, '', 'core_message_sender', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('core_message_list', 0, 0, 2, '', 'core_message_sent_at', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('core_message_list', 0, 0, 3, '', 'core_message_event', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('core_page_view', 0, 0, 0, '', 'core_page_content', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('dime_actor_item', 0, 0, 0, '', 'dime_actor_id', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('dime_actor_item', 0, 0, 1, '', 'dime_actor_fullname', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
@@ -2021,6 +2024,7 @@ INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `transition
 ('core.file.license', 'list', 'ARK Core', 1, 0, 1, 0, 'core.file.type', 'File License'),
 ('core.file.status', 'list', 'ARK Core', 1, 0, 1, 0, 'core.file.status', 'File Status'),
 ('core.file.type', 'list', 'ARK Core', 1, 0, 1, 0, 'core.file.type', 'File Type'),
+('core.form.mode', 'list', 'ARK Core', 1, 0, 1, 0, 'core.form.mode', 'Form field modes'),
 ('core.item.status', 'list', 'ARK Core', 1, 0, 1, 0, 'core.item.status', 'Item Status'),
 ('core.message.status', 'list', 'ARK Core', 1, 0, 1, 0, 'core.message.status', 'Message Status'),
 ('core.message.type', 'list', 'ARK Core', 1, 0, 1, 0, 'core.message.type', 'Message Type'),
@@ -2627,6 +2631,12 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('core.file.type', 'other', '', 0, 1, 0, 'core.file.type.other', ''),
 ('core.file.type', 'text', '', 0, 1, 0, 'core.file.type.text', ''),
 ('core.file.type', 'video', '', 0, 1, 0, 'core.file.type.video', ''),
+('core.form.mode', 'active', '', 0, 1, 0, 'core.form.mode.active', ''),
+('core.form.mode', 'disabled', '', 0, 1, 0, 'core.form.mode.disabled', ''),
+('core.form.mode', 'excluded', '', 0, 1, 0, 'core.form.mode.excluded', ''),
+('core.form.mode', 'hidden', '', 0, 1, 0, 'core.form.mode.hidden', ''),
+('core.form.mode', 'readonly', '', 0, 1, 0, 'core.form.mode.readonly', ''),
+('core.form.mode', 'static', '', 0, 1, 0, 'core.form.mode.static', ''),
 ('core.item.status', 'allocated', '', 0, 1, 0, 'core.item.status.allocated', ''),
 ('core.item.status', 'deleted', '', 0, 1, 0, 'core.item.status.deleted', ''),
 ('core.item.status', 'registered', '', 0, 1, 0, 'core.item.status.registered', ''),
@@ -3246,15 +3256,15 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('language', 'ext', 'extremaduran', 0, 1, 0, 'language.extremaduran', ''),
 ('language', 'fa', 'persian', 0, 1, 0, 'language.persian', ''),
 ('language', 'fan', 'fang', 0, 1, 0, 'language.fang', ''),
-('language', 'fat', 'fanti', 0, 1, 0, 'language.fanti', ''),
+('language', 'fat', 'fanti', 0, 1, 0, 'language.fanti', '');
+INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('language', 'ff', 'fulah', 0, 1, 0, 'language.fulah', ''),
 ('language', 'fi', 'finnish', 0, 1, 0, 'language.finnish', ''),
 ('language', 'fil', 'filipino', 0, 1, 0, 'language.filipino', ''),
 ('language', 'fit', 'finnish.tornedalen', 0, 1, 0, 'language.finnish.tornedalen', ''),
 ('language', 'fj', 'fijian', 0, 1, 0, 'language.fijian', ''),
 ('language', 'fo', 'faroese', 0, 1, 0, 'language.faroese', ''),
-('language', 'fon', 'fon', 0, 1, 0, 'language.fon', '');
-INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('language', 'fon', 'fon', 0, 1, 0, 'language.fon', ''),
 ('language', 'fr', 'french', 0, 1, 0, 'language.french', ''),
 ('language', 'fr-CA', 'french.canadian', 0, 1, 0, 'language.french.canadian', ''),
 ('language', 'fr-CH', 'french.swiss', 0, 1, 0, 'language.french.swiss', ''),

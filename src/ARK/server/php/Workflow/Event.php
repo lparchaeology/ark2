@@ -50,7 +50,7 @@ class Event implements Item
 
     public function name()
     {
-        return $this->property('event')->value();
+        return $this->property('type')->value();
     }
 
     public function agent()

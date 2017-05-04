@@ -33,6 +33,8 @@ namespace ARK\Model\Fragment;
 use ARK\Model\Fragment;
 use ARK\Model\Fragment\DateTimeTrait;
 use ARK\ORM\ClassMetadata;
+use DateTime;
+use DateTimeZone;
 
 class DateTimeFragment extends Fragment
 {

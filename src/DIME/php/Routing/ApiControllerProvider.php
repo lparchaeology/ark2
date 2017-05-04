@@ -39,13 +39,19 @@ class ApiControllerProvider implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
 
+        $controllers->get('/files/{fileSlug}', 'DIME\\Controller\\JsonApi\\FileGetController')
+                    ->bind('api.files.get');
+
+        $controllers->get('/files', 'DIME\\Controller\\JsonApi\\FileCollectionController')
+                    ->bind('api.files.collection');
+
         $controllers->get('/messages/{messageSlug}', 'DIME\\Controller\\JsonApi\\MessageGetController')
                     ->bind('api.messages.get');
 
         $controllers->get('/messages', 'DIME\\Controller\\JsonApi\\MessageCollectionController')
                     ->bind('api.messages.collection');
 
-        $controllers->get('/events/{eventSlug}', 'DIME\\Controller\\JsonApi\\MessageGetController')
+        $controllers->get('/events/{eventSlug}', 'DIME\\Controller\\JsonApi\\EventGetController')
                     ->bind('api.events.get');
 
         $controllers->get('/events', 'DIME\\Controller\\JsonApi\\EventCollectionController')

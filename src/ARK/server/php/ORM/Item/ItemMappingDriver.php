@@ -57,6 +57,7 @@ class ItemMappingDriver implements MappingDriver
         if (!$module) {
             return;
         }
+        $classNames[] = $module['classname'];
         $builder = new ClassMetadataBuilder($metadata, $module['tbl']);
         $builder->setCustomRepositoryClass(ItemRepository::class);
 
@@ -74,6 +75,7 @@ class ItemMappingDriver implements MappingDriver
             $metadata->addDiscriminatorMapClass('', $module['classname']);
             foreach ($typeEntities as $type) {
                 $metadata->addDiscriminatorMapClass($type['type'], $type['classname']);
+                $classNames[] = $type['classname'];
             }
         } else {
             $builder->addStringField('type', 30);
@@ -86,16 +88,20 @@ class ItemMappingDriver implements MappingDriver
         $builder->addStringField('label', 30);
         VersionTrait::buildVersionMetadata($builder);
         $metadata->setItemEntity(true);
+        if ($this->classNames === null) {
+            $this->classNames = $classNames;
+        }
     }
 
     public function getAllClassNames()
     {
         if ($this->classNames === null) {
-            $this->classNames = [];
-            $modules = Service::database()->getModules();
-            foreach ($modules as $module) {
-                if ($module['namespace'] == $this->namespace) {
-                    $this->classNames[] = $module['classname'];
+            $module = Service::database()->getModuleForNamespace($this->namespace);
+            $this->classNames[] = $module['classname'];
+            $typeEntities = Service::database()->getTypeEntities($module['module']);
+            if ($typeEntities) {
+                foreach ($typeEntities as $type) {
+                    $this->classNames[] = $type['classname'];
                 }
             }
         }

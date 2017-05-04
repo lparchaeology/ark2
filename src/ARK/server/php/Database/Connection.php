@@ -63,7 +63,8 @@ class Connection extends DBALConnection
 
     public function fetchAllColumn($sql, $column, array $params = [], array $types = [])
     {
-        return array_column($this->fetchAll($sql, $params, $types), $column);
+        $rows = $this->executeQuery($sql, $params, $types)->fetchAll();
+        return array_column($rows, $column);
     }
 
     public function insertRows($table, array $fields, array $rows)

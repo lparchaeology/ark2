@@ -36,9 +36,9 @@ use ARK\Message\Message;
 
 class MessageGetController extends AbstractGetAction
 {
-    public function __invoke(JsonApiRequest $request, $findSlug = null)
+    public function __invoke(JsonApiRequest $request, $messageSlug = null)
     {
-        $this->id = $findSlug;
+        $this->id = $messageSlug;
         $this->class = Message::class;
         $this->resource = 'messages';
         return parent::__invoke($request);

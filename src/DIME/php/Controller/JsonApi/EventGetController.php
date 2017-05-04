@@ -36,9 +36,9 @@ use ARK\Workflow\Event;
 
 class EventGetController extends AbstractGetAction
 {
-    public function __invoke(JsonApiRequest $request, $findSlug = null)
+    public function __invoke(JsonApiRequest $request, $eventSlug = null)
     {
-        $this->id = $findSlug;
+        $this->id = $eventSlug;
         $this->class = Event::class;
         $this->resource = 'events';
         return parent::__invoke($request);
