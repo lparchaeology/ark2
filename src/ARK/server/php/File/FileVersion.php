@@ -70,6 +70,11 @@ class FileVersion extends FileHandler
         return $this->name;
     }
 
+    public function sequence()
+    {
+        return $this->sequence;
+    }
+
     public function name()
     {
         return $this->version;
@@ -122,7 +127,7 @@ class FileVersion extends FileHandler
     {
         $version = new FileVersion();
         $version->file = $property->item();
-        $config = $property->value();
+        $config = $property->serialize();
         $version->sequence = $config['sequence'];
         $version->name = $config['name'];
         $version->version = $config['version'];

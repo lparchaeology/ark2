@@ -137,9 +137,9 @@ class Service
         return self::$app->log($message, $context, Logger::DEBUG);
     }
 
-    public static function filesystem()
+    public static function filesystem($mount = 'data')
     {
-        return self::$app['filesystem'];
+        return self::$app['flysystems'][$mount];
     }
 
     public static function mailer()

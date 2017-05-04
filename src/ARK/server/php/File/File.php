@@ -13,10 +13,94 @@ use ARK\Model\ItemTrait;
 
 class File implements Item
 {
+    protected $versions = null;
+    protected $current = null;
+    protected $sequence = null;
+    protected $filepath = null;
+
     use ItemTrait;
 
     public function __construct($schema = 'core.file')
     {
         $this->construct($schema);
+    }
+
+    protected function init()
+    {
+        if ($this->versions === null) {
+            $this->versions = $this->property('versions')->serialize();
+        }
+        if ($this->current === null) {
+            $seq = -1;
+            foreach ($this->versions as $version) {
+                if ($version['sequence'] > $seq) {
+                    $this->current = $version;
+                    $this->sequence = $version['sequence'];
+                }
+            }
+        }
+    }
+
+    public function filepath()
+    {
+        $this->init();
+        if ($this->filepath === null) {
+            $token = floor(intval($this->id()) / 1000) * 1000;
+            $suffix = MimeType::findDefaultExtension($this->mediatype()->name());
+            $this->filepath = $this->type().'/'.$token.'/'.$this->id().'.'.$this->sequence.'.'.$suffix;
+        }
+        return $this->filepath;
+    }
+
+    public function name()
+    {
+        return $this->current()['name'];
+    }
+
+    public function title()
+    {
+        return $this->property('title')->value();
+    }
+
+    public function description()
+    {
+        return $this->property('description')->value();
+    }
+
+    public function version()
+    {
+        return $this->current()['version'];
+    }
+
+    public function current()
+    {
+        $this->init();
+        return $this->current;
+    }
+
+    public function versions()
+    {
+        $this->init();
+        return $this->versions;
+    }
+
+    public function status()
+    {
+        return $this->property('status')->value();
+    }
+
+    public function license()
+    {
+        return $this->property('license')->value();
+    }
+
+    public function copyright()
+    {
+        return $this->property('copyright')->value();
+    }
+
+    public function mediatype()
+    {
+        return $this->property('mediatype')->value();
     }
 }

@@ -32,17 +32,21 @@ namespace DIME\Controller;
 
 use ARK\File\File;
 use ARK\ORM\ORM;
-use DIME\Controller\EntityController;
+use ARK\Service;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\Request;
+use League\Glide\Responses\SymfonyResponseFactory;
 
-class FileViewController extends EntityController
+class FileController
 {
-    public function __invoke(Request $request, $itemSlug)
+    public function __invoke(Request $request, $fileId)
     {
-        $layout = 'core_file_item';
-        if (!$data[$layout] = ORM::find(File::class, $itemSlug)) {
-            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'File not found', "File $itemSlug not found"));
-        }
-        return $this->renderResponse($request, $data, $layout);
+        // TODO Wrap in a nice neat class or Service call
+        $file = ORM::find(File::class, $fileId);
+        $factory = new SymfonyResponseFactory($request);
+        $response = $factory->create(Service::filesystem(), $file->filepath());
+        $disposition = ($request->query->has('d') ? ResponseHeaderBag::DISPOSITION_ATTACHMENT : ResponseHeaderBag::DISPOSITION_INLINE);
+        $response->headers->set('Content-Disposition', $response->headers->makeDisposition($disposition, $file->name()));
+        return $response;
     }
 }

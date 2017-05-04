@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Event Entity
+ * ARK Carousel Form Type
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,44 +28,43 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Workflow;
+namespace ARK\Form\Type;
 
-use ARK\ARK;
-use ARK\Actor\Actor;
-use ARK\Model\Item;
-use ARK\Model\ItemTrait;
+use ARK\Model\Property;
+use ARK\Form\Type\AbstractFormType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\FormBuilderInterface;
 
-class Event implements Item
+class CarouselType extends AbstractFormType
 {
-    use ItemTrait;
-
-    public function __construct(Actor $agent, Action $action, Item $item)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->construct('core.event');
-        $this->setParent($item);
-        $this->property('agent')->setValue($agent);
-        $this->property('subject')->setValue($item);
-        $this->property('type')->setValue($action->event());
-        $this->property('occurred')->setValue(ARK::timestamp());
+        $fieldOptions['label'] = false;
+        $fieldOptions['mapped'] = false;
+        $builder->add('image', CollectionType::class, $fieldOptions);
+        $builder->setDataMapper($this);
     }
 
-    public function term()
+    protected function options()
     {
-        return $this->property('type')->value();
+        return [
+            'compound' => true,
+            'multiple' => true,
+        ];
     }
 
-    public function agent()
+    public function mapDataToForms($property, $forms)
     {
-        return $this->property('agent')->value();
+        if (!$property) {
+            return;
+        }
+        $forms = iterator_to_array($forms);
+        $name = $property->attribute()->name();
+        $value = $property->value();
+        $forms['image']->setData($value);
     }
 
-    public function subject()
+    public function mapFormsToData($forms, &$property)
     {
-        return $this->parent();
-    }
-
-    public function occurredAt()
-    {
-        return $this->property('occurred')->value();
     }
 }

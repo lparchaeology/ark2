@@ -30,6 +30,8 @@
 
 namespace DIME\Controller;
 
+use ARK\File\Image;
+use ARK\ORM\ORM;
 use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -37,6 +39,8 @@ class ImageController
 {
     public function __invoke(Request $request, $image)
     {
-        return Service::imageResponse($image);
+        // TODO Wrap in a nice neat class or Service call
+        $file = ORM::find(Image::class, $image);
+        return Service::imageResponse($file->filepath(), $request->query->all());
     }
 }

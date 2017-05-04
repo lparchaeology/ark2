@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 04, 2017 at 10:58 AM
+-- Generation Time: May 04, 2017 at 11:57 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -278,7 +278,9 @@ CREATE TABLE `ark_fragment_integer` (
 --
 
 INSERT INTO `ark_fragment_integer` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `object`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
-(1, 'find', '1', 'year', 'integer', NULL, NULL, 1233, 1, 1344, 2, 0, '2017-05-03 08:54:22', 0, '0000-00-00 00:00:00', NULL);
+(1, 'find', '1', 'year', 'integer', NULL, NULL, 1233, 1, 1344, 2, 0, '2017-05-03 08:54:22', 0, '0000-00-00 00:00:00', NULL),
+(2, 'file', '1', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 7, 0, '2017-05-03 08:54:22', 0, '0000-00-00 00:00:00', NULL),
+(3, 'file', '2', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 8, 0, '2017-05-03 08:54:22', 0, '0000-00-00 00:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -337,7 +339,12 @@ INSERT INTO `ark_fragment_item` (`fid`, `module`, `item`, `attribute`, `datatype
 (25, 'message', '2', 'event', 'item', '', 'event', '2', 0, '', 2, 0, '2017-01-29 22:41:12', 0, '2017-01-29 22:37:39', ''),
 (26, 'message', '1', 'recipient', 'item', '', 'actor', 'ahavfrue', 0, '', 4, 0, '2017-05-03 18:58:32', 0, '2017-01-29 22:37:39', ''),
 (27, 'message', '2', 'recipient', 'item', '', 'actor', 'ahavfrue', 0, '', 5, 0, '2017-05-03 18:58:36', 0, '2017-01-29 22:37:39', ''),
-(28, 'message', '3', 'recipient', 'item', '', 'actor', 'ahavfrue', 0, '', 6, 0, '2017-05-03 18:58:38', 0, '2017-01-29 22:37:39', '');
+(28, 'message', '3', 'recipient', 'item', '', 'actor', 'ahavfrue', 0, '', 6, 0, '2017-05-03 18:58:38', 0, '2017-01-29 22:37:39', ''),
+(29, 'file', '1', 'copyright', 'item', NULL, 'actor', 'ahavfrue', 0, '', NULL, 0, '2017-05-04 15:33:38', 0, '2017-01-29 22:37:39', ''),
+(30, 'file', '2', 'copyright', 'item', NULL, 'actor', 'ahavfrue', 0, '', NULL, 0, '2017-05-04 15:33:36', 0, '2017-01-29 22:37:39', ''),
+(31, 'find', '1', 'image', 'item', NULL, 'file', '1', 0, '', NULL, 0, '2017-05-04 15:33:38', 0, '2017-01-29 22:37:39', ''),
+(32, 'find', '1', 'image', 'item', NULL, 'file', '2', 0, '', NULL, 0, '2017-05-04 15:33:36', 0, '2017-01-29 22:37:39', ''),
+(33, 'message', '3', 'sender', 'item', '', 'actor', 'ahavfrue', 0, '', NULL, 0, '2017-01-29 22:41:12', 0, '2017-01-29 22:37:39', '');
 
 -- --------------------------------------------------------
 
@@ -374,7 +381,9 @@ INSERT INTO `ark_fragment_object` (`fid`, `module`, `item`, `attribute`, `dataty
 (3, 'find', '1', 'description', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-02 16:16:32', 0, '0000-00-00 00:00:00', NULL),
 (4, 'message', '1', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-03 19:03:25', 0, '0000-00-00 00:00:00', NULL),
 (5, 'message', '2', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-03 19:03:30', 0, '0000-00-00 00:00:00', NULL),
-(6, 'message', '3', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-03 19:03:32', 0, '0000-00-00 00:00:00', NULL);
+(6, 'message', '3', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-03 19:03:32', 0, '0000-00-00 00:00:00', NULL),
+(7, 'file', '1', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-03 19:03:25', 0, '0000-00-00 00:00:00', NULL),
+(8, 'file', '2', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-03 19:03:30', 0, '0000-00-00 00:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -507,10 +516,6 @@ INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `dataty
 (225, 'actor', 'VKH', 'type', 'string', '', 'dime.actor.type', 'museum', 0, NULL, NULL, 0, '2017-02-15 15:41:13', 0, '0000-00-00 00:00:00', ''),
 (226, 'actor', 'VMÅ', 'type', 'string', '', 'dime.actor.type', 'museum', 0, NULL, NULL, 0, '2017-02-15 15:41:13', 0, '0000-00-00 00:00:00', ''),
 (227, 'actor', 'VSM', 'type', 'string', '', 'dime.actor.type', 'museum', 0, NULL, NULL, 0, '2017-02-15 15:41:13', 0, '0000-00-00 00:00:00', ''),
-(244, 'file', '1', 'id', 'string', '', NULL, '1', 0, NULL, NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
-(245, 'file', '1', 'type', 'string', '', 'core.file.type', 'text', 0, NULL, NULL, 0, '2017-01-25 19:46:09', 0, '0000-00-00 00:00:00', ''),
-(246, 'file', '1', 'mediatype', 'string', '', NULL, 'text/plain', 0, NULL, NULL, 0, '2017-01-25 19:46:09', 0, '2017-01-25 19:46:09', ''),
-(247, 'file', '1', 'status', 'string', '', 'core.file.status', 'new', 0, NULL, NULL, 0, '2017-01-25 19:46:09', 0, '2017-01-25 19:46:09', ''),
 (250, 'locality', '1', 'id', 'string', '', NULL, '1', 0, NULL, NULL, 0, '2017-01-26 14:33:48', 0, '2017-01-26 14:33:48', ''),
 (251, 'locality', '1', 'type', 'string', '', NULL, 'test', 0, NULL, NULL, 0, '2017-01-26 22:43:27', 0, '2017-01-26 14:33:48', ''),
 (252, 'locality', '2', 'id', 'string', '', NULL, '2', 0, NULL, NULL, 0, '2017-01-26 14:34:15', 0, '2017-01-26 14:34:15', ''),
@@ -751,7 +756,19 @@ INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `dataty
 (606, 'message', '1', 'id', 'string', '', NULL, '1', 0, NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
 (607, 'message', '2', 'id', 'string', '', NULL, '2', 0, NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
 (608, 'message', '3', 'id', 'string', '', NULL, '3', 0, NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
-(609, 'actor', 'ahavfrue', 'id', 'string', '', '', 'ahavfrue', 0, NULL, NULL, 0, '2017-02-15 15:41:13', 0, '0000-00-00 00:00:00', '');
+(609, 'actor', 'ahavfrue', 'id', 'string', '', '', 'ahavfrue', 0, NULL, NULL, 0, '2017-02-15 15:41:13', 0, '0000-00-00 00:00:00', ''),
+(610, 'file', '1', 'id', 'string', NULL, NULL, '1', 0, NULL, NULL, 0, '2017-05-04 14:59:22', 0, '2017-01-31 07:59:45', ''),
+(611, 'file', '2', 'id', 'string', NULL, NULL, '2', 0, NULL, NULL, 0, '2017-05-04 14:59:20', 0, '2017-01-31 07:59:45', ''),
+(612, 'file', '1', 'type', 'string', NULL, NULL, 'image', 0, NULL, NULL, 0, '2017-05-04 14:59:14', 0, '2017-01-31 07:59:45', ''),
+(613, 'file', '2', 'type', 'string', NULL, NULL, 'image', 0, NULL, NULL, 0, '2017-05-04 14:59:18', 0, '2017-01-31 07:59:45', ''),
+(614, 'file', '1', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, NULL, 0, '2017-05-04 15:30:40', 0, '2017-01-31 07:59:45', ''),
+(615, 'file', '2', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, NULL, 0, '2017-05-04 15:30:49', 0, '2017-01-31 07:59:45', ''),
+(616, 'file', '1', 'license', 'string', NULL, 'core.license', 'ccbyncsa', 0, NULL, NULL, 0, '2017-05-04 15:30:04', 0, '2017-01-31 07:59:45', ''),
+(617, 'file', '2', 'license', 'string', NULL, 'core.license', 'ccbyncsa', 0, NULL, NULL, 0, '2017-05-04 15:30:09', 0, '2017-01-31 07:59:45', ''),
+(618, 'file', '1', 'status', 'string', NULL, 'core.file.status', 'new', 0, NULL, NULL, 0, '2017-05-04 15:32:29', 0, '2017-01-31 07:59:45', ''),
+(619, 'file', '2', 'status', 'string', NULL, 'core.file.status', 'new', 0, NULL, NULL, 0, '2017-05-04 15:32:34', 0, '2017-01-31 07:59:45', ''),
+(620, 'file', '1', 'name', 'string', NULL, NULL, '5178K189-1.jpg', 0, NULL, 7, 0, '2017-05-04 15:42:18', 0, '2017-01-31 07:59:45', ''),
+(621, 'file', '2', 'name', 'string', NULL, NULL, '5178K189-1.jpg', 0, NULL, 8, 0, '2017-05-04 15:42:25', 0, '2017-01-31 07:59:45', '');
 
 -- --------------------------------------------------------
 
@@ -906,8 +923,6 @@ INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `attribute`, `datatype
 (166, 'actor', 'VKH', 'fullname', 'text', 'text/plain', 'en', 'Vejle Museum', 0, NULL, NULL, 0, '2017-02-15 14:12:03', 0, '0000-00-00 00:00:00', ''),
 (167, 'actor', 'VMÅ', 'fullname', 'text', 'text/plain', 'en', 'Vesthimmerlands Museum', 0, NULL, NULL, 0, '2017-02-15 14:12:03', 0, '0000-00-00 00:00:00', ''),
 (168, 'actor', 'VSM', 'fullname', 'text', 'text/plain', 'en', 'Viborg Museum', 0, NULL, NULL, 0, '2017-02-15 14:12:03', 0, '0000-00-00 00:00:00', ''),
-(180, 'file', '1', 'title', 'text', 'text/plain', 'en', 'A File', 0, NULL, NULL, 0, '2017-05-02 16:27:18', 0, '2017-01-25 19:46:09', ''),
-(181, 'file', '1', 'description', 'text', 'text/plain', 'en', 'A test file', 0, NULL, NULL, 0, '2017-02-15 14:12:03', 0, '2017-01-25 19:46:09', ''),
 (217, 'find', '1', 'text', 'text', 'text/plain', 'da', 'Velbevaret, skjoldformet, orientalsk bæltebeslag med planteslyngsornamentik.', 0, NULL, 3, 0, '2017-05-02 19:41:37', 0, '2017-01-29 20:23:17', ''),
 (218, 'find', '2', 'description', 'text', 'text/plain', 'da', 'Hel pladefibel i gennembrudt arbejde med støbt, slynget, etfodet dyr i Mammen/ Ringerike stil. Over ryggen ses desuden en bladlignende vinge?\\r\\n\\r\\nForside: lettere korroderet\\r\\n\\r\\nBagside: ukendt', 0, NULL, NULL, 0, '2017-02-15 14:12:03', 0, '2017-01-29 20:29:28', ''),
 (219, 'find', '3', 'description', 'text', 'text/plain', 'da', 'Hel, let bøjet men ellers velbevaret dirhem', 0, NULL, NULL, 0, '2017-02-15 14:12:03', 0, '2017-01-29 20:39:17', ''),
@@ -934,7 +949,11 @@ INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `attribute`, `datatype
 (240, 'actor', 'slund', 'fullname', 'text', 'text/plain', 'da', 'Sarah Lund', 0, NULL, NULL, 0, '2017-02-15 14:12:03', 0, '0000-00-00 00:00:00', ''),
 (241, 'message', '1', 'body', 'text', 'text/plain', 'en', 'This is a test message.', 0, NULL, NULL, 0, '2017-03-27 10:40:35', 0, '0000-00-00 00:00:00', NULL),
 (242, 'message', '2', 'body', 'text', 'text/plain', 'en', 'This is a second message', 0, NULL, NULL, 0, '2017-03-27 10:40:35', 0, '0000-00-00 00:00:00', NULL),
-(243, 'find', '1', 'text', 'text', 'text/plain', 'en', 'Well-preserved, shielded, oriental belt buckle with plant-slipped ornamentation.', 0, NULL, 3, 0, '2017-05-02 19:49:30', 0, '2017-01-29 20:23:17', '');
+(243, 'find', '1', 'text', 'text', 'text/plain', 'en', 'Well-preserved, shielded, oriental belt buckle with plant-slipped ornamentation.', 0, NULL, 3, 0, '2017-05-02 19:49:30', 0, '2017-01-29 20:23:17', ''),
+(244, 'file', '1', 'title', 'text', 'text/plain', 'en', 'File 1', 0, NULL, NULL, 0, '2017-05-04 15:40:21', 0, '2017-01-29 20:23:17', ''),
+(245, 'file', '1', 'description', 'text', 'text/plain', 'en', 'File 1 description.', 0, NULL, NULL, 0, '2017-05-04 15:40:28', 0, '2017-01-29 20:23:17', ''),
+(246, 'file', '2', 'title', 'text', 'text/plain', 'en', 'File 2', 0, NULL, NULL, 0, '2017-05-04 15:40:26', 0, '2017-01-29 20:23:17', ''),
+(247, 'file', '2', 'description', 'text', 'text/plain', 'en', 'File 2 description.', 0, NULL, NULL, 0, '2017-05-04 15:40:24', 0, '2017-01-29 20:23:17', '');
 
 -- --------------------------------------------------------
 
@@ -1070,7 +1089,7 @@ CREATE TABLE `ark_item_file` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'core.file',
   `type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'allocated',
-  `visibilty` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'restricted',
+  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'restricted',
   `parent_module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parent_item` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `idx` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1081,6 +1100,14 @@ CREATE TABLE `ark_item_file` (
   `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `version` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_item_file`
+--
+
+INSERT INTO `ark_item_file` (`item`, `module`, `schma`, `type`, `status`, `visibility`, `parent_module`, `parent_item`, `idx`, `label`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
+('1', 'file', 'core.file', 'image', 'allocated', 'restricted', NULL, NULL, '1', '1', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+('2', 'file', 'core.file', 'image', 'allocated', 'restricted', NULL, NULL, '2', '2', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -1535,12 +1562,12 @@ ALTER TABLE `ark_fragment_float`
 -- AUTO_INCREMENT for table `ark_fragment_integer`
 --
 ALTER TABLE `ark_fragment_integer`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `ark_fragment_item`
 --
 ALTER TABLE `ark_fragment_item`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT for table `ark_fragment_spatial`
 --
@@ -1550,12 +1577,12 @@ ALTER TABLE `ark_fragment_spatial`
 -- AUTO_INCREMENT for table `ark_fragment_string`
 --
 ALTER TABLE `ark_fragment_string`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=610;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=622;
 --
 -- AUTO_INCREMENT for table `ark_fragment_text`
 --
 ALTER TABLE `ark_fragment_text`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=244;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=248;
 --
 -- AUTO_INCREMENT for table `ark_fragment_time`
 --

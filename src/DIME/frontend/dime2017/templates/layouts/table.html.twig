@@ -46,7 +46,7 @@
                         <td class="thumbimage">
                             {% set images = item.property('image').value() %}
                             {% if images is not empty %}
-                                <img src="{{path('img', {'image': 'thumb.'~images[0]})}}" alt='' />
+                                <img src="{{path('img', {'image': images[0].id}) ~ '?p=thumb'}}" alt='' />
                             {% else %}
                                 <span class="glyphicon glyphicon-picture placeholder-img"></span>
                             {% endif %}
