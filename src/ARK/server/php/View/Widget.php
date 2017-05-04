@@ -96,7 +96,7 @@ class Widget extends Element
             $options['placeholder'] = null;
         }
         if ($this->vocabulary) {
-            $options = $this->vocabularyOptions($vocabulary, $options);
+            $options = $this->vocabularyOptions($this->vocabulary, $options);
         }
         return $options;
     }
@@ -108,11 +108,13 @@ class Widget extends Element
 
     public function buildForm(FormBuilderInterface $builder, $data, $options = [])
     {
-        if ($options['mode'] == 'edit' && Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $options = $this->formOptions($data, $options);
-            $fieldBuilder = $this->formBuilder($data, $options);
-            $builder->add($fieldBuilder);
+        if ($options['mode'] == 'edit' && !Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            return ;
         }
+        $options = $this->formOptions($data, $options);
+        dump($options);
+        $fieldBuilder = $this->formBuilder($data, $options);
+        $builder->add($fieldBuilder);
     }
 
     public function renderView($data, $forms = null, $form = null, array $options = [])

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 04, 2017 at 10:58 AM
+-- Generation Time: May 04, 2017 at 03:46 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -1339,7 +1339,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.home.alarm', 'default', 'Notifications', ''),
 ('en', 'dime.home.faq', 'default', '<dl>\\n\\n<dt>What is DIME?</dt>\\n<dd>DIME is a shared portal for detectorists and Danish museums that can be accessed by everyone.</dd>\\n<dd>&nbsp;</dd>\\n\\n<dt>Why should I use DIME?</dt>\\n<dd>DIME allows faster processing of your finds in cooperation with the museum, and gives you an overview of your finds and collection.</dd>\\n<dd>&nbsp;</dd>\\n\\n<dt>What finds can be added to DIME? </dt>\\n<dd>All detector finds (not only Danefæ) can added to DIME.</dd>\\n<dd>&nbsp;</dd>\\n\\n<dt>Can others see my find locations?</dt>\\n<dd>No! Find locations and other private information are only visible for museum archaeologists and researchers with special access.</dd>\\n<dd>&nbsp;</dd>\\n\\n<dt>Is there a DIME app?</dt>\\n<dd>An app for recording in the field is under development.</dd>\\n\\n</dl>', ''),
 ('en', 'dime.home.hvert', 'default', 'Every year, the metal detector users across the country thousands of objects from antiquity, middelal-there and later periods. Metal objects are part of our common cultural heritage and important pieces in the history of Denmark. DIME provides information about the finds for the benefit of present and subsequent generatione', ''),
-('en', 'dime.home.welcome', 'default', 'Welcome %user%', ''),
+('en', 'dime.home.welcome', 'default', 'Welcome %name%', ''),
 ('en', 'dime.krogager', 'default', 'KrogagerFonden', ''),
 ('en', 'dime.material', 'default', 'Material', ''),
 ('en', 'dime.material.silver', 'default', 'Silver Test1', ''),
@@ -1782,10 +1782,10 @@ INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `elemen
 ('dime_find_event', 0, 0, 26, '', 'dime_find_custody', NULL, NULL, 'readonly', NULL, NULL, NULL, 1, 0, NULL),
 ('dime_find_event', 0, 0, 28, '', 'dime_find_custodian', NULL, NULL, 'readonly', NULL, NULL, NULL, 1, 0, NULL),
 ('dime_find_event', 0, 0, 30, '', 'dime_find_recipient', NULL, NULL, 'readonly', NULL, NULL, NULL, 1, 0, NULL),
-('dime_find_filter', 0, 0, 0, '', 'dime_find_filter_municipality', NULL, 0, NULL, NULL, NULL, NULL, 1, 0, NULL),
-('dime_find_filter', 0, 1, 0, '', 'dime_find_filter_type', NULL, 0, NULL, NULL, NULL, NULL, 1, 0, NULL),
-('dime_find_filter', 0, 2, 0, '', 'dime_find_filter_period', NULL, 0, NULL, NULL, NULL, NULL, 1, 0, NULL),
-('dime_find_filter', 0, 3, 0, '', 'dime_find_filter_material', NULL, 0, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('dime_find_filter', 0, 0, 0, '', 'dime_find_filter_municipality', NULL, 0, NULL, NULL, NULL, 0, 1, 0, NULL),
+('dime_find_filter', 0, 1, 0, '', 'dime_find_filter_type', NULL, 0, NULL, NULL, NULL, 0, 1, 0, NULL),
+('dime_find_filter', 0, 2, 0, '', 'dime_find_filter_period', NULL, 0, NULL, NULL, NULL, 0, 1, 0, NULL),
+('dime_find_filter', 0, 3, 0, '', 'dime_find_filter_material', NULL, 0, NULL, NULL, NULL, 0, 1, 0, NULL),
 ('dime_find_filter', 0, 4, 0, '', 'dime_search', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('dime_find_item', 0, 0, 0, '', 'dime_find_event', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('dime_find_item', 0, 0, 1, '', 'dime_find_image', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
@@ -1967,7 +1967,7 @@ INSERT INTO `ark_view_type` (`type`, `class`, `layout`, `form_type_class`, `temp
 ('page', 'ARK\\View\\Page', 0, NULL, 'pages/page.html.twig', ''),
 ('tabbed', 'ARK\\View\\Tabbed', 1, 'ARK\\Form\\Type\\SimpleFormType', 'layouts/tabbed.html.twig', ''),
 ('table', 'ARK\\View\\Table', 1, 'ARK\\Form\\Type\\SimpleFormType', 'layouts/table.html.twig', ''),
-('widget', 'ARK\\View\\Widget', 1, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', 'layouts/field.html.twig', '');
+('widget', 'ARK\\View\\Widget', 0, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', 'layouts/field.html.twig', '');
 
 -- --------------------------------------------------------
 
@@ -1989,10 +1989,10 @@ CREATE TABLE `ark_view_widget` (
 
 INSERT INTO `ark_view_widget` (`element`, `label`, `vocabulary`, `form_type_class`, `form_options`) VALUES
 ('dime_find_actions', 1, NULL, 'ARK\\Form\\Type\\TermChoiceType', ''),
-('dime_find_filter_material', 1, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', '{\"vocabulary\": \"dime.material\", \"multiple\":true, \"placeholder\": \"dime.filter.bymaterial\"}'),
-('dime_find_filter_municipality', 1, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', '{\"vocabulary\": \"dime.denmark.municipality\", \"multiple\":true, \"placeholder\": \"dime.filter.bycommune\"}'),
-('dime_find_filter_period', 1, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', '{\"vocabulary\": \"dime.denmark.municipality\", \"multiple\":true, \"placeholder\": \"dime.filter.byperiod\"}'),
-('dime_find_filter_type', 1, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', '{\"vocabulary\": \"dime.period\", \"multiple\":true, \"placeholder\": \"dime.filter.bytype\"}'),
+('dime_find_filter_material', 1, 'dime.material', 'ARK\\Form\\Type\\TermChoiceType', '{\"multiple\":true}'),
+('dime_find_filter_municipality', 1, 'dime.denmark.municipality', 'ARK\\Form\\Type\\TermChoiceType', '{\"multiple\":true}'),
+('dime_find_filter_period', 1, 'dime.period', 'ARK\\Form\\Type\\TermChoiceType', '{\"multiple\":true}'),
+('dime_find_filter_type', 1, 'dime.find.type', 'ARK\\Form\\Type\\TermChoiceType', '{\"multiple\":true}'),
 ('dime_save', 1, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', ''),
 ('dime_search', 1, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', '');
 

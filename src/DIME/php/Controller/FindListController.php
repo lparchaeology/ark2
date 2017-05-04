@@ -54,42 +54,35 @@ class FindListController extends DimeFormController
         $query = $request->query->all();
         $criteria = [];
         if (isset($query['kommune'])) {
-            $kommune = ORM::find(Term::class, [
-                'concept' => 'dime.denmark.kommune',
+            $municipalities = ORM::findBy(Term::class, [
+                'concept' => 'dime.denmark.municipality',
                 'term' => $query['kommune']
             ]);
-            $data['dime_find_filter_kommune'] = $kommune;
+            $data['dime_find_filter_municipality'] = $municipalities->toArray();
             // $criteria['kommune'] = $kommune->name();
         }
         if (isset($query['type'])) {
-            $type = ORM::find(Term::class, [
+            $types = ORM::findBy(Term::class, [
                 'concept' => 'dime.find.type',
                 'term' => $query['type']
             ]);
-            $data['dime_find_filter_type'] = $type;
-            $criteria['type'] = $type->name();
+            $data['dime_find_filter_type'] = $types->toArray();
+            //$criteria['type'] = $type->name();
         }
-        /*
-         * if (isset($query['subtype'])) {
-         * $subtype = ORM::find(Term::class, ['concept' => 'dime.find.subtype', 'term' => $query['subtype']]);
-         * $data['dime_find_filter_subtype'] = $type;
-         * $criteria['subtype'] = $subtype->name();
-         * }
-         */
         if (isset($query['period'])) {
-            $period = ORM::find(Term::class, [
+            $periods = ORM::findBy(Term::class, [
                 'concept' => 'dime.period',
                 'term' => $query['period']
             ]);
-            $data['dime_find_filter_period'] = $period;
+            $data['dime_find_filter_period'] = $periods->toArray();
             // $criteria['period'] = $period->name();
         }
         if (isset($query['material'])) {
-            $material = ORM::find(Term::class, [
+            $materials = ORM::findBy(Term::class, [
                 'concept' => 'dime.material',
                 'term' => $query['material']
             ]);
-            $data['dime_find_filter_material'] = $material;
+            $data['dime_find_filter_material'] = $materials->toArray();
             // $criteria['material'] = $material->name();
         }
 
@@ -121,31 +114,40 @@ class FindListController extends DimeFormController
     public function processForm(Request $request, $form, $redirect)
     {
         $data = $form->getData();
-        $kommune = $data['dime_find_filter_kommune'];
-        $type = $data['dime_find_filter_type'];
-        $period = $data['dime_find_filter_period'];
-        $material = $data['dime_find_filter_material'];
+        $municipalities = $data['dime_find_filter_municipality'];
+        $types = $data['dime_find_filter_type'];
+        $periods = $data['dime_find_filter_period'];
+        $materials = $data['dime_find_filter_material'];
         $query = $request->query->all();
-        if ($kommune) {
-            $query['kommune'] = $kommune->name();
+        if ($municipalities) {
+            foreach ($municipalities as $municipality) {
+                $query['kommune'][] = $municipality->name();
+            }
         } else {
             unset($query['kommune']);
         }
-        if ($type) {
-            $query['type'] = $type->name();
+        if ($types) {
+            foreach ($types as $type) {
+                $query['type'][] = $type->name();
+            }
         } else {
             unset($query['type']);
         }
-        if ($period) {
-            $query['period'] = $period->name();
+        if ($periods) {
+            foreach ($periods as $period) {
+                $query['period'][] = $period->name();
+            }
         } else {
             unset($query['period']);
         }
-        if ($material) {
-            $query['material'] = $material->name();
+        if ($materials) {
+            foreach ($materials as $material) {
+                $query['material'][] = $material->name();
+            }
         } else {
             unset($query['material']);
         }
+        dump($query);
         return Service::redirectPath($redirect, $query);
     }
 }
