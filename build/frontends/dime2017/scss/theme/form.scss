@@ -33,6 +33,12 @@
     }
 }
 
+.select2-results__option[aria-selected],
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    border-radius: 10px;
+    line-height: 0.5em;
+}
+    
 /* BTN */
 
 .btn {

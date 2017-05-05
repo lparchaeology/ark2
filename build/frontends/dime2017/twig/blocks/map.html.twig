@@ -48,7 +48,7 @@
                 {% set source = {'key': layer.source.ticket, 'imagerySet': layer.sourceName} %}
             {% endif %}
             {% if layer.source.viewClass == 'TileWMS' %}
-                {% set source = {'url': layer.url ~ '&ticket=' ~ data['kortforsyningenticket'] | raw, 'parameters': layer.parameters} %}
+                {% set source = {'url': layer.url ~ '&TRANSPARENT=TRUE&ticket=' ~ data['kortforsyningenticket'] | raw, 'params': layer.parameters} %}
             {% endif %}
             {% set conf = {'name': layer.name, 'visible': layer.isVisible, 'class': layer.source.viewClass, 'source': source} %}
             {% set config = config | merge([conf]) %}

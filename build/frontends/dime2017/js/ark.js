@@ -13,12 +13,12 @@ $(document).ready(function() {
     $(".checkbox").addClass("col-xs-4 col-sm-4 col-lg-3");
     // Fake readonly mode
     $('.readonly-select').prop('disabled', true);
-
+/*
     $("file").fileinput({
         'showUpload':true,
         'previewFileType':'any'
     });
-
+*/
     //$("date").datetimepicker();
     //$("time").datetimepicker();
     //$("datetime").datetimepicker();

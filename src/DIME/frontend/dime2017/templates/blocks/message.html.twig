@@ -23,7 +23,7 @@ window.senderinitial = "";
 {% if data.message %}
     window.message_id = {{ data.message.id }};
     
-    window.eventinitial = "{{ data.message.event.name.keyword | translate }}";
+    window.eventinitial = "{{ data.message.event.term.keyword | translate }}";
 
     window.dateinitial = "{{ data.message.sentAt.datetime.date }}";
 

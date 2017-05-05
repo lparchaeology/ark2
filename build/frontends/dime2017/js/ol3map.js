@@ -9,6 +9,7 @@ function initialiseMapView() {
     var layers = [];
     for (var i = 0; i < layerConfig.length; ++i) {
         var config = layerConfig[i];
+        console.log(config.source);
         layer = new ol.layer.Tile({
             name: config.name,
             visible: config.visible,
