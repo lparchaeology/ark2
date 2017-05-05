@@ -143,12 +143,36 @@
 }
 
 a.loginbutton {
-    background-image: url("../images/icons/login_button.png");
-    background-size: contain;
-    display: block;
-    height: 2em;
-    width: 5.75em;
+    display: inline-block;
+    background: #f7f7f7;
+    padding: 5px;
+    color: #000;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 5px 0;
+    white-space: nowrap;
 }
+
+a.loginbutton span.text{
+    vertical-align: bottom;
+}
+
+a.loginbutton span.glyphicon {
+    padding: 0 5px;
+}
+
+a.loginbutton:hover{
+    text-decoration: none;
+}
+
+.username {
+    padding:5px;
+}
+
+.useractions {
+    padding:10px;
+}
+
 /*
  * Sidebar make fixed width when screen is too small
  */
@@ -198,7 +222,6 @@ a.loginbutton {
  */
 
 .usertool {
-    padding: 20px;
     min-height: 120px;
     text-transform: uppercase;
     text-align: center;

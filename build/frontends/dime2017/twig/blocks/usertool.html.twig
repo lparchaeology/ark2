@@ -2,13 +2,15 @@
 {% block usertool %}
 
     {% if global.user %}
-        <div class="row usertool">
-            <a href="{{ path('user.logout') }}">
+        <div class="row usertool username">
                 <span class="dime-icon icon-user small"></span>
                 {{ 'user.greeting' | trans({ '%name%': global.user.displayName }) }}
+            <a href="{{ path('user.logout') }}" class="loginbutton">
+                <span class=" dime-icon glyphicon glyphicon-log-out logout"></span>
+                <span class="text">logout</span>
             </a>
         </div>
-        <div class="row usertool">
+        <div class="row usertool useractions">
                 <a href="{{ path('user.view', {'id': global.user.id}) }}">
                     {{ 'user.menu.home' | trans }}
                 </a>
@@ -21,7 +23,10 @@
             </div>
     {% else %}
         <div class="row usertool">
-            <a href="#" data-toggle="modal" data-target="#login-modal" class="loginbutton"></a>
+            <a href="#" data-toggle="modal" data-target="#login-modal" class="loginbutton">
+                <span class=" dime-icon glyphicon glyphicon-log-in login"></span>
+                <span class="text">login</span>
+            </a>
         </div>
     {% endif %}
 
