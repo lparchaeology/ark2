@@ -166,10 +166,33 @@ function initialiseMapView() {
                 
             }
 
+            var extent = [Infinity,Infinity,-Infinity,-Infinity];
+
             collection.forEach(function(e, i, a) {
                 var ark_id = e.get('ark_id');
                 $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
-            })
+                
+                var featureextent = e.getGeometry().getExtent();
+                
+                console.log(featureextent);
+                
+                if(typeof featureextent != 'undefined'){
+                    extent = [
+                        Math.min(featureextent[0],extent[0]),
+                        Math.min(featureextent[1],extent[1]),
+                        Math.max(featureextent[2],extent[2]),
+                        Math.max(featureextent[3],extent[3])
+                    ];
+                    
+                }
+                
+                
+            });
+            
+            console.log(extent);
+            
+            map.getView().fit(extent, map.getSize());
+            
         });
 
         collection.on('remove', function(evt) {
