@@ -60,7 +60,9 @@
                     {% endfor %}
                     <td class="gotofind">
                         <a href="{{ path('finds.view', {'itemSlug': item.id}) }}">
-                            {{ 'find.gotofind'|trans }}
+                    {#{{ 'find.gotofind'|trans }}#}
+                            <span class="glyphicon glyphicon-page"></span>
+
                         </a>
                     </td>
                 </tr>
