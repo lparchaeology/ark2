@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 05, 2017 at 11:45 AM
+-- Generation Time: May 05, 2017 at 01:38 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -280,7 +280,18 @@ CREATE TABLE `ark_fragment_integer` (
 INSERT INTO `ark_fragment_integer` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `object`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
 (1, 'find', '1', 'year', 'integer', NULL, NULL, 1233, 1, 1344, 2, 0, '2017-05-03 08:54:22', 0, '0000-00-00 00:00:00', NULL),
 (2, 'file', '1', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 7, 0, '2017-05-03 08:54:22', 0, '0000-00-00 00:00:00', NULL),
-(3, 'file', '2', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 8, 0, '2017-05-03 08:54:22', 0, '0000-00-00 00:00:00', NULL);
+(3, 'file', '2', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 8, 0, '2017-05-03 08:54:22', 0, '0000-00-00 00:00:00', NULL),
+(4, 'file', '3', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 9, 0, '2017-05-05 10:56:49', 0, '0000-00-00 00:00:00', NULL),
+(5, 'file', '4', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 10, 0, '2017-05-05 10:56:45', 0, '0000-00-00 00:00:00', NULL),
+(6, 'file', '5', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 11, 0, '2017-05-05 10:56:42', 0, '0000-00-00 00:00:00', NULL),
+(7, 'file', '6', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 12, 0, '2017-05-05 10:56:39', 0, '0000-00-00 00:00:00', NULL),
+(8, 'file', '7', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 13, 0, '2017-05-05 10:56:36', 0, '0000-00-00 00:00:00', NULL),
+(9, 'file', '8', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 14, 0, '2017-05-05 10:56:33', 0, '0000-00-00 00:00:00', NULL),
+(10, 'file', '9', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 15, 0, '2017-05-05 10:56:29', 0, '0000-00-00 00:00:00', NULL),
+(11, 'file', '10', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 16, 0, '2017-05-05 10:56:25', 0, '0000-00-00 00:00:00', NULL),
+(12, 'file', '11', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 17, 0, '2017-05-05 10:56:21', 0, '0000-00-00 00:00:00', NULL),
+(13, 'file', '12', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 18, 0, '2017-05-05 10:56:18', 0, '0000-00-00 00:00:00', NULL),
+(14, 'file', '13', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 19, 0, '2017-05-05 10:56:11', 0, '0000-00-00 00:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -343,8 +354,19 @@ INSERT INTO `ark_fragment_item` (`fid`, `module`, `item`, `attribute`, `datatype
 (29, 'file', '1', 'copyright', 'item', NULL, 'actor', 'ahavfrue', 0, '', NULL, 0, '2017-05-04 15:33:38', 0, '2017-01-29 22:37:39', ''),
 (30, 'file', '2', 'copyright', 'item', NULL, 'actor', 'ahavfrue', 0, '', NULL, 0, '2017-05-04 15:33:36', 0, '2017-01-29 22:37:39', ''),
 (31, 'find', '1', 'image', 'item', NULL, 'file', '1', 0, '', NULL, 0, '2017-05-04 15:33:38', 0, '2017-01-29 22:37:39', ''),
-(32, 'find', '1', 'image', 'item', NULL, 'file', '2', 0, '', NULL, 0, '2017-05-04 15:33:36', 0, '2017-01-29 22:37:39', ''),
-(33, 'message', '3', 'sender', 'item', '', 'actor', 'ahavfrue', 0, '', NULL, 0, '2017-01-29 22:41:12', 0, '2017-01-29 22:37:39', '');
+(32, 'find', '2', 'image', 'item', NULL, 'file', '2', 0, '', NULL, 0, '2017-05-05 10:45:53', 0, '2017-01-29 22:37:39', ''),
+(33, 'message', '3', 'sender', 'item', '', 'actor', 'ahavfrue', 0, '', NULL, 0, '2017-01-29 22:41:12', 0, '2017-01-29 22:37:39', ''),
+(34, 'find', '3', 'image', 'item', NULL, 'file', '3', 0, '', NULL, 0, '2017-05-05 10:46:48', 0, '2017-01-29 22:37:39', ''),
+(35, 'find', '4', 'image', 'item', NULL, 'file', '4', 0, '', NULL, 0, '2017-05-05 10:46:51', 0, '2017-01-29 22:37:39', ''),
+(36, 'find', '4', 'image', 'item', NULL, 'file', '5', 0, '', NULL, 0, '2017-05-05 10:46:52', 0, '2017-01-29 22:37:39', ''),
+(37, 'find', '5', 'image', 'item', NULL, 'file', '6', 0, '', NULL, 0, '2017-05-05 10:46:54', 0, '2017-01-29 22:37:39', ''),
+(38, 'find', '5', 'image', 'item', NULL, 'file', '7', 0, '', NULL, 0, '2017-05-05 10:46:55', 0, '2017-01-29 22:37:39', ''),
+(39, 'find', '6', 'image', 'item', NULL, 'file', '8', 0, '', NULL, 0, '2017-05-05 10:46:57', 0, '2017-01-29 22:37:39', ''),
+(40, 'find', '7', 'image', 'item', NULL, 'file', '9', 0, '', NULL, 0, '2017-05-05 10:46:58', 0, '2017-01-29 22:37:39', ''),
+(41, 'find', '8', 'image', 'item', NULL, 'file', '10', 0, '', NULL, 0, '2017-05-05 10:47:00', 0, '2017-01-29 22:37:39', ''),
+(42, 'find', '9', 'image', 'item', NULL, 'file', '11', 0, '', NULL, 0, '2017-05-05 10:47:03', 0, '2017-01-29 22:37:39', ''),
+(43, 'find', '10', 'image', 'item', NULL, 'file', '12', 0, '', NULL, 0, '2017-05-05 10:47:05', 0, '2017-01-29 22:37:39', ''),
+(44, 'find', '10', 'image', 'item', NULL, 'file', '13', 0, '', NULL, 0, '2017-05-05 10:47:09', 0, '2017-01-29 22:37:39', '');
 
 -- --------------------------------------------------------
 
@@ -383,7 +405,18 @@ INSERT INTO `ark_fragment_object` (`fid`, `module`, `item`, `attribute`, `dataty
 (5, 'message', '2', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-03 19:03:30', 0, '0000-00-00 00:00:00', NULL),
 (6, 'message', '3', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-03 19:03:32', 0, '0000-00-00 00:00:00', NULL),
 (7, 'file', '1', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-03 19:03:25', 0, '0000-00-00 00:00:00', NULL),
-(8, 'file', '2', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-03 19:03:30', 0, '0000-00-00 00:00:00', NULL);
+(8, 'file', '2', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-03 19:03:30', 0, '0000-00-00 00:00:00', NULL),
+(9, 'file', '3', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-05 10:49:55', 0, '0000-00-00 00:00:00', NULL),
+(10, 'file', '4', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-05 10:49:59', 0, '0000-00-00 00:00:00', NULL),
+(11, 'file', '5', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-05 10:50:55', 0, '0000-00-00 00:00:00', NULL),
+(12, 'file', '6', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-05 10:51:02', 0, '0000-00-00 00:00:00', NULL),
+(13, 'file', '7', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-05 10:51:04', 0, '0000-00-00 00:00:00', NULL),
+(14, 'file', '8', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-05 10:51:06', 0, '0000-00-00 00:00:00', NULL),
+(15, 'file', '9', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-05 10:51:07', 0, '0000-00-00 00:00:00', NULL),
+(16, 'file', '10', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-05 10:51:10', 0, '0000-00-00 00:00:00', NULL),
+(17, 'file', '11', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-05 10:51:14', 0, '0000-00-00 00:00:00', NULL),
+(18, 'file', '12', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-05 10:51:16', 0, '0000-00-00 00:00:00', NULL),
+(19, 'file', '13', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-05 10:51:18', 0, '0000-00-00 00:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -698,19 +731,19 @@ INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `dataty
 (542, 'find', '11', 'material', 'string', '', 'dime.material', 'ag', 0, NULL, NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
 (543, 'find', '11', 'condition', 'string', '', 'dime.find.condition', 'fragmented', 0, NULL, NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
 (544, 'find', '11', 'id', 'string', '', NULL, '11', 0, NULL, NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
-(545, 'find', '1', 'image', 'string', '', NULL, '5178K189-1.jpg', 0, NULL, NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
-(546, 'find', '2', 'image', 'string', '', NULL, '5182K117-3.jpg', 0, NULL, NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
-(547, 'find', '3', 'image', 'string', '', NULL, '5595K024-1.jpg', 0, NULL, NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
-(548, 'find', '4', 'image', 'string', '', NULL, '5923K002-1.bagside.jpg', 0, NULL, NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
-(549, 'find', '4', 'image', 'string', '', NULL, '5923K002-1.forside.jpg', 0, NULL, NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
-(550, 'find', '5', 'image', 'string', '', NULL, '5924K016-1.bagside.jpg', 0, NULL, NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
-(551, 'find', '5', 'image', 'string', '', NULL, '5924K016-1.forside.jpg', 0, NULL, NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
-(552, 'find', '6', 'image', 'string', '', NULL, '6128K002-3.jpg', 0, NULL, NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
-(553, 'find', '7', 'image', 'string', '', NULL, '6300K004-1.jpg', 0, NULL, NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
-(554, 'find', '8', 'image', 'string', '', NULL, '6309K027-1.jpg', 0, NULL, NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
-(555, 'find', '9', 'image', 'string', '', NULL, '6309K028-1.jpg', 0, NULL, NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
-(556, 'find', '10', 'image', 'string', '', NULL, '6400K002-14.bagside.jpg', 0, NULL, NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
-(557, 'find', '10', 'image', 'string', '', NULL, '6400K002-14.forside.jpg', 0, NULL, NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
+(545, 'file', '1', 'name', 'string', '', NULL, '5178K189-1.jpg', 0, NULL, 7, 0, '2017-05-05 10:52:20', 0, '2017-01-30 00:00:07', ''),
+(546, 'file', '2', 'name', 'string', '', NULL, '5182K117-3.jpg', 0, NULL, 8, 0, '2017-05-05 10:52:28', 0, '2017-01-30 00:00:07', ''),
+(547, 'file', '3', 'name', 'string', '', NULL, '5595K024-1.jpg', 0, NULL, 9, 0, '2017-05-05 10:53:18', 0, '2017-01-30 00:00:07', ''),
+(548, 'file', '4', 'name', 'string', '', NULL, '5923K002-1.bagside.jpg', 0, NULL, 10, 0, '2017-05-05 10:53:14', 0, '2017-01-30 00:00:07', ''),
+(549, 'file', '5', 'name', 'string', '', NULL, '5923K002-1.forside.jpg', 0, NULL, 11, 0, '2017-05-05 10:53:11', 0, '2017-01-30 00:00:07', ''),
+(550, 'file', '6', 'name', 'string', '', NULL, '5924K016-1.bagside.jpg', 0, NULL, 12, 0, '2017-05-05 10:53:07', 0, '2017-01-30 00:00:07', ''),
+(551, 'file', '7', 'name', 'string', '', NULL, '5924K016-1.forside.jpg', 0, NULL, 13, 0, '2017-05-05 10:53:05', 0, '2017-01-30 00:00:07', ''),
+(552, 'file', '8', 'name', 'string', '', NULL, '6128K002-3.jpg', 0, NULL, 14, 0, '2017-05-05 10:53:01', 0, '2017-01-30 00:00:07', ''),
+(553, 'file', '9', 'name', 'string', '', NULL, '6300K004-1.jpg', 0, NULL, 15, 0, '2017-05-05 10:52:57', 0, '2017-01-30 00:00:07', ''),
+(554, 'file', '10', 'name', 'string', '', NULL, '6309K027-1.jpg', 0, NULL, 16, 0, '2017-05-05 10:52:54', 0, '2017-01-30 00:00:07', ''),
+(555, 'file', '11', 'name', 'string', '', NULL, '6309K028-1.jpg', 0, NULL, 17, 0, '2017-05-05 10:52:49', 0, '2017-01-30 00:00:07', ''),
+(556, 'file', '12', 'name', 'string', '', NULL, '6400K002-14.bagside.jpg', 0, NULL, 18, 0, '2017-05-05 10:52:45', 0, '2017-01-30 00:00:07', ''),
+(557, 'file', '13', 'name', 'string', '', NULL, '6400K002-14.forside.jpg', 0, NULL, 19, 0, '2017-05-05 10:52:41', 0, '2017-01-30 00:00:07', ''),
 (558, 'find', '11', 'finder_id', 'string', '', NULL, 'MYFIND-1', 0, NULL, NULL, 0, '2017-01-30 10:34:16', 0, '2017-01-30 10:34:16', ''),
 (559, 'find', '11', 'type', 'string', '', 'dime.find.type', 'fibula', 0, NULL, NULL, 0, '2017-01-30 10:34:16', 0, '2017-01-30 10:34:16', ''),
 (560, 'find', '11', 'period_start', 'string', '', 'dime.period', 'CÆRÆ', 0, NULL, NULL, 0, '2017-01-30 10:34:16', 0, '2017-01-30 10:34:16', ''),
@@ -767,8 +800,39 @@ INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `dataty
 (617, 'file', '2', 'license', 'string', NULL, 'core.license', 'ccbyncsa', 0, NULL, NULL, 0, '2017-05-04 15:30:09', 0, '2017-01-31 07:59:45', ''),
 (618, 'file', '1', 'status', 'string', NULL, 'core.file.status', 'new', 0, NULL, NULL, 0, '2017-05-04 15:32:29', 0, '2017-01-31 07:59:45', ''),
 (619, 'file', '2', 'status', 'string', NULL, 'core.file.status', 'new', 0, NULL, NULL, 0, '2017-05-04 15:32:34', 0, '2017-01-31 07:59:45', ''),
-(620, 'file', '1', 'name', 'string', NULL, NULL, '5178K189-1.jpg', 0, NULL, 7, 0, '2017-05-04 15:42:18', 0, '2017-01-31 07:59:45', ''),
-(621, 'file', '2', 'name', 'string', NULL, NULL, '5178K189-1.jpg', 0, NULL, 8, 0, '2017-05-04 15:42:25', 0, '2017-01-31 07:59:45', '');
+(622, 'file', '3', 'id', 'string', NULL, NULL, '3', 0, NULL, NULL, 0, '2017-05-05 10:58:54', 0, '2017-01-31 07:59:45', ''),
+(623, 'file', '4', 'id', 'string', NULL, NULL, '4', 0, NULL, NULL, 0, '2017-05-05 10:58:55', 0, '2017-01-31 07:59:45', ''),
+(624, 'file', '5', 'id', 'string', NULL, NULL, '5', 0, NULL, NULL, 0, '2017-05-05 10:58:57', 0, '2017-01-31 07:59:45', ''),
+(625, 'file', '6', 'id', 'string', NULL, NULL, '6', 0, NULL, NULL, 0, '2017-05-05 10:58:59', 0, '2017-01-31 07:59:45', ''),
+(626, 'file', '7', 'id', 'string', NULL, NULL, '7', 0, NULL, NULL, 0, '2017-05-05 10:59:00', 0, '2017-01-31 07:59:45', ''),
+(627, 'file', '8', 'id', 'string', NULL, NULL, '8', 0, NULL, NULL, 0, '2017-05-05 10:59:02', 0, '2017-01-31 07:59:45', ''),
+(628, 'file', '9', 'id', 'string', NULL, NULL, '9', 0, NULL, NULL, 0, '2017-05-05 10:59:03', 0, '2017-01-31 07:59:45', ''),
+(629, 'file', '10', 'id', 'string', NULL, NULL, '10', 0, NULL, NULL, 0, '2017-05-05 10:59:05', 0, '2017-01-31 07:59:45', ''),
+(630, 'file', '11', 'id', 'string', NULL, NULL, '11', 0, NULL, NULL, 0, '2017-05-05 10:59:08', 0, '2017-01-31 07:59:45', ''),
+(631, 'file', '12', 'id', 'string', NULL, NULL, '12', 0, NULL, NULL, 0, '2017-05-05 10:59:09', 0, '2017-01-31 07:59:45', ''),
+(632, 'file', '13', 'id', 'string', NULL, NULL, '13', 0, NULL, NULL, 0, '2017-05-05 10:59:11', 0, '2017-01-31 07:59:45', ''),
+(633, 'file', '3', 'type', 'string', NULL, NULL, 'image', 0, NULL, NULL, 0, '2017-05-04 14:59:14', 0, '2017-01-31 07:59:45', ''),
+(634, 'file', '4', 'type', 'string', NULL, NULL, 'image', 0, NULL, NULL, 0, '2017-05-04 14:59:18', 0, '2017-01-31 07:59:45', ''),
+(635, 'file', '5', 'type', 'string', NULL, NULL, 'image', 0, NULL, NULL, 0, '2017-05-05 11:00:01', 0, '2017-01-31 07:59:45', ''),
+(636, 'file', '6', 'type', 'string', NULL, NULL, 'image', 0, NULL, NULL, 0, '2017-05-05 11:00:02', 0, '2017-01-31 07:59:45', ''),
+(637, 'file', '7', 'type', 'string', NULL, NULL, 'image', 0, NULL, NULL, 0, '2017-05-05 11:00:04', 0, '2017-01-31 07:59:45', ''),
+(638, 'file', '8', 'type', 'string', NULL, NULL, 'image', 0, NULL, NULL, 0, '2017-05-05 11:00:06', 0, '2017-01-31 07:59:45', ''),
+(639, 'file', '9', 'type', 'string', NULL, NULL, 'image', 0, NULL, NULL, 0, '2017-05-05 11:00:10', 0, '2017-01-31 07:59:45', ''),
+(640, 'file', '10', 'type', 'string', NULL, NULL, 'image', 0, NULL, NULL, 0, '2017-05-05 11:00:14', 0, '2017-01-31 07:59:45', ''),
+(641, 'file', '11', 'type', 'string', NULL, NULL, 'image', 0, NULL, NULL, 0, '2017-05-05 11:00:18', 0, '2017-01-31 07:59:45', ''),
+(642, 'file', '12', 'type', 'string', NULL, NULL, 'image', 0, NULL, NULL, 0, '2017-05-05 11:00:20', 0, '2017-01-31 07:59:45', ''),
+(643, 'file', '13', 'type', 'string', NULL, NULL, 'image', 0, NULL, NULL, 0, '2017-05-05 11:00:22', 0, '2017-01-31 07:59:45', ''),
+(644, 'file', '3', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, NULL, 0, '2017-05-05 11:34:43', 0, '2017-01-31 07:59:45', ''),
+(645, 'file', '4', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, NULL, 0, '2017-05-05 11:34:50', 0, '2017-01-31 07:59:45', ''),
+(646, 'file', '5', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, NULL, 0, '2017-05-05 11:34:52', 0, '2017-01-31 07:59:45', ''),
+(647, 'file', '6', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, NULL, 0, '2017-05-05 11:34:54', 0, '2017-01-31 07:59:45', ''),
+(648, 'file', '7', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, NULL, 0, '2017-05-05 11:34:56', 0, '2017-01-31 07:59:45', ''),
+(649, 'file', '8', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, NULL, 0, '2017-05-05 11:34:58', 0, '2017-01-31 07:59:45', ''),
+(650, 'file', '9', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, NULL, 0, '2017-05-05 11:34:59', 0, '2017-01-31 07:59:45', ''),
+(651, 'file', '10', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, NULL, 0, '2017-05-05 11:35:02', 0, '2017-01-31 07:59:45', ''),
+(652, 'file', '11', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, NULL, 0, '2017-05-05 11:35:03', 0, '2017-01-31 07:59:45', ''),
+(653, 'file', '12', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, NULL, 0, '2017-05-05 11:35:05', 0, '2017-01-31 07:59:45', ''),
+(654, 'file', '13', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, NULL, 0, '2017-05-05 11:35:07', 0, '2017-01-31 07:59:45', '');
 
 -- --------------------------------------------------------
 
@@ -1107,7 +1171,18 @@ CREATE TABLE `ark_item_file` (
 
 INSERT INTO `ark_item_file` (`item`, `module`, `schma`, `type`, `status`, `visibility`, `parent_module`, `parent_item`, `idx`, `label`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
 ('1', 'file', 'core.file', 'image', 'allocated', 'restricted', NULL, NULL, '1', '1', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
-('2', 'file', 'core.file', 'image', 'allocated', 'restricted', NULL, NULL, '2', '2', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '');
+('10', 'file', 'core.file', 'image', 'allocated', 'restricted', NULL, NULL, '10', '10', 0, '2017-05-05 10:43:16', 0, '0000-00-00 00:00:00', ''),
+('11', 'file', 'core.file', 'image', 'allocated', 'restricted', NULL, NULL, '11', '11', 0, '2017-05-05 10:43:18', 0, '0000-00-00 00:00:00', ''),
+('12', 'file', 'core.file', 'image', 'allocated', 'restricted', NULL, NULL, '12', '12', 0, '2017-05-05 10:43:21', 0, '0000-00-00 00:00:00', ''),
+('13', 'file', 'core.file', 'image', 'allocated', 'restricted', NULL, NULL, '13', '13', 0, '2017-05-05 10:43:25', 0, '0000-00-00 00:00:00', ''),
+('2', 'file', 'core.file', 'image', 'allocated', 'restricted', NULL, NULL, '2', '2', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+('3', 'file', 'core.file', 'image', 'allocated', 'restricted', NULL, NULL, '3', '3', 0, '2017-05-05 10:43:29', 0, '0000-00-00 00:00:00', ''),
+('4', 'file', 'core.file', 'image', 'allocated', 'restricted', NULL, NULL, '4', '4', 0, '2017-05-05 10:43:31', 0, '0000-00-00 00:00:00', ''),
+('5', 'file', 'core.file', 'image', 'allocated', 'restricted', NULL, NULL, '5', '5', 0, '2017-05-05 10:43:33', 0, '0000-00-00 00:00:00', ''),
+('6', 'file', 'core.file', 'image', 'allocated', 'restricted', NULL, NULL, '6', '6', 0, '2017-05-05 10:43:35', 0, '0000-00-00 00:00:00', ''),
+('7', 'file', 'core.file', 'image', 'allocated', 'restricted', NULL, NULL, '7', '7', 0, '2017-05-05 10:43:36', 0, '0000-00-00 00:00:00', ''),
+('8', 'file', 'core.file', 'image', 'allocated', 'restricted', NULL, NULL, '8', '8', 0, '2017-05-05 10:43:37', 0, '0000-00-00 00:00:00', ''),
+('9', 'file', 'core.file', 'image', 'allocated', 'restricted', NULL, NULL, '9', '9', 0, '2017-05-05 10:43:39', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -1562,12 +1637,12 @@ ALTER TABLE `ark_fragment_float`
 -- AUTO_INCREMENT for table `ark_fragment_integer`
 --
 ALTER TABLE `ark_fragment_integer`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `ark_fragment_item`
 --
 ALTER TABLE `ark_fragment_item`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 --
 -- AUTO_INCREMENT for table `ark_fragment_spatial`
 --
@@ -1577,7 +1652,7 @@ ALTER TABLE `ark_fragment_spatial`
 -- AUTO_INCREMENT for table `ark_fragment_string`
 --
 ALTER TABLE `ark_fragment_string`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=622;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=655;
 --
 -- AUTO_INCREMENT for table `ark_fragment_text`
 --
