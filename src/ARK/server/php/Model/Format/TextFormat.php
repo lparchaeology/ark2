@@ -30,20 +30,23 @@
 
 namespace ARK\Model\Format;
 
+use ARK\Model\Fragment;
 use ARK\Model\Format;
+use ARK\Model\LocalText;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class TextFormat extends Format
 {
-    protected $mimetype = '';
+    protected $mediatype = '';
     protected $minimumLength = 0;
     protected $maximumLength = 0;
     protected $defaultSize = 0;
 
-    public function mimetype()
+    public function mediatype()
     {
-        return $this->pattern;
+        return $this->mediatype;
     }
 
     public function minimumLength()
@@ -61,8 +64,21 @@ class TextFormat extends Format
         return $this->defaultSize;
     }
 
-    public static function buildStringMetadata(ClassMetadataBuilder $builder)
+    protected function fragmentValue($fragment, ArrayCollection $properties = null)
     {
+        dump('fragmentValue');
+        $data = new LocalText();
+        if ($fragment instanceof ArrayCollection) {
+            foreach ($fragment as $frag) {
+                $data->setContent($frag->value(), $frag->parameter());
+                $data->setMediatype($frag->format());
+            }
+        } elseif ($fragment instanceof Fragment) {
+            $data->setContent($fragment->value(), $fragment->parameter());
+            $data->setMediatype($fragment->format());
+        }
+        dump($data);
+        return $data;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
@@ -71,7 +87,7 @@ class TextFormat extends Format
         $builder = new ClassMetadataBuilder($metadata, 'ark_format_text');
 
         // Attributes
-        $builder->addStringField('mimetype', 30);
+        $builder->addStringField('mediatype', 30);
         $builder->addField('minimumLength', 'integer', [], 'min_length');
         $builder->addField('maximumLength', 'integer', [], 'max_length');
         $builder->addField('defaultSize', 'integer', [], 'default_size');

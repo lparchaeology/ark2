@@ -35,6 +35,7 @@ use ARK\Form\Type\AbstractFormType;
 use ARK\Form\Type\StaticType;
 use ARK\ORM\ORM;
 use ARK\Model\Item;
+use ARK\Model\LocalText;
 use ARK\Vocabulary\Term;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -80,10 +81,11 @@ class ItemType extends AbstractFormType
             if (isset($options['field']['value']['options']['display_property'])) {
                 $display = $options['field']['value']['options']['display_property'];
                 $val = $value->property($display)->value();
+                dump($val);
                 if ($val instanceof Term) {
                     $name = $val->keyword();
-                } elseif (isset($val[0]['content'])) {
-                    $name = $val[0]['content'];
+                } elseif ($val instanceof LocalText) {
+                    $name = $val->content();
                 } else {
                     $name = $val;
                 }

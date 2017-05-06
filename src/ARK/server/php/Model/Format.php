@@ -184,18 +184,26 @@ abstract class Format
             return $this->nullValue();
         }
         if ($this->hasMultipleValues()) {
+            dump('multiple values '.$this->format);
             $data = [];
             foreach ($model as $fragment) {
-                $data[] = $this->fragmentValue($fragment);
+                $data[] = $this->value($fragment);
             }
+            dump($data);
             return $data;
         }
-        return $this->fragmentValue($model->first());
+        return $this->fragmentValue($model, $properties);
     }
 
     protected function fragmentValue($fragment, ArrayCollection $properties = null)
     {
-        return $this->serializeFragment($fragment);
+        if ($fragment instanceof ArrayCollection) {
+            return $this->serializeFragment($fragment->first(), $properties);
+        }
+        if ($fragment instanceof Fragment) {
+            return $this->serializeFragment($fragment, $properties);
+        }
+        return null;
     }
 
     public function serialize($model, ArrayCollection $properties = null)

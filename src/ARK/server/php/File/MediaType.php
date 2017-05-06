@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK File Mime Type
+ * ARK File Media Type
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -32,54 +32,55 @@ namespace ARK\File;
 
 use Dflydev\ApacheMimeTypes\PhpRepository;
 
-class MimeType
+class MediaType
 {
     const DEFAULT_TYPE = 'application/octet-stream';
     private static $repository = null;
-    private static $mimetypes = null;
+    private static $mediatypes = null;
     private static $extensions = null;
-    private $mimetype = null;
+    protected $mediatype = null;
 
     public function __construct(/*string*/ $type = DEFAULT_TYPE)
     {
-        if (self::isValidMimeType($type)) {
-            $this->mimetype = $type;
+        if (self::isValidMediaType($type)) {
+            $this->mediatype = $type;
         } elseif (self::isValidExtension($type)) {
-            $this->mimetype = self::findType($type);
+            $this->mediatype = self::findType($type);
         }
-        $this->mimetype = DEFAULT_TYPE;
-    }
-
-    public function mimeType()
-    {
-        return self::parseMediaType($this->mimetype);
+        $this->mediatype = DEFAULT_TYPE;
     }
 
     public function mediaType()
     {
-        return self::parseMediaType($this->mimetype);
+        return $this->mediatype;
     }
 
-    private static function parseMediaType($mimetype)
+    public function type()
     {
-        $parts = explode('/', $mimetype);
+        $parts = explode('/', $this->mediatype);
         return isset($parts[0]) ? $parts[0] : null;
+    }
+
+    public function subType()
+    {
+        $parts = explode('/', $mediatype);
+        return isset($parts[1]) ? $parts[1] : null;
     }
 
     private static function repository()
     {
         if (!self::$repository) {
             self::$repository = new PhpRepository();
-            self::$mimetypes = array_keys(self::$repository->dumpTypeToExtensions());
+            self::$mediatypes = array_keys(self::$repository->dumpTypeToExtensions());
             self::$extensions = array_keys(self::$repository->dumpExtensionToType());
         }
         return self::$repository;
     }
 
-    public static function isValidMimeType($mimetype)
+    public static function isValidMediaType($mediatype)
     {
         self::repository();
-        return in_array($mimetype, self::$mimetypes);
+        return in_array($mediatype, self::$mediatypes);
     }
 
     public static function isValidExtension($extension)
@@ -88,34 +89,36 @@ class MimeType
         return in_array($extension, self::$extensions);
     }
 
-    public static function isDefaultExtension($mimetype, $extension)
+    public static function isDefaultExtension($mediatype, $extension)
     {
-        return (self::findDefaultExtension($mimetype) === $extension);
+        return (self::findDefaultExtension($mediatype) === $extension);
     }
 
-    public static function findExtensions($mimetype)
+    public static function findExtensions($mediatype)
     {
-        return self::repository()->findExtensions($mimetype);
+        return self::repository()->findExtensions($mediatype);
     }
 
-    public static function findDefaultExtension($mimetype)
+    public static function findDefaultExtension($mediatype)
     {
-        $exts = self::repository()->findExtensions($mimetype);
+        $exts = self::repository()->findExtensions($mediatype);
         return isset($exts[0]) ? $exts[0] : null;
     }
 
-    public static function findMimeType($extension)
+    public static function findMediaType($extension)
     {
         return self::repository()->findType($extension);
     }
 
-    public static function findMediaType($type)
+    public static function findType($type)
     {
-        if (self::isValidMimeType($type)) {
-            return self::parseMediaType($type);
+        $mediatype = null;
+        if (self::isValidMediaType($type)) {
+            $mediatype = $type;
         } elseif (self::isValidExtension($type)) {
-            return self::parseMediaType(self::findMimeType($type));
+            $mediatype = self::findMediaType($type);
         }
-        return null;
+        $parts = explode('/', $mediatype);
+        return isset($parts[0]) ? $parts[0] : null;
     }
 }

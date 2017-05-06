@@ -33,6 +33,7 @@ namespace ARK\Model\Format;
 use ARK\Model\Format;
 use ARK\Model\Module;
 use ARK\Model\Fragment;
+use ARK\Model\LocalText;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
@@ -49,13 +50,11 @@ class ItemFormat extends Format
 
     protected function fragmentValue($fragment, ArrayCollection $properties = null)
     {
+        if ($fragment instanceof ArrayCollection) {
+            $fragment = $fragment->first();
+        }
         $module = ORM::find(Module::class, $fragment->parameter());
         return ORM::find($module->classname(), $fragment->value());
-    }
-
-    protected function serializeFragment(Fragment $fragment, ArrayCollection $properties = null)
-    {
-        return $fragment->value();
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 05, 2017 at 11:45 AM
+-- Generation Time: May 07, 2017 at 12:07 AM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -103,7 +103,7 @@ INSERT INTO `ark_datatype` (`datatype`, `object`, `compound`, `storage_type`, `s
 ('object', 1, 0, 'integer', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ark_format_object', 'ARK\\Model\\Format\\ObjectFormat', 'ark_fragment_object', 'ARK\\Model\\Fragment\\ObjectFragment', 'ARK\\Form\\Type\\PropertyType', 1, 0, 'core.datatype.object'),
 ('spatial', 0, 1, 'string', 1431655765, 0, 'geometry', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', 'srid', 'spatial.crs', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', 'format', 'spatial.format', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', 'ark_format_spatial', 'ARK\\Model\\Format\\SpatialFormat', 'ark_fragment_spatial', 'ARK\\Model\\Fragment\\SpatialFragment', 'ARK\\Form\\Type\\WktType', 1, 0, 'core.datatype.spatial'),
 ('string', 0, 0, 'string', 4000, 1, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, NULL, NULL, 'ark_format_string', 'ARK\\Model\\Format\\StringFormat', 'ark_fragment_string', 'ARK\\Model\\Fragment\\StringFragment', 'ARK\\Form\\Type\\ScalarFormType', 1, 0, 'core.datatype.string'),
-('text', 0, 1, 'string', 1431655765, 0, 'content', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', 'language', 'language', NULL, 'mimetype', 'mediatype', NULL, 'ark_format_text', 'ARK\\Model\\Format\\TextFormat', 'ark_fragment_text', 'ARK\\Model\\Fragment\\TextFragment', 'ARK\\Form\\Type\\LocalTextType', 1, 0, 'core.datatype.text'),
+('text', 0, 1, 'string', 1431655765, 0, 'content', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', 'language', 'language', NULL, 'mediatype', 'mediatype', NULL, 'ark_format_text', 'ARK\\Model\\Format\\TextFormat', 'ark_fragment_text', 'ARK\\Model\\Fragment\\TextFragment', 'ARK\\Form\\Type\\LocalTextType', 1, 0, 'core.datatype.text'),
 ('time', 0, 0, 'time', NULL, 1, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', NULL, NULL, NULL, NULL, NULL, NULL, 'ark_format_datetime', 'ARK\\Model\\Format\\TimeFormat', 'ark_fragment_time', 'ARK\\Model\\Fragment\\TimeFragment', 'ARK\\Form\\Type\\ScalarFormType', 0, 0, 'core.datatype.time');
 
 -- --------------------------------------------------------
@@ -158,13 +158,13 @@ INSERT INTO `ark_format` (`format`, `datatype`, `entity`, `value_name`, `value_f
 ('event', 'item', 'ARK\\Workflow\\Event', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 0, 1, 1, 0, 'format.event'),
 ('file', 'item', 'ARK\\File\\File', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FileType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'format.file'),
 ('float', 'float', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.float'),
-('html', 'text', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 1, 1, 1, 1, 0, 'format.html'),
+('html', 'text', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 1, 1, 1, 0, 'format.html'),
 ('identifier', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.identifier'),
 ('image', 'item', 'ARK\\File\\Image', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FileType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'format.image'),
 ('integer', 'integer', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.integer'),
 ('item', 'item', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'format.item'),
 ('key', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.key'),
-('markdown', 'text', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 1, 1, 1, 1, 0, 'format.markdown'),
+('markdown', 'text', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 1, 1, 1, 0, 'format.markdown'),
 ('mass', 'decimal', NULL, NULL, NULL, 'unit', 'mass', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.mass'),
 ('message', 'item', 'ARK\\Message\\Message', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'format.actor'),
 ('module', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'format.module'),
@@ -172,15 +172,15 @@ INSERT INTO `ark_format` (`format`, `datatype`, `entity`, `value_name`, `value_f
 ('ordinaldate', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.ordinaldate'),
 ('password', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.password'),
 ('percent', 'float', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.percent'),
-('plaintext', 'text', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 1, 1, 1, 1, 0, 'format.localtext'),
-('richtext', 'text', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 1, 1, 1, 1, 0, 'format.richtext'),
-('shorttext', 'text', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 1, 1, 1, 1, 0, 'format.shortlocaltext'),
+('plaintext', 'text', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 1, 1, 1, 0, 'format.localtext'),
+('richtext', 'text', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 1, 1, 1, 0, 'format.richtext'),
+('shorttext', 'text', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 1, 1, 1, 0, 'format.shortlocaltext'),
 ('spatial', 'spatial', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.geometry'),
 ('string', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.string'),
 ('telephone', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.telephone'),
 ('term', 'string', 'ARK\\Vocabulary\\Term', 'term', 'ARK\\Form\\Type\\TermChoiceType', 'concept', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, 'ARK\\Form\\Type\\VocabularyFormType', 0, 0, 0, 0, 1, 1, 1, 0, 'format.identifier'),
 ('time', 'time', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.time'),
-('url', 'text', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 1, 1, 1, 1, 0, 'format.url'),
+('url', 'text', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.url'),
 ('version', 'object', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ARK\\Form\\Type\\FileVersionType', 1, 0, 0, 0, 0, 1, 1, 0, 'format.fileversion'),
 ('weekdate', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.weekdate'),
 ('wkt', 'spatial', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 1, 1, 0, 'format.wkt'),
@@ -465,7 +465,7 @@ INSERT INTO `ark_format_string` (`format`, `pattern`, `min_length`, `max_length`
 
 CREATE TABLE `ark_format_text` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mimetype` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mediatype` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `min_length` int(11) NOT NULL,
   `max_length` int(11) NOT NULL,
   `default_size` int(11) NOT NULL
@@ -475,7 +475,7 @@ CREATE TABLE `ark_format_text` (
 -- Dumping data for table `ark_format_text`
 --
 
-INSERT INTO `ark_format_text` (`format`, `mimetype`, `min_length`, `max_length`, `default_size`) VALUES
+INSERT INTO `ark_format_text` (`format`, `mediatype`, `min_length`, `max_length`, `default_size`) VALUES
 ('html', 'text/html', 1, 1431655765, 30),
 ('markdown', 'text/markdown', 1, 1431655765, 30),
 ('plaintext', 'text/plain', 1, 1431655765, 30),
@@ -1223,7 +1223,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.home', 'default', 'Hjem', ''),
 ('da', 'dime.home', 'resource', 'hjem', ''),
 ('da', 'dime.home.alarm', 'default', 'Underretninger', ''),
-('da', 'dime.home.faq', 'default', '<dl>\\n<dt>Hvem Er DIME?</dt>\\n<dd>DIME er en fællesportal for detektorbrugere og Danske museer, der kan bruges af alle.</dd>\\n<dd>&nbsp;</dd>\\n<dt>Hvorfor skal jeg bruge dime?</dt>\\n<dd>DIME muliggør en hurtigere behandling af dinefund i samarbejde med museet og giver dig overblik over dine fund og fundpladser.</dd>\\n<dd>&nbsp;</dd>\\n<dt>Hvilke fund skal/kan uploades i DIME?</dt>\\n<dd>Alle detektorfund (ikke kun Danefæ) kan uploades i DIME.</dd>\\n<dd>&nbsp;</dd>\\n<dt>Kan andre se mine fundsteder?</dt>\\n<dd>Nej! Fundsteder og privatoplysninger er kunsynlige for museumsarkæologer og forskere med særlig adgang</dd>\\n<dd>&nbsp;</dd>\\n<dt>Findes der en dime-app?</dt>\\n<dd>En app-løsning til registrering i marken er under udvikling.</dd>\\n</dl>', ''),
+('da', 'dime.home.faq', 'default', '<dl><dt>Hvem Er DIME?</dt><dd>DIME er en fællesportal for detektorbrugere og Danske museer, der kan bruges af alle.</dd><dd>&nbsp;</dd><dt>Hvorfor skal jeg bruge dime?</dt><dd>DIME muliggør en hurtigere behandling af dinefund i samarbejde med museet og giver dig overblik over dine fund og fundpladser.</dd><dd>&nbsp;</dd><dt>Hvilke fund skal/kan uploades i DIME?</dt><dd>Alle detektorfund (ikke kun Danefæ) kan uploades i DIME.</dd><dd>&nbsp;</dd><dt>Kan andre se mine fundsteder?</dt><dd>Nej! Fundsteder og privatoplysninger er kunsynlige for museumsarkæologer og forskere med særlig adgang</dd><dd>&nbsp;</dd><dt>Findes der en dime-app?</dt><dd>En app-løsning til registrering i marken er under udvikling.</dd></dl>', ''),
 ('da', 'dime.home.hvert', 'default', 'Hvert år finder metaldetektorbrugere landet over tusindevis af genstande fra oldtid, middelal-der og senere perioder. Metalgenstandene er en del af vores fælles kulturarv og vigtige brikker i Danmarkshistorien. DIME sikrer oplysninger om fundene til gavn for nulevende og efterføl- gende generatione', ''),
 ('da', 'dime.home.welcome', 'default', 'Velkommen %name%', ''),
 ('da', 'dime.krogager', 'default', 'KrogagerFonden', ''),
@@ -1558,8 +1558,8 @@ INSERT INTO `ark_view_element` (`element`, `type`, `class`, `template`, `enabled
 ('core_file_versions', 'field', '', '', 1, 0, NULL),
 ('core_message_event', 'field', '', '', 1, 0, NULL),
 ('core_message_id', 'field', '', '', 1, 0, NULL),
-('core_message_item', 'grid', '', '', 1, 0, NULL),
-('core_message_list', 'table', '', '', 1, 0, NULL),
+('core_message_item', 'grid', '', 'blocks/message.html.twig', 1, 0, NULL),
+('core_message_list', 'table', '', 'blocks/messagelist.html.twig', 1, 0, NULL),
 ('core_message_sender', 'field', '', '', 1, 0, NULL),
 ('core_message_sent_at', 'field', '', '', 1, 0, NULL),
 ('core_message_type', 'field', '', '', 1, 0, NULL),
@@ -1681,7 +1681,7 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `lab
 ('dime_find_custodian', 'dime.find', 'find', 'custodian', 1, 'hidden', 'hidden', NULL, NULL, '{\"display_property\": \"fullname\", \"attr\": {\"style\": \"width:50%\"}}'),
 ('dime_find_custody', 'dime.find', 'find', 'custody', 1, 'active', NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
 ('dime_find_dating', 'dime.find', 'find', 'dating', 1, 'active', NULL, NULL, 'DIME\\Form\\Type\\DatingType', ''),
-('dime_find_description', 'dime.find', 'find', 'description', 1, 'active', NULL, NULL, 'DIME\\Form\\Type\\DescriptionType', ''),
+('dime_find_description', 'dime.find', 'find', 'description', 1, 'active', NULL, NULL, NULL, ''),
 ('dime_find_finddate', 'dime.find', 'find', 'finddate', 1, 'active', NULL, NULL, NULL, '{\"widget\": \"picker\"}'),
 ('dime_find_finder', 'dime.find', 'find', 'finder', 1, 'active', NULL, NULL, NULL, '{\"display_property\": \"fullname\", \"attr\": {\"style\": \"width:50%\"}}'),
 ('dime_find_finder_id', 'dime.find', 'find', 'finder_id', 1, 'active', NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
@@ -1769,7 +1769,7 @@ INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `elemen
 ('dime_find_details', 0, 0, 14, '', 'dime_find_condition', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('dime_find_details', 0, 0, 16, '', 'dime_find_weight', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('dime_find_details', 0, 0, 18, '', 'dime_find_length', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
-('dime_find_details', 0, 0, 20, '', 'dime_find_description', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('dime_find_details', 0, 0, 20, '', 'dime_find_finder_id', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('dime_find_edit', 0, 0, 0, '', 'dime_find_event', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('dime_find_edit', 0, 1, 0, '', 'dime_find_details', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('dime_find_event', 0, 0, 0, '', 'dime_find_id', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
@@ -3978,7 +3978,7 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('da', 'vocabulary', 'dime.kommune.vordingborg', 'official', 'Vordingborg Kommune', ''),
 ('da', 'vocabulary', 'dime.material.aluminium', 'default', 'Aluminium', ''),
 ('da', 'vocabulary', 'dime.material.copper', 'default', 'Kobber', ''),
-('da', 'vocabulary', 'dime.material.copperalloy', 'default', 'Kobberlegering', ''),
+('da', 'vocabulary', 'dime.material.copperalloy', 'default', 'Bronze', ''),
 ('da', 'vocabulary', 'dime.material.gold', 'default', 'Guld', ''),
 ('da', 'vocabulary', 'dime.material.iron', 'default', 'Jern', ''),
 ('da', 'vocabulary', 'dime.material.lead', 'default', 'Bly', ''),

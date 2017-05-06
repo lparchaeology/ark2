@@ -8,6 +8,7 @@
 
 namespace ARK\File;
 
+use ARK\File\MediaType;
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
 
@@ -46,7 +47,7 @@ class File implements Item
         $this->init();
         if ($this->filepath === null) {
             $token = floor(intval($this->id()) / 1000) * 1000;
-            $suffix = MimeType::findDefaultExtension($this->mediatype()->name());
+            $suffix = MediaType::findDefaultExtension($this->mediatype()->name());
             $this->filepath = $this->type().'/'.$token.'/'.$this->id().'.'.$this->sequence.'.'.$suffix;
         }
         return $this->filepath;

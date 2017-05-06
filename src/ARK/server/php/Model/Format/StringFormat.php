@@ -62,10 +62,6 @@ class StringFormat extends Format
         return $this->defaultSize;
     }
 
-    public static function buildStringMetadata(ClassMetadataBuilder $builder)
-    {
-    }
-
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table

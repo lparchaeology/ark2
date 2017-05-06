@@ -34,11 +34,16 @@ use ARK\Form\Type\AbstractFormType;
 use ARK\Model\Property;
 use ARK\Vocabulary\Term;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ScalarFormType extends AbstractFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if (!isset($options['field']['object'])) {
+            dump($this);
+            dump($options);
+        }
         $field = $options['field']['object'];
         $format = $field->attribute()->format();
         $builder->add($format->valueName(), $options['field']['value']['type'], $options['field']['value']['options']);

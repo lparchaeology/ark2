@@ -31,9 +31,12 @@
 namespace ARK\Form\Type;
 
 use ARK\Form\Type\ScalarFormType;
+use ARK\Model\Property;
+use ARK\Model\LocalText;
 use ARK\Service;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LocalTextType extends ScalarFormType
 {
@@ -51,53 +54,36 @@ class LocalTextType extends ScalarFormType
             return;
         }
         $forms = iterator_to_array($forms);
-        $name = $property->attribute()->name();
-        $language = Service::locale();
-        $mimetype = 'text/plain';
-        $values = $property->value();
-        $text = [];
-        foreach ($values as $value) {
-            $text[$value['language']] = $value['content'];
-            $mimetype = $value['mimetype'];
-        }
-        $content = '';
-        if (isset($text[$language])) {
-            $content = $text[$language];
-        } else {
-            foreach (Service::localeFallbacks() as $fallback) {
-                if (isset($text[$fallback])) {
-                    $content = $text[$fallback];
-                    continue;
-                }
+        if ($property instanceof Property) {
+            dump($property->attribute()->name());
+            $value = $property->value();
+            $language = Service::locale();
+            // Shouldn't need this once using Property object instead
+            dump($value);
+            if (is_array($value)) {
+                $value = $value[0];
+                dump($value);
             }
+            dump($value->languages());
+            dump($value->content());
+            dump($value->mediaType());
+            dump($language);
+            dump($value->content($language));
+            $forms['previous']->setData(serialize($value->contents()));
+            $forms['mediatype']->setData($value->mediaType());
+            $forms['language']->setData($language);
+            $forms['content']->setData($value->content($language));
         }
-        // Shouldn't need this once using Property object instead
-        $forms['previous']->setData(serialize($text));
-        $forms['mimetype']->setData($mimetype);
-        $forms['language']->setData($language);
-        $forms['content']->setData($content);
     }
 
     public function mapFormsToData($forms, &$property)
     {
         $forms = iterator_to_array($forms);
-        $name = $property->attribute()->name();
-        $text = unserialize($forms['previous']->getData());
-        $mimetype = $forms['mimetype']->getData();
-        $language = $forms['language']->getData();
-        $content = $forms['content']->getData();
-        if (isset($text[$language]) && $text[$language] == $content) {
-            return;
-        }
-        if (!isset($text[$language]) && !$content) {
-            return;
-        }
-        $text[$language] = $content;
-        $values = [];
-        foreach ($text as $lang => $cont) {
-            $values[] = ['mimetype' => $mimetype, 'language' => $lang, 'content' => $cont];
-        }
-        $property->setValue($values);
+        $data = new LocalText();
+        $data->setContents(unserialize($forms['previous']->getData()));
+        $data->setMediaType($forms['mediatype']->getData());
+        $data->setContent($forms['content']->getData(), $forms['language']->getData());
+        $property->setValue($data);
     }
 
     public function getParent()

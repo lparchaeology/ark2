@@ -31,40 +31,41 @@
  namespace DIME\Form\Type;
 
 use ARK\Form\Type\AbstractFormType;
- use ARK\Model\Property;
- use Symfony\Component\Form\Extension\Core\Type\CollectionType;
- use Symfony\Component\Form\FormBuilderInterface;
+use ARK\Model\Property;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\FormBuilderInterface;
 
- class ClassificationType extends AbstractFormType
- {
-     public function buildForm(FormBuilderInterface $builder, array $options)
-     {
-         $fieldOptions['label'] = false;
-         $fieldOptions['mapped'] = false;
-         $builder->add('classifications', CollectionType::class, $fieldOptions);
-         $builder->setDataMapper($this);
-     }
+class ClassificationType extends AbstractFormType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $fieldOptions['label'] = false;
+        $fieldOptions['mapped'] = false;
+        //$builder->add('classifications', CollectionType::class, $fieldOptions);
+        //$builder->setDataMapper($this);
+    }
 
-     protected function options()
-     {
-         return [
+    protected function options()
+    {
+        return [
              'compound' => true,
              'multiple' => true,
          ];
-     }
+    }
 
-     public function mapDataToForms($property, $forms)
-     {
-         if (!$property) {
-             return;
-         }
-         $forms = iterator_to_array($forms);
-         $name = $property->attribute()->name();
-         $value = $property->value();
-         $forms['classifications']->setData($value);
-     }
+    public function mapDataToForms($property, $forms)
+    {
+        return;
+        if (!$property) {
+            return;
+        }
+        $forms = iterator_to_array($forms);
+        $name = $property->attribute()->name();
+        $value = $property->value();
+        $forms['classifications']->setData($value);
+    }
 
-     public function mapFormsToData($forms, &$property)
-     {
-     }
- }
+    public function mapFormsToData($forms, &$property)
+    {
+    }
+}

@@ -149,7 +149,7 @@ class Field extends Element
             $options['label'] = ($this->keyword() ?: false);
         }
         if ($options['mode'] == 'view') {
-            $options['required'] = false;
+            unset($options['required']);
         } elseif ($options['required'] === null) {
             $options['required'] = $this->attribute()->isRequired();
         }
@@ -300,7 +300,7 @@ class Field extends Element
                 return null;
             }
             if ($value instanceof Actor) {
-                return $value->property('fullname')->serialize()[0]['content'];
+                return $value->property('fullname')->value()->content();
             }
             if ($value instanceof Event) {
                 $type = $value->property('type')->value();
@@ -311,7 +311,7 @@ class Field extends Element
             }
             if ($value instanceof Item) {
                 if (isset($options['options']['display_property'])) {
-                    return $value->property($options['options']['display_property'])->serialize()[0]['content'];
+                    return $value->property($options['options']['display_property'])->value()->content();
                 }
                 return $value->property('id')->serialize();
             }
@@ -319,14 +319,7 @@ class Field extends Element
                 return Service::translate($value->keyword());
             }
             if ($this->attribute()->format()->datatype()->id() == 'text') {
-                $language = Service::locale();
-                $values = $item->property($this->attribute->name())->value();
-                foreach ($values as $trans) {
-                    if ($trans['language'] == $language) {
-                        return $trans['content'];
-                    }
-                }
-                return $values[0]['content'];
+                return $item->property($this->attribute->name())->value()->content();
             }
             if (is_array($value)) {
                 $value = $value[$this->attribute()->format()->valueName()];

@@ -41,8 +41,8 @@ class DatingType extends AbstractFormType
     {
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
-        $builder->add('datings', CollectionType::class, $fieldOptions);
-        $builder->setDataMapper($this);
+        //$builder->add('datings', CollectionType::class, $fieldOptions);
+        //$builder->setDataMapper($this);
     }
 
     protected function options()
@@ -55,6 +55,7 @@ class DatingType extends AbstractFormType
 
     public function mapDataToForms($property, $forms)
     {
+        return;
         if (!$property) {
             return;
         }

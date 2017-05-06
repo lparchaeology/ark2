@@ -31,6 +31,7 @@
  namespace DIME\Form\Type;
 
 use ARK\Form\Type\AbstractFormType;
+use ARK\Form\Type\LocalTextType;
 use ARK\Model\Property;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -41,8 +42,16 @@ class DescriptionType extends AbstractFormType
     {
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
+        $fieldOptions['entry_type'] = LocalTextType::class;
+        $entryOptions['field'] = $options['field'];
+        unset($entryOptions['field']['value']['options']['multiple']);
+        $entryOptions['label'] = false;
+        $entryOptions['mapped'] = false;
+        $fieldOptions['entry_options'] = $entryOptions;
+        dump($options);
+        dump($fieldOptions);
         $builder->add('descriptions', CollectionType::class, $fieldOptions);
-        $builder->setDataMapper($this);
+        //$builder->setDataMapper($this);
     }
 
     protected function options()
@@ -50,6 +59,7 @@ class DescriptionType extends AbstractFormType
         return [
              'compound' => true,
              'multiple' => true,
+             'entry_type' => LocalTextType::class,
          ];
     }
 
@@ -60,8 +70,14 @@ class DescriptionType extends AbstractFormType
         }
         $forms = iterator_to_array($forms);
         $name = $property->attribute()->name();
-        $value = $property->value();
-        $forms['descriptions']->setData($value);
+        $value = $property->serialize();
+        $data = [];
+        foreach ($value as $text) {
+            $data[] = $text['text'];
+        }
+        dump($property);
+        dump($data);
+        $forms['descriptions']->setData($data);
     }
 
     public function mapFormsToData($forms, &$property)
