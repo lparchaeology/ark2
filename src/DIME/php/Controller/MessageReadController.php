@@ -31,6 +31,7 @@
 namespace DIME\Controller;
 
 use ARK\Http\JsonResponse;
+use ARK\ORM\ORM;
 use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -44,8 +45,10 @@ class MessageReadController
             $message = ORM::find(Message::class, $message);
             $recipient = $content['recipient'];
             $recipient = ORM::find(Actor::class, $recipient);
-            if ($message && $recipient && $message->isRecipient()) {
+            if ($message && $recipient && $message->isRecipient($recipient)) {
                 $data['result'] = $message->markAsRead($recipient);
+                ORM::persist($message);
+                ORM::flush($message);
             } else {
                 $data['error']['code']['9999'];
                 $data['error']['message']['Message or Recipient Not Found'];

@@ -98,7 +98,7 @@ abstract class Vocabulary
 
     public function transitions()
     {
-        if ($this->hasTransitions() && $this->$definition === null) {
+        if ($this->hasTransitions() && $this->definition === null) {
             $builder = new DefinitionBuilder;
             foreach ($this->terms() as $term) {
                 $builder->addPlace($term->name());
@@ -114,9 +114,9 @@ abstract class Vocabulary
                     }
                 }
             }
-            $this->$definition = $builder->build();
+            $this->definition = $builder->build();
         }
-        return $this->$definition;
+        return $this->definition;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

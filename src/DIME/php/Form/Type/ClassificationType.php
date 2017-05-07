@@ -42,8 +42,6 @@ class ClassificationType extends AbstractFormType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $valueOptions = $options['field']['value']['options'];
-        // Not multi-vocality for now
-        unset($valueOptions['multiple']);
         $field = $options['field']['object'];
         $format = $field->attribute()->format();
 
