@@ -8,11 +8,11 @@ $(document).ready(function() {
 });
 
 function initialisePickMap() {
-    
+
     proj4.defs("EPSG:32633","+proj=utm +zone=33 +datum=WGS84 +units=m +no_defs");
 
     proj4.defs("EPSG:32632","+proj=utm +zone=32 +datum=WGS84 +units=m +no_defs");
-    
+
     mapPickLayers = [
         new ol.layer.Tile({
             visible: true,
@@ -94,20 +94,20 @@ function initialisePickMap() {
                 $(".mappick_northing").attr("readonly", true);
                 $(".mappick-utm").attr("readonly", false);
                 break;
-                
+
             case 'decimalgrader':
                 $(".mappick_easting").attr("readonly", false);
                 $(".mappick_northing").attr("readonly", false);
                 $(".mappick-utm").attr("readonly", true);
                 break;
-                
+
             default:
                 $(".mappick_easting").attr("readonly", true);
                 $(".mappick_northing").attr("readonly", true);
                 $(".mappick-utm").attr("readonly", false);
         }
      });
-    
+
      $('.mappick_easting').on('change', function() {
          updateUtmpoint();
          updateMappoint();
@@ -117,23 +117,23 @@ function initialisePickMap() {
          updateUtmpoint();
          updateMappoint();
      });
-     
+
      $('.mappick-utm').on('change', function() {
          updateDecimalgrader();
          updateMappoint();
      });
-     
+
      $(".mappick_fields").keydown(function (event) {
          if (event.keyCode == 13) {
              event.preventDefault();
              document.activeElement.blur();
          }
      });
-     
+
     mapPickMap.addInteraction(draw);
 
     updateUtmpoint();
-    
+
     //$('.mappick_fields input').change();
     updateMappoint();
 };
@@ -144,7 +144,7 @@ function updateMunicipality() {
     var wkt = 'POINT(' + easting + ' ' + northing + ')';
     $.post(path + 'api/geo/find', wkt, function(result) {
         // TODO Find way without using actual form IDs
-        $('#dime_find_item_kommune_term').val(result['kommune']['term']).trigger("change");
+        $('#dime_find_item_municipality_term').val(result['municipality']['term']).trigger("change");
         $('#dime_find_item_museum_module').val(result['museum']['module']);
         $('#dime_find_item_museum_item').val(result['museum']['item']);
         $('#dime_find_item_museum_content').val(result['museum']['name']).trigger("change");

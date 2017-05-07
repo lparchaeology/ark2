@@ -47,19 +47,19 @@ class GeoFindController
         $wkt = $request->getContent();
         try {
             $point = Point::fromText($wkt);
-            $id = Service::database()->getSpatialTermsContain('dime.denmark.kommune', $wkt, '4326');
-            $kommune = ORM::find(Term::class, ['concept' => 'dime.denmark.kommune', 'term' => $id]);
-            $id = Service::database()->getKommuneMuseum($id);
+            $mid = Service::database()->getSpatialTermsContain('dime.denmark.municipality', $wkt, '4326');
+            $municipality = ORM::find(Term::class, ['concept' => 'dime.denmark.municipality', 'term' => $mid]);
+            $id = Service::database()->getMunicipalityMuseum($mid);
             $museum = ORM::find(Actor::class, $id);
             $data['in'] = $wkt;
             $data['x'] = $point->x();
             $data['y'] = $point->y();
-            $data['kommune']['concept'] = $kommune->concept()->concept();
-            $data['kommune']['term'] = $kommune->name();
-            $data['kommune']['text'] = Service::translate($kommune->keyword());
+            $data['municipality']['concept'] = $municipality->concept()->concept();
+            $data['municipality']['term'] = $municipality->name();
+            $data['municipality']['text'] = Service::translate($municipality->keyword());
             $data['museum']['item'] = $museum->id();
             $data['museum']['module'] = $museum->schema()->module()->name();
-            $data['museum']['name'] = $museum->property('fullname')->value()[0]['content'];
+            $data['museum']['name'] = $museum->property('fullname')->value()->content();
         } catch (Exception $e) {
             $data = [$e->getMessage()];
         }

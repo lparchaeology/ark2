@@ -53,13 +53,13 @@ class FindListController extends DimeFormController
     {
         $query = $request->query->all();
         $criteria = [];
-        if (isset($query['kommune'])) {
+        if (isset($query['municipality'])) {
             $municipalities = ORM::findBy(Term::class, [
                 'concept' => 'dime.denmark.municipality',
-                'term' => $query['kommune']
+                'term' => $query['municipality']
             ]);
             $data['dime_find_filter_municipality'] = $municipalities->toArray();
-            // $criteria['kommune'] = $kommune->name();
+            // $criteria['municipality'] = $municipality->name();
         }
         if (isset($query['type'])) {
             $types = ORM::findBy(Term::class, [
@@ -121,10 +121,10 @@ class FindListController extends DimeFormController
         $query = $request->query->all();
         if ($municipalities) {
             foreach ($municipalities as $municipality) {
-                $query['kommune'][] = $municipality->name();
+                $query['municipality'][] = $municipality->name();
             }
         } else {
-            unset($query['kommune']);
+            unset($query['municipality']);
         }
         if ($types) {
             foreach ($types as $type) {

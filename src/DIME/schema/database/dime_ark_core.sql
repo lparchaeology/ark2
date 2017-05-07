@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6
+-- version 4.6.5.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 07, 2017 at 09:09 AM
--- Server version: 10.1.22-MariaDB
--- PHP Version: 7.1.3
+-- Generation Time: May 07, 2017 at 04:04 PM
+-- Server version: 5.6.34
+-- PHP Version: 7.1.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -5483,27 +5483,27 @@ CREATE TABLE `ark_workflow_grant` (
 --
 
 INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
+('researcher', 'core.file.read'),
 ('anon', 'core.page.read'),
 ('registrar', 'dime.find.create'),
 ('registrar', 'dime.find.read'),
+('researcher', 'dime.find.read'),
 ('registrar', 'dime.find.read.custody'),
 ('registrar', 'dime.find.read.finddate'),
+('researcher', 'dime.find.read.finddate'),
 ('registrar', 'dime.find.read.finder'),
 ('registrar', 'dime.find.read.location'),
+('researcher', 'dime.find.read.location'),
 ('registrar', 'dime.find.read.owner'),
 ('registrar', 'dime.find.read.treasure'),
+('researcher', 'dime.find.read.treasure'),
 ('registrar', 'dime.find.update'),
 ('registrar', 'dime.find.update.custody'),
 ('registrar', 'dime.find.update.finddate'),
 ('registrar', 'dime.find.update.finder'),
 ('registrar', 'dime.find.update.location'),
 ('registrar', 'dime.find.update.owner'),
-('registrar', 'dime.find.update.treasure'),
-('researcher', 'core.file.read'),
-('researcher', 'dime.find.read'),
-('researcher', 'dime.find.read.finddate'),
-('researcher', 'dime.find.read.location'),
-('researcher', 'dime.find.read.treasure');
+('registrar', 'dime.find.update.treasure');
 
 -- --------------------------------------------------------
 
@@ -5698,39 +5698,39 @@ CREATE TABLE `ark_workflow_update` (
 --
 
 INSERT INTO `ark_workflow_update` (`schma`, `action`, `type`, `attribute`) VALUES
-('dime.find', 'accession', 'find', 'owner'),
-('dime.find', 'accession', 'find', 'process'),
-('dime.find', 'appraise', 'find', 'process'),
-('dime.find', 'appraise', 'find', 'treasure'),
-('dime.find', 'assess', 'find', 'process'),
-('dime.find', 'assess', 'find', 'treasure'),
+('dime.find', 'receive', 'find', 'custodian'),
+('dime.find', 'record', 'find', 'custodian'),
 ('dime.find', 'decline', 'find', 'custody'),
-('dime.find', 'decline', 'find', 'recipient'),
-('dime.find', 'delete', 'find', 'process'),
 ('dime.find', 'destroy', 'find', 'custody'),
 ('dime.find', 'discard', 'find', 'custody'),
 ('dime.find', 'lose', 'find', 'custody'),
-('dime.find', 'receive', 'find', 'custodian'),
 ('dime.find', 'receive', 'find', 'custody'),
-('dime.find', 'receive', 'find', 'recipient'),
-('dime.find', 'record', 'find', 'custodian'),
 ('dime.find', 'record', 'find', 'custody'),
-('dime.find', 'record', 'find', 'finder'),
-('dime.find', 'record', 'find', 'owner'),
-('dime.find', 'record', 'find', 'process'),
-('dime.find', 'record', 'find', 'treasure'),
 ('dime.find', 'recover', 'find', 'custody'),
+('dime.find', 'request', 'find', 'custody'),
+('dime.find', 'send', 'find', 'custody'),
+('dime.find', 'withdraw', 'find', 'custody'),
+('dime.find', 'record', 'find', 'finder'),
+('dime.find', 'accession', 'find', 'owner'),
+('dime.find', 'record', 'find', 'owner'),
+('dime.find', 'transfer', 'find', 'owner'),
+('dime.find', 'accession', 'find', 'process'),
+('dime.find', 'appraise', 'find', 'process'),
+('dime.find', 'assess', 'find', 'process'),
+('dime.find', 'delete', 'find', 'process'),
+('dime.find', 'record', 'find', 'process'),
 ('dime.find', 'reject', 'find', 'process'),
 ('dime.find', 'release', 'find', 'process'),
 ('dime.find', 'report', 'find', 'process'),
-('dime.find', 'request', 'find', 'custody'),
-('dime.find', 'request', 'find', 'recipient'),
-('dime.find', 'send', 'find', 'custody'),
-('dime.find', 'send', 'find', 'recipient'),
-('dime.find', 'transfer', 'find', 'owner'),
 ('dime.find', 'validate', 'find', 'process'),
-('dime.find', 'withdraw', 'find', 'custody'),
-('dime.find', 'withdraw', 'find', 'recipient');
+('dime.find', 'decline', 'find', 'recipient'),
+('dime.find', 'receive', 'find', 'recipient'),
+('dime.find', 'request', 'find', 'recipient'),
+('dime.find', 'send', 'find', 'recipient'),
+('dime.find', 'withdraw', 'find', 'recipient'),
+('dime.find', 'appraise', 'find', 'treasure'),
+('dime.find', 'assess', 'find', 'treasure'),
+('dime.find', 'record', 'find', 'treasure');
 
 -- --------------------------------------------------------
 

@@ -38,10 +38,10 @@ class ChoroplethController
 {
     public function __invoke(Request $request)
     {
-        //get all the kommune
-        $kommunes = Service::database()->getSpatialTerms('dime.denmark.kommune');
-        // get the counts of finds in kommune
-        $findCounts = Service::database()->getSpatialTermChoropleth('dime.denmark.kommune', 'find', 'findpoint');
+        //get all the municipality
+        $municipalities = Service::database()->getSpatialTerms('dime.denmark.municipality');
+        // get the counts of finds in municipality
+        $findCounts = Service::database()->getSpatialTermChoropleth('dime.denmark.municipality', 'find', 'location');
         //create a blank array to return
         $data = [];
         $curmax = 0;
@@ -61,28 +61,28 @@ class ChoroplethController
 
         $band = ($curmax - $curmin)/3;
 
-        foreach ($kommunes as $kommune) {
-            // if the kommune has a count associate that with the geometry
-            if (array_key_exists($kommune['term'], $findCounts)) {
-                $kommune['count'] = $findCounts[$kommune['term']];
-                if ($kommune['count'] == $curmin) {
-                    $kommune['band'] = 1;
-                } elseif ($kommune['count'] < $curmin + $band) {
-                    $kommune['band'] = 2;
-                } elseif ($kommune['count'] < $curmin + $band * 2) {
-                    $kommune['band'] = 3;
-                } elseif ($kommune['count'] < $curmin + $band * 3) {
-                    $kommune['band'] = 4;
+        foreach ($municipalities as $municipality) {
+            // if the municipality has a count associate that with the geometry
+            if (array_key_exists($municipality['term'], $findCounts)) {
+                $municipality['count'] = $findCounts[$municipality['term']];
+                if ($municipality['count'] == $curmin) {
+                    $municipality['band'] = 1;
+                } elseif ($municipality['count'] < $curmin + $band) {
+                    $municipality['band'] = 2;
+                } elseif ($municipality['count'] < $curmin + $band * 2) {
+                    $municipality['band'] = 3;
+                } elseif ($municipality['count'] < $curmin + $band * 3) {
+                    $municipality['band'] = 4;
                 } else {
-                    $kommune['band'] = 4;
+                    $municipality['band'] = 4;
                 }
             } else {
                 //otherwise it is 0
-                $kommune['count'] = "0";
-                $kommune['band'] = 1;
+                $municipality['count'] = "0";
+                $municipality['band'] = 1;
             }
-            // fill return array with these new kommune arrays
-            $data['kommune'][] = $kommune;
+            // fill return array with these new municipality arrays
+            $data['municipality'][] = $municipality;
         }
 
         $data['max'] = $curmax;

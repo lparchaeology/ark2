@@ -876,6 +876,8 @@ class Database
             ':point' => $wkt,
             ':srid' => $srid,
         );
+        dump($sql);
+        dump($params);
         return $this->spatial()->fetchColumn($sql, $params);
     }
 
@@ -896,7 +898,7 @@ class Database
         return $this->spatial()->fetchAll($sql, $params);
     }
 
-    public function getKommuneMuseum($kommune)
+    public function getMunicipalityMuseum($municipality)
     {
         $sql = "
             SELECT item
@@ -907,8 +909,8 @@ class Database
         ";
         $params = array(
             ':module' => 'actor',
-            ':parameter' => 'dime.denmark.kommune',
-            ':value' => $kommune,
+            ':parameter' => 'dime.denmark.municipality',
+            ':value' => $municipality,
         );
         return $this->data()->fetchColumn($sql, $params);
     }

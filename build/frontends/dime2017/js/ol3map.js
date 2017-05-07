@@ -156,14 +156,14 @@ function initialiseMapView() {
         window.mapcollection = collection;
 
         collection.on('add', function(evt) {
-            
+
             if (!evt.shiftKey) {
                 var elements = $('.dime-table tr');
-                
+
                 for (var i = 0; i < elements.length; i++) {
                     $(elements[i]).removeClass('selected');
                 }
-                
+
             }
 
             var extent = [Infinity,Infinity,-Infinity,-Infinity];
@@ -171,11 +171,11 @@ function initialiseMapView() {
             collection.forEach(function(e, i, a) {
                 var ark_id = e.get('ark_id');
                 $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
-                
+
                 var featureextent = e.getGeometry().getExtent();
-                
+
                 console.log(featureextent);
-                
+
                 if(typeof featureextent != 'undefined'){
                     extent = [
                         Math.min(featureextent[0],extent[0]),
@@ -183,26 +183,26 @@ function initialiseMapView() {
                         Math.max(featureextent[2],extent[2]),
                         Math.max(featureextent[3],extent[3])
                     ];
-                    
+
                 }
-                
-                
+
+
             });
-            
+
             console.log(extent);
-            
+
             map.getView().fit(extent, map.getSize());
-            
+
         });
 
         collection.on('remove', function(evt) {
 
             var elements = $('.dime-table tr');
-            
+
             for (var i = 0; i < elements.length; i++) {
                 $(elements[i]).removeClass('selected');
             }
-            
+
             collection.forEach(function(e, i, a) {
                 var ark_id = e.get('ark_id');
 
@@ -224,7 +224,7 @@ function initialiseMapView() {
             $(".ol-viewport").append($div);
             var prerun = false;
             map.getLayers().forEach(function(e, i, a) {
-                if (e.get("name") === "kommunelayer") {
+                if (e.get("name") === "municipalitylayer") {
                     e.setVisible(true);
                     $('.modal-backdrop').detach();
                     view = map.getView();
@@ -239,16 +239,16 @@ function initialiseMapView() {
             if (prerun == false) {
                 $.get(path + 'api/geo/choropleth', false, function(result) {
                     var format = new ol.format.WKT();
-                    var kommunesource = [];
-                    var kommunes = result['kommune'];
-                    for (kommune in kommunes) {
-                        feature = format.readFeature(kommunes[kommune]['geometry'], {
-                            dataProjection: 'EPSG:'+kommunes[kommune]['srid'],
+                    var municipalitysource = [];
+                    var municipalities = result['municipality'];
+                    for (municipality in municipalities) {
+                        feature = format.readFeature(municipalities[municipality]['geometry'], {
+                            dataProjection: 'EPSG:'+municipalities[municipality]['srid'],
                             featureProjection: 'EPSG:3857'
                         });
-                        feature.set('count', kommunes[kommune]['count']);
-                        feature.set('band', kommunes[kommune]['band']);
-                        kommunesource.push(feature);
+                        feature.set('count', municipalities[municipality]['count']);
+                        feature.set('band', municipalities[municipality]['band']);
+                        municipalitysource.push(feature);
                     }
 
                     var bands = {
@@ -299,20 +299,20 @@ function initialiseMapView() {
 
                     $('.map-legend').show();
 
-                    var kommunelayer = new ol.layer.Vector({
+                    var municipalitylayer = new ol.layer.Vector({
                         source: new ol.source.Vector({
-                            features: kommunesource
+                            features: municipalitysource
                         }),
                         style: function(feature, resolution) {
                             return [styles[feature.get('band')]];
                         }
 
                     });
-                    kommunelayer.set('name', "kommunelayer");
-                    kommunelayer.set('selectable', false);
-                    map.addLayer(kommunelayer);
+                    municipalitylayer.set('name', "municipalitylayer");
+                    municipalitylayer.set('selectable', false);
+                    map.addLayer(municipalitylayer);
                     view = map.getView();
-                    extent = kommunelayer.getSource().getExtent();
+                    extent = municipalitylayer.getSource().getExtent();
                     view.fit(extent, map.getSize());
                     $('.modal-backdrop').detach();
                 }).fail(function() {
@@ -328,7 +328,7 @@ function initialiseMapView() {
             extent = [Infinity, Infinity, -Infinity, -Infinity];
 
             map.getLayers().forEach(function(e, i, a) {
-                if (e.get("name") === "kommunelayer") {
+                if (e.get("name") === "municipalitylayer") {
                     e.setVisible(false);
                 } else {
                     if (e.get("name") === "yours" || e.get("name") === "theirs") {
@@ -363,7 +363,7 @@ function initialiseMapView() {
         default:
 
     }
-    
+
     return map;
 }
 
