@@ -54,6 +54,8 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         // Temp APi routes
+        $controllers->post('/api/internal/message/read', 'DIME\Controller\MessageReadController')
+                    ->bind('api.internal.message.read');
         $controllers->post('/api/geo/find', 'DIME\Controller\GeoFindController')
                     ->bind('api.geo.find');
         $controllers->get('/api/geo/choropleth', 'DIME\Controller\ChoroplethController')

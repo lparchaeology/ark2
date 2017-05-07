@@ -31,6 +31,7 @@
 namespace ARK\Message;
 
 use ARK\Actor\Actor;
+use ARK\ARK;
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
 use DateTime;
@@ -64,8 +65,7 @@ class Message implements Item
 
     public function isRecipient(Actor $actor)
     {
-        $recipients = $this->recipients();
-        foreach ($recipients as $recipient) {
+        foreach ($this->recipients() as $recipient) {
             if ($actor->id() == $recipient['sent_to']->id()) {
                 return true;
             }
@@ -73,10 +73,20 @@ class Message implements Item
         return false;
     }
 
-    public function wasReadBy(Actor $recipient)
+    public function markAsRead(Actor $actor)
     {
-        $recipients = $this->recipients();
-        foreach ($recipients as $recipient) {
+        foreach ($this->recipients() as &$recipient) {
+            if ($actor->id() == $recipient['sent_to']->id() && !isset($recipient['read_on'])) {
+                $recipient['sent_to'] = ARK::timestamp();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function wasReadBy(Actor $actor)
+    {
+        foreach ($this->recipients() as $recipient) {
             if ($actor->id() == $recipient['sent_to']->id() && isset($recipient['read_on'])) {
                 return true;
             }
