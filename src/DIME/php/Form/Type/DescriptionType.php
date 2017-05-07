@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Carousel Form Type
+ * DIME Form Type
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,57 +30,79 @@
 
  namespace DIME\Form\Type;
 
+use ARK\Form\Type\TermChoiceType;
 use ARK\Form\Type\AbstractFormType;
-use ARK\Form\Type\LocalTextType;
 use ARK\Model\Property;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use ARK\ORM\ORM;
+use ARK\Service;
+use ARK\Workflow\Event;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class DescriptionType extends AbstractFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $valueOptions = $options['field']['value']['options'];
+        // No multi-vocality for now
+        unset($valueOptions['multiple']);
+        $field = $options['field']['object'];
+        $format = $field->attribute()->format();
+
+        $builder->add('content', TextareaType::class, $valueOptions);
+
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
-        $fieldOptions['entry_type'] = LocalTextType::class;
-        $entryOptions['field'] = $options['field'];
-        unset($entryOptions['field']['value']['options']['multiple']);
-        $entryOptions['label'] = false;
-        $entryOptions['mapped'] = false;
-        $fieldOptions['entry_options'] = $entryOptions;
-        dump($options);
-        dump($fieldOptions);
-        $builder->add('descriptions', CollectionType::class, $fieldOptions);
-        //$builder->setDataMapper($this);
+        $builder->add('event', HiddenType::class, $fieldOptions);
+        $builder->add('previous', HiddenType::class, $fieldOptions);
+        $builder->add('mediatype', HiddenType::class, $fieldOptions);
+        $builder->add('language', HiddenType::class, $fieldOptions);
+
+        $builder->setDataMapper($this);
     }
 
     protected function options()
     {
         return [
-             'compound' => true,
-             'multiple' => true,
-             'entry_type' => LocalTextType::class,
+            'compound' => true,
          ];
     }
 
     public function mapDataToForms($property, $forms)
     {
-        if (!$property) {
-            return;
-        }
         $forms = iterator_to_array($forms);
-        $name = $property->attribute()->name();
-        $value = $property->serialize();
-        $data = [];
-        foreach ($value as $text) {
-            $data[] = $text['text'];
+        if ($property instanceof Property) {
+            $value = $property->value();
+            if ($value) {
+                // No multi-vocality for now
+                $event = $value[0]['event'];
+                $text = $value[0]['text'];
+                $language = Service::locale();
+                $forms['event']->setData($event->id());
+                $forms['content']->setData($text->content($language));
+                $forms['previous']->setData(serialize($text->contents()));
+                $forms['mediatype']->setData($text->mediaType());
+                $forms['language']->setData($language);
+            }
         }
-        dump($property);
-        dump($data);
-        $forms['descriptions']->setData($data);
     }
 
     public function mapFormsToData($forms, &$property)
     {
+        $forms = iterator_to_array($forms);
+        if ($property instanceof Property) {
+            $text = new LocalText();
+            $text->setContents(unserialize($forms['previous']->getData()));
+            $text->setMediaType($forms['mediatype']->getData());
+            $text->setContent($forms['content']->getData(), $forms['language']->getData());
+            $event = $forms['event']->getData();
+            if ($event) {
+                $event = ORM::find(Event::class, $event);
+            }
+            $data['event'] = $event;
+            $data['text'] = $text;
+            $property->setValue($data);
+        }
     }
 }

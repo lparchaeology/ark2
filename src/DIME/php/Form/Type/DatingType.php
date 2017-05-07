@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Carousel Form Type
+ * DIME Form Type
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -36,7 +36,6 @@ use ARK\Model\Property;
 use ARK\ORM\ORM;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class DatingType extends AbstractFormType
@@ -65,9 +64,6 @@ class DatingType extends AbstractFormType
         $builder->add('entered', HiddenType::class, $fieldOptions);
 
         $builder->setDataMapper($this);
-        dump($field);
-        dump($format);
-        dump($valueOptions);
     }
 
     protected function options()
@@ -84,7 +80,6 @@ class DatingType extends AbstractFormType
             $value = $property->serialize();
             if ($value) {
                 $value = $value[0];
-                dump($value);
                 $forms['event']->setData($value['event']['item']);
                 $forms['entered']->setData($value['entered']);
                 $forms['year']->setData($value['year'][0]);
@@ -92,7 +87,6 @@ class DatingType extends AbstractFormType
                 $vocabulary = $property->attribute()->format()->attribute('period')->vocabulary();
                 $forms['period']->setData($vocabulary->term($value['period'][0]));
                 $forms['period_span']->setData($vocabulary->term($value['period'][1]));
-                dump($forms['period']);
             }
         }
     }

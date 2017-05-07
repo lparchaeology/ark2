@@ -66,7 +66,6 @@ class TextFormat extends Format
 
     protected function fragmentValue($fragment, ArrayCollection $properties = null)
     {
-        dump('fragmentValue');
         $data = new LocalText();
         if ($fragment instanceof ArrayCollection) {
             foreach ($fragment as $frag) {
@@ -77,7 +76,6 @@ class TextFormat extends Format
             $data->setContent($fragment->value(), $fragment->parameter());
             $data->setMediatype($fragment->format());
         }
-        dump($data);
         return $data;
     }
 

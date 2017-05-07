@@ -45,7 +45,7 @@ class LocalText
 
     public function contents()
     {
-        return $this->contents;
+        return $this->content;
     }
 
     public function content($language = null)

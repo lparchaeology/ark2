@@ -61,20 +61,9 @@ class LocalTextType extends AbstractFormType
         }
         $forms = iterator_to_array($forms);
         if ($property instanceof Property) {
-            dump($property->attribute()->name());
             $value = $property->value();
             $language = Service::locale();
             // Shouldn't need this once using Property object instead
-            dump($value);
-            if (is_array($value)) {
-                $value = $value[0];
-                dump($value);
-            }
-            dump($value->languages());
-            dump($value->content());
-            dump($value->mediaType());
-            dump($language);
-            dump($value->content($language));
             $forms['previous']->setData(serialize($value->contents()));
             $forms['mediatype']->setData($value->mediaType());
             $forms['language']->setData($language);

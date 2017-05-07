@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 07, 2017 at 07:01 PM
+-- Generation Time: May 07, 2017 at 08:16 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -1681,7 +1681,7 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `lab
 ('dime_find_custodian', 'dime.find', 'find', 'custodian', 1, 'hidden', 'hidden', NULL, NULL, '{\"display_property\": \"fullname\", \"attr\": {\"style\": \"width:50%\"}}'),
 ('dime_find_custody', 'dime.find', 'find', 'custody', 1, 'active', NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
 ('dime_find_dating', 'dime.find', 'find', 'dating', 1, 'active', NULL, NULL, 'DIME\\Form\\Type\\DatingType', ''),
-('dime_find_description', 'dime.find', 'find', 'description', 1, 'active', NULL, NULL, NULL, ''),
+('dime_find_description', 'dime.find', 'find', 'description', 1, 'active', NULL, NULL, 'DIME\\Form\\Type\\DescriptionType', ''),
 ('dime_find_finddate', 'dime.find', 'find', 'finddate', 1, 'active', NULL, NULL, NULL, '{\"widget\": \"picker\"}'),
 ('dime_find_finder', 'dime.find', 'find', 'finder', 1, 'active', NULL, NULL, NULL, '{\"display_property\": \"fullname\", \"attr\": {\"style\": \"width:50%\"}}'),
 ('dime_find_finder_id', 'dime.find', 'find', 'finder_id', 1, 'active', NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
@@ -1769,7 +1769,7 @@ INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `elemen
 ('dime_find_details', 0, 0, 14, '', 'dime_find_condition', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('dime_find_details', 0, 0, 16, '', 'dime_find_weight', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('dime_find_details', 0, 0, 18, '', 'dime_find_length', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
-('dime_find_details', 0, 0, 20, '', 'dime_find_finder_id', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('dime_find_details', 0, 0, 20, '', 'dime_find_description', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('dime_find_edit', 0, 0, 0, '', 'dime_find_event', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('dime_find_edit', 0, 1, 0, '', 'dime_find_details', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('dime_find_event', 0, 0, 0, '', 'dime_find_id', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),

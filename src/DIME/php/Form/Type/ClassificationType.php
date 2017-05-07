@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Carousel Form Type
+ * DIME Form Type
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,42 +30,65 @@
 
  namespace DIME\Form\Type;
 
+use ARK\Form\Type\TermChoiceType;
 use ARK\Form\Type\AbstractFormType;
 use ARK\Model\Property;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use ARK\ORM\ORM;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class ClassificationType extends AbstractFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $valueOptions = $options['field']['value']['options'];
+        // Not multi-vocality for now
+        unset($valueOptions['multiple']);
+        $field = $options['field']['object'];
+        $format = $field->attribute()->format();
+
+        $valueOptions['choices'] = $format->attribute('class')->vocabulary()->terms();
+        $valueOptions['placeholder'] = '...';
+        $valueOptions['required'] = true;
+        $builder->add('class', TermChoiceType::class, $valueOptions);
+
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
-        //$builder->add('classifications', CollectionType::class, $fieldOptions);
-        //$builder->setDataMapper($this);
+        $builder->add('event', HiddenType::class, $fieldOptions);
+
+        $builder->setDataMapper($this);
     }
 
     protected function options()
     {
         return [
-             'compound' => true,
-             'multiple' => true,
+            'compound' => true,
          ];
     }
 
     public function mapDataToForms($property, $forms)
     {
-        return;
-        if (!$property) {
-            return;
-        }
         $forms = iterator_to_array($forms);
-        $name = $property->attribute()->name();
-        $value = $property->value();
-        $forms['classifications']->setData($value);
+        if ($property instanceof Property) {
+            $value = $property->serialize();
+            if ($value) {
+                $value = $value[0];
+                $forms['event']->setData($value['event']['item']);
+                $vocabulary = $property->attribute()->format()->attribute('class')->vocabulary();
+                $forms['class']->setData($vocabulary->term($value['class']));
+            }
+        }
     }
 
     public function mapFormsToData($forms, &$property)
     {
+        $forms = iterator_to_array($forms);
+        if ($property instanceof Property) {
+            $value = $value[0];
+            $value['event']['module'] = 'event';
+            $value['event']['item'] = $forms['event']->setData();
+            $value['class'] = $forms['class']->getData();
+            $property->setValue([$value]);
+        }
     }
 }

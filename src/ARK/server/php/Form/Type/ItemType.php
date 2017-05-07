@@ -81,7 +81,6 @@ class ItemType extends AbstractFormType
             if (isset($options['field']['value']['options']['display_property'])) {
                 $display = $options['field']['value']['options']['display_property'];
                 $val = $value->property($display)->value();
-                dump($val);
                 if ($val instanceof Term) {
                     $name = $val->keyword();
                 } elseif ($val instanceof LocalText) {
