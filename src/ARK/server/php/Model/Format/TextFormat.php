@@ -81,6 +81,29 @@ class TextFormat extends Format
         return $data;
     }
 
+    public function serialize($model, ArrayCollection $properties = null)
+    {
+        if ($model instanceof Fragment) {
+            return [$this->serializeFragment($model, $properties)];
+        }
+        if (!$model instanceof ArrayCollection || $model->isEmpty()) {
+            return null;
+        }
+        $data = [];
+        foreach ($model as $fragment) {
+            $data[] = $this->serializeFragment($fragment, $properties);
+        }
+        return $data;
+    }
+
+    protected function serializeFragment(Fragment $fragment, ArrayCollection $properties = null)
+    {
+        $data[$this->formatName()] = $fragment->format();
+        $data[$this->parameterName()] = $fragment->parameter();
+        $data[$this->valueName()] = $fragment->value();
+        return $data;
+    }
+
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
