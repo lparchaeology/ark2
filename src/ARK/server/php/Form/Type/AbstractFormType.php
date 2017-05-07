@@ -31,6 +31,7 @@
 namespace ARK\Form\Type;
 
 use ARK\Model\Property;
+use ARK\Model\LocalText;
 use ARK\Vocabulary\Term;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\AbstractType;
@@ -70,6 +71,9 @@ abstract class AbstractFormType extends AbstractType implements DataMapperInterf
         }
         if ($value instanceof Term) {
             return $value->name();
+        }
+        if ($value instanceof LocalText) {
+            return $value->content();
         }
         return $value;
     }

@@ -30,8 +30,12 @@
 
  namespace DIME\Form\Type;
 
+use ARK\Form\Type\TermChoiceType;
 use ARK\Form\Type\AbstractFormType;
 use ARK\Model\Property;
+use ARK\ORM\ORM;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -39,33 +43,73 @@ class DatingType extends AbstractFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $valueOptions = $options['field']['value']['options'];
+        // Not multi-vocality for now
+        unset($valueOptions['multiple']);
+        $field = $options['field']['object'];
+        $format = $field->attribute()->format();
+
+        $builder->add('year', IntegerType::class, $valueOptions);
+        $builder->add('year_span', IntegerType::class, $valueOptions);
+
+
+        $valueOptions['choices'] = $format->attribute('period')->vocabulary()->terms();
+        $valueOptions['placeholder'] = '...';
+        $valueOptions['required'] = false;
+        $builder->add('period', TermChoiceType::class, $valueOptions);
+        $builder->add('period_span', TermChoiceType::class, $valueOptions);
+
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
-        //$builder->add('datings', CollectionType::class, $fieldOptions);
-        //$builder->setDataMapper($this);
+        $builder->add('event', HiddenType::class, $fieldOptions);
+        $builder->add('entered', HiddenType::class, $fieldOptions);
+
+        $builder->setDataMapper($this);
+        dump($field);
+        dump($format);
+        dump($valueOptions);
     }
 
     protected function options()
     {
         return [
-             'compound' => true,
-             'multiple' => true,
+            'compound' => true,
          ];
     }
 
     public function mapDataToForms($property, $forms)
     {
-        return;
-        if (!$property) {
-            return;
-        }
         $forms = iterator_to_array($forms);
-        $name = $property->attribute()->name();
-        $value = $property->value();
-        $forms['datings']->setData($value);
+        if ($property instanceof Property) {
+            $value = $property->serialize();
+            if ($value) {
+                $value = $value[0];
+                dump($value);
+                $forms['event']->setData($value['event']['item']);
+                $forms['entered']->setData($value['entered']);
+                $forms['year']->setData($value['year'][0]);
+                $forms['year_span']->setData($value['year'][1]);
+                $vocabulary = $property->attribute()->format()->attribute('period')->vocabulary();
+                $forms['period']->setData($vocabulary->term($value['period'][0]));
+                $forms['period_span']->setData($vocabulary->term($value['period'][1]));
+                dump($forms['period']);
+            }
+        }
     }
 
     public function mapFormsToData($forms, &$property)
     {
+        $forms = iterator_to_array($forms);
+        if ($property instanceof Property) {
+            $value = $value[0];
+            $value['event']['module'] = 'event';
+            $value['event']['item'] = $forms['event']->setData();
+            $value['entered'] = $forms['entered']->getData();
+            $value['year'][0] = $forms['year']->getData();
+            $value['year'][1] = $forms['year_span']->getData();
+            $value['period'][0] = $forms['period']->getData();
+            $value['period'][1] = $forms['period_span']->getData();
+            $property->setValue([$value]);
+        }
     }
 }

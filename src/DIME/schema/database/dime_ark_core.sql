@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 07, 2017 at 04:04 PM
+-- Generation Time: May 07, 2017 at 07:01 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -1581,7 +1581,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `class`, `template`, `enabled
 ('dime_find_condition', 'field', '', '', 1, 0, NULL),
 ('dime_find_custodian', 'field', '', '', 1, 0, NULL),
 ('dime_find_custody', 'field', '', '', 1, 0, NULL),
-('dime_find_dating', 'field', '', '', 1, 0, NULL),
+('dime_find_dating', 'field', '', 'blocks/dating.html.twig', 1, 0, NULL),
 ('dime_find_description', 'field', '', '', 1, 0, NULL),
 ('dime_find_details', 'grid', '', '', 1, 0, NULL),
 ('dime_find_edit', 'grid', '', '', 1, 0, NULL),

@@ -30,7 +30,7 @@
 
 namespace ARK\Form\Type;
 
-use ARK\Form\Type\ScalarFormType;
+use ARK\Form\Type\AbstractFormType;
 use ARK\Model\Property;
 use ARK\Model\LocalText;
 use ARK\Service;
@@ -38,13 +38,19 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class LocalTextType extends ScalarFormType
+class LocalTextType extends AbstractFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
         $builder->add('previous', HiddenType::class, $fieldOptions);
+
+        $field = $options['field']['object'];
+        $format = $field->attribute()->format();
+        $builder->add($format->valueName(), $options['field']['value']['type'], $options['field']['value']['options']);
+        $builder->add($format->parameterName(), $options['field']['parameter']['type'], $options['field']['parameter']['options']);
+        $builder->add($format->formatName(), $options['field']['format']['type'], $options['field']['format']['options']);
         $builder->setDataMapper($this);
     }
 
@@ -84,10 +90,5 @@ class LocalTextType extends ScalarFormType
         $data->setMediaType($forms['mediatype']->getData());
         $data->setContent($forms['content']->getData(), $forms['language']->getData());
         $property->setValue($data);
-    }
-
-    public function getParent()
-    {
-        return ScalarFormType::class;
     }
 }

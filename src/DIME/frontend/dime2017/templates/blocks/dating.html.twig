@@ -1,0 +1,32 @@
+{# Block to write out correctly formatted field value #}
+{% block dating %}
+<div class="form-group">
+
+    {% set fieldForm = form[field.formName] %}
+
+    {{ form_label(fieldForm) }}
+
+    <div class="col-sm-10 col-lg-9">
+        <div class="row">
+            <div class="col-sm-6">
+                {{ form_widget(fieldForm.year) }}
+            </div>
+            <div class="col-sm-6">
+                {{ form_widget(fieldForm.year_span) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                {{ form_widget(fieldForm.period) }}
+            </div>
+            <div class="col-sm-6">
+                {{ form_widget(fieldForm.period_span) }}
+            </div>
+        </div>
+    </div>
+
+    {% do fieldForm.setRendered %}
+
+</div>
+
+{% endblock dating %}
