@@ -27,7 +27,6 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-
 namespace DIME\Controller;
 
 use ARK\Error\ErrorException;
@@ -40,10 +39,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PageViewController extends DimeController
 {
+
     public function __invoke(Request $request)
     {
         $page = $request->attributes->get('_route');
-        if (!$item = ORM::find('ARK\Entity\Page', $page)) {
+        if (! $item = ORM::find('ARK\Entity\Page', $page)) {
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Item not found', "Item $page not found"));
         }
 
@@ -68,8 +68,8 @@ class PageViewController extends DimeController
         dump($item);
         dump($item->property('content'));
         dump($value);
-        if ($value && isset($value[0]['content'])) {
-            $content .= $value[0]['content'];
+        if ($value && $value->content()) {
+            $content .= $value->content();
         }
         if (Service::isGranted('ROLE_ADMIN')) {
             $content .= '</div>';

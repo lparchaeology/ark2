@@ -27,7 +27,6 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-
 namespace DIME\Controller;
 
 use ARK\Actor\Actor;
@@ -39,15 +38,17 @@ use Symfony\Component\HttpFoundation\Request;
 
 class MessageReadController
 {
+
     public function __invoke(Request $request)
     {
         $content = json_decode($request->getContent());
         try {
-            $message = $content['message'];
+            $message = $content->message;
             $message = ORM::find(Message::class, $message);
-            $recipient = $content['recipient'];
+            $recipient = $content->recipient;
             $recipient = ORM::find(Actor::class, $recipient);
             if ($message && $recipient && $message->isRecipient($recipient)) {
+                print_r("isRecipient");
                 $data['result'] = $message->markAsRead($recipient);
                 ORM::persist($message);
                 ORM::flush($message);

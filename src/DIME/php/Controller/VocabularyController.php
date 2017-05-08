@@ -27,7 +27,6 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-
 namespace DIME\Controller;
 
 use ARK\Http\JsonResponse;
@@ -39,18 +38,24 @@ use Symfony\Component\HttpFoundation\Request;
 
 class VocabularyController
 {
+
     protected $term = '';
+
     protected $alias = '';
+
     protected $root = false;
+
     protected $parameters = null;
+
     protected $related = null;
+
     protected $descendents = null;
 
     public function __invoke(Request $request)
     {
         $content = json_decode($request->getContent());
         try {
-            $vocabulary = ORM::find(Vocabulary::class, $content);
+            $vocabulary = ORM::find(Vocabulary::class, $content->concept);
             $data['concept'] = $vocabulary->concept();
             $data['type'] = $vocabulary->type();
             $data['source'] = $vocabulary->source();
@@ -60,8 +65,12 @@ class VocabularyController
             foreach ($vocabulary->terms() as $term) {
                 $vtd['name'] = $term->name();
                 $vtd['alias'] = $term->alias();
-                $vtd['root'] = $term->root();
-                $vtd['parameters'] = $term->parameters();
+                $vtd['root'] = $term->isRoot();
+                foreach ($term->parameters() as $parameter) {
+                    $vtd['parameters'][$parameter->name()]["type"] = $parameter->type();
+                    $vtd['parameters'][$parameter->name()]["value"] = $parameter->value();
+                }
+
                 $vtd['related'] = $term->related();
                 if ($vocabulary->type() == 'taxonomy') {
                     foreach ($term->descendents() as $descendent) {
