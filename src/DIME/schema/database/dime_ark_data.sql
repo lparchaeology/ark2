@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 08, 2017 at 12:40 PM
+-- Generation Time: May 08, 2017 at 09:03 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -1397,7 +1397,7 @@ CREATE TABLE `ark_workflow_actor_user` (
 --
 
 INSERT INTO `ark_workflow_actor_user` (`actor`, `user`, `enabled`, `verified`, `locked`, `expired`, `expires_at`, `verification_token`, `verification_requested_at`) VALUES
-('ahavfrue', 3, 1, 1, 0, 0, NULL, '', NULL);
+('ahavfrue', 1, 1, 1, 0, 0, NULL, '', NULL);
 
 --
 -- Indexes for dumped tables
