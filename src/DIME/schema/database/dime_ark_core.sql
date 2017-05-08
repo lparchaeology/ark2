@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 08, 2017 at 09:03 PM
+-- Generation Time: May 08, 2017 at 09:15 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -1587,10 +1587,10 @@ INSERT INTO `ark_view_element` (`element`, `type`, `class`, `template`, `enabled
 ('dime_find_edit', 'grid', '', '', 1, 0, NULL),
 ('dime_find_event', 'grid', '', '', 1, 0, NULL),
 ('dime_find_filter', 'grid', '', '', 1, 0, 'dime.find.filter'),
-('dime_find_filter_material', 'widget', '', '', 1, 0, NULL),
-('dime_find_filter_municipality', 'widget', '', '', 1, 0, NULL),
-('dime_find_filter_period', 'widget', '', '', 1, 0, NULL),
-('dime_find_filter_type', 'widget', '', '', 1, 0, NULL),
+('dime_find_filter_material', 'widget', '', '', 1, 0, 'dime.find.material'),
+('dime_find_filter_municipality', 'widget', '', '', 1, 0, 'dime.find.municipality'),
+('dime_find_filter_period', 'widget', '', '', 1, 0, 'dime.find.period'),
+('dime_find_filter_type', 'widget', '', '', 1, 0, 'dime.find.type'),
 ('dime_find_finddate', 'field', '', '', 1, 0, NULL),
 ('dime_find_finder', 'field', '', '', 1, 0, NULL),
 ('dime_find_finder_id', 'field', '', '', 1, 0, NULL),
