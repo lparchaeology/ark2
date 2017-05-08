@@ -48,7 +48,7 @@ class EntityController extends DimeFormController
         $item = $data[$form->getName()];
         if (isset($data['dime_find_actions'])) {
             $action = $data['dime_find_actions'];
-            $actor = ORM::find(Actor::class, 'ahavfrue');
+            $actor = Service::workflow()->actor();
             $action->apply($actor, $item);
         }
         ORM::persist($item);

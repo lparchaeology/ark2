@@ -79,7 +79,7 @@ class ObjectFormat extends Format
         foreach ($this->attributes as $attribute) {
             $data[$attribute->name()] = $properties->get($attribute->name())->value();
         }
-        if ($data = $this->nullValue()) {
+        if ($data == $this->nullValue()) {
             return null;
         }
         return $data;

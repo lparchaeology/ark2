@@ -51,7 +51,7 @@ class DescriptionType extends AbstractFormType
         $field = $options['field']['object'];
         $format = $field->attribute()->format();
 
-        $builder->add('content', TextareaType::class, $valueOptions);
+        $builder->add('content', $options['field']['value']['type'], $valueOptions);
 
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;

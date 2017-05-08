@@ -43,6 +43,7 @@ use Symfony\Component\Workflow\Exception\InvalidArgumentException;
 use Symfony\Component\Workflow\Registry as SymfonyRegistry;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Workflow;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Registry extends SymfonyRegistry
 {
@@ -53,14 +54,20 @@ class Registry extends SymfonyRegistry
         if (isset($this->actions[$schema])) {
             return;
         }
-        $this->actions[$schema] = [];
-        $this->actions[$schema] = ORM::findBy(Action::class, ['schma' => $schema]);
+        $this->actions[$schema] = new ArrayCollection();
+        $actions = ORM::findBy(Action::class, ['schma' => $schema]);
+        foreach ($actions as $action) {
+            $this->actions[$schema][$action->name()] = $action;
+        }
     }
 
     public function actor(User $user = null)
     {
         if ($user === null) {
             $user = Service::user();
+        }
+        if ($user === null) {
+            return null;
         }
         $au = ORM::findOneBy(ActorUser::class, ['user' => $user->getId()]);
         return ($au ? $au->actor() : null);
@@ -93,7 +100,8 @@ class Registry extends SymfonyRegistry
 
     public function can(Actor $actor, $action, Item $item)
     {
-        if ($action = $this->action($item->schema()->name(), $action)) {
+        $action = $this->action($item->schema()->name(), $action);
+        if ($action) {
             return $action->isGranted($actor, $item);
         }
         return false;

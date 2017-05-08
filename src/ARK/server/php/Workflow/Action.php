@@ -60,6 +60,7 @@ class Action
     protected $defaultCondition = false;
     protected $defaultAllowence = false;
     protected $enabled = true;
+    protected $permissions = null;
     protected $allowances = null;
     protected $agencies = null;
     protected $conditions = null;
@@ -159,8 +160,9 @@ class Action
 
     public function isGranted(Actor $actor, Item $item)
     {
-        return $this->hasPermission($actor, $item)
-            && $this->isAllowed($actor)
+        // TODO Sort out Permissions vs Allowances
+        return //$this->hasPermission($actor, $item)
+            $this->isAllowed($actor)
             && $this->hasAgency($actor, $item)
             && $this->meetsConditions($item);
     }
@@ -171,7 +173,6 @@ class Action
         foreach ($this->notifications as $notify) {
             $recipients[] = $notify->recipient($item);
         }
-        dump($recipients);
         return $recipients;
     }
 
@@ -186,9 +187,6 @@ class Action
             // Send Notifications
             $notification = new Notification($actor, $this->notify($item), $event);
             ORM::persist($notification);
-            dump($this);
-            dump($event);
-            dump($notification);
         }
     }
 

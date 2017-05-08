@@ -46,7 +46,7 @@ class FindListController extends DimeFormController
     public function __invoke(Request $request, $actorSlug = null)
     {
         $this->actorSlug = $actorSlug;
-        return $this->renderResponse($request, 'dime_page_find_search');
+        return $this->renderResponse($request, 'dime_page_find_list');
     }
 
     public function buildData(Request $request, Page $page)

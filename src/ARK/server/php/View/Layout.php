@@ -40,7 +40,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 abstract class Layout extends Element
 {
     protected $schma = null;
-    protected $formMode = null;
+    protected $form = false;
+    protected $mode = null;
     protected $cells = null;
     protected $grid = null;
     protected $elements = null;
@@ -73,9 +74,22 @@ abstract class Layout extends Element
         return $this->schma;
     }
 
-    public function formMode()
+    public function isForm()
     {
-        return $this->formMode;
+        return $this->form;
+    }
+
+    public function defaultMode($options)
+    {
+        return $this->mode;
+    }
+
+    public function displayMode($options)
+    {
+        if ($this->mode !== null && $options['mode'] == 'edit') {
+            return $this->mode;
+        }
+        return $options['mode'];
     }
 
     public function formOptions($data, $options)
@@ -97,8 +111,11 @@ abstract class Layout extends Element
 
     public function buildForms($data, $options)
     {
-        if ($this->formMode) {
-            $opts['mode'] = ($options['mode'] == 'edit' ? $this->formMode : $options['mode']);
+        if (!isset($options['mode'])) {
+            $options['mode'] = $options['page_mode'];
+        }
+        if ($this->form) {
+            $opts['mode'] = $this->displayMode($options);
             $builder = $this->formBuilder($data, $opts);
             $this->buildForm($builder, $data[$this->element], $this->formOptions($data, $opts));
             return [$this->element => $builder->getForm()];
@@ -140,7 +157,8 @@ abstract class Layout extends Element
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_layout');
 
         // Fields
-        $builder->addStringField('formMode', 10, 'form_mode');
+        $builder->addField('form', 'boolean');
+        $builder->addStringField('mode', 10);
 
         // Associations
         $builder->addManyToOneField('schma', 'ARK\Model\Schema');

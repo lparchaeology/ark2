@@ -46,6 +46,7 @@ class Cell
     protected $seq = 0;
     protected $itemType = null;
     protected $label = null;
+    protected $mode = null;
     protected $required = null;
     protected $value = null;
     protected $parameter = null;
@@ -100,11 +101,22 @@ class Cell
         return $this->required;
     }
 
+    public function defaultMode()
+    {
+        return $this->mode;
+    }
+
+    public function displayMode($options)
+    {
+        $layoutMode = $this->layout->displayMode($options);
+        if ($this->mode !== null && $layoutMode == 'edit') {
+            return $this->mode;
+        }
+        return $layoutMode;
+    }
+
     public function valueMode()
     {
-        if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            return 'static';
-        }
         return $this->value;
     }
 
@@ -132,6 +144,7 @@ class Cell
             $this->formOptionsArray['cell']['format']['mode'] = $this->formatMode();
         }
         $options = array_merge($options, $this->formOptionsArray);
+        $options['cell']['mode'] = $this->displayMode($options);
         return $options;
     }
 
@@ -166,6 +179,7 @@ class Cell
 
         // Fields
         $builder->addField('label', 'boolean');
+        $builder->addStringField('mode', 10);
         $builder->addStringField('value', 10);
         $builder->addStringField('parameter', 10);
         $builder->addStringField('format', 10);

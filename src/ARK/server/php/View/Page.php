@@ -72,7 +72,7 @@ class Page extends Element
     {
         $options['data'] = null;
         $options['forms'] = null;
-        $options['mode'] = $this->mode();
+        $options['page_mode'] = $this->mode();
         return $options;
     }
 

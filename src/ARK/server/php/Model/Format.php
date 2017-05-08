@@ -184,12 +184,10 @@ abstract class Format
             return $this->nullValue();
         }
         if ($this->hasMultipleValues()) {
-            dump('multiple values '.$this->format);
             $data = [];
             foreach ($model as $fragment) {
                 $data[] = $this->value($fragment);
             }
-            dump($data);
             return $data;
         }
         return $this->fragmentValue($model, $properties);

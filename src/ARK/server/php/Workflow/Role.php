@@ -51,7 +51,6 @@ class Role
     public function __construct($role)
     {
         $this->role = $role;
-        $this->actors = new ArrayCollection();
         $this->permissions = new ArrayCollection();
     }
 
@@ -68,14 +67,18 @@ class Role
     public function actors()
     {
         if ($this->actors === null) {
-            $this->actors = ORM::findBy(ActorRole::class, ['role' => $this->role]);
+            $ars = ORM::findBy(ActorRole::class, ['role' => $this->role]);
+            $this->actors = new ArrayCollection();
+            foreach ($ars as $ar) {
+                $this->actors[] = $ar->actor();
+            }
         }
         return $this->actors;
     }
 
-    public function hasActor(Actor $user)
+    public function hasActor(Actor $actor)
     {
-        return $this->actors()->contains($user);
+        return $this->actors()->contains($actor);
     }
 
     public function addActors(array $actors)

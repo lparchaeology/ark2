@@ -49,6 +49,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 class Widget extends Element
 {
     protected $label = true;
+    protected $mode = 'edit';
     protected $vocabulary = null;
     protected $formTypeClass = '';
     protected $formOptions = '';
@@ -80,7 +81,6 @@ class Widget extends Element
         $cellOptions = $options['cell'];
         unset($options['cell']);
         unset($options['required']);
-        unset($options['mode']);
         $options = array_merge_recursive($this->formOptionsArray, $options);
         if ($options['label'] === null) {
             $options['label'] = ($this->showLabel() ? $this->keyword() : false);
@@ -98,6 +98,7 @@ class Widget extends Element
         if ($this->vocabulary) {
             $options = $this->vocabularyOptions($this->vocabulary, $options);
         }
+        $options['mode'] = ($cellOptions['mode'] == 'view' ? $cellOptions['mode'] : $this->mode);
         return $options;
     }
 
@@ -108,12 +109,14 @@ class Widget extends Element
 
     public function buildForm(FormBuilderInterface $builder, $data, $options = [])
     {
-        if ($options['mode'] == 'edit' && !Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            return ;
-        }
         $options = $this->formOptions($data, $options);
-        $fieldBuilder = $this->formBuilder($data, $options);
-        $builder->add($fieldBuilder);
+        // TODO check workflow instead!
+        if ($this->mode == 'view' || $options['mode'] == 'edit') {
+            unset($options['mode']);
+            unset($options['page_mode']);
+            $fieldBuilder = $this->formBuilder($data, $options);
+            $builder->add($fieldBuilder);
+        }
     }
 
     public function renderView($data, $forms = null, $form = null, array $options = [])
@@ -134,6 +137,7 @@ class Widget extends Element
 
         // Fields
         $builder->addField('label', 'boolean');
+        $builder->addStringField('mode', 10);
         $builder->addStringField('formTypeClass', 100, 'form_type_class');
         $builder->addStringField('formOptions', 4000, 'form_options');
 

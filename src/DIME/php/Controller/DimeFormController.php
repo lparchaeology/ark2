@@ -47,6 +47,13 @@ abstract class DimeFormController extends DimeController
         $options = $page->defaultOptions();
         $options['page_config'] = $this->pageConfig($route);
         $data = $this->buildData($request, $page);
+        if ($page->mode() == 'edit') {
+            $actor = Service::workflow()->actor();
+            $item = $data[$page->content()->name()];
+            if (!$actor || !Service::workflow()->can($actor, 'edit', $item)) {
+                $options['page_mode'] = 'view';
+            }
+        }
         $forms = $page->content()->buildForms($data, $options);
         if ($request->getMethod() == 'POST') {
             $form = null;
@@ -75,7 +82,6 @@ abstract class DimeFormController extends DimeController
         $options['page'] = $page;
         $options['layout'] = $page->content();
         $options['data'] = $data;
-        $actor = ORM::find(Actor::class, 'ahavfrue');
         return Service::renderResponse($page->template(), $options);
     }
 

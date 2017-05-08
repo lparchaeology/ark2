@@ -38,7 +38,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class ClassificationType extends AbstractFormType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $valueOptions = $options['field']['value']['options'];
@@ -52,7 +51,7 @@ class ClassificationType extends AbstractFormType
             ->terms();
         $valueOptions['placeholder'] = ' - ';
         $valueOptions['required'] = true;
-        $builder->add('class', TermChoiceType::class, $valueOptions);
+        $builder->add('class', $options['field']['value']['type'], $valueOptions);
 
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
@@ -72,15 +71,16 @@ class ClassificationType extends AbstractFormType
     {
         $forms = iterator_to_array($forms);
         if ($property instanceof Property) {
-            $value = $property->serialize();
-            if ($value) {
-                $value = $value[0];
-                $forms['event']->setData($value['event']['item']);
-                $vocabulary = $property->attribute()
-                    ->format()
-                    ->attribute('class')
-                    ->vocabulary();
-                $forms['class']->setData($vocabulary->term($value['class']));
+            $value = $property->value();
+            if ($value && $value[0]) {
+                $event = $value[0]['event'];
+                if ($event) {
+                    $forms['event']->setData($event->id());
+                }
+                $class = $value[0]['class'];
+                if ($class) {
+                    $forms['class']->setData($class);
+                }
             }
         }
     }
@@ -92,9 +92,7 @@ class ClassificationType extends AbstractFormType
             $value['event']['module'] = 'event';
             $value['event']['item'] = $forms['event']->getData();
             $value['class'] = $forms['class']->getData();
-            $property->setValue([
-                $value
-            ]);
+            $property->setValue([$value]);
         }
     }
 }

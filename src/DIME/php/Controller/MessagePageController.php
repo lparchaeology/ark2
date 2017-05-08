@@ -39,10 +39,9 @@ use ARK\Vocabulary\Vocabulary;
 
 class MessagePageController extends DimeFormController
 {
-
     public function __invoke(Request $request)
     {
-        return $this->renderResponse($request, 'dime_page_messages');
+        return $this->renderResponse($request, 'dime_page_message');
     }
 
     public function buildData(Request $request, Page $page)
@@ -54,7 +53,6 @@ class MessagePageController extends DimeFormController
             'created' => 'DESC'
         ]);
         $data['messages'] = $messages;
-
         $data['message_vocabulary'] = ORM::find(Vocabulary::class, 'core.event.type');
 
         $data['message'] = null;

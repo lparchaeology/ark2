@@ -29,6 +29,7 @@
  */
 namespace DIME\Form\Type;
 
+use ARK\Form\Type\StaticType;
 use ARK\Form\Type\TermChoiceType;
 use ARK\Form\Type\AbstractFormType;
 use ARK\Model\Property;
@@ -47,17 +48,17 @@ class DatingType extends AbstractFormType
         unset($valueOptions['multiple']);
         $field = $options['field']['object'];
         $format = $field->attribute()->format();
+        $builder->add('year', $options['field']['value']['type'], $valueOptions);
+        $builder->add('year_span', $options['field']['value']['type'], $valueOptions);
 
-        $builder->add('year', IntegerType::class, $valueOptions);
-        $builder->add('year_span', IntegerType::class, $valueOptions);
-
-        $valueOptions['choices'] = $format->attribute('period')
-            ->vocabulary()
-            ->terms();
+        $valueOptions['choices'] = $format->attribute('period')->vocabulary()->terms();
         $valueOptions['placeholder'] = ' - ';
         $valueOptions['required'] = false;
-        $builder->add('period', TermChoiceType::class, $valueOptions);
-        $builder->add('period_span', TermChoiceType::class, $valueOptions);
+        if ($options['field']['value']['type'] != StaticType::class) {
+            $options['field']['value']['type'] = TermChoiceType::class;
+        }
+        $builder->add('period', $options['field']['value']['type'], $valueOptions);
+        $builder->add('period_span', $options['field']['value']['type'], $valueOptions);
 
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;

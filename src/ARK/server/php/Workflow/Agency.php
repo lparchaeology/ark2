@@ -55,7 +55,7 @@ class Agency
     public function isGranted(Actor $actor, Item $item)
     {
         $value = $item->property($this->attributeName)->value();
-        $isAgent = (isset($value['item']) && $value['item'] == $actor->id()) ;
+        $isAgent = ($value && $value->id() == $actor->id()) ;
         if ($this->operator == 'not' && $isAgent) {
             return self::DENY;
         }
