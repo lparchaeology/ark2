@@ -95,9 +95,8 @@ class DatingType extends AbstractFormType
     {
         $forms = iterator_to_array($forms);
         if ($property instanceof Property) {
-            $value = $value[0];
             $value['event']['module'] = 'event';
-            $value['event']['item'] = $forms['event']->setData();
+            $value['event']['item'] = $forms['event']->getData();
             $value['entered'] = $forms['entered']->getData();
             $value['year'][0] = $forms['year']->getData();
             $value['year'][1] = $forms['year_span']->getData();

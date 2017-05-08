@@ -32,10 +32,17 @@ namespace ARK\Model\Fragment;
 
 use ARK\Model\Fragment;
 use ARK\ORM\ClassMetadata;
+use ARK\Service;
+use ARK\ORM\ClassMetadataBuilder;
 
 class ObjectFragment extends Fragment
 {
     protected $children = null;
+
+    public function __construct()
+    {
+        $this->fid = Service::database()->generateItemSequence('object', '', 'fid');
+    }
 
     public function children(Attribute $attribute)
     {
@@ -55,5 +62,14 @@ class ObjectFragment extends Fragment
     public static function loadMetadata(ClassMetadata $metadata)
     {
         return self::buildSubclassMetadata($metadata, self::class);
+    }
+
+    public static function buildSubclassMetadata(ClassMetadata $metadata, $class)
+    {
+        $datatype = Service::database()->getFragmentDatatype($class);
+        $builder = new ClassMetadataBuilder($metadata, $datatype['data_table']);
+        $builder->addKey('fid', 'integer');
+        $builder->addStringField('value', $datatype['storage_size']);
+        $builder->addStringField('extent', $datatype['storage_size']);
     }
 }

@@ -32,6 +32,7 @@
 
 use ARK\Form\Type\TermChoiceType;
 use ARK\Form\Type\AbstractFormType;
+use ARK\Model\LocalText;
 use ARK\Model\Property;
 use ARK\ORM\ORM;
 use ARK\Service;
@@ -74,7 +75,7 @@ class DescriptionType extends AbstractFormType
         $forms = iterator_to_array($forms);
         if ($property instanceof Property) {
             $value = $property->value();
-            if ($value) {
+            if ($value && $value[0]) {
                 // No multi-vocality for now
                 $event = $value[0]['event'];
                 $text = $value[0]['text'];
@@ -93,8 +94,14 @@ class DescriptionType extends AbstractFormType
         $forms = iterator_to_array($forms);
         if ($property instanceof Property) {
             $text = new LocalText();
-            $text->setContents(unserialize($forms['previous']->getData()));
-            $text->setMediaType($forms['mediatype']->getData());
+            $previous = unserialize($forms['previous']->getData());
+            if ($previous) {
+                $text->setContents($previous);
+            }
+            $mediatype = $forms['mediatype']->getData();
+            if ($mediatype) {
+                $text->setMediaType($mediatype);
+            }
             $text->setContent($forms['content']->getData(), $forms['language']->getData());
             $event = $forms['event']->getData();
             if ($event) {

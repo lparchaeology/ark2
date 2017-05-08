@@ -84,9 +84,8 @@ class ClassificationType extends AbstractFormType
     {
         $forms = iterator_to_array($forms);
         if ($property instanceof Property) {
-            $value = $value[0];
             $value['event']['module'] = 'event';
-            $value['event']['item'] = $forms['event']->setData();
+            $value['event']['item'] = $forms['event']->getData();
             $value['class'] = $forms['class']->getData();
             $property->setValue([$value]);
         }

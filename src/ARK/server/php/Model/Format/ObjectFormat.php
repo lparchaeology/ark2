@@ -35,6 +35,7 @@ use ARK\Model\Format\FormatAttribute;
 use ARK\Model\Fragment;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\Vocabulary\Vocabulary;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class ObjectFormat extends Format
@@ -61,6 +62,14 @@ class ObjectFormat extends Format
         return null;
     }
 
+    public function nullValue()
+    {
+        foreach ($this->attributes as $attribute) {
+            $data[$attribute->name()] = $attribute->format()->nullValue();
+        }
+        return $data;
+    }
+
     protected function fragmentValue($fragment, ArrayCollection $properties = null)
     {
         if ($properties === null || $properties->isEmpty()) {
@@ -69,6 +78,9 @@ class ObjectFormat extends Format
         $data = [];
         foreach ($this->attributes as $attribute) {
             $data[$attribute->name()] = $properties->get($attribute->name())->value();
+        }
+        if ($data = $this->nullValue()) {
+            return null;
         }
         return $data;
     }
@@ -83,6 +95,17 @@ class ObjectFormat extends Format
             $data[$attribute->name()] = $properties->get($attribute->name())->serialize();
         }
         return $data;
+    }
+
+    protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null)
+    {
+        $fragment->setValue('');
+        if (!is_array($data)) {
+            return;
+        }
+        foreach ($data as $key => $value) {
+            $attribute = $this->attribute($key);
+        }
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
