@@ -34,6 +34,7 @@ use ARK\Service;
 use ARK\View\Page;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
+use ARK\Message\Message;
 use DIME\Controller\DimeFormController;
 use DIME\Entity\Find;
 use Exception;
@@ -41,6 +42,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FindListController extends DimeFormController
 {
+
     private $actorSlug = null;
 
     public function __invoke(Request $request, $actorSlug = null)
@@ -87,7 +89,9 @@ class FindListController extends DimeFormController
 
         if ($query) {
             $items = Service::database()->findSearch($query);
-            $resource = ORM::findBy(Find::class, ['item' => $items]);
+            $resource = ORM::findBy(Find::class, [
+                'item' => $items
+            ]);
         } else {
             $resource = ORM::findAll(Find::class);
         }
@@ -97,8 +101,16 @@ class FindListController extends DimeFormController
         $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $resource : []);
         $data['dime_find_filter'] = null;
 
+        $items = Service::database()->getUnreadMessages('ahavfrue');
+
+        $data['notifications'] = ORM::findBy(Message::class, [
+            'item' => $items
+        ], [
+            'created' => 'DESC'
+        ]);
+
         try {
-            $passPath = Service::configDir().'/passwords.json';
+            $passPath = Service::configDir() . '/passwords.json';
             if ($passwords = json_decode(file_get_contents($passPath), true)) {
                 $user = $passwords['kortforsyningen']['user'];
                 $password = $passwords['kortforsyningen']['password'];

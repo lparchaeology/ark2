@@ -27,16 +27,19 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-
 namespace DIME\Controller;
 
 use ARK\View\Page;
+use ARK\ORM\ORM;
+use ARK\Service;
+use ARK\Message\Message;
 use DIME\Controller\EntityController;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
 class FindAddController extends EntityController
 {
+
     public function __invoke(Request $request)
     {
         return $this->renderResponse($request, 'dime_page_find', 'finds.view');
@@ -44,6 +47,13 @@ class FindAddController extends EntityController
 
     public function buildData(Request $request, Page $page)
     {
+        $items = Service::database()->getUnreadMessages('ahavfrue');
+
+        $data['notifications'] = ORM::findBy(Message::class, [
+            'item' => $items
+        ], [
+            'created' => 'DESC'
+        ]);
         $data[$page->content()->name()] = new Find('dime.find');
         return $data;
     }

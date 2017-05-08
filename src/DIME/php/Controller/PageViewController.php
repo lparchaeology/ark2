@@ -33,6 +33,7 @@ use ARK\Error\ErrorException;
 use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\Message\Message;
 use DIME\Controller\DimeController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -74,7 +75,17 @@ class PageViewController extends DimeController
         if (Service::isGranted('ROLE_ADMIN')) {
             $content .= '</div>';
         }
+
+        $items = Service::database()->getUnreadMessages('ahavfrue');
+
+        $options['notifications'] = ORM::findBy(Message::class, [
+            'item' => $items
+        ], [
+            'created' => 'DESC'
+        ]);
+
         $options['content'][0] = $content;
+
         return Service::renderResponse('pages/page.html.twig', $options);
     }
 }

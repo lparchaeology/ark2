@@ -27,7 +27,6 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-
 namespace ARK\Message;
 
 use ARK\Actor\Actor;
@@ -55,7 +54,7 @@ class Message implements Item
 
     public function recipients()
     {
-        return $this->property('recipients')->value();
+        return $this->property('recipients')->serialize();
     }
 
     public function sentAt()
@@ -76,7 +75,7 @@ class Message implements Item
     public function markAsRead(Actor $actor)
     {
         foreach ($this->recipients() as &$dispatch) {
-            if ($actor->id() == $dispatch['recipient']->id() && !isset($dispatch['read'])) {
+            if ($actor->id() == $dispatch['recipient']->id() && ! isset($dispatch['read'])) {
                 $dispatch['read'] = ARK::timestamp();
                 return true;
             }

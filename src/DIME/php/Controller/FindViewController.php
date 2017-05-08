@@ -27,19 +27,21 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-
 namespace DIME\Controller;
 
 use ARK\Error\ErrorException;
 use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
 use ARK\View\Page;
+use ARK\Service;
+use ARK\Message\Message;
 use DIME\Controller\EntityController;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
 class FindViewController extends EntityController
 {
+
     private $itemSlug = null;
 
     public function __invoke(Request $request, $itemSlug)
@@ -50,10 +52,19 @@ class FindViewController extends EntityController
 
     public function buildData(Request $request, Page $page)
     {
-        if (!$resource = ORM::find(Find::class, $this->itemSlug)) {
+        if (! $resource = ORM::find(Find::class, $this->itemSlug)) {
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Find not found', "Find $this->itemSlug not found"));
         }
         $data[$page->content()->name()] = $resource;
+
+        $items = Service::database()->getUnreadMessages('ahavfrue');
+
+        $data['notifications'] = ORM::findBy(Message::class, [
+            'item' => $items
+        ], [
+            'created' => 'DESC'
+        ]);
+
         return $data;
     }
 }

@@ -19,8 +19,14 @@
 
             <a href="{{ path('user.edit', {'id': global.user.id})  }}">
                     {{ 'user.menu.edit' | trans }}
-                </a></li>
+            </a></li>
+        </div>
+        
+        {% if data.notifications is defined %}
+            <div class="row usertool">
+                {% include "blocks/notifications.html.twig" with { 'data':data } %}
             </div>
+        {% endif %}
     {% else %}
         <div class="row usertool">
             <a href="#" data-toggle="modal" data-target="#login-modal" class="loginbutton">
