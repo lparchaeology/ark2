@@ -8,6 +8,8 @@ window.message_vocabulary = [];
     message_vocabulary['{{ term.keyword }}'] = "{{ term.keyword | translate }}";
 {% endfor %}
 
+window.useractorid = "{{ global.workflow.actor.id }}";
+
 window.eventtranslation = "{{ 'core.message.notification.event' | translate }}";
 
 window.datetranslation = "{{ 'core.message.sent_at' | translate }}";

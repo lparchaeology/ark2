@@ -64,8 +64,8 @@ var getMessage = function(id) {
         })
         .done(function(data) {
           var response = data.data;
-          
-          $.ajax(apiurl+'/actors/'+response.attributes.sender)
+          console.log(data);
+          $.ajax(apiurl+'/actors/'+response.attributes.sender.item)
           .fail(function() {
               thisRow.data("message").find('.message-from').html('error reading sender');
           })
@@ -79,7 +79,7 @@ var getMessage = function(id) {
           
           thisRow.data("message").find('.message-date').html(formatDate(sent_at));
           
-          $.ajax(apiurl+'/events/'+response.attributes.event)
+          $.ajax(apiurl+'/events/'+response.attributes.event.item)
           .fail(function() {
               thisRow.data("message").find('.message-body').html('error reading message');
           })
@@ -108,6 +108,14 @@ var showMessage = function(id){
     
 };
 
+var markAsRead = function(message, recipient) {
+    var read = {};
+    read['message'] = message;
+    read['recipient'] = recipient;
+    $.post(path + 'api/internal/message/read', read, function(result) {
+    });
+}
+
 var messageclick = function(evt) {
 
     $('tr').removeClass('selected');
@@ -120,7 +128,10 @@ var messageclick = function(evt) {
 
     self.addClass('selected');
     self.addClass('read');
-    
+
+    console.log(window.useractorid);
+    markAsRead(self.attr('data-unique-id'), window.useractorid);
+
     showMessage(self.attr('data-unique-id'));
 
 };

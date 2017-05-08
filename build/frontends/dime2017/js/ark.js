@@ -25,10 +25,12 @@ $(document).ready(function() {
     $('.datetimepicker').datetimepicker({
         locale: applocale
     });
+    
     $('.datepicker').datetimepicker({
         locale: applocale,
         minView: 2
     });
+    
     $('.timepicker').datetimepicker({
         locale: applocale,
         format: 'hh:ii',

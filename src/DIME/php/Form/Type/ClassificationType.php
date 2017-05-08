@@ -27,8 +27,7 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-
- namespace DIME\Form\Type;
+namespace DIME\Form\Type;
 
 use ARK\Form\Type\TermChoiceType;
 use ARK\Form\Type\AbstractFormType;
@@ -39,6 +38,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class ClassificationType extends AbstractFormType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $valueOptions = $options['field']['value']['options'];
@@ -47,8 +47,10 @@ class ClassificationType extends AbstractFormType
         $field = $options['field']['object'];
         $format = $field->attribute()->format();
 
-        $valueOptions['choices'] = $format->attribute('class')->vocabulary()->terms();
-        $valueOptions['placeholder'] = '...';
+        $valueOptions['choices'] = $format->attribute('class')
+            ->vocabulary()
+            ->terms();
+        $valueOptions['placeholder'] = ' - ';
         $valueOptions['required'] = true;
         $builder->add('class', TermChoiceType::class, $valueOptions);
 
@@ -62,8 +64,8 @@ class ClassificationType extends AbstractFormType
     protected function options()
     {
         return [
-            'compound' => true,
-         ];
+            'compound' => true
+        ];
     }
 
     public function mapDataToForms($property, $forms)
@@ -74,7 +76,10 @@ class ClassificationType extends AbstractFormType
             if ($value) {
                 $value = $value[0];
                 $forms['event']->setData($value['event']['item']);
-                $vocabulary = $property->attribute()->format()->attribute('class')->vocabulary();
+                $vocabulary = $property->attribute()
+                    ->format()
+                    ->attribute('class')
+                    ->vocabulary();
                 $forms['class']->setData($vocabulary->term($value['class']));
             }
         }
@@ -87,7 +92,9 @@ class ClassificationType extends AbstractFormType
             $value['event']['module'] = 'event';
             $value['event']['item'] = $forms['event']->getData();
             $value['class'] = $forms['class']->getData();
-            $property->setValue([$value]);
+            $property->setValue([
+                $value
+            ]);
         }
     }
 }
