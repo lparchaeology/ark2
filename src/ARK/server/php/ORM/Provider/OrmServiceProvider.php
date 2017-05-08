@@ -221,6 +221,11 @@ class OrmServiceProvider implements ServiceProviderInterface
                             'namespace' => 'ARK\File',
                         ],
                         [
+                            'type' => 'php',
+                            'namespace' => 'ARK\Security',
+                            'path' => $srcDir.'/Security',
+                        ],
+                        [
                             'type' => 'item',
                             'namespace' => 'ARK\Workflow',
                             'path' => $srcDir.'/Workflow',

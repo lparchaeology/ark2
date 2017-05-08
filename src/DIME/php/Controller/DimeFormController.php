@@ -33,6 +33,8 @@ namespace DIME\Controller;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Page;
+use ARK\Workflow\Registry;
+use ARK\Actor\Actor;
 use DIME\Controller\DimeController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -73,6 +75,7 @@ abstract class DimeFormController extends DimeController
         $options['page'] = $page;
         $options['layout'] = $page->content();
         $options['data'] = $data;
+        $actor = ORM::find(Actor::class, 'ahavfrue');
         return Service::renderResponse($page->template(), $options);
     }
 

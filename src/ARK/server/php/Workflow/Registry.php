@@ -31,12 +31,14 @@
 namespace ARK\Workflow;
 
 use ARK\Actor\Actor;
+use ARK\Security\ActorUser;
 use ARK\Model\Attribute;
 use ARK\Model\Item;
 use ARK\Model\ItemPropertyMarkingStore;
 use ARK\Model\Schema;
 use ARK\ORM\ORM;
 use ARK\Workflow\Action;
+use ARK\Service;
 use Symfony\Component\Workflow\Exception\InvalidArgumentException;
 use Symfony\Component\Workflow\Registry as SymfonyRegistry;
 use Symfony\Component\Workflow\StateMachine;
@@ -53,6 +55,21 @@ class Registry extends SymfonyRegistry
         }
         $this->actions[$schema] = [];
         $this->actions[$schema] = ORM::findBy(Action::class, ['schma' => $schema]);
+    }
+
+    public function actor(User $user = null)
+    {
+        if ($user === null) {
+            $user = Service::user();
+        }
+        $au = ORM::findOneBy(ActorUser::class, ['user' => $user->getId()]);
+        return ($au ? $au->actor() : null);
+    }
+
+    public function user(Actor $actor)
+    {
+        $au = ORM::findOneBy(ActorUser::class, ['actor' => $actor->id()]);
+        return ($au ? $au->user() : null);
     }
 
     public function schemaActions(Schema $schema)

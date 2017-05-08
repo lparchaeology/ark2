@@ -31,7 +31,7 @@
 namespace ARK\Workflow;
 
 use ARK\Actor\Actor;
-use ARK\Actor\ActorRole;
+use ARK\Security\ActorRole;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;

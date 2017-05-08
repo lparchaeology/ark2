@@ -30,7 +30,9 @@
 
 namespace DIME\Controller;
 
+use ARK\Actor\Actor;
 use ARK\Http\JsonResponse;
+use ARK\Message\Message;
 use ARK\ORM\ORM;
 use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;

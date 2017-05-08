@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 07, 2017 at 04:04 PM
+-- Generation Time: May 08, 2017 at 12:40 PM
 -- Server version: 5.6.34
 -- PHP Version: 7.1.0
 
@@ -1295,59 +1295,6 @@ INSERT INTO `ark_item_page` (`item`, `module`, `schma`, `type`, `status`, `visib
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ark_rbac_actor_role`
---
-
-CREATE TABLE `ark_rbac_actor_role` (
-  `actor` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `role` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `verified` tinyint(1) NOT NULL DEFAULT '0',
-  `locked` tinyint(1) NOT NULL DEFAULT '0',
-  `expired` tinyint(1) NOT NULL DEFAULT '0',
-  `expires_at` timestamp NULL DEFAULT NULL,
-  `verification_token` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `verification_requested_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_rbac_actor_role`
---
-
-INSERT INTO `ark_rbac_actor_role` (`actor`, `role`, `enabled`, `verified`, `locked`, `expired`, `expires_at`, `verification_token`, `verification_requested_at`) VALUES
-('ahavfrue', 'detectorist', 1, 1, 0, 0, NULL, '', NULL),
-('bnchristensen', 'appraiser', 1, 0, 0, 0, NULL, '', NULL),
-('dsvendson', 'researcher', 1, 0, 0, 0, NULL, '', NULL),
-('slund', 'registrar', 1, 0, 0, 0, NULL, '', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ark_rbac_actor_user`
---
-
-CREATE TABLE `ark_rbac_actor_user` (
-  `actor` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user` int(10) UNSIGNED NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `verified` tinyint(1) NOT NULL DEFAULT '0',
-  `locked` tinyint(1) NOT NULL DEFAULT '0',
-  `expired` tinyint(1) NOT NULL DEFAULT '0',
-  `expires_at` timestamp NULL DEFAULT NULL,
-  `verification_token` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `verification_requested_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `ark_rbac_actor_user`
---
-
-INSERT INTO `ark_rbac_actor_user` (`actor`, `user`, `enabled`, `verified`, `locked`, `expired`, `expires_at`, `verification_token`, `verification_requested_at`) VALUES
-('ahavfrue', 1, 1, 1, 0, 0, NULL, '', NULL);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `ark_sequence`
 --
 
@@ -1398,6 +1345,59 @@ CREATE TABLE `ark_sequence_reserve` (
   `min` int(11) NOT NULL,
   `max` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_workflow_actor_role`
+--
+
+CREATE TABLE `ark_workflow_actor_role` (
+  `actor` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `verified` tinyint(1) NOT NULL DEFAULT '0',
+  `locked` tinyint(1) NOT NULL DEFAULT '0',
+  `expired` tinyint(1) NOT NULL DEFAULT '0',
+  `expires_at` timestamp NULL DEFAULT NULL,
+  `verification_token` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `verification_requested_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `ark_workflow_actor_role`
+--
+
+INSERT INTO `ark_workflow_actor_role` (`actor`, `role`, `enabled`, `verified`, `locked`, `expired`, `expires_at`, `verification_token`, `verification_requested_at`) VALUES
+('ahavfrue', 'detectorist', 1, 1, 0, 0, NULL, '', NULL),
+('bnchristensen', 'appraiser', 1, 0, 0, 0, NULL, '', NULL),
+('dsvendson', 'researcher', 1, 0, 0, 0, NULL, '', NULL),
+('slund', 'registrar', 1, 0, 0, 0, NULL, '', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ark_workflow_actor_user`
+--
+
+CREATE TABLE `ark_workflow_actor_user` (
+  `actor` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user` int(10) UNSIGNED NOT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `verified` tinyint(1) NOT NULL DEFAULT '0',
+  `locked` tinyint(1) NOT NULL DEFAULT '0',
+  `expired` tinyint(1) NOT NULL DEFAULT '0',
+  `expires_at` timestamp NULL DEFAULT NULL,
+  `verification_token` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `verification_requested_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `ark_workflow_actor_user`
+--
+
+INSERT INTO `ark_workflow_actor_user` (`actor`, `user`, `enabled`, `verified`, `locked`, `expired`, `expires_at`, `verification_token`, `verification_requested_at`) VALUES
+('ahavfrue', 3, 1, 1, 0, 0, NULL, '', NULL);
 
 --
 -- Indexes for dumped tables
@@ -1565,18 +1565,6 @@ ALTER TABLE `ark_item_page`
   ADD KEY `parent` (`parent_module`,`parent_item`) USING BTREE;
 
 --
--- Indexes for table `ark_rbac_actor_role`
---
-ALTER TABLE `ark_rbac_actor_role`
-  ADD PRIMARY KEY (`actor`,`role`);
-
---
--- Indexes for table `ark_rbac_actor_user`
---
-ALTER TABLE `ark_rbac_actor_user`
-  ADD PRIMARY KEY (`actor`,`user`);
-
---
 -- Indexes for table `ark_sequence`
 --
 ALTER TABLE `ark_sequence`
@@ -1593,6 +1581,18 @@ ALTER TABLE `ark_sequence_lock`
 --
 ALTER TABLE `ark_sequence_reserve`
   ADD PRIMARY KEY (`module`,`parent`,`sequence`);
+
+--
+-- Indexes for table `ark_workflow_actor_role`
+--
+ALTER TABLE `ark_workflow_actor_role`
+  ADD PRIMARY KEY (`actor`,`role`);
+
+--
+-- Indexes for table `ark_workflow_actor_user`
+--
+ALTER TABLE `ark_workflow_actor_user`
+  ADD PRIMARY KEY (`actor`,`user`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -1751,16 +1751,16 @@ ALTER TABLE `ark_fragment_time`
   ADD CONSTRAINT `ark_fragment_time_ibfk_1` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `ark_rbac_actor_role`
+-- Constraints for table `ark_workflow_actor_role`
 --
-ALTER TABLE `ark_rbac_actor_role`
-  ADD CONSTRAINT `ark_rbac_actor_role_ibfk_1` FOREIGN KEY (`actor`) REFERENCES `ark_item_actor` (`item`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `ark_workflow_actor_role`
+  ADD CONSTRAINT `ark_workflow_actor_role_ibfk_1` FOREIGN KEY (`actor`) REFERENCES `ark_item_actor` (`item`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `ark_rbac_actor_user`
+-- Constraints for table `ark_workflow_actor_user`
 --
-ALTER TABLE `ark_rbac_actor_user`
-  ADD CONSTRAINT `ark_rbac_actor_user_ibfk_1` FOREIGN KEY (`actor`) REFERENCES `ark_item_actor` (`item`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `ark_workflow_actor_user`
+  ADD CONSTRAINT `ark_workflow_actor_user_ibfk_1` FOREIGN KEY (`actor`) REFERENCES `ark_item_actor` (`item`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

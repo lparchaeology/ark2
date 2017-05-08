@@ -192,8 +192,16 @@ class Service
         return self::$app['security'];
     }
 
-    public static function user()
+    public static function userManager()
     {
+        return self::$app['user.manager'];
+    }
+
+    public static function user($id = null)
+    {
+        if ($id) {
+            return self::userManager()->getUser($id);
+        }
         return self::$app['user'];
     }
 

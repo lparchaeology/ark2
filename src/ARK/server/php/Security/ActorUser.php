@@ -28,22 +28,23 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Actor;
+namespace ARK\Security;
 
 use ARK\Actor\Actor;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
+use ARK\Service;
 use ARK\Workflow\Role;
 use DateTime;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class ActorRole
+class ActorUser
 {
     protected $actor = null;
-    protected $role = null;
-    protected $roleName = '';
+    protected $user = null;
+    protected $userId = null;
     protected $enabled = false;
     protected $verified = false;
     protected $locked = false;
@@ -52,10 +53,11 @@ class ActorRole
     protected $verificationToken = '';
     protected $verificationRequestedAt = null;
 
-    public function __construct($actor, $role)
+    public function __construct($actor, $user)
     {
         $this->actor = $actor;
-        $this->role = $role;
+        $this->user = $user;
+        $this->userId = $user->id();
     }
 
     public function actor()
@@ -63,12 +65,12 @@ class ActorRole
         return $this->actor;
     }
 
-    public function role()
+    public function user()
     {
-        if ($this->role === null) {
-            $this->roleName = ORM::find(Role::class, $this->roleName);
+        if ($this->user === null) {
+            $this->user = Service::user($this->userId);
         }
-        return $this->role;
+        return $this->user;
     }
 
     public function isVerified()
@@ -175,11 +177,11 @@ class ActorRole
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_rbac_actor_role');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_actor_user');
 
         // Key
         $builder->addManyToOneKey('actor', Actor::class, 'actor', 'item');
-        $builder->addStringKey('role', 30);
+        $builder->addKey('user', 'integer');
 
         // Attributes
         $builder->addField('enabled', 'boolean');
