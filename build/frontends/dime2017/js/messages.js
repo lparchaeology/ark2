@@ -46,7 +46,9 @@ var getMessage = function(id) {
             datetranslation+"</dt><dd class=\"message-date\">"+
             formatDate(dateinitial)+"</dd><dt>"+
             eventtranslation+"</dt><dd class=\"message-body\">"+
-            eventinitial+"</dd></dl>").append(button);
+            eventinitial+"</dd><dd class=\"message-item\">"+
+            itemtranslation+"</dd><dt>"+
+            iteminitial+"</dt></dl>").append(button);
     
     var message = $("<div></div>").append(definitionlist).append(button);
     

@@ -1,7 +1,13 @@
 $(document).ready(function(){
     $('.dropdown-menu .markasread').click(function(e) {
         e.stopPropagation();
-        $.post($(e.target).attr('href'))
+        
+        console.log($(e.target).attr('message'));
+        console.log($(e.target).attr('recipient'));
+        
+        var payload = JSON.stringify({"message":$(e.target).attr('message'),"recipient":$(e.target).attr('recipient')});
+        
+        $.post($(e.target).attr('href'), payload)
         .fail(function() {
             alert('fail');
         })

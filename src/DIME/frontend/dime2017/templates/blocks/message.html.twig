@@ -8,7 +8,7 @@ window.message_vocabulary = [];
     message_vocabulary['{{ term.keyword }}'] = "{{ term.keyword | translate }}";
 {% endfor %}
 
-window.useractorid = "{{ global.workflow.actor.id }}";
+window.useractorid = "{{ workflow.actor.id }}";
 
 window.eventtranslation = "{{ 'core.message.notification.event' | translate }}";
 
@@ -16,11 +16,15 @@ window.datetranslation = "{{ 'core.message.sent_at' | translate }}";
 
 window.sendertranslation = "{{ 'core.message.sender' | translate }}";
 
+window.itemtranslation = "{{ 'dime.find' | translate }}";
+
 window.eventinitial = "";
 
 window.dateinitial = "";
 
 window.senderinitial = "";
+
+window.iteminitial = "";
 
 {% if data.message %}
     window.message_id = {{ data.message.id }};
@@ -30,6 +34,9 @@ window.senderinitial = "";
     window.dateinitial = "{{ data.message.sentAt.datetime.date }}";
 
     window.senderinitial = "{{ data.message.sender.fullname }}";
+    
+    window.iteminitial = "{{ data.message.event.subject.id }}";
+
 {% endif %}
 
 </script>

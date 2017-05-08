@@ -4,7 +4,7 @@ $('document').ready(function(){
     
     $.post(path + 'api/internal/vocabulary', JSON.stringify(query) )
     .fail(function() {
-        alert('fial');
+        alert('Error fetching period vocabulary');
     })
     .done(function(response) {
         window.periodvocabulary = response.terms;
