@@ -100,16 +100,17 @@ class DatingType extends AbstractFormType
     {
         $forms = iterator_to_array($forms);
         if ($property instanceof Property) {
-            $value['event']['module'] = 'event';
-            $value['event']['item'] = $forms['event']->getData();
+            $event = $forms['event']->getData();
+            if ($event) {
+                $event = ORM::find(Event::class, $event);
+            }
+            $value['event'] = $event;
             $value['entered'] = $forms['entered']->getData();
             $value['year'][0] = $forms['year']->getData();
             $value['year'][1] = $forms['year_span']->getData();
             $value['period'][0] = $forms['period']->getData();
             $value['period'][1] = $forms['period_span']->getData();
-            $property->setValue([
-                $value
-            ]);
+            $property->setValue([$value]);
         }
     }
 }

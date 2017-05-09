@@ -37,6 +37,7 @@ use ARK\Model\Attribute;
 use ARK\Model\Datatype;
 use ARK\Model\Item;
 use ARK\Model\VersionTrait;
+use ARK\Model\Fragment\ObjectFragment;
 use ARK\Service;
 
 abstract class Fragment
@@ -141,7 +142,12 @@ abstract class Fragment
         return $this->object;
     }
 
-    public static function create($module, $item, Attribute $attribute, Fragment $object = null)
+    public function setObject(ObjectFragment $object)
+    {
+        $this->object = $object;
+    }
+
+    public static function create($module, $item, Attribute $attribute, ObjectFragment $object = null)
     {
         $class = $attribute->format()->datatype()->dataClass();
         $fragment = new $class;
@@ -149,22 +155,19 @@ abstract class Fragment
         $fragment->item = $item;
         $fragment->attribute = $attribute->name();
         $fragment->datatype = $attribute->format()->datatype()->id();
-        if ($object) {
-            $fragment->object = $object->id();
-        }
+        $fragment->object = $object;
         $fragment->refreshVersion();
         return $fragment;
     }
 
-    public static function createFromAttribute(Attribute $attribute, Fragment $object = null)
+    public static function createFromAttribute(Attribute $attribute, ObjectFragment $object = null)
     {
         $class = $attribute->format()->datatype()->dataClass();
         $fragment = new $class;
         $fragment->attribute = $attribute->name();
         $fragment->datatype = $attribute->format()->datatype()->id();
-        if ($object) {
-            $fragment->object = $object->id();
-        }
+        $fragment->span = $attribute->isSpan();
+        $fragment->object = $object;
         $fragment->refreshVersion();
         return $fragment;
     }
@@ -183,8 +186,10 @@ abstract class Fragment
         $builder->addStringField('format', 30);
         $builder->addStringField('parameter', 30);
         $builder->addField('span', 'boolean');
-        $builder->addField('object', 'integer', [], 'object');
         VersionTrait::buildVersionMetadata($builder);
+
+        // Attributes
+        $builder->addManyToOneField('object', ObjectFragment::class, 'object', 'fid', true);
     }
 
     public static function buildSubclassMetadata(ClassMetadata $metadata, $class)

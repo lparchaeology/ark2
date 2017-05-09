@@ -34,10 +34,13 @@ use ARK\Model\Datatype;
 use ARK\Model\Fragment;
 use ARK\Model\EnabledTrait;
 use ARK\Model\Format\FormatAttribute;
+use ARK\Model\LocalText;
+use ARK\Model\Attribute;
 use ARK\Model\Item;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
@@ -245,42 +248,54 @@ abstract class Format
         return $data;
     }
 
-    public function hydrate($data, $model, Vocabulary $vocabulary = null)
+    public function hydrate($data, Attribute $attribute, Vocabulary $vocabulary = null)
     {
-        if ($model instanceof Fragment) {
-            $this->hydrateFragment($data, $model, $vocabulary);
-            return;
-        }
-        if (!is_array($model) || $model = []) {
-            return;
-        }
+        $fragments = new ArrayCollection();
         if ($data === [] || $data === null) {
-            return;
+            return $fragments;
         }
-        if ($this->hasMultipleValues()) {
-            for ($i = 0; $i < count($data); $i++) {
-                $this->hydrateFragment($data[i], $model[i], $vocabulary);
-            }
-            return;
+        if (!$this->hasMultipleValues()) {
+            $data = [$data];
         }
-        $data = (is_array($data) ? $data[0] : $data);
-        $fragment = (is_array($model) ? $model[0] : $model);
-        $this->hydrateFragment($data, $fragment, $vocabulary);
+        foreach ($data as $datum) {
+            $fragment = Fragment::createFromAttribute($attribute);
+            $this->hydrateFragment($datum, $fragment, $vocabulary);
+            $fragments[] = $fragment;
+        }
+        return $fragments;
     }
 
     protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null)
     {
+        $span = ($this->isSpan() || $fragment->isSpan());
+        if ($span) {
+            $extent = $data[1];
+            $data = $data[0];
+        }
         if ($vocabulary instanceof Vocabulary) {
             $data = ($data instanceof Term ? $data->name() : $data);
-            $fragment->setValue($data, $vocabulary->concept());
+            if ($span) {
+                $extent = ($extent instanceof Term ? $extent->name() : $extent);
+                $fragment->setSpan($data, $extent, $vocabulary->concept());
+            } else {
+                $fragment->setValue($data, $vocabulary->concept());
+            }
             return;
         }
         if ($data instanceof Term) {
-            $fragment->setValue($data->name(), $data->concept()->concept());
+            if ($span) {
+                $fragment->setSpan($data->name(), $extent->name(), $data->concept()->concept());
+            } else {
+                $fragment->setValue($data->name(), $data->concept()->concept());
+            }
             return;
         }
         if ($data instanceof DateTime) {
-            $fragment->setValue($data);
+            if ($span) {
+                $fragment->setSpan($data, $extent);
+            } else {
+                $fragment->setValue($data);
+            }
             return;
         }
         if ($data instanceof Item) {
@@ -291,7 +306,11 @@ abstract class Format
             return;
         }
         if ($this->isAtomic()) {
-            $fragment->setValue($data);
+            if ($span) {
+                $fragment->setSpan($data, $extent);
+            } else {
+                $fragment->setValue($data);
+            }
             return;
         }
         if (!is_array($data)) {
@@ -300,7 +319,12 @@ abstract class Format
         $format = ($this->formatName() ? $data[$this->formatName()] : null);
         $parameter = ($this->parameterName() ? $data[$this->parameterName()] : null);
         $value = ($this->valueName() ? $data[$this->valueName()] : null);
-        $fragment->setValue($value, $parameter, $format);
+        if ($span) {
+            $extent = ($this->valueName() ? $extent[$this->valueName()] : null);
+            $fragment->setSpan($value, $extent, $parameter, $format);
+        } else {
+            $fragment->setValue($value, $parameter, $format);
+        }
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
