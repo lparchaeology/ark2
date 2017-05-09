@@ -51,7 +51,8 @@ function initialisePickMap() {
         target: 'mappick',
         view: new ol.View({
             center: [965972, 7575813],
-            zoom: 14
+            //center: [531578, 6295675],
+            zoom: 5
         }),
         controls: [],
     });
