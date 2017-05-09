@@ -13,29 +13,30 @@ $(document).ready(function() {
     $(".checkbox").addClass("col-xs-4 col-sm-4 col-lg-3");
     // Fake readonly mode
     $('.readonly-select').prop('disabled', true);
-/*
-    $("file").fileinput({
-        'showUpload':true,
-        'previewFileType':'any'
-    });
-*/
+    /*
+        $("file").fileinput({
+            'showUpload':true,
+            'previewFileType':'any'
+        });
+    */
     //$("date").datetimepicker();
     //$("time").datetimepicker();
     //$("datetime").datetimepicker();
     $('.datetimepicker').datetimepicker({
         locale: applocale
     });
-    
+
     $('.datepicker').datetimepicker({
         locale: applocale,
         minView: 2
     });
-    
+
     $('.timepicker').datetimepicker({
         locale: applocale,
         format: 'hh:ii',
         maxView: 0
     });
+
     // FIXME Hide Bootstrap Table loading animation as is a bit broken
     $('.table-bootstrap-table').bootstrapTable('hideLoading');
 
