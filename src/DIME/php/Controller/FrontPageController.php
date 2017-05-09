@@ -27,23 +27,31 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-
 namespace DIME\Controller;
 
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\Message\Message;
 use DIME\Controller\DimeController;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
 class FrontPageController extends DimeController
 {
+
     public function __invoke(Request $request)
     {
         $layout = 'dime_front_page';
         $options = $this->defaultOptions();
-        $options['layout'] =  Service::layout($layout);
+        $options['layout'] = Service::layout($layout);
         $options['data'][$layout] = ORM::findAll(Find::class);
+        $items = Service::database()->getUnreadMessages('ahavfrue');
+
+        $options['data']['notifications'] = ORM::findBy(Message::class, [
+            'item' => $items
+        ], [
+            'created' => 'DESC'
+        ]);
         return Service::renderResponse('pages/page.html.twig', $options);
     }
 }

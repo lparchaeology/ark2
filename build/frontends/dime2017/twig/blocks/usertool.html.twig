@@ -3,30 +3,25 @@
 
     {% if global.user %}
         <div class="row usertool username">
+            <a href="{{ path('user.view', {'id': global.user.id}) }}">
                 <span class="dime-icon icon-user small"></span>
                 {{ 'user.greeting' | trans({ '%name%': global.user.displayName }) }}
+            </a>
             <a href="{{ path('user.logout') }}" class="loginbutton">
                 <span class=" dime-icon glyphicon glyphicon-log-out logout"></span>
                 <span class="text">logout</span>
             </a>
         </div>
         <div class="row usertool useractions">
-                <a href="{{ path('user.view', {'id': global.user.id}) }}">
-                    {{ 'user.menu.home' | trans }}
-                </a>
-
-            <span class="dime-icon icon-user-edit small"> </span>
-
-            <a href="{{ path('user.edit', {'id': global.user.id})  }}">
-                    {{ 'user.menu.edit' | trans }}
-            </a></li>
+            {% if data.notifications|length %}
+                {%  set notificationicon = 'icon-new-notification small wide' %}
+            {% else %}
+                {%  set notificationicon = 'icon-notification small' %}
+            {% endif %}
+            <a href = " {{ path( 'home.messages' ) }}">
+                <span class="dime-icon dimehometool-icon {{ notificationicon }} "></span>
+            </a>
         </div>
-        
-        {% if data.notifications is defined %}
-            <div class="row usertool">
-                {% include "blocks/notifications.html.twig" with { 'data':data } %}
-            </div>
-        {% endif %}
     {% else %}
         <div class="row usertool">
             <a href="#" data-toggle="modal" data-target="#login-modal" class="loginbutton">
