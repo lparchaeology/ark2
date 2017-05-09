@@ -960,4 +960,34 @@ class Database
         $read = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
         return array_diff($all, $read);
     }
+
+    public function findSearch($query)
+    {
+        $pre = "
+            SELECT item
+            FROM ark_fragment_string
+            WHERE module = 'find'
+        ";
+        $types = [\Doctrine\DBAL\Connection::PARAM_STR_ARRAY];
+        $res = [];
+        if (isset($query['municipality'])) {
+            $sql = $pre."AND attribute = 'municipality' AND value IN (?)";
+            $params = [$query['municipality']];
+            $res = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
+        }
+        if (isset($query['type'])) {
+            $sql = $pre."AND attribute = 'type' AND value IN (?)";
+            $params = [$query['type']];
+            $typ = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
+            $res = ($res ? array_intersect($res, $typ) : $typ);
+        }
+        $mat = [];
+        if (isset($query['material'])) {
+            $sql = $pre."AND attribute = 'material' AND value IN (?)";
+            $params = [$query['material']];
+            $mat = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
+            $res = ($res ? array_intersect($res, $mat) : $mat);
+        }
+        return $res;
+    }
 }

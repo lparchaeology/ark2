@@ -52,41 +52,46 @@ class FindListController extends DimeFormController
     public function buildData(Request $request, Page $page)
     {
         $query = $request->query->all();
-        $criteria = [];
+
         if (isset($query['municipality'])) {
             $municipalities = ORM::findBy(Term::class, [
                 'concept' => 'dime.denmark.municipality',
                 'term' => $query['municipality']
             ]);
             $data['dime_find_filter_municipality'] = $municipalities->toArray();
-            // $criteria['municipality'] = $municipality->name();
         }
+
         if (isset($query['type'])) {
             $types = ORM::findBy(Term::class, [
                 'concept' => 'dime.find.type',
                 'term' => $query['type']
             ]);
             $data['dime_find_filter_type'] = $types->toArray();
-            //$criteria['type'] = $type->name();
         }
+
         if (isset($query['period'])) {
             $periods = ORM::findBy(Term::class, [
                 'concept' => 'dime.period',
                 'term' => $query['period']
             ]);
             $data['dime_find_filter_period'] = $periods->toArray();
-            // $criteria['period'] = $period->name();
         }
+
         if (isset($query['material'])) {
             $materials = ORM::findBy(Term::class, [
                 'concept' => 'dime.material',
                 'term' => $query['material']
             ]);
             $data['dime_find_filter_material'] = $materials->toArray();
-            // $criteria['material'] = $material->name();
         }
 
-        $resource = ORM::findBy(Find::class, $criteria);
+        if ($query) {
+            $items = Service::database()->findSearch($query);
+            $resource = ORM::findBy(Find::class, ['item' => $items]);
+        } else {
+            $resource = ORM::findAll(Find::class);
+        }
+
         $data[$page->content()->name()] = $resource;
         $data['dime_find_list'] = $resource;
         $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $resource : []);
@@ -118,36 +123,27 @@ class FindListController extends DimeFormController
         $types = $data['dime_find_filter_type'];
         $periods = $data['dime_find_filter_period'];
         $materials = $data['dime_find_filter_material'];
-        $query = $request->query->all();
+        $query = [];
         if ($municipalities) {
             foreach ($municipalities as $municipality) {
                 $query['municipality'][] = $municipality->name();
             }
-        } else {
-            unset($query['municipality']);
         }
         if ($types) {
             foreach ($types as $type) {
                 $query['type'][] = $type->name();
             }
-        } else {
-            unset($query['type']);
         }
         if ($periods) {
             foreach ($periods as $period) {
                 $query['period'][] = $period->name();
             }
-        } else {
-            unset($query['period']);
         }
         if ($materials) {
             foreach ($materials as $material) {
                 $query['material'][] = $material->name();
             }
-        } else {
-            unset($query['material']);
         }
-        dump($query);
         return Service::redirectPath($redirect, $query);
     }
 }
