@@ -4,7 +4,9 @@
     <a class = "messagetext" href="{{ path('home.messages',  {'id': notification.id}) }}">
         {{ notification.event.term.keyword | trans }}
     </a>
-    <span class="markasread" href="{{ path('api.internal.message.read') }}" message="{{ notification.id }}" recipient="{{ workflow.actor.id }}">
+    <span class="markasread" href="{{ path('api.internal.message.read') }}"
+    message="{{ notification.id }}"
+    recipient="{{ workflow.actor.id }}">
         &times;
     </span>
 

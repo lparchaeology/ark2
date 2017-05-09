@@ -65,7 +65,7 @@ class Message implements Item
     public function isRecipient(Actor $actor)
     {
         foreach ($this->recipients() as $dispatch) {
-            if ($actor->id() == $dispatch['recipient']->id()) {
+            if ($actor->id() == $dispatch['recipient']['item']) {
                 return true;
             }
         }
@@ -75,7 +75,7 @@ class Message implements Item
     public function markAsRead(Actor $actor)
     {
         foreach ($this->recipients() as &$dispatch) {
-            if ($actor->id() == $dispatch['recipient']->id() && ! isset($dispatch['read'])) {
+            if ($actor->id() == $dispatch['recipient']['item'] && ! isset($dispatch['read'])) {
                 $dispatch['read'] = ARK::timestamp();
                 return true;
             }
@@ -86,7 +86,7 @@ class Message implements Item
     public function wasReadBy(Actor $actor)
     {
         foreach ($this->recipients() as $dispatch) {
-            if ($actor->id() == $dispatch['recipient']->id() && isset($dispatch['read'])) {
+            if ($actor->id() == $dispatch['recipient']['item'] && isset($dispatch['read'])) {
                 return true;
             }
         }

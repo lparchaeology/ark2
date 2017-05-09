@@ -48,7 +48,6 @@ class MessageReadController
             $recipient = $content->recipient;
             $recipient = ORM::find(Actor::class, $recipient);
             if ($message && $recipient && $message->isRecipient($recipient)) {
-                print_r("isRecipient");
                 $data['result'] = $message->markAsRead($recipient);
                 ORM::persist($message);
                 ORM::flush($message);
