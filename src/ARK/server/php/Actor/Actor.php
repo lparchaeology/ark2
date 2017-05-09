@@ -9,10 +9,15 @@ namespace ARK\Actor;
 
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
+use ARK\ORM\ORM;
+use ARK\Security\ActorRole;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Actor implements Item
 {
     use ItemTrait;
+
+    protected $roles = null;
 
     public function __construct($schema = 'core.actor')
     {
@@ -22,5 +27,17 @@ class Actor implements Item
     public function fullname()
     {
         return $this->property('fullname')->value()->content();
+    }
+
+    public function roles()
+    {
+        if ($this->roles === null) {
+            $ars = ORM::findBy(ActorRole::class, ['actor' => $this->id()]);
+            $this->roles = new ArrayCollection();
+            foreach ($ars as $ar) {
+                $this->roles[] = $ar->role();
+            }
+        }
+        return $this->roles;
     }
 }

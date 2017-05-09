@@ -47,10 +47,6 @@ abstract class Attribute
     protected $attribute = '';
     protected $format = null;
     protected $vocabulary = null;
-    protected $visibility = 'restricted';
-    protected $visibilityTerm = null;
-    protected $read = null;
-    protected $update = null;
     protected $span = false;
     protected $minimum = 0;
     protected $maximum = 1;
@@ -91,24 +87,6 @@ abstract class Attribute
             return $this->vocabulary->transitions();
         }
         return null;
-    }
-
-    public function visibility()
-    {
-        if ($this->visibilityTerm === null) {
-            $this->visibilityTerm = ORM::find(Term::class, ['concept' => 'core.visibility', 'term' => $this->visibility]);
-        }
-        return $this->visibilityTerm;
-    }
-
-    public function readPermission()
-    {
-        return $this->read;
-    }
-
-    public function updatePermission()
-    {
-        return $this->update;
     }
 
     public function defaultValue()
@@ -253,7 +231,6 @@ abstract class Attribute
         $builder->setReadOnly();
 
         // Attributes
-        $builder->addStringField('visibility', 30);
         $builder->addField('span', 'boolean');
         $builder->addField('minimum', 'integer');
         $builder->addField('maximum', 'integer');
@@ -265,7 +242,5 @@ abstract class Attribute
         // Associations
         $builder->addManyToOneField('format', Format::class, 'format', 'format', false);
         $builder->addVocabularyField('vocabulary');
-        $builder->addPermissionField('read', 'view');
-        $builder->addPermissionField('update', 'edit');
     }
 }

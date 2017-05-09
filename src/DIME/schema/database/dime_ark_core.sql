@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.1
+-- version 4.6.6
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 08, 2017 at 09:15 PM
--- Server version: 5.6.34
--- PHP Version: 7.1.0
+-- Generation Time: May 09, 2017 at 12:53 PM
+-- Server version: 10.1.22-MariaDB
+-- PHP Version: 7.1.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -201,9 +201,6 @@ CREATE TABLE `ark_format_attribute` (
   `sequence` int(11) NOT NULL,
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'public',
-  `view` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `edit` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `root` tinyint(1) NOT NULL DEFAULT '0',
   `span` tinyint(1) NOT NULL DEFAULT '0',
   `minimum` int(11) NOT NULL DEFAULT '0',
@@ -219,28 +216,28 @@ CREATE TABLE `ark_format_attribute` (
 -- Dumping data for table `ark_format_attribute`
 --
 
-INSERT INTO `ark_format_attribute` (`parent`, `attribute`, `sequence`, `format`, `vocabulary`, `visibility`, `view`, `edit`, `root`, `span`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`, `keyword`) VALUES
-('address', 'city', 1, 'plaintext', NULL, 'public', NULL, NULL, 0, 0, 1, 1, 1, 0, 1, 0, 'format.address.city'),
-('address', 'country', 2, 'term', 'country', 'public', NULL, NULL, 0, 0, 1, 1, 1, 0, 1, 0, 'format.address.country'),
-('address', 'street', 0, 'plaintext', NULL, 'public', NULL, NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.address.street'),
-('classification', 'class', 0, 'term', 'dime.find.type', 'public', NULL, NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.classification.class'),
-('classification', 'event', 1, 'event', 'dime.find.type', 'public', NULL, NULL, 0, 0, 1, 1, 1, 0, 1, 0, 'format.classification.classified'),
-('dating', 'entered', 0, 'identifier', NULL, 'public', NULL, NULL, 0, 0, 1, 1, 1, 0, 1, 0, 'format.dating.type'),
-('dating', 'event', 5, 'event', NULL, 'public', NULL, NULL, 0, 0, 1, 1, 1, 0, 1, 0, 'format.dating.dated'),
-('dating', 'period', 3, 'term', 'dime.period', 'public', NULL, NULL, 0, 1, 1, 1, 1, 0, 1, 0, 'format.dating.period'),
-('dating', 'year', 1, 'integer', NULL, 'public', NULL, NULL, 1, 1, 1, 1, 1, 0, 1, 0, 'format.dating.year'),
-('description', 'event', 1, 'event', NULL, 'public', NULL, NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.description.described'),
-('description', 'text', 0, 'plaintext', NULL, 'public', NULL, NULL, 0, 0, 1, 1, 1, 0, 1, 0, 'format.description.text'),
-('dispatch', 'read', 1, 'datetime', NULL, 'public', NULL, NULL, 0, 0, 1, 1, 1, 0, 1, 0, 'format.recipient.read_on'),
-('dispatch', 'recipient', 0, 'actor', NULL, 'public', NULL, NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.recipient.sent_to'),
-('version', 'created', 3, 'datetime', NULL, 'public', NULL, NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.fileversion.created'),
-('version', 'creator', 3, 'actor', NULL, 'public', NULL, NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.fileversion.creator'),
-('version', 'expires', 5, 'datetime', NULL, 'public', NULL, NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.fileversion.expires'),
-('version', 'modified', 4, 'datetime', NULL, 'public', NULL, NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.fileversion.modified'),
-('version', 'modifier', 4, 'actor', NULL, 'public', NULL, NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.fileversion.modifier'),
-('version', 'name', 1, 'string', NULL, 'public', NULL, NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.fileversion.name'),
-('version', 'sequence', 0, 'integer', NULL, 'public', NULL, NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.fileversion.sequence'),
-('version', 'version', 2, 'string', NULL, 'public', NULL, NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.fileversion.string');
+INSERT INTO `ark_format_attribute` (`parent`, `attribute`, `sequence`, `format`, `vocabulary`, `root`, `span`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`, `keyword`) VALUES
+('address', 'city', 1, 'plaintext', NULL, 0, 0, 1, 1, 1, 0, 1, 0, 'format.address.city'),
+('address', 'country', 2, 'term', 'country', 0, 0, 1, 1, 1, 0, 1, 0, 'format.address.country'),
+('address', 'street', 0, 'plaintext', NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.address.street'),
+('classification', 'class', 0, 'term', 'dime.find.type', 1, 0, 1, 1, 1, 0, 1, 0, 'format.classification.class'),
+('classification', 'event', 1, 'event', 'dime.find.type', 0, 0, 1, 1, 1, 0, 1, 0, 'format.classification.classified'),
+('dating', 'entered', 0, 'identifier', NULL, 0, 0, 1, 1, 1, 0, 1, 0, 'format.dating.type'),
+('dating', 'event', 5, 'event', NULL, 0, 0, 1, 1, 1, 0, 1, 0, 'format.dating.dated'),
+('dating', 'period', 3, 'term', 'dime.period', 0, 1, 1, 1, 1, 0, 1, 0, 'format.dating.period'),
+('dating', 'year', 1, 'integer', NULL, 1, 1, 1, 1, 1, 0, 1, 0, 'format.dating.year'),
+('description', 'event', 1, 'event', NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.description.described'),
+('description', 'text', 0, 'plaintext', NULL, 0, 0, 1, 1, 1, 0, 1, 0, 'format.description.text'),
+('dispatch', 'read', 1, 'datetime', NULL, 0, 0, 1, 1, 1, 0, 1, 0, 'format.recipient.read_on'),
+('dispatch', 'recipient', 0, 'actor', NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.recipient.sent_to'),
+('version', 'created', 3, 'datetime', NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.fileversion.created'),
+('version', 'creator', 3, 'actor', NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.fileversion.creator'),
+('version', 'expires', 5, 'datetime', NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.fileversion.expires'),
+('version', 'modified', 4, 'datetime', NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.fileversion.modified'),
+('version', 'modifier', 4, 'actor', NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.fileversion.modifier'),
+('version', 'name', 1, 'string', NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.fileversion.name'),
+('version', 'sequence', 0, 'integer', NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.fileversion.sequence'),
+('version', 'version', 2, 'string', NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.fileversion.string');
 
 -- --------------------------------------------------------
 
@@ -839,7 +836,7 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('dime.find', 'find', 'museum', 'actor', NULL, 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'dime.actor.type.museum'),
 ('dime.find', 'find', 'museum_id', 'identifier', NULL, 'public', NULL, NULL, 0, 0, 1, 1, 0, 1, 0, 'dime.find.museum_id'),
 ('dime.find', 'find', 'owner', 'actor', NULL, 'restricted', 'dime.find.read.owner', 'dime.find.read.owner', 0, 1, 1, 1, 0, 1, 0, 'dime.find.owner'),
-('dime.find', 'find', 'process', 'term', 'dime.find.process', 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'dime.find.process'),
+('dime.find', 'find', 'process', 'term', 'dime.find.process', 'restricted', 'dime.find.read.process', 'dime.find.update.process', 0, 1, 1, 1, 0, 1, 0, 'dime.find.process'),
 ('dime.find', 'find', 'recipient', 'actor', NULL, 'restricted', 'dime.find.read.custody', 'dime.find.read.custody', 0, 0, 1, 1, 0, 1, 0, 'dime.find.recipient'),
 ('dime.find', 'find', 'recorder', 'actor', NULL, 'restricted', 'dime.find.read.finder', 'dime.find.update.finder', 0, 1, 1, 1, 0, 1, 0, 'dime.find.recorder'),
 ('dime.find', 'find', 'secondary', 'term', 'dime.find.secondary', 'public', NULL, NULL, 0, 0, 0, 1, 0, 1, 0, 'dime.find.material.secondary'),
@@ -5495,34 +5492,45 @@ CREATE TABLE `ark_workflow_grant` (
 --
 
 INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
-('researcher', 'core.file.read'),
 ('anon', 'core.page.read'),
-('registrar', 'dime.find.create'),
+('anon', 'dime.find.read'),
 ('detectorist', 'dime.find.read'),
+('detectorist', 'dime.find.read.custody'),
+('detectorist', 'dime.find.read.finddate'),
+('detectorist', 'dime.find.read.finder'),
+('detectorist', 'dime.find.read.location'),
+('detectorist', 'dime.find.read.owner'),
+('detectorist', 'dime.find.read.process'),
+('detectorist', 'dime.find.read.treasure'),
+('detectorist', 'dime.find.update'),
+('detectorist', 'dime.find.update.custody'),
+('detectorist', 'dime.find.update.finddate'),
+('detectorist', 'dime.find.update.finder'),
+('detectorist', 'dime.find.update.location'),
+('detectorist', 'dime.find.update.owner'),
+('detectorist', 'dime.find.update.process'),
+('registrar', 'dime.find.create'),
 ('registrar', 'dime.find.read'),
-('researcher', 'dime.find.read'),
 ('registrar', 'dime.find.read.custody'),
 ('registrar', 'dime.find.read.finddate'),
-('researcher', 'dime.find.read.finddate'),
 ('registrar', 'dime.find.read.finder'),
 ('registrar', 'dime.find.read.location'),
-('researcher', 'dime.find.read.location'),
 ('registrar', 'dime.find.read.owner'),
+('registrar', 'dime.find.read.process'),
 ('registrar', 'dime.find.read.treasure'),
-('researcher', 'dime.find.read.treasure'),
-('detectorist', 'dime.find.update'),
 ('registrar', 'dime.find.update'),
-('detectorist', 'dime.find.update.custody'),
 ('registrar', 'dime.find.update.custody'),
-('detectorist', 'dime.find.update.finddate'),
 ('registrar', 'dime.find.update.finddate'),
-('detectorist', 'dime.find.update.finder'),
 ('registrar', 'dime.find.update.finder'),
-('detectorist', 'dime.find.update.location'),
 ('registrar', 'dime.find.update.location'),
-('detectorist', 'dime.find.update.owner'),
 ('registrar', 'dime.find.update.owner'),
-('registrar', 'dime.find.update.treasure');
+('registrar', 'dime.find.update.process'),
+('registrar', 'dime.find.update.treasure'),
+('researcher', 'core.file.read'),
+('researcher', 'dime.find.read'),
+('researcher', 'dime.find.read.finddate'),
+('researcher', 'dime.find.read.location'),
+('researcher', 'dime.find.read.treasure');
 
 -- --------------------------------------------------------
 
@@ -5640,6 +5648,7 @@ INSERT INTO `ark_workflow_permission` (`permission`, `enabled`, `keyword`) VALUE
 ('dime.find.read.finder', 1, ''),
 ('dime.find.read.location', 1, ''),
 ('dime.find.read.owner', 1, ''),
+('dime.find.read.process', 1, ''),
 ('dime.find.read.treasure', 1, ''),
 ('dime.find.update', 1, ''),
 ('dime.find.update.custody', 1, ''),
@@ -5647,6 +5656,7 @@ INSERT INTO `ark_workflow_permission` (`permission`, `enabled`, `keyword`) VALUE
 ('dime.find.update.finder', 1, ''),
 ('dime.find.update.location', 1, ''),
 ('dime.find.update.owner', 1, ''),
+('dime.find.update.process', 1, ''),
 ('dime.find.update.treasure', 1, ''),
 ('dime.locality.create', 1, ''),
 ('dime.locality.delete', 1, ''),
@@ -5717,39 +5727,39 @@ CREATE TABLE `ark_workflow_update` (
 --
 
 INSERT INTO `ark_workflow_update` (`schma`, `action`, `type`, `attribute`) VALUES
-('dime.find', 'receive', 'find', 'custodian'),
-('dime.find', 'record', 'find', 'custodian'),
+('dime.find', 'accession', 'find', 'owner'),
+('dime.find', 'accession', 'find', 'process'),
+('dime.find', 'appraise', 'find', 'process'),
+('dime.find', 'appraise', 'find', 'treasure'),
+('dime.find', 'assess', 'find', 'process'),
+('dime.find', 'assess', 'find', 'treasure'),
 ('dime.find', 'decline', 'find', 'custody'),
+('dime.find', 'decline', 'find', 'recipient'),
+('dime.find', 'delete', 'find', 'process'),
 ('dime.find', 'destroy', 'find', 'custody'),
 ('dime.find', 'discard', 'find', 'custody'),
 ('dime.find', 'lose', 'find', 'custody'),
+('dime.find', 'receive', 'find', 'custodian'),
 ('dime.find', 'receive', 'find', 'custody'),
+('dime.find', 'receive', 'find', 'recipient'),
+('dime.find', 'record', 'find', 'custodian'),
 ('dime.find', 'record', 'find', 'custody'),
-('dime.find', 'recover', 'find', 'custody'),
-('dime.find', 'request', 'find', 'custody'),
-('dime.find', 'send', 'find', 'custody'),
-('dime.find', 'withdraw', 'find', 'custody'),
 ('dime.find', 'record', 'find', 'finder'),
-('dime.find', 'accession', 'find', 'owner'),
 ('dime.find', 'record', 'find', 'owner'),
-('dime.find', 'transfer', 'find', 'owner'),
-('dime.find', 'accession', 'find', 'process'),
-('dime.find', 'appraise', 'find', 'process'),
-('dime.find', 'assess', 'find', 'process'),
-('dime.find', 'delete', 'find', 'process'),
 ('dime.find', 'record', 'find', 'process'),
+('dime.find', 'record', 'find', 'treasure'),
+('dime.find', 'recover', 'find', 'custody'),
 ('dime.find', 'reject', 'find', 'process'),
 ('dime.find', 'release', 'find', 'process'),
 ('dime.find', 'report', 'find', 'process'),
-('dime.find', 'validate', 'find', 'process'),
-('dime.find', 'decline', 'find', 'recipient'),
-('dime.find', 'receive', 'find', 'recipient'),
+('dime.find', 'request', 'find', 'custody'),
 ('dime.find', 'request', 'find', 'recipient'),
+('dime.find', 'send', 'find', 'custody'),
 ('dime.find', 'send', 'find', 'recipient'),
-('dime.find', 'withdraw', 'find', 'recipient'),
-('dime.find', 'appraise', 'find', 'treasure'),
-('dime.find', 'assess', 'find', 'treasure'),
-('dime.find', 'record', 'find', 'treasure');
+('dime.find', 'transfer', 'find', 'owner'),
+('dime.find', 'validate', 'find', 'process'),
+('dime.find', 'withdraw', 'find', 'custody'),
+('dime.find', 'withdraw', 'find', 'recipient');
 
 -- --------------------------------------------------------
 
@@ -5909,9 +5919,7 @@ ALTER TABLE `ark_format`
 ALTER TABLE `ark_format_attribute`
   ADD PRIMARY KEY (`parent`,`attribute`),
   ADD KEY `vocabulary` (`vocabulary`),
-  ADD KEY `format` (`format`),
-  ADD KEY `view` (`view`),
-  ADD KEY `edit` (`edit`);
+  ADD KEY `format` (`format`);
 
 --
 -- Indexes for table `ark_format_blob`
@@ -6361,9 +6369,7 @@ ALTER TABLE `ark_format`
 ALTER TABLE `ark_format_attribute`
   ADD CONSTRAINT `ark_format_attribute_ibfk_2` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
   ADD CONSTRAINT `ark_format_attribute_ibfk_3` FOREIGN KEY (`parent`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_format_attribute_ibfk_4` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_format_attribute_ibfk_5` FOREIGN KEY (`view`) REFERENCES `ark_workflow_permission` (`permission`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_format_attribute_ibfk_6` FOREIGN KEY (`edit`) REFERENCES `ark_workflow_permission` (`permission`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `ark_format_attribute_ibfk_4` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_blob`

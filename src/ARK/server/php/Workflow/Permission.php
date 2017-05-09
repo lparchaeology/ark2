@@ -65,16 +65,6 @@ class Permission
         return $this->enabled;
     }
 
-    public function roles()
-    {
-        return $this->roles;
-    }
-
-    public function inRole(Role $role)
-    {
-        return $this->roles->contains($role);
-    }
-
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
@@ -89,6 +79,6 @@ class Permission
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Relationships
-        $builder->addManyToMany('roles', Role::class, 'ark_workflow_grant');
+        $builder->addManyToMany('roles', Role::class, 'ark_workflow_grant', 'permission', 'role');
     }
 }

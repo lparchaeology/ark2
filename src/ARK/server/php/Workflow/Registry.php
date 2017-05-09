@@ -67,7 +67,7 @@ class Registry extends SymfonyRegistry
             $user = Service::user();
         }
         if ($user === null) {
-            return null;
+            return ORM::find(Actor::class, 'anonymous');
         }
         $au = ORM::findOneBy(ActorUser::class, ['user' => $user->getId()]);
         return ($au ? $au->actor() : null);
@@ -77,6 +77,19 @@ class Registry extends SymfonyRegistry
     {
         $au = ORM::findOneBy(ActorUser::class, ['actor' => $actor->id()]);
         return ($au ? $au->user() : null);
+    }
+
+    public function hasPermission(Permission $permission, Actor $actor = null)
+    {
+        if ($actor === null) {
+            $actor = $this->actor();
+        }
+        foreach ($actor->roles() as $role) {
+            if ($role->hasPermission($permission)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function schemaActions(Schema $schema)

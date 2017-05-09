@@ -33,11 +33,16 @@ namespace ARK\Model\Schema;
 use ARK\Model\Attribute;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\Vocabulary\Term;
 
 class SchemaAttribute extends Attribute
 {
     protected $schma = null;
     protected $type = '';
+    protected $visibility = 'restricted';
+    protected $visibilityTerm = null;
+    protected $read = null;
+    protected $update = null;
 
     public function schema()
     {
@@ -47,6 +52,30 @@ class SchemaAttribute extends Attribute
     public function type()
     {
         return $this->type;
+    }
+
+    public function visibility()
+    {
+        if ($this->visibilityTerm === null) {
+            $this->visibilityTerm = ORM::find(Term::class, ['concept' => 'core.visibility', 'term' => $this->visibility]);
+        }
+        return $this->visibilityTerm;
+    }
+
+    public function readPermission()
+    {
+        if ($this->read) {
+            return $this->read;
+        }
+        return $this->schma->readPermission();
+    }
+
+    public function updatePermission()
+    {
+        if ($this->update) {
+            return $this->update;
+        }
+        return $this->schma->updatePermission();
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
@@ -59,5 +88,12 @@ class SchemaAttribute extends Attribute
         $builder->addManyToOneKey('schma', 'ARK\Model\Schema');
         $builder->addStringKey('type', 30);
         $builder->addStringKey('attribute', 30);
+
+        // Attributes
+        $builder->addStringField('visibility', 30);
+
+        // Associations
+        $builder->addPermissionField('read', 'view');
+        $builder->addPermissionField('update', 'edit');
     }
 }

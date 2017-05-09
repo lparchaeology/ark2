@@ -279,13 +279,12 @@ class Field extends Element
 
     public function buildForm(FormBuilderInterface $builder, $data, $options = [])
     {
-        // TODO Do this properly
-        if ($this->formName() == 'location' && !Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            return;
-        }
         //if (!Service::security()->hasVisibility($actor, $this->attribute())) {
         //    return;
         //}
+        if (!Service::workflow()->hasPermission($this->attribute->readPermission())) {
+            return;
+        }
         $options = $this->formOptions($data, $options);
         $fieldBuilder = $this->formBuilder($data, $options);
         $builder->add($fieldBuilder);
@@ -293,8 +292,7 @@ class Field extends Element
 
     public function renderView($data, $forms = null, $form = null, array $options = [])
     {
-        // TODO Do this properly
-        if ($this->formName() == 'location' && !Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+        if (!Service::workflow()->hasPermission($this->attribute->readPermission())) {
             return;
         }
         if ($form && $this->template()) {

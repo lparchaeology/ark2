@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.1
+-- version 4.6.6
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 08, 2017 at 09:03 PM
--- Server version: 5.6.34
--- PHP Version: 7.1.0
+-- Generation Time: May 09, 2017 at 12:53 PM
+-- Server version: 10.1.22-MariaDB
+-- PHP Version: 7.1.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -122,10 +122,6 @@ CREATE TABLE `ark_fragment_date` (
 INSERT INTO `ark_fragment_date` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `object`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
 (30, 'find', '1', 'finddate', 'date', '', NULL, '2017-01-29', 0, NULL, NULL, 0, '2017-01-29 20:23:17', 0, '2017-01-29 20:23:17', ''),
 (31, 'find', '2', 'finddate', 'date', '', NULL, '2017-01-29', 0, NULL, NULL, 0, '2017-01-29 20:29:28', 0, '2017-01-29 20:29:28', ''),
-(32, 'find', '3', 'finddate', 'date', '', NULL, '2017-01-29', 0, NULL, NULL, 0, '2017-01-29 20:39:17', 0, '2017-01-29 20:39:17', ''),
-(33, 'find', '4', 'finddate', 'date', '', NULL, '2017-01-29', 0, NULL, NULL, 0, '2017-01-29 20:44:41', 0, '2017-01-29 20:44:41', ''),
-(34, 'find', '5', 'finddate', 'date', '', NULL, '2017-01-29', 0, NULL, NULL, 0, '2017-01-29 20:50:43', 0, '2017-01-29 20:50:43', ''),
-(35, 'find', '6', 'finddate', 'date', '', NULL, '2017-01-29', 0, NULL, NULL, 0, '2017-01-29 20:53:52', 0, '2017-01-29 20:53:52', ''),
 (36, 'find', '7', 'finddate', 'date', '', NULL, '2017-01-29', 0, NULL, NULL, 0, '2017-01-29 21:00:51', 0, '2017-01-29 21:00:51', ''),
 (37, 'find', '8', 'finddate', 'date', '', NULL, '2017-01-29', 0, NULL, NULL, 0, '2017-01-29 21:03:54', 0, '2017-01-29 21:03:54', ''),
 (38, 'find', '9', 'finddate', 'date', '', NULL, '2017-01-29', 0, NULL, NULL, 0, '2017-01-29 21:07:02', 0, '2017-01-29 21:07:02', ''),
@@ -134,7 +130,12 @@ INSERT INTO `ark_fragment_date` (`fid`, `module`, `item`, `attribute`, `datatype
 (41, 'find', '11', 'finddate', 'date', '', NULL, '2017-01-30', 0, NULL, NULL, 0, '2017-01-30 10:34:16', 0, '2017-01-30 10:34:16', ''),
 (42, 'find', '12', 'finddate', 'date', '', NULL, '2017-01-30', 0, NULL, NULL, 0, '2017-01-30 10:35:09', 0, '2017-01-30 10:35:09', ''),
 (43, 'find', '13', 'finddate', 'date', '', NULL, '2017-01-30', 0, NULL, NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
-(44, 'find', '14', 'finddate', 'date', '', NULL, '2017-01-31', 0, NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', '');
+(44, 'find', '14', 'finddate', 'date', '', NULL, '2017-01-31', 0, NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
+(47, 'find', '3', 'finddate', 'date', NULL, 'UTC', '2017-01-29', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(48, 'find', '4', 'finddate', 'date', NULL, 'UTC', '2017-01-29', 0, NULL, NULL, 0, '2017-05-08 23:24:03', 0, '2017-05-08 23:24:03', ''),
+(49, 'find', '5', 'finddate', 'date', NULL, 'UTC', '2017-01-29', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(50, 'find', '6', 'finddate', 'date', NULL, 'UTC', '2017-01-29', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(51, 'find', '13', 'finddate', 'date', NULL, 'UTC', '2017-05-01', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', '');
 
 -- --------------------------------------------------------
 
@@ -171,7 +172,21 @@ INSERT INTO `ark_fragment_datetime` (`fid`, `module`, `item`, `attribute`, `data
 (5, 'event', '3', 'occurred', 'datetime', NULL, NULL, '2017-05-01 07:00:00', 0, NULL, NULL, 0, '2017-05-02 15:57:12', 0, '0000-00-00 00:00:00', NULL),
 (6, 'message', '1', 'sent', 'datetime', NULL, NULL, '2017-05-01 07:00:00', 0, NULL, NULL, 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', NULL),
 (7, 'message', '2', 'sent', 'datetime', NULL, NULL, '2017-05-01 07:00:00', 0, NULL, NULL, 0, '2017-05-02 15:57:10', 0, '0000-00-00 00:00:00', NULL),
-(8, 'message', '3', 'sent', 'datetime', NULL, NULL, '2017-05-01 07:00:00', 0, NULL, NULL, 0, '2017-05-02 15:57:12', 0, '0000-00-00 00:00:00', NULL);
+(8, 'message', '3', 'sent', 'datetime', NULL, NULL, '2017-05-01 07:00:00', 0, NULL, NULL, 0, '2017-05-02 15:57:12', 0, '0000-00-00 00:00:00', NULL),
+(11, 'event', '5', 'occurred', 'datetime', NULL, 'UTC', '2017-05-09 00:21:45', 0, NULL, NULL, 0, '2017-05-08 23:21:45', 0, '2017-05-08 23:21:45', ''),
+(12, 'message', '5', 'sent', 'datetime', NULL, 'UTC', '2017-05-09 00:21:45', 0, NULL, NULL, 0, '2017-05-08 23:21:45', 0, '2017-05-08 23:21:45', ''),
+(13, 'event', '6', 'occurred', 'datetime', NULL, 'UTC', '2017-05-09 00:22:05', 0, NULL, NULL, 0, '2017-05-08 23:22:05', 0, '2017-05-08 23:22:05', ''),
+(14, 'message', '6', 'sent', 'datetime', NULL, 'UTC', '2017-05-09 00:22:05', 0, NULL, NULL, 0, '2017-05-08 23:22:05', 0, '2017-05-08 23:22:05', ''),
+(15, 'event', '7', 'occurred', 'datetime', NULL, 'UTC', '2017-05-09 00:22:34', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(16, 'message', '7', 'sent', 'datetime', NULL, 'UTC', '2017-05-09 00:22:34', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(17, 'event', '8', 'occurred', 'datetime', NULL, 'UTC', '2017-05-09 00:24:04', 0, NULL, NULL, 0, '2017-05-08 23:24:04', 0, '2017-05-08 23:24:04', ''),
+(18, 'message', '8', 'sent', 'datetime', NULL, 'UTC', '2017-05-09 00:24:04', 0, NULL, NULL, 0, '2017-05-08 23:24:04', 0, '2017-05-08 23:24:04', ''),
+(19, 'event', '9', 'occurred', 'datetime', NULL, 'UTC', '2017-05-09 00:24:13', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(20, 'message', '9', 'sent', 'datetime', NULL, 'UTC', '2017-05-09 00:24:13', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(21, 'event', '10', 'occurred', 'datetime', NULL, 'UTC', '2017-05-09 00:24:25', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(22, 'message', '10', 'sent', 'datetime', NULL, 'UTC', '2017-05-09 00:24:25', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(27, 'event', '13', 'occurred', 'datetime', NULL, 'UTC', '2017-05-09 07:38:55', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(28, 'message', '13', 'sent', 'datetime', NULL, 'UTC', '2017-05-09 07:38:55', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', '');
 
 -- --------------------------------------------------------
 
@@ -205,10 +220,6 @@ CREATE TABLE `ark_fragment_decimal` (
 INSERT INTO `ark_fragment_decimal` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `object`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
 (50, 'find', '1', 'length', 'decimal', '', 'mm', '22', 0, NULL, NULL, 0, '2017-01-29 20:24:17', 0, '2017-01-29 20:23:17', ''),
 (51, 'find', '2', 'length', 'decimal', '', 'mm', '31', 0, NULL, NULL, 0, '2017-01-29 20:29:28', 0, '2017-01-29 20:29:28', ''),
-(52, 'find', '3', 'length', 'decimal', '', 'mm', '22', 0, NULL, NULL, 0, '2017-01-29 20:39:17', 0, '2017-01-29 20:39:17', ''),
-(53, 'find', '4', 'length', 'decimal', '', 'mm', '20', 0, NULL, NULL, 0, '2017-01-29 20:44:41', 0, '2017-01-29 20:44:41', ''),
-(54, 'find', '5', 'length', 'decimal', '', 'mm', '31', 0, NULL, NULL, 0, '2017-01-29 20:50:43', 0, '2017-01-29 20:50:43', ''),
-(55, 'find', '6', 'length', 'decimal', '', 'mm', '31', 0, NULL, NULL, 0, '2017-01-29 20:53:52', 0, '2017-01-29 20:53:52', ''),
 (56, 'find', '7', 'length', 'decimal', '', 'mm', '36', 0, NULL, NULL, 0, '2017-01-29 21:00:51', 0, '2017-01-29 21:00:51', ''),
 (57, 'find', '8', 'length', 'decimal', '', 'mm', '60', 0, NULL, NULL, 0, '2017-01-29 21:03:54', 0, '2017-01-29 21:03:54', ''),
 (58, 'find', '9', 'length', 'decimal', '', 'mm', '19', 0, NULL, NULL, 0, '2017-01-29 21:07:02', 0, '2017-01-29 21:07:02', ''),
@@ -221,7 +232,13 @@ INSERT INTO `ark_fragment_decimal` (`fid`, `module`, `item`, `attribute`, `datat
 (65, 'find', '13', 'length', 'decimal', '', 'mm', '123', 0, NULL, NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
 (66, 'find', '14', 'weight', 'decimal', '', 'g', '10', 0, NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
 (67, 'find', '14', 'length', 'decimal', '', 'mm', '70', 0, NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
-(68, 'find', '1', 'weight', 'decimal', '', 'g', '1', 0, NULL, NULL, 0, '2017-01-29 20:24:17', 0, '2017-01-29 20:23:17', '');
+(68, 'find', '1', 'weight', 'decimal', '', 'g', '1', 0, NULL, NULL, 0, '2017-01-29 20:24:17', 0, '2017-01-29 20:23:17', ''),
+(72, 'find', '3', 'length', 'decimal', NULL, 'mm', '22', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(73, 'find', '4', 'length', 'decimal', NULL, 'mm', '20', 0, NULL, NULL, 0, '2017-05-08 23:24:04', 0, '2017-05-08 23:24:04', ''),
+(74, 'find', '5', 'length', 'decimal', NULL, 'mm', '31', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(75, 'find', '6', 'length', 'decimal', NULL, 'mm', '31', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(76, 'find', '13', 'weight', 'decimal', NULL, NULL, '123', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(77, 'find', '13', 'length', 'decimal', NULL, NULL, '456', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', '');
 
 -- --------------------------------------------------------
 
@@ -325,10 +342,6 @@ CREATE TABLE `ark_fragment_item` (
 INSERT INTO `ark_fragment_item` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `object`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
 (1, 'find', '1', 'museum', 'item', '', 'actor', 'NJM', 0, '', NULL, 0, '2017-01-29 22:41:12', 0, '2017-01-29 22:37:39', ''),
 (2, 'find', '2', 'museum', 'item', '', 'actor', 'NJM', 0, '', NULL, 0, '2017-01-29 22:41:15', 0, '2017-01-29 22:37:39', ''),
-(3, 'find', '3', 'museum', 'item', '', 'actor', 'NJM', 0, '', NULL, 0, '2017-01-29 22:41:15', 0, '2017-01-29 22:37:39', ''),
-(4, 'find', '4', 'museum', 'item', '', 'actor', 'NJM', 0, '', NULL, 0, '2017-01-29 22:41:15', 0, '2017-01-29 22:37:39', ''),
-(5, 'find', '5', 'museum', 'item', '', 'actor', 'NJM', 0, '', NULL, 0, '2017-01-29 22:41:15', 0, '2017-01-29 22:37:39', ''),
-(6, 'find', '6', 'museum', 'item', '', 'actor', 'NJM', 0, '', NULL, 0, '2017-01-29 22:41:15', 0, '2017-01-29 22:37:39', ''),
 (7, 'find', '7', 'museum', 'item', '', 'actor', 'NJM', 0, '', NULL, 0, '2017-01-29 22:41:15', 0, '2017-01-29 22:37:39', ''),
 (8, 'find', '8', 'museum', 'item', '', 'actor', 'NJM', 0, '', NULL, 0, '2017-01-29 22:41:15', 0, '2017-01-29 22:37:39', ''),
 (9, 'find', '9', 'museum', 'item', '', 'actor', 'NJM', 0, '', NULL, 0, '2017-01-29 22:41:15', 0, '2017-01-29 22:37:39', ''),
@@ -366,7 +379,39 @@ INSERT INTO `ark_fragment_item` (`fid`, `module`, `item`, `attribute`, `datatype
 (41, 'find', '8', 'image', 'item', NULL, 'file', '10', 0, '', NULL, 0, '2017-05-05 10:47:00', 0, '2017-01-29 22:37:39', ''),
 (42, 'find', '9', 'image', 'item', NULL, 'file', '11', 0, '', NULL, 0, '2017-05-05 10:47:03', 0, '2017-01-29 22:37:39', ''),
 (43, 'find', '10', 'image', 'item', NULL, 'file', '12', 0, '', NULL, 0, '2017-05-05 10:47:05', 0, '2017-01-29 22:37:39', ''),
-(44, 'find', '10', 'image', 'item', NULL, 'file', '13', 0, '', NULL, 0, '2017-05-05 10:47:09', 0, '2017-01-29 22:37:39', '');
+(44, 'find', '10', 'image', 'item', NULL, 'file', '13', 0, '', NULL, 0, '2017-05-05 10:47:09', 0, '2017-01-29 22:37:39', ''),
+(46, 'event', '5', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 0, '2017-05-08 23:21:45', 0, '2017-05-08 23:21:45', ''),
+(47, 'event', '5', 'subject', 'item', NULL, 'find', '3', 0, NULL, NULL, 0, '2017-05-08 23:21:45', 0, '2017-05-08 23:21:45', ''),
+(48, 'message', '5', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 0, '2017-05-08 23:21:45', 0, '2017-05-08 23:21:45', ''),
+(49, 'message', '5', 'event', 'item', NULL, 'event', '5', 0, NULL, NULL, 0, '2017-05-08 23:21:45', 0, '2017-05-08 23:21:45', ''),
+(51, 'event', '6', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 0, '2017-05-08 23:22:05', 0, '2017-05-08 23:22:05', ''),
+(52, 'event', '6', 'subject', 'item', NULL, 'find', '3', 0, NULL, NULL, 0, '2017-05-08 23:22:05', 0, '2017-05-08 23:22:05', ''),
+(53, 'message', '6', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 0, '2017-05-08 23:22:05', 0, '2017-05-08 23:22:05', ''),
+(54, 'message', '6', 'event', 'item', NULL, 'event', '6', 0, NULL, NULL, 0, '2017-05-08 23:22:05', 0, '2017-05-08 23:22:05', ''),
+(55, 'find', '3', 'museum', 'item', NULL, 'actor', 'NJM', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(56, 'event', '7', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(57, 'event', '7', 'subject', 'item', NULL, 'find', '3', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(58, 'message', '7', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(59, 'message', '7', 'event', 'item', NULL, 'event', '7', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(60, 'find', '4', 'museum', 'item', NULL, 'actor', 'NJM', 0, NULL, NULL, 0, '2017-05-08 23:24:03', 0, '2017-05-08 23:24:03', ''),
+(61, 'event', '8', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 0, '2017-05-08 23:24:04', 0, '2017-05-08 23:24:04', ''),
+(62, 'event', '8', 'subject', 'item', NULL, 'find', '4', 0, NULL, NULL, 0, '2017-05-08 23:24:04', 0, '2017-05-08 23:24:04', ''),
+(63, 'message', '8', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 0, '2017-05-08 23:24:04', 0, '2017-05-08 23:24:04', ''),
+(64, 'message', '8', 'event', 'item', NULL, 'event', '8', 0, NULL, NULL, 0, '2017-05-08 23:24:04', 0, '2017-05-08 23:24:04', ''),
+(65, 'find', '5', 'museum', 'item', NULL, 'actor', 'NJM', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(66, 'event', '9', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(67, 'event', '9', 'subject', 'item', NULL, 'find', '5', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(68, 'message', '9', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(69, 'message', '9', 'event', 'item', NULL, 'event', '9', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(70, 'find', '6', 'museum', 'item', NULL, 'actor', 'NJM', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(71, 'event', '10', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(72, 'event', '10', 'subject', 'item', NULL, 'find', '6', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(73, 'message', '10', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(74, 'message', '10', 'event', 'item', NULL, 'event', '10', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(77, 'event', '13', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(78, 'event', '13', 'subject', 'item', NULL, 'find', '13', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(79, 'message', '13', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(80, 'message', '13', 'event', 'item', NULL, 'event', '13', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', '');
 
 -- --------------------------------------------------------
 
@@ -416,7 +461,27 @@ INSERT INTO `ark_fragment_object` (`fid`, `module`, `item`, `attribute`, `dataty
 (16, 'file', '10', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-05 10:51:10', 0, '0000-00-00 00:00:00', NULL),
 (17, 'file', '11', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-05 10:51:14', 0, '0000-00-00 00:00:00', NULL),
 (18, 'file', '12', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-05 10:51:16', 0, '0000-00-00 00:00:00', NULL),
-(19, 'file', '13', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-05 10:51:18', 0, '0000-00-00 00:00:00', NULL);
+(19, 'file', '13', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-05 10:51:18', 0, '0000-00-00 00:00:00', NULL),
+(29, 'find', '3', 'classification', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(30, 'find', '3', 'dating', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(31, 'find', '3', 'description', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(32, 'find', '3', 'description', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(33, 'find', '4', 'classification', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-08 23:24:04', 0, '2017-05-08 23:24:04', ''),
+(34, 'find', '4', 'dating', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-08 23:24:04', 0, '2017-05-08 23:24:04', ''),
+(35, 'find', '4', 'description', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-08 23:24:04', 0, '2017-05-08 23:24:04', ''),
+(36, 'find', '4', 'description', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-08 23:24:04', 0, '2017-05-08 23:24:04', ''),
+(37, 'find', '5', 'classification', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(38, 'find', '5', 'dating', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(39, 'find', '5', 'description', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(40, 'find', '5', 'description', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(41, 'find', '6', 'classification', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(42, 'find', '6', 'dating', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(43, 'find', '6', 'description', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(44, 'find', '6', 'description', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(53, 'find', '13', 'classification', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(54, 'find', '13', 'dating', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(55, 'find', '13', 'description', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(56, 'find', '13', 'description', 'object', NULL, NULL, '', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', '');
 
 -- --------------------------------------------------------
 
@@ -450,14 +515,15 @@ CREATE TABLE `ark_fragment_spatial` (
 INSERT INTO `ark_fragment_spatial` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `object`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
 (18, 'find', '1', 'location', 'spatial', 'wkt', 'EPSG:4326', 'POINT (9.727013 57.034633)', 0, NULL, NULL, 0, '2017-05-02 19:38:40', 0, '2017-01-29 20:23:17', ''),
 (19, 'find', '2', 'location', 'spatial', 'wkt', 'EPSG:4326', 'POINT (9.740322 56.993769)', 0, NULL, NULL, 0, '2017-05-02 19:38:55', 0, '2017-01-29 20:29:28', ''),
-(20, 'find', '3', 'location', 'spatial', 'wkt', 'EPSG:4326', 'POINT (9.968663 57.010178)', 0, NULL, NULL, 0, '2017-05-02 19:38:53', 0, '2017-01-29 20:39:17', ''),
-(21, 'find', '4', 'location', 'spatial', 'wkt', 'EPSG:4326', 'POINT (9.973601 57.011353)', 0, NULL, NULL, 0, '2017-05-02 19:38:52', 0, '2017-01-29 20:44:41', ''),
-(22, 'find', '5', 'location', 'spatial', 'wkt', 'EPSG:4326', 'POINT (9.975734 57.011713)', 0, NULL, NULL, 0, '2017-05-02 19:38:51', 0, '2017-01-29 20:50:43', ''),
-(23, 'find', '6', 'location', 'spatial', 'wkt', 'EPSG:4326', 'POINT (10.181632 57.071948)', 0, NULL, NULL, 0, '2017-05-02 19:38:49', 0, '2017-01-29 20:53:52', ''),
 (24, 'find', '7', 'location', 'spatial', 'wkt', 'EPSG:4326', 'POINT (10.044265 56.959717)', 0, NULL, NULL, 0, '2017-05-02 19:38:48', 0, '2017-01-29 21:00:51', ''),
 (25, 'find', '8', 'location', 'spatial', 'wkt', 'EPSG:4326', 'POINT (9.740236 57.028384)', 0, NULL, NULL, 0, '2017-05-02 19:38:47', 0, '2017-01-29 21:03:54', ''),
 (26, 'find', '9', 'location', 'spatial', 'wkt', 'EPSG:4326', 'POINT (9.740109 57.03276)', 0, NULL, NULL, 0, '2017-05-02 19:38:46', 0, '2017-01-29 21:07:02', ''),
-(27, 'find', '10', 'location', 'spatial', 'wkt', 'EPSG:4326', 'POINT (10.012489 56.958308)', 0, NULL, NULL, 0, '2017-05-02 19:38:44', 0, '2017-01-29 21:09:38', '');
+(27, 'find', '10', 'location', 'spatial', 'wkt', 'EPSG:4326', 'POINT (10.012489 56.958308)', 0, NULL, NULL, 0, '2017-05-02 19:38:44', 0, '2017-01-29 21:09:38', ''),
+(30, 'find', '3', 'location', 'spatial', NULL, '0', 'POINT (9.968663 57.010178)', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(31, 'find', '4', 'location', 'spatial', NULL, '0', 'POINT (9.973601 57.011353)', 0, NULL, NULL, 0, '2017-05-08 23:24:03', 0, '2017-05-08 23:24:03', ''),
+(32, 'find', '5', 'location', 'spatial', NULL, '0', 'POINT (9.975734 57.011713)', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(33, 'find', '6', 'location', 'spatial', NULL, '0', 'POINT (10.181632 57.071948)', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(34, 'find', '13', 'location', 'spatial', NULL, '0', 'POINT (0 0)', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', '');
 
 -- --------------------------------------------------------
 
@@ -665,30 +731,10 @@ INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `dataty
 (476, 'find', '2', 'material', 'string', '', 'dime.material', 'cual', 0, NULL, NULL, 0, '2017-01-29 20:29:28', 0, '2017-01-29 20:29:28', ''),
 (477, 'find', '2', 'condition', 'string', '', 'dime.find.condition', 'whole', 0, NULL, NULL, 0, '2017-01-29 20:29:28', 0, '2017-01-29 20:29:28', ''),
 (478, 'find', '2', 'id', 'string', '', NULL, '2', 0, NULL, NULL, 0, '2017-01-29 20:29:28', 0, '2017-01-29 20:29:28', ''),
-(479, 'find', '3', 'finder_id', 'string', '', NULL, '5595K024-1', 0, NULL, NULL, 0, '2017-01-29 20:39:17', 0, '2017-01-29 20:39:17', ''),
-(480, 'find', '3', 'type', 'string', '', 'dime.find.type', 'coin', 0, NULL, NULL, 0, '2017-01-29 20:39:17', 0, '2017-01-29 20:39:17', ''),
 (481, 'find', '3', 'period_start', 'string', '', 'dime.period', 'CYVÆ', 0, NULL, NULL, 0, '2017-01-29 20:39:17', 0, '2017-01-29 20:39:17', ''),
-(482, 'find', '3', 'material', 'string', '', 'dime.material', 'ag', 0, NULL, NULL, 0, '2017-01-29 20:39:17', 0, '2017-01-29 20:39:17', ''),
-(483, 'find', '3', 'condition', 'string', '', 'dime.find.condition', 'whole', 0, NULL, NULL, 0, '2017-01-29 20:39:17', 0, '2017-01-29 20:39:17', ''),
-(484, 'find', '3', 'id', 'string', '', NULL, '3', 0, NULL, NULL, 0, '2017-01-29 20:39:17', 0, '2017-01-29 20:39:17', ''),
-(485, 'find', '4', 'finder_id', 'string', '', NULL, '5923K002-1', 0, NULL, NULL, 0, '2017-01-29 20:44:41', 0, '2017-01-29 20:44:41', ''),
-(486, 'find', '4', 'type', 'string', '', 'dime.find.type', 'coin', 0, NULL, NULL, 0, '2017-01-29 20:44:41', 0, '2017-01-29 20:44:41', ''),
 (487, 'find', '4', 'period_start', 'string', '', 'dime.period', 'CÆRY', 0, NULL, NULL, 0, '2017-01-29 20:44:41', 0, '2017-01-29 20:44:41', ''),
-(488, 'find', '4', 'material', 'string', '', 'dime.material', 'ag', 0, NULL, NULL, 0, '2017-01-29 20:44:41', 0, '2017-01-29 20:44:41', ''),
-(489, 'find', '4', 'condition', 'string', '', 'dime.find.condition', 'whole', 0, NULL, NULL, 0, '2017-01-29 20:44:41', 0, '2017-01-29 20:44:41', ''),
-(490, 'find', '4', 'id', 'string', '', NULL, '4', 0, NULL, NULL, 0, '2017-01-29 20:44:41', 0, '2017-01-29 20:44:41', ''),
-(491, 'find', '5', 'finder_id', 'string', '', NULL, '5924K016-1', 0, NULL, NULL, 0, '2017-01-29 20:50:43', 0, '2017-01-29 20:50:43', ''),
-(492, 'find', '5', 'type', 'string', '', 'dime.find.type', 'fibula', 0, NULL, NULL, 0, '2017-01-29 20:50:43', 0, '2017-01-29 20:50:43', ''),
 (493, 'find', '5', 'period_start', 'string', '', 'dime.period', 'CYVÆ', 0, NULL, NULL, 0, '2017-01-29 20:50:43', 0, '2017-01-29 20:50:43', ''),
-(494, 'find', '5', 'material', 'string', '', 'dime.material', 'cual', 0, NULL, NULL, 0, '2017-01-29 20:50:43', 0, '2017-01-29 20:50:43', ''),
-(495, 'find', '5', 'condition', 'string', '', 'dime.find.condition', 'whole', 0, NULL, NULL, 0, '2017-01-29 20:50:43', 0, '2017-01-29 20:50:43', ''),
-(496, 'find', '5', 'id', 'string', '', NULL, '5', 0, NULL, NULL, 0, '2017-01-29 20:50:43', 0, '2017-01-29 20:50:43', ''),
-(497, 'find', '6', 'finder_id', 'string', '', NULL, '6128K002-3', 0, NULL, NULL, 0, '2017-01-29 20:53:52', 0, '2017-01-29 20:53:52', ''),
-(498, 'find', '6', 'type', 'string', '', 'dime.find.type', 'accessory', 0, NULL, NULL, 0, '2017-01-29 20:53:52', 0, '2017-01-29 20:53:52', ''),
 (499, 'find', '6', 'period_start', 'string', '', 'dime.period', 'DXXX', 0, NULL, NULL, 0, '2017-01-29 20:53:52', 0, '2017-01-29 20:53:52', ''),
-(500, 'find', '6', 'material', 'string', '', 'dime.material', 'cual', 0, NULL, NULL, 0, '2017-01-29 20:53:52', 0, '2017-01-29 20:53:52', ''),
-(501, 'find', '6', 'condition', 'string', '', 'dime.find.condition', 'fragmented', 0, NULL, NULL, 0, '2017-01-29 20:53:52', 0, '2017-01-29 20:53:52', ''),
-(502, 'find', '6', 'id', 'string', '', NULL, '6', 0, NULL, NULL, 0, '2017-01-29 20:53:52', 0, '2017-01-29 20:53:52', ''),
 (503, 'find', '7', 'finder_id', 'string', '', NULL, '6300K004-1', 0, NULL, NULL, 0, '2017-01-29 21:00:51', 0, '2017-01-29 21:00:51', ''),
 (504, 'find', '7', 'type', 'string', '', 'dime.find.type', 'fibula', 0, NULL, NULL, 0, '2017-01-29 21:00:51', 0, '2017-01-29 21:00:51', ''),
 (505, 'find', '7', 'period_start', 'string', '', 'dime.period', 'VEM', 0, NULL, NULL, 0, '2017-01-29 21:00:51', 0, '2017-01-29 21:00:51', ''),
@@ -718,17 +764,11 @@ INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `dataty
 (529, 'find', '10', 'id', 'string', '', NULL, '10', 0, NULL, NULL, 0, '2017-01-29 21:09:38', 0, '2017-01-29 21:09:38', ''),
 (530, 'find', '1', 'treasure', 'string', '', 'dime.treasure', 'assessing', 0, NULL, NULL, 0, '2017-01-29 22:37:39', 0, '2017-01-29 22:37:39', ''),
 (531, 'find', '2', 'treasure', 'string', '', 'dime.treasure', 'assessing', 0, NULL, NULL, 0, '2017-01-29 22:37:39', 0, '2017-01-29 22:37:39', ''),
-(532, 'find', '3', 'treasure', 'string', '', 'dime.treasure', 'treasure', 0, NULL, NULL, 0, '2017-01-29 22:46:48', 0, '2017-01-29 22:37:39', ''),
-(533, 'find', '4', 'treasure', 'string', '', 'dime.treasure', 'treasure', 0, NULL, NULL, 0, '2017-01-29 22:48:31', 0, '2017-01-29 22:37:39', ''),
-(534, 'find', '5', 'treasure', 'string', '', 'dime.treasure', 'assessing', 0, NULL, NULL, 0, '2017-01-29 22:37:39', 0, '2017-01-29 22:37:39', ''),
-(535, 'find', '6', 'treasure', 'string', '', 'dime.treasure', 'assessing', 0, NULL, NULL, 0, '2017-01-29 22:37:39', 0, '2017-01-29 22:37:39', ''),
 (536, 'find', '7', 'treasure', 'string', '', 'dime.treasure', 'assessing', 0, NULL, NULL, 0, '2017-01-29 22:37:39', 0, '2017-01-29 22:37:39', ''),
 (537, 'find', '8', 'treasure', 'string', '', 'dime.treasure', 'assessing', 0, NULL, NULL, 0, '2017-01-29 22:37:39', 0, '2017-01-29 22:37:39', ''),
 (538, 'find', '9', 'treasure', 'string', '', 'dime.treasure', 'assessing', 0, NULL, NULL, 0, '2017-01-29 22:37:39', 0, '2017-01-29 22:37:39', ''),
 (539, 'find', '10', 'treasure', 'string', '', 'dime.treasure', 'assessing', 0, NULL, NULL, 0, '2017-01-29 22:37:39', 0, '2017-01-29 22:37:39', ''),
 (540, 'find', '11', 'finder_id', 'string', '', NULL, 'qqqqq', 0, NULL, NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
-(541, 'find', '11', 'type', 'string', '', 'dime.find.type', 'accessory', 0, NULL, NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
-(542, 'find', '11', 'material', 'string', '', 'dime.material', 'ag', 0, NULL, NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
 (543, 'find', '11', 'condition', 'string', '', 'dime.find.condition', 'fragmented', 0, NULL, NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
 (544, 'find', '11', 'id', 'string', '', NULL, '11', 0, NULL, NULL, 0, '2017-01-30 00:00:07', 0, '2017-01-30 00:00:07', ''),
 (545, 'file', '1', 'name', 'string', '', NULL, '5178K189-1.jpg', 0, NULL, 7, 0, '2017-05-05 10:52:20', 0, '2017-01-30 00:00:07', ''),
@@ -745,35 +785,20 @@ INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `dataty
 (556, 'file', '12', 'name', 'string', '', NULL, '6400K002-14.bagside.jpg', 0, NULL, 18, 0, '2017-05-05 10:52:45', 0, '2017-01-30 00:00:07', ''),
 (557, 'file', '13', 'name', 'string', '', NULL, '6400K002-14.forside.jpg', 0, NULL, 19, 0, '2017-05-05 10:52:41', 0, '2017-01-30 00:00:07', ''),
 (558, 'find', '11', 'finder_id', 'string', '', NULL, 'MYFIND-1', 0, NULL, NULL, 0, '2017-01-30 10:34:16', 0, '2017-01-30 10:34:16', ''),
-(559, 'find', '11', 'type', 'string', '', 'dime.find.type', 'fibula', 0, NULL, NULL, 0, '2017-01-30 10:34:16', 0, '2017-01-30 10:34:16', ''),
-(560, 'find', '11', 'period_start', 'string', '', 'dime.period', 'CÆRÆ', 0, NULL, NULL, 0, '2017-01-30 10:34:16', 0, '2017-01-30 10:34:16', ''),
-(561, 'find', '11', 'material', 'string', '', 'dime.material', 'al', 0, NULL, NULL, 0, '2017-01-30 10:34:16', 0, '2017-01-30 10:34:16', ''),
 (562, 'find', '11', 'condition', 'string', '', 'dime.find.condition', 'fragmented', 0, NULL, NULL, 0, '2017-01-30 10:34:16', 0, '2017-01-30 10:34:16', ''),
 (563, 'find', '12', 'finder_id', 'string', '', NULL, 'KurtRavnErGud', 0, NULL, NULL, 0, '2017-01-30 10:35:09', 0, '2017-01-30 10:35:09', ''),
-(564, 'find', '12', 'type', 'string', '', 'dime.find.type', 'military', 0, NULL, NULL, 0, '2017-01-30 10:35:09', 0, '2017-01-30 10:35:09', ''),
-(565, 'find', '12', 'period_start', 'string', '', 'dime.period', 'CÆRÆ', 0, NULL, NULL, 0, '2017-01-30 10:35:09', 0, '2017-01-30 10:35:09', ''),
-(566, 'find', '12', 'material', 'string', '', 'dime.material', 'fe', 0, NULL, NULL, 0, '2017-01-30 10:35:09', 0, '2017-01-30 10:35:09', ''),
 (568, 'find', '12', 'condition', 'string', '', 'dime.find.condition', 'whole', 0, NULL, NULL, 0, '2017-01-30 10:35:09', 0, '2017-01-30 10:35:09', ''),
 (569, 'find', '12', 'id', 'string', '', NULL, '12', 0, NULL, NULL, 0, '2017-01-30 10:35:09', 0, '2017-01-30 10:35:09', ''),
-(571, 'find', '12', 'secondary', 'string', '', 'dime.find.secondary', 'zz', 0, NULL, NULL, 0, '2017-01-30 10:37:24', 0, '2017-01-30 10:37:24', ''),
 (572, 'find', '13', 'finder_id', 'string', '', NULL, 'myfind', 0, NULL, NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
-(573, 'find', '13', 'type', 'string', '', 'dime.find.type', 'fibula', 0, NULL, NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
-(574, 'find', '13', 'period_start', 'string', '', 'dime.period', 'AXXX', 0, NULL, NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
-(575, 'find', '13', 'material', 'string', '', 'dime.material', 'cu', 0, NULL, NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
-(576, 'find', '13', 'secondary', 'string', '', 'dime.find.secondary', 'glass', 0, NULL, NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
-(577, 'find', '13', 'secondary', 'string', '', 'dime.find.secondary', 'organic', 0, NULL, NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
 (578, 'find', '13', 'condition', 'string', '', 'dime.find.condition', 'whole', 0, NULL, NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
 (579, 'find', '13', 'id', 'string', '', NULL, '13', 0, NULL, NULL, 0, '2017-01-30 10:42:51', 0, '2017-01-30 10:42:51', ''),
 (582, 'find', '14', 'finder_id', 'string', '', NULL, 'NytNummer', 0, NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
-(583, 'find', '14', 'type', 'string', '', 'dime.find.type', 'fibula', 0, NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
-(584, 'find', '14', 'period_start', 'string', '', 'dime.period', 'BÆX1', 0, NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
-(585, 'find', '14', 'material', 'string', '', 'dime.material', 'cual', 0, NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
 (586, 'find', '14', 'condition', 'string', '', 'dime.find.condition', 'fragmented', 0, NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
 (587, 'find', '14', 'id', 'string', '', NULL, '14', 0, NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
 (590, 'message', '1', 'type', 'string', '', 'core.message.type', 'notification', 0, NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
 (591, 'message', '2', 'type', 'string', '', 'core.message.type', 'notification', 0, NULL, NULL, 0, '2017-01-31 07:59:45', 0, '2017-01-31 07:59:45', ''),
 (592, 'find', '1', 'custody', 'string', '', 'dime.find.custody', 'held', 0, NULL, NULL, 0, '2017-01-29 20:23:17', 0, '2017-01-29 20:23:17', ''),
-(593, 'find', '1', 'municipality', 'string', '', 'dime.find.condition', '265', 0, NULL, NULL, 0, '2017-05-02 15:36:51', 0, '2017-01-29 20:23:17', ''),
+(593, 'find', '1', 'municipality', 'string', '', 'dime.find.municipality', '265', 0, NULL, NULL, 0, '2017-05-08 23:06:25', 0, '2017-01-29 20:23:17', ''),
 (594, 'find', '1', 'museum_id', 'string', '', NULL, 'NJM-DF-1', 0, NULL, NULL, 0, '2017-01-29 20:23:17', 0, '2017-01-29 20:23:17', ''),
 (595, 'find', '1', 'process', 'string', '', 'dime.find.process', 'reported', 0, NULL, NULL, 0, '2017-05-02 15:31:06', 0, '2017-01-29 20:23:17', ''),
 (596, 'find', '1', 'visibility', 'string', '', 'core.visibility', 'public', 0, NULL, NULL, 0, '2017-01-29 20:23:17', 0, '2017-01-29 20:23:17', ''),
@@ -832,7 +857,86 @@ INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `dataty
 (651, 'file', '10', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, NULL, 0, '2017-05-05 11:35:02', 0, '2017-01-31 07:59:45', ''),
 (652, 'file', '11', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, NULL, 0, '2017-05-05 11:35:03', 0, '2017-01-31 07:59:45', ''),
 (653, 'file', '12', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, NULL, 0, '2017-05-05 11:35:05', 0, '2017-01-31 07:59:45', ''),
-(654, 'file', '13', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, NULL, 0, '2017-05-05 11:35:07', 0, '2017-01-31 07:59:45', '');
+(654, 'file', '13', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, NULL, 0, '2017-05-05 11:35:07', 0, '2017-01-31 07:59:45', ''),
+(665, 'event', '5', 'type', 'string', NULL, 'core.event.type', 'edited', 0, NULL, NULL, 0, '2017-05-08 23:21:45', 0, '2017-05-08 23:21:45', ''),
+(666, 'event', '5', 'id', 'string', NULL, NULL, '5', 0, NULL, NULL, 0, '2017-05-08 23:21:45', 0, '2017-05-08 23:21:45', ''),
+(667, 'message', '5', 'type', 'string', NULL, 'core.message.type', 'notification', 0, NULL, NULL, 0, '2017-05-08 23:21:45', 0, '2017-05-08 23:21:45', ''),
+(668, 'message', '5', 'id', 'string', NULL, NULL, '5', 0, NULL, NULL, 0, '2017-05-08 23:21:45', 0, '2017-05-08 23:21:45', ''),
+(678, 'event', '6', 'type', 'string', NULL, 'core.event.type', 'edited', 0, NULL, NULL, 0, '2017-05-08 23:22:05', 0, '2017-05-08 23:22:05', ''),
+(679, 'event', '6', 'id', 'string', NULL, NULL, '6', 0, NULL, NULL, 0, '2017-05-08 23:22:05', 0, '2017-05-08 23:22:05', ''),
+(680, 'message', '6', 'type', 'string', NULL, 'core.message.type', 'notification', 0, NULL, NULL, 0, '2017-05-08 23:22:05', 0, '2017-05-08 23:22:05', ''),
+(681, 'message', '6', 'id', 'string', NULL, NULL, '6', 0, NULL, NULL, 0, '2017-05-08 23:22:05', 0, '2017-05-08 23:22:05', ''),
+(682, 'find', '3', 'id', 'string', NULL, NULL, '3', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(683, 'find', '3', 'finder_id', 'string', NULL, NULL, '5595K024-1', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(684, 'find', '3', 'municipality', 'string', NULL, 'dime.denmark.municipality', '101', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(685, 'find', '3', 'process', 'string', NULL, 'dime.find.process', 'accessioned', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(686, 'find', '3', 'treasure', 'string', NULL, 'dime.treasure', 'treasure', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(687, 'find', '3', 'custody', 'string', NULL, 'dime.find.custody', 'destroyed', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(688, 'find', '3', 'type', 'string', NULL, 'dime.find.type', 'coin', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(689, 'find', '3', 'material', 'string', NULL, 'dime.material', 'ag', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(690, 'find', '3', 'condition', 'string', NULL, 'dime.find.condition', 'whole', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(691, 'event', '7', 'type', 'string', NULL, 'core.event.type', 'edited', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(692, 'event', '7', 'id', 'string', NULL, NULL, '7', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(693, 'message', '7', 'type', 'string', NULL, 'core.message.type', 'notification', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(694, 'message', '7', 'id', 'string', NULL, NULL, '7', 0, NULL, NULL, 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+(695, 'find', '4', 'id', 'string', NULL, NULL, '4', 0, NULL, NULL, 0, '2017-05-08 23:24:03', 0, '2017-05-08 23:24:03', ''),
+(696, 'find', '4', 'finder_id', 'string', NULL, NULL, '5923K002-1', 0, NULL, NULL, 0, '2017-05-08 23:24:03', 0, '2017-05-08 23:24:03', ''),
+(697, 'find', '4', 'municipality', 'string', NULL, 'dime.denmark.municipality', '101', 0, NULL, NULL, 0, '2017-05-08 23:24:03', 0, '2017-05-08 23:24:03', ''),
+(698, 'find', '4', 'process', 'string', NULL, 'dime.find.process', 'accessioned', 0, NULL, NULL, 0, '2017-05-08 23:24:03', 0, '2017-05-08 23:24:03', ''),
+(699, 'find', '4', 'treasure', 'string', NULL, 'dime.treasure', 'treasure', 0, NULL, NULL, 0, '2017-05-08 23:24:03', 0, '2017-05-08 23:24:03', ''),
+(700, 'find', '4', 'custody', 'string', NULL, 'dime.find.custody', 'destroyed', 0, NULL, NULL, 0, '2017-05-08 23:24:03', 0, '2017-05-08 23:24:03', ''),
+(701, 'find', '4', 'type', 'string', NULL, 'dime.find.type', 'coin', 0, NULL, NULL, 0, '2017-05-08 23:24:03', 0, '2017-05-08 23:24:03', ''),
+(702, 'find', '4', 'material', 'string', NULL, 'dime.material', 'ag', 0, NULL, NULL, 0, '2017-05-08 23:24:04', 0, '2017-05-08 23:24:04', ''),
+(703, 'find', '4', 'condition', 'string', NULL, 'dime.find.condition', 'whole', 0, NULL, NULL, 0, '2017-05-08 23:24:04', 0, '2017-05-08 23:24:04', ''),
+(704, 'event', '8', 'type', 'string', NULL, 'core.event.type', 'edited', 0, NULL, NULL, 0, '2017-05-08 23:24:04', 0, '2017-05-08 23:24:04', ''),
+(705, 'event', '8', 'id', 'string', NULL, NULL, '8', 0, NULL, NULL, 0, '2017-05-08 23:24:04', 0, '2017-05-08 23:24:04', ''),
+(706, 'message', '8', 'type', 'string', NULL, 'core.message.type', 'notification', 0, NULL, NULL, 0, '2017-05-08 23:24:04', 0, '2017-05-08 23:24:04', ''),
+(707, 'message', '8', 'id', 'string', NULL, NULL, '8', 0, NULL, NULL, 0, '2017-05-08 23:24:04', 0, '2017-05-08 23:24:04', ''),
+(708, 'find', '5', 'id', 'string', NULL, NULL, '5', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(709, 'find', '5', 'finder_id', 'string', NULL, NULL, '5924K016-1', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(710, 'find', '5', 'municipality', 'string', NULL, 'dime.denmark.municipality', '101', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(711, 'find', '5', 'process', 'string', NULL, 'dime.find.process', 'accessioned', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(712, 'find', '5', 'treasure', 'string', NULL, 'dime.treasure', 'appraisal', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(713, 'find', '5', 'custody', 'string', NULL, 'dime.find.custody', 'destroyed', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(714, 'find', '5', 'type', 'string', NULL, 'dime.find.type', 'fibula', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(715, 'find', '5', 'material', 'string', NULL, 'dime.material', 'cual', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(716, 'find', '5', 'condition', 'string', NULL, 'dime.find.condition', 'whole', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(717, 'event', '9', 'type', 'string', NULL, 'core.event.type', 'edited', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(718, 'event', '9', 'id', 'string', NULL, NULL, '9', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(719, 'message', '9', 'type', 'string', NULL, 'core.message.type', 'notification', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(720, 'message', '9', 'id', 'string', NULL, NULL, '9', 0, NULL, NULL, 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+(721, 'find', '6', 'id', 'string', NULL, NULL, '6', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(722, 'find', '6', 'finder_id', 'string', NULL, NULL, '6128K002-3', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', '');
+INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `object`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
+(723, 'find', '6', 'municipality', 'string', NULL, 'dime.denmark.municipality', '101', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(724, 'find', '6', 'process', 'string', NULL, 'dime.find.process', 'accessioned', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(725, 'find', '6', 'treasure', 'string', NULL, 'dime.treasure', 'appraisal', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(726, 'find', '6', 'custody', 'string', NULL, 'dime.find.custody', 'destroyed', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(727, 'find', '6', 'type', 'string', NULL, 'dime.find.type', 'accessory', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(728, 'find', '6', 'material', 'string', NULL, 'dime.material', 'cual', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(729, 'find', '6', 'condition', 'string', NULL, 'dime.find.condition', 'fragmented', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(730, 'event', '10', 'type', 'string', NULL, 'core.event.type', 'edited', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(731, 'event', '10', 'id', 'string', NULL, NULL, '10', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(732, 'message', '10', 'type', 'string', NULL, 'core.message.type', 'notification', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(733, 'message', '10', 'id', 'string', NULL, NULL, '10', 0, NULL, NULL, 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+(734, 'find', '13', 'finder_id', 'string', NULL, NULL, 'id123', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(735, 'find', '13', 'municipality', 'string', NULL, 'dime.denmark.municipality', '101', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(736, 'find', '13', 'process', 'string', NULL, 'dime.find.process', 'accessioned', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(737, 'find', '13', 'treasure', 'string', NULL, 'dime.treasure', 'appraisal', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(738, 'find', '13', 'custody', 'string', NULL, 'dime.find.custody', 'destroyed', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(739, 'find', '13', 'type', 'string', NULL, 'dime.find.type', 'military', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(740, 'find', '13', 'material', 'string', NULL, 'dime.material', 'ag', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(741, 'find', '13', 'secondary', 'string', NULL, 'dime.find.secondary', 'gilded', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(742, 'find', '13', 'secondary', 'string', NULL, 'dime.find.secondary', 'organic', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(743, 'find', '13', 'condition', 'string', NULL, 'dime.find.condition', 'unfinished', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(744, 'find', '13', 'id', 'string', NULL, NULL, '13', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(745, 'event', '13', 'type', 'string', NULL, 'core.event.type', 'edited', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(746, 'event', '13', 'id', 'string', NULL, NULL, '13', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(747, 'message', '13', 'type', 'string', NULL, 'core.message.type', 'notification', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(748, 'message', '13', 'id', 'string', NULL, NULL, '13', 0, NULL, NULL, 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
+(749, 'actor', 'anonymous', 'id', 'string', '', '', 'ahavfrue', 0, NULL, NULL, 0, '2017-02-15 15:41:13', 0, '0000-00-00 00:00:00', ''),
+(750, 'actor', 'ahavfrue', 'type', 'string', '', '', 'person', 0, NULL, NULL, 0, '2017-02-15 15:41:13', 0, '0000-00-00 00:00:00', ''),
+(751, 'actor', 'anonymous', 'type', 'string', '', '', 'person', 0, NULL, NULL, 0, '2017-02-15 15:41:13', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -1017,7 +1121,9 @@ INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `attribute`, `datatype
 (244, 'file', '1', 'title', 'text', 'text/plain', 'en', 'File 1', 0, NULL, NULL, 0, '2017-05-04 15:40:21', 0, '2017-01-29 20:23:17', ''),
 (245, 'file', '1', 'description', 'text', 'text/plain', 'en', 'File 1 description.', 0, NULL, NULL, 0, '2017-05-04 15:40:28', 0, '2017-01-29 20:23:17', ''),
 (246, 'file', '2', 'title', 'text', 'text/plain', 'en', 'File 2', 0, NULL, NULL, 0, '2017-05-04 15:40:26', 0, '2017-01-29 20:23:17', ''),
-(247, 'file', '2', 'description', 'text', 'text/plain', 'en', 'File 2 description.', 0, NULL, NULL, 0, '2017-05-04 15:40:24', 0, '2017-01-29 20:23:17', '');
+(247, 'file', '2', 'description', 'text', 'text/plain', 'en', 'File 2 description.', 0, NULL, NULL, 0, '2017-05-04 15:40:24', 0, '2017-01-29 20:23:17', ''),
+(248, 'actor', 'anonymous', 'shortname', 'text', 'text/plain', 'da', 'Anonymous', 0, NULL, NULL, 0, '2017-02-15 14:12:03', 0, '0000-00-00 00:00:00', ''),
+(249, 'actor', 'anonymous', 'fullname', 'text', 'text/plain', 'da', 'Anonymous', 0, NULL, NULL, 0, '2017-02-15 14:12:03', 0, '0000-00-00 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -1074,6 +1180,7 @@ CREATE TABLE `ark_item_actor` (
 
 INSERT INTO `ark_item_actor` (`item`, `module`, `schma`, `type`, `status`, `visibility`, `parent_module`, `parent_item`, `idx`, `label`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
 ('ahavfrue', 'actor', 'core.actor', 'person', 'registered', 'restricted', NULL, NULL, 'ahavfrue', 'ahavfrue', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+('anonymous', 'actor', 'core.actor', 'person', 'registered', 'restricted', NULL, NULL, 'anonymous', 'anonymous', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
 ('ARV', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'ARV', 'ARV', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
 ('BMR', 'actor', 'core.actor', 'museum', 'registered', 'restricted', NULL, NULL, 'BMR', 'BMR', 0, '2017-04-29 12:55:29', 0, '0000-00-00 00:00:00', ''),
 ('bnchristensen', 'actor', 'core.actor', 'person', 'registered', 'restricted', NULL, NULL, 'bnchristensen', 'bnchristensen', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
@@ -1138,8 +1245,15 @@ CREATE TABLE `ark_item_event` (
 
 INSERT INTO `ark_item_event` (`item`, `module`, `schma`, `type`, `status`, `visibility`, `parent_module`, `parent_item`, `idx`, `label`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
 ('1', 'event', 'core.event', 'classified', 'allocated', 'restricted', 'find', '1', '1', '1', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+('10', 'event', 'core.event', 'edited', 'allocated', 'restricted', 'find', '6', '10', '10', 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+('13', 'event', 'core.event', 'edited', 'allocated', 'restricted', 'find', '13', '13', '13', 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
 ('2', 'event', 'core.event', 'dated', 'allocated', 'restricted', 'find', '1', '2', '2', 0, '2017-05-02 15:52:47', 0, '0000-00-00 00:00:00', ''),
-('3', 'event', 'core.event', 'described', 'allocated', 'restricted', 'find', '1', '3', '3', 0, '2017-05-02 15:53:31', 0, '0000-00-00 00:00:00', '');
+('3', 'event', 'core.event', 'described', 'allocated', 'restricted', 'find', '1', '3', '3', 0, '2017-05-02 15:53:31', 0, '0000-00-00 00:00:00', ''),
+('5', 'event', 'core.event', 'edited', 'allocated', 'restricted', 'find', '3', '5', '5', 0, '2017-05-08 23:21:45', 0, '2017-05-08 23:21:45', ''),
+('6', 'event', 'core.event', 'edited', 'allocated', 'restricted', 'find', '3', '6', '6', 0, '2017-05-08 23:22:05', 0, '2017-05-08 23:22:05', ''),
+('7', 'event', 'core.event', 'edited', 'allocated', 'restricted', 'find', '3', '7', '7', 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+('8', 'event', 'core.event', 'edited', 'allocated', 'restricted', 'find', '4', '8', '8', 0, '2017-05-08 23:24:04', 0, '2017-05-08 23:24:04', ''),
+('9', 'event', 'core.event', 'edited', 'allocated', 'restricted', 'find', '5', '9', '9', 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', '');
 
 -- --------------------------------------------------------
 
@@ -1215,11 +1329,12 @@ CREATE TABLE `ark_item_find` (
 INSERT INTO `ark_item_find` (`item`, `module`, `schma`, `type`, `status`, `visibility`, `parent_module`, `parent_item`, `idx`, `label`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
 ('1', 'find', 'dime.find', 'accessory', 'registered', 'restricted', NULL, NULL, '1', '1', 0, '2017-04-27 18:59:35', 0, '2017-04-27 18:59:35', ''),
 ('10', 'find', 'dime.find', 'fibula', 'registered', 'restricted', NULL, NULL, '10', '10', 0, '2017-02-15 15:52:17', 0, '2017-01-29 21:09:38', ''),
+('13', 'find', 'dime.find', 'military', 'allocated', 'restricted', NULL, NULL, '13', '13', 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
 ('2', 'find', 'dime.find', 'fibula', 'registered', 'restricted', NULL, NULL, '2', '2', 0, '2017-02-15 15:52:17', 0, '2017-01-29 20:45:58', ''),
-('3', 'find', 'dime.find', 'coin', 'registered', 'restricted', NULL, NULL, '3', '3', 0, '2017-02-15 15:52:17', 0, '2017-01-29 22:46:48', ''),
-('4', 'find', 'dime.find', 'coin', 'registered', 'restricted', NULL, NULL, '4', '4', 0, '2017-02-15 15:52:17', 0, '2017-01-29 22:48:31', ''),
-('5', 'find', 'dime.find', 'fibula', 'registered', 'restricted', NULL, NULL, '5', '5', 0, '2017-02-15 15:52:17', 0, '2017-01-29 20:50:43', ''),
-('6', 'find', 'dime.find', 'accessory', 'registered', 'restricted', NULL, NULL, '6', '6', 0, '2017-02-15 15:52:17', 0, '2017-01-29 20:53:52', ''),
+('3', 'find', 'dime.find', 'coin', 'registered', 'restricted', NULL, NULL, '3', '3', 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+('4', 'find', 'dime.find', 'coin', 'registered', 'restricted', NULL, NULL, '4', '4', 0, '2017-05-08 23:24:04', 0, '2017-05-08 23:24:04', ''),
+('5', 'find', 'dime.find', 'fibula', 'registered', 'restricted', NULL, NULL, '5', '5', 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', ''),
+('6', 'find', 'dime.find', 'accessory', 'registered', 'restricted', NULL, NULL, '6', '6', 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
 ('7', 'find', 'dime.find', 'fibula', 'registered', 'restricted', NULL, NULL, '7', '7', 0, '2017-02-15 15:52:17', 0, '2017-01-29 21:01:00', ''),
 ('8', 'find', 'dime.find', 'fibula', 'registered', 'restricted', NULL, NULL, '8', '8', 0, '2017-02-15 15:52:17', 0, '2017-01-29 21:03:54', ''),
 ('9', 'find', 'dime.find', 'fibula', 'registered', 'restricted', NULL, NULL, '9', '9', 0, '2017-02-15 15:52:17', 0, '2017-01-29 21:07:02', '');
@@ -1254,8 +1369,15 @@ CREATE TABLE `ark_item_message` (
 
 INSERT INTO `ark_item_message` (`item`, `module`, `schma`, `type`, `status`, `visibility`, `parent_module`, `parent_item`, `idx`, `label`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
 ('1', 'message', 'core.message', 'notification', 'allocated', 'restricted', 'find', '1', '1', '1', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+('10', 'message', 'core.message', 'notification', 'allocated', 'restricted', NULL, NULL, '10', '10', 0, '2017-05-08 23:24:25', 0, '2017-05-08 23:24:25', ''),
+('13', 'message', 'core.message', 'notification', 'allocated', 'restricted', NULL, NULL, '13', '13', 0, '2017-05-09 06:38:55', 0, '2017-05-09 06:38:55', ''),
 ('2', 'message', 'core.message', 'notification', 'allocated', 'restricted', 'find', '1', '2', '2', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
-('3', 'message', 'core.message', 'notification', 'allocated', 'restricted', 'find', '1', '3', '3', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', '');
+('3', 'message', 'core.message', 'notification', 'allocated', 'restricted', 'find', '1', '3', '3', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', ''),
+('5', 'message', 'core.message', 'notification', 'allocated', 'restricted', NULL, NULL, '5', '5', 0, '2017-05-08 23:21:45', 0, '2017-05-08 23:21:45', ''),
+('6', 'message', 'core.message', 'notification', 'allocated', 'restricted', NULL, NULL, '6', '6', 0, '2017-05-08 23:22:05', 0, '2017-05-08 23:22:05', ''),
+('7', 'message', 'core.message', 'notification', 'allocated', 'restricted', NULL, NULL, '7', '7', 0, '2017-05-08 23:22:34', 0, '2017-05-08 23:22:34', ''),
+('8', 'message', 'core.message', 'notification', 'allocated', 'restricted', NULL, NULL, '8', '8', 0, '2017-05-08 23:24:04', 0, '2017-05-08 23:24:04', ''),
+('9', 'message', 'core.message', 'notification', 'allocated', 'restricted', NULL, NULL, '9', '9', 0, '2017-05-08 23:24:13', 0, '2017-05-08 23:24:13', '');
 
 -- --------------------------------------------------------
 
@@ -1312,7 +1434,10 @@ CREATE TABLE `ark_sequence` (
 --
 
 INSERT INTO `ark_sequence` (`module`, `parent`, `sequence`, `idx`, `min`, `max`) VALUES
-('find', '', 'id', 10, NULL, NULL);
+('event', '', 'id', 13, NULL, NULL),
+('find', '', 'id', 13, NULL, NULL),
+('message', '', 'id', 13, NULL, NULL),
+('object', '', 'fid', 56, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1330,6 +1455,97 @@ CREATE TABLE `ark_sequence_lock` (
   `locked_by` int(11) NOT NULL,
   `locked_on` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `ark_sequence_lock`
+--
+
+INSERT INTO `ark_sequence_lock` (`id`, `module`, `parent`, `sequence`, `idx`, `recycle`, `locked_by`, `locked_on`) VALUES
+(1, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(2, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(3, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(4, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(5, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(6, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(7, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(8, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(9, 'event', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(10, 'message', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(11, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(12, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(13, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(14, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(15, 'event', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(16, 'message', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(17, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(18, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(19, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(20, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(21, 'event', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(22, 'message', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(23, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(24, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(25, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(26, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(27, 'event', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(28, 'message', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(29, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(30, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(31, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(32, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(33, 'event', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(34, 'message', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(35, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(36, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(37, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(38, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(39, 'event', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(40, 'message', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(41, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(42, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(43, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(44, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(45, 'event', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(46, 'message', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(47, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(48, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(49, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(50, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(51, 'event', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(52, 'message', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(53, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(54, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(55, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(56, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(57, 'event', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(58, 'message', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(59, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(60, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(61, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(62, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(63, 'event', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(64, 'message', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(65, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(66, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(67, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(68, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(69, 'event', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(70, 'message', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(71, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(72, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(73, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(74, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(75, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(76, 'event', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(77, 'message', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(78, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(79, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(80, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(81, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(82, 'object', '', 'fid', 1, 0, 0, '0000-00-00 00:00:00'),
+(83, 'find', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(84, 'event', '', 'id', 1, 0, 0, '0000-00-00 00:00:00'),
+(85, 'message', '', 'id', 1, 0, 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -1370,6 +1586,7 @@ CREATE TABLE `ark_workflow_actor_role` (
 
 INSERT INTO `ark_workflow_actor_role` (`actor`, `role`, `enabled`, `verified`, `locked`, `expired`, `expires_at`, `verification_token`, `verification_requested_at`) VALUES
 ('ahavfrue', 'detectorist', 1, 1, 0, 0, NULL, '', NULL),
+('anonymous', 'anon', 1, 1, 0, 0, NULL, '', NULL),
 ('bnchristensen', 'appraiser', 1, 0, 0, 0, NULL, '', NULL),
 ('dsvendson', 'researcher', 1, 0, 0, 0, NULL, '', NULL),
 ('slund', 'registrar', 1, 0, 0, 0, NULL, '', NULL);
@@ -1617,17 +1834,17 @@ ALTER TABLE `ark_fragment_boolean`
 -- AUTO_INCREMENT for table `ark_fragment_date`
 --
 ALTER TABLE `ark_fragment_date`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 --
 -- AUTO_INCREMENT for table `ark_fragment_datetime`
 --
 ALTER TABLE `ark_fragment_datetime`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 --
 -- AUTO_INCREMENT for table `ark_fragment_decimal`
 --
 ALTER TABLE `ark_fragment_decimal`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 --
 -- AUTO_INCREMENT for table `ark_fragment_float`
 --
@@ -1642,22 +1859,22 @@ ALTER TABLE `ark_fragment_integer`
 -- AUTO_INCREMENT for table `ark_fragment_item`
 --
 ALTER TABLE `ark_fragment_item`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 --
 -- AUTO_INCREMENT for table `ark_fragment_spatial`
 --
 ALTER TABLE `ark_fragment_spatial`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 --
 -- AUTO_INCREMENT for table `ark_fragment_string`
 --
 ALTER TABLE `ark_fragment_string`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=655;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=752;
 --
 -- AUTO_INCREMENT for table `ark_fragment_text`
 --
 ALTER TABLE `ark_fragment_text`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=248;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=250;
 --
 -- AUTO_INCREMENT for table `ark_fragment_time`
 --
@@ -1667,7 +1884,7 @@ ALTER TABLE `ark_fragment_time`
 -- AUTO_INCREMENT for table `ark_sequence_lock`
 --
 ALTER TABLE `ark_sequence_lock`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 --
 -- Constraints for dumped tables
 --

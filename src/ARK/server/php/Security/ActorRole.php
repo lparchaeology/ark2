@@ -43,7 +43,7 @@ class ActorRole
 {
     protected $actor = null;
     protected $role = null;
-    protected $roleName = '';
+    protected $roleEntity = null;
     protected $enabled = false;
     protected $verified = false;
     protected $locked = false;
@@ -52,11 +52,11 @@ class ActorRole
     protected $verificationToken = '';
     protected $verificationRequestedAt = null;
 
-    public function __construct($actor, $role)
+    public function __construct(Actor $actor, Role $role)
     {
         $this->actor = $actor;
-        $this->role = $role;
-        $this->roleName = $role->name();
+        $this->role = $role->name();
+        $this->roleEntity = $role;
     }
 
     public function actor()
@@ -66,10 +66,10 @@ class ActorRole
 
     public function role()
     {
-        if ($this->role === null) {
-            $this->role = ORM::find(Role::class, $this->roleName);
+        if ($this->roleEntity === null) {
+            $this->roleEntity = ORM::find(Role::class, $this->role);
         }
-        return $this->role;
+        return $this->roleEntity;
     }
 
     public function isVerified()

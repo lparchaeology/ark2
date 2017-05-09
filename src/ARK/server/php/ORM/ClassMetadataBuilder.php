@@ -54,10 +54,12 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         $this->getClassMetadata()->setIdGeneratorType($type);
     }
 
-    public function addManyToMany($name, $targetEntity, $joinTable)
+    public function addManyToMany($name, $targetEntity, $joinTable, $joinColumn = null, $inverseColumn = null)
     {
         $builder = $this->createManyToMany($name, $targetEntity);
         $builder->setJoinTable($joinTable);
+        $builder->addJoinColumn($joinColumn, $joinColumn);
+        $builder->addInverseJoinColumn($inverseColumn, $inverseColumn);
         return $builder->build();
     }
 
