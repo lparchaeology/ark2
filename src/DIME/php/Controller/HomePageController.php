@@ -38,6 +38,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class HomePageController extends DimeController
 {
+
     public function __invoke(Request $request)
     {
         $options = $this->defaultOptions();
@@ -45,15 +46,21 @@ class HomePageController extends DimeController
         $layout = 'dime_home_page';
         $options['layout'] = Service::layout($layout);
 
-        $items = Service::database()->getUnreadMessages('ahavfrue');
-        $data['notifications'] = ORM::findBy(Message::class, ['item' => $items], ['created' => 'DESC']);
+        $items = Service::database()->getUnreadMessages(Service::workflow()->actor()
+            ->id());
+
+        $data['notifications'] = ORM::findBy(Message::class, [
+            'item' => $items
+        ], [
+            'created' => 'DESC'
+        ]);
         $data[$layout] = ORM::findAll(Find::class);
         $data['dime_find_list'] = $data[$layout];
         $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $data[$layout] : []);
         $data['dime_home_action'] = null;
 
         $kortforsyningenticket = false;
-        $passPath = Service::configDir().'/credentials.json';
+        $passPath = Service::configDir() . '/credentials.json';
         if ($passwords = json_decode(file_get_contents($passPath), true) && isset($passwords['kortforsyningen'])) {
             $user = $passwords['kortforsyningen']['user'];
             $password = $passwords['kortforsyningen']['password'];
