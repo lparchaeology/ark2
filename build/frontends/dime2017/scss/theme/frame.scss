@@ -222,9 +222,17 @@ a.loginbutton:hover{
  */
 
 .usertool {
-    min-height: 120px;
     text-transform: uppercase;
     text-align: center;
+}
+
+.dime-icon.icon-user {
+    padding-right:5px;
+    float:none;
+}
+
+.usertool .usergreeting {
+    padding-left:0;
 }
 
 .dime-listhead {

@@ -101,7 +101,8 @@ class FindListController extends DimeFormController
         $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $resource : []);
         $data['dime_find_filter'] = null;
 
-        $items = Service::database()->getUnreadMessages('ahavfrue');
+        $items = Service::database()->getUnreadMessages(Service::workflow()->actor()
+            ->id());
 
         $data['notifications'] = ORM::findBy(Message::class, [
             'item' => $items

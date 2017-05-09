@@ -47,7 +47,8 @@ class FindAddController extends EntityController
 
     public function buildData(Request $request, Page $page)
     {
-        $items = Service::database()->getUnreadMessages('ahavfrue');
+        $items = Service::database()->getUnreadMessages(Service::workflow()->actor()
+            ->id());
 
         $data['notifications'] = ORM::findBy(Message::class, [
             'item' => $items

@@ -4,23 +4,27 @@
     {% if global.user %}
         <div class="row usertool username">
             <a href="{{ path('user.view', {'id': global.user.id}) }}">
-                <span class="dime-icon icon-user small"></span>
-                {{ 'user.greeting' | trans({ '%name%': global.user.displayName }) }}
+                <span class="usergreeting">
+                    {# <span class="dime-icon icon-user small"></span> #}
+                    {{ 'user.greeting' | trans({ '%name%': global.user.displayName }) }}
+                </span>
             </a>
+        </div>
+        <div class="row usertool">
+            {% if data.notifications is defined %}
+                {% if data.notifications|length %}
+                    {%  set notificationicon = 'icon-new-notification small wide' %}
+                {% else %}
+                    {%  set notificationicon = 'icon-notification small' %}
+                {% endif %}
+                <a href = " {{ path( 'home.messages' ) }}">
+                    <span class="dime-icon dimehometool-icon {{ notificationicon }} "></span>
+                </a>
+            {% endif %}
+            <p>
             <a href="{{ path('user.logout') }}" class="loginbutton">
                 <span class=" dime-icon glyphicon glyphicon-log-out logout"></span>
                 <span class="text">logout</span>
-            </a>
-        </div>
-        <div class="row usertool useractions">
-
-            {% if data.notifications|length %}
-                {%  set notificationicon = 'icon-new-notification small wide' %}
-            {% else %}
-                {%  set notificationicon = 'icon-notification small' %}
-            {% endif %}
-            <a href = " {{ path( 'home.messages' ) }}">
-                <span class="dime-icon dimehometool-icon {{ notificationicon }} "></span>
             </a>
         </div>
     {% else %}

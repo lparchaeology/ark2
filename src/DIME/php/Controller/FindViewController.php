@@ -57,8 +57,8 @@ class FindViewController extends EntityController
         }
         $data[$page->content()->name()] = $resource;
 
-        $items = Service::database()->getUnreadMessages('ahavfrue');
-
+        $items = Service::database()->getUnreadMessages(Service::workflow()->actor()
+            ->id());
         $data['notifications'] = ORM::findBy(Message::class, [
             'item' => $items
         ], [
