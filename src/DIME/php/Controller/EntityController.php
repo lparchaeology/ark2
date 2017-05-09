@@ -44,12 +44,12 @@ class EntityController extends DimeFormController
         $id = 0;
         $data = $form->getData();
         $item = $data[$form->getName()];
+        ORM::persist($item);
         if (isset($data['dime_find_actions'])) {
             $action = $data['dime_find_actions'];
             $actor = Service::workflow()->actor();
             $action->apply($actor, $item);
         }
-        ORM::persist($item);
         ORM::flush($item);
         return Service::redirectPath($redirect, ['itemSlug' => $item->id()]);
     }

@@ -259,12 +259,12 @@ abstract class Format
         }
         if ($this->hasMultipleValues()) {
             for ($i = 0; $i < count($data); $i++) {
-                $this->hydrateFragment($data[i], $fragments[i], $vocabulary);
+                $this->hydrateFragment($data[i], $model[i], $vocabulary);
             }
             return;
         }
         $data = (is_array($data) ? $data[0] : $data);
-        $fragment = (is_array($fragments) ? $fragments[0] : $fragments);
+        $fragment = (is_array($model) ? $model[0] : $model);
         $this->hydrateFragment($data, $fragment, $vocabulary);
     }
 
@@ -286,7 +286,7 @@ abstract class Format
         if ($data instanceof Item) {
             $format = null;
             $parameter = ($this->parameterName() ? $data->schema()->module()->name() : null);
-            $value = ($this->parameterName() ? $data->id() : null);
+            $value = ($this->valueName() ? $data->id() : null);
             $fragment->setValue($value, $parameter, $format);
             return;
         }
