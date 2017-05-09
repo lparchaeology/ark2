@@ -43,8 +43,6 @@ class EntityController extends DimeFormController
     {
         $id = 0;
         $data = $form->getData();
-        dump($form);
-        dump($data);
         $item = $data[$form->getName()];
         if (isset($data['dime_find_actions'])) {
             $action = $data['dime_find_actions'];

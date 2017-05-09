@@ -202,6 +202,9 @@ trait ItemTrait
 
     public function property($attribute)
     {
+        if ($this->schema()->attribute($attribute, $this->type()) === null) {
+            return null;
+        }
         if (!isset($this->properties[$attribute])) {
             $this->properties[$attribute] = new Property($this, $this->schema()->attribute($attribute, $this->type()));
         }
