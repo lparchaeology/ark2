@@ -1056,7 +1056,7 @@ a.editable-click.editable-disabled:hover {
 
 /**
  * @author zhixin wen <wenzhixin2010@gmail.com>
- * version: 1.11.1
+ * version: 1.11.0
  * https://github.com/wenzhixin/bootstrap-table/
  */
 
@@ -1345,7 +1345,7 @@ a.editable-click.editable-disabled:hover {
     padding: 0 !important;
 }
 
-.bootstrap-table .pull-right .dropdown-menu {
+.pull-right .dropdown-menu {
     right: 0;
     left: auto;
 }
@@ -1363,13 +1363,6 @@ div.fixed-table-scroll-outer {
     width: 200px;
     height: 150px;
     overflow: hidden;
-}
-
-/* for get correct heights  */
-.fixed-table-toolbar:after, .fixed-table-pagination:after {
-    content: "";
-    display: block;
-    clear: both;
 }
 
 /**
