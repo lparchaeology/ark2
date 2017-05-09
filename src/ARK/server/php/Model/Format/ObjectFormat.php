@@ -32,9 +32,11 @@ namespace ARK\Model\Format;
 
 use ARK\Model\Format;
 use ARK\Model\Format\FormatAttribute;
+use ARK\Model\Attribute;
 use ARK\Model\Fragment;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\ORM\ORM;
 use ARK\Vocabulary\Vocabulary;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -97,15 +99,35 @@ class ObjectFormat extends Format
         return $data;
     }
 
+    public function hydrate($data, Attribute $attribute, Vocabulary $vocabulary = null)
+    {
+        $fragments = new ArrayCollection();
+        if ($data === [] || $data === null) {
+            return $fragments;
+        }
+        if (!$this->hasMultipleValues()) {
+            $data = [$data];
+        }
+        foreach ($data as $datum) {
+            $fragment = Fragment::createFromAttribute($attribute);
+            $fragment->setValue('');
+            $fragments->add($fragment);
+            if (!is_array($datum)) {
+                return;
+            }
+            foreach ($datum as $key => $value) {
+                $children = $this->attribute($key)->hydrate($value);
+                foreach ($children as $child) {
+                    $child->setObject($fragment);
+                    $fragments->add($child);
+                }
+            }
+        }
+        return $fragments;
+    }
+
     protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null)
     {
-        $fragment->setValue('');
-        if (!is_array($data)) {
-            return;
-        }
-        foreach ($data as $key => $value) {
-            $attribute = $this->attribute($key);
-        }
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

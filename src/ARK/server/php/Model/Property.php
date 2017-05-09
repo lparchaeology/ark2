@@ -126,8 +126,7 @@ class Property
         if ($value == $this->nullValue()) {
             return;
         }
-        $model = $this->attribute->hydrate($value);
-        $this->fragments = new ArrayCollection(is_array($model) ? $model : [$model]);
+        $this->fragments = $this->attribute->hydrate($value);
         if (!$this->fragments->isEmpty()) {
             $this->updateFragments();
             ORM::persist($this->fragments);

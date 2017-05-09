@@ -41,6 +41,7 @@ class ObjectFragment extends Fragment
 
     public function __construct()
     {
+        // TODO Use ORM Generator properly in metadata??? Or persist does auto?
         $this->fid = Service::database()->generateItemSequence('object', '', 'fid');
     }
 
@@ -52,7 +53,7 @@ class ObjectFragment extends Fragment
                'module' => $this->module,
                'item' => $this->item,
                'attribute' => $attribute->name(),
-               'object' => $this->object,
+               'object' => $this->object->id(),
             ];
             $this->children = ORM::findBy($attribute->format()->datatype()->dataClass(), $key);
         }

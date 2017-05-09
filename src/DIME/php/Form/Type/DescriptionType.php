@@ -80,7 +80,7 @@ class DescriptionType extends AbstractFormType
                 $event = $value[0]['event'];
                 $text = $value[0]['text'];
                 $language = Service::locale();
-                $forms['event']->setData($event->id());
+                $forms['event']->setData($event['item']);
                 $forms['content']->setData($text->content($language));
                 $forms['previous']->setData(serialize($text->contents()));
                 $forms['mediatype']->setData($text->mediaType());
@@ -109,7 +109,7 @@ class DescriptionType extends AbstractFormType
             }
             $data['event'] = $event;
             $data['text'] = $text;
-            $property->setValue($data);
+            $property->setValue([$data]);
         }
     }
 }

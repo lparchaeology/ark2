@@ -33,8 +33,11 @@ namespace ARK\Model\Format;
 use ARK\Model\Fragment;
 use ARK\Model\Format;
 use ARK\Model\LocalText;
+use ARK\Model\Attribute;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\ORM\ORM;
+use ARK\Vocabulary\Vocabulary;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class TextFormat extends Format
@@ -100,6 +103,36 @@ class TextFormat extends Format
         $data[$this->parameterName()] = $fragment->parameter();
         $data[$this->valueName()] = $fragment->value();
         return $data;
+    }
+
+    public function hydrate($data, Attribute $attribute, Vocabulary $vocabulary = null)
+    {
+        $fragments = new ArrayCollection();
+        if ($data === [] || $data === null) {
+            return $fragments;
+        }
+        if ($data instanceof LocalText) {
+            foreach ($data->contents() as $language => $content) {
+                $fragment = Fragment::createFromAttribute($attribute);
+                $fragment->setValue($content, $language, $data->mediatype());
+                $fragments[] = $fragment;
+            }
+            return $fragments;
+        }
+        if (isset($data['content'])) {
+            $data = [$data];
+        }
+        foreach ($data as $datum) {
+            $fragment = Fragment::createFromAttribute($attribute);
+            $this->hydrateFragment($datum, $fragment, $vocabulary);
+            $fragments[] = $fragment;
+        }
+        return $fragments;
+    }
+
+    protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null)
+    {
+        $fragment->setValue($data['content'], data['language'], content['mediatype']);
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

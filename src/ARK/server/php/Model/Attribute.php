@@ -205,22 +205,20 @@ abstract class Attribute
 
     public function hydrate($data)
     {
+        $fragments = new ArrayCollection();
         if ($data === null || $data === [] || $data === $this->nullValue()) {
-            return [];
-        }
-        // TODO Objects/Chains
-        if ($this->hasMultipleOccurrences() || $this->format()->hasMultipleValues()) {
-            $fragments = [];
-            foreach ($data as $datum) {
-                $fragment = Fragment::createFromAttribute($this);
-                $this->format()->hydrate($datum, $fragment, $this->vocabulary);
-                $fragments[] = $fragment;
-            }
             return $fragments;
         }
-        $fragment = Fragment::createFromAttribute($this);
-        $this->format()->hydrate($data, $fragment, $this->vocabulary);
-        return $fragment;
+        if (!$this->hasMultipleOccurrences() && !$this->format()->hasMultipleValues()) {
+            $data = [$data];
+        }
+        foreach ($data as $datum) {
+            $frags = $this->format()->hydrate($datum, $this, $this->vocabulary);
+            foreach ($frags as $frag) {
+                $fragments->add($frag);
+            }
+        }
+        return $fragments;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
