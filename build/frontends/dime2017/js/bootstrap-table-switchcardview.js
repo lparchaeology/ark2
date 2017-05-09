@@ -126,17 +126,23 @@
                 }
                 var ark_id = self.attr('data-unique-id');
 
-                
                 console.log(self.hasClass('selected') );
-                
+
                 if (!evt.shiftKey) {
                     $('tr').removeClass('selected');
-                    mapcollection.clear();
                 } else if ( self.hasClass('selected') ){
                     var deselect = true;
                     self.removeClass('selected');
                 } else {
                     var deselect = false;
+                }
+
+                if(typeof mapcollection == 'undefined'){
+                    return true;
+                }
+
+                if (!evt.shiftKey) {
+                    mapcollection.clear();
                 }
 
                 map.getLayers().forEach(function(i, e, a) {
@@ -205,11 +211,13 @@
                 $('tr').off("click");
                 $('tr').on("click", {"target":this}, mapclick );
                 
-                mapcollection.forEach(function(e, i, a) {
-                    var ark_id = e.get('ark_id');
+                if(typeof mapcollection != 'undefined'){
+                    mapcollection.forEach(function(e, i, a) {
+                        var ark_id = e.get('ark_id');
 
-                    $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
-                });
+                        $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
+                    });
+                }
             }
         });
 
@@ -231,12 +239,14 @@
                 
                 $('tr').off("click");
                 $('tr').on("click", {"target":this}, thumbclick );
+                
+                if(typeof mapcollection != 'undefined'){
+                    mapcollection.forEach(function(e, i, a) {
+                        var ark_id = e.get('ark_id');
 
-                mapcollection.forEach(function(e, i, a) {
-                    var ark_id = e.get('ark_id');
-
-                    $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
-                });
+                        $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
+                    });
+                }
 
             }
         });
@@ -267,11 +277,13 @@
 
             $('tr').on("click", {"target":this}, mapclick );
             
-            mapcollection.forEach(function(e, i, a) {
-                var ark_id = e.get('ark_id');
+            if(typeof mapcollection != 'undefined'){
+                mapcollection.forEach(function(e, i, a) {
+                    var ark_id = e.get('ark_id');
 
-                $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
-            });
+                    $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
+                });
+            }
             
         }
     });

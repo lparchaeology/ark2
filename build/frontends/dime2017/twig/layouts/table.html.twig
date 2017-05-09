@@ -28,15 +28,17 @@
                     <th class="thumbimagehead" data-field="image" data-title="image" data-sortable="false"></th>
                 {% endif %}
                 {% for field in layout.elements %}
-                    {% if field.attribute.name == 'id' %}
-                    <th data-field="{{field.name}}" data-title="{{field.keyword|trans}}" data-sortable="true" data-sorter="alphanum" data-card-visible="false">
-                    {% else %}
-                    <th data-field="{{field.name}}" data-title="{{field.keyword|trans}}" data-sortable="true" data-sorter="alphanum" data-card-visible="false">
-                    {% endif %}
-                        {{field.keyword|trans}}
-                    </th>
+                    {% if workflow.hasPermission(field.attribute.readPermission) %}
+                        {% if field.attribute.name == 'id' %}
+                        <th data-field="{{field.name}}" data-title="{{field.keyword|trans}}" data-sortable="true" data-sorter="alphanum" data-card-visible="false">
+                        {% else %}
+                        <th data-field="{{field.name}}" data-title="{{field.keyword|trans}}" data-sortable="true" data-sorter="alphanum" data-card-visible="false">
+                        {% endif %}
+                            {{field.keyword|trans}}
+                        </th>
+                    {%  endif %}
                 {% endfor %}
-                    <th class="controlshead" data-field="controls" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
+                <th class="controlshead" data-field="controls" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
             </tr>
         </thead>
 
@@ -54,10 +56,12 @@
                         </td>
                     {% endif %}
                     {% for field in layout.elements %}
-                        <td>
-                            <span class="cell-label">{{field.keyword|trans}}</span>
-                            {{ field.renderView(item) }}
-                        </td>
+                        {% if workflow.hasPermission(field.attribute.readPermission) %}
+                            <td>
+                                <span class="cell-label">{{field.keyword|trans}}</span>
+                                {{ field.renderView(item) }}
+                            </td>
+                        {% endif %}
                     {% endfor %}
                     <td class="gotofind">
                         <a href="{{ path('finds.view', {'itemSlug': item.id}) }}">

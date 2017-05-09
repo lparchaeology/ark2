@@ -21,7 +21,7 @@
             {% set colclass = 'col-md-12' %}
         {% endif %}
 
-        {% if layout.formMode %}
+        {% if layout.formMode is defined %}
             {{ form_start(forms[layout.name]) }}
             {% set form = forms[layout.name] %}
         {% endif %}
@@ -34,7 +34,7 @@
             </div>
         {% endfor %}
 
-        {% if layout.formMode %}
+        {% if layout.formMode is defined  %}
             {{ form_end(forms[layout.name]) }}
         {% endif %}
 
