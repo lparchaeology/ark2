@@ -32,7 +32,6 @@ namespace DIME\Controller;
 use ARK\View\Page;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\Message\Message;
 use DIME\Controller\EntityController;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,14 +46,6 @@ class FindAddController extends EntityController
 
     public function buildData(Request $request, Page $page)
     {
-        $items = Service::database()->getUnreadMessages(Service::workflow()->actor()
-            ->id());
-
-        $data['notifications'] = ORM::findBy(Message::class, [
-            'item' => $items
-        ], [
-            'created' => 'DESC'
-        ]);
         $data[$page->content()->name()] = new Find('dime.find');
         return $data;
     }

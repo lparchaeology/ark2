@@ -101,15 +101,6 @@ class FindListController extends DimeFormController
         $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $resource : []);
         $data['dime_find_filter'] = null;
 
-        $items = Service::database()->getUnreadMessages(Service::workflow()->actor()
-            ->id());
-
-        $data['notifications'] = ORM::findBy(Message::class, [
-            'item' => $items
-        ], [
-            'created' => 'DESC'
-        ]);
-
         try {
             $passPath = Service::configDir() . '/passwords.json';
             if ($passwords = json_decode(file_get_contents($passPath), true)) {

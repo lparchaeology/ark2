@@ -27,7 +27,6 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-
 namespace DIME\Controller;
 
 use ARK\ORM\ORM;
@@ -35,11 +34,13 @@ use ARK\Service;
 use ARK\View\Page;
 use ARK\Workflow\Registry;
 use ARK\Actor\Actor;
+use ARK\Message\Message;
 use DIME\Controller\DimeController;
 use Symfony\Component\HttpFoundation\Request;
 
 abstract class DimeFormController extends DimeController
 {
+
     public function renderResponse(Request $request, $page, $redirect = null, $options = [])
     {
         $route = $request->attributes->get('_route');
@@ -47,10 +48,18 @@ abstract class DimeFormController extends DimeController
         $options = $page->defaultOptions();
         $options['page_config'] = $this->pageConfig($route);
         $data = $this->buildData($request, $page);
+        $items = Service::database()->getUnreadMessages(Service::workflow()->actor()
+            ->id());
+
+        $data['notifications'] = ORM::findBy(Message::class, [
+            'item' => $items
+        ], [
+            'created' => 'DESC'
+        ]);
         if ($page->mode() == 'edit') {
             $actor = Service::workflow()->actor();
             $item = $data[$page->content()->name()];
-            if (!$actor || !Service::workflow()->can($actor, 'edit', $item)) {
+            if (! $actor || ! Service::workflow()->can($actor, 'edit', $item)) {
                 $options['page_mode'] = 'view';
             }
         }
@@ -66,7 +75,7 @@ abstract class DimeFormController extends DimeController
             if ($form) {
                 $form->handleRequest($request);
                 if ($form->isSubmitted() && $form->isValid()) {
-                    if (!$redirect) {
+                    if (! $redirect) {
                         $redirect = $route;
                     }
                     return $this->processForm($request, $form, $redirect);

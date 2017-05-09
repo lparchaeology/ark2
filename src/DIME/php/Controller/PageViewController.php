@@ -76,7 +76,8 @@ class PageViewController extends DimeController
             $content .= '</div>';
         }
 
-        $items = Service::database()->getUnreadMessages('ahavfrue');
+        $items = Service::database()->getUnreadMessages(Service::workflow()->actor()
+            ->id());
 
         $options['notifications'] = ORM::findBy(Message::class, [
             'item' => $items
