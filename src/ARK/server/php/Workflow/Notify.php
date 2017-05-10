@@ -50,8 +50,7 @@ class Notify
 
     public function recipient(Item $item)
     {
-        $item->property($this->attributeName)->value();
-        return ORM::find(Actor::class, 'ahavfrue');
+        return $item->property($this->attributeName)->value();
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

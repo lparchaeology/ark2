@@ -88,7 +88,7 @@ class Widget extends Element
         // FIXME HACK Need to find a better way to build custom fields!
         if ($this->name() == 'dime_find_actions') {
             // TODO Current Actor
-            $actor = ORM::find(Actor::class, 'ahavfrue');
+            $actor = Service::workflow()->actor();
             $options['choices'] = Service::workflow()->actions($actor, $data);
             $options['choice_value'] = 'name';
             $options['choice_name'] = 'name';
