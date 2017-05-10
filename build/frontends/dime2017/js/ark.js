@@ -14,6 +14,11 @@ $(document).ready(function() {
     $("#edit_roles .checkbox").removeClass("col-xs-4 col-sm-4 col-lg-3");
     // Fake readonly mode
     $('.readonly-select').prop('disabled', true);
+    
+    $('.loginbutton').click(function(){
+        $('.sidebar').removeClass('collapse');
+    });
+    
     /*
         $("file").fileinput({
             'showUpload':true,
