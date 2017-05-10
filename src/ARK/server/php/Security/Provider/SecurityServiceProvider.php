@@ -27,7 +27,6 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-
 namespace ARK\Security\Provider;
 
 use ARK\Security\Security;
@@ -41,6 +40,7 @@ use Silex\Provider\SecurityServiceProvider as SilexSecurityServiceProvider;
 
 class SecurityServiceProvider implements ServiceProviderInterface
 {
+
     public function register(Container $container)
     {
         $container->register(new SilexSecurityServiceProvider());
@@ -51,37 +51,38 @@ class SecurityServiceProvider implements ServiceProviderInterface
             return new Security();
         };
         $container['security.firewalls'] = [];
-        $container->extendArray(
-            'security.firewalls',
-            'login_area',
-            [
-                'pattern' => '(^/users/login$)|(^/users/register$)|(^/users/forgot-password$)',
-                'anonymous' => true,
-            ]
-        );
-        $container->extendArray(
-            'security.firewalls',
-            'default',
-            [
-                'pattern' => '^/.*$',
-                'anonymous' => true,
-                'remember_me' => [],
-                'form' => [
-                   'login_path' => '/users/login',
-                   'check_path' => '/users/login_check',
-                ],
-                'logout' => [
-                   'logout_path' => '/users/logout',
-                ],
-                'users' => function ($app) {
-                    return $app['user.manager'];
-                },
-            ]
-        );
+        $container->extendArray('security.firewalls', 'login_area', [
+            'pattern' => '(^/users/login$)|(^/users/register$)|(^/users/forgot-password$)',
+            'anonymous' => true
+        ]);
+        $container->extendArray('security.firewalls', 'default', [
+            'pattern' => '^/.*$',
+            'anonymous' => true,
+            'remember_me' => [],
+            'form' => [
+                'login_path' => '/users/login',
+                'check_path' => '/users/login_check'
+            ],
+            'logout' => [
+                'logout_path' => '/users/logout'
+            ],
+            'users' => function ($app) {
+                return $app['user.manager'];
+            }
+        ]);
         $container['security.access_rules'] = [
-            ["(^/users/login$)|(^/users/register$)|(^/users/forgot-password$)|(^/users/login_check$)", "IS_AUTHENTICATED_ANONYMOUSLY"],
-            ["(^/users)", "ROLE_USER"],
-            ["^/.+$", "IS_AUTHENTICATED_ANONYMOUSLY"]
+            [
+                "(^/users/login$)|(^/users/register$)|(^/users/forgot-password$)|(^/users/login_check$)",
+                "IS_AUTHENTICATED_ANONYMOUSLY"
+            ],
+            [
+                "(^/users)",
+                "ROLE_USER"
+            ],
+            [
+                "^/.+$",
+                "IS_AUTHENTICATED_ANONYMOUSLY"
+            ]
         ];
         if (isset($container['ark']['security']['access_rules'])) {
             $container['security.access_rules'] = array_merge($container['ark']['security']['access_rules']);
@@ -94,7 +95,9 @@ class SecurityServiceProvider implements ServiceProviderInterface
             'userTableName' => 'ark_user',
             'userCustomFieldsTableName' => 'ark_user_field',
             'editCustomFields' => [],
-            'templates'=> ['layout' => 'pages/page.html.twig'],
+            'templates' => [
+                'layout' => 'pages/hardcoded.html.twig'
+            ]
         ];
     }
 }
