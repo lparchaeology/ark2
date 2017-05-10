@@ -32,6 +32,9 @@ function initialiseMapView() {
         })
     });
 
+    map.addControl(new ol.control.Zoom());
+    map.addControl(new ol.control.ZoomSlider());
+    
     map.on('moveend', function() {
         var center = map.getView().get('center');
         var extents = map.getView().calculateExtent(map.getSize());

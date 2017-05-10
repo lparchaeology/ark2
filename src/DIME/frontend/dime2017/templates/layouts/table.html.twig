@@ -81,9 +81,13 @@
 
 <script>
 window.findslist = [
-    {% for item in data[layout.name] %}
-        {{ item.id }},
-    {% endfor %}
+    {% if data[layout.name]|length > 0 %}
+        {% for item in data[layout.name] %}
+            {{ item.id }},
+        {% endfor %}
+    {% else %}
+            false
+     {% endif %}
 ];
 
 console.log(findslist);

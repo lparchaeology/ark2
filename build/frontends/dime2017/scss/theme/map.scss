@@ -87,3 +87,24 @@ a.layer-select.selected:hover {
 .form-horizontal .form-control {
    margin-top: 0;
 }
+
+.ol-control {
+    background-color: rgba(255,255,255,.4);
+    border-radius: 5px;
+}
+
+.ol-control button {
+    background-color: rgba(0, 0, 0, 1);
+    border-radius: 5px;
+}
+
+.ol-control:focus,
+.ol-control button:focus {
+    outline-color: rgba(255,255,255,.4);
+    background-color: rgba(0, 0, 0, 1);
+}
+
+.ol-control button:hover {
+    background-color: rgba(255, 255, 255, 1);
+    color: rgba(0, 0, 0, 1);
+}

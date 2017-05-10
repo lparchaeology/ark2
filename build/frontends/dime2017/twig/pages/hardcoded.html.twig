@@ -38,15 +38,17 @@
                     </a>
                 {% else %}
                     <span class="usergreeting">
-                        {{ 'user.greeting' | trans() }}
+                        {{ 'user.greeting' | trans({ '%name%': {{ "dime.newuser"|trans }} }) }}
                     </span>
                 {% endif %}
                 </div>
+                {% if global.user.id is defined %}
                 <div class="row usertool">
                     {%  set notificationicon = 'icon-notification small' %}
                     <a href = " {{ path( 'home.messages' ) }}">
                         <span class="dime-icon dimehometool-icon {{ notificationicon }} "></span>
                     </a>
+                {% endif %}
                     <p>
                     <a href="{{ path('user.logout') }}" class="loginbutton">
                         <span class=" dime-icon glyphicon glyphicon-log-out logout"></span>
@@ -55,15 +57,16 @@
                 </div>
                 <div class="row">
                     <ul class="list-group dime-navlist">
-                        <li class="list-group-item dime-listhead small">
-                            <span class="dime-icon icon-add small"></span>
-                        </li>
-                        <li class=" list-group-item navlist">
-                            <a href="{{ path('finds.add') }}">
-                                {{ "dime.find.add" | translate }}
-                            </a>
-                        </li>
-                        
+                        {% if global.user.id is defined %}
+                            <li class="list-group-item dime-listhead small">
+                                <span class="dime-icon icon-add small"></span>
+                            </li>
+                            <li class=" list-group-item navlist">
+                                <a href="{{ path('finds.add') }}">
+                                    {{ "dime.find.add" | translate }}
+                                </a>
+                            </li>
+                        {% endif %}
                         <li class="list-group-item dime-listhead small">
                             <span class="dime-icon icon-search small"></span>
                         </li>

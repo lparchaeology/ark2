@@ -909,7 +909,7 @@ class Database
             AND ark_spatial_term.concept = :concept
             AND ark_spatial_fragment.module = :module
             AND ark_spatial_fragment.attribute = :attribute";
-        if ($items) {
+        if (gettype($items) == 'array') {
             $sql .= " AND (";
             foreach ($items as $key => $item) {
                 $sql .= "

@@ -50,20 +50,25 @@ class ChoroplethController
         $curmax = 0;
         $curmin = INF;
 
-        // this turns the 2D array of find counts into an array with keys
-        $findCounts = array_column($findCounts, "count", "term");
-
-        foreach ($findCounts as $term => $count) {
-            if ($count < $curmin) {
-                $curmin = $count;
-            }
-            if ($count > $curmax) {
-                $curmax = $count;
-            }
-        }
-
-        if ($curmin == $curmax) {
+        if (count($findCounts) == 0) {
+            $curmax = 0;
             $curmin = 0;
+        } else {
+            // this turns the 2D array of find counts into an array with keys
+            $findCounts = array_column($findCounts, "count", "term");
+
+            foreach ($findCounts as $term => $count) {
+                if ($count < $curmin) {
+                    $curmin = $count;
+                }
+                if ($count > $curmax) {
+                    $curmax = $count;
+                }
+            }
+
+            if ($curmin == $curmax) {
+                $curmin = 0;
+            }
         }
 
         $band = ($curmax - $curmin) / 3;
