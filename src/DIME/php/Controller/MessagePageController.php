@@ -46,7 +46,7 @@ class MessagePageController extends DimeFormController
 
     public function buildData(Request $request, Page $page)
     {
-        $items = Service::database()->getActorMessages(Service::workflow()->actor());
+        $items = Service::database()->getActorMessages(Service::workflow()->actor()->id());
         $messages = ORM::findBy(Message::class, ['item' => $items], ['created' => 'DESC']);
         $data['messages'] = $messages;
         $data['message_vocabulary'] = ORM::find(Vocabulary::class, 'core.event.type');
