@@ -27,38 +27,40 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-
 namespace ARK\View;
 
 use ARK\Actor\Actor;
 use ARK\Form\Type\StaticType;
-use ARK\Form\Type\PropertyType;
-use ARK\Form\Type\ActionChoiceType;
-use ARK\Form\Type\VocabularyChoiceType;
 use ARK\Model\Item;
 use ARK\Model\Schema\SchemaAttribute;
-use ARK\ORM\ORM;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 use ARK\Workflow\Event;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class Field extends Element
 {
+
     protected $formTypeClass = '';
+
     protected $formOptions = '';
+
     protected $formOptionsArray = null;
+
     protected $label = true;
+
     protected $mode = null;
+
     protected $value = 'excluded';
+
     protected $parameter = null;
+
     protected $format = null;
+
     protected $attribute = null;
 
     public function attribute()
@@ -91,7 +93,9 @@ class Field extends Element
 
     public function parameterFormMode()
     {
-        if (!$this->attribute()->format()->parameterName()) {
+        if (! $this->attribute()
+            ->format()
+            ->parameterName()) {
             return null;
         }
         return ($this->parameter ?: 'hidden');
@@ -99,7 +103,9 @@ class Field extends Element
 
     public function formatFormMode()
     {
-        if (!$this->attribute()->format()->formatName()) {
+        if (! $this->attribute()
+            ->format()
+            ->formatName()) {
             return null;
         }
         return ($this->format ?: 'hidden');
@@ -115,8 +121,12 @@ class Field extends Element
         if ($this->formTypeClass) {
             return $this->formTypeClass;
         }
-        if ($this->attribute()->format()->formTypeClass()) {
-            return $this->attribute()->format()->formTypeClass();
+        if ($this->attribute()
+            ->format()
+            ->formTypeClass()) {
+            return $this->attribute()
+                ->format()
+                ->formTypeClass();
         }
         return parent::formTypeClass();
     }
@@ -145,17 +155,23 @@ class Field extends Element
 
     public function valueFormType()
     {
-        return $this->appearanceToFormType($this->value, $this->attribute()->format()->valueFormType());
+        return $this->appearanceToFormType($this->value, $this->attribute()
+            ->format()
+            ->valueFormType());
     }
 
     public function parameterFormType()
     {
-        return $this->appearanceToFormType($this->parameter, $this->attribute()->format()->parameterFormType());
+        return $this->appearanceToFormType($this->parameter, $this->attribute()
+            ->format()
+            ->parameterFormType());
     }
 
     public function formatFormType()
     {
-        return $this->appearanceToFormType($this->format, $this->attribute()->format()->formatFormType());
+        return $this->appearanceToFormType($this->format, $this->attribute()
+            ->format()
+            ->formatFormType());
     }
 
     public function keyword()
@@ -178,20 +194,8 @@ class Field extends Element
         }
         $options['field']['object'] = $this;
         $options['field']['value'] = $this->valueOptions($options['mode'], $cellOptions['value']);
-        $options['field']['parameter'] = $this->baseOptions(
-            $options['mode'],
-            $cellOptions['parameter'],
-            [],
-            $this->parameterFormMode(),
-            $this->parameterFormType()
-        );
-        $options['field']['format'] = $this->baseOptions(
-            $options['mode'],
-            $cellOptions['format'],
-            [],
-            $this->formatFormMode(),
-            $this->formatFormType()
-        );
+        $options['field']['parameter'] = $this->baseOptions($options['mode'], $cellOptions['parameter'], [], $this->parameterFormMode(), $this->parameterFormType());
+        $options['field']['format'] = $this->baseOptions($options['mode'], $cellOptions['format'], [], $this->formatFormMode(), $this->formatFormType());
         return $options;
     }
 
@@ -205,20 +209,24 @@ class Field extends Element
         if (isset($options['widget']) && $options['widget'] == 'picker') {
             $options['widget'] = 'single_text';
             $options['html5'] = false;
-            $picker = $this->attribute()->format()->datatype()->id().'picker';
+            $picker = $this->attribute()
+                ->format()
+                ->datatype()
+                ->id() . 'picker';
             if (isset($options['attr']['class'])) {
-                $options['attr']['class'] = $options['attr']['class'].' '.$picker;
+                $options['attr']['class'] = $options['attr']['class'] . ' ' . $picker;
             } else {
                 $options['attr']['class'] = $picker;
             }
         }
         if ($this->attribute()->hasVocabulary()) {
-            $options = $this->vocabularyOptions($this->attribute()->vocabulary(), $options);
+            $options = $this->vocabularyOptions($this->attribute()
+                ->vocabulary(), $options);
         }
         if ($this->attribute()->hasMultipleOccurrences()) {
             $options['multiple'] = true;
         }
-        if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+        if (! Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             if ($this->attribute()->hasVocabulary()) {
                 $options['disabled'] = true;
             }
@@ -228,7 +236,7 @@ class Field extends Element
 
     protected function baseOptions($mode, $cellOptions, $subOptions, $appearance, $formType)
     {
-        if (!$appearance) {
+        if (! $appearance) {
             return null;
         }
         $base['mode'] = $this->modeToAppearance($mode, ($cellOptions['mode'] ?: $appearance));
@@ -252,7 +260,7 @@ class Field extends Element
     protected function concatOption($options, $option, $attr, $value)
     {
         if (isset($options[$option][$attr])) {
-            return $options[$option][$attr].' '.$value;
+            return $options[$option][$attr] . ' ' . $value;
         }
         return $value;
     }
@@ -279,10 +287,10 @@ class Field extends Element
 
     public function buildForm(FormBuilderInterface $builder, $data, $options = [])
     {
-        //if (!Service::security()->hasVisibility($actor, $this->attribute())) {
-        //    return;
-        //}
-        if (!Service::workflow()->hasPermission($this->attribute->readPermission())) {
+        // if (!Service::security()->hasVisibility($actor, $this->attribute())) {
+        // return;
+        // }
+        if (! Service::workflow()->hasPermission($this->attribute->readPermission())) {
             return;
         }
         $options = $this->formOptions($data, $options);
@@ -292,7 +300,7 @@ class Field extends Element
 
     public function renderView($data, $forms = null, $form = null, array $options = [])
     {
-        if (!Service::workflow()->hasPermission($this->attribute->readPermission())) {
+        if (! Service::workflow()->hasPermission($this->attribute->readPermission())) {
             return;
         }
         if ($form && $this->template()) {
@@ -306,7 +314,9 @@ class Field extends Element
         // FIXME Should probably have some way to use FormTypes here to render 'flat' compond values
         $value = null;
         $item = null;
-        $options = $this->valueOptions('view', ['mode' => 'view']);
+        $options = $this->valueOptions('view', [
+            'mode' => 'view'
+        ]);
         if ($data instanceof Item) {
             $item = $data;
         } elseif (is_array($data) && isset($data['data'])) {
@@ -314,13 +324,17 @@ class Field extends Element
         }
 
         if ($item instanceof Item) {
-            $value = 'FIXME: '.$this->element;
-            $value = $item->property($this->attribute()->name())->value();
+            $value = 'FIXME: ' . $this->element;
+            $value = $item->property($this->attribute()
+                ->name())
+                ->value();
             if ($value === null) {
                 return null;
             }
             if ($value instanceof Actor) {
-                return $value->property('fullname')->value()->content();
+                return $value->property('fullname')
+                    ->value()
+                    ->content();
             }
             if ($value instanceof Event) {
                 $type = $value->property('type')->value();
@@ -331,18 +345,27 @@ class Field extends Element
             }
             if ($value instanceof Item) {
                 if (isset($options['options']['display_property'])) {
-                    return $value->property($options['options']['display_property'])->value()->content();
+                    return $value->property($options['options']['display_property'])
+                        ->value()
+                        ->content();
                 }
                 return $value->property('id')->serialize();
             }
             if ($value instanceof Term) {
                 return Service::translate($value->keyword());
             }
-            if ($this->attribute()->format()->datatype()->id() == 'text') {
-                return $item->property($this->attribute->name())->value()->content();
+            if ($this->attribute()
+                ->format()
+                ->datatype()
+                ->id() == 'text') {
+                return $item->property($this->attribute->name())
+                    ->value()
+                    ->content();
             }
             if (is_array($value)) {
-                $value = $value[$this->attribute()->format()->valueName()];
+                $value = $value[$this->attribute()
+                    ->format()
+                    ->valueName()];
             }
             if ($this->attribute()->hasVocabulary()) {
                 return Service::translate($value->keyword());
@@ -368,14 +391,20 @@ class Field extends Element
         $builder->addStringField('format', 10);
 
         // Associations
-        $builder->addCompositeManyToOneField(
-            'attribute',
-            'ARK\Model\Schema\SchemaAttribute',
+        $builder->addCompositeManyToOneField('attribute', 'ARK\Model\Schema\SchemaAttribute', [
             [
-                ['column' => 'schma', 'nullable' => true],
-                ['column' => 'item_type', 'reference' => 'type', 'nullable' => true],
-                ['column' => 'attribute', 'nullable' => true],
+                'column' => 'schma',
+                'nullable' => true
+            ],
+            [
+                'column' => 'item_type',
+                'reference' => 'type',
+                'nullable' => true
+            ],
+            [
+                'column' => 'attribute',
+                'nullable' => true
             ]
-        );
+        ]);
     }
 }

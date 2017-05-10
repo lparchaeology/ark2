@@ -33,6 +33,11 @@ $('document').ready(function(){
     
     $('#dime_find_item_dating_year').on('keyup', function(){
         var year = parseInt(this.value);
+        
+        if(year<this.min){
+            this.value = this.min;
+            year = parseInt(this.value);
+        }
 
         var period = getPeriodFromYear(year);
         
@@ -42,6 +47,11 @@ $('document').ready(function(){
     
     $('#dime_find_item_dating_year_span').on('keyup', function(){
         var year = parseInt(this.value);
+        
+        if( this.max != '' && year>this.max){
+            this.value = this.max;
+            year = parseInt(this.value);
+        }
 
         var period = getPeriodFromYear(year);
         
@@ -88,6 +98,7 @@ $('document').ready(function(){
         }
 
         $('#dime_find_item_dating_year').val(year);
+        $('#dime_find_item_dating_year').trigger('focusout');
     });
     
     $('#dime_find_item_dating_period_span').on('change', function(){
@@ -105,6 +116,9 @@ $('document').ready(function(){
         }
 
         $('#dime_find_item_dating_year_span').val(year);
+        
+        $('#dime_find_item_dating_year_span').trigger('focusout');
+        
     });
     
 })
