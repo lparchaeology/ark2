@@ -11,6 +11,7 @@ $(document).ready(function() {
     // HACK To add columns of checkboxes
     $("#dime_find_item_secondary_term").css("width", "100%");
     $(".checkbox").addClass("col-xs-4 col-sm-4 col-lg-3");
+    $("#edit_roles .checkbox").removeClass("col-xs-4 col-sm-4 col-lg-3");
     // Fake readonly mode
     $('.readonly-select').prop('disabled', true);
     /*
@@ -22,20 +23,23 @@ $(document).ready(function() {
     //$("date").datetimepicker();
     //$("time").datetimepicker();
     //$("datetime").datetimepicker();
-    $('.datetimepicker').datetimepicker({
-        locale: applocale
-    });
+    
+    if(typeof applocale != 'undefined' ){
+        $('.datetimepicker').datetimepicker({
+            locale: applocale
+        });
 
-    $('.datepicker').datetimepicker({
-        locale: applocale,
-        minView: 2
-    });
+        $('.datepicker').datetimepicker({
+            locale: applocale,
+            minView: 2
+        });
 
-    $('.timepicker').datetimepicker({
-        locale: applocale,
-        format: 'hh:ii',
-        maxView: 0
-    });
+        $('.timepicker').datetimepicker({
+            locale: applocale,
+            format: 'hh:ii',
+            maxView: 0
+        });
+    }
 
     // FIXME Hide Bootstrap Table loading animation as is a bit broken
     $('.table-bootstrap-table').bootstrapTable('hideLoading');

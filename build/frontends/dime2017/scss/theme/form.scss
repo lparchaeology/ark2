@@ -4,7 +4,8 @@
 }
 
 .select2-container--default .select2-selection--single,
-.form-group input[type=text] {
+.form-group input[type="text"],
+.form-group input[type="email"] {
     border: 1px solid black;
     border-radius: 10px;
     height: 1.4em;
@@ -20,7 +21,20 @@
 
 .form-group input[type=text] {
     width: 50%;
+    max-width:20em;
     }
+
+.form-group input[type="email"] {
+    width: 50%;
+    max-width:30em;
+}
+
+@media (max-width: $break-small){
+   .form-group input[type="email"],
+   .form-group input[type=text] {
+        width: 100%;
+    } 
+}
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {
     line-height: 1em;
@@ -31,6 +45,10 @@
     .form-horizontal .control-label {
         margin-top:0;
     }
+   .form-group input[type="email"],
+   .form-group input[type=text] {
+    width: 100%;
+    } 
 }
 
 .select2-results__option[aria-selected],

@@ -41,7 +41,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FindViewController extends EntityController
 {
-
     private $itemSlug = null;
 
     public function __invoke(Request $request, $itemSlug)
@@ -57,13 +56,8 @@ class FindViewController extends EntityController
         }
         $data[$page->content()->name()] = $resource;
 
-        $items = Service::database()->getUnreadMessages(Service::workflow()->actor()
-            ->id());
-        $data['notifications'] = ORM::findBy(Message::class, [
-            'item' => $items
-        ], [
-            'created' => 'DESC'
-        ]);
+        $items = Service::database()->getUnreadMessages(Service::workflow()->actor()->id());
+        $data['notifications'] = ORM::findBy(Message::class, ['item' => $items], ['created' => 'DESC']);
 
         return $data;
     }

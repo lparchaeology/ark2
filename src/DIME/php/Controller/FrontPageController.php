@@ -31,7 +31,7 @@ namespace DIME\Controller;
 
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\Message\Message;
+use ARK\Message\Notification;
 use DIME\Controller\DimeController;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
