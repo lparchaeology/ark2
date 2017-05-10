@@ -1008,29 +1008,35 @@ class Database
             SELECT *
             FROM ark_fragment_item
             WHERE module = 'message'
+            AND item = :message
             AND attribute = 'recipient'
             AND value = :actor
         ";
         $params = array(
-            ':actor' => $actor
+            ':message' => $message,
+            ':actor' => $actor,
         );
         $recipient = $this->data()->fetchAssoc($sql, $params);
         if (!$recipient) {
             return null;
         }
         $sql = "
-            SELECT *
+            SELECT item
             FROM ark_fragment_datetime
             WHERE module = 'message'
+            AND item = :message
             AND attribute = 'read'
             AND value = :actor
+            AND object = :object
         ";
+        $params['object'] = $recipient['object'];
         $read = $this->data()->fetchAssoc($sql, $params);
         if ($read) {
             return null;
         }
         $read = [];
         $read['module'] = 'message';
+        $read['item'] = $message;
         $read['attribute'] = 'read';
         $read['object'] = $recipient['object'];
         $timestamp = ARK::timestamp()->format(DateTime::ATOM);
