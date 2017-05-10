@@ -975,31 +975,27 @@ class Database
     // TODO Optimise!!!
     public function getUnreadMessages($actor)
     {
+        dump($actor);
         $sql = "
-            SELECT item
-            FROM ark_fragment_item
-            WHERE module = 'message'
-            AND attribute = 'recipient'
-            AND value = :actor
+            SELECT ark_fragment_item.item
+            FROM ark_fragment_item, ark_fragment_datetime
+            WHERE ark_fragment_item.module = 'message'
+            AND ark_fragment_item.attribute = 'recipient'
+            AND ark_fragment_item.value = :actor
+            AND ark_fragment_item.module = ark_fragment_datetime.module
+            AND ark_fragment_item.item = ark_fragment_datetime.item
+            AND ark_fragment_item.object = ark_fragment_datetime.object
+            AND ark_fragment_datetime.attribute = 'status'
+            AND ark_fragment_datetime.value = 'unread'
         ";
         $params = array(
             ':actor' => $actor
         );
+        dump($sql);
+        dump($params);
         $all = $this->data()->fetchAllColumn($sql, 'item', $params);
-        $sql = "
-            SELECT item
-            FROM ark_fragment_datetime
-            WHERE module = 'message'
-            AND attribute = 'read'
-            AND item IN (?)
-        ";
-        $params = array(
-            $all
-        );
-        $types = array(
-            \Doctrine\DBAL\Connection::PARAM_STR_ARRAY
-        );
-        $read = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
+        dump($all);
+        return $all;
     }
 
     public function markMessageAsRead($message, $actor)

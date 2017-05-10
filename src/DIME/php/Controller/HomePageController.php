@@ -53,7 +53,7 @@ class HomePageController extends DimeController
         $data['dime_find_list'] = $finds;
 
         $data['notifications'] = DIME::getUnreadNotifications();
-
+        dump($data['notifications']);
         $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $finds : []);
         $data['kortforsyningenticket'] = DIME::getMapTicket();
 

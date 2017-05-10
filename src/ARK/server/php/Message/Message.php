@@ -47,6 +47,7 @@ class Message implements Item
         $dispatches =[];
         foreach ($recipients as $recipient) {
             $dispatches[]['recipient'] = $recipient;
+            $dispatches[]['status'] = 'unread';
         }
         $this->property('recipients')->setValue($dispatches);
         $this->property('sent')->setValue($sentAt);

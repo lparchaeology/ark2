@@ -79,8 +79,10 @@ class DIME
         if ($actor === null) {
             $actor = Service::workflow()->actor();
         }
+        dump($actor);
         if ($actor instanceof Actor && $actor->id() != 'anonymous') {
             $msgIds = Service::database()->getUnreadMessages($actor->id());
+            dump($msgIds);
             return ORM::findBy(Notification::class, ['item' => $msgIds], ['created' => 'DESC']);
         }
         return new ArrayCollection();
