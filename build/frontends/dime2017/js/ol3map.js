@@ -331,7 +331,7 @@ function initialiseMapView() {
                 });
             }
 
-        } else {
+        } else if ($(this).attr("value") == 'distribution') {
             view = map.getView();
 
             //[minx,miny,maxx,maxy]
@@ -360,6 +360,14 @@ function initialiseMapView() {
 
             $('.map-legend').hide();
 
+        } else {
+            map.getLayers().forEach(function(e, i, a) {
+                if (e.get("name") === "municipalitylayer" || e.get("name") === "yours" || e.get("name") === "theirs") {
+                    e.setVisible(false);
+                }
+            });
+
+            $('.map-legend').hide();
         }
 
     });
