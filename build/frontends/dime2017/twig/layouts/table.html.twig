@@ -78,3 +78,14 @@
 
 </div>
 <div id = "thumbModal"></div>
+
+<script>
+window.findslist = [
+    {% for item in data[layout.name] %}
+        {{ item.id }},
+    {% endfor %}
+];
+
+console.log(findslist);
+
+</script>

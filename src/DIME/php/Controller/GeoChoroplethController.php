@@ -27,7 +27,6 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-
 namespace DIME\Controller;
 
 use ARK\Http\JsonResponse;
@@ -37,21 +36,26 @@ use Symfony\Component\HttpFoundation\Request;
 
 class GeoChoroplethController
 {
+
     public function __invoke(Request $request)
     {
-        $content = json_decode($request->getContent());
         try {
-            $concept = $content['concept'];
-            $module = $content['module'];
-            $attribute = (isset($content['attribute']) ? $content['attribute'] : null);
-            $terms = Service::database()->getSpatialTermChoropleth($concept, $module, $attribute);
+            $concept = $request->query->get('concept');
+            $module = $request->query->get('module');
+
+            $attribute = (null !== $request->query->get('attribute') ? $request->query->get('attribute') : null);
+
+            $itemlist = $request->query->get('itemlist');
+
+            $terms = Service::database()->getSpatialTermChoropleth($concept, $module, $attribute, $itemlist);
+
             $terms = array_column($terms, "count", "term");
 
             $curmax = 0;
-            $curmin = inf;
+            $curmin = INF;
             foreach ($terms as $term => $count) {
-                $curmin = ($count < $curmin ?  $count : $curmin);
-                $curmax = ($count > $curmax ?  $count : $curmax);
+                $curmin = ($count < $curmin ? $count : $curmin);
+                $curmax = ($count > $curmax ? $count : $curmax);
             }
             $band = ($curmax - $curmin) / 3;
 
@@ -75,7 +79,9 @@ class GeoChoroplethController
                 $data['terms'][$term] = $datum;
             }
         } catch (Exception $e) {
-            $data = [$e->getMessage()];
+            $data = [
+                $e->getMessage()
+            ];
         }
 
         return new JsonResponse($data);

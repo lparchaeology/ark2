@@ -29,9 +29,10 @@
  */
 namespace DIME\Controller;
 
-use ARK\Message\Message;
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\Message\Message;
+use ARK\Message\Notification;
 use DIME\Controller\DimeController;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,7 +50,7 @@ class HomePageController extends DimeController
         if (null !== Service::workflow()->actor()) {
             $items = Service::database()->getUnreadMessages(Service::workflow()->actor()
                 ->id());
-            $data['notifications'] = ORM::findBy(Message::class, [
+            $data['notifications'] = ORM::findBy(Notification::class, [
                 'item' => $items
             ], [
                 'created' => 'DESC'

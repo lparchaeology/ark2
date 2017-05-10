@@ -27,7 +27,6 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-
 namespace ARK\Database;
 
 use ARK\Error\ErrorException;
@@ -36,9 +35,13 @@ use Silex\Application;
 
 class Database
 {
+
     private $app = null;
+
     private $modules = [];
+
     private $datatypes = [];
+
     private $fragmentTables = [];
 
     public function __construct(Application $app)
@@ -82,12 +85,14 @@ class Database
             AND parent = :parent
             AND sequence = :sequence
             AND recycle = :recycle
-        ".$this->data()->platform()->getWriteLockSQL();
+        " . $this->data()
+            ->platform()
+            ->getWriteLockSQL();
         $params = [
             'module' => $module,
             'parent' => $parent,
             'sequence' => $sequence,
-            'recycle' => true,
+            'recycle' => true
         ];
         $recycle = $this->data()->fetchAssoc($sql, $params);
         if ($recycle && $recycle['recycle']) {
@@ -100,7 +105,7 @@ class Database
                 ";
                 $reparams = [
                     'recycle' => false,
-                    'id' => $recycle['id'],
+                    'id' => $recycle['id']
                 ];
                 $this->data()->executeUpdate($sql, $reparams);
                 $this->data()->commit();
@@ -117,33 +122,39 @@ class Database
             WHERE module = :module
             AND parent = :parent
             AND sequence = :sequence
-        ".$this->data()->platform()->getWriteLockSQL();
+        " . $this->data()
+            ->platform()
+            ->getWriteLockSQL();
         unset($params['recycle']);
         $seq = $this->data()->fetchAssoc($sql, $params);
-        if (!$seq) {
+        if (! $seq) {
             // No sequence exists, so try create one
             try {
-                $fields = ['module', 'parent', 'sequence', 'idx'];
-                $rows = [[$module, $parent, $sequence, 1]];
+                $fields = [
+                    'module',
+                    'parent',
+                    'sequence',
+                    'idx'
+                ];
+                $rows = [
+                    [
+                        $module,
+                        $parent,
+                        $sequence,
+                        1
+                    ]
+                ];
                 $this->data()->insertRows('ark_sequence', $fields, $rows);
                 $this->data()->insertRows('ark_sequence_lock', $fields, $rows);
                 $this->data()->commit();
                 return 1;
             } catch (Exception $e) {
                 $this->data()->rollback();
-                throw new ErrorException(new InternalServerError(
-                    'DB_SEQUENCE_CREATE',
-                    'Creating index sequence failed',
-                    "Creating the index sequence for Module $module Parent $parent Sequence $sequence failed"
-                ));
+                throw new ErrorException(new InternalServerError('DB_SEQUENCE_CREATE', 'Creating index sequence failed', "Creating the index sequence for Module $module Parent $parent Sequence $sequence failed"));
             }
         }
         if ($seq['max'] && $seq['idx'] >= $seq['max']) {
-            throw new ErrorException(new InternalServerError(
-                'DB_SEQUENCE_EXHASTED',
-                'Index sequence exhausted',
-                "The index sequence for Module $module Parent $parent Sequence $sequence has reached maximum"
-            ));
+            throw new ErrorException(new InternalServerError('DB_SEQUENCE_EXHASTED', 'Index sequence exhausted', "The index sequence for Module $module Parent $parent Sequence $sequence has reached maximum"));
         }
         try {
             $sql = "
@@ -154,18 +165,26 @@ class Database
                 AND sequence = :sequence
             ";
             $this->data()->executeUpdate($sql, $params);
-            $fields = ['module', 'parent', 'sequence', 'idx'];
-            $rows = [[$module, $parent, $sequence, 1]];
+            $fields = [
+                'module',
+                'parent',
+                'sequence',
+                'idx'
+            ];
+            $rows = [
+                [
+                    $module,
+                    $parent,
+                    $sequence,
+                    1
+                ]
+            ];
             $this->data()->insertRows('ark_sequence_lock', $fields, $rows);
             $this->data()->commit();
             return $seq['idx'] + 1;
         } catch (Exception $e) {
             $this->data()->rollback();
-            throw new ErrorException(new InternalServerError(
-                'DB_SEQUENCE_INCREMENT',
-                'Increment index sequence failed',
-                "Incrementing the index sequence failed for Module $module Parent $parent Sequence $sequence"
-            ));
+            throw new ErrorException(new InternalServerError('DB_SEQUENCE_INCREMENT', 'Increment index sequence failed', "Incrementing the index sequence failed for Module $module Parent $parent Sequence $sequence"));
         }
     }
 
@@ -294,7 +313,7 @@ class Database
         ";
         $params = array(
             ':module' => $module,
-            ':parameter' => 'classname',
+            ':parameter' => 'classname'
         );
         return $this->core()->fetchAll($sql, $params);
     }
@@ -310,7 +329,7 @@ class Database
         ";
         $params = array(
             ':module' => $module,
-            ':schema_id' => $schemaId,
+            ':schema_id' => $schemaId
         );
         return $this->core()->fetchAll($sql, $params);
     }
@@ -328,7 +347,7 @@ class Database
         $params = array(
             ':module' => $module,
             ':schema_id' => $schemaId,
-            ':submodule' => $submodule,
+            ':submodule' => $submodule
         );
         return $this->core()->fetchAssoc($sql, $params);
     }
@@ -344,7 +363,7 @@ class Database
         ";
         $params = array(
             ':module' => $module,
-            ':schema_id' => $schemaId,
+            ':schema_id' => $schemaId
         );
         return $this->core()->fetchAll($sql, $params);
     }
@@ -376,7 +395,7 @@ class Database
         ";
         $params = array(
             ':module' => strtolower($module),
-            ':schema_id' => strtolower($schemaId),
+            ':schema_id' => strtolower($schemaId)
         );
         return $this->core()->fetchAll($sql, $params);
     }
@@ -389,7 +408,7 @@ class Database
             WHERE module = :module
         ";
         $params = array(
-            ':module' => strtolower($module),
+            ':module' => strtolower($module)
         );
         return $this->core()->fetchAll($sql, $params);
     }
@@ -424,7 +443,7 @@ class Database
             WHERE layout = :layout
         ";
         $params = array(
-            ':layout' => $layout,
+            ':layout' => $layout
         );
         return $this->core()->fetchAssoc($sql, $params);
     }
@@ -450,10 +469,10 @@ class Database
                 AND ark_view_element.type = ark_view_element_type.type
         ";
         $params = array(
-            ':element' => $element,
+            ':element' => $element
         );
         $results = $this->core()->fetchAssoc($sql, $params);
-        if (empty($results['class']) && !empty($results['layout_class'])) {
+        if (empty($results['class']) && ! empty($results['layout_class'])) {
             $results['class'] = $results['layout_class'];
         }
         return $results;
@@ -468,7 +487,7 @@ class Database
             AND ark_view_field.attribute = ark_module_attribute.attribute
         ";
         $params = array(
-            ':field' => $field,
+            ':field' => $field
         );
         return $this->core()->fetchAssoc($sql, $params);
     }
@@ -481,7 +500,7 @@ class Database
             WHERE subform = :subform
         ";
         $params = array(
-            ':subform' => $subform,
+            ':subform' => $subform
         );
         return $this->core()->fetchAssoc($sql, $params);
     }
@@ -502,9 +521,9 @@ class Database
             ':modtype' => $modtype,
             ':module' => $module,
             ':cor' => 'cor',
-            ':enabled' => true,
+            ':enabled' => true
         );
-        if (!$modtype) {
+        if (! $modtype) {
             $params[':modtype'] = 'cor';
         }
         return $this->core()->fetchAll($sql, $params);
@@ -539,7 +558,7 @@ class Database
             WHERE vld_rule = :vld_rule
         ";
         $params = array(
-            ':vld_rule' => $vldRule,
+            ':vld_rule' => $vldRule
         );
         return $this->core()->fetchAssoc($sql, $params);
     }
@@ -554,7 +573,7 @@ class Database
         ";
         $params = array(
             ':element' => $element,
-            ':vld_role' => $vldRole,
+            ':vld_role' => $vldRole
         );
         return $this->core()->fetchAssoc($sql, $params);
     }
@@ -567,7 +586,7 @@ class Database
             WHERE element = :element
         ";
         $params = array(
-            ':element' => $element,
+            ':element' => $element
         );
         return $this->core()->fetchAll($sql, $params);
     }
@@ -580,7 +599,7 @@ class Database
             WHERE vld_group = :vld_group
         ";
         $params = array(
-            ':vld_group' => $vldGroup,
+            ':vld_group' => $vldGroup
         );
         return $this->core()->fetchAll($sql, $params);
     }
@@ -593,7 +612,7 @@ class Database
             WHERE element = :element
         ";
         $params = array(
-            ':element' => $element,
+            ':element' => $element
         );
         return $this->core()->fetchAll($sql, $params);
     }
@@ -606,7 +625,7 @@ class Database
             WHERE link = :link
         ";
         $params = array(
-            ':link' => $link,
+            ':link' => $link
         );
         return $this->core()->fetchAssoc($sql, $params);
     }
@@ -621,7 +640,7 @@ class Database
         ";
         $params = array(
             ':element' => $element,
-            ':option' => $option,
+            ':option' => $option
         );
         return $this->core()->fetchAssoc($sql, $params);
     }
@@ -634,7 +653,7 @@ class Database
             WHERE element = :element
         ";
         $params = array(
-            ':element' => $element,
+            ':element' => $element
         );
         return $this->core()->fetchAll($sql, $params);
     }
@@ -654,11 +673,11 @@ class Database
         ";
         $params = array(
             ':module' => $module,
-            ':schema' => $schema,
+            ':schema' => $schema
         );
         $results = $this->core()->fetchAll($sql, $params);
         foreach ($results as $result) {
-            if ((!isset($result['keyword']) || !$result['keyword']) && isset($result['format_keyword'])) {
+            if ((! isset($result['keyword']) || ! $result['keyword']) && isset($result['format_keyword'])) {
                 $result['keyword'] = $result['format_keyword'];
             }
         }
@@ -684,10 +703,10 @@ class Database
             ':module' => $module,
             ':schema' => $schema,
             ':modtype' => $modtype,
-            ':attribute' => $attribute,
+            ':attribute' => $attribute
         );
         $result = $this->core()->fetchAssoc($sql, $params);
-        if ((!isset($result['keyword']) or !$result['keyword']) && isset($result['format_keyword'])) {
+        if ((! isset($result['keyword']) or ! $result['keyword']) && isset($result['format_keyword'])) {
             $result['keyword'] = $result['format_keyword'];
         }
         return $result;
@@ -707,11 +726,11 @@ class Database
             ORDER BY ark_format_attribute.seq
         ";
         $params = array(
-            ':format' => $format,
+            ':format' => $format
         );
         $results = $this->core()->fetchAll($sql, $params);
         foreach ($results as $result) {
-            if ((!isset($result['keyword']) || !$result['keyword']) && isset($result['format_keyword'])) {
+            if ((! isset($result['keyword']) || ! $result['keyword']) && isset($result['format_keyword'])) {
                 $result['keyword'] = $result['format_keyword'];
             }
         }
@@ -733,10 +752,10 @@ class Database
         ";
         $params = array(
             ':format' => $format,
-            ':attribute' => $attribute,
+            ':attribute' => $attribute
         );
         $result = $this->core()->fetchAssoc($sql, $params);
-        if ((!isset($result['keyword']) or !$result['keyword']) && isset($result['format_keyword'])) {
+        if ((! isset($result['keyword']) or ! $result['keyword']) && isset($result['format_keyword'])) {
             $result['keyword'] = $result['format_keyword'];
         }
         return $result;
@@ -754,7 +773,7 @@ class Database
             WHERE ark_format.format = :format
         ";
         $params = array(
-            ':format' => $format,
+            ':format' => $format
         );
         return $this->core()->fetchAssoc($sql, $params);
     }
@@ -767,7 +786,7 @@ class Database
             WHERE format = :format
         ";
         $params = array(
-            ':format' => $format,
+            ':format' => $format
         );
         return $this->core()->fetchAll($sql, $params);
     }
@@ -827,7 +846,7 @@ class Database
         ";
         $params = array(
             ':module' => 'act',
-            ':attribute' => 'name',
+            ':attribute' => 'name'
         );
         return $this->data()->fetchAll($sql, $params);
     }
@@ -842,7 +861,7 @@ class Database
         ";
         $params = array(
             ':language' => $language,
-            ':active' => true,
+            ':active' => true
         );
         return $this->core()->fetchAll($sql, $params);
     }
@@ -874,14 +893,14 @@ class Database
         $params = array(
             ':concept' => $concept,
             ':point' => $wkt,
-            ':srid' => $srid,
+            ':srid' => $srid
         );
         dump($sql);
         dump($params);
         return $this->spatial()->fetchColumn($sql, $params);
     }
 
-    public function getSpatialTermChoropleth($concept, $module, $attribute)
+    public function getSpatialTermChoropleth($concept, $module, $attribute, $items = false)
     {
         $sql = "
             SELECT ark_spatial_term.term, count(*) as count
@@ -889,12 +908,32 @@ class Database
             WHERE ST_Contains(ark_spatial_term.geometry, ark_spatial_fragment.geometry)
             AND ark_spatial_term.concept = :concept
             AND ark_spatial_fragment.module = :module
-            AND ark_spatial_fragment.attribute = :attribute
+            AND ark_spatial_fragment.attribute = :attribute";
+        if ($items) {
+            $sql .= " AND (";
+            foreach ($items as $key => $item) {
+                $sql .= "
+                    ark_spatial_fragment.item = :item$key
+                ";
+                if ($key < count($items) - 1) {
+                    $sql .= " OR ";
+                } else {
+                    $sql .= ") ";
+                }
+            }
+        }
+
+        $sql .= "
             GROUP BY ark_spatial_term.term
         ";
         $params[':concept'] = $concept;
         $params[':module'] = $module;
         $params[':attribute'] = $attribute;
+        if ($items) {
+            foreach ($items as $key => $item) {
+                $params[":item$key"] = $item;
+            }
+        }
         return $this->spatial()->fetchAll($sql, $params);
     }
 
@@ -910,7 +949,7 @@ class Database
         $params = array(
             ':module' => 'actor',
             ':parameter' => 'dime.denmark.municipality',
-            ':value' => $municipality,
+            ':value' => $municipality
         );
         return $this->data()->fetchColumn($sql, $params);
     }
@@ -927,7 +966,7 @@ class Database
         $params = array(
             ':module' => 'message',
             ':attribute' => 'recipient',
-            ':value' => $actor,
+            ':value' => $actor
         );
         return $this->data()->fetchAllColumn($sql, 'item', $params);
     }
@@ -943,7 +982,7 @@ class Database
             AND value = :actor
         ";
         $params = array(
-            ':actor' => $actor,
+            ':actor' => $actor
         );
         $all = $this->data()->fetchAllColumn($sql, 'item', $params);
         $sql = "
@@ -953,9 +992,11 @@ class Database
             AND attribute = 'read'
             AND item IN (?)
         ";
-        $params = array($all);
+        $params = array(
+            $all
+        );
         $types = array(
-            \Doctrine\DBAL\Connection::PARAM_STR_ARRAY,
+            \Doctrine\DBAL\Connection::PARAM_STR_ARRAY
         );
         $read = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
         return array_diff($all, $read);
@@ -968,23 +1009,31 @@ class Database
             FROM ark_fragment_string
             WHERE module = 'find'
         ";
-        $types = [\Doctrine\DBAL\Connection::PARAM_STR_ARRAY];
+        $types = [
+            \Doctrine\DBAL\Connection::PARAM_STR_ARRAY
+        ];
         $res = [];
         if (isset($query['municipality'])) {
-            $sql = $pre."AND attribute = 'municipality' AND value IN (?)";
-            $params = [$query['municipality']];
+            $sql = $pre . "AND attribute = 'municipality' AND value IN (?)";
+            $params = [
+                $query['municipality']
+            ];
             $res = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
         }
         if (isset($query['type'])) {
-            $sql = $pre."AND attribute = 'type' AND value IN (?)";
-            $params = [$query['type']];
+            $sql = $pre . "AND attribute = 'type' AND value IN (?)";
+            $params = [
+                $query['type']
+            ];
             $typ = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
             $res = ($res ? array_intersect($res, $typ) : $typ);
         }
         $mat = [];
         if (isset($query['material'])) {
-            $sql = $pre."AND attribute = 'material' AND value IN (?)";
-            $params = [$query['material']];
+            $sql = $pre . "AND attribute = 'material' AND value IN (?)";
+            $params = [
+                $query['material']
+            ];
             $mat = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
             $res = ($res ? array_intersect($res, $mat) : $mat);
         }

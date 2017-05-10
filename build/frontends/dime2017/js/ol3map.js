@@ -237,7 +237,15 @@ function initialiseMapView() {
                 }
             });
             if (prerun == false) {
-                $.get(path + 'api/geo/choropleth', false, function(result) {
+                
+                var payload = {
+                    "concept":"dime.denmark.municipality",
+                    "module":"find",
+                    "attribute":"location",
+                    "itemlist": findslist
+                }
+                
+                $.get(path + 'api/geo/choropleth', payload, function(result) {
                     var format = new ol.format.WKT();
                     var municipalitysource = [];
                     var municipalities = result['municipality'];

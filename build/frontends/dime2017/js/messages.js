@@ -14,6 +14,10 @@ var padString = function (string) {
 
 var formatDate = function(datestring) {
     
+    if( datestring == '' ){
+        return '';
+    }
+    
     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
     
     return new Intl.DateTimeFormat(applocale, options).format(new Date(datestring));
@@ -46,9 +50,9 @@ var getMessage = function(id) {
             datetranslation+"</dt><dd class=\"message-date\">"+
             formatDate(dateinitial)+"</dd><dt>"+
             eventtranslation+"</dt><dd class=\"message-body\">"+
-            eventinitial+"</dd><dd class=\"message-item\">"+
-            itemtranslation+"</dd><dt>"+
-            iteminitial+"</dt></dl>").append(button);
+            eventinitial+"</dd><dd class=\"message-item\"><dt>"+
+            itemtranslation+"</dt><dd>"+
+            iteminitial+"</dd></dl>").append(button);
     
     var message = $("<div></div>").append(definitionlist).append(button);
     

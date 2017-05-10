@@ -30,12 +30,17 @@
 
             <div class="col-md-1 sidebar">
                 <div class="row usertool username">
+                {% if global.user.id is defined %}
                     <a href="{{ path('user.view', {'id': global.user.id}) }}">
                         <span class="usergreeting">
-                            {# <span class="dime-icon icon-user small"></span> #}
                             {{ 'user.greeting' | trans({ '%name%': global.user.displayName }) }}
                         </span>
                     </a>
+                {% else %}
+                    <span class="usergreeting">
+                        {{ 'user.greeting' | trans() }}
+                    </span>
+                {% endif %}
                 </div>
                 <div class="row usertool">
                     {%  set notificationicon = 'icon-notification small' %}

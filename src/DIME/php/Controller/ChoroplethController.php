@@ -27,7 +27,6 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-
 namespace DIME\Controller;
 
 use ARK\Service;
@@ -36,18 +35,22 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ChoroplethController
 {
+
     public function __invoke(Request $request)
     {
-        //get all the municipality
+        // get all the municipality
         $municipalities = Service::database()->getSpatialTerms('dime.denmark.municipality');
+
         // get the counts of finds in municipality
-        $findCounts = Service::database()->getSpatialTermChoropleth('dime.denmark.municipality', 'find', 'location');
-        //create a blank array to return
+        $itemlist = $request->query->get('itemlist');
+
+        $findCounts = Service::database()->getSpatialTermChoropleth('dime.denmark.municipality', 'find', 'location', $itemlist);
+        // create a blank array to return
         $data = [];
         $curmax = 0;
         $curmin = INF;
 
-        //this turns the 2D array of find counts into an array with keys
+        // this turns the 2D array of find counts into an array with keys
         $findCounts = array_column($findCounts, "count", "term");
 
         foreach ($findCounts as $term => $count) {
@@ -59,7 +62,11 @@ class ChoroplethController
             }
         }
 
-        $band = ($curmax - $curmin)/3;
+        if ($curmin == $curmax) {
+            $curmin = 0;
+        }
+
+        $band = ($curmax - $curmin) / 3;
 
         foreach ($municipalities as $municipality) {
             // if the municipality has a count associate that with the geometry
@@ -77,7 +84,7 @@ class ChoroplethController
                     $municipality['band'] = 4;
                 }
             } else {
-                //otherwise it is 0
+                // otherwise it is 0
                 $municipality['count'] = "0";
                 $municipality['band'] = 1;
             }
@@ -88,7 +95,7 @@ class ChoroplethController
         $data['max'] = $curmax;
         $data['min'] = $curmin;
 
-        //return it as json
+        // return it as json
         return new JsonResponse($data);
     }
 }
