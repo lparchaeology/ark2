@@ -38,7 +38,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FrontPageController extends DimeController
 {
-
     public function __invoke(Request $request)
     {
         $layout = 'dime_front_page';
@@ -47,13 +46,8 @@ class FrontPageController extends DimeController
         $options['data'][$layout] = ORM::findAll(Find::class);
 
         if (null !== Service::workflow()->actor()) {
-            $items = Service::database()->getUnreadMessages(Service::workflow()->actor()
-                ->id());
-            $options['data']['notifications'] = ORM::findBy(Message::class, [
-                'item' => $items
-            ], [
-                'created' => 'DESC'
-            ]);
+            $items = Service::database()->getUnreadMessages(Service::workflow()->actor()->id());
+            $options['data']['notifications'] = ORM::findBy(Notification::class, ['item' => $items], ['created' => 'DESC']);
         }
 
         return Service::renderResponse('pages/page.html.twig', $options);
