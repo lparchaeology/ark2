@@ -29,39 +29,33 @@
  */
 namespace DIME\Controller;
 
-use ARK\Message\Message;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Page;
-use DIME\Controller\DimeController;
-use Symfony\Component\HttpFoundation\Request;
+use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
+use ARK\Message\Message;
+use DIME\Controller\DimeFormController;
+use DIME\Entity\Find;
+use Exception;
+use Symfony\Component\HttpFoundation\Request;
 
-class MessagePageController extends DimeFormController
+class NewsPageController extends DimeFormController
 {
-    public function __invoke(Request $request)
+    private $actorSlug = null;
+
+    public function __invoke(Request $request, $actorSlug = null)
     {
-        return $this->renderResponse($request, 'dime_page_message');
+        $this->actorSlug = $actorSlug;
+        return $this->renderResponse($request, 'dime_page_news');
     }
 
     public function buildData(Request $request, Page $page)
     {
-        $items = Service::database()->getActorMessages(Service::workflow()->actor());
-        $messages = ORM::findBy(Message::class, ['item' => $items], ['created' => 'DESC']);
-        $data['messages'] = $messages;
-        $data['message_vocabulary'] = ORM::find(Vocabulary::class, 'core.event.type');
-
-        $data['message'] = null;
-        $data['core_message_item'] = null;
-        $data['core_message_list'] = null;
-
-        $msg = $request->query->get('id');
-        if ($msg) {
-            $message = ORM::find(Message::class, $msg);
-            if ($messages->contains($message)) {
-                $data['message'] = $message;
-            }
-        }
+        $resource = ORM::findBy(Find::class, ['visibility' => 'public'], ['item' => 'DESC']);
+        dump($resource);
+        $data['finds'] = $resource;
+        $data['dime_find_list'] = $resource;
         return $data;
     }
 }

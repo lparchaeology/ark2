@@ -40,7 +40,6 @@ use Silex\Provider\SecurityServiceProvider as SilexSecurityServiceProvider;
 
 class SecurityServiceProvider implements ServiceProviderInterface
 {
-
     public function register(Container $container)
     {
         $container->register(new SilexSecurityServiceProvider());
@@ -95,6 +94,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             'userTableName' => 'ark_user',
             'userCustomFieldsTableName' => 'ark_user_field',
             'editCustomFields' => [],
+            'isUsernameRequired' => true,
             'templates' => [
                 'layout' => 'pages/hardcoded.html.twig'
             ]
