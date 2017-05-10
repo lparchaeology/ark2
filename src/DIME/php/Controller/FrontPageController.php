@@ -31,8 +31,8 @@ namespace DIME\Controller;
 
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\Message\Message;
-use ARK\Message\Notification;
+use ARK\View\Page;
+use DIME\DIME;
 use DIME\Controller\DimeController;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,12 +41,14 @@ class FrontPageController extends DimeController
 {
     public function __invoke(Request $request)
     {
-        $layout = 'dime_front_page';
+        $page = ORM::find(Page::class, 'dime_page_front');
+
         $options = $this->defaultOptions();
-        $options['layout'] = Service::layout($layout);
+        $options['page'] = $page;
+        $options['layout'] = $page->content();
+
         // Get the 25 most recent public Items
         $finds = ORM::findBy(Find::class, ['visibility' => 'public'], ['item' => 'DESC'], 25);
-        dump($finds);
         // Then the 5 with images
         $featured = [];
         foreach ($finds as $find) {
@@ -58,14 +60,11 @@ class FrontPageController extends DimeController
                 break;
             }
         }
-        dump($featured);
-        $options['data'][$layout] = $featured;
+        $data[$page->content()->name()] = $featured;
 
-        if (null !== Service::workflow()->actor()) {
-            $msgIds = Service::database()->getUnreadMessages(Service::workflow()->actor()->id());
-            $options['data']['notifications'] = ORM::findBy(Notification::class, ['item' => $msgIds], ['created' => 'DESC']);
-        }
+        $data['notifications'] = DIME::getUnreadNotifications();
 
-        return Service::renderResponse('pages/page.html.twig', $options);
+        $options['data'] = $data;
+        return Service::renderResponse($page->template(), $options);
     }
 }

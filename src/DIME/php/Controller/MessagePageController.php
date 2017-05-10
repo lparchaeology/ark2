@@ -33,6 +33,7 @@ use ARK\Message\Message;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Page;
+use DIME\DIME;
 use DIME\Controller\DimeController;
 use Symfony\Component\HttpFoundation\Request;
 use ARK\Vocabulary\Vocabulary;
@@ -46,9 +47,7 @@ class MessagePageController extends DimeFormController
 
     public function buildData(Request $request, Page $page)
     {
-        $items = Service::database()->getActorMessages(Service::workflow()->actor()->id());
-        $messages = ORM::findBy(Message::class, ['item' => $items], ['created' => 'DESC']);
-        $data['messages'] = $messages;
+        $data['messages'] = DIME::getNotifications();
         $data['message_vocabulary'] = ORM::find(Vocabulary::class, 'core.event.type');
 
         $data['message'] = null;

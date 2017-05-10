@@ -33,14 +33,13 @@ use ARK\Error\ErrorException;
 use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\Message\Message;
+use DIME\DIME;
 use DIME\Controller\DimeController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class PageViewController extends DimeController
 {
-
     public function __invoke(Request $request)
     {
         $page = $request->attributes->get('_route');
@@ -65,10 +64,6 @@ class PageViewController extends DimeController
             $content .= '<button id="pageedit" type="button" class="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">Edit</button>';
             $content .= '<div class="inlineedit">';
         }
-        dump($page);
-        dump($item);
-        dump($item->property('content'));
-        dump($value);
         if ($value && $value->content()) {
             $content .= $value->content();
         }
@@ -76,14 +71,7 @@ class PageViewController extends DimeController
             $content .= '</div>';
         }
 
-        $items = Service::database()->getUnreadMessages(Service::workflow()->actor()
-            ->id());
-
-        $options['notifications'] = ORM::findBy(Message::class, [
-            'item' => $items
-        ], [
-            'created' => 'DESC'
-        ]);
+        $options['data']['notifications'] = DIME::getUnreadNotifications();
 
         $options['content'][0] = $content;
 

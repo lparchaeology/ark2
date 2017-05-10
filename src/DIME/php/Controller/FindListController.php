@@ -35,6 +35,7 @@ use ARK\View\Page;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 use ARK\Message\Message;
+use DIME\DIME;
 use DIME\Controller\DimeFormController;
 use DIME\Entity\Find;
 use Exception;
@@ -42,7 +43,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FindListController extends DimeFormController
 {
-
     private $actorSlug = null;
 
     public function __invoke(Request $request, $actorSlug = null)
@@ -100,23 +100,7 @@ class FindListController extends DimeFormController
         $data['dime_find_list'] = $resource;
         $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $resource : []);
         $data['dime_find_filter'] = null;
-
-        try {
-            $passPath = Service::configDir() . '/passwords.json';
-            if ($passwords = json_decode(file_get_contents($passPath), true)) {
-                $user = $passwords['kortforsyningen']['user'];
-                $password = $passwords['kortforsyningen']['password'];
-                $kortforsyningenticket = file_get_contents("http://services.kortforsyningen.dk/service?request=GetTicket&login=$user&password=$password");
-            }
-            if (strlen($kortforsyningenticket) == 32) {
-                $data['kortforsyningenticket'] = $kortforsyningenticket;
-            } else {
-                $data['kortforsyningenticket'] = false;
-            }
-        } catch (Exception $e) {
-            // Nothing to see here, move along now...
-            $data['kortforsyningenticket'] = false;
-        }
+        $data['kortforsyningenticket'] = DIME::getMapTicket();
         return $data;
     }
 

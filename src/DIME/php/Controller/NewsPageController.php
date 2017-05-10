@@ -30,14 +30,10 @@
 namespace DIME\Controller;
 
 use ARK\ORM\ORM;
-use ARK\Service;
 use ARK\View\Page;
-use ARK\Vocabulary\Term;
-use ARK\Vocabulary\Vocabulary;
-use ARK\Message\Message;
+use DIME\DIME;
 use DIME\Controller\DimeFormController;
 use DIME\Entity\Find;
-use Exception;
 use Symfony\Component\HttpFoundation\Request;
 
 class NewsPageController extends DimeFormController
@@ -55,6 +51,7 @@ class NewsPageController extends DimeFormController
         $resource = ORM::findBy(Find::class, ['visibility' => 'public'], ['item' => 'DESC']);
         $data['finds'] = $resource;
         $data['dime_find_list'] = $resource;
+        $data['notifications'] = DIME::getUnreadNotifications();
         return $data;
     }
 }

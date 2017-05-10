@@ -34,7 +34,7 @@ use ARK\Service;
 use ARK\View\Page;
 use ARK\Workflow\Registry;
 use ARK\Actor\Actor;
-use ARK\Message\Message;
+use DIME\DIME;
 use DIME\Controller\DimeController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -46,12 +46,12 @@ abstract class DimeFormController extends DimeController
         $page = ORM::find(Page::class, $page);
         $options = $page->defaultOptions();
         $options['page_config'] = $this->pageConfig($route);
+        $options['page_mode'] = 'view';
         $data = $this->buildData($request, $page);
 
         $actor = Service::workflow()->actor();
-        if ($actor) {
-            $msgIds = Service::database()->getUnreadMessages($actor->id());
-            $data['notifications'] = ORM::findBy(Message::class, ['item' => $msgIds], ['created' => 'DESC']);
+        if ($actor && $actor->id() != 'anonymous') {
+            $data['notifications'] = DIME::getUnreadNotifications();
             if ($page->mode() == 'edit') {
                 $item = $data[$page->content()->name()];
                 if (Service::workflow()->can($actor, 'edit', $item)) {
