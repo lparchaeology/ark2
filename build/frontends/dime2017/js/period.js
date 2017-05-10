@@ -31,6 +31,39 @@ $('document').ready(function(){
         
     }
     
+    var periodMouseEnter = function(item) {
+        var highlighted_item_id = item.attr('id');
+        var highlighted_item_code = highlighted_item_id.split('-');
+        var highlighted_item_concept = highlighted_item_code[highlighted_item_code.length-1];
+        
+        if( typeof periodvocabulary[highlighted_item_concept].parameters == undefined ){
+            var tooltip = "undefined";
+        } else{
+            var tooltip = periodvocabulary[highlighted_item_concept].parameters.year_start.value+"\xa0\u2014\xa0"+periodvocabulary[highlighted_item_concept].parameters.year_end.value;
+        }
+        
+        var promise = new Promise(function(resolve) {
+            item.attr({"data-toggle":"tooltip","data-placement":"right","title":tooltip});
+            item.tooltip();
+            resolve(true);
+          });
+        promise.then(function(result) {
+            item.tooltip('show');
+        });
+    }
+    
+    $('body').on({
+        mouseenter: function () {
+            periodMouseEnter($(this));
+       }
+    }, '#select2-dime_find_item_dating_period-results .select2-results__option.select2-results__option--highlighted');
+    
+    $('body').on({
+        mouseenter: function () {
+            periodMouseEnter($(this));
+       }
+    }, '#select2-dime_find_item_dating_period_span-results .select2-results__option.select2-results__option--highlighted');
+    
     $('#dime_find_item_dating_year').on('keyup', function(){
         var year = parseInt(this.value);
         

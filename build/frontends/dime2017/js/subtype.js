@@ -2,6 +2,51 @@ $('document').ready(function(){
     
     var query = {"concept":"dime.find.type"};
     
+    var buildSubtypeSelect2 = function(){
+
+        $('#dime_find_item_classification_subtype').select2({
+            minimumResultsForSearch: 11,
+            width: 'resolve',
+            sorter: function(data) {
+                return data.sort(function (a, b) {
+                    if (a.text > b.text) {
+                        return 1;
+                    }
+                    if (a.text < b.text) {
+                        return -1;
+                    }
+                    return 0;
+                });
+            },
+        });
+        
+        $('body').on({
+            mouseenter: function () {
+                var item = $(this);
+                var highlighted_item_id = item.attr('id');
+                var highlighted_item_code = highlighted_item_id.split('-');
+                var highlighted_item_concept = highlighted_item_code[highlighted_item_code.length-1];
+                
+                if( typeof subtypevocabulary[highlighted_item_concept].parameters == undefined ){
+                    var tooltip = "undefined";
+                } else {
+                    var tooltip = subtypevocabulary[highlighted_item_concept].parameters.year_start.value+"\xa0\u2014\xa0"+subtypevocabulary[highlighted_item_concept].parameters.year_end.value;
+                }
+                
+               
+                var promise = new Promise(function(resolve) {
+                    item.attr({"data-toggle":"tooltip","data-placement":"right","title":tooltip});
+                    item.tooltip();
+                    resolve(true);
+                  });
+                promise.then(function(result) {
+                    item.tooltip('show');
+                });
+           }
+        }, '#select2-dime_find_item_classification_subtype-results .select2-results__option.select2-results__option--highlighted');
+        
+    }
+    
     $.post(path + 'api/internal/vocabulary', JSON.stringify(query) )
     .fail(function() {
         console.log('Error fetching type vocabulary');
@@ -21,10 +66,7 @@ $('document').ready(function(){
         for (var subtype in subtypevocabulary) {
             subtypevocabulary[subtype].optionelement = $('#dime_find_item_classification_subtype option[value="'+subtype+'"]').detach();
         }
-        $('#dime_find_item_classification_subtype').select2({
-            minimumResultsForSearch: 11,
-            width: 'resolve'
-        });
+        buildSubtypeSelect2();
         $('#dime_find_item_type_term').trigger('change');
     });
     
@@ -47,21 +89,8 @@ $('document').ready(function(){
             }
         }
 
-        $('#dime_find_item_classification_subtype').select2({
-            minimumResultsForSearch: 11,
-            width: 'resolve',
-            sorter: function(data) {
-                return data.sort(function (a, b) {
-                    if (a.text > b.text) {
-                        return 1;
-                    }
-                    if (a.text < b.text) {
-                        return -1;
-                    }
-                    return 0;
-                });
-            }
-        });
+        buildSubtypeSelect2();
+        
     });
     
     $('#dime_find_item_classification_subtype').on('change', function(){
@@ -87,21 +116,7 @@ $('document').ready(function(){
             
             $('#dime_find_item_classification_subtype').val(target);
             
-            $('#dime_find_item_classification_subtype').select2({
-                minimumResultsForSearch: 11,
-                width: 'resolve',
-                sorter: function(data) {
-                    return data.sort(function (a, b) {
-                        if (a.text > b.text) {
-                            return 1;
-                        }
-                        if (a.text < b.text) {
-                            return -1;
-                        }
-                        return 0;
-                    });
-                }
-            });
+            buildSubtypeSelect2();
             
             $('#dime_find_item_classification_subtype').select2('open');
         }
