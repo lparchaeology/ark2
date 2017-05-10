@@ -40,7 +40,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class DatingType extends AbstractFormType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $valueOptions = $options['field']['value']['options'];
@@ -86,10 +85,7 @@ class DatingType extends AbstractFormType
                 $forms['entered']->setData($value['entered']);
                 $forms['year']->setData($value['year'][0]);
                 $forms['year_span']->setData($value['year'][1]);
-                $vocabulary = $property->attribute()
-                    ->format()
-                    ->attribute('period')
-                    ->vocabulary();
+                $vocabulary = $property->attribute()->format()->attribute('period')->vocabulary();
                 $forms['period']->setData($vocabulary->term($value['period'][0]));
                 $forms['period_span']->setData($vocabulary->term($value['period'][1]));
             }
@@ -110,7 +106,11 @@ class DatingType extends AbstractFormType
             $value['year'][1] = $forms['year_span']->getData();
             $value['period'][0] = $forms['period']->getData();
             $value['period'][1] = $forms['period_span']->getData();
-            $property->setValue([$value]);
+            if ($value['year'][0] || $value['period'][0]) {
+                $property->setValue([$value]);
+            } else {
+                $property->setValue([]);
+            }
         }
     }
 }

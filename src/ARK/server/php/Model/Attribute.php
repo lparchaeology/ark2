@@ -141,7 +141,7 @@ abstract class Attribute
         return '';
     }
 
-    public function nullValue()
+    public function emptyValue()
     {
         if ($this->hasMultipleOccurrences()) {
             return [];
@@ -149,13 +149,13 @@ abstract class Attribute
         if ($this->hasVocabulary()) {
             return null;
         }
-        return $this->format()->nullValue();
+        return $this->format()->emptyValue();
     }
 
     public function value(ArrayCollection $fragments, ArrayCollection $properties)
     {
         if ($fragments->isEmpty()) {
-            return $this->nullValue();
+            return ($this->hasMultipleOccurrences() ? [] : null);
         }
         if ($this->hasVocabulary()) {
             if ($this->hasMultipleOccurrences()) {
@@ -206,7 +206,7 @@ abstract class Attribute
     public function hydrate($data)
     {
         $fragments = new ArrayCollection();
-        if ($data === null || $data === [] || $data === $this->nullValue()) {
+        if ($data === null || $data === [] || $data === $this->emptyValue()) {
             return $fragments;
         }
         if (!$this->hasMultipleOccurrences() && !$this->format()->hasMultipleValues()) {

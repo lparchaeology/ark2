@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6
--- https://www.phpmyadmin.net/
+-- version 4.2.12deb2+deb8u2
+-- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 09, 2017 at 12:53 PM
--- Server version: 10.1.22-MariaDB
--- PHP Version: 7.1.3
+-- Generation Time: May 10, 2017 at 02:08 PM
+-- Server version: 10.0.29-MariaDB-0+deb8u1
+-- PHP Version: 5.6.29-0+deb8u1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `dime_ark_core`
@@ -26,7 +26,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `ark_config_error`
 --
 
-CREATE TABLE `ark_config_error` (
+CREATE TABLE IF NOT EXISTS `ark_config_error` (
   `code` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
@@ -38,13 +38,13 @@ CREATE TABLE `ark_config_error` (
 -- Table structure for table `ark_config_flash`
 --
 
-CREATE TABLE `ark_config_flash` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `ark_config_flash` (
+`id` int(11) NOT NULL,
   `active` tinyint(1) NOT NULL,
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `text` text COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_config_flash`
@@ -62,7 +62,7 @@ INSERT INTO `ark_config_flash` (`id`, `active`, `type`, `language`, `text`) VALU
 -- Table structure for table `ark_datatype`
 --
 
-CREATE TABLE `ark_datatype` (
+CREATE TABLE IF NOT EXISTS `ark_datatype` (
   `datatype` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `object` tinyint(1) NOT NULL DEFAULT '0',
   `compound` tinyint(1) NOT NULL DEFAULT '1',
@@ -112,7 +112,7 @@ INSERT INTO `ark_datatype` (`datatype`, `object`, `compound`, `storage_type`, `s
 -- Table structure for table `ark_format`
 --
 
-CREATE TABLE `ark_format` (
+CREATE TABLE IF NOT EXISTS `ark_format` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `datatype` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `entity` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -195,7 +195,7 @@ INSERT INTO `ark_format` (`format`, `datatype`, `entity`, `value_name`, `value_f
 -- Table structure for table `ark_format_attribute`
 --
 
-CREATE TABLE `ark_format_attribute` (
+CREATE TABLE IF NOT EXISTS `ark_format_attribute` (
   `parent` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sequence` int(11) NOT NULL,
@@ -220,8 +220,8 @@ INSERT INTO `ark_format_attribute` (`parent`, `attribute`, `sequence`, `format`,
 ('address', 'city', 1, 'plaintext', NULL, 0, 0, 1, 1, 1, 0, 1, 0, 'format.address.city'),
 ('address', 'country', 2, 'term', 'country', 0, 0, 1, 1, 1, 0, 1, 0, 'format.address.country'),
 ('address', 'street', 0, 'plaintext', NULL, 1, 0, 1, 1, 1, 0, 1, 0, 'format.address.street'),
-('classification', 'class', 0, 'term', 'dime.find.type', 1, 0, 1, 1, 1, 0, 1, 0, 'format.classification.class'),
-('classification', 'event', 1, 'event', 'dime.find.type', 0, 0, 1, 1, 1, 0, 1, 0, 'format.classification.classified'),
+('classification', 'event', 1, 'event', 'core.event.type', 0, 0, 1, 1, 1, 0, 1, 0, 'format.classification.classified'),
+('classification', 'subtype', 0, 'term', 'dime.find.subtype', 1, 0, 1, 1, 1, 0, 1, 0, 'format.classification.class'),
 ('dating', 'entered', 0, 'identifier', NULL, 0, 0, 1, 1, 1, 0, 1, 0, 'format.dating.type'),
 ('dating', 'event', 5, 'event', NULL, 0, 0, 1, 1, 1, 0, 1, 0, 'format.dating.dated'),
 ('dating', 'period', 3, 'term', 'dime.period', 0, 1, 1, 1, 1, 0, 1, 0, 'format.dating.period'),
@@ -245,7 +245,7 @@ INSERT INTO `ark_format_attribute` (`parent`, `attribute`, `sequence`, `format`,
 -- Table structure for table `ark_format_blob`
 --
 
-CREATE TABLE `ark_format_blob` (
+CREATE TABLE IF NOT EXISTS `ark_format_blob` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -262,7 +262,7 @@ INSERT INTO `ark_format_blob` (`format`) VALUES
 -- Table structure for table `ark_format_boolean`
 --
 
-CREATE TABLE `ark_format_boolean` (
+CREATE TABLE IF NOT EXISTS `ark_format_boolean` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -279,7 +279,7 @@ INSERT INTO `ark_format_boolean` (`format`) VALUES
 -- Table structure for table `ark_format_datetime`
 --
 
-CREATE TABLE `ark_format_datetime` (
+CREATE TABLE IF NOT EXISTS `ark_format_datetime` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `pattern` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `unicode` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
@@ -302,7 +302,7 @@ INSERT INTO `ark_format_datetime` (`format`, `pattern`, `unicode`) VALUES
 -- Table structure for table `ark_format_decimal`
 --
 
-CREATE TABLE `ark_format_decimal` (
+CREATE TABLE IF NOT EXISTS `ark_format_decimal` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `prec` int(11) NOT NULL DEFAULT '200',
   `scale` int(11) NOT NULL DEFAULT '0',
@@ -328,7 +328,7 @@ INSERT INTO `ark_format_decimal` (`format`, `prec`, `scale`, `minimum`, `exclusi
 -- Table structure for table `ark_format_float`
 --
 
-CREATE TABLE `ark_format_float` (
+CREATE TABLE IF NOT EXISTS `ark_format_float` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `minimum` double DEFAULT NULL,
   `exclusive_minimum` tinyint(1) NOT NULL DEFAULT '0',
@@ -351,7 +351,7 @@ INSERT INTO `ark_format_float` (`format`, `minimum`, `exclusive_minimum`, `maxim
 -- Table structure for table `ark_format_integer`
 --
 
-CREATE TABLE `ark_format_integer` (
+CREATE TABLE IF NOT EXISTS `ark_format_integer` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `minimum` int(11) DEFAULT NULL,
   `exclusive_minimum` tinyint(1) NOT NULL DEFAULT '0',
@@ -373,7 +373,7 @@ INSERT INTO `ark_format_integer` (`format`, `minimum`, `exclusive_minimum`, `max
 -- Table structure for table `ark_format_item`
 --
 
-CREATE TABLE `ark_format_item` (
+CREATE TABLE IF NOT EXISTS `ark_format_item` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -394,7 +394,7 @@ INSERT INTO `ark_format_item` (`format`, `module`) VALUES
 -- Table structure for table `ark_format_object`
 --
 
-CREATE TABLE `ark_format_object` (
+CREATE TABLE IF NOT EXISTS `ark_format_object` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -414,7 +414,7 @@ INSERT INTO `ark_format_object` (`format`) VALUES
 -- Table structure for table `ark_format_spatial`
 --
 
-CREATE TABLE `ark_format_spatial` (
+CREATE TABLE IF NOT EXISTS `ark_format_spatial` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
@@ -432,7 +432,7 @@ INSERT INTO `ark_format_spatial` (`format`) VALUES
 -- Table structure for table `ark_format_string`
 --
 
-CREATE TABLE `ark_format_string` (
+CREATE TABLE IF NOT EXISTS `ark_format_string` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `pattern` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `min_length` int(11) NOT NULL,
@@ -460,7 +460,7 @@ INSERT INTO `ark_format_string` (`format`, `pattern`, `min_length`, `max_length`
 -- Table structure for table `ark_format_text`
 --
 
-CREATE TABLE `ark_format_text` (
+CREATE TABLE IF NOT EXISTS `ark_format_text` (
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mediatype` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `min_length` int(11) NOT NULL,
@@ -486,7 +486,7 @@ INSERT INTO `ark_format_text` (`format`, `mediatype`, `min_length`, `max_length`
 -- Table structure for table `ark_instance`
 --
 
-CREATE TABLE `ark_instance` (
+CREATE TABLE IF NOT EXISTS `ark_instance` (
   `instance` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `deprecated` tinyint(1) NOT NULL DEFAULT '0'
@@ -505,7 +505,7 @@ INSERT INTO `ark_instance` (`instance`, `enabled`, `deprecated`) VALUES
 -- Table structure for table `ark_instance_schema`
 --
 
-CREATE TABLE `ark_instance_schema` (
+CREATE TABLE IF NOT EXISTS `ark_instance_schema` (
   `instance` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
@@ -529,7 +529,7 @@ INSERT INTO `ark_instance_schema` (`instance`, `schma`, `enabled`, `deprecated`)
 -- Table structure for table `ark_map`
 --
 
-CREATE TABLE `ark_map` (
+CREATE TABLE IF NOT EXISTS `ark_map` (
   `map` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `draggable` tinyint(1) NOT NULL DEFAULT '1',
   `zoomable` tinyint(1) NOT NULL DEFAULT '1',
@@ -552,7 +552,7 @@ INSERT INTO `ark_map` (`map`, `draggable`, `zoomable`, `clickable`, `options`, `
 -- Table structure for table `ark_map_layer`
 --
 
-CREATE TABLE `ark_map_layer` (
+CREATE TABLE IF NOT EXISTS `ark_map_layer` (
   `source` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `layer` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `source_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -570,8 +570,8 @@ INSERT INTO `ark_map_layer` (`source`, `layer`, `source_name`, `url`, `options`,
 ('bing', 'aerial', 'Aerial', '', '', '', 'map.layer.bing.aerial'),
 ('bing', 'aerialwithlabels', 'AerialWithLabels', '', '', '', 'map.layer.bing.aerialwithlabels'),
 ('bing', 'road', 'Road', '', '', '', 'map.layer.bing.road'),
-('kortforsyningen', 'foraar', 'orto_foraar', 'http://kortforsyningen.kms.dk/service?servicename=orto_foraar&service=WMS&layers=orto_foraar', '', '{\"LAYERS\": \"orto_foraar\", \"VERSION\": \"1.1.1\", \"FORMAT\": \"image/png\", \"TILED\": true,\"TRANSPARENT\":\"TRUE\"}', 'dime.map.layer.foraar'),
-('kortforsyningen', 'skaermkort', 'topo_skaermkort', 'http://kortforsyningen.kms.dk/service?servicename=topo_skaermkort&service=WMS&layers=topo_skaermkort', '', '{\"LAYERS\": \"topo_skaermkort\", \"VERSION\": \"1.1.1\", \"FORMAT\": \"image/png\", \"TILED\": true,\"TRANSPARENT\":\"TRUE\" }', 'dime.map.layer.skaermkort');
+('kortforsyningen', 'foraar', 'orto_foraar', 'http://kortforsyningen.kms.dk/service?servicename=orto_foraar&service=WMS&layers=orto_foraar', '', '{"LAYERS": "orto_foraar", "VERSION": "1.1.1", "FORMAT": "image/png", "TILED": true,"TRANSPARENT":"TRUE"}', 'dime.map.layer.foraar'),
+('kortforsyningen', 'skaermkort', 'topo_skaermkort', 'http://kortforsyningen.kms.dk/service?servicename=topo_skaermkort&service=WMS&layers=topo_skaermkort', '', '{"LAYERS": "topo_skaermkort", "VERSION": "1.1.1", "FORMAT": "image/png", "TILED": true,"TRANSPARENT":"TRUE" }', 'dime.map.layer.skaermkort');
 
 -- --------------------------------------------------------
 
@@ -579,7 +579,7 @@ INSERT INTO `ark_map_layer` (`source`, `layer`, `source_name`, `url`, `options`,
 -- Table structure for table `ark_map_legend`
 --
 
-CREATE TABLE `ark_map_legend` (
+CREATE TABLE IF NOT EXISTS `ark_map_legend` (
   `map` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `source` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `layer` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -613,7 +613,7 @@ INSERT INTO `ark_map_legend` (`map`, `source`, `layer`, `seq`, `is_default`, `en
 -- Table structure for table `ark_map_source`
 --
 
-CREATE TABLE `ark_map_source` (
+CREATE TABLE IF NOT EXISTS `ark_map_source` (
   `source` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `subtype` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -639,7 +639,7 @@ INSERT INTO `ark_map_source` (`source`, `type`, `subtype`, `format`, `view_class
 -- Table structure for table `ark_module`
 --
 
-CREATE TABLE `ark_module` (
+CREATE TABLE IF NOT EXISTS `ark_module` (
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `resource` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `project` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -671,7 +671,7 @@ INSERT INTO `ark_module` (`module`, `resource`, `project`, `namespace`, `entity`
 -- Table structure for table `ark_route`
 --
 
-CREATE TABLE `ark_route` (
+CREATE TABLE IF NOT EXISTS `ark_route` (
   `route` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `path` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `can_get` tinyint(1) NOT NULL DEFAULT '1',
@@ -695,7 +695,7 @@ INSERT INTO `ark_route` (`route`, `path`, `can_get`, `can_post`, `controller`, `
 -- Table structure for table `ark_schema`
 --
 
-CREATE TABLE `ark_schema` (
+CREATE TABLE IF NOT EXISTS `ark_schema` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `generator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -721,7 +721,7 @@ INSERT INTO `ark_schema` (`schma`, `module`, `generator`, `sequence`, `type`, `v
 ('core.actor', 'actor', 'sequence', 'id', 'type', 'core.actor.type', 'restricted', 'core.actor.create', 'core.actor.read', 'core.actor.update', 'core.actor.delete', 1, 1, 0, 'core.actor'),
 ('core.event', 'event', 'sequence', 'id', 'type', 'core.event.type', 'restricted', 'core.event.create', 'core.event.read', 'core.event.update', 'core.event.delete', 0, 1, 0, 'core.event'),
 ('core.file', 'file', 'sequence', 'id', 'type', 'core.file.type', 'restricted', 'core.file.create', 'core.event.read', 'core.file.update', 'core.file.delete', 1, 1, 0, 'core.file'),
-('core.message', 'message', 'sequence', 'id', 'type', 'core.message.type', 'private', NULL, NULL, NULL, NULL, 1, 1, 0, 'core.message'),
+('core.message', 'message', 'sequence', 'id', 'type', 'core.message.type', 'private', 'core.message.create', 'core.message.read', 'core.message.update', 'core.message.delete', 1, 1, 0, 'core.message'),
 ('core.page', 'page', 'sequence', 'id', NULL, NULL, 'public', 'core.page.create', NULL, 'core.page.update', 'core.page.delete', 0, 1, 0, 'core.page'),
 ('dime.find', 'find', 'sequence', 'id', 'type', 'dime.find.type', 'restricted', 'dime.find.create', 'dime.find.read', 'dime.find.update', 'dime.find.delete', 0, 1, 0, 'dime.find');
 
@@ -731,7 +731,7 @@ INSERT INTO `ark_schema` (`schma`, `module`, `generator`, `sequence`, `type`, `v
 -- Table structure for table `ark_schema_association`
 --
 
-CREATE TABLE `ark_schema_association` (
+CREATE TABLE IF NOT EXISTS `ark_schema_association` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `association` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -764,7 +764,7 @@ INSERT INTO `ark_schema_association` (`schma`, `type`, `association`, `module1`,
 -- Table structure for table `ark_schema_attribute`
 --
 
-CREATE TABLE `ark_schema_attribute` (
+CREATE TABLE IF NOT EXISTS `ark_schema_attribute` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -851,7 +851,7 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 -- Table structure for table `ark_schema_item`
 --
 
-CREATE TABLE `ark_schema_item` (
+CREATE TABLE IF NOT EXISTS `ark_schema_item` (
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -883,7 +883,7 @@ INSERT INTO `ark_schema_item` (`attribute`, `format`, `vocabulary`, `minimum`, `
 -- Table structure for table `ark_translation`
 --
 
-CREATE TABLE `ark_translation` (
+CREATE TABLE IF NOT EXISTS `ark_translation` (
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `domain` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_plural` tinyint(1) NOT NULL DEFAULT '0',
@@ -1092,7 +1092,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 -- Table structure for table `ark_translation_domain`
 --
 
-CREATE TABLE `ark_translation_domain` (
+CREATE TABLE IF NOT EXISTS `ark_translation_domain` (
   `domain` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1115,7 +1115,7 @@ INSERT INTO `ark_translation_domain` (`domain`, `keyword`) VALUES
 -- Table structure for table `ark_translation_language`
 --
 
-CREATE TABLE `ark_translation_language` (
+CREATE TABLE IF NOT EXISTS `ark_translation_language` (
   `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `markup` tinyint(1) NOT NULL DEFAULT '0',
   `vocabulary` tinyint(1) NOT NULL DEFAULT '0',
@@ -1137,7 +1137,7 @@ INSERT INTO `ark_translation_language` (`language`, `markup`, `vocabulary`, `tex
 -- Table structure for table `ark_translation_message`
 --
 
-CREATE TABLE `ark_translation_message` (
+CREATE TABLE IF NOT EXISTS `ark_translation_message` (
   `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1313,7 +1313,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.description', 'default', 'Description', ''),
 ('en', 'dime.find.event.classified', 'default', 'Classified', ''),
 ('en', 'dime.find.finddate', 'default', 'Find Date', 'DIME Find Find Date'),
-('en', 'dime.find.finder_id', 'default', 'Find ID', 'DIME Find Finder\'s ID'),
+('en', 'dime.find.finder_id', 'default', 'Find ID', 'DIME Find Finder''s ID'),
 ('en', 'dime.find.id', 'default', 'ID', 'DIME Find ID'),
 ('en', 'dime.find.length', 'default', 'Maximum Dimension', ''),
 ('en', 'dime.find.location', 'default', 'Coordinates', ''),
@@ -1449,7 +1449,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'site.brand', 'default', 'DIME', ''),
 ('en', 'site.welcome', 'default', 'Welcome to DIME.', ''),
 ('en', 'test.test', 'default', 'text text', 'notes notes'),
-('en', 'user.greeting', 'default', 'Logged In as %name%', ''),
+('en', 'user.greeting', 'default', 'Logged In As %name%', ''),
 ('en', 'user.menu.edit', 'default', 'Edit your profile', ''),
 ('en', 'user.menu.home', 'default', 'My Home', ''),
 ('en', 'user.menu.list', 'default', 'List users', ''),
@@ -1465,7 +1465,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 -- Table structure for table `ark_translation_parameter`
 --
 
-CREATE TABLE `ark_translation_parameter` (
+CREATE TABLE IF NOT EXISTS `ark_translation_parameter` (
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `parameter` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1484,7 +1484,7 @@ INSERT INTO `ark_translation_parameter` (`keyword`, `parameter`) VALUES
 -- Table structure for table `ark_translation_role`
 --
 
-CREATE TABLE `ark_translation_role` (
+CREATE TABLE IF NOT EXISTS `ark_translation_role` (
   `role` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
@@ -1529,7 +1529,7 @@ INSERT INTO `ark_translation_role` (`role`, `keyword`, `description`) VALUES
 -- Table structure for table `ark_view_element`
 --
 
-CREATE TABLE `ark_view_element` (
+CREATE TABLE IF NOT EXISTS `ark_view_element` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `class` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1639,7 +1639,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `class`, `template`, `enabled
 -- Table structure for table `ark_view_field`
 --
 
-CREATE TABLE `ark_view_field` (
+CREATE TABLE IF NOT EXISTS `ark_view_field` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `item_type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1664,9 +1664,9 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `lab
 ('core_file_title', 'core.file', 'file', 'title', 1, 'active', NULL, NULL, NULL, ''),
 ('core_file_type', 'core.file', 'file', 'type', 1, 'active', NULL, NULL, NULL, ''),
 ('core_file_versions', 'core.file', 'file', 'versions', 1, 'active', NULL, NULL, NULL, ''),
-('core_message_event', 'core.message', 'notification', 'event', 1, 'active', NULL, NULL, NULL, '{\"display_property\": \"type\"}'),
+('core_message_event', 'core.message', 'notification', 'event', 1, 'active', NULL, NULL, NULL, '{"display_property": "type"}'),
 ('core_message_id', 'core.message', 'message', 'id', 1, 'active', NULL, NULL, NULL, ''),
-('core_message_sender', 'core.message', 'message', 'sender', 1, 'active', NULL, NULL, NULL, '{\"display_property\": \"fullname\"}'),
+('core_message_sender', 'core.message', 'message', 'sender', 1, 'active', NULL, NULL, NULL, '{"display_property": "fullname"}'),
 ('core_message_sent_at', 'core.message', 'message', 'sent', 1, 'active', NULL, NULL, NULL, ''),
 ('core_message_type', 'core.message', 'message', 'type', 1, 'active', NULL, NULL, NULL, ''),
 ('core_page_content', 'core.page', 'page', 'content', 1, 'active', NULL, NULL, NULL, ''),
@@ -1677,31 +1677,31 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `lab
 ('dime_actor_type', 'core.actor', 'actor', 'type', 1, 'active', NULL, NULL, NULL, ''),
 ('dime_find_carousel', 'dime.find', 'find', 'image', 1, 'active', NULL, NULL, 'ARK\\Form\\Type\\CarouselType', ''),
 ('dime_find_classification', 'dime.find', 'find', 'classification', 1, 'active', NULL, NULL, 'DIME\\Form\\Type\\ClassificationType', ''),
-('dime_find_condition', 'dime.find', 'find', 'condition', 1, 'active', NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:75%\"}}'),
-('dime_find_custodian', 'dime.find', 'find', 'custodian', 1, 'hidden', 'hidden', NULL, NULL, '{\"display_property\": \"fullname\", \"attr\": {\"style\": \"width:50%\"}}'),
-('dime_find_custody', 'dime.find', 'find', 'custody', 1, 'active', NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
+('dime_find_condition', 'dime.find', 'find', 'condition', 1, 'active', NULL, NULL, NULL, '{"attr": {"style": "width:75%"}}'),
+('dime_find_custodian', 'dime.find', 'find', 'custodian', 1, 'hidden', 'hidden', NULL, NULL, '{"display_property": "fullname", "attr": {"style": "width:50%"}}'),
+('dime_find_custody', 'dime.find', 'find', 'custody', 1, 'active', NULL, NULL, NULL, '{"attr": {"style": "width:50%"}}'),
 ('dime_find_dating', 'dime.find', 'find', 'dating', 1, 'active', NULL, NULL, 'DIME\\Form\\Type\\DatingType', ''),
 ('dime_find_description', 'dime.find', 'find', 'description', 1, 'active', NULL, NULL, 'DIME\\Form\\Type\\DescriptionType', ''),
-('dime_find_finddate', 'dime.find', 'find', 'finddate', 1, 'active', NULL, NULL, NULL, '{\"widget\": \"picker\"}'),
-('dime_find_finder', 'dime.find', 'find', 'finder', 1, 'active', NULL, NULL, NULL, '{\"display_property\": \"fullname\", \"attr\": {\"style\": \"width:50%\"}}'),
-('dime_find_finder_id', 'dime.find', 'find', 'finder_id', 1, 'active', NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
-('dime_find_id', 'dime.find', 'find', 'id', 1, 'readonly', NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
+('dime_find_finddate', 'dime.find', 'find', 'finddate', 1, 'active', NULL, NULL, NULL, '{"widget": "picker"}'),
+('dime_find_finder', 'dime.find', 'find', 'finder', 1, 'active', NULL, NULL, NULL, '{"display_property": "fullname", "attr": {"style": "width:50%"}}'),
+('dime_find_finder_id', 'dime.find', 'find', 'finder_id', 1, 'active', NULL, NULL, NULL, '{"attr": {"style": "width:50%"}}'),
+('dime_find_id', 'dime.find', 'find', 'id', 1, 'readonly', NULL, NULL, NULL, '{"attr": {"style": "width:50%"}}'),
 ('dime_find_image', 'dime.find', 'find', 'image', 1, 'active', NULL, NULL, NULL, ''),
-('dime_find_length', 'dime.find', 'find', 'length', 1, 'active', 'hidden', NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
-('dime_find_location', 'dime.find', 'find', 'location', 1, 'active', NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
-('dime_find_material', 'dime.find', 'find', 'material', 1, 'active', NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
-('dime_find_municipality', 'dime.find', 'find', 'municipality', 1, 'active', NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
-('dime_find_museum', 'dime.find', 'find', 'museum', 1, 'active', NULL, NULL, NULL, '{\"display_property\": \"fullname\", \"attr\": {\"style\": \"width:75%\"}}'),
-('dime_find_museum_id', 'dime.find', 'find', 'museum_id', 1, 'active', NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:75%\"}}'),
-('dime_find_owner', 'dime.find', 'find', 'owner', 1, 'active', NULL, NULL, NULL, '{\"display_property\": \"fullname\", \"attr\": {\"style\": \"width:50%\"}}'),
-('dime_find_process', 'dime.find', 'find', 'process', 1, 'active', NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
-('dime_find_recipient', 'dime.find', 'find', 'recipient', 1, 'active', NULL, NULL, NULL, '{\"display_property\": \"fullname\", \"attr\": {\"style\": \"width:50%\"}}'),
-('dime_find_recorder', 'dime.find', 'find', 'recorder', 1, 'active', NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
-('dime_find_secondary', 'dime.find', 'find', 'secondary', 1, 'active', NULL, NULL, NULL, '{\"multiple\":true, \"expanded\": \"true\", \"attr\": {\"style\": \"width:50%\"}}'),
-('dime_find_treasure', 'dime.find', 'find', 'treasure', 1, 'active', NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
-('dime_find_type', 'dime.find', 'find', 'type', 1, 'active', NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:75%\"}}'),
-('dime_find_visibility', 'dime.find', 'find', 'visibility', 1, 'active', NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
-('dime_find_weight', 'dime.find', 'find', 'weight', 1, 'active', 'hidden', NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}');
+('dime_find_length', 'dime.find', 'find', 'length', 1, 'active', 'hidden', NULL, NULL, '{"attr": {"style": "width:50%"}}'),
+('dime_find_location', 'dime.find', 'find', 'location', 1, 'active', NULL, NULL, NULL, '{"attr": {"style": "width:50%"}}'),
+('dime_find_material', 'dime.find', 'find', 'material', 1, 'active', NULL, NULL, NULL, '{"attr": {"style": "width:50%"}}'),
+('dime_find_municipality', 'dime.find', 'find', 'municipality', 1, 'active', NULL, NULL, NULL, '{"attr": {"style": "width:50%"}}'),
+('dime_find_museum', 'dime.find', 'find', 'museum', 1, 'active', NULL, NULL, NULL, '{"display_property": "fullname", "attr": {"style": "width:75%"}}'),
+('dime_find_museum_id', 'dime.find', 'find', 'museum_id', 1, 'active', NULL, NULL, NULL, '{"attr": {"style": "width:75%"}}'),
+('dime_find_owner', 'dime.find', 'find', 'owner', 1, 'active', NULL, NULL, NULL, '{"display_property": "fullname", "attr": {"style": "width:50%"}}'),
+('dime_find_process', 'dime.find', 'find', 'process', 1, 'active', NULL, NULL, NULL, '{"attr": {"style": "width:50%"}}'),
+('dime_find_recipient', 'dime.find', 'find', 'recipient', 1, 'active', NULL, NULL, NULL, '{"display_property": "fullname", "attr": {"style": "width:50%"}}'),
+('dime_find_recorder', 'dime.find', 'find', 'recorder', 1, 'active', NULL, NULL, NULL, '{"attr": {"style": "width:50%"}}'),
+('dime_find_secondary', 'dime.find', 'find', 'secondary', 1, 'active', NULL, NULL, NULL, '{"multiple":true, "expanded": "true", "attr": {"style": "width:50%"}}'),
+('dime_find_treasure', 'dime.find', 'find', 'treasure', 1, 'active', NULL, NULL, NULL, '{"attr": {"style": "width:50%"}}'),
+('dime_find_type', 'dime.find', 'find', 'type', 1, 'active', NULL, NULL, NULL, '{"attr": {"style": "width:75%"}}'),
+('dime_find_visibility', 'dime.find', 'find', 'visibility', 1, 'active', NULL, NULL, NULL, '{"attr": {"style": "width:50%"}}'),
+('dime_find_weight', 'dime.find', 'find', 'weight', 1, 'active', 'hidden', NULL, NULL, '{"attr": {"style": "width:50%"}}');
 
 -- --------------------------------------------------------
 
@@ -1709,7 +1709,7 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `lab
 -- Table structure for table `ark_view_grid`
 --
 
-CREATE TABLE `ark_view_grid` (
+CREATE TABLE IF NOT EXISTS `ark_view_grid` (
   `layout` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `row` int(11) NOT NULL,
   `col` int(11) NOT NULL,
@@ -1821,7 +1821,7 @@ INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `elemen
 -- Table structure for table `ark_view_layout`
 --
 
-CREATE TABLE `ark_view_layout` (
+CREATE TABLE IF NOT EXISTS `ark_view_layout` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `item_type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1862,7 +1862,7 @@ INSERT INTO `ark_view_layout` (`element`, `schma`, `item_type`, `form`, `mode`) 
 -- Table structure for table `ark_view_nav`
 --
 
-CREATE TABLE `ark_view_nav` (
+CREATE TABLE IF NOT EXISTS `ark_view_nav` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `parent` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `seq` int(11) NOT NULL DEFAULT '0',
@@ -1891,7 +1891,7 @@ INSERT INTO `ark_view_nav` (`element`, `parent`, `seq`, `level`, `icon`, `route`
 -- Table structure for table `ark_view_page`
 --
 
-CREATE TABLE `ark_view_page` (
+CREATE TABLE IF NOT EXISTS `ark_view_page` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mode` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'view',
   `content` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1919,12 +1919,12 @@ INSERT INTO `ark_view_page` (`element`, `mode`, `content`, `footer`, `navbar`, `
 -- Table structure for table `ark_view_tree`
 --
 
-CREATE TABLE `ark_view_tree` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `ark_view_tree` (
+`id` int(11) NOT NULL,
   `ancestor` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `descendant` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `depth` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_view_tree`
@@ -1955,7 +1955,7 @@ INSERT INTO `ark_view_tree` (`id`, `ancestor`, `descendant`, `depth`) VALUES
 -- Table structure for table `ark_view_type`
 --
 
-CREATE TABLE `ark_view_type` (
+CREATE TABLE IF NOT EXISTS `ark_view_type` (
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `class` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `layout` tinyint(1) NOT NULL DEFAULT '0',
@@ -1983,7 +1983,7 @@ INSERT INTO `ark_view_type` (`type`, `class`, `layout`, `form_type_class`, `temp
 -- Table structure for table `ark_view_widget`
 --
 
-CREATE TABLE `ark_view_widget` (
+CREATE TABLE IF NOT EXISTS `ark_view_widget` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `mode` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'view',
   `label` tinyint(1) NOT NULL DEFAULT '1',
@@ -1998,10 +1998,10 @@ CREATE TABLE `ark_view_widget` (
 
 INSERT INTO `ark_view_widget` (`element`, `mode`, `label`, `vocabulary`, `form_type_class`, `form_options`) VALUES
 ('dime_find_actions', 'edit', 1, NULL, 'ARK\\Form\\Type\\TermChoiceType', ''),
-('dime_find_filter_material', 'view', 1, 'dime.material', 'ARK\\Form\\Type\\TermChoiceType', '{\"multiple\":true}'),
-('dime_find_filter_municipality', 'view', 1, 'dime.denmark.municipality', 'ARK\\Form\\Type\\TermChoiceType', '{\"multiple\":true}'),
-('dime_find_filter_period', 'view', 1, 'dime.period', 'ARK\\Form\\Type\\TermChoiceType', '{\"multiple\":true}'),
-('dime_find_filter_type', 'view', 1, 'dime.find.type', 'ARK\\Form\\Type\\TermChoiceType', '{\"multiple\":true}'),
+('dime_find_filter_material', 'view', 1, 'dime.material', 'ARK\\Form\\Type\\TermChoiceType', '{"multiple":true}'),
+('dime_find_filter_municipality', 'view', 1, 'dime.denmark.municipality', 'ARK\\Form\\Type\\TermChoiceType', '{"multiple":true}'),
+('dime_find_filter_period', 'view', 1, 'dime.period', 'ARK\\Form\\Type\\TermChoiceType', '{"multiple":true}'),
+('dime_find_filter_type', 'view', 1, 'dime.find.type', 'ARK\\Form\\Type\\TermChoiceType', '{"multiple":true}'),
 ('dime_save', 'edit', 1, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', ''),
 ('dime_search', 'view', 1, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', '');
 
@@ -2011,7 +2011,7 @@ INSERT INTO `ark_view_widget` (`element`, `mode`, `label`, `vocabulary`, `form_t
 -- Table structure for table `ark_vocabulary`
 --
 
-CREATE TABLE `ark_vocabulary` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `source` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2046,6 +2046,7 @@ INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `transition
 ('dime.find.custody', 'list', 'DIME', 1, 0, 1, 0, 'dime.find.custody', 'DIME Find Custody'),
 ('dime.find.process', 'list', 'DIME', 1, 0, 1, 0, 'dime.find.process', 'DIME Find Process'),
 ('dime.find.secondary', 'list', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.find.secondary', 'DIME Secondary Materials List'),
+('dime.find.subtype', 'list', 'DIME', 1, 0, 1, 0, 'dime.find.subtype', 'DIME Find Subtype'),
 ('dime.find.type', 'list', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.type', 'DIME Find Type'),
 ('dime.material', 'list', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.material', 'DIME Material List'),
 ('dime.period', 'taxonomy', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.period', 'DIME Period Taxonomy'),
@@ -2063,7 +2064,7 @@ INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `transition
 -- Table structure for table `ark_vocabulary_collected`
 --
 
-CREATE TABLE `ark_vocabulary_collected` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_collected` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `collection` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2177,7 +2178,7 @@ INSERT INTO `ark_vocabulary_collected` (`concept`, `collection`, `term`, `seq`) 
 -- Table structure for table `ark_vocabulary_collection`
 --
 
-CREATE TABLE `ark_vocabulary_collection` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_collection` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `collection` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `label` text COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2191,7 +2192,7 @@ CREATE TABLE `ark_vocabulary_collection` (
 -- Table structure for table `ark_vocabulary_parameter`
 --
 
-CREATE TABLE `ark_vocabulary_parameter` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_parameter` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2218,6 +2219,167 @@ INSERT INTO `ark_vocabulary_parameter` (`concept`, `term`, `name`, `type`, `valu
 ('core.license', 'ccbysa', 'url', 'string', 'https://creativecommons.org/licenses/by-sa/4.0/'),
 ('core.message.type', 'mail', 'classname', 'string', 'ARK\\Message\\Mail'),
 ('core.message.type', 'notification', 'classname', 'string', 'ARK\\Message\\Notification'),
+('dime.find.subtype', 'accessory.button.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'accessory.fitting.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'accessory.jewelery.bracteate', 'year_end', 'integer', '530'),
+('dime.find.subtype', 'accessory.jewelery.bracteate', 'year_start', 'integer', '375'),
+('dime.find.subtype', 'accessory.jewelery.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'accessory.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'accessory.pilgrim', 'period', 'string', 'DXXX'),
+('dime.find.subtype', 'accessory.tutulus', 'period', 'string', 'BXXX'),
+('dime.find.subtype', 'coin.danish', 'period', 'string', 'DXXX'),
+('dime.find.subtype', 'coin.danish.civilwar', 'year_end', 'integer', '1380'),
+('dime.find.subtype', 'coin.danish.civilwar', 'year_start', 'integer', '1241'),
+('dime.find.subtype', 'coin.danish.early', 'year_end', 'integer', '1241'),
+('dime.find.subtype', 'coin.danish.early', 'year_start', 'integer', '1067'),
+('dime.find.subtype', 'coin.danish.hvide', 'year_end', 'integer', '1535'),
+('dime.find.subtype', 'coin.danish.hvide', 'year_start', 'integer', '1380'),
+('dime.find.subtype', 'coin.danish.klipping', 'year_end', 'integer', '1535'),
+('dime.find.subtype', 'coin.danish.klipping', 'year_start', 'integer', '1380'),
+('dime.find.subtype', 'coin.danish.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'coin.danish.other', 'period', 'string', 'DXXX'),
+('dime.find.subtype', 'coin.danish.søsling', 'year_end', 'integer', '1535'),
+('dime.find.subtype', 'coin.danish.søsling', 'year_start', 'integer', '1380'),
+('dime.find.subtype', 'coin.danish.sterling', 'year_end', 'integer', '1535'),
+('dime.find.subtype', 'coin.danish.sterling', 'year_start', 'integer', '1380'),
+('dime.find.subtype', 'coin.foreign', 'period', 'string', 'DXXX'),
+('dime.find.subtype', 'coin.foreign.hohlpfennig', 'period', 'string', 'DXXX'),
+('dime.find.subtype', 'coin.foreign.hvide', 'period', 'string', 'DXXX'),
+('dime.find.subtype', 'coin.foreign.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'coin.foreign.other', 'period', 'string', 'DXXX'),
+('dime.find.subtype', 'coin.foreign.sterling', 'period', 'string', 'DXXX'),
+('dime.find.subtype', 'coin.foreign.tournois', 'period', 'string', 'DXXX'),
+('dime.find.subtype', 'coin.modern', 'year_start', 'integer', '1536'),
+('dime.find.subtype', 'coin.modern.danish', 'year_start', 'integer', '1536'),
+('dime.find.subtype', 'coin.modern.foreign', 'year_start', 'integer', '1536'),
+('dime.find.subtype', 'coin.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'coin.roman.aureus', 'year_end', 'integer', '300'),
+('dime.find.subtype', 'coin.roman.aureus', 'year_start', 'integer', '1'),
+('dime.find.subtype', 'coin.roman.denarius', 'year_end', 'integer', '200'),
+('dime.find.subtype', 'coin.roman.denarius', 'year_start', 'integer', '-200'),
+('dime.find.subtype', 'coin.roman.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'coin.roman.other', 'period', 'string', 'CÆXX'),
+('dime.find.subtype', 'coin.roman.sestertius', 'year_end', 'integer', '375'),
+('dime.find.subtype', 'coin.roman.sestertius', 'year_start', 'integer', '-200'),
+('dime.find.subtype', 'coin.roman.siliqua', 'year_end', 'integer', '400'),
+('dime.find.subtype', 'coin.roman.siliqua', 'year_start', 'integer', '324'),
+('dime.find.subtype', 'coin.roman.solidus', 'year_end', 'integer', '500'),
+('dime.find.subtype', 'coin.roman.solidus', 'year_start', 'integer', '300'),
+('dime.find.subtype', 'coin.viking', 'period', 'string', 'CYVX'),
+('dime.find.subtype', 'coin.viking.byzantine', 'period', 'string', 'CYVX'),
+('dime.find.subtype', 'coin.viking.carolingian', 'period', 'string', 'CYVÆ'),
+('dime.find.subtype', 'coin.viking.denarius', 'period', 'string', 'CYVÆ'),
+('dime.find.subtype', 'coin.viking.dirham', 'year_end', 'integer', '1000'),
+('dime.find.subtype', 'coin.viking.dirham', 'year_start', 'integer', '700'),
+('dime.find.subtype', 'coin.viking.english', 'period', 'string', 'CYVX'),
+('dime.find.subtype', 'coin.viking.german', 'period', 'string', 'CYVX'),
+('dime.find.subtype', 'coin.viking.nordic', 'period', 'string', 'CYVX'),
+('dime.find.subtype', 'coin.viking.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'coin.viking.other', 'period', 'string', 'CYVX'),
+('dime.find.subtype', 'coin.viking.penny', 'period', 'string', 'CYVX'),
+('dime.find.subtype', 'coin.viking.phennig', 'period', 'string', 'CYVX'),
+('dime.find.subtype', 'coin.viking.sceat', 'year_end', 'integer', '900'),
+('dime.find.subtype', 'coin.viking.sceat', 'year_start', 'integer', '700'),
+('dime.find.subtype', 'fibula.beak', 'year_end', 'integer', '700'),
+('dime.find.subtype', 'fibula.beak', 'year_start', 'integer', '530'),
+('dime.find.subtype', 'fibula.bird.above', 'year_end', 'integer', '700'),
+('dime.find.subtype', 'fibula.bird.above', 'year_start', 'integer', '600'),
+('dime.find.subtype', 'fibula.bird.profile', 'period', 'string', 'DÆXX'),
+('dime.find.subtype', 'fibula.bow', 'period', 'string', 'CXXX'),
+('dime.find.subtype', 'fibula.bow.ball', 'period', 'string', 'CÆFÆ'),
+('dime.find.subtype', 'fibula.bow.band', 'period', 'string', 'CÆRX'),
+('dime.find.subtype', 'fibula.bow.bilateral', 'period', 'string', 'CÆRÆ'),
+('dime.find.subtype', 'fibula.bow.button', 'year_end', 'integer', '900'),
+('dime.find.subtype', 'fibula.bow.button', 'year_start', 'integer', '530'),
+('dime.find.subtype', 'fibula.bow.cross', 'year_end', 'integer', '530'),
+('dime.find.subtype', 'fibula.bow.cross', 'year_start', 'integer', '375'),
+('dime.find.subtype', 'fibula.bow.foot', 'period', 'string', 'CÆRY'),
+('dime.find.subtype', 'fibula.bow.high', 'period', 'string', 'CÆRY'),
+('dime.find.subtype', 'fibula.bow.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'fibula.bow.other', 'period', 'string', 'CXXX'),
+('dime.find.subtype', 'fibula.bow.relief', 'year_end', 'integer', '530'),
+('dime.find.subtype', 'fibula.bow.relief', 'year_start', 'integer', '375'),
+('dime.find.subtype', 'fibula.bowl.animal', 'year_end', 'integer', '750'),
+('dime.find.subtype', 'fibula.bowl.animal', 'year_start', 'integer', '700'),
+('dime.find.subtype', 'fibula.bowl.circular', 'year_end', 'integer', '600'),
+('dime.find.subtype', 'fibula.bowl.circular', 'year_start', 'integer', '530'),
+('dime.find.subtype', 'fibula.bowl.large', 'year_end', 'integer', '950'),
+('dime.find.subtype', 'fibula.bowl.large', 'year_start', 'integer', '750'),
+('dime.find.subtype', 'fibula.bowl.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'fibula.bowl.small', 'year_end', 'integer', '750'),
+('dime.find.subtype', 'fibula.bowl.small', 'year_start', 'integer', '700'),
+('dime.find.subtype', 'fibula.circular.large', 'year_end', 'integer', '950'),
+('dime.find.subtype', 'fibula.circular.large', 'year_start', 'integer', '750'),
+('dime.find.subtype', 'fibula.circular.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'fibula.circular.small', 'year_end', 'integer', '950'),
+('dime.find.subtype', 'fibula.circular.small', 'year_start', 'integer', '750'),
+('dime.find.subtype', 'fibula.circular.tin', 'period', 'string', 'DÆXX'),
+('dime.find.subtype', 'fibula.enamel.central', 'year_end', 'integer', '1150'),
+('dime.find.subtype', 'fibula.enamel.central', 'year_start', 'integer', '900'),
+('dime.find.subtype', 'fibula.enamel.cross', 'year_end', 'integer', '1000'),
+('dime.find.subtype', 'fibula.enamel.cross', 'year_start', 'integer', '800'),
+('dime.find.subtype', 'fibula.enamel.multiple', 'year_end', 'integer', '1100'),
+('dime.find.subtype', 'fibula.enamel.multiple', 'year_start', 'integer', '800'),
+('dime.find.subtype', 'fibula.enamel.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'fibula.equalarm', 'period', 'string', 'CYXX'),
+('dime.find.subtype', 'fibula.equalarm.large', 'period', 'string', 'CYVX'),
+('dime.find.subtype', 'fibula.equalarm.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'fibula.equalarm.small', 'year_end', 'integer', '60'),
+('dime.find.subtype', 'fibula.equalarm.small', 'year_start', 'integer', '530'),
+('dime.find.subtype', 'fibula.healing', 'year_end', 'integer', '1150'),
+('dime.find.subtype', 'fibula.healing', 'year_start', 'integer', '950'),
+('dime.find.subtype', 'fibula.healing.aalborg', 'period', 'string', 'DÆXX'),
+('dime.find.subtype', 'fibula.healing.lamb', 'period', 'string', 'DÆXX'),
+('dime.find.subtype', 'fibula.healing.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'fibula.healing.urnes', 'year_end', 'integer', '1150'),
+('dime.find.subtype', 'fibula.healing.urnes', 'year_start', 'integer', '950'),
+('dime.find.subtype', 'fibula.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'fibula.plate.bird', 'year_end', 'integer', '700'),
+('dime.find.subtype', 'fibula.plate.bird', 'year_start', 'integer', '530'),
+('dime.find.subtype', 'fibula.plate.coin', 'period', 'string', 'CYVX'),
+('dime.find.subtype', 'fibula.plate.horse', 'year_end', 'integer', '750'),
+('dime.find.subtype', 'fibula.plate.horse', 'year_start', 'integer', '530'),
+('dime.find.subtype', 'fibula.plate.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'fibula.plate.oval', 'year_end', 'integer', '700'),
+('dime.find.subtype', 'fibula.plate.oval', 'year_start', 'integer', '600'),
+('dime.find.subtype', 'fibula.plate.råhede', 'year_end', 'integer', '950'),
+('dime.find.subtype', 'fibula.plate.råhede', 'year_start', 'integer', '800'),
+('dime.find.subtype', 'fibula.plate.rectangular', 'year_end', 'integer', '700'),
+('dime.find.subtype', 'fibula.plate.rectangular', 'year_start', 'integer', '600'),
+('dime.find.subtype', 'fibula.plate.ship', 'year_end', 'integer', '950'),
+('dime.find.subtype', 'fibula.plate.ship', 'year_start', 'integer', '750'),
+('dime.find.subtype', 'fibula.plate.snake', 'year_end', 'integer', '700'),
+('dime.find.subtype', 'fibula.plate.snake', 'year_start', 'integer', '530'),
+('dime.find.subtype', 'fibula.plate.swastika', 'year_end', 'integer', '1066'),
+('dime.find.subtype', 'fibula.plate.swastika', 'year_start', 'integer', '174'),
+('dime.find.subtype', 'fibula.plate.tongue', 'year_end', 'integer', '950'),
+('dime.find.subtype', 'fibula.plate.tongue', 'year_start', 'integer', '750'),
+('dime.find.subtype', 'fibula.plate.valkyrie', 'year_end', 'integer', '950'),
+('dime.find.subtype', 'fibula.plate.valkyrie', 'year_start', 'integer', '750'),
+('dime.find.subtype', 'fibula.ring', 'period', 'string', 'DXXX'),
+('dime.find.subtype', 'fibula.ring.circular', 'period', 'string', 'DXXX'),
+('dime.find.subtype', 'fibula.ring.heart', 'period', 'string', 'DYX3'),
+('dime.find.subtype', 'fibula.ring.other', 'period', 'string', 'DXXX'),
+('dime.find.subtype', 'fibula.ring.star', 'period', 'string', 'DYX3'),
+('dime.find.subtype', 'fibula.trilobal', 'year_end', 'integer', '1000'),
+('dime.find.subtype', 'fibula.trilobal', 'year_start', 'integer', '850'),
+('dime.find.subtype', 'fibula.viking', 'period', 'string', 'CYVX'),
+('dime.find.subtype', 'fibula.viking.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'fibula.viking.other', 'period', 'string', 'CYVX'),
+('dime.find.subtype', 'fibula.viking.rhombic', 'year_end', 'integer', '950'),
+('dime.find.subtype', 'fibula.viking.rhombic', 'year_start', 'integer', '800'),
+('dime.find.subtype', 'fibula.viking.ring', 'year_end', 'integer', '950'),
+('dime.find.subtype', 'fibula.viking.ring', 'year_start', 'integer', '750'),
+('dime.find.subtype', 'fibula.viking.roof', 'period', 'string', 'CYVÆ'),
+('dime.find.subtype', 'metal.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'military.fitting.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'military.melee.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'military.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'tool.house.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'tool.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'tool.toilet.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'tool.toy.other', 'description', 'boolean', '1'),
+('dime.find.subtype', 'tool.work.other', 'description', 'boolean', '1'),
 ('dime.period', 'AMXX', 'year_end', 'integer', '-3951'),
 ('dime.period', 'AMXX', 'year_start', 'integer', '-9000'),
 ('dime.period', 'AXXX', 'year_end', 'integer', '-1701'),
@@ -2318,7 +2480,7 @@ INSERT INTO `ark_vocabulary_parameter` (`concept`, `term`, `name`, `type`, `valu
 -- Table structure for table `ark_vocabulary_related`
 --
 
-CREATE TABLE `ark_vocabulary_related` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_related` (
   `from_concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `from_term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `to_concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2468,6 +2630,222 @@ INSERT INTO `ark_vocabulary_related` (`from_concept`, `from_term`, `to_concept`,
 ('dime.find.process', 'reported', 'dime.find.process', 'rejected', 'transition', 'reject', 0),
 ('dime.find.process', 'reported', 'dime.find.process', 'validated', 'transition', 'validate', 0),
 ('dime.find.process', 'validated', 'dime.find.process', 'evaluated', 'transition', 'evaluate', 0),
+('dime.find.subtype', 'accessory.button', 'dime.find.subtype', 'accessory.button.bar', 'broader', '', 3),
+('dime.find.subtype', 'accessory.button', 'dime.find.subtype', 'accessory.button.other', 'broader', '', 3),
+('dime.find.subtype', 'accessory.button', 'dime.find.subtype', 'accessory.button.round', 'broader', '', 3),
+('dime.find.subtype', 'accessory.button', 'dime.find.subtype', 'accessory.button.stud', 'broader', '', 3),
+('dime.find.subtype', 'accessory.fitting', 'dime.find.subtype', 'accessory.fitting.belt', 'broader', '', 3),
+('dime.find.subtype', 'accessory.fitting', 'dime.find.subtype', 'accessory.fitting.other', 'broader', '', 3),
+('dime.find.subtype', 'accessory.jewelery', 'dime.find.subtype', 'accessory.jewelery.bracelet', 'broader', '', 3),
+('dime.find.subtype', 'accessory.jewelery', 'dime.find.subtype', 'accessory.jewelery.bracteate', 'broader', '', 3),
+('dime.find.subtype', 'accessory.jewelery', 'dime.find.subtype', 'accessory.jewelery.earring', 'broader', '', 3),
+('dime.find.subtype', 'accessory.jewelery', 'dime.find.subtype', 'accessory.jewelery.necklace', 'broader', '', 3),
+('dime.find.subtype', 'accessory.jewelery', 'dime.find.subtype', 'accessory.jewelery.other', 'broader', '', 3),
+('dime.find.subtype', 'accessory.jewelery', 'dime.find.subtype', 'accessory.jewelery.pasyning', 'broader', '', 3),
+('dime.find.subtype', 'accessory.jewelery', 'dime.find.subtype', 'accessory.jewelery.pearl', 'broader', '', 3),
+('dime.find.subtype', 'accessory.jewelery', 'dime.find.subtype', 'accessory.jewelery.pendant', 'broader', '', 3),
+('dime.find.subtype', 'accessory.jewelery', 'dime.find.subtype', 'accessory.jewelery.ring', 'broader', '', 3),
+('dime.find.subtype', 'coin.danish', 'dime.find.subtype', 'coin.danish.civilwar', 'broader', '', 3),
+('dime.find.subtype', 'coin.danish', 'dime.find.subtype', 'coin.danish.early', 'broader', '', 3),
+('dime.find.subtype', 'coin.danish', 'dime.find.subtype', 'coin.danish.hvide', 'broader', '', 3),
+('dime.find.subtype', 'coin.danish', 'dime.find.subtype', 'coin.danish.klipping', 'broader', '', 3),
+('dime.find.subtype', 'coin.danish', 'dime.find.subtype', 'coin.danish.other', 'broader', '', 3),
+('dime.find.subtype', 'coin.danish', 'dime.find.subtype', 'coin.danish.søsling', 'broader', '', 3),
+('dime.find.subtype', 'coin.danish', 'dime.find.subtype', 'coin.danish.sterling', 'broader', '', 3),
+('dime.find.subtype', 'coin.foreign', 'dime.find.subtype', 'coin.foreign.hohlpfennig', 'broader', '', 3),
+('dime.find.subtype', 'coin.foreign', 'dime.find.subtype', 'coin.foreign.hvide', 'broader', '', 3),
+('dime.find.subtype', 'coin.foreign', 'dime.find.subtype', 'coin.foreign.other', 'broader', '', 3),
+('dime.find.subtype', 'coin.foreign', 'dime.find.subtype', 'coin.foreign.sterling', 'broader', '', 3),
+('dime.find.subtype', 'coin.foreign', 'dime.find.subtype', 'coin.foreign.tournois', 'broader', '', 3),
+('dime.find.subtype', 'coin.modern', 'dime.find.subtype', 'coin.modern.danish', 'broader', '', 3),
+('dime.find.subtype', 'coin.modern', 'dime.find.subtype', 'coin.modern.foreign', 'broader', '', 3),
+('dime.find.subtype', 'coin.roman', 'dime.find.subtype', 'coin.roman.aureus', 'broader', '', 3),
+('dime.find.subtype', 'coin.roman', 'dime.find.subtype', 'coin.roman.denarius', 'broader', '', 3),
+('dime.find.subtype', 'coin.roman', 'dime.find.subtype', 'coin.roman.other', 'broader', '', 3),
+('dime.find.subtype', 'coin.roman', 'dime.find.subtype', 'coin.roman.sestertius', 'broader', '', 3),
+('dime.find.subtype', 'coin.roman', 'dime.find.subtype', 'coin.roman.siliqua', 'broader', '', 3),
+('dime.find.subtype', 'coin.roman', 'dime.find.subtype', 'coin.roman.solidus', 'broader', '', 3),
+('dime.find.subtype', 'coin.viking', 'dime.find.subtype', 'coin.viking.byzantine', 'broader', '', 3),
+('dime.find.subtype', 'coin.viking', 'dime.find.subtype', 'coin.viking.carolingian', 'broader', '', 3),
+('dime.find.subtype', 'coin.viking', 'dime.find.subtype', 'coin.viking.denarius', 'broader', '', 3),
+('dime.find.subtype', 'coin.viking', 'dime.find.subtype', 'coin.viking.dirham', 'broader', '', 3),
+('dime.find.subtype', 'coin.viking', 'dime.find.subtype', 'coin.viking.english', 'broader', '', 3),
+('dime.find.subtype', 'coin.viking', 'dime.find.subtype', 'coin.viking.german', 'broader', '', 3),
+('dime.find.subtype', 'coin.viking', 'dime.find.subtype', 'coin.viking.nordic', 'broader', '', 3),
+('dime.find.subtype', 'coin.viking', 'dime.find.subtype', 'coin.viking.other', 'broader', '', 3),
+('dime.find.subtype', 'coin.viking', 'dime.find.subtype', 'coin.viking.penny', 'broader', '', 3),
+('dime.find.subtype', 'coin.viking', 'dime.find.subtype', 'coin.viking.phennig', 'broader', '', 3),
+('dime.find.subtype', 'coin.viking', 'dime.find.subtype', 'coin.viking.sceat', 'broader', '', 3),
+('dime.find.subtype', 'fibula.bow', 'dime.find.subtype', 'fibula.bow.ball', 'broader', '', 3),
+('dime.find.subtype', 'fibula.bow', 'dime.find.subtype', 'fibula.bow.band', 'broader', '', 3),
+('dime.find.subtype', 'fibula.bow', 'dime.find.subtype', 'fibula.bow.bilateral', 'broader', '', 3),
+('dime.find.subtype', 'fibula.bow', 'dime.find.subtype', 'fibula.bow.button', 'broader', '', 3),
+('dime.find.subtype', 'fibula.bow', 'dime.find.subtype', 'fibula.bow.cross', 'broader', '', 3),
+('dime.find.subtype', 'fibula.bow', 'dime.find.subtype', 'fibula.bow.foot', 'broader', '', 3),
+('dime.find.subtype', 'fibula.bow', 'dime.find.subtype', 'fibula.bow.high', 'broader', '', 3),
+('dime.find.subtype', 'fibula.bow', 'dime.find.subtype', 'fibula.bow.other', 'broader', '', 3),
+('dime.find.subtype', 'fibula.bow', 'dime.find.subtype', 'fibula.bow.relief', 'broader', '', 3),
+('dime.find.subtype', 'fibula.bowl', 'dime.find.subtype', 'fibula.bowl.animal', 'broader', '', 3),
+('dime.find.subtype', 'fibula.bowl', 'dime.find.subtype', 'fibula.bowl.circular', 'broader', '', 3),
+('dime.find.subtype', 'fibula.bowl', 'dime.find.subtype', 'fibula.bowl.large', 'broader', '', 3),
+('dime.find.subtype', 'fibula.bowl', 'dime.find.subtype', 'fibula.bowl.other', 'broader', '', 3),
+('dime.find.subtype', 'fibula.bowl', 'dime.find.subtype', 'fibula.bowl.small', 'broader', '', 3),
+('dime.find.subtype', 'fibula.circular', 'dime.find.subtype', 'fibula.circular.large', 'broader', '', 3),
+('dime.find.subtype', 'fibula.circular', 'dime.find.subtype', 'fibula.circular.other', 'broader', '', 3),
+('dime.find.subtype', 'fibula.circular', 'dime.find.subtype', 'fibula.circular.small', 'broader', '', 3),
+('dime.find.subtype', 'fibula.circular', 'dime.find.subtype', 'fibula.circular.tin', 'broader', '', 3),
+('dime.find.subtype', 'fibula.enamel', 'dime.find.subtype', 'fibula.enamel.central', 'broader', '', 3),
+('dime.find.subtype', 'fibula.enamel', 'dime.find.subtype', 'fibula.enamel.cross', 'broader', '', 3),
+('dime.find.subtype', 'fibula.enamel', 'dime.find.subtype', 'fibula.enamel.multiple', 'broader', '', 3),
+('dime.find.subtype', 'fibula.enamel', 'dime.find.subtype', 'fibula.enamel.other', 'broader', '', 3),
+('dime.find.subtype', 'fibula.equalarm', 'dime.find.subtype', 'fibula.equalarm.large', 'broader', '', 3),
+('dime.find.subtype', 'fibula.equalarm', 'dime.find.subtype', 'fibula.equalarm.other', 'broader', '', 3),
+('dime.find.subtype', 'fibula.equalarm', 'dime.find.subtype', 'fibula.equalarm.small', 'broader', '', 3),
+('dime.find.subtype', 'fibula.healing', 'dime.find.subtype', 'fibula.healing.aalborg', 'broader', '', 3),
+('dime.find.subtype', 'fibula.healing', 'dime.find.subtype', 'fibula.healing.lamb', 'broader', '', 3),
+('dime.find.subtype', 'fibula.healing', 'dime.find.subtype', 'fibula.healing.other', 'broader', '', 3),
+('dime.find.subtype', 'fibula.healing', 'dime.find.subtype', 'fibula.healing.urnes', 'broader', '', 3),
+('dime.find.subtype', 'fibula.plate', 'dime.find.subtype', 'fibula.plate.bird', 'broader', '', 3),
+('dime.find.subtype', 'fibula.plate', 'dime.find.subtype', 'fibula.plate.circular', 'broader', '', 3),
+('dime.find.subtype', 'fibula.plate', 'dime.find.subtype', 'fibula.plate.coin', 'broader', '', 3),
+('dime.find.subtype', 'fibula.plate', 'dime.find.subtype', 'fibula.plate.horse', 'broader', '', 3),
+('dime.find.subtype', 'fibula.plate', 'dime.find.subtype', 'fibula.plate.other', 'broader', '', 3),
+('dime.find.subtype', 'fibula.plate', 'dime.find.subtype', 'fibula.plate.oval', 'broader', '', 3),
+('dime.find.subtype', 'fibula.plate', 'dime.find.subtype', 'fibula.plate.råhede', 'broader', '', 3),
+('dime.find.subtype', 'fibula.plate', 'dime.find.subtype', 'fibula.plate.rectangular', 'broader', '', 3),
+('dime.find.subtype', 'fibula.plate', 'dime.find.subtype', 'fibula.plate.ship', 'broader', '', 3),
+('dime.find.subtype', 'fibula.plate', 'dime.find.subtype', 'fibula.plate.snake', 'broader', '', 3),
+('dime.find.subtype', 'fibula.plate', 'dime.find.subtype', 'fibula.plate.swastika', 'broader', '', 3),
+('dime.find.subtype', 'fibula.plate', 'dime.find.subtype', 'fibula.plate.tongue', 'broader', '', 3),
+('dime.find.subtype', 'fibula.plate', 'dime.find.subtype', 'fibula.plate.valkyrie', 'broader', '', 3),
+('dime.find.subtype', 'fibula.ring', 'dime.find.subtype', 'fibula.ring.circular', 'broader', '', 3),
+('dime.find.subtype', 'fibula.ring', 'dime.find.subtype', 'fibula.ring.heart', 'broader', '', 3),
+('dime.find.subtype', 'fibula.ring', 'dime.find.subtype', 'fibula.ring.other', 'broader', '', 3),
+('dime.find.subtype', 'fibula.ring', 'dime.find.subtype', 'fibula.ring.star', 'broader', '', 3),
+('dime.find.subtype', 'fibula.viking', 'dime.find.subtype', 'fibula.viking.other', 'broader', '', 3),
+('dime.find.subtype', 'fibula.viking', 'dime.find.subtype', 'fibula.viking.rhombic', 'broader', '', 3),
+('dime.find.subtype', 'fibula.viking', 'dime.find.subtype', 'fibula.viking.ring', 'broader', '', 3),
+('dime.find.subtype', 'fibula.viking', 'dime.find.subtype', 'fibula.viking.roof', 'broader', '', 3),
+('dime.find.subtype', 'military.fitting', 'dime.find.subtype', 'military.fitting.other', 'broader', '', 3),
+('dime.find.subtype', 'military.fitting', 'dime.find.subtype', 'military.fitting.sheath', 'broader', '', 3),
+('dime.find.subtype', 'military.fitting', 'dime.find.subtype', 'military.fitting.uniform', 'broader', '', 3),
+('dime.find.subtype', 'military.melee', 'dime.find.subtype', 'military.melee.axe', 'broader', '', 3),
+('dime.find.subtype', 'military.melee', 'dime.find.subtype', 'military.melee.blunt', 'broader', '', 3),
+('dime.find.subtype', 'military.melee', 'dime.find.subtype', 'military.melee.knife', 'broader', '', 3),
+('dime.find.subtype', 'military.melee', 'dime.find.subtype', 'military.melee.other', 'broader', '', 3),
+('dime.find.subtype', 'military.melee', 'dime.find.subtype', 'military.melee.pointed', 'broader', '', 3),
+('dime.find.subtype', 'military.melee', 'dime.find.subtype', 'military.melee.sword', 'broader', '', 3),
+('dime.find.subtype', 'tool.equestrian', 'dime.find.subtype', 'tool.equestrian.bell', 'broader', '', 3),
+('dime.find.subtype', 'tool.equestrian', 'dime.find.subtype', 'tool.equestrian.bridle', 'broader', '', 3),
+('dime.find.subtype', 'tool.equestrian', 'dime.find.subtype', 'tool.equestrian.cheek', 'broader', '', 3),
+('dime.find.subtype', 'tool.equestrian', 'dime.find.subtype', 'tool.equestrian.other', 'broader', '', 3),
+('dime.find.subtype', 'tool.equestrian', 'dime.find.subtype', 'tool.equestrian.shoe', 'broader', '', 3),
+('dime.find.subtype', 'tool.equestrian', 'dime.find.subtype', 'tool.equestrian.stirrup', 'broader', '', 3),
+('dime.find.subtype', 'tool.equestrian', 'dime.find.subtype', 'tool.equestrian.tack', 'broader', '', 3),
+('dime.find.subtype', 'tool.house', 'dime.find.subtype', 'tool.house.crockery', 'broader', '', 3),
+('dime.find.subtype', 'tool.house', 'dime.find.subtype', 'tool.house.cutlery', 'broader', '', 3),
+('dime.find.subtype', 'tool.house', 'dime.find.subtype', 'tool.house.fixtures', 'broader', '', 3),
+('dime.find.subtype', 'tool.house', 'dime.find.subtype', 'tool.house.key', 'broader', '', 3),
+('dime.find.subtype', 'tool.house', 'dime.find.subtype', 'tool.house.knife', 'broader', '', 3),
+('dime.find.subtype', 'tool.house', 'dime.find.subtype', 'tool.house.light', 'broader', '', 3),
+('dime.find.subtype', 'tool.house', 'dime.find.subtype', 'tool.house.lock', 'broader', '', 3),
+('dime.find.subtype', 'tool.house', 'dime.find.subtype', 'tool.house.other', 'broader', '', 3),
+('dime.find.subtype', 'tool.house', 'dime.find.subtype', 'tool.house.pot', 'broader', '', 3),
+('dime.find.subtype', 'tool.house', 'dime.find.subtype', 'tool.house.scissors', 'broader', '', 3),
+('dime.find.subtype', 'tool.house', 'dime.find.subtype', 'tool.house.striker', 'broader', '', 3),
+('dime.find.subtype', 'tool.measure', 'dime.find.subtype', 'tool.measure.clip', 'broader', '', 3),
+('dime.find.subtype', 'tool.measure', 'dime.find.subtype', 'tool.measure.ingot', 'broader', '', 3),
+('dime.find.subtype', 'tool.measure', 'dime.find.subtype', 'tool.measure.scale', 'broader', '', 3),
+('dime.find.subtype', 'tool.measure', 'dime.find.subtype', 'tool.measure.weight', 'broader', '', 3),
+('dime.find.subtype', 'tool.textile', 'dime.find.subtype', 'tool.textile.case', 'broader', '', 3),
+('dime.find.subtype', 'tool.textile', 'dime.find.subtype', 'tool.textile.needle', 'broader', '', 3),
+('dime.find.subtype', 'tool.textile', 'dime.find.subtype', 'tool.textile.scissors', 'broader', '', 3),
+('dime.find.subtype', 'tool.textile', 'dime.find.subtype', 'tool.textile.thimble', 'broader', '', 3),
+('dime.find.subtype', 'tool.textile', 'dime.find.subtype', 'tool.textile.whorl', 'broader', '', 3),
+('dime.find.subtype', 'tool.toilet', 'dime.find.subtype', 'tool.toilet.comb', 'broader', '', 3),
+('dime.find.subtype', 'tool.toilet', 'dime.find.subtype', 'tool.toilet.ear', 'broader', '', 3),
+('dime.find.subtype', 'tool.toilet', 'dime.find.subtype', 'tool.toilet.other', 'broader', '', 3),
+('dime.find.subtype', 'tool.toilet', 'dime.find.subtype', 'tool.toilet.razor', 'broader', '', 3),
+('dime.find.subtype', 'tool.toilet', 'dime.find.subtype', 'tool.toilet.tweezers', 'broader', '', 3),
+('dime.find.subtype', 'tool.toy', 'dime.find.subtype', 'tool.toy.counter', 'broader', '', 3),
+('dime.find.subtype', 'tool.toy', 'dime.find.subtype', 'tool.toy.dice', 'broader', '', 3),
+('dime.find.subtype', 'tool.toy', 'dime.find.subtype', 'tool.toy.other', 'broader', '', 3),
+('dime.find.subtype', 'tool.work', 'dime.find.subtype', 'tool.work.axe', 'broader', '', 3),
+('dime.find.subtype', 'tool.work', 'dime.find.subtype', 'tool.work.chisel', 'broader', '', 3),
+('dime.find.subtype', 'tool.work', 'dime.find.subtype', 'tool.work.drill', 'broader', '', 3),
+('dime.find.subtype', 'tool.work', 'dime.find.subtype', 'tool.work.fitting', 'broader', '', 3),
+('dime.find.subtype', 'tool.work', 'dime.find.subtype', 'tool.work.hammer', 'broader', '', 3),
+('dime.find.subtype', 'tool.work', 'dime.find.subtype', 'tool.work.knife', 'broader', '', 3),
+('dime.find.subtype', 'tool.work', 'dime.find.subtype', 'tool.work.nail', 'broader', '', 3),
+('dime.find.subtype', 'tool.work', 'dime.find.subtype', 'tool.work.other', 'broader', '', 3),
+('dime.find.subtype', 'tool.work', 'dime.find.subtype', 'tool.work.pliars', 'broader', '', 3),
+('dime.find.subtype', 'tool.work', 'dime.find.subtype', 'tool.work.rivet', 'broader', '', 3),
+('dime.find.subtype', 'tool.work', 'dime.find.subtype', 'tool.work.sickle', 'broader', '', 3),
+('dime.find.subtype', 'tool.writing', 'dime.find.subtype', 'tool.writing.bylamulet', 'broader', '', 3),
+('dime.find.subtype', 'tool.writing', 'dime.find.subtype', 'tool.writing.clasp', 'broader', '', 3),
+('dime.find.subtype', 'tool.writing', 'dime.find.subtype', 'tool.writing.guldgubbe', 'broader', '', 3),
+('dime.find.subtype', 'tool.writing', 'dime.find.subtype', 'tool.writing.runebrev', 'broader', '', 3),
+('dime.find.subtype', 'tool.writing', 'dime.find.subtype', 'tool.writing.seal', 'broader', '', 3),
+('dime.find.subtype', 'tool.writing', 'dime.find.subtype', 'tool.writing.stamp', 'broader', '', 3),
+('dime.find.subtype', 'tool.writing', 'dime.find.subtype', 'tool.writing.stylus', 'broader', '', 3),
+('dime.find.type', 'accessory', 'dime.find.subtype', 'accessory.bell', 'broader', '', 2),
+('dime.find.type', 'accessory', 'dime.find.subtype', 'accessory.brooch', 'broader', '', 2),
+('dime.find.type', 'accessory', 'dime.find.subtype', 'accessory.buckle', 'broader', '', 2),
+('dime.find.type', 'accessory', 'dime.find.subtype', 'accessory.button', 'broader', '', 2),
+('dime.find.type', 'accessory', 'dime.find.subtype', 'accessory.fitting', 'broader', '', 2),
+('dime.find.type', 'accessory', 'dime.find.subtype', 'accessory.hook', 'broader', '', 2),
+('dime.find.type', 'accessory', 'dime.find.subtype', 'accessory.jewelery', 'broader', '', 2),
+('dime.find.type', 'accessory', 'dime.find.subtype', 'accessory.lace', 'broader', '', 2),
+('dime.find.type', 'accessory', 'dime.find.subtype', 'accessory.medal', 'broader', '', 2),
+('dime.find.type', 'accessory', 'dime.find.subtype', 'accessory.other', 'broader', '', 2),
+('dime.find.type', 'accessory', 'dime.find.subtype', 'accessory.pilgrim', 'broader', '', 2),
+('dime.find.type', 'accessory', 'dime.find.subtype', 'accessory.pin', 'broader', '', 2),
+('dime.find.type', 'accessory', 'dime.find.subtype', 'accessory.tutulus', 'broader', '', 2),
+('dime.find.type', 'coin', 'dime.find.subtype', 'coin.danish', 'broader', '', 2),
+('dime.find.type', 'coin', 'dime.find.subtype', 'coin.foreign', 'broader', '', 2),
+('dime.find.type', 'coin', 'dime.find.subtype', 'coin.jeton', 'broader', '', 2),
+('dime.find.type', 'coin', 'dime.find.subtype', 'coin.modern', 'broader', '', 2),
+('dime.find.type', 'coin', 'dime.find.subtype', 'coin.other', 'broader', '', 2),
+('dime.find.type', 'coin', 'dime.find.subtype', 'coin.roman', 'broader', '', 2),
+('dime.find.type', 'coin', 'dime.find.subtype', 'coin.viking', 'broader', '', 2),
+('dime.find.type', 'fibula', 'dime.find.subtype', 'fibula.beak', 'broader', '', 2),
+('dime.find.type', 'fibula', 'dime.find.subtype', 'fibula.bird.above', 'broader', '', 2),
+('dime.find.type', 'fibula', 'dime.find.subtype', 'fibula.bird.profile', 'broader', '', 2),
+('dime.find.type', 'fibula', 'dime.find.subtype', 'fibula.bow', 'broader', '', 2),
+('dime.find.type', 'fibula', 'dime.find.subtype', 'fibula.bowl', 'broader', '', 2),
+('dime.find.type', 'fibula', 'dime.find.subtype', 'fibula.circular', 'broader', '', 2),
+('dime.find.type', 'fibula', 'dime.find.subtype', 'fibula.enamel', 'broader', '', 2),
+('dime.find.type', 'fibula', 'dime.find.subtype', 'fibula.equalarm', 'broader', '', 2),
+('dime.find.type', 'fibula', 'dime.find.subtype', 'fibula.healing', 'broader', '', 2),
+('dime.find.type', 'fibula', 'dime.find.subtype', 'fibula.other', 'broader', '', 2),
+('dime.find.type', 'fibula', 'dime.find.subtype', 'fibula.plate', 'broader', '', 2),
+('dime.find.type', 'fibula', 'dime.find.subtype', 'fibula.ring', 'broader', '', 2),
+('dime.find.type', 'fibula', 'dime.find.subtype', 'fibula.trilobal', 'broader', '', 2),
+('dime.find.type', 'fibula', 'dime.find.subtype', 'fibula.viking', 'broader', '', 2),
+('dime.find.type', 'metal', 'dime.find.subtype', 'metal.ingot', 'broader', '', 2),
+('dime.find.type', 'metal', 'dime.find.subtype', 'metal.mold', 'broader', '', 2),
+('dime.find.type', 'metal', 'dime.find.subtype', 'metal.other', 'broader', '', 2),
+('dime.find.type', 'metal', 'dime.find.subtype', 'metal.rest', 'broader', '', 2),
+('dime.find.type', 'metal', 'dime.find.subtype', 'metal.slag', 'broader', '', 2),
+('dime.find.type', 'metal', 'dime.find.subtype', 'metal.tin', 'broader', '', 2),
+('dime.find.type', 'military', 'dime.find.subtype', 'military.ammunition', 'broader', '', 2),
+('dime.find.type', 'military', 'dime.find.subtype', 'military.armor', 'broader', '', 2),
+('dime.find.type', 'military', 'dime.find.subtype', 'military.arrow', 'broader', '', 2),
+('dime.find.type', 'military', 'dime.find.subtype', 'military.firearm', 'broader', '', 2),
+('dime.find.type', 'military', 'dime.find.subtype', 'military.fitting', 'broader', '', 2),
+('dime.find.type', 'military', 'dime.find.subtype', 'military.helmet', 'broader', '', 2),
+('dime.find.type', 'military', 'dime.find.subtype', 'military.melee', 'broader', '', 2),
+('dime.find.type', 'military', 'dime.find.subtype', 'military.other', 'broader', '', 2),
+('dime.find.type', 'military', 'dime.find.subtype', 'military.shield', 'broader', '', 2),
+('dime.find.type', 'tool', 'dime.find.subtype', 'tool.equestrian', 'broader', '', 2),
+('dime.find.type', 'tool', 'dime.find.subtype', 'tool.house', 'broader', '', 2),
+('dime.find.type', 'tool', 'dime.find.subtype', 'tool.measure', 'broader', '', 2),
+('dime.find.type', 'tool', 'dime.find.subtype', 'tool.other', 'broader', '', 2),
+('dime.find.type', 'tool', 'dime.find.subtype', 'tool.textile', 'broader', '', 2),
+('dime.find.type', 'tool', 'dime.find.subtype', 'tool.toilet', 'broader', '', 2),
+('dime.find.type', 'tool', 'dime.find.subtype', 'tool.toy', 'broader', '', 2),
+('dime.find.type', 'tool', 'dime.find.subtype', 'tool.work', 'broader', '', 2),
+('dime.find.type', 'tool', 'dime.find.subtype', 'tool.writing', 'broader', '', 2),
 ('dime.period', 'AXXX', 'dime.period', 'AMXX', 'broader', '', 2),
 ('dime.period', 'AXXX', 'dime.period', 'AXXX', 'broader', '', 1),
 ('dime.period', 'AXXX', 'dime.period', 'AYXX', 'broader', '', 2),
@@ -2527,7 +2905,7 @@ INSERT INTO `ark_vocabulary_related` (`from_concept`, `from_term`, `to_concept`,
 -- Table structure for table `ark_vocabulary_relation`
 --
 
-CREATE TABLE `ark_vocabulary_relation` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_relation` (
   `relation` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `notation` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
   `recipricol` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2543,13 +2921,13 @@ CREATE TABLE `ark_vocabulary_relation` (
 --
 
 INSERT INTO `ark_vocabulary_relation` (`relation`, `notation`, `recipricol`, `recipricol_notation`, `equivalence`, `hierarchy`, `associative`, `description`) VALUES
-('broader', 'BT', 'narrower', 'NT', 0, 1, 0, 'The \'Has A\' parent/child hierarchy relationship'),
-('class', 'BTI', 'instance', 'NTI', 0, 1, 0, 'The \'Is A\' class/instance hierarchy relationship.'),
+('broader', 'BT', 'narrower', 'NT', 0, 1, 0, 'The ''Has A'' parent/child hierarchy relationship'),
+('class', 'BTI', 'instance', 'NTI', 0, 1, 0, 'The ''Is A'' class/instance hierarchy relationship.'),
 ('related', 'RT', 'related', 'RT', 0, 0, 1, 'Related terms that are neither equivalent or hierarchical.'),
 ('sequence', 'RTS', '', '', 0, 0, 1, 'Related terms where one term follows another in a list.'),
 ('transition', 'RTT', '', '', 0, 0, 1, 'Related terms where one term follows another, i.e. a sequence or change of state.'),
 ('usedfor', 'UF', 'use', 'U', 1, 0, 0, 'Leads from the preferred entry term to the\\nnon-preferred term(s).'),
-('whole', 'BTP', 'part', 'NTP', 0, 1, 0, 'The \'Part Of\' whole/part hierarchy relationship.');
+('whole', 'BTP', 'part', 'NTP', 0, 1, 0, 'The ''Part Of'' whole/part hierarchy relationship.');
 
 -- --------------------------------------------------------
 
@@ -2557,7 +2935,7 @@ INSERT INTO `ark_vocabulary_relation` (`relation`, `notation`, `recipricol`, `re
 -- Table structure for table `ark_vocabulary_term`
 --
 
-CREATE TABLE `ark_vocabulary_term` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_term` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `alias` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -3035,6 +3413,223 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('dime.find.secondary', 'stone', '', 0, 1, 0, 'dime.find.secondary.stone', ''),
 ('dime.find.secondary', 'tinned', '', 0, 1, 0, 'dime.dime.secondary.tinned', ''),
 ('dime.find.secondary', 'zz', 'other', 0, 1, 0, 'dime.dime.secondary.other', ''),
+('dime.find.subtype', 'accessory.bell', '', 0, 0, 0, 'dime.find.subtype.accessory.bell', ''),
+('dime.find.subtype', 'accessory.brooch', '', 0, 0, 0, 'dime.find.subtype.accessory.brooch', ''),
+('dime.find.subtype', 'accessory.buckle', '', 0, 0, 0, 'dime.find.subtype.accessory.buckle', ''),
+('dime.find.subtype', 'accessory.button', '', 0, 0, 0, 'dime.find.subtype.accessory.button', ''),
+('dime.find.subtype', 'accessory.button.bar', '', 0, 0, 0, 'dime.find.subtype.accessory.button.bar', ''),
+('dime.find.subtype', 'accessory.button.other', '', 0, 0, 0, 'dime.find.subtype.accessory.button.other', ''),
+('dime.find.subtype', 'accessory.button.round', '', 0, 0, 0, 'dime.find.subtype.accessory.button.round', ''),
+('dime.find.subtype', 'accessory.button.stud', '', 0, 0, 0, 'dime.find.subtype.accessory.button.stud', ''),
+('dime.find.subtype', 'accessory.fitting', '', 0, 0, 0, 'dime.find.subtype.accessory.fitting', ''),
+('dime.find.subtype', 'accessory.fitting.belt', '', 0, 0, 0, 'dime.find.subtype.accessory.fitting.belt', ''),
+('dime.find.subtype', 'accessory.fitting.other', '', 0, 0, 0, 'dime.find.subtype.accessory.fitting.other', ''),
+('dime.find.subtype', 'accessory.hook', '', 0, 0, 0, 'dime.find.subtype.accessory.hook', ''),
+('dime.find.subtype', 'accessory.jewelery', '', 0, 0, 0, 'dime.find.subtype.accessory.jewelery', ''),
+('dime.find.subtype', 'accessory.jewelery.bracelet', '', 0, 0, 0, 'dime.find.subtype.accessory.jewelery.bracelet', ''),
+('dime.find.subtype', 'accessory.jewelery.bracteate', '', 0, 0, 0, 'dime.find.subtype.accessory.jewelery.bracteate', ''),
+('dime.find.subtype', 'accessory.jewelery.earring', '', 0, 0, 0, 'dime.find.subtype.accessory.jewelery.earring', ''),
+('dime.find.subtype', 'accessory.jewelery.necklace', '', 0, 0, 0, 'dime.find.subtype.accessory.jewelery.necklace', ''),
+('dime.find.subtype', 'accessory.jewelery.other', '', 0, 0, 0, 'dime.find.subtype.accessory.jewelery.other', ''),
+('dime.find.subtype', 'accessory.jewelery.pasyning', '', 0, 0, 0, 'dime.find.subtype.accessory.jewelery.pasyning', ''),
+('dime.find.subtype', 'accessory.jewelery.pearl', '', 0, 0, 0, 'dime.find.subtype.accessory.jewelery.pearl', ''),
+('dime.find.subtype', 'accessory.jewelery.pendant', '', 0, 0, 0, 'dime.find.subtype.accessory.jewelery.pendant', ''),
+('dime.find.subtype', 'accessory.jewelery.ring', '', 0, 0, 0, 'dime.find.subtype.accessory.jewelery.ring', ''),
+('dime.find.subtype', 'accessory.lace', '', 0, 0, 0, 'dime.find.subtype.accessory.lace', ''),
+('dime.find.subtype', 'accessory.medal', '', 0, 0, 0, 'dime.find.subtype.accessory.medal', ''),
+('dime.find.subtype', 'accessory.other', '', 0, 0, 0, 'dime.find.subtype.accessory.other', ''),
+('dime.find.subtype', 'accessory.pilgrim', '', 0, 0, 0, 'dime.find.subtype.accessory.pilgrim', ''),
+('dime.find.subtype', 'accessory.pin', '', 0, 0, 0, 'dime.find.subtype.accessory.pin', ''),
+('dime.find.subtype', 'accessory.tutulus', '', 0, 0, 0, 'dime.find.subtype.accessory.tutulus', ''),
+('dime.find.subtype', 'coin.danish', '', 0, 0, 0, 'dime.find.subtype.coin.danish', ''),
+('dime.find.subtype', 'coin.danish.civilwar', '', 0, 0, 0, 'dime.find.subtype.coin.danish.civilwar', ''),
+('dime.find.subtype', 'coin.danish.early', '', 0, 0, 0, 'dime.find.subtype.coin.danish.early', ''),
+('dime.find.subtype', 'coin.danish.hvide', '', 0, 0, 0, 'dime.find.subtype.coin.danish.hvide', ''),
+('dime.find.subtype', 'coin.danish.klipping', '', 0, 0, 0, 'dime.find.subtype.coin.danish.klipping', ''),
+('dime.find.subtype', 'coin.danish.other', '', 0, 0, 0, 'dime.find.subtype.coin.danish.other', ''),
+('dime.find.subtype', 'coin.danish.søsling', '', 0, 0, 0, 'dime.find.subtype.coin.danish.søsling', ''),
+('dime.find.subtype', 'coin.danish.sterling', '', 0, 0, 0, 'dime.find.subtype.coin.danish.sterling', ''),
+('dime.find.subtype', 'coin.foreign', '', 0, 0, 0, 'dime.find.subtype.coin.foreign', ''),
+('dime.find.subtype', 'coin.foreign.hohlpfennig', '', 0, 0, 0, 'dime.find.subtype.coin.foreign.hohlpfennig', ''),
+('dime.find.subtype', 'coin.foreign.hvide', '', 0, 0, 0, 'dime.find.subtype.coin.foreign.hvide', ''),
+('dime.find.subtype', 'coin.foreign.other', '', 0, 0, 0, 'dime.find.subtype.coin.foreign.other', ''),
+('dime.find.subtype', 'coin.foreign.sterling', '', 0, 0, 0, 'dime.find.subtype.coin.foreign.sterling', ''),
+('dime.find.subtype', 'coin.foreign.tournois', '', 0, 0, 0, 'dime.find.subtype.coin.foreign.tournois', ''),
+('dime.find.subtype', 'coin.jeton', '', 0, 0, 0, 'dime.find.subtype.coin.jeton', ''),
+('dime.find.subtype', 'coin.modern', '', 0, 0, 0, 'dime.find.subtype.coin.modern', ''),
+('dime.find.subtype', 'coin.modern.danish', '', 0, 0, 0, 'dime.find.subtype.coin.modern.danish', ''),
+('dime.find.subtype', 'coin.modern.foreign', '', 0, 0, 0, 'dime.find.subtype.coin.modern.foreign', ''),
+('dime.find.subtype', 'coin.other', '', 0, 0, 0, 'dime.find.subtype.coin.other', ''),
+('dime.find.subtype', 'coin.roman', '', 0, 0, 0, 'dime.find.subtype.coin.roman', ''),
+('dime.find.subtype', 'coin.roman.aureus', '', 0, 0, 0, 'dime.find.subtype.coin.roman.aureus', ''),
+('dime.find.subtype', 'coin.roman.denarius', '', 0, 0, 0, 'dime.find.subtype.coin.roman.denarius', ''),
+('dime.find.subtype', 'coin.roman.other', '', 0, 0, 0, 'dime.find.subtype.coin.roman.other', ''),
+('dime.find.subtype', 'coin.roman.sestertius', '', 0, 0, 0, 'dime.find.subtype.coin.roman.sestertius', ''),
+('dime.find.subtype', 'coin.roman.siliqua', '', 0, 0, 0, 'dime.find.subtype.coin.roman.siliqua', ''),
+('dime.find.subtype', 'coin.roman.solidus', '', 0, 0, 0, 'dime.find.subtype.coin.roman.solidus', ''),
+('dime.find.subtype', 'coin.viking', '', 0, 0, 0, 'dime.find.subtype.coin.viking', ''),
+('dime.find.subtype', 'coin.viking.byzantine', '', 0, 0, 0, 'dime.find.subtype.coin.viking.byzantine', ''),
+('dime.find.subtype', 'coin.viking.carolingian', '', 0, 0, 0, 'dime.find.subtype.coin.viking.carolingian', ''),
+('dime.find.subtype', 'coin.viking.denarius', '', 0, 0, 0, 'dime.find.subtype.coin.viking.denarius', ''),
+('dime.find.subtype', 'coin.viking.dirham', '', 0, 0, 0, 'dime.find.subtype.coin.viking.dirham', ''),
+('dime.find.subtype', 'coin.viking.english', '', 0, 0, 0, 'dime.find.subtype.coin.viking.english', ''),
+('dime.find.subtype', 'coin.viking.german', '', 0, 0, 0, 'dime.find.subtype.coin.viking.german', ''),
+('dime.find.subtype', 'coin.viking.nordic', '', 0, 0, 0, 'dime.find.subtype.coin.viking.nordic', ''),
+('dime.find.subtype', 'coin.viking.other', '', 0, 0, 0, 'dime.find.subtype.coin.viking.other', ''),
+('dime.find.subtype', 'coin.viking.penny', '', 0, 0, 0, 'dime.find.subtype.coin.viking.penny', ''),
+('dime.find.subtype', 'coin.viking.phennig', '', 0, 0, 0, 'dime.find.subtype.coin.viking.phennig', ''),
+('dime.find.subtype', 'coin.viking.sceat', '', 0, 0, 0, 'dime.find.subtype.coin.viking.sceat', ''),
+('dime.find.subtype', 'fibula.beak', '', 0, 1, 0, 'dime.find.subtype.fibula.beak', ''),
+('dime.find.subtype', 'fibula.bird.above', '', 0, 0, 0, 'dime.find.subtype.fibula.bird.above', ''),
+('dime.find.subtype', 'fibula.bird.profile', '', 0, 0, 0, 'dime.find.subtype.fibula.bird.profile', ''),
+('dime.find.subtype', 'fibula.bow', '', 0, 0, 0, 'dime.find.subtype.fibula.bow', ''),
+('dime.find.subtype', 'fibula.bow.ball', '', 0, 0, 0, 'dime.find.subtype.fibula.bow.ball', ''),
+('dime.find.subtype', 'fibula.bow.band', '', 0, 0, 0, 'dime.find.subtype.fibula.bow.band', ''),
+('dime.find.subtype', 'fibula.bow.bilateral', '', 0, 0, 0, 'dime.find.subtype.fibula.bow.bilateral', ''),
+('dime.find.subtype', 'fibula.bow.button', '', 0, 0, 0, 'dime.find.subtype.fibula.bow.button', ''),
+('dime.find.subtype', 'fibula.bow.cross', '', 0, 0, 0, 'dime.find.subtype.fibula.bow.cross', ''),
+('dime.find.subtype', 'fibula.bow.foot', '', 0, 0, 0, 'dime.find.subtype.fibula.bow.foot', ''),
+('dime.find.subtype', 'fibula.bow.high', '', 0, 0, 0, 'dime.find.subtype.fibula.bow.high', ''),
+('dime.find.subtype', 'fibula.bow.other', '', 0, 0, 0, 'dime.find.subtype.fibula.bow.other', ''),
+('dime.find.subtype', 'fibula.bow.relief', '', 0, 0, 0, 'dime.find.subtype.fibula.bow.relief', ''),
+('dime.find.subtype', 'fibula.bowl', '', 0, 0, 0, 'dime.find.subtype.fibula.bowl', ''),
+('dime.find.subtype', 'fibula.bowl.animal', '', 0, 0, 0, 'dime.find.subtype.fibula.bowl.animal', ''),
+('dime.find.subtype', 'fibula.bowl.circular', '', 0, 0, 0, 'dime.find.subtype.fibula.bowl.circular', ''),
+('dime.find.subtype', 'fibula.bowl.large', '', 0, 0, 0, 'dime.find.subtype.fibula.bowl.large', ''),
+('dime.find.subtype', 'fibula.bowl.other', '', 0, 0, 0, 'dime.find.subtype.fibula.bowl.other', ''),
+('dime.find.subtype', 'fibula.bowl.small', '', 0, 0, 0, 'dime.find.subtype.fibula.bowl.small', ''),
+('dime.find.subtype', 'fibula.circular', '', 0, 0, 0, 'dime.find.subtype.fibula.circular', ''),
+('dime.find.subtype', 'fibula.circular.large', '', 0, 0, 0, 'dime.find.subtype.fibula.circular.large', ''),
+('dime.find.subtype', 'fibula.circular.other', '', 0, 0, 0, 'dime.find.subtype.fibula.circular.other', ''),
+('dime.find.subtype', 'fibula.circular.small', '', 0, 0, 0, 'dime.find.subtype.fibula.circular.small', ''),
+('dime.find.subtype', 'fibula.circular.tin', '', 0, 0, 0, 'dime.find.subtype.fibula.circular.tin', ''),
+('dime.find.subtype', 'fibula.enamel', '', 0, 0, 0, 'dime.find.subtype.fibula.enamel', ''),
+('dime.find.subtype', 'fibula.enamel.central', '', 0, 0, 0, 'dime.find.subtype.fibula.enamel.central', ''),
+('dime.find.subtype', 'fibula.enamel.cross', '', 0, 0, 0, 'dime.find.subtype.fibula.enamel.cross', ''),
+('dime.find.subtype', 'fibula.enamel.multiple', '', 0, 0, 0, 'dime.find.subtype.fibula.enamel.multiple', ''),
+('dime.find.subtype', 'fibula.enamel.other', '', 0, 0, 0, 'dime.find.subtype.fibula.enamel.other', ''),
+('dime.find.subtype', 'fibula.equalarm', '', 0, 0, 0, 'dime.find.subtype.fibula.equalarm', ''),
+('dime.find.subtype', 'fibula.equalarm.large', '', 0, 0, 0, 'dime.find.subtype.fibula.equalarm.large', ''),
+('dime.find.subtype', 'fibula.equalarm.other', '', 0, 0, 0, 'dime.find.subtype.fibula.equalarm.other', ''),
+('dime.find.subtype', 'fibula.equalarm.small', '', 0, 0, 0, 'dime.find.subtype.fibula.equalarm.small', ''),
+('dime.find.subtype', 'fibula.healing', '', 0, 0, 0, 'dime.find.subtype.fibula.healing', ''),
+('dime.find.subtype', 'fibula.healing.aalborg', '', 0, 0, 0, 'dime.find.subtype.fibula.healing.aalborg', ''),
+('dime.find.subtype', 'fibula.healing.lamb', '', 0, 0, 0, 'dime.find.subtype.fibula.healing.lamb', ''),
+('dime.find.subtype', 'fibula.healing.other', '', 0, 0, 0, 'dime.find.subtype.fibula.healing.other', ''),
+('dime.find.subtype', 'fibula.healing.urnes', '', 0, 0, 0, 'dime.find.subtype.fibula.healing.urnes', ''),
+('dime.find.subtype', 'fibula.other', '', 0, 0, 0, 'dime.find.subtype.fibula.other', ''),
+('dime.find.subtype', 'fibula.plate', '', 0, 0, 0, 'dime.find.subtype.fibula.plate', ''),
+('dime.find.subtype', 'fibula.plate.bird', '', 0, 0, 0, 'dime.find.subtype.fibula.plate.bird', ''),
+('dime.find.subtype', 'fibula.plate.circular', '', 0, 0, 0, 'dime.find.subtype.fibula.plate.circular', ''),
+('dime.find.subtype', 'fibula.plate.coin', '', 0, 0, 0, 'dime.find.subtype.fibula.plate.coin', ''),
+('dime.find.subtype', 'fibula.plate.horse', '', 0, 0, 0, 'dime.find.subtype.fibula.plate.horse', ''),
+('dime.find.subtype', 'fibula.plate.other', '', 0, 0, 0, 'dime.find.subtype.fibula.plate.other', ''),
+('dime.find.subtype', 'fibula.plate.oval', '', 0, 0, 0, 'dime.find.subtype.fibula.plate.oval', ''),
+('dime.find.subtype', 'fibula.plate.råhede', '', 0, 0, 0, 'dime.find.subtype.fibula.plate.råhede', ''),
+('dime.find.subtype', 'fibula.plate.rectangular', '', 0, 0, 0, 'dime.find.subtype.fibula.plate.rectangular', ''),
+('dime.find.subtype', 'fibula.plate.ship', '', 0, 0, 0, 'dime.find.subtype.fibula.plate.ship', ''),
+('dime.find.subtype', 'fibula.plate.snake', '', 0, 0, 0, 'dime.find.subtype.fibula.plate.snake', ''),
+('dime.find.subtype', 'fibula.plate.swastika', '', 0, 0, 0, 'dime.find.subtype.fibula.plate.swastika', ''),
+('dime.find.subtype', 'fibula.plate.tongue', '', 0, 0, 0, 'dime.find.subtype.fibula.plate.tongue', ''),
+('dime.find.subtype', 'fibula.plate.valkyrie', '', 0, 0, 0, 'dime.find.subtype.fibula.plate.valkyrie', ''),
+('dime.find.subtype', 'fibula.ring', '', 0, 0, 0, 'dime.find.subtype.fibula.ring', ''),
+('dime.find.subtype', 'fibula.ring.circular', '', 0, 0, 0, 'dime.find.subtype.fibula.ring.circular', ''),
+('dime.find.subtype', 'fibula.ring.heart', '', 0, 0, 0, 'dime.find.subtype.fibula.ring.heart', ''),
+('dime.find.subtype', 'fibula.ring.other', '', 0, 0, 0, 'dime.find.subtype.fibula.ring.other', ''),
+('dime.find.subtype', 'fibula.ring.star', '', 0, 0, 0, 'dime.find.subtype.fibula.ring.star', ''),
+('dime.find.subtype', 'fibula.trilobal', '', 0, 0, 0, 'dime.find.subtype.fibula.trilobal', ''),
+('dime.find.subtype', 'fibula.viking', '', 0, 0, 0, 'dime.find.subtype.fibula.viking', ''),
+('dime.find.subtype', 'fibula.viking.other', '', 0, 0, 0, 'dime.find.subtype.fibula.viking.other', ''),
+('dime.find.subtype', 'fibula.viking.rhombic', '', 0, 0, 0, 'dime.find.subtype.fibula.viking.rhombic', ''),
+('dime.find.subtype', 'fibula.viking.ring', '', 0, 0, 0, 'dime.find.subtype.fibula.viking.ring', ''),
+('dime.find.subtype', 'fibula.viking.roof', '', 0, 0, 0, 'dime.find.subtype.fibula.viking.roof', ''),
+('dime.find.subtype', 'metal.ingot', '', 0, 0, 0, 'dime.find.subtype.metal.ingot', ''),
+('dime.find.subtype', 'metal.mold', '', 0, 0, 0, 'dime.find.subtype.metal.mold', ''),
+('dime.find.subtype', 'metal.other', '', 0, 0, 0, 'dime.find.subtype.metal.other', ''),
+('dime.find.subtype', 'metal.rest', '', 0, 0, 0, 'dime.find.subtype.metal.rest', ''),
+('dime.find.subtype', 'metal.slag', '', 0, 0, 0, 'dime.find.subtype.metal.slag', ''),
+('dime.find.subtype', 'metal.tin', '', 0, 0, 0, 'dime.find.subtype.metal.tin', ''),
+('dime.find.subtype', 'military.ammunition', '', 0, 0, 0, 'dime.find.subtype.military.ammunition', ''),
+('dime.find.subtype', 'military.armor', '', 0, 0, 0, 'dime.find.subtype.military.armor', ''),
+('dime.find.subtype', 'military.arrow', '', 0, 0, 0, 'dime.find.subtype.military.arrow', ''),
+('dime.find.subtype', 'military.firearm', '', 0, 0, 0, 'dime.find.subtype.military.firearm', ''),
+('dime.find.subtype', 'military.fitting', '', 0, 0, 0, 'dime.find.subtype.military.fitting', ''),
+('dime.find.subtype', 'military.fitting.other', '', 0, 0, 0, 'dime.find.subtype.military.fitting.other', ''),
+('dime.find.subtype', 'military.fitting.sheath', '', 0, 0, 0, 'dime.find.subtype.military.fitting.sheath', ''),
+('dime.find.subtype', 'military.fitting.uniform', '', 0, 0, 0, 'dime.find.subtype.military.fitting.uniform', ''),
+('dime.find.subtype', 'military.helmet', '', 0, 0, 0, 'dime.find.subtype.military.helmet', ''),
+('dime.find.subtype', 'military.melee', '', 0, 0, 0, 'dime.find.subtype.military.melee', ''),
+('dime.find.subtype', 'military.melee.axe', '', 0, 0, 0, 'dime.find.subtype.military.melee.axe', ''),
+('dime.find.subtype', 'military.melee.blunt', '', 0, 0, 0, 'dime.find.subtype.military.melee.blunt', ''),
+('dime.find.subtype', 'military.melee.knife', '', 0, 0, 0, 'dime.find.subtype.military.melee.knife', ''),
+('dime.find.subtype', 'military.melee.other', '', 0, 0, 0, 'dime.find.subtype.military.melee.other', ''),
+('dime.find.subtype', 'military.melee.pointed', '', 0, 0, 0, 'dime.find.subtype.military.melee.pointed', ''),
+('dime.find.subtype', 'military.melee.sword', '', 0, 0, 0, 'dime.find.subtype.military.melee.sword', ''),
+('dime.find.subtype', 'military.other', '', 0, 0, 0, 'dime.find.subtype.military.other', ''),
+('dime.find.subtype', 'military.shield', '', 0, 0, 0, 'dime.find.subtype.military.shield', ''),
+('dime.find.subtype', 'tool.equestrian', '', 0, 0, 0, 'dime.find.subtype.tool.equestrian', ''),
+('dime.find.subtype', 'tool.equestrian.bell', '', 0, 0, 0, 'dime.find.subtype.tool.equestrian.bell', ''),
+('dime.find.subtype', 'tool.equestrian.bridle', '', 0, 0, 0, 'dime.find.subtype.tool.equestrian.bridle', ''),
+('dime.find.subtype', 'tool.equestrian.cheek', '', 0, 0, 0, 'dime.find.subtype.tool.equestrian.cheek', ''),
+('dime.find.subtype', 'tool.equestrian.other', '', 0, 0, 0, 'dime.find.subtype.tool.equestrian.other', ''),
+('dime.find.subtype', 'tool.equestrian.shoe', '', 0, 0, 0, 'dime.find.subtype.tool.equestrian.shoe', ''),
+('dime.find.subtype', 'tool.equestrian.stirrup', '', 0, 0, 0, 'dime.find.subtype.tool.equestrian.stirrup', ''),
+('dime.find.subtype', 'tool.equestrian.tack', '', 0, 0, 0, 'dime.find.subtype.tool.equestrian.tack', ''),
+('dime.find.subtype', 'tool.house', '', 0, 0, 0, 'dime.find.subtype.tool.house', ''),
+('dime.find.subtype', 'tool.house.crockery', '', 0, 0, 0, 'dime.find.subtype.tool.house.crockery', ''),
+('dime.find.subtype', 'tool.house.cutlery', '', 0, 0, 0, 'dime.find.subtype.tool.house.cutlery', ''),
+('dime.find.subtype', 'tool.house.fixtures', '', 0, 0, 0, 'dime.find.subtype.tool.house.fixtures', '');
+INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('dime.find.subtype', 'tool.house.key', '', 0, 0, 0, 'dime.find.subtype.tool.house.key', ''),
+('dime.find.subtype', 'tool.house.knife', '', 0, 0, 0, 'dime.find.subtype.tool.house.knife', ''),
+('dime.find.subtype', 'tool.house.light', '', 0, 0, 0, 'dime.find.subtype.tool.house.light', ''),
+('dime.find.subtype', 'tool.house.lock', '', 0, 0, 0, 'dime.find.subtype.tool.house.lock', ''),
+('dime.find.subtype', 'tool.house.other', '', 0, 0, 0, 'dime.find.subtype.tool.house.other', ''),
+('dime.find.subtype', 'tool.house.pot', '', 0, 0, 0, 'dime.find.subtype.tool.house.pot', ''),
+('dime.find.subtype', 'tool.house.scissors', '', 0, 0, 0, 'dime.find.subtype.tool.house.scissors', ''),
+('dime.find.subtype', 'tool.house.striker', '', 0, 0, 0, 'dime.find.subtype.tool.house.striker', ''),
+('dime.find.subtype', 'tool.measure', '', 0, 0, 0, 'dime.find.subtype.tool.measure', ''),
+('dime.find.subtype', 'tool.measure.clip', '', 0, 0, 0, 'dime.find.subtype.tool.measure.clip', ''),
+('dime.find.subtype', 'tool.measure.ingot', '', 0, 0, 0, 'dime.find.subtype.tool.measure.ingot', ''),
+('dime.find.subtype', 'tool.measure.scale', '', 0, 0, 0, 'dime.find.subtype.tool.measure.scale', ''),
+('dime.find.subtype', 'tool.measure.weight', '', 0, 0, 0, 'dime.find.subtype.tool.measure.weight', ''),
+('dime.find.subtype', 'tool.other', '', 0, 0, 0, 'dime.find.subtype.tool.other', ''),
+('dime.find.subtype', 'tool.textile', '', 0, 0, 0, 'dime.find.subtype.tool.textile', ''),
+('dime.find.subtype', 'tool.textile.case', '', 0, 0, 0, 'dime.find.subtype.tool.textile.case', ''),
+('dime.find.subtype', 'tool.textile.needle', '', 0, 0, 0, 'dime.find.subtype.tool.textile.needle', ''),
+('dime.find.subtype', 'tool.textile.scissors', '', 0, 0, 0, 'dime.find.subtype.tool.textile.scissors', ''),
+('dime.find.subtype', 'tool.textile.thimble', '', 0, 0, 0, 'dime.find.subtype.tool.textile.thimble', ''),
+('dime.find.subtype', 'tool.textile.whorl', '', 0, 0, 0, 'dime.find.subtype.tool.textile.whorl', ''),
+('dime.find.subtype', 'tool.toilet', '', 0, 0, 0, 'dime.find.subtype.tool.toilet', ''),
+('dime.find.subtype', 'tool.toilet.comb', '', 0, 0, 0, 'dime.find.subtype.tool.toilet.comb', ''),
+('dime.find.subtype', 'tool.toilet.ear', '', 0, 0, 0, 'dime.find.subtype.tool.toilet.ear', ''),
+('dime.find.subtype', 'tool.toilet.other', '', 0, 0, 0, 'dime.find.subtype.tool.toilet.other', ''),
+('dime.find.subtype', 'tool.toilet.razor', '', 0, 0, 0, 'dime.find.subtype.tool.toilet.razor', ''),
+('dime.find.subtype', 'tool.toilet.tweezers', '', 0, 0, 0, 'dime.find.subtype.tool.toilet.tweezers', ''),
+('dime.find.subtype', 'tool.toy', '', 0, 0, 0, 'dime.find.subtype.tool.toy', ''),
+('dime.find.subtype', 'tool.toy.counter', '', 0, 0, 0, 'dime.find.subtype.tool.toy.counter', ''),
+('dime.find.subtype', 'tool.toy.dice', '', 0, 0, 0, 'dime.find.subtype.tool.toy.dice', ''),
+('dime.find.subtype', 'tool.toy.other', '', 0, 0, 0, 'dime.find.subtype.tool.toy.other', ''),
+('dime.find.subtype', 'tool.work', '', 0, 0, 0, 'dime.find.subtype.tool.work', ''),
+('dime.find.subtype', 'tool.work.axe', '', 0, 0, 0, 'dime.find.subtype.tool.work.axe', ''),
+('dime.find.subtype', 'tool.work.chisel', '', 0, 0, 0, 'dime.find.subtype.tool.work.chisel', ''),
+('dime.find.subtype', 'tool.work.drill', '', 0, 0, 0, 'dime.find.subtype.tool.work.drill', ''),
+('dime.find.subtype', 'tool.work.fitting', '', 0, 0, 0, 'dime.find.subtype.tool.work.fitting', ''),
+('dime.find.subtype', 'tool.work.hammer', '', 0, 0, 0, 'dime.find.subtype.tool.work.hammer', ''),
+('dime.find.subtype', 'tool.work.knife', '', 0, 0, 0, 'dime.find.subtype.tool.work.knife', ''),
+('dime.find.subtype', 'tool.work.nail', '', 0, 0, 0, 'dime.find.subtype.tool.work.nail', ''),
+('dime.find.subtype', 'tool.work.other', '', 0, 0, 0, 'dime.find.subtype.tool.work.other', ''),
+('dime.find.subtype', 'tool.work.pliars', '', 0, 0, 0, 'dime.find.subtype.tool.work.pliars', ''),
+('dime.find.subtype', 'tool.work.rivet', '', 0, 0, 0, 'dime.find.subtype.tool.work.rivet', ''),
+('dime.find.subtype', 'tool.work.sickle', '', 0, 0, 0, 'dime.find.subtype.tool.work.sickle', ''),
+('dime.find.subtype', 'tool.writing', '', 0, 0, 0, 'dime.find.subtype.tool.writing', ''),
+('dime.find.subtype', 'tool.writing.bylamulet', '', 0, 0, 0, 'dime.find.subtype.tool.writing.bylamulet', ''),
+('dime.find.subtype', 'tool.writing.clasp', '', 0, 0, 0, 'dime.find.subtype.tool.writing.clasp', ''),
+('dime.find.subtype', 'tool.writing.guldgubbe', '', 0, 0, 0, 'dime.find.subtype.tool.writing.guldgubbe', ''),
+('dime.find.subtype', 'tool.writing.runebrev', '', 0, 0, 0, 'dime.find.subtype.tool.writing.runebrev', ''),
+('dime.find.subtype', 'tool.writing.seal', '', 0, 0, 0, 'dime.find.subtype.tool.writing.seal', ''),
+('dime.find.subtype', 'tool.writing.stamp', '', 0, 0, 0, 'dime.find.subtype.tool.writing.stamp', ''),
+('dime.find.subtype', 'tool.writing.stylus', '', 0, 0, 0, 'dime.find.subtype.tool.writing.stylus', ''),
 ('dime.find.type', 'accessory', '', 0, 1, 0, 'dime.find.type.accessory', ''),
 ('dime.find.type', 'coin', '', 0, 1, 0, 'dime.find.type.coin', ''),
 ('dime.find.type', 'fibula', '', 0, 1, 0, 'dime.find.type.fibula', ''),
@@ -3266,8 +3861,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('language', 'fa', 'persian', 0, 1, 0, 'language.persian', ''),
 ('language', 'fan', 'fang', 0, 1, 0, 'language.fang', ''),
 ('language', 'fat', 'fanti', 0, 1, 0, 'language.fanti', ''),
-('language', 'ff', 'fulah', 0, 1, 0, 'language.fulah', '');
-INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('language', 'ff', 'fulah', 0, 1, 0, 'language.fulah', ''),
 ('language', 'fi', 'finnish', 0, 1, 0, 'language.finnish', ''),
 ('language', 'fil', 'filipino', 0, 1, 0, 'language.filipino', ''),
 ('language', 'fit', 'finnish.tornedalen', 0, 1, 0, 'language.finnish.tornedalen', ''),
@@ -3708,7 +4302,8 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('language', 'yrl', 'nheengatu', 0, 1, 0, 'language.nheengatu', ''),
 ('language', 'yue', 'cantonese', 0, 1, 0, 'language.cantonese', ''),
 ('language', 'za', 'zhuang', 0, 1, 0, 'language.zhuang', ''),
-('language', 'zap', 'zapotec', 0, 1, 0, 'language.zapotec', ''),
+('language', 'zap', 'zapotec', 0, 1, 0, 'language.zapotec', '');
+INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
 ('language', 'zbl', 'blissymbols', 0, 1, 0, 'language.blissymbols', ''),
 ('language', 'zea', 'zeelandic', 0, 1, 0, 'language.zeelandic', ''),
 ('language', 'zen', 'zenaga', 0, 1, 0, 'language.zenaga', ''),
@@ -3740,7 +4335,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 -- Table structure for table `ark_vocabulary_translation`
 --
 
-CREATE TABLE `ark_vocabulary_translation` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_translation` (
   `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `domain` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -3780,6 +4375,222 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('da', 'vocabulary', 'dime.find.secondary.niello', 'default', 'Niello', ''),
 ('da', 'vocabulary', 'dime.find.secondary.organic', 'default', 'Organisk', ''),
 ('da', 'vocabulary', 'dime.find.secondary.stone', 'default', 'Sten', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.bell', 'default', 'Bjælde/ Klokke', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.brooch', 'default', 'Broche/ Emblem', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.buckle', 'default', 'Spænde (bæltespænde, skospænde osv.)', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.button', 'default', 'Knap', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.button.bar', 'default', 'Stangknap', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.button.other', 'default', 'Anden type knap (Angiv i beskrivelsefelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.button.round', 'default', 'Alm. rund, halvrund el. skiveformet knap til påsyning', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.button.stud', 'default', 'Dobbeltknap', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.fitting', 'default', 'Beslag', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.fitting.belt', 'default', 'Remendebeslag', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.fitting.other', 'default', 'Anden type beslag (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.hook', 'default', 'Hægte/ Malle', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery', 'default', 'Smykke', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.bracelet', 'default', 'Armring el. -kæde', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.bracteate', 'default', 'Brakteat', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.earring', 'default', 'Ørering', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.necklace', 'default', 'Halssmykke - krave, ring, el. kæde', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.other', 'default', 'Andet smykke (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.pasyning', 'default', 'Påsyningsblik', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.pearl', 'default', 'Perle', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.pendant', 'default', 'Hængesmykke/amulet', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.ring', 'default', 'Fingerring', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.lace', 'default', 'Snøreendedup/ Snørenål', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.medal', 'default', 'Medalje/ Orden', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.other', 'default', 'Andet dragttilbehør (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.pilgrim', 'default', 'Pilgrimsmærke', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.pin', 'default', 'Dragtnål', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.tutulus', 'default', 'Tutulus', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish', 'default', 'Dansk middelaldermønt (1067-1535) ', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish.civilwar', 'default', 'Dansk borgerkrigsmønt (1242-1380)', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish.early', 'default', 'Dansk tidlig middaldermønt (1067-1241)', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish.hvide', 'default', 'Hvide', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish.klipping', 'default', 'Klipping', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish.other', 'default', 'Anden dansk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish.søsling', 'default', 'Søsling', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish.sterling', 'default', 'Kobbersterling', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.foreign', 'default', 'Udenlandsk middelaldermønt (1067-1535)', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.foreign.hohlpfennig', 'default', 'Hulpenning', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.foreign.hvide', 'default', 'Nordtyske hvide', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.foreign.other', 'default', 'Anden udenlandsk middelaldermønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.foreign.sterling', 'default', 'Engelske sterling', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.foreign.tournois', 'default', 'Franske turnos', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.jeton', 'default', 'Regnepenning', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.modern', 'default', 'Nyere mønt (efter 1535)', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.modern.danish', 'default', 'Nyere dansk mønt (efter 1535)', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.modern.foreign', 'default', 'Nyere udenlandsk mønt (efter 1535)', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.other', 'default', 'Anden mønt (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.roman', 'default', 'Romersk / Byzantinsk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.roman.aureus', 'default', 'Aurus', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.roman.denarius', 'default', 'Denar', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.roman.other', 'default', 'Anden romersk / byzantinsk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.roman.sestertius', 'default', 'Sesters', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.roman.siliqua', 'default', 'Siliqua', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.roman.solidus', 'default', 'Solidus', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking', 'default', 'Vikingetidsmønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.byzantine', 'default', 'Byzantisk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.carolingian', 'default', 'Anden karolingisk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.denarius', 'default', 'Karolingsk denar', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.dirham', 'default', 'Dirhem', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.english', 'default', 'Anden engelsk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.german', 'default', 'Anden tysk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.nordic', 'default', 'Dansk/nordisk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.other', 'default', 'Anden vikingetidsmønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.penny', 'default', 'Engelsk penny', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.phennig', 'default', 'Tysk phennig', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.sceat', 'default', 'Sceatta', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.beak', 'default', 'Næbfibula', 'delete'),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bird.above', 'default', 'Fuglefibula (set fra oven)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bird.profile', 'default', 'Fugleformet fibula (ældre middelalder - lille fugl i profil)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow', 'default', 'Bøjlefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.ball', 'default', 'Sværtstøbt kuglefibula (Førromersk jernalder)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.band', 'default', 'Brede båndformede bøjlefibler (Romersk jernalder - Almgr. V)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.bilateral', 'default', '2-leddede fibler m. tværkam (Ældre romersk jernalder - Almgr. I-IV)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.button', 'default', 'Rygknapfibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.cross', 'default', 'Korsformet fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.foot', 'default', 'Bøjlefibler med omslået fod inkl. Nydamfibler (Yngre romersk jernalder - Almgr. VI)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.high', 'default', 'Bøjlefibler med høj nåleholder (Yngre romersk jernalder - Almgr. VII)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.other', 'default', 'Anden bøjlefibula (Angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.relief', 'default', 'Relieffibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bowl', 'default', 'Skålfibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bowl.animal', 'default', 'Dyreformet skålfibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bowl.circular', 'default', 'Cirkulær skålfibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bowl.large', 'default', 'Stor oval skålfibula (større end 7,5 cm)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bowl.other', 'default', 'Anden skålfibel', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bowl.small', 'default', 'Lille oval skålfibula (mindre end 7,5 cm)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.circular', 'default', 'Cirkulær fibula uden emalje/ indfatning', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.circular.large', 'default', 'Stor hvælvet cirkulær fibula (diameter > 4 cm)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.circular.other', 'default', 'Anden cirkulær fibula (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.circular.small', 'default', 'Lille hvælvet cirkulær fibula (diameter < 4 cm) ', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.circular.tin', 'default', 'Cirkulær blikfibula (tidlig middelalder)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.enamel', 'default', 'Emaljefibula/ Fibula m. indfatning', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.enamel.central', 'default', 'Fibula m. central indfatning', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.enamel.cross', 'default', 'Korsemaljefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.enamel.multiple', 'default', 'Fibula m. flere indfatninger', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.enamel.other', 'default', 'Anden emaljefibula/ Fibula m. indfatning', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.equalarm', 'default', 'Ligearmet fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.equalarm.large', 'default', 'Stor ligearmet fibula (Vikingetid)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.equalarm.other', 'default', 'Anden type ligearmet fibel (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.equalarm.small', 'default', 'Lille ligearmet fibula (Germansk jernalder)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.healing', 'default', 'Dyreslyngsfibula (Urnesfibula og Guds lam)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.healing.aalborg', 'default', 'Dyreslyngsfibula af Aalborg-type (Guds lam uden kors)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.healing.lamb', 'default', 'Guds lam fibula / Agnus Dei fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.healing.other', 'default', 'Anden dyreslyngsfibula (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.healing.urnes', 'default', 'Urnesfibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.other', 'default', 'Anden type fibula/ Dragtspænde (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate', 'default', 'Pladefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.bird', 'default', 'Stor fugleformet pladefibula (Yngre germansk jernalder)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.circular', 'default', 'Cirkulær pladefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.coin', 'default', 'Møntfibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.horse', 'default', 'Hesteformet pladefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.other', 'default', 'Anden pladefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.oval', 'default', 'Oval pladefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.råhede', 'default', 'Råhedefibula (korsformet pladefibel)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.rectangular', 'default', 'Rektangulær pladefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.ship', 'default', 'Skibsformet fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.snake', 'default', 'S- el. Slangeformet pladefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.swastika', 'default', 'Hagekorsfibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.tongue', 'default', 'Tungeformet fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.valkyrie', 'default', 'Valkyriefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.ring', 'default', 'Middelalderligt ringspænde', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.ring.circular', 'default', 'Cirkulære ringspænder', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.ring.heart', 'default', 'Hjerteformede ringspænder', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.ring.other', 'default', 'Anden type middelalderligt ringspænde', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.ring.star', 'default', 'Stjerneformede ringspænder', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.trilobal', 'default', 'Trefliget fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.viking', 'default', 'Anden vikingetidsfibula/-dragtspænde', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.viking.other', 'default', 'Fibula lavet af anden genstand', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.viking.rhombic', 'default', 'Rhombisk fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.viking.ring', 'default', 'Ringspænde/ Ringnål', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.viking.roof', 'default', 'Hjalteformet/ Tagformet fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.metal.ingot', 'default', 'Barre', ''),
+('da', 'vocabulary', 'dime.find.subtype.metal.mold', 'default', 'Støbeform/ Smeltedigel', ''),
+('da', 'vocabulary', 'dime.find.subtype.metal.other', 'default', 'Andet produktionsaffald/ Metalskrot/ Råmaterialer\n(angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.metal.rest', 'default', 'Støberest', ''),
+('da', 'vocabulary', 'dime.find.subtype.metal.slag', 'default', 'Slagge', ''),
+('da', 'vocabulary', 'dime.find.subtype.metal.tin', 'default', 'Blikfragment', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.ammunition', 'default', 'Ammunition (Musketkugle/Granat/Patronhylster/Kanonkugler)', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.armor', 'default', 'Rustning/ Ringbrynje', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.arrow', 'default', 'Pilespids/ Armbrøstbolt', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.firearm', 'default', 'Skydevåben', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.fitting', 'default', 'Beslag', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.fitting.other', 'default', 'Anden type beslag (angiv)', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.fitting.sheath', 'default', 'Skedebeslag ', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.fitting.uniform', 'default', 'Orden/Uniformbeslag', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.helmet', 'default', 'Hjelm', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.melee', 'default', 'Slag-/ Stikvåben', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.melee.axe', 'default', 'Økse/celt/pålstav', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.melee.blunt', 'default', 'Stridskølle', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.melee.knife', 'default', 'Dolk', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.melee.other', 'default', 'Anden type slag-/stikvåben (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.melee.pointed', 'default', 'Lanse/Spyd', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.melee.sword', 'default', 'Sværd/Sabel (klinge eller greb)', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.other', 'default', 'Andet våben/ Militaria  (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.shield', 'default', 'Skjold', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian', 'default', 'Rideudstyr/ Seletøj (spore, hestesko, bidsel, etc)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian.bell', 'default', 'Bjælde/klokke', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian.bridle', 'default', 'Hovedtøjsdele (Bidsel/ bidselbeslag, remfordeler, etc.)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian.cheek', 'default', 'Rasleblik', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian.other', 'default', 'Andet rideudstyr/ seletøj (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian.shoe', 'default', 'Hestesko', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian.stirrup', 'default', 'Stigbøjle/stigbøjlebeslag', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian.tack', 'default', 'Spore', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house', 'default', 'Husgeråd/ Bord- og køkkentøj/ Interiør', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.crockery', 'default', 'Tallerken/fad/skål', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.cutlery', 'default', 'Bestik (spisekniv,-gaffel, -ske)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.fixtures', 'default', 'Møbel-/skrinbeslag/håndtag/pyntenitter', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.key', 'default', 'Nøgle', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.knife', 'default', 'Kniv (knivblad, grebsbeslag, knivskedebeslag, etc) ', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.light', 'default', 'Lysestage/lampe', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.lock', 'default', 'Lås', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.other', 'default', 'Andet "Husgeråd/bord- og køkkentøj/interiør" (Angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.pot', 'default', 'Malmgryde', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.scissors', 'default', 'Saks', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.striker', 'default', 'Ildstål', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.measure', 'default', 'Værdimetal/Vægte og vægtlodder', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.measure.clip', 'default', 'Klipsølv/guldfragment (ikke møntfragmenter)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.measure.ingot', 'default', 'Barre', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.measure.scale', 'default', 'Vægt', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.measure.weight', 'default', 'Vægtlod', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.other', 'default', 'Andet redskab/værktøj (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.textile', 'default', 'Redskaber til tekstilarbejde', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.textile.case', 'default', 'Nålehylster', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.textile.needle', 'default', 'Nål', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.textile.scissors', 'default', 'Saks', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.textile.thimble', 'default', 'Fingerbøl', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.textile.whorl', 'default', 'tenvægt', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toilet', 'default', 'Toiletudstyr (kam, ragekniv, pincet)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toilet.comb', 'default', 'kam', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toilet.ear', 'default', 'øreske', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toilet.other', 'default', 'Andet toiletudstyr', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toilet.razor', 'default', 'ragekniv', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toilet.tweezers', 'default', 'pincet', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toy', 'default', 'Legetøj/ Spillerekvisiter (tinsoldat, spillebrik, etc.)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toy.counter', 'default', 'Spillebrik', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toy.dice', 'default', 'Terning', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toy.other', 'default', 'Andet legetøj/ Spillerekvisit (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work', 'default', 'Landbrugsudstyr/ Værktøj/ Håndværksartikel', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.axe', 'default', 'Økse/celt/pålstav', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.chisel', 'default', 'Mejsel/punsel', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.drill', 'default', 'Syl/bor', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.fitting', 'default', 'Beslag', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.hammer', 'default', 'Hammer', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.knife', 'default', 'Kniv (knivblad, grebsbeslag, knivskedebeslag, etc) ', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.nail', 'default', 'Søm/skrue/krampe', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.other', 'default', 'Andet landbrugsudstyr/værktøj/håndværksartikel (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.pliars', 'default', 'Tang', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.rivet', 'default', 'Nitte/klinknagle/Nitteplade', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.sickle', 'default', 'Segl/Le', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing', 'default', 'Artikler - religion og kommunikation', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing.bylamulet', 'default', 'Blyamulet', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing.clasp', 'default', 'Bogspænde', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing.guldgubbe', 'default', 'Guldgubbe', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing.runebrev', 'default', 'Runebrev', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing.seal', 'default', 'Plombe', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing.stamp', 'default', 'Seglstampe/Signet', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing.stylus', 'default', 'Stylos', ''),
 ('da', 'vocabulary', 'dime.find.type.accessory', 'default', 'Smykke / Dragttilbehør', ''),
 ('da', 'vocabulary', 'dime.find.type.coin', 'default', 'Mønt', ''),
 ('da', 'vocabulary', 'dime.find.type.fibula', 'default', 'Fibula / Dragtspænde', ''),
@@ -4101,7 +4912,8 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'country.benin', 'default', 'Benin ', ''),
 ('en', 'vocabulary', 'country.bermuda', 'default', 'Bermuda ', ''),
 ('en', 'vocabulary', 'country.bhutan', 'default', 'Bhutan ', ''),
-('en', 'vocabulary', 'country.bolivia', 'default', 'Bolivia', ''),
+('en', 'vocabulary', 'country.bolivia', 'default', 'Bolivia', '');
+INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'vocabulary', 'country.bonaire', 'default', 'Bonaire, Sint Eustatius and Saba ', ''),
 ('en', 'vocabulary', 'country.bosniaherzegovina', 'default', 'Bosnia and Herzegovina ', ''),
 ('en', 'vocabulary', 'country.botswana', 'default', 'Botswana ', ''),
@@ -4127,7 +4939,7 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'country.congo', 'default', 'Congo ', ''),
 ('en', 'vocabulary', 'country.cookislands', 'default', 'Cook Islands ', ''),
 ('en', 'vocabulary', 'country.costarica', 'default', 'Costa Rica ', ''),
-('en', 'vocabulary', 'country.cotedivoire', 'default', 'Côte d\'Ivoire ', ''),
+('en', 'vocabulary', 'country.cotedivoire', 'default', 'Côte d''Ivoire ', ''),
 ('en', 'vocabulary', 'country.croatia', 'default', 'Croatia ', ''),
 ('en', 'vocabulary', 'country.cuba', 'default', 'Cuba ', ''),
 ('en', 'vocabulary', 'country.curacao', 'default', 'Curaçao ', ''),
@@ -4334,6 +5146,222 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'dime.find.secondary.niello', 'default', 'Niello', ''),
 ('en', 'vocabulary', 'dime.find.secondary.organic', 'default', 'Organic', ''),
 ('en', 'vocabulary', 'dime.find.secondary.stone', 'default', 'Stone', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.bell', 'default', 'Bell', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.brooch', 'default', 'Brooch / Emblem', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.buckle', 'default', 'Buckle (Buckle, shoe pænde etc.).', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.button', 'default', 'Button', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.button.bar', 'default', 'Bar Button', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.button.other', 'default', 'Other type button (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.button.round', 'default', 'Alm. round, half-round or disc-shaped button sewing', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.button.stud', 'default', 'Stud Button', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.fitting', 'default', 'Fittings', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.fitting.belt', 'default', 'Belt end fitting', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.fitting.other', 'default', 'Other type fittings (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.hook', 'default', 'Hook / Malle', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery', 'default', 'Jewelery', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.bracelet', 'default', 'Bangle / Bracelet', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.bracteate', 'default', 'Bracteate', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.earring', 'default', 'Earring', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.necklace', 'default', 'Necklace - collar, ring, or chain', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.other', 'default', 'Other jewelry (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.pasyning', 'default', 'Påsyningsblik?', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.pearl', 'default', 'Pearl', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.pendant', 'default', 'Pendant / Amulet', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.ring', 'default', 'Finger ring', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.lace', 'default', 'Lace End', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.medal', 'default', 'Medal / Order', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.other', 'default', 'Other costume accessories (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.pilgrim', 'default', 'Pilgrim Badge', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.pin', 'default', 'Clothes pin', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.tutulus', 'default', 'Tutulus', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish', 'default', 'Danish medieval coins', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish.civilwar', 'default', 'Danish civil war coin (1242-1380)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish.early', 'default', 'Danish early middaldermønt (1067-1241)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish.hvide', 'default', 'White', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish.klipping', 'default', 'Klipping', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish.other', 'default', 'Other Danish medieval coin (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish.søsling', 'default', 'Søsling', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish.sterling', 'default', 'Copper Sterling', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.foreign', 'default', 'Medieval foreign coin (1067-1535)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.foreign.hohlpfennig', 'default', 'Hohlpfennigs (Bracteate)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.foreign.hvide', 'default', 'North German White', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.foreign.other', 'default', 'Other foreign medieval coin (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.foreign.sterling', 'default', 'English Sterling', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.foreign.tournois', 'default', 'French Tournois', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.jeton', 'default', 'Jeton / Trade Token', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.modern', 'default', 'Modern coins (after 1535)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.modern.danish', 'default', 'Modern Danish coin (after 1535)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.modern.foreign', 'default', 'Modern foreign coin (after 1535)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.other', 'default', 'Other coin (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.roman', 'default', 'Roman / Byzantine coin', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.roman.aureus', 'default', 'Aureus', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.roman.denarius', 'default', 'Denarius', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.roman.other', 'default', 'Other Roman / Byzantine coin (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.roman.sestertius', 'default', 'Sestertius', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.roman.siliqua', 'default', 'Siliqua', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.roman.solidus', 'default', 'Solidus', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking', 'default', 'Viking Coin', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.byzantine', 'default', 'Byzantine coins', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.carolingian', 'default', 'Other Carolingian coin', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.denarius', 'default', 'Carolingian denarius', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.dirham', 'default', 'Dirham', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.english', 'default', 'Other English coin', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.german', 'default', 'Other German coin', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.nordic', 'default', 'Danish / Nordic Coin', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.other', 'default', 'Other Viking coin (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.penny', 'default', 'English penny', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.phennig', 'default', 'German phennig', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.sceat', 'default', 'Sceat', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.beak', 'default', 'Beak fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bird.above', 'default', 'Bird fibula (top view)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bird.profile', 'default', 'Bird-shaped fibula (Early medieval - small bird in profile)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow', 'default', 'Bow fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.ball', 'default', 'Hard cast ball fibula (Pre- Roman Iron Age)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.band', 'default', 'Wide band-shaped bow fibulas (Roman Iron Age - Almgr. V)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.bilateral', 'default', 'Bilateral fibulas with two combs (Early Roman Iron Age - Almgr. I-IV)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.button', 'default', 'Back button fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.cross', 'default', 'Cross shaped fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.foot', 'default', 'Bow fibulas with enclosed foot including Nydam fibulas (Late Roman Iron Age - Almgr. VI)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.high', 'default', 'Bow fibulas high needle holder (Late Roman Iron Age - Almgr. VII)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.other', 'default', 'Other bow fibula (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.relief', 'default', 'Relief fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bowl', 'default', 'Bowl Fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bowl.animal', 'default', 'Animal Shaped Bowl fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bowl.circular', 'default', 'Circular Bowl fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bowl.large', 'default', 'Large oval Bowl fibula (greater than 7.5 cm)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bowl.other', 'default', 'Other bowl fibula (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bowl.small', 'default', 'Small Oval Bowl fibula (less than 7.5 cm)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.circular', 'default', 'Circular fibula without enamel / casing', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.circular.large', 'default', 'Large vaulted circular fibula (diameter of> 4 cm)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.circular.other', 'default', 'Other circular fibula (specify in description box)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.circular.small', 'default', 'Small vaulted circular fibula (diameter <4 cm)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.circular.tin', 'default', 'Circular tin fibula (early Middle Ages)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.enamel', 'default', 'Enamel fibula / FIbula with setting', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.enamel.central', 'default', 'Fibula with central casing', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.enamel.cross', 'default', 'Cross enamel fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.enamel.multiple', 'default', 'Fibula with several settings', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.enamel.other', 'default', 'Other enamel fibula / FIbula with setting (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.equalarm', 'default', 'Equal arm fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.equalarm.large', 'default', 'Large equal arm fibula (Viking)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.equalarm.other', 'default', 'Other type equal arm fibula (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.equalarm.small', 'default', 'Small equal arm fibula (Germanic Iron Age)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.healing', 'default', 'Animal healing fibula (Urnes fibula and Lamb of God)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.healing.aalborg', 'default', 'Animal healing fibula of Aalborg type (Lamb of God without cross)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.healing.lamb', 'default', 'Lamb of God fibula / Agnus Dei fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.healing.other', 'default', 'Other Animal healing fibula (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.healing.urnes', 'default', 'Urnes fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.other', 'default', 'Other type fibula / brooches (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate', 'default', 'Plate fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.bird', 'default', 'Large bird-shaped plate fibula (Early Germanic Iron Age)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.circular', 'default', 'Circular plate fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.coin', 'default', 'Coin fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.horse', 'default', 'Horse Shaped plate fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.other', 'default', 'Other plate fibula (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.oval', 'default', 'Oval plate fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.råhede', 'default', 'Råhede fibula (cruciform plate Fibel)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.rectangular', 'default', 'Rectangular plate fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.ship', 'default', 'Ship-shaped fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.snake', 'default', 'S-shaped snake plate fibula?', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.swastika', 'default', 'swastika fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.tongue', 'default', 'Tongue-shaped fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.valkyrie', 'default', 'Valkyrie fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.ring', 'default', 'Medieval ring brooches', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.ring.circular', 'default', 'Circular ring brooches', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.ring.heart', 'default', 'Heart-shaped ring brooches', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.ring.other', 'default', 'Other Type medieval ring brooches', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.ring.star', 'default', 'Star-shaped ring brooches', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.trilobal', 'default', 'Trilobal fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.viking', 'default', 'Other Viking fibula / brooch', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.viking.other', 'default', 'Other Viking fibula / costume buckle (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.viking.rhombic', 'default', 'Rhombic fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.viking.ring', 'default', 'Ring Brooch / Ringed Pin', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.viking.roof', 'default', 'Hjalti-shaped / roof-shaped fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.metal.ingot', 'default', 'Ingot', ''),
+('en', 'vocabulary', 'dime.find.subtype.metal.mold', 'default', 'Mold / Melting Pot', ''),
+('en', 'vocabulary', 'dime.find.subtype.metal.other', 'default', 'Other production waste / metal scrap / raw materials (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.metal.rest', 'default', 'Casting Rest', ''),
+('en', 'vocabulary', 'dime.find.subtype.metal.slag', 'default', 'Slag', ''),
+('en', 'vocabulary', 'dime.find.subtype.metal.tin', 'default', 'Tin Fragment', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.ammunition', 'default', 'Munition (musket ball / Garnet / shotshell / cannon balls)', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.armor', 'default', 'Armor / Chainmail', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.arrow', 'default', 'Arrowhead / Armbrøstbolt', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.firearm', 'default', 'Firearms', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.fitting', 'default', 'Fittings', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.fitting.other', 'default', 'Other type bracket (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.fitting.sheath', 'default', 'Sheath Brackets', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.fitting.uniform', 'default', 'Order / Uniform Bracket', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.helmet', 'default', 'Helmet', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.melee', 'default', 'Stroke / Stick Weapons', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.melee.axe', 'default', 'Ax / celt / pålstav', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.melee.blunt', 'default', 'Blunt weapons (clubs, maces, hammers, staves, flails, etc)', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.melee.knife', 'default', 'Dagger', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.melee.other', 'default', 'Other type of impact / stabbing weapon (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.melee.pointed', 'default', 'Lance / spear', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.melee.sword', 'default', 'Sword / Sabel (blade or handle)', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.other', 'default', 'Other weapons / militaria (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.shield', 'default', 'Shield', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian', 'default', 'Riding / Harness (track, horseshoes, bridle, etc)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian.bell', 'default', 'Bell / rattle', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian.bridle', 'default', 'Hovedtøjsdele (bridle / bidselbeslag, remfordeler, etc.)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian.cheek', 'default', 'Rattle glance? Cheek piece?', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian.other', 'default', 'Other riding / harness (specify in description box)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian.shoe', 'default', 'Horseshoe', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian.stirrup', 'default', 'Stirrup / stirrup bracket', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian.tack', 'default', 'Track?', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house', 'default', 'Housekeeping / Table and cookware / Interior', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.crockery', 'default', 'Plate / dish / bowl', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.cutlery', 'default', 'Flatware / Cutlery (table knives, forks, spoons)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.fixtures', 'default', 'Furniture / bo bracket / handles / decorative rivets', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.key', 'default', 'Key', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.knife', 'default', 'Knife (blade knife, handle bracket, knife scabbard fittings, etc)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.light', 'default', 'Candlestick / lamp', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.lock', 'default', 'Lock', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.other', 'default', 'Other "Housekeeping / table and cookware / interior" (Enter the description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.pot', 'default', 'Malm pot', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.scissors', 'default', 'Scissors', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.striker', 'default', 'Fire-steel', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.measure', 'default', 'Safety Metal / Scales and weights', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.measure.clip', 'default', 'Cut silver / gold fragment (not coin fragments)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.measure.ingot', 'default', 'Ingot', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.measure.scale', 'default', 'Scales', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.measure.weight', 'default', 'Weights', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.other', 'default', 'Other tool / tools (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.textile', 'default', 'Tools for textile work', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.textile.case', 'default', 'Needle Case', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.textile.needle', 'default', 'Needle', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.textile.scissors', 'default', 'Scissors', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.textile.thimble', 'default', 'Thimble', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.textile.whorl', 'default', 'Spindle whorl', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toilet', 'default', 'Toilet equipment (comb, razor, tweezers)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toilet.comb', 'default', 'comb', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toilet.ear', 'default', 'Ear spoon', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toilet.other', 'default', 'Other toilet equipment (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toilet.razor', 'default', 'razor', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toilet.tweezers', 'default', 'Tweezers', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toy', 'default', 'Toy / Spillerekvisiter (tin soldier, playing piece, etc.)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toy.counter', 'default', 'play Brik', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toy.dice', 'default', 'Dice', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toy.other', 'default', 'Other toys / games Prop (insert in the description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work', 'default', 'Agricultural Equipment / Tools / Crafts Article', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.axe', 'default', 'Axe / celt / pålstav', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.chisel', 'default', 'Chisel / punch', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.drill', 'default', 'Awl / drill', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.fitting', 'default', 'Fitting', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.hammer', 'default', 'Hammer', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.knife', 'default', 'Knife (blade knife, handle bracket, knife scabbard fittings, etc)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.nail', 'default', 'Nail / screw / spasm', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.other', 'default', 'Other agricultural equipment / tools / crafts article (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.pliars', 'default', 'Pliars', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.rivet', 'default', 'Rivet / clinker nail / Rivet Plate', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.sickle', 'default', 'Scythe / Sickle', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing', 'default', 'Articles - Religion and Communications', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing.bylamulet', 'default', 'Blyamulet', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing.clasp', 'default', 'Book clasp', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing.guldgubbe', 'default', 'Guldgubbe', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing.runebrev', 'default', 'Rune Letter', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing.seal', 'default', 'seal', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing.stamp', 'default', 'Seal Stamps / Signet', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing.stylus', 'default', 'Stylus', ''),
 ('en', 'vocabulary', 'dime.find.type.accessory', 'default', 'Jewelery / Costume Accessories', ''),
 ('en', 'vocabulary', 'dime.find.type.coin', 'default', 'Coin', ''),
 ('en', 'vocabulary', 'dime.find.type.fibula', 'default', 'Fibula / Suit Buckle', ''),
@@ -4406,8 +5434,7 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'dime.kommune.haderslev', 'official', 'Haderslev Municipality', ''),
 ('en', 'vocabulary', 'dime.kommune.halsnaes', 'default', 'Halsnæs', ''),
 ('en', 'vocabulary', 'dime.kommune.halsnaes', 'official', 'Halsnæs Municipality', ''),
-('en', 'vocabulary', 'dime.kommune.hedensted', 'default', 'Hedensted', '');
-INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'vocabulary', 'dime.kommune.hedensted', 'default', 'Hedensted', ''),
 ('en', 'vocabulary', 'dime.kommune.hedensted', 'official', 'Hedensted Municipality', ''),
 ('en', 'vocabulary', 'dime.kommune.helsingor', 'default', 'Helsingør', ''),
 ('en', 'vocabulary', 'dime.kommune.helsingor', 'official', 'Helsingør Municipality', ''),
@@ -4469,7 +5496,8 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'dime.kommune.naestved', 'official', 'Næstved Municipality', ''),
 ('en', 'vocabulary', 'dime.kommune.norddjurs', 'default', 'Norddjurs', ''),
 ('en', 'vocabulary', 'dime.kommune.norddjurs', 'official', 'Norddjurs Municipality', ''),
-('en', 'vocabulary', 'dime.kommune.nordfyns', 'default', 'Nordfyns', ''),
+('en', 'vocabulary', 'dime.kommune.nordfyns', 'default', 'Nordfyns', '');
+INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'vocabulary', 'dime.kommune.nordfyns', 'official', 'Nordfyns Municipality', ''),
 ('en', 'vocabulary', 'dime.kommune.nyborg', 'default', 'Nyborg', ''),
 ('en', 'vocabulary', 'dime.kommune.nyborg', 'official', 'Nyborg Municipality', ''),
@@ -5107,8 +6135,7 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'language.sinhala', 'default', 'Sinhala', ''),
 ('en', 'vocabulary', 'language.slave', 'default', 'Slave', ''),
 ('en', 'vocabulary', 'language.slavic.church', 'default', 'Church Slavic', ''),
-('en', 'vocabulary', 'language.slovak', 'default', 'Slovak', '');
-INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'vocabulary', 'language.slovak', 'default', 'Slovak', ''),
 ('en', 'vocabulary', 'language.slovenian', 'default', 'Slovenian', ''),
 ('en', 'vocabulary', 'language.soga', 'default', 'Soga', ''),
 ('en', 'vocabulary', 'language.sogdien', 'default', 'Sogdien', ''),
@@ -5179,7 +6206,8 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 ('en', 'vocabulary', 'language.twi', 'default', 'Twi', ''),
 ('en', 'vocabulary', 'language.tyap', 'default', 'Tyap', ''),
 ('en', 'vocabulary', 'language.udmurt', 'default', 'Udmurt', ''),
-('en', 'vocabulary', 'language.ugaritic', 'default', 'Ugaritic', ''),
+('en', 'vocabulary', 'language.ugaritic', 'default', 'Ugaritic', '');
+INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'vocabulary', 'language.ukrainian', 'default', 'Ukrainian', ''),
 ('en', 'vocabulary', 'language.umbundu', 'default', 'Umbundu', ''),
 ('en', 'vocabulary', 'language.unknown', 'default', 'Unknown Language', ''),
@@ -5238,7 +6266,7 @@ INSERT INTO `ark_vocabulary_translation` (`language`, `domain`, `keyword`, `role
 -- Table structure for table `ark_vocabulary_type`
 --
 
-CREATE TABLE `ark_vocabulary_type` (
+CREATE TABLE IF NOT EXISTS `ark_vocabulary_type` (
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `equivalence` tinyint(1) NOT NULL DEFAULT '0',
   `hierarchy` tinyint(1) NOT NULL DEFAULT '0',
@@ -5265,7 +6293,7 @@ INSERT INTO `ark_vocabulary_type` (`type`, `equivalence`, `hierarchy`, `associat
 -- Table structure for table `ark_workflow_action`
 --
 
-CREATE TABLE `ark_workflow_action` (
+CREATE TABLE IF NOT EXISTS `ark_workflow_action` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `action` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `event_vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -5341,7 +6369,7 @@ INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event
 -- Table structure for table `ark_workflow_agency`
 --
 
-CREATE TABLE `ark_workflow_agency` (
+CREATE TABLE IF NOT EXISTS `ark_workflow_agency` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `action` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -5384,7 +6412,7 @@ INSERT INTO `ark_workflow_agency` (`schma`, `action`, `type`, `attribute`, `oper
 -- Table structure for table `ark_workflow_allow`
 --
 
-CREATE TABLE `ark_workflow_allow` (
+CREATE TABLE IF NOT EXISTS `ark_workflow_allow` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `action` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -5433,7 +6461,7 @@ INSERT INTO `ark_workflow_allow` (`schma`, `action`, `role`, `operator`) VALUES
 -- Table structure for table `ark_workflow_condition`
 --
 
-CREATE TABLE `ark_workflow_condition` (
+CREATE TABLE IF NOT EXISTS `ark_workflow_condition` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `action` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -5482,7 +6510,7 @@ INSERT INTO `ark_workflow_condition` (`schma`, `action`, `type`, `attribute`, `g
 -- Table structure for table `ark_workflow_grant`
 --
 
-CREATE TABLE `ark_workflow_grant` (
+CREATE TABLE IF NOT EXISTS `ark_workflow_grant` (
   `role` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `permission` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
@@ -5494,6 +6522,8 @@ CREATE TABLE `ark_workflow_grant` (
 INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('anon', 'core.page.read'),
 ('anon', 'dime.find.read'),
+('detectorist', 'core.message.read'),
+('detectorist', 'core.message.update'),
 ('detectorist', 'dime.find.read'),
 ('detectorist', 'dime.find.read.custody'),
 ('detectorist', 'dime.find.read.finddate'),
@@ -5538,7 +6568,7 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 -- Table structure for table `ark_workflow_notify`
 --
 
-CREATE TABLE `ark_workflow_notify` (
+CREATE TABLE IF NOT EXISTS `ark_workflow_notify` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `action` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -5609,7 +6639,7 @@ INSERT INTO `ark_workflow_notify` (`schma`, `action`, `type`, `attribute`, `keyw
 -- Table structure for table `ark_workflow_permission`
 --
 
-CREATE TABLE `ark_workflow_permission` (
+CREATE TABLE IF NOT EXISTS `ark_workflow_permission` (
   `permission` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
@@ -5669,7 +6699,7 @@ INSERT INTO `ark_workflow_permission` (`permission`, `enabled`, `keyword`) VALUE
 -- Table structure for table `ark_workflow_role`
 --
 
-CREATE TABLE `ark_workflow_role` (
+CREATE TABLE IF NOT EXISTS `ark_workflow_role` (
   `role` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
@@ -5694,7 +6724,7 @@ INSERT INTO `ark_workflow_role` (`role`, `enabled`, `keyword`) VALUES
 -- Table structure for table `ark_workflow_trigger`
 --
 
-CREATE TABLE `ark_workflow_trigger` (
+CREATE TABLE IF NOT EXISTS `ark_workflow_trigger` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `action` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `trigger_schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -5715,7 +6745,7 @@ INSERT INTO `ark_workflow_trigger` (`schma`, `action`, `trigger_schma`, `trigger
 -- Table structure for table `ark_workflow_update`
 --
 
-CREATE TABLE `ark_workflow_update` (
+CREATE TABLE IF NOT EXISTS `ark_workflow_update` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `action` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -5767,7 +6797,7 @@ INSERT INTO `ark_workflow_update` (`schma`, `action`, `type`, `attribute`) VALUE
 -- Table structure for table `dime_period`
 --
 
-CREATE TABLE `dime_period` (
+CREATE TABLE IF NOT EXISTS `dime_period` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `parent` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -5880,6 +6910,892 @@ INSERT INTO `dime_period` (`concept`, `term`, `parent`, `depth`, `from_year`, `t
 ('dime.period', 'TM1B', 'ATM1', 8, -3200, -3100, 'Mellemneolitisk Tragtbægerkultur 1B', 'funnelbeaker.middle.ib', 'dime.period.funnelbeaker.middle.ib'),
 ('dime.period', 'XXXX', '', 1, -250000, 2100, 'Udateret', 'undated', 'dime.period.undated');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `TABLE 64`
+--
+
+CREATE TABLE IF NOT EXISTS `TABLE 64` (
+  `COL 1` varchar(2) DEFAULT NULL,
+  `COL 2` varchar(10) DEFAULT NULL,
+  `COL 3` varchar(46) DEFAULT NULL,
+  `COL 4` varchar(11) DEFAULT NULL,
+  `COL 5` varchar(88) DEFAULT NULL,
+  `COL 6` varchar(6) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `TABLE 64`
+--
+
+INSERT INTO `TABLE 64` (`COL 1`, `COL 2`, `COL 3`, `COL 4`, `COL 5`, `COL 6`) VALUES
+('da', 'vocabulary', 'dime.find.subtype.fibula.beak', 'default', 'Næbfibula', 'delete'),
+('da', 'vocabulary', 'dime.find.subtype.fibula.equalarm', 'default', 'Ligearmet fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.equalarm.small', 'default', 'Lille ligearmet fibula (Germansk jernalder)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.equalarm.large', 'default', 'Stor ligearmet fibula (Vikingetid)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.equalarm.other', 'default', 'Anden type ligearmet fibel (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.healing', 'default', 'Dyreslyngsfibula (Urnesfibula og Guds lam)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.healing.urnes', 'default', 'Urnesfibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.healing.lamb', 'default', 'Guds lam fibula / Agnus Dei fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.healing.aalborg', 'default', 'Dyreslyngsfibula af Aalborg-type (Guds lam uden kors)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.healing.other', 'default', 'Anden dyreslyngsfibula (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bird.above', 'default', 'Fuglefibula (set fra oven)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bird.profile', 'default', 'Fugleformet fibula (ældre middelalder - lille fugl i profil)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.trilobal', 'default', 'Trefliget fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow', 'default', 'Bøjlefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.ball', 'default', 'Sværtstøbt kuglefibula (Førromersk jernalder)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.bilateral', 'default', '2-leddede fibler m. tværkam (Ældre romersk jernalder - Almgr. I-IV)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.band', 'default', 'Brede båndformede bøjlefibler (Romersk jernalder - Almgr. V)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.foot', 'default', 'Bøjlefibler med omslået fod inkl. Nydamfibler (Yngre romersk jernalder - Almgr. VI)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.high', 'default', 'Bøjlefibler med høj nåleholder (Yngre romersk jernalder - Almgr. VII)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.relief', 'default', 'Relieffibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.cross', 'default', 'Korsformet fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.button', 'default', 'Rygknapfibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.other', 'default', 'Anden bøjlefibula (Angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate', 'default', 'Pladefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.oval', 'default', 'Oval pladefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.rectangular', 'default', 'Rektangulær pladefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.horse', 'default', 'Hesteformet pladefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.bird', 'default', 'Stor fugleformet pladefibula (Yngre germansk jernalder)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.circular', 'default', 'Cirkulær pladefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.snake', 'default', 'S- el. Slangeformet pladefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.ship', 'default', 'Skibsformet fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.tongue', 'default', 'Tungeformet fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.valkyrie', 'default', 'Valkyriefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.swastika', 'default', 'Hagekorsfibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.råhede', 'default', 'Råhedefibula (korsformet pladefibel)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.coin', 'default', 'Møntfibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.other', 'default', 'Anden pladefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bowl', 'default', 'Skålfibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bowl.small', 'default', 'Lille oval skålfibula (mindre end 7,5 cm)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bowl.large', 'default', 'Stor oval skålfibula (større end 7,5 cm)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bowl.circular', 'default', 'Cirkulær skålfibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bowl.animal', 'default', 'Dyreformet skålfibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bowl.other', 'default', 'Anden skålfibel', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.circular', 'default', 'Cirkulær fibula uden emalje/ indfatning', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.circular.small', 'default', 'Lille hvælvet cirkulær fibula (diameter < 4 cm) ', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.circular.large', 'default', 'Stor hvælvet cirkulær fibula (diameter > 4 cm)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.circular.tin', 'default', 'Cirkulær blikfibula (tidlig middelalder)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.circular.other', 'default', 'Anden cirkulær fibula (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.enamel', 'default', 'Emaljefibula/ Fibula m. indfatning', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.enamel.central', 'default', 'Fibula m. central indfatning', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.enamel.multiple', 'default', 'Fibula m. flere indfatninger', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.enamel.cross', 'default', 'Korsemaljefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.enamel.other', 'default', 'Anden emaljefibula/ Fibula m. indfatning', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.viking', 'default', 'Anden vikingetidsfibula/-dragtspænde', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.viking.roof', 'default', 'Hjalteformet/ Tagformet fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.viking.rhombic', 'default', 'Rhombisk fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.viking.ring', 'default', 'Ringspænde/ Ringnål', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.viking.other', 'default', 'Fibula lavet af anden genstand', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.ring', 'default', 'Middelalderligt ringspænde', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.ring.circular', 'default', 'Cirkulære ringspænder', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.ring.heart', 'default', 'Hjerteformede ringspænder', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.ring.star', 'default', 'Stjerneformede ringspænder', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.ring.other', 'default', 'Anden type middelalderligt ringspænde', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.other', 'default', 'Anden type fibula/ Dragtspænde (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery', 'default', 'Smykke', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.bracteate', 'default', 'Brakteat', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.bracelet', 'default', 'Armring el. -kæde', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.ring', 'default', 'Fingerring', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.necklace', 'default', 'Halssmykke - krave, ring, el. kæde', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.pasyning', 'default', 'Påsyningsblik', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.earring', 'default', 'Ørering', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.pendant', 'default', 'Hængesmykke/amulet', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.pearl', 'default', 'Perle', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.other', 'default', 'Andet smykke (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.fitting', 'default', 'Beslag', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.fitting.belt', 'default', 'Remendebeslag', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.fitting.other', 'default', 'Anden type beslag (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.brooch', 'default', 'Broche/ Emblem', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.lace', 'default', 'Snøreendedup/ Snørenål', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.hook', 'default', 'Hægte/ Malle', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.medal', 'default', 'Medalje/ Orden', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.pin', 'default', 'Dragtnål', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.pilgrim', 'default', 'Pilgrimsmærke', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.buckle', 'default', 'Spænde (bæltespænde, skospænde osv.)', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.button', 'default', 'Knap', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.button.round', 'default', 'Alm. rund, halvrund el. skiveformet knap til påsyning', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.button.bar', 'default', 'Stangknap', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.button.stud', 'default', 'Dobbeltknap', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.button.other', 'default', 'Anden type knap (Angiv i beskrivelsefelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.tutulus', 'default', 'Tutulus', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.bell', 'default', 'Bjælde/ Klokke', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.other', 'default', 'Andet dragttilbehør (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.roman', 'default', 'Romersk / Byzantinsk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.roman.denarius', 'default', 'Denar', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.roman.solidus', 'default', 'Solidus', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.roman.aureus', 'default', 'Aurus', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.roman.sestertius', 'default', 'Sesters', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.roman.siliqua', 'default', 'Siliqua', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.roman.other', 'default', 'Anden romersk / byzantinsk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking', 'default', 'Vikingetidsmønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.sceat', 'default', 'Sceatta', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.dirham', 'default', 'Dirhem', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.denarius', 'default', 'Karolingsk denar', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.carolingian', 'default', 'Anden karolingisk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.penny', 'default', 'Engelsk penny', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.english', 'default', 'Anden engelsk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.phennig', 'default', 'Tysk phennig', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.german', 'default', 'Anden tysk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.nordic', 'default', 'Dansk/nordisk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.byzantine', 'default', 'Byzantisk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.other', 'default', 'Anden vikingetidsmønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish', 'default', 'Dansk middelaldermønt (1067-1535) ', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish.early', 'default', 'Dansk tidlig middaldermønt (1067-1241)', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish.civilwar', 'default', 'Dansk borgerkrigsmønt (1242-1380)', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish.sterling', 'default', 'Kobbersterling', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish.hvide', 'default', 'Hvide', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish.klipping', 'default', 'Klipping', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish.søsling', 'default', 'Søsling', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish.other', 'default', 'Anden dansk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.foreign', 'default', 'Udenlandsk middelaldermønt (1067-1535)', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.foreign.hohlpfennig', 'default', 'Hulpenning', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.foreign.sterling', 'default', 'Engelske sterling', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.foreign.tournois', 'default', 'Franske turnos', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.foreign.hvide', 'default', 'Nordtyske hvide', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.foreign.other', 'default', 'Anden udenlandsk middelaldermønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.modern', 'default', 'Nyere mønt (efter 1535)', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.modern.danish', 'default', 'Nyere dansk mønt (efter 1535)', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.modern.foreign', 'default', 'Nyere udenlandsk mønt (efter 1535)', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.jeton', 'default', 'Regnepenning', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.other', 'default', 'Anden mønt (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work', 'default', 'Landbrugsudstyr/ Værktøj/ Håndværksartikel', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.axe', 'default', 'Økse/celt/pålstav', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.chisel', 'default', 'Mejsel/punsel', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.knife', 'default', 'Kniv (knivblad, grebsbeslag, knivskedebeslag, etc) ', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.sickle', 'default', 'Segl/Le', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.pliars', 'default', 'Tang', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.hammer', 'default', 'Hammer', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.drill', 'default', 'Syl/bor', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.rivet', 'default', 'Nitte/klinknagle/Nitteplade', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.nail', 'default', 'Søm/skrue/krampe', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.fitting', 'default', 'Beslag', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.other', 'default', 'Andet landbrugsudstyr/værktøj/håndværksartikel (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.textile', 'default', 'Redskaber til tekstilarbejde', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.textile.whorl', 'default', 'tenvægt', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.textile.needle', 'default', 'Nål', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.textile.scissors', 'default', 'Saks', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.textile.case', 'default', 'Nålehylster', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.textile.thimble', 'default', 'Fingerbøl', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toilet', 'default', 'Toiletudstyr (kam, ragekniv, pincet)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toilet.comb', 'default', 'kam', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toilet.razor', 'default', 'ragekniv', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toilet.ear', 'default', 'øreske', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toilet.tweezers', 'default', 'pincet', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toilet.other', 'default', 'Andet toiletudstyr', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house', 'default', 'Husgeråd/ Bord- og køkkentøj/ Interiør', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.scissors', 'default', 'Saks', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.pot', 'default', 'Malmgryde', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.crockery', 'default', 'Tallerken/fad/skål', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.cutlery', 'default', 'Bestik (spisekniv,-gaffel, -ske)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.light', 'default', 'Lysestage/lampe', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.knife', 'default', 'Kniv (knivblad, grebsbeslag, knivskedebeslag, etc) ', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.striker', 'default', 'Ildstål', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.key', 'default', 'Nøgle', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.lock', 'default', 'Lås', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.fixtures', 'default', 'Møbel-/skrinbeslag/håndtag/pyntenitter', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.other', 'default', 'Andet "Husgeråd/bord- og køkkentøj/interiør" (Angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toy', 'default', 'Legetøj/ Spillerekvisiter (tinsoldat, spillebrik, etc.)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toy.dice', 'default', 'Terning', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toy.counter', 'default', 'Spillebrik', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toy.other', 'default', 'Andet legetøj/ Spillerekvisit (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian', 'default', 'Rideudstyr/ Seletøj (spore, hestesko, bidsel, etc)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian.tack', 'default', 'Spore', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian.stirrup', 'default', 'Stigbøjle/stigbøjlebeslag', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian.bridle', 'default', 'Hovedtøjsdele (Bidsel/ bidselbeslag, remfordeler, etc.)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian.bell', 'default', 'Bjælde/klokke', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian.shoe', 'default', 'Hestesko', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian.cheek', 'default', 'Rasleblik', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian.other', 'default', 'Andet rideudstyr/ seletøj (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.measure', 'default', 'Værdimetal/Vægte og vægtlodder', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.measure.scale', 'default', 'Vægt', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.measure.weight', 'default', 'Vægtlod', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.measure.clip', 'default', 'Klipsølv/guldfragment (ikke møntfragmenter)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.measure.ingot', 'default', 'Barre', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing', 'default', 'Artikler - religion og kommunikation', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing.guldgubbe', 'default', 'Guldgubbe', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing.stamp', 'default', 'Seglstampe/Signet', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing.stylus', 'default', 'Stylos', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing.clasp', 'default', 'Bogspænde', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing.runebrev', 'default', 'Runebrev', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing.bylamulet', 'default', 'Blyamulet', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing.seal', 'default', 'Plombe', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.other', 'default', 'Andet redskab/værktøj (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.melee', 'default', 'Slag-/ Stikvåben', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.melee.axe', 'default', 'Økse/celt/pålstav', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.melee.blunt', 'default', 'Stridskølle', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.melee.knife', 'default', 'Dolk', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.melee.sword', 'default', 'Sværd/Sabel (klinge eller greb)', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.melee.pointed', 'default', 'Lanse/Spyd', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.melee.other', 'default', 'Anden type slag-/stikvåben (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.fitting', 'default', 'Beslag', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.fitting.uniform', 'default', 'Orden/Uniformbeslag', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.fitting.sheath', 'default', 'Skedebeslag ', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.fitting.other', 'default', 'Anden type beslag (angiv)', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.arrow', 'default', 'Pilespids/ Armbrøstbolt', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.ammunition', 'default', 'Ammunition (Musketkugle/Granat/Patronhylster/Kanonkugler)', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.armor', 'default', 'Rustning/ Ringbrynje', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.shield', 'default', 'Skjold', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.helmet', 'default', 'Hjelm', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.firearm', 'default', 'Skydevåben', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.other', 'default', 'Andet våben/ Militaria  (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.metal.ingot', 'default', 'Barre', ''),
+('da', 'vocabulary', 'dime.find.subtype.metal.tin', 'default', 'Blikfragment', ''),
+('da', 'vocabulary', 'dime.find.subtype.metal.mold', 'default', 'Støbeform/ Smeltedigel', ''),
+('da', 'vocabulary', 'dime.find.subtype.metal.rest', 'default', 'Støberest', ''),
+('da', 'vocabulary', 'dime.find.subtype.metal.slag', 'default', 'Slagge', ''),
+('da', 'vocabulary', 'dime.find.subtype.metal.other', 'default', 'Andet produktionsaffald/ Metalskrot/ Råmaterialer\n(angiv i beskrivelsesfelt)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.beak', 'default', 'Beak fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.equalarm', 'default', 'Equal arm fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.equalarm.small', 'default', 'Small equal arm fibula (Germanic Iron Age)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.equalarm.large', 'default', 'Large equal arm fibula (Viking)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.equalarm.other', 'default', 'Other type equal arm fibula (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.healing', 'default', 'Animal healing fibula (Urnes fibula and Lamb of God)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.healing.urnes', 'default', 'Urnes fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.healing.lamb', 'default', 'Lamb of God fibula / Agnus Dei fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.healing.aalborg', 'default', 'Animal healing fibula of Aalborg type (Lamb of God without cross)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.healing.other', 'default', 'Other Animal healing fibula (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bird.above', 'default', 'Bird fibula (top view)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bird.profile', 'default', 'Bird-shaped fibula (Early medieval - small bird in profile)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.trilobal', 'default', 'Trilobal fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow', 'default', 'Bow fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.ball', 'default', 'Hard cast ball fibula (Pre- Roman Iron Age)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.bilateral', 'default', 'Bilateral fibulas with two combs (Early Roman Iron Age - Almgr. I-IV)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.band', 'default', 'Wide band-shaped bow fibulas (Roman Iron Age - Almgr. V)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.foot', 'default', 'Bow fibulas with enclosed foot including Nydam fibulas (Late Roman Iron Age - Almgr. VI)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.high', 'default', 'Bow fibulas high needle holder (Late Roman Iron Age - Almgr. VII)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.relief', 'default', 'Relief fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.cross', 'default', 'Cross shaped fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.button', 'default', 'Back button fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.other', 'default', 'Other bow fibula (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate', 'default', 'Plate fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.oval', 'default', 'Oval plate fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.rectangular', 'default', 'Rectangular plate fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.horse', 'default', 'Horse Shaped plate fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.bird', 'default', 'Large bird-shaped plate fibula (Early Germanic Iron Age)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.circular', 'default', 'Circular plate fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.snake', 'default', 'S-shaped snake plate fibula?', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.ship', 'default', 'Ship-shaped fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.tongue', 'default', 'Tongue-shaped fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.valkyrie', 'default', 'Valkyrie fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.swastika', 'default', 'swastika fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.råhede', 'default', 'Råhede fibula (cruciform plate Fibel)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.coin', 'default', 'Coin fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.other', 'default', 'Other plate fibula (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bowl', 'default', 'Bowl Fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bowl.small', 'default', 'Small Oval Bowl fibula (less than 7.5 cm)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bowl.large', 'default', 'Large oval Bowl fibula (greater than 7.5 cm)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bowl.circular', 'default', 'Circular Bowl fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bowl.animal', 'default', 'Animal Shaped Bowl fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bowl.other', 'default', 'Other bowl fibula (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.circular', 'default', 'Circular fibula without enamel / casing', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.circular.small', 'default', 'Small vaulted circular fibula (diameter <4 cm)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.circular.large', 'default', 'Large vaulted circular fibula (diameter of> 4 cm)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.circular.tin', 'default', 'Circular tin fibula (early Middle Ages)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.circular.other', 'default', 'Other circular fibula (specify in description box)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.enamel', 'default', 'Enamel fibula / FIbula with setting', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.enamel.central', 'default', 'Fibula with central casing', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.enamel.multiple', 'default', 'Fibula with several settings', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.enamel.cross', 'default', 'Cross enamel fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.enamel.other', 'default', 'Other enamel fibula / FIbula with setting (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.viking', 'default', 'Other Viking fibula / brooch', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.viking.roof', 'default', 'Hjalti-shaped / roof-shaped fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.viking.rhombic', 'default', 'Rhombic fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.viking.ring', 'default', 'Ring Brooch / Ringed Pin', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.viking.other', 'default', 'Other Viking fibula / costume buckle (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.ring', 'default', 'Medieval ring brooches', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.ring.circular', 'default', 'Circular ring brooches', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.ring.heart', 'default', 'Heart-shaped ring brooches', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.ring.star', 'default', 'Star-shaped ring brooches', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.ring.other', 'default', 'Other Type medieval ring brooches', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.other', 'default', 'Other type fibula / brooches (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery', 'default', 'Jewelery', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.bracteate', 'default', 'Bracteate', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.bracelet', 'default', 'Bangle / Bracelet', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.ring', 'default', 'Finger ring', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.necklace', 'default', 'Necklace - collar, ring, or chain', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.pasyning', 'default', 'Påsyningsblik?', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.earring', 'default', 'Earring', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.pendant', 'default', 'Pendant / Amulet', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.pearl', 'default', 'Pearl', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.other', 'default', 'Other jewelry (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.fitting', 'default', 'Fittings', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.fitting.belt', 'default', 'Belt end fitting', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.fitting.other', 'default', 'Other type fittings (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.brooch', 'default', 'Brooch / Emblem', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.lace', 'default', 'Lace End', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.hook', 'default', 'Hook / Malle', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.medal', 'default', 'Medal / Order', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.pin', 'default', 'Clothes pin', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.pilgrim', 'default', 'Pilgrim Badge', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.buckle', 'default', 'Buckle (Buckle, shoe pænde etc.).', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.button', 'default', 'Button', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.button.round', 'default', 'Alm. round, half-round or disc-shaped button sewing', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.button.bar', 'default', 'Bar Button', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.button.stud', 'default', 'Stud Button', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.button.other', 'default', 'Other type button (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.tutulus', 'default', 'Tutulus', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.bell', 'default', 'Bell', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.other', 'default', 'Other costume accessories (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.roman', 'default', 'Roman / Byzantine coin', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.roman.denarius', 'default', 'Denarius', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.roman.solidus', 'default', 'Solidus', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.roman.aureus', 'default', 'Aureus', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.roman.sestertius', 'default', 'Sestertius', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.roman.siliqua', 'default', 'Siliqua', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.roman.other', 'default', 'Other Roman / Byzantine coin (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking', 'default', 'Viking Coin', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.sceat', 'default', 'Sceat', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.dirham', 'default', 'Dirham', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.denarius', 'default', 'Carolingian denarius', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.carolingian', 'default', 'Other Carolingian coin', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.penny', 'default', 'English penny', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.english', 'default', 'Other English coin', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.phennig', 'default', 'German phennig', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.german', 'default', 'Other German coin', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.nordic', 'default', 'Danish / Nordic Coin', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.byzantine', 'default', 'Byzantine coins', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.other', 'default', 'Other Viking coin (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish', 'default', 'Danish medieval coins', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish.early', 'default', 'Danish early middaldermønt (1067-1241)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish.civilwar', 'default', 'Danish civil war coin (1242-1380)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish.sterling', 'default', 'Copper Sterling', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish.hvide', 'default', 'White', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish.klipping', 'default', 'Klipping', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish.søsling', 'default', 'Søsling', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish.other', 'default', 'Other Danish medieval coin (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.foreign', 'default', 'Medieval foreign coin (1067-1535)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.foreign.hohlpfennig', 'default', 'Hohlpfennigs (Bracteate)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.foreign.sterling', 'default', 'English Sterling', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.foreign.tournois', 'default', 'French Tournois', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.foreign.hvide', 'default', 'North German White', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.foreign.other', 'default', 'Other foreign medieval coin (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.modern', 'default', 'Modern coins (after 1535)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.modern.danish', 'default', 'Modern Danish coin (after 1535)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.modern.foreign', 'default', 'Modern foreign coin (after 1535)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.jeton', 'default', 'Jeton / Trade Token', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.other', 'default', 'Other coin (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work', 'default', 'Agricultural Equipment / Tools / Crafts Article', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.axe', 'default', 'Axe / celt / pålstav', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.chisel', 'default', 'Chisel / punch', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.knife', 'default', 'Knife (blade knife, handle bracket, knife scabbard fittings, etc)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.sickle', 'default', 'Scythe / Sickle', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.pliars', 'default', 'Pliars', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.hammer', 'default', 'Hammer', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.drill', 'default', 'Awl / drill', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.rivet', 'default', 'Rivet / clinker nail / Rivet Plate', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.nail', 'default', 'Nail / screw / spasm', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.fitting', 'default', 'Fitting', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.other', 'default', 'Other agricultural equipment / tools / crafts article (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.textile', 'default', 'Tools for textile work', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.textile.whorl', 'default', 'Spindle whorl', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.textile.needle', 'default', 'Needle', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.textile.scissors', 'default', 'Scissors', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.textile.case', 'default', 'Needle Case', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.textile.thimble', 'default', 'Thimble', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toilet', 'default', 'Toilet equipment (comb, razor, tweezers)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toilet.comb', 'default', 'comb', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toilet.razor', 'default', 'razor', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toilet.ear', 'default', 'Ear spoon', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toilet.tweezers', 'default', 'Tweezers', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toilet.other', 'default', 'Other toilet equipment (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house', 'default', 'Housekeeping / Table and cookware / Interior', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.scissors', 'default', 'Scissors', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.pot', 'default', 'Malm pot', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.crockery', 'default', 'Plate / dish / bowl', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.cutlery', 'default', 'Flatware / Cutlery (table knives, forks, spoons)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.light', 'default', 'Candlestick / lamp', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.knife', 'default', 'Knife (blade knife, handle bracket, knife scabbard fittings, etc)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.striker', 'default', 'Fire-steel', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.key', 'default', 'Key', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.lock', 'default', 'Lock', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.fixtures', 'default', 'Furniture / bo bracket / handles / decorative rivets', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.other', 'default', 'Other "Housekeeping / table and cookware / interior" (Enter the description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toy', 'default', 'Toy / Spillerekvisiter (tin soldier, playing piece, etc.)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toy.dice', 'default', 'Dice', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toy.counter', 'default', 'play Brik', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toy.other', 'default', 'Other toys / games Prop (insert in the description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian', 'default', 'Riding / Harness (track, horseshoes, bridle, etc)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian.tack', 'default', 'Track?', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian.stirrup', 'default', 'Stirrup / stirrup bracket', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian.bridle', 'default', 'Hovedtøjsdele (bridle / bidselbeslag, remfordeler, etc.)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian.bell', 'default', 'Bell / rattle', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian.shoe', 'default', 'Horseshoe', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian.cheek', 'default', 'Rattle glance? Cheek piece?', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian.other', 'default', 'Other riding / harness (specify in description box)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.measure', 'default', 'Safety Metal / Scales and weights', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.measure.scale', 'default', 'Scales', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.measure.weight', 'default', 'Weights', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.measure.clip', 'default', 'Cut silver / gold fragment (not coin fragments)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.measure.ingot', 'default', 'Ingot', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing', 'default', 'Articles - Religion and Communications', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing.guldgubbe', 'default', 'Guldgubbe', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing.stamp', 'default', 'Seal Stamps / Signet', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing.stylus', 'default', 'Stylus', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing.clasp', 'default', 'Book clasp', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing.runebrev', 'default', 'Rune Letter', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing.bylamulet', 'default', 'Blyamulet', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing.seal', 'default', 'seal', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.other', 'default', 'Other tool / tools (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.melee', 'default', 'Stroke / Stick Weapons', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.melee.axe', 'default', 'Ax / celt / pålstav', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.melee.blunt', 'default', 'Blunt weapons (clubs, maces, hammers, staves, flails, etc)', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.melee.knife', 'default', 'Dagger', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.melee.sword', 'default', 'Sword / Sabel (blade or handle)', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.melee.pointed', 'default', 'Lance / spear', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.melee.other', 'default', 'Other type of impact / stabbing weapon (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.fitting', 'default', 'Fittings', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.fitting.uniform', 'default', 'Order / Uniform Bracket', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.fitting.sheath', 'default', 'Sheath Brackets', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.fitting.other', 'default', 'Other type bracket (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.arrow', 'default', 'Arrowhead / Armbrøstbolt', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.ammunition', 'default', 'Munition (musket ball / Garnet / shotshell / cannon balls)', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.armor', 'default', 'Armor / Chainmail', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.shield', 'default', 'Shield', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.helmet', 'default', 'Helmet', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.firearm', 'default', 'Firearms', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.other', 'default', 'Other weapons / militaria (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.metal.ingot', 'default', 'Ingot', ''),
+('en', 'vocabulary', 'dime.find.subtype.metal.tin', 'default', 'Tin Fragment', ''),
+('en', 'vocabulary', 'dime.find.subtype.metal.mold', 'default', 'Mold / Melting Pot', ''),
+('en', 'vocabulary', 'dime.find.subtype.metal.rest', 'default', 'Casting Rest', ''),
+('en', 'vocabulary', 'dime.find.subtype.metal.slag', 'default', 'Slag', ''),
+('en', 'vocabulary', 'dime.find.subtype.metal.other', 'default', 'Other production waste / metal scrap / raw materials (specify in description field)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.beak', 'description', 'Næbfibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.equalarm', 'description', 'Ligearmet fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.equalarm.small', 'description', 'Lille ligearmet fibula (Germansk jernalder)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.equalarm.large', 'description', 'Stor ligearmet fibula (Vikingetid)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.equalarm.other', 'description', 'Anden type ligearmet fibel (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.healing', 'description', 'Dyreslyngsfibula (Urnesfibula og Guds lam)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.healing.urnes', 'description', 'Urnesfibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.healing.lamb', 'description', 'Guds lam fibula / Agnus Dei fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.healing.aalborg', 'description', 'Dyreslyngsfibula af Aalborg-type (Guds lam uden kors)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.healing.other', 'description', 'Anden dyreslyngsfibula (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bird.above', 'description', 'Fuglefibula (set fra oven)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bird.profile', 'description', 'Fugleformet fibula (ældre middelalder - lille fugl i profil)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.trilobal', 'description', 'Trefliget fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow', 'description', 'Bøjlefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.ball', 'description', 'Sværtstøbt kuglefibula (Førromersk jernalder)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.bilateral', 'description', '2-leddede fibler m. tværkam (Ældre romersk jernalder - Almgr. I-IV)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.band', 'description', 'Brede båndformede bøjlefibler (Romersk jernalder - Almgr. V)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.foot', 'description', 'Bøjlefibler med omslået fod inkl. Nydamfibler (Yngre romersk jernalder - Almgr. VI)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.high', 'description', 'Bøjlefibler med høj nåleholder (Yngre romersk jernalder - Almgr. VII)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.relief', 'description', 'Relieffibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.cross', 'description', 'Korsformet fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.button', 'description', 'Rygknapfibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bow.other', 'description', 'Anden bøjlefibula (Angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate', 'description', 'Pladefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.oval', 'description', 'Oval pladefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.rectangular', 'description', 'Rektangulær pladefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.horse', 'description', 'Hesteformet pladefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.bird', 'description', 'Stor fugleformet pladefibula (Yngre germansk jernalder)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.circular', 'description', 'Cirkulær pladefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.snake', 'description', 'S- el. Slangeformet pladefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.ship', 'description', 'Skibsformet fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.tongue', 'description', 'Tungeformet fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.valkyrie', 'description', 'Valkyriefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.swastika', 'description', 'Hagekorsfibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.råhede', 'description', 'Råhedefibula (korsformet pladefibel)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.coin', 'description', 'Møntfibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.plate.other', 'description', 'Anden pladefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bowl', 'description', 'Skålfibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bowl.small', 'description', 'Lille oval skålfibula (mindre end 7,5 cm)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bowl.large', 'description', 'Stor oval skålfibula (større end 7,5 cm)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bowl.circular', 'description', 'Cirkulær skålfibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bowl.animal', 'description', 'Dyreformet skålfibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.bowl.other', 'description', 'Anden skålfibel', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.circular', 'description', 'Cirkulær fibula uden emalje/ indfatning', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.circular.small', 'description', 'Lille hvælvet cirkulær fibula (diameter < 4 cm) ', '');
+INSERT INTO `TABLE 64` (`COL 1`, `COL 2`, `COL 3`, `COL 4`, `COL 5`, `COL 6`) VALUES
+('da', 'vocabulary', 'dime.find.subtype.fibula.circular.large', 'description', 'Stor hvælvet cirkulær fibula (diameter > 4 cm)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.circular.tin', 'description', 'Cirkulær blikfibula (tidlig middelalder)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.circular.other', 'description', 'Anden cirkulær fibula (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.enamel', 'description', 'Emaljefibula/ Fibula m. indfatning', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.enamel.central', 'description', 'Fibula m. central indfatning', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.enamel.multiple', 'description', 'Fibula m. flere indfatninger', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.enamel.cross', 'description', 'Korsemaljefibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.enamel.other', 'description', 'Anden emaljefibula/ Fibula m. indfatning', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.viking', 'description', 'Anden vikingetidsfibula/-dragtspænde', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.viking.roof', 'description', 'Hjalteformet/ Tagformet fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.viking.rhombic', 'description', 'Rhombisk fibula', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.viking.ring', 'description', 'Ringspænde/ Ringnål', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.viking.other', 'description', 'Fibula lavet af anden genstand', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.ring', 'description', 'Middelalderligt ringspænde', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.ring.circular', 'description', 'Cirkulære ringspænder', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.ring.heart', 'description', 'Hjerteformede ringspænder', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.ring.star', 'description', 'Stjerneformede ringspænder', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.ring.other', 'description', 'Anden type middelalderligt ringspænde', ''),
+('da', 'vocabulary', 'dime.find.subtype.fibula.other', 'description', 'Anden type fibula/ Dragtspænde (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery', 'description', 'Smykke', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.bracteate', 'description', 'Brakteat', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.bracelet', 'description', 'Armring el. -kæde', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.ring', 'description', 'Fingerring', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.necklace', 'description', 'Halssmykke - krave, ring, el. kæde', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.pasyning', 'description', 'Påsyningsblik', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.earring', 'description', 'Ørering', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.pendant', 'description', 'Hængesmykke/amulet', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.pearl', 'description', 'Perle', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.jewelery.other', 'description', 'Andet smykke (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.fitting', 'description', 'Beslag', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.fitting.belt', 'description', 'Remendebeslag', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.fitting.other', 'description', 'Anden type beslag (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.brooch', 'description', 'Broche/ Emblem', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.lace', 'description', 'Snøreendedup/ Snørenål', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.hook', 'description', 'Hægte/ Malle', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.medal', 'description', 'Medalje/ Orden', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.pin', 'description', 'Dragtnål', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.pilgrim', 'description', 'Pilgrimsmærke', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.buckle', 'description', 'Spænde (bæltespænde, skospænde osv.)', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.button', 'description', 'Knap', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.button.round', 'description', 'Alm. rund, halvrund el. skiveformet knap til påsyning', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.button.bar', 'description', 'Stangknap', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.button.stud', 'description', 'Dobbeltknap', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.button.other', 'description', 'Anden type knap (Angiv i beskrivelsefelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.tutulus', 'description', 'Tutulus', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.bell', 'description', 'Bjælde/ Klokke', ''),
+('da', 'vocabulary', 'dime.find.subtype.accessory.other', 'description', 'Andet dragttilbehør (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.roman', 'description', 'Romersk / Byzantinsk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.roman.denarius', 'description', 'Denar', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.roman.solidus', 'description', 'Solidus', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.roman.aureus', 'description', 'Aurus', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.roman.sestertius', 'description', 'Sesters', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.roman.siliqua', 'description', 'Siliqua', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.roman.other', 'description', 'Anden romersk / byzantinsk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking', 'description', 'Vikingetidsmønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.sceat', 'description', 'Sceatta', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.dirham', 'description', 'Dirhem', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.denarius', 'description', 'Karolingsk denar', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.carolingian', 'description', 'Anden karolingisk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.penny', 'description', 'Engelsk penny', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.english', 'description', 'Anden engelsk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.phennig', 'description', 'Tysk phennig', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.german', 'description', 'Anden tysk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.nordic', 'description', 'Dansk/nordisk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.byzantine', 'description', 'Byzantisk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.viking.other', 'description', 'Anden vikingetidsmønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish', 'description', 'Dansk middelaldermønt (1067-1535) ', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish.early', 'description', 'Dansk tidlig middaldermønt (1067-1241)', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish.civilwar', 'description', 'Dansk borgerkrigsmønt (1242-1380)', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish.sterling', 'description', 'Kobbersterling', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish.hvide', 'description', 'Hvide', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish.klipping', 'description', 'Klipping', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish.søsling', 'description', 'Søsling', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.danish.other', 'description', 'Anden dansk mønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.foreign', 'description', 'Udenlandsk middelaldermønt (1067-1535)', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.foreign.hohlpfennig', 'description', 'Hulpenning', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.foreign.sterling', 'description', 'Engelske sterling', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.foreign.tournois', 'description', 'Franske turnos', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.foreign.hvide', 'description', 'Nordtyske hvide', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.foreign.other', 'description', 'Anden udenlandsk middelaldermønt', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.modern', 'description', 'Nyere mønt (efter 1535)', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.modern.danish', 'description', 'Nyere dansk mønt (efter 1535)', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.modern.foreign', 'description', 'Nyere udenlandsk mønt (efter 1535)', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.jeton', 'description', 'Regnepenning', ''),
+('da', 'vocabulary', 'dime.find.subtype.coin.other', 'description', 'Anden mønt (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work', 'description', 'Landbrugsudstyr/ Værktøj/ Håndværksartikel', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.axe', 'description', 'Økse/celt/pålstav', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.chisel', 'description', 'Mejsel/punsel', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.knife', 'description', 'Kniv (knivblad, grebsbeslag, knivskedebeslag, etc) ', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.sickle', 'description', 'Segl/Le', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.pliars', 'description', 'Tang', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.hammer', 'description', 'Hammer', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.drill', 'description', 'Syl/bor', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.rivet', 'description', 'Nitte/klinknagle/Nitteplade', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.nail', 'description', 'Søm/skrue/krampe', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.fitting', 'description', 'Beslag', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.work.other', 'description', 'Andet landbrugsudstyr/værktøj/håndværksartikel (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.textile', 'description', 'Redskaber til tekstilarbejde', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.textile.whorl', 'description', 'tenvægt', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.textile.needle', 'description', 'Nål', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.textile.scissors', 'description', 'Saks', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.textile.case', 'description', 'Nålehylster', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.textile.thimble', 'description', 'Fingerbøl', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toilet', 'description', 'Toiletudstyr (kam, ragekniv, pincet)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toilet.comb', 'description', 'kam', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toilet.razor', 'description', 'ragekniv', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toilet.ear', 'description', 'øreske', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toilet.tweezers', 'description', 'pincet', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toilet.other', 'description', 'Andet toiletudstyr', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house', 'description', 'Husgeråd/ Bord- og køkkentøj/ Interiør', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.scissors', 'description', 'Saks', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.pot', 'description', 'Malmgryde', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.crockery', 'description', 'Tallerken/fad/skål', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.cutlery', 'description', 'Bestik (spisekniv,-gaffel, -ske)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.light', 'description', 'Lysestage/lampe', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.knife', 'description', 'Kniv (knivblad, grebsbeslag, knivskedebeslag, etc) ', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.striker', 'description', 'Ildstål', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.key', 'description', 'Nøgle', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.lock', 'description', 'Lås', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.fixtures', 'description', 'Møbel-/skrinbeslag/håndtag/pyntenitter', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.house.other', 'description', 'Andet "Husgeråd/bord- og køkkentøj/interiør" (Angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toy', 'description', 'Legetøj/ Spillerekvisiter (tinsoldat, spillebrik, etc.)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toy.dice', 'description', 'Terning', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toy.counter', 'description', 'Spillebrik', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.toy.other', 'description', 'Andet legetøj/ Spillerekvisit (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian', 'description', 'Rideudstyr/ Seletøj (spore, hestesko, bidsel, etc)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian.tack', 'description', 'Spore', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian.stirrup', 'description', 'Stigbøjle/stigbøjlebeslag', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian.bridle', 'description', 'Hovedtøjsdele (Bidsel/ bidselbeslag, remfordeler, etc.)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian.bell', 'description', 'Bjælde/klokke', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian.shoe', 'description', 'Hestesko', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian.cheek', 'description', 'Rasleblik', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.equestrian.other', 'description', 'Andet rideudstyr/ seletøj (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.measure', 'description', 'Værdimetal/Vægte og vægtlodder', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.measure.scale', 'description', 'Vægt', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.measure.weight', 'description', 'Vægtlod', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.measure.clip', 'description', 'Klipsølv/guldfragment (ikke møntfragmenter)', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.measure.ingot', 'description', 'Barre', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing', 'description', 'Artikler - religion og kommunikation', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing.guldgubbe', 'description', 'Guldgubbe', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing.stamp', 'description', 'Seglstampe/Signet', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing.stylus', 'description', 'Stylos', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing.clasp', 'description', 'Bogspænde', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing.runebrev', 'description', 'Runebrev', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing.bylamulet', 'description', 'Blyamulet', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.writing.seal', 'description', 'Plombe', ''),
+('da', 'vocabulary', 'dime.find.subtype.tool.other', 'description', 'Andet redskab/værktøj (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.melee', 'description', 'Slag-/ Stikvåben', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.melee.axe', 'description', 'Økse/celt/pålstav', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.melee.blunt', 'description', 'Stridskølle', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.melee.knife', 'description', 'Dolk', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.melee.sword', 'description', 'Sværd/Sabel (klinge eller greb)', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.melee.pointed', 'description', 'Lanse/Spyd', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.melee.other', 'description', 'Anden type slag-/stikvåben (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.fitting', 'description', 'Beslag', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.fitting.uniform', 'description', 'Orden/Uniformbeslag', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.fitting.sheath', 'description', 'Skedebeslag ', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.fitting.other', 'description', 'Anden type beslag (angiv)', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.arrow', 'description', 'Pilespids/ Armbrøstbolt', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.ammunition', 'description', 'Ammunition (Musketkugle/Granat/Patronhylster/Kanonkugler)', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.armor', 'description', 'Rustning/ Ringbrynje', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.shield', 'description', 'Skjold', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.helmet', 'description', 'Hjelm', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.firearm', 'description', 'Skydevåben', ''),
+('da', 'vocabulary', 'dime.find.subtype.military.other', 'description', 'Andet våben/ Militaria  (angiv i beskrivelsesfelt)', ''),
+('da', 'vocabulary', 'dime.find.subtype.metal.ingot', 'description', 'Barre', ''),
+('da', 'vocabulary', 'dime.find.subtype.metal.tin', 'description', 'Blikfragment', ''),
+('da', 'vocabulary', 'dime.find.subtype.metal.mold', 'description', 'Støbeform/ Smeltedigel', ''),
+('da', 'vocabulary', 'dime.find.subtype.metal.rest', 'description', 'Støberest', ''),
+('da', 'vocabulary', 'dime.find.subtype.metal.slag', 'description', 'Slagge', ''),
+('da', 'vocabulary', 'dime.find.subtype.metal.other', 'description', 'Andet produktionsaffald/ Metalskrot/ Råmaterialer\n(angiv i beskrivelsesfelt)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.beak', 'description', 'Beak fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.equalarm', 'description', 'Equal arm fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.equalarm.small', 'description', 'Small equal arm fibula (Germanic Iron Age)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.equalarm.large', 'description', 'Large equal arm fibula (Viking)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.equalarm.other', 'description', 'Other type equal arm fibula (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.healing', 'description', 'Animal healing fibula (Urnes fibula and Lamb of God)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.healing.urnes', 'description', 'Urnes fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.healing.lamb', 'description', 'Lamb of God fibula / Agnus Dei fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.healing.aalborg', 'description', 'Animal healing fibula of Aalborg type (Lamb of God without cross)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.healing.other', 'description', 'Other Animal healing fibula (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bird.above', 'description', 'Bird fibula (top view)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bird.profile', 'description', 'Bird-shaped fibula (Early medieval - small bird in profile)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.trilobal', 'description', 'Trilobal fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow', 'description', 'Bow fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.ball', 'description', 'Hard cast ball fibula (Pre- Roman Iron Age)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.bilateral', 'description', 'Bilateral fibulas with two combs (Early Roman Iron Age - Almgr. I-IV)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.band', 'description', 'Wide band-shaped bow fibulas (Roman Iron Age - Almgr. V)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.foot', 'description', 'Bow fibulas with enclosed foot including Nydam fibulas (Late Roman Iron Age - Almgr. VI)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.high', 'description', 'Bow fibulas high needle holder (Late Roman Iron Age - Almgr. VII)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.relief', 'description', 'Relief fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.cross', 'description', 'Cross shaped fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.button', 'description', 'Back button fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bow.other', 'description', 'Other bow fibula (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate', 'description', 'Plate fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.oval', 'description', 'Oval plate fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.rectangular', 'description', 'Rectangular plate fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.horse', 'description', 'Horse Shaped plate fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.bird', 'description', 'Large bird-shaped plate fibula (Early Germanic Iron Age)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.circular', 'description', 'Circular plate fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.snake', 'description', 'S-shaped snake plate fibula?', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.ship', 'description', 'Ship-shaped fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.tongue', 'description', 'Tongue-shaped fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.valkyrie', 'description', 'Valkyrie fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.swastika', 'description', 'swastika fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.råhede', 'description', 'Råhede fibula (cruciform plate Fibel)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.coin', 'description', 'Coin fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.plate.other', 'description', 'Other plate fibula (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bowl', 'description', 'Bowl Fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bowl.small', 'description', 'Small Oval Bowl fibula (less than 7.5 cm)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bowl.large', 'description', 'Large oval Bowl fibula (greater than 7.5 cm)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bowl.circular', 'description', 'Circular Bowl fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bowl.animal', 'description', 'Animal Shaped Bowl fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.bowl.other', 'description', 'Other bowl fibula (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.circular', 'description', 'Circular fibula without enamel / casing', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.circular.small', 'description', 'Small vaulted circular fibula (diameter <4 cm)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.circular.large', 'description', 'Large vaulted circular fibula (diameter of> 4 cm)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.circular.tin', 'description', 'Circular tin fibula (early Middle Ages)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.circular.other', 'description', 'Other circular fibula (specify in description box)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.enamel', 'description', 'Enamel fibula / FIbula with setting', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.enamel.central', 'description', 'Fibula with central casing', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.enamel.multiple', 'description', 'Fibula with several settings', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.enamel.cross', 'description', 'Cross enamel fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.enamel.other', 'description', 'Other enamel fibula / FIbula with setting (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.viking', 'description', 'Other Viking fibula / brooch', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.viking.roof', 'description', 'Hjalti-shaped / roof-shaped fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.viking.rhombic', 'description', 'Rhombic fibula', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.viking.ring', 'description', 'Ring Brooch / Ringed Pin', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.viking.other', 'description', 'Other Viking fibula / costume buckle (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.ring', 'description', 'Medieval ring brooches', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.ring.circular', 'description', 'Circular ring brooches', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.ring.heart', 'description', 'Heart-shaped ring brooches', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.ring.star', 'description', 'Star-shaped ring brooches', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.ring.other', 'description', 'Other Type medieval ring brooches', ''),
+('en', 'vocabulary', 'dime.find.subtype.fibula.other', 'description', 'Other type fibula / brooches (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery', 'description', 'Jewelery', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.bracteate', 'description', 'Bracteate', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.bracelet', 'description', 'Bangle / Bracelet', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.ring', 'description', 'Finger ring', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.necklace', 'description', 'Necklace - collar, ring, or chain', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.pasyning', 'description', 'Påsyningsblik?', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.earring', 'description', 'Earring', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.pendant', 'description', 'Pendant / Amulet', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.pearl', 'description', 'Pearl', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.jewelery.other', 'description', 'Other jewelry (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.fitting', 'description', 'Fittings', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.fitting.belt', 'description', 'Belt end fitting', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.fitting.other', 'description', 'Other type fittings (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.brooch', 'description', 'Brooch / Emblem', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.lace', 'description', 'Lace End', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.hook', 'description', 'Hook / Malle', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.medal', 'description', 'Medal / Order', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.pin', 'description', 'Clothes pin', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.pilgrim', 'description', 'Pilgrim Badge', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.buckle', 'description', 'Buckle (Buckle, shoe pænde etc.).', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.button', 'description', 'Button', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.button.round', 'description', 'Alm. round, half-round or disc-shaped button sewing', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.button.bar', 'description', 'Bar Button', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.button.stud', 'description', 'Stud Button', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.button.other', 'description', 'Other type button (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.tutulus', 'description', 'Tutulus', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.bell', 'description', 'Bell', ''),
+('en', 'vocabulary', 'dime.find.subtype.accessory.other', 'description', 'Other costume accessories (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.roman', 'description', 'Roman / Byzantine coin', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.roman.denarius', 'description', 'Denarius', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.roman.solidus', 'description', 'Solidus', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.roman.aureus', 'description', 'Aureus', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.roman.sestertius', 'description', 'Sestertius', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.roman.siliqua', 'description', 'Siliqua', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.roman.other', 'description', 'Other Roman / Byzantine coin (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking', 'description', 'Viking Coin', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.sceat', 'description', 'Sceat', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.dirham', 'description', 'Dirham', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.denarius', 'description', 'Carolingian denarius', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.carolingian', 'description', 'Other Carolingian coin', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.penny', 'description', 'English penny', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.english', 'description', 'Other English coin', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.phennig', 'description', 'German phennig', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.german', 'description', 'Other German coin', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.nordic', 'description', 'Danish / Nordic Coin', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.byzantine', 'description', 'Byzantine coins', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.viking.other', 'description', 'Other Viking coin (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish', 'description', 'Danish medieval coins', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish.early', 'description', 'Danish early middaldermønt (1067-1241)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish.civilwar', 'description', 'Danish civil war coin (1242-1380)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish.sterling', 'description', 'Copper Sterling', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish.hvide', 'description', 'White', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish.klipping', 'description', 'Klipping', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish.søsling', 'description', 'Søsling', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.danish.other', 'description', 'Other Danish medieval coin (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.foreign', 'description', 'Medieval foreign coin (1067-1535)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.foreign.hohlpfennig', 'description', 'Hohlpfennigs (Bracteate)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.foreign.sterling', 'description', 'English Sterling', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.foreign.tournois', 'description', 'French Tournois', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.foreign.hvide', 'description', 'North German White', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.foreign.other', 'description', 'Other foreign medieval coin (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.modern', 'description', 'Modern coins (after 1535)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.modern.danish', 'description', 'Modern Danish coin (after 1535)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.modern.foreign', 'description', 'Modern foreign coin (after 1535)', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.jeton', 'description', 'Jeton / Trade Token', ''),
+('en', 'vocabulary', 'dime.find.subtype.coin.other', 'description', 'Other coin (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work', 'description', 'Agricultural Equipment / Tools / Crafts Article', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.axe', 'description', 'Axe / celt / pålstav', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.chisel', 'description', 'Chisel / punch', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.knife', 'description', 'Knife (blade knife, handle bracket, knife scabbard fittings, etc)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.sickle', 'description', 'Scythe / Sickle', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.pliars', 'description', 'Pliars', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.hammer', 'description', 'Hammer', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.drill', 'description', 'Awl / drill', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.rivet', 'description', 'Rivet / clinker nail / Rivet Plate', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.nail', 'description', 'Nail / screw / spasm', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.fitting', 'description', 'Fitting', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.work.other', 'description', 'Other agricultural equipment / tools / crafts article (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.textile', 'description', 'Tools for textile work', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.textile.whorl', 'description', 'Spindle whorl', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.textile.needle', 'description', 'Needle', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.textile.scissors', 'description', 'Scissors', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.textile.case', 'description', 'Needle Case', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.textile.thimble', 'description', 'Thimble', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toilet', 'description', 'Toilet equipment (comb, razor, tweezers)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toilet.comb', 'description', 'comb', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toilet.razor', 'description', 'razor', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toilet.ear', 'description', 'Ear spoon', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toilet.tweezers', 'description', 'Tweezers', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toilet.other', 'description', 'Other toilet equipment (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house', 'description', 'Housekeeping / Table and cookware / Interior', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.scissors', 'description', 'Scissors', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.pot', 'description', 'Malm pot', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.crockery', 'description', 'Plate / dish / bowl', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.cutlery', 'description', 'Flatware / Cutlery (table knives, forks, spoons)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.light', 'description', 'Candlestick / lamp', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.knife', 'description', 'Knife (blade knife, handle bracket, knife scabbard fittings, etc)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.striker', 'description', 'Fire-steel', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.key', 'description', 'Key', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.lock', 'description', 'Lock', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.fixtures', 'description', 'Furniture / bo bracket / handles / decorative rivets', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.house.other', 'description', 'Other "Housekeeping / table and cookware / interior" (Enter the description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toy', 'description', 'Toy / Spillerekvisiter (tin soldier, playing piece, etc.)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toy.dice', 'description', 'Dice', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toy.counter', 'description', 'play Brik', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.toy.other', 'description', 'Other toys / games Prop (insert in the description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian', 'description', 'Riding / Harness (track, horseshoes, bridle, etc)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian.tack', 'description', 'Track?', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian.stirrup', 'description', 'Stirrup / stirrup bracket', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian.bridle', 'description', 'Hovedtøjsdele (bridle / bidselbeslag, remfordeler, etc.)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian.bell', 'description', 'Bell / rattle', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian.shoe', 'description', 'Horseshoe', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian.cheek', 'description', 'Rattle glance? Cheek piece?', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.equestrian.other', 'description', 'Other riding / harness (specify in description box)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.measure', 'description', 'Safety Metal / Scales and weights', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.measure.scale', 'description', 'Scales', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.measure.weight', 'description', 'Weights', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.measure.clip', 'description', 'Cut silver / gold fragment (not coin fragments)', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.measure.ingot', 'description', 'Ingot', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing', 'description', 'Articles - Religion and Communications', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing.guldgubbe', 'description', 'Guldgubbe', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing.stamp', 'description', 'Seal Stamps / Signet', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing.stylus', 'description', 'Stylus', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing.clasp', 'description', 'Book clasp', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing.runebrev', 'description', 'Rune Letter', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing.bylamulet', 'description', 'Blyamulet', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.writing.seal', 'description', 'seal', ''),
+('en', 'vocabulary', 'dime.find.subtype.tool.other', 'description', 'Other tool / tools (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.melee', 'description', 'Stroke / Stick Weapons', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.melee.axe', 'description', 'Ax / celt / pålstav', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.melee.blunt', 'description', 'Blunt weapons (clubs, maces, hammers, staves, flails, etc)', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.melee.knife', 'description', 'Dagger', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.melee.sword', 'description', 'Sword / Sabel (blade or handle)', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.melee.pointed', 'description', 'Lance / spear', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.melee.other', 'description', 'Other type of impact / stabbing weapon (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.fitting', 'description', 'Fittings', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.fitting.uniform', 'description', 'Order / Uniform Bracket', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.fitting.sheath', 'description', 'Sheath Brackets', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.fitting.other', 'description', 'Other type bracket (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.arrow', 'description', 'Arrowhead / Armbrøstbolt', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.ammunition', 'description', 'Munition (musket ball / Garnet / shotshell / cannon balls)', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.armor', 'description', 'Armor / Chainmail', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.shield', 'description', 'Shield', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.helmet', 'description', 'Helmet', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.firearm', 'description', 'Firearms', ''),
+('en', 'vocabulary', 'dime.find.subtype.military.other', 'description', 'Other weapons / militaria (specify in description field)', ''),
+('en', 'vocabulary', 'dime.find.subtype.metal.ingot', 'description', 'Ingot', ''),
+('en', 'vocabulary', 'dime.find.subtype.metal.tin', 'description', 'Tin Fragment', ''),
+('en', 'vocabulary', 'dime.find.subtype.metal.mold', 'description', 'Mold / Melting Pot', ''),
+('en', 'vocabulary', 'dime.find.subtype.metal.rest', 'description', 'Casting Rest', ''),
+('en', 'vocabulary', 'dime.find.subtype.metal.slag', 'description', 'Slag', ''),
+('en', 'vocabulary', 'dime.find.subtype.metal.other', 'description', 'Other production waste / metal scrap / raw materials (specify in description field)', '');
+
 --
 -- Indexes for dumped tables
 --
@@ -5888,447 +7804,379 @@ INSERT INTO `dime_period` (`concept`, `term`, `parent`, `depth`, `from_year`, `t
 -- Indexes for table `ark_config_error`
 --
 ALTER TABLE `ark_config_error`
-  ADD PRIMARY KEY (`code`);
+ ADD PRIMARY KEY (`code`);
 
 --
 -- Indexes for table `ark_config_flash`
 --
 ALTER TABLE `ark_config_flash`
-  ADD PRIMARY KEY (`id`);
+ ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `ark_datatype`
 --
 ALTER TABLE `ark_datatype`
-  ADD PRIMARY KEY (`datatype`),
-  ADD KEY `format_vocabulary` (`format_vocabulary`),
-  ADD KEY `parameter_vocabulary` (`parameter_vocabulary`);
+ ADD PRIMARY KEY (`datatype`), ADD KEY `format_vocabulary` (`format_vocabulary`), ADD KEY `parameter_vocabulary` (`parameter_vocabulary`);
 
 --
 -- Indexes for table `ark_format`
 --
 ALTER TABLE `ark_format`
-  ADD PRIMARY KEY (`format`),
-  ADD KEY `fragment_type` (`datatype`),
-  ADD KEY `parameter_vocabulary` (`parameter_vocabulary`),
-  ADD KEY `format_vocabulary` (`format_vocabulary`);
+ ADD PRIMARY KEY (`format`), ADD KEY `fragment_type` (`datatype`), ADD KEY `parameter_vocabulary` (`parameter_vocabulary`), ADD KEY `format_vocabulary` (`format_vocabulary`);
 
 --
 -- Indexes for table `ark_format_attribute`
 --
 ALTER TABLE `ark_format_attribute`
-  ADD PRIMARY KEY (`parent`,`attribute`),
-  ADD KEY `vocabulary` (`vocabulary`),
-  ADD KEY `format` (`format`);
+ ADD PRIMARY KEY (`parent`,`attribute`), ADD KEY `vocabulary` (`vocabulary`), ADD KEY `format` (`format`);
 
 --
 -- Indexes for table `ark_format_blob`
 --
 ALTER TABLE `ark_format_blob`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_boolean`
 --
 ALTER TABLE `ark_format_boolean`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_datetime`
 --
 ALTER TABLE `ark_format_datetime`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_decimal`
 --
 ALTER TABLE `ark_format_decimal`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_float`
 --
 ALTER TABLE `ark_format_float`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_integer`
 --
 ALTER TABLE `ark_format_integer`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_item`
 --
 ALTER TABLE `ark_format_item`
-  ADD PRIMARY KEY (`format`),
-  ADD KEY `module` (`module`);
+ ADD PRIMARY KEY (`format`), ADD KEY `module` (`module`);
 
 --
 -- Indexes for table `ark_format_object`
 --
 ALTER TABLE `ark_format_object`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_spatial`
 --
 ALTER TABLE `ark_format_spatial`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_string`
 --
 ALTER TABLE `ark_format_string`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_format_text`
 --
 ALTER TABLE `ark_format_text`
-  ADD PRIMARY KEY (`format`);
+ ADD PRIMARY KEY (`format`);
 
 --
 -- Indexes for table `ark_instance`
 --
 ALTER TABLE `ark_instance`
-  ADD PRIMARY KEY (`instance`);
+ ADD PRIMARY KEY (`instance`);
 
 --
 -- Indexes for table `ark_instance_schema`
 --
 ALTER TABLE `ark_instance_schema`
-  ADD PRIMARY KEY (`instance`,`schma`),
-  ADD KEY `schma` (`schma`);
+ ADD PRIMARY KEY (`instance`,`schma`), ADD KEY `schma` (`schma`);
 
 --
 -- Indexes for table `ark_map`
 --
 ALTER TABLE `ark_map`
-  ADD PRIMARY KEY (`map`);
+ ADD PRIMARY KEY (`map`);
 
 --
 -- Indexes for table `ark_map_layer`
 --
 ALTER TABLE `ark_map_layer`
-  ADD PRIMARY KEY (`source`,`layer`);
+ ADD PRIMARY KEY (`source`,`layer`);
 
 --
 -- Indexes for table `ark_map_legend`
 --
 ALTER TABLE `ark_map_legend`
-  ADD PRIMARY KEY (`map`,`source`,`layer`),
-  ADD UNIQUE KEY `sequence` (`map`,`source`,`layer`,`seq`) USING BTREE,
-  ADD KEY `legend_layer` (`source`,`layer`);
+ ADD PRIMARY KEY (`map`,`source`,`layer`), ADD UNIQUE KEY `sequence` (`map`,`source`,`layer`,`seq`) USING BTREE, ADD KEY `legend_layer` (`source`,`layer`);
 
 --
 -- Indexes for table `ark_map_source`
 --
 ALTER TABLE `ark_map_source`
-  ADD PRIMARY KEY (`source`);
+ ADD PRIMARY KEY (`source`);
 
 --
 -- Indexes for table `ark_module`
 --
 ALTER TABLE `ark_module`
-  ADD PRIMARY KEY (`module`),
-  ADD UNIQUE KEY `tbl` (`tbl`),
-  ADD UNIQUE KEY `classname` (`classname`),
-  ADD UNIQUE KEY `resource` (`resource`),
-  ADD UNIQUE KEY `entity` (`entity`);
+ ADD PRIMARY KEY (`module`), ADD UNIQUE KEY `tbl` (`tbl`), ADD UNIQUE KEY `classname` (`classname`), ADD UNIQUE KEY `resource` (`resource`), ADD UNIQUE KEY `entity` (`entity`);
 
 --
 -- Indexes for table `ark_route`
 --
 ALTER TABLE `ark_route`
-  ADD PRIMARY KEY (`route`),
-  ADD KEY `page` (`page`);
+ ADD PRIMARY KEY (`route`), ADD KEY `page` (`page`);
 
 --
 -- Indexes for table `ark_schema`
 --
 ALTER TABLE `ark_schema`
-  ADD PRIMARY KEY (`schma`),
-  ADD KEY `module` (`module`),
-  ADD KEY `type_vocabulary` (`vocabulary`),
-  ADD KEY `view` (`view`),
-  ADD KEY `edit` (`edit`),
-  ADD KEY `remove` (`remove`),
-  ADD KEY `new` (`new`);
+ ADD PRIMARY KEY (`schma`), ADD KEY `module` (`module`), ADD KEY `type_vocabulary` (`vocabulary`), ADD KEY `view` (`view`), ADD KEY `edit` (`edit`), ADD KEY `remove` (`remove`), ADD KEY `new` (`new`);
 
 --
 -- Indexes for table `ark_schema_association`
 --
 ALTER TABLE `ark_schema_association`
-  ADD PRIMARY KEY (`schma`,`type`,`association`) USING BTREE,
-  ADD KEY `inverse_schema` (`inverse`),
-  ADD KEY `module1` (`module1`,`schema1`),
-  ADD KEY `module2` (`module2`,`schema2`);
+ ADD PRIMARY KEY (`schma`,`type`,`association`) USING BTREE, ADD KEY `inverse_schema` (`inverse`), ADD KEY `module1` (`module1`,`schema1`), ADD KEY `module2` (`module2`,`schema2`);
 
 --
 -- Indexes for table `ark_schema_attribute`
 --
 ALTER TABLE `ark_schema_attribute`
-  ADD PRIMARY KEY (`schma`,`type`,`attribute`) USING BTREE,
-  ADD KEY `format` (`format`),
-  ADD KEY `vocabulary` (`vocabulary`),
-  ADD KEY `view` (`view`),
-  ADD KEY `edit` (`edit`);
+ ADD PRIMARY KEY (`schma`,`type`,`attribute`) USING BTREE, ADD KEY `format` (`format`), ADD KEY `vocabulary` (`vocabulary`), ADD KEY `view` (`view`), ADD KEY `edit` (`edit`);
 
 --
 -- Indexes for table `ark_schema_item`
 --
 ALTER TABLE `ark_schema_item`
-  ADD PRIMARY KEY (`attribute`) USING BTREE,
-  ADD KEY `format` (`format`),
-  ADD KEY `vocabulary` (`vocabulary`);
+ ADD PRIMARY KEY (`attribute`) USING BTREE, ADD KEY `format` (`format`), ADD KEY `vocabulary` (`vocabulary`);
 
 --
 -- Indexes for table `ark_translation`
 --
 ALTER TABLE `ark_translation`
-  ADD PRIMARY KEY (`keyword`),
-  ADD KEY `domain` (`domain`);
+ ADD PRIMARY KEY (`keyword`), ADD KEY `domain` (`domain`);
 
 --
 -- Indexes for table `ark_translation_domain`
 --
 ALTER TABLE `ark_translation_domain`
-  ADD PRIMARY KEY (`domain`);
+ ADD PRIMARY KEY (`domain`);
 
 --
 -- Indexes for table `ark_translation_language`
 --
 ALTER TABLE `ark_translation_language`
-  ADD PRIMARY KEY (`language`);
+ ADD PRIMARY KEY (`language`);
 
 --
 -- Indexes for table `ark_translation_message`
 --
 ALTER TABLE `ark_translation_message`
-  ADD PRIMARY KEY (`language`,`keyword`,`role`),
-  ADD KEY `keyword` (`keyword`),
-  ADD KEY `role` (`role`);
+ ADD PRIMARY KEY (`language`,`keyword`,`role`), ADD KEY `keyword` (`keyword`), ADD KEY `role` (`role`);
 
 --
 -- Indexes for table `ark_translation_parameter`
 --
 ALTER TABLE `ark_translation_parameter`
-  ADD PRIMARY KEY (`keyword`,`parameter`);
+ ADD PRIMARY KEY (`keyword`,`parameter`);
 
 --
 -- Indexes for table `ark_translation_role`
 --
 ALTER TABLE `ark_translation_role`
-  ADD PRIMARY KEY (`role`);
+ ADD PRIMARY KEY (`role`);
 
 --
 -- Indexes for table `ark_view_element`
 --
 ALTER TABLE `ark_view_element`
-  ADD PRIMARY KEY (`element`),
-  ADD KEY `type` (`type`);
+ ADD PRIMARY KEY (`element`), ADD KEY `type` (`type`);
 
 --
 -- Indexes for table `ark_view_field`
 --
 ALTER TABLE `ark_view_field`
-  ADD PRIMARY KEY (`element`),
-  ADD KEY `schma` (`schma`),
-  ADD KEY `schma_2` (`schma`,`item_type`,`attribute`);
+ ADD PRIMARY KEY (`element`), ADD KEY `schma` (`schma`), ADD KEY `schma_2` (`schma`,`item_type`,`attribute`);
 
 --
 -- Indexes for table `ark_view_grid`
 --
 ALTER TABLE `ark_view_grid`
-  ADD PRIMARY KEY (`layout`,`item_type`,`row`,`col`,`seq`),
-  ADD KEY `child` (`element`),
-  ADD KEY `map` (`map`);
+ ADD PRIMARY KEY (`layout`,`item_type`,`row`,`col`,`seq`), ADD KEY `child` (`element`), ADD KEY `map` (`map`);
 
 --
 -- Indexes for table `ark_view_layout`
 --
 ALTER TABLE `ark_view_layout`
-  ADD PRIMARY KEY (`element`),
-  ADD KEY `schma` (`schma`);
+ ADD PRIMARY KEY (`element`), ADD KEY `schma` (`schma`);
 
 --
 -- Indexes for table `ark_view_nav`
 --
 ALTER TABLE `ark_view_nav`
-  ADD PRIMARY KEY (`element`),
-  ADD UNIQUE KEY `parent` (`parent`,`seq`);
+ ADD PRIMARY KEY (`element`), ADD UNIQUE KEY `parent` (`parent`,`seq`);
 
 --
 -- Indexes for table `ark_view_page`
 --
 ALTER TABLE `ark_view_page`
-  ADD PRIMARY KEY (`element`),
-  ADD KEY `navbar_element` (`navbar`),
-  ADD KEY `sidebar_element` (`sidebar`),
-  ADD KEY `content_element` (`content`),
-  ADD KEY `footer_element` (`footer`);
+ ADD PRIMARY KEY (`element`), ADD KEY `navbar_element` (`navbar`), ADD KEY `sidebar_element` (`sidebar`), ADD KEY `content_element` (`content`), ADD KEY `footer_element` (`footer`);
 
 --
 -- Indexes for table `ark_view_tree`
 --
 ALTER TABLE `ark_view_tree`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `depth` (`depth`),
-  ADD KEY `ancestor` (`ancestor`),
-  ADD KEY `descendent` (`descendant`);
+ ADD PRIMARY KEY (`id`), ADD KEY `depth` (`depth`), ADD KEY `ancestor` (`ancestor`), ADD KEY `descendent` (`descendant`);
 
 --
 -- Indexes for table `ark_view_type`
 --
 ALTER TABLE `ark_view_type`
-  ADD PRIMARY KEY (`type`);
+ ADD PRIMARY KEY (`type`);
 
 --
 -- Indexes for table `ark_view_widget`
 --
 ALTER TABLE `ark_view_widget`
-  ADD PRIMARY KEY (`element`),
-  ADD KEY `ark_view_widget_ibfk_1` (`vocabulary`);
+ ADD PRIMARY KEY (`element`), ADD KEY `ark_view_widget_ibfk_1` (`vocabulary`);
 
 --
 -- Indexes for table `ark_vocabulary`
 --
 ALTER TABLE `ark_vocabulary`
-  ADD PRIMARY KEY (`concept`),
-  ADD KEY `type` (`type`);
+ ADD PRIMARY KEY (`concept`), ADD KEY `type` (`type`);
 
 --
 -- Indexes for table `ark_vocabulary_collected`
 --
 ALTER TABLE `ark_vocabulary_collected`
-  ADD PRIMARY KEY (`concept`,`collection`,`term`);
+ ADD PRIMARY KEY (`concept`,`collection`,`term`);
 
 --
 -- Indexes for table `ark_vocabulary_collection`
 --
 ALTER TABLE `ark_vocabulary_collection`
-  ADD PRIMARY KEY (`concept`,`collection`);
+ ADD PRIMARY KEY (`concept`,`collection`);
 
 --
 -- Indexes for table `ark_vocabulary_parameter`
 --
 ALTER TABLE `ark_vocabulary_parameter`
-  ADD PRIMARY KEY (`concept`,`term`,`name`),
-  ADD KEY `concept` (`concept`,`term`);
+ ADD PRIMARY KEY (`concept`,`term`,`name`), ADD KEY `concept` (`concept`,`term`);
 
 --
 -- Indexes for table `ark_vocabulary_related`
 --
 ALTER TABLE `ark_vocabulary_related`
-  ADD PRIMARY KEY (`from_concept`,`from_term`,`to_concept`,`to_term`),
-  ADD KEY `relation` (`relation`),
-  ADD KEY `from_term` (`from_concept`,`from_term`) USING BTREE,
-  ADD KEY `to_term` (`to_concept`,`to_term`) USING BTREE;
+ ADD PRIMARY KEY (`from_concept`,`from_term`,`to_concept`,`to_term`), ADD KEY `relation` (`relation`), ADD KEY `from_term` (`from_concept`,`from_term`) USING BTREE, ADD KEY `to_term` (`to_concept`,`to_term`) USING BTREE;
 
 --
 -- Indexes for table `ark_vocabulary_relation`
 --
 ALTER TABLE `ark_vocabulary_relation`
-  ADD PRIMARY KEY (`relation`);
+ ADD PRIMARY KEY (`relation`);
 
 --
 -- Indexes for table `ark_vocabulary_term`
 --
 ALTER TABLE `ark_vocabulary_term`
-  ADD PRIMARY KEY (`concept`,`term`),
-  ADD UNIQUE KEY `keyword` (`keyword`);
+ ADD PRIMARY KEY (`concept`,`term`), ADD UNIQUE KEY `keyword` (`keyword`);
 
 --
 -- Indexes for table `ark_vocabulary_translation`
 --
 ALTER TABLE `ark_vocabulary_translation`
-  ADD PRIMARY KEY (`language`,`domain`,`keyword`,`role`),
-  ADD KEY `keyword` (`keyword`),
-  ADD KEY `domain` (`domain`),
-  ADD KEY `role` (`role`);
+ ADD PRIMARY KEY (`language`,`domain`,`keyword`,`role`), ADD KEY `keyword` (`keyword`), ADD KEY `domain` (`domain`), ADD KEY `role` (`role`);
 
 --
 -- Indexes for table `ark_vocabulary_type`
 --
 ALTER TABLE `ark_vocabulary_type`
-  ADD PRIMARY KEY (`type`);
+ ADD PRIMARY KEY (`type`);
 
 --
 -- Indexes for table `ark_workflow_action`
 --
 ALTER TABLE `ark_workflow_action`
-  ADD PRIMARY KEY (`schma`,`action`),
-  ADD KEY `event_vocabulary` (`event_vocabulary`,`event_term`);
+ ADD PRIMARY KEY (`schma`,`action`), ADD KEY `event_vocabulary` (`event_vocabulary`,`event_term`);
 
 --
 -- Indexes for table `ark_workflow_agency`
 --
 ALTER TABLE `ark_workflow_agency`
-  ADD PRIMARY KEY (`schma`,`action`,`type`,`attribute`),
-  ADD KEY `schma` (`schma`,`type`,`attribute`);
+ ADD PRIMARY KEY (`schma`,`action`,`type`,`attribute`), ADD KEY `schma` (`schma`,`type`,`attribute`);
 
 --
 -- Indexes for table `ark_workflow_allow`
 --
 ALTER TABLE `ark_workflow_allow`
-  ADD PRIMARY KEY (`schma`,`action`,`role`),
-  ADD KEY `schma` (`schma`),
-  ADD KEY `role` (`role`);
+ ADD PRIMARY KEY (`schma`,`action`,`role`), ADD KEY `schma` (`schma`), ADD KEY `role` (`role`);
 
 --
 -- Indexes for table `ark_workflow_condition`
 --
 ALTER TABLE `ark_workflow_condition`
-  ADD PRIMARY KEY (`schma`,`action`,`type`,`attribute`,`grp`),
-  ADD KEY `schma` (`schma`,`type`,`attribute`);
+ ADD PRIMARY KEY (`schma`,`action`,`type`,`attribute`,`grp`), ADD KEY `schma` (`schma`,`type`,`attribute`);
 
 --
 -- Indexes for table `ark_workflow_grant`
 --
 ALTER TABLE `ark_workflow_grant`
-  ADD PRIMARY KEY (`role`,`permission`),
-  ADD KEY `permission` (`permission`);
+ ADD PRIMARY KEY (`role`,`permission`), ADD KEY `permission` (`permission`);
 
 --
 -- Indexes for table `ark_workflow_notify`
 --
 ALTER TABLE `ark_workflow_notify`
-  ADD PRIMARY KEY (`schma`,`action`,`type`,`attribute`),
-  ADD KEY `schma` (`schma`,`type`,`attribute`);
+ ADD PRIMARY KEY (`schma`,`action`,`type`,`attribute`), ADD KEY `schma` (`schma`,`type`,`attribute`);
 
 --
 -- Indexes for table `ark_workflow_permission`
 --
 ALTER TABLE `ark_workflow_permission`
-  ADD PRIMARY KEY (`permission`);
+ ADD PRIMARY KEY (`permission`);
 
 --
 -- Indexes for table `ark_workflow_role`
 --
 ALTER TABLE `ark_workflow_role`
-  ADD PRIMARY KEY (`role`);
+ ADD PRIMARY KEY (`role`);
 
 --
 -- Indexes for table `ark_workflow_trigger`
 --
 ALTER TABLE `ark_workflow_trigger`
-  ADD PRIMARY KEY (`schma`,`action`,`trigger_schma`,`trigger_action`),
-  ADD KEY `schma` (`schma`),
-  ADD KEY `trigger_schma` (`trigger_schma`,`trigger_action`);
+ ADD PRIMARY KEY (`schma`,`action`,`trigger_schma`,`trigger_action`), ADD KEY `schma` (`schma`), ADD KEY `trigger_schma` (`trigger_schma`,`trigger_action`);
 
 --
 -- Indexes for table `ark_workflow_update`
 --
 ALTER TABLE `ark_workflow_update`
-  ADD PRIMARY KEY (`schma`,`action`,`type`,`attribute`),
-  ADD KEY `schma` (`schma`,`type`,`attribute`);
+ ADD PRIMARY KEY (`schma`,`action`,`type`,`attribute`), ADD KEY `schma` (`schma`,`type`,`attribute`);
 
 --
 -- Indexes for table `dime_period`
 --
 ALTER TABLE `dime_period`
-  ADD PRIMARY KEY (`concept`,`term`);
+ ADD PRIMARY KEY (`concept`,`term`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -6338,12 +8186,12 @@ ALTER TABLE `dime_period`
 -- AUTO_INCREMENT for table `ark_config_flash`
 --
 ALTER TABLE `ark_config_flash`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `ark_view_tree`
 --
 ALTER TABLE `ark_view_tree`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=18;
 --
 -- Constraints for dumped tables
 --
@@ -6352,316 +8200,316 @@ ALTER TABLE `ark_view_tree`
 -- Constraints for table `ark_datatype`
 --
 ALTER TABLE `ark_datatype`
-  ADD CONSTRAINT `ark_datatype_ibfk_1` FOREIGN KEY (`format_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_datatype_ibfk_2` FOREIGN KEY (`parameter_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_datatype_ibfk_1` FOREIGN KEY (`format_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_datatype_ibfk_2` FOREIGN KEY (`parameter_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format`
 --
 ALTER TABLE `ark_format`
-  ADD CONSTRAINT `ark_format_ibfk_1` FOREIGN KEY (`datatype`) REFERENCES `ark_datatype` (`datatype`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_format_ibfk_2` FOREIGN KEY (`parameter_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_format_ibfk_3` FOREIGN KEY (`format_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_ibfk_1` FOREIGN KEY (`datatype`) REFERENCES `ark_datatype` (`datatype`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_format_ibfk_2` FOREIGN KEY (`parameter_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_format_ibfk_3` FOREIGN KEY (`format_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_attribute`
 --
 ALTER TABLE `ark_format_attribute`
-  ADD CONSTRAINT `ark_format_attribute_ibfk_2` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_format_attribute_ibfk_3` FOREIGN KEY (`parent`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_format_attribute_ibfk_4` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_attribute_ibfk_2` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_format_attribute_ibfk_3` FOREIGN KEY (`parent`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_format_attribute_ibfk_4` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_blob`
 --
 ALTER TABLE `ark_format_blob`
-  ADD CONSTRAINT `ark_format_blob_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_blob_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_boolean`
 --
 ALTER TABLE `ark_format_boolean`
-  ADD CONSTRAINT `ark_format_boolean_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_boolean_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_datetime`
 --
 ALTER TABLE `ark_format_datetime`
-  ADD CONSTRAINT `ark_format_datetime_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_datetime_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_decimal`
 --
 ALTER TABLE `ark_format_decimal`
-  ADD CONSTRAINT `ark_format_decimal_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_decimal_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_float`
 --
 ALTER TABLE `ark_format_float`
-  ADD CONSTRAINT `ark_format_float_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_float_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_integer`
 --
 ALTER TABLE `ark_format_integer`
-  ADD CONSTRAINT `ark_format_integer_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_integer_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_item`
 --
 ALTER TABLE `ark_format_item`
-  ADD CONSTRAINT `ark_format_item_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_format_item_ibfk_2` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_item_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_format_item_ibfk_2` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_object`
 --
 ALTER TABLE `ark_format_object`
-  ADD CONSTRAINT `ark_format_object_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_object_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_spatial`
 --
 ALTER TABLE `ark_format_spatial`
-  ADD CONSTRAINT `ark_format_spatial_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_spatial_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_string`
 --
 ALTER TABLE `ark_format_string`
-  ADD CONSTRAINT `ark_format_string_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_string_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_format_text`
 --
 ALTER TABLE `ark_format_text`
-  ADD CONSTRAINT `ark_format_text_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_format_text_ibfk_1` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_instance_schema`
 --
 ALTER TABLE `ark_instance_schema`
-  ADD CONSTRAINT `ark_instance_schema_ibfk_1` FOREIGN KEY (`instance`) REFERENCES `ark_instance` (`instance`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_instance_schema_ibfk_2` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_instance_schema_ibfk_1` FOREIGN KEY (`instance`) REFERENCES `ark_instance` (`instance`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_instance_schema_ibfk_2` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_map_layer`
 --
 ALTER TABLE `ark_map_layer`
-  ADD CONSTRAINT `ark_map_layer_ibfk_1` FOREIGN KEY (`source`) REFERENCES `ark_map_source` (`source`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_map_layer_ibfk_1` FOREIGN KEY (`source`) REFERENCES `ark_map_source` (`source`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_map_legend`
 --
 ALTER TABLE `ark_map_legend`
-  ADD CONSTRAINT `legend_layer` FOREIGN KEY (`source`,`layer`) REFERENCES `ark_map_layer` (`source`, `layer`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `legend_map` FOREIGN KEY (`map`) REFERENCES `ark_map` (`map`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `legend_layer` FOREIGN KEY (`source`, `layer`) REFERENCES `ark_map_layer` (`source`, `layer`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `legend_map` FOREIGN KEY (`map`) REFERENCES `ark_map` (`map`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_route`
 --
 ALTER TABLE `ark_route`
-  ADD CONSTRAINT `ark_route_ibfk_1` FOREIGN KEY (`page`) REFERENCES `ark_view_page` (`element`);
+ADD CONSTRAINT `ark_route_ibfk_1` FOREIGN KEY (`page`) REFERENCES `ark_view_page` (`element`);
 
 --
 -- Constraints for table `ark_schema`
 --
 ALTER TABLE `ark_schema`
-  ADD CONSTRAINT `ark_schema_ibfk_1` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_schema_ibfk_2` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_schema_ibfk_3` FOREIGN KEY (`view`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_schema_ibfk_4` FOREIGN KEY (`edit`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_schema_ibfk_5` FOREIGN KEY (`remove`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_schema_ibfk_6` FOREIGN KEY (`new`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_schema_ibfk_1` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_schema_ibfk_2` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON DELETE SET NULL ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_schema_ibfk_3` FOREIGN KEY (`view`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_schema_ibfk_4` FOREIGN KEY (`edit`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_schema_ibfk_5` FOREIGN KEY (`remove`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_schema_ibfk_6` FOREIGN KEY (`new`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_schema_association`
 --
 ALTER TABLE `ark_schema_association`
-  ADD CONSTRAINT `ark_schema_association_ibfk_1` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_schema_association_ibfk_3` FOREIGN KEY (`module1`,`schema1`) REFERENCES `ark_schema` (`module`, `schma`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_schema_association_ibfk_4` FOREIGN KEY (`module2`,`schema2`) REFERENCES `ark_schema` (`module`, `schma`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_schema_association_ibfk_1` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_schema_association_ibfk_3` FOREIGN KEY (`module1`, `schema1`) REFERENCES `ark_schema` (`module`, `schma`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_schema_association_ibfk_4` FOREIGN KEY (`module2`, `schema2`) REFERENCES `ark_schema` (`module`, `schma`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_schema_attribute`
 --
 ALTER TABLE `ark_schema_attribute`
-  ADD CONSTRAINT `ark_schema_attribute_ibfk_1` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_schema_attribute_ibfk_2` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_schema_attribute_ibfk_3` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_schema_attribute_ibfk_4` FOREIGN KEY (`view`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_schema_attribute_ibfk_5` FOREIGN KEY (`edit`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_schema_attribute_ibfk_1` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_schema_attribute_ibfk_2` FOREIGN KEY (`format`) REFERENCES `ark_format` (`format`) ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_schema_attribute_ibfk_3` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_schema_attribute_ibfk_4` FOREIGN KEY (`view`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_schema_attribute_ibfk_5` FOREIGN KEY (`edit`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_translation`
 --
 ALTER TABLE `ark_translation`
-  ADD CONSTRAINT `ark_translation_ibfk_1` FOREIGN KEY (`domain`) REFERENCES `ark_translation_domain` (`domain`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_translation_ibfk_1` FOREIGN KEY (`domain`) REFERENCES `ark_translation_domain` (`domain`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_translation_message`
 --
 ALTER TABLE `ark_translation_message`
-  ADD CONSTRAINT `ark_translation_message_ibfk_1` FOREIGN KEY (`language`) REFERENCES `ark_translation_language` (`language`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_translation_message_ibfk_2` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_translation_message_ibfk_3` FOREIGN KEY (`role`) REFERENCES `ark_translation_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_translation_message_ibfk_1` FOREIGN KEY (`language`) REFERENCES `ark_translation_language` (`language`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_translation_message_ibfk_2` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_translation_message_ibfk_3` FOREIGN KEY (`role`) REFERENCES `ark_translation_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_translation_parameter`
 --
 ALTER TABLE `ark_translation_parameter`
-  ADD CONSTRAINT `ark_translation_parameter_ibfk_1` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_translation_parameter_ibfk_1` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_element`
 --
 ALTER TABLE `ark_view_element`
-  ADD CONSTRAINT `ark_view_element_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_view_type` (`type`) ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_view_element_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_view_type` (`type`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_field`
 --
 ALTER TABLE `ark_view_field`
-  ADD CONSTRAINT `ark_view_field_ibfk_1` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_view_field_ibfk_2` FOREIGN KEY (`schma`,`item_type`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `type`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_view_field_ibfk_1` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_view_field_ibfk_2` FOREIGN KEY (`schma`, `item_type`, `attribute`) REFERENCES `ark_schema_attribute` (`schma`, `type`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_grid`
 --
 ALTER TABLE `ark_view_grid`
-  ADD CONSTRAINT `ark_view_grid_ibfk_1` FOREIGN KEY (`layout`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_view_grid_ibfk_2` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_view_grid_ibfk_3` FOREIGN KEY (`map`) REFERENCES `ark_map` (`map`) ON DELETE SET NULL ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_view_grid_ibfk_1` FOREIGN KEY (`layout`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_view_grid_ibfk_2` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_view_grid_ibfk_3` FOREIGN KEY (`map`) REFERENCES `ark_map` (`map`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_layout`
 --
 ALTER TABLE `ark_view_layout`
-  ADD CONSTRAINT `ark_view_layout_ibfk_1` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_view_layout_ibfk_2` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_view_layout_ibfk_1` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_view_layout_ibfk_2` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_nav`
 --
 ALTER TABLE `ark_view_nav`
-  ADD CONSTRAINT `ark_view_nav_ibfk_1` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_view_nav_ibfk_2` FOREIGN KEY (`parent`) REFERENCES `ark_view_nav` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_view_nav_ibfk_1` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_view_nav_ibfk_2` FOREIGN KEY (`parent`) REFERENCES `ark_view_nav` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_page`
 --
 ALTER TABLE `ark_view_page`
-  ADD CONSTRAINT `content_element` FOREIGN KEY (`content`) REFERENCES `ark_view_layout` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `element` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `footer_element` FOREIGN KEY (`footer`) REFERENCES `ark_view_layout` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `navbar_element` FOREIGN KEY (`navbar`) REFERENCES `ark_view_nav` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `sidebar_element` FOREIGN KEY (`sidebar`) REFERENCES `ark_view_nav` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `content_element` FOREIGN KEY (`content`) REFERENCES `ark_view_layout` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `element` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `footer_element` FOREIGN KEY (`footer`) REFERENCES `ark_view_layout` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `navbar_element` FOREIGN KEY (`navbar`) REFERENCES `ark_view_nav` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `sidebar_element` FOREIGN KEY (`sidebar`) REFERENCES `ark_view_nav` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_tree`
 --
 ALTER TABLE `ark_view_tree`
-  ADD CONSTRAINT `ark_view_tree_ibfk_1` FOREIGN KEY (`ancestor`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_view_tree_ibfk_2` FOREIGN KEY (`descendant`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_view_tree_ibfk_1` FOREIGN KEY (`ancestor`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_view_tree_ibfk_2` FOREIGN KEY (`descendant`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_widget`
 --
 ALTER TABLE `ark_view_widget`
-  ADD CONSTRAINT `ark_view_widget_ibfk_1` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_view_widget_ibfk_2` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_view_widget_ibfk_1` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_view_widget_ibfk_2` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary`
 --
 ALTER TABLE `ark_vocabulary`
-  ADD CONSTRAINT `ark_vocabulary_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_vocabulary_type` (`type`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_vocabulary_ibfk_1` FOREIGN KEY (`type`) REFERENCES `ark_vocabulary_type` (`type`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary_parameter`
 --
 ALTER TABLE `ark_vocabulary_parameter`
-  ADD CONSTRAINT `ark_vocabulary_parameter_ibfk_1` FOREIGN KEY (`concept`,`term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_vocabulary_parameter_ibfk_1` FOREIGN KEY (`concept`, `term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary_related`
 --
 ALTER TABLE `ark_vocabulary_related`
-  ADD CONSTRAINT `ark_vocabulary_related_ibfk_1` FOREIGN KEY (`from_concept`,`from_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_vocabulary_related_ibfk_2` FOREIGN KEY (`to_concept`,`to_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_vocabulary_related_ibfk_3` FOREIGN KEY (`relation`) REFERENCES `ark_vocabulary_relation` (`relation`) ON DELETE CASCADE;
+ADD CONSTRAINT `ark_vocabulary_related_ibfk_1` FOREIGN KEY (`from_concept`, `from_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_vocabulary_related_ibfk_2` FOREIGN KEY (`to_concept`, `to_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_vocabulary_related_ibfk_3` FOREIGN KEY (`relation`) REFERENCES `ark_vocabulary_relation` (`relation`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary_term`
 --
 ALTER TABLE `ark_vocabulary_term`
-  ADD CONSTRAINT `ark_vocabulary_term_ibfk_1` FOREIGN KEY (`concept`) REFERENCES `ark_vocabulary` (`concept`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_vocabulary_term_ibfk_1` FOREIGN KEY (`concept`) REFERENCES `ark_vocabulary` (`concept`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary_translation`
 --
 ALTER TABLE `ark_vocabulary_translation`
-  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_1` FOREIGN KEY (`keyword`) REFERENCES `ark_vocabulary_term` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_2` FOREIGN KEY (`language`) REFERENCES `ark_translation_language` (`language`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_3` FOREIGN KEY (`domain`) REFERENCES `ark_translation_domain` (`domain`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_vocabulary_translation_ibfk_4` FOREIGN KEY (`role`) REFERENCES `ark_translation_role` (`role`) ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_vocabulary_translation_ibfk_1` FOREIGN KEY (`keyword`) REFERENCES `ark_vocabulary_term` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_vocabulary_translation_ibfk_2` FOREIGN KEY (`language`) REFERENCES `ark_translation_language` (`language`) ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_vocabulary_translation_ibfk_3` FOREIGN KEY (`domain`) REFERENCES `ark_translation_domain` (`domain`) ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_vocabulary_translation_ibfk_4` FOREIGN KEY (`role`) REFERENCES `ark_translation_role` (`role`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_action`
 --
 ALTER TABLE `ark_workflow_action`
-  ADD CONSTRAINT `ark_workflow_action_ibfk_1` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_workflow_action_ibfk_2` FOREIGN KEY (`event_vocabulary`,`event_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_workflow_action_ibfk_1` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_workflow_action_ibfk_2` FOREIGN KEY (`event_vocabulary`, `event_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_agency`
 --
 ALTER TABLE `ark_workflow_agency`
-  ADD CONSTRAINT `ark_workflow_agency_ibfk_1` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_workflow_agency_ibfk_2` FOREIGN KEY (`schma`,`type`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `type`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_workflow_agency_ibfk_1` FOREIGN KEY (`schma`, `action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_workflow_agency_ibfk_2` FOREIGN KEY (`schma`, `type`, `attribute`) REFERENCES `ark_schema_attribute` (`schma`, `type`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_allow`
 --
 ALTER TABLE `ark_workflow_allow`
-  ADD CONSTRAINT `ark_workflow_allow_ibfk_1` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_workflow_allow_ibfk_2` FOREIGN KEY (`role`) REFERENCES `ark_workflow_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_workflow_allow_ibfk_1` FOREIGN KEY (`schma`, `action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_workflow_allow_ibfk_2` FOREIGN KEY (`role`) REFERENCES `ark_workflow_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_condition`
 --
 ALTER TABLE `ark_workflow_condition`
-  ADD CONSTRAINT `ark_workflow_condition_ibfk_1` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_workflow_condition_ibfk_2` FOREIGN KEY (`schma`,`type`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `type`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_workflow_condition_ibfk_1` FOREIGN KEY (`schma`, `action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_workflow_condition_ibfk_2` FOREIGN KEY (`schma`, `type`, `attribute`) REFERENCES `ark_schema_attribute` (`schma`, `type`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_grant`
 --
 ALTER TABLE `ark_workflow_grant`
-  ADD CONSTRAINT `ark_workflow_grant_ibfk_1` FOREIGN KEY (`role`) REFERENCES `ark_workflow_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_workflow_grant_ibfk_2` FOREIGN KEY (`permission`) REFERENCES `ark_workflow_permission` (`permission`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_workflow_grant_ibfk_1` FOREIGN KEY (`role`) REFERENCES `ark_workflow_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_workflow_grant_ibfk_2` FOREIGN KEY (`permission`) REFERENCES `ark_workflow_permission` (`permission`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_notify`
 --
 ALTER TABLE `ark_workflow_notify`
-  ADD CONSTRAINT `ark_workflow_notify_ibfk_1` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_workflow_notify_ibfk_2` FOREIGN KEY (`schma`,`type`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `type`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_workflow_notify_ibfk_1` FOREIGN KEY (`schma`, `action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_workflow_notify_ibfk_2` FOREIGN KEY (`schma`, `type`, `attribute`) REFERENCES `ark_schema_attribute` (`schma`, `type`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_trigger`
 --
 ALTER TABLE `ark_workflow_trigger`
-  ADD CONSTRAINT `ark_workflow_trigger_ibfk_1` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_workflow_trigger_ibfk_2` FOREIGN KEY (`trigger_schma`,`trigger_action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_workflow_trigger_ibfk_1` FOREIGN KEY (`schma`, `action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_workflow_trigger_ibfk_2` FOREIGN KEY (`trigger_schma`, `trigger_action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_update`
 --
 ALTER TABLE `ark_workflow_update`
-  ADD CONSTRAINT `ark_workflow_update_ibfk_1` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_workflow_update_ibfk_2` FOREIGN KEY (`schma`,`type`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `type`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `ark_workflow_update_ibfk_1` FOREIGN KEY (`schma`, `action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `ark_workflow_update_ibfk_2` FOREIGN KEY (`schma`, `type`, `attribute`) REFERENCES `ark_schema_attribute` (`schma`, `type`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

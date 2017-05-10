@@ -83,9 +83,11 @@ class DescriptionType extends AbstractFormType
                 if ($event instanceof Event) {
                     $forms['event']->setData($event->id());
                 }
-                $forms['content']->setData($text->content($language));
-                $forms['previous']->setData(serialize($text->contents()));
-                $forms['mediatype']->setData($text->mediaType());
+                if ($text) {
+                    $forms['content']->setData($text->content($language));
+                    $forms['previous']->setData(serialize($text->contents()));
+                    $forms['mediatype']->setData($text->mediaType());
+                }
                 $forms['language']->setData($language);
             }
         }

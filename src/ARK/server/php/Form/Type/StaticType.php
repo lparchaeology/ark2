@@ -30,8 +30,9 @@
 
 namespace ARK\Form\Type;
 
-use DateTime;
+use ARK\Service;
 use ARK\Vocabulary\Term;
+use DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -67,6 +68,9 @@ class StaticType extends AbstractType implements DataTransformerInterface
         }
         if ($value instanceof Term) {
             return $value->keyword();
+        }
+        if (!$value) {
+            return Service::translate('dime.placeholder');
         }
         return $value;
     }

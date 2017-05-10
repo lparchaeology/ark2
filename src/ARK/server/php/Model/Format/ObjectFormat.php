@@ -64,10 +64,10 @@ class ObjectFormat extends Format
         return null;
     }
 
-    public function nullValue()
+    public function emptyValue()
     {
         foreach ($this->attributes as $attribute) {
-            $data[$attribute->name()] = $attribute->format()->nullValue();
+            $data[$attribute->name()] = $attribute->format()->emptyValue();
         }
         return $data;
     }
@@ -81,7 +81,7 @@ class ObjectFormat extends Format
         foreach ($this->attributes as $attribute) {
             $data[$attribute->name()] = $properties->get($attribute->name())->value();
         }
-        if ($data == $this->nullValue()) {
+        if ($data == $this->emptyValue()) {
             return null;
         }
         return $data;

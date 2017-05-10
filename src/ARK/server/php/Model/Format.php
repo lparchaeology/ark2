@@ -156,7 +156,7 @@ abstract class Format
         return $this->formatName() === null && $this->parameterName() === null;
     }
 
-    public function nullValue()
+    public function emptyValue()
     {
         if ($this->hasMultipleValues()) {
             return [];
@@ -170,9 +170,6 @@ abstract class Format
         }
         if ($this->parameterName()) {
             $data[$this->parameterName()] = null;
-        }
-        if ($this->isSpan()) {
-            return [null, null];
         }
         $data[$this->valueName()] = ($this->isSpan() ? [null, null] : null);
         return $data;

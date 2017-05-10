@@ -100,9 +100,9 @@ class Property
         return $this->children;
     }
 
-    public function nullValue()
+    public function emptyValue()
     {
-        return $this->attribute->nullValue();
+        return $this->attribute->emptyValue();
     }
 
     public function value()
@@ -123,7 +123,7 @@ class Property
             ORM::remove($this->fragments);
             $this->fragments->clear();
         }
-        if ($value == $this->nullValue()) {
+        if (!$value || $value == $this->emptyValue()) {
             return;
         }
         $this->fragments = $this->attribute->hydrate($value);
