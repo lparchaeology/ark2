@@ -47,7 +47,6 @@ abstract class DimeFormController extends DimeController
         $options = $page->defaultOptions();
         $options['page_config'] = $this->pageConfig($route);
         $data = $this->buildData($request, $page);
-        $options['page_mode'] = 'view';
 
         $actor = Service::workflow()->actor();
         if ($actor) {
