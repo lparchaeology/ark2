@@ -34,6 +34,7 @@ use ARK\ARK;
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
 use DateTime;
+use ARK\Service;
 
 class Message implements Item
 {
@@ -78,13 +79,7 @@ class Message implements Item
 
     public function markAsRead(Actor $actor)
     {
-        foreach ($this->recipients() as &$dispatch) {
-            if ($actor->id() == $dispatch['recipient']['item'] && ! isset($dispatch['read'])) {
-                $dispatch['read'] = ARK::timestamp();
-                return true;
-            }
-        }
-        return false;
+        return Service::database()->markMessageAsRead($this->id(), $actor->id());
     }
 
     public function wasReadBy(Actor $actor)

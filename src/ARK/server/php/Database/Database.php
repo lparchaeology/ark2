@@ -29,13 +29,14 @@
  */
 namespace ARK\Database;
 
+use ARK\ARK;
 use ARK\Error\ErrorException;
 use ARK\Http\Error\InternalServerError;
+use DateTime;
 use Silex\Application;
 
 class Database
 {
-
     private $app = null;
 
     private $modules = [];
@@ -999,7 +1000,45 @@ class Database
             \Doctrine\DBAL\Connection::PARAM_STR_ARRAY
         );
         $read = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
-        return array_diff($all, $read);
+    }
+
+    public function markMessageAsRead($message, $actor)
+    {
+        $sql = "
+            SELECT *
+            FROM ark_fragment_item
+            WHERE module = 'message'
+            AND attribute = 'recipient'
+            AND value = :actor
+        ";
+        $params = array(
+            ':actor' => $actor
+        );
+        $recipient = $this->data()->fetchAssoc($sql, $params);
+        if (!$recipient) {
+            return null;
+        }
+        $sql = "
+            SELECT *
+            FROM ark_fragment_datetime
+            WHERE module = 'message'
+            AND attribute = 'read'
+            AND value = :actor
+        ";
+        $read = $this->data()->fetchAssoc($sql, $params);
+        if ($read) {
+            return null;
+        }
+        $read = [];
+        $read['module'] = 'message';
+        $read['attribute'] = 'read';
+        $read['object'] = $recipient['object'];
+        $timestamp = ARK::timestamp()->format(DateTime::ATOM);
+        $read['value'] = $timestamp;
+        if ($result = $this->data()->insert('ark_fragment_datetime', $read)) {
+            return $timestamp;
+        }
+        return null;
     }
 
     public function findSearch($query)

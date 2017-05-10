@@ -38,14 +38,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class MessageReadController
 {
-
     public function __invoke(Request $request)
     {
-        $content = json_decode($request->getContent());
         try {
-            $message = $content->message;
+            $content = json_decode($request->getContent(), true);
+            $message = $content['message'];
             $message = ORM::find(Message::class, $message);
-            $recipient = $content->recipient;
+            $recipient = $content['recipient'];
             $recipient = ORM::find(Actor::class, $recipient);
             if ($message && $recipient && $message->isRecipient($recipient)) {
                 $data['result'] = $message->markAsRead($recipient);
