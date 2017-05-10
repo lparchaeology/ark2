@@ -46,12 +46,10 @@ class ClassificationType extends AbstractFormType
         $field = $options['field']['object'];
         $format = $field->attribute()->format();
 
-        $valueOptions['choices'] = $format->attribute('class')
-            ->vocabulary()
-            ->terms();
+        $valueOptions['choices'] = $format->attribute('subtype')->vocabulary()->terms();
         $valueOptions['placeholder'] = ' - ';
         $valueOptions['required'] = true;
-        $builder->add('class', $options['field']['value']['type'], $valueOptions);
+        $builder->add('subtype', $options['field']['value']['type'], $valueOptions);
 
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
@@ -77,9 +75,9 @@ class ClassificationType extends AbstractFormType
                 if ($event) {
                     $forms['event']->setData($event->id());
                 }
-                $class = $value[0]['class'];
+                $class = $value[0]['subtype'];
                 if ($class) {
-                    $forms['class']->setData($class);
+                    $forms['subtype']->setData($class);
                 }
             }
         }
@@ -94,7 +92,7 @@ class ClassificationType extends AbstractFormType
                 $event = ORM::find(Event::class, $event);
             }
             $value['event'] = $event;
-            $value['class'] = $forms['class']->getData();
+            $value['subtype'] = $forms['subtype']->getData();
             $property->setValue([$value]);
         }
     }
