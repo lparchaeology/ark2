@@ -34,7 +34,6 @@ use Silex\Api\ControllerProviderInterface;
 
 class ViewControllerProvider implements ControllerProviderInterface
 {
-
     public function connect(Application $app)
     {
         // HACK for translated routing, replace later with DynamicRouter
@@ -70,8 +69,8 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers->match("/$about", 'DIME\Controller\PageViewController')
             ->method('GET|POST')
             ->bind('about');
-        $controllers->match("/$news", 'DIME\Controller\PageViewController')
-            ->method('GET|POST')
+        $controllers->match("/$news", 'DIME\Controller\NewsPageController')
+            ->method('GET')
             ->bind('news');
 
         // Temp Routes?

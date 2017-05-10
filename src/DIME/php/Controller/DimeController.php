@@ -37,6 +37,7 @@ abstract class DimeController
     public function defaultOptions($route = null)
     {
         $options['mode'] = 'view';
+        $options['page_mode'] = 'view';
         $options['data'] = null;
         $options['forms'] = null;
         $options['page_config'] = $this->pageConfig($route);

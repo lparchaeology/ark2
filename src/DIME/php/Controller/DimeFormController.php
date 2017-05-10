@@ -40,7 +40,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class DimeFormController extends DimeController
 {
-
     public function renderResponse(Request $request, $page, $redirect = null, $options = [])
     {
         $route = $request->attributes->get('_route');
@@ -49,21 +48,18 @@ abstract class DimeFormController extends DimeController
         $options['page_config'] = $this->pageConfig($route);
         $data = $this->buildData($request, $page);
 
-        $items = Service::database()->getUnreadMessages(Service::workflow()->actor()
-            ->id());
-
-        $data['notifications'] = ORM::findBy(Message::class, [
-            'item' => $items
-        ], [
-            'created' => 'DESC'
-        ]);
-        if ($page->mode() == 'edit') {
-            $actor = Service::workflow()->actor();
-            $item = $data[$page->content()->name()];
-            if (! $actor || ! Service::workflow()->can($actor, 'edit', $item)) {
-                $options['page_mode'] = 'view';
+        $actor = Service::workflow()->actor();
+        if ($actor) {
+            $msgIds = Service::database()->getUnreadMessages($actor->id());
+            $data['notifications'] = ORM::findBy(Message::class, ['item' => $msgIds], ['created' => 'DESC']);
+            if ($page->mode() == 'edit') {
+                $item = $data[$page->content()->name()];
+                if (Service::workflow()->can($actor, 'edit', $item)) {
+                    $options['page_mode'] = 'edit';
+                }
             }
         }
+
         $forms = $page->content()->buildForms($data, $options);
         if ($request->getMethod() == 'POST') {
             $form = null;

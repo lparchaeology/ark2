@@ -185,8 +185,11 @@ class Action
             // Apply Updates
             // Trigger Actions
             // Send Notifications
-            $notification = new Notification($actor, $this->notify($item), $event);
-            ORM::persist($notification);
+            $recipients = $this->notify($item);
+            if ($recipients) {
+                $notification = new Notification($actor, $recipients, $event);
+                ORM::persist($notification);
+            }
         }
     }
 

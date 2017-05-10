@@ -39,23 +39,31 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FrontPageController extends DimeController
 {
-
     public function __invoke(Request $request)
     {
         $layout = 'dime_front_page';
         $options = $this->defaultOptions();
         $options['layout'] = Service::layout($layout);
-        $options['data'][$layout] = ORM::findAll(Find::class);
+        // Get the 25 most recent public Items
+        $finds = ORM::findBy(Find::class, ['visibility' => 'public'], ['item' => 'DESC'], 25);
+        dump($finds);
+        // Then the 5 with images
+        $featured = [];
+        foreach ($finds as $find) {
+            $images = $find->property('image')->value();
+            if ($images = $find->property('image')->value()) {
+                $featured[] = $find;
+            }
+            if (count($featured) >= 5) {
+                break;
+            }
+        }
+        dump($featured);
+        $options['data'][$layout] = $featured;
 
         if (null !== Service::workflow()->actor()) {
-
-            $items = Service::database()->getUnreadMessages(Service::workflow()->actor()
-                ->id());
-            $options['data']['notifications'] = ORM::findBy(Notification::class, [
-                'item' => $items
-            ], [
-                'created' => 'DESC'
-            ]);
+            $msgIds = Service::database()->getUnreadMessages(Service::workflow()->actor()->id());
+            $options['data']['notifications'] = ORM::findBy(Notification::class, ['item' => $msgIds], ['created' => 'DESC']);
         }
 
         return Service::renderResponse('pages/page.html.twig', $options);
