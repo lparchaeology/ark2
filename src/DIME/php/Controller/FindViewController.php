@@ -33,8 +33,7 @@ use ARK\Error\ErrorException;
 use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
 use ARK\View\Page;
-use ARK\Service;
-use ARK\Message\Message;
+use DIME\DIME;
 use DIME\Controller\EntityController;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,10 +54,7 @@ class FindViewController extends EntityController
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Find not found', "Find $this->itemSlug not found"));
         }
         $data[$page->content()->name()] = $resource;
-
-        $items = Service::database()->getUnreadMessages(Service::workflow()->actor()->id());
-        $data['notifications'] = ORM::findBy(Message::class, ['item' => $items], ['created' => 'DESC']);
-
+        $data['notifications'] = DIME::getUnreadNotifications();
         return $data;
     }
 }

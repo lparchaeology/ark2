@@ -31,51 +31,35 @@ namespace DIME\Controller;
 
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\Message\Message;
-use ARK\Message\Notification;
+use ARK\View\Page;
+use DIME\DIME;
 use DIME\Controller\DimeController;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
 class HomePageController extends DimeController
 {
-
     public function __invoke(Request $request)
     {
+        $page = ORM::find(Page::class, 'dime_page_home');
+
         $options = $this->defaultOptions();
+        $options['page'] = $page;
+        $options['layout'] = $page->content();
 
-        $layout = 'dime_home_page';
-        $options['layout'] = Service::layout($layout);
+        // Find 9 most recent finds for current actor
+        $finds = ORM::findAll(Find::class);
+        $data[$page->content()->name()] = $finds;
+        $data['dime_find_list'] = $finds;
 
-        if (null !== Service::workflow()->actor()) {
-            $items = Service::database()->getUnreadMessages(Service::workflow()->actor()
-                ->id());
-            $data['notifications'] = ORM::findBy(Notification::class, [
-                'item' => $items
-            ], [
-                'created' => 'DESC'
-            ]);
-        }
+        $data['notifications'] = DIME::getUnreadNotifications();
 
-        $data[$layout] = ORM::findAll(Find::class);
-        $data['dime_find_list'] = $data[$layout];
-        $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $data[$layout] : []);
+        $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $finds : []);
+        $data['kortforsyningenticket'] = DIME::getMapTicket();
+
         $data['dime_home_action'] = null;
 
-        $kortforsyningenticket = false;
-        $passPath = Service::configDir() . '/credentials.json';
-        if ($passwords = json_decode(file_get_contents($passPath), true) && isset($passwords['kortforsyningen'])) {
-            $user = $passwords['kortforsyningen']['user'];
-            $password = $passwords['kortforsyningen']['password'];
-            $kortforsyningenticket = file_get_contents("http://services.kortforsyningen.dk/service?request=GetTicket&login=$user&password=$password");
-        }
-        if (strlen($kortforsyningenticket) == 32) {
-            $data['kortforsyningenticket'] = $kortforsyningenticket;
-        } else {
-            $data['kortforsyningenticket'] = false;
-        }
-
         $options['data'] = $data;
-        return Service::renderResponse('pages/page.html.twig', $options);
+        return Service::renderResponse($page->template(), $options);
     }
 }
