@@ -45,13 +45,17 @@ class FrontPageController extends DimeController
         $options = $this->defaultOptions();
         $options['layout'] = Service::layout($layout);
         $options['data'][$layout] = ORM::findAll(Find::class);
-        $items = Service::database()->getUnreadMessages(Service::workflow()->actor()
-            ->id());
-        $options['data']['notifications'] = ORM::findBy(Message::class, [
-            'item' => $items
-        ], [
-            'created' => 'DESC'
-        ]);
+
+        if (null !== Service::workflow()->actor()) {
+            $items = Service::database()->getUnreadMessages(Service::workflow()->actor()
+                ->id());
+            $options['data']['notifications'] = ORM::findBy(Message::class, [
+                'item' => $items
+            ], [
+                'created' => 'DESC'
+            ]);
+        }
+
         return Service::renderResponse('pages/page.html.twig', $options);
     }
 }

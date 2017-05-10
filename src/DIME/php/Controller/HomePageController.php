@@ -46,14 +46,16 @@ class HomePageController extends DimeController
         $layout = 'dime_home_page';
         $options['layout'] = Service::layout($layout);
 
-        $items = Service::database()->getUnreadMessages(Service::workflow()->actor()
-            ->id());
+        if (null !== Service::workflow()->actor()) {
+            $items = Service::database()->getUnreadMessages(Service::workflow()->actor()
+                ->id());
+            $data['notifications'] = ORM::findBy(Message::class, [
+                'item' => $items
+            ], [
+                'created' => 'DESC'
+            ]);
+        }
 
-        $data['notifications'] = ORM::findBy(Message::class, [
-            'item' => $items
-        ], [
-            'created' => 'DESC'
-        ]);
         $data[$layout] = ORM::findAll(Find::class);
         $data['dime_find_list'] = $data[$layout];
         $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $data[$layout] : []);
