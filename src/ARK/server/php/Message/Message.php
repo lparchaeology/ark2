@@ -43,7 +43,11 @@ class Message implements Item
     {
         $this->construct('core.message');
         $this->property('sender')->setValue($sender);
-        $this->property('recipients')->setValue($recipients);
+        $dispatches =[];
+        foreach ($recipients as $recipient) {
+            $dispatches[]['recipient'] = $recipient;
+        }
+        $this->property('recipients')->setValue($dispatches);
         $this->property('sent')->setValue($sentAt);
     }
 
