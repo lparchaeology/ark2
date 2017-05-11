@@ -50,6 +50,9 @@ class Notify
 
     public function recipient(Item $item)
     {
+        if ($this->attributeName == 'museum') {
+            return ORM::find(Actor::class, 'bnchristensen');
+        }
         return $item->property($this->attributeName)->value();
     }
 
