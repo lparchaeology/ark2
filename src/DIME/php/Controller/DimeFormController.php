@@ -55,7 +55,11 @@ abstract class DimeFormController extends DimeController
             if ($page->mode() == 'edit') {
                 $item = $data[$page->content()->name()];
                 if (Service::workflow()->can($actor, 'edit', $item)) {
-                    $options['page_mode'] = 'edit';
+                    $role = $actor->roles()[0];
+                    // HACK Do using workflow!
+                    if ($role->id() != 'detectorist' || $item->property('process')->value()->name() == 'recorded') {
+                        $options['page_mode'] = 'edit';
+                    }
                 }
             }
         }
