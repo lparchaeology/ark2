@@ -36,10 +36,11 @@ use ARK\Model\Schema\SchemaAttribute;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
+use ARK\Vocabulary\Term;
 use ARK\Workflow\Action;
 use ARK\Workflow\Role;
 
-class Notify
+class Update
 {
     protected $schma = '';
     protected $actionName = '';
@@ -47,16 +48,23 @@ class Notify
     protected $type = '';
     protected $attributeName = '';
     protected $attribute = null;
+    protected $actor = false;
+    protected $term = '';
 
-    public function recipient(Item $item)
+    public function apply(Item $item)
     {
-        return $item->property($this->attributeName)->value();
+        if ($this->actor) {
+            $item->property($this->attributeName)->setValue(Service::workflow()->actor());
+        } elseif ($this->term) {
+            $term = ORM::findOneBy(Term::class, ['concept' => $this->attribute->vocabulary()->concept(), 'term' => $this->term]);
+            $item->property($this->attributeName)->setValue($term);
+        }
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Joined Table Inheritance
-        $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_notify');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_update');
         $builder->setReadOnly();
 
         // Key
@@ -64,6 +72,9 @@ class Notify
         $builder->addStringKey('actionName', 30, 'action');
         $builder->addStringKey('type', 30);
         $builder->addStringKey('attributeName', 30, 'attribute');
+
+        $builder->addStringField('term', 30);
+        $builder->addStringField('actor', 'boolean');
 
         // Associations
         $builder->addCompositeManyToOneField(
@@ -73,7 +84,7 @@ class Notify
                 ['column' => 'schma', 'nullable' => true],
                 ['column' => 'action', 'nullable' => true],
             ],
-            'notifications'
+            'updates'
         );
         $builder->addCompositeManyToOneField(
             'attribute',

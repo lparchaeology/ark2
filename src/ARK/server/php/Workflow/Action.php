@@ -65,6 +65,7 @@ class Action
     protected $agencies = null;
     protected $conditions = null;
     protected $notifications = null;
+    protected $updates = null;
     protected $groups = null;
 
     public function __construct()
@@ -183,6 +184,9 @@ class Action
             $event = new Event($actor, $this, $item);
             ORM::persist($event);
             // Apply Updates
+            foreach ($this->updates as $update) {
+                $update->apply($item);
+            }
             // Trigger Actions
             // Send Notifications
             $recipients = $this->notify($item);
@@ -250,6 +254,15 @@ class Action
         $builder->addCompositeOneToMany(
             'notifications',
             Notify::class,
+            'action',
+            [
+                ['column' => 'schma', 'nullable' => true],
+                ['column' => 'action', 'nullable' => true],
+            ]
+        );
+        $builder->addCompositeOneToMany(
+            'updates',
+            Update::class,
             'action',
             [
                 ['column' => 'schma', 'nullable' => true],
