@@ -32,6 +32,7 @@ namespace DIME\Controller;
 use ARK\View\Page;
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\Vocabulary\Term;
 use DIME\Controller\EntityController;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,7 +47,18 @@ class FindAddController extends EntityController
 
     public function buildData(Request $request, Page $page)
     {
-        $data[$page->content()->name()] = new Find('dime.find');
+        $actor = Service::workflow()->actor();
+        $find = new Find('dime.find');
+        $find->property('finder')->setValue($actor);
+        $find->property('owner')->setValue($actor);
+        $find->property('custodian')->setValue($actor);
+        $process = ORM::find(Term::class, ['concept' => 'dime.find.process', 'term' => 'recorded']);
+        $find->property('process')->setValue($process);
+        $custody = ORM::find(Term::class, ['concept' => 'dime.find.custody', 'term' => 'held']);
+        $find->property('custody')->setValue($custody);
+        $treasure = ORM::find(Term::class, ['concept' => 'dime.treasure', 'term' => 'pending']);
+        $find->property('treasure')->setValue($treasure);
+        $data[$page->content()->name()] = $find;
         return $data;
     }
 }
