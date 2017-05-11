@@ -980,13 +980,13 @@ class Database
             SELECT ark_fragment_item.item
             FROM ark_fragment_item, ark_fragment_datetime
             WHERE ark_fragment_item.module = 'message'
-            AND ark_fragment_item.attribute = 'recipient'
-            AND ark_fragment_item.value = :actor
-            AND ark_fragment_item.module = ark_fragment_datetime.module
-            AND ark_fragment_item.item = ark_fragment_datetime.item
-            AND ark_fragment_item.object = ark_fragment_datetime.object
-            AND ark_fragment_datetime.attribute = 'status'
-            AND ark_fragment_datetime.value = 'unread'
+            AND   ark_fragment_item.attribute = 'recipient'
+            AND   ark_fragment_item.value = :actor
+            AND   ark_fragment_item.module = ark_fragment_datetime.module
+            AND   ark_fragment_item.item = ark_fragment_datetime.item
+            AND   ark_fragment_item.object = ark_fragment_datetime.object
+            AND   ark_fragment_datetime.attribute = 'status'
+            AND   ark_fragment_datetime.value = 'unread'
         ";
         $params = array(
             ':actor' => $actor
