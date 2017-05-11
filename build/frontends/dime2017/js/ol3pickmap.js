@@ -54,7 +54,7 @@ function initialisePickMap() {
             //center: [531578, 6295675],
             zoom: 5
         }),
-        controls: [],
+        controls: [new ol.control.FullScreen()],
     });
 
     var draw = new ol.interaction.Draw({

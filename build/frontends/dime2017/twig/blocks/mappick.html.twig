@@ -4,28 +4,31 @@
 
     {% set fieldForm = form[field.formName] %}
 
-   {# {{ form_label(fieldForm) }} #}
-
     <div class="mappick_fields col-sm-7">
         <div class="row mappick-options mappick_utm">
             <div class="col-sm-6">
                 <div class="radio">
-                    <input type="radio" name="koordinater" id="mappick_utm" checked="checked" />
+                    {% if true %}
+                    {# if workflow.can(global.user.actor, field.attribute.updatePermission, data.item ) #}
+                        <input type="radio" name="koordinater" id="mappick_utm" checked="checked" />
+                    {% endif %}
                     <label for="mappick_utm"><span class="radiolabel">Universal Transverse Mercator</span></label>
                 </div>
             </div>
             <div class="col-sm-6">
-                <input id="mappick-utm" class="mappick_field mappick-utm form-control" type="text" >
-            {#
-                <input id="mappick-utm-easting" class="mappick_field mappick-utm-easting form-control" type="text" >
-                <input id="mappick-utm-northing" class="mappick_field mappick-utm-northing form-control" type="text" >
-            #}
+                {% if workflow.hasPermission(field.attribute.updatePermission) %}
+                    <input id="mappick-utm" class="mappick_field mappick-utm form-control" type="text" >
+                {% else %}
+                    <input id="mappick-utm" class="mappick_field mappick-utm form-control" readonly="readonly" type="text" >#}
+                {% endif %}
             </div>
         </div>
         <div class="row mappick-options decimalgrader">
             <div class="col-sm-6">
                 <div class="radio">
-                    <input type="radio" name="koordinater" id="decimalgrader" />
+                    {% if workflow.hasPermission(field.attribute.updatePermission) %}
+                        <input type="radio" name="koordinater" id="decimalgrader" />
+                    {% endif %}
                     <label for="decimalgrader"><span class="radiolabel">Decimalgrader</span></label>
                 </div>
             </div>

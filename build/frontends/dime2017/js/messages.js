@@ -50,11 +50,11 @@ var getMessage = function(id) {
             datetranslation+"</dt><dd class=\"message-date\">"+
             formatDate(dateinitial)+"</dd><dt>"+
             eventtranslation+"</dt><dd class=\"message-body\">"+
-            eventinitial+"</dd><dd class=\"message-item\"><dt>"+
-            itemtranslation+"</dt><dd>"+
-            iteminitial+"</dd></dl>").append(button);
+            eventinitial+"</dd><dt>"+
+            itemtranslation+"</dt><dd class=\"message-item\">"+
+            iteminitial+"</dd></dl>");
 
-    var message = $("<div></div>").append(definitionlist).append(button);
+    var message = $("<div></div>").append(definitionlist);
 
     thisRow.data("message", message);
 
@@ -91,6 +91,9 @@ var getMessage = function(id) {
           })
           .done(function(response){
               thisRow.data("message").find('.message-body').html(message_vocabulary["dime.find.event."+response.data.attributes.type]);
+              console.log(response.data.attributes.subject.module);
+              var subjectitem = $('<a href = "/dime/fund/'+response.data.attributes.subject.item+'"><span class="glyphicon glyphicon-file"></span></a>')
+              subjectitem.appendTo(thisRow.data("message").find('.message-item'));
           });
 
         });
