@@ -26,7 +26,8 @@ class Actor implements Item
 
     public function fullname()
     {
-        return $this->property('fullname')->value()->content();
+        $fullname = $this->property('fullname')->value();
+        return ($fullname ? $fullname->content() : '');
     }
 
     public function roles()
