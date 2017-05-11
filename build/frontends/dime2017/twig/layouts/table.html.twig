@@ -59,7 +59,7 @@
                         {% if workflow.hasPermission(field.attribute.readPermission) %}
                             <td>
                                 <span class="cell-label">{{field.keyword|trans}}</span>
-                                {{ field.renderView(item) }}
+                                {{ field.renderView(mode, item) }}
                             </td>
                         {% endif %}
                     {% endfor %}

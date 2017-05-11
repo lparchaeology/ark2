@@ -46,13 +46,13 @@ class Cell
     protected $seq = 0;
     protected $itemType = null;
     protected $label = null;
-    protected $mode = null;
     protected $required = null;
     protected $value = null;
     protected $parameter = null;
     protected $format = null;
     protected $element = null;
     protected $map = null;
+    protected $mode = 'view';
     protected $formOptions = '';
     protected $formOptionsArray = null;
 
@@ -106,13 +106,12 @@ class Cell
         return $this->mode;
     }
 
-    public function displayMode($options)
+    public function displayMode($parentMode)
     {
-        $layoutMode = $this->layout->displayMode($options);
-        if ($this->mode !== null && $layoutMode == 'edit') {
-            return $this->mode;
+        if ($this->defaultMode() !== null && $parentMode == 'edit') {
+            return $this->defaultMode();
         }
-        return $layoutMode;
+        return $parentMode;
     }
 
     public function valueMode()
@@ -130,7 +129,7 @@ class Cell
         return $this->format;
     }
 
-    public function formOptions($data, $options = [])
+    public function formOptions($mode, $data, $options = [])
     {
         if ($this->formOptionsArray === null) {
             $this->formOptionsArray = json_decode($this->formOptions, true);
@@ -148,20 +147,21 @@ class Cell
         return $options;
     }
 
-    public function buildForms($data, $options)
+    public function buildForms($mode, $data, $options)
     {
-        return $this->element->buildForms($data, $options);
+        return $this->element->buildForms($this->displayMode($mode), $data, $options);
     }
 
-    public function buildForm(FormBuilderInterface $builder, $data, $options = [])
+    public function buildForm(FormBuilderInterface $builder, $mode, $data, $options = [])
     {
-        $this->element->buildForm($builder, $data, $this->formOptions($data, $options));
+        dump('BUILD CELL '.$this->element->name().' '.$mode);
+        $this->element->buildForm($builder, $this->displayMode($mode), $data, $this->formOptions($data, $options));
     }
 
-    public function renderView($data, $forms = null, $form = null, array $options = [])
+    public function renderView($mode, $data, array $options = [], $forms = null, $form = null)
     {
         $options['map'] = $this->map;
-        return $this->element->renderView($data, $forms, $form, $options);
+        return $this->element->renderView($this->displayMode($mode), $data, $options, $forms, $form);
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

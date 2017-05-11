@@ -32,9 +32,16 @@ namespace ARK;
 
 class ARK
 {
+    const VERSION = '1.9.80';
+    const VERSION_ID = 10980;
+    const MAJOR_VERSION = 1;
+    const MINOR_VERSION = 9;
+    const RELEASE_VERSION = 80;
+    const EXTRA_VERSION = '';
+
     public static function version()
     {
-        return '1.9.80';
+        return self::VERSION;
     }
 
     public static function timestamp()

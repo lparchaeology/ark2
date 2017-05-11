@@ -49,7 +49,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 class Widget extends Element
 {
     protected $label = true;
-    protected $mode = 'edit';
     protected $vocabulary = null;
     protected $formTypeClass = '';
     protected $formOptions = '';
@@ -73,7 +72,7 @@ class Widget extends Element
         return parent::formTypeClass();
     }
 
-    public function formOptions($data, $options)
+    public function formOptions($mode, $data, $options)
     {
         if ($this->formOptionsArray === null) {
             $this->formOptionsArray = ($this->formOptions ? json_decode($this->formOptions, true) : []);
@@ -89,7 +88,9 @@ class Widget extends Element
         if ($this->name() == 'dime_find_actions') {
             // TODO Current Actor
             $actor = Service::workflow()->actor();
-            $options['choices'] = Service::workflow()->actions($actor, $data);
+            if ($actor) {
+                $options['choices'] = Service::workflow()->actions($actor, $data);
+            }
             $options['choice_value'] = 'name';
             $options['choice_name'] = 'name';
             $options['choice_label'] = 'keyword';
@@ -98,7 +99,6 @@ class Widget extends Element
         if ($this->vocabulary) {
             $options = $this->vocabularyOptions($this->vocabulary, $options);
         }
-        $options['mode'] = ($cellOptions['mode'] == 'view' ? $cellOptions['mode'] : $this->mode);
         return $options;
     }
 
@@ -107,21 +107,21 @@ class Widget extends Element
         return null;
     }
 
-    public function buildForm(FormBuilderInterface $builder, $data, $options = [])
+    public function buildForm(FormBuilderInterface $builder, $mode, $data, $options = [])
     {
-        $options = $this->formOptions($data, $options);
+        dump('BUILD WIDGET '.$this->element.' '.$mode);
+        $options = $this->formOptions($mode, $data, $options);
         // TODO check workflow instead!
-        if ($this->mode == 'view' || $options['mode'] == 'edit') {
-            unset($options['mode']);
-            unset($options['page_mode']);
+        if ($this->mode == 'view' || $mode == 'edit') {
             $fieldBuilder = $this->formBuilder($data, $options);
             $builder->add($fieldBuilder);
         }
     }
 
-    public function renderView($data, $forms = null, $form = null, array $options = [])
+    public function renderView($mode, $data, array $options = [], $forms = null, $form = null)
     {
         if (isset($form[$this->formName()])) {
+            $options['mode'] = $mode;
             $options['data'] = $this->formData($data[$form->vars['id']]);
             $options['forms'] = $forms;
             $options['form'] = $form[$this->formName()];

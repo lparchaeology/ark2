@@ -44,23 +44,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class Field extends Element
 {
-
     protected $formTypeClass = '';
-
     protected $formOptions = '';
-
     protected $formOptionsArray = null;
-
     protected $label = true;
-
-    protected $mode = null;
-
     protected $value = 'excluded';
-
     protected $parameter = null;
-
     protected $format = null;
-
     protected $attribute = null;
 
     public function attribute()
@@ -71,19 +61,6 @@ class Field extends Element
     public function showLabel()
     {
         return $this->label;
-    }
-
-    public function defaultMode()
-    {
-        return $this->mode;
-    }
-
-    public function displayMode($options)
-    {
-        if ($this->mode !== null && $options['mode'] == 'edit') {
-            return $this->mode;
-        }
-        return $options['mode'];
     }
 
     public function valueFormMode()
@@ -142,9 +119,9 @@ class Field extends Element
         return $appearance;
     }
 
-    private function appearanceToFormType($mode, $default = null)
+    private function appearanceToFormType($appearance, $default = null)
     {
-        switch ($mode) {
+        switch ($appearance) {
             case 'hidden':
                 return HiddenType::class;
             case 'static':
@@ -179,23 +156,22 @@ class Field extends Element
         return ($this->keyword ?: $this->attribute->keyword());
     }
 
-    public function formOptions($data, $options)
+    public function formOptions($mode, $data, $options)
     {
         $cellOptions = $options['cell'];
         unset($options['cell']);
         if ($options['label'] === null) {
             $options['label'] = ($this->keyword() ?: false);
         }
-        $options['mode'] = $this->displayMode($cellOptions);
-        if ($options['mode'] == 'view') {
+        if ($mode == 'view') {
             $options['required'] = false;
         } elseif ($options['required'] === null) {
             $options['required'] = $this->attribute()->isRequired();
         }
         $options['field']['object'] = $this;
-        $options['field']['value'] = $this->valueOptions($options['mode'], $cellOptions['value']);
-        $options['field']['parameter'] = $this->baseOptions($options['mode'], $cellOptions['parameter'], [], $this->parameterFormMode(), $this->parameterFormType());
-        $options['field']['format'] = $this->baseOptions($options['mode'], $cellOptions['format'], [], $this->formatFormMode(), $this->formatFormType());
+        $options['field']['value'] = $this->valueOptions($mode, $cellOptions['value']);
+        $options['field']['parameter'] = $this->baseOptions($mode, $cellOptions['parameter'], [], $this->parameterFormMode(), $this->parameterFormType());
+        $options['field']['format'] = $this->baseOptions($mode, $cellOptions['format'], [], $this->formatFormMode(), $this->formatFormType());
         return $options;
     }
 
@@ -226,7 +202,7 @@ class Field extends Element
         if ($this->attribute()->hasMultipleOccurrences()) {
             $options['multiple'] = true;
         }
-        if (! Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+        if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             if ($this->attribute()->hasVocabulary()) {
                 $options['disabled'] = true;
             }
@@ -239,8 +215,11 @@ class Field extends Element
         if (! $appearance) {
             return null;
         }
-        $base['mode'] = $this->modeToAppearance($mode, ($cellOptions['mode'] ?: $appearance));
+        $base['mode'] = $this->modeToAppearance($mode, $appearance);
         $base['type'] = $this->appearanceToFormType($base['mode'], $formType);
+        dump('mode '.$mode);
+        dump('base mode '.$base['mode']);
+        dump('base type '.$base['type']);
         $base['options'] = $subOptions;
         $base['options']['mapped'] = false;
         $base['options']['label'] = false;
@@ -285,38 +264,38 @@ class Field extends Element
         return null;
     }
 
-    public function buildForm(FormBuilderInterface $builder, $data, $options = [])
+    public function buildForm(FormBuilderInterface $builder, $mode, $data, $options = [])
     {
+        dump('BUILD FIELD '.$this->element.' '.$mode);
         // if (!Service::security()->hasVisibility($actor, $this->attribute())) {
         // return;
         // }
-        if (! Service::workflow()->hasPermission($this->attribute->readPermission())) {
+        if (!Service::workflow()->hasPermission($this->attribute->readPermission())) {
             return;
         }
-        $options = $this->formOptions($data, $options);
+        $options = $this->formOptions($this->displayMode($mode), $data, $options);
         $fieldBuilder = $this->formBuilder($data, $options);
         $builder->add($fieldBuilder);
     }
 
-    public function renderView($data, $forms = null, $form = null, array $options = [])
+    public function renderView($mode, $data, array $context = [], $forms = null, $form = null)
     {
-        if (! Service::workflow()->hasPermission($this->attribute->readPermission())) {
+        if (!Service::workflow()->hasPermission($this->attribute->readPermission())) {
             return;
         }
         if ($form && $this->template()) {
-            $options['field'] = $this;
-            $options['data'] = $this->formData($data[$form->vars['id']]);
-            $options['forms'] = $forms;
-            $options['form'] = $form;
-            return Service::renderView($this->template(), $options);
+            $context['field'] = $this;
+            $context['mode'] = $this->displayMode($mode);
+            $context['data'] = $this->formData($data[$form->vars['id']]);
+            $context['forms'] = $forms;
+            $context['form'] = $form;
+            return Service::renderView($this->template(), $context);
         }
 
         // FIXME Should probably have some way to use FormTypes here to render 'flat' compond values
         $value = null;
         $item = null;
-        $options = $this->valueOptions('view', [
-            'mode' => 'view'
-        ]);
+        $context = $this->valueOptions('view', ['mode' => 'view']);
         if ($data instanceof Item) {
             $item = $data;
         } elseif (is_array($data) && isset($data['data'])) {
@@ -344,8 +323,8 @@ class Field extends Element
                 return $type;
             }
             if ($value instanceof Item) {
-                if (isset($options['options']['display_property'])) {
-                    return $value->property($options['options']['display_property'])
+                if (isset($context['options']['display_property'])) {
+                    return $value->property($context['options']['display_property'])
                         ->value()
                         ->content();
                 }

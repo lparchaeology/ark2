@@ -29,7 +29,7 @@
         {% for cdx, col in row %}
             <div class="{{colclass}}">
                 {% for idx, cell in col %}
-                    {{ cell.renderView(data, forms, form)|raw }}
+                    {{ cell.renderView(mode, data, [], forms, form)|raw }}
                 {% endfor %}
             </div>
         {% endfor %}

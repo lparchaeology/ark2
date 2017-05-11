@@ -41,7 +41,6 @@ abstract class Layout extends Element
 {
     protected $schma = null;
     protected $form = false;
-    protected $mode = null;
     protected $cells = null;
     protected $grid = null;
     protected $elements = null;
@@ -79,20 +78,7 @@ abstract class Layout extends Element
         return $this->form;
     }
 
-    public function defaultMode($options)
-    {
-        return $this->mode;
-    }
-
-    public function displayMode($options)
-    {
-        if ($this->mode !== null && $options['mode'] == 'edit') {
-            return $this->mode;
-        }
-        return $options['mode'];
-    }
-
-    public function formOptions($data, $options)
+    public function formOptions($mode, $data, $options)
     {
         return $options;
     }
@@ -109,35 +95,34 @@ abstract class Layout extends Element
         return $this->elements;
     }
 
-    public function buildForms($data, $options)
+    public function buildForms($mode, $data, $options)
     {
-        if (!isset($options['mode'])) {
-            $options['mode'] = $options['page_mode'];
-        }
+        $mode = $this->displayMode($mode);
         if ($this->form) {
-            $opts['mode'] = $this->displayMode($options);
-            $builder = $this->formBuilder($data, $opts);
-            $this->buildForm($builder, $data[$this->element], $this->formOptions($data, $opts));
+            $builder = $this->formBuilder($data, $options);
+            $this->buildForm($builder, $mode, $data[$this->element], $this->formOptions($mode, $data, $options));
             return [$this->element => $builder->getForm()];
         }
         $forms = [];
         foreach ($this->cells() as $cell) {
-            $forms = array_merge($forms, $cell->buildForms($data, $options));
+            $forms = array_merge($forms, $cell->buildForms($mode, $data, $options));
         }
         return $forms;
     }
 
-    public function buildForm(FormBuilderInterface $builder, $data, $options = [])
+    public function buildForm(FormBuilderInterface $builder, $mode, $data, $options = [])
     {
+        dump('BUILD LAYOUT '.$this->element.' '.$mode);
         foreach ($this->cells() as $cell) {
-            $cell->buildForm($builder, $data, $options);
+            $cell->buildForm($builder, $mode, $data, $options);
         }
     }
 
-    public function renderView($data, $forms = null, $form = null, array $options = [])
+    public function renderView($mode, $data, array $options = [], $forms = null, $form = null)
     {
         if ($this->template()) {
             $options['layout'] = $this;
+            $options['mode'] = $this->displayMode($mode);
             $options['data'] = $data;
             $options['forms'] = $forms;
             $options['form'] = $form;

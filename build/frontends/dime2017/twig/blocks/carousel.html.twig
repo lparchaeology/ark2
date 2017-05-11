@@ -52,7 +52,7 @@
     {% for field in layout.elements %}
       {% if field.name == 'dime_find_location' %}
       {% else %}
-          <div class="homefield">{{field.keyword|trans}}: {{ field.renderView(item) }}</div>
+          <div class="homefield">{{field.keyword|trans}}: {{ field.renderView(mode, item) }}</div>
       {% endif %}
      {% endfor %}
      </div>

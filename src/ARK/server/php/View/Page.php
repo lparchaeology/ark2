@@ -37,16 +37,10 @@ use ARK\View\Element;
 
 class Page extends Element
 {
-    protected $mode = 'view';
     protected $navbar = null;
     protected $sidebar = null;
     protected $content = null;
     protected $footer = null;
-
-    public function mode()
-    {
-        return $this->mode;
-    }
 
     public function navbar()
     {
@@ -72,20 +66,41 @@ class Page extends Element
     {
         $options['data'] = null;
         $options['forms'] = null;
-        $options['page_mode'] = $this->mode();
         return $options;
     }
 
-    public function renderView($data, $forms = null, $form = null, array $options = [])
+    public function buildForms($mode, $data, $options)
     {
-        if ($this->template()) {
-            $options['page'] = $this;
-            $options['data'] = $data;
-            $options['forms'] = $forms;
-            $options['form'] = $form;
-            return Service::renderView($this->template(), $options);
+        dump('BUILD PAGE '.$this->element.' '.$mode);
+        return $this->content->buildForms($mode, $data, $options);
+    }
+
+    public function renderView($mode, $data, array $options = [], $forms = null, $form = null)
+    {
+        $options = $this->renderOptions($mode, $data, $options, $forms, $form);
+        return Service::renderView($this->template(), $options);
+    }
+
+    public function renderResponse($mode, $data, array $options = [], $forms = null, $form = null)
+    {
+        $options = $this->renderOptions($mode, $data, $options, $forms, $form);
+        return Service::renderResponse($this->template(), $options);
+    }
+
+    protected function renderOptions($mode, $data, array $options = [], $forms = null, $form = null)
+    {
+        $options['page'] = $this;
+        $options['layout'] = $this->content();
+        $options['mode'] = $mode;
+        $options['data'] = $data;
+        $options['forms'] = null;
+        if ($forms) {
+            foreach ($forms as $name => $form) {
+                $options['forms'][$name] = $form->createView();
+            }
         }
-        return '';
+        $options['form'] = $form;
+        return $options;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

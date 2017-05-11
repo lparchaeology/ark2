@@ -53,6 +53,7 @@ abstract class Element
     protected $type = '';
     protected $class = '';
     protected $template = '';
+    protected $mode = null;
 
     public function __construct($element, $type, $class = '', $template = '')
     {
@@ -90,6 +91,19 @@ abstract class Element
         return $this->type->template();
     }
 
+    public function defaultMode()
+    {
+        return $this->mode;
+    }
+
+    public function displayMode($parentMode)
+    {
+        if ($this->defaultMode() !== null && $parentMode == 'edit') {
+            return $this->defaultMode();
+        }
+        return $parentMode;
+    }
+
     public function formData($resource)
     {
         return $resource;
@@ -100,7 +114,7 @@ abstract class Element
         return $this->type->formTypeClass();
     }
 
-    public function formOptions($data, $options)
+    public function formOptions($mode, $data, $options)
     {
         return $options;
     }
@@ -115,11 +129,11 @@ abstract class Element
         return $options;
     }
 
-    public function buildForm(FormBuilderInterface $builder, $data, $options = [])
+    public function buildForm(FormBuilderInterface $builder, $mode, $data, $options = [])
     {
     }
 
-    public function buildForms($data, $options)
+    public function buildForms($mode, $data, $options)
     {
         return [];
     }
@@ -132,7 +146,7 @@ abstract class Element
                                                     $options);
     }
 
-    abstract public function renderView($data, $forms = null, $form = null, array $options = []);
+    abstract public function renderView($mode, $data, array $options = [], $forms = null, $form = null);
 
     public static function loadMetadata(ClassMetadata $metadata)
     {

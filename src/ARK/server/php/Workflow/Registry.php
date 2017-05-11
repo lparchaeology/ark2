@@ -84,6 +84,9 @@ class Registry extends SymfonyRegistry
         if ($actor === null) {
             $actor = $this->actor();
         }
+        if ($actor === null) {
+            return false;
+        }
         foreach ($actor->roles() as $role) {
             if ($role->hasPermission($permission)) {
                 return true;

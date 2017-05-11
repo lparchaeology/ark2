@@ -42,29 +42,40 @@ abstract class DimeFormController extends DimeController
 {
     public function renderResponse(Request $request, $page, $redirect = null, $options = [])
     {
-        $route = $request->attributes->get('_route');
         $page = ORM::find(Page::class, $page);
-        $options = $page->defaultOptions();
-        $options['page_config'] = $this->pageConfig($route);
-        $options['page_mode'] = 'view';
+
         $data = $this->buildData($request, $page);
 
+        $mode = 'view';
         $actor = Service::workflow()->actor();
         if ($actor && $actor->id() != 'anonymous') {
             $data['notifications'] = DIME::getUnreadNotifications();
-            if ($page->mode() == 'edit') {
+            if ($page->defaultMode() == 'edit') {
                 $item = $data[$page->content()->name()];
                 if (Service::workflow()->can($actor, 'edit', $item)) {
+                    dump('initial');
+                    dump($actor);
+                    dump($actor->roles());
                     $role = $actor->roles()[0];
+                    $process = $item->property('process')->value();
+                    dump($item);
+                    dump($item->property('process'));
+                    dump($process);
+                    dump($role->id());
+                    dump($process->name());
                     // HACK Do using workflow!
-                    if ($role->id() != 'detectorist' || $item->property('process')->value()->name() == 'recorded') {
-                        $options['page_mode'] = 'edit';
+                    if ($role->id() != 'detectorist' || $process->name() == 'recorded') {
+                        $mode = 'edit';
                     }
+                    dump($mode);
                 }
             }
         }
 
-        $forms = $page->content()->buildForms($data, $options);
+        $options = $page->defaultOptions();
+        $forms = $page->buildForms($mode, $data, $options);
+        dump('BUILT');
+        dump($forms);
         if ($request->getMethod() == 'POST') {
             $form = null;
             foreach ($forms as $name => $fm) {
@@ -76,23 +87,16 @@ abstract class DimeFormController extends DimeController
             if ($form) {
                 $form->handleRequest($request);
                 if ($form->isSubmitted() && $form->isValid()) {
-                    if (! $redirect) {
-                        $redirect = $route;
+                    if (!$redirect) {
+                        $redirect = $request->attributes->get('_route');
                     }
                     return $this->processForm($request, $form, $redirect);
                 }
             }
         }
-        $options['forms'] = null;
-        if ($forms) {
-            foreach ($forms as $name => $form) {
-                $options['forms'][$name] = $form->createView();
-            }
-        }
-        $options['page'] = $page;
-        $options['layout'] = $page->content();
-        $options['data'] = $data;
-        return Service::renderResponse($page->template(), $options);
+
+        $options['page_config'] = $this->pageConfig($request->attributes->get('_route'));
+        return $page->renderResponse($mode, $data, $options, $forms);
     }
 
     public function buildData(Request $request, Page $page)

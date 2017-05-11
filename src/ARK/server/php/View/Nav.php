@@ -115,7 +115,7 @@ class Nav extends Element
         return $this->seperator;
     }
 
-    public function renderView($data, $forms = null, $form = null, array $options = [])
+    public function renderView($mode, $data, array $options = [], $forms = null, $form = null)
     {
         $options['nav'] = $this;
         $options['data'] = $data;
