@@ -48,7 +48,8 @@ class HomePageController extends DimeController
         $options['layout'] = $page->content();
 
         // Find 9 most recent finds for current actor
-        $finds = ORM::findAll(Find::class);
+        $items = Service::database()->getActorFinds(Service::workflow()->actor()->id());
+        $finds = ORM::findBy(Find::class, ['item' => $items], ['created' => 'DESC'], 9);
         $data[$page->content()->name()] = $finds;
         $data['dime_find_list'] = $finds;
 

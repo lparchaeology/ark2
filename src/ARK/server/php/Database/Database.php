@@ -896,8 +896,6 @@ class Database
             ':point' => $wkt,
             ':srid' => $srid
         );
-        dump($sql);
-        dump($params);
         return $this->spatial()->fetchColumn($sql, $params);
     }
 
@@ -955,6 +953,23 @@ class Database
         return $this->data()->fetchColumn($sql, $params);
     }
 
+    public function getActorFinds($actor)
+    {
+        $sql = "
+            SELECT item
+            FROM ark_fragment_item
+            WHERE module = 'find'
+            AND (attribute = 'finder'
+              OR attribute = 'owner'
+              OR attribute = 'custodian')
+            AND value = :actor
+        ";
+        $params = array(
+            ':actor' => $actor
+        );
+        return $this->data()->fetchAllColumn($sql, 'item', $params);
+    }
+
     public function getActorMessages($actor)
     {
         $sql = "
@@ -975,7 +990,6 @@ class Database
     // TODO Optimise!!!
     public function getUnreadMessages($actor)
     {
-        dump($actor);
         $sql = "
             SELECT ark_fragment_item.item
             FROM ark_fragment_item, ark_fragment_datetime
@@ -991,10 +1005,7 @@ class Database
         $params = array(
             ':actor' => $actor
         );
-        dump($sql);
-        dump($params);
         $all = $this->data()->fetchAllColumn($sql, 'item', $params);
-        dump($all);
         return $all;
     }
 

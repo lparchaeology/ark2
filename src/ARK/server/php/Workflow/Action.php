@@ -100,7 +100,7 @@ class Action
     public function meetsConditions(Item $item)
     {
         if ($this->conditions->isEmpty()) {
-            return $this->defaultCondition;
+            return Condition::PASS;
         }
 
         // Sort the groups
