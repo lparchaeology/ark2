@@ -66,7 +66,9 @@ class ChoroplethController
                 }
             }
 
-            if ($curmin == $curmax) {
+            // if the min and max are the same set the min to 0 so all municipalities are maximum
+            // if there are not counts for all the municipalities some will be 0, so that is the minimum
+            if ($curmin == $curmax || count($findCounts) != count($municipalities)) {
                 $curmin = 0;
             }
         }
@@ -79,11 +81,11 @@ class ChoroplethController
                 $municipality['count'] = $findCounts[$municipality['term']];
                 if ($municipality['count'] == $curmin) {
                     $municipality['band'] = 1;
-                } elseif ($municipality['count'] < $curmin + $band) {
+                } elseif ($municipality['count'] <= $curmin + $band) {
                     $municipality['band'] = 2;
-                } elseif ($municipality['count'] < $curmin + $band * 2) {
+                } elseif ($municipality['count'] <= $curmin + $band * 2) {
                     $municipality['band'] = 3;
-                } elseif ($municipality['count'] < $curmin + $band * 3) {
+                } elseif ($municipality['count'] <= $curmin + $band * 3) {
                     $municipality['band'] = 4;
                 } else {
                     $municipality['band'] = 4;

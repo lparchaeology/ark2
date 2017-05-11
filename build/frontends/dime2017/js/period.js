@@ -94,8 +94,12 @@ $('document').ready(function(){
     
     $('#dime_find_item_dating_year').on('focusout', function(){
         var year = parseInt(this.value);
-        if (parseInt($('#dime_find_item_dating_year_span').val()) < year){
-            var endyear = parseInt($('#dime_find_item_dating_year_span').val());
+        var span_year = parseInt($('#dime_find_item_dating_year_span').val());
+        if(isNaN(year) || isNaN(span_year)){
+            return true;
+        }
+        if ( span_year < year){
+            var endyear = span_year;
             $(this).val(endyear);
             $('#dime_find_item_dating_year_span').val(year);
             
@@ -106,6 +110,9 @@ $('document').ready(function(){
     
     $('#dime_find_item_dating_year_span').on('focusout', function(){
         var year = parseInt(this.value);
+        if(isNaN(year) || isNaN(parseInt($('#dime_find_item_dating_year').val()))){
+            return true;
+        }
         if (parseInt($('#dime_find_item_dating_year').val()) > year){
             var endyear = parseInt($('#dime_find_item_dating_year').val());
             $(this).val(endyear);

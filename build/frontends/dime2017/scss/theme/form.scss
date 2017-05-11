@@ -3,6 +3,10 @@
     margin-bottom: 5px;
 }
 
+.select2-container--default {
+    text-transform: capitalize;
+}
+
 .select2-container--default .select2-selection--single,
 .form-group input[type="text"],
 .form-group input[type="email"] {
