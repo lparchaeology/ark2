@@ -52,52 +52,40 @@ class ViewControllerProvider implements ControllerProviderInterface
 
         $controllers = $app['controllers_factory'];
 
-        // Temp APi routes
-        $controllers->post('/api/internal/vocabulary', 'DIME\Controller\VocabularyController')->bind('api.internal.vocabulary');
-        $controllers->post('/api/internal/message/read', 'DIME\Controller\MessageReadController')->bind('api.internal.message.read');
-        $controllers->post('/api/geo/find', 'DIME\Controller\GeoFindController')->bind('api.geo.find');
-        $controllers->get('/api/geo/choropleth', 'DIME\Controller\ChoroplethController')->bind('api.geo.choropleth');
-        $controllers->get("/img/{image}", 'DIME\Controller\ImageController')->bind('img');
-
         // Static Page Routes
-        $controllers->match("/$detector", 'DIME\Controller\PageViewController')
+        $controllers->match("/$detector", 'DIME\Controller\View\PageViewController')
             ->method('GET|POST')
             ->bind('detector');
-        $controllers->match("/$research", 'DIME\Controller\PageViewController')
+        $controllers->match("/$research", 'DIME\Controller\View\PageViewController')
             ->method('GET|POST')
             ->bind('research');
-        $controllers->match("/$about", 'DIME\Controller\PageViewController')
+        $controllers->match("/$about", 'DIME\Controller\View\PageViewController')
             ->method('GET|POST')
             ->bind('about');
-        $controllers->match("/$news", 'DIME\Controller\NewsPageController')
+        $controllers->match("/$news", 'DIME\Controller\View\NewsPageController')
             ->method('GET')
             ->bind('news');
 
         // Temp Routes?
-        $controllers->match("/$files/{fileId}", 'DIME\Controller\FileController')
+        $controllers->match("/$files/{fileId}", 'DIME\Controller\View\FileController')
             ->method('GET|POST')
             ->bind('files.view');
 
-        // Actor Routes
-        $controllers->get("/$actors/{itemSlug}/finds", 'DIME\Controller\FindListController')->bind('actors.finds.list');
-        $controllers->get("/$actors/{itemSlug}", 'DIME\Controller\ActorViewController')->bind('actors.view');
-        $controllers->get("/$actors", 'DIME\Controller\ActorListController')->bind('actors.list');
-
         // Find Routes
-        $controllers->match("/$finds/add", 'DIME\Controller\FindAddController')
+        $controllers->match("/$finds/add", 'DIME\Controller\View\FindAddController')
             ->method('GET|POST')
             ->bind('finds.add');
-        $controllers->match("/$finds/{itemSlug}", 'DIME\Controller\FindViewController')
+        $controllers->match("/$finds/{itemSlug}", 'DIME\Controller\View\FindViewController')
             ->method('GET|POST')
             ->bind('finds.view');
-        $controllers->match("/$finds", 'DIME\Controller\FindListController')
+        $controllers->match("/$finds", 'DIME\Controller\View\FindListController')
             ->method('GET|POST')
             ->bind('finds.list');
 
         // Home routes
-        $controllers->get("/$home/$messages", 'DIME\Controller\MessagePageController')->bind('home.messages');
-        $controllers->get("/$home", 'DIME\Controller\HomePageController')->bind('home');
-        $controllers->get('/', 'DIME\Controller\FrontPageController')->bind('front');
+        $controllers->get("/$home/$messages", 'DIME\Controller\View\MessagePageController')->bind('home.messages');
+        $controllers->get("/$home", 'DIME\Controller\View\HomePageController')->bind('home');
+        $controllers->get('/', 'DIME\Controller\View\FrontPageController')->bind('front');
 
         return $controllers;
     }

@@ -27,37 +27,35 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-namespace DIME\Controller;
 
-use ARK\Actor\Actor;
-use ARK\Http\JsonResponse;
-use ARK\Message\Message;
+namespace DIME\Controller\View;
+
+use ARK\Error\ErrorException;
+use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
-use ARK\Service;
+use ARK\View\Page;
+use DIME\DIME;
+use DIME\Controller\View\DimeFormController;
+use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
-class MessageReadController
+class FindViewController extends DimeFormController
 {
-    public function __invoke(Request $request)
+    private $itemSlug = null;
+
+    public function __invoke(Request $request, $itemSlug)
     {
-        try {
-            $content = json_decode($request->getContent(), true);
-            $message = $content['message'];
-            $message = ORM::find(Message::class, $message);
-            $recipient = $content['recipient'];
-            $recipient = ORM::find(Actor::class, $recipient);
-            if ($message && $recipient && $message->isRecipient($recipient)) {
-                $data['result'] = $message->markAsRead($recipient);
-                ORM::persist($message);
-                ORM::flush($message);
-            } else {
-                $data['error']['code']['9999'];
-                $data['error']['message']['Message or Recipient Not Found'];
-            }
-        } catch (Exception $e) {
-            $data['error']['code'][$e->getCode()];
-            $data['error']['message'][$e->getMessage()];
+        $this->itemSlug = $itemSlug;
+        return $this->handleRequest($request, 'dime_page_find');
+    }
+
+    public function buildData(Request $request, Page $page)
+    {
+        if (! $resource = ORM::find(Find::class, $this->itemSlug)) {
+            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Find not found', "Find $this->itemSlug not found"));
         }
-        return new JsonResponse($data);
+        $data[$page->content()->name()] = $resource;
+        $data['notifications'] = DIME::getUnreadNotifications();
+        return $data;
     }
 }

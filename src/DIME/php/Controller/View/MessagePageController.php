@@ -28,30 +28,40 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Controller;
+namespace DIME\Controller\View;
 
-use ARK\Http\JsonResponse;
+use ARK\Message\Message;
+use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\View\Page;
+use DIME\DIME;
+use DIME\Controller\View\DimeFormController;
 use Symfony\Component\HttpFoundation\Request;
+use ARK\Vocabulary\Vocabulary;
 
-class GeoTermController
+class MessagePageController extends DimeFormController
 {
     public function __invoke(Request $request)
     {
-        $content = json_decode($request->getContent());
-        try {
-            $concept = $content['concept'];
-            $rows = Service::database()->getSpatialTerms($concept);
-            $data['concept'] = $concept;
-            $data['count'] = count($rows);
-            $data['terms'] = [];
-            foreach ($rows as $row) {
-                $data['terms'][$row['term']] = $row;
+        return $this->handleRequest($request, 'dime_page_message');
+    }
+
+    public function buildData(Request $request, Page $page)
+    {
+        $data['messages'] = DIME::getNotifications();
+        $data['message_vocabulary'] = ORM::find(Vocabulary::class, 'core.event.type');
+
+        $data['message'] = null;
+        $data['core_message_item'] = null;
+        $data['core_message_list'] = null;
+
+        $msg = $request->query->get('id');
+        if ($msg) {
+            $message = ORM::find(Message::class, $msg);
+            if ($messages->contains($message)) {
+                $data['message'] = $message;
             }
-        } catch (Exception $e) {
-            $data['error']['code'][$e->getCode()];
-            $data['error']['message'][$e->getMessage()];
         }
-        return new JsonResponse($data);
+        return $data;
     }
 }

@@ -114,17 +114,17 @@ class Cell
         return $parentMode;
     }
 
-    public function valueMode()
+    public function valueModus()
     {
         return $this->value;
     }
 
-    public function parameterMode()
+    public function parameterModus()
     {
         return $this->parameter;
     }
 
-    public function formatMode()
+    public function formatModus()
     {
         return $this->format;
     }
@@ -138,12 +138,11 @@ class Cell
             }
             $this->formOptionsArray['label'] = $this->showLabel();
             $this->formOptionsArray['required'] = $this->isRequired();
-            $this->formOptionsArray['cell']['value']['mode'] = $this->valueMode();
-            $this->formOptionsArray['cell']['parameter']['mode'] = $this->parameterMode();
-            $this->formOptionsArray['cell']['format']['mode'] = $this->formatMode();
+            $this->formOptionsArray['cell']['value']['modus'] = $this->valueModus();
+            $this->formOptionsArray['cell']['parameter']['modus'] = $this->parameterModus();
+            $this->formOptionsArray['cell']['format']['modus'] = $this->formatModus();
         }
         $options = array_merge($options, $this->formOptionsArray);
-        $options['cell']['mode'] = $this->displayMode($options);
         return $options;
     }
 
@@ -154,8 +153,8 @@ class Cell
 
     public function buildForm(FormBuilderInterface $builder, $mode, $data, $options = [])
     {
-        dump('BUILD CELL '.$this->element->name().' '.$mode);
-        $this->element->buildForm($builder, $this->displayMode($mode), $data, $this->formOptions($data, $options));
+        $mode = $this->displayMode($mode);
+        $this->element->buildForm($builder, $mode, $data, $this->formOptions($mode, $data, $options));
     }
 
     public function renderView($mode, $data, array $options = [], $forms = null, $form = null)

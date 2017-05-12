@@ -114,9 +114,15 @@ abstract class Element
         return $this->type->formTypeClass();
     }
 
-    public function formOptions($mode, $data, $options)
+    public function buildOptions($mode, $data, $options)
     {
         return $options;
+    }
+
+    public function viewContext($mode, $data, $context)
+    {
+        $context['mode'] = $mode;
+        return $context;
     }
 
     protected function vocabularyOptions(Vocabulary $vocabulary, $options = [])

@@ -64,6 +64,11 @@ class Page extends Element
 
     public function defaultOptions($route = null)
     {
+        return $options;
+    }
+
+    public function defaultContext($route = null)
+    {
         $options['data'] = null;
         $options['forms'] = null;
         return $options;
@@ -71,36 +76,66 @@ class Page extends Element
 
     public function buildForms($mode, $data, $options)
     {
-        dump('BUILD PAGE '.$this->element.' '.$mode);
         return $this->content->buildForms($mode, $data, $options);
     }
 
     public function renderView($mode, $data, array $options = [], $forms = null, $form = null)
     {
-        $options = $this->renderOptions($mode, $data, $options, $forms, $form);
+        $options = $this->renderContext($mode, $data, $options, $forms, $form);
         return Service::renderView($this->template(), $options);
     }
 
-    public function renderResponse($mode, $data, array $options = [], $forms = null, $form = null)
+    protected function renderContext($mode, $data, array $context = [], $forms = null, $form = null)
     {
-        $options = $this->renderOptions($mode, $data, $options, $forms, $form);
-        return Service::renderResponse($this->template(), $options);
-    }
-
-    protected function renderOptions($mode, $data, array $options = [], $forms = null, $form = null)
-    {
-        $options['page'] = $this;
-        $options['layout'] = $this->content();
-        $options['mode'] = $mode;
-        $options['data'] = $data;
-        $options['forms'] = null;
+        $context['page'] = $this;
+        $context['layout'] = $this->content();
+        $context['mode'] = $mode;
+        $context['data'] = $data;
+        $context['forms'] = null;
         if ($forms) {
             foreach ($forms as $name => $form) {
-                $options['forms'][$name] = $form->createView();
+                $context['forms'][$name] = $form->createView();
             }
         }
-        $options['form'] = $form;
-        return $options;
+        $context['form'] = $form;
+        return $context;
+    }
+
+    public function postedForm($request, $forms)
+    {
+        if ($forms && $request->getMethod() == 'POST') {
+            foreach ($forms as $name => $form) {
+                if ($request->request->has($name)) {
+                    $form->handleRequest($request);
+                    if ($form->isSubmitted() && $form->isValid()) {
+                        return $form;
+                    }
+                    break;
+                }
+            }
+        }
+        return null;
+    }
+
+    public function renderResponse($mode, $data, array $context = [], $forms = null, $form = null)
+    {
+        $context = $this->renderContext($mode, $data, $context, $forms, $form);
+        return Service::renderResponse($this->template(), $context);
+    }
+
+    public function handleRequest($request, $mode, $data, $options = [], $context = [], callable $processForm = null, $redirect = null)
+    {
+        $forms = $this->buildForms($mode, $data, $options);
+        if ($posted = $this->postedForm($request, $forms)) {
+            if (!$redirect) {
+                $redirect = $request->attributes->get('_route');
+            }
+            if ($processForm === null) {
+                return Service::redirectPath($redirect);
+            }
+            return $processForm($request, $posted, $redirect);
+        }
+        return $this->renderResponse($mode, $data, $context, $forms);
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

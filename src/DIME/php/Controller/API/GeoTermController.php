@@ -28,26 +28,30 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Controller;
+namespace DIME\Controller\API;
 
+use ARK\Http\JsonResponse;
 use ARK\Service;
-use ARK\Application;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
-class ErrorController
+class GeoTermController
 {
-    public function __invoke(Application $app, Exception $e, Request $request, $code)
+    public function __invoke(Request $request)
     {
-        print_r('here!');
-        // 404.html, or 40x.html, or 4xx.html, or error.html
-        $dir = $app['dir.site'].'/templates/'.$config['web']['frontend'].'/errors/';
-        $templates = array(
-            $dir.$code.'.html.twig',
-            $dir.substr($code, 0, 2).'x.html.twig',
-            $dir.substr($code, 0, 1).'xx.html.twig',
-            $dir.'default.html.twig',
-        );
-        return new Response($app['twig']->resolveTemplate($templates)->render(['code' => $code]), $code);
+        $content = json_decode($request->getContent());
+        try {
+            $concept = $content['concept'];
+            $rows = Service::database()->getSpatialTerms($concept);
+            $data['concept'] = $concept;
+            $data['count'] = count($rows);
+            $data['terms'] = [];
+            foreach ($rows as $row) {
+                $data['terms'][$row['term']] = $row;
+            }
+        } catch (Exception $e) {
+            $data['error']['code'][$e->getCode()];
+            $data['error']['message'][$e->getMessage()];
+        }
+        return new JsonResponse($data);
     }
 }

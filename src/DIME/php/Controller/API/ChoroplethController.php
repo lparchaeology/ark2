@@ -27,7 +27,8 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-namespace DIME\Controller;
+
+namespace DIME\Controller\API;
 
 use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +36,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ChoroplethController
 {
-
     public function __invoke(Request $request)
     {
         // get all the municipality

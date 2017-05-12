@@ -27,18 +27,19 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-namespace DIME\Controller;
+
+namespace DIME\Controller\View;
 
 use ARK\Error\ErrorException;
 use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
 use ARK\Service;
 use DIME\DIME;
-use DIME\Controller\DimeController;
+use DIME\Controller\View\DimeFormController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class PageViewController extends DimeController
+class PageViewController extends DimeFormController
 {
     public function __invoke(Request $request)
     {

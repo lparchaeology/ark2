@@ -27,30 +27,40 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-namespace DIME\Controller;
+
+namespace DIME\Controller\View;
 
 use ARK\ORM\ORM;
+use ARK\Service;
 use ARK\View\Page;
 use DIME\DIME;
-use DIME\Controller\DimeFormController;
+use DIME\Controller\View\DimeFormController;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
-class NewsPageController extends DimeFormController
+class FrontPageController extends DimeFormController
 {
-    private $actorSlug = null;
-
-    public function __invoke(Request $request, $actorSlug = null)
+    public function __invoke(Request $request)
     {
-        $this->actorSlug = $actorSlug;
-        return $this->renderResponse($request, 'dime_page_news');
+        return $this->handleRequest($request, 'dime_page_front');
     }
 
     public function buildData(Request $request, Page $page)
     {
-        $resource = ORM::findBy(Find::class, ['visibility' => 'public'], ['item' => 'DESC']);
-        $data['finds'] = $resource;
-        $data['dime_find_list'] = $resource;
+        // Get the 25 most recent public Items
+        $finds = ORM::findBy(Find::class, ['visibility' => 'public'], ['item' => 'DESC'], 25);
+        // Then the 5 with images
+        $featured = [];
+        foreach ($finds as $find) {
+            $images = $find->property('image')->value();
+            if ($images = $find->property('image')->value()) {
+                $featured[] = $find;
+            }
+            if (count($featured) >= 5) {
+                break;
+            }
+        }
+        $data[$page->content()->name()] = $featured;
         $data['notifications'] = DIME::getUnreadNotifications();
         return $data;
     }

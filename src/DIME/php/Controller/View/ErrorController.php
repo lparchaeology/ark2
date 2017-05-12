@@ -27,34 +27,27 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-namespace DIME\Controller;
 
-use ARK\Error\ErrorException;
-use ARK\Http\Error\NotFoundError;
-use ARK\ORM\ORM;
-use ARK\View\Page;
-use DIME\DIME;
-use DIME\Controller\EntityController;
-use DIME\Entity\Find;
+namespace DIME\Controller\View;
+
+use ARK\Service;
+use ARK\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class FindViewController extends EntityController
+class ErrorController
 {
-    private $itemSlug = null;
-
-    public function __invoke(Request $request, $itemSlug)
+    public function __invoke(Application $app, Exception $e, Request $request, $code)
     {
-        $this->itemSlug = $itemSlug;
-        return $this->renderResponse($request, 'dime_page_find');
-    }
-
-    public function buildData(Request $request, Page $page)
-    {
-        if (! $resource = ORM::find(Find::class, $this->itemSlug)) {
-            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Find not found', "Find $this->itemSlug not found"));
-        }
-        $data[$page->content()->name()] = $resource;
-        $data['notifications'] = DIME::getUnreadNotifications();
-        return $data;
+        print_r('here!');
+        // 404.html, or 40x.html, or 4xx.html, or error.html
+        $dir = $app['dir.site'].'/templates/'.$config['web']['frontend'].'/errors/';
+        $templates = array(
+            $dir.$code.'.html.twig',
+            $dir.substr($code, 0, 2).'x.html.twig',
+            $dir.substr($code, 0, 1).'xx.html.twig',
+            $dir.'default.html.twig',
+        );
+        return new Response($app['twig']->resolveTemplate($templates)->render(['code' => $code]), $code);
     }
 }

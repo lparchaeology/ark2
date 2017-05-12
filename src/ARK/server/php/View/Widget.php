@@ -78,7 +78,11 @@ class Widget extends Element
             $this->formOptionsArray = ($this->formOptions ? json_decode($this->formOptions, true) : []);
         }
         $cellOptions = $options['cell'];
+        unset($options['page']);
+        unset($options['data']);
         unset($options['cell']);
+        unset($options['forms']);
+        unset($options['form']);
         unset($options['required']);
         $options = array_merge_recursive($this->formOptionsArray, $options);
         if ($options['label'] === null) {
@@ -109,7 +113,6 @@ class Widget extends Element
 
     public function buildForm(FormBuilderInterface $builder, $mode, $data, $options = [])
     {
-        dump('BUILD WIDGET '.$this->element.' '.$mode);
         $options = $this->formOptions($mode, $data, $options);
         // TODO check workflow instead!
         if ($this->mode == 'view' || $mode == 'edit') {

@@ -28,25 +28,19 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Controller;
+namespace DIME\Controller\API;
 
-use ARK\File\File;
+use ARK\File\Image;
 use ARK\ORM\ORM;
 use ARK\Service;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\Request;
-use League\Glide\Responses\SymfonyResponseFactory;
 
-class FileController
+class ImageController
 {
-    public function __invoke(Request $request, $fileId)
+    public function __invoke(Request $request, $image)
     {
         // TODO Wrap in a nice neat class or Service call
-        $file = ORM::find(File::class, $fileId);
-        $factory = new SymfonyResponseFactory($request);
-        $response = $factory->create(Service::filesystem(), $file->filepath());
-        $disposition = ($request->query->has('d') ? ResponseHeaderBag::DISPOSITION_ATTACHMENT : ResponseHeaderBag::DISPOSITION_INLINE);
-        $response->headers->set('Content-Disposition', $response->headers->makeDisposition($disposition, $file->name()));
-        return $response;
+        $file = ORM::find(Image::class, $image);
+        return Service::imageResponse($file->filepath(), $request->query->all());
     }
 }

@@ -27,40 +27,32 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-namespace DIME\Controller;
+
+namespace DIME\Controller\View;
 
 use ARK\ORM\ORM;
-use ARK\Service;
 use ARK\View\Page;
 use DIME\DIME;
-use DIME\Controller\DimeController;
+use DIME\Controller\View\DimeFormController;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
-class HomePageController extends DimeController
+class NewsPageController extends DimeFormController
 {
-    public function __invoke(Request $request)
+    private $actorSlug = null;
+
+    public function __invoke(Request $request, $actorSlug = null)
     {
-        $page = ORM::find(Page::class, 'dime_page_home');
+        $this->actorSlug = $actorSlug;
+        return $this->handleRequest($request, 'dime_page_news');
+    }
 
-        $options = $this->defaultOptions();
-        $options['page'] = $page;
-        $options['layout'] = $page->content();
-
-        // Find 9 most recent finds for current actor
-        $items = Service::database()->getActorFinds(Service::workflow()->actor()->id());
-        $finds = ORM::findBy(Find::class, ['item' => $items], ['created' => 'DESC'], 9);
-        $data[$page->content()->name()] = $finds;
-        $data['dime_find_list'] = $finds;
-
+    public function buildData(Request $request, Page $page)
+    {
+        $resource = ORM::findBy(Find::class, ['visibility' => 'public'], ['item' => 'DESC']);
+        $data['finds'] = $resource;
+        $data['dime_find_list'] = $resource;
         $data['notifications'] = DIME::getUnreadNotifications();
-        dump($data['notifications']);
-        $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $finds : []);
-        $data['kortforsyningenticket'] = DIME::getMapTicket();
-
-        $data['dime_home_action'] = null;
-
-        $options['data'] = $data;
-        return Service::renderResponse($page->template(), $options);
+        return $data;
     }
 }

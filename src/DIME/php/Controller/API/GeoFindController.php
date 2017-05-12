@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Controller;
+namespace DIME\Controller\API;
 
 use ARK\Actor\Actor;
 use ARK\Database\Database;

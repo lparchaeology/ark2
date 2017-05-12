@@ -28,19 +28,36 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Controller;
+namespace DIME\Controller\View;
 
-use ARK\File\Image;
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\View\Page;
+use DIME\DIME;
+use DIME\Controller\View\DimeFormController;
+use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
-class ImageController
+class HomePageController extends DimeFormController
 {
-    public function __invoke(Request $request, $image)
+    public function __invoke(Request $request)
     {
-        // TODO Wrap in a nice neat class or Service call
-        $file = ORM::find(Image::class, $image);
-        return Service::imageResponse($file->filepath(), $request->query->all());
+        return $this->handleRequest($request, 'dime_page_home');
+    }
+
+    public function buildData(Request $request, Page $page)
+    {
+        // Find 9 most recent finds for current actor
+        $items = Service::database()->getActorFinds(Service::workflow()->actor()->id());
+        $finds = ORM::findBy(Find::class, ['item' => $items], ['created' => 'DESC'], 9);
+        $data[$page->content()->name()] = $finds;
+        $data['dime_find_list'] = $finds;
+
+        $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $finds : []);
+        $data['kortforsyningenticket'] = DIME::getMapTicket();
+        $data['dime_home_action'] = null;
+        $data['notifications'] = DIME::getUnreadNotifications();
+
+        return $data;
     }
 }

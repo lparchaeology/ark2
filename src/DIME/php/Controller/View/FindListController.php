@@ -27,7 +27,8 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-namespace DIME\Controller;
+
+namespace DIME\Controller\View;
 
 use ARK\ORM\ORM;
 use ARK\Service;
@@ -36,7 +37,7 @@ use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 use ARK\Message\Message;
 use DIME\DIME;
-use DIME\Controller\DimeFormController;
+use DIME\Controller\View\DimeFormController;
 use DIME\Entity\Find;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,7 +49,7 @@ class FindListController extends DimeFormController
     public function __invoke(Request $request, $actorSlug = null)
     {
         $this->actorSlug = $actorSlug;
-        return $this->renderResponse($request, 'dime_page_find_list');
+        return $this->handleRequest($request, 'dime_page_find_list');
     }
 
     public function buildData(Request $request, Page $page)

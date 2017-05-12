@@ -27,40 +27,26 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-namespace DIME\Controller;
 
-use ARK\Message\Message;
+namespace DIME\Controller\API;
+
+use ARK\File\File;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\View\Page;
-use DIME\DIME;
-use DIME\Controller\DimeController;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\Request;
-use ARK\Vocabulary\Vocabulary;
+use League\Glide\Responses\SymfonyResponseFactory;
 
-class MessagePageController extends DimeFormController
+class FileController
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, $fileId)
     {
-        return $this->renderResponse($request, 'dime_page_message');
-    }
-
-    public function buildData(Request $request, Page $page)
-    {
-        $data['messages'] = DIME::getNotifications();
-        $data['message_vocabulary'] = ORM::find(Vocabulary::class, 'core.event.type');
-
-        $data['message'] = null;
-        $data['core_message_item'] = null;
-        $data['core_message_list'] = null;
-
-        $msg = $request->query->get('id');
-        if ($msg) {
-            $message = ORM::find(Message::class, $msg);
-            if ($messages->contains($message)) {
-                $data['message'] = $message;
-            }
-        }
-        return $data;
+        // TODO Wrap in a nice neat class or Service call
+        $file = ORM::find(File::class, $fileId);
+        $factory = new SymfonyResponseFactory($request);
+        $response = $factory->create(Service::filesystem(), $file->filepath());
+        $disposition = ($request->query->has('d') ? ResponseHeaderBag::DISPOSITION_ATTACHMENT : ResponseHeaderBag::DISPOSITION_INLINE);
+        $response->headers->set('Content-Disposition', $response->headers->makeDisposition($disposition, $file->name()));
+        return $response;
     }
 }

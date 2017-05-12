@@ -27,44 +27,37 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-namespace DIME\Controller;
+namespace DIME\Controller\View;
 
+use ARK\View\Page;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\View\Page;
-use DIME\DIME;
-use DIME\Controller\DimeController;
+use ARK\Vocabulary\Term;
+use DIME\Controller\View\DimeFormController;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
-class FrontPageController extends DimeController
+class FindAddController extends DimeFormController
 {
     public function __invoke(Request $request)
     {
-        $page = ORM::find(Page::class, 'dime_page_front');
+        return $this->handleRequest($request, 'dime_page_find', 'finds.view');
+    }
 
-        $options = $this->defaultOptions();
-        $options['page'] = $page;
-        $options['layout'] = $page->content();
-
-        // Get the 25 most recent public Items
-        $finds = ORM::findBy(Find::class, ['visibility' => 'public'], ['item' => 'DESC'], 25);
-        // Then the 5 with images
-        $featured = [];
-        foreach ($finds as $find) {
-            $images = $find->property('image')->value();
-            if ($images = $find->property('image')->value()) {
-                $featured[] = $find;
-            }
-            if (count($featured) >= 5) {
-                break;
-            }
-        }
-        $data[$page->content()->name()] = $featured;
-
-        $data['notifications'] = DIME::getUnreadNotifications();
-
-        $options['data'] = $data;
-        return Service::renderResponse($page->template(), $options);
+    public function buildData(Request $request, Page $page)
+    {
+        $actor = Service::workflow()->actor();
+        $find = new Find('dime.find');
+        $find->property('finder')->setValue($actor);
+        $find->property('owner')->setValue($actor);
+        $find->property('custodian')->setValue($actor);
+        $process = ORM::find(Term::class, ['concept' => 'dime.find.process', 'term' => 'recorded']);
+        $find->property('process')->setValue($process);
+        $custody = ORM::find(Term::class, ['concept' => 'dime.find.custody', 'term' => 'held']);
+        $find->property('custody')->setValue($custody);
+        $treasure = ORM::find(Term::class, ['concept' => 'dime.treasure', 'term' => 'pending']);
+        $find->property('treasure')->setValue($treasure);
+        $data[$page->content()->name()] = $find;
+        return $data;
     }
 }

@@ -50,7 +50,7 @@ class ItemType extends AbstractFormType
         $fieldOptions['mapped'] = false;
         $builder->add('module', HiddenType::class, $fieldOptions);
         $builder->add('item', HiddenType::class, $fieldOptions);
-        if ($options['field']['value']['mode'] == 'static') {
+        if ($options['field']['value']['modus'] == 'static') {
             $builder->add('content', StaticType::class, $fieldOptions);
         } else {
             $builder->add('content', TextType::class, $fieldOptions);

@@ -27,7 +27,8 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-namespace DIME\Controller;
+
+namespace DIME\Controller\API;
 
 use ARK\Http\JsonResponse;
 use ARK\ORM\ORM;
@@ -38,7 +39,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class VocabularyController
 {
-
     protected $term = '';
 
     protected $alias = '';

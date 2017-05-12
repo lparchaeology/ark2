@@ -28,19 +28,37 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Controller;
+namespace DIME\Controller\API;
 
 use ARK\Actor\Actor;
+use ARK\Http\JsonResponse;
+use ARK\Message\Message;
 use ARK\ORM\ORM;
-use DIME\Controller\DimeFormController;
+use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
 
-class ActorListController extends DimeFormController
+class MessageReadController
 {
     public function __invoke(Request $request)
     {
-        $layout = 'dime_actor_list';
-        $data[$layout] = ORM::findAll(Actor::class);
-        return $this->renderResponse($request, $data, $layout);
+        try {
+            $content = json_decode($request->getContent(), true);
+            $message = $content['message'];
+            $message = ORM::find(Message::class, $message);
+            $recipient = $content['recipient'];
+            $recipient = ORM::find(Actor::class, $recipient);
+            if ($message && $recipient && $message->isRecipient($recipient)) {
+                $data['result'] = $message->markAsRead($recipient);
+                ORM::persist($message);
+                ORM::flush($message);
+            } else {
+                $data['error']['code']['9999'];
+                $data['error']['message']['Message or Recipient Not Found'];
+            }
+        } catch (Exception $e) {
+            $data['error']['code'][$e->getCode()];
+            $data['error']['message'][$e->getMessage()];
+        }
+        return new JsonResponse($data);
     }
 }

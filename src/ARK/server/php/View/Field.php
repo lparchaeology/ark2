@@ -63,26 +63,22 @@ class Field extends Element
         return $this->label;
     }
 
-    public function valueFormMode()
+    public function valueModus()
     {
         return $this->value;
     }
 
-    public function parameterFormMode()
+    public function parameterModus()
     {
-        if (! $this->attribute()
-            ->format()
-            ->parameterName()) {
+        if (!$this->attribute()->format()->parameterName()) {
             return null;
         }
         return ($this->parameter ?: 'hidden');
     }
 
-    public function formatFormMode()
+    public function formatModus()
     {
-        if (! $this->attribute()
-            ->format()
-            ->formatName()) {
+        if (! $this->attribute()->format()->formatName()) {
             return null;
         }
         return ($this->format ?: 'hidden');
@@ -98,30 +94,26 @@ class Field extends Element
         if ($this->formTypeClass) {
             return $this->formTypeClass;
         }
-        if ($this->attribute()
-            ->format()
-            ->formTypeClass()) {
-            return $this->attribute()
-                ->format()
-                ->formTypeClass();
+        if ($this->attribute()->format()->formTypeClass()) {
+            return $this->attribute()->format()->formTypeClass();
         }
         return parent::formTypeClass();
     }
 
-    private function modeToAppearance($mode, $appearance)
+    private function modeToModus($mode, $modus)
     {
-        if ($appearance == 'excluded' || $appearance == 'hidden') {
-            return $appearance;
+        if ($modus == 'excluded' || $modus == 'hidden') {
+            return $modus;
         }
         if ($mode == 'view') {
             return 'static';
         }
-        return $appearance;
+        return $modus;
     }
 
-    private function appearanceToFormType($appearance, $default = null)
+    private function modusToFormType($modus, $default = null)
     {
-        switch ($appearance) {
+        switch ($modus) {
             case 'hidden':
                 return HiddenType::class;
             case 'static':
@@ -132,23 +124,17 @@ class Field extends Element
 
     public function valueFormType()
     {
-        return $this->appearanceToFormType($this->value, $this->attribute()
-            ->format()
-            ->valueFormType());
+        return $this->modusToFormType($this->value, $this->attribute()->format()->valueFormType());
     }
 
     public function parameterFormType()
     {
-        return $this->appearanceToFormType($this->parameter, $this->attribute()
-            ->format()
-            ->parameterFormType());
+        return $this->modusToFormType($this->parameter, $this->attribute()->format()->parameterFormType());
     }
 
     public function formatFormType()
     {
-        return $this->appearanceToFormType($this->format, $this->attribute()
-            ->format()
-            ->formatFormType());
+        return $this->modusToFormType($this->format, $this->attribute()->format()->formatFormType());
     }
 
     public function keyword()
@@ -159,19 +145,23 @@ class Field extends Element
     public function formOptions($mode, $data, $options)
     {
         $cellOptions = $options['cell'];
+        unset($options['page']);
         unset($options['cell']);
-        if ($options['label'] === null) {
-            $options['label'] = ($this->keyword() ?: false);
-        }
+        unset($options['forms']);
+        //unset($options['form']);
+        $options['mode'] = $mode;
         if ($mode == 'view') {
             $options['required'] = false;
         } elseif ($options['required'] === null) {
             $options['required'] = $this->attribute()->isRequired();
         }
+        if ($options['label'] === null) {
+            $options['label'] = ($this->keyword() ?: false);
+        }
         $options['field']['object'] = $this;
         $options['field']['value'] = $this->valueOptions($mode, $cellOptions['value']);
-        $options['field']['parameter'] = $this->baseOptions($mode, $cellOptions['parameter'], [], $this->parameterFormMode(), $this->parameterFormType());
-        $options['field']['format'] = $this->baseOptions($mode, $cellOptions['format'], [], $this->formatFormMode(), $this->formatFormType());
+        $options['field']['parameter'] = $this->baseOptions($mode, $cellOptions['parameter'], [], $this->parameterModus(), $this->parameterFormType());
+        $options['field']['format'] = $this->baseOptions($mode, $cellOptions['format'], [], $this->formatModus(), $this->formatFormType());
         return $options;
     }
 
@@ -185,12 +175,9 @@ class Field extends Element
         if (isset($options['widget']) && $options['widget'] == 'picker') {
             $options['widget'] = 'single_text';
             $options['html5'] = false;
-            $picker = $this->attribute()
-                ->format()
-                ->datatype()
-                ->id() . 'picker';
+            $picker = $this->attribute()->format()->datatype()->id().'picker';
             if (isset($options['attr']['class'])) {
-                $options['attr']['class'] = $options['attr']['class'] . ' ' . $picker;
+                $options['attr']['class'] = $options['attr']['class'].' '.$picker;
             } else {
                 $options['attr']['class'] = $picker;
             }
@@ -207,26 +194,23 @@ class Field extends Element
                 $options['disabled'] = true;
             }
         }
-        return $this->baseOptions($mode, $cellOptions, $options, $this->valueFormMode(), $this->valueFormType());
+        return $this->baseOptions($mode, $cellOptions, $options, $this->valueModus(), $this->valueFormType());
     }
 
-    protected function baseOptions($mode, $cellOptions, $subOptions, $appearance, $formType)
+    protected function baseOptions($mode, $cellOptions, $subOptions, $modus, $formType)
     {
-        if (! $appearance) {
+        if (! $modus) {
             return null;
         }
-        $base['mode'] = $this->modeToAppearance($mode, $appearance);
-        $base['type'] = $this->appearanceToFormType($base['mode'], $formType);
-        dump('mode '.$mode);
-        dump('base mode '.$base['mode']);
-        dump('base type '.$base['type']);
+        $base['modus'] = $this->modeToModus($mode, ($cellOptions['modus'] ?: $modus));
+        $base['type'] = $this->modusToFormType($base['modus'], $formType);
         $base['options'] = $subOptions;
         $base['options']['mapped'] = false;
         $base['options']['label'] = false;
-        if ($base['mode'] == 'disabled') {
+        if ($base['modus'] == 'disabled') {
             $base['options']['disabled'] = true;
         }
-        if ($base['mode'] == 'readonly') {
+        if ($base['modus'] == 'readonly') {
             if ($this->attribute()->hasVocabulary()) {
                 $base['options']['attr']['class'] = $this->concatOption($base, 'attr', 'class', 'readonly-select');
             } else {
@@ -266,7 +250,6 @@ class Field extends Element
 
     public function buildForm(FormBuilderInterface $builder, $mode, $data, $options = [])
     {
-        dump('BUILD FIELD '.$this->element.' '.$mode);
         // if (!Service::security()->hasVisibility($actor, $this->attribute())) {
         // return;
         // }
@@ -295,7 +278,7 @@ class Field extends Element
         // FIXME Should probably have some way to use FormTypes here to render 'flat' compond values
         $value = null;
         $item = null;
-        $context = $this->valueOptions('view', ['mode' => 'view']);
+        $context = $this->valueOptions('view', ['mode' => 'view', 'modus' => 'readonly']);
         if ($data instanceof Item) {
             $item = $data;
         } elseif (is_array($data) && isset($data['data'])) {

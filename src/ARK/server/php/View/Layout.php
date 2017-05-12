@@ -56,6 +56,7 @@ abstract class Layout extends Element
         if ($this->grid !== null) {
             return;
         }
+        $this->grid = [];
         foreach ($this->cells as $cell) {
             $this->grid[$cell->row()][$cell->col()][$cell->seq()] = $cell;
         }
@@ -112,7 +113,6 @@ abstract class Layout extends Element
 
     public function buildForm(FormBuilderInterface $builder, $mode, $data, $options = [])
     {
-        dump('BUILD LAYOUT '.$this->element.' '.$mode);
         foreach ($this->cells() as $cell) {
             $cell->buildForm($builder, $mode, $data, $options);
         }
