@@ -139,6 +139,7 @@ class Nav extends Element
         $builder->addStringField('route', 50);
         $builder->addStringField('uri', 50);
         $builder->addField('seperator', 'boolean');
+        $builder->addStringField('template', 100);
 
         $builder->addManyToOneField('parent', Nav::class, 'parent', 'element', true, 'children');
         $builder->addOneToMany('children', Nav::class, 'parent');

@@ -144,6 +144,7 @@ abstract class Layout extends Element
         // Fields
         $builder->addField('form', 'boolean');
         $builder->addStringField('mode', 10);
+        $builder->addStringField('template', 100);
 
         // Associations
         $builder->addManyToOneField('schma', 'ARK\Model\Schema');

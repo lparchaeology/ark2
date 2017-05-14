@@ -51,7 +51,6 @@ abstract class Element
 
     protected $element = '';
     protected $type = '';
-    protected $class = '';
     protected $template = '';
     protected $mode = null;
 
@@ -76,11 +75,6 @@ abstract class Element
     public function type()
     {
         return $this->type;
-    }
-
-    public function className()
-    {
-        return $this->class;
     }
 
     public function template()
@@ -169,8 +163,6 @@ abstract class Element
         $builder->addStringKey('element', 30);
 
         // Fields
-        $builder->addStringField('class', 100);
-        $builder->addStringField('template', 100);
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);
 

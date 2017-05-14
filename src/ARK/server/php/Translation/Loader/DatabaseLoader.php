@@ -30,10 +30,8 @@
 
 namespace ARK\Translation\Loader;
 
-use ARK\Database\Database;
 use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Translation\Loader\LoaderInterface;
-use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class DatabaseLoader implements LoaderInterface
 {
@@ -41,8 +39,6 @@ class DatabaseLoader implements LoaderInterface
     {
         $catalogue = new MessageCatalogue($locale);
         $rows = $db->getTranslationMessages($locale);
-        $this->addMessages($rows, $catalogue);
-        $rows = $db->getVocabularyMessages($locale);
         $this->addMessages($rows, $catalogue);
         return $catalogue;
     }

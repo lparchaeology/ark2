@@ -141,6 +141,7 @@ class Widget extends Element
         // Fields
         $builder->addField('label', 'boolean');
         $builder->addStringField('mode', 10);
+        $builder->addStringField('template', 100);
         $builder->addStringField('formTypeClass', 100, 'form_type_class');
         $builder->addStringField('formOptions', 4000, 'form_options');
 

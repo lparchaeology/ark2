@@ -37,14 +37,14 @@ use ARK\View\Element;
 
 class Page extends Element
 {
-    protected $navbar = null;
+    protected $header = null;
     protected $sidebar = null;
     protected $content = null;
     protected $footer = null;
 
-    public function navbar()
+    public function header()
     {
-        return $this->navbar;
+        return $this->header;
     }
 
     public function sidebar()
@@ -144,12 +144,13 @@ class Page extends Element
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_page');
 
         // Fields
-        $builder->addStringField('mode', 10, 'mode');
+        $builder->addStringField('mode', 10);
+        $builder->addStringField('template', 100);
 
         // Associations
-        $builder->addManyToOneField('navbar', Nav::class, 'navbar', 'element');
-        $builder->addManyToOneField('sidebar', Nav::class, 'sidebar', 'element');
+        $builder->addManyToOneField('header', Layout::class, 'header', 'element');
+        $builder->addManyToOneField('sidebar', Layout::class, 'sidebar', 'element');
         $builder->addManyToOneField('content', Layout::class, 'content', 'element');
-        $builder->addManyToOneField('footer', Nav::class, 'footer', 'element');
+        $builder->addManyToOneField('footer', Layout::class, 'footer', 'element');
     }
 }

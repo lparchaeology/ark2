@@ -351,6 +351,7 @@ class Field extends Element
         $builder->addStringField('value', 10);
         $builder->addStringField('parameter', 10);
         $builder->addStringField('format', 10);
+        $builder->addStringField('template', 100);
 
         // Associations
         $builder->addCompositeManyToOneField('attribute', 'ARK\Model\Schema\SchemaAttribute', [
