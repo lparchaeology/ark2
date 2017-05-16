@@ -33,12 +33,15 @@ namespace ARK\Security\User;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
-use ARK\Security\User\Account;
+use ARK\Security\Account;
+use ARK\Security\User\Validator\Constraints\EMailIsUnique;
 use DateTime;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
 use Serializable;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Mapping\ClassMetadata as ValidatorMetadata;
 
 class User implements AdvancedUserInterface, Serializable
 {
@@ -430,6 +433,25 @@ class User implements AdvancedUserInterface, Serializable
     public function __toString()
     {
         return (string) $this->getUsername();
+    }
+
+    public static function loadValidatorMetadata(ValidatorMetadata $metadata)
+    {
+        $metadata->addConstraint(new EMailIsUnique());
+        $metadata->addPropertyConstraint('username', new Constraints\Regex("/^[a-zA-Z0-9]{3,30}$/us"));
+        $metadata->addPropertyConstraints('email', [
+            new Constraints\NotBlank(),
+            new Constraints\Email()
+        ]);
+        $metadata->addPropertyConstraints('plainPassword', [
+            new Constraints\NotBlank([
+                'groups' => ['full']
+            ]),
+            new Constraints\Length([
+                'min' => 8,
+                'groups' => ['full']
+            ])
+        ]);
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
