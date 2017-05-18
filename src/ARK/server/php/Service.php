@@ -197,12 +197,35 @@ class Service
         return self::$app['user.manager'];
     }
 
-    public static function user($id = null)
+    public static function userProvider()
     {
-        if ($id) {
-            return self::userManager()->getUser($id);
-        }
+        return self::$app['user.provider'];
+    }
+
+    public function tokenStorage()
+    {
+        return self::$app['security.token_storage'];
+    }
+
+    public static function user()
+    {
         return self::$app['user'];
+    }
+
+    public function currentUser()
+    {
+        if ($token = self::tokenStorage()->getToken()) {
+            return $token->getUser();
+        }
+        return null;
+    }
+
+    function isLoggedIn()
+    {
+        if ($token = $this->app['security.token_storage']->getToken()) {
+            return self::isGranted('IS_AUTHENTICATED_REMEMBERED');
+        }
+        return false;
     }
 
     public static function isGranted($permission)

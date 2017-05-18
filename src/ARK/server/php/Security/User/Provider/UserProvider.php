@@ -22,11 +22,11 @@
  * @license LGPL-3.0 <http://spdx.org/licenses/LGPL-3.0>
  */
 
-namespace ARK\Security\User\Manager;
+namespace ARK\Security\User\Provider;
 
+use ARK\ORM\ORM;
 use ARK\Security\User;
 use Silex\Application;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -36,76 +36,70 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 use Doctrine\ORM\EntityManager;
 use Saxulum\DoctrineOrmManagerRegistry\Doctrine\ManagerRegistry;
-use ARK\Security\User\Event\UserEvent;
-use ARK\Security\User\Event\UserEvents;
 
 class UserProvider implements UserProviderInterface
 {
-    protected $em;
     protected $app;
-    protected $dispatcher;
-    protected $userClass = '\ARK\Security\User';
     protected $passwordStrengthValidator;
-    protected $isUsernameRequired = false;
 
     public function __construct(Application $app)
     {
         $this->app = $app;
-        $this->em = $app['orm.em'];
-        $this->dispatcher = $app['dispatcher'];
+    }
+
+    public function loadUserByUsername($username)
+    {
+        $user = $this->findUser($username);
+        if (!$user) {
+            throw new UsernameNotFoundException("User $username not found.");
+        }
+        return $user;
+    }
+
+    public function refreshUser(UserInterface $user)
+    {
+        if (!$this->supportsClass(get_class($user))) {
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
+        }
+        return $this->getUser($user->getId());
     }
 
     public function supportsClass($class)
     {
-        return ($class === 'rootLogin\UserProvider\Entity\User') || is_subclass_of($class, 'rootLogin\UserProvider\Entity\User');
+        return ($class === User::class) || is_subclass_of($class, User::class);
     }
 
-    public function getUser($id)
+    public function findUser($id)
     {
-        return $this->em->getRepository($this->userClass)->find($id);
+        return ORM::find(User::class, $id);
     }
 
-    public function findOneBy(array $criteria, array $orderBy = null)
+    public function findUsername($username)
     {
-        return $this->em->getRepository($this->userClass)->findOneBy($criteria, $orderBy);
+        $user = null;
+        if (strpos($username, '@') !== false) {
+            $user = ORM::findOneBy(User::class, ['email' => $username]);
+        }
+        if (!$user) {
+            $user = ORM::findOneBy(User::class, ['username' => $username]);
+        }
+        return $user;
     }
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        return $this->em->getRepository($this->userClass)->findBy($criteria, $orderBy, $limit, $offset);
-    }
-
-    public function findCount(array $criteria = array())
-    {
-        return count($this->findBy($criteria));
+        return ORM::findBy(User::class, $criteria, $orderBy, $limit, $offset);
     }
 
     public function save(User $user) {
-        $id = $user->getId();
-        if($id != null) {
-            $this->dispatcher->dispatch(UserEvents::BEFORE_UPDATE, new UserEvent($user));
-        } else {
-            $this->dispatcher->dispatch(UserEvents::BEFORE_INSERT, new UserEvent($user));
-        }
-
-        $this->em->persist($user);
-        $this->em->flush();
-
-        if($id != null) {
-            $this->dispatcher->dispatch(UserEvents::AFTER_UPDATE, new UserEvent($user));
-        } else {
-            $this->dispatcher->dispatch(UserEvents::AFTER_INSERT, new UserEvent($user));
-        }
+        ORM::persist($user);
+        ORM::flush();
     }
 
     public function delete(User $user)
     {
-        $this->dispatcher->dispatch(UserEvents::BEFORE_DELETE, new UserEvent($user));
-
         $this->em->remove($user);
         $this->em->flush();
-
-        $this->dispatcher->dispatch(UserEvents::AFTER_DELETE, new UserEvent($user));
     }
 
     public function validate(User $user)
@@ -144,41 +138,12 @@ class UserProvider implements UserProviderInterface
         return $errors;
     }
 
-    public function loadUserByUsername($username)
-    {
-        if (strpos($username, '@') !== false) {
-            $user = $this->findOneBy(array('email' => $username));
-            if (!$user) {
-                throw new UsernameNotFoundException(sprintf('Email "%s" does not exist.', $username));
-            }
-
-            return $user;
-        }
-
-        $user = $this->findOneBy(array('username' => $username));
-        if (!$user) {
-            throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
-        }
-
-        return $user;
-    }
-
-    public function refreshUser(UserInterface $user)
-    {
-        if (!$this->supportsClass(get_class($user))) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
-        }
-
-        return $this->getUser($user->getId());
-    }
-
     public function loginAsUser(User $user)
     {
-        if (null !== ($current_token = $this->app['security.token_storage']->getToken())) {
+        if (null !== ($current_token = Service::tokenStorage()->getToken())) {
             $providerKey = method_exists($current_token, 'getProviderKey') ? $current_token->getProviderKey() : $current_token->getSecret();
             $token = new UsernamePasswordToken($user, null, $providerKey);
-            $this->app['security.token_storage']->setToken($token);
-
+            Service::tokenStorage()->setToken($token);
             $this->app['user'] = $user;
         }
     }
@@ -255,48 +220,5 @@ class UserProvider implements UserProviderInterface
         $this->passwordStrengthValidator = $callable;
 
         return $this;
-    }
-
-    public function getCurrentUser()
-    {
-        if ($this->isLoggedIn()) {
-            return $this->app['security.token_storage']->getToken()->getUser();
-        }
-
-        return null;
-    }
-
-    function isLoggedIn()
-    {
-        $token = $this->app['security.token_storage']->getToken();
-        if (null === $token) {
-            return false;
-        }
-
-        return $this->app['security.authorization_checker']->isGranted('IS_AUTHENTICATED_REMEMBERED');
-    }
-
-    public function setUserClass($userClass)
-    {
-        $this->userClass = $userClass;
-
-        return $this;
-    }
-
-    public function getUserClass()
-    {
-        return $this->userClass;
-    }
-
-    public function setUsernameRequired($isRequired)
-    {
-        $this->isUsernameRequired = (bool) $isRequired;
-
-        return $this;
-    }
-
-    public function getUsernameRequired()
-    {
-        return $this->isUsernameRequired;
     }
 }
