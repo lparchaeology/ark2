@@ -31,6 +31,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\Voter\RoleHierarchyVoter;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
+use ARK\Security\User\Provider\UserProvider;
 
 class UserProviderServiceProvider implements ServiceProviderInterface, BootableProviderInterface
 {
@@ -63,15 +64,17 @@ class UserProviderServiceProvider implements ServiceProviderInterface, BootableP
         $this->addFormTypes($app);
 
         // Token generator.
-        $app['user.tokenGenerator'] = function($app) { return new TokenGenerator($app['logger']); };
+        $app['user.tokenGenerator'] = function ($app) {
+            return new TokenGenerator($app['logger']);
+        };
 
         // Current user.
-        $app['user'] = function($app) {
+        $app['user'] = function ($app) {
             return ($app['user.manager']->getCurrentUser());
         };
 
         // Add a custom security voter to support testing user attributes.
-        $app['security.voters'] = $app->extend('security.voters', function($voters) use ($app) {
+        $app['security.voters'] = $app->extend('security.voters', function ($voters) use ($app) {
             foreach ($voters as $voter) {
                 if ($voter instanceof RoleHierarchyVoter) {
                     $roleHierarchyVoter = $voter;
@@ -100,7 +103,7 @@ class UserProviderServiceProvider implements ServiceProviderInterface, BootableP
         });
 
         if (isset($app['translator'])) {
-            $app['translator'] = $app->extend('translator', function($translator, $app) {
+            $app['translator'] = $app->extend('translator', function ($translator, $app) {
                 $translator->addResource('xliff', __DIR__ . '/../Resources/translations/messages.en.xliff', 'en', 'messages');
                 $translator->addResource('xliff', __DIR__ . '/../Resources/translations/validators.en.xliff', 'en', 'validators');
                 $translator->addResource('xliff', __DIR__ . '/../Resources/translations/mail.en.xliff', 'en', 'mail');
@@ -265,7 +268,7 @@ class UserProviderServiceProvider implements ServiceProviderInterface, BootableP
 
     protected function initializeOptions(Container $app)
     {
-        $app['user.options.init'] = $app->protect(function() use ($app) {
+        $app['user.options.init'] = $app->protect(function () use ($app) {
             $options = $app['user.options.default'];
             if (isset($app['user.options'])) {
                 // Merge default and configured options
@@ -297,29 +300,12 @@ class UserProviderServiceProvider implements ServiceProviderInterface, BootableP
 
     protected function initializeUserManager(Container $app)
     {
-        $app['user.manager'] = function($app) {
+        $app['user.provider'] = function ($app) {
             $app['user.options.init']();
-
-            if($this->useOrm($app)) {
-                $userManager = new OrmUserManager($app);
-                $userManager->setUserClass($app['user.options']['userClass']);
-                $userManager->setUsernameRequired($app['user.options']['isUsernameRequired']);
-            } else {
-                $userManager = new DBALUserManager($app);
-                $userManager->setUserClass($app['user.options']['userClass']);
-                $userManager->setUsernameRequired($app['user.options']['isUsernameRequired']);
-                $userManager->setUserTableName($app['user.options']['userTableName']);
-                $userManager->setUserCustomFieldsTableName($app['user.options']['userCustomFieldsTableName']);
-                $userManager->setUserColumns($app['user.options']['userColumns']);
-            }
-
-            return $userManager;
+            return new UserProvider($app);
         };
 
-        // Enable orm mappings
-        if($this->useOrm($app)) {
-            $this->addDoctrineOrmMappings($app);
-        }
+        $this->addDoctrineOrmMappings($app);
     }
 
     protected function initializeUserController(Container $app)
@@ -340,16 +326,8 @@ class UserProviderServiceProvider implements ServiceProviderInterface, BootableP
 
     protected function initializeMailer(Container $app)
     {
-        $app['user.mailer'] = function($app) {
+        $app['user.mailer'] = function ($app) {
             $app['user.options.init']();
-
-            $missingDeps = array();
-            if (!isset($app['mailer'])) $missingDeps[] = 'SwiftMailerServiceProvider';
-            if (!isset($app['url_generator'])) $missingDeps[] = 'UrlGeneratorServiceProvider';
-            if (!isset($app['twig'])) $missingDeps[] = 'TwigServiceProvider';
-            if (!empty($missingDeps)) {
-                throw new \RuntimeException('To access the UserProvider mailer you must enable the following missing dependencies: ' . implode(', ', $missingDeps));
-            }
 
             $mailer = new Mailer($app['mailer'], $app['url_generator'], $app['twig']);
             $mailer->setFromAddress($app['user.options']['mailer']['fromEmail']['address'] ?: null);
@@ -401,7 +379,7 @@ class UserProviderServiceProvider implements ServiceProviderInterface, BootableP
             return $validator;
         };
 
-        if(is_array($app['validator.validator_service_ids'])) {
+        if (is_array($app['validator.validator_service_ids'])) {
             $app['validator.validator_service_ids'] = array_merge(
                 $app['validator.validator_service_ids'],
                 [
@@ -432,23 +410,5 @@ class UserProviderServiceProvider implements ServiceProviderInterface, BootableP
 
             return $types;
         });
-    }
-
-    /**
-     * True if Orm is available.
-     *
-     * @return bool
-     */
-    protected function useOrm($app)
-    {
-        return (isset($app['orm.em']) && !$this->forceDBAL);
-    }
-
-    /**
-     * @return string
-     */
-    protected function getEntityMappingsPath()
-    {
-        return realpath(__DIR__ . "/../Resources/mappings");
     }
 }
