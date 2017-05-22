@@ -22,7 +22,7 @@
  * @license LGPL-3.0 <http://spdx.org/licenses/LGPL-3.0>
  */
 
-namespace rootLogin\UserProvider\Command;
+namespace ARK\Security\User\Command;
 
 use Silex\Application;
 use Symfony\Component\Console\Command\Command;
@@ -92,7 +92,7 @@ EOT
         $questions = array();
         if (!$input->getArgument('email')) {
             $question = new Question('Please choose an email:');
-            $question->setValidator(function($email) {
+            $question->setValidator(function ($email) {
                 if (empty($email)) {
                     throw new \Exception('Email can not be empty');
                 }
@@ -103,7 +103,7 @@ EOT
 
         if (!$input->getArgument('password')) {
             $question = new Question('Please choose a password:');
-            $question->setValidator(function($password) {
+            $question->setValidator(function ($password) {
                 if (empty($password)) {
                     throw new \Exception('Password can not be empty');
                 }

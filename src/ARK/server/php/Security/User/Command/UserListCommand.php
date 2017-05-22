@@ -22,7 +22,7 @@
  * @license LGPL-3.0 <http://spdx.org/licenses/LGPL-3.0>
  */
 
-namespace rootLogin\UserProvider\Command;
+namespace ARK\Security\User\Command;
 
 use Silex\Application;
 use Symfony\Component\Console\Command\Command;
@@ -70,7 +70,7 @@ EOT
 
         $output->writeln("User list\n");
 
-        foreach($users as $user) {
+        foreach ($users as $user) {
             /** @var User */
             $output->writeln(sprintf(" - %s (ID: %d)", $user->getEmail(), $user->getId()));
         }

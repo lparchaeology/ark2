@@ -22,7 +22,7 @@
  * @license LGPL-3.0 <http://spdx.org/licenses/LGPL-3.0>
  */
 
-namespace rootLogin\UserProvider\Controller;
+namespace ARK\Security\User\Controller;
 
 use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;

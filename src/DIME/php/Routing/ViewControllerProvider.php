@@ -43,8 +43,9 @@ class ViewControllerProvider implements ControllerProviderInterface
         $files = $app->translate('core.file', 'resource');
         $events = $app->translate('core.event', 'resource');
         $messages = $app->translate('core.message', 'resource');
-        // Static pages
         $home = $app->translate('dime.home', 'resource');
+        $profile = $app->translate('dime.profile', 'resource');
+        // Static pages
         $detector = $app->translate('dime.detector', 'resource');
         $research = $app->translate('dime.research', 'resource');
         $about = $app->translate('dime.about', 'resource');
@@ -85,6 +86,7 @@ class ViewControllerProvider implements ControllerProviderInterface
         // Home routes
         $controllers->get("/$home/$messages", 'DIME\Controller\View\MessagePageController')->bind('home.messages');
         $controllers->get("/$home", 'DIME\Controller\View\HomePageController')->bind('home');
+        $controllers->get("/$profile", 'DIME\Controller\View\ProfilePageController')->bind('profile');
         $controllers->get('/', 'DIME\Controller\View\FrontPageController')->bind('front');
 
         return $controllers;

@@ -22,7 +22,7 @@
  * @license LGPL-3.0 <http://spdx.org/licenses/LGPL-3.0>
  */
 
-namespace rootLogin\UserProvider\Controller;
+namespace ARK\Security\User\Controller;
 
 use rootLogin\UserProvider\Entity\User;
 use rootLogin\UserProvider\Form\Model\PasswordChange;
@@ -66,7 +66,6 @@ class UserViewController
             'user' => $user,
             'imageUrl' => $this->getGravatarUrl($user->getEmail()),
         ]);
-
     }
 
     public function viewSelfAction(Application $app, Request $request)
@@ -79,7 +78,7 @@ class UserViewController
     public function editAction(Application $app, Request $request, $id)
     {
         $user = $this->userManager->getUser($id);
-        if(!$user) {
+        if (!$user) {
             throw new NotFoundHttpException($this->trans('No user was found with that ID.'));
         }
 

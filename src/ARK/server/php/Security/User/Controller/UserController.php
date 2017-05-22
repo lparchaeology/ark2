@@ -22,7 +22,7 @@
  * @license LGPL-3.0 <http://spdx.org/licenses/LGPL-3.0>
  */
 
-namespace rootLogin\UserProvider\Controller;
+namespace ARK\Security\User\Controller;
 
 use rootLogin\UserProvider\Entity\User;
 use rootLogin\UserProvider\Form\Model\PasswordChange;
@@ -176,7 +176,6 @@ class UserController
             'user' => $user,
             'imageUrl' => $this->getGravatarUrl($user->getEmail()),
         ]);
-
     }
 
     /**
@@ -202,7 +201,7 @@ class UserController
     public function editAction(Application $app, Request $request, $id)
     {
         $user = $this->userManager->getUser($id);
-        if(!$user) {
+        if (!$user) {
             throw new NotFoundHttpException($this->trans('No user was found with that ID.'));
         }
 
@@ -255,7 +254,7 @@ class UserController
     {
         /** @var User $user */
         $user = $this->userManager->getCurrentUser();
-        if(!$user) {
+        if (!$user) {
             throw new AccessDeniedException($this->trans('You need to be logged in.'));
         }
 

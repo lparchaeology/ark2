@@ -22,7 +22,7 @@
  * @license LGPL-3.0 <http://spdx.org/licenses/LGPL-3.0>
  */
 
-namespace rootLogin\UserProvider\Command;
+namespace ARK\Security\User\Command;
 
 use rootLogin\UserProvider\Entity\User;
 use Silex\Application;
@@ -81,11 +81,11 @@ EOT
 
         /** @var User $user */
         $user = $this->app['user.manager']->findOneBy(['email' => $email]);
-        if($user === null) {
+        if ($user === null) {
             $output->writeln(sprintf('User <comment>%s</comment> not found!', $email));
             return 1;
         }
-        if($user->hasRole($role)) {
+        if ($user->hasRole($role)) {
             $output->writeln(sprintf('User <comment>%s</comment> has already the <comment>%s</comment> role.', $email, $role));
             return 0;
         }
@@ -105,7 +105,7 @@ EOT
         $questions = array();
         if (!$input->getArgument('email')) {
             $question = new Question('Please choose an email:');
-            $question->setValidator(function($email) {
+            $question->setValidator(function ($email) {
                 if (empty($email)) {
                     throw new \Exception('Email can not be empty');
                 }
@@ -116,7 +116,7 @@ EOT
 
         if (!$input->getArgument('role')) {
             $question = new Question('Please choose a role:');
-            $question->setValidator(function($role) {
+            $question->setValidator(function ($role) {
                 if (empty($role)) {
                     throw new \Exception('Role can not be empty');
                 }

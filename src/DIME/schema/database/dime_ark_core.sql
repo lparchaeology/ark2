@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 14, 2017 at 04:07 PM
--- Server version: 10.1.22-MariaDB
--- PHP Version: 7.1.4
+-- Generation Time: May 22, 2017 at 04:55 PM
+-- Server version: 10.1.23-MariaDB
+-- PHP Version: 7.1.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -781,9 +781,13 @@ CREATE TABLE `ark_schema_attribute` (
 --
 
 INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `vocabulary`, `visibility`, `view`, `edit`, `span`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`, `keyword`) VALUES
+('core.actor', 'actor', 'address', 'address', NULL, 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'core.actor'),
+('core.actor', 'actor', 'avatar', 'image', NULL, 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'core.actor'),
+('core.actor', 'actor', 'email', 'email', NULL, 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'core.actor'),
 ('core.actor', 'actor', 'fullname', 'shorttext', NULL, 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'dime.actor.fullname'),
 ('core.actor', 'actor', 'id', 'identifier', NULL, 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'dime.actor.id'),
 ('core.actor', 'actor', 'shortname', 'shorttext', NULL, 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'dime.actor.shortname'),
+('core.actor', 'actor', 'telephone', 'telephone', NULL, 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'core.actor'),
 ('core.actor', 'actor', 'type', 'term', 'core.actor.type', 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'dime.actor.type'),
 ('core.actor', 'museum', 'municipality', 'term', 'dime.denmark.municipality', 'public', NULL, NULL, 0, 0, 0, 1, 0, 1, 0, 'dime.actor.kommuner'),
 ('core.event', 'event', 'agents', 'actor', NULL, 'public', NULL, NULL, 0, 1, 0, 1, 0, 1, 0, 'core.event.agent'),
@@ -1806,6 +1810,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.period.ww1', 'vocabulary', 0, 0),
 ('dime.period.ww2', 'vocabulary', 0, 0),
 ('dime.placeholder', 'dime', 0, 0),
+('dime.profile', 'dime', 0, 0),
 ('dime.region.hovedstaden', 'vocabulary', 0, 0),
 ('dime.region.midtjylland', 'vocabulary', 0, 0),
 ('dime.region.nordjylland', 'vocabulary', 0, 0),
@@ -2009,9 +2014,9 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('language.bulgarian', 'vocabulary', 0, 0),
 ('language.bulu', 'vocabulary', 0, 0),
 ('language.buriat', 'vocabulary', 0, 0),
-('language.burmese', 'vocabulary', 0, 0),
-('language.caddo', 'vocabulary', 0, 0);
+('language.burmese', 'vocabulary', 0, 0);
 INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('language.caddo', 'vocabulary', 0, 0),
 ('language.cantonese', 'vocabulary', 0, 0),
 ('language.capiznon', 'vocabulary', 0, 0),
 ('language.carib', 'vocabulary', 0, 0),
@@ -3300,6 +3305,8 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.period.ww1', 'default', '1. Verdenskrig', 'First World War'),
 ('da', 'dime.period.ww2', 'default', '2. Verdenskrig', 'Second World War'),
 ('da', 'dime.placeholder', 'default', '-', NULL),
+('da', 'dime.profile', 'default', 'Profil', ''),
+('da', 'dime.profile', 'resource', 'profil', ''),
 ('da', 'dime.region.hovedstaden', 'default', 'Hovedstaden', NULL),
 ('da', 'dime.region.hovedstaden', 'official', 'Region Hovedstaden', NULL),
 ('da', 'dime.region.midtjylland', 'default', 'Midtjylland', NULL),
@@ -3372,10 +3379,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'core.file.status.expired', 'default', 'core.file.status.expired', NULL),
 ('en', 'core.file.status.locked', 'default', 'core.file.status.locked', NULL),
 ('en', 'core.file.status.new', 'default', 'core.file.status.new', NULL),
-('en', 'core.file.type.audio', 'default', 'core.file.type.audio', NULL),
-('en', 'core.file.type.document', 'default', 'core.file.type.document', NULL),
-('en', 'core.file.type.image', 'default', 'core.file.type.image', NULL);
+('en', 'core.file.type.audio', 'default', 'core.file.type.audio', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'core.file.type.document', 'default', 'core.file.type.document', NULL),
+('en', 'core.file.type.image', 'default', 'core.file.type.image', NULL),
 ('en', 'core.file.type.other', 'default', 'core.file.type.other', NULL),
 ('en', 'core.file.type.text', 'default', 'core.file.type.text', NULL),
 ('en', 'core.file.type.video', 'default', 'core.file.type.video', NULL),
@@ -4054,10 +4061,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.kommune.jammerbugt', 'official', 'Jammerbugt Municipality', NULL),
 ('en', 'dime.kommune.kalundborg', 'default', 'Kalundborg', NULL),
 ('en', 'dime.kommune.kalundborg', 'official', 'Kalundborg Municipality', NULL),
-('en', 'dime.kommune.kerteminde', 'default', 'Kerteminde', NULL),
-('en', 'dime.kommune.kerteminde', 'official', 'Kerteminde Municipality', NULL),
-('en', 'dime.kommune.kobenhavn', 'default', 'Copenhagen', NULL);
+('en', 'dime.kommune.kerteminde', 'default', 'Kerteminde', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.kommune.kerteminde', 'official', 'Kerteminde Municipality', NULL),
+('en', 'dime.kommune.kobenhavn', 'default', 'Copenhagen', NULL),
 ('en', 'dime.kommune.kobenhavn', 'official', 'Copenhagen Municipality', NULL),
 ('en', 'dime.kommune.koge', 'default', 'Køge', NULL),
 ('en', 'dime.kommune.koge', 'official', 'Køge Municipality', NULL),
@@ -4219,6 +4226,8 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.period.ww1', 'default', 'First World War', NULL),
 ('en', 'dime.period.ww2', 'default', 'Second World War', NULL),
 ('en', 'dime.placeholder', 'default', '-', NULL),
+('en', 'dime.profile', 'default', 'Profile', ''),
+('en', 'dime.profile', 'resource', 'profile', ''),
 ('en', 'dime.region.hovedstaden', 'default', 'Capital', NULL),
 ('en', 'dime.region.hovedstaden', 'official', 'Capital Region', NULL),
 ('en', 'dime.region.midtjylland', 'default', 'Central', NULL),
@@ -4910,12 +4919,12 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'language.zarma', 'default', 'Zarma', NULL),
 ('en', 'language.zaza', 'default', 'Zaza', NULL),
 ('en', 'language.zeelandic', 'default', 'Zeelandic', NULL),
-('en', 'language.zenaga', 'default', 'Zenaga', NULL),
+('en', 'language.zenaga', 'default', 'Zenaga', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'language.zhuang', 'default', 'Zhuang', NULL),
 ('en', 'language.zulu', 'default', 'Zulu', NULL),
 ('en', 'language.zuni', 'default', 'Zuni', NULL),
-('en', 'length.kilometre', 'default', 'kilometre', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'length.kilometre', 'default', 'kilometre', NULL),
 ('en', 'length.metre', 'default', 'metre', NULL),
 ('en', 'length.micrometre', 'default', 'micrometre', NULL),
 ('en', 'length.millimetre', 'default', 'millimetre', NULL),
@@ -5060,6 +5069,18 @@ CREATE TABLE `ark_view_element` (
 --
 
 INSERT INTO `ark_view_element` (`element`, `type`, `enabled`, `deprecated`, `keyword`) VALUES
+('core_actor_address', 'field', 1, 0, NULL),
+('core_actor_avatar', 'field', 1, 0, NULL),
+('core_actor_email', 'field', 1, 0, NULL),
+('core_actor_fullname', 'field', 1, 0, NULL),
+('core_actor_id', 'field', 1, 0, NULL),
+('core_actor_item', 'grid', 1, 0, NULL),
+('core_actor_list', 'table', 1, 0, NULL),
+('core_actor_municipality', 'field', 1, 0, NULL),
+('core_actor_person', 'grid', 1, 0, NULL),
+('core_actor_shortname', 'field', 1, 0, NULL),
+('core_actor_telephone', 'field', 1, 0, NULL),
+('core_actor_type', 'field', 1, 0, NULL),
 ('core_file_description', 'field', 1, 0, NULL),
 ('core_file_id', 'field', 1, 0, NULL),
 ('core_file_item', 'grid', 1, 0, NULL),
@@ -5079,15 +5100,10 @@ INSERT INTO `ark_view_element` (`element`, `type`, `enabled`, `deprecated`, `key
 ('core_page_content', 'field', 1, 0, NULL),
 ('core_page_static', 'page', 1, 0, NULL),
 ('core_page_view', 'grid', 1, 0, NULL),
+('core_user_password', 'grid', 1, 0, NULL),
+('core_widget_password', 'widget', 1, 0, NULL),
 ('core_widget_save', 'widget', 1, 0, 'core.button.save'),
 ('core_widget_search', 'widget', 1, 0, 'core.button.search'),
-('dime_actor_fullname', 'field', 1, 0, NULL),
-('dime_actor_id', 'field', 1, 0, NULL),
-('dime_actor_item', 'grid', 1, 0, NULL),
-('dime_actor_list', 'table', 1, 0, NULL),
-('dime_actor_municipality', 'field', 1, 0, NULL),
-('dime_actor_shortname', 'field', 1, 0, NULL),
-('dime_actor_type', 'field', 1, 0, NULL),
 ('dime_find_actions', 'widget', 1, 0, 'dime.actions'),
 ('dime_find_add', 'grid', 1, 0, NULL),
 ('dime_find_apply', 'grid', 1, 0, NULL),
@@ -5148,7 +5164,9 @@ INSERT INTO `ark_view_element` (`element`, `type`, `enabled`, `deprecated`, `key
 ('dime_page_home', 'page', 1, 0, NULL),
 ('dime_page_message', 'page', 1, 0, NULL),
 ('dime_page_news', 'page', 1, 0, NULL),
+('dime_page_profile', 'page', 1, 0, NULL),
 ('dime_page_static', 'page', 1, 0, NULL),
+('dime_profile_page', 'grid', 1, 0, NULL),
 ('dime_site_footer', 'grid', 1, 0, NULL),
 ('dime_site_header', 'grid', 1, 0, NULL),
 ('dime_site_sidebar', 'grid', 1, 0, NULL);
@@ -5178,6 +5196,15 @@ CREATE TABLE `ark_view_field` (
 --
 
 INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `label`, `value`, `parameter`, `format`, `template`, `form_type_class`, `form_options`) VALUES
+('core_actor_address', 'core.actor', 'actor', 'address', 1, 'active', NULL, NULL, NULL, NULL, ''),
+('core_actor_avatar', 'core.actor', 'actor', 'avatar', 1, 'active', NULL, NULL, NULL, NULL, ''),
+('core_actor_email', 'core.actor', 'actor', 'email', 1, 'active', NULL, NULL, NULL, NULL, ''),
+('core_actor_fullname', 'core.actor', 'actor', 'fullname', 1, 'active', NULL, NULL, NULL, NULL, ''),
+('core_actor_id', 'core.actor', 'actor', 'id', 1, 'active', NULL, NULL, NULL, NULL, ''),
+('core_actor_municipality', 'core.actor', 'museum', 'municipality', 1, 'active', NULL, NULL, NULL, NULL, ''),
+('core_actor_shortname', 'core.actor', 'actor', 'shortname', 1, 'active', NULL, NULL, NULL, NULL, ''),
+('core_actor_telephone', 'core.actor', 'actor', 'telephone', 1, 'active', NULL, NULL, NULL, NULL, ''),
+('core_actor_type', 'core.actor', 'actor', 'type', 1, 'active', NULL, NULL, NULL, NULL, ''),
 ('core_file_description', 'core.file', 'file', 'description', 1, 'active', NULL, NULL, NULL, NULL, ''),
 ('core_file_id', 'core.file', 'file', 'id', 1, 'readonly', NULL, NULL, NULL, NULL, ''),
 ('core_file_mediatype', 'core.file', 'file', 'mediatype', 1, 'active', NULL, NULL, NULL, NULL, ''),
@@ -5191,11 +5218,6 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `lab
 ('core_message_sent_at', 'core.message', 'message', 'sent', 1, 'active', NULL, NULL, NULL, NULL, ''),
 ('core_message_type', 'core.message', 'message', 'type', 1, 'active', NULL, NULL, NULL, NULL, ''),
 ('core_page_content', 'core.page', 'page', 'content', 1, 'active', NULL, NULL, NULL, NULL, ''),
-('dime_actor_fullname', 'core.actor', 'actor', 'fullname', 1, 'active', NULL, NULL, NULL, NULL, ''),
-('dime_actor_id', 'core.actor', 'actor', 'id', 1, 'active', NULL, NULL, NULL, NULL, ''),
-('dime_actor_municipality', 'core.actor', 'museum', 'municipality', 1, 'active', NULL, NULL, NULL, NULL, ''),
-('dime_actor_shortname', 'core.actor', 'actor', 'shortname', 1, 'active', NULL, NULL, NULL, NULL, ''),
-('dime_actor_type', 'core.actor', 'actor', 'type', 1, 'active', NULL, NULL, NULL, NULL, ''),
 ('dime_find_carousel', 'dime.find', 'find', 'image', 1, 'active', NULL, NULL, 'blocks/carouselfield.html.twig', 'ARK\\Form\\Type\\CarouselType', ''),
 ('dime_find_classification', 'dime.find', 'find', 'classification', 1, 'active', NULL, NULL, NULL, 'DIME\\Form\\Type\\ClassificationType', ''),
 ('dime_find_condition', 'dime.find', 'find', 'condition', 1, 'active', NULL, NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:75%\"}}'),
@@ -5254,6 +5276,20 @@ CREATE TABLE `ark_view_grid` (
 --
 
 INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `element`, `map`, `label`, `mode`, `value`, `parameter`, `format`, `required`, `enabled`, `deprecated`, `form_options`) VALUES
+('core_actor_item', 0, 0, 0, '', 'core_actor_id', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('core_actor_item', 0, 0, 1, '', 'core_actor_fullname', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('core_actor_item', 0, 0, 2, '', 'core_actor_shortname', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('core_actor_item', 0, 0, 3, '', 'core_actor_municipality', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('core_actor_list', 0, 0, 0, '', 'core_actor_id', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('core_actor_list', 0, 0, 1, '', 'core_actor_type', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('core_actor_list', 0, 0, 2, '', 'core_actor_fullname', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('core_actor_person', 0, 0, 0, '', 'core_actor_id', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('core_actor_person', 0, 0, 1, '', 'core_actor_fullname', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('core_actor_person', 0, 0, 2, '', 'core_actor_shortname', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('core_actor_person', 0, 0, 3, '', 'core_actor_address', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('core_actor_person', 0, 0, 4, '', 'core_actor_telephone', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('core_actor_person', 0, 0, 5, '', 'core_actor_email', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('core_actor_person', 0, 1, 0, '', 'core_actor_avatar', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('core_file_item', 0, 0, 0, '', 'core_file_id', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('core_file_item', 0, 0, 1, '', 'core_file_type', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('core_file_item', 0, 0, 2, '', 'core_file_mediatype', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
@@ -5272,13 +5308,10 @@ INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `elemen
 ('core_message_list', 0, 0, 2, '', 'core_message_sent_at', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('core_message_list', 0, 0, 3, '', 'core_message_event', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('core_page_view', 0, 0, 0, '', 'core_page_content', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
-('dime_actor_item', 0, 0, 0, '', 'dime_actor_id', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
-('dime_actor_item', 0, 0, 1, '', 'dime_actor_fullname', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
-('dime_actor_item', 0, 0, 2, '', 'dime_actor_shortname', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
-('dime_actor_item', 0, 0, 3, '', 'dime_actor_municipality', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
-('dime_actor_list', 0, 0, 0, '', 'dime_actor_id', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
-('dime_actor_list', 0, 0, 1, '', 'dime_actor_type', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
-('dime_actor_list', 0, 0, 2, '', 'dime_actor_fullname', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('core_user_password', 0, 0, 0, '', 'core_widget_password', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('core_user_password', 0, 0, 1, '', 'core_widget_password', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('core_user_password', 0, 0, 2, '', 'core_widget_password', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('core_user_password', 0, 0, 3, '', 'core_widget_save', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('dime_find_add', 0, 0, 0, '', 'dime_find_event', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('dime_find_add', 0, 1, 0, '', 'dime_find_details', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('dime_find_apply', 0, 0, 0, '', 'dime_find_actions', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
@@ -5333,7 +5366,10 @@ INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `elemen
 ('dime_home_page', 1, 0, 0, '', 'dime_find_list', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('dime_home_page', 1, 1, 0, '', 'dime_find_map', 'dime_map_user', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
 ('dime_message_page', 0, 0, 0, '', 'core_message_list', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
-('dime_message_page', 0, 1, 0, '', 'core_message_item', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL);
+('dime_message_page', 0, 1, 0, '', 'core_message_item', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('dime_profile_page', 0, 0, 0, '', 'dime_home_action', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('dime_profile_page', 1, 0, 0, '', 'core_actor_person', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL),
+('dime_profile_page', 1, 1, 0, '', 'core_user_password', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -5355,13 +5391,15 @@ CREATE TABLE `ark_view_layout` (
 --
 
 INSERT INTO `ark_view_layout` (`element`, `schma`, `item_type`, `form`, `mode`, `template`) VALUES
+('core_actor_item', NULL, NULL, 1, 'edit', NULL),
+('core_actor_list', NULL, NULL, 1, 'view', NULL),
+('core_actor_person', 'core.actor', 'person', 1, 'edit', NULL),
 ('core_file_item', NULL, NULL, 1, 'edit', NULL),
 ('core_file_list', NULL, NULL, 0, NULL, NULL),
 ('core_message_item', 'core.message', NULL, 1, 'view', 'blocks/message.html.twig'),
 ('core_message_list', NULL, NULL, 1, 'view', 'blocks/messagelist.html.twig'),
 ('core_page_view', NULL, NULL, 0, NULL, NULL),
-('dime_actor_item', NULL, NULL, 1, 'edit', NULL),
-('dime_actor_list', NULL, NULL, 1, 'view', NULL),
+('core_user_password', NULL, NULL, 1, 'edit', NULL),
 ('dime_find_add', NULL, NULL, 0, NULL, NULL),
 ('dime_find_apply', NULL, NULL, 0, NULL, NULL),
 ('dime_find_details', NULL, NULL, 0, NULL, NULL),
@@ -5376,6 +5414,7 @@ INSERT INTO `ark_view_layout` (`element`, `schma`, `item_type`, `form`, `mode`, 
 ('dime_home_action', NULL, NULL, 0, NULL, 'blocks/homeaction.html.twig'),
 ('dime_home_page', NULL, NULL, 0, NULL, NULL),
 ('dime_message_page', NULL, NULL, 0, NULL, NULL),
+('dime_profile_page', NULL, NULL, 0, NULL, NULL),
 ('dime_site_footer', NULL, NULL, 0, NULL, NULL),
 ('dime_site_header', NULL, NULL, 0, NULL, NULL),
 ('dime_site_sidebar', NULL, NULL, 0, NULL, NULL);
@@ -5436,6 +5475,7 @@ INSERT INTO `ark_view_page` (`element`, `mode`, `header`, `sidebar`, `content`, 
 ('dime_page_home', 'view', 'dime_site_header', 'dime_site_sidebar', 'dime_home_page', 'dime_site_footer', NULL),
 ('dime_page_message', 'view', 'dime_site_header', 'dime_site_sidebar', 'dime_message_page', 'dime_site_footer', NULL),
 ('dime_page_news', 'view', 'dime_site_header', 'dime_site_sidebar', 'dime_find_list', 'dime_site_footer', NULL),
+('dime_page_profile', 'view', 'dime_site_header', 'dime_site_sidebar', 'dime_profile_page', 'dime_site_footer', NULL),
 ('dime_page_static', 'view', 'dime_site_header', 'dime_site_sidebar', NULL, 'dime_site_footer', NULL);
 
 -- --------------------------------------------------------
@@ -5523,6 +5563,7 @@ CREATE TABLE `ark_view_widget` (
 --
 
 INSERT INTO `ark_view_widget` (`element`, `mode`, `label`, `vocabulary`, `template`, `form_type_class`, `form_options`) VALUES
+('core_widget_password', 'edit', 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\PasswordType', ''),
 ('core_widget_save', 'edit', 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', ''),
 ('core_widget_search', 'view', 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', ''),
 ('dime_find_actions', 'edit', 1, NULL, NULL, 'ARK\\Form\\Type\\TermChoiceType', ''),
