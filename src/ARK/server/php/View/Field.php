@@ -189,10 +189,9 @@ class Field extends Element
         if ($this->attribute()->hasMultipleOccurrences()) {
             $options['multiple'] = true;
         }
-        if (!Service::isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            if ($this->attribute()->hasVocabulary()) {
-                $options['disabled'] = true;
-            }
+        // TODO Use visibility instead
+        if (!Service::security()->isLoggedIn() && $this->attribute()->hasVocabulary()) {
+            $options['disabled'] = true;
         }
         return $this->baseOptions($mode, $cellOptions, $options, $this->valueModus(), $this->valueFormType());
     }

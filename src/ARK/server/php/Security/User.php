@@ -34,26 +34,27 @@ use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Security\Account;
-use ARK\Security\User\Validator\Constraints\EMailIsUnique;
+use ARK\Security\Validator\PasswordStrength;
 use DateTime;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
 use Serializable;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
-use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Mapping\ClassMetadata as ValidatorMetadata;
 
 class User implements AdvancedUserInterface, Serializable
 {
     use KeywordTrait;
 
-    protected $user = null;
+    protected $id = null;
     protected $username = '';
-    protected $usernameCanonical = '';
     protected $email = '';
-    protected $emailCanonical = '';
     protected $password = null;
-    protected $plainPassword = '';
     protected $name = '';
     protected $level = 'ROLE_ANON';
     protected $enabled = false;
@@ -70,39 +71,36 @@ class User implements AdvancedUserInterface, Serializable
     protected $lastLogin = null;
     protected $accounts = null;
 
-    public function __construct($user)
+    public function __construct($id, $username = null, $email = null)
     {
-        $this->user = $user;
+        $this->id = $id;
+        $this->username = $username;
+        $this->email = $email;
         $this->accounts = new ArrayCollection();
     }
 
     public function id()
     {
-        return $this->user;
+        return $this->id;
     }
 
+    // UserInterface
     public function getUsername()
     {
-        return $this->username ?: $this->email;
+        return $this->username;
+    }
+
+    public function username()
+    {
+        return $this->username;
     }
 
     public function setUsername($username)
     {
         $this->username = $username;
-        return $this;
     }
 
-    public function getRealUsername()
-    {
-        return $this->username;
-    }
-
-    public function hasRealUsername()
-    {
-        return (bool) $this->username;
-    }
-
-    public function getEmail()
+    public function email()
     {
         return $this->email;
     }
@@ -110,52 +108,44 @@ class User implements AdvancedUserInterface, Serializable
     public function setEmail($email)
     {
         $this->email = $email;
-        return $this;
     }
 
+    // UserInterface
     public function getPassword()
+    {
+        return $this->password;
+    }
+
+    public function password()
     {
         return $this->password;
     }
 
     public function setPassword($password)
     {
-        $this->password = $password;
-        return $this;
+        $this->password = Service::security()->encodePassword($password);
     }
 
-    public function getPlainPassword()
-    {
-        return $this->plainPassword;
-    }
-
-    public function setPlainPassword($password)
-    {
-        $this->plainPassword = $password;
-
-        return $this;
-    }
-
+    // UserInterface
     public function getSalt()
     {
         return null;
     }
 
-    public function getName()
+    public function name()
     {
         return $this->name;
     }
 
-    public function getDisplayName()
+    public function displayName()
     {
         // TODO translate
-        return $this->getName() ?: 'User ' . $this->id;
+        return $this->getName() ?: Service::translate('User ' . $this->id);
     }
 
     public function setName($name)
     {
         $this->name = $name;
-        return $this;
     }
 
     public function isVerified()
@@ -166,9 +156,9 @@ class User implements AdvancedUserInterface, Serializable
     public function verify()
     {
         $this->verified = true;
-        return $this;
     }
 
+    // AdvancedUserInterface
     public function isEnabled()
     {
         return $this->enabled;
@@ -183,7 +173,6 @@ class User implements AdvancedUserInterface, Serializable
     public function disable()
     {
         $this->enabled = false;
-        return $this;
     }
 
     public function isLocked()
@@ -191,6 +180,7 @@ class User implements AdvancedUserInterface, Serializable
         return $this->locked;
     }
 
+    // AdvancedUserInterface
     public function isAccountNonLocked()
     {
         return !$this->isLocked();
@@ -199,13 +189,11 @@ class User implements AdvancedUserInterface, Serializable
     public function lock()
     {
         $this->locked = true;
-        return $this;
     }
 
     public function unlock()
     {
         $this->locked = false;
-        return $this;
     }
 
     public function isExpired()
@@ -217,6 +205,7 @@ class User implements AdvancedUserInterface, Serializable
         return $this->expired;
     }
 
+    // AdvancedUserInterface
     public function isAccountNonExpired()
     {
         return !$this->isExpired();
@@ -236,8 +225,13 @@ class User implements AdvancedUserInterface, Serializable
 
     public function expireAt(DateTime $date)
     {
+        // TODO Check is UTC?
+        if ($date->getTimestamp() < time()) {
+            $this->expire();
+            return;
+        }
+        $this->expired = false;
         $this->expiresAt = $date;
-        return $this;
     }
 
     public function areCredentialsExpired()
@@ -251,6 +245,7 @@ class User implements AdvancedUserInterface, Serializable
         return $this->credentialsExpired;
     }
 
+    // AdvancedUserInterface
     public function isCredentialsNonExpired()
     {
         return !$this->areCredentialsExpired();
@@ -258,20 +253,23 @@ class User implements AdvancedUserInterface, Serializable
 
     public function expireCredentials()
     {
-        $this->credentialsExpired = $boolean;
+        $this->credentialsExpired = true;
         $this->credentialsExpireAt = null;
-        return $this;
     }
 
     public function expireCredentialsAt(DateTime $date)
     {
+        // TODO Check is UTC?
+        if ($date->getTimestamp() < time()) {
+            $this->expireCredentials();
+            return;
+        }
         $this->credentialsExpireAt = $date;
-        return $this;
     }
 
+    // UserInterface
     public function eraseCredentials()
     {
-        $this->plainPassword = null;
     }
 
     public function verificationToken()
@@ -291,7 +289,6 @@ class User implements AdvancedUserInterface, Serializable
         $this->verificationToken = $token;
         // TODO check is UTC
         $this->verificationRequestedAt = time();
-        return $this;
     }
 
     public function isVerificationRequestExpired($ttl)
@@ -329,7 +326,7 @@ class User implements AdvancedUserInterface, Serializable
         return $this->passwordRequestToken === '';
     }
 
-    public function getLastLogin()
+    public function lastLogin()
     {
         return $this->lastLogin;
     }
@@ -340,14 +337,19 @@ class User implements AdvancedUserInterface, Serializable
         return $this;
     }
 
-    public function level($level)
+    public function level()
     {
         return $this->level;
     }
 
+    public function levels()
+    {
+        return $this->levels;
+    }
+
     private function initLevels()
     {
-        if ($this->levels) {
+        if ($this->levels !== null) {
             return;
         }
         if ($this->level == 'ROLE_ANON' || !$this->level) {
@@ -364,7 +366,7 @@ class User implements AdvancedUserInterface, Serializable
         }
     }
 
-    // Required by UserInterface
+    // UserInterface
     public function getRoles()
     {
         $this->initLevels();
@@ -373,7 +375,8 @@ class User implements AdvancedUserInterface, Serializable
 
     public function hasLevel($level)
     {
-        return in_array($level, $this->getRoles());
+        $this->initLevels();
+        return in_array($level, $this->levels);
     }
 
     public function setLevel($level)
@@ -432,25 +435,27 @@ class User implements AdvancedUserInterface, Serializable
 
     public function __toString()
     {
-        return (string) $this->getUsername();
+        return (string) $this->username();
     }
 
     public static function loadValidatorMetadata(ValidatorMetadata $metadata)
     {
-        $metadata->addConstraint(new EMailIsUnique());
-        $metadata->addPropertyConstraint('username', new Constraints\Regex("/^[a-zA-Z0-9]{3,30}$/us"));
-        $metadata->addPropertyConstraints('email', [
-            new Constraints\NotBlank(),
-            new Constraints\Email()
+        $metadata->addConstraint(new UniqueEntity('username'));
+        $metadata->addPropertyConstraints('username', [
+            new NotBlank(),
+            new Regex("/^[a-zA-Z0-9]{3,30}$/us")
         ]);
+
+        $metadata->addConstraint(new UniqueEntity('email'));
+        $metadata->addPropertyConstraints('email', [
+            new NotBlank(),
+            new Email()
+        ]);
+
         $metadata->addPropertyConstraints('plainPassword', [
-            new Constraints\NotBlank([
-                'groups' => ['full']
-            ]),
-            new Constraints\Length([
-                'min' => 8,
-                'groups' => ['full']
-            ])
+            new NotBlank(['groups' => ['full']]),
+            new Length(['min' => 8, 'groups' => ['full']]),
+            new PasswordStrength(2)
         ]);
     }
 
@@ -460,7 +465,7 @@ class User implements AdvancedUserInterface, Serializable
         $builder = new ClassMetadataBuilder($metadata, 'ark_security_user');
 
         // Key
-        $builder->addKey('user', 'integer');
+        $builder->addKey('id', 'integer', 'user');
 
         // Attributes
         $builder->addStringField('username', 100);

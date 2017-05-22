@@ -61,14 +61,16 @@ class PageViewController extends DimeFormController
         // TODO Language Switching!!!
         $content = '';
 
-        if (Service::isGranted('ROLE_ADMIN')) {
+        // TODO Use visibility / permissions
+        if (Service::security()->isGranted('ROLE_ADMIN')) {
             $content .= '<button id="pageedit" type="button" class="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">Edit</button>';
             $content .= '<div class="inlineedit">';
         }
         if ($value && $value->content()) {
             $content .= $value->content();
         }
-        if (Service::isGranted('ROLE_ADMIN')) {
+        // TODO Use visibility / permissions
+        if (Service::security()->isGranted('ROLE_ADMIN')) {
             $content .= '</div>';
         }
 

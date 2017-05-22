@@ -47,23 +47,23 @@ class UserProvider implements UserProviderInterface
         $this->app = $app;
     }
 
+    // UserProviderInterface
     public function loadUserByUsername($username)
     {
-        $user = $this->findUser($username);
+        $user = $this->findByUsername($username);
         if (!$user) {
             throw new UsernameNotFoundException("User $username not found.");
         }
         return $user;
     }
 
+    // UserProviderInterface
     public function refreshUser(UserInterface $user)
     {
-        if (!$this->supportsClass(get_class($user))) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
-        }
-        return $this->getUser($user->getId());
+        return $this->findUser($user->getId());
     }
 
+    // UserProviderInterface
     public function supportsClass($class)
     {
         return ($class === User::class) || is_subclass_of($class, User::class);
@@ -74,32 +74,19 @@ class UserProvider implements UserProviderInterface
         return ORM::find(User::class, $id);
     }
 
+    public function findByUsername($username)
+    {
+        return ORM::findOneBy(User::class, ['username' => $username]);
+    }
+
     public function findUsername($username)
     {
-        $user = null;
-        if (strpos($username, '@') !== false) {
-            $user = ORM::findOneBy(User::class, ['email' => $username]);
-        }
-        if (!$user) {
-            $user = ORM::findOneBy(User::class, ['username' => $username]);
-        }
-        return $user;
+        return ORM::findOneBy(User::class, ['email' => $username]);
     }
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         return ORM::findBy(User::class, $criteria, $orderBy, $limit, $offset);
-    }
-
-    public function save(User $user) {
-        ORM::persist($user);
-        ORM::flush();
-    }
-
-    public function delete(User $user)
-    {
-        $this->em->remove($user);
-        $this->em->flush();
     }
 
     public function validate(User $user)
@@ -148,14 +135,8 @@ class UserProvider implements UserProviderInterface
         }
     }
 
-    public function getEmptyUser() {
-        $userClass = $this->getUserClass();
-
-        return new $userClass();
-    }
-
     public function create($email, $plainPassword, $name = null, $roles = array()) {
-        $user = $this->getEmptyUser();
+        $user = new User;
         $user->setEmail($email);
 
         if (!empty($plainPassword)) {
@@ -172,53 +153,27 @@ class UserProvider implements UserProviderInterface
         return $user;
     }
 
-    protected function getEncoder(UserInterface $user)
+    public function registerUser($username, $email, $plainPassword, $name = null, $level = 'ROLE_USER')
     {
-        return $this->app['security.encoder_factory']->getEncoder($user);
-    }
-
-    public function encodeUserPassword(User $user, $password)
-    {
-        $encoder = $this->getEncoder($user);
-
-        return $encoder->encodePassword($password, $user->getSalt());
-    }
-
-    public function setUserPassword(User $user, $password)
-    {
-        $user->setPassword($this->encodeUserPassword($user, $password));
-
-        return $this;
-    }
-
-    public function validatePasswordStrength(User $user, $password)
-    {
-        return call_user_func($this->getPasswordStrengthValidator(), $user, $password);
-    }
-
-    public function getPasswordStrengthValidator()
-    {
-        if (!is_callable($this->passwordStrengthValidator)) {
-            return function(User $user, $password) {
-                if (empty($password)) {
-                    return 'Password cannot be empty.';
-                }
-
-                return null;
-            };
+        $user = new User($username, $email);
+        if ($this->isEmailConfirmationRequired) {
+            $user->setEnabled(false);
+            $user->setConfirmationToken($app['user.tokenGenerator']->generateToken());
         }
+        $user->setPassword($plainPassword);
+        ORM::persist($user);
+        ORM::flush($user);
 
-        return $this->passwordStrengthValidator;
+        if ($this->isEmailConfirmationRequired) {
+            $this->sendConfirmationMessage($user);
+        } else {
+            $this->loginAsUser($user);
+        }
     }
 
-    public function setPasswordStrengthValidator($callable)
+    protected function getGravatarUrl($email, $size = 80)
     {
-        if (!is_callable($callable)) {
-            throw new \InvalidArgumentException('Password strength validator must be Callable.');
-        }
-
-        $this->passwordStrengthValidator = $callable;
-
-        return $this;
+        // See https://en.gravatar.com/site/implement/images/ for available options.
+        return '//www.gravatar.com/avatar/' . md5(strtolower(trim($email))) . '?s=' . $size . '&d=identicon';
     }
 }

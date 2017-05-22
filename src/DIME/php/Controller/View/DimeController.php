@@ -45,7 +45,8 @@ abstract class DimeController
 
     public function pageConfig($route = null)
     {
-        $homeTarget = (Service::isGranted('ROLE_USER') ? 'home' : 'front');
+        // TODO Use visibility / permissions
+        $homeTarget = (Service::security()->isGranted('ROLE_USER') ? 'home' : 'front');
         $config = [
             "navlinks" => [
                 ["name" => "dime.home", "dropdown" => false, "target" => $homeTarget],

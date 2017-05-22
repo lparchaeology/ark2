@@ -53,7 +53,8 @@ class HomePageController extends DimeFormController
         $data[$page->content()->name()] = $finds;
         $data['dime_find_list'] = $finds;
 
-        $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $finds : []);
+        // TODO Use visibility / permissions
+        $data['dime_find_map'] = (Service::security()->isGranted('ROLE_USER') ? $finds : []);
         $data['kortforsyningenticket'] = DIME::getMapTicket();
         $data['dime_home_action'] = null;
         $data['notifications'] = DIME::getUnreadNotifications();

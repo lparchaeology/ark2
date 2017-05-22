@@ -47,7 +47,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
         $container->register(new CsrfServiceProvider());
 
         $container['security'] = function ($app) {
-            return new Security();
+            return new Security($app);
         };
         $container['security.firewalls'] = [];
         $container->extendArray('security.firewalls', 'login_area', [

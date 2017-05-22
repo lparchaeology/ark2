@@ -60,6 +60,7 @@ class StaticPageController
         $options['page'] = $page;
         $options['data'] = $item;
 
+        // TODO Use visibility / permissions
         if (Service::isGranted('ROLE_ADMIN')) {
             $content .= '<button id="pageedit" type="button" class="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">Edit</button>';
             $content .= '<div class="inlineedit">';
@@ -67,7 +68,8 @@ class StaticPageController
         if ($value) {
             $content .= $value[0]['content'];
         }
-        if (Service::isGranted('ROLE_ADMIN')) {
+        // TODO Use visibility / permissions
+        if (Service::security()->isGranted('ROLE_ADMIN')) {
             $content .= '</div>';
         }
 

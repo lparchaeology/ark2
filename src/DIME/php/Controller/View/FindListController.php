@@ -99,7 +99,8 @@ class FindListController extends DimeFormController
 
         $data[$page->content()->name()] = $resource;
         $data['dime_find_list'] = $resource;
-        $data['dime_find_map'] = (Service::isGranted('ROLE_USER') ? $resource : []);
+        // TODO Use visibility/workflow
+        $data['dime_find_map'] = (Service::security()->isGranted('ROLE_USER') ? $resource : []);
         $data['dime_find_filter'] = null;
         $data['kortforsyningenticket'] = DIME::getMapTicket();
         return $data;
