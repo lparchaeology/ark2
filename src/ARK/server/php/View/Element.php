@@ -98,7 +98,7 @@ abstract class Element
         return $parentMode;
     }
 
-    public function formData($resource)
+    public function formData($resource, $formId = null)
     {
         return $resource;
     }
@@ -129,7 +129,7 @@ abstract class Element
         return $options;
     }
 
-    public function buildForm(FormBuilderInterface $builder, $mode, $data, $options = [])
+    public function buildForm(FormBuilderInterface $builder, $mode, $data, $dayaKey, $options = [])
     {
     }
 

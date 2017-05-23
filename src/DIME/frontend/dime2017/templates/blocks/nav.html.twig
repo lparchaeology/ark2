@@ -1,0 +1,44 @@
+{# Define the standard navbar block #}
+
+{% block nav %}
+
+<ul class="nav nav-tabs nav-justified dime-nav">
+    {% for link in navlinks %}
+        {% if link.dropdown == true %}
+            <li class="dropdown">
+                <a data-toggle="dropdown" class="dropdown-toggle" href="{{ path(link.target) }}">
+                    {{ link.name | translate }}
+                </a>
+                <ul class="dropdown-menu">
+                    {% for sublink in link.navlinks %}
+                        <li>
+                            {% include "blocks/link.html.twig" with {'link': sublink} %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% else %}
+            <li role="presentation">
+                {% include "blocks/link.html.twig" with {'link': link} %}
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>
+
+<ul class="list-group dime-navlist">
+    {% for group in navlinks %}
+        {% for link in group.links %}
+            {% if link.active %}
+                <li class="active list-group-item navlist">
+                    {% include "blocks/link.html.twig" with {'link': link} %}
+                </li>
+            {% else %}
+                <li class="list-group-item navlist">
+                    {% include "blocks/link.html.twig" with {'link': link} %}
+                </li>
+                {% endif %}
+            {% endfor %}
+    {% endfor %}
+</ul>
+
+{% endblock nav %}

@@ -32,6 +32,7 @@ namespace ARK\View;
 use ARK\Actor\Actor;
 use ARK\Form\Type\StaticType;
 use ARK\Model\Item;
+use ARK\Model\Property;
 use ARK\Model\Schema\SchemaAttribute;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
@@ -236,8 +237,14 @@ class Field extends Element
         return $options;
     }
 
-    public function formData($data)
+    public function formData($data, $formId = null)
     {
+        if (is_array($data) && isset($data[$formId])) {
+            $data = $data[$formId];
+        }
+        if ($data instanceof Property) {
+            return $data;
+        }
         if ($data instanceof Item) {
             return $data->property($this->attribute->name());
         }
@@ -247,16 +254,21 @@ class Field extends Element
         return null;
     }
 
-    public function buildForm(FormBuilderInterface $builder, $mode, $data, $options = [])
+    public function buildForm(FormBuilderInterface $builder, $mode, $data, $dataKey, $options = [])
     {
+        //dump('BUILD : '.$this->element);
+        //dump($mode);
+        //dump($this->displayMode($mode));
+        //dump($data);
         // if (!Service::security()->hasVisibility($actor, $this->attribute())) {
         // return;
         // }
         if (!Service::workflow()->hasPermission($this->attribute->readPermission())) {
             return;
         }
-        dump($this->element);
-        dump($data);
+        if (is_array($data) && isset($data[$dataKey])) {
+            $data = $data[$dataKey];
+        }
         $options = $this->formOptions($this->displayMode($mode), $data, $options);
         $fieldBuilder = $this->formBuilder($data, $options);
         $builder->add($fieldBuilder);
@@ -264,13 +276,17 @@ class Field extends Element
 
     public function renderView($mode, $data, array $context = [], $forms = null, $form = null)
     {
+        //dump('RENDER FIELD : '.$this->element);
+        //dump($mode);
+        //dump($this->displayMode($mode));
+        //dump($data);
         if (!Service::workflow()->hasPermission($this->attribute->readPermission())) {
             return;
         }
         if ($form && $this->template()) {
             $context['field'] = $this;
             $context['mode'] = $this->displayMode($mode);
-            $context['data'] = $this->formData($data[$form->vars['id']]);
+            $context['data'] = $this->formData($data, $form->vars['id']);
             $context['forms'] = $forms;
             $context['form'] = $form;
             return Service::renderView($this->template(), $context);

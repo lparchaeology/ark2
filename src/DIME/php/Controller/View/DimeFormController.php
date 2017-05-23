@@ -53,7 +53,8 @@ abstract class DimeFormController extends DimeController
         if ($actor && $actor->id() != 'anonymous') {
             if ($page->defaultMode() == 'edit') {
                 $item = $data[$page->content()->name()];
-                if (Service::workflow()->can($actor, 'edit', $item)) {
+                // HACK Do properly in permissions!!!
+                if ($page->name() == 'dime_page_claim' || Service::workflow()->can($actor, 'edit', $item)) {
                     $role = $actor->roles()[0];
                     $process = $item->property('process')->value();
                     // HACK Do using workflow!

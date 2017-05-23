@@ -76,6 +76,10 @@ class Page extends Element
 
     public function buildForms($mode, $data, $options)
     {
+        //dump('BUILD PAGE : '.$this->element);
+        //dump($mode);
+        //dump($data);
+        //dump($options);
         return $this->content->buildForms($mode, $data, $options);
     }
 
@@ -85,7 +89,7 @@ class Page extends Element
         return Service::renderView($this->template(), $options);
     }
 
-    protected function renderContext($mode, $data, array $context = [], $forms = null, $form = null)
+    public function renderContext($mode, $data, array $context = [], $forms = null, $form = null)
     {
         $context['page'] = $this;
         $context['layout'] = $this->content();

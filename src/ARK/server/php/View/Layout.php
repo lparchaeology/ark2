@@ -98,10 +98,15 @@ abstract class Layout extends Element
 
     public function buildForms($mode, $data, $options)
     {
+        //dump('FORMS : '.$this->element);
+        //dump($mode);
+        //dump($this->displayMode($mode));
+        //dump($data);
+        //dump($options);
         $mode = $this->displayMode($mode);
         if ($this->form) {
             $builder = $this->formBuilder($data, $options);
-            $this->buildForm($builder, $mode, $data[$this->element], $this->formOptions($mode, $data, $options));
+            $this->buildForm($builder, $mode, $data, $this->element, $this->formOptions($mode, $data, $options));
             return [$this->element => $builder->getForm()];
         }
         $forms = [];
@@ -111,15 +116,24 @@ abstract class Layout extends Element
         return $forms;
     }
 
-    public function buildForm(FormBuilderInterface $builder, $mode, $data, $options = [])
+    public function buildForm(FormBuilderInterface $builder, $mode, $data, $dataKey, $options = [])
     {
+        //dump('BUILD : '.$this->element);
+        //dump($mode);
+        //dump($data);
+        //dump($options);
         foreach ($this->cells() as $cell) {
-            $cell->buildForm($builder, $mode, $data, $options);
+            $cell->buildForm($builder, $mode, $data, $dataKey, $options);
         }
     }
 
     public function renderView($mode, $data, array $options = [], $forms = null, $form = null)
     {
+        //dump('RENDER FORMS : '.$this->element);
+        //dump($mode);
+        //dump($this->displayMode($mode));
+        //dump($data);
+        //dump($options);
         if ($this->template()) {
             $options['layout'] = $this;
             $options['mode'] = $this->displayMode($mode);

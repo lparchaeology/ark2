@@ -89,12 +89,12 @@ class ViewServiceProvider implements ServiceProviderInterface
         ];
 
         // Enable render to PDF or Image
-        $container['renderer.pdf.binary'] = 'wkhtmltopdf';
+        $container['renderer.pdf.binary'] = '/usr/local/bin/wkhtmltopdf';
         $container['renderer.pdf.options'] = [];
         $container['renderer.pdf'] = function ($container) {
             return new Pdf($container['renderer.pdf.binary'], $container['renderer.pdf.options']);
         };
-        $container['renderer.image.binary'] = 'wkhtmltopdf';
+        $container['renderer.image.binary'] = '/usr/local/bin/wkhtmltoimage';
         $container['renderer.image.options'] = [];
         $container['renderer.image'] = function ($container) {
             return new Image($container['renderer.image.binary'], $container['renderer.image.options']);

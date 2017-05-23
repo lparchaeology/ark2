@@ -45,6 +45,7 @@ class ViewControllerProvider implements ControllerProviderInterface
         $messages = $app->translate('core.message', 'resource');
         $home = $app->translate('dime.home', 'resource');
         $profile = $app->translate('dime.profile', 'resource');
+        $claim = $app->translate('dime.claim', 'resource');
         // Static pages
         $detector = $app->translate('dime.detector', 'resource');
         $research = $app->translate('dime.research', 'resource');
@@ -71,6 +72,9 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers->match("/$files/{fileId}", 'DIME\Controller\View\FileController')
             ->method('GET|POST')
             ->bind('files.view');
+        $controllers->match("/$claim/{itemSlug}", 'DIME\Controller\View\TreasureClaimController')
+            ->method('GET|POST')
+            ->bind('treasure.claim');
 
         // Find Routes
         $controllers->match("/$finds/add", 'DIME\Controller\View\FindAddController')

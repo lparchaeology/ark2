@@ -50,6 +50,7 @@ class Cell
     protected $value = null;
     protected $parameter = null;
     protected $format = null;
+    protected $dataKey = null;
     protected $element = null;
     protected $map = null;
     protected $mode = 'view';
@@ -151,15 +152,29 @@ class Cell
         return $this->element->buildForms($this->displayMode($mode), $data, $options);
     }
 
-    public function buildForm(FormBuilderInterface $builder, $mode, $data, $options = [])
+    public function buildForm(FormBuilderInterface $builder, $mode, $data, $dataKey, $options = [])
     {
+        //dump('BUILD CELL : '.$this->element->name());
+        //dump($mode);
+        //dump($this->displayMode($mode));
+        //dump($data);
         $mode = $this->displayMode($mode);
-        $this->element->buildForm($builder, $mode, $data, $this->formOptions($mode, $data, $options));
+        if ($this->dataKey) {
+            $dataKey = $this->dataKey;
+        }
+        $this->element->buildForm($builder, $mode, $data, $dataKey, $this->formOptions($mode, $data, $options));
     }
 
     public function renderView($mode, $data, array $options = [], $forms = null, $form = null)
     {
+        //dump('RENDER CELL : ');
+        //dump($mode);
+        //dump($this->displayMode($mode));
+        //dump($data);
         $options['map'] = $this->map;
+        if ($this->dataKey && is_array($data) && isset($data[$this->dataKey])) {
+            $data = $data[$this->dataKey];
+        }
         return $this->element->renderView($this->displayMode($mode), $data, $options, $forms, $form);
     }
 
@@ -182,6 +197,7 @@ class Cell
         $builder->addStringField('value', 10);
         $builder->addStringField('parameter', 10);
         $builder->addStringField('format', 10);
+        $builder->addStringField('dataKey', 4000, 'data');
         $builder->addStringField('formOptions', 4000, 'form_options');
         $builder->addField('required', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);

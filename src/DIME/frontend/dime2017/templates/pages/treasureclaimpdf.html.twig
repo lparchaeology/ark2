@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html lang="da">
+
+<head>
+
+    <!-- Bootstrap -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head, any other head content must come *after* these tags -->
+
+    {% block head %}{% endblock %}
+
+    <!-- Combined Bootstrap and ARK CSS -->
+    <link href="{{ absolute_url(asset('/styles/ark.min.css', 'frontend')) }}" rel="stylesheet" type="text/css"/>
+
+</head>
+
+<body class="danefaevurdering" >
+
+    <header >
+    <h1>Anmeldelse af genstande til danefævurdering</h1>
+
+    <span class= "subheader nationalmuseeticon" alt="National Museet"></span>
+
+    </header>
+
+    <div class = "returnaddress">
+
+    <h3>Nationalmuseet</h3>
+Att. Danefæ-sekretæren Frederiksholms Kanal 12 1220 København K
+Telefon: 41 20 60 13 Email: danefae@natmus.dk
+
+</div>
+<div class="instructions">
+<h3>Oplysninger fra Fund og Fortidsminder</h3>
+
+Disse felter overføres automatisk fra Fund og Fortidsminder. Check at oplysningerne er korrekte. Hvis du ønsker at ændre oplysningerne, skal du lukke formularen uden at sende, og rette oplysningerne i Fund og Fortidsminder. Derefter kan du åbne en ny formular.
+</div>
+
+<div class="forms">
+{% if layout is defined %}
+    {{ layout.renderView(mode, data, [], forms)|raw }}
+{% endif %}
+</div>
+
+<footer class="daenfaevurdering">
+<h3>Indlevering af fund</h3>
+
+Fundene indleveres til:
+
+Danefæ-sekretæren Nationalmuseet Frederiksholms Kanal 12 1220 København K Telefon 41 20 60 13
+Fund indleveres i rene æsker/poser med præcis mærkning i henhold til fundliste. Ved større indleveringer må oldsager og mønter gerne sorteres og grupperes særskilt.
+
+<h3>Fundene skal ledsages af:</h3>
+<ol>
+<li>Print af denne anmeldelsesformular.</li>
+<li>Print af fundliste.</li>
+<li>Ved nye danefæmodtagere vedlægges kuvert med CPR-nummer. Dette er en forudsætning for udbetaling.</li>
+</ol>
+
+<h3>Dato</h3>
+{{ "now"|date("d-m-Y") }}
+<h3>Kvittering</h3>
+Du skal angive din email nedenfor. En kvittering for anmeldelsen vil blive sendt til din email.
+
+Kontaktpersonens e-mail
+cvj-kultur@aalborg.dk
+
+</footer>
+
+</body>
+
+</html>

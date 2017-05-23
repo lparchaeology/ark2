@@ -106,13 +106,16 @@ class Widget extends Element
         return $options;
     }
 
-    public function formData($data)
+    public function formData($data, $formId = null)
     {
         return null;
     }
 
-    public function buildForm(FormBuilderInterface $builder, $mode, $data, $options = [])
+    public function buildForm(FormBuilderInterface $builder, $mode, $data, $dataKey, $options = [])
     {
+        if (is_array($data) && isset($data[$dataKey])) {
+            $data = $data[$dataKey];
+        }
         $options = $this->formOptions($mode, $data, $options);
         // TODO check workflow instead!
         if ($this->mode == 'view' || $mode == 'edit') {
