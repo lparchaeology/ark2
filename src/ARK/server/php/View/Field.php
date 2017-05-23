@@ -255,6 +255,8 @@ class Field extends Element
         if (!Service::workflow()->hasPermission($this->attribute->readPermission())) {
             return;
         }
+        dump($this->element);
+        dump($data);
         $options = $this->formOptions($this->displayMode($mode), $data, $options);
         $fieldBuilder = $this->formBuilder($data, $options);
         $builder->add($fieldBuilder);

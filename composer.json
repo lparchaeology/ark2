@@ -112,7 +112,8 @@
         "intervention/image": "^2.3",
         "ninsuo/jordan-tree": "^1.0",
         "symfony-cmf/routing": "^2.0",
-        "bjeavons/zxcvbn-php": "^0.3.0"
+        "bjeavons/zxcvbn-php": "^0.3.0",
+        "knplabs/knp-snappy": "^0.4.3"
     },
     "autoload": {
         "psr-4": {

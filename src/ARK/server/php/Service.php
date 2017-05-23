@@ -87,6 +87,54 @@ class Service
         return self::$app->renderView($view, $parameters);
     }
 
+    public static function renderPdfResponse($view, array $parameters = [], $filename = 'file.pdf', Response $response = null)
+    {
+        $pdf = self::renderPdf($view, $parameters);
+        $headers = ['Content-Type' => 'application/pdf', 'Content-Disposition' => 'filename="'.$filename.'"'];
+        if ($response === null) {
+            return new Response($pdf, 200, $headers);
+        }
+        $response->headers->add($headers);
+        $response->setContent($pdf);
+        return $response;
+    }
+
+    public static function renderPdf($view, array $parameters = [])
+    {
+        $html = self::renderView($view, $parameters);
+        return self::$app['renderer.pdf']->getOutputFromHtml($html);
+    }
+
+    public static function generatePdf($view, $path, array $parameters = [])
+    {
+        $html = self::renderView($view, $parameters);
+        self::$app['renderer.pdf']->generateFromHtml($html, $path);
+    }
+
+    public static function renderImageResponse($view, array $parameters = [], $filename = 'image.jpg', Response $response = null)
+    {
+        $pdf = self::renderImage($view, $parameters);
+        $headers = ['Content-Type' => 'image/jpg', 'Content-Disposition' => 'filename="'.$filename.'"'];
+        if ($response === null) {
+            return new Response($pdf, 200, $headers);
+        }
+        $response->headers->add($headers);
+        $response->setContent($pdf);
+        return $response;
+    }
+
+    public static function renderImage($view, array $parameters = [])
+    {
+        $html = self::renderView($view, $parameters);
+        return self::$app['renderer.image']->getOutputFromHtml($html);
+    }
+
+    public static function generateImage($view, $path, array $parameters = [])
+    {
+        $html = self::renderView($view, $parameters);
+        self::$app['renderer.image']->generateFromHtml($html, $path);
+    }
+
     public static function redirect($url, $status = 302)
     {
         return self::$app->redirect($url, $status);

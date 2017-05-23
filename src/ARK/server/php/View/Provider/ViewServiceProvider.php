@@ -35,6 +35,8 @@ use ARK\Translation\Twig\TranslateExtension;
 use ARK\View\Bus\NavAddMessage;
 use ARK\View\Bus\NavAddHandler;
 use Fuz\Jordan\Twig\Extension\TreeExtension;
+use Knp\Snappy\Image;
+use Knp\Snappy\Pdf;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Provider\AssetServiceProvider;
@@ -85,5 +87,17 @@ class ViewServiceProvider implements ServiceProviderInterface
         $container['twig.options'] = [
             'cache' => $container['dir.var'].'/cache/twig',
         ];
+
+        // Enable render to PDF or Image
+        $container['renderer.pdf.binary'] = 'wkhtmltopdf';
+        $container['renderer.pdf.options'] = [];
+        $container['renderer.pdf'] = function ($container) {
+            return new Pdf($container['renderer.pdf.binary'], $container['renderer.pdf.options']);
+        };
+        $container['renderer.image.binary'] = 'wkhtmltopdf';
+        $container['renderer.image.options'] = [];
+        $container['renderer.image'] = function ($container) {
+            return new Image($container['renderer.image.binary'], $container['renderer.image.options']);
+        };
     }
 }
