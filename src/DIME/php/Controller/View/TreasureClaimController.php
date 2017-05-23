@@ -56,6 +56,7 @@ class TreasureClaimController extends DimeFormController
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Find not found', "Find $this->itemSlug not found"));
         }
         $data[$page->content()->name()] = $find;
+        $data['dime_treasure_sender'] = null;
         $data['find'] = $find;
         $data['museum'] = $find->property('museum')->value();
         $data['claimant'] = $find->property('finder')->value();

@@ -31,6 +31,7 @@
 namespace ARK\View;
 
 use ARK\Model\EnabledTrait;
+use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
@@ -39,6 +40,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 class Cell
 {
     use EnabledTrait;
+    use KeywordTrait;
 
     protected $layout = null;
     protected $row = 0;
@@ -137,7 +139,11 @@ class Cell
             if (!is_array($this->formOptionsArray)) {
                 $this->formOptionsArray = [];
             }
-            $this->formOptionsArray['label'] = $this->showLabel();
+            if ($this->showLabel() && $this->keyword()) {
+                $this->formOptionsArray['label'] = $this->keyword();
+            } else {
+                $this->formOptionsArray['label'] = $this->showLabel();
+            }
             $this->formOptionsArray['required'] = $this->isRequired();
             $this->formOptionsArray['cell']['value']['modus'] = $this->valueModus();
             $this->formOptionsArray['cell']['parameter']['modus'] = $this->parameterModus();
@@ -201,6 +207,7 @@ class Cell
         $builder->addStringField('formOptions', 4000, 'form_options');
         $builder->addField('required', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
+        KeywordTrait::buildKeywordMetadata($builder);
 
         // Relationships
         $builder->addManyToOneField('element', 'ARK\View\Element', 'element', 'element', false);
