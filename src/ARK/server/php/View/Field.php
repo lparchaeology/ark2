@@ -112,30 +112,34 @@ class Field extends Element
         return $modus;
     }
 
-    private function modusToFormType($modus, $default = null)
+    private function modusToFormType($modus, $default, $static = null)
     {
         switch ($modus) {
             case 'hidden':
                 return HiddenType::class;
             case 'static':
-                return StaticType::class;
+                return $static;
         }
         return $default;
     }
 
     public function valueFormType()
     {
-        return $this->modusToFormType($this->value, $this->attribute()->format()->valueFormType());
+        return $this->modusToFormType(
+            $this->value,
+            $this->attribute()->format()->valueFormType(),
+            $this->attribute()->format()->staticFormType()
+        );
     }
 
     public function parameterFormType()
     {
-        return $this->modusToFormType($this->parameter, $this->attribute()->format()->parameterFormType());
+        return $this->modusToFormType($this->parameter, $this->attribute()->format()->parameterFormType(), StaticType::class);
     }
 
     public function formatFormType()
     {
-        return $this->modusToFormType($this->format, $this->attribute()->format()->formatFormType());
+        return $this->modusToFormType($this->format, $this->attribute()->format()->formatFormType(), StaticType::class);
     }
 
     public function keyword()
@@ -197,7 +201,7 @@ class Field extends Element
         return $this->baseOptions($mode, $cellOptions, $options, $this->valueModus(), $this->valueFormType());
     }
 
-    protected function baseOptions($mode, $cellOptions, $subOptions, $modus, $formType)
+    protected function baseOptions($mode, $cellOptions, $subOptions, $modus, $formType, $staticType)
     {
         if (! $modus) {
             return null;

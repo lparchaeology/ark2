@@ -62,6 +62,7 @@ abstract class Format
     protected $parameterVocabulary = null;
     protected $formTypeClass = '';
     protected $valueFormType = '';
+    protected $staticFormType = '';
     protected $formatFormType = '';
     protected $parameterFormType = '';
     protected $object = false;
@@ -119,6 +120,11 @@ abstract class Format
     public function valueFormType()
     {
         return ($this->valueFormType ?: $this->datatype->valueFormType());
+    }
+
+    public function staticFormType()
+    {
+        return ($this->staticFormType ?: $this->datatype->staticFormType());
     }
 
     public function parameterFormType()
@@ -347,6 +353,7 @@ abstract class Format
         $builder->addStringField('parameterVocabulary', 30, 'parameter_vocabulary');
         $builder->addStringField('formTypeClass', 100, 'form_type_class');
         $builder->addStringField('valueFormType', 100, 'value_form_class');
+        $builder->addStringField('staticFormType', 100, 'static_form_class');
         $builder->addStringField('formatFormType', 100, 'format_form_class');
         $builder->addStringField('parameterFormType', 100, 'parameter_form_class');
         $builder->addField('object', 'boolean');
