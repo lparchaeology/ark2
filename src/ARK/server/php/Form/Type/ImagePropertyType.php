@@ -31,11 +31,11 @@
 namespace ARK\Form\Type;
 
 use ARK\Model\Property;
-use ARK\Form\Type\AbstractFormType;
+use ARK\Form\Type\AbstractPropertyType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class ImagePropertyType extends AbstractFormType
+class ImagePropertyType extends AbstractPropertyType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

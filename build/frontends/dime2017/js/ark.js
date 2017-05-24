@@ -14,21 +14,20 @@ $(document).ready(function() {
     $("#edit_roles .checkbox").removeClass("col-xs-4 col-sm-4 col-lg-3");
     // Fake readonly mode
     $('.readonly-select').prop('disabled', true);
-    
+
     $('.loginbutton').click(function(){
         $('.sidebar').removeClass('collapse');
     });
-    
-    /*
-        $("file").fileinput({
-            'showUpload':true,
-            'previewFileType':'any'
-        });
-    */
+
+    $("input[type=file]").fileinput({
+        'showUpload':true,
+        'previewFileType':'any'
+    });
+
     //$("date").datetimepicker();
     //$("time").datetimepicker();
     //$("datetime").datetimepicker();
-    
+
     if(typeof applocale != 'undefined' ){
         $('.datetimepicker').datetimepicker({
             locale: applocale

@@ -171,17 +171,18 @@ class Cell
         $this->element->buildForm($builder, $mode, $data, $dataKey, $this->formOptions($mode, $data, $options));
     }
 
-    public function renderView($mode, $data, array $options = [], $forms = null, $form = null)
+    public function renderView($mode, $data, array $context = [], $forms = null, $form = null)
     {
         //dump('RENDER CELL : ');
         //dump($mode);
         //dump($this->displayMode($mode));
         //dump($data);
-        $options['map'] = $this->map;
+        $context['map'] = $this->map;
+        $context['modus'] = $this->valueModus();
         if ($this->dataKey && is_array($data) && isset($data[$this->dataKey])) {
             $data = $data[$this->dataKey];
         }
-        return $this->element->renderView($this->displayMode($mode), $data, $options, $forms, $form);
+        return $this->element->renderView($this->displayMode($mode), $data, $context, $forms, $form);
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

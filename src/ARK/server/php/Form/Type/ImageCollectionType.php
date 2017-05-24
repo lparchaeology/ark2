@@ -30,12 +30,13 @@
 
 namespace ARK\Form\Type;
 
-use ARK\Model\Property;
-use ARK\Form\Type\AbstractFormType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CarouselType extends AbstractFormType
+class ImageCollectionType extends AbstractType implements DataMapperInterface
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -45,12 +46,12 @@ class CarouselType extends AbstractFormType
         $builder->setDataMapper($this);
     }
 
-    protected function options()
+    public function configureOptions(OptionsResolver $resolver)
     {
-        return [
+        $resolver->setDefaults([
             'compound' => true,
             'multiple' => true,
-        ];
+        ]);
     }
 
     public function mapDataToForms($property, $forms)
@@ -59,7 +60,6 @@ class CarouselType extends AbstractFormType
             return;
         }
         $forms = iterator_to_array($forms);
-        $name = $property->attribute()->name();
         $value = $property->value();
         $forms['image']->setData($value);
     }

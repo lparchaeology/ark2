@@ -9,7 +9,16 @@
 namespace ARK\File;
 
 use ARK\File\File;
+use ARK\Service;
 
 class Image extends File
 {
+    public function sourcePath($preset = null)
+    {
+        $path = Service::path('img', ['image' => $this->id()]);
+        if ($preset) {
+            return $path.'?p='.$preset;
+        }
+        return $path;
+    }
 }

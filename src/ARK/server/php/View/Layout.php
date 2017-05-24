@@ -35,6 +35,7 @@ use ARK\ORM\ClassMetadata;
 use ARK\View\Element;
 use ARK\Service;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
 
 abstract class Layout extends Element

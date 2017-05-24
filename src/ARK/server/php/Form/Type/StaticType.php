@@ -59,6 +59,7 @@ class StaticType extends AbstractType implements DataTransformerInterface
             'placeholder' => false,
             'expanded' => false,
             'multiple' => false,
+            'display_property' => 'id',
         ]);
     }
 
