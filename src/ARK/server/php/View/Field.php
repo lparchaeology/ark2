@@ -112,7 +112,7 @@ class Field extends Element
         return $modus;
     }
 
-    private function modusToFormType($modus, $default, $static = null)
+    private function modusToFormType($modus, $default, $static = StaticType::class)
     {
         switch ($modus) {
             case 'hidden':
@@ -201,7 +201,7 @@ class Field extends Element
         return $this->baseOptions($mode, $cellOptions, $options, $this->valueModus(), $this->valueFormType());
     }
 
-    protected function baseOptions($mode, $cellOptions, $subOptions, $modus, $formType, $staticType)
+    protected function baseOptions($mode, $cellOptions, $subOptions, $modus, $formType)
     {
         if (! $modus) {
             return null;
@@ -274,6 +274,7 @@ class Field extends Element
             $data = $data[$dataKey];
         }
         $options = $this->formOptions($this->displayMode($mode), $data, $options);
+        //dump($options);
         $fieldBuilder = $this->formBuilder($data, $options);
         $builder->add($fieldBuilder);
     }
