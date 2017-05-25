@@ -4,43 +4,39 @@
 
     {% set fieldForm = form[field.formName] %}
 
-    <div class="mappick_fields col-sm-7">
-        <div class="row mappick-options mappick_utm">
-            <div class="col-sm-6">
+    <div class="row">
+        <div class="mappick-fields col-sm-4">
+            <div class="row mappick-options mappick-utm">
                 <div class="radio">
                     {% if true %}
                     {# if workflow.can(global.user.actor, field.attribute.updatePermission, data.item ) #}
-                        <input type="radio" name="koordinater" id="mappick_utm" checked="checked" />
+                        <input type="radio" name="mappick-coordinates-radio" id="mappick-utm" checked="checked" />
                     {% endif %}
-                    <label for="mappick_utm"><span class="radiolabel">Universal Transverse Mercator</span></label>
+                    <label for="mappick-utm"><span class="radiolabel">{{ 'dime.find.location.utm' | translate }}</span></label>
                 </div>
-            </div>
-            <div class="col-sm-6">
                 {% if workflow.hasPermission(field.attribute.updatePermission) %}
-                    <input id="mappick-utm" class="mappick_field mappick-utm form-control" type="text" >
+                    <input id="mappick-utm-easting" class="mappick_field mappick-utm-control form-control" type="text" >
+                    <input id="mappick-utm-northing" class="mappick_field mappick-utm-control form-control" type="text" >
                 {% else %}
-                    <input id="mappick-utm" class="mappick_field mappick-utm form-control" readonly="readonly" type="text" >#}
+                    <input id="mappick-utm-easting" class="mappick_field mappick-utm-control form-control" readonly="readonly" type="text" >#}
+                    <input id="mappick-utm-northing" class="mappick_field mappick-utm-control form-control" readonly="readonly" type="text" >#}
                 {% endif %}
             </div>
-        </div>
-        <div class="row mappick-options decimalgrader">
-            <div class="col-sm-6">
+            <div class="row mappick-options mappick-decimal">
                 <div class="radio">
                     {% if workflow.hasPermission(field.attribute.updatePermission) %}
-                        <input type="radio" name="koordinater" id="decimalgrader" />
+                        <input type="radio" name="mappick-coordinates-radio" id="mappick-decimal" />
                     {% endif %}
-                    <label for="decimalgrader"><span class="radiolabel">Decimalgrader</span></label>
+                    <label for="mappick-decimal"><span class="radiolabel">{{ 'dime.find.location.decimal' | translate }}</span></label>
                 </div>
-            </div>
-            <div class="col-sm-6">
-                {{ form_widget(fieldForm.easting, {'attr': {'class': 'mappick_field mappick_easting', 'readonly':'readonly'}}) }}
-                {{ form_widget(fieldForm.northing, {'attr': {'class': 'mappick_field mappick_northing', 'readonly':'readonly'}}) }}
+                {{ form_widget(fieldForm.easting, {'attr': {'class': 'mappick_field mappick-decimal-control', 'readonly':'readonly'}}) }}
+                {{ form_widget(fieldForm.northing, {'attr': {'class': 'mappick_field mappick-decimal-control', 'readonly':'readonly'}}) }}
             </div>
         </div>
-    </div>
-    <div id="mappick" class="mappick col-sm-5"></div>
+        <div id="mappick" class="mappick col-sm-8"></div>
 
-    <script>var mapPin = "{{ asset('/images/icons/pin.png', 'frontend') }}"</script>
+        <script>var mapPin = "{{ asset('/images/icons/pin.png', 'frontend') }}"</script>
+    </div>
 
     {% do fieldForm.setRendered %}
 

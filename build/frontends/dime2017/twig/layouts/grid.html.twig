@@ -21,6 +21,15 @@
             {% set colclass = 'col-md-12' %}
         {% endif %}
 
+        {% if label %}
+            <div class="{{colclass}}">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <h4>{{ label | translate }}</h4>
+                </div>
+            </div>
+        {% endif %}
+
         {% if layout.form %}
             {{ form_start(forms[layout.name]) }}
             {% set form = forms[layout.name] %}

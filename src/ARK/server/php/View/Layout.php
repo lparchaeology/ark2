@@ -128,20 +128,25 @@ abstract class Layout extends Element
         }
     }
 
-    public function renderView($mode, $data, array $options = [], $forms = null, $form = null)
+    public function renderView($mode, $data, array $context = [], $forms = null, $form = null)
     {
         //dump('RENDER FORMS : '.$this->element);
         //dump($mode);
         //dump($this->displayMode($mode));
         //dump($data);
-        //dump($options);
+        //dump($context);
         if ($this->template()) {
-            $options['layout'] = $this;
-            $options['mode'] = $this->displayMode($mode);
-            $options['data'] = $data;
-            $options['forms'] = $forms;
-            $options['form'] = $form;
-            return Service::renderView($this->template(), $options);
+            $context['layout'] = $this;
+            $context['mode'] = $this->displayMode($mode);
+            $context['data'] = $data;
+            $context['forms'] = $forms;
+            $context['form'] = $form;
+            if (isset($context['label']) && $context['label'] === true) {
+                $context['label'] = $this->keyword();
+            } else {
+                $context['label'] = false;
+            }
+            return Service::renderView($this->template(), $context);
         }
         return '';
     }

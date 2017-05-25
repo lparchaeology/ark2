@@ -179,6 +179,11 @@ class Cell
         //dump($data);
         $context['map'] = $this->map;
         $context['modus'] = $this->valueModus();
+        if ($this->showLabel() && $this->keyword()) {
+            $context['label'] = $this->keyword();
+        } else {
+            $context['label'] = $this->showLabel();
+        }
         if ($this->dataKey && is_array($data) && isset($data[$this->dataKey])) {
             $data = $data[$this->dataKey];
         }

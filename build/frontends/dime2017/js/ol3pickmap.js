@@ -76,9 +76,9 @@ function initialisePickMap() {
     mapPickSource.on('addfeature', function() {
         mapPickSource.forEachFeature(function(feature) {
             coords = ol.proj.transform(feature.getGeometry().getCoordinates(), 'EPSG:3857', 'EPSG:4326');
-            $('.mappick_easting').val(parseFloat(coords[0].toFixed(6)));
-            $('.mappick_northing').val(parseFloat(coords[1].toFixed(6)));
-            updateUtmpoint()
+            $('#dime_find_item_location_easting').val(parseFloat(coords[0].toFixed(6)));
+            $('#dime_find_item_location_northing').val(parseFloat(coords[1].toFixed(6)));
+            updateUtmPoint()
             mapPickMap.getView().setCenter(feature.getGeometry().getCoordinates());
             updateMunicipality();
         });
@@ -88,43 +88,31 @@ function initialisePickMap() {
         mapPickSource.clear();
     });
 
-    $('.mappick_fields input').on('change', function() {
-        switch($('input[name=koordinater]:checked', '.mappick_fields').attr('id')) {
-            case 'mappick_utm':
-                $(".mappick_easting").attr("readonly", true);
-                $(".mappick_northing").attr("readonly", true);
-                $(".mappick-utm").attr("readonly", false);
+    $('.mappick-fields input').on('change', function() {
+        switch($('input[name=mappick-coordinates-radio]:checked', '.mappick-fields').attr('id')) {
+            case 'mappick-decimal':
+                $(".mappick-decimal-control").attr("readonly", false);
+                $(".mappick-utm-control").attr("readonly", true);
                 break;
 
-            case 'decimalgrader':
-                $(".mappick_easting").attr("readonly", false);
-                $(".mappick_northing").attr("readonly", false);
-                $(".mappick-utm").attr("readonly", true);
-                break;
-
+            case 'mappick-utm':
             default:
-                $(".mappick_easting").attr("readonly", true);
-                $(".mappick_northing").attr("readonly", true);
-                $(".mappick-utm").attr("readonly", false);
+                $(".mappick-decimal-control").attr("readonly", true);
+                $(".mappick-utm-control").attr("readonly", false);
         }
      });
 
-     $('.mappick_easting').on('change', function() {
-         updateUtmpoint();
-         updateMappoint();
+     $('.mappick-decimal-control').on('change', function() {
+         updateUtmPoint();
+         updateMapPoint();
      });
 
-     $('.mappick_northing').on('change', function() {
-         updateUtmpoint();
-         updateMappoint();
+     $('.mappick-utm-control').on('change', function() {
+         updateDecimalPoint();
+         updateMapPoint();
      });
 
-     $('.mappick-utm').on('change', function() {
-         updateDecimalgrader();
-         updateMappoint();
-     });
-
-     $(".mappick_fields").keydown(function (event) {
+     $(".mappick-fields").keydown(function (event) {
          if (event.keyCode == 13) {
              event.preventDefault();
              document.activeElement.blur();
@@ -133,15 +121,15 @@ function initialisePickMap() {
 
     mapPickMap.addInteraction(draw);
 
-    updateUtmpoint();
+    updateUtmPoint();
 
-    //$('.mappick_fields input').change();
-    updateMappoint();
+    //$('.mappick-fields input').change();
+    updateMapPoint();
 };
 
 function updateMunicipality() {
-    var easting = $('.mappick_easting').val();
-    var northing = $('.mappick_northing').val();
+    easting = $('#dime_find_item_location_easting').val();
+    northing = $('#dime_find_item_location_northing').val();
     var wkt = 'POINT(' + easting + ' ' + northing + ')';
     $.post(path + 'api/geo/find', wkt, function(result) {
         // TODO Find way without using actual form IDs
@@ -152,11 +140,11 @@ function updateMunicipality() {
     });
 }
 
-function updateMappoint() {
-    lat = $('.mappick_easting').val();
-    lon = $('.mappick_northing').val();
-    if ( lat && lon) {
-        coords = ol.proj.transform([parseFloat(lat), parseFloat(lon)], 'EPSG:4326', 'EPSG:3857');
+function updateMapPoint() {
+    easting = $('#dime_find_item_location_easting').val();
+    northing = $('#dime_find_item_location_northing').val();
+    if (easting && northing) {
+        coords = ol.proj.transform([parseFloat(easting), parseFloat(northing)], 'EPSG:4326', 'EPSG:3857');
         mapPickSource.clear();
         mapPickSource.addFeature(new ol.Feature({
             geometry: new ol.geom.Point(coords),
@@ -164,25 +152,22 @@ function updateMappoint() {
     }
 }
 
-function updateDecimalgrader() {
-    decimalgrader = $('#mappick-utm').val();
-    if ($.inArray(",",decimalgrader)>0){
-        [lat, lon] = decimalgrader.split(",");
-     } else if ($.inArray(" ",decimalgrader)>0){
-         [lat, lon] = decimalgrader.split(" ");
-     } else if ($.inArray("  ",decimalgrader)>0){
-         [lat, lon]=decimalgrader.split("   ");
-     }
-    coords = ol.proj.transform([parseFloat(lat), parseFloat(lon)], 'EPSG:32632', 'EPSG:4326');
-    $('.mappick_easting').val(coords[0].toFixed(6));
-    $('.mappick_northing').val(coords[1].toFixed(6));
+function updateDecimalPoint() {
+    easting = $('#mappick-utm-easting').val();
+    northing = $('#mappick-utm-northing').val();
+    if (easting && northing) {
+        coords = ol.proj.transform([parseFloat(easting), parseFloat(northing)], 'EPSG:32632', 'EPSG:4326');
+        $('#dime_find_item_location_easting').val(coords[0].toFixed(6));
+        $('#dime_find_item_location_northing').val(coords[1].toFixed(6));
+    }
 }
 
-function updateUtmpoint() {
-    lat = $('.mappick_easting').val();
-    lon = $('.mappick_northing').val();
-    if ( lat && lon) {
-        coords = ol.proj.transform([parseFloat(lat), parseFloat(lon)], 'EPSG:4326', 'EPSG:32632');
-        $('#mappick-utm').val(coords[0].toFixed(0)+', '+coords[1].toFixed(0));
+function updateUtmPoint() {
+    easting = $('#dime_find_item_location_easting').val();
+    northing = $('#dime_find_item_location_northing').val();
+    if (easting && northing) {
+        coords = ol.proj.transform([parseFloat(easting), parseFloat(northing)], 'EPSG:4326', 'EPSG:32632');
+        $('#mappick-utm-easting').val(coords[0].toFixed(0));
+        $('#mappick-utm-northing').val(coords[1].toFixed(0));
     }
 }
