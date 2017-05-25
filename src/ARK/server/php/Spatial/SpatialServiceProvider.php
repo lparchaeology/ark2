@@ -28,8 +28,9 @@
 * @php        >=5.6, >=7.0
 */
 
-namespace ARK\Provider;
+namespace ARK\Spatial;
 
+use ARK\Spatial\Spatial;
 use Brick\Geo\Doctrine\Functions\AreaFunction;
 use Brick\Geo\Doctrine\Functions\BufferFunction;
 use Brick\Geo\Doctrine\Functions\CentroidFunction;
@@ -58,6 +59,7 @@ use Brick\Geo\Engine\PDOEngine;
 use Doctrine\DBAL\Types\Type;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use proj4php\Proj4php;
 
 class SpatialServiceProvider implements ServiceProviderInterface
 {
@@ -98,5 +100,13 @@ class SpatialServiceProvider implements ServiceProviderInterface
             'st_union' => UnionFunction::class,
             'st_within' => WithinFunction::class,
         ];
+
+        $container['spatial.proj'] = function ($app) {
+            return new Proj4php();
+        };
+
+        $container['spatial'] = function ($app) {
+            return new Spatial($app);
+        };
     }
 }

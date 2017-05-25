@@ -7,30 +7,30 @@
     <div class="row">
         <div class="mappick-fields col-sm-4">
             <div class="row mappick-options mappick-utm">
-                <div class="radio">
-                    {% if true %}
-                    {# if workflow.can(global.user.actor, field.attribute.updatePermission, data.item ) #}
+                {% if modus == 'active' %}
+                    <div class="radio">
                         <input type="radio" name="mappick-coordinates-radio" id="mappick-utm" checked="checked" />
-                    {% endif %}
-                    <label for="mappick-utm"><span class="radiolabel">{{ 'dime.find.location.utm' | translate }}</span></label>
-                </div>
-                {% if workflow.hasPermission(field.attribute.updatePermission) %}
-                    <input id="mappick-utm-easting" class="mappick_field mappick-utm-control form-control" type="text" >
-                    <input id="mappick-utm-northing" class="mappick_field mappick-utm-control form-control" type="text" >
+                        <label for="mappick-utm"><span class="radiolabel">{{ 'dime.find.location.utm' | translate }}</span></label>
+                    </div>
+                    {{ form_widget(fieldForm.utmEasting, {'attr': {'class': 'mappick_field mappick-utm-control'}}) }}
+                    {{ form_widget(fieldForm.utmNorthing, {'attr': {'class': 'mappick-field mappick-utm-control'}}) }}
                 {% else %}
-                    <input id="mappick-utm-easting" class="mappick_field mappick-utm-control form-control" readonly="readonly" type="text" >#}
-                    <input id="mappick-utm-northing" class="mappick_field mappick-utm-control form-control" readonly="readonly" type="text" >#}
+                    {{ form_widget(fieldForm.utmEasting) }}
+                    {{ form_widget(fieldForm.utmNorthing) }}
                 {% endif %}
             </div>
             <div class="row mappick-options mappick-decimal">
-                <div class="radio">
-                    {% if workflow.hasPermission(field.attribute.updatePermission) %}
+                {% if modus == 'active' %}
+                    <div class="radio">
                         <input type="radio" name="mappick-coordinates-radio" id="mappick-decimal" />
-                    {% endif %}
-                    <label for="mappick-decimal"><span class="radiolabel">{{ 'dime.find.location.decimal' | translate }}</span></label>
-                </div>
-                {{ form_widget(fieldForm.easting, {'attr': {'class': 'mappick_field mappick-decimal-control', 'readonly':'readonly'}}) }}
-                {{ form_widget(fieldForm.northing, {'attr': {'class': 'mappick_field mappick-decimal-control', 'readonly':'readonly'}}) }}
+                        <label for="mappick-decimal"><span class="radiolabel">{{ 'dime.find.location.decimal' | translate }}</span></label>
+                    </div>
+                    {{ form_widget(fieldForm.easting, {'attr': {'class': 'mappick_field mappick-decimal-control', 'readonly':'readonly'}}) }}
+                    {{ form_widget(fieldForm.northing, {'attr': {'class': 'mappick-field mappick-decimal-control', 'readonly':'readonly'}}) }}
+                {% else %}
+                    {{ form_widget(fieldForm.easting) }}
+                    {{ form_widget(fieldForm.northing) }}
+                {% endif %}
             </div>
         </div>
         <div id="mappick" class="mappick col-sm-8"></div>

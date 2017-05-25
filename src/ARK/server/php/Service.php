@@ -255,6 +255,11 @@ class Service
         return self::$app['user'];
     }
 
+    public static function spatial()
+    {
+        return self::$app['spatial'];
+    }
+
     public static function database()
     {
         return self::$app['database'];

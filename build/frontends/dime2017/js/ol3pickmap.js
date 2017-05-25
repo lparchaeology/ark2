@@ -9,9 +9,9 @@ $(document).ready(function() {
 
 function initialisePickMap() {
 
-    proj4.defs("EPSG:32633","+proj=utm +zone=33 +datum=WGS84 +units=m +no_defs");
+    proj4.defs("EPSG:32633", "+proj=utm +zone=33 +datum=WGS84 +units=m +no_defs");
 
-    proj4.defs("EPSG:32632","+proj=utm +zone=32 +datum=WGS84 +units=m +no_defs");
+    proj4.defs("EPSG:32632", "+proj=utm +zone=32 +datum=WGS84 +units=m +no_defs");
 
     mapPickLayers = [
         new ol.layer.Tile({
@@ -61,15 +61,14 @@ function initialisePickMap() {
         source: mapPickSource,
         type: "Point",
         style: new ol.style.Style({
-            image:
-                new ol.style.RegularShape({
-                    fill: new ol.style.Fill({
-                        color: 'white'
-                    }),
-                    points: 4,
-                    radius1: 6,
-                    radius2: 1
-                })
+            image: new ol.style.RegularShape({
+                fill: new ol.style.Fill({
+                    color: 'white'
+                }),
+                points: 4,
+                radius1: 6,
+                radius2: 1
+            })
         })
     });
 
@@ -89,7 +88,7 @@ function initialisePickMap() {
     });
 
     $('.mappick-fields input').on('change', function() {
-        switch($('input[name=mappick-coordinates-radio]:checked', '.mappick-fields').attr('id')) {
+        switch ($('input[name=mappick-coordinates-radio]:checked', '.mappick-fields').attr('id')) {
             case 'mappick-decimal':
                 $(".mappick-decimal-control").attr("readonly", false);
                 $(".mappick-utm-control").attr("readonly", true);
@@ -100,24 +99,24 @@ function initialisePickMap() {
                 $(".mappick-decimal-control").attr("readonly", true);
                 $(".mappick-utm-control").attr("readonly", false);
         }
-     });
+    });
 
-     $('.mappick-decimal-control').on('change', function() {
-         updateUtmPoint();
-         updateMapPoint();
-     });
+    $('.mappick-decimal-control').on('change', function() {
+        updateUtmPoint();
+        updateMapPoint();
+    });
 
-     $('.mappick-utm-control').on('change', function() {
-         updateDecimalPoint();
-         updateMapPoint();
-     });
+    $('.mappick-utm-control').on('change', function() {
+        updateDecimalPoint();
+        updateMapPoint();
+    });
 
-     $(".mappick-fields").keydown(function (event) {
-         if (event.keyCode == 13) {
-             event.preventDefault();
-             document.activeElement.blur();
-         }
-     });
+    $(".mappick-fields").keydown(function(event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            document.activeElement.blur();
+        }
+    });
 
     mapPickMap.addInteraction(draw);
 
@@ -153,8 +152,8 @@ function updateMapPoint() {
 }
 
 function updateDecimalPoint() {
-    easting = $('#mappick-utm-easting').val();
-    northing = $('#mappick-utm-northing').val();
+    easting = $('#dime_find_item_location_utmEasting').val();
+    northing = $('#dime_find_item_location_utmNorthing').val();
     if (easting && northing) {
         coords = ol.proj.transform([parseFloat(easting), parseFloat(northing)], 'EPSG:32632', 'EPSG:4326');
         $('#dime_find_item_location_easting').val(coords[0].toFixed(6));
@@ -167,7 +166,7 @@ function updateUtmPoint() {
     northing = $('#dime_find_item_location_northing').val();
     if (easting && northing) {
         coords = ol.proj.transform([parseFloat(easting), parseFloat(northing)], 'EPSG:4326', 'EPSG:32632');
-        $('#mappick-utm-easting').val(coords[0].toFixed(0));
-        $('#mappick-utm-northing').val(coords[1].toFixed(0));
+        $('#dime_find_item_location_utmEasting').val(coords[0].toFixed(0));
+        $('#dime_find_item_location_utmNorthing').val(coords[1].toFixed(0));
     }
 }
