@@ -42,10 +42,13 @@ class LocationPropertyType extends AbstractPropertyType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $fieldOptions['mapped'] = false;
-        $fieldOptions['label'] = false;
+        $fieldOptions['label'] = 'dime.find.location.decimal';
         $builder->add('easting', $options['field']['value']['type'], $fieldOptions);
+        $fieldOptions['label'] = ' ';
         $builder->add('northing', $options['field']['value']['type'], $fieldOptions);
+        $fieldOptions['label'] = 'dime.find.location.utm';
         $builder->add('utmEasting', $options['field']['value']['type'], $fieldOptions);
+        $fieldOptions['label'] = ' ';
         $builder->add('utmNorthing', $options['field']['value']['type'], $fieldOptions);
         $builder->add('srid', HiddenType::class, $fieldOptions);
         $builder->add('format', HiddenType::class, $fieldOptions);

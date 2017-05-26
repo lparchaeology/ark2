@@ -1,11 +1,12 @@
 {# Block to write out correctly formatted field value #}
 {% block mappick %}
+
+{% set fieldForm = form[field.formName] %}
+{{ form_label(fieldForm) }}
+
 <div class="mappick-group form-group row">
 
-    {% set fieldForm = form[field.formName] %}
-
-    <div class="row">
-        <div class="mappick-fields col-sm-4">
+        <div class="mappick-fields col-sm-6">
             <div class="row mappick-options mappick-utm">
                 {% if modus == 'active' %}
                     <div class="radio">
@@ -15,8 +16,8 @@
                     {{ form_widget(fieldForm.utmEasting, {'attr': {'class': 'mappick_field mappick-utm-control'}}) }}
                     {{ form_widget(fieldForm.utmNorthing, {'attr': {'class': 'mappick-field mappick-utm-control'}}) }}
                 {% else %}
-                    {{ form_widget(fieldForm.utmEasting) }}
-                    {{ form_widget(fieldForm.utmNorthing) }}
+                    {{ form_row(fieldForm.utmEasting) }}
+                    {{ form_row(fieldForm.utmNorthing) }}
                 {% endif %}
             </div>
             <div class="row mappick-options mappick-decimal">
@@ -28,15 +29,14 @@
                     {{ form_widget(fieldForm.easting, {'attr': {'class': 'mappick_field mappick-decimal-control', 'readonly':'readonly'}}) }}
                     {{ form_widget(fieldForm.northing, {'attr': {'class': 'mappick-field mappick-decimal-control', 'readonly':'readonly'}}) }}
                 {% else %}
-                    {{ form_widget(fieldForm.easting) }}
-                    {{ form_widget(fieldForm.northing) }}
+                    {{ form_row(fieldForm.easting) }}
+                    {{ form_row(fieldForm.northing) }}
                 {% endif %}
             </div>
         </div>
-        <div id="mappick" class="mappick col-sm-8"></div>
+        <div id="mappick" class="mappick col-sm-6"></div>
 
         <script>var mapPin = "{{ asset('/images/icons/pin.png', 'frontend') }}"</script>
-    </div>
 
     {% do fieldForm.setRendered %}
 

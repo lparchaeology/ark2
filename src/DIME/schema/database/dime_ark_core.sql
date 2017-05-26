@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 25, 2017 at 05:52 PM
+-- Generation Time: May 26, 2017 at 03:13 PM
 -- Server version: 10.1.23-MariaDB
 -- PHP Version: 7.1.5
 
@@ -5285,7 +5285,7 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `lab
 ('dime_find_id', 'dime.find', 'find', 'id', 1, 'readonly', NULL, NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
 ('dime_find_images', 'dime.find', 'find', 'image', 1, 'active', NULL, NULL, 'blocks/imagecollection.html.twig', NULL, '{\"multiple\":true}'),
 ('dime_find_length', 'dime.find', 'find', 'length', 1, 'active', 'hidden', NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
-('dime_find_location', 'dime.find', 'find', 'location', 1, 'active', NULL, NULL, 'blocks/mappick.html.twig', NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
+('dime_find_location', 'dime.find', 'find', 'location', 1, 'active', NULL, NULL, 'blocks/mappick.html.twig', 'DIME\\Form\\Type\\LocationPropertyType', '{\"attr\": {\"style\": \"width:50%\"}}'),
 ('dime_find_material', 'dime.find', 'find', 'material', 1, 'active', NULL, NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
 ('dime_find_municipality', 'dime.find', 'find', 'municipality', 1, 'active', NULL, NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
 ('dime_find_museum', 'dime.find', 'find', 'museum', 1, 'active', NULL, NULL, NULL, NULL, '{\"display_property\": \"fullname\", \"attr\": {\"style\": \"width:75%\"}}'),
