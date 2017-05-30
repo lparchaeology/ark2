@@ -94,12 +94,15 @@
                     html += '</button>';
                     html += '<div class="modal-body thumbModal">';
                     for ( var field in fields ){
+                        console.log(fields[field]);
                         html += '<div class="field">';
-                        if(fields[field].field == 'image' ) {
-                            //html += item[fields[field].field].replace('/img/thumb.','/img/');
-                            html += item[fields[field].field];
-                        } else {
-                            html += item[fields[field].field];
+                        if(fields[field].field != 'checked' ) {
+                            if(fields[field].field == 'image' ) {
+                                //html += item[fields[field].field].replace('/img/thumb.','/img/');
+                                html += item[fields[field].field];
+                            } else {
+                                html += item[fields[field].field];
+                            }
                         }
                         html += '</div>';
                     }
@@ -107,6 +110,9 @@
                     html += '</div>';  // modalWindow
                     $("#thumbModal").html(html);
                     $("#modalWindow").modal();
+                    $('#modalWindow').on('hidden.bs.modal', function () {
+                        $('tr').removeClass('selected');
+                    })
                     $('.modal-body img').load(function() {
                         $('.thumbmodal-container').width(this.naturalWidth+70);
                     });

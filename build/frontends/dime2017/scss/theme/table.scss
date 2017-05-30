@@ -177,6 +177,11 @@
     display: block;
 }
 
+
+.thumbmodal-container td.not-card-visible {
+    display:none;
+}
+
 .bootstrap-table .table.dime-table.cardViewTable:not(.table-condensed) tbody td.thumbimage {
     border:none;
 }
