@@ -128,21 +128,16 @@
 
                 console.log(self.hasClass('selected') );
 
-                if (!evt.shiftKey) {
-                    $('tr').removeClass('selected');
-                } else if ( self.hasClass('selected') ){
-                    var deselect = true;
-                    self.removeClass('selected');
-                } else {
-                    var deselect = false;
-                }
-
                 if(typeof mapcollection == 'undefined'){
+                    if (self.hasClass('selected')){
+                        self.removeClass('selected');
+                        self.find('.tablecheckbox').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+                    } else {
+                        self.addClass('selected');
+                        self.find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+                        
+                    }
                     return true;
-                }
-
-                if (!evt.shiftKey) {
-                    mapcollection.clear();
                 }
 
                 map.getLayers().forEach(function(i, e, a) {
@@ -151,15 +146,10 @@
                         if (typeof i.getSource().getFeatures == 'function') {
                             i.getSource().getFeatures().forEach(function(i, e, a) {
                                 if (i.get('ark_id').toUpperCase() == ark_id) {
-                                    if (!evt.shiftKey) {
-                                        mapcollection.push(i);
+                                    if (self.hasClass('selected')) {
+                                        mapcollection.remove(i);
                                     } else {
-                                        console.log(deselect);
-                                        if (deselect) {
-                                            mapcollection.remove(i);
-                                        } else {
-                                            mapcollection.push(i);
-                                        }
+                                        mapcollection.push(i);
                                     }
                                 }
                             });

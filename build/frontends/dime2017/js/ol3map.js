@@ -165,6 +165,7 @@ function initialiseMapView() {
 
                 for (var i = 0; i < elements.length; i++) {
                     $(elements[i]).removeClass('selected');
+                    $(elements[i]).find('.tablecheckbox').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
                 }
 
             }
@@ -174,6 +175,8 @@ function initialiseMapView() {
             collection.forEach(function(e, i, a) {
                 var ark_id = e.get('ark_id');
                 $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
+                $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+
 
                 var featureextent = e.getGeometry().getExtent();
 
@@ -204,12 +207,15 @@ function initialiseMapView() {
 
             for (var i = 0; i < elements.length; i++) {
                 $(elements[i]).removeClass('selected');
+                $(elements[i]).find('.tablecheckbox').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
             }
 
             collection.forEach(function(e, i, a) {
                 var ark_id = e.get('ark_id');
 
-                $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
+                $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected')
+                $(elements[i]).find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+
             })
         });
 

@@ -104,8 +104,8 @@
     border: 2px solid black;
 }
 
-.dime-table tr.selected td{
-    background: #ddd;
+.dime-table.cardViewTable td.not-card-visible {
+    display:none;
 }
 
 .dime-table.cardViewTable tr.selected td {
@@ -233,7 +233,6 @@ th.thumbimagehead {
     display: none;
 }
 
-
 .placeholder-img {
     line-height: 100px;
     width: 100px;
@@ -253,3 +252,9 @@ th.thumbimagehead {
 .dropdown-menu input[type="checkbox"]{
     visibility: visible;
 }
+.fixed-table-toolbar .btn-group  .btn-group:last-child  .btn,
+.fixed-table-toolbar .btn-group  .btn-group:first-child  .btn {
+    border-radius:0;
+}
+
+

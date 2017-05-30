@@ -24,6 +24,7 @@
 
         <thead>
             <tr>
+                <th class="checkedhead" data-field="checked" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
                 {% if data[layout.name][0] is defined and data[layout.name][0].hasAttribute('image') %}
                     <th class="thumbimagehead" data-field="image" data-title="image" data-sortable="false"></th>
                 {% endif %}
@@ -45,6 +46,7 @@
         <tbody>
             {% for item in data[layout.name] %}
                 <tr data-unique-id = "{{ item.id }}" >
+                    <td class="not-card-visible"><span class="tablecheckbox glyphicon glyphicon-unchecked"></span></td>
                     {% if item.hasAttribute('image') %}
                         <td class="thumbimage">
                             {% set images = item.property('image').value() %}

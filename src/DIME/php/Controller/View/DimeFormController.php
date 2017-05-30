@@ -27,7 +27,6 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-
 namespace DIME\Controller\View;
 
 use ARK\ORM\ORM;
@@ -41,6 +40,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class DimeFormController extends DimeController
 {
+
     public function handleRequest(Request $request, $page, $redirect = null, $options = [], $context = [])
     {
         $page = ORM::find(Page::class, $page);
@@ -48,7 +48,7 @@ abstract class DimeFormController extends DimeController
         $data = $this->buildData($request, $page);
 
         // TODO Make generic somehow?
-        $mode = 'view';
+        $mode = 'edit';
         $actor = Service::workflow()->actor();
         if ($actor && $actor->id() != 'anonymous') {
             if ($page->defaultMode() == 'edit') {
@@ -67,7 +67,10 @@ abstract class DimeFormController extends DimeController
 
         $context['page_config'] = $this->pageConfig($request->attributes->get('_route'));
 
-        return $page->handleRequest($request, $mode, $data, $options, $context, [$this, 'processForm']);
+        return $page->handleRequest($request, $mode, $data, $options, $context, [
+            $this,
+            'processForm'
+        ]);
     }
 
     public function buildData(Request $request, Page $page)
@@ -89,6 +92,8 @@ abstract class DimeFormController extends DimeController
             $action->apply($actor, $item);
         }
         ORM::flush($item);
-        return Service::redirectPath($redirect, ['itemSlug' => $item->id()]);
+        return Service::redirectPath($redirect, [
+            'itemSlug' => $item->id()
+        ]);
     }
 }
