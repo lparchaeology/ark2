@@ -1,62 +1,18 @@
-{% extends layout_template  %}
 
-{% block title %}Sign in{% endblock %}
+{% if global.user %}
 
-{% block content %}
+    <p>{{ 'core.user.register.loggedin' | trans({ '%name%': global.user.displayName }) }}</p>
+    <p><a href="{{ path('user.logout') }}">{{ 'core.user.register.logout' | translate() }}</a></p>
 
-    {% if global.user %}
-        <p>Hello, {{ global.user.displayName }}.</p>
-        <p><a href="{{ path('user.logout') }}">Sign out</a></p>
+{% else %}
 
-    {% else %}
-        <h1>
-            {{ 'Sign in' | trans({}, 'messages') }}
-        </h1>
+    <h1>{{ 'core.user.login.heading' | translate }}</h1>
 
-        <p class="text-muted lead">
-            {{ 'Don\'t have an account?' | trans({}, 'messages') }} <a href="{{ path('user.register') }}">{{ 'Register now.' | trans({}, 'messages') }}</a>
-        </p>
+    <p class="text-muted lead">
+        {{ 'core.user.login.' | translate }}
+        <a href="{{ path('user.register') }}">{{ 'Register now.' | translate }}</a>
+    </p>
 
-        {% if error %}
-            <div class="alert alert-danger">{{ error|nl2br }}</div>
-        {% endif %}
+    {% include "layouts/grid.html.twig" %}
 
-        <form class="form-horizontal" method="POST" action="{{ path('user.login_check') }}">
-
-            <div class="form-group">
-                <label class="col-sm-2 control-label" for="inputEmail">{{ 'Email' | trans({}, 'messages') }}</label>
-                <div class="col-sm-6">
-                    <input class="form-control" name="_username" type="text" id="inputEmail" placeholder="{{ 'Email' | trans({}, 'messages') }}" required value="{{ last_username }}">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-2 control-label" for="inputPassword">{{ 'Password' | trans({}, 'messages') }}</label>
-                <div class="col-sm-6">
-                    <input class="form-control" name="_password" type="password" id="inputPassword" required placeholder="{{ 'Password' | trans({}, 'messages') }}">
-                </div>
-            </div>
-
-            {% if allowRememberMe %}
-                <div class="form-group">
-                    <div class="col-sm-6 col-sm-offset-2 checkbox">
-                        <label>
-                            <input type="checkbox" name="_remember_me" value="true" checked> {{ 'Remember me on this computer' | trans({}, 'messages') }}
-                        </label>
-                    </div>
-                </div>
-            {% endif %}
-
-            <div class="form-group">
-                <div class="col-sm-8 col-sm-offset-2">
-                    <button type="submit" class="btn btn-primary">{{ 'Sign in' | trans({}, 'messages') }}</button>
-                    {% if allowPasswordReset %}
-                        <a style="margin-left: 10px;" href="{{ path('user.forgot-password') }}">{{ 'Forgot your password?' | trans({}, 'messages') }}</a>
-                    {% endif %}
-                </div>
-            </div>
-
-        </form>
-
-    {% endif %}
-{% endblock %}
+{% endif %}

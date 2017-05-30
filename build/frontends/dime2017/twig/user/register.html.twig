@@ -1,25 +1,18 @@
-{% extends layout_template  %}
 
-{% form_theme registerForm 'bootstrap_3_layout.html.twig' %}
+{% if global.user %}
 
-{% block title %}{{ 'Register' | trans({}, 'messages') }}{% endblock %}
+    <p>{{ 'core.user.register.loggedin' | trans({ '%name%': global.user.displayName }) }}</p>
+    <p><a href="{{ path('user.logout') }}">{{ 'core.user.register.logout' | translate }}</a></p>
 
-{% block content %}
-    {% if global.user %}
-        <p>{{ 'Hello, %name%. You are already registered and signed in.' | trans({ '%name%': global.user.displayName }, 'messages') }}</p>
-        <p><a href="{{ path('user.logout') }}">{{ 'Sign out' | trans({}, 'messages') }}</a></p>
-    {% else %}
-        <h1>
-            {{ 'Create an account' | trans({}, 'messages') }}
-        </h1>
+{% else %}
 
-        <p class="text-muted lead">
-            {{ 'Already have an account?' | trans({}, 'messages') }} <a href="{{ path('user.login') }}">{{ 'Sign in now.' | trans({}, 'messages') }}</a>
-        </p>
+    <h1>{{ 'core.user.register.heading' | translate }}</h1>
 
-        {{ form_start(registerForm) }}
-        {{ form_widget(registerForm) }}
-        {{ form_end(registerForm) }}
+    <p class="text-muted lead">
+        {{ 'core.user.register.existing' | translate }}
+        <a href="{{ path('user.login') }}">{{ 'core.user.register.login' | translate() }}</a>
+    </p>
 
-        {% endif %}
-{% endblock %}
+    {% include "layouts/grid.html.twig" %}
+
+{% endif %}

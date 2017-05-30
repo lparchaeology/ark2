@@ -34,24 +34,28 @@ use ARK\Application;
 use ARK\Model\Attribute;
 use ARK\Model\Item;
 use ARK\Service;
+use ARK\Error\ErrorException;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 
 class Security
 {
     protected $app = null;
-    protected $passwordStrengthValidator = null;
 
     public function __construct(Application $app)
     {
         $this->app = $app;
-        // TODO Replace with proper validator, config driven?
-        $this->passwordStrengthValidator = function(User $user, $password) {
-            return (empty($password) ? Service::translate('user.validate.password.empty') : null);
-        };
     }
 
     public function tokenStorage()
     {
         return $this->app['security.token_storage'];
+    }
+
+    public static function userProvider()
+    {
+        return $this->$app['user.provider'];
     }
 
     public function user()
@@ -85,24 +89,98 @@ class Security
         return $this->app['security.encoder.bcrypt'];
     }
 
-    public function encodePassword($password)
+    public function encodePassword($plainPassword)
     {
-        return $this->encoder()->encodePassword($password);
+        return $this->encoder()->encodePassword($plainPassword);
     }
 
-    public function validatePasswordStrength($password)
+    public function validatePassword($plainPassword)
     {
-        return $this->passwordStrengthValidator->validate($password);
+        $errors = $this->app['password.validate']->validate($plainPassword, $this->app['password.validator.constraint']);
+        if (count($errors) > 0) {
+            throw ErrorException();
+        }
+        return true;
+    }
+
+    public function validate(User $user)
+    {
+        $errors = $user->validate();
+
+        // Ensure email address is unique.
+        $duplicates = $this->findBy(array('email' => $user->getEmail()));
+        if (!empty($duplicates)) {
+            foreach ($duplicates as $dup) {
+                if ($user->getId() && $dup->getId() == $user->getId()) {
+                    continue;
+                }
+                $errors['email'] = 'An account with that email address already exists.';
+            }
+        }
+
+        // Ensure username is unique or null.
+        if($user->hasRealUsername()) {
+            $duplicates = $this->findBy(array('username' => $user->getRealUsername()));
+            if (!empty($duplicates)) {
+                foreach ($duplicates as $dup) {
+                    if ($user->getId() && $dup->getId() == $user->getId()) {
+                        continue;
+                    }
+                    $errors['username'] = 'An account with that username already exists.';
+                }
+            }
+        }
+
+        // If username is required, ensure it is set.
+        if ($this->isUsernameRequired && !$user->getRealUsername()) {
+            $errors['username'] = 'Username is required.';
+        }
+
+        return $errors;
+    }
+
+    public function loginAsUser(User $user)
+    {
+        if (null !== ($current_token = Service::tokenStorage()->getToken())) {
+            $providerKey = method_exists($current_token, 'getProviderKey') ? $current_token->getProviderKey() : $current_token->getSecret();
+            $token = new UsernamePasswordToken($user, null, $providerKey);
+            Service::tokenStorage()->setToken($token);
+            $this->app['user'] = $user;
+        }
+    }
+
+    public function registerUser($username, $email, $plainPassword, $name = null, $level = 'ROLE_USER')
+    {
+        $user = new User($username, $email);
+        if ($this->isEmailConfirmationRequired) {
+            $user->setEnabled(false);
+            $user->setConfirmationToken($app['user.tokenGenerator']->generateToken());
+        }
+        $user->setPassword($plainPassword);
+        ORM::persist($user);
+        ORM::flush($user);
+
+        if ($this->isEmailConfirmationRequired) {
+            $this->sendConfirmationMessage($user);
+        } else {
+            $this->loginAsUser($user);
+        }
+    }
+
+    protected function getGravatarUrl($email, $size = 80)
+    {
+        // See https://en.gravatar.com/site/implement/images/ for available options.
+        return '//www.gravatar.com/avatar/' . md5(strtolower(trim($email))) . '?s=' . $size . '&d=identicon';
     }
 
     public function sendConfirmationMessage(User $user)
     {
-        $url = $this->urlGenerator->generate(self::ROUTE_CONFIRM_EMAIL, array('token' => $user->getConfirmationToken()), UrlGeneratorInterface::ABSOLUTE_URL);
+        $url = Service::url('user.confirm', ['token' => $user->getConfirmationToken()]);
 
-        $context = array(
+        $context = [
             'user' => $user,
             'confirmationUrl' => $url
-        );
+        ];
 
         $this->sendMessage($this->confirmationTemplate, $context, $this->getFromEmail(), $user->getEmail());
     }

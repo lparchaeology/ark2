@@ -34,7 +34,6 @@ use ARK\Routing\Router\SilexRouter;
 use Exception;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use rootLogin\UserProvider\Provider\UserProviderControllerProvider;
 use Silex\Provider\RoutingServiceProvider as SilexRoutingServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -63,8 +62,6 @@ class RoutingServiceProvider extends SilexRoutingServiceProvider
             return $chain;
         };
 
-        // Mount standard routes
-        $container->mount('/users', new UserProviderControllerProvider());
         foreach ($container['ark']['routes'] as $path => $provider) {
             $container->mount($path, new $provider);
         }

@@ -27,13 +27,15 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
+
 namespace ARK\Security\Provider;
 
 use ARK\Security\Security;
+use ARK\Security\Validator\PasswordStrength;
+use ARK\Security\Validator\PasswordStrengthValidator;
+use ARK\Security\UserProvider;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use rootLogin\UserProvider\Entity\LegacyUser as User;
-use rootLogin\UserProvider\Provider\UserProviderServiceProvider;
 use Silex\Provider\CsrfServiceProvider;
 use Silex\Provider\RememberMeServiceProvider;
 use Silex\Provider\SecurityServiceProvider as SilexSecurityServiceProvider;
@@ -46,12 +48,19 @@ class SecurityServiceProvider implements ServiceProviderInterface
         $container->register(new RememberMeServiceProvider());
         $container->register(new CsrfServiceProvider());
 
+        // ARK Security Service
         $container['security'] = function ($app) {
             return new Security($app);
         };
+
+        // HACK translate as needed!
+        //$user = $container->translate('core.user', 'resource');
+        $user = 'users';
+
+        // Configure Symfony Security Firewalls
         $container['security.firewalls'] = [];
         $container->extendArray('security.firewalls', 'login_area', [
-            'pattern' => '(^/users/login$)|(^/users/register$)|(^/users/forgot-password$)',
+            'pattern' => "(^/$user/login$)|(^/$user/register$)|(^/$user/forgot-password$)",
             'anonymous' => true
         ]);
         $container->extendArray('security.firewalls', 'default', [
@@ -59,23 +68,23 @@ class SecurityServiceProvider implements ServiceProviderInterface
             'anonymous' => true,
             'remember_me' => [],
             'form' => [
-                'login_path' => '/users/login',
-                'check_path' => '/users/login_check'
+                'login_path' => "/$user/login",
+                'check_path' => "/$user/check"
             ],
             'logout' => [
-                'logout_path' => '/users/logout'
+                'logout_path' => "/$user/logout"
             ],
             'users' => function ($app) {
-                return $app['user.manager'];
+                return $app['user.provider'];
             }
         ]);
         $container['security.access_rules'] = [
             [
-                "(^/users/login$)|(^/users/register$)|(^/users/forgot-password$)|(^/users/login_check$)",
+                "(^/$user/login$)|(^/$user/register$)|(^/$user/reset$)|(^/$user/check$)",
                 "IS_AUTHENTICATED_ANONYMOUSLY"
             ],
             [
-                "(^/users)",
+                "(^/$user)",
                 "ROLE_USER"
             ],
             [
@@ -84,20 +93,43 @@ class SecurityServiceProvider implements ServiceProviderInterface
             ]
         ];
         if (isset($container['ark']['security']['access_rules'])) {
-            $container['security.access_rules'] = array_merge($container['ark']['security']['access_rules']);
+            $container['security.access_rules'] = array_merge(
+                $container['security.access_rules'],
+                $container['ark']['security']['access_rules']
+            );
         }
 
-        $container->register(new UserProviderServiceProvider(true));
         $container['user.options'] = [
-            'userConnection' => 'user',
-            'userClass' => User::class,
-            'userTableName' => 'ark_user',
-            'userCustomFieldsTableName' => 'ark_user_field',
-            'editCustomFields' => [],
-            'isUsernameRequired' => true,
-            'templates' => [
-                'layout' => 'pages/hardcoded.html.twig'
-            ]
+            'emailConfirm' => true,
+            'emailAddress' => 'noreply@example.com',
+            'emailName' => 'ARK User Admin (Do Not Reply)',
+            'passwordStrength' => 2,
+            'userReset' => true,
+            'resetTTL' => 86400,
         ];
+
+        $container['user.options.init'] = $container->protect(function() use ($container) {
+            return;
+        });
+
+        $container['password.validate'] = $container->protect(function($plainPassword) use ($container) {
+            return $container['password.validator']->validate($plainPassword, $container['password.validator.constraint']);
+        });
+
+        $container['password.validator'] = function($app) {
+            return new PasswordStrengthValidator;
+        };
+
+        $container['password.validator.constraint'] = function($app) {
+            $app['user.options.init']();
+            $constraint = new PasswordStrength();
+            $constraint->minimumScore = $app['user.options']['passwordStrength'];
+            return $constraint;
+        };
+
+        $container['user.provider'] = function($app) {
+            $app['user.options.init']();
+            return new UserProvider;
+        };
     }
 }

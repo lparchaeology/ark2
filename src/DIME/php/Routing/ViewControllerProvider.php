@@ -40,6 +40,7 @@ class ViewControllerProvider implements ControllerProviderInterface
         // Module Resources
         $finds = $app->translate('dime.find', 'resource');
         $actors = $app->translate('core.actor', 'resource');
+        $user = $app->translate('core.user', 'resource');
         $files = $app->translate('core.file', 'resource');
         $events = $app->translate('core.event', 'resource');
         $messages = $app->translate('core.message', 'resource');
@@ -53,6 +54,26 @@ class ViewControllerProvider implements ControllerProviderInterface
         $news = $app->translate('dime.news', 'resource');
 
         $controllers = $app['controllers_factory'];
+
+        // User Routes
+        $controllers->match("/$user/register", 'DIME\Controller\View\UserRegisterController')
+            ->method('GET|POST')
+            ->bind('user.register');
+        $controllers->match("/$user/reset", 'DIME\Controller\View\UserResetController')
+            ->method('GET|POST')
+            ->bind('user.reset');
+        $controllers->match("/$user/confirm", 'DIME\Controller\View\UserConfirmController')
+            ->method('GET')
+            ->bind('user.confirm');
+        $controllers->match("/$user/login", 'DIME\Controller\View\UserLoginController')
+            ->method('GET')
+            ->bind('user.login');
+        $controllers->match("/$user/check", function () {})
+            ->method('GET|POST')
+            ->bind('user.check');
+        $controllers->match("/$user/logout", function () {})
+            ->method('GET')
+            ->bind('user.logout');
 
         // Static Page Routes
         $controllers->match("/$detector", 'DIME\Controller\View\PageViewController')

@@ -64,9 +64,9 @@ class Registry extends SymfonyRegistry
     public function actor(User $user = null)
     {
         if ($user === null) {
-            $user = Service::user();
+            $user = Service::security()->user();
         }
-        if ($user === null) {
+        if (!$user instanceof User) {
             return ORM::find(Actor::class, 'anonymous');
         }
         $au = ORM::findOneBy(ActorUser::class, ['user' => $user->getId()]);

@@ -240,21 +240,6 @@ class Service
         return self::$app['security'];
     }
 
-    public static function userManager()
-    {
-        return self::$app['user.manager'];
-    }
-
-    public static function userProvider()
-    {
-        return self::$app['user.provider'];
-    }
-
-    public static function user()
-    {
-        return self::$app['user'];
-    }
-
     public static function spatial()
     {
         return self::$app['spatial'];

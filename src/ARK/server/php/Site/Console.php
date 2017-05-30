@@ -45,12 +45,12 @@ use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand;
-use rootLogin\UserProvider\Command\UserCreateCommand;
-use rootLogin\UserProvider\Command\UserDeleteCommand;
-use rootLogin\UserProvider\Command\UserListCommand;
-use rootLogin\UserProvider\Command\UserRoleAddCommand;
-use rootLogin\UserProvider\Command\UserRoleListCommand;
-use rootLogin\UserProvider\Command\UserRoleRemoveCommand;
+use Security\Command\UserCreateCommand;
+use Security\Command\UserDeleteCommand;
+use Security\Command\UserListCommand;
+use Security\Command\UserRoleAddCommand;
+use Security\Command\UserRoleListCommand;
+use Security\Command\UserRoleRemoveCommand;
 
 class Console extends AbstractConsole
 {

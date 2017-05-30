@@ -1,25 +1,31 @@
 <?php
 
 /**
- * Silex User Provider
+ * ARK Translation Service Provider
  *
- *  Copyright 2016 by Simon Erhardt <hello@rootlogin.ch>
+ * Copyright (C) 2017  L - P : Heritage LLP.
  *
- * This file is part of the silex user provider.
+ * This file is part of ARK, the Archaeological Recording Kit.
  *
- * The silex user provider is free software: you can redistribute
- * it and/or modify it under the terms of the Lesser GNU General Public
- * License version 3 as published by the Free Software Foundation.
+ * ARK is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * The silex user provider is distributed in the hope that it will
- * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
- * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * ARK is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the Lesser GNU General Public
- * License along with the silex user provider.  If not, see
- * <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @license LGPL-3.0 <http://spdx.org/licenses/LGPL-3.0>
+ * @author     John Layt <j.layt@lparchaeology.com>
+ * @copyright  2017 L - P : Heritage LLP.
+ * @license    GPL-3.0+
+ * @see        http://ark.lparchaeology.com/
+ * @since      2.0
+ * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Security\User\Controller;
