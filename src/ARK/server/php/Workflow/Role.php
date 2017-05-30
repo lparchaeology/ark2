@@ -31,11 +31,11 @@
 namespace ARK\Workflow;
 
 use ARK\Actor\Actor;
-use ARK\Security\ActorRole;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Workflow\Permission;
+use ARK\Workflow\Security\ActorRole;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
 

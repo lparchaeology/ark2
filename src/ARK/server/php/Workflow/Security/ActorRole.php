@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Security;
+namespace ARK\Workflow\Security;
 
 use ARK\Actor\Actor;
 use ARK\Model\KeywordTrait;

@@ -28,8 +28,9 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Provider;
+namespace ARK\Bus\Provider;
 
+use ARK\Bus\Bus;
 use Exception;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -51,6 +52,11 @@ class BusServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $app)
     {
+        // ARK View Service
+        $container['bus'] = function ($app) {
+            return new Bus($app);
+        };
+
         $app['bus.command.handlers'] = [];
 
         $app['bus.event.subscribers'] = [];

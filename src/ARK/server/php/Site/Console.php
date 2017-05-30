@@ -66,12 +66,12 @@ class Console extends AbstractConsole
         $this->add(new TranslationDimeCommand());
 
         // User Commands
-        $this->add(new UserCreateCommand($this->app));
-        $this->add(new UserListCommand($this->app));
-        $this->add(new UserDeleteCommand($this->app));
-        $this->add(new UserRoleAddCommand($this->app));
-        $this->add(new UserRoleListCommand($this->app));
-        $this->add(new UserRoleRemoveCommand($this->app));
+        //$this->add(new UserCreateCommand($this->app));
+        //$this->add(new UserListCommand($this->app));
+        //$this->add(new UserDeleteCommand($this->app));
+        //$this->add(new UserRoleAddCommand($this->app));
+        //$this->add(new UserRoleListCommand($this->app));
+        //$this->add(new UserRoleRemoveCommand($this->app));
 
         // View Commands
         $this->add(new NavAddCommand);

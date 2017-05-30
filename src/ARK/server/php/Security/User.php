@@ -28,9 +28,8 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Security\User;
+namespace ARK\Security;
 
-use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Security\Account;
@@ -49,8 +48,6 @@ use Symfony\Component\Validator\Mapping\ClassMetadata as ValidatorMetadata;
 
 class User implements AdvancedUserInterface, Serializable
 {
-    use KeywordTrait;
-
     protected $id = null;
     protected $username = '';
     protected $email = '';
@@ -452,7 +449,7 @@ class User implements AdvancedUserInterface, Serializable
             new Email()
         ]);
 
-        $metadata->addPropertyConstraints('plainPassword', [
+        $metadata->addPropertyConstraints('_password', [
             new NotBlank(['groups' => ['full']]),
             new Length(['min' => 8, 'groups' => ['full']]),
             new PasswordStrength(2)
@@ -485,7 +482,6 @@ class User implements AdvancedUserInterface, Serializable
         $builder->addStringField('passwordRequestToken', 100, 'password_request_token');
         $builder->addField('passwordRequestedAt', 'datetime', [], 'password_requested_at');
         $builder->addField('lastLogin', 'datetime', [], 'last_login');
-        KeywordTrait::buildKeywordMetadata($builder);
 
         // Relationships
         $builder->addManyToMany('accounts', Account::class, 'ark_auth_account');

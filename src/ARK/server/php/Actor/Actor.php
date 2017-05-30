@@ -10,7 +10,7 @@ namespace ARK\Actor;
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
 use ARK\ORM\ORM;
-use ARK\Security\ActorRole;
+use ARK\Workflow\Security\ActorRole;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class Actor implements Item

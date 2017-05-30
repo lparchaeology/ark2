@@ -48,11 +48,17 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class Widget extends Element
 {
+    protected $forceName = false;
     protected $label = true;
     protected $vocabulary = null;
     protected $formTypeClass = '';
     protected $formOptions = '';
     protected $formOptionsArray = null;
+
+    public function forceName()
+    {
+        return $this->forceName;
+    }
 
     public function showLabel()
     {
@@ -124,14 +130,16 @@ class Widget extends Element
         }
     }
 
-    public function renderView($mode, $data, array $options = [], $forms = null, $form = null)
+    public function renderView($mode, $data, array $context = [], $forms = null, $form = null)
     {
         if (isset($form[$this->formName()])) {
-            $options['mode'] = $mode;
-            $options['data'] = $this->formData($data[$form->vars['id']]);
-            $options['forms'] = $forms;
-            $options['form'] = $form[$this->formName()];
-            return Service::renderView($this->template(), $options);
+            $context['widget'] = $this;
+            $context['mode'] = $mode;
+            $context['data'] = $this->formData($data[$form->vars['id']]);
+            $context['forms'] = $forms;
+            $context['form'] = $form[$this->formName()];
+            dump($context);
+            return Service::view()->renderView($this->template(), $context);
         }
         return '';
     }
@@ -142,6 +150,7 @@ class Widget extends Element
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_widget');
 
         // Fields
+        $builder->addField('forceName', 'boolean', [], 'force_name');
         $builder->addField('label', 'boolean');
         $builder->addStringField('mode', 10);
         $builder->addStringField('template', 100);

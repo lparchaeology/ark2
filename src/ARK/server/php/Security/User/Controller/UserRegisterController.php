@@ -45,7 +45,7 @@ class UserRegisterController
         if ($registerForm->isValid()) {
             $user = $registerForm->getData();
             Service::security()->userProvider()->registerUser($username, $email, $plainPassword);
-            Service::addAlertFlash('core.user.created.flash');
+            Service::view()->addSuccessFlash('core.user.created.flash');
             if (Service::security()->isLoggedIn()) {
                 return $app->redirect($app['url_generator']->generate('user.view', ['id' => $user->getId()]));
             }

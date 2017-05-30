@@ -69,7 +69,7 @@ class NavAddCommand extends AbstractCommand
 
         $icon = $this->askQuestion("Please enter the icon key (e.g. 'home.png', default none)");
 
-        Service::handleCommand(new NavAddMessage($element, $parent, $seq, $separator, $route, $uri, $icon));
+        Service::bus()->handleCommand(new NavAddMessage($element, $parent, $seq, $separator, $route, $uri, $icon));
 
         return $this->successCode();
     }

@@ -222,8 +222,8 @@ class OrmServiceProvider implements ServiceProviderInterface
                         ],
                         [
                             'type' => 'php',
-                            'namespace' => 'ARK\Security',
-                            'path' => $srcDir.'/Security',
+                            'namespace' => 'ARK\Workflow\Security',
+                            'path' => $srcDir.'/Workflow/Security',
                         ],
                         [
                             'type' => 'item',
@@ -241,11 +241,13 @@ class OrmServiceProvider implements ServiceProviderInterface
                 $container['orm.em.default_options'],
                 [
                     'connection' => 'user',
-                    [
-                        'type' => 'php',
-                        'namespace' => 'ARK\Security',
-                        'path' => $srcDir.'/Security',
-                    ]
+                    'mappings' => [
+                        [
+                            'type' => 'php',
+                            'namespace' => 'ARK\Security',
+                            'path' => $srcDir.'/Security',
+                        ]
+                    ],
                 ]
             );
 

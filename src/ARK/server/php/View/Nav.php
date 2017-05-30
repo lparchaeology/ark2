@@ -119,7 +119,7 @@ class Nav extends Element
     {
         $options['nav'] = $this;
         $options['data'] = $data;
-        return Service::renderView($this->template(), $options);
+        return Service::view()->renderView($this->template(), $options);
     }
 
     public static function fromMessage(NavAddMessage $msg)

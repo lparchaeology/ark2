@@ -61,7 +61,7 @@ class StaticPageController
         $options['data'] = $item;
 
         // TODO Use visibility / permissions
-        if (Service::isGranted('ROLE_ADMIN')) {
+        if (Service::security()->isGranted('ROLE_ADMIN')) {
             $content .= '<button id="pageedit" type="button" class="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">Edit</button>';
             $content .= '<div class="inlineedit">';
         }

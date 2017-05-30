@@ -42,6 +42,8 @@ abstract class Layout extends Element
 {
     protected $schma = null;
     protected $form = false;
+    protected $method = null;
+    protected $action = null;
     protected $cells = null;
     protected $grid = null;
     protected $elements = null;
@@ -80,6 +82,16 @@ abstract class Layout extends Element
         return $this->form;
     }
 
+    public function formMethod()
+    {
+        return $this->method;
+    }
+
+    public function formAction()
+    {
+        return $this->action;
+    }
+
     public function formOptions($mode, $data, $options)
     {
         return $options;
@@ -107,6 +119,12 @@ abstract class Layout extends Element
         $mode = $this->displayMode($mode);
         if ($this->form) {
             $builder = $this->formBuilder($data, $options);
+            if ($this->method) {
+                $builder->setMethod($this->method);
+            }
+            if ($this->action) {
+                $builder->setAction(Service::path($this->action));
+            }
             $this->buildForm($builder, $mode, $data, $this->element, $this->formOptions($mode, $data, $options));
             return [$this->element => $builder->getForm()];
         }
@@ -146,7 +164,7 @@ abstract class Layout extends Element
             } else {
                 $context['label'] = false;
             }
-            return Service::renderView($this->template(), $context);
+            return Service::view()->renderView($this->template(), $context);
         }
         return '';
     }
@@ -163,6 +181,8 @@ abstract class Layout extends Element
 
         // Fields
         $builder->addField('form', 'boolean');
+        $builder->addStringField('method', 10);
+        $builder->addStringField('action', 30);
         $builder->addStringField('mode', 10);
         $builder->addStringField('template', 100);
 

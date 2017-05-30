@@ -68,10 +68,12 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers->match("/$user/login", 'DIME\Controller\View\UserLoginController')
             ->method('GET')
             ->bind('user.login');
-        $controllers->match("/$user/check", function () {})
+        $controllers->match("/$user/check", function () {
+        })
             ->method('GET|POST')
             ->bind('user.check');
-        $controllers->match("/$user/logout", function () {})
+        $controllers->match("/$user/logout", function () {
+        })
             ->method('GET')
             ->bind('user.logout');
 

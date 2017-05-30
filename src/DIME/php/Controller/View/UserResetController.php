@@ -39,11 +39,11 @@ use DIME\DIME;
 use DIME\Controller\View\DimeFormController;
 use Symfony\Component\HttpFoundation\Request;
 
-class UserRegisterController extends DimeFormController
+class UserResetController extends DimeFormController
 {
     public function __invoke(Request $request)
     {
-        return $this->handleRequest($request, 'core_page_user_register');
+        return $this->handleRequest($request, 'core_page_user_reset');
     }
 
     public function buildData(Request $request, Page $page)
@@ -54,8 +54,6 @@ class UserRegisterController extends DimeFormController
 
     public function processForm(Request $request, $form, $redirect)
     {
-        $data = $form->getData();
-        $item = $data[$form->getName()];
         return Service::redirectPath($redirect);
     }
 }

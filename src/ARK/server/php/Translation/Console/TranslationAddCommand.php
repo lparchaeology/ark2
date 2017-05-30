@@ -114,7 +114,7 @@ class TranslationAddCommand extends Command
         $notes = $question->ask($input, $output, $notesQuestion);
 
         $message = new TranslationAddMessage($keyword, $domain, $role, $language, $text, $notes);
-        Service::handleCommand($message);
+        Service::bus()->handleCommand($message);
 
         $output->writeln("\nTranslation added.");
     }

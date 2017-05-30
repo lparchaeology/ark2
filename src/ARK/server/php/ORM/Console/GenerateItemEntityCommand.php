@@ -58,7 +58,7 @@ class GenerateItemEntityCommand extends AbstractCommand
                     $module['classname'],
                     ''
                 );
-                Service::handleCommand($msg);
+                Service::bus()->handleCommand($msg);
             }
         }
 

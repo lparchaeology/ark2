@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * ARK Security
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,34 +28,46 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Controller\View;
+namespace ARK\Bus;
 
-use ARK\Error\ErrorException;
-use ARK\Http\Error\NotFoundError;
-use ARK\ORM\ORM;
-use ARK\Service;
-use ARK\View\Page;
-use DIME\DIME;
-use DIME\Controller\View\DimeFormController;
-use Symfony\Component\HttpFoundation\Request;
+use ARK\Application;
 
-class UserRegisterController extends DimeFormController
+class Bus
 {
-    public function __invoke(Request $request)
+    protected $app = null;
+
+    public function __construct(Application $app)
     {
-        return $this->handleRequest($request, 'core_page_user_register');
+        $this->app = $app;
     }
 
-    public function buildData(Request $request, Page $page)
+    public static function commandBus()
     {
-        $data[$page->content()->name()] = null;
-        return $data;
+        return $this->app['bus.command'];
     }
 
-    public function processForm(Request $request, $form, $redirect)
+    public static function eventBus()
     {
-        $data = $form->getData();
-        $item = $data[$form->getName()];
-        return Service::redirectPath($redirect);
+        return $this->app['bus.event'];
+    }
+
+    public static function eventRecorder()
+    {
+        return $this->app['bus.event.recorder'];
+    }
+
+    public static function handleCommand($message)
+    {
+        return $this->commandBus()->handle($message);
+    }
+
+    public static function handleEvent($message)
+    {
+        return $this->eventBus()->handle($message);
+    }
+
+    public static function recordEvent($message)
+    {
+        return $this->eventRecorder()->record($message);
     }
 }

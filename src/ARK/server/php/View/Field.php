@@ -317,7 +317,7 @@ class Field extends Element
             $context['forms'] = $forms;
             $context['form'] = $form;
             //dump($context);
-            return Service::renderView($this->template(), $context);
+            return Service::view()->renderView($this->template(), $context);
         }
 
         // FIXME Should probably have some way to use FormTypes here to render 'flat' compond values

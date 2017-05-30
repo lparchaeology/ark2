@@ -33,6 +33,7 @@ namespace DIME\Controller\View;
 use ARK\Error\ErrorException;
 use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
+use ARK\Service;
 use ARK\View\Page;
 use DIME\DIME;
 use DIME\Controller\View\DimeFormController;
@@ -42,7 +43,13 @@ class UserLoginController extends DimeFormController
 {
     public function __invoke(Request $request)
     {
-        return $this->handleRequest($request, 'core_page_user_login');
+        if ($error = Service::security()->lastError($request)) {
+            dump($error);
+            Service::view()->addErrorFlash($error);
+        }
+
+        $context['last_username'] = Service::security()->lastUsername();
+        return $this->handleRequest($request, 'core_page_user_login', null, [], $context);
     }
 
     public function buildData(Request $request, Page $page)
@@ -53,16 +60,7 @@ class UserLoginController extends DimeFormController
 
     public function processForm(Request $request, $form, $redirect)
     {
-        $id = 0;
-        $data = $form->getData();
-        $item = $data[$form->getName()];
-        ORM::persist($item);
-        if (isset($data['dime_find_actions'])) {
-            $action = $data['dime_find_actions'];
-            $actor = Service::workflow()->actor();
-            $action->apply($actor, $item);
-        }
-        ORM::flush($item);
-        return Service::redirectPath($redirect, ['itemSlug' => $item->id()]);
+        // action already set to go to /users/check
+        return Service::redirectPath($redirect);
     }
 }

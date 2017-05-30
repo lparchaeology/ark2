@@ -34,6 +34,7 @@ use ARK\ARK;
 use ARK\Translation\Twig\TranslateExtension;
 use ARK\View\Bus\NavAddMessage;
 use ARK\View\Bus\NavAddHandler;
+use ARK\View\View;
 use Fuz\Jordan\Twig\Extension\TreeExtension;
 use Knp\Snappy\Image;
 use Knp\Snappy\Pdf;
@@ -48,6 +49,11 @@ class ViewServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container)
     {
+        // ARK View Service
+        $container['view'] = function ($app) {
+            return new View($app);
+        };
+
         $commands = [
             NavAddMessage::class => NavAddHandler::class,
         ];

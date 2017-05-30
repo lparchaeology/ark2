@@ -31,14 +31,14 @@
 namespace ARK\Workflow;
 
 use ARK\Actor\Actor;
-use ARK\Security\ActorUser;
 use ARK\Model\Attribute;
 use ARK\Model\Item;
 use ARK\Model\ItemPropertyMarkingStore;
 use ARK\Model\Schema;
 use ARK\ORM\ORM;
-use ARK\Workflow\Action;
 use ARK\Service;
+use ARK\Workflow\Action;
+use ARK\Workflow\Security\ActorUser;
 use Symfony\Component\Workflow\Exception\InvalidArgumentException;
 use Symfony\Component\Workflow\Registry as SymfonyRegistry;
 use Symfony\Component\Workflow\StateMachine;

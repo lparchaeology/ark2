@@ -35,6 +35,7 @@ use ARK\Model\Attribute;
 use ARK\Model\Item;
 use ARK\Service;
 use ARK\Error\ErrorException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -53,9 +54,19 @@ class Security
         return $this->app['security.token_storage'];
     }
 
-    public static function userProvider()
+    public function userProvider()
     {
-        return $this->$app['user.provider'];
+        return $this->app['user.provider'];
+    }
+
+    public function lastError(Request $request)
+    {
+        return $this->app['security.last_error']($request);
+    }
+
+    public function lastUsername()
+    {
+        return Service::session()->get('_security.last_username');
     }
 
     public function user()
@@ -66,7 +77,7 @@ class Security
         return null;
     }
 
-    function isLoggedIn()
+    public function isLoggedIn()
     {
         if ($token = $this->tokenStorage()->getToken()) {
             return $this->isGranted('IS_AUTHENTICATED_REMEMBERED');
@@ -119,7 +130,7 @@ class Security
         }
 
         // Ensure username is unique or null.
-        if($user->hasRealUsername()) {
+        if ($user->hasRealUsername()) {
             $duplicates = $this->findBy(array('username' => $user->getRealUsername()));
             if (!empty($duplicates)) {
                 foreach ($duplicates as $dup) {
@@ -141,10 +152,10 @@ class Security
 
     public function loginAsUser(User $user)
     {
-        if (null !== ($current_token = Service::tokenStorage()->getToken())) {
+        if (null !== ($current_token = $this->tokenStorage()->getToken())) {
             $providerKey = method_exists($current_token, 'getProviderKey') ? $current_token->getProviderKey() : $current_token->getSecret();
             $token = new UsernamePasswordToken($user, null, $providerKey);
-            Service::tokenStorage()->setToken($token);
+            $this->tokenStorage()->setToken($token);
             $this->app['user'] = $user;
         }
     }

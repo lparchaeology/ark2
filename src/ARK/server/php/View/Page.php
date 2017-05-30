@@ -32,15 +32,62 @@ namespace ARK\View;
 
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
+use ARK\Actor\Actor;
 use ARK\Service;
 use ARK\View\Element;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class Page extends Element
 {
+    protected $visibility = 'restricted';
+    protected $visibilityTerm = null;
+    protected $read = null;
+    protected $update = null;
     protected $header = null;
     protected $sidebar = null;
     protected $content = null;
     protected $footer = null;
+
+    public function mode(Actor $actor, $item = null)
+    {
+        if ($this->visibility == 'restricted') {
+            $actor = Service::workflow()->actor();
+            if ($actor && $item) {
+                if ($this->defaultMode() == 'edit' && Service::workflow()->can($actor, 'edit', $item)) {
+                    return 'edit';
+                } elseif (Service::workflow()->can($actor, 'view', $item)) {
+                    return 'view';
+                }
+            } elseif ($actor) {
+                if ($this->defaultMode() == 'edit' && Service::workflow()->isPermitted($actor, $this->updatePermission())) {
+                    return 'edit';
+                } elseif (Service::workflow()->isPermitted($actor, $this->readPermission())) {
+                    return 'view';
+                }
+            }
+            throw new AccessDeniedException('core.error.access.denied');
+        }
+        // Assume visibility == 'public'
+        return $this->defaultMode();
+    }
+
+    public function visibility()
+    {
+        if ($this->visibilityTerm === null) {
+            $this->visibilityTerm = ORM::find(Term::class, ['concept' => 'core.visibility', 'term' => $this->visibility]);
+        }
+        return $this->visibilityTerm;
+    }
+
+    public function readPermission()
+    {
+        return $this->read;
+    }
+
+    public function updatePermission()
+    {
+        return $this->update;
+    }
 
     public function header()
     {
@@ -86,7 +133,7 @@ class Page extends Element
     public function renderView($mode, $data, array $options = [], $forms = null, $form = null)
     {
         $options = $this->renderContext($mode, $data, $options, $forms, $form);
-        return Service::renderView($this->template(), $options);
+        return Service::view()->renderView($this->template(), $options);
     }
 
     public function renderContext($mode, $data, array $context = [], $forms = null, $form = null)
@@ -124,11 +171,17 @@ class Page extends Element
     public function renderResponse($mode, $data, array $context = [], $forms = null, $form = null)
     {
         $context = $this->renderContext($mode, $data, $context, $forms, $form);
-        return Service::renderResponse($this->template(), $context);
+        return Service::view()->renderResponse($this->template(), $context);
     }
 
-    public function handleRequest($request, $mode, $data, $options = [], $context = [], callable $processForm = null, $redirect = null)
+    public function handleRequest($request, $data, $options = [], $context = [], callable $processForm = null, $redirect = null)
     {
+        $actor = Service::workflow()->actor();
+        $item = (isset($data[$this->content()->name()]) ? $data[$this->content()->name()] : null);
+        if (is_iterable($item)) {
+            $item = $item[0];
+        }
+        $mode = $this->mode($actor, $item);
         $forms = $this->buildForms($mode, $data, $options);
         if ($posted = $this->postedForm($request, $forms)) {
             if (!$redirect) {
@@ -139,7 +192,9 @@ class Page extends Element
             }
             return $processForm($request, $posted, $redirect);
         }
-        return $this->renderResponse($mode, $data, $context, $forms);
+        $response = $this->renderResponse($mode, $data, $context, $forms);
+        Service::view()->clearFlashes();
+        return $response;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
@@ -149,9 +204,12 @@ class Page extends Element
 
         // Fields
         $builder->addStringField('mode', 10);
+        $builder->addStringField('visibility', 30);
         $builder->addStringField('template', 100);
 
         // Associations
+        $builder->addPermissionField('read', 'view');
+        $builder->addPermissionField('update', 'edit');
         $builder->addManyToOneField('header', Layout::class, 'header', 'element');
         $builder->addManyToOneField('sidebar', Layout::class, 'sidebar', 'element');
         $builder->addManyToOneField('content', Layout::class, 'content', 'element');

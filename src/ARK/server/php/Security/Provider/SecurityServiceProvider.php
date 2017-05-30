@@ -60,7 +60,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
         // Configure Symfony Security Firewalls
         $container['security.firewalls'] = [];
         $container->extendArray('security.firewalls', 'login_area', [
-            'pattern' => "(^/$user/login$)|(^/$user/register$)|(^/$user/forgot-password$)",
+            'pattern' => "(^/$user/login$)|(^/$user/register$)|(^/$user/reset$)",
             'anonymous' => true
         ]);
         $container->extendArray('security.firewalls', 'default', [
@@ -100,6 +100,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
         }
 
         $container['user.options'] = [
+            'adminConfirm' => true,
             'emailConfirm' => true,
             'emailAddress' => 'noreply@example.com',
             'emailName' => 'ARK User Admin (Do Not Reply)',
@@ -108,26 +109,26 @@ class SecurityServiceProvider implements ServiceProviderInterface
             'resetTTL' => 86400,
         ];
 
-        $container['user.options.init'] = $container->protect(function() use ($container) {
+        $container['user.options.init'] = $container->protect(function () use ($container) {
             return;
         });
 
-        $container['password.validate'] = $container->protect(function($plainPassword) use ($container) {
+        $container['password.validate'] = $container->protect(function ($plainPassword) use ($container) {
             return $container['password.validator']->validate($plainPassword, $container['password.validator.constraint']);
         });
 
-        $container['password.validator'] = function($app) {
+        $container['password.validator'] = function ($app) {
             return new PasswordStrengthValidator;
         };
 
-        $container['password.validator.constraint'] = function($app) {
+        $container['password.validator.constraint'] = function ($app) {
             $app['user.options.init']();
             $constraint = new PasswordStrength();
             $constraint->minimumScore = $app['user.options']['passwordStrength'];
             return $constraint;
         };
 
-        $container['user.provider'] = function($app) {
+        $container['user.provider'] = function ($app) {
             $app['user.options.init']();
             return new UserProvider;
         };
