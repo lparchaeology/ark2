@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 30, 2017 at 08:29 PM
+-- Generation Time: May 31, 2017 at 12:07 PM
 -- Server version: 10.1.23-MariaDB
 -- PHP Version: 7.1.5
 
@@ -902,6 +902,7 @@ CREATE TABLE `ark_translation` (
 
 INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
 ('association.contact', 'core', 0, 0),
+('core.action.view', 'dime', 0, 0),
 ('core.actor', 'dime', 0, 0),
 ('core.actor.address', 'dime', 0, 0),
 ('core.actor.avatar', 'dime', 0, 0),
@@ -942,6 +943,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('core.event.occurred', 'core', 0, 0),
 ('core.event.subject', 'core', 0, 0),
 ('core.event.type', 'core', 0, 0),
+('core.event.type.viewed', 'dime', 0, 0),
 ('core.events', 'dime', 0, 0),
 ('core.file', 'dime', 0, 0),
 ('core.file.copyright', 'core', 0, 0),
@@ -2023,10 +2025,10 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('language.basaa', 'vocabulary', 0, 0),
 ('language.bashkir', 'vocabulary', 0, 0),
 ('language.basque', 'vocabulary', 0, 0),
-('language.bataktoba', 'vocabulary', 0, 0),
-('language.bavarian', 'vocabulary', 0, 0),
-('language.beja', 'vocabulary', 0, 0);
+('language.bataktoba', 'vocabulary', 0, 0);
 INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('language.bavarian', 'vocabulary', 0, 0),
+('language.beja', 'vocabulary', 0, 0),
 ('language.belarusian', 'vocabulary', 0, 0),
 ('language.bemba', 'vocabulary', 0, 0),
 ('language.bena', 'vocabulary', 0, 0),
@@ -3422,6 +3424,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'user.menu.edit', 'default', 'Rediger Bruger', NULL),
 ('da', 'user.menu.home', 'default', 'Min Side', NULL),
 ('da', 'user.menu.login', 'default', 'Login', NULL),
+('en', 'core.action.view', 'default', 'View', ''),
 ('en', 'core.actor', 'resource', 'actors', NULL),
 ('en', 'core.actor.address', 'default', 'Address', ''),
 ('en', 'core.actor.avatar', 'default', 'Photo', ''),
@@ -3436,6 +3439,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'core.button.save', 'default', 'Save', NULL),
 ('en', 'core.button.search', 'default', 'Search', NULL),
 ('en', 'core.button.send', 'default', 'Send', ''),
+('en', 'core.event.type.viewed', 'default', 'Viewed', ''),
 ('en', 'core.events', 'resource', 'events', NULL),
 ('en', 'core.file', 'resource', 'files', NULL),
 ('en', 'core.file.status.checkedin', 'default', 'core.file.status.checkedin', NULL),
@@ -4101,9 +4105,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.kommune.glostrup', 'official', 'Glostrup Municipality', NULL),
 ('en', 'dime.kommune.greve', 'default', 'Greve', NULL),
 ('en', 'dime.kommune.greve', 'official', 'Greve Municipality', NULL),
-('en', 'dime.kommune.gribskov', 'default', 'Gribskov', NULL),
-('en', 'dime.kommune.gribskov', 'official', 'Gribskov Municipality', NULL);
+('en', 'dime.kommune.gribskov', 'default', 'Gribskov', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.kommune.gribskov', 'official', 'Gribskov Municipality', NULL),
 ('en', 'dime.kommune.guldborgsund', 'default', 'Guldborgsund', NULL),
 ('en', 'dime.kommune.guldborgsund', 'official', 'Guldborgsund Municipality', NULL),
 ('en', 'dime.kommune.haderslev', 'default', 'Haderslev', NULL),
@@ -4947,10 +4951,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'language.tsakhur', 'default', 'Tsakhur', NULL),
 ('en', 'language.tsakonian', 'default', 'Tsakonian', NULL),
 ('en', 'language.tsimshian', 'default', 'Tsimshian', NULL),
-('en', 'language.tsonga', 'default', 'Tsonga', NULL),
-('en', 'language.tswana', 'default', 'Tswana', NULL),
-('en', 'language.tulu', 'default', 'Tulu', NULL);
+('en', 'language.tsonga', 'default', 'Tsonga', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'language.tswana', 'default', 'Tswana', NULL),
+('en', 'language.tulu', 'default', 'Tulu', NULL),
 ('en', 'language.tumbuka', 'default', 'Tumbuka', NULL),
 ('en', 'language.turkish', 'default', 'Turkish', NULL),
 ('en', 'language.turkish.crimean', 'default', 'Crimean Turkish', NULL),
@@ -5519,6 +5523,7 @@ CREATE TABLE `ark_view_layout` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `item_type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `form` tinyint(1) NOT NULL DEFAULT '0',
+  `name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `method` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `action` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `mode` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -5529,45 +5534,45 @@ CREATE TABLE `ark_view_layout` (
 -- Dumping data for table `ark_view_layout`
 --
 
-INSERT INTO `ark_view_layout` (`element`, `schma`, `item_type`, `form`, `method`, `action`, `mode`, `template`) VALUES
-('core_actor_item', NULL, NULL, 1, NULL, NULL, 'edit', NULL),
-('core_actor_list', NULL, NULL, 1, NULL, NULL, 'view', NULL),
-('core_actor_person', 'core.actor', 'person', 0, NULL, NULL, 'edit', NULL),
-('core_file_item', NULL, NULL, 1, NULL, NULL, 'edit', NULL),
-('core_file_list', NULL, NULL, 0, NULL, NULL, NULL, NULL),
-('core_message_item', 'core.message', NULL, 1, NULL, NULL, 'view', 'blocks/message.html.twig'),
-('core_message_list', NULL, NULL, 1, NULL, NULL, 'view', 'blocks/messagelist.html.twig'),
-('core_page_view', NULL, NULL, 0, NULL, NULL, NULL, NULL),
-('core_user_login', NULL, NULL, 1, 'POST', 'user.check', 'edit', 'user/login.html.twig'),
-('core_user_password', NULL, NULL, 1, NULL, NULL, 'edit', NULL),
-('dime_find_add', NULL, NULL, 0, NULL, NULL, NULL, NULL),
-('dime_find_apply', NULL, NULL, 0, NULL, NULL, NULL, NULL),
-('dime_find_artefact', NULL, NULL, 0, NULL, NULL, NULL, NULL),
-('dime_find_edit', NULL, NULL, 0, NULL, NULL, NULL, NULL),
-('dime_find_event', NULL, NULL, 0, NULL, NULL, NULL, NULL),
-('dime_find_filter', NULL, NULL, 1, NULL, NULL, 'edit', NULL),
-('dime_find_geo', NULL, NULL, 0, NULL, NULL, NULL, NULL),
-('dime_find_item', NULL, NULL, 1, NULL, NULL, 'edit', NULL),
-('dime_find_list', NULL, NULL, 1, NULL, NULL, 'view', NULL),
-('dime_find_map', NULL, NULL, 0, NULL, NULL, NULL, 'blocks/map.html.twig'),
-('dime_find_photo', NULL, NULL, 0, NULL, NULL, NULL, NULL),
-('dime_find_search', NULL, NULL, 0, NULL, NULL, NULL, NULL),
-('dime_find_status', NULL, NULL, 0, NULL, NULL, NULL, NULL),
-('dime_front_page', 'dime.find', NULL, 0, NULL, NULL, NULL, 'layouts/front.html.twig'),
-('dime_home_action', NULL, NULL, 0, NULL, NULL, NULL, 'blocks/homeaction.html.twig'),
-('dime_home_page', NULL, NULL, 0, NULL, NULL, NULL, NULL),
-('dime_message_page', NULL, NULL, 0, NULL, NULL, NULL, NULL),
-('dime_profile_page', NULL, NULL, 0, NULL, NULL, 'edit', NULL),
-('dime_site_footer', NULL, NULL, 0, NULL, NULL, NULL, NULL),
-('dime_site_header', NULL, NULL, 0, NULL, NULL, NULL, NULL),
-('dime_site_sidebar', NULL, NULL, 0, NULL, NULL, NULL, NULL),
-('dime_treasure_claim', NULL, NULL, 0, NULL, NULL, 'edit', NULL),
-('dime_treasure_claimant', NULL, NULL, 1, NULL, NULL, 'edit', NULL),
-('dime_treasure_find', NULL, NULL, 1, NULL, NULL, 'edit', NULL),
-('dime_treasure_museum', NULL, NULL, 1, NULL, NULL, 'edit', NULL),
-('dime_treasure_pdf', NULL, NULL, 0, NULL, NULL, 'view', NULL),
-('dime_treasure_sender', NULL, NULL, 1, NULL, NULL, 'edit', NULL),
-('dime_user_register', NULL, NULL, 1, NULL, NULL, 'edit', 'user/register.html.twig');
+INSERT INTO `ark_view_layout` (`element`, `schma`, `item_type`, `form`, `name`, `method`, `action`, `mode`, `template`) VALUES
+('core_actor_item', NULL, NULL, 1, 'actor_item', NULL, NULL, 'edit', NULL),
+('core_actor_list', NULL, NULL, 1, 'actor_list', NULL, NULL, 'view', NULL),
+('core_actor_person', 'core.actor', 'person', 0, NULL, NULL, NULL, 'edit', NULL),
+('core_file_item', NULL, NULL, 1, 'file_item', NULL, NULL, 'edit', NULL),
+('core_file_list', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+('core_message_item', 'core.message', NULL, 1, 'message', NULL, NULL, 'view', 'blocks/message.html.twig'),
+('core_message_list', NULL, NULL, 1, 'message_list', NULL, NULL, 'view', 'blocks/messagelist.html.twig'),
+('core_page_view', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+('core_user_login', NULL, NULL, 1, NULL, 'POST', 'user.check', 'edit', 'user/login.html.twig'),
+('core_user_password', NULL, NULL, 1, 'user_password', NULL, NULL, 'edit', NULL),
+('dime_find_add', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_apply', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_artefact', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_edit', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_event', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_filter', NULL, NULL, 1, 'find_filter', NULL, NULL, 'edit', NULL),
+('dime_find_geo', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_item', NULL, NULL, 1, 'find_item', NULL, NULL, 'edit', NULL),
+('dime_find_list', NULL, NULL, 1, 'find_list', NULL, NULL, 'view', NULL),
+('dime_find_map', NULL, NULL, 0, NULL, NULL, NULL, NULL, 'blocks/map.html.twig'),
+('dime_find_photo', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_search', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_find_status', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_front_page', 'dime.find', NULL, 0, NULL, NULL, NULL, NULL, 'layouts/front.html.twig'),
+('dime_home_action', NULL, NULL, 0, NULL, NULL, NULL, NULL, 'blocks/homeaction.html.twig'),
+('dime_home_page', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_message_page', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_profile_page', NULL, NULL, 0, NULL, NULL, NULL, 'edit', NULL),
+('dime_site_footer', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_site_header', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_site_sidebar', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
+('dime_treasure_claim', NULL, NULL, 0, NULL, NULL, NULL, 'edit', NULL),
+('dime_treasure_claimant', NULL, NULL, 1, 'treasure_claimant', NULL, NULL, 'edit', NULL),
+('dime_treasure_find', NULL, NULL, 1, 'treasure_find', NULL, NULL, 'edit', NULL),
+('dime_treasure_museum', NULL, NULL, 1, 'treasure_museum', NULL, NULL, 'edit', NULL),
+('dime_treasure_pdf', NULL, NULL, 0, NULL, NULL, NULL, 'view', NULL),
+('dime_treasure_sender', NULL, NULL, 1, 'treasure_sender', NULL, NULL, 'edit', NULL),
+('dime_user_register', NULL, NULL, 1, 'user_register', NULL, NULL, 'edit', 'user/register.html.twig');
 
 -- --------------------------------------------------------
 
@@ -6732,6 +6737,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('core.event.type', 'suspended', '', 0, 0, 0, 'core.actor.event.suspended', ''),
 ('core.event.type', 'transferred', '', 0, 0, 0, 'dime.find.event.transferred', ''),
 ('core.event.type', 'validated', '', 0, 0, 0, 'dime.find.event.validated', ''),
+('core.event.type', 'viewed', '', 0, 0, 0, 'core.event.type.viewed', ''),
 ('core.event.type', 'withdrawn', '', 0, 0, 0, 'dime.find.event.withdrawn', ''),
 ('core.file.status', 'checkedin', '', 0, 1, 0, 'core.file.status.checkedin', ''),
 ('core.file.status', 'checkedout', '', 0, 1, 0, 'core.file.status.checkedout', ''),
@@ -7306,9 +7312,9 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('dime.find.subtype', 'tool.equestrian.other', '', 0, 0, 0, 'dime.find.subtype.tool.equestrian.other', ''),
 ('dime.find.subtype', 'tool.equestrian.shoe', '', 0, 0, 0, 'dime.find.subtype.tool.equestrian.shoe', ''),
 ('dime.find.subtype', 'tool.equestrian.stirrup', '', 0, 0, 0, 'dime.find.subtype.tool.equestrian.stirrup', ''),
-('dime.find.subtype', 'tool.equestrian.tack', '', 0, 0, 0, 'dime.find.subtype.tool.equestrian.tack', ''),
-('dime.find.subtype', 'tool.house', '', 0, 0, 0, 'dime.find.subtype.tool.house', '');
+('dime.find.subtype', 'tool.equestrian.tack', '', 0, 0, 0, 'dime.find.subtype.tool.equestrian.tack', '');
 INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('dime.find.subtype', 'tool.house', '', 0, 0, 0, 'dime.find.subtype.tool.house', ''),
 ('dime.find.subtype', 'tool.house.crockery', '', 0, 0, 0, 'dime.find.subtype.tool.house.crockery', ''),
 ('dime.find.subtype', 'tool.house.cutlery', '', 0, 0, 0, 'dime.find.subtype.tool.house.cutlery', ''),
 ('dime.find.subtype', 'tool.house.fixtures', '', 0, 0, 0, 'dime.find.subtype.tool.house.fixtures', ''),
@@ -8029,9 +8035,9 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`
 ('language', 'yap', 'yapese', 0, 1, 0, 'language.yapese', ''),
 ('language', 'yav', 'yangben', 0, 1, 0, 'language.yangben', ''),
 ('language', 'ybb', 'yemba', 0, 1, 0, 'language.yemba', ''),
-('language', 'yi', 'yiddish', 0, 1, 0, 'language.yiddish', ''),
-('language', 'yo', 'yoruba', 0, 1, 0, 'language.yoruba', '');
+('language', 'yi', 'yiddish', 0, 1, 0, 'language.yiddish', '');
 INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('language', 'yo', 'yoruba', 0, 1, 0, 'language.yoruba', ''),
 ('language', 'yrl', 'nheengatu', 0, 1, 0, 'language.nheengatu', ''),
 ('language', 'yue', 'cantonese', 0, 1, 0, 'language.cantonese', ''),
 ('language', 'za', 'zhuang', 0, 1, 0, 'language.zhuang', ''),
@@ -8162,6 +8168,7 @@ INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event
 ('dime.find', 'suppress', 'core.event.type', 'suppressed', NULL, 0, 0, 0, 0, 1, 'dime.action.suppress'),
 ('dime.find', 'transfer', 'core.event.type', 'transferred', NULL, 0, 0, 0, 0, 1, 'dime.action.transfer'),
 ('dime.find', 'validate', 'core.event.type', 'validated', NULL, 0, 0, 0, 0, 1, 'dime.action.validate'),
+('dime.find', 'view', 'core.event.type', 'viewed', NULL, 0, 1, 1, 0, 1, 'dime.action.edit'),
 ('dime.find', 'withdraw', 'core.event.type', 'withdrawn', NULL, 0, 0, 0, 0, 1, 'dime.action.withdraw');
 
 -- --------------------------------------------------------
@@ -8255,7 +8262,14 @@ INSERT INTO `ark_workflow_allow` (`schma`, `action`, `role`, `operator`) VALUES
 ('dime.find', 'release', 'registrar', 'is'),
 ('dime.find', 'report', 'detectorist', 'is'),
 ('dime.find', 'reward', 'appraiser', 'is'),
-('dime.find', 'validate', 'registrar', 'is');
+('dime.find', 'validate', 'registrar', 'is'),
+('dime.find', 'view', 'admin', 'is'),
+('dime.find', 'view', 'anon', 'is'),
+('dime.find', 'view', 'appraiser', 'is'),
+('dime.find', 'view', 'curator', 'is'),
+('dime.find', 'view', 'detectorist', 'is'),
+('dime.find', 'view', 'registrar', 'is'),
+('dime.find', 'view', 'researcher', 'is');
 
 -- --------------------------------------------------------
 

@@ -33,6 +33,7 @@ namespace ARK\Security;
 use ARK\Application;
 use ARK\Model\Attribute;
 use ARK\Model\Item;
+use ARK\Security\User;
 use ARK\Service;
 use ARK\Error\ErrorException;
 use Symfony\Component\HttpFoundation\Request;

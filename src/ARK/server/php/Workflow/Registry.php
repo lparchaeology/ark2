@@ -36,6 +36,7 @@ use ARK\Model\Item;
 use ARK\Model\ItemPropertyMarkingStore;
 use ARK\Model\Schema;
 use ARK\ORM\ORM;
+use ARK\Security\User;
 use ARK\Service;
 use ARK\Workflow\Action;
 use ARK\Workflow\Security\ActorUser;
@@ -67,9 +68,10 @@ class Registry extends SymfonyRegistry
             $user = Service::security()->user();
         }
         if (!$user instanceof User) {
+            dump('anon!');
             return ORM::find(Actor::class, 'anonymous');
         }
-        $au = ORM::findOneBy(ActorUser::class, ['user' => $user->getId()]);
+        $au = ORM::findOneBy(ActorUser::class, ['user' => $user->id()]);
         return ($au ? $au->actor() : null);
     }
 
@@ -116,10 +118,17 @@ class Registry extends SymfonyRegistry
 
     public function can(Actor $actor, $action, Item $item)
     {
+        dump('can');
+        dump($actor);
+        dump($action);
+        dump($item);
         $action = $this->action($item->schema()->name(), $action);
+        dump($action);
         if ($action) {
+            dump($action->isGranted($actor, $item));
             return $action->isGranted($actor, $item);
         }
+        dump('false');
         return false;
     }
 

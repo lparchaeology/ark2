@@ -3,7 +3,7 @@
 
     {% if global.user %}
         <div class="row usertool username">
-            <a href="{{ path('user.view', {'id': global.user.id}) }}">
+            <a href="{{ path('profile', {'id': global.user.username}) }}">
                 <span class="usergreeting">
                     {# <span class="dime-icon icon-user small"></span> #}
                     {{ 'user.greeting' | trans({ '%name%': global.user.displayName }) }}

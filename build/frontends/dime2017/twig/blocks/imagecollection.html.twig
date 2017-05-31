@@ -13,13 +13,13 @@
             <!-- Wrapper for slides -->
             <div class='carousel-inner'>
 
-                {% for key, image in data.value %}
-
-                    <div class='item {% if key == 0 %} active {% endif %}'>
-                        <img src="{{ image.sourcePath('preview') }}" alt='' />
-                    </div>
-
-                {% endfor %}
+                {% if data %}
+                    {% for key, image in data.value %}
+                        <div class='item {% if key == 0 %} active {% endif %}'>
+                            <img src="{{ image.sourcePath('preview') }}" alt='' />
+                        </div>
+                    {% endfor %}
+                {% endif %}
 
             </div>
 
@@ -35,11 +35,13 @@
 
         <!-- Indicators -->
         <ol class='carousel-indicators mCustomScrollbar'>
-            {% for key, image in data.value %}
-                <li data-target='#carousel-custom' data-slide-to='{{ key }}' {% if key == 0 %} class='active' {% endif %} >
-                    <img src="{{ image.sourcePath('thumb') }}" alt='' />
-                </li>
-            {% endfor %}
+            {% if data %}
+                {% for key, image in data.value %}
+                    <li data-target='#carousel-custom' data-slide-to='{{ key }}' {% if key == 0 %} class='active' {% endif %} >
+                        <img src="{{ image.sourcePath('thumb') }}" alt='' />
+                    </li>
+                {% endfor %}
+            {% endif %}
         </ol>
 
     </div>

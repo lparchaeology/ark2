@@ -41,17 +41,25 @@ class UserProvider implements UserProviderInterface
     // UserProviderInterface
     public function loadUserByUsername($username)
     {
+        dump('load user '.$username);
         $user = $this->findByUsername($username);
         if (!$user) {
+            dump('not username, try email');
+            $user = $this->findByEmail($username);
+        }
+        if (!$user) {
+            dump('not email, fail');
             throw new UsernameNotFoundException("User $username not found.");
         }
+        dump('found user');
+        dump($user);
         return $user;
     }
 
     // UserProviderInterface
     public function refreshUser(UserInterface $user)
     {
-        return $this->findUser($user->getId());
+        return $this->findUser($user->id());
     }
 
     // UserProviderInterface
@@ -70,9 +78,9 @@ class UserProvider implements UserProviderInterface
         return ORM::findOneBy(User::class, ['username' => $username]);
     }
 
-    public function findByEmail($username)
+    public function findByEmail($email)
     {
-        return ORM::findOneBy(User::class, ['email' => $username]);
+        return ORM::findOneBy(User::class, ['email' => $email]);
     }
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)

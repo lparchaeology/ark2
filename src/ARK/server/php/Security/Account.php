@@ -43,6 +43,7 @@ class Account
     protected $identifier;
     protected $accessToken;
     protected $refreshToken;
+    protected $enabled;
 
     public function __construct($user, $account)
     {
@@ -104,7 +105,7 @@ class Account
         $builder->addStringField('provider', 30);
         $builder->addStringField('identifier', 30);
         $builder->addStringField('accessToken', 30, 'access_token');
-        $builder->addStringField('refresh_token', 30, 'refresh_token');
+        $builder->addStringField('refreshToken', 30, 'refresh_token');
         $builder->addField('enabled', 'boolean');
     }
 }

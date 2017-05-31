@@ -50,8 +50,11 @@ class Page extends Element
 
     public function mode(Actor $actor, $item = null)
     {
+        dump($this->visibility);
+        dump($actor);
+        dump($item);
+        dump($this->defaultMode());
         if ($this->visibility == 'restricted') {
-            $actor = Service::workflow()->actor();
             if ($actor && $item) {
                 if ($this->defaultMode() == 'edit' && Service::workflow()->can($actor, 'edit', $item)) {
                     return 'edit';
@@ -59,9 +62,9 @@ class Page extends Element
                     return 'view';
                 }
             } elseif ($actor) {
-                if ($this->defaultMode() == 'edit' && Service::workflow()->isPermitted($actor, $this->updatePermission())) {
+                if ($this->defaultMode() == 'edit' && $this->updatePermission() && Service::workflow()->hasPermission($this->updatePermission(), $actor)) {
                     return 'edit';
-                } elseif (Service::workflow()->isPermitted($actor, $this->readPermission())) {
+                } elseif ($this->readPermission() && Service::workflow()->hasPermission($this->readPermission(), $actor)) {
                     return 'view';
                 }
             }

@@ -54,6 +54,7 @@ class User implements AdvancedUserInterface, Serializable
     protected $password = null;
     protected $name = '';
     protected $level = 'ROLE_ANON';
+    protected $levels = null;
     protected $enabled = false;
     protected $verified = false;
     protected $locked = false;
@@ -137,7 +138,7 @@ class User implements AdvancedUserInterface, Serializable
     public function displayName()
     {
         // TODO translate
-        return $this->getName() ?: Service::translate('User ' . $this->id);
+        return $this->name() ?: Service::translate('User ' . $this->id);
     }
 
     public function setName($name)
@@ -341,6 +342,7 @@ class User implements AdvancedUserInterface, Serializable
 
     public function levels()
     {
+        $this->initLevels();
         return $this->levels;
     }
 

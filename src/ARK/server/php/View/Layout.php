@@ -42,6 +42,7 @@ abstract class Layout extends Element
 {
     protected $schma = null;
     protected $form = false;
+    protected $name = null;
     protected $method = null;
     protected $action = null;
     protected $cells = null;
@@ -70,6 +71,11 @@ abstract class Layout extends Element
                 }
             }
         }
+    }
+
+    public function formName()
+    {
+        return $this->name;
     }
 
     public function schema()
@@ -181,6 +187,7 @@ abstract class Layout extends Element
 
         // Fields
         $builder->addField('form', 'boolean');
+        $builder->addStringField('name', 30);
         $builder->addStringField('method', 10);
         $builder->addStringField('action', 30);
         $builder->addStringField('mode', 10);

@@ -135,10 +135,9 @@ class Widget extends Element
         if (isset($form[$this->formName()])) {
             $context['widget'] = $this;
             $context['mode'] = $mode;
-            $context['data'] = $this->formData($data[$form->vars['id']]);
+            $context['data'] = (isset($data[$form->vars['id']]) ? $this->formData($data[$form->vars['id']]) : null);
             $context['forms'] = $forms;
             $context['form'] = $form[$this->formName()];
-            dump($context);
             return Service::view()->renderView($this->template(), $context);
         }
         return '';

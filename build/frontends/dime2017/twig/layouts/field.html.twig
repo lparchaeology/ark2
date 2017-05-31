@@ -1,5 +1,7 @@
 {% if field is defined %}
     {{ form_row(form[field.formName]) }}
+{% elseif widget is defined %}
+    {{ form_row(form) }}
 {% else %}
     {{ form_row(form) }}
 {% endif %}
