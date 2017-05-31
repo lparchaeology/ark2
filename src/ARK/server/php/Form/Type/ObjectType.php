@@ -36,7 +36,7 @@ use ARK\Model\Property;
 use ARK\Model\Attribute;
 use ARK\Model\TextFragment;
 use ARK\Vocabulary\Term;
-use ARK\Form\Type\VocabularyChoiceType;
+use ARK\Form\Type\TermChoiceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\DataMapperInterface;
@@ -47,7 +47,8 @@ class ObjectType extends AbstractType implements DataMapperInterface
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $field = $options['field'];
+        $field = $options['field']['object'];
+        $format = $field->attribute()->format();
         $fieldOptions = [];
         if ($field->attribute()->vocabulary() && isset($options['attr']['readonly'])) {
             $fieldOptions['disabled'] = true;
@@ -66,11 +67,11 @@ class ObjectType extends AbstractType implements DataMapperInterface
             return;
         }
         if ($attribute->hasVocabulary()) {
-            $class = VocabularyChoiceType::class;
+            $class = TermChoiceType::class;
             $options['choices'] = $attribute->vocabulary()->terms();
             $options['multiple'] = $attribute->hasMultipleOccurrences();
         } else {
-            $class = $attribute->format()->datatype()->formClass();
+            $class = $attribute->format()->datatype()->valueFormType();
         }
         if ($attribute->format()->datatype()->id() == 'datetime') {
             $options['widget'] = 'single_text';
@@ -100,6 +101,7 @@ class ObjectType extends AbstractType implements DataMapperInterface
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'mode' => null,
             'field' => null,
             'expanded' => null,
             'multiple' => null,
@@ -111,6 +113,9 @@ class ObjectType extends AbstractType implements DataMapperInterface
     public function mapDataToForms($property, $forms)
     {
         $forms = iterator_to_array($forms);
+        if (!$property) {
+            return;
+        }
         $attribute = $property->attribute();
         $value = $property->value();
         if ($attribute->format()->datatype()->isObject()) {

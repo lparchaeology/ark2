@@ -55,6 +55,13 @@ class ViewControllerProvider implements ControllerProviderInterface
 
         $controllers = $app['controllers_factory'];
 
+        // Internal API routes
+        $controllers->post('/api/internal/vocabulary', 'DIME\Controller\API\VocabularyController')->bind('api.internal.vocabulary');
+        $controllers->post('/api/internal/message/read', 'DIME\Controller\API\MessageReadController')->bind('api.internal.message.read');
+        $controllers->post('/api/geo/find', 'DIME\Controller\API\GeoFindController')->bind('api.geo.find');
+        $controllers->get('/api/geo/choropleth', 'DIME\Controller\API\ChoroplethController')->bind('api.geo.choropleth');
+        $controllers->get("/img/{image}", 'DIME\Controller\API\ImageController')->bind('img');
+
         // User Routes
         $controllers->match("/$user/register", 'DIME\Controller\View\UserRegisterController')
             ->method('GET|POST')

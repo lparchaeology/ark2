@@ -136,6 +136,6 @@ class ObjectFormat extends Format
         $builder = new ClassMetadataBuilder($metadata, 'ark_format_object');
 
         // Associations
-        $builder->addOneToMany('attributes', FormatAttribute::class, 'parent');
+        $builder->addOneToMany('attributes', FormatAttribute::class, 'parent', null, null, null, ['sequence' => 'ASC']);
     }
 }

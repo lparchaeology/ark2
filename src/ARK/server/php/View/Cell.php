@@ -49,6 +49,8 @@ class Cell
     protected $itemType = null;
     protected $label = null;
     protected $required = null;
+    protected $sanitise = null;
+    protected $display = null;
     protected $value = null;
     protected $parameter = null;
     protected $format = null;
@@ -56,8 +58,8 @@ class Cell
     protected $element = null;
     protected $map = null;
     protected $mode = 'view';
-    protected $formOptions = '';
-    protected $formOptionsArray = null;
+    protected $options = '';
+    protected $optionsArray = null;
 
     public function layout()
     {
@@ -117,6 +119,11 @@ class Cell
         return $parentMode;
     }
 
+    public function sanitise()
+    {
+        return $this->sanitise;
+    }
+
     public function valueModus()
     {
         return $this->value;
@@ -132,24 +139,27 @@ class Cell
         return $this->format;
     }
 
-    public function formOptions($mode, $data, $options = [])
+    public function options($mode, $data, $options = [])
     {
-        if ($this->formOptionsArray === null) {
-            $this->formOptionsArray = json_decode($this->formOptions, true);
-            if (!is_array($this->formOptionsArray)) {
-                $this->formOptionsArray = [];
+        if ($this->optionsArray === null) {
+            $this->optionsArray = json_decode($this->options, true);
+            if (!is_array($this->optionsArray)) {
+                $this->optionsArray = [];
             }
             if ($this->showLabel() && $this->keyword()) {
-                $this->formOptionsArray['label'] = $this->keyword();
+                $this->optionsArray['label'] = $this->keyword();
             } else {
-                $this->formOptionsArray['label'] = $this->showLabel();
+                $this->optionsArray['label'] = $this->showLabel();
             }
-            $this->formOptionsArray['required'] = $this->isRequired();
-            $this->formOptionsArray['cell']['value']['modus'] = $this->valueModus();
-            $this->formOptionsArray['cell']['parameter']['modus'] = $this->parameterModus();
-            $this->formOptionsArray['cell']['format']['modus'] = $this->formatModus();
+            $this->optionsArray['required'] = $this->isRequired();
+            if ($this->sanitise()) {
+                $this->optionsArray['sanitise'] = $this->sanitise();
+            }
+            $this->optionsArray['cell']['value']['modus'] = $this->valueModus();
+            $this->optionsArray['cell']['parameter']['modus'] = $this->parameterModus();
+            $this->optionsArray['cell']['format']['modus'] = $this->formatModus();
         }
-        $options = array_merge($options, $this->formOptionsArray);
+        $options = array_merge($options, $this->optionsArray);
         return $options;
     }
 
@@ -168,25 +178,29 @@ class Cell
         if ($this->dataKey) {
             $dataKey = $this->dataKey;
         }
-        $this->element->buildForm($builder, $mode, $data, $dataKey, $this->formOptions($mode, $data, $options));
+        $this->element->buildForm($builder, $mode, $data, $dataKey, $this->options($mode, $data, $options));
     }
 
     public function renderView($mode, $data, array $context = [], $forms = null, $form = null)
     {
-        //dump('RENDER CELL : ');
+        //dump('RENDER CELL : '.$this->element->name());
         //dump($mode);
         //dump($this->displayMode($mode));
         //dump($data);
         $context['map'] = $this->map;
-        $context['modus'] = $this->valueModus();
         if ($this->showLabel() && $this->keyword()) {
             $context['label'] = $this->keyword();
         } else {
             $context['label'] = $this->showLabel();
         }
+        $context['modus'] = $this->valueModus();
+        if (!isset($context['sanitise']) || $this->sanitise()) {
+            $context['sanitise'] = $this->sanitise();
+        }
         if ($this->dataKey && is_array($data) && isset($data[$this->dataKey])) {
             $data = $data[$this->dataKey];
         }
+        //dump($context);
         return $this->element->renderView($this->displayMode($mode), $data, $context, $forms, $form);
     }
 
@@ -206,11 +220,13 @@ class Cell
         // Fields
         $builder->addField('label', 'boolean');
         $builder->addStringField('mode', 10);
+        $builder->addStringField('sanitise', 10);
         $builder->addStringField('value', 10);
         $builder->addStringField('parameter', 10);
         $builder->addStringField('format', 10);
+        $builder->addStringField('display', 30);
         $builder->addStringField('dataKey', 4000, 'data');
-        $builder->addStringField('formOptions', 4000, 'form_options');
+        $builder->addStringField('options', 4000, 'options');
         $builder->addField('required', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
         KeywordTrait::buildKeywordMetadata($builder);

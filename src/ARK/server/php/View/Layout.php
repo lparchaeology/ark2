@@ -154,13 +154,16 @@ abstract class Layout extends Element
 
     public function renderView($mode, $data, array $context = [], $forms = null, $form = null)
     {
-        //dump('RENDER FORMS : '.$this->element);
+        //dump('RENDER LAYOUT : '.$this->element);
         //dump($mode);
         //dump($this->displayMode($mode));
         //dump($data);
         //dump($context);
         if ($this->template()) {
             $context['layout'] = $this;
+            if (!isset($context['sanitise'])) {
+                $context['sanitise'] = null;
+            }
             $context['mode'] = $this->displayMode($mode);
             $context['data'] = $data;
             $context['forms'] = $forms;
@@ -170,6 +173,7 @@ abstract class Layout extends Element
             } else {
                 $context['label'] = false;
             }
+            //dump($context);
             return Service::view()->renderView($this->template(), $context);
         }
         return '';

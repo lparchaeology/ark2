@@ -63,12 +63,15 @@ class ClassMetadataBuilder extends DoctrineClassMetadataBuilder
         return $builder->build();
     }
 
-    public function addOneToMany($name, $targetEntity, $mappedBy, $column = null, $reference = null, $nullable = true)
+    public function addOneToMany($name, $targetEntity, $mappedBy, $column = null, $reference = null, $nullable = true, $orderBy = [])
     {
         $builder = $this->createOneToMany($name, $targetEntity);
         $builder->mappedBy($mappedBy);
         if ($reference) {
             $builder->addJoinColumn($column, $reference, $nullable);
+        }
+        if ($orderBy) {
+            $builder->setOrderBy($orderBy);
         }
         return $builder->build();
     }

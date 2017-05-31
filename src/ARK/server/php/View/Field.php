@@ -49,6 +49,7 @@ class Field extends Element
     protected $formOptions = '';
     protected $formOptionsArray = null;
     protected $label = true;
+    protected $display = null;
     protected $value = 'excluded';
     protected $parameter = null;
     protected $format = null;
@@ -103,7 +104,7 @@ class Field extends Element
 
     private function modeToModus($mode, $modus)
     {
-        if ($modus == 'excluded' || $modus == 'hidden') {
+        if ($modus == 'hidden') {
             return $modus;
         }
         if ($mode == 'view') {
@@ -156,6 +157,10 @@ class Field extends Element
         unset($options['forms']);
         //unset($options['form']);
         $options['mode'] = $mode;
+        if ($this->display) {
+            $options['display'] = $this->display;
+        }
+
         if ($options['label'] === null) {
             $options['label'] = ($this->keyword() ?: false);
         }
@@ -261,10 +266,10 @@ class Field extends Element
         return $options;
     }
 
-    public function formData($data, $formId = null)
+    public function formData($data, $dataKey = null)
     {
-        if (is_array($data) && isset($data[$formId])) {
-            $data = $data[$formId];
+        if (is_array($data) && isset($data[$dataKey])) {
+            $data = $data[$dataKey];
         }
         if ($data instanceof Property) {
             return $data;
@@ -278,25 +283,32 @@ class Field extends Element
         return null;
     }
 
+    protected function fieldBuilder($mode, $data, $dataKey, $options = [])
+    {
+        $options = $this->formOptions($this->displayMode($mode), $data, $options);
+        return $this->formBuilder($data, $options);
+    }
+
     public function buildForm(FormBuilderInterface $builder, $mode, $data, $dataKey, $options = [])
     {
-        //dump('BUILD : '.$this->element);
+        //dump('BUILD FIELD : '.$this->element);
         //dump($mode);
         //dump($this->displayMode($mode));
         //dump($data);
         //dump($this);
-        // if (!Service::security()->hasVisibility($actor, $this->attribute())) {
-        // return;
-        // }
-        if (!Service::workflow()->hasPermission($this->attribute->readPermission())) {
-            return;
-        }
-        if (is_array($data) && isset($data[$dataKey])) {
-            $data = $data[$dataKey];
-        }
-        $options = $this->formOptions($this->displayMode($mode), $data, $options);
-        $fieldBuilder = $this->formBuilder($data, $options);
         //dump($options);
+        // TODO Service::workflow()->hasVisibility($actor, $this->attribute())???
+        if (!Service::workflow()->hasPermission($this->attribute->readPermission())) {
+            if (isset($options['sanitise']) && $options['sanitise'] == 'redact') {
+                $data = null;
+                unset($options['sanitise']);
+            } else {
+                return;
+            }
+        } else {
+            $data = $this->formData($data, $dataKey);
+        }
+        $fieldBuilder = $this->fieldBuilder($mode, $data, $dataKey, $options);
         $builder->add($fieldBuilder);
     }
 
@@ -307,13 +319,21 @@ class Field extends Element
         //dump($this->displayMode($mode));
         //dump($data);
         if (!Service::workflow()->hasPermission($this->attribute->readPermission())) {
-            return;
+            if ($context['sanitise'] == 'redact') {
+                $data = null;
+            } else {
+                return;
+            }
+        } elseif ($form && isset($form->vars['id'])) {
+            $data = $this->formData($data, $form->vars['id']);
+        } else {
+            $data = $this->formData($data);
         }
         if ($form && $this->template()) {
             $context['field'] = $this;
             $context['mode'] = $this->displayMode($mode);
             $context['modus'] = $this->modeToModus($context['mode'], ($context['modus'] ?: $this->valueModus()));
-            $context['data'] = $this->formData($data, $form->vars['id']);
+            $context['data'] = $data;
             $context['forms'] = $forms;
             $context['form'] = $form;
             //dump($context);
@@ -323,7 +343,10 @@ class Field extends Element
         // FIXME Should probably have some way to use FormTypes here to render 'flat' compond values
         $value = null;
         $item = null;
-        $context = $this->valueOptions('view', ['mode' => 'view', 'modus' => 'readonly']);
+        $options = $this->valueOptions('view', ['mode' => 'view', 'modus' => 'static']);
+        // TODO Now what? Render out just the Value child?
+        //$fieldBuilder = $this->fieldBuilder('view', $data, $this->name(), $options);
+        //dump($fieldBuilder);
 
         if ($data instanceof Item) {
             $item = $data;
@@ -394,6 +417,7 @@ class Field extends Element
         $builder->addStringField('formTypeClass', 100, 'form_type_class');
         $builder->addStringField('formOptions', 4000, 'form_options');
         $builder->addField('label', 'boolean');
+        $builder->addStringField('display', 30);
         $builder->addStringField('value', 10);
         $builder->addStringField('parameter', 10);
         $builder->addStringField('format', 10);

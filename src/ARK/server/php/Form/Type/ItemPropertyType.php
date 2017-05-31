@@ -35,6 +35,7 @@ use ARK\Form\Type\AbstractPropertyType;
 use ARK\Form\Type\StaticType;
 use ARK\ORM\ORM;
 use ARK\Model\Item;
+use ARK\Model\Property;
 use ARK\Model\LocalText;
 use ARK\Vocabulary\Term;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -47,13 +48,18 @@ class ItemPropertyType extends AbstractPropertyType
     {
         $field = $options['field']['object'];
         $format = $field->attribute()->format();
-        unset($options['field']['value']['options']['display_property']);
-        $builder->add('display', $options['field']['value']['type'], $options['field']['value']['options']);
-        $fieldOptions['attr']['readonly'] = true;
-        $fieldOptions['label'] = false;
-        $fieldOptions['mapped'] = false;
-        $builder->add('module', HiddenType::class, $fieldOptions);
-        $builder->add('item', HiddenType::class, $fieldOptions);
+        if (isset($options['display'])) {
+            $builder->add('display', $options['field']['value']['type'], $options['field']['value']['options']);
+            $builder->add($format->valueName(), $options['field']['value']['type'], $options['field']['value']['options']);
+        } else {
+            $builder->add($format->valueName(), $options['field']['value']['type'], $options['field']['value']['options']);
+        }
+        if ($options['field']['parameter'] !== null) {
+            $builder->add($format->parameterName(), $options['field']['parameter']['type'], $options['field']['parameter']['options']);
+        }
+        if ($options['field']['format'] !== null) {
+            $builder->add($format->formatName(), $options['field']['format']['type'], $options['field']['format']['options']);
+        }
         $builder->setDataMapper($this);
     }
 
@@ -61,7 +67,7 @@ class ItemPropertyType extends AbstractPropertyType
     {
         return [
             'compound' => true,
-            'display_property' => 'id',
+            'display' => null,
         ];
     }
 
@@ -71,15 +77,15 @@ class ItemPropertyType extends AbstractPropertyType
             return;
         }
         $forms = iterator_to_array($forms);
-        $value = $property->value();
+        $value = ($property instanceof Property ? $property->value() : $property);
         if ($value instanceof Item) {
-            $forms['module']->setData($value->schema()->module()->name());
-            $forms['item']->setData($value->id());
+            $item = $value;
+            $forms['module']->setData($item->schema()->module()->name());
+            $forms['item']->setData($item->id());
             // TODO Make generic using module!
             $options = $forms['module']->getParent()->getConfig()->getOptions();
-            if (isset($options['field']['value']['options']['display_property'])) {
-                $display = $options['field']['value']['options']['display_property'];
-                $val = $value->property($display)->value();
+            if (isset($options['display'])) {
+                $val = $item->property($options['display'])->value();
                 if ($val instanceof Term) {
                     $name = $val->keyword();
                 } elseif ($val instanceof LocalText) {
@@ -87,11 +93,8 @@ class ItemPropertyType extends AbstractPropertyType
                 } else {
                     $name = $val;
                 }
-            } elseif (isset($options['display_property'])) {
-                $display = $options['display_property'];
-                $name = $value->property($display)->serialize();
             } else {
-                $name = $value->property('id')->serialize();
+                $name = $item->property('id')->serialize();
             }
             $forms['display']->setData($name);
         } elseif (isset($value['item'])) {
