@@ -165,12 +165,12 @@ class Action
     public function isGranted(Actor $actor, Item $item)
     {
         // TODO Sort out Permissions vs Allowances
-        dump('allowed');
-        dump($this->isAllowed($actor));
-        dump('agency');
-        dump($this->hasAgency($actor, $item));
-        dump('conditions');
-        dump($this->meetsConditions($item));
+        //dump('Allowed');
+        //dump($this->isAllowed($actor));
+        //dump('Agency');
+        //dump($this->hasAgency($actor, $item));
+        //dump('Conditions');
+        //dump($this->meetsConditions($item));
         return //$this->hasPermission($actor, $item)
             $this->isAllowed($actor)
             && $this->hasAgency($actor, $item)

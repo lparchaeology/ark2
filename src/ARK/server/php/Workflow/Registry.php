@@ -68,7 +68,6 @@ class Registry extends SymfonyRegistry
             $user = Service::security()->user();
         }
         if (!$user instanceof User) {
-            dump('anon!');
             return ORM::find(Actor::class, 'anonymous');
         }
         $au = ORM::findOneBy(ActorUser::class, ['user' => $user->id()]);
@@ -118,17 +117,11 @@ class Registry extends SymfonyRegistry
 
     public function can(Actor $actor, $action, Item $item)
     {
-        dump('can');
-        dump($actor);
-        dump($action);
-        dump($item);
+        //dump('Workflow::can('.$actor->id().' '.$action.' '.$item->schema()->module()->name().')');
         $action = $this->action($item->schema()->name(), $action);
-        dump($action);
         if ($action) {
-            dump($action->isGranted($actor, $item));
             return $action->isGranted($actor, $item);
         }
-        dump('false');
         return false;
     }
 

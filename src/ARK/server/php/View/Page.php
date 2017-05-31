@@ -50,10 +50,7 @@ class Page extends Element
 
     public function mode(Actor $actor, $item = null)
     {
-        dump($this->visibility);
-        dump($actor);
-        dump($item);
-        dump($this->defaultMode());
+        // TODO Move check to Security or Workflow???
         if ($this->visibility == 'restricted') {
             if ($actor && $item) {
                 if ($this->defaultMode() == 'edit' && Service::workflow()->can($actor, 'edit', $item)) {
@@ -179,6 +176,9 @@ class Page extends Element
 
     public function handleRequest($request, $data, $options = [], $context = [], callable $processForm = null, $redirect = null)
     {
+        dump($this);
+        dump($request);
+        dump($data);
         $actor = Service::workflow()->actor();
         $item = (isset($data[$this->content()->name()]) ? $data[$this->content()->name()] : null);
         if (is_iterable($item)) {
@@ -186,6 +186,10 @@ class Page extends Element
         }
         $mode = $this->mode($actor, $item);
         $forms = $this->buildForms($mode, $data, $options);
+        dump($actor);
+        dump($item);
+        dump($mode);
+        dump($forms);
         if ($posted = $this->postedForm($request, $forms)) {
             if (!$redirect) {
                 $redirect = $request->attributes->get('_route');
