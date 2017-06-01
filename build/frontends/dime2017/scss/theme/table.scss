@@ -262,4 +262,37 @@ th.thumbimagehead {
     border-radius:0;
 }
 
+/* Edit Actions */
 
+#chooseAction {
+    margin: 3px;
+}
+
+#chooseActionSelectHolder {
+    display: block;
+    width: 150px;
+    margin: 5px 50px;
+}
+
+ul.action-select {
+    border-radius: 5px;
+    border: 1px black solid;
+    padding: 0 5px;
+}
+
+.action-select li {
+    list-style: none;
+    cursor:pointer;
+}
+.action-select li.disabled {
+    color:lightgrey;
+}
+
+#find_filter_core_widget_search {
+	// this number comes from the body lineheight, which is bootstrap I think? MJ 1/6/17
+    margin: 1.42857143em 0;
+}
+
+.control-label{
+    display:inline-table;
+}

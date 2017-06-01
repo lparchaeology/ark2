@@ -27,7 +27,6 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-
 namespace DIME\Routing;
 
 use Silex\Application;
@@ -35,52 +34,39 @@ use Silex\Api\ControllerProviderInterface;
 
 class ApiControllerProvider implements ControllerProviderInterface
 {
+
     public function connect(Application $app)
     {
         $controllers = $app['controllers_factory'];
 
         // JSON API Routes
-        $controllers->get('/files/{fileSlug}', 'DIME\Controller\JsonApi\FileGetController')
-                    ->bind('api.files.get');
+        $controllers->get('/files/{fileSlug}', 'DIME\Controller\JsonApi\FileGetController')->bind('api.files.get');
 
-        $controllers->get('/files', 'DIME\Controller\JsonApi\FileCollectionController')
-                    ->bind('api.files.collection');
+        $controllers->get('/files', 'DIME\Controller\JsonApi\FileCollectionController')->bind('api.files.collection');
 
-        $controllers->get('/messages/{messageSlug}', 'DIME\Controller\JsonApi\MessageGetController')
-                    ->bind('api.messages.get');
+        $controllers->get('/messages/{messageSlug}', 'DIME\Controller\JsonApi\MessageGetController')->bind('api.messages.get');
 
-        $controllers->get('/messages', 'DIME\Controller\JsonApi\MessageCollectionController')
-                    ->bind('api.messages.collection');
+        $controllers->get('/messages', 'DIME\Controller\JsonApi\MessageCollectionController')->bind('api.messages.collection');
 
-        $controllers->get('/events/{eventSlug}', 'DIME\Controller\JsonApi\EventGetController')
-                    ->bind('api.events.get');
+        $controllers->get('/events/{eventSlug}', 'DIME\Controller\JsonApi\EventGetController')->bind('api.events.get');
 
-        $controllers->get('/events', 'DIME\Controller\JsonApi\EventCollectionController')
-                    ->bind('api.events.collection');
+        $controllers->get('/events', 'DIME\Controller\JsonApi\EventCollectionController')->bind('api.events.collection');
 
-        $controllers->get('/actors/{actorSlug}/messages', 'DIME\Controller\JsonApi\MessageCollectionController')
-                    ->bind('api.actors.messages.collection');
+        $controllers->get('/actors/{actorSlug}/messages', 'DIME\Controller\JsonApi\MessageCollectionController')->bind('api.actors.messages.collection');
 
-        $controllers->get('/actors/{actorSlug}/events', 'DIME\Controller\JsonApi\EventCollectionController')
-                    ->bind('api.actors.events.collection');
+        $controllers->get('/actors/{actorSlug}/events', 'DIME\Controller\JsonApi\EventCollectionController')->bind('api.actors.events.collection');
 
-        $controllers->get('/actors/{actorSlug}', 'DIME\Controller\JsonApi\ActorGetController')
-                    ->bind('api.actors.get');
+        $controllers->get('/actors/{actorSlug}', 'DIME\Controller\JsonApi\ActorGetController')->bind('api.actors.get');
 
-        $controllers->get('/actors', 'DIME\Controller\JsonApi\ActorCollectionController')
-                    ->bind('api.actors.collection');
+        $controllers->get('/actors', 'DIME\Controller\JsonApi\ActorCollectionController')->bind('api.actors.collection');
 
-        $controllers->get('/finds/{findSlug}/messages', 'DIME\Controller\JsonApi\MessageCollectionController')
-                    ->bind('api.finds.messages.collection');
+        $controllers->get('/finds/{findSlug}/messages', 'DIME\Controller\JsonApi\MessageCollectionController')->bind('api.finds.messages.collection');
 
-        $controllers->get('/finds/{findSlug}/events', 'DIME\Controller\JsonApi\EventCollectionController')
-                    ->bind('api.finds.events.collection');
+        $controllers->get('/finds/{findSlug}/events', 'DIME\Controller\JsonApi\EventCollectionController')->bind('api.finds.events.collection');
 
-        $controllers->get('/finds/{findSlug}', 'DIME\Controller\JsonApi\FindGetController')
-                    ->bind('api.finds.get');
+        $controllers->get('/finds/{findSlug}', 'DIME\Controller\JsonApi\FindGetController')->bind('api.finds.get');
 
-        $controllers->get('/finds', 'DIME\Controller\JsonApi\FindCollectionController')
-                    ->bind('api.finds.collection');
+        $controllers->get('/finds', 'DIME\Controller\JsonApi\FindCollectionController')->bind('api.finds.collection');
 
         return $controllers;
     }

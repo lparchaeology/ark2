@@ -249,9 +249,9 @@ function initialiseMapView() {
                 
                 var payload = {
                     "concept":"dime.denmark.municipality",
-                    "module":"find",
+                    "module":itemkey,
                     "attribute":"location",
-                    "itemlist": findslist
+                    "itemlist": itemlist
                 }
                 
                 $.get(path + 'api/geo/choropleth', payload, function(result) {
