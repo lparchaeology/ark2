@@ -91,6 +91,16 @@ abstract class Vocabulary
         return null;
     }
 
+    public function defaultTerm()
+    {
+        foreach ($this->terms as $term) {
+            if ($term->isDefault()) {
+                return $term;
+            }
+        }
+        return null;
+    }
+
     public function hasTransitions()
     {
         return $this->transitions;

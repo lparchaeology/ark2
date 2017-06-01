@@ -91,7 +91,10 @@ abstract class Attribute
 
     public function defaultValue()
     {
-        //TODO Needs implementing!
+        if ($this->vocabulary) {
+            return $this->vocabulary->defaultTerm();
+        }
+        return $this->format->defaultValue();
     }
 
     public function isSpan()

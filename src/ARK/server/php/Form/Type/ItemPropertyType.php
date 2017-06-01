@@ -50,7 +50,7 @@ class ItemPropertyType extends AbstractPropertyType
         $format = $field->attribute()->format();
         if (isset($options['display'])) {
             $builder->add('display', $options['field']['value']['type'], $options['field']['value']['options']);
-            $builder->add($format->valueName(), $options['field']['value']['type'], $options['field']['value']['options']);
+            $builder->add($format->valueName(), HiddenType::class, $options['field']['value']['options']);
         } else {
             $builder->add($format->valueName(), $options['field']['value']['type'], $options['field']['value']['options']);
         }
@@ -73,13 +73,9 @@ class ItemPropertyType extends AbstractPropertyType
 
     public function mapDataToForms($property, $forms)
     {
-        if (!$property) {
-            return;
-        }
+        $item = $this->value($property, $forms);
         $forms = iterator_to_array($forms);
-        $value = ($property instanceof Property ? $property->value() : $property);
-        if ($value instanceof Item) {
-            $item = $value;
+        if ($item instanceof Item) {
             $forms['module']->setData($item->schema()->module()->name());
             $forms['item']->setData($item->id());
             // TODO Make generic using module!
@@ -97,9 +93,9 @@ class ItemPropertyType extends AbstractPropertyType
                 $name = $item->property('id')->serialize();
             }
             $forms['display']->setData($name);
-        } elseif (isset($value['item'])) {
-            $forms['module']->setData($value['module']);
-            $forms['item']->setData($value['item']);
+        } elseif (isset($item['item'])) {
+            $forms['module']->setData($item['module']);
+            $forms['item']->setData($item['item']);
             $forms['display']->setData('');
         }
     }

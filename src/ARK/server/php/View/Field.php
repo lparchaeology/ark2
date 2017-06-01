@@ -149,7 +149,7 @@ class Field extends Element
         return ($this->keyword ?: $this->attribute->keyword());
     }
 
-    public function formOptions($mode, $data, $options)
+    public function formOptions($mode, $property, $options)
     {
         $cellOptions = $options['cell'];
         unset($options['page']);
@@ -157,12 +157,20 @@ class Field extends Element
         unset($options['forms']);
         //unset($options['form']);
         $options['mode'] = $mode;
+
         if ($this->display) {
             $options['display'] = $this->display;
         }
 
         if ($options['label'] === null) {
-            $options['label'] = ($this->keyword() ?: false);
+            $options['label'] = $this->showLabel();
+        }
+        if ($options['label']) {
+            if ($cellOptions['keyword']) {
+                $options['label'] = $cellOptions['keyword'];
+            } elseif ($this->keyword()) {
+                $options['label'] = $this->keyword();
+            }
         }
         $options['field']['object'] = $this;
         $options['field']['value'] = $this->valueOptions($mode, $cellOptions['value']);
@@ -180,6 +188,9 @@ class Field extends Element
             $this->formatModus(),
             $this->formatFormType()
         );
+        if ($options['required'] || $this->attribute()->isRequired()) {
+            $options['default_data'] = $this->attribute->defaultValue();
+        }
         if ($mode == 'view' || $options['field']['value']['modus'] != 'active') {
             $options['required'] = false;
         } elseif ($options['required'] === null) {
@@ -213,9 +224,9 @@ class Field extends Element
             $options['multiple'] = true;
         }
         // TODO Use visibility instead
-        if (!Service::security()->isLoggedIn() && $this->attribute()->hasVocabulary()) {
-            $options['disabled'] = true;
-        }
+        //if (!Service::security()->isLoggedIn() && $this->attribute()->hasVocabulary()) {
+        //    $options['disabled'] = true;
+        //}
         return $this->baseOptions(
             $mode,
             $cellOptions,
@@ -268,17 +279,18 @@ class Field extends Element
 
     public function formData($data, $dataKey = null)
     {
-        if (is_array($data) && isset($data[$dataKey])) {
-            $data = $data[$dataKey];
+        if (is_array($data)) {
+            if (isset($data[$dataKey])) {
+                $data = $data[$dataKey];
+            } elseif (isset($data[$this->name()])) {
+                $data = $data[$this->name()];
+            }
         }
         if ($data instanceof Property) {
             return $data;
         }
         if ($data instanceof Item) {
             return $data->property($this->attribute->name());
-        }
-        if (is_array($data) && isset($data[$this->name()])) {
-            return $data[$this->name()];
         }
         return null;
     }
@@ -289,6 +301,18 @@ class Field extends Element
         return $this->formBuilder($data, $options);
     }
 
+    protected function sanitise($options)
+    {
+        // TODO Service::workflow()->hasVisibility($actor, $this->attribute())???
+        if (!Service::workflow()->hasPermission($this->attribute->readPermission())) {
+            if (isset($options['sanitise']) && $options['sanitise'] == 'redact') {
+                return 'redact';
+            }
+            return 'withhold';
+        }
+        return null;
+    }
+
     public function buildForm(FormBuilderInterface $builder, $mode, $data, $dataKey, $options = [])
     {
         //dump('BUILD FIELD : '.$this->element);
@@ -297,17 +321,11 @@ class Field extends Element
         //dump($data);
         //dump($this);
         //dump($options);
-        // TODO Service::workflow()->hasVisibility($actor, $this->attribute())???
-        if (!Service::workflow()->hasPermission($this->attribute->readPermission())) {
-            if (isset($options['sanitise']) && $options['sanitise'] == 'redact') {
-                $data = null;
-            } else {
-                return;
-            }
-        } else {
-            $data = $this->formData($data, $dataKey);
+        if ($this->sanitise($options) == 'withhold') {
+            return;
         }
         unset($options['sanitise']);
+        $data = $this->formData($data, $dataKey);
         $fieldBuilder = $this->fieldBuilder($mode, $data, $dataKey, $options);
         $builder->add($fieldBuilder);
     }
@@ -318,12 +336,9 @@ class Field extends Element
         //dump($mode);
         //dump($this->displayMode($mode));
         //dump($data);
-        if (!Service::workflow()->hasPermission($this->attribute->readPermission())) {
-            if (isset($context['sanitise']) && $context['sanitise'] == 'redact') {
-                $data = null;
-            } else {
-                return;
-            }
+        $sanitise = $this->sanitise($context);
+        if ($sanitise == 'withhold') {
+            return;
         } elseif ($form && isset($form->vars['id'])) {
             $data = $this->formData($data, $form->vars['id']);
         } else {
@@ -337,6 +352,7 @@ class Field extends Element
             $context['forms'] = $forms;
             $context['form'] = $form;
             //dump($context);
+            //dump($data);
             return Service::view()->renderView($this->template(), $context);
         }
 

@@ -35,6 +35,8 @@ use ARK\Model\Property;
 use ARK\Vocabulary\Term;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 
 class VocabularyPropertyType extends ScalarPropertyType
 {
@@ -43,15 +45,18 @@ class VocabularyPropertyType extends ScalarPropertyType
         $builder->setDataMapper($this);
     }
 
-    public function mapDataToForms($data, $forms)
+    public function mapDataToForms($property, $forms)
     {
-        $forms = iterator_to_array($forms);
-        if ($data instanceof Property) {
-            $value = $data->value();
-            $format = $data->attribute()->format();
-            $forms[$format->valueName()]->setData($value);
-            $forms[$format->parameterName()]->setData($data->attribute()->vocabulary()->concept());
+        if (!$property instanceof Property) {
+            return;
         }
+        $term = $this->value($property, $forms);
+        $forms = iterator_to_array($forms);
+        $attribute = $property->attribute();
+        $termForm = $forms[$attribute->format()->valueName()];
+        $vocabularyForm = $forms[$attribute->format()->parameterName()];
+        $termForm->setData($term);
+        $vocabularyForm->setData($attribute->vocabulary()->concept());
     }
 
     public function mapFormsToData($forms, &$data)

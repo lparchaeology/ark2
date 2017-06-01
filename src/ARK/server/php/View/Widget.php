@@ -44,6 +44,7 @@ use ARK\Vocabulary\Vocabulary;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\SubmitButtonTypeInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class Widget extends Element
@@ -89,11 +90,20 @@ class Widget extends Element
         unset($options['cell']);
         unset($options['forms']);
         unset($options['form']);
-        unset($options['required']);
+        if (is_subclass_of($this->formTypeClass(), SubmitButtonTypeInterface::class)) {
+            unset($options['required']);
+        }
         unset($options['sanitise']);
         $options = array_merge_recursive($this->formOptionsArray, $options);
         if ($options['label'] === null) {
-            $options['label'] = ($this->showLabel() ? $this->keyword() : false);
+            $options['label'] = $this->showLabel();
+        }
+        if ($options['label']) {
+            if ($cellOptions['keyword']) {
+                $options['label'] = $cellOptions['keyword'];
+            } elseif ($this->keyword()) {
+                $options['label'] = $this->keyword();
+            }
         }
         // FIXME HACK Need to find a better way to build custom fields!
         if ($this->name() == 'dime_find_actions') {

@@ -107,6 +107,7 @@ class ObjectType extends AbstractType implements DataMapperInterface
             'multiple' => null,
             'data_class' => Property::class,
             'empty_data' => null,
+            'default_data' => null,
         ]);
     }
 

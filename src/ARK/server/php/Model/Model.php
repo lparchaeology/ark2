@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Blob Format
+ * ARK Model
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,17 +28,26 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model\Format;
+namespace ARK\Model;
 
-use ARK\Model\Format;
-use ARK\ORM\ClassMetadata;
-use ARK\ORM\ClassMetadataBuilder;
+use ARK\Application;
+use ARK\Model\Attribute;
+use ARK\Model\Item;
+use ARK\Model\Schema;
+use ARK\ORM\ORM;
+use ARK\Service;
 
-class BlobFormat extends Format
+class Model
 {
-    public static function loadMetadata(ClassMetadata $metadata)
+    protected $app = null;
+
+    public function __construct(Application $app)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_format_blob');
-        $builder->addField('preset', 'blob');
+        $this->app = $app;
+    }
+
+    public function schema($schema)
+    {
+        return ORM::find(Schema::class, $schema);
     }
 }

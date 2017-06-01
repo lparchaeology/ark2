@@ -59,23 +59,36 @@ class ScalarPropertyType extends AbstractPropertyType
         ];
     }
 
-    public function mapDataToForms($value, $forms)
+    public function mapDataToForms($property, $forms)
     {
+        if (!$property instanceof Property) {
+            return;
+        }
+        $forms->rewind();
+        $propertyForm = $forms->current()->getParent();
         $forms = iterator_to_array($forms);
-        if ($value instanceof Property) {
-            $val = $value->value();
-            $format = $value->attribute()->format();
-            if ($format->isAtomic()) {
-                $forms[$format->valueName()]->setData($val);
-                return;
-            }
-            $forms[$format->valueName()]->setData($val[$format->valueName()]);
-            if ($format->formatName()) {
-                $forms[$format->formatName()]->setData($val[$format->formatName()]);
-            }
-            if ($format->parameterName()) {
-                $forms[$format->parameterName()]->setData($val[$format->parameterName()]);
-            }
+        $attribute = $property->attribute();
+        $format = $attribute->format();
+        $valueName = $format->valueName();
+        $formatName = $format->valueName();
+        $parameterName = $format->valueName();
+
+        $value = $property->value();
+        if ($value === null || $value == $attribute->emptyValue()) {
+            $value = $propertyForm->getConfig()->getOption('default_data');
+        }
+
+        if ($format->isAtomic()) {
+            $forms[$valueName]->setData($value);
+            return;
+        }
+
+        $forms[$valueName]->setData($value[$valueName]);
+        if ($formatName) {
+            $forms[$formatName]->setData($value[$formatName]);
+        }
+        if ($parameterName) {
+            $forms[$parameterName]->setData($value[$parameterName]);
         }
     }
 

@@ -44,13 +44,11 @@ class ItemChoicePropertyType extends ScalarPropertyType
 
     public function mapDataToForms($data, $forms)
     {
-        $forms = iterator_to_array($forms);
-        if ($data instanceof Property) {
-            $value = $data->value();
-            $format = $data->attribute()->format();
-            $forms[$format->valueName()]->setData($value);
-            $forms[$format->parameterName()]->setData($data->attribute()->vocabulary()->concept());
+        if (!$property instanceof Property) {
+            return;
         }
+        $value = $this->value($property, $forms);
+        $forms = iterator_to_array($forms);
     }
 
     public function mapFormsToData($forms, &$data)

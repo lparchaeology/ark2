@@ -145,5 +145,6 @@ class TextFormat extends Format
         $builder->addField('minimumLength', 'integer', [], 'min_length');
         $builder->addField('maximumLength', 'integer', [], 'max_length');
         $builder->addField('defaultSize', 'integer', [], 'default_size');
+        $builder->addStringField('preset', 1431655765);
     }
 }

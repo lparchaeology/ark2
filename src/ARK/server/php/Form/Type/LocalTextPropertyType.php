@@ -56,19 +56,19 @@ class LocalTextPropertyType extends AbstractPropertyType
 
     public function mapDataToForms($property, $forms)
     {
-        if (!$property) {
+        if (!$property instanceof Property) {
             return;
         }
+        $text = $this->value($property, $forms);
         $forms = iterator_to_array($forms);
-        if ($property instanceof Property) {
-            $language = Service::locale();
-            $forms['language']->setData($language);
-            $value = $property->value();
-            if ($value) {
-                $forms['previous']->setData(serialize($value->contents()));
-                $forms['mediatype']->setData($value->mediaType());
-                $forms['content']->setData($value->content($language));
-            }
+
+        $language = Service::locale();
+        $forms['language']->setData($language);
+
+        if ($text instanceof LocalText) {
+            $forms['previous']->setData(serialize($text->contents()));
+            $forms['mediatype']->setData($text->mediaType());
+            $forms['content']->setData($text->content($language));
         }
     }
 

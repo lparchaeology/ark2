@@ -71,6 +71,7 @@ abstract class Format
     protected $multiple = false;
     protected $sortable = false;
     protected $searchable = false;
+    protected $preset = null;
 
     public function id()
     {
@@ -179,6 +180,11 @@ abstract class Format
         }
         $data[$this->valueName()] = ($this->isSpan() ? [null, null] : null);
         return $data;
+    }
+
+    public function defaultValue()
+    {
+        return $this->preset;
     }
 
     public function value($model, ArrayCollection $properties = null)

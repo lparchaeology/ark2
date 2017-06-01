@@ -33,6 +33,7 @@ namespace ARK\Form\Type;
 use ARK\Model\Property;
 use ARK\Model\LocalText;
 use ARK\Vocabulary\Term;
+use RecursiveIteratorIterator;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
@@ -47,6 +48,7 @@ abstract class AbstractPropertyType extends AbstractType implements DataMapperIn
     private $options = [
         'data_class' => null,
         'empty_data' => null,
+        'default_data' => null,
         'field' => null,
         'hidden' => false,
         'mode' => 'view',
@@ -84,15 +86,27 @@ abstract class AbstractPropertyType extends AbstractType implements DataMapperIn
         return $value;
     }
 
-    // Use to map parent model data to child form elements
-    public function mapDataToForms($value, $forms)
+    // Returns the data value to poulate the form with
+    protected function value(Property $property, RecursiveIteratorIterator $forms)
     {
-        $forms = iterator_to_array($forms);
-        if ($value instanceof Property) {
-            $name = $value->attribute()->name();
-            $value = $value->value();
-            $forms[$name]->setData($value);
+        $forms->rewind();
+        $propertyForm = $forms->current()->getParent();
+        $value = $property->value();
+        if ($value === null || $value == $property->attribute()->emptyValue()) {
+            $value = $propertyForm->getConfig()->getOption('default_data');
         }
+        return $value;
+    }
+
+    // Use to map parent model data to child form elements
+    public function mapDataToForms($property, $forms)
+    {
+        if (!$property instanceof Property) {
+            return;
+        }
+        $value = $this->value($property, $forms);
+        $forms = iterator_to_array($forms);
+        $forms[$property->attribute()->name()]->setData($value);
     }
 
     // Use to map child form elements to parent data model

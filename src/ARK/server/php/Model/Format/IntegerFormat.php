@@ -45,6 +45,7 @@ class IntegerFormat extends Format
         $builder->addField('minimum', 'integer');
         $builder->addField('maximum', 'integer');
         $builder->addField('multipleOf', 'integer', [], 'multiple_of');
+        $builder->addField('preset', 'integer');
         NumberTrait::buildNumberMetadata($builder);
     }
 }

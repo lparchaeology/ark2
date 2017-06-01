@@ -43,7 +43,6 @@ class ImagePropertyType extends AbstractPropertyType
         $fieldOptions['mapped'] = false;
         $builder->add('image', CollectionType::class, $fieldOptions);
         $builder->setDataMapper($this);
-        dump($builder);
     }
 
     protected function options()
@@ -56,14 +55,11 @@ class ImagePropertyType extends AbstractPropertyType
 
     public function mapDataToForms($property, $forms)
     {
-        if (!$property) {
+        if (!$property instanceof Property) {
             return;
         }
+        $value = $this->value($property, $forms);
         $forms = iterator_to_array($forms);
-        $name = $property->attribute()->name();
-        $value = $property->value();
-        dump($value);
-        //$forms['image']->setData($value);
     }
 
     public function mapFormsToData($forms, &$property)

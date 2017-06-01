@@ -49,6 +49,7 @@ use ARK\Spatial\SpatialServiceProvider;
 use ARK\Translation\Provider\TranslationServiceProvider;
 use ARK\View\Provider\ViewServiceProvider;
 use ARK\Workflow\Provider\WorkflowServiceProvider;
+use ARK\Model\Model;
 use Silex\Application as SilexApplication;
 use Silex\Application\TwigTrait;
 use Silex\Application\MonologTrait;
@@ -163,6 +164,11 @@ class Application extends SilexApplication
 
         // Define the routes
         $this->register(new RoutingServiceProvider());
+
+        // ARK Model Service
+        $container['model'] = function ($app) {
+            return new Model($app);
+        };
     }
 
     public function boot()

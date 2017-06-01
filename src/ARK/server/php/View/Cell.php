@@ -146,15 +146,12 @@ class Cell
             if (!is_array($this->optionsArray)) {
                 $this->optionsArray = [];
             }
-            if ($this->showLabel() && $this->keyword()) {
-                $this->optionsArray['label'] = $this->keyword();
-            } else {
-                $this->optionsArray['label'] = $this->showLabel();
-            }
+            $this->optionsArray['label'] = $this->showLabel();
             $this->optionsArray['required'] = $this->isRequired();
             if ($this->sanitise()) {
                 $this->optionsArray['sanitise'] = $this->sanitise();
             }
+            $this->optionsArray['cell']['keyword'] = $this->keyword();
             $this->optionsArray['cell']['value']['modus'] = $this->valueModus();
             $this->optionsArray['cell']['parameter']['modus'] = $this->parameterModus();
             $this->optionsArray['cell']['format']['modus'] = $this->formatModus();

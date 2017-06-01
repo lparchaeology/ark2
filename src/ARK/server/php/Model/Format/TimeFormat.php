@@ -41,7 +41,8 @@ class TimeFormat extends Format
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_format_datetime');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_format_time');
         DateTimeTrait::buildDateTimeMetadata($builder);
+        $builder->addField('preset', 'time');
     }
 }

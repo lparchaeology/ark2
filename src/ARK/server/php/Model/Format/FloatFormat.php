@@ -45,6 +45,7 @@ class FloatFormat extends Format
         $builder->addField('minimum', 'float');
         $builder->addField('maximum', 'float');
         $builder->addField('multipleOf', 'float', [], 'multiple_of');
+        $builder->addField('preset', 'float');
         NumberTrait::buildNumberMetadata($builder);
     }
 }

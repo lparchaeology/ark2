@@ -60,6 +60,7 @@ class DecimalFormat extends Format
         $builder->addStringField('minimum', 200);
         $builder->addStringField('maximum', 200);
         $builder->addStringField('multipleOf', 200, 'multiple_of');
+        $builder->addStringField('preset', 200);
         NumberTrait::buildNumberMetadata($builder);
     }
 }

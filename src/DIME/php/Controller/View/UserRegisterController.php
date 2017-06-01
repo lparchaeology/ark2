@@ -35,6 +35,10 @@ use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Page;
+use ARK\Actor\Actor;
+use ARK\Actor\Person;
+use ARK\Model\Module;
+use ARK\Model\Schema;
 use DIME\DIME;
 use DIME\Controller\View\DimeFormController;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,7 +52,8 @@ class UserRegisterController extends DimeFormController
 
     public function buildData(Request $request, Page $page)
     {
-        $data[$page->content()->name()] = null;
+        $data[$page->content()->name()] = new Person;
+        dump($data[$page->content()->name()]->property('license'));
         return $data;
     }
 

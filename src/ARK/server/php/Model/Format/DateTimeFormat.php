@@ -43,5 +43,6 @@ class DateTimeFormat extends Format
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_format_datetime');
         DateTimeTrait::buildDateTimeMetadata($builder);
+        $builder->addField('preset', 'datetime');
     }
 }

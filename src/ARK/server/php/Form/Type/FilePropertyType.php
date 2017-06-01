@@ -63,28 +63,11 @@ class FilePropertyType extends AbstractPropertyType
 
     public function mapDataToForms($property, $forms)
     {
+        if (!$property instanceof Property) {
+            return;
+        }
+        $value = $this->value($property, $forms);
         $forms = iterator_to_array($forms);
-        $language = Service::locale();
-        $values = $property->value();
-        $text = [];
-        foreach ($values as $value) {
-            $text[$value['language']] = $value['content'];
-        }
-        $content = '';
-        if (isset($text[$language])) {
-            $content = $text[$language];
-        } else {
-            foreach (Service::localeFallbacks() as $fallback) {
-                if (isset($text[$fallback])) {
-                    $content = $text[$fallback];
-                    continue;
-                }
-            }
-        }
-        // Shouldn't need this once using Property object instead
-        $forms['previous']->setData(serialize($text));
-        $forms['language']->setData($language);
-        $forms['content']->setData($content);
     }
 
     public function mapFormsToData($forms, &$property)

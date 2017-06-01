@@ -39,5 +39,6 @@ class SpatialFormat extends Format
     public static function loadMetadata(ClassMetadata $metadata)
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_format_string');
+        $builder->addStringField('preset', 1431655765);
     }
 }

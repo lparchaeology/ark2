@@ -48,6 +48,16 @@ class ItemFormat extends Format
         return $this->module;
     }
 
+    public function defaultValue()
+    {
+        if ($this->module && $this->preset) {
+            $module = ORM::find(Module::class, $this->module);
+            return ORM::find($module->classname(), $this->preset);
+        }
+        // TODO Do we want to return an empty object instead???
+        return null;
+    }
+
     protected function fragmentValue($fragment, ArrayCollection $properties = null)
     {
         if ($fragment instanceof ArrayCollection) {
@@ -61,5 +71,6 @@ class ItemFormat extends Format
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_format_item');
         $builder->addStringField('module', 30, 'module', true);
+        $builder->addStringField('preset', 30);
     }
 }
