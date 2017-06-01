@@ -301,13 +301,13 @@ class Field extends Element
         if (!Service::workflow()->hasPermission($this->attribute->readPermission())) {
             if (isset($options['sanitise']) && $options['sanitise'] == 'redact') {
                 $data = null;
-                unset($options['sanitise']);
             } else {
                 return;
             }
         } else {
             $data = $this->formData($data, $dataKey);
         }
+        unset($options['sanitise']);
         $fieldBuilder = $this->fieldBuilder($mode, $data, $dataKey, $options);
         $builder->add($fieldBuilder);
     }
@@ -319,7 +319,7 @@ class Field extends Element
         //dump($this->displayMode($mode));
         //dump($data);
         if (!Service::workflow()->hasPermission($this->attribute->readPermission())) {
-            if ($context['sanitise'] == 'redact') {
+            if (isset($context['sanitise']) && $context['sanitise'] == 'redact') {
                 $data = null;
             } else {
                 return;
