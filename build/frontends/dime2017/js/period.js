@@ -1,5 +1,10 @@
 $('document').ready(function(){
     
+
+    var date_start_id = "find_item_dating_year";
+    
+    var date_start_period_id = 'find_item_dating_period';
+    
     var query = {"concept":"dime.period"};
     
     $.post(path + 'api/internal/vocabulary', JSON.stringify(query) )
@@ -56,15 +61,15 @@ $('document').ready(function(){
         mouseenter: function () {
             periodMouseEnter($(this));
        }
-    }, '#select2-dime_find_item_dating_period-results .select2-results__option.select2-results__option--highlighted');
+    }, '#select2-'+date_start_period_id+'-results .select2-results__option.select2-results__option--highlighted');
     
     $('body').on({
         mouseenter: function () {
             periodMouseEnter($(this));
        }
-    }, '#select2-dime_find_item_dating_period_span-results .select2-results__option.select2-results__option--highlighted');
+    }, '#select2-'+date_start_period_id+'_span-results .select2-results__option.select2-results__option--highlighted');
     
-    $('#dime_find_item_dating_year').on('keyup', function(){
+    $('#'+date_start_id).on('keyup', function(){
         var year = parseInt(this.value);
         
         if(year<this.min){
@@ -74,11 +79,11 @@ $('document').ready(function(){
 
         var period = getPeriodFromYear(year);
         
-        $('#dime_find_item_dating_period').val(period.name);
-        $('#dime_find_item_dating_period').trigger('change.select2');
+        $('#'+date_start_period_id).val(period.name);
+        $('#'+date_start_period_id).trigger('change.select2');
     });
     
-    $('#dime_find_item_dating_year_span').on('keyup', function(){
+    $('#'+date_start_id+'_span').on('keyup', function(){
         var year = parseInt(this.value);
         
         if( this.max != '' && year>this.max){
@@ -88,76 +93,76 @@ $('document').ready(function(){
 
         var period = getPeriodFromYear(year);
         
-        $('#dime_find_item_dating_period_span').val(period.name);
-        $('#dime_find_item_dating_period_span').trigger('change.select2');
+        $('#'+date_start_period_id+'_span').val(period.name);
+        $('#'+date_start_period_id+'_span').trigger('change.select2');
     });
     
-    $('#dime_find_item_dating_year').on('focusout', function(){
+    $('#'+date_start_id).on('focusout', function(){
         var year = parseInt(this.value);
-        var span_year = parseInt($('#dime_find_item_dating_year_span').val());
+        var span_year = parseInt($('#'+date_start_id+'_span').val());
         if(isNaN(year) || isNaN(span_year)){
             return true;
         }
         if ( span_year < year){
             var endyear = span_year;
             $(this).val(endyear);
-            $('#dime_find_item_dating_year_span').val(year);
+            $('#'+date_start_id+'_span').val(year);
             
-            $('#dime_find_item_dating_year_span').trigger('keyup');
-            $('#dime_find_item_dating_year').trigger('keyup');
+            $('#'+date_start_id+'_span').trigger('keyup');
+            $('#'+date_start_id).trigger('keyup');
         }
     });
     
-    $('#dime_find_item_dating_year_span').on('focusout', function(){
+    $('#'+date_start_id+'_span').on('focusout', function(){
         var year = parseInt(this.value);
-        if(isNaN(year) || isNaN(parseInt($('#dime_find_item_dating_year').val()))){
+        if(isNaN(year) || isNaN(parseInt($('#'+date_start_id).val()))){
             return true;
         }
-        if (parseInt($('#dime_find_item_dating_year').val()) > year){
-            var endyear = parseInt($('#dime_find_item_dating_year').val());
+        if (parseInt($('#'+date_start_id).val()) > year){
+            var endyear = parseInt($('#'+date_start_id).val());
             $(this).val(endyear);
-            $('#dime_find_item_dating_year').val(year);
+            $('#'+date_start_id).val(year);
             
-            $('#dime_find_item_dating_year').trigger('keyup');
-            $('#dime_find_item_dating_year_span').trigger('keyup');
+            $('#'+date_start_id).trigger('keyup');
+            $('#'+date_start_id+'_span').trigger('keyup');
         }
     });
     
-    $('#dime_find_item_dating_period').on('change', function(){
+    $('#'+date_start_period_id).on('change', function(){
         period = periodvocabulary[this.value];
         
-        if ($('#dime_find_item_dating_year').val() == '') {
+        if ($('#'+date_start_id).val() == '') {
             var year = period.parameters.year_start.value;
             
         } else {
-            var year = parseInt($('#dime_find_item_dating_year').val());
+            var year = parseInt($('#'+date_start_id).val());
             if( year < parseInt(period.parameters.year_start.value) || year > parseInt(period.parameters.year_end.value) ){
                 year = period.parameters.year_start.value;
             }
             
         }
 
-        $('#dime_find_item_dating_year').val(year);
-        $('#dime_find_item_dating_year').trigger('focusout');
+        $('#'+date_start_id).val(year);
+        $('#'+date_start_id).trigger('focusout');
     });
     
-    $('#dime_find_item_dating_period_span').on('change', function(){
+    $('#'+date_start_period_id+'_span').on('change', function(){
         period = periodvocabulary[this.value];
         
-        if ($('#dime_find_item_dating_year_span').val() == '') {
+        if ($('#'+date_start_id+'_span').val() == '') {
             var year = period.parameters.year_end.value;
             
         } else {
-            var year = parseInt($('#dime_find_item_dating_year_span').val());
+            var year = parseInt($('#'+date_start_id+'_span').val());
             if( year < parseInt(period.parameters.year_start.value) || year > parseInt(period.parameters.year_end.value) ){
                 year = period.parameters.year_end.value;
             }
             
         }
 
-        $('#dime_find_item_dating_year_span').val(year);
+        $('#'+date_start_id+'_span').val(year);
         
-        $('#dime_find_item_dating_year_span').trigger('focusout');
+        $('#'+date_start_id+'_span').trigger('focusout');
         
     });
     

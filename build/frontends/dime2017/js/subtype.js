@@ -2,9 +2,15 @@ $('document').ready(function(){
     
     var query = {"concept":"dime.find.type"};
     
+    var type_id = "find_item_type_term"
+    
+    var subtype_id = "find_item_classification_subtype";
+    
+    var date_start_id = "find_item_dating_year";
+    
     var buildSubtypeSelect2 = function(){
 
-        $('#dime_find_item_classification_subtype').select2({
+        $('#'+subtype_id).select2({
             minimumResultsForSearch: 11,
             width: 'resolve',
             sorter: function(data) {
@@ -43,7 +49,7 @@ $('document').ready(function(){
                     item.tooltip('show');
                 });
            }
-        }, '#select2-dime_find_item_classification_subtype-results .select2-results__option.select2-results__option--highlighted');
+        }, '#select2-'+subtype_id+'-results .select2-results__option.select2-results__option--highlighted');
         
     }
     
@@ -64,28 +70,28 @@ $('document').ready(function(){
     .done(function(response) {
         window.subtypevocabulary = response.terms;
         for (var subtype in subtypevocabulary) {
-            subtypevocabulary[subtype].optionelement = $('#dime_find_item_classification_subtype option[value="'+subtype+'"]').detach();
+            subtypevocabulary[subtype].optionelement = $('#'+subtype_id+' option[value="'+subtype+'"]').detach();
         }
         buildSubtypeSelect2();
-        $('#dime_find_item_type_term').trigger('change');
+        $('#'+date_start_id).trigger('change');
     });
     
-    $('#dime_find_item_dating_year').on('focusout', function(){
+    $('#'+date_start_id).on('focusout', function(){
         console.log($(this).val());
     });
     
-    $('#dime_find_item_dating_year_span').on('focusout', function(){
+    $('#'+date_start_id+'_span').on('focusout', function(){
         console.log($(this).val());
     });
     
-    $('#dime_find_item_type_term').on('change', function(){
+    $('#'+date_start_id).on('change', function(){
 
         var target = $(this).val();
         console.log(target);
-        $('#dime_find_item_classification_subtype').empty();
+        $('#'+subtype_id).empty();
         for (var subtype in subtypevocabulary) {
             if( target == subtype.split('.')[0] && subtype.split('.').length == 2 ){
-                subtypevocabulary[subtype].optionelement.appendTo('#dime_find_item_classification_subtype');
+                subtypevocabulary[subtype].optionelement.appendTo('#'+subtype_id);
             }
         }
 
@@ -93,62 +99,62 @@ $('document').ready(function(){
         
     });
     
-    $('#dime_find_item_classification_subtype').on('change', function(){
+    $('#'+subtype_id).on('change', function(){
 
         var target = $(this).val();
         console.log(target);
         
         if(target == "up"){
-            $('#dime_find_item_type_term').trigger('change');
-            $('#dime_find_item_classification_subtype').select2('open');
+            $('#'+date_start_id).trigger('change');
+            $('#'+subtype_id).select2('open');
             return true;
         }
         
         var goupoption = $('<option value="up"> ↖</option>');
         if(target.split('.').length < 3 ){
-            $('#dime_find_item_classification_subtype').empty();
-            $('#dime_find_item_classification_subtype').append(goupoption);
+            $('#'+subtype_id).empty();
+            $('#'+subtype_id).append(goupoption);
             for (var subtype in subtypevocabulary) {
                 if( target.split('.')[0] == subtype.split('.')[0] && target.split('.')[1] == subtype.split('.')[1]) {
-                    subtypevocabulary[subtype].optionelement.appendTo('#dime_find_item_classification_subtype');
+                    subtypevocabulary[subtype].optionelement.appendTo('#'+subtype_id);
                 }
             }
             
-            $('#dime_find_item_classification_subtype').val(target);
+            $('#'+subtype_id).val(target);
             
             buildSubtypeSelect2();
             
-            $('#dime_find_item_classification_subtype').select2('open');
+            $('#'+subtype_id).select2('open');
         }
         
-        var current_start_year = parseInt($('#dime_find_item_dating_year').val())
+        var current_start_year = parseInt($('#'+date_start_id).val())
         var target_start_year = parseInt(subtypevocabulary[target].parameters.year_start.value);
 
-        var current_end_year = parseInt($('#dime_find_item_dating_year_span').val())
+        var current_end_year = parseInt($('#'+date_start_id+'_span').val())
         var target_end_year = parseInt(subtypevocabulary[target].parameters.year_end.value);
         
         console.log([target,"target",target_start_year,target_end_year,"current", current_start_year, current_end_year]);
         
         if ( isNaN(current_start_year) || current_start_year < target_start_year || current_start_year > target_end_year ){
             console.log('changeing start');
-            $('#dime_find_item_dating_year').val(target_start_year);
+            $('#'+date_start_id).val(target_start_year);
         }
         
         if ( isNaN(current_end_year) || current_end_year > target_end_year || current_end_year < target_start_year ){
             console.log('changeing end');
-            $('#dime_find_item_dating_year_span').val(target_end_year);
+            $('#'+date_start_id+'_span').val(target_end_year);
         }
 
-        $('#dime_find_item_dating_year').attr({
+        $('#'+date_start_id).attr({
             "min" : target_start_year
          });
         
-        $('#dime_find_item_dating_year_span').attr({
+        $('#'+date_start_id+'_span').attr({
             "max" : target_end_year
         });
 
-        $('#dime_find_item_dating_year').trigger('keyup');
-        $('#dime_find_item_dating_year_span').trigger('keyup');
+        $('#'+date_start_id).trigger('keyup');
+        $('#'+date_start_id+'_span').trigger('keyup');
         
     });
     

@@ -44,16 +44,21 @@ function initialisePickMap() {
     });
 
     mapPickLayers.push(vector);
+    
+    var denmarkExtent = [813900, 7262100, 1798900, 7959750];
+    
+    var mapPickView = new ol.View({
+        center: [(denmarkExtent[0]+denmarkExtent[2])/2, (denmarkExtent[1]+denmarkExtent[3])/2],
+        //center: [531578, 6295675],
+        zoom: 6,
+        minZoom: 6
+    });
 
     var mapPickMap = new ol.Map({
         layers: mapPickLayers,
         loadTilesWhileInteracting: true,
         target: 'mappick',
-        view: new ol.View({
-            center: [965972, 7575813],
-            //center: [531578, 6295675],
-            zoom: 5
-        }),
+        view: mapPickView,
         controls: [new ol.control.FullScreen()],
     });
 
@@ -124,6 +129,35 @@ function initialisePickMap() {
 
     //$('.mappick-fields input').change();
     updateMapPoint();
+    
+    
+    var constrainPan = debounce(function() {
+        
+        var visible = mapPickView.calculateExtent(mapPickMap.getSize());
+        var centre = mapPickView.getCenter();
+        var delta;
+        var adjust = false;
+        if ((delta = denmarkExtent[0] - visible[0]) > 0) {
+            adjust = true;
+            centre[0] += delta;
+        } else if ((delta = denmarkExtent[2] - visible[2]) < 0) {
+            adjust = true;
+            centre[0] += delta;
+        }
+        if ((delta = denmarkExtent[1] - visible[1]) > 0) {
+            adjust = true;
+            centre[1] += delta;
+        } else if ((delta = denmarkExtent[3] - visible[3]) < 0) {
+            adjust = true;
+            centre[1] += delta;
+        }
+        if (adjust) {
+            mapPickView.setCenter(centre);
+        }
+    }, 10, false);
+    
+    mapPickView.on('change:resolution', constrainPan);
+    mapPickView.on('change:center', constrainPan);
 };
 
 function updateMunicipality() {
