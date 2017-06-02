@@ -40,35 +40,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class DimeFormController extends DimeController
 {
-
     public function handleRequest(Request $request, $page, $redirect = null, $options = [], $context = [])
     {
         $page = ORM::find(Page::class, $page);
         $data = $this->buildData($request, $page);
-
-        // TODO Make generic somehow?
-        $mode = 'view';
-        $actor = Service::workflow()->actor();
-        if ($actor && $actor->id() != 'anonymous') {
-            if ($page->defaultMode() == 'edit') {
-                $item = $data[$page->content()->name()];
-                // HACK Do properly in permissions!!!
-                if ($page->name() == 'dime_page_claim' || Service::workflow()->can($actor, 'edit', $item)) {
-                    $role = $actor->roles()[0];
-                    $process = $item->property('process')->value();
-                    // HACK Do using workflow!
-                    if ($role->id() != 'detectorist' || $process->name() == 'recorded') {
-                        $mode = 'edit';
-                    }
-                }
-            }
-        }
-
         $context['page_config'] = $this->pageConfig($request->attributes->get('_route'));
-        return $page->handleRequest($request, $data, $options, $context, [
-            $this,
-            'processForm'
-        ]);
+        return $page->handleRequest($request, $data, $options, $context, [$this, 'processForm']);
     }
 
     public function buildData(Request $request, Page $page)

@@ -133,6 +133,9 @@ class Widget extends Element
         if (is_array($data) && isset($data[$dataKey])) {
             $data = $data[$dataKey];
         }
+        if ($data === null && $this->vocabulary && $options['required']) {
+            $data = $this->vocabulary->defautlTerm();
+        }
         $options = $this->formOptions($mode, $data, $options);
         // TODO check workflow instead!
         if ($this->mode == 'view' || $mode == 'edit') {

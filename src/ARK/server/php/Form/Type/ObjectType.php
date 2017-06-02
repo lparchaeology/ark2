@@ -145,15 +145,12 @@ class ObjectType extends AbstractType implements DataMapperInterface
     public function mapFormsToData($forms, &$property)
     {
         $forms = iterator_to_array($forms);
-        $attribute = $property->attribute();
-        if ($attribute->format()->hasAttributes()) {
-            $value = [];
-            foreach ($forms as $key => $form) {
-                $value[$key] = $forms[$key]->getData();
-            }
-        } else {
-            $value = $forms[$attribute->name()]->getData();
+        $value = [];
+        foreach ($forms as $id => $form) {
+            $value[$id] = $form->getData();
+            dump($value[$id]);
         }
+        dump($value);
         $property->setValue($value);
     }
 }

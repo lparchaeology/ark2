@@ -61,6 +61,9 @@ class UserRegisterController extends DimeFormController
     {
         $data = $form->getData();
         $item = $data[$form->getName()];
+        dump($form);
+        dump($data);
+        dump($item);
         return Service::redirectPath($redirect);
     }
 }

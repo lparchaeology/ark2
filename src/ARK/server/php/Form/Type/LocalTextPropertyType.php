@@ -66,7 +66,7 @@ class LocalTextPropertyType extends AbstractPropertyType
         $forms['language']->setData($language);
 
         if ($text instanceof LocalText) {
-            $forms['previous']->setData(serialize($text->contents()));
+            $forms['previous']->setData(json_encode($text->contents()));
             $forms['mediatype']->setData($text->mediaType());
             $forms['content']->setData($text->content($language));
         }
@@ -76,7 +76,10 @@ class LocalTextPropertyType extends AbstractPropertyType
     {
         $forms = iterator_to_array($forms);
         $data = new LocalText();
-        $data->setContents(unserialize($forms['previous']->getData()));
+        $previous = json_decode($forms['previous']->getData());
+        if (is_array($previous)) {
+            $data->setContents($previous);
+        }
         $data->setMediaType($forms['mediatype']->getData());
         $data->setContent($forms['content']->getData(), $forms['language']->getData());
         $property->setValue($data);
