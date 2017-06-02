@@ -59,10 +59,10 @@ class UserRegisterController extends DimeFormController
 
     public function processForm(Request $request, $form, $redirect)
     {
-        $data = $form->getData();
-        $item = $data[$form->getName()];
         dump($form);
+        $data = $form->getData();
         dump($data);
+        $item = $data[$form->getId()];
         dump($item);
         return Service::redirectPath($redirect);
     }

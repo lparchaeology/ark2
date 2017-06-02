@@ -148,9 +148,7 @@ class ObjectType extends AbstractType implements DataMapperInterface
         $value = [];
         foreach ($forms as $id => $form) {
             $value[$id] = $form->getData();
-            dump($value[$id]);
         }
-        dump($value);
         $property->setValue($value);
     }
 }
