@@ -47,6 +47,7 @@ class Cell
     protected $col = 0;
     protected $seq = 0;
     protected $itemType = null;
+    protected $width = null;
     protected $label = null;
     protected $required = null;
     protected $sanitise = null;
@@ -94,6 +95,11 @@ class Cell
     public function map()
     {
         return $this->map;
+    }
+
+    public function width()
+    {
+        return $this->width;
     }
 
     public function showLabel()
@@ -151,6 +157,7 @@ class Cell
             if ($this->sanitise()) {
                 $this->optionsArray['sanitise'] = $this->sanitise();
             }
+            $this->optionsArray['cell']['width'] = $this->width();
             $this->optionsArray['cell']['keyword'] = $this->keyword();
             $this->optionsArray['cell']['value']['modus'] = $this->valueModus();
             $this->optionsArray['cell']['parameter']['modus'] = $this->parameterModus();
@@ -215,6 +222,7 @@ class Cell
         $builder->addStringKey('itemType', 30, 'item_type');
 
         // Fields
+        $builder->addField('width', 'integer');
         $builder->addField('label', 'boolean');
         $builder->addStringField('mode', 10);
         $builder->addStringField('sanitise', 10);

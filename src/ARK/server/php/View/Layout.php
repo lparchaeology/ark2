@@ -75,7 +75,7 @@ abstract class Layout extends Element
 
     public function formName()
     {
-        return $this->name;
+        return $this->name ?: parent::formName();
     }
 
     public function schema()
@@ -124,6 +124,7 @@ abstract class Layout extends Element
         //dump($options);
         $mode = $this->displayMode($mode);
         if ($this->form) {
+            $data = (isset($data[$this->name]) ? $data[$this->name] : null);
             $builder = $this->formBuilder($data, $options);
             if ($this->method) {
                 $builder->setMethod($this->method);
@@ -143,12 +144,20 @@ abstract class Layout extends Element
 
     public function buildForm(FormBuilderInterface $builder, $mode, $data, $dataKey, $options = [])
     {
-        //dump('BUILD : '.$this->element);
+        //dump('BUILD : '.$this->element.' '.$this->name);
         //dump($mode);
         //dump($data);
         //dump($options);
+        if (!$this->form && $this->name) {
+            $dataKey = $this->name;
+            //$data = (isset($data[$this->name]) ? $data[$this->name] : null);
+            $layoutBuilder = $this->formBuilder($data, $options);
+            $builder->add($layoutBuilder);
+        } else {
+            $layoutBuilder = $builder;
+        }
         foreach ($this->cells() as $cell) {
-            $cell->buildForm($builder, $mode, $data, $dataKey, $options);
+            $cell->buildForm($layoutBuilder, $mode, $data, $dataKey, $options);
         }
     }
 
@@ -165,9 +174,9 @@ abstract class Layout extends Element
                 $context['sanitise'] = null;
             }
             $context['mode'] = $this->displayMode($mode);
-            $context['data'] = $data;
+            $context['data'] = (isset($data[$this->name]) ? $data[$this->name] : $data);
             $context['forms'] = $forms;
-            $context['form'] = $form;
+            $context['form'] = (isset($form[$this->name]) ? $form[$this->name] : $form);
             if (isset($context['label']) && $context['label'] === true) {
                 $context['label'] = $this->keyword();
             } else {

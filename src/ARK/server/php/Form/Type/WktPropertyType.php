@@ -78,6 +78,9 @@ class WktPropertyType extends AbstractPropertyType
 
     public function mapFormsToData($forms, &$property)
     {
+        if (!$property instanceof Property) {
+            return;
+        }
         $forms = iterator_to_array($forms);
         $point = Point::xy($forms['easting']->getData(), $forms['northing']->getData(), $forms['srid']->getData());
         $value['geometry'] = $point->asText();

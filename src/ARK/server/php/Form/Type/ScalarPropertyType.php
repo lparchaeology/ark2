@@ -92,20 +92,21 @@ class ScalarPropertyType extends AbstractPropertyType
         }
     }
 
-    public function mapFormsToData($forms, &$value)
+    public function mapFormsToData($forms, &$property)
     {
+        if (!$property instanceof Property) {
+            return;
+        }
         $forms = iterator_to_array($forms);
-        if ($value instanceof Property) {
-            $format = $value->attribute()->format();
-            $val = null;
-            if ($format->isAtomic()) {
-                $val = $forms[$format->valueName()]->getData();
-            } else {
-                foreach ($forms as $key => $form) {
-                    $val[$key] = $forms[$key]->getData();
-                }
+        $format = $property->attribute()->format();
+        $value = null;
+        if ($format->isAtomic()) {
+            $value = $forms[$format->valueName()]->getData();
+        } else {
+            foreach ($forms as $key => $form) {
+                $value[$key] = $forms[$key]->getData();
             }
         }
-        $value->setValue($val);
+        $property->setValue($value);
     }
 }

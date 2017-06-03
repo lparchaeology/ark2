@@ -59,12 +59,13 @@ class VocabularyPropertyType extends ScalarPropertyType
         $vocabularyForm->setData($attribute->vocabulary()->concept());
     }
 
-    public function mapFormsToData($forms, &$data)
+    public function mapFormsToData($forms, &$property)
     {
-        $forms = iterator_to_array($forms);
-        if ($data instanceof Property) {
-            $data->setValue($forms[$data->attribute()->format()->valueName()]->getData());
+        if (!$property instanceof Property) {
+            return;
         }
+        $forms = iterator_to_array($forms);
+        $property->setValue($forms[$property->attribute()->format()->valueName()]->getData());
     }
 
     public function getParent()

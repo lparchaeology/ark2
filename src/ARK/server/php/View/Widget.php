@@ -49,17 +49,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class Widget extends Element
 {
-    protected $forceName = false;
     protected $label = true;
     protected $vocabulary = null;
     protected $formTypeClass = '';
     protected $formOptions = '';
     protected $formOptionsArray = null;
-
-    public function forceName()
-    {
-        return $this->forceName;
-    }
 
     public function showLabel()
     {
@@ -134,7 +128,7 @@ class Widget extends Element
             $data = $data[$dataKey];
         }
         if ($data === null && $this->vocabulary && $options['required']) {
-            $data = $this->vocabulary->defautlTerm();
+            $data = $this->vocabulary->defaultTerm();
         }
         $options = $this->formOptions($mode, $data, $options);
         // TODO check workflow instead!
@@ -163,7 +157,6 @@ class Widget extends Element
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_widget');
 
         // Fields
-        $builder->addField('forceName', 'boolean', [], 'force_name');
         $builder->addField('label', 'boolean');
         $builder->addStringField('mode', 10);
         $builder->addStringField('template', 100);

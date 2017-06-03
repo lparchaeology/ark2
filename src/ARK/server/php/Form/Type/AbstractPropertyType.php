@@ -52,6 +52,8 @@ abstract class AbstractPropertyType extends AbstractType implements DataMapperIn
         'field' => null,
         'hidden' => false,
         'mode' => 'view',
+        'sanitise' => null,
+        'cell' => null,
     ];
 
     protected function options()
@@ -112,6 +114,9 @@ abstract class AbstractPropertyType extends AbstractType implements DataMapperIn
     // Use to map child form elements to parent data model
     public function mapFormsToData($forms, &$property)
     {
+        if (!$property instanceof Property) {
+            return;
+        }
         $forms = iterator_to_array($forms);
         $name = $property->attribute()->name();
         $value = $forms[$name]->getData();

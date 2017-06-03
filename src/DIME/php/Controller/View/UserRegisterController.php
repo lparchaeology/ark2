@@ -39,6 +39,7 @@ use ARK\Actor\Actor;
 use ARK\Actor\Person;
 use ARK\Model\Module;
 use ARK\Model\Schema;
+use ARK\Security\User;
 use DIME\DIME;
 use DIME\Controller\View\DimeFormController;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,9 +53,9 @@ class UserRegisterController extends DimeFormController
 
     public function buildData(Request $request, Page $page)
     {
-        $data[$page->content()->name()] = new Person;
-        dump($data[$page->content()->name()]->property('license'));
-        return $data;
+        $data['actor'] = new Person;
+        $data['terms'] = $data['actor']->property('terms')->attribute()->defaultValue();
+        return [$page->content()->formName() => $data];
     }
 
     public function processForm(Request $request, $form, $redirect)
@@ -62,8 +63,11 @@ class UserRegisterController extends DimeFormController
         dump($form);
         $data = $form->getData();
         dump($data);
-        $item = $data[$form->getId()];
-        dump($item);
+        $credentials = $data['credentials'];
+        $actor = $data['actor'];
+        //$actor->setId($credentials['username']);
+        //$user = new User();
+        //$actor->addRole($role);
         return Service::redirectPath($redirect);
     }
 }

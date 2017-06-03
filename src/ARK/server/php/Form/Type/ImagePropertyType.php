@@ -64,5 +64,8 @@ class ImagePropertyType extends AbstractPropertyType
 
     public function mapFormsToData($forms, &$property)
     {
+        if (!$property instanceof Property) {
+            return;
+        }
     }
 }

@@ -73,6 +73,9 @@ class ItemPropertyType extends AbstractPropertyType
 
     public function mapDataToForms($property, $forms)
     {
+        if (!$property instanceof Property) {
+            return;
+        }
         $item = $this->value($property, $forms);
         $forms = iterator_to_array($forms);
         if ($item instanceof Item) {
@@ -102,6 +105,9 @@ class ItemPropertyType extends AbstractPropertyType
 
     public function mapFormsToData($forms, &$property)
     {
+        if (!$property instanceof Property) {
+            return;
+        }
         $forms = iterator_to_array($forms);
         $module = $forms['module']->getData();
         $item = $forms['item']->getData();

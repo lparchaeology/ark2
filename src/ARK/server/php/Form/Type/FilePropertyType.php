@@ -72,6 +72,9 @@ class FilePropertyType extends AbstractPropertyType
 
     public function mapFormsToData($forms, &$property)
     {
+        if (!$property instanceof Property) {
+            return;
+        }
         $forms = iterator_to_array($forms);
         $text = unserialize($forms['previous']->getData());
         $language = $forms['language']->getData();

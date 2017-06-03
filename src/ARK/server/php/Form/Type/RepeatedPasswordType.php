@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Event Form Type
+ * ARK Repeated Password Form Type
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,42 +25,31 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=7.0
+ * @php        >=5.6, >=7.0
  */
-
 namespace ARK\Form\Type;
 
-use ARK\Form\Type\ScalarPropertyType;
-use ARK\Model\Property;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ItemChoicePropertyType extends ScalarPropertyType
+class RepeatedPasswordType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $builder->setDataMapper($this);
-    }
-
-    public function mapDataToForms($data, $forms)
-    {
-        if (!$property instanceof Property) {
-            return;
-        }
-        $value = $this->value($property, $forms);
-        $forms = iterator_to_array($forms);
-    }
-
-    public function mapFormsToData($forms, &$data)
-    {
-        if (!$property instanceof Property) {
-            return;
-        }
-        $forms = iterator_to_array($forms);
+        $resolver->setDefaults([
+            'type' => PasswordType::class,
+            'invalid_message' => 'core.user.password.match',
+            'options' => array('attr' => array('class' => 'password-field')),
+            'first_options'  => array('label' => 'core.user.password'),
+            'second_options' => array('label' => 'core.user.password.repeat'),
+            'field' => null,
+        ]);
     }
 
     public function getParent()
     {
-        return ScalarPropertyType::class;
+        return RepeatedType::class;
     }
 }
