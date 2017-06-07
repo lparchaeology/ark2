@@ -8,6 +8,9 @@ $('document').ready(function(){
   
   var query = {"concept":"dime.period"};
   
+  $(".classification-holder").append($('#find_item_type_term').clone().attr('id', '#find_item_type_term-modal'));
+  
+  
   $.post(path + 'api/internal/vocabulary', JSON.stringify(query) )
   .fail(function() {
       console.log('Error fetching period vocabulary');
