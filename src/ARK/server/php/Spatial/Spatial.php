@@ -63,14 +63,12 @@ class Spatial
             }
             $this->projections[$srid] = new Proj('EPSG:'.$srid, $this->proj());
         }
-        dump($this->projections[$srid]);
         return $this->projections[$srid];
     }
 
     public function transform(Point $point, $toSrid)
     {
         $source = new ProjPoint($point->x(), $point->y(), $this->projection($point->SRID()));
-        dump($source);
         $dest = $this->proj()->transform($this->projection($toSrid), $source);
         return Point::xy((int)$dest->__get('x'), (int)$dest->__get('y'), $toSrid);
     }

@@ -53,14 +53,19 @@ class SecurityServiceProvider implements ServiceProviderInterface
             return new Security($app);
         };
 
-        // HACK translate as needed!
-        //$user = $container->translate('core.user', 'resource');
-        $user = 'users';
+        // Can't use translation here :-(
+        $paths = $container['ark']['security']['user_paths'][$container['locale']];
+        $root = $paths['root'];
+        $login = $paths['login'];
+        $check = $paths['check'];
+        $logout = $paths['logout'];
+        $register = $paths['register'];
+        $reset = $paths['reset'];
 
         // Configure Symfony Security Firewalls
         $container['security.firewalls'] = [];
         $container->extendArray('security.firewalls', 'login_area', [
-            'pattern' => "(^/$user/login$)|(^/$user/register$)|(^/$user/reset$)",
+            'pattern' => "(^$login$)|(^$register$)|(^$reset$)",
             'anonymous' => true
         ]);
         $container->extendArray('security.firewalls', 'default', [
@@ -68,11 +73,11 @@ class SecurityServiceProvider implements ServiceProviderInterface
             'anonymous' => true,
             'remember_me' => [],
             'form' => [
-                'login_path' => "/$user/login",
-                'check_path' => "/$user/check"
+                'login_path' => $login,
+                'check_path' => $check
             ],
             'logout' => [
-                'logout_path' => "/$user/logout"
+                'logout_path' => $logout
             ],
             'users' => function ($app) {
                 return $app['user.provider'];
@@ -80,11 +85,11 @@ class SecurityServiceProvider implements ServiceProviderInterface
         ]);
         $container['security.access_rules'] = [
             [
-                "(^/$user/login$)|(^/$user/register$)|(^/$user/reset$)|(^/$user/check$)",
+                "(^$login$)|(^$register$)|(^$reset$)|(^$check$)",
                 "IS_AUTHENTICATED_ANONYMOUSLY"
             ],
             [
-                "(^/$user)",
+                "(^$root)",
                 "ROLE_USER"
             ],
             [

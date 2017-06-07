@@ -34,14 +34,12 @@ use Silex\Api\ControllerProviderInterface;
 
 class ViewControllerProvider implements ControllerProviderInterface
 {
-
     public function connect(Application $app)
     {
         // HACK for translated routing, replace later with DynamicRouter
         // Module Resources
         $finds = $app->translate('dime.find', 'resource');
         $actors = $app->translate('core.actor', 'resource');
-        $user = $app->translate('core.user', 'resource');
         $files = $app->translate('core.file', 'resource');
         $events = $app->translate('core.event', 'resource');
         $messages = $app->translate('core.message', 'resource');
@@ -64,22 +62,25 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers->get("/img/{image}", 'DIME\Controller\API\ImageController')->bind('img');
 
         // User Routes
-        $controllers->match("/$user/register", 'DIME\Controller\View\UserRegisterController')
+        $paths = $app['ark']['security']['user_paths'][$app['locale']];
+        $controllers->match($paths['register'], 'DIME\Controller\View\UserRegisterController')
             ->method('GET|POST')
             ->bind('user.register');
-        $controllers->match("/$user/reset", 'DIME\Controller\View\UserResetController')
+        $controllers->match($paths['reset'], 'DIME\Controller\View\UserResetController')
             ->method('GET|POST')
             ->bind('user.reset');
-        $controllers->match("/$user/confirm", 'DIME\Controller\View\UserConfirmController')
+        $controllers->match($paths['root'], 'DIME\Controller\View\UserConfirmController')
             ->method('GET')
             ->bind('user.confirm');
-        $controllers->match("/$user/login", 'DIME\Controller\View\UserLoginController')
+        $controllers->match($paths['login'], 'DIME\Controller\View\UserLoginController')
             ->method('GET')
             ->bind('user.login');
-        $controllers->match("/$user/check", function () {})
+        $controllers->match($paths['check'], function () {
+        })
             ->method('GET|POST')
             ->bind('user.check');
-        $controllers->match("/$user/logout", function () {})
+        $controllers->match($paths['logout'], function () {
+        })
             ->method('GET')
             ->bind('user.logout');
 
