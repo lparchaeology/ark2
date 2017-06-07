@@ -41,17 +41,13 @@ class UserProvider implements UserProviderInterface
     // UserProviderInterface
     public function loadUserByUsername($username)
     {
-        dump('load user '.$username);
         $user = $this->findByUsername($username);
         if (!$user) {
-            dump('not username, try email');
             $user = $this->findByEmail($username);
         }
         if (!$user) {
-            dump('not email, fail');
             throw new UsernameNotFoundException("User $username not found.");
         }
-        dump('found user');
         dump($user);
         return $user;
     }

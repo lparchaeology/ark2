@@ -57,7 +57,6 @@ class FilePropertyType extends ItemPropertyType
             return;
         }
         $forms = iterator_to_array($forms);
-        dump($forms);
         $forms['avatar']->getData()->move($dir, $someNewFilename);
         $property->setValue($values);
     }

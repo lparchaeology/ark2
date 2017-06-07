@@ -182,14 +182,12 @@ class Security
         $user->enable();
         ORM::persist($user);
         if ($actor && $role) {
-            dump($actor);
             $actorUser = new ActorUser($actor, $user);
             $actorRole = new ActorRole($actor, $role);
             ORM::persist($actor);
             ORM::persist($actorUser);
             ORM::persist($actorRole);
             ORM::flush($actor);
-            dump($actor);
         }
         ORM::flush($user);
         if ($this->options['verifyEmail']) {
