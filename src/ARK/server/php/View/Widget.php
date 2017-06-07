@@ -94,6 +94,7 @@ class Widget extends Element
             $options['label'] = $this->showLabel();
         }
         if ($options['label']) {
+            //dump($cellOptions);
             if ($cellOptions['keyword']) {
                 $options['label'] = $cellOptions['keyword'];
             } elseif ($this->keyword()) {
@@ -146,7 +147,7 @@ class Widget extends Element
         $options = $this->buildOptions($mode, $data, $options);
         // TODO check workflow instead!
         if ($this->mode == 'view' || $mode == 'edit') {
-            $widgetBuilder = $this->formBuilder($mode, $data, $options, $cellName);
+            $widgetBuilder =  $this->formBuilder($mode, $data, $options, $cellName);
             $builder->add($widgetBuilder);
         }
     }
@@ -154,7 +155,9 @@ class Widget extends Element
     public function renderView($mode, $data, array $context = [], $forms = null, $form = null)
     {
         //dump('RENDER WIDGET : '.$this->formName());
-        if (isset($form[$this->formName()])) {
+        //dump($form);
+        //dump($context);
+        if ($form) {
             $context['widget'] = $this;
             $context['mode'] = $mode;
             if (isset($form->vars['id'])) {
@@ -166,7 +169,7 @@ class Widget extends Element
             $data = $this->formData($mode, $data, $options);
             $context['data'] = $data;
             $context['forms'] = $forms;
-            $context['form'] = $form[$this->formName()];
+            $context['form'] = $form;
             //dump($context);
             return Service::view()->renderView($this->template(), $context);
         }

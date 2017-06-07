@@ -63,8 +63,7 @@ class FindViewController extends DimeFormController
 
     public function processForm(Request $request, $form, $redirect)
     {
-        $data = $this->getData($form);
-        $find = $data['find'];
+        $find = $this->getData($form);
         ORM::persist($find);
         if (isset($data['actions'])) {
             $action = $data['actions'];

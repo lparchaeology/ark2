@@ -140,18 +140,18 @@ class Page extends Element
         return $context;
     }
 
-    public function postedForm($request, $forms)
+    private function postedForm($request, $forms)
     {
-        if ($forms && $request->getMethod() == 'POST') {
-            foreach ($forms as $id => $form) {
-                $name = $form->getName();
-                if ($request->request->has($name)) {
-                    $form->handleRequest($request);
-                    if ($form->isSubmitted() && $form->isValid()) {
-                        return $form;
-                    }
-                    break;
+        foreach ($forms as $id => $form) {
+            $name = $form->getName();
+            if ($request->request->has($name)) {
+                $form->handleRequest($request);
+                if ($form->isSubmitted() && $form->isValid()) {
+                    return $form;
                 }
+            }
+            if ($ret = $this->postedForm($request, $form)) {
+                return $ret;
             }
         }
         return null;
@@ -177,8 +177,9 @@ class Page extends Element
         //dump($actor);
         //dump($item);
         //dump($mode);
+        //dump($request);
         //dump($forms);
-        if ($posted = $this->postedForm($request, $forms)) {
+        if ($forms && $request->getMethod() == 'POST' && $posted = $this->postedForm($request, $forms)) {
             if (!$redirect) {
                 $redirect = $request->attributes->get('_route');
             }

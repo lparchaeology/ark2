@@ -208,6 +208,12 @@ class Cell
         if (!isset($context['sanitise']) || $this->sanitise()) {
             $context['sanitise'] = $this->sanitise();
         }
+        if ($form && isset($form[$this->name])) {
+            $form = $form[$this->name];
+        }
+        //if ($form === null && isset($forms[$this->name])) {
+        //    $form = $forms[$this->name];
+        //}
         if ($this->dataKey && is_array($data) && array_key_exists($this->dataKey, $data)) {
             $data = $data[$this->dataKey];
         }

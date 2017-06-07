@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 07, 2017 at 11:46 AM
+-- Generation Time: Jun 07, 2017 at 05:04 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -5292,7 +5292,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `enabled`, `deprecated`, `key
 ('core_widget_save', 'widget', 1, 0, 'core.button.save'),
 ('core_widget_search', 'widget', 1, 0, 'core.button.search'),
 ('core_widget_send', 'widget', 1, 0, 'core.widget.send'),
-('core_widget_submit', 'widget', 1, 0, NULL),
+('core_widget_submit', 'widget', 1, 0, 'core.widget.submit'),
 ('dime_find_actions', 'widget', 1, 0, 'dime.actions'),
 ('dime_find_add', 'grid', 1, 0, NULL),
 ('dime_find_apply', 'grid', 1, 0, NULL),
@@ -5505,7 +5505,7 @@ INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `elemen
 ('core_file_item', 0, 0, 3, '', 'core_file_title', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('core_file_item', 0, 0, 4, '', 'core_file_status', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('core_file_item', 0, 0, 5, '', 'core_file_description', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('core_file_item', 0, 1, 1, '', 'core_widget_save', 'save', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('core_file_item', 0, 1, 1, '', 'core_widget_submit', 'save', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL),
 ('core_file_list', 0, 0, 0, '', 'core_file_id', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('core_file_list', 0, 0, 1, '', 'core_file_type', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('core_message_item', 0, 0, 0, '', 'core_message_type', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'static', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
@@ -5551,10 +5551,10 @@ INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `elemen
 ('dime_find_event', 0, 0, 6, '', 'dime_find_finder_id', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_event', 0, 0, 8, '', 'dime_find_finddate', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_filter', 0, 0, 0, '', 'dime_find_filter_municipality', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_find_filter', 0, 1, 0, '', 'dime_find_filter_type', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_find_filter', 0, 2, 0, '', 'dime_find_filter_period', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_find_filter', 0, 3, 0, '', 'dime_find_filter_material', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_find_filter', 0, 4, 0, '', 'core_widget_search', 'search', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_find_filter', 0, 2, 0, '', 'dime_find_filter_type', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_find_filter', 0, 4, 0, '', 'dime_find_filter_period', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_find_filter', 0, 6, 0, '', 'dime_find_filter_material', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_find_filter', 0, 8, 0, '', 'core_widget_submit', 'search', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_geo', 0, 0, 0, '', 'dime_find_location', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_geo', 0, 0, 2, '', 'dime_find_municipality', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_geo', 0, 0, 4, '', 'dime_find_museum', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
@@ -5563,7 +5563,7 @@ INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `elemen
 ('dime_find_item', 0, 0, 4, '', 'dime_find_photo', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_item', 0, 1, 0, '', 'dime_find_artefact', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_item', 0, 1, 1, '', 'dime_find_status', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_find_item', 0, 1, 4, '', 'core_widget_save', 'save', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_find_item', 0, 1, 4, '', 'core_widget_submit', 'save', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_list', 0, 0, 0, '', 'dime_find_id', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_list', 0, 0, 1, '', 'dime_find_finder_id', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_list', 0, 0, 2, '', 'dime_find_type', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
@@ -5571,8 +5571,8 @@ INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `elemen
 ('dime_find_map', 0, 0, 0, '', 'dime_find_id', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_map', 0, 0, 1, '', 'dime_find_location', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_news', 0, 0, 0, '', 'dime_find_list', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_find_photo', 0, 0, 1, '', 'dime_find_images', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_find_search', 0, 0, 0, '', 'dime_find_filter', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_find_photo', 0, 0, 1, '', 'dime_find_images', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_find_search', 0, 0, 0, '', 'dime_find_filter', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_search', 1, 0, 0, '', 'dime_find_list', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_search', 1, 1, 0, '', 'dime_find_map', NULL, NULL, 'dime_map_public', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_status', 0, 0, 0, '', 'dime_find_process', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'static', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),

@@ -178,10 +178,10 @@ abstract class Layout extends Element
             $data = $this->formData($mode, $data, $context);
             $context = $this->viewContext($mode, $data, $context);
             $context['layout'] = $this;
-            if ($forms && $form === null && isset($forms[$this->formName()])) {
-                $form = $forms[$this->formName()];
+            if ($forms && $form === null && isset($forms[$this->formName($context['cell']['name'])])) {
+                $form = $forms[$this->formName($context['cell']['name'])];
             }
-            $form = (isset($form[$this->formName()]) ? $form[$this->formName()] : $form);
+            $form = (isset($form[$this->formName($context['cell']['name'])]) ? $form[$this->formName($context['cell']['name'])] : $form);
             $context['forms'] = $forms;
             $context['form'] = $form;
             if (isset($context['label']) && $context['label'] === true) {

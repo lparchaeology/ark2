@@ -44,9 +44,9 @@ function initialisePickMap() {
     });
 
     mapPickLayers.push(vector);
-    
+
     var denmarkExtent = [813900, 7262100, 1798900, 7959750];
-    
+
     var mapPickView = new ol.View({
         center: [(denmarkExtent[0]+denmarkExtent[2])/2, (denmarkExtent[1]+denmarkExtent[3])/2],
         //center: [531578, 6295675],
@@ -80,8 +80,8 @@ function initialisePickMap() {
     mapPickSource.on('addfeature', function() {
         mapPickSource.forEachFeature(function(feature) {
             coords = ol.proj.transform(feature.getGeometry().getCoordinates(), 'EPSG:3857', 'EPSG:4326');
-            $('#dime_find_item_location_easting').val(parseFloat(coords[0].toFixed(6)));
-            $('#dime_find_item_location_northing').val(parseFloat(coords[1].toFixed(6)));
+            $('#find_location_easting').val(parseFloat(coords[0].toFixed(6)));
+            $('#find_location_northing').val(parseFloat(coords[1].toFixed(6)));
             updateUtmPoint()
             mapPickMap.getView().setCenter(feature.getGeometry().getCoordinates());
             updateMunicipality();
@@ -129,10 +129,10 @@ function initialisePickMap() {
 
     //$('.mappick-fields input').change();
     updateMapPoint();
-    
-    
+
+
     var constrainPan = debounce(function() {
-        
+
         var visible = mapPickView.calculateExtent(mapPickMap.getSize());
         var centre = mapPickView.getCenter();
         var delta;
@@ -155,27 +155,27 @@ function initialisePickMap() {
             mapPickView.setCenter(centre);
         }
     }, 10, false);
-    
+
     mapPickView.on('change:resolution', constrainPan);
     mapPickView.on('change:center', constrainPan);
 };
 
 function updateMunicipality() {
-    easting = $('#dime_find_item_location_easting').val();
-    northing = $('#dime_find_item_location_northing').val();
+    easting = $('#find_location_easting').val();
+    northing = $('#find_location_northing').val();
     var wkt = 'POINT(' + easting + ' ' + northing + ')';
     $.post(path + 'api/geo/find', wkt, function(result) {
         // TODO Find way without using actual form IDs
-        $('#dime_find_item_municipality_term').val(result['municipality']['term']).trigger("change");
-        $('#dime_find_item_museum_module').val(result['museum']['module']);
-        $('#dime_find_item_museum_item').val(result['museum']['item']);
-        $('#dime_find_item_museum_content').val(result['museum']['name']).trigger("change");
+        $('#find_municipality_term').val(result['municipality']['term']).trigger("change");
+        $('#find_museum_module').val(result['museum']['module']);
+        $('#find_museum_item').val(result['museum']['item']);
+        $('#find_museum_display').val(result['museum']['name']).trigger("change");
     });
 }
 
 function updateMapPoint() {
-    easting = $('#dime_find_item_location_easting').val();
-    northing = $('#dime_find_item_location_northing').val();
+    easting = $('#find_location_easting').val();
+    northing = $('#find_location_northing').val();
     if (easting && northing) {
         coords = ol.proj.transform([parseFloat(easting), parseFloat(northing)], 'EPSG:4326', 'EPSG:3857');
         mapPickSource.clear();
@@ -186,21 +186,21 @@ function updateMapPoint() {
 }
 
 function updateDecimalPoint() {
-    easting = $('#dime_find_item_location_utmEasting').val();
-    northing = $('#dime_find_item_location_utmNorthing').val();
+    easting = $('#find_location_utmEasting').val();
+    northing = $('#find_location_utmNorthing').val();
     if (easting && northing) {
         coords = ol.proj.transform([parseFloat(easting), parseFloat(northing)], 'EPSG:32632', 'EPSG:4326');
-        $('#dime_find_item_location_easting').val(coords[0].toFixed(6));
-        $('#dime_find_item_location_northing').val(coords[1].toFixed(6));
+        $('#find_location_easting').val(coords[0].toFixed(6));
+        $('#find_location_northing').val(coords[1].toFixed(6));
     }
 }
 
 function updateUtmPoint() {
-    easting = $('#dime_find_item_location_easting').val();
-    northing = $('#dime_find_item_location_northing').val();
+    easting = $('#find_location_easting').val();
+    northing = $('#find_location_northing').val();
     if (easting && northing) {
         coords = ol.proj.transform([parseFloat(easting), parseFloat(northing)], 'EPSG:4326', 'EPSG:32632');
-        $('#dime_find_item_location_utmEasting').val(coords[0].toFixed(0));
-        $('#dime_find_item_location_utmNorthing').val(coords[1].toFixed(0));
+        $('#find_location_utmEasting').val(coords[0].toFixed(0));
+        $('#find_location_utmNorthing').val(coords[1].toFixed(0));
     }
 }

@@ -1,13 +1,13 @@
 $('document').ready(function(){
-    
+
     var query = {"concept":"dime.find.type"};
-    
-    var type_id = "find_item_type_term"
-    
-    var subtype_id = "find_item_classification_subtype";
-    
-    var date_start_id = "find_item_dating_year";
-    
+
+    var type_id = "find_type_term";
+
+    var subtype_id = "find_classification_subtype";
+
+    var date_start_id = "find_dating_year";
+
     var buildSubtypeSelect2 = function(){
 
         $('#'+subtype_id).select2({
@@ -25,21 +25,21 @@ $('document').ready(function(){
                 });
             },
         });
-        
+
         $('body').on({
             mouseenter: function () {
                 var item = $(this);
                 var highlighted_item_id = item.attr('id');
                 var highlighted_item_code = highlighted_item_id.split('-');
                 var highlighted_item_concept = highlighted_item_code[highlighted_item_code.length-1];
-                
+
                 if( typeof subtypevocabulary[highlighted_item_concept].parameters == undefined ){
                     var tooltip = "undefined";
                 } else {
                     var tooltip = subtypevocabulary[highlighted_item_concept].parameters.year_start.value+"\xa0\u2014\xa0"+subtypevocabulary[highlighted_item_concept].parameters.year_end.value;
                 }
-                
-               
+
+
                 var promise = new Promise(function(resolve) {
                     item.attr({"data-toggle":"tooltip","data-placement":"right","title":tooltip});
                     item.tooltip();
@@ -50,9 +50,9 @@ $('document').ready(function(){
                 });
            }
         }, '#select2-'+subtype_id+'-results .select2-results__option.select2-results__option--highlighted');
-        
+
     }
-    
+
     $.post(path + 'api/internal/vocabulary', JSON.stringify(query) )
     .fail(function() {
         console.log('Error fetching type vocabulary');
@@ -75,15 +75,15 @@ $('document').ready(function(){
         buildSubtypeSelect2();
         $('#'+date_start_id).trigger('change');
     });
-    
+
     $('#'+date_start_id).on('focusout', function(){
         console.log($(this).val());
     });
-    
+
     $('#'+date_start_id+'_span').on('focusout', function(){
         console.log($(this).val());
     });
-    
+
     $('#'+date_start_id).on('change', function(){
 
         var target = $(this).val();
@@ -96,20 +96,20 @@ $('document').ready(function(){
         }
 
         buildSubtypeSelect2();
-        
+
     });
-    
+
     $('#'+subtype_id).on('change', function(){
 
         var target = $(this).val();
         console.log(target);
-        
+
         if(target == "up"){
             $('#'+date_start_id).trigger('change');
             $('#'+subtype_id).select2('open');
             return true;
         }
-        
+
         var goupoption = $('<option value="up"> ↖</option>');
         if(target.split('.').length < 3 ){
             $('#'+subtype_id).empty();
@@ -119,27 +119,27 @@ $('document').ready(function(){
                     subtypevocabulary[subtype].optionelement.appendTo('#'+subtype_id);
                 }
             }
-            
+
             $('#'+subtype_id).val(target);
-            
+
             buildSubtypeSelect2();
-            
+
             $('#'+subtype_id).select2('open');
         }
-        
+
         var current_start_year = parseInt($('#'+date_start_id).val())
         var target_start_year = parseInt(subtypevocabulary[target].parameters.year_start.value);
 
         var current_end_year = parseInt($('#'+date_start_id+'_span').val())
         var target_end_year = parseInt(subtypevocabulary[target].parameters.year_end.value);
-        
+
         console.log([target,"target",target_start_year,target_end_year,"current", current_start_year, current_end_year]);
-        
+
         if ( isNaN(current_start_year) || current_start_year < target_start_year || current_start_year > target_end_year ){
             console.log('changeing start');
             $('#'+date_start_id).val(target_start_year);
         }
-        
+
         if ( isNaN(current_end_year) || current_end_year > target_end_year || current_end_year < target_start_year ){
             console.log('changeing end');
             $('#'+date_start_id+'_span').val(target_end_year);
@@ -148,14 +148,14 @@ $('document').ready(function(){
         $('#'+date_start_id).attr({
             "min" : target_start_year
          });
-        
+
         $('#'+date_start_id+'_span').attr({
             "max" : target_end_year
         });
 
         $('#'+date_start_id).trigger('keyup');
         $('#'+date_start_id+'_span').trigger('keyup');
-        
+
     });
-    
+
 })

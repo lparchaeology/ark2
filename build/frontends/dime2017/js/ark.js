@@ -9,7 +9,7 @@ $(document).ready(function() {
     // See https://github.com/select2/select2/issues/3278 and http://stackoverflow.com/a/41429176
     //$(".select2.select2-container").css("width", "100%");
     // HACK To add columns of checkboxes
-    $("#dime_find_item_secondary_term").css("width", "100%");
+    $("#find_secondary_term").css("width", "100%");
     $(".checkbox").addClass("col-xs-4 col-sm-4 col-lg-3");
     $("#edit_roles .checkbox").removeClass("col-xs-4 col-sm-4 col-lg-3");
     // Fake readonly mode
@@ -47,7 +47,7 @@ $(document).ready(function() {
 
     // FIXME Hide Bootstrap Table loading animation as is a bit broken
     $('.table-bootstrap-table').bootstrapTable('hideLoading');
-    
+
     // Bootstrap table seems to be ignoring the icons attribute so hack it here for now
     $('.btn-group[title="Columns"]').find('i.glyphicon-th').removeClass('glyphicon-th').addClass('glyphicon-th-list');
 
