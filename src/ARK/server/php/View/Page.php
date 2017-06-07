@@ -145,13 +145,13 @@ class Page extends Element
         foreach ($forms as $id => $form) {
             $name = $form->getName();
             if ($request->request->has($name)) {
-                $form->handleRequest($request);
+                $form->getRoot()->handleRequest($request);
                 if ($form->isSubmitted() && $form->isValid()) {
-                    return $form;
+                    return $form->getRoot();
                 }
             }
-            if ($ret = $this->postedForm($request, $form)) {
-                return $ret;
+            if ($root = $this->postedForm($request, $form)) {
+                return $root;
             }
         }
         return null;
@@ -178,8 +178,10 @@ class Page extends Element
         //dump($item);
         //dump($mode);
         //dump($request);
+        //dump($request->request);
         //dump($forms);
         if ($forms && $request->getMethod() == 'POST' && $posted = $this->postedForm($request, $forms)) {
+            //dump($posted);
             if (!$redirect) {
                 $redirect = $request->attributes->get('_route');
             }

@@ -45,7 +45,7 @@ abstract class DimeFormController extends DimeController
         $page = ORM::find(Page::class, $page);
         $data = $this->buildData($request);
         $context['page_config'] = $this->pageConfig($request->attributes->get('_route'));
-        return $page->handleRequest($request, $data, $options, $context, [$this, 'processForm']);
+        return $page->handleRequest($request, $data, $options, $context, [$this, 'processForm'], $redirect);
     }
 
     public function buildData(Request $request)
@@ -56,7 +56,7 @@ abstract class DimeFormController extends DimeController
     public function getData($form)
     {
         $data = $form->getData();
-        return $data[$form->getName()];
+        return array_key_exists($form->getName(), $data) ? $data[$form->getName()] : $data;
     }
 
     public function processForm(Request $request, $form, $redirect)

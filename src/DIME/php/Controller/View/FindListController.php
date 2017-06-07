@@ -93,6 +93,7 @@ class FindListController extends DimeFormController
             $finds = ORM::findBy(Find::class, [
                 'item' => $items
             ]);
+            Service::view()->addInfoFlash('dime.find.query.set');
         } else {
             $finds = ORM::findAll(Find::class);
         }

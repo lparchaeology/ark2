@@ -44,10 +44,8 @@ class UserLoginController extends DimeFormController
     public function __invoke(Request $request)
     {
         if ($error = Service::security()->lastError($request)) {
-            dump($error);
             Service::view()->addErrorFlash($error);
         }
-
         $context['last_username'] = Service::security()->lastUsername();
         return $this->handleRequest($request, 'core_page_user_login', null, [], $context);
     }

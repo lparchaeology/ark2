@@ -50,7 +50,7 @@ class TreasureClaimController extends DimeFormController
         return $this->handleRequest($request, 'dime_page_claim');
     }
 
-    public function buildData(Request $request, Page $page)
+    public function buildData(Request $request)
     {
         if (!$find = ORM::find(Find::class, $this->itemSlug)) {
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Find not found', "Find $this->itemSlug not found"));

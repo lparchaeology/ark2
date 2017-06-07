@@ -33,6 +33,7 @@ use ARK\View\Page;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Vocabulary\Term;
+use DIME\DIME;
 use DIME\Controller\View\DimeFormController;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,6 +59,26 @@ class FindAddController extends DimeFormController
         $find->property('custody')->setValue($custody);
         $treasure = ORM::find(Term::class, ['concept' => 'dime.treasure', 'term' => 'pending']);
         $find->property('treasure')->setValue($treasure);
-        return $find;
+        $data['find'] = $find;
+        $data['notifications'] = DIME::getUnreadNotifications();
+        $data['actions'] = Service::workflow()->actions(Service::workflow()->actor(), $find);
+        return $data;
+    }
+
+    public function processForm(Request $request, $form, $redirect)
+    {
+        $data = $form->getData();
+        $find = $data['find'];
+        ORM::persist($find);
+        if (isset($data['actions'])) {
+            $action = $data['actions'];
+            $actor = Service::workflow()->actor();
+            //$action->apply($actor, $item);
+        }
+        ORM::flush($find);
+        Service::view()->addSuccessFlash('dime.find.add.success');
+        return Service::redirectPath($redirect, [
+            'itemSlug' => $find->id()
+        ]);
     }
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 07, 2017 at 05:04 PM
+-- Generation Time: Jun 07, 2017 at 09:33 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -1405,6 +1405,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.exhibits.weapons', 'dime', 0, 0),
 ('dime.find', 'dime', 0, 0),
 ('dime.find.add', 'dime', 0, 0),
+('dime.find.add.success', 'dime', 0, 0),
 ('dime.find.artefact', 'dime', 0, 0),
 ('dime.find.classification', 'dime', 0, 0),
 ('dime.find.condition', 'dime', 0, 0),
@@ -1496,6 +1497,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.find.process.released', 'dime', 0, 0),
 ('dime.find.process.reported', 'dime', 0, 0),
 ('dime.find.process.validated', 'dime', 0, 0),
+('dime.find.query.set', 'dime', 0, 0),
 ('dime.find.recipient', 'dime', 0, 0),
 ('dime.find.recorder', 'core', 0, 0),
 ('dime.find.save', 'dime', 0, 0),
@@ -1733,6 +1735,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.find.type.metal', 'vocabulary', 0, 0),
 ('dime.find.type.military', 'vocabulary', 0, 0),
 ('dime.find.type.tool', 'vocabulary', 0, 0),
+('dime.find.update.success', 'dime', 0, 0),
 ('dime.find.visibility', 'core', 0, 0),
 ('dime.find.weight', 'core', 0, 0),
 ('dime.home', 'dime', 0, 0),
@@ -1937,6 +1940,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.user.password', 'dime', 0, 0),
 ('dime.user.password.forgot', 'dime', 0, 0),
 ('dime.user.register', 'dime', 0, 0),
+('dime.user.register.success', 'dime', 0, 0),
 ('dime.user.terms', 'dime', 0, 0),
 ('dime.user.terms.v1', 'dime', 0, 0),
 ('file.type.audio', 'core', 0, 0),
@@ -2073,12 +2077,12 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('language.avaric', 'vocabulary', 0, 0),
 ('language.avestan', 'vocabulary', 0, 0),
 ('language.awadhi', 'vocabulary', 0, 0),
-('language.aymara', 'vocabulary', 0, 0),
+('language.aymara', 'vocabulary', 0, 0);
+INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
 ('language.azerbaijani', 'vocabulary', 0, 0),
 ('language.badaga', 'vocabulary', 0, 0),
 ('language.bafia', 'vocabulary', 0, 0),
-('language.bafut', 'vocabulary', 0, 0);
-INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('language.bafut', 'vocabulary', 0, 0),
 ('language.bakhtiari', 'vocabulary', 0, 0),
 ('language.balinese', 'vocabulary', 0, 0),
 ('language.balochi.western', 'vocabulary', 0, 0),
@@ -3833,6 +3837,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find', 'default', 'Find', NULL),
 ('en', 'dime.find', 'resource', 'finds', NULL),
 ('en', 'dime.find.add', 'default', 'Add Find', NULL),
+('en', 'dime.find.add.success', 'default', 'The find was successfully added.', ''),
 ('en', 'dime.find.artefact', 'default', 'Artefact', ''),
 ('en', 'dime.find.classification', 'default', 'Classification', NULL),
 ('en', 'dime.find.condition', 'default', 'Condition', NULL),
@@ -3883,6 +3888,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.process.released', 'default', 'Released', NULL),
 ('en', 'dime.find.process.reported', 'default', 'Reported', NULL),
 ('en', 'dime.find.process.validated', 'default', 'Validated', NULL),
+('en', 'dime.find.query.set', 'default', 'Your search found %items% finds.', ''),
 ('en', 'dime.find.recipient', 'default', 'Recipient', NULL),
 ('en', 'dime.find.save', 'default', 'Save', 'DIME Find Save button'),
 ('en', 'dime.find.search', 'default', 'Search Finds', NULL),
@@ -4119,6 +4125,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.type.metal', 'default', 'Production Waste / Scrap Metal', NULL),
 ('en', 'dime.find.type.military', 'default', 'Weapons / Militaria', NULL),
 ('en', 'dime.find.type.tool', 'default', 'Equipment / Tools', NULL),
+('en', 'dime.find.update.success', 'default', 'The find was successfully updated.', ''),
 ('en', 'dime.find.weight', 'default', 'Weight', 'Core Property Weight'),
 ('en', 'dime.home', 'default', 'Home', NULL),
 ('en', 'dime.home', 'resource', 'home', NULL),
@@ -4165,11 +4172,11 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.kommune.faxe', 'default', 'Faxe', NULL),
 ('en', 'dime.kommune.faxe', 'official', 'Faxe Municipality', NULL),
 ('en', 'dime.kommune.fredensborg', 'default', 'Fredensborg', NULL),
-('en', 'dime.kommune.fredensborg', 'official', 'Fredensborg Municipality', NULL),
+('en', 'dime.kommune.fredensborg', 'official', 'Fredensborg Municipality', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'dime.kommune.fredericia', 'default', 'Fredericia', NULL),
 ('en', 'dime.kommune.fredericia', 'official', 'Fredericia Municipality', NULL),
-('en', 'dime.kommune.frederiksbeg', 'default', 'Frederiksbeg', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.kommune.frederiksbeg', 'default', 'Frederiksbeg', NULL),
 ('en', 'dime.kommune.frederiksbeg', 'official', 'Frederiksberg Municipality', NULL),
 ('en', 'dime.kommune.frederikshavn', 'default', 'Frederikshavn', NULL),
 ('en', 'dime.kommune.frederikshavn', 'official', 'Frederikshavn Municipality', NULL),
@@ -4428,6 +4435,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.user.password', 'default', 'Password', NULL),
 ('en', 'dime.user.password.forgot', 'default', 'Forgotten Password?', NULL),
 ('en', 'dime.user.register', 'default', 'New User?', NULL),
+('en', 'dime.user.register.success', 'default', 'Your DIME registration has been submitted. Please verify your email address and wait for your user profile to be reviewed and approved.', ''),
 ('en', 'dime.user.terms', 'default', 'Terms and Conditions', ''),
 ('en', 'dime.user.terms.v1', 'default', '<H2>Terms and Conditions</H2><P>v1.0 dated 1 June 2017</P><P>Lorem Ipsem...</P>', ''),
 ('en', 'file.type.audio', 'default', 'Audio File', NULL),
@@ -5002,15 +5010,15 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'language.sundanese', 'default', 'Sundanese', NULL),
 ('en', 'language.susu', 'default', 'Susu', NULL),
 ('en', 'language.swahili', 'default', 'Swahili', NULL),
-('en', 'language.swahili.congo', 'default', 'Congo Swahili', NULL),
+('en', 'language.swahili.congo', 'default', 'Congo Swahili', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'language.swati', 'default', 'Swati', NULL),
 ('en', 'language.swedish', 'default', 'Swedish', NULL),
 ('en', 'language.syriac', 'default', 'Syriac', NULL),
 ('en', 'language.syriac.classical', 'default', 'Classical Syriac', NULL),
 ('en', 'language.tachelhit', 'default', 'Tachelhit', NULL),
 ('en', 'language.tagalog', 'default', 'Tagalog', NULL),
-('en', 'language.tahitian', 'default', 'Tahitian', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'language.tahitian', 'default', 'Tahitian', NULL),
 ('en', 'language.taita', 'default', 'Taita', NULL),
 ('en', 'language.tajik', 'default', 'Tajik', NULL),
 ('en', 'language.talysh', 'default', 'Talysh', NULL),
@@ -5613,10 +5621,10 @@ INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `elemen
 ('dime_treasure_pdf', 0, 0, 2, '', 'dime_treasure_find', NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_treasure_pdf', 0, 0, 3, '', 'dime_treasure_sender', NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_treasure_sender', 0, 0, 4, '', 'core_widget_send', 'send', NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_user_register', 0, 0, 0, '', 'core_user_credentials', NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_user_register', 0, 0, 2, '', 'core_user_actor', NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_user_register', 0, 0, 4, '', 'dime_user_role', NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_user_register', 0, 0, 8, '', 'core_widget_submit', 'submit', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.widget.submit', NULL),
+('dime_user_register', 0, 0, 0, '', 'core_user_credentials', NULL, NULL, NULL, 0, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_user_register', 0, 0, 2, '', 'core_user_actor', NULL, NULL, NULL, 0, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_user_register', 0, 0, 4, '', 'dime_user_role', NULL, NULL, NULL, 0, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_user_register', 0, 0, 8, '', 'core_widget_submit', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_user_role', 0, 0, 0, '', 'dime_widget_role', NULL, NULL, NULL, NULL, 1, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_user_role', 0, 0, 2, '', 'core_widget_comments', NULL, NULL, NULL, NULL, 1, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL);
 
@@ -5682,7 +5690,7 @@ INSERT INTO `ark_view_layout` (`element`, `schma`, `item_type`, `form`, `name`, 
 ('dime_treasure_museum', NULL, NULL, 1, 'treasure_museum', NULL, NULL, 'edit', NULL),
 ('dime_treasure_pdf', NULL, NULL, 0, NULL, NULL, NULL, 'view', NULL),
 ('dime_treasure_sender', NULL, NULL, 1, 'treasure_sender', NULL, NULL, 'edit', NULL),
-('dime_user_register', NULL, NULL, 1, 'user_register', NULL, NULL, 'edit', 'user/register.html.twig'),
+('dime_user_register', NULL, NULL, 1, NULL, NULL, NULL, 'edit', 'user/register.html.twig'),
 ('dime_user_role', NULL, NULL, 0, 'role', NULL, NULL, 'edit', NULL);
 
 -- --------------------------------------------------------
@@ -5844,7 +5852,7 @@ INSERT INTO `ark_view_widget` (`element`, `mode`, `name`, `label`, `vocabulary`,
 ('core_user_password', 'edit', 'password', 1, NULL, NULL, 'ARK\\Form\\Type\\RepeatedPasswordType', ''),
 ('core_user_username', 'edit', 'username', 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', ''),
 ('core_widget_checkbox', 'edit', NULL, 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', ''),
-('core_widget_comments', 'edit', NULL, 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', ''),
+('core_widget_comments', 'edit', 'comments', 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', ''),
 ('core_widget_save', 'edit', NULL, 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', ''),
 ('core_widget_search', 'view', NULL, 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', ''),
 ('core_widget_send', 'edit', NULL, 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', ''),

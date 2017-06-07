@@ -63,7 +63,8 @@ class FindViewController extends DimeFormController
 
     public function processForm(Request $request, $form, $redirect)
     {
-        $find = $this->getData($form);
+        $data = $form->getData();
+        $find = $data['find']['find'];
         ORM::persist($find);
         if (isset($data['actions'])) {
             $action = $data['actions'];
@@ -71,6 +72,7 @@ class FindViewController extends DimeFormController
             //$action->apply($actor, $item);
         }
         ORM::flush($find);
+        Service::view()->addSuccessFlash('dime.find.update.success');
         return Service::redirectPath($redirect, [
             'itemSlug' => $find->id()
         ]);
