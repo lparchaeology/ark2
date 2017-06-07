@@ -282,11 +282,11 @@ class Field extends Element
     {
         $cellName = $options['cell']['name'];
         if (is_array($data)) {
-            if (isset($data[$cellName])) {
+            if (array_key_exists($cellName, $data)) {
                 $data = $data[$cellName];
-            } elseif (isset($data[$this->name])) {
+            } elseif (array_key_exists($this->name, $data)) {
                 $data = $data[$this->name];
-            } elseif (isset($data[$this->id()])) {
+            } elseif (array_key_exists($this->id(), $data)) {
                 $data = $data[$this->id()];
             }
         }
@@ -351,7 +351,7 @@ class Field extends Element
         $sanitise = $this->sanitise($context);
         if ($sanitise == 'withhold') {
             return;
-        } elseif ($form && isset($form->vars['id'])) {
+        } elseif ($form && array_key_exists('id', $form->vars)) {
             // TODO What is this? Why?
             $options['cell']['name'] = $form->vars['id'];
         } else {

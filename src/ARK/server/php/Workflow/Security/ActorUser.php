@@ -44,7 +44,7 @@ class ActorUser
 {
     protected $actor = null;
     protected $user = null;
-    protected $userId = null;
+    protected $userEntity = null;
     protected $enabled = false;
     protected $verified = false;
     protected $locked = false;
@@ -56,8 +56,8 @@ class ActorUser
     public function __construct($actor, $user)
     {
         $this->actor = $actor;
-        $this->user = $user;
-        $this->userId = $user->id();
+        $this->user = $user->id();
+        $this->userEntity = $user;
     }
 
     public function actor()
@@ -67,10 +67,10 @@ class ActorUser
 
     public function user()
     {
-        if ($this->user === null) {
-            $this->user = Service::user($this->userId);
+        if ($this->userEntity === null) {
+            $this->userEntity = Service::user($this->user);
         }
-        return $this->user;
+        return $this->userEntity;
     }
 
     public function isVerified()
@@ -181,7 +181,7 @@ class ActorUser
 
         // Key
         $builder->addManyToOneKey('actor', Actor::class, 'actor', 'item');
-        $builder->addStringKey('userId', 30, 'user');
+        $builder->addStringKey('user', 30);
 
         // Attributes
         $builder->addField('enabled', 'boolean');

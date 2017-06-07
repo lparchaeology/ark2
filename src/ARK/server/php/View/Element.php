@@ -108,17 +108,17 @@ abstract class Element
     public function formData($mode, $data, $options)
     {
         $cellName = $options['cell']['name'];
-        if ($cellName && is_array($data) && isset($data[$cellName])) {
+        if ($cellName && is_array($data) && array_key_exists($cellName, $data)) {
             return $data[$cellName];
         }
         if ($this->name) {
-            if(is_array($data) && isset($data[$this->name])) {
+            if (is_array($data) && array_key_exists($this->name, $data)) {
                 return $data[$this->name];
             }
             return null;
         }
         $name = $this->formName($cellName);
-        return (is_array($data) && isset($data[$name]) ? $data[$name] : $data);
+        return (is_array($data) && array_key_exists($name, $data) ? $data[$name] : $data);
     }
 
     public function formTypeClass()
@@ -178,8 +178,9 @@ abstract class Element
         if ($cellName === null && isset($options['cell']['name'])) {
             $cellName = $options['cell']['name'];
         }
+        $formName = ($cellName === false ? $formName = null : $this->formName($cellName));
         return Service::forms()->createNamedBuilder(
-            $this->formName($cellName),
+            $formName,
             $this->formTypeClass(),
             $data,
             $options

@@ -90,27 +90,26 @@ class FindListController extends DimeFormController
 
         if ($query) {
             $items = Service::database()->findSearch($query);
-            $resource = ORM::findBy(Find::class, [
+            $finds = ORM::findBy(Find::class, [
                 'item' => $items
             ]);
         } else {
-            $resource = ORM::findAll(Find::class);
+            $finds = ORM::findAll(Find::class);
         }
 
-        $data['finds'] = $resource;
+        $data['finds'] = $finds;
         // TODO Use visibility/workflow
-        $data['map']['finds'] = (Service::security()->isGranted('ROLE_USER') ? $resource : []);
+        $data['map']['finds'] = (Service::security()->isGranted('ROLE_USER') ? $finds : []);
         $data['map']['kortforsyningenticket'] = DIME::getMapTicket();
         return $data;
     }
 
     public function processForm(Request $request, $form, $redirect)
     {
-        $data = $this->getData($form);
-        $municipalities = $data['filters']['municipality'];
-        $types = $data['filters']['type'];
-        $periods = $data['filters']['period'];
-        $materials = $data['filters']['material'];
+        $municipalities = $form['municipality']->getData();
+        $types = $form['type']->getData();
+        $periods = $form['period']->getData();
+        $materials = $form['material']->getData();
         $query = [];
         if ($municipalities) {
             foreach ($municipalities as $municipality) {

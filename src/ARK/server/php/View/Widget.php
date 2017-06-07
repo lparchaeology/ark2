@@ -111,8 +111,17 @@ class Widget extends Element
         if (is_subclass_of($this->formTypeClass(), SubmitButtonTypeInterface::class)) {
             return null;
         }
-        if (is_array($data) && isset($data[$options['cell']['name']])) {
-            $data = $data[$options['cell']['name']];
+        $cellName = $options['cell']['name'];
+        if (is_array($data)) {
+            if (array_key_exists($cellName, $data)) {
+                $data = $data[$cellName];
+            } elseif (array_key_exists($this->name, $data)) {
+                $data = $data[$this->name];
+            } elseif (array_key_exists($this->id(), $data)) {
+                $data = $data[$this->id()];
+            } else {
+                $data = null;
+            }
         }
         if ($data === null && $this->vocabulary && isset($options['required']) && $options['required']) {
             $data = $this->vocabulary->defaultTerm();
@@ -126,7 +135,8 @@ class Widget extends Element
         //dump('BUILD WIDGET : '.$this->formName());
         //dump($mode);
         //dump($this->displayMode($mode));
-        //dump($data);
+        //dump($this);
+        //ump($data);
         //dump($dataKey);
         //dump($this);
         //dump($options);
@@ -153,10 +163,11 @@ class Widget extends Element
             } else {
                 $options['cell']['name'] = null;
             }
-            $data = $this->formData($mode, $data, $context);
+            $data = $this->formData($mode, $data, $options);
             $context['data'] = $data;
             $context['forms'] = $forms;
             $context['form'] = $form[$this->formName()];
+            //dump($context);
             return Service::view()->renderView($this->template(), $context);
         }
         return '';

@@ -208,7 +208,7 @@ class Cell
         if (!isset($context['sanitise']) || $this->sanitise()) {
             $context['sanitise'] = $this->sanitise();
         }
-        if ($this->dataKey && is_array($data) && isset($data[$this->dataKey])) {
+        if ($this->dataKey && is_array($data) && array_key_exists($this->dataKey, $data)) {
             $data = $data[$this->dataKey];
         }
         //dump($data);

@@ -126,8 +126,8 @@ abstract class Layout extends Element
         if ($this->form) {
             $builderMode = $this->displayMode($mode);
             $builderData = $this->formData($builderMode, $data, $options);
-            $builderOptions = $this->buildOptions($builderMode, $data, $options);
-            $builder = $this->formBuilder($builderMode, $data, $builderOptions);
+            $builderOptions = $this->buildOptions($builderMode, $builderData, $options);
+            $builder = $this->formBuilder($builderMode, $builderData, $builderOptions, ($this->name ? null : false));
             $this->buildForm($builder, $mode, $data, null, $options);
             $form = $builder->getForm();
             return [$this->formName() => $form];
@@ -147,6 +147,7 @@ abstract class Layout extends Element
         //dump($options);
         $mode = $this->displayMode($mode);
         $data = $this->formData($mode, $data, $options);
+        //dump($data);
         $options = $this->buildOptions($mode, $data, $options);
         //dump($data);
         if (!$this->form && $this->name) {

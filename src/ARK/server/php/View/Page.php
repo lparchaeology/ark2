@@ -142,9 +142,17 @@ class Page extends Element
 
     public function postedForm($request, $forms)
     {
+        dump('test post');
+        dump($request);
+        dump($request->request);
+        dump($forms);
         if ($forms && $request->getMethod() == 'POST') {
+            dump('is post');
             foreach ($forms as $id => $form) {
+                dump($id);
+                dump($form);
                 $name = $form->getName();
+                dump($name);
                 if ($request->request->has($name)) {
                     $form->handleRequest($request);
                     if ($form->isSubmitted() && $form->isValid()) {
@@ -179,12 +187,15 @@ class Page extends Element
         //dump($mode);
         dump($forms);
         if ($posted = $this->postedForm($request, $forms)) {
+            dump('posted');
+            dump($posted);
             if (!$redirect) {
                 $redirect = $request->attributes->get('_route');
             }
             if ($processForm === null) {
                 return Service::redirectPath($redirect);
             }
+            dump('process...');
             return $processForm($request, $posted, $redirect);
         }
         $response = $this->renderResponse($mode, $data, $context, $forms);

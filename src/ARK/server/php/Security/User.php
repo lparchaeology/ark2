@@ -483,7 +483,7 @@ class User implements AdvancedUserInterface, Serializable
         $builder->addStringField('email', 100);
         $builder->addStringField('password', 255);
         $builder->addStringField('name', 100);
-        $builder->addStringField('level', 10);
+        $builder->addStringField('level', 30);
         $builder->addField('enabled', 'boolean');
         $builder->addField('verified', 'boolean');
         $builder->addField('locked', 'boolean');
