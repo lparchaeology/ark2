@@ -1,0 +1,24 @@
+dating-modal-dialog {
+    margin: 10% auto;
+    width: 500px;
+}
+
+.dating-modal-container.dime {
+    border: 1px solid black;
+    background-image: linear-gradient(0deg, #f4f4f4, #c3c3c3);
+    text-align: center;
+    padding: 50px 10px;
+}
+
+.dating-modal-container.dime input {
+    border: 1px solid black;
+    display: block;
+    margin: 15px auto;
+    width: 250px;
+}
+.vis-custom-time.start {
+	background-color:#108210;
+}
+.vis-custom-time.end {
+	background-color:#821010;
+}

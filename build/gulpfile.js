@@ -178,6 +178,7 @@ gulp.task('js', function() {
         config.vendorDir + '/bootstrap-table/dist/extensions/resizeable/bootstrap-table-resizeable.js',
         config.vendorDir + '/bootstrap-table/dist/extensions/select2-filter/bootstrap-table-select2-filter.js',
         config.vendorDir + '/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.js',
+        config.vendorDir + '/vis/dist/vis.js',
         config.vendorDir + '/proj4/dist/proj4.js',
         config.frontendsDir + '/' + frontend + '/js/**/*'
     ];
@@ -212,6 +213,7 @@ gulp.task('css', function() {
         config.vendorDir + '/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css',
         config.vendorDir + '/select2-bootstrap-frontend/dist/select2-bootstrap.css',
         config.vendorDir + '/bootstrap-fileinput/css/fileinput.css',
+        config.vendorDir + '/vis/dist/vis-timeline-graph2d.min.css',
     ];
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/assets/styles';
     var mapsConf = {

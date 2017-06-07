@@ -28,5 +28,21 @@
     {% do fieldForm.setRendered %}
 
 </div>
+<a href="#" data-toggle="modal" data-target="#dating-modal" class="loginbutton">
+	Modal
+</a>
+<div class="modal fade" id="dating-modal" tabindex="-1" role="dialog" aria-labelledby="datingModal" aria-hidden="true" style="display: none;">
+    <div class="dating-modal-dialog">
+        <div class="dating-modal-container dime">
+  <title>Timeline | Basic demo</title>
+<p>
+  A basic timeline. You can move and zoom the timeline, and select items.
+</p>
+
+<div id="visualization"></div>
+
+        </div>
+    </div>
+</div>
 
 {% endblock dating %}

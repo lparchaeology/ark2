@@ -1,0 +1,5 @@
+{
+    "require": {
+        "symfony/debug": "^3.2"
+    }
+}
