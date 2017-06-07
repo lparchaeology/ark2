@@ -1,9 +1,11 @@
 {
     "site": "dime",
     "debug": true,
-    "timezone": "UTC",
-    "locale": "da",
-    "locales": ["en", "da"],
+    "locale": {
+        "default": "en",
+        "locales": ["en", "da"],
+        "timezone": "UTC"
+    },
     "spatial": {
         "driver": "mysql"
     },
@@ -26,6 +28,12 @@
             "preview": { "w": 500, "h": 500 }
         }
     },
+    "view": {
+        "renderer": {
+            "pdf": "/usr/bin/xvfb-run /usr/bin/wkhtmltopdf",
+            "image": "/usr/bin/xvfb-run /usr/bin/wkhtmltoimage"
+        }
+    },
     "api": {
         "enable": true,
         "path": "/api/v2"
@@ -42,6 +50,24 @@
         "access_rules": [
             ["(^/home)|(^/users)|(^/fund/add$)|(^/lokalitet/add$)", "ROLE_USER"],
             ["^/.+$", "IS_AUTHENTICATED_ANONYMOUSLY"]
-        ]
+        ],
+        "user_paths": {
+            "da": {
+                "root": "/brugere",
+                "login": "/brugere/login",
+                "check": "/brugere/check",
+                "logout": "/brugere/logout",
+                "register": "/brugere/register",
+                "reset": "/brugere/reset"
+            },
+            "en": {
+                "root": "/users",
+                "login": "/users/login",
+                "check": "/users/check",
+                "logout": "/users/logout",
+                "register": "/users/register",
+                "reset": "/users/reset"
+            }
+        }
     }
 }
