@@ -181,7 +181,7 @@ class ActorUser
 
         // Key
         $builder->addManyToOneKey('actor', Actor::class, 'actor', 'item');
-        $builder->addKey('user', 'integer');
+        $builder->addStringKey('userId', 30, 'user');
 
         // Attributes
         $builder->addField('enabled', 'boolean');

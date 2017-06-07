@@ -45,15 +45,4 @@ class UserConfirmController extends DimeFormController
     {
         return $this->handleRequest($request, 'core_page_user_confirm');
     }
-
-    public function buildData(Request $request, Page $page)
-    {
-        $data[$page->content()->name()] = null;
-        return $data;
-    }
-
-    public function processForm(Request $request, $form, $redirect)
-    {
-        return Service::redirectPath($redirect);
-    }
 }

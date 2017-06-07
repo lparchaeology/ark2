@@ -50,6 +50,7 @@ abstract class Element
     use KeywordTrait;
 
     protected $element = '';
+    protected $name = '';
     protected $type = '';
     protected $template = '';
     protected $mode = null;
@@ -62,14 +63,20 @@ abstract class Element
         $this->template = $template;
     }
 
-    public function name()
+    public function id()
     {
         return $this->element;
     }
 
-    public function formName()
+    public function formName($cellName = null)
     {
-        return $this->name();
+        if ($cellName) {
+            return $cellName;
+        }
+        if ($this->name) {
+            return $this->name;
+        }
+        return $this->element;
     }
 
     public function type()
@@ -98,9 +105,20 @@ abstract class Element
         return $parentMode;
     }
 
-    public function formData($resource, $formId = null)
+    public function formData($mode, $data, $options)
     {
-        return $resource;
+        $cellName = $options['cell']['name'];
+        if ($cellName && is_array($data) && isset($data[$cellName])) {
+            return $data[$cellName];
+        }
+        if ($this->name) {
+            if(is_array($data) && isset($data[$this->name])) {
+                return $data[$this->name];
+            }
+            return null;
+        }
+        $name = $this->formName($cellName);
+        return (is_array($data) && isset($data[$name]) ? $data[$name] : $data);
     }
 
     public function formTypeClass()
@@ -108,14 +126,31 @@ abstract class Element
         return $this->type->formTypeClass();
     }
 
-    public function buildOptions($mode, $data, $options)
+    public function defaultOptions($route = null)
     {
+        $options['cell']['name'] = null;
         return $options;
     }
 
-    public function viewContext($mode, $data, $context)
+    public function buildOptions($mode, $data, $options)
     {
+        return array_merge($this->defaultOptions(), $options);
+    }
+
+    public function defaultContext($route = null)
+    {
+        $context['data'] = null;
+        $context['forms'] = null;
+        $context['sanitise'] = null;
+        $context['cell']['name'] = null;
+        return $context;
+    }
+
+    public function viewContext($mode, $data, $context = [])
+    {
+        $context = array_merge($this->defaultContext(), $context);
         $context['mode'] = $mode;
+        $context['data'] = $data;
         return $context;
     }
 
@@ -138,12 +173,17 @@ abstract class Element
         return [];
     }
 
-    protected function formBuilder($data, $options = [])
+    protected function formBuilder($mode, $data, $options, $cellName = null)
     {
-        return Service::forms()->createNamedBuilder($this->formName(),
-                                                    $this->formTypeClass(),
-                                                    $this->formData($data),
-                                                    $options);
+        if ($cellName === null && isset($options['cell']['name'])) {
+            $cellName = $options['cell']['name'];
+        }
+        return Service::forms()->createNamedBuilder(
+            $this->formName($cellName),
+            $this->formTypeClass(),
+            $data,
+            $options
+        );
     }
 
     abstract public function renderView($mode, $data, array $options = [], $forms = null, $form = null);

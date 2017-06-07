@@ -61,10 +61,9 @@ class LocalTextPropertyType extends AbstractPropertyType
         }
         $text = $this->value($property, $forms);
         $forms = iterator_to_array($forms);
-
         $language = Service::locale();
         $forms['language']->setData($language);
-
+        $forms['mediatype']->setData('text/plain');
         if ($text instanceof LocalText) {
             $forms['previous']->setData(json_encode($text->contents()));
             $forms['mediatype']->setData($text->mediaType());

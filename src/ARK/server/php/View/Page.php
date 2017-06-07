@@ -67,7 +67,7 @@ class Page extends Element
             }
             throw new AccessDeniedException('core.error.access.denied');
         }
-        // Assume visibility == 'public'
+        // TODO Assumes visibility == 'public'
         return $this->defaultMode();
     }
 
@@ -109,39 +109,27 @@ class Page extends Element
         return $this->footer;
     }
 
-    public function defaultOptions($route = null)
-    {
-        return $options;
-    }
-
-    public function defaultContext($route = null)
-    {
-        $options['data'] = null;
-        $options['forms'] = null;
-        return $options;
-    }
-
     public function buildForms($mode, $data, $options)
     {
-        //dump('BUILD PAGE : '.$this->element);
+        dump('BUILD PAGE : '.$this->element);
         //dump($mode);
-        //dump($data);
+        dump($data);
         //dump($options);
+        $options = $this->buildOptions($mode, $data, $options);
         return $this->content->buildForms($mode, $data, $options);
     }
 
-    public function renderView($mode, $data, array $options = [], $forms = null, $form = null)
+    public function renderView($mode, $data, array $context = [], $forms = null, $form = null)
     {
-        $options = $this->renderContext($mode, $data, $options, $forms, $form);
-        return Service::view()->renderView($this->template(), $options);
+        $context = $this->renderContext($mode, $data, $context, $forms, $form);
+        return Service::view()->renderView($this->template(), $context);
     }
 
     public function renderContext($mode, $data, array $context = [], $forms = null, $form = null)
     {
+        $context = $this->viewContext($mode, $data, $context);
         $context['page'] = $this;
         $context['layout'] = $this->content();
-        $context['mode'] = $mode;
-        $context['data'] = $data;
         $context['forms'] = null;
         if ($forms) {
             foreach ($forms as $name => $form) {
@@ -180,17 +168,16 @@ class Page extends Element
         //dump($this);
         //dump($request);
         //dump($data);
+        //dump($options);
+        //dump($context);
         $actor = Service::workflow()->actor();
-        $item = (isset($data[$this->content()->name()]) ? $data[$this->content()->name()] : null);
-        if (is_iterable($item)) {
-            $item = $item[0];
-        }
+        $item = null;
         $mode = $this->mode($actor, $item);
         $forms = $this->buildForms($mode, $data, $options);
         //dump($actor);
         //dump($item);
         //dump($mode);
-        //dump($forms);
+        dump($forms);
         if ($posted = $this->postedForm($request, $forms)) {
             if (!$redirect) {
                 $redirect = $request->attributes->get('_route');

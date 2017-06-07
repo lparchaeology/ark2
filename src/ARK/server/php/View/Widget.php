@@ -73,11 +73,12 @@ class Widget extends Element
         return parent::formTypeClass();
     }
 
-    public function formOptions($mode, $data, $options)
+    public function buildOptions($mode, $data, $options)
     {
         if ($this->formOptionsArray === null) {
             $this->formOptionsArray = ($this->formOptions ? json_decode($this->formOptions, true) : []);
         }
+        $options = array_merge_recursive($this->defaultOptions(), $this->formOptionsArray, $options);
         $cellOptions = $options['cell'];
         unset($options['page']);
         unset($options['data']);
@@ -86,9 +87,9 @@ class Widget extends Element
         unset($options['form']);
         if (is_subclass_of($this->formTypeClass(), SubmitButtonTypeInterface::class)) {
             unset($options['required']);
+            unset($options['mapped']);
         }
         unset($options['sanitise']);
-        $options = array_merge_recursive($this->formOptionsArray, $options);
         if ($options['label'] === null) {
             $options['label'] = $this->showLabel();
         }
@@ -99,51 +100,61 @@ class Widget extends Element
                 $options['label'] = $this->keyword();
             }
         }
-        // FIXME HACK Need to find a better way to build custom fields!
-        if ($this->name() == 'dime_find_actions') {
-            // TODO Current Actor
-            $actor = Service::workflow()->actor();
-            if ($actor) {
-                $options['choices'] = Service::workflow()->actions($actor, $data);
-            }
-            $options['choice_value'] = 'name';
-            $options['choice_name'] = 'name';
-            $options['choice_label'] = 'keyword';
-            $options['placeholder'] = null;
-        }
         if ($this->vocabulary) {
             $options = $this->vocabularyOptions($this->vocabulary, $options);
         }
         return $options;
     }
 
-    public function formData($data, $formId = null)
+    public function formData($mode, $data, $options)
     {
-        return null;
+        if (is_subclass_of($this->formTypeClass(), SubmitButtonTypeInterface::class)) {
+            return null;
+        }
+        if (is_array($data) && isset($data[$options['cell']['name']])) {
+            $data = $data[$options['cell']['name']];
+        }
+        if ($data === null && $this->vocabulary && isset($options['required']) && $options['required']) {
+            $data = $this->vocabulary->defaultTerm();
+        }
+        //dump($data);
+        return $data;
     }
 
     public function buildForm(FormBuilderInterface $builder, $mode, $data, $dataKey, $options = [])
     {
-        if (is_array($data) && isset($data[$dataKey])) {
-            $data = $data[$dataKey];
-        }
-        if ($data === null && $this->vocabulary && $options['required']) {
-            $data = $this->vocabulary->defaultTerm();
-        }
-        $options = $this->formOptions($mode, $data, $options);
+        //dump('BUILD WIDGET : '.$this->formName());
+        //dump($mode);
+        //dump($this->displayMode($mode));
+        //dump($data);
+        //dump($dataKey);
+        //dump($this);
+        //dump($options);
+        $data = $this->formData($mode, $data, $options);
+        //dump($data);
+        $cellName = $options['cell']['name'];
+        $options = $this->buildOptions($mode, $data, $options);
         // TODO check workflow instead!
         if ($this->mode == 'view' || $mode == 'edit') {
-            $fieldBuilder = $this->formBuilder($data, $options);
-            $builder->add($fieldBuilder);
+            $widgetBuilder = $this->formBuilder($mode, $data, $options, $cellName);
+            $builder->add($widgetBuilder);
         }
     }
 
     public function renderView($mode, $data, array $context = [], $forms = null, $form = null)
     {
+        //dump('RENDER WIDGET : '.$this->formName());
         if (isset($form[$this->formName()])) {
             $context['widget'] = $this;
             $context['mode'] = $mode;
-            $context['data'] = (isset($data[$form->vars['id']]) ? $this->formData($data[$form->vars['id']]) : null);
+            if (isset($form->vars['id'])) {
+                // TODO What is this? Why?
+                $options['cell']['name'] = $form->vars['id'];
+            } else {
+                $options['cell']['name'] = null;
+            }
+            $data = $this->formData($mode, $data, $context);
+            $context['data'] = $data;
             $context['forms'] = $forms;
             $context['form'] = $form[$this->formName()];
             return Service::view()->renderView($this->template(), $context);
@@ -159,6 +170,7 @@ class Widget extends Element
         // Fields
         $builder->addField('label', 'boolean');
         $builder->addStringField('mode', 10);
+        $builder->addStringField('name', 30);
         $builder->addStringField('template', 100);
         $builder->addStringField('formTypeClass', 100, 'form_type_class');
         $builder->addStringField('formOptions', 4000, 'form_options');

@@ -47,6 +47,7 @@ class Cell
     protected $col = 0;
     protected $seq = 0;
     protected $itemType = null;
+    protected $name = null;
     protected $width = null;
     protected $label = null;
     protected $required = null;
@@ -95,6 +96,11 @@ class Cell
     public function map()
     {
         return $this->map;
+    }
+
+    public function formName()
+    {
+        return $this->name;
     }
 
     public function width()
@@ -157,6 +163,7 @@ class Cell
             if ($this->sanitise()) {
                 $this->optionsArray['sanitise'] = $this->sanitise();
             }
+            $this->optionsArray['cell']['name'] = $this->formName();
             $this->optionsArray['cell']['width'] = $this->width();
             $this->optionsArray['cell']['keyword'] = $this->keyword();
             $this->optionsArray['cell']['value']['modus'] = $this->valueModus();
@@ -174,7 +181,7 @@ class Cell
 
     public function buildForm(FormBuilderInterface $builder, $mode, $data, $dataKey, $options = [])
     {
-        //dump('BUILD CELL : '.$this->element->name());
+        dump('BUILD CELL : '.$this->element->formName());
         //dump('Mode = '.$mode);
         //dump('Display Mode = '.$this->displayMode($mode));
         //dump($data);
@@ -187,7 +194,7 @@ class Cell
 
     public function renderView($mode, $data, array $context = [], $forms = null, $form = null)
     {
-        //dump('RENDER CELL : '.$this->element->name());
+        //dump('RENDER CELL : '.$this->element->formName());
         //dump($mode);
         //dump($this->displayMode($mode));
         //dump($data);
@@ -204,6 +211,8 @@ class Cell
         if ($this->dataKey && is_array($data) && isset($data[$this->dataKey])) {
             $data = $data[$this->dataKey];
         }
+        //dump($data);
+        $context['cell']['name'] = $this->formName();
         //dump($context);
         return $this->element->renderView($this->displayMode($mode), $data, $context, $forms, $form);
     }
@@ -222,6 +231,7 @@ class Cell
         $builder->addStringKey('itemType', 30, 'item_type');
 
         // Fields
+        $builder->addStringField('name', 30);
         $builder->addField('width', 'integer');
         $builder->addField('label', 'boolean');
         $builder->addStringField('mode', 10);

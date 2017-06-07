@@ -42,7 +42,6 @@ abstract class Layout extends Element
 {
     protected $schma = null;
     protected $form = false;
-    protected $name = null;
     protected $method = null;
     protected $action = null;
     protected $cells = null;
@@ -73,11 +72,6 @@ abstract class Layout extends Element
         }
     }
 
-    public function formName()
-    {
-        return $this->name ?: parent::formName();
-    }
-
     public function schema()
     {
         return $this->schma;
@@ -98,11 +92,6 @@ abstract class Layout extends Element
         return $this->action;
     }
 
-    public function formOptions($mode, $data, $options)
-    {
-        return $options;
-    }
-
     public function cells()
     {
         $this->init();
@@ -115,25 +104,35 @@ abstract class Layout extends Element
         return $this->elements;
     }
 
+    protected function formBuilder($mode, $data, $options, $cellName = null)
+    {
+        $builder = parent::formBuilder($mode, $data, $options, $cellName);
+        if ($this->method) {
+            $builder->setMethod($this->method);
+        }
+        if ($this->action) {
+            $builder->setAction(Service::path($this->action));
+        }
+        return $builder;
+    }
+
     public function buildForms($mode, $data, $options)
     {
-        //dump('FORMS : '.$this->element);
+        dump('FORMS : '.$this->formName());
         //dump($mode);
         //dump($this->displayMode($mode));
         //dump($data);
         //dump($options);
-        $mode = $this->displayMode($mode);
         if ($this->form) {
-            $data = (isset($data[$this->name]) ? $data[$this->name] : null);
-            $builder = $this->formBuilder($data, $options);
-            if ($this->method) {
-                $builder->setMethod($this->method);
-            }
-            if ($this->action) {
-                $builder->setAction(Service::path($this->action));
-            }
-            $this->buildForm($builder, $mode, $data, $this->element, $this->formOptions($mode, $data, $options));
-            return [$this->element => $builder->getForm()];
+            $builderMode = $this->displayMode($mode);
+            $builderData = $this->formData($builderMode, $data, $options);
+            $builderOptions = $this->buildOptions($builderMode, $data, $options);
+            $builder = $this->formBuilder($builderMode, $data, $builderOptions);
+            $this->buildForm($builder, $mode, $data, null, $options);
+            dump($builder);
+            $form = $builder->getForm();
+            dump($form);
+            return [$this->formName() => $form];
         }
         $forms = [];
         foreach ($this->cells() as $cell) {
@@ -144,45 +143,54 @@ abstract class Layout extends Element
 
     public function buildForm(FormBuilderInterface $builder, $mode, $data, $dataKey, $options = [])
     {
-        //dump('BUILD : '.$this->element.' '.$this->name);
+        //dump('BUILD LAYOUT : '.$this->formName());
         //dump($mode);
         //dump($data);
         //dump($options);
+        $mode = $this->displayMode($mode);
+        $data = $this->formData($mode, $data, $options);
+        $options = $this->buildOptions($mode, $data, $options);
+        //dump($data);
         if (!$this->form && $this->name) {
-            $dataKey = $this->name;
-            //$data = (isset($data[$this->name]) ? $data[$this->name] : null);
-            $layoutBuilder = $this->formBuilder($data, $options);
+            $layoutBuilder = $this->formBuilder($mode, [$this->name => $data], $options);
+            //dump($layoutBuilder);
             $builder->add($layoutBuilder);
+            foreach ($this->cells() as $cell) {
+                $cell->buildForm($layoutBuilder, $mode, $data, $dataKey, $options);
+            }
         } else {
-            $layoutBuilder = $builder;
-        }
-        foreach ($this->cells() as $cell) {
-            $cell->buildForm($layoutBuilder, $mode, $data, $dataKey, $options);
+            foreach ($this->cells() as $cell) {
+                $cell->buildForm($builder, $mode, $data, $dataKey, $options);
+            }
         }
     }
 
     public function renderView($mode, $data, array $context = [], $forms = null, $form = null)
     {
-        //dump('RENDER LAYOUT : '.$this->element);
-        //dump($mode);
-        //dump($this->displayMode($mode));
+        //dump('RENDER LAYOUT : '.$this->formName());
         //dump($data);
         //dump($context);
+        //dump($forms);
+        //dump($form);
         if ($this->template()) {
-            $context['layout'] = $this;
-            if (!isset($context['sanitise'])) {
-                $context['sanitise'] = null;
+            if (!$context) {
+                $context = $this->defaultContext();
             }
-            $context['mode'] = $this->displayMode($mode);
-            $context['data'] = (isset($data[$this->name]) ? $data[$this->name] : $data);
+            $mode = $this->displayMode($mode);
+            $data = $this->formData($mode, $data, $context);
+            $context = $this->viewContext($mode, $data, $context);
+            $context['layout'] = $this;
+            if ($forms && $form === null && isset($forms[$this->formName()])) {
+                $form = $forms[$this->formName()];
+            }
+            $form = (isset($form[$this->formName()]) ? $form[$this->formName()] : $form);
             $context['forms'] = $forms;
-            $context['form'] = (isset($form[$this->name]) ? $form[$this->name] : $form);
+            $context['form'] = $form;
             if (isset($context['label']) && $context['label'] === true) {
                 $context['label'] = $this->keyword();
             } else {
                 $context['label'] = false;
             }
-            //dump($context);
             return Service::view()->renderView($this->template(), $context);
         }
         return '';

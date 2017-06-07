@@ -55,8 +55,6 @@ class TreasureClaimController extends DimeFormController
         if (!$find = ORM::find(Find::class, $this->itemSlug)) {
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Find not found', "Find $this->itemSlug not found"));
         }
-        $data[$page->content()->name()] = $find;
-        $data['dime_treasure_sender'] = null;
         $data['find'] = $find;
         $data['museum'] = $find->property('museum')->value();
         $data['claimant'] = $find->property('finder')->value();
@@ -66,7 +64,7 @@ class TreasureClaimController extends DimeFormController
     public function processForm(Request $request, $form, $redirect)
     {
         $page = ORM::find(Page::class, 'dime_page_claim');
-        $data = $this->buildData($request, $page);
+        $data = $this->buildData($request);
         $forms = $page->buildForms('view', $data, []);
         $context = $page->renderContext('view', $data, [], $forms, $form);
         return Service::renderPdfResponse('pages/treasureclaimpdf.html.twig', $context, 'danefae.pdf');

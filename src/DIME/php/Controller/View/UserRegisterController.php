@@ -40,6 +40,7 @@ use ARK\Actor\Person;
 use ARK\Model\Module;
 use ARK\Model\Schema;
 use ARK\Security\User;
+use ARK\Workflow\Role;
 use DIME\DIME;
 use DIME\Controller\View\DimeFormController;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,23 +52,31 @@ class UserRegisterController extends DimeFormController
         return $this->handleRequest($request, 'core_page_user_register');
     }
 
-    public function buildData(Request $request, Page $page)
+    public function buildData(Request $request)
     {
         $data['actor'] = new Person;
-        $data['terms'] = $data['actor']->property('terms')->attribute()->defaultValue();
-        return [$page->content()->formName() => $data];
+        //$data['terms'] = $data['actor']->property('terms')->attribute()->defaultValue();
+        return $data;
     }
 
     public function processForm(Request $request, $form, $redirect)
     {
-        dump($form);
         $data = $form->getData();
         dump($data);
         $credentials = $data['credentials'];
-        $actor = $data['actor'];
-        //$actor->setId($credentials['username']);
-        //$user = new User();
-        //$actor->addRole($role);
+        $actor = $data[$form->getName()]['actor'];
+        $actor->setItem($credentials['username']);
+        $user = Service::security()->createUser(
+            $credentials['username'],
+            $credentials['email'],
+            $credentials['password'],
+            $actor->fullname()
+        );
+        $role = ORM::find(Role::class, $data['role']['role']->name());
+        dump($actor);
+        dump($user);
+        dump($role);
+        Service::security()->registerUser($user, $actor, $role);
         return Service::redirectPath($redirect);
     }
 }

@@ -44,10 +44,11 @@ class FindAddController extends DimeFormController
         return $this->handleRequest($request, 'dime_page_find', 'finds.view');
     }
 
-    public function buildData(Request $request, Page $page)
+    public function buildData(Request $request)
     {
         $actor = Service::workflow()->actor();
         $find = new Find('dime.find');
+        // TODO Remove these, set in processForm instead?
         $find->property('finder')->setValue($actor);
         $find->property('owner')->setValue($actor);
         $find->property('custodian')->setValue($actor);
@@ -57,7 +58,6 @@ class FindAddController extends DimeFormController
         $find->property('custody')->setValue($custody);
         $treasure = ORM::find(Term::class, ['concept' => 'dime.treasure', 'term' => 'pending']);
         $find->property('treasure')->setValue($treasure);
-        $data[$page->content()->name()] = $find;
-        return $data;
+        return $find;
     }
 }

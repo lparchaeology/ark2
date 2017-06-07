@@ -105,11 +105,11 @@ trait ItemTrait
     }
 
     // TODO Should this be here? Or use reflection?
-    public function setItem($id, $index, $name)
+    public function setItem($id, $index = null, $name = null)
     {
         $this->item = $id;
-        $this->idx = $index;
-        $this->label = $name;
+        $this->idx = ($index !== null ? $index : $id);
+        $this->label = ($name !== null ? $name : $id);
         foreach ($this->properties() as $property) {
             $property->updateFragments();
             if ($property->name() == 'id') {

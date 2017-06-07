@@ -66,7 +66,7 @@ class Service
         return self::$app->redirect($url, $status);
     }
 
-    public static function redirectPath($path, $parmameters = null, $status = 302)
+    public static function redirectPath($path, $parmameters = [], $status = 302)
     {
         return self::$app->redirect(self::path($path, $parmameters), $status);
     }

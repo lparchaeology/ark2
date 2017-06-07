@@ -86,7 +86,7 @@ class Field extends Element
         return ($this->format ?: 'hidden');
     }
 
-    public function formName()
+    public function formName($cellName = null)
     {
         return $this->attribute->name();
     }
@@ -277,13 +277,16 @@ class Field extends Element
         return $options;
     }
 
-    public function formData($data, $dataKey = null)
+    public function formData($mode, $data, $options)
     {
+        $cellName = $options['cell']['name'];
         if (is_array($data)) {
-            if (isset($data[$dataKey])) {
-                $data = $data[$dataKey];
-            } elseif (isset($data[$this->name()])) {
-                $data = $data[$this->name()];
+            if (isset($data[$cellName])) {
+                $data = $data[$cellName];
+            } elseif (isset($data[$this->name])) {
+                $data = $data[$this->name];
+            } elseif (isset($data[$this->id()])) {
+                $data = $data[$this->id()];
             }
         }
         if ($data instanceof Property) {
@@ -297,8 +300,9 @@ class Field extends Element
 
     protected function fieldBuilder($mode, $data, $dataKey, $options = [])
     {
-        $options = $this->formOptions($this->displayMode($mode), $data, $options);
-        return $this->formBuilder($data, $options);
+        $cellName = $options['cell']['name'];
+        $options = $this->formOptions($mode, $data, $options);
+        return $this->formBuilder($mode, $data, $options, $cellName);
     }
 
     protected function sanitise($options)
@@ -315,7 +319,7 @@ class Field extends Element
 
     public function buildForm(FormBuilderInterface $builder, $mode, $data, $dataKey, $options = [])
     {
-        //dump('BUILD FIELD : '.$this->element.' '.$this->attribute()->name());
+        //dump('BUILD FIELD : '.$this->formName());
         //dump($mode);
         //dump($this->displayMode($mode));
         //dump($data);
@@ -326,26 +330,33 @@ class Field extends Element
             return;
         }
         unset($options['sanitise']);
-        $data = $this->formData($data, $dataKey);
+        $mode = $this->displayMode($mode);
+        $data = $this->formData($mode, $data, $options);
+        //dump($data);
         $fieldBuilder = $this->fieldBuilder($mode, $data, $dataKey, $options);
         $builder->add($fieldBuilder);
     }
 
     public function renderView($mode, $data, array $context = [], $forms = null, $form = null)
     {
-        //dump('RENDER FIELD : '.$this->element);
+        //dump('RENDER FIELD : '.$this->formName());
         //dump($mode);
         //dump($this->displayMode($mode));
         //dump($data);
         //dump($form);
+        if (!$context) {
+            $context = $this->defaultContext();
+        }
         $sanitise = $this->sanitise($context);
         if ($sanitise == 'withhold') {
             return;
         } elseif ($form && isset($form->vars['id'])) {
-            $data = $this->formData($data, $form->vars['id']);
+            // TODO What is this? Why?
+            $options['cell']['name'] = $form->vars['id'];
         } else {
-            $data = $this->formData($data);
+            $options['cell']['name'] = null;
         }
+        $data = $this->formData($mode, $data, $context);
         if ($form && $this->template()) {
             $context['field'] = $this;
             $context['mode'] = $this->displayMode($mode);
@@ -353,8 +364,6 @@ class Field extends Element
             $context['data'] = $data;
             $context['forms'] = $forms;
             $context['form'] = $form;
-            //dump($context);
-            //dump($data);
             return Service::view()->renderView($this->template(), $context);
         }
 

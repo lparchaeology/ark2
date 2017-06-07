@@ -67,6 +67,11 @@ class TextFormat extends Format
         return $this->defaultSize;
     }
 
+    public function emptyValue()
+    {
+        return new LocalText();
+    }
+
     protected function fragmentValue($fragment, ArrayCollection $properties = null)
     {
         $data = new LocalText();
@@ -132,7 +137,7 @@ class TextFormat extends Format
 
     protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null)
     {
-        $fragment->setValue($data['content'], data['language'], content['mediatype']);
+        $fragment->setValue($data['content'], $data['language'], $data['mediatype']);
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

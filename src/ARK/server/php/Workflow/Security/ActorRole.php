@@ -55,7 +55,7 @@ class ActorRole
     public function __construct(Actor $actor, Role $role)
     {
         $this->actor = $actor;
-        $this->role = $role->name();
+        $this->role = $role->id();
         $this->roleEntity = $role;
     }
 

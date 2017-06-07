@@ -33,6 +33,7 @@ namespace DIME\Controller\View;
 use ARK\Error\ErrorException;
 use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
+use ARK\Service;
 use ARK\View\Page;
 use DIME\DIME;
 use DIME\Controller\View\DimeFormController;
@@ -49,13 +50,30 @@ class FindViewController extends DimeFormController
         return $this->handleRequest($request, 'dime_page_find');
     }
 
-    public function buildData(Request $request, Page $page)
+    public function buildData(Request $request)
     {
-        if (! $resource = ORM::find(Find::class, $this->itemSlug)) {
+        if (! $find = ORM::find(Find::class, $this->itemSlug)) {
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Find not found', "Find $this->itemSlug not found"));
         }
-        $data[$page->content()->name()] = $resource;
+        $data['find'] = $find;
         $data['notifications'] = DIME::getUnreadNotifications();
+        $data['actions'] = Service::workflow()->actions(Service::workflow()->actor(), $find);
         return $data;
+    }
+
+    public function processForm(Request $request, $form, $redirect)
+    {
+        $data = $this->getData($form);
+        $find = $data['find'];
+        ORM::persist($find);
+        if (isset($data['actions'])) {
+            $action = $data['actions'];
+            $actor = Service::workflow()->actor();
+            //$action->apply($actor, $item);
+        }
+        ORM::flush($find);
+        return Service::redirectPath($redirect, [
+            'itemSlug' => $find->id()
+        ]);
     }
 }

@@ -51,16 +51,4 @@ class UserLoginController extends DimeFormController
         $context['last_username'] = Service::security()->lastUsername();
         return $this->handleRequest($request, 'core_page_user_login', null, [], $context);
     }
-
-    public function buildData(Request $request, Page $page)
-    {
-        $data[$page->content()->name()] = null;
-        return $data;
-    }
-
-    public function processForm(Request $request, $form, $redirect)
-    {
-        // action already set to go to /users/check
-        return Service::redirectPath($redirect);
-    }
 }

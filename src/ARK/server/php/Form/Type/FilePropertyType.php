@@ -39,35 +39,16 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class FilePropertyType extends AbstractPropertyType
+class FilePropertyType extends ItemPropertyType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $fieldOptions['label'] = false;
-        $fieldOptions['mapped'] = false;
-        $builder->add('sequence', HiddenType::class, $fieldOptions);
-        $builder->add('name', LocalTextType::class, $fieldOptions);
-        $builder->add('version', TextType::class, $fieldOptions);
-        $builder->add('created', EventType::class, $fieldOptions);
-        $builder->add('modified', EventType::class, $fieldOptions);
-        $builder->add('expires', DateTimeType::class, $fieldOptions);
         $builder->setDataMapper($this);
-    }
-
-    protected function options()
-    {
-        return [
-            'compound' => true,
-        ];
     }
 
     public function mapDataToForms($property, $forms)
     {
-        if (!$property instanceof Property) {
-            return;
-        }
-        $value = $this->value($property, $forms);
-        $forms = iterator_to_array($forms);
+        parent::mapDataToForms($property, $forms);
     }
 
     public function mapFormsToData($forms, &$property)
@@ -76,20 +57,8 @@ class FilePropertyType extends AbstractPropertyType
             return;
         }
         $forms = iterator_to_array($forms);
-        $text = unserialize($forms['previous']->getData());
-        $language = $forms['language']->getData();
-        $content = $forms['content']->getData();
-        if (isset($text[$language]) && $text[$language] == $content) {
-            return;
-        }
-        if (!isset($text[$language]) && !$content) {
-            return;
-        }
-        $text[$language] = $content;
-        $values = [];
-        foreach ($text as $lang => $cont) {
-            $values[] = ['language' => $lang, 'content' => $cont];
-        }
+        dump($forms);
+        $forms['avatar']->getData()->move($dir, $someNewFilename);
         $property->setValue($values);
     }
 }

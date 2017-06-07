@@ -36,6 +36,7 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Workflow\Permission;
 use ARK\Workflow\Security\ActorRole;
+use ARK\Vocabulary\Term;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -50,7 +51,7 @@ class Role
 
     public function __construct($role)
     {
-        $this->role = $role;
+        $this->role = ($role instanceof Term ? $role->name() : $role);
         $this->permissions = new ArrayCollection();
     }
 

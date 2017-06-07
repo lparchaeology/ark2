@@ -34,6 +34,7 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Security\Account;
 use ARK\Security\Validator\PasswordStrength;
+use ARK\Service;
 use DateTime;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -49,22 +50,23 @@ use Symfony\Component\Validator\Mapping\ClassMetadata as ValidatorMetadata;
 class User implements AdvancedUserInterface, Serializable
 {
     protected $id = null;
-    protected $username = '';
-    protected $email = '';
+    protected $username = null;
+    protected $email = null;
     protected $password = null;
-    protected $name = '';
+    protected $name = null;
     protected $level = 'ROLE_ANON';
     protected $levels = null;
     protected $enabled = false;
+    protected $confirmed = false;
     protected $verified = false;
     protected $locked = false;
     protected $expired = false;
     protected $expiresAt = null;
     protected $credentialsExpired = false;
     protected $credentialsExpireAt = null;
-    protected $verificationToken = '';
+    protected $verificationToken = null;
     protected $verificationRequestedAt = null;
-    protected $passwordRequestToken = '';
+    protected $passwordRequestToken = null;
     protected $passwordRequestedAt = null;
     protected $lastLogin = null;
     protected $accounts = null;
@@ -119,9 +121,9 @@ class User implements AdvancedUserInterface, Serializable
         return $this->password;
     }
 
-    public function setPassword($password)
+    public function setPassword($plainPassword)
     {
-        $this->password = Service::security()->encodePassword($password);
+        $this->password = Service::security()->encodePassword($plainPassword);
     }
 
     // UserInterface
@@ -156,6 +158,16 @@ class User implements AdvancedUserInterface, Serializable
         $this->verified = true;
     }
 
+    public function isConfirmed()
+    {
+        return $this->confirmed;
+    }
+
+    public function confirm()
+    {
+        $this->confirmed = true;
+    }
+
     // AdvancedUserInterface
     public function isEnabled()
     {
@@ -164,8 +176,9 @@ class User implements AdvancedUserInterface, Serializable
 
     public function enable()
     {
-        $this->enabled = true;
-        return $this;
+        if ($this->isVerified() && $this->isConfirmed() && !$this->isLocked() && !$this->isExpired()) {
+            $this->enabled = true;
+        }
     }
 
     public function disable()
@@ -281,12 +294,11 @@ class User implements AdvancedUserInterface, Serializable
         return $this->verificationRequestedAt;
     }
 
-    // TODO which way around? Do here or in command?
-    public function requestVerification($token)
+    public function setVerificationRequested()
     {
-        $this->verificationToken = $token;
+        $this->verificationToken = Service::security()->generateToken();
         // TODO check is UTC
-        $this->verificationRequestedAt = time();
+        $this->verificationRequestedAt = new DateTime();
     }
 
     public function isVerificationRequestExpired($ttl)
@@ -464,14 +476,14 @@ class User implements AdvancedUserInterface, Serializable
         $builder = new ClassMetadataBuilder($metadata, 'ark_security_user');
 
         // Key
-        $builder->addKey('id', 'integer', 'user');
+        $builder->addStringKey('id', 30, 'user');
 
         // Attributes
-        $builder->addStringField('username', 100);
+        $builder->addStringField('username', 30);
         $builder->addStringField('email', 100);
         $builder->addStringField('password', 255);
         $builder->addStringField('name', 100);
-        $builder->addStringField('level', 30);
+        $builder->addStringField('level', 10);
         $builder->addField('enabled', 'boolean');
         $builder->addField('verified', 'boolean');
         $builder->addField('locked', 'boolean');

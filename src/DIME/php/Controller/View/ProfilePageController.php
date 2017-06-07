@@ -48,9 +48,7 @@ class ProfilePageController extends DimeFormController
     public function buildData(Request $request, Page $page)
     {
         $actor = Service::workflow()->actor();
-        $data['core_actor_person'] = $actor;
-        $data['core_user_password'] = null;
-        $data['dime_home_action'] = null;
+        $data['person'] = $actor;
         $data['notifications'] = DIME::getUnreadNotifications();
         return $data;
     }

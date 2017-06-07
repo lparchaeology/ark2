@@ -52,7 +52,7 @@ class FindListController extends DimeFormController
         return $this->handleRequest($request, 'dime_page_find_list');
     }
 
-    public function buildData(Request $request, Page $page)
+    public function buildData(Request $request)
     {
         $query = $request->query->all();
 
@@ -61,7 +61,7 @@ class FindListController extends DimeFormController
                 'concept' => 'dime.denmark.municipality',
                 'term' => $query['municipality']
             ]);
-            $data['dime_find_filter_municipality'] = $municipalities->toArray();
+            $data['filters']['municipality'] = $municipalities->toArray();
         }
 
         if (isset($query['type'])) {
@@ -69,7 +69,7 @@ class FindListController extends DimeFormController
                 'concept' => 'dime.find.type',
                 'term' => $query['type']
             ]);
-            $data['dime_find_filter_type'] = $types->toArray();
+            $data['filters']['type'] = $types->toArray();
         }
 
         if (isset($query['period'])) {
@@ -77,7 +77,7 @@ class FindListController extends DimeFormController
                 'concept' => 'dime.period',
                 'term' => $query['period']
             ]);
-            $data['dime_find_filter_period'] = $periods->toArray();
+            $data['filters']['period'] = $periods->toArray();
         }
 
         if (isset($query['material'])) {
@@ -85,7 +85,7 @@ class FindListController extends DimeFormController
                 'concept' => 'dime.material',
                 'term' => $query['material']
             ]);
-            $data['dime_find_filter_material'] = $materials->toArray();
+            $data['filters']['material'] = $materials->toArray();
         }
 
         if ($query) {
@@ -97,22 +97,20 @@ class FindListController extends DimeFormController
             $resource = ORM::findAll(Find::class);
         }
 
-        $data[$page->content()->name()] = $resource;
-        $data['dime_find_list'] = $resource;
+        $data['finds'] = $resource;
         // TODO Use visibility/workflow
-        $data['dime_find_map'] = (Service::security()->isGranted('ROLE_USER') ? $resource : []);
-        $data['dime_find_filter'] = null;
-        $data['kortforsyningenticket'] = DIME::getMapTicket();
+        $data['map']['finds'] = (Service::security()->isGranted('ROLE_USER') ? $resource : []);
+        $data['map']['kortforsyningenticket'] = DIME::getMapTicket();
         return $data;
     }
 
     public function processForm(Request $request, $form, $redirect)
     {
-        $data = $form->getData();
-        $municipalities = $data['dime_find_filter_municipality'];
-        $types = $data['dime_find_filter_type'];
-        $periods = $data['dime_find_filter_period'];
-        $materials = $data['dime_find_filter_material'];
+        $data = $this->getData($form);
+        $municipalities = $data['filters']['municipality'];
+        $types = $data['filters']['type'];
+        $periods = $data['filters']['period'];
+        $materials = $data['filters']['material'];
         $query = [];
         if ($municipalities) {
             foreach ($municipalities as $municipality) {

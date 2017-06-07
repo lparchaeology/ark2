@@ -101,7 +101,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
         $container['user.options'] = [
             'adminConfirm' => true,
-            'emailConfirm' => true,
+            'verifyEmail' => true,
             'emailAddress' => 'noreply@example.com',
             'emailName' => 'ARK User Admin (Do Not Reply)',
             'passwordStrength' => 2,

@@ -30,12 +30,18 @@
 
 namespace ARK\Security;
 
+use ARK\Actor\Actor;
 use ARK\Application;
+use ARK\Error\ErrorException;
 use ARK\Model\Attribute;
 use ARK\Model\Item;
+use ARK\ORM\ORM;
 use ARK\Security\User;
 use ARK\Service;
-use ARK\Error\ErrorException;
+use ARK\Vocabulary\Term;
+use ARK\Workflow\Security\ActorRole;
+use ARK\Workflow\Security\ActorUser;
+use ARK\Workflow\Role;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
@@ -44,10 +50,12 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 class Security
 {
     protected $app = null;
+    protected $options = null;
 
     public function __construct(Application $app)
     {
         $this->app = $app;
+        $this->options = $app['user.options'];
     }
 
     public function tokenStorage()
@@ -101,9 +109,9 @@ class Security
         return $this->app['security.encoder.bcrypt'];
     }
 
-    public function encodePassword($plainPassword)
+    public function encodePassword($plainPassword, $salt = null)
     {
-        return $this->encoder()->encodePassword($plainPassword);
+        return $this->encoder()->encodePassword($plainPassword, $salt);
     }
 
     public function validatePassword($plainPassword)
@@ -161,22 +169,41 @@ class Security
         }
     }
 
-    public function registerUser($username, $email, $plainPassword, $name = null, $level = 'ROLE_USER')
+    public function registerUser(User $user, Actor $actor = null, Role $role = null)
     {
-        $user = new User($username, $email);
-        if ($this->isEmailConfirmationRequired) {
-            $user->setEnabled(false);
-            $user->setConfirmationToken($app['user.tokenGenerator']->generateToken());
+        if (!$this->options['adminConfirm']) {
+            $user->confirm();
         }
-        $user->setPassword($plainPassword);
-        ORM::persist($user);
-        ORM::flush($user);
-
-        if ($this->isEmailConfirmationRequired) {
-            $this->sendConfirmationMessage($user);
+        if ($this->options['verifyEmail']) {
+            $user->setVerificationRequested();
         } else {
-            $this->loginAsUser($user);
+            $user->verify();
         }
+        $user->enable();
+        ORM::persist($user);
+        if ($actor && $role) {
+            dump($actor);
+            $actorUser = new ActorUser($actor, $user);
+            $actorRole = new ActorRole($actor, $role);
+            ORM::persist($actor);
+            ORM::persist($actorUser);
+            ORM::persist($actorRole);
+            ORM::flush($actor);
+            dump($actor);
+        }
+        ORM::flush($user);
+        if ($this->options['verifyEmail']) {
+            //$this->sendVerificationMessage($user);
+        }
+    }
+
+    public function createUser($username, $email, $plainPassword, $name = null, $level = 'ROLE_USER')
+    {
+        $user = new User($username, $username, $email);
+        $user->setPassword($plainPassword);
+        $user->setName($name);
+        $user->setLevel($level);
+        return $user;
     }
 
     protected function getGravatarUrl($email, $size = 80)
@@ -185,9 +212,9 @@ class Security
         return '//www.gravatar.com/avatar/' . md5(strtolower(trim($email))) . '?s=' . $size . '&d=identicon';
     }
 
-    public function sendConfirmationMessage(User $user)
+    public function sendVerificationMessage(User $user)
     {
-        $url = Service::url('user.confirm', ['token' => $user->getConfirmationToken()]);
+        $url = Service::url('user.confirm', ['token' => $user->getVerificationToken()]);
 
         $context = [
             'user' => $user,
@@ -199,12 +226,12 @@ class Security
 
     public function sendResetMessage(User $user)
     {
-        $url = $this->urlGenerator->generate(self::ROUTE_RESET_PASSWORD, array('token' => $user->getConfirmationToken()), UrlGeneratorInterface::ABSOLUTE_URL);
+        $url = $this->urlGenerator->generate('user.reset', array('token' => $user->getConfirmationToken()), UrlGeneratorInterface::ABSOLUTE_URL);
 
-        $context = array(
+        $context = [
             'user' => $user,
             'resetUrl' => $url
-        );
+        ];
 
         $this->sendMessage($this->resetTemplate, $context, $this->getFromEmail(), $user->getEmail());
     }

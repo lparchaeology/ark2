@@ -50,7 +50,7 @@ class ItemIdGenerator extends AbstractIdGenerator
         }
         $strategy = $entity->schema()->generator();
         if ($strategy == 'assigned') {
-            return $entity->property('id');
+            return $entity->id();
         }
         $parentItem = '';
         $parent = '';

@@ -78,6 +78,6 @@ class PageViewController extends DimeFormController
 
         $options['content'][0] = $content;
 
-        return Service::renderResponse('pages/page.html.twig', $options);
+        return Service::view()->renderResponse('pages/page.html.twig', $options);
     }
 }

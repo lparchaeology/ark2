@@ -43,32 +43,25 @@ abstract class DimeFormController extends DimeController
     public function handleRequest(Request $request, $page, $redirect = null, $options = [], $context = [])
     {
         $page = ORM::find(Page::class, $page);
-        $data = $this->buildData($request, $page);
+        $data[$page->content()->formName()] = $this->buildData($request);
         $context['page_config'] = $this->pageConfig($request->attributes->get('_route'));
         return $page->handleRequest($request, $data, $options, $context, [$this, 'processForm']);
     }
 
-    public function buildData(Request $request, Page $page)
+    public function buildData(Request $request)
     {
-        $data[$page->content()->name()] = null;
-        $data['notifications'] = DIME::getUnreadNotifications();
-        return $data;
+        return null;
+    }
+
+    public function getData($form)
+    {
+        $data = $form->getData();
+        dump($data);
+        return $data[$form->getName()];
     }
 
     public function processForm(Request $request, $form, $redirect)
     {
-        $id = 0;
-        $data = $form->getData();
-        $item = $data[$form->getName()];
-        ORM::persist($item);
-        if (isset($data['dime_find_actions'])) {
-            $action = $data['dime_find_actions'];
-            $actor = Service::workflow()->actor();
-            $action->apply($actor, $item);
-        }
-        ORM::flush($item);
-        return Service::redirectPath($redirect, [
-            'itemSlug' => $item->id()
-        ]);
+        return Service::redirectPath($redirect);
     }
 }

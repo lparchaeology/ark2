@@ -7,11 +7,11 @@
     {% endset %}
 
     <table
-        id="{{layout.name}}"
+        id="{{layout.id}}"
         class="{{table_class}}"
         data-toggle="table"
         data-classes="{{table_class}}"
-        data-sort-name="{{layout.elements[0].name}}"
+        data-sort-name="{{layout.elements[0].id}}"
         {#data-show-refresh="true"#}
         data-show-toggle="true"
         data-show-columns="true"
@@ -26,15 +26,15 @@
         <thead>
             <tr>
                 <th class="checkedhead" data-field="checked" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
-                {% if data[layout.name][0] is defined and data[layout.name][0].hasAttribute('image') %}
+                {% if data[0] is defined and data[0].hasAttribute('image') %}
                     <th class="thumbimagehead" data-field="image" data-title="image" data-sortable="false"></th>
                 {% endif %}
                 {% for field in layout.elements %}
                     {% if workflow.hasPermission(field.attribute.readPermission) %}
                         {% if field.attribute.name == 'id' %}
-                        <th data-field="{{field.name}}" data-title="{{field.keyword|trans}}" data-sortable="true" data-sorter="alphanum" data-card-visible="false">
+                        <th data-field="{{field.id}}" data-title="{{field.keyword|trans}}" data-sortable="true" data-sorter="alphanum" data-card-visible="false">
                         {% else %}
-                        <th data-field="{{field.name}}" data-title="{{field.keyword|trans}}" data-sortable="true" data-sorter="alphanum" data-card-visible="false">
+                        <th data-field="{{field.id}}" data-title="{{field.keyword|trans}}" data-sortable="true" data-sorter="alphanum" data-card-visible="false">
                         {% endif %}
                             {{field.keyword|trans}}
                         </th>
@@ -45,7 +45,7 @@
         </thead>
 
         <tbody>
-            {% for item in data[layout.name] %}
+            {% for item in data %}
                 <tr data-unique-id = "{{ item.id }}" >
                     <td class="not-card-visible"><span class="tablecheckbox glyphicon glyphicon-unchecked"></span></td>
                     {% if item.hasAttribute('image') %}
@@ -86,10 +86,15 @@
 <div id = "chooseActionSelectHolder"></div>
 <script>
 
-window.itemkey = {{ data[layout.name][0].schema.module.name }};
+window.itemkey =
+    {% if data[0] is defined %}
+        {{ data[0].schema.module.name }};
+    {% else %}
+        {{null}}
+    {% endif %}
 window.itemlist = [
-    {% if data[layout.name]|length > 0 %}
-        {% for item in data[layout.name] %}
+    {% if data|length > 0 %}
+        {% for item in data %}
             {{ item.id }},
         {% endfor %}
     {% else %}
@@ -98,7 +103,8 @@ window.itemlist = [
 ];
 
 window.defaultAvailableActions = [
-    {% for action in workflow.schemaActions(data[layout.name][0].schema) %}
+    {% if data[0] is defined %}
+    {% for action in workflow.schemaActions(data[0].schema) %}
         {
             "keyword":"{{ action.keyword }}",
             "translation":"{{ action.keyword | trans }}",
@@ -106,10 +112,11 @@ window.defaultAvailableActions = [
             "visible":false,
         },
     {% endfor %}
+    {% endif %}
     ];
 
 window.itemAvailableActions = {
-    {% for item in data[layout.name] %}
+    {% for item in data %}
         "{{item.id}}": {
             {% for action in workflow.actions(workflow.actor, item) %}
             "{{ action.keyword }}":{

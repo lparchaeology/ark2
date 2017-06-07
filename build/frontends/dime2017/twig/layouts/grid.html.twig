@@ -31,8 +31,7 @@
         {% endif %}
 
         {% if layout.form %}
-            {{ form_start(forms[layout.name]) }}
-            {% set form = forms[layout.name] %}
+            {{ form_start(form) }}
         {% endif %}
 
         {% for cdx, col in row %}
@@ -44,7 +43,7 @@
         {% endfor %}
 
         {% if layout.form %}
-            {{ form_end(forms[layout.name]) }}
+            {{ form_end(form) }}
         {% endif %}
 
     </div>

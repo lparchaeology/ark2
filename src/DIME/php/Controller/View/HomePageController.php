@@ -45,18 +45,16 @@ class HomePageController extends DimeFormController
         return $this->handleRequest($request, 'dime_page_home');
     }
 
-    public function buildData(Request $request, Page $page)
+    public function buildData(Request $request)
     {
         // Find 9 most recent finds for current actor
         $items = Service::database()->getActorFinds(Service::workflow()->actor()->id());
         $finds = ORM::findBy(Find::class, ['item' => $items], ['created' => 'DESC'], 9);
-        $data[$page->content()->name()] = $finds;
-        $data['dime_find_list'] = $finds;
+        $data['finds'] = $finds;
 
         // TODO Use visibility / permissions
-        $data['dime_find_map'] = (Service::security()->isGranted('ROLE_USER') ? $finds : []);
-        $data['kortforsyningenticket'] = DIME::getMapTicket();
-        $data['dime_home_action'] = null;
+        $data['map']['finds'] = (Service::security()->isGranted('ROLE_USER') ? $finds : []);
+        $data['map']['kortforsyningenticket'] = DIME::getMapTicket();
         $data['notifications'] = DIME::getUnreadNotifications();
 
         return $data;
