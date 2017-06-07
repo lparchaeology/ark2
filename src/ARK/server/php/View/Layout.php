@@ -118,7 +118,7 @@ abstract class Layout extends Element
 
     public function buildForms($mode, $data, $options)
     {
-        dump('FORMS : '.$this->formName());
+        //dump('FORMS : '.$this->formName());
         //dump($mode);
         //dump($this->displayMode($mode));
         //dump($data);
@@ -129,9 +129,7 @@ abstract class Layout extends Element
             $builderOptions = $this->buildOptions($builderMode, $data, $options);
             $builder = $this->formBuilder($builderMode, $data, $builderOptions);
             $this->buildForm($builder, $mode, $data, null, $options);
-            dump($builder);
             $form = $builder->getForm();
-            dump($form);
             return [$this->formName() => $form];
         }
         $forms = [];
@@ -153,7 +151,6 @@ abstract class Layout extends Element
         //dump($data);
         if (!$this->form && $this->name) {
             $layoutBuilder = $this->formBuilder($mode, [$this->name => $data], $options);
-            //dump($layoutBuilder);
             $builder->add($layoutBuilder);
             foreach ($this->cells() as $cell) {
                 $cell->buildForm($layoutBuilder, $mode, $data, $dataKey, $options);

@@ -111,9 +111,9 @@ class Page extends Element
 
     public function buildForms($mode, $data, $options)
     {
-        dump('BUILD PAGE : '.$this->element);
+        //dump('BUILD PAGE : '.$this->element);
         //dump($mode);
-        dump($data);
+        //dump($data);
         //dump($options);
         $options = $this->buildOptions($mode, $data, $options);
         return $this->content->buildForms($mode, $data, $options);

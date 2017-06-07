@@ -34,6 +34,7 @@ use ARK\Form\Type\StaticType;
 use ARK\Model\Item;
 use ARK\Model\Property;
 use ARK\Model\Schema\SchemaAttribute;
+use ARK\Model\LocalText;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
@@ -376,18 +377,15 @@ class Field extends Element
         //dump($fieldBuilder);
 
         if ($data instanceof Item) {
-            $item = $data;
-        } elseif (is_array($data) && isset($data['data'])) {
-            $item = $data['data'];
+            $data = $item->property($this->attribute()->name());
         }
-
-        if ($item instanceof Item) {
-            $value = 'FIXME: ' . $this->element;
-            $value = $item->property($this->attribute()
-                ->name())
-                ->value();
+        if ($data instanceof Property) {
+            $value = $data->value();
             if ($value === null) {
                 return null;
+            }
+            if (is_array($value)) {
+                $value = $value[$this->attribute()->format()->valueName()];
             }
             if ($value instanceof Actor) {
                 return $value->property('fullname')
@@ -409,27 +407,17 @@ class Field extends Element
                 }
                 return $value->property('id')->serialize();
             }
+            if ($value instanceof LocalText) {
+                return $value->content();
+            }
             if ($value instanceof Term) {
-                return Service::translate($value->keyword());
-            }
-            if ($this->attribute()
-                ->format()
-                ->datatype()
-                ->id() == 'text') {
-                return $item->property($this->attribute->name())
-                    ->value()
-                    ->content();
-            }
-            if (is_array($value)) {
-                $value = $value[$this->attribute()
-                    ->format()
-                    ->valueName()];
-            }
-            if ($this->attribute()->hasVocabulary()) {
                 return Service::translate($value->keyword());
             }
             if ($value instanceof \DateTime) {
                 return $value->format('Y-m-d H:i:s');
+            }
+            if ($this->attribute()->hasVocabulary()) {
+                return Service::translate($value);
             }
         }
         return $value;
