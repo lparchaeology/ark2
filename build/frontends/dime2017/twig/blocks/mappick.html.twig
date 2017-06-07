@@ -6,37 +6,39 @@
 
 <div class="mappick-group form-group row">
 
-        <div class="mappick-fields col-sm-6">
-            <div class="row mappick-options mappick-utm">
-                {% if modus == 'active' %}
-                    <div class="radio">
-                        <input type="radio" name="mappick-coordinates-radio" id="mappick-utm" checked="checked" />
-                        <label for="mappick-utm"><span class="radiolabel">{{ 'dime.find.location.utm' | translate }}</span></label>
-                    </div>
-                    {{ form_widget(fieldForm.utmEasting, {'attr': {'class': 'mappick_field mappick-utm-control'}}) }}
-                    {{ form_widget(fieldForm.utmNorthing, {'attr': {'class': 'mappick-field mappick-utm-control'}}) }}
-                {% else %}
-                    {{ form_row(fieldForm.utmEasting) }}
-                    {{ form_row(fieldForm.utmNorthing) }}
-                {% endif %}
-            </div>
-            <div class="row mappick-options mappick-decimal">
-                {% if modus == 'active' %}
-                    <div class="radio">
-                        <input type="radio" name="mappick-coordinates-radio" id="mappick-decimal" />
-                        <label for="mappick-decimal"><span class="radiolabel">{{ 'dime.find.location.decimal' | translate }}</span></label>
-                    </div>
-                    {{ form_widget(fieldForm.easting, {'attr': {'class': 'mappick_field mappick-decimal-control', 'readonly':'readonly'}}) }}
-                    {{ form_widget(fieldForm.northing, {'attr': {'class': 'mappick-field mappick-decimal-control', 'readonly':'readonly'}}) }}
-                {% else %}
-                    {{ form_row(fieldForm.easting) }}
-                    {{ form_row(fieldForm.northing) }}
-                {% endif %}
-            </div>
+    <div class="mappick-fields col-sm-6">
+        <div class="row mappick-options mappick-utm">
+            {% if modus == 'active' %}
+                <div class="radio">
+                    <input type="radio" name="mappick-coordinates-radio" id="mappick-utm" checked="checked" />
+                    <label for="mappick-utm"><span class="radiolabel">{{ 'dime.find.location.utm' | translate }}</span></label>
+                </div>
+                {{ form_widget(fieldForm.utmEasting, {'attr': {'class': 'mappick_field mappick-utm-control'}}) }}
+                {{ form_widget(fieldForm.utmNorthing, {'attr': {'class': 'mappick-field mappick-utm-control'}}) }}
+            {% else %}
+                {{ form_row(fieldForm.utmEasting) }}
+                {{ form_row(fieldForm.utmNorthing) }}
+            {% endif %}
         </div>
-        <div id="mappick" class="mappick col-sm-6"></div>
+        <div class="row mappick-options mappick-decimal">
+            {% if modus == 'active' %}
+                <div class="radio">
+                    <input type="radio" name="mappick-coordinates-radio" id="mappick-decimal" />
+                    <label for="mappick-decimal"><span class="radiolabel">{{ 'dime.find.location.decimal' | translate }}</span></label>
+                </div>
+                {{ form_widget(fieldForm.easting, {'attr': {'class': 'mappick_field mappick-decimal-control', 'readonly':'readonly'}}) }}
+                {{ form_widget(fieldForm.northing, {'attr': {'class': 'mappick-field mappick-decimal-control', 'readonly':'readonly'}}) }}
+            {% else %}
+                {{ form_row(fieldForm.easting) }}
+                {{ form_row(fieldForm.northing) }}
+            {% endif %}
+            {{ form_row(fieldForm.srid) }}
+            {{ form_row(fieldForm.format) }}
+        </div>
+    </div>
+    <div id="mappick" class="mappick col-sm-6"></div>
 
-        <script>var mapPin = "{{ asset('/images/icons/pin.png', 'frontend') }}"</script>
+    <script>var mapPin = "{{ asset('/images/icons/pin.png', 'frontend') }}"</script>
 
     {% do fieldForm.setRendered %}
 
