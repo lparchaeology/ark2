@@ -9,7 +9,6 @@ function initialiseMapView() {
     var layers = [];
     for (var i = 0; i < layerConfig.length; ++i) {
         var config = layerConfig[i];
-        console.log(config.source);
         layer = new ol.layer.Tile({
             name: config.name,
             visible: config.visible,
@@ -180,8 +179,6 @@ function initialiseMapView() {
 
                 var featureextent = e.getGeometry().getExtent();
 
-                console.log(featureextent);
-
                 if(typeof featureextent != 'undefined'){
                     extent = [
                         Math.min(featureextent[0],extent[0]),
@@ -194,8 +191,6 @@ function initialiseMapView() {
 
 
             });
-
-            console.log(extent);
 
             map.getView().fit(extent, map.getSize());
 
@@ -336,7 +331,6 @@ function initialiseMapView() {
                     $('.modal-backdrop').detach();
                 });
             }
-
         } else if ($(this).attr("value") == 'distribution') {
             view = map.getView();
 

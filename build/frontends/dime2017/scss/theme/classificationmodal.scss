@@ -1,6 +1,14 @@
-dating-modal-dialog {
-    margin: 10% auto;
-    width: 500px;
+.dating-modal-dialog {
+    margin: 10vh auto;
+    width: 90vw;
+}
+
+.dating-modal-container {
+    margin: 0 0 20px 0;
+}
+
+.dating-modal-container .select2 {
+
 }
 
 .dating-modal-container.dime {
@@ -16,9 +24,34 @@ dating-modal-dialog {
     margin: 15px auto;
     width: 250px;
 }
+
+.classification-holder {
+    text-align:left;
+}
+
 .vis-custom-time.start {
 	background-color:#108210;
+    z-index: 3;
 }
 .vis-custom-time.end {
 	background-color:#821010;
+    z-index: 3;
+}
+
+.vis-background {
+    background-color:#f9f9f9;
+}
+.vis-item,
+.vis-item.vis-range {
+    border-radius: 10px;
+    border: 1px black solid;
+    background-color:#fff;
+}
+
+.vis-item .vis-item-content {
+    padding:0;
+}
+
+#find_type_term_modal{
+    width:20%
 }

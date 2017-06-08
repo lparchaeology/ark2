@@ -1,4 +1,4 @@
-$('document').ready(function(){
+var initPeriod = function(){
 
     var date_start_id = "find_dating_year";
 
@@ -12,16 +12,24 @@ $('document').ready(function(){
     })
     .done(function(response) {
         window.periodvocabulary = response.terms;
+        initTimeline();
     });
 
     var getPeriodFromYear = function(year){
 
         // Null period covers all potential dates
         var period = {"name":"NULL","parameters":{"year_start":{"value":-Infinity},"year_end":{"value":Infinity}}};
-
         for (var key in periodvocabulary) {
-            periodvocabstart = parseInt(periodvocabulary[key].parameters.year_start.value);
-            periodvocabend = parseInt(periodvocabulary[key].parameters.year_end.value);
+            try {
+                periodvocabstart = parseInt(periodvocabulary[key].parameters.year_start.value);
+            } catch (e) {
+                periodvocabstart = null;
+            }
+            try {
+                periodvocabend = parseInt(periodvocabulary[key].parameters.year_end.value);
+            } catch (e) {
+                periodvocabend = null;
+            }
             if ( periodvocabend >= year && year >= periodvocabstart ){
                 //lets just get the most precise for now
                 if(periodvocabstart >= period.parameters.year_start.value
@@ -40,10 +48,29 @@ $('document').ready(function(){
         var highlighted_item_code = highlighted_item_id.split('-');
         var highlighted_item_concept = highlighted_item_code[highlighted_item_code.length-1];
 
-        if( typeof periodvocabulary[highlighted_item_concept].parameters == undefined ){
+        if( typeof periodvocabulary[highlighted_item_concept].parameters == "undefined" ){
             var tooltip = "undefined";
-        } else{
-            var tooltip = periodvocabulary[highlighted_item_concept].parameters.year_start.value+"\xa0\u2014\xa0"+periodvocabulary[highlighted_item_concept].parameters.year_end.value;
+        } else {
+            
+             try {          
+                if( isNaN(periodvocabulary[highlighted_item_concept].parameters.year_end.value) ){
+                    throw 'year end is NaN';
+                }
+                end = periodvocabulary[highlighted_item_concept].parameters.year_end.value;
+            } catch (e) {
+                end = new Date().getFullYear();
+            }
+            
+            try {          
+                if( isNaN(periodvocabulary[highlighted_item_concept].parameters.year_start.value) ){
+                    throw 'year end is NaN';
+                }
+                start = period.parameters.year_end.value;
+            } catch (e) {
+                start = -10000;
+            }
+            
+            var tooltip = start.toString()+"\xa0\u2014\xa0"+end.toString();
         }
 
         var promise = new Promise(function(resolve) {
@@ -69,12 +96,8 @@ $('document').ready(function(){
     }, '#select2-'+date_start_period_id+'_span-results .select2-results__option.select2-results__option--highlighted');
 
     $('#'+date_start_id).on('keyup', function(){
+        console.log(this.value)
         var year = parseInt(this.value);
-
-        if(year<this.min){
-            this.value = this.min;
-            year = parseInt(this.value);
-        }
 
         var period = getPeriodFromYear(year);
 
@@ -84,11 +107,6 @@ $('document').ready(function(){
 
     $('#'+date_start_id+'_span').on('keyup', function(){
         var year = parseInt(this.value);
-
-        if( this.max != '' && year>this.max){
-            this.value = this.max;
-            year = parseInt(this.value);
-        }
 
         var period = getPeriodFromYear(year);
 
@@ -127,7 +145,7 @@ $('document').ready(function(){
         }
     });
 
-    $('#'+date_start_period_id).on('change', function(){
+    $('#'+date_start_period_id).on("select2:select select2:unselecting", function(){
         period = periodvocabulary[this.value];
 
         if ($('#'+date_start_id).val() == '') {
@@ -145,7 +163,7 @@ $('document').ready(function(){
         $('#'+date_start_id).trigger('focusout');
     });
 
-    $('#'+date_start_period_id+'_span').on('change', function(){
+    $('#'+date_start_period_id+'_span').on("select2:select select2:unselecting", function(){
         period = periodvocabulary[this.value];
 
         if ($('#'+date_start_id+'_span').val() == '') {
@@ -165,4 +183,4 @@ $('document').ready(function(){
 
     });
 
-})
+}

@@ -1,6 +1,4 @@
-$('document').ready(function(){
-
-    var query = {"concept":"dime.find.type"};
+var initSubtype = function(){
 
     var type_id = "find_type_term";
 
@@ -32,13 +30,23 @@ $('document').ready(function(){
                 var highlighted_item_id = item.attr('id');
                 var highlighted_item_code = highlighted_item_id.split('-');
                 var highlighted_item_concept = highlighted_item_code[highlighted_item_code.length-1];
-
-                if( typeof subtypevocabulary[highlighted_item_concept].parameters == undefined ){
-                    var tooltip = "undefined";
-                } else {
-                    var tooltip = subtypevocabulary[highlighted_item_concept].parameters.year_start.value+"\xa0\u2014\xa0"+subtypevocabulary[highlighted_item_concept].parameters.year_end.value;
+                try {
+                    if (typeof subtypevocabulary[highlighted_item_concept].parameters != "undefined") {
+                        var subtypeItemParams = subtypevocabulary[highlighted_item_concept].parameters;
+                        if( typeof subtypeItemParams.year_start != "undefined" &&
+                                typeof subtypeItemParams.year_end != "undefined" ) {
+                            var tooltip = subtypeItemParams.year_start.value+"\xa0\u2014\xa0"+subtypeItemParams.year_end.value;
+                        } else if( typeof subtypevocabulary[highlighted_item_concept].parameters.period != "undefined" ){
+                            var tooltip = subtypevocabulary[highlighted_item_concept].parameters.period.value;
+                        } else {
+                            var tooltip = "Undefined";
+                        }
+                    } else {
+                        var tooltip = "Undefined";
+                    }
+                } catch (e) {
+                    
                 }
-
 
                 var promise = new Promise(function(resolve) {
                     item.attr({"data-toggle":"tooltip","data-placement":"right","title":tooltip});
@@ -53,29 +61,6 @@ $('document').ready(function(){
 
     }
 
-    $.post(path + 'api/internal/vocabulary', JSON.stringify(query) )
-    .fail(function() {
-        console.log('Error fetching type vocabulary');
-    })
-    .done(function(response) {
-        window.typevocabulary = response.terms;
-    });
-
-    var query = {"concept":"dime.find.subtype"};
-
-    $.post(path + 'api/internal/vocabulary', JSON.stringify(query) )
-    .fail(function() {
-        console.log('Error fetching subtype vocabulary');
-    })
-    .done(function(response) {
-        window.subtypevocabulary = response.terms;
-        for (var subtype in subtypevocabulary) {
-            subtypevocabulary[subtype].optionelement = $('#'+subtype_id+' option[value="'+subtype+'"]').detach();
-        }
-        buildSubtypeSelect2();
-        $('#'+date_start_id).trigger('change');
-    });
-
     $('#'+date_start_id).on('focusout', function(){
         console.log($(this).val());
     });
@@ -84,7 +69,7 @@ $('document').ready(function(){
         console.log($(this).val());
     });
 
-    $('#'+date_start_id).on('change', function(){
+    $('#'+type_id).on("select2:select select2:unselecting", function(){
 
         var target = $(this).val();
         console.log(target);
@@ -99,13 +84,13 @@ $('document').ready(function(){
 
     });
 
-    $('#'+subtype_id).on('change', function(){
+    $('#'+subtype_id).on("select2:select select2:unselecting", function(){
 
         var target = $(this).val();
         console.log(target);
 
         if(target == "up"){
-            $('#'+date_start_id).trigger('change');
+            $('#'+type_id).trigger('select2:select');
             $('#'+subtype_id).select2('open');
             return true;
         }
@@ -126,36 +111,102 @@ $('document').ready(function(){
 
             $('#'+subtype_id).select2('open');
         }
+        
+        try {
+            
+            var target_years = getYearsFromTarget(target);
 
-        var current_start_year = parseInt($('#'+date_start_id).val())
+            target_start_year = target_years.start;
+            target_end_year = target_years.end;
+
+            console.log([target,"target",target_start_year,target_end_year,"current", current_start_year, current_end_year]);
+            
+            if ( isNaN(current_start_year) || current_start_year < target_start_year || current_start_year > target_end_year ){
+                $('#'+date_start_id).val(target_start_year);
+            }
+
+            if ( isNaN(current_end_year) || current_end_year > target_end_year || current_end_year < target_start_year ){
+                $('#'+date_start_id+'_span').val(target_end_year);
+            }
+
+            $('#'+date_start_id).attr({
+                "min" : target_start_year,
+                "max" : target_end_year
+             });
+
+            $('#'+date_start_id+'_span').attr({
+                "max" : target_end_year,
+                "max" : target_end_year
+            });
+
+            $('#'+date_start_id).trigger('keyup');
+
+            $('#'+date_start_id+'_span').trigger('keyup');
+
+        } catch (e) {
+            console.log('something was probably undefined :(');
+        }
+
+    });
+    
+
+    buildSubtypeSelect2();
+    $('#'+date_start_id).trigger('select2:select');
+
+};
+
+window.getYearsFromTarget = function(target){
+    var current_start_year = parseInt($('#'+date_start_id).val());
+    var current_end_year = parseInt($('#'+date_start_id+'_span').val());
+
+    if(typeof subtypevocabulary[target].parameters.year_start != "undefined") {
+
         var target_start_year = parseInt(subtypevocabulary[target].parameters.year_start.value);
 
-        var current_end_year = parseInt($('#'+date_start_id+'_span').val())
         var target_end_year = parseInt(subtypevocabulary[target].parameters.year_end.value);
 
-        console.log([target,"target",target_start_year,target_end_year,"current", current_start_year, current_end_year]);
+    } else if(typeof subtypevocabulary[target].parameters.period != "undefined") {
+        console.log(window.periodvocabulary);
+        console.log(window.periodvocabulary[subtypevocabulary[target].parameters.period.value]);
 
-        if ( isNaN(current_start_year) || current_start_year < target_start_year || current_start_year > target_end_year ){
-            console.log('changeing start');
-            $('#'+date_start_id).val(target_start_year);
-        }
+        var target_start_year = parseInt(window.periodvocabulary[subtypevocabulary[target].parameters.period.value].parameters.year_start.value);
 
-        if ( isNaN(current_end_year) || current_end_year > target_end_year || current_end_year < target_start_year ){
-            console.log('changeing end');
-            $('#'+date_start_id+'_span').val(target_end_year);
-        }
+        var target_end_year = parseInt(window.periodvocabulary[subtypevocabulary[target].parameters.period.value].parameters.year_end.value);
+    }
+    return {"start":target_start_year, "end":target_end_year}
+}
 
-        $('#'+date_start_id).attr({
-            "min" : target_start_year
-         });
+$(document).ready(function(){
+    window.type_id = "find_type_term";
 
-        $('#'+date_start_id+'_span').attr({
-            "max" : target_end_year
+    window.subtype_id = "find_classification_subtype";
+
+    window.date_start_id = "find_dating_year";
+    
+    var query = {"concept":"dime.find.type"};
+    $.post(path + 'api/internal/vocabulary', JSON.stringify(query) )
+    .fail(function() {
+        console.log('Error fetching type vocabulary');
+    })
+    .done(function(response) {
+        window.typevocabulary = response.terms;
+
+        var query = {"concept":"dime.find.subtype"};
+
+        $.post(path + 'api/internal/vocabulary', JSON.stringify(query) )
+        .fail(function() {
+            console.log('Error fetching subtype vocabulary');
+        })
+        .done(function(response) {
+            window.subtypevocabulary = response.terms;
+            for (var subtype in subtypevocabulary) {
+                subtypevocabulary[subtype].optionelement = $('#'+subtype_id+' option[value="'+subtype+'"]').detach();
+            }
+
+            initSubtype();
+            initPeriod();
         });
-
-        $('#'+date_start_id).trigger('keyup');
-        $('#'+date_start_id+'_span').trigger('keyup');
 
     });
 
-})
+});
