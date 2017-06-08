@@ -46,10 +46,15 @@ class MessagePageController extends DimeFormController
         return $this->handleRequest($request, 'dime_page_message');
     }
 
+    public function buildState(Request $request)
+    {
+        $state['event_vocabulary'] = ORM::find(Vocabulary::class, 'core.event.type');
+        return $state;
+    }
+
     public function buildData(Request $request)
     {
         $data['messages'] = DIME::getNotifications();
-        $data['message_vocabulary'] = ORM::find(Vocabulary::class, 'core.event.type');
         $msg = $request->query->get('id');
         if ($msg) {
             $message = ORM::find(Message::class, $msg);

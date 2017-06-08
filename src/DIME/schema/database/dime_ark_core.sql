@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 07, 2017 at 09:33 PM
+-- Generation Time: Jun 08, 2017 at 10:34 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -890,7 +890,7 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('dime.find', 'find', 'material', 'term', 'dime.material', 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'dime.find.material'),
 ('dime.find', 'find', 'municipality', 'term', 'dime.denmark.municipality', 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'dime.find.municipality'),
 ('dime.find', 'find', 'museum', 'actor', NULL, 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'dime.actor.type.museum'),
-('dime.find', 'find', 'museum_id', 'identifier', NULL, 'public', NULL, 'dime.find.update.museum_id', 0, 0, 1, 1, 0, 1, 0, 'dime.find.museum_id'),
+('dime.find', 'find', 'museum_id', 'identifier', NULL, 'restricted', 'dime.find.read', 'dime.find.update.museum_id', 0, 0, 1, 1, 0, 1, 0, 'dime.find.museum_id'),
 ('dime.find', 'find', 'owner', 'actor', NULL, 'restricted', 'dime.find.read.owner', 'dime.find.update.owner', 0, 1, 1, 1, 0, 1, 0, 'dime.find.owner'),
 ('dime.find', 'find', 'process', 'term', 'dime.find.process', 'restricted', 'dime.find.read.process', 'dime.find.update.process', 0, 1, 1, 1, 0, 1, 0, 'dime.find.process'),
 ('dime.find', 'find', 'recipient', 'actor', NULL, 'restricted', 'dime.find.read.custody', 'dime.find.update.custody', 0, 0, 1, 1, 0, 1, 0, 'dime.find.recipient'),
@@ -5450,7 +5450,7 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `lab
 ('dime_find_length', 'dime.find', 'find', 'length', 1, NULL, 'active', 'hidden', NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
 ('dime_find_location', 'dime.find', 'find', 'location', 1, NULL, 'active', NULL, NULL, 'blocks/mappick.html.twig', 'DIME\\Form\\Type\\LocationPropertyType', '{\"attr\": {\"style\": \"width:50%\"}}'),
 ('dime_find_material', 'dime.find', 'find', 'material', 1, NULL, 'active', NULL, NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
-('dime_find_municipality', 'dime.find', 'find', 'municipality', 1, NULL, 'active', NULL, NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
+('dime_find_municipality', 'dime.find', 'find', 'municipality', 1, NULL, 'readonly', NULL, NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
 ('dime_find_museum', 'dime.find', 'find', 'museum', 1, 'fullname', 'readonly', NULL, NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:75%\"}}'),
 ('dime_find_museum_id', 'dime.find', 'find', 'museum_id', 1, NULL, 'active', NULL, NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:75%\"}}'),
 ('dime_find_owner', 'dime.find', 'find', 'owner', 1, 'fullname', 'readonly', NULL, NULL, NULL, NULL, '{\"attr\": {\"style\": \"width:50%\"}}'),
@@ -5571,7 +5571,7 @@ INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `elemen
 ('dime_find_item', 0, 0, 4, '', 'dime_find_photo', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_item', 0, 1, 0, '', 'dime_find_artefact', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_item', 0, 1, 1, '', 'dime_find_status', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_find_item', 0, 1, 4, '', 'core_widget_submit', 'save', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_find_item', 0, 1, 4, '', 'core_widget_submit', 'save', NULL, NULL, 1, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_list', 0, 0, 0, '', 'dime_find_id', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_list', 0, 0, 1, '', 'dime_find_finder_id', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_list', 0, 0, 2, '', 'dime_find_type', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
@@ -5656,7 +5656,7 @@ INSERT INTO `ark_view_layout` (`element`, `schma`, `item_type`, `form`, `name`, 
 ('core_file_item', NULL, NULL, 1, 'item', NULL, NULL, 'edit', NULL),
 ('core_file_list', NULL, NULL, 0, 'items', NULL, NULL, NULL, NULL),
 ('core_message_item', 'core.message', NULL, 1, 'message', NULL, NULL, 'view', 'blocks/message.html.twig'),
-('core_message_list', NULL, NULL, 1, 'message_list', NULL, NULL, 'view', 'blocks/messagelist.html.twig'),
+('core_message_list', NULL, NULL, 1, 'messages', NULL, NULL, 'view', 'blocks/messagelist.html.twig'),
 ('core_page_view', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
 ('core_user_actor', 'core.actor', 'person', 0, 'actor', NULL, NULL, 'edit', NULL),
 ('core_user_credentials', NULL, NULL, 0, 'credentials', NULL, NULL, NULL, NULL),
@@ -5754,10 +5754,10 @@ INSERT INTO `ark_view_page` (`element`, `mode`, `visibility`, `view`, `edit`, `h
 ('dime_page_find', 'edit', 'restricted', 'dime.find.read', 'dime.find.update', 'dime_site_header', 'dime_site_sidebar', 'dime_find_view', 'dime_site_footer', NULL),
 ('dime_page_find_list', 'view', 'restricted', 'dime.find.read', 'dime.find.update', 'dime_site_header', 'dime_site_sidebar', 'dime_find_search', 'dime_site_footer', NULL),
 ('dime_page_front', 'view', 'public', NULL, NULL, 'dime_site_header', 'dime_site_sidebar', 'dime_front_page', 'dime_site_footer', NULL),
-('dime_page_home', 'view', 'restricted', NULL, NULL, 'dime_site_header', 'dime_site_sidebar', 'dime_home_page', 'dime_site_footer', NULL),
-('dime_page_message', 'view', 'restricted', NULL, NULL, 'dime_site_header', 'dime_site_sidebar', 'dime_message_page', 'dime_site_footer', NULL),
+('dime_page_home', 'view', 'restricted', 'core.actor.read', NULL, 'dime_site_header', 'dime_site_sidebar', 'dime_home_page', 'dime_site_footer', NULL),
+('dime_page_message', 'view', 'restricted', 'core.message.read', NULL, 'dime_site_header', 'dime_site_sidebar', 'dime_message_page', 'dime_site_footer', NULL),
 ('dime_page_news', 'view', 'public', NULL, NULL, 'dime_site_header', 'dime_site_sidebar', 'dime_find_news', 'dime_site_footer', NULL),
-('dime_page_profile', 'edit', 'restricted', NULL, NULL, 'dime_site_header', 'dime_site_sidebar', 'dime_profile_page', 'dime_site_footer', NULL),
+('dime_page_profile', 'edit', 'restricted', 'core.actor.read', 'core.actor.update', 'dime_site_header', 'dime_site_sidebar', 'dime_profile_page', 'dime_site_footer', NULL),
 ('dime_page_static', 'view', 'public', NULL, NULL, 'dime_site_header', 'dime_site_sidebar', NULL, 'dime_site_footer', NULL);
 
 -- --------------------------------------------------------
@@ -8474,6 +8474,8 @@ CREATE TABLE `ark_workflow_grant` (
 
 INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('admin', 'core.actor.read'),
+('admin', 'core.message.read'),
+('admin', 'core.message.update'),
 ('admin', 'dime.find.create'),
 ('admin', 'dime.find.read'),
 ('admin', 'dime.find.read.custody'),
@@ -8499,7 +8501,11 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('anon', 'core.user.reset'),
 ('anon', 'dime.find.read'),
 ('appraiser', 'core.actor.read'),
+('appraiser', 'core.message.read'),
+('appraiser', 'core.message.update'),
 ('curator', 'core.actor.read'),
+('curator', 'core.message.read'),
+('curator', 'core.message.update'),
 ('detectorist', 'core.actor.read'),
 ('detectorist', 'core.message.read'),
 ('detectorist', 'core.message.update'),
@@ -8518,6 +8524,8 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('detectorist', 'dime.find.update.location'),
 ('detectorist', 'dime.find.update.owner'),
 ('detectorist', 'dime.find.update.process'),
+('registrar', 'core.message.read'),
+('registrar', 'core.message.update'),
 ('registrar', 'dime.find.create'),
 ('registrar', 'dime.find.read'),
 ('registrar', 'dime.find.read.custody'),
@@ -8539,6 +8547,8 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('registrar', 'dime.find.update.treasure'),
 ('researcher', 'core.actor.read'),
 ('researcher', 'core.file.read'),
+('researcher', 'core.message.read'),
+('researcher', 'core.message.update'),
 ('researcher', 'dime.find.read'),
 ('researcher', 'dime.find.read.finddate'),
 ('researcher', 'dime.find.read.location'),

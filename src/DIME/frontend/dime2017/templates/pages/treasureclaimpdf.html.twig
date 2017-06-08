@@ -41,7 +41,7 @@ Disse felter overføres automatisk fra Fund og Fortidsminder. Check at oplysning
 
 <div class="forms">
 {% if layout is defined %}
-    {{ layout.renderView(mode, data, [], forms)|raw }}
+    {{ layout.renderView(data, state, forms)|raw }}
 {% endif %}
 </div>
 

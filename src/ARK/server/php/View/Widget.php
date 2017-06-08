@@ -73,49 +73,51 @@ class Widget extends Element
         return parent::formTypeClass();
     }
 
-    public function buildOptions($mode, $data, $options)
+    public function buildOptions($data, $options = [])
     {
         if ($this->formOptionsArray === null) {
             $this->formOptionsArray = ($this->formOptions ? json_decode($this->formOptions, true) : []);
         }
-        $options = array_merge_recursive($this->defaultOptions(), $this->formOptionsArray, $options);
-        $cellOptions = $options['cell'];
+        $options = array_replace_recursive($this->defaultOptions(), $this->formOptionsArray, $options);
+        $state = $options['state'];
+        unset($options['state']);
         unset($options['page']);
         unset($options['data']);
-        unset($options['cell']);
         unset($options['forms']);
         unset($options['form']);
         if (is_subclass_of($this->formTypeClass(), SubmitButtonTypeInterface::class)) {
             unset($options['required']);
             unset($options['mapped']);
         }
-        unset($options['sanitise']);
-        if ($options['label'] === null) {
+
+        if ($state['label'] === null) {
             $options['label'] = $this->showLabel();
+        } else {
+            $options['label'] = $state['label'];
         }
         if ($options['label']) {
-            //dump($cellOptions);
-            if ($cellOptions['keyword']) {
-                $options['label'] = $cellOptions['keyword'];
+            if ($state['keyword']) {
+                $options['label'] = $state['keyword'];
             } elseif ($this->keyword()) {
                 $options['label'] = $this->keyword();
             }
         }
+
         if ($this->vocabulary) {
             $options = $this->vocabularyOptions($this->vocabulary, $options);
         }
         return $options;
     }
 
-    public function formData($mode, $data, $options)
+    public function formData($data, $state)
     {
         if (is_subclass_of($this->formTypeClass(), SubmitButtonTypeInterface::class)) {
             return null;
         }
-        $cellName = $options['cell']['name'];
+        $name = $state['name'];
         if (is_array($data)) {
-            if (array_key_exists($cellName, $data)) {
-                $data = $data[$cellName];
+            if (array_key_exists($name, $data)) {
+                $data = $data[$name];
             } elseif (array_key_exists($this->name, $data)) {
                 $data = $data[$this->name];
             } elseif (array_key_exists($this->id(), $data)) {
@@ -124,53 +126,65 @@ class Widget extends Element
                 $data = null;
             }
         }
-        if ($data === null && $this->vocabulary && isset($options['required']) && $options['required']) {
+        if ($data === null && $this->vocabulary && isset($state['required']) && $state['required']) {
             $data = $this->vocabulary->defaultTerm();
         }
         //dump($data);
         return $data;
     }
 
-    public function buildForm(FormBuilderInterface $builder, $mode, $data, $dataKey, $options = [])
+    protected function buildState($state)
     {
-        //dump('BUILD WIDGET : '.$this->formName());
-        //dump($mode);
-        //dump($this->displayMode($mode));
+        if (!isset($state['label'])) {
+            $state['label'] = $this->showLabel();
+        }
+        if (!isset($state['name'])) {
+            $state['name'] = $this->formName();
+        }
+        if (!isset($state['keyword'])) {
+            $state['keyword'] = $this->keyword();
+        }
+        $state['mode'] = $this->displayMode($state['mode']);
+        $state['widget'] = $this;
+        return $state;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, $data, $dataKey, $options = [])
+    {
+        dump('BUILD WIDGET : '.$this->formName());
         //dump($this);
         //ump($data);
         //dump($dataKey);
         //dump($this);
-        //dump($options);
-        $data = $this->formData($mode, $data, $options);
+        dump($options);
+        $options['state'] = $this->buildState($options['state']);
+        dump($options);
+        $name = $options['state']['name'];
+        $mode = $options['state']['mode'];
+        $data = $this->formData($data, $options['state']);
         //dump($data);
-        $cellName = $options['cell']['name'];
-        $options = $this->buildOptions($mode, $data, $options);
+        $options = $this->buildOptions($data, $options);
+        //dump($options);
         // TODO check workflow instead!
         if ($this->mode == 'view' || $mode == 'edit') {
-            $widgetBuilder =  $this->formBuilder($mode, $data, $options, $cellName);
+            $widgetBuilder =  $this->formBuilder($data, $options, $name);
             $builder->add($widgetBuilder);
         }
     }
 
-    public function renderView($mode, $data, array $context = [], $forms = null, $form = null)
+    public function renderView($data, array $state, $forms = null, $form = null)
     {
-        //dump('RENDER WIDGET : '.$this->formName());
+        dump('RENDER WIDGET : '.$this->formName());
         //dump($form);
-        //dump($context);
+        dump($state);
         if ($form) {
+            $context = $this->defaultContext();
+            $context['state'] = array_replace_recursive($context['state'], $state);
             $context['widget'] = $this;
-            $context['mode'] = $mode;
-            if (isset($form->vars['id'])) {
-                // TODO What is this? Why?
-                $options['cell']['name'] = $form->vars['id'];
-            } else {
-                $options['cell']['name'] = null;
-            }
-            $data = $this->formData($mode, $data, $options);
-            $context['data'] = $data;
+            $context['data'] = $this->formData($data, $state);
             $context['forms'] = $forms;
             $context['form'] = $form;
-            //dump($context);
+            dump($context);
             return Service::view()->renderView($this->template(), $context);
         }
         return '';

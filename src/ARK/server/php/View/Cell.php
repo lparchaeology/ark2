@@ -151,62 +151,75 @@ class Cell
         return $this->format;
     }
 
-    public function options($mode, $data, $options = [])
+    private function setCellState($key, $value = null)
+    {
+        if ($value !== null) {
+            $this->optionsArray['state'][$key] = $value;
+        }
+    }
+
+    public function buildOptions($data, $options = [])
     {
         if ($this->optionsArray === null) {
             $this->optionsArray = json_decode($this->options, true);
             if (!is_array($this->optionsArray)) {
                 $this->optionsArray = [];
             }
-            $this->optionsArray['label'] = $this->showLabel();
-            $this->optionsArray['required'] = $this->isRequired();
-            if ($this->sanitise()) {
-                $this->optionsArray['sanitise'] = $this->sanitise();
+            $this->setCellState('label', $this->showLabel());
+            $this->setCellState('required', $this->isRequired());
+            $this->setCellState('sanitise', $this->sanitise());
+            $this->setCellState('name', $this->formName());
+            $this->setCellState('width', $this->width());
+            $this->setCellState('keyword', $this->keyword());
+            if ($this->valueModus() !== null) {
+                $this->optionsArray['state']['value']['modus'] = $this->valueModus();
             }
-            $this->optionsArray['cell']['name'] = $this->formName();
-            $this->optionsArray['cell']['width'] = $this->width();
-            $this->optionsArray['cell']['keyword'] = $this->keyword();
-            $this->optionsArray['cell']['value']['modus'] = $this->valueModus();
-            $this->optionsArray['cell']['parameter']['modus'] = $this->parameterModus();
-            $this->optionsArray['cell']['format']['modus'] = $this->formatModus();
+            if ($this->valueModus() !== null) {
+                $this->optionsArray['state']['parameter']['modus'] = $this->parameterModus();
+            }
+            if ($this->valueModus() !== null) {
+                $this->optionsArray['state']['format']['modus'] = $this->formatModus();
+            }
         }
-        $options = array_merge($options, $this->optionsArray);
+        $options = array_replace_recursive($options, $this->optionsArray);
         return $options;
     }
 
-    public function buildForms($mode, $data, $options)
+    public function buildForms($data, $options)
     {
-        return $this->element->buildForms($this->displayMode($mode), $data, $options);
+        $options['state']['mode'] = $this->displayMode($options['state']['mode']);
+        return $this->element->buildForms($data, $options);
     }
 
-    public function buildForm(FormBuilderInterface $builder, $mode, $data, $dataKey, $options = [])
+    public function buildForm(FormBuilderInterface $builder, $data, $dataKey, $options = [])
     {
-        //dump('BUILD CELL : '.$this->element->formName());
-        //dump('Mode = '.$mode);
-        //dump('Display Mode = '.$this->displayMode($mode));
+        dump('BUILD CELL : '.$this->element->formName());
         //dump($data);
-        $mode = $this->displayMode($mode);
+        dump($options);
+        $options['state']['mode'] = $this->displayMode($options['state']['mode']);
         if ($this->dataKey) {
             $dataKey = $this->dataKey;
         }
-        $this->element->buildForm($builder, $mode, $data, $dataKey, $this->options($mode, $data, $options));
+        $options = $this->buildOptions($data, $options);
+        //dump($options);
+        $this->element->buildForm($builder, $data, $dataKey, $options);
     }
 
-    public function renderView($mode, $data, array $context = [], $forms = null, $form = null)
+    public function renderView($data, array $state, $forms = null, $form = null)
     {
         //dump('RENDER CELL : '.$this->element->formName());
-        //dump($mode);
-        //dump($this->displayMode($mode));
+        //dump($state);
         //dump($data);
-        $context['map'] = $this->map;
+        $state['mode'] = $this->displayMode($state['mode']);
+        $state['map'] = $this->map;
         if ($this->showLabel() && $this->keyword()) {
-            $context['label'] = $this->keyword();
+            $state['label'] = $this->keyword();
         } else {
-            $context['label'] = $this->showLabel();
+            $state['label'] = $this->showLabel();
         }
-        $context['modus'] = $this->valueModus();
-        if (!isset($context['sanitise']) || $this->sanitise()) {
-            $context['sanitise'] = $this->sanitise();
+        $state['modus'] = $this->valueModus();
+        if (!isset($state['sanitise']) || $this->sanitise()) {
+            $state['sanitise'] = $this->sanitise();
         }
         if ($form && isset($form[$this->name])) {
             $form = $form[$this->name];
@@ -218,9 +231,9 @@ class Cell
             $data = $data[$this->dataKey];
         }
         //dump($data);
-        $context['cell']['name'] = $this->formName();
-        //dump($context);
-        return $this->element->renderView($this->displayMode($mode), $data, $context, $forms, $form);
+        $state['name'] = $this->formName();
+        //dump($state);
+        return $this->element->renderView($data, $state, $forms, $form);
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

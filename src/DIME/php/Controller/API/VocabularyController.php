@@ -63,23 +63,7 @@ class VocabularyController
             $data['keyword'] = $vocabulary->keyword();
             $data['terms'] = [];
             foreach ($vocabulary->terms() as $term) {
-                $vtd = [];
-                $vtd['name'] = $term->name();
-                $vtd['alias'] = $term->alias();
-                $vtd['default'] = $term->isDefault();
-                $vtd['root'] = $term->isRoot();
-                foreach ($term->parameters() as $parameter) {
-                    $vtd['parameters'][$parameter->name()]["type"] = $parameter->type();
-                    $vtd['parameters'][$parameter->name()]["value"] = $parameter->value();
-                }
-
-                $vtd['related'] = $term->related();
-                if ($vocabulary->type() == 'taxonomy') {
-                    foreach ($term->descendents() as $descendent) {
-                        $vtd['descendents'][] = $term->descendents();
-                    }
-                }
-                $data['terms'][$term->name()] = $vtd;
+                $data['terms'][$term->name()] = $this->serializeTerm($term);
             }
             $data['transitions'] = $vocabulary->transitions();
         } catch (Exception $e) {
@@ -93,12 +77,18 @@ class VocabularyController
     {
         $data['name'] = $term->name();
         $data['alias'] = $term->alias();
+        $data['default'] = $term->isDefault();
         $data['root'] = $term->root();
-        $data['parameters'] = $term->parameters();
-        $data['related'] = $term->related();
+        foreach ($term->parameters() as $parameter) {
+            $data['parameters'][$parameter->name()]["type"] = $parameter->type();
+            $data['parameters'][$parameter->name()]["value"] = $parameter->value();
+        }
+        foreach ($term->related() as $related) {
+            $data['related'][] = $this->serializeTerm($related);
+        }
         if ($vocabulary->type() == 'taxonomy') {
             foreach ($term->descendents() as $descendent) {
-                $vtd['descendents'][] = $term->descendents();
+                $data['descendents'][] = $this->serializeTerm($descendent);
             }
         }
         return $data;

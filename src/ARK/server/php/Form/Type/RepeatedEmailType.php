@@ -43,7 +43,6 @@ class RepeatedEmailType extends AbstractType
             'invalid_message' => 'core.user.email.match',
             'first_options'  => array('label' => 'core.user.email'),
             'second_options' => array('label' => 'core.user.email.repeat'),
-            'field' => null,
         ]);
     }
 

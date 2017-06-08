@@ -7,7 +7,7 @@
     {% endset %}
 
     <table
-        id="{{layout.name}}"
+        id="{{layout.formName}}"
         class="{{table_class}}"
         data-toggle="table"
         data-classes="{{table_class}}"
@@ -27,8 +27,8 @@
         </thead>
 
         <tbody>
-            {% for item in data.messages %}
-                <tr data-unique-id = "{{ item.id }}" 
+            {% for item in data %}
+                <tr data-unique-id = "{{ item.id }}"
                 {# {% if item.wasReadBy(global.user.actor) %} #}
                 {% if false %}
                     class = "read"

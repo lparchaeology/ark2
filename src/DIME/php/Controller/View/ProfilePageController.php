@@ -45,7 +45,7 @@ class ProfilePageController extends DimeFormController
         return $this->handleRequest($request, 'dime_page_profile');
     }
 
-    public function buildData(Request $request, Page $page)
+    public function buildData(Request $request)
     {
         $actor = Service::workflow()->actor();
         $data['person'] = $actor;

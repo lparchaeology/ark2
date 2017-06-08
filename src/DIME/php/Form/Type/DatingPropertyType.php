@@ -42,22 +42,22 @@ class DatingPropertyType extends AbstractPropertyType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $valueOptions = $options['field']['value']['options'];
+        $valueOptions = $options['state']['value']['options'];
         // Not multi-vocality for now
         unset($valueOptions['multiple']);
-        $field = $options['field']['object'];
+        $field = $options['state']['field'];
         $format = $field->attribute()->format();
-        $builder->add('year', $options['field']['value']['type'], $valueOptions);
-        $builder->add('year_span', $options['field']['value']['type'], $valueOptions);
+        $builder->add('year', $options['state']['value']['type'], $valueOptions);
+        $builder->add('year_span', $options['state']['value']['type'], $valueOptions);
 
         $valueOptions['choices'] = $format->attribute('period')->vocabulary()->terms();
         $valueOptions['placeholder'] = ' - ';
         $valueOptions['required'] = false;
-        if ($options['field']['value']['type'] != StaticType::class) {
-            $options['field']['value']['type'] = TermChoiceType::class;
+        if ($options['state']['value']['type'] != StaticType::class) {
+            $options['state']['value']['type'] = TermChoiceType::class;
         }
-        $builder->add('period', $options['field']['value']['type'], $valueOptions);
-        $builder->add('period_span', $options['field']['value']['type'], $valueOptions);
+        $builder->add('period', $options['state']['value']['type'], $valueOptions);
+        $builder->add('period_span', $options['state']['value']['type'], $valueOptions);
 
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;

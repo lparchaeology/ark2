@@ -44,7 +44,6 @@ class RepeatedPasswordType extends AbstractType
             'options' => array('attr' => array('class' => 'password-field')),
             'first_options'  => array('label' => 'core.user.password'),
             'second_options' => array('label' => 'core.user.password.repeat'),
-            'field' => null,
         ]);
     }
 

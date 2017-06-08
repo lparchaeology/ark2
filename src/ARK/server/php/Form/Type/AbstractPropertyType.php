@@ -49,11 +49,8 @@ abstract class AbstractPropertyType extends AbstractType implements DataMapperIn
         'data_class' => null,
         'empty_data' => null,
         'default_data' => null,
-        'field' => null,
         'hidden' => false,
-        'mode' => 'view',
-        'sanitise' => null,
-        'cell' => null,
+        'state' => null,
     ];
 
     protected function options()

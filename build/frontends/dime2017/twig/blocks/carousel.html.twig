@@ -52,7 +52,7 @@
     {% for field in layout.elements %}
       {% if field.formName == 'location' %}
       {% else %}
-          <div class="homefield">{{field.keyword|trans}}: {{ field.renderView(mode, item) }}</div>
+          <div class="homefield">{{field.keyword|trans}}: {{ field.renderView(item, state) }}</div>
       {% endif %}
      {% endfor %}
      </div>

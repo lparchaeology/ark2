@@ -8,8 +8,8 @@
 
     <div class="row">
         <ul class="list-group dime-navlist">
-            {% if page_config.sidelinks is defined %}
-                {% for group in page_config.sidelinks %}
+            {% if state.page_config.sidelinks is defined %}
+                {% for group in state.page_config.sidelinks %}
                     {% if is_granted(group.role) %}
                         {% if group.active %}
                             <li class="list-group-item dime-listhead normal">

@@ -109,25 +109,24 @@ class Page extends Element
         return $this->footer;
     }
 
-    public function buildForms($mode, $data, $options)
+    public function buildForms($data, $options)
     {
         //dump('BUILD PAGE : '.$this->element);
-        //dump($mode);
         //dump($data);
         //dump($options);
-        $options = $this->buildOptions($mode, $data, $options);
-        return $this->content->buildForms($mode, $data, $options);
+        $options = $this->buildOptions($data, $options);
+        return $this->content->buildForms($data, $options);
     }
 
-    public function renderView($mode, $data, array $context = [], $forms = null, $form = null)
+    public function renderView($data, array $state, $forms = null, $form = null)
     {
-        $context = $this->renderContext($mode, $data, $context, $forms, $form);
+        $context = $this->renderContext($data, $state, $forms, $form);
         return Service::view()->renderView($this->template(), $context);
     }
 
-    public function renderContext($mode, $data, array $context = [], $forms = null, $form = null)
+    public function renderContext($data, array $context, $forms = null, $form = null)
     {
-        $context = $this->viewContext($mode, $data, $context);
+        $context = $this->viewContext($data, $context, $context['state']);
         $context['page'] = $this;
         $context['layout'] = $this->content();
         $context['forms'] = null;
@@ -157,29 +156,30 @@ class Page extends Element
         return null;
     }
 
-    public function renderResponse($mode, $data, array $context = [], $forms = null, $form = null)
+    public function renderResponse($data, array $context, $forms = null, $form = null)
     {
-        $context = $this->renderContext($mode, $data, $context, $forms, $form);
+        $context = $this->renderContext($data, $context, $forms, $form);
+        dump($context);
+        dump($this->template());
         return Service::view()->renderResponse($this->template(), $context);
     }
 
-    public function handleRequest($request, $data, $options = [], $context = [], callable $processForm = null, $redirect = null)
+    public function handleRequest($request, $data, $state, callable $processForm = null, $redirect = null)
     {
-        //dump($this);
-        //dump($request);
-        //dump($data);
-        //dump($options);
-        //dump($context);
+        dump($this);
+        dump($request);
+        dump($data);
+        dump($state);
         $actor = Service::workflow()->actor();
         $item = null;
-        $mode = $this->mode($actor, $item);
-        $forms = $this->buildForms($mode, $data, $options);
+        $state['mode'] = $this->mode($actor, $item);
+        $options['state'] = $state;
+        $forms = $this->buildForms($data, $options);
         //dump($actor);
         //dump($item);
-        //dump($mode);
         //dump($request);
         //dump($request->request);
-        //dump($forms);
+        dump($forms);
         if ($forms && $request->getMethod() == 'POST' && $posted = $this->postedForm($request, $forms)) {
             //dump($posted);
             if (!$redirect) {
@@ -190,7 +190,8 @@ class Page extends Element
             }
             return $processForm($request, $posted, $redirect);
         }
-        $response = $this->renderResponse($mode, $data, $context, $forms);
+        $context['state'] = $state;
+        $response = $this->renderResponse($data, $context, $forms);
         Service::view()->clearFlashes();
         return $response;
     }

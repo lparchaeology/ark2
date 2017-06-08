@@ -37,7 +37,7 @@
         {% for cdx, col in row %}
             <div class="{{colclass}}">
                 {% for idx, cell in col %}
-                    {{ cell.renderView(mode, data, {'sanitise': sanitise}, forms, form)|raw }}
+                    {{ cell.renderView(data, state, forms, form)|raw }}
                 {% endfor %}
             </div>
         {% endfor %}

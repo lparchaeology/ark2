@@ -39,7 +39,7 @@ class SimplePropertyType extends AbstractPropertyType
         return [
             'forms' => null,
             'page' => null,
-            'page_config' => null,
+            'state' => null,
         ];
     }
 }

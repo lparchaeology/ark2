@@ -40,12 +40,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class DimeFormController extends DimeController
 {
-    public function handleRequest(Request $request, $page, $redirect = null, $options = [], $context = [])
+    public function handleRequest(Request $request, $page, $redirect = null)
     {
         $page = ORM::find(Page::class, $page);
         $data = $this->buildData($request);
-        $context['page_config'] = $this->pageConfig($request->attributes->get('_route'));
-        return $page->handleRequest($request, $data, $options, $context, [$this, 'processForm'], $redirect);
+        $state = $this->buildState($request);
+        $state['page_config'] = $this->pageConfig($request->attributes->get('_route'));
+        return $page->handleRequest($request, $data, $state, [$this, 'processForm'], $redirect);
     }
 
     public function buildData(Request $request)
@@ -53,10 +54,9 @@ abstract class DimeFormController extends DimeController
         return null;
     }
 
-    public function getData($form)
+    public function buildState(Request $request)
     {
-        $data = $form->getData();
-        return array_key_exists($form->getName(), $data) ? $data[$form->getName()] : $data;
+        return null;
     }
 
     public function processForm(Request $request, $form, $redirect)
