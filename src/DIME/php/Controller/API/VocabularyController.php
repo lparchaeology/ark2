@@ -63,8 +63,10 @@ class VocabularyController
             $data['keyword'] = $vocabulary->keyword();
             $data['terms'] = [];
             foreach ($vocabulary->terms() as $term) {
+                $vtd = [];
                 $vtd['name'] = $term->name();
                 $vtd['alias'] = $term->alias();
+                $vtd['default'] = $term->isDefault();
                 $vtd['root'] = $term->isRoot();
                 foreach ($term->parameters() as $parameter) {
                     $vtd['parameters'][$parameter->name()]["type"] = $parameter->type();
