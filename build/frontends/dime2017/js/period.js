@@ -1,6 +1,5 @@
 $('document').ready(function(){
 
-
     var date_start_id = "find_dating_year";
 
     var date_start_period_id = 'find_dating_period';
