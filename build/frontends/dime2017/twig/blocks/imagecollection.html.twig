@@ -1,8 +1,8 @@
 {% block carousel -%}
 
-{% if modus == 'active' %}
+{% if state.modus == 'active' %}
 
-    {{ form_row(form[field.formName]) }}
+    {{ form_row(form) }}
 
 {% else %}
 
@@ -46,7 +46,7 @@
 
     </div>
 
-    {% do form[field.formName].setRendered %}
+    {% do form.setRendered %}
 
 {% endif %}
 

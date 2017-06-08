@@ -41,7 +41,7 @@ class TermChoiceType extends AbstractType
             'choice_value' => 'name',
             'choice_name' => 'name',
             'choice_label' => 'keyword',
-            'field' => null,
+            'state' => null,
             'placeholder' => false,
             'required' => false,
             'attr' => array(

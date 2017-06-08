@@ -43,13 +43,13 @@ class LocationPropertyType extends AbstractPropertyType
     {
         $fieldOptions['mapped'] = false;
         $fieldOptions['label'] = 'dime.find.location.decimal';
-        $builder->add('easting', $options['field']['value']['type'], $fieldOptions);
+        $builder->add('easting', $options['state']['value']['type'], $fieldOptions);
         $fieldOptions['label'] = ' ';
-        $builder->add('northing', $options['field']['value']['type'], $fieldOptions);
+        $builder->add('northing', $options['state']['value']['type'], $fieldOptions);
         $fieldOptions['label'] = 'dime.find.location.utm';
-        $builder->add('utmEasting', $options['field']['value']['type'], $fieldOptions);
+        $builder->add('utmEasting', $options['state']['value']['type'], $fieldOptions);
         $fieldOptions['label'] = ' ';
-        $builder->add('utmNorthing', $options['field']['value']['type'], $fieldOptions);
+        $builder->add('utmNorthing', $options['state']['value']['type'], $fieldOptions);
         $builder->add('srid', HiddenType::class, $fieldOptions);
         $builder->add('format', HiddenType::class, $fieldOptions);
         $builder->setDataMapper($this);

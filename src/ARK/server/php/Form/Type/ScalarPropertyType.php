@@ -40,14 +40,14 @@ class ScalarPropertyType extends AbstractPropertyType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $field = $options['field']['object'];
+        $field = $options['state']['field'];
         $format = $field->attribute()->format();
-        $builder->add($format->valueName(), $options['field']['value']['type'], $options['field']['value']['options']);
-        if ($options['field']['parameter'] !== null) {
-            $builder->add($format->parameterName(), $options['field']['parameter']['type'], $options['field']['parameter']['options']);
+        $builder->add($format->valueName(), $options['state']['value']['type'], $options['state']['value']['options']);
+        if ($options['state']['parameter'] !== null) {
+            $builder->add($format->parameterName(), $options['state']['parameter']['type'], $options['state']['parameter']['options']);
         }
-        if ($options['field']['format'] !== null) {
-            $builder->add($format->formatName(), $options['field']['format']['type'], $options['field']['format']['options']);
+        if ($options['state']['format'] !== null) {
+            $builder->add($format->formatName(), $options['state']['format']['type'], $options['state']['format']['options']);
         }
         $builder->setDataMapper($this);
     }

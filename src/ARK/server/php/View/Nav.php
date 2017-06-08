@@ -115,11 +115,12 @@ class Nav extends Element
         return $this->seperator;
     }
 
-    public function renderView($mode, $data, array $options = [], $forms = null, $form = null)
+    public function renderView($data, array $state, $forms = null, $form = null)
     {
-        $options['nav'] = $this;
-        $options['data'] = $data;
-        return Service::view()->renderView($this->template(), $options);
+        $context['nav'] = $this;
+        $context['data'] = $data;
+        $context['state'] = $state;
+        return Service::view()->renderView($this->template(), $context);
     }
 
     public static function fromMessage(NavAddMessage $msg)

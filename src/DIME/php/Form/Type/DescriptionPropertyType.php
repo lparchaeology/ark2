@@ -45,13 +45,13 @@ class DescriptionPropertyType extends AbstractPropertyType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $valueOptions = $options['field']['value']['options'];
+        $valueOptions = $options['state']['value']['options'];
         // No multi-vocality for now
         unset($valueOptions['multiple']);
-        $field = $options['field']['object'];
+        $field = $options['state']['field'];
         $format = $field->attribute()->format();
 
-        $builder->add('content', $options['field']['value']['type'], $valueOptions);
+        $builder->add('content', $options['state']['value']['type'], $valueOptions);
 
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;

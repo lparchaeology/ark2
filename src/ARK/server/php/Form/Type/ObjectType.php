@@ -47,7 +47,7 @@ class ObjectType extends AbstractType implements DataMapperInterface
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $field = $options['field']['object'];
+        $field = $options['state']['field'];
         $format = $field->attribute()->format();
         $fieldOptions = [];
         if ($field->attribute()->vocabulary() && isset($options['attr']['readonly'])) {
@@ -101,8 +101,7 @@ class ObjectType extends AbstractType implements DataMapperInterface
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'mode' => null,
-            'field' => null,
+            'state' => null,
             'expanded' => null,
             'multiple' => null,
             'data_class' => Property::class,

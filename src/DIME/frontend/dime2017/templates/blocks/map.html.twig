@@ -10,7 +10,7 @@
         </button>
         <ul class="dropdown-menu layer-select" aria-labelledby="mapLayerMenu">
             {% set config = [] %}
-            {% for layer in map.layers %}
+            {% for layer in state.map.layers %}
                 {% if layer.isDefault %}
                     <li><a class="layer-select selected" value="{{ layer.name }}">{{ layer.keyword | translate }}</a></li>
                 {% else %}
@@ -44,7 +44,7 @@
 
         {# Convert the ARK map config into OpenLayers json #}
         {% set config = [] %}
-        {% for layer in map.layers %}
+        {% for layer in state.map.layers %}
             {% if layer.source.viewClass == 'BingMaps' %}
                 {% set source = {'key': layer.source.ticket, 'imagerySet': layer.sourceName} %}
             {% endif %}

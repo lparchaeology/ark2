@@ -46,11 +46,11 @@ class LocalTextPropertyType extends AbstractPropertyType
         $fieldOptions['mapped'] = false;
         $builder->add('previous', HiddenType::class, $fieldOptions);
 
-        $field = $options['field']['object'];
+        $field = $options['state']['field'];
         $format = $field->attribute()->format();
-        $builder->add($format->valueName(), $options['field']['value']['type'], $options['field']['value']['options']);
-        $builder->add($format->parameterName(), $options['field']['parameter']['type'], $options['field']['parameter']['options']);
-        $builder->add($format->formatName(), $options['field']['format']['type'], $options['field']['format']['options']);
+        $builder->add($format->valueName(), $options['state']['value']['type'], $options['state']['value']['options']);
+        $builder->add($format->parameterName(), $options['state']['parameter']['type'], $options['state']['parameter']['options']);
+        $builder->add($format->formatName(), $options['state']['format']['type'], $options['state']['format']['options']);
         $builder->setDataMapper($this);
     }
 

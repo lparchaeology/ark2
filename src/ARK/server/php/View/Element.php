@@ -105,11 +105,11 @@ abstract class Element
         return $parentMode;
     }
 
-    public function formData($mode, $data, $options)
+    public function formData($data, $state)
     {
-        $cellName = $options['cell']['name'];
-        if ($cellName && is_array($data) && array_key_exists($cellName, $data)) {
-            return $data[$cellName];
+        $name = (isset($state['name'])) ? $state['name'] : null;
+        if ($name && is_array($data) && array_key_exists($name, $data)) {
+            return $data[$name];
         }
         if ($this->name) {
             if (is_array($data) && array_key_exists($this->name, $data)) {
@@ -117,7 +117,7 @@ abstract class Element
             }
             return null;
         }
-        $name = $this->formName($cellName);
+        $name = $this->formName($name);
         return (is_array($data) && array_key_exists($name, $data) ? $data[$name] : $data);
     }
 
@@ -128,28 +128,45 @@ abstract class Element
 
     public function defaultOptions($route = null)
     {
-        $options['cell']['name'] = null;
+        $options['state'] = $this->defaultState($route);
         return $options;
     }
 
-    public function buildOptions($mode, $data, $options)
+    public function buildOptions($data, $options = [])
     {
-        return array_merge($this->defaultOptions(), $options);
+        if (is_array($options)) {
+            return array_replace_recursive($this->defaultOptions(), $options);
+        }
+        return $this->defaultOptions();
     }
 
     public function defaultContext($route = null)
     {
         $context['data'] = null;
         $context['forms'] = null;
-        $context['sanitise'] = null;
-        $context['cell']['name'] = null;
+        $context['form'] = null;
+        $context['state'] = $this->defaultState($route);
         return $context;
     }
 
-    public function viewContext($mode, $data, $context = [])
+    public function defaultState($route = null)
     {
-        $context = array_merge($this->defaultContext(), $context);
-        $context['mode'] = $mode;
+        $state['sanitise'] = null;
+        $state['name'] = null;
+        $state['mode'] = null;
+        $state['modus'] = null;
+        $state['keyword'] = null;
+        $state['required'] = null;
+        $state['value']['modus'] = null;
+        $state['parameter']['modus'] = null;
+        $state['format']['modus'] = null;
+        return $state;
+    }
+
+    public function viewContext($data, $context = [], $state = [])
+    {
+        $context = array_replace_recursive($this->defaultContext(), $context);
+        $context['state'] = array_replace_recursive($context['state'], $state);
         $context['data'] = $data;
         return $context;
     }
@@ -164,30 +181,30 @@ abstract class Element
         return $options;
     }
 
-    public function buildForm(FormBuilderInterface $builder, $mode, $data, $dayaKey, $options = [])
+    public function buildForm(FormBuilderInterface $builder, $data, $dayaKey, $options = [])
     {
     }
 
-    public function buildForms($mode, $data, $options)
+    public function buildForms($data, $options)
     {
         return [];
     }
 
-    protected function formBuilder($mode, $data, $options, $cellName = null)
+    protected function formBuilder($data, $options, $name = null)
     {
-        if ($cellName === null && isset($options['cell']['name'])) {
-            $cellName = $options['cell']['name'];
+        if ($name === null && isset($options['state']['name'])) {
+            $name = $options['state']['name'];
         }
-        $formName = ($cellName === false ? $formName = null : $this->formName($cellName));
+        $name = ($name === false ? null : $this->formName($name));
         return Service::forms()->createNamedBuilder(
-            $formName,
+            $name,
             $this->formTypeClass(),
             $data,
             $options
         );
     }
 
-    abstract public function renderView($mode, $data, array $options = [], $forms = null, $form = null);
+    abstract public function renderView($data, array $state, $forms = null, $form = null);
 
     public static function loadMetadata(ClassMetadata $metadata)
     {

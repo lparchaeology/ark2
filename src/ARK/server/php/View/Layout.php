@@ -104,9 +104,9 @@ abstract class Layout extends Element
         return $this->elements;
     }
 
-    protected function formBuilder($mode, $data, $options, $cellName = null)
+    protected function formBuilder($data, $options, $name = null)
     {
-        $builder = parent::formBuilder($mode, $data, $options, $cellName);
+        $builder = parent::formBuilder($data, $options, $name);
         if ($this->method) {
             $builder->setMethod($this->method);
         }
@@ -116,79 +116,75 @@ abstract class Layout extends Element
         return $builder;
     }
 
-    public function buildForms($mode, $data, $options)
+    public function buildForms($data, $options)
     {
         //dump('FORMS : '.$this->formName());
-        //dump($mode);
-        //dump($this->displayMode($mode));
         //dump($data);
         //dump($options);
         if ($this->form) {
-            $builderMode = $this->displayMode($mode);
-            $builderData = $this->formData($builderMode, $data, $options);
-            $builderOptions = $this->buildOptions($builderMode, $builderData, $options);
-            $builder = $this->formBuilder($builderMode, $builderData, $builderOptions, ($this->name ? null : false));
-            $this->buildForm($builder, $mode, $data, null, $options);
+            $builderData = $this->formData($data, $options);
+            $builderOptions = $this->buildOptions($builderData, $options);
+            $builder = $this->formBuilder($builderData, $builderOptions, ($this->name ? null : false));
+            $this->buildForm($builder, $data, null, $options);
             $form = $builder->getForm();
             return [$this->formName() => $form];
         }
         $forms = [];
         foreach ($this->cells() as $cell) {
-            $forms = array_merge($forms, $cell->buildForms($mode, $data, $options));
+            $forms = array_merge($forms, $cell->buildForms($data, $options));
         }
         return $forms;
     }
 
-    public function buildForm(FormBuilderInterface $builder, $mode, $data, $dataKey, $options = [])
+    public function buildForm(FormBuilderInterface $builder, $data, $dataKey, $options = [])
     {
         //dump('BUILD LAYOUT : '.$this->formName());
-        //dump($mode);
         //dump($data);
-        //dump($options);
-        $mode = $this->displayMode($mode);
-        $data = $this->formData($mode, $data, $options);
+        //ump($options);
+        $options['state']['mode'] = $this->displayMode($options['state']['mode']);
+        $data = $this->formData($data, $options['state']);
         //dump($data);
-        $options = $this->buildOptions($mode, $data, $options);
+        $options = $this->buildOptions($data, $options);
         //dump($data);
         if (!$this->form && $this->name) {
-            $layoutBuilder = $this->formBuilder($mode, [$this->name => $data], $options);
+            $layoutBuilder = $this->formBuilder([$this->name => $data], $options);
             $builder->add($layoutBuilder);
             foreach ($this->cells() as $cell) {
-                $cell->buildForm($layoutBuilder, $mode, $data, $dataKey, $options);
+                $cell->buildForm($layoutBuilder, $data, $dataKey, $options);
             }
         } else {
             foreach ($this->cells() as $cell) {
-                $cell->buildForm($builder, $mode, $data, $dataKey, $options);
+                $cell->buildForm($builder, $data, $dataKey, $options);
             }
         }
     }
 
-    public function renderView($mode, $data, array $context = [], $forms = null, $form = null)
+    public function renderView($data, array $state, $forms = null, $form = null)
     {
-        //dump('RENDER LAYOUT : '.$this->formName());
+        dump('RENDER LAYOUT : '.$this->formName());
         //dump($data);
-        //dump($context);
+        dump($state);
         //dump($forms);
         //dump($form);
         if ($this->template()) {
-            if (!$context) {
-                $context = $this->defaultContext();
-            }
-            $mode = $this->displayMode($mode);
-            $data = $this->formData($mode, $data, $context);
-            $context = $this->viewContext($mode, $data, $context);
+            $context = $this->defaultContext();
+            $context['state'] = array_replace_recursive($context['state'], $state);
+            $state['mode'] = $this->displayMode($state['mode']);
+            $data = $this->formData($data, $state);
+            $context = $this->viewContext($data, $context, $state);
             $context['layout'] = $this;
-            if ($forms && $form === null && isset($forms[$this->formName($context['cell']['name'])])) {
-                $form = $forms[$this->formName($context['cell']['name'])];
+            if ($forms && $form === null && isset($forms[$this->formName($state['name'])])) {
+                $form = $forms[$this->formName($state['name'])];
             }
-            $form = (isset($form[$this->formName($context['cell']['name'])]) ? $form[$this->formName($context['cell']['name'])] : $form);
+            $form = (isset($form[$this->formName($state['name'])]) ? $form[$this->formName($state['name'])] : $form);
             $context['forms'] = $forms;
             $context['form'] = $form;
-            if (isset($context['label']) && $context['label'] === true) {
+            if (isset($state['label']) && $state['label'] === true) {
                 $context['label'] = $this->keyword();
             } else {
                 $context['label'] = false;
             }
+            dump($context);
             return Service::view()->renderView($this->template(), $context);
         }
         return '';

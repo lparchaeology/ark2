@@ -2,30 +2,28 @@
 {% block dating %}
 <div class="form-group">
 
-    {% set fieldForm = form[field.formName] %}
-
-    {{ form_label(fieldForm) }}
+    {{ form_label(form) }}
 
     <div class="col-sm-10 col-lg-9">
         <div class="row">
             <div class="col-sm-6">
-                {{ form_widget(fieldForm.year) }}
+                {{ form_widget(form.year) }}
             </div>
             <div class="col-sm-6">
-                {{ form_widget(fieldForm.year_span) }}
+                {{ form_widget(form.year_span) }}
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6">
-                {{ form_widget(fieldForm.period) }}
+                {{ form_widget(form.period) }}
             </div>
             <div class="col-sm-6">
-                {{ form_widget(fieldForm.period_span) }}
+                {{ form_widget(form.period_span) }}
             </div>
         </div>
     </div>
 
-    {% do fieldForm.setRendered %}
+    {% do form.setRendered %}
 
 </div>
 <a href="#" data-toggle="modal" data-target="#dating-modal" class="loginbutton">

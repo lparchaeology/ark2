@@ -1,10 +1,10 @@
 {# ARK Message template for standard Bootstrap grid #}
 
 <script>
-    
+
 window.message_vocabulary = [];
 
-{%  for term in data.message_vocabulary.terms %}
+{%  for term in context.event_vocabulary.terms %}
     message_vocabulary['{{ term.keyword }}'] = "{{ term.keyword | translate }}";
 {% endfor %}
 
@@ -26,16 +26,16 @@ window.senderinitial = "";
 
 window.iteminitial = "";
 
-{% if data.message %}
-    window.message_id = {{ data.message.id }};
-    
-    window.eventinitial = "{{ data.message.event.term.keyword | translate }}";
+{% if data %}
+    window.message_id = {{ data.id }};
 
-    window.dateinitial = "{{ data.message.sentAt.datetime.date }}";
+    window.eventinitial = "{{ data.event.term.keyword | translate }}";
 
-    window.senderinitial = "{{ data.message.sender.fullname }}";
-    
-    window.iteminitial = "{{ data.message.event.subject.id }}";
+    window.dateinitial = "{{ data.sentAt.datetime.date }}";
+
+    window.senderinitial = "{{ data.sender.fullname }}";
+
+    window.iteminitial = "{{ data.event.subject.id }}";
 
 {% endif %}
 

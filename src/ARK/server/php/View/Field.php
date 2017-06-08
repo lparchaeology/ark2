@@ -87,7 +87,7 @@ class Field extends Element
         return ($this->format ?: 'hidden');
     }
 
-    public function formName($cellName = null)
+    public function formName($name = null)
     {
         return $this->attribute->name();
     }
@@ -106,12 +106,24 @@ class Field extends Element
     private function modeToModus($mode, $modus)
     {
         if ($modus == 'hidden') {
-            return $modus;
+            return 'hidden';
         }
-        if ($mode == 'view') {
+        if ($mode == 'view' || $modus == 'static') {
             return 'static';
         }
-        return $modus;
+        if ($mode == 'edit') {
+            if ($modus == 'readonly') {
+                return 'readonly';
+            }
+            if (Service::workflow()->hasPermission($this->attribute->updatePermission())) {
+                return 'active';
+            }
+            if ($modus == 'disabled') {
+                return 'disabled';
+            }
+            return 'readonly';
+        }
+        return 'static';
     }
 
     private function modusToFormType($modus, $default, $static = StaticType::class)
@@ -150,57 +162,68 @@ class Field extends Element
         return ($this->keyword ?: $this->attribute->keyword());
     }
 
-    public function formOptions($mode, $property, $options)
+    public function buildOptions($property, $options = [])
     {
-        $cellOptions = $options['cell'];
+        $state = $options['state'];
         unset($options['page']);
-        unset($options['cell']);
         unset($options['forms']);
-        //unset($options['form']);
-        $options['mode'] = $mode;
 
         if ($this->display) {
             $options['display'] = $this->display;
         }
 
-        if ($options['label'] === null) {
+        if ($state['label'] === null) {
             $options['label'] = $this->showLabel();
+        } else {
+            $options['label'] = $state['label'];
         }
         if ($options['label']) {
-            if ($cellOptions['keyword']) {
-                $options['label'] = $cellOptions['keyword'];
+            if ($state['keyword']) {
+                $options['label'] = $state['keyword'];
             } elseif ($this->keyword()) {
                 $options['label'] = $this->keyword();
             }
         }
-        $options['field']['object'] = $this;
-        $options['field']['value'] = $this->valueOptions($mode, $cellOptions['value']);
-        $options['field']['parameter'] = $this->baseOptions(
-            $mode,
-            $cellOptions['parameter'],
-            [],
-            $this->parameterModus(),
-            $this->parameterFormType()
-        );
-        $options['field']['format'] = $this->baseOptions(
-            $mode,
-            $cellOptions['format'],
-            [],
-            $this->formatModus(),
-            $this->formatFormType()
-        );
-        if ($options['required'] || $this->attribute()->isRequired()) {
+
+        $options['state']['value']['modus'] =
+            $this->modeToModus($state['mode'], $options['state']['value']['modus']);
+        $options['state']['value']['type'] =
+            $this->modusToFormType($options['state']['value']['modus'], $this->valueFormType(), $this->staticFormType());
+        $options['state']['value']['options'] = $this->valueOptions($state);
+
+        if (isset($state['parameter']['modus'])) {
+            $options['state']['parameter']['modus'] =
+                $this->modeToModus($state['mode'], $options['state']['parameter']['modus']);
+            $options['state']['parameter']['type'] =
+                $this->modusToFormType($options['state']['parameter']['modus'], $this->parameterFormType());
+            $options['state']['parameter']['options'] = $this->baseOptions($options['state']['parameter']);
+        } else {
+            $options['state']['parameter'] = null;
+        }
+
+        if (isset($state['format']['modus'])) {
+            $options['state']['format']['modus'] =
+                $this->modeToModus($state['mode'], $options['state']['parameter']['modus']);
+            $options['state']['format']['type'] =
+                $this->modusToFormType($options['state']['parameter']['modus'], $this->formatFormType());
+            $options['state']['format']['options'] = $this->baseOptions($options['state']['format']);
+        } else {
+            $options['state']['format'] = null;
+        }
+
+        if ($state['required']) {
             $options['default_data'] = $this->attribute->defaultValue();
         }
-        if ($mode == 'view' || $options['field']['value']['modus'] != 'active') {
+        if ($state['mode'] == 'view' || $options['state']['value']['modus'] != 'active') {
             $options['required'] = false;
-        } elseif ($options['required'] === null) {
-            $options['required'] = $this->attribute()->isRequired();
+        } else {
+            $options['required'] = $state['required'];
         }
+
         return $options;
     }
 
-    protected function valueOptions($mode, $cellOptions)
+    protected function valueOptions($state)
     {
         if ($this->formOptionsArray === null) {
             $this->formOptionsArray = ($this->formOptions ? json_decode($this->formOptions, true) : []);
@@ -218,47 +241,29 @@ class Field extends Element
             }
         }
         if ($this->attribute()->hasVocabulary()) {
-            $options = $this->vocabularyOptions($this->attribute()
-                ->vocabulary(), $options);
+            $options = $this->vocabularyOptions($this->attribute()->vocabulary(), $options);
         }
         if ($this->attribute()->hasMultipleOccurrences()) {
             $options['multiple'] = true;
         }
-        // TODO Use visibility instead
-        //if (!Service::security()->isLoggedIn() && $this->attribute()->hasVocabulary()) {
-        //    $options['disabled'] = true;
-        //}
-        return $this->baseOptions(
-            $mode,
-            $cellOptions,
-            $options,
-            $this->valueModus(),
-            $this->valueFormType(),
-            $this->staticFormType()
-        );
+        return $this->baseOptions($state, $options);
     }
 
-    protected function baseOptions($mode, $cellOptions, $subOptions, $modus, $formType, $staticType = StaticType::class)
+    protected function baseOptions($state, $options = [])
     {
-        if (! $modus) {
-            return null;
+        $options['mapped'] = false;
+        $options['label'] = false;
+        if ($state['modus'] == 'disabled') {
+            $options['disabled'] = true;
         }
-        $base['modus'] = $this->modeToModus($mode, ($cellOptions['modus'] ?: $modus));
-        $base['type'] = $this->modusToFormType($base['modus'], $formType, $staticType);
-        $base['options'] = $subOptions;
-        $base['options']['mapped'] = false;
-        $base['options']['label'] = false;
-        if ($base['modus'] == 'disabled') {
-            $base['options']['disabled'] = true;
-        }
-        if ($base['modus'] == 'readonly') {
+        if ($state['modus'] == 'readonly') {
             if ($this->attribute()->hasVocabulary()) {
-                $base['options']['attr']['class'] = $this->concatOption($base, 'attr', 'class', 'readonly-select');
+                $options['attr']['class'] = $this->concatOption($options, 'attr', 'class', 'readonly-select');
             } else {
-                $base['options']['attr']['readonly'] = true;
+                $options['attr']['readonly'] = true;
             }
         }
-        return $base;
+        return $options;
     }
 
     protected function concatOption($options, $option, $attr, $value)
@@ -278,12 +283,12 @@ class Field extends Element
         return $options;
     }
 
-    public function formData($mode, $data, $options)
+    public function formData($data, $state)
     {
-        $cellName = $options['cell']['name'];
+        $name = $state['name'];
         if (is_array($data)) {
-            if (array_key_exists($cellName, $data)) {
-                $data = $data[$cellName];
+            if (array_key_exists($name, $data)) {
+                $data = $data[$name];
             } elseif (array_key_exists($this->name, $data)) {
                 $data = $data[$this->name];
             } elseif (array_key_exists($this->id(), $data)) {
@@ -299,18 +304,11 @@ class Field extends Element
         return null;
     }
 
-    protected function fieldBuilder($mode, $data, $dataKey, $options = [])
-    {
-        $cellName = $options['cell']['name'];
-        $options = $this->formOptions($mode, $data, $options);
-        return $this->formBuilder($mode, $data, $options, $cellName);
-    }
-
-    protected function sanitise($options)
+    protected function sanitise($state)
     {
         // TODO Service::workflow()->hasVisibility($actor, $this->attribute())???
         if (!Service::workflow()->hasPermission($this->attribute->readPermission())) {
-            if (isset($options['sanitise']) && $options['sanitise'] == 'redact') {
+            if ($state['sanitise'] == 'redact') {
                 return 'redact';
             }
             return 'withhold';
@@ -318,66 +316,86 @@ class Field extends Element
         return null;
     }
 
-    public function buildForm(FormBuilderInterface $builder, $mode, $data, $dataKey, $options = [])
+    protected function buildState($state)
     {
-        //dump('BUILD FIELD : '.$this->formName());
-        //dump($mode);
-        //dump($this->displayMode($mode));
+        if (!isset($state['label'])) {
+            $state['label'] = $this->showLabel();
+        }
+        if (!isset($state['required'])) {
+            $state['required'] = $this->attribute()->isRequired();
+        }
+        if (!isset($state['name'])) {
+            $state['name'] = $this->formName();
+        }
+        if (!isset($state['keyword'])) {
+            $state['keyword'] = $this->keyword();
+        }
+        if (!isset($state['value']['modus'])) {
+            $state['value']['modus'] = $this->valueModus();
+        }
+        if (!isset($state['parameter']['modus'])) {
+            $state['parameter']['modus'] = $this->parameterModus();
+        }
+        if (!isset($state['format']['modus'])) {
+            $state['format']['modus'] = $this->formatModus();
+        }
+        $state['sanitise'] = $this->sanitise($state);
+        $state['mode'] = $this->displayMode($state['mode']);
+        $state['modus'] = $this->modeToModus($state['mode'], ($state['modus'] ?: $this->valueModus()));
+        $state['field'] = $this;
+        return $state;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, $data, $dataKey, $options = [])
+    {
+        dump('BUILD FIELD : '.$this->formName());
         //dump($data);
         //dump($dataKey);
         //dump($this);
-        //dump($options);
-        if ($this->sanitise($options) == 'withhold') {
+        dump($options);
+        $options['state'] = $this->buildState($options['state']);
+        if ($options['state']['sanitise'] == 'withhold') {
             return;
         }
-        unset($options['sanitise']);
-        $mode = $this->displayMode($mode);
-        $data = $this->formData($mode, $data, $options);
+        dump($options);
+        $name = $options['state']['name'];
+        $data = $this->formData($data, $options['state']);
         //dump($data);
-        $fieldBuilder = $this->fieldBuilder($mode, $data, $dataKey, $options);
+        $options = $this->buildOptions($data, $options);
+        dump($options);
+        $fieldBuilder = $this->formBuilder($data, $options, $name);
         $builder->add($fieldBuilder);
     }
 
-    public function renderView($mode, $data, array $context = [], $forms = null, $form = null)
+    public function renderView($data, array $state, $forms = null, $form = null)
     {
         //dump('RENDER FIELD : '.$this->formName());
-        //dump($mode);
-        //dump($this->displayMode($mode));
         //dump($data);
+        //dump($state);
         //dump($form);
-        if (!$context) {
-            $context = $this->defaultContext();
-        }
-        $sanitise = $this->sanitise($context);
-        if ($sanitise == 'withhold') {
+        $state['sanitise'] = $this->sanitise($state);
+        if ($state['sanitise'] == 'withhold') {
             return;
-        } elseif ($form && array_key_exists('id', $form->vars)) {
-            // TODO What is this? Why?
-            $options['cell']['name'] = $form->vars['id'];
-        } else {
-            $options['cell']['name'] = null;
         }
-        $data = $this->formData($mode, $data, $context);
+        $state['mode'] = $this->displayMode($state['mode']);
+        $state['modus'] = $this->modeToModus($state['mode'], ($state['modus'] ?: $this->valueModus()));
+        $state['field'] = $this;
+        $data = $this->formData($data, $state);
         if ($form && $this->template()) {
-            $context['field'] = $this;
-            $context['mode'] = $this->displayMode($mode);
-            $context['modus'] = $this->modeToModus($context['mode'], ($context['modus'] ?: $this->valueModus()));
+            $context = $this->defaultContext();
+            $context['state'] = array_replace_recursive($context['state'], $state);
             $context['data'] = $data;
             $context['forms'] = $forms;
-            $context['form'] = $form;
+            $context['form'] = $form[$this->formName()];
+            //dump($context);
+            //dump($this->template());
             return Service::view()->renderView($this->template(), $context);
         }
 
         // FIXME Should probably have some way to use FormTypes here to render 'flat' compond values
         $value = null;
-        $item = null;
-        $options = $this->valueOptions('view', ['mode' => 'view', 'modus' => 'static']);
-        // TODO Now what? Render out just the Value child?
-        //$fieldBuilder = $this->fieldBuilder('view', $data, $this->name(), $options);
-        //dump($fieldBuilder);
-
         if ($data instanceof Item) {
-            $data = $item->property($this->attribute()->name());
+            $data = $data->property($this->attribute()->name());
         }
         if ($data instanceof Property) {
             $value = $data->value();
@@ -388,9 +406,7 @@ class Field extends Element
                 $value = $value[$this->attribute()->format()->valueName()];
             }
             if ($value instanceof Actor) {
-                return $value->property('fullname')
-                    ->value()
-                    ->content();
+                return $value->property('fullname')->value()->content();
             }
             if ($value instanceof Event) {
                 $type = $value->property('type')->value();
