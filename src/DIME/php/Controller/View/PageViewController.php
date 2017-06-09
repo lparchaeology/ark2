@@ -50,15 +50,13 @@ class PageViewController extends DimeFormController
 
         if ($request->getMethod() == 'POST') {
             $value = $item->property('content')->value();
-            $value[0]['content'] = $request->getContent();
+            $value->setContent($request->getContent());
             $item->property('content')->setValue($value);
             ORM::flush('data');
             return new Response('', 203);
         }
 
-        $options = $this->defaultOptions();
         $value = $item->property('content')->value();
-        // TODO Language Switching!!!
         $content = '';
 
         // TODO Use visibility / permissions
@@ -75,8 +73,8 @@ class PageViewController extends DimeFormController
         }
 
         $options['data']['notifications'] = DIME::getUnreadNotifications();
-
         $options['content'][0] = $content;
+        $options['state']['page_config'] = $this->pageConfig($request->attributes->get('_route'));
 
         return Service::view()->renderResponse('pages/page.html.twig', $options);
     }
