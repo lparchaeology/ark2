@@ -151,13 +151,14 @@ class Widget extends Element
 
     public function buildForm(FormBuilderInterface $builder, $data, $dataKey, $options = [])
     {
-        //dump('BUILD WIDGET : '.$this->formName());
+        dump('BUILD WIDGET : '.$this->formName());
         //dump($this);
         //ump($data);
         //dump($dataKey);
         //dump($this);
-        //dump($options);
+        dump($options);
         $options['state'] = $this->buildState($options['state']);
+        dump($options);
         if ($this->mode == 'edit' && $options['state']['mode'] == 'view') {
             return;
         }
@@ -166,12 +167,10 @@ class Widget extends Element
         $data = $this->formData($data, $options['state']);
         //dump($data);
         $options = $this->buildOptions($data, $options);
-        //dump($options);
+        dump($options);
         // TODO check workflow instead!
-        if ($this->mode == 'view' || $mode == 'edit') {
-            $widgetBuilder =  $this->formBuilder($data, $options, $name);
-            $builder->add($widgetBuilder);
-        }
+        $widgetBuilder =  $this->formBuilder($data, $options, $name);
+        $builder->add($widgetBuilder);
     }
 
     public function renderView($data, array $state, $forms = null, $form = null)

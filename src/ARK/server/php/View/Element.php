@@ -156,6 +156,7 @@ abstract class Element
         $state['mode'] = null;
         $state['modus'] = null;
         $state['keyword'] = null;
+        $state['label'] = false;
         $state['required'] = null;
         $state['value']['modus'] = null;
         $state['parameter']['modus'] = null;
