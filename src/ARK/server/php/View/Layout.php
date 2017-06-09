@@ -138,14 +138,14 @@ abstract class Layout extends Element
 
     public function buildForm(FormBuilderInterface $builder, $data, $dataKey, $options = [])
     {
-        dump('BUILD LAYOUT : '.$this->formName());
+        //dump('BUILD LAYOUT : '.$this->formName());
         //dump($data);
-        dump($options);
+        //dump($options);
         $options['state']['mode'] = $this->displayMode($options['state']['mode']);
         $data = $this->formData($data, $options['state']);
         //dump($data);
         $options = $this->buildOptions($data, $options);
-        dump($options);
+        //dump($options);
         //dump($data);
         if (!$this->form && $this->name) {
             $layoutBuilder = $this->formBuilder([$this->name => $data], $options);
@@ -162,9 +162,9 @@ abstract class Layout extends Element
 
     public function renderView($data, array $state, $forms = null, $form = null)
     {
-        dump('RENDER LAYOUT : '.$this->formName());
+        //dump('RENDER LAYOUT : '.$this->formName());
         //dump($data);
-        dump($state);
+        //dump($state);
         //dump($forms);
         //dump($form);
         if ($this->template()) {

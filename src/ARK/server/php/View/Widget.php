@@ -151,14 +151,14 @@ class Widget extends Element
 
     public function buildForm(FormBuilderInterface $builder, $data, $dataKey, $options = [])
     {
-        dump('BUILD WIDGET : '.$this->formName());
+        //dump('BUILD WIDGET : '.$this->formName());
         //dump($this);
         //ump($data);
         //dump($dataKey);
         //dump($this);
-        dump($options);
+        //dump($options);
         $options['state'] = $this->buildState($options['state']);
-        dump($options);
+        //dump($options);
         if ($this->mode == 'edit' && $options['state']['mode'] == 'view') {
             return;
         }
@@ -167,7 +167,7 @@ class Widget extends Element
         $data = $this->formData($data, $options['state']);
         //dump($data);
         $options = $this->buildOptions($data, $options);
-        dump($options);
+        //dump($options);
         // TODO check workflow instead!
         $widgetBuilder =  $this->formBuilder($data, $options, $name);
         $builder->add($widgetBuilder);
