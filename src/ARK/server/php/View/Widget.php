@@ -151,14 +151,16 @@ class Widget extends Element
 
     public function buildForm(FormBuilderInterface $builder, $data, $dataKey, $options = [])
     {
-        dump('BUILD WIDGET : '.$this->formName());
+        //dump('BUILD WIDGET : '.$this->formName());
         //dump($this);
         //ump($data);
         //dump($dataKey);
         //dump($this);
-        dump($options);
+        //dump($options);
         $options['state'] = $this->buildState($options['state']);
-        dump($options);
+        if ($this->mode == 'edit' && $options['state']['mode'] == 'view') {
+            return;
+        }
         $name = $options['state']['name'];
         $mode = $options['state']['mode'];
         $data = $this->formData($data, $options['state']);
@@ -174,9 +176,13 @@ class Widget extends Element
 
     public function renderView($data, array $state, $forms = null, $form = null)
     {
-        dump('RENDER WIDGET : '.$this->formName());
+        //dump('RENDER WIDGET : '.$this->formName());
         //dump($form);
-        dump($state);
+        //dump($state);
+        $state = $this->buildState($state);
+        if ($this->mode == 'edit' && $state['mode'] == 'view') {
+            return;
+        }
         if ($form) {
             $context = $this->defaultContext();
             $context['state'] = array_replace_recursive($context['state'], $state);
@@ -184,7 +190,7 @@ class Widget extends Element
             $context['data'] = $this->formData($data, $state);
             $context['forms'] = $forms;
             $context['form'] = $form;
-            dump($context);
+            //dump($context);
             return Service::view()->renderView($this->template(), $context);
         }
         return '';

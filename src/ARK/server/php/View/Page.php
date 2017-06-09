@@ -159,17 +159,15 @@ class Page extends Element
     public function renderResponse($data, array $context, $forms = null, $form = null)
     {
         $context = $this->renderContext($data, $context, $forms, $form);
-        dump($context);
-        dump($this->template());
         return Service::view()->renderResponse($this->template(), $context);
     }
 
     public function handleRequest($request, $data, $state, callable $processForm = null, $redirect = null)
     {
-        dump($this);
-        dump($request);
-        dump($data);
-        dump($state);
+        //dump($this);
+        //dump($request);
+        //dump($data);
+        //dump($state);
         $actor = Service::workflow()->actor();
         $item = null;
         $state['mode'] = $this->mode($actor, $item);
@@ -179,7 +177,7 @@ class Page extends Element
         //dump($item);
         //dump($request);
         //dump($request->request);
-        dump($forms);
+        //dump($forms);
         if ($forms && $request->getMethod() == 'POST' && $posted = $this->postedForm($request, $forms)) {
             //dump($posted);
             if (!$redirect) {

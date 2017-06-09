@@ -161,9 +161,9 @@ abstract class Layout extends Element
 
     public function renderView($data, array $state, $forms = null, $form = null)
     {
-        dump('RENDER LAYOUT : '.$this->formName());
+        //dump('RENDER LAYOUT : '.$this->formName());
         //dump($data);
-        dump($state);
+        //dump($state);
         //dump($forms);
         //dump($form);
         if ($this->template()) {
@@ -184,7 +184,7 @@ abstract class Layout extends Element
             } else {
                 $context['label'] = false;
             }
-            dump($context);
+            //dump($context);
             return Service::view()->renderView($this->template(), $context);
         }
         return '';

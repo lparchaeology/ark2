@@ -193,9 +193,9 @@ class Cell
 
     public function buildForm(FormBuilderInterface $builder, $data, $dataKey, $options = [])
     {
-        dump('BUILD CELL : '.$this->element->formName());
+        //dump('BUILD CELL : '.$this->element->formName());
         //dump($data);
-        dump($options);
+        //dump($options);
         $options['state']['mode'] = $this->displayMode($options['state']['mode']);
         if ($this->dataKey) {
             $dataKey = $this->dataKey;
@@ -224,9 +224,6 @@ class Cell
         if ($form && isset($form[$this->name])) {
             $form = $form[$this->name];
         }
-        //if ($form === null && isset($forms[$this->name])) {
-        //    $form = $forms[$this->name];
-        //}
         if ($this->dataKey && is_array($data) && array_key_exists($this->dataKey, $data)) {
             $data = $data[$this->dataKey];
         }

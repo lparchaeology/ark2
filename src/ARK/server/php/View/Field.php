@@ -348,21 +348,20 @@ class Field extends Element
 
     public function buildForm(FormBuilderInterface $builder, $data, $dataKey, $options = [])
     {
-        dump('BUILD FIELD : '.$this->formName());
+        //dump('BUILD FIELD : '.$this->formName());
         //dump($data);
         //dump($dataKey);
         //dump($this);
-        dump($options);
+        //dump($options);
         $options['state'] = $this->buildState($options['state']);
         if ($options['state']['sanitise'] == 'withhold') {
             return;
         }
-        dump($options);
         $name = $options['state']['name'];
         $data = $this->formData($data, $options['state']);
         //dump($data);
         $options = $this->buildOptions($data, $options);
-        dump($options);
+        //dump($options);
         $fieldBuilder = $this->formBuilder($data, $options, $name);
         $builder->add($fieldBuilder);
     }

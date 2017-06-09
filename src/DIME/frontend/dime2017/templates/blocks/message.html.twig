@@ -4,7 +4,7 @@
 
 window.message_vocabulary = [];
 
-{%  for term in context.event_vocabulary.terms %}
+{%  for term in state.event_vocabulary.terms %}
     message_vocabulary['{{ term.keyword }}'] = "{{ term.keyword | translate }}";
 {% endfor %}
 
