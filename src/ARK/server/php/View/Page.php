@@ -137,10 +137,10 @@ class Page extends Element
         $context['forms'] = null;
         if ($forms) {
             foreach ($forms as $name => $form) {
-                dump('CREATE VIEW : '.$name);
-                dump($form);
+                //dump('CREATE VIEW : '.$name);
+                //dump($form);
                 $context['forms'][$name] = $form->createView();
-                dump($context['forms'][$name]);
+                //dump($context['forms'][$name]);
             }
         }
         $context['form'] = null;
@@ -182,6 +182,7 @@ class Page extends Element
         $options = $this->buildOptions($data, ['state' => $state]);
         $options['state']['actor'] = $actor;
         $options['state']['mode'] = $this->mode($actor, $item);
+        //dump($options);
         //dump('PAGE : BUILD FORMS');
         $forms = $this->buildForms($data, $options);
         //dump($actor);
@@ -201,7 +202,7 @@ class Page extends Element
             return $processForm($request, $posted, $redirect);
         }
         $context['state'] = $options['state'];
-        dump('PAGE : RENDER');
+        //dump('PAGE : RENDER');
         //dump($context);
         $response = $this->renderResponse($data, $context, $forms);
         Service::view()->clearFlashes();

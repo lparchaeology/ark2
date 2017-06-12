@@ -75,13 +75,10 @@ class Widget extends Element
 
     public function buildOptions($data, $options = [])
     {
-        dump('build options');
-        dump($options);
         if ($this->formOptionsArray === null) {
             $this->formOptionsArray = ($this->formOptions ? json_decode($this->formOptions, true) : []);
         }
         $options = array_replace_recursive($this->defaultOptions(), $this->formOptionsArray, $options);
-        dump($options);
         $state = $options['state'];
 
         if ($state['label'] === null) {
@@ -161,15 +158,14 @@ class Widget extends Element
 
     public function buildForm(FormBuilderInterface $builder, $data, $dataKey, $options = [])
     {
-        dump('BUILD WIDGET : '.$this->formName());
+        //dump('BUILD WIDGET : '.$this->formName());
         //dump($this);
         //dump($data);
         //dump($dataKey);
-        //dump($this);
         //dump($options);
         $options['state'] = $this->buildState($options['state']);
         //dump($options);
-        if ($this->mode == 'edit' && $options['state']['mode'] == 'view') {
+        if ($options['state']['mode'] == 'view' || $this->mode == 'view') {
             return;
         }
         $name = $options['state']['name'];
@@ -177,20 +173,20 @@ class Widget extends Element
         $data = $this->formData($data, $options['state']);
         //dump($data);
         $options = $this->buildOptions($data, $options);
-        dump($options);
+        //dump($options);
         // TODO check workflow instead!
         $widgetBuilder =  $this->formBuilder($data, $options, $name);
-        dump($widgetBuilder);
+        //dump($widgetBuilder);
         $builder->add($widgetBuilder);
     }
 
     public function renderView($data, array $state, $forms = null, $form = null)
     {
-        dump('RENDER WIDGET : '.$this->formName());
+        //dump('RENDER WIDGET : '.$this->formName());
         //dump($form);
         //dump($state);
         $state = $this->buildState($state);
-        if ($this->mode == 'edit' && $state['mode'] == 'view') {
+        if ($state['mode'] == 'view' || $this->mode == 'view') {
             return;
         }
         if ($form) {
@@ -198,9 +194,9 @@ class Widget extends Element
             $context['state'] = array_replace_recursive($context['state'], $state);
             $context['data'] = $this->formData($data, $state);
             $context['forms'] = $forms;
-            $context['form'] = $form;
-            dump($context);
-            dump($this->template());
+            $context['form'] = $form[$context['state']['name']];
+            //dump($context['form']);
+            //dump($this->template());
             return Service::view()->renderView($this->template(), $context);
         }
         return null;

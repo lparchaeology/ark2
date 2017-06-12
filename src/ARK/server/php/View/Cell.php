@@ -225,9 +225,6 @@ class Cell
         if (!isset($state['sanitise']) || $this->sanitise()) {
             $state['sanitise'] = $this->sanitise();
         }
-        if ($form && isset($form[$this->name])) {
-            $form = $form[$this->name];
-        }
         if ($this->dataKey && is_array($data) && array_key_exists($this->dataKey, $data)) {
             $data = $data[$this->dataKey];
         }

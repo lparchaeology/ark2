@@ -1,51 +1,51 @@
 {# ARK GridLayout template for standard Bootstrap grid #}
 
-{% for rdx, row in layout.rows %}
+{% if layout.form %}
+    {{ form_start(form) }}
+{% endif %}
 
-    <div class="row">
-
-        {# TODO: Make this driven from GridLayout object! #}
-        {% if row | length > 12 %}
-            {% set colclass = 'col-md-12' %}
-        {% elseif row | length > 6 %}
-            {% set colclass = 'col-md-1' %}
-        {% elseif row | length >= 5 %}
-            {% set colclass = 'col-md-2' %}
-        {% elseif row | length == 4 %}
-            {% set colclass = 'col-md-3' %}
-        {% elseif row | length == 3 %}
-            {% set colclass = 'col-md-4' %}
-        {% elseif row | length == 2 %}
-            {% set colclass = 'col-md-6' %}
-        {% else %}
-            {% set colclass = 'col-md-12' %}
-        {% endif %}
-
-        {% if label %}
-            <div class="{{colclass}}">
-                <div class="col-md-2"></div>
-                <div class="col-md-8">
-                    <h4>{{ label | translate }}</h4>
-                </div>
-            </div>
-        {% endif %}
-
-        {% if layout.form %}
-            {{ form_start(form) }}
-        {% endif %}
-
-        {% for cdx, col in row %}
-            <div class="{{colclass}}">
-                {% for idx, cell in col %}
-                    {{ cell.renderView(data, state, forms, form)|raw }}
-                {% endfor %}
-            </div>
-        {% endfor %}
-
-        {% if layout.form %}
-            {{ form_end(form) }}
-        {% endif %}
-
+{% if label %}
+<div class="form-group">
+    <div class="col-md-4"></div>
+    <div class="col-md-8">
+        <h4>{{ label | translate }}</h4>
     </div>
+</div>
+{% endif %}
+
+{% for rdx, row in layout.rows %}
+        {% if row | length > 1 %}
+            <div class="row">
+        {% endif %}
+        {% set rowlength = row | length %}
+        {% for cdx, col in row %}
+            {# TODO: Make this table driven from GridLayout object! #}
+            {% if rowlength > 12 %}
+                <div class="col-md-12">
+            {% elseif rowlength > 6 %}
+                <div class="col-md-1">
+            {% elseif rowlength >= 5 %}
+                <div class="col-md-2">
+            {% elseif rowlength == 4 %}
+                <div class="col-md-3">
+            {% elseif rowlength == 3 %}
+                <div class="col-md-4">
+            {% elseif rowlength == 2 %}
+                <div class="col-md-6">
+            {% endif %}
+            {% for idx, cell in col %}
+                {{ cell.renderView(data, state, forms, form)|raw }}
+            {% endfor %}
+            {% if rowlength > 1 %}
+                </div>
+            {% endif %}
+        {% endfor %}
+        {% if rowlength > 1 %}
+            </div>
+        {% endif %}
 
 {% endfor %}
+
+{% if layout.form %}
+    {{ form_end(form) }}
+{% endif %}

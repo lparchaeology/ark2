@@ -68,7 +68,7 @@ class FindAddController extends DimeFormController
     public function processForm(Request $request, $form, $redirect)
     {
         $data = $form->getData();
-        $find = $data['find']['find'];
+        $find = $data['find'];
         ORM::persist($find);
         if (isset($data['actions'])) {
             $action = $data['actions'];

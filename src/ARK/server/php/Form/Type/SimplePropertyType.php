@@ -31,6 +31,7 @@
 namespace ARK\Form\Type;
 
 use ARK\Form\Type\AbstractPropertyType;
+use ARK\Model\Property;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class SimplePropertyType extends AbstractPropertyType
@@ -54,5 +55,14 @@ class SimplePropertyType extends AbstractPropertyType
 
     public function mapFormsToData($forms, &$data)
     {
+        // TODO Find correct way for Items/objects
+        $forms = iterator_to_array($forms);
+        foreach ($forms as $key => $form) {
+            $data[$key] = $form->getData();
+            if ($data[$key] instanceof Property) {
+                $data = $data[$key]->item();
+                return;
+            }
+        }
     }
 }

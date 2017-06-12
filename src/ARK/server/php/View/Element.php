@@ -68,6 +68,11 @@ abstract class Element
         return $this->element;
     }
 
+    public function showLabel()
+    {
+        return null;
+    }
+
     public function formName($cellName = null)
     {
         if ($cellName) {
@@ -176,9 +181,9 @@ abstract class Element
         $state['mode'] = null;
         $state['modus'] = null;
         $state['sanitise'] = null;
-        $state['label'] = false;
+        $state['label'] = null;
         $state['keyword'] = null;
-        $state['required'] = false;
+        $state['required'] = true;
         $state['value']['modus'] = null;
         $state['parameter']['modus'] = null;
         $state['format']['modus'] = null;
@@ -217,7 +222,6 @@ abstract class Element
             $name = $options['state']['name'];
         }
         $name = ($name === false ? null : $this->formName($name));
-        dump('builder name = '.$name);
         return Service::forms()->createNamedBuilder(
             $name,
             $this->formTypeClass(),

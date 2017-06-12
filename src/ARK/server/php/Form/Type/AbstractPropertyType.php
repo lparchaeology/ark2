@@ -64,6 +64,11 @@ abstract class AbstractPropertyType extends AbstractType implements DataMapperIn
         $resolver->setDefaults(array_merge($this->options, $this->options()));
     }
 
+    public function getBlockPrefix()
+    {
+        return 'property';
+    }
+
     // Use to transform data from the model to this form element
     public function transform($value)
     {

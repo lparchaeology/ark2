@@ -59,6 +59,11 @@ class ItemChoicePropertyType extends ScalarPropertyType
         $forms = iterator_to_array($forms);
     }
 
+    public function getBlockPrefix()
+    {
+        return null;
+    }
+
     public function getParent()
     {
         return ScalarPropertyType::class;

@@ -25,6 +25,13 @@ col-sm-4
 
 {# Custom blocks #}
 
+{% block property_widget -%}
+    {% for key, subform in form %}
+        {{- form_widget(subform) -}}
+        {% do subform.setRendered %}
+    {% endfor %}
+{%- endblock property_widget %}
+
 {% block static_widget -%}
     {% if value is empty %}
         &nbsp;

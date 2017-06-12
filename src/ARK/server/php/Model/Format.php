@@ -325,9 +325,9 @@ abstract class Format
         if (!is_array($data)) {
             // TODO throw error
         }
-        $format = ($this->formatName() ? $data[$this->formatName()] : null);
-        $parameter = ($this->parameterName() ? $data[$this->parameterName()] : null);
-        $value = ($this->valueName() ? $data[$this->valueName()] : null);
+        $format = ($this->formatName() && isset($data[$this->formatName()]) ? $data[$this->formatName()] : null);
+        $parameter = ($this->parameterName() && isset($data[$this->parameterName()]) ? $data[$this->parameterName()] : null);
+        $value = ($this->valueName() && isset($data[$this->valueName()]) ? $data[$this->valueName()] : null);
         if ($span) {
             $extent = ($this->valueName() ? $extent[$this->valueName()] : null);
             $fragment->setSpan($value, $extent, $parameter, $format);

@@ -68,6 +68,11 @@ class VocabularyPropertyType extends ScalarPropertyType
         $property->setValue($forms[$property->attribute()->format()->valueName()]->getData());
     }
 
+    public function getBlockPrefix()
+    {
+        return 'vocabulary';
+    }
+
     public function getParent()
     {
         return ScalarPropertyType::class;

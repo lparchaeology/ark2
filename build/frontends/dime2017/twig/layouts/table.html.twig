@@ -30,7 +30,7 @@
                     <th class="thumbimagehead" data-field="image" data-title="image" data-sortable="false"></th>
                 {% endif %}
                 {% for field in layout.elements %}
-                    {% if workflow.hasPermission(field.attribute.readPermission) %}
+                    {% if state.actor.hasPermission(field.attribute.readPermission) %}
                         {% if field.attribute.name == 'id' %}
                         <th data-field="{{field.id}}" data-title="{{field.keyword|trans}}" data-sortable="true" data-sorter="alphanum" data-card-visible="false">
                         {% else %}
@@ -59,7 +59,7 @@
                         </td>
                     {% endif %}
                     {% for field in layout.elements %}
-                        {% if workflow.hasPermission(field.attribute.readPermission) %}
+                        {% if state.actor.hasPermission(field.attribute.readPermission) %}
                             <td>
                                 <span class="cell-label">{{field.keyword|trans}}</span>
                                 {{ field.renderView(item, state) }}

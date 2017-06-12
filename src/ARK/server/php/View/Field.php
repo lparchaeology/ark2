@@ -321,9 +321,7 @@ class Field extends Element
         if (!isset($state['label'])) {
             $state['label'] = $this->showLabel();
         }
-        if (!isset($state['required'])) {
-            $state['required'] = $this->attribute()->isRequired();
-        }
+        $state['required'] = $this->attribute()->isRequired();
         if (!isset($state['name'])) {
             $state['name'] = $this->formName();
         }
@@ -348,7 +346,7 @@ class Field extends Element
 
     public function buildForm(FormBuilderInterface $builder, $data, $dataKey, $options = [])
     {
-        dump('BUILD FIELD : '.$this->formName());
+        //dump('BUILD FIELD : '.$this->formName());
         //dump($data);
         //dump($dataKey);
         //dump($this);
@@ -358,17 +356,17 @@ class Field extends Element
             return;
         }
         $data = $this->formData($data, $options['state']);
-        dump($data);
+        //dump($data);
         $options = $this->buildOptions($data, $options);
-        dump($options);
+        //dump($options);
         $fieldBuilder = $this->formBuilder($data, $options, $options['state']['name']);
-        dump($fieldBuilder);
+        //dump($fieldBuilder);
         $builder->add($fieldBuilder);
     }
 
     public function renderView($data, array $state, $forms = null, $form = null)
     {
-        dump('RENDER FIELD : '.$this->formName());
+        //dump('RENDER FIELD : '.$this->formName());
         //dump($data);
         //dump($state);
         //dump($form);
@@ -385,9 +383,9 @@ class Field extends Element
             $context['state'] = array_replace_recursive($context['state'], $state);
             $context['data'] = $data;
             $context['forms'] = $forms;
-            $context['form'] = $form[$this->formName()];
-            dump($context);
-            dump($this->template());
+            $context['form'] = $form[$this->formName($context['state']['name'])];
+            //dump($context['form']);
+            //dump($this->template());
             return Service::view()->renderView($this->template(), $context);
         }
 

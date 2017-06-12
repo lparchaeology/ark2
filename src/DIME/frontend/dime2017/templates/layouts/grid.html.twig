@@ -1,12 +1,10 @@
 {# ARK GridLayout template for standard Bootstrap grid #}
 
 {% if layout.form %}
-*form_start*
     {{ form_start(form) }}
 {% endif %}
 
 {% if label %}
-*label*
 <div class="form-group">
     <div class="col-md-4"></div>
     <div class="col-md-8">
@@ -16,14 +14,11 @@
 {% endif %}
 
 {% for rdx, row in layout.rows %}
-*row {{rdx}}*
         {% if row | length > 1 %}
-        *new row*
             <div class="row">
         {% endif %}
         {% set rowlength = row | length %}
         {% for cdx, col in row %}
-        *col {{cdx}}*
             {# TODO: Make this table driven from GridLayout object! #}
             {% if rowlength > 12 %}
                 <div class="col-md-12">
@@ -39,7 +34,6 @@
                 <div class="col-md-6">
             {% endif %}
             {% for idx, cell in col %}
-            *render cell {{idx}}*
                 {{ cell.renderView(data, state, forms, form)|raw }}
             {% endfor %}
             {% if rowlength > 1 %}

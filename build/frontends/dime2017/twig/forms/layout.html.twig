@@ -1,5 +1,9 @@
 {% use "bootstrap_3_horizontal_layout.html.twig" %}
 
+{% block form_label_class -%}
+col-sm-4
+{%- endblock form_label_class %}
+
 {# Fix nested blank labels, see https://github.com/symfony/symfony/pull/19247 #}
 {% block form_label -%}
     {% spaceless %}
@@ -15,17 +19,18 @@
     {%- if label is same as(false) -%}
         col-sm-12
     {%- else -%}
-        col-sm-10 col-lg-9
+        col-sm-8 col-lg-7
     {%- endif -%}
 {%- endblock form_group_class %}
 
 {# Custom blocks #}
 
-{% block scalar_form_widget -%}
-    {#<div class="input-group">#}
-        {{- form_widget(form) -}}
-    {#</div>#}
-{%- endblock scalar_form_widget %}
+{% block property_widget -%}
+    {% for key, subform in form %}
+        {{- form_widget(subform) -}}
+        {% do subform.setRendered %}
+    {% endfor %}
+{%- endblock property_widget %}
 
 {% block static_widget -%}
     {% if value is empty %}
@@ -64,4 +69,3 @@
         </div>
     {% endspaceless %}
 {% endblock checkbox_widget %}
-
