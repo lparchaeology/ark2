@@ -48,7 +48,6 @@ class UserProvider implements UserProviderInterface
         if (!$user) {
             throw new UsernameNotFoundException("User $username not found.");
         }
-        dump($user);
         return $user;
     }
 
