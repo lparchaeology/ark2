@@ -103,11 +103,12 @@ class Field extends Element
         return parent::formTypeClass();
     }
 
-    private function modeToModus($mode, $modus, $sanitise = null)
+    private function modeToModus($state, $modus)
     {
         if ($modus == 'hidden') {
             return 'hidden';
         }
+        $mode = $state['mode'];
         if ($mode == 'view' || $modus == 'static') {
             return 'static';
         }
@@ -115,7 +116,7 @@ class Field extends Element
             if ($modus == 'readonly') {
                 return 'readonly';
             }
-            if (Service::workflow()->hasPermission($this->attribute->updatePermission()) || $sanitise == 'redact') {
+            if ($state['actor']->hasPermission($this->attribute->updatePermission()) || $state['sanitise'] == 'redact') {
                 return 'active';
             }
             if ($modus == 'disabled') {
@@ -165,7 +166,6 @@ class Field extends Element
     public function buildOptions($property, $options = [])
     {
         $state = $options['state'];
-        unset($options['page']);
         unset($options['forms']);
 
         if ($this->display) {
@@ -186,14 +186,14 @@ class Field extends Element
         }
 
         $options['state']['value']['modus'] =
-            $this->modeToModus($state['mode'], $options['state']['value']['modus'], $state['sanitise']);
+            $this->modeToModus($state, $options['state']['value']['modus']);
         $options['state']['value']['type'] =
             $this->modusToFormType($options['state']['value']['modus'], $this->valueFormType(), $this->staticFormType());
         $options['state']['value']['options'] = $this->valueOptions($state);
 
         if (isset($state['parameter']['modus'])) {
             $options['state']['parameter']['modus'] =
-                $this->modeToModus($state['mode'], $options['state']['parameter']['modus']);
+                $this->modeToModus($state, $options['state']['parameter']['modus']);
             $options['state']['parameter']['type'] =
                 $this->modusToFormType($options['state']['parameter']['modus'], $this->parameterFormType());
             $options['state']['parameter']['options'] = $this->baseOptions($options['state']['parameter']);
@@ -203,9 +203,9 @@ class Field extends Element
 
         if (isset($state['format']['modus'])) {
             $options['state']['format']['modus'] =
-                $this->modeToModus($state['mode'], $options['state']['parameter']['modus']);
+                $this->modeToModus($state, $options['state']['format']['modus']);
             $options['state']['format']['type'] =
-                $this->modusToFormType($options['state']['parameter']['modus'], $this->formatFormType());
+                $this->modusToFormType($options['state']['format']['modus'], $this->formatFormType());
             $options['state']['format']['options'] = $this->baseOptions($options['state']['format']);
         } else {
             $options['state']['format'] = null;
@@ -307,7 +307,7 @@ class Field extends Element
     protected function sanitise($state)
     {
         // TODO Service::workflow()->hasVisibility($actor, $this->attribute())???
-        if (!Service::workflow()->hasPermission($this->attribute->readPermission())) {
+        if (!$state['actor']->hasPermission($this->attribute->readPermission())) {
             if ($state['sanitise'] == 'redact') {
                 return 'redact';
             }
@@ -341,14 +341,14 @@ class Field extends Element
         }
         $state['sanitise'] = $this->sanitise($state);
         $state['mode'] = $this->displayMode($state['mode']);
-        $state['modus'] = $this->modeToModus($state['mode'], ($state['modus'] ?: $this->valueModus()), $state['sanitise']);
+        $state['modus'] = $this->modeToModus($state, ($state['modus'] ?: $this->valueModus()));
         $state['field'] = $this;
         return $state;
     }
 
     public function buildForm(FormBuilderInterface $builder, $data, $dataKey, $options = [])
     {
-        //dump('BUILD FIELD : '.$this->formName());
+        dump('BUILD FIELD : '.$this->formName());
         //dump($data);
         //dump($dataKey);
         //dump($this);
@@ -357,18 +357,18 @@ class Field extends Element
         if ($options['state']['sanitise'] == 'withhold') {
             return;
         }
-        $name = $options['state']['name'];
         $data = $this->formData($data, $options['state']);
-        //dump($data);
+        dump($data);
         $options = $this->buildOptions($data, $options);
-        //dump($options);
-        $fieldBuilder = $this->formBuilder($data, $options, $name);
+        dump($options);
+        $fieldBuilder = $this->formBuilder($data, $options, $options['state']['name']);
+        dump($fieldBuilder);
         $builder->add($fieldBuilder);
     }
 
     public function renderView($data, array $state, $forms = null, $form = null)
     {
-        //dump('RENDER FIELD : '.$this->formName());
+        dump('RENDER FIELD : '.$this->formName());
         //dump($data);
         //dump($state);
         //dump($form);
@@ -377,7 +377,7 @@ class Field extends Element
             return;
         }
         $state['mode'] = $this->displayMode($state['mode']);
-        $state['modus'] = $this->modeToModus($state['mode'], ($state['modus'] ?: $this->valueModus()), $state['sanitise']);
+        $state['modus'] = $this->modeToModus($state, ($state['modus'] ?: $this->valueModus()));
         $state['field'] = $this;
         $data = $this->formData($data, $state);
         if ($form && $this->template()) {
@@ -386,8 +386,8 @@ class Field extends Element
             $context['data'] = $data;
             $context['forms'] = $forms;
             $context['form'] = $form[$this->formName()];
-            //dump($context);
-            //dump($this->template());
+            dump($context);
+            dump($this->template());
             return Service::view()->renderView($this->template(), $context);
         }
 

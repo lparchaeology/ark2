@@ -42,21 +42,17 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FindViewController extends DimeFormController
 {
-    private $itemSlug = null;
-
     public function __invoke(Request $request, $itemSlug)
     {
-        $this->itemSlug = $itemSlug;
-        return $this->handleRequest($request, 'dime_page_find');
+        return $this->handleRequest($request, 'dime_page_find', ['find' => $itemSlug]);
     }
 
-    public function buildData(Request $request)
+    public function buildData(Request $request, $slugs = [])
     {
-        if (! $find = ORM::find(Find::class, $this->itemSlug)) {
-            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Find not found', "Find $this->itemSlug not found"));
+        if (!$find = ORM::find(Find::class, $slugs['find'])) {
+            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Find not found', "Find ".$slugs['find']." not found"));
         }
         $data['find'] = $find;
-        $data['notifications'] = DIME::getUnreadNotifications();
         $data['actions'] = Service::workflow()->actions(Service::workflow()->actor(), $find);
         return $data;
     }

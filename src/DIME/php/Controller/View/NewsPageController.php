@@ -39,15 +39,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 class NewsPageController extends DimeFormController
 {
-    private $actorSlug = null;
-
     public function __invoke(Request $request, $actorSlug = null)
     {
-        $this->actorSlug = $actorSlug;
-        return $this->handleRequest($request, 'dime_page_news');
+        return $this->handleRequest($request, 'dime_page_news', ['actor' => $actorSlug]);
     }
 
-    public function buildData(Request $request)
+    public function buildData(Request $request, $slugs = [])
     {
         $data['finds'] = ORM::findBy(Find::class, ['visibility' => 'public'], ['item' => 'DESC']);
         $data['notifications'] = DIME::getUnreadNotifications();

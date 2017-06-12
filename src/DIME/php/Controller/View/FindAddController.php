@@ -42,10 +42,10 @@ class FindAddController extends DimeFormController
 {
     public function __invoke(Request $request)
     {
-        return $this->handleRequest($request, 'dime_page_find', 'finds.view');
+        return $this->handleRequest($request, 'dime_page_find', [], 'finds.view');
     }
 
-    public function buildData(Request $request)
+    public function buildData(Request $request, $slugs = [])
     {
         $actor = Service::workflow()->actor();
         $find = new Find('dime.find');

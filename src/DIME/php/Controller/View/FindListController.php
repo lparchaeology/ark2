@@ -44,15 +44,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FindListController extends DimeFormController
 {
-    private $actorSlug = null;
-
     public function __invoke(Request $request, $actorSlug = null)
     {
-        $this->actorSlug = $actorSlug;
-        return $this->handleRequest($request, 'dime_page_find_list');
+        return $this->handleRequest($request, 'dime_page_find_list', ['actor' => $actorSlug]);
     }
 
-    public function buildData(Request $request)
+    public function buildData(Request $request, $slugs = [])
     {
         $query = $request->query->all();
 

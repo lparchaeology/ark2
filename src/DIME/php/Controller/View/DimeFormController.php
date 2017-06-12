@@ -40,23 +40,24 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class DimeFormController extends DimeController
 {
-    public function handleRequest(Request $request, $page, $redirect = null)
+    public function handleRequest(Request $request, $page, $slugs = [], $redirect = null)
     {
         $page = ORM::find(Page::class, $page);
-        $data = $this->buildData($request);
+        $data = $this->buildData($request, $slugs);
         $state = $this->buildState($request);
         $state['page_config'] = $this->pageConfig($request->attributes->get('_route'));
         return $page->handleRequest($request, $data, $state, [$this, 'processForm'], $redirect);
     }
 
-    public function buildData(Request $request)
+    public function buildData(Request $request, $slugs = [])
     {
         return null;
     }
 
     public function buildState(Request $request)
     {
-        return null;
+        $state['notifications'] = DIME::getUnreadNotifications();
+        return $state;
     }
 
     public function processForm(Request $request, $form, $redirect)

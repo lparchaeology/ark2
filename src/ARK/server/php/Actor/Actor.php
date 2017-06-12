@@ -10,6 +10,7 @@ namespace ARK\Actor;
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
 use ARK\ORM\ORM;
+use ARK\Workflow\Permission;
 use ARK\Workflow\Security\ActorRole;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -40,5 +41,18 @@ class Actor implements Item
             }
         }
         return $this->roles;
+    }
+
+    public function hasPermission(Permission $permission = null)
+    {
+        if ($permission === null) {
+            return true;
+        }
+        foreach ($this->roles() as $role) {
+            if ($role->hasPermission($permission)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

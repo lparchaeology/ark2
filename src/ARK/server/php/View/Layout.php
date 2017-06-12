@@ -41,6 +41,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 abstract class Layout extends Element
 {
     protected $schma = null;
+    protected $label = false;
+    protected $required = false;
     protected $form = false;
     protected $method = null;
     protected $action = null;
@@ -75,6 +77,16 @@ abstract class Layout extends Element
     public function schema()
     {
         return $this->schma;
+    }
+
+    public function showLabel()
+    {
+        return $this->label;
+    }
+
+    public function isRequired()
+    {
+        return $this->required;
     }
 
     public function isForm()
@@ -118,14 +130,26 @@ abstract class Layout extends Element
 
     public function buildForms($data, $options)
     {
-        //dump('FORMS : '.$this->formName());
+        dump('LAYOUT FORMS : '.$this->formName());
         //dump($data);
         //dump($options);
+        $options['state']['layout'] = $this;
+        if ($this->label !== null) {
+            $options['state']['label'] = $this->label;
+        }
+        if ($this->required !== null) {
+            $options['state']['required'] = $this->required;
+        }
         if ($this->form) {
+            dump('LAYOUT : BUILD FORMS');
+            dump($options);
             $builderData = $this->formData($data, $options);
             $builderOptions = $this->buildOptions($builderData, $options);
+            dump($builderOptions);
             $builder = $this->formBuilder($builderData, $builderOptions, ($this->name ? null : false));
             $this->buildForm($builder, $data, null, $options);
+            dump('LAYOUT : FORM BUILDER');
+            dump($builder);
             $form = $builder->getForm();
             return [$this->formName() => $form];
         }
@@ -138,17 +162,27 @@ abstract class Layout extends Element
 
     public function buildForm(FormBuilderInterface $builder, $data, $dataKey, $options = [])
     {
-        //dump('BUILD LAYOUT : '.$this->formName());
+        dump('BUILD LAYOUT : '.$this->formName());
         //dump($data);
+        //dump($dataKey);
         //dump($options);
         $options['state']['mode'] = $this->displayMode($options['state']['mode']);
         $data = $this->formData($data, $options['state']);
         //dump($data);
         $options = $this->buildOptions($data, $options);
-        //dump($options);
+        $options['state']['layout'] = $this;
+        if ($this->label !== null) {
+            $options['state']['label'] = $this->label;
+        }
+        if ($this->required !== null) {
+            $options['state']['required'] = $this->required;
+        }
+        dump($options);
         //dump($data);
         if (!$this->form && $this->name) {
             $layoutBuilder = $this->formBuilder([$this->name => $data], $options);
+            dump('LAYOUT : CELL BUILDER');
+            dump($layoutBuilder);
             $builder->add($layoutBuilder);
             foreach ($this->cells() as $cell) {
                 $cell->buildForm($layoutBuilder, $data, $dataKey, $options);
@@ -162,7 +196,7 @@ abstract class Layout extends Element
 
     public function renderView($data, array $state, $forms = null, $form = null)
     {
-        //dump('RENDER LAYOUT : '.$this->formName());
+        dump('RENDER LAYOUT : '.$this->formName());
         //dump($data);
         //dump($state);
         //dump($forms);
@@ -182,12 +216,11 @@ abstract class Layout extends Element
             $context['form'] = $form;
             if (isset($state['label']) && $state['label'] === true) {
                 $context['label'] = $this->keyword();
-                dump('keyword');
             } else {
                 $context['label'] = false;
-                dump('false');
             }
             dump($context);
+            dump($this->template());
             return Service::view()->renderView($this->template(), $context);
         }
         return '';

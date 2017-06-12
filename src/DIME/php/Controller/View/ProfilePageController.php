@@ -40,16 +40,27 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ProfilePageController extends DimeFormController
 {
-    public function __invoke(Request $request)
+    private $id = null;
+
+    public function __invoke(Request $request, $id = null)
     {
-        return $this->handleRequest($request, 'dime_page_profile');
+        return $this->handleRequest($request, 'dime_page_profile', ['actor' => $id]);
     }
 
-    public function buildData(Request $request)
+    public function buildData(Request $request, $slugs = [])
     {
-        $actor = Service::workflow()->actor();
-        $data['person'] = $actor;
-        $data['notifications'] = DIME::getUnreadNotifications();
+        if ($slugs['actor'] === null) {
+            $actor = Service::workflow()->actor();
+            $user = Service::security()->user();
+        } else {
+            if (!$actor = ORM::find(Actor::class, $slugs['actor'])) {
+                throw new ErrorException(new NotFoundError('ACTOR_NOT_FOUND', 'Actor not found', "Actor ".$slugs['actor']." not found"));
+            }
+            $data['actor'] = $actor;
+            $data['user'] = Service::security()->user();
+        }
+        $data['actor'] = $actor;
+        $data['user'] = $user;
         return $data;
     }
 }

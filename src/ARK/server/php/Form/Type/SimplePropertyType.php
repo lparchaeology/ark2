@@ -31,9 +31,15 @@
 namespace ARK\Form\Type;
 
 use ARK\Form\Type\AbstractPropertyType;
+use Symfony\Component\Form\FormBuilderInterface;
 
 class SimplePropertyType extends AbstractPropertyType
 {
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->setDataMapper($this);
+    }
+
     protected function options()
     {
         return [
@@ -41,5 +47,12 @@ class SimplePropertyType extends AbstractPropertyType
             'page' => null,
             'state' => null,
         ];
+    }
+    public function mapDataToForms($data, $forms)
+    {
+    }
+
+    public function mapFormsToData($forms, &$data)
+    {
     }
 }

@@ -48,27 +48,25 @@ class Page extends Element
     protected $content = null;
     protected $footer = null;
 
-    public function mode(Actor $actor, $item = null)
+    public function mode(Actor $actor, Item $item = null)
     {
         // TODO Move check to Security or Workflow???
-        if ($this->visibility == 'restricted') {
-            if ($actor && $item) {
-                if ($this->defaultMode() == 'edit' && Service::workflow()->can($actor, 'edit', $item)) {
-                    return 'edit';
-                } elseif (Service::workflow()->can($actor, 'view', $item)) {
-                    return 'view';
-                }
-            } elseif ($actor) {
-                if ($this->defaultMode() == 'edit' && $this->updatePermission() && Service::workflow()->hasPermission($this->updatePermission(), $actor)) {
-                    return 'edit';
-                } elseif ($this->readPermission() && Service::workflow()->hasPermission($this->readPermission(), $actor)) {
-                    return 'view';
-                }
+        $mode = $this->defaultMode();
+        if ($this->visibility != 'public') {
+            if ($mode == 'edit' && !$actor->hasPermission($this->updatePermission())) {
+                $mode = 'view';
             }
-            throw new AccessDeniedException('core.error.access.denied');
+            if ($mode == 'view' && !$actor->hasPermission($this->readPermission())) {
+                $mode = null;
+            }
+            if ($item && !Service::workflow()->can($actor, $mode, $item)) {
+                $mode == null;
+            }
+            if (!$mode) {
+                throw new AccessDeniedException('core.error.access.denied');
+            }
         }
-        // TODO Assumes visibility == 'public'
-        return $this->defaultMode();
+        return $mode;
     }
 
     public function visibility()
@@ -109,6 +107,13 @@ class Page extends Element
         return $this->footer;
     }
 
+    public function defaultState($route = null)
+    {
+        $state = parent::defaultState($route);
+        $state['page'] = $this;
+        return $state;
+    }
+
     public function buildForms($data, $options)
     {
         //dump('BUILD PAGE : '.$this->element);
@@ -120,11 +125,11 @@ class Page extends Element
 
     public function renderView($data, array $state, $forms = null, $form = null)
     {
-        $context = $this->renderContext($data, $state, $forms, $form);
+        $context = $this->renderContext($data, $state, $forms);
         return Service::view()->renderView($this->template(), $context);
     }
 
-    public function renderContext($data, array $context, $forms = null, $form = null)
+    public function renderContext($data, array $context, $forms = null)
     {
         $context = $this->viewContext($data, $context, $context['state']);
         $context['page'] = $this;
@@ -132,10 +137,13 @@ class Page extends Element
         $context['forms'] = null;
         if ($forms) {
             foreach ($forms as $name => $form) {
+                dump('CREATE VIEW : '.$name);
+                dump($form);
                 $context['forms'][$name] = $form->createView();
+                dump($context['forms'][$name]);
             }
         }
-        $context['form'] = $form;
+        $context['form'] = null;
         return $context;
     }
 
@@ -164,20 +172,24 @@ class Page extends Element
 
     public function handleRequest($request, $data, $state, callable $processForm = null, $redirect = null)
     {
+        //dump('PAGE : '.$this->element);
         //dump($this);
         //dump($request);
         //dump($data);
         //dump($state);
         $actor = Service::workflow()->actor();
         $item = null;
-        $state['mode'] = $this->mode($actor, $item);
-        $options['state'] = $state;
+        $options = $this->buildOptions($data, ['state' => $state]);
+        $options['state']['actor'] = $actor;
+        $options['state']['mode'] = $this->mode($actor, $item);
+        //dump('PAGE : BUILD FORMS');
         $forms = $this->buildForms($data, $options);
         //dump($actor);
         //dump($item);
         //dump($request);
         //dump($request->request);
         //dump($forms);
+        //dump('PAGE : CHECK POSTED');
         if ($forms && $request->getMethod() == 'POST' && $posted = $this->postedForm($request, $forms)) {
             //dump($posted);
             if (!$redirect) {
@@ -188,7 +200,9 @@ class Page extends Element
             }
             return $processForm($request, $posted, $redirect);
         }
-        $context['state'] = $state;
+        $context['state'] = $options['state'];
+        dump('PAGE : RENDER');
+        //dump($context);
         $response = $this->renderResponse($data, $context, $forms);
         Service::view()->clearFlashes();
         return $response;

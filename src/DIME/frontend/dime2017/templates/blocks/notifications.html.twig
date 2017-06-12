@@ -1,7 +1,7 @@
 {# Define the notifications block #}
 {% block notifications %}
 
-{% if data.notifications|length %}
+{% if state.notifications|length %}
     {%  set notificationicon = 'icon-new-notification small wide' %}
 {% else %}
     {%  set notificationicon = 'icon-notification small' %}
@@ -14,21 +14,21 @@
     <div class="dropdown-menu messages">
         <span class="notification-dropdown-header">
             <span class="count">
-                    {{ data.notifications|length }}
+                    {{ state.notifications|length }}
             </span>
             {{ "core.message.newmessages" | translate }}
         </span>
         <ul class="list-group">
-            {% for notification in data.notifications[0:5] %}
+            {% for notification in state.notifications[0:5] %}
                 <li>
                     {% include "blocks/notification.html.twig" with {'notification': notification} %}
                 </li>
             {% endfor %}
         </ul>
-        {% if data.notifications|length > 5 %}
+        {% if state.notifications|length > 5 %}
             <div class="notification-dropdown-info">
                 <a href = " {{ path( 'home.messages' ) }}">
-                    {{ data.notifications|length-5 }} {{ 'core.message.notshown' | translate }}
+                    {{ state.notifications|length-5 }} {{ 'core.message.notshown' | translate }}
                 </a>
             </div>
         {% endif %}

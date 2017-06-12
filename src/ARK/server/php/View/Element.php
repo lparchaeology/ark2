@@ -134,10 +134,26 @@ abstract class Element
 
     public function buildOptions($data, $options = [])
     {
-        if (is_array($options)) {
-            return array_replace_recursive($this->defaultOptions(), $options);
+        $options = array_replace_recursive($this->defaultOptions(), $options);
+        $state = $options['state'];
+        if ($state['label'] === null) {
+            $options['label'] = $this->showLabel();
+        } else {
+            $options['label'] = $state['label'];
         }
-        return $this->defaultOptions();
+        if ($options['label']) {
+            if ($state['keyword']) {
+                $options['label'] = $state['keyword'];
+            } elseif ($this->keyword()) {
+                $options['label'] = $this->keyword();
+            }
+        }
+        if ($state['mode'] == 'view') {
+            $options['required'] = false;
+        } else {
+            $options['required'] = $state['required'];
+        }
+        return $options;
     }
 
     public function defaultContext($route = null)
@@ -151,13 +167,18 @@ abstract class Element
 
     public function defaultState($route = null)
     {
-        $state['sanitise'] = null;
+        $state['actor'] = null;
+        $state['page'] = null;
+        $state['layout'] = null;
+        $state['field'] = null;
+        $state['widget'] = null;
         $state['name'] = null;
         $state['mode'] = null;
         $state['modus'] = null;
-        $state['keyword'] = null;
+        $state['sanitise'] = null;
         $state['label'] = false;
-        $state['required'] = null;
+        $state['keyword'] = null;
+        $state['required'] = false;
         $state['value']['modus'] = null;
         $state['parameter']['modus'] = null;
         $state['format']['modus'] = null;
@@ -166,8 +187,7 @@ abstract class Element
 
     public function viewContext($data, $context = [], $state = [])
     {
-        $context = array_replace_recursive($this->defaultContext(), $context);
-        $context['state'] = array_replace_recursive($context['state'], $state);
+        $context = array_replace_recursive($this->defaultContext(), $context, ['state' => $state]);
         $context['data'] = $data;
         return $context;
     }
@@ -197,6 +217,7 @@ abstract class Element
             $name = $options['state']['name'];
         }
         $name = ($name === false ? null : $this->formName($name));
+        dump('builder name = '.$name);
         return Service::forms()->createNamedBuilder(
             $name,
             $this->formTypeClass(),

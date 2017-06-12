@@ -80,22 +80,6 @@ class Registry extends SymfonyRegistry
         return ($au ? $au->user() : null);
     }
 
-    public function hasPermission(Permission $permission, Actor $actor = null)
-    {
-        if ($actor === null) {
-            $actor = $this->actor();
-        }
-        if ($actor === null) {
-            return false;
-        }
-        foreach ($actor->roles() as $role) {
-            if ($role->hasPermission($permission)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public function schemaActions(Schema $schema)
     {
         $this->init($schema->name());
@@ -118,8 +102,10 @@ class Registry extends SymfonyRegistry
     public function can(Actor $actor, $action, Item $item)
     {
         //dump('Workflow::can('.$actor->id().' '.$action.' '.$item->schema()->module()->name().')');
-        $action = $this->action($item->schema()->name(), $action);
-        if ($action) {
+        if (is_string($action)) {
+            $action = $this->action($item->schema()->name(), $action);
+        }
+        if ($action instanceof Action) {
             return $action->isGranted($actor, $item);
         }
         return false;

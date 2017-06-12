@@ -75,20 +75,14 @@ class Widget extends Element
 
     public function buildOptions($data, $options = [])
     {
+        dump('build options');
+        dump($options);
         if ($this->formOptionsArray === null) {
             $this->formOptionsArray = ($this->formOptions ? json_decode($this->formOptions, true) : []);
         }
         $options = array_replace_recursive($this->defaultOptions(), $this->formOptionsArray, $options);
+        dump($options);
         $state = $options['state'];
-        unset($options['state']);
-        unset($options['page']);
-        unset($options['data']);
-        unset($options['forms']);
-        unset($options['form']);
-        if (is_subclass_of($this->formTypeClass(), SubmitButtonTypeInterface::class)) {
-            unset($options['required']);
-            unset($options['mapped']);
-        }
 
         if ($state['label'] === null) {
             $options['label'] = $this->showLabel();
@@ -103,9 +97,25 @@ class Widget extends Element
             }
         }
 
+        if ($state['mode'] == 'view') {
+            $options['required'] = false;
+        } else {
+            $options['required'] = $state['required'];
+        }
+
         if ($this->vocabulary) {
             $options = $this->vocabularyOptions($this->vocabulary, $options);
         }
+
+        unset($options['state']);
+        unset($options['data']);
+        unset($options['forms']);
+        unset($options['form']);
+        if (is_subclass_of($this->formTypeClass(), SubmitButtonTypeInterface::class)) {
+            unset($options['required']);
+            unset($options['mapped']);
+        }
+
         return $options;
     }
 
@@ -151,9 +161,9 @@ class Widget extends Element
 
     public function buildForm(FormBuilderInterface $builder, $data, $dataKey, $options = [])
     {
-        //dump('BUILD WIDGET : '.$this->formName());
+        dump('BUILD WIDGET : '.$this->formName());
         //dump($this);
-        //ump($data);
+        //dump($data);
         //dump($dataKey);
         //dump($this);
         //dump($options);
@@ -167,15 +177,16 @@ class Widget extends Element
         $data = $this->formData($data, $options['state']);
         //dump($data);
         $options = $this->buildOptions($data, $options);
-        //dump($options);
+        dump($options);
         // TODO check workflow instead!
         $widgetBuilder =  $this->formBuilder($data, $options, $name);
+        dump($widgetBuilder);
         $builder->add($widgetBuilder);
     }
 
     public function renderView($data, array $state, $forms = null, $form = null)
     {
-        //dump('RENDER WIDGET : '.$this->formName());
+        dump('RENDER WIDGET : '.$this->formName());
         //dump($form);
         //dump($state);
         $state = $this->buildState($state);
@@ -185,14 +196,14 @@ class Widget extends Element
         if ($form) {
             $context = $this->defaultContext();
             $context['state'] = array_replace_recursive($context['state'], $state);
-            $context['widget'] = $this;
             $context['data'] = $this->formData($data, $state);
             $context['forms'] = $forms;
             $context['form'] = $form;
-            //dump($context);
+            dump($context);
+            dump($this->template());
             return Service::view()->renderView($this->template(), $context);
         }
-        return '';
+        return null;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

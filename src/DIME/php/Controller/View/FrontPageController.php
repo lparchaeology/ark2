@@ -45,7 +45,7 @@ class FrontPageController extends DimeFormController
         return $this->handleRequest($request, 'dime_page_front');
     }
 
-    public function buildData(Request $request)
+    public function buildData(Request $request, $slugs = [])
     {
         // Get the 25 most recent public Items
         $finds = ORM::findBy(Find::class, ['visibility' => 'public'], ['item' => 'DESC'], 25);
@@ -61,7 +61,6 @@ class FrontPageController extends DimeFormController
             }
         }
         $data['finds'] = $featured;
-        $data['notifications'] = DIME::getUnreadNotifications();
         return $data;
     }
 }

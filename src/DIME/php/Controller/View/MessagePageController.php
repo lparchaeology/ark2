@@ -48,11 +48,12 @@ class MessagePageController extends DimeFormController
 
     public function buildState(Request $request)
     {
+        $state['notifications'] = DIME::getUnreadNotifications();
         $state['event_vocabulary'] = ORM::find(Vocabulary::class, 'core.event.type');
         return $state;
     }
 
-    public function buildData(Request $request)
+    public function buildData(Request $request, $slugs = [])
     {
         $data['messages'] = DIME::getNotifications();
         $msg = $request->query->get('id');

@@ -195,6 +195,7 @@ class Cell
     {
         //dump('BUILD CELL : '.$this->element->formName());
         //dump($data);
+        //dump($dataKey);
         //dump($options);
         $options['state']['mode'] = $this->displayMode($options['state']['mode']);
         if ($this->dataKey) {
@@ -216,6 +217,9 @@ class Cell
             $state['label'] = $this->keyword();
         } else {
             $state['label'] = $this->showLabel();
+        }
+        if ($this->isRequired() !== null) {
+            $state['required'] = $this->isRequired();
         }
         $state['modus'] = $this->valueModus();
         if (!isset($state['sanitise']) || $this->sanitise()) {

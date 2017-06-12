@@ -52,7 +52,7 @@ class UserRegisterController extends DimeFormController
         return $this->handleRequest($request, 'core_page_user_register', 'front');
     }
 
-    public function buildData(Request $request)
+    public function buildData(Request $request, $slugs = [])
     {
         $data['actor'] = new Person;
         return $data;
