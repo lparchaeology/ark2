@@ -33,10 +33,13 @@ namespace ARK\Translation;
 use ARK\Service;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
+use ARK\Translation\Language;
 use ARK\Translation\Message;
+use ARK\Translation\Role;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 
 class Translation
 {
@@ -105,7 +108,20 @@ class Translation
     public function message($language = null, $role = 'default')
     {
         // TODO select by language and role with fallbacks
-        return $this->messages;
+        if ($language == null) {
+            $language = Service::locale();
+        }
+        $language = ORM::find(Language::class, $language);
+
+        if ($role == null) {
+            $role = 'default';
+        }
+        $role = ORM::find(Role::class, $role);
+
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq("language", $language))
+            ->andWhere(Criteria::expr()->eq("role", $role));
+        return $this->messages->matching($criteria)->first();
     }
 
     public function setMessages(array $messages)
@@ -125,7 +141,7 @@ class Translation
         $builder->addManyToOneField('domain', 'ARK\Translation\Domain');
         $builder->addField('isPlural', 'boolean', [], 'is_plural');
         $builder->addField('hasParameters', 'boolean', [], 'has_parameters');
-        $builder->addOneToManyCascade('parameters', 'ARK\Translation\Parameter', 'key');
-        $builder->addOneToManyCascade('messages', 'ARK\Translation\Message', 'key');
+        $builder->addOneToManyCascade('parameters', 'ARK\Translation\Parameter', 'keyword');
+        $builder->addOneToManyCascade('messages', 'ARK\Translation\Message', 'keyword');
     }
 }
