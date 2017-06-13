@@ -43,6 +43,7 @@ use ARK\Workflow\Security\ActorRole;
 use ARK\Workflow\Security\ActorUser;
 use ARK\Workflow\Role;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -51,6 +52,7 @@ class Security
 {
     protected $app = null;
     protected $options = null;
+    protected $anon = null;
 
     public function __construct(Application $app)
     {
@@ -81,9 +83,15 @@ class Security
     public function user()
     {
         if ($token = $this->tokenStorage()->getToken()) {
-            return $token->getUser();
+            if (!$token instanceof AnonymousToken) {
+                return $token->getUser();
+            }
         }
-        return null;
+        if ($this->anon === null) {
+            $this->anon = new User('anonymous');
+            $this->anon->enable();
+        }
+        return $this->anon;
     }
 
     public function isLoggedIn()

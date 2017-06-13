@@ -74,7 +74,7 @@ class ObjectFormat extends Format
 
     protected function fragmentValue($fragment, ArrayCollection $properties = null)
     {
-        if ($properties === null || $properties->isEmpty()) {
+        if ($properties === null || $properties->isEmpty() || !$fragment instanceof Fragment) {
             return null;
         }
         $data = [];

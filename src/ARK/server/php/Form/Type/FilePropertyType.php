@@ -32,6 +32,7 @@ namespace ARK\Form\Type;
 
 use ARK\File\File;
 use ARK\Form\Type\AbstractPropertyType;
+use ARK\Model\Item;
 use ARK\Model\Property;
 use ARK\ORM\ORM;
 use ARK\Service;
@@ -88,6 +89,10 @@ class FilePropertyType extends AbstractPropertyType
         $forms = iterator_to_array($forms);
         $upload = $forms['file']->getData();
         $file = File::createFromUploadedFile($upload);
-        $property->setValue([$file]);
+        // FIXME handle multiples properly!
+        if ($property->attribute()->hasMultipleOccurrences()) {
+            $file = [$file];
+        }
+        $property->setValue($file);
     }
 }

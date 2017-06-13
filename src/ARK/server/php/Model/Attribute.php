@@ -170,14 +170,25 @@ abstract class Attribute
             }
             return $this->vocabulary->term($fragments[0]->value());
         }
+        if ($this->format()->datatype()->isObject()) {
+            if ($this->hasMultipleOccurrences()) {
+                $data = [];
+                foreach ($fragments as $fragment) {
+                    $data[] = $this->format()->value($fragment, $properties->get($fragment->id()));
+                }
+                return $data;
+            }
+            $fragment = $fragments->first();
+            return $this->format()->value($fragment, $properties->get($fragment->id()));
+        }
         if ($this->hasMultipleOccurrences()) {
             $data = [];
             foreach ($fragments as $fragment) {
-                $data[] = $this->format()->value(new ArrayCollection([$fragment]), $properties->get($fragment->id()));
+                $data[] = $this->format()->value(new ArrayCollection([$fragment]));
             }
             return $data;
         }
-        return $this->format()->value($fragments, $properties);
+        return $this->format()->value($fragments);
     }
 
     public function serialize(ArrayCollection $fragments, ArrayCollection $properties)

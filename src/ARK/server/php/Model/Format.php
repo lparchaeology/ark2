@@ -190,7 +190,7 @@ abstract class Format
     public function value($model, ArrayCollection $properties = null)
     {
         if ($model instanceof Fragment) {
-            return $this->fragmentValue($model);
+            return $this->fragmentValue($model, $properties);
         }
         if (!$model instanceof ArrayCollection || $model->isEmpty()) {
             return $this->nullValue();
@@ -198,10 +198,15 @@ abstract class Format
         if ($this->hasMultipleValues()) {
             $data = [];
             foreach ($model as $fragment) {
-                $data[] = $this->value($fragment);
+                if ($properties && $properties->hasKey($fragment->id())) {
+                    $data[] = $this->value($fragment, $properties[$fragment->id()]);
+                } else {
+                    $data[] = $this->value($fragment, $properties);
+                }
             }
             return $data;
         }
+        // Formats with multiple fragments per value, e.g. LocalText (but not Objects)
         return $this->fragmentValue($model, $properties);
     }
 

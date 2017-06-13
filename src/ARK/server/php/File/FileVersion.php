@@ -134,6 +134,7 @@ class FileVersion extends FileHandler
         $file->path = FileVersion::makeFilePath($type, $id, $file->sequence, $extension);
         $file->version = ($version ? $version : $created->format('Y-m-d H:i:s'));
         $file->created = $created;
+        dump(Service::security()->user());
         $file->creator = Service::security()->user()->id();
         $file->modified = $created;
         $file->modifier = $file->creator;

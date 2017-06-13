@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 07, 2017 at 11:59 AM
+-- Generation Time: Jun 13, 2017 at 09:22 PM
 -- Server version: 10.0.30-MariaDB-0+deb8u2
 -- PHP Version: 5.6.30-0+deb8u1
 
@@ -1453,6 +1453,7 @@ CREATE TABLE IF NOT EXISTS `ark_workflow_actor_user` (
 
 INSERT INTO `ark_workflow_actor_user` (`actor`, `user`, `enabled`, `verified`, `locked`, `expired`, `expires_at`, `verification_token`, `verification_requested_at`) VALUES
 ('ahavfrue', 'ahavfrue', 1, 1, 0, 0, NULL, '', NULL),
+('anonymous', 'anonymous', 1, 1, 0, 0, NULL, '', NULL),
 ('bnchristensen', 'bnchristensen', 1, 1, 0, 0, NULL, '', NULL),
 ('dsvendson', 'dsvendson', 1, 1, 0, 0, NULL, '', NULL),
 ('jlayt', 'jlayt', 1, 1, 0, 0, NULL, '', NULL),

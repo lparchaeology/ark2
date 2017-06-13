@@ -74,7 +74,7 @@ class User implements AdvancedUserInterface, Serializable
     public function __construct($id, $username = null, $email = null)
     {
         $this->id = $id;
-        $this->username = $username;
+        $this->username = ($username ?: $id);
         $this->email = $email;
         $this->accounts = new ArrayCollection();
     }
