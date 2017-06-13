@@ -39,19 +39,7 @@ window.iteminitial = "";
 
 {% endif %}
 
-{# this should be using real data #}
-
-window.modules = {
-        "find" : { 
-            "translations" : {
-                "{{ app.locale }}" : "{{ "find" | translate }}"
-                },
-            "paths" : {
-                "en" : "finds",
-                "da" : "fund"
-                }
-            }
-}
+window.modules = {{ state.modules|json_encode()|raw }}
 
 </script>
 
