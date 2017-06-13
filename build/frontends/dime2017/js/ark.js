@@ -10,8 +10,8 @@ $(document).ready(function() {
     //$(".select2.select2-container").css("width", "100%");
     // HACK To add columns of checkboxes
     $("#find_secondary_term").css("width", "100%");
-    $(".checkbox").addClass("col-xs-4 col-sm-4 col-lg-3");
-    $("#edit_roles .checkbox").removeClass("col-xs-4 col-sm-4 col-lg-3");
+    $(".checkbox").addClass("col-xs-4 col-sm-4 ");
+    $("#edit_roles .checkbox").removeClass("col-xs-4 col-sm-4");
     // Fake readonly mode
     $('.readonly-select').prop('disabled', true);
 

@@ -48,9 +48,9 @@
 
 .form-group .kv-fileinput-caption {
     border: 1px solid black;
-    border-radius: 10px;
     height: 1.6em;
-    padding: 0 10px;
+    padding: 0 5px;
+    border-radius: 0;
 }
 
 @media (max-width: $break-small){
