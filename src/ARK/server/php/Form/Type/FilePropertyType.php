@@ -30,7 +30,7 @@
 
 namespace ARK\Form\Type;
 
-use ARK\File\Image;
+use ARK\File\File;
 use ARK\Form\Type\AbstractPropertyType;
 use ARK\Model\Property;
 use ARK\ORM\ORM;
@@ -38,6 +38,7 @@ use ARK\Service;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FilePropertyType extends AbstractPropertyType
 {
@@ -65,9 +66,7 @@ class FilePropertyType extends AbstractPropertyType
         if (!$property instanceof Property) {
             return;
         }
-        dump($property);
         $file = $this->value($property, $forms);
-        dump($file);
         $forms = iterator_to_array($forms);
         if ($file instanceof Item) {
             $forms['filename']->setData($file->name());
@@ -87,34 +86,8 @@ class FilePropertyType extends AbstractPropertyType
             return;
         }
         $forms = iterator_to_array($forms);
-        dump($forms);
-        dump($property);
-        $file = $forms['file']->getData();
-        dump($file);
-        if ($file->isValid()) {
-            $item = new Image();
-            ORM::persist($item);
-            $item->setMediatype($file->getMimetype());
-            $stream = fopen($file->getRealPath(), 'r+');
-            dump($item);
-            dump($item->filepath());
-            Service::filesystem()->writeStream($item->filepath(), $stream);
-            fclose($stream);
-            $property->setValue($item);
-            dump($item);
-            dump($property);
-        }
-        return;
-        //$file->move($dir, $someNewFilename);
-        //$module = $forms['module']->getData();
-        //$item = $forms['item']->getData();
-        if ($module && $item) {
-            // TODO Check file unchanged else delete old and insert new
-            $values['module'] = $module;
-            $values['item'] = $item;
-            $property->setValue($values);
-        } else {
-            // new item!
-        }
+        $upload = $forms['file']->getData();
+        $file = File::createFromUploadedFile($upload);
+        $property->setValue([$file]);
     }
 }

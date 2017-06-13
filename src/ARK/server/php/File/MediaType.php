@@ -40,14 +40,15 @@ class MediaType
     private static $extensions = null;
     protected $mediatype = null;
 
-    public function __construct(/*string*/ $type = DEFAULT_TYPE)
+    public function __construct(/*string*/ $type = self::DEFAULT_TYPE)
     {
         if (self::isValidMediaType($type)) {
             $this->mediatype = $type;
         } elseif (self::isValidExtension($type)) {
             $this->mediatype = self::findType($type);
+        } else {
+            $this->mediatype = self::DEFAULT_TYPE;
         }
-        $this->mediatype = DEFAULT_TYPE;
     }
 
     public function mediaType()

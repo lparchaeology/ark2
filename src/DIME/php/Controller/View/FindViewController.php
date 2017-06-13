@@ -61,9 +61,6 @@ class FindViewController extends DimeFormController
     {
         $data = $form->getData();
         $find = $data['find'];
-        // FIXME!!!
-        //$find->property('image')->setValue(null);
-        dump($find->property('image'));
         ORM::persist($find);
         if (isset($data['actions'])) {
             $action = $data['actions'];
@@ -72,8 +69,6 @@ class FindViewController extends DimeFormController
         }
         ORM::flush($find);
         Service::view()->addSuccessFlash('dime.find.update.success');
-        return Service::redirectPath($redirect, [
-            'itemSlug' => $find->id()
-        ]);
+        return Service::redirectPath($redirect, ['itemSlug' => $find->id()]);
     }
 }

@@ -41,6 +41,6 @@ class ImageController
     {
         // TODO Wrap in a nice neat class or Service call
         $file = ORM::find(Image::class, $image);
-        return Service::imageResponse($file->filepath(), $request->query->all());
+        return Service::imageResponse($file->path(), $request->query->all());
     }
 }

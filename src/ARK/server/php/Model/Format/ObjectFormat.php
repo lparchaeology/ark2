@@ -81,6 +81,9 @@ class ObjectFormat extends Format
         foreach ($this->attributes as $attribute) {
             $data[$attribute->name()] = $properties->get($attribute->name())->value();
         }
+        if ($this->entity) {
+            $data = $this->entity::fromArray($data);
+        }
         if ($data == $this->emptyValue()) {
             return null;
         }
@@ -112,6 +115,9 @@ class ObjectFormat extends Format
             $fragment = Fragment::createFromAttribute($attribute);
             $fragment->setValue('');
             $fragments->add($fragment);
+            if ($this->entity && $datum instanceof $this->entity) {
+                $datum = $this->entity::toArray($datum);
+            }
             if (!is_array($datum)) {
                 return;
             }

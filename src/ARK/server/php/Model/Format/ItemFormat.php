@@ -33,10 +33,12 @@ namespace ARK\Model\Format;
 use ARK\Model\Format;
 use ARK\Model\Module;
 use ARK\Model\Fragment;
+use ARK\Model\Item;
 use ARK\Model\LocalText;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
+use ARK\Vocabulary\Vocabulary;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class ItemFormat extends Format
@@ -65,6 +67,15 @@ class ItemFormat extends Format
         }
         $module = ORM::find(Module::class, $fragment->parameter());
         return ORM::find($module->classname(), $fragment->value());
+    }
+
+    protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null)
+    {
+        if ($data instanceof Item) {
+            $fragment->setValue($data->id(), $data->schema()->module()->name());
+        } elseif (is_array($data)) {
+            $fragment->setValue($data['item'], $data['module']);
+        }
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
