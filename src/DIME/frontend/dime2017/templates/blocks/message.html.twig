@@ -39,6 +39,20 @@ window.iteminitial = "";
 
 {% endif %}
 
+{# this should be using real data #}
+
+window.modules = {
+        "find" : { 
+            "translations" : {
+                "{{ app.locale }}" : "{{ "find" | translate }}"
+                },
+            "paths" : {
+                "en" : "finds",
+                "da" : "fund"
+                }
+            }
+}
+
 </script>
 
 <div class="dime-messages"></div>

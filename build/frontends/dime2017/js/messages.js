@@ -91,8 +91,8 @@ var getMessage = function(id) {
           })
           .done(function(response){
               thisRow.data("message").find('.message-body').html(message_vocabulary["dime.find.event."+response.data.attributes.type]);
-              console.log(response.data.attributes.subject.module);
-              var subjectitem = $('<a href = "/dime/fund/'+response.data.attributes.subject.item+'"><span class="glyphicon glyphicon-file"></span></a>')
+              console.log(applocale);
+              var subjectitem = $('<a href = "/dime/'+window.modules[response.data.attributes.subject.module].paths[applocale]+'/'+response.data.attributes.subject.item+'"><span class="glyphicon glyphicon-file"></span></a>')
               subjectitem.appendTo(thisRow.data("message").find('.message-item'));
           });
 

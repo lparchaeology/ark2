@@ -9,6 +9,7 @@
 
 .select2-container--default .select2-selection--single,
 .form-group input[type="text"],
+.form-group input[type="password"],
 .form-group input[type="email"] {
     border: 1px solid black;
     border-radius: 10px;
@@ -29,6 +30,7 @@
     overflow:hidden;
 }
 
+.form-group input[type="password"],
 .form-group input[type=text] {
     width: 50%;
     max-width:20em;
@@ -39,8 +41,21 @@
     max-width:30em;
 }
 
+.form-group textarea {
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.form-group .kv-fileinput-caption {
+    border: 1px solid black;
+    border-radius: 10px;
+    height: 1.6em;
+    padding: 0 10px;
+}
+
 @media (max-width: $break-small){
    .form-group input[type="email"],
+   .form-group input[type="password"],
    .form-group input[type=text] {
         width: 100%;
     } 
@@ -50,9 +65,10 @@
     .form-horizontal .control-label {
         margin-top:0;
     }
-   .form-group input[type="email"],
-   .form-group input[type=text] {
-    width: 100%;
+    .form-group input[type="email"],
+    .form-group input[type="password"],
+    .form-group input[type=text] {
+        width: 100%;
     } 
 }
 
