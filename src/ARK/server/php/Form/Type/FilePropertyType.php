@@ -30,25 +30,55 @@
 
 namespace ARK\Form\Type;
 
-use ARK\Service;
+use ARK\File\Image;
 use ARK\Form\Type\AbstractPropertyType;
-use ARK\Form\Type\EventType;
-use ARK\Form\Type\LocalTextType;
+use ARK\Model\Property;
+use ARK\ORM\ORM;
+use ARK\Service;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class FilePropertyType extends ItemPropertyType
+class FilePropertyType extends AbstractPropertyType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $field = $options['state']['field'];
+        $format = $field->attribute()->format();
+        $builder->add('file', FileType::class, []);
+        $builder->add('filename', HiddenType::class, []);
+        $builder->add('item', HiddenType::class, []);
+        $builder->add('module', HiddenType::class, []);
         $builder->setDataMapper($this);
+    }
+
+    protected function options()
+    {
+        return [
+            'compound' => true,
+            'display' => null,
+        ];
     }
 
     public function mapDataToForms($property, $forms)
     {
-        parent::mapDataToForms($property, $forms);
+        if (!$property instanceof Property) {
+            return;
+        }
+        dump($property);
+        $file = $this->value($property, $forms);
+        dump($file);
+        $forms = iterator_to_array($forms);
+        if ($file instanceof Item) {
+            $forms['filename']->setData($file->name());
+            $forms['item']->setData($file->id());
+            $forms['module']->setData($file->schema()->module()->name());
+        } elseif (isset($file['item'])) {
+            $forms['item']->setData($file['item']);
+            $forms['module']->setData($file['module']);
+        } else {
+            $forms['module']->setData('file');
+        }
     }
 
     public function mapFormsToData($forms, &$property)
@@ -57,7 +87,34 @@ class FilePropertyType extends ItemPropertyType
             return;
         }
         $forms = iterator_to_array($forms);
-        $forms['avatar']->getData()->move($dir, $someNewFilename);
-        $property->setValue($values);
+        dump($forms);
+        dump($property);
+        $file = $forms['file']->getData();
+        dump($file);
+        if ($file->isValid()) {
+            $item = new Image();
+            ORM::persist($item);
+            $item->setMediatype($file->getMimetype());
+            $stream = fopen($file->getRealPath(), 'r+');
+            dump($item);
+            dump($item->filepath());
+            Service::filesystem()->writeStream($item->filepath(), $stream);
+            fclose($stream);
+            $property->setValue($item);
+            dump($item);
+            dump($property);
+        }
+        return;
+        //$file->move($dir, $someNewFilename);
+        //$module = $forms['module']->getData();
+        //$item = $forms['item']->getData();
+        if ($module && $item) {
+            // TODO Check file unchanged else delete old and insert new
+            $values['module'] = $module;
+            $values['item'] = $item;
+            $property->setValue($values);
+        } else {
+            // new item!
+        }
     }
 }

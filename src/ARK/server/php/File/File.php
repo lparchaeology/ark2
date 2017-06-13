@@ -11,6 +11,7 @@ namespace ARK\File;
 use ARK\File\MediaType;
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class File implements Item
 {
@@ -24,6 +25,9 @@ class File implements Item
     public function __construct($schema = 'core.file')
     {
         $this->construct($schema);
+        $this->current = new FileVersion($this);
+        $this->sequence = $this->current->sequence();
+        $this->versions = new ArrayCollection([$this->current]);
     }
 
     protected function init()
@@ -31,12 +35,12 @@ class File implements Item
         if ($this->versions === null) {
             $this->versions = $this->property('versions')->serialize();
         }
-        if ($this->current === null) {
+        if ($this->current === null && $this->versions !== null) {
             $seq = -1;
             foreach ($this->versions as $version) {
-                if ($version['sequence'] > $seq) {
+                if ($version->sequence() > $seq) {
                     $this->current = $version;
-                    $this->sequence = $version['sequence'];
+                    $this->sequence = $version->sequence();
                 }
             }
         }
@@ -47,7 +51,7 @@ class File implements Item
         $this->init();
         if ($this->filepath === null) {
             $token = floor(intval($this->id()) / 1000) * 1000;
-            $suffix = MediaType::findDefaultExtension($this->mediatype()->name());
+            $suffix = MediaType::findDefaultExtension($this->mediatype());
             $this->filepath = $this->type().'/'.$token.'/'.$this->id().'.'.$this->sequence.'.'.$suffix;
         }
         return $this->filepath;
@@ -103,5 +107,10 @@ class File implements Item
     public function mediatype()
     {
         return $this->property('mediatype')->value();
+    }
+
+    public function setMediatype($value)
+    {
+        return $this->property('mediatype')->setValue($value);
     }
 }

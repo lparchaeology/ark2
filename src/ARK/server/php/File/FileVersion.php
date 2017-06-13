@@ -53,7 +53,7 @@ class FileVersion extends FileHandler
     public function __construct(File $file, DateTime $created = null, $version = null)
     {
         $this->file = $file;
-        $this->suffix = $file->suffix();
+        //$this->suffix = $file->suffix();
         //TODO Check is UTC!
         if (!$created) {
             $created = ARK::timestamp();
@@ -61,8 +61,8 @@ class FileVersion extends FileHandler
         $this->created = $created;
         $this->modified = $created;
         $this->version = ($version ? $version : $created->format('YmdHis'));
-        $filepath = Service::filesystem()->dataPath().'/'.$file->mediaPath().'.'.$this->version.$file->suffix();
-        parent::__construct(Service::filesystem(), $filepath);
+        //$filepath = Service::filesystem()->dataPath().'/'.$file->mediaPath().'.'.$this->version.$file->suffix();
+        parent::__construct(Service::filesystem(), $file->filepath());
     }
 
     public function originalName()

@@ -62,7 +62,8 @@ class FindViewController extends DimeFormController
         $data = $form->getData();
         $find = $data['find'];
         // FIXME!!!
-        $find->property('image')->setValue(null);
+        //$find->property('image')->setValue(null);
+        dump($find->property('image'));
         ORM::persist($find);
         if (isset($data['actions'])) {
             $action = $data['actions'];

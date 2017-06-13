@@ -30,6 +30,7 @@
 
 namespace ARK\Form\Type;
 
+use ARK\Model\Property;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -66,5 +67,9 @@ class ImageCollectionType extends AbstractType implements DataMapperInterface
 
     public function mapFormsToData($forms, &$property)
     {
+        if (!$property instanceof Property) {
+            return;
+        }
+        $forms = iterator_to_array($forms);
     }
 }

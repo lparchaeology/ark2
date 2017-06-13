@@ -67,5 +67,6 @@ class ImagePropertyType extends AbstractPropertyType
         if (!$property instanceof Property) {
             return;
         }
+        $forms = iterator_to_array($forms);
     }
 }
