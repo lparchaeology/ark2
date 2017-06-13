@@ -44,6 +44,7 @@ use ARK\Vocabulary\Vocabulary;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\ButtonTypeInterface;
 use Symfony\Component\Form\SubmitButtonTypeInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -71,6 +72,12 @@ class Widget extends Element
             return $this->formTypeClass;
         }
         return parent::formTypeClass();
+    }
+
+    private function isButton()
+    {
+        return is_subclass_of($this->formTypeClass(), SubmitButtonTypeInterface::class) ||
+            is_subclass_of($this->formTypeClass(), ButtonTypeInterface::class);
     }
 
     public function buildOptions($data, $options = [])
@@ -108,7 +115,7 @@ class Widget extends Element
         unset($options['data']);
         unset($options['forms']);
         unset($options['form']);
-        if (is_subclass_of($this->formTypeClass(), SubmitButtonTypeInterface::class)) {
+        if ($this->isButton()) {
             unset($options['required']);
             unset($options['mapped']);
         }
@@ -118,7 +125,7 @@ class Widget extends Element
 
     public function formData($data, $state)
     {
-        if (is_subclass_of($this->formTypeClass(), SubmitButtonTypeInterface::class)) {
+        if ($this->isButton()) {
             return null;
         }
         $name = $state['name'];

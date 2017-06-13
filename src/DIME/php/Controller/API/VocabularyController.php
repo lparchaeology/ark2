@@ -65,7 +65,7 @@ class VocabularyController
             foreach ($vocabulary->terms() as $term) {
                 $data['terms'][$term->name()] = $this->serializeTerm($term);
             }
-            $data['transitions'] = $vocabulary->transitions();
+            //$data['transitions'] = $vocabulary->transitions();
         } catch (Exception $e) {
             $data['error']['code'][$e->getCode()];
             $data['error']['message'][$e->getMessage()];
@@ -78,18 +78,21 @@ class VocabularyController
         $data['name'] = $term->name();
         $data['alias'] = $term->alias();
         $data['default'] = $term->isDefault();
-        $data['root'] = $term->root();
+        $data['root'] = $term->isRoot();
+        $data['parameters'] = [];
         foreach ($term->parameters() as $parameter) {
             $data['parameters'][$parameter->name()]["type"] = $parameter->type();
             $data['parameters'][$parameter->name()]["value"] = $parameter->value();
         }
+        $data['related'] = [];
         foreach ($term->related() as $related) {
-            $data['related'][] = $this->serializeTerm($related);
+            $data['related']['from'] = $related->fromTerm()->name();
+            $data['related']['relation'] = $related->type();
+            $data['related']['to'] = $related->toTerm()->name();
         }
-        if ($vocabulary->type() == 'taxonomy') {
-            foreach ($term->descendents() as $descendent) {
-                $data['descendents'][] = $this->serializeTerm($descendent);
-            }
+        $data['descendents'] = [];
+        foreach ($term->descendents() as $descendent) {
+            $data['descendents'][] = $descendent->name();
         }
         return $data;
     }

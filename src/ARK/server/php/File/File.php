@@ -82,7 +82,6 @@ abstract class File implements Item
     {
         if ($this->versions === null) {
             $this->versions = $this->property('versions')->value();
-            dump($this->versions);
         }
         return $this->versions;
     }
