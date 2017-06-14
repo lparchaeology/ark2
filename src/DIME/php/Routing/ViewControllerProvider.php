@@ -118,7 +118,9 @@ class ViewControllerProvider implements ControllerProviderInterface
             ->bind('finds.list');
 
         // Home routes
-        $controllers->get("/$home/$profile", 'DIME\Controller\View\ProfilePageController')->bind('home.profile');
+        $controllers->match("/$home/$profile", 'DIME\Controller\View\ProfilePageController')
+            ->method('GET|POST')
+            ->bind('home.profile');
         $controllers->get("/$home/$messages", 'DIME\Controller\View\MessagePageController')->bind('home.messages');
         $controllers->get("/$home", 'DIME\Controller\View\HomePageController')->bind('home');
         $controllers->get('/', 'DIME\Controller\View\FrontPageController')->bind('front');

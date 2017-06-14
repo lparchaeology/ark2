@@ -122,6 +122,11 @@ class Security
         return $this->encoder()->encodePassword($plainPassword, $salt);
     }
 
+    public function checkPassword(User $user, $plainPassword)
+    {
+        return $this->encoder()->isPasswordValid($user->password(), $plainPassword, $user->getSalt());
+    }
+
     public function validatePassword($plainPassword)
     {
         $errors = $this->app['password.validate']->validate($plainPassword, $this->app['password.validator.constraint']);

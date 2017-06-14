@@ -42,7 +42,7 @@ class RepeatedPasswordType extends AbstractType
             'type' => PasswordType::class,
             'invalid_message' => 'core.user.password.match',
             'options' => array('attr' => array('class' => 'password-field')),
-            'first_options'  => array('label' => 'core.user.password'),
+            'first_options'  => array('label' => 'core.user.password.set'),
             'second_options' => array('label' => 'core.user.password.repeat'),
         ]);
     }

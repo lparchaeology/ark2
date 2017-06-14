@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 14, 2017 at 08:55 AM
+-- Generation Time: Jun 14, 2017 at 11:54 AM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -983,6 +983,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('core.actor.type.museum', 'vocabulary', 0, 0),
 ('core.actor.type.person', 'vocabulary', 0, 0),
 ('core.actor.visibility', 'core', 0, 0),
+('core.button.change', 'dime', 0, 0),
 ('core.button.save', 'core', 0, 0),
 ('core.button.search', 'core', 0, 0),
 ('core.button.send', 'core', 0, 0),
@@ -1074,7 +1075,12 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('core.user.email.repeat', 'core', 0, 0),
 ('core.user.login', 'core', 0, 0),
 ('core.user.password', 'core', 0, 0),
+('core.user.password.change', 'dime', 0, 0),
+('core.user.password.change.success', 'dime', 0, 0),
+('core.user.password.current', 'dime', 0, 0),
+('core.user.password.new', 'dime', 0, 0),
 ('core.user.password.repeat', 'core', 0, 0),
+('core.user.password.set', 'dime', 0, 0),
 ('core.user.register', 'core', 0, 0),
 ('core.user.register.existing', 'core', 0, 0),
 ('core.user.register.heading', 'core', 0, 0),
@@ -2073,14 +2079,14 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('language.aramaic', 'vocabulary', 0, 0),
 ('language.aramaic.samaritan', 'vocabulary', 0, 0),
 ('language.araona', 'vocabulary', 0, 0),
-('language.arapaho', 'vocabulary', 0, 0),
+('language.arapaho', 'vocabulary', 0, 0);
+INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
 ('language.arawak', 'vocabulary', 0, 0),
 ('language.armenian', 'vocabulary', 0, 0),
 ('language.aromanian', 'vocabulary', 0, 0),
 ('language.arpitan', 'vocabulary', 0, 0),
 ('language.assamese', 'vocabulary', 0, 0),
-('language.asturian', 'vocabulary', 0, 0);
-INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('language.asturian', 'vocabulary', 0, 0),
 ('language.asu', 'vocabulary', 0, 0),
 ('language.atsam', 'vocabulary', 0, 0),
 ('language.avaric', 'vocabulary', 0, 0),
@@ -3517,6 +3523,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'core.actor.type.museum', 'default', 'Museum', NULL),
 ('en', 'core.actor.type.person', 'default', 'dime.actor.type.person', NULL),
 ('en', 'core.actor.visibility', 'default', 'Privacy', ''),
+('en', 'core.button.change', 'default', 'Change', ''),
 ('en', 'core.button.save', 'default', 'Save', NULL),
 ('en', 'core.button.search', 'default', 'Search', NULL),
 ('en', 'core.button.send', 'default', 'Send', ''),
@@ -3553,7 +3560,12 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'core.user.email.repeat', 'default', 'Repeat Email', ''),
 ('en', 'core.user.login', 'default', 'Login', ''),
 ('en', 'core.user.password', 'default', 'Password', ''),
+('en', 'core.user.password.change', 'default', 'Change Password', ''),
+('en', 'core.user.password.change.success', 'default', 'You have successfully changed your password.', ''),
+('en', 'core.user.password.current', 'default', 'Current Password', ''),
+('en', 'core.user.password.new', 'default', 'New Password', ''),
 ('en', 'core.user.password.repeat', 'default', 'Repeat Password', ''),
+('en', 'core.user.password.set', 'default', 'Set Password', ''),
 ('en', 'core.user.register', 'default', 'Register', ''),
 ('en', 'core.user.register.existing', 'default', 'Already have an account?', ''),
 ('en', 'core.user.register.heading', 'default', 'Register as a new user.', ''),
@@ -4172,15 +4184,15 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.kommune.egedal', 'default', 'Egedal', NULL),
 ('en', 'dime.kommune.egedal', 'official', 'Egedal Municipality', NULL),
 ('en', 'dime.kommune.esbjerg', 'default', 'Esbjerg', NULL),
-('en', 'dime.kommune.esbjerg', 'official', 'Esbjerg Municipality', NULL),
+('en', 'dime.kommune.esbjerg', 'official', 'Esbjerg Municipality', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'dime.kommune.faaborgmidtfyn', 'default', 'Faaborg-Midtfyn', NULL),
 ('en', 'dime.kommune.faaborgmidtfyn', 'official', 'Faaborg-Midtfyn Municipality', NULL),
 ('en', 'dime.kommune.fano', 'default', 'Fanø', NULL),
 ('en', 'dime.kommune.fano', 'official', 'Fanø Municipality', NULL),
 ('en', 'dime.kommune.favrskov', 'default', 'Favrskov', NULL),
 ('en', 'dime.kommune.favrskov', 'official', 'Favrskov Municipality', NULL),
-('en', 'dime.kommune.faxe', 'default', 'Faxe', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.kommune.faxe', 'default', 'Faxe', NULL),
 ('en', 'dime.kommune.faxe', 'official', 'Faxe Municipality', NULL),
 ('en', 'dime.kommune.fredensborg', 'default', 'Fredensborg', NULL),
 ('en', 'dime.kommune.fredensborg', 'official', 'Fredensborg Municipality', NULL),
@@ -5009,15 +5021,15 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'language.sorbian.lower', 'default', 'Lower Sorbian', NULL),
 ('en', 'language.sorbian.upper', 'default', 'Upper Sorbian', NULL),
 ('en', 'language.sotho.northern', 'default', 'Northern Sotho', NULL),
-('en', 'language.sotho.southern', 'default', 'Southern Sotho', NULL),
+('en', 'language.sotho.southern', 'default', 'Southern Sotho', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'language.southern kurdish', 'default', 'Southern Kurdish', NULL),
 ('en', 'language.spanish', 'default', 'Spanish', NULL),
 ('en', 'language.spanish.european', 'default', 'European Spanish', NULL),
 ('en', 'Language.spanish.latinamerican', 'default', 'Latin American Spanish', NULL),
 ('en', 'language.spanish.mexican', 'default', 'Mexican Spanish', NULL),
 ('en', 'language.sukuma', 'default', 'Sukuma', NULL),
-('en', 'language.sumerian', 'default', 'Sumerian', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'language.sumerian', 'default', 'Sumerian', NULL),
 ('en', 'language.sundanese', 'default', 'Sundanese', NULL),
 ('en', 'language.susu', 'default', 'Susu', NULL),
 ('en', 'language.swahili', 'default', 'Swahili', NULL),
@@ -5257,8 +5269,6 @@ CREATE TABLE `ark_view_element` (
 --
 
 INSERT INTO `ark_view_element` (`element`, `type`, `enabled`, `deprecated`, `keyword`) VALUES
-('_password', 'widget', 1, 0, 'core.user.password'),
-('_username', 'widget', 1, 0, 'core.user.username'),
 ('core_actor_address', 'field', 1, 0, NULL),
 ('core_actor_avatar', 'field', 1, 0, NULL),
 ('core_actor_biography', 'field', 1, 0, NULL),
@@ -5299,10 +5309,11 @@ INSERT INTO `ark_view_element` (`element`, `type`, `enabled`, `deprecated`, `key
 ('core_page_view', 'grid', 1, 0, NULL),
 ('core_user_actor', 'grid', 1, 0, NULL),
 ('core_user_credentials', 'grid', 1, 0, NULL),
-('core_user_email', 'widget', 1, 0, 'core.user.email'),
+('core_user_email_set', 'widget', 1, 0, 'core.user.email'),
 ('core_user_login', 'grid', 1, 0, NULL),
 ('core_user_password', 'widget', 1, 0, 'core.user.password'),
-('core_user_password_set', 'grid', 1, 0, 'core.user.password'),
+('core_user_password_change', 'grid', 1, 0, 'core.user.password.change'),
+('core_user_password_set', 'widget', 1, 0, 'core.user.password'),
 ('core_user_reset', 'grid', 1, 0, NULL),
 ('core_user_username', 'widget', 1, 0, 'core.user.username'),
 ('core_widget_button', 'widget', 1, 0, NULL),
@@ -5548,14 +5559,15 @@ INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `elemen
 ('core_user_actor', 0, 0, 18, '', 'core_actor_biography', NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('core_user_actor', 0, 0, 20, '', 'core_actor_avatar', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('core_user_credentials', 0, 0, 0, '', 'core_user_username', NULL, NULL, NULL, 1, 1, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('core_user_credentials', 0, 0, 2, '', 'core_user_email', NULL, NULL, NULL, 1, 1, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('core_user_credentials', 0, 0, 4, '', 'core_user_password', NULL, NULL, NULL, 1, 1, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('core_user_login', 0, 0, 0, '', '_username', NULL, NULL, NULL, 1, 1, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('core_user_login', 0, 0, 2, '', '_password', NULL, NULL, NULL, 1, 1, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('core_user_credentials', 0, 0, 2, '', 'core_user_email_set', NULL, NULL, NULL, 1, 1, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('core_user_credentials', 0, 0, 4, '', 'core_user_password_set', NULL, NULL, NULL, 1, 1, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('core_user_login', 0, 0, 0, '', 'core_user_username', NULL, NULL, NULL, 1, 1, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('core_user_login', 0, 0, 2, '', 'core_user_password', NULL, NULL, NULL, 1, 1, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('core_user_login', 0, 0, 4, '', 'core_widget_submit', NULL, NULL, NULL, 1, NULL, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.user.login', NULL),
-('core_user_password_set', 0, 0, 0, '', '_password', NULL, NULL, NULL, 1, 1, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('core_user_password_set', 0, 0, 2, '', 'core_user_password', NULL, NULL, NULL, 1, 1, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('core_user_reset', 0, 0, 0, '', '_username', NULL, NULL, NULL, 1, 1, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('core_user_password_change', 0, 0, 0, '', 'core_user_password', NULL, NULL, NULL, 1, 1, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.user.password.current', NULL),
+('core_user_password_change', 0, 0, 2, '', 'core_user_password_set', NULL, NULL, NULL, 1, 1, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('core_user_password_change', 0, 0, 4, '', 'core_widget_submit', 'save', NULL, NULL, NULL, NULL, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.button.change', NULL),
+('core_user_reset', 0, 0, 0, '', 'core_user_username', NULL, NULL, NULL, 1, 1, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('core_user_reset', 0, 0, 4, '', 'core_widget_submit', 'reset', NULL, NULL, 1, NULL, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.user.reset', NULL),
 ('dime_find_add', 0, 0, 0, '', 'dime_find_event', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_add', 0, 1, 0, '', 'dime_find_artefact', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
@@ -5619,7 +5631,7 @@ INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `elemen
 ('dime_message_page', 0, 1, 0, '', 'core_message_item', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_profile_page', 0, 0, 0, '', 'dime_home_action', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_profile_page', 1, 0, 0, '', 'dime_user_actor', NULL, NULL, NULL, 1, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_profile_page', 1, 1, 0, '', 'core_user_password_set', NULL, NULL, NULL, 1, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_profile_page', 1, 1, 0, '', 'core_user_password_change', NULL, NULL, NULL, 1, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_treasure_claim', 0, 0, 0, '', 'dime_treasure_museum', NULL, NULL, NULL, NULL, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_treasure_claim', 0, 0, 1, '', 'dime_treasure_claimant', NULL, NULL, NULL, NULL, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_treasure_claim', 0, 0, 2, '', 'dime_treasure_find', NULL, NULL, NULL, NULL, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
@@ -5639,6 +5651,7 @@ INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `elemen
 ('dime_treasure_pdf', 0, 0, 2, '', 'dime_treasure_find', NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_treasure_pdf', 0, 0, 3, '', 'dime_treasure_sender', NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_treasure_sender', 0, 0, 4, '', 'core_widget_send', 'send', NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_user_actor', 0, 0, 0, '', 'core_actor_id', NULL, 8, NULL, NULL, 0, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.user.username', NULL),
 ('dime_user_actor', 0, 0, 2, '', 'core_actor_fullname', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_user_actor', 0, 0, 4, '', 'core_actor_shortname', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_user_actor', 0, 0, 6, '', 'core_actor_initials', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
@@ -5648,7 +5661,8 @@ INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `elemen
 ('dime_user_actor', 0, 0, 14, '', 'core_actor_visibility', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_user_actor', 0, 0, 16, '', 'core_actor_license', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_user_actor', 0, 0, 18, '', 'core_actor_biography', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_user_actor', 0, 1, 0, '', 'core_actor_avatar', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_user_actor', 0, 0, 20, '', 'core_widget_submit', 'save', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL),
+('dime_user_actor', 0, 1, 2, '', 'core_actor_avatar', NULL, 4, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_user_register', 0, 0, 0, '', 'core_user_credentials', NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_user_register', 0, 0, 2, '', 'core_user_actor', NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_user_register', 0, 0, 4, '', 'dime_user_role', NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
@@ -5691,7 +5705,7 @@ INSERT INTO `ark_view_layout` (`element`, `schma`, `item_type`, `label`, `requir
 ('core_user_actor', 'core.actor', 'person', NULL, NULL, 0, 'actor', NULL, NULL, 'edit', NULL),
 ('core_user_credentials', NULL, NULL, NULL, NULL, 0, 'credentials', NULL, NULL, 'edit', NULL),
 ('core_user_login', NULL, NULL, NULL, NULL, 1, NULL, 'POST', 'user.check', 'edit', 'user/login.html.twig'),
-('core_user_password_set', NULL, NULL, NULL, NULL, 1, 'password_set', NULL, NULL, NULL, NULL),
+('core_user_password_change', NULL, NULL, NULL, NULL, 1, 'password_change', NULL, NULL, NULL, NULL),
 ('core_user_reset', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, 'edit', 'user/reset.html.twig'),
 ('dime_find_add', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_apply', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
@@ -5879,11 +5893,10 @@ CREATE TABLE `ark_view_widget` (
 --
 
 INSERT INTO `ark_view_widget` (`element`, `mode`, `name`, `label`, `vocabulary`, `template`, `form_type_class`, `form_options`) VALUES
-('_password', 'edit', '_password', 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\PasswordType', ''),
-('_username', 'edit', '_username', 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', ''),
-('core_user_email', 'edit', 'email', 1, NULL, NULL, 'ARK\\Form\\Type\\RepeatedEmailType', ''),
-('core_user_password', 'edit', 'password', 1, NULL, NULL, 'ARK\\Form\\Type\\RepeatedPasswordType', ''),
-('core_user_username', 'edit', 'username', 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', ''),
+('core_user_email_set', 'edit', 'email', 1, NULL, NULL, 'ARK\\Form\\Type\\RepeatedEmailType', ''),
+('core_user_password', 'edit', '_password', 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\PasswordType', ''),
+('core_user_password_set', 'edit', 'password', 1, NULL, NULL, 'ARK\\Form\\Type\\RepeatedPasswordType', ''),
+('core_user_username', 'edit', '_username', 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', ''),
 ('core_widget_button', 'edit', 'button', 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', ''),
 ('core_widget_checkbox', 'edit', NULL, 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', ''),
 ('core_widget_comments', 'edit', 'comments', 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', ''),
@@ -8508,6 +8521,7 @@ CREATE TABLE `ark_workflow_grant` (
 
 INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('admin', 'core.actor.read'),
+('admin', 'core.actor.update'),
 ('admin', 'core.message.read'),
 ('admin', 'core.message.update'),
 ('admin', 'dime.find.create'),
@@ -8535,12 +8549,15 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('anon', 'core.user.reset'),
 ('anon', 'dime.find.read'),
 ('appraiser', 'core.actor.read'),
+('appraiser', 'core.actor.update'),
 ('appraiser', 'core.message.read'),
 ('appraiser', 'core.message.update'),
 ('curator', 'core.actor.read'),
+('curator', 'core.actor.update'),
 ('curator', 'core.message.read'),
 ('curator', 'core.message.update'),
 ('detectorist', 'core.actor.read'),
+('detectorist', 'core.actor.update'),
 ('detectorist', 'core.message.read'),
 ('detectorist', 'core.message.update'),
 ('detectorist', 'dime.find.read'),
@@ -8580,6 +8597,7 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('registrar', 'dime.find.update.process'),
 ('registrar', 'dime.find.update.treasure'),
 ('researcher', 'core.actor.read'),
+('researcher', 'core.actor.update'),
 ('researcher', 'core.file.read'),
 ('researcher', 'core.message.read'),
 ('researcher', 'core.message.update'),

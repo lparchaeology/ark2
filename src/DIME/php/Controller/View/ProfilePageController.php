@@ -63,4 +63,32 @@ class ProfilePageController extends DimeFormController
         $data['user'] = $user;
         return $data;
     }
+
+    public function processForm(Request $request, $form, $redirect)
+    {
+        $submitted = $form->getConfig()->getName();
+        if ($submitted == 'password_change') {
+            dump($form);
+            $data = $form->getData();
+            $user = Service::security()->user();
+            dump($data);
+            dump($data['_password']);
+            dump($data['password']);
+            if (Service::security()->checkPassword($user, $data['_password'])) {
+                $user->setPassword($data['password']);
+                ORM::persist($user);
+                ORM::flush($user);
+                Service::view()->addSuccessFlash('core.user.password.change.success');
+            } else {
+                Service::view()->addErrorFlash('core.user.password.incorrect');
+            }
+        }
+        if ($submitted == 'actor') {
+            $actor = $form->getData();
+            ORM::persist($actor);
+            ORM::flush($actor);
+            Service::view()->addSuccessFlash('dime.user.update.success');
+        }
+        return Service::redirectPath($redirect);
+    }
 }

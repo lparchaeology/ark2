@@ -57,6 +57,9 @@ class SimplePropertyType extends AbstractPropertyType
     {
         // TODO Find correct way for Items/objects
         $forms = iterator_to_array($forms);
+        if (is_object($data)) {
+            return;
+        }
         foreach ($forms as $key => $form) {
             $data[$key] = $form->getData();
             if ($data[$key] instanceof Property) {

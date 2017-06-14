@@ -81,6 +81,15 @@ class Grid extends Layout
         return $this->grid[$row][$col];
     }
 
+    public function columnWidth($row, $col)
+    {
+        if (!isset($this->grid[$row][$col])) {
+            return null;
+        }
+        reset($this->grid[$row][$col]);
+        return current($this->grid[$row][$col])->width();
+    }
+
     public static function loadMetadata(ClassMetadata $metadata)
     {
         self::layoutMetadata($metadata);

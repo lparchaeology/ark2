@@ -19,8 +19,9 @@
         {% endif %}
         {% set rowlength = row | length %}
         {% for cdx, col in row %}
-            {# TODO: Make this table driven from GridLayout object! #}
-            {% if rowlength > 12 %}
+            {% if layout.columnWidth(rdx, cdx) %}
+                <div class="col-md-{{- layout.columnWidth(rdx, cdx) -}}" >
+            {% elseif rowlength > 12 %}
                 <div class="col-md-12">
             {% elseif rowlength > 6 %}
                 <div class="col-md-1">

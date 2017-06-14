@@ -82,7 +82,8 @@ class ObjectFormat extends Format
             $data[$attribute->name()] = $properties->get($attribute->name())->value();
         }
         if ($this->entity) {
-            $data = $this->entity::fromArray($data);
+            // FIXME PHP7 $data = $this->entity::fromArray($data);
+            $data = call_user_func($this->entity.'::fromArray', $data);
         }
         if ($data == $this->emptyValue()) {
             return null;
@@ -116,7 +117,8 @@ class ObjectFormat extends Format
             $fragment->setValue('');
             $fragments->add($fragment);
             if ($this->entity && $datum instanceof $this->entity) {
-                $datum = $this->entity::toArray($datum);
+                // FIXME PHP7 $datum = $this->entity::toArray($datum);
+                $datum = call_user_func($this->entity.'::toArray', $datum);
             }
             if (!is_array($datum)) {
                 return;
