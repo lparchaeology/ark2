@@ -74,6 +74,11 @@ col-sm-4
     {% spaceless %}
      {% set type = type|default('file') %}
      {% set id_array = form.vars.id|split('_') %}
-     <input type="{{ type }}" {{ block('widget_attributes') }} data-existing = "{{ form.parent.vars.data.item.property(id_array[1]).value.id }}"/>
+     
+     {% if form.parent.vars.data.item.property(id_array[1]).value.id is defined %}
+         <input type="{{ type }}" {{ block('widget_attributes') }} data-existing = "{{ form.parent.vars.data.item.property(id_array[1]).value.id }}"/>
+     {% else %}
+         <input type="{{ type }}" {{ block('widget_attributes') }} />
+     {% endif %}
     {% endspaceless %}
 {% endblock file_widget %}
