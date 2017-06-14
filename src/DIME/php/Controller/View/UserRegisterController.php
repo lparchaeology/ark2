@@ -61,7 +61,6 @@ class UserRegisterController extends DimeFormController
     public function processForm(Request $request, $form, $redirect)
     {
         $data = $form->getData();
-        dump($data);
         $credentials = $data['credentials'];
         $role = $data['role']['role'];
         $comments = $data['role']['comments'];
