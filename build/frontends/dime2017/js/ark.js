@@ -20,12 +20,19 @@ $(document).ready(function() {
     });
     
     $("input[type=file]").each(function(){
+        
+        initialPreview = [];
+        
+        var arr = $(this).attr('data-existing').split(',');
+        
+        for (var i = 0, len = arr.length; i < len; i++) {
+            initialPreview.push('<img class="profile-img" class="file-preview-image" src="/dime/img/'+arr[i]+'?p=preview">');
+        }
+        
         $(this).fileinput({
             'showUpload':false,
             'previewFileType':'any',
-            'initialPreview': [
-                '<img class="profile-img" class="file-preview-image" src="/dime/img/'+$(this).attr('data-existing')+'?p=preview">'
-            ],
+            'initialPreview': initialPreview
         });
     })
 
