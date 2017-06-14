@@ -296,3 +296,19 @@ ul.action-select {
 .control-label{
     display:inline-table;
 }
+
+.dime-table.cardViewTable .no-records-found {
+    border: 1px solid transparent;
+    border-radius: 4px;
+    box-shadow: none;
+    width: 100%;
+    min-height: 1em;
+}
+
+.dime-table.thumbViewTable .no-records-found {
+    border: 1px solid transparent;
+    border-radius: 4px;
+    box-shadow: none;
+    width: 100%;
+    min-height: 1em;
+}
