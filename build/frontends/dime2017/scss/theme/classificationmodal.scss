@@ -7,8 +7,9 @@
     margin: 0 0 20px 0;
 }
 
-.dating-modal-container .select2 {
 
+.dating-modal-container .select2 {
+	margin-right: 10px
 }
 
 .dating-modal-container.dime {
@@ -27,6 +28,7 @@
 
 .classification-holder {
     text-align:left;
+    margin: 0 0 20px 20px;
 }
 
 .vis-custom-time.start {
@@ -46,10 +48,17 @@
     border-radius: 10px;
     border: 1px black solid;
     background-color:#fff;
+    padding: 0 5px;
+    cursor:pointer;
 }
 
 .vis-item .vis-item-content {
     padding:0;
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1;
 }
 
 #find_type_term_modal{

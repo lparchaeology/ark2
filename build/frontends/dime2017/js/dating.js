@@ -29,10 +29,9 @@ var initTimeline = function(){
               start = -10000;
           }
           
-          
           items.add({
               id:      period_id,
-              content: period.name,
+              content: $("#find_dating_period").find("option[value="+period.name+"]").html(),
               start:   vis.moment(start, "Y"),
               end:     vis.moment(end, "Y")
             });
@@ -76,8 +75,11 @@ var initTimeline = function(){
               },
           };
       
-      $('#classification-modal-button').on('click',function(){
+      $('#find_classify').attr('data-toggle','modal');
+      
+      $('#find_classify').on('click',function(){
           $(".classification-holder").empty();
+          console.log($('#find_type_term').val());
           $(".classification-holder").append($('#find_type_term').clone().attr('id','find_type_term_modal'));
           $('#find_type_term_modal').attr('style','width:20%');
           $('#find_type_term_modal').val($('#find_type_term').val());
@@ -303,6 +305,11 @@ var initTimeline = function(){
           
          timeline.addCustomTime( start, 'start' );
          timeline.addCustomTime( end, 'end' );
+         
+         $('.vis-item-content').each(function(){
+             $(this).attr('title',$(this).html());
+         })
+         
       });
 };
 

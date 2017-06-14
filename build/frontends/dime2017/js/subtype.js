@@ -177,6 +177,9 @@ window.getYearsFromTarget = function(target){
 }
 
 $(document).ready(function(){
+
+    $('#find_classify').attr('data-toggle','false');
+    
     window.type_id = "find_type_term";
 
     window.subtype_id = "find_classification_subtype";
