@@ -307,7 +307,8 @@ var initTimeline = function(){
          timeline.addCustomTime( end, 'end' );
          
          $('.vis-item-content').each(function(){
-             $(this).attr('title',$(this).html());
+             console.log($(this).html());
+             $(this).attr('title', $(this).html());
          })
          
       });

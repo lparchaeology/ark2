@@ -18,11 +18,16 @@ $(document).ready(function() {
     $('.loginbutton').click(function(){
         $('.sidebar').removeClass('collapse');
     });
-
-    $("input[type=file]").fileinput({
-        'showUpload':true,
-        'previewFileType':'any'
-    });
+    
+    $("input[type=file]").each(function(){
+        $(this).fileinput({
+            'showUpload':false,
+            'previewFileType':'any',
+            'initialPreview': [
+                '<img class="profile-img" class="file-preview-image" src="/dime/img/'+$(this).attr('data-existing')+'?p=preview">'
+            ],
+        });
+    })
 
     //$("date").datetimepicker();
     //$("time").datetimepicker();

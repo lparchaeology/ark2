@@ -208,3 +208,22 @@ input[type=radio]:checked ~ label::before{
     text-transform: uppercase;
     border: 1px black solid;
 }
+
+/* File Uploader */
+
+.file-preview-thumbnails img {
+  display: block;
+  max-width:90%;
+  max-height:90%;
+  width: auto;
+  height: auto;
+}
+
+.krajee-default.file-preview-frame {
+    max-width: 90%;
+    display:block;
+}
+
+.krajee-default.file-preview-frame .kv-file-content {
+    height: inherit;
+}
