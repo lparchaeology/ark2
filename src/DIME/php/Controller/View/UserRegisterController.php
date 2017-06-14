@@ -61,13 +61,14 @@ class UserRegisterController extends DimeFormController
     public function processForm(Request $request, $form, $redirect)
     {
         $data = $form->getData();
+        dump($data);
         $credentials = $data['credentials'];
         $role = $data['role']['role'];
         $comments = $data['role']['comments'];
         $actor = $data['actor'];
-        $actor->setItem($credentials['username']);
+        $actor->setItem($credentials['_username']);
         $user = Service::security()->createUser(
-            $credentials['username'],
+            $credentials['_username'],
             $credentials['email'],
             $credentials['password'],
             $actor->fullname()
