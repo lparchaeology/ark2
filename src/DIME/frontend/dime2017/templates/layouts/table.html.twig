@@ -11,7 +11,7 @@
         class="{{table_class}}"
         data-toggle="table"
         data-classes="{{table_class}}"
-        data-sort-name="{{layout.elements[0].id}}"
+        data-sort-name="id"
         {#data-show-refresh="true"#}
         data-show-toggle="true"
         data-show-columns="true"
@@ -26,8 +26,8 @@
         <thead>
             <tr>
                 <th class="checkedhead" data-field="checked" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
-                {% if data[0] is defined and data[0].hasAttribute('image') %}
-                    <th class="thumbimagehead" data-field="image" data-title="image" data-sortable="false"></th>
+                {% if data[0] is defined and data[0].hasAttribute(state.image) %}
+                    <th class="thumbimagehead" data-field="{{state.image}}" data-title="{{state.image}}" data-sortable="false"></th>
                 {% endif %}
                 {% for field in layout.elements %}
                     {% if state.actor.hasPermission(field.attribute.readPermission) %}
@@ -48,11 +48,14 @@
             {% for item in data %}
                 <tr data-unique-id = "{{ item.id }}" >
                     <td class="not-card-visible"><span class="tablecheckbox glyphicon glyphicon-unchecked"></span></td>
-                    {% if item.hasAttribute('image') %}
+                    {% if item.hasAttribute(state.image) %}
                         <td class="thumbimage">
-                            {% set images = item.property('image').value() %}
-                            {% if images is not empty %}
-                                <img src="{{path('img', {'image': images[0].id}) ~ '?p=thumb'}}" alt='' />
+                            {% set image = item.property(state.image).value() %}
+                            {% if image is not empty %}
+                                {% if item.property(state.image).attribute.hasMultipleOccurrences %}
+                                    {% set image = image[0] %}
+                                {% endif %}
+                                <img src="{{path('img', {'image': image.id}) ~ '?p=thumb'}}" alt='' />
                             {% else %}
                                 <span class="glyphicon glyphicon-picture placeholder-img"></span>
                             {% endif %}

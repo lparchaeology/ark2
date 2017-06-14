@@ -38,29 +38,24 @@ use DIME\DIME;
 use DIME\Controller\View\DimeFormController;
 use Symfony\Component\HttpFoundation\Request;
 
-class ProfilePageController extends DimeFormController
+class UserProfileController extends DimeFormController
 {
-    private $id = null;
-
-    public function __invoke(Request $request, $id = null)
+    public function __invoke(Request $request)
     {
-        return $this->handleRequest($request, 'dime_page_profile', ['actor' => $id]);
+        return $this->handleRequest($request, 'dime_page_user_profile');
+    }
+
+    public function buildState(Request $request)
+    {
+        $state = parent::buildState($request);
+        $state['image'] = 'avatar';
+        return $state;
     }
 
     public function buildData(Request $request, $slugs = [])
     {
-        if ($slugs['actor'] === null) {
-            $actor = Service::workflow()->actor();
-            $user = Service::security()->user();
-        } else {
-            if (!$actor = ORM::find(Actor::class, $slugs['actor'])) {
-                throw new ErrorException(new NotFoundError('ACTOR_NOT_FOUND', 'Actor not found', "Actor ".$slugs['actor']." not found"));
-            }
-            $data['actor'] = $actor;
-            $data['user'] = Service::security()->user();
-        }
-        $data['actor'] = $actor;
-        $data['user'] = $user;
+        $data['actor'] = Service::workflow()->actor();
+        $data['user'] = Service::security()->user();
         return $data;
     }
 

@@ -38,6 +38,8 @@ class ViewControllerProvider implements ControllerProviderInterface
     {
         // HACK for translated routing, replace later with DynamicRouter
         // Module Resources
+        $admin = $app->translate('core.admin', 'resource');
+        $users = $app->translate('core.users', 'resource');
         $finds = $app->translate('dime.find', 'resource');
         $actors = $app->translate('core.actor', 'resource');
         $files = $app->translate('core.file', 'resource');
@@ -45,6 +47,7 @@ class ViewControllerProvider implements ControllerProviderInterface
         $messages = $app->translate('core.message', 'resource');
         $home = $app->translate('dime.home', 'resource');
         $profile = $app->translate('dime.profile', 'resource');
+        $profiles = $app->translate('dime.profiles', 'resource');
         $claim = $app->translate('dime.claim', 'resource');
         // Static pages
         $detector = $app->translate('dime.detector', 'resource');
@@ -60,6 +63,14 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers->post('/api/geo/find', 'DIME\Controller\API\GeoFindController')->bind('api.geo.find');
         $controllers->get('/api/geo/choropleth', 'DIME\Controller\API\ChoroplethController')->bind('api.geo.choropleth');
         $controllers->get("/img/{image}", 'DIME\Controller\API\ImageController')->bind('img');
+
+        // Admin Routes
+        $controllers->match("/$admin/$users", 'DIME\Controller\View\AdminUserController')
+            ->method('GET|POST')
+            ->bind('admin.users');
+        $controllers->match("/$admin", 'DIME\Controller\View\AdminHomeController')
+            ->method('GET')
+            ->bind('admin');
 
         // User Routes
         $paths = $app['ark']['security']['user_paths'][$app['locale']];
@@ -117,8 +128,16 @@ class ViewControllerProvider implements ControllerProviderInterface
             ->method('GET|POST')
             ->bind('finds.list');
 
+        // Profile Routes
+        $controllers->match("/$profiles/{id}", 'DIME\Controller\View\ProfileViewController')
+            ->method('GET')
+            ->bind('profiles.view');
+        $controllers->match("/$profiles", 'DIME\Controller\View\ProfileListController')
+            ->method('GET')
+            ->bind('profiles.list');
+
         // Home routes
-        $controllers->match("/$home/$profile", 'DIME\Controller\View\ProfilePageController')
+        $controllers->match("/$home/$profile", 'DIME\Controller\View\UserProfileController')
             ->method('GET|POST')
             ->bind('home.profile');
         $controllers->get("/$home/$messages", 'DIME\Controller\View\MessagePageController')->bind('home.messages');

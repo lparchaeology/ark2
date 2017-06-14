@@ -72,6 +72,14 @@ abstract class DimeController
                         ["name" => "dime.find.search", "active" => false, "target" => "finds.list"],
                     ],
                 ],
+                [
+                    "name" => "admin.users",
+                    "active" => false,
+                    "role" => "ROLE_ADMIN",
+                    "links" => [
+                        ["name" => "dime.admin.users", "active" => false, "target" => "admin.users"],
+                    ],
+                ],
             ]
         ];
         if ($route) {

@@ -205,6 +205,7 @@ class Page extends Element
         //dump('PAGE : RENDER');
         //dump($context);
         $response = $this->renderResponse($data, $context, $forms);
+        //dump($response);
         Service::view()->clearFlashes();
         return $response;
     }

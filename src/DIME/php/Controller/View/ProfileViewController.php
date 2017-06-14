@@ -27,42 +27,42 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
+
 namespace DIME\Controller\View;
 
+use ARK\Actor\Actor;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Page;
-use ARK\Workflow\Registry;
-use ARK\Actor\Actor;
 use DIME\DIME;
-use DIME\Controller\View\DimeController;
+use DIME\Controller\View\DimeFormController;
+use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
-abstract class DimeFormController extends DimeController
+class ProfileViewController extends DimeFormController
 {
-    public function handleRequest(Request $request, $page, $slugs = [], $redirect = null)
+    public function __invoke(Request $request, $id)
     {
-        $page = ORM::find(Page::class, $page);
-        $data = $this->buildData($request, $slugs);
-        $state = $this->buildState($request);
-        $state['page_config'] = $this->pageConfig($request->attributes->get('_route'));
-        return $page->handleRequest($request, $data, $state, [$this, 'processForm'], $redirect);
-    }
-
-    public function buildData(Request $request, $slugs = [])
-    {
-        return null;
+        return $this->handleRequest($request, 'dime_page_profile', ['actor' => $id]);
     }
 
     public function buildState(Request $request)
     {
-        $state['image'] = 'image';
-        $state['notifications'] = DIME::getUnreadNotifications();
+        $state = parent::buildState($request);
+        $state['image'] = 'avatar';
         return $state;
     }
 
-    public function processForm(Request $request, $form, $redirect)
+    public function buildData(Request $request, $slugs = [])
     {
-        return Service::redirectPath($redirect);
+        $id = $slugs['actor'];
+        if (!$actor = ORM::find(Actor::class, $id)) {
+            throw new ErrorException(new NotFoundError('PROFILE_NOT_FOUND', 'Profile not found', "Profile for user $id not found"));
+        }
+        $data['actor'] = $actor;
+        $items = Service::database()->getActorFinds($actor->id());
+        $finds = ORM::findBy(Find::class, ['item' => $items]);
+        $data['finds'] = $finds;
+        return $data;
     }
 }

@@ -27,42 +27,36 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
+
 namespace DIME\Controller\View;
 
+use ARK\Actor\Person;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Page;
-use ARK\Workflow\Registry;
-use ARK\Actor\Actor;
 use DIME\DIME;
-use DIME\Controller\View\DimeController;
+use DIME\Controller\View\DimeFormController;
 use Symfony\Component\HttpFoundation\Request;
 
-abstract class DimeFormController extends DimeController
+class ProfileListController extends DimeFormController
 {
-    public function handleRequest(Request $request, $page, $slugs = [], $redirect = null)
+    public function __invoke(Request $request)
     {
-        $page = ORM::find(Page::class, $page);
-        $data = $this->buildData($request, $slugs);
-        $state = $this->buildState($request);
-        $state['page_config'] = $this->pageConfig($request->attributes->get('_route'));
-        return $page->handleRequest($request, $data, $state, [$this, 'processForm'], $redirect);
-    }
-
-    public function buildData(Request $request, $slugs = [])
-    {
-        return null;
+        return $this->handleRequest($request, 'dime_page_profile_list');
     }
 
     public function buildState(Request $request)
     {
-        $state['image'] = 'image';
-        $state['notifications'] = DIME::getUnreadNotifications();
+        $state = parent::buildState($request);
+        $state['image'] = 'avatar';
         return $state;
     }
 
-    public function processForm(Request $request, $form, $redirect)
+    public function buildData(Request $request, $slugs = [])
     {
-        return Service::redirectPath($redirect);
+        $actors = ORM::findAll(Person::class);
+        $data['actors'] = $actors;
+        $data['finds'] = [];
+        return $data;
     }
 }
