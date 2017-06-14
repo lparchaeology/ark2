@@ -68,12 +68,8 @@ class ProfilePageController extends DimeFormController
     {
         $submitted = $form->getConfig()->getName();
         if ($submitted == 'password_change') {
-            dump($form);
             $data = $form->getData();
             $user = Service::security()->user();
-            dump($data);
-            dump($data['_password']);
-            dump($data['password']);
             if (Service::security()->checkPassword($user, $data['_password'])) {
                 $user->setPassword($data['password']);
                 ORM::persist($user);
