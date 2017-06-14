@@ -42,9 +42,8 @@ class TranslationServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container)
     {
-        $fallbacks = $container['locale_fallbacks'];
         $container->register(new CoreTranslationServiceProvider());
-        $container['locale_fallbacks'] = $fallbacks;
+        $container['locale_fallbacks'] = $container['ark']['locale']['locales'];
         $container->extend('translator', function ($translator, $container) {
             $translator->addLoader('database', new DatabaseLoader());
             $translator->addLoader('actor', new ActorLoader());

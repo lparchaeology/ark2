@@ -41,7 +41,6 @@ class LocaleServiceProvider implements ServiceProviderInterface
         $container->register(new SilexLocaleServiceProvider());
         $locale = $container['ark']['locale'];
         $container['locale'] = (isset($locale['default']) ? $locale['default'] : 'en');
-        $container['locale_fallbacks'] = (isset($locale['fallbacks']) ? $locale['fallbacks'] : [$container['locale']]);
         date_default_timezone_set(isset($locale['timezone']) ? $locale['timezone'] : 'UTC');
     }
 }
