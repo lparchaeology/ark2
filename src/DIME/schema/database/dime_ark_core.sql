@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 13, 2017 at 09:22 PM
+-- Generation Time: Jun 14, 2017 at 08:55 AM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -1081,6 +1081,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('core.user.register.loggedin', 'core', 0, 0),
 ('core.user.register.login', 'core', 0, 0),
 ('core.user.register.logout', 'core', 0, 0),
+('core.user.reset', 'dime', 0, 0),
 ('core.user.username', 'core', 0, 0),
 ('core.visibility', 'vocabulary', 0, 0),
 ('core.visibility.private', 'vocabulary', 0, 0),
@@ -1413,6 +1414,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.find.add.success', 'dime', 0, 0),
 ('dime.find.artefact', 'dime', 0, 0),
 ('dime.find.classification', 'dime', 0, 0),
+('dime.find.classify', 'dime', 0, 0),
 ('dime.find.condition', 'dime', 0, 0),
 ('dime.find.condition.fragmented', 'vocabulary', 0, 0),
 ('dime.find.condition.modified', 'dime', 0, 0),
@@ -2077,10 +2079,10 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('language.aromanian', 'vocabulary', 0, 0),
 ('language.arpitan', 'vocabulary', 0, 0),
 ('language.assamese', 'vocabulary', 0, 0),
-('language.asturian', 'vocabulary', 0, 0),
-('language.asu', 'vocabulary', 0, 0),
-('language.atsam', 'vocabulary', 0, 0);
+('language.asturian', 'vocabulary', 0, 0);
 INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('language.asu', 'vocabulary', 0, 0),
+('language.atsam', 'vocabulary', 0, 0),
 ('language.avaric', 'vocabulary', 0, 0),
 ('language.avestan', 'vocabulary', 0, 0),
 ('language.awadhi', 'vocabulary', 0, 0),
@@ -3558,6 +3560,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'core.user.register.loggedin', 'default', 'Hello, %name%. You are already registered and signed in.', ''),
 ('en', 'core.user.register.login', 'default', 'Sign in here.', ''),
 ('en', 'core.user.register.logout', 'default', 'Sign out.', ''),
+('en', 'core.user.reset', 'default', 'Reset', ''),
 ('en', 'core.user.username', 'default', 'Username', ''),
 ('en', 'core.visibility.private', 'default', 'Private', ''),
 ('en', 'core.visibility.public', 'default', 'Public', ''),
@@ -3845,6 +3848,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.add.success', 'default', 'The find was successfully added.', ''),
 ('en', 'dime.find.artefact', 'default', 'Artefact', ''),
 ('en', 'dime.find.classification', 'default', 'Classification', NULL),
+('en', 'dime.find.classify', 'default', 'Classify', ''),
 ('en', 'dime.find.condition', 'default', 'Condition', NULL),
 ('en', 'dime.find.condition.fragmented', 'default', 'Fragmented', NULL),
 ('en', 'dime.find.condition.modified', 'default', 'Modified', NULL),
@@ -4175,9 +4179,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.kommune.fano', 'official', 'Fanø Municipality', NULL),
 ('en', 'dime.kommune.favrskov', 'default', 'Favrskov', NULL),
 ('en', 'dime.kommune.favrskov', 'official', 'Favrskov Municipality', NULL),
-('en', 'dime.kommune.faxe', 'default', 'Faxe', NULL),
-('en', 'dime.kommune.faxe', 'official', 'Faxe Municipality', NULL);
+('en', 'dime.kommune.faxe', 'default', 'Faxe', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.kommune.faxe', 'official', 'Faxe Municipality', NULL),
 ('en', 'dime.kommune.fredensborg', 'default', 'Fredensborg', NULL),
 ('en', 'dime.kommune.fredensborg', 'official', 'Fredensborg Municipality', NULL),
 ('en', 'dime.kommune.fredericia', 'default', 'Fredericia', NULL),
@@ -5012,9 +5016,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'Language.spanish.latinamerican', 'default', 'Latin American Spanish', NULL),
 ('en', 'language.spanish.mexican', 'default', 'Mexican Spanish', NULL),
 ('en', 'language.sukuma', 'default', 'Sukuma', NULL),
-('en', 'language.sumerian', 'default', 'Sumerian', NULL),
-('en', 'language.sundanese', 'default', 'Sundanese', NULL);
+('en', 'language.sumerian', 'default', 'Sumerian', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'language.sundanese', 'default', 'Sundanese', NULL),
 ('en', 'language.susu', 'default', 'Susu', NULL),
 ('en', 'language.swahili', 'default', 'Swahili', NULL),
 ('en', 'language.swahili.congo', 'default', 'Congo Swahili', NULL),
@@ -5299,7 +5303,9 @@ INSERT INTO `ark_view_element` (`element`, `type`, `enabled`, `deprecated`, `key
 ('core_user_login', 'grid', 1, 0, NULL),
 ('core_user_password', 'widget', 1, 0, 'core.user.password'),
 ('core_user_password_set', 'grid', 1, 0, 'core.user.password'),
+('core_user_reset', 'grid', 1, 0, NULL),
 ('core_user_username', 'widget', 1, 0, 'core.user.username'),
+('core_widget_button', 'widget', 1, 0, NULL),
 ('core_widget_checkbox', 'widget', 1, 0, NULL),
 ('core_widget_comments', 'widget', 1, 0, 'core.widget.comments'),
 ('core_widget_save', 'widget', 1, 0, 'core.button.save'),
@@ -5387,6 +5393,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `enabled`, `deprecated`, `key
 ('dime_user_register', 'grid', 1, 0, NULL),
 ('dime_user_role', 'grid', 1, 0, NULL),
 ('dime_user_terms', 'field', 1, 0, NULL),
+('dime_widget_classify', 'widget', 1, 0, 'dime.find.classify'),
 ('dime_widget_role', 'widget', 1, 0, 'core.workflow.role'),
 ('dime_widget_terms', 'widget', 1, 0, NULL);
 
@@ -5548,17 +5555,20 @@ INSERT INTO `ark_view_grid` (`layout`, `row`, `col`, `seq`, `item_type`, `elemen
 ('core_user_login', 0, 0, 4, '', 'core_widget_submit', NULL, NULL, NULL, 1, NULL, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.user.login', NULL),
 ('core_user_password_set', 0, 0, 0, '', '_password', NULL, NULL, NULL, 1, 1, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('core_user_password_set', 0, 0, 2, '', 'core_user_password', NULL, NULL, NULL, 1, 1, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('core_user_reset', 0, 0, 0, '', '_username', NULL, NULL, NULL, 1, 1, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('core_user_reset', 0, 0, 4, '', 'core_widget_submit', 'reset', NULL, NULL, 1, NULL, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.user.reset', NULL),
 ('dime_find_add', 0, 0, 0, '', 'dime_find_event', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_add', 0, 1, 0, '', 'dime_find_artefact', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_find_artefact', 0, 0, 0, '', 'dime_find_type', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_find_artefact', 0, 0, 2, '', 'dime_find_classification', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_find_artefact', 0, 0, 8, '', 'dime_find_dating', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_find_artefact', 0, 0, 10, '', 'dime_find_material', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_find_artefact', 0, 0, 12, '', 'dime_find_secondary', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_find_artefact', 0, 0, 14, '', 'dime_find_condition', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_find_artefact', 0, 0, 16, '', 'dime_find_weight', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_find_artefact', 0, 0, 18, '', 'dime_find_length', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_find_artefact', 0, 0, 20, '', 'dime_find_description', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_find_artefact', 0, 0, 4, '', 'dime_widget_classify', NULL, NULL, NULL, 1, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, '{\"attr\": {\"data-toggle\": \"modal\", \"data-target\":\"#dating-modal\"}}'),
+('dime_find_artefact', 0, 0, 6, '', 'dime_find_type', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_find_artefact', 0, 0, 8, '', 'dime_find_classification', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_find_artefact', 0, 0, 10, '', 'dime_find_dating', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_find_artefact', 0, 0, 12, '', 'dime_find_material', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_find_artefact', 0, 0, 14, '', 'dime_find_secondary', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_find_artefact', 0, 0, 16, '', 'dime_find_condition', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_find_artefact', 0, 0, 18, '', 'dime_find_weight', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_find_artefact', 0, 0, 20, '', 'dime_find_length', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_find_artefact', 0, 0, 22, '', 'dime_find_description', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_edit', 0, 0, 0, '', 'dime_find_event', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_edit', 0, 1, 0, '', 'dime_find_artefact', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_event', 0, 0, 0, '', 'dime_find_id', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
@@ -5682,6 +5692,7 @@ INSERT INTO `ark_view_layout` (`element`, `schma`, `item_type`, `label`, `requir
 ('core_user_credentials', NULL, NULL, NULL, NULL, 0, 'credentials', NULL, NULL, 'edit', NULL),
 ('core_user_login', NULL, NULL, NULL, NULL, 1, NULL, 'POST', 'user.check', 'edit', 'user/login.html.twig'),
 ('core_user_password_set', NULL, NULL, NULL, NULL, 1, 'password_set', NULL, NULL, NULL, NULL),
+('core_user_reset', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, 'edit', 'user/reset.html.twig'),
 ('dime_find_add', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_apply', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
 ('dime_find_artefact', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL),
@@ -5771,7 +5782,7 @@ INSERT INTO `ark_view_page` (`element`, `mode`, `visibility`, `view`, `edit`, `h
 ('core_page_user_confirm', 'edit', 'public', NULL, NULL, 'dime_site_header', 'dime_site_sidebar', NULL, 'dime_site_footer', NULL),
 ('core_page_user_login', 'edit', 'public', NULL, NULL, 'dime_site_header', 'dime_site_sidebar', 'core_user_login', 'dime_site_footer', NULL),
 ('core_page_user_register', 'edit', 'public', NULL, NULL, 'dime_site_header', 'dime_site_sidebar', 'dime_user_register', 'dime_site_footer', NULL),
-('core_page_user_reset', 'edit', 'public', NULL, NULL, 'dime_site_header', 'dime_site_sidebar', NULL, 'dime_site_footer', NULL),
+('core_page_user_reset', 'edit', 'public', NULL, NULL, 'dime_site_header', 'dime_site_sidebar', 'core_user_reset', 'dime_site_footer', NULL),
 ('dime_page_claim', 'edit', 'restricted', 'dime.find.treasure.claim', 'dime.find.treasure.claim', 'dime_site_header', 'dime_site_sidebar', 'dime_treasure_claim', 'dime_site_footer', NULL),
 ('dime_page_find', 'edit', 'restricted', 'dime.find.read', 'dime.find.update', 'dime_site_header', 'dime_site_sidebar', 'dime_find_view', 'dime_site_footer', NULL),
 ('dime_page_find_list', 'edit', 'public', 'dime.find.read', 'dime.find.update', 'dime_site_header', 'dime_site_sidebar', 'dime_find_search', 'dime_site_footer', NULL),
@@ -5873,6 +5884,7 @@ INSERT INTO `ark_view_widget` (`element`, `mode`, `name`, `label`, `vocabulary`,
 ('core_user_email', 'edit', 'email', 1, NULL, NULL, 'ARK\\Form\\Type\\RepeatedEmailType', ''),
 ('core_user_password', 'edit', 'password', 1, NULL, NULL, 'ARK\\Form\\Type\\RepeatedPasswordType', ''),
 ('core_user_username', 'edit', 'username', 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', ''),
+('core_widget_button', 'edit', 'button', 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', ''),
 ('core_widget_checkbox', 'edit', NULL, 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', ''),
 ('core_widget_comments', 'edit', 'comments', 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', ''),
 ('core_widget_save', 'edit', NULL, 1, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', ''),
@@ -5883,6 +5895,7 @@ INSERT INTO `ark_view_widget` (`element`, `mode`, `name`, `label`, `vocabulary`,
 ('dime_find_filter_municipality', 'edit', 'municipality', 1, 'dime.denmark.municipality', NULL, 'ARK\\Form\\Type\\TermChoiceType', '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
 ('dime_find_filter_period', 'edit', 'period', 1, 'dime.period', NULL, 'ARK\\Form\\Type\\TermChoiceType', '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
 ('dime_find_filter_type', 'edit', 'type', 1, 'dime.find.type', NULL, 'ARK\\Form\\Type\\TermChoiceType', '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
+('dime_widget_classify', 'edit', 'classify', 1, NULL, 'blocks/classification.html.twig', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', ''),
 ('dime_widget_role', 'edit', 'role', 1, 'core.workflow.role', NULL, 'ARK\\Form\\Type\\TermChoiceType', ''),
 ('dime_widget_terms', 'edit', 'terms', 1, 'dime.user.terms', NULL, 'ARK\\Form\\Type\\TermChoiceType', '');
 

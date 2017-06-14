@@ -212,6 +212,12 @@ class Security
         return $user;
     }
 
+    public function resetUser(User $user)
+    {
+        $user->expireCredentials();
+        //$this->sendResetMessage($user);
+    }
+
     protected function getGravatarUrl($email, $size = 80)
     {
         // See https://en.gravatar.com/site/implement/images/ for available options.

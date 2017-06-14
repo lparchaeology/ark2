@@ -43,6 +43,17 @@ class UserResetController extends DimeFormController
 {
     public function __invoke(Request $request)
     {
-        return $this->handleRequest($request, 'core_page_user_reset');
+        return $this->handleRequest($request, 'core_page_user_reset', [], 'front');
+    }
+
+    public function processForm(Request $request, $form, $redirect)
+    {
+        $data = $form->getData();
+        $user = Service::security()->userProvider()->loadUserByUsername($data['_username']);
+        if ($user) {
+        }
+        Service::security()->resetUser($user);
+        Service::view()->addInfoFlash('dime.user.reset.sent');
+        return Service::redirectPath($redirect);
     }
 }
