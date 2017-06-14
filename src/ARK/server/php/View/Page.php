@@ -139,7 +139,9 @@ class Page extends Element
             foreach ($forms as $name => $form) {
                 //dump('CREATE VIEW : '.$name);
                 //dump($form);
-                $context['forms'][$name] = $form->createView();
+                if ($form) {
+                    $context['forms'][$name] = $form->createView();
+                }
                 //dump($context['forms'][$name]);
             }
         }

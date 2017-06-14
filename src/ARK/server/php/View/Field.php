@@ -116,7 +116,7 @@ class Field extends Element
             if ($modus == 'readonly') {
                 return 'readonly';
             }
-            if ($state['actor']->hasPermission($this->attribute->updatePermission()) || $state['sanitise'] == 'redact') {
+            if ($state['sanitise'] == 'redact' || $state['actor']->hasPermission($this->attribute->updatePermission())) {
                 return 'active';
             }
             if ($modus == 'disabled') {
@@ -313,7 +313,7 @@ class Field extends Element
             }
             return 'withhold';
         }
-        return null;
+        return $state['sanitise'];
     }
 
     protected function buildState($state)
