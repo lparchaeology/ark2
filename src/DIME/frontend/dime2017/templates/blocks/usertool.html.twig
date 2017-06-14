@@ -4,7 +4,9 @@
     {% if global.user %}
         <div class="row usertool username">
             <a href="{{ path('home.profile') }}">
-            <img class = "profile-img" src="{{ path('img', {'image': workflow.actor.property('avatar').value.id}) ~ '?p=preview' }}"/>
+                {% if workflow.actor.property('avatar').value %}
+                    <img class = "profile-img" src="{{ path('img', {'image': workflow.actor.property('avatar').value.id}) ~ '?p=preview' }}"/>
+                {% endif %}
                 <span class="usergreeting">
                     {{ 'user.greeting' | trans({ '%name%': global.user.displayName }) }}
                 </span>
