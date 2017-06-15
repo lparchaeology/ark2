@@ -52,11 +52,9 @@ class FormController
 
     public function handleRequest(Request $request, array $state, array $formData, $redirect = null)
     {
-        $data = $this->buildData($request, $state['slugs']);
         $state = $this->buildState($request, $state);
+        $data = $this->buildData($request, $state['slugs']);
         $options = $page->buildOptions($data, ['state' => $state]);
-        $options['state']['actor'] = $actor;
-        $options['state']['mode'] = $page->mode($actor, $item);
         $options = $page->buildOptions($data, $options);
         $layout = $page->content;
         $forms = $layout->buildForms($data, $options);
