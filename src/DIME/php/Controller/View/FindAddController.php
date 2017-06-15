@@ -78,7 +78,7 @@ class FindAddController extends DimeFormController
         ORM::flush($find);
         Service::view()->addSuccessFlash('dime.find.add.success');
         return Service::redirectPath($redirect, [
-            'itemSlug' => $find->id()
+            'id' => $find->id()
         ]);
     }
 }
