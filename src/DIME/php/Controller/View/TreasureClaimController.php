@@ -42,8 +42,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TreasureClaimController extends DimeFormController
 {
+    private $id = null;
+
     public function __invoke(Request $request, $id)
     {
+        $this->id = $id;
         return $this->handleRequest($request, 'dime_page_claim', ['find' => $id]);
     }
 
@@ -61,9 +64,14 @@ class TreasureClaimController extends DimeFormController
     public function processForm(Request $request, $form, $redirect)
     {
         $page = ORM::find(Page::class, 'dime_page_claim');
-        $data = $this->buildData($request);
-        $forms = $page->buildForms('view', $data, []);
-        $context = $page->renderContext('view', $data, [], $forms, $form);
-        return Service::renderPdfResponse('pages/treasureclaimpdf.html.twig', $context, 'danefae.pdf');
+        $data = $this->buildData($request, ['find' => $this->id]);
+        $state = $this->buildState($request);
+        $actor = Service::workflow()->actor();
+        $item = null;
+        $options['state']['actor'] = $actor;
+        $options['state']['mode'] = 'view';
+        $forms = $page->buildForms($data, $options);
+        $context = $page->renderContext($data, ['state' => $options['state']], $forms, $form);
+        return Service::view()->renderPdfResponse('pages/treasureclaimpdf.html.twig', $context, 'danefae.pdf');
     }
 }

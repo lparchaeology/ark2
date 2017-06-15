@@ -230,7 +230,7 @@ class Field extends Element
         }
         $options = $this->formOptionsArray;
         // TODO Nicer way to set js date pickers?
-        if (isset($options['widget']) && $options['widget'] == 'picker') {
+        if ($state['value']['modus'] == 'active' && isset($options['widget']) && $options['widget'] == 'picker') {
             $options['widget'] = 'single_text';
             $options['html5'] = false;
             $picker = $this->attribute()->format()->datatype()->id().'picker';
@@ -239,6 +239,8 @@ class Field extends Element
             } else {
                 $options['attr']['class'] = $picker;
             }
+        } else {
+            unset($options['widget']);
         }
         if ($this->attribute()->hasVocabulary()) {
             $options = $this->vocabularyOptions($this->attribute()->vocabulary(), $options);
