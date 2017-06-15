@@ -30,12 +30,9 @@
 
 namespace DIME\Controller\View;
 
-use ARK\Error\ErrorException;
-use ARK\Http\Error\NotFoundError;
+use ARK\Actor\Person;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\View\Page;
-use DIME\DIME;
 use DIME\Controller\View\DimeFormController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -44,5 +41,40 @@ class AdminUserController extends DimeFormController
     public function __invoke(Request $request)
     {
         return $this->handleRequest($request, 'dime_page_admin_user');
+    }
+    public function buildState(Request $request)
+    {
+        $state = parent::buildState($request);
+        $state['image'] = 'avatar';
+        return $state;
+    }
+
+    public function buildData(Request $request, $slugs = [])
+    {
+        $data['actors'] = ORM::findAll(Person::class);
+        $data['actor'] = Service::workflow()->actor();
+        $data['user'] = Service::security()->user();
+        $data['actions'] = Service::workflow()->actions($data['actor'], $data['actor']);
+        return $data;
+    }
+
+    public function processForm(Request $request, $form, $redirect)
+    {
+        $submitted = $form->getConfig()->getName();
+        if ($submitted == 'password_set') {
+            $data = $form->getData();
+            $user = Service::security()->user();
+            $user->setPassword($data['password']);
+            ORM::persist($user);
+            ORM::flush($user);
+            Service::view()->addSuccessFlash('core.user.password.change.success');
+        }
+        if ($submitted == 'actor') {
+            $actor = $form->getData();
+            ORM::persist($actor);
+            ORM::flush($actor);
+            Service::view()->addSuccessFlash('dime.user.update.success');
+        }
+        return Service::redirectPath($redirect);
     }
 }

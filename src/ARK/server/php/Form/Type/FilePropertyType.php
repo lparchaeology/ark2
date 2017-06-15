@@ -88,11 +88,13 @@ class FilePropertyType extends AbstractPropertyType
         }
         $forms = iterator_to_array($forms);
         $upload = $forms['file']->getData();
-        $file = File::createFromUploadedFile($upload);
         // FIXME handle multiples properly!
-        if ($property->attribute()->hasMultipleOccurrences()) {
-            $file = [$file];
+        if ($upload) {
+            $file = File::createFromUploadedFile($upload);
+            if ($property->attribute()->hasMultipleOccurrences()) {
+                $file = [$file];
+            }
+            $property->setValue($file);
         }
-        $property->setValue($file);
     }
 }

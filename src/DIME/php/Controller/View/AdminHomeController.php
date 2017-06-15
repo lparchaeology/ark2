@@ -39,10 +39,10 @@ use DIME\DIME;
 use DIME\Controller\View\DimeFormController;
 use Symfony\Component\HttpFoundation\Request;
 
-class AdminUsersController extends DimeFormController
+class AdminHomeController extends DimeFormController
 {
     public function __invoke(Request $request)
     {
-        return $this->handleRequest($request, 'dime_page_admin_user');
+        return $this->handleRequest($request, 'dime_page_admin');
     }
 }

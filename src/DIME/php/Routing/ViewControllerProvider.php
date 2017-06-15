@@ -110,10 +110,10 @@ class ViewControllerProvider implements ControllerProviderInterface
             ->bind('news');
 
         // Temp Routes?
-        $controllers->match("/$files/{fileId}", 'DIME\Controller\View\FileController')
+        $controllers->match("/$files/{id}", 'DIME\Controller\View\FileController')
             ->method('GET|POST')
             ->bind('files.view');
-        $controllers->match("/$claim/{itemSlug}", 'DIME\Controller\View\TreasureClaimController')
+        $controllers->match("/$claim/{id}", 'DIME\Controller\View\TreasureClaimController')
             ->method('GET|POST')
             ->bind('treasure.claim');
 
@@ -121,7 +121,7 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers->match("/$finds/add", 'DIME\Controller\View\FindAddController')
             ->method('GET|POST')
             ->bind('finds.add');
-        $controllers->match("/$finds/{itemSlug}", 'DIME\Controller\View\FindViewController')
+        $controllers->match("/$finds/{id}", 'DIME\Controller\View\FindViewController')
             ->method('GET|POST')
             ->bind('finds.view');
         $controllers->match("/$finds", 'DIME\Controller\View\FindListController')

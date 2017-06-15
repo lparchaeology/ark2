@@ -42,9 +42,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TreasureClaimController extends DimeFormController
 {
-    public function __invoke(Request $request, $itemSlug)
+    public function __invoke(Request $request, $id)
     {
-        return $this->handleRequest($request, 'dime_page_claim', ['find' => $itemSlug]);
+        return $this->handleRequest($request, 'dime_page_claim', ['find' => $id]);
     }
 
     public function buildData(Request $request, $slugs = [])

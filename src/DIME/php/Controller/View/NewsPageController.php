@@ -39,9 +39,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class NewsPageController extends DimeFormController
 {
-    public function __invoke(Request $request, $actorSlug = null)
+    public function __invoke(Request $request)
     {
-        return $this->handleRequest($request, 'dime_page_news', ['actor' => $actorSlug]);
+        return $this->handleRequest($request, 'dime_page_news');
     }
 
     public function buildData(Request $request, $slugs = [])

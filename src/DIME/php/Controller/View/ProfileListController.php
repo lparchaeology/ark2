@@ -33,8 +33,6 @@ namespace DIME\Controller\View;
 use ARK\Actor\Person;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\View\Page;
-use DIME\DIME;
 use DIME\Controller\View\DimeFormController;
 use Symfony\Component\HttpFoundation\Request;
 

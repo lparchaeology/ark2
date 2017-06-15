@@ -71,7 +71,7 @@
                     {% endfor %}
                     <td class="gotofind">
                         <span class="cell-label">{{ 'find.gotofind'|trans }}</span>
-                        <a href="{{ path('finds.view', {'itemSlug': item.id}) }}">
+                        <a href="{{ path(state.modules[item.schema.module.name].route, {'id': item.id}) }}">
                             <span class="glyphicon glyphicon-file"></span>
 
                         </a>
@@ -83,6 +83,7 @@
     </table>
 
 </div>
+{#}
 <div id = "thumbModal"></div>
 
 <div id = "chooseAction" class="btn chooseAction">{{ 'dime.chooseaction'|trans }}</div>
@@ -136,3 +137,4 @@ window.itemAvailableActions = {
 console.log({"itemAvailableAction":window.itemAvailableActions,"defaultAvailableActions":window.defaultAvailableActions});
 
 </script>
+#}
