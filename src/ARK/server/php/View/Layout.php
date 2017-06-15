@@ -143,7 +143,7 @@ abstract class Layout extends Element
         if ($this->form) {
             //dump('LAYOUT : BUILD FORMS');
             //dump($options);
-            $builderData = $this->formData($data, $options);
+            $builderData = $this->formData($data, $options['state']);
             $builderOptions = $this->buildOptions($builderData, $options);
             //dump($builderOptions);
             $builder = $this->formBuilder($builderData, $builderOptions, ($this->name ? null : false));
