@@ -159,11 +159,14 @@ class Widget extends Element
             $state['keyword'] = $this->keyword();
         }
         $state['mode'] = $this->displayMode($state['mode']);
+        if ($state['mode'] == 'view' || $this->mode == 'view') {
+            return;
+        }
         $state['widget'] = $this;
         return $state;
     }
 
-    public function buildForm(FormBuilderInterface $builder, $data, $dataKey, $options = [])
+    public function buildForm(FormBuilderInterface $builder, $state, $data, $options = [])
     {
         //dump('BUILD WIDGET : '.$this->formName());
         //dump($this);
@@ -187,15 +190,12 @@ class Widget extends Element
         $builder->add($widgetBuilder);
     }
 
-    public function renderView($data, array $state, $forms = null, $form = null)
+    public function renderView($data, array $state, $form = null)
     {
         //dump('RENDER WIDGET : '.$this->formName());
         //dump($form);
         //dump($state);
         $state = $this->buildState($state);
-        if ($state['mode'] == 'view' || $this->mode == 'view') {
-            return;
-        }
         if ($form) {
             $context = $this->defaultContext();
             $context['state'] = array_replace_recursive($context['state'], $state);

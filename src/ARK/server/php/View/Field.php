@@ -306,18 +306,6 @@ class Field extends Element
         return null;
     }
 
-    protected function sanitise($state)
-    {
-        // TODO Service::workflow()->hasVisibility($actor, $this->attribute())???
-        if (!$state['actor']->hasPermission($this->attribute->readPermission())) {
-            if ($state['sanitise'] == 'redact') {
-                return 'redact';
-            }
-            return 'withhold';
-        }
-        return $state['sanitise'];
-    }
-
     protected function buildState($state)
     {
         if (!isset($state['label'])) {
@@ -339,7 +327,12 @@ class Field extends Element
         if (!isset($state['format']['modus'])) {
             $state['format']['modus'] = $this->formatModus();
         }
-        $state['sanitise'] = $this->sanitise($state);
+        // TODO Service::workflow()->hasVisibility($actor, $this->attribute())???
+        if (!$state['actor']->hasPermission($this->attribute->readPermission())) {
+            if ($state['sanitise'] != 'redact') {
+                $state['sanitise'] = 'withhold';
+            }
+        }
         $state['mode'] = $this->displayMode($state['mode']);
         $state['modus'] = $this->modeToModus($state, ($state['modus'] ?: $this->valueModus()));
         $state['field'] = $this;
@@ -372,7 +365,7 @@ class Field extends Element
         //dump($data);
         //dump($state);
         //dump($form);
-        $state['sanitise'] = $this->sanitise($state);
+        $options['state'] = $this->buildState($options['state']);
         if ($state['sanitise'] == 'withhold') {
             return;
         }

@@ -207,7 +207,7 @@ abstract class Element
         return $options;
     }
 
-    public function buildForm(FormBuilderInterface $builder, $data, $dayaKey, $options = [])
+    public function buildForm(FormBuilderInterface $builder, $data, $state, $options = [])
     {
     }
 
@@ -216,21 +216,33 @@ abstract class Element
         return [];
     }
 
-    protected function formBuilder($data, $options, $name = null)
+    protected function formBuilder($data, $state, $options = [])
     {
-        if ($name === null && isset($options['state']['name'])) {
-            $name = $options['state']['name'];
-        }
-        $name = ($name === false ? null : $this->formName($name));
         return Service::forms()->createNamedBuilder(
-            $name,
+            $state['name'],
             $this->formTypeClass(),
             $data,
             $options
         );
     }
 
-    abstract public function renderView($data, array $state, $forms = null, $form = null);
+    public function renderView($data, array $state, $form = null)
+    {
+        $state = $this->buildState($state);
+        if ($state['mode'] == 'withhold') {
+            return;
+        }
+        if ($form) {
+            $context = $this->viewContext($state, $data, $form);
+            return Service::view()->renderView($this->template(), $context);
+        }
+        return $this->defaultView($data, $state);
+    }
+
+    public function defaultView($data, array $state)
+    {
+        return null;
+    }
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
