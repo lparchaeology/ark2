@@ -83,19 +83,15 @@
     </table>
 
 </div>
-{#}
-<div id = "thumbModal"></div>
-
-<div id = "chooseAction" class="btn chooseAction">{{ 'dime.chooseaction'|trans }}</div>
-<div id = "chooseActionSelectHolder"></div>
 <script>
-
 window.itemkey =
     {% if data[0] is defined %}
         {{ data[0].schema.module.name }};
     {% else %}
         {{null}}
     {% endif %}
+
+
 window.itemlist = [
     {% if data|length > 0 %}
         {% for item in data %}
@@ -105,6 +101,12 @@ window.itemlist = [
             false
      {% endif %}
 ];
+</script>
+{#}
+<div id = "thumbModal"></div>
+
+<div id = "chooseAction" class="btn chooseAction">{{ 'dime.chooseaction'|trans }}</div>
+<div id = "chooseActionSelectHolder"></div>
 
 window.defaultAvailableActions = [
     {% if data[0] is defined %}

@@ -6,12 +6,14 @@ var initTimeline = function(){
   //Create a DataSet (allows two way data-binding)
   var items = new vis.DataSet();
   
+  var all_items = JSON.parse(JSON.stringify(items));
+  
   var query = {"concept":"dime.period"};
   
   for ( period_id in window.periodvocabulary){
           var period = window.periodvocabulary[period_id];
           
-          try {          
+          try {
               if( isNaN(period.parameters.year_end.value) ){
                   throw 'year end is NaN';
               }
@@ -20,7 +22,7 @@ var initTimeline = function(){
               end = new Date().getFullYear();
           }
           
-          try {          
+          try {
               if( isNaN(period.parameters.year_start.value) ){
                   throw 'year end is NaN';
               }
@@ -41,7 +43,7 @@ var initTimeline = function(){
         // order by length
           a.length = a.start-a.end;
           b.length = b.start-b.end;
-        return b.length - a.length;
+        return a.length - b.length;
       }
 
       // Configuration for the Timeline
@@ -50,10 +52,12 @@ var initTimeline = function(){
         editable: false,
         margin: {item: 0},
         zoomMin: 1576800000000,//10 years 1000*60*60*24*365*10 in milliseconds
-        zoomMax: 63120000000000, //15000 years 1000*60*60*24*365*5000 in milliseconds
+        zoomMax: 315700000000000, //75000 years 1000*60*60*24*365*75000 in milliseconds
         showCurrentTime: false,
-        horizontalScroll: true,
-        zoomKey: 'ctrlKey'
+        horizontalScroll: false,
+        zoomKey: 'ctrlKey',
+        start: vis.moment('-0400','Y'),
+        end: vis.moment('2000','Y')
       };
 
       // Create a Timeline
@@ -306,11 +310,39 @@ var initTimeline = function(){
          timeline.addCustomTime( start, 'start' );
          timeline.addCustomTime( end, 'end' );
          
-         $('.vis-item-content').each(function(){
-             console.log($(this).html());
-             $(this).attr('title', $(this).html());
-         })
          
       });
+      
+      $('.vis-tl-zoom-in').on('click', function () { timeline.zoomIn( 0.2); });
+      $('.vis-tl-zoom-out').on('click', function () { timeline.zoomOut( 0.2); });
+      
+      $('.vis-item-content').each(function(){
+          $(this).attr('title', $(this).html());
+      });
+      
+      $('.vis-range').each(function(i,e){
+          var remove = [];
+          if( $(e).width() < 200 ){
+              $(e).hide();
+          } else {
+              $(e).show();
+          }
+      });
+      timeline.redraw();
+      
+      timeline.zoomOut( 0.2);
+      
+      timeline.on('rangechanged', function(){
+          $('.vis-range').each(function(i,e){
+              var remove = [];
+              if( $(e).width() < 200 ){
+                  $(e).hide();
+              } else {
+                  $(e).show();
+              }
+              timeline.redraw();
+          });
+      });
+    
 };
 

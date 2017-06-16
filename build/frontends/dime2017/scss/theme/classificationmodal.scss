@@ -64,3 +64,31 @@
 #find_type_term_modal{
     width:20%
 }
+
+
+.vis-tl-control {
+    background-color: rgba(255,255,255,0.4);
+    border-radius: 5px;
+    position: absolute;
+    z-index: 3;
+    padding: 5px;
+}
+
+.vis-tl-control button {
+    background-color: #000;
+    border-radius: 5px;
+    display: block;
+    color: white;
+    margin: 1px;
+}
+
+.vis-tl-control:focus,
+.vis-tl-control button:focus {
+    outline-color: rgba(255,255,255,.4);
+    background-color: rgba(0, 0, 0, 1);
+}
+
+.vis-tl-control button:hover {
+    background-color: rgba(255, 255, 255, 1);
+    color: rgba(0, 0, 0, 1);
+}
