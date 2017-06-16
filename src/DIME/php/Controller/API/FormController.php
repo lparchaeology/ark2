@@ -50,16 +50,13 @@ class FormController
         return new JsonResponse($data);
     }
 
-    public function handleRequest(Request $request, array $state, array $formData, $redirect = null)
+    public function handleRequest(Request $request, $formId, array $state = [])
     {
         $state = $this->buildState($request, $state);
-        $data = $this->buildData($request, $state['slugs']);
+        $data = $this->buildData($request, $state);
         $options = $page->buildOptions($data, ['state' => $state]);
-        $options = $page->buildOptions($data, $options);
+
         $layout = $page->content;
-        $forms = $layout->buildForms($data, $options);
-
-
         $options['state']['layout'] = $layout;
         if ($layout->label !== null) {
             $options['state']['label'] = $layout->label;
@@ -68,37 +65,31 @@ class FormController
             $options['state']['required'] = $layout->required;
         }
         $data = $layout->formData($data, $options['state']);
-        $options = $layout->buildOptions($data, $options);
-        $builder = $layout->formBuilder($data, $options, ($layout->name ? null : false));
-
-
         $options['state']['mode'] = $layout->displayMode($options['state']['mode']);
-        $data = $layout->formData($data, $options['state']);
-        //dump($data);
-        $options = $layout->buildOptions($data, $options);
         $options['state']['layout'] = $layout;
+        $data = $layout->formData($data, $options['state']);
         if ($layout->label !== null) {
             $options['state']['label'] = $layout->label;
         }
         if ($layout->required === false) {
             $options['state']['required'] = $layout->required;
         }
+
+        $options = $layout->buildOptions($data, $options, $state);
+
+        $builder = $layout->formBuilder($data, $options, ($layout->formName() ? null : false));
+
         foreach ($layout->cells() as $cell) {
-            $cell->buildForm($builder, $data, $dataKey, $options);
+            $cell->buildForm($builder, $data, $options);
         }
 
 
         $form = $builder->getForm();
-        $forms = [$layout->formName() => $form];
-
 
         if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-                if (!$redirect) {
-                    $redirect = $request->attributes->get('_route');
-                }
-                return $this->processForm($request, $posted, $redirect);
+                return $this->processForm($request, $form);
             }
         }
 
@@ -119,8 +110,8 @@ class FormController
         return $state;
     }
 
-    public function processForm(Request $request, $form, $redirect)
+    public function processForm(Request $request, $form)
     {
-        return Service::redirectPath($redirect);
+        return null;
     }
 }

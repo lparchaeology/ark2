@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * ARK Transaction
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,29 +28,23 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Controller\View;
+namespace ARK\Security\Transaction;
 
-use ARK\Error\ErrorException;
-use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\View\Page;
-use DIME\DIME;
-use DIME\Controller\View\DimeFormController;
-use Symfony\Component\HttpFoundation\Request;
+use ARK\Security\User;
 
-class UserResetController extends DimeFormController
+class UserResetTransaction extends Transaction
 {
-    public function __invoke(Request $request)
+    public static function process($data)
     {
-        return $this->handleRequest($request, 'core_page_user_reset', [], 'front');
-    }
-
-    public function processForm(Request $request, $form, $redirect)
-    {
-        $data = $form->getData();
-        ResetUserTransaction::execute($data['_username']);
-        Service::view()->addInfoFlash('dime.user.reset.sent');
-        return Service::redirectPath($redirect);
+        if (is_string($data)) {
+            $user = Service::security()->userProvider()->loadUserByUsername($data);
+        } else {
+            $user = $data;
+        }
+        if ($user instanceof User) {
+            Service::security()->resetUser($user);
+        }
     }
 }
