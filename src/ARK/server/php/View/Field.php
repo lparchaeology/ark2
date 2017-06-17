@@ -46,10 +46,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class Field extends Element
 {
-    protected $formTypeClass = '';
     protected $formOptions = '';
     protected $formOptionsArray = null;
-    protected $label = true;
     protected $display = null;
     protected $value = 'excluded';
     protected $parameter = null;
@@ -59,11 +57,6 @@ class Field extends Element
     public function attribute()
     {
         return $this->attribute;
-    }
-
-    public function showLabel()
-    {
-        return $this->label;
     }
 
     public function valueModus()
@@ -163,7 +156,7 @@ class Field extends Element
         return ($this->keyword ?: $this->attribute->keyword());
     }
 
-    public function buildOptions($property, $options = [])
+    public function buildOptions($property, array $state, array $options = [])
     {
         $state = $options['state'];
         unset($options['forms']);
@@ -172,11 +165,7 @@ class Field extends Element
             $options['display'] = $this->display;
         }
 
-        if ($state['label'] === null) {
-            $options['label'] = $this->showLabel();
-        } else {
-            $options['label'] = $state['label'];
-        }
+        $options['label'] = $state['label'];
         if ($options['label']) {
             if ($state['keyword']) {
                 $options['label'] = $state['keyword'];
@@ -308,9 +297,6 @@ class Field extends Element
 
     protected function buildState($state)
     {
-        if (!isset($state['label'])) {
-            $state['label'] = $this->showLabel();
-        }
         $state['required'] = $this->attribute()->isRequired();
         if (!isset($state['name'])) {
             $state['name'] = $this->formName();
@@ -330,33 +316,13 @@ class Field extends Element
         // TODO Service::workflow()->hasVisibility($actor, $this->attribute())???
         if (!$state['actor']->hasPermission($this->attribute->readPermission())) {
             if ($state['sanitise'] != 'redact') {
-                $state['sanitise'] = 'withhold';
+                $state['mode'] = 'withhold';
             }
         }
         $state['mode'] = $this->displayMode($state['mode']);
         $state['modus'] = $this->modeToModus($state, ($state['modus'] ?: $this->valueModus()));
         $state['field'] = $this;
         return $state;
-    }
-
-    public function buildForm(FormBuilderInterface $builder, $data, $dataKey, $options = [])
-    {
-        //dump('BUILD FIELD : '.$this->formName());
-        //dump($data);
-        //dump($dataKey);
-        //dump($this);
-        //dump($options);
-        $options['state'] = $this->buildState($options['state']);
-        if ($options['state']['sanitise'] == 'withhold') {
-            return;
-        }
-        $data = $this->formData($data, $options['state']);
-        //dump($data);
-        $options = $this->buildOptions($data, $options);
-        //dump($options);
-        $fieldBuilder = $this->formBuilder($data, $options, $options['state']['name']);
-        //dump($fieldBuilder);
-        $builder->add($fieldBuilder);
     }
 
     public function renderView($data, array $state, $forms = null, $form = null)
@@ -439,7 +405,6 @@ class Field extends Element
         // Fields
         $builder->addStringField('formTypeClass', 100, 'form_type_class');
         $builder->addStringField('formOptions', 4000, 'form_options');
-        $builder->addField('label', 'boolean');
         $builder->addStringField('display', 30);
         $builder->addStringField('value', 10);
         $builder->addStringField('parameter', 10);

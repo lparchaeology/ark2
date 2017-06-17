@@ -36,13 +36,14 @@ use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormView;
 
 class Cell
 {
     use EnabledTrait;
     use KeywordTrait;
 
-    protected $layout = null;
+    protected $group = null;
     protected $row = 0;
     protected $col = 0;
     protected $seq = 0;
@@ -62,9 +63,9 @@ class Cell
     protected $options = '';
     protected $optionsArray = null;
 
-    public function layout()
+    public function group()
     {
-        return $this->layout;
+        return $this->group;
     }
 
     public function row()
@@ -144,23 +145,20 @@ class Cell
 
     public function buildState($state)
     {
-        if ($this->showLabel() !== null) {
-            $state['label'] = $this->showLabel();
+        $state['name'] = $this->name;
+        $state['label'] = $this->label;
+        $state['map'] = $this->map;
+        if ($this->required === false) {
+            $state['required'] = false;
         }
-        if ($this->isRequired() !== null) {
-            $state['required'] = $this->isRequired();
+        if ($this->sanitise !== null) {
+            $state['sanitise'] = $this->sanitise;
         }
-        if ($this->sanitise() !== null) {
-            $state['sanitise'] = $this->sanitise();
+        if ($this->width !== null) {
+            $state['width'] = $this->width;
         }
-        if ($this->formName !== null) {
-            $state['name'] = $this->formName();
-        }
-        if ($this->width() !== null) {
-            $state['width'] = $this->width();
-        }
-        if ($this->keyword() !== null) {
-            $state['keyword'] = $this->keyword();
+        if ($this->keyword !== null) {
+            $state['keyword'] = $this->keyword;
         }
         if ($this->valueModus() !== null) {
             $this->optionsArray['state']['value']['modus'] = $this->valueModus();
@@ -171,7 +169,6 @@ class Cell
         if ($this->valueModus() !== null) {
             $this->optionsArray['state']['format']['modus'] = $this->formatModus();
         }
-        $state['map'] = $this->map;
         return $state;
     }
 
@@ -193,10 +190,11 @@ class Cell
         return $this->element->buildForms($data, $state, $options);
     }
 
-    public function buildForm(FormBuilderInterface $builder, $data, $state, $options = [])
+    public function buildForm(FormBuilderInterface $builder, $data, array $state, array $options = [])
     {
         //dump('BUILD CELL : '.$this->element->formName());
         //dump($data);
+        //dump($state);
         //dump($options);
         $state = $this->buildState($state);
         $options = $this->buildOptions($data, $options);
@@ -204,7 +202,7 @@ class Cell
         $this->element->buildForm($builder, $data, $state, $options);
     }
 
-    public function renderView($data, array $state, $form = null)
+    public function renderView($data, array $state, FormView $form = null)
     {
         //dump('RENDER CELL : '.$this->element->formName());
         //dump($state);
@@ -234,7 +232,7 @@ class Cell
         $builder->setReadOnly();
 
         // Key
-        $builder->addManyToOneKey('layout', 'ARK\View\Element', 'layout', 'element');
+        $builder->addManyToOneKey('group', 'ARK\View\Element', 'grp', 'element');
         $builder->addKey('row', 'integer');
         $builder->addKey('col', 'integer');
         $builder->addKey('seq', 'integer');

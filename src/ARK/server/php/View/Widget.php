@@ -50,28 +50,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class Widget extends Element
 {
-    protected $label = true;
     protected $vocabulary = null;
-    protected $formTypeClass = '';
     protected $formOptions = '';
     protected $formOptionsArray = null;
-
-    public function showLabel()
-    {
-        return $this->label;
-    }
 
     public function vocabulary()
     {
         return $this->vocabulary;
-    }
-
-    public function formTypeClass()
-    {
-        if ($this->formTypeClass) {
-            return $this->formTypeClass;
-        }
-        return parent::formTypeClass();
     }
 
     private function isButton()
@@ -80,19 +65,14 @@ class Widget extends Element
             is_subclass_of($this->formTypeClass(), ButtonTypeInterface::class);
     }
 
-    public function buildOptions($data, $options = [])
+    public function buildOptions($data, array $state, array $options = [])
     {
         if ($this->formOptionsArray === null) {
             $this->formOptionsArray = ($this->formOptions ? json_decode($this->formOptions, true) : []);
         }
         $options = array_replace_recursive($this->defaultOptions(), $this->formOptionsArray, $options);
-        $state = $options['state'];
 
-        if ($state['label'] === null) {
-            $options['label'] = $this->showLabel();
-        } else {
-            $options['label'] = $state['label'];
-        }
+        $options['label'] = $state['label'];
         if ($options['label']) {
             if ($state['keyword']) {
                 $options['label'] = $state['keyword'];
@@ -111,7 +91,6 @@ class Widget extends Element
             $options = $this->vocabularyOptions($this->vocabulary, $options);
         }
 
-        unset($options['state']);
         unset($options['data']);
         unset($options['forms']);
         unset($options['form']);
@@ -162,32 +141,11 @@ class Widget extends Element
         if ($state['mode'] == 'view' || $this->mode == 'view') {
             return;
         }
+        if ($state['mode'] == 'view' || $this->mode == 'view') {
+            $stae['mode'] = 'withhold';
+        }
         $state['widget'] = $this;
         return $state;
-    }
-
-    public function buildForm(FormBuilderInterface $builder, $state, $data, $options = [])
-    {
-        //dump('BUILD WIDGET : '.$this->formName());
-        //dump($this);
-        //dump($data);
-        //dump($dataKey);
-        //dump($options);
-        $options['state'] = $this->buildState($options['state']);
-        //dump($options);
-        if ($options['state']['mode'] == 'view' || $this->mode == 'view') {
-            return;
-        }
-        $name = $options['state']['name'];
-        $mode = $options['state']['mode'];
-        $data = $this->formData($data, $options['state']);
-        //dump($data);
-        $options = $this->buildOptions($data, $options);
-        //dump($options);
-        // TODO check workflow instead!
-        $widgetBuilder =  $this->formBuilder($data, $options, $name);
-        //dump($widgetBuilder);
-        $builder->add($widgetBuilder);
     }
 
     public function renderView($data, array $state, $form = null)
@@ -215,7 +173,6 @@ class Widget extends Element
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_widget');
 
         // Fields
-        $builder->addField('label', 'boolean');
         $builder->addStringField('mode', 10);
         $builder->addStringField('name', 30);
         $builder->addStringField('template', 100);

@@ -32,17 +32,20 @@ namespace ARK\View;
 
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
+use ARK\View\Group;
 
-class Grid extends Layout
+class Grid extends Group
 {
+    protected $grid = null;
+
     public function rowCount()
     {
-        return count($this->rows());
+        return count($this->grid());
     }
 
     public function columnCount($row)
     {
-        return count($this->columns($row));
+        return count($this->row($row));
     }
 
     public function cellCount($row, $col)
@@ -52,19 +55,18 @@ class Grid extends Layout
 
     public function grid()
     {
-        $this->init();
+        if ($this->grid === null) {
+            $this->grid = [];
+            foreach ($this->cells as $cell) {
+                $this->grid[$cell->row()][$cell->col()][$cell->seq()] = $cell;
+            }
+        }
         return $this->grid;
     }
 
-    public function rows()
+    public function row($row)
     {
-        $this->init();
-        return $this->grid;
-    }
-
-    public function columns($row)
-    {
-        if ($row < 0 || $row >= count($this->rows())) {
+        if ($row < 0 || $row >= count($this->grid())) {
             return [];
         }
         return $this->grid[$row];
@@ -72,7 +74,7 @@ class Grid extends Layout
 
     public function column($row, $col)
     {
-        if ($row < 0 || $row >= count($this->rows())) {
+        if ($row < 0 || $row >= count($this->grid())) {
             return [];
         }
         if ($col < 0 || $col >= count($this->grid[$col])) {
@@ -83,15 +85,15 @@ class Grid extends Layout
 
     public function columnWidth($row, $col)
     {
-        if (!isset($this->grid[$row][$col])) {
+        $column = $this->column($row, $col);
+        if ($column == []) {
             return null;
         }
-        reset($this->grid[$row][$col]);
-        return current($this->grid[$row][$col])->width();
+        return $column[0]->width();
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        self::layoutMetadata($metadata);
+        self::groupMetadata($metadata);
     }
 }

@@ -38,50 +38,18 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
 
-abstract class Layout extends Element
+class Group extends Element
 {
-    protected $schma = null;
-    protected $label = null;
     protected $required = null;
     protected $form = null;
     protected $method = null;
     protected $action = null;
     protected $cells = null;
-    protected $grid = null;
-    protected $elements = null;
     protected $parentCells = null;
 
     public function __construct()
     {
         $this->cells = new ArrayCollection();
-    }
-
-    protected function init()
-    {
-        if ($this->grid !== null) {
-            return;
-        }
-        $this->grid = [];
-        foreach ($this->cells as $cell) {
-            $this->grid[$cell->row()][$cell->col()][$cell->seq()] = $cell;
-        }
-        foreach ($this->grid as $rdx => $row) {
-            foreach ($row as $cdx => $col) {
-                foreach ($col as $cell) {
-                    $this->elements[] = $cell->element();
-                }
-            }
-        }
-    }
-
-    public function schema()
-    {
-        return $this->schma;
-    }
-
-    public function showLabel()
-    {
-        return $this->label;
     }
 
     public function isRequired()
@@ -106,31 +74,24 @@ abstract class Layout extends Element
 
     public function cells()
     {
-        $this->init();
         return $this->cells;
     }
 
-    public function elements()
+    protected function buildState($state)
     {
-        $this->init();
-        return $this->elements;
-    }
-
-    protected function formBuilder($data, $options, $name = null)
-    {
-        $builder = parent::formBuilder($data, $options, $name);
-        if ($this->method) {
-            $builder->setMethod($this->method);
+        $options['state']['mode'] = $this->displayMode($options['state']['mode']);
+        $options['state']['layout'] = $this;
+        if ($this->label !== null) {
+            $options['state']['label'] = $this->label;
         }
-        if ($this->action) {
-            $builder->setAction(Service::path($this->action));
+        if ($this->required === false) {
+            $options['state']['required'] = $this->required;
         }
-        return $builder;
     }
 
     public function buildForms($data, $options)
     {
-        //dump('LAYOUT FORMS : '.$this->formName());
+        //dump('Group FORMS : '.$this->formName());
         //dump($data);
         //dump($options);
         $options['state']['layout'] = $this;
@@ -141,14 +102,20 @@ abstract class Layout extends Element
             $options['state']['required'] = $this->required;
         }
         if ($this->form) {
-            //dump('LAYOUT : BUILD FORMS');
+            //dump('Group : BUILD FORMS');
             //dump($options);
             $builderData = $this->formData($data, $options['state']);
             $builderOptions = $this->buildOptions($builderData, $options);
             //dump($builderOptions);
             $builder = $this->formBuilder($builderData, $builderOptions, ($this->name ? null : false));
+            if ($this->method) {
+                $builder->setMethod($this->method);
+            }
+            if ($this->action) {
+                $builder->setAction(Service::path($this->action));
+            }
             $this->buildForm($builder, $data, null, $options);
-            //dump('LAYOUT : FORM BUILDER');
+            //dump('Group : FORM BUILDER');
             //dump($builder);
             $form = $builder->getForm();
             return [$this->formName() => $form];
@@ -160,28 +127,23 @@ abstract class Layout extends Element
         return $forms;
     }
 
-    public function buildForm(FormBuilderInterface $builder, $data, $dataKey, $options = [])
+    public function buildForm(FormBuilderInterface $builder, $data, array $state, array $options = [])
     {
-        //dump('BUILD LAYOUT : '.$this->formName());
+        //dump('BUILD GROUP : '.$this->formName());
         //dump($data);
-        //dump($dataKey);
+        //dump($state);
         //dump($options);
-        $options['state']['mode'] = $this->displayMode($options['state']['mode']);
-        $data = $this->formData($data, $options['state']);
+        $state = $this->buildState($state);
+        if ($state['mode'] == 'withhold') {
+            return;
+        }
+        $data = $this->formData($data, $state);
         //dump($data);
         $options = $this->buildOptions($data, $options);
-        $options['state']['layout'] = $this;
-        if ($this->label !== null) {
-            $options['state']['label'] = $this->label;
-        }
-        if ($this->required === false) {
-            $options['state']['required'] = $this->required;
-        }
         //dump($options);
-        //dump($data);
         if (!$this->form && $this->name) {
-            $layoutBuilder = $this->formBuilder([$this->name => $data], $options);
-            //dump('LAYOUT : CELL BUILDER');
+            $layoutBuilder = $this->formBuilder([$this->name => $data], $state, $options);
+            //dump('GROUP : CELL BUILDER');
             //dump($layoutBuilder);
             $builder->add($layoutBuilder);
             foreach ($this->cells() as $cell) {
@@ -189,14 +151,14 @@ abstract class Layout extends Element
             }
         } else {
             foreach ($this->cells() as $cell) {
-                $cell->buildForm($builder, $data, $dataKey, $options);
+                $cell->buildForm($builder, $data, $state, $options);
             }
         }
     }
 
     public function renderView($data, array $state, $forms = null, $form = null)
     {
-        //dump('RENDER LAYOUT : '.$this->formName());
+        //dump('RENDER GROUP : '.$this->formName());
         //dump($data);
         //dump($state);
         //dump($forms);
@@ -229,13 +191,8 @@ abstract class Layout extends Element
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_view_layout');
-    }
-
-    public static function layoutMetadata(ClassMetadata $metadata)
-    {
         // Joined Table Inheritance
-        $builder = new ClassMetadataBuilder($metadata, 'ark_view_layout');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_view_group');
 
         // Fields
         $builder->addField('form', 'boolean');
@@ -246,7 +203,6 @@ abstract class Layout extends Element
         $builder->addStringField('template', 100);
 
         // Associations
-        $builder->addManyToOneField('schma', 'ARK\Model\Schema');
-        $builder->addOneToMany('cells', 'ARK\View\Cell', 'layout');
+        $builder->addOneToMany('cells', 'ARK\View\Cell', 'group');
     }
 }

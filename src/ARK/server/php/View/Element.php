@@ -49,13 +49,14 @@ abstract class Element
     use EnabledTrait;
     use KeywordTrait;
 
-    protected $element = '';
-    protected $name = '';
-    protected $type = '';
-    protected $template = '';
+    protected $element = null;
+    protected $name = null;
+    protected $type = null;
+    protected $formTypeClass = null;
+    protected $template = null;
     protected $mode = null;
 
-    public function __construct($element, $type, $class = '', $template = '')
+    public function __construct($element, $type, $class = null, $template = null)
     {
         $this->element = $element;
         $this->type = (is_string($type) ? ORM::find(Type::class, $type) : $type);
@@ -66,11 +67,6 @@ abstract class Element
     public function id()
     {
         return $this->element;
-    }
-
-    public function showLabel()
-    {
-        return null;
     }
 
     public function formName($cellName = null)
@@ -128,46 +124,10 @@ abstract class Element
 
     public function formTypeClass()
     {
+        if ($this->formTypeClass) {
+            return $this->formTypeClass;
+        }
         return $this->type->formTypeClass();
-    }
-
-    public function defaultOptions($route = null)
-    {
-        $options['state'] = $this->defaultState($route);
-        return $options;
-    }
-
-    public function buildOptions($data, $options = [])
-    {
-        $options = array_replace_recursive($this->defaultOptions(), $options);
-        $state = $options['state'];
-        if ($state['label'] === null) {
-            $options['label'] = $this->showLabel();
-        } else {
-            $options['label'] = $state['label'];
-        }
-        if ($options['label']) {
-            if ($state['keyword']) {
-                $options['label'] = $state['keyword'];
-            } elseif ($this->keyword()) {
-                $options['label'] = $this->keyword();
-            }
-        }
-        if ($state['mode'] == 'view') {
-            $options['required'] = false;
-        } else {
-            $options['required'] = $state['required'];
-        }
-        return $options;
-    }
-
-    public function defaultContext($route = null)
-    {
-        $context['data'] = null;
-        $context['forms'] = null;
-        $context['form'] = null;
-        $context['state'] = $this->defaultState($route);
-        return $context;
     }
 
     public function defaultState($route = null)
@@ -190,14 +150,29 @@ abstract class Element
         return $state;
     }
 
-    public function viewContext($data, $context = [], $state = [])
+    protected function buildState($state)
     {
-        $context = array_replace_recursive($this->defaultContext(), $context, ['state' => $state]);
-        $context['data'] = $data;
-        return $context;
+        $options = array_replace_recursive($this->defaultState(), $options);
     }
 
-    protected function vocabularyOptions(Vocabulary $vocabulary, $options = [])
+    public function defaultOptions($route = null)
+    {
+        return [];
+    }
+
+    public function buildOptions($data, array $state, array $options = [])
+    {
+        $options = array_replace_recursive($this->defaultOptions(), $options);
+        if ($state['label']) {
+            $options['label'] = ($state['keyword'] ? $state['keyword'] : $this->keyword());
+        } else {
+            $options['label'] = $state['label'];
+        }
+        $options['required'] = ($state['mode'] == 'view' ? false : $state['required']);
+        return $options;
+    }
+
+    protected function vocabularyOptions(Vocabulary $vocabulary, array $options = [])
     {
         $options['choices'] = $vocabulary->terms();
         $options['choice_value'] = 'name';
@@ -207,8 +182,19 @@ abstract class Element
         return $options;
     }
 
-    public function buildForm(FormBuilderInterface $builder, $data, $state, $options = [])
+    public function defaultContext($route = null)
     {
+        $context['data'] = null;
+        $context['forms'] = null;
+        $context['form'] = null;
+        return $context;
+    }
+
+    public function viewContext($data, $context = [], $state = [])
+    {
+        $context = array_replace_recursive($this->defaultContext(), $context, ['state' => $state]);
+        $context['data'] = $data;
+        return $context;
     }
 
     public function buildForms($data, $options)
@@ -216,8 +202,29 @@ abstract class Element
         return [];
     }
 
+    public function buildForm(FormBuilderInterface $builder, $data, array $state, array $options = [])
+    {
+        //dump('BUILD FORM : '.$this->formName());
+        //dump($this);
+        //dump($data);
+        //dump($state);
+        //dump($options);
+        $state = $this->buildState($state);
+        if ($state['mode'] == 'withhold') {
+            return;
+        }
+        $data = $this->formData($data, $state);
+        //dump($data);
+        $options = $this->buildOptions($data, $options);
+        //dump($options);
+        $elementBuilder = $this->formBuilder($data, $state, $options);
+        //dump($fieldBuilder);
+        $builder->add($elementBuilder);
+    }
+
     protected function formBuilder($data, $state, $options = [])
     {
+        $options['state'] = $state;
         return Service::forms()->createNamedBuilder(
             $state['name'],
             $this->formTypeClass(),
