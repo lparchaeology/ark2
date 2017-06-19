@@ -199,30 +199,6 @@ class Page extends Element
         return $response;
     }
 
-    public function handleJsonRequest(Request $request, $data, array $state, callable $processForm = null)
-    {
-        $item = null;
-        $state = $this->buildState($state);
-        $actor = Service::workflow()->actor();
-        $state['actor'] = $actor;
-        $state['mode'] = $this->pageMode($actor, $item);
-        $options = $this->buildOptions($data, $state, []);
-        $forms = $this->content->buildForms($data, $state, $options);
-        if ($forms && $request->getMethod() == 'POST' && $posted = $this->postedForm($request, $forms)) {
-            if (!$redirect) {
-                $redirect = $request->attributes->get('_route');
-            }
-            if ($processForm === null) {
-                return Service::redirectPath($redirect);
-            }
-            return $processForm($request, $posted, $redirect);
-        }
-        $context = $this->pageContext($data, $state, $forms);
-        $response = Service::view()->renderResponse($this->template(), $context);
-        Service::view()->clearFlashes();
-        return $response;
-    }
-
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Joined Table Inheritance

@@ -49,14 +49,6 @@ abstract class DimeFormController extends DimeController
         return $page->handleRequest($request, $data, $state, [$this, 'processForm']);
     }
 
-    public function handleJsonRequest(Request $request)
-    {
-        $page = ORM::find(Page::class, $page);
-        $data = $this->buildData($request, $slugs);
-        $state = $this->buildState($request);
-        return $page->handleJsonRequest($request, $data, $state, [$this, 'processForm']);
-    }
-
     public function buildData(Request $request)
     {
         return null;

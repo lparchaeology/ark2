@@ -51,26 +51,33 @@ class FormController
         return new JsonResponse($data);
     }
 
-    public function handleRequest(Request $request, $data, array $state)
+    public function handleRequest(Request $request, array $state)
     {
-        $element = $state['group'];
+        $element = $state['id'];
         $name = $state['name'];
-        $group = ORM::findOneBy(Group::class, ['element' => $element, 'name' => $name]);
+        $group = ORM::findOneBy(Group::class, ['grp' => $element, 'name' => $name]);
 
         $state = array_replace_recursive($group->defaultState(), $state);
         $state['actor'] = Service::workflow()->actor();
 
+        $data = $group->buildData($data, $state);
         $options = $group->defaultOptions();
 
         $forms = $group->buildForms($data, $state, $options);
         $form = $forms[$name];
         if ($request->getMethod() == 'POST') {
-            return $this->processForm($request, $form);
+            $this->processForm($request, $form);
+            $data = $group->buildData($data, $state);
+            if ($flash = $request->attributes->get('flash')) {
+                $state['flash'] = $flash;
+                $state['message'] = $request->attributes->get('message');
+            }
+            $parameters = ($request->attributes->get('parameters') ?: []);
         }
         $view = $form->createView();
     }
 
-    public function buildData(Request $request, $slugs = [])
+    public function buildData(Request $request)
     {
         $data = null;
         return $data;
