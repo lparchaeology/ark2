@@ -208,6 +208,13 @@ abstract class Element implements ElementInterface
         } else {
             $context['label'] = null;
         }
+        if ($state['modus'] == 'active') {
+            if ($state['keyword']) {
+                $context['help'] = $state['keyword'];
+            } elseif ($this->keyword()) {
+                $context['help'] = $this->keyword();
+            }
+        }
         return $context;
     }
 
