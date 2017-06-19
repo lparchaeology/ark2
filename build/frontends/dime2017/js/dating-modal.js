@@ -43,7 +43,7 @@ var initTimeline = function(){
         // order by length
           a.length = a.start-a.end;
           b.length = b.start-b.end;
-        return a.length - b.length;
+        return b.length - a.length;
       }
 
       // Configuration for the Timeline
@@ -51,17 +51,27 @@ var initTimeline = function(){
         order: customOrder,
         editable: false,
         margin: {item: 0},
-        zoomMin: 1576800000000,//10 years 1000*60*60*24*365*10 in milliseconds
+        zoomMin: 157680000000,//1 years 1000*60*60*24*365*1 in milliseconds
         zoomMax: 315700000000000, //75000 years 1000*60*60*24*365*75000 in milliseconds
         showCurrentTime: false,
-        horizontalScroll: false,
+        horizontalScroll: true,
         zoomKey: 'ctrlKey',
-        start: vis.moment('-0400','Y'),
+        start: vis.moment('1066','Y'),
         end: vis.moment('2000','Y')
       };
 
       // Create a Timeline
       var timeline = new vis.Timeline(container, items, options);
+      
+      $('.vis-range').each(function(i,e){
+          var remove = [];
+          if( $(e).width() < 100 || $(e).width() > 1500 ){
+              $(e).hide();
+          } else {
+              $(e).show();
+          }
+      });
+
       
       select2Options = {
               minimumResultsForSearch: 11,
@@ -90,7 +100,12 @@ var initTimeline = function(){
 
           $('#find_type_term_modal').select2(select2Options);
 
- 
+          var zoomout = function(){
+              $('.vis-tl-zoom-out').trigger('click');
+          }
+
+          window.setTimeout(zoomout, 3000);
+          
           var level1 = $('<select id="find_subtype_level1" style="width:20%">');
           $(".classification-holder").append(level1);
           level1.select2(select2Options);
@@ -184,7 +199,7 @@ var initTimeline = function(){
                   $(window.subtypevocabulary[subtype].optionelement).clone().appendTo(level1);
               }
           }
-          
+
           if( currentSubtype != null ){
               var currentSubtypeSplit = currentSubtype.split('.');
               if( currentSubtypeSplit.length == 2 ) {
@@ -215,13 +230,7 @@ var initTimeline = function(){
                   timeline.addCustomTime( vis.moment(end, 'Y'), 'end' );
               }
           }
-          setTimeout(function() {
-              try {
-                  timeline.moveTo(timeline.getCustomTime('start'));
-              }catch (err){
-                  timeline.moveTo(vis.moment(new Date().getFullYear(),'Y'));
-              }
-          }, 100);
+          
       });
       
       $(timeline).attr('pannning', false);
@@ -257,16 +266,21 @@ var initTimeline = function(){
               timeline.removeCustomTime( 'end' );
           }
 
-
           console.log("start",existing_start,"end",existing_end);
           
           if( event.item != null ) {
               
-              console.log(window.periodvocabulary[event.item]);
+              try {
+                  var item_start = vis.moment(window.periodvocabulary[event.item].parameters.year_start.value, 'Y');
+              } catch (e){
+                  var item_start = vis.moment(date.now(), 'Y');
+              }
+              try {
+                  var item_end = vis.moment(window.periodvocabulary[event.item].parameters.year_end.value, 'Y');
+              }catch (e){
+                  var item_end = vis.moment('10000', 'Y');
+              }
 
-              var item_start = vis.moment(window.periodvocabulary[event.item].parameters.year_start.value, 'Y');
-
-              var item_end = vis.moment(window.periodvocabulary[event.item].parameters.year_end.value, 'Y');
               if( event.event.shiftKey ){
                   if (existing_start < item_start) {
                       var start = existing_start;
@@ -292,7 +306,13 @@ var initTimeline = function(){
                  start = existing_start;
                  end = event.time;
              } else {
-                 if ( Math.pow(event.time - existing_start, 2) > Math.pow(event.time - existing_end, 2) ){
+                 if( event.time > existing_end ){
+                     start = existing_start;
+                     end = event.time;
+                 } else if  ( event.time < existing_start ) {
+                     start = event.time;
+                     end = existing_end;
+                 } else if ( Math.pow(event.time - existing_start, 2) > Math.pow(event.time - existing_end, 2) ){
                      start = existing_start;
                      end = event.time;
                  } else {
@@ -301,47 +321,56 @@ var initTimeline = function(){
                  }
              }
          }
-          
-          $('#find_dating_year').val(new Date(start).getFullYear(),'Y');
-          $('#find_dating_year').trigger('keyup');
-          $('#find_dating_year_span').val(new Date(end).getFullYear(),'Y');
-          $('#find_dating_year_span').trigger('keyup');
-          
+         
+         $('#find_dating_year').val(new Date(start).getFullYear(),'Y');
+         $('#find_dating_year').trigger('keyup');
+         $('#find_dating_year_span').val(new Date(end).getFullYear(),'Y');
+         $('#find_dating_year_span').trigger('keyup');
+         
          timeline.addCustomTime( start, 'start' );
          timeline.addCustomTime( end, 'end' );
-         
-         
+        
       });
       
       $('.vis-tl-zoom-in').on('click', function () { timeline.zoomIn( 0.2); });
       $('.vis-tl-zoom-out').on('click', function () { timeline.zoomOut( 0.2); });
+
+      $('#closemodal').on('click',function(e){
+          e.preventDefault();
+          $('#dating-modal').modal('hide');
+      });
       
       $('.vis-item-content').each(function(){
           $(this).attr('title', $(this).html());
       });
-      
-      $('.vis-range').each(function(i,e){
-          var remove = [];
-          if( $(e).width() < 200 ){
-              $(e).hide();
-          } else {
-              $(e).show();
-          }
-      });
-      timeline.redraw();
-      
-      timeline.zoomOut( 0.2);
-      
+
       timeline.on('rangechanged', function(){
           $('.vis-range').each(function(i,e){
               var remove = [];
-              if( $(e).width() < 200 ){
+              if( $(e).width() < 100 || $(e).width() > 1800 ){
                   $(e).hide();
               } else {
                   $(e).show();
               }
               timeline.redraw();
           });
+      });
+
+      timeline.on('timechanged',function(properties){
+          if(properties.id == 'start'){
+              if( properties.time > timeline.getCustomTime('end') ){
+                  timeline.removeCustomTime('start');
+                  timeline.addCustomTime(timeline.getCustomTime('end'),'start');
+                  return false;
+              }
+          } else {
+              if( properties.time < timeline.getCustomTime('start') ){
+                  timeline.removeCustomTime('end');
+                  timeline.addCustomTime(timeline.getCustomTime('start'),'end');
+                  return false;
+              }
+              
+          }
       });
     
 };

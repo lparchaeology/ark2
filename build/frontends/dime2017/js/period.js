@@ -183,4 +183,44 @@ var initPeriod = function(){
 
     });
 
+    $('.dating-button').removeClass('inactive');
+
+    $('#oldtid-dating-button').on('click', function(e){
+        e.preventDefault();
+        $('#'+date_start_id).val('-9000');
+        $('#'+date_start_id).trigger('keyup');
+        $('#'+date_start_id+'_span').val('1066');
+        $('#'+date_start_id+'_span').trigger('keyup');
+        $('#historiktid-dating-button').removeClass('selected');
+        $('#oldtid-dating-button').addClass('selected');
+    });
+    $('#historiktid-dating-button').on('click', function(e){
+        e.preventDefault();
+        $('#'+date_start_id).val('1067');
+        $('#'+date_start_id).trigger('keyup');
+        $('#'+date_start_id+'_span').val(new Date().getFullYear());
+        $('#'+date_start_id+'_span').trigger('keyup');
+        $('#oldtid-dating-button').removeClass('selected');
+        $('#historiktid-dating-button').addClass('selected');
+    });
+
 }
+
+$(document).ready(function(){
+    $('#advanced-dating-button').on('click', function(e){
+        e.preventDefault();
+        $('.simple-dating').hide();
+        $('.advanced-dating').show();
+    });
+    $('#oldtid-dating-button').on('click', function(e){
+        e.preventDefault();
+    });
+    $('#historiktid-dating-button').on('click', function(e){
+        e.preventDefault();
+    });
+    if ( $('#find_dating_year').val() < 1067){
+        $('#oldtid-dating-button').addClass('selected');
+    } else {
+        $('#historiktid-dating-button').addClass('selected');
+    }
+});
