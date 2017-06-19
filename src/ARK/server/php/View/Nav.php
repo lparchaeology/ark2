@@ -38,6 +38,7 @@ use ARK\View\Bus\NavAddMessage;
 use ARK\View\Element;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Tree\Entity\Repository\ClosureTreeRepository;
+use Symfony\Component\Form\FormView;
 
 class Nav extends Element
 {
@@ -113,14 +114,6 @@ class Nav extends Element
     public function isSeperator()
     {
         return $this->seperator;
-    }
-
-    public function renderView($data, array $state, $forms = null, $form = null)
-    {
-        $context['nav'] = $this;
-        $context['data'] = $data;
-        $context['state'] = $state;
-        return Service::view()->renderView($this->template(), $context);
     }
 
     public static function fromMessage(NavAddMessage $msg)

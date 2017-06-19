@@ -37,14 +37,16 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\View\Type;
 use ARK\View\Cell;
+use ARK\View\ElementInterface;
+use ARK\View\Type;
 use ARK\Vocabulary\Vocabulary;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormBuilderInterface;
 
-abstract class Element
+abstract class Element implements ElementInterface
 {
     use EnabledTrait;
     use KeywordTrait;
@@ -69,11 +71,8 @@ abstract class Element
         return $this->element;
     }
 
-    public function formName($cellName = null)
+    public function formName()
     {
-        if ($cellName) {
-            return $cellName;
-        }
         if ($this->name) {
             return $this->name;
         }
@@ -93,20 +92,20 @@ abstract class Element
         return $this->type->template();
     }
 
-    public function defaultMode()
+    public function mode()
     {
         return $this->mode;
     }
 
     public function displayMode($parentMode)
     {
-        if ($this->defaultMode() !== null && $parentMode == 'edit') {
-            return $this->defaultMode();
+        if ($this->mode !== null && $parentMode == 'edit') {
+            return $this->mode;
         }
         return $parentMode;
     }
 
-    public function formData($data, $state)
+    public function buildData($data, array $state)
     {
         $name = (isset($state['name'])) ? $state['name'] : null;
         if ($name && is_array($data) && array_key_exists($name, $data)) {
@@ -118,7 +117,7 @@ abstract class Element
             }
             return null;
         }
-        $name = $this->formName($name);
+        $name = $this->formName();
         return (is_array($data) && array_key_exists($name, $data) ? $data[$name] : $data);
     }
 
@@ -150,9 +149,12 @@ abstract class Element
         return $state;
     }
 
-    protected function buildState($state)
+    public function buildState(array $state)
     {
-        $options = array_replace_recursive($this->defaultState(), $options);
+        $state['name'] = $this->formName();
+        $state['mode'] = $this->displayMode($state['mode']);
+        $state['template'] = $this->template();
+        return $state;
     }
 
     public function defaultOptions($route = null)
@@ -165,8 +167,6 @@ abstract class Element
         $options = array_replace_recursive($this->defaultOptions(), $options);
         if ($state['label']) {
             $options['label'] = ($state['keyword'] ? $state['keyword'] : $this->keyword());
-        } else {
-            $options['label'] = $state['label'];
         }
         $options['required'] = ($state['mode'] == 'view' ? false : $state['required']);
         return $options;
@@ -182,24 +182,28 @@ abstract class Element
         return $options;
     }
 
-    public function defaultContext($route = null)
+    public function defaultContext()
     {
+        $context['state'] = null;
         $context['data'] = null;
-        $context['forms'] = null;
         $context['form'] = null;
         return $context;
     }
 
-    public function viewContext($data, $context = [], $state = [])
+    public function buildContext($data, array $state, FormView $form = null)
     {
-        $context = array_replace_recursive($this->defaultContext(), $context, ['state' => $state]);
-        $context['data'] = $data;
+        $context = $this->defaultContext();
+        $state = $this->buildState($state);
+        $context['state'] = $state;
+        $context['data'] = $this->buildData($data, $state);
+        $name = $state['name'];
+        if ($form === null) {
+            $context['form'] = (isset($state['forms'][$name]) ? $state['forms'][$name] : $form);
+        } else {
+            $context['form'] = (isset($form[$name]) ? $form[$name] : $form);
+        }
+        $context['label'] = $state['label'];
         return $context;
-    }
-
-    public function buildForms($data, $options)
-    {
-        return [];
     }
 
     public function buildForm(FormBuilderInterface $builder, $data, array $state, array $options = [])
@@ -213,9 +217,9 @@ abstract class Element
         if ($state['mode'] == 'withhold') {
             return;
         }
-        $data = $this->formData($data, $state);
+        $data = $this->buildData($data, $state);
         //dump($data);
-        $options = $this->buildOptions($data, $options);
+        $options = $this->buildOptions($data, $state, $options);
         //dump($options);
         $elementBuilder = $this->formBuilder($data, $state, $options);
         //dump($fieldBuilder);
@@ -224,7 +228,6 @@ abstract class Element
 
     protected function formBuilder($data, $state, $options = [])
     {
-        $options['state'] = $state;
         return Service::forms()->createNamedBuilder(
             $state['name'],
             $this->formTypeClass(),
@@ -233,17 +236,17 @@ abstract class Element
         );
     }
 
-    public function renderView($data, array $state, $form = null)
+    public function renderForm($data, array $state, FormView $form = null)
     {
-        $state = $this->buildState($state);
-        if ($state['mode'] == 'withhold') {
+        dump('RENDER FORM : '.$this->formName());
+        dump($state);
+        dump($form);
+        $context = $this->buildContext($data, $state, $form);
+        if ($context['state']['mode'] == 'withhold') {
             return;
         }
-        if ($form) {
-            $context = $this->viewContext($state, $data, $form);
-            return Service::view()->renderView($this->template(), $context);
-        }
-        return $this->defaultView($data, $state);
+        dump($context);
+        return Service::view()->renderView($context['state']['template'], $context);
     }
 
     public function defaultView($data, array $state)

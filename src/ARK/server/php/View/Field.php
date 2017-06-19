@@ -42,6 +42,7 @@ use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 use ARK\Workflow\Event;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class Field extends Element
@@ -96,7 +97,7 @@ class Field extends Element
         return parent::formTypeClass();
     }
 
-    private function modeToModus($state, $modus)
+    private function modeToModus(array $state, $modus)
     {
         if ($modus == 'hidden') {
             return 'hidden';
@@ -156,22 +157,64 @@ class Field extends Element
         return ($this->keyword ?: $this->attribute->keyword());
     }
 
+    public function buildState(array $state)
+    {
+        $state['required'] = $this->attribute()->isRequired();
+        if (!isset($state['name'])) {
+            $state['name'] = $this->formName();
+        }
+        if (!isset($state['keyword'])) {
+            $state['keyword'] = $this->keyword();
+        }
+        if (!isset($state['value']['modus'])) {
+            $state['value']['modus'] = $this->valueModus();
+        }
+        if (!isset($state['parameter']['modus'])) {
+            $state['parameter']['modus'] = $this->parameterModus();
+        }
+        if (!isset($state['format']['modus'])) {
+            $state['format']['modus'] = $this->formatModus();
+        }
+        // TODO Service::workflow()->hasVisibility($actor, $this->attribute())???
+        if (!$state['actor']->hasPermission($this->attribute->readPermission())) {
+            if ($state['sanitise'] != 'redact') {
+                $state['mode'] = 'withhold';
+            }
+        }
+        $state['mode'] = $this->displayMode($state['mode']);
+        $state['modus'] = $this->modeToModus($state, ($state['modus'] ?: $this->valueModus()));
+        $state['template'] = $this->template();
+        $state['field'] = $this;
+        return $state;
+    }
+
+    public function buildData($data, array $state)
+    {
+        $name = $state['name'];
+        if (is_array($data)) {
+            if (array_key_exists($name, $data)) {
+                $data = $data[$name];
+            } elseif (array_key_exists($this->name, $data)) {
+                $data = $data[$this->name];
+            } elseif (array_key_exists($this->id(), $data)) {
+                $data = $data[$this->id()];
+            }
+        }
+        if ($data instanceof Property) {
+            return $data;
+        }
+        if ($data instanceof Item) {
+            return $data->property($this->attribute->name());
+        }
+        return null;
+    }
+
     public function buildOptions($property, array $state, array $options = [])
     {
-        $state = $options['state'];
-        unset($options['forms']);
+        $options['state'] = $state;
 
-        if ($this->display) {
-            $options['display'] = $this->display;
-        }
-
-        $options['label'] = $state['label'];
-        if ($options['label']) {
-            if ($state['keyword']) {
-                $options['label'] = $state['keyword'];
-            } elseif ($this->keyword()) {
-                $options['label'] = $this->keyword();
-            }
+        if ($state['label']) {
+            $options['label'] = ($state['keyword'] ? $state['keyword'] : $this->keyword());
         }
 
         $options['state']['value']['modus'] =
@@ -179,6 +222,9 @@ class Field extends Element
         $options['state']['value']['type'] =
             $this->modusToFormType($options['state']['value']['modus'], $this->valueFormType(), $this->staticFormType());
         $options['state']['value']['options'] = $this->valueOptions($state);
+        if ($this->display) {
+            $options['state']['value']['display'] = $this->display;
+        }
 
         if (isset($state['parameter']['modus'])) {
             $options['state']['parameter']['modus'] =
@@ -212,7 +258,7 @@ class Field extends Element
         return $options;
     }
 
-    protected function valueOptions($state)
+    protected function valueOptions(array $state)
     {
         if ($this->formOptionsArray === null) {
             $this->formOptionsArray = ($this->formOptions ? json_decode($this->formOptions, true) : []);
@@ -240,7 +286,7 @@ class Field extends Element
         return $this->baseOptions($state, $options);
     }
 
-    protected function baseOptions($state, $options = [])
+    protected function baseOptions(array $state, array $options = [])
     {
         $options['mapped'] = false;
         $options['label'] = false;
@@ -257,7 +303,7 @@ class Field extends Element
         return $options;
     }
 
-    protected function concatOption($options, $option, $attr, $value)
+    protected function concatOption(array $options, $option, $attr, $value)
     {
         if (isset($options[$option][$attr])) {
             return $options[$option][$attr] . ' ' . $value;
@@ -265,7 +311,7 @@ class Field extends Element
         return $value;
     }
 
-    protected function vocabularyOptions(Vocabulary $vocabulary, $options = [])
+    protected function vocabularyOptions(Vocabulary $vocabulary, array $options = [])
     {
         $options = parent::vocabularyOptions($vocabulary, $options);
         if ($this->attribute()->isRequired()) {
@@ -274,94 +320,39 @@ class Field extends Element
         return $options;
     }
 
-    public function formData($data, $state)
+    public function buildContext($data, array $state, FormView $form = null)
     {
-        $name = $state['name'];
-        if (is_array($data)) {
-            if (array_key_exists($name, $data)) {
-                $data = $data[$name];
-            } elseif (array_key_exists($this->name, $data)) {
-                $data = $data[$this->name];
-            } elseif (array_key_exists($this->id(), $data)) {
-                $data = $data[$this->id()];
-            }
-        }
-        if ($data instanceof Property) {
-            return $data;
-        }
-        if ($data instanceof Item) {
-            return $data->property($this->attribute->name());
-        }
-        return null;
+        $context = parent::buildContext($data, $state, $form);
+        $context['field'] = $this;
+        return $context;
     }
 
-    protected function buildState($state)
+    // FIXME Should probably have some way to use FormTypes here to render 'flat' compond values
+    public function renderView($data, array $state)
     {
-        $state['required'] = $this->attribute()->isRequired();
-        if (!isset($state['name'])) {
-            $state['name'] = $this->formName();
-        }
-        if (!isset($state['keyword'])) {
-            $state['keyword'] = $this->keyword();
-        }
-        if (!isset($state['value']['modus'])) {
-            $state['value']['modus'] = $this->valueModus();
-        }
-        if (!isset($state['parameter']['modus'])) {
-            $state['parameter']['modus'] = $this->parameterModus();
-        }
-        if (!isset($state['format']['modus'])) {
-            $state['format']['modus'] = $this->formatModus();
-        }
-        // TODO Service::workflow()->hasVisibility($actor, $this->attribute())???
-        if (!$state['actor']->hasPermission($this->attribute->readPermission())) {
-            if ($state['sanitise'] != 'redact') {
-                $state['mode'] = 'withhold';
-            }
-        }
-        $state['mode'] = $this->displayMode($state['mode']);
-        $state['modus'] = $this->modeToModus($state, ($state['modus'] ?: $this->valueModus()));
-        $state['field'] = $this;
-        return $state;
-    }
-
-    public function renderView($data, array $state, $forms = null, $form = null)
-    {
-        //dump('RENDER FIELD : '.$this->formName());
-        //dump($data);
-        //dump($state);
-        //dump($form);
-        $options['state'] = $this->buildState($options['state']);
+        $state = $this->buildState($state);
         if ($state['sanitise'] == 'withhold') {
-            return;
+            return null;
         }
-        $state['mode'] = $this->displayMode($state['mode']);
-        $state['modus'] = $this->modeToModus($state, ($state['modus'] ?: $this->valueModus()));
-        $state['field'] = $this;
-        $data = $this->formData($data, $state);
-        if ($form && $this->template()) {
-            $context = $this->defaultContext();
-            $context['state'] = array_replace_recursive($context['state'], $state);
-            $context['data'] = $data;
-            $context['forms'] = $forms;
-            $context['form'] = $form[$this->formName($context['state']['name'])];
-            //dump($context['form']);
-            //dump($this->template());
-            return Service::view()->renderView($this->template(), $context);
-        }
-
-        // FIXME Should probably have some way to use FormTypes here to render 'flat' compond values
+        $data = $this->buildData($data, $state);
         $value = null;
         if ($data instanceof Item) {
             $data = $data->property($this->attribute()->name());
         }
         if ($data instanceof Property) {
             $value = $data->value();
-            if ($value === null) {
+            if (!$value) {
                 return null;
             }
+            if ($this->attribute()->hasMultipleOccurrences() && is_array($value)) {
+                $value = $value[0];
+            }
             if (is_array($value)) {
-                $value = $value[$this->attribute()->format()->valueName()];
+                if ($this->display) {
+                    $value = $value[$this->display];
+                } elseif (isset($value[$this->attribute()->format()->valueName()])) {
+                    $value = $value[$this->attribute()->format()->valueName()];
+                }
             }
             if ($value instanceof Actor) {
                 return $value->property('fullname')->value()->content();
@@ -374,8 +365,8 @@ class Field extends Element
                 return $type;
             }
             if ($value instanceof Item) {
-                if (isset($context['options']['display_property'])) {
-                    return $value->property($context['options']['display_property'])
+                if (isset($this->display)) {
+                    return $value->property($this->display)
                         ->value()
                         ->content();
                 }

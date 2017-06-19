@@ -35,12 +35,12 @@ use ARK\ORM\ClassMetadata;
 use ARK\View\Element;
 use ARK\Service;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class Group extends Element
+abstract class Group extends Element
 {
-    protected $required = null;
     protected $form = null;
     protected $method = null;
     protected $action = null;
@@ -50,11 +50,6 @@ class Group extends Element
     public function __construct()
     {
         $this->cells = new ArrayCollection();
-    }
-
-    public function isRequired()
-    {
-        return $this->required;
     }
 
     public function isForm()
@@ -77,44 +72,34 @@ class Group extends Element
         return $this->cells;
     }
 
-    protected function buildState($state)
+    public function buildState(array $state)
     {
-        $options['state']['mode'] = $this->displayMode($options['state']['mode']);
-        $options['state']['layout'] = $this;
-        if ($this->label !== null) {
-            $options['state']['label'] = $this->label;
-        }
-        if ($this->required === false) {
-            $options['state']['required'] = $this->required;
-        }
+        $state = parent::buildState($state);
+        $state['layout'] = $this;
+        return $state;
     }
 
-    public function buildForms($data, $options)
+    public function buildForms($data, array $state, array $options)
     {
-        //dump('Group FORMS : '.$this->formName());
+        //dump('GROUP FORMS : '.$this->formName());
+        //dump($this);
         //dump($data);
+        //dump($state);
         //dump($options);
-        $options['state']['layout'] = $this;
-        if ($this->label !== null) {
-            $options['state']['label'] = $this->label;
-        }
-        if ($this->required === false) {
-            $options['state']['required'] = $this->required;
-        }
+        $state = $this->buildState($state);
         if ($this->form) {
-            //dump('Group : BUILD FORMS');
-            //dump($options);
-            $builderData = $this->formData($data, $options['state']);
-            $builderOptions = $this->buildOptions($builderData, $options);
+            //dump('GROUP : BUILD FORMS');
+            $builderData = $this->buildData($data, $state);
+            $builderOptions = $this->buildOptions($builderData, $state, $options);
             //dump($builderOptions);
-            $builder = $this->formBuilder($builderData, $builderOptions, ($this->name ? null : false));
+            $builder = $this->formBuilder($builderData, $state, $builderOptions);
             if ($this->method) {
                 $builder->setMethod($this->method);
             }
             if ($this->action) {
                 $builder->setAction(Service::path($this->action));
             }
-            $this->buildForm($builder, $data, null, $options);
+            $this->buildForm($builder, $data, $state, $options);
             //dump('Group : FORM BUILDER');
             //dump($builder);
             $form = $builder->getForm();
@@ -122,7 +107,7 @@ class Group extends Element
         }
         $forms = [];
         foreach ($this->cells() as $cell) {
-            $forms = array_merge($forms, $cell->buildForms($data, $options));
+            $forms = array_merge($forms, $cell->buildForms($data, $state, $options));
         }
         return $forms;
     }
@@ -137,9 +122,9 @@ class Group extends Element
         if ($state['mode'] == 'withhold') {
             return;
         }
-        $data = $this->formData($data, $state);
+        $data = $this->buildData($data, $state);
         //dump($data);
-        $options = $this->buildOptions($data, $options);
+        $options = $this->buildOptions($data, $state, $options);
         //dump($options);
         if (!$this->form && $this->name) {
             $layoutBuilder = $this->formBuilder([$this->name => $data], $state, $options);
@@ -147,7 +132,7 @@ class Group extends Element
             //dump($layoutBuilder);
             $builder->add($layoutBuilder);
             foreach ($this->cells() as $cell) {
-                $cell->buildForm($layoutBuilder, $data, $dataKey, $options);
+                $cell->buildForm($layoutBuilder, $data, $state, $options);
             }
         } else {
             foreach ($this->cells() as $cell) {
@@ -156,43 +141,23 @@ class Group extends Element
         }
     }
 
-    public function renderView($data, array $state, $forms = null, $form = null)
+    public function buildContext($data, array $state, FormView $form = null)
     {
-        //dump('RENDER GROUP : '.$this->formName());
-        //dump($data);
-        //dump($state);
-        //dump($forms);
-        //dump($form);
-        if ($this->template()) {
-            $context = $this->defaultContext();
-            $context['state'] = array_replace_recursive($context['state'], $state);
-            $state['mode'] = $this->displayMode($state['mode']);
-            $data = $this->formData($data, $state);
-            $context = $this->viewContext($data, $context, $state);
-            $context['layout'] = $this;
-            if ($forms && $form === null && isset($forms[$this->formName($state['name'])])) {
-                $form = $forms[$this->formName($state['name'])];
-            }
-            $form = (isset($form[$this->formName($state['name'])]) ? $form[$this->formName($state['name'])] : $form);
-            //dump($form);
-            $context['forms'] = $forms;
-            $context['form'] = $form;
-            if (isset($state['label']) && $state['label'] === true) {
-                $context['label'] = $this->keyword();
-            } else {
-                $context['label'] = false;
-            }
-            //dump($context);
-            //dump($this->template());
-            return Service::view()->renderView($this->template(), $context);
-        }
-        return '';
+        $context = parent::buildContext($data, $state, $form);
+        $context['layout'] = $this;
+        return $context;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
+        $builder = new ClassMetadataBuilder($metadata, 'ark_view_group');
+    }
+
+    public static function groupMetadata(ClassMetadata $metadata)
+    {
         // Joined Table Inheritance
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_group');
+        $builder->setReadOnly();
 
         // Fields
         $builder->addField('form', 'boolean');

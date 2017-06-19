@@ -34,8 +34,11 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
 use ARK\Actor\Actor;
 use ARK\Service;
+use ARK\View\Group;
 use ARK\View\Element;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\Request;
 
 class Page extends Element
 {
@@ -48,10 +51,10 @@ class Page extends Element
     protected $content = null;
     protected $footer = null;
 
-    public function mode(Actor $actor, Item $item = null)
+    public function pageMode(Actor $actor, Item $item = null)
     {
         // TODO Move check to Security or Workflow???
-        $mode = $this->defaultMode();
+        $mode = $this->mode();
         if ($this->visibility != 'public') {
             if ($mode == 'edit' && !$actor->hasPermission($this->updatePermission())) {
                 $mode = 'view';
@@ -107,42 +110,30 @@ class Page extends Element
         return $this->footer;
     }
 
-    public function defaultState($route = null)
+    public function buildState(array $state)
     {
-        $state = parent::defaultState($route);
+        $state = parent::buildState($state);
         $state['page'] = $this;
         return $state;
     }
 
-    public function buildForms($data, $options)
-    {
-        //dump('BUILD PAGE : '.$this->element);
-        //dump($data);
-        //dump($options);
-        $options = $this->buildOptions($data, $options);
-        return $this->content->buildForms($data, $options);
-    }
-
-    public function renderView($data, array $state, $forms = null, $form = null)
+    public function renderView($data, array $state, $forms = null)
     {
         $context = $this->renderContext($data, $state, $forms);
         return Service::view()->renderView($this->template(), $context);
     }
 
-    public function renderContext($data, array $context, $forms = null)
+    public function pageContext($data, array $state, $forms = null)
     {
-        $context = $this->viewContext($data, $context, $context['state']);
+        $context = $this->buildContext($data, $state);
         $context['page'] = $this;
         $context['layout'] = $this->content();
         $context['forms'] = null;
         if ($forms) {
             foreach ($forms as $name => $form) {
-                //dump('CREATE VIEW : '.$name);
-                //dump($form);
                 if ($form) {
-                    $context['forms'][$name] = $form->createView();
+                    $context['state']['forms'][$name] = $form->createView();
                 }
-                //dump($context['forms'][$name]);
             }
         }
         $context['form'] = null;
@@ -166,32 +157,27 @@ class Page extends Element
         return null;
     }
 
-    public function renderResponse($data, array $context, $forms = null, $form = null)
+    public function handleRequest(Request $request, $data, array $state, callable $processForm = null, $redirect = null)
     {
-        $context = $this->renderContext($data, $context, $forms, $form);
-        return Service::view()->renderResponse($this->template(), $context);
-    }
-
-    public function handleRequest($request, $data, $state, callable $processForm = null, $redirect = null)
-    {
-        //dump('PAGE : '.$this->element);
+        dump('PAGE : '.$this->element);
         //dump($this);
         //dump($request);
         //dump($data);
         //dump($state);
-        $actor = Service::workflow()->actor();
         $item = null;
-        $options = $this->buildOptions($data, ['state' => $state]);
-        $options['state']['actor'] = $actor;
-        $options['state']['mode'] = $this->mode($actor, $item);
-        //dump($options);
-        //dump('PAGE : BUILD FORMS');
-        $forms = $this->buildForms($data, $options);
+        $state = $this->buildState($this->defaultState());
+        $actor = Service::workflow()->actor();
+        $state['actor'] = $actor;
+        $state['mode'] = $this->pageMode($actor, $item);
+        $options = $this->buildOptions($data, $state, []);
+        dump($options);
+        dump('PAGE : BUILD FORMS');
+        $forms = $this->content->buildForms($data, $state, $options);
         //dump($actor);
         //dump($item);
         //dump($request);
         //dump($request->request);
-        //dump($forms);
+        dump($forms);
         //dump('PAGE : CHECK POSTED');
         if ($forms && $request->getMethod() == 'POST' && $posted = $this->postedForm($request, $forms)) {
             //dump($posted);
@@ -203,11 +189,11 @@ class Page extends Element
             }
             return $processForm($request, $posted, $redirect);
         }
-        $context['state'] = $options['state'];
-        //dump('PAGE : RENDER');
-        //dump($context);
-        $response = $this->renderResponse($data, $context, $forms);
-        //dump($response);
+        dump('PAGE : RENDER');
+        $context = $this->pageContext($data, $state, $forms);
+        dump($context);
+        $response = Service::view()->renderResponse($this->template(), $context);
+        dump($response);
         Service::view()->clearFlashes();
         return $response;
     }
@@ -225,9 +211,9 @@ class Page extends Element
         // Associations
         $builder->addPermissionField('read', 'view');
         $builder->addPermissionField('update', 'edit');
-        $builder->addManyToOneField('header', Layout::class, 'header', 'element');
-        $builder->addManyToOneField('sidebar', Layout::class, 'sidebar', 'element');
-        $builder->addManyToOneField('content', Layout::class, 'content', 'element');
-        $builder->addManyToOneField('footer', Layout::class, 'footer', 'element');
+        $builder->addManyToOneField('header', Group::class, 'header', 'element');
+        $builder->addManyToOneField('sidebar', Group::class, 'sidebar', 'element');
+        $builder->addManyToOneField('content', Group::class, 'content', 'element');
+        $builder->addManyToOneField('footer', Group::class, 'footer', 'element');
     }
 }

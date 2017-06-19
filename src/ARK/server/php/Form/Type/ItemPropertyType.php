@@ -48,8 +48,8 @@ class ItemPropertyType extends AbstractPropertyType
     {
         $field = $options['state']['field'];
         $format = $field->attribute()->format();
-        if (isset($options['display'])) {
-            $builder->add('display', $options['state']['value']['type'], $options['state']['value']['options']);
+        if (isset($options['state']['value']['display'])) {
+            $builder->add($options['state']['value']['display'], $options['state']['value']['type'], $options['state']['value']['options']);
             $builder->add($format->valueName(), HiddenType::class, $options['state']['value']['options']);
         } else {
             $builder->add($format->valueName(), $options['state']['value']['type'], $options['state']['value']['options']);
@@ -67,7 +67,6 @@ class ItemPropertyType extends AbstractPropertyType
     {
         return [
             'compound' => true,
-            'display' => null,
         ];
     }
 
@@ -83,8 +82,8 @@ class ItemPropertyType extends AbstractPropertyType
             $forms['item']->setData($item->id());
             // TODO Make generic using module!
             $options = $forms['module']->getParent()->getConfig()->getOptions();
-            if (isset($options['display'])) {
-                $val = $item->property($options['display'])->value();
+            if (isset($options['state']['value']['display'])) {
+                $val = $item->property($options['state']['value']['display'])->value();
                 if ($val instanceof Term) {
                     $name = $val->keyword();
                 } elseif ($val instanceof LocalText) {
@@ -92,14 +91,14 @@ class ItemPropertyType extends AbstractPropertyType
                 } else {
                     $name = $val;
                 }
+                $forms[$options['state']['value']['display']]->setData($name);
             } else {
                 $name = $item->property('id')->serialize();
+                $forms[$options['state']['value']['name']]->setData($name);
             }
-            $forms['display']->setData($name);
         } elseif (isset($item['item'])) {
             $forms['module']->setData($item['module']);
             $forms['item']->setData($item['item']);
-            $forms['display']->setData('');
         }
     }
 

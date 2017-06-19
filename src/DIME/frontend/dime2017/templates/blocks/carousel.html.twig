@@ -49,13 +49,10 @@
 
 {% for key,item in data %}
     <div class="carouselextratext_{{ key }}">
-    {% for field in layout.elements %}
-      {% if field.formName == 'location' %}
-      {% else %}
-          <div class="homefield">{{field.keyword|trans}}: {{ field.renderView(item, state) }}</div>
-      {% endif %}
-     {% endfor %}
-     </div>
+        {% for cell in layout.cells %}
+            <div class="homefield">{{cell.element.keyword|trans}}: {{ cell.element.renderView(item, state) }}</div>
+        {% endfor %}
+    </div>
 {% endfor %}
 
 </div>

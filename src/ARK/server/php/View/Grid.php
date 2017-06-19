@@ -77,7 +77,7 @@ class Grid extends Group
         if ($row < 0 || $row >= count($this->grid())) {
             return [];
         }
-        if ($col < 0 || $col >= count($this->grid[$col])) {
+        if ($col < 0 || $col >= count($this->grid[$row])) {
             return [];
         }
         return $this->grid[$row][$col];
@@ -89,7 +89,8 @@ class Grid extends Group
         if ($column == []) {
             return null;
         }
-        return $column[0]->width();
+        reset($column);
+        return current($column)->width();
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

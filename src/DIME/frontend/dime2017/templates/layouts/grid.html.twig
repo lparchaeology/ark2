@@ -13,7 +13,7 @@
     </div>
 {% endif %}
 
-{% for rdx, row in layout.rows %}
+{% for rdx, row in layout.grid %}
 
     {% set rowlength = row | length %}
     {% if rowlength > 1 %}
@@ -41,7 +41,7 @@
         {% endif %}
 
         {% for idx, cell in col %}
-            {{ cell.renderView(data, state, forms, form)|raw }}
+            {{ cell.renderForm(data, state, form)|raw }}
         {% endfor %}
         </div>
     {% endfor %}

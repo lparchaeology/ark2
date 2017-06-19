@@ -47,6 +47,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\ButtonTypeInterface;
 use Symfony\Component\Form\SubmitButtonTypeInterface;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormView;
 
 class Widget extends Element
 {
@@ -65,44 +66,27 @@ class Widget extends Element
             is_subclass_of($this->formTypeClass(), ButtonTypeInterface::class);
     }
 
-    public function buildOptions($data, array $state, array $options = [])
+    public function buildState(array $state)
     {
-        if ($this->formOptionsArray === null) {
-            $this->formOptionsArray = ($this->formOptions ? json_decode($this->formOptions, true) : []);
+        if (!isset($state['label'])) {
+            $state['label'] = $this->showLabel();
         }
-        $options = array_replace_recursive($this->defaultOptions(), $this->formOptionsArray, $options);
-
-        $options['label'] = $state['label'];
-        if ($options['label']) {
-            if ($state['keyword']) {
-                $options['label'] = $state['keyword'];
-            } elseif ($this->keyword()) {
-                $options['label'] = $this->keyword();
-            }
+        if (!isset($state['name'])) {
+            $state['name'] = $this->formName();
         }
-
-        if ($state['mode'] == 'view') {
-            $options['required'] = false;
-        } else {
-            $options['required'] = $state['required'];
+        if (!isset($state['keyword'])) {
+            $state['keyword'] = $this->keyword();
         }
-
-        if ($this->vocabulary) {
-            $options = $this->vocabularyOptions($this->vocabulary, $options);
+        $state['mode'] = $this->displayMode($state['mode']);
+        if ($state['mode'] == 'view' || $this->mode == 'view') {
+            $stae['mode'] = 'withhold';
         }
-
-        unset($options['data']);
-        unset($options['forms']);
-        unset($options['form']);
-        if ($this->isButton()) {
-            unset($options['required']);
-            unset($options['mapped']);
-        }
-
-        return $options;
+        $state['template'] = $this->template();
+        $state['widget'] = $this;
+        return $state;
     }
 
-    public function formData($data, $state)
+    public function buildData($data, array $state)
     {
         if ($this->isButton()) {
             return null;
@@ -126,45 +110,40 @@ class Widget extends Element
         return $data;
     }
 
-    protected function buildState($state)
+    public function buildOptions($data, array $state, array $options = [])
     {
-        if (!isset($state['label'])) {
-            $state['label'] = $this->showLabel();
+        if ($this->formOptionsArray === null) {
+            $this->formOptionsArray = ($this->formOptions ? json_decode($this->formOptions, true) : []);
         }
-        if (!isset($state['name'])) {
-            $state['name'] = $this->formName();
+        $options = array_replace_recursive($this->defaultOptions(), $this->formOptionsArray, $options);
+
+        if ($state['label']) {
+            $options['label'] = ($state['keyword'] ? $state['keyword'] : $this->keyword());
         }
-        if (!isset($state['keyword'])) {
-            $state['keyword'] = $this->keyword();
+
+        if ($state['mode'] == 'view') {
+            $options['required'] = false;
+        } else {
+            $options['required'] = $state['required'];
         }
-        $state['mode'] = $this->displayMode($state['mode']);
-        if ($state['mode'] == 'view' || $this->mode == 'view') {
-            return;
+
+        if ($this->vocabulary) {
+            $options = $this->vocabularyOptions($this->vocabulary, $options);
         }
-        if ($state['mode'] == 'view' || $this->mode == 'view') {
-            $stae['mode'] = 'withhold';
+
+        if ($this->isButton()) {
+            unset($options['required']);
+            unset($options['mapped']);
         }
-        $state['widget'] = $this;
-        return $state;
+
+        return $options;
     }
 
-    public function renderView($data, array $state, $form = null)
+    public function buildContext($data, array $state, FormView $form = null)
     {
-        //dump('RENDER WIDGET : '.$this->formName());
-        //dump($form);
-        //dump($state);
-        $state = $this->buildState($state);
-        if ($form) {
-            $context = $this->defaultContext();
-            $context['state'] = array_replace_recursive($context['state'], $state);
-            $context['data'] = $this->formData($data, $state);
-            $context['forms'] = $forms;
-            $context['form'] = $form[$context['state']['name']];
-            //dump($context['form']);
-            //dump($this->template());
-            return Service::view()->renderView($this->template(), $context);
-        }
-        return null;
+        $context = parent::buildContext($data, $state, $form);
+        $context['widget'] = $this;
+        return $context;
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
@@ -173,7 +152,6 @@ class Widget extends Element
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_widget');
 
         // Fields
-        $builder->addStringField('mode', 10);
         $builder->addStringField('name', 30);
         $builder->addStringField('template', 100);
         $builder->addStringField('formTypeClass', 100, 'form_type_class');
