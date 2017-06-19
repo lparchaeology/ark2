@@ -49,16 +49,18 @@ class UserRegisterController extends DimeFormController
 {
     public function __invoke(Request $request)
     {
-        return $this->handleRequest($request, 'core_page_user_register', [], 'front');
+        $request->attributes->set('page', 'core_page_user_register');
+        $request->attributes->set('redirect', 'front');
+        return $this->handleRequest($request);
     }
 
-    public function buildData(Request $request, $slugs = [])
+    public function buildData(Request $request)
     {
         $data['actor'] = new Person;
         return $data;
     }
 
-    public function processForm(Request $request, $form, $redirect)
+    public function processForm(Request $request, $form)
     {
         $data = $form->getData();
         $credentials = $data['credentials'];
@@ -66,6 +68,7 @@ class UserRegisterController extends DimeFormController
         $comments = $data['role']['comments'];
         $actor = $data['actor'];
         $actor->setItem($credentials['_username']);
+
         $user = Service::security()->createUser(
             $credentials['_username'],
             $credentials['email'],
@@ -74,7 +77,8 @@ class UserRegisterController extends DimeFormController
         );
         $role = ORM::find(Role::class, $role->name());
         Service::security()->registerUser($user, $actor, $role);
-        Service::view()->addSuccessFlash('dime.user.register.success');
-        return Service::redirectPath($redirect);
+
+        $request->attributes->set('flash', 'success');
+        $request->attributes->set('message', 'dime.user.register.success');
     }
 }

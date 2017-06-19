@@ -42,6 +42,7 @@ class UserProfileController extends DimeFormController
 {
     public function __invoke(Request $request)
     {
+        $request->attributes->set('page', 'dime_page_user_profile');
         return $this->handleRequest($request, 'dime_page_user_profile');
     }
 
@@ -52,14 +53,14 @@ class UserProfileController extends DimeFormController
         return $state;
     }
 
-    public function buildData(Request $request, $slugs = [])
+    public function buildData(Request $request)
     {
         $data['actor'] = Service::workflow()->actor();
         $data['user'] = Service::security()->user();
         return $data;
     }
 
-    public function processForm(Request $request, $form, $redirect)
+    public function processForm(Request $request, $form)
     {
         $submitted = $form->getConfig()->getName();
         if ($submitted == 'password_change') {
@@ -69,17 +70,19 @@ class UserProfileController extends DimeFormController
                 $user->setPassword($data['password']);
                 ORM::persist($user);
                 ORM::flush($user);
-                Service::view()->addSuccessFlash('core.user.password.change.success');
+                $request->attributes->set('flash', 'success');
+                $request->attributes->set('message', 'core.user.password.change.success');
             } else {
-                Service::view()->addErrorFlash('core.user.password.incorrect');
+                $request->attributes->set('flash', 'error');
+                $request->attributes->set('message', 'core.user.password.incorrect');
             }
         }
         if ($submitted == 'actor') {
             $actor = $form->getData();
             ORM::persist($actor);
             ORM::flush($actor);
-            Service::view()->addSuccessFlash('dime.user.update.success');
+            $request->attributes->set('flash', 'success');
+            $request->attributes->set('message', 'dime.find.update.success');
         }
-        return Service::redirectPath($redirect);
     }
 }

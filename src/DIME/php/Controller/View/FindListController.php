@@ -46,10 +46,11 @@ class FindListController extends DimeFormController
 {
     public function __invoke(Request $request)
     {
-        return $this->handleRequest($request, 'dime_page_find_list');
+        $request->attributes->set('page', 'dime_page_find_list');
+        return $this->handleRequest($request);
     }
 
-    public function buildData(Request $request, $slugs = [])
+    public function buildData(Request $request)
     {
         $query = $request->query->all();
 
@@ -90,7 +91,8 @@ class FindListController extends DimeFormController
             $finds = ORM::findBy(Find::class, [
                 'item' => $items
             ]);
-            Service::view()->addInfoFlash('dime.find.query.set');
+            $request->attributes->set('flash', 'info');
+            $request->attributes->set('message', 'dime.find.query.set');
         } else {
             $finds = ORM::findAll(Find::class);
         }
@@ -102,7 +104,7 @@ class FindListController extends DimeFormController
         return $data;
     }
 
-    public function processForm(Request $request, $form, $redirect)
+    public function processForm(Request $request, $form)
     {
         $municipalities = $form['municipality']->getData();
         $types = $form['type']->getData();
@@ -129,6 +131,6 @@ class FindListController extends DimeFormController
                 $query['material'][] = $material->name();
             }
         }
-        return Service::redirectPath($redirect, $query);
+        $request->attributes->set('parameters', $query);
     }
 }

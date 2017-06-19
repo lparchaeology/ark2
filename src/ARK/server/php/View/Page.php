@@ -161,7 +161,7 @@ class Page extends Element
         return null;
     }
 
-    public function handleRequest(Request $request, $data, array $state, callable $processForm = null, $redirect = null)
+    public function handleRequest(Request $request, $data, array $state, callable $processForm = null)
     {
         //dump('PAGE : '.$this->element);
         //dump($this);
@@ -174,20 +174,21 @@ class Page extends Element
         $state['actor'] = $actor;
         $state['mode'] = $this->pageMode($actor, $item);
         $options = $this->buildOptions($data, $state, []);
-        //dump($options);
-        //dump('PAGE : BUILD FORMS');
         $forms = $this->content->buildForms($data, $state, $options);
         //dump($forms);
-        //dump('PAGE : CHECK POSTED');
         if ($forms && $request->getMethod() == 'POST' && $posted = $this->postedForm($request, $forms)) {
-            //dump($posted);
+            $redirect = $request->attributes->get('redirect');
             if (!$redirect) {
                 $redirect = $request->attributes->get('_route');
             }
-            if ($processForm === null) {
-                return Service::redirectPath($redirect);
+            if ($processForm !== null) {
+                $processForm($request, $posted);
             }
-            return $processForm($request, $posted, $redirect);
+            if ($flash = $request->attributes->get('flash')) {
+                Service::view()->addFlash($flash, $request->attributes->get('message'));
+            }
+            $parameters = ($request->attributes->get('parameters') ?: []);
+            return Service::redirectPath($redirect, $parameters);
         }
         //dump('PAGE : RENDER');
         $context = $this->pageContext($data, $state, $forms);

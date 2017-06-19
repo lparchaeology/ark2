@@ -42,10 +42,11 @@ class HomePageController extends DimeFormController
 {
     public function __invoke(Request $request)
     {
-        return $this->handleRequest($request, 'dime_page_home');
+        $request->attributes->set('page', 'dime_page_home');
+        return $this->handleRequest($request);
     }
 
-    public function buildData(Request $request, $slugs = [])
+    public function buildData(Request $request)
     {
         // Find 9 most recent finds for current actor
         $items = Service::database()->getActorFinds(Service::workflow()->actor()->id());

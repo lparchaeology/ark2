@@ -28,52 +28,46 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace DIME\Controller\View;
+namespace DIME\Controller\API;
 
-use ARK\Error\ErrorException;
-use ARK\Http\Error\NotFoundError;
+use ARK\Actor\Actor;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Page;
 use DIME\DIME;
 use DIME\Controller\View\DimeFormController;
-use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
-class FindViewController extends DimeFormController
+class UserActorController extends AjaxFormController
 {
     public function __invoke(Request $request, $id)
     {
-        $request->attributes->set('page', 'dime_page_find');
-        $request->attributes->set('find', $id);
+        $request->attributes->set('page', 'dime_page_user_profile');
+        $request->attributes->set('actor', $id);
         return $this->handleRequest($request);
+    }
+
+    public function buildState(Request $request)
+    {
+        $state = parent::buildState($request);
+        $state['image'] = 'avatar';
+        return $state;
     }
 
     public function buildData(Request $request)
     {
-        $id = $request->attributes->get('find');
-        if (!$find = ORM::find(Find::class, $id)) {
-            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Find not found', "Find $id not found"));
-        }
-        $data['find'] = $find;
-        $data['actions'] = Service::workflow()->actions(Service::workflow()->actor(), $find);
+        $actor = $request->attributes->get('actor');
+        $data['actor'] = ORM::fetch(Actor::class, $actor);
         return $data;
     }
 
     public function processForm(Request $request, $form)
     {
-        $data = $form->getData();
-        $find = $data['find'];
-        ORM::persist($find);
-        if (isset($data['actions'])) {
-            $action = $data['actions'];
-            $actor = Service::workflow()->actor();
-            //$action->apply($actor, $item);
-        }
-        ORM::flush($find);
-        $parameters['id'] = $find->id();
-        $request->attributes->set('parameters', $parameters);
+        $actor = $form->getData();
+        ORM::persist($actor);
+        ORM::flush($actor);
         $request->attributes->set('flash', 'success');
-        $request->attributes->set('message', 'dime.find.update.success');
+        $request->attributes->set('message', 'dime.user.update.success');
+        // TODO Reload & Return data?
     }
 }

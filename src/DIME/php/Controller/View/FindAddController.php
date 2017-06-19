@@ -42,10 +42,12 @@ class FindAddController extends DimeFormController
 {
     public function __invoke(Request $request)
     {
-        return $this->handleRequest($request, 'dime_page_find', [], 'finds.view');
+        $request->attributes->set('page', 'dime_page_find');
+        $request->attributes->set('redirect', 'finds.view');
+        return $this->handleRequest($request);
     }
 
-    public function buildData(Request $request, $slugs = [])
+    public function buildData(Request $request)
     {
         $actor = Service::workflow()->actor();
         $find = new Find('dime.find');
@@ -65,7 +67,7 @@ class FindAddController extends DimeFormController
         return $data;
     }
 
-    public function processForm(Request $request, $form, $redirect)
+    public function processForm(Request $request, $form)
     {
         $data = $form->getData();
         $find = $data['find'];
@@ -76,9 +78,9 @@ class FindAddController extends DimeFormController
             //$action->apply($actor, $item);
         }
         ORM::flush($find);
-        Service::view()->addSuccessFlash('dime.find.add.success');
-        return Service::redirectPath($redirect, [
-            'id' => $find->id()
-        ]);
+        $parameters['id'] = $find->id();
+        $request->attributes->set('parameters', $parameters);
+        $request->attributes->set('flash', 'success');
+        $request->attributes->set('message', 'dime.find.add.success');
     }
 }

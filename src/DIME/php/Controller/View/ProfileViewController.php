@@ -43,7 +43,9 @@ class ProfileViewController extends DimeFormController
 {
     public function __invoke(Request $request, $id)
     {
-        return $this->handleRequest($request, 'dime_page_profile', ['actor' => $id]);
+        $request->attributes->set('page', 'dime_page_profile');
+        $request->attributes->set('actor', $id);
+        return $this->handleRequest($request);
     }
 
     public function buildState(Request $request)
@@ -53,16 +55,15 @@ class ProfileViewController extends DimeFormController
         return $state;
     }
 
-    public function buildData(Request $request, $slugs = [])
+    public function buildData(Request $request)
     {
-        $id = $slugs['actor'];
+        $id = $request->attributes->get('actor');
         if (!$actor = ORM::find(Actor::class, $id)) {
             throw new ErrorException(new NotFoundError('PROFILE_NOT_FOUND', 'Profile not found', "Profile for user $id not found"));
         }
         $data['actor'] = $actor;
         $items = Service::database()->getActorFinds($actor->id());
-        $finds = ORM::findBy(Find::class, ['item' => $items]);
-        $data['finds'] = $finds;
+        $data['finds'] = ORM::findBy(Find::class, ['item' => $items]);
         return $data;
     }
 }

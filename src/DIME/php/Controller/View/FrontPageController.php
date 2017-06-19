@@ -42,10 +42,11 @@ class FrontPageController extends DimeFormController
 {
     public function __invoke(Request $request)
     {
-        return $this->handleRequest($request, 'dime_page_front');
+        $request->attributes->set('page', 'dime_page_front');
+        return $this->handleRequest($request);
     }
 
-    public function buildData(Request $request, $slugs = [])
+    public function buildData(Request $request)
     {
         // Get the 25 most recent public Items
         $finds = ORM::findBy(Find::class, ['visibility' => 'public'], ['item' => 'DESC'], 25);

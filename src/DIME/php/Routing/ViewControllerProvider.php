@@ -58,6 +58,9 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         // Internal API routes
+        $controllers->match("/api/internal/users/{id}", 'DIME\Controller\View\AdminUserController')
+            ->method('GET|POST')
+            ->bind('api.internal.users');
         $controllers->post('/api/internal/vocabulary', 'DIME\Controller\API\VocabularyController')->bind('api.internal.vocabulary');
         $controllers->post('/api/internal/message/read', 'DIME\Controller\API\MessageReadController')->bind('api.internal.message.read');
         $controllers->post('/api/geo/find', 'DIME\Controller\API\GeoFindController')->bind('api.geo.find');

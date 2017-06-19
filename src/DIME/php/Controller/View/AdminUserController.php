@@ -40,8 +40,10 @@ class AdminUserController extends DimeFormController
 {
     public function __invoke(Request $request)
     {
-        return $this->handleRequest($request, 'dime_page_admin_user');
+        $request->attributes->set('page', 'dime_page_admin_user');
+        return $this->handleRequest($request);
     }
+
     public function buildState(Request $request)
     {
         $state = parent::buildState($request);
@@ -49,7 +51,7 @@ class AdminUserController extends DimeFormController
         return $state;
     }
 
-    public function buildData(Request $request, $slugs = [])
+    public function buildData(Request $request)
     {
         $data['actors'] = ORM::findAll(Person::class);
         $data['actor'] = Service::workflow()->actor();
@@ -58,7 +60,7 @@ class AdminUserController extends DimeFormController
         return $data;
     }
 
-    public function processForm(Request $request, $form, $redirect)
+    public function processForm(Request $request, $form)
     {
         $submitted = $form->getConfig()->getName();
         if ($submitted == 'password_set') {
@@ -67,14 +69,15 @@ class AdminUserController extends DimeFormController
             $user->setPassword($data['password']);
             ORM::persist($user);
             ORM::flush($user);
-            Service::view()->addSuccessFlash('core.user.password.change.success');
+            $request->attributes->set('flash', 'success');
+            $request->attributes->set('message', 'core.user.password.change.success');
         }
         if ($submitted == 'actor') {
             $actor = $form->getData();
             ORM::persist($actor);
             ORM::flush($actor);
-            Service::view()->addSuccessFlash('dime.user.update.success');
+            $request->attributes->set('flash', 'success');
+            $request->attributes->set('message', 'dime.user.update.success');
         }
-        return Service::redirectPath($redirect);
     }
 }

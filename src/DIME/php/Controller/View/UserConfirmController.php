@@ -43,6 +43,7 @@ class UserConfirmController extends DimeFormController
 {
     public function __invoke(Request $request)
     {
-        return $this->handleRequest($request, 'core_page_user_confirm');
+        $request->attributes->set('page', 'core_page_user_confirm');
+        return $this->handleRequest($request);
     }
 }

@@ -40,7 +40,8 @@ class ProfileListController extends DimeFormController
 {
     public function __invoke(Request $request)
     {
-        return $this->handleRequest($request, 'dime_page_profile_list');
+        $request->attributes->set('page', 'dime_page_profile_list');
+        return $this->handleRequest($request);
     }
 
     public function buildState(Request $request)
@@ -50,7 +51,7 @@ class ProfileListController extends DimeFormController
         return $state;
     }
 
-    public function buildData(Request $request, $slugs = [])
+    public function buildData(Request $request)
     {
         $actors = ORM::findAll(Person::class);
         $data['actors'] = $actors;

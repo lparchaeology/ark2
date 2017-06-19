@@ -40,16 +40,16 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class DimeFormController extends DimeController
 {
-    public function handleRequest(Request $request, $page, $slugs = [], $redirect = null)
+    public function handleRequest(Request $request)
     {
-        $page = ORM::find(Page::class, $page);
-        $data = $this->buildData($request, $slugs);
+        $page = ORM::find(Page::class, $request->attributes->get('page'));
+        $data = $this->buildData($request);
         $state = $this->buildState($request);
         $state['page_config'] = $this->pageConfig($request->attributes->get('_route'));
-        return $page->handleRequest($request, $data, $state, [$this, 'processForm'], $redirect);
+        return $page->handleRequest($request, $data, $state, [$this, 'processForm']);
     }
 
-    public function handleJsonRequest(Request $request, $page, $slugs = [])
+    public function handleJsonRequest(Request $request)
     {
         $page = ORM::find(Page::class, $page);
         $data = $this->buildData($request, $slugs);
@@ -57,7 +57,7 @@ abstract class DimeFormController extends DimeController
         return $page->handleJsonRequest($request, $data, $state, [$this, 'processForm']);
     }
 
-    public function buildData(Request $request, $slugs = [])
+    public function buildData(Request $request)
     {
         return null;
     }
@@ -90,8 +90,7 @@ abstract class DimeFormController extends DimeController
         return $state;
     }
 
-    public function processForm(Request $request, $form, $redirect)
+    public function processForm(Request $request, $form)
     {
-        return Service::redirectPath($redirect);
     }
 }
