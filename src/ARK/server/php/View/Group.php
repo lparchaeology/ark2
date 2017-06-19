@@ -88,10 +88,11 @@ abstract class Group extends Element
         //dump($options);
         $state = $this->buildState($state);
         if ($this->form) {
-            //dump('GROUP : BUILD FORMS');
+            //dump('GROUP : BUILD FORMS '.$this->formName());
             $builderData = $this->buildData($data, $state);
             $builderOptions = $this->buildOptions($builderData, $state, $options);
             //dump($builderOptions);
+            //dump($state);
             $builder = $this->formBuilder($builderData, $state, $builderOptions);
             if ($this->method) {
                 $builder->setMethod($this->method);
@@ -100,7 +101,7 @@ abstract class Group extends Element
                 $builder->setAction(Service::path($this->action));
             }
             $this->buildForm($builder, $data, $state, $options);
-            //dump('Group : FORM BUILDER');
+            //dump('GROUP : FORM BUILDER '.$this->formName());
             //dump($builder);
             $form = $builder->getForm();
             return [$this->formName() => $form];
@@ -123,6 +124,7 @@ abstract class Group extends Element
             return;
         }
         $data = $this->buildData($data, $state);
+        //dump($state);
         //dump($data);
         $options = $this->buildOptions($data, $state, $options);
         //dump($options);

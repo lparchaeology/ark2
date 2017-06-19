@@ -150,6 +150,7 @@ gulp.task('js', function() {
     var namespace = (util.env.namespace || 'ARK');
     var src = [
         config.vendorDir + '/jquery/dist/jquery.js',
+        config.vendorDir + '/jquery-form/src/jquery.form.js',
         config.bootstrapDir + '/javascripts/bootstrap.js',
         config.vendorDir + '/summernote/dist/summernote.js',
         config.vendorDir + '/select2/dist/js/select2.js',

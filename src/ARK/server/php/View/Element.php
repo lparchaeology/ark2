@@ -223,11 +223,9 @@ abstract class Element implements ElementInterface
             return;
         }
         $data = $this->buildData($data, $state);
-        //dump($data);
         $options = $this->buildOptions($data, $state, $options);
-        //dump($options);
         $elementBuilder = $this->formBuilder($data, $state, $options);
-        //dump($fieldBuilder);
+        //dump($elementBuilder);
         $builder->add($elementBuilder);
     }
 
@@ -243,10 +241,11 @@ abstract class Element implements ElementInterface
 
     public function renderForm($data, array $state, FormView $form = null)
     {
-        //dump('RENDER FORM : '.$this->formName());
+        //dump('RENDER FORM : '.get_class($this).' '.$this->formName());
         //dump($state);
         //dump($form);
         $context = $this->buildContext($data, $state, $form);
+        //dump($context);
         if ($context['state']['mode'] == 'withhold') {
             return;
         }

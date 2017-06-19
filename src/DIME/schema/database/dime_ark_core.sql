@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 19, 2017 at 10:28 AM
+-- Generation Time: Jun 19, 2017 at 05:35 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -5579,7 +5579,7 @@ INSERT INTO `ark_view_grid` (`grp`, `row`, `col`, `seq`, `item_type`, `element`,
 ('core_user_actor', 0, 0, 14, '', 'core_actor_visibility', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_user_actor', 0, 0, 16, '', 'core_actor_license', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_user_actor', 0, 0, 18, '', 'core_actor_biography', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_actor', 0, 0, 20, '', 'core_actor_avatar', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_actor', 0, 0, 20, '', 'core_actor_avatar', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_user_credentials', 0, 0, 0, '', 'core_user_username', NULL, NULL, NULL, 1, NULL, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_user_credentials', 0, 0, 2, '', 'core_user_email_confirm', NULL, NULL, NULL, 1, NULL, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_user_credentials', 0, 0, 4, '', 'core_user_password_confirm', NULL, NULL, NULL, 1, NULL, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -5661,7 +5661,7 @@ INSERT INTO `ark_view_grid` (`grp`, `row`, `col`, `seq`, `item_type`, `element`,
 ('dime_message_page', 0, 1, 0, '', 'core_message_item', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_profile_list', 0, 0, 0, '', 'core_actor_id', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_profile_list', 0, 0, 2, '', 'core_actor_fullname', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_profile_list', 0, 1, 2, '', 'core_actor_avatar', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_profile_list', 0, 1, 2, '', 'core_actor_avatar', NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_profile_list_page', 0, 0, 0, '', 'dime_profile_list', 'actors', NULL, NULL, 1, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_profile_list_page', 0, 1, 0, '', 'dime_find_list', 'finds', NULL, NULL, 1, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_profile_page', 0, 0, 0, '', 'dime_profile_view', 'actor', NULL, NULL, 1, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -5669,7 +5669,7 @@ INSERT INTO `ark_view_grid` (`grp`, `row`, `col`, `seq`, `item_type`, `element`,
 ('dime_profile_view', 0, 0, 0, '', 'core_actor_id', NULL, 8, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_profile_view', 0, 0, 2, '', 'core_actor_fullname', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_profile_view', 0, 0, 6, '', 'core_actor_biography', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_profile_view', 0, 1, 2, '', 'core_actor_avatar', NULL, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_profile_view', 0, 1, 2, '', 'core_actor_avatar', NULL, 4, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_treasure_claim', 0, 0, 0, '', 'dime_treasure_museum', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_treasure_claim', 0, 0, 1, '', 'dime_treasure_claimant', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_treasure_claim', 0, 0, 2, '', 'dime_treasure_find', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -5700,7 +5700,7 @@ INSERT INTO `ark_view_grid` (`grp`, `row`, `col`, `seq`, `item_type`, `element`,
 ('dime_user_actor', 0, 0, 16, '', 'core_actor_license', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_user_actor', 0, 0, 18, '', 'core_actor_biography', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_user_actor', 0, 0, 20, '', 'core_widget_submit', 'save', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL),
-('dime_user_actor', 0, 1, 2, '', 'core_actor_avatar', NULL, 4, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_user_actor', 0, 1, 2, '', 'core_actor_avatar', NULL, 4, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_user_profile', 0, 0, 0, '', 'dime_home_action', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_user_profile', 1, 0, 0, '', 'dime_user_actor', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_user_profile', 1, 1, 0, '', 'core_user_password_change', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -5768,7 +5768,7 @@ INSERT INTO `ark_view_group` (`element`, `layout`, `mode`, `form`, `name`, `meth
 ('dime_home_action', 'grid', NULL, 0, NULL, NULL, NULL, 'blocks/homeaction.html.twig'),
 ('dime_home_page', 'grid', NULL, 0, NULL, NULL, NULL, NULL),
 ('dime_message_page', 'grid', NULL, 0, NULL, NULL, NULL, NULL),
-('dime_profile_list', 'table', 'view', 0, NULL, NULL, NULL, 'layouts/table.html.twig'),
+('dime_profile_list', 'table', 'view', 1, 'actors', NULL, NULL, 'layouts/table.html.twig'),
 ('dime_profile_list_page', 'grid', 'view', 0, NULL, NULL, NULL, NULL),
 ('dime_profile_page', 'grid', 'view', 0, NULL, NULL, NULL, NULL),
 ('dime_profile_view', 'grid', NULL, 1, 'actor', NULL, NULL, NULL),

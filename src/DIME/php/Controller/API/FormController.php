@@ -33,6 +33,7 @@ namespace DIME\Controller\API;
 use ARK\Http\JsonResponse;
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\View\Group;
 use Symfony\Component\HttpFoundation\Request;
 
 class FormController
@@ -42,7 +43,7 @@ class FormController
         $content = json_decode($request->getContent());
         try {
             $state = $content['state'];
-            $this->handleRequest($request, $state);
+            $data = $this->handleRequest($request, $state);
         } catch (Exception $e) {
             $data['error']['code'][$e->getCode()];
             $data['error']['message'][$e->getMessage()];
@@ -50,64 +51,29 @@ class FormController
         return new JsonResponse($data);
     }
 
-    public function handleRequest(Request $request, $formId, array $state = [])
+    public function handleRequest(Request $request, $data, array $state)
     {
-        $state = $this->buildState($request, $state);
-        $data = $this->buildData($request, $state);
-        $options = $page->buildOptions($data, ['state' => $state]);
+        $element = $state['group'];
+        $name = $state['name'];
+        $group = ORM::findOneBy(Group::class, ['element' => $element, 'name' => $name]);
 
-        $layout = $page->content;
-        $options['state']['layout'] = $layout;
-        if ($layout->label !== null) {
-            $options['state']['label'] = $layout->label;
-        }
-        if ($layout->required === false) {
-            $options['state']['required'] = $layout->required;
-        }
-        $data = $layout->formData($data, $options['state']);
-        $options['state']['mode'] = $layout->displayMode($options['state']['mode']);
-        $options['state']['layout'] = $layout;
-        $data = $layout->formData($data, $options['state']);
-        if ($layout->label !== null) {
-            $options['state']['label'] = $layout->label;
-        }
-        if ($layout->required === false) {
-            $options['state']['required'] = $layout->required;
-        }
+        $state = array_replace_recursive($group->defaultState(), $state);
+        $state['actor'] = Service::workflow()->actor();
 
-        $options = $layout->buildOptions($data, $options, $state);
+        $options = $group->defaultOptions();
 
-        $builder = $layout->formBuilder($data, $options, ($layout->formName() ? null : false));
-
-        foreach ($layout->cells() as $cell) {
-            $cell->buildForm($builder, $data, $options);
-        }
-
-
-        $form = $builder->getForm();
-
+        $forms = $group->buildForms($data, $state, $options);
+        $form = $forms[$name];
         if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                return $this->processForm($request, $form);
-            }
+            return $this->processForm($request, $form);
         }
-
-        $context['state'] = $options['state'];
-        $response = $this->renderResponse($data, $context, $forms);
-        return $response;
+        $view = $form->createView();
     }
 
     public function buildData(Request $request, $slugs = [])
     {
         $data = null;
         return $data;
-    }
-
-    public function buildState(Request $request, $state)
-    {
-        $state['actor'] = Service::workflow()->actor();
-        return $state;
     }
 
     public function processForm(Request $request, $form)

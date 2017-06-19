@@ -129,15 +129,18 @@ class Page extends Element
         $context = $this->buildContext($data, $state);
         $context['page'] = $this;
         $context['layout'] = $this->content();
-        $context['forms'] = null;
+        $views = null;
         if ($forms) {
             foreach ($forms as $name => $form) {
                 if ($form) {
-                    $context['state']['forms'][$name] = $form->createView();
+                    $views[$name] = $form->createView();
                 }
             }
         }
+        $context['state']['forms'] = $views;
+        $context['forms'] = $views;
         $context['form'] = null;
+        //dump($context);
         return $context;
     }
 
@@ -174,10 +177,6 @@ class Page extends Element
         //dump($options);
         //dump('PAGE : BUILD FORMS');
         $forms = $this->content->buildForms($data, $state, $options);
-        //dump($actor);
-        //dump($item);
-        //dump($request);
-        //dump($request->request);
         //dump($forms);
         //dump('PAGE : CHECK POSTED');
         if ($forms && $request->getMethod() == 'POST' && $posted = $this->postedForm($request, $forms)) {
@@ -195,6 +194,30 @@ class Page extends Element
         //dump($context);
         $response = Service::view()->renderResponse($this->template(), $context);
         //dump($response);
+        Service::view()->clearFlashes();
+        return $response;
+    }
+
+    public function handleJsonRequest(Request $request, $data, array $state, callable $processForm = null)
+    {
+        $item = null;
+        $state = $this->buildState($state);
+        $actor = Service::workflow()->actor();
+        $state['actor'] = $actor;
+        $state['mode'] = $this->pageMode($actor, $item);
+        $options = $this->buildOptions($data, $state, []);
+        $forms = $this->content->buildForms($data, $state, $options);
+        if ($forms && $request->getMethod() == 'POST' && $posted = $this->postedForm($request, $forms)) {
+            if (!$redirect) {
+                $redirect = $request->attributes->get('_route');
+            }
+            if ($processForm === null) {
+                return Service::redirectPath($redirect);
+            }
+            return $processForm($request, $posted, $redirect);
+        }
+        $context = $this->pageContext($data, $state, $forms);
+        $response = Service::view()->renderResponse($this->template(), $context);
         Service::view()->clearFlashes();
         return $response;
     }

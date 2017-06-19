@@ -35,6 +35,7 @@
     "proj4": "^2.4.3",
     "notosans-fontface": "^1.0.1",
     "bootstrap-fileinput": "^4.3.9",
+    "jquery-form": "^4.2.1",
     "vis": "^4.20.0"
   },
   "resolutions": {
