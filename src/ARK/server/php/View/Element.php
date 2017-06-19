@@ -73,6 +73,7 @@ abstract class Element implements ElementInterface
 
     public function formName()
     {
+        return $this->name;
         if ($this->name) {
             return $this->name;
         }
@@ -202,7 +203,11 @@ abstract class Element implements ElementInterface
         } else {
             $context['form'] = (isset($form[$name]) ? $form[$name] : $form);
         }
-        $context['label'] = $state['label'];
+        if ($state['label']) {
+            $context['label'] = ($state['keyword'] ? $state['keyword'] : $this->keyword());
+        } else {
+            $context['label'] = null;
+        }
         return $context;
     }
 
@@ -238,14 +243,13 @@ abstract class Element implements ElementInterface
 
     public function renderForm($data, array $state, FormView $form = null)
     {
-        dump('RENDER FORM : '.$this->formName());
-        dump($state);
-        dump($form);
+        //dump('RENDER FORM : '.$this->formName());
+        //dump($state);
+        //dump($form);
         $context = $this->buildContext($data, $state, $form);
         if ($context['state']['mode'] == 'withhold') {
             return;
         }
-        dump($context);
         return Service::view()->renderView($context['state']['template'], $context);
     }
 

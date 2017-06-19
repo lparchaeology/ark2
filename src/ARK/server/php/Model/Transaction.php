@@ -33,7 +33,7 @@ namespace ARK\Model\Transaction;
 use ARK\ORM\ORM;
 use ARK\Service;
 
-abstract class Transaction
+class Transaction
 {
     protected static function execute($data)
     {
@@ -42,5 +42,7 @@ abstract class Transaction
         return $result;
     }
 
-    abstract protected static function process($data);
+    protected static function process($data)
+    {
+    }
 }

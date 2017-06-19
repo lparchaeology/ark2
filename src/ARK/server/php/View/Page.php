@@ -112,6 +112,7 @@ class Page extends Element
 
     public function buildState(array $state)
     {
+        $state = array_replace_recursive($this->defaultState(), $state);
         $state = parent::buildState($state);
         $state['page'] = $this;
         return $state;
@@ -159,25 +160,25 @@ class Page extends Element
 
     public function handleRequest(Request $request, $data, array $state, callable $processForm = null, $redirect = null)
     {
-        dump('PAGE : '.$this->element);
+        //dump('PAGE : '.$this->element);
         //dump($this);
         //dump($request);
         //dump($data);
         //dump($state);
         $item = null;
-        $state = $this->buildState($this->defaultState());
+        $state = $this->buildState($state);
         $actor = Service::workflow()->actor();
         $state['actor'] = $actor;
         $state['mode'] = $this->pageMode($actor, $item);
         $options = $this->buildOptions($data, $state, []);
-        dump($options);
-        dump('PAGE : BUILD FORMS');
+        //dump($options);
+        //dump('PAGE : BUILD FORMS');
         $forms = $this->content->buildForms($data, $state, $options);
         //dump($actor);
         //dump($item);
         //dump($request);
         //dump($request->request);
-        dump($forms);
+        //dump($forms);
         //dump('PAGE : CHECK POSTED');
         if ($forms && $request->getMethod() == 'POST' && $posted = $this->postedForm($request, $forms)) {
             //dump($posted);
@@ -189,11 +190,11 @@ class Page extends Element
             }
             return $processForm($request, $posted, $redirect);
         }
-        dump('PAGE : RENDER');
+        //dump('PAGE : RENDER');
         $context = $this->pageContext($data, $state, $forms);
-        dump($context);
+        //dump($context);
         $response = Service::view()->renderResponse($this->template(), $context);
-        dump($response);
+        //dump($response);
         Service::view()->clearFlashes();
         return $response;
     }

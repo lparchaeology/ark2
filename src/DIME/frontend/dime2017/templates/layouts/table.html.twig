@@ -29,7 +29,8 @@
                 {% if data[0] is defined and data[0].hasAttribute(state.image) %}
                     <th class="thumbimagehead" data-field="{{state.image}}" data-title="{{state.image}}" data-sortable="false"></th>
                 {% endif %}
-                {% for field in layout.elements %}
+                {% for cell in layout.cells %}
+                    {% set field = cell.element %}
                     {% if state.actor.hasPermission(field.attribute.readPermission) %}
                         {% if field.attribute.name == 'id' %}
                         <th data-field="{{field.id}}" data-title="{{field.keyword|trans}}" data-sortable="true" data-sorter="alphanum" data-card-visible="false">
@@ -61,7 +62,8 @@
                             {% endif %}
                         </td>
                     {% endif %}
-                    {% for field in layout.elements %}
+                    {% for cell in layout.cells %}
+                        {% set field = cell.element %}
                         {% if state.actor.hasPermission(field.attribute.readPermission) %}
                             <td>
                                 <span class="cell-label">{{field.keyword|trans}}</span>

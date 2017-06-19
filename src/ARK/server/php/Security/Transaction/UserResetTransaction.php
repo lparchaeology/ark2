@@ -30,11 +30,12 @@
 
 namespace ARK\Security\Transaction;
 
+//use ARK\Model\Transaction;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Security\User;
 
-class UserResetTransaction extends Transaction
+class UserResetTransaction //extends Transaction
 {
     public static function process($data)
     {

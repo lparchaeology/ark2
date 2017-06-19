@@ -215,6 +215,8 @@ class Field extends Element
 
         if ($state['label']) {
             $options['label'] = ($state['keyword'] ? $state['keyword'] : $this->keyword());
+        } else {
+            $options['label'] = false;
         }
 
         $options['state']['value']['modus'] =
@@ -327,7 +329,7 @@ class Field extends Element
         return $context;
     }
 
-    // FIXME Should probably have some way to use FormTypes here to render 'flat' compond values
+    // FIXME Should probably have some way to use FormTypes here to render 'static' mode
     public function renderView($data, array $state)
     {
         $state = $this->buildState($state);

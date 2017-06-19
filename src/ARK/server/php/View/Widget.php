@@ -79,7 +79,7 @@ class Widget extends Element
         }
         $state['mode'] = $this->displayMode($state['mode']);
         if ($state['mode'] == 'view' || $this->mode == 'view') {
-            $stae['mode'] = 'withhold';
+            $state['mode'] = 'withhold';
         }
         $state['template'] = $this->template();
         $state['widget'] = $this;
@@ -106,7 +106,6 @@ class Widget extends Element
         if ($data === null && $this->vocabulary && isset($state['required']) && $state['required']) {
             $data = $this->vocabulary->defaultTerm();
         }
-        //dump($data);
         return $data;
     }
 
@@ -131,6 +130,7 @@ class Widget extends Element
             $options = $this->vocabularyOptions($this->vocabulary, $options);
         }
 
+        unset($options['state']);
         if ($this->isButton()) {
             unset($options['required']);
             unset($options['mapped']);
