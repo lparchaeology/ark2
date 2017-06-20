@@ -231,6 +231,9 @@ abstract class Element implements ElementInterface
         }
         $data = $this->buildData($data, $state);
         $options = $this->buildOptions($data, $state, $options);
+        //dump($data);
+        //dump($state);
+        //dump($options);
         $elementBuilder = $this->formBuilder($data, $state, $options);
         //dump($elementBuilder);
         $builder->add($elementBuilder);

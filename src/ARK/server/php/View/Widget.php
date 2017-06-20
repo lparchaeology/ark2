@@ -52,6 +52,7 @@ use Symfony\Component\Form\FormView;
 class Widget extends Element
 {
     protected $vocabulary = null;
+    protected $choices = null;
     protected $formOptions = '';
     protected $formOptionsArray = null;
 
@@ -130,6 +131,10 @@ class Widget extends Element
             $options = $this->vocabularyOptions($this->vocabulary, $options);
         }
 
+        if ($this->choices && isset($state[$this->choices])) {
+            $options['choices'] = $state[$this->choices];
+        }
+
         unset($options['state']);
         if ($this->isButton()) {
             unset($options['required']);
@@ -153,6 +158,7 @@ class Widget extends Element
 
         // Fields
         $builder->addStringField('name', 30);
+        $builder->addStringField('choices', 30);
         $builder->addStringField('template', 100);
         $builder->addStringField('formTypeClass', 100, 'form_type_class');
         $builder->addStringField('formOptions', 4000, 'form_options');

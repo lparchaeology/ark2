@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 20, 2017 at 06:59 PM
+-- Generation Time: Jun 20, 2017 at 09:57 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -5691,6 +5691,7 @@ INSERT INTO `ark_view_grid` (`grp`, `row`, `col`, `seq`, `item_type`, `element`,
 ('dime_find_status', 0, 0, 8, '', 'dime_find_custodian', NULL, NULL, NULL, 1, NULL, NULL, NULL, 'static', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_update', 0, 0, 0, '', 'core_widget_submit', 'save', NULL, NULL, 1, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL),
 ('dime_find_update', 0, 0, 2, '', 'core_widget_submit', 'clone', NULL, NULL, 1, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.clone', NULL, NULL),
+('dime_find_update', 0, 0, 4, '', 'dime_find_actions', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_update', 0, 0, 6, '', 'dime_find_recipient', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_update', 0, 0, 8, '', 'core_widget_submit', 'apply', NULL, NULL, 1, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL),
 ('dime_find_view', 0, 0, 0, '', 'dime_find_item', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -5977,6 +5978,7 @@ CREATE TABLE `ark_view_widget` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `choices` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `template` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `form_type_class` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `form_options` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL
@@ -5986,24 +5988,24 @@ CREATE TABLE `ark_view_widget` (
 -- Dumping data for table `ark_view_widget`
 --
 
-INSERT INTO `ark_view_widget` (`element`, `name`, `vocabulary`, `template`, `form_type_class`, `form_options`) VALUES
-('core_user_email_confirm', 'email', NULL, NULL, 'ARK\\Form\\Type\\RepeatedEmailType', ''),
-('core_user_password', '_password', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\PasswordType', ''),
-('core_user_password_confirm', 'password', NULL, NULL, 'ARK\\Form\\Type\\RepeatedPasswordType', ''),
-('core_user_username', '_username', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', ''),
-('core_widget_button', 'button', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', ''),
-('core_widget_checkbox', 'checkbox', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', ''),
-('core_widget_submit', 'submit', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', ''),
-('core_widget_submit_recaptcha', 'submit', NULL, NULL, 'ARK\\Form\\Type\\RecaptchaSubmitType', ''),
-('core_widget_textarea', 'comments', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', ''),
-('dime_find_actions', 'actions', NULL, NULL, 'ARK\\Form\\Type\\TermChoiceType', ''),
-('dime_find_filter_material', 'material', 'dime.material', NULL, 'ARK\\Form\\Type\\TermChoiceType', '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
-('dime_find_filter_municipality', 'municipality', 'dime.denmark.municipality', NULL, 'ARK\\Form\\Type\\TermChoiceType', '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
-('dime_find_filter_period', 'period', 'dime.period', NULL, 'ARK\\Form\\Type\\TermChoiceType', '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
-('dime_find_filter_type', 'type', 'dime.find.type', NULL, 'ARK\\Form\\Type\\TermChoiceType', '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
-('dime_widget_classify', 'classify', NULL, 'blocks/classification.html.twig', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', ''),
-('dime_widget_role', 'role', 'core.workflow.role', NULL, 'ARK\\Form\\Type\\TermChoiceType', ''),
-('dime_widget_terms', 'terms', 'dime.user.terms', NULL, 'ARK\\Form\\Type\\TermChoiceType', '');
+INSERT INTO `ark_view_widget` (`element`, `name`, `vocabulary`, `choices`, `template`, `form_type_class`, `form_options`) VALUES
+('core_user_email_confirm', 'email', NULL, NULL, NULL, 'ARK\\Form\\Type\\RepeatedEmailType', ''),
+('core_user_password', '_password', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\PasswordType', ''),
+('core_user_password_confirm', 'password', NULL, NULL, NULL, 'ARK\\Form\\Type\\RepeatedPasswordType', ''),
+('core_user_username', '_username', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', ''),
+('core_widget_button', 'button', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', ''),
+('core_widget_checkbox', 'checkbox', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', ''),
+('core_widget_submit', 'submit', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', ''),
+('core_widget_submit_recaptcha', 'submit', NULL, NULL, NULL, 'ARK\\Form\\Type\\RecaptchaSubmitType', ''),
+('core_widget_textarea', 'comments', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', ''),
+('dime_find_actions', 'actions', NULL, 'actions', NULL, 'ARK\\Form\\Type\\ActionChoiceType', ''),
+('dime_find_filter_material', 'material', 'dime.material', NULL, NULL, 'ARK\\Form\\Type\\TermChoiceType', '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
+('dime_find_filter_municipality', 'municipality', 'dime.denmark.municipality', NULL, NULL, 'ARK\\Form\\Type\\TermChoiceType', '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
+('dime_find_filter_period', 'period', 'dime.period', NULL, NULL, 'ARK\\Form\\Type\\TermChoiceType', '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
+('dime_find_filter_type', 'type', 'dime.find.type', NULL, NULL, 'ARK\\Form\\Type\\TermChoiceType', '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
+('dime_widget_classify', 'classify', NULL, NULL, 'blocks/classification.html.twig', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', ''),
+('dime_widget_role', 'role', 'core.workflow.role', NULL, NULL, 'ARK\\Form\\Type\\TermChoiceType', ''),
+('dime_widget_terms', 'terms', 'dime.user.terms', NULL, NULL, 'ARK\\Form\\Type\\TermChoiceType', '');
 
 -- --------------------------------------------------------
 
