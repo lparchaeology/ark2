@@ -42,7 +42,7 @@ class FindAddController extends DimeFormController
 {
     public function __invoke(Request $request)
     {
-        $request->attributes->set('page', 'dime_page_find');
+        $request->attributes->set('page', 'dime_page_find_add');
         $request->attributes->set('redirect', 'finds.view');
         return $this->handleRequest($request);
     }
@@ -69,8 +69,7 @@ class FindAddController extends DimeFormController
 
     public function processForm(Request $request, $form)
     {
-        $data = $form->getData();
-        $find = $data['find'];
+        $find = $form->getData();
         ORM::persist($find);
         if (isset($data['actions'])) {
             $action = $data['actions'];
