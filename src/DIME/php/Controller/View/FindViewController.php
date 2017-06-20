@@ -62,18 +62,39 @@ class FindViewController extends DimeFormController
 
     public function processForm(Request $request, $form)
     {
+        dump($form);
+        $clicked = $form->getClickedButton()->getName();
         $data = $form->getData();
-        $find = $data['find'];
-        ORM::persist($find);
-        if (isset($data['actions'])) {
-            $action = $data['actions'];
-            $actor = Service::workflow()->actor();
-            //$action->apply($actor, $item);
+        if ($clicked == 'save') {
+            $find = $data['find'];
+            ORM::persist($find);
+            if (isset($data['actions'])) {
+                $action = $data['actions'];
+                $actor = Service::workflow()->actor();
+                //$action->apply($actor, $item);
+            }
+            ORM::flush($find);
+            $parameters['id'] = $find->id();
+            $request->attributes->set('parameters', $parameters);
+            $request->attributes->set('flash', 'success');
+            $request->attributes->set('message', 'dime.find.update.success');
+            return;
         }
-        ORM::flush($find);
-        $parameters['id'] = $find->id();
-        $request->attributes->set('parameters', $parameters);
-        $request->attributes->set('flash', 'success');
-        $request->attributes->set('message', 'dime.find.update.success');
+        if ($clicked == 'clone') {
+            // TODO
+            $request->attributes->set('redirect', 'finds.add');
+        }
+        if ($clicked == 'apply') {
+            $data = $form->getData();
+            $find = $data['find'];
+            if (isset($data['actions'])) {
+                $action = $data['actions'];
+                $actor = Service::workflow()->actor();
+                //$action->apply($actor, $item);
+            }
+            $parameters['id'] = $find->id();
+            $request->attributes->set('parameters', $parameters);
+            return;
+        }
     }
 }

@@ -3,14 +3,14 @@
 
 .mappick-group div {}
 
-.mappick_fields {
-    padding-right:0;
+.mappick-fields {
+    padding-right: 0;
 }
 
-.mappick_fields label {}
+.mappick-fields label {}
 
-.form-group input[type=text].mappick_field {
-    margin: 0 0 5px 0;
+.form-group input[type=text].mappick-field {
+    margin: 0 0 5px;
 }
 
 .mappick {
@@ -22,11 +22,12 @@
 }
 
 .mappick-options .col-sm-6 {
-    padding-right:0;
+    padding-right: 0;
 }
-
 @media (max-width: $break-small) {
-	.mappick-options .radiolabel {width: 100vw}
+    .mappick-options .radiolabel {
+        width: 100vw;
+    }
 }
 /* map overlay */
 
@@ -78,12 +79,12 @@ a.layer-select.selected:hover {
     color: red;
 }
 
-.form-horizontal .control-label { 
+.form-horizontal .control-label {
     padding-top: 0;
 }
 
 .form-horizontal .form-control {
-   margin-top: 0;
+    margin-top: 0;
 }
 
 .ol-control {
@@ -96,8 +97,8 @@ a.layer-select.selected:hover {
     border-radius: 5px;
 }
 
-.ol-control:focus,
-.ol-control button:focus {
+.ol-control button:focus,
+.ol-control:focus {
     outline-color: rgba(255,255,255,.4);
     background-color: rgba(0, 0, 0, 1);
 }
