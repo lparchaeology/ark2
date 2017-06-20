@@ -60,6 +60,21 @@ class Security
         $this->options = $app['user.options'];
     }
 
+    public function credentials($key)
+    {
+        try {
+            $path = Service::configDir() . '/credentials.json';
+            $credentials = json_decode(file_get_contents($path), true);
+            if (isset($credentials[$key])) {
+                return $credentials[$key];
+            }
+        } catch (Exception $e) {
+            // Nothing to see here, move along now...
+            dump('exception');
+        }
+        return null;
+    }
+
     public function tokenStorage()
     {
         return $this->app['security.token_storage'];

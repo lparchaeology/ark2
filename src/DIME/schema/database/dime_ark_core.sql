@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 20, 2017 at 10:48 AM
+-- Generation Time: Jun 20, 2017 at 01:08 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -2924,7 +2924,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.find.finder', 'default', 'Detektor', ''),
 ('da', 'dime.find.finder_id', 'default', 'Detektor Fund ID', NULL),
 ('da', 'dime.find.finder_place', 'default', 'Fundplads', ''),
-('da', 'dime.find.id', 'default', 'DIME Fund ID', NULL),
+('da', 'dime.find.id', 'default', 'DIME ID', NULL),
 ('da', 'dime.find.images', 'default', 'Billeder', ''),
 ('da', 'dime.find.length', 'default', 'Maksimal Dimension', NULL),
 ('da', 'dime.find.location', 'default', 'Placering', NULL),
@@ -3905,7 +3905,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.finder', 'default', 'Detectorist', ''),
 ('en', 'dime.find.finder_id', 'default', 'Detectorist\'s Find ID', 'DIME Find Finder\'s ID'),
 ('en', 'dime.find.finder_place', 'default', 'Find spot', ''),
-('en', 'dime.find.id', 'default', 'DIME Find ID', 'DIME Find ID'),
+('en', 'dime.find.id', 'default', 'DIME ID', 'DIME Find ID'),
 ('en', 'dime.find.images', 'default', 'Photos', ''),
 ('en', 'dime.find.length', 'default', 'Maximum Dimension', NULL),
 ('en', 'dime.find.location', 'default', 'Location', NULL),
@@ -5348,6 +5348,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `enabled`, `deprecated`, `key
 ('core_widget_button', 'widget', 1, 0, NULL),
 ('core_widget_checkbox', 'widget', 1, 0, NULL),
 ('core_widget_submit', 'widget', 1, 0, 'core.widget.submit'),
+('core_widget_submit_recaptcha', 'widget', 1, 0, 'core.widget.submit'),
 ('core_widget_textarea', 'widget', 1, 0, NULL),
 ('dime_admin_page', 'grid', 1, 0, NULL),
 ('dime_admin_user_page', 'grid', 1, 0, NULL),
@@ -5737,7 +5738,7 @@ INSERT INTO `ark_view_grid` (`grp`, `row`, `col`, `seq`, `item_type`, `element`,
 ('dime_user_register', 0, 0, 0, '', 'core_user_credentials', NULL, NULL, NULL, 1, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_user_register', 0, 0, 2, '', 'core_user_actor', NULL, NULL, NULL, 1, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_user_register', 0, 0, 4, '', 'dime_user_role', NULL, NULL, NULL, 1, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_user_register', 0, 0, 8, '', 'core_widget_submit', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.user.register', NULL, NULL),
+('dime_user_register', 0, 0, 8, '', 'core_widget_submit_recaptcha', NULL, NULL, NULL, 1, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.user.register', NULL, NULL),
 ('dime_user_role', 0, 0, 0, '', 'dime_widget_role', NULL, NULL, NULL, 1, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_user_role', 0, 0, 2, '', 'core_widget_textarea', 'comments', NULL, NULL, 1, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.widget.comments', NULL, NULL);
 
@@ -5979,6 +5980,7 @@ INSERT INTO `ark_view_widget` (`element`, `name`, `vocabulary`, `template`, `for
 ('core_widget_button', 'button', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', ''),
 ('core_widget_checkbox', 'checkbox', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', ''),
 ('core_widget_submit', 'submit', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', ''),
+('core_widget_submit_recaptcha', 'submit', NULL, NULL, 'ARK\\Form\\Type\\RecaptchaSubmitType', ''),
 ('core_widget_textarea', 'comments', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', ''),
 ('dime_find_actions', 'actions', NULL, NULL, 'ARK\\Form\\Type\\TermChoiceType', ''),
 ('dime_find_filter_material', 'material', 'dime.material', NULL, 'ARK\\Form\\Type\\TermChoiceType', '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),

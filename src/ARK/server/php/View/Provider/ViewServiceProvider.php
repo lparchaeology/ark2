@@ -105,5 +105,11 @@ class ViewServiceProvider implements ServiceProviderInterface
         $container['renderer.image'] = function ($container) {
             return new Image($container['renderer.image.binary'], $container['renderer.image.options']);
         };
+
+        // Add RECAPTCHA config
+        $container['recaptcha.locale_key'] = $container['ark']['view']['recaptcha']['locale_key'];
+        $container['recaptcha.enabled'] = $container['ark']['view']['recaptcha']['enabled'];
+        $container['recaptcha.verify_host'] = $container['ark']['view']['recaptcha']['verify_host'];
+        $container['recaptcha.ajax'] = $container['ark']['view']['recaptcha']['ajax'];
     }
 }

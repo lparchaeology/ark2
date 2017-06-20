@@ -45,19 +45,14 @@ class DIME
 
     public static function getMapTicket()
     {
-        try {
-            $passPath = Service::configDir() . '/credentials.json';
-            if ($passwords = json_decode(file_get_contents($passPath), true) && isset($passwords['kortforsyningen'])) {
-                $user = $passwords['kortforsyningen']['user'];
-                $password = $passwords['kortforsyningen']['password'];
-                $path = "http://services.kortforsyningen.dk/service?request=GetTicket&login=$user&password=$password";
-                $ticket = file_get_contents($path);
-                if (strlen($ticket) == 32) {
-                    return $ticket;
-                }
+        if ($credentials = Service::security()->credentials('kortforsyningen')) {
+            $user = $credentials['kortforsyningen']['user'];
+            $password = $credentials['kortforsyningen']['password'];
+            $path = "http://services.kortforsyningen.dk/service?request=GetTicket&login=$user&password=$password";
+            $ticket = file_get_contents($path);
+            if (strlen($ticket) == 32) {
+                return $ticket;
             }
-        } catch (Exception $e) {
-            // Nothing to see here, move along now...
         }
         return false;
     }

@@ -2,8 +2,8 @@
     "site": "dime",
     "debug": true,
     "locale": {
-        "default": "en",
-        "locales": ["en", "da"],
+        "default": "da",
+        "locales": ["da", "en"],
         "timezone": "UTC"
     },
     "spatial": {
@@ -32,6 +32,12 @@
         "renderer": {
             "pdf": "/usr/bin/xvfb-run /usr/bin/wkhtmltopdf",
             "image": "/usr/bin/xvfb-run /usr/bin/wkhtmltoimage"
+        },
+        "recaptcha": {
+            "locale_key": "da",
+            "enabled": true,
+            "verify_host": true,
+            "ajax": true
         }
     },
     "api": {
