@@ -51,16 +51,7 @@ class FindAddController extends DimeFormController
     {
         $actor = Service::workflow()->actor();
         $find = new Find('dime.find');
-        // TODO Remove these, set in processForm instead?
         $find->property('finder')->setValue($actor);
-        $find->property('owner')->setValue($actor);
-        $find->property('custodian')->setValue($actor);
-        $process = ORM::find(Term::class, ['concept' => 'dime.find.process', 'term' => 'recorded']);
-        $find->property('process')->setValue($process);
-        $custody = ORM::find(Term::class, ['concept' => 'dime.find.custody', 'term' => 'held']);
-        $find->property('custody')->setValue($custody);
-        $treasure = ORM::find(Term::class, ['concept' => 'dime.treasure', 'term' => 'pending']);
-        $find->property('treasure')->setValue($treasure);
         $data['find'] = $find;
         $data['notifications'] = DIME::getUnreadNotifications();
         $data['actions'] = Service::workflow()->actions(Service::workflow()->actor(), $find);
@@ -70,6 +61,16 @@ class FindAddController extends DimeFormController
     public function processForm(Request $request, $form)
     {
         $find = $form->getData();
+        // TODO Do using actions?
+        $actor = Service::workflow()->actor();
+        $find->property('owner')->setValue($actor);
+        $find->property('custodian')->setValue($actor);
+        $process = ORM::find(Term::class, ['concept' => 'dime.find.process', 'term' => 'recorded']);
+        $find->property('process')->setValue($process);
+        $custody = ORM::find(Term::class, ['concept' => 'dime.find.custody', 'term' => 'held']);
+        $find->property('custody')->setValue($custody);
+        $treasure = ORM::find(Term::class, ['concept' => 'dime.treasure', 'term' => 'pending']);
+        $find->property('treasure')->setValue($treasure);
         ORM::persist($find);
         if (isset($data['actions'])) {
             $action = $data['actions'];
