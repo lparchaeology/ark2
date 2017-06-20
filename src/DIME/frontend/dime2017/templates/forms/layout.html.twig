@@ -34,7 +34,7 @@ col-sm-4
 
 {% block static_widget -%}
     {% spaceless %}
-    <div id="{{ id }}" >
+    <div id="{{ id }}" class="static-widget" >
         {% if value is empty %}
             &nbsp;
         {% elseif value is iterable %}
