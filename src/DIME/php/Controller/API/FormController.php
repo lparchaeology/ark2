@@ -34,6 +34,7 @@ use ARK\Http\JsonResponse;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Group;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 
 class FormController
@@ -52,19 +53,18 @@ class FormController
     protected function processRequest(Request $request)
     {
         $content = json_decode($request->getContent());
-        dump($content);
-        $state = $content['state'];
+        //dump($content);
 
         $group = ORM::find(Group::class, $request->attributes->get('form'));
 
+        $state = $this->buildState($request);
         $state = array_replace_recursive($group->defaultState(), $state);
         $state['actor'] = Service::workflow()->actor();
-
-        $data = $group->buildData($data, $state);
+        $data = $this->buildData($request);
         $options = $group->defaultOptions();
 
         $forms = $group->buildForms($data, $state, $options);
-        $form = $forms[$name];
+        $form = $forms[$group->formName()];
         if ($request->getMethod() == 'POST') {
             $this->processForm($request, $form);
             $data = $group->buildData($data, $state);
@@ -75,18 +75,39 @@ class FormController
             $parameters = ($request->attributes->get('parameters') ?: []);
         }
         $view = $form->createView();
-        dump($view);
-        return $view;
+        $json = $this->jsonView($view);
+        return $json;
+    }
+
+    private function jsonView(FormView $view)
+    {
+        $json = [];
+        if ($view->children) {
+            foreach ($view as $name => $child) {
+                $json = array_merge($json, $this->jsonView($child));
+            }
+        } else {
+            $data = [];
+            $data['id'] = $view->vars['id'];
+            $data['name'] = $view->vars['name'];
+            $data['full_name'] = $view->vars['full_name'];
+            $data['value'] = $view->vars['value'];
+            $json = [$data['id'] => $data];
+        }
+        return $json;
     }
 
     public function buildData(Request $request)
     {
-        $data = null;
-        return $data;
+        return null;
+    }
+
+    public function buildState(Request $request)
+    {
+        return [];
     }
 
     public function processForm(Request $request, $form)
     {
-        return null;
     }
 }

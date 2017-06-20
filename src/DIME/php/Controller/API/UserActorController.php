@@ -57,7 +57,7 @@ class UserActorController extends FormController
     public function buildData(Request $request)
     {
         $actor = $request->attributes->get('actor');
-        $data['actor'] = ORM::fetch(Actor::class, $actor);
+        $data['actor'] = ORM::find(Actor::class, $actor);
         return $data;
     }
 
