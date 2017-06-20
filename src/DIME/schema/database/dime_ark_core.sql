@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 20, 2017 at 05:42 PM
+-- Generation Time: Jun 20, 2017 at 06:59 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -1434,6 +1434,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.find.condition.modified', 'dime', 0, 0),
 ('dime.find.condition.unfinished', 'dime', 0, 0),
 ('dime.find.condition.whole', 'vocabulary', 0, 0),
+('dime.find.coordinates', 'dime', 0, 0),
 ('dime.find.custodian', 'dime', 0, 0),
 ('dime.find.custody', 'dime', 0, 0),
 ('dime.find.custody.destroyed', 'dime', 0, 0),
@@ -2084,9 +2085,9 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('language.amharic', 'vocabulary', 0, 0),
 ('language.angika', 'vocabulary', 0, 0),
 ('language.aonaga', 'vocabulary', 0, 0),
-('language.arabic', 'vocabulary', 0, 0),
-('language.arabic.algerian', 'vocabulary', 0, 0);
+('language.arabic', 'vocabulary', 0, 0);
 INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('language.arabic.algerian', 'vocabulary', 0, 0),
 ('language.arabic.chadian', 'vocabulary', 0, 0),
 ('language.arabic.egyptian', 'vocabulary', 0, 0),
 ('language.arabic.modern', 'vocabulary', 0, 0),
@@ -2909,6 +2910,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.find.condition.modified', 'default', 'Modificeret', NULL),
 ('da', 'dime.find.condition.unfinished', 'default', 'Ufærdige', NULL),
 ('da', 'dime.find.condition.whole', 'default', 'Hel', NULL),
+('da', 'dime.find.coordinates', 'default', 'Koordinater', ''),
 ('da', 'dime.find.custodian', 'default', 'Vogter', NULL),
 ('da', 'dime.find.custody', 'default', 'Forvaring', NULL),
 ('da', 'dime.find.custody.destroyed', 'default', 'Ødelagt', NULL),
@@ -2930,7 +2932,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.find.id', 'default', 'DIME ID', NULL),
 ('da', 'dime.find.images', 'default', 'Billeder', ''),
 ('da', 'dime.find.length', 'default', 'Maksimal Dimension', NULL),
-('da', 'dime.find.location', 'default', 'Koordinater', NULL),
+('da', 'dime.find.location', 'default', 'Placering', NULL),
 ('da', 'dime.find.location.decimal', 'default', 'Decimal (WGS84)', NULL),
 ('da', 'dime.find.location.utm', 'default', 'UTM', NULL),
 ('da', 'dime.find.material', 'default', 'Materiale', NULL),
@@ -3510,9 +3512,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'map.style.distribution', 'default', 'Fordeling', NULL),
 ('da', 'map.style.none', 'default', 'Ingen', NULL),
 ('da', 'mass.gram', 'default', 'gram', NULL),
-('da', 'mass.kilogram', 'default', 'kilogram', NULL),
-('da', 'mass.microgram', 'default', 'mikrogram', NULL);
+('da', 'mass.kilogram', 'default', 'kilogram', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('da', 'mass.microgram', 'default', 'mikrogram', NULL),
 ('da', 'mass.milligram', 'default', 'milligram', NULL),
 ('da', 'mass.tonne', 'default', 'ton', NULL),
 ('da', 'module.file', 'default', 'Filer', NULL),
@@ -3891,6 +3893,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.condition.modified', 'default', 'Modified', NULL),
 ('en', 'dime.find.condition.unfinished', 'default', 'Unfinished', NULL),
 ('en', 'dime.find.condition.whole', 'default', 'Whole', NULL),
+('en', 'dime.find.coordinates', 'default', 'Coordinates', ''),
 ('en', 'dime.find.custodian', 'default', 'Custodian', NULL),
 ('en', 'dime.find.custody', 'default', 'Custody', NULL),
 ('en', 'dime.find.custody.destroyed', 'default', 'destroyed', NULL),
@@ -3913,7 +3916,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.id', 'default', 'DIME ID', 'DIME Find ID'),
 ('en', 'dime.find.images', 'default', 'Photos', ''),
 ('en', 'dime.find.length', 'default', 'Maximum Dimension', NULL),
-('en', 'dime.find.location', 'default', 'Coordinates', NULL),
+('en', 'dime.find.location', 'default', 'Location', NULL),
 ('en', 'dime.find.location.decimal', 'default', 'Decimal (WGS84)', NULL),
 ('en', 'dime.find.location.utm', 'default', 'UTM', NULL),
 ('en', 'dime.find.material', 'default', 'Material', 'DIME Find Material'),
@@ -4201,10 +4204,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.kommune.arhus', 'official', 'Århus Municipality', NULL),
 ('en', 'dime.kommune.assens', 'default', 'Assens', NULL),
 ('en', 'dime.kommune.assens', 'official', 'Assens Municipality', NULL),
-('en', 'dime.kommune.ballerup', 'default', 'Ballerup', NULL),
-('en', 'dime.kommune.ballerup', 'official', 'Ballerup Municipality', NULL),
-('en', 'dime.kommune.billund', 'default', 'Billund', NULL);
+('en', 'dime.kommune.ballerup', 'default', 'Ballerup', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.kommune.ballerup', 'official', 'Ballerup Municipality', NULL),
+('en', 'dime.kommune.billund', 'default', 'Billund', NULL),
 ('en', 'dime.kommune.billund', 'official', 'Billund Municipality', NULL),
 ('en', 'dime.kommune.bornholm', 'default', 'Bornholm', NULL),
 ('en', 'dime.kommune.bornholm', 'official', 'Bornholms Municipality', NULL),
@@ -5036,10 +5039,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'language.shambala', 'default', 'Shambala', NULL),
 ('en', 'language.shan', 'default', 'Shan', NULL),
 ('en', 'language.shona', 'default', 'Shona', NULL),
-('en', 'language.sicilian', 'default', 'Sicilian', NULL),
-('en', 'language.sidamo', 'default', 'Sidamo', NULL),
-('en', 'language.siksika', 'default', 'Siksika', NULL);
+('en', 'language.sicilian', 'default', 'Sicilian', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'language.sidamo', 'default', 'Sidamo', NULL),
+('en', 'language.siksika', 'default', 'Siksika', NULL),
 ('en', 'language.silesian', 'default', 'Silesian', NULL),
 ('en', 'language.silesian.lower', 'default', 'Lower Silesian', NULL),
 ('en', 'language.sindhi', 'default', 'Sindhi', NULL),
@@ -5655,7 +5658,7 @@ INSERT INTO `ark_view_grid` (`grp`, `row`, `col`, `seq`, `item_type`, `element`,
 ('dime_find_filter', 0, 4, 0, '', 'dime_find_filter_period', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_filter', 0, 6, 0, '', 'dime_find_filter_material', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_filter', 0, 8, 0, '', 'core_widget_submit', 'search', NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_geo', 0, 0, 0, '', 'dime_find_location', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_geo', 0, 0, 0, '', 'dime_find_location', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.find.coordinates', NULL, NULL),
 ('dime_find_geo', 0, 0, 2, '', 'dime_find_municipality', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_geo', 0, 0, 4, '', 'dime_find_museum', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_item', 0, 0, 0, '', 'dime_find_metadata', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
