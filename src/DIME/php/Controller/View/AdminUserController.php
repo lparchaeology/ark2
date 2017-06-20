@@ -54,9 +54,10 @@ class AdminUserController extends DimeFormController
     public function buildData(Request $request)
     {
         $data['actors'] = ORM::findAll(Person::class);
-        $data['actor'] = Service::workflow()->actor();
-        $data['user'] = Service::security()->user();
-        $data['actions'] = Service::workflow()->actions($data['actor'], $data['actor']);
+        $data['actor'] = null;
+        $data['user'] = null;
+        $actor = Service::workflow()->actor();
+        $data['actions'] = Service::workflow()->actions($actor, $actor);
         return $data;
     }
 

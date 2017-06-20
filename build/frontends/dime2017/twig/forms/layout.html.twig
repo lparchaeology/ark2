@@ -33,19 +33,23 @@ col-sm-4
 {%- endblock property_widget %}
 
 {% block static_widget -%}
-    {% if value is empty %}
-        &nbsp;
-    {% elseif value is iterable %}
-        {% set out = '' %}
-        {% set sep = '' %}
-        {% for val in value %}
-            {% set out = out ~ sep ~ val|translate %}
-            {% set sep = '<br />' %}
-        {% endfor %}
-        {{ out|raw }}
-    {% else %}
-        {{ value|translate }}
-    {% endif %}
+    {% spaceless %}
+    <div id="{{ id }}" >
+        {% if value is empty %}
+            &nbsp;
+        {% elseif value is iterable %}
+            {% set out = '' %}
+            {% set sep = '' %}
+            {% for val in value %}
+                {% set out = out ~ sep ~ val|translate %}
+                {% set sep = '<br />' %}
+            {% endfor %}
+            {{ out|raw }}
+        {% else %}
+            {{ value|translate }}
+        {% endif %}
+    </div>
+    {% endspaceless %}
 {%- endblock static_widget %}
 
 {% block measurement_widget -%}
