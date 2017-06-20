@@ -38,12 +38,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FormController
 {
-    public function __invoke(Request $request)
+    public function handleRequest(Request $request)
     {
-        $content = json_decode($request->getContent());
         try {
-            $state = $content['state'];
-            $data = $this->handleRequest($request, $state);
+            $data = $this->processRequest($request);
         } catch (Exception $e) {
             $data['error']['code'][$e->getCode()];
             $data['error']['message'][$e->getMessage()];
@@ -51,11 +49,13 @@ class FormController
         return new JsonResponse($data);
     }
 
-    public function handleRequest(Request $request, array $state)
+    protected function processRequest(Request $request)
     {
-        $element = $state['id'];
-        $name = $state['name'];
-        $group = ORM::findOneBy(Group::class, ['grp' => $element, 'name' => $name]);
+        $content = json_decode($request->getContent());
+        dump($content);
+        $state = $content['state'];
+
+        $group = ORM::find(Group::class, $request->attributes->get('form'));
 
         $state = array_replace_recursive($group->defaultState(), $state);
         $state['actor'] = Service::workflow()->actor();
@@ -75,6 +75,8 @@ class FormController
             $parameters = ($request->attributes->get('parameters') ?: []);
         }
         $view = $form->createView();
+        dump($view);
+        return $view;
     }
 
     public function buildData(Request $request)

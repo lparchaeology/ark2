@@ -35,14 +35,14 @@ use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Page;
 use DIME\DIME;
-use DIME\Controller\View\DimeFormController;
+use DIME\Controller\API\FormController;
 use Symfony\Component\HttpFoundation\Request;
 
-class UserActorController extends AjaxFormController
+class UserActorController extends FormController
 {
     public function __invoke(Request $request, $id)
     {
-        $request->attributes->set('page', 'dime_page_user_profile');
+        $request->attributes->set('form', 'dime_user_actor');
         $request->attributes->set('actor', $id);
         return $this->handleRequest($request);
     }
