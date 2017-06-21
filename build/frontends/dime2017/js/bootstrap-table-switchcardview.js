@@ -85,43 +85,72 @@
             }
             
             window.createItemModal = function( item, fields ) {
-                {
-                    var html =  '<div id="modalWindow" class="modal fade in" style="display:none;" data-backdrop="false">';
-                    html += '<div class="modal-dialog thumbmodal-container dime" tabindex="-1" >';
-                   // html += '<div class="modal-header">';
-                    html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close">';
-                    html += '<span aria-hidden="true">&times;</span>';
-                    html += '</button>';
-                    html += '<div class="modal-body thumbModal">';
-                    for ( var field in fields ){
-                        console.log(fields[field]);
-                        html += '<div class="field">';
-                        if(fields[field].field != 'checked' ) {
-                            if(fields[field].field == 'image' ) {
-                                //html += item[fields[field].field].replace('/img/thumb.','/img/');
-                                html += item[fields[field].field];
-                            } else {
-                                html += item[fields[field].field];
-                            }
+                var html =  '<div id="modalWindow" class="modal fade in" style="display:none;" data-backdrop="false">';
+                html += '<div class="modal-dialog thumbmodal-container dime" tabindex="-1" >';
+               // html += '<div class="modal-header">';
+                html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close">';
+                html += '<span aria-hidden="true">&times;</span>';
+                html += '</button>';
+                html += '<div class="modal-body thumbModal">';
+                for ( var field in fields ){
+                    console.log(fields[field]);
+                    html += '<div class="field">';
+                    if(fields[field].field != 'checked' ) {
+                        if(fields[field].field == 'image' ) {
+                            //html += item[fields[field].field].replace('/img/thumb.','/img/');
+                            html += item[fields[field].field];
+                        } else {
+                            html += item[fields[field].field];
                         }
-                        html += '</div>';
                     }
                     html += '</div>';
-                    html += '</div>';  // modalWindow
-                    $("#thumbModal").html(html);
-                    $("#modalWindow").modal();
-                    $('#modalWindow').on('hidden.bs.modal', function () {
-                        $('tr').removeClass('selected');
-                    })
-                    $('.modal-body img').load(function() {
-                        $('.thumbmodal-container').width(this.naturalWidth+70);
-                    });
                 }
+                html += '</div>';
+                html += '</div>';  // modalWindow
+                $("#thumbModal").html(html);
+                $("#modalWindow").modal();
+                $('#modalWindow').on('hidden.bs.modal', function () {
+                    $('tr').removeClass('selected');
+                })
+                $('.modal-body img').load(function() {
+                    $('.thumbmodal-container').width(this.naturalWidth+70);
+                });
             }
+            
+            var formclick = function(evt) {
+                
+                removeTextSelection();
+                if($(evt.target).is('a')){
+                    return true;
+                }
+
+                if($(evt.target).is('tr')){
+                    var self = $(evt.target);
+                } else {
+                    var self = $(evt.target).closest('tr');
+                }
+                var ark_id = self.attr('data-unique-id');
+
+                console.log( ark_id );
+
+                if (self.hasClass('selected')){
+                    self.removeClass('selected');
+                    self.find('.tablecheckbox').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
+                } else {
+                    self.addClass('selected');
+                    self.find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+                    
+                }
+
+            };
             
             var mapclick = function(evt) {
                 removeTextSelection();
                 if($(evt.target).is('a')){
+                    return true;
+                }
+
+                if($(evt.target).hasClass('icon-user-focus')){
                     return true;
                 }
 
@@ -163,9 +192,14 @@
                     }
                 });
 
-
             };
-            
+
+            if( window.itemkey = 'find'){
+                window.tableclick = mapclick;
+            } else {
+                window.tableclick = formclick;
+            }
+
             var thumbclick = function(evt) {
 
                 if($(evt.target).is('tr')){
@@ -174,120 +208,113 @@
                     var self = $(evt.target).closest('tr');
                 }
 
-                mapclick(evt);
+                window.tableclick(evt);
 
                 createItemModal(that.data[self[0].rowIndex-1], that.columns);
 
             };
-        
-        that.$toolbar.find('button[name="tableView"]')
-        .on('click', function() {
-            $(this).blur();
-            
-            if($(this).hasClass('disabled')){
-                return false;
-            }
-            
-            if ( $($btnGroup.find('[name="tableView"]')).hasClass("active") == false ) {
-                $('#dime_find_list').removeClass("cardViewTable");
-                $('#dime_find_home').removeClass("cardViewTable");
-                $('#dime_find_list').removeClass("thumbViewTable");
-                $('#dime_find_home').removeClass("thumbViewTable");
 
-                console.log(that.options.cardView);
-                
-                if( $($btnGroup.find('[name="thumbView"]')).hasClass("active") ){
+            that.$toolbar.find('button[name="tableView"]').on('click', function() {
+                $(this).blur();
+
+                if($(this).hasClass('disabled')){
+                    return false;
+                }
+
+                if ( $($btnGroup.find('[name="tableView"]')).hasClass("active") == false ) {
+                    $('#dime_find_list').removeClass("cardViewTable");
+                    $('#dime_find_home').removeClass("cardViewTable");
+                    $('#dime_find_list').removeClass("thumbViewTable");
+                    $('#dime_find_home').removeClass("thumbViewTable");
+
+                    if( $($btnGroup.find('[name="thumbView"]')).hasClass("active") ){
+                        that.toggleView();
+                    }
+
+                    $($btnGroup.find('[name="cardView"]')).removeClass("active");
+                    $($btnGroup.find('[name="thumbView"]')).removeClass("active");
+                    $($btnGroup.find('[name="tableView"]')).addClass("active");
+                    
+                    $('tr').off("click");
+                    $('tr').on("click", {"target":this}, window.tableclick );
+                    
+                    if(typeof mapcollection != 'undefined'){
+                        mapcollection.forEach(function(e, i, a) {
+                            var ark_id = e.get('ark_id');
+                            $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
+                        });
+                    }
+                }
+            });
+
+            that.$toolbar.find('button[name="thumbView"]').on('click', function() {
+                $(this).blur();
+                if( $($btnGroup.find('[name="thumbView"]')).hasClass("active") == false ){
+
                     that.toggleView();
+
+                    $('#dime_find_list').addClass("thumbViewTable");
+                    $('#dime_find_home').addClass("thumbViewTable");
+                    $('#dime_find_list').removeClass("cardViewTable");
+                    $('#dime_find_home').removeClass("cardViewTable");
+
+                    $($btnGroup.find('[name="thumbView"]')).addClass("active");
+                    $($btnGroup.find('[name="cardView"]')).removeClass("active");
+                    $($btnGroup.find('[name="tableView"]')).removeClass("active");
+                    
+                    $('tr').off("click");
+                    $('tr').on("click", {"target":this}, thumbclick );
+                    
+                    if(typeof mapcollection != 'undefined'){
+                        mapcollection.forEach(function(e, i, a) {
+                            var ark_id = e.get('ark_id');
+
+                            $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
+                        });
+                    }
+
                 }
+            });
 
-                $($btnGroup.find('[name="cardView"]')).removeClass("active");
-                $($btnGroup.find('[name="thumbView"]')).removeClass("active");
-                $($btnGroup.find('[name="tableView"]')).addClass("active");
-                
-                $('tr').off("click");
-                $('tr').on("click", {"target":this}, mapclick );
-                
-                if(typeof mapcollection != 'undefined'){
-                    mapcollection.forEach(function(e, i, a) {
-                        var ark_id = e.get('ark_id');
+            that.$toolbar.find('button[name="cardView"]').on('click', function() {
+                $(this).blur();
+                that.$toolbar.find('button[name="tableView"]').blur();
+                that.$toolbar.find('button[name="thumbView"]').blur();
 
-                        $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
-                    });
+                if( $($btnGroup.find('[name="cardView"]')).hasClass("active") == false ){
+                    if( $($btnGroup.find('[name="thumbView"]')).hasClass("active") ){
+                        that.toggleView();
+                    }
+
+                    $('#dime_find_list').addClass("cardViewTable");
+                    $('#dime_find_home').addClass("cardViewTable");
+                    $('#dime_find_list').removeClass("thumbViewTable");
+                    $('#dime_find_home').removeClass("thumbViewTable");
+
+                    $($btnGroup.find('[name="cardView"]')).addClass("active");
+                    $($btnGroup.find('[name="thumbView"]')).removeClass("active");
+                    $($btnGroup.find('[name="tableView"]')).removeClass("active");
+
+                    $('tr').off("click");
+
+                    $('tr').on("click", {"target":this}, window.tableclick );
+
+                    if(typeof mapcollection != 'undefined'){
+                        mapcollection.forEach(function(e, i, a) {
+                            var ark_id = e.get('ark_id');
+
+                            $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
+                        });
+                    }
+                    
                 }
-            }
-        });
+            });
 
-    that.$toolbar.find('button[name="thumbView"]')
-        .on('click', function() {
-            $(this).blur();
-            if( $($btnGroup.find('[name="thumbView"]')).hasClass("active") == false ){
-
-                that.toggleView();
-
-                $('#dime_find_list').addClass("thumbViewTable");
-                $('#dime_find_home').addClass("thumbViewTable");
-                $('#dime_find_list').removeClass("cardViewTable");
-                $('#dime_find_home').removeClass("cardViewTable");
-
-                $($btnGroup.find('[name="thumbView"]')).addClass("active");
-                $($btnGroup.find('[name="cardView"]')).removeClass("active");
-                $($btnGroup.find('[name="tableView"]')).removeClass("active");
-                
-                $('tr').off("click");
-                $('tr').on("click", {"target":this}, thumbclick );
-                
-                if(typeof mapcollection != 'undefined'){
-                    mapcollection.forEach(function(e, i, a) {
-                        var ark_id = e.get('ark_id');
-
-                        $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
-                    });
-                }
-
-            }
-        });
-
-    that.$toolbar.find('button[name="cardView"]')
-    .on('click', function() {
-        $(this).blur();
-        that.$toolbar.find('button[name="tableView"]').blur();
-        that.$toolbar.find('button[name="thumbView"]').blur();
-        
-        if( $($btnGroup.find('[name="cardView"]')).hasClass("active") == false ){
-
-            if( $($btnGroup.find('[name="thumbView"]')).hasClass("active") ){
-                that.toggleView();
-            }
-
-            $('#dime_find_list').addClass("cardViewTable");
-            $('#dime_find_home').addClass("cardViewTable");
-            $('#dime_find_list').removeClass("thumbViewTable");
-            $('#dime_find_home').removeClass("thumbViewTable");
-
-            $($btnGroup.find('[name="cardView"]')).addClass("active");
-            $($btnGroup.find('[name="thumbView"]')).removeClass("active");
-            $($btnGroup.find('[name="tableView"]')).removeClass("active");
-            
-
-            $('tr').off("click");
-
-            $('tr').on("click", {"target":this}, mapclick );
-            
-            if(typeof mapcollection != 'undefined'){
-                mapcollection.forEach(function(e, i, a) {
-                    var ark_id = e.get('ark_id');
-
-                    $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
-                });
-            }
-            
-        }
-    });
             $('td').off("click");
-            
+
             that.$toolbar.find('button[name="cardView"]').click();
+
         });
-        
 
     };
 

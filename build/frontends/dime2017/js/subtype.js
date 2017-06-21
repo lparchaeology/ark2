@@ -73,6 +73,13 @@ var initSubtype = function(){
 
         var target = $(this).val();
         console.log(target);
+        
+        if(target=='coin'){
+            $( '#find_mint_content' ).closest('.form-group').show();
+        } else {
+            $( '#find_mint_content' ).closest('.form-group').hide();
+        }
+        
         $('#'+subtype_id).empty();
         for (var subtype in subtypevocabulary) {
             if( target == subtype.split('.')[0] && subtype.split('.').length == 2 ){
@@ -211,5 +218,9 @@ $(document).ready(function(){
         });
 
     });
+
+    $( '#find_mint_content' ).closest('.form-group').hide();
+    
+    $( '#find_secondary_term_looped' ).closest('.checkbox').hide();
 
 });

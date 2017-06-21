@@ -208,15 +208,18 @@
 .bootstrap-table .table:not(.table-condensed).dime-table.thumbViewTable tbody td img {
     width:60px;
 }
-.bootstrap-table .table:not(.table-condensed).dime-table.thumbViewTable tbody td .gotofind,
+.bootstrap-table .table:not(.table-condensed).dime-table.thumbViewTable tbody td .gotoitem,
 .cell-label {
     display:none;
 }
 .fixed-table-container {
     border: none;
 }
-.gotofind a {
+
+.controls a {
     color: black;
+    padding-right:5px;
+    display:inline-block;
 }
 
 .fixed-table-container .dime-table thead th .both {

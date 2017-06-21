@@ -71,11 +71,15 @@
                             </td>
                         {% endif %}
                     {% endfor %}
-                    <td class="gotofind">
-                        <span class="cell-label">{{ 'find.gotofind'|trans }}</span>
+                    <td class="controls">
+                        <span class="cell-label">{{ 'dime.controls'|trans }}</span>
+                        {% if (state.name == 'actors') %}
+                            <a href="#" class="open-focus">
+                                <span class="dime-icon icon-user-focus small"></span>
+                            </a>
+                        {% endif %}
                         <a href="{{ path(state.modules[item.schema.module.name].route, {'id': item.id}) }}">
                             <span class="glyphicon glyphicon-file"></span>
-
                         </a>
                     </td>
                 </tr>
@@ -88,7 +92,7 @@
 <script>
 window.itemkey =
     {% if data[0] is defined %}
-        {{ data[0].schema.module.name }};
+        "{{ data[0].schema.module.name }}";
     {% else %}
         {{null}}
     {% endif %}
@@ -97,12 +101,13 @@ window.itemkey =
 window.itemlist = [
     {% if data|length > 0 %}
         {% for item in data %}
-            {{ item.id }},
+            "{{ item.id }}",
         {% endfor %}
     {% else %}
             false
      {% endif %}
 ];
+
 </script>
 {#}
 <div id = "thumbModal"></div>

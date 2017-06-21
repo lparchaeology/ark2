@@ -23,10 +23,16 @@ $(document).ready(function() {
 
         initialPreview = [];
 
-        var arr = $(this).attr('data-existing').split(',');
+        if (typeof $(this).attr('data-existing') == 'string'){
+            
+            var arr = $(this).attr('data-existing').split(',');
 
-        for (var i = 0, len = arr.length; i < len; i++) {
-            initialPreview.push('<img class="profile-img" class="file-preview-image" src="/dime/img/'+arr[i]+'?p=preview">');
+            var len = arr.length;
+
+            for (var i = 0; i < len; i++) {
+                initialPreview.push('<img class="profile-img" class="file-preview-image" src="/dime/img/'+arr[i]+'?p=preview">');
+            }
+            
         }
 
         $(this).fileinput({
