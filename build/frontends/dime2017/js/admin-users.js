@@ -61,6 +61,13 @@ var itemFormToHtml = function(data){
     $('.form-horizontal[name=actor]').find("input[type=text], textarea").each(function(i,e,a){
         $(e).val(data[$(e).attr('id')]['value']);
     });
+    $('.form-horizontal[name=actor]').find("select").each(function(i,e,a){
+        $(e).val(data[$(e).attr('id')]['value']);
+        $(e).select2({
+            minimumResultsForSearch: 11,
+            width: 'resolve'
+        });
+    });
 }
 
 var showItemForm = function(id){
@@ -71,7 +78,8 @@ var showItemForm = function(id){
 
     if(data){
         $('#actor_id_value').html(id);
-        $('#actor_id_value').closest('form').append($('<input type="hidden" id="actor_id_content" name="actor[id][content]" value="'+id+'">'+'</input>'));
+        $('#actor_id_content').remove();
+        $('#actor_id_value').closest('form').append($('<input type="hidden" id="actor_id_content" name="actor[id][content]" value="'+id+'"></input>'));
         itemFormToHtml(data);
     } else {
         getItemForm(id, true);

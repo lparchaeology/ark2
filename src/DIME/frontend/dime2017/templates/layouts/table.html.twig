@@ -62,6 +62,7 @@
                             {% endif %}
                         </td>
                     {% endif %}
+                    {{  dump(state.image) }}
                     {% for cell in layout.cells %}
                         {% set field = cell.element %}
                         {% if state.actor.hasPermission(field.attribute.readPermission) %}

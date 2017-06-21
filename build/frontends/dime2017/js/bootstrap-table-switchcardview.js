@@ -222,10 +222,8 @@
                 }
 
                 if ( $($btnGroup.find('[name="tableView"]')).hasClass("active") == false ) {
-                    $('#dime_find_list').removeClass("cardViewTable");
-                    $('#dime_find_home').removeClass("cardViewTable");
-                    $('#dime_find_list').removeClass("thumbViewTable");
-                    $('#dime_find_home').removeClass("thumbViewTable");
+                    $('.dime-table').removeClass("cardViewTable");
+                    $('.dime-table').removeClass("thumbViewTable");
 
                     if( $($btnGroup.find('[name="thumbView"]')).hasClass("active") ){
                         that.toggleView();
@@ -253,10 +251,8 @@
 
                     that.toggleView();
 
-                    $('#dime_find_list').addClass("thumbViewTable");
-                    $('#dime_find_home').addClass("thumbViewTable");
-                    $('#dime_find_list').removeClass("cardViewTable");
-                    $('#dime_find_home').removeClass("cardViewTable");
+                    $('.dime-table').addClass("thumbViewTable");
+                    $('.dime-table').removeClass("cardViewTable");
 
                     $($btnGroup.find('[name="thumbView"]')).addClass("active");
                     $($btnGroup.find('[name="cardView"]')).removeClass("active");
@@ -286,10 +282,8 @@
                         that.toggleView();
                     }
 
-                    $('#dime_find_list').addClass("cardViewTable");
-                    $('#dime_find_home').addClass("cardViewTable");
-                    $('#dime_find_list').removeClass("thumbViewTable");
-                    $('#dime_find_home').removeClass("thumbViewTable");
+                    $('.dime-table').addClass("cardViewTable");
+                    $('.dime-table').removeClass("thumbViewTable");
 
                     $($btnGroup.find('[name="cardView"]')).addClass("active");
                     $($btnGroup.find('[name="thumbView"]')).removeClass("active");
