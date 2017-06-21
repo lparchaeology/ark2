@@ -21,6 +21,10 @@ $(document).ready(function() {
 
     $("input[type=file]").each(function(){
 
+        if($(this).attr('id')=='actor_avatar_file'){
+            return true;
+        }
+        
         initialPreview = [];
 
         if (typeof $(this).attr('data-existing') == 'string'){
