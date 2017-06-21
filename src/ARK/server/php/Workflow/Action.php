@@ -70,7 +70,13 @@ class Action
 
     public function __construct()
     {
-        $this->cells = new ArrayCollection();
+        $this->permissions = new ArrayCollection();
+        $this->allowances = new ArrayCollection();
+        $this->agencies = new ArrayCollection();
+        $this->conditions = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
+        $this->updates = new ArrayCollection();
+        $this->groups = new ArrayCollection();
     }
 
     public function schema()
@@ -96,6 +102,11 @@ class Action
     public function enabled()
     {
         return $this->enabled;
+    }
+
+    public function isUpdate()
+    {
+        return !$this->updates->isEmpty();
     }
 
     public function meetsConditions(Item $item)
@@ -186,7 +197,7 @@ class Action
         return $recipients;
     }
 
-    public function apply(Actor $actor, Item $item)
+    public function apply(Actor $actor, Item $item, Actor $subject = null)
     {
         if ($this->isGranted($actor, $item)) {
             // Create Event
@@ -194,7 +205,7 @@ class Action
             ORM::persist($event);
             // Apply Updates
             foreach ($this->updates as $update) {
-                $update->apply($item);
+                $update->apply($actor, $item, $subject);
             }
             // Trigger Actions
             // Send Notifications

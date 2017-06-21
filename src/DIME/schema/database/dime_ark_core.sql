@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 21, 2017 at 01:09 PM
+-- Generation Time: Jun 21, 2017 at 05:47 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -1408,6 +1408,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.action.suspend', 'core', 0, 0),
 ('dime.action.transfer', 'core', 0, 0),
 ('dime.action.validate', 'core', 0, 0),
+('dime.action.view', 'dime', 0, 0),
 ('dime.action.withdraw', 'core', 0, 0),
 ('dime.actions', 'dime', 0, 0),
 ('dime.actor.municipalities', 'dime', 0, 0),
@@ -2084,9 +2085,9 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('language.aleut', 'vocabulary', 0, 0),
 ('language.altai.southern', 'vocabulary', 0, 0),
 ('language.amharic', 'vocabulary', 0, 0),
-('language.angika', 'vocabulary', 0, 0),
-('language.aonaga', 'vocabulary', 0, 0);
+('language.angika', 'vocabulary', 0, 0);
 INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('language.aonaga', 'vocabulary', 0, 0),
 ('language.arabic', 'vocabulary', 0, 0),
 ('language.arabic.algerian', 'vocabulary', 0, 0),
 ('language.arabic.chadian', 'vocabulary', 0, 0),
@@ -3867,6 +3868,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.action.edit', 'default', 'edit', NULL),
 ('en', 'dime.action.record', 'default', 'Record', 'Record'),
 ('en', 'dime.action.report', 'default', 'Report', 'Report'),
+('en', 'dime.action.view', 'default', 'View', ''),
 ('en', 'dime.actions', 'default', 'Action', 'Action'),
 ('en', 'dime.actor.municipalities', 'default', 'Municipalities', NULL),
 ('en', 'dime.admin.users', 'default', 'Administer Users', ''),
@@ -4204,9 +4206,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.kommune.allerod', 'official', 'Allerød Municipality', NULL),
 ('en', 'dime.kommune.arhus', 'default', 'Århus', NULL),
 ('en', 'dime.kommune.arhus', 'official', 'Århus Municipality', NULL),
-('en', 'dime.kommune.assens', 'default', 'Assens', NULL),
-('en', 'dime.kommune.assens', 'official', 'Assens Municipality', NULL);
+('en', 'dime.kommune.assens', 'default', 'Assens', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.kommune.assens', 'official', 'Assens Municipality', NULL),
 ('en', 'dime.kommune.ballerup', 'default', 'Ballerup', NULL),
 ('en', 'dime.kommune.ballerup', 'official', 'Ballerup Municipality', NULL),
 ('en', 'dime.kommune.billund', 'default', 'Billund', NULL),
@@ -5038,9 +5040,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'language.serbocroatian', 'default', 'Serbo-Croatian', NULL),
 ('en', 'language.serer', 'default', 'Serer', NULL),
 ('en', 'language.seri', 'default', 'Seri', NULL),
-('en', 'language.shambala', 'default', 'Shambala', NULL),
-('en', 'language.shan', 'default', 'Shan', NULL);
+('en', 'language.shambala', 'default', 'Shambala', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'language.shan', 'default', 'Shan', NULL),
 ('en', 'language.shona', 'default', 'Shona', NULL),
 ('en', 'language.sicilian', 'default', 'Sicilian', NULL),
 ('en', 'language.sidamo', 'default', 'Sidamo', NULL),
@@ -8425,14 +8427,14 @@ INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event
 ('dime.find', 'appraise', 'core.event.type', 'appraised', 'appraiser', 0, 0, 0, 0, 1, 'dime.action.appraise'),
 ('dime.find', 'assess', 'core.event.type', 'assessed', 'assessor', 0, 0, 0, 0, 1, 'dime.action.assess'),
 ('dime.find', 'cite', 'core.event.type', 'cited', NULL, 0, 0, 0, 0, 1, 'dime.action.cite'),
-('dime.find', 'classify', 'core.event.type', 'classified', '', 0, 0, 0, 0, 1, 'dime.action.classify'),
+('dime.find', 'classify', 'core.event.type', 'classified', NULL, 0, 0, 0, 0, 1, 'dime.action.classify'),
 ('dime.find', 'comment', 'core.event.type', 'commented', NULL, 0, 0, 0, 0, 1, 'dime.action.comment'),
 ('dime.find', 'conserve', 'core.event.type', 'conserved', NULL, 0, 0, 0, 0, 1, 'dime.action.conserve'),
 ('dime.find', 'contact', 'core.event.type', 'contacted', NULL, 0, 0, 0, 0, 1, 'dime.action.contact'),
 ('dime.find', 'date', 'core.event.type', 'dated', NULL, 0, 0, 0, 0, 1, 'dime.action.date'),
 ('dime.find', 'decline', 'core.event.type', 'declined', NULL, 0, 0, 0, 0, 1, 'dime.action.decline'),
 ('dime.find', 'delete', 'core.event.type', 'deleted', NULL, 0, 0, 0, 0, 1, 'dime.action.delete'),
-('dime.find', 'describe', 'core.event.type', 'described', '', 0, 0, 0, 0, 1, 'dime.action.describe'),
+('dime.find', 'describe', 'core.event.type', 'described', NULL, 0, 0, 0, 0, 1, 'dime.action.describe'),
 ('dime.find', 'destroy', 'core.event.type', 'destroyed', NULL, 0, 0, 0, 0, 1, 'dime.action.destroy'),
 ('dime.find', 'disagree', 'core.event.type', 'disagreed', NULL, 0, 0, 0, 0, 1, 'dime.action.disagree'),
 ('dime.find', 'discard', 'core.event.type', 'discarded', NULL, 0, 0, 0, 0, 1, 'dime.action.discard'),
@@ -8462,7 +8464,7 @@ INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event
 ('dime.find', 'suppress', 'core.event.type', 'suppressed', NULL, 0, 0, 0, 0, 1, 'dime.action.suppress'),
 ('dime.find', 'transfer', 'core.event.type', 'transferred', NULL, 0, 0, 0, 0, 1, 'dime.action.transfer'),
 ('dime.find', 'validate', 'core.event.type', 'validated', NULL, 0, 0, 0, 0, 1, 'dime.action.validate'),
-('dime.find', 'view', 'core.event.type', 'viewed', NULL, 0, 1, 1, 0, 1, 'dime.action.edit'),
+('dime.find', 'view', 'core.event.type', 'viewed', NULL, 0, 1, 1, 0, 1, 'dime.action.view'),
 ('dime.find', 'withdraw', 'core.event.type', 'withdrawn', NULL, 0, 0, 0, 0, 1, 'dime.action.withdraw');
 
 -- --------------------------------------------------------
@@ -8917,7 +8919,9 @@ CREATE TABLE `ark_workflow_update` (
   `action` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `actor` tinyint(1) NOT NULL DEFAULT 0,
+  `actor` tinyint(1) DEFAULT NULL,
+  `subject` tinyint(1) DEFAULT NULL,
+  `clear` tinyint(1) DEFAULT NULL,
   `term` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
@@ -8925,8 +8929,21 @@ CREATE TABLE `ark_workflow_update` (
 -- Dumping data for table `ark_workflow_update`
 --
 
-INSERT INTO `ark_workflow_update` (`schma`, `action`, `type`, `attribute`, `actor`, `term`) VALUES
-('dime.find', 'report', 'find', 'process', 0, 'reported');
+INSERT INTO `ark_workflow_update` (`schma`, `action`, `type`, `attribute`, `actor`, `subject`, `clear`, `term`) VALUES
+('dime.find', 'delete', 'find', 'custody', NULL, NULL, NULL, 'sent'),
+('dime.find', 'delete', 'find', 'process', NULL, NULL, NULL, 'deleted'),
+('dime.find', 'receive', 'find', 'custodian', 1, NULL, NULL, NULL),
+('dime.find', 'receive', 'find', 'custody', NULL, NULL, NULL, 'held'),
+('dime.find', 'receive', 'find', 'recipient', NULL, NULL, NULL, NULL),
+('dime.find', 'record', 'find', 'custodian', 1, NULL, NULL, NULL),
+('dime.find', 'record', 'find', 'custody', NULL, NULL, NULL, 'held'),
+('dime.find', 'record', 'find', 'finder', 1, NULL, NULL, NULL),
+('dime.find', 'record', 'find', 'owner', 1, NULL, NULL, NULL),
+('dime.find', 'record', 'find', 'process', NULL, NULL, NULL, 'recorded'),
+('dime.find', 'record', 'find', 'treasure', NULL, NULL, NULL, 'pending'),
+('dime.find', 'report', 'find', 'process', NULL, NULL, NULL, 'reported'),
+('dime.find', 'send', 'find', 'custody', NULL, NULL, NULL, 'sent'),
+('dime.find', 'send', 'find', 'recipient', NULL, 1, NULL, NULL);
 
 --
 -- Indexes for dumped tables

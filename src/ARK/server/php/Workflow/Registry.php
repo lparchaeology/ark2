@@ -86,6 +86,20 @@ class Registry extends SymfonyRegistry
         return $this->actions[$schema->name()];
     }
 
+    public function updateActions(Actor $actor, Item $item)
+    {
+        $schema = $item->schema()->name();
+        $this->init($schema);
+        dump($this);
+        $actions = [];
+        foreach ($this->actions[$schema] as $action) {
+            if ($action->isUpdate() && $action->isGranted($actor, $item)) {
+                $actions[$action->name()] = $action;
+            }
+        }
+        return $actions;
+    }
+
     public function actions(Actor $actor, Item $item)
     {
         $schema = $item->schema()->name();
@@ -111,10 +125,10 @@ class Registry extends SymfonyRegistry
         return false;
     }
 
-    public function apply(Actor $actor, $action, Item $item)
+    public function apply(Actor $actor, $action, Item $item, Actor $subject = null)
     {
         if ($action = $this->action($item->schema()->name(), $action)) {
-            return $action->apply($actor, $item);
+            return $action->apply($actor, $item, $subject);
         }
         return false;
     }

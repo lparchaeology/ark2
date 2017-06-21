@@ -63,7 +63,8 @@ class UserActorController extends FormController
 
     public function processForm(Request $request, $form)
     {
-        $actor = $form->getData();
+        $data = $form->getData();
+        $actor = $data['actor'];
         ORM::persist($actor);
         ORM::flush($actor);
         $request->attributes->set('flash', 'success');

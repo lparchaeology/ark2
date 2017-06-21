@@ -63,7 +63,7 @@ class FindViewController extends DimeFormController
     public function buildWorkflow(Request $request, $data, array $state)
     {
         $workflow['actor'] = $state['actor'];
-        $workflow['actions'] = Service::workflow()->actions($workflow['actor'], $data['find']);
+        $workflow['actions'] = Service::workflow()->updateActions($workflow['actor'], $data['find']);
         $workflow['actors'] = ORM::findAll(Person::class);
         return $workflow;
     }

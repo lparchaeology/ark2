@@ -48,13 +48,19 @@ class Update
     protected $type = '';
     protected $attributeName = '';
     protected $attribute = null;
-    protected $actor = false;
+    protected $subject = null;
+    protected $actor = null;
+    protected $clear = null;
     protected $term = '';
 
-    public function apply(Item $item)
+    public function apply(Actor $actor, Item $item, Actor $subject = null)
     {
         if ($this->actor) {
-            $item->property($this->attributeName)->setValue(Service::workflow()->actor());
+            $item->property($this->attributeName)->setValue($actor);
+        } elseif ($this->subject) {
+            $item->property($this->attributeName)->setValue($subject);
+        } elseif ($this->clear) {
+            $item->property($this->attributeName)->setValue($this->attribute->nullValue());
         } elseif ($this->term) {
             $term = ORM::findOneBy(Term::class, ['concept' => $this->attribute->vocabulary()->concept(), 'term' => $this->term]);
             $item->property($this->attributeName)->setValue($term);
@@ -73,8 +79,10 @@ class Update
         $builder->addStringKey('type', 30);
         $builder->addStringKey('attributeName', 30, 'attribute');
 
-        $builder->addStringField('term', 30);
         $builder->addStringField('actor', 'boolean');
+        $builder->addStringField('subject', 'boolean');
+        $builder->addStringField('clear', 'boolean');
+        $builder->addStringField('term', 30);
 
         // Associations
         $builder->addCompositeManyToOneField(
