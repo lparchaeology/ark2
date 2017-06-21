@@ -93,15 +93,14 @@ class FindViewController extends DimeFormController
             return;
         }
         if ($clicked == 'apply') {
+            $actor = Service::workflow()->actor();
             $action = $form['find']['actions']->getNormData();
-            $actor = $form['find']['actors']->getNormData();
+            $subject = $form['find']['actors']->getNormData();
             $data = $form->getData();
             $find = $data['find'];
-            if (isset($data['actions'])) {
-                $action = $data['actions'];
-                $actor = Service::workflow()->actor();
-                //$action->apply($actor, $item);
-            }
+            $action->apply($actor, $find, $subject);
+            ORM::persist($find);
+            ORM::flush($find);
             $parameters['id'] = $find->id();
             $request->attributes->set('parameters', $parameters);
             return;

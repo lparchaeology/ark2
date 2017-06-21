@@ -72,9 +72,9 @@ abstract class Group extends Element
         return $this->cells;
     }
 
-    public function buildState(array $state)
+    public function buildState($data, array $state)
     {
-        $state = parent::buildState($state);
+        $state = parent::buildState($data, $state);
         $state['layout'] = $this;
         return $state;
     }
@@ -86,7 +86,7 @@ abstract class Group extends Element
         //dump($data);
         //dump($state);
         //dump($options);
-        $state = $this->buildState($state);
+        $state = $this->buildState($data, $state);
         if ($this->form) {
             //dump('GROUP : BUILD FORMS '.$this->formName());
             $builderData = $this->buildData($data, $state);
@@ -119,7 +119,7 @@ abstract class Group extends Element
         //dump($data);
         //dump($state);
         //dump($options);
-        $state = $this->buildState($state);
+        $state = $this->buildState($data, $state);
         if ($state['mode'] == 'withhold') {
             return;
         }

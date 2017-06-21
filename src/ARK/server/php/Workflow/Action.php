@@ -160,10 +160,6 @@ class Action
     public function hasAgency(Actor $actor, Item $item)
     {
         // Check if Actor is one of the permitted agents
-        $vote = Agency::GRANT;
-        if ($actor->id() == 'bnchristensen') {
-            return $vote;
-        }
         foreach ($this->agencies as $agency) {
             $vote = $agency->isGranted($actor, $item);
             if ($vote !== Agency::ABSTAIN) {
@@ -173,17 +169,22 @@ class Action
         return $this->defaultAgency;
     }
 
-    public function isGranted(Actor $actor, Item $item)
+    public function isGranted(Actor $actor, Item $item, $attribute = null)
     {
         // TODO Sort out Permissions vs Allowances
-        //dump('Allowed');
-        //dump($this->isAllowed($actor));
-        //dump('Agency');
-        //dump($this->hasAgency($actor, $item));
-        //dump('Conditions');
-        //dump($this->meetsConditions($item));
-        return //$this->hasPermission($actor, $item)
-            $this->isAllowed($actor)
+        if ($attribute) {
+            dump('ACTION : '.$this->action);
+            dump('Allowed = '.(string) $this->isAllowed($actor));
+            dump('Agency = '.(string) $this->hasAgency($actor, $item));
+            dump('Conditions = '.(string) $this->meetsConditions($item));
+            if (is_string($attribute)) {
+                $attribute = $item->property($attribute)->attribute();
+            }
+            return $this->isAllowed($actor)
+                && ($this->hasAgency($actor, $item) || $actor->hasPermission($attribute->readPermission()))
+                && $this->meetsConditions($item);
+        }
+        return $this->isAllowed($actor)
             && $this->hasAgency($actor, $item)
             && $this->meetsConditions($item);
     }

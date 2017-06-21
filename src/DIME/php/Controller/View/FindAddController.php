@@ -61,22 +61,9 @@ class FindAddController extends DimeFormController
     public function processForm(Request $request, $form)
     {
         $find = $form->getData();
-        // TODO Do using actions?
         $actor = Service::workflow()->actor();
-        $find->property('owner')->setValue($actor);
-        $find->property('custodian')->setValue($actor);
-        $process = ORM::find(Term::class, ['concept' => 'dime.find.process', 'term' => 'recorded']);
-        $find->property('process')->setValue($process);
-        $custody = ORM::find(Term::class, ['concept' => 'dime.find.custody', 'term' => 'held']);
-        $find->property('custody')->setValue($custody);
-        $treasure = ORM::find(Term::class, ['concept' => 'dime.treasure', 'term' => 'pending']);
-        $find->property('treasure')->setValue($treasure);
+        Service::workflow()->apply($actor, 'record', $find);
         ORM::persist($find);
-        if (isset($data['actions'])) {
-            $action = $data['actions'];
-            $actor = Service::workflow()->actor();
-            //$action->apply($actor, $item);
-        }
         ORM::flush($find);
         $parameters['id'] = $find->id();
         $request->attributes->set('parameters', $parameters);

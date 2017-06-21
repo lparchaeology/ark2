@@ -150,7 +150,7 @@ abstract class Element implements ElementInterface
         return $state;
     }
 
-    public function buildState(array $state)
+    public function buildState($data, array $state)
     {
         $state['name'] = $this->formName();
         $state['mode'] = $this->displayMode($state['mode']);
@@ -194,7 +194,7 @@ abstract class Element implements ElementInterface
     public function buildContext($data, array $state, FormView $form = null)
     {
         $context = $this->defaultContext();
-        $state = $this->buildState($state);
+        $state = $this->buildState($data, $state);
         $context['state'] = $state;
         $context['data'] = $this->buildData($data, $state);
         $name = $state['name'];
@@ -225,7 +225,7 @@ abstract class Element implements ElementInterface
         //dump($data);
         //dump($state);
         //dump($options);
-        $state = $this->buildState($state);
+        $state = $this->buildState($data, $state);
         if ($state['mode'] == 'withhold') {
             return;
         }

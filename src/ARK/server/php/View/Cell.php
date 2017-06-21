@@ -156,7 +156,7 @@ class Cell implements ElementInterface
         return $this->template;
     }
 
-    public function buildState(array $state)
+    public function buildState($data, array $state)
     {
         $state['name'] = $this->name;
         $state['label'] = $this->label;
@@ -211,7 +211,7 @@ class Cell implements ElementInterface
     {
         //dump('BUILD CELL : '.$this->element->formName());
         if ($this->element->type()->isLayout()) {
-            $state = $this->buildState($state);
+            $state = $this->buildState($data, $state);
             return $this->element->buildForms($data, $state, $options);
         }
         return [];
@@ -223,7 +223,7 @@ class Cell implements ElementInterface
         //dump($data);
         //dump($state);
         //dump($options);
-        $state = $this->buildState($state);
+        $state = $this->buildState($data, $state);
         $data = $this->buildData($data, $state);
         $options = $this->buildOptions($data, $state, $options);
         $this->element->buildForm($builder, $data, $state, $options);
@@ -234,7 +234,7 @@ class Cell implements ElementInterface
         //dump('RENDER CELL FORM : '.$this->element->formName());
         //dump($state);
         //dump($data);
-        $state = $this->buildState($state);
+        $state = $this->buildState($data, $state);
         return $this->element->renderForm($data, $state, $form);
     }
 

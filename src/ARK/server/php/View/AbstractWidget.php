@@ -67,7 +67,7 @@ abstract class AbstractWidget extends Element
             is_subclass_of($this->formTypeClass(), ButtonTypeInterface::class);
     }
 
-    public function buildState(array $state)
+    public function buildState($data, array $state)
     {
         if (!isset($state['label'])) {
             $state['label'] = $this->showLabel();

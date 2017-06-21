@@ -157,7 +157,7 @@ class Field extends Element
         return ($this->keyword ?: $this->attribute->keyword());
     }
 
-    public function buildState(array $state)
+    public function buildState($data, array $state)
     {
         $state['required'] = $this->attribute()->isRequired();
         if (!isset($state['name'])) {
@@ -175,10 +175,11 @@ class Field extends Element
         if (!isset($state['format']['modus'])) {
             $state['format']['modus'] = $this->formatModus();
         }
-        // TODO Service::workflow()->hasVisibility($actor, $this->attribute())???
-        if (!$state['actor']->hasPermission($this->attribute->readPermission())) {
+        dump('CAN VIEW ATTRIBUTE : '.$this->attribute()->name());
+        if ($data instanceof Item && !Service::workflow()->can($state['actor'], 'view', $data, $this->attribute())) {
             if ($state['sanitise'] != 'redact') {
                 $state['mode'] = 'withhold';
+                dump('WITHHOLD');
             }
         }
         $state['mode'] = $this->displayMode($state['mode']);
@@ -332,7 +333,7 @@ class Field extends Element
     // FIXME Should probably have some way to use FormTypes here to render 'static' mode
     public function renderView($data, array $state)
     {
-        $state = $this->buildState($state);
+        $state = $this->buildState($data, $state);
         if ($state['sanitise'] == 'withhold') {
             return null;
         }

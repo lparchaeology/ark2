@@ -41,7 +41,7 @@ interface ElementInterface
 
     public function mode();
 
-    public function buildState(array $state);
+    public function buildState($data, array $state);
 
     public function buildOptions($data, array $state, array $options = []);
 

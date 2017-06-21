@@ -113,14 +113,14 @@ class Registry extends SymfonyRegistry
         return $actions;
     }
 
-    public function can(Actor $actor, $action, Item $item)
+    public function can(Actor $actor, $action, Item $item, $attribute = null)
     {
-        //dump('Workflow::can('.$actor->id().' '.$action.' '.$item->schema()->module()->name().')');
+        dump('Workflow::can('.$actor->id().' '.$action.' '.$item->schema()->module()->name().')');
         if (is_string($action)) {
             $action = $this->action($item->schema()->name(), $action);
         }
         if ($action instanceof Action) {
-            return $action->isGranted($actor, $item);
+            return $action->isGranted($actor, $item, $attribute);
         }
         return false;
     }

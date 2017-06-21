@@ -110,10 +110,10 @@ class Page extends Element
         return $this->footer;
     }
 
-    public function buildState(array $state)
+    public function buildState($data, array $state)
     {
         $state = array_replace_recursive($this->defaultState(), $state);
-        $state = parent::buildState($state);
+        $state = parent::buildState($data, $state);
         $state['page'] = $this;
         return $state;
     }
@@ -169,7 +169,7 @@ class Page extends Element
         //dump($data);
         //dump($state);
         $item = null;
-        $state = $this->buildState($state);
+        $state = $this->buildState($data, $state);
         $actor = Service::workflow()->actor();
         $state['actor'] = $actor;
         $state['mode'] = $this->pageMode($actor, $item);
