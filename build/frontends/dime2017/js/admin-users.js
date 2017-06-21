@@ -71,10 +71,12 @@ var itemFormToHtml = function(data){
 
     initialAvatarPreview = [];
     
+    defaultImage = 1;
+    
     if(data['actor_avatar_item']['value']){
-        
         initialAvatarPreview.push('<img class="file-preview-image" src="/dime/img/'+data['actor_avatar_item']['value']+'?p=preview">');
-        
+    } else {
+        initialAvatarPreview.push('<img class="file-preview-image" src="/dime/img/'+defaultImage+'?p=preview">');
     }
     
     $('div.file-input').parent().append($('<input type="file" id="actor_avatar_file" name="actor[avatar][file]">'));
