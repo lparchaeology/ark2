@@ -30,6 +30,7 @@
 
 namespace DIME\Controller\View;
 
+use ARK\Actor\Person;
 use ARK\Error\ErrorException;
 use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
@@ -56,13 +57,19 @@ class FindViewController extends DimeFormController
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Find not found', "Find $id not found"));
         }
         $data['find'] = $find;
-        $data['actions'] = Service::workflow()->actions(Service::workflow()->actor(), $find);
         return $data;
+    }
+
+    public function buildWorkflow(Request $request, $data, array $state)
+    {
+        $workflow['actor'] = $state['actor'];
+        $workflow['actions'] = Service::workflow()->actions($workflow['actor'], $data['find']);
+        $workflow['actors'] = ORM::findAll(Person::class);
+        return $workflow;
     }
 
     public function processForm(Request $request, $form)
     {
-        dump($form);
         $clicked = $form->getClickedButton()->getName();
         $data = $form->getData();
         if ($clicked == 'save') {
@@ -83,8 +90,11 @@ class FindViewController extends DimeFormController
         if ($clicked == 'clone') {
             // TODO
             $request->attributes->set('redirect', 'finds.add');
+            return;
         }
         if ($clicked == 'apply') {
+            $action = $form['find']['actions']->getNormData();
+            $actor = $form['find']['actors']->getNormData();
             $data = $form->getData();
             $find = $data['find'];
             if (isset($data['actions'])) {

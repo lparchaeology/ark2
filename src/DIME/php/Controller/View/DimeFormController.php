@@ -45,6 +45,7 @@ abstract class DimeFormController extends DimeController
         $page = ORM::find(Page::class, $request->attributes->get('page'));
         $data = $this->buildData($request);
         $state = $this->buildState($request);
+        $state['workflow'] = $this->buildWorkflow($request, $data, $state);
         $state['page_config'] = $this->pageConfig($request->attributes->get('_route'));
         return $page->handleRequest($request, $data, $state, [$this, 'processForm']);
     }
@@ -56,6 +57,7 @@ abstract class DimeFormController extends DimeController
 
     public function buildState(Request $request)
     {
+        $state['actor'] = Service::workflow()->actor();
         $state['image'] = 'image';
         $state['notifications'] = DIME::getUnreadNotifications();
         // FIXME temp hardcode for now, do properly later!
@@ -80,6 +82,11 @@ abstract class DimeFormController extends DimeController
         $state['modules']['file']['route'] = null;
         $state['modules']['file']['resource'] = Service::translate('core.file', 'resource');
         return $state;
+    }
+
+    public function buildWorkflow(Request $request, $data, array $state)
+    {
+        return null;
     }
 
     public function processForm(Request $request, $form)

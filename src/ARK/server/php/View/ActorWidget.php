@@ -33,8 +33,17 @@ namespace ARK\View;
 use ARK\View\AbstractWidget;
 use ARK\ORM\ClassMetadata;
 
-class Widget extends AbstractWidget
+class ActorWidget extends AbstractWidget
 {
+    public function buildOptions($data, array $state, array $options = [])
+    {
+        $options = parent::buildOptions($data, $state, $options);
+        if (isset($state['workflow']['actors'])) {
+            $options['choices'] = $state['workflow']['actors'];
+        }
+        return $options;
+    }
+
     public static function loadMetadata(ClassMetadata $metadata)
     {
         self::widgetMetadata($metadata);

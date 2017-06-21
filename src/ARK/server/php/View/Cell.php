@@ -52,6 +52,7 @@ class Cell implements ElementInterface
     protected $name = null;
     protected $width = null;
     protected $label = null;
+    protected $placeholder = null;
     protected $required = null;
     protected $sanitise = null;
     protected $display = null;
@@ -113,6 +114,11 @@ class Cell implements ElementInterface
     public function showLabel()
     {
         return $this->label;
+    }
+
+    public function showPlaceholder()
+    {
+        return $this->placeholder;
     }
 
     public function isRequired()
@@ -249,6 +255,7 @@ class Cell implements ElementInterface
         $builder->addStringField('name', 30);
         $builder->addField('width', 'integer');
         $builder->addField('label', 'boolean');
+        $builder->addField('placeholder', 'boolean');
         $builder->addStringField('mode', 10);
         $builder->addStringField('sanitise', 10);
         $builder->addStringField('value', 10);

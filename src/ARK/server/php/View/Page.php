@@ -177,7 +177,6 @@ class Page extends Element
         $forms = $this->content->buildForms($data, $state, $options);
         //dump($forms);
         if ($forms && $request->getMethod() == 'POST' && $posted = $this->postedForm($request, $forms)) {
-            //dump($posted);
             if ($processForm !== null) {
                 $processForm($request, $posted);
             }
@@ -189,7 +188,6 @@ class Page extends Element
                 Service::view()->addFlash($flash, $request->attributes->get('message'));
             }
             $parameters = ($request->attributes->get('parameters') ?: []);
-            dump($redirect);
             return Service::redirectPath($redirect, $parameters);
         }
         //dump('PAGE : RENDER');
