@@ -107,11 +107,14 @@ $('document').ready(function(){
     });
     
     $('#actor_save').on("click", function(e){
-        e.preventDefault();
         var options = {
                 success: showResponse
             }; 
-        $(e.target).closest('form').ajaxSubmit(options);
+        var valid = $(e.target).closest('form')[0].checkValidity();
+        if(valid){
+            e.preventDefault();
+            $(e.target).closest('form').ajaxSubmit(options);
+        }
     });
 
 });
