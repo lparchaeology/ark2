@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 22, 2017 at 01:37 PM
+-- Generation Time: Jun 22, 2017 at 03:24 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -1095,6 +1095,10 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('core.user.register.login', 'core', 0, 0),
 ('core.user.register.logout', 'core', 0, 0),
 ('core.user.reset', 'dime', 0, 0),
+('core.user.reset.heading', 'dime', 0, 0),
+('core.user.reset.notregistered', 'dime', 0, 0),
+('core.user.reset.register', 'dime', 0, 0),
+('core.user.reset.reset', 'dime', 0, 0),
 ('core.user.username', 'core', 0, 0),
 ('core.users', 'dime', 0, 0),
 ('core.visibility', 'vocabulary', 0, 0),
@@ -2081,12 +2085,12 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('language.akoose', 'vocabulary', 0, 0),
 ('language.alabama', 'vocabulary', 0, 0),
 ('language.albanian', 'vocabulary', 0, 0),
-('language.albanian.gheg', 'vocabulary', 0, 0),
+('language.albanian.gheg', 'vocabulary', 0, 0);
+INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
 ('language.aleut', 'vocabulary', 0, 0),
 ('language.altai.southern', 'vocabulary', 0, 0),
 ('language.amharic', 'vocabulary', 0, 0),
-('language.angika', 'vocabulary', 0, 0);
-INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('language.angika', 'vocabulary', 0, 0),
 ('language.aonaga', 'vocabulary', 0, 0),
 ('language.arabic', 'vocabulary', 0, 0),
 ('language.arabic.algerian', 'vocabulary', 0, 0),
@@ -3601,6 +3605,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'core.user.register.login', 'default', 'Sign in here.', ''),
 ('en', 'core.user.register.logout', 'default', 'Sign out.', ''),
 ('en', 'core.user.reset', 'default', 'Reset', ''),
+('en', 'core.user.reset.heading', 'default', 'Reset User', ''),
+('en', 'core.user.reset.notregistered', 'default', 'Not a registered user?', ''),
+('en', 'core.user.reset.register', 'default', 'Register here.', ''),
+('en', 'core.user.reset.reset', 'default', 'Enter your username to request a password reset or to unlock your account.', ''),
 ('en', 'core.user.username', 'default', 'Username', ''),
 ('en', 'core.users', 'resource', 'users', ''),
 ('en', 'core.visibility.private', 'default', 'Private', ''),
@@ -4201,14 +4209,14 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.kommune.aalborg', 'official', 'Aalborg Municipality', NULL),
 ('en', 'dime.kommune.aero', 'default', 'Ærø', NULL),
 ('en', 'dime.kommune.aero', 'official', 'Ærø Municipality', NULL),
-('en', 'dime.kommune.albertslund', 'default', 'Albertslund', NULL),
+('en', 'dime.kommune.albertslund', 'default', 'Albertslund', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'dime.kommune.albertslund', 'official', 'Albertslund Municipality', NULL),
 ('en', 'dime.kommune.allerod', 'default', 'Allerød', NULL),
 ('en', 'dime.kommune.allerod', 'official', 'Allerød Municipality', NULL),
 ('en', 'dime.kommune.arhus', 'default', 'Århus', NULL),
 ('en', 'dime.kommune.arhus', 'official', 'Århus Municipality', NULL),
-('en', 'dime.kommune.assens', 'default', 'Assens', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.kommune.assens', 'default', 'Assens', NULL),
 ('en', 'dime.kommune.assens', 'official', 'Assens Municipality', NULL),
 ('en', 'dime.kommune.ballerup', 'default', 'Ballerup', NULL),
 ('en', 'dime.kommune.ballerup', 'official', 'Ballerup Municipality', NULL),
@@ -5034,15 +5042,15 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'language.scots', 'default', 'Scots', NULL),
 ('en', 'language.selayar', 'default', 'Selayar', NULL),
 ('en', 'language.selkup', 'default', 'Selkup', NULL),
-('en', 'language.sena', 'default', 'Sena', NULL),
+('en', 'language.sena', 'default', 'Sena', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'language.seneca', 'default', 'Seneca', NULL),
 ('en', 'language.senni.koyraboro', 'default', 'Koyraboro Senni', NULL),
 ('en', 'language.serbian', 'default', 'Serbian', NULL),
 ('en', 'language.serbocroatian', 'default', 'Serbo-Croatian', NULL),
 ('en', 'language.serer', 'default', 'Serer', NULL),
 ('en', 'language.seri', 'default', 'Seri', NULL),
-('en', 'language.shambala', 'default', 'Shambala', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'language.shambala', 'default', 'Shambala', NULL),
 ('en', 'language.shan', 'default', 'Shan', NULL),
 ('en', 'language.shona', 'default', 'Shona', NULL),
 ('en', 'language.sicilian', 'default', 'Sicilian', NULL),
@@ -5755,7 +5763,7 @@ INSERT INTO `ark_view_grid` (`grp`, `row`, `col`, `seq`, `item_type`, `element`,
 ('dime_user_actor', 0, 0, 20, '', 'core_widget_submit', 'save', NULL, NULL, NULL, 1, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL),
 ('dime_user_actor', 0, 1, 2, '', 'core_actor_avatar', NULL, 4, NULL, NULL, 0, NULL, 0, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_user_profile', 0, 0, 0, '', 'dime_home_action', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_user_profile', 1, 0, 0, '', 'dime_user_actor', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_user_profile', 1, 0, 0, '', 'dime_user_actor', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_user_profile', 1, 1, 0, '', 'core_user_password_change', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_user_register', 0, 0, 0, '', 'core_user_credentials', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_user_register', 0, 0, 2, '', 'core_user_actor', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),

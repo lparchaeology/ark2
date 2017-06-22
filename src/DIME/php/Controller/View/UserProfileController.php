@@ -62,7 +62,7 @@ class UserProfileController extends DimeFormController
 
     public function buildWorkflow(Request $request, $data, array $state)
     {
-        $workflow['mode'] = 'view';
+        $workflow['mode'] = 'edit';
         $workflow['actor'] = $state['actor'];
         return $workflow;
     }

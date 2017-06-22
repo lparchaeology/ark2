@@ -297,6 +297,7 @@ class Field extends Element
     {
         $options['mapped'] = false;
         $options['label'] = false;
+        $options['compound'] = false;
         if ($state['modus'] == 'disabled') {
             $options['disabled'] = true;
         }

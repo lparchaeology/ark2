@@ -53,7 +53,6 @@ class FormController
     protected function processRequest(Request $request)
     {
         $content = json_decode($request->getContent());
-        //dump($content);
 
         $group = ORM::find(Group::class, $request->attributes->get('form'));
 
@@ -66,13 +65,18 @@ class FormController
         $forms = $group->buildForms($data, $state, $options);
         $form = $forms[$group->formName()];
         if ($request->getMethod() == 'POST') {
-            $this->processForm($request, $form);
-            $data = $group->buildData($data, $state);
-            if ($flash = $request->attributes->get('flash')) {
-                $state['flash'] = $flash;
-                $state['message'] = $request->attributes->get('message');
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->processForm($request, $form);
+                $data = $group->buildData($data, $state);
+                if ($flash = $request->attributes->get('flash')) {
+                    $state['flash'] = $flash;
+                    $state['message'] = $request->attributes->get('message');
+                }
+                $parameters = ($request->attributes->get('parameters') ?: []);
+            } else {
+                // TODO Return Errors!!!!
             }
-            $parameters = ($request->attributes->get('parameters') ?: []);
         }
         $view = $form->createView();
         $json = $this->jsonView($view);
