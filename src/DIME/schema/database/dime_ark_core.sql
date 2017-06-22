@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 22, 2017 at 05:25 PM
+-- Generation Time: Jun 22, 2017 at 06:01 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -5630,7 +5630,7 @@ INSERT INTO `ark_view_grid` (`grp`, `row`, `col`, `seq`, `item_type`, `element`,
 ('core_user_actor', 0, 0, 14, '', 'core_actor_visibility', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_user_actor', 0, 0, 16, '', 'core_actor_license', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_user_actor', 0, 0, 18, '', 'core_actor_biography', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_actor', 0, 0, 20, '', 'core_actor_avatar', NULL, NULL, NULL, NULL, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_actor', 0, 0, 20, '', 'core_actor_avatar', NULL, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_user_credentials', 0, 0, 0, '', 'core_widget_username', NULL, NULL, NULL, NULL, 1, NULL, NULL, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_user_credentials', 0, 0, 2, '', 'core_user_email_confirm', NULL, NULL, NULL, NULL, 1, NULL, NULL, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_user_credentials', 0, 0, 4, '', 'core_user_password_confirm', NULL, NULL, NULL, NULL, 1, NULL, NULL, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),

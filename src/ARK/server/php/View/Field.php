@@ -175,12 +175,10 @@ class Field extends Element
         if (!isset($state['format']['modus'])) {
             $state['format']['modus'] = $this->formatModus();
         }
-        if ($data instanceof Item) {
+        if ($state['sanitise'] != 'redact' && $data instanceof Item) {
             if ($state['mode'] == 'edit' && Service::workflow()->can($state['actor'], 'edit', $data, $this->attribute())) {
                 $state['mode'] = 'edit';
             } elseif (Service::workflow()->can($state['actor'], 'view', $data, $this->attribute())) {
-                $state['mode'] = 'view';
-            } elseif ($state['sanitise'] == 'redact') {
                 $state['mode'] = 'view';
             } else {
                 $state['mode'] = 'deny';
