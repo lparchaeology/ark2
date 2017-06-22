@@ -14,8 +14,25 @@
 }
 
 .mappick {
-    min-height: 250px;
+    cursor: none;
 }
+
+.mappick:-webkit-full-screen {
+   height: 100%;
+   width: 100%;
+ }
+.mappick:-moz-full-screen {
+   height: 100%;
+   width: 100%;
+ }
+.mappick:-ms-fullscreen {
+   height: 100%;
+   width: 100%;
+ }
+.mappick:fullscreen {
+   height: 100%;
+   width: 100%;
+ }
 
 .mappick-options {
     margin: 40px 0;

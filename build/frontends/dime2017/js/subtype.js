@@ -162,7 +162,8 @@ var initSubtype = function(){
     });
     
 
-    buildSubtypeSelect2();
+    //buildSubtypeSelect2();
+
     $('#'+date_start_id).trigger('select2:select');
 
 };

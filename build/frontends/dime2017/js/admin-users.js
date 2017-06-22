@@ -109,13 +109,13 @@ var showItemForm = function(id){
 
     if(data){
         $('#actor_id_value').html(id);
-        $('#actor_id_content').remove();
         var working = thisRow.data("working", true);
         var thisForm = $('#actor_id_value').closest('form');
-        thisForm.append($('<input type="hidden" id="actor_id_content" name="actor[id][content]" value="'+id+'"></input>'));
-        thisForm.attr('action',window.userApiUrl+id+"/actor");
+        thisForm.attr('action', window.userApiUrl+id+"/actor");
         itemFormToHtml(data);
-    } else if( (typeof working == 'undefined') || working == true ) {
+    } else if( working == true ) {
+        showItemForm(id);
+    } else {
         getItemForm(id, true);
     }
 };

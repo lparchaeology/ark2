@@ -3,7 +3,15 @@ $(document).ready(function() {
         var mapPickLayers;
         var mapPickSource;
         var mapPickMap;
+        $('#mappick').height($('#mappick').width());
         initialisePickMap();
+        $( window ).resize(function() {
+            if( $('button[title="Toggle full-screen"]').hasClass('ol-full-screen-false')) {
+                $('#mappick').height($('#mappick').width());
+            } else {
+                $('#mappick').height('100%');
+            }
+        });
     }
 });
 
@@ -49,8 +57,7 @@ function initialisePickMap() {
 
     var mapPickView = new ol.View({
         center: [(denmarkExtent[0]+denmarkExtent[2])/2, (denmarkExtent[1]+denmarkExtent[3])/2],
-        //center: [531578, 6295675],
-        zoom: 6,
+        zoom: 5,
         minZoom: 6
     });
 
@@ -59,7 +66,7 @@ function initialisePickMap() {
         loadTilesWhileInteracting: true,
         target: 'mappick',
         view: mapPickView,
-        controls: [new ol.control.FullScreen()],
+        controls: [ new ol.control.FullScreen(), new ol.control.Zoom() ],
     });
 
     var draw = new ol.interaction.Draw({
@@ -84,6 +91,7 @@ function initialisePickMap() {
             $('#find_location_northing').val(parseFloat(coords[1].toFixed(6)));
             updateUtmPoint()
             mapPickMap.getView().setCenter(feature.getGeometry().getCoordinates());
+            mapPickMap.getView().setZoom(12);
             updateMunicipality();
         });
     });
@@ -130,7 +138,7 @@ function initialisePickMap() {
     //$('.mappick-fields input').change();
     updateMapPoint();
 
-
+/* This does not work well
     var constrainPan = debounce(function() {
 
         var visible = mapPickView.calculateExtent(mapPickMap.getSize());
@@ -152,12 +160,14 @@ function initialisePickMap() {
             centre[1] += delta;
         }
         if (adjust) {
+            mapPickView.setZoom(Math.max(6,mapPickView.getZoom()));
             mapPickView.setCenter(centre);
         }
     }, 10, false);
 
     mapPickView.on('change:resolution', constrainPan);
     mapPickView.on('change:center', constrainPan);
+    */
 };
 
 function updateMunicipality() {
@@ -174,8 +184,14 @@ function updateMunicipality() {
 }
 
 function updateMapPoint() {
-    easting = $('#find_location_easting').val();
-    northing = $('#find_location_northing').val();
+    if($('#find_location_easting').is('input')){
+        easting = $('#find_location_easting').val();
+        northing = $('#find_location_northing').val();
+    } else if ($('#find_location_easting').is('div')){
+        easting = $('#find_location_easting').text();
+        northing = $('#find_location_northing').text();
+        
+    }
     if (easting && northing) {
         coords = ol.proj.transform([parseFloat(easting), parseFloat(northing)], 'EPSG:4326', 'EPSG:3857');
         mapPickSource.clear();
