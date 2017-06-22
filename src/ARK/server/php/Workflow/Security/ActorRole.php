@@ -44,6 +44,7 @@ class ActorRole
     protected $actor = null;
     protected $role = null;
     protected $roleEntity = null;
+    protected $proxyFor = null;
     protected $enabled = false;
     protected $verified = false;
     protected $locked = false;
@@ -70,6 +71,16 @@ class ActorRole
             $this->roleEntity = ORM::find(Role::class, $this->role);
         }
         return $this->roleEntity;
+    }
+
+    public function isProxy()
+    {
+        return $this->proxyFor !== null;
+    }
+
+    public function proxyFor()
+    {
+        return $this->proxyFor;
     }
 
     public function isVerified()
@@ -190,5 +201,8 @@ class ActorRole
         $builder->addField('expiresAt', 'datetime', [], 'expires_at');
         $builder->addStringField('verificationToken', 100, 'verification_token');
         $builder->addField('verificationRequestedAt', 'datetime', [], 'verification_requested_at');
+
+        // Relationships
+        $builder->addManyToOneField('proxyFor', Actor::class, 'proxy_for', 'item');
     }
 }

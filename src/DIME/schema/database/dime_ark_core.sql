@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 22, 2017 at 06:01 PM
+-- Generation Time: Jun 22, 2017 at 09:01 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -1058,8 +1058,10 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('core.message.mail.subject', 'core', 0, 0),
 ('core.message.messages', 'core', 0, 0),
 ('core.message.messages.new', 'core', 0, 0),
+('core.message.newmessages', 'dime', 0, 0),
 ('core.message.notification.body', 'core', 0, 0),
 ('core.message.notification.event', 'core', 0, 0),
+('core.message.notshown', 'dime', 0, 0),
 ('core.message.recipient.status', 'vocabulary', 0, 0),
 ('core.message.recipient.status.discarded', 'vocabulary', 0, 0),
 ('core.message.recipient.status.read', 'vocabulary', 0, 0),
@@ -1420,6 +1422,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.admin.users', 'dime', 0, 0),
 ('dime.background', 'dime', 0, 0),
 ('dime.claim', 'dime', 0, 0),
+('dime.controls', 'dime', 0, 0),
 ('dime.copyright', 'dime', 0, 0),
 ('dime.credits', 'dime', 0, 0),
 ('dime.denmark.admin.denmark', 'vocabulary', 0, 0),
@@ -2082,11 +2085,11 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('language.aghem', 'vocabulary', 0, 0),
 ('language.ainu', 'vocabulary', 0, 0),
 ('language.akan', 'vocabulary', 0, 0),
-('language.akkadian', 'vocabulary', 0, 0),
+('language.akkadian', 'vocabulary', 0, 0);
+INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
 ('language.akoose', 'vocabulary', 0, 0),
 ('language.alabama', 'vocabulary', 0, 0),
-('language.albanian', 'vocabulary', 0, 0);
-INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('language.albanian', 'vocabulary', 0, 0),
 ('language.albanian.gheg', 'vocabulary', 0, 0),
 ('language.aleut', 'vocabulary', 0, 0),
 ('language.altai.southern', 'vocabulary', 0, 0),
@@ -3581,8 +3584,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'core.message.allmessages', 'default', 'See Older Notifications', NULL),
 ('en', 'core.message.messages', 'default', 'Notifications', NULL),
 ('en', 'core.message.messages.new', 'default', 'New Notifications', NULL),
+('en', 'core.message.newmessages', 'default', 'new messages', ''),
 ('en', 'core.message.notification.body', 'default', 'Notification', NULL),
 ('en', 'core.message.notification.event', 'default', 'Event', NULL),
+('en', 'core.message.notshown', 'default', 'message(s) not shown', ''),
 ('en', 'core.message.sender', 'default', 'From', 'Fra'),
 ('en', 'core.message.sent_at', 'default', 'Date', NULL),
 ('en', 'core.message.type', 'default', 'Type', NULL),
@@ -3885,6 +3890,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.background', 'default', 'Background', NULL),
 ('en', 'dime.background', 'resource', 'background', NULL),
 ('en', 'dime.claim', 'resource', 'claim', ''),
+('en', 'dime.controls', 'default', 'Go', ''),
 ('en', 'dime.copyright', 'default', 'Copyright © 2013-2017 Arkæologisk IT, Aarhus University', NULL),
 ('en', 'dime.credits', 'default', 'Data modelling and support: Carsten Risager | Design: Casper Skaaning Anderson | Implementation: L ~ P Archaeology', NULL),
 ('en', 'dime.denmark.municipality', 'default', 'Municipalities', NULL),
@@ -3920,6 +3926,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.description', 'default', 'Description', NULL),
 ('en', 'dime.find.event', 'default', 'Event', ''),
 ('en', 'dime.find.event.classified', 'default', 'Classified', NULL),
+('en', 'dime.find.event.deleted', 'default', 'Deleted', ''),
 ('en', 'dime.find.event.edited', 'default', 'Edited', NULL),
 ('en', 'dime.find.event.reported', 'default', 'Reported', NULL),
 ('en', 'dime.find.filters', 'default', 'Filters', ''),
@@ -4207,11 +4214,11 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.kommune.aabenraa', 'default', 'Aabenraa', NULL),
 ('en', 'dime.kommune.aabenraa', 'official', 'Aabenraa Municipality', NULL),
 ('en', 'dime.kommune.aalborg', 'default', 'Aalborg', NULL),
-('en', 'dime.kommune.aalborg', 'official', 'Aalborg Municipality', NULL),
+('en', 'dime.kommune.aalborg', 'official', 'Aalborg Municipality', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'dime.kommune.aero', 'default', 'Ærø', NULL),
 ('en', 'dime.kommune.aero', 'official', 'Ærø Municipality', NULL),
-('en', 'dime.kommune.albertslund', 'default', 'Albertslund', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.kommune.albertslund', 'default', 'Albertslund', NULL),
 ('en', 'dime.kommune.albertslund', 'official', 'Albertslund Municipality', NULL),
 ('en', 'dime.kommune.allerod', 'default', 'Allerød', NULL),
 ('en', 'dime.kommune.allerod', 'official', 'Allerød Municipality', NULL),
@@ -5039,12 +5046,12 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'language.sardinian', 'default', 'Sardinian', NULL),
 ('en', 'language.sardinian.sassarese', 'default', 'Sassarese Sardinian', NULL),
 ('en', 'language.sasak', 'default', 'Sasak', NULL),
-('en', 'language.saurashtra', 'default', 'Saurashtra', NULL),
+('en', 'language.saurashtra', 'default', 'Saurashtra', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'language.saxon.low', 'default', 'Low Saxon', NULL),
 ('en', 'language.scots', 'default', 'Scots', NULL),
 ('en', 'language.selayar', 'default', 'Selayar', NULL),
-('en', 'language.selkup', 'default', 'Selkup', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'language.selkup', 'default', 'Selkup', NULL),
 ('en', 'language.sena', 'default', 'Sena', NULL),
 ('en', 'language.seneca', 'default', 'Seneca', NULL),
 ('en', 'language.senni.koyraboro', 'default', 'Koyraboro Senni', NULL),
@@ -5644,11 +5651,11 @@ INSERT INTO `ark_view_grid` (`grp`, `row`, `col`, `seq`, `item_type`, `element`,
 ('core_user_password_set', 0, 0, 2, '', 'core_widget_submit', 'save', NULL, NULL, NULL, 1, NULL, NULL, 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL),
 ('core_user_reset', 0, 0, 0, '', 'core_widget_username', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_user_reset', 0, 0, 4, '', 'core_widget_submit', 'reset', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.user.reset', NULL, NULL),
-('core_workflow_process', 0, 0, 0, '', 'core_widget_actions', 'actions', NULL, NULL, NULL, 1, NULL, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_workflow_process', 0, 0, 2, '', 'core_widget_actors', 'actors', NULL, NULL, NULL, 1, NULL, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_workflow_process', 0, 0, 4, '', 'core_widget_submit', 'apply', NULL, NULL, NULL, 1, NULL, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL),
+('core_workflow_process', 0, 0, 0, '', 'core_widget_actions', 'actions', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_workflow_process', 0, 0, 2, '', 'core_widget_actors', 'actors', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_workflow_process', 0, 0, 4, '', 'core_widget_submit', 'apply', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL),
 ('dime_admin_user_page', 0, 0, 0, '', 'dime_profile_list', 'actors', NULL, NULL, NULL, 1, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_admin_user_page', 0, 1, 0, '', 'dime_user_actor', NULL, NULL, NULL, NULL, 1, NULL, NULL, 'edit', 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_admin_user_page', 0, 1, 0, '', 'dime_user_actor', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_admin_user_page', 0, 1, 2, '', 'core_user_password_set', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_admin_user_page', 0, 1, 4, '', 'core_action_select', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_add', 0, 0, 2, '', 'dime_find_event', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -5809,7 +5816,7 @@ INSERT INTO `ark_view_group` (`element`, `layout`, `mode`, `form`, `name`, `meth
 ('core_user_password_change', 'grid', NULL, 1, 'password_change', NULL, NULL, NULL),
 ('core_user_password_set', 'grid', NULL, 1, 'password_set', NULL, NULL, NULL),
 ('core_user_reset', 'grid', NULL, 1, NULL, NULL, NULL, 'user/reset.html.twig'),
-('core_workflow_process', 'grid', NULL, 1, 'workflow', NULL, NULL, NULL),
+('core_workflow_process', 'grid', NULL, 0, NULL, NULL, NULL, NULL),
 ('dime_admin_page', 'grid', NULL, 0, NULL, NULL, NULL, NULL),
 ('dime_admin_user_page', 'grid', NULL, 0, NULL, NULL, NULL, NULL),
 ('dime_find_add', 'grid', NULL, 1, 'find', NULL, NULL, NULL),
@@ -8875,6 +8882,7 @@ INSERT INTO `ark_workflow_permission` (`permission`, `enabled`, `keyword`) VALUE
 
 CREATE TABLE `ark_workflow_role` (
   `role` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `proxy_for` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT 1,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
@@ -8883,14 +8891,14 @@ CREATE TABLE `ark_workflow_role` (
 -- Dumping data for table `ark_workflow_role`
 --
 
-INSERT INTO `ark_workflow_role` (`role`, `enabled`, `keyword`) VALUES
-('admin', 1, 'dime.role.admin'),
-('anonymous', 1, 'dime.role.anon'),
-('appraiser', 1, 'dime.role.appraiser'),
-('curator', 1, 'dime.role.curator'),
-('detectorist', 1, 'dime.role.detectorist'),
-('registrar', 1, 'dime.role.registrar'),
-('researcher', 1, 'dime.role.researcher');
+INSERT INTO `ark_workflow_role` (`role`, `proxy_for`, `enabled`, `keyword`) VALUES
+('admin', 'museum', 1, 'dime.role.admin'),
+('anonymous', NULL, 1, 'dime.role.anon'),
+('appraiser', 'museum', 1, 'dime.role.appraiser'),
+('curator', 'museum', 1, 'dime.role.curator'),
+('detectorist', NULL, 1, 'dime.role.detectorist'),
+('registrar', 'museum', 1, 'dime.role.registrar'),
+('researcher', 'museum', 1, 'dime.role.researcher');
 
 -- --------------------------------------------------------
 

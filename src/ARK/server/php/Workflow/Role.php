@@ -45,6 +45,7 @@ class Role
     use KeywordTrait;
 
     protected $role = '';
+    protected $proxyFor = null;
     protected $enabled = true;
     protected $actors = null;
     protected $permissions = null;
@@ -58,6 +59,16 @@ class Role
     public function id()
     {
         return $this->role;
+    }
+
+    public function isProxy()
+    {
+        return $this->proxyFor !== null;
+    }
+
+    public function proxyFor()
+    {
+        return $this->proxyFor;
     }
 
     public function isEnabled()
@@ -141,6 +152,7 @@ class Role
         $builder->addStringKey('role', 30);
 
         // Attributes
+        $builder->addStringField('proxyFor', 30, 'proxy_for');
         $builder->addField('enabled', 'boolean');
         KeywordTrait::buildKeywordMetadata($builder);
 
