@@ -85,7 +85,7 @@ class TranslateExtension extends \Twig_Extension
     {
         if ($role !== null && $role != 'default') {
             $translation = $this->translator->trans($message.'.'.$role, $arguments, $domain, $locale);
-            if ($translation != $id) {
+            if ($translation != $message) {
                 return $translation;
             }
         }
@@ -96,7 +96,7 @@ class TranslateExtension extends \Twig_Extension
     {
         if ($role !== null && $role != 'default') {
             $translation = $this->translator->transChoice($message.'.'.$role, $count, array_merge(array('%count%' => $count), $arguments), $domain, $locale);
-            if ($translation != $id) {
+            if ($translation != $message) {
                 return $translation;
             }
         }
