@@ -84,7 +84,7 @@ class TranslateExtension extends \Twig_Extension
     public function translate($message, $role = null, array $arguments = [], $domain = null, $locale = null)
     {
         if ($role !== null && $role != 'default') {
-            $translation = $this->translator->trans($message.'.'.$role, $parameters, $domain, $locale);
+            $translation = $this->translator->trans($message.'.'.$role, $arguments, $domain, $locale);
             if ($translation != $id) {
                 return $translation;
             }
