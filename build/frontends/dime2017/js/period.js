@@ -218,9 +218,16 @@ $(document).ready(function(){
     $('#historiktid-dating-button').on('click', function(e){
         e.preventDefault();
     });
-    if ( $('#find_dating_year').val() < 1067){
-        $('#oldtid-dating-button').addClass('selected');
-    } else {
-        $('#historiktid-dating-button').addClass('selected');
+    var setSimpleButtons = function(){
+        if ( $('#find_dating_year').val() < 1067){
+            $('#oldtid-dating-button').addClass('selected');
+        } else {
+            $('#historiktid-dating-button').addClass('selected');
+        }
     }
+    
+    setSimpleButtons();
+    
+    $('#find_dating_year').on('change',setSimpleButtons());
+
 });

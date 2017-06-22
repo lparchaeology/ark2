@@ -76,8 +76,10 @@ var initSubtype = function(){
         
         if(target=='coin'){
             $( '#find_mint_content' ).closest('.form-group').show();
+            $( '#find_secondary_term_looped' ).closest('.checkbox').show();
         } else {
             $( '#find_mint_content' ).closest('.form-group').hide();
+            $( '#find_secondary_term_looped' ).closest('.checkbox').hide();
         }
         
         $('#'+subtype_id).empty();
@@ -119,15 +121,18 @@ var initSubtype = function(){
             $('#'+subtype_id).select2('open');
         }
         
+
         try {
-            
             var target_years = getYearsFromTarget(target);
 
             target_start_year = target_years.start;
             target_end_year = target_years.end;
 
+            var current_start_year = parseInt($('#'+date_start_id).val());
+            var current_end_year = parseInt($('#'+date_start_id+'_span').val());
+
             console.log([target,"target",target_start_year,target_end_year,"current", current_start_year, current_end_year]);
-            
+
             if ( isNaN(current_start_year) || current_start_year < target_start_year || current_start_year > target_end_year ){
                 $('#'+date_start_id).val(target_start_year);
             }
@@ -165,7 +170,7 @@ var initSubtype = function(){
 window.getYearsFromTarget = function(target){
     var current_start_year = parseInt($('#'+date_start_id).val());
     var current_end_year = parseInt($('#'+date_start_id+'_span').val());
-
+    
     if(typeof subtypevocabulary[target].parameters.year_start != "undefined") {
 
         var target_start_year = parseInt(subtypevocabulary[target].parameters.year_start.value);
@@ -180,6 +185,7 @@ window.getYearsFromTarget = function(target){
 
         var target_end_year = parseInt(window.periodvocabulary[subtypevocabulary[target].parameters.period.value].parameters.year_end.value);
     }
+
     return {"start":target_start_year, "end":target_end_year}
 }
 
