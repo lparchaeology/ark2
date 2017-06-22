@@ -108,6 +108,8 @@ window.itemlist = [
      {% endif %}
 ];
 
+window.userApiUrl = "{{ path('api.internal.user.actor', {'id': 'dummyid'}) }}".split('dummyid')[0];
+
 </script>
 {#}
 <div id = "thumbModal"></div>

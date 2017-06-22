@@ -41,7 +41,7 @@ var getItemForm = function(id, showImmediately) {
         return true;
     }
 
-    $.ajax('../api/internal/users/'+id+'/actor').fail(function() {
+    $.ajax(window.userApiUrl+id+'/actor').fail(function() {
         emptyForm();
     }).done(function(response) {
         console.log(response);
@@ -100,7 +100,9 @@ var showItemForm = function(id){
     if(data){
         $('#actor_id_value').html(id);
         $('#actor_id_content').remove();
-        $('#actor_id_value').closest('form').append($('<input type="hidden" id="actor_id_content" name="actor[id][content]" value="'+id+'"></input>'));
+        var thisForm = $('#actor_id_value').closest('form');
+        thisForm.append($('<input type="hidden" id="actor_id_content" name="actor[id][content]" value="'+id+'"></input>'));
+        thisForm.attr('action',window.userApiUrl+id+"/actor");
         itemFormToHtml(data);
     } else {
         getItemForm(id, true);
