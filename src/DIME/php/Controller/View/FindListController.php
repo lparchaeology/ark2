@@ -108,6 +108,7 @@ class FindListController extends DimeFormController
     {
         $workflow['mode'] = 'view';
         $workflow['actor'] = $state['actor'];
+        return $workflow;
     }
 
     public function processForm(Request $request, $form)

@@ -120,6 +120,7 @@ abstract class Group extends Element
         //dump($state);
         //dump($options);
         $state = $this->buildState($data, $state);
+        //dump($state);
         if ($state['mode'] == 'deny') {
             return;
         }

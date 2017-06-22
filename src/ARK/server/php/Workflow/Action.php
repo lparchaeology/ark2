@@ -146,12 +146,10 @@ class Action
     public function isAllowed(Actor $actor)
     {
         if ($this->allowances->isEmpty()) {
-            dump('No Allowance');
             return $this->defaultAllowence;
         }
         foreach ($this->allowances as $allow) {
             $vote = $allow->isAllowed($actor);
-            dump('Vote '.$allow->role()->id().' '.(string)$vote);
             if ($vote !== Allow::ABSTAIN) {
                 return ($vote === Allow::GRANT);
             }
@@ -174,10 +172,10 @@ class Action
     public function isGranted(Actor $actor, Item $item, $attribute = null)
     {
         // TODO Sort out Permissions vs Allowances
-        dump('ACTION : '.$this->action);
-        dump('Allowed = '.(string) $this->isAllowed($actor));
-        dump('Agency = '.(string) $this->hasAgency($actor, $item));
-        dump('Conditions = '.(string) $this->meetsConditions($item));
+        //dump('ACTION : '.$this->action);
+        //dump('Allowed = '.(string) $this->isAllowed($actor));
+        //dump('Agency = '.(string) $this->hasAgency($actor, $item));
+        //dump('Conditions = '.(string) $this->meetsConditions($item));
         if ($attribute) {
             if (is_string($attribute)) {
                 $attribute = $item->property($attribute)->attribute();

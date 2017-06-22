@@ -46,4 +46,11 @@ class UserConfirmController extends DimeFormController
         $request->attributes->set('page', 'core_page_user_confirm');
         return $this->handleRequest($request);
     }
+
+    public function buildWorkflow(Request $request, $data, array $state)
+    {
+        $workflow['mode'] = 'edit';
+        $workflow['actor'] = $state['actor'];
+        return $workflow;
+    }
 }

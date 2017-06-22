@@ -48,6 +48,13 @@ class UserResetController extends DimeFormController
         return $this->handleRequest($request);
     }
 
+    public function buildWorkflow(Request $request, $data, array $state)
+    {
+        $workflow['mode'] = 'edit';
+        $workflow['actor'] = $state['actor'];
+        return $workflow;
+    }
+
     public function processForm(Request $request, $form)
     {
         $data = $form->getData();

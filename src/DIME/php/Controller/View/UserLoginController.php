@@ -56,4 +56,11 @@ class UserLoginController extends DimeFormController
         $state['last_username'] = Service::security()->lastUsername();
         return $state;
     }
+
+    public function buildWorkflow(Request $request, $data, array $state)
+    {
+        $workflow['mode'] = 'edit';
+        $workflow['actor'] = $state['actor'];
+        return $workflow;
+    }
 }

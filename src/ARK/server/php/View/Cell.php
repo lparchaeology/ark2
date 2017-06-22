@@ -224,6 +224,7 @@ class Cell implements ElementInterface
         //dump($state);
         //dump($options);
         $state = $this->buildState($data, $state);
+        //dump($state);
         $data = $this->buildData($data, $state);
         $options = $this->buildOptions($data, $state, $options);
         $this->element->buildForm($builder, $data, $state, $options);

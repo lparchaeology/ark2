@@ -54,6 +54,13 @@ class MessagePageController extends DimeFormController
         return $state;
     }
 
+    public function buildWorkflow(Request $request, $data, array $state)
+    {
+        $workflow['mode'] = 'edit';
+        $workflow['actor'] = $state['actor'];
+        return $workflow;
+    }
+
     public function buildData(Request $request)
     {
         $data['messages'] = DIME::getNotifications();

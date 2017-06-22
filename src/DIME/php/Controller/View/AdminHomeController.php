@@ -46,4 +46,11 @@ class AdminHomeController extends DimeFormController
         $request->attributes->set('page', 'dime_page_admin');
         return $this->handleRequest($request);
     }
+
+    public function buildWorkflow(Request $request, $data, array $state)
+    {
+        $workflow['mode'] = 'view';
+        $workflow['actor'] = $state['actor'];
+        return $workflow;
+    }
 }

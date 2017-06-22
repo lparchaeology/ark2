@@ -69,12 +69,24 @@ class UserActorController extends FormController
 
     public function processForm(Request $request, $form)
     {
-        $data = $form->getData();
-        $actor = $data['actor'];
-        ORM::persist($actor);
-        ORM::flush($actor);
-        $request->attributes->set('flash', 'success');
-        $request->attributes->set('message', 'dime.user.update.success');
-        // TODO Reload & Return data?
+        $submitted = $form->getConfig()->getName();
+        if ($submitted == 'password_set') {
+            $data = $form->getData();
+            $user = Service::security()->user();
+            $user->setPassword($data['password']);
+            ORM::persist($user);
+            ORM::flush($user);
+            $request->attributes->set('flash', 'success');
+            $request->attributes->set('message', 'core.user.password.change.success');
+        }
+        if ($submitted == 'actor') {
+            $actor = $form->getData();
+            dump($actor);
+            ORM::persist($actor);
+            ORM::flush($actor);
+            $request->attributes->set('flash', 'success');
+            $request->attributes->set('message', 'dime.user.update.success');
+            // TODO Reload & Return data?
+        }
     }
 }

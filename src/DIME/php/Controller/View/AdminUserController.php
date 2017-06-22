@@ -65,26 +65,6 @@ class AdminUserController extends DimeFormController
     {
         $workflow['mode'] = 'edit';
         $workflow['actor'] = $state['actor'];
-    }
-
-    public function processForm(Request $request, $form)
-    {
-        $submitted = $form->getConfig()->getName();
-        if ($submitted == 'password_set') {
-            $data = $form->getData();
-            $user = Service::security()->user();
-            $user->setPassword($data['password']);
-            ORM::persist($user);
-            ORM::flush($user);
-            $request->attributes->set('flash', 'success');
-            $request->attributes->set('message', 'core.user.password.change.success');
-        }
-        if ($submitted == 'actor') {
-            $actor = $form->getData();
-            ORM::persist($actor);
-            ORM::flush($actor);
-            $request->attributes->set('flash', 'success');
-            $request->attributes->set('message', 'dime.user.update.success');
-        }
+        return $workflow;
     }
 }
