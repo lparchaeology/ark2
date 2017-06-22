@@ -89,6 +89,7 @@
     </table>
 
 </div>
+
 <script>
 window.itemkey =
     {% if data[0] is defined %}
@@ -96,7 +97,6 @@ window.itemkey =
     {% else %}
         {{null}}
     {% endif %}
-
 
 window.itemlist = [
     {% if data|length > 0 %}

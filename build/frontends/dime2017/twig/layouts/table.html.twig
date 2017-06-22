@@ -89,6 +89,7 @@
     </table>
 
 </div>
+
 <script>
 window.itemkey =
     {% if data[0] is defined %}
@@ -96,7 +97,6 @@ window.itemkey =
     {% else %}
         {{null}}
     {% endif %}
-
 
 window.itemlist = [
     {% if data|length > 0 %}
@@ -110,7 +110,7 @@ window.itemlist = [
 if(typeof window.translations == 'undefined'){
     window.translations = [];
 }
-window.translations['dime.user.update.success'] = "{{ 'dime.user.update.success' | trans }}"
+window.translations['dime.user.update.success'] = "{{ 'dime.user.update.success' | trans }}";
 window.translations['dime.user.update.failure'] = "{{ 'dime.user.update.failure' | trans }}"
 
 window.userApiUrl = "{{ path('api.internal.user.actor', {'id': 'dummyid'}) }}".split('dummyid')[0];

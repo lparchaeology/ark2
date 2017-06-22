@@ -122,7 +122,7 @@ var showItemForm = function(id){
 
 var userFocusClick = function(evt) {
     evt.preventDefault();
-
+    
     if($(evt.target).is('tr')){
         var self = $(evt.target);
     } else {
@@ -140,7 +140,7 @@ function showResponse(responseText, statusText, xhr, $form) {
     if(responseText.status == 'success'){
         $('#actor_id_value').closest('form').prepend($('<div class="alert alert-success" role="alert">'+window.translations[responseText.message]+'</div>'));
     } else {
-        $('#actor_id_value').closest('form').prepend($('<div class="alert alert-success" role="alert">'+window.translations[responseText.message]+'</div>'));
+        $('#actor_id_value').closest('form').prepend($('<div class="alert alert-error" role="alert">'+window.translations['dime.user.update.failure']+'</div>'));
     }
 } 
 
@@ -151,16 +151,19 @@ $('document').ready(function(){
     $('tr').each( function(i, e){
         getItemForm($(e).attr('data-unique-id'), false);
     });
-    
-    $('#actor_save').on("click", function(e){
-        var options = {
-                success: showResponse
-            }; 
-        var valid = $(e.target).closest('form')[0].checkValidity();
-        if(valid){
-            e.preventDefault();
-            $(e.target).closest('form').ajaxSubmit(options);
-        }
-    });
+    console.log($('#dime_profile_list').length);
+    if($('#dime_profile_list').length){
+    	$('#actor_save').on("click", function(e){
+            var options = {
+                    success: showResponse
+                }; 
+            var valid = $(e.target).closest('form')[0].checkValidity();
+            if(valid){
+                e.preventDefault();
+                $(e.target).closest('form').ajaxSubmit(options);
+            }
+        });
+    }
+
 
 });
