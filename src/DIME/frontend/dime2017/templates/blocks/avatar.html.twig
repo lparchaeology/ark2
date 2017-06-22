@@ -8,7 +8,7 @@
 
     <div class='item'>
         {% if data and data.value %}
-            <img src="{{ data.value.sourcePath('avatar') }}" alt='' />
+             <img class = "profile-img" src="{{ path('img', {'image': data.value.id}) ~ '?p=thumb' }}"/>
         {% endif %}
     </div>
 

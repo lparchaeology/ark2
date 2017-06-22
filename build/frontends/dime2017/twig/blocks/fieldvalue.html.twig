@@ -2,7 +2,7 @@
 {% block fieldvalue %}
     
    {{ item.name }}
-    
+    {{ dump (state.modus) }}
     {% if item.property(field.attribute.name).value is not null %}
             {{ item.property(field.attribute.name).value['content'] }}
         {% else %}

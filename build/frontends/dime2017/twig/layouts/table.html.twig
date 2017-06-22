@@ -107,6 +107,11 @@ window.itemlist = [
             false
      {% endif %}
 ];
+if(typeof window.translations == 'undefined'){
+    window.translations = [];
+}
+window.translations['dime.user.update.success'] = "{{ 'dime.user.update.success' | trans }}"
+window.translations['dime.user.update.failure'] = "{{ 'dime.user.update.failure' | trans }}"
 
 window.userApiUrl = "{{ path('api.internal.user.actor', {'id': 'dummyid'}) }}".split('dummyid')[0];
 

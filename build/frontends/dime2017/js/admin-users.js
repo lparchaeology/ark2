@@ -137,8 +137,11 @@ var userFocusClick = function(evt) {
 
 //post-submit callback 
 function showResponse(responseText, statusText, xhr, $form) { 
-    alert('status: ' + statusText + '\n\nresponseText: \n' + responseText + 
-        '\n\nThe output div should have already been updated with the responseText.'); 
+    if(responseText.status == 'success'){
+        $('#actor_id_value').closest('form').prepend($('<div class="alert alert-success" role="alert">'+window.translations[responseText.message]+'</div>'));
+    } else {
+        $('#actor_id_value').closest('form').prepend($('<div class="alert alert-success" role="alert">'+window.translations[responseText.message]+'</div>'));
+    }
 } 
 
 $('document').ready(function(){
