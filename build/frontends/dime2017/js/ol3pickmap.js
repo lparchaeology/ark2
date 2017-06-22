@@ -57,7 +57,7 @@ function initialisePickMap() {
 
     var mapPickView = new ol.View({
         center: [(denmarkExtent[0]+denmarkExtent[2])/2, (denmarkExtent[1]+denmarkExtent[3])/2],
-        zoom: 5,
+        zoom: 6,
         minZoom: 6
     });
 
