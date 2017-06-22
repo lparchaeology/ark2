@@ -46,6 +46,7 @@ class RecaptchaSubmitType extends SubmitType
                 'class' => 'g-recaptcha',
                 'data-sitekey' => Service::security()->credentials('recaptcha')['public_key'],
                 'data-callback' => 'recaptchaSubmit',
+                'data-badge' => 'inline',
             ],
         ]);
     }
