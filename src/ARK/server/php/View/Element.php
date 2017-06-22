@@ -137,6 +137,8 @@ abstract class Element implements ElementInterface
         $state['layout'] = null;
         $state['field'] = null;
         $state['widget'] = null;
+        $state['map'] = null;
+        $state['vocabulary'] = null;
         $state['name'] = null;
         $state['mode'] = null;
         $state['modus'] = null;

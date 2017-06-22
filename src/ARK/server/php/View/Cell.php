@@ -36,6 +36,7 @@ use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
 use ARK\View\ElementInterface;
+use ARK\Vocabulary\Vocabulary;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 
@@ -49,19 +50,20 @@ class Cell implements ElementInterface
     protected $col = 0;
     protected $seq = 0;
     protected $itemType = null;
+    protected $element = null;
     protected $name = null;
     protected $width = null;
+    protected $map = null;
+    protected $vocabulary = null;
     protected $label = null;
     protected $placeholder = null;
     protected $required = null;
+    protected $mode = null;
     protected $sanitise = null;
-    protected $display = null;
     protected $value = null;
     protected $parameter = null;
     protected $format = null;
-    protected $element = null;
-    protected $map = null;
-    protected $mode = 'view';
+    protected $display = null;
     protected $template = null;
     protected $options = null;
     protected $optionsArray = null;
@@ -99,6 +101,11 @@ class Cell implements ElementInterface
     public function map()
     {
         return $this->map;
+    }
+
+    public function vocabulary()
+    {
+        return $this->vocabulary;
     }
 
     public function formName()
@@ -161,6 +168,7 @@ class Cell implements ElementInterface
         $state['name'] = $this->name;
         $state['label'] = $this->label;
         $state['map'] = $this->map;
+        $state['vocabulary'] = $this->vocabulary;
         if ($this->required === false) {
             $state['required'] = false;
         }
@@ -272,5 +280,6 @@ class Cell implements ElementInterface
         // Relationships
         $builder->addManyToOneField('element', 'ARK\View\Element', 'element', 'element', false);
         $builder->addManyToOneField('map', 'ARK\Map\Map');
+        $builder->addManyToOneField('vocabulary', Vocabulary::class, 'vocabulary', 'concept');
     }
 }

@@ -30,17 +30,10 @@
 
 namespace ARK\View;
 
-use ARK\Actor\Actor;
-use ARK\Form\Type\PropertyType;
-use ARK\Form\Type\ActionChoiceType;
-use ARK\Form\Type\VocabularyChoiceType;
-use ARK\Model\Item;
-use ARK\Model\Schema\SchemaAttribute;
 use ARK\ORM\ORM;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
-use ARK\Vocabulary\Vocabulary;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -51,15 +44,9 @@ use Symfony\Component\Form\FormView;
 
 abstract class AbstractWidget extends Element
 {
-    protected $vocabulary = null;
     protected $choices = null;
     protected $formOptions = '';
     protected $formOptionsArray = null;
-
-    public function vocabulary()
-    {
-        return $this->vocabulary;
-    }
 
     private function isButton()
     {
@@ -104,8 +91,8 @@ abstract class AbstractWidget extends Element
                 $data = null;
             }
         }
-        if ($data === null && $this->vocabulary && isset($state['required']) && $state['required']) {
-            $data = $this->vocabulary->defaultTerm();
+        if ($data === null && $state['vocabulary'] && isset($state['required']) && $state['required']) {
+            $data = $state['vocabulary']->defaultTerm();
         }
         return $data;
     }
@@ -127,8 +114,8 @@ abstract class AbstractWidget extends Element
             $options['required'] = $state['required'];
         }
 
-        if ($this->vocabulary) {
-            $options = $this->vocabularyOptions($this->vocabulary, $options);
+        if ($state['vocabulary']) {
+            $options = $this->vocabularyOptions($state['vocabulary'], $options);
         }
 
         if ($this->choices) {
@@ -166,8 +153,5 @@ abstract class AbstractWidget extends Element
         $builder->addStringField('template', 100);
         $builder->addStringField('formTypeClass', 100, 'form_type_class');
         $builder->addStringField('formOptions', 4000, 'form_options');
-
-        // Associations
-        $builder->addManyToOneField('vocabulary', Vocabulary::class, 'vocabulary', 'concept');
     }
 }
