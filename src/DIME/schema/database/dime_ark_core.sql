@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 22, 2017 at 04:19 PM
+-- Generation Time: Jun 22, 2017 at 05:25 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -1981,6 +1981,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.user.register.success', 'dime', 0, 0),
 ('dime.user.terms', 'dime', 0, 0),
 ('dime.user.terms.v1', 'dime', 0, 0),
+('dime.user.update.success', 'dime', 0, 0),
 ('file.type.audio', 'core', 0, 0),
 ('file.type.document', 'core', 0, 0),
 ('file.type.image', 'core', 0, 0),
@@ -2084,9 +2085,9 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('language.akkadian', 'vocabulary', 0, 0),
 ('language.akoose', 'vocabulary', 0, 0),
 ('language.alabama', 'vocabulary', 0, 0),
-('language.albanian', 'vocabulary', 0, 0),
-('language.albanian.gheg', 'vocabulary', 0, 0);
+('language.albanian', 'vocabulary', 0, 0);
 INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('language.albanian.gheg', 'vocabulary', 0, 0),
 ('language.aleut', 'vocabulary', 0, 0),
 ('language.altai.southern', 'vocabulary', 0, 0),
 ('language.amharic', 'vocabulary', 0, 0),
@@ -4510,6 +4511,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.user.register.success', 'default', 'Your DIME registration has been submitted. Please verify your email address and wait for your user profile to be reviewed and approved.', ''),
 ('en', 'dime.user.terms', 'default', 'Terms and Conditions', ''),
 ('en', 'dime.user.terms.v1', 'default', '<H2>Terms and Conditions</H2><P>v1.0 dated 1 June 2017</P><P>Lorem Ipsem...</P>', ''),
+('en', 'dime.user.update.success', 'default', 'User successfully updated.', ''),
 ('en', 'file.type.audio', 'default', 'Audio File', NULL),
 ('en', 'file.type.document', 'default', 'Document File', NULL),
 ('en', 'file.type.image', 'default', 'Image File', NULL),
@@ -5041,9 +5043,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'language.saxon.low', 'default', 'Low Saxon', NULL),
 ('en', 'language.scots', 'default', 'Scots', NULL),
 ('en', 'language.selayar', 'default', 'Selayar', NULL),
-('en', 'language.selkup', 'default', 'Selkup', NULL),
-('en', 'language.sena', 'default', 'Sena', NULL);
+('en', 'language.selkup', 'default', 'Selkup', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'language.sena', 'default', 'Sena', NULL),
 ('en', 'language.seneca', 'default', 'Seneca', NULL),
 ('en', 'language.senni.koyraboro', 'default', 'Koyraboro Senni', NULL),
 ('en', 'language.serbian', 'default', 'Serbian', NULL),

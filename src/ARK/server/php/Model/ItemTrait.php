@@ -35,6 +35,7 @@ use ARK\Model\Schema;
 use ARK\Model\VersionTrait;
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\Vocabulary\Term;
 
 trait ItemTrait
 {

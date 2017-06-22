@@ -39,6 +39,7 @@ use ARK\Message\Message;
 use DIME\DIME;
 use DIME\Controller\View\DimeFormController;
 use DIME\Entity\Find;
+use Doctrine\Common\Collections\ArrayCollection;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -88,18 +89,28 @@ class FindListController extends DimeFormController
 
         if ($query) {
             $items = Service::database()->findSearch($query);
-            $finds = ORM::findBy(Find::class, [
-                'item' => $items
-            ]);
-            $request->attributes->set('flash', 'info');
-            $request->attributes->set('message', 'dime.find.query.set');
+            $finds = ORM::findBy(Find::class, ['item' => $items]);
         } else {
             $finds = ORM::findAll(Find::class);
         }
 
-        $data['finds'] = $finds;
-        // TODO Use visibility/workflow
-        $data['map']['finds'] = (Service::security()->isGranted('ROLE_USER') ? $finds : []);
+        $actor = Service::workflow()->actor();
+        $visible = new ArrayCollection();
+        foreach ($finds as $find) {
+            if ($find->visibility()->name() == 'public' || Service::workflow()->can($actor, 'view', $find)) {
+                $visible[] = $find;
+            }
+        }
+        //dump(count($finds));
+        //dump(count($visible));
+
+        if ($query) {
+            $request->attributes->set('flash', 'info');
+            $request->attributes->set('message', 'dime.find.query.set');
+        }
+
+        $data['finds'] = $visible;
+        $data['map']['finds'] = $visible;
         $data['map']['kortforsyningenticket'] = DIME::getMapTicket();
         return $data;
     }
