@@ -39,13 +39,17 @@ var getItemForm = function(id, showImmediately) {
 
     if( thisRow.data("data") ){
         return true;
+    } else {
+        thisRow.data("working", true);
     }
+
 
     $.ajax(window.userApiUrl+id+'/actor').fail(function() {
         emptyForm();
     }).done(function(response) {
         console.log(response);
         thisRow.data("data",response);
+        thisRow.data("working", false);
         if(showImmediately){
             showItemForm(id);
         }
@@ -97,14 +101,17 @@ var showItemForm = function(id){
 
     var data = thisRow.data("data");
 
+    var working = thisRow.data("working");
+
     if(data){
         $('#actor_id_value').html(id);
         $('#actor_id_content').remove();
+        var working = thisRow.data("working", true);
         var thisForm = $('#actor_id_value').closest('form');
         thisForm.append($('<input type="hidden" id="actor_id_content" name="actor[id][content]" value="'+id+'"></input>'));
         thisForm.attr('action',window.userApiUrl+id+"/actor");
         itemFormToHtml(data);
-    } else {
+    } else if( (typeof working == 'undefined') || working == true ) {
         getItemForm(id, true);
     }
 };
@@ -123,6 +130,7 @@ var userFocusClick = function(evt) {
     showItemForm(self.attr('data-unique-id'));
 
 };
+
 //post-submit callback 
 function showResponse(responseText, statusText, xhr, $form) { 
     alert('status: ' + statusText + '\n\nresponseText: \n' + responseText + 
