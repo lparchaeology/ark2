@@ -95,6 +95,9 @@ $(document).ready(function() {
         $(this).css('z-index', 9999);
         $("body").append($div);
     });
+    
+    $('[data-toggle="tooltip"]').tooltip({'trigger':'click'});
+    
 });
 
 // Summernote Editor

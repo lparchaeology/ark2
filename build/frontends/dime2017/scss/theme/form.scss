@@ -34,7 +34,7 @@
 .form-group input[type=text] {
     width: 50%;
     max-width:20em;
-    }
+}
 
 .form-group input[type="email"] {
     width: 50%;
@@ -54,9 +54,9 @@
 }
 
 @media (max-width: $break-small){
-   .form-group input[type="email"],
-   .form-group input[type="password"],
-   .form-group input[type=text] {
+    .form-group input[type="email"],
+    .form-group input[type="password"],
+    .form-group input[type=text] {
         width: 100%;
     } 
 }
@@ -69,7 +69,8 @@
     .form-group input[type="password"],
     .form-group input[type=text] {
         width: 100%;
-    } 
+    }
+    
 }
 
 .select2-results__option[aria-selected],
@@ -250,4 +251,16 @@ input[type=radio]:checked ~ label::before{
 .dating-button.advanced-dating-button,
 .dating-button.selected {
     background-color:white;
+}
+
+.help {
+    
+}
+
+.form-group-widget {
+    max-width:20em;
+}
+
+.glyphicon-question-sign {
+    cursor:pointer;
 }
