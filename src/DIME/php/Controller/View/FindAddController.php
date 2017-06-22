@@ -53,9 +53,12 @@ class FindAddController extends DimeFormController
         $find = new Find('dime.find');
         $find->property('finder')->setValue($actor);
         $data['find'] = $find;
-        $data['notifications'] = DIME::getUnreadNotifications();
-        $data['actions'] = Service::workflow()->actions(Service::workflow()->actor(), $find);
         return $data;
+    }
+
+    public function buildWorkflow(Request $request, $data, array $state)
+    {
+        return parent::buildWorkflow($request, $data['find'], $state);
     }
 
     public function processForm(Request $request, $form)

@@ -51,27 +51,6 @@ class Page extends Element
     protected $content = null;
     protected $footer = null;
 
-    public function pageMode(Actor $actor, Item $item = null)
-    {
-        // TODO Move check to Security or Workflow???
-        $mode = $this->mode();
-        if ($this->visibility != 'public') {
-            if ($mode == 'edit' && !$actor->hasPermission($this->updatePermission())) {
-                $mode = 'view';
-            }
-            if ($mode == 'view' && !$actor->hasPermission($this->readPermission())) {
-                $mode = null;
-            }
-            if ($item && !Service::workflow()->can($actor, $mode, $item)) {
-                $mode == null;
-            }
-            if (!$mode) {
-                throw new AccessDeniedException('core.error.access.denied');
-            }
-        }
-        return $mode;
-    }
-
     public function visibility()
     {
         if ($this->visibilityTerm === null) {
@@ -114,6 +93,22 @@ class Page extends Element
     {
         $state = array_replace_recursive($this->defaultState(), $state);
         $state = parent::buildState($data, $state);
+
+        $mode = $state['workflow']['mode'];
+        if ($this->visibility == 'restricted') {
+            $actor = $state['workflow']['actor'];
+            if ($mode == 'edit' && !$actor->hasPermission($this->updatePermission())) {
+                $mode = 'view';
+            }
+            if ($mode == 'view' && !$actor->hasPermission($this->readPermission())) {
+                $mode = 'deny';
+            }
+        }
+        if ($this->visibility == 'private') {
+            // TODO What?
+        }
+        $state['mode'] = $mode;
+
         $state['page'] = $this;
         return $state;
     }
@@ -168,11 +163,11 @@ class Page extends Element
         //dump($request);
         //dump($data);
         //dump($state);
-        $item = null;
         $state = $this->buildState($data, $state);
-        $actor = Service::workflow()->actor();
-        $state['actor'] = $actor;
-        $state['mode'] = $this->pageMode($actor, $item);
+        //dump($state);
+        if ($state['mode'] == 'deny') {
+            throw new AccessDeniedException('core.error.access.denied');
+        }
         $options = $this->buildOptions($data, $state, []);
         $forms = $this->content->buildForms($data, $state, $options);
         //dump($forms);

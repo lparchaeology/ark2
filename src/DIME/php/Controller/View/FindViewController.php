@@ -30,7 +30,6 @@
 
 namespace DIME\Controller\View;
 
-use ARK\Actor\Person;
 use ARK\Error\ErrorException;
 use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
@@ -62,10 +61,7 @@ class FindViewController extends DimeFormController
 
     public function buildWorkflow(Request $request, $data, array $state)
     {
-        $workflow['actor'] = $state['actor'];
-        $workflow['actions'] = Service::workflow()->updateActions($workflow['actor'], $data['find']);
-        $workflow['actors'] = ORM::findAll(Person::class);
-        return $workflow;
+        return parent::buildWorkflow($request, $data['find'], $state);
     }
 
     public function processForm(Request $request, $form)

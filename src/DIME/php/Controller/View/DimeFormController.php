@@ -86,7 +86,14 @@ abstract class DimeFormController extends DimeController
 
     public function buildWorkflow(Request $request, $data, array $state)
     {
-        return null;
+        $actor = $state['actor'];
+        $workflow['mode'] = Service::workflow()->mode($actor, $data);
+        $workflow['actor'] = $actor;
+        if ($workflow['mode'] == 'edit') {
+            $workflow['actions'] = Service::workflow()->updateActions($actor, $data);
+            $workflow['actors'] =  Service::workflow()->actors($actor, $data);
+        }
+        return $workflow;
     }
 
     public function processForm(Request $request, $form)

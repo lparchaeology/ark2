@@ -31,6 +31,7 @@
 namespace ARK\Workflow;
 
 use ARK\Actor\Actor;
+use ARK\Actor\Person;
 use ARK\Model\Attribute;
 use ARK\Model\Item;
 use ARK\Model\ItemPropertyMarkingStore;
@@ -111,6 +112,27 @@ class Registry extends SymfonyRegistry
             }
         }
         return $actions;
+    }
+
+    public function actors(Actor $actor, Item $item)
+    {
+        $schema = $item->schema()->name();
+        $this->init($schema);
+        // TODO Fiter the list!!! Probably only museum staff?
+        $actors = ORM::findAll(Person::class);
+        return $actors;
+    }
+
+    public function mode(Actor $actor, Item $item)
+    {
+        if ($this->can($actor, 'edit', $item)) {
+            return 'edit';
+        }
+        $view = $this->action($item->schema()->name(), 'view');
+        if ($view->isAllowed($actor)) {
+            return 'view';
+        }
+        return 'deny';
     }
 
     public function can(Actor $actor, $action, Item $item, $attribute = null)
