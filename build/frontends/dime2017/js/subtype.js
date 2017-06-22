@@ -217,9 +217,10 @@ $(document).ready(function(){
         .done(function(response) {
             window.subtypevocabulary = response.terms;
             for (var subtype in subtypevocabulary) {
-                subtypevocabulary[subtype].optionelement = $('#'+subtype_id+' option[value="'+subtype+'"]').detach();
+                if($('#'+subtype_id).val() != subtype ){
+                    subtypevocabulary[subtype].optionelement = $('#'+subtype_id+' option[value="'+subtype+'"]').detach();
+                }
             }
-
             initSubtype();
             initPeriod();
         });
