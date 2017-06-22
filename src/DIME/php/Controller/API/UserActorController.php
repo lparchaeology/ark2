@@ -61,6 +61,12 @@ class UserActorController extends FormController
         return $data;
     }
 
+    public function buildWorkflow(Request $request, $data, array $state)
+    {
+        $workflow['mode'] = 'edit';
+        $workflow['actor'] = $state['actor'];
+    }
+
     public function processForm(Request $request, $form)
     {
         $data = $form->getData();

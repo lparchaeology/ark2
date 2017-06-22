@@ -7,7 +7,7 @@
 {% else %}
 
     <div class='item'>
-        {% if data.value %}
+        {% if data and data.value %}
             <img src="{{ data.value.sourcePath('avatar') }}" alt='' />
         {% endif %}
     </div>
