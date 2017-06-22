@@ -65,6 +65,10 @@ var itemFormToHtml = function(data){
     $('.form-horizontal[name=actor]').find("input[type=text], textarea").each(function(i,e,a){
         $(e).val(data[$(e).attr('id')]['value']);
     });
+    $('.form-horizontal[name=actor]').find("input[type=hidden]").each(function(i,e,a){
+        console.log(data[$(e).attr('id')]);
+        $(e).val(data[$(e).attr('id')]['value']);
+    });
     $('.form-horizontal[name=actor]').find("select").each(function(i,e,a){
         $(e).val(data[$(e).attr('id')]['value']);
         $(e).select2({
