@@ -80,7 +80,7 @@ abstract class AbstractWidget extends Element
         }
         $state['mode'] = $this->displayMode($state['mode']);
         if ($state['mode'] == 'view' || $this->mode == 'view') {
-            $state['mode'] = 'withhold';
+            $state['mode'] = 'deny';
         }
         $state['template'] = $this->template();
         $state['widget'] = $this;

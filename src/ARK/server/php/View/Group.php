@@ -120,7 +120,7 @@ abstract class Group extends Element
         //dump($state);
         //dump($options);
         $state = $this->buildState($data, $state);
-        if ($state['mode'] == 'withhold') {
+        if ($state['mode'] == 'deny') {
             return;
         }
         $data = $this->buildData($data, $state);

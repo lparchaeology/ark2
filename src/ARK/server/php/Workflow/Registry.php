@@ -137,7 +137,7 @@ class Registry extends SymfonyRegistry
 
     public function can(Actor $actor, $action, Item $item, $attribute = null)
     {
-        dump('Workflow::can('.$actor->id().' '.$action.' '.$item->schema()->module()->name().')');
+        //dump('Workflow::can('.$actor->id().' '.$action.' '.$item->schema()->module()->name().')');
         if (is_string($action)) {
             $action = $this->action($item->schema()->name(), $action);
         }

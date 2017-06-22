@@ -65,8 +65,8 @@ class FindAddController extends DimeFormController
     {
         $find = $form->getData();
         $actor = Service::workflow()->actor();
-        Service::workflow()->apply($actor, 'record', $find);
         ORM::persist($find);
+        Service::workflow()->apply($actor, 'record', $find);
         ORM::flush($find);
         $parameters['id'] = $find->id();
         $request->attributes->set('parameters', $parameters);

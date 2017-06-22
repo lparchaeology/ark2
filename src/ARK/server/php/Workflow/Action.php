@@ -172,11 +172,11 @@ class Action
     public function isGranted(Actor $actor, Item $item, $attribute = null)
     {
         // TODO Sort out Permissions vs Allowances
+        //dump('ACTION : '.$this->action);
+        //dump('Allowed = '.(string) $this->isAllowed($actor));
+        //dump('Agency = '.(string) $this->hasAgency($actor, $item));
+        //dump('Conditions = '.(string) $this->meetsConditions($item));
         if ($attribute) {
-            dump('ACTION : '.$this->action);
-            dump('Allowed = '.(string) $this->isAllowed($actor));
-            dump('Agency = '.(string) $this->hasAgency($actor, $item));
-            dump('Conditions = '.(string) $this->meetsConditions($item));
             if (is_string($attribute)) {
                 $attribute = $item->property($attribute)->attribute();
             }

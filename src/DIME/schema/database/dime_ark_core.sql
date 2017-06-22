@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 21, 2017 at 05:47 PM
+-- Generation Time: Jun 22, 2017 at 10:19 AM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -3865,6 +3865,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.about.instructions', 'default', 'Instructions', NULL),
 ('en', 'dime.about.museums', 'default', 'Participating Museums', NULL),
 ('en', 'dime.about.partners', 'default', 'Partners', NULL),
+('en', 'dime.action.delete', 'default', 'Delete', ''),
 ('en', 'dime.action.edit', 'default', 'edit', NULL),
 ('en', 'dime.action.record', 'default', 'Record', 'Record'),
 ('en', 'dime.action.report', 'default', 'Report', 'Report'),
@@ -5643,10 +5644,10 @@ INSERT INTO `ark_view_grid` (`grp`, `row`, `col`, `seq`, `item_type`, `element`,
 ('dime_admin_user_page', 0, 1, 0, '', 'dime_user_actor', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_admin_user_page', 0, 1, 2, '', 'core_user_password_set', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_admin_user_page', 0, 1, 4, '', 'core_action_select', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_add', 0, 0, 2, '', 'dime_find_event', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_add', 0, 0, 4, '', 'dime_find_geo', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_add', 0, 0, 6, '', 'dime_find_photo', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_add', 0, 1, 0, '', 'dime_find_artefact', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_add', 0, 0, 2, '', 'dime_find_event', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_add', 0, 0, 4, '', 'dime_find_geo', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_add', 0, 0, 6, '', 'dime_find_photo', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_add', 0, 1, 0, '', 'dime_find_artefact', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_add', 0, 1, 4, '', 'core_widget_submit', 'save', NULL, NULL, NULL, 1, NULL, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_artefact', 0, 0, 0, '', 'dime_widget_classify', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"data-toggle\": \"modal\", \"data-target\":\"#dating-modal\"}}'),
 ('dime_find_artefact', 0, 0, 2, '', 'dime_find_type', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -5717,7 +5718,6 @@ INSERT INTO `ark_view_grid` (`grp`, `row`, `col`, `seq`, `item_type`, `element`,
 ('dime_message_page', 0, 1, 0, '', 'core_message_item', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_profile_list', 0, 0, 0, '', 'core_actor_id', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_profile_list', 0, 0, 2, '', 'core_actor_fullname', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_profile_list', 0, 1, 2, '', 'core_actor_avatar', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_profile_list_page', 0, 0, 0, '', 'dime_profile_list', 'actors', NULL, NULL, NULL, 1, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_profile_list_page', 0, 1, 0, '', 'dime_find_list', 'finds', NULL, NULL, NULL, 1, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_profile_page', 0, 0, 0, '', 'dime_profile_view', 'actor', NULL, NULL, NULL, 1, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -8455,7 +8455,7 @@ INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event
 ('dime.find', 'refer', 'core.event.type', 'referred', NULL, 0, 0, 0, 0, 1, 'dime.action.refer'),
 ('dime.find', 'reject', 'core.event.type', 'rejected', NULL, 0, 0, 0, 0, 1, 'dime.action.reject'),
 ('dime.find', 'release', 'core.event.type', 'released', NULL, 0, 0, 0, 0, 1, 'dime.action.release'),
-('dime.find', 'report', 'core.event.type', 'reported', 'reporter', 1, 0, 0, 0, 1, 'dime.action.report'),
+('dime.find', 'report', 'core.event.type', 'reported', 'reporter', 1, 0, 0, 1, 1, 'dime.action.report'),
 ('dime.find', 'request', 'core.event.type', 'requested', NULL, 0, 0, 0, 0, 1, 'dime.action.request'),
 ('dime.find', 'reward', 'core.event.type', 'rewarded', NULL, 0, 0, 0, 0, 1, 'dime.action.reward'),
 ('dime.find', 'send', 'core.event.type', 'sent', NULL, 0, 0, 0, 0, 1, 'dime.action.send'),
@@ -8464,7 +8464,7 @@ INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event
 ('dime.find', 'suppress', 'core.event.type', 'suppressed', NULL, 0, 0, 0, 0, 1, 'dime.action.suppress'),
 ('dime.find', 'transfer', 'core.event.type', 'transferred', NULL, 0, 0, 0, 0, 1, 'dime.action.transfer'),
 ('dime.find', 'validate', 'core.event.type', 'validated', NULL, 0, 0, 0, 0, 1, 'dime.action.validate'),
-('dime.find', 'view', 'core.event.type', 'viewed', NULL, 0, 1, 1, 0, 1, 'dime.action.view'),
+('dime.find', 'view', 'core.event.type', 'viewed', NULL, 0, 0, 1, 0, 1, 'dime.action.view'),
 ('dime.find', 'withdraw', 'core.event.type', 'withdrawn', NULL, 0, 0, 0, 0, 1, 'dime.action.withdraw');
 
 -- --------------------------------------------------------
@@ -8489,6 +8489,7 @@ INSERT INTO `ark_workflow_agency` (`schma`, `action`, `type`, `attribute`, `oper
 ('dime.find', 'accession', 'find', 'custodian', 'is'),
 ('dime.find', 'conserve', 'find', 'custodian', 'is'),
 ('dime.find', 'decline', 'find', 'custodian', 'is'),
+('dime.find', 'delete', 'find', 'finder', 'is'),
 ('dime.find', 'destroy', 'find', 'custodian', 'is'),
 ('dime.find', 'discard', 'find', 'owner', 'is'),
 ('dime.find', 'edit', 'find', 'custodian', 'is'),
@@ -8498,6 +8499,7 @@ INSERT INTO `ark_workflow_agency` (`schma`, `action`, `type`, `attribute`, `oper
 ('dime.find', 'lose', 'find', 'custodian', 'is'),
 ('dime.find', 'publish', 'find', 'owner', 'is'),
 ('dime.find', 'receive', 'find', 'recipient', 'is'),
+('dime.find', 'record', 'find', 'finder', 'is'),
 ('dime.find', 'recover', 'find', 'custodian', 'is'),
 ('dime.find', 'recover', 'find', 'owner', 'is'),
 ('dime.find', 'redact', 'find', 'owner', 'is'),
@@ -8508,6 +8510,7 @@ INSERT INTO `ark_workflow_agency` (`schma`, `action`, `type`, `attribute`, `oper
 ('dime.find', 'send', 'find', 'custodian', 'is'),
 ('dime.find', 'suppress', 'find', 'owner', 'is'),
 ('dime.find', 'transfer', 'find', 'owner', 'is'),
+('dime.find', 'view', 'find', 'finder', 'is'),
 ('dime.find', 'withdraw', 'find', 'recipient', 'is');
 
 -- --------------------------------------------------------
@@ -8553,10 +8556,10 @@ INSERT INTO `ark_workflow_allow` (`schma`, `action`, `role`, `operator`) VALUES
 ('dime.find', 'edit', 'admin', 'is'),
 ('dime.find', 'edit', 'detectorist', 'is'),
 ('dime.find', 'edit', 'registrar', 'is'),
+('dime.find', 'record', 'detectorist', 'is'),
 ('dime.find', 'reject', 'registrar', 'is'),
 ('dime.find', 'release', 'appraiser', 'is'),
 ('dime.find', 'release', 'registrar', 'is'),
-('dime.find', 'report', 'detectorist', 'is'),
 ('dime.find', 'reward', 'appraiser', 'is'),
 ('dime.find', 'validate', 'registrar', 'is'),
 ('dime.find', 'view', 'admin', 'is'),
@@ -8677,20 +8680,9 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('detectorist', 'core.message.read'),
 ('detectorist', 'core.message.update'),
 ('detectorist', 'dime.find.read'),
-('detectorist', 'dime.find.read.custody'),
-('detectorist', 'dime.find.read.finddate'),
-('detectorist', 'dime.find.read.finder'),
-('detectorist', 'dime.find.read.location'),
-('detectorist', 'dime.find.read.owner'),
 ('detectorist', 'dime.find.read.process'),
 ('detectorist', 'dime.find.read.treasure'),
 ('detectorist', 'dime.find.update'),
-('detectorist', 'dime.find.update.custody'),
-('detectorist', 'dime.find.update.finddate'),
-('detectorist', 'dime.find.update.finder'),
-('detectorist', 'dime.find.update.location'),
-('detectorist', 'dime.find.update.owner'),
-('detectorist', 'dime.find.update.process'),
 ('registrar', 'core.admin'),
 ('registrar', 'core.admin.user'),
 ('registrar', 'core.message.read'),

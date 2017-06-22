@@ -60,4 +60,10 @@ class HomePageController extends DimeFormController
 
         return $data;
     }
+
+    public function buildWorkflow(Request $request, $data, array $state)
+    {
+        $workflow['mode'] = 'view';
+        $workflow['actor'] = $state['actor'];
+    }
 }

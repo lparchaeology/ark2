@@ -110,7 +110,7 @@ class Field extends Element
             if ($modus == 'readonly') {
                 return 'readonly';
             }
-            if ($state['sanitise'] == 'redact' || $state['actor']->hasPermission($this->attribute->updatePermission())) {
+            if ($modus == 'active' || $state['sanitise'] == 'redact') {
                 return 'active';
             }
             if ($modus == 'disabled') {
@@ -175,11 +175,15 @@ class Field extends Element
         if (!isset($state['format']['modus'])) {
             $state['format']['modus'] = $this->formatModus();
         }
-        dump('CAN VIEW ATTRIBUTE : '.$this->attribute()->name());
-        if ($data instanceof Item && !Service::workflow()->can($state['actor'], 'view', $data, $this->attribute())) {
-            if ($state['sanitise'] != 'redact') {
-                $state['mode'] = 'withhold';
-                dump('WITHHOLD');
+        if ($data instanceof Item) {
+            if ($state['mode'] == 'edit' && Service::workflow()->can($state['actor'], 'edit', $data, $this->attribute())) {
+                $state['mode'] = 'edit';
+            } elseif (Service::workflow()->can($state['actor'], 'view', $data, $this->attribute())) {
+                $state['mode'] = 'view';
+            } elseif ($state['sanitise'] == 'redact') {
+                $state['mode'] = 'view';
+            } else {
+                $state['mode'] = 'deny';
             }
         }
         $state['mode'] = $this->displayMode($state['mode']);
@@ -334,7 +338,7 @@ class Field extends Element
     public function renderView($data, array $state)
     {
         $state = $this->buildState($data, $state);
-        if ($state['sanitise'] == 'withhold') {
+        if ($state['mode'] == 'deny') {
             return null;
         }
         $data = $this->buildData($data, $state);

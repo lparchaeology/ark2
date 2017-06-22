@@ -66,4 +66,10 @@ class ProfileViewController extends DimeFormController
         $data['finds'] = ORM::findBy(Find::class, ['item' => $items]);
         return $data;
     }
+
+    public function buildWorkflow(Request $request, $data, array $state)
+    {
+        $workflow['mode'] = 'view';
+        $workflow['actor'] = $state['actor'];
+    }
 }

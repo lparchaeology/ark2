@@ -51,4 +51,10 @@ class NewsPageController extends DimeFormController
         $data['notifications'] = DIME::getUnreadNotifications();
         return $data;
     }
+
+    public function buildWorkflow(Request $request, $data, array $state)
+    {
+        $workflow['mode'] = 'view';
+        $workflow['actor'] = $state['actor'];
+    }
 }

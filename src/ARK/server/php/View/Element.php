@@ -226,7 +226,8 @@ abstract class Element implements ElementInterface
         //dump($state);
         //dump($options);
         $state = $this->buildState($data, $state);
-        if ($state['mode'] == 'withhold') {
+        //dump($state);
+        if ($state['mode'] == 'deny') {
             return;
         }
         $data = $this->buildData($data, $state);
@@ -256,7 +257,7 @@ abstract class Element implements ElementInterface
         //dump($form);
         $context = $this->buildContext($data, $state, $form);
         //dump($context);
-        if ($context['state']['mode'] == 'withhold') {
+        if ($context['state']['mode'] == 'deny') {
             return;
         }
         return Service::view()->renderView($context['state']['template'], $context);

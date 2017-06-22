@@ -70,12 +70,9 @@ class FindViewController extends DimeFormController
         $data = $form->getData();
         if ($clicked == 'save') {
             $find = $data['find'];
+            $actor = Service::workflow()->actor();
+            Service::workflow()->apply($actor, 'edit', $find);
             ORM::persist($find);
-            if (isset($data['actions'])) {
-                $action = $data['actions'];
-                $actor = Service::workflow()->actor();
-                //$action->apply($actor, $item);
-            }
             ORM::flush($find);
             $parameters['id'] = $find->id();
             $request->attributes->set('parameters', $parameters);
