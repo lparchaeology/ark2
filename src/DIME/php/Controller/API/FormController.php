@@ -44,8 +44,8 @@ class FormController
         try {
             $data = $this->processRequest($request);
         } catch (Exception $e) {
-            $data['error']['code'][$e->getCode()];
-            $data['error']['message'][$e->getMessage()];
+            $data['status'][$e->getCode()];
+            $data['message'][$e->getMessage()];
         }
         return new JsonResponse($data);
     }
@@ -74,9 +74,14 @@ class FormController
                     $state['message'] = $request->attributes->get('message');
                 }
                 $parameters = ($request->attributes->get('parameters') ?: []);
+                $result['status'] = $state['flash'];
+                $result['message'] = $state['message'];
             } else {
+                $result['status'] = 'error';
+                $result['message'] = 'core.form.validation.failed';
                 // TODO Return Errors!!!!
             }
+            return $result;
         }
         $view = $form->createView();
         $json = $this->jsonView($view);
