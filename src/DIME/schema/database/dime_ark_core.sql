@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 22, 2017 at 03:24 PM
+-- Generation Time: Jun 22, 2017 at 04:19 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -5688,7 +5688,6 @@ INSERT INTO `ark_view_grid` (`grp`, `row`, `col`, `seq`, `item_type`, `element`,
 ('dime_find_item', 0, 1, 4, '', 'dime_find_update', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_item', 0, 1, 8, '', 'core_workflow_process', NULL, NULL, NULL, NULL, 1, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_list', 0, 0, 0, '', 'dime_find_id', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_list', 0, 0, 2, '', 'dime_find_finder_id', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_list', 0, 0, 4, '', 'dime_find_type', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_list', 0, 0, 6, '', 'dime_find_classification', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_list', 0, 0, 8, '', 'dime_find_material', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),

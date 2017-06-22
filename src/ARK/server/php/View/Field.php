@@ -270,7 +270,7 @@ class Field extends Element
         if ($this->formOptionsArray === null) {
             $this->formOptionsArray = ($this->formOptions ? json_decode($this->formOptions, true) : []);
         }
-        $options = $this->formOptionsArray;
+        $options = $this->baseOptions($state, $this->formOptionsArray);
         // TODO Nicer way to set js date pickers?
         if ($state['value']['modus'] == 'active' && isset($options['widget']) && $options['widget'] == 'picker') {
             $options['widget'] = 'single_text';
@@ -288,9 +288,11 @@ class Field extends Element
             $options = $this->vocabularyOptions($this->attribute()->vocabulary(), $options);
         }
         if ($this->attribute()->hasMultipleOccurrences()) {
+            // TODO DO we need multiple???
             $options['multiple'] = true;
+            $options['compound'] = true;
         }
-        return $this->baseOptions($state, $options);
+        return $options;
     }
 
     protected function baseOptions(array $state, array $options = [])
