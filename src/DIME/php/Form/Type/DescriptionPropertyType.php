@@ -94,8 +94,6 @@ class DescriptionPropertyType extends AbstractPropertyType
     public function mapFormsToData($forms, &$property)
     {
         $forms = iterator_to_array($forms);
-        dump($forms);
-        dump($property);
         if ($property instanceof Property) {
             $text = new LocalText();
             if ($previous = unserialize($forms['previous']->getData())) {
