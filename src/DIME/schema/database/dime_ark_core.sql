@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 23, 2017 at 04:50 PM
+-- Generation Time: Jun 23, 2017 at 05:37 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -145,7 +145,7 @@ CREATE TABLE `ark_format` (
 --
 
 INSERT INTO `ark_format` (`format`, `datatype`, `entity`, `value_name`, `value_form_class`, `static_form_class`, `parameter_name`, `parameter_vocabulary`, `parameter_form_class`, `format_name`, `format_vocabulary`, `format_form_class`, `form_type_class`, `object`, `array`, `span`, `multiple`, `sortable`, `searchable`, `enabled`, `deprecated`, `keyword`) VALUES
-('actor', 'item', 'ARK\\Actor\\Actor', NULL, 'ARK\\Form\\Type\\ActorChoiceType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'core.actor'),
+('actor', 'item', 'ARK\\Actor\\Actor', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'core.actor'),
 ('address', 'object', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 0, 1, 1, 0, 'format.address'),
 ('blob', 'blob', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'format.blob'),
 ('boolean', 'boolean', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.boolean'),
@@ -173,11 +173,11 @@ INSERT INTO `ark_format` (`format`, `datatype`, `entity`, `value_name`, `value_f
 ('message', 'item', 'ARK\\Message\\Message', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'core.actor.format'),
 ('module', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'format.module'),
 ('money', 'decimal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.money'),
-('museum', 'item', 'ARK\\Actor\\Museum', NULL, 'ARK\\Form\\Type\\ActorChoiceType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'core.actor.type.museum'),
+('museum', 'item', 'ARK\\Actor\\Museum', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'core.actor.type.museum'),
 ('ordinaldate', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.ordinaldate'),
 ('password', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.password'),
 ('percent', 'float', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.percent'),
-('person', 'item', 'ARK\\Actor\\Person', NULL, 'ARK\\Form\\Type\\ActorChoiceType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'core.actor.type.person'),
+('person', 'item', 'ARK\\Actor\\Person', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'core.actor.type.person'),
 ('plaintext', 'text', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 1, 1, 1, 0, 'format.localtext'),
 ('richtext', 'text', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 1, 1, 1, 0, 'format.richtext'),
 ('shorttext', 'text', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 1, 1, 1, 0, 'format.shortlocaltext'),
@@ -3934,10 +3934,12 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.dating', 'default', 'Dating', NULL),
 ('en', 'dime.find.description', 'default', 'Description', NULL),
 ('en', 'dime.find.event', 'default', 'Event', ''),
+('en', 'dime.find.event.accessioned', 'default', 'Accessioned', ''),
 ('en', 'dime.find.event.classified', 'default', 'Classified', NULL),
 ('en', 'dime.find.event.deleted', 'default', 'Deleted', ''),
 ('en', 'dime.find.event.edited', 'default', 'Edited', NULL),
 ('en', 'dime.find.event.reported', 'default', 'Reported', NULL),
+('en', 'dime.find.event.validated', 'default', 'Validated', ''),
 ('en', 'dime.find.filters', 'default', 'Filters', ''),
 ('en', 'dime.find.finddate', 'default', 'Find Date', 'DIME Find Find Date'),
 ('en', 'dime.find.finder', 'default', 'Detectorist', ''),
@@ -4220,10 +4222,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.home.faq', 'default', '<dl>\\n<dt>What is DIME?</dt>\\n<dd>DIME is a shared portal for detectorists and Danish museums that can be accessed by everyone.</dd>\\n<dd>&nbsp;</dd>\\n<dt>Why should I use DIME?</dt>\\n<dd>DIME allows faster processing of your finds in cooperation with the museum, and gives you an overview of your finds and collection.</dd>\\n<dd>&nbsp;</dd\\n<dt>What finds can be added to DIME? </dt>\\n<dd>All detector finds (not only Danefæ) can added to DIME.</dd>\\n<dd>&nbsp;</dd>\\n<dt>Can others see my find locations?</dt>\\n<dd>No! Find locations and other private information are only visible for museum archaeologists and researchers with special access.</dd>\\n<dd>&nbsp;</dd>\\n<dt>Is there a DIME app?</dt>\\n<dd>An app for recording in the field is under development.</dd>\\n</dl>', NULL),
 ('en', 'dime.home.hvert', 'default', 'Every year, the metal detector users across the country thousands of objects from antiquity, middelal-there and later periods. Metal objects are part of our common cultural heritage and important pieces in the history of Denmark. DIME provides information about the finds for the benefit of present and subsequent generatione', NULL),
 ('en', 'dime.home.welcome', 'default', 'Welcome %name%', NULL),
-('en', 'dime.kommune.aabenraa', 'default', 'Aabenraa', NULL),
-('en', 'dime.kommune.aabenraa', 'official', 'Aabenraa Municipality', NULL),
-('en', 'dime.kommune.aalborg', 'default', 'Aalborg', NULL);
+('en', 'dime.kommune.aabenraa', 'default', 'Aabenraa', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.kommune.aabenraa', 'official', 'Aabenraa Municipality', NULL),
+('en', 'dime.kommune.aalborg', 'default', 'Aalborg', NULL),
 ('en', 'dime.kommune.aalborg', 'official', 'Aalborg Municipality', NULL),
 ('en', 'dime.kommune.aero', 'default', 'Ærø', NULL),
 ('en', 'dime.kommune.aero', 'official', 'Ærø Municipality', NULL),
@@ -5052,10 +5054,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'language.sango', 'default', 'Sango', NULL),
 ('en', 'language.sangu', 'default', 'Sangu', NULL),
 ('en', 'language.sanskrit', 'default', 'Sanskrit', NULL),
-('en', 'language.santali', 'default', 'Santali', NULL),
-('en', 'language.sardinian', 'default', 'Sardinian', NULL),
-('en', 'language.sardinian.sassarese', 'default', 'Sassarese Sardinian', NULL);
+('en', 'language.santali', 'default', 'Santali', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'language.sardinian', 'default', 'Sardinian', NULL),
+('en', 'language.sardinian.sassarese', 'default', 'Sassarese Sardinian', NULL),
 ('en', 'language.sasak', 'default', 'Sasak', NULL),
 ('en', 'language.saurashtra', 'default', 'Saurashtra', NULL),
 ('en', 'language.saxon.low', 'default', 'Low Saxon', NULL),
