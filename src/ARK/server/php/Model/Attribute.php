@@ -68,6 +68,21 @@ abstract class Attribute
         return $this->vocabulary !== null;
     }
 
+    public function isItem()
+    {
+        return $this->format->datatype()->id() == 'item';
+    }
+
+    public function isObject()
+    {
+        return $this->format->datatype()->id() == 'object';
+    }
+
+    public function entity()
+    {
+        return $this->format->entity();
+    }
+
     public function vocabulary()
     {
         return $this->vocabulary;

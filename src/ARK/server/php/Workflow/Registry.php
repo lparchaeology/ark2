@@ -91,7 +91,6 @@ class Registry extends SymfonyRegistry
     {
         $schema = $item->schema()->name();
         $this->init($schema);
-        dump($this);
         $actions = [];
         foreach ($this->actions[$schema] as $action) {
             if ($action->isUpdate() && $action->isGranted($actor, $item)) {

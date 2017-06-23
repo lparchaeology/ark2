@@ -37,6 +37,7 @@ use ARK\Model\Schema\SchemaAttribute;
 use ARK\Model\LocalText;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
@@ -282,12 +283,28 @@ class Field extends Element
         } else {
             unset($options['widget']);
         }
+        /*
+        if ($state['value']['modus'] == 'active' && $this->attribute()->isItem()) {
+            if (isset($state['choices'])) {
+                $choices = $state['choices'];
+            } else {
+                $choices = ORM::findAll($this->attribute()->entity());
+            }
+            if ($choices) {
+                dump($this);
+                dump($state);
+                dump($choices);
+                $options['choices'] = $choices;
+                $options['placeholder'] = '';
+            }
+        }
+        */
         if ($this->attribute()->hasVocabulary()) {
             $options = $this->vocabularyOptions($this->attribute()->vocabulary(), $options);
         }
         if ($this->attribute()->hasMultipleOccurrences()) {
             // TODO DO we need multiple???
-            $options['multiple'] = true;
+            //$options['multiple'] = true;
             $options['compound'] = true;
         }
         return $options;
