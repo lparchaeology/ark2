@@ -218,6 +218,7 @@ $(document).ready(function(){
             window.subtypevocabulary = response.terms;
             for (var subtype in subtypevocabulary) {
                 if($('#'+subtype_id).val() != subtype ){
+                    console.log('detaching '+subtype);
                     subtypevocabulary[subtype].optionelement = $('#'+subtype_id+' option[value="'+subtype+'"]').detach();
                 }
             }

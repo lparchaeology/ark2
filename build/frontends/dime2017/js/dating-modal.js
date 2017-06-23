@@ -131,44 +131,57 @@ var initTimeline = function(){
           });
 
           var updateTimeline = function(target){
-              if(typeof window.subtypevocabulary[target].parameters != 'undefined'){
-                  try {
-                      var target_years = getYearsFromTarget(target);
-                      console.log(target_years);
+              if(target != 'undefined'){
+                  if(typeof window.subtypevocabulary[target].parameters != 'undefined'){
                       try {
-                          timeline.setCustomTime( vis.moment(target_years.start, 'Y'), 'start' );
+                          var target_years = getYearsFromTarget(target);
+                          console.log(target_years);
+                          try {
+                              timeline.setCustomTime( vis.moment(target_years.start, 'Y'), 'start' );
+                          } catch (e){
+                              timeline.addCustomTime( vis.moment(target_years.start, 'Y'), 'start' );
+                          }
+                          try {
+                              timeline.setCustomTime( vis.moment(target_years.end, 'Y'), 'end' );
+                          }catch (e){
+                              timeline.addCustomTime( vis.moment(target_years.end, 'Y'), 'end' );
+                          }
+                          timeline.moveTo(vis.moment(target_years.end, 'Y'));
+                          $('#find_dating_year').val(target_years.start);
+                          $('#find_dating_year').trigger('keyup');
+                          $('#find_dating_year_span').val(target_years.end);
+                          $('#find_dating_year_span').trigger('keyup');
                       } catch (e){
-                          timeline.addCustomTime( vis.moment(target_years.start, 'Y'), 'start' );
+                          
                       }
-                      try {
-                          timeline.setCustomTime( vis.moment(target_years.end, 'Y'), 'end' );
-                      }catch (e){
-                          timeline.addCustomTime( vis.moment(target_years.end, 'Y'), 'end' );
-                      }
-                      timeline.moveTo(vis.moment(target_years.end, 'Y'));
-                      $('#find_dating_year').val(target_years.start);
-                      $('#find_dating_year').trigger('keyup');
-                      $('#find_dating_year_span').val(target_years.end);
-                      $('#find_dating_year_span').trigger('keyup');
-                  } catch (e){
-                      
                   }
-              }
-              var targetSplit = target.split('.');
+                  var targetSplit = target.split('.');
 
-              $('#find_type_term').val(targetSplit[0]);
-              $('#find_type_term').select2(select2Options);
-              $('#find_type_term').trigger('select2:select');
-              $('#find_classification_subtype').val(targetSplit[0]+'.'+targetSplit[1]);
-              $('#find_classification_subtype').select2(select2Options);
-              $('#find_classification_subtype').trigger('select2:select');
-              $('#find_classification_subtype').select2('close');
-              if( targetSplit.length = 3 ){
-                  $('#find_classification_subtype').val(target);
+                  $('#find_type_term').val(targetSplit[0]);
+                  $('#find_type_term').select2(select2Options);
+                  $('#find_type_term').trigger('select2:select');
+                  $('#find_classification_subtype').val(targetSplit[0]+'.'+targetSplit[1]);
                   $('#find_classification_subtype').select2(select2Options);
                   $('#find_classification_subtype').trigger('select2:select');
                   $('#find_classification_subtype').select2('close');
+                  if( targetSplit.length = 3 ){
+                      $('#find_classification_subtype').val(target);
+                      $('#find_classification_subtype').select2(select2Options);
+                      $('#find_classification_subtype').trigger('select2:select');
+                      $('#find_classification_subtype').select2('close');
+                  }
+              } else {
+                  if($('#find_subtype_level1').val() == 'undefined'){
+                      $('#find_classification_subtype').val(null);
+                      $('#find_classification_subtype').select2(select2Options);
+                  } else {
+                      console.log($('#find_subtype_level1').val());
+                      $('#find_classification_subtype').val($('#find_subtype_level1').val());
+                      $('#find_classification_subtype').select2(select2Options);
+                      
+                  }
               }
+
           }
 
           level1.on("select2:select select2:unselecting", function(){

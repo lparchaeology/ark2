@@ -219,9 +219,10 @@ $(document).ready(function(){
         e.preventDefault();
     });
     var setSimpleButtons = function(){
+        console.log($('#find_dating_year').val());
         if ( $('#find_dating_year').val() < 1067){
             $('#oldtid-dating-button').addClass('selected');
-        } else {
+        } else if ( $('#find_dating_year').val() > 1066) {
             $('#historiktid-dating-button').addClass('selected');
         }
     }
