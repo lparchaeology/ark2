@@ -37,6 +37,7 @@ use ARK\Service;
 use ARK\View\Group;
 use ARK\View\Element;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -147,6 +148,9 @@ class Page extends Element
                 $form->getRoot()->handleRequest($request);
                 if ($form->isSubmitted() && $form->isValid()) {
                     return $form->getRoot();
+                } else {
+                    // TODO Tell it of errors!!!
+                    return null;
                 }
             }
             if ($root = $this->postedForm($request, $form)) {
@@ -171,19 +175,23 @@ class Page extends Element
         $options = $this->buildOptions($data, $state, []);
         $forms = $this->content->buildForms($data, $state, $options);
         //dump($forms);
-        if ($forms && $request->getMethod() == 'POST' && $posted = $this->postedForm($request, $forms)) {
-            if ($processForm !== null) {
-                $processForm($request, $posted);
+        if ($forms && $request->getMethod() == 'POST') {
+            $posted = $this->postedForm($request, $forms);
+            if ($posted instanceof Form) {
+                if ($processForm !== null) {
+                    $processForm($request, $posted);
+                }
+                $redirect = $request->attributes->get('redirect');
+                if (!$redirect) {
+                    $redirect = $request->attributes->get('_route');
+                }
+                if ($flash = $request->attributes->get('flash')) {
+                    Service::view()->addFlash($flash, $request->attributes->get('message'));
+                }
+                $parameters = ($request->attributes->get('parameters') ?: []);
+                return Service::redirectPath($redirect, $parameters);
             }
-            $redirect = $request->attributes->get('redirect');
-            if (!$redirect) {
-                $redirect = $request->attributes->get('_route');
-            }
-            if ($flash = $request->attributes->get('flash')) {
-                Service::view()->addFlash($flash, $request->attributes->get('message'));
-            }
-            $parameters = ($request->attributes->get('parameters') ?: []);
-            return Service::redirectPath($redirect, $parameters);
+            // TODO Process Errors!!!
         }
         //dump('PAGE : RENDER');
         $context = $this->pageContext($data, $state, $forms);

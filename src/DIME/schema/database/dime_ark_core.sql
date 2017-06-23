@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 23, 2017 at 03:25 PM
+-- Generation Time: Jun 23, 2017 at 04:50 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -885,12 +885,12 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('core.page', 'page', 'id', 'identifier', NULL, 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'core.page.id'),
 ('dime.find', 'coin', 'mint', 'shorttext', NULL, 'public', NULL, NULL, 0, 0, 1, 1, 0, 1, 0, 'dime.find.mint'),
 ('dime.find', 'find', 'case', 'identifier', NULL, 'public', NULL, NULL, 0, 0, 1, 1, 0, 1, 0, 'dime.find.case'),
-('dime.find', 'find', 'classification', 'classification', NULL, 'public', NULL, NULL, 0, 0, 0, 1, 0, 1, 0, 'dime.find.classification'),
+('dime.find', 'find', 'classification', 'classification', NULL, 'public', NULL, NULL, 0, 0, 1, 1, 0, 1, 0, 'dime.find.classification'),
 ('dime.find', 'find', 'condition', 'term', 'dime.find.condition', 'public', NULL, NULL, 0, 0, 1, 1, 0, 1, 0, 'dime.find.condition'),
 ('dime.find', 'find', 'custodian', 'actor', NULL, 'restricted', 'dime.find.read.custody', 'dime.find.update.custody', 0, 1, 1, 1, 0, 1, 0, 'dime.find.custodian'),
 ('dime.find', 'find', 'custody', 'term', 'dime.find.custody', 'restricted', 'dime.find.read.custody', 'dime.find.update.custody', 0, 1, 1, 1, 0, 1, 0, 'dime.find.custody'),
-('dime.find', 'find', 'dating', 'dating', NULL, 'public', NULL, NULL, 0, 0, 0, 1, 0, 1, 0, 'dime.find.dating'),
-('dime.find', 'find', 'description', 'description', NULL, 'public', NULL, NULL, 0, 0, 0, 1, 0, 1, 0, 'dime.find.description'),
+('dime.find', 'find', 'dating', 'dating', NULL, 'public', NULL, NULL, 0, 0, 1, 1, 0, 1, 0, 'dime.find.dating'),
+('dime.find', 'find', 'description', 'description', NULL, 'public', NULL, NULL, 0, 0, 1, 1, 0, 1, 0, 'dime.find.description'),
 ('dime.find', 'find', 'finddate', 'date', NULL, 'restricted', 'dime.find.read.finddate', 'dime.find.update.finddate', 0, 0, 1, 1, 0, 1, 0, 'dime.find.finddate'),
 ('dime.find', 'find', 'finder', 'person', NULL, 'restricted', 'dime.find.read.finder', 'dime.find.update.finder', 0, 1, 1, 1, 0, 1, 0, 'dime.find.finder'),
 ('dime.find', 'find', 'finder_id', 'identifier', NULL, 'restricted', 'dime.find.read.finder', 'dime.find.update.finder', 0, 0, 1, 1, 0, 1, 0, 'dime.find.finder_id'),

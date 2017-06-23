@@ -43,8 +43,6 @@ class DatingPropertyType extends AbstractPropertyType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $valueOptions = $options['state']['value']['options'];
-        // Not multi-vocality for now
-        unset($valueOptions['multiple']);
         $field = $options['state']['field'];
         $format = $field->attribute()->format();
         $builder->add('year', $options['state']['value']['type'], $valueOptions);
@@ -80,7 +78,6 @@ class DatingPropertyType extends AbstractPropertyType
         if ($property instanceof Property) {
             $value = $property->serialize();
             if ($value) {
-                $value = $value[0];
                 $forms['event']->setData($value['event']['item']);
                 $forms['entered']->setData($value['entered']);
                 $forms['year']->setData($value['year'][0]);
@@ -107,9 +104,9 @@ class DatingPropertyType extends AbstractPropertyType
             $value['period'][0] = $forms['period']->getData();
             $value['period'][1] = $forms['period_span']->getData();
             if ($value['year'][0] || $value['period'][0]) {
-                $property->setValue([$value]);
+                $property->setValue($value);
             } else {
-                $property->setValue([]);
+                $property->setValue(null);
             }
         }
     }

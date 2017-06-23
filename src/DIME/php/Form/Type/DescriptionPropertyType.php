@@ -46,8 +46,6 @@ class DescriptionPropertyType extends AbstractPropertyType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $valueOptions = $options['state']['value']['options'];
-        // No multi-vocality for now
-        unset($valueOptions['multiple']);
         $field = $options['state']['field'];
         $format = $field->attribute()->format();
 
@@ -75,10 +73,10 @@ class DescriptionPropertyType extends AbstractPropertyType
         $forms = iterator_to_array($forms);
         if ($property instanceof Property) {
             $value = $property->value();
-            if ($value && $value[0]) {
+            if ($value) {
                 // No multi-vocality for now
-                $event = $value[0]['event'];
-                $text = $value[0]['text'];
+                $event = $value['event'];
+                $text = $value['text'];
                 $language = Service::locale();
                 if ($event instanceof Event) {
                     $forms['event']->setData($event->id());
@@ -96,14 +94,14 @@ class DescriptionPropertyType extends AbstractPropertyType
     public function mapFormsToData($forms, &$property)
     {
         $forms = iterator_to_array($forms);
+        dump($forms);
+        dump($property);
         if ($property instanceof Property) {
             $text = new LocalText();
-            $previous = unserialize($forms['previous']->getData());
-            if ($previous) {
+            if ($previous = unserialize($forms['previous']->getData())) {
                 $text->setContents($previous);
             }
-            $mediatype = $forms['mediatype']->getData();
-            if ($mediatype) {
+            if ($mediatype = $forms['mediatype']->getData()) {
                 $text->setMediaType($mediatype);
             }
             $text->setContent($forms['content']->getData(), $forms['language']->getData());
@@ -113,7 +111,7 @@ class DescriptionPropertyType extends AbstractPropertyType
             }
             $data['event'] = $event;
             $data['text'] = $text;
-            $property->setValue([$data]);
+            $property->setValue($data);
         }
     }
 }

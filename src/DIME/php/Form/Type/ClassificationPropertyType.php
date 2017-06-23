@@ -41,14 +41,12 @@ class ClassificationPropertyType extends AbstractPropertyType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $valueOptions = $options['state']['value']['options'];
-        // Not multi-vocality for now
-        unset($valueOptions['multiple']);
         $field = $options['state']['field'];
         $format = $field->attribute()->format();
 
         $valueOptions['choices'] = $format->attribute('subtype')->vocabulary()->terms();
         $valueOptions['placeholder'] = ' - ';
-        $valueOptions['required'] = true;
+        //$valueOptions['required'] = true;
         $builder->add('subtype', $options['state']['value']['type'], $valueOptions);
 
         $fieldOptions['label'] = false;
@@ -70,12 +68,12 @@ class ClassificationPropertyType extends AbstractPropertyType
         $forms = iterator_to_array($forms);
         if ($property instanceof Property) {
             $value = $property->value();
-            if ($value && $value[0]) {
-                $event = $value[0]['event'];
+            if ($value && $value) {
+                $event = $value['event'];
                 if ($event) {
                     $forms['event']->setData($event->id());
                 }
-                $class = $value[0]['subtype'];
+                $class = $value['subtype'];
                 if ($class) {
                     $forms['subtype']->setData($class);
                 }
@@ -93,7 +91,7 @@ class ClassificationPropertyType extends AbstractPropertyType
             }
             $value['event'] = $event;
             $value['subtype'] = $forms['subtype']->getData();
-            $property->setValue([$value]);
+            $property->setValue($value);
         }
     }
 }
