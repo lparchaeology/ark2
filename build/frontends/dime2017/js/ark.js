@@ -147,7 +147,7 @@ $('#pageedit').on('click', function() {
         });
     }
 });
-
+/*
 jQuery(function($) {
     $('form[data-async]').on('submit', function(event) {
         var $form = $(this);
@@ -169,7 +169,7 @@ jQuery(function($) {
         event.preventDefault();
     });
 });
-
+*/
 function debounce(func, wait, immediate) {
     var timeout;
     return function() {

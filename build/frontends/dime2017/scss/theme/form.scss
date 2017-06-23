@@ -257,6 +257,10 @@ input[type=radio]:checked ~ label::before{
     font-size:0.7em;
 }
 
+.mappick-decimal-control form-control{
+    padding: 0 5px;
+}
+
 .dating-button.advanced-dating-button,
 .dating-button.selected {
     background-color:white;
