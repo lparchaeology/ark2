@@ -126,7 +126,7 @@ class ObjectFormat extends Format
                 $datum = call_user_func($this->entity.'::toArray', $datum);
             }
             if (!is_array($datum)) {
-                return;
+                return [];
             }
             foreach ($datum as $key => $value) {
                 $children = $this->attribute($key)->hydrate($value);
