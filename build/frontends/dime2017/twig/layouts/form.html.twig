@@ -1,7 +1,7 @@
 <div>
 
     {% for form in forms %}
-        {{ form_row(form) }}
+        {{ form_row(form, {'state': state, 'help': help}) }}
     {% endfor %}
 
 </div>

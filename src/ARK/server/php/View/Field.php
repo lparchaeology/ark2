@@ -122,20 +122,27 @@ class Field extends Element
         return 'static';
     }
 
-    private function modusToFormType($modus, $default, $static = StaticType::class)
+    private function modusToFormType($modus, $active, $readonly = null, $static = null)
     {
         switch ($modus) {
             case 'hidden':
                 return HiddenType::class;
             case 'static':
-                return $static;
+                return $static ?: StaticType::class;
+            case 'readonly':
+                return $readonly ?: $active;
         }
-        return $default;
+        return $active;
     }
 
-    public function valueFormType()
+    public function activeFormType()
     {
-        return $this->attribute()->format()->valueFormType();
+        return $this->attribute()->format()->activeFormType();
+    }
+
+    public function readonlyFormType()
+    {
+        return $this->attribute()->format()->readonlyFormType();
     }
 
     public function staticFormType()
@@ -223,11 +230,14 @@ class Field extends Element
             $options['label'] = false;
         }
 
-        $options['state']['value']['modus'] =
-            $this->modeToModus($state, $options['state']['value']['modus']);
-        $options['state']['value']['type'] =
-            $this->modusToFormType($options['state']['value']['modus'], $this->valueFormType(), $this->staticFormType());
-        $options['state']['value']['options'] = $this->valueOptions($state);
+        $options['state']['value']['modus'] = $this->modeToModus($state, $state['value']['modus']);
+        $options['state']['value']['type'] = $this->modusToFormType(
+            $options['state']['value']['modus'],
+            $this->activeFormType(),
+            $this->readonlyFormType(),
+            $this->staticFormType()
+        );
+        $options['state']['value']['options'] = $this->valueOptions($options['state']);
         if ($this->display) {
             $options['state']['value']['display'] = $this->display;
         }
@@ -283,24 +293,24 @@ class Field extends Element
         } else {
             unset($options['widget']);
         }
-        /*
-        if ($state['value']['modus'] == 'active' && $this->attribute()->isItem()) {
-            if (isset($state['choices'])) {
-                $choices = $state['choices'];
+        if ($state['choices'] && $state['value']['modus'] == 'active' && $this->attribute()->isItem()) {
+            if (isset($state['select']['choices'])) {
+                $choices = $state['select']['choices'];
             } else {
                 $choices = ORM::findAll($this->attribute()->entity());
             }
             if ($choices) {
-                dump($this);
-                dump($state);
-                dump($choices);
                 $options['choices'] = $choices;
-                $options['placeholder'] = '';
+                if ($state['placeholder']) {
+                    $options['placeholder'] = $state['select']['placeholder'];
+                }
             }
         }
-        */
         if ($this->attribute()->hasVocabulary()) {
             $options = $this->vocabularyOptions($this->attribute()->vocabulary(), $options);
+            if ($this->attribute()->isRequired() || $state['placeholder'] === false) {
+                $options['placeholder'] = null;
+            }
         }
         if ($this->attribute()->hasMultipleOccurrences()) {
             // TODO DO we need multiple???
@@ -334,15 +344,6 @@ class Field extends Element
             return $options[$option][$attr] . ' ' . $value;
         }
         return $value;
-    }
-
-    protected function vocabularyOptions(Vocabulary $vocabulary, array $options = [])
-    {
-        $options = parent::vocabularyOptions($vocabulary, $options);
-        if ($this->attribute()->isRequired()) {
-            $options['placeholder'] = null;
-        }
-        return $options;
     }
 
     public function buildContext($data, array $state, FormView $form = null)

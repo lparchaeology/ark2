@@ -57,6 +57,7 @@ class Cell implements ElementInterface
     protected $vocabulary = null;
     protected $label = null;
     protected $placeholder = null;
+    protected $choices = null;
     protected $required = null;
     protected $mode = null;
     protected $sanitise = null;
@@ -128,6 +129,11 @@ class Cell implements ElementInterface
         return $this->placeholder;
     }
 
+    public function showChoices()
+    {
+        return $this->choices;
+    }
+
     public function isRequired()
     {
         return $this->required;
@@ -167,6 +173,8 @@ class Cell implements ElementInterface
     {
         $state['name'] = $this->name;
         $state['label'] = $this->label;
+        $state['placeholder'] = $this->placeholder;
+        $state['choices'] = $this->choices;
         $state['map'] = $this->map;
         $state['vocabulary'] = $this->vocabulary;
         if ($this->required === false) {
@@ -184,13 +192,13 @@ class Cell implements ElementInterface
         }
         $state['modus'] = $this->valueModus();
         if ($this->valueModus() !== null) {
-            $this->optionsArray['state']['value']['modus'] = $this->valueModus();
+            $state['value']['modus'] = $this->valueModus();
         }
         if ($this->valueModus() !== null) {
-            $this->optionsArray['state']['parameter']['modus'] = $this->parameterModus();
+            $state['parameter']['modus'] = $this->parameterModus();
         }
         if ($this->valueModus() !== null) {
-            $this->optionsArray['state']['format']['modus'] = $this->formatModus();
+            $state['format']['modus'] = $this->formatModus();
         }
         if (!isset($state['sanitise']) || $this->sanitise) {
             $state['sanitise'] = $this->sanitise;
@@ -265,6 +273,7 @@ class Cell implements ElementInterface
         $builder->addField('width', 'integer');
         $builder->addField('label', 'boolean');
         $builder->addField('placeholder', 'boolean');
+        $builder->addField('choices', 'boolean');
         $builder->addStringField('mode', 10);
         $builder->addStringField('sanitise', 10);
         $builder->addStringField('value', 10);

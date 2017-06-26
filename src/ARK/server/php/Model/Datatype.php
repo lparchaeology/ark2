@@ -59,7 +59,8 @@ class Datatype
     protected $dataTable = '';
     protected $dataClass = '';
     protected $formTypeClass = '';
-    protected $valueFormType = '';
+    protected $activeFormType = '';
+    protected $readonlyFormType = '';
     protected $staticFormType = '';
     protected $formatFormType = '';
     protected $parameterFormType = '';
@@ -144,9 +145,14 @@ class Datatype
         return $this->formTypeClass;
     }
 
-    public function valueFormType()
+    public function activeFormType()
     {
-        return $this->valueFormType;
+        return $this->activeFormType;
+    }
+
+    public function readonlyFormType()
+    {
+        return $this->readonlyFormType;
     }
 
     public function staticFormType()
@@ -189,7 +195,8 @@ class Datatype
         $builder->addStringField('dataTable', 50, 'data_table');
         $builder->addStringField('dataClass', 100, 'data_class');
         $builder->addStringField('formTypeClass', 100, 'form_type_class');
-        $builder->addStringField('valueFormType', 100, 'value_form_class');
+        $builder->addStringField('activeFormType', 100, 'active_form_class');
+        $builder->addStringField('readonlyFormType', 100, 'readonly_form_class');
         $builder->addStringField('staticFormType', 100, 'static_form_class');
         $builder->addStringField('formatFormType', 100, 'format_form_class');
         $builder->addStringField('parameterFormType', 100, 'parameter_form_class');

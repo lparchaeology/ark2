@@ -190,6 +190,7 @@ abstract class Element implements ElementInterface
         $context['state'] = null;
         $context['data'] = null;
         $context['form'] = null;
+        $context['help'] = null;
         return $context;
     }
 

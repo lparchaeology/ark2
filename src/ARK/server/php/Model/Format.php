@@ -61,7 +61,8 @@ abstract class Format
     protected $parameterName = null;
     protected $parameterVocabulary = null;
     protected $formTypeClass = '';
-    protected $valueFormType = '';
+    protected $activeFormType = '';
+    protected $readonlyFormType = '';
     protected $staticFormType = '';
     protected $formatFormType = '';
     protected $parameterFormType = '';
@@ -118,9 +119,14 @@ abstract class Format
         return ($this->formTypeClass ?: $this->datatype->formTypeClass());
     }
 
-    public function valueFormType()
+    public function activeFormType()
     {
-        return ($this->valueFormType ?: $this->datatype->valueFormType());
+        return ($this->activeFormType ?: $this->datatype->activeFormType());
+    }
+
+    public function readonlyFormType()
+    {
+        return ($this->readonlyFormType ?: $this->datatype->readonlyFormType());
     }
 
     public function staticFormType()
@@ -363,7 +369,8 @@ abstract class Format
         $builder->addStringField('parameterName', 30, 'parameter_name');
         $builder->addStringField('parameterVocabulary', 30, 'parameter_vocabulary');
         $builder->addStringField('formTypeClass', 100, 'form_type_class');
-        $builder->addStringField('valueFormType', 100, 'value_form_class');
+        $builder->addStringField('activeFormType', 100, 'active_form_class');
+        $builder->addStringField('readonlyFormType', 100, 'readonly_form_class');
         $builder->addStringField('staticFormType', 100, 'static_form_class');
         $builder->addStringField('formatFormType', 100, 'format_form_class');
         $builder->addStringField('parameterFormType', 100, 'parameter_form_class');

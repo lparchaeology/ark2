@@ -2,7 +2,7 @@
 {% block mappick %}
 
 <div class="form-class">
-    <div class="col-sm-4"></div>
+    <div class="col-xs-12 col-sm-4"></div>
     <div class="col-sm-8 col-lg-7">
         <div id="mappick" class="mappick"></div>
         <script>var mapPin = "{{ asset('images/icons/pin.png', 'frontend') }}"</script>
@@ -11,7 +11,7 @@
 
 <div class="form-class">
 
-    {{ form_label(form) }}
+    {{ form_row(form, {'state': null, 'help': null}) }}
 
     <div class="col-sm-8 col-lg-7 mappick-fields">
 

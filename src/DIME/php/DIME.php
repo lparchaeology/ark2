@@ -64,6 +64,11 @@ class DIME
         }
         if ($actor instanceof Actor && $actor->id() != 'anonymous') {
             $msgIds = Service::database()->getActorMessages($actor->id());
+            foreach ($actor->roles() as $role) {
+                if ($role->isAgent()) {
+                    $msgIds = array_merge($msgIds, Service::database()->getActorMessages($role->agentFor()->id()));
+                }
+            }
             return ORM::findBy(Notification::class, ['item' => $msgIds], ['created' => 'DESC']);
         }
         return new ArrayCollection();

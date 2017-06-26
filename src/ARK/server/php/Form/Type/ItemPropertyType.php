@@ -94,7 +94,7 @@ class ItemPropertyType extends AbstractPropertyType
                 $forms[$options['state']['value']['display']]->setData($name);
             } else {
                 $name = $item->property('id')->serialize();
-                $forms[$options['state']['value']['name']]->setData($name);
+                $forms['item']->setData($name);
             }
         } elseif (isset($item['item'])) {
             $forms['module']->setData($item['module']);
@@ -108,11 +108,12 @@ class ItemPropertyType extends AbstractPropertyType
             return;
         }
         $forms = iterator_to_array($forms);
-        $module = $forms['module']->getData();
         $item = $forms['item']->getData();
-        if ($item) {
+        if ($item instanceof Item) {
+            $property->setValue($item);
+        } elseif (is_string($item)) {
             // TODO Generic test exists
-            $values['module'] = $module;
+            $values['module'] = $forms['module']->getData();
             $values['item'] = $item;
             $property->setValue($values);
         }

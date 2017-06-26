@@ -1,17 +1,1 @@
-
-{%- if label is same as(false) -%}
-    {% set form_group_class = "col-sm-11" %}
-{%- else -%}
-    {% set form_group_class = "form-group-widget col-xs-11 col-sm-7 col-lg-7" %}
-{%- endif -%}
-
-<div class="form-group row">
-    {{ form_label(form) }}
-    {{ form_errors(form) }}
-    <div class="{{ form_group_class }}">
-        {{ form_widget(form) }}
-    </div>
-    {% if state.modus == 'active' %}
-        <span class="help" title="{{ help | translate() }}" data-toggle="tooltip" data-placement="right" ><span class="glyphicon glyphicon-question-sign"></span></span>
-    {% endif %}
-</div>
+{{ form_row(form, {'state': state, 'help': help}) }}

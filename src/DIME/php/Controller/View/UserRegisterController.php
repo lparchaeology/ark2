@@ -73,6 +73,7 @@ class UserRegisterController extends DimeFormController
         $credentials = $data['credentials'];
         $role = $data['role']['role'];
         $comments = $data['role']['comments'];
+
         $actor = $data['actor'];
         $actor->setItem($credentials['_username']);
 
@@ -82,8 +83,13 @@ class UserRegisterController extends DimeFormController
             $credentials['password'],
             $actor->fullname()
         );
+
         $role = ORM::find(Role::class, $role->name());
+
         Service::security()->registerUser($user, $actor, $role);
+
+        Service::workflow()->apply($actor, 'register', $actor);
+        ORM::flush($actor);
 
         $request->attributes->set('flash', 'success');
         $request->attributes->set('message', 'dime.user.register.success');

@@ -44,7 +44,7 @@ class ActorRole
     protected $actor = null;
     protected $role = null;
     protected $roleEntity = null;
-    protected $proxyFor = null;
+    protected $agentFor = null;
     protected $enabled = false;
     protected $verified = false;
     protected $locked = false;
@@ -53,11 +53,12 @@ class ActorRole
     protected $verificationToken = '';
     protected $verificationRequestedAt = null;
 
-    public function __construct(Actor $actor, Role $role)
+    public function __construct(Actor $actor, Role $role, Actor $agentFor = null)
     {
         $this->actor = $actor;
         $this->role = $role->id();
         $this->roleEntity = $role;
+        $this->agentFor = $agentFor;
     }
 
     public function actor()
@@ -73,14 +74,14 @@ class ActorRole
         return $this->roleEntity;
     }
 
-    public function isProxy()
+    public function isAgent()
     {
-        return $this->proxyFor !== null;
+        return $this->agentFor !== null;
     }
 
-    public function proxyFor()
+    public function agentFor()
     {
-        return $this->proxyFor;
+        return $this->agentFor;
     }
 
     public function isVerified()
@@ -203,6 +204,6 @@ class ActorRole
         $builder->addField('verificationRequestedAt', 'datetime', [], 'verification_requested_at');
 
         // Relationships
-        $builder->addManyToOneField('proxyFor', Actor::class, 'proxy_for', 'item');
+        $builder->addManyToOneField('agentFor', Actor::class, 'proxy_for', 'item');
     }
 }

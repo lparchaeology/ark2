@@ -71,7 +71,7 @@ class ObjectType extends AbstractType implements DataMapperInterface
             $options['choices'] = $attribute->vocabulary()->terms();
             $options['multiple'] = $attribute->hasMultipleOccurrences();
         } else {
-            $class = $attribute->format()->datatype()->valueFormType();
+            $class = $attribute->format()->datatype()->activeFormType();
         }
         if ($attribute->format()->datatype()->id() == 'datetime') {
             $options['widget'] = 'single_text';

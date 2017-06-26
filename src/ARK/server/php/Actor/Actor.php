@@ -34,11 +34,7 @@ class Actor implements Item
     public function roles()
     {
         if ($this->roles === null) {
-            $ars = ORM::findBy(ActorRole::class, ['actor' => $this->id()]);
-            $this->roles = new ArrayCollection();
-            foreach ($ars as $ar) {
-                $this->roles[] = $ar->role();
-            }
+            $this->roles = ORM::findBy(ActorRole::class, ['actor' => $this->id()]);
         }
         return $this->roles;
     }
@@ -49,7 +45,7 @@ class Actor implements Item
             return true;
         }
         foreach ($this->roles() as $role) {
-            if ($role->hasPermission($permission)) {
+            if ($role->role()->hasPermission($permission)) {
                 return true;
             }
         }

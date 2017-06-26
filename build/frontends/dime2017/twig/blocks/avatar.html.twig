@@ -2,7 +2,7 @@
 
 {% if state.modus == 'active' %}
 
-    {{ form_row(form) }}
+    {{ form_row(form, {'state': state, 'help': help}) }}
 
 {% else %}
 

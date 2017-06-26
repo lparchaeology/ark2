@@ -30,20 +30,11 @@
 namespace ARK\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\DataMapperInterface;
-use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ActorChoiceType extends AbstractType implements DataMapperInterface, DataTransformerInterface
+class ActorChoiceType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->setDataMapper($this);
-        $builder->addModelTransformer($this);
-    }
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -57,22 +48,6 @@ class ActorChoiceType extends AbstractType implements DataMapperInterface, DataT
                 'style' => 'width: 100%'
             )
         ]);
-    }
-
-    public function mapDataToForms($property, $forms)
-    {
-    }
-
-    public function mapFormsToData($forms, &$property)
-    {
-    }
-
-    public function transform($value)
-    {
-    }
-
-    public function reverseTransform($value)
-    {
     }
 
     public function getParent()
