@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 26, 2017 at 11:30 AM
+-- Generation Time: Jun 26, 2017 at 07:45 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -159,7 +159,7 @@ INSERT INTO `ark_format` (`format`, `datatype`, `entity`, `value_name`, `active_
 ('decimal', 'decimal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.decimal'),
 ('description', 'object', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 0, 1, 1, 0, 'format.address'),
 ('dispatch', 'object', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 0, 1, 1, 0, 'format.recipient'),
-('distance', 'decimal', NULL, NULL, NULL, NULL, NULL, 'unit', 'distance', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.distance'),
+('distance', 'decimal', NULL, NULL, NULL, NULL, NULL, 'unit', 'distance', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, 'ARK\\Form\\Type\\UnitPropertyType', 0, 0, 0, 0, 1, 1, 1, 0, 'format.distance'),
 ('email', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.email'),
 ('event', 'item', 'ARK\\Workflow\\Event', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 0, 1, 1, 0, 'format.event'),
 ('file', 'item', 'ARK\\File\\File', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FileType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'format.file'),
@@ -171,7 +171,7 @@ INSERT INTO `ark_format` (`format`, `datatype`, `entity`, `value_name`, `active_
 ('item', 'item', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'format.item'),
 ('key', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.key'),
 ('markdown', 'text', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 1, 1, 1, 0, 'format.markdown'),
-('mass', 'decimal', NULL, NULL, NULL, NULL, NULL, 'unit', 'mass', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.mass'),
+('mass', 'decimal', NULL, NULL, NULL, NULL, NULL, 'unit', 'mass', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, 'ARK\\Form\\Type\\UnitPropertyType', 0, 0, 0, 0, 1, 1, 1, 0, 'format.mass'),
 ('message', 'item', 'ARK\\Message\\Message', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'core.actor.format'),
 ('module', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'format.module'),
 ('money', 'decimal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.money'),
@@ -5563,7 +5563,7 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `dis
 ('dime_find_finder_place', 'dime.find', 'find', 'finder_place', NULL, 'active', NULL, NULL, NULL, NULL, ''),
 ('dime_find_id', 'dime.find', 'find', 'id', NULL, 'readonly', NULL, NULL, NULL, NULL, ''),
 ('dime_find_images', 'dime.find', 'find', 'image', NULL, 'active', NULL, NULL, 'blocks/imagecollection.html.twig', NULL, ''),
-('dime_find_length', 'dime.find', 'find', 'length', NULL, 'active', 'hidden', NULL, NULL, NULL, ''),
+('dime_find_length', 'dime.find', 'find', 'length', NULL, 'active', 'active', NULL, NULL, NULL, ''),
 ('dime_find_location', 'dime.find', 'find', 'location', NULL, 'active', NULL, NULL, 'blocks/mappick.html.twig', 'DIME\\Form\\Type\\LocationPropertyType', ''),
 ('dime_find_material', 'dime.find', 'find', 'material', NULL, 'active', NULL, NULL, NULL, NULL, ''),
 ('dime_find_mint', 'dime.find', 'coin', 'mint', NULL, 'active', NULL, NULL, NULL, NULL, ''),
@@ -5578,7 +5578,7 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `dis
 ('dime_find_treasure', 'dime.find', 'find', 'treasure', NULL, 'static', NULL, NULL, NULL, NULL, ''),
 ('dime_find_type', 'dime.find', 'find', 'type', NULL, 'active', NULL, NULL, NULL, NULL, ''),
 ('dime_find_visibility', 'dime.find', 'find', 'visibility', NULL, 'active', NULL, NULL, NULL, NULL, ''),
-('dime_find_weight', 'dime.find', 'find', 'weight', NULL, 'active', 'hidden', NULL, NULL, NULL, ''),
+('dime_find_weight', 'dime.find', 'find', 'weight', NULL, 'active', 'active', NULL, NULL, NULL, ''),
 ('dime_user_terms', 'core.actor', 'person', 'terms', NULL, 'readonly', NULL, NULL, NULL, NULL, '');
 
 -- --------------------------------------------------------
@@ -5652,8 +5652,6 @@ INSERT INTO `ark_view_grid` (`grp`, `row`, `col`, `seq`, `item_type`, `element`,
 ('core_user_actor', 0, 0, 6, '', 'core_actor_initials', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_user_actor', 0, 0, 8, '', 'core_actor_address', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_user_actor', 0, 0, 10, '', 'core_actor_telephone', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_actor', 0, 0, 14, '', 'core_actor_visibility', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_actor', 0, 0, 16, '', 'core_actor_license', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_user_actor', 0, 0, 18, '', 'core_actor_biography', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_user_actor', 0, 0, 20, '', 'core_actor_avatar', NULL, NULL, NULL, NULL, 1, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_user_actor', 0, 0, 22, '', 'core_actor_museum', NULL, NULL, NULL, NULL, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.user.actor.museum', NULL, NULL),
@@ -5690,8 +5688,8 @@ INSERT INTO `ark_view_grid` (`grp`, `row`, `col`, `seq`, `item_type`, `element`,
 ('dime_find_artefact', 0, 0, 12, '', 'dime_find_material', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_artefact', 0, 0, 14, '', 'dime_find_secondary', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_artefact', 0, 0, 16, '', 'dime_find_condition', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_artefact', 0, 0, 18, '', 'dime_find_weight', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_artefact', 0, 0, 20, '', 'dime_find_length', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_artefact', 0, 0, 18, '', 'dime_find_weight', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_artefact', 0, 0, 20, '', 'dime_find_length', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_artefact', 0, 0, 22, '', 'dime_find_description', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_edit', 0, 0, 0, '', 'dime_find_event', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_edit', 0, 1, 0, '', 'dime_find_artefact', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -5788,7 +5786,7 @@ INSERT INTO `ark_view_grid` (`grp`, `row`, `col`, `seq`, `item_type`, `element`,
 ('dime_user_actor', 0, 0, 14, '', 'core_actor_visibility', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_user_actor', 0, 0, 16, '', 'core_actor_license', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_user_actor', 0, 0, 18, '', 'core_actor_biography', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_user_actor', 0, 0, 22, '', 'core_actor_museum', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_user_actor', 0, 0, 22, '', 'core_actor_museum', NULL, NULL, NULL, NULL, 1, 1, 1, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_user_actor', 0, 0, 24, '', 'core_widget_submit', 'save', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL),
 ('dime_user_actor', 0, 1, 2, '', 'core_actor_avatar', NULL, 4, NULL, NULL, 0, NULL, NULL, 0, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_user_profile', 0, 0, 0, '', 'dime_home_action', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -7762,7 +7760,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 ('dime.user.terms', 'v1', '', 1, 0, 1, 0, 'dime.user.terms.v1', ''),
 ('distance', 'km', 'kilometre', 0, 0, 1, 0, 'length.kilometre', ''),
 ('distance', 'm', 'metre', 0, 0, 1, 0, 'length.metre', ''),
-('distance', 'mm', 'millimetre', 0, 0, 1, 0, 'length.millimetre', ''),
+('distance', 'mm', 'millimetre', 1, 0, 1, 0, 'length.millimetre', ''),
 ('distance', 'nm', 'nanometre', 0, 0, 1, 0, 'length.nanometre', ''),
 ('distance', 'µm', 'nanometre', 0, 0, 1, 0, 'length.micrometre', ''),
 ('language', 'aa', 'afar', 0, 0, 1, 0, 'language.afar', ''),
@@ -8377,7 +8375,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 ('language', 'zun', 'zuni', 0, 0, 1, 0, 'language.zuni', ''),
 ('language', 'zxx', 'none', 0, 0, 1, 0, 'language.none', ''),
 ('language', 'zza', 'zaza', 0, 0, 1, 0, 'language.zaza', ''),
-('mass', 'g', 'gram', 0, 0, 1, 0, 'mass.gram', ''),
+('mass', 'g', 'gram', 1, 0, 1, 0, 'mass.gram', ''),
 ('mass', 'kg', 'kilogram', 0, 0, 1, 0, 'mass.kilogram', ''),
 ('mass', 'mg', 'milligram', 0, 0, 1, 0, 'mass.milligram', ''),
 ('mass', 't', 'tonne', 0, 0, 1, 0, 'mass.tonne', ''),
@@ -8479,7 +8477,7 @@ INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event
 ('dime.find', 'notify', 'core.event.type', 'notified', NULL, 0, 0, 0, 0, 1, 'dime.action.notify'),
 ('dime.find', 'publish', 'core.event.type', 'published', NULL, 0, 0, 0, 0, 1, 'dime.action.publish'),
 ('dime.find', 'receive', 'core.event.type', 'received', NULL, 0, 0, 0, 0, 1, 'dime.action.receive'),
-('dime.find', 'record', 'core.event.type', 'recorded', 'recorder', 1, 1, 1, 0, 1, 'dime.action.record'),
+('dime.find', 'record', 'core.event.type', 'recorded', 'recorder', 1, 1, 1, 1, 1, 'dime.action.record'),
 ('dime.find', 'recover', 'core.event.type', 'recovered', NULL, 0, 0, 0, 0, 1, 'dime.action.recover'),
 ('dime.find', 'redact', 'core.event.type', 'redacted', NULL, 0, 0, 0, 0, 1, 'dime.action.redact'),
 ('dime.find', 'refer', 'core.event.type', 'referred', NULL, 0, 0, 0, 0, 1, 'dime.action.refer'),
@@ -8595,7 +8593,7 @@ INSERT INTO `ark_workflow_allow` (`schma`, `action`, `role`, `operator`) VALUES
 ('dime.find', 'edit', 'detectorist', 'is'),
 ('dime.find', 'edit', 'registrar', 'is'),
 ('dime.find', 'edit', 'researcher', 'is'),
-('dime.find', 'record', 'detectorist', 'is'),
+('dime.find', 'record', 'anonymous', 'not'),
 ('dime.find', 'reject', 'registrar', 'is'),
 ('dime.find', 'release', 'appraiser', 'is'),
 ('dime.find', 'release', 'registrar', 'is'),
@@ -8966,6 +8964,8 @@ CREATE TABLE `ark_workflow_update` (
 --
 
 INSERT INTO `ark_workflow_update` (`schma`, `action`, `type`, `attribute`, `actor`, `subject`, `clear`, `term`) VALUES
+('core.actor', 'register', 'actor', 'license', NULL, NULL, NULL, 'ccbysa'),
+('core.actor', 'register', 'actor', 'privacy', NULL, NULL, NULL, 'public'),
 ('dime.find', 'delete', 'find', 'custody', NULL, NULL, NULL, 'sent'),
 ('dime.find', 'delete', 'find', 'process', NULL, NULL, NULL, 'deleted'),
 ('dime.find', 'receive', 'find', 'custodian', 1, NULL, NULL, NULL),

@@ -64,18 +64,13 @@ col-xs-12 col-sm-4
     {% endspaceless %}
 {%- endblock static_widget %}
 
-{% block measurement_widget -%}
+{% block unit_widget -%}
     <div class="input-group">
-        {{- form_widget(form['measurement']) -}}
-        <div class="input-group-btn">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Units <span class="caret"></span></button>
-            <ul class="dropdown-menu dropdown-menu-right">
-                <li "value" = "g">Grams</li>
-                <li "value" = "kg">Kilgrams</li>
-            </ul>
-         </div>
+        {{- form_widget(form['value']) -}}
+        <div class="input-group-addon"> {{- form['unit'].vars['data'] -}} </div>
     </div>
-{%- endblock measurement_widget %}
+    {% do form.setRendered %}
+{%- endblock unit_widget %}
 
 {% block checkbox_widget %}
     {% spaceless %}
