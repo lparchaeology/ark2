@@ -302,7 +302,11 @@ class Field extends Element
             if ($choices) {
                 $options['choices'] = $choices;
                 if ($state['placeholder']) {
-                    $options['placeholder'] = $state['select']['placeholder'];
+                    if (isset($state['select']['placeholder'])) {
+                        $options['placeholder'] = $state['select']['placeholder'];
+                    } else {
+                        $options['placeholder'] = '';
+                    }
                 }
             }
         }

@@ -118,8 +118,11 @@ abstract class AbstractWidget extends Element
             $options = $this->vocabularyOptions($state['vocabulary'], $options);
         }
 
-        if ($this->choices) {
+        if ($state['choices'] && $state['value']['modus'] == 'active') {
             $options['choices'] = $data;
+            if ($state['placeholder']) {
+                $options['placeholder'] = $state['select']['placeholder'];
+            }
         }
 
         unset($options['state']);

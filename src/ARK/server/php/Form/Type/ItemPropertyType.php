@@ -50,6 +50,8 @@ class ItemPropertyType extends AbstractPropertyType
         $format = $field->attribute()->format();
         if (isset($options['state']['value']['display'])) {
             $builder->add($options['state']['value']['display'], $options['state']['value']['type'], $options['state']['value']['options']);
+            unset($options['state']['value']['options']['choices']);
+            unset($options['state']['value']['options']['placeholder']);
             $builder->add($format->valueName(), HiddenType::class, $options['state']['value']['options']);
         } else {
             $builder->add($format->valueName(), $options['state']['value']['type'], $options['state']['value']['options']);
