@@ -36,7 +36,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ActorChoiceType extends AbstractType implements DataMapperInterface, DataTransformerInterface
+class ActorWidgetType extends AbstractType implements DataMapperInterface, DataTransformerInterface
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
