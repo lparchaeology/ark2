@@ -1101,6 +1101,29 @@ class Database
             $tre = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
             $res = ($res ? array_intersect($res, $tre) : $tre);
         }
+
+        $pre = "
+            SELECT item
+            FROM ark_fragment_item
+            WHERE module = 'find'
+        ";
+        if (isset($query['museum'])) {
+            $sql = $pre . "AND attribute = 'museum' AND parameter = 'actor' AND value IN (?)";
+            $params = [
+                $query['museum']
+            ];
+            $mus = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
+            $res = ($res ? array_intersect($res, $mus) : $mus);
+        }
+        if (isset($query['finder'])) {
+            $sql = $pre . "AND attribute = 'finder' AND parameter = 'actor' AND value IN (?)";
+            $params = [
+                $query['finder']
+            ];
+            $fin = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
+            $res = ($res ? array_intersect($res, $mus) : $fin);
+        }
+
         return $res;
     }
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 27, 2017 at 09:14 AM
+-- Generation Time: Jun 27, 2017 at 06:17 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -5391,7 +5391,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `enabled`, `deprecated`, `key
 ('core_user_password_set', 'grid', 1, 0, 'core.user.password.set'),
 ('core_user_reset', 'grid', 1, 0, NULL),
 ('core_widget_actions', 'action', 1, 0, NULL),
-('core_widget_actors', 'actor', 1, 0, NULL),
+('core_widget_actor', 'widget', 1, 0, NULL),
 ('core_widget_button', 'widget', 1, 0, NULL),
 ('core_widget_checkbox', 'widget', 1, 0, NULL),
 ('core_widget_choice', 'widget', 1, 0, NULL),
@@ -5494,6 +5494,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `enabled`, `deprecated`, `key
 ('dime_user_register', 'grid', 1, 0, NULL),
 ('dime_user_role', 'grid', 1, 0, NULL),
 ('dime_user_terms', 'field', 1, 0, NULL),
+('dime_widget_actors', 'actor', 1, 0, NULL),
 ('dime_widget_classify', 'widget', 1, 0, 'dime.find.classify'),
 ('dime_widget_role', 'widget', 1, 0, 'core.workflow.role'),
 ('dime_widget_terms', 'widget', 1, 0, NULL),
@@ -5670,7 +5671,7 @@ INSERT INTO `ark_view_grid` (`grp`, `row`, `col`, `seq`, `item_type`, `element`,
 ('core_user_reset', 0, 0, 0, '', 'core_widget_username', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_user_reset', 0, 0, 4, '', 'core_widget_submit', 'reset', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.user.reset', NULL, NULL),
 ('core_workflow_process', 0, 0, 0, '', 'core_widget_actions', 'actions', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_workflow_process', 0, 0, 2, '', 'core_widget_actors', 'actors', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_workflow_process', 0, 0, 2, '', 'dime_widget_actors', 'actors', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_workflow_process', 0, 0, 4, '', 'core_widget_submit', 'apply', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL),
 ('dime_admin_user_page', 0, 0, 0, '', 'dime_profile_list', 'actors', NULL, NULL, NULL, 1, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_admin_user_page', 0, 1, 0, '', 'dime_user_actor', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -5700,11 +5701,11 @@ INSERT INTO `ark_view_grid` (`grp`, `row`, `col`, `seq`, `item_type`, `element`,
 ('dime_find_event', 0, 0, 6, '', 'dime_find_finddate', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_filter', 0, 0, 0, '', 'core_widget_choice', 'municipality', NULL, NULL, 'dime.denmark.municipality', 1, NULL, NULL, 0, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
 ('dime_find_filter', 0, 2, 0, '', 'core_widget_choice', 'type', NULL, NULL, 'dime.find.type', 1, NULL, NULL, 0, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
-('dime_find_filter', 0, 4, 0, '', 'core_widget_choice', 'period', NULL, NULL, 'dime.period', 1, NULL, NULL, 0, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}'),
+('dime_find_filter', 0, 4, 0, '', 'core_widget_choice', 'period', NULL, NULL, 'dime.period', 1, 1, NULL, 0, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}'),
 ('dime_find_filter', 0, 6, 0, '', 'core_widget_choice', 'material', NULL, NULL, 'dime.material', 1, NULL, NULL, 0, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
 ('dime_find_filter', 0, 8, 0, '', 'core_widget_submit', 'search', NULL, NULL, NULL, 1, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_filter', 1, 0, 0, '', 'core_widget_choice', 'museum', NULL, NULL, NULL, 1, NULL, NULL, 0, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
-('dime_find_filter', 1, 2, 0, '', 'core_widget_choice', 'finder', NULL, NULL, NULL, 1, NULL, NULL, 0, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
+('dime_find_filter', 1, 0, 0, '', 'core_widget_actor', 'museum', NULL, NULL, NULL, 1, 1, 1, 0, NULL, 'redact', 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
+('dime_find_filter', 1, 2, 0, '', 'core_widget_actor', 'finder', NULL, NULL, NULL, 1, 1, 1, 0, NULL, 'redact', 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
 ('dime_find_filter', 1, 4, 0, '', 'core_widget_choice', 'status', NULL, NULL, 'dime.find.process', 1, NULL, NULL, 0, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
 ('dime_find_filter', 1, 6, 0, '', 'core_widget_choice', 'treasure', NULL, NULL, 'dime.treasure', 1, NULL, NULL, 0, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
 ('dime_find_geo', 0, 0, 0, '', 'dime_find_location', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.find.coordinates', NULL, NULL),
@@ -6042,7 +6043,7 @@ INSERT INTO `ark_view_widget` (`element`, `name`, `choices`, `template`, `form_t
 ('core_user_email_confirm', 'email', NULL, NULL, 'ARK\\Form\\Type\\RepeatedEmailType', ''),
 ('core_user_password_confirm', 'password', NULL, NULL, 'ARK\\Form\\Type\\RepeatedPasswordType', ''),
 ('core_widget_actions', 'actions', 'actions', NULL, 'ARK\\Form\\Type\\ActionChoiceType', ''),
-('core_widget_actors', 'actors', 'actors', NULL, 'ARK\\Form\\Type\\ActorWidgetType', ''),
+('core_widget_actor', 'actor', 'actors', NULL, 'ARK\\Form\\Type\\ActorChoiceType', ''),
 ('core_widget_button', 'button', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', ''),
 ('core_widget_checkbox', 'checkbox', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', ''),
 ('core_widget_choice', 'choice', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', ''),
@@ -6052,6 +6053,7 @@ INSERT INTO `ark_view_widget` (`element`, `name`, `choices`, `template`, `form_t
 ('core_widget_terms', 'terms', NULL, NULL, 'ARK\\Form\\Type\\TermChoiceType', ''),
 ('core_widget_textarea', 'textarea', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', ''),
 ('core_widget_username', '_username', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', ''),
+('dime_widget_actors', 'actors', 'actors', NULL, 'ARK\\Form\\Type\\ActorWidgetType', ''),
 ('dime_widget_classify', 'classify', NULL, 'blocks/classification.html.twig', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', '');
 
 -- --------------------------------------------------------

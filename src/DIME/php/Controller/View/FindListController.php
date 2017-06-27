@@ -30,6 +30,8 @@
 
 namespace DIME\Controller\View;
 
+use ARK\Actor\Museum;
+use ARK\Actor\Person;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Page;
@@ -49,6 +51,16 @@ class FindListController extends DimeFormController
     {
         $request->attributes->set('page', 'dime_page_find_list');
         return $this->handleRequest($request);
+    }
+
+    public function buildState(Request $request)
+    {
+        $state = parent::buildState($request);
+        $state['options']['museum']['choices'] = ORM::findAll(Museum::class);
+        $state['options']['museum']['placeholder'] = '';
+        $state['options']['finder']['choices'] = ORM::findAll(Person::class);
+        $state['options']['finder']['placeholder'] = '';
+        return $state;
     }
 
     public function buildData(Request $request)
@@ -93,6 +105,20 @@ class FindListController extends DimeFormController
         }
 
         if (Service::workflow()->actor()->hasPermission('dime.find.filter.museum')) {
+            if (isset($query['museum'])) {
+                $museums = ORM::findBy(Museum::class, [
+                    'item' => $query['museum']
+                ]);
+                $data['filters']['museum'] = $museums->toArray();
+            }
+
+            if (isset($query['finder'])) {
+                $finders = ORM::findBy(Person::class, [
+                    'item' => $query['finder']
+                ]);
+                $data['filters']['finder'] = $finders->toArray();
+            }
+
             if (isset($query['status'])) {
                 $statuses = ORM::findBy(Term::class, [
                     'concept' => 'dime.find.process',
@@ -152,6 +178,8 @@ class FindListController extends DimeFormController
         $period = $form['period']->getData();
         $materials = $form['material']->getData();
         if (Service::workflow()->actor()->hasPermission('dime.find.filter.museum')) {
+            $museums = $form['museum']->getData();
+            $finders = $form['finder']->getData();
             $statuses = $form['status']->getData();
             $treasures = $form['treasure']->getData();
         }
@@ -175,6 +203,16 @@ class FindListController extends DimeFormController
             }
         }
         if (Service::workflow()->actor()->hasPermission('dime.find.filter.museum')) {
+            if ($museums) {
+                foreach ($museums as $museum) {
+                    $query['museum'][] = $museum->id();
+                }
+            }
+            if ($finders) {
+                foreach ($finders as $finder) {
+                    $query['finder'][] = $finder->id();
+                }
+            }
             if ($statuses) {
                 foreach ($statuses as $status) {
                     $query['status'][] = $status->name();
