@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 27, 2017 at 06:17 PM
+-- Generation Time: Jun 27, 2017 at 07:28 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -5701,7 +5701,7 @@ INSERT INTO `ark_view_grid` (`grp`, `row`, `col`, `seq`, `item_type`, `element`,
 ('dime_find_event', 0, 0, 6, '', 'dime_find_finddate', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_filter', 0, 0, 0, '', 'core_widget_choice', 'municipality', NULL, NULL, 'dime.denmark.municipality', 1, NULL, NULL, 0, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
 ('dime_find_filter', 0, 2, 0, '', 'core_widget_choice', 'type', NULL, NULL, 'dime.find.type', 1, NULL, NULL, 0, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
-('dime_find_filter', 0, 4, 0, '', 'core_widget_choice', 'period', NULL, NULL, 'dime.period', 1, 1, NULL, 0, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}'),
+('dime_find_filter', 0, 4, 0, '', 'core_widget_choice', 'period', NULL, NULL, 'dime.period', 1, NULL, NULL, 0, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}'),
 ('dime_find_filter', 0, 6, 0, '', 'core_widget_choice', 'material', NULL, NULL, 'dime.material', 1, NULL, NULL, 0, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
 ('dime_find_filter', 0, 8, 0, '', 'core_widget_submit', 'search', NULL, NULL, NULL, 1, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_filter', 1, 0, 0, '', 'core_widget_actor', 'museum', NULL, NULL, NULL, 1, 1, 1, 0, NULL, 'redact', 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),

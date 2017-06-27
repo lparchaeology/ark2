@@ -116,6 +116,9 @@ abstract class AbstractWidget extends Element
 
         if ($state['vocabulary']) {
             $options = $this->vocabularyOptions($state['vocabulary'], $options);
+            if (!$state['placeholder']) {
+                $options['placeholder'] = ($state['required'] ? null : ' - ');
+            }
         }
 
         if ($state['choices'] && $state['value']['modus'] == 'active') {
