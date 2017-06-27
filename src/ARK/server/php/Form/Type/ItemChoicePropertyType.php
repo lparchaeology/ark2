@@ -32,7 +32,9 @@ namespace ARK\Form\Type;
 
 use ARK\Form\Type\AbstractPropertyType;
 use ARK\Model\Item;
+use ARK\Model\LocalText;
 use ARK\Model\Property;
+use ARK\Vocabulary\Term;
 use ARK\ORM\ORM;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -51,7 +53,27 @@ class ItemChoicePropertyType extends AbstractPropertyType
             return;
         }
         $forms = iterator_to_array($forms);
-        $forms['item']->setData($property->value());
+        $item = $property->value();
+        if ($item instanceof Item) {
+            $options = $forms['item']->getParent()->getConfig()->getOptions();
+            if ($options['state']['value']['modus'] == 'static') {
+                if (isset($options['state']['value']['display'])) {
+                    $value = $item->property($options['state']['value']['display'])->value();
+                    if ($value instanceof Term) {
+                        $name = $value->keyword();
+                    } elseif ($value instanceof LocalText) {
+                        $name = $value->content();
+                    } else {
+                        $name = $value;
+                    }
+                } else {
+                    $name = $item->property('id')->value();
+                }
+                $forms['item']->setData($name);
+            } else {
+                $forms['item']->setData($item);
+            }
+        }
     }
 
     public function mapFormsToData($forms, &$property)
@@ -61,8 +83,6 @@ class ItemChoicePropertyType extends AbstractPropertyType
         }
         $forms = iterator_to_array($forms);
         $value = $forms['item']->getData();
-        dump($forms);
-        dump($value);
         if (is_string($value)) {
             $class = $property->attribute()->format()->entity();
             dump($class);
