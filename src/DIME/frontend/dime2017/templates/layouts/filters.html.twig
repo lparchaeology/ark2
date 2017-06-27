@@ -1,45 +1,31 @@
 {{ form_start(form) }}
 
-    <div class="row">
-
-        <label class="col-sm-1 control-label">
-            <br/>
-            {{ 'dime.find.filters' | translate }}
-        </label>
-
-        <div class="col-sm-10">
-            <div class="col-sm-3">
-                {{- form_label(form.municipality) -}}<br/>
-                {{- form_widget(form.municipality) -}}
-            </div>
-            <div class="col-sm-3">
-                {{- form_label(form.type) -}}<br/>
-                {{- form_widget(form.type) -}}
-            </div>
-            <div class="col-sm-3">
-                {{- form_label(form.period) -}}<br/>
-                {{- form_widget(form.period) -}}
-            </div>
-            <div class="col-sm-3">
-                {{- form_label(form.material) -}}<br/>
-                {{- form_widget(form.material) -}}
-            </div>
-        </div>
+    <div class="row filters">
 
         <div class="col-sm-1">
             <br/>
-            {{- form_widget(form.search) -}}
-            {% do form.search.setRendered %}
+            {{ 'dime.find.filters' | translate }}
         </div>
-
-    </div>
-
-    {% if workflow.actor.hasPermission('dime.find.filter.museum') %}
-        <div class="row">
-
-            <div class="col-sm-1"><br/></div>
-
-            <div class="col-sm-10">
+        <div class="col-sm-10">
+            <div class = "row">
+                <div class="col-sm-3">
+                    {{- form_label(form.municipality) -}}<br/>
+                    {{- form_widget(form.municipality) -}}
+                </div>
+                <div class="col-sm-3">
+                    {{- form_label(form.type) -}}<br/>
+                    {{- form_widget(form.type) -}}
+                </div>
+                <div class="col-sm-3">
+                    {{- form_label(form.period) -}}<br/>
+                    {{- form_widget(form.period) -}}
+                </div>
+                <div class="col-sm-3">
+                    {{- form_label(form.material) -}}<br/>
+                    {{- form_widget(form.material) -}}
+                </div>
+            </div>
+            <div class = "row">
                 <div class="col-sm-3">
                     {{- form_label(form.museum) -}}<br/>
                     {{- form_widget(form.museum) -}}
@@ -57,15 +43,16 @@
                     {{- form_widget(form.treasure) -}}
                 </div>
             </div>
-
-            <div class="col-sm-1"><br/></div>
-
         </div>
-    {% else %}
-        {% do form.museum.setRendered %}
-        {% do form.finder.setRendered %}
-        {% do form.status.setRendered %}
-        {% do form.treasure.setRendered %}
-    {% endif %}
+
+        <div class="col-sm-1">
+            <br/>
+            {{- form_widget(form.search) -}}
+            {% do form.search.setRendered %}
+        </div>
+
+    </div>
+
+
 
 {{ form_end(form) }}

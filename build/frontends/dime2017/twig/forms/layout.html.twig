@@ -28,7 +28,7 @@ col-xs-12 col-sm-4
 {% block form_widget -%}
     {{ parent() }}
     {% if help is defined and help is not null and state.modus is defined and state.modus == 'active' %}
-        <span class="help" title="{{ help | translate }}" data-toggle="tooltip" data-placement="right" >
+        <span class="help" title="{{ help | translate }}" data-toggle="tooltip" data-placement="bottom" >
             <span class="glyphicon glyphicon-question-sign">
             </span>
         </span>

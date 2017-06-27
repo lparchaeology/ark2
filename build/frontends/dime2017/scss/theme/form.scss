@@ -37,6 +37,9 @@
     line-height: 1em;
     padding:2px 10px;
     overflow:hidden;
+    word-wrap: break-word;
+    text-overflow: inherit;
+    white-space: normal;
 }
 
 .form-group input[type="password"],
@@ -54,6 +57,16 @@
     border: 1px solid black;
     border-radius: 10px;
 }
+.input-group-addon:last-child {
+    padding: 0 10px 0 5px;
+    height: 5px;
+    border: 1px solid black;
+    border-left: none;
+    line-height: 5px;
+    border-radius: 10px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
 
 .form-group .kv-fileinput-caption {
     border: 1px solid black;
@@ -62,6 +75,15 @@
     border-radius: 0;
 }
 
+.form-group-widget span.help{
+    margin: -20px;
+    position: absolute;
+    width: 20px;
+}
+
+.filters label {
+    text-align:left;
+}
 @media (max-width: $break-small){
     .form-group input[type="email"],
     .form-group input[type="password"],
