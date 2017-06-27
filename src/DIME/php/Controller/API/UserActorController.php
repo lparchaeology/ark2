@@ -81,7 +81,6 @@ class UserActorController extends FormController
         }
         if ($submitted == 'actor') {
             $actor = $form->getData();
-            dump($actor);
             ORM::persist($actor);
             ORM::flush($actor);
             $request->attributes->set('flash', 'success');

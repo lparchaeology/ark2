@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 27, 2017 at 07:28 PM
+-- Generation Time: Jun 27, 2017 at 09:59 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -147,7 +147,7 @@ CREATE TABLE `ark_format` (
 --
 
 INSERT INTO `ark_format` (`format`, `datatype`, `entity`, `value_name`, `active_form_class`, `readonly_form_class`, `static_form_class`, `parameter_name`, `parameter_vocabulary`, `parameter_form_class`, `format_name`, `format_vocabulary`, `format_form_class`, `form_type_class`, `object`, `array`, `span`, `multiple`, `sortable`, `searchable`, `enabled`, `deprecated`, `keyword`) VALUES
-('actor', 'item', 'ARK\\Actor\\Actor', NULL, 'ARK\\Form\\Type\\ActorChoiceType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'core.actor'),
+('actor', 'item', 'ARK\\Actor\\Actor', NULL, 'ARK\\Form\\Type\\ActorChoiceType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ARK\\Form\\Type\\ItemChoicePropertyType', 0, 0, 0, 0, 0, 0, 1, 0, 'core.actor'),
 ('address', 'object', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 0, 1, 1, 0, 'format.address'),
 ('blob', 'blob', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'format.blob'),
 ('boolean', 'boolean', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.boolean'),
@@ -175,11 +175,11 @@ INSERT INTO `ark_format` (`format`, `datatype`, `entity`, `value_name`, `active_
 ('message', 'item', 'ARK\\Message\\Message', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'core.actor.format'),
 ('module', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'format.module'),
 ('money', 'decimal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.money'),
-('museum', 'item', 'ARK\\Actor\\Museum', NULL, 'ARK\\Form\\Type\\ActorChoiceType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'core.actor.type.museum'),
+('museum', 'item', 'ARK\\Actor\\Museum', NULL, 'ARK\\Form\\Type\\ActorChoiceType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ARK\\Form\\Type\\ItemChoicePropertyType', 0, 0, 0, 0, 0, 0, 1, 0, 'core.actor.type.museum'),
 ('ordinaldate', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.ordinaldate'),
 ('password', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.password'),
 ('percent', 'float', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.percent'),
-('person', 'item', 'ARK\\Actor\\Person', NULL, 'ARK\\Form\\Type\\ActorChoiceType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'core.actor.type.person'),
+('person', 'item', 'ARK\\Actor\\Person', NULL, 'ARK\\Form\\Type\\ActorChoiceType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ARK\\Form\\Type\\ItemChoicePropertyType', 0, 0, 0, 0, 0, 0, 1, 0, 'core.actor.type.person'),
 ('plaintext', 'text', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 1, 1, 1, 0, 'format.localtext'),
 ('richtext', 'text', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 1, 1, 1, 0, 'format.richtext'),
 ('shorttext', 'text', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 1, 1, 1, 0, 'format.shortlocaltext'),
@@ -5401,6 +5401,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `enabled`, `deprecated`, `key
 ('core_widget_terms', 'widget', 1, 0, NULL),
 ('core_widget_textarea', 'widget', 1, 0, NULL),
 ('core_widget_username', 'widget', 1, 0, 'core.user.username'),
+('core_workflow_action', 'grid', 1, 0, 'core.workflow.action'),
 ('core_workflow_process', 'grid', 1, 0, 'core.workflow.action'),
 ('dime_admin_page', 'grid', 1, 0, NULL),
 ('dime_admin_user_page', 'grid', 1, 0, NULL),
@@ -5670,13 +5671,15 @@ INSERT INTO `ark_view_grid` (`grp`, `row`, `col`, `seq`, `item_type`, `element`,
 ('core_user_password_set', 0, 0, 2, '', 'core_widget_submit', 'save', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL),
 ('core_user_reset', 0, 0, 0, '', 'core_widget_username', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_user_reset', 0, 0, 4, '', 'core_widget_submit', 'reset', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.user.reset', NULL, NULL),
+('core_workflow_action', 0, 0, 0, '', 'core_widget_actions', 'actions', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_workflow_action', 0, 0, 4, '', 'core_widget_submit', 'apply', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL),
 ('core_workflow_process', 0, 0, 0, '', 'core_widget_actions', 'actions', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_workflow_process', 0, 0, 2, '', 'dime_widget_actors', 'actors', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_workflow_process', 0, 0, 4, '', 'core_widget_submit', 'apply', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL),
 ('dime_admin_user_page', 0, 0, 0, '', 'dime_profile_list', 'actors', NULL, NULL, NULL, 1, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_admin_user_page', 0, 1, 0, '', 'dime_user_actor', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_admin_user_page', 0, 1, 2, '', 'core_user_password_set', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_admin_user_page', 0, 1, 4, '', 'core_action_select', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_admin_user_page', 0, 1, 4, '', 'core_workflow_action', NULL, NULL, NULL, NULL, 1, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_add', 0, 0, 2, '', 'dime_find_event', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_add', 0, 0, 4, '', 'dime_find_geo', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_add', 0, 0, 6, '', 'dime_find_photo', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -5841,6 +5844,7 @@ INSERT INTO `ark_view_group` (`element`, `layout`, `mode`, `form`, `name`, `meth
 ('core_user_password_change', 'grid', NULL, 1, 'password_change', NULL, NULL, NULL),
 ('core_user_password_set', 'grid', NULL, 1, 'password_set', NULL, NULL, NULL),
 ('core_user_reset', 'grid', NULL, 1, NULL, NULL, NULL, 'user/reset.html.twig'),
+('core_workflow_action', 'grid', NULL, 1, 'action', NULL, NULL, NULL),
 ('core_workflow_process', 'grid', NULL, 0, NULL, NULL, NULL, NULL),
 ('dime_admin_page', 'grid', NULL, 0, NULL, NULL, NULL, NULL),
 ('dime_admin_user_page', 'grid', NULL, 0, NULL, NULL, NULL, NULL),

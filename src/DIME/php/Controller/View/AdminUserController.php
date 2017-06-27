@@ -57,14 +57,17 @@ class AdminUserController extends DimeFormController
         $data['actor'] = null;
         $data['user'] = null;
         $actor = Service::workflow()->actor();
-        $data['actions'] = Service::workflow()->actions($actor, $actor);
+        $data['action'] = Service::workflow()->actions($actor, $actor);
         return $data;
     }
 
     public function buildWorkflow(Request $request, $data, array $state)
     {
+        $actor = $state['actor'];
         $workflow['mode'] = 'edit';
-        $workflow['actor'] = $state['actor'];
+        $workflow['actor'] = $actor;
+        $workflow['actions'] = Service::workflow()->updateActions($actor, $actor);
+        $workflow['actors'] =  Service::workflow()->actors($actor, $actor);
         return $workflow;
     }
 }

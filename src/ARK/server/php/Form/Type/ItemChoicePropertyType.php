@@ -30,42 +30,44 @@
 
 namespace ARK\Form\Type;
 
-use ARK\Form\Type\ScalarPropertyType;
+use ARK\Form\Type\AbstractPropertyType;
+use ARK\Model\Item;
 use ARK\Model\Property;
+use ARK\ORM\ORM;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
-class ItemChoicePropertyType extends ScalarPropertyType
+class ItemChoicePropertyType extends AbstractPropertyType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->add('item', $options['state']['value']['type'], $options['state']['value']['options']);
         $builder->setDataMapper($this);
     }
 
-    public function mapDataToForms($data, $forms)
-    {
-        if (!$property instanceof Property) {
-            return;
-        }
-        $value = $this->value($property, $forms);
-        $forms = iterator_to_array($forms);
-    }
-
-    public function mapFormsToData($forms, &$data)
+    public function mapDataToForms($property, $forms)
     {
         if (!$property instanceof Property) {
             return;
         }
         $forms = iterator_to_array($forms);
+        $forms['item']->setData($property->value());
     }
 
-    public function getBlockPrefix()
+    public function mapFormsToData($forms, &$property)
     {
-        return null;
-    }
-
-    public function getParent()
-    {
-        return ScalarPropertyType::class;
+        if (!$property instanceof Property) {
+            return;
+        }
+        $forms = iterator_to_array($forms);
+        $value = $forms['item']->getData();
+        dump($forms);
+        dump($value);
+        if (is_string($value)) {
+            $class = $property->attribute()->format()->entity();
+            dump($class);
+            $value = ORM::find($class, $value);
+        }
+        $property->setValue($value);
     }
 }

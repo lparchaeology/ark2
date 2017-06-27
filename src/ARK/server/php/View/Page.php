@@ -173,6 +173,7 @@ class Page extends Element
             throw new AccessDeniedException('core.error.access.denied');
         }
         $options = $this->buildOptions($data, $state, []);
+        //dump($options);
         $forms = $this->content->buildForms($data, $state, $options);
         //dump($forms);
         if ($forms && $request->getMethod() == 'POST') {
