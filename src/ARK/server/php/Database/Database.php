@@ -1121,7 +1121,7 @@ class Database
                 $query['finder']
             ];
             $fin = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
-            $res = ($res ? array_intersect($res, $mus) : $fin);
+            $res = ($res ? array_intersect($res, $fin) : $fin);
         }
 
         return $res;
