@@ -72,11 +72,16 @@ class FindListController extends DimeFormController
         }
 
         if (isset($query['period'])) {
-            $periods = ORM::findBy(Term::class, [
+            $period = ORM::findOneBy(Term::class, [
                 'concept' => 'dime.period',
                 'term' => $query['period']
             ]);
-            $data['filters']['period'] = $periods->toArray();
+            $data['filters']['period'] = $period;
+            $periods[] = $period->name();
+            foreach ($period->descendents() as $descendent) {
+                $periods[] = $descendent->name();
+            }
+            $query['period'] = $periods;
         }
 
         if (isset($query['material'])) {
@@ -85,6 +90,22 @@ class FindListController extends DimeFormController
                 'term' => $query['material']
             ]);
             $data['filters']['material'] = $materials->toArray();
+        }
+
+        if (isset($query['status'])) {
+            $statuses = ORM::findBy(Term::class, [
+                'concept' => 'dime.find.process',
+                'term' => $query['status']
+            ]);
+            $data['filters']['status'] = $statuses->toArray();
+        }
+
+        if (isset($query['treasure'])) {
+            $treasures = ORM::findBy(Term::class, [
+                'concept' => 'dime.treasure',
+                'term' => $query['treasure']
+            ]);
+            $data['filters']['treasure'] = $treasures->toArray();
         }
 
         if ($query) {
@@ -126,8 +147,10 @@ class FindListController extends DimeFormController
     {
         $municipalities = $form['municipality']->getData();
         $types = $form['type']->getData();
-        $periods = $form['period']->getData();
+        $period = $form['period']->getData();
         $materials = $form['material']->getData();
+        $statuses = $form['status']->getData();
+        $treasures = $form['treasure']->getData();
         $query = [];
         if ($municipalities) {
             foreach ($municipalities as $municipality) {
@@ -139,14 +162,22 @@ class FindListController extends DimeFormController
                 $query['type'][] = $type->name();
             }
         }
-        if ($periods) {
-            foreach ($periods as $period) {
-                $query['period'][] = $period->name();
-            }
+        if ($period) {
+            $query['period'] = $period->name();
         }
         if ($materials) {
             foreach ($materials as $material) {
                 $query['material'][] = $material->name();
+            }
+        }
+        if ($statuses) {
+            foreach ($statuses as $status) {
+                $query['status'][] = $status->name();
+            }
+        }
+        if ($treasures) {
+            foreach ($treasures as $treasure) {
+                $query['treasure'][] = $treasure->name();
             }
         }
         $request->attributes->set('parameters', $query);

@@ -34,6 +34,7 @@ use ARK\Model\EnabledTrait;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Term
 {
@@ -92,8 +93,8 @@ class Term
 
     public function descendents()
     {
-        if (!$this->descendents) {
-            $this->descendents = [];
+        if ($this->descendents === null) {
+            $this->descendents = new ArrayCollection();
             foreach ($this->related as $relation) {
                 if ($relation->fromTerm()->name() != $relation->toTerm()->name() && $relation->type() == 'broader') {
                     $this->descendents[] = $relation->toTerm();

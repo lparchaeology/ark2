@@ -1069,7 +1069,14 @@ class Database
             $typ = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
             $res = ($res ? array_intersect($res, $typ) : $typ);
         }
-        $mat = [];
+        if (isset($query['period'])) {
+            $sql = $pre . "AND attribute = 'period' AND value IN (?)";
+            $params = [
+                $query['period']
+            ];
+            $prd = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
+            $res = ($res ? array_intersect($res, $prd) : $prd);
+        }
         if (isset($query['material'])) {
             $sql = $pre . "AND attribute = 'material' AND value IN (?)";
             $params = [
@@ -1077,6 +1084,22 @@ class Database
             ];
             $mat = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
             $res = ($res ? array_intersect($res, $mat) : $mat);
+        }
+        if (isset($query['status'])) {
+            $sql = $pre . "AND attribute = 'process' AND value IN (?)";
+            $params = [
+                $query['status']
+            ];
+            $sta = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
+            $res = ($res ? array_intersect($res, $sta) : $sta);
+        }
+        if (isset($query['treasure'])) {
+            $sql = $pre . "AND attribute = 'treasure' AND value IN (?)";
+            $params = [
+                $query['treasure']
+            ];
+            $tre = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
+            $res = ($res ? array_intersect($res, $tre) : $tre);
         }
         return $res;
     }
