@@ -39,14 +39,19 @@ class Actor implements Item
         return $this->roles;
     }
 
-    public function hasPermission(Permission $permission = null)
+    public function hasPermission($permission = null)
     {
         if ($permission === null) {
             return true;
         }
-        foreach ($this->roles() as $role) {
-            if ($role->role()->hasPermission($permission)) {
-                return true;
+        if (is_string($permission)) {
+            $permission = ORM::find(Permission::class, $permission);
+        }
+        if ($permission instanceof Permission) {
+            foreach ($this->roles() as $role) {
+                if ($role->role()->hasPermission($permission)) {
+                    return true;
+                }
             }
         }
         return false;

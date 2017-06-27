@@ -92,20 +92,22 @@ class FindListController extends DimeFormController
             $data['filters']['material'] = $materials->toArray();
         }
 
-        if (isset($query['status'])) {
-            $statuses = ORM::findBy(Term::class, [
-                'concept' => 'dime.find.process',
-                'term' => $query['status']
-            ]);
-            $data['filters']['status'] = $statuses->toArray();
-        }
+        if (Service::workflow()->actor()->hasPermission('dime.find.filter.museum')) {
+            if (isset($query['status'])) {
+                $statuses = ORM::findBy(Term::class, [
+                    'concept' => 'dime.find.process',
+                    'term' => $query['status']
+                ]);
+                $data['filters']['status'] = $statuses->toArray();
+            }
 
-        if (isset($query['treasure'])) {
-            $treasures = ORM::findBy(Term::class, [
-                'concept' => 'dime.treasure',
-                'term' => $query['treasure']
-            ]);
-            $data['filters']['treasure'] = $treasures->toArray();
+            if (isset($query['treasure'])) {
+                $treasures = ORM::findBy(Term::class, [
+                    'concept' => 'dime.treasure',
+                    'term' => $query['treasure']
+                ]);
+                $data['filters']['treasure'] = $treasures->toArray();
+            }
         }
 
         if ($query) {
@@ -149,8 +151,10 @@ class FindListController extends DimeFormController
         $types = $form['type']->getData();
         $period = $form['period']->getData();
         $materials = $form['material']->getData();
-        $statuses = $form['status']->getData();
-        $treasures = $form['treasure']->getData();
+        if (Service::workflow()->actor()->hasPermission('dime.find.filter.museum')) {
+            $statuses = $form['status']->getData();
+            $treasures = $form['treasure']->getData();
+        }
         $query = [];
         if ($municipalities) {
             foreach ($municipalities as $municipality) {
@@ -170,14 +174,16 @@ class FindListController extends DimeFormController
                 $query['material'][] = $material->name();
             }
         }
-        if ($statuses) {
-            foreach ($statuses as $status) {
-                $query['status'][] = $status->name();
+        if (Service::workflow()->actor()->hasPermission('dime.find.filter.museum')) {
+            if ($statuses) {
+                foreach ($statuses as $status) {
+                    $query['status'][] = $status->name();
+                }
             }
-        }
-        if ($treasures) {
-            foreach ($treasures as $treasure) {
-                $query['treasure'][] = $treasure->name();
+            if ($treasures) {
+                foreach ($treasures as $treasure) {
+                    $query['treasure'][] = $treasure->name();
+                }
             }
         }
         $request->attributes->set('parameters', $query);
