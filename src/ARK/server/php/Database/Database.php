@@ -1043,6 +1043,18 @@ class Database
         return null;
     }
 
+    public function userSearch($query)
+    {
+        $sql = "
+            SELECT item
+            FROM ark_fragment_string
+            WHERE module = 'actor'
+            AND attribute = 'status'
+            AND value = :status
+        ";
+        return $this->data()->fetchAllColumn($sql, 'item', $query);
+    }
+
     public function findSearch($query)
     {
         $pre = "

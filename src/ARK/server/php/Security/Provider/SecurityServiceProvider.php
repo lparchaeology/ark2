@@ -104,7 +104,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
             );
         }
 
-        $container['user.options'] = [
+        $container['user.defaults'] = [
             'adminConfirm' => true,
             'verifyEmail' => true,
             'emailAddress' => 'noreply@example.com',
@@ -113,6 +113,8 @@ class SecurityServiceProvider implements ServiceProviderInterface
             'userReset' => true,
             'resetTTL' => 86400,
         ];
+
+        $container['user.options'] = array_replace($container['user.defaults'], $container['ark']['security']['user']);
 
         $container['user.options.init'] = $container->protect(function () use ($container) {
             return;

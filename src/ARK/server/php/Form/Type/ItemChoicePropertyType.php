@@ -30,6 +30,7 @@
 
 namespace ARK\Form\Type;
 
+use ARK\Actor\Actor;
 use ARK\Form\Type\AbstractPropertyType;
 use ARK\Model\Item;
 use ARK\Model\LocalText;
@@ -56,13 +57,17 @@ class ItemChoicePropertyType extends AbstractPropertyType
         $item = $property->value();
         if ($item instanceof Item) {
             $options = $forms['item']->getParent()->getConfig()->getOptions();
-            if ($options['state']['value']['modus'] == 'static') {
+            if ($options['state']['value']['modus'] == 'active') {
+                $forms['item']->setData($item);
+            } else {
                 if (isset($options['state']['value']['display'])) {
                     $value = $item->property($options['state']['value']['display'])->value();
                     if ($value instanceof Term) {
                         $name = $value->keyword();
                     } elseif ($value instanceof LocalText) {
                         $name = $value->content();
+                    } elseif ($value instanceof Actor) {
+                        $name = $value->fullname();
                     } else {
                         $name = $value;
                     }
@@ -70,8 +75,6 @@ class ItemChoicePropertyType extends AbstractPropertyType
                     $name = $item->property('id')->value();
                 }
                 $forms['item']->setData($name);
-            } else {
-                $forms['item']->setData($item);
             }
         }
     }

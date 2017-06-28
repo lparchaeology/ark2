@@ -33,6 +33,7 @@ namespace DIME\Controller\View;
 use ARK\Actor\Person;
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\Vocabulary\Term;
 use DIME\Controller\View\DimeFormController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -53,7 +54,20 @@ class AdminUserController extends DimeFormController
 
     public function buildData(Request $request)
     {
-        $data['actors'] = ORM::findAll(Person::class);
+        $query = $request->query->all();
+
+        if (isset($query['status'])) {
+            $status = ORM::findOneBy(Term::class, [
+                'concept' => 'core.security.status',
+                'term' => $query['status']
+            ]);
+            $data['filter']['status'] = $status;
+            $items = Service::database()->userSearch($query);
+            $data['actors'] = ORM::findBy(Person::class, ['item' => $items]);
+        } else {
+            $data['actors'] = ORM::findAll(Person::class);
+        }
+
         $data['actor'] = null;
         $data['user'] = null;
         $actor = Service::workflow()->actor();
@@ -69,5 +83,25 @@ class AdminUserController extends DimeFormController
         $workflow['actions'] = Service::workflow()->updateActions($actor, $actor);
         $workflow['actors'] =  Service::workflow()->actors($actor, $actor);
         return $workflow;
+    }
+
+    public function processForm(Request $request, $form)
+    {
+        $query = [];
+        $submitted = $form->getConfig()->getName();
+        if ($submitted == 'filter') {
+            $status = $form['status']->getData();
+            if ($status) {
+                $query['status'] = $status->name();
+            }
+            $request->attributes->set('parameters', $query);
+        }
+        if ($submitted == 'actions') {
+            $action = $form['actions']->getData();
+            $agent = Service::workflow()->actor();
+            //Service::workflow()->apply($agent, $action, $actor);
+            //ORM::persist($actor);
+            //ORM::flush($actor);
+        }
     }
 }
