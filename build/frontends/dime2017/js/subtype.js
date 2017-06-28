@@ -45,7 +45,7 @@ var initSubtype = function(){
                         var tooltip = "Undefined";
                     }
                 } catch (e) {
-                    
+
                 }
 
                 var promise = new Promise(function(resolve) {
@@ -73,15 +73,18 @@ var initSubtype = function(){
 
         var target = $(this).val();
         console.log(target);
-        
+
+        // Toggle the Coin-only fields.
         if(target=='coin'){
             $( '#find_mint_content' ).closest('.form-group').show();
+            $( '#find_issuer_content' ).closest('.form-group').show();
             $( '#find_secondary_term_looped' ).closest('.checkbox').show();
         } else {
             $( '#find_mint_content' ).closest('.form-group').hide();
+            $( '#find_issuer_content' ).closest('.form-group').hide();
             $( '#find_secondary_term_looped' ).closest('.checkbox').hide();
         }
-        
+
         $('#'+subtype_id).empty();
         for (var subtype in subtypevocabulary) {
             if( target == subtype.split('.')[0] && subtype.split('.').length == 2 ){
@@ -120,7 +123,7 @@ var initSubtype = function(){
 
             $('#'+subtype_id).select2('open');
         }
-        
+
 
         try {
             var target_years = getYearsFromTarget(target);
@@ -160,7 +163,7 @@ var initSubtype = function(){
         }
 
     });
-    
+
 
     //buildSubtypeSelect2();
 
@@ -171,7 +174,7 @@ var initSubtype = function(){
 window.getYearsFromTarget = function(target){
     var current_start_year = parseInt($('#'+date_start_id).val());
     var current_end_year = parseInt($('#'+date_start_id+'_span').val());
-    
+
     if(typeof subtypevocabulary[target].parameters.year_start != "undefined") {
 
         var target_start_year = parseInt(subtypevocabulary[target].parameters.year_start.value);
@@ -193,13 +196,13 @@ window.getYearsFromTarget = function(target){
 $(document).ready(function(){
 
     $('#find_classify').attr('data-toggle','false');
-    
+
     window.type_id = "find_type_term";
 
     window.subtype_id = "find_classification_subtype";
 
     window.date_start_id = "find_dating_year";
-    
+
     var query = {"concept":"dime.find.type"};
     $.post(path + 'api/internal/vocabulary', JSON.stringify(query) )
     .fail(function() {
@@ -228,8 +231,9 @@ $(document).ready(function(){
 
     });
 
+    // Initially hide the Coin-only fields
     $( '#find_mint_content' ).closest('.form-group').hide();
-    
+    $( '#find_issuer_content' ).closest('.form-group').hide();
     $( '#find_secondary_term_looped' ).closest('.checkbox').hide();
 
 });

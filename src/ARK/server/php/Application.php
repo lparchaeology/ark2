@@ -207,8 +207,9 @@ class Application extends SilexApplication
     public function translate($id, $role = 'default', array $parameters = [], $domain = 'messages', $locale = null)
     {
         if ($role != null && $role != 'default') {
-            $msg = $this->trans($id.'.'.$role, $parameters, $domain, $locale);
-            if ($msg != $id) {
+            $lookup = $id.'.'.$role;
+            $msg = $this->trans($lookup, $parameters, $domain, $locale);
+            if ($msg != $lookup) {
                 return $msg;
             }
         }
@@ -218,8 +219,9 @@ class Application extends SilexApplication
     public function translateChoice($id, $number, $role = 'default', array $parameters = [], $domain = 'messages', $locale = null)
     {
         if ($role != null && $role != 'default') {
-            $msg = $this->transChoice($id.'.'.$role, $number, $parameters, $domain, $locale);
-            if ($msg != $id) {
+            $lookup = $id.'.'.$role;
+            $msg = $this->transChoice($lookup, $number, $parameters, $domain, $locale);
+            if ($msg != $lookup) {
                 return $msg;
             }
         }

@@ -84,8 +84,9 @@ class TranslateExtension extends \Twig_Extension
     public function translate($message, $role = null, array $arguments = [], $domain = null, $locale = null)
     {
         if ($role !== null && $role != 'default') {
-            $translation = $this->translator->trans($message.'.'.$role, $arguments, $domain, $locale);
-            if ($translation != $message) {
+            $lookup = $message.'.'.$role;
+            $translation = $this->translator->trans($lookup, $arguments, $domain, $locale);
+            if ($translation != $lookup) {
                 return $translation;
             }
         }
@@ -95,8 +96,9 @@ class TranslateExtension extends \Twig_Extension
     public function translatechoice($message, $count, $role = null, array $arguments = [], $domain = null, $locale = null)
     {
         if ($role !== null && $role != 'default') {
-            $translation = $this->translator->transChoice($message.'.'.$role, $count, array_merge(array('%count%' => $count), $arguments), $domain, $locale);
-            if ($translation != $message) {
+            $lookup = $message.'.'.$role;
+            $translation = $this->translator->transChoice($lookup, $count, array_merge(array('%count%' => $count), $arguments), $domain, $locale);
+            if ($translation != $lookup) {
                 return $translation;
             }
         }

@@ -25,15 +25,44 @@ col-xs-12 col-sm-4
     {%- endif -%}
 {%- endblock form_group_class %}
 
-{% block form_widget -%}
-    {{ parent() }}
-    {% if help is defined and help is not null and state.modus is defined and state.modus == 'active' %}
-        <span class="help" title="{{ help | translate }}" data-toggle="tooltip" data-placement="bottom" >
+{% block form_help -%}
+    {% if help is defined and help is not null %}
+        <span class="help" title="{{ help | translate('help') }}" data-toggle="tooltip" data-placement="bottom" >
             <span class="glyphicon glyphicon-question-sign">
             </span>
         </span>
     {% endif %}
+{%- endblock form_help %}
+
+{% block form_widget -%}
+    {{ parent() }}
+    {{ block('form_help') }}
 {%- endblock form_widget %}
+
+{% block datetime_widget -%}
+    {{ parent() }}
+    {{ block('form_help') }}
+{%- endblock datetime_widget %}
+
+{% block date_widget -%}
+    {{ parent() }}
+    {{ block('form_help') }}
+{%- endblock date_widget %}
+
+{% block time_widget -%}
+    {{ parent() }}
+    {{ block('form_help') }}
+{%- endblock time_widget %}
+
+{% block choice_widget -%}
+    {{ parent() }}
+    {{ block('form_help') }}
+{%- endblock choice_widget %}
+
+{% block textarea_widget -%}
+    {{ parent() }}
+    {{ block('form_help') }}
+{%- endblock textarea_widget %}
 
 {# Custom blocks #}
 
@@ -69,6 +98,7 @@ col-xs-12 col-sm-4
         {{- form_widget(form['value']) -}}
         <div class="input-group-addon"> {{- form['unit'].vars['data'] -}} </div>
     </div>
+    {{ block('form_help') }}
     {% do form.setRendered %}
 {%- endblock unit_widget %}
 
@@ -83,14 +113,15 @@ col-xs-12 col-sm-4
 
 {% block file_widget %}
     {% spaceless %}
-     {% set type = type|default('file') %}
-     {% set id_array = form.vars.id|split('_') %}
-     {% if form.parent.vars.data and form.parent.vars.data.item.property(id_array[1]).value is iterable %}
-         <input type="{{ type }}" {{ block('widget_attributes') }} data-existing = "{%- for image in form.parent.vars.data.item.property(id_array[1]).value %}{{ image.id }}{{ loop.last ? '' : ', ' }}{% endfor %}"/>
-     {% elseif form.parent.vars.data.item.property(id_array[1]).value.id is defined %}
-         <input type="{{ type }}" {{ block('widget_attributes') }} data-existing = "{{ form.parent.vars.data.item.property(id_array[1]).value.id }}"/>
-     {% else %}
-         <input type="{{ type }}" {{ block('widget_attributes') }} />
-     {% endif %}
+        {% set type = type|default('file') %}
+        {% set id_array = form.vars.id|split('_') %}
+        {% if form.parent.vars.data and form.parent.vars.data.item.property(id_array[1]).value is iterable %}
+            <input type="{{ type }}" {{ block('widget_attributes') }} data-existing = "{%- for image in form.parent.vars.data.item.property(id_array[1]).value %}{{ image.id }}{{ loop.last ? '' : ', ' }}{% endfor %}"/>
+        {% elseif form.parent.vars.data.item.property(id_array[1]).value.id is defined %}
+            <input type="{{ type }}" {{ block('widget_attributes') }} data-existing = "{{ form.parent.vars.data.item.property(id_array[1]).value.id }}"/>
+        {% else %}
+            <input type="{{ type }}" {{ block('widget_attributes') }} />
+        {% endif %}
+        {{ block('form_help') }}
     {% endspaceless %}
 {% endblock file_widget %}
