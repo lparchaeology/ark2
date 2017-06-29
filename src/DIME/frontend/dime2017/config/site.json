@@ -62,6 +62,7 @@
                 "root": "/brugere",
                 "login": "/brugere/login",
                 "check": "/brugere/check",
+                "target": "/hjem",
                 "logout": "/brugere/logout",
                 "register": "/brugere/register",
                 "reset": "/brugere/reset"
@@ -70,6 +71,7 @@
                 "root": "/users",
                 "login": "/users/login",
                 "check": "/users/check",
+                "target": "/home",
                 "logout": "/users/logout",
                 "register": "/users/register",
                 "reset": "/users/reset"

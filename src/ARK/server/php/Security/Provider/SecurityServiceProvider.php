@@ -58,6 +58,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
         $root = $paths['root'];
         $login = $paths['login'];
         $check = $paths['check'];
+        $target = $paths['target'];
         $logout = $paths['logout'];
         $register = $paths['register'];
         $reset = $paths['reset'];
@@ -74,7 +75,8 @@ class SecurityServiceProvider implements ServiceProviderInterface
             'remember_me' => [],
             'form' => [
                 'login_path' => $login,
-                'check_path' => $check
+                'check_path' => $check,
+                'default_target_path' => $target,
             ],
             'logout' => [
                 'logout_path' => $logout
