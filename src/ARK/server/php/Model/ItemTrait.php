@@ -212,6 +212,21 @@ trait ItemTrait
         return $this->properties[$attribute];
     }
 
+    public function value($attribute)
+    {
+        if ($property = $this->property($attribute)) {
+            return $property->value();
+        }
+        return null;
+    }
+
+    public function setValue($attribute, $value)
+    {
+        if ($property = $this->property($attribute)) {
+            $property->setValue($value);
+        }
+    }
+
     private function loadRelated()
     {
         if ($this->related) {

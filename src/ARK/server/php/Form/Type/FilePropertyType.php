@@ -78,10 +78,13 @@ class FilePropertyType extends AbstractPropertyType
             $file = File::createFromUploadedFile($upload);
             $property->setValue($file);
         } elseif (is_array($upload)) {
+            $files = [];
             foreach ($upload as $up) {
                 $files[] = File::createFromUploadedFile($up);
             }
-            $property->setValue($files);
+            if ($files) {
+                $property->setValue($files);
+            }
         }
     }
 }

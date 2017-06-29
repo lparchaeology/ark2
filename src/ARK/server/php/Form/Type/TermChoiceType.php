@@ -42,7 +42,7 @@ class TermChoiceType extends AbstractType
             'choice_name' => 'name',
             'choice_label' => 'keyword',
             'state' => null,
-            'placeholder' => false,
+            'placeholder' => 'dime.placeholder',
             'required' => false,
             'attr' => array(
                 'style' => 'width: 100%'

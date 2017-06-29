@@ -68,20 +68,19 @@ class FindViewController extends DimeFormController
     {
         $clicked = $form->getClickedButton()->getName();
         $data = $form->getData();
+        $find = $data['find'];
+        $parameters['id'] = $find->id();
+        $request->attributes->set('parameters', $parameters);
         if ($clicked == 'save') {
-            $find = $data['find'];
             $actor = Service::workflow()->actor();
             Service::workflow()->apply($actor, 'edit', $find);
             ORM::persist($find);
             ORM::flush($find);
-            $parameters['id'] = $find->id();
-            $request->attributes->set('parameters', $parameters);
             $request->attributes->set('flash', 'success');
             $request->attributes->set('message', 'dime.find.update.success');
             return;
         }
         if ($clicked == 'clone') {
-            // TODO
             $request->attributes->set('redirect', 'finds.add');
             return;
         }
@@ -89,13 +88,9 @@ class FindViewController extends DimeFormController
             $actor = Service::workflow()->actor();
             $action = $form['find']['actions']->getNormData();
             $subject = $form['find']['actors']->getNormData();
-            $data = $form->getData();
-            $find = $data['find'];
             $action->apply($actor, $find, $subject);
             ORM::persist($find);
             ORM::flush($find);
-            $parameters['id'] = $find->id();
-            $request->attributes->set('parameters', $parameters);
             return;
         }
     }

@@ -51,7 +51,7 @@ class ActorWidgetType extends AbstractType implements DataMapperInterface, DataT
             'choice_name' => 'id',
             'choice_label' => 'fullname',
             'state' => null,
-            'placeholder' => false,
+            'placeholder' => 'dime.placeholder',
             'required' => false,
             'attr' => array(
                 'style' => 'width: 100%'

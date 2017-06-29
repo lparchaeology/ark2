@@ -118,11 +118,15 @@ class ObjectType extends AbstractType implements DataMapperInterface
         $forms = iterator_to_array($forms);
         $attribute = $property->attribute();
         $value = $property->value();
+        dump($attribute);
+        dump($value);
         if ($attribute->format()->datatype()->isObject()) {
             foreach ($attribute->format()->attributes() as $sub) {
                 $key = $sub->name();
                 if ($key && isset($value[$key])) {
                     $forms[$key]->setData($value[$key]);
+                } elseif ($sub->hasVocabulary() && $default = $sub->vocabulary()->defaultTerm()) {
+                    $forms[$sub->name()]->setData($default);
                 }
             }
         } elseif (is_array($value) && $value) {
@@ -136,6 +140,8 @@ class ObjectType extends AbstractType implements DataMapperInterface
             }
             $name = $attribute->format()->valueName();
             $forms[$name]->setData($value[$name]);
+        } elseif (!$value && $attribute->hasVocabulary() && $default = $attribute->vocabulary()->defaultTerm()) {
+            $forms[$attribute->name()]->setData($default);
         } else {
             $forms[$attribute->name()]->setData($value);
         }

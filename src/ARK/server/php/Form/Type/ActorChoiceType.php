@@ -42,7 +42,7 @@ class ActorChoiceType extends AbstractType
             'choice_name' => 'id',
             'choice_label' => 'fullname',
             'state' => null,
-            'placeholder' => false,
+            'placeholder' => 'dime.placeholder',
             'required' => false,
             'attr' => array(
                 'style' => 'width: 100%'

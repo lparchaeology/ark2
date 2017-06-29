@@ -51,7 +51,19 @@ class FindAddController extends DimeFormController
     {
         $actor = Service::workflow()->actor();
         $find = new Find('dime.find');
-        $find->property('finder')->setValue($actor);
+        $find->setValue('finder', $actor);
+
+        $query = $request->query->all();
+        if (isset($query['id'])) {
+            if ($source = ORM::find(Find::class, $query['id'])) {
+                if ($source->value('finder')->id() == $actor->id()) {
+                    $find->setValue('finddate', $source->value('finddate'));
+                    $find->setValue('finder_place', $source->value('finder_place'));
+                    $find->setValue('location', $source->value('location'));
+                }
+            }
+        }
+
         $data['find'] = $find;
         return $data;
     }
@@ -63,14 +75,21 @@ class FindAddController extends DimeFormController
 
     public function processForm(Request $request, $form)
     {
+        $clicked = $form->getClickedButton()->getName();
         $find = $form->getData();
         $actor = Service::workflow()->actor();
         ORM::persist($find);
         Service::workflow()->apply($actor, 'record', $find);
+        if ($clicked == 'report') {
+            Service::workflow()->apply($actor, 'report', $find);
+            $message = 'dime.find.add.success';
+        } else {
+            $message = 'dime.find.add.success';
+        }
         ORM::flush($find);
         $parameters['id'] = $find->id();
         $request->attributes->set('parameters', $parameters);
         $request->attributes->set('flash', 'success');
-        $request->attributes->set('message', 'dime.find.add.success');
+        $request->attributes->set('message', $message);
     }
 }

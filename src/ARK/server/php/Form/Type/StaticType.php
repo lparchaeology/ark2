@@ -55,7 +55,7 @@ class StaticType extends AbstractType implements DataTransformerInterface
             'choice_name' => 'name',
             'choice_label' => 'keyword',
             'state' => null,
-            'placeholder' => false,
+            'placeholder' => 'dime.placeholder',
             'expanded' => false,
             'multiple' => false,
             'display' => null,

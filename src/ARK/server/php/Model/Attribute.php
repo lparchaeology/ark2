@@ -222,6 +222,17 @@ abstract class Attribute
             $fragment = $fragments[0];
             return ($fragment->isSpan()? [$fragment->value(), $fragment->extent()] : $fragment->value());
         }
+        if ($this->format()->datatype()->isObject()) {
+            if ($this->hasMultipleOccurrences()) {
+                $data = [];
+                foreach ($fragments as $fragment) {
+                    $data[] = $this->format()->serialize($fragment, $properties->get($fragment->id()));
+                }
+                return $data;
+            }
+            $fragment = $fragments->first();
+            return $this->format()->serialize($fragment, $properties->get($fragment->id()));
+        }
         if ($this->hasMultipleOccurrences()) {
             $data = [];
             foreach ($fragments as $fragment) {

@@ -98,8 +98,7 @@ class ObjectFormat extends Format
         }
         $data = [];
         foreach ($this->attributes as $attribute) {
-            $property = $properties->get($attribute->name());
-            if ($property) {
+            if ($property = $properties->get($attribute->name())) {
                 $data[$attribute->name()] = $property->serialize();
             } else {
                 $data[$attribute->name()] = null;

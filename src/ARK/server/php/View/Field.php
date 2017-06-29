@@ -306,7 +306,7 @@ class Field extends Element
                     if (isset($state['select']['placeholder'])) {
                         $options['placeholder'] = $state['select']['placeholder'];
                     } else {
-                        $options['placeholder'] = '';
+                        $options['placeholder'] = 'dime.placeholder';
                     }
                 }
             }
@@ -316,13 +316,11 @@ class Field extends Element
         }
         if ($this->attribute()->hasVocabulary()) {
             $options = $this->vocabularyOptions($this->attribute()->vocabulary(), $options);
-            if ($this->attribute()->isRequired() || $state['placeholder'] === false) {
-                $options['placeholder'] = null;
+            if ($this->attribute()->isRequired() || !$state['placeholder']) {
+                $options['placeholder'] = 'dime.placeholder';
             }
         }
         if ($this->attribute()->hasMultipleOccurrences()) {
-            // TODO DO we need multiple???
-            //$options['multiple'] = true;
             $options['compound'] = true;
         }
         return $options;

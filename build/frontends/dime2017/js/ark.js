@@ -38,13 +38,13 @@ $(document).ready(function() {
         $(this).fileinput({
             'theme': 'gly',
             'showUpload':false,
-            'autoReplace': true,
-            'validateInitialCount': true,
+            //'autoReplace': true,
+            //'validateInitialCount': true,
             'allowedFileTypes': ['image'],
             'previewFileType':'image',
             'allowedFileExtensions': ["jpg", "png", "gif"],
             'initialPreview': initialPreview,
-            //'minFileCount': 1,
+            'minFileCount': 0,
             'maxFileCount': 3
 
         });
