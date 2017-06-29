@@ -197,7 +197,7 @@ class Security
         }
     }
 
-    public function registerUser(User $user, Actor $actor = null, Role $role = null, Actor $proxyFor = null)
+    public function registerUser(User $user, Actor $actor = null, Role $role = null, Actor $agentFor = null)
     {
         if (!$this->options['adminConfirm']) {
             $user->confirm();
@@ -211,7 +211,7 @@ class Security
         ORM::persist($user);
         if ($actor && $role) {
             $actorUser = new ActorUser($actor, $user);
-            $actorRole = new ActorRole($actor, $role, $proxyFor);
+            $actorRole = new ActorRole($actor, $role, $agentFor);
             ORM::persist($actor);
             ORM::persist($actorUser);
             ORM::persist($actorRole);

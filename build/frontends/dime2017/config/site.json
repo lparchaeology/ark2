@@ -57,6 +57,15 @@
             ["(^/home)|(^/users)|(^/fund/add$)|(^/lokalitet/add$)", "ROLE_USER"],
             ["^/.+$", "IS_AUTHENTICATED_ANONYMOUSLY"]
         ],
+        "user": {
+            "adminConfirm": true,
+            "verifyEmail": true,
+            "emailAddress": "noreply@example.com",
+            "emailName": "ARK User Admin (Do Not Reply)",
+            "passwordStrength": 2,
+            "userReset": true,
+            "resetTTL": 86400
+        },
         "user_paths": {
             "da": {
                 "root": "/brugere",

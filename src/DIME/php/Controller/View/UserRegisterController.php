@@ -86,7 +86,8 @@ class UserRegisterController extends DimeFormController
 
         $role = ORM::find(Role::class, $role->name());
 
-        Service::security()->registerUser($user, $actor, $role);
+        $museum = $actor->property('museum')->value();
+        Service::security()->registerUser($user, $actor, $role, $museum);
 
         Service::workflow()->apply($actor, 'register', $actor);
         ORM::flush($actor);

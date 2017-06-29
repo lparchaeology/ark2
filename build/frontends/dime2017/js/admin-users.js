@@ -80,23 +80,26 @@ var itemFormToHtml = function(data){
     });
 
     initialAvatarPreview = [];
-    
+
     defaultImage = 1;
-    
+
     if(data['actor_avatar_item']['value']){
         initialAvatarPreview.push('<img class="file-preview-image" src="/dime/img/'+data['actor_avatar_item']['value']+'?p=preview">');
     } else {
         initialAvatarPreview.push('<img class="file-preview-image" src="/dime/img/'+defaultImage+'?p=preview">');
     }
-    
+
     $('div.file-input').parent().append($('<input type="file" id="actor_avatar_file" name="actor[avatar][file]">'));
-    
+
     $('div.file-input').remove();
-    
+
     $('#actor_avatar_file').fileinput({
         'showUpload':false,
-        'previewFileType':'any',
-        'initialPreview': initialAvatarPreview
+        'allowedFileTypes': ['image'],
+        'previewFileType':'image',
+        'initialPreview': initialAvatarPreview,
+        'minFileCount': 0,
+        'maxFileCount': 1
     });
 
 }
@@ -124,7 +127,7 @@ var showItemForm = function(id){
 
 var userFocusClick = function(evt) {
     evt.preventDefault();
-    
+
     if($(evt.target).is('tr')){
         var self = $(evt.target);
     } else {
@@ -137,19 +140,19 @@ var userFocusClick = function(evt) {
 
 };
 
-//post-submit callback 
-function showResponse(responseText, statusText, xhr, $form) { 
+//post-submit callback
+function showResponse(responseText, statusText, xhr, $form) {
     if(responseText.status == 'success'){
         $('#actor_id_value').closest('form').prepend($('<div class="alert alert-success" role="alert">'+window.translations[responseText.message]+'</div>'));
     } else {
         $('#actor_id_value').closest('form').prepend($('<div class="alert alert-error" role="alert">'+window.translations['dime.user.update.failure']+'</div>'));
     }
-} 
+}
 
 $('document').ready(function(){
 
     console.log(window.itemkey);
-    
+
     if(window.itemkey == 'actor'){
 
         $('.icon-user-focus').on("click", {"target":this}, userFocusClick );
@@ -162,7 +165,7 @@ $('document').ready(function(){
             $('#actor_save').on("click", function(e){
                 var options = {
                         success: showResponse
-                    }; 
+                    };
                 var valid = $(e.target).closest('form')[0].checkValidity();
                 if(valid){
                     e.preventDefault();

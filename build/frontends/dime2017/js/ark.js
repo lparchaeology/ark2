@@ -20,11 +20,11 @@ $(document).ready(function() {
     });
 
     $("input[type=file]").each(function(){
-        
+
         initialPreview = [];
 
         if (typeof $(this).attr('data-existing') == 'string'){
-            
+
             var arr = $(this).attr('data-existing').split(',');
 
             var len = arr.length;
@@ -32,13 +32,20 @@ $(document).ready(function() {
             for (var i = 0; i < len; i++) {
                 initialPreview.push('<img class="profile-img" class="file-preview-image" src="/dime/img/'+arr[i]+'?p=preview">');
             }
-            
+
         }
 
         $(this).fileinput({
+            'theme': 'gly',
             'showUpload':false,
-            'previewFileType':'any',
-            'initialPreview': initialPreview
+            'autoReplace': true,
+            'validateInitialCount': true,
+            'allowedFileTypes': ['image'],
+            'previewFileType':'image',
+            'allowedFileExtensions': ["jpg", "png", "gif"],
+            'initialPreview': initialPreview,
+            //'minFileCount': 1,
+            'maxFileCount': 3
         });
     })
 
@@ -95,9 +102,9 @@ $(document).ready(function() {
         $(this).css('z-index', 9999);
         $("body").append($div);
     });
-    
+
     $('[data-toggle="tooltip"]').tooltip({'trigger':'click'});
-    
+
 });
 
 // Summernote Editor

@@ -58,7 +58,9 @@ class ActorRole
         $this->actor = $actor;
         $this->role = $role->id();
         $this->roleEntity = $role;
-        $this->agentFor = $agentFor;
+        if ($role->isAgent()) {
+            $this->agentFor = $agentFor;
+        }
     }
 
     public function actor()

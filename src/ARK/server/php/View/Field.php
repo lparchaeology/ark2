@@ -168,6 +168,7 @@ class Field extends Element
     public function buildState($data, array $state)
     {
         $state['required'] = $this->attribute()->isRequired();
+        $state['multiple'] = $this->attribute->hasMultipleOccurrences();
         if (!isset($state['name'])) {
             $state['name'] = $this->formName();
         }

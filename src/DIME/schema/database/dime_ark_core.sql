@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 28, 2017 at 07:30 PM
+-- Generation Time: Jun 29, 2017 at 02:54 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -147,7 +147,7 @@ CREATE TABLE `ark_format` (
 --
 
 INSERT INTO `ark_format` (`format`, `datatype`, `entity`, `value_name`, `active_form_class`, `readonly_form_class`, `static_form_class`, `parameter_name`, `parameter_vocabulary`, `parameter_form_class`, `format_name`, `format_vocabulary`, `format_form_class`, `form_type_class`, `object`, `array`, `span`, `multiple`, `sortable`, `searchable`, `enabled`, `deprecated`, `keyword`) VALUES
-('actor', 'item', 'ARK\\Actor\\Actor', NULL, 'ARK\\Form\\Type\\ActorChoiceType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ARK\\Form\\Type\\ItemChoicePropertyType', 0, 0, 0, 0, 0, 0, 1, 0, 'core.actor'),
+('actor', 'item', 'ARK\\Actor\\Actor', NULL, 'ARK\\Form\\Type\\ActorChoiceType', 'ARK\\Form\\Type\\ActorChoiceType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ARK\\Form\\Type\\ItemChoicePropertyType', 0, 0, 0, 0, 0, 0, 1, 0, 'core.actor'),
 ('address', 'object', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 0, 1, 1, 0, 'format.address'),
 ('blob', 'blob', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'format.blob'),
 ('boolean', 'boolean', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.boolean'),
@@ -175,11 +175,11 @@ INSERT INTO `ark_format` (`format`, `datatype`, `entity`, `value_name`, `active_
 ('message', 'item', 'ARK\\Message\\Message', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'core.actor.format'),
 ('module', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0, 'format.module'),
 ('money', 'decimal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.money'),
-('museum', 'item', 'ARK\\Actor\\Museum', NULL, 'ARK\\Form\\Type\\ActorChoiceType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ARK\\Form\\Type\\ItemChoicePropertyType', 0, 0, 0, 0, 0, 0, 1, 0, 'core.actor.type.museum'),
+('museum', 'item', 'ARK\\Actor\\Museum', NULL, 'ARK\\Form\\Type\\ActorChoiceType', 'ARK\\Form\\Type\\ActorChoiceType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ARK\\Form\\Type\\ItemChoicePropertyType', 0, 0, 0, 0, 0, 0, 1, 0, 'core.actor.type.museum'),
 ('ordinaldate', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.ordinaldate'),
 ('password', 'string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.password'),
 ('percent', 'float', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0, 'format.percent'),
-('person', 'item', 'ARK\\Actor\\Person', NULL, 'ARK\\Form\\Type\\ActorChoiceType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ARK\\Form\\Type\\ItemChoicePropertyType', 0, 0, 0, 0, 0, 0, 1, 0, 'core.actor.type.person'),
+('person', 'item', 'ARK\\Actor\\Person', NULL, 'ARK\\Form\\Type\\ActorChoiceType', 'ARK\\Form\\Type\\ActorChoiceType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ARK\\Form\\Type\\ItemChoicePropertyType', 0, 0, 0, 0, 0, 0, 1, 0, 'core.actor.type.person'),
 ('plaintext', 'text', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 1, 1, 1, 0, 'format.localtext'),
 ('richtext', 'text', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 1, 1, 1, 0, 'format.richtext'),
 ('shorttext', 'text', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 1, 1, 1, 0, 'format.shortlocaltext'),
@@ -5750,7 +5750,7 @@ INSERT INTO `ark_view_grid` (`grp`, `row`, `col`, `seq`, `item_type`, `element`,
 ('dime_find_artefact', 0, 0, 22, '', 'dime_find_description', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_edit', 0, 0, 0, '', 'dime_find_event', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_edit', 0, 1, 0, '', 'dime_find_artefact', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_event', 0, 0, 0, '', 'dime_find_finder', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_event', 0, 0, 0, '', 'dime_find_finder', NULL, NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_event', 0, 0, 2, '', 'dime_find_finder_id', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_event', 0, 0, 4, '', 'dime_find_finder_place', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_event', 0, 0, 6, '', 'dime_find_finddate', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -5765,7 +5765,7 @@ INSERT INTO `ark_view_grid` (`grp`, `row`, `col`, `seq`, `item_type`, `element`,
 ('dime_find_filter', 1, 6, 0, '', 'core_widget_choice', 'treasure', NULL, NULL, 'dime.treasure', 1, NULL, NULL, 0, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"multiple\":true, \"attr\": {\"style\": \"width:95%\"}}'),
 ('dime_find_geo', 0, 0, 0, '', 'dime_find_location', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.find.coordinates', NULL, NULL),
 ('dime_find_geo', 0, 0, 2, '', 'dime_find_municipality', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_geo', 0, 0, 4, '', 'dime_find_museum', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_geo', 0, 0, 4, '', 'dime_find_museum', NULL, NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_item', 0, 0, 0, '', 'dime_find_metadata', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_item', 0, 0, 2, '', 'dime_find_event', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_item', 0, 0, 4, '', 'dime_find_geo', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),

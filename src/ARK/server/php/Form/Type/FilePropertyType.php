@@ -47,10 +47,11 @@ class FilePropertyType extends AbstractPropertyType
     {
         $field = $options['state']['field'];
         $format = $field->attribute()->format();
-        $builder->add('file', FileType::class, []);
-        $builder->add('filename', HiddenType::class, []);
-        $builder->add('item', HiddenType::class, []);
-        $builder->add('module', HiddenType::class, []);
+        $fileOptions = [];
+        if ($options['state']['multiple']) {
+            $fileOptions['multiple'] = true;
+        }
+        $builder->add('file', FileType::class, $fileOptions);
         $builder->setDataMapper($this);
     }
 
@@ -64,21 +65,6 @@ class FilePropertyType extends AbstractPropertyType
 
     public function mapDataToForms($property, $forms)
     {
-        if (!$property instanceof Property) {
-            return;
-        }
-        $file = $this->value($property, $forms);
-        $forms = iterator_to_array($forms);
-        if ($file instanceof Item) {
-            $forms['filename']->setData($file->name());
-            $forms['item']->setData($file->id());
-            $forms['module']->setData($file->schema()->module()->name());
-        } elseif (isset($file['item'])) {
-            $forms['item']->setData($file['item']);
-            $forms['module']->setData($file['module']);
-        } else {
-            $forms['module']->setData('file');
-        }
     }
 
     public function mapFormsToData($forms, &$property)
@@ -88,13 +74,14 @@ class FilePropertyType extends AbstractPropertyType
         }
         $forms = iterator_to_array($forms);
         $upload = $forms['file']->getData();
-        // FIXME handle multiples properly!
-        if ($upload) {
+        if ($upload instanceof UploadedFile) {
             $file = File::createFromUploadedFile($upload);
-            if ($property->attribute()->hasMultipleOccurrences()) {
-                $file = [$file];
-            }
             $property->setValue($file);
+        } elseif (is_array($upload)) {
+            foreach ($upload as $up) {
+                $files[] = File::createFromUploadedFile($up);
+            }
+            $property->setValue($files);
         }
     }
 }

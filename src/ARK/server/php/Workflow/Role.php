@@ -61,12 +61,12 @@ class Role
         return $this->role;
     }
 
-    public function isProxy()
+    public function isAgent()
     {
         return $this->proxyFor !== null;
     }
 
-    public function proxyFor()
+    public function agentFor()
     {
         return $this->proxyFor;
     }
