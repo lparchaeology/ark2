@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 29, 2017 at 02:54 PM
+-- Generation Time: Jun 29, 2017 at 04:49 PM
 -- Server version: 10.2.6-MariaDB
 -- PHP Version: 7.1.5
 
@@ -900,7 +900,7 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `format`, `voc
 ('dime.find', 'find', 'finder_id', 'identifier', NULL, 'restricted', 'dime.find.read.finder', 'dime.find.update.finder', 0, 0, 1, 1, 0, 1, 0, 'dime.find.finder_id'),
 ('dime.find', 'find', 'finder_place', 'identifier', NULL, 'restricted', 'dime.find.read.finder', 'dime.find.update.finder', 0, 0, 1, 1, 0, 1, 0, 'dime.find.finder_place'),
 ('dime.find', 'find', 'id', 'identifier', NULL, 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'dime.find.id'),
-('dime.find', 'find', 'image', 'image', NULL, 'public', NULL, NULL, 0, 0, 0, 1, 1, 1, 0, 'dime.find.images'),
+('dime.find', 'find', 'image', 'image', NULL, 'public', NULL, NULL, 0, 1, 3, 1, 1, 1, 0, 'dime.find.images'),
 ('dime.find', 'find', 'length', 'distance', NULL, 'public', NULL, NULL, 0, 0, 1, 1, 0, 1, 0, 'dime.find.length'),
 ('dime.find', 'find', 'location', 'spatial', NULL, 'restricted', 'dime.find.read.location', 'dime.find.update.location', 0, 1, 1, 1, 0, 1, 0, 'dime.find.location'),
 ('dime.find', 'find', 'material', 'term', 'dime.material', 'public', NULL, NULL, 0, 1, 1, 1, 0, 1, 0, 'dime.find.material'),
@@ -5611,7 +5611,7 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `dis
 ('dime_find_finder_id', 'dime.find', 'find', 'finder_id', NULL, 'active', NULL, NULL, NULL, NULL, ''),
 ('dime_find_finder_place', 'dime.find', 'find', 'finder_place', NULL, 'active', NULL, NULL, NULL, NULL, ''),
 ('dime_find_id', 'dime.find', 'find', 'id', NULL, 'readonly', NULL, NULL, NULL, NULL, ''),
-('dime_find_images', 'dime.find', 'find', 'image', NULL, 'active', NULL, NULL, 'blocks/imagecollection.html.twig', NULL, ''),
+('dime_find_images', 'dime.find', 'find', 'image', NULL, 'active', NULL, NULL, 'blocks/imagecollection.html.twig', NULL, '{\"multiple\":true}'),
 ('dime_find_issuer', 'dime.find', 'coin', 'issuer', NULL, 'active', NULL, NULL, NULL, NULL, ''),
 ('dime_find_length', 'dime.find', 'find', 'length', NULL, 'active', 'active', NULL, NULL, NULL, ''),
 ('dime_find_location', 'dime.find', 'find', 'location', NULL, 'active', NULL, NULL, 'blocks/mappick.html.twig', 'DIME\\Form\\Type\\LocationPropertyType', ''),
