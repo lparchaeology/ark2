@@ -173,6 +173,8 @@ $('document').ready(function(){
                 }
             });
         }
+
+        that.$toolbar.find('button[name="tableView"]').click();
     }
 
 });

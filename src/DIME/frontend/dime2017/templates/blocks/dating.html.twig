@@ -8,31 +8,46 @@
 
         {% if (state.mode is sameas("edit")) %}
             <div class = "simple-dating">
-                <button id="oldtid-dating-button" class="oldtid dating-button btn inactive">{{ 'dime.dating.oldtid' | translate }}</button>
-                <button id="historiktid-dating-button" class="historiktid dating-button btn inactive">{{ 'dime.dating.historiktid' | translate }}</button>
-                <button id="advanced-dating-button" class="advanced-dating-button dating-button btn">{{ 'dime.advanced-dating-button' | translate }}</button>
+                <div class="col-sm-11 form-period">
+                    {{ form_widget(form.period) }}
+                </div>
+                <span id="advanced-dating-button" class="advanced-dating-button dating-button"><span class="glyphicon glyphicon-expand"></span></span>
             </div>
             <div class = "advanced-dating">
-        {% else %}
-            <div>
-        {% endif %}
                 <div class="row">
-                    <div class="col-sm-6">
-                        {{ form_widget(form.period) }}
-                    </div>
                     <div class="col-sm-6">
                         {{ form_widget(form.period_span) }}
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-6 form-year">
                         {{ form_widget(form.year) }}
                     </div>
                     <div class="col-sm-6">
                         {{ form_widget(form.year_span) }}
                     </div>
                 </div>
+                <span id="simple-dating-button" class="advanced-dating-button dating-button"><span class="glyphicon glyphicon-collapse-up"></span></span>
             </div>
+        {% else %}
+             <div class="row">
+                 <div class="col-sm-6">
+                     {{ form_widget(form.period) }}
+                 </div>
+                 <div class="col-sm-6">
+                     {{ form_widget(form.period_span) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    {{ form_widget(form.year) }}
+                </div>
+                <div class="col-sm-6">
+                    {{ form_widget(form.year_span) }}
+                </div>
+            </div>
+        {% endif %}
+
     </div>
 
     {% do form.setRendered %}

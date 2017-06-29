@@ -79,6 +79,7 @@ var initSubtype = function(){
             $( '#find_mint_content' ).closest('.form-group').show();
             $( '#find_issuer_content' ).closest('.form-group').show();
             $( '#find_secondary_term_looped' ).closest('.checkbox').show();
+            $( '#advanced-dating-button' ).click();
         } else {
             $( '#find_mint_content' ).closest('.form-group').hide();
             $( '#find_issuer_content' ).closest('.form-group').hide();

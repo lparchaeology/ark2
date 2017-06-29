@@ -46,6 +46,7 @@ $(document).ready(function() {
             'initialPreview': initialPreview,
             //'minFileCount': 1,
             'maxFileCount': 3
+
         });
     })
 

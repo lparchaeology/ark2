@@ -209,8 +209,15 @@ var initPeriod = function(){
 $(document).ready(function(){
     $('#advanced-dating-button').on('click', function(e){
         e.preventDefault();
-        $('.simple-dating').hide();
+        $('#advanced-dating-button').hide();
         $('.advanced-dating').show();
+        $('.form-period').addClass("col-sm-6").removeClass("col-sm-11");
+    });
+    $('#simple-dating-button').on('click', function(e){
+        e.preventDefault();
+        $('#advanced-dating-button').show();
+        $('.advanced-dating').hide();
+        $('.form-period').removeClass("col-sm-6").addClass("col-sm-11");
     });
     $('#oldtid-dating-button').on('click', function(e){
         e.preventDefault();

@@ -81,9 +81,9 @@
 }
 
 .form-group-widget span.help{
-    margin: -20px;
-    position: absolute;
-    width: 20px;
+    position: relative;
+    top: -1.4em;
+    left: 102%;
 }
 
 .filters label {
@@ -281,7 +281,7 @@ input[type=radio]:checked ~ label::before{
 }
 
 .dating-button.advanced-dating-button {
-    font-size:0.7em;
+    font-size:1.4em;
 }
 
 .mappick-decimal-control{
