@@ -48,7 +48,6 @@ class NewsPageController extends DimeFormController
     public function buildData(Request $request)
     {
         $data['finds'] = ORM::findBy(Find::class, ['visibility' => 'public'], ['item' => 'DESC']);
-        $data['notifications'] = DIME::getUnreadNotifications();
         return $data;
     }
 

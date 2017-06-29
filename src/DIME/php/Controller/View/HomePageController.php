@@ -56,7 +56,6 @@ class HomePageController extends DimeFormController
         // TODO Use visibility / permissions
         $data['map']['finds'] = (Service::security()->isGranted('ROLE_USER') ? $finds : []);
         $data['map']['kortforsyningenticket'] = DIME::getMapTicket();
-        $data['notifications'] = DIME::getUnreadNotifications();
 
         return $data;
     }

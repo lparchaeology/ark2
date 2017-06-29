@@ -72,9 +72,11 @@ class PageViewController extends DimeFormController
             $content .= '</div>';
         }
 
-        $options['data']['notifications'] = DIME::getUnreadNotifications();
+        $state = $this->buildState($request);
+        $state['page_config'] = $this->pageConfig($request->attributes->get('_route'));
+
         $options['content'][0] = $content;
-        $options['state']['page_config'] = $this->pageConfig($request->attributes->get('_route'));
+        $options['state'] = $state;
 
         return Service::view()->renderResponse('pages/page.html.twig', $options);
     }
