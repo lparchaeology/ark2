@@ -174,12 +174,11 @@ function updateMunicipality() {
     easting = $('#find_location_easting').val();
     northing = $('#find_location_northing').val();
     var wkt = 'POINT(' + easting + ' ' + northing + ')';
+
     $.post(path + 'api/geo/find', wkt, function(result) {
         // TODO Find way without using actual form IDs
         $('#find_municipality_term').val(result['municipality']['term']).trigger("change");
-        $('#find_museum_module').val(result['museum']['module']);
-        $('#find_museum_item').val(result['museum']['item']);
-        $('#find_museum_display').val(result['museum']['name']).trigger("change");
+        $('#find_museum_item').val(result['museum']['item']).trigger("change");
     });
 }
 
@@ -190,7 +189,7 @@ function updateMapPoint() {
     } else if ($('#find_location_easting').is('div')){
         easting = $('#find_location_easting').text();
         northing = $('#find_location_northing').text();
-        
+
     }
     if (easting && northing) {
         coords = ol.proj.transform([parseFloat(easting), parseFloat(northing)], 'EPSG:4326', 'EPSG:3857');

@@ -293,7 +293,7 @@ class Field extends Element
         } else {
             unset($options['widget']);
         }
-        if ($state['choices'] && $state['value']['modus'] == 'active' && $this->attribute()->isItem()) {
+        if ($state['choices'] && $state['value']['modus'] != 'static' && $this->attribute()->isItem()) {
             if (isset($state['select']['choices'])) {
                 $choices = $state['select']['choices'];
             } else {
@@ -308,6 +308,9 @@ class Field extends Element
                         $options['placeholder'] = '';
                     }
                 }
+            }
+            if ($state['modus'] == 'readonly') {
+                $options['attr']['class'] = $this->concatOption($options, 'attr', 'class', 'readonly-select');
             }
         }
         if ($this->attribute()->hasVocabulary()) {
