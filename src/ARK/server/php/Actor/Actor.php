@@ -31,6 +31,16 @@ class Actor implements Item
         return ($fullname ? $fullname->content() : '');
     }
 
+    public function hasRole($role)
+    {
+        foreach ($this->roles() as $has) {
+            if ($has == $role or $has->role()->id() == $role) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function roles()
     {
         if ($this->roles === null) {

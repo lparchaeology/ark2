@@ -17,4 +17,6 @@
 
 {% endif %}
 
-{% do form.setRendered %}
+{% if form %}
+    {% do form.setRendered %}
+{% endif %}

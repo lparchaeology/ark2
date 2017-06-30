@@ -114,7 +114,11 @@ col-xs-12 col-sm-4
 {% block file_widget %}
     {% spaceless %}
         {% set type = type|default('file') %}
-        {% set value = form.parent.vars.data.value %}
+        {% if form.parent.vars.data %}
+            {% set value = form.parent.vars.data.value %}
+        {% else %}
+            {% set value = null %}
+        {% endif %}
         {% if value is iterable and value | length > 0 %}
             <input type="{{ type }}" {{ block('widget_attributes') }} data-existing = "{%- for image in value %}{{ image.id }}{{ loop.last ? '' : ',' }}{% endfor %}"/>
         {% elseif value.id is defined %}

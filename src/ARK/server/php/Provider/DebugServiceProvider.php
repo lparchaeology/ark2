@@ -42,15 +42,15 @@ class DebugServiceProvider implements ServiceProviderInterface
     {
         if ($container['debug']) {
             $container->register(new VarDumperServiceProvider());
-            //$container->register(new WebProfilerServiceProvider(), [
-            //    'profiler.cache_dir' => $container['dir.var'].'/cache/profiler',
-            //]);
+            $container->register(new WebProfilerServiceProvider(), [
+                'profiler.cache_dir' => $container['dir.var'].'/cache/profiler',
+            ]);
             // HACK Fix to work-around bug in the profiler not finding the dump template
             $container['profiler.templates_path.debug'] = function () {
                 $r = new \ReflectionClass('Symfony\Bundle\DebugBundle\DependencyInjection\Configuration');
                 return dirname(dirname($r->getFileName())).'/Resources/views';
             };
-            //$container->register(new DoctrineProfilerServiceProvider());
+            $container->register(new DoctrineProfilerServiceProvider());
             $container->extendArray(
                 'security.firewalls',
                 'dev_area',

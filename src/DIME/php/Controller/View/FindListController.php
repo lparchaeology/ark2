@@ -120,11 +120,12 @@ class FindListController extends DimeFormController
             }
 
             if (isset($query['status'])) {
-                $statuses = ORM::findBy(Term::class, [
+                $status = ORM::findOneBy(Term::class, [
                     'concept' => 'dime.find.process',
                     'term' => $query['status']
                 ]);
-                $data['filters']['status'] = $statuses->toArray();
+                $query['status'] = [$status->name()];
+                $data['filters']['status'] = $status;
             }
 
             if (isset($query['treasure'])) {
@@ -166,8 +167,13 @@ class FindListController extends DimeFormController
 
     public function buildWorkflow(Request $request, $data, array $state)
     {
+        $actor = $state['actor'];
+        $workflow['actor'] = $actor;
         $workflow['mode'] = 'edit';
-        $workflow['actor'] = $state['actor'];
+        $query = $request->query->all();
+        if (isset($query['status']) && isset($data['finds'][0])) {
+            $workflow['actions'] = Service::workflow()->updateActions($actor, $data['finds'][0]);
+        }
         return $workflow;
     }
 
@@ -180,7 +186,7 @@ class FindListController extends DimeFormController
         if (Service::workflow()->actor()->hasPermission('dime.find.filter.museum')) {
             $museums = $form['museum']->getData();
             $finders = $form['finder']->getData();
-            $statuses = $form['status']->getData();
+            $status = $form['status']->getData();
             $treasures = $form['treasure']->getData();
         }
         $query = [];
@@ -213,10 +219,8 @@ class FindListController extends DimeFormController
                     $query['finder'][] = $finder->id();
                 }
             }
-            if ($statuses) {
-                foreach ($statuses as $status) {
-                    $query['status'][] = $status->name();
-                }
+            if ($status) {
+                $query['status'] = $status->name();
             }
             if ($treasures) {
                 foreach ($treasures as $treasure) {

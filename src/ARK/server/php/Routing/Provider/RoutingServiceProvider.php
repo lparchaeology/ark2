@@ -70,7 +70,7 @@ class RoutingServiceProvider extends SilexRoutingServiceProvider
         // TODO Proper error handling
         $container->error(function (Exception $e, Request $request, $code) use ($container) {
             if ($container['debug']) {
-                //return;
+                return;
             }
             // 404.html, or 40x.html, or 4xx.html, or error.html
             $templates = array(
