@@ -33,11 +33,13 @@ namespace ARK\Workflow;
 use ARK\Actor\Actor;
 use ARK\Model\Item;
 use ARK\Model\Schema\SchemaAttribute;
+use ARK\Model\LocalText;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
 use ARK\Workflow\Action;
 use ARK\Workflow\Permission;
 use ARK\Workflow\Role;
+use ARK\Vocabulary\Term;
 
 class Condition
 {
@@ -61,13 +63,17 @@ class Condition
 
     public function isGranted(Item $item)
     {
-        return self::PASS;
-        $property = $item->property($this->attribute->name());
-        $isValue = ($property->value() == $this->value);
-        if ($this->operator == 'not') {
-            $isValue = !$isvalue;
+        $value = $item->value($this->attribute->name());
+        if ($value instanceof Term) {
+            $value = $value->name();
         }
-        return ($isValue ? self::PASS : self::FAIL);
+        if ($value instanceof LocalText) {
+            $value = $value->content();
+        }
+        if ($this->operator == 'not') {
+            return ($value !== $this->value ? self::PASS : self::FAIL);
+        }
+        return ($value === $this->value ? self::PASS : self::FAIL);
     }
 
     public static function loadMetadata(ClassMetadata $metadata)

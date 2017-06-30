@@ -181,7 +181,7 @@ class Application extends SilexApplication
         parent::boot();
         // FIXME HACK Workaround the listener not firing for some reason
         if (static::$debug) {
-            $this['var_dumper.dump_listener']->configure();
+            //$this['var_dumper.dump_listener']->configure();
         }
     }
 
