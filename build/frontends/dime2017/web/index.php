@@ -26,6 +26,7 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
+ 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 $site = basename(realpath(__DIR__ . '/..'));
 $app = new ARK\Application($site);

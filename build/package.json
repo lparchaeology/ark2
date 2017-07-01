@@ -35,24 +35,27 @@
   "homepage": "https://github.com/lparchaeology/ark2#readme",
   "devDependencies": {
     "bootlint": "^0.14.2",
-    "bower": "^1.7.9",
+    "bower": "^1.8.0",
     "csscomb": "^3.1.7",
     "csslint": "^1.0.5",
     "eslint": "^3.12.2",
+    "graceful-fs": "^4.1.11",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-concat": "^2.6.0",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.3.1",
     "gulp-sourcemaps": "^1.6.0",
-    "gulp-uglifyjs": "^0.6.2",
+    "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.7",
     "js-beautify": "^1.6.14",
     "jsonlint": "^1.6.2",
     "merge-stream": "^1.0.0",
+    "minimatch": "^3.0.4",
     "prettydiff": "^99.0.1",
     "remark-lint": "^5.4.0",
     "sass-lint": "^1.10.2",
-    "tidy-markdown": "^2.0.4"
+    "tidy-markdown": "^2.0.4",
+    "uuid": "^3.1.0"
   }
 }

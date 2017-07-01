@@ -3,7 +3,7 @@ var util = require('gulp-util');
 var sass = require('gulp-sass');
 var sourcemaps = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
-var uglify = require('gulp-uglifyjs');
+var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var fs = require("fs");
 var merge = require('merge-stream');
@@ -45,9 +45,9 @@ gulp.task('create', function() {
         fs.statSync(dest);
         util.log('Frontend already exists!');
         return util.noop();
-    } catch(e) {
+    } catch (e) {
         return gulp.src(src)
-                   .pipe(gulp.dest(dest));
+            .pipe(gulp.dest(dest));
     }
 });
 
@@ -60,7 +60,7 @@ gulp.task('web', function() {
     var src = [config.frontendsDir + '/' + frontend + '/web/**/*', config.frontendsDir + '/' + frontend + '/web/**/.*'];
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/web';
     return gulp.src(src)
-               .pipe(gulp.dest(dest));
+        .pipe(gulp.dest(dest));
 });
 
 /*
@@ -72,7 +72,7 @@ gulp.task('config', function() {
     var src = config.frontendsDir + '/' + frontend + '/config/**/*';
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/config';
     return gulp.src([src])
-               .pipe(gulp.dest(dest));
+        .pipe(gulp.dest(dest));
 });
 
 /*
@@ -84,7 +84,7 @@ gulp.task('bin', function() {
     var src = config.frontendsDir + '/' + frontend + '/bin/**/*';
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/bin';
     return gulp.src([src])
-               .pipe(gulp.dest(dest));
+        .pipe(gulp.dest(dest));
 });
 
 /*
@@ -96,7 +96,7 @@ gulp.task('xliff', function() {
     var src = config.frontendsDir + '/' + frontend + '/xliff/**/*';
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/translations';
     return gulp.src([src])
-               .pipe(gulp.dest(dest));
+        .pipe(gulp.dest(dest));
 });
 
 /*
@@ -111,7 +111,7 @@ gulp.task('fonts', function() {
     ];
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/assets/fonts';
     return gulp.src(src)
-               .pipe(gulp.dest(dest));
+        .pipe(gulp.dest(dest));
 });
 
 /*
@@ -127,7 +127,7 @@ gulp.task('images', function() {
     ];
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/assets/images';
     return gulp.src(src)
-               .pipe(gulp.dest(dest));
+        .pipe(gulp.dest(dest));
 });
 
 /*
@@ -139,7 +139,7 @@ gulp.task('twig', function() {
     var src = config.frontendsDir + '/' + frontend + '/twig/**/*';
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/templates';
     return gulp.src([src])
-               .pipe(gulp.dest(dest));
+        .pipe(gulp.dest(dest));
 });
 
 /*
@@ -184,13 +184,15 @@ gulp.task('js', function() {
     ];
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/assets/scripts';
     var conf = {
-        compress: false,
-        outSourceMap: true,
+        compress: false
     };
     return gulp.src(src)
-               .pipe(concat('ark.js'))
-               .pipe(uglify('ark.min.js', conf))
-               .pipe(gulp.dest(dest));
+        .pipe(concat('ark.js'))
+        .pipe(sourcemaps.init())
+        .pipe(uglify(conf))
+        .pipe(sourcemaps.write())
+        .pipe(rename('ark.min.js'))
+        .pipe(gulp.dest(dest));
 });
 
 /*
@@ -238,20 +240,20 @@ gulp.task('css', function() {
         ]
     };
     var cssStream = gulp.src(cssSrc)
-                        .pipe(concat('tmp.css'));
+        .pipe(concat('tmp.css'));
 
     var sassStream = gulp.src(sassSrc)
-                         .pipe(sourcemaps.init(mapsConf))
-                         .pipe(sass(sassConf).on('error', sass.logError));
+        .pipe(sourcemaps.init(mapsConf))
+        .pipe(sass(sassConf).on('error', sass.logError));
 
     var bootCssStream = gulp.src(bootCssSrc)
-                        .pipe(concat('boot.tmp.css'));
+        .pipe(concat('boot.tmp.css'));
 
     return merge(cssStream, sassStream, bootCssStream)
-            .pipe(concat('ark.min.css'))
-            .pipe(autoprefixer(prefixConf))
-            .pipe(sourcemaps.write('.'))
-            .pipe(gulp.dest(dest));
+        .pipe(concat('ark.min.css'))
+        .pipe(autoprefixer(prefixConf))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(dest));
 });
 
 /*

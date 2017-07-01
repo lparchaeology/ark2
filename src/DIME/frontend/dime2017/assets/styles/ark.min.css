@@ -1396,7 +1396,7 @@ div.fixed-table-scroll-outer {
 }
 
 /*!
- * bootstrap-fileinput v4.4.1
+ * bootstrap-fileinput v4.4.2
  * http://plugins.krajee.com/file-input
  *
  * Krajee default styling for bootstrap-fileinput.
@@ -1487,6 +1487,11 @@ div.fixed-table-scroll-outer {
     padding: 5px;
     width: 100%;
     margin-bottom: 5px;
+}
+
+.file-preview-image {
+    font: 40px Impact, Charcoal, sans-serif;
+    color: green;
 }
 
 .krajee-default.file-preview-frame {
@@ -1874,6 +1879,10 @@ div.fixed-table-scroll-outer {
 
 .file-preview-initial.sortable-chosen {
     background-color: #d9edf7;
+}
+
+.hide-content .kv-file-content {
+    display: none;
 }
 
 /* IE 10 fix */
