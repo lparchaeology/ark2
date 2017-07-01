@@ -88,7 +88,7 @@ class ViewServiceProvider implements ServiceProviderInterface
             $container['dir.site'].'/templates/'.$container['ark']['web']['frontend'],
         ];
         $container['twig.form.templates'] = [
-            'forms/layout.html.twig',
+            'blocks/forms.html.twig',
         ];
         $container['twig.options'] = [
             'cache' => $container['dir.var'].'/cache/twig',
