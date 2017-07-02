@@ -41,7 +41,7 @@ class Database
 
     private $modules = [];
 
-    private $datatypes = [];
+    private $types = [];
 
     private $fragmentTables = [];
 
@@ -253,41 +253,41 @@ class Database
         return $this->modules;
     }
 
-    private function loadDatatypes()
+    private function loadTypes()
     {
-        if ($this->datatypes) {
+        if ($this->types) {
             return;
         }
         $sql = "
             SELECT *
-            FROM ark_datatype
+            FROM ark_datatype_type
             WHERE enabled = true
         ";
-        $datatypes = $this->core()->fetchAll($sql, []);
-        foreach ($datatypes as $datatype) {
-            $this->datatypes[$datatype['datatype']] = $datatype;
-            if ($datatype['data_table']) {
-                $this->fragmentTables[] = $datatype['data_table'];
+        $types = $this->core()->fetchAll($sql, []);
+        foreach ($types as $type) {
+            $this->types[$type['type']] = $type;
+            if ($type['data_table']) {
+                $this->fragmentTables[] = $type['data_table'];
             }
         }
     }
 
-    public function getDatatypes()
+    public function getTypes()
     {
-        $this->loadDatatypes();
-        return $this->datatypes;
+        $this->loadTypes();
+        return $this->types;
     }
 
-    private function getFragmentTable($datatype)
+    private function getFragmentTable($type)
     {
-        $this->loadDatatypes();
-        return $this->datatypes[$datatype]['data_table'];
+        $this->loadTypes();
+        return $this->types[$type]['data_table'];
     }
 
-    public function getFragmentDatatype($class)
+    public function getFragmentType($class)
     {
-        $this->loadDatatypes();
-        foreach ($this->datatypes as $datatype => $attributes) {
+        $this->loadTypes();
+        foreach ($this->types as $type => $attributes) {
             if ($attributes['data_class'] === $class) {
                 return $attributes;
             }
@@ -297,7 +297,7 @@ class Database
 
     public function getFragmentTables()
     {
-        $this->loadDatatypes();
+        $this->loadTypes();
         return $this->fragmentTables;
     }
 
@@ -662,13 +662,13 @@ class Database
     public function getModuleProperties($module, $schema)
     {
         $sql = "
-        SELECT *, ark_schema_attribute.format, ark_schema_attribute.keyword, ark_format.keyword as format_keyword
+        SELECT *, ark_schema_attribute.datatype, ark_schema_attribute.keyword, ark_datatype.keyword as datatype_keyword
         FROM ark_schema_attribute
-        LEFT JOIN ark_format ON ark_format.format = ark_schema_attribute.format
-        LEFT JOIN ark_format_float ON ark_format_float.format = ark_format.format_type
-        LEFT JOIN ark_format_integer ON ark_format_integer.format = ark_format.format_type
-        LEFT JOIN ark_format_string ON ark_format_string.format = ark_format.format_type
-        LEFT JOIN ark_fragment_type ON ark_fragment_type.fragment_type = ark_format.fragment_type
+        LEFT JOIN ark_datatype ON ark_datatype.datatype = ark_schema_attribute.datatype
+        LEFT JOIN ark_datatype_float ON ark_datatype_float.datatype = ark_datatype.datatype_type
+        LEFT JOIN ark_datatype_integer ON ark_datatype_integer.datatype = ark_datatype.datatype_type
+        LEFT JOIN ark_datatype_string ON ark_datatype_string.datatype = ark_datatype.datatype_type
+        LEFT JOIN ark_fragment_type ON ark_fragment_type.fragment_type = ark_datatype.fragment_type
         WHERE ark_schema_attribute.module = :module
         AND ark_schema_attribute.schema_id = :schema
         ";
@@ -678,8 +678,8 @@ class Database
         );
         $results = $this->core()->fetchAll($sql, $params);
         foreach ($results as $result) {
-            if ((! isset($result['keyword']) || ! $result['keyword']) && isset($result['format_keyword'])) {
-                $result['keyword'] = $result['format_keyword'];
+            if ((! isset($result['keyword']) || ! $result['keyword']) && isset($result['datatype_keyword'])) {
+                $result['keyword'] = $result['datatype_keyword'];
             }
         }
         return $results;
@@ -688,13 +688,13 @@ class Database
     public function getModuleProperty($module, $schema, $modtype, $attribute)
     {
         $sql = "
-            SELECT *, ark_schema_attribute.format, ark_schema_attribute.keyword, ark_format.keyword as format_keyword
+            SELECT *, ark_schema_attribute.datatype, ark_schema_attribute.keyword, ark_datatype.keyword as datatype_keyword
             FROM ark_schema_attribute
-            LEFT JOIN ark_format ON ark_format_float.format = ark_schema_attribute.format
-            LEFT JOIN ark_format_float ON ark_format_float.format = ark_format.format_type
-            LEFT JOIN ark_format_integer ON ark_format_integer.format = ark_format.format_type
-            LEFT JOIN ark_format_string ON ark_format_string.format = ark_format.format_type
-            LEFT JOIN ark_fragment_type ON ark_fragment_type.fragment_type = ark_format.fragment_type
+            LEFT JOIN ark_datatype ON ark_datatype_float.datatype = ark_schema_attribute.datatype
+            LEFT JOIN ark_datatype_float ON ark_datatype_float.datatype = ark_datatype.datatype_type
+            LEFT JOIN ark_datatype_integer ON ark_datatype_integer.datatype = ark_datatype.datatype_type
+            LEFT JOIN ark_datatype_string ON ark_datatype_string.datatype = ark_datatype.datatype_type
+            LEFT JOIN ark_fragment_type ON ark_fragment_type.fragment_type = ark_datatype.fragment_type
             WHERE ark_schema_attribute.module = :module
             AND ark_schema_attribute.schema = :schema
             AND (ark_schema_attribute.modtype = :modtype OR ark_schema_attribute.modtype = :module)
@@ -707,87 +707,87 @@ class Database
             ':attribute' => $attribute
         );
         $result = $this->core()->fetchAssoc($sql, $params);
-        if ((! isset($result['keyword']) or ! $result['keyword']) && isset($result['format_keyword'])) {
-            $result['keyword'] = $result['format_keyword'];
+        if ((! isset($result['keyword']) or ! $result['keyword']) && isset($result['datatype_keyword'])) {
+            $result['keyword'] = $result['datatype_keyword'];
         }
         return $result;
     }
 
-    public function getFormatProperties($format)
+    public function getDatatypeProperties($datatype)
     {
         $sql = "
-            SELECT *, ark_format_attribute.format, ark_format_attribute.keyword, ark_format.keyword as format_keyword
-            FROM ark_format_attribute
-            LEFT JOIN ark_format ON ark_format.format = ark_format_attribute.format
-            LEFT JOIN ark_format_float ON ark_format_float.format = ark_format.format_type
-            LEFT JOIN ark_format_integer ON ark_format_integer.format = ark_format.format_type
-            LEFT JOIN ark_format_string ON ark_format_string.format = ark_format.format_type
-            LEFT JOIN ark_fragment_type ON ark_fragment_type.fragment_type = ark_format.fragment_type
-            WHERE ark_format_attribute.parent_format = :format
-            ORDER BY ark_format_attribute.seq
+            SELECT *, ark_datatype_attribute.datatype, ark_datatype_attribute.keyword, ark_datatype.keyword as datatype_keyword
+            FROM ark_datatype_attribute
+            LEFT JOIN ark_datatype ON ark_datatype.datatype = ark_datatype_attribute.datatype
+            LEFT JOIN ark_datatype_float ON ark_datatype_float.datatype = ark_datatype.datatype_type
+            LEFT JOIN ark_datatype_integer ON ark_datatype_integer.datatype = ark_datatype.datatype_type
+            LEFT JOIN ark_datatype_string ON ark_datatype_string.datatype = ark_datatype.datatype_type
+            LEFT JOIN ark_fragment_type ON ark_fragment_type.fragment_type = ark_datatype.fragment_type
+            WHERE ark_datatype_attribute.parent_datatype = :datatype
+            ORDER BY ark_datatype_attribute.seq
         ";
         $params = array(
-            ':format' => $format
+            ':datatype' => $datatype
         );
         $results = $this->core()->fetchAll($sql, $params);
         foreach ($results as $result) {
-            if ((! isset($result['keyword']) || ! $result['keyword']) && isset($result['format_keyword'])) {
-                $result['keyword'] = $result['format_keyword'];
+            if ((! isset($result['keyword']) || ! $result['keyword']) && isset($result['datatype_keyword'])) {
+                $result['keyword'] = $result['datatype_keyword'];
             }
         }
         return $results;
     }
 
-    public function getFormatProperty($format, $attribute)
+    public function getDatatypeProperty($datatype, $attribute)
     {
         $sql = "
-            SELECT *, ark_format_attribute.format, ark_format_attribute.keyword, ark_format.keyword as format_keyword
-            FROM ark_format_attribute
-            LEFT JOIN ark_format ON ark_format.format = ark_format_attribute.format
-            LEFT JOIN ark_format_float ON ark_format_float.format = ark_format.format_type
-            LEFT JOIN ark_format_integer ON ark_format_integer.format = ark_format.format_type
-            LEFT JOIN ark_format_string ON ark_format_string.format = ark_format.format_type
-            LEFT JOIN ark_fragment_type ON ark_fragment_type.fragment_type = ark_format.fragment_type
-            WHERE ark_format_attribute.parent_format = :format
-            AND ark_format_attribute.attribute = :attribute
+            SELECT *, ark_datatype_attribute.datatype, ark_datatype_attribute.keyword, ark_datatype.keyword as datatype_keyword
+            FROM ark_datatype_attribute
+            LEFT JOIN ark_datatype ON ark_datatype.datatype = ark_datatype_attribute.datatype
+            LEFT JOIN ark_datatype_float ON ark_datatype_float.datatype = ark_datatype.datatype_type
+            LEFT JOIN ark_datatype_integer ON ark_datatype_integer.datatype = ark_datatype.datatype_type
+            LEFT JOIN ark_datatype_string ON ark_datatype_string.datatype = ark_datatype.datatype_type
+            LEFT JOIN ark_fragment_type ON ark_fragment_type.fragment_type = ark_datatype.fragment_type
+            WHERE ark_datatype_attribute.parent_datatype = :datatype
+            AND ark_datatype_attribute.attribute = :attribute
         ";
         $params = array(
-            ':format' => $format,
+            ':datatype' => $datatype,
             ':attribute' => $attribute
         );
         $result = $this->core()->fetchAssoc($sql, $params);
-        if ((! isset($result['keyword']) or ! $result['keyword']) && isset($result['format_keyword'])) {
-            $result['keyword'] = $result['format_keyword'];
+        if ((! isset($result['keyword']) or ! $result['keyword']) && isset($result['datatype_keyword'])) {
+            $result['keyword'] = $result['datatype_keyword'];
         }
         return $result;
     }
 
-    public function getFormat($format)
+    public function getDatatype($datatype)
     {
         $sql = "
             SELECT *
-            FROM ark_format
-            LEFT JOIN ark_format_float ON ark_format_float.format = ark_format.format_type
-            LEFT JOIN ark_format_integer ON ark_format_integer.format = ark_format.format_type
-            LEFT JOIN ark_format_string ON ark_format_string.format = ark_format.format_type
-            LEFT JOIN ark_fragment_type ON ark_fragment_type.fragment_type = ark_format.fragment_type
-            WHERE ark_format.format = :format
+            FROM ark_datatype
+            LEFT JOIN ark_datatype_float ON ark_datatype_float.datatype = ark_datatype.datatype_type
+            LEFT JOIN ark_datatype_integer ON ark_datatype_integer.datatype = ark_datatype.datatype_type
+            LEFT JOIN ark_datatype_string ON ark_datatype_string.datatype = ark_datatype.datatype_type
+            LEFT JOIN ark_fragment_type ON ark_fragment_type.fragment_type = ark_datatype.fragment_type
+            WHERE ark_datatype.datatype = :datatype
         ";
         $params = array(
-            ':format' => $format
+            ':datatype' => $datatype
         );
         return $this->core()->fetchAssoc($sql, $params);
     }
 
-    public function getAllowedValues($format)
+    public function getAllowedValues($datatype)
     {
         $sql = "
             SELECT *
-            FROM ark_format_value
-            WHERE format = :format
+            FROM ark_datatype_value
+            WHERE datatype = :datatype
         ";
         $params = array(
-            ':format' => $format
+            ':datatype' => $datatype
         );
         return $this->core()->fetchAll($sql, $params);
     }

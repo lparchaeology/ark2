@@ -87,8 +87,7 @@ class ItemChoicePropertyType extends AbstractPropertyType
         $forms = iterator_to_array($forms);
         $value = $forms['item']->getData();
         if (is_string($value)) {
-            $class = $property->attribute()->format()->entity();
-            dump($class);
+            $class = $property->attribute()->datatype()->entity();
             $value = ORM::find($class, $value);
         }
         $property->setValue($value);

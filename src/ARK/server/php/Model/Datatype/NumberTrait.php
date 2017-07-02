@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model DateTime Format Trait
+ * ARK Model Number Datatype Trait
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,28 +28,46 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model\Format;
+namespace ARK\Model\Datatype;
 
 use ARK\ORM\ClassMetadataBuilder;
 
-trait DateTimeTrait
+trait NumberTrait
 {
-    protected $pattern = '';
-    protected $unicode = '';
+    protected $minimum = null;
+    protected $exclusiveMinimum = false;
+    protected $maximum = null;
+    protected $exclusiveMaximum = false;
+    protected $multipleOf = null;
 
-    public function pattern()
+    public function minimumValue()
     {
-        return $this->pattern;
+        return $this->minimum;
     }
 
-    public function unicode()
+    public function exclusiveMinimum()
     {
-        return $this->unicode;
+        return $this->exclusiveMinimum;
     }
 
-    public static function buildDateTimeMetadata(ClassMetadataBuilder $builder)
+    public function maximumValue()
     {
-        $builder->addStringField('pattern', 255);
-        $builder->addStringField('unicode', 50);
+        return $this->maximum;
+    }
+
+    public function exclusiveMaximum()
+    {
+        return $this->exclusiveMaximum;
+    }
+
+    public function multipleOf()
+    {
+        return $this->multipleOf;
+    }
+
+    public static function buildNumberMetadata(ClassMetadataBuilder $builder)
+    {
+        $builder->addField('exclusiveMinimum', 'boolean', [], 'exclusive_minimum');
+        $builder->addField('exclusiveMaximum', 'boolean', [], 'exclusive_maximum');
     }
 }

@@ -48,7 +48,6 @@ class ObjectType extends AbstractType implements DataMapperInterface
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $field = $options['state']['field'];
-        $format = $field->attribute()->format();
         $fieldOptions = [];
         if ($field->attribute()->vocabulary() && isset($options['attr']['readonly'])) {
             $fieldOptions['disabled'] = true;
@@ -60,8 +59,8 @@ class ObjectType extends AbstractType implements DataMapperInterface
     protected function buildAttribute(FormBuilderInterface $builder, Attribute $attribute, $options, $required)
     {
         $name = $attribute->name();
-        if ($attribute->format()->datatype()->isObject()) {
-            foreach ($attribute->format()->attributes() as $child) {
+        if ($attribute->datatype()->type()->isObject()) {
+            foreach ($attribute->datatype()->attributes() as $child) {
                 $this->buildAttribute($builder, $child, $options, $required);
             }
             return;
@@ -71,19 +70,19 @@ class ObjectType extends AbstractType implements DataMapperInterface
             $options['choices'] = $attribute->vocabulary()->terms();
             $options['multiple'] = $attribute->hasMultipleOccurrences();
         } else {
-            $class = $attribute->format()->datatype()->activeFormType();
+            $class = $attribute->datatype()->type()->activeFormType();
         }
-        if ($attribute->format()->datatype()->id() == 'datetime') {
+        if ($attribute->datatype()->type()->id() == 'datetime') {
             $options['widget'] = 'single_text';
             $options['html5'] = false;
             $options['attr']['class'] = 'datetimepicker';
         }
-        if ($attribute->format()->datatype()->id() == 'date') {
+        if ($attribute->datatype()->type()->id() == 'date') {
             $options['widget'] = 'single_text';
             $options['html5'] = false;
             $options['attr']['class'] = 'datepicker';
         }
-        if ($attribute->format()->datatype()->id() == 'time') {
+        if ($attribute->datatype()->type()->id() == 'time') {
             $options['widget'] = 'single_text';
             $options['html5'] = false;
             $options['attr']['class'] = 'timepicker';
@@ -120,8 +119,8 @@ class ObjectType extends AbstractType implements DataMapperInterface
         $value = $property->value();
         dump($attribute);
         dump($value);
-        if ($attribute->format()->datatype()->isObject()) {
-            foreach ($attribute->format()->attributes() as $sub) {
+        if ($attribute->datatype()->type()->isObject()) {
+            foreach ($attribute->datatype()->attributes() as $sub) {
                 $key = $sub->name();
                 if ($key && isset($value[$key])) {
                     $forms[$key]->setData($value[$key]);
@@ -130,15 +129,15 @@ class ObjectType extends AbstractType implements DataMapperInterface
                 }
             }
         } elseif (is_array($value) && $value) {
-            $parameter = $attribute->format()->parameterName();
+            $parameter = $attribute->datatype()->parameterName();
             if (isset($value[$parameter])) {
                 $forms[$parameter]->setData($value[$parameter]);
             }
-            $format = $attribute->format()->formatName();
-            if (isset($value[$format])) {
-                $forms[$format]->setData($value[$format]);
+            $datatype = $attribute->datatype()->formatName();
+            if (isset($value[$datatype])) {
+                $forms[$datatype]->setData($value[$datatype]);
             }
-            $name = $attribute->format()->valueName();
+            $name = $attribute->datatype()->valueName();
             $forms[$name]->setData($value[$name]);
         } elseif (!$value && $attribute->hasVocabulary() && $default = $attribute->vocabulary()->defaultTerm()) {
             $forms[$attribute->name()]->setData($default);

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Object Format
+ * ARK Model Object Datatype
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,10 +28,10 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model\Format;
+namespace ARK\Model\Datatype;
 
-use ARK\Model\Format;
-use ARK\Model\Format\FormatAttribute;
+use ARK\Model\Datatype;
+use ARK\Model\Datatype\DatatypeAttribute;
 use ARK\Model\Attribute;
 use ARK\Model\Fragment;
 use ARK\ORM\ClassMetadata;
@@ -40,7 +40,7 @@ use ARK\ORM\ORM;
 use ARK\Vocabulary\Vocabulary;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class ObjectFormat extends Format
+class ObjectDatatype extends Datatype
 {
     protected $attributes = null;
 
@@ -67,7 +67,7 @@ class ObjectFormat extends Format
     public function emptyValue()
     {
         foreach ($this->attributes as $attribute) {
-            $data[$attribute->name()] = $attribute->format()->emptyValue();
+            $data[$attribute->name()] = $attribute->datatype()->emptyValue();
         }
         return $data;
     }
@@ -145,9 +145,9 @@ class ObjectFormat extends Format
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_format_object');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_object');
 
         // Associations
-        $builder->addOneToMany('attributes', FormatAttribute::class, 'parent', null, null, null, ['sequence' => 'ASC']);
+        $builder->addOneToMany('attributes', DatatypeAttribute::class, 'parent', null, null, null, ['sequence' => 'ASC']);
     }
 }

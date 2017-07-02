@@ -45,8 +45,6 @@ class FilePropertyType extends AbstractPropertyType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $field = $options['state']['field'];
-        $format = $field->attribute()->format();
         $fileOptions = [];
         if ($options['state']['multiple']) {
             $fileOptions['multiple'] = true;

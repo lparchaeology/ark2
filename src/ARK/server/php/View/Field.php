@@ -68,7 +68,7 @@ class Field extends Element
 
     public function parameterModus()
     {
-        if (!$this->attribute()->format()->parameterName()) {
+        if (!$this->attribute()->datatype()->parameterName()) {
             return null;
         }
         return ($this->parameter ?: 'hidden');
@@ -76,7 +76,7 @@ class Field extends Element
 
     public function formatModus()
     {
-        if (! $this->attribute()->format()->formatName()) {
+        if (! $this->attribute()->datatype()->formatName()) {
             return null;
         }
         return ($this->format ?: 'hidden');
@@ -92,8 +92,8 @@ class Field extends Element
         if ($this->formTypeClass) {
             return $this->formTypeClass;
         }
-        if ($this->attribute()->format()->formTypeClass()) {
-            return $this->attribute()->format()->formTypeClass();
+        if ($this->attribute()->datatype()->formTypeClass()) {
+            return $this->attribute()->datatype()->formTypeClass();
         }
         return parent::formTypeClass();
     }
@@ -137,27 +137,27 @@ class Field extends Element
 
     public function activeFormType()
     {
-        return $this->attribute()->format()->activeFormType();
+        return $this->attribute()->datatype()->activeFormType();
     }
 
     public function readonlyFormType()
     {
-        return $this->attribute()->format()->readonlyFormType();
+        return $this->attribute()->datatype()->readonlyFormType();
     }
 
     public function staticFormType()
     {
-        return $this->attribute()->format()->staticFormType();
+        return $this->attribute()->datatype()->staticFormType();
     }
 
     public function parameterFormType()
     {
-        return $this->attribute()->format()->parameterFormType();
+        return $this->attribute()->datatype()->parameterFormType();
     }
 
     public function formatFormType()
     {
-        return $this->attribute()->format()->formatFormType();
+        return $this->attribute()->datatype()->formatFormType();
     }
 
     public function keyword()
@@ -285,7 +285,7 @@ class Field extends Element
         if ($state['value']['modus'] == 'active' && isset($options['widget']) && $options['widget'] == 'picker') {
             $options['widget'] = 'single_text';
             $options['html5'] = false;
-            $picker = $this->attribute()->format()->datatype()->id().'picker';
+            $picker = $this->attribute()->datatype()->type()->id().'picker';
             if (isset($options['attr']['class'])) {
                 $options['attr']['class'] = $options['attr']['class'].' '.$picker;
             } else {
@@ -382,8 +382,8 @@ class Field extends Element
             if (is_array($value)) {
                 if ($this->display) {
                     $value = $value[$this->display];
-                } elseif (isset($value[$this->attribute()->format()->valueName()])) {
-                    $value = $value[$this->attribute()->format()->valueName()];
+                } elseif (isset($value[$this->attribute()->datatype()->valueName()])) {
+                    $value = $value[$this->attribute()->datatype()->valueName()];
                 }
             }
             if ($value instanceof Actor) {

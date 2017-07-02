@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Text Format
+ * ARK Model Text Datatype
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,10 +28,10 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model\Format;
+namespace ARK\Model\Datatype;
 
 use ARK\Model\Fragment;
-use ARK\Model\Format;
+use ARK\Model\Datatype;
 use ARK\Model\LocalText;
 use ARK\Model\Attribute;
 use ARK\ORM\ClassMetadata;
@@ -40,7 +40,7 @@ use ARK\ORM\ORM;
 use ARK\Vocabulary\Vocabulary;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class TextFormat extends Format
+class TextDatatype extends Datatype
 {
     protected $mediatype = '';
     protected $minimumLength = 0;
@@ -143,7 +143,7 @@ class TextFormat extends Format
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_format_text');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_text');
 
         // Attributes
         $builder->addStringField('mediatype', 30);

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Blob Format
+ * ARK Model Boolean Datatype
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,17 +28,17 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model\Format;
+namespace ARK\Model\Datatype;
 
-use ARK\Model\Format;
+use ARK\Model\Datatype;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
-class BlobFormat extends Format
+class BooleanDatatype extends Datatype
 {
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_format_blob');
-        $builder->addField('preset', 'blob');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_boolean');
+        $builder->addField('preset', 'boolean');
     }
 }

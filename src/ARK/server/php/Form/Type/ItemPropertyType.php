@@ -47,20 +47,20 @@ class ItemPropertyType extends AbstractPropertyType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $field = $options['state']['field'];
-        $format = $field->attribute()->format();
+        $datatype = $field->attribute()->datatype();
         if (isset($options['state']['value']['display'])) {
             $builder->add($options['state']['value']['display'], $options['state']['value']['type'], $options['state']['value']['options']);
             unset($options['state']['value']['options']['choices']);
             unset($options['state']['value']['options']['placeholder']);
-            $builder->add($format->valueName(), HiddenType::class, $options['state']['value']['options']);
+            $builder->add($datatype->valueName(), HiddenType::class, $options['state']['value']['options']);
         } else {
-            $builder->add($format->valueName(), $options['state']['value']['type'], $options['state']['value']['options']);
+            $builder->add($datatype->valueName(), $options['state']['value']['type'], $options['state']['value']['options']);
         }
         if ($options['state']['parameter'] !== null) {
-            $builder->add($format->parameterName(), $options['state']['parameter']['type'], $options['state']['parameter']['options']);
+            $builder->add($datatype->parameterName(), $options['state']['parameter']['type'], $options['state']['parameter']['options']);
         }
         if ($options['state']['format'] !== null) {
-            $builder->add($format->formatName(), $options['state']['format']['type'], $options['state']['format']['options']);
+            $builder->add($datatype->formatName(), $options['state']['format']['type'], $options['state']['format']['options']);
         }
         $builder->setDataMapper($this);
     }

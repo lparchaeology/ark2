@@ -39,7 +39,7 @@ use ARK\ORM\ORM;
 use ARK\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 
-// TODO Think about extending from Attribute??? Or move serializing *into* attribute/format? Or separate serializers?
+// TODO Think about extending from Attribute??? Or move serializing *into* attribute/datatype? Or separate serializers?
 class Property
 {
     protected $item = null;
@@ -62,13 +62,13 @@ class Property
         if ($parent) {
             $key['object'] = $parent->id();
         }
-        $this->fragments = ORM::findBy($attribute->format()->datatype()->dataClass(), $key);
-        if (!$attribute->format()->datatype()->isObject()) {
+        $this->fragments = ORM::findBy($attribute->datatype()->type()->dataClass(), $key);
+        if (!$attribute->datatype()->type()->isObject()) {
             return;
         }
         foreach ($this->fragments as $fragment) {
             $properties = new ArrayCollection();
-            foreach ($attribute->format()->attributes() as $child) {
+            foreach ($attribute->datatype()->attributes() as $child) {
                 $properties->set($child->name(), new Property($item, $child, $fragment));
             }
             $this->children->set($fragment->id(), $properties);

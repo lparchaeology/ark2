@@ -42,9 +42,9 @@ class ClassificationPropertyType extends AbstractPropertyType
     {
         $valueOptions = $options['state']['value']['options'];
         $field = $options['state']['field'];
-        $format = $field->attribute()->format();
+        $datatype = $field->attribute()->datatype();
 
-        $valueOptions['choices'] = $format->attribute('subtype')->vocabulary()->terms();
+        $valueOptions['choices'] = $datatype->attribute('subtype')->vocabulary()->terms();
         $valueOptions['placeholder'] = ' - ';
         //$valueOptions['required'] = true;
         $builder->add('subtype', $options['state']['value']['type'], $valueOptions);

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Geometry Format
+ * ARK Model Geometry Datatype
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,17 +28,17 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model\Format;
+namespace ARK\Model\Datatype;
 
-use ARK\Model\Format;
+use ARK\Model\Datatype;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
-class SpatialFormat extends Format
+class SpatialDatatype extends Datatype
 {
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_format_string');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_string');
         $builder->addStringField('preset', 1431655765);
     }
 }

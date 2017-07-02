@@ -53,8 +53,8 @@ class VocabularyPropertyType extends ScalarPropertyType
         $term = $this->value($property, $forms);
         $forms = iterator_to_array($forms);
         $attribute = $property->attribute();
-        $termForm = $forms[$attribute->format()->valueName()];
-        $vocabularyForm = $forms[$attribute->format()->parameterName()];
+        $termForm = $forms[$attribute->datatype()->valueName()];
+        $vocabularyForm = $forms[$attribute->datatype()->parameterName()];
         $termForm->setData($term);
         $vocabularyForm->setData($attribute->vocabulary()->concept());
     }
@@ -65,7 +65,7 @@ class VocabularyPropertyType extends ScalarPropertyType
             return;
         }
         $forms = iterator_to_array($forms);
-        $property->setValue($forms[$property->attribute()->format()->valueName()]->getData());
+        $property->setValue($forms[$property->attribute()->datatype()->valueName()]->getData());
     }
 
     public function getBlockPrefix()

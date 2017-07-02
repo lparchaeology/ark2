@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model DateTime Format
+ * ARK Model DateTime Datatype Trait
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,21 +28,28 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model\Format;
+namespace ARK\Model\Datatype;
 
-use ARK\Model\Format;
-use ARK\Model\Format\DateTimeTrait;
-use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
-class DateTimeFormat extends Format
+trait DateTimeTrait
 {
-    use DateTimeTrait;
+    protected $pattern = '';
+    protected $unicode = '';
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public function pattern()
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_format_datetime');
-        DateTimeTrait::buildDateTimeMetadata($builder);
-        $builder->addField('preset', 'datetime');
+        return $this->pattern;
+    }
+
+    public function unicode()
+    {
+        return $this->unicode;
+    }
+
+    public static function buildDateTimeMetadata(ClassMetadataBuilder $builder)
+    {
+        $builder->addStringField('pattern', 255);
+        $builder->addStringField('unicode', 50);
     }
 }

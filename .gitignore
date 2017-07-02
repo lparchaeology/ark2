@@ -1,4 +1,5 @@
 .DS_Store
+.directory
 .kdev4
 /build/node_modules
 /build/vendor

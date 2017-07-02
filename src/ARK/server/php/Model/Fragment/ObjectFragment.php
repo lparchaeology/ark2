@@ -56,7 +56,7 @@ class ObjectFragment extends Fragment
                'attribute' => $attribute->name(),
                'object' => $this->object->id(),
             ];
-            $this->children = ORM::findBy($attribute->format()->datatype()->dataClass(), $key);
+            $this->children = ORM::findBy($attribute->datatype()->type()->dataClass(), $key);
         }
         return $this->children;
     }
@@ -68,10 +68,10 @@ class ObjectFragment extends Fragment
 
     public static function buildSubclassMetadata(ClassMetadata $metadata, $class)
     {
-        $datatype = Service::database()->getFragmentDatatype($class);
-        $builder = new ClassMetadataBuilder($metadata, $datatype['data_table']);
+        $type = Service::database()->getFragmentType($class);
+        $builder = new ClassMetadataBuilder($metadata, $type['data_table']);
         $builder->addKey('fid', 'integer');
-        $builder->addStringField('value', $datatype['storage_size']);
-        $builder->addStringField('extent', $datatype['storage_size']);
+        $builder->addStringField('value', $type['storage_size']);
+        $builder->addStringField('extent', $type['storage_size']);
     }
 }

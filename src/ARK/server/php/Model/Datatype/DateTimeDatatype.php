@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Decimal Format
+ * ARK Model DateTime Datatype
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,39 +28,21 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model\Format;
+namespace ARK\Model\Datatype;
 
-use ARK\Model\Format;
-use ARK\Model\Format\NumberTrait;
+use ARK\Model\Datatype;
+use ARK\Model\Datatype\DateTimeTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
-class DecimalFormat extends Format
+class DateTimeDatatype extends Datatype
 {
-    use NumberTrait;
-
-    public $precision = 200;
-    public $scale = 0;
-
-    public function precision()
-    {
-        return $this->precision;
-    }
-
-    public function scale()
-    {
-        return $this->scale;
-    }
+    use DateTimeTrait;
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_format_decimal');
-        $builder->addField('precision', 'integer', [], 'prec');
-        $builder->addField('scale', 'integer');
-        $builder->addStringField('minimum', 200);
-        $builder->addStringField('maximum', 200);
-        $builder->addStringField('multipleOf', 200, 'multiple_of');
-        $builder->addStringField('preset', 200);
-        NumberTrait::buildNumberMetadata($builder);
+        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_datetime');
+        DateTimeTrait::buildDateTimeMetadata($builder);
+        $builder->addField('preset', 'datetime');
     }
 }

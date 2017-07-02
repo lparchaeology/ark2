@@ -34,7 +34,7 @@ use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Model\Attribute;
-use ARK\Model\Datatype;
+use ARK\Model\Type;
 use ARK\Model\Item;
 use ARK\Model\VersionTrait;
 use ARK\Model\Fragment\ObjectFragment;
@@ -48,7 +48,7 @@ abstract class Fragment
     protected $module = '';
     protected $item = '';
     protected $attribute = '';
-    protected $datatype = '';
+    protected $type = '';
     protected $format = '';
     protected $parameter = '';
     protected $value = null;
@@ -90,9 +90,9 @@ abstract class Fragment
         return $this->attribute;
     }
 
-    public function datatype()
+    public function type()
     {
-        return $this->datatype;
+        return $this->type;
     }
 
     public function format()
@@ -149,12 +149,12 @@ abstract class Fragment
 
     public static function create($module, $item, Attribute $attribute, ObjectFragment $object = null)
     {
-        $class = $attribute->format()->datatype()->dataClass();
+        $class = $attribute->datatype()->type()->dataClass();
         $fragment = new $class;
         $fragment->module = $module;
         $fragment->item = $item;
         $fragment->attribute = $attribute->name();
-        $fragment->datatype = $attribute->format()->datatype()->id();
+        $fragment->type = $attribute->datatype()->type()->id();
         $fragment->object = $object;
         $fragment->refreshVersion();
         return $fragment;
@@ -162,10 +162,10 @@ abstract class Fragment
 
     public static function createFromAttribute(Attribute $attribute, ObjectFragment $object = null)
     {
-        $class = $attribute->format()->datatype()->dataClass();
+        $class = $attribute->datatype()->type()->dataClass();
         $fragment = new $class;
         $fragment->attribute = $attribute->name();
-        $fragment->datatype = $attribute->format()->datatype()->id();
+        $fragment->type = $attribute->datatype()->type()->id();
         $fragment->span = $attribute->isSpan();
         $fragment->object = $object;
         $fragment->refreshVersion();
@@ -182,7 +182,7 @@ abstract class Fragment
         $builder->addStringField('module', 30);
         $builder->addStringField('item', 30);
         $builder->addStringField('attribute', 30);
-        $builder->addStringField('datatype', 30, 'datatype');
+        $builder->addStringField('type', 30, 'type');
         $builder->addStringField('format', 30);
         $builder->addStringField('parameter', 30);
         $builder->addField('span', 'boolean');
@@ -194,15 +194,15 @@ abstract class Fragment
 
     public static function buildSubclassMetadata(ClassMetadata $metadata, $class)
     {
-        $datatype = Service::database()->getFragmentDatatype($class);
-        $builder = new ClassMetadataBuilder($metadata, $datatype['data_table']);
+        $type = Service::database()->getFragmentType($class);
+        $builder = new ClassMetadataBuilder($metadata, $type['data_table']);
         $builder->addGeneratedKey('fid');
-        if ($datatype['storage_type'] == 'string') {
-            $builder->addStringField('value', $datatype['storage_size']);
-            $builder->addStringField('extent', $datatype['storage_size']);
+        if ($type['storage_type'] == 'string') {
+            $builder->addStringField('value', $type['storage_size']);
+            $builder->addStringField('extent', $type['storage_size']);
         } else {
-            $builder->addField('value', $datatype['storage_type']);
-            $builder->addField('extent', $datatype['storage_type']);
+            $builder->addField('value', $type['storage_type']);
+            $builder->addField('extent', $type['storage_type']);
         }
     }
 }

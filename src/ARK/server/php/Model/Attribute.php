@@ -31,7 +31,7 @@
 namespace ARK\Model;
 
 use ARK\Model\EnabledTrait;
-use ARK\Model\Format;
+use ARK\Model\Datatype;
 use ARK\Model\Fragment;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
@@ -45,7 +45,7 @@ abstract class Attribute
     use KeywordTrait;
 
     protected $attribute = '';
-    protected $format = null;
+    protected $datatype = null;
     protected $vocabulary = null;
     protected $span = false;
     protected $minimum = 0;
@@ -58,9 +58,9 @@ abstract class Attribute
         return $this->attribute;
     }
 
-    public function format()
+    public function datatype()
     {
-        return $this->format;
+        return $this->datatype;
     }
 
     public function hasVocabulary()
@@ -70,17 +70,17 @@ abstract class Attribute
 
     public function isItem()
     {
-        return $this->format->datatype()->id() == 'item';
+        return $this->datatype->type()->id() == 'item';
     }
 
     public function isObject()
     {
-        return $this->format->datatype()->id() == 'object';
+        return $this->datatype->type()->id() == 'object';
     }
 
     public function entity()
     {
-        return $this->format->entity();
+        return $this->datatype->entity();
     }
 
     public function vocabulary()
@@ -109,7 +109,7 @@ abstract class Attribute
         if ($this->vocabulary) {
             return $this->vocabulary->defaultTerm();
         }
-        return $this->format->defaultValue();
+        return $this->datatype->defaultValue();
     }
 
     public function isSpan()
@@ -153,8 +153,8 @@ abstract class Attribute
         if ($this->keyword) {
             return $this->keyword;
         }
-        if ($this->format) {
-            return $this->format()->keyword();
+        if ($this->datatype) {
+            return $this->datatype()->keyword();
         }
         return '';
     }
@@ -167,7 +167,7 @@ abstract class Attribute
         if ($this->hasVocabulary()) {
             return null;
         }
-        return $this->format()->emptyValue();
+        return $this->datatype()->emptyValue();
     }
 
     public function value(ArrayCollection $fragments, ArrayCollection $properties)
@@ -185,25 +185,25 @@ abstract class Attribute
             }
             return $this->vocabulary->term($fragments[0]->value());
         }
-        if ($this->format()->datatype()->isObject()) {
+        if ($this->datatype()->type()->isObject()) {
             if ($this->hasMultipleOccurrences()) {
                 $data = [];
                 foreach ($fragments as $fragment) {
-                    $data[] = $this->format()->value($fragment, $properties->get($fragment->id()));
+                    $data[] = $this->datatype()->value($fragment, $properties->get($fragment->id()));
                 }
                 return $data;
             }
             $fragment = $fragments->first();
-            return $this->format()->value($fragment, $properties->get($fragment->id()));
+            return $this->datatype()->value($fragment, $properties->get($fragment->id()));
         }
         if ($this->hasMultipleOccurrences()) {
             $data = [];
             foreach ($fragments as $fragment) {
-                $data[] = $this->format()->value(new ArrayCollection([$fragment]));
+                $data[] = $this->datatype()->value(new ArrayCollection([$fragment]));
             }
             return $data;
         }
-        return $this->format()->value($fragments);
+        return $this->datatype()->value($fragments);
     }
 
     public function serialize(ArrayCollection $fragments, ArrayCollection $properties)
@@ -222,25 +222,25 @@ abstract class Attribute
             $fragment = $fragments[0];
             return ($fragment->isSpan()? [$fragment->value(), $fragment->extent()] : $fragment->value());
         }
-        if ($this->format()->datatype()->isObject()) {
+        if ($this->datatype()->type()->isObject()) {
             if ($this->hasMultipleOccurrences()) {
                 $data = [];
                 foreach ($fragments as $fragment) {
-                    $data[] = $this->format()->serialize($fragment, $properties->get($fragment->id()));
+                    $data[] = $this->datatype()->serialize($fragment, $properties->get($fragment->id()));
                 }
                 return $data;
             }
             $fragment = $fragments->first();
-            return $this->format()->serialize($fragment, $properties->get($fragment->id()));
+            return $this->datatype()->serialize($fragment, $properties->get($fragment->id()));
         }
         if ($this->hasMultipleOccurrences()) {
             $data = [];
             foreach ($fragments as $fragment) {
-                $data[] = $this->format()->serialize(new ArrayCollection([$fragment]), $properties->get($fragment->id()));
+                $data[] = $this->datatype()->serialize(new ArrayCollection([$fragment]), $properties->get($fragment->id()));
             }
             return $data;
         }
-        return $this->format()->serialize($fragments, $properties);
+        return $this->datatype()->serialize($fragments, $properties);
     }
 
     public function hydrate($data)
@@ -249,11 +249,11 @@ abstract class Attribute
         if ($data === null || $data === [] || $data === $this->emptyValue()) {
             return $fragments;
         }
-        if (!$this->hasMultipleOccurrences() && !$this->format()->hasMultipleValues()) {
+        if (!$this->hasMultipleOccurrences() && !$this->datatype()->hasMultipleValues()) {
             $data = [$data];
         }
         foreach ($data as $datum) {
-            $frags = $this->format()->hydrate($datum, $this, $this->vocabulary);
+            $frags = $this->datatype()->hydrate($datum, $this, $this->vocabulary);
             foreach ($frags as $frag) {
                 $fragments->add($frag);
             }
@@ -278,7 +278,7 @@ abstract class Attribute
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations
-        $builder->addManyToOneField('format', Format::class, 'format', 'format', false);
+        $builder->addManyToOneField('datatype', Datatype::class, 'datatype', 'datatype', false);
         $builder->addVocabularyField('vocabulary');
     }
 }

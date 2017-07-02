@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Number Format Trait
+ * ARK Model Decimal Datatype
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,46 +28,39 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model\Format;
+namespace ARK\Model\Datatype;
 
+use ARK\Model\Datatype;
+use ARK\Model\Datatype\NumberTrait;
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
-trait NumberTrait
+class DecimalDatatype extends Datatype
 {
-    protected $minimum = null;
-    protected $exclusiveMinimum = false;
-    protected $maximum = null;
-    protected $exclusiveMaximum = false;
-    protected $multipleOf = null;
+    use NumberTrait;
 
-    public function minimumValue()
+    public $precision = 200;
+    public $scale = 0;
+
+    public function precision()
     {
-        return $this->minimum;
+        return $this->precision;
     }
 
-    public function exclusiveMinimum()
+    public function scale()
     {
-        return $this->exclusiveMinimum;
+        return $this->scale;
     }
 
-    public function maximumValue()
+    public static function loadMetadata(ClassMetadata $metadata)
     {
-        return $this->maximum;
-    }
-
-    public function exclusiveMaximum()
-    {
-        return $this->exclusiveMaximum;
-    }
-
-    public function multipleOf()
-    {
-        return $this->multipleOf;
-    }
-
-    public static function buildNumberMetadata(ClassMetadataBuilder $builder)
-    {
-        $builder->addField('exclusiveMinimum', 'boolean', [], 'exclusive_minimum');
-        $builder->addField('exclusiveMaximum', 'boolean', [], 'exclusive_maximum');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_decimal');
+        $builder->addField('precision', 'integer', [], 'prec');
+        $builder->addField('scale', 'integer');
+        $builder->addStringField('minimum', 200);
+        $builder->addStringField('maximum', 200);
+        $builder->addStringField('multipleOf', 200, 'multiple_of');
+        $builder->addStringField('preset', 200);
+        NumberTrait::buildNumberMetadata($builder);
     }
 }

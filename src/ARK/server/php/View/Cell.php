@@ -258,7 +258,7 @@ class Cell implements ElementInterface
     public static function loadMetadata(ClassMetadata $metadata)
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_view_grid');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_view_cell');
         $builder->setReadOnly();
 
         // Key

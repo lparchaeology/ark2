@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Date Format
+ * ARK Model Date Datatype
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,20 +28,20 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model\Format;
+namespace ARK\Model\Datatype;
 
-use ARK\Model\Format;
-use ARK\Model\Format\DateTimeTrait;
+use ARK\Model\Datatype;
+use ARK\Model\Datatype\DateTimeTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
-class DateFormat extends Format
+class DateDatatype extends Datatype
 {
     use DateTimeTrait;
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_format_date');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_date');
         DateTimeTrait::buildDateTimeMetadata($builder);
         $builder->addField('preset', 'date');
     }

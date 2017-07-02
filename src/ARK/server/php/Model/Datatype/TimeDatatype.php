@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Integer Format
+ * ARK Model Time Datatype
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,24 +28,21 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model\Format;
+namespace ARK\Model\Datatype;
 
-use ARK\Model\Format;
-use ARK\Model\Format\NumberTrait;
+use ARK\Model\Datatype;
+use ARK\Model\Datatype\DateTimeTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
-class IntegerFormat extends Format
+class TimeDatatype extends Datatype
 {
-    use NumberTrait;
+    use DateTimeTrait;
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_format_integer');
-        $builder->addField('minimum', 'integer');
-        $builder->addField('maximum', 'integer');
-        $builder->addField('multipleOf', 'integer', [], 'multiple_of');
-        $builder->addField('preset', 'integer');
-        NumberTrait::buildNumberMetadata($builder);
+        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_time');
+        DateTimeTrait::buildDateTimeMetadata($builder);
+        $builder->addField('preset', 'time');
     }
 }

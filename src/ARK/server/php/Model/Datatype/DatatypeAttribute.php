@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Float Format
+ * ARK Model Datatype Attribute
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,24 +28,46 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model\Format;
+namespace ARK\Model\Datatype;
 
-use ARK\Model\Format;
-use ARK\Model\Format\NumberTrait;
+use ARK\Model\Attribute;
+use ARK\Model\Datatype;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\Vocabulary\Vocabulary;
 
-class FloatFormat extends Format
+class DatatypeAttribute extends Attribute
 {
-    use NumberTrait;
+    protected $parent = null;
+    protected $sequence = 0;
+    protected $root = false;
+
+    public function parent()
+    {
+        return $this->parent;
+    }
+
+    public function sequence()
+    {
+        return $this->sequence;
+    }
+
+    public function isRoot()
+    {
+        return $this->root;
+    }
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_format_float');
-        $builder->addField('minimum', 'float');
-        $builder->addField('maximum', 'float');
-        $builder->addField('multipleOf', 'float', [], 'multiple_of');
-        $builder->addField('preset', 'float');
-        NumberTrait::buildNumberMetadata($builder);
+        // Table
+        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_attribute');
+
+        // Key
+        $builder->addManyToOneKey('parent', 'ARK\Model\Datatype', 'parent', 'datatype', false);
+        $builder->addStringKey('attribute', 30);
+
+        // Attributes
+        $builder->addField('sequence', 'integer');
+        $builder->addField('root', 'boolean');
     }
 }

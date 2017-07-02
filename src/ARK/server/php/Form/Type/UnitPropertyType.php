@@ -56,7 +56,7 @@ class UnitPropertyType extends ScalarPropertyType
         $value = $property->value();
         $forms['value']->setData($value['value']);
         if (!isset($value['unit'])) {
-            $vocab = $property->attribute()->format()->parameterVocabulary();
+            $vocab = $property->attribute()->datatype()->parameterVocabulary();
             $vocab = ORM::find(Vocabulary::class, $vocab);
             $value['unit'] = $vocab->defaultTerm()->name();
         }

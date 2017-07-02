@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Time Format
+ * ARK Model String Datatype
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,21 +28,50 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model\Format;
+namespace ARK\Model\Datatype;
 
-use ARK\Model\Format;
-use ARK\Model\Format\DateTimeTrait;
+use ARK\Model\Datatype;
+use ARK\Model\Datatype\StringDatatype;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
-class TimeFormat extends Format
+class StringDatatype extends Datatype
 {
-    use DateTimeTrait;
+    protected $pattern = '';
+    protected $minimumLength = 0;
+    protected $maximumLength = 0;
+    protected $defaultSize = 0;
+
+    public function pattern()
+    {
+        return $this->pattern;
+    }
+
+    public function minimumLength()
+    {
+        return $this->minimumLength;
+    }
+
+    public function maximumLength()
+    {
+        return $this->maximumLength;
+    }
+
+    public function defaultSize()
+    {
+        return $this->defaultSize;
+    }
 
     public static function loadMetadata(ClassMetadata $metadata)
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_format_time');
-        DateTimeTrait::buildDateTimeMetadata($builder);
-        $builder->addField('preset', 'time');
+        // Table
+        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_string');
+
+        // Attributes
+        $builder->addStringField('pattern', 100);
+        $builder->addField('minimumLength', 'integer', [], 'min_length');
+        $builder->addField('maximumLength', 'integer', [], 'max_length');
+        $builder->addField('defaultSize', 'integer', [], 'default_size');
+        $builder->addStringField('preset', 4000);
     }
 }
