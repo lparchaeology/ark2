@@ -1,0 +1,131 @@
+{% use "bootstrap_3_horizontal_layout.html.twig" %}
+
+{# Override standard blocks #}
+
+{% block form_label_class -%}
+col-xs-12 col-sm-4
+{%- endblock form_label_class %}
+
+{# Fix nested blank labels, see https://github.com/symfony/symfony/pull/19247 #}
+{% block form_label -%}
+    {% spaceless %}
+        {% if label is not same as(false) %}
+            {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' ' ~ block('form_label_class'))|trim}) %}
+            {{- parent() -}}
+        {% endif %}
+    {% endspaceless %}
+{%- endblock form_label %}
+
+{# Fix nested blank labels, see https://github.com/symfony/symfony/pull/19247 #}
+{% block form_group_class -%}
+    {%- if label is same as(false) -%}
+        col-sm-11
+    {%- else -%}
+        form-group-widget col-xs-11 col-sm-7 col-lg-7
+    {%- endif -%}
+{%- endblock form_group_class %}
+
+{% block form_help -%}
+    {% if help is defined and help is not null %}
+        <span class="help" title="{{ help | translate('help') }}" data-toggle="tooltip" data-placement="bottom" >
+            <span class="glyphicon glyphicon-question-sign">
+            </span>
+        </span>
+    {% endif %}
+{%- endblock form_help %}
+
+{% block form_widget -%}
+    {{ parent() }}
+    {{ block('form_help') }}
+{%- endblock form_widget %}
+
+{% block datetime_widget -%}
+    {{ parent() }}
+    {{ block('form_help') }}
+{%- endblock datetime_widget %}
+
+{% block date_widget -%}
+    {{ parent() }}
+    {{ block('form_help') }}
+{%- endblock date_widget %}
+
+{% block time_widget -%}
+    {{ parent() }}
+    {{ block('form_help') }}
+{%- endblock time_widget %}
+
+{% block choice_widget -%}
+    {{ parent() }}
+    {{ block('form_help') }}
+{%- endblock choice_widget %}
+
+{% block textarea_widget -%}
+    {{ parent() }}
+    {{ block('form_help') }}
+{%- endblock textarea_widget %}
+
+{# Custom blocks #}
+
+{% block property_widget -%}
+    {% for key, subform in form %}
+        {{- form_widget(subform, {'state': state, 'help': help}) -}}
+        {% do subform.setRendered %}
+    {% endfor %}
+{%- endblock property_widget %}
+
+{% block static_widget -%}
+    {% spaceless %}
+    <div id="{{ id }}" class="static-widget" >
+        {% if value is empty %}
+            &nbsp;
+        {% elseif value is iterable %}
+            {% set out = '' %}
+            {% set sep = '' %}
+            {% for val in value %}
+                {% set out = out ~ sep ~ val|translate %}
+                {% set sep = '<br />' %}
+            {% endfor %}
+            {{ out|raw }}
+        {% else %}
+            {{ value|translate }}
+        {% endif %}
+    </div>
+    {% endspaceless %}
+{%- endblock static_widget %}
+
+{% block unit_widget -%}
+    <div class="input-group">
+        {{- form_widget(form['value']) -}}
+        <div class="input-group-addon"> {{- form['unit'].vars['data'] -}} </div>
+    </div>
+    {{ block('form_help') }}
+    {% do form.setRendered %}
+{%- endblock unit_widget %}
+
+{% block checkbox_widget %}
+    {% spaceless %}
+        <div class="checkbox">
+            <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+            <label for="{{ id }}"><span class="checkboxlabel">{{ label|trans({}, translation_domain) }}</span></label>
+        </div>
+    {% endspaceless %}
+{% endblock checkbox_widget %}
+
+{% block file_widget %}
+    {% spaceless %}
+        {% set type = type|default('file') %}
+        {% if form.parent.vars.data %}
+            {% set value = form.parent.vars.data.value %}
+        {% else %}
+            {% set value = null %}
+        {% endif %}
+        {% if value is iterable and value | length > 0 %}
+            <input type="{{ type }}" {{ block('widget_attributes') }} data-existing = "{%- for image in value %}{{ image.id }}{{ loop.last ? '' : ',' }}{% endfor %}"/>
+        {% elseif value.id is defined %}
+            <input type="{{ type }}" {{ block('widget_attributes') }} data-existing = "{{ value.id }}"/>
+        {% else %}
+            <input type="{{ type }}" {{ block('widget_attributes') }} />
+        {% endif %}
+        {{ block('form_help') }}
+    {% endspaceless %}
+{% endblock file_widget %}

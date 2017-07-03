@@ -1,0 +1,8 @@
+{# Define the standard navbar block #}
+{% block link %}
+
+    <a href="{{ path(link.target) }}">
+        {{ link.name | translate }}
+    </a>
+
+{% endblock link %}

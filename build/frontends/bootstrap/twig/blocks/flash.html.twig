@@ -1,0 +1,23 @@
+{% block flash -%}
+
+    <div class="row">
+        <div class="col-xs-12">
+            {# Display flashes in order of priority #}
+            {% set types = ['danger', 'error', 'success', 'warning', 'info'] %}
+            {% for type in types %}
+                {%if type == 'error'%}
+                    {% set alert = 'danger' %}
+                {% else %}
+                    {% set alert = type %}
+                {% endif %}
+                {% for message in app.session.flashBag.get(type) %}
+                    <div class="alert alert-{{ alert }} " role="alert">
+                        <button class="close" data-dismiss="alert">×</button>
+                        {{ message | translate }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+
+{%- endblock flash %}

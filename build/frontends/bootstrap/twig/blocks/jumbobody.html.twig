@@ -1,0 +1,12 @@
+{# Define the standard <body> block including navbar, sidebar, and content block #}
+{% block body %}
+
+    {% block navbar %}{% endblock %}
+
+    <div class="container-fluid">
+        <div class="jumbotron">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+{% endblock body %}

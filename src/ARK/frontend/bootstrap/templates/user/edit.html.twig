@@ -1,0 +1,19 @@
+{% extends layout_template  %}
+
+{% form_theme editForm 'bootstrap_3_layout.html.twig' %}
+
+{% block title %}{{ 'Edit User' | trans({}, 'messages') }}: {{ user.displayName }}{% endblock %}
+
+{% block content %}
+    <h1>
+        {% if global.user == user %}
+            {{ 'Edit your profile' | trans({}, 'messages') }}
+        {% else %}
+            {{ 'Edit User' | trans({}, 'messages') }}: {{ user.displayName }}
+        {% endif %}
+    </h1>
+
+    {{ form_start(editForm) }}
+    {{ form_widget(editForm) }}
+    {{ form_end(editForm) }}
+{% endblock %}

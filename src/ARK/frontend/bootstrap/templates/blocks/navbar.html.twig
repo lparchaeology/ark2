@@ -1,0 +1,59 @@
+{# Define the standard navbar block #}
+
+{% use "blocks/link.html.twig" %}
+
+{% block navbar %}
+
+    <div id="navbar" class="navbar row">
+        <div class="col-md-12 dime-banner">
+            <div class="row">
+                <div class="col-xs-1 col-xs-push-0 col-sm-1 col-sm-push-0 col-md-1 col-md-push-0">
+                    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".sidebar">
+                        <span class="glyphicon glyphicon-menu-hamburger"></span>
+                    </button>
+                </div>
+                <div class="col-xs-1 col-xs-push-0 col-sm-1 col-sm-push-2 col-md-1 col-md-push-3">
+                    <span>
+                        &nbsp;
+                    </span>
+                </div>
+                <div class="col-sm-push-0 col-md-4 col-md-push-6">
+                    <form class="navbar-form navbar-right">
+                        <input type="text" class="form-control" placeholder="{{ 'search.placeholder' | trans }}">
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs nav-justified dime-nav">
+                        {% if state.page_config.navlinks is defined %}
+                            {% for link in state.page_config.navlinks %}
+                                {% if link.dropdown == true %}
+                                    <li class="dropdown">
+                                        <a data-toggle="dropdown" class="dropdown-toggle" href="{{ path(link.target) }}">
+                                            {{ link.name | translate }}
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            {% for sublink in link.navlinks %}
+                                                <li>
+                                                    {% include "blocks/link.html.twig" with {'link': sublink} %}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% else %}
+                                    <li role="presentation">
+                                        {% include "blocks/link.html.twig" with {'link': link} %}
+                                    </li>
+                                {% endif %}
+
+                            {% endfor %}
+                        {% endif %}
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock navbar %}
