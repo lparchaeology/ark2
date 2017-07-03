@@ -30,13 +30,13 @@
 
 namespace ARK\Api\JsonApi\Action;
 
-use ARK\Application;
 use ARK\Api\JsonApi\Http\JsonApiRequest;
 use ARK\Api\JsonApi\Http\JsonApiResponse;
 use ARK\Api\JsonApi\Http\JsonApiErrorResponse;
 use ARK\Api\JsonApi\JsonApiException;
 use ARK\Error\Error;
 use ARK\Error\ErrorBag;
+use ARK\Framework\Application;
 use ARK\Http\Error\InternalServerError;
 use ARK\Service;
 use Exception;

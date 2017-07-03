@@ -30,8 +30,8 @@
 
 namespace ARK\Api\JsonApi\Http;
 
-use ARK\Application;
 use ARK\Error\ErrorBag;
+use ARK\Framework\Application;
 use ARK\Http\Error\InternalServerError;
 use Symfony\Component\Serializer\Serializer;
 

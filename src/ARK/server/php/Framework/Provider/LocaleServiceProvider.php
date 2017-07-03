@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Debug Service Provider
+ * ARK Locale Service Provider
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,20 +28,19 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Api;
+namespace ARK\Framework\Provider;
 
-use ARK\Api\JsonApi\JsonApiServiceProvider;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Silex\Provider\LocaleServiceProvider as SilexLocaleServiceProvider;
 
-class ApiServiceProvider implements ServiceProviderInterface
+class LocaleServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container)
     {
-        $path = $container['ark']['api']['path'];
-        $container['path.api'] = $path;
-        $container->register(new JsonApiServiceProvider());
-        // FIXME Unsecured API access, secure with OAUTH2
-        $container->extendArray('security.firewalls', 'api_area', ['pattern' => "(^$path)", 'anonymous' => true]);
+        $container->register(new SilexLocaleServiceProvider());
+        $locale = $container['ark']['locale'];
+        $container['locale'] = (isset($locale['default']) ? $locale['default'] : 'en');
+        date_default_timezone_set(isset($locale['timezone']) ? $locale['timezone'] : 'UTC');
     }
 }

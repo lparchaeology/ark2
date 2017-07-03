@@ -30,9 +30,9 @@
 
 namespace ARK;
 
-use ARK\Application;
 use ARK\Error\Error;
 use ARK\Error\ErrorException;
+use ARK\Framework\Application;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model
+ * Workflow Service Provider
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,26 +28,22 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model;
+namespace ARK\Framework\Provider;
 
-use ARK\Framework\Application;
-use ARK\Model\Attribute;
-use ARK\Model\Item;
-use ARK\Model\Schema;
-use ARK\ORM\ORM;
-use ARK\Service;
+use ARK\Workflow\Registry;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 
-class Model
+class WorkflowServiceProvider implements ServiceProviderInterface
 {
-    protected $app = null;
-
-    public function __construct(Application $app)
+    public function register(Container $container)
     {
-        $this->app = $app;
-    }
-
-    public function schema($schema)
-    {
-        return ORM::find(Schema::class, $schema);
+        $container['workflow.registry'] = function () {
+            return new Registry();
+        };
+        $container->extend('twig', function ($twig, $app) {
+            $twig->addGlobal('workflow', $app['workflow.registry']);
+            return $twig;
+        });
     }
 }

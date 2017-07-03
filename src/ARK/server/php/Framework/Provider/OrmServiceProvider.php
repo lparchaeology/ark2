@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\ORM\Provider;
+namespace ARK\Framework\Provider;
 
 /*
  * Simplified/Extended version of dflydev/doctrine-orm-service-provider.
@@ -285,10 +285,10 @@ class OrmServiceProvider implements ServiceProviderInterface
                 $config = new Configuration;
 
                 if (!$container['debug']) {
-                    $config->setMetadataCacheImpl($container['cache.orm.system']);
-                    $config->setQueryCacheImpl($container['cache.orm.system']);
-                    $config->setResultCacheImpl($container['cache.orm.app']);
-                    $config->setHydrationCacheImpl($container['cache.orm.app']);
+                    //$config->setMetadataCacheImpl($container['orm.default_cache']);
+                    //$config->setQueryCacheImpl($container['orm.default_cache']);
+                    //$config->setResultCacheImpl($container['orm.default_cache']);
+                    //$config->setHydrationCacheImpl($container['orm.default_cache']);
                 }
 
                 $config->setProxyDir($options['proxies_dir']);

@@ -26,8 +26,12 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
- 
+
 require_once __DIR__ . '/../../../vendor/autoload.php';
+
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
+ini_set('display_errors', 0);
+
 $site = basename(realpath(__DIR__ . '/..'));
-$app = new ARK\Application($site);
+$app = new ARK\Framework\Application($site);
 $app->run();

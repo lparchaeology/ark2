@@ -31,9 +31,9 @@
 namespace ARK\System;
 
 use ARK\ARK;
-use ARK\Bus\Provider\BusServiceProvider;
-use ARK\Provider\LoggerServiceProvider;
-use ARK\Provider\MailerServiceProvider;
+use ARK\Framework\Provider\BusServiceProvider;
+use ARK\Framework\Provider\LoggerServiceProvider;
+use ARK\Framework\Provider\MailerServiceProvider;
 use Psr\Log\LogLevel;
 use Silex\Application as SilexApplication;
 use Silex\Application\MonologTrait;

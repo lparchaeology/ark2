@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\View\Provider;
+namespace ARK\Framework\Provider;
 
 use ARK\ARK;
 use ARK\Translation\Twig\TranslateExtension;

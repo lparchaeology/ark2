@@ -30,9 +30,9 @@
 
 namespace ARK\View;
 
-use ARK\Application;
 use ARK\Error\Error;
 use ARK\Error\ErrorException;
+use ARK\Framework\Application;
 use ARK\Service;
 use ARK\View\Layout;
 use ARK\ORM\ORM;

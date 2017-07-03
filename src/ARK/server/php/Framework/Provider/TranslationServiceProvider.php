@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Translation\Provider;
+namespace ARK\Framework\Provider;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;

@@ -30,13 +30,13 @@
 
 namespace ARK\Api\JsonApi\Action;
 
-use ARK\Application;
 use ARK\Api\JsonApi\Error\NotFoundError;
 use ARK\Api\JsonApi\Http\JsonApiException;
 use ARK\Api\JsonApi\Http\JsonApiRequest;
 use ARK\Api\JsonApi\Http\JsonApiResponse;
 use ARK\Api\JsonApi\Resource\ItemResource;
 use ARK\Api\JsonApi\Serializer\ItemSerializer;
+use ARK\Framework\Application;
 use ARK\Model\Module\Module;
 use ARK\ORM\EntityManager;
 use Exception;

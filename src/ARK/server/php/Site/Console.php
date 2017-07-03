@@ -31,8 +31,8 @@
 namespace ARK\Site;
 
 use ARK\ARK;
-use ARK\Application;
 use ARK\Console\AbstractConsole;
+use ARK\Framework\Application;
 use ARK\ORM\Console\GenerateItemEntityCommand;
 use ARK\Translation\Console\TranslationAddCommand;
 use ARK\Translation\Console\TranslationDimeCommand;

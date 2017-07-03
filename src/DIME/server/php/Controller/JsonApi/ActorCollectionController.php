@@ -30,12 +30,12 @@
 
 namespace DIME\Controller\JsonApi;
 
-use ARK\Application;
 use ARK\Actor\Actor;
 use ARK\Api\JsonApi\Action\AbstractJsonApiAction;
 use ARK\Api\JsonApi\Http\JsonApiRequest;
 use ARK\Api\JsonApi\Http\JsonApiResponse;
 use ARK\Api\JsonApi\Resource\ItemResource;
+use ARK\Framework\Application;
 use ARK\ORM\ORM;
 use Tobscure\JsonApi\Document;
 use Tobscure\JsonApi\Resource;

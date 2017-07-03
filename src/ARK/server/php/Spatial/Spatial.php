@@ -30,7 +30,7 @@
 
 namespace ARK\Spatial;
 
-use ARK\Application;
+use ARK\Framework\Application;
 use ARK\Service;
 use proj4php\Proj;
 use proj4php\Point as ProjPoint;

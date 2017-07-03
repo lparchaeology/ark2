@@ -28,19 +28,20 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Provider;
+namespace ARK\Framework\Provider;
 
+use ARK\Api\JsonApi\JsonApiServiceProvider;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Psr\Log\LogLevel;
-use Silex\Provider\SwiftmailerServiceProvider;
 
-class MailerServiceProvider implements ServiceProviderInterface
+class ApiServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container)
     {
-        $container->register(new SwiftmailerServiceProvider());
-        // TODO Configure mailer!
-        $container['swiftmailer.options'] = [];
+        $path = $container['ark']['api']['path'];
+        $container['path.api'] = $path;
+        $container->register(new JsonApiServiceProvider());
+        // FIXME Unsecured API access, secure with OAUTH2
+        $container->extendArray('security.firewalls', 'api_area', ['pattern' => "(^$path)", 'anonymous' => true]);
     }
 }

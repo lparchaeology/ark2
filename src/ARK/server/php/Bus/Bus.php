@@ -30,7 +30,7 @@
 
 namespace ARK\Bus;
 
-use ARK\Application;
+use ARK\Framework\Application;
 
 class Bus
 {

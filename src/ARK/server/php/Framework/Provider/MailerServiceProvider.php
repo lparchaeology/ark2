@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Locale Service Provider
+ * ARK Debug Service Provider
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,19 +28,19 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Provider;
+namespace ARK\Framework\Provider;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Silex\Provider\LocaleServiceProvider as SilexLocaleServiceProvider;
+use Psr\Log\LogLevel;
+use Silex\Provider\SwiftmailerServiceProvider;
 
-class LocaleServiceProvider implements ServiceProviderInterface
+class MailerServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container)
     {
-        $container->register(new SilexLocaleServiceProvider());
-        $locale = $container['ark']['locale'];
-        $container['locale'] = (isset($locale['default']) ? $locale['default'] : 'en');
-        date_default_timezone_set(isset($locale['timezone']) ? $locale['timezone'] : 'UTC');
+        $container->register(new SwiftmailerServiceProvider());
+        // TODO Configure mailer!
+        $container['swiftmailer.options'] = [];
     }
 }

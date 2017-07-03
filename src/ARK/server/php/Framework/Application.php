@@ -28,28 +28,29 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK;
+namespace ARK\Framework;
 
-use ARK\Api\ApiServiceProvider;
 use ARK\Api\JsonApi\Http\JsonApiRequest;
 use ARK\ARK;
-use ARK\Bus\Provider\BusServiceProvider;
-use ARK\Database\Provider\DbalServiceProvider;
-use ARK\File\Provider\FileServiceProvider;
+use ARK\Framework\Provider\ApiServiceProvider;
+use ARK\Framework\Provider\BusServiceProvider;
+use ARK\Framework\Provider\DbalServiceProvider;
+use ARK\Framework\Provider\FileServiceProvider;
+use ARK\Framework\Provider\OrmServiceProvider;
+use ARK\Framework\Provider\DebugServiceProvider;
+use ARK\Framework\Provider\JsonSchemaServiceProvider;
+use ARK\Framework\Provider\LocaleServiceProvider;
+use ARK\Framework\Provider\LoggerServiceProvider;
+use ARK\Framework\Provider\MailerServiceProvider;
+use ARK\Framework\Provider\RoutingServiceProvider;
+use ARK\Framework\Provider\SecurityServiceProvider;
+use ARK\Framework\Provider\SpatialServiceProvider;
+use ARK\Framework\Provider\TranslationServiceProvider;
+use ARK\Framework\Provider\ViewServiceProvider;
+use ARK\Framework\Provider\WorkflowServiceProvider;
 use ARK\Http\Error\InternalServerError;
 use ARK\Model\Model;
-use ARK\ORM\Provider\OrmServiceProvider;
-use ARK\Provider\DebugServiceProvider;
-use ARK\Provider\JsonSchemaServiceProvider;
-use ARK\Provider\LocaleServiceProvider;
-use ARK\Provider\LoggerServiceProvider;
-use ARK\Provider\MailerServiceProvider;
-use ARK\Routing\Provider\RoutingServiceProvider;
-use ARK\Security\Provider\SecurityServiceProvider;
-use ARK\Spatial\SpatialServiceProvider;
-use ARK\Translation\Provider\TranslationServiceProvider;
-use ARK\View\Provider\ViewServiceProvider;
-use ARK\Workflow\Provider\WorkflowServiceProvider;
+use ARK\Service;
 use Silex\Application as SilexApplication;
 use Silex\Application\FormTrait;
 use Silex\Application\MonologTrait;
@@ -95,11 +96,10 @@ class Application extends SilexApplication
 
         // Enable the debug mode
         static::$debug = $this['debug'] = $this['ark']['debug'];
+
         if (static::$debug) {
             Debug::enable(E_ALL, true);
         } else {
-            error_reporting(E_ERROR | E_WARNING | E_PARSE);
-            ini_set('display_errors', 0);
             // TODO Check is production safe, also need a custom Exception Handler to log?
             ErrorHandler::register();
             ExceptionHandler::register(false);
@@ -179,6 +179,7 @@ class Application extends SilexApplication
             return;
         }
         parent::boot();
+
         // FIXME HACK Workaround the listener not firing for some reason
         if (static::$debug) {
             $this['var_dumper.dump_listener']->configure();

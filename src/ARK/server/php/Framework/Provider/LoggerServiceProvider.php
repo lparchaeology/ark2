@@ -28,34 +28,34 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Provider;
+namespace ARK\Framework\Provider;
 
+use ARK\ARK;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Silex\Provider\VarDumperServiceProvider;
-use Silex\Provider\WebProfilerServiceProvider;
-use Sorien\Provider\DoctrineProfilerServiceProvider;
+use Psr\Log\LogLevel;
+use Silex\Provider\MonologServiceProvider;
 
-class DebugServiceProvider implements ServiceProviderInterface
+class LoggerServiceProvider implements ServiceProviderInterface
 {
+    protected $logName;
+
+    public function __construct($logName)
+    {
+        $this->logName = $logName;
+    }
+
     public function register(Container $container)
     {
+        $container->register(new MonologServiceProvider);
+        $container['monolog.logfile'] = ARK::logDir().'/'.$this->logName.'.log';
+        $container['monolog.name'] = $this->logName;
         if ($container['debug']) {
-            $container->register(new VarDumperServiceProvider());
-            $container->register(new WebProfilerServiceProvider(), [
-                'profiler.cache_dir' => $container['dir.var'].'/cache/profiler',
-            ]);
-            // HACK Fix to work-around bug in the profiler not finding the dump template
-            $container['profiler.templates_path.debug'] = function () {
-                $r = new \ReflectionClass('Symfony\Bundle\DebugBundle\DependencyInjection\Configuration');
-                return dirname(dirname($r->getFileName())).'/Resources/views';
-            };
-            $container->register(new DoctrineProfilerServiceProvider());
-            $container->extendArray(
-                'security.firewalls',
-                'dev_area',
-                ['pattern' => '^/(_(profiler|wdt)|css|images|js)/', 'anonymous' => true]
-            );
+            $container['monolog.level'] = 'DEBUG';
+            $container['logger.level'] = LogLevel::DEBUG;
+        } else {
+            $container['monolog.level'] = 'WARNING';
+            $container['logger.level'] = LogLevel::WARNING;
         }
     }
 }

@@ -31,8 +31,8 @@
 namespace ARK\Security;
 
 use ARK\Actor\Actor;
-use ARK\Application;
 use ARK\Error\ErrorException;
+use ARK\Framework\Application;
 use ARK\Model\Attribute;
 use ARK\Model\Item;
 use ARK\ORM\ORM;

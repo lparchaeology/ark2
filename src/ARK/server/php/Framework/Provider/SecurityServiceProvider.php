@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Security\Provider;
+namespace ARK\Framework\Provider;
 
 use ARK\Security\Security;
 use ARK\Security\Validator\PasswordStrength;

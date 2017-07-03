@@ -28,7 +28,7 @@
  * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Routing\Provider;
+namespace ARK\Framework\Provider;
 
 use ARK\Routing\Router\SilexRouter;
 use ARK\Service;
