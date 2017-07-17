@@ -770,7 +770,7 @@ class SiteMigrateCommand extends DatabaseCommand
             foreach ($fragmentTables as $fragmentTable) {
                 $upd = "
                     UPDATE $fragmentTable
-                    SET object_fid = :fid
+                    SET object = :fid
                     WHERE old_parent_table = :old_table
                     AND old_parent_id = :old_id
                 ";

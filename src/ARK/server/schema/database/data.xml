@@ -1,1279 +1,1285 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema xmlns="http://www.concrete5.org/doctrine-xml/0.5">
-  <table name="ark_association">
-    <field name="fid" type="integer">
-      <autoincrement/>
-      <key/>
-      <notnull/>
-    </field>
-    <field name="module1" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="item1" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="association" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="module2" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="item2" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="mod_by" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="mod_on" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="cre_by" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="cre_on" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="version" type="string" size="36"/>
-    <index name="association">
-      <col>association</col>
-    </index>
-    <index name="item1">
-      <col>module1</col>
-      <col>item1</col>
-    </index>
-    <index name="item2">
-      <col>module2</col>
-      <col>item2</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-  </table>
-  <table name="ark_fragment_blob">
-    <field name="fid" type="integer">
-      <autoincrement/>
-      <key/>
-      <notnull/>
-    </field>
-    <field name="object" type="integer"/>
-    <field name="module" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="item" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="attribute" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="type" type="string" size="30">
-      <default value="blob"/>
-      <notnull/>
-    </field>
-    <field name="format" type="string" size="30"/>
-    <field name="parameter" type="string" size="30"/>
-    <field name="value" type="blob">
-      <notnull/>
-    </field>
-    <field name="span" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="extent" type="blob"/>
-    <field name="modifier" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="modified" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="creator" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="created" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="version" type="string" size="36"/>
-    <index name="property">
-      <col>module</col>
-      <col>item</col>
-      <col>attribute</col>
-    </index>
-    <index name="object">
-      <col>object</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    <references name="ark_fragment_blob_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
-      <column local="object" foreign="fid"/>
-    </references>
-  </table>
-  <table name="ark_fragment_boolean">
-    <field name="fid" type="integer">
-      <autoincrement/>
-      <key/>
-      <notnull/>
-    </field>
-    <field name="object" type="integer"/>
-    <field name="module" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="item" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="attribute" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="type" type="string" size="30">
-      <default value="boolean"/>
-      <notnull/>
-    </field>
-    <field name="format" type="string" size="30"/>
-    <field name="parameter" type="string" size="30"/>
-    <field name="value" type="boolean">
-      <notnull/>
-    </field>
-    <field name="span" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="extent" type="boolean"/>
-    <field name="modifier" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="modified" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="creator" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="created" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="version" type="string" size="36"/>
-    <index name="module">
-      <col>module</col>
-      <col>item</col>
-      <col>attribute</col>
-    </index>
-    <index name="object">
-      <col>object</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    <references name="ark_fragment_boolean_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
-      <column local="object" foreign="fid"/>
-    </references>
-  </table>
-  <table name="ark_fragment_date">
-    <field name="fid" type="integer">
-      <autoincrement/>
-      <key/>
-      <notnull/>
-    </field>
-    <field name="object" type="integer"/>
-    <field name="module" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="item" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="attribute" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="type" type="string" size="30">
-      <default value="date"/>
-      <notnull/>
-    </field>
-    <field name="format" type="string" size="30"/>
-    <field name="parameter" type="string" size="30"/>
-    <field name="value" type="date">
-      <notnull/>
-    </field>
-    <field name="span" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="extent" type="date"/>
-    <field name="modifier" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="modified" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="creator" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="created" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="version" type="string" size="36"/>
-    <index name="module">
-      <col>module</col>
-      <col>item</col>
-      <col>attribute</col>
-    </index>
-    <index name="object">
-      <col>object</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    <references name="ark_fragment_date_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
-      <column local="object" foreign="fid"/>
-    </references>
-  </table>
-  <table name="ark_fragment_datetime">
-    <field name="fid" type="integer">
-      <autoincrement/>
-      <key/>
-      <notnull/>
-    </field>
-    <field name="object" type="integer"/>
-    <field name="module" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="item" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="attribute" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="type" type="string" size="30">
-      <default value="datetime"/>
-      <notnull/>
-    </field>
-    <field name="format" type="string" size="30"/>
-    <field name="parameter" type="string" size="30"/>
-    <field name="value" type="datetime">
-      <notnull/>
-    </field>
-    <field name="span" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="extent" type="datetime"/>
-    <field name="modifier" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="modified" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="creator" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="created" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="version" type="string" size="36"/>
-    <index name="module">
-      <col>module</col>
-      <col>item</col>
-      <col>attribute</col>
-    </index>
-    <index name="object">
-      <col>object</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    <references name="ark_fragment_datetime_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
-      <column local="object" foreign="fid"/>
-    </references>
-  </table>
-  <table name="ark_fragment_decimal">
-    <field name="fid" type="integer">
-      <autoincrement/>
-      <key/>
-      <notnull/>
-    </field>
-    <field name="object" type="integer"/>
-    <field name="module" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="item" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="attribute" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="type" type="string" size="30">
-      <default value="decimal"/>
-      <notnull/>
-    </field>
-    <field name="format" type="string" size="30"/>
-    <field name="parameter" type="string" size="30"/>
-    <field name="value" type="string" size="200">
-      <notnull/>
-    </field>
-    <field name="span" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="extent" type="string" size="200"/>
-    <field name="modifier" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="modified" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="creator" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="created" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="version" type="string" size="36"/>
-    <index name="property">
-      <col>module</col>
-      <col>item</col>
-      <col>attribute</col>
-    </index>
-    <index name="object">
-      <col>object</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    <references name="ark_fragment_decimal_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
-      <column local="object" foreign="fid"/>
-    </references>
-  </table>
-  <table name="ark_fragment_float">
-    <field name="fid" type="integer">
-      <autoincrement/>
-      <key/>
-      <notnull/>
-    </field>
-    <field name="object" type="integer"/>
-    <field name="module" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="item" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="attribute" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="type" type="string" size="30">
-      <default value="float"/>
-      <notnull/>
-    </field>
-    <field name="format" type="string" size="30"/>
-    <field name="parameter" type="string" size="30"/>
-    <field name="value" type="float" size="10.0">
-      <notnull/>
-    </field>
-    <field name="span" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="extent" type="float" size="10.0"/>
-    <field name="modifier" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="modified" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="creator" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="created" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="version" type="string" size="36"/>
-    <index name="module">
-      <col>module</col>
-      <col>item</col>
-      <col>attribute</col>
-    </index>
-    <index name="object">
-      <col>object</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    <references name="ark_fragment_float_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
-      <column local="object" foreign="fid"/>
-    </references>
-  </table>
-  <table name="ark_fragment_integer">
-    <field name="fid" type="integer">
-      <autoincrement/>
-      <key/>
-      <notnull/>
-    </field>
-    <field name="object" type="integer"/>
-    <field name="module" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="item" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="attribute" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="type" type="string" size="30">
-      <default value="integer"/>
-      <notnull/>
-    </field>
-    <field name="format" type="string" size="30"/>
-    <field name="parameter" type="string" size="30"/>
-    <field name="value" type="bigint">
-      <notnull/>
-    </field>
-    <field name="span" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="extent" type="bigint"/>
-    <field name="modifier" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="modified" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="creator" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="created" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="version" type="string" size="36"/>
-    <index name="module">
-      <col>module</col>
-      <col>item</col>
-      <col>attribute</col>
-    </index>
-    <index name="object_fid">
-      <col>object</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    <references name="ark_fragment_integer_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
-      <column local="object" foreign="fid"/>
-    </references>
-  </table>
-  <table name="ark_fragment_item">
-    <field name="fid" type="integer">
-      <autoincrement/>
-      <key/>
-      <notnull/>
-    </field>
-    <field name="object" type="integer"/>
-    <field name="module" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="item" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="attribute" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="type" type="string" size="30">
-      <default value="item"/>
-      <notnull/>
-    </field>
-    <field name="format" type="string" size="30"/>
-    <field name="parameter" type="string" size="30"/>
-    <field name="value" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="span" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="extent" type="string" size="30"/>
-    <field name="modifier" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="modified" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="creator" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="created" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="version" type="string" size="36"/>
-    <index name="module">
-      <col>module</col>
-      <col>item</col>
-      <col>attribute</col>
-    </index>
-    <index name="object_fid">
-      <col>object</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    <references name="ark_fragment_item_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
-      <column local="object" foreign="fid"/>
-    </references>
-  </table>
-  <table name="ark_fragment_object">
-    <field name="fid" type="integer">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="object" type="integer"/>
-    <field name="module" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="item" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="attribute" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="type" type="string" size="30">
-      <default value="object"/>
-      <notnull/>
-    </field>
-    <field name="format" type="string" size="30"/>
-    <field name="parameter" type="string" size="30"/>
-    <field name="value" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="span" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="extent" type="string" size="30"/>
-    <field name="modifier" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="modified" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="creator" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="created" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="version" type="string" size="36"/>
-    <index name="item">
-      <col>module</col>
-      <col>item</col>
-      <col>attribute</col>
-    </index>
-    <index name="object">
-      <col>object</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    <references name="ark_fragment_object_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
-      <column local="object" foreign="fid"/>
-    </references>
-  </table>
-  <table name="ark_fragment_spatial">
-    <field name="fid" type="integer">
-      <autoincrement/>
-      <key/>
-      <notnull/>
-    </field>
-    <field name="object" type="integer"/>
-    <field name="module" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="item" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="attribute" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="type" type="string" size="30">
-      <default value="spatial"/>
-      <notnull/>
-    </field>
-    <field name="format" type="string" size="30"/>
-    <field name="parameter" type="string" size="30"/>
-    <field name="value" type="text">
-      <notnull/>
-    </field>
-    <field name="span" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="extent" type="text"/>
-    <field name="modifier" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="modified" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="creator" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="created" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="version" type="string" size="36"/>
-    <index name="property">
-      <col>module</col>
-      <col>item</col>
-      <col>attribute</col>
-    </index>
-    <index name="object">
-      <col>object</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    <references name="ark_fragment_spatial_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
-      <column local="object" foreign="fid"/>
-    </references>
-  </table>
-  <table name="ark_fragment_string">
-    <field name="fid" type="integer">
-      <autoincrement/>
-      <key/>
-      <notnull/>
-    </field>
-    <field name="object" type="integer"/>
-    <field name="module" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="item" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="attribute" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="type" type="string" size="30">
-      <default value="string"/>
-      <notnull/>
-    </field>
-    <field name="format" type="string" size="30"/>
-    <field name="parameter" type="string" size="30"/>
-    <field name="value" type="string" size="4000">
-      <notnull/>
-    </field>
-    <field name="span" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="extent" type="string" size="4000"/>
-    <field name="modifier" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="modified" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="creator" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="created" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="version" type="string" size="36"/>
-    <index name="module">
-      <col>module</col>
-      <col>item</col>
-      <col>attribute</col>
-    </index>
-    <index name="object_fid">
-      <col>object</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    <references name="ark_fragment_string_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
-      <column local="object" foreign="fid"/>
-    </references>
-  </table>
-  <table name="ark_fragment_text">
-    <field name="fid" type="integer">
-      <autoincrement/>
-      <key/>
-      <notnull/>
-    </field>
-    <field name="object" type="integer"/>
-    <field name="module" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="item" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="attribute" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="type" type="string" size="30">
-      <default value="text"/>
-      <notnull/>
-    </field>
-    <field name="format" type="string" size="30">
-      <default value="text/plain"/>
-      <notnull/>
-    </field>
-    <field name="parameter" type="string" size="30"/>
-    <field name="value" type="text">
-      <notnull/>
-    </field>
-    <field name="span" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="extent" type="text"/>
-    <field name="modifier" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="modified" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="creator" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="created" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="version" type="string" size="36"/>
-    <index name="module">
-      <col>module</col>
-      <col>item</col>
-      <col>attribute</col>
-    </index>
-    <index name="object_fid">
-      <col>object</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    <references name="ark_fragment_text_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
-      <column local="object" foreign="fid"/>
-    </references>
-  </table>
-  <table name="ark_fragment_time">
-    <field name="fid" type="integer">
-      <autoincrement/>
-      <key/>
-      <notnull/>
-    </field>
-    <field name="object" type="integer"/>
-    <field name="module" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="item" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="attribute" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="type" type="string" size="30">
-      <default value="time"/>
-      <notnull/>
-    </field>
-    <field name="format" type="string" size="30"/>
-    <field name="parameter" type="string" size="30"/>
-    <field name="value" type="time">
-      <notnull/>
-    </field>
-    <field name="span" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="extent" type="time"/>
-    <field name="modifier" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="modified" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="creator" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="created" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="version" type="string" size="36"/>
-    <index name="module">
-      <col>module</col>
-      <col>item</col>
-      <col>attribute</col>
-    </index>
-    <index name="objec">
-      <col>object</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    <references name="ark_fragment_time_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
-      <column local="object" foreign="fid"/>
-    </references>
-  </table>
-  <table name="ark_item_actor">
-    <field name="item" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="module" type="string" size="30">
-      <default value="actor"/>
-      <notnull/>
-    </field>
-    <field name="schma" type="string" size="30">
-      <default value="core.actor"/>
-      <notnull/>
-    </field>
-    <field name="type" type="string" size="30"/>
-    <field name="status" type="string" size="30">
-      <default value="allocated"/>
-      <notnull/>
-    </field>
-    <field name="visibility" type="string" size="30">
-      <default value="restricted"/>
-      <notnull/>
-    </field>
-    <field name="parent_module" type="string" size="30"/>
-    <field name="parent_item" type="string" size="30"/>
-    <field name="idx" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="label" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="modifier" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="modified" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="creator" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="created" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="version" type="string" size="36">
-      <notnull/>
-    </field>
-    <index name="name">
-      <col>label</col>
-    </index>
-    <index name="parent">
-      <col>parent_module</col>
-      <col>parent_item</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-  </table>
-  <table name="ark_item_event">
-    <field name="item" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="module" type="string" size="30">
-      <default value="event"/>
-      <notnull/>
-    </field>
-    <field name="schma" type="string" size="30">
-      <default value="core.event"/>
-      <notnull/>
-    </field>
-    <field name="type" type="string" size="30"/>
-    <field name="status" type="string" size="30">
-      <default value="allocated"/>
-      <notnull/>
-    </field>
-    <field name="visibility" type="string" size="30">
-      <default value="restricted"/>
-      <notnull/>
-    </field>
-    <field name="parent_module" type="string" size="30"/>
-    <field name="parent_item" type="string" size="30"/>
-    <field name="idx" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="label" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="modifier" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="modified" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="creator" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="created" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="version" type="string" size="36">
-      <notnull/>
-    </field>
-    <index name="name">
-      <col>label</col>
-    </index>
-    <index name="parent">
-      <col>parent_module</col>
-      <col>parent_item</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-  </table>
-  <table name="ark_item_file">
-    <field name="item" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="module" type="string" size="30">
-      <default value="file"/>
-      <notnull/>
-    </field>
-    <field name="schma" type="string" size="30">
-      <default value="core.file"/>
-      <notnull/>
-    </field>
-    <field name="type" type="string" size="30"/>
-    <field name="status" type="string" size="30">
-      <default value="allocated"/>
-      <notnull/>
-    </field>
-    <field name="visibility" type="string" size="30">
-      <default value="restricted"/>
-      <notnull/>
-    </field>
-    <field name="parent_module" type="string" size="30"/>
-    <field name="parent_item" type="string" size="30"/>
-    <field name="idx" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="label" type="string" size="255">
-      <notnull/>
-    </field>
-    <field name="modifier" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="modified" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="creator" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="created" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="version" type="string" size="36">
-      <notnull/>
-    </field>
-    <index name="parent">
-      <col>parent_module</col>
-      <col>parent_item</col>
-    </index>
-    <index name="name">
-      <col>label</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-  </table>
-  <table name="ark_item_message">
-    <field name="item" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="module" type="string" size="30">
-      <default value="message"/>
-      <notnull/>
-    </field>
-    <field name="schma" type="string" size="30">
-      <default value="core.message"/>
-      <notnull/>
-    </field>
-    <field name="type" type="string" size="30"/>
-    <field name="status" type="string" size="30">
-      <default value="allocated"/>
-      <notnull/>
-    </field>
-    <field name="visibility" type="string" size="30">
-      <default value="restricted"/>
-      <notnull/>
-    </field>
-    <field name="parent_module" type="string" size="30"/>
-    <field name="parent_item" type="string" size="30"/>
-    <field name="idx" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="label" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="modifier" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="modified" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="creator" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="created" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="version" type="string" size="36">
-      <notnull/>
-    </field>
-    <index name="name">
-      <col>label</col>
-    </index>
-    <index name="parent">
-      <col>parent_module</col>
-      <col>parent_item</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-  </table>
-  <table name="ark_item_page">
-    <field name="item" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="module" type="string" size="30">
-      <default value="page"/>
-      <notnull/>
-    </field>
-    <field name="schma" type="string" size="30">
-      <default value="core.page"/>
-      <notnull/>
-    </field>
-    <field name="type" type="string" size="30"/>
-    <field name="status" type="string" size="30">
-      <default value="allocated"/>
-      <notnull/>
-    </field>
-    <field name="visibility" type="string" size="30">
-      <default value="restricted"/>
-      <notnull/>
-    </field>
-    <field name="parent_module" type="string" size="30"/>
-    <field name="parent_item" type="string" size="30"/>
-    <field name="idx" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="label" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="modifier" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="modified" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="creator" type="integer">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="created" type="datetime">
-      <deftimestamp/>
-      <notnull/>
-    </field>
-    <field name="version" type="string" size="36">
-      <notnull/>
-    </field>
-    <index name="name">
-      <col>label</col>
-    </index>
-    <index name="parent">
-      <col>parent_module</col>
-      <col>parent_item</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-  </table>
-  <table name="ark_sequence">
-    <field name="module" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="parent" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="sequence" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="idx" type="integer">
-      <notnull/>
-    </field>
-    <field name="min" type="integer"/>
-    <field name="max" type="integer"/>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-  </table>
-  <table name="ark_sequence_lock">
-    <field name="id" type="integer">
-      <autoincrement/>
-      <key/>
-      <notnull/>
-    </field>
-    <field name="module" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="parent" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="sequence" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="idx" type="integer">
-      <notnull/>
-    </field>
-    <field name="recycle" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="locked_by" type="string" size="30"/>
-    <field name="locked_on" type="datetime"/>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-  </table>
-  <table name="ark_sequence_reserve">
-    <field name="module" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="parent" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="sequence" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="idx" type="integer">
-      <notnull/>
-    </field>
-    <field name="min" type="integer">
-      <notnull/>
-    </field>
-    <field name="max" type="integer">
-      <notnull/>
-    </field>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-  </table>
-  <table name="ark_workflow_actor_role">
-    <field name="actor" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="role" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="proxy_for" type="string" size="30"/>
-    <field name="enabled" type="boolean">
-      <default value="1"/>
-      <notnull/>
-    </field>
-    <field name="verified" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="locked" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="expired" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="expires_at" type="datetime"/>
-    <field name="verification_token" type="string" size="100">
-      <notnull/>
-    </field>
-    <field name="verification_requested_at" type="datetime"/>
-    <index name="proxy_for">
-      <col>proxy_for</col>
-    </index>
-    <index name="IDX_9FE8DE90447556F9">
-      <col>actor</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    <references name="ark_workflow_actor_role_ibfk_1" table="ark_item_actor" onupdate="cascade" ondelete="cascade">
-      <column local="actor" foreign="item"/>
-    </references>
-    <references name="ark_workflow_actor_role_ibfk_2" table="ark_item_actor" onupdate="cascade" ondelete="set null">
-      <column local="proxy_for" foreign="item"/>
-    </references>
-  </table>
-  <table name="ark_workflow_actor_user">
-    <field name="actor" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="user" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="enabled" type="boolean">
-      <default value="1"/>
-      <notnull/>
-    </field>
-    <field name="verified" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="locked" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="expired" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="expires_at" type="datetime"/>
-    <field name="verification_token" type="string" size="100">
-      <notnull/>
-    </field>
-    <field name="verification_requested_at" type="datetime"/>
-    <index name="IDX_451282B3447556F9">
-      <col>actor</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    <references name="ark_workflow_actor_user_ibfk_1" table="ark_item_actor" onupdate="cascade" ondelete="cascade">
-      <column local="actor" foreign="item"/>
-    </references>
-  </table>
+    <table name="ark_association">
+        <field name="fid" type="integer">
+            <autoincrement/>
+            <key/>
+            <notnull/>
+        </field>
+        <field name="module1" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="item1" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="association" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="module2" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="item2" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="mod_by" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="mod_on" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="cre_by" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="cre_on" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="version" type="string" size="36"/>
+        <index name="association">
+            <col>association</col>
+        </index>
+        <index name="item1">
+            <col>module1</col>
+            <col>item1</col>
+        </index>
+        <index name="item2">
+            <col>module2</col>
+            <col>item2</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    </table>
+    <table name="ark_fragment_blob">
+        <field name="fid" type="integer">
+            <autoincrement/>
+            <key/>
+            <notnull/>
+        </field>
+        <field name="object" type="integer"/>
+        <field name="module" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="item" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="attribute" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30">
+            <default value="blob"/>
+            <notnull/>
+        </field>
+        <field name="format" type="string" size="30"/>
+        <field name="parameter" type="string" size="30"/>
+        <field name="value" type="blob">
+            <notnull/>
+        </field>
+        <field name="span" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="extent" type="blob"/>
+        <field name="modifier" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="modified" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="creator" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="created" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="version" type="string" size="36"/>
+        <index name="property">
+            <col>module</col>
+            <col>item</col>
+            <col>attribute</col>
+        </index>
+        <index name="object">
+            <col>object</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_fragment_blob_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+            <column local="object" foreign="fid"/>
+        </references>
+    </table>
+    <table name="ark_fragment_boolean">
+        <field name="fid" type="integer">
+            <autoincrement/>
+            <key/>
+            <notnull/>
+        </field>
+        <field name="object" type="integer"/>
+        <field name="module" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="item" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="attribute" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30">
+            <default value="boolean"/>
+            <notnull/>
+        </field>
+        <field name="format" type="string" size="30"/>
+        <field name="parameter" type="string" size="30"/>
+        <field name="value" type="boolean">
+            <notnull/>
+        </field>
+        <field name="span" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="extent" type="boolean"/>
+        <field name="modifier" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="modified" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="creator" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="created" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="version" type="string" size="36"/>
+        <index name="module">
+            <col>module</col>
+            <col>item</col>
+            <col>attribute</col>
+        </index>
+        <index name="object">
+            <col>object</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_fragment_boolean_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+            <column local="object" foreign="fid"/>
+        </references>
+    </table>
+    <table name="ark_fragment_date">
+        <field name="fid" type="integer">
+            <autoincrement/>
+            <key/>
+            <notnull/>
+        </field>
+        <field name="object" type="integer"/>
+        <field name="module" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="item" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="attribute" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30">
+            <default value="date"/>
+            <notnull/>
+        </field>
+        <field name="format" type="string" size="30"/>
+        <field name="parameter" type="string" size="30"/>
+        <field name="value" type="date">
+            <notnull/>
+        </field>
+        <field name="span" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="extent" type="date"/>
+        <field name="modifier" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="modified" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="creator" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="created" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="version" type="string" size="36"/>
+        <index name="module">
+            <col>module</col>
+            <col>item</col>
+            <col>attribute</col>
+        </index>
+        <index name="object">
+            <col>object</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_fragment_date_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+            <column local="object" foreign="fid"/>
+        </references>
+    </table>
+    <table name="ark_fragment_datetime">
+        <field name="fid" type="integer">
+            <autoincrement/>
+            <key/>
+            <notnull/>
+        </field>
+        <field name="object" type="integer"/>
+        <field name="module" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="item" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="attribute" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30">
+            <default value="datetime"/>
+            <notnull/>
+        </field>
+        <field name="format" type="string" size="30"/>
+        <field name="parameter" type="string" size="30"/>
+        <field name="value" type="datetime">
+            <notnull/>
+        </field>
+        <field name="span" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="extent" type="datetime"/>
+        <field name="modifier" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="modified" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="creator" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="created" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="version" type="string" size="36"/>
+        <index name="module">
+            <col>module</col>
+            <col>item</col>
+            <col>attribute</col>
+        </index>
+        <index name="object">
+            <col>object</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_fragment_datetime_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+            <column local="object" foreign="fid"/>
+        </references>
+    </table>
+    <table name="ark_fragment_decimal">
+        <field name="fid" type="integer">
+            <autoincrement/>
+            <key/>
+            <notnull/>
+        </field>
+        <field name="object" type="integer"/>
+        <field name="module" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="item" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="attribute" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30">
+            <default value="decimal"/>
+            <notnull/>
+        </field>
+        <field name="format" type="string" size="30"/>
+        <field name="parameter" type="string" size="30"/>
+        <field name="value" type="string" size="200">
+            <notnull/>
+        </field>
+        <field name="span" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="extent" type="string" size="200"/>
+        <field name="modifier" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="modified" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="creator" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="created" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="version" type="string" size="36"/>
+        <index name="property">
+            <col>module</col>
+            <col>item</col>
+            <col>attribute</col>
+        </index>
+        <index name="object">
+            <col>object</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_fragment_decimal_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+            <column local="object" foreign="fid"/>
+        </references>
+    </table>
+    <table name="ark_fragment_float">
+        <field name="fid" type="integer">
+            <autoincrement/>
+            <key/>
+            <notnull/>
+        </field>
+        <field name="object" type="integer"/>
+        <field name="module" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="item" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="attribute" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30">
+            <default value="float"/>
+            <notnull/>
+        </field>
+        <field name="format" type="string" size="30"/>
+        <field name="parameter" type="string" size="30"/>
+        <field name="value" type="float" size="10.0">
+            <notnull/>
+        </field>
+        <field name="span" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="extent" type="float" size="10.0"/>
+        <field name="modifier" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="modified" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="creator" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="created" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="version" type="string" size="36"/>
+        <index name="module">
+            <col>module</col>
+            <col>item</col>
+            <col>attribute</col>
+        </index>
+        <index name="object">
+            <col>object</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_fragment_float_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+            <column local="object" foreign="fid"/>
+        </references>
+    </table>
+    <table name="ark_fragment_integer">
+        <field name="fid" type="integer">
+            <autoincrement/>
+            <key/>
+            <notnull/>
+        </field>
+        <field name="object" type="integer"/>
+        <field name="module" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="item" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="attribute" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30">
+            <default value="integer"/>
+            <notnull/>
+        </field>
+        <field name="format" type="string" size="30"/>
+        <field name="parameter" type="string" size="30"/>
+        <field name="value" type="bigint">
+            <notnull/>
+        </field>
+        <field name="span" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="extent" type="bigint"/>
+        <field name="modifier" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="modified" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="creator" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="created" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="version" type="string" size="36"/>
+        <index name="module">
+            <col>module</col>
+            <col>item</col>
+            <col>attribute</col>
+        </index>
+        <index name="object_fid">
+            <col>object</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_fragment_integer_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+            <column local="object" foreign="fid"/>
+        </references>
+    </table>
+    <table name="ark_fragment_item">
+        <field name="fid" type="integer">
+            <autoincrement/>
+            <key/>
+            <notnull/>
+        </field>
+        <field name="object" type="integer"/>
+        <field name="module" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="item" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="attribute" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30">
+            <default value="item"/>
+            <notnull/>
+        </field>
+        <field name="format" type="string" size="30"/>
+        <field name="parameter" type="string" size="30"/>
+        <field name="value" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="span" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="extent" type="string" size="30"/>
+        <field name="modifier" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="modified" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="creator" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="created" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="version" type="string" size="36"/>
+        <index name="module">
+            <col>module</col>
+            <col>item</col>
+            <col>attribute</col>
+        </index>
+        <index name="object_fid">
+            <col>object</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_fragment_item_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+            <column local="object" foreign="fid"/>
+        </references>
+    </table>
+    <table name="ark_fragment_object">
+        <field name="fid" type="integer">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="object" type="integer"/>
+        <field name="module" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="item" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="attribute" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30">
+            <default value="object"/>
+            <notnull/>
+        </field>
+        <field name="format" type="string" size="30"/>
+        <field name="parameter" type="string" size="30"/>
+        <field name="value" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="span" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="extent" type="string" size="30"/>
+        <field name="modifier" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="modified" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="creator" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="created" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="version" type="string" size="36"/>
+        <index name="item">
+            <col>module</col>
+            <col>item</col>
+            <col>attribute</col>
+        </index>
+        <index name="object">
+            <col>object</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_fragment_object_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+            <column local="object" foreign="fid"/>
+        </references>
+    </table>
+    <table name="ark_fragment_spatial">
+        <field name="fid" type="integer">
+            <autoincrement/>
+            <key/>
+            <notnull/>
+        </field>
+        <field name="object" type="integer"/>
+        <field name="module" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="item" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="attribute" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30">
+            <default value="spatial"/>
+            <notnull/>
+        </field>
+        <field name="format" type="string" size="30">
+            <default value="wkt"/>
+            <notnull/>
+        </field>
+        <field name="parameter" type="string" size="30">
+            <default value="4326"/>
+            <notnull/>
+        </field>
+        <field name="value" type="text">
+            <notnull/>
+        </field>
+        <field name="span" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="extent" type="text"/>
+        <field name="modifier" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="modified" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="creator" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="created" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="version" type="string" size="36"/>
+        <index name="property">
+            <col>module</col>
+            <col>item</col>
+            <col>attribute</col>
+        </index>
+        <index name="object">
+            <col>object</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_fragment_spatial_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+            <column local="object" foreign="fid"/>
+        </references>
+    </table>
+    <table name="ark_fragment_string">
+        <field name="fid" type="integer">
+            <autoincrement/>
+            <key/>
+            <notnull/>
+        </field>
+        <field name="object" type="integer"/>
+        <field name="module" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="item" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="attribute" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30">
+            <default value="string"/>
+            <notnull/>
+        </field>
+        <field name="format" type="string" size="30"/>
+        <field name="parameter" type="string" size="30"/>
+        <field name="value" type="string" size="4000">
+            <notnull/>
+        </field>
+        <field name="span" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="extent" type="string" size="4000"/>
+        <field name="modifier" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="modified" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="creator" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="created" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="version" type="string" size="36"/>
+        <index name="module">
+            <col>module</col>
+            <col>item</col>
+            <col>attribute</col>
+        </index>
+        <index name="object_fid">
+            <col>object</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_fragment_string_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+            <column local="object" foreign="fid"/>
+        </references>
+    </table>
+    <table name="ark_fragment_text">
+        <field name="fid" type="integer">
+            <autoincrement/>
+            <key/>
+            <notnull/>
+        </field>
+        <field name="object" type="integer"/>
+        <field name="module" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="item" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="attribute" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30">
+            <default value="text"/>
+            <notnull/>
+        </field>
+        <field name="format" type="string" size="30">
+            <default value="text/plain"/>
+            <notnull/>
+        </field>
+        <field name="parameter" type="string" size="30"/>
+        <field name="value" type="text">
+            <notnull/>
+        </field>
+        <field name="span" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="extent" type="text"/>
+        <field name="modifier" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="modified" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="creator" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="created" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="version" type="string" size="36"/>
+        <index name="module">
+            <col>module</col>
+            <col>item</col>
+            <col>attribute</col>
+        </index>
+        <index name="object_fid">
+            <col>object</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_fragment_text_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+            <column local="object" foreign="fid"/>
+        </references>
+    </table>
+    <table name="ark_fragment_time">
+        <field name="fid" type="integer">
+            <autoincrement/>
+            <key/>
+            <notnull/>
+        </field>
+        <field name="object" type="integer"/>
+        <field name="module" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="item" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="attribute" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30">
+            <default value="time"/>
+            <notnull/>
+        </field>
+        <field name="format" type="string" size="30"/>
+        <field name="parameter" type="string" size="30"/>
+        <field name="value" type="time">
+            <notnull/>
+        </field>
+        <field name="span" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="extent" type="time"/>
+        <field name="modifier" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="modified" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="creator" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="created" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="version" type="string" size="36"/>
+        <index name="module">
+            <col>module</col>
+            <col>item</col>
+            <col>attribute</col>
+        </index>
+        <index name="objec">
+            <col>object</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_fragment_time_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+            <column local="object" foreign="fid"/>
+        </references>
+    </table>
+    <table name="ark_item_actor">
+        <field name="item" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="module" type="string" size="30">
+            <default value="actor"/>
+            <notnull/>
+        </field>
+        <field name="schma" type="string" size="30">
+            <default value="core.actor"/>
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30"/>
+        <field name="status" type="string" size="30">
+            <default value="allocated"/>
+            <notnull/>
+        </field>
+        <field name="visibility" type="string" size="30">
+            <default value="restricted"/>
+            <notnull/>
+        </field>
+        <field name="parent_module" type="string" size="30"/>
+        <field name="parent_item" type="string" size="30"/>
+        <field name="idx" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="label" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="modifier" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="modified" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="creator" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="created" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="version" type="string" size="36">
+            <notnull/>
+        </field>
+        <index name="name">
+            <col>label</col>
+        </index>
+        <index name="parent">
+            <col>parent_module</col>
+            <col>parent_item</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    </table>
+    <table name="ark_item_event">
+        <field name="item" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="module" type="string" size="30">
+            <default value="event"/>
+            <notnull/>
+        </field>
+        <field name="schma" type="string" size="30">
+            <default value="core.event"/>
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30"/>
+        <field name="status" type="string" size="30">
+            <default value="allocated"/>
+            <notnull/>
+        </field>
+        <field name="visibility" type="string" size="30">
+            <default value="restricted"/>
+            <notnull/>
+        </field>
+        <field name="parent_module" type="string" size="30"/>
+        <field name="parent_item" type="string" size="30"/>
+        <field name="idx" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="label" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="modifier" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="modified" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="creator" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="created" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="version" type="string" size="36">
+            <notnull/>
+        </field>
+        <index name="name">
+            <col>label</col>
+        </index>
+        <index name="parent">
+            <col>parent_module</col>
+            <col>parent_item</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    </table>
+    <table name="ark_item_file">
+        <field name="item" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="module" type="string" size="30">
+            <default value="file"/>
+            <notnull/>
+        </field>
+        <field name="schma" type="string" size="30">
+            <default value="core.file"/>
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30"/>
+        <field name="status" type="string" size="30">
+            <default value="allocated"/>
+            <notnull/>
+        </field>
+        <field name="visibility" type="string" size="30">
+            <default value="restricted"/>
+            <notnull/>
+        </field>
+        <field name="parent_module" type="string" size="30"/>
+        <field name="parent_item" type="string" size="30"/>
+        <field name="idx" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="label" type="string" size="255">
+            <notnull/>
+        </field>
+        <field name="modifier" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="modified" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="creator" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="created" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="version" type="string" size="36">
+            <notnull/>
+        </field>
+        <index name="parent">
+            <col>parent_module</col>
+            <col>parent_item</col>
+        </index>
+        <index name="name">
+            <col>label</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    </table>
+    <table name="ark_item_message">
+        <field name="item" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="module" type="string" size="30">
+            <default value="message"/>
+            <notnull/>
+        </field>
+        <field name="schma" type="string" size="30">
+            <default value="core.message"/>
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30"/>
+        <field name="status" type="string" size="30">
+            <default value="allocated"/>
+            <notnull/>
+        </field>
+        <field name="visibility" type="string" size="30">
+            <default value="restricted"/>
+            <notnull/>
+        </field>
+        <field name="parent_module" type="string" size="30"/>
+        <field name="parent_item" type="string" size="30"/>
+        <field name="idx" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="label" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="modifier" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="modified" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="creator" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="created" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="version" type="string" size="36">
+            <notnull/>
+        </field>
+        <index name="name">
+            <col>label</col>
+        </index>
+        <index name="parent">
+            <col>parent_module</col>
+            <col>parent_item</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    </table>
+    <table name="ark_item_page">
+        <field name="item" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="module" type="string" size="30">
+            <default value="page"/>
+            <notnull/>
+        </field>
+        <field name="schma" type="string" size="30">
+            <default value="core.page"/>
+            <notnull/>
+        </field>
+        <field name="type" type="string" size="30"/>
+        <field name="status" type="string" size="30">
+            <default value="allocated"/>
+            <notnull/>
+        </field>
+        <field name="visibility" type="string" size="30">
+            <default value="restricted"/>
+            <notnull/>
+        </field>
+        <field name="parent_module" type="string" size="30"/>
+        <field name="parent_item" type="string" size="30"/>
+        <field name="idx" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="label" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="modifier" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="modified" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="creator" type="integer">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="created" type="datetime">
+            <deftimestamp/>
+            <notnull/>
+        </field>
+        <field name="version" type="string" size="36">
+            <notnull/>
+        </field>
+        <index name="name">
+            <col>label</col>
+        </index>
+        <index name="parent">
+            <col>parent_module</col>
+            <col>parent_item</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    </table>
+    <table name="ark_sequence">
+        <field name="module" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="parent" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="sequence" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="idx" type="integer">
+            <notnull/>
+        </field>
+        <field name="min" type="integer"/>
+        <field name="max" type="integer"/>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    </table>
+    <table name="ark_sequence_lock">
+        <field name="id" type="integer">
+            <autoincrement/>
+            <key/>
+            <notnull/>
+        </field>
+        <field name="module" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="parent" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="sequence" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="idx" type="integer">
+            <notnull/>
+        </field>
+        <field name="recycle" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="locked_by" type="string" size="30"/>
+        <field name="locked_on" type="datetime"/>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    </table>
+    <table name="ark_sequence_reserve">
+        <field name="module" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="parent" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="sequence" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="idx" type="integer">
+            <notnull/>
+        </field>
+        <field name="min" type="integer">
+            <notnull/>
+        </field>
+        <field name="max" type="integer">
+            <notnull/>
+        </field>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    </table>
+    <table name="ark_workflow_actor_role">
+        <field name="actor" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="role" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="proxy_for" type="string" size="30"/>
+        <field name="enabled" type="boolean">
+            <default value="1"/>
+            <notnull/>
+        </field>
+        <field name="verified" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="locked" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="expired" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="expires_at" type="datetime"/>
+        <field name="verification_token" type="string" size="100">
+            <notnull/>
+        </field>
+        <field name="verification_requested_at" type="datetime"/>
+        <index name="proxy_for">
+            <col>proxy_for</col>
+        </index>
+        <index name="IDX_9FE8DE90447556F9">
+            <col>actor</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_workflow_actor_role_ibfk_1" table="ark_item_actor" onupdate="cascade" ondelete="cascade">
+            <column local="actor" foreign="item"/>
+        </references>
+        <references name="ark_workflow_actor_role_ibfk_2" table="ark_item_actor" onupdate="cascade" ondelete="set null">
+            <column local="proxy_for" foreign="item"/>
+        </references>
+    </table>
+    <table name="ark_workflow_actor_user">
+        <field name="actor" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="user" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="enabled" type="boolean">
+            <default value="1"/>
+            <notnull/>
+        </field>
+        <field name="verified" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="locked" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="expired" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="expires_at" type="datetime"/>
+        <field name="verification_token" type="string" size="100">
+            <notnull/>
+        </field>
+        <field name="verification_requested_at" type="datetime"/>
+        <index name="IDX_451282B3447556F9">
+            <col>actor</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="ark_workflow_actor_user_ibfk_1" table="ark_item_actor" onupdate="cascade" ondelete="cascade">
+            <column local="actor" foreign="item"/>
+        </references>
+    </table>
 </schema>

@@ -10,11 +10,16 @@
             <notnull/>
         </field>
         <field name="schma" type="string" size="30">
+            <default value="core.module"/>
             <notnull/>
         </field>
         <field name="type" type="string" size="30"/>
         <field name="status" type="string" size="30">
-            <default value="registered"/>
+            <default value="allocated"/>
+            <notnull/>
+        </field>
+        <field name="visibility" type="string" size="30">
+            <default value="restricted"/>
             <notnull/>
         </field>
         <field name="parent_module" type="string" size="30"/>
@@ -25,24 +30,26 @@
         <field name="label" type="string" size="30">
             <notnull/>
         </field>
-        <field name="mod_by" type="integer">
+        <field name="modifier" type="integer">
             <default value="0"/>
             <notnull/>
         </field>
-        <field name="mod_on" type="datetime">
+        <field name="modified" type="datetime">
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="cre_by" type="integer">
+        <field name="creator" type="integer">
             <default value="0"/>
             <notnull/>
         </field>
-        <field name="cre_on" type="datetime">
+        <field name="created" type="datetime">
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="version" type="string" size="36"/>
-        <index name="label">
+        <field name="version" type="string" size="36">
+            <notnull/>
+        </field>
+        <index name="name">
             <col>label</col>
         </index>
         <index name="parent">
