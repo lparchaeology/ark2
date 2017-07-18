@@ -42,13 +42,13 @@ abstract class AbstractConsole extends SymfonyConsole
 
     protected $app = null;
 
-    public function __construct($name, $app)
+    public function __construct(string $name, $app)
     {
         parent::__construct($name, ARK::version());
         $this->app = $app;
     }
 
-    public function app($key = null)
+    public function app(string $key = null)
     {
         if ($key) {
             return $this->app[$key];

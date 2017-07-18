@@ -75,7 +75,7 @@ class Database
         return $this->app['dbs']['user'];
     }
 
-    public function generateItemSequence($module, $parent, $sequence)
+    public function generateItemSequence(string $module, string $parent, string $sequence)
     {
         $this->data()->beginTransaction();
         // Check if there are any IDs to recycle first
@@ -204,13 +204,13 @@ class Database
         }
     }
 
-    public function getModuleTable($module)
+    public function getModuleTable(string $module)
     {
         $this->loadModules();
         return $this->modules[$module]['tbl'];
     }
 
-    public function getModule($module)
+    public function getModule(string $module)
     {
         $this->loadModules();
         $module = strtolower($module);
@@ -225,7 +225,7 @@ class Database
         return null;
     }
 
-    public function getModuleForClassName($className)
+    public function getModuleForClassName(string $className)
     {
         $this->loadModules();
         foreach ($this->modules as $module) {
@@ -236,7 +236,7 @@ class Database
         return null;
     }
 
-    public function getModuleForNamespace($namespace)
+    public function getModuleForNamespace(string $namespace)
     {
         $this->loadModules();
         foreach ($this->modules as $module) {
@@ -278,13 +278,13 @@ class Database
         return $this->types;
     }
 
-    private function getFragmentTable($type)
+    private function getFragmentTable(string $type)
     {
         $this->loadTypes();
         return $this->types[$type]['data_table'];
     }
 
-    public function getFragmentType($class)
+    public function getFragmentType(string $class)
     {
         $this->loadTypes();
         foreach ($this->types as $type => $attributes) {
@@ -301,7 +301,7 @@ class Database
         return $this->fragmentTables;
     }
 
-    public function getTypeEntities($module)
+    public function getTypeEntities(string $module)
     {
         $sql = "
             SELECT ark_vocabulary_parameter.term as type, ark_vocabulary_parameter.value as classname
@@ -319,496 +319,12 @@ class Database
         return $this->core()->fetchAll($sql, $params);
     }
 
-    public function getSubmodules($module, $schemaId)
-    {
-        $sql = "
-            SELECT *
-            FROM ark_module_submodule, ark_module
-            WHERE ark_module_submodule.module = :module
-            AND ark_module_submodule.schema_id = :schema_id
-            AND ark_module_submodule.submodule = ark_module.module
-        ";
-        $params = array(
-            ':module' => $module,
-            ':schema_id' => $schemaId
-        );
-        return $this->core()->fetchAll($sql, $params);
-    }
-
-    public function getSubmodule($module, $schemaId, $submodule)
-    {
-        $sql = "
-            SELECT *
-            FROM ark_module_submodule, ark_module
-            WHERE ark_module_submodule.module = :module
-            AND ark_module_submodule.schema_id = :schema_id
-            AND ark_module_submodule.submodule = :submodule
-            AND ark_module.module = ark_module_submodule.submodule
-        ";
-        $params = array(
-            ':module' => $module,
-            ':schema_id' => $schemaId,
-            ':submodule' => $submodule
-        );
-        return $this->core()->fetchAssoc($sql, $params);
-    }
-
-    public function getXmiModules($module, $schemaId)
-    {
-        $sql = "
-            SELECT *
-            FROM ark_module_xmi, ark_module
-            WHERE ark_module_xmi.module = :module
-            AND ark_module_xmi.schema_id = :schema_id
-            AND ark_module.module = ark_module_xmi.module
-        ";
-        $params = array(
-            ':module' => $module,
-            ':schema_id' => $schemaId
-        );
-        return $this->core()->fetchAll($sql, $params);
-    }
-
-    public function getModuleSchema($module, $schemaId)
-    {
-        $sql = "
-            SELECT
-                ark_module.*,
-                ark_module_schema.*, ark_schema_type.keyword AS modtype_keyword,
-                ark_schema_type.*, ark_schema_type.keyword AS modtype_keyword,
-                ark_schema_attribute.attribute
-            FROM ark_module
-            INNER JOIN ark_module_schema
-                ON ark_module_schema.module = ark_module.module
-                AND ark_module_schema.schema_id = :schema_id
-                AND ark_module_schema.enabled = true
-            INNER JOIN ark_schema_type
-                ON ark_schema_type.module = ark_module_schema.module
-                AND ark_schema_type.schema_id = ark_module_schema.schema_id
-                AND (ark_schema_type.enabled = true OR ark_schema_type.modtype = '')
-            LEFT JOIN ark_schema_attribute
-                ON ark_schema_attribute.module = ark_schema_type.module
-                AND ark_schema_attribute.schema_id = ark_schema_type.schema_id
-                AND ark_schema_attribute.modtype = ark_schema_type.modtype
-                AND ark_schema_attribute.enabled = true
-            WHERE ark_module.module = :module
-            AND ark_module.enabled = true
-        ";
-        $params = array(
-            ':module' => strtolower($module),
-            ':schema_id' => strtolower($schemaId)
-        );
-        return $this->core()->fetchAll($sql, $params);
-    }
-
-    public function getModuleSchemas($module)
-    {
-        $sql = "
-            SELECT *
-            FROM ark_module_schema
-            WHERE module = :module
-        ";
-        $params = array(
-            ':module' => strtolower($module)
-        );
-        return $this->core()->fetchAll($sql, $params);
-    }
-
-    public function getModtypes($module, $schema = null)
-    {
-        $sql = "
-            SELECT *
-            FROM ark_schema_type
-            WHERE module = :module
-        ";
-        $params[':module'] = $module;
-        if ($schema) {
-            $sql .= "
-                AND schema_id = :schema
-            ";
-            $params[':schema'] = $schema;
-        }
-        return $this->core()->fetchAll($sql, $params);
-    }
-
     public function getViewTypes()
     {
         return $this->core()->fetchAllTable('ark_view_type');
     }
 
-    public function getLayout($layout)
-    {
-        $sql = "
-            SELECT *
-            FROM ark_view_layout
-            WHERE layout = :layout
-        ";
-        $params = array(
-            ':layout' => $layout
-        );
-        return $this->core()->fetchAssoc($sql, $params);
-    }
-
-    public function getElement($element)
-    {
-        $sql = "
-            SELECT *,
-                   ark_view_element.type AS type,
-                   ark_view_element_type.class AS class,
-                   ark_view_layout.class AS layout_class
-            FROM ark_view_element,
-                 ark_view_element_type
-            LEFT JOIN
-                ark_view_field ON ark_view_field.field = :element
-            LEFT JOIN ark_view_layout
-                ON ark_view_layout.layout = :element
-            LEFT JOIN cor_conf_link
-                ON cor_conf_link.link = :element
-            LEFT JOIN cor_conf_subform
-                ON cor_conf_subform.subform = :element
-            WHERE ark_view_element.element = :element
-                AND ark_view_element.type = ark_view_element_type.type
-        ";
-        $params = array(
-            ':element' => $element
-        );
-        $results = $this->core()->fetchAssoc($sql, $params);
-        if (empty($results['class']) && ! empty($results['layout_class'])) {
-            $results['class'] = $results['layout_class'];
-        }
-        return $results;
-    }
-
-    public function getField($field)
-    {
-        $sql = "
-            SELECT *
-            FROM ark_view_field, ark_module_attribute
-            WHERE field = :field
-            AND ark_view_field.attribute = ark_module_attribute.attribute
-        ";
-        $params = array(
-            ':field' => $field
-        );
-        return $this->core()->fetchAssoc($sql, $params);
-    }
-
-    public function getSubform($subform)
-    {
-        $sql = "
-            SELECT *
-            FROM cor_conf_subform
-            WHERE subform = :subform
-        ";
-        $params = array(
-            ':subform' => $subform
-        );
-        return $this->core()->fetchAssoc($sql, $params);
-    }
-
-    public function getGroupForModule($group, $module, $modtype = null)
-    {
-        $sql = "
-            SELECT ark_view_group.*, ark_view_element.type AS child_type
-            FROM ark_view_group, ark_view_element
-            WHERE ark_view_group.element = :element
-            AND (ark_view_group.modtype = :module OR ark_view_group.modtype = :modtype OR ark_view_group.modtype = :cor)
-            AND ark_view_group.enabled = :enabled
-            AND ark_view_group.child = ark_view_element.element
-            ORDER BY ark_view_group.row, ark_view_group.col, ark_view_group.seq
-        ";
-        $params = array(
-            ':element' => $group,
-            ':modtype' => $modtype,
-            ':module' => $module,
-            ':cor' => 'cor',
-            ':enabled' => true
-        );
-        if (! $modtype) {
-            $params[':modtype'] = 'cor';
-        }
-        return $this->core()->fetchAll($sql, $params);
-    }
-
-    public function getGroup($element, $childType = null, /*bool*/ $enabled = true)
-    {
-        $sql = "
-            SELECT ark_view_group.*, ark_view_element.type AS child_type
-            FROM ark_view_group, ark_view_element
-            WHERE ark_view_group.element = :element
-            AND ark_view_group.child = ark_view_element.element
-            ORDER BY ark_view_group.row, ark_view_group.col, ark_view_group.seq
-        ";
-        $params[':element'] = $element;
-        if ($childType) {
-            $sql .= ' AND ark_view_element.type = :type';
-            $params[':type'] = $childType;
-        }
-        if ($enabled === true || $enabled === false) {
-            $sql .= ' AND ark_view_group.enabled = :enabled';
-            $params[':enabled'] = $enabled;
-        }
-        return $this->core()->fetchAll($sql, $params);
-    }
-
-    public function getRule($vldRule)
-    {
-        $sql = "
-            SELECT *
-            FROM cor_conf_vld_rule
-            WHERE vld_rule = :vld_rule
-        ";
-        $params = array(
-            ':vld_rule' => $vldRule
-        );
-        return $this->core()->fetchAssoc($sql, $params);
-    }
-
-    public function getElementValidationGroup($element, $vldRole)
-    {
-        $sql = "
-            SELECT *
-            FROM cor_conf_element_vld
-            WHERE element = :element
-            AND vld_role = :vld_role
-        ";
-        $params = array(
-            ':element' => $element,
-            ':vld_role' => $vldRole
-        );
-        return $this->core()->fetchAssoc($sql, $params);
-    }
-
-    public function getElementValidationGroups($element)
-    {
-        $sql = "
-            SELECT *
-            FROM cor_conf_element_vld
-            WHERE element = :element
-        ";
-        $params = array(
-            ':element' => $element
-        );
-        return $this->core()->fetchAll($sql, $params);
-    }
-
-    public function getValidationGroup($vldGroup)
-    {
-        $sql = "
-            SELECT *
-            FROM cor_conf_vld_group
-            WHERE vld_group = :vld_group
-        ";
-        $params = array(
-            ':vld_group' => $vldGroup
-        );
-        return $this->core()->fetchAll($sql, $params);
-    }
-
-    public function getConditions($element)
-    {
-        $sql = "
-            SELECT *
-            FROM cor_conf_condition
-            WHERE element = :element
-        ";
-        $params = array(
-            ':element' => $element
-        );
-        return $this->core()->fetchAll($sql, $params);
-    }
-
-    public function getLink($link)
-    {
-        $sql = "
-            SELECT *
-            FROM cor_conf_link
-            WHERE link = :link
-        ";
-        $params = array(
-            ':link' => $link
-        );
-        return $this->core()->fetchAssoc($sql, $params);
-    }
-
-    public function getOption($element, $option)
-    {
-        $sql = "
-            SELECT *
-            FROM ark_view_option
-            WHERE element = :element
-            AND option = :option
-        ";
-        $params = array(
-            ':element' => $element,
-            ':option' => $option
-        );
-        return $this->core()->fetchAssoc($sql, $params);
-    }
-
-    public function getOptions($element)
-    {
-        $sql = "
-            SELECT *
-            FROM ark_view_option
-            WHERE element = :element
-        ";
-        $params = array(
-            ':element' => $element
-        );
-        return $this->core()->fetchAll($sql, $params);
-    }
-
-    public function getModuleProperties($module, $schema)
-    {
-        $sql = "
-        SELECT *, ark_schema_attribute.datatype, ark_schema_attribute.keyword, ark_datatype.keyword as datatype_keyword
-        FROM ark_schema_attribute
-        LEFT JOIN ark_datatype ON ark_datatype.datatype = ark_schema_attribute.datatype
-        LEFT JOIN ark_datatype_float ON ark_datatype_float.datatype = ark_datatype.datatype_type
-        LEFT JOIN ark_datatype_integer ON ark_datatype_integer.datatype = ark_datatype.datatype_type
-        LEFT JOIN ark_datatype_string ON ark_datatype_string.datatype = ark_datatype.datatype_type
-        LEFT JOIN ark_fragment_type ON ark_fragment_type.fragment_type = ark_datatype.fragment_type
-        WHERE ark_schema_attribute.module = :module
-        AND ark_schema_attribute.schema_id = :schema
-        ";
-        $params = array(
-            ':module' => $module,
-            ':schema' => $schema
-        );
-        $results = $this->core()->fetchAll($sql, $params);
-        foreach ($results as $result) {
-            if ((! isset($result['keyword']) || ! $result['keyword']) && isset($result['datatype_keyword'])) {
-                $result['keyword'] = $result['datatype_keyword'];
-            }
-        }
-        return $results;
-    }
-
-    public function getModuleProperty($module, $schema, $modtype, $attribute)
-    {
-        $sql = "
-            SELECT *, ark_schema_attribute.datatype, ark_schema_attribute.keyword, ark_datatype.keyword as datatype_keyword
-            FROM ark_schema_attribute
-            LEFT JOIN ark_datatype ON ark_datatype_float.datatype = ark_schema_attribute.datatype
-            LEFT JOIN ark_datatype_float ON ark_datatype_float.datatype = ark_datatype.datatype_type
-            LEFT JOIN ark_datatype_integer ON ark_datatype_integer.datatype = ark_datatype.datatype_type
-            LEFT JOIN ark_datatype_string ON ark_datatype_string.datatype = ark_datatype.datatype_type
-            LEFT JOIN ark_fragment_type ON ark_fragment_type.fragment_type = ark_datatype.fragment_type
-            WHERE ark_schema_attribute.module = :module
-            AND ark_schema_attribute.schema = :schema
-            AND (ark_schema_attribute.modtype = :modtype OR ark_schema_attribute.modtype = :module)
-            AND ark_schema_attribute.attribute = :attribute
-        ";
-        $params = array(
-            ':module' => $module,
-            ':schema' => $schema,
-            ':modtype' => $modtype,
-            ':attribute' => $attribute
-        );
-        $result = $this->core()->fetchAssoc($sql, $params);
-        if ((! isset($result['keyword']) or ! $result['keyword']) && isset($result['datatype_keyword'])) {
-            $result['keyword'] = $result['datatype_keyword'];
-        }
-        return $result;
-    }
-
-    public function getDatatypeProperties($datatype)
-    {
-        $sql = "
-            SELECT *, ark_datatype_attribute.datatype, ark_datatype_attribute.keyword, ark_datatype.keyword as datatype_keyword
-            FROM ark_datatype_attribute
-            LEFT JOIN ark_datatype ON ark_datatype.datatype = ark_datatype_attribute.datatype
-            LEFT JOIN ark_datatype_float ON ark_datatype_float.datatype = ark_datatype.datatype_type
-            LEFT JOIN ark_datatype_integer ON ark_datatype_integer.datatype = ark_datatype.datatype_type
-            LEFT JOIN ark_datatype_string ON ark_datatype_string.datatype = ark_datatype.datatype_type
-            LEFT JOIN ark_fragment_type ON ark_fragment_type.fragment_type = ark_datatype.fragment_type
-            WHERE ark_datatype_attribute.parent_datatype = :datatype
-            ORDER BY ark_datatype_attribute.seq
-        ";
-        $params = array(
-            ':datatype' => $datatype
-        );
-        $results = $this->core()->fetchAll($sql, $params);
-        foreach ($results as $result) {
-            if ((! isset($result['keyword']) || ! $result['keyword']) && isset($result['datatype_keyword'])) {
-                $result['keyword'] = $result['datatype_keyword'];
-            }
-        }
-        return $results;
-    }
-
-    public function getDatatypeProperty($datatype, $attribute)
-    {
-        $sql = "
-            SELECT *, ark_datatype_attribute.datatype, ark_datatype_attribute.keyword, ark_datatype.keyword as datatype_keyword
-            FROM ark_datatype_attribute
-            LEFT JOIN ark_datatype ON ark_datatype.datatype = ark_datatype_attribute.datatype
-            LEFT JOIN ark_datatype_float ON ark_datatype_float.datatype = ark_datatype.datatype_type
-            LEFT JOIN ark_datatype_integer ON ark_datatype_integer.datatype = ark_datatype.datatype_type
-            LEFT JOIN ark_datatype_string ON ark_datatype_string.datatype = ark_datatype.datatype_type
-            LEFT JOIN ark_fragment_type ON ark_fragment_type.fragment_type = ark_datatype.fragment_type
-            WHERE ark_datatype_attribute.parent_datatype = :datatype
-            AND ark_datatype_attribute.attribute = :attribute
-        ";
-        $params = array(
-            ':datatype' => $datatype,
-            ':attribute' => $attribute
-        );
-        $result = $this->core()->fetchAssoc($sql, $params);
-        if ((! isset($result['keyword']) or ! $result['keyword']) && isset($result['datatype_keyword'])) {
-            $result['keyword'] = $result['datatype_keyword'];
-        }
-        return $result;
-    }
-
-    public function getDatatype($datatype)
-    {
-        $sql = "
-            SELECT *
-            FROM ark_datatype
-            LEFT JOIN ark_datatype_float ON ark_datatype_float.datatype = ark_datatype.datatype_type
-            LEFT JOIN ark_datatype_integer ON ark_datatype_integer.datatype = ark_datatype.datatype_type
-            LEFT JOIN ark_datatype_string ON ark_datatype_string.datatype = ark_datatype.datatype_type
-            LEFT JOIN ark_fragment_type ON ark_fragment_type.fragment_type = ark_datatype.fragment_type
-            WHERE ark_datatype.datatype = :datatype
-        ";
-        $params = array(
-            ':datatype' => $datatype
-        );
-        return $this->core()->fetchAssoc($sql, $params);
-    }
-
-    public function getAllowedValues($datatype)
-    {
-        $sql = "
-            SELECT *
-            FROM ark_datatype_value
-            WHERE datatype = :datatype
-        ";
-        $params = array(
-            ':datatype' => $datatype
-        );
-        return $this->core()->fetchAll($sql, $params);
-    }
-
-    public function getTranslations($domain = null)
-    {
-        $sql = "
-            SELECT *
-            FROM ark_translation
-        ";
-        $params = array();
-        if ($domain) {
-            $sql .= "
-                WHERE domain = :domain
-            ";
-            $params[':domain'] = $domain;
-        }
-        return $this->core()->fetchAll($sql, $params);
-    }
-
-    public function getTranslationMessages($language, $domain = null)
+    public function getTranslationMessages(string $language, string $domain = null)
     {
         $sql = "
             SELECT *
@@ -841,7 +357,7 @@ class Database
         return $this->data()->fetchAll($sql, $params);
     }
 
-    public function getFlashes($language)
+    public function getFlashes(string $language)
     {
         $sql = "
             SELECT *
@@ -857,7 +373,7 @@ class Database
     }
 
     // Spatial
-    public function getSpatialTerms($concept, $type = null)
+    public function getSpatialTerms(string $concept, string $type = null)
     {
         $sql = "
             SELECT term, ST_AsText(geometry) as geometry, srid
@@ -872,7 +388,7 @@ class Database
         return $this->spatial()->fetchAll($sql, $params);
     }
 
-    public function getSpatialTermsContain($concept, $wkt, $srid)
+    public function getSpatialTermsContain(string $concept, string $wkt, string $srid)
     {
         $sql = "
             SELECT term
@@ -888,7 +404,7 @@ class Database
         return $this->spatial()->fetchColumn($sql, $params);
     }
 
-    public function getSpatialTermChoropleth($concept, $module, $attribute, $items = false)
+    public function getSpatialTermChoropleth(string $concept, string $module, string $attribute, bool $items = false)
     {
         $sql = "
             SELECT ark_spatial_term.term, count(*) as count
@@ -925,7 +441,7 @@ class Database
         return $this->spatial()->fetchAll($sql, $params);
     }
 
-    public function getMunicipalityMuseum($municipality)
+    public function getMunicipalityMuseum(string $municipality)
     {
         $sql = "
             SELECT item
@@ -942,7 +458,7 @@ class Database
         return $this->data()->fetchColumn($sql, $params);
     }
 
-    public function getActorFinds($actor)
+    public function getActorFinds(string $actor)
     {
         $sql = "
             SELECT item
@@ -959,7 +475,7 @@ class Database
         return $this->data()->fetchAllColumn($sql, 'item', $params);
     }
 
-    public function getActorMessages($actor)
+    public function getActorMessages(string $actor)
     {
         $sql = "
             SELECT item
@@ -977,7 +493,7 @@ class Database
     }
 
     // TODO Optimise!!!
-    public function getUnreadMessages($actor)
+    public function getUnreadMessages(string $actor)
     {
         $sql = "
             SELECT ark_fragment_item.item
@@ -998,7 +514,7 @@ class Database
         return $all;
     }
 
-    public function markMessageAsRead($message, $actor)
+    public function markMessageAsRead(string $message, string $actor)
     {
         $sql = "
             SELECT *
@@ -1043,7 +559,7 @@ class Database
         return null;
     }
 
-    public function userSearch($query)
+    public function userSearch(string $query)
     {
         $sql = "
             SELECT item
@@ -1055,7 +571,7 @@ class Database
         return $this->data()->fetchAllColumn($sql, 'item', $query);
     }
 
-    public function findSearch($query)
+    public function findSearch(array $query)
     {
         $pre = "
             SELECT item

@@ -20,7 +20,7 @@ class Actor implements Item
 
     protected $roles = null;
 
-    public function __construct($schema = 'core.actor')
+    public function __construct(string $schema = 'core.actor')
     {
         $this->construct($schema);
     }

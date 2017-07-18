@@ -43,7 +43,7 @@ class Error
     protected $source = null;
     protected $variables = [];
 
-    public function __construct(/*string*/ $code, /*string*/ $title, /*string*/ $detail, /*int*/ $statusCode = null)
+    public function __construct(string $code, string $title, string $detail, int $statusCode = null)
     {
         $this->setCode($code);
         $this->setTitle($title);
@@ -53,7 +53,7 @@ class Error
         }
     }
 
-    public function setId(/*string*/ $id)
+    public function setId(string $id)
     {
         $this->id = $id;
     }
@@ -63,7 +63,7 @@ class Error
         return $this->id;
     }
 
-    public function setCode(/*string*/ $code)
+    public function setCode(string $code)
     {
         $this->code = $code;
     }
@@ -73,7 +73,7 @@ class Error
         return $this->code;
     }
 
-    public function setTitle(/*string*/ $title)
+    public function setTitle(string $title)
     {
         $this->title = $title;
     }
@@ -83,7 +83,7 @@ class Error
         return $this->title;
     }
 
-    public function setDetail(/*string*/ $detail)
+    public function setDetail(string $detail)
     {
         $this->detail = $detail;
     }
@@ -103,16 +103,17 @@ class Error
         return $this->source;
     }
 
-    public function setVariable(/*string*/ $key, $value)
+    public function setVariable(string $key, $value)
     {
         $this->variables[$key] = $value;
     }
 
-    public function variables() {
+    public function variables()
+    {
         return $this->variables;
     }
 
-    public function variable(/*string*/ $key)
+    public function variable(string $key)
     {
         if (isset($this->variables[$key])) {
             return $this->variables[$key];

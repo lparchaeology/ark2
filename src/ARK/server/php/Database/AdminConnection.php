@@ -51,7 +51,7 @@ class AdminConnection extends Connection
         $this->executeQuery("SET FOREIGN_KEY_CHECKS=1");
     }
 
-    public function createDatabase($database)
+    public function createDatabase(string $database)
     {
         $this->getSchemaManager()->createDatabase($database);
         // Set MySQL default charset and collation to utf8
@@ -65,7 +65,7 @@ class AdminConnection extends Connection
         return $this->getSchemaManager()->listDatabases();
     }
 
-    public function databaseExists($database)
+    public function databaseExists(string $database)
     {
         return in_array($database, $this->getSchemaManager()->listDatabases());
     }
@@ -75,20 +75,20 @@ class AdminConnection extends Connection
         return $this->getSchemaManager()->createSchema();
     }
 
-    public function loadSql($sqlPath)
+    public function loadSql(string $sqlPath)
     {
         $this->disableForeignKeyChecks();
         $this->executeUpdate(file_get_contents($sqlPath));
         $this->enableForeignKeyChecks();
     }
 
-    public function loadSchema($schemaPath)
+    public function loadSchema(string $schemaPath)
     {
         $schema = Parser::fromFile($schemaPath, $this->platform());
         $this->createSchema($schema);
     }
 
-    public function createSchema($schema)
+    public function createSchema(string $schema)
     {
         $this->disableForeignKeyChecks();
         // TODO More efficient way???
@@ -100,17 +100,17 @@ class AdminConnection extends Connection
         $this->enableForeignKeyChecks();
     }
 
-    public function extractSchema($schemaPath, $overwrite = true)
+    public function extractSchema(string $schemaPath, bool $overwrite = true)
     {
         SchemaWriter::fromConnection($this, $schemaPath, $overwrite);
     }
 
-    public function tableExists($table)
+    public function tableExists(string $table)
     {
         return $this->getSchemaManager()->tablesExist([$table]);
     }
 
-    public function createItemTable($module)
+    public function createItemTable(string $module)
     {
         $table = 'ark_item_'.$module;
         $sm = $this->getSchemaManager();
@@ -122,7 +122,7 @@ class AdminConnection extends Connection
         $sm->createTable($schema->getTable($table));
     }
 
-    public function listUsers($identity = false)
+    public function listUsers(bool $identity = false)
     {
         switch ($this->platform()->getName()) {
             case 'mysql':
@@ -145,12 +145,12 @@ class AdminConnection extends Connection
         }
     }
 
-    public function userExists($user)
+    public function userExists(string $user)
     {
         return in_array($user, $this->listUsers());
     }
 
-    public function createUser($user, $password)
+    public function createUser(string $user, string $password)
     {
         switch ($this->platform()->getName()) {
             case 'mysql':
@@ -173,7 +173,7 @@ class AdminConnection extends Connection
         }
     }
 
-    private function applyPermissions($action, $user, $database)
+    private function applyPermissions(string $action, string $user, string $database)
     {
         switch ($this->platform()->getName()) {
             case 'mysql':
@@ -198,17 +198,17 @@ class AdminConnection extends Connection
         }
     }
 
-    public function grantUser($user, $database)
+    public function grantUser(string $user, string $database)
     {
         $this->applyPermissions('GRANT', $user, $database);
     }
 
-    public function revokeUser($user, $database)
+    public function revokeUser(string $user, string $database)
     {
         $this->applyPermissions('REVOKE', $user, $database);
     }
 
-    public function dropUser($user)
+    public function dropUser(string $user)
     {
         switch ($this->platform()->getName()) {
             case 'mysql':

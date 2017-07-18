@@ -13,7 +13,7 @@ use ARK\Service;
 
 class Image extends File
 {
-    public function sourcePath($preset = null)
+    public function sourcePath(string $preset = null)
     {
         $path = Service::path('img', ['image' => $this->id()]);
         if ($preset) {

@@ -51,23 +51,23 @@ class Connection extends DBALConnection
     }
 
 
-    public function countRows($table)
+    public function countRows(string $table)
     {
         return $this->executeQuery("SELECT COUNT(*) FROM $table")->fetch()["COUNT(*)"];
     }
 
-    public function fetchAllTable($table)
+    public function fetchAllTable(string $table)
     {
         return $this->fetchAll("SELECT * FROM $table");
     }
 
-    public function fetchAllColumn($sql, $column, array $params = [], array $types = [])
+    public function fetchAllColumn(string $sql, string $column, array $params = [], array $types = [])
     {
         $rows = $this->executeQuery($sql, $params, $types)->fetchAll();
         return array_column($rows, $column);
     }
 
-    public function insertRows($table, array $fields, array $rows)
+    public function insertRows(string $table, array $fields, array $rows)
     {
         $cols = count($fields);
         $fl = implode(', ', $fields);

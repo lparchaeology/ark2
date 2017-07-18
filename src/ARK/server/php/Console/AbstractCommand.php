@@ -65,7 +65,7 @@ abstract class AbstractCommand extends Command
 
     abstract protected function doExecute();
 
-    protected function runCommand($command, array $arguments = [])
+    protected function runCommand(string $command, array $arguments = [])
     {
         $command = $this->getApplication()->find($command);
         $returnCode = $command->run(new ArrayInput($arguments), $this->output);
@@ -75,7 +75,7 @@ abstract class AbstractCommand extends Command
         return $returnCode;
     }
 
-    protected function app($key = null)
+    protected function app(string $key = null)
     {
         return $this->getApplication()->app($key);
     }
@@ -95,22 +95,22 @@ abstract class AbstractCommand extends Command
         return $this->result;
     }
 
-    protected function addRequiredArgument($argument, $description)
+    protected function addRequiredArgument(string $argument, string $description)
     {
         return $this->addArgument($argument, InputArgument::REQUIRED, $description);
     }
 
-    protected function addOptionalArgument($argument, $description)
+    protected function addOptionalArgument(string $argument, string $description)
     {
         return $this->addArgument($argument, InputArgument::OPTIONAL, $description);
     }
 
-    protected function getArgument($argument)
+    protected function getArgument(string $argument)
     {
         return $this->input->getArgument($argument);
     }
 
-    protected function write($message)
+    protected function write(string $message)
     {
         if ($this->progress->getProgress() != $this->progress->getMaxSteps()) {
             $this->progress->clear();
@@ -129,7 +129,7 @@ abstract class AbstractCommand extends Command
         $table->render();
     }
 
-    protected function writeException($message, Exception $e)
+    protected function writeException(string $message, Exception $e)
     {
         $this->write($message.' : '.$e->getCode().' - '.$e->getMessage());
     }
@@ -139,7 +139,7 @@ abstract class AbstractCommand extends Command
         return $this->query->ask($this->input, $this->output, $question);
     }
 
-    protected function askQuestion($text, $default = null)
+    protected function askQuestion(string $text, $default = null)
     {
         if ($default !== null) {
             return $this->ask(new Question("$text (default: $default): ", $default));
@@ -147,7 +147,7 @@ abstract class AbstractCommand extends Command
         return $this->ask(new Question("$text : "));
     }
 
-    protected function askConfirmation($text, $default = true)
+    protected function askConfirmation(string $text, $default = true)
     {
         if ($default) {
             return $this->ask(new ConfirmationQuestion("$text (default: Yes): ", $default));
@@ -155,7 +155,7 @@ abstract class AbstractCommand extends Command
         return $this->ask(new ConfirmationQuestion("$text (default: No): ", $default));
     }
 
-    protected function askChoice($text, $choices, $default = null, $auto = true)
+    protected function askChoice(string $text, $choices, $default = null, bool $auto = true)
     {
         if ($default) {
             $text = "$text (default: $default): ";
@@ -169,7 +169,7 @@ abstract class AbstractCommand extends Command
         return $this->ask($question);
     }
 
-    protected function askPassword($user = 'root', $text = null)
+    protected function askPassword(string $user = 'root', string $text = null)
     {
         if (!$text) {
             $text = "Please enter the password for the user '$user' : ";

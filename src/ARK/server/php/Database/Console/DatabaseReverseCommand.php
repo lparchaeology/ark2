@@ -54,7 +54,7 @@ class DatabaseReverseCommand extends DatabaseCommand
         $this->reverse($dbprefix, 'user', $config);
     }
 
-    private function reverse($prefix, $name, $config)
+    private function reverse(string $prefix, string $name, array $config)
     {
         // Get the Admin Connection
         $dbname = $prefix.$name;

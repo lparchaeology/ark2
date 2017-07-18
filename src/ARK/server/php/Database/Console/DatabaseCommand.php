@@ -40,19 +40,19 @@ use Doctrine\DBAL\DriverManager;
 
 abstract class DatabaseCommand extends AbstractCommand
 {
-    protected function chooseServerConnection($text = null, $user = null)
+    protected function chooseServerConnection(string $text = null, string $user = null)
     {
         $server = $this->chooseServer($text);
         return $this->getServerConnection($server, $user);
     }
 
-    protected function getServerConnection($server, $user = null)
+    protected function getServerConnection(string $server, string $user = null)
     {
         $config = $this->getServerConfig($server, $user);
         return $this->getConnection($config);
     }
 
-    protected function getConnection($config)
+    protected function getConnection(array $config)
     {
         if (!isset($config['password'])) {
             $config['password'] = $this->askPassword($config['user']);
@@ -67,13 +67,13 @@ abstract class DatabaseCommand extends AbstractCommand
         return $connection;
     }
 
-    protected function chooseServerConfig($text = null, $user = null)
+    protected function chooseServerConfig(string $text = null, string $user = null)
     {
         $server = $this->chooseServer($text);
         return $this->getServerConfig($server, $user);
     }
 
-    protected function getServerConfig($server, $user = null)
+    protected function getServerConfig(string $server, string $user = null)
     {
         $config = ARK::server($server);
         $config['wrapperClass'] = 'ARK\Database\AdminConnection';
@@ -84,7 +84,7 @@ abstract class DatabaseCommand extends AbstractCommand
         return $config;
     }
 
-    protected function chooseServer($text = null)
+    protected function chooseServer(string $text = null)
     {
         if (!$text) {
             $text = 'Please choose the database server to use';
@@ -98,13 +98,13 @@ abstract class DatabaseCommand extends AbstractCommand
         return $server;
     }
 
-    protected function chooseDatabaseConnection($text = null, $user = null)
+    protected function chooseDatabaseConnection(string $text = null, string $user = null)
     {
         $config = $this->chooseDatabaseConfig($text, $user);
         return $this->getConnection($config);
     }
 
-    protected function chooseDatabaseConfig($text = null, $user = null)
+    protected function chooseDatabaseConfig(string $text = null, string $user = null)
     {
         $conn = $this->chooseServerConnection(null, $user);
         $config = $conn->config();
@@ -113,7 +113,7 @@ abstract class DatabaseCommand extends AbstractCommand
         return $config;
     }
 
-    protected function chooseDatabase(AdminConnection $conn, $text = null)
+    protected function chooseDatabase(AdminConnection $conn, string $text = null)
     {
         if (!$text) {
             $text = 'Please choose a database';

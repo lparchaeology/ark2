@@ -15,7 +15,7 @@ class Page implements Item
 {
     use ItemTrait;
 
-    public function __construct($schema = 'core.page')
+    public function __construct(string $schema = 'core.page')
     {
         $this->construct($schema);
     }

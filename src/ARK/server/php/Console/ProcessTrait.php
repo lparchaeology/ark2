@@ -36,7 +36,7 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 
 trait ProcessTrait
 {
-    protected function runProcess($command, OutputInterface $output)
+    protected function runProcess(string $command, OutputInterface $output)
     {
         $process = new Process($command);
         $process->run();

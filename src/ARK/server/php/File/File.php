@@ -22,7 +22,7 @@ abstract class File implements Item
 
     use ItemTrait;
 
-    protected function __construct($schema = 'core.file')
+    protected function __construct(string $schema = 'core.file')
     {
         $this->construct($schema);
     }
@@ -70,7 +70,7 @@ abstract class File implements Item
         return $this->current;
     }
 
-    public function addFileVersion($name, $extension, $version = null, DateTime $created = null)
+    public function addFileVersion(string $name, string $extension, string $version = null, DateTime $created = null)
     {
         $this->current();
         $this->current = FileVersion::create($this->id(), $this->mediatype()->type(), $name, $extension, $version, $created);
@@ -133,7 +133,7 @@ abstract class File implements Item
         if (is_string($mediatype)) {
             $mediatype = new MediaType($mediatype);
         }
-        if (! $mediatype instanceof MediaType) {
+        if (!$mediatype instanceof MediaType) {
             return new Other;
         }
         switch ($mediatype->type()) {

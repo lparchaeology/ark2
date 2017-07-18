@@ -40,7 +40,7 @@ class MediaType
     private static $extensions = null;
     protected $mediatype = null;
 
-    public function __construct(/*string*/ $type = self::DEFAULT_TYPE)
+    public function __construct(string $type = self::DEFAULT_TYPE)
     {
         if (self::isValidMediaType($type)) {
             $this->mediatype = $type;
@@ -78,40 +78,40 @@ class MediaType
         return self::$repository;
     }
 
-    public static function isValidMediaType($mediatype)
+    public static function isValidMediaType(string $mediatype)
     {
         self::repository();
         return in_array($mediatype, self::$mediatypes);
     }
 
-    public static function isValidExtension($extension)
+    public static function isValidExtension(string $extension)
     {
         self::repository();
         return in_array($extension, self::$extensions);
     }
 
-    public static function isDefaultExtension($mediatype, $extension)
+    public static function isDefaultExtension(string $mediatype, string $extension)
     {
         return (self::findDefaultExtension($mediatype) === $extension);
     }
 
-    public static function findExtensions($mediatype)
+    public static function findExtensions(string $mediatype)
     {
         return self::repository()->findExtensions($mediatype);
     }
 
-    public static function findDefaultExtension($mediatype)
+    public static function findDefaultExtension(string $mediatype)
     {
         $exts = self::repository()->findExtensions($mediatype);
         return isset($exts[0]) ? $exts[0] : null;
     }
 
-    public static function findMediaType($extension)
+    public static function findMediaType(string $extension)
     {
         return self::repository()->findType($extension);
     }
 
-    public static function findType($type)
+    public static function findType(string $type)
     {
         $mediatype = null;
         if (self::isValidMediaType($type)) {

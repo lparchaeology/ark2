@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Form\Type;
@@ -56,7 +55,7 @@ class ObjectType extends AbstractType implements DataMapperInterface
         $this->buildAttribute($builder, $field->attribute(), $fieldOptions, $field->attribute()->isRequired());
     }
 
-    protected function buildAttribute(FormBuilderInterface $builder, Attribute $attribute, $options, $required)
+    protected function buildAttribute(FormBuilderInterface $builder, Attribute $attribute, array $options, bool $required)
     {
         $name = $attribute->name();
         if ($attribute->datatype()->type()->isObject()) {
@@ -117,8 +116,6 @@ class ObjectType extends AbstractType implements DataMapperInterface
         $forms = iterator_to_array($forms);
         $attribute = $property->attribute();
         $value = $property->value();
-        dump($attribute);
-        dump($value);
         if ($attribute->datatype()->type()->isObject()) {
             foreach ($attribute->datatype()->attributes() as $sub) {
                 $key = $sub->name();

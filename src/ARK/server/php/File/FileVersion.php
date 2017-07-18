@@ -116,14 +116,20 @@ class FileVersion extends FileHandler
         $this->expires = $expiresOn;
     }
 
-    public static function makeFilePath($type, $id, $sequence, $extension)
+    public static function makeFilePath(string $type, $id, $sequence, string $extension)
     {
         $token = floor(intval($id) / 1000) * 1000;
         return "$type/$token/$id.$sequence.$extension";
     }
 
-    public static function create($id, $type, $name, $extension, $version = null, DateTime $created = null)
-    {
+    public static function create(
+        string $id,
+        string $type,
+        string $name,
+        string $extension,
+        string $version = null,
+        DateTime $created = null
+    ) {
         $file = new FileVersion;
         $file->name = $name;
         $file->extension = $extension;

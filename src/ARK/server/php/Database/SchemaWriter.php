@@ -55,7 +55,11 @@ class SchemaWriter
      *
      * @return string
      */
-    public static function fromConnection(Connection $connection, $filename = '', $replaceIfExists = false, $tableFilter = null)
+    public static function fromConnection(
+        Connection $connection,
+        string $filename = '',
+        bool $replaceIfExists = false,
+        callable $tableFilter = null)
     {
         $schema = $connection->getSchemaManager()->createSchema();
         $platform = $connection->getDatabasePlatform();
@@ -72,13 +76,24 @@ class SchemaWriter
      *
      * @return string
      */
-    public static function fromSchema(Schema $schema, AbstractPlatform $platform, $filename = '', $replaceIfExists = false, $tableFilter = null)
-    {
+    public static function fromSchema(
+        Schema $schema,
+        AbstractPlatform $platform,
+        string $filename = '',
+        bool $replaceIfExists = false,
+        callable $tableFilter = null
+    ) {
         return static::toDocument(null, $schema, $platform, $filename, $replaceIfExists, $tableFilter);
     }
 
-    public static function toDocument(Connection $connection, Schema $schema, AbstractPlatform $platform, $filename = '', $replaceIfExists = false, $tableFilter = null)
-    {
+    public static function toDocument(
+        Connection $connection,
+        Schema $schema,
+        AbstractPlatform $platform,
+        string $filename = '',
+        bool $replaceIfExists = false,
+        callable $tableFilter = null
+    ) {
         if ($filename && !$replaceIfExists && is_file($filename)) {
             throw new Exception('File '.$filename.' already exists');
         }
@@ -110,8 +125,12 @@ class SchemaWriter
         return $xml;
     }
 
-    protected static function addTable(SimpleXMLElement $parent, Table $table, AbstractPlatform $platform, Connection $connection)
-    {
+    protected static function addTable(
+        SimpleXMLElement $parent,
+        Table $table,
+        AbstractPlatform $platform,
+        Connection $connection
+    ) {
         $element = $parent->addChild('table');
         static::addNameAttribute($element, $table);
         $options = $table->getOptions();
@@ -150,8 +169,13 @@ class SchemaWriter
         static::addOptions($element, $options, $platform);
     }
 
-    protected static function addField(SimpleXMLElement $parent, Column $field, array $primaryFields, array $tableOptions, AbstractPlatform $platform)
-    {
+    protected static function addField(
+        SimpleXMLElement $parent,
+        Column $field,
+        array $primaryFields,
+        array $tableOptions,
+        AbstractPlatform $platform
+    ) {
         $element = $parent->addChild('field');
         static::addNameAttribute($element, $field);
         $options = $field->getPlatformOptions();
@@ -259,7 +283,7 @@ class SchemaWriter
         }
     }
 
-    protected static function addOptions(SimpleXMLElement $element, $options, AbstractPlatform $platform)
+    protected static function addOptions(SimpleXMLElement $element, array $options, AbstractPlatform $platform)
     {
         if (count($options)) {
             $opt = $element->addChild('opt');
@@ -270,8 +294,12 @@ class SchemaWriter
         }
     }
 
-    protected static function tableOptions($table, $options, Connection $connection, AbstractPlatform $platform)
-    {
+    protected static function tableOptions(
+        string $table,
+        array $options,
+        Connection $connection,
+        AbstractPlatform $platform
+    ) {
         if ($connection == null) {
             return $options;
         }

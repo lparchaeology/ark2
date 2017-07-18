@@ -67,7 +67,7 @@ class ErrorBag implements Countable, IteratorAggregate
         return 500;
     }
 
-    public function setCode(/*string*/ $code)
+    public function setCode(string $code)
     {
         $this->errorCode = $code;
     }
