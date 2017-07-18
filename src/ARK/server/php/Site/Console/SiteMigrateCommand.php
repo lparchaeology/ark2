@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Console Command
+ * ARK Console Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -23,6 +23,7 @@
  * @author     John Layt <j.layt@lparchaeology.com>
  * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
+ *
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
  * @php        >=5.6, >=7.0
@@ -33,28 +34,125 @@ namespace ARK\Site\Console;
 use ARK\ARK;
 use ARK\Console\ProcessTrait;
 use ARK\Database\Console\DatabaseCommand;
-use Doctrine\DBAL\DBALException;
 use Exception;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableSeparator;
-use Symfony\Component\Console\Input\ArrayInput;
 
 class SiteMigrateCommand extends DatabaseCommand
 {
     use ProcessTrait;
 
-    protected static $defaults = [
-        'cxt' => 'context',
-        'grp' => 'group',
-        'lus' => 'landuse',
-        'pln' => 'plan',
-        'rgf' => 'rfind',
-        'sec' => 'section',
-        'sgr' => 'subgroup',
-        'smp' => 'sample',
-        'spf' => 'find',
-        'sph' => 'photo',
-        'tmb' => 'timber',
+    protected static $moduleDefault = [
+        'cxt' => [
+            'module' => 'context',
+            'resource' => 'contexts',
+            'project' => 'ARK',
+            'namespace' => 'ARK\Entity',
+            'entity' => 'Context',
+            'classname' => 'ARK\Entity\Context',
+            'tbl' => 'ark_item_context',
+            'keyword' => 'core.module.context',
+        ],
+        'grp' => [
+            'module' => 'group',
+            'resource' => 'groups',
+            'project' => 'ARK',
+            'namespace' => 'ARK\Entity',
+            'entity' => 'Group',
+            'classname' => 'ARK\Entity\Group',
+            'tbl' => 'ark_item_group',
+            'keyword' => 'core.module.group',
+        ],
+        'lus' => [
+            'module' => 'landuse',
+            'resource' => 'landuses',
+            'project' => 'ARK',
+            'namespace' => 'ARK\Entity',
+            'entity' => 'Landuse',
+            'classname' => 'ARK\Entity\Landuse',
+            'tbl' => 'ark_item_landuse',
+            'keyword' => 'core.module.landuse',
+        ],
+        'pln' => [
+            'module' => 'plan',
+            'resource' => 'plans',
+            'project' => 'ARK',
+            'namespace' => 'ARK\Entity',
+            'entity' => 'Plan',
+            'classname' => 'ARK\Entity\Plan',
+            'tbl' => 'ark_item_plan',
+            'keyword' => 'core.module.plan',
+        ],
+        'rgf' => [
+            'module' => 'rfind',
+            'resource' => 'rfinds',
+            'project' => 'ARK',
+            'namespace' => 'ARK\Entity',
+            'entity' => 'Rfind',
+            'classname' => 'ARK\Entity\Rfind',
+            'tbl' => 'ark_item_rfind',
+            'keyword' => 'core.module.rfind',
+        ],
+        'sec' => [
+            'module' => 'section',
+            'resource' => 'sections',
+            'project' => 'ARK',
+            'namespace' => 'ARK\Entity',
+            'entity' => 'Section',
+            'classname' => 'ARK\Entity\Section',
+            'tbl' => 'ark_item_section',
+            'keyword' => 'core.module.section',
+        ],
+        'sgr' => [
+            'module' => 'subgroup',
+            'resource' => 'subgroups',
+            'project' => 'ARK',
+            'namespace' => 'ARK\Entity',
+            'entity' => 'Subgroup',
+            'classname' => 'ARK\Entity\Subgroup',
+            'tbl' => 'ark_item_subgroup',
+            'keyword' => 'core.module.subgroup',
+        ],
+        'smp' => [
+            'module' => 'sample',
+            'resource' => 'samples',
+            'project' => 'ARK',
+            'namespace' => 'ARK\Entity',
+            'entity' => 'Sample',
+            'classname' => 'ARK\Entity\Sample',
+            'tbl' => 'ark_item_sample',
+            'keyword' => 'core.module.sample',
+        ],
+        'spf' => [
+            'module' => 'find',
+            'resource' => 'finds',
+            'project' => 'ARK',
+            'namespace' => 'ARK\Entity',
+            'entity' => 'Find',
+            'classname' => 'ARK\Entity\Find',
+            'tbl' => 'ark_item_find',
+            'keyword' => 'core.module.find',
+        ],
+        'sph' => [
+            'module' => 'photo',
+            'resource' => 'photos',
+            'project' => 'ARK',
+            'namespace' => 'ARK\Entity',
+            'entity' => 'Photo',
+            'classname' => 'ARK\Entity\Photo',
+            'tbl' => 'ark_item_photo',
+            'keyword' => 'core.module.photo',
+        ],
+        'tmb' => [
+            'module' => 'timber',
+            'resource' => 'timbers',
+            'project' => 'ARK',
+            'namespace' => 'ARK\Entity',
+            'entity' => 'Timber',
+            'classname' => 'ARK\Entity\Timber',
+            'tbl' => 'ark_item_timber',
+            'keyword' => 'core.module.timber',
+        ],
     ];
 
     protected static $attributes = [
@@ -118,14 +216,7 @@ class SiteMigrateCommand extends DatabaseCommand
             return $this->errorCode();
         }
         $destinationConfig = ARK::siteDatabaseConfig($this->site, true);
-        // Clone old database and get clone connection
-        $clone = $this->askChoice('Do you want to clone the database or an use an existing clone?', ['Clone', 'Existing'], 'Clone');
-        // TODO Only list databases with cor_tbl_module in them?
-        if (strtolower($clone) == 'new') {
-            $sourceConfig = $this->runCommand('database:clone');
-        } else {
-            $sourceConfig = $this->chooseDatabaseConfig();
-        }
+        $sourceConfig = $this->chooseDatabaseConfig();
         if (!is_array($sourceConfig)) {
             return $this->errorCode();
         }
@@ -135,7 +226,8 @@ class SiteMigrateCommand extends DatabaseCommand
         // Do any fixes?
 
         // Set up modules in new, loop through list asking required details, choose schema, etc, create data tables
-        $newChoice = 'Create New Module';
+        $newChoice = 'Create New Module with Custom settings';
+        $defaultChoice = 'Create New Module with Default settings';
         $skipChoice = 'Skip This Module';
         $destModChoices = [$newChoice, $skipChoice];
         $this->core = $this->getConnection($destinationConfig['core']);
@@ -157,6 +249,10 @@ class SiteMigrateCommand extends DatabaseCommand
                 $hasSiteMod = true;
             }
             $destMod[$mod['module']] = $mod;
+        }
+        $schemaRows = $this->core->fetchAllTable('ark_schema');
+        foreach ($schemaRows as $schema) {
+            $destSchema[$schema['module']][] = $schema['schma'];
         }
 
         $srcMods = $this->source->fetchAllTable('cor_tbl_module');
@@ -186,16 +282,28 @@ class SiteMigrateCommand extends DatabaseCommand
                     $module['classname'] = 'ARK\Actor\Actor';
                     $module['tbl'] = 'ark_item_actor';
                     $module['core'] = true;
-                    $module['keyword'] = 'module.actor';
+                    $module['keyword'] = 'core.module.actor';
                     $mapping['abk']['config'] = $module;
                 }
-                $this->write(" - Auto-mapped to Actor module");
+                $this->write(' - Auto-mapped to Actor module');
             } else {
-                $choice = $this->askChoice('Please choose a module to migrate to', $destModChoices, $newChoice);
-                if ($choice == $newChoice) {
-                    // TODO repeat until not a current module
-                    if (isset(self::$defaults[$mod])) {
-                        $module['module'] = $this->askQuestion('Please enter the new module code as a singular noun, e.g. context or image', self::$defaults[$mod]);
+                $hasDefault = isset(self::$moduleDefault[$mod]);
+                if ($hasDefault) {
+                    $defChoices = $destModChoices;
+                    array_unshift($defChoices, $defaultChoice);
+                    $choice = $this->askChoice('Please choose a module to migrate to', $defChoices, $defaultChoice);
+                    unset($defChoices);
+                } else {
+                    $choice = $this->askChoice('Please choose a module to migrate to', $destModChoices, $newChoice);
+                }
+                if ($hasDefault && $choice == $defaultChoice) {
+                    $module = self::$moduleDefault[$mod];
+                    $mapping[$mod]['module'] = $module['module'];
+                    $mapping[$mod]['mode'] = 'new';
+                    $mapping[$mod]['config'] = $module;
+                } elseif ($choice == $newChoice) {
+                    if ($hasDefault) {
+                        $module['module'] = $this->askQuestion('Please enter the new module code as a singular noun, e.g. context or image', self::$moduleDefault[$mod]);
                     } else {
                         $module['module'] = $this->askQuestion('Please enter the new module code as a singular noun, e.g. context or image');
                     }
@@ -205,26 +313,30 @@ class SiteMigrateCommand extends DatabaseCommand
                     $module['entity'] = ucfirst($module['module']);
                     $module['classname'] = $module['namespace'].'\\'.$module['entity'];
                     $module['tbl'] = 'ark_item_'.$module['module'];
-                    $module['keyword'] = 'module.'.$module['module'];
+                    $module['keyword'] = 'core.module.'.$module['module'];
                     $mapping[$mod]['module'] = $module['module'];
                     $mapping[$mod]['mode'] = 'new';
                     $mapping[$mod]['config'] = $module;
-                    // TODO Create Schema
-                    $mapping[$mod]['schema'] = $this->siteKey.'.'.$module['module'];
-                    unset($module);
                 } elseif ($choice != $skipChoice) {
                     $mapping[$mod]['mode'] = 'existing';
                     $mapping[$mod]['module'] = $choice;
                     $mapping[$mod]['config'] = $destMod[$choice];
-                    // TODO Schema
-                    $schemaRows = $this->core->executeQuery("SELECT * FROM ark_schema WHERE module = ?", [$choice])->fetchAll();
-                    $schemaChoices[] = $this->siteKey.'.'.$choice;
-                    foreach ($schemaRows as $schema) {
-                        $schemaChoices[] = $schema['schma'];
-                    }
-                    $schema = $this->askChoice('Please choose a schema to use', $schemaChoices, $schemaChoices[0]);
-                    $mapping[$mod]['schema'] = $schema;
                 }
+                $schemaChoices = [];
+                if (isset($destSchema[$module['module']])) {
+                    $schemaChoices = $destSchema[$module['module']];
+                }
+                $coreSchema = 'core.'.$module['module'];
+                if (!in_array($coreSchema, $schemaChoices)) {
+                    $schemaChoices[] = $coreSchema;
+                }
+                $siteSchema = $this->siteKey.'.'.$module['module'];
+                if (!in_array($siteSchema, $schemaChoices)) {
+                    $schemaChoices[] = $siteSchema;
+                }
+                $schema = $this->askChoice('Please choose a schema to use', $schemaChoices, $coreSchema);
+                $mapping[$mod]['schema'] = $schema;
+                unset($schemas, $module, $schemaChoices, $coreSchema, $siteSchema);
             }
         }
         foreach (array_keys($mapping) as $mod) {
@@ -240,7 +352,7 @@ class SiteMigrateCommand extends DatabaseCommand
         }
         unset($module);
         $table->render();
-        if (!$this->askConfirmation('Please confirm you want to use this mapping', false)) {
+        if (!$this->askConfirmation('Please confirm you want to use this mapping', true)) {
             return $this->errorCode();
         }
         $this->write('');
@@ -255,7 +367,8 @@ class SiteMigrateCommand extends DatabaseCommand
             $module['classname'] = 'ARK\Entity\Site';
             $module['tbl'] = 'ark_item_site';
             $module['core'] = true;
-            $module['keyword'] = 'module.site';
+            $module['keyword'] = 'core.module.site';
+            $this->addTranslation($module['keyword'], $module['entity']);
             $this->core->insert('ark_module', $module);
             unset($module);
         }
@@ -271,11 +384,14 @@ class SiteMigrateCommand extends DatabaseCommand
                     'schma' => 'core.site',
                     'idx' => $site['id'],
                     'label' => $site['id'],
-                    'cre_by' => $site['cre_by'],
-                    'cre_on' => $site['cre_on'],
+                    'creator' => $site['cre_by'],
+                    'created' => $site['cre_on'],
                     'version' => '',
                 ];
-                $this->data->insert('ark_item_site', $item);
+                try {
+                    $this->data->insert('ark_item_site', $item);
+                } catch (Exception $e) {
+                }
                 $text = [
                     'module' => 'site',
                     'item' => $site['id'],
@@ -291,6 +407,7 @@ class SiteMigrateCommand extends DatabaseCommand
         // * MODULE SCHEMA * //
         foreach ($mapping as $mod => &$module) {
             if ($module['mode'] == 'new') {
+                $this->addTranslation($module['config']['keyword'], $module['config']['entity']);
                 $this->core->insert('ark_module', $module['config']);
                 if (!$this->data->tableExists($module['config']['tbl'])) {
                     $this->data->createItemTable($module['module']);
@@ -316,12 +433,15 @@ class SiteMigrateCommand extends DatabaseCommand
                     $vocab['concept'] = $typeVocabulary;
                     $vocab['type'] = 'list';
                     $vocab['source'] = 'ARK 1.2';
+                    $vocab['description'] = $typeVocabulary;
                     $vocab['keyword'] = $typeVocabulary;
+                    $this->addTranslation($vocab['keyword'], $vocab['concept']);
                     $this->core->insert('ark_vocabulary', $vocab);
                     $term['concept'] = $typeVocabulary;
                     foreach ($modtypes as $modtype) {
                         $term['term'] = strtolower($modtype[$mod.'type']);
                         $term['keyword'] = $term['concept'].'.'.$term['term'];
+                        $this->addTranslation($term['keyword'], $term['term']);
                         $this->core->insert('ark_vocabulary_term', $term);
                     }
                 } else {
@@ -331,11 +451,12 @@ class SiteMigrateCommand extends DatabaseCommand
                 }
                 $schema['schma'] = $module['schema'];
                 $schema['module'] = $module['module'];
-                $schema['generator'] = 'ARK\Model\Entity\ItemSequenceGenerator';
+                $schema['generator'] = 'sequence';
                 $schema['sequence'] = 'id';
                 $schema['type'] = $type;
-                $schema['type_vocabulary'] = $typeVocabulary;
+                $schema['vocabulary'] = $typeVocabulary;
                 $schema['keyword'] = $module['schema'].'.schema';
+                $this->addTranslation($schema['keyword'], $schema['schma']);
                 $this->core->insert('ark_schema', $schema);
             } else {
                 $module['type'] = null;
@@ -352,18 +473,20 @@ class SiteMigrateCommand extends DatabaseCommand
             $vocab['type'] = 'list';
             $vocab['source'] = 'ARK 1.2';
             $vocab['keyword'] = $vocab['concept'];
+            $this->addTranslation($vocab['keyword'], $vocab['concept']);
             $this->core->insert('ark_vocabulary', $vocab);
         }
-        $sql = "
+        $sql = '
             SELECT cor_lut_attribute.*, cor_lut_attributetype.attributetype
             FROM cor_lut_attribute, cor_lut_attributetype
             WHERE cor_lut_attribute.attributetype = cor_lut_attributetype.id
-        ";
+        ';
         $attributes = $this->source->fetchAll($sql);
         foreach ($attributes as $attribute) {
             $term['concept'] = strtolower($this->siteKey.'.'.$attribute['attributetype']);
             $term['term'] = $this->makeAttribute($attribute['attribute']);
             $term['keyword'] = $term['concept'].'.'.$term['term'];
+            $this->addTranslation($term['keyword'], $term['term']);
             // There can be duplicate values!
             try {
                 $this->core->insert('ark_vocabulary_term', $term);
@@ -403,8 +526,8 @@ class SiteMigrateCommand extends DatabaseCommand
                     $newItem['module'] = $module['module'];
                     $newItem['schma'] = $module['schema'];
                     $newItem['type'] = (isset($item['modtype']) ? strtolower($item['modtype']) : '');
-                    $newItem['cre_by'] = $item['cre_by'];
-                    $newItem['cre_on'] = $item['cre_on'];
+                    $newItem['creator'] = $item['cre_by'];
+                    $newItem['created'] = $item['cre_on'];
                     $this->data->insert($module['config']['tbl'], $newItem);
                     $updates = $updates + 1;
                 }
@@ -415,11 +538,11 @@ class SiteMigrateCommand extends DatabaseCommand
         unset($module);
 
         // * COPY FILE ITEMS * /
-        $sql = "
+        $sql = '
             SELECT cor_lut_file.*, cor_lut_filetype.filetype
             FROM cor_lut_file, cor_lut_filetype
             WHERE cor_lut_file.filetype = cor_lut_filetype.id
-        ";
+        ';
         $rows = $this->source->fetchAllTable('cor_lut_file');
         $count = count($rows);
         $this->write('cor_lut_file : '.$count);
@@ -436,8 +559,8 @@ class SiteMigrateCommand extends DatabaseCommand
                 'type' => 'other',
                 'idx' => $row['id'],
                 'label' => $row['filename'],
-                'cre_by' => $row['cre_by'],
-                'cre_on' => $row['cre_on'],
+                'creator' => $row['cre_by'],
+                'created' => $row['cre_on'],
             ];
             if (in_array($row['filetype'], ['image', 'images', 'drawing'])) {
                 $item['type'] = 'image';
@@ -451,13 +574,13 @@ class SiteMigrateCommand extends DatabaseCommand
         $this->progress->finish();
         $this->write("\nark_item_file : $updates\n");
         $updates = 0;
-        $sql = "
+        $sql = '
             SELECT cor_tbl_file.*, cor_lut_filetype.filetype
             FROM cor_tbl_file, cor_lut_file, cor_lut_filetype
             WHERE cor_tbl_file.file = cor_lut_file.id
             AND cor_lut_file.filetype = cor_lut_filetype.id
-        ";
-        $rows = $this->source->fetchAll($sql, array());
+        ';
+        $rows = $this->source->fetchAll($sql, []);
         $count = count($rows);
         $this->write('cor_tbl_file : '.$count);
         if ($count) {
@@ -487,13 +610,13 @@ class SiteMigrateCommand extends DatabaseCommand
 
         // * COPY FRAGMENTS * //
         $parents = [];
-        $classes = array(
+        $classes = [
             'action' => 'ark_fragment_item',
             'attribute' => 'ark_fragment_string',
             'date' => 'ark_fragment_date',
             'number' => 'ark_fragment_integer',
             'txt' => 'ark_fragment_text',
-        );
+        ];
         foreach ($classes as $dataclass => $new_tbl) {
             if ($new_tbl == '') {
                 continue;
@@ -506,19 +629,19 @@ class SiteMigrateCommand extends DatabaseCommand
             $old_tbl = 'cor_tbl_'.$dataclass;
             $lut = 'cor_lut_'.$type;
             if ($dataclass == 'attribute') {
-                $sql = "
+                $sql = '
                     SELECT cor_tbl_attribute.*, cor_lut_attribute.attribute, cor_lut_attributetype.attributetype
                     FROM cor_tbl_attribute, cor_lut_attribute, cor_lut_attributetype
                     WHERE cor_tbl_attribute.attribute = cor_lut_attribute.id
                     AND cor_lut_attribute.attributetype = cor_lut_attributetype.id
-                ";
+                ';
                 $attributes['format'] = 'identifier';
             } elseif ($dataclass == 'action') {
-                $sql = "
+                $sql = '
                     SELECT cor_tbl_action.*, cor_lut_actiontype.actiontype
                     FROM cor_tbl_action, cor_lut_actiontype
                     WHERE cor_tbl_action.actiontype = cor_lut_actiontype.id
-                ";
+                ';
                 $attributes['format'] = 'actor';
             } else {
                 $sql = "
@@ -527,7 +650,7 @@ class SiteMigrateCommand extends DatabaseCommand
                     WHERE $old_tbl.$type = $lut.id
                 ";
             }
-            $frags = $this->source->fetchAll($sql, array());
+            $frags = $this->source->fetchAll($sql, []);
             $count = count($frags);
             $this->write($old_tbl.' : '.$count);
             $updates = 0;
@@ -565,8 +688,7 @@ class SiteMigrateCommand extends DatabaseCommand
                     $frag['parameter'] = $this->siteKey.'.'.$frag['attributetype'];
                     $frag['value'] = $this->makeAttribute($frag['attribute']);
                     $attribute['vocabulary'] = $frag['parameter'];
-                    unset($frag['attribute']);
-                    unset($frag['boolean']);
+                    unset($frag['attribute'], $frag['boolean']);
                 }
                 if (isset($frag[$type])) {
                     $frag['attribute'] = $frag[$type];
@@ -574,10 +696,8 @@ class SiteMigrateCommand extends DatabaseCommand
                 }
                 $frag['old_table'] = $old_tbl;
                 $frag['old_id'] = $frag['id'];
-                unset($frag['id']);
-                unset($frag['typemod']);
-                unset($frag['fragtype']);
-                unset($frag['fragid']);
+                unset($frag['id'], $frag['typemod'], $frag['fragtype'], $frag['fragid']);
+
                 if (isset($frag['itemkey'])) {
                     $frag['module'] = $module;
                 }
@@ -585,13 +705,12 @@ class SiteMigrateCommand extends DatabaseCommand
                     $frag['parameter'] = $mapping[substr($frag['actor_itemkey'], 0, 3)]['module'];
                     $key = $this->makeItemKey($frag['actor_itemvalue']);
                     $frag['value'] = $key['item'];
-                    unset($frag['actor_itemkey']);
-                    unset($frag['actor_itemvalue']);
+                    unset($frag['actor_itemkey'], $frag['actor_itemvalue']);
                 }
                 $key = $this->makeItemKey($frag['itemvalue']);
                 $frag['item'] = $key['item'];
-                unset($frag['itemkey']);
-                unset($frag['itemvalue']);
+                unset($frag['itemkey'], $frag['itemvalue']);
+
                 if (isset($frag['date'])) {
                     $frag['value'] = $frag['date'];
                     unset($frag['date']);
@@ -603,8 +722,15 @@ class SiteMigrateCommand extends DatabaseCommand
                 if (isset($frag['txt'])) {
                     $frag['value'] = $frag['txt'];
                     $frag['parameter'] = $frag['language'];
-                    unset($frag['txt']);
-                    unset($frag['language']);
+                    unset($frag['txt'], $frag['language']);
+                }
+                if (isset($frag['cre_by'])) {
+                    $frag['creator'] = $frag['cre_by'];
+                    unset($frag['cre_by']);
+                }
+                if (isset($frag['cre_on'])) {
+                    $frag['created'] = $frag['cre_on'];
+                    unset($frag['cre_on']);
                 }
                 $this->data->insert($new_tbl, $frag);
                 $updates = $updates + 1;
@@ -617,12 +743,12 @@ class SiteMigrateCommand extends DatabaseCommand
         // TODO Other span types than tvector/sameas
         // TODO Chains?
         $updates = 0;
-        $sql = "
+        $sql = '
             SELECT cor_tbl_span.*, cor_lut_spantype.spantype
             FROM cor_tbl_span, cor_lut_spantype
             WHERE cor_tbl_span.spantype = cor_lut_spantype.id
-        ";
-        $rows = $this->source->fetchAll($sql, array());
+        ';
+        $rows = $this->source->fetchAll($sql, []);
         $count = count($rows);
         $this->write('cor_tbl_span : '.$count);
         if ($count) {
@@ -639,14 +765,15 @@ class SiteMigrateCommand extends DatabaseCommand
             $key = $this->makeItemKey($row['beg']);
             $value = $key['item'];
             $key = $this->makeItemKey($row['end']);
-            $span = $key['item'];
+            $extent = $key['item'];
             $frag = [
                 'module' => $module,
                 'item' => $item,
                 'attribute' => $row['spantype'],
                 'parameter' => $module,
                 'value' => $value,
-                'span' => $span,
+                'span' => true,
+                'extent' => $extent,
             ];
             $this->data->insert('ark_fragment_item', $frag);
             $updates = $updates + 1;
@@ -705,17 +832,17 @@ class SiteMigrateCommand extends DatabaseCommand
             'ark_fragment_string',
             'ark_fragment_text',
         ];
-        $chainTables = array(
+        $chainTables = [
             'cor_tbl_action' => 'ark_fragment_item',
             'cor_tbl_attribute' => 'ark_fragment_string',
             'cor_tbl_date' => 'ark_fragment_date',
             'cor_tbl_number' => 'ark_fragment_integer',
             'cor_tbl_txt' => 'ark_fragment_text',
-        );
-        $chainMap = array(
+        ];
+        $chainMap = [
             'interp' => ['object' => 'interpretation', 'parent' => 'interpretedas'],
             'sgrnarrative' => ['object' => 'narrative', 'parent' => 'narratedas'],
-        );
+        ];
         // Add temp chain fields
         $this->addChainFields('ark_fragment_object');
         $this->data->beginTransaction();
@@ -752,13 +879,14 @@ class SiteMigrateCommand extends DatabaseCommand
                 $params[':old_id'] = $old_parent_id;
                 $object = $this->data->fetchAssoc($sql, $params);
                 $this->data->executeUpdate($upd, ['fid' => $object['fid']]);
-                unset($object['fid']);
-                $object['datatype'] = 'object';
-                unset($object['format']);
-                unset($object['parameter']);
+                $object['fid'] = $this->data->generateItemSequence('object', '', 'fid');
+
+                $object['type'] = 'object';
+                unset($object['format'], $object['parameter']);
+
                 $object['value'] = '';
-                unset($object['old_parent_table']);
-                unset($object['old_parent_id']);
+                unset($object['old_parent_table'], $object['old_parent_id']);
+
                 $this->data->insert('ark_fragment_object', $object);
             }
         }
@@ -818,11 +946,11 @@ class SiteMigrateCommand extends DatabaseCommand
                 ];
                 $this->data->executeUpdate($upd, $params);
             }
-            $upd = "
+            $upd = '
                 UPDATE ark_fragment_object
                 SET attribute = :attribute
                 WHERE fid = :fid
-            ";
+            ';
             $params = [
                 ':fid' => $object['fid'],
                 ':attribute' => $attribute,
@@ -840,6 +968,28 @@ class SiteMigrateCommand extends DatabaseCommand
         $this->write("\nMigration Complete!");
     }
 
+    private function addTranslation($keyword, $text = null, $title = true)
+    {
+        // May already exist
+        try {
+            $trans['keyword'] = $keyword;
+            $trans['domain'] = 'core';
+            $this->core->insert('ark_translation', $trans);
+        } catch (Exception $e) {
+        }
+        // May already exist
+        try {
+            if ($text) {
+                $msg['language'] = 'en';
+                $msg['keyword'] = $keyword;
+                $msg['role'] = 'default';
+                $msg['text'] = $title ? ucwords($text) : $text;
+                $this->core->insert('ark_translation_message', $msg);
+            }
+        } catch (Exception $e) {
+        }
+    }
+
     private function makeAttribute($attribute)
     {
         if (isset(self::$attributes[$attribute])) {
@@ -855,6 +1005,7 @@ class SiteMigrateCommand extends DatabaseCommand
         $attribute = str_replace('-', 'to', $attribute);
         $attribute = str_replace(':', 'to', $attribute);
         $attribute = str_replace('%', 'pcnt', $attribute);
+
         return strtolower($attribute);
     }
 
@@ -870,6 +1021,7 @@ class SiteMigrateCommand extends DatabaseCommand
                 'label' => $itemvalue,
             ];
         }
+
         return [
             'item' => $itemvalue,
             'parent_module' => null,
@@ -887,9 +1039,10 @@ class SiteMigrateCommand extends DatabaseCommand
             WHERE id = ?
         ";
         $parent = $conn->fetchAssoc($sql, [$id]);
-        if ($conn->tableExists($parent['itemkey'])) {
+        if ($parent['itemkey'] && $conn->tableExists($parent['itemkey'])) {
             return $this->getParent($conn, $parent['itemkey'], $parent['itemvalue']);
         }
+
         return ['itemkey' => $parent['itemkey'], 'itemvalue' => $parent['itemvalue']];
     }
 
@@ -899,14 +1052,14 @@ class SiteMigrateCommand extends DatabaseCommand
         $schema_new = $this->admin->getSchemaManager()->createSchema();
         $schema = clone $schema_new;
         if (!$schema->getTable($table)->hasColumn('old_table')) {
-            $schema->getTable($table)->addColumn('old_table', 'string', ["length" => 50, 'notnull' => false]);
+            $schema->getTable($table)->addColumn('old_table', 'string', ['length' => 50, 'notnull' => false]);
         }
         if (!$schema->getTable($table)->hasColumn('old_id')) {
             $schema->getTable($table)->addColumn('old_id', 'integer', ['notnull' => false]);
             $schema->getTable($table)->addIndex(['old_table', 'old_id'], 'old_child');
         }
         if (!$schema->getTable($table)->hasColumn('old_parent_table')) {
-            $schema->getTable($table)->addColumn('old_parent_table', 'string', ["length" => 50, 'notnull' => false]);
+            $schema->getTable($table)->addColumn('old_parent_table', 'string', ['length' => 50, 'notnull' => false]);
         }
         if (!$schema->getTable($table)->hasColumn('old_parent_id')) {
             $schema->getTable($table)->addColumn('old_parent_id', 'integer', ['notnull' => false]);

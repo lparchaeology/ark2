@@ -46,9 +46,7 @@
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="version" type="string" size="36">
-            <notnull/>
-        </field>
+        <field name="version" type="string" size="36"/>
         <index name="name">
             <col>label</col>
         </index>

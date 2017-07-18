@@ -6,7 +6,6 @@ return PhpCsFixer\Config::create()
         '@PSR2' => true,
         '@Symfony' => true,
         '@PHP70Migration' => true,
-        'align_multiline_comment' => true,
         'array_syntax' => ['syntax' => 'short'],
         'combine_consecutive_unsets' => true,
         'no_short_echo_tag' => true,
@@ -18,9 +17,4 @@ return PhpCsFixer\Config::create()
         'phpdoc_order' => true,
         'semicolon_after_instruction' => true,
     ])
-    ->setFinder(
-        PhpCsFixer\Finder::create()
-            ->exclude('sites')
-            ->in(__DIR__)
-    )
-;
+    ->setFinder(PhpCsFixer\Finder::create()->exclude('sites')->in(__DIR__));

@@ -57,7 +57,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -81,6 +80,7 @@
             <notnull/>
         </field>
         <field name="extent" type="blob"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="integer">
             <default value="0"/>
             <notnull/>
@@ -117,7 +117,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -141,6 +140,7 @@
             <notnull/>
         </field>
         <field name="extent" type="boolean"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="integer">
             <default value="0"/>
             <notnull/>
@@ -177,7 +177,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -201,6 +200,7 @@
             <notnull/>
         </field>
         <field name="extent" type="date"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="integer">
             <default value="0"/>
             <notnull/>
@@ -237,7 +237,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -261,6 +260,7 @@
             <notnull/>
         </field>
         <field name="extent" type="datetime"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="integer">
             <default value="0"/>
             <notnull/>
@@ -297,7 +297,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -321,6 +320,7 @@
             <notnull/>
         </field>
         <field name="extent" type="string" size="200"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="integer">
             <default value="0"/>
             <notnull/>
@@ -357,7 +357,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -381,6 +380,7 @@
             <notnull/>
         </field>
         <field name="extent" type="float" size="10.0"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="integer">
             <default value="0"/>
             <notnull/>
@@ -417,7 +417,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -441,6 +440,7 @@
             <notnull/>
         </field>
         <field name="extent" type="bigint"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="integer">
             <default value="0"/>
             <notnull/>
@@ -477,7 +477,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -501,6 +500,7 @@
             <notnull/>
         </field>
         <field name="extent" type="string" size="30"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="integer">
             <default value="0"/>
             <notnull/>
@@ -536,7 +536,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -560,6 +559,7 @@
             <notnull/>
         </field>
         <field name="extent" type="string" size="30"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="integer">
             <default value="0"/>
             <notnull/>
@@ -596,7 +596,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -626,6 +625,7 @@
             <notnull/>
         </field>
         <field name="extent" type="text"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="integer">
             <default value="0"/>
             <notnull/>
@@ -662,7 +662,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -686,6 +685,7 @@
             <notnull/>
         </field>
         <field name="extent" type="string" size="4000"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="integer">
             <default value="0"/>
             <notnull/>
@@ -722,7 +722,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -749,6 +748,7 @@
             <notnull/>
         </field>
         <field name="extent" type="text"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="integer">
             <default value="0"/>
             <notnull/>
@@ -785,7 +785,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -809,6 +808,7 @@
             <notnull/>
         </field>
         <field name="extent" type="time"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="integer">
             <default value="0"/>
             <notnull/>
@@ -885,9 +885,7 @@
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="version" type="string" size="36">
-            <notnull/>
-        </field>
+        <field name="version" type="string" size="36"/>
         <index name="name">
             <col>label</col>
         </index>
@@ -943,9 +941,7 @@
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="version" type="string" size="36">
-            <notnull/>
-        </field>
+        <field name="version" type="string" size="36"/>
         <index name="name">
             <col>label</col>
         </index>
@@ -1001,9 +997,7 @@
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="version" type="string" size="36">
-            <notnull/>
-        </field>
+        <field name="version" type="string" size="36"/>
         <index name="parent">
             <col>parent_module</col>
             <col>parent_item</col>
@@ -1059,9 +1053,7 @@
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="version" type="string" size="36">
-            <notnull/>
-        </field>
+        <field name="version" type="string" size="36"/>
         <index name="name">
             <col>label</col>
         </index>
@@ -1117,9 +1109,7 @@
             <deftimestamp/>
             <notnull/>
         </field>
-        <field name="version" type="string" size="36">
-            <notnull/>
-        </field>
+        <field name="version" type="string" size="36"/>
         <index name="name">
             <col>label</col>
         </index>

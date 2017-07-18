@@ -1457,6 +1457,9 @@
         <references name="edit_permission" table="ark_workflow_permission" onupdate="cascade" ondelete="set null">
             <column local="edit" foreign="permission"/>
         </references>
+        <references name="element" table="ark_view_element" onupdate="cascade" ondelete="cascade">
+            <column local="element" foreign="element"/>
+        </references>
         <references name="footer_element" table="ark_view_group" onupdate="cascade" ondelete="set null">
             <column local="footer" foreign="element"/>
         </references>
@@ -1572,9 +1575,7 @@
             <default value="0"/>
             <notnull/>
         </field>
-        <field name="description" type="text" size="65535">
-            <notnull/>
-        </field>
+        <field name="description" type="text" size="65535"/>
         <index name="type">
             <col>type</col>
         </index>
@@ -1623,9 +1624,7 @@
             <default value="0"/>
             <notnull/>
         </field>
-        <field name="description" type="text" size="65535">
-            <notnull/>
-        </field>
+        <field name="description" type="text" size="65535"/>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     </table>
     <table name="ark_vocabulary_parameter">
@@ -1733,9 +1732,7 @@
             <default value="0"/>
             <notnull/>
         </field>
-        <field name="description" type="text" size="65535">
-            <notnull/>
-        </field>
+        <field name="description" type="text" size="65535"/>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     </table>
     <table name="ark_vocabulary_term">
@@ -1748,9 +1745,7 @@
             <notnull/>
         </field>
         <field name="keyword" type="string" size="100"/>
-        <field name="alias" type="string" size="50">
-            <notnull/>
-        </field>
+        <field name="alias" type="string" size="50"/>
         <field name="is_default" type="boolean">
             <default value="0"/>
             <notnull/>
@@ -1767,9 +1762,7 @@
             <default value="0"/>
             <notnull/>
         </field>
-        <field name="description" type="string" size="100">
-            <notnull/>
-        </field>
+        <field name="description" type="string" size="100"/>
         <index name="keyword">
             <unique/>
             <col>keyword</col>
@@ -1811,9 +1804,7 @@
             <default value="0"/>
             <notnull/>
         </field>
-        <field name="description" type="text" size="65535">
-            <notnull/>
-        </field>
+        <field name="description" type="text" size="65535"/>
         <index name="vocabulary_type_translation">
             <col>keyword</col>
         </index>

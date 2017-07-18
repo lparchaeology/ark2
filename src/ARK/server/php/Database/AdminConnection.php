@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Admin Database Connection
+ * ARK Admin Database Connection.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -23,6 +23,7 @@
  * @author     John Layt <j.layt@lparchaeology.com>
  * @copyright  2016 L - P : Heritage LLP.
  * @license    GPL-3.0+
+ *
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
  * @php        >=5.6, >=7.0
@@ -31,8 +32,6 @@
 namespace ARK\Database;
 
 use ARK\ARK;
-use ARK\Database\Connection;
-use ARK\Database\SchemaWriter;
 use Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Schema\Schema;
 use DoctrineXml\Parser;
@@ -42,13 +41,13 @@ class AdminConnection extends Connection
     public function disableForeignKeyChecks()
     {
         // TODO Check Postgres and SQLite
-        $this->executeQuery("SET FOREIGN_KEY_CHECKS=0");
+        $this->executeQuery('SET FOREIGN_KEY_CHECKS=0');
     }
 
     public function enableForeignKeyChecks()
     {
         // TODO Check Postgres and SQLite
-        $this->executeQuery("SET FOREIGN_KEY_CHECKS=1");
+        $this->executeQuery('SET FOREIGN_KEY_CHECKS=1');
     }
 
     public function createDatabase(string $database)
@@ -88,7 +87,7 @@ class AdminConnection extends Connection
         $this->createSchema($schema);
     }
 
-    public function createSchema(string $schema)
+    public function createSchema(Schema $schema)
     {
         $this->disableForeignKeyChecks();
         // TODO More efficient way???
@@ -130,13 +129,15 @@ class AdminConnection extends Connection
                     $sql = "SELECT CONCAT(QUOTE(User),'@',QUOTE(Host)) Identity FROM mysql.user ORDER BY User";
                     $col = 'Identity';
                 } else {
-                    $sql = "SELECT User FROM mysql.user ORDER BY User";
+                    $sql = 'SELECT User FROM mysql.user ORDER BY User';
                     $col = 'User';
                 }
+
                 return $this->fetchAllColumn($sql, $col);
                 break;
             case 'postgresql':
                 $sql = 'SELECT rolname FROM pg_roles';
+
                 return $this->fetchAllColumn($sql, 'rolname');
                 break;
             default:
@@ -173,31 +174,6 @@ class AdminConnection extends Connection
         }
     }
 
-    private function applyPermissions(string $action, string $user, string $database)
-    {
-        switch ($this->platform()->getName()) {
-            case 'mysql':
-                $clause = 'ON '.$database.'.* TO ?@?';
-                $params = [$user, $this->getHost()];
-                break;
-            case 'postgresql':
-                $clause = 'ON '.$database.'.* TO ?';
-                $params = [$user];
-                break;
-            default:
-                // SQLite doesn't support users
-                return;
-        }
-        $permissions = ['CREATE', 'SELECT', 'INSERT', 'UPDATE', 'DELETE'];
-        foreach ($permissions as $permission) {
-            $sql = $action.' '.$permission.' '.$clause;
-            $this->executeUpdate($sql, $params);
-        }
-        if ($this->platform()->getName() == 'mysql') {
-            $this->executeUpdate('FLUSH PRIVILEGES');
-        }
-    }
-
     public function grantUser(string $user, string $database)
     {
         $this->applyPermissions('GRANT', $user, $database);
@@ -223,6 +199,32 @@ class AdminConnection extends Connection
                 // SQLite doesn't support users
                 return;
         }
+
         return $this->executeUpdate($sql, $params);
+    }
+
+    private function applyPermissions(string $action, string $user, string $database)
+    {
+        switch ($this->platform()->getName()) {
+            case 'mysql':
+                $clause = 'ON '.$database.'.* TO ?@?';
+                $params = [$user, $this->getHost()];
+                break;
+            case 'postgresql':
+                $clause = 'ON '.$database.'.* TO ?';
+                $params = [$user];
+                break;
+            default:
+                // SQLite doesn't support users
+                return;
+        }
+        $permissions = ['CREATE', 'SELECT', 'INSERT', 'UPDATE', 'DELETE'];
+        foreach ($permissions as $permission) {
+            $sql = $action.' '.$permission.' '.$clause;
+            $this->executeUpdate($sql, $params);
+        }
+        if ($this->platform()->getName() == 'mysql') {
+            $this->executeUpdate('FLUSH PRIVILEGES');
+        }
     }
 }
