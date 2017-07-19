@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Object Fragment
+ * ARK Model Object Fragment.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -23,9 +23,9 @@
  * @author     John Layt <j.layt@lparchaeology.com>
  * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
+ *
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model\Fragment;
@@ -33,8 +33,8 @@ namespace ARK\Model\Fragment;
 use ARK\Model\Attribute;
 use ARK\Model\Fragment;
 use ARK\ORM\ClassMetadata;
-use ARK\Service;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\Service;
 
 class ObjectFragment extends Fragment
 {
@@ -43,7 +43,7 @@ class ObjectFragment extends Fragment
     public function __construct()
     {
         // TODO Use ORM Generator properly in metadata??? Or persist does auto?
-        $this->fid = Service::database()->generateItemSequence('object', '', 'fid');
+        $this->fid = Service::database()->data()->generateSequence('object', '', 'fid');
     }
 
     public function children(Attribute $attribute)
@@ -58,6 +58,7 @@ class ObjectFragment extends Fragment
             ];
             $this->children = ORM::findBy($attribute->datatype()->type()->dataClass(), $key);
         }
+
         return $this->children;
     }
 

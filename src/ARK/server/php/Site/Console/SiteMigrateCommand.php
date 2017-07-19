@@ -84,14 +84,14 @@ class SiteMigrateCommand extends DatabaseCommand
             'keyword' => 'core.module.plan',
         ],
         'rgf' => [
-            'module' => 'rfind',
-            'resource' => 'rfinds',
+            'module' => 'find',
+            'resource' => 'finds',
             'project' => 'ARK',
             'namespace' => 'ARK\Entity',
-            'entity' => 'Rfind',
-            'classname' => 'ARK\Entity\Rfind',
-            'tbl' => 'ark_item_rfind',
-            'keyword' => 'core.module.rfind',
+            'entity' => 'Find',
+            'classname' => 'ARK\Entity\Find',
+            'tbl' => 'ark_item_find',
+            'keyword' => 'core.module.find',
         ],
         'sec' => [
             'module' => 'section',
@@ -124,14 +124,14 @@ class SiteMigrateCommand extends DatabaseCommand
             'keyword' => 'core.module.sample',
         ],
         'spf' => [
-            'module' => 'find',
-            'resource' => 'finds',
+            'module' => 'sfind',
+            'resource' => 'sfinds',
             'project' => 'ARK',
             'namespace' => 'ARK\Entity',
-            'entity' => 'Find',
-            'classname' => 'ARK\Entity\Find',
-            'tbl' => 'ark_item_find',
-            'keyword' => 'core.module.find',
+            'entity' => 'SFind',
+            'classname' => 'ARK\Entity\SFind',
+            'tbl' => 'ark_item_sfind',
+            'keyword' => 'core.module.sfind',
         ],
         'sph' => [
             'module' => 'photo',
@@ -879,7 +879,7 @@ class SiteMigrateCommand extends DatabaseCommand
                 $params[':old_id'] = $old_parent_id;
                 $object = $this->data->fetchAssoc($sql, $params);
                 $this->data->executeUpdate($upd, ['fid' => $object['fid']]);
-                $object['fid'] = $this->data->generateItemSequence('object', '', 'fid');
+                $object['fid'] = $this->data->generateSequence('object', '', 'fid');
 
                 $object['type'] = 'object';
                 unset($object['format'], $object['parameter']);

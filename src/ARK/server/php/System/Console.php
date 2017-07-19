@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK System Console
+ * ARK System Console.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -23,6 +23,7 @@
  * @author     John Layt <j.layt@lparchaeology.com>
  * @copyright  2016 L - P : Heritage LLP.
  * @license    GPL-3.0+
+ *
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
  * @php        >=5.6, >=7.0
@@ -31,19 +32,19 @@
 namespace ARK\System;
 
 use ARK\Console\AbstractConsole;
-use ARK\System\Application;
-use ARK\System\Console\SystemAboutCommand;
+use ARK\Database\Console\DatabaseCloneCommand;
+use ARK\Database\Console\DatabaseServerAddCommand;
 use ARK\Site\Console\SiteCreateCommand;
 use ARK\Site\Console\SiteFrontendCommand;
 use ARK\Site\Console\SiteMigrateCommand;
-use ARK\Database\Console\DatabaseCloneCommand;
-use ARK\Database\Console\DatabaseServerAddCommand;
+use ARK\Site\Console\SiteMigrateInfoCommand;
+use ARK\System\Console\SystemAboutCommand;
 
 class Console extends AbstractConsole
 {
     public function __construct()
     {
-        parent::__construct('ARK System Admin Console', new Application);
+        parent::__construct('ARK System Admin Console', new Application());
 
         // Database Commands
         $this->add(new DatabaseServerAddCommand());
@@ -53,6 +54,7 @@ class Console extends AbstractConsole
         $this->add(new SiteCreateCommand());
         $this->add(new SiteFrontendCommand());
         $this->add(new SiteMigrateCommand());
+        $this->add(new SiteMigrateInfoCommand());
 
         // System Commands
         $this->add(new SystemAboutCommand());

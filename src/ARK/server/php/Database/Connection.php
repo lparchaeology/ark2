@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Database Connection
+ * ARK Database Connection.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -23,6 +23,7 @@
  * @author     John Layt <j.layt@lparchaeology.com>
  * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
+ *
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
  * @php        >=5.6, >=7.0
@@ -47,13 +48,13 @@ class Connection extends DBALConnection
     public function generateGuid()
     {
         $sql = 'SELECT '.$this->platform()->getGuidExpression();
+
         return $this->query($sql)->fetchColumn(0);
     }
 
-
     public function countRows(string $table)
     {
-        return $this->executeQuery("SELECT COUNT(*) FROM $table")->fetch()["COUNT(*)"];
+        return $this->executeQuery("SELECT COUNT(*) FROM $table")->fetch()['COUNT(*)'];
     }
 
     public function fetchAllTable(string $table)
@@ -64,6 +65,7 @@ class Connection extends DBALConnection
     public function fetchAllColumn(string $sql, string $column, array $params = [], array $types = [])
     {
         $rows = $this->executeQuery($sql, $params, $types)->fetchAll();
+
         return array_column($rows, $column);
     }
 
@@ -84,5 +86,118 @@ class Connection extends DBALConnection
             ";
         }
         $this->executeUpdate($sql, $values);
+    }
+
+    public function generateSequence(string $module, string $parent, string $sequence)
+    {
+        $this->beginTransaction();
+        // Check if there are any IDs to recycle first
+        $sql = '
+            SELECT *
+            FROM ark_sequence_lock
+            WHERE module = :module
+            AND parent = :parent
+            AND sequence = :sequence
+            AND recycle = :recycle
+        '.$this->platform()->getWriteLockSQL();
+        $params = [
+            'module' => $module,
+            'parent' => $parent,
+            'sequence' => $sequence,
+            'recycle' => true,
+        ];
+        $recycle = $this->fetchAssoc($sql, $params);
+        if ($recycle && $recycle['recycle']) {
+            try {
+                // If there is one, try to recycle it
+                $sql = '
+                    UPDATE ark_sequence_lock
+                    SET recycle = :recycle
+                    WHERE id = :id
+                ';
+                $reparams = [
+                    'recycle' => false,
+                    'id' => $recycle['id'],
+                ];
+                $this->executeUpdate($sql, $reparams);
+                $this->commit();
+
+                return $recycle['idx'];
+            } catch (Exception $e) {
+                // If recycle fails, just try issue the next one
+                $this->rollback();
+                $this->startTransaction();
+            }
+        }
+        $sql = '
+            SELECT *
+            FROM ark_sequence
+            WHERE module = :module
+            AND parent = :parent
+            AND sequence = :sequence
+        '.$this->platform()->getWriteLockSQL();
+        unset($params['recycle']);
+        $seq = $this->fetchAssoc($sql, $params);
+        if (!$seq) {
+            // No sequence exists, so try create one
+            try {
+                $fields = [
+                    'module',
+                    'parent',
+                    'sequence',
+                    'idx',
+                ];
+                $rows = [
+                    [
+                        $module,
+                        $parent,
+                        $sequence,
+                        1,
+                    ],
+                ];
+                $this->insertRows('ark_sequence', $fields, $rows);
+                $this->insertRows('ark_sequence_lock', $fields, $rows);
+                $this->commit();
+
+                return 1;
+            } catch (Exception $e) {
+                $this->rollback();
+                throw new ErrorException(new InternalServerError('DB_SEQUENCE_CREATE', 'Creating index sequence failed', "Creating the index sequence for Module $module Parent $parent Sequence $sequence failed"));
+            }
+        }
+        if ($seq['max'] && $seq['idx'] >= $seq['max']) {
+            throw new ErrorException(new InternalServerError('DB_SEQUENCE_EXHASTED', 'Index sequence exhausted', "The index sequence for Module $module Parent $parent Sequence $sequence has reached maximum"));
+        }
+        try {
+            $sql = '
+                UPDATE ark_sequence
+                SET idx = idx + 1
+                WHERE module = :module
+                AND parent = :parent
+                AND sequence = :sequence
+            ';
+            $this->executeUpdate($sql, $params);
+            $fields = [
+                'module',
+                'parent',
+                'sequence',
+                'idx',
+            ];
+            $rows = [
+                [
+                    $module,
+                    $parent,
+                    $sequence,
+                    1,
+                ],
+            ];
+            $this->insertRows('ark_sequence_lock', $fields, $rows);
+            $this->commit();
+
+            return $seq['idx'] + 1;
+        } catch (Exception $e) {
+            $this->data()->rollback();
+            throw new ErrorException(new InternalServerError('DB_SEQUENCE_INCREMENT', 'Increment index sequence failed', "Incrementing the index sequence failed for Module $module Parent $parent Sequence $sequence"));
+        }
     }
 }
