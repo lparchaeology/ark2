@@ -93,7 +93,9 @@ class SiteMigrateInfoCommand extends DatabaseCommand
             if ($this->source->tableExists($module['lut'])) {
                 $modtypes = $this->source->fetchAllTable($module['lut']);
                 foreach ($modtypes as $modtype) {
-                    $module['modtypes'][] = strtolower($modtype[$module['modtype']]);
+                    if (isset($modtype[$module['modtype']])) {
+                        $module['modtypes'][] = strtolower($modtype[$module['modtype']]);
+                    }
                 }
             } else {
                 $module['modtype'] = null;
