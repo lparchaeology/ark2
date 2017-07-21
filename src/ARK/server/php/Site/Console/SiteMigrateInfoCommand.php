@@ -108,6 +108,7 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         $this->write('');
 
         // ACTIONS
+        $this->buildTypes('action');
         $sql = '
             SELECT cor_tbl_action.*, cor_lut_actiontype.actiontype
             FROM cor_tbl_action, cor_lut_actiontype
@@ -116,6 +117,7 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         $this->countFrags('action', $sql);
 
         // ATTRIBUTES
+        $this->buildTypes('attribute');
         $sql = '
             SELECT cor_tbl_attribute.*, cor_lut_attribute.attribute, cor_lut_attributetype.attributetype
             FROM cor_tbl_attribute, cor_lut_attribute, cor_lut_attributetype
@@ -125,6 +127,7 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         $this->countFrags('attribute', $sql);
 
         // FILES
+        $this->buildTypes('file');
         $sql = '
             SELECT cor_tbl_file.*, cor_lut_filetype.filetype
             FROM cor_tbl_file, cor_lut_file, cor_lut_filetype
@@ -134,15 +137,19 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         $this->countFrags('file', $sql);
 
         // DATE
+        $this->buildTypes('date');
         $this->countTypeFrags('date');
 
         // NUMBER
+        $this->buildTypes('number');
         $this->countTypeFrags('number');
 
         // TEXT
+        $this->buildTypes('txt');
         $this->countTypeFrags('txt');
 
         // SPAN
+        $this->buildTypes('span');
         $this->countTypeFrags('span');
 
         // * COPY XMIS * //
@@ -248,6 +255,17 @@ class SiteMigrateInfoCommand extends DatabaseCommand
             } else {
                 $this->frags[$modcode][$type][$field] = 1;
             }
+        }
+    }
+
+    private function buildTypes($type)
+    {
+        $typename = $type.'type';
+        $types = $this->source->fetchAllTable('cor_lut_'.$typename);
+        foreach ($types as $type) {
+            $modcode = $type['module'];
+            $field = $frag[$typename];
+            $this->types[$modcode][$type][$field] = null;
         }
     }
 }
