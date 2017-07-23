@@ -30,6 +30,8 @@
 
 namespace ARK;
 
+use Symfony\Component\Filesystem\Filesystem;
+
 class ARK
 {
     const VERSION = '1.9.80';
@@ -232,6 +234,11 @@ class ARK
 
     public static function jsonEncodeWrite(array $data, $path, $pretty = true)
     {
+        $dir = dirname($path);
+        if (!is_dir($dir)) {
+            $fs = new Filesystem();
+            $fs->mkdir($dir);
+        }
         file_put_contents($path, self::jsonEncode($data, $pretty));
     }
 

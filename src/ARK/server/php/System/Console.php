@@ -37,7 +37,7 @@ use ARK\Database\Console\DatabaseServerAddCommand;
 use ARK\Site\Console\SiteCreateCommand;
 use ARK\Site\Console\SiteFrontendCommand;
 use ARK\Site\Console\SiteMigrateCommand;
-use ARK\Site\Console\SiteMigrateInfoCommand;
+use ARK\Site\Console\SiteMigrateMapCommand;
 use ARK\System\Console\SystemAboutCommand;
 
 class Console extends AbstractConsole
@@ -54,7 +54,7 @@ class Console extends AbstractConsole
         $this->add(new SiteCreateCommand());
         $this->add(new SiteFrontendCommand());
         $this->add(new SiteMigrateCommand());
-        $this->add(new SiteMigrateInfoCommand());
+        $this->add(new SiteMigrateMapCommand());
 
         // System Commands
         $this->add(new SystemAboutCommand());

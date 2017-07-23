@@ -22,11 +22,9 @@
  *
  * @author     John Layt <j.layt@lparchaeology.com>
  * @copyright  2017 L - P : Heritage LLP.
- * @license    GPL-3.0+
- *
+ * @license    GPL-3.0+.
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Site\Console;
@@ -36,23 +34,25 @@ use ARK\Console\ProcessTrait;
 use ARK\Database\Console\DatabaseCommand;
 use Symfony\Component\Console\Helper\Table;
 
-class SiteMigrateInfoCommand extends DatabaseCommand
+class SiteMigrateMapCommand extends DatabaseCommand
 {
     use ProcessTrait;
 
     protected $source = null;
+    protected $exportPath = null;
     protected $modules = [];
     protected $itemkeys = [];
     protected $sites = [];
     protected $users = [];
+    protected $actors = [];
     protected $types = [];
     protected $tables = [];
     protected $frags = [];
 
     protected function configure()
     {
-        $this->setName('site:migrate:info')
-             ->setDescription('Information on an ARK 1 site');
+        $this->setName('site:migrate:map')
+             ->setDescription('Migration mapping for an ARK 1 site');
     }
 
     protected function doExecute()
@@ -64,7 +64,13 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         $this->source = $this->getConnection($sourceConfig);
         $this->source->beginTransaction();
 
+        if ($this->askConfirmation('Do you want to save the mapping?', false)) {
+            $this->exportPath = ARK::varDir().'/migrate/'.$this->source->getDatabase();
+            $this->write("The mapping will be written to ".$this->exportPath);
+        }
+
         // SITES
+        $this->write("Analysing Sites...");
         $sites = $this->source->fetchAllTable('cor_tbl_ste');
         foreach ($sites as $site) {
             $site['modules'] = [];
@@ -73,6 +79,7 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         }
 
         // MODULES
+        $this->write("Analysing Modules...");
         $this->modules = $this->source->fetchAllTable('cor_tbl_module');
         foreach ($this->modules as &$module) {
             $mod = $module['shortform'];
@@ -106,15 +113,71 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         unset($module);
 
         // USERS
-        $users = $this->source->fetchAllTable('cor_tbl_users');
-        foreach ($users as $user) {
+        $this->write("Analysing Users...");
+        $sql = '
+            SELECT cor_tbl_users.*, abk_tbl_abk.ste_cd, abk_lut_abktype.abktype
+            FROM cor_tbl_users
+            LEFT JOIN abk_tbl_abk
+            ON cor_tbl_users.itemvalue = abk_tbl_abk.abk_cd
+            LEFT JOIN abk_lut_abktype
+            ON abk_tbl_abk.abktype = abk_lut_abktype.abktype
+        ';
+        $users = $this->source->fetchAll($sql);
+        foreach ($users as $row) {
+            $user['user'] = $row['id'];
+            $user['username'] = $row['username'];
+            $user['actor'] = $row['itemvalue'];
+            $user['name'] = $row['firstname'].' '.$row['lastname'];
+            $user['type'] = null;
+            $user['site'] = $row['ste_cd'];
             $user['audit'] = false;
             $user['action'] = false;
-            $this->users[$user['id']] = $user;
+            $user['roles'] = [];
+            $this->users[$user['user']] = $user;
         }
-        unset($user);
+        $sql = '
+            SELECT cor_tbl_users.id, cor_lvu_groups.group_define_name
+            FROM cor_tbl_users, cor_lvu_perm_users, cor_lvu_groupusers, cor_lvu_groups
+            WHERE cor_tbl_users.id = cor_lvu_perm_users.auth_user_id
+            AND cor_lvu_perm_users.perm_user_id = cor_lvu_groupusers.perm_user_id
+            AND cor_lvu_groupusers.group_id = cor_lvu_groups.group_id
+        ';
+        $usergroups = $this->source->fetchAll($sql);
+        foreach ($usergroups as $user) {
+            $this->users[$user['id']]['roles'][] = $user['group_define_name'];
+        }
+
+        // ACTORS
+        $this->write("Analysing Actors...");
+        $sql = '
+            SELECT *
+            FROM cor_lut_txttype
+            WHERE cor_lut_txttype.txttype = ?
+        ';
+        $txttype = $this->source->fetchAssoc($sql, ['name']);
+        $sql = '
+            SELECT abk_tbl_abk.*, abk_lut_abktype.abktype, cor_tbl_txt.txt
+            FROM abk_tbl_abk
+            LEFT JOIN abk_lut_abktype
+            ON abk_tbl_abk.abktype = abk_lut_abktype.id
+            LEFT JOIN cor_tbl_txt
+            ON cor_tbl_txt.itemkey = ?
+            AND cor_tbl_txt.itemvalue = abk_tbl_abk.abk_cd
+            AND cor_tbl_txt.txttype = ?
+        ';
+        $actors = $this->source->fetchAll($sql, ['abk_cd', $txttype['id']]);
+        foreach ($actors as $row) {
+            $actor['actor'] = $row['abk_cd'];
+            $actor['username'] = null;
+            $actor['name'] = $row['txt'];
+            $actor['site'] = $row['ste_cd'];
+            $actor['type'] = $row['abktype'];
+            $actor['action'] = false;
+            $this->actors[$row['abk_cd']] = $actor;
+        }
 
         // ACTIONS
+        $this->write("Analysing Actions...");
         $this->buildTypes('action');
         $sql = '
             SELECT cor_tbl_action.*, cor_lut_actiontype.actiontype
@@ -124,6 +187,7 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         $this->summariseFrags('action', $sql);
 
         // ATTRIBUTES
+        $this->write("Analysing Attributes...");
         $sql = '
             SELECT cor_lut_attribute.*, cor_lut_attributetype.attributetype, cor_lut_attributetype.module
             FROM cor_lut_attribute, cor_lut_attributetype
@@ -139,6 +203,7 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         $this->summariseFrags('attribute', $sql);
 
         // FILES
+        $this->write("Analysing Files...");
         $this->buildTypes('file');
         $sql = '
             SELECT cor_tbl_file.*, cor_lut_filetype.filetype
@@ -149,22 +214,27 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         $this->summariseFrags('file', $sql);
 
         // DATE
+        $this->write("Analysing Date Fragments...");
         $this->buildTypes('date');
         $this->summariseTypeFrags('date');
 
         // NUMBER
+        $this->write("Analysing Number Fragments...");
         $this->buildTypes('number');
         $this->summariseTypeFrags('number');
 
         // TEXT
+        $this->write("Analysing Text Fragments...");
         $this->buildTypes('txt');
         $this->summariseTypeFrags('txt');
 
         // SPAN
+        $this->write("Analysing Spans...");
         $this->buildTypes('span');
         $this->summariseTypeFrags('span');
 
         // XMI
+        $this->write("Analysing XMIs...");
         $frags = $this->source->fetchAllTable('cor_tbl_xmi');
         foreach ($frags as $frag) {
             $mod = $frag['itemkey'];
@@ -178,6 +248,52 @@ class SiteMigrateInfoCommand extends DatabaseCommand
                 $this->frags[$xmi]['xmi'][$mod] += 1;
             } else {
                 $this->frags[$xmi]['xmi'][$mod] = 1;
+            }
+            if ($mod == 'abk_cd') {
+                $this->actors[$frag['itemvalue']]['action'] = true;
+            }
+            if ($xmi == 'abk_cd') {
+                $this->actors[$frag['xmi_itemvalue']]['action'] = true;
+            }
+        }
+
+        // USERS / ACTORS
+        foreach ($this->users as $id => &$user) {
+            if (isset($user['actor']) && isset($this->actors[$user['actor']])) {
+                $user['action'] = $this->actors[$user['actor']]['action'];
+                $user['type'] = $this->actors[$user['actor']]['type'] ?? null;
+                unset($this->actors[$user['actor']]);
+            }
+            if (!isset($user['user'])) {
+                $user['user'] = $id;
+                $user['username'] = null;
+                $user['actor'] = null;
+                $user['name'] = null;
+                $user['type'] = null;
+                $user['site'] = null;
+                $user['audit'] = $user['audit'] ?? false;
+                $user['action'] = $user['action'] ?? false;
+                $user['roles'] = [];
+            }
+        }
+        unset($user);
+        foreach ($this->actors as $id => $actor) {
+            if (!isset($actor['actor'])) {
+                $user['user'] = null;
+                $user['username'] = null;
+                $user['actor'] = $id;
+                $user['name'] = null;
+                $user['type'] = null;
+                $user['site'] = null;
+                $user['audit'] = false;
+                $user['action'] = $actor['action'];
+                $user['roles'] = [];
+                $this->users[] = $user;
+            } else {
+                $actor['user'] = null;
+                $actor['audit'] = false;
+                $actor['roles'] = [];
+                $this->users[] = $actor;
             }
         }
 
@@ -194,7 +310,7 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         // REPORT MODULES
         $this->write("\nMODULES");
         $table = new Table($this->output);
-        $table->setHeaders(['Code', 'Description', 'Modtype', 'Table', 'Rows']);
+        $table->setHeaders(['Code', 'Description', 'Modtype', 'Table', 'Items']);
         foreach ($this->modules as $module) {
             if (isset($module['shortform']) && $module['shortform'] != 'cor') {
                 $table->addRow([$module['shortform'], $module['description'], $module['modtype'], $module['table'], $module['rows']]);
@@ -218,15 +334,22 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         $this->write('');
 
         // REPORT USERS
-        $this->write("\nUSERS");
+        $this->write("\nUSERS / ACTORS");
         $table = new Table($this->output);
-        $table->setHeaders(['Username', 'Name', 'Audit', 'Action']);
+        $table->setHeaders(['User', 'Username', 'Name', 'Actor', 'Groups', 'Site', 'Audit', 'Action']);
         foreach ($this->users as $id => $user) {
-            if (isset($user['username'])) {
-                $table->addRow([$user['username'], $user['firstname'].' '.$user['lastname'], $user['audit'], $user['action']]);
-            } else {
-                $table->addRow([$id, 'Unknown', $user['audit'] ?? false, $user['action'] ?? false]);
-            }
+            $table->addRow(
+                [
+                    $user['user'],
+                    $user['username'],
+                    $user['name'],
+                    $user['actor'],
+                    implode(', ', $user['roles']),
+                    $user['site'],
+                    $user['audit'],
+                    $user['action']
+                ]
+            );
         }
         $table->render();
         $this->write('');
@@ -268,6 +391,10 @@ class SiteMigrateInfoCommand extends DatabaseCommand
                 }
             }
             $table->render();
+        }
+
+        if ($this->exportPath) {
+            $this->exportMapping();
         }
     }
 
@@ -378,6 +505,9 @@ class SiteMigrateInfoCommand extends DatabaseCommand
             } else {
                 $this->frags[$module][$type][$field] = 1;
             }
+            if (isset($frag['actor_itemvalue'])) {
+                $this->actors[$frag['actor_itemvalue']]['action'] = true;
+            }
             if (isset($frag['cre_by'])) {
                 $this->users[$frag['cre_by']]['audit'] = true;
             }
@@ -406,5 +536,24 @@ class SiteMigrateInfoCommand extends DatabaseCommand
                 $this->types[$module][$type][$field][''] = $this->countTypeFrags($type, $field);
             }
         }
+    }
+
+    private function exportMapping()
+    {
+        $users = [];
+        foreach ($this->users as $user) {
+            $map = [];
+            $map['source']['name'] = $user['name'] ?? '';
+            $map['source']['username'] = $user['username'] ?? '';
+            $map['source']['user'] = $user['user'] ?? '';
+            $map['source']['actor'] = $user['actor'] ?? '';
+            $map['map'] = ($user['audit'] ?? false) || ($user['action'] ?? false);
+            $map['user'] = $map['source']['username'];
+            $map['actor'] = $map['source']['actor'];
+            $map['site'] = $user['site'] ?? '';
+            $map['roles'] = $user['roles'] ?? [];
+            $users[] = $map;
+        }
+        ARK::jsonEncodeWrite($users, $this->exportPath.'/users.map.json');
     }
 }
