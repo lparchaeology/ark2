@@ -169,6 +169,7 @@ class SiteMigrateMapCommand extends SiteMigrateInfoCommand
         $this->source = $this->getConnection($sourceConfig);
         $this->source->beginTransaction();
         $this->exportPath = ARK::varDir().'/migration/'.$this->source->getDatabase();
+
         $this->analyse();
         $this->export();
     }
@@ -179,7 +180,7 @@ class SiteMigrateMapCommand extends SiteMigrateInfoCommand
 
         $source['path'] = $this->sourcePath;
         $source['database'] = $this->source->getParams();
-        ARK::jsonEncodeWrite($source, $this->exportPath.'/source.map.json');
+        ARK::jsonEncodeWrite($source, $this->exportPath.'/source.json');
 
         $users = [];
         foreach ($this->users as $user) {
@@ -193,6 +194,7 @@ class SiteMigrateMapCommand extends SiteMigrateInfoCommand
             $map['actor'] = $map['source']['actor'];
             $map['site'] = $user['site'] ?? '';
             $map['roles'] = $user['roles'] ?? [];
+            $map['enabled'] = $user['enabled'] ?? false;
             $users[] = $map;
         }
         ARK::jsonEncodeWrite($users, $this->exportPath.'/users.map.json');

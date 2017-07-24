@@ -129,7 +129,7 @@ class FileFilter
         return $this;
     }
 
-    public function getResultFor(string $partialPath)
+    public function getResultFor(string $partialPath = null)
     {
         if (file_exists($partialPath) && is_dir($partialPath)) {
             $path = $partialPath;

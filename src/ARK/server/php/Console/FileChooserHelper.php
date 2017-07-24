@@ -193,7 +193,7 @@ class FileChooserHelper extends Helper
         return $ret;
     }
 
-    private function searchCompletion(string $partial, FileFilter $filter, int &$ofs, array &$matches, int &$numMatches)
+    private function searchCompletion(string $partial = null, FileFilter $filter, int &$ofs, array &$matches, int &$numMatches)
     {
         $ret = $partial;
         $i = strlen($ret);

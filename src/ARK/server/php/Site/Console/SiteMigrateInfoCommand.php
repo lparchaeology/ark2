@@ -128,6 +128,7 @@ class SiteMigrateInfoCommand extends DatabaseCommand
             $user['audit'] = false;
             $user['action'] = false;
             $user['roles'] = [];
+            $user['enabled'] = (bool) $row['account_enabled'];
             $this->users[$user['user']] = $user;
         }
         $sql = '
@@ -499,9 +500,6 @@ class SiteMigrateInfoCommand extends DatabaseCommand
             }
             if (isset($frag['cre_by'])) {
                 $this->users[$frag['cre_by']]['audit'] = true;
-            }
-            if (isset($frag['mod_by'])) {
-                $this->users[$frag['mod_by']]['audit'] = true;
             }
         }
     }

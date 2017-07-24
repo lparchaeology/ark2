@@ -183,7 +183,7 @@ abstract class AbstractCommand extends Command
         }
 
         $dialog = $this->getHelper('filechooser');
-        $filter = FileFilter($text, $default);
+        $filter = new FileFilter($text, $default);
 
         return $dialog->ask($this->input, $this->output, $filter);
     }

@@ -34,9 +34,12 @@ namespace ARK\Site\Console;
 use ARK\ARK;
 use ARK\Database\Console\DatabaseCommand;
 use Exception;
+use ARK\Framework\Application;
+use ARK\Service;
 
 class SiteMigrateLoadCommand extends DatabaseCommand
 {
+    protected $app = null;
     protected $sourcePath = '';
     protected $mapPath = '';
     protected $path = '';
@@ -72,12 +75,13 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         if ($this->site === $this->errorCode()) {
             return $this->errorCode();
         }
-        $destinationConfig = ARK::siteDatabaseConfig($this->site, true);
-        $this->core = $this->getConnection($destinationConfig['core']);
-        $this->data = $this->getConnection($destinationConfig['data']);
-        $this->user = $this->getConnection($destinationConfig['user']);
-        $admin = ARK::server($destinationConfig['data']['server']);
-        $admin['dbname'] = $destinationConfig['data']['dbname'];
+        $this->app = new Application($this->site);
+
+        $this->core = Service::database()->core();
+        $this->data = Service::database()->data();
+        $this->user = Service::database()->user();
+        $admin = $this->getServerConfig($this->data->getServer());
+        $admin['dbname'] = $this->data->getDatabase();
         $this->admin = $this->getConnection($admin);
         $this->core->beginTransaction();
         $this->data->beginTransaction();
