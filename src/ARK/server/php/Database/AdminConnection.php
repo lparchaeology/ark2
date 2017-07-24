@@ -23,15 +23,14 @@
  * @author     John Layt <j.layt@lparchaeology.com>
  * @copyright  2016 L - P : Heritage LLP.
  * @license    GPL-3.0+
- *
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Database;
 
 use ARK\ARK;
+use ARK\Database\Connection;
 use Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Schema\Schema;
 use DoctrineXml\Parser;

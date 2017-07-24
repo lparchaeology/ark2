@@ -32,159 +32,14 @@
 namespace ARK\Site\Console;
 
 use ARK\ARK;
-use ARK\Console\ProcessTrait;
 use ARK\Database\Console\DatabaseCommand;
 use Exception;
-use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Helper\TableSeparator;
 
-class SiteMigrateCommand extends DatabaseCommand
+class SiteMigrateLoadCommand extends DatabaseCommand
 {
-    use ProcessTrait;
-
-    protected static $moduleDefault = [
-        'cxt' => [
-            'module' => 'context',
-            'resource' => 'contexts',
-            'project' => 'ARK',
-            'namespace' => 'ARK\Entity',
-            'entity' => 'Context',
-            'classname' => 'ARK\Entity\Context',
-            'tbl' => 'ark_item_context',
-            'keyword' => 'core.module.context',
-        ],
-        'grp' => [
-            'module' => 'group',
-            'resource' => 'groups',
-            'project' => 'ARK',
-            'namespace' => 'ARK\Entity',
-            'entity' => 'Group',
-            'classname' => 'ARK\Entity\Group',
-            'tbl' => 'ark_item_group',
-            'keyword' => 'core.module.group',
-        ],
-        'lus' => [
-            'module' => 'landuse',
-            'resource' => 'landuses',
-            'project' => 'ARK',
-            'namespace' => 'ARK\Entity',
-            'entity' => 'Landuse',
-            'classname' => 'ARK\Entity\Landuse',
-            'tbl' => 'ark_item_landuse',
-            'keyword' => 'core.module.landuse',
-        ],
-        'pln' => [
-            'module' => 'plan',
-            'resource' => 'plans',
-            'project' => 'ARK',
-            'namespace' => 'ARK\Entity',
-            'entity' => 'Plan',
-            'classname' => 'ARK\Entity\Plan',
-            'tbl' => 'ark_item_plan',
-            'keyword' => 'core.module.plan',
-        ],
-        'rgf' => [
-            'module' => 'find',
-            'resource' => 'finds',
-            'project' => 'ARK',
-            'namespace' => 'ARK\Entity',
-            'entity' => 'Find',
-            'classname' => 'ARK\Entity\Find',
-            'tbl' => 'ark_item_find',
-            'keyword' => 'core.module.find',
-        ],
-        'sec' => [
-            'module' => 'section',
-            'resource' => 'sections',
-            'project' => 'ARK',
-            'namespace' => 'ARK\Entity',
-            'entity' => 'Section',
-            'classname' => 'ARK\Entity\Section',
-            'tbl' => 'ark_item_section',
-            'keyword' => 'core.module.section',
-        ],
-        'sgr' => [
-            'module' => 'subgroup',
-            'resource' => 'subgroups',
-            'project' => 'ARK',
-            'namespace' => 'ARK\Entity',
-            'entity' => 'Subgroup',
-            'classname' => 'ARK\Entity\Subgroup',
-            'tbl' => 'ark_item_subgroup',
-            'keyword' => 'core.module.subgroup',
-        ],
-        'smp' => [
-            'module' => 'sample',
-            'resource' => 'samples',
-            'project' => 'ARK',
-            'namespace' => 'ARK\Entity',
-            'entity' => 'Sample',
-            'classname' => 'ARK\Entity\Sample',
-            'tbl' => 'ark_item_sample',
-            'keyword' => 'core.module.sample',
-        ],
-        'spf' => [
-            'module' => 'sfind',
-            'resource' => 'sfinds',
-            'project' => 'ARK',
-            'namespace' => 'ARK\Entity',
-            'entity' => 'SFind',
-            'classname' => 'ARK\Entity\SFind',
-            'tbl' => 'ark_item_sfind',
-            'keyword' => 'core.module.sfind',
-        ],
-        'sph' => [
-            'module' => 'photo',
-            'resource' => 'photos',
-            'project' => 'ARK',
-            'namespace' => 'ARK\Entity',
-            'entity' => 'Photo',
-            'classname' => 'ARK\Entity\Photo',
-            'tbl' => 'ark_item_photo',
-            'keyword' => 'core.module.photo',
-        ],
-        'tmb' => [
-            'module' => 'timber',
-            'resource' => 'timbers',
-            'project' => 'ARK',
-            'namespace' => 'ARK\Entity',
-            'entity' => 'Timber',
-            'classname' => 'ARK\Entity\Timber',
-            'tbl' => 'ark_item_timber',
-            'keyword' => 'core.module.timber',
-        ],
-    ];
-
-    protected static $attributes = [
-        '<5%' => 'lt5pcnt',
-        '5-20%' => '5to20pcnt',
-        '20-40%' => '20to40pcnt',
-        '40-60%' => '40to60pcnt',
-        '60-80%' => '60to80pcnt',
-        '80-100%' => '80to100pcnt',
-        '1:1' => 'ratio1to1',
-        '1:10' => 'ratio1to10',
-        '1:20' => 'ratio1to20',
-        '0.2m' => '02m',
-        '0.3m' => '03m',
-        '0.3m0.2m' => '03m02m',
-        '0.2m1m' => '02m1m',
-        '1m0.5m' => '1m05m',
-        '1m0.3m' => '1m03m',
-        '0.5m' => '05m',
-        '0.5m0.2m' => '05m02m',
-        '0.3m1m' => '03m1m',
-        '0.2m0.5m' => '02m05m',
-        '0.3m0.5m' => '03m05m',
-        '0.5m0.2' => '05m02',
-        '0.2m0.5m1m' => '02m05m1m',
-        '0.2m0.2m' => '02m02m',
-        'c.t.p.' => 'ctp',
-        'n/a' => 'na',
-        'rb??' => 'rbq',
-        'n/a_1' => 'na_1',
-        'n/a_2' => 'na_2',
-    ];
+    protected $sourcePath = '';
+    protected $mapPath = '';
+    protected $path = '';
     protected $site = '';
     protected $siteKey = '';
     protected $source = null;
@@ -195,41 +50,29 @@ class SiteMigrateCommand extends DatabaseCommand
 
     protected function configure()
     {
-        $this->setName('site:migrate')
-             ->setDescription('Migrate an ARK 1.2 site');
+        $this->setName('site:migrate:load')
+            ->setDescription('Migrate an ARK 1.2 site');
     }
 
     protected function doExecute()
     {
-        // Ask if migrate to new or existing site
-        $migrate = $this->askChoice('Do you want to migrate to a new site or an existing site?', ['New', 'Existing'], 'New');
+        // Ask for source
+        $path = ARK::varDir().'/migration';
+        $sources = ARK::dirList($path);
+        $source = $this->askChoice('Please choose the source ARK mapping', $sources);
+        $this->mapPath = $path.'/'.$source;
+        $source = ARK::jsonDecodeFile($this->mapPath.'/source.json');
+        $this->source = $this->getConnection($source['database']);
+        $this->source->beginTransaction();
+        $this->sourcePath = $source['path'];
+        $this->schemaMap = ARK::jsonDecodeFile($this->mapPath.'/schema.map.json');
+        $this->userMap = ARK::jsonDecodeFile($this->mapPath.'/user.map.json');
 
-        // If new, create by calling create
-        if (strtolower($migrate) == 'new') {
-            $this->site = strtolower($this->runCommand('site:create'));
-            $this->siteKey = $this->site;
-        } else {
-            $this->site = strtolower($this->askChoice('Please choose the site to migrate into', ARK::sites()));
-            $this->siteKey = strtolower($this->askQuestion('Please enter a unique key for the site being migrated', $this->site));
-        }
+        $this->site = strtolower($this->askChoice('Please choose the destination ARK instance', ARK::sites()));
         if ($this->site === $this->errorCode()) {
             return $this->errorCode();
         }
         $destinationConfig = ARK::siteDatabaseConfig($this->site, true);
-        $sourceConfig = $this->chooseDatabaseConfig();
-        if (!is_array($sourceConfig)) {
-            return $this->errorCode();
-        }
-        $this->source = $this->getConnection($sourceConfig);
-        $this->source->beginTransaction();
-
-        // Do any fixes?
-
-        // Set up modules in new, loop through list asking required details, choose schema, etc, create data tables
-        $newChoice = 'Create New Module with Custom settings';
-        $defaultChoice = 'Create New Module with Default settings';
-        $skipChoice = 'Skip This Module';
-        $destModChoices = [$newChoice, $skipChoice];
         $this->core = $this->getConnection($destinationConfig['core']);
         $this->data = $this->getConnection($destinationConfig['data']);
         $this->user = $this->getConnection($destinationConfig['user']);
@@ -239,6 +82,7 @@ class SiteMigrateCommand extends DatabaseCommand
         $this->core->beginTransaction();
         $this->data->beginTransaction();
         $this->user->beginTransaction();
+
         $modRows = $this->core->fetchAllTable('ark_module');
         $hasSiteMod = false;
         foreach ($modRows as $mod) {
@@ -250,108 +94,25 @@ class SiteMigrateCommand extends DatabaseCommand
             }
             $destMod[$mod['module']] = $mod;
         }
+
         $schemaRows = $this->core->fetchAllTable('ark_schema');
         foreach ($schemaRows as $schema) {
             $destSchema[$schema['module']][] = $schema['schma'];
         }
 
-        $srcMods = $this->source->fetchAllTable('cor_tbl_module');
-        $this->write("\nConfigure the modules to be imported.");
-        $mapping = [];
-        foreach ($srcMods as $srcMod) {
-            $mod = $srcMod['shortform'];
-            if ($mod == 'cor') {
-                continue;
-            }
-            $descr = $srcMod['description'];
-            $this->write("\nModule $mod - $descr");
-            if ($mod == 'abk') {
-                $mapping['abk']['module'] = 'actor';
-                $mapping['abk']['schema'] = 'core.actor';
-                if (isset($destMod['actor'])) {
-                    $mapping['abk']['mode'] = 'existing';
-                    $mapping['abk']['config'] = $destMod['actor'];
-                    // TODO Schema
-                } else {
-                    $mapping['abk']['mode'] = 'new';
-                    $module['module'] = 'actor';
-                    $module['resource'] = 'actors';
-                    $module['project'] = 'ARK';
-                    $module['namespace'] = 'ARK\Actor';
-                    $module['entity'] = 'Actor';
-                    $module['classname'] = 'ARK\Actor\Actor';
-                    $module['tbl'] = 'ark_item_actor';
-                    $module['core'] = true;
-                    $module['keyword'] = 'core.module.actor';
-                    $mapping['abk']['config'] = $module;
-                }
-                $this->write(' - Auto-mapped to Actor module');
-            } else {
-                $hasDefault = isset(self::$moduleDefault[$mod]);
-                if ($hasDefault) {
-                    $defChoices = $destModChoices;
-                    array_unshift($defChoices, $defaultChoice);
-                    $choice = $this->askChoice('Please choose a module to migrate to', $defChoices, $defaultChoice);
-                    unset($defChoices);
-                } else {
-                    $choice = $this->askChoice('Please choose a module to migrate to', $destModChoices, $newChoice);
-                }
-                if ($hasDefault && $choice == $defaultChoice) {
-                    $module = self::$moduleDefault[$mod];
-                    $mapping[$mod]['module'] = $module['module'];
-                    $mapping[$mod]['mode'] = 'new';
-                    $mapping[$mod]['config'] = $module;
-                } elseif ($choice == $newChoice) {
-                    if ($hasDefault) {
-                        $module['module'] = $this->askQuestion('Please enter the new module code as a singular noun, e.g. context or image', self::$moduleDefault[$mod]);
-                    } else {
-                        $module['module'] = $this->askQuestion('Please enter the new module code as a singular noun, e.g. context or image');
-                    }
-                    $module['resource'] = $this->askQuestion('Please enter the resource code as a plural noun, e.g. contexts or images', $module['module'].'s');
-                    $module['project'] = $this->askQuestion('Please enter the root namespace, e.g. ARK or MyProject', 'ARK');
-                    $module['namespace'] = ucfirst($module['project']).'\\Entity';
-                    $module['entity'] = ucfirst($module['module']);
-                    $module['classname'] = $module['namespace'].'\\'.$module['entity'];
-                    $module['tbl'] = 'ark_item_'.$module['module'];
-                    $module['keyword'] = 'core.module.'.$module['module'];
-                    $mapping[$mod]['module'] = $module['module'];
-                    $mapping[$mod]['mode'] = 'new';
-                    $mapping[$mod]['config'] = $module;
-                } elseif ($choice != $skipChoice) {
-                    $mapping[$mod]['mode'] = 'existing';
-                    $mapping[$mod]['module'] = $choice;
-                    $mapping[$mod]['config'] = $destMod[$choice];
-                }
-                $schemaChoices = [];
-                if (isset($destSchema[$module['module']])) {
-                    $schemaChoices = $destSchema[$module['module']];
-                }
-                $coreSchema = 'core.'.$module['module'];
-                if (!in_array($coreSchema, $schemaChoices)) {
-                    $schemaChoices[] = $coreSchema;
-                }
-                $siteSchema = $this->siteKey.'.'.$module['module'];
-                if (!in_array($siteSchema, $schemaChoices)) {
-                    $schemaChoices[] = $siteSchema;
-                }
-                $schema = $this->askChoice('Please choose a schema to use', $schemaChoices, $coreSchema);
-                $mapping[$mod]['schema'] = $schema;
-                unset($schemas, $module, $schemaChoices, $coreSchema, $siteSchema);
-            }
-        }
+        $mapping = $this->schemaMap['modules'];
         foreach (array_keys($mapping) as $mod) {
             $modCodes[] = $mod.'_cd';
         }
 
         $this->write("\nThe following modules will be migrated:");
-        $table = new Table($this->output);
-        $table->setHeaders(['Old', 'New', 'Schema', 'Entity', 'Table']);
+        $headers = ['Old', 'New', 'Schema', 'Entity', 'Table'];
+        $rows = [];
         foreach ($mapping as $mod => $module) {
-            $table->addRow([$mod, $module['module'], $module['schema'], $module['config']['entity'], $module['config']['tbl']]);
-            //$table->addRow(new TableSeparator());
+            $rows[] = [$mod, $module['module'], $module['schema'], $module['config']['entity'], $module['config']['tbl']];
         }
         unset($module);
-        $table->render();
+        $this->writeTable($headers, $rows);
         if (!$this->askConfirmation('Please confirm you want to use this mapping', true)) {
             return $this->errorCode();
         }

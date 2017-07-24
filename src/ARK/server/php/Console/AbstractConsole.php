@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Console
+ * ARK Console.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -22,16 +22,15 @@
  *
  * @author     John Layt <j.layt@lparchaeology.com>
  * @copyright  2016 L - P : Heritage LLP.
- * @license    GPL-3.0+
+ * @license    GPL-3.0+.
+ *
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Console;
 
 use ARK\ARK;
-use ARK\Console\ProcessTrait;
 use Symfony\Component\Console\Application as SymfonyConsole;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -46,6 +45,7 @@ abstract class AbstractConsole extends SymfonyConsole
     {
         parent::__construct($name, ARK::version());
         $this->app = $app;
+        $this->getHelperSet()->set(new FileChooserHelper());
     }
 
     public function app(string $key = null)
@@ -53,6 +53,7 @@ abstract class AbstractConsole extends SymfonyConsole
         if ($key) {
             return $this->app[$key];
         }
+
         return $this->app;
     }
 

@@ -2,6 +2,9 @@
     "modules": {
         "abk": {
             "module": "actor",
+            "resource": "actors",
+            "namespace": "ARK",
+            "namespace": "ARK",
             "modtypes": {
                 "people": "person"
             },

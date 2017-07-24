@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Ark Console Command
+ * Ark Console Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -23,6 +23,7 @@
  * @author     John Layt <j.layt@lparchaeology.com>
  * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
+ *
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
  * @php        >=5.6, >=7.0
@@ -32,8 +33,8 @@ namespace ARK\Console;
 
 use Exception;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -72,6 +73,7 @@ abstract class AbstractCommand extends Command
         if ($returnCode == self::SUCCESS_CODE && $command->result() !== null) {
             return $command->result();
         }
+
         return $returnCode;
     }
 
@@ -121,7 +123,7 @@ abstract class AbstractCommand extends Command
         }
     }
 
-    protected function writeTable($headers, $rows)
+    protected function writeTable(array $headers, array $rows)
     {
         $table = new Table($this->output);
         $table->setHeaders($headers);
@@ -144,18 +146,20 @@ abstract class AbstractCommand extends Command
         if ($default !== null) {
             return $this->ask(new Question("$text (default: $default): ", $default));
         }
+
         return $this->ask(new Question("$text : "));
     }
 
-    protected function askConfirmation(string $text, $default = true)
+    protected function askConfirmation(string $text, bool $default = true)
     {
         if ($default) {
             return $this->ask(new ConfirmationQuestion("$text (default: Yes): ", $default));
         }
+
         return $this->ask(new ConfirmationQuestion("$text (default: No): ", $default));
     }
 
-    protected function askChoice(string $text, $choices, $default = null, bool $auto = true)
+    protected function askChoice(string $text, array $choices, $default = null, bool $auto = true)
     {
         if ($default) {
             $text = "$text (default: $default): ";
@@ -166,7 +170,22 @@ abstract class AbstractCommand extends Command
         if ($auto) {
             $question->setAutocompleterValues($choices);
         }
+
         return $this->ask($question);
+    }
+
+    protected function askFilePath(string $text, $default = null)
+    {
+        if ($default) {
+            $text = "$text (default: $default): ";
+        } else {
+            $text = "$text : ";
+        }
+
+        $dialog = $this->getHelper('filechooser');
+        $filter = FileFilter($text, $default);
+
+        return $dialog->ask($this->input, $this->output, $filter);
     }
 
     protected function askPassword(string $user = 'root', string $text = null)
@@ -179,6 +198,7 @@ abstract class AbstractCommand extends Command
         $question->setHiddenFallback(false);
         $question->setMaxAttempts(3);
         $password = $this->ask($question);
+
         return $password;
     }
 }

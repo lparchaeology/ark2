@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Installation Globals
+ * ARK Installation Globals.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -23,6 +23,7 @@
  * @author     John Layt <j.layt@lparchaeology.com>
  * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
+ *
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
  * @php        >=5.6, >=7.0
@@ -48,7 +49,7 @@ class ARK
 
     public static function timestamp()
     {
-        return new \DateTime(null, new \DateTimeZone("UTC"));
+        return new \DateTime(null, new \DateTimeZone('UTC'));
     }
 
     public static function installDir()
@@ -86,6 +87,7 @@ class ARK
         if ($project == 'ARK') {
             return self::srcDir().'/'.'ARK/server/php';
         }
+
         return self::srcDir().'/'.$project.'/php';
     }
 
@@ -119,15 +121,33 @@ class ARK
         return self::siteDir($site).'/web/assets/'.$frontend;
     }
 
-    public static function namespaces()
+    public static function dirList($dir, $fullPath = false)
     {
-        $namespaces = [];
-        foreach (scandir(self::srcDir()) as $namespace) {
-            if ($namespace != '.' && $namespace != '..' && is_dir(self::namespaceDir($namespace))) {
-                $namespaces[] = $namespace;
+        $dirs = [];
+        foreach (scandir($dir) as $entry) {
+            if ($entry != '.' && $entry != '..' && is_dir($dir.'/'.$entry)) {
+                $dirs[] = $fullPath ? $dir.'/'.$entry : $entry;
             }
         }
-        return $namespaces;
+
+        return $dirs;
+    }
+
+    public static function fileList($dir, $fullPath = false)
+    {
+        $files = [];
+        foreach (scandir($dir) as $entry) {
+            if ($entry != '.' && $entry != '..' && !is_dir($dir.'/'.$entry)) {
+                $files[] = $fullPath ? $dir.'/'.$entry : $entry;
+            }
+        }
+
+        return $files;
+    }
+
+    public static function namespaces()
+    {
+        return self::dirList(self::srcDir());
     }
 
     public static function frontends()
@@ -142,18 +162,13 @@ class ARK
                 }
             }
         }
+
         return $frontends;
     }
 
     public static function sites()
     {
-        $sites = [];
-        foreach (scandir(self::sitesDir()) as $site) {
-            if ($site != '.' && $site != '..' && is_dir(self::siteDir($site))) {
-                $sites[] = $site;
-            }
-        }
-        return $sites;
+        return self::dirList(self::sitesDir());
     }
 
     public static function siteConfigPath($site)
@@ -172,9 +187,10 @@ class ARK
         $conns = [];
         foreach ($settings['connections'] as $name => $config) {
             $config['wrapperClass'] = ($admin ? 'ARK\Database\AdminConnection' : 'ARK\Database\Connection');
-            $server =  $settings['servers'][$config['server']];
+            $server = $settings['servers'][$config['server']];
             $conns[$name] = array_merge($server, $config);
         }
+
         return $conns;
     }
 
@@ -194,6 +210,7 @@ class ARK
         if (isset($config['servers'])) {
             return $config['servers'];
         }
+
         return [];
     }
 
@@ -208,6 +225,7 @@ class ARK
         if (isset($servers[$server])) {
             return $servers[$server];
         }
+
         return [];
     }
 
@@ -220,6 +238,7 @@ class ARK
         if (isset($config['servers']) && !empty($config['servers'])) {
             return current($servers['servers']);
         }
+
         return [];
     }
 
@@ -229,7 +248,13 @@ class ARK
         if (isset($config['default']) && isset($config['servers'][$config['default']])) {
             return $config['default'];
         }
+
         return '';
+    }
+
+    public static function jsonDecodeFile(string $path)
+    {
+        return json_decode(file_get_contents($this->mapPath.'/user.map.json'), true);
     }
 
     public static function jsonEncodeWrite(array $data, $path, $pretty = true)
@@ -247,6 +272,7 @@ class ARK
         if ($pretty) {
             return json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         }
+
         return json_encode($data);
     }
 }
