@@ -1,0 +1,21 @@
+{% block imagecollection -%}
+
+{% if state.modus == 'active' %}
+
+    {{ form_row(form, {'state': state, 'help': help}) }}
+
+{% else %}
+
+    {% if data %}
+        {% for key, image in data.value %}
+            <div class='item {% if key == 0 %} active {% endif %}'>
+                <img src="{{ image.sourcePath('preview') }}" alt='' />
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% do form.setRendered %}
+
+{% endif %}
+
+{%- endblock imagecollection %}

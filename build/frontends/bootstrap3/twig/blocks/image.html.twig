@@ -1,0 +1,19 @@
+{% block image -%}
+
+{% if state.modus == 'active' %}
+
+    {{ form_row(form, {'state': state, 'help': help}) }}
+
+{% else %}
+
+    <div class='item'>
+        {% if data.value %}
+            <img src="{{ data.value.sourcePath(state.image) }}" alt='' />
+        {% endif %}
+    </div>
+
+    {% do form.setRendered %}
+
+{% endif %}
+
+{%- endblock image %}

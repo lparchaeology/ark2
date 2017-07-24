@@ -30,7 +30,7 @@
 
 namespace ARK\View\Console;
 
-use ARK\Console\AbstractCommand;
+use ARK\Framework\Console\Command\AbstractCommand;
 use ARK\Service;
 use ARK\View\Bus\NavAddMessage;
 
@@ -39,8 +39,8 @@ class NavAddCommand extends AbstractCommand
     protected function configure()
     {
         $this->setName('view:nav:add')
-             ->setDescription('Add a new Nav view element')
-             ->addOptionalArgument('element', 'The Nav view element key');
+            ->setDescription('Add a new Nav view element')
+            ->addOptionalArgument('element', 'The Nav view element key');
     }
 
     protected function doExecute()

@@ -30,7 +30,7 @@
 
 namespace ARK\ORM\Console;
 
-use ARK\Console\AbstractCommand;
+use ARK\Framework\Console\Command\AbstractCommand;
 use ARK\ORM\Command\GenerateItemEntityMessage;
 use ARK\Service;
 

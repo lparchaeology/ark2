@@ -1,0 +1,28 @@
+{
+    "servers": {
+        "server": {
+            "server": "server",
+            "driver": "",
+            "user": "",
+            "password": ""
+        }
+    },
+    "connections": {
+        "core": {
+            "server": "server",
+            "dbname": "core"
+        },
+        "data": {
+            "server": "server",
+            "dbname": "data"
+        },
+        "spatial": {
+            "server": "server",
+            "dbname": "spatial"
+        },
+        "user": {
+            "server": "server",
+            "dbname": "user"
+        }
+    }
+}

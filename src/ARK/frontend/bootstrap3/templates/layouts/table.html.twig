@@ -1,0 +1,156 @@
+{# Standard table layout using only HTML5/Bootstrap #}
+
+<div class='table-wrapper-div'>
+
+    {% set table_class %}
+    table bootstrap-table table-hover dime-table
+    {% endset %}
+
+    <table
+        id="{{layout.id}}"
+        class="{{table_class}}"
+        data-toggle="table"
+        data-classes="{{table_class}}"
+        data-sort-name="id"
+        {#data-show-refresh="true"#}
+        data-show-toggle="true"
+        data-show-columns="true"
+        data-mobile-responsive="true"
+        data-show-export="true"
+        data-switchcardview="true"
+        data-click-to-select="true"
+        data-locale={{ app.locale }}
+        icons = "{ columns: 'glyphicon-th-list icon-th-list' }"
+    >
+
+        <thead>
+            <tr>
+                <th class="checkedhead" data-field="checked" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
+                {% if data[0] is defined and data[0].hasAttribute(state.image) %}
+                    <th class="thumbimagehead" data-field="{{state.image}}" data-title="{{state.image}}" data-sortable="false"></th>
+                {% endif %}
+                {% for cell in layout.cells %}
+                    {% set field = cell.element %}
+                    {% if state.actor.hasPermission(field.attribute.readPermission) %}
+                        {% if field.attribute.name == 'id' %}
+                        <th data-field="{{field.id}}" data-title="{{field.keyword|trans}}" data-sortable="true" data-sorter="alphanum" data-card-visible="false">
+                        {% else %}
+                        <th data-field="{{field.id}}" data-title="{{field.keyword|trans}}" data-sortable="true" data-sorter="alphanum" data-card-visible="false">
+                        {% endif %}
+                            {{field.keyword|trans}}
+                        </th>
+                    {%  endif %}
+                {% endfor %}
+                <th class="controlshead" data-field="controls" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for item in data %}
+                <tr data-unique-id = "{{ item.id }}" >
+                    <td class="not-card-visible"><span class="tablecheckbox glyphicon glyphicon-unchecked"></span></td>
+                    {% if item.hasAttribute(state.image) %}
+                        <td class="thumbimage">
+                            {% set image = item.property(state.image).value() %}
+                            {% if image is not empty %}
+                                {% if item.property(state.image).attribute.hasMultipleOccurrences %}
+                                    {% set image = image[0] %}
+                                {% endif %}
+                                <img src="{{path('img', {'image': image.id}) ~ '?p=thumb'}}" alt='' />
+                            {% else %}
+                                <span class="glyphicon glyphicon-picture placeholder-img"></span>
+                            {% endif %}
+                        </td>
+                    {% endif %}
+                    {% for cell in layout.cells %}
+                        {% set field = cell.element %}
+                        {% if state.actor.hasPermission(field.attribute.readPermission) %}
+                            <td>
+                                <span class="cell-label">{{field.keyword|trans}}</span>
+                                {{ field.renderView(item, state) }}
+                            </td>
+                        {% endif %}
+                    {% endfor %}
+                    <td class="controls">
+                        <span class="cell-label">{{ 'dime.controls'|trans }}</span>
+                        {% if (state.name == 'actors') %}
+                            <a href="#" class="open-focus">
+                                <span class="dime-icon icon-user-focus small"></span>
+                            </a>
+                        {% endif %}
+                        <a href="{{ path(state.modules[item.schema.module.name].route, {'id': item.id}) }}">
+                            <span class="glyphicon glyphicon-file"></span>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
+
+<script>
+window.itemkey =
+    {% if data[0] is defined %}
+        "{{ data[0].schema.module.name }}";
+    {% else %}
+        {{null}}
+    {% endif %}
+
+window.itemlist = [
+    {% if data|length > 0 %}
+        {% for item in data %}
+            "{{ item.id }}",
+        {% endfor %}
+    {% else %}
+            false
+     {% endif %}
+];
+if(typeof window.translations == 'undefined'){
+    window.translations = [];
+}
+window.translations['dime.user.update.success'] = "{{ 'dime.user.update.success' | trans }}";
+window.translations['dime.user.update.failure'] = "{{ 'dime.user.update.failure' | trans }}"
+
+window.userApiUrl = "{{ path('api.internal.user.actor', {'id': 'dummyid'}) }}".split('dummyid')[0];
+
+</script>
+{#}
+<div id = "thumbModal"></div>
+
+<div id = "chooseAction" class="btn chooseAction">{{ 'dime.chooseaction'|trans }}</div>
+<div id = "chooseActionSelectHolder"></div>
+
+window.defaultAvailableActions = [
+    {% if data[0] is defined %}
+    {% for action in workflow.schemaActions(data[0].schema) %}
+        {
+            "keyword":"{{ action.keyword }}",
+            "translation":"{{ action.keyword | trans }}",
+            "available":true,
+            "visible":false,
+        },
+    {% endfor %}
+    {% endif %}
+    ];
+
+window.itemAvailableActions = {
+    {% for item in data %}
+        "{{item.id}}": {
+            {% for action in workflow.actions(workflow.actor, item) %}
+            "{{ action.keyword }}":{
+                    "keyword":"{{ action.keyword }}",
+                    "translation":"{{ action.keyword | trans }}",
+                    "available":true,
+                    "visible":true,
+                },
+            {% endfor %}
+        },
+    {% endfor %}
+};
+
+console.log({"itemAvailableAction":window.itemAvailableActions,"defaultAvailableActions":window.defaultAvailableActions});
+
+</script>
+#}

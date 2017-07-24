@@ -1,0 +1,18 @@
+{# DIME front page content layout #}
+
+<div class="row">
+    <div class="col-md-6 col-md-push-3 dimehome banner" >
+        {{ 'dime.home.hvert' | translate }}
+    </div>
+</div>
+
+<div class="row dimehome">
+    <div class="col-md-6 col-md-push-3">
+        {% include "blocks/carousel.html.twig" with {'data': data.finds} %}
+    </div>
+    <div class="col-md-3 col-md-push-3">
+        <div class="redtext">
+            {{ 'dime.home.faq' | translate | raw }}
+        </div>
+    </div>
+</div>
