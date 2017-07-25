@@ -33,6 +33,7 @@ use ARK\ARK;
 use ARK\Framework\Application;
 use ARK\Framework\Console\AbstractConsole;
 use ARK\Framework\Console\Command\RouteDumpCommand;
+use ARK\Framework\Console\Command\UserListCommand;
 use ARK\ORM\Console\GenerateItemEntityCommand;
 use ARK\Translation\Console\TranslationAddCommand;
 use ARK\Translation\Console\TranslationDimeCommand;
@@ -44,12 +45,6 @@ use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand;
-use Security\Command\UserCreateCommand;
-use Security\Command\UserDeleteCommand;
-use Security\Command\UserListCommand;
-use Security\Command\UserRoleAddCommand;
-use Security\Command\UserRoleListCommand;
-use Security\Command\UserRoleRemoveCommand;
 
 class Console extends AbstractConsole
 {
@@ -65,8 +60,8 @@ class Console extends AbstractConsole
         $this->add(new TranslationDimeCommand());
 
         // User Commands
+        $this->add(new UserListCommand());
         //$this->add(new UserCreateCommand($this->app));
-        //$this->add(new UserListCommand($this->app));
         //$this->add(new UserDeleteCommand($this->app));
         //$this->add(new UserRoleAddCommand($this->app));
         //$this->add(new UserRoleListCommand($this->app));

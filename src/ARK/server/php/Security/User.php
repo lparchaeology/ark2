@@ -35,6 +35,7 @@ use ARK\ORM\ORM;
 use ARK\Security\Account;
 use ARK\Security\Validator\PasswordStrength;
 use ARK\Service;
+use ARK\Workflow\Security\ActorUser;
 use DateTime;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -70,6 +71,7 @@ class User implements AdvancedUserInterface, Serializable
     protected $passwordRequestedAt = null;
     protected $lastLogin = null;
     protected $accounts = null;
+    protected $actors = null;
 
     public function __construct($id, $username = null, $email = null)
     {
@@ -424,6 +426,29 @@ class User implements AdvancedUserInterface, Serializable
         if ($this->hasAccount($account)) {
             $this->accounts->removeElement($account);
         }
+    }
+
+    public function actors()
+    {
+        if ($this->actors === null) {
+            $aus = ORM::findBy(ActorUser::class, ['user' => $this->id()]);
+            foreach ($aus as $au) {
+                if ($au->isEnabled()) {
+                    $this->actors[] = $au->actor();
+                }
+            }
+            return $this->actors;
+        }
+    }
+
+    public function hasRole($role)
+    {
+        foreach ($this->actors() as $actor) {
+            if ($actor->hasRole($role)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function serialize()

@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Workflow\Security;
@@ -46,12 +45,7 @@ class ActorRole
     protected $roleEntity = null;
     protected $agentFor = null;
     protected $enabled = false;
-    protected $verified = false;
-    protected $locked = false;
-    protected $expired = false;
     protected $expiresAt = null;
-    protected $verificationToken = '';
-    protected $verificationRequestedAt = null;
 
     public function __construct(Actor $actor, Role $role, Actor $agentFor = null)
     {
@@ -86,105 +80,31 @@ class ActorRole
         return $this->agentFor;
     }
 
-    public function isVerified()
-    {
-        return $this->verified;
-    }
-
-    public function verify()
-    {
-        $this->verified = true;
-        return $this;
-    }
-
     public function isEnabled()
     {
+        // TODO Check is UTC?
+        if ($this->enabled && $this->expiresAt && $this->expiresAt->getTimestamp() < time()) {
+            $this->disable();
+        }
         return $this->enabled;
     }
 
     public function enable()
     {
         $this->enabled = true;
-        return $this;
+        $this->expiresAt = null;
     }
 
     public function disable()
     {
         $this->enabled = false;
-        return $this;
-    }
-
-    public function isLocked()
-    {
-        return $this->locked;
-    }
-
-    public function isAccountNonLocked()
-    {
-        return !$this->isLocked();
-    }
-
-    public function lock()
-    {
-        $this->locked = true;
-        return $this;
-    }
-
-    public function unlock()
-    {
-        $this->locked = false;
-        return $this;
-    }
-
-    public function isExpired()
-    {
-        // TODO Check is UTC?
-        if (!$this->expired && $this->expiresAt instanceof DateTime && $this->expiresAt->getTimestamp() < time()) {
-            $this->expire();
-        }
-        return $this->expired;
-    }
-
-    public function expire()
-    {
-        $this->expired = true;
         $this->expiresAt = null;
-        return $this;
     }
 
     public function expireAt(DateTime $date)
     {
         $this->expiresAt = $date;
         return $this;
-    }
-
-    public function verificationToken()
-    {
-        // TODO Check if expired?
-        return $this->verificationToken;
-    }
-
-    public function verificationRequestedAt()
-    {
-        return $this->verificationRequestedAt;
-    }
-
-    // TODO which way around? Do here or in command?
-    public function requestVerification($token)
-    {
-        $this->verificationToken = $token;
-        // TODO check is UTC
-        $this->verificationRequestedAt = time();
-        return $this;
-    }
-
-    public function isVerificationRequestExpired($ttl)
-    {
-        if ($this->verificationRequestedAt instanceof DateTime && $this->verificationRequestedAt->getTimestamp() + $ttl < time()) {
-            $this->verificationToken = '';
-            $this->verificationRequestedAt = null;
-        }
-        return $this->verificationToken === '';
     }
 
     public static function loadMetadata(ClassMetadata $metadata)
@@ -198,14 +118,9 @@ class ActorRole
 
         // Attributes
         $builder->addField('enabled', 'boolean');
-        $builder->addField('verified', 'boolean');
-        $builder->addField('locked', 'boolean');
-        $builder->addField('expired', 'boolean');
         $builder->addField('expiresAt', 'datetime', [], 'expires_at');
-        $builder->addStringField('verificationToken', 100, 'verification_token');
-        $builder->addField('verificationRequestedAt', 'datetime', [], 'verification_requested_at');
 
         // Relationships
-        $builder->addManyToOneField('agentFor', Actor::class, 'proxy_for', 'item');
+        $builder->addManyToOneField('agentFor', Actor::class, 'agent_for', 'item');
     }
 }

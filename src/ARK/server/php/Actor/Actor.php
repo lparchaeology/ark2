@@ -53,7 +53,12 @@ class Actor implements Item
     public function roles()
     {
         if ($this->roles === null) {
-            $this->roles = ORM::findBy(ActorRole::class, ['actor' => $this->id()]);
+            $ars = ORM::findBy(ActorRole::class, ['actor' => $this->id()]);
+            foreach($ars as $ar) {
+                if ($ar->isEnabled()) {
+                    $this->roles[] = $ar->role();
+                }
+            }
         }
         return $this->roles;
     }

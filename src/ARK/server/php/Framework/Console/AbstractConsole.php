@@ -30,6 +30,7 @@
 namespace ARK\Framework\Console;
 
 use ARK\ARK;
+use ARK\Framework\Application;
 use ARK\Framework\Console\ProcessTrait;
 use ARK\Framework\Console\Helper\FileChooserHelper;
 use Symfony\Component\Console\Application as SymfonyConsole;
@@ -42,7 +43,7 @@ abstract class AbstractConsole extends SymfonyConsole
 
     protected $app = null;
 
-    public function __construct(string $name, $app)
+    public function __construct(string $name, Application $app)
     {
         parent::__construct($name, ARK::version());
         $this->app = $app;

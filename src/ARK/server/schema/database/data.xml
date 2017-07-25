@@ -1316,36 +1316,14 @@
       <key/>
       <notnull/>
     </field>
-    <field name="proxy_for" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="agent_for" type="string" size="30"/>
     <field name="enabled" type="boolean">
       <default value="1"/>
       <notnull/>
     </field>
-    <field name="verified" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="locked" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="expired" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="expires_at" type="datetime">
-      <deftimestamp/>
-    </field>
-    <field name="verification_token" type="string" size="100">
-      <notnull/>
-    </field>
-    <field name="verification_requested_at" type="datetime">
-      <deftimestamp/>
-    </field>
-    <index name="proxy_for">
-      <col>proxy_for</col>
+    <field name="expires_at" type="datetime"/>
+    <index name="agent_for">
+      <col>agent_for</col>
     </index>
     <index name="IDX_9FE8DE90447556F9">
       <col>actor</col>
@@ -1355,7 +1333,7 @@
       <column local="actor" foreign="item"/>
     </references>
     <references name="ark_workflow_actor_role_ibfk_2" table="ark_item_actor" onupdate="cascade" ondelete="set null">
-      <column local="proxy_for" foreign="item"/>
+      <column local="agent_for" foreign="item"/>
     </references>
   </table>
   <table name="ark_workflow_actor_user">
@@ -1371,27 +1349,7 @@
       <default value="1"/>
       <notnull/>
     </field>
-    <field name="verified" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="locked" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="expired" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="expires_at" type="datetime">
-      <deftimestamp/>
-    </field>
-    <field name="verification_token" type="string" size="100">
-      <notnull/>
-    </field>
-    <field name="verification_requested_at" type="datetime">
-      <deftimestamp/>
-    </field>
+    <field name="expires_at" type="datetime"/>
     <index name="IDX_451282B3447556F9">
       <col>actor</col>
     </index>
