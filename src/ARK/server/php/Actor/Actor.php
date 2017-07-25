@@ -9,8 +9,10 @@ namespace ARK\Actor;
 
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
+use ARK\Model\LocalText;
 use ARK\ORM\ORM;
 use ARK\Workflow\Permission;
+use ARK\Workflow\Role;
 use ARK\Workflow\Security\ActorRole;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -31,6 +33,13 @@ class Actor implements Item
         return ($fullname ? $fullname->content() : '');
     }
 
+    public function setFullname(string $name)
+    {
+        $fullname = new LocalText();
+        $fullname->setContent($name);
+        $this->property('fullname')->setValue($fullname);
+    }
+
     public function hasRole($role)
     {
         foreach ($this->roles() as $has) {
@@ -47,6 +56,22 @@ class Actor implements Item
             $this->roles = ORM::findBy(ActorRole::class, ['actor' => $this->id()]);
         }
         return $this->roles;
+    }
+
+    public function addRole($role, Actor $agentFor = null)
+    {
+        if ($this->hasRole($role) && $agentFor === null) {
+            return;
+        }
+        if (is_string($role)) {
+            $role = ORM::find(Role::class, $role);
+        }
+        if ($role instanceof Role) {
+            $actorRole = new ActorRole($actor, $role, $agentFor);
+            ORM::persist($actorRole);
+            $this->roles->append($actorRole);
+            ORM::persist($this);
+        }
     }
 
     public function hasPermission($permission = null)

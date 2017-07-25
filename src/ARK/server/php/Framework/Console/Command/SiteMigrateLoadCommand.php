@@ -27,12 +27,16 @@
  * @since      2.0
  */
 
- namespace ARK\Framework\Console\Command;
+namespace ARK\Framework\Console\Command;
 
+use ARK\Actor\Actor;
+use ARK\Actor\Person;
 use ARK\ARK;
 use ARK\Database\Console\DatabaseCommand;
 use Exception;
 use ARK\Framework\Application;
+use ARK\ORM\ORM;
+use ARK\Security\User;
 use ARK\Service;
 
 class SiteMigrateLoadCommand extends DatabaseCommand
@@ -48,6 +52,10 @@ class SiteMigrateLoadCommand extends DatabaseCommand
     protected $data = null;
     protected $user = null;
     protected $admin = null;
+    protected $userMap = null;
+    protected $schemaMap = null;
+    protected $mapActor = [];
+    protected $mapUser = [];
 
     protected function configure()
     {
@@ -66,8 +74,8 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         $this->source = $this->getConnection($source['database']);
         $this->source->beginTransaction();
         $this->sourcePath = $source['path'];
-        $this->schemaMap = ARK::jsonDecodeFile($this->mapPath.'/schema.map.json');
-        $this->userMap = ARK::jsonDecodeFile($this->mapPath.'/user.map.json');
+        //$this->schemaMap = ARK::jsonDecodeFile($this->mapPath.'/schema.map.json');
+        $this->userMap = ARK::jsonDecodeFile($this->mapPath.'/users.map.json');
 
         $this->site = strtolower($this->askChoice('Please choose the destination ARK instance', ARK::sites()));
         if ($this->site === $this->errorCode()) {
@@ -75,6 +83,8 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         }
         $this->app = new Application($this->site);
 
+        $this->loadUsers();
+return;
         $this->core = Service::database()->core();
         $this->data = Service::database()->data();
         $this->user = Service::database()->user();
@@ -729,6 +739,50 @@ class SiteMigrateLoadCommand extends DatabaseCommand
 
         // * DONE! * //
         $this->write("\nMigration Complete!");
+    }
+
+    private function loadUsers()
+    {
+        foreach ($this->userMap as $map) {
+            if (!$map['map']) {
+                continue;
+            }
+
+            if ($map['user']) {
+                $this->mapUser[$map['user']] = $map['id'];
+            }
+            if ($map['actor']) {
+                $this->mapActor[$map['actor']] = $map['id'];
+            }
+
+            $actor = ORM::find(Actor::class, $map['id']);
+            $user = ORM::find(User::class, $map['id']);
+
+            if (!$actor || !$user) {
+                if (!$actor && $map['actor']) {
+                    $actor = new Person();
+                    $actor->setItem($map['id']);
+                    ORM::persist($actor);
+                    $this->mapAbk[$map['actor']] = $map['id'];
+                }
+                if (!$user && $map['user']) {
+                    $user = Service::security()->createUser(
+                        $map['id'],
+                        $map['email'],
+                        $map['password'],
+                        $map['name'],
+                        $map['level']
+                    );
+                    Service::security()->registerUser($user, $actor);
+                }
+            }
+            if ($actor) {
+                foreach ($map['roles'] as $role) {
+                    $actor->addRole($role);
+                }
+                ORM::flush($actor);
+            }
+        }
     }
 
     private function addTranslation($keyword, $text = null, $title = true)

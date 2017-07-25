@@ -185,16 +185,19 @@ class SiteMigrateMapCommand extends SiteMigrateInfoCommand
         $users = [];
         foreach ($this->users as $user) {
             $map = [];
-            $map['source']['name'] = $user['name'] ?? '';
-            $map['source']['username'] = $user['username'] ?? '';
-            $map['source']['user'] = $user['user'] ?? '';
-            $map['source']['actor'] = $user['actor'] ?? '';
+            $map['name'] = $user['name'] ?? '';
+            $map['username'] = $user['username'] ?? null;
+            $map['email'] = $user['email'] ?? null;
+            $map['user'] = $user['user'] ?? null;
+            $map['actor'] = $user['actor'] ?? null;
+            $map['site'] = $user['site'] ?? null;
+            $map['groups'] = $user['groups'] ?? [];
             $map['map'] = ($user['audit'] ?? false) || ($user['action'] ?? false);
-            $map['user'] = $map['source']['username'];
-            $map['actor'] = $map['source']['actor'];
-            $map['site'] = $user['site'] ?? '';
-            $map['roles'] = $user['roles'] ?? [];
+            $map['id'] = $map['username'];
+            $map['password'] = 'password';
+            $map['level'] = 'ROLE_USER';
             $map['enabled'] = $user['enabled'] ?? false;
+            $map['roles'] = [];
             $users[] = $map;
         }
         ARK::jsonEncodeWrite($users, $this->exportPath.'/users.map.json');

@@ -155,8 +155,11 @@ class Database
         return $this->fragmentTables;
     }
 
-    public function getTypeEntities(string $module)
+    public function getTypeEntities(string $module = null)
     {
+        if ($module === null) {
+            return [];
+        }
         $sql = '
             SELECT ark_vocabulary_parameter.term as type, ark_vocabulary_parameter.value as classname
             FROM ark_schema, ark_vocabulary_parameter

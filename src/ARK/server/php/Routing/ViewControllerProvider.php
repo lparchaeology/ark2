@@ -44,6 +44,7 @@ class ViewControllerProvider implements ControllerProviderInterface
     {
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
+        return $controllers;
         $routes = ORM::findAll(Route::class);
         $pages = ORM::findAll(Page::class);
         $instances = ORM::findAll(Instance::class);

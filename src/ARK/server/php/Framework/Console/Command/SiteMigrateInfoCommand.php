@@ -109,25 +109,30 @@ class SiteMigrateInfoCommand extends DatabaseCommand
 
         // USERS
         $this->write('Analysing Users...');
-        $sql = '
-            SELECT cor_tbl_users.*, abk_tbl_abk.ste_cd, abk_lut_abktype.abktype
-            FROM cor_tbl_users
-            LEFT JOIN abk_tbl_abk
-            ON cor_tbl_users.itemvalue = abk_tbl_abk.abk_cd
-            LEFT JOIN abk_lut_abktype
-            ON abk_tbl_abk.abktype = abk_lut_abktype.abktype
-        ';
-        $users = $this->source->fetchAll($sql);
+        if ($this->source->table('cor_tbl_users')->hasColumn('itemvalue')) {
+            $sql = '
+                SELECT cor_tbl_users.*, abk_tbl_abk.ste_cd, abk_lut_abktype.abktype
+                FROM cor_tbl_users
+                LEFT JOIN abk_tbl_abk
+                ON cor_tbl_users.itemvalue = abk_tbl_abk.abk_cd
+                LEFT JOIN abk_lut_abktype
+                ON abk_tbl_abk.abktype = abk_lut_abktype.abktype
+            ';
+            $users = $this->source->fetchAll($sql);
+        } else {
+            $users = $this->source->fetchAllTable('cor_tbl_users');
+        }
         foreach ($users as $row) {
             $user['user'] = $row['id'];
             $user['username'] = $row['username'];
-            $user['actor'] = $row['itemvalue'];
+            $user['actor'] = $row['itemvalue'] ?? null;
             $user['name'] = $row['firstname'].' '.$row['lastname'];
+            $user['email'] = $row['email'] ? $row['email'] : null;
             $user['type'] = null;
-            $user['site'] = $row['ste_cd'];
+            $user['site'] = $row['ste_cd'] ?? null;
             $user['audit'] = false;
             $user['action'] = false;
-            $user['roles'] = [];
+            $user['groups'] = [];
             $user['enabled'] = (bool) $row['account_enabled'];
             $this->users[$user['user']] = $user;
         }
@@ -140,7 +145,7 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         ';
         $usergroups = $this->source->fetchAll($sql);
         foreach ($usergroups as $user) {
-            $this->users[$user['id']]['roles'][] = $user['group_define_name'];
+            $this->users[$user['id']]['groups'][] = $user['group_define_name'];
         }
 
         // ACTORS
@@ -263,13 +268,14 @@ class SiteMigrateInfoCommand extends DatabaseCommand
             if (!isset($user['user'])) {
                 $user['user'] = $id;
                 $user['username'] = null;
+                $user['email'] = null;
                 $user['actor'] = null;
                 $user['name'] = null;
                 $user['type'] = null;
                 $user['site'] = null;
                 $user['audit'] = $user['audit'] ?? false;
                 $user['action'] = $user['action'] ?? false;
-                $user['roles'] = [];
+                $user['groups'] = [];
             }
         }
         unset($user);
@@ -277,18 +283,20 @@ class SiteMigrateInfoCommand extends DatabaseCommand
             if (!isset($actor['actor'])) {
                 $user['user'] = null;
                 $user['username'] = null;
+                $user['email'] = null;
                 $user['actor'] = $id;
                 $user['name'] = null;
                 $user['type'] = null;
                 $user['site'] = null;
                 $user['audit'] = false;
                 $user['action'] = $actor['action'];
-                $user['roles'] = [];
+                $user['groups'] = [];
                 $this->users[] = $user;
             } else {
                 $actor['user'] = null;
+                $actor['email'] = null;
                 $actor['audit'] = false;
-                $actor['roles'] = [];
+                $actor['groups'] = [];
                 $this->users[] = $actor;
             }
         }
@@ -331,15 +339,16 @@ class SiteMigrateInfoCommand extends DatabaseCommand
 
         // REPORT USERS
         $this->write("\nUSERS / ACTORS");
-        $headers = ['User', 'Username', 'Name', 'Actor', 'Groups', 'Site', 'Audit', 'Action'];
+        $headers = ['User', 'Username', 'Email', 'Name', 'Actor', 'Groups', 'Site', 'Audit', 'Action'];
         $rows = [];
         foreach ($this->users as $id => $user) {
             $rows[] = [
                 $user['user'],
                 $user['username'],
+                $user['email'],
                 $user['name'],
                 $user['actor'],
-                implode(', ', $user['roles']),
+                implode(', ', $user['groups']),
                 $user['site'],
                 $user['audit'],
                 $user['action'],

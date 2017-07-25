@@ -75,6 +75,9 @@ class SiteCreateCommand extends DatabaseCommand
             $database['servers'][$config['server']['server']] = $config['server'];
             $database['connections'] = $config['connections'];
             ARK::jsonEncodeWrite($database, ARK::siteDir($site).'/config/database.json');
+            $config = ARK::siteConfig($site);
+            $config['site'] = $site;
+            ARK::writeSiteConfig($site, $config);
             $this->write('Site created.');
             $this->write('Please add an Admin User from the Site Admin Console.');
             $this->result = $site;

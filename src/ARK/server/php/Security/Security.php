@@ -209,18 +209,43 @@ class Security
         }
         $user->enable();
         ORM::persist($user);
-        if ($actor && $role) {
+        if ($actor) {
             $actorUser = new ActorUser($actor, $user);
-            $actorRole = new ActorRole($actor, $role, $agentFor);
             ORM::persist($actor);
             ORM::persist($actorUser);
+        }
+        if ($actor && $role) {
+            $actorRole = new ActorRole($actor, $role, $agentFor);
             ORM::persist($actorRole);
-            ORM::flush($actor);
+            ORM::persist($agentFor);
         }
         ORM::flush($user);
+        ORM::flush($actor);
         if ($this->options['verifyEmail']) {
             //$this->sendVerificationMessage($user);
         }
+    }
+
+    public function registerActor(User $user, Actor $actor, Role $role = null, Actor $agentFor = null)
+    {
+        $actorUser = new ActorUser($actor, $user);
+        ORM::persist($actor);
+        ORM::persist($actorUser);
+        if ($role) {
+            $actorRole = new ActorRole($actor, $role, $agentFor);
+            ORM::persist($actorRole);
+            ORM::persist($agentFor);
+        }
+        ORM::flush($actor);
+    }
+
+    public function registerRole(Actor $actor, Role $role, Actor $agentFor = null)
+    {
+        ORM::persist($actor);
+        $actorRole = new ActorRole($actor, $role, $agentFor);
+        ORM::persist($actorRole);
+        ORM::persist($agentFor);
+        ORM::flush($actor);
     }
 
     public function createUser($username, $email, $plainPassword, $name = null, $level = 'ROLE_USER')

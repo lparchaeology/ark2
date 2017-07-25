@@ -295,7 +295,7 @@ class SchemaWriter
     }
 
     protected static function tableOptions(
-        string $table,
+        Table $table,
         array $options,
         Connection $connection,
         AbstractPlatform $platform

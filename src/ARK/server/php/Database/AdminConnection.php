@@ -103,21 +103,35 @@ class AdminConnection extends Connection
         SchemaWriter::fromConnection($this, $schemaPath, $overwrite);
     }
 
+    public function table(string $table)
+    {
+        return $this->getSchemaManager()->listTableDetails($table);
+    }
+
+    public function listTables()
+    {
+        return $this->getSchemaManager()->listTables();
+    }
+
+    public function listTableNames()
+    {
+        return $this->getSchemaManager()->listTableNames();
+    }
+
     public function tableExists(string $table)
     {
-        return $this->getSchemaManager()->tablesExist([$table]);
+        return in_array($table, $this->getSchemaManager()->listTableNames());
     }
 
     public function createItemTable(string $module)
     {
         $table = 'ark_item_'.$module;
-        $sm = $this->getSchemaManager();
-        if ($sm->tablesExist([$table])) {
+        if ($this->tablesExist($table)) {
             throw new \Exception('Table exists!');
         }
         $schema = Parser::fromFile(ARK::namespaceDir('ARK').'/server/schema/database/ark_item_table.xml', $this->platform());
         $schema->renameTable('ark_item_table', $table);
-        $sm->createTable($schema->getTable($table));
+        $this->getSchemaManager()->createTable($schema->getTable($table));
     }
 
     public function listUsers(bool $identity = false)

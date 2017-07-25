@@ -372,8 +372,8 @@ class User implements AdvancedUserInterface, Serializable
         if ($this->level == 'ROLE_ADMIN') {
             $this->levels = ['ROLE_ANON', 'ROLE_USER', 'ROLE_ADMIN'];
         }
-        if ($this->level == 'ROLE_SYSADMIN') {
-            $this->levels = ['ROLE_ANON', 'ROLE_USER', 'ROLE_ADMIN', 'ROLE_SYSADMIN'];
+        if ($this->level == 'ROLE_SUPER_ADMIN') {
+            $this->levels = ['ROLE_ANON', 'ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPER_ADMIN'];
         }
     }
 

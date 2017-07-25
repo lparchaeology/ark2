@@ -171,14 +171,19 @@ class ARK
         return self::dirList(self::sitesDir());
     }
 
-    public static function siteConfigPath($site)
+    public static function siteConfigPath(string $site)
     {
         return self::siteDir($site).'/config/site.json';
     }
 
-    public static function siteConfig($site)
+    public static function siteConfig(string $site)
     {
         return json_decode(file_get_contents(self::siteConfigPath($site)), true);
+    }
+
+    public static function writeSiteConfig(string $site, array $config)
+    {
+        return self::jsonEncodeWrite($config, self::siteConfigPath($site));
     }
 
     public static function siteDatabaseConfig($site, $admin = false)
@@ -254,10 +259,10 @@ class ARK
 
     public static function jsonDecodeFile(string $path)
     {
-        return json_decode(file_get_contents($this->mapPath.'/user.map.json'), true);
+        return json_decode(file_get_contents($path), true);
     }
 
-    public static function jsonEncodeWrite(array $data, $path, $pretty = true)
+    public static function jsonEncodeWrite(array $data, string $path, bool $pretty = true)
     {
         $dir = dirname($path);
         if (!is_dir($dir)) {
@@ -267,7 +272,7 @@ class ARK
         file_put_contents($path, self::jsonEncode($data, $pretty));
     }
 
-    public static function jsonEncode(array $data, $pretty = true)
+    public static function jsonEncode(array $data, bool $pretty = true)
     {
         if ($pretty) {
             return json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
