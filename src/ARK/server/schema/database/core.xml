@@ -41,45 +41,19 @@
     <field name="type" type="string" size="10">
       <notnull/>
     </field>
-    <field name="format_vocabulary" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="parameter_vocabulary" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="keyword" type="string" size="100">
-      <default value="NULL"/>
-    </field>
-    <field name="entity" type="string" size="100">
-      <default value="NULL"/>
-    </field>
-    <field name="value_name" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="active_form_class" type="string" size="100">
-      <default value="NULL"/>
-    </field>
-    <field name="readonly_form_class" type="string" size="100">
-      <default value="NULL"/>
-    </field>
-    <field name="static_form_class" type="string" size="100">
-      <default value="NULL"/>
-    </field>
-    <field name="parameter_name" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="parameter_form_class" type="string" size="100">
-      <default value="NULL"/>
-    </field>
-    <field name="format_name" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="format_form_class" type="string" size="100">
-      <default value="NULL"/>
-    </field>
-    <field name="form_type_class" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="format_vocabulary" type="string" size="30"/>
+    <field name="parameter_vocabulary" type="string" size="30"/>
+    <field name="keyword" type="string" size="100"/>
+    <field name="entity" type="string" size="100"/>
+    <field name="value_name" type="string" size="30"/>
+    <field name="active_form_class" type="string" size="100"/>
+    <field name="readonly_form_class" type="string" size="100"/>
+    <field name="static_form_class" type="string" size="100"/>
+    <field name="parameter_name" type="string" size="30"/>
+    <field name="parameter_form_class" type="string" size="100"/>
+    <field name="format_name" type="string" size="30"/>
+    <field name="format_form_class" type="string" size="100"/>
+    <field name="form_type_class" type="string" size="100"/>
     <field name="object" type="boolean">
       <default value="0"/>
       <notnull/>
@@ -150,12 +124,8 @@
     <field name="datatype" type="string" size="30">
       <notnull/>
     </field>
-    <field name="keyword" type="string" size="100">
-      <default value="NULL"/>
-    </field>
-    <field name="vocabulary" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="keyword" type="string" size="100"/>
+    <field name="vocabulary" type="string" size="30"/>
     <field name="sequence" type="integer">
       <notnull/>
     </field>
@@ -222,9 +192,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="preset" type="blob" size="65535">
-      <default value="NULL"/>
-    </field>
+    <field name="preset" type="blob" size="65535"/>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     <references name="ark_datatype_blob_ibfk_1" table="ark_datatype" onupdate="cascade" ondelete="cascade">
       <column local="datatype" foreign="datatype"/>
@@ -235,9 +203,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="preset" type="boolean">
-      <default value="NULL"/>
-    </field>
+    <field name="preset" type="boolean"/>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     <references name="ark_datatype_boolean_ibfk_1" table="ark_datatype" onupdate="cascade" ondelete="cascade">
       <column local="datatype" foreign="datatype"/>
@@ -291,26 +257,18 @@
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="minimum" type="string" size="200">
-      <default value="NULL"/>
-    </field>
+    <field name="minimum" type="string" size="200"/>
     <field name="exclusive_minimum" type="boolean">
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="maximum" type="string" size="200">
-      <default value="NULL"/>
-    </field>
+    <field name="maximum" type="string" size="200"/>
     <field name="exclusive_maximum" type="boolean">
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="multiple_of" type="string" size="200">
-      <default value="NULL"/>
-    </field>
-    <field name="preset" type="string" size="200">
-      <default value="NULL"/>
-    </field>
+    <field name="multiple_of" type="string" size="200"/>
+    <field name="preset" type="string" size="200"/>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     <references name="ark_datatype_decimal_ibfk_1" table="ark_datatype" onupdate="cascade" ondelete="cascade">
       <column local="datatype" foreign="datatype"/>
@@ -321,26 +279,18 @@
       <key/>
       <notnull/>
     </field>
-    <field name="minimum" type="float" size="10.0">
-      <default value="NULL"/>
-    </field>
+    <field name="minimum" type="float" size="10.0"/>
     <field name="exclusive_minimum" type="boolean">
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="maximum" type="float" size="10.0">
-      <default value="NULL"/>
-    </field>
+    <field name="maximum" type="float" size="10.0"/>
     <field name="exclusive_maximum" type="boolean">
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="multiple_of" type="float" size="10.0">
-      <default value="NULL"/>
-    </field>
-    <field name="preset" type="float" size="10.0">
-      <default value="NULL"/>
-    </field>
+    <field name="multiple_of" type="float" size="10.0"/>
+    <field name="preset" type="float" size="10.0"/>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     <references name="ark_datatype_float_ibfk_1" table="ark_datatype" onupdate="cascade" ondelete="cascade">
       <column local="datatype" foreign="datatype"/>
@@ -351,16 +301,12 @@
       <key/>
       <notnull/>
     </field>
-    <field name="minimum" type="integer">
-      <default value="NULL"/>
-    </field>
+    <field name="minimum" type="integer"/>
     <field name="exclusive_minimum" type="boolean">
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="maximum" type="integer">
-      <default value="NULL"/>
-    </field>
+    <field name="maximum" type="integer"/>
     <field name="exclusive_maximum" type="boolean">
       <default value="0"/>
       <notnull/>
@@ -368,9 +314,7 @@
     <field name="multiple_of" type="integer">
       <default value="1"/>
     </field>
-    <field name="preset" type="integer">
-      <default value="NULL"/>
-    </field>
+    <field name="preset" type="integer"/>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     <references name="ark_datatype_integer_ibfk_1" table="ark_datatype" onupdate="cascade" ondelete="cascade">
       <column local="datatype" foreign="datatype"/>
@@ -381,12 +325,8 @@
       <key/>
       <notnull/>
     </field>
-    <field name="module" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="preset" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="module" type="string" size="30"/>
+    <field name="preset" type="string" size="30"/>
     <index name="module">
       <col>module</col>
     </index>
@@ -413,9 +353,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="preset" type="text">
-      <default value="NULL"/>
-    </field>
+    <field name="preset" type="text"/>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     <references name="ark_datatype_spatial_ibfk_1" table="ark_datatype" onupdate="cascade" ondelete="cascade">
       <column local="datatype" foreign="datatype"/>
@@ -438,9 +376,7 @@
     <field name="default_size" type="integer">
       <notnull/>
     </field>
-    <field name="preset" type="string" size="4000">
-      <default value="NULL"/>
-    </field>
+    <field name="preset" type="string" size="4000"/>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     <references name="ark_datatype_string_ibfk_1" table="ark_datatype" onupdate="cascade" ondelete="cascade">
       <column local="datatype" foreign="datatype"/>
@@ -463,9 +399,7 @@
     <field name="default_size" type="integer">
       <notnull/>
     </field>
-    <field name="preset" type="text">
-      <default value="NULL"/>
-    </field>
+    <field name="preset" type="text"/>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     <references name="ark_datatype_text_ibfk_1" table="ark_datatype" onupdate="cascade" ondelete="cascade">
       <column local="datatype" foreign="datatype"/>
@@ -492,15 +426,9 @@
       <key/>
       <notnull/>
     </field>
-    <field name="format_vocabulary" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="parameter_vocabulary" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="keyword" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="format_vocabulary" type="string" size="30"/>
+    <field name="parameter_vocabulary" type="string" size="30"/>
+    <field name="keyword" type="string" size="100"/>
     <field name="object" type="boolean">
       <default value="0"/>
       <notnull/>
@@ -512,37 +440,19 @@
     <field name="storage_type" type="string" size="30">
       <notnull/>
     </field>
-    <field name="storage_size" type="integer">
-      <default value="NULL"/>
-    </field>
+    <field name="storage_size" type="integer"/>
     <field name="spanable" type="boolean">
       <default value="1"/>
       <notnull/>
     </field>
-    <field name="value_name" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="active_form_class" type="string" size="100">
-      <default value="NULL"/>
-    </field>
-    <field name="readonly_form_class" type="string" size="100">
-      <default value="NULL"/>
-    </field>
-    <field name="static_form_class" type="string" size="100">
-      <default value="NULL"/>
-    </field>
-    <field name="parameter_name" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="parameter_form_class" type="string" size="100">
-      <default value="NULL"/>
-    </field>
-    <field name="format_name" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="format_form_class" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="value_name" type="string" size="30"/>
+    <field name="active_form_class" type="string" size="100"/>
+    <field name="readonly_form_class" type="string" size="100"/>
+    <field name="static_form_class" type="string" size="100"/>
+    <field name="parameter_name" type="string" size="30"/>
+    <field name="parameter_form_class" type="string" size="100"/>
+    <field name="format_name" type="string" size="30"/>
+    <field name="format_form_class" type="string" size="100"/>
     <field name="model_table" type="string" size="50">
       <notnull/>
     </field>
@@ -555,9 +465,7 @@
     <field name="data_class" type="string" size="100">
       <notnull/>
     </field>
-    <field name="form_type_class" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="form_type_class" type="string" size="100"/>
     <field name="enabled" type="boolean">
       <default value="1"/>
       <notnull/>
@@ -637,9 +545,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="keyword" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="keyword" type="string" size="100"/>
     <field name="draggable" type="boolean">
       <default value="1"/>
       <notnull/>
@@ -672,9 +578,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="keyword" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="keyword" type="string" size="100"/>
     <field name="source_name" type="string" size="50">
       <notnull/>
     </field>
@@ -714,9 +618,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="keyword" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="keyword" type="string" size="100"/>
     <field name="seq" type="integer">
       <notnull/>
     </field>
@@ -769,9 +671,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="keyword" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="keyword" type="string" size="100"/>
     <field name="type" type="string" size="30">
       <notnull/>
     </field>
@@ -806,9 +706,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="keyword" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="keyword" type="string" size="100"/>
     <field name="resource" type="string" size="30">
       <notnull/>
     </field>
@@ -868,9 +766,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="page" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="page" type="string" size="30"/>
     <field name="path" type="string" size="50">
       <notnull/>
     </field>
@@ -898,38 +794,22 @@
       <key/>
       <notnull/>
     </field>
-    <field name="edit" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="edit" type="string" size="30"/>
     <field name="module" type="string" size="30">
       <notnull/>
     </field>
-    <field name="new" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="remove" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="keyword" type="string" size="100">
-      <default value="NULL"/>
-    </field>
-    <field name="view" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="vocabulary" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="new" type="string" size="30"/>
+    <field name="remove" type="string" size="30"/>
+    <field name="keyword" type="string" size="100"/>
+    <field name="view" type="string" size="30"/>
+    <field name="vocabulary" type="string" size="30"/>
     <field name="generator" type="string" size="30">
       <notnull/>
     </field>
-    <field name="sequence" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="type" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="sequence" type="string" size="30"/>
+    <field name="type" type="string" size="30"/>
     <field name="visibility" type="string" size="30">
-      <default value="'restricted'"/>
+      <default value="restricted"/>
       <notnull/>
     </field>
     <field name="entities" type="boolean">
@@ -1013,9 +893,7 @@
     <field name="schema2" type="string" size="30">
       <notnull/>
     </field>
-    <field name="keyword" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="keyword" type="string" size="100"/>
     <field name="degree" type="integer">
       <notnull/>
     </field>
@@ -1083,23 +961,15 @@
       <key/>
       <notnull/>
     </field>
-    <field name="edit" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="edit" type="string" size="30"/>
     <field name="datatype" type="string" size="30">
       <notnull/>
     </field>
-    <field name="keyword" type="string" size="100">
-      <default value="NULL"/>
-    </field>
-    <field name="view" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="vocabulary" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="keyword" type="string" size="100"/>
+    <field name="view" type="string" size="30"/>
+    <field name="vocabulary" type="string" size="30"/>
     <field name="visibility" type="string" size="30">
-      <default value="'public'"/>
+      <default value="public"/>
       <notnull/>
     </field>
     <field name="span" type="boolean">
@@ -1176,9 +1046,7 @@
     <field name="format" type="string" size="30">
       <notnull/>
     </field>
-    <field name="vocabulary" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="vocabulary" type="string" size="30"/>
     <field name="minimum" type="integer">
       <default value="0"/>
       <notnull/>
@@ -1203,9 +1071,7 @@
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="keyword" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="keyword" type="string" size="100"/>
     <index name="format">
       <col>format</col>
     </index>
@@ -1243,9 +1109,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="keyword" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="keyword" type="string" size="100"/>
     <index name="translation_domain_translation">
       <col>keyword</col>
     </index>
@@ -1289,9 +1153,7 @@
     <field name="text" type="text">
       <notnull/>
     </field>
-    <field name="notes" type="text">
-      <default value="NULL"/>
-    </field>
+    <field name="notes" type="text"/>
     <index name="keyword">
       <col>keyword</col>
     </index>
@@ -1334,12 +1196,8 @@
       <key/>
       <notnull/>
     </field>
-    <field name="keyword" type="string" size="100">
-      <default value="NULL"/>
-    </field>
-    <field name="description" type="string" size="50">
-      <default value="NULL"/>
-    </field>
+    <field name="keyword" type="string" size="100"/>
+    <field name="description" type="string" size="50"/>
     <index name="translation_role_translation">
       <col>keyword</col>
     </index>
@@ -1372,54 +1230,22 @@
     <field name="element" type="string" size="30">
       <notnull/>
     </field>
-    <field name="keyword" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="map" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="vocabulary" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="name" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="width" type="integer">
-      <default value="NULL"/>
-    </field>
-    <field name="label" type="boolean">
-      <default value="NULL"/>
-    </field>
-    <field name="placeholder" type="boolean">
-      <default value="NULL"/>
-    </field>
-    <field name="choices" type="boolean">
-      <default value="NULL"/>
-    </field>
-    <field name="required" type="boolean">
-      <default value="NULL"/>
-    </field>
-    <field name="mode" type="string" size="10">
-      <default value="NULL"/>
-    </field>
-    <field name="sanitise" type="string" size="10">
-      <default value="NULL"/>
-    </field>
-    <field name="value" type="string" size="10">
-      <default value="NULL"/>
-    </field>
-    <field name="parameter" type="string" size="10">
-      <default value="NULL"/>
-    </field>
-    <field name="format" type="string" size="10">
-      <default value="NULL"/>
-    </field>
-    <field name="display" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="data" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="keyword" type="string" size="30"/>
+    <field name="map" type="string" size="30"/>
+    <field name="vocabulary" type="string" size="30"/>
+    <field name="name" type="string" size="30"/>
+    <field name="width" type="integer"/>
+    <field name="label" type="boolean"/>
+    <field name="placeholder" type="boolean"/>
+    <field name="choices" type="boolean"/>
+    <field name="required" type="boolean"/>
+    <field name="mode" type="string" size="10"/>
+    <field name="sanitise" type="string" size="10"/>
+    <field name="value" type="string" size="10"/>
+    <field name="parameter" type="string" size="10"/>
+    <field name="format" type="string" size="10"/>
+    <field name="display" type="string" size="30"/>
+    <field name="data" type="string" size="30"/>
     <field name="enabled" type="boolean">
       <default value="1"/>
       <notnull/>
@@ -1428,12 +1254,8 @@
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="template" type="string" size="100">
-      <default value="NULL"/>
-    </field>
-    <field name="options" type="string" size="4000">
-      <default value="NULL"/>
-    </field>
+    <field name="template" type="string" size="100"/>
+    <field name="options" type="string" size="4000"/>
     <index name="child">
       <col>element</col>
     </index>
@@ -1474,9 +1296,7 @@
     <field name="type" type="string" size="10">
       <notnull/>
     </field>
-    <field name="keyword" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="keyword" type="string" size="100"/>
     <field name="enabled" type="boolean">
       <default value="1"/>
       <notnull/>
@@ -1513,25 +1333,15 @@
     <field name="attribute" type="string" size="30">
       <notnull/>
     </field>
-    <field name="display" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="display" type="string" size="30"/>
     <field name="value" type="string" size="10">
-      <default value="'active'"/>
+      <default value="active"/>
       <notnull/>
     </field>
-    <field name="parameter" type="string" size="10">
-      <default value="NULL"/>
-    </field>
-    <field name="format" type="string" size="10">
-      <default value="NULL"/>
-    </field>
-    <field name="template" type="string" size="100">
-      <default value="NULL"/>
-    </field>
-    <field name="form_type_class" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="parameter" type="string" size="10"/>
+    <field name="format" type="string" size="10"/>
+    <field name="template" type="string" size="100"/>
+    <field name="form_type_class" type="string" size="100"/>
     <field name="form_options" type="string" size="4000">
       <notnull/>
     </field>
@@ -1559,28 +1369,18 @@
       <notnull/>
     </field>
     <field name="layout" type="string" size="10">
-      <default value="'grid'"/>
+      <default value="grid"/>
       <notnull/>
     </field>
-    <field name="mode" type="string" size="10">
-      <default value="NULL"/>
-    </field>
+    <field name="mode" type="string" size="10"/>
     <field name="form" type="boolean">
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="name" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="method" type="string" size="10">
-      <default value="NULL"/>
-    </field>
-    <field name="action" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="template" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="name" type="string" size="30"/>
+    <field name="method" type="string" size="10"/>
+    <field name="action" type="string" size="30"/>
+    <field name="template" type="string" size="100"/>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     <references name="layout_element" table="ark_view_element" onupdate="cascade" ondelete="cascade">
       <column local="element" foreign="element"/>
@@ -1591,32 +1391,20 @@
       <key/>
       <notnull/>
     </field>
-    <field name="parent" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="parent" type="string" size="30"/>
     <field name="seq" type="integer">
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="level" type="integer">
-      <default value="NULL"/>
-    </field>
-    <field name="icon" type="string" size="50">
-      <default value="NULL"/>
-    </field>
-    <field name="route" type="string" size="50">
-      <default value="NULL"/>
-    </field>
-    <field name="uri" type="string" size="2038">
-      <default value="NULL"/>
-    </field>
+    <field name="level" type="integer"/>
+    <field name="icon" type="string" size="50"/>
+    <field name="route" type="string" size="50"/>
+    <field name="uri" type="string" size="2038"/>
     <field name="seperator" type="boolean">
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="template" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="template" type="string" size="100"/>
     <index name="parent">
       <unique/>
       <col>parent</col>
@@ -1638,34 +1426,20 @@
       <key/>
       <notnull/>
     </field>
-    <field name="content" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="edit" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="footer" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="header" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="sidebar" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="view" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="content" type="string" size="30"/>
+    <field name="edit" type="string" size="30"/>
+    <field name="footer" type="string" size="30"/>
+    <field name="header" type="string" size="30"/>
+    <field name="sidebar" type="string" size="30"/>
+    <field name="view" type="string" size="30"/>
     <field name="mode" type="string" size="10">
-      <default value="'view'"/>
+      <default value="view"/>
       <notnull/>
     </field>
     <field name="visibility" type="string" size="30">
       <notnull/>
     </field>
-    <field name="template" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="template" type="string" size="100"/>
     <index name="navbar_element">
       <col>header</col>
     </index>
@@ -1744,9 +1518,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="keyword" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="keyword" type="string" size="100"/>
     <field name="class" type="string" size="100">
       <notnull/>
     </field>
@@ -1754,9 +1526,7 @@
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="form_type_class" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="form_type_class" type="string" size="100"/>
     <field name="template" type="string" size="100">
       <notnull/>
     </field>
@@ -1773,18 +1543,10 @@
       <key/>
       <notnull/>
     </field>
-    <field name="name" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="choices" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="template" type="string" size="100">
-      <default value="NULL"/>
-    </field>
-    <field name="form_type_class" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="name" type="string" size="30"/>
+    <field name="choices" type="string" size="30"/>
+    <field name="template" type="string" size="100"/>
+    <field name="form_type_class" type="string" size="100"/>
     <field name="form_options" type="string" size="4000">
       <notnull/>
     </field>
@@ -1798,9 +1560,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="keyword" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="keyword" type="string" size="100"/>
     <field name="type" type="string" size="10">
       <notnull/>
     </field>
@@ -1823,9 +1583,7 @@
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="description" type="text" size="65535">
-      <default value="NULL"/>
-    </field>
+    <field name="description" type="text" size="65535"/>
     <index name="type">
       <col>type</col>
     </index>
@@ -1874,9 +1632,7 @@
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="description" type="text" size="65535">
-      <default value="NULL"/>
-    </field>
+    <field name="description" type="text" size="65535"/>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
   </table>
   <table name="ark_vocabulary_parameter">
@@ -1984,9 +1740,7 @@
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="description" type="text" size="65535">
-      <default value="NULL"/>
-    </field>
+    <field name="description" type="text" size="65535"/>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
   </table>
   <table name="ark_vocabulary_term">
@@ -1998,12 +1752,8 @@
       <key/>
       <notnull/>
     </field>
-    <field name="keyword" type="string" size="100">
-      <default value="NULL"/>
-    </field>
-    <field name="alias" type="string" size="50">
-      <default value="NULL"/>
-    </field>
+    <field name="keyword" type="string" size="100"/>
+    <field name="alias" type="string" size="50"/>
     <field name="is_default" type="boolean">
       <default value="0"/>
       <notnull/>
@@ -2020,9 +1770,7 @@
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="description" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="description" type="string" size="100"/>
     <index name="keyword">
       <unique/>
       <col>keyword</col>
@@ -2043,9 +1791,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="keyword" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="keyword" type="string" size="100"/>
     <field name="equivalence" type="boolean">
       <default value="0"/>
       <notnull/>
@@ -2066,9 +1812,7 @@
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="description" type="text" size="65535">
-      <default value="NULL"/>
-    </field>
+    <field name="description" type="text" size="65535"/>
     <index name="vocabulary_type_translation">
       <col>keyword</col>
     </index>
@@ -2092,12 +1836,8 @@
     <field name="event_term" type="string" size="30">
       <notnull/>
     </field>
-    <field name="keyword" type="string" size="100">
-      <default value="NULL"/>
-    </field>
-    <field name="agent" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="keyword" type="string" size="100"/>
+    <field name="agent" type="string" size="30"/>
     <field name="default_permission" type="boolean">
       <default value="0"/>
       <notnull/>
@@ -2158,7 +1898,7 @@
       <notnull/>
     </field>
     <field name="operator" type="string" size="10">
-      <default value="'eq'"/>
+      <default value="eq"/>
       <notnull/>
     </field>
     <index name="schma">
@@ -2195,7 +1935,7 @@
       <notnull/>
     </field>
     <field name="operator" type="string" size="10">
-      <default value="'is'"/>
+      <default value="is"/>
       <notnull/>
     </field>
     <index name="schma">
@@ -2240,12 +1980,10 @@
       <notnull/>
     </field>
     <field name="operator" type="string" size="10">
-      <default value="'eq'"/>
+      <default value="eq"/>
       <notnull/>
     </field>
-    <field name="value" type="string" size="4000">
-      <default value="NULL"/>
-    </field>
+    <field name="value" type="string" size="4000"/>
     <index name="schma">
       <col>schma</col>
       <col>type</col>
@@ -2334,9 +2072,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="keyword" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="keyword" type="string" size="100"/>
     <field name="enabled" type="boolean">
       <default value="1"/>
       <notnull/>
@@ -2354,12 +2090,8 @@
       <key/>
       <notnull/>
     </field>
-    <field name="keyword" type="string" size="100">
-      <default value="NULL"/>
-    </field>
-    <field name="proxy_for" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="keyword" type="string" size="100"/>
+    <field name="proxy_for" type="string" size="30"/>
     <field name="enabled" type="boolean">
       <default value="1"/>
       <notnull/>
@@ -2427,18 +2159,10 @@
       <key/>
       <notnull/>
     </field>
-    <field name="actor" type="boolean">
-      <default value="NULL"/>
-    </field>
-    <field name="subject" type="boolean">
-      <default value="NULL"/>
-    </field>
-    <field name="clear" type="boolean">
-      <default value="NULL"/>
-    </field>
-    <field name="term" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="actor" type="boolean"/>
+    <field name="subject" type="boolean"/>
+    <field name="clear" type="boolean"/>
+    <field name="term" type="string" size="30"/>
     <index name="schma">
       <col>schma</col>
       <col>type</col>

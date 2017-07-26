@@ -209,12 +209,12 @@ class SchemaWriter
             $element->addChild('autoincrement');
         }
         $default = $field->getDefault();
-        if ($default != null) {
+        if ($default != null && $default != 'NULL') {
             if ($type == 'date' || $type == 'time' || $type == 'timestamp' || $type == 'datetime') {
                 $element->addChild('deftimestamp');
             } else {
                 $def = $element->addChild('default');
-                $def->addAttribute('value', $default);
+                $def->addAttribute('value', trim($default, "'"));
             }
         }
         if (in_array($field->getName(), $primaryFields)) {

@@ -41,9 +41,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="description" type="string" size="50">
-      <default value="NULL"/>
-    </field>
+    <field name="description" type="string" size="50"/>
     <field name="enabled" type="boolean">
       <default value="1"/>
       <notnull/>
@@ -61,15 +59,9 @@
     <field name="username" type="string" size="30">
       <notnull/>
     </field>
-    <field name="email" type="string" size="100">
-      <default value="NULL"/>
-    </field>
-    <field name="password" type="string" size="255">
-      <default value="NULL"/>
-    </field>
-    <field name="name" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="email" type="string" size="100"/>
+    <field name="password" type="string" size="255"/>
+    <field name="name" type="string" size="100"/>
     <field name="enabled" type="boolean">
       <default value="0"/>
       <notnull/>
@@ -96,15 +88,11 @@
     <field name="credentials_expire_at" type="datetime">
       <deftimestamp/>
     </field>
-    <field name="verification_token" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="verification_token" type="string" size="100"/>
     <field name="verification_requested_at" type="datetime">
       <deftimestamp/>
     </field>
-    <field name="password_request_token" type="string" size="100">
-      <default value="NULL"/>
-    </field>
+    <field name="password_request_token" type="string" size="100"/>
     <field name="password_requested_at" type="datetime">
       <deftimestamp/>
     </field>

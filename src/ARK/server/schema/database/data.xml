@@ -21,22 +21,16 @@
     <field name="item2" type="string" size="30">
       <notnull/>
     </field>
-    <field name="modifier" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
       <deftimestamp/>
       <notnull/>
     </field>
-    <field name="creator" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
       <deftimestamp/>
     </field>
-    <field name="version" type="string" size="36">
-      <default value="NULL"/>
-    </field>
+    <field name="version" type="string" size="36"/>
     <index name="association">
       <col>association</col>
     </index>
@@ -56,9 +50,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="object" type="integer">
-      <default value="NULL"/>
-    </field>
+    <field name="object" type="integer"/>
     <field name="module" type="string" size="30">
       <notnull/>
     </field>
@@ -69,15 +61,11 @@
       <notnull/>
     </field>
     <field name="type" type="string" size="30">
-      <default value="'blob'"/>
+      <default value="blob"/>
       <notnull/>
     </field>
-    <field name="format" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="parameter" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="format" type="string" size="30"/>
+    <field name="parameter" type="string" size="30"/>
     <field name="value" type="blob">
       <notnull/>
     </field>
@@ -85,25 +73,17 @@
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="extent" type="blob">
-      <default value="NULL"/>
-    </field>
-    <field name="modifier" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="extent" type="blob"/>
+    <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
       <deftimestamp/>
       <notnull/>
     </field>
-    <field name="creator" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
       <deftimestamp/>
     </field>
-    <field name="version" type="string" size="36">
-      <default value="NULL"/>
-    </field>
+    <field name="version" type="string" size="36"/>
     <index name="property">
       <col>module</col>
       <col>item</col>
@@ -123,9 +103,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="object" type="integer">
-      <default value="NULL"/>
-    </field>
+    <field name="object" type="integer"/>
     <field name="module" type="string" size="30">
       <notnull/>
     </field>
@@ -136,15 +114,11 @@
       <notnull/>
     </field>
     <field name="type" type="string" size="30">
-      <default value="'boolean'"/>
+      <default value="boolean"/>
       <notnull/>
     </field>
-    <field name="format" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="parameter" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="format" type="string" size="30"/>
+    <field name="parameter" type="string" size="30"/>
     <field name="value" type="boolean">
       <notnull/>
     </field>
@@ -152,25 +126,17 @@
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="extent" type="boolean">
-      <default value="NULL"/>
-    </field>
-    <field name="modifier" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="extent" type="boolean"/>
+    <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
       <deftimestamp/>
       <notnull/>
     </field>
-    <field name="creator" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
       <deftimestamp/>
     </field>
-    <field name="version" type="string" size="36">
-      <default value="NULL"/>
-    </field>
+    <field name="version" type="string" size="36"/>
     <index name="module">
       <col>module</col>
       <col>item</col>
@@ -190,9 +156,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="object" type="integer">
-      <default value="NULL"/>
-    </field>
+    <field name="object" type="integer"/>
     <field name="module" type="string" size="30">
       <notnull/>
     </field>
@@ -203,15 +167,11 @@
       <notnull/>
     </field>
     <field name="type" type="string" size="30">
-      <default value="'date'"/>
+      <default value="date"/>
       <notnull/>
     </field>
-    <field name="format" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="parameter" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="format" type="string" size="30"/>
+    <field name="parameter" type="string" size="30"/>
     <field name="value" type="date">
       <notnull/>
     </field>
@@ -222,22 +182,16 @@
     <field name="extent" type="date">
       <deftimestamp/>
     </field>
-    <field name="modifier" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
       <deftimestamp/>
       <notnull/>
     </field>
-    <field name="creator" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
       <deftimestamp/>
     </field>
-    <field name="version" type="string" size="36">
-      <default value="NULL"/>
-    </field>
+    <field name="version" type="string" size="36"/>
     <index name="module">
       <col>module</col>
       <col>item</col>
@@ -257,9 +211,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="object" type="integer">
-      <default value="NULL"/>
-    </field>
+    <field name="object" type="integer"/>
     <field name="module" type="string" size="30">
       <notnull/>
     </field>
@@ -270,15 +222,11 @@
       <notnull/>
     </field>
     <field name="type" type="string" size="30">
-      <default value="'datetime'"/>
+      <default value="datetime"/>
       <notnull/>
     </field>
-    <field name="format" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="parameter" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="format" type="string" size="30"/>
+    <field name="parameter" type="string" size="30"/>
     <field name="value" type="datetime">
       <notnull/>
     </field>
@@ -289,22 +237,16 @@
     <field name="extent" type="datetime">
       <deftimestamp/>
     </field>
-    <field name="modifier" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
       <deftimestamp/>
       <notnull/>
     </field>
-    <field name="creator" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
       <deftimestamp/>
     </field>
-    <field name="version" type="string" size="36">
-      <default value="NULL"/>
-    </field>
+    <field name="version" type="string" size="36"/>
     <index name="module">
       <col>module</col>
       <col>item</col>
@@ -324,9 +266,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="object" type="integer">
-      <default value="NULL"/>
-    </field>
+    <field name="object" type="integer"/>
     <field name="module" type="string" size="30">
       <notnull/>
     </field>
@@ -337,15 +277,11 @@
       <notnull/>
     </field>
     <field name="type" type="string" size="30">
-      <default value="'decimal'"/>
+      <default value="decimal"/>
       <notnull/>
     </field>
-    <field name="format" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="parameter" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="format" type="string" size="30"/>
+    <field name="parameter" type="string" size="30"/>
     <field name="value" type="string" size="200">
       <notnull/>
     </field>
@@ -353,25 +289,17 @@
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="extent" type="string" size="200">
-      <default value="NULL"/>
-    </field>
-    <field name="modifier" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="extent" type="string" size="200"/>
+    <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
       <deftimestamp/>
       <notnull/>
     </field>
-    <field name="creator" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
       <deftimestamp/>
     </field>
-    <field name="version" type="string" size="36">
-      <default value="NULL"/>
-    </field>
+    <field name="version" type="string" size="36"/>
     <index name="property">
       <col>module</col>
       <col>item</col>
@@ -391,9 +319,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="object" type="integer">
-      <default value="NULL"/>
-    </field>
+    <field name="object" type="integer"/>
     <field name="module" type="string" size="30">
       <notnull/>
     </field>
@@ -404,15 +330,11 @@
       <notnull/>
     </field>
     <field name="type" type="string" size="30">
-      <default value="'float'"/>
+      <default value="float"/>
       <notnull/>
     </field>
-    <field name="format" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="parameter" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="format" type="string" size="30"/>
+    <field name="parameter" type="string" size="30"/>
     <field name="value" type="float" size="10.0">
       <notnull/>
     </field>
@@ -420,25 +342,17 @@
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="extent" type="float" size="10.0">
-      <default value="NULL"/>
-    </field>
-    <field name="modifier" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="extent" type="float" size="10.0"/>
+    <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
       <deftimestamp/>
       <notnull/>
     </field>
-    <field name="creator" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
       <deftimestamp/>
     </field>
-    <field name="version" type="string" size="36">
-      <default value="NULL"/>
-    </field>
+    <field name="version" type="string" size="36"/>
     <index name="module">
       <col>module</col>
       <col>item</col>
@@ -458,9 +372,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="object" type="integer">
-      <default value="NULL"/>
-    </field>
+    <field name="object" type="integer"/>
     <field name="module" type="string" size="30">
       <notnull/>
     </field>
@@ -471,15 +383,11 @@
       <notnull/>
     </field>
     <field name="type" type="string" size="30">
-      <default value="'integer'"/>
+      <default value="integer"/>
       <notnull/>
     </field>
-    <field name="format" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="parameter" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="format" type="string" size="30"/>
+    <field name="parameter" type="string" size="30"/>
     <field name="value" type="bigint">
       <notnull/>
     </field>
@@ -487,25 +395,17 @@
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="extent" type="bigint">
-      <default value="NULL"/>
-    </field>
-    <field name="modifier" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="extent" type="bigint"/>
+    <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
       <deftimestamp/>
       <notnull/>
     </field>
-    <field name="creator" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
       <deftimestamp/>
     </field>
-    <field name="version" type="string" size="36">
-      <default value="NULL"/>
-    </field>
+    <field name="version" type="string" size="36"/>
     <index name="module">
       <col>module</col>
       <col>item</col>
@@ -525,9 +425,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="object" type="integer">
-      <default value="NULL"/>
-    </field>
+    <field name="object" type="integer"/>
     <field name="module" type="string" size="30">
       <notnull/>
     </field>
@@ -538,15 +436,11 @@
       <notnull/>
     </field>
     <field name="type" type="string" size="30">
-      <default value="'item'"/>
+      <default value="item"/>
       <notnull/>
     </field>
-    <field name="format" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="parameter" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="format" type="string" size="30"/>
+    <field name="parameter" type="string" size="30"/>
     <field name="value" type="string" size="30">
       <notnull/>
     </field>
@@ -554,12 +448,8 @@
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="extent" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="modifier" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="extent" type="string" size="30"/>
+    <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
       <deftimestamp/>
       <notnull/>
@@ -571,9 +461,7 @@
     <field name="created" type="datetime">
       <deftimestamp/>
     </field>
-    <field name="version" type="string" size="36">
-      <default value="NULL"/>
-    </field>
+    <field name="version" type="string" size="36"/>
     <index name="module">
       <col>module</col>
       <col>item</col>
@@ -592,9 +480,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="object" type="integer">
-      <default value="NULL"/>
-    </field>
+    <field name="object" type="integer"/>
     <field name="module" type="string" size="30">
       <notnull/>
     </field>
@@ -605,15 +491,11 @@
       <notnull/>
     </field>
     <field name="type" type="string" size="30">
-      <default value="'object'"/>
+      <default value="object"/>
       <notnull/>
     </field>
-    <field name="format" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="parameter" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="format" type="string" size="30"/>
+    <field name="parameter" type="string" size="30"/>
     <field name="value" type="string" size="30">
       <notnull/>
     </field>
@@ -621,25 +503,17 @@
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="extent" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="modifier" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="extent" type="string" size="30"/>
+    <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
       <deftimestamp/>
       <notnull/>
     </field>
-    <field name="creator" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
       <deftimestamp/>
     </field>
-    <field name="version" type="string" size="36">
-      <default value="NULL"/>
-    </field>
+    <field name="version" type="string" size="36"/>
     <index name="item">
       <col>module</col>
       <col>item</col>
@@ -659,9 +533,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="object" type="integer">
-      <default value="NULL"/>
-    </field>
+    <field name="object" type="integer"/>
     <field name="module" type="string" size="30">
       <notnull/>
     </field>
@@ -672,15 +544,15 @@
       <notnull/>
     </field>
     <field name="type" type="string" size="30">
-      <default value="'spatial'"/>
+      <default value="spatial"/>
       <notnull/>
     </field>
     <field name="format" type="string" size="30">
-      <default value="'wkt'"/>
+      <default value="wkt"/>
       <notnull/>
     </field>
     <field name="parameter" type="string" size="30">
-      <default value="'4326'"/>
+      <default value="4326"/>
       <notnull/>
     </field>
     <field name="value" type="text">
@@ -690,25 +562,17 @@
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="extent" type="text">
-      <default value="NULL"/>
-    </field>
-    <field name="modifier" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="extent" type="text"/>
+    <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
       <deftimestamp/>
       <notnull/>
     </field>
-    <field name="creator" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
       <deftimestamp/>
     </field>
-    <field name="version" type="string" size="36">
-      <default value="NULL"/>
-    </field>
+    <field name="version" type="string" size="36"/>
     <index name="property">
       <col>module</col>
       <col>item</col>
@@ -728,9 +592,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="object" type="integer">
-      <default value="NULL"/>
-    </field>
+    <field name="object" type="integer"/>
     <field name="module" type="string" size="30">
       <notnull/>
     </field>
@@ -741,15 +603,11 @@
       <notnull/>
     </field>
     <field name="type" type="string" size="30">
-      <default value="'string'"/>
+      <default value="string"/>
       <notnull/>
     </field>
-    <field name="format" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="parameter" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="format" type="string" size="30"/>
+    <field name="parameter" type="string" size="30"/>
     <field name="value" type="string" size="4000">
       <notnull/>
     </field>
@@ -757,25 +615,17 @@
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="extent" type="string" size="4000">
-      <default value="NULL"/>
-    </field>
-    <field name="modifier" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="extent" type="string" size="4000"/>
+    <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
       <deftimestamp/>
       <notnull/>
     </field>
-    <field name="creator" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
       <deftimestamp/>
     </field>
-    <field name="version" type="string" size="36">
-      <default value="NULL"/>
-    </field>
+    <field name="version" type="string" size="36"/>
     <index name="module">
       <col>module</col>
       <col>item</col>
@@ -795,9 +645,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="object" type="integer">
-      <default value="NULL"/>
-    </field>
+    <field name="object" type="integer"/>
     <field name="module" type="string" size="30">
       <notnull/>
     </field>
@@ -808,16 +656,14 @@
       <notnull/>
     </field>
     <field name="type" type="string" size="30">
-      <default value="'text'"/>
+      <default value="text"/>
       <notnull/>
     </field>
     <field name="format" type="string" size="30">
-      <default value="'text/plain'"/>
+      <default value="text/plain"/>
       <notnull/>
     </field>
-    <field name="parameter" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="parameter" type="string" size="30"/>
     <field name="value" type="text">
       <notnull/>
     </field>
@@ -825,25 +671,17 @@
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="extent" type="text">
-      <default value="NULL"/>
-    </field>
-    <field name="modifier" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="extent" type="text"/>
+    <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
       <deftimestamp/>
       <notnull/>
     </field>
-    <field name="creator" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
       <deftimestamp/>
     </field>
-    <field name="version" type="string" size="36">
-      <default value="NULL"/>
-    </field>
+    <field name="version" type="string" size="36"/>
     <index name="module">
       <col>module</col>
       <col>item</col>
@@ -863,9 +701,7 @@
       <key/>
       <notnull/>
     </field>
-    <field name="object" type="integer">
-      <default value="NULL"/>
-    </field>
+    <field name="object" type="integer"/>
     <field name="module" type="string" size="30">
       <notnull/>
     </field>
@@ -876,15 +712,11 @@
       <notnull/>
     </field>
     <field name="type" type="string" size="30">
-      <default value="'time'"/>
+      <default value="time"/>
       <notnull/>
     </field>
-    <field name="format" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="parameter" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="format" type="string" size="30"/>
+    <field name="parameter" type="string" size="30"/>
     <field name="value" type="time">
       <notnull/>
     </field>
@@ -895,22 +727,16 @@
     <field name="extent" type="time">
       <deftimestamp/>
     </field>
-    <field name="modifier" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
       <deftimestamp/>
       <notnull/>
     </field>
-    <field name="creator" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
       <deftimestamp/>
     </field>
-    <field name="version" type="string" size="36">
-      <default value="NULL"/>
-    </field>
+    <field name="version" type="string" size="36"/>
     <index name="module">
       <col>module</col>
       <col>item</col>
@@ -930,52 +756,40 @@
       <notnull/>
     </field>
     <field name="module" type="string" size="30">
-      <default value="'actor'"/>
+      <default value="actor"/>
       <notnull/>
     </field>
     <field name="schma" type="string" size="30">
-      <default value="'core.actor'"/>
+      <default value="core.actor"/>
       <notnull/>
     </field>
-    <field name="type" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="type" type="string" size="30"/>
     <field name="status" type="string" size="30">
-      <default value="'allocated'"/>
+      <default value="allocated"/>
       <notnull/>
     </field>
     <field name="visibility" type="string" size="30">
-      <default value="'restricted'"/>
+      <default value="restricted"/>
       <notnull/>
     </field>
-    <field name="parent_module" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="parent_item" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="parent_module" type="string" size="30"/>
+    <field name="parent_item" type="string" size="30"/>
     <field name="idx" type="string" size="30">
       <notnull/>
     </field>
     <field name="label" type="string" size="30">
       <notnull/>
     </field>
-    <field name="modifier" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
       <deftimestamp/>
       <notnull/>
     </field>
-    <field name="creator" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
       <deftimestamp/>
     </field>
-    <field name="version" type="string" size="36">
-      <default value="NULL"/>
-    </field>
+    <field name="version" type="string" size="36"/>
     <index name="name">
       <col>label</col>
     </index>
@@ -991,52 +805,40 @@
       <notnull/>
     </field>
     <field name="module" type="string" size="30">
-      <default value="'event'"/>
+      <default value="event"/>
       <notnull/>
     </field>
     <field name="schma" type="string" size="30">
-      <default value="'core.event'"/>
+      <default value="core.event"/>
       <notnull/>
     </field>
-    <field name="type" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="type" type="string" size="30"/>
     <field name="status" type="string" size="30">
-      <default value="'allocated'"/>
+      <default value="allocated"/>
       <notnull/>
     </field>
     <field name="visibility" type="string" size="30">
-      <default value="'restricted'"/>
+      <default value="restricted"/>
       <notnull/>
     </field>
-    <field name="parent_module" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="parent_item" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="parent_module" type="string" size="30"/>
+    <field name="parent_item" type="string" size="30"/>
     <field name="idx" type="string" size="30">
       <notnull/>
     </field>
     <field name="label" type="string" size="30">
       <notnull/>
     </field>
-    <field name="modifier" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
       <deftimestamp/>
       <notnull/>
     </field>
-    <field name="creator" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
       <deftimestamp/>
     </field>
-    <field name="version" type="string" size="36">
-      <default value="NULL"/>
-    </field>
+    <field name="version" type="string" size="36"/>
     <index name="name">
       <col>label</col>
     </index>
@@ -1052,52 +854,40 @@
       <notnull/>
     </field>
     <field name="module" type="string" size="30">
-      <default value="'file'"/>
+      <default value="file"/>
       <notnull/>
     </field>
     <field name="schma" type="string" size="30">
-      <default value="'core.file'"/>
+      <default value="core.file"/>
       <notnull/>
     </field>
-    <field name="type" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="type" type="string" size="30"/>
     <field name="status" type="string" size="30">
-      <default value="'allocated'"/>
+      <default value="allocated"/>
       <notnull/>
     </field>
     <field name="visibility" type="string" size="30">
-      <default value="'restricted'"/>
+      <default value="restricted"/>
       <notnull/>
     </field>
-    <field name="parent_module" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="parent_item" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="parent_module" type="string" size="30"/>
+    <field name="parent_item" type="string" size="30"/>
     <field name="idx" type="string" size="30">
       <notnull/>
     </field>
     <field name="label" type="string" size="255">
       <notnull/>
     </field>
-    <field name="modifier" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
       <deftimestamp/>
       <notnull/>
     </field>
-    <field name="creator" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
       <deftimestamp/>
     </field>
-    <field name="version" type="string" size="36">
-      <default value="NULL"/>
-    </field>
+    <field name="version" type="string" size="36"/>
     <index name="parent">
       <col>parent_module</col>
       <col>parent_item</col>
@@ -1113,52 +903,40 @@
       <notnull/>
     </field>
     <field name="module" type="string" size="30">
-      <default value="'message'"/>
+      <default value="message"/>
       <notnull/>
     </field>
     <field name="schma" type="string" size="30">
-      <default value="'core.message'"/>
+      <default value="core.message"/>
       <notnull/>
     </field>
-    <field name="type" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="type" type="string" size="30"/>
     <field name="status" type="string" size="30">
-      <default value="'allocated'"/>
+      <default value="allocated"/>
       <notnull/>
     </field>
     <field name="visibility" type="string" size="30">
-      <default value="'restricted'"/>
+      <default value="restricted"/>
       <notnull/>
     </field>
-    <field name="parent_module" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="parent_item" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="parent_module" type="string" size="30"/>
+    <field name="parent_item" type="string" size="30"/>
     <field name="idx" type="string" size="30">
       <notnull/>
     </field>
     <field name="label" type="string" size="30">
       <notnull/>
     </field>
-    <field name="modifier" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
       <deftimestamp/>
       <notnull/>
     </field>
-    <field name="creator" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
       <deftimestamp/>
     </field>
-    <field name="version" type="string" size="36">
-      <default value="NULL"/>
-    </field>
+    <field name="version" type="string" size="36"/>
     <index name="name">
       <col>label</col>
     </index>
@@ -1174,52 +952,40 @@
       <notnull/>
     </field>
     <field name="module" type="string" size="30">
-      <default value="'page'"/>
+      <default value="page"/>
       <notnull/>
     </field>
     <field name="schma" type="string" size="30">
-      <default value="'core.page'"/>
+      <default value="core.page"/>
       <notnull/>
     </field>
-    <field name="type" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="type" type="string" size="30"/>
     <field name="status" type="string" size="30">
-      <default value="'allocated'"/>
+      <default value="allocated"/>
       <notnull/>
     </field>
     <field name="visibility" type="string" size="30">
-      <default value="'restricted'"/>
+      <default value="restricted"/>
       <notnull/>
     </field>
-    <field name="parent_module" type="string" size="30">
-      <default value="NULL"/>
-    </field>
-    <field name="parent_item" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="parent_module" type="string" size="30"/>
+    <field name="parent_item" type="string" size="30"/>
     <field name="idx" type="string" size="30">
       <notnull/>
     </field>
     <field name="label" type="string" size="30">
       <notnull/>
     </field>
-    <field name="modifier" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
       <deftimestamp/>
       <notnull/>
     </field>
-    <field name="creator" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
       <deftimestamp/>
     </field>
-    <field name="version" type="string" size="36">
-      <default value="NULL"/>
-    </field>
+    <field name="version" type="string" size="36"/>
     <index name="name">
       <col>label</col>
     </index>
@@ -1245,12 +1011,8 @@
     <field name="idx" type="integer">
       <notnull/>
     </field>
-    <field name="min" type="integer">
-      <default value="NULL"/>
-    </field>
-    <field name="max" type="integer">
-      <default value="NULL"/>
-    </field>
+    <field name="min" type="integer"/>
+    <field name="max" type="integer"/>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
   </table>
   <table name="ark_sequence_lock">
@@ -1275,9 +1037,7 @@
       <default value="0"/>
       <notnull/>
     </field>
-    <field name="locked_by" type="string" size="30">
-      <default value="NULL"/>
-    </field>
+    <field name="locked_by" type="string" size="30"/>
     <field name="locked_on" type="datetime">
       <deftimestamp/>
     </field>
