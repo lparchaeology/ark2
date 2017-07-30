@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Security Permission
+ * ARK Security Permission.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,47 +25,44 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Workflow;
 
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\ORM\ORM;
-use ARK\Workflow\Role;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Permission
 {
     use KeywordTrait;
 
-    const GRANT = true;
-    const DENY = false;
-    const ABSTAIN = null;
+    public const GRANT = true;
+    public const DENY = false;
+    public const ABSTAIN = null;
 
     protected $permission = '';
     protected $enabled = true;
-    protected $roles = null;
+    protected $roles;
 
-    public function __construct($permission)
+    public function __construct(string $permission)
     {
         $this->permission = $permission;
         $this->roles = new ArrayCollection();
     }
 
-    public function id()
+    public function id() : string
     {
         return $this->permission;
     }
 
-    public function isEnabled()
+    public function isEnabled() : bool
     {
         return $this->enabled;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_permission');

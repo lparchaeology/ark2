@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Database Schema Writer
+ * ARK Database Schema Writer.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,30 +25,29 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Database;
 
-use Exception;
-use SimpleXMLElement;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\AbstractAsset;
+use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Schema\ForeignKeyConstraint;
+use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\Index;
-use Doctrine\DBAL\Schema\ForeignKeyConstraint;
-use DoctrineXml\Normalizer;
 use DoctrineXml\Checker;
+use DoctrineXml\Normalizer;
+use Exception;
+use SimpleXMLElement;
 
 class SchemaWriter
 {
     /**
-     * @param Connection $connection
-     * @param string $filename
-     * @param bool $replaceIfExists
+     * @param Connection    $connection
+     * @param string        $filename
+     * @param bool          $replaceIfExists
      * @param callable|null $tableFilter
      *
      * @throws Exception
@@ -59,18 +58,18 @@ class SchemaWriter
         Connection $connection,
         string $filename = '',
         bool $replaceIfExists = false,
-        callable $tableFilter = null)
-    {
+        callable $tableFilter = null
+    ) : string {
         $schema = $connection->getSchemaManager()->createSchema();
         $platform = $connection->getDatabasePlatform();
         return static::toDocument($connection, $schema, $platform, $filename, $replaceIfExists, $tableFilter);
     }
 
     /**
-     * @param string $filename
-     * @param bool $replaceIfExists
+     * @param string           $filename
+     * @param bool             $replaceIfExists
      * @param AbstractPlatform $platform
-     * @param callable|null $tableFilter
+     * @param callable|null    $tableFilter
      *
      * @throws Exception
      *
@@ -82,7 +81,7 @@ class SchemaWriter
         string $filename = '',
         bool $replaceIfExists = false,
         callable $tableFilter = null
-    ) {
+    ) : string {
         return static::toDocument(null, $schema, $platform, $filename, $replaceIfExists, $tableFilter);
     }
 
@@ -93,14 +92,14 @@ class SchemaWriter
         string $filename = '',
         bool $replaceIfExists = false,
         callable $tableFilter = null
-    ) {
+    ) : string {
         if ($filename && !$replaceIfExists && is_file($filename)) {
             throw new Exception('File '.$filename.' already exists');
         }
         $header = '<?xml version="1.0" encoding="UTF-8"?>';
-        $ns = "http://www.concrete5.org/doctrine-xml/0.5";
-        $xsi = "http://www.w3.org/2001/XMLSchema-instance";
-        $xsd = "http://concrete5.github.io/doctrine-xml/doctrine-xml-0.5.xsd";
+        $ns = 'http://www.concrete5.org/doctrine-xml/0.5';
+        $xsi = 'http://www.w3.org/2001/XMLSchema-instance';
+        $xsd = 'http://concrete5.github.io/doctrine-xml/doctrine-xml-0.5.xsd';
         $doc = "$header\n<schema xmlns=\"$ns\" xmlns:xsi=\"$xsi\" xsi:schemaLocation=\"$ns $xsd\"></schema>";
         $root = new SimpleXMLElement($doc);
         $tables = $schema->getTables();
@@ -130,7 +129,7 @@ class SchemaWriter
         Table $table,
         AbstractPlatform $platform,
         Connection $connection
-    ) {
+    ) : void {
         $element = $parent->addChild('table');
         static::addNameAttribute($element, $table);
         $options = $table->getOptions();
@@ -145,7 +144,7 @@ class SchemaWriter
             $primaryFields = $primaryKey->getColumns();
             $primaryIndex = $primaryKey->getName();
         } else {
-            $primaryFields = array();
+            $primaryFields = [];
             $primaryIndex = '';
         }
         // Fields
@@ -156,7 +155,7 @@ class SchemaWriter
         // Indexes
         $indexes = $table->getIndexes();
         foreach ($indexes as $index) {
-            if ($index->getName() != $primaryIndex) {
+            if ($index->getName() !== $primaryIndex) {
                 static::addIndex($element, $index);
             }
         }
@@ -172,10 +171,10 @@ class SchemaWriter
     protected static function addField(
         SimpleXMLElement $parent,
         Column $field,
-        array $primaryFields,
-        array $tableOptions,
+        iterable $primaryFields,
+        iterable $tableOptions,
         AbstractPlatform $platform
-    ) {
+    ) : void {
         $element = $parent->addChild('field');
         static::addNameAttribute($element, $field);
         $options = $field->getPlatformOptions();
@@ -195,7 +194,7 @@ class SchemaWriter
                 break;
         }
         $element->addAttribute('type', $type);
-        if ($size != null) {
+        if ($size !== null) {
             $element->addAttribute('size', $size);
         }
         $comment = $field->getComment();
@@ -209,15 +208,15 @@ class SchemaWriter
             $element->addChild('autoincrement');
         }
         $default = $field->getDefault();
-        if ($default != null && $default != 'NULL') {
-            if ($type == 'date' || $type == 'time' || $type == 'timestamp' || $type == 'datetime') {
+        if ($default !== null && $default !== 'NULL') {
+            if ($type === 'date' || $type === 'time' || $type === 'timestamp' || $type === 'datetime') {
                 $element->addChild('deftimestamp');
             } else {
                 $def = $element->addChild('default');
                 $def->addAttribute('value', trim($default, "'"));
             }
         }
-        if (in_array($field->getName(), $primaryFields)) {
+        if (in_array($field->getName(), $primaryFields, true)) {
             $element->addChild('key');
         }
         if ($field->getNotnull()) {
@@ -231,14 +230,14 @@ class SchemaWriter
             if (isset($options[$key]) && $options[$key] === $value) {
                 unset($options[$key]);
             }
-            if ($key == 'collate' && isset($options['collation']) && $options['collation'] === $value) {
+            if ($key === 'collate' && isset($options['collation']) && $options['collation'] === $value) {
                 unset($options['collation']);
             }
         }
         static::addOptions($element, $options, $platform);
     }
 
-    protected static function addIndex(SimpleXMLElement $parent, Index $index)
+    protected static function addIndex(SimpleXMLElement $parent, Index $index) : void
     {
         $element = $parent->addChild('index');
         static::addNameAttribute($element, $index);
@@ -254,7 +253,7 @@ class SchemaWriter
         }
     }
 
-    protected static function addForeignKey(SimpleXMLElement $parent, ForeignKeyConstraint $foreignKey)
+    protected static function addForeignKey(SimpleXMLElement $parent, ForeignKeyConstraint $foreignKey) : void
     {
         $element = $parent->addChild('references');
         static::addNameAttribute($element, $foreignKey);
@@ -275,7 +274,7 @@ class SchemaWriter
         }
     }
 
-    protected static function addNameAttribute(SimpleXMLElement $element, AbstractAsset $asset)
+    protected static function addNameAttribute(SimpleXMLElement $element, AbstractAsset $asset) : void
     {
         $name = $asset->getName();
         if ($name) {
@@ -283,7 +282,7 @@ class SchemaWriter
         }
     }
 
-    protected static function addOptions(SimpleXMLElement $element, array $options, AbstractPlatform $platform)
+    protected static function addOptions(SimpleXMLElement $element, iterable $options, AbstractPlatform $platform) : void
     {
         if (count($options)) {
             $opt = $element->addChild('opt');
@@ -296,14 +295,14 @@ class SchemaWriter
 
     protected static function tableOptions(
         Table $table,
-        array $options,
+        iterable $options,
         Connection $connection,
         AbstractPlatform $platform
-    ) {
-        if ($connection == null) {
+    ) : iterable {
+        if ($connection === null) {
             return $options;
         }
-        if ($platform->getName() == 'mysql') {
+        if ($platform->getName() === 'mysql') {
             $sql = 'SELECT * FROM information_schema.TABLES WHERE TABLE_SCHEMA = :database AND TABLE_NAME = :table';
             $stmt = $connection->prepare($sql);
             $stmt->bindValue('database', $connection->getDatabase());

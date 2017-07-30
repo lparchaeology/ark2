@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Error
+ * ARK Error.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,11 +21,10 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Error;
@@ -36,11 +35,11 @@ class Error
 {
     use StatusCodeTrait;
 
-    protected $id = null;
-    protected $code = null;
-    protected $title = null;
-    protected $detail = null;
-    protected $source = null;
+    protected $id = '';
+    protected $code = '';
+    protected $title = '';
+    protected $detail = '';
+    protected $source;
     protected $variables = [];
 
     public function __construct(string $code, string $title, string $detail, int $statusCode = null)
@@ -48,67 +47,67 @@ class Error
         $this->setCode($code);
         $this->setTitle($title);
         $this->setDetail($detail);
-        if ($statusCode) {
+        if ($statusCode !== null) {
             $this->setStatusCode($statusCode);
         }
     }
 
-    public function setId(string $id)
+    public function setId(string $id) : void
     {
         $this->id = $id;
     }
 
-    public function id()
+    public function id() : string
     {
         return $this->id;
     }
 
-    public function setCode(string $code)
+    public function setCode(string $code) : void
     {
         $this->code = $code;
     }
 
-    public function code()
+    public function code() : string
     {
         return $this->code;
     }
 
-    public function setTitle(string $title)
+    public function setTitle(string $title) : void
     {
         $this->title = $title;
     }
 
-    public function title()
+    public function title() : string
     {
         return $this->title;
     }
 
-    public function setDetail(string $detail)
+    public function setDetail(string $detail) : void
     {
         $this->detail = $detail;
     }
 
-    public function detail()
+    public function detail() : string
     {
         return $this->detail;
     }
 
-    public function setSource(ErrorSource $source)
+    public function setSource(ErrorSource $source) : void
     {
         $this->source = $source;
     }
 
-    public function source()
+    public function source() : ErrorSource
     {
         return $this->source;
     }
 
-    public function setVariable(string $key, $value)
+    public function setVariable(string $key, $value) : void
     {
         $this->variables[$key] = $value;
     }
 
-    public function variables()
+    public function variables() : iterable
     {
         return $this->variables;
     }

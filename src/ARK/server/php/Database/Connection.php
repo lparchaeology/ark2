@@ -30,44 +30,45 @@
 namespace ARK\Database;
 
 use Doctrine\DBAL\Connection as DBALConnection;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 
 class Connection extends DBALConnection
 {
-    public function platform()
+    public function platform() : AbstractPlatform
     {
         return $this->getDriver()->getDatabasePlatform();
     }
 
-    public function config()
+    public function config() : iterable
     {
         return $this->getParams();
     }
 
-    public function generateGuid()
+    public function generateGuid() : string
     {
         $sql = 'SELECT '.$this->platform()->getGuidExpression();
 
         return $this->query($sql)->fetchColumn(0);
     }
 
-    public function countRows(string $table)
+    public function countRows(string $table) : int
     {
         return $this->executeQuery("SELECT COUNT(*) FROM $table")->fetch()['COUNT(*)'];
     }
 
-    public function fetchAllTable(string $table)
+    public function fetchAllTable(string $table) : iterable
     {
         return $this->fetchAll("SELECT * FROM $table");
     }
 
-    public function fetchAllColumn(string $sql, string $column, array $params = [], array $types = [])
+    public function fetchAllColumn(string $sql, string $column, iterable $params = [], iterable $types = []) : iterable
     {
         $rows = $this->executeQuery($sql, $params, $types)->fetchAll();
 
         return array_column($rows, $column);
     }
 
-    public function insertRows(string $table, array $fields, array $rows)
+    public function insertRows(string $table, iterable $fields, iterable $rows) : void
     {
         $cols = count($fields);
         $fl = implode(', ', $fields);
@@ -86,7 +87,7 @@ class Connection extends DBALConnection
         $this->executeUpdate($sql, $values);
     }
 
-    public function generateSequence(string $module, string $parent, string $sequence)
+    public function generateSequence(string $module, string $parent, string $sequence) : int
     {
         $this->beginTransaction();
         // Check if there are any IDs to recycle first

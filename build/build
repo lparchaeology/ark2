@@ -2,7 +2,7 @@
 <?php
 
 /**
- * Ark Build Console
+ * Ark Build Console.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,12 +27,12 @@
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
  */
-
 ini_set('display_errors', 1);
+error_reporting(E_ALL);
+date_default_timezone_set('UTC');
+set_time_limit(0);
 
 require_once __DIR__.'/../vendor/autoload.php';
-
-set_time_limit(0);
 
 $console = new ARK\Framework\Console\BuildConsole();
 $console->run();

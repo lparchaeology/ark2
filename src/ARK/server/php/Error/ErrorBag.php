@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Error Bag
+ * ARK Error Bag.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,11 +21,10 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Error;
@@ -39,8 +38,8 @@ class ErrorBag implements Countable, IteratorAggregate
 {
     use StatusCodeTrait;
 
-    protected $code = null;
-    protected $message = null;
+    protected $code = '';
+    protected $message = '';
     protected $errors = [];
 
     public function __construct(Error $error = null)
@@ -50,7 +49,7 @@ class ErrorBag implements Countable, IteratorAggregate
         }
     }
 
-    public function statusCode()
+    public function statusCode() : int
     {
         if ($this->statusCode) {
             return $this->statusCode;
@@ -67,12 +66,12 @@ class ErrorBag implements Countable, IteratorAggregate
         return 500;
     }
 
-    public function setCode(string $code)
+    public function setCode(string $code) : void
     {
         $this->errorCode = $code;
     }
 
-    public function code()
+    public function code() : string
     {
         if ($this->code) {
             return $this->code;
@@ -83,27 +82,27 @@ class ErrorBag implements Countable, IteratorAggregate
         return 'MULTIPLE_ERROR_CODES';
     }
 
-    public function errors()
+    public function errors() : iterable
     {
         return $this->errors;
     }
 
-    public function addError(Error $error)
+    public function addError(Error $error) : void
     {
         $this->errors[] = $error;
     }
 
-    public function prependError(Error $error)
+    public function prependError(Error $error) : void
     {
         $this->errors = array_merge([$error], $this->errors);
     }
 
-    public function count()
+    public function count() : int
     {
         return count($this->errors);
     }
 
-    public function getIterator()
+    public function getIterator() : ArrayIterator
     {
         return new ArrayIterator($this->errors);
     }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK User
+ * ARK User.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -31,32 +31,32 @@ namespace ARK\Workflow\Security;
 
 use ARK\Actor\Actor;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\Security\User;
 use ARK\Service;
 use DateTime;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class ActorUser
 {
-    protected $actor = null;
-    protected $user = null;
-    protected $userEntity = null;
+    protected $actor;
+    protected $user;
+    protected $userEntity;
     protected $enabled = false;
-    protected $expiresAt = null;
+    protected $expiresAt;
 
-    public function __construct($actor, $user)
+    public function __construct(Actor $actor, User $user)
     {
         $this->actor = $actor;
         $this->user = $user->id();
         $this->userEntity = $user;
     }
 
-    public function actor()
+    public function actor() : Actor
     {
         return $this->actor;
     }
 
-    public function user()
+    public function user() : User
     {
         if ($this->userEntity === null) {
             $this->userEntity = Service::user($this->user);
@@ -64,7 +64,7 @@ class ActorUser
         return $this->userEntity;
     }
 
-    public function isEnabled()
+    public function isEnabled() : bool
     {
         // TODO Check is UTC?
         if ($this->enabled && $this->expiresAt && $this->expiresAt->getTimestamp() < time()) {
@@ -73,25 +73,24 @@ class ActorUser
         return $this->enabled;
     }
 
-    public function enable()
+    public function enable() : void
     {
         $this->enabled = true;
         $this->expiresAt = null;
     }
 
-    public function disable()
+    public function disable() : void
     {
         $this->enabled = false;
         $this->expiresAt = null;
     }
 
-    public function expireAt(DateTime $date)
+    public function expireAt(DateTime $date) : void
     {
         $this->expiresAt = $date;
-        return $this;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_actor_user');

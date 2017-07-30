@@ -46,7 +46,7 @@
         "docs": "http://ark.lparchaeology.com/wiki/index.php/ARK2"
     },
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.1",
         "silex/silex": "^2.0",
         "silex/web-profiler": "^2.0",
         "symfony/asset": "^3.3",

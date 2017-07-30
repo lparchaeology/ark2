@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Translation Twig Token Parser
+ * ARK Translation Twig Token Parser.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,11 +21,10 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 /*
@@ -43,7 +42,7 @@ class TranslateNode extends \Twig_Node
 {
     public function __construct(\Twig_Node $body, \Twig_Node $role = null, \Twig_Node $domain = null, \Twig_Node_Expression $count = null, \Twig_Node_Expression $vars = null, \Twig_Node_Expression $locale = null, $lineno = 0, $tag = null)
     {
-        $nodes = array('body' => $body);
+        $nodes = ['body' => $body];
         if (null !== $role) {
             $nodes['role'] = $role;
         }
@@ -60,7 +59,7 @@ class TranslateNode extends \Twig_Node
             $nodes['locale'] = $locale;
         }
 
-        parent::__construct($nodes, array(), $lineno, $tag);
+        parent::__construct($nodes, [], $lineno, $tag);
     }
 
     /**
@@ -68,11 +67,11 @@ class TranslateNode extends \Twig_Node
      *
      * @param \Twig_Compiler $compiler A Twig_Compiler instance
      */
-    public function compile(\Twig_Compiler $compiler)
+    public function compile(\Twig_Compiler $compiler) : void
     {
         $compiler->addDebugInfo($this);
 
-        $defaults = new \Twig_Node_Expression_Array(array(), -1);
+        $defaults = new \Twig_Node_Expression_Array([], -1);
         if ($this->hasNode('vars') && ($vars = $this->getNode('vars')) instanceof \Twig_Node_Expression_Array) {
             $defaults = $this->getNode('vars');
             $vars = null;
@@ -142,7 +141,7 @@ class TranslateNode extends \Twig_Node
         } elseif ($body instanceof \Twig_Node_Text) {
             $msg = $body->getAttribute('data');
         } else {
-            return array($body, $vars);
+            return [$body, $vars];
         }
 
         preg_match_all('/(?<!%)%([^%]+)%/', $msg, $matches);
@@ -160,6 +159,6 @@ class TranslateNode extends \Twig_Node
             }
         }
 
-        return array(new \Twig_Node_Expression_Constant(str_replace('%%', '%', trim($msg)), $body->getTemplateLine()), $vars);
+        return [new \Twig_Node_Expression_Constant(str_replace('%%', '%', trim($msg)), $body->getTemplateLine()), $vars];
     }
 }

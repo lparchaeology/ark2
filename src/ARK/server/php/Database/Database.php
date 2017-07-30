@@ -21,28 +21,24 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
- *
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Database;
 
 use ARK\ARK;
 use DateTime;
+use Doctrine\DBAL\Connection;
 use Silex\Application;
 
 class Database
 {
-    private $app = null;
-
+    private $app;
     private $modules = [];
-
     private $types = [];
-
     private $fragmentTables = [];
 
     public function __construct(Application $app)
@@ -50,39 +46,32 @@ class Database
         $this->app = $app;
     }
 
-    public function data()
+    public function data() : Connection
     {
         return $this->app['dbs']['data'];
     }
 
-    public function sequence()
+    public function sequence() : Connection
     {
         return $this->app['dbs']['data'];
     }
 
-    public function core()
+    public function core() : Connection
     {
         return $this->app['dbs']['core'];
     }
 
-    public function spatial()
+    public function spatial() : Connection
     {
         return $this->app['dbs']['spatial'];
     }
 
-    public function user()
+    public function user() : Connection
     {
         return $this->app['dbs']['user'];
     }
 
-    public function getModuleTable(string $module)
-    {
-        $this->loadModules();
-
-        return $this->modules[$module]['tbl'];
-    }
-
-    public function getModule(string $module)
+    public function getModule(string $module) : ?iterable
     {
         $this->loadModules();
         $module = strtolower($module);
@@ -90,53 +79,48 @@ class Database
             return $this->modules[$module];
         }
         foreach ($this->modules as $mod) {
-            if ($mod['resource'] == $module) {
+            if ($mod['resource'] === $module) {
                 return $mod;
             }
         }
-
         return null;
     }
 
-    public function getModuleForClassName(string $className)
+    public function getModuleForClassName(string $className) : ?iterable
     {
         $this->loadModules();
         foreach ($this->modules as $module) {
-            if ($module['classname'] == $className) {
+            if ($module['classname'] === $className) {
                 return $module;
             }
         }
-
         return null;
     }
 
-    public function getModuleForNamespace(string $namespace)
+    public function getModuleForNamespace(string $namespace) : ?iterable
     {
         $this->loadModules();
         foreach ($this->modules as $module) {
-            if ($module['namespace'] == $namespace) {
+            if ($module['namespace'] === $namespace) {
                 return $module;
             }
         }
-
         return null;
     }
 
-    public function getModules()
+    public function getModules() : ?iterable
     {
         $this->loadModules();
-
         return $this->modules;
     }
 
-    public function getTypes()
+    public function getTypes() : ?iterable
     {
         $this->loadTypes();
-
         return $this->types;
     }
 
-    public function getFragmentType(string $class)
+    public function getFragmentType(string $class) : ?iterable
     {
         $this->loadTypes();
         foreach ($this->types as $type => $attributes) {
@@ -144,18 +128,16 @@ class Database
                 return $attributes;
             }
         }
-
-        return [];
+        return null;
     }
 
-    public function getFragmentTables()
+    public function getFragmentTables() : ?iterable
     {
         $this->loadTypes();
-
         return $this->fragmentTables;
     }
 
-    public function getTypeEntities(string $module = null)
+    public function getTypeEntities(string $module = null) : ?iterable
     {
         if ($module === null) {
             return [];
@@ -177,12 +159,12 @@ class Database
         return $this->core()->fetchAll($sql, $params);
     }
 
-    public function getViewTypes()
+    public function getViewTypes() : ?iterable
     {
         return $this->core()->fetchAllTable('ark_view_type');
     }
 
-    public function getTranslationMessages(string $language, string $domain = null)
+    public function getTranslationMessages(string $language, string $domain = null) : ?iterable
     {
         $sql = '
             SELECT *
@@ -200,7 +182,7 @@ class Database
         return $this->core()->fetchAll($sql, $params);
     }
 
-    public function getActorNames()
+    public function getActorNames() : ?iterable
     {
         $sql = '
             SELECT *
@@ -217,7 +199,7 @@ class Database
         return $this->data()->fetchAll($sql, $params);
     }
 
-    public function getFlashes(string $language)
+    public function getFlashes(string $language) : ?iterable
     {
         $sql = '
             SELECT *
@@ -234,7 +216,7 @@ class Database
     }
 
     // Spatial
-    public function getSpatialTerms(string $concept, string $type = null)
+    public function getSpatialTerms(string $concept, string $type = null) : ?iterable
     {
         $sql = '
             SELECT term, ST_AsText(geometry) as geometry, srid
@@ -250,7 +232,7 @@ class Database
         return $this->spatial()->fetchAll($sql, $params);
     }
 
-    public function getSpatialTermsContain(string $concept, string $wkt, string $srid)
+    public function getSpatialTermsContain(string $concept, string $wkt, string $srid) : ?iterable
     {
         $sql = '
             SELECT term
@@ -267,8 +249,12 @@ class Database
         return $this->spatial()->fetchColumn($sql, $params);
     }
 
-    public function getSpatialTermChoropleth(string $concept, string $module, string $attribute, bool $items = false)
-    {
+    public function getSpatialTermChoropleth(
+        string $concept,
+        string $module,
+        string $attribute,
+        iterable $items = []
+    ) : ?iterable {
         $sql = '
             SELECT ark_spatial_term.term, count(*) as count
             FROM ark_spatial_fragment, ark_spatial_term
@@ -276,7 +262,8 @@ class Database
             AND ark_spatial_term.concept = :concept
             AND ark_spatial_fragment.module = :module
             AND ark_spatial_fragment.attribute = :attribute';
-        if (gettype($items) == 'array') {
+
+        if ($items) {
             $sql .= ' AND (';
             foreach ($items as $key => $item) {
                 $sql .= "
@@ -305,7 +292,7 @@ class Database
         return $this->spatial()->fetchAll($sql, $params);
     }
 
-    public function getMunicipalityMuseum(string $municipality)
+    public function getMunicipalityMuseum(string $municipality) : ?iterable
     {
         $sql = '
             SELECT item
@@ -323,7 +310,7 @@ class Database
         return $this->data()->fetchColumn($sql, $params);
     }
 
-    public function getActorFinds(string $actor)
+    public function getActorFinds(string $actor) : ?iterable
     {
         $sql = "
             SELECT item
@@ -341,7 +328,7 @@ class Database
         return $this->data()->fetchAllColumn($sql, 'item', $params);
     }
 
-    public function getActorMessages(string $actor)
+    public function getActorMessages(string $actor) : ?iterable
     {
         $sql = '
             SELECT item
@@ -360,7 +347,7 @@ class Database
     }
 
     // TODO Optimise!!!
-    public function getUnreadMessages(string $actor)
+    public function getUnreadMessages(string $actor) : ?iterable
     {
         $sql = "
             SELECT ark_fragment_item.item
@@ -382,7 +369,7 @@ class Database
         return $all;
     }
 
-    public function markMessageAsRead(string $message, string $actor)
+    public function markMessageAsRead(string $message, string $actor) : void
     {
         $sql = "
             SELECT *
@@ -398,7 +385,7 @@ class Database
         ];
         $recipient = $this->data()->fetchAssoc($sql, $params);
         if (!$recipient) {
-            return null;
+            return;
         }
         $sql = "
             SELECT item
@@ -412,7 +399,7 @@ class Database
         $params['object'] = $recipient['object'];
         $read = $this->data()->fetchAssoc($sql, $params);
         if ($read) {
-            return null;
+            return;
         }
         $read = [];
         $read['module'] = 'message';
@@ -421,14 +408,10 @@ class Database
         $read['object'] = $recipient['object'];
         $timestamp = ARK::timestamp()->format(DateTime::ATOM);
         $read['value'] = $timestamp;
-        if ($result = $this->data()->insert('ark_fragment_datetime', $read)) {
-            return $timestamp;
-        }
-
-        return null;
+        $this->data()->insert('ark_fragment_datetime', $read);
     }
 
-    public function userSearch(string $query)
+    public function userSearch(string $query) : ?iterable
     {
         $sql = "
             SELECT item
@@ -441,7 +424,7 @@ class Database
         return $this->data()->fetchAllColumn($sql, 'item', $query);
     }
 
-    public function findSearch(array $query)
+    public function findSearch(iterable $query) : ?iterable
     {
         $pre = "
             SELECT item
@@ -449,7 +432,7 @@ class Database
             WHERE module = 'find'
         ";
         $types = [
-            \Doctrine\DBAL\Connection::PARAM_STR_ARRAY,
+            Connection::PARAM_STR_ARRAY,
         ];
         $res = [];
         if (isset($query['municipality'])) {
@@ -525,7 +508,7 @@ class Database
         return $res;
     }
 
-    private function loadModules()
+    private function loadModules() : void
     {
         if ($this->modules) {
             return;
@@ -540,7 +523,7 @@ class Database
         }
     }
 
-    private function loadTypes()
+    private function loadTypes() : void
     {
         if ($this->types) {
             return;
@@ -559,10 +542,9 @@ class Database
         }
     }
 
-    private function getFragmentTable(string $type)
+    private function getFragmentTable(string $type) : ?iterable
     {
         $this->loadTypes();
-
         return $this->types[$type]['data_table'];
     }
 }

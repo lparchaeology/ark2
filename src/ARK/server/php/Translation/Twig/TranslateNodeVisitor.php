@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Translation Twig Token Parser
+ * ARK Translation Twig Token Parser.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,11 +21,10 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 /*
@@ -36,8 +35,6 @@
 
 namespace ARK\Translation\Twig;
 
-use ARK\Translation\Twig\TranslateNode;
-
 /**
  * TranslateNodeVisitor extracts translation messages.
  *
@@ -45,18 +42,18 @@ use ARK\Translation\Twig\TranslateNode;
  */
 class TranslateNodeVisitor extends \Twig_BaseNodeVisitor
 {
-    const UNDEFINED_DOMAIN = '_undefined';
+    public const UNDEFINED_DOMAIN = '_undefined';
 
     private $enabled = false;
     private $messages = [];
 
-    public function enable()
+    public function enable() : void
     {
         $this->enabled = true;
         $this->messages = [];
     }
 
-    public function disable()
+    public function disable() : void
     {
         $this->enabled = false;
         $this->messages = [];
@@ -65,6 +62,14 @@ class TranslateNodeVisitor extends \Twig_BaseNodeVisitor
     public function getMessages()
     {
         return $this->messages;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        return 0;
     }
 
     /**
@@ -82,26 +87,26 @@ class TranslateNodeVisitor extends \Twig_BaseNodeVisitor
             $node->getNode('node') instanceof \Twig_Node_Expression_Constant
         ) {
             // extract constant nodes with a translate filter
-            $this->messages[] = array(
+            $this->messages[] = [
                 $node->getNode('node')->getAttribute('value'),
                 $this->getReadDomainFromArguments($node->getNode('arguments'), 1),
-            );
+            ];
         } elseif (
             $node instanceof \Twig_Node_Expression_Filter &&
             'translatechoice' === $node->getNode('filter')->getAttribute('value') &&
             $node->getNode('node') instanceof \Twig_Node_Expression_Constant
         ) {
             // extract constant nodes with a translatechoice filter
-            $this->messages[] = array(
+            $this->messages[] = [
                 $node->getNode('node')->getAttribute('value'),
                 $this->getReadDomainFromArguments($node->getNode('arguments'), 2),
-            );
+            ];
         } elseif ($node instanceof TranslateNode) {
             // extract translate nodes
-            $this->messages[] = array(
+            $this->messages[] = [
                 $node->getNode('body')->getAttribute('data'),
                 $node->hasNode('domain') ? $this->getReadDomainFromNode($node->getNode('domain')) : null,
-            );
+            ];
         }
 
         return $node;
@@ -113,14 +118,6 @@ class TranslateNodeVisitor extends \Twig_BaseNodeVisitor
     protected function doLeaveNode(\Twig_Node $node, \Twig_Environment $env)
     {
         return $node;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPriority()
-    {
-        return 0;
     }
 
     /**

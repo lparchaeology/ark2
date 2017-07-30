@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Security Role
+ * ARK Security Role.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Workflow;
@@ -34,73 +33,73 @@ use ARK\Actor\Actor;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
-use ARK\Workflow\Permission;
-use ARK\Workflow\Security\ActorRole;
 use ARK\Vocabulary\Term;
-use Doctrine\ORM\Mapping\ClassMetadata;
+use ARK\Workflow\Security\ActorRole;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Role
 {
     use KeywordTrait;
 
     protected $role = '';
-    protected $proxyFor = null;
+    protected $agentFor;
     protected $enabled = true;
-    protected $actors = null;
-    protected $permissions = null;
+    protected $actors;
+    protected $permissions;
 
     public function __construct($role)
     {
         $this->role = ($role instanceof Term ? $role->name() : $role);
+        $this->actors = new ArrayCollection();
         $this->permissions = new ArrayCollection();
     }
 
-    public function id()
+    public function id() : string
     {
         return $this->role;
     }
 
-    public function isAgent()
+    public function isAgent() : bool
     {
-        return $this->proxyFor !== null;
+        return $this->agentFor !== null;
     }
 
-    public function agentFor()
+    public function agentFor() : Actor
     {
-        return $this->proxyFor;
+        return $this->agentFor;
     }
 
-    public function isEnabled()
+    public function isEnabled() : bool
     {
         return $this->enabled;
     }
 
-    public function actors()
+    public function actors() : ArrayCollection
     {
         if ($this->actors === null) {
             $ars = ORM::findBy(ActorRole::class, ['role' => $this->role]);
             $this->actors = new ArrayCollection();
             foreach ($ars as $ar) {
-                $this->actors[] = $ar->actor();
+                $this->actors->add($ar->actor());
             }
         }
         return $this->actors;
     }
 
-    public function hasActor(Actor $actor)
+    public function hasActor(Actor $actor) : bool
     {
         return $this->actors()->contains($actor);
     }
 
-    public function addActors(array $actors)
+    public function addActors(array $actors) : void
     {
         foreach ($actors as $user) {
             $this->addActor($user);
         }
     }
 
-    public function addActor(Actor $user)
+    public function addActor(Actor $user) : void
     {
         if (!$this->hasActor($user)) {
             $this->actors()->add($user);
@@ -108,7 +107,7 @@ class Role
         }
     }
 
-    public function removeActor(Actor $user)
+    public function removeActor(Actor $user) : void
     {
         if ($this->hasActor($user)) {
             $this->actors()->removeElement($user);
@@ -116,17 +115,17 @@ class Role
         }
     }
 
-    public function permissions()
+    public function permissions() : ArrayCollection
     {
         return $this->permissions;
     }
 
-    public function hasPermission(Permission $permission)
+    public function hasPermission(Permission $permission) : bool
     {
         return $this->permissions->contains($permission);
     }
 
-    public function addPermission(Permission $permission)
+    public function addPermission(Permission $permission) : void
     {
         if (!$this->hasPermission($permission)) {
             $this->permissions->add($permission);
@@ -134,7 +133,7 @@ class Role
         }
     }
 
-    public function removePermission(Permission $permission)
+    public function removePermission(Permission $permission) : void
     {
         if ($this->hasPermission($permission)) {
             $this->permissions->removeElement($permission);
@@ -142,7 +141,7 @@ class Role
         }
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_role');
@@ -152,7 +151,7 @@ class Role
         $builder->addStringKey('role', 30);
 
         // Attributes
-        $builder->addStringField('proxyFor', 30, 'proxy_for');
+        $builder->addStringField('agentFor', 30, 'proxy_for');
         $builder->addField('enabled', 'boolean');
         KeywordTrait::buildKeywordMetadata($builder);
 

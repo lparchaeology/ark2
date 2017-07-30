@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Command Message
+ * ARK Command Message.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Workflow\Bus;
@@ -35,28 +34,28 @@ use ARK\Entity\Event;
 
 class SendNotificationMessage
 {
-    protected $sender = null;
+    protected $sender;
     protected $recipients = [];
-    protected $event = null;
+    protected $event;
 
-    public function __construct(Actor $sender, array $recipients, Event $event)
+    public function __construct(Actor $sender, iterable $recipients, Event $event)
     {
         $this->sender = $sender;
         $this->recipients = $recipients;
         $this->event = $event;
     }
 
-    public function sender()
+    public function sender() : Actor
     {
         return $this->sender;
     }
 
-    public function recipients()
+    public function recipients() : iterable
     {
         return $this->recipients;
     }
 
-    public function event()
+    public function event() : Event
     {
         return $this->event;
     }

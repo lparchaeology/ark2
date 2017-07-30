@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Translation Twig Token Parser
+ * ARK Translation Twig Token Parser.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,11 +21,10 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 /*
@@ -34,9 +33,7 @@
  * (c) Fabien Potencier <fabien@symfony.com>
  */
 
- namespace ARK\Translation\Twig;
-
- use ARK\Translation\Twig\TranslateNode;
+namespace ARK\Translation\Twig;
 
 /**
  * Token Parser for the 'translate' tag.
@@ -50,16 +47,15 @@ class TranslateTokenParser extends \Twig_TokenParser
      *
      * @param \Twig_Token $token A Twig_Token instance
      *
-     * @return \Twig_Node A Twig_Node instance
-     *
      * @throws \Twig_Error_Syntax
+     * @return \Twig_Node         A Twig_Node instance
      */
     public function parse(\Twig_Token $token)
     {
         $lineno = $token->getLine();
         $stream = $this->parser->getStream();
 
-        $vars = new \Twig_Node_Expression_Array(array(), $lineno);
+        $vars = new \Twig_Node_Expression_Array([], $lineno);
         $role = null;
         $domain = null;
         $locale = null;
@@ -93,7 +89,7 @@ class TranslateTokenParser extends \Twig_TokenParser
 
         // {% trans %}message{% endtrans %}
         $stream->expect(\Twig_Token::BLOCK_END_TYPE);
-        $body = $this->parser->subparse(array($this, 'decideTranslateFork'), true);
+        $body = $this->parser->subparse([$this, 'decideTranslateFork'], true);
 
         if (!$body instanceof \Twig_Node_Text && !$body instanceof \Twig_Node_Expression) {
             throw new \Twig_Error_Syntax('A message inside a translate tag must be a simple text.', $body->getTemplateLine(), $stream->getSourceContext()->getName());
@@ -106,7 +102,7 @@ class TranslateTokenParser extends \Twig_TokenParser
 
     public function decideTranslateFork($token)
     {
-        return $token->test(array('endtranslate'));
+        return $token->test(['endtranslate']);
     }
 
     /**

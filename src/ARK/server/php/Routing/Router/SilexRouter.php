@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Route Service Provider
+ * ARK Route Service Provider.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,13 +25,11 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Routing\Router;
 
 use Pimple\Container;
-use Psr\Log\LoggerInterface;
 use Silex\Provider\Routing\RedirectableUrlMatcher;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
@@ -39,15 +37,15 @@ use Symfony\Component\Routing\RouterInterface;
 
 class SilexRouter implements RouterInterface
 {
-    protected $container = null;
-    protected $context = null;
+    protected $container;
+    protected $context;
 
     public function __construct(Container $container)
     {
         $this->container = $container;
     }
 
-    public function setContext(RequestContext $context)
+    public function setContext(RequestContext $context) : void
     {
         $this->context = $context;
     }

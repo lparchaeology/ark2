@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Translation Twig Extension
+ * ARK Translation Twig Extension.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,26 +21,25 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Translation\Twig;
 
-use ARK\Translation\Twig\TranslateTokenParser;
-use ARK\Translation\Twig\TranslateChoiceTokenParser;
-use ARK\Translation\Twig\TranslateNodeVisitor;
 use Symfony\Component\Translation\TranslatorInterface;
+use Twig_Extension;
+use Twig_NodeVisitorInterface;
+use Twig_SimpleFilter;
 
-class TranslateExtension extends \Twig_Extension
+class TranslateExtension extends Twig_Extension
 {
     private $translator;
     private $translateNodeVisitor;
 
-    public function __construct(TranslatorInterface $translator, \Twig_NodeVisitorInterface $translateNodeVisitor = null)
+    public function __construct(TranslatorInterface $translator, Twig_NodeVisitorInterface $translateNodeVisitor = null)
     {
         if (!$translateNodeVisitor) {
             $translateNodeVisitor = new TranslateNodeVisitor();
@@ -50,65 +49,82 @@ class TranslateExtension extends \Twig_Extension
         $this->translateNodeVisitor = $translateNodeVisitor;
     }
 
-    public function getTranslator()
+    public function getTranslator() : TranslatorInterface
     {
         return $this->translator;
     }
 
-    public function getFilters()
+    public function getFilters() : iterable
     {
-        return array(
-            new \Twig_SimpleFilter('translate', array($this, 'translate')),
-            new \Twig_SimpleFilter('translatechoice', array($this, 'translatechoice')),
-        );
+        return [
+            new Twig_SimpleFilter('translate', [$this, 'translate']),
+            new Twig_SimpleFilter('translatechoice', [$this, 'translatechoice']),
+        ];
     }
 
-    public function getTokenParsers()
+    public function getTokenParsers() : iterable
     {
-        return array(
-            new TranslateTokenParser(),
-            new TranslateChoiceTokenParser(),
-        );
+        return [new TranslateTokenParser(), new TranslateChoiceTokenParser()];
     }
 
-    public function getNodeVisitors()
+    public function getNodeVisitors() : iterable
     {
         return [$this->translateNodeVisitor];
     }
 
-    public function getTranslationNodeVisitor()
+    public function getTranslationNodeVisitor() : Twig_NodeVisitorInterface
     {
         return $this->translateNodeVisitor;
     }
 
-    public function translate($message, $role = null, array $arguments = [], $domain = null, $locale = null)
-    {
-        if ($role !== null && $role != 'default') {
+    public function translate(
+        string $message,
+        string $role = null,
+        iterable $arguments = [],
+        string $domain = null,
+        string $locale = null
+    ) : string {
+        if ($role !== null && $role !== 'default') {
             $lookup = $message.'.'.$role;
             $translation = $this->translator->trans($lookup, $arguments, $domain, $locale);
-            if ($translation != $lookup) {
+            if ($translation !== $lookup) {
                 return $translation;
             }
         }
         return $this->translator->trans($message, $arguments, $domain, $locale);
     }
 
-    public function translatechoice($message, $count, $role = null, array $arguments = [], $domain = null, $locale = null)
-    {
-        if ($role !== null && $role != 'default') {
+    public function translatechoice(
+        string $message,
+        int $count,
+        string $role = null,
+        iterable $arguments = [],
+        string $domain = null,
+        string $locale = null
+    ) : string {
+        if ($role !== null && $role !== 'default') {
             $lookup = $message.'.'.$role;
-            $translation = $this->translator->transChoice($lookup, $count, array_merge(array('%count%' => $count), $arguments), $domain, $locale);
-            if ($translation != $lookup) {
+            $translation = $this->translator->transChoice(
+                $lookup,
+                $count,
+                array_merge(['%count%' => $count], $arguments),
+                $domain,
+                $locale
+            );
+            if ($translation !== $lookup) {
                 return $translation;
             }
         }
-        return $this->translator->transChoice($message, $count, array_merge(array('%count%' => $count), $arguments), $domain, $locale);
+        return $this->translator->transChoice(
+            $message,
+            $count,
+            array_merge(['%count%' => $count], $arguments),
+            $domain,
+            $locale
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName() : string
     {
         return 'translate';
     }

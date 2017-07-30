@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Thesaurus Vocabulary
+ * ARK Model Thesaurus Vocabulary.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Vocabulary;
@@ -34,7 +33,7 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Thesaurus extends Vocabulary
 {
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
     }
 }

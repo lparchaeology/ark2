@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Translation Add Command
+ * ARK Translation Add Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,31 +25,28 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\View\Bus;
 
 use ARK\ORM\ORM;
-use ARK\Service;
-use ARK\View\Bus\NavAddMessage;
 use ARK\View\Nav;
 
 class NavAddHandler
 {
-    public function __invoke(NavAddMessage $msg)
+    public function __invoke(NavAddMessage $msg) : void
     {
         // Validate / Defaults
         if ($nav = ORM::find(Nav::class, $msg->nav())) {
             // TODO Proper error
-            throw new \Exception;
+            throw new \Exception();
         }
         $parent = $msg->parent();
         if ($parent) {
             $parent = ORM::find(Nav::class, $msg->parent());
             if (!$parent) {
                 // TODO Proper error
-                throw new \Exception;
+                throw new \Exception();
             }
         }
         if ($msg->route()) {

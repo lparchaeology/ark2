@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Vocabulary Term
+ * ARK Model Vocabulary Term.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Vocabulary;
@@ -36,41 +35,41 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 class Parameter
 {
     protected $concept = '';
-    protected $termName = '';
-    protected $term = null;
+    protected $term = '';
+    protected $termEntity;
     protected $name = '';
     protected $type = '';
     protected $value = '';
 
-    public function term()
+    public function term() : Term
     {
-        return $this->term;
+        return $this->termEntity;
     }
 
-    public function name()
+    public function name() : string
     {
         return $this->name;
     }
 
-    public function type()
+    public function type() : string
     {
         return $this->type;
     }
 
-    public function value()
+    public function value() : string
     {
         return $this->value;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_vocabulary_parameter');
         $builder->setReadOnly();
 
         // Key
-        $builder->addManyToOneKey('concept', 'ARK\Vocabulary\Vocabulary', 'concept', 'concept', 'terms');
-        $builder->addStringKey('termName', 30, 'term');
+        $builder->addManyToOneKey('concept', Vocabulary::class, 'concept', 'concept', 'terms');
+        $builder->addStringKey('term', 30);
         $builder->addStringKey('name', 30);
 
         // Attributes
@@ -79,8 +78,8 @@ class Parameter
 
         // Associations
         $builder->addCompositeManyToOneField(
-            'term',
-            'ARK\Vocabulary\Term',
+            'termEntity',
+            Term::class,
             [
                 ['column' => 'concept', 'nullable' => false],
                 ['column' => 'term', 'nullable' => false],

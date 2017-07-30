@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Security
+ * ARK Security.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,49 +25,50 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Bus;
 
 use ARK\Framework\Application;
+use SimpleBus\Message\Bus\MessageBus;
+use SimpleBus\Message\Recorder\RecordsMessages;
 
 class Bus
 {
-    protected $app = null;
+    protected $app;
 
     public function __construct(Application $app)
     {
         $this->app = $app;
     }
 
-    public static function commandBus()
+    public static function commandBus() : MessageBus
     {
         return $this->app['bus.command'];
     }
 
-    public static function eventBus()
+    public static function eventBus() : MessageBus
     {
         return $this->app['bus.event'];
     }
 
-    public static function eventRecorder()
+    public static function eventRecorder() : RecordsMessages
     {
         return $this->app['bus.event.recorder'];
     }
 
-    public static function handleCommand($message)
+    public static function handleCommand(object $message) : void
     {
-        return $this->commandBus()->handle($message);
+        $this->commandBus()->handle($message);
     }
 
-    public static function handleEvent($message)
+    public static function handleEvent(object $message) : void
     {
-        return $this->eventBus()->handle($message);
+        $this->eventBus()->handle($message);
     }
 
-    public static function recordEvent($message)
+    public static function recordEvent(object $message) : void
     {
-        return $this->eventRecorder()->record($message);
+        $this->eventRecorder()->record($message);
     }
 }

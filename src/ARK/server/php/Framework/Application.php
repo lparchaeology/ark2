@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Application
+ * ARK Application.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -34,20 +34,19 @@ use ARK\ARK;
 use ARK\Framework\Provider\ApiServiceProvider;
 use ARK\Framework\Provider\BusServiceProvider;
 use ARK\Framework\Provider\DbalServiceProvider;
-use ARK\Framework\Provider\FileServiceProvider;
-use ARK\Framework\Provider\OrmServiceProvider;
 use ARK\Framework\Provider\DebugServiceProvider;
+use ARK\Framework\Provider\FileServiceProvider;
 use ARK\Framework\Provider\JsonSchemaServiceProvider;
 use ARK\Framework\Provider\LocaleServiceProvider;
 use ARK\Framework\Provider\LoggerServiceProvider;
 use ARK\Framework\Provider\MailerServiceProvider;
+use ARK\Framework\Provider\OrmServiceProvider;
 use ARK\Framework\Provider\RoutingServiceProvider;
 use ARK\Framework\Provider\SecurityServiceProvider;
 use ARK\Framework\Provider\SpatialServiceProvider;
 use ARK\Framework\Provider\TranslationServiceProvider;
 use ARK\Framework\Provider\ViewServiceProvider;
 use ARK\Framework\Provider\WorkflowServiceProvider;
-use ARK\Http\Error\InternalServerError;
 use ARK\Model\Model;
 use ARK\Service;
 use Silex\Application as SilexApplication;
@@ -81,7 +80,7 @@ class Application extends SilexApplication
 
     private static $debug = false;
 
-    public function __construct($site)
+    public function __construct(string $site)
     {
         parent::__construct();
 
@@ -116,7 +115,7 @@ class Application extends SilexApplication
 
         // Enable the Message Bus and Event Bus
         // - Required on Use: Logger
-        $this->register(new BusServiceProvider);
+        $this->register(new BusServiceProvider());
 
         // Enable the Database
         // - Optional on Use: Logger, Stopwatch
@@ -172,7 +171,7 @@ class Application extends SilexApplication
         };
     }
 
-    public function boot()
+    public function boot() : void
     {
         if ($this->booted) {
             return;
@@ -185,11 +184,11 @@ class Application extends SilexApplication
         }
     }
 
-    public function run(Request $request = null)
+    public function run(Request $request = null) : void
     {
         // TODO Use kernel event instead???
         if ($request === null) {
-            $path = (isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '');
+            $path = ($_SERVER['PATH_INFO'] ?? '');
             $pos = strpos($path, $this['path.api']);
             if ($pos === 0) {
                 $request = JsonApiRequest::createFromGlobals();
@@ -199,38 +198,49 @@ class Application extends SilexApplication
         parent::run($request);
     }
 
-    public function extendArray($id, $key, $value)
+    public function extendArray(string $id, string $key, $value) : void
     {
-        $array = (isset($this[$id])) ? $this[$id] : [];
+        $array = $this[$id] ?? [];
         $array[$key] = $value;
         $this[$id] = $array;
     }
 
-    public function translate($id, $role = 'default', array $parameters = [], $domain = 'messages', $locale = null)
-    {
-        if ($role != null && $role != 'default') {
+    public function translate(
+        string $id,
+        string $role = 'default',
+        iterable $parameters = [],
+        string $domain = 'messages',
+        strint $locale = null
+    ) : string {
+        if ($role !== null && $role !== 'default') {
             $lookup = $id.'.'.$role;
             $msg = $this->trans($lookup, $parameters, $domain, $locale);
-            if ($msg != $lookup) {
+            if ($msg !== $lookup) {
                 return $msg;
             }
         }
         return $this->trans($id, $parameters, $domain, $locale);
     }
 
-    public function translateChoice($id, $number, $role = 'default', array $parameters = [], $domain = 'messages', $locale = null)
-    {
-        if ($role != null && $role != 'default') {
+    public function translateChoice(
+        string $id,
+        int $number,
+        string $role = 'default',
+        iterable $parameters = [],
+        string $domain = 'messages',
+        strint $locale = null
+    ) : string {
+        if ($role !== null && $role !== 'default') {
             $lookup = $id.'.'.$role;
             $msg = $this->transChoice($lookup, $number, $parameters, $domain, $locale);
-            if ($msg != $lookup) {
+            if ($msg !== $lookup) {
                 return $msg;
             }
         }
         return $this->transChoice($id, $number, $parameters, $domain, $locale);
     }
 
-    public static function debug()
+    public static function debug() : bool
     {
         return static::$debug;
     }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Translation Domain Entity
+ * ARK Translation Domain Entity.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,32 +25,27 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Translation;
 
-use ARK\Service;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
-use ARK\Translation\Language;
-use ARK\Translation\Message;
-use ARK\Translation\Role;
-use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\PersistentCollection;
+use ARK\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Translation
 {
     protected $keyword = '';
-    protected $domain = null;
+    protected $domain;
     protected $isPlural = false;
     protected $hasParameters = false;
-    protected $parameters = null;
-    protected $messages = null;
+    protected $parameters;
+    protected $messages;
 
-    public function __construct($keyword, Domain $domain)
+    public function __construct(string $keyword, Domain $domain)
     {
         $this->keyword = $keyword;
         $this->domain = $domain;
@@ -58,90 +53,87 @@ class Translation
         $this->messages = new ArrayCollection();
     }
 
-    public function keyword()
+    public function keyword() : string
     {
         return $this->keyword;
     }
 
-    public function domain()
+    public function domain() : Domain
     {
         return $this->domain;
     }
 
-    public function isPlural()
+    public function isPlural() : bool
     {
         return $this->isPlural;
     }
 
-    public function setPlural($plural)
+    public function setPlural(bool $plural) : void
     {
-        $this->isPlural = (bool) $plural;
+        $this->isPlural = $plural;
     }
 
-    public function hasParameters()
+    public function hasParameters() : bool
     {
         return $this->hasParameters;
     }
 
-    public function parameters()
+    public function parameters() : ArrayCollection
     {
         return $this->parameters;
     }
 
-    public function setParameters(array $parameters)
+    public function setParameters(iterable $parameters) : void
     {
         $this->hasParameters = (bool) count($parameters);
         $this->parameters = new ArrayCollection($parameters);
     }
 
-    public function addParameter(Parameter $parameter)
+    public function addParameter(Parameter $parameter) : void
     {
         $this->hasParameters = true;
         $this->parameters->add($parameter);
     }
 
-    public function messages()
+    public function messages() : ArrayCollection
     {
         return $this->messages;
     }
 
-    public function message($language = null, $role = 'default')
+    public function message(string $language = null, string $role = 'default') : Message
     {
         // TODO select by language and role with fallbacks
-        if ($language == null) {
+        if ($language === null) {
             $language = Service::locale();
         }
         $language = ORM::find(Language::class, $language);
 
-        if ($role == null) {
-            $role = 'default';
-        }
         $role = ORM::find(Role::class, $role);
 
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->eq("language", $language))
-            ->andWhere(Criteria::expr()->eq("role", $role));
+            ->where(Criteria::expr()->eq('language', $language))
+            ->andWhere(Criteria::expr()->eq('role', $role));
         return $this->messages->matching($criteria)->first();
     }
 
-    public function setMessages(array $messages)
+    public function setMessages(iterable $messages) : void
     {
         $this->messages = new ArrayCollection($messages);
     }
 
-    public function addMessage(Message $message)
+    public function addMessage(Message $message) : void
     {
         $this->messages->add($message);
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_translation');
         $builder->addStringKey('keyword', 100);
-        $builder->addManyToOneField('domain', 'ARK\Translation\Domain');
+        $builder->addManyToOneField('domain', Domain::class);
         $builder->addField('isPlural', 'boolean', [], 'is_plural');
         $builder->addField('hasParameters', 'boolean', [], 'has_parameters');
-        $builder->addOneToManyCascade('parameters', 'ARK\Translation\Parameter', 'keyword');
-        $builder->addOneToManyCascade('messages', 'ARK\Translation\Message', 'keyword');
+        $builder->addOneToManyCascade('parameters', Parameter::class, 'keyword');
+        $builder->addOneToManyCascade('messages', Message::class, 'keyword');
     }
 }

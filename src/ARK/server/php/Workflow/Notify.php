@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Workflow Notification
+ * ARK Workflow Notification.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,35 +25,30 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Workflow;
 
-use ARK\Actor\Actor;
 use ARK\Model\Item;
 use ARK\Model\Schema\SchemaAttribute;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\ORM\ORM;
-use ARK\Workflow\Action;
-use ARK\Workflow\Role;
 
 class Notify
 {
     protected $schma = '';
     protected $actionName = '';
-    protected $action = null;
+    protected $action;
     protected $type = '';
     protected $attributeName = '';
-    protected $attribute = null;
+    protected $attribute;
 
-    public function recipient(Item $item)
+    public function recipient(Item $item) : Actor
     {
         return $item->property($this->attributeName)->value();
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Joined Table Inheritance
         $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_notify');

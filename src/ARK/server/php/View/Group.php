@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK View Group
+ * ARK View Group.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,61 +25,58 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\View;
 
-use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
-use ARK\View\Element;
+use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormView;
 
 abstract class Group extends Element
 {
-    protected $form = null;
-    protected $method = null;
-    protected $action = null;
-    protected $cells = null;
-    protected $parentCells = null;
+    protected $form = false;
+    protected $method = '';
+    protected $action = '';
+    protected $cells;
+    protected $parentCells;
 
     public function __construct()
     {
         $this->cells = new ArrayCollection();
     }
 
-    public function isForm()
+    public function isForm() : bool
     {
         return $this->form;
     }
 
-    public function formMethod()
+    public function formMethod() : string
     {
         return $this->method;
     }
 
-    public function formAction()
+    public function formAction() : string
     {
         return $this->action;
     }
 
-    public function cells()
+    public function cells() : iterable
     {
         return $this->cells;
     }
 
-    public function buildState($data, array $state)
+    public function buildState($data, iterable $state) : iterable
     {
         $state = parent::buildState($data, $state);
         $state['layout'] = $this;
         return $state;
     }
 
-    public function buildForms($data, array $state, array $options)
+    public function buildForms($data, iterable $state, iterable $options) : iterable
     {
         //dump('GROUP FORMS : '.$this->formName());
         //dump($this);
@@ -113,7 +110,7 @@ abstract class Group extends Element
         return $forms;
     }
 
-    public function buildForm(FormBuilderInterface $builder, $data, array $state, array $options = [])
+    public function buildForm(FormBuilderInterface $builder, $data, iterable $state, iterable $options = []) : void
     {
         //dump('BUILD GROUP : '.$this->id());
         //dump($data);
@@ -121,7 +118,7 @@ abstract class Group extends Element
         //dump($options);
         $state = $this->buildState($data, $state);
         //dump($state);
-        if ($state['mode'] == 'deny') {
+        if ($state['mode'] === 'deny') {
             return;
         }
         $data = $this->buildData($data, $state);
@@ -144,19 +141,19 @@ abstract class Group extends Element
         }
     }
 
-    public function buildContext($data, array $state, FormView $form = null)
+    public function buildContext($data, iterable $state, FormView $form = null) : iterable
     {
         $context = parent::buildContext($data, $state, $form);
         $context['layout'] = $this;
         return $context;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_group');
     }
 
-    public static function groupMetadata(ClassMetadata $metadata)
+    public static function groupMetadata(ClassMetadata $metadata) : void
     {
         // Joined Table Inheritance
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_group');
@@ -171,6 +168,6 @@ abstract class Group extends Element
         $builder->addStringField('template', 100);
 
         // Associations
-        $builder->addOneToMany('cells', 'ARK\View\Cell', 'group');
+        $builder->addOneToMany('cells', Cell::class, 'group');
     }
 }

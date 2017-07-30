@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Error Exception
+ * ARK Error Exception.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,21 +21,19 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Error;
 
-use ARK\Error\Error;
 use Exception;
 
 class ErrorException extends Exception
 {
-    protected $error = null;
+    protected $error;
 
     public function __construct(Error $error)
     {
@@ -43,7 +41,7 @@ class ErrorException extends Exception
         $this->error = $error;
     }
 
-    public function error()
+    public function error() : Error
     {
         return $this->error;
     }

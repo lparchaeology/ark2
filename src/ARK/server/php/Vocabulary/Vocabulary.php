@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Abstract Vocabulary
+ * ARK Model Abstract Vocabulary.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Vocabulary;
@@ -33,8 +32,9 @@ namespace ARK\Vocabulary;
 use ARK\Model\EnabledTrait;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Symfony\Component\Workflow\Definition;
 use Symfony\Component\Workflow\DefinitionBuilder;
 use Symfony\Component\Workflow\Transition;
 
@@ -44,54 +44,54 @@ abstract class Vocabulary
     use KeywordTrait;
 
     protected $concept = '';
-    protected $type = null;
+    protected $type;
     protected $source = '';
     protected $closed = true;
     protected $transitions = false;
-    protected $definition = null;
-    protected $terms = null;
+    protected $definition;
+    protected $terms;
 
     public function __construct()
     {
         $this->terms = new ArrayCollection();
     }
 
-    public function concept()
+    public function concept() : string
     {
         return $this->concept;
     }
 
-    public function type()
+    public function type() : Type
     {
         return $this->type;
     }
 
-    public function source()
+    public function source() : string
     {
         return $this->source;
     }
 
-    public function closed()
+    public function closed() : bool
     {
         return $this->closed;
     }
 
-    public function terms()
+    public function terms() : ArrayCollection
     {
         return $this->terms;
     }
 
-    public function term($name)
+    public function term(string $name) : ?Term
     {
         foreach ($this->terms as $term) {
-            if ($term->name() == $name) {
+            if ($term->name() === $name) {
                 return $term;
             }
         }
         return null;
     }
 
-    public function defaultTerm()
+    public function defaultTerm() : ?Term
     {
         foreach ($this->terms as $term) {
             if ($term->isDefault()) {
@@ -101,15 +101,15 @@ abstract class Vocabulary
         return null;
     }
 
-    public function hasTransitions()
+    public function hasTransitions() : bool
     {
         return $this->transitions;
     }
 
-    public function transitions()
+    public function transitions() : Definition
     {
         if ($this->hasTransitions() && $this->definition === null) {
-            $builder = new DefinitionBuilder;
+            $builder = new DefinitionBuilder();
             foreach ($this->terms() as $term) {
                 $builder->addPlace($term->name());
                 if ($term->isRoot()) {
@@ -118,9 +118,9 @@ abstract class Vocabulary
             }
             foreach ($this->terms() as $term) {
                 foreach ($term->related() as $related) {
-                    if ($related->type() == 'transition') {
+                    if ($related->type() === 'transition') {
                         $trans = new Transition($related->parameter(), $related->fromTerm()->name(), $related->toTerm()->name());
-                        $builder>addTransition($trans);
+                        $builder > addTransition($trans);
                     }
                 }
             }
@@ -129,22 +129,22 @@ abstract class Vocabulary
         return $this->definition;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_vocabulary');
         $builder->setReadOnly();
         $builder->setSingleTableInheritance()->setDiscriminatorColumn('type', 'string', 10);
-        $builder->addDiscriminatorMapClass('taxonomy', 'ARK\Vocabulary\Taxonomy');
-        $builder->addDiscriminatorMapClass('list', 'ARK\Vocabulary\TermList');
-        $builder->addDiscriminatorMapClass('ring', 'ARK\Vocabulary\TermRing');
-        $builder->addDiscriminatorMapClass('thesaurus', 'ARK\Vocabulary\Thesaurus');
+        $builder->addDiscriminatorMapClass('taxonomy', Taxonomy::class);
+        $builder->addDiscriminatorMapClass('list', TermList::class);
+        $builder->addDiscriminatorMapClass('ring', TermRing::class);
+        $builder->addDiscriminatorMapClass('thesaurus', Thesaurus::class);
 
         // Key
         $builder->addStringKey('concept', 30);
 
         // Attributes
-        $builder->addManyToOneField('type', 'ARK\Vocabulary\Type', 'type', 'type', false);
+        $builder->addManyToOneField('type', Type::class, 'type', 'type', false);
         $builder->addStringField('source', 30);
         $builder->addField('closed', 'boolean');
         $builder->addField('transitions', 'boolean');
@@ -152,6 +152,6 @@ abstract class Vocabulary
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations
-        $builder->addOneToMany('terms', 'ARK\Vocabulary\Term', 'concept');
+        $builder->addOneToMany('terms', Term::class, 'concept');
     }
 }

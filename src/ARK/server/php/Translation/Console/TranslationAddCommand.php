@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Translation Add Command
+ * ARK Translation Add Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,45 +21,39 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Translation\Console;
 
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\Translation\Command\TranslationAddMessage;
 use ARK\Translation\Domain;
 use ARK\Translation\Language;
 use ARK\Translation\Message;
 use ARK\Translation\Role;
 use ARK\Translation\Translation;
-use ARK\Translation\Command\TranslationAddMessage;
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\DriverManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
 class TranslationAddCommand extends Command
 {
-    protected function configure()
+    protected function configure() : void
     {
         $this->setName('translation:add')
              ->setDescription('Add or Set a translation.')
              ->addArgument('keyword', InputArgument::REQUIRED, 'The translation keyword');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : void
     {
         $question = $this->getHelper('question');
 
@@ -102,15 +96,15 @@ class TranslationAddCommand extends Command
         $message = ORM::findOneBy(Message::class, ['language' => $language, 'parent' => $keyword, 'role' => $role]);
         if ($message) {
             $output->writeln("\nMessage exists:");
-            $output->writeln("  Text: ".$message->text());
-            $output->writeln("  Notes: ".$message->notes());
-            $output->writeln("Text and Notes will be replaced.");
+            $output->writeln('  Text: '.$message->text());
+            $output->writeln('  Notes: '.$message->notes());
+            $output->writeln('Text and Notes will be replaced.');
         }
 
-        $textQuestion = new Question("Please enter the translation text: ");
+        $textQuestion = new Question('Please enter the translation text: ');
         $text = $question->ask($input, $output, $textQuestion);
 
-        $notesQuestion = new Question("Please enter any translation notes: ");
+        $notesQuestion = new Question('Please enter any translation notes: ');
         $notes = $question->ask($input, $output, $notesQuestion);
 
         $message = new TranslationAddMessage($keyword, $domain, $role, $language, $text, $notes);

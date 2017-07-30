@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Map Layer
+ * ARK Map Layer.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,7 +30,6 @@
 
 namespace ARK\Map;
 
-use ARK\Map\LayerInterface;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -39,17 +38,17 @@ class LayerView implements LayerInterface
 {
     use KeywordTrait;
 
-    protected $map = null;
+    protected $map;
     protected $source = '';
     protected $layer = '';
-    protected $layerClass = null;
+    protected $layerClass;
     protected $seq = 0;
     protected $isDefault = false;
     protected $enabled = true;
     protected $visible = false;
     protected $options = '';
 
-    public function id()
+    public function id() : iterable
     {
         return [
             'map' => $this->map->id(),
@@ -58,76 +57,76 @@ class LayerView implements LayerInterface
         ];
     }
 
-    public function source()
+    public function source() : Source
     {
         return $this->layerClass->source();
     }
 
-    public function name()
+    public function name() : string
     {
         return $this->layer;
     }
 
-    public function sourceName()
+    public function sourceName() : string
     {
         return $this->layerClass->sourceName();
     }
 
-    public function url()
+    public function url() : string
     {
         return $this->layerClass->url();
     }
 
-    public function options()
+    public function options() : iterable
     {
         return array_merge($this->layerClass->options(), json_decode($this->options));
     }
 
-    public function parameters()
+    public function parameters() : itrable
     {
         return $this->layerClass->parameters();
     }
 
-    public function sequence()
+    public function sequence() : int
     {
         return $this->seq;
     }
 
-    public function isDefault()
+    public function isDefault() : bool
     {
         return $this->isDefault;
     }
 
-    public function isEnabled()
+    public function isEnabled() : bool
     {
         return $this->enabled;
     }
 
-    public function isVisible()
+    public function isVisible() : bool
     {
         return $this->visible;
     }
 
-    public function keyword()
+    public function keyword() : string
     {
-        return ($this->keyword ? $this->keyword : $this->layerClass->keyword());
+        return $this->keyword ? $this->keyword : $this->layerClass->keyword();
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_map_legend');
         $builder->setReadOnly();
 
         // Key
-        $builder->addManyToOneKey('map', 'ARK\Map\Map');
+        $builder->addManyToOneKey('map', Map::class);
         $builder->addStringKey('source', 30);
         $builder->addStringKey('layer', 30);
 
         // Attributes
         $builder->addCompositeManyToOneField(
             'layerClass',
-            'ARK\Map\Layer',
+            Layer::class,
             [
                 ['column' => 'source', 'nullable' => false],
                 ['column' => 'layer', 'nullable' => false],

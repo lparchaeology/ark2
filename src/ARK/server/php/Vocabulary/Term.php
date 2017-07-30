@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Vocabulary Term
+ * ARK Model Vocabulary Term.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Vocabulary;
@@ -33,22 +32,22 @@ namespace ARK\Vocabulary;
 use ARK\Model\EnabledTrait;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Term
 {
     use EnabledTrait;
     use KeywordTrait;
 
-    protected $concept = null;
+    protected $concept;
     protected $term = '';
     protected $alias = '';
     protected $default = false;
     protected $root = false;
-    protected $parameters = null;
-    protected $related = null;
-    protected $descendents = null;
+    protected $parameters;
+    protected $related;
+    protected $descendents;
 
     public function __construct()
     {
@@ -56,62 +55,62 @@ class Term
         $this->related = new ArrayCollection();
     }
 
-    public function concept()
+    public function concept() : Vocabulary
     {
         return $this->concept;
     }
 
-    public function name()
+    public function name() : string
     {
         return $this->term;
     }
 
-    public function alias()
+    public function alias() : string
     {
         return $this->alias;
     }
 
-    public function isDefault()
+    public function isDefault() : bool
     {
         return $this->default;
     }
 
-    public function isRoot()
+    public function isRoot() : bool
     {
         return $this->root;
     }
 
-    public function parameters()
+    public function parameters() : ArrayCollection
     {
         return $this->parameters;
     }
 
-    public function related()
+    public function related() : ArrayCollection
     {
         return $this->related;
     }
 
-    public function descendents()
+    public function descendents() : ArrayCollection
     {
         if ($this->descendents === null) {
             $this->descendents = new ArrayCollection();
-            foreach ($this->related as $relation) {
-                if ($relation->fromTerm()->name() != $relation->toTerm()->name() && $relation->type() == 'broader') {
-                    $this->descendents[] = $relation->toTerm();
+            foreach ($this->related as $related) {
+                if ($related->fromTerm()->name() !== $related->toTerm()->name() && $related->relation()->id() === 'broader') {
+                    $this->descendents->add($related->toTerm());
                 }
             }
         }
         return $this->descendents;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_vocabulary_term');
         $builder->setReadOnly();
 
         // Key
-        $builder->addManyToOneKey('concept', 'ARK\Vocabulary\Vocabulary', 'concept', 'concept', 'terms');
+        $builder->addManyToOneKey('concept', Vocabulary::class, 'concept', 'concept', 'terms');
         $builder->addStringKey('term', 30);
 
         // Attributes
@@ -122,7 +121,7 @@ class Term
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations
-        $builder->addOneToMany('parameters', 'ARK\Vocabulary\Parameter', 'term');
-        $builder->addOneToMany('related', 'ARK\Vocabulary\Related', 'fromTerm');
+        $builder->addOneToMany('parameters', Parameter::class, 'term');
+        $builder->addOneToMany('related', Related::class, 'fromTerm');
     }
 }

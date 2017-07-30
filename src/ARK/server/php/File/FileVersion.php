@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK File Version
+ * ARK File Version.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,30 +25,27 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\File;
 
 use ARK\ARK;
+use ARK\Security\User;
 use ARK\Service;
 use DateTime;
-use ARK\Model\Property;
-use ARK\Security\User;
 use League\Flysystem\File as FileHandler;
-use League\Flysystem\FilesystemInterface;
 
 class FileVersion extends FileHandler
 {
-    protected $name = null;
-    protected $extension = null;
-    protected $sequence = null;
-    protected $version = null;
-    protected $created = null;
-    protected $creator = null;
-    protected $modified = null;
-    protected $modifier = null;
-    protected $expires = null;
+    protected $name;
+    protected $extension;
+    protected $sequence;
+    protected $version;
+    protected $created;
+    protected $creator;
+    protected $modified;
+    protected $modifier;
+    protected $expires;
 
     public function __construct()
     {
@@ -100,7 +97,7 @@ class FileVersion extends FileHandler
         return $this->modifier;
     }
 
-    public function setModified(DateTime $modified = null, User $modifier = null)
+    public function setModified(DateTime $modified = null, User $modifier = null) : void
     {
         $this->modified = ($modified ?: ARK::timestamp());
         $this->modifier = ($modifier ? $modifier : Service::security()->user()->id());
@@ -111,14 +108,14 @@ class FileVersion extends FileHandler
         return $this->expires;
     }
 
-    public function setExpiry(DateTime $expiresOn)
+    public function setExpiry(DateTime $expiresOn) : void
     {
         $this->expires = $expiresOn;
     }
 
     public static function makeFilePath(string $type, $id, $sequence, string $extension)
     {
-        $token = floor(intval($id) / 1000) * 1000;
+        $token = floor((int) $id / 1000) * 1000;
         return "$type/$token/$id.$sequence.$extension";
     }
 
@@ -130,14 +127,14 @@ class FileVersion extends FileHandler
         string $version = null,
         DateTime $created = null
     ) {
-        $file = new FileVersion;
+        $file = new self();
         $file->name = $name;
         $file->extension = $extension;
         if (!$created) {
             $created = ARK::timestamp();
         }
         $file->sequence = $created->format('YmdHis');
-        $file->path = FileVersion::makeFilePath($type, $id, $file->sequence, $extension);
+        $file->path = self::makeFilePath($type, $id, $file->sequence, $extension);
         $file->version = ($version ? $version : $created->format('Y-m-d H:i:s'));
         $file->created = $created;
         $file->creator = Service::security()->user()->id();
@@ -149,17 +146,17 @@ class FileVersion extends FileHandler
     // TODO Do this in ObjectFormat? Use magic methods?
     public static function fromArray(array $data)
     {
-        $file = new FileVersion();
-        $file->path = isset($data['path']) ? $data['path'] : null;
-        $file->name = isset($data['name']) ? $data['name'] : null;
-        $file->extension = isset($data['extension']) ? $data['extension'] : null;
-        $file->sequence = isset($data['sequence']) ? $data['sequence'] : null;
-        $file->version = isset($data['version']) ? $data['version'] : null;
-        $file->created = isset($data['created']) ? $data['created'] : null;
-        $file->creator = isset($data['creator']) ? $data['creator'] : null;
-        $file->modified = isset($data['modified']) ? $data['modified'] : null;
-        $file->modifier = isset($data['modifier']) ? $data['modifier'] : null;
-        $file->expires = isset($data['expires']) ? $data['expires'] : null;
+        $file = new self();
+        $file->path = $data['path'] ?? null;
+        $file->name = $data['name'] ?? null;
+        $file->extension = $data['extension'] ?? null;
+        $file->sequence = $data['sequence'] ?? null;
+        $file->version = $data['version'] ?? null;
+        $file->created = $data['created'] ?? null;
+        $file->creator = $data['creator'] ?? null;
+        $file->modified = $data['modified'] ?? null;
+        $file->modifier = $data['modifier'] ?? null;
+        $file->expires = $data['expires'] ?? null;
         return $file;
     }
 

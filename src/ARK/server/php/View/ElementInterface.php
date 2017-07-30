@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK View Cell
+ * ARK View Cell.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\View;
@@ -35,17 +34,17 @@ use Symfony\Component\Form\FormView;
 
 interface ElementInterface
 {
-    public function formName();
+    public function formName() : string;
 
-    public function template();
+    public function template() : string;
 
-    public function mode();
+    public function mode() : string;
 
-    public function buildState($data, array $state);
+    public function buildState($data, iterable $state) : iterable;
 
-    public function buildOptions($data, array $state, array $options = []);
+    public function buildOptions($data, iterable $state, iterable $options = []) : iterable;
 
-    public function buildForm(FormBuilderInterface $builder, $data, array $state, array $options = []);
+    public function buildForm(FormBuilderInterface $builder, $data, iterable $state, iterable $options = []) : void;
 
-    public function renderForm($data, array $state, FormView $form = null);
+    public function renderForm($data, iterable $state, FormView $form = null) : string;
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Translation Parameter Entity
+ * ARK Translation Parameter Entity.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,35 +25,33 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Translation;
 
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\Translation\Translation;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Parameter
 {
-    protected $parent = null;
+    protected $key;
     protected $parameter = '';
 
-    public function __construct(Translation $parent, $name)
+    public function __construct(Translation $key, string $name)
     {
-        $this->parent = $parent;
+        $this->key = $key;
         $this->parameter = $name;
     }
 
-    public function name()
+    public function name() : string
     {
         return $this->parameter;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_translation_parameter');
-        $builder->addManyToOneKey('parent', 'ARK\Translation\Translation', 'keyword');
+        $builder->addManyToOneKey('key', Translation::class, 'keyword');
         $builder->addStringKey('parameter', 30);
     }
 }

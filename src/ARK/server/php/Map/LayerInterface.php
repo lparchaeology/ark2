@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Map Layer Interface
+ * ARK Map Layer Interface.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -32,15 +32,15 @@ namespace ARK\Map;
 
 interface LayerInterface
 {
-    public function source();
+    public function source() : Source;
 
-    public function name();
+    public function name() : string;
 
-    public function sourceName();
+    public function sourceName() : string;
 
-    public function url();
+    public function url() : string;
 
-    public function options();
+    public function options() : iterable;
 
-    public function parameters();
+    public function parameters() : iterable;
 }

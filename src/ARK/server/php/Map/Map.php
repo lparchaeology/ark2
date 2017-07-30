@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Map View
+ * ARK Map View.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -32,8 +32,8 @@ namespace ARK\Map;
 
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Map
 {
@@ -41,29 +41,29 @@ class Map
 
     protected $map = '';
     protected $options = '';
-    protected $layers = null;
+    protected $layers;
 
     public function __construct()
     {
         $this->terms = new ArrayCollection();
     }
 
-    public function id()
+    public function id() : string
     {
         return $this->map;
     }
 
-    public function options()
+    public function options() : iterable
     {
         return json_decode($this->options);
     }
 
-    public function layers()
+    public function layers() : ArrayCollection
     {
         return $this->layers;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_map');
@@ -77,6 +77,6 @@ class Map
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Relationships
-        $builder->addOneToMany('layers', 'ARK\Map\LayerView', 'map');
+        $builder->addOneToMany('layers', Layer::class, 'map');
     }
 }

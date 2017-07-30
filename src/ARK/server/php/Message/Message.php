@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Message Entity
+ * ARK Message Entity.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,26 +25,26 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
+
 namespace ARK\Message;
 
 use ARK\Actor\Actor;
 use ARK\ARK;
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
-use DateTime;
 use ARK\Service;
+use DateTime;
 
 class Message implements Item
 {
     use ItemTrait;
 
-    public function __construct(Actor $sender, array $recipients, DateTime $sentAt)
+    public function __construct(Actor $sender, iterable $recipients, DateTime $sentAt)
     {
         $this->construct('core.message');
         $this->property('sender')->setValue($sender);
-        $dispatches =[];
+        $dispatches = [];
         foreach ($recipients as $recipient) {
             $dispatches[]['recipient'] = $recipient;
             $dispatches[]['status'] = 'unread';
@@ -53,40 +53,40 @@ class Message implements Item
         $this->property('sent')->setValue($sentAt);
     }
 
-    public function sender()
+    public function sender() : Actor
     {
         return $this->property('sender')->value();
     }
 
-    public function recipients()
+    public function recipients() : ArrayCollection
     {
         return $this->property('recipients')->serialize();
     }
 
-    public function sentAt()
+    public function sentAt() : DateTime
     {
         return $this->property('sent')->value();
     }
 
-    public function isRecipient(Actor $actor)
+    public function isRecipient(Actor $actor) : bool
     {
         foreach ($this->recipients() as $dispatch) {
-            if ($actor->id() == $dispatch['recipient']['item']) {
+            if ($actor->id() === $dispatch['recipient']['item']) {
                 return true;
             }
         }
         return false;
     }
 
-    public function markAsRead(Actor $actor)
+    public function markAsRead(Actor $actor) : void
     {
-        return Service::database()->markMessageAsRead($this->id(), $actor->id());
+        Service::database()->markMessageAsRead($this->id(), $actor->id());
     }
 
-    public function wasReadBy(Actor $actor)
+    public function wasReadBy(Actor $actor) : bool
     {
         foreach ($this->recipients() as $dispatch) {
-            if ($actor->id() == $dispatch['recipient']['item'] && isset($dispatch['read'])) {
+            if ($actor->id() === $dispatch['recipient']['item'] && isset($dispatch['read'])) {
                 return true;
             }
         }

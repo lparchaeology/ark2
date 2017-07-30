@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Grid View
+ * ARK Grid View.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,35 +25,32 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\View;
 
-use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
-use ARK\View\Group;
 
 class Grid extends Group
 {
-    protected $grid = null;
+    protected $grid;
 
-    public function rowCount()
+    public function rowCount() : int
     {
         return count($this->grid());
     }
 
-    public function columnCount($row)
+    public function columnCount(int $row) : int
     {
         return count($this->row($row));
     }
 
-    public function cellCount($row, $col)
+    public function cellCount(int $row, int $col) : int
     {
         return count($this->column($row, $col));
     }
 
-    public function grid()
+    public function grid() : iterable
     {
         if ($this->grid === null) {
             $this->grid = [];
@@ -64,7 +61,7 @@ class Grid extends Group
         return $this->grid;
     }
 
-    public function row($row)
+    public function row(int $row) : iterable
     {
         if ($row < 0 || $row >= count($this->grid())) {
             return [];
@@ -72,7 +69,7 @@ class Grid extends Group
         return $this->grid[$row];
     }
 
-    public function column($row, $col)
+    public function column(int $row, int $col) : iterable
     {
         if ($row < 0 || $row >= count($this->grid())) {
             return [];
@@ -83,17 +80,17 @@ class Grid extends Group
         return $this->grid[$row][$col];
     }
 
-    public function columnWidth($row, $col)
+    public function columnWidth(int $row, int $col) : ?int
     {
         $column = $this->column($row, $col);
-        if ($column == []) {
+        if ($column === []) {
             return null;
         }
         reset($column);
         return current($column)->width();
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         self::groupMetadata($metadata);
     }

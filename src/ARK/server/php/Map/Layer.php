@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Map Layer
+ * ARK Map Layer.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,7 +30,6 @@
 
 namespace ARK\Map;
 
-use ARK\Map\LayerInterface;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -39,41 +38,41 @@ class Layer implements LayerInterface
 {
     use KeywordTrait;
 
-    protected $source = null;
+    protected $source;
     protected $layer = '';
     protected $sourceName = '';
     protected $url = '';
     protected $options = '';
-    protected $optionsArray = null;
+    protected $optionsArray;
     protected $parameters = '';
-    protected $parametersArray = null;
+    protected $parametersArray;
 
     public function id()
     {
         return ['source' => $this->source->id(), 'layer' => $this->layer];
     }
 
-    public function source()
+    public function source() : Source
     {
         return $this->source;
     }
 
-    public function name()
+    public function name() : string
     {
         return $this->layer;
     }
 
-    public function sourceName()
+    public function sourceName() : string
     {
         return $this->sourceName;
     }
 
-    public function url()
+    public function url() : string
     {
         return $this->url;
     }
 
-    public function options()
+    public function options() : iterable
     {
         if ($this->optionsArray === null) {
             $this->optionsArray = json_decode($this->options, true);
@@ -81,7 +80,7 @@ class Layer implements LayerInterface
         return $this->optionsArray;
     }
 
-    public function parameters()
+    public function parameters() : iterable
     {
         if ($this->parametersArray === null) {
             $this->parametersArray = json_decode($this->parameters, true);
@@ -90,7 +89,7 @@ class Layer implements LayerInterface
         return $this->parameters;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_map_layer');

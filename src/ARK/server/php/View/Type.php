@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK View Element Type
+ * ARK View Element Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\View;
@@ -33,7 +32,6 @@ namespace ARK\View;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use Symfony\Component\Form\FormBuilder;
 
 class Type
 {
@@ -44,27 +42,27 @@ class Type
     protected $formTypeClass = '';
     protected $template = '';
 
-    public function id()
+    public function id() : string
     {
         return $this->type;
     }
 
-    public function isLayout()
+    public function isLayout() : bool
     {
         return $this->layout;
     }
 
-    public function formTypeClass()
+    public function formTypeClass() : string
     {
         return $this->formTypeClass;
     }
 
-    public function template()
+    public function template() : string
     {
         return $this->template;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_type');

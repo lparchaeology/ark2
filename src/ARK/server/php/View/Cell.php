@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK View Cell
+ * ARK View Cell.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,17 +25,15 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\View;
 
+use ARK\Map\Map;
 use ARK\Model\EnabledTrait;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\Service;
-use ARK\View\ElementInterface;
 use ARK\Vocabulary\Vocabulary;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
@@ -45,131 +43,131 @@ class Cell implements ElementInterface
     use EnabledTrait;
     use KeywordTrait;
 
-    protected $group = null;
+    protected $group;
     protected $row = 0;
     protected $col = 0;
     protected $seq = 0;
-    protected $itemType = null;
-    protected $element = null;
-    protected $name = null;
-    protected $width = null;
-    protected $map = null;
-    protected $vocabulary = null;
-    protected $label = null;
-    protected $placeholder = null;
-    protected $choices = null;
-    protected $required = null;
-    protected $mode = null;
-    protected $sanitise = null;
-    protected $value = null;
-    protected $parameter = null;
-    protected $format = null;
-    protected $display = null;
-    protected $template = null;
-    protected $options = null;
-    protected $optionsArray = null;
+    protected $itemType = '';
+    protected $element;
+    protected $name = '';
+    protected $width = 0;
+    protected $map;
+    protected $vocabulary;
+    protected $label = false;
+    protected $placeholder = false;
+    protected $choices = false;
+    protected $required = false;
+    protected $mode = '';
+    protected $sanitise = '';
+    protected $value = '';
+    protected $parameter = '';
+    protected $format = '';
+    protected $display = '';
+    protected $template = '';
+    protected $options = '';
+    protected $optionsArray;
 
-    public function group()
+    public function group() : Element
     {
         return $this->group;
     }
 
-    public function row()
+    public function row() : int
     {
         return $this->row;
     }
 
-    public function col()
+    public function col() : int
     {
         return $this->col;
     }
 
-    public function seq()
+    public function seq() : int
     {
         return $this->seq;
     }
 
-    public function itemType()
+    public function itemType() : string
     {
         return $this->itemType;
     }
 
-    public function element()
+    public function element() : Element
     {
         return $this->element;
     }
 
-    public function map()
+    public function map() : Map
     {
         return $this->map;
     }
 
-    public function vocabulary()
+    public function vocabulary() : Vocabulary
     {
         return $this->vocabulary;
     }
 
-    public function formName()
+    public function formName() : string
     {
         return $this->name;
     }
 
-    public function width()
+    public function width() : int
     {
         return $this->width;
     }
 
-    public function showLabel()
+    public function showLabel() : bool
     {
         return $this->label;
     }
 
-    public function showPlaceholder()
+    public function showPlaceholder() : bool
     {
         return $this->placeholder;
     }
 
-    public function showChoices()
+    public function showChoices() : bool
     {
         return $this->choices;
     }
 
-    public function isRequired()
+    public function isRequired() : bool
     {
         return $this->required;
     }
 
-    public function mode()
+    public function mode() : string
     {
         return $this->mode;
     }
 
-    public function sanitise()
+    public function sanitise() : string
     {
         return $this->sanitise;
     }
 
-    public function valueModus()
+    public function valueModus() : string
     {
         return $this->value;
     }
 
-    public function parameterModus()
+    public function parameterModus() : string
     {
         return $this->parameter;
     }
 
-    public function formatModus()
+    public function formatModus() : string
     {
         return $this->format;
     }
 
-    public function template()
+    public function template() : string
     {
         return $this->template;
     }
 
-    public function buildState($data, array $state)
+    public function buildState($data, iterable $state)
     {
         $state['name'] = $this->name;
         $state['label'] = $this->label;
@@ -206,12 +204,12 @@ class Cell implements ElementInterface
         return $state;
     }
 
-    public function buildData($data, array $state)
+    public function buildData($data, iterable $state) : iterable
     {
         return $data;
     }
 
-    public function buildOptions($data, array $state, array $options = [])
+    public function buildOptions($data, iterable $state, iterable $options = []) : iterable
     {
         if ($this->optionsArray === null) {
             $this->optionsArray = json_decode($this->options, true);
@@ -223,7 +221,7 @@ class Cell implements ElementInterface
         return $options;
     }
 
-    public function buildForms($data, array $state, array $options)
+    public function buildForms($data, iterable $state, iterable $options) : iterable
     {
         //dump('BUILD CELL : '.$this->element->formName());
         if ($this->element->type()->isLayout()) {
@@ -233,7 +231,7 @@ class Cell implements ElementInterface
         return [];
     }
 
-    public function buildForm(FormBuilderInterface $builder, $data, array $state, array $options = [])
+    public function buildForm(FormBuilderInterface $builder, $data, iterable $state, iterable $options = []) : void
     {
         //dump('BUILD CELL FORM : '.$this->element->formName());
         //dump($data);
@@ -246,7 +244,7 @@ class Cell implements ElementInterface
         $this->element->buildForm($builder, $data, $state, $options);
     }
 
-    public function renderForm($data, array $state, FormView $form = null)
+    public function renderForm($data, iterable $state, FormView $form = null) : string
     {
         //dump('RENDER CELL FORM : '.$this->element->formName());
         //dump($state);
@@ -255,7 +253,7 @@ class Cell implements ElementInterface
         return $this->element->renderForm($data, $state, $form);
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_cell');

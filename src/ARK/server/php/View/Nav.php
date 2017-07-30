@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Table View
+ * ARK Table View.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,36 +25,40 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\View;
 
-use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
+use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Bus\NavAddMessage;
-use ARK\View\Element;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Tree\Entity\Repository\ClosureTreeRepository;
-use Symfony\Component\Form\FormView;
 
 class Nav extends Element
 {
-    protected $parent = null;
+    protected $parent;
     protected $level = 0;
     protected $seq = 0;
     protected $icon = '';
     protected $route = '';
     protected $uri = '';
     protected $seperator = false;
-    protected $children = null;
+    protected $children;
 
-    public function __construct($element, $parent = null, $seq = 0, $separator = false, $route = null, $uri = null, $icon = null)
-    {
+    public function __construct(
+        string $element,
+        $parent = null,
+        int $seq = 0,
+        bool $separator = false,
+        string $route = null,
+        string $uri = null,
+        string $icon = null
+    ) {
         parent::__construct($element, 'nav');
-        $this->parent = (is_string($parent) ? ORM::find(Nav::class, $parent) : $parent);
+        $this->parent = (is_string($parent) ? ORM::find(self::class, $parent) : $parent);
         $this->seq = $seq;
         $this->separator = $separator;
         $this->route = $route;
@@ -63,47 +67,47 @@ class Nav extends Element
         $this->children = new ArrayCollection();
     }
 
-    public function parent()
+    public function parent() : Nav
     {
         return $this->parent;
     }
 
-    public function children()
+    public function children() : ArrayCollection
     {
         return $this->children;
     }
 
-    public function hasChildren()
+    public function hasChildren() : bool
     {
         return $this->children && $this->children->count() > 0;
     }
 
-    public function hierarchy()
+    public function hierarchy() : ArrayCollection
     {
-        return ORM::repository(Nav::class)->getChildren($this, false, 'seq');
+        return ORM::repository(self::class)->getChildren($this, false, 'seq');
     }
 
-    public function level()
+    public function level() : int
     {
         return $this->level;
     }
 
-    public function sequence()
+    public function sequence() : int
     {
         return $this->seq;
     }
 
-    public function icon()
+    public function icon() : string
     {
         return $this->icon;
     }
 
-    public function route()
+    public function route() : string
     {
         return $this->route;
     }
 
-    public function uri()
+    public function uri() : string
     {
         if ($this->route) {
             return Service::path($this->route);
@@ -111,17 +115,25 @@ class Nav extends Element
         return $this->uri;
     }
 
-    public function isSeperator()
+    public function isSeperator() : bool
     {
         return $this->seperator;
     }
 
-    public static function fromMessage(NavAddMessage $msg)
+    public static function fromMessage(NavAddMessage $msg) : Nav
     {
-        return new Nav($msg->nav(), $msg->parent(), $msg->sequence(), $msg->separator(), $msg->route(), $msg->uri(), $msg->icon());
+        return new self(
+            $msg->nav(),
+            $msg->parent(),
+            $msg->sequence(),
+            $msg->separator(),
+            $msg->route(),
+            $msg->uri(),
+            $msg->icon()
+        );
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Joined Table Inheritance
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_nav');
@@ -135,14 +147,14 @@ class Nav extends Element
         $builder->addField('seperator', 'boolean');
         $builder->addStringField('template', 100);
 
-        $builder->addManyToOneField('parent', Nav::class, 'parent', 'element', true, 'children');
-        $builder->addOneToMany('children', Nav::class, 'parent');
+        $builder->addManyToOneField('parent', self::class, 'parent', 'element', true, 'children');
+        $builder->addOneToMany('children', self::class, 'parent');
     }
 
-    public static function readExtendedMetadata(array &$config)
+    public static function readExtendedMetadata(iterable &$config) : void
     {
         $config['strategy'] = 'closure';
-        $config['closure'] = 'ARK\View\Tree';
+        $config['closure'] = Tree::class;
         $config['parent'] = 'parent';
         $config['sortByField'] = 'seq';
         $config['level'] = 'level';

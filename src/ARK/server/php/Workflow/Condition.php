@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Workflow Condition
+ * ARK Workflow Condition.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,43 +25,38 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Workflow;
 
-use ARK\Actor\Actor;
 use ARK\Model\Item;
-use ARK\Model\Schema\SchemaAttribute;
 use ARK\Model\LocalText;
-use ARK\ORM\ClassMetadataBuilder;
+use ARK\Model\Schema\SchemaAttribute;
 use ARK\ORM\ClassMetadata;
-use ARK\Workflow\Action;
-use ARK\Workflow\Permission;
-use ARK\Workflow\Role;
+use ARK\ORM\ClassMetadataBuilder;
 use ARK\Vocabulary\Term;
 
 class Condition
 {
-    const PASS = true;
-    const FAIL = false;
+    public const PASS = true;
+    public const FAIL = false;
 
     protected $schma = '';
     protected $actionName = '';
-    protected $action = null;
+    protected $action;
     protected $type = '';
     protected $attributeName = '';
-    protected $attribute = null;
+    protected $attribute;
     protected $operator = 'is';
     protected $grp = 0;
     protected $value = '';
 
-    public function group()
+    public function group() : int
     {
         return $this->grp;
     }
 
-    public function isGranted(Item $item)
+    public function isGranted(Item $item) : bool
     {
         $value = $item->value($this->attribute->name());
         if ($value instanceof Term) {
@@ -70,13 +65,13 @@ class Condition
         if ($value instanceof LocalText) {
             $value = $value->content();
         }
-        if ($this->operator == 'not') {
-            return ($value !== $this->value ? self::PASS : self::FAIL);
+        if ($this->operator === 'not') {
+            return $value !== $this->value ? self::PASS : self::FAIL;
         }
-        return ($value === $this->value ? self::PASS : self::FAIL);
+        return $value === $this->value ? self::PASS : self::FAIL;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Joined Table Inheritance
         $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_condition');

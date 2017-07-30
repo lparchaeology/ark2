@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -30,63 +30,62 @@
 namespace ARK\Database;
 
 use ARK\ARK;
-use ARK\Database\Connection;
 use Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Schema\Schema;
 use DoctrineXml\Parser;
 
 class AdminConnection extends Connection
 {
-    public function disableForeignKeyChecks()
+    public function disableForeignKeyChecks() : void
     {
         // TODO Check Postgres and SQLite
         $this->executeQuery('SET FOREIGN_KEY_CHECKS=0');
     }
 
-    public function enableForeignKeyChecks()
+    public function enableForeignKeyChecks() : void
     {
         // TODO Check Postgres and SQLite
         $this->executeQuery('SET FOREIGN_KEY_CHECKS=1');
     }
 
-    public function createDatabase(string $database)
+    public function createDatabase(string $database) : void
     {
         $this->getSchemaManager()->createDatabase($database);
         // Set MySQL default charset and collation to utf8
-        if ($this->platform()->getName() == 'mysql') {
+        if ($this->platform()->getName() === 'mysql') {
             $this->query("ALTER DATABASE $database CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
         }
     }
 
-    public function listDatabases()
+    public function listDatabases() : iterable
     {
         return $this->getSchemaManager()->listDatabases();
     }
 
-    public function databaseExists(string $database)
+    public function databaseExists(string $database) : bool
     {
-        return in_array($database, $this->getSchemaManager()->listDatabases());
+        return in_array($database, $this->getSchemaManager()->listDatabases(), true);
     }
 
-    public function schema()
+    public function schema() : Schema
     {
         return $this->getSchemaManager()->createSchema();
     }
 
-    public function loadSql(string $sqlPath)
+    public function loadSql(string $sqlPath) : void
     {
         $this->disableForeignKeyChecks();
         $this->executeUpdate(file_get_contents($sqlPath));
         $this->enableForeignKeyChecks();
     }
 
-    public function loadSchema(string $schemaPath)
+    public function loadSchema(string $schemaPath) : void
     {
         $schema = Parser::fromFile($schemaPath, $this->platform());
         $this->createSchema($schema);
     }
 
-    public function createSchema(Schema $schema)
+    public function createSchema(Schema $schema) : void
     {
         $this->disableForeignKeyChecks();
         // TODO More efficient way???
@@ -98,43 +97,46 @@ class AdminConnection extends Connection
         $this->enableForeignKeyChecks();
     }
 
-    public function extractSchema(string $schemaPath, bool $overwrite = true)
+    public function extractSchema(string $schemaPath, bool $overwrite = true) : void
     {
         SchemaWriter::fromConnection($this, $schemaPath, $overwrite);
     }
 
-    public function table(string $table)
+    public function table(string $table) : Table
     {
         return $this->getSchemaManager()->listTableDetails($table);
     }
 
-    public function listTables()
+    public function listTables() : iterable
     {
         return $this->getSchemaManager()->listTables();
     }
 
-    public function listTableNames()
+    public function listTableNames() : iterable
     {
         return $this->getSchemaManager()->listTableNames();
     }
 
-    public function tableExists(string $table)
+    public function tableExists(string $table) : bool
     {
-        return in_array($table, $this->getSchemaManager()->listTableNames());
+        return in_array($table, $this->getSchemaManager()->listTableNames(), true);
     }
 
-    public function createItemTable(string $module)
+    public function createItemTable(string $module) : void
     {
         $table = 'ark_item_'.$module;
         if ($this->tablesExist($table)) {
             throw new \Exception('Table exists!');
         }
-        $schema = Parser::fromFile(ARK::namespaceDir('ARK').'/server/schema/database/ark_item_table.xml', $this->platform());
+        $schema = Parser::fromFile(
+            ARK::namespaceDir('ARK').'/server/schema/database/ark_item_table.xml',
+            $this->platform()
+        );
         $schema->renameTable('ark_item_table', $table);
         $this->getSchemaManager()->createTable($schema->getTable($table));
     }
 
-    public function listUsers(bool $identity = false)
+    public function listUsers(bool $identity = false) : iterable
     {
         switch ($this->platform()->getName()) {
             case 'mysql':
@@ -159,18 +161,18 @@ class AdminConnection extends Connection
         }
     }
 
-    public function userExists(string $user)
+    public function userExists(string $user) : bool
     {
-        return in_array($user, $this->listUsers());
+        return in_array($user, $this->listUsers(), true);
     }
 
-    public function createUser(string $user, string $password)
+    public function createUser(string $user, string $password) : void
     {
         switch ($this->platform()->getName()) {
             case 'mysql':
                 $sql = 'CREATE USER ?@? IDENTIFIED BY ?';
                 $host = $this->getHost();
-                if ($host == '127.0.0.1' || $host == 'localhost') {
+                if ($host === '127.0.0.1' || $host === 'localhost') {
                     $this->executeUpdate($sql, [$user, '127.0.0.1', $password]);
                     $this->executeUpdate($sql, [$user, 'localhost', $password]);
                 } else {
@@ -187,17 +189,17 @@ class AdminConnection extends Connection
         }
     }
 
-    public function grantUser(string $user, string $database)
+    public function grantUser(string $user, string $database) : void
     {
         $this->applyPermissions('GRANT', $user, $database);
     }
 
-    public function revokeUser(string $user, string $database)
+    public function revokeUser(string $user, string $database) : void
     {
         $this->applyPermissions('REVOKE', $user, $database);
     }
 
-    public function dropUser(string $user)
+    public function dropUser(string $user) : void
     {
         switch ($this->platform()->getName()) {
             case 'mysql':
@@ -213,10 +215,10 @@ class AdminConnection extends Connection
                 return;
         }
 
-        return $this->executeUpdate($sql, $params);
+        $this->executeUpdate($sql, $params);
     }
 
-    private function applyPermissions(string $action, string $user, string $database)
+    private function applyPermissions(string $action, string $user, string $database) : void
     {
         switch ($this->platform()->getName()) {
             case 'mysql':
@@ -236,7 +238,7 @@ class AdminConnection extends Connection
             $sql = $action.' '.$permission.' '.$clause;
             $this->executeUpdate($sql, $params);
         }
-        if ($this->platform()->getName() == 'mysql') {
+        if ($this->platform()->getName() === 'mysql') {
             $this->executeUpdate('FLUSH PRIVILEGES');
         }
     }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Translation Add Command
+ * ARK Translation Add Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,44 +21,42 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Translation\Bus;
 
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\Translation\Command\TranslationAddMessage;
 use ARK\Translation\Domain;
 use ARK\Translation\Language;
-use ARK\Translation\Parameter;
 use ARK\Translation\Message;
+use ARK\Translation\Parameter;
 use ARK\Translation\Role;
 use ARK\Translation\Translation;
 
 class TranslationAddHandler
 {
-    public function __invoke(TranslationAddMessage $msg)
+    public function __invoke(TranslationAddMessage $msg) : void
     {
         // Validate / Defaults
         $domain = ORM::find(Domain::class, $msg->domain() ?: 'core');
         if (!$domain) {
             // TODO Proper error
-            throw new \Exception;
+            throw new \Exception();
         }
         $role = ORM::find(Role::class, $msg->role() ?: 'default');
         if (!$role) {
             // TODO Proper error
-            throw new \Exception;
+            throw new \Exception();
         }
         $language = ORM::find(Language::class, $msg->language() ?: Service::locale());
         if (!$language || !$language->usedForMarkup()) {
             // TODO Proper error
-            throw new \Exception;
+            throw new \Exception();
         }
 
         // Create

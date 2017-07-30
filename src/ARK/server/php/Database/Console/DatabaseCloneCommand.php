@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Ark Clone Database Console Command
+ * Ark Clone Database Console Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,18 +25,16 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Database\Console;
 
 use ARK\ARK;
-use ARK\Database\Console\DatabaseCommand;
 use Doctrine\DBAL\DBALException;
 
 class DatabaseCloneCommand extends DatabaseCommand
 {
-    protected function configure()
+    protected function configure() : void
     {
         $this->setName('database:clone')
              ->setDescription('Clone an existing database')
@@ -46,7 +44,7 @@ class DatabaseCloneCommand extends DatabaseCommand
              ->addOptionalArgument('new_database', 'The new database');
     }
 
-    protected function doExecute()
+    protected function doExecute() : void
     {
         $sourceServer = $this->getArgument('source');
         $destinationServer = $this->getArgument('destination');
@@ -63,7 +61,7 @@ class DatabaseCloneCommand extends DatabaseCommand
         if ($sourceDatabase) {
             if (!$source->databaseExists($sourceDatabase)) {
                 $this->write('Source database does not exist!');
-                return $this->errorCode();
+                return;
             }
         } else {
             $sourceDatabase = $this->chooseDatabase($source, 'Please choose the database to clone');
@@ -86,7 +84,7 @@ class DatabaseCloneCommand extends DatabaseCommand
         }
         if ($destination->databaseExists($destinationDatabase)) {
             $this->write('Destination database already exists!');
-            return $this->errorCode();
+            return;
         }
 
         // Create the Destination Database
@@ -94,7 +92,7 @@ class DatabaseCloneCommand extends DatabaseCommand
             $destination->createDatabase($destinationDatabase);
         } catch (DBALException $e) {
             $this->writeException("Create database $destinationDatabase failed", $e);
-            return $this->errorCode();
+            return;
         }
         $this->write("Destination database $destinationDatabase created.");
 
@@ -111,20 +109,20 @@ class DatabaseCloneCommand extends DatabaseCommand
         $destination = $this->getConnection($config);
 
         // Create the Destination Schema
-        $this->write("Creating database schema, please wait...");
+        $this->write('Creating database schema, please wait...');
         $schema = $source->schema();
         try {
             $destination->createSchema($schema);
         } catch (DBALException $e) {
             $this->writeException('Create database schema failed', $e);
-            return $this->errorCode();
+            return;
         }
-        $this->write("Database schema created.");
+        $this->write('Database schema created.');
 
         // Copy the data
-        $this->write("Copying data, please wait...");
+        $this->write('Copying data, please wait...');
         $source->beginTransaction();
-        $destination->executeQuery("SET FOREIGN_KEY_CHECKS=0");
+        $destination->executeQuery('SET FOREIGN_KEY_CHECKS=0');
         $destination->beginTransaction();
         try {
             $tables = $schema->getTables();
@@ -139,11 +137,11 @@ class DatabaseCloneCommand extends DatabaseCommand
                 }
             }
             $destination->commit();
-            $destination->executeQuery("SET FOREIGN_KEY_CHECKS=1");
+            $destination->executeQuery('SET FOREIGN_KEY_CHECKS=1');
         } catch (DBALException $e) {
             $destination->rollBack();
             $this->writeException('Copy database failed', $e);
-            return $this->errorCode();
+            return;
         }
 
         // Done!
@@ -151,6 +149,5 @@ class DatabaseCloneCommand extends DatabaseCommand
         $destination->close();
         $this->write("SUCCESS: Database $sourceDatabase cloned.");
         $this->result = $config;
-        return $this->successCode();
     }
 }

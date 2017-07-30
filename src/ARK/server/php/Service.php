@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Service Provider
+ * ARK Service Provider.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,177 +21,203 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2017 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK;
 
-use ARK\Error\Error;
-use ARK\Error\ErrorException;
+use ARK\Database\Database;
 use ARK\Framework\Application;
+use ARK\Security\Security;
+use ARK\Spatial\Spatial;
+use ARK\View\View;
+use Doctrine\ORM\EntityManagerInterface;
+use League\Flysystem\Filesystem;
+use League\Glide\Server;
+use Monolog\Logger;
+use Psr\Log\LoggerInterface;
+use Seld\JsonLint\JsonParser;
+use SimpleBus\Message\Bus\MessageBus;
+use Swift;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Workflow\Registry;
 
 class Service
 {
     private static $app = null;
 
-    public static function init(Application $app)
+    public static function init(Application $app) : void
     {
         self::$app = $app;
     }
 
-    public static function configDir()
+    public static function configDir() : string
     {
         return self::$app['dir.config'];
     }
 
-    public static function path($name, $parameters = [], $relative = false)
+    public static function path(string $name, iterable $parameters = [], bool $relative = false) : string
     {
-        return self::$app['url_generator']->generate($name, $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
+        return self::$app['url_generator']->generate(
+            $name,
+            $parameters,
+            $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH
+        );
     }
 
-    public static function url($name, $parameters = [], $schemeRelative = false)
+    public static function url(string $name, iterable $parameters = [], bool $schemeRelative = false) : string
     {
-        return self::$app['url_generator']->generate($name, $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
+        return self::$app['url_generator']->generate(
+            $name,
+            $parameters,
+            $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL
+        );
     }
 
-    public static function redirect($url, $status = 302)
+    public static function redirect(iterable $url, int $status = 302) : Response
     {
         return self::$app->redirect($url, $status);
     }
 
-    public static function redirectPath($path, $parmameters = [], $status = 302)
+    public static function redirectPath(string $path, iterable $parmameters = [], int $status = 302) : Response
     {
         return self::$app->redirect(self::path($path, $parmameters), $status);
     }
 
-    public static function imageServer()
+    public static function imageServer() : Server
     {
         return self::$app['glide.server'];
     }
 
-    public static function imageResponse($path, array $parameters = [])
+    public static function imageResponse(string $path, iterable $parameters = []) : Response
     {
         return self::$app['glide.server']->getImageResponse($path, $parameters);
     }
 
-    public static function forms()
+    public static function forms() : FormFactory
     {
         return self::$app['form.factory'];
     }
 
-    public static function logger()
+    public static function logger() : LoggerInterface
     {
         return self::$app['logger'];
     }
 
-    public static function log($message, array $context = [], $level = Logger::INFO)
+    public static function log(string $message, iterable $context = [], $level = Logger::INFO) : bool
     {
         return self::$app->log($message, $context, $level);
     }
 
-    public static function logError($message, array $context = [])
+    public static function logError($message, iterable $context = []) : bool
     {
         return self::$app->log($message, $context, Logger::ERROR);
     }
 
-    public static function logInfo($message, array $context = [])
+    public static function logInfo($message, iterable $context = []) : bool
     {
         return self::$app->log($message, $context, Logger::INFO);
     }
 
-    public static function logDebug($message, array $context = [])
+    public static function logDebug($message, iterable $context = []) : bool
     {
         return self::$app->log($message, $context, Logger::DEBUG);
     }
 
-    public static function filesystem($mount = 'data')
+    public static function filesystem($mount = 'data') : Filesystem
     {
         return self::$app['flysystems'][$mount];
     }
 
-    public static function mailer()
+    public static function mailer() : Swift
     {
         return self::$app['mailer'];
     }
 
-    public static function translate($id, $role = 'default', array $parameters = [], $domain = 'messages', $locale = null)
-    {
+    public static function translate(
+        string $id,
+        string $role = 'default',
+        iterable $parameters = [],
+        string $domain = 'messages',
+        string $locale = null
+    ) : string {
         return self::$app->translate($id, $role, $parameters, $domain, $locale);
     }
 
-    public static function translateChoice($id, $number, $role = 'default', array $parameters = [], $domain = 'messages', $locale = null)
-    {
+    public static function translateChoice(
+        string $id,
+        int $number,
+        string $role = 'default',
+        iterable $parameters = [],
+        string $domain = 'messages',
+        string $locale = null
+    ) : string {
         return self::$app->translateChoice($id, $number, $role, $parameters, $domain, $locale);
     }
 
-    public static function entityManager($em)
+    public static function entityManager(string $em) : EntityManagerInterface
     {
         return self::$app['orm.ems'][$em];
     }
 
-    public static function locale()
+    public static function locale() : string
     {
         return self::$app['locale'];
     }
 
-    public static function localeFallbacks()
+    public static function localeFallbacks() : iterable
     {
         return self::$app['locale_fallbacks'];
     }
 
-    public static function jsonLinter()
+    public static function jsonLinter() : JsonParser
     {
         return self::$app['json.linter'];
     }
 
-    public static function jsonSchema()
-    {
-        return self::$app['json.schema'];
-    }
-
-    public static function bus()
+    public static function bus() : MessageBus
     {
         return self::$app['bus'];
     }
 
-    public static function database()
+    public static function database() : Database
     {
         return self::$app['database'];
     }
 
-    public static function security()
+    public static function security() : Security
     {
         return self::$app['security'];
     }
 
-    public static function serializer()
+    public static function serializer() : Serializer
     {
         return self::$app['serializer'];
     }
 
-    public static function session()
+    public static function session() : SessionInterface
     {
         return self::$app['session'];
     }
 
-    public static function spatial()
+    public static function spatial() : Spatial
     {
         return self::$app['spatial'];
     }
 
-    public static function view()
+    public static function view() : View
     {
         return self::$app['view'];
     }
 
-    public static function workflow()
+    public static function workflow() : Registry
     {
         return self::$app['workflow.registry'];
     }

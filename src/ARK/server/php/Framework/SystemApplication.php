@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK System Application
+ * ARK System Application.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -33,7 +33,6 @@ use ARK\ARK;
 use ARK\Framework\Provider\BusServiceProvider;
 use ARK\Framework\Provider\LoggerServiceProvider;
 use ARK\Framework\Provider\MailerServiceProvider;
-use Psr\Log\LogLevel;
 use Silex\Application as SilexApplication;
 use Silex\Application\MonologTrait;
 use Silex\Application\SwiftmailerTrait;
@@ -47,22 +46,14 @@ class SystemApplication extends SilexApplication
 
     public function __construct()
     {
-        error_reporting(E_ALL);
-        ini_set('display_errors', 1);
         Debug::enable();
 
         parent::__construct();
 
         $this['debug'] = true;
-
-        date_default_timezone_set('UTC');
-
         $this->register(new LoggerServiceProvider('console'));
-
-        $this->register(new BusServiceProvider);
-
+        $this->register(new BusServiceProvider());
         $this->register(new MailerServiceProvider());
-
         $this->register(new VarDumperServiceProvider());
     }
 }

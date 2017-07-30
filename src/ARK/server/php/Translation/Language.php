@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Translation Domain Entity
+ * ARK Translation Domain Entity.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Translation;
@@ -40,7 +39,7 @@ class Language
     protected $vocabulary = true;
     protected $text = true;
 
-    public function __construct($code, $markup = true, $vocabulary = true, $text = true)
+    public function __construct(string $code, bool $markup = true, bool $vocabulary = true, bool $text = true)
     {
         $this->language = $code;
         $this->markup = $markup;
@@ -48,27 +47,27 @@ class Language
         $this->text = $text;
     }
 
-    public function code()
+    public function code() : string
     {
         return $this->language;
     }
 
-    public function usedForMarkup()
+    public function usedForMarkup() : bool
     {
         return $this->markup;
     }
 
-    public function usedForVocabulary()
+    public function usedForVocabulary() : bool
     {
         return $this->vocabulary;
     }
 
-    public function usedForText()
+    public function usedForText() : bool
     {
         return $this->text;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_translation_language');
         $builder->addStringKey('language', 10);

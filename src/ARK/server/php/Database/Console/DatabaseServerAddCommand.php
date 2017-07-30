@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Database Server Add Console Command
+ * ARK Database Server Add Console Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,25 +30,20 @@
 namespace ARK\Database\Console;
 
 use ARK\ARK;
-use ARK\Database\Console\DatabaseCommand;
 use ARK\Framework\Console\ProcessTrait;
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\DriverManager;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputOption;
 
 class DatabaseServerAddCommand extends DatabaseCommand
 {
     use ProcessTrait;
 
-    protected function configure()
+    protected function configure() : void
     {
         $this->setName('database:server:add')
              ->setDescription('Add a new database server')
              ->addOptionalArgument('server', 'The server key');
     }
 
-    protected function doExecute()
+    protected function doExecute() : void
     {
         $server = $this->getArgument('server');
         if (!$server) {
@@ -62,7 +57,7 @@ class DatabaseServerAddCommand extends DatabaseCommand
             $servers['servers']['sqlite']['driver'] = 'pdo_sqlite';
         } elseif (isset($servers['servers'][$server])) {
             $output->writeln("\nFAILED: Server already exists, please choose a new name.");
-            return $this->errorCode();
+            return;
         }
 
         // Get the new server details
@@ -88,8 +83,8 @@ class DatabaseServerAddCommand extends DatabaseCommand
         $admin->close();
 
         // Save the new server
-        unset($config['password']);
-        unset($config['wrapperClass']);
+        unset($config['password'], $config['wrapperClass']);
+
         $servers['servers'][$server] = $config;
         if ($default) {
             $servers['default'] = $server;
@@ -97,6 +92,5 @@ class DatabaseServerAddCommand extends DatabaseCommand
         file_put_contents(ARK::serversPath(), json_encode($servers));
         $this->result = $server;
         $this->write("\nServer $server created.");
-        return $this->successCode();
     }
 }

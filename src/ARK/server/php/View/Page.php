@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Page View
+ * ARK Page View.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,34 +25,33 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\View;
 
-use ARK\ORM\ClassMetadataBuilder;
-use ARK\ORM\ClassMetadata;
 use ARK\Actor\Actor;
+use ARK\ORM\ClassMetadata;
+use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
-use ARK\View\Group;
-use ARK\View\Element;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use ARK\Vocabulary\Term;
+use ARK\Workflow\Permission;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class Page extends Element
 {
     protected $visibility = 'restricted';
-    protected $visibilityTerm = null;
-    protected $read = null;
-    protected $update = null;
-    protected $header = null;
-    protected $sidebar = null;
-    protected $content = null;
-    protected $footer = null;
+    protected $visibilityTerm;
+    protected $read;
+    protected $update;
+    protected $header;
+    protected $sidebar;
+    protected $content;
+    protected $footer;
 
-    public function visibility()
+    public function visibility() : Term
     {
         if ($this->visibilityTerm === null) {
             $this->visibilityTerm = ORM::find(Term::class, ['concept' => 'core.visibility', 'term' => $this->visibility]);
@@ -60,52 +59,52 @@ class Page extends Element
         return $this->visibilityTerm;
     }
 
-    public function readPermission()
+    public function readPermission() : Permission
     {
         return $this->read;
     }
 
-    public function updatePermission()
+    public function updatePermission() : Permission
     {
         return $this->update;
     }
 
-    public function header()
+    public function header() : Group
     {
         return $this->header;
     }
 
-    public function sidebar()
+    public function sidebar() : Group
     {
         return $this->sidebar;
     }
 
-    public function content()
+    public function content() : Group
     {
         return $this->content;
     }
 
-    public function footer()
+    public function footer() : Group
     {
         return $this->footer;
     }
 
-    public function buildState($data, array $state)
+    public function buildState($data, iterable $state) : iterable
     {
         $state = array_replace_recursive($this->defaultState(), $state);
         $state = parent::buildState($data, $state);
 
         $mode = $state['workflow']['mode'];
-        if ($this->visibility == 'restricted') {
+        if ($this->visibility === 'restricted') {
             $actor = $state['workflow']['actor'];
-            if ($mode == 'edit' && !$actor->hasPermission($this->updatePermission())) {
+            if ($mode === 'edit' && !$actor->hasPermission($this->updatePermission())) {
                 $mode = 'view';
             }
-            if ($mode == 'view' && !$actor->hasPermission($this->readPermission())) {
+            if ($mode === 'view' && !$actor->hasPermission($this->readPermission())) {
                 $mode = 'deny';
             }
         }
-        if ($this->visibility == 'private') {
+        if ($this->visibility === 'private') {
             // TODO What?
         }
         $state['mode'] = $mode;
@@ -114,13 +113,13 @@ class Page extends Element
         return $state;
     }
 
-    public function renderView($data, array $state, $forms = null)
+    public function renderView($data, iterable $state, iterable $forms = null) : string
     {
         $context = $this->renderContext($data, $state, $forms);
         return Service::view()->renderView($this->template(), $context);
     }
 
-    public function pageContext($data, array $state, $forms = null)
+    public function pageContext($data, iterable $state, iterable $forms = null) : iterable
     {
         $context = $this->buildContext($data, $state);
         $context['page'] = $this;
@@ -140,27 +139,7 @@ class Page extends Element
         return $context;
     }
 
-    private function postedForm($request, $forms)
-    {
-        foreach ($forms as $id => $form) {
-            $name = $form->getName();
-            if ($request->request->has($name)) {
-                $form->getRoot()->handleRequest($request);
-                if ($form->isSubmitted() && $form->isValid()) {
-                    return $form->getRoot();
-                } else {
-                    // TODO Tell it of errors!!!
-                    return null;
-                }
-            }
-            if ($root = $this->postedForm($request, $form)) {
-                return $root;
-            }
-        }
-        return null;
-    }
-
-    public function handleRequest(Request $request, $data, array $state, callable $processForm = null)
+    public function handleRequest(Request $request, $data, iterable $state, callable $processForm = null) : Response
     {
         //dump('PAGE : '.$this->element);
         //dump($this);
@@ -169,14 +148,14 @@ class Page extends Element
         //dump($state);
         $state = $this->buildState($data, $state);
         //dump($state);
-        if ($state['mode'] == 'deny') {
+        if ($state['mode'] === 'deny') {
             throw new AccessDeniedException('core.error.access.denied');
         }
         $options = $this->buildOptions($data, $state, []);
         //dump($options);
         $forms = $this->content->buildForms($data, $state, $options);
         //dump($forms);
-        if ($forms && $request->getMethod() == 'POST') {
+        if ($forms && $request->getMethod() === 'POST') {
             $posted = $this->postedForm($request, $forms);
             if ($posted instanceof Form) {
                 if ($processForm !== null) {
@@ -203,7 +182,7 @@ class Page extends Element
         return $response;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Joined Table Inheritance
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_page');
@@ -220,5 +199,24 @@ class Page extends Element
         $builder->addManyToOneField('sidebar', Group::class, 'sidebar', 'element');
         $builder->addManyToOneField('content', Group::class, 'content', 'element');
         $builder->addManyToOneField('footer', Group::class, 'footer', 'element');
+    }
+
+    private function postedForm(Request $request, iterable $forms)
+    {
+        foreach ($forms as $id => $form) {
+            $name = $form->getName();
+            if ($request->request->has($name)) {
+                $form->getRoot()->handleRequest($request);
+                if ($form->isSubmitted() && $form->isValid()) {
+                    return $form->getRoot();
+                }
+                // TODO Tell it of errors!!!
+                return null;
+            }
+            if ($root = $this->postedForm($request, $form)) {
+                return $root;
+            }
+        }
+        return null;
     }
 }

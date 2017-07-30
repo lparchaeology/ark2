@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Taxonomy Vocabulary
+ * ARK Model Taxonomy Vocabulary.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,24 +25,25 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Vocabulary;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Taxonomy extends Vocabulary
 {
-    protected $taxons = null;
+    protected $taxons;
 
-    public function taxons()
+    public function taxons() : ArrayCollection
     {
-        if (!$this->taxons) {
+        if ($this->taxons === null) {
+            $this->taxons = new ArrayCollection();
             foreach ($this->terms() as $term) {
                 foreach ($term->related() as $related) {
-                    if ($related->depth() == 1) {
-                        $this->taxons[] = $term;
+                    if ($related->depth() === 1) {
+                        $this->taxons->add($term);
                     }
                 }
             }
@@ -50,7 +51,7 @@ class Taxonomy extends Vocabulary
         return $this->taxons;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
     }
 }

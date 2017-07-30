@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Translation Domain Entity
+ * ARK Translation Domain Entity.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,29 +25,26 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Translation;
 
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\Translation\Translation;
-use ARK\Translation\Language;
-use ARK\Translation\Role;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Message
 {
-    protected $language = null;
-    protected $parent = null;
-    protected $role = null;
+    protected $language;
+    protected $key;
+    protected $role;
     protected $keyword = '';
     protected $text = '';
     protected $notes = '';
 
-    public function __construct(Translation $parent, Language $language, Role $role = null)
+    public function __construct(Translation $key, Language $language, Role $role = null)
     {
-        $this->parent = $parent;
+        $this->key = $key;
         $this->language = $language;
         if (!$role) {
             $role = new Role();
@@ -55,67 +52,67 @@ class Message
         $this->role = $role;
     }
 
-    public function keyword()
+    public function keyword() : string
     {
-        return $this->parent->keyword();
+        return $this->key->keyword();
     }
 
-    public function domain()
+    public function domain() : Domain
     {
-        return $this->parent->domain();
+        return $this->key->domain();
     }
 
-    public function language()
+    public function language() : Language
     {
         return $this->language;
     }
 
-    public function role()
+    public function role() : Role
     {
         return $this->role;
     }
 
-    public function text()
+    public function text() : string
     {
         return $this->text;
     }
 
-    public function setText($text)
+    public function setText(string $text) : void
     {
         $this->text = $text;
     }
 
-    public function notes()
+    public function notes() : string
     {
         return $this->notes;
     }
 
-    public function setNotes($notes)
+    public function setNotes(string $notes) : void
     {
         $this->notes = $notes;
     }
 
-    public function isPlural()
+    public function isPlural() : bool
     {
         return $this->key->isPlural();
     }
 
-    public function hasParameters()
+    public function hasParameters() : bool
     {
         return $this->key->hasParameters();
     }
 
-    public function parameters()
+    public function parameters() : ArrayCollection
     {
         return $this->key->parameters();
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_translation_message');
-        $builder->addManyToOneKey('language', 'ARK\Translation\Language');
-        $builder->addManyToOneKey('parent', 'ARK\Translation\Translation', 'keyword');
-        $builder->addManyToOneKey('role', 'ARK\Translation\Role');
+        $builder->addManyToOneKey('language', Language::class);
+        $builder->addManyToOneKey('key', Translation::class, 'keyword');
+        $builder->addManyToOneKey('role', Role::class);
         $builder->addStringField('keyword', 100);
         $builder->addStringField('text', 4294967295);
         $builder->addStringField('notes', 4294967295);

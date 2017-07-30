@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Ark Reverse Engineer Database Console Command
+ * Ark Reverse Engineer Database Console Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,25 +25,22 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Database\Console;
 
 use ARK\ARK;
-use ARK\Database\Console\DatabaseCommand;
 use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\DriverManager;
 
 class DatabaseReverseCommand extends DatabaseCommand
 {
-    protected function configure()
+    protected function configure() : void
     {
         $this->setName('database:reverse')
              ->setDescription('Reverse engineer an existing database as DoctrineXML');
     }
 
-    protected function doExecute()
+    protected function doExecute() : void
     {
         $site = $this->askChoice('Please choose the site to reverse engineer', ARK::sites());
         $config = $this->chooseServerConfig();
@@ -54,7 +51,7 @@ class DatabaseReverseCommand extends DatabaseCommand
         $this->reverse($dbprefix, 'user', $config);
     }
 
-    private function reverse(string $prefix, string $name, array $config)
+    private function reverse(string $prefix, string $name, iterable $config) : void
     {
         // Get the Admin Connection
         $dbname = $prefix.$name;
@@ -66,11 +63,10 @@ class DatabaseReverseCommand extends DatabaseCommand
             $admin->extractSchema($path, true);
         } catch (DBALException $e) {
             $this->writeException("FAILED: Extract Schema from database $dbname failed", $e);
-            return $this->errorCode();
+            return;
         }
 
         $admin->close();
         $this->write("SUCCESS: Schema for $dbname extracted to file $path");
-        return $this->successCode();
     }
 }

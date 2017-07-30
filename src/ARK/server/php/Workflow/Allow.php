@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Workflow Action
+ * ARK Workflow Action.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,47 +25,44 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Workflow;
 
 use ARK\Actor\Actor;
 use ARK\Model\KeywordTrait;
-use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
-use ARK\Workflow\Action;
-use ARK\Workflow\Role;
+use ARK\ORM\ClassMetadataBuilder;
 
 class Allow
 {
     use KeywordTrait;
 
-    const GRANT = true;
-    const DENY = false;
-    const ABSTAIN = null;
+    public const GRANT = true;
+    public const DENY = false;
+    public const ABSTAIN = null;
 
     protected $schma = '';
     protected $actionName = '';
-    protected $action = null;
-    protected $role = null;
+    protected $action;
+    protected $role;
     protected $operator = 'is';
 
-    public function role()
+    public function role() : Role
     {
         return $this->role;
     }
 
-    public function isAllowed(Actor $actor)
+    public function isAllowed(Actor $actor) : bool
     {
         $hasRole = $this->role->hasActor($actor);
         if ($hasRole) {
-            return ($this->operator == 'not' ? self::DENY : self::GRANT);
+            return $this->operator === 'not' ? self::DENY : self::GRANT;
         }
         return self::ABSTAIN;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Joined Table Inheritance
         $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_allow');

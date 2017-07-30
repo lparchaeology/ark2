@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Vocabulary Relation
+ * ARK Model Vocabulary Relation.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Vocabulary;
@@ -43,42 +42,42 @@ class Relation
     protected $heirarchy = false;
     protected $associative = false;
 
-    public function id()
+    public function id() : string
     {
         return $this->relation;
     }
 
-    public function notation()
+    public function notation() : string
     {
         return $this->notation;
     }
 
-    public function reciprocolRelation()
+    public function reciprocolRelation() : string
     {
         return $this->recipricol;
     }
 
-    public function recipricolNotation()
+    public function recipricolNotation() : string
     {
         return $this->recipricolNotation;
     }
 
-    public function isEquivalence()
+    public function isEquivalence() : bool
     {
         return $this->equivalence;
     }
 
-    public function isHeirarchy()
+    public function isHeirarchy() : bool
     {
         return $this->heirarchy;
     }
 
-    public function isAssociative()
+    public function isAssociative() : bool
     {
         return $this->associative;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_vocabulary_relation');

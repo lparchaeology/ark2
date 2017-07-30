@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Translation Add Command
+ * ARK Translation Add Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,27 +21,33 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\View\Bus;
 
 class NavAddMessage
 {
-    protected $nav = null;
-    protected $parent = null;
+    protected $nav = '';
+    protected $parent = '';
     protected $seq = 0;
     protected $seperator = false;
-    protected $route = null;
-    protected $uri = null;
-    protected $icon = null;
+    protected $route = '';
+    protected $uri = '';
+    protected $icon = '';
 
-    public function __construct($nav, $parent = null, $seq = 0, $separator = false, $route = null, $uri = null, $icon = null)
-    {
+    public function __construct(
+        string $nav,
+        string $parent = null,
+        int $seq = 0,
+        bool $separator = false,
+        string $route = null,
+        string $uri = null,
+        string $icon = null
+    ) {
         $this->nav = $nav;
         $this->parent = $parent;
         $this->seq = $seq;
@@ -51,37 +57,37 @@ class NavAddMessage
         $this->icon = $icon;
     }
 
-    public function nav()
+    public function nav() : string
     {
         return $this->nav;
     }
 
-    public function parent()
+    public function parent() : string
     {
         return $this->parent;
     }
 
-    public function sequence()
+    public function sequence() : int
     {
         return $this->seq;
     }
 
-    public function separator()
+    public function separator() : bool
     {
         return $this->separator;
     }
 
-    public function route()
+    public function route() : string
     {
         return $this->route;
     }
 
-    public function uri()
+    public function uri() : string
     {
         return $this->uri;
     }
 
-    public function icon()
+    public function icon() : string
     {
         return $this->icon;
     }

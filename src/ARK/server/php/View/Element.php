@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK View Element
+ * ARK View Element.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,53 +25,46 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\View;
 
 use ARK\Model\EnabledTrait;
 use ARK\Model\KeywordTrait;
-use ARK\Model\Schema\SchemaAttribute;
-use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ClassMetadata;
+use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\View\Cell;
-use ARK\View\ElementInterface;
-use ARK\View\Type;
 use ARK\Vocabulary\Vocabulary;
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormView;
 
 abstract class Element implements ElementInterface
 {
     use EnabledTrait;
     use KeywordTrait;
 
-    protected $element = null;
-    protected $name = null;
-    protected $type = null;
-    protected $formTypeClass = null;
-    protected $template = null;
-    protected $mode = null;
+    protected $element = '';
+    protected $name = '';
+    protected $type;
+    protected $formTypeClass = '';
+    protected $template = '';
+    protected $mode = '';
 
-    public function __construct($element, $type, $class = null, $template = null)
+    public function __construct(string $element, $type, string $formTypeClass = null, string $template = null)
     {
         $this->element = $element;
         $this->type = (is_string($type) ? ORM::find(Type::class, $type) : $type);
-        $this->class = $class;
+        $this->formTypeClass = $formTypeClass;
         $this->template = $template;
     }
 
-    public function id()
+    public function id() : string
     {
         return $this->element;
     }
 
-    public function formName()
+    public function formName() : string
     {
         return $this->name;
         if ($this->name) {
@@ -80,12 +73,12 @@ abstract class Element implements ElementInterface
         return $this->element;
     }
 
-    public function type()
+    public function type() : Type
     {
         return $this->type;
     }
 
-    public function template()
+    public function template() : string
     {
         if ($this->template) {
             return $this->template;
@@ -93,20 +86,20 @@ abstract class Element implements ElementInterface
         return $this->type->template();
     }
 
-    public function mode()
+    public function mode() : string
     {
         return $this->mode;
     }
 
-    public function displayMode($parentMode)
+    public function displayMode($parentMode) : string
     {
-        if ($this->mode !== null && $parentMode == 'edit') {
+        if ($this->mode !== null && $parentMode === 'edit') {
             return $this->mode;
         }
         return $parentMode;
     }
 
-    public function buildData($data, array $state)
+    public function buildData($data, iterable $state)
     {
         $name = (isset($state['name'])) ? $state['name'] : null;
         if ($name && is_array($data) && array_key_exists($name, $data)) {
@@ -119,10 +112,10 @@ abstract class Element implements ElementInterface
             return null;
         }
         $name = $this->formName();
-        return (is_array($data) && array_key_exists($name, $data) ? $data[$name] : $data);
+        return is_array($data) && array_key_exists($name, $data) ? $data[$name] : $data;
     }
 
-    public function formTypeClass()
+    public function formTypeClass() : string
     {
         if ($this->formTypeClass) {
             return $this->formTypeClass;
@@ -130,7 +123,7 @@ abstract class Element implements ElementInterface
         return $this->type->formTypeClass();
     }
 
-    public function defaultState($route = null)
+    public function defaultState($route = null) : iterable
     {
         $state['actor'] = null;
         $state['page'] = null;
@@ -152,7 +145,7 @@ abstract class Element implements ElementInterface
         return $state;
     }
 
-    public function buildState($data, array $state)
+    public function buildState($data, iterable $state) : iterable
     {
         $state['name'] = $this->formName();
         $state['mode'] = $this->displayMode($state['mode']);
@@ -160,32 +153,22 @@ abstract class Element implements ElementInterface
         return $state;
     }
 
-    public function defaultOptions($route = null)
+    public function defaultOptions($route = null) : iterable
     {
         return [];
     }
 
-    public function buildOptions($data, array $state, array $options = [])
+    public function buildOptions($data, iterable $state, iterable $options = []) : iterable
     {
         $options = array_replace_recursive($this->defaultOptions(), $options);
         if ($state['label']) {
             $options['label'] = ($state['keyword'] ? $state['keyword'] : $this->keyword());
         }
-        $options['required'] = ($state['mode'] == 'view' ? false : $state['required']);
+        $options['required'] = ($state['mode'] === 'view' ? false : $state['required']);
         return $options;
     }
 
-    protected function vocabularyOptions(Vocabulary $vocabulary, array $options = [])
-    {
-        $options['choices'] = $vocabulary->terms();
-        $options['choice_value'] = 'name';
-        $options['choice_name'] = 'name';
-        $options['choice_label'] = 'keyword';
-        $options['placeholder'] = $vocabulary->keyword();
-        return $options;
-    }
-
-    public function defaultContext()
+    public function defaultContext() : iterable
     {
         $context['state'] = null;
         $context['data'] = null;
@@ -194,7 +177,7 @@ abstract class Element implements ElementInterface
         return $context;
     }
 
-    public function buildContext($data, array $state, FormView $form = null)
+    public function buildContext($data, iterable $state, FormView $form = null) : iterable
     {
         $context = $this->defaultContext();
         $state = $this->buildState($data, $state);
@@ -202,16 +185,16 @@ abstract class Element implements ElementInterface
         $context['data'] = $this->buildData($data, $state);
         $name = $state['name'];
         if ($form === null) {
-            $context['form'] = (isset($state['forms'][$name]) ? $state['forms'][$name] : $form);
+            $context['form'] = ($state['forms'][$name] ?? $form);
         } else {
-            $context['form'] = (isset($form[$name]) ? $form[$name] : $form);
+            $context['form'] = ($form[$name] ?? $form);
         }
         if ($state['label']) {
             $context['label'] = ($state['keyword'] ? $state['keyword'] : $this->keyword());
         } else {
             $context['label'] = null;
         }
-        if ($state['modus'] == 'active') {
+        if ($state['modus'] === 'active') {
             if ($state['keyword']) {
                 $context['help'] = $state['keyword'];
             } elseif ($this->keyword()) {
@@ -221,7 +204,7 @@ abstract class Element implements ElementInterface
         return $context;
     }
 
-    public function buildForm(FormBuilderInterface $builder, $data, array $state, array $options = [])
+    public function buildForm(FormBuilderInterface $builder, $data, iterable $state, iterable $options = []) : void
     {
         //dump('BUILD FORM : '.get_class($this).' '.$this->id().' '.$this->keyword());
         //dump($this);
@@ -230,7 +213,7 @@ abstract class Element implements ElementInterface
         //dump($options);
         $state = $this->buildState($data, $state);
         //dump($state);
-        if ($state['mode'] == 'deny') {
+        if ($state['mode'] === 'deny') {
             return;
         }
         $data = $this->buildData($data, $state);
@@ -243,35 +226,20 @@ abstract class Element implements ElementInterface
         $builder->add($elementBuilder);
     }
 
-    protected function formBuilder($data, $state, $options = [])
-    {
-        return Service::forms()->createNamedBuilder(
-            $state['name'],
-            $this->formTypeClass(),
-            $data,
-            $options
-        );
-    }
-
-    public function renderForm($data, array $state, FormView $form = null)
+    public function renderForm($data, iterable $state, FormView $form = null) : string
     {
         //dump('RENDER FORM : '.get_class($this).' '.$this->id().' '.$this->keyword());
         //dump($state);
         //dump($form);
         $context = $this->buildContext($data, $state, $form);
         //dump($context);
-        if ($context['state']['mode'] == 'deny') {
-            return;
+        if ($context['state']['mode'] === 'deny') {
+            return '';
         }
         return Service::view()->renderView($context['state']['template'], $context);
     }
 
-    public function defaultView($data, array $state)
-    {
-        return null;
-    }
-
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_element');
@@ -291,5 +259,25 @@ abstract class Element implements ElementInterface
 
         // Relationships
         $builder->addManyToOneField('type', Type::class, 'type', 'type', false);
+    }
+
+    protected function vocabularyOptions(Vocabulary $vocabulary, iterable $options = []) : iterable
+    {
+        $options['choices'] = $vocabulary->terms();
+        $options['choice_value'] = 'name';
+        $options['choice_name'] = 'name';
+        $options['choice_label'] = 'keyword';
+        $options['placeholder'] = $vocabulary->keyword();
+        return $options;
+    }
+
+    protected function formBuilder($data, $state, $options = []) : FormBuilderInterface
+    {
+        return Service::forms()->createNamedBuilder(
+            $state['name'],
+            $this->formTypeClass(),
+            $data,
+            $options
+        );
     }
 }

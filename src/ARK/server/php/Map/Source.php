@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Map Source
+ * ARK Map Source.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -32,6 +32,7 @@ namespace ARK\Map;
 
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
+use DateTime;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Source
@@ -44,46 +45,46 @@ class Source
     protected $format = '';
     protected $viewClass = '';
     protected $ticket = '';
-    protected $ticketExpiry = null;
+    protected $ticketExpiry;
     protected $options = '';
-    protected $optionsArray = null;
+    protected $optionsArray;
 
-    public function id()
+    public function id() : string
     {
         return $this->source;
     }
 
-    public function type()
+    public function type() : string
     {
         return $this->type;
     }
 
-    public function subtype()
+    public function subtype() : string
     {
         return $this->subtype;
     }
 
-    public function format()
+    public function format() : string
     {
         return $this->format;
     }
 
-    public function viewClass()
+    public function viewClass() : string
     {
         return $this->viewClass;
     }
 
-    public function ticket()
+    public function ticket() : string
     {
         return $this->ticket;
     }
 
-    public function ticketExpiry()
+    public function ticketExpiry() : DateTime
     {
         return $this->ticketExpiry;
     }
 
-    public function options()
+    public function options() : iterable
     {
         if ($this->optionsArray === null) {
             $this->optionsArray = json_decode($this->options);
@@ -91,7 +92,7 @@ class Source
         return $this->optionsArray;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_map_source');

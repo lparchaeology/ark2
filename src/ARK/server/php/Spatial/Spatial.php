@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Spatial
+ * ARK Spatial.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -31,14 +31,13 @@
 namespace ARK\Spatial;
 
 use ARK\Framework\Application;
-use ARK\Service;
-use proj4php\Proj;
-use proj4php\Point as ProjPoint;
 use Brick\Geo\Point;
+use proj4php\Point as ProjPoint;
+use proj4php\Proj;
 
 class Spatial
 {
-    protected $app = null;
+    protected $app;
     protected $parms = [];
     protected $projections = [];
 
@@ -46,16 +45,16 @@ class Spatial
     {
         $this->app = $app;
         $this->parms = [
-            32632 => '+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs'
+            32632 => '+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
         ];
     }
 
-    public function proj()
+    public function proj() : Proj4php
     {
         return $this->app['spatial.proj'];
     }
 
-    public function projection($srid)
+    public function projection(string $srid) : Proj
     {
         if (!isset($this->projections[$srid])) {
             if (isset($this->parms[$srid])) {
@@ -66,10 +65,10 @@ class Spatial
         return $this->projections[$srid];
     }
 
-    public function transform(Point $point, $toSrid)
+    public function transform(Point $point, string $toSrid) : Point
     {
         $source = new ProjPoint($point->x(), $point->y(), $this->projection($point->SRID()));
         $dest = $this->proj()->transform($this->projection($toSrid), $source);
-        return Point::xy((int)$dest->__get('x'), (int)$dest->__get('y'), $toSrid);
+        return Point::xy((int) $dest->__get('x'), (int) $dest->__get('y'), $toSrid);
     }
 }

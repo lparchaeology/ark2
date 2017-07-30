@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Event Entity
+ * ARK Event Entity.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,13 +25,12 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Workflow;
 
-use ARK\ARK;
 use ARK\Actor\Actor;
+use ARK\ARK;
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
 

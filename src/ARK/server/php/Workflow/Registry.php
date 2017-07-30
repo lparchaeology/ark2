@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Workflow Registry
+ * ARK Workflow Registry.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Workflow;
@@ -39,31 +38,18 @@ use ARK\Model\Schema;
 use ARK\ORM\ORM;
 use ARK\Security\User;
 use ARK\Service;
-use ARK\Workflow\Action;
 use ARK\Workflow\Security\ActorUser;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Workflow\Exception\InvalidArgumentException;
 use Symfony\Component\Workflow\Registry as SymfonyRegistry;
 use Symfony\Component\Workflow\StateMachine;
 use Symfony\Component\Workflow\Workflow;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class Registry extends SymfonyRegistry
 {
     protected $actions = [];
 
-    protected function init($schema)
-    {
-        if (isset($this->actions[$schema])) {
-            return;
-        }
-        $this->actions[$schema] = new ArrayCollection();
-        $actions = ORM::findBy(Action::class, ['schma' => $schema]);
-        foreach ($actions as $action) {
-            $this->actions[$schema][$action->name()] = $action;
-        }
-    }
-
-    public function actor(User $user = null)
+    public function actor(User $user = null) : ?Actor
     {
         if ($user === null) {
             $user = Service::security()->user();
@@ -72,26 +58,26 @@ class Registry extends SymfonyRegistry
             return ORM::find(Actor::class, 'anonymous');
         }
         $au = ORM::findOneBy(ActorUser::class, ['user' => $user->id()]);
-        return ($au ? $au->actor() : null);
+        return $au ? $au->actor() : null;
     }
 
-    public function user(Actor $actor)
+    public function user(Actor $actor) : ?User
     {
         $au = ORM::findOneBy(ActorUser::class, ['actor' => $actor->id()]);
-        return ($au ? $au->user() : null);
+        return $au ? $au->user() : null;
     }
 
-    public function schemaActions(Schema $schema)
+    public function schemaActions(Schema $schema) : ArrayCollection
     {
         $this->init($schema->name());
         return $this->actions[$schema->name()];
     }
 
-    public function updateActions(Actor $actor, Item $item)
+    public function updateActions(Actor $actor, Item $item) : ArrayCollection
     {
         $schema = $item->schema()->name();
         $this->init($schema);
-        $actions = [];
+        $actions = new ArrayCollection();
         foreach ($this->actions[$schema] as $action) {
             if ($action->isUpdate() && $action->isGranted($actor, $item)) {
                 $actions[$action->name()] = $action;
@@ -100,11 +86,11 @@ class Registry extends SymfonyRegistry
         return $actions;
     }
 
-    public function actions(Actor $actor, Item $item)
+    public function actions(Actor $actor, Item $item) : ArrayCollection
     {
         $schema = $item->schema()->name();
         $this->init($schema);
-        $actions = [];
+        $actions = new ArrayCollection();
         foreach ($this->actions[$schema] as $action) {
             if ($action->isGranted($actor, $item)) {
                 $actions[$action->name()] = $action;
@@ -113,7 +99,7 @@ class Registry extends SymfonyRegistry
         return $actions;
     }
 
-    public function actors(Actor $actor, Item $item)
+    public function actors(Actor $actor, Item $item) : ArrayCollection
     {
         $schema = $item->schema()->name();
         $this->init($schema);
@@ -122,7 +108,7 @@ class Registry extends SymfonyRegistry
         return $actors;
     }
 
-    public function mode(Actor $actor, Item $item)
+    public function mode(Actor $actor, Item $item) : string
     {
         if ($this->can($actor, 'edit', $item)) {
             return 'edit';
@@ -134,7 +120,7 @@ class Registry extends SymfonyRegistry
         return 'deny';
     }
 
-    public function can(Actor $actor, $action, Item $item, $attribute = null)
+    public function can(Actor $actor, $action, Item $item, $attribute = null) : bool
     {
         //dump('Workflow::can('.$actor->id().' '.$action.' '.$item->schema()->module()->name().')');
         if (is_string($action)) {
@@ -146,7 +132,7 @@ class Registry extends SymfonyRegistry
         return false;
     }
 
-    public function apply(Actor $actor, $action, Item $item, Actor $subject = null)
+    public function apply(Actor $actor, string $action, Item $item, Actor $subject = null) : bool
     {
         if ($action = $this->action($item->schema()->name(), $action)) {
             return $action->apply($actor, $item, $subject);
@@ -154,16 +140,7 @@ class Registry extends SymfonyRegistry
         return false;
     }
 
-    private function action($schema, $action)
-    {
-        $this->init($schema);
-        if (isset($this->actions[$schema][$action])) {
-            return $this->actions[$schema][$action];
-        }
-        return null;
-    }
-
-    public function getStateMachine(Attribute $attribute)
+    public function getStateMachine(Attribute $attribute) : StateMachine
     {
         if (!$attribute->hasVocabulary() || !$attribute->vocabulary() || !$attribute->vocabulary()->hasTransitions()) {
             throw new InvalidArgumentException(sprintf('Unable to find transitions for attribute "%s".', $attribute->name()));
@@ -174,7 +151,7 @@ class Registry extends SymfonyRegistry
         return $machine;
     }
 
-    public function get($subject, $workflowName = null)
+    public function get(string $subject, string $workflowName = null) : Workflow
     {
         $workflow = null;
         try {
@@ -186,5 +163,26 @@ class Registry extends SymfonyRegistry
             $this->add($workflow, get_class($subject));
         }
         return $workflow;
+    }
+
+    protected function init(string $schema) : void
+    {
+        if (isset($this->actions[$schema])) {
+            return;
+        }
+        $this->actions[$schema] = new ArrayCollection();
+        $actions = ORM::findBy(Action::class, ['schma' => $schema]);
+        foreach ($actions as $action) {
+            $this->actions[$schema][$action->name()] = $action;
+        }
+    }
+
+    private function action(string $schema, string $action) : ?Action
+    {
+        $this->init($schema);
+        if (isset($this->actions[$schema][$action])) {
+            return $this->actions[$schema][$action];
+        }
+        return null;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK User
+ * ARK User.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,22 +30,20 @@
 namespace ARK\Workflow\Security;
 
 use ARK\Actor\Actor;
-use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Workflow\Role;
 use DateTime;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class ActorRole
 {
-    protected $actor = null;
-    protected $role = null;
-    protected $roleEntity = null;
-    protected $agentFor = null;
+    protected $actor;
+    protected $role;
+    protected $roleEntity;
+    protected $agentFor;
     protected $enabled = false;
-    protected $expiresAt = null;
+    protected $expiresAt;
 
     public function __construct(Actor $actor, Role $role, Actor $agentFor = null)
     {
@@ -57,12 +55,12 @@ class ActorRole
         }
     }
 
-    public function actor()
+    public function actor() : Actor
     {
         return $this->actor;
     }
 
-    public function role()
+    public function role() : Role
     {
         if ($this->roleEntity === null) {
             $this->roleEntity = ORM::find(Role::class, $this->role);
@@ -70,17 +68,17 @@ class ActorRole
         return $this->roleEntity;
     }
 
-    public function isAgent()
+    public function isAgent() : bool
     {
         return $this->agentFor !== null;
     }
 
-    public function agentFor()
+    public function agentFor() : ?Actor
     {
         return $this->agentFor;
     }
 
-    public function isEnabled()
+    public function isEnabled() : bool
     {
         // TODO Check is UTC?
         if ($this->enabled && $this->expiresAt && $this->expiresAt->getTimestamp() < time()) {
@@ -89,25 +87,24 @@ class ActorRole
         return $this->enabled;
     }
 
-    public function enable()
+    public function enable() : void
     {
         $this->enabled = true;
         $this->expiresAt = null;
     }
 
-    public function disable()
+    public function disable() : void
     {
         $this->enabled = false;
         $this->expiresAt = null;
     }
 
-    public function expireAt(DateTime $date)
+    public function expireAt(DateTime $date) : void
     {
         $this->expiresAt = $date;
-        return $this;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_actor_role');

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK View Widget
+ * ARK View Widget.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,36 +25,23 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\View;
 
-use ARK\ORM\ORM;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\Service;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\ButtonTypeInterface;
-use Symfony\Component\Form\SubmitButtonTypeInterface;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\SubmitButtonTypeInterface;
 
 abstract class AbstractWidget extends Element
 {
-    protected $choices = null;
+    protected $choices;
     protected $formOptions = '';
-    protected $formOptionsArray = null;
+    protected $formOptionsArray;
 
-    private function isButton()
-    {
-        return is_subclass_of($this->formTypeClass(), SubmitButtonTypeInterface::class) ||
-            is_subclass_of($this->formTypeClass(), ButtonTypeInterface::class);
-    }
-
-    public function buildState($data, array $state)
+    public function buildState($data, iterable $state) : interable
     {
         if (!isset($state['label'])) {
             $state['label'] = $this->showLabel();
@@ -66,7 +53,7 @@ abstract class AbstractWidget extends Element
             $state['keyword'] = $this->keyword();
         }
         $state['mode'] = $this->displayMode($state['mode']);
-        if ($state['mode'] == 'view' || $this->mode == 'view') {
+        if ($state['mode'] === 'view' || $this->mode === 'view') {
             $state['mode'] = 'deny';
         }
         $state['template'] = $this->template();
@@ -74,30 +61,20 @@ abstract class AbstractWidget extends Element
         return $state;
     }
 
-    public function buildData($data, array $state)
+    public function buildData($data, iterable $state)
     {
         if ($this->isButton()) {
             return null;
         }
         $name = $state['name'];
-        if (is_array($data)) {
-            if (array_key_exists($name, $data)) {
-                $data = $data[$name];
-            } elseif (array_key_exists($this->name, $data)) {
-                $data = $data[$this->name];
-            } elseif (array_key_exists($this->id(), $data)) {
-                $data = $data[$this->id()];
-            } else {
-                $data = null;
-            }
-        }
-        if ($data === null && $state['vocabulary'] && isset($state['required']) && $state['required']) {
-            $data = $state['vocabulary']->defaultTerm();
+        $data = $data[$name] ?? $data[$this->name] ?? $data[$this->id()] ?? null;
+        if ($data === null && $state['vocabulary']) {
+            $data = $state['required'] ? $state['vocabulary']->defaultTerm() : null;
         }
         return $data;
     }
 
-    public function buildOptions($data, array $state, array $options = [])
+    public function buildOptions($data, iterable $state, iterable $options = []) : iterable
     {
         if ($this->formOptionsArray === null) {
             $this->formOptionsArray = ($this->formOptions ? json_decode($this->formOptions, true) : []);
@@ -108,7 +85,7 @@ abstract class AbstractWidget extends Element
             $options['label'] = ($state['keyword'] ? $state['keyword'] : $this->keyword());
         }
 
-        if ($state['mode'] == 'view') {
+        if ($state['mode'] === 'view') {
             $options['required'] = false;
         } else {
             $options['required'] = $state['required'];
@@ -121,7 +98,7 @@ abstract class AbstractWidget extends Element
             }
         }
 
-        if ($state['choices'] && $state['value']['modus'] == 'active') {
+        if ($state['choices'] && $state['value']['modus'] === 'active') {
             $name = $state['name'];
             if (isset($state['options'][$name]['choices'])) {
                 $options['choices'] = $state['options'][$name]['choices'];
@@ -131,32 +108,31 @@ abstract class AbstractWidget extends Element
             } else {
                 $options['choices'] = $data;
                 if ($state['placeholder']) {
-                    $options['placeholder'] = isset($state['select']['placeholder']) ? $state['select']['placeholder'] : '';
+                    $options['placeholder'] = $state['select']['placeholder'] ?? '';
                 }
             }
         }
 
         unset($options['state']);
         if ($this->isButton()) {
-            unset($options['required']);
-            unset($options['mapped']);
+            unset($options['required'], $options['mapped']);
         }
         return $options;
     }
 
-    public function buildContext($data, array $state, FormView $form = null)
+    public function buildContext($data, iterable $state, FormView $form = null) : iterable
     {
         $context = parent::buildContext($data, $state, $form);
         $context['widget'] = $this;
         return $context;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_widget');
     }
 
-    public static function widgetMetadata(ClassMetadata $metadata)
+    public static function widgetMetadata(ClassMetadata $metadata) : void
     {
         // Joined Table Inheritance
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_widget');
@@ -167,5 +143,11 @@ abstract class AbstractWidget extends Element
         $builder->addStringField('template', 100);
         $builder->addStringField('formTypeClass', 100, 'form_type_class');
         $builder->addStringField('formOptions', 4000, 'form_options');
+    }
+
+    private function isButton()
+    {
+        return is_subclass_of($this->formTypeClass(), SubmitButtonTypeInterface::class) ||
+            is_subclass_of($this->formTypeClass(), ButtonTypeInterface::class);
     }
 }

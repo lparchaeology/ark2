@@ -21,111 +21,107 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2017 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP
  * @license    GPL-3.0+
- *
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK;
 
+use DateTime;
+use DateTimeZone;
 use Symfony\Component\Filesystem\Filesystem;
 
 class ARK
 {
-    const VERSION = '1.9.80';
-    const VERSION_ID = 10980;
-    const MAJOR_VERSION = 1;
-    const MINOR_VERSION = 9;
-    const RELEASE_VERSION = 80;
-    const EXTRA_VERSION = '';
+    public const VERSION = '1.9.80';
+    public const VERSION_ID = 10980;
+    public const MAJOR_VERSION = 1;
+    public const MINOR_VERSION = 9;
+    public const RELEASE_VERSION = 80;
+    public const EXTRA_VERSION = '';
 
-    public static function version()
+    public static function version() : string
     {
         return self::VERSION;
     }
 
-    public static function timestamp()
+    public static function timestamp() : DateTime
     {
-        return new \DateTime(null, new \DateTimeZone('UTC'));
+        return new DateTime(null, new DateTimeZone('UTC'));
     }
 
-    public static function installDir()
+    public static function installDir() : string
     {
         return realpath(__DIR__.'/../../../..');
     }
 
-    public static function varDir()
+    public static function varDir() : string
     {
         return self::installDir().'/var';
     }
 
-    public static function cacheDir()
+    public static function cacheDir() : string
     {
         return self::varDir().'/cache';
     }
 
-    public static function logDir()
+    public static function logDir() : string
     {
         return self::varDir().'/log';
     }
 
-    public static function srcDir()
+    public static function srcDir() : string
     {
         return self::installDir().'/src';
     }
 
-    public static function namespaceDir($namespace)
+    public static function namespaceDir(string $namespace) : string
     {
         return self::srcDir().'/'.$namespace;
     }
 
-    public static function autoloadDir($project = 'ARK')
+    public static function autoloadDir(string $project = 'ARK') : string
     {
-        if ($project == 'ARK') {
-            return self::srcDir().'/'.'ARK/server/php';
-        }
-
-        return self::srcDir().'/'.$project.'/php';
+        return self::srcDir()."/$project/server/php";
     }
 
-    public static function frontendDir($namespace, $frontend)
+    public static function frontendDir(string $namespace, string $frontend) : string
     {
-        return self::namespaceDir($namespace).'/frontend/'.$frontend;
+        return self::namespaceDir($namespace)."/frontend/$frontend";
     }
 
-    public static function sitesDir()
+    public static function sitesDir() : string
     {
         return self::installDir().'/sites';
     }
 
-    public static function siteDir($site)
+    public static function siteDir(string $site) : string
     {
         return self::sitesDir().'/'.$site;
     }
 
-    public static function templatesDir($site, $frontend)
+    public static function templatesDir(string $site, string $frontend) : string
     {
         return self::siteDir($site).'/templates/'.$frontend;
     }
 
-    public static function translationsDir($site, $frontend)
+    public static function translationsDir(string $site, string $frontend) : string
     {
         return self::siteDir($site).'/translations/'.$frontend;
     }
 
-    public static function assetsDir($site, $frontend)
+    public static function assetsDir(string $site, string $frontend) : string
     {
         return self::siteDir($site).'/web/assets/'.$frontend;
     }
 
-    public static function dirList($dir, $fullPath = false)
+    public static function dirList(string $dir, bool $fullPath = false) : iterable
     {
         $dirs = [];
         foreach (scandir($dir) as $entry) {
-            if ($entry != '.' && $entry != '..' && is_dir($dir.'/'.$entry)) {
+            if ($entry !== '.' && $entry !== '..' && is_dir($dir.'/'.$entry)) {
                 $dirs[] = $fullPath ? $dir.'/'.$entry : $entry;
             }
         }
@@ -133,11 +129,11 @@ class ARK
         return $dirs;
     }
 
-    public static function fileList($dir, $fullPath = false)
+    public static function fileList(string $dir, bool $fullPath = false) : iterable
     {
         $files = [];
         foreach (scandir($dir) as $entry) {
-            if ($entry != '.' && $entry != '..' && !is_dir($dir.'/'.$entry)) {
+            if ($entry !== '.' && $entry !== '..' && !is_dir($dir.'/'.$entry)) {
                 $files[] = $fullPath ? $dir.'/'.$entry : $entry;
             }
         }
@@ -145,18 +141,18 @@ class ARK
         return $files;
     }
 
-    public static function namespaces()
+    public static function namespaces() : iterable
     {
         return self::dirList(self::srcDir());
     }
 
-    public static function frontends()
+    public static function frontends() : iterable
     {
         $frontends = [];
         foreach (self::namespaces() as $namespace) {
             if (is_dir(self::namespaceDir($namespace).'/frontend')) {
                 foreach (scandir(self::namespaceDir($namespace).'/frontend') as $frontend) {
-                    if ($frontend != '.' && $frontend != '..' && is_dir(self::frontendDir($namespace, $frontend))) {
+                    if ($frontend !== '.' && $frontend !== '..' && is_dir(self::frontendDir($namespace, $frontend))) {
                         $frontends[$frontend] = $namespace;
                     }
                 }
@@ -166,27 +162,27 @@ class ARK
         return $frontends;
     }
 
-    public static function sites()
+    public static function sites() : iterable
     {
         return self::dirList(self::sitesDir());
     }
 
-    public static function siteConfigPath(string $site)
+    public static function siteConfigPath(string $site) : string
     {
         return self::siteDir($site).'/config/site.json';
     }
 
-    public static function siteConfig(string $site)
+    public static function siteConfig(string $site) : iterable
     {
         return json_decode(file_get_contents(self::siteConfigPath($site)), true);
     }
 
-    public static function writeSiteConfig(string $site, array $config)
+    public static function writeSiteConfig(string $site, array $config) : int
     {
         return self::jsonEncodeWrite($config, self::siteConfigPath($site));
     }
 
-    public static function siteDatabaseConfig($site, $admin = false)
+    public static function siteDatabaseConfig(string $site, bool $admin = false) : iterable
     {
         $settings = json_decode(file_get_contents(self::siteDir($site).'/config/database.json'), true);
         $conns = [];
@@ -199,17 +195,17 @@ class ARK
         return $conns;
     }
 
-    public static function serversPath()
+    public static function serversPath() : string
     {
         return self::sitesDir().'/servers.json';
     }
 
-    public static function serversConfig()
+    public static function serversConfig() : iterable
     {
         return json_decode(file_get_contents(self::serversPath()), true);
     }
 
-    public static function servers()
+    public static function servers() : iterable
     {
         $config = self::serversConfig();
         if (isset($config['servers'])) {
@@ -219,12 +215,12 @@ class ARK
         return [];
     }
 
-    public static function serverNames()
+    public static function serverNames() : iterable
     {
         return array_keys(self::servers());
     }
 
-    public static function server($server)
+    public static function server(string $server) : iterable
     {
         $servers = self::servers();
         if (isset($servers[$server])) {
@@ -234,7 +230,7 @@ class ARK
         return [];
     }
 
-    public static function defaultServer()
+    public static function defaultServer() : iterable
     {
         $config = self::serversConfig();
         if (isset($config['default']) && isset($config['servers'][$config['default']])) {
@@ -247,7 +243,7 @@ class ARK
         return [];
     }
 
-    public static function defaultServerName()
+    public static function defaultServerName() : string
     {
         $config = self::serversConfig();
         if (isset($config['default']) && isset($config['servers'][$config['default']])) {
@@ -257,22 +253,22 @@ class ARK
         return '';
     }
 
-    public static function jsonDecodeFile(string $path)
+    public static function jsonDecodeFile(string $path) : iterable
     {
         return json_decode(file_get_contents($path), true);
     }
 
-    public static function jsonEncodeWrite(array $data, string $path, bool $pretty = true)
+    public static function jsonEncodeWrite(array $data, string $path, bool $pretty = true) : int
     {
         $dir = dirname($path);
         if (!is_dir($dir)) {
             $fs = new Filesystem();
             $fs->mkdir($dir);
         }
-        file_put_contents($path, self::jsonEncode($data, $pretty));
+        return file_put_contents($path, self::jsonEncode($data, $pretty));
     }
 
-    public static function jsonEncode(array $data, bool $pretty = true)
+    public static function jsonEncode(array $data, bool $pretty = true) : string
     {
         if ($pretty) {
             return json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);

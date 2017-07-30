@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Vocabulary Term
+ * ARK Model Vocabulary Term.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Vocabulary;
@@ -35,36 +34,36 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Related
 {
-    protected $fromConcept = null;
+    protected $fromConcept;
     protected $fromTermName = '';
-    protected $fromTerm = null;
-    protected $toConcept = null;
+    protected $fromTerm;
+    protected $toConcept;
     protected $toTermName = '';
-    protected $toTerm = null;
-    protected $relation = '';
+    protected $toTerm;
+    protected $relation;
     protected $depth = 0;
 
-    public function fromTerm()
+    public function fromTerm() : Term
     {
         return $this->fromTerm;
     }
 
-    public function toTerm()
+    public function toTerm() : Term
     {
         return $this->toTerm;
     }
 
-    public function type()
+    public function relation() : Relation
     {
         return $this->relation;
     }
 
-    public function depth()
+    public function depth() : int
     {
         return $this->depth;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_vocabulary_related');
@@ -77,7 +76,7 @@ class Related
         $builder->addStringKey('toTermName', 30, 'to_term');
 
         // Attributes
-        $builder->addStringField('relation', 30);
+        $builder->addManyToOneField('relation', Relation::class, 'relation');
         $builder->addField('depth', 'integer');
 
         // Associations

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Translation Add Command
+ * ARK Translation Add Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,50 +21,43 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Translation\Console;
 
 use ARK\ORM\ORM;
-use ARK\Service;
 use ARK\Translation\Domain;
 use ARK\Translation\Language;
 use ARK\Translation\Message;
 use ARK\Translation\Role;
 use ARK\Translation\Translation;
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\DriverManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
 class TranslationDimeCommand extends Command
 {
-    protected function configure()
+    protected function configure() : void
     {
         $this->setName('translation:dime')
              ->setDescription('Add or Set a DIME translation.')
              ->addArgument('keyword', InputArgument::OPTIONAL, 'The translation keyword');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : void
     {
         $question = $this->getHelper('question');
 
         $keyword = $input->getArgument('keyword');
         if (!$keyword) {
-            $keywordQuestion = new Question("Please enter the keyword: ");
+            $keywordQuestion = new Question('Please enter the keyword: ');
             $keyword = $question->ask($input, $output, $keywordQuestion);
         }
 
@@ -73,9 +66,9 @@ class TranslationDimeCommand extends Command
             $output->writeln("\nTranslation keyword exists in domain ".$key->domain()->name());
             $messages = ORM::findBy(Message::class, ['keyword' => $keyword]);
             foreach ($messages as $message) {
-                $output->writeln($message->language()->code()." = ".$message->text());
+                $output->writeln($message->language()->code().' = '.$message->text());
             }
-            $output->writeln("");
+            $output->writeln('');
         } else {
             $domain = ORM::findOneBy(Domain::class, ['domain' => 'dime']);
             $key = new Translation($keyword, $domain);
@@ -93,10 +86,10 @@ class TranslationDimeCommand extends Command
         $role = $question->ask($input, $output, $roleQuestion);
         $role = ORM::findOneBy(Role::class, ['name' => $role]);
 
-        $daQuestion = new Question("Please enter the Danish text: ");
+        $daQuestion = new Question('Please enter the Danish text: ');
         $daText = $question->ask($input, $output, $daQuestion);
 
-        $enQuestion = new Question("Please enter the English text: ");
+        $enQuestion = new Question('Please enter the English text: ');
         $enText = $question->ask($input, $output, $enQuestion);
 
         if ($daText || $enText) {

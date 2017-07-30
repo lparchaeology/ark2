@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Workflow Action
+ * ARK Workflow Action.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Workflow;
@@ -33,26 +32,20 @@ namespace ARK\Workflow;
 use ARK\Actor\Actor;
 use ARK\Message\Notification;
 use ARK\Model\Item;
-use ARK\Model\Schema;
-use ARK\Model\Attribute;
 use ARK\Model\KeywordTrait;
-use ARK\ORM\ClassMetadataBuilder;
+use ARK\Model\Schema;
 use ARK\ORM\ClassMetadata;
+use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Vocabulary\Term;
-use ARK\Workflow\Agency;
-use ARK\Workflow\Condition;
-use ARK\Workflow\Event;
-use ARK\Workflow\Notify;
-use ARK\Workflow\Permission;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class Action
 {
     use KeywordTrait;
 
-    protected $schma = null;
-    protected $event = null;
+    protected $schma;
+    protected $event;
     protected $action = '';
     protected $agent = '';
     protected $defaultPermission = false;
@@ -60,13 +53,13 @@ class Action
     protected $defaultCondition = false;
     protected $defaultAllowence = false;
     protected $enabled = true;
-    protected $permissions = null;
-    protected $allowances = null;
-    protected $agencies = null;
-    protected $conditions = null;
-    protected $notifications = null;
-    protected $updates = null;
-    protected $groups = null;
+    protected $permissions;
+    protected $allowances;
+    protected $agencies;
+    protected $conditions;
+    protected $notifications;
+    protected $updates;
+    protected $groups;
 
     public function __construct()
     {
@@ -79,37 +72,37 @@ class Action
         $this->groups = new ArrayCollection();
     }
 
-    public function schema()
+    public function schema() : Schema
     {
         return $this->schma;
     }
 
-    public function name()
+    public function name() : string
     {
         return $this->action;
     }
 
-    public function event()
+    public function event() : Event
     {
         return $this->event;
     }
 
-    public function agent()
+    public function agent() : Actor
     {
         return $this->agent;
     }
 
-    public function enabled()
+    public function enabled() : bool
     {
         return $this->enabled;
     }
 
-    public function isUpdate()
+    public function isUpdate() : bool
     {
         return !$this->updates->isEmpty();
     }
 
-    public function meetsConditions(Item $item)
+    public function meetsConditions(Item $item) : bool
     {
         if ($this->conditions->isEmpty()) {
             return Condition::PASS;
@@ -137,13 +130,13 @@ class Action
         return $this->defaultCondition;
     }
 
-    public function hasPermission(Actor $actor, $item)
+    public function hasPermission(Actor $actor, Item $item) : bool
     {
         // TODO Check permissions!
         return $this->defaultPermission;
     }
 
-    public function isAllowed(Actor $actor)
+    public function isAllowed(Actor $actor) : bool
     {
         if ($this->allowances->isEmpty()) {
             return $this->defaultAllowence;
@@ -151,25 +144,25 @@ class Action
         foreach ($this->allowances as $allow) {
             $vote = $allow->isAllowed($actor);
             if ($vote !== Allow::ABSTAIN) {
-                return ($vote === Allow::GRANT);
+                return $vote === Allow::GRANT;
             }
         }
         return $this->defaultAllowence;
     }
 
-    public function hasAgency(Actor $actor, Item $item)
+    public function hasAgency(Actor $actor, Item $item) : bool
     {
         // Check if Actor is one of the permitted agents
         foreach ($this->agencies as $agency) {
             $vote = $agency->isGranted($actor, $item);
             if ($vote !== Agency::ABSTAIN) {
-                return ($vote === Agency::GRANT);
+                return $vote === Agency::GRANT;
             }
         }
         return $this->defaultAgency;
     }
 
-    public function isGranted(Actor $actor, Item $item, $attribute = null)
+    public function isGranted(Actor $actor, Item $item, $attribute = null) : bool
     {
         // TODO Sort out Permissions vs Allowances
         //dump('ACTION : '.$this->action);
@@ -189,16 +182,16 @@ class Action
             && $this->meetsConditions($item);
     }
 
-    public function notify(Item $item)
+    public function notify(Item $item) : ArrayCollection
     {
-        $recipients = [];
+        $recipients = new ArrayCollection();
         foreach ($this->notifications as $notify) {
-            $recipients[] = $notify->recipient($item);
+            $recipients->add($notify->recipient($item));
         }
         return $recipients;
     }
 
-    public function apply(Actor $actor, Item $item, Actor $subject = null)
+    public function apply(Actor $actor, Item $item, Actor $subject = null) : void
     {
         if ($this->isGranted($actor, $item)) {
             // Create Event
@@ -218,7 +211,7 @@ class Action
         }
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Joined Table Inheritance
         $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_action');

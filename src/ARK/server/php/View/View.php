@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Security
+ * ARK Security.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\View;
@@ -33,46 +32,52 @@ namespace ARK\View;
 use ARK\Error\Error;
 use ARK\Error\ErrorException;
 use ARK\Framework\Application;
-use ARK\Service;
-use ARK\View\Layout;
 use ARK\ORM\ORM;
+use ARK\Service;
 use Symfony\Component\HttpFoundation\Response;
+use Twig_Environment;
 
 class View
 {
-    protected $app = null;
+    protected $app;
 
     public function __construct(Application $app)
     {
         $this->app = $app;
     }
 
-    public function templates()
+    public function templates() : Twig_Environment
     {
         return $this->app['twig'];
     }
 
-    public function layout($name)
+    public function layout(string $name) : Layout
     {
-        $layout =  ORM::find(Layout::class, $name);
+        $layout = ORM::find(Layout::class, $name);
         if ($layout) {
             return $layout;
         }
-        throw new ErrorException(new Error('INVALID_LAYOUT_NAME', "Invalid Layout Name: $name", "Layout $name does not exist"));
+        throw new ErrorException(
+            new Error('INVALID_LAYOUT_NAME', "Invalid Layout Name: $name", "Layout $name does not exist")
+        );
     }
 
-    public function renderResponse($view, array $parameters = [], Response $response = null)
+    public function renderResponse(string $view, iterable $parameters = [], Response $response = null) : Response
     {
         return $this->app->render($view, $parameters, $response);
     }
 
-    public function renderView($view, array $parameters = [])
+    public function renderView(string $view, iterable $parameters = []) : string
     {
         return $this->app->renderView($view, $parameters);
     }
 
-    public function renderPdfResponse($view, array $parameters = [], $filename = 'file.pdf', Response $response = null)
-    {
+    public function renderPdfResponse(
+        string $view,
+        iterable $parameters = [],
+        string $filename = 'file.pdf',
+        Response $response = null
+    ) : Response {
         $pdf = $this->renderPdf($view, $parameters);
         $headers = ['Content-Type' => 'application/pdf', 'Content-Disposition' => 'filename="'.$filename.'"'];
         if ($response === null) {
@@ -83,20 +88,24 @@ class View
         return $response;
     }
 
-    public function renderPdf($view, array $parameters = [])
+    public function renderPdf(string $view, iterable $parameters = []) : string
     {
         $html = $this->renderView($view, $parameters);
         return $this->app['renderer.pdf']->getOutputFromHtml($html);
     }
 
-    public function generatePdf($view, $path, array $parameters = [])
+    public function generatePdf(string $view, string $path, iterable $parameters = []) : void
     {
         $html = $this->renderView($view, $parameters);
         $this->app['renderer.pdf']->generateFromHtml($html, $path);
     }
 
-    public function renderImageResponse($view, array $parameters = [], $filename = 'image.jpg', Response $response = null)
-    {
+    public function renderImageResponse(
+        string $view,
+        iterable $parameters = [],
+        string $filename = 'image.jpg',
+        Response $response = null
+    ) : Response {
         $pdf = $this->renderImage($view, $parameters);
         $headers = ['Content-Type' => 'image/jpg', 'Content-Disposition' => 'filename="'.$filename.'"'];
         if ($response === null) {
@@ -107,62 +116,62 @@ class View
         return $response;
     }
 
-    public function renderImage($view, array $parameters = [])
+    public function renderImage(string $view, iterable $parameters = []) : string
     {
         $html = $this->renderView($view, $parameters);
         return $this->app['renderer.image']->getOutputFromHtml($html);
     }
 
-    public function generateImage($view, $path, array $parameters = [])
+    public function generateImage(string $view, string $path, iterable $parameters = []) : void
     {
         $html = $this->renderView($view, $parameters);
         $this->app['renderer.image']->generateFromHtml($html, $path);
     }
 
-    public function flashes()
+    public function flashes() : void
     {
         Service::session()->getFlashBag();
     }
 
-    public function clearFlashes()
+    public function clearFlashes() : void
     {
         Service::session()->getFlashBag()->clear();
     }
 
-    public function loadFlashes()
+    public function loadFlashes() : void
     {
-        $flashes =  ORM::findAll(Flash::class);
+        $flashes = ORM::findAll(Flash::class);
         foreach ($flashes as $flash) {
             $this->addFlash($flash->type(), $flash->keyword());
         }
     }
 
-    public function addFlash($type, $message)
+    public function addFlash(string $type, string $message) : void
     {
         Service::session()->getFlashBag()->add($type, $message);
     }
 
-    public function addSuccessFlash($message)
+    public function addSuccessFlash(string $message) : void
     {
         $this->addFlash('success', $message);
     }
 
-    public function addErrorFlash($message)
+    public function addErrorFlash(string $message) : void
     {
         $this->addFlash('error', $message);
     }
 
-    public function addDangerFlash($message)
+    public function addDangerFlash(string $message) : void
     {
         $this->addFlash('danger', $message);
     }
 
-    public function addWarningFlash($message)
+    public function addWarningFlash(string $message) : void
     {
         $this->addFlash('warning', $message);
     }
 
-    public function addInfoFlash($message)
+    public function addInfoFlash(string $message) : void
     {
         $this->addFlash('info', $message);
     }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Translation Add Command
+ * ARK Translation Add Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,11 +21,10 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Translation\Bus;
@@ -41,8 +40,16 @@ class TranslationAddMessage
     protected $plural = false;
     protected $parameters = [];
 
-    public function __construct($keyword, $domain, $role, $language, $text, $notes = '', $plural = false, array $parameters = [])
-    {
+    public function __construct(
+        string $keyword,
+        string $domain,
+        string $role,
+        string $language,
+        string $text,
+        string $notes = '',
+        bool $plural = false,
+        iterable $parameters = []
+    ) {
         $this->keyword = $keyword;
         $this->domain = $domain;
         $this->role = $role;
@@ -53,42 +60,42 @@ class TranslationAddMessage
         $this->parameters = $parameters;
     }
 
-    public function keyword()
+    public function keyword() : string
     {
         return $this->keyword;
     }
 
-    public function domain()
+    public function domain() : string
     {
         return $this->domain;
     }
 
-    public function role()
+    public function role() : string
     {
         return $this->role;
     }
 
-    public function language()
+    public function language() : string
     {
         return $this->language;
     }
 
-    public function text()
+    public function text() : string
     {
         return $this->text;
     }
 
-    public function notes()
+    public function notes() : string
     {
         return $this->notes;
     }
 
-    public function plural()
+    public function plural() : bool
     {
         return $this->plural;
     }
 
-    public function parameters()
+    public function parameters() : iterable
     {
         return $this->parameters;
     }
