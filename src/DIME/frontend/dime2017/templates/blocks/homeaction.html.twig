@@ -1,5 +1,3 @@
-{# ARK default page layout with default navbar, sidebar, and content sections #}
-
 {% block homeaction %}
 
     <div class="row dimehometoolbar">
@@ -19,7 +17,7 @@
             {% include "blocks/link.html.twig" with {'link':
                            {"name": "dime.search.finds.mine",
                            "active": true,
-                           "target": "finds.list"} } %}
+                           "target": "dime.home.finds"} } %}
         </div>
     </div>
 

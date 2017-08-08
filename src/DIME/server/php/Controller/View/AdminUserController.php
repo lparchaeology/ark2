@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * DIME Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace DIME\Controller\View;
@@ -34,7 +33,7 @@ use ARK\Actor\Person;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Vocabulary\Term;
-use DIME\Controller\View\DimeFormController;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
 class AdminUserController extends DimeFormController
@@ -45,7 +44,7 @@ class AdminUserController extends DimeFormController
         return $this->handleRequest($request);
     }
 
-    public function buildState(Request $request)
+    public function buildState(Request $request) : iterable
     {
         $state = parent::buildState($request);
         $state['image'] = 'avatar';
@@ -59,7 +58,7 @@ class AdminUserController extends DimeFormController
         if (isset($query['status'])) {
             $status = ORM::findOneBy(Term::class, [
                 'concept' => 'core.security.status',
-                'term' => $query['status']
+                'term' => $query['status'],
             ]);
             $data['filter']['status'] = $status;
             $items = Service::database()->userSearch($query);
@@ -75,28 +74,28 @@ class AdminUserController extends DimeFormController
         return $data;
     }
 
-    public function buildWorkflow(Request $request, $data, array $state)
+    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
     {
         $actor = $state['actor'];
         $workflow['mode'] = 'edit';
         $workflow['actor'] = $actor;
         $workflow['actions'] = Service::workflow()->updateActions($actor, $actor);
-        $workflow['actors'] =  Service::workflow()->actors($actor, $actor);
+        $workflow['actors'] = Service::workflow()->actors($actor, $actor);
         return $workflow;
     }
 
-    public function processForm(Request $request, $form)
+    public function processForm(Request $request, Form $form) : void
     {
         $query = [];
         $submitted = $form->getConfig()->getName();
-        if ($submitted == 'filter') {
+        if ($submitted === 'filter') {
             $status = $form['status']->getData();
             if ($status) {
                 $query['status'] = $status->name();
             }
             $request->attributes->set('parameters', $query);
         }
-        if ($submitted == 'actions') {
+        if ($submitted === 'actions') {
             $action = $form['actions']->getData();
             $agent = Service::workflow()->actor();
             //Service::workflow()->apply($agent, $action, $actor);

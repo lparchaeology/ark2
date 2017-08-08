@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Ark Route Site Controller Provider
+ * Ark Route Site Controller Provider.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,10 +27,11 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
+
 namespace DIME\Routing;
 
-use Silex\Application;
 use Silex\Api\ControllerProviderInterface;
+use Silex\Application;
 
 class ViewControllerProvider implements ControllerProviderInterface
 {
@@ -58,14 +59,14 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         // Internal API routes
-        $controllers->match("/api/internal/users/{id}/actor", 'DIME\Controller\API\UserActorController')
+        $controllers->match('/api/internal/users/{id}/actor', 'DIME\Controller\API\UserActorController')
             ->method('GET|POST')
             ->bind('api.internal.user.actor');
         $controllers->post('/api/internal/vocabulary', 'DIME\Controller\API\VocabularyController')->bind('api.internal.vocabulary');
         $controllers->post('/api/internal/message/read', 'DIME\Controller\API\MessageReadController')->bind('api.internal.message.read');
         $controllers->post('/api/geo/find', 'DIME\Controller\API\GeoFindController')->bind('api.geo.find');
         $controllers->get('/api/geo/choropleth', 'DIME\Controller\API\ChoroplethController')->bind('api.geo.choropleth');
-        $controllers->get("/img/{image}", 'DIME\Controller\API\ImageController')->bind('img');
+        $controllers->get('/img/{image}', 'DIME\Controller\API\ImageController')->bind('img');
 
         // Admin Routes
         $controllers->match("/$admin/$users", 'DIME\Controller\View\AdminUserController')
@@ -89,11 +90,11 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers->match($paths['login'], 'DIME\Controller\View\UserLoginController')
             ->method('GET')
             ->bind('user.login');
-        $controllers->match($paths['check'], function () {
+        $controllers->match($paths['check'], function () : void {
         })
             ->method('GET|POST')
             ->bind('user.check');
-        $controllers->match($paths['logout'], function () {
+        $controllers->match($paths['logout'], function () : void {
         })
             ->method('GET')
             ->bind('user.logout');
@@ -142,9 +143,12 @@ class ViewControllerProvider implements ControllerProviderInterface
         // Home routes
         $controllers->match("/$home/$profile", 'DIME\Controller\View\UserProfileController')
             ->method('GET|POST')
-            ->bind('home.profile');
-        $controllers->get("/$home/$messages", 'DIME\Controller\View\MessagePageController')->bind('home.messages');
-        $controllers->get("/$home", 'DIME\Controller\View\HomePageController')->bind('home');
+            ->bind('dime.home.profile');
+        $controllers->match("/$home/$finds", 'DIME\Controller\View\FindListController')
+            ->method('GET|POST')
+            ->bind('dime.home.finds');
+        $controllers->get("/$home/$messages", 'DIME\Controller\View\MessagePageController')->bind('dime.home.messages');
+        $controllers->get("/$home", 'DIME\Controller\View\HomePageController')->bind('dime.home');
         $controllers->get('/', 'DIME\Controller\View\FrontPageController')->bind('front');
 
         return $controllers;

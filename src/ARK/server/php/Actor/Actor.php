@@ -65,7 +65,7 @@ class Actor implements Item
     public function hasRole($role) : bool
     {
         foreach ($this->roles() as $has) {
-            if ($has === $role or $has->role()->id() === $role) {
+            if ($has->role() === $role or $has->role()->id() === $role) {
                 return true;
             }
         }
@@ -79,7 +79,7 @@ class Actor implements Item
             $ars = ORM::findBy(ActorRole::class, ['actor' => $this->id()]);
             foreach ($ars as $ar) {
                 if ($ar->isEnabled()) {
-                    $this->roles->add($ar->role());
+                    $this->roles->add($ar);
                 }
             }
         }

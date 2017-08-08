@@ -59,32 +59,32 @@ class Page extends Element
         return $this->visibilityTerm;
     }
 
-    public function readPermission() : Permission
+    public function readPermission() : ?Permission
     {
         return $this->read;
     }
 
-    public function updatePermission() : Permission
+    public function updatePermission() : ?Permission
     {
         return $this->update;
     }
 
-    public function header() : Group
+    public function header() : ?Group
     {
         return $this->header;
     }
 
-    public function sidebar() : Group
+    public function sidebar() : ?Group
     {
         return $this->sidebar;
     }
 
-    public function content() : Group
+    public function content() : ?Group
     {
         return $this->content;
     }
 
-    public function footer() : Group
+    public function footer() : ?Group
     {
         return $this->footer;
     }

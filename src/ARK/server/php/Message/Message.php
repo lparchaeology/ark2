@@ -58,7 +58,7 @@ class Message implements Item
         return $this->property('sender')->value();
     }
 
-    public function recipients() : ArrayCollection
+    public function recipients() : iterable
     {
         return $this->property('recipients')->serialize();
     }

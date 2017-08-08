@@ -65,7 +65,7 @@ class Role
         return $this->agentFor !== null;
     }
 
-    public function agentFor() : Actor
+    public function agentFor() : ?string
     {
         return $this->agentFor;
     }
@@ -151,7 +151,7 @@ class Role
         $builder->addStringKey('role', 30);
 
         // Attributes
-        $builder->addStringField('agentFor', 30, 'proxy_for');
+        $builder->addStringField('agentFor', 30, 'agent_for');
         $builder->addField('enabled', 'boolean');
         KeywordTrait::buildKeywordMetadata($builder);
 

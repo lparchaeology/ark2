@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Map View.
+ * ARK Route.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,59 +25,69 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Map;
+namespace ARK\Routing;
 
-use ARK\Model\KeywordTrait;
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\ClassMetadata;
+use ARK\View\Page;
 
-class Map
+class Route
 {
-    use KeywordTrait;
+    protected $route = '';
+    protected $path = '';
+    protected $get = false;
+    protected $post = false;
+    protected $page;
+    protected $controller;
 
-    protected $map = '';
-    protected $options = '';
-    protected $layers;
-
-    public function __construct()
+    public function route() : string
     {
-        $this->terms = new ArrayCollection();
+        return $this->route;
     }
 
-    public function id() : string
+    public function path() : string
     {
-        return $this->map;
+        return $this->route;
     }
 
-    public function options() : iterable
+    public function canGet() : bool
     {
-        return json_decode($this->options);
+        return $this->get;
     }
 
-    public function layers() : Collection
+    public function canPost() : bool
     {
-        return $this->layers;
+        return $this->post;
+    }
+
+    public function page() : Page
+    {
+        return $this->page;
+    }
+
+    public function controller() : string
+    {
+        return $this->page;
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_map');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_route');
         $builder->setReadOnly();
 
         // Key
-        $builder->addStringKey('map', 30);
+        $builder->addStringKey('route', 30);
 
-        // Attributes
-        $builder->addStringField('options', 4000);
-        KeywordTrait::buildKeywordMetadata($builder);
+        // Fields
+        $builder->addStringField('path', 10);
+        $builder->addField('get', 'boolean', [], 'can_get');
+        $builder->addField('post', 'boolean', [], 'can_post');
+        $builder->addStringField('controller', 100);
 
-        // Relationships
-        $builder->addOneToMany('layers', LayerView::class, 'map');
+        // Associations
+        $builder->addManyToOneField('page', Page::class, 'page', 'element');
     }
 }

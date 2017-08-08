@@ -41,7 +41,7 @@ abstract class AbstractWidget extends Element
     protected $formOptions = '';
     protected $formOptionsArray;
 
-    public function buildState($data, iterable $state) : interable
+    public function buildState($data, iterable $state) : iterable
     {
         if (!isset($state['label'])) {
             $state['label'] = $this->showLabel();

@@ -35,7 +35,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 
 class DatabaseLoader implements LoaderInterface
 {
-    public function load(Database $db, string $locale, string $domain = 'messages') : MessageCatalogue
+    public function load($db, $locale, $domain = 'messages') : MessageCatalogue
     {
         $catalogue = new MessageCatalogue($locale);
         $rows = $db->getTranslationMessages($locale);
@@ -43,7 +43,7 @@ class DatabaseLoader implements LoaderInterface
         return $catalogue;
     }
 
-    public function addMessages(iterable $rows, string $catalogue) : MessageCatalogue
+    public function addMessages(iterable $rows, MessageCatalogue $catalogue) : MessageCatalogue
     {
         foreach ($rows as $row) {
             if ($row['role'] !== 'default') {

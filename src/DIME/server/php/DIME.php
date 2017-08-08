@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Globals
+ * DIME Globals.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,10 +30,10 @@
 
 namespace DIME;
 
-use ARK\ORM\ORM;
-use ARK\Service;
 use ARK\Actor\Actor;
 use ARK\Message\Notification;
+use ARK\ORM\ORM;
+use ARK\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class DIME
@@ -50,7 +50,7 @@ class DIME
             $password = $credentials['kortforsyningen']['password'];
             $path = "http://services.kortforsyningen.dk/service?request=GetTicket&login=$user&password=$password";
             $ticket = file_get_contents($path);
-            if (strlen($ticket) == 32) {
+            if (strlen($ticket) === 32) {
                 return $ticket;
             }
         }
@@ -62,8 +62,9 @@ class DIME
         if ($actor === null) {
             $actor = Service::workflow()->actor();
         }
-        if ($actor instanceof Actor && $actor->id() != 'anonymous') {
+        if ($actor instanceof Actor && $actor->id() !== 'anonymous') {
             $msgIds = Service::database()->getActorMessages($actor->id());
+            dump($actor->roles());
             foreach ($actor->roles() as $role) {
                 if ($role->isAgent()) {
                     $msgIds = array_merge($msgIds, Service::database()->getActorMessages($role->agentFor()->id()));

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * DIME Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,24 +25,34 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
+
 namespace DIME\Controller\View;
 
+use ARK\Actor\Actor;
 use ARK\ORM\ORM;
+use ARK\Routing\Route;
 use ARK\Service;
 use ARK\View\Page;
-use ARK\Workflow\Registry;
-use ARK\Actor\Actor;
 use DIME\DIME;
-use DIME\Controller\View\DimeController;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
 abstract class DimeFormController extends DimeController
 {
+    public function __invoke(Request $request)
+    {
+        return $this->handleRequest($request);
+    }
+
     public function handleRequest(Request $request)
     {
-        $page = ORM::find(Page::class, $request->attributes->get('page'));
+        $route = ORM::find(Route::class, $request->attributes->get('_route'));
+        if ($route) {
+            $page = $route->page();
+        } else {
+            $page = ORM::find(Page::class, $request->attributes->get('page'));
+        }
         $data = $this->buildData($request);
         $state = $this->buildState($request);
         $state['workflow'] = $this->buildWorkflow($request, $data, $state);
@@ -55,7 +65,7 @@ abstract class DimeFormController extends DimeController
         return null;
     }
 
-    public function buildState(Request $request)
+    public function buildState(Request $request) : iterable
     {
         $state['actor'] = Service::workflow()->actor();
         $state['image'] = 'image';
@@ -84,19 +94,19 @@ abstract class DimeFormController extends DimeController
         return $state;
     }
 
-    public function buildWorkflow(Request $request, $data, array $state)
+    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
     {
         $actor = $state['actor'];
         $workflow['mode'] = Service::workflow()->mode($actor, $data);
         $workflow['actor'] = $actor;
-        if ($workflow['mode'] == 'edit') {
+        if ($workflow['mode'] === 'edit') {
             $workflow['actions'] = Service::workflow()->updateActions($actor, $data);
-            $workflow['actors'] =  Service::workflow()->actors($actor, $data);
+            $workflow['actors'] = Service::workflow()->actors($actor, $data);
         }
         return $workflow;
     }
 
-    public function processForm(Request $request, $form)
+    public function processForm(Request $request, Form $form) : void
     {
     }
 }

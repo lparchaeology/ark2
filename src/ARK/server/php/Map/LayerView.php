@@ -82,7 +82,7 @@ class LayerView implements LayerInterface
         return array_merge($this->layerClass->options(), json_decode($this->options));
     }
 
-    public function parameters() : itrable
+    public function parameters() : iterable
     {
         return $this->layerClass->parameters();
     }

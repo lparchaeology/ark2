@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * DIME Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace DIME\Controller\View;
@@ -34,7 +33,7 @@ use ARK\Service;
 
 abstract class DimeController
 {
-    public function defaultOptions($route = null)
+    public function defaultOptions(string $route = null) : iterable
     {
         $options['mode'] = 'view';
         $options['data'] = null;
@@ -43,49 +42,49 @@ abstract class DimeController
         return $options;
     }
 
-    public function pageConfig($route = null)
+    public function pageConfig(string $route = null) : iterable
     {
         // TODO Use visibility / permissions
-        $homeTarget = (Service::security()->isGranted('ROLE_USER') ? 'home' : 'front');
+        $homeTarget = (Service::security()->isGranted('ROLE_USER') ? 'dime.home' : 'front');
         $config = [
-            "navlinks" => [
-                ["name" => "dime.home", "dropdown" => false, "target" => $homeTarget],
-                ["name" => "dime.detector", "dropdown" => false, "target" => "detector"],
-                ["name" => "dime.research", "dropdown" => false, "target" => "research"],
-                ["name" => "dime.about", "dropdown" => false, "target" => "about"],
-                ["name" => "dime.news", "dropdown" => false, "target" => "news"],
+            'navlinks' => [
+                ['name' => 'dime.home', 'dropdown' => false, 'target' => $homeTarget],
+                ['name' => 'dime.detector', 'dropdown' => false, 'target' => 'detector'],
+                ['name' => 'dime.research', 'dropdown' => false, 'target' => 'research'],
+                ['name' => 'dime.about', 'dropdown' => false, 'target' => 'about'],
+                ['name' => 'dime.news', 'dropdown' => false, 'target' => 'news'],
             ],
-            "sidelinks" => [
+            'sidelinks' => [
                 [
-                    "name" => "add",
-                    "active" => false,
-                    "role" => "ROLE_USER",
-                    "links" => [
-                        ["name" => "dime.find.add", "active" => false, "target" => "finds.add"],
+                    'name' => 'add',
+                    'active' => false,
+                    'role' => 'ROLE_USER',
+                    'links' => [
+                        ['name' => 'dime.find.add', 'active' => false, 'target' => 'finds.add'],
                     ],
                 ],
                 [
-                    "name" => "search",
-                    "active" => false,
-                    "role" => "IS_AUTHENTICATED_ANONYMOUSLY",
-                    "links" => [
-                        ["name" => "dime.find.search", "active" => false, "target" => "finds.list"],
+                    'name' => 'search',
+                    'active' => false,
+                    'role' => 'IS_AUTHENTICATED_ANONYMOUSLY',
+                    'links' => [
+                        ['name' => 'dime.find.search', 'active' => false, 'target' => 'finds.list'],
                     ],
                 ],
                 [
-                    "name" => "admin.users",
-                    "active" => false,
-                    "role" => "ROLE_ADMIN",
-                    "links" => [
-                        ["name" => "dime.admin.users", "active" => false, "target" => "admin.users"],
+                    'name' => 'admin.users',
+                    'active' => false,
+                    'role' => 'ROLE_ADMIN',
+                    'links' => [
+                        ['name' => 'dime.admin.users', 'active' => false, 'target' => 'admin.users'],
                     ],
                 ],
-            ]
+            ],
         ];
         if ($route) {
             foreach ($config['sidelinks'] as &$section) {
                 foreach ($section['links'] as &$link) {
-                    if ($link['target'] == $route) {
+                    if ($link['target'] === $route) {
                         $section['active'] = true;
                         $link['active'] = true;
                     }

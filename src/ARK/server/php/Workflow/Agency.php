@@ -37,23 +37,23 @@ use ARK\ORM\ClassMetadataBuilder;
 
 class Agency
 {
-    const GRANT = true;
-    const DENY = false;
-    const ABSTAIN = null;
+    public const GRANT = true;
+    public const DENY = false;
+    public const ABSTAIN = null;
 
     protected $schma = '';
     protected $actionName = '';
-    protected $action = null;
+    protected $action;
     protected $type = '';
     protected $attributeName = '';
-    protected $attribute = null;
+    protected $attribute;
     protected $operator = 'is';
 
-    public function isGranted(Actor $actor, Item $item)
+    public function isGranted(Actor $actor, Item $item) : ?bool
     {
         $value = $item->property($this->attributeName)->value();
-        $isAgent = ($value instanceof Actor && $value->id() == $actor->id());
-        if ($this->operator == 'not' && $isAgent) {
+        $isAgent = ($value instanceof Actor && $value->id() === $actor->id());
+        if ($this->operator === 'not' && $isAgent) {
             return self::DENY;
         }
         if ($isAgent) {
@@ -62,7 +62,7 @@ class Agency
         return self::ABSTAIN;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Joined Table Inheritance
         $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_agency');

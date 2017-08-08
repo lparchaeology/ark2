@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * DIME Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,24 +25,21 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace DIME\Controller\View;
 
 use ARK\Actor\Museum;
 use ARK\Actor\Person;
+use ARK\Message\Message;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Page;
 use ARK\Vocabulary\Term;
-use ARK\Vocabulary\Vocabulary;
-use ARK\Message\Message;
 use DIME\DIME;
-use DIME\Controller\View\DimeFormController;
 use DIME\Entity\Find;
 use Doctrine\Common\Collections\ArrayCollection;
-use Exception;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
 class FindListController extends DimeFormController
@@ -53,7 +50,7 @@ class FindListController extends DimeFormController
         return $this->handleRequest($request);
     }
 
-    public function buildState(Request $request)
+    public function buildState(Request $request) : iterable
     {
         $state = parent::buildState($request);
         $state['options']['museum']['choices'] = ORM::findAll(Museum::class);
@@ -70,7 +67,7 @@ class FindListController extends DimeFormController
         if (isset($query['municipality'])) {
             $municipalities = ORM::findBy(Term::class, [
                 'concept' => 'dime.denmark.municipality',
-                'term' => $query['municipality']
+                'term' => $query['municipality'],
             ]);
             $data['filters']['municipality'] = $municipalities->toArray();
         }
@@ -78,7 +75,7 @@ class FindListController extends DimeFormController
         if (isset($query['type'])) {
             $types = ORM::findBy(Term::class, [
                 'concept' => 'dime.find.type',
-                'term' => $query['type']
+                'term' => $query['type'],
             ]);
             $data['filters']['type'] = $types->toArray();
         }
@@ -86,7 +83,7 @@ class FindListController extends DimeFormController
         if (isset($query['period'])) {
             $period = ORM::findOneBy(Term::class, [
                 'concept' => 'dime.period',
-                'term' => $query['period']
+                'term' => $query['period'],
             ]);
             $data['filters']['period'] = $period;
             $periods[] = $period->name();
@@ -99,7 +96,7 @@ class FindListController extends DimeFormController
         if (isset($query['material'])) {
             $materials = ORM::findBy(Term::class, [
                 'concept' => 'dime.material',
-                'term' => $query['material']
+                'term' => $query['material'],
             ]);
             $data['filters']['material'] = $materials->toArray();
         }
@@ -107,14 +104,14 @@ class FindListController extends DimeFormController
         if (Service::workflow()->actor()->hasPermission('dime.find.filter.museum')) {
             if (isset($query['museum'])) {
                 $museums = ORM::findBy(Museum::class, [
-                    'item' => $query['museum']
+                    'item' => $query['museum'],
                 ]);
                 $data['filters']['museum'] = $museums->toArray();
             }
 
             if (isset($query['finder'])) {
                 $finders = ORM::findBy(Person::class, [
-                    'item' => $query['finder']
+                    'item' => $query['finder'],
                 ]);
                 $data['filters']['finder'] = $finders->toArray();
             }
@@ -122,7 +119,7 @@ class FindListController extends DimeFormController
             if (isset($query['status'])) {
                 $status = ORM::findOneBy(Term::class, [
                     'concept' => 'dime.find.process',
-                    'term' => $query['status']
+                    'term' => $query['status'],
                 ]);
                 $query['status'] = [$status->name()];
                 $data['filters']['status'] = $status;
@@ -131,7 +128,7 @@ class FindListController extends DimeFormController
             if (isset($query['treasure'])) {
                 $treasures = ORM::findBy(Term::class, [
                     'concept' => 'dime.treasure',
-                    'term' => $query['treasure']
+                    'term' => $query['treasure'],
                 ]);
                 $data['filters']['treasure'] = $treasures->toArray();
             }
@@ -147,7 +144,7 @@ class FindListController extends DimeFormController
         $actor = Service::workflow()->actor();
         $visible = new ArrayCollection();
         foreach ($finds as $find) {
-            if ($find->visibility()->name() == 'public' || Service::workflow()->can($actor, 'view', $find)) {
+            if ($find->visibility()->name() === 'public' || Service::workflow()->can($actor, 'view', $find)) {
                 $visible[] = $find;
             }
         }
@@ -165,7 +162,7 @@ class FindListController extends DimeFormController
         return $data;
     }
 
-    public function buildWorkflow(Request $request, $data, array $state)
+    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
     {
         $actor = $state['actor'];
         $workflow['actor'] = $actor;
@@ -177,7 +174,7 @@ class FindListController extends DimeFormController
         return $workflow;
     }
 
-    public function processForm(Request $request, $form)
+    public function processForm(Request $request, Form $form) : void
     {
         $municipalities = $form['municipality']->getData();
         $types = $form['type']->getData();

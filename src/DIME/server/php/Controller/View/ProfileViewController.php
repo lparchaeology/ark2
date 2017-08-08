@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * DIME Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace DIME\Controller\View;
@@ -35,7 +34,6 @@ use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Page;
 use DIME\DIME;
-use DIME\Controller\View\DimeFormController;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -48,7 +46,7 @@ class ProfileViewController extends DimeFormController
         return $this->handleRequest($request);
     }
 
-    public function buildState(Request $request)
+    public function buildState(Request $request) : iterable
     {
         $state = parent::buildState($request);
         $state['image'] = 'avatar';
@@ -67,7 +65,7 @@ class ProfileViewController extends DimeFormController
         return $data;
     }
 
-    public function buildWorkflow(Request $request, $data, array $state)
+    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
     {
         $workflow['mode'] = 'edit';
         $workflow['actor'] = $state['actor'];

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * DIME Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,18 +25,13 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace DIME\Controller\View;
 
-use ARK\Error\ErrorException;
-use ARK\Http\Error\NotFoundError;
-use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Page;
 use DIME\DIME;
-use DIME\Controller\View\DimeFormController;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserLoginController extends DimeFormController
@@ -57,7 +52,7 @@ class UserLoginController extends DimeFormController
         return $state;
     }
 
-    public function buildWorkflow(Request $request, $data, array $state)
+    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
     {
         $workflow['mode'] = 'edit';
         $workflow['actor'] = $state['actor'];

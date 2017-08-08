@@ -29,13 +29,12 @@
 
 namespace ARK\Translation\Loader;
 
-use ARK\Database\Database;
 use Symfony\Component\Translation\Loader\LoaderInterface;
 use Symfony\Component\Translation\MessageCatalogue;
 
 class ActorLoader implements LoaderInterface
 {
-    public function load(Database $db, string $locale, string $domain = 'actors') : MessageCatalogue
+    public function load($db, $locale, $domain = 'actors') : MessageCatalogue
     {
         $catalogue = new MessageCatalogue($locale);
         $actors = $db->getActorNames();

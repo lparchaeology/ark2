@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * DIME Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace DIME\Controller\View;
@@ -36,8 +35,8 @@ use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Page;
 use DIME\DIME;
-use DIME\Controller\View\DimeFormController;
 use DIME\Entity\Find;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
 class FindViewController extends DimeFormController
@@ -59,19 +58,19 @@ class FindViewController extends DimeFormController
         return $data;
     }
 
-    public function buildWorkflow(Request $request, $data, array $state)
+    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
     {
         return parent::buildWorkflow($request, $data['find'], $state);
     }
 
-    public function processForm(Request $request, $form)
+    public function processForm(Request $request, Form $form) : void
     {
         $clicked = $form->getClickedButton()->getName();
         $data = $form->getData();
         $find = $data['find'];
         $parameters['id'] = $find->id();
         $request->attributes->set('parameters', $parameters);
-        if ($clicked == 'save') {
+        if ($clicked === 'save') {
             $actor = Service::workflow()->actor();
             Service::workflow()->apply($actor, 'edit', $find);
             ORM::persist($find);
@@ -80,11 +79,11 @@ class FindViewController extends DimeFormController
             $request->attributes->set('message', 'dime.find.update.success');
             return;
         }
-        if ($clicked == 'clone') {
+        if ($clicked === 'clone') {
             $request->attributes->set('redirect', 'finds.add');
             return;
         }
-        if ($clicked == 'apply') {
+        if ($clicked === 'apply') {
             $actor = Service::workflow()->actor();
             $action = $form['find']['action']['actions']->getNormData();
             $action->apply($actor, $find, $find->value('museum'));

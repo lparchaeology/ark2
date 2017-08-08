@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * DIME Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace DIME\Controller\View;
@@ -35,7 +34,6 @@ use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
 use ARK\Service;
 use DIME\DIME;
-use DIME\Controller\View\DimeFormController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -44,11 +42,11 @@ class PageViewController extends DimeFormController
     public function __invoke(Request $request)
     {
         $page = $request->attributes->get('_route');
-        if (! $item = ORM::find('ARK\Entity\Page', $page)) {
+        if (!$item = ORM::find('ARK\Entity\Page', $page)) {
             throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Item not found', "Item $page not found"));
         }
 
-        if ($request->getMethod() == 'POST') {
+        if ($request->getMethod() === 'POST') {
             $value = $item->property('content')->value();
             $value->setContent($request->getContent());
             $item->property('content')->setValue($value);

@@ -97,22 +97,22 @@ class Cell implements ElementInterface
         return $this->element;
     }
 
-    public function map() : Map
+    public function map() : ?Map
     {
         return $this->map;
     }
 
-    public function vocabulary() : Vocabulary
+    public function vocabulary() : ?Vocabulary
     {
         return $this->vocabulary;
     }
 
-    public function formName() : string
+    public function formName() : ?string
     {
         return $this->name;
     }
 
-    public function width() : int
+    public function width() : ?int
     {
         return $this->width;
     }
@@ -122,12 +122,12 @@ class Cell implements ElementInterface
         return $this->label;
     }
 
-    public function showPlaceholder() : bool
+    public function showPlaceholder() : ?bool
     {
         return $this->placeholder;
     }
 
-    public function showChoices() : bool
+    public function showChoices() : ?bool
     {
         return $this->choices;
     }
@@ -142,32 +142,32 @@ class Cell implements ElementInterface
         return $this->mode;
     }
 
-    public function sanitise() : string
+    public function sanitise() : ?string
     {
         return $this->sanitise;
     }
 
-    public function valueModus() : string
+    public function valueModus() : ?string
     {
         return $this->value;
     }
 
-    public function parameterModus() : string
+    public function parameterModus() : ?string
     {
         return $this->parameter;
     }
 
-    public function formatModus() : string
+    public function formatModus() : ?string
     {
         return $this->format;
     }
 
     public function template() : string
     {
-        return $this->template;
+        return $this->template ?? '';
     }
 
-    public function buildState($data, iterable $state)
+    public function buildState($data, iterable $state) : iterable
     {
         $state['name'] = $this->name;
         $state['label'] = $this->label;
@@ -204,7 +204,7 @@ class Cell implements ElementInterface
         return $state;
     }
 
-    public function buildData($data, iterable $state) : iterable
+    public function buildData($data, iterable $state)
     {
         return $data;
     }

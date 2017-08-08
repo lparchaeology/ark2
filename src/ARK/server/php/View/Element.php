@@ -64,7 +64,7 @@ abstract class Element implements ElementInterface
         return $this->element;
     }
 
-    public function formName() : string
+    public function formName() : ?string
     {
         return $this->name;
         if ($this->name) {
@@ -91,7 +91,7 @@ abstract class Element implements ElementInterface
         return $this->mode;
     }
 
-    public function displayMode($parentMode) : string
+    public function displayMode(?string $parentMode) : ?string
     {
         if ($this->mode !== null && $parentMode === 'edit') {
             return $this->mode;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * DIME Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace DIME\Controller\View;
@@ -35,7 +34,7 @@ use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Page;
 use DIME\DIME;
-use DIME\Controller\View\DimeFormController;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserProfileController extends DimeFormController
@@ -43,10 +42,10 @@ class UserProfileController extends DimeFormController
     public function __invoke(Request $request)
     {
         $request->attributes->set('page', 'dime_page_user_profile');
-        return $this->handleRequest($request, 'dime_page_user_profile');
+        return $this->handleRequest($request);
     }
 
-    public function buildState(Request $request)
+    public function buildState(Request $request) : iterable
     {
         $state = parent::buildState($request);
         $state['image'] = 'avatar';
@@ -60,17 +59,17 @@ class UserProfileController extends DimeFormController
         return $data;
     }
 
-    public function buildWorkflow(Request $request, $data, array $state)
+    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
     {
         $workflow['mode'] = 'edit';
         $workflow['actor'] = $state['actor'];
         return $workflow;
     }
 
-    public function processForm(Request $request, $form)
+    public function processForm(Request $request, Form $form) : void
     {
         $submitted = $form->getConfig()->getName();
-        if ($submitted == 'password_change') {
+        if ($submitted === 'password_change') {
             $data = $form->getData();
             $user = Service::security()->user();
             if (Service::security()->checkPassword($user, $data['_password'])) {
@@ -84,7 +83,7 @@ class UserProfileController extends DimeFormController
                 $request->attributes->set('message', 'core.user.password.incorrect');
             }
         }
-        if ($submitted == 'actor') {
+        if ($submitted === 'actor') {
             $actor = $form->getData();
             ORM::persist($actor);
             ORM::flush($actor);

@@ -96,32 +96,32 @@ class Field extends Element
         return parent::formTypeClass();
     }
 
-    public function activeFormType() : string
+    public function activeFormType() : ?string
     {
         return $this->attribute()->datatype()->activeFormType();
     }
 
-    public function readonlyFormType() : string
+    public function readonlyFormType() : ?string
     {
         return $this->attribute()->datatype()->readonlyFormType();
     }
 
-    public function staticFormType() : string
+    public function staticFormType() : ?string
     {
         return $this->attribute()->datatype()->staticFormType();
     }
 
-    public function parameterFormType() : string
+    public function parameterFormType() : ?string
     {
         return $this->attribute()->datatype()->parameterFormType();
     }
 
-    public function formatFormType() : string
+    public function formatFormType() : ?string
     {
         return $this->attribute()->datatype()->formatFormType();
     }
 
-    public function keyword() : string
+    public function keyword() : ?string
     {
         return $this->keyword ?: $this->attribute->keyword();
     }
@@ -248,17 +248,17 @@ class Field extends Element
     {
         $state = $this->buildState($data, $state);
         if ($state['mode'] === 'deny') {
-            return null;
+            return '';
         }
         $data = $this->buildData($data, $state);
-        $value = null;
+        $value = '';
         if ($data instanceof Item) {
             $data = $data->property($this->attribute()->name());
         }
         if ($data instanceof Property) {
             $value = $data->value();
             if (!$value) {
-                return null;
+                return '';
             }
             if ($this->attribute()->hasMultipleOccurrences() && is_array($value)) {
                 $value = $value[0];
@@ -282,9 +282,7 @@ class Field extends Element
             }
             if ($value instanceof Item) {
                 if (isset($this->display)) {
-                    return $value->property($this->display)
-                        ->value()
-                        ->content();
+                    return $value->property($this->display)->value()->content();
                 }
                 return $value->property('id')->serialize();
             }
@@ -301,7 +299,7 @@ class Field extends Element
                 return Service::translate($value);
             }
         }
-        return $value;
+        return $value ?? '';
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
@@ -437,8 +435,11 @@ class Field extends Element
         return 'static';
     }
 
-    private function modusToFormType(string $modus, string $active, string $readonly = null, string $static = null) : string
+    private function modusToFormType(string $modus, ?string $active, string $readonly = null, string $static = null) : ?string
     {
+        if ($active === null) {
+            return null;
+        }
         switch ($modus) {
             case 'hidden':
                 return HiddenType::class;

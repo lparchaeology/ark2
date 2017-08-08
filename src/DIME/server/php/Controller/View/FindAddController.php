@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * DIME Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,17 +25,16 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
+
 namespace DIME\Controller\View;
 
-use ARK\View\Page;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\Vocabulary\Term;
+use ARK\View\Page;
 use DIME\DIME;
-use DIME\Controller\View\DimeFormController;
 use DIME\Entity\Find;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
 class FindAddController extends DimeFormController
@@ -56,7 +55,7 @@ class FindAddController extends DimeFormController
         $query = $request->query->all();
         if (isset($query['id'])) {
             if ($source = ORM::find(Find::class, $query['id'])) {
-                if ($source->value('finder')->id() == $actor->id()) {
+                if ($source->value('finder')->id() === $actor->id()) {
                     $find->setValue('finddate', $source->value('finddate'));
                     $find->setValue('finder_place', $source->value('finder_place'));
                     $find->setValue('location', $source->value('location'));
@@ -68,19 +67,19 @@ class FindAddController extends DimeFormController
         return $data;
     }
 
-    public function buildWorkflow(Request $request, $data, array $state)
+    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
     {
         return parent::buildWorkflow($request, $data['find'], $state);
     }
 
-    public function processForm(Request $request, $form)
+    public function processForm(Request $request, Form $form) : void
     {
         $clicked = $form->getClickedButton()->getName();
         $find = $form->getData();
         $actor = Service::workflow()->actor();
         ORM::persist($find);
         Service::workflow()->apply($actor, 'record', $find);
-        if ($clicked == 'report') {
+        if ($clicked === 'report') {
             Service::workflow()->apply($actor, 'report', $find);
             $message = 'dime.find.add.success';
         } else {

@@ -509,6 +509,37 @@
     </field>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
   </table>
+  <table name="ark_instance_route">
+    <field name="instance" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="route" type="string" size="30">
+      <key/>
+      <notnull/>
+    </field>
+    <field name="enabled" type="boolean">
+      <default value="1"/>
+      <notnull/>
+    </field>
+    <field name="deprecated" type="boolean">
+      <default value="0"/>
+      <notnull/>
+    </field>
+    <index name="schma">
+      <col>route</col>
+    </index>
+    <index name="IDX_63EF5444230B1DE">
+      <col>instance</col>
+    </index>
+    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    <references name="instance" table="ark_instance" onupdate="cascade" ondelete="cascade">
+      <column local="instance" foreign="instance"/>
+    </references>
+    <references name="route" table="ark_route" onupdate="cascade" ondelete="cascade">
+      <column local="route" foreign="route"/>
+    </references>
+  </table>
   <table name="ark_instance_schema">
     <field name="instance" type="string" size="30">
       <key/>
@@ -533,10 +564,10 @@
       <col>instance</col>
     </index>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    <references name="ark_instance_schema_ibfk_1" table="ark_instance" onupdate="cascade" ondelete="cascade">
+    <references name="ark_instance_schema_ibfk_1" table="ark_instance">
       <column local="instance" foreign="instance"/>
     </references>
-    <references name="ark_instance_schema_ibfk_2" table="ark_schema" onupdate="cascade" ondelete="cascade">
+    <references name="schema" table="ark_schema" onupdate="cascade" ondelete="cascade">
       <column local="schma" foreign="schma"/>
     </references>
   </table>
@@ -1427,11 +1458,19 @@
       <notnull/>
     </field>
     <field name="content" type="string" size="30"/>
-    <field name="edit" type="string" size="30"/>
+    <field name="edit" type="string" size="30">
+      <default value="NULL"/>
+    </field>
     <field name="footer" type="string" size="30"/>
-    <field name="header" type="string" size="30"/>
-    <field name="sidebar" type="string" size="30"/>
-    <field name="view" type="string" size="30"/>
+    <field name="header" type="string" size="30">
+      <default value="NULL"/>
+    </field>
+    <field name="sidebar" type="string" size="30">
+      <default value="NULL"/>
+    </field>
+    <field name="view" type="string" size="30">
+      <default value="NULL"/>
+    </field>
     <field name="mode" type="string" size="10">
       <default value="view"/>
       <notnull/>
@@ -2091,7 +2130,7 @@
       <notnull/>
     </field>
     <field name="keyword" type="string" size="100"/>
-    <field name="proxy_for" type="string" size="30"/>
+    <field name="agent_for" type="string" size="30"/>
     <field name="enabled" type="boolean">
       <default value="1"/>
       <notnull/>

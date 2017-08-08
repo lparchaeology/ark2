@@ -33,6 +33,7 @@ use ARK\Model\EnabledTrait;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Component\Workflow\Definition;
 use Symfony\Component\Workflow\DefinitionBuilder;
@@ -76,7 +77,7 @@ abstract class Vocabulary
         return $this->closed;
     }
 
-    public function terms() : ArrayCollection
+    public function terms() : Collection
     {
         return $this->terms;
     }

@@ -151,7 +151,7 @@ class Registry extends SymfonyRegistry
         return $machine;
     }
 
-    public function get(string $subject, string $workflowName = null) : Workflow
+    public function get($subject, $workflowName = null) : Workflow
     {
         $workflow = null;
         try {

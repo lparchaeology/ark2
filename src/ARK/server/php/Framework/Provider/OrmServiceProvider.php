@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK ORM Service Provider
+ * ARK ORM Service Provider.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -36,13 +36,11 @@ namespace ARK\Framework\Provider;
  * (c) Dragonfly Development Inc.
  */
 
-use ARK\ORM\Command\GenerateItemEntityMessage;
 use ARK\ORM\Command\GenerateItemEntityHandler;
+use ARK\ORM\Command\GenerateItemEntityMessage;
 use ARK\ORM\Driver\StaticPHPDriver;
 use ARK\ORM\EntityManager;
 use ARK\ORM\Item\ItemMappingDriver;
-use ARK\ORM\UnitOfWork;
-use Doctrine\Common\Cache\CacheProvider;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\Configuration;
@@ -52,9 +50,9 @@ use Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver;
 use Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver;
 use Doctrine\ORM\Mapping\Driver\XmlDriver;
 use Doctrine\ORM\Mapping\Driver\YamlDriver;
+use Gedmo\DoctrineExtensions;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Gedmo\DoctrineExtensions;
 
 /**
  * Doctrine ORM Pimple Service Provider.
@@ -63,7 +61,7 @@ use Gedmo\DoctrineExtensions;
  */
 class OrmServiceProvider implements ServiceProviderInterface
 {
-    public function register(Container $container)
+    public function register(Container $container) : void
     {
         $commands = [
             GenerateItemEntityMessage::class => GenerateItemEntityHandler::class,
@@ -121,7 +119,7 @@ class OrmServiceProvider implements ServiceProviderInterface
             ],
         ];
 
-        $container['orm.ems.options.initializer'] = $container->protect(function () use ($container) {
+        $container['orm.ems.options.initializer'] = $container->protect(function () use ($container) : void {
             static $initialized = false;
 
             if ($initialized) {
@@ -151,7 +149,7 @@ class OrmServiceProvider implements ServiceProviderInterface
                                 $srcDir.'/Model/Datatype.php',
                                 $srcDir.'/Model/Module.php',
                                 $srcDir.'/Model/Schema.php',
-                            ]
+                            ],
                         ],
                         [
                             'type' => 'php',
@@ -162,6 +160,11 @@ class OrmServiceProvider implements ServiceProviderInterface
                             'type' => 'php',
                             'namespace' => 'ARK\Model\Schema',
                             'path' => $srcDir.'/Model/Schema',
+                        ],
+                        [
+                            'type' => 'php',
+                            'namespace' => 'ARK\Routing',
+                            'path' => $srcDir.'/Routing',
                         ],
                         [
                             'type' => 'php',
@@ -246,7 +249,7 @@ class OrmServiceProvider implements ServiceProviderInterface
                             'type' => 'php',
                             'namespace' => 'ARK\Security',
                             'path' => $srcDir.'/Security',
-                        ]
+                        ],
                     ],
                 ]
             );
@@ -274,7 +277,7 @@ class OrmServiceProvider implements ServiceProviderInterface
                 return $container[$cacheInstanceKey];
             }
 
-            return $container[$cacheInstanceKey] = new MappingDriverChain;
+            return $container[$cacheInstanceKey] = new MappingDriverChain();
         });
 
         $container['orm.ems.config'] = function ($container) {
@@ -282,7 +285,7 @@ class OrmServiceProvider implements ServiceProviderInterface
 
             $configs = new Container();
             foreach ($container['orm.ems.options'] as $name => $options) {
-                $config = new Configuration;
+                $config = new Configuration();
 
                 if (!$container['debug']) {
                     //$config->setMetadataCacheImpl($container['orm.default_cache']);
@@ -303,11 +306,11 @@ class OrmServiceProvider implements ServiceProviderInterface
                 $config->setClassMetadataFactoryName($options['class_metadata_factory_name']);
                 $config->setDefaultRepositoryClassName($options['default_repository_class']);
 
-                $config->setEntityListenerResolver(new $options['entity_listener_resolver']);
-                $config->setRepositoryFactory(new $options['repository_factory']);
+                $config->setEntityListenerResolver(new $options['entity_listener_resolver']());
+                $config->setRepositoryFactory(new $options['repository_factory']());
 
-                $config->setNamingStrategy(new $options['naming_strategy']);
-                $config->setQuoteStrategy(new $options['quote_strategy']);
+                $config->setNamingStrategy(new $options['naming_strategy']());
+                $config->setQuoteStrategy(new $options['quote_strategy']());
 
                 $chain = $container['orm.mapping_driver_chain.locator']($name);
 
@@ -331,22 +334,21 @@ class OrmServiceProvider implements ServiceProviderInterface
                             break;
                         case 'annotation':
                             $useSimpleAnnotationReader =
-                                isset($entity['use_simple_annotation_reader'])
-                                ? $entity['use_simple_annotation_reader']
-                                : true;
+                                $entity['use_simple_annotation_reader']
+                                ?? true;
                             $driver = $config->newDefaultAnnotationDriver((array) $entity['path'], $useSimpleAnnotationReader);
                             break;
                         case 'yml':
                             $driver = new YamlDriver($entity['path']);
                             break;
                         case 'simple_yml':
-                            $driver = new SimplifiedYamlDriver(array($entity['path'] => $entity['namespace']));
+                            $driver = new SimplifiedYamlDriver([$entity['path'] => $entity['namespace']]);
                             break;
                         case 'xml':
                             $driver = new XmlDriver($entity['path']);
                             break;
                         case 'simple_xml':
-                            $driver = new SimplifiedXmlDriver(array($entity['path'] => $entity['namespace']));
+                            $driver = new SimplifiedXmlDriver([$entity['path'] => $entity['namespace']]);
                             break;
                         default:
                             throw new \InvalidArgumentException(sprintf('"%s" is not a recognized driver', $entity['type']));
@@ -391,7 +393,7 @@ class OrmServiceProvider implements ServiceProviderInterface
                     );
                     $eventManager = $em->getConnection()->getEventManager();
                     foreach ($options['listeners'] as $listener) {
-                        $eventManager->addEventSubscriber(new $listener);
+                        $eventManager->addEventSubscriber(new $listener());
                     }
                     return new EntityManager($em);
                 };

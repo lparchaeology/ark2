@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * DIME Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,13 +25,11 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace DIME\Controller\View;
 
 use ARK\Framework\Application;
-use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -42,12 +40,12 @@ class ErrorController
         print_r('here!');
         // 404.html, or 40x.html, or 4xx.html, or error.html
         $dir = $app['dir.site'].'/templates/'.$config['web']['frontend'].'/errors/';
-        $templates = array(
+        $templates = [
             $dir.$code.'.html.twig',
             $dir.substr($code, 0, 2).'x.html.twig',
             $dir.substr($code, 0, 1).'xx.html.twig',
             $dir.'default.html.twig',
-        );
+        ];
         return new Response($app['twig']->resolveTemplate($templates)->render(['code' => $code]), $code);
     }
 }
