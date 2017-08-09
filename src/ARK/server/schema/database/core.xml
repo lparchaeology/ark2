@@ -221,7 +221,6 @@
       <notnull/>
     </field>
     <field name="preset" type="date">
-      <deftimestamp/>
     </field>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
   </table>
@@ -237,7 +236,6 @@
       <notnull/>
     </field>
     <field name="preset" type="datetime">
-      <deftimestamp/>
     </field>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     <references name="ark_datatype_datetime_ibfk_1" table="ark_datatype" onupdate="cascade" ondelete="cascade">
@@ -417,7 +415,6 @@
       <notnull/>
     </field>
     <field name="preset" type="time">
-      <deftimestamp/>
     </field>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
   </table>
@@ -719,7 +716,6 @@
       <notnull/>
     </field>
     <field name="ticket_expiry" type="datetime">
-      <deftimestamp/>
     </field>
     <field name="options" type="string" size="4000">
       <notnull/>

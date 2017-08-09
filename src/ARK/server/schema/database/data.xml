@@ -23,12 +23,10 @@
     </field>
     <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
-      <deftimestamp/>
       <notnull/>
     </field>
     <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
-      <deftimestamp/>
     </field>
     <field name="version" type="string" size="36"/>
     <index name="association">
@@ -76,12 +74,10 @@
     <field name="extent" type="blob"/>
     <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
-      <deftimestamp/>
       <notnull/>
     </field>
     <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
-      <deftimestamp/>
     </field>
     <field name="version" type="string" size="36"/>
     <index name="property">
@@ -129,12 +125,10 @@
     <field name="extent" type="boolean"/>
     <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
-      <deftimestamp/>
       <notnull/>
     </field>
     <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
-      <deftimestamp/>
     </field>
     <field name="version" type="string" size="36"/>
     <index name="module">
@@ -180,16 +174,13 @@
       <notnull/>
     </field>
     <field name="extent" type="date">
-      <deftimestamp/>
     </field>
     <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
-      <deftimestamp/>
       <notnull/>
     </field>
     <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
-      <deftimestamp/>
     </field>
     <field name="version" type="string" size="36"/>
     <index name="module">
@@ -235,16 +226,13 @@
       <notnull/>
     </field>
     <field name="extent" type="datetime">
-      <deftimestamp/>
     </field>
     <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
-      <deftimestamp/>
       <notnull/>
     </field>
     <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
-      <deftimestamp/>
     </field>
     <field name="version" type="string" size="36"/>
     <index name="module">
@@ -292,12 +280,10 @@
     <field name="extent" type="string" size="200"/>
     <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
-      <deftimestamp/>
       <notnull/>
     </field>
     <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
-      <deftimestamp/>
     </field>
     <field name="version" type="string" size="36"/>
     <index name="property">
@@ -345,12 +331,10 @@
     <field name="extent" type="float" size="10.0"/>
     <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
-      <deftimestamp/>
       <notnull/>
     </field>
     <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
-      <deftimestamp/>
     </field>
     <field name="version" type="string" size="36"/>
     <index name="module">
@@ -398,12 +382,10 @@
     <field name="extent" type="bigint"/>
     <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
-      <deftimestamp/>
       <notnull/>
     </field>
     <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
-      <deftimestamp/>
     </field>
     <field name="version" type="string" size="36"/>
     <index name="module">
@@ -451,7 +433,6 @@
     <field name="extent" type="string" size="30"/>
     <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
-      <deftimestamp/>
       <notnull/>
     </field>
     <field name="creator" type="integer">
@@ -459,7 +440,6 @@
       <notnull/>
     </field>
     <field name="created" type="datetime">
-      <deftimestamp/>
     </field>
     <field name="version" type="string" size="36"/>
     <index name="module">
@@ -506,12 +486,10 @@
     <field name="extent" type="string" size="30"/>
     <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
-      <deftimestamp/>
       <notnull/>
     </field>
     <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
-      <deftimestamp/>
     </field>
     <field name="version" type="string" size="36"/>
     <index name="item">
@@ -565,12 +543,10 @@
     <field name="extent" type="text"/>
     <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
-      <deftimestamp/>
       <notnull/>
     </field>
     <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
-      <deftimestamp/>
     </field>
     <field name="version" type="string" size="36"/>
     <index name="property">
@@ -618,12 +594,10 @@
     <field name="extent" type="string" size="4000"/>
     <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
-      <deftimestamp/>
       <notnull/>
     </field>
     <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
-      <deftimestamp/>
     </field>
     <field name="version" type="string" size="36"/>
     <index name="module">
@@ -674,12 +648,10 @@
     <field name="extent" type="text"/>
     <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
-      <deftimestamp/>
       <notnull/>
     </field>
     <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
-      <deftimestamp/>
     </field>
     <field name="version" type="string" size="36"/>
     <index name="module">
@@ -725,16 +697,13 @@
       <notnull/>
     </field>
     <field name="extent" type="time">
-      <deftimestamp/>
     </field>
     <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
-      <deftimestamp/>
       <notnull/>
     </field>
     <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
-      <deftimestamp/>
     </field>
     <field name="version" type="string" size="36"/>
     <index name="module">
@@ -782,12 +751,10 @@
     </field>
     <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
-      <deftimestamp/>
       <notnull/>
     </field>
     <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
-      <deftimestamp/>
     </field>
     <field name="version" type="string" size="36"/>
     <index name="name">
@@ -831,12 +798,10 @@
     </field>
     <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
-      <deftimestamp/>
       <notnull/>
     </field>
     <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
-      <deftimestamp/>
     </field>
     <field name="version" type="string" size="36"/>
     <index name="name">
@@ -880,12 +845,10 @@
     </field>
     <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
-      <deftimestamp/>
       <notnull/>
     </field>
     <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
-      <deftimestamp/>
     </field>
     <field name="version" type="string" size="36"/>
     <index name="parent">
@@ -929,12 +892,10 @@
     </field>
     <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
-      <deftimestamp/>
       <notnull/>
     </field>
     <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
-      <deftimestamp/>
     </field>
     <field name="version" type="string" size="36"/>
     <index name="name">
@@ -978,12 +939,10 @@
     </field>
     <field name="modifier" type="string" size="30"/>
     <field name="modified" type="datetime">
-      <deftimestamp/>
       <notnull/>
     </field>
     <field name="creator" type="string" size="30"/>
     <field name="created" type="datetime">
-      <deftimestamp/>
     </field>
     <field name="version" type="string" size="36"/>
     <index name="name">
@@ -1039,7 +998,6 @@
     </field>
     <field name="locked_by" type="string" size="30"/>
     <field name="locked_on" type="datetime">
-      <deftimestamp/>
     </field>
     <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
   </table>
