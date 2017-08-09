@@ -45,7 +45,7 @@ class UserLoginController extends DimeFormController
         return $this->handleRequest($request);
     }
 
-    public function buildState(Request $request)
+    public function buildState(Request $request) : iterable
     {
         $state = parent::buildState($request);
         $state['last_username'] = Service::security()->lastUsername();
