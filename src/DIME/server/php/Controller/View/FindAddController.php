@@ -31,7 +31,6 @@ namespace DIME\Controller\View;
 
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\View\Page;
 use DIME\DIME;
 use DIME\Entity\Find;
 use Symfony\Component\Form\Form;
@@ -39,13 +38,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FindAddController extends DimeFormController
 {
-    public function __invoke(Request $request)
-    {
-        $request->attributes->set('page', 'dime_page_find_add');
-        $request->attributes->set('redirect', 'finds.view');
-        return $this->handleRequest($request);
-    }
-
     public function buildData(Request $request)
     {
         $actor = Service::workflow()->actor();

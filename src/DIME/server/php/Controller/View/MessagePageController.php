@@ -31,19 +31,12 @@ namespace DIME\Controller\View;
 
 use ARK\Message\Message;
 use ARK\ORM\ORM;
-use ARK\View\Page;
 use ARK\Vocabulary\Vocabulary;
 use DIME\DIME;
 use Symfony\Component\HttpFoundation\Request;
 
 class MessagePageController extends DimeFormController
 {
-    public function __invoke(Request $request)
-    {
-        $request->attributes->set('page', 'dime_page_message');
-        return $this->handleRequest($request);
-    }
-
     public function buildState(Request $request) : iterable
     {
         $state = parent::buildState($request);

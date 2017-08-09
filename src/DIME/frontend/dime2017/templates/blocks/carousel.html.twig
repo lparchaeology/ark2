@@ -12,7 +12,7 @@
             '>
             {% set images = item.property('image').value() %}
             {% if images is not empty %}
-                {% set itempath = path('finds.view', {'id': item.id}) %}
+                {% set itempath = path('dime.finds.view', {'id': item.id}) %}
                 <a href="{{itempath}}"><img src="{{path('img', {'image': images[0].id}) ~ '?p=preview'}}" alt='' /></a>
             {% endif %}
             </div>

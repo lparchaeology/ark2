@@ -34,7 +34,6 @@ use ARK\Actor\Person;
 use ARK\Message\Message;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\View\Page;
 use ARK\Vocabulary\Term;
 use DIME\DIME;
 use DIME\Entity\Find;
@@ -44,12 +43,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FindListController extends DimeFormController
 {
-    public function __invoke(Request $request)
-    {
-        $request->attributes->set('page', 'dime_page_find_list');
-        return $this->handleRequest($request);
-    }
-
     public function buildState(Request $request) : iterable
     {
         $state = parent::buildState($request);

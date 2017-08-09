@@ -34,7 +34,6 @@ use ARK\Actor\Person;
 use ARK\ORM\ORM;
 use ARK\Security\User;
 use ARK\Service;
-use ARK\View\Page;
 use ARK\Workflow\Role;
 use DIME\DIME;
 use Symfony\Component\Form\Form;
@@ -42,19 +41,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserRegisterController extends DimeFormController
 {
-    public function __invoke(Request $request)
-    {
-        $request->attributes->set('page', 'core_page_user_register');
-        $request->attributes->set('redirect', 'front');
-        return $this->handleRequest($request);
-    }
-
-    public function buildData(Request $request)
-    {
-        $data['actor'] = new Person();
-        return $data;
-    }
-
     public function buildWorkflow(Request $request, $data, iterable $state) : iterable
     {
         $workflow['mode'] = 'edit';
@@ -66,11 +52,12 @@ class UserRegisterController extends DimeFormController
     {
         $data = $form->getData();
         $credentials = $data['credentials'];
-        $role = $data['role']['role'];
-        $comments = $data['role']['comments'];
 
-        $actor = $data['actor'];
+        $actor = new Person();
         $actor->setItem($credentials['_username']);
+        $actor->setValue('fullname', $data['fullname']);
+        $actor->setValue('address', $data['address']);
+        $actor->setValue('telephone', $data['telephone']);
 
         $user = Service::security()->createUser(
             $credentials['_username'],
@@ -79,10 +66,8 @@ class UserRegisterController extends DimeFormController
             $actor->fullname()
         );
 
-        $role = ORM::find(Role::class, $role->name());
-
-        $museum = $actor->property('museum')->value();
-        Service::security()->registerUser($user, $actor, $role, $museum);
+        $role = ORM::find(Role::class, 'detectorist');
+        Service::security()->registerUser($user, $actor, $role);
 
         Service::workflow()->apply($actor, 'register', $actor);
         ORM::flush($actor);

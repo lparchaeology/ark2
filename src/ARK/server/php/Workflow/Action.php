@@ -82,7 +82,7 @@ class Action
         return $this->action;
     }
 
-    public function event() : Event
+    public function event() : Term
     {
         return $this->event;
     }

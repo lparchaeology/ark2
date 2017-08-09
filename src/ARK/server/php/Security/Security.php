@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Security
+ * ARK Security.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -36,23 +36,19 @@ use ARK\Framework\Application;
 use ARK\Model\Attribute;
 use ARK\Model\Item;
 use ARK\ORM\ORM;
-use ARK\Security\User;
 use ARK\Service;
-use ARK\Vocabulary\Term;
+use ARK\Workflow\Role;
 use ARK\Workflow\Security\ActorRole;
 use ARK\Workflow\Security\ActorUser;
-use ARK\Workflow\Role;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 
 class Security
 {
-    protected $app = null;
-    protected $options = null;
-    protected $anon = null;
+    protected $app;
+    protected $options;
+    protected $anon;
 
     public function __construct(Application $app)
     {
@@ -63,7 +59,7 @@ class Security
     public function credentials($key)
     {
         try {
-            $path = Service::configDir() . '/credentials.json';
+            $path = Service::configDir().'/credentials.json';
             $credentials = json_decode(file_get_contents($path), true);
             if (isset($credentials[$key])) {
                 return $credentials[$key];
@@ -127,11 +123,6 @@ class Security
         return base64_encode(random_bytes(32));
     }
 
-    protected function encoder()
-    {
-        return $this->app['security.encoder.bcrypt'];
-    }
-
     public function encodePassword($plainPassword, $salt = null)
     {
         return $this->encoder()->encodePassword($plainPassword, $salt);
@@ -156,10 +147,10 @@ class Security
         $errors = $user->validate();
 
         // Ensure email address is unique.
-        $duplicates = $this->findBy(array('email' => $user->getEmail()));
+        $duplicates = $this->findBy(['email' => $user->getEmail()]);
         if (!empty($duplicates)) {
             foreach ($duplicates as $dup) {
-                if ($user->getId() && $dup->getId() == $user->getId()) {
+                if ($user->getId() && $dup->getId() === $user->getId()) {
                     continue;
                 }
                 $errors['email'] = 'An account with that email address already exists.';
@@ -168,10 +159,10 @@ class Security
 
         // Ensure username is unique or null.
         if ($user->hasRealUsername()) {
-            $duplicates = $this->findBy(array('username' => $user->getRealUsername()));
+            $duplicates = $this->findBy(['username' => $user->getRealUsername()]);
             if (!empty($duplicates)) {
                 foreach ($duplicates as $dup) {
-                    if ($user->getId() && $dup->getId() == $user->getId()) {
+                    if ($user->getId() && $dup->getId() === $user->getId()) {
                         continue;
                     }
                     $errors['username'] = 'An account with that username already exists.';
@@ -187,7 +178,7 @@ class Security
         return $errors;
     }
 
-    public function loginAsUser(User $user)
+    public function loginAsUser(User $user) : void
     {
         if (null !== ($current_token = $this->tokenStorage()->getToken())) {
             $providerKey = method_exists($current_token, 'getProviderKey') ? $current_token->getProviderKey() : $current_token->getSecret();
@@ -197,7 +188,7 @@ class Security
         }
     }
 
-    public function registerUser(User $user, Actor $actor = null, Role $role = null, Actor $agentFor = null)
+    public function registerUser(User $user, Actor $actor = null, Role $role = null, Actor $agentFor = null) : void
     {
         if (!$this->options['adminConfirm']) {
             $user->confirm();
@@ -226,7 +217,7 @@ class Security
         }
     }
 
-    public function registerActor(User $user, Actor $actor, Role $role = null, Actor $agentFor = null)
+    public function registerActor(User $user, Actor $actor, Role $role = null, Actor $agentFor = null) : void
     {
         $actorUser = new ActorUser($actor, $user);
         ORM::persist($actor);
@@ -239,7 +230,7 @@ class Security
         ORM::flush($actor);
     }
 
-    public function registerRole(Actor $actor, Role $role, Actor $agentFor = null)
+    public function registerRole(Actor $actor, Role $role, Actor $agentFor = null) : void
     {
         ORM::persist($actor);
         $actorRole = new ActorRole($actor, $role, $agentFor);
@@ -257,43 +248,59 @@ class Security
         return $user;
     }
 
-    public function resetUser(User $user)
+    public function resetUser(User $user) : void
     {
         $user->expireCredentials();
         //$this->sendResetMessage($user);
     }
 
-    protected function getGravatarUrl($email, $size = 80)
-    {
-        // See https://en.gravatar.com/site/implement/images/ for available options.
-        return '//www.gravatar.com/avatar/' . md5(strtolower(trim($email))) . '?s=' . $size . '&d=identicon';
-    }
-
-    public function sendVerificationMessage(User $user)
+    public function sendVerificationMessage(User $user) : void
     {
         $url = Service::url('user.confirm', ['token' => $user->getVerificationToken()]);
 
         $context = [
             'user' => $user,
-            'confirmationUrl' => $url
+            'confirmationUrl' => $url,
         ];
 
         $this->sendMessage($this->confirmationTemplate, $context, $this->getFromEmail(), $user->getEmail());
     }
 
-    public function sendResetMessage(User $user)
+    public function sendResetMessage(User $user) : void
     {
-        $url = $this->urlGenerator->generate('user.reset', array('token' => $user->getConfirmationToken()), UrlGeneratorInterface::ABSOLUTE_URL);
+        $url = $this->urlGenerator->generate('user.reset', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL);
 
         $context = [
             'user' => $user,
-            'resetUrl' => $url
+            'resetUrl' => $url,
         ];
 
         $this->sendMessage($this->resetTemplate, $context, $this->getFromEmail(), $user->getEmail());
     }
 
-    protected function sendMessage($templateName, $context, $fromEmail, $toEmail)
+    public function hasVisibility($user, $model)
+    {
+        if ($model instanceof Item) {
+            // Do something to check User/Actor can see Item
+        }
+        if ($model instanceof Attribute) {
+            // Do something to check User/Actor can see Attribute
+        }
+        return true;
+    }
+
+    protected function encoder()
+    {
+        return $this->app['security.encoder.bcrypt'];
+    }
+
+    protected function getGravatarUrl($email, $size = 80)
+    {
+        // See https://en.gravatar.com/site/implement/images/ for available options.
+        return '//www.gravatar.com/avatar/'.md5(strtolower(trim($email))).'?s='.$size.'&d=identicon';
+    }
+
+    protected function sendMessage($templateName, $context, $fromEmail, $toEmail) : void
     {
         if ($this->noSend) {
             return;
@@ -318,16 +325,5 @@ class Security
         }
 
         $this->mailer->send($message);
-    }
-
-    public function hasVisibility($user, $model)
-    {
-        if ($model instanceof Item) {
-            // Do something to check User/Actor can see Item
-        }
-        if ($model instanceof Attribute) {
-            // Do something to check User/Actor can see Attribute
-        }
-        return true;
     }
 }

@@ -45,14 +45,14 @@ abstract class DimeController
     public function pageConfig(string $route = null) : iterable
     {
         // TODO Use visibility / permissions
-        $homeTarget = (Service::security()->isGranted('ROLE_USER') ? 'dime.home' : 'front');
+        $homeTarget = (Service::security()->isGranted('ROLE_USER') ? 'dime.home' : 'dime.front');
         $config = [
             'navlinks' => [
                 ['name' => 'dime.home', 'dropdown' => false, 'target' => $homeTarget],
-                ['name' => 'dime.detector', 'dropdown' => false, 'target' => 'detector'],
-                ['name' => 'dime.research', 'dropdown' => false, 'target' => 'research'],
-                ['name' => 'dime.about', 'dropdown' => false, 'target' => 'about'],
-                ['name' => 'dime.news', 'dropdown' => false, 'target' => 'news'],
+                ['name' => 'dime.detector', 'dropdown' => false, 'target' => 'dime.detector'],
+                ['name' => 'dime.research', 'dropdown' => false, 'target' => 'dime.research'],
+                ['name' => 'dime.about', 'dropdown' => false, 'target' => 'dime.about'],
+                ['name' => 'dime.news', 'dropdown' => false, 'target' => 'dime.news'],
             ],
             'sidelinks' => [
                 [
@@ -60,7 +60,7 @@ abstract class DimeController
                     'active' => false,
                     'role' => 'ROLE_USER',
                     'links' => [
-                        ['name' => 'dime.find.add', 'active' => false, 'target' => 'finds.add'],
+                        ['name' => 'dime.find.add', 'active' => false, 'target' => 'dime.finds.add'],
                     ],
                 ],
                 [
@@ -68,7 +68,7 @@ abstract class DimeController
                     'active' => false,
                     'role' => 'IS_AUTHENTICATED_ANONYMOUSLY',
                     'links' => [
-                        ['name' => 'dime.find.search', 'active' => false, 'target' => 'finds.list'],
+                        ['name' => 'dime.find.search', 'active' => false, 'target' => 'dime.finds.list'],
                     ],
                 ],
                 [
@@ -76,7 +76,7 @@ abstract class DimeController
                     'active' => false,
                     'role' => 'ROLE_ADMIN',
                     'links' => [
-                        ['name' => 'dime.admin.users', 'active' => false, 'target' => 'admin.users'],
+                        ['name' => 'dime.admin.users', 'active' => false, 'target' => 'dime.admin.users'],
                     ],
                 ],
             ],

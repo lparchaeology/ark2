@@ -35,12 +35,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ProfileListController extends DimeFormController
 {
-    public function __invoke(Request $request)
-    {
-        $request->attributes->set('page', 'dime_page_profile_list');
-        return $this->handleRequest($request);
-    }
-
     public function buildState(Request $request) : iterable
     {
         $state = parent::buildState($request);

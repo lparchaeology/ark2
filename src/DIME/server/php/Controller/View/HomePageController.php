@@ -31,19 +31,12 @@ namespace DIME\Controller\View;
 
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\View\Page;
 use DIME\DIME;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
 class HomePageController extends DimeFormController
 {
-    public function __invoke(Request $request)
-    {
-        $request->attributes->set('page', 'dime_page_home');
-        return $this->handleRequest($request);
-    }
-
     public function buildData(Request $request)
     {
         // Find 9 most recent finds for current actor

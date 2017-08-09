@@ -43,7 +43,7 @@ class Notify
     protected $attributeName = '';
     protected $attribute;
 
-    public function recipient(Item $item) : Actor
+    public function recipient(Item $item) : ?Actor
     {
         return $item->property($this->attributeName)->value();
     }

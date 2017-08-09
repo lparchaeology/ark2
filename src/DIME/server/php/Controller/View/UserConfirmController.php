@@ -29,18 +29,11 @@
 
 namespace DIME\Controller\View;
 
-use ARK\View\Page;
 use DIME\DIME;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserConfirmController extends DimeFormController
 {
-    public function __invoke(Request $request)
-    {
-        $request->attributes->set('page', 'core_page_user_confirm');
-        return $this->handleRequest($request);
-    }
-
     public function buildWorkflow(Request $request, $data, iterable $state) : iterable
     {
         $workflow['mode'] = 'edit';

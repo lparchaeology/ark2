@@ -40,9 +40,10 @@ class Route
     protected $get = false;
     protected $post = false;
     protected $page;
+    protected $redirect;
     protected $controller;
 
-    public function route() : string
+    public function id() : string
     {
         return $this->route;
     }
@@ -62,9 +63,14 @@ class Route
         return $this->post;
     }
 
-    public function page() : Page
+    public function page() : ?Page
     {
         return $this->page;
+    }
+
+    public function redirect() : ?Route
+    {
+        return $this->redirect;
     }
 
     public function controller() : string
@@ -89,5 +95,6 @@ class Route
 
         // Associations
         $builder->addManyToOneField('page', Page::class, 'page', 'element');
+        $builder->addManyToOneField('redirect', self::class, 'redirect', 'route');
     }
 }

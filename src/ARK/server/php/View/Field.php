@@ -155,7 +155,7 @@ class Field extends Element
             }
         }
         $state['mode'] = $this->displayMode($state['mode']);
-        $state['modus'] = $this->modeToModus($state, ($state['modus'] ?: $this->valueModus()));
+        $state['modus'] = $this->modeToModus($state, ($state['modus'] ?? $this->valueModus()));
         $state['template'] = $this->template();
         $state['field'] = $this;
         return $state;
@@ -437,9 +437,6 @@ class Field extends Element
 
     private function modusToFormType(string $modus, ?string $active, string $readonly = null, string $static = null) : ?string
     {
-        if ($active === null) {
-            return null;
-        }
         switch ($modus) {
             case 'hidden':
                 return HiddenType::class;

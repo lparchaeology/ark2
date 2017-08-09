@@ -93,7 +93,7 @@ abstract class Element implements ElementInterface
 
     public function displayMode(?string $parentMode) : ?string
     {
-        if ($this->mode !== null && $parentMode === 'edit') {
+        if ($this->mode && $parentMode === 'edit') {
             return $this->mode;
         }
         return $parentMode;

@@ -38,12 +38,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AdminUserController extends DimeFormController
 {
-    public function __invoke(Request $request)
-    {
-        $request->attributes->set('page', 'dime_page_admin_user');
-        return $this->handleRequest($request);
-    }
-
     public function buildState(Request $request) : iterable
     {
         $state = parent::buildState($request);

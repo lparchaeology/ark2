@@ -62,34 +62,39 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers->match('/api/internal/users/{id}/actor', 'DIME\Controller\API\UserActorController')
             ->method('GET|POST')
             ->bind('api.internal.user.actor');
-        $controllers->post('/api/internal/vocabulary', 'DIME\Controller\API\VocabularyController')->bind('api.internal.vocabulary');
-        $controllers->post('/api/internal/message/read', 'DIME\Controller\API\MessageReadController')->bind('api.internal.message.read');
-        $controllers->post('/api/geo/find', 'DIME\Controller\API\GeoFindController')->bind('api.geo.find');
-        $controllers->get('/api/geo/choropleth', 'DIME\Controller\API\ChoroplethController')->bind('api.geo.choropleth');
-        $controllers->get('/img/{image}', 'DIME\Controller\API\ImageController')->bind('img');
+        $controllers->post('/api/internal/vocabulary', 'DIME\Controller\API\VocabularyController')
+            ->bind('api.internal.vocabulary');
+        $controllers->post('/api/internal/message/read', 'DIME\Controller\API\MessageReadController')
+            ->bind('api.internal.message.read');
+        $controllers->post('/api/geo/find', 'DIME\Controller\API\GeoFindController')
+            ->bind('api.geo.find');
+        $controllers->get('/api/geo/choropleth', 'DIME\Controller\API\ChoroplethController')
+            ->bind('api.geo.choropleth');
+        $controllers->get('/img/{image}', 'DIME\Controller\API\ImageController')
+            ->bind('img');
 
         // Admin Routes
         $controllers->match("/$admin/$users", 'DIME\Controller\View\AdminUserController')
             ->method('GET|POST')
-            ->bind('admin.users');
+            ->bind('dime.admin.users');
         $controllers->match("/$admin", 'DIME\Controller\View\AdminHomeController')
             ->method('GET')
-            ->bind('admin');
+            ->bind('dime.admin');
 
         // User Routes
         $paths = $app['ark']['security']['user_paths'][$app['locale']];
         $controllers->match($paths['register'], 'DIME\Controller\View\UserRegisterController')
             ->method('GET|POST')
-            ->bind('user.register');
+            ->bind('dime.user.register');
         $controllers->match($paths['reset'], 'DIME\Controller\View\UserResetController')
             ->method('GET|POST')
-            ->bind('user.reset');
+            ->bind('dime.user.reset');
         $controllers->match($paths['root'], 'DIME\Controller\View\UserConfirmController')
             ->method('GET')
-            ->bind('user.confirm');
+            ->bind('dime.user.confirm');
         $controllers->match($paths['login'], 'DIME\Controller\View\UserLoginController')
             ->method('GET')
-            ->bind('user.login');
+            ->bind('dime.user.login');
         $controllers->match($paths['check'], function () : void {
         })
             ->method('GET|POST')
@@ -102,16 +107,16 @@ class ViewControllerProvider implements ControllerProviderInterface
         // Static Page Routes
         $controllers->match("/$detector", 'DIME\Controller\View\PageViewController')
             ->method('GET|POST')
-            ->bind('detector');
+            ->bind('dime.detector');
         $controllers->match("/$research", 'DIME\Controller\View\PageViewController')
             ->method('GET|POST')
-            ->bind('research');
+            ->bind('dime.research');
         $controllers->match("/$about", 'DIME\Controller\View\PageViewController')
             ->method('GET|POST')
-            ->bind('about');
+            ->bind('dime.about');
         $controllers->match("/$news", 'DIME\Controller\View\NewsPageController')
             ->method('GET')
-            ->bind('news');
+            ->bind('dime.news');
 
         // Temp Routes?
         $controllers->match("/$files/{id}", 'DIME\Controller\View\FileController')
@@ -119,26 +124,26 @@ class ViewControllerProvider implements ControllerProviderInterface
             ->bind('files.view');
         $controllers->match("/$claim/{id}", 'DIME\Controller\View\TreasureClaimController')
             ->method('GET|POST')
-            ->bind('treasure.claim');
+            ->bind('dime.treasure.claim');
 
         // Find Routes
         $controllers->match("/$finds/add", 'DIME\Controller\View\FindAddController')
             ->method('GET|POST')
-            ->bind('finds.add');
+            ->bind('dime.finds.add');
         $controllers->match("/$finds/{id}", 'DIME\Controller\View\FindViewController')
             ->method('GET|POST')
-            ->bind('finds.view');
+            ->bind('dime.finds.view');
         $controllers->match("/$finds", 'DIME\Controller\View\FindListController')
             ->method('GET|POST')
-            ->bind('finds.list');
+            ->bind('dime.finds.list');
 
         // Profile Routes
         $controllers->match("/$profiles/{id}", 'DIME\Controller\View\ProfileViewController')
             ->method('GET')
-            ->bind('profiles.view');
+            ->bind('dime.profiles.view');
         $controllers->match("/$profiles", 'DIME\Controller\View\ProfileListController')
             ->method('GET')
-            ->bind('profiles.list');
+            ->bind('dime.profiles.list');
 
         // Home routes
         $controllers->match("/$home/$profile", 'DIME\Controller\View\UserProfileController')
@@ -149,7 +154,7 @@ class ViewControllerProvider implements ControllerProviderInterface
             ->bind('dime.home.finds');
         $controllers->get("/$home/$messages", 'DIME\Controller\View\MessagePageController')->bind('dime.home.messages');
         $controllers->get("/$home", 'DIME\Controller\View\HomePageController')->bind('dime.home');
-        $controllers->get('/', 'DIME\Controller\View\FrontPageController')->bind('front');
+        $controllers->get('/', 'DIME\Controller\View\FrontPageController')->bind('dime.front');
 
         return $controllers;
     }

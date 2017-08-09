@@ -30,19 +30,12 @@
 namespace DIME\Controller\View;
 
 use ARK\ORM\ORM;
-use ARK\View\Page;
 use DIME\DIME;
 use DIME\Entity\Find;
 use Symfony\Component\HttpFoundation\Request;
 
 class FrontPageController extends DimeFormController
 {
-    public function __invoke(Request $request)
-    {
-        $request->attributes->set('page', 'dime_page_front');
-        return $this->handleRequest($request);
-    }
-
     public function buildData(Request $request)
     {
         // Get the 25 most recent public Items

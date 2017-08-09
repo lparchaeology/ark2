@@ -29,19 +29,11 @@
 
 namespace DIME\Controller\View;
 
-use ARK\View\Page;
 use DIME\DIME;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserResetController extends DimeFormController
 {
-    public function __invoke(Request $request)
-    {
-        $request->attributes->set('page', 'core_page_user_reset');
-        $request->attributes->set('redirect', 'front');
-        return $this->handleRequest($request);
-    }
-
     public function buildWorkflow(Request $request, $data, iterable $state) : iterable
     {
         $workflow['mode'] = 'edit';

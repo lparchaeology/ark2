@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK ORM Globals
+ * ARK ORM Globals.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -59,8 +59,11 @@ class ORM
         return self::manager($class)->getRepository($class);
     }
 
-    public static function persist($entity)
+    public static function persist($entity) : void
     {
+        if (!$entity) {
+            return;
+        }
         if (is_array($entity) || $entity instanceof \Traversable) {
             foreach ($entity as $ent) {
                 self::manager($ent)->persist($ent);
@@ -70,7 +73,7 @@ class ORM
         self::manager($entity)->persist($entity);
     }
 
-    public static function remove($entity)
+    public static function remove($entity) : void
     {
         if (is_array($entity) || $entity instanceof \Traversable) {
             foreach ($entity as $ent) {
@@ -86,12 +89,12 @@ class ORM
         return self::manager($entity)->contains($entity);
     }
 
-    public static function flush($class)
+    public static function flush($class) : void
     {
         self::manager($class)->flush();
     }
 
-    public static function clear($class)
+    public static function clear($class) : void
     {
         self::repository($class)->clear();
     }

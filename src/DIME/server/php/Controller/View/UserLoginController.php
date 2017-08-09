@@ -30,7 +30,6 @@
 namespace DIME\Controller\View;
 
 use ARK\Service;
-use ARK\View\Page;
 use DIME\DIME;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -41,8 +40,7 @@ class UserLoginController extends DimeFormController
         if ($error = Service::security()->lastError($request)) {
             Service::view()->addErrorFlash($error);
         }
-        $request->attributes->set('page', 'core_page_user_login');
-        return $this->handleRequest($request);
+        return parent::__invoke($request);
     }
 
     public function buildState(Request $request) : iterable
