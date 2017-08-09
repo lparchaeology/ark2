@@ -27,13 +27,13 @@
         </ul>
         {% if state.notifications|length > 5 %}
             <div class="notification-dropdown-info">
-                <a href = " {{ path( 'home.messages' ) }}">
+                <a href = " {{ path( 'dime.home.messages' ) }}">
                     {{ state.notifications|length-5 }} {{ 'core.message.notshown' | translate }}
                 </a>
             </div>
         {% endif %}
         <span class="notification-dropdown-footer">
-            <a href = " {{ path( 'home.messages' ) }}">
+            <a href = " {{ path( 'dime.home.messages' ) }}">
                 {{ "core.message.allmessages" | translate }}
            </a>
         </span>

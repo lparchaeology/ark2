@@ -45,7 +45,7 @@
                 {% if global.user.id is defined %}
                 <div class="row usertool">
                     {%  set notificationicon = 'icon-notification small' %}
-                    <a href = " {{ path( 'home.messages' ) }}">
+                    <a href = " {{ path( 'dime.home.messages' ) }}">
                         <span class="dime-icon dimehometool-icon {{ notificationicon }} "></span>
                     </a>
                 {% endif %}
@@ -104,7 +104,7 @@
                             <div class="col-md-12">
                                 <ul class="nav nav-tabs nav-justified dime-nav">
                                     <li role="presentation">
-                                        <a href="{{ path('home') }}">
+                                        <a href="{{ path('dime.home') }}">
                                             {{ "dime.home" | translate }}
                                         </a>
                                     </li>
@@ -153,6 +153,3 @@
     </body>
 
 </html>
-
-
-

@@ -1,7 +1,7 @@
 {# Define the standard notification block #}
 {% block notification %}
 
-    <a class = "messagetext" href="{{ path('home.messages' ) }}">
+    <a class = "messagetext" href="{{ path('dime.home.messages' ) }}">
         {{ notification.event.term.keyword | trans }}
         <br/>
         {{ notification.event.subject.schema.keyword | trans ~ ' ' ~  notification.event.subject.id }}

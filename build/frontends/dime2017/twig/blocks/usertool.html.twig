@@ -3,7 +3,7 @@
 
     {% if global.user %}
         <div class="row usertool username">
-            <a href="{{ path('home.profile') }}">
+            <a href="{{ path('dime.home.profile') }}">
                 {% if workflow.actor.property('avatar').value %}
                     <img class = "profile-img" src="{{ path('img', {'image': workflow.actor.property('avatar').value.id}) ~ '?p=preview' }}"/>
                 {% endif %}
@@ -19,7 +19,7 @@
                 {% else %}
                     {%  set notificationicon = 'icon-notification small' %}
                 {% endif %}
-                <a href = " {{ path( 'home.messages' ) }}">
+                <a href = " {{ path( 'dime.home.messages' ) }}">
                     <span class="dime-icon dimehometool-icon {{ notificationicon }} "></span>
                 </a>
             {% endif %}
