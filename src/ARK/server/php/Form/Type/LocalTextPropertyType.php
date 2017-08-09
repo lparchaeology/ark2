@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Event Form Type
+ * ARK Event Form Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,17 +30,15 @@
 
 namespace ARK\Form\Type;
 
-use ARK\Form\Type\AbstractPropertyType;
-use ARK\Model\Property;
 use ARK\Model\LocalText;
+use ARK\Model\Property;
 use ARK\Service;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormBuilderInterface;
 
 class LocalTextPropertyType extends AbstractPropertyType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
@@ -54,7 +52,7 @@ class LocalTextPropertyType extends AbstractPropertyType
         $builder->setDataMapper($this);
     }
 
-    public function mapDataToForms($property, $forms)
+    public function mapDataToForms($property, $forms) : void
     {
         if (!$property instanceof Property) {
             return;
@@ -71,7 +69,7 @@ class LocalTextPropertyType extends AbstractPropertyType
         }
     }
 
-    public function mapFormsToData($forms, &$property)
+    public function mapFormsToData($forms, &$property) : void
     {
         if (!$property instanceof Property) {
             return;

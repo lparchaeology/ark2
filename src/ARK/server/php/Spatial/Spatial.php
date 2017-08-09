@@ -34,6 +34,7 @@ use ARK\Framework\Application;
 use Brick\Geo\Point;
 use proj4php\Point as ProjPoint;
 use proj4php\Proj;
+use proj4php\Proj4php;
 
 class Spatial
 {
@@ -45,7 +46,7 @@ class Spatial
     {
         $this->app = $app;
         $this->parms = [
-            32632 => '+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
+            '32632' => '+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs',
         ];
     }
 

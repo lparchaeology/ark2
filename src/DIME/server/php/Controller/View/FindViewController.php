@@ -40,7 +40,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FindViewController extends DimeFormController
 {
-    public function __invoke(Request $request, $id)
+    public function __invoke(Request $request, $id = null)
     {
         $request->attributes->set('find', $id);
         return parent::__invoke($request);

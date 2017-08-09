@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Notification Entity.
+ * ARK Form Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,22 +27,19 @@
  * @since      2.0
  */
 
-namespace ARK\Message;
+namespace ARK\Form\Type;
 
-use ARK\Actor\Actor;
-use ARK\ARK;
-use ARK\Workflow\Event;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType as SymfonyTextareaType;
 
-class Notification extends Message
+class TextareaType extends AbstractType
 {
-    public function __construct(Actor $sender, iterable $recipients, Event $event)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
-        parent::__construct($sender, $recipients, ARK::timestamp());
-        $this->property('event')->setValue($event);
     }
 
-    public function event() : Event
+    public function getParent()
     {
-        return $this->property('event')->value();
+        return SymfonyTextareaType::class;
     }
 }

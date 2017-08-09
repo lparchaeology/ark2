@@ -64,8 +64,8 @@ class DIME
         }
         if ($actor instanceof Actor && $actor->id() !== 'anonymous') {
             $msgIds = Service::database()->getActorMessages($actor->id());
-            dump($actor->roles());
             foreach ($actor->roles() as $role) {
+                $msgIds = array_merge($msgIds, Service::database()->getRoleMessages($role->role()->id()));
                 if ($role->isAgent()) {
                     $msgIds = array_merge($msgIds, Service::database()->getActorMessages($role->agentFor()->id()));
                 }

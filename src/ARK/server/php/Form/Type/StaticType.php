@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Form Type
+ * ARK Form Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,11 +25,11 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Form\Type;
 
+use ARK\Model\LocalText;
 use ARK\Service;
 use ARK\Vocabulary\Term;
 use DateTime;
@@ -40,12 +40,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class StaticType extends AbstractType implements DataTransformerInterface
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder->addModelTransformer($this);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults([
             'widget' => null,
@@ -62,20 +62,6 @@ class StaticType extends AbstractType implements DataTransformerInterface
         ]);
     }
 
-    private function transformValue($value)
-    {
-        if ($value instanceof DateTime) {
-            return $value->format('Y-m-d H:i:s');
-        }
-        if ($value instanceof Term) {
-            return $value->keyword();
-        }
-        if (!$value) {
-            return Service::translate('dime.placeholder');
-        }
-        return $value;
-    }
-
     public function transform($value)
     {
         if (is_array($value)) {
@@ -90,6 +76,23 @@ class StaticType extends AbstractType implements DataTransformerInterface
 
     public function reverseTransform($value)
     {
+        return $value;
+    }
+
+    private function transformValue($value)
+    {
+        if ($value instanceof DateTime) {
+            return $value->format('Y-m-d H:i:s');
+        }
+        if ($value instanceof Term) {
+            return $value->keyword();
+        }
+        if ($value instanceof LocalText) {
+            return $value->content();
+        }
+        if (!$value) {
+            return Service::translate('dime.placeholder');
+        }
         return $value;
     }
 }

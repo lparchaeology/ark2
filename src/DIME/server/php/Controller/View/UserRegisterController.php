@@ -41,6 +41,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserRegisterController extends DimeFormController
 {
+    public function buildData(Request $request)
+    {
+        $data['actor'] = new Person();
+        $data['faq'] = 'dime.register.faq';
+        return $data;
+    }
+
     public function buildWorkflow(Request $request, $data, iterable $state) : iterable
     {
         $workflow['mode'] = 'edit';
@@ -52,12 +59,8 @@ class UserRegisterController extends DimeFormController
     {
         $data = $form->getData();
         $credentials = $data['credentials'];
-
-        $actor = new Person();
+        $actor = $data['actor'];
         $actor->setItem($credentials['_username']);
-        $actor->setValue('fullname', $data['fullname']);
-        $actor->setValue('address', $data['address']);
-        $actor->setValue('telephone', $data['telephone']);
 
         $user = Service::security()->createUser(
             $credentials['_username'],
@@ -68,6 +71,13 @@ class UserRegisterController extends DimeFormController
 
         $role = ORM::find(Role::class, 'detectorist');
         Service::security()->registerUser($user, $actor, $role);
+
+        // FIXME Temp hack until email working
+        $user->verify();
+        $user->confirm();
+        $user->enable();
+        ORM::persist($user);
+        ORM::flush($user);
 
         Service::workflow()->apply($actor, 'register', $actor);
         ORM::flush($actor);

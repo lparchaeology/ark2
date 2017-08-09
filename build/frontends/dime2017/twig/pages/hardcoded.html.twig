@@ -62,7 +62,7 @@
                                 <span class="dime-icon icon-add small"></span>
                             </li>
                             <li class=" list-group-item navlist">
-                                <a href="{{ path('finds.add') }}">
+                                <a href="{{ path('dime.finds.add') }}">
                                     {{ "dime.find.add" | translate }}
                                 </a>
                             </li>
@@ -71,7 +71,7 @@
                             <span class="dime-icon icon-search small"></span>
                         </li>
                         <li class=" list-group-item navlist">
-                            <a href="{{ path('finds.list') }}">
+                            <a href="{{ path('dime.finds.list') }}">
                                 {{ "dime.find.search" | translate }}
                             </a>
                         </li>
@@ -109,22 +109,22 @@
                                         </a>
                                     </li>
                                     <li role="presentation">
-                                        <a href="{{ path('detector') }}">
+                                        <a href="{{ path('dime.detector') }}">
                                             {{ "dime.detector" | translate }}
                                         </a>
                                     </li>
                                     <li role="presentation">
-                                        <a href="{{ path('research') }}">
+                                        <a href="{{ path('dime.research') }}">
                                             {{ "dime.research" | translate }}
                                         </a>
                                     </li>
                                     <li role="presentation">
-                                        <a href="{{ path('about') }}">
+                                        <a href="{{ path('dime.about') }}">
                                             {{ "dime.about" | translate }}
                                         </a>
                                     </li>
                                     <li role="presentation">
-                                        <a href="{{ path('news') }}">
+                                        <a href="{{ path('dime.news') }}">
                                             {{"dime.news" | translate }}
                                         </a>
                                     </li>
@@ -146,7 +146,7 @@
     {% block footer %}{% endblock %}
 
         <!-- Combined jQuery, Bootstrap and ARK js -->
-        <script> var path = "{{ path('front')|escape('js') }}";</script>
+        <script> var path = "{{ path('dime.front')|escape('js') }}";</script>
         <script src="https://openlayers.org/en/v3.20.1/build/ol.js"></script>
         <script src="{{ asset('/scripts/ark.min.js', 'frontend') }}"></script>
 

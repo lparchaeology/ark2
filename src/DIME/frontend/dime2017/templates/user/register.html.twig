@@ -13,6 +13,12 @@
         <a href="{{ path('dime.user.login') }}">{{ 'core.user.register.login' | translate() }}</a>
     </p>
 
-    {% include "layouts/grid.html.twig" %}
+    <div class="col-md-6">
+        {% include "layouts/grid.html.twig" %}
+    </div>
+
+    <div class="col-md-6 redtext">
+        {{ 'dime.register.faq' | translate | raw }}
+    </div>
 
 {% endif %}

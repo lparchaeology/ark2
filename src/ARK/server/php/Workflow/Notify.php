@@ -36,6 +36,7 @@ use ARK\ORM\ClassMetadataBuilder;
 
 class Notify
 {
+    protected $id;
     protected $schma = '';
     protected $actionName = '';
     protected $action;
@@ -45,9 +46,15 @@ class Notify
     protected $roleName = '';
     protected $role;
 
-    public function recipient(Item $item) : ?Actor
+    public function recipient(Item $item)
     {
-        return $item->property($this->attributeName)->value();
+        if ($this->attributeName) {
+            return $item->property($this->attributeName)->value();
+        }
+        if ($this->roleName) {
+            return $this->role;
+        }
+        return null;
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
