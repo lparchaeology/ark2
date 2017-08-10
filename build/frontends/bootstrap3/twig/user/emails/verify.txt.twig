@@ -2,7 +2,7 @@
 Template for an email message sent to confirm an email address.
 Variables passed to this template:
     user: The SimpleUser\User instance.
-    confirmationUrl: The link to click to complete the confirmation process.
+    url: The link to click to complete the confirmation process.
 #}
 
 {# The subject line. #}
@@ -16,7 +16,7 @@ Variables passed to this template:
 {{ 'Thanks for joining our site!' | trans({}, 'mail') }}
 
 {{ 'Please click the link below to confirm your email:' | trans({}, 'mail') }}
-{{ confirmationUrl }}
+{{ url }}
 
 {%- endautoescape -%}{%- endblock -%}
 
@@ -26,7 +26,7 @@ Variables passed to this template:
     <h1>{{ 'Thanks for joining our site!' | trans({}, 'mail') }}</h1>
 
     <p>
-        <a href="{{ confirmationUrl }}">{{ 'Please click this link to confirm your email.' | trans({}, 'mail') }}</a>.
+        <a href="{{ url }}">{{ 'Please click this link to confirm your email.' | trans({}, 'mail') }}</a>.
     </p>
 
 {%- endblock -%}

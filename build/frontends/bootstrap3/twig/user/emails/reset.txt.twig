@@ -2,7 +2,7 @@
 Template for an email message sent to authorize a password reset.
 Variables passed to this template:
     user: The SimpleUser\User instance.
-    resetUrl: The link to click to reset the password.
+    url: The link to click to reset the password.
 #}
 
 {# The subject line. #}
@@ -16,7 +16,7 @@ Variables passed to this template:
 {{ 'Reset your password' | trans({}, 'mail') }}
 
 {{ 'Please click the link below to reset your password:' | trans({}, 'mail') }}
-{{ resetUrl }}
+{{ url }}
 
 _______________________________________________________________
 {{ 'Didn\'t ask to reset your password?' | trans({}, 'mail') }}
@@ -32,7 +32,7 @@ _______________________________________________________________
     <h1>{{ 'Reset your password' | trans({}, 'mail') }}</h1>
 
     <p>
-        <a href="{{ resetUrl }}">{{ 'Please click this link to reset your password.' | trans({}, 'mail') }}</a>
+        <a href="{{ url }}">{{ 'Please click this link to reset your password.' | trans({}, 'mail') }}</a>
     </p>
 
     <hr style="margin-top: 30px;"/>

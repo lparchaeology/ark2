@@ -42,6 +42,7 @@ use Psr\Log\LoggerInterface;
 use Seld\JsonLint\JsonParser;
 use SimpleBus\Message\Bus\MessageBus;
 use Swift;
+use Swift_Message;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -139,6 +140,31 @@ class Service
     public static function mailer() : Swift
     {
         return self::$app['mailer'];
+    }
+
+    public static function sendEmail(string $fromEmail, string $toEmail, string $template, iterable $context = []) : void
+    {
+        $context = self::view()->templates()->mergeGlobals($context);
+        $template = self::view()->templates()->loadTemplate($template);
+        $subject = $template->renderBlock('subject', $context);
+        $textBody = $template->renderBlock('body_text', $context);
+        $htmlBody = $template->renderBlock('body_html', $context);
+
+        $message = new Swift_Message($subject);
+        $message->setFrom($fromEmail)->setTo($toEmail);
+
+        if (!empty($htmlBody)) {
+            $message->setBody($htmlBody, 'text/html')
+                ->addPart($textBody, 'text/plain');
+        } else {
+            $message->setBody($textBody);
+        }
+
+        if (self::$app['ark']['mailer']['enabled']) {
+            self::mailer()->send($message);
+        } elseif (self::$app['debug']) {
+            dump($message);
+        }
     }
 
     public static function translate(

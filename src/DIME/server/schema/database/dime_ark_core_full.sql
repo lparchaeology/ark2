@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 09, 2017 at 07:34 PM
+-- Generation Time: Aug 10, 2017 at 05:34 PM
 -- Server version: 10.2.7-MariaDB
 -- PHP Version: 7.1.8
 
@@ -174,9 +174,9 @@ CREATE TABLE `ark_datatype_attribute` (
 --
 
 INSERT INTO `ark_datatype_attribute` (`parent`, `attribute`, `datatype`, `keyword`, `vocabulary`, `sequence`, `root`, `span`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`) VALUES
-('address', 'city', 'string', 'format.address.city', NULL, 2, 0, 0, 1, 1, 1, 0, 1, 0),
+('address', 'city', 'string', 'format.address.city', NULL, 2, 0, 0, 0, 1, 1, 0, 1, 0),
 ('address', 'country', 'term', 'format.address.country', 'country', 6, 0, 0, 1, 1, 1, 0, 1, 0),
-('address', 'postcode', 'string', NULL, NULL, 4, 1, 0, 1, 1, 1, 0, 1, 0),
+('address', 'postcode', 'string', NULL, NULL, 4, 0, 0, 0, 1, 1, 0, 1, 0),
 ('address', 'street', 'string', 'format.address.street', NULL, 0, 1, 0, 1, 1, 1, 0, 1, 0),
 ('classification', 'event', 'event', 'format.classification.classified', 'core.event.type', 2, 0, 0, 1, 1, 1, 0, 1, 0),
 ('classification', 'subtype', 'term', 'format.classification.class', 'dime.find.subtype', 0, 1, 0, 1, 1, 1, 0, 1, 0),
@@ -790,7 +790,7 @@ INSERT INTO `ark_route` (`route`, `path`, `can_get`, `can_post`, `page`, `redire
 ('dime.research', '/research', 1, 0, 'dime_page_static', NULL, 'DIME\\Controller\\View\\PageViewController'),
 ('dime.user.confirm', '/users/confirm', 1, 0, 'core_page_user_confirm', NULL, 'DIME\\Controller\\View\\UserConfirmController'),
 ('dime.user.login', '/users/login', 1, 0, 'core_page_user_login', NULL, 'DIME\\Controller\\View\\UserLoginController'),
-('dime.user.register', '/users/register', 1, 1, 'dime_page_user_register', 'dime.front', 'DIME\\Contoller\\UserRegisterController'),
+('dime.user.register', '/users/register', 1, 1, 'dime_page_user_register', 'dime.home.profile', 'DIME\\Contoller\\UserRegisterController'),
 ('dime.user.reset', '/users/reset', 1, 1, 'core_page_user_reset', NULL, 'DIME\\Controller\\View\\UserResetController'),
 ('home', '/', 1, 0, 'core_page_home', NULL, 'ARK\\Controller\\HomePageController'),
 ('user.check', '/users/check', 1, 1, NULL, NULL, ''),
@@ -4644,7 +4644,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.user.password.forgot', 'default', 'Forgotten Password?', NULL),
 ('en', 'dime.user.profile', 'default', 'Profile', ''),
 ('en', 'dime.user.register', 'default', 'New User?', NULL),
-('en', 'dime.user.register.success', 'default', 'Your DIME registration has been submitted. Please verify your email address and wait for your user profile to be reviewed and approved.', ''),
+('en', 'dime.user.register.success', 'default', 'Your DIME registration has been successful. You will shortly receive an email with a link to verify your account and enable full access. Until your account is verified you will only be able to record finds and not submit them for Danefae assessment.', ''),
 ('en', 'dime.user.terms', 'default', 'Terms and Conditions', ''),
 ('en', 'dime.user.terms.v1', 'default', '<H2>Terms and Conditions</H2><P>v1.0 dated 1 June 2017</P><P>Lorem Ipsem...</P>', ''),
 ('en', 'dime.user.update.success', 'default', 'User successfully updated.', ''),
@@ -5110,10 +5110,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'language.nyanja', 'default', 'Nyanja', NULL),
 ('en', 'language.nyankole', 'default', 'Nyankole', NULL),
 ('en', 'language.nyoro', 'default', 'Nyoro', NULL),
-('en', 'language.nzima', 'default', 'Nzima', NULL),
-('en', 'language.occitan', 'default', 'Occitan', NULL),
-('en', 'language.ojibwa', 'default', 'Ojibwa', NULL);
+('en', 'language.nzima', 'default', 'Nzima', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'language.occitan', 'default', 'Occitan', NULL),
+('en', 'language.ojibwa', 'default', 'Ojibwa', NULL),
 ('en', 'language.oriya', 'default', 'Oriya', NULL),
 ('en', 'language.oromo', 'default', 'Oromo', NULL),
 ('en', 'language.osage', 'default', 'Osage', NULL),
@@ -6033,12 +6033,12 @@ INSERT INTO `ark_view_group` (`element`, `layout`, `mode`, `form`, `name`, `meth
 ('core_user_actor', 'grid', NULL, 0, 'actor', NULL, NULL, NULL),
 ('core_user_credentials', 'grid', NULL, 0, 'credentials', NULL, NULL, NULL),
 ('core_user_filter', 'grid', NULL, 1, 'filter', NULL, NULL, NULL),
-('core_user_login', 'grid', NULL, 1, NULL, 'POST', 'user.check', 'user/login.html.twig'),
+('core_user_login', 'grid', NULL, 1, NULL, 'POST', 'user.check', 'user/layouts/login.html.twig'),
 ('core_user_password_change', 'grid', NULL, 1, 'password_change', NULL, NULL, NULL),
 ('core_user_password_set', 'grid', NULL, 1, 'password_set', NULL, NULL, NULL),
 ('core_user_profile', 'grid', NULL, 0, NULL, NULL, NULL, NULL),
-('core_user_register', 'grid', NULL, 1, NULL, NULL, NULL, 'user/register.html.twig'),
-('core_user_reset', 'grid', NULL, 1, NULL, NULL, NULL, 'user/reset.html.twig'),
+('core_user_register', 'grid', NULL, 1, NULL, NULL, NULL, 'user/layouts/register.html.twig'),
+('core_user_reset', 'grid', NULL, 1, NULL, NULL, NULL, 'user/layouts/reset.html.twig'),
 ('core_user_role', 'grid', NULL, 0, 'role', NULL, NULL, NULL),
 ('core_workflow_action', 'grid', NULL, 0, 'action', NULL, NULL, 'layouts/action.html.twig'),
 ('core_workflow_action_form', 'grid', NULL, 1, 'action', NULL, NULL, 'layouts/action.html.twig'),
@@ -6083,7 +6083,7 @@ INSERT INTO `ark_view_group` (`element`, `layout`, `mode`, `form`, `name`, `meth
 ('dime_user_actor', 'grid', NULL, 1, 'actor', NULL, NULL, NULL),
 ('dime_user_filter', 'grid', NULL, 1, 'filter', NULL, NULL, NULL),
 ('dime_user_profile', 'grid', NULL, 0, NULL, NULL, NULL, NULL),
-('dime_user_register', 'grid', NULL, 1, NULL, NULL, NULL, 'user/register.html.twig'),
+('dime_user_register', 'grid', NULL, 1, NULL, NULL, NULL, 'user/layouts/register.html.twig'),
 ('dime_user_register_actor', 'grid', NULL, 0, 'actor', NULL, NULL, NULL);
 
 -- --------------------------------------------------------

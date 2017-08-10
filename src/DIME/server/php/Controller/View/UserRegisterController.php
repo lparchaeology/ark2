@@ -72,16 +72,13 @@ class UserRegisterController extends DimeFormController
         $role = ORM::find(Role::class, 'detectorist');
         Service::security()->registerUser($user, $actor, $role);
 
-        // FIXME Temp hack until email working
-        $user->verify();
-        $user->confirm();
-        $user->enable();
-        ORM::persist($user);
-        ORM::flush($user);
-
         Service::workflow()->apply($actor, 'register', $actor);
         ORM::flush($actor);
 
+        if ($user->isEnabled()) {
+            dump('enabled, logging in');
+            Service::security()->loginAsUser($user, 'default', $request);
+        }
         $request->attributes->set('flash', 'success');
         $request->attributes->set('message', 'dime.user.register.success');
     }

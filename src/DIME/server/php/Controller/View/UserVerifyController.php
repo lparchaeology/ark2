@@ -32,7 +32,7 @@ namespace DIME\Controller\View;
 use DIME\DIME;
 use Symfony\Component\HttpFoundation\Request;
 
-class UserConfirmController extends DimeFormController
+class UserVerifyController extends DimeFormController
 {
     public function buildWorkflow(Request $request, $data, iterable $state) : iterable
     {

@@ -43,6 +43,7 @@ use ARK\Workflow\Security\ActorUser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class Security
 {
@@ -66,7 +67,6 @@ class Security
             }
         } catch (Exception $e) {
             // Nothing to see here, move along now...
-            dump('exception');
         }
         return null;
     }
@@ -178,42 +178,48 @@ class Security
         return $errors;
     }
 
-    public function loginAsUser(User $user) : void
+    public function loginAsUser(User $user, string $providerKey = 'default', Request $request = null) : void
     {
-        if (null !== ($current_token = $this->tokenStorage()->getToken())) {
-            $providerKey = method_exists($current_token, 'getProviderKey') ? $current_token->getProviderKey() : $current_token->getSecret();
-            $token = new UsernamePasswordToken($user, null, $providerKey);
+        // TODO logout first?
+        if (!$this->isLoggedIn()) {
+            $token = new UsernamePasswordToken($user, null, $providerKey, $user->levels());
             $this->tokenStorage()->setToken($token);
             $this->app['user'] = $user;
+            if ($request) {
+                $request->getSession()->set('_security_'.$providerKey, serialize($token));
+                //$event = new InteractiveLoginEvent($request, $token);
+                //$this->app['dispatcher']->dispatch('security.interactive_login', $event);
+            }
         }
     }
 
     public function registerUser(User $user, Actor $actor = null, Role $role = null, Actor $agentFor = null) : void
     {
-        if (!$this->options['adminConfirm']) {
-            $user->confirm();
-        }
-        if ($this->options['verifyEmail']) {
+        if ($this->options['verify_email']) {
             $user->setVerificationRequested();
-        } else {
-            $user->verify();
         }
-        $user->enable();
+        if (!$this->options['verify_email_required'] && !$this->options['admin_confirm']) {
+            $user->enable();
+        }
         ORM::persist($user);
         if ($actor) {
             $actorUser = new ActorUser($actor, $user);
             ORM::persist($actor);
             ORM::persist($actorUser);
-        }
-        if ($actor && $role) {
-            $actorRole = new ActorRole($actor, $role, $agentFor);
-            ORM::persist($actorRole);
-            ORM::persist($agentFor);
+            if ($role) {
+                $actorRole = new ActorRole($actor, $role, $agentFor);
+                // TODO
+                if (!$this->options['verify_email_required'] && !$this->options['admin_confirm']) {
+                    $actorRole->enable();
+                }
+                ORM::persist($actorRole);
+                ORM::persist($agentFor);
+            }
         }
         ORM::flush($user);
         ORM::flush($actor);
-        if ($this->options['verifyEmail']) {
-            //$this->sendVerificationMessage($user);
+        if ($this->options['verify_email']) {
+            $this->sendVerificationMessage($user);
         }
     }
 
@@ -250,32 +256,8 @@ class Security
 
     public function resetUser(User $user) : void
     {
-        $user->expireCredentials();
-        //$this->sendResetMessage($user);
-    }
-
-    public function sendVerificationMessage(User $user) : void
-    {
-        $url = Service::url('user.confirm', ['token' => $user->getVerificationToken()]);
-
-        $context = [
-            'user' => $user,
-            'confirmationUrl' => $url,
-        ];
-
-        $this->sendMessage($this->confirmationTemplate, $context, $this->getFromEmail(), $user->getEmail());
-    }
-
-    public function sendResetMessage(User $user) : void
-    {
-        $url = $this->urlGenerator->generate('user.reset', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL);
-
-        $context = [
-            'user' => $user,
-            'resetUrl' => $url,
-        ];
-
-        $this->sendMessage($this->resetTemplate, $context, $this->getFromEmail(), $user->getEmail());
+        $user->setPasswordRequested();
+        $this->sendResetMessage($user);
     }
 
     public function hasVisibility($user, $model)
@@ -289,41 +271,28 @@ class Security
         return true;
     }
 
-    protected function encoder()
+    public function encoder()
     {
         return $this->app['security.encoder.bcrypt'];
     }
 
-    protected function getGravatarUrl($email, $size = 80)
+    protected function sendVerificationMessage(User $user) : void
+    {
+        $url = Service::url($this->options['routes']['verify']['route'], ['token' => $user->verificationToken()]);
+        $context = ['user' => $user, 'url' => $url];
+        Service::sendEmail($this->options['email'], $user->email(), $this->options['verify_email_template'], $context);
+    }
+
+    protected function sendResetMessage(User $user) : void
+    {
+        $url = Service::url($this->options['routes']['reset']['route'], ['token' => $user->passwordRequestToken()]);
+        $context = ['user' => $user, 'url' => $url];
+        Service::sendEmail($this->options['email'], $user->email(), $this->options['reset_email_template'], $context);
+    }
+
+    protected function getGravatarUrl(string $email, int $size = 80) : string
     {
         // See https://en.gravatar.com/site/implement/images/ for available options.
         return '//www.gravatar.com/avatar/'.md5(strtolower(trim($email))).'?s='.$size.'&d=identicon';
-    }
-
-    protected function sendMessage($templateName, $context, $fromEmail, $toEmail) : void
-    {
-        if ($this->noSend) {
-            return;
-        }
-
-        $context = $this->twig->mergeGlobals($context);
-        $template = $this->twig->loadTemplate($templateName);
-        $subject = $template->renderBlock('subject', $context);
-        $textBody = $template->renderBlock('body_text', $context);
-        $htmlBody = $template->renderBlock('body_html', $context);
-
-        $message = \Swift_Message::newInstance()
-            ->setSubject($subject)
-            ->setFrom($fromEmail)
-            ->setTo($toEmail);
-
-        if (!empty($htmlBody)) {
-            $message->setBody($htmlBody, 'text/html')
-                ->addPart($textBody, 'text/plain');
-        } else {
-            $message->setBody($textBody);
-        }
-
-        $this->mailer->send($message);
     }
 }
