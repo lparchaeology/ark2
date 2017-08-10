@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Site Admin Console
+ * ARK Site Admin Console.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -31,20 +31,19 @@ namespace ARK\Framework\Console;
 
 use ARK\ARK;
 use ARK\Framework\Application;
-use ARK\Framework\Console\AbstractConsole;
+use ARK\Framework\Console\Command\NavAddCommand;
 use ARK\Framework\Console\Command\RouteDumpCommand;
 use ARK\Framework\Console\Command\UserListCommand;
 use ARK\ORM\Console\GenerateItemEntityCommand;
 use ARK\Translation\Console\TranslationAddCommand;
 use ARK\Translation\Console\TranslationDimeCommand;
-use ARK\View\Console\NavAddCommand;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand;
 use Doctrine\DBAL\Tools\Console\Command\ImportCommand;
 use Doctrine\DBAL\Tools\Console\Command\RunSqlCommand;
 use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand;
 
 class Console extends AbstractConsole
 {
@@ -53,7 +52,7 @@ class Console extends AbstractConsole
         parent::__construct('ARK Site Admin Console', new Application($site));
 
         // Route Commands
-        $this->add(new RouteDumpCommand);
+        $this->add(new RouteDumpCommand());
 
         // Translation Commands
         $this->add(new TranslationAddCommand());
@@ -68,7 +67,7 @@ class Console extends AbstractConsole
         //$this->add(new UserRoleRemoveCommand($this->app));
 
         // View Commands
-        $this->add(new NavAddCommand);
+        $this->add(new NavAddCommand());
 
         // Doctrine DBAL Commands
         $this->add(new ImportCommand());
