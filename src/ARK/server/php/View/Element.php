@@ -137,6 +137,7 @@ abstract class Element implements ElementInterface
         $state['modus'] = null;
         $state['sanitise'] = null;
         $state['label'] = null;
+        $state['help'] = null;
         $state['keyword'] = null;
         $state['required'] = true;
         $state['value']['modus'] = null;
@@ -162,7 +163,7 @@ abstract class Element implements ElementInterface
     {
         $options = array_replace_recursive($this->defaultOptions(), $options);
         if ($state['label']) {
-            $options['label'] = ($state['keyword'] ? $state['keyword'] : $this->keyword());
+            $options['label'] = $state['keyword'] ?? $this->keyword();
         }
         $options['required'] = ($state['mode'] === 'view' ? false : $state['required']);
         return $options;
@@ -190,16 +191,12 @@ abstract class Element implements ElementInterface
             $context['form'] = ($form[$name] ?? $form);
         }
         if ($state['label']) {
-            $context['label'] = ($state['keyword'] ? $state['keyword'] : $this->keyword());
+            $context['label'] = $state['keyword'] ?? $this->keyword();
         } else {
             $context['label'] = null;
         }
-        if ($state['modus'] === 'active') {
-            if ($state['keyword']) {
-                $context['help'] = $state['keyword'];
-            } elseif ($this->keyword()) {
-                $context['help'] = $this->keyword();
-            }
+        if ($state['help'] && $state['modus'] === 'active') {
+            $context['help'] = $state['keyword'] ?? $this->keyword();
         }
         return $context;
     }
