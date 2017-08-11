@@ -54,6 +54,7 @@ class Cell implements ElementInterface
     protected $map;
     protected $vocabulary;
     protected $label = false;
+    protected $help = false;
     protected $placeholder = false;
     protected $choices = false;
     protected $required = false;
@@ -122,6 +123,11 @@ class Cell implements ElementInterface
         return $this->label;
     }
 
+    public function showHelp() : bool
+    {
+        return $this->help;
+    }
+
     public function showPlaceholder() : ?bool
     {
         return $this->placeholder;
@@ -171,6 +177,7 @@ class Cell implements ElementInterface
     {
         $state['name'] = $this->name;
         $state['label'] = $this->label;
+        $state['help'] = $this->help;
         $state['placeholder'] = $this->placeholder;
         $state['choices'] = $this->choices;
         $state['map'] = $this->map;
@@ -270,6 +277,7 @@ class Cell implements ElementInterface
         $builder->addStringField('name', 30);
         $builder->addField('width', 'integer');
         $builder->addField('label', 'boolean');
+        $builder->addField('help', 'boolean');
         $builder->addField('placeholder', 'boolean');
         $builder->addField('choices', 'boolean');
         $builder->addStringField('mode', 10);
