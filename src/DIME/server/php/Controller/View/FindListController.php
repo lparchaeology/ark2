@@ -48,8 +48,14 @@ class FindListController extends DimeFormController
         $state = parent::buildState($request);
         $state['options']['museum']['choices'] = ORM::findAll(Museum::class);
         $state['options']['museum']['placeholder'] = '';
-        $state['options']['finder']['choices'] = ORM::findAll(Person::class);
-        $state['options']['finder']['placeholder'] = '';
+        if ($request->attributes->get('_route') === 'dime.home.finds') {
+            $state['options']['finder']['choices'] = [Service::workflow()->actor()];
+            $state['options']['finder']['multiple'] = false;
+            $state['options']['finder']['placeholder'] = '';
+        } else {
+            $state['options']['finder']['choices'] = ORM::findAll(Person::class);
+            $state['options']['finder']['placeholder'] = '';
+        }
         return $state;
     }
 
@@ -94,7 +100,8 @@ class FindListController extends DimeFormController
             $data['filters']['material'] = $materials->toArray();
         }
 
-        if (Service::workflow()->actor()->hasPermission('dime.find.filter.museum')) {
+        $myfinds = ($request->attributes->get('_route') === 'dime.home.finds');
+        if ($myfinds || Service::workflow()->actor()->hasPermission('dime.find.filter.museum')) {
             if (isset($query['museum'])) {
                 $museums = ORM::findBy(Museum::class, [
                     'item' => $query['museum'],
@@ -102,7 +109,10 @@ class FindListController extends DimeFormController
                 $data['filters']['museum'] = $museums->toArray();
             }
 
-            if (isset($query['finder'])) {
+            if ($myfinds) {
+                $data['filters']['finder'] = Service::workflow()->actor();
+                $query['finder'] = [$data['filters']['finder']->id()];
+            } elseif (isset($query['finder'])) {
                 $finders = ORM::findBy(Person::class, [
                     'item' => $query['finder'],
                 ]);
@@ -173,12 +183,10 @@ class FindListController extends DimeFormController
         $types = $form['type']->getData();
         $period = $form['period']->getData();
         $materials = $form['material']->getData();
-        if (Service::workflow()->actor()->hasPermission('dime.find.filter.museum')) {
-            $museums = $form['museum']->getData();
-            $finders = $form['finder']->getData();
-            $status = $form['status']->getData();
-            $treasures = $form['treasure']->getData();
-        }
+        $museums = $form['museum']->getData();
+        $finders = $form['finder']->getData();
+        $status = $form['status']->getData();
+        $treasures = $form['treasure']->getData();
         $query = [];
         if ($municipalities) {
             foreach ($municipalities as $municipality) {
@@ -198,24 +206,22 @@ class FindListController extends DimeFormController
                 $query['material'][] = $material->name();
             }
         }
-        if (Service::workflow()->actor()->hasPermission('dime.find.filter.museum')) {
-            if ($museums) {
-                foreach ($museums as $museum) {
-                    $query['museum'][] = $museum->id();
-                }
+        if ($museums) {
+            foreach ($museums as $museum) {
+                $query['museum'][] = $museum->id();
             }
-            if ($finders) {
-                foreach ($finders as $finder) {
-                    $query['finder'][] = $finder->id();
-                }
+        }
+        if ($finders && $request->attributes->get('_route') !== 'dime.home.finds') {
+            foreach ($finders as $finder) {
+                $query['finder'][] = $finder->id();
             }
-            if ($status) {
-                $query['status'] = $status->name();
-            }
-            if ($treasures) {
-                foreach ($treasures as $treasure) {
-                    $query['treasure'][] = $treasure->name();
-                }
+        }
+        if ($status) {
+            $query['status'] = $status->name();
+        }
+        if ($treasures) {
+            foreach ($treasures as $treasure) {
+                $query['treasure'][] = $treasure->name();
             }
         }
         $request->attributes->set('parameters', $query);

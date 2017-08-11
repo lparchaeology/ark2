@@ -36,7 +36,7 @@
 
     </div>
 
-    {% if workflow.actor.hasPermission('dime.find.filter.museum') %}
+    {% if global.request.attributes.get('_route') == 'dime.home.finds' or workflow.actor.hasPermission('dime.find.filter.museum') %}
         <div class="row filters">
 
             <div class="col-sm-1"><br/></div>
