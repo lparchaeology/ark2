@@ -82,7 +82,9 @@ abstract class AbstractWidget extends Element
         $options = array_replace_recursive($this->defaultOptions(), $this->formOptionsArray, $options);
 
         if ($state['label']) {
-            $options['label'] = ($state['keyword'] ? $state['keyword'] : $this->keyword());
+            $options['label'] = $state['keyword'] ?? $this->keyword();
+        } else {
+            $options['label'] = false;
         }
 
         if ($state['mode'] === 'view') {

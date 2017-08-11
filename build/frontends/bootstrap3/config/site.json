@@ -9,6 +9,9 @@
     "spatial": {
         "driver": "mysql"
     },
+    "mailer": {
+        "enabled": false
+    },
     "file": {
         "root": "/files",
         "data": {
@@ -58,23 +61,71 @@
             ["^/.+$", "IS_AUTHENTICATED_ANONYMOUSLY"]
         ],
         "user": {
-            "adminConfirm": true,
-            "verifyEmail": true,
-            "emailAddress": "noreply@example.com",
-            "emailName": "ARK User Admin (Do Not Reply)",
-            "passwordStrength": 2,
-            "userReset": true,
-            "resetTTL": 86400
-        },
-        "user_paths": {
-            "en": {
-                "root": "/users",
-                "login": "/users/login",
-                "check": "/users/check",
-                "target": "/",
-                "logout": "/users/logout",
-                "register": "/users/register",
-                "reset": "/users/reset"
+            "admin_confirm": false,
+            "verify_email": true,
+            "verify_email_required": true,
+            "email": "noreply@example.com",
+            "sender": "ARK User Admin (Do Not Reply)",
+            "reset_email_template": "user/emails/reset.txt.twig",
+            "verify_email_template": "user/emails/verify.txt.twig",
+            "password_strength": 2,
+            "password_expiry": 0,
+            "user_reset": true,
+            "user_register": true,
+            "reset_ttl": 86400,
+            "routes": {
+                "root": {
+                    "paths": {
+                        "en": "/users"
+                    }
+                },
+                "target": {
+                    "paths": {
+                        "en": "/"
+                    }
+                },
+                "check": {
+                    "route": "user.check",
+                    "paths": {
+                        "en": "/users/check"
+                    }
+                },
+                "confirm": {
+                    "route": "user.confirm",
+                    "paths": {
+                        "en": "/users/confirm"
+                    }
+                },
+                "login": {
+                    "route": "user.login",
+                    "paths": {
+                        "en": "/users/login"
+                    }
+                },
+                "logout": {
+                    "route": "user.logout",
+                    "paths": {
+                        "en": "/users/logout"
+                    }
+                },
+                "register": {
+                    "route": "user.register",
+                    "paths": {
+                        "en": "/users/register"
+                    }
+                },
+                "reset": {
+                    "route": "user.reset",
+                    "paths": {
+                        "en": "/users/reset"
+                    }
+                },
+                "verify": {
+                    "route": "user.verify",
+                    "paths": {
+                        "en": "/users/verify"
+                    }
+                }
             }
         }
     }

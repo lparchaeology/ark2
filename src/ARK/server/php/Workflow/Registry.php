@@ -132,12 +132,11 @@ class Registry extends SymfonyRegistry
         return false;
     }
 
-    public function apply(Actor $actor, string $action, Item $item, Actor $subject = null) : bool
+    public function apply(Actor $actor, string $action, Item $item, Actor $subject = null) : void
     {
         if ($action = $this->action($item->schema()->name(), $action)) {
-            return $action->apply($actor, $item, $subject);
+            $action->apply($actor, $item, $subject);
         }
-        return false;
     }
 
     public function getStateMachine(Attribute $attribute) : StateMachine

@@ -36,16 +36,25 @@ use ARK\ORM\ClassMetadataBuilder;
 
 class Notify
 {
+    protected $id;
     protected $schma = '';
     protected $actionName = '';
     protected $action;
     protected $type = '';
     protected $attributeName = '';
     protected $attribute;
+    protected $roleName = '';
+    protected $role;
 
-    public function recipient(Item $item) : ?Actor
+    public function recipient(Item $item)
     {
-        return $item->property($this->attributeName)->value();
+        if ($this->attributeName) {
+            return $item->property($this->attributeName)->value();
+        }
+        if ($this->roleName) {
+            return $this->role;
+        }
+        return null;
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
@@ -55,10 +64,14 @@ class Notify
         $builder->setReadOnly();
 
         // Key
-        $builder->addStringKey('schma', 30);
-        $builder->addStringKey('actionName', 30, 'action');
-        $builder->addStringKey('type', 30);
-        $builder->addStringKey('attributeName', 30, 'attribute');
+        $builder->addGeneratedKey('id');
+
+        // Attributes
+        $builder->addStringField('schma', 30);
+        $builder->addStringField('actionName', 30, 'action');
+        $builder->addStringField('type', 30);
+        $builder->addStringField('attributeName', 30, 'attribute');
+        $builder->addStringField('roleName', 30, 'role');
 
         // Associations
         $builder->addCompositeManyToOneField(
@@ -79,5 +92,6 @@ class Notify
                 ['column' => 'attribute'],
             ]
         );
+        $builder->addManyToOneField('role', Role::class);
     }
 }

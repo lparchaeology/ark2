@@ -29,7 +29,10 @@
 
 namespace DIME\Controller\View;
 
-use DIME\DIME;
+use ARK\ORM\ORM;
+use ARK\Security\User;
+use ARK\Service;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserResetController extends DimeFormController
@@ -41,10 +44,13 @@ class UserResetController extends DimeFormController
         return $workflow;
     }
 
-    public function processForm(Request $request, $form) : void
+    public function processForm(Request $request, Form $form) : void
     {
         $data = $form->getData();
-        ResetUserTransaction::execute($data['_username']);
+        $user = ORM::find(User::class, $data['_username']);
+        if ($user) {
+            Service::security()->resetUser($user);
+        }
         $request->attributes->set('flash', 'success');
         $request->attributes->set('message', 'dime.user.reset.sent');
     }

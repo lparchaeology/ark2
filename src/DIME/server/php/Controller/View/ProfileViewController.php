@@ -38,7 +38,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ProfileViewController extends DimeFormController
 {
-    public function __invoke(Request $request, $id)
+    public function __invoke(Request $request, $id = null)
     {
         $request->attributes->set('actor', $id);
         return parent::__invoke($request);

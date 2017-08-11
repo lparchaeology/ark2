@@ -49,6 +49,9 @@ class ActorUser
         $this->actor = $actor;
         $this->user = $user->id();
         $this->userEntity = $user;
+        if ($user->isEnabled()) {
+            $this->enable();
+        }
     }
 
     public function actor() : Actor

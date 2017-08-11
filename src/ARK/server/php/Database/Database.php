@@ -346,6 +346,24 @@ class Database
         return $this->data()->fetchAllColumn($sql, 'item', $params);
     }
 
+    public function getRoleMessages(string $role) : ?iterable
+    {
+        $sql = '
+            SELECT item
+            FROM ark_fragment_string
+            WHERE module = :module
+            AND attribute = :attribute
+            AND value = :value
+        ';
+        $params = [
+            ':module' => 'message',
+            ':attribute' => 'role',
+            ':value' => $role,
+        ];
+
+        return $this->data()->fetchAllColumn($sql, 'item', $params);
+    }
+
     // TODO Optimise!!!
     public function getUnreadMessages(string $actor) : ?iterable
     {
@@ -411,7 +429,7 @@ class Database
         $this->data()->insert('ark_fragment_datetime', $read);
     }
 
-    public function userSearch(string $query) : ?iterable
+    public function userSearch(iterable $query) : ?iterable
     {
         $sql = "
             SELECT item

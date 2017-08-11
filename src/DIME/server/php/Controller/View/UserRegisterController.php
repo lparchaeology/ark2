@@ -41,6 +41,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserRegisterController extends DimeFormController
 {
+    public function buildData(Request $request)
+    {
+        $data['actor'] = new Person();
+        $data['faq'] = 'dime.register.faq';
+        return $data;
+    }
+
     public function buildWorkflow(Request $request, $data, iterable $state) : iterable
     {
         $workflow['mode'] = 'edit';
@@ -52,12 +59,8 @@ class UserRegisterController extends DimeFormController
     {
         $data = $form->getData();
         $credentials = $data['credentials'];
-
-        $actor = new Person();
+        $actor = $data['actor'];
         $actor->setItem($credentials['_username']);
-        $actor->setValue('fullname', $data['fullname']);
-        $actor->setValue('address', $data['address']);
-        $actor->setValue('telephone', $data['telephone']);
 
         $user = Service::security()->createUser(
             $credentials['_username'],
@@ -72,6 +75,10 @@ class UserRegisterController extends DimeFormController
         Service::workflow()->apply($actor, 'register', $actor);
         ORM::flush($actor);
 
+        if ($user->isEnabled()) {
+            dump('enabled, logging in');
+            Service::security()->loginAsUser($user, 'default', $request);
+        }
         $request->attributes->set('flash', 'success');
         $request->attributes->set('message', 'dime.user.register.success');
     }

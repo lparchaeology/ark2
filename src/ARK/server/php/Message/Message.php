@@ -46,8 +46,13 @@ class Message implements Item
         $this->property('sender')->setValue($sender);
         $dispatches = [];
         foreach ($recipients as $recipient) {
-            $dispatches[]['recipient'] = $recipient;
             $dispatches[]['status'] = 'unread';
+            if ($recipient instanceof Actor) {
+                $dispatches[]['recipient'] = $recipient;
+            }
+            if ($recipient instanceof Role) {
+                $dispatches[]['role'] = $recipient;
+            }
         }
         $this->property('recipients')->setValue($dispatches);
         $this->property('sent')->setValue($sentAt);

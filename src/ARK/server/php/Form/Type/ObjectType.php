@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Event Form Type
+ * ARK Event Form Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -29,22 +29,16 @@
 
 namespace ARK\Form\Type;
 
-use ARK\Service;
-use ARK\Model\Item;
-use ARK\Model\Property;
 use ARK\Model\Attribute;
-use ARK\Model\TextFragment;
-use ARK\Vocabulary\Term;
-use ARK\Form\Type\TermChoiceType;
+use ARK\Model\Property;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ObjectType extends AbstractType implements DataMapperInterface
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $field = $options['state']['field'];
         $fieldOptions = [];
@@ -52,51 +46,10 @@ class ObjectType extends AbstractType implements DataMapperInterface
             $fieldOptions['disabled'] = true;
         }
         $builder->setDataMapper($this);
-        $this->buildAttribute($builder, $field->attribute(), $fieldOptions, $field->attribute()->isRequired());
+        $this->buildAttribute($builder, $field->attribute(), $fieldOptions);
     }
 
-    protected function buildAttribute(FormBuilderInterface $builder, Attribute $attribute, array $options, bool $required)
-    {
-        $name = $attribute->name();
-        if ($attribute->datatype()->type()->isObject()) {
-            foreach ($attribute->datatype()->attributes() as $child) {
-                $this->buildAttribute($builder, $child, $options, $required);
-            }
-            return;
-        }
-        if ($attribute->hasVocabulary()) {
-            $class = TermChoiceType::class;
-            $options['choices'] = $attribute->vocabulary()->terms();
-            $options['multiple'] = $attribute->hasMultipleOccurrences();
-        } else {
-            $class = $attribute->datatype()->type()->activeFormType();
-        }
-        if ($attribute->datatype()->type()->id() == 'datetime') {
-            $options['widget'] = 'single_text';
-            $options['html5'] = false;
-            $options['attr']['class'] = 'datetimepicker';
-        }
-        if ($attribute->datatype()->type()->id() == 'date') {
-            $options['widget'] = 'single_text';
-            $options['html5'] = false;
-            $options['attr']['class'] = 'datepicker';
-        }
-        if ($attribute->datatype()->type()->id() == 'time') {
-            $options['widget'] = 'single_text';
-            $options['html5'] = false;
-            $options['attr']['class'] = 'timepicker';
-        }
-        $options['mapped'] = false;
-        $options['label'] = false;
-        $options['required'] = $required;
-        // HACK
-        if ($name == 'museum') {
-            $options['attr']['readonly'] = true;
-        }
-        $builder->add($name, $class, $options);
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults([
             'state' => null,
@@ -108,7 +61,7 @@ class ObjectType extends AbstractType implements DataMapperInterface
         ]);
     }
 
-    public function mapDataToForms($property, $forms)
+    public function mapDataToForms($property, $forms) : void
     {
         if (!$property instanceof Property) {
             return;
@@ -143,7 +96,7 @@ class ObjectType extends AbstractType implements DataMapperInterface
         }
     }
 
-    public function mapFormsToData($forms, &$property)
+    public function mapFormsToData($forms, &$property) : void
     {
         if (!$property instanceof Property) {
             return;
@@ -154,5 +107,46 @@ class ObjectType extends AbstractType implements DataMapperInterface
             $value[$id] = $form->getData();
         }
         $property->setValue($value);
+    }
+
+    protected function buildAttribute(FormBuilderInterface $builder, Attribute $attribute, array $options) : void
+    {
+        $name = $attribute->name();
+        if ($attribute->datatype()->type()->isObject()) {
+            foreach ($attribute->datatype()->attributes() as $child) {
+                $this->buildAttribute($builder, $child, $options);
+            }
+            return;
+        }
+        if ($attribute->hasVocabulary()) {
+            $class = TermChoiceType::class;
+            $options['choices'] = $attribute->vocabulary()->terms();
+            $options['multiple'] = $attribute->hasMultipleOccurrences();
+        } else {
+            $class = $attribute->datatype()->type()->activeFormType();
+        }
+        if ($attribute->datatype()->type()->id() === 'datetime') {
+            $options['widget'] = 'single_text';
+            $options['html5'] = false;
+            $options['attr']['class'] = 'datetimepicker';
+        }
+        if ($attribute->datatype()->type()->id() === 'date') {
+            $options['widget'] = 'single_text';
+            $options['html5'] = false;
+            $options['attr']['class'] = 'datepicker';
+        }
+        if ($attribute->datatype()->type()->id() === 'time') {
+            $options['widget'] = 'single_text';
+            $options['html5'] = false;
+            $options['attr']['class'] = 'timepicker';
+        }
+        $options['mapped'] = false;
+        $options['label'] = false;
+        $options['required'] = $attribute->isRequired();
+        // HACK
+        if ($name === 'museum') {
+            $options['attr']['readonly'] = true;
+        }
+        $builder->add($name, $class, $options);
     }
 }

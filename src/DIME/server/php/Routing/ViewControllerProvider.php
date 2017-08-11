@@ -82,27 +82,31 @@ class ViewControllerProvider implements ControllerProviderInterface
             ->bind('dime.admin');
 
         // User Routes
-        $paths = $app['ark']['security']['user_paths'][$app['locale']];
-        $controllers->match($paths['register'], 'DIME\Controller\View\UserRegisterController')
+        $routes = $app['ark']['security']['user']['routes'];
+        $locale = $app['locale'];
+        $controllers->match($routes['register']['paths'][$locale], 'DIME\Controller\View\UserRegisterController')
             ->method('GET|POST')
-            ->bind('dime.user.register');
-        $controllers->match($paths['reset'], 'DIME\Controller\View\UserResetController')
+            ->bind($routes['register']['route']);
+        $controllers->match($routes['reset']['paths'][$locale], 'DIME\Controller\View\UserResetController')
             ->method('GET|POST')
-            ->bind('dime.user.reset');
-        $controllers->match($paths['root'], 'DIME\Controller\View\UserConfirmController')
+            ->bind($routes['reset']['route']);
+        $controllers->match($routes['confirm']['paths'][$locale], 'DIME\Controller\View\UserConfirmController')
             ->method('GET')
-            ->bind('dime.user.confirm');
-        $controllers->match($paths['login'], 'DIME\Controller\View\UserLoginController')
+            ->bind($routes['confirm']['route']);
+        $controllers->match($routes['login']['paths'][$locale], 'DIME\Controller\View\UserLoginController')
             ->method('GET')
-            ->bind('dime.user.login');
-        $controllers->match($paths['check'], function () : void {
+            ->bind($routes['login']['route']);
+        $controllers->match($routes['verify']['paths'][$locale], 'DIME\Controller\View\UserVerifyController')
+            ->method('GET')
+            ->bind($routes['verify']['route']);
+        $controllers->match($routes['check']['paths'][$locale], function () : void {
         })
             ->method('GET|POST')
-            ->bind('user.check');
-        $controllers->match($paths['logout'], function () : void {
+            ->bind($routes['check']['route']);
+        $controllers->match($routes['logout']['paths'][$locale], function () : void {
         })
             ->method('GET')
-            ->bind('user.logout');
+            ->bind($routes['logout']['route']);
 
         // Static Page Routes
         $controllers->match("/$detector", 'DIME\Controller\View\PageViewController')

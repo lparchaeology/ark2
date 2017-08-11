@@ -35,13 +35,13 @@ use ARK\Workflow\Event;
 
 class Notification extends Message
 {
-    public function __construct(Actor $sender, array $recipients, Event $event)
+    public function __construct(Actor $sender, iterable $recipients, Event $event)
     {
         parent::__construct($sender, $recipients, ARK::timestamp());
         $this->property('event')->setValue($event);
     }
 
-    public function event()
+    public function event() : Event
     {
         return $this->property('event')->value();
     }

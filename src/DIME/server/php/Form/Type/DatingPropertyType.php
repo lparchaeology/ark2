@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Form Type
+ * DIME Form Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,20 +27,20 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
+
 namespace DIME\Form\Type;
 
+use ARK\Form\Type\AbstractPropertyType;
 use ARK\Form\Type\StaticType;
 use ARK\Form\Type\TermChoiceType;
-use ARK\Form\Type\AbstractPropertyType;
 use ARK\Model\Property;
 use ARK\ORM\ORM;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class DatingPropertyType extends AbstractPropertyType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $valueOptions = $options['state']['value']['options'];
         $field = $options['state']['field'];
@@ -51,7 +51,7 @@ class DatingPropertyType extends AbstractPropertyType
         $valueOptions['choices'] = $datatype->attribute('period')->vocabulary()->terms();
         $valueOptions['placeholder'] = ' - ';
         $valueOptions['required'] = false;
-        if ($options['state']['value']['type'] != StaticType::class) {
+        if ($options['state']['value']['type'] !== StaticType::class) {
             $options['state']['value']['type'] = TermChoiceType::class;
         }
         $builder->add('period', $options['state']['value']['type'], $valueOptions);
@@ -65,14 +65,7 @@ class DatingPropertyType extends AbstractPropertyType
         $builder->setDataMapper($this);
     }
 
-    protected function options()
-    {
-        return [
-            'compound' => true
-        ];
-    }
-
-    public function mapDataToForms($property, $forms)
+    public function mapDataToForms($property, $forms) : void
     {
         $forms = iterator_to_array($forms);
         if ($property instanceof Property) {
@@ -83,13 +76,17 @@ class DatingPropertyType extends AbstractPropertyType
                 $forms['year']->setData($value['year'][0]);
                 $forms['year_span']->setData($value['year'][1]);
                 $vocabulary = $property->attribute()->datatype()->attribute('period')->vocabulary();
-                $forms['period']->setData($vocabulary->term($value['period'][0]));
-                $forms['period_span']->setData($vocabulary->term($value['period'][1]));
+                if ($value['period'][0]) {
+                    $forms['period']->setData($vocabulary->term($value['period'][0]));
+                }
+                if ($value['period'][1]) {
+                    $forms['period_span']->setData($vocabulary->term($value['period'][1]));
+                }
             }
         }
     }
 
-    public function mapFormsToData($forms, &$property)
+    public function mapFormsToData($forms, &$property) : void
     {
         $forms = iterator_to_array($forms);
         if ($property instanceof Property) {
@@ -109,5 +106,12 @@ class DatingPropertyType extends AbstractPropertyType
                 $property->setValue(null);
             }
         }
+    }
+
+    protected function options()
+    {
+        return [
+            'compound' => true,
+        ];
     }
 }

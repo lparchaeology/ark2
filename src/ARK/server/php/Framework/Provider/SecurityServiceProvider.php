@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Translation Service Provider
+ * ARK Translation Service Provider.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -31,9 +31,9 @@
 namespace ARK\Framework\Provider;
 
 use ARK\Security\Security;
+use ARK\Security\UserProvider;
 use ARK\Security\Validator\PasswordStrength;
 use ARK\Security\Validator\PasswordStrengthValidator;
-use ARK\Security\UserProvider;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Provider\CsrfServiceProvider;
@@ -42,7 +42,7 @@ use Silex\Provider\SecurityServiceProvider as SilexSecurityServiceProvider;
 
 class SecurityServiceProvider implements ServiceProviderInterface
 {
-    public function register(Container $container)
+    public function register(Container $container) : void
     {
         $container->register(new SilexSecurityServiceProvider());
         $container->register(new RememberMeServiceProvider());
@@ -54,20 +54,21 @@ class SecurityServiceProvider implements ServiceProviderInterface
         };
 
         // Can't use translation here :-(
-        $paths = $container['ark']['security']['user_paths'][$container['locale']];
-        $root = $paths['root'];
-        $login = $paths['login'];
-        $check = $paths['check'];
-        $target = $paths['target'];
-        $logout = $paths['logout'];
-        $register = $paths['register'];
-        $reset = $paths['reset'];
+        $locale = $container['locale'];
+        $routes = $container['ark']['security']['user']['routes'];
+        $root = $routes['root']['paths'][$locale];
+        $login = $routes['login']['paths'][$locale];
+        $check = $routes['check']['paths'][$locale];
+        $target = $routes['target']['paths'][$locale];
+        $logout = $routes['logout']['paths'][$locale];
+        $register = $routes['register']['paths'][$locale];
+        $reset = $routes['reset']['paths'][$locale];
 
         // Configure Symfony Security Firewalls
         $container['security.firewalls'] = [];
         $container->extendArray('security.firewalls', 'login_area', [
             'pattern' => "(^$login$)|(^$register$)|(^$reset$)",
-            'anonymous' => true
+            'anonymous' => true,
         ]);
         $container->extendArray('security.firewalls', 'default', [
             'pattern' => '^/.*$',
@@ -79,25 +80,25 @@ class SecurityServiceProvider implements ServiceProviderInterface
                 'default_target_path' => $target,
             ],
             'logout' => [
-                'logout_path' => $logout
+                'logout_path' => $logout,
             ],
             'users' => function ($app) {
                 return $app['user.provider'];
-            }
+            },
         ]);
         $container['security.access_rules'] = [
             [
                 "(^$login$)|(^$register$)|(^$reset$)|(^$check$)",
-                "IS_AUTHENTICATED_ANONYMOUSLY"
+                'IS_AUTHENTICATED_ANONYMOUSLY',
             ],
             [
                 "(^$root)",
-                "ROLE_USER"
+                'ROLE_USER',
             ],
             [
-                "^/.+$",
-                "IS_AUTHENTICATED_ANONYMOUSLY"
-            ]
+                '^/.+$',
+                'IS_AUTHENTICATED_ANONYMOUSLY',
+            ],
         ];
         if (isset($container['ark']['security']['access_rules'])) {
             $container['security.access_rules'] = array_merge(
@@ -118,8 +119,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
         $container['user.options'] = array_replace($container['user.defaults'], $container['ark']['security']['user']);
 
-        $container['user.options.init'] = $container->protect(function () use ($container) {
-            return;
+        $container['user.options.init'] = $container->protect(function () use ($container) : void {
         });
 
         $container['password.validate'] = $container->protect(function ($plainPassword) use ($container) {
@@ -127,7 +127,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
         });
 
         $container['password.validator'] = function ($app) {
-            return new PasswordStrengthValidator;
+            return new PasswordStrengthValidator();
         };
 
         $container['password.validator.constraint'] = function ($app) {
@@ -139,7 +139,7 @@ class SecurityServiceProvider implements ServiceProviderInterface
 
         $container['user.provider'] = function ($app) {
             $app['user.options.init']();
-            return new UserProvider;
+            return new UserProvider();
         };
     }
 }

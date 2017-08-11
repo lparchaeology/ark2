@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK User
+ * ARK User.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -32,48 +32,46 @@ namespace ARK\Security;
 
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
-use ARK\Security\Account;
 use ARK\Security\Validator\PasswordStrength;
 use ARK\Service;
 use ARK\Workflow\Security\ActorUser;
 use DateTime;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Mapping\ClassMetadata as ValidatorMetadata;
 
 class User implements AdvancedUserInterface, Serializable
 {
-    protected $id = null;
-    protected $username = null;
-    protected $email = null;
-    protected $password = null;
-    protected $name = null;
+    protected $id;
+    protected $username;
+    protected $email;
+    protected $password = '';
+    protected $name;
     protected $level = 'ROLE_ANON';
-    protected $levels = null;
+    protected $levels;
     protected $enabled = false;
-    protected $confirmed = false;
     protected $verified = false;
     protected $locked = false;
     protected $expired = false;
-    protected $expiresAt = null;
+    protected $expiresAt;
     protected $credentialsExpired = false;
-    protected $credentialsExpireAt = null;
-    protected $verificationToken = null;
-    protected $verificationRequestedAt = null;
-    protected $passwordRequestToken = null;
-    protected $passwordRequestedAt = null;
-    protected $lastLogin = null;
-    protected $accounts = null;
-    protected $actors = null;
+    protected $credentialsExpireAt;
+    protected $verificationToken;
+    protected $verificationRequestedAt;
+    protected $passwordRequestToken;
+    protected $passwordRequestedAt;
+    protected $lastLogin;
+    protected $accounts;
+    protected $actors;
 
-    public function __construct($id, $username = null, $email = null)
+    public function __construct(string $id, string $username = null, string $email = null)
     {
         $this->id = $id;
         $this->username = ($username ?: $id);
@@ -81,135 +79,129 @@ class User implements AdvancedUserInterface, Serializable
         $this->accounts = new ArrayCollection();
     }
 
-    public function id()
+    public function __toString() : string
+    {
+        return (string) $this->username();
+    }
+
+    public function id() : string
     {
         return $this->id;
     }
 
     // UserInterface
-    public function getUsername()
+    public function getUsername() : string
     {
         return $this->username;
     }
 
-    public function username()
+    public function username() : string
     {
         return $this->username;
     }
 
-    public function setUsername($username)
+    public function setUsername(string $username) : void
     {
         $this->username = $username;
     }
 
-    public function email()
+    public function email() : string
     {
         return $this->email;
     }
 
-    public function setEmail($email)
+    public function setEmail(string $email) : void
     {
         $this->email = $email;
     }
 
     // UserInterface
-    public function getPassword()
+    public function getPassword() : string
     {
         return $this->password;
     }
 
-    public function password()
+    public function password() : string
     {
         return $this->password;
     }
 
-    public function setPassword($plainPassword)
+    public function setPassword(string $plainPassword) : void
     {
         $this->password = Service::security()->encodePassword($plainPassword);
     }
 
     // UserInterface
-    public function getSalt()
+    public function getSalt() : ?string
     {
         return null;
     }
 
-    public function name()
+    public function name() : string
     {
         return $this->name;
     }
 
-    public function displayName()
+    public function displayName() : string
     {
-        // TODO translate
-        return $this->name() ?: Service::translate('User ' . $this->id);
+        return $this->name ?? $this->id;
     }
 
-    public function setName($name)
+    public function setName(string $name) : void
     {
         $this->name = $name;
     }
 
-    public function isVerified()
+    public function isVerified() : bool
     {
         return $this->verified;
     }
 
-    public function verify()
+    public function verify() : void
     {
         $this->verified = true;
     }
 
-    public function isConfirmed()
-    {
-        return $this->confirmed;
-    }
-
-    public function confirm()
-    {
-        $this->confirmed = true;
-    }
-
     // AdvancedUserInterface
-    public function isEnabled()
+    public function isEnabled() : bool
     {
         return $this->enabled;
     }
 
-    public function enable()
+    public function enable() : void
     {
-        if ($this->isVerified() && $this->isConfirmed() && !$this->isLocked() && !$this->isExpired()) {
-            $this->enabled = true;
-        }
+        $this->expired = false;
+        $this->expiresAt = null;
+        $this->enabled = true;
     }
 
-    public function disable()
+    public function disable() : void
     {
         $this->enabled = false;
     }
 
-    public function isLocked()
+    public function isLocked() : bool
     {
         return $this->locked;
     }
 
     // AdvancedUserInterface
-    public function isAccountNonLocked()
+    public function isAccountNonLocked() : bool
     {
         return !$this->isLocked();
     }
 
-    public function lock()
+    public function lock() : void
     {
         $this->locked = true;
     }
 
-    public function unlock()
+    public function unlock() : void
     {
         $this->locked = false;
     }
 
-    public function isExpired()
+    public function isExpired() : bool
     {
         // TODO Check is UTC?
         if (!$this->expired && $this->expiresAt instanceof DateTime && $this->expiresAt->getTimestamp() < time()) {
@@ -219,24 +211,23 @@ class User implements AdvancedUserInterface, Serializable
     }
 
     // AdvancedUserInterface
-    public function isAccountNonExpired()
+    public function isAccountNonExpired() : bool
     {
         return !$this->isExpired();
     }
 
-    public function expiresAt()
+    public function expiresAt() : ?DateTime
     {
         return $this->expiresAt;
     }
 
-    public function expire()
+    public function expire() : void
     {
         $this->expired = true;
         $this->expiresAt = null;
-        return $this;
     }
 
-    public function expireAt(DateTime $date)
+    public function expireAt(DateTime $date) : void
     {
         // TODO Check is UTC?
         if ($date->getTimestamp() < time()) {
@@ -247,7 +238,7 @@ class User implements AdvancedUserInterface, Serializable
         $this->expiresAt = $date;
     }
 
-    public function areCredentialsExpired()
+    public function areCredentialsExpired() : bool
     {
         // TODO Check is UTC?
         if (!$this->credentialsExpired
@@ -259,18 +250,18 @@ class User implements AdvancedUserInterface, Serializable
     }
 
     // AdvancedUserInterface
-    public function isCredentialsNonExpired()
+    public function isCredentialsNonExpired() : bool
     {
         return !$this->areCredentialsExpired();
     }
 
-    public function expireCredentials()
+    public function expireCredentials() : void
     {
         $this->credentialsExpired = true;
         $this->credentialsExpireAt = null;
     }
 
-    public function expireCredentialsAt(DateTime $date)
+    public function expireCredentialsAt(DateTime $date) : void
     {
         // TODO Check is UTC?
         if ($date->getTimestamp() < time()) {
@@ -281,29 +272,29 @@ class User implements AdvancedUserInterface, Serializable
     }
 
     // UserInterface
-    public function eraseCredentials()
+    public function eraseCredentials() : void
     {
     }
 
-    public function verificationToken()
+    public function verificationToken() : string
     {
         // TODO Check if expired?
         return $this->verificationToken;
     }
 
-    public function verificationRequestedAt()
+    public function verificationRequestedAt() : ?DateTime
     {
         return $this->verificationRequestedAt;
     }
 
-    public function setVerificationRequested()
+    public function setVerificationRequested() : void
     {
         $this->verificationToken = Service::security()->generateToken();
         // TODO check is UTC
         $this->verificationRequestedAt = new DateTime();
     }
 
-    public function isVerificationRequestExpired($ttl)
+    public function isVerificationRequestExpired(int $ttl) : bool
     {
         if ($this->verificationRequestedAt instanceof DateTime && $this->verificationRequestedAt->getTimestamp() + $ttl < time()) {
             $this->verificationToken = '';
@@ -312,24 +303,24 @@ class User implements AdvancedUserInterface, Serializable
         return $this->verificationToken === '';
     }
 
-    public function passwordRequestToken()
+    public function passwordRequestToken() : string
     {
         return $this->passwordRequestToken;
     }
 
-    public function passwordRequestedAt()
+    public function passwordRequestedAt() : ?DateTime
     {
         return $this->passwordRequestedAt;
     }
 
-    public function requestPassword($token)
+    public function setPasswordRequested() : void
     {
-        $this->passwordRequestToken = $token;
-        $this->passwordRequestedAt = time();
-        return $this;
+        $this->passwordRequestToken = Service::security()->generateToken();
+        // TODO check is UTC
+        $this->passwordRequestedAt = new DateTime();
     }
 
-    public function isPasswordRequestExpired($ttl)
+    public function isPasswordRequestExpired(int $ttl) : bool
     {
         if ($this->getPasswordRequestedAt instanceof DateTime && $this->getPasswordRequestedAt->getTimestamp() + $ttl < time()) {
             $this->passwordRequestToken = '';
@@ -338,97 +329,77 @@ class User implements AdvancedUserInterface, Serializable
         return $this->passwordRequestToken === '';
     }
 
-    public function lastLogin()
+    public function lastLogin() : ?DateTime
     {
         return $this->lastLogin;
     }
 
-    public function setLastLogin(DateTime $time = null)
+    public function setLastLogin(DateTime $time = null) : void
     {
         $this->lastLogin = $time;
-        return $this;
     }
 
-    public function level()
+    public function level() : string
     {
         return $this->level;
     }
 
-    public function levels()
+    public function levels() : iterable
     {
         $this->initLevels();
         return $this->levels;
-    }
-
-    private function initLevels()
-    {
-        if ($this->levels !== null) {
-            return;
-        }
-        if ($this->level == 'ROLE_ANON' || !$this->level) {
-            $this->levels = ['ROLE_ANON'];
-        }
-        if ($this->level == 'ROLE_USER') {
-            $this->levels = ['ROLE_ANON', 'ROLE_USER'];
-        }
-        if ($this->level == 'ROLE_ADMIN') {
-            $this->levels = ['ROLE_ANON', 'ROLE_USER', 'ROLE_ADMIN'];
-        }
-        if ($this->level == 'ROLE_SUPER_ADMIN') {
-            $this->levels = ['ROLE_ANON', 'ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPER_ADMIN'];
-        }
     }
 
     // UserInterface
-    public function getRoles()
+    public function getRoles() : iterable
     {
         $this->initLevels();
         return $this->levels;
     }
 
-    public function hasLevel($level)
+    public function hasLevel($level) : bool
     {
         $this->initLevels();
-        return in_array($level, $this->levels);
+        return in_array($level, $this->levels, true);
     }
 
-    public function setLevel($level)
+    public function setLevel(string $level) : void
     {
         $this->level = $level;
     }
 
-    public function accounts()
+    public function accounts() : iterable
     {
         return $this->accounts;
     }
 
-    public function hasAccount(Account $account)
+    public function hasAccount(Account $account) : bool
     {
         return $this->accounts->contains($account);
     }
 
-    public function addAccounts(array $accounts)
+    public function addAccounts(iterable $accounts) : void
     {
         foreach ($accounts as $account) {
             $this->addAccount($account);
         }
     }
 
-    public function addAccount(Account $account)
+    public function addAccount(Account $account) : void
     {
         if (!$this->hasAccount($account)) {
             $this->accounts->add($account);
         }
     }
 
-    public function removeAccount(Account $account)
+    public function removeAccount(Account $account) : void
     {
         if ($this->hasAccount($account)) {
             $this->accounts->removeElement($account);
         }
     }
 
-    public function actors()
+    public function actors() : iterable
     {
         if ($this->actors === null) {
             $aus = ORM::findBy(ActorUser::class, ['user' => $this->id()]);
@@ -441,7 +412,7 @@ class User implements AdvancedUserInterface, Serializable
         }
     }
 
-    public function hasRole($role)
+    public function hasRole(Role $role) : bool
     {
         foreach ($this->actors() as $actor) {
             if ($actor->hasRole($role)) {
@@ -451,51 +422,38 @@ class User implements AdvancedUserInterface, Serializable
         return false;
     }
 
-    public function serialize()
+    public function serialize() : string
     {
-        return serialize([
-            $this->id,
-            $this->username,
-            $this->email,
-        ]);
+        return serialize([$this->id, $this->username, $this->email]);
     }
 
-    public function unserialize($serialized)
+    public function unserialize($serialized) : void
     {
-        list(
-            $this->id,
-            $this->username,
-            $this->email,
-        ) = unserialize($serialized);
+        list($this->id, $this->username, $this->email) = unserialize($serialized);
     }
 
-    public function __toString()
-    {
-        return (string) $this->username();
-    }
-
-    public static function loadValidatorMetadata(ValidatorMetadata $metadata)
+    public static function loadValidatorMetadata(ValidatorMetadata $metadata) : void
     {
         $metadata->addConstraint(new UniqueEntity('username'));
         $metadata->addPropertyConstraints('username', [
             new NotBlank(),
-            new Regex("/^[a-zA-Z0-9]{3,30}$/us")
+            new Regex('/^[a-zA-Z0-9]{3,30}$/us'),
         ]);
 
         $metadata->addConstraint(new UniqueEntity('email'));
         $metadata->addPropertyConstraints('email', [
             new NotBlank(),
-            new Email()
+            new Email(),
         ]);
 
         $metadata->addPropertyConstraints('_password', [
             new NotBlank(['groups' => ['full']]),
             new Length(['min' => 8, 'groups' => ['full']]),
-            new PasswordStrength(2)
+            new PasswordStrength(2),
         ]);
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_security_user');
@@ -524,5 +482,24 @@ class User implements AdvancedUserInterface, Serializable
 
         // Relationships
         $builder->addManyToMany('accounts', Account::class, 'ark_auth_account');
+    }
+
+    private function initLevels() : void
+    {
+        if ($this->levels !== null) {
+            return;
+        }
+        if ($this->level === 'ROLE_ANON' || !$this->level) {
+            $this->levels = ['ROLE_ANON'];
+        }
+        if ($this->level === 'ROLE_USER') {
+            $this->levels = ['ROLE_ANON', 'ROLE_USER'];
+        }
+        if ($this->level === 'ROLE_ADMIN') {
+            $this->levels = ['ROLE_ANON', 'ROLE_USER', 'ROLE_ADMIN'];
+        }
+        if ($this->level === 'ROLE_SUPER_ADMIN') {
+            $this->levels = ['ROLE_ANON', 'ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPER_ADMIN'];
+        }
     }
 }
