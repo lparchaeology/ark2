@@ -73,6 +73,8 @@
 
         $(document).ready(function (){
             
+
+            
             window.removeTextSelection = function (){
                 var sel = window.getSelection ? window.getSelection() : document.selection;
                 if (sel) {
@@ -308,6 +310,28 @@
 
             that.$toolbar.find('button[name="cardView"]').click();
 
+            
+            $('.bootstrap-table').on('all.bs.table', function( e ){
+                console.log($(this).find('button[name="thumbView"]'));
+                
+                console.log($(this).find('button[name="thumbView"]').hasClass('active'));
+                
+                if($(this).find('button[name="thumbView"]').hasClass('active')){
+                    $('tr').on("click", {"target":this}, window.thumbclick );
+                } else {
+                    $('tr').on("click", {"target":this}, window.tableclick );
+                }
+                
+                if(typeof mapcollection != 'undefined'){
+                    mapcollection.forEach(function(e, i, a) {
+                        var ark_id = e.get('ark_id');
+    
+                        $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
+                        $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+                    });
+                }
+            });
+            
         });
 
     };
