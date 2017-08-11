@@ -104,8 +104,14 @@ abstract class AbstractWidget extends Element
             $name = $state['name'];
             if (isset($state['options'][$name]['choices'])) {
                 $options['choices'] = $state['options'][$name]['choices'];
-                if ($state['placeholder']) {
+                if (isset($state['options'][$name]['placeholder'])) {
                     $options['placeholder'] = $state['options'][$name]['placeholder'];
+                }
+                if (isset($state['options'][$name]['multiple'])) {
+                    $options['multiple'] = $state['options'][$name]['multiple'];
+                }
+                if (isset($state['options'][$name]['required'])) {
+                    $options['required'] = $state['options'][$name]['required'];
                 }
             } else {
                 $options['choices'] = $data;
