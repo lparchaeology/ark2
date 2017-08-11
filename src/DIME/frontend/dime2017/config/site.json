@@ -9,6 +9,9 @@
     "spatial": {
         "driver": "mysql"
     },
+    "mailer": {
+        "enabled": false
+    },
     "file": {
         "root": "/files",
         "data": {
@@ -58,32 +61,80 @@
             ["^/.+$", "IS_AUTHENTICATED_ANONYMOUSLY"]
         ],
         "user": {
-            "adminConfirm": true,
-            "verifyEmail": true,
-            "emailAddress": "noreply@example.com",
-            "emailName": "ARK User Admin (Do Not Reply)",
-            "passwordStrength": 2,
-            "userReset": true,
-            "resetTTL": 86400
-        },
-        "user_paths": {
-            "da": {
-                "root": "/brugere",
-                "login": "/brugere/login",
-                "check": "/brugere/check",
-                "target": "/hjem",
-                "logout": "/brugere/logout",
-                "register": "/brugere/register",
-                "reset": "/brugere/reset"
-            },
-            "en": {
-                "root": "/users",
-                "login": "/users/login",
-                "check": "/users/check",
-                "target": "/home",
-                "logout": "/users/logout",
-                "register": "/users/register",
-                "reset": "/users/reset"
+            "admin_confirm": false,
+            "verify_email": true,
+            "verify_email_required": false,
+            "email": "noreply@example.com",
+            "sender": "DIME User Admin (Do Not Reply)",
+            "reset_email_template": "user/emails/reset.txt.twig",
+            "verify_email_template": "user/emails/verify.txt.twig",
+            "password_strength": 2,
+            "password_expiry": 0,
+            "user_reset": true,
+            "user_register": true,
+            "reset_ttl": 86400,
+            "routes": {
+                "root": {
+                    "paths": {
+                        "da": "/brugere",
+                        "en": "/users"
+                    }
+                },
+                "target": {
+                    "paths": {
+                        "da": "/hjem",
+                        "en": "/home"
+                    }
+                },
+                "check": {
+                    "route": "user.check",
+                    "paths": {
+                        "da": "/brugere/check",
+                        "en": "/users/check"
+                    }
+                },
+                "confirm": {
+                    "route": "dime.user.confirm",
+                    "paths": {
+                        "da": "/brugere/confirm",
+                        "en": "/users/confirm"
+                    }
+                },
+                "login": {
+                    "route": "dime.user.login",
+                    "paths": {
+                        "da": "/brugere/login",
+                        "en": "/users/login"
+                    }
+                },
+                "logout": {
+                    "route": "user.logout",
+                    "paths": {
+                        "da": "/brugere/logout",
+                        "en": "/users/logout"
+                    }
+                },
+                "register": {
+                    "route": "dime.user.register",
+                    "paths": {
+                        "da": "/brugere/register",
+                        "en": "/users/register"
+                    }
+                },
+                "reset": {
+                    "route": "dime.user.reset",
+                    "paths": {
+                        "da": "/brugere/reset",
+                        "en": "/users/reset"
+                    }
+                },
+                "verify": {
+                    "route": "dime.user.verify",
+                    "paths": {
+                        "da": "/brugere/verify",
+                        "en": "/users/verify"
+                    }
+                }
             }
         }
     }

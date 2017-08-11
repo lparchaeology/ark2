@@ -84,22 +84,33 @@ function initialisePickMap() {
         })
     });
 
+    var removefeature = null;
+    
     mapPickSource.on('addfeature', function() {
-        mapPickSource.forEachFeature(function(feature) {
-            coords = ol.proj.transform(feature.getGeometry().getCoordinates(), 'EPSG:3857', 'EPSG:4326');
-            $('#find_location_easting').val(parseFloat(coords[0].toFixed(6)));
-            $('#find_location_northing').val(parseFloat(coords[1].toFixed(6)));
-            updateUtmPoint()
-            mapPickMap.getView().setCenter(feature.getGeometry().getCoordinates());
-            mapPickMap.getView().setZoom(12);
-            updateMunicipality();
-        });
+        if(mapPickSource.getFeatures().length == 1){
+            mapPickSource.forEachFeature(function(feature) {
+                coords = ol.proj.transform(feature.getGeometry().getCoordinates(), 'EPSG:3857', 'EPSG:4326');
+                $('#find_location_easting').val(parseFloat(coords[0].toFixed(6)));
+                $('#find_location_northing').val(parseFloat(coords[1].toFixed(6)));
+                updateUtmPoint()
+                mapPickMap.getView().setCenter(feature.getGeometry().getCoordinates());
+                mapPickMap.getView().setZoom(12);
+                updateMunicipality();
+            });
+        } else {
+            mapPickSource.removeFeature(removefeature);
+        }
+        
     });
 
-    draw.on('drawstart', function() {
-        mapPickSource.clear();
+    draw.on('drawend', function(e) {
+        if ( confirm(window.newpointconfirmmessage) ) {
+            mapPickSource.clear();
+        } else {
+            removefeature = e.feature;
+        }
     });
-
+    
     $('.mappick-fields input').on('change', function() {
         switch ($('input[name=mappick-coordinates-radio]:checked', '.mappick-fields').attr('id')) {
             case 'mappick-decimal':

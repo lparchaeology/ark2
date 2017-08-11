@@ -5,7 +5,9 @@
     <label class="col-xs-12 col-sm-4 control-label">{{ 'dime.find.location' | translate }}</label>
     <div class="col-sm-8 col-lg-7">
         <div id="mappick" class="mappick"></div>
-        <script>var mapPin = "{{ asset('images/icons/pin.png', 'frontend') }}"</script>
+        <script>
+            var mapPin = "{{ asset('images/icons/pin.png', 'frontend') }}";
+            window.newpointconfirmmessage = "{{"dime.mappick.newpointconfirmmessage" | translate }}"</script>
     </div>
 </div>
 
