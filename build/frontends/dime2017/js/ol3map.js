@@ -175,7 +175,7 @@ function initialiseMapView() {
                 var ark_id = e.get('ark_id');
                 $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
                 $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
-
+                $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").parent().prepend($(".dime-table tr[data-unique-id='" + ark_id.toString() + "']"));
 
                 var featureextent = e.getGeometry().getExtent();
 
@@ -334,8 +334,6 @@ function initialiseMapView() {
         } else if ($(this).attr("value") == 'distribution') {
             view = map.getView();
 
-            //[minx,miny,maxx,maxy]
-
             extent = [Infinity, Infinity, -Infinity, -Infinity];
 
             map.getLayers().forEach(function(e, i, a) {
@@ -351,7 +349,7 @@ function initialiseMapView() {
                                       Math.min(newextent[1],extent[1]),
                                       Math.max(newextent[2],extent[2]),
                                       Math.max(newextent[3],extent[3])
-                                      ];
+                                  ];
                             view.fit(extent, map.getSize());
                         }
                     }
