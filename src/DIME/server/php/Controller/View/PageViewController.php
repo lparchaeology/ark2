@@ -33,6 +33,7 @@ use ARK\Error\ErrorException;
 use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\Entity\Page;
 use DIME\DIME;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,8 +43,8 @@ class PageViewController extends DimeFormController
     public function __invoke(Request $request)
     {
         $page = $request->attributes->get('_route');
-        if (!$item = ORM::find('ARK\Entity\Page', $page)) {
-            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Item not found', "Item $page not found"));
+        if (!$item = ORM::find(Page::class, $page)) {
+            throw new ErrorException(new NotFoundError('PAGE_NOT_FOUND', 'Page not found', "Page $page not found"));
         }
 
         if ($request->getMethod() === 'POST') {
