@@ -38,10 +38,12 @@ trait ProcessTrait
     protected function runProcess(string $command, OutputInterface $output)
     {
         $process = new Process($command);
-        $process->run();
+        $process->start();
+        foreach ($process as $type => $data) {
+            $output->write($data);
+        }
         if (!$process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
-        $output->writeln($process->getOutput());
     }
 }

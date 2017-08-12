@@ -28,10 +28,10 @@ gulp.task('core', function() {
 });
 
 var config = {
-    frontendsDir: './frontends',
+    frontendsDir: 'frontends',
     srcDir: '../src',
-    vendorDir: './vendor',
-    bootstrapDir: './vendor/bootstrap-sass/assets',
+    vendorDir: 'node_modules',
+    bootstrapDir: 'node_modules/bootstrap-sass/assets',
 };
 
 /*
@@ -155,7 +155,7 @@ gulp.task('js', function() {
         config.vendorDir + '/summernote/dist/summernote.js',
         config.vendorDir + '/select2/dist/js/select2.js',
         config.vendorDir + '/file-saver.js/FileSaver.js',
-        config.vendorDir + '/tableExport.jquery.plugin/tableExport.min.js',
+        config.vendorDir + '/tableexport.jquery.plugin/tableExport.min.js',
         //config.vendorDir + '/col-resizable/colResizable-1.6.js',
         config.vendorDir + '/moment/moment.js',
         config.vendorDir + '/bootstrap-fileinput/js/plugins/canvas-to-blob.js',
@@ -163,7 +163,7 @@ gulp.task('js', function() {
         //config.vendorDir + '/bootstrap-fileinput/js/plugins/sortable.js',
         config.vendorDir + '/bootstrap-fileinput/js/fileinput.js',
         config.vendorDir + '/bootstrap-fileinput/themes/gly/theme.js',
-        config.vendorDir + '/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.js',
+        config.vendorDir + '/bootstrap-datetime-picker/js/bootstrap-datetimepicker.js',
         config.vendorDir + '/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.js',
         config.vendorDir + '/bootstrap-table/dist/bootstrap-table.js',
         config.vendorDir + '/bootstrap-table/dist/extensions/accent-neutralise/bootstrap-table-accent-neutralise.js',
@@ -209,11 +209,11 @@ gulp.task('css', function() {
         './frontends/' + frontend + '/scss/ark.scss',
     ];
     var bootCssSrc = [
-        config.vendorDir + '/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.css',
+        config.vendorDir + '/bootstrap-datetime-picker/css/bootstrap-datetimepicker.css',
         config.vendorDir + '/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css',
         config.vendorDir + '/bootstrap-table/dist/bootstrap-table.css',
         config.vendorDir + '/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css',
-        config.vendorDir + '/select2-bootstrap-frontend/dist/select2-bootstrap.css',
+        config.vendorDir + '/select2-bootstrap-theme/dist/select2-bootstrap.css',
         config.vendorDir + '/bootstrap-fileinput/css/fileinput.css',
         config.vendorDir + '/vis/dist/vis-timeline-graph2d.min.css',
     ];

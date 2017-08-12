@@ -32,7 +32,7 @@ namespace ARK\Framework\Console;
 use ARK\ARK;
 use ARK\Database\Console\DatabaseReverseCommand;
 use ARK\Framework\Console\AbstractConsole;
-use ARK\Framework\Console\Command\BuildInstallCommand;
+use ARK\Framework\Console\Command\BuildStatusCommand;
 use ARK\Framework\Console\Command\BuildUpdateCommand;
 use ARK\Framework\Console\Command\BuildFrontendCommand;
 use ARK\Framework\Console\Command\BuildFrontendCreateCommand;
@@ -51,7 +51,7 @@ class BuildConsole extends AbstractConsole
         parent::__construct('ARK Build Console', new SystemApplication);
 
         // Build Environment Commands
-        $this->add(new BuildInstallCommand());
+        $this->add(new BuildStatusCommand());
         $this->add(new BuildUpdateCommand());
 
         // Build Commands

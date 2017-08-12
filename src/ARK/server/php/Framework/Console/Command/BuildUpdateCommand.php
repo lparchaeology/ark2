@@ -41,11 +41,31 @@ class BuildUpdateCommand extends Command
     protected function configure()
     {
         $this->setName('env:update')
-             ->setDescription('Update the build environment.');
+             ->setDescription('Install/Update the build environment.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->runProcess('npm run update-env', $output);
+        $output->writeln('');
+        $output->writeln('Cleaning Cache...');
+        $this->runProcess('npm cache clean', $output);
+        $output->writeln('');
+        $output->writeln('Pruning Tree...');
+        $this->runProcess('npm prune', $output);
+        $output->writeln('');
+        $output->writeln('Deduping Tree...');
+        $this->runProcess('npm dedupe', $output);
+        $output->writeln('');
+        $output->writeln('Outdated Packages:');
+        $this->runProcess('npm outdated', $output);
+        $output->writeln('');
+        $output->writeln('Updating Packages...');
+        $this->runProcess('npm update', $output);
+        $output->writeln('');
+        $output->writeln('Pruning Tree...');
+        $this->runProcess('npm prune', $output);
+        $output->writeln('');
+        $output->writeln('Deduping Tree...');
+        $this->runProcess('npm dedupe', $output);
     }
 }

@@ -34,18 +34,32 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class BuildInstallCommand extends Command
+class BuildStatusCommand extends Command
 {
     use ProcessTrait;
 
     protected function configure()
     {
-        $this->setName('env:install')
-             ->setDescription('Install the build environment.');
+        $this->setName('env:status')
+             ->setDescription('Show the sttus of the build environment.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->runProcess('npm run install-env', $output);
+        $output->writeln('');
+        $output->writeln('Cleaning Cache...');
+        $this->runProcess('npm cache clean', $output);
+        $output->writeln('');
+        $output->writeln('Pruning Tree...');
+        $this->runProcess('npm prune', $output);
+        $output->writeln('');
+        $output->writeln('Deduping Tree...');
+        $this->runProcess('npm dedupe', $output);
+        $output->writeln('');
+        $output->writeln('All Packages:');
+        $this->runProcess('npm ls', $output);
+        $output->writeln('');
+        $output->writeln('Outdated Packages:');
+        $this->runProcess('npm outdated', $output);
     }
 }
