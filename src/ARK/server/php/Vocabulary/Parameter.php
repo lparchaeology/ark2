@@ -35,15 +35,15 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 class Parameter
 {
     protected $concept = '';
-    protected $term = '';
-    protected $termEntity;
+    protected $termName = '';
+    protected $term;
     protected $name = '';
     protected $type = '';
     protected $value = '';
 
     public function term() : Term
     {
-        return $this->termEntity;
+        return $this->term;
     }
 
     public function name() : string
@@ -69,7 +69,7 @@ class Parameter
 
         // Key
         $builder->addManyToOneKey('concept', Vocabulary::class, 'concept', 'concept', 'terms');
-        $builder->addStringKey('term', 30);
+        $builder->addStringKey('termName', 30);
         $builder->addStringKey('name', 30);
 
         // Attributes
@@ -78,7 +78,7 @@ class Parameter
 
         // Associations
         $builder->addCompositeManyToOneField(
-            'termEntity',
+            'term',
             Term::class,
             [
                 ['column' => 'concept', 'nullable' => false],
