@@ -87,7 +87,7 @@ class VocabularyController
         $data['related'] = [];
         foreach ($term->related() as $related) {
             $data['related']['from'] = $related->fromTerm()->name();
-            $data['related']['relation'] = $related->type();
+            $data['related']['relation'] = $related->relation()->id();
             $data['related']['to'] = $related->toTerm()->name();
         }
         $data['descendents'] = [];
