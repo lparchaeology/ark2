@@ -39,7 +39,7 @@ class Relation
     protected $recipricol = '';
     protected $recipricolNotation = '';
     protected $equivalence = false;
-    protected $heirarchy = false;
+    protected $hierarchy = false;
     protected $associative = false;
 
     public function id() : string
@@ -67,9 +67,9 @@ class Relation
         return $this->equivalence;
     }
 
-    public function isHeirarchy() : bool
+    public function isHierarchy() : bool
     {
-        return $this->heirarchy;
+        return $this->hierarchy;
     }
 
     public function isAssociative() : bool
@@ -91,7 +91,7 @@ class Relation
         $builder->addStringField('recipricol', 30);
         $builder->addStringField('recipricolNotation', 30, 'recipricol_notation');
         $builder->addField('equivalence', 'boolean');
-        $builder->addField('heirarchy', 'boolean');
+        $builder->addField('hierarchy', 'boolean');
         $builder->addField('associative', 'boolean');
     }
 }
