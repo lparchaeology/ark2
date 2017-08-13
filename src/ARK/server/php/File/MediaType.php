@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK File Media Type
+ * ARK File Media Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\File;
@@ -34,11 +33,11 @@ use Dflydev\ApacheMimeTypes\PhpRepository;
 
 class MediaType
 {
-    const DEFAULT_TYPE = 'application/octet-stream';
+    public const DEFAULT_TYPE = 'application/octet-stream';
+    protected $mediatype;
     private static $repository = null;
     private static $mediatypes = null;
     private static $extensions = null;
-    protected $mediatype = null;
 
     public function __construct(string $type = self::DEFAULT_TYPE)
     {
@@ -51,67 +50,57 @@ class MediaType
         }
     }
 
-    public function mediaType()
+    public function mediaType() : string
     {
         return $this->mediatype;
     }
 
-    public function type()
+    public function type() : ?string
     {
         $parts = explode('/', $this->mediatype);
-        return isset($parts[0]) ? $parts[0] : null;
+        return $parts[0] ?? null;
     }
 
-    public function subType()
+    public function subType() : ?string
     {
         $parts = explode('/', $mediatype);
-        return isset($parts[1]) ? $parts[1] : null;
+        return $parts[1] ?? null;
     }
 
-    private static function repository()
-    {
-        if (!self::$repository) {
-            self::$repository = new PhpRepository();
-            self::$mediatypes = array_keys(self::$repository->dumpTypeToExtensions());
-            self::$extensions = array_keys(self::$repository->dumpExtensionToType());
-        }
-        return self::$repository;
-    }
-
-    public static function isValidMediaType(string $mediatype)
+    public static function isValidMediaType(string $mediatype) : bool
     {
         self::repository();
-        return in_array($mediatype, self::$mediatypes);
+        return in_array($mediatype, self::$mediatypes, true);
     }
 
-    public static function isValidExtension(string $extension)
+    public static function isValidExtension(string $extension) : bbol
     {
         self::repository();
-        return in_array($extension, self::$extensions);
+        return in_array($extension, self::$extensions, true);
     }
 
-    public static function isDefaultExtension(string $mediatype, string $extension)
+    public static function isDefaultExtension(string $mediatype, string $extension) : bool
     {
-        return (self::findDefaultExtension($mediatype) === $extension);
+        return self::findDefaultExtension($mediatype) === $extension;
     }
 
-    public static function findExtensions(string $mediatype)
+    public static function findExtensions(string $mediatype) : iterable
     {
         return self::repository()->findExtensions($mediatype);
     }
 
-    public static function findDefaultExtension(string $mediatype)
+    public static function findDefaultExtension(string $mediatype) : ?string
     {
         $exts = self::repository()->findExtensions($mediatype);
-        return isset($exts[0]) ? $exts[0] : null;
+        return $exts[0] ?? null;
     }
 
-    public static function findMediaType(string $extension)
+    public static function findMediaType(string $extension) : string
     {
         return self::repository()->findType($extension);
     }
 
-    public static function findType(string $type)
+    public static function findType(string $type) : ?string
     {
         $mediatype = null;
         if (self::isValidMediaType($type)) {
@@ -120,6 +109,16 @@ class MediaType
             $mediatype = self::findMediaType($type);
         }
         $parts = explode('/', $mediatype);
-        return isset($parts[0]) ? $parts[0] : null;
+        return $parts[0] ?? null;
+    }
+
+    private static function repository() : PhpRepository
+    {
+        if (!self::$repository) {
+            self::$repository = new PhpRepository();
+            self::$mediatypes = array_keys(self::$repository->dumpTypeToExtensions());
+            self::$extensions = array_keys(self::$repository->dumpExtensionToType());
+        }
+        return self::$repository;
     }
 }

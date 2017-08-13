@@ -37,10 +37,11 @@ use League\Flysystem\File as FileHandler;
 
 class FileVersion extends FileHandler
 {
-    protected $name;
-    protected $extension;
-    protected $sequence;
-    protected $version;
+    protected $name = '';
+    protected $path = '';
+    protected $extension = '';
+    protected $sequence = 0;
+    protected $version = '';
     protected $created;
     protected $creator;
     protected $modified;
@@ -52,47 +53,47 @@ class FileVersion extends FileHandler
         parent::__construct(Service::filesystem());
     }
 
-    public function path()
+    public function path() : string
     {
         return $this->path;
     }
 
-    public function name()
+    public function name() : string
     {
         return $this->name;
     }
 
-    public function extension()
+    public function extension() : string
     {
         return $this->extension;
     }
 
-    public function sequence()
+    public function sequence() : int
     {
         return $this->sequence;
     }
 
-    public function version()
+    public function version() : string
     {
         return $this->version;
     }
 
-    public function created()
+    public function created() : DateTime
     {
         return $this->created;
     }
 
-    public function creator()
+    public function creator() : string
     {
         return $this->creator;
     }
 
-    public function modified()
+    public function modified() : DateTime
     {
         return $this->modified;
     }
 
-    public function modifier()
+    public function modifier() : string
     {
         return $this->modifier;
     }
@@ -103,7 +104,7 @@ class FileVersion extends FileHandler
         $this->modifier = ($modifier ? $modifier : Service::security()->user()->id());
     }
 
-    public function expires()
+    public function expires() : ?DateTime
     {
         return $this->expires;
     }
@@ -113,9 +114,9 @@ class FileVersion extends FileHandler
         $this->expires = $expiresOn;
     }
 
-    public static function makeFilePath(string $type, $id, $sequence, string $extension)
+    public static function makeFilePath(string $type, int $id, int $sequence, string $extension) : string
     {
-        $token = floor((int) $id / 1000) * 1000;
+        $token = intdiv($id, 1000) * 1000;
         return "$type/$token/$id.$sequence.$extension";
     }
 
@@ -126,7 +127,7 @@ class FileVersion extends FileHandler
         string $extension,
         string $version = null,
         DateTime $created = null
-    ) {
+    ) : FileVersion {
         $file = new self();
         $file->name = $name;
         $file->extension = $extension;
@@ -144,24 +145,24 @@ class FileVersion extends FileHandler
     }
 
     // TODO Do this in ObjectFormat? Use magic methods?
-    public static function fromArray(array $data)
+    public static function fromArray(array $data) : FileVersion
     {
         $file = new self();
-        $file->path = $data['path'] ?? null;
-        $file->name = $data['name'] ?? null;
-        $file->extension = $data['extension'] ?? null;
-        $file->sequence = $data['sequence'] ?? null;
-        $file->version = $data['version'] ?? null;
+        $file->name = $data['name'] ?? '';
+        $file->path = $data['path'] ?? '';
+        $file->extension = $data['extension'] ?? '';
+        $file->sequence = $data['sequence'] ?? 0;
+        $file->version = $data['version'] ?? '';
         $file->created = $data['created'] ?? null;
-        $file->creator = $data['creator'] ?? null;
-        $file->modified = $data['modified'] ?? null;
-        $file->modifier = $data['modifier'] ?? null;
+        $file->creator = $data['creator'] ?? '';
+        $file->modified = $data['modified'] ?? $file->created;
+        $file->modifier = $data['modifier'] ?? $file->creator;
         $file->expires = $data['expires'] ?? null;
         return $file;
     }
 
     // TODO Do this in ObjectFormat? Use magic methods?
-    public static function toArray(FileVersion $file)
+    public static function toArray(FileVersion $file) : iterable
     {
         $data['path'] = $file->path();
         $data['name'] = $file->name();

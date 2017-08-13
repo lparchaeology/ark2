@@ -125,12 +125,12 @@ abstract class File implements Item
         return $this->property('license')->value();
     }
 
-    public function copyright()
+    public function copyright() : string
     {
         return $this->property('copyright')->value();
     }
 
-    public function mediatype()
+    public function mediatype() : MediaType
     {
         if ($this->mediatype === null) {
             $this->mediatype = new MediaType($this->property('mediatype')->value());
@@ -138,7 +138,7 @@ abstract class File implements Item
         return $this->mediatype;
     }
 
-    public static function createFromUploadedFile(UploadedFile $upload)
+    public static function createFromUploadedFile(UploadedFile $upload) : File
     {
         if ($upload->isValid()) {
             $file = self::createForMediatype($upload->getMimetype());
@@ -157,7 +157,7 @@ abstract class File implements Item
         $this->property('mediatype')->setValue($mediatype->mediatype());
     }
 
-    protected static function createForMediatype($mediatype)
+    protected static function createForMediatype($mediatype) : File
     {
         if (is_string($mediatype)) {
             $mediatype = new MediaType($mediatype);
