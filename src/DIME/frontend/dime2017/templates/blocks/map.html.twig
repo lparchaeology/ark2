@@ -26,7 +26,7 @@
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu style-select" aria-labelledby="mapStyleMenu">
-            {% if global.user %}
+            {% if data['finds'] %}
                 <li><a class="style-select-option" value="distribution">{{ 'map.style.distribution' | translate }}</a></li>
             {% endif %}
             <li><a class="style-select-option" value="choropleth">{{ 'map.style.choropleth' | translate }}</a></li>
@@ -62,7 +62,7 @@
 
             twkts = [];
 
-            {% if global.user %}
+            {% if data['finds'] %}
 
                 var default_overlay = "distribution";
 

@@ -160,7 +160,11 @@ class FindListController extends DimeFormController
         }
 
         $data['finds'] = $visible;
-        $data['map']['finds'] = $visible;
+        if ($myfinds || Service::workflow()->actor()->hasPermission('dime.find.view.location')) {
+            $data['map']['finds'] = $visible;
+        } else {
+            $data['map']['finds'] = [];
+        }
         $data['map']['kortforsyningenticket'] = DIME::getMapTicket();
         return $data;
     }
