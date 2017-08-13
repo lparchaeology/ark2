@@ -188,7 +188,7 @@ class Application extends SilexApplication
     {
         // TODO Use kernel event instead???
         if ($request === null) {
-            $path = ($_SERVER['PATH_INFO'] ?? '');
+            $path = ($_SERVER['PATH_INFO'] ?? $_SERVER['REQUEST_URI'] ?? '');
             $pos = strpos($path, $this['path.api']);
             if ($pos === 0) {
                 $request = JsonApiRequest::createFromGlobals();
