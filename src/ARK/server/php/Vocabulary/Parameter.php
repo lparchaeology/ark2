@@ -69,7 +69,7 @@ class Parameter
 
         // Key
         $builder->addManyToOneKey('concept', Vocabulary::class, 'concept', 'concept', 'terms');
-        $builder->addStringKey('termName', 30);
+        $builder->addStringKey('termName', 30, 'term');
         $builder->addStringKey('name', 30);
 
         // Attributes
