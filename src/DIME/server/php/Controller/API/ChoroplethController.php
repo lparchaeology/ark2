@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * DIME Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,14 +25,13 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace DIME\Controller\API;
 
 use ARK\Service;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class ChoroplethController
 {
@@ -44,18 +43,18 @@ class ChoroplethController
         // get the counts of finds in municipality
         $itemlist = $request->query->get('itemlist');
 
-        $findCounts = Service::database()->getSpatialTermChoropleth('dime.denmark.municipality', 'find', 'location', $itemlist);
+        $findCounts = Service::database()->getSpatialTermChoropleth('dime.denmark.municipality', 'find', 'location', $itemlist ?? []);
         // create a blank array to return
         $data = [];
         $curmax = 0;
         $curmin = INF;
 
-        if (count($findCounts) == 0) {
+        if (count($findCounts) === 0) {
             $curmax = 0;
             $curmin = 0;
         } else {
             // this turns the 2D array of find counts into an array with keys
-            $findCounts = array_column($findCounts, "count", "term");
+            $findCounts = array_column($findCounts, 'count', 'term');
 
             foreach ($findCounts as $term => $count) {
                 if ($count < $curmin) {
@@ -68,7 +67,7 @@ class ChoroplethController
 
             // if the min and max are the same set the min to 0 so all municipalities are maximum
             // if there are not counts for all the municipalities some will be 0, so that is the minimum
-            if ($curmin == $curmax || count($findCounts) != count($municipalities)) {
+            if ($curmin === $curmax || count($findCounts) !== count($municipalities)) {
                 $curmin = 0;
             }
         }
@@ -79,7 +78,7 @@ class ChoroplethController
             // if the municipality has a count associate that with the geometry
             if (array_key_exists($municipality['term'], $findCounts)) {
                 $municipality['count'] = $findCounts[$municipality['term']];
-                if ($municipality['count'] == $curmin) {
+                if ($municipality['count'] === $curmin) {
                     $municipality['band'] = 1;
                 } elseif ($municipality['count'] <= $curmin + $band) {
                     $municipality['band'] = 2;
@@ -92,7 +91,7 @@ class ChoroplethController
                 }
             } else {
                 // otherwise it is 0
-                $municipality['count'] = "0";
+                $municipality['count'] = '0';
                 $municipality['band'] = 1;
             }
             // fill return array with these new municipality arrays
