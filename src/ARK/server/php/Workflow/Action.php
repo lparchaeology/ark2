@@ -39,6 +39,7 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Vocabulary\Term;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class Action
 {
@@ -182,7 +183,7 @@ class Action
             && $this->meetsConditions($item);
     }
 
-    public function notify(Item $item) : ArrayCollection
+    public function notify(Item $item) : Collection
     {
         $recipients = new ArrayCollection();
         foreach ($this->notifications as $notify) {

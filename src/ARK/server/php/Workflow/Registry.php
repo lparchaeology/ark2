@@ -40,6 +40,7 @@ use ARK\Security\User;
 use ARK\Service;
 use ARK\Workflow\Security\ActorUser;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Workflow\Exception\InvalidArgumentException;
 use Symfony\Component\Workflow\Registry as SymfonyRegistry;
 use Symfony\Component\Workflow\StateMachine;
@@ -67,13 +68,13 @@ class Registry extends SymfonyRegistry
         return $au ? $au->user() : null;
     }
 
-    public function schemaActions(Schema $schema) : ArrayCollection
+    public function schemaActions(Schema $schema) : Collection
     {
         $this->init($schema->name());
         return $this->actions[$schema->name()];
     }
 
-    public function updateActions(Actor $actor, Item $item) : ArrayCollection
+    public function updateActions(Actor $actor, Item $item) : Collection
     {
         $schema = $item->schema()->name();
         $this->init($schema);
@@ -86,7 +87,7 @@ class Registry extends SymfonyRegistry
         return $actions;
     }
 
-    public function actions(Actor $actor, Item $item) : ArrayCollection
+    public function actions(Actor $actor, Item $item) : Collection
     {
         $schema = $item->schema()->name();
         $this->init($schema);
@@ -99,7 +100,7 @@ class Registry extends SymfonyRegistry
         return $actions;
     }
 
-    public function actors(Actor $actor, Item $item) : ArrayCollection
+    public function actors(Actor $actor, Item $item) : Collection
     {
         $schema = $item->schema()->name();
         $this->init($schema);

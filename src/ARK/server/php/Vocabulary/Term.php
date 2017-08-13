@@ -33,6 +33,7 @@ use ARK\Model\EnabledTrait;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Term
@@ -80,17 +81,17 @@ class Term
         return $this->root;
     }
 
-    public function parameters() : ArrayCollection
+    public function parameters() : Collection
     {
         return $this->parameters;
     }
 
-    public function related() : ArrayCollection
+    public function related() : Collection
     {
         return $this->related;
     }
 
-    public function descendents() : ArrayCollection
+    public function descendents() : Collection
     {
         if ($this->descendents === null) {
             $this->descendents = new ArrayCollection();

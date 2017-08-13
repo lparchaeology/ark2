@@ -37,6 +37,7 @@ use ARK\Workflow\Permission;
 use ARK\Workflow\Role;
 use ARK\Workflow\Security\ActorRole;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class Actor implements Item
 {
@@ -72,7 +73,7 @@ class Actor implements Item
         return false;
     }
 
-    public function roles() : ArrayCollection
+    public function roles() : Collection
     {
         if ($this->roles === null) {
             $this->roles = new ArrayCollection();

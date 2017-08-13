@@ -35,6 +35,7 @@ use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Bus\NavAddMessage;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Gedmo\Tree\Entity\Repository\ClosureTreeRepository;
 
 class Nav extends Element
@@ -72,7 +73,7 @@ class Nav extends Element
         return $this->parent;
     }
 
-    public function children() : ArrayCollection
+    public function children() : Collection
     {
         return $this->children;
     }
@@ -82,7 +83,7 @@ class Nav extends Element
         return $this->children && $this->children->count() > 0;
     }
 
-    public function hierarchy() : ArrayCollection
+    public function hierarchy() : Collection
     {
         return ORM::repository(self::class)->getChildren($this, false, 'seq');
     }

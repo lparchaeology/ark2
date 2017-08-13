@@ -30,13 +30,14 @@
 namespace ARK\Vocabulary;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Taxonomy extends Vocabulary
 {
     protected $taxons;
 
-    public function taxons() : ArrayCollection
+    public function taxons() : Collection
     {
         if ($this->taxons === null) {
             $this->taxons = new ArrayCollection();

@@ -36,6 +36,7 @@ use ARK\ORM\ORM;
 use ARK\Vocabulary\Term;
 use ARK\Workflow\Security\ActorRole;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Role
@@ -75,7 +76,7 @@ class Role
         return $this->enabled;
     }
 
-    public function actors() : ArrayCollection
+    public function actors() : Collection
     {
         if ($this->actors === null) {
             $ars = ORM::findBy(ActorRole::class, ['role' => $this->role]);
@@ -115,7 +116,7 @@ class Role
         }
     }
 
-    public function permissions() : ArrayCollection
+    public function permissions() : Collection
     {
         return $this->permissions;
     }

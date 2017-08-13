@@ -31,6 +31,7 @@ namespace ARK\Translation;
 
 use ARK\ORM\ClassMetadataBuilder;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Message
@@ -102,7 +103,7 @@ class Message
         return $this->key->hasParameters();
     }
 
-    public function parameters() : ArrayCollection
+    public function parameters() : Collection
     {
         return $this->key->parameters();
     }
