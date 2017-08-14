@@ -32,6 +32,8 @@ namespace ARK\Map;
 
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadataBuilder;
+use Brick\Geo\MultiPoint;
+use Brick\Geo\Point;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -44,7 +46,7 @@ class Map
     protected $draggable = true;
     protected $clickable = true;
     protected $zoomable = true;
-    protected $projection;
+    protected $srid = 3857;
     protected $center;
     protected $extent;
     protected $zoom;
@@ -93,19 +95,19 @@ class Map
         return $this->maxZoom;
     }
 
-    public function projection() : ?string
+    public function srid() : int
     {
-        return $this->projection;
+        return $this->srid;
     }
 
-    public function center() : string
+    public function center() : Point
     {
-        return $this->center;
+        return Point::fromText($this->center, $this->srid);
     }
 
-    public function extent() : ?string
+    public function extent() : MultiPoint
     {
-        return $this->extent;
+        return MultiPoint::fromText($this->extent, $this->srid);
     }
 
     public function options() : iterable
@@ -134,7 +136,7 @@ class Map
         $builder->addField('zoom', 'integer');
         $builder->addField('minZoom', 'integer', [], 'min_zoom');
         $builder->addField('maxZoom', 'integer', [], 'max_zoom');
-        $builder->addStringField('projection', 30);
+        $builder->addField('srid', 'integer');
         $builder->addStringField('center', 50);
         $builder->addStringField('extent', 100);
         KeywordTrait::buildKeywordMetadata($builder);

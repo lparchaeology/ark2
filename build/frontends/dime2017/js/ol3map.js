@@ -25,16 +25,8 @@ function initialiseMapView() {
         target: 'map',
         view: new ol.View(mapConfig.view)
     });
-
     map.addControl(new ol.control.Zoom());
     map.addControl(new ol.control.ZoomSlider());
-
-    map.on('moveend', function() {
-        var center = map.getView().get('center');
-        var extents = map.getView().calculateExtent(map.getSize());
-        centerstring = '[' + center.toString() + ']';
-        var zoom = map.getView().getZoom();
-    });
 
     $('a.layer-select').on('click', function() {
         var name = $(this).attr('value');

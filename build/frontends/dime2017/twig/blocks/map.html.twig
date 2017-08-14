@@ -44,9 +44,9 @@
 
         {# Convert the ARK map config into OpenLayers json #}
         {% set view = {
-            'projection': state.map.projection,
-            'center': state.map.center,
-            'extent': state.map.extent,
+            'projection': 'EPSG:' ~ state.map.srid,
+            'center': state.map.center.toArray,
+            'extent': state.map.extent.toArray[0] | merge(state.map.extent.toArray[1]),
             'zoom': state.map.zoom,
             'minZoom': state.map.minimumZoom,
             'maxZoom': state.map.maximumZoom

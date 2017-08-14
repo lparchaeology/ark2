@@ -53,11 +53,11 @@ function initialisePickMap() {
 
     mapPickLayers.push(vector);
 
-    var denmarkExtent = [813900, 7262100, 1798900, 7959750];
-
+    // TODO Get from ark_map tables.
     var mapPickView = new ol.View({
-        center: [(denmarkExtent[0]+denmarkExtent[2])/2, (denmarkExtent[1]+denmarkExtent[3])/2],
+        center: [1155972, 7580813],
         zoom: 6,
+        extent: [831000, 7230000, 1750000, 7950000],
         minZoom: 6
     });
 
@@ -85,7 +85,7 @@ function initialisePickMap() {
     });
 
     var removefeature = null;
-    
+
     mapPickSource.on('addfeature', function() {
         if(mapPickSource.getFeatures().length == 1){
             mapPickSource.forEachFeature(function(feature) {
@@ -100,7 +100,7 @@ function initialisePickMap() {
         } else {
             mapPickSource.removeFeature(removefeature);
         }
-        
+
     });
 
     draw.on('drawend', function(e) {
@@ -110,7 +110,7 @@ function initialisePickMap() {
             removefeature = e.feature;
         }
     });
-    
+
     $('.mappick-fields input').on('change', function() {
         switch ($('input[name=mappick-coordinates-radio]:checked', '.mappick-fields').attr('id')) {
             case 'mappick-decimal':
