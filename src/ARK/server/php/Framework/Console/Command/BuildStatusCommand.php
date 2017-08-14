@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Build Console Command
+ * ARK Build Console Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -38,26 +38,17 @@ class BuildStatusCommand extends Command
 {
     use ProcessTrait;
 
-    protected function configure()
+    protected function configure() : void
     {
         $this->setName('env:status')
              ->setDescription('Show the sttus of the build environment.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : void
     {
         $output->writeln('');
-        $output->writeln('Cleaning Cache...');
-        $this->runProcess('npm cache clean', $output);
-        $output->writeln('');
-        $output->writeln('Pruning Tree...');
-        $this->runProcess('npm prune', $output);
-        $output->writeln('');
-        $output->writeln('Deduping Tree...');
-        $this->runProcess('npm dedupe', $output);
-        $output->writeln('');
-        $output->writeln('All Packages:');
-        $this->runProcess('npm ls', $output);
+        $output->writeln('Status:');
+        $this->runProcess('npm doctor', $output);
         $output->writeln('');
         $output->writeln('Outdated Packages:');
         $this->runProcess('npm outdated', $output);

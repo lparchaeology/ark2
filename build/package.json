@@ -23,7 +23,7 @@
     "heritage",
     "database"
   ],
-  "author": "L~P : Heritage LLP",
+  "author": "L - P : Heritage LLP",
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/lparchaeology/ark2/issues"
@@ -67,5 +67,6 @@
     "bootstrap-fileinput": "^4.4.2",
     "jquery-form": "^4.2.1",
     "vis": "^4.20.1"
-  }
+  },
+  "dependencies": {}
 }

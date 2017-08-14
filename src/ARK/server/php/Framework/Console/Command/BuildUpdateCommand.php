@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Build Console Command
+ * ARK Build Console Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -38,17 +38,17 @@ class BuildUpdateCommand extends Command
 {
     use ProcessTrait;
 
-    protected function configure()
+    protected function configure() : void
     {
         $this->setName('env:update')
              ->setDescription('Install/Update the build environment.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : void
     {
         $output->writeln('');
         $output->writeln('Cleaning Cache...');
-        $this->runProcess('npm cache clean', $output);
+        $this->runProcess('npm cache clean --force', $output);
         $output->writeln('');
         $output->writeln('Pruning Tree...');
         $this->runProcess('npm prune', $output);
@@ -58,6 +58,9 @@ class BuildUpdateCommand extends Command
         $output->writeln('');
         $output->writeln('Outdated Packages:');
         $this->runProcess('npm outdated', $output);
+        $output->writeln('');
+        $output->writeln('Installing Packages...');
+        $this->runProcess('npm install', $output);
         $output->writeln('');
         $output->writeln('Updating Packages...');
         $this->runProcess('npm update', $output);
