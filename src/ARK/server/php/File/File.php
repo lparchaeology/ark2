@@ -75,7 +75,7 @@ abstract class File implements Item
         return $this->current()->version();
     }
 
-    public function current() : FileVersion
+    public function current() : ?FileVersion
     {
         if ($this->current === null) {
             $seq = -1;

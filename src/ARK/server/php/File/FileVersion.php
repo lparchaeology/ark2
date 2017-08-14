@@ -131,7 +131,7 @@ class FileVersion extends FileHandler
         $file = new self();
         $file->name = $name;
         $file->extension = $extension;
-        if (!$created) {
+        if ($created === null) {
             $created = ARK::timestamp();
         }
         $file->sequence = $created->format('YmdHis');
