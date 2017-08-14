@@ -34,12 +34,12 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Parameter
 {
-    protected $key;
+    protected $keyword;
     protected $parameter = '';
 
-    public function __construct(Translation $key, string $name)
+    public function __construct(Translation $keyword, string $name)
     {
-        $this->key = $key;
+        $this->keyword = $keyword;
         $this->parameter = $name;
     }
 
@@ -51,7 +51,7 @@ class Parameter
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_translation_parameter');
-        $builder->addManyToOneKey('key', Translation::class, 'keyword');
+        $builder->addManyToOneKey('keyword', Translation::class);
         $builder->addStringKey('parameter', 30);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Boolean Datatype
+ * ARK Model Boolean Datatype.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model\Datatype;
@@ -33,10 +32,25 @@ namespace ARK\Model\Datatype;
 use ARK\Model\Datatype;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use Symfony\Component\Validator\Constraints\IsFalse;
+use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\Validator\Constraints\Type;
 
 class BooleanDatatype extends Datatype
 {
-    public static function loadMetadata(ClassMetadata $metadata)
+    public function constraints() : iterable
+    {
+        $constraints = parent::constraints();
+        $constraints[] = new Type('bool');
+        if ($this->preset === true) {
+            $constraints[] = new IsTrue();
+        } elseif ($this->preset === false) {
+            $constraints[] = new IsFalse();
+        }
+        return $constraints;
+    }
+
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_boolean');
         $builder->addField('preset', 'boolean');

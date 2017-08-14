@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Integer Datatype
+ * ARK Model Integer Datatype.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,13 +25,11 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model\Datatype;
 
 use ARK\Model\Datatype;
-use ARK\Model\Datatype\NumberTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
@@ -39,7 +37,22 @@ class IntegerDatatype extends Datatype
 {
     use NumberTrait;
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public function minimumValue() : int
+    {
+        return $this->minimum;
+    }
+
+    public function maximumValue() : int
+    {
+        return $this->maximum;
+    }
+
+    public function multipleOf() : int
+    {
+        return $this->multipleOf;
+    }
+
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_integer');
         $builder->addField('minimum', 'integer');

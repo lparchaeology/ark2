@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Datatype Attribute
+ * ARK Model Datatype Attribute.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model\Datatype;
@@ -34,30 +33,29 @@ use ARK\Model\Attribute;
 use ARK\Model\Datatype;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\Vocabulary\Vocabulary;
 
 class DatatypeAttribute extends Attribute
 {
-    protected $parent = null;
+    protected $parent;
     protected $sequence = 0;
     protected $root = false;
 
-    public function parent()
+    public function parent() : Datatype
     {
         return $this->parent;
     }
 
-    public function sequence()
+    public function sequence() : int
     {
         return $this->sequence;
     }
 
-    public function isRoot()
+    public function isRoot() : bool
     {
         return $this->root;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_attribute');

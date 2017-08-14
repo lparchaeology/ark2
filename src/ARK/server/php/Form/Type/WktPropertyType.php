@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Event Form Type
+ * ARK Event Form Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,23 +25,22 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Form\Type;
 
-use ARK\Form\Type\AbstractPropertyType;
 use Brick\Geo\Point;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
 
 class WktPropertyType extends AbstractPropertyType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, iterable $options) : void
     {
         $fieldOptions['mapped'] = false;
         $fieldOptions['label'] = false;
+        $fieldOptions['contraints'] = [];
         $builder->add('easting', TextType::class, $fieldOptions);
         $builder->add('northing', TextType::class, $fieldOptions);
         $builder->add('srid', HiddenType::class, $fieldOptions);
@@ -49,14 +48,7 @@ class WktPropertyType extends AbstractPropertyType
         $builder->setDataMapper($this);
     }
 
-    protected function options()
-    {
-        return [
-            'compound' => true,
-        ];
-    }
-
-    public function mapDataToForms($property, $forms)
+    public function mapDataToForms($property, $forms) : void
     {
         if (!$property instanceof Property) {
             return;
@@ -65,7 +57,7 @@ class WktPropertyType extends AbstractPropertyType
         $forms = iterator_to_array($forms);
 
         if ($value['geometry']) {
-            $point = Point::fromText($value['geometry'], (int)$value['srid']);
+            $point = Point::fromText($value['geometry'], (int) $value['srid']);
             $forms['easting']->setData($point->x());
             $forms['northing']->setData($point->y());
             $forms['srid']->setData($point->SRID());
@@ -76,7 +68,7 @@ class WktPropertyType extends AbstractPropertyType
         }
     }
 
-    public function mapFormsToData($forms, &$property)
+    public function mapFormsToData($forms, &$property) : void
     {
         if (!$property instanceof Property) {
             return;
@@ -87,5 +79,12 @@ class WktPropertyType extends AbstractPropertyType
         $value['srid'] = $point->SRID();
         $value['format'] = $forms['format']->getData();
         $property->setValue($value);
+    }
+
+    protected function options() : iterable
+    {
+        return [
+            'compound' => true,
+        ];
     }
 }

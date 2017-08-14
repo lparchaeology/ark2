@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Decimal Datatype
+ * ARK Model Decimal Datatype.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,13 +25,11 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model\Datatype;
 
 use ARK\Model\Datatype;
-use ARK\Model\Datatype\NumberTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
@@ -39,20 +37,35 @@ class DecimalDatatype extends Datatype
 {
     use NumberTrait;
 
-    public $precision = 200;
-    public $scale = 0;
+    protected $precision = 200;
+    protected $scale = 0;
 
-    public function precision()
+    public function minimumValue() : string
+    {
+        return $this->minimum;
+    }
+
+    public function maximumValue() : string
+    {
+        return $this->maximum;
+    }
+
+    public function multipleOf() : string
+    {
+        return $this->multipleOf;
+    }
+
+    public function precision() : int
     {
         return $this->precision;
     }
 
-    public function scale()
+    public function scale() : int
     {
         return $this->scale;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_decimal');
         $builder->addField('precision', 'integer', [], 'prec');

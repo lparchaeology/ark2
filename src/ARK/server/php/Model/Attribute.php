@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Schema Attribute
+ * ARK Model Schema Attribute.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,19 +25,16 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model;
 
-use ARK\Model\EnabledTrait;
-use ARK\Model\Datatype;
-use ARK\Model\Fragment;
-use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Vocabulary\Vocabulary;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 abstract class Attribute
 {
@@ -45,8 +42,8 @@ abstract class Attribute
     use KeywordTrait;
 
     protected $attribute = '';
-    protected $datatype = null;
-    protected $vocabulary = null;
+    protected $datatype;
+    protected $vocabulary;
     protected $span = false;
     protected $minimum = 0;
     protected $maximum = 1;
@@ -70,12 +67,12 @@ abstract class Attribute
 
     public function isItem()
     {
-        return $this->datatype->type()->id() == 'item';
+        return $this->datatype->type()->id() === 'item';
     }
 
     public function isObject()
     {
-        return $this->datatype->type()->id() == 'object';
+        return $this->datatype->type()->id() === 'object';
     }
 
     public function entity()
@@ -125,7 +122,7 @@ abstract class Attribute
 
     public function hasMultipleOccurrences()
     {
-        return ($this->maximum != 1);
+        return $this->maximum !== 1;
     }
 
     public function minimumOccurrences()
@@ -146,6 +143,19 @@ abstract class Attribute
     public function additionalValues()
     {
         return $this->additionalValues;
+    }
+
+    public function constraints() : iterable
+    {
+        $constraints = $this->datatype->constraints();
+        if ($this->maximum > 1) {
+            $constraints[] = new Count(['min' => $this->minimum, 'max' => $this->maximum]);
+        } elseif ($this->maximum === 0) {
+            $constraints[] = new Count(['min' => $this->minimum]);
+        } elseif ($this->minimum > 0) {
+            $constraints[] = new NotBlank();
+        }
+        return $constraints;
     }
 
     public function keyword()
@@ -173,7 +183,7 @@ abstract class Attribute
     public function value(ArrayCollection $fragments, ArrayCollection $properties)
     {
         if ($fragments->isEmpty()) {
-            return ($this->hasMultipleOccurrences() ? [] : null);
+            return $this->hasMultipleOccurrences() ? [] : null;
         }
         if ($this->hasVocabulary()) {
             if ($this->hasMultipleOccurrences()) {
@@ -215,12 +225,12 @@ abstract class Attribute
             if ($this->hasMultipleOccurrences()) {
                 $data = [];
                 foreach ($fragments as $fragment) {
-                    $data[] = ($fragment->isSpan()? [$fragment->value(), $fragment->extent()] : $fragment->value());
+                    $data[] = ($fragment->isSpan() ? [$fragment->value(), $fragment->extent()] : $fragment->value());
                 }
                 return $data;
             }
             $fragment = $fragments[0];
-            return ($fragment->isSpan()? [$fragment->value(), $fragment->extent()] : $fragment->value());
+            return $fragment->isSpan() ? [$fragment->value(), $fragment->extent()] : $fragment->value();
         }
         if ($this->datatype()->type()->isObject()) {
             if ($this->hasMultipleOccurrences()) {
@@ -261,7 +271,7 @@ abstract class Attribute
         return $fragments;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata);

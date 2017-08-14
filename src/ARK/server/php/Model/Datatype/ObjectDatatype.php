@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Object Datatype
+ * ARK Model Object Datatype.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,39 +25,47 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model\Datatype;
 
-use ARK\Model\Datatype;
-use ARK\Model\Datatype\DatatypeAttribute;
 use ARK\Model\Attribute;
+use ARK\Model\Datatype;
 use ARK\Model\Fragment;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\ORM\ORM;
 use ARK\Vocabulary\Vocabulary;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints\Type;
 
 class ObjectDatatype extends Datatype
 {
-    protected $attributes = null;
+    protected $attributes;
 
     public function __construct()
     {
         $this->attributes = new ArrayCollection();
     }
 
-    public function attributes()
+    public function constraints() : iterable
+    {
+        $constraints = parent::constraints();
+        if ($this->entity) {
+            $constraints[] = new Type($this->entity);
+        }
+        return $constraints;
+    }
+
+    public function attributes() : iterable
     {
         return $this->attributes;
     }
 
-    public function attribute($name)
+    public function attribute(string $name) : ?Attribute
     {
         foreach ($this->attributes as $attribute) {
-            if ($attribute->name() == $name) {
+            if ($attribute->name() === $name) {
                 return $attribute;
             }
         }
@@ -72,42 +80,7 @@ class ObjectDatatype extends Datatype
         return $data;
     }
 
-    protected function fragmentValue($fragment, ArrayCollection $properties = null)
-    {
-        if ($properties === null || $properties->isEmpty() || !$fragment instanceof Fragment) {
-            return null;
-        }
-        $data = [];
-        foreach ($this->attributes as $attribute) {
-            $data[$attribute->name()] = $properties->get($attribute->name())->value();
-        }
-        if ($this->entity) {
-            // FIXME PHP7 $data = $this->entity::fromArray($data);
-            $data = call_user_func($this->entity.'::fromArray', $data);
-        }
-        if ($data == $this->emptyValue()) {
-            return null;
-        }
-        return $data;
-    }
-
-    protected function serializeFragment(Fragment $fragment, ArrayCollection $properties = null)
-    {
-        if ($properties === null || $properties->isEmpty()) {
-            return null;
-        }
-        $data = [];
-        foreach ($this->attributes as $attribute) {
-            if ($property = $properties->get($attribute->name())) {
-                $data[$attribute->name()] = $property->serialize();
-            } else {
-                $data[$attribute->name()] = null;
-            }
-        }
-        return $data;
-    }
-
-    public function hydrate($data, Attribute $attribute, Vocabulary $vocabulary = null)
+    public function hydrate($data, Attribute $attribute, Vocabulary $vocabulary = null) : Collection
     {
         $fragments = new ArrayCollection();
         if ($data === [] || $data === null) {
@@ -138,16 +111,50 @@ class ObjectDatatype extends Datatype
         return $fragments;
     }
 
-    protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null)
-    {
-    }
-
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_object');
 
         // Associations
         $builder->addOneToMany('attributes', DatatypeAttribute::class, 'parent', null, null, null, ['sequence' => 'ASC']);
+    }
+
+    protected function fragmentValue($fragment, Collection $properties = null)
+    {
+        if ($properties === null || $properties->isEmpty() || !$fragment instanceof Fragment) {
+            return null;
+        }
+        $data = [];
+        foreach ($this->attributes as $attribute) {
+            $data[$attribute->name()] = $properties->get($attribute->name())->value();
+        }
+        if ($this->entity) {
+            $data = $this->entity::fromArray($data);
+        }
+        if ($data === $this->emptyValue()) {
+            return null;
+        }
+        return $data;
+    }
+
+    protected function serializeFragment(Fragment $fragment, Collection $properties = null)
+    {
+        if ($properties === null || $properties->isEmpty()) {
+            return null;
+        }
+        $data = [];
+        foreach ($this->attributes as $attribute) {
+            if ($property = $properties->get($attribute->name())) {
+                $data[$attribute->name()] = $property->serialize();
+            } else {
+                $data[$attribute->name()] = null;
+            }
+        }
+        return $data;
+    }
+
+    protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null) : void
+    {
     }
 }

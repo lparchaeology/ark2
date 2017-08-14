@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Blob Datatype
+ * ARK Model Blob Datatype.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model\Datatype;
@@ -36,7 +35,7 @@ use ARK\ORM\ClassMetadataBuilder;
 
 class BlobDatatype extends Datatype
 {
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_blob');
         $builder->addField('preset', 'blob');

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model String Datatype
+ * ARK Model String Datatype.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,15 +25,16 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model\Datatype;
 
 use ARK\Model\Datatype;
-use ARK\Model\Datatype\StringDatatype;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Type;
 
 class StringDatatype extends Datatype
 {
@@ -42,27 +43,41 @@ class StringDatatype extends Datatype
     protected $maximumLength = 0;
     protected $defaultSize = 0;
 
-    public function pattern()
+    public function pattern() : string
     {
         return $this->pattern;
     }
 
-    public function minimumLength()
+    public function minimumLength() : int
     {
         return $this->minimumLength;
     }
 
-    public function maximumLength()
+    public function maximumLength() : int
     {
         return $this->maximumLength;
     }
 
-    public function defaultSize()
+    public function defaultSize() : int
     {
         return $this->defaultSize;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public function constraints() : iterable
+    {
+        $constraints = parent::constraints();
+        $constraints[] = new Type('string');
+        if ($this->pattern) {
+            // TODO Multiple items doesn't like???
+            //$constraints[] = new Regex(['pattern' => $this->pattern]);
+        }
+        if ($this->entity === null) {
+            $constraints[] = new Length(['min' => $this->minimumLength, 'max' => $this->maximumLength]);
+        }
+        return $constraints;
+    }
+
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_string');

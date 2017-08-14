@@ -38,7 +38,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ObjectType extends AbstractType implements DataMapperInterface
 {
-    public function buildForm(FormBuilderInterface $builder, array $options) : void
+    public function buildForm(FormBuilderInterface $builder, iterable $options) : void
     {
         $field = $options['state']['field'];
         $fieldOptions = [];

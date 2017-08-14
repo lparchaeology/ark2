@@ -101,7 +101,7 @@ class Translation
         return $this->messages;
     }
 
-    public function message(string $language = null, string $role = 'default') : Message
+    public function message(string $language = null, string $role = 'default') : ?Message
     {
         // TODO select by language and role with fallbacks
         if ($language === null) {
@@ -114,7 +114,11 @@ class Translation
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('language', $language))
             ->andWhere(Criteria::expr()->eq('role', $role));
-        return $this->messages->matching($criteria)->first();
+        $results = $this->messages()->matching($criteria);
+        if ($results->isEmpty()) {
+            return null;
+        }
+        return $results->first();
     }
 
     public function setMessages(iterable $messages) : void
@@ -134,7 +138,7 @@ class Translation
         $builder->addManyToOneField('domain', Domain::class);
         $builder->addField('isPlural', 'boolean', [], 'is_plural');
         $builder->addField('hasParameters', 'boolean', [], 'has_parameters');
-        $builder->addOneToManyCascade('parameters', Parameter::class, 'keyword');
-        $builder->addOneToManyCascade('messages', Message::class, 'keyword');
+        $builder->addOneToManyCascade('parameters', Parameter::class, 'key');
+        $builder->addOneToManyCascade('messages', Message::class, 'key');
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Float Datatype
+ * ARK Model Float Datatype.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -31,7 +31,6 @@
 namespace ARK\Model\Datatype;
 
 use ARK\Model\Datatype;
-use ARK\Model\Datatype\NumberTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
@@ -39,7 +38,22 @@ class FloatDatatype extends Datatype
 {
     use NumberTrait;
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public function minimumValue() : float
+    {
+        return $this->minimum;
+    }
+
+    public function maximumValue() : float
+    {
+        return $this->maximum;
+    }
+
+    public function multipleOf() : float
+    {
+        return $this->multipleOf;
+    }
+
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_float');
         $builder->addField('minimum', 'float');

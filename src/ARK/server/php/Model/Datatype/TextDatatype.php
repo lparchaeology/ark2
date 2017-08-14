@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Text Datatype
+ * ARK Model Text Datatype.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,20 +25,21 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model\Datatype;
 
-use ARK\Model\Fragment;
-use ARK\Model\Datatype;
-use ARK\Model\LocalText;
 use ARK\Model\Attribute;
+use ARK\Model\Datatype;
+use ARK\Model\Fragment;
+use ARK\Model\LocalText;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\ORM\ORM;
 use ARK\Vocabulary\Vocabulary;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Type;
 
 class TextDatatype extends Datatype
 {
@@ -47,52 +48,45 @@ class TextDatatype extends Datatype
     protected $maximumLength = 0;
     protected $defaultSize = 0;
 
-    public function mediatype()
+    public function mediatype() : string
     {
         return $this->mediatype;
     }
 
-    public function minimumLength()
+    public function minimumLength() : int
     {
         return $this->minimumLength;
     }
 
-    public function maximumLength()
+    public function maximumLength() : int
     {
         return $this->maximumLength;
     }
 
-    public function defaultSize()
+    public function defaultSize() : int
     {
         return $this->defaultSize;
     }
 
-    public function emptyValue()
+    public function emptyValue() : LocalText
     {
         return new LocalText();
     }
 
-    protected function fragmentValue($fragment, ArrayCollection $properties = null)
+    public function constraints() : iterable
     {
-        $data = new LocalText();
-        if ($fragment instanceof ArrayCollection) {
-            foreach ($fragment as $frag) {
-                $data->setContent($frag->value(), $frag->parameter());
-                $data->setMediatype($frag->format());
-            }
-        } elseif ($fragment instanceof Fragment) {
-            $data->setContent($fragment->value(), $fragment->parameter());
-            $data->setMediatype($fragment->format());
-        }
-        return $data;
+        $constraints = parent::constraints();
+        $constraints[] = new Type('string');
+        $constraints[] = new Length(['min' => $this->minimumLength, 'max' => $this->maximumLength]);
+        return $constraints;
     }
 
-    public function serialize($model, ArrayCollection $properties = null)
+    public function serialize($model, Collection $properties = null)
     {
         if ($model instanceof Fragment) {
             return [$this->serializeFragment($model, $properties)];
         }
-        if (!$model instanceof ArrayCollection || $model->isEmpty()) {
+        if (!$model instanceof Collection || $model->isEmpty()) {
             return null;
         }
         $data = [];
@@ -102,15 +96,7 @@ class TextDatatype extends Datatype
         return $data;
     }
 
-    protected function serializeFragment(Fragment $fragment, ArrayCollection $properties = null)
-    {
-        $data[$this->formatName()] = $fragment->format();
-        $data[$this->parameterName()] = $fragment->parameter();
-        $data[$this->valueName()] = $fragment->value();
-        return $data;
-    }
-
-    public function hydrate($data, Attribute $attribute, Vocabulary $vocabulary = null)
+    public function hydrate($data, Attribute $attribute, Vocabulary $vocabulary = null) : Collection
     {
         $fragments = new ArrayCollection();
         if ($data === [] || $data === null) {
@@ -135,12 +121,7 @@ class TextDatatype extends Datatype
         return $fragments;
     }
 
-    protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null)
-    {
-        $fragment->setValue($data['content'], $data['language'], $data['mediatype']);
-    }
-
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_text');
@@ -151,5 +132,33 @@ class TextDatatype extends Datatype
         $builder->addField('maximumLength', 'integer', [], 'max_length');
         $builder->addField('defaultSize', 'integer', [], 'default_size');
         $builder->addStringField('preset', 1431655765);
+    }
+
+    protected function fragmentValue($fragment, Collection $properties = null)
+    {
+        $data = new LocalText();
+        if ($fragment instanceof Collection) {
+            foreach ($fragment as $frag) {
+                $data->setContent($frag->value(), $frag->parameter());
+                $data->setMediatype($frag->format());
+            }
+        } elseif ($fragment instanceof Fragment) {
+            $data->setContent($fragment->value(), $fragment->parameter());
+            $data->setMediatype($fragment->format());
+        }
+        return $data;
+    }
+
+    protected function serializeFragment(Fragment $fragment, Collection $properties = null)
+    {
+        $data[$this->formatName()] = $fragment->format();
+        $data[$this->parameterName()] = $fragment->parameter();
+        $data[$this->valueName()] = $fragment->value();
+        return $data;
+    }
+
+    protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null) : void
+    {
+        $fragment->setValue($data['content'], $data['language'], $data['mediatype']);
     }
 }

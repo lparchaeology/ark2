@@ -30,7 +30,6 @@
 namespace ARK\Translation;
 
 use ARK\ORM\ClassMetadataBuilder;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
@@ -66,6 +65,18 @@ class Message
     public function language() : Language
     {
         return $this->language;
+    }
+
+    // FIXME Need getXxx to be used as Criteria
+    public function getLanguage() : Language
+    {
+        return $this->language;
+    }
+
+    // FIXME Need getXxx to be used as Criteria
+    public function getRole() : Role
+    {
+        return $this->role;
     }
 
     public function role() : Role

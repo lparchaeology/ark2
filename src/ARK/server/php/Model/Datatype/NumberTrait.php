@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Number Datatype Trait
+ * ARK Model Number Datatype Trait.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,47 +25,50 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model\Datatype;
 
 use ARK\ORM\ClassMetadataBuilder;
+use Symfony\Component\Validator\Constraints\NotEqualTo;
+use Symfony\Component\Validator\Constraints\Range;
+use Symfony\Component\Validator\Constraints\Type;
 
 trait NumberTrait
 {
-    protected $minimum = null;
+    protected $minimum;
     protected $exclusiveMinimum = false;
-    protected $maximum = null;
+    protected $maximum;
     protected $exclusiveMaximum = false;
-    protected $multipleOf = null;
+    protected $multipleOf;
 
-    public function minimumValue()
-    {
-        return $this->minimum;
-    }
-
-    public function exclusiveMinimum()
+    public function exclusiveMinimum() : bool
     {
         return $this->exclusiveMinimum;
     }
 
-    public function maximumValue()
-    {
-        return $this->maximum;
-    }
-
-    public function exclusiveMaximum()
+    public function exclusiveMaximum() : bool
     {
         return $this->exclusiveMaximum;
     }
 
-    public function multipleOf()
+    public function constraints() : iterable
     {
-        return $this->multipleOf;
+        $constraints = parent::constraints();
+        $constraints[] = new Type('numeric');
+        if ($this->minimum !== null || $this->maximum !== null) {
+            $constraints[] = new Range(['min' => $this->minimum, 'max' => $this->maximum]);
+        }
+        if ($this->minimum !== null && $this->exclusiveMinimum === true) {
+            $constraints[] = new NotEqualTo(['value' => $this->minimum]);
+        }
+        if ($this->maximum !== null && $this->exclusiveMaximum === true) {
+            $constraints[] = new NotEqualTo(['value' => $this->maximum]);
+        }
+        return $constraints;
     }
 
-    public static function buildNumberMetadata(ClassMetadataBuilder $builder)
+    public static function buildNumberMetadata(ClassMetadataBuilder $builder) : void
     {
         $builder->addField('exclusiveMinimum', 'boolean', [], 'exclusive_minimum');
         $builder->addField('exclusiveMaximum', 'boolean', [], 'exclusive_maximum');

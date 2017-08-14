@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Schema Property
+ * ARK Model Schema Property.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,36 +25,37 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model\Schema;
 
 use ARK\Model\Attribute;
+use ARK\Model\Schema;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Vocabulary\Term;
+use ARK\Workflow\Permission;
 
 class SchemaAttribute extends Attribute
 {
-    protected $schma = null;
+    protected $schma;
     protected $type = '';
     protected $visibility = 'restricted';
-    protected $visibilityTerm = null;
-    protected $read = null;
-    protected $update = null;
+    protected $visibilityTerm;
+    protected $read;
+    protected $update;
 
-    public function schema()
+    public function schema() : Schema
     {
         return $this->schma;
     }
 
-    public function type()
+    public function type() : string
     {
         return $this->type;
     }
 
-    public function visibility()
+    public function visibility() : ?Term
     {
         if ($this->visibilityTerm === null) {
             $this->visibilityTerm = ORM::find(Term::class, ['concept' => 'core.visibility', 'term' => $this->visibility]);
@@ -62,7 +63,7 @@ class SchemaAttribute extends Attribute
         return $this->visibilityTerm;
     }
 
-    public function readPermission()
+    public function readPermission() : ?Permission
     {
         if ($this->read) {
             return $this->read;
@@ -70,7 +71,7 @@ class SchemaAttribute extends Attribute
         return $this->schma->readPermission();
     }
 
-    public function updatePermission()
+    public function updatePermission() : ?Permission
     {
         if ($this->update) {
             return $this->update;
@@ -78,14 +79,14 @@ class SchemaAttribute extends Attribute
         return $this->schma->updatePermission();
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_schema_attribute');
         $builder->setReadOnly();
 
         // Key
-        $builder->addManyToOneKey('schma', 'ARK\Model\Schema');
+        $builder->addManyToOneKey('schma', Schema::class);
         $builder->addStringKey('type', 30);
         $builder->addStringKey('attribute', 30);
 

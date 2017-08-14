@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Item Form Type
+ * ARK Item Form Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,20 +25,16 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Form\Type;
 
-use ARK\Form\Type\AbstractPropertyType;
 use ARK\Model\Property;
-use ARK\Vocabulary\Term;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ScalarPropertyType extends AbstractPropertyType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, iterable $options) : void
     {
         $field = $options['state']['field'];
         $datatype = $field->attribute()->datatype();
@@ -52,14 +48,7 @@ class ScalarPropertyType extends AbstractPropertyType
         $builder->setDataMapper($this);
     }
 
-    protected function options()
-    {
-        return [
-            'compound' => true,
-        ];
-    }
-
-    public function mapDataToForms($property, $forms)
+    public function mapDataToForms($property, $forms) : void
     {
         if (!$property instanceof Property) {
             return;
@@ -74,7 +63,7 @@ class ScalarPropertyType extends AbstractPropertyType
         $parameterName = $datatype->parameterName();
 
         $value = $property->value();
-        if ($value === null || $value == $attribute->emptyValue()) {
+        if ($value === null || $value === $attribute->emptyValue()) {
             $value = $propertyForm->getConfig()->getOption('default_data');
         }
 
@@ -92,7 +81,7 @@ class ScalarPropertyType extends AbstractPropertyType
         }
     }
 
-    public function mapFormsToData($forms, &$property)
+    public function mapFormsToData($forms, &$property) : void
     {
         if (!$property instanceof Property) {
             return;
@@ -108,5 +97,12 @@ class ScalarPropertyType extends AbstractPropertyType
             }
         }
         $property->setValue($value);
+    }
+
+    protected function options() : iterable
+    {
+        return [
+            'compound' => true,
+        ];
     }
 }

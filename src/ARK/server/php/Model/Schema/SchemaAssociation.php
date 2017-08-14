@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Schema Association
+ * ARK Model Schema Association.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model\Schema;
@@ -41,67 +40,68 @@ class SchemaAssociation
     use EnabledTrait;
     use KeywordTrait;
 
-    protected $schma = null;
+    protected $schma;
     protected $type = '';
     protected $association = '';
     protected $module1 = '';
     protected $schema1 = '';
-    protected $owningSchema = null;
+    protected $owningSchema;
     protected $module2 = '';
     protected $schema2 = '';
     protected $degree = 0;
-    protected $inverse = null;
-    protected $inverseSchema = null;
+    protected $inverse;
+    protected $inverseSchema;
     protected $inverseDegree = 1;
     protected $bidirectional = false;
 
-    public function schema()
+    public function schema() : Schema
     {
         return $this->schma;
     }
 
-    public function type()
+    public function type() : string
     {
         return $this->type;
     }
 
-    public function name()
+    public function name() : string
     {
         return $this->association;
     }
 
-    public function owningSchema()
+    public function owningSchema() : Schema
     {
-        return $this->inverseSchma;
+        return $this->owningSchema;
     }
 
-    public function degree()
+    public function degree() : int
     {
         return $this->degree;
     }
 
-    public function inverseSchema()
+    public function inverseSchema() : Schema
     {
         return $this->inverseSchma;
     }
 
-    public function inverseDegree()
+    public function inverseDegree() : int
     {
         return $this->inverseDegree;
     }
 
-    public function bidirectional()
+    public function bidirectional() : bool
     {
         return $this->bidirectional;
     }
-    public static function loadMetadata(ClassMetadata $metadata)
+
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_schema_association');
         $builder->setReadOnly();
 
         // Key
-        $builder->addManyToOneKey('schma', 'ARK\Model\Schema');
+        $builder->addManyToOneKey('schma', Schema::class);
         $builder->addStringKey('type', 30, 'type');
         $builder->addStringKey('association', 30);
 

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Item Datatype
+ * ARK Model Item Datatype.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,27 +25,26 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model\Datatype;
 
 use ARK\Model\Datatype;
-use ARK\Model\Module;
 use ARK\Model\Fragment;
 use ARK\Model\Item;
-use ARK\Model\LocalText;
+use ARK\Model\Module;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Vocabulary\Vocabulary;
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints\Type;
 
 class ItemDatatype extends Datatype
 {
-    protected $module = null;
+    protected $module;
 
-    public function module()
+    public function module() : string
     {
         return $this->module;
     }
@@ -60,28 +59,37 @@ class ItemDatatype extends Datatype
         return null;
     }
 
-    protected function fragmentValue($fragment, ArrayCollection $properties = null)
+    public function constraints() : iterable
     {
-        if ($fragment instanceof ArrayCollection) {
+        $constraints = parent::constraints();
+        if ($this->entity) {
+            $constraints[] = new Type($this->entity);
+        }
+        return $constraints;
+    }
+
+    public static function loadMetadata(ClassMetadata $metadata) : void
+    {
+        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_item');
+        $builder->addStringField('module', 30, 'module', true);
+        $builder->addStringField('preset', 30);
+    }
+
+    protected function fragmentValue($fragment, Collection $properties = null)
+    {
+        if ($fragment instanceof Collection) {
             $fragment = $fragment->first();
         }
         $module = ORM::find(Module::class, $fragment->parameter());
         return ORM::find($module->classname(), $fragment->value());
     }
 
-    protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null)
+    protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null) : void
     {
         if ($data instanceof Item) {
             $fragment->setValue($data->id(), $data->schema()->module()->name());
         } elseif (is_array($data)) {
             $fragment->setValue($data['item'], $data['module']);
         }
-    }
-
-    public static function loadMetadata(ClassMetadata $metadata)
-    {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_item');
-        $builder->addStringField('module', 30, 'module', true);
-        $builder->addStringField('preset', 30);
     }
 }

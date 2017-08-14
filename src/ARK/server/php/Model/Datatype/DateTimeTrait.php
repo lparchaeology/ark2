@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model DateTime Datatype Trait
+ * ARK Model DateTime Datatype Trait.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model\Datatype;
@@ -36,20 +35,27 @@ trait DateTimeTrait
 {
     protected $pattern = '';
     protected $unicode = '';
+    protected $php = '';
 
-    public function pattern()
+    public function pattern() : string
     {
         return $this->pattern;
     }
 
-    public function unicode()
+    public function unicode() : string
     {
         return $this->unicode;
     }
 
-    public static function buildDateTimeMetadata(ClassMetadataBuilder $builder)
+    public function php() : string
+    {
+        return $this->php;
+    }
+
+    public static function buildDateTimeMetadata(ClassMetadataBuilder $builder) : void
     {
         $builder->addStringField('pattern', 255);
         $builder->addStringField('unicode', 50);
+        $builder->addStringField('php', 50);
     }
 }

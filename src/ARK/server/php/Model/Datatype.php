@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Schema Datatype
+ * ARK Model Schema Datatype.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,22 +30,14 @@
 
 namespace ARK\Model;
 
-use ARK\Model\Type;
-use ARK\Model\Fragment;
-use ARK\Model\EnabledTrait;
-use ARK\Model\Datatype\DatatypeAttribute;
-use ARK\Model\LocalText;
-use ARK\Model\Attribute;
-use ARK\Model\Item;
-use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 abstract class Datatype
 {
@@ -53,13 +45,13 @@ abstract class Datatype
     use KeywordTrait;
 
     protected $datatype = '';
-    protected $type = null;
-    protected $entity = null;
-    protected $valueName = null;
-    protected $formatName = null;
-    protected $formatVocabulary = null;
-    protected $parameterName = null;
-    protected $parameterVocabulary = null;
+    protected $type;
+    protected $entity;
+    protected $valueName;
+    protected $formatName;
+    protected $formatVocabulary;
+    protected $parameterName;
+    protected $parameterVocabulary;
     protected $formTypeClass = '';
     protected $activeFormType = '';
     protected $readonlyFormType = '';
@@ -72,101 +64,106 @@ abstract class Datatype
     protected $multiple = false;
     protected $sortable = false;
     protected $searchable = false;
-    protected $preset = null;
+    protected $preset;
 
-    public function id()
+    public function id() : string
     {
         return $this->datatype;
     }
 
-    public function type()
+    public function type() : Type
     {
         return $this->type;
     }
 
-    public function entity()
+    public function entity() : string
     {
         return $this->entity;
     }
 
-    public function valueName()
+    public function valueName() : string
     {
-        return ($this->valueName ?: $this->type->valueName());
+        return $this->valueName ?: $this->type->valueName();
     }
 
-    public function formatName()
+    public function formatName() : ?string
     {
-        return ($this->formatName ?: $this->type->formatName());
+        return $this->formatName ?: $this->type->formatName();
     }
 
-    public function formatVocabulary()
+    public function formatVocabulary() : ?string
     {
-        return ($this->formatVocabulary ?: $this->type->formatVocabulary());
+        return $this->formatVocabulary ?: $this->type->formatVocabulary();
     }
 
-    public function parameterName()
+    public function parameterName() : ?string
     {
-        return ($this->parameterName ?: $this->type->parameterName());
+        return $this->parameterName ?: $this->type->parameterName();
     }
 
-    public function parameterVocabulary()
+    public function parameterVocabulary() : ?string
     {
-        return ($this->parameterVocabulary ?: $this->type->parameterVocabulary());
+        return $this->parameterVocabulary ?: $this->type->parameterVocabulary();
     }
 
-    public function formTypeClass()
+    public function formTypeClass() : ?string
     {
-        return ($this->formTypeClass ?: $this->type->formTypeClass());
+        return $this->formTypeClass ?: $this->type->formTypeClass();
     }
 
-    public function activeFormType()
+    public function activeFormType() : ?string
     {
-        return ($this->activeFormType ?: $this->type->activeFormType());
+        return $this->activeFormType ?: $this->type->activeFormType();
     }
 
-    public function readonlyFormType()
+    public function readonlyFormType() : ?string
     {
-        return ($this->readonlyFormType ?: $this->type->readonlyFormType());
+        return $this->readonlyFormType ?: $this->type->readonlyFormType();
     }
 
-    public function staticFormType()
+    public function staticFormType() : ?string
     {
-        return ($this->staticFormType ?: $this->type->staticFormType());
+        return $this->staticFormType ?: $this->type->staticFormType();
     }
 
-    public function parameterFormType()
+    public function parameterFormType() : ?string
     {
-        return ($this->parameterFormType ?: $this->type->parameterFormType());
+        return $this->parameterFormType ?: $this->type->parameterFormType();
     }
 
-    public function formatFormType()
+    public function formatFormType() : ?string
     {
-        return ($this->formatFormType ?: $this->type->formatFormType());
+        return $this->formatFormType ?: $this->type->formatFormType();
     }
 
-    public function isSpan()
+    public function isSpan() : bool
     {
         return $this->span;
     }
 
-    public function isSortable()
+    public function isSortable() : bool
     {
         return $this->sortable;
     }
 
-    public function isSearchable()
+    public function isSearchable() : bool
     {
         return $this->searchable;
     }
 
-    public function hasMultipleValues()
+    public function hasMultipleValues() : bool
     {
         return $this->multiple;
     }
 
-    public function isAtomic()
+    public function isAtomic() : bool
     {
         return $this->formatName() === null && $this->parameterName() === null;
+    }
+
+    public function constraints() : iterable
+    {
+        return [];
     }
 
     public function emptyValue()
@@ -175,7 +172,7 @@ abstract class Datatype
             return [];
         }
         if ($this->isAtomic()) {
-            return ($this->isSpan() ? [null, null] : null);
+            return $this->isSpan() ? [null, null] : null;
         }
         $data = [];
         if ($this->formatName()) {
@@ -193,12 +190,12 @@ abstract class Datatype
         return $this->preset;
     }
 
-    public function value($model, ArrayCollection $properties = null)
+    public function value($model, Collection $properties = null)
     {
         if ($model instanceof Fragment) {
             return $this->fragmentValue($model, $properties);
         }
-        if (!$model instanceof ArrayCollection || $model->isEmpty()) {
+        if (!$model instanceof Collection || $model->isEmpty()) {
             return $this->nullValue();
         }
         if ($this->hasMultipleValues()) {
@@ -216,23 +213,12 @@ abstract class Datatype
         return $this->fragmentValue($model, $properties);
     }
 
-    protected function fragmentValue($fragment, ArrayCollection $properties = null)
-    {
-        if ($fragment instanceof ArrayCollection) {
-            return $this->serializeFragment($fragment->first(), $properties);
-        }
-        if ($fragment instanceof Fragment) {
-            return $this->serializeFragment($fragment, $properties);
-        }
-        return null;
-    }
-
-    public function serialize($model, ArrayCollection $properties = null)
+    public function serialize($model, Collection $properties = null)
     {
         if ($model instanceof Fragment) {
             return $this->serializeFragment($model, $properties);
         }
-        if (!$model instanceof ArrayCollection || $model->isEmpty()) {
+        if (!$model instanceof Collection || $model->isEmpty()) {
             return null;
         }
         if ($this->hasMultipleValues()) {
@@ -245,7 +231,75 @@ abstract class Datatype
         return $this->serializeFragment($model->first(), $properties);
     }
 
-    protected function serializeFragment(Fragment $fragment, ArrayCollection $properties = null)
+    public function hydrate($data, Attribute $attribute, Vocabulary $vocabulary = null) : Collection
+    {
+        $fragments = new ArrayCollection();
+        if ($data === [] || $data === null) {
+            return $fragments;
+        }
+        if (!$this->hasMultipleValues()) {
+            $data = [$data];
+        }
+        foreach ($data as $datum) {
+            $fragment = Fragment::createFromAttribute($attribute);
+            $this->hydrateFragment($datum, $fragment, $vocabulary);
+            $fragments[] = $fragment;
+        }
+        return $fragments;
+    }
+
+    public static function loadMetadata(ClassMetadata $metadata) : void
+    {
+        // Table
+        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype');
+        $builder->setReadOnly();
+        $builder->setJoinedTableInheritance()->setDiscriminatorColumn('type', 'string', 30);
+        $types = Service::database()->getTypes();
+        foreach ($types as $type => $attributes) {
+            $builder->addDiscriminatorMapClass($type, $attributes['model_class']);
+        }
+
+        // Key
+        $builder->addStringKey('datatype', 30);
+
+        // Attributes
+        $builder->addStringField('entity', 100);
+        $builder->addStringField('valueName', 30, 'value_name');
+        $builder->addStringField('formatName', 30, 'format_name');
+        $builder->addStringField('formatVocabulary', 30, 'format_vocabulary');
+        $builder->addStringField('parameterName', 30, 'parameter_name');
+        $builder->addStringField('parameterVocabulary', 30, 'parameter_vocabulary');
+        $builder->addStringField('formTypeClass', 100, 'form_type_class');
+        $builder->addStringField('activeFormType', 100, 'active_form_class');
+        $builder->addStringField('readonlyFormType', 100, 'readonly_form_class');
+        $builder->addStringField('staticFormType', 100, 'static_form_class');
+        $builder->addStringField('formatFormType', 100, 'format_form_class');
+        $builder->addStringField('parameterFormType', 100, 'parameter_form_class');
+        $builder->addField('object', 'boolean');
+        $builder->addField('array', 'boolean');
+        $builder->addField('span', 'boolean');
+        $builder->addField('multiple', 'boolean');
+        $builder->addField('sortable', 'boolean');
+        $builder->addField('searchable', 'boolean');
+        EnabledTrait::buildEnabledMetadata($builder);
+        KeywordTrait::buildKeywordMetadata($builder);
+
+        // Associations
+        $builder->addManyToOneField('type', Type::class, 'type', 'type', false);
+    }
+
+    protected function fragmentValue($fragment, Collection $properties = null)
+    {
+        if ($fragment instanceof Collection) {
+            return $this->serializeFragment($fragment->first(), $properties);
+        }
+        if ($fragment instanceof Fragment) {
+            return $this->serializeFragment($fragment, $properties);
+        }
+        return null;
+    }
+
+    protected function serializeFragment(Fragment $fragment, Collection $properties = null)
     {
         if ($this->isAtomic()) {
             if ($fragment->isSpan() || $this->isSpan()) {
@@ -268,24 +322,7 @@ abstract class Datatype
         return $data;
     }
 
-    public function hydrate($data, Attribute $attribute, Vocabulary $vocabulary = null)
-    {
-        $fragments = new ArrayCollection();
-        if ($data === [] || $data === null) {
-            return $fragments;
-        }
-        if (!$this->hasMultipleValues()) {
-            $data = [$data];
-        }
-        foreach ($data as $datum) {
-            $fragment = Fragment::createFromAttribute($attribute);
-            $this->hydrateFragment($datum, $fragment, $vocabulary);
-            $fragments[] = $fragment;
-        }
-        return $fragments;
-    }
-
-    protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null)
+    protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null) : void
     {
         $span = ($this->isSpan() || $fragment->isSpan());
         if ($span) {
@@ -345,45 +382,5 @@ abstract class Datatype
         } else {
             $fragment->setValue($value, $parameter, $format);
         }
-    }
-
-    public static function loadMetadata(ClassMetadata $metadata)
-    {
-        // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype');
-        $builder->setReadOnly();
-        $builder->setJoinedTableInheritance()->setDiscriminatorColumn('type', 'string', 30);
-        $types = Service::database()->getTypes();
-        foreach ($types as $type => $attributes) {
-            $builder->addDiscriminatorMapClass($type, $attributes['model_class']);
-        }
-
-        // Key
-        $builder->addStringKey('datatype', 30);
-
-        // Attributes
-        $builder->addStringField('entity', 100);
-        $builder->addStringField('valueName', 30, 'value_name');
-        $builder->addStringField('formatName', 30, 'format_name');
-        $builder->addStringField('formatVocabulary', 30, 'format_vocabulary');
-        $builder->addStringField('parameterName', 30, 'parameter_name');
-        $builder->addStringField('parameterVocabulary', 30, 'parameter_vocabulary');
-        $builder->addStringField('formTypeClass', 100, 'form_type_class');
-        $builder->addStringField('activeFormType', 100, 'active_form_class');
-        $builder->addStringField('readonlyFormType', 100, 'readonly_form_class');
-        $builder->addStringField('staticFormType', 100, 'static_form_class');
-        $builder->addStringField('formatFormType', 100, 'format_form_class');
-        $builder->addStringField('parameterFormType', 100, 'parameter_form_class');
-        $builder->addField('object', 'boolean');
-        $builder->addField('array', 'boolean');
-        $builder->addField('span', 'boolean');
-        $builder->addField('multiple', 'boolean');
-        $builder->addField('sortable', 'boolean');
-        $builder->addField('searchable', 'boolean');
-        EnabledTrait::buildEnabledMetadata($builder);
-        KeywordTrait::buildKeywordMetadata($builder);
-
-        // Associations
-        $builder->addManyToOneField('type', Type::class, 'type', 'type', false);
     }
 }

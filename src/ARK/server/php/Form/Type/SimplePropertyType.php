@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Form Type
+ * ARK Form Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,35 +25,25 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Form\Type;
 
-use ARK\Form\Type\AbstractPropertyType;
 use ARK\Model\Property;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class SimplePropertyType extends AbstractPropertyType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder->setDataMapper($this);
     }
 
-    protected function options()
-    {
-        return [
-            'forms' => null,
-            'page' => null,
-            'state' => null,
-        ];
-    }
-    public function mapDataToForms($data, $forms)
+    public function mapDataToForms($data, $forms) : void
     {
     }
 
-    public function mapFormsToData($forms, &$data)
+    public function mapFormsToData($forms, &$data) : void
     {
         // TODO Find correct way for Items/objects
         $forms = iterator_to_array($forms);
@@ -67,5 +57,14 @@ class SimplePropertyType extends AbstractPropertyType
                 return;
             }
         }
+    }
+
+    protected function options() : iterable
+    {
+        return [
+            'forms' => null,
+            'page' => null,
+            'state' => null,
+        ];
     }
 }
