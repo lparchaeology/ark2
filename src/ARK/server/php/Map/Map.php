@@ -41,6 +41,15 @@ class Map
     use KeywordTrait;
 
     protected $map = '';
+    protected $draggable = true;
+    protected $clickable = true;
+    protected $zoomable = true;
+    protected $projection;
+    protected $center;
+    protected $extent;
+    protected $zoom;
+    protected $minZoom;
+    protected $maxZoom;
     protected $options = '';
     protected $layers;
 
@@ -52,6 +61,51 @@ class Map
     public function id() : string
     {
         return $this->map;
+    }
+
+    public function draggable() : bool
+    {
+        return $this->draggable;
+    }
+
+    public function clickable() : bool
+    {
+        return $this->clickable;
+    }
+
+    public function zoomable() : bool
+    {
+        return $this->zoomable;
+    }
+
+    public function zoom() : int
+    {
+        return $this->zoom;
+    }
+
+    public function minimumZoom() : ?int
+    {
+        return $this->minZoom;
+    }
+
+    public function maximumZoom() : ?int
+    {
+        return $this->maxZoom;
+    }
+
+    public function projection() : ?string
+    {
+        return $this->projection;
+    }
+
+    public function center() : string
+    {
+        return $this->center;
+    }
+
+    public function extent() : ?string
+    {
+        return $this->extent;
     }
 
     public function options() : iterable
@@ -74,8 +128,17 @@ class Map
         $builder->addStringKey('map', 30);
 
         // Attributes
-        $builder->addStringField('options', 4000);
+        $builder->addField('draggable', 'boolean');
+        $builder->addField('clickable', 'boolean');
+        $builder->addField('zoomable', 'boolean');
+        $builder->addField('zoom', 'integer');
+        $builder->addField('minZoom', 'integer', [], 'min_zoom');
+        $builder->addField('maxZoom', 'integer', [], 'max_zoom');
+        $builder->addStringField('projection', 30);
+        $builder->addStringField('center', 50);
+        $builder->addStringField('extent', 100);
         KeywordTrait::buildKeywordMetadata($builder);
+        $builder->addStringField('options', 4000);
 
         // Relationships
         $builder->addOneToMany('layers', LayerView::class, 'map');

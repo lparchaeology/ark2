@@ -5,10 +5,9 @@ $(document).ready(function() {
 });
 
 function initialiseMapView() {
-
     var layers = [];
-    for (var i = 0; i < layerConfig.length; ++i) {
-        var config = layerConfig[i];
+    for (var i = 0; i < mapConfig.layers.length; ++i) {
+        var config = mapConfig.layers[i];
         layer = new ol.layer.Tile({
             name: config.name,
             visible: config.visible,
@@ -24,16 +23,12 @@ function initialiseMapView() {
         controls: [],
         loadTilesWhileInteracting: true,
         target: 'map',
-        view: new ol.View({
-            center: [1155972, 7580813],
-            zoom: 7,
-            maxZoom: 16,
-        })
+        view: new ol.View(mapConfig.view)
     });
 
     map.addControl(new ol.control.Zoom());
     map.addControl(new ol.control.ZoomSlider());
-    
+
     map.on('moveend', function() {
         var center = map.getView().get('center');
         var extents = map.getView().calculateExtent(map.getSize());
@@ -51,86 +46,41 @@ function initialiseMapView() {
         }
     });
 
-    if (ywkts.length != 0) {
+    if (points.length > 0) {
 
-        yourfeatures = [];
+        features = [];
 
-        theirfeatures = [];
-
-        var dimestyles = {
-            'yours': new ol.style.Style({
-                image: new ol.style.Circle({
-                    radius: 5,
-                    fill: new ol.style.Fill({
-                        color: '#f00'
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: '#000',
-                        width: 1
-                    })
-                })
-            }),
-            'theirs': new ol.style.Style({
-                image: new ol.style.Circle({
-                    radius: 5,
-                    fill: new ol.style.Fill({
-                        color: '#00f'
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: '#000',
-                        width: 1
-                    })
-                })
+        var style = new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 5,
+                fill: new ol.style.Fill({color: '#f00'}),
+                stroke: new ol.style.Stroke({color: '#000', width: 1})
             })
-        };
+        });
 
         var format = new ol.format.WKT();
 
-        for (wkt in ywkts) {
-            feature = format.readFeature(ywkts[wkt], {
+        for (id in points) {
+            feature = format.readFeature(points[id], {
                 dataProjection: 'EPSG:4326',
                 featureProjection: 'EPSG:3857'
             });
-            feature.set('ark_id', wkt);
-            yourfeatures.push(feature);
+            feature.set('ark_id', id);
+            features.push(feature);
         }
 
-        for (wkt in twkts) {
-            theirfeatures.push(format.readFeature(twkts[wkt], {
-                dataProjection: 'EPSG:4326',
-                featureProjection: 'EPSG:3857'
-            }).set('ark_id', wkt));
-        }
-
-        var yours = new ol.layer.Vector({
-            source: new ol.source.Vector({
-                features: yourfeatures
-            }),
-            style: dimestyles['yours']
+        var layer = new ol.layer.Vector({
+            source: new ol.source.Vector({features: features}),
+            style: style
         });
 
-        var theirs = new ol.layer.Vector({
-            source: new ol.source.Vector({
-                features: theirfeatures
-            }),
-            style: dimestyles['theirs']
-        });
+        layer.set('name', 'finds');
 
-        yours.set('name', 'yours');
-
-        yours.set('selectable', true);
-
-
-        theirs.set('name', 'theirs');
-
-        theirs.set('selectable', true);
-
-
-        map.addLayer(theirs);
-        map.addLayer(yours);
+        layer.set('selectable', true);
+        map.addLayer(layer);
 
         view = map.getView();
-        extent = yours.getSource().getExtent();
+        extent = layer.getSource().getExtent();
         view.fit(extent, map.getSize());
 
         var select = new ol.interaction.Select({
@@ -140,13 +90,8 @@ function initialiseMapView() {
             style: new ol.style.Style({
                 image: new ol.style.Circle({
                     radius: 8,
-                    fill: new ol.style.Fill({
-                        color: '#f00'
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: '#000',
-                        width: 1
-                    })
+                    fill: new ol.style.Fill({color: '#f00'}),
+                    stroke: new ol.style.Stroke({color: '#000', width: 1})
                 })
             }),
         });
@@ -236,19 +181,19 @@ function initialiseMapView() {
                     view.fit(extent, map.getSize());
                     $('.map-legend').show();
                     prerun = true;
-                } else if (e.get("name") === "yours" || e.get("name") === "theirs") {
+                } else if (e.get("name") === "finds") {
                     e.setVisible(false);
                 }
             });
             if (prerun == false) {
-                
+
                 var payload = {
-                    "concept":"dime.denmark.municipality",
-                    "module":itemkey,
-                    "attribute":"location",
+                    "concept": "dime.denmark.municipality",
+                    "module": itemkey,
+                    "attribute": "location",
                     "itemlist": itemlist
                 }
-                
+
                 $.get(path + 'api/geo/choropleth', payload, function(result) {
                     var format = new ol.format.WKT();
                     var municipalitysource = [];
@@ -340,7 +285,7 @@ function initialiseMapView() {
                 if (e.get("name") === "municipalitylayer") {
                     e.setVisible(false);
                 } else {
-                    if (e.get("name") === "yours" || e.get("name") === "theirs") {
+                    if (e.get("name") === "finds") {
                         e.setVisible(true);
                         newextent = e.getSource().getExtent();
                         if(newextent[0] != Infinity){
@@ -360,7 +305,7 @@ function initialiseMapView() {
 
         } else {
             map.getLayers().forEach(function(e, i, a) {
-                if (e.get("name") === "municipalitylayer" || e.get("name") === "yours" || e.get("name") === "theirs") {
+                if (e.get("name") === "municipalitylayer" || e.get("name") === "finds") {
                     e.setVisible(false);
                 }
             });

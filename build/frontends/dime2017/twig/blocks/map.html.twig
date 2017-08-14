@@ -43,7 +43,15 @@
         </div>
 
         {# Convert the ARK map config into OpenLayers json #}
-        {% set config = [] %}
+        {% set view = {
+            'projection': state.map.projection,
+            'center': state.map.center,
+            'extent': state.map.extent,
+            'zoom': state.map.zoom,
+            'minZoom': state.map.minimumZoom,
+            'maxZoom': state.map.maximumZoom
+        } %}
+        {% set layers = [] %}
         {% for layer in state.map.layers %}
             {% if layer.source.viewClass == 'BingMaps' %}
                 {% set source = {'key': layer.source.ticket, 'imagerySet': layer.sourceName} %}
@@ -52,15 +60,16 @@
                 {% set source = {'url': layer.url ~ '&TRANSPARENT=TRUE&ticket=' ~ data['kortforsyningenticket'] | raw, 'params': layer.parameters} %}
             {% endif %}
             {% set conf = {'name': layer.name, 'visible': layer.isVisible, 'class': layer.source.viewClass, 'source': source} %}
-            {% set config = config | merge([conf]) %}
+            {% set layers = layers | merge([conf]) %}
         {% endfor %}
+        {% set config = [] %}
+        {% set config = config | merge({'view': view}) %}
+        {% set config = config | merge({'layers': layers}) %}
 
         <script>
-            var layerConfig = JSON.parse("{{ config | json_encode() | escape('js') }}");
+            var mapConfig = JSON.parse("{{ config | json_encode() | escape('js') }}");
 
-            ywkts = [];
-
-            twkts = [];
+            points = [];
 
             {% if data['finds'] %}
 
@@ -69,7 +78,7 @@
                 {% for item in data['finds'] %}
                     {% set location = item.property('location').value() %}
                     {% if location['geometry'] is defined %}
-                        ywkts[{{ item.id }}] = '{{ location['geometry'] }}';
+                        points[{{ item.id }}] = '{{ location['geometry'] }}';
                     {% endif %}
                 {% endfor %}
 

@@ -72,9 +72,9 @@
         ].join('')).prependTo($btnGroup);
 
         $(document).ready(function (){
-            
 
-            
+
+
             window.removeTextSelection = function (){
                 var sel = window.getSelection ? window.getSelection() : document.selection;
                 if (sel) {
@@ -85,7 +85,7 @@
                     }
                 }
             }
-            
+
             window.createItemModal = function( item, fields ) {
                 var html =  '<div id="modalWindow" class="modal fade in" style="display:none;" data-backdrop="false">';
                 html += '<div class="modal-dialog thumbmodal-container dime" tabindex="-1" >';
@@ -118,9 +118,9 @@
                     $('.thumbmodal-container').width(this.naturalWidth+70);
                 });
             }
-            
+
             var formclick = function(evt) {
-                
+
                 removeTextSelection();
                 if($(evt.target).is('a')){
                     return true;
@@ -141,11 +141,11 @@
                 } else {
                     self.addClass('selected');
                     self.find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
-                    
+
                 }
 
             };
-            
+
             var mapclick = function(evt) {
                 removeTextSelection();
                 if($(evt.target).is('a')){
@@ -172,13 +172,13 @@
                     } else {
                         self.addClass('selected');
                         self.find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
-                        
+
                     }
                     return true;
                 }
 
                 map.getLayers().forEach(function(i, e, a) {
-                    if (i.get('name') == 'yours') {
+                    if (i.get('name') == 'finds') {
                         console.log(mapcollection);
                         if (typeof i.getSource().getFeatures == 'function') {
                             i.getSource().getFeatures().forEach(function(i, e, a) {
@@ -234,10 +234,10 @@
                     $($btnGroup.find('[name="cardView"]')).removeClass("active");
                     $($btnGroup.find('[name="thumbView"]')).removeClass("active");
                     $($btnGroup.find('[name="tableView"]')).addClass("active");
-                    
+
                     $('tr').off("click");
                     $('tr').on("click", {"target":this}, window.tableclick );
-                    
+
                     if(typeof mapcollection != 'undefined'){
                         mapcollection.forEach(function(e, i, a) {
                             var ark_id = e.get('ark_id');
@@ -259,10 +259,10 @@
                     $($btnGroup.find('[name="thumbView"]')).addClass("active");
                     $($btnGroup.find('[name="cardView"]')).removeClass("active");
                     $($btnGroup.find('[name="tableView"]')).removeClass("active");
-                    
+
                     $('tr').off("click");
                     $('tr').on("click", {"target":this}, thumbclick );
-                    
+
                     if(typeof mapcollection != 'undefined'){
                         mapcollection.forEach(function(e, i, a) {
                             var ark_id = e.get('ark_id');
@@ -302,7 +302,7 @@
                             $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
                         });
                     }
-                    
+
                 }
             });
 
@@ -310,28 +310,28 @@
 
             that.$toolbar.find('button[name="cardView"]').click();
 
-            
+
             $('.bootstrap-table').on('all.bs.table', function( e ){
                 console.log($(this).find('button[name="thumbView"]'));
-                
+
                 console.log($(this).find('button[name="thumbView"]').hasClass('active'));
-                
+
                 if($(this).find('button[name="thumbView"]').hasClass('active')){
                     $('tr').on("click", {"target":this}, window.thumbclick );
                 } else {
                     $('tr').on("click", {"target":this}, window.tableclick );
                 }
-                
+
                 if(typeof mapcollection != 'undefined'){
                     mapcollection.forEach(function(e, i, a) {
                         var ark_id = e.get('ark_id');
-    
+
                         $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
                         $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
                     });
                 }
             });
-            
+
         });
 
     };
