@@ -2,9 +2,8 @@
 
 <div class='table-wrapper-div'>
 
-    {% set table_class %}
-    table bootstrap-table table-hover dime-table
-    {% endset %}
+    {% set table_class = 'table bootstrap-table table-hover dime-table' %}
+    {% set items = data.items %}
 
     <table
         id="{{layout.id}}"
@@ -26,7 +25,7 @@
         <thead>
             <tr>
                 <th class="checkedhead" data-field="checked" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
-                {% if data[0] is defined and data[0].hasAttribute(state.image) %}
+                {% if items[0] is defined and items[0].hasAttribute(state.image) %}
                     <th class="thumbimagehead" data-field="{{state.image}}" data-title="{{state.image}}" data-sortable="false"></th>
                 {% endif %}
                 {% for cell in layout.cells %}
@@ -40,13 +39,14 @@
                             {{field.keyword|trans}}
                         </th>
                     {%  endif %}
+                    {% do form[field.formName].setRendered %}
                 {% endfor %}
                 <th class="controlshead" data-field="controls" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
             </tr>
         </thead>
 
         <tbody>
-            {% for item in data %}
+            {% for item in items %}
                 <tr data-unique-id = "{{ item.id }}" >
                     <td class="not-card-visible"><span class="tablecheckbox glyphicon glyphicon-unchecked"></span></td>
                     {% if item.hasAttribute(state.image) %}
@@ -92,15 +92,15 @@
 
 <script>
 window.itemkey =
-    {% if data[0] is defined %}
-        "{{ data[0].schema.module.name }}";
+    {% if items[0] is defined %}
+        "{{ items[0].schema.module.name }}";
     {% else %}
         {{null}}
     {% endif %}
 
 window.itemlist = [
-    {% if data|length > 0 %}
-        {% for item in data %}
+    {% if items|length > 0 %}
+        {% for item in items %}
             "{{ item.id }}",
         {% endfor %}
     {% else %}
@@ -123,8 +123,8 @@ window.userApiUrl = "{{ path('api.internal.user.actor', {'id': 'dummyid'}) }}".s
 <div id = "chooseActionSelectHolder"></div>
 
 window.defaultAvailableActions = [
-    {% if data[0] is defined %}
-    {% for action in workflow.schemaActions(data[0].schema) %}
+    {% if items[0] is defined %}
+    {% for action in workflow.schemaActions(items[0].schema) %}
         {
             "keyword":"{{ action.keyword }}",
             "translation":"{{ action.keyword | trans }}",
@@ -136,7 +136,7 @@ window.defaultAvailableActions = [
     ];
 
 window.itemAvailableActions = {
-    {% for item in data %}
+    {% for item in items %}
         "{{item.id}}": {
             {% for action in workflow.actions(workflow.actor, item) %}
             "{{ action.keyword }}":{

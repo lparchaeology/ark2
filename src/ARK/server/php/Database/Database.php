@@ -328,6 +328,17 @@ class Database
         return $this->data()->fetchAllColumn($sql, 'item', $params);
     }
 
+    public function getFinders() : ?iterable
+    {
+        $sql = "
+            SELECT DISTINCT value
+            FROM ark_fragment_item
+            WHERE module = 'find'
+            AND attribute = 'finder'
+        ";
+        return $this->data()->fetchAllColumn($sql, 'value');
+    }
+
     public function getActorMessages(string $actor) : ?iterable
     {
         $sql = '

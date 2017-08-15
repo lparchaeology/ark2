@@ -1,7 +1,7 @@
 /**
- * 
+ *
  * @author: Mike Johnson
- * 
+ *
  * Adapted from bootstrap-table-mobile:
  * @author: Dennis Hernández
  * @webSite: http://djhvscf.github.io/Blog
@@ -31,7 +31,7 @@
             }, 1);
         }
     };
-    
+
     var currentView = function ( that ) {
         if(that.$toolbar.find('button[name="tableView"]').hasClass('active')){
             return 'tableView';
@@ -43,30 +43,30 @@
     };
 
     var changeView = function (that, width, height) {
-        
-        
+
+
         var oldView = currentView( that );
-        
+
         console.log(oldView);
 
         if (oldView != 'tableView'){
-            $('#dime_find_list').removeClass("cardViewTable");
+            $('#dime_find_table').removeClass("cardViewTable");
             $('#dime_find_home').removeClass("cardViewTable");
-            $('#dime_find_list').removeClass("thumbViewTable");
+            $('#dime_find_table').removeClass("thumbViewTable");
             $('#dime_find_home').removeClass("thumbViewTable");
             if (oldView == 'thumbView'){
                 that.toggleView();
             }
             that.$toolbar.find('button').removeClass('active');
         }
-        
+
         var thatClientWidth = $('.table-wrapper-div .fixed-table-body')[0].clientWidth;
         var thatScrollWidth = $('.table-wrapper-div .fixed-table-body')[0].scrollWidth;
-        
+
         var overflowWide = (thatClientWidth < thatScrollWidth);
-        
+
         console.log(overflowWide);
-        
+
         if (that.options.minHeight) {
             if ((width <= that.options.minWidth) && (height <= that.options.minHeight)) {
                 that.$toolbar.find('button[name="tableView"]').addClass('disabled');
@@ -135,7 +135,7 @@
     var conditionThumbView = function (that) {
         that.$toolbar.find('button[name="thumbView"]').click();
     };
-    
+
     var conditionTableView = function (that) {
         that.$toolbar.find('button[name="tableView"]').click();
     };
@@ -199,7 +199,7 @@
             // reset view if height has only changed by at least the threshold.
             var height = $('.bootstrap-table').height(),
                 width = $('.bootstrap-table').width();
-            
+
             if (Math.abs(old.height - height) > that.options.heightThreshold || old.width != width) {
                 changeView(that, width, height);
                 old = {
@@ -207,9 +207,9 @@
                     height: height
                 };
             }
-            
+
         },200));
-        
+
         if (this.options.checkOnInit) {
             var height = $('.bootstrap-table').height(),
                 width = $('.bootstrap-table').width();
@@ -219,7 +219,7 @@
                 height: height
             };
         }
-        
+
         $('.bootstrap-table').on('column-switch.bs.table', function(){
             var height = $('.bootstrap-table').height(),
             width = $('.bootstrap-table').width();
@@ -227,6 +227,6 @@
             changeView(that, width, height);
             return true;
         });
-        
+
     };
 }(jQuery);

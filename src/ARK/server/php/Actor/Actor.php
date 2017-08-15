@@ -43,8 +43,6 @@ class Actor implements Item
 {
     use ItemTrait;
 
-    protected $roles;
-
     public function __construct(string $schema = 'core.actor')
     {
         $this->construct($schema);
@@ -63,6 +61,22 @@ class Actor implements Item
         $this->property('fullname')->setValue($fullname);
     }
 
+    public function isAgentFor(Actor $actor) : bool
+    {
+        return $this->agencies()->contains($actor);
+    }
+
+    public function agencies() : Collection
+    {
+        $agencies = new ArrayCollection();
+        foreach ($this->roles() as $role) {
+            if ($role->agentFor()) {
+                $agencies->add($role->agentFor());
+            }
+        }
+        return $agencies;
+    }
+
     public function hasRole($role) : bool
     {
         foreach ($this->roles() as $has) {
@@ -75,16 +89,7 @@ class Actor implements Item
 
     public function roles() : Collection
     {
-        if ($this->roles === null) {
-            $this->roles = new ArrayCollection();
-            $ars = ORM::findBy(ActorRole::class, ['actor' => $this->id()]);
-            foreach ($ars as $ar) {
-                if ($ar->isEnabled()) {
-                    $this->roles->add($ar);
-                }
-            }
-        }
-        return $this->roles;
+        return ORM::findBy(ActorRole::class, ['actor' => $this->id(), 'enabled' => true]);
     }
 
     public function addRole($role, Actor $agentFor = null) : void
@@ -98,8 +103,6 @@ class Actor implements Item
         if ($role instanceof Role) {
             $actorRole = new ActorRole($actor, $role, $agentFor);
             ORM::persist($actorRole);
-            $this->roles->append($actorRole);
-            ORM::persist($this);
         }
     }
 

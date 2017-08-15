@@ -10,7 +10,7 @@
                 {% else %}
                     {% set alert = type %}
                 {% endif %}
-                {% for message in app.session.flashBag.get(type) %}
+                {% for message in global.session.getFlashBag.get(type) %}
                     <div class="alert alert-{{ alert }} " role="alert">
                         <button class="close" data-dismiss="alert">×</button>
                         {{ message | translate }}

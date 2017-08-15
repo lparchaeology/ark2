@@ -246,6 +246,7 @@ class Field extends Element
     // FIXME Should probably have some way to use FormTypes here to render 'static' mode
     public function renderView($data, iterable $state) : string
     {
+        //dump('RENDER FIELD '.$this->id().' '.$this->keyword());
         $state = $this->buildState($data, $state);
         if ($state['mode'] === 'deny') {
             return '';

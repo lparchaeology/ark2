@@ -47,6 +47,7 @@ abstract class DimeFormController extends DimeController
 
     public function handleRequest(Request $request)
     {
+        $request->getSession()->getFlashBag()->clear();
         $route = ORM::find(Route::class, $request->attributes->get('_route'));
         if ($route) {
             $page = $route->page();
@@ -61,6 +62,14 @@ abstract class DimeFormController extends DimeController
         $state['workflow'] = $this->buildWorkflow($request, $data, $state);
         $state['page_config'] = $this->pageConfig($request->attributes->get('_route'));
         return $page->handleRequest($request, $data, $state, [$this, 'processForm']);
+    }
+
+    public function addFlash(Request $request, string $flash, string $message, iterable $parms = []) : void
+    {
+        if ($parms) {
+            $message = Service::translate('dime.find.query.set', 'default', $parms);
+        }
+        $request->getSession()->getFlashBag()->add($flash, $message);
     }
 
     public function buildData(Request $request)

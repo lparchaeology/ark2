@@ -42,7 +42,7 @@ class HomePageController extends DimeFormController
         // Find 9 most recent finds for current actor
         $items = Service::database()->getActorFinds(Service::workflow()->actor()->id());
         $finds = ORM::findBy(Find::class, ['item' => $items], ['created' => 'DESC'], 9);
-        $data['finds'] = $finds;
+        $data['finds']['items'] = $finds;
 
         // TODO Use visibility / permissions
         $data['map']['finds'] = (Service::security()->isGranted('ROLE_USER') ? $finds : []);
