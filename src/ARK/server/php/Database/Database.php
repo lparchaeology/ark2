@@ -307,7 +307,7 @@ class Database
             ':value' => $municipality,
         ];
 
-        return $this->data()->fetchColumn($sql, $params);
+        return $this->data()->fetchAll($sql, $params);
     }
 
     public function getActorFinds(string $actor) : ?iterable

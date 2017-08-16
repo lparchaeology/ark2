@@ -30,7 +30,7 @@
 
 namespace DIME\Controller\API;
 
-use ARK\Actor\Actor;
+use ARK\Actor\Museum;
 use ARK\Database\Database;
 use ARK\ORM\ORM;
 use ARK\Service;
@@ -53,15 +53,19 @@ class GeoFindController
             $mid = Service::database()->getSpatialTermsContain('dime.denmark.municipality', $wkt, '4326');
             if ($mid) {
                 $mid = $mid[0]['term'];
+
                 $municipality = ORM::findBy(Term::class, ['concept' => 'dime.denmark.municipality', 'term' => $mid]);
-                $id = Service::database()->getMunicipalityMuseum($mid);
-                $museum = ORM::find(Actor::class, $id);
                 $data['municipality']['concept'] = $municipality->concept()->concept();
                 $data['municipality']['term'] = $municipality->name();
                 $data['municipality']['text'] = Service::translate($municipality->keyword());
-                $data['museum']['item'] = $museum->id();
-                $data['museum']['module'] = $museum->schema()->module()->name();
-                $data['museum']['name'] = $museum->property('fullname')->value()->content();
+
+                $id = Service::database()->getMunicipalityMuseum($mid);
+                if ($id) {
+                    $museum = ORM::find(Museum::class, $id[0]['item']);
+                    $data['museum']['item'] = $museum->id();
+                    $data['museum']['module'] = $museum->schema()->module()->name();
+                    $data['museum']['name'] = $museum->property('fullname')->value()->content();
+                }
             }
         } catch (Exception $e) {
             $data = [$e->getMessage()];
