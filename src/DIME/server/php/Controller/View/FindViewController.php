@@ -26,6 +26,7 @@
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
  */
+
 namespace DIME\Controller\View;
 
 use ARK\Error\ErrorException;
@@ -37,53 +38,55 @@ use DIME\Entity\Find;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
-
 class FindViewController extends DimeFormController
 {
     public function __invoke(Request $request, $id = null)
     {
-        $request->attributes->set ( 'find', $id );
-        return parent::__invoke ( $request );
+        $request->attributes->set('find', $id);
+        return parent::__invoke($request);
     }
+
     public function buildData(Request $request)
     {
-        $id = $request->attributes->get ( 'find' );
-        if (! $find = ORM::find ( Find::class, $id )) {
-            throw new ErrorException ( new NotFoundError ( 'ITEM_NOT_FOUND', 'Find not found', "Find $id not found" ) );
+        $id = $request->attributes->get('find');
+        if (!$find = ORM::find(Find::class, $id)) {
+            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Find not found', "Find $id not found"));
         }
-        $data ['find'] = $find;
+        $data['find'] = $find;
         return $data;
     }
-    public function buildWorkflow(Request $request, $data, iterable $state): iterable
+
+    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
     {
-        return parent::buildWorkflow ( $request, $data ['find'], $state );
+        return parent::buildWorkflow($request, $data['find'], $state);
     }
-    public function processForm(Request $request, Form $form): void
+
+    public function processForm(Request $request, Form $form) : void
     {
-        $clicked = $form->getClickedButton ()->getName ();
-        $data = $form->getData ();
-        $find = $data ['find'];
-        $parameters ['id'] = $find->id ();
-        $request->attributes->set ( 'parameters', $parameters );
+        $clicked = $form->getClickedButton()->getName();
+        $data = $form->getData();
+        $find = $data['find'];
+        $parameters['id'] = $find->id();
+        $request->attributes->set('parameters', $parameters);
         if ($clicked === 'save') {
-            $actor = Service::workflow ()->actor ();
-            Service::workflow ()->apply ( $actor, 'edit', $find );
-            ORM::persist ( $find );
-            ORM::flush ( $find );
-            $request->attributes->set ( 'flash', 'success' );
-            $request->attributes->set ( 'message', 'dime.find.update.success' );
+            $actor = Service::workflow()->actor();
+            Service::workflow()->apply($actor, 'edit', $find);
+            ORM::persist($find);
+            ORM::flush($find);
+            $request->attributes->set('flash', 'success');
+            $request->attributes->set('message', 'dime.find.update.success');
             return;
         }
         if ($clicked === 'clone') {
-            $request->attributes->set ( 'redirect', 'finds.add' );
+            $request->attributes->set('redirect', 'finds.add');
             return;
         }
         if ($clicked === 'apply') {
-            $actor = Service::workflow ()->actor ();
-            $action = $form ['find'] ['action'] ['actions']->getNormData ();
-            $action->apply ( $actor, $find, $find->value ( 'museum' ) );
-            ORM::persist ( $find );
-            ORM::flush ( $find );
+            $actor = Service::workflow()->actor();
+            $action = $form['find']['action']['actions']->getNormData();
+            $action->apply($actor, $find, $find->value('museum'));
+            ORM::persist($find);
+            ORM::flush($find);
             return;
         }
     }

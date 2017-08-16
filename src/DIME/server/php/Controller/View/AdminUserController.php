@@ -56,9 +56,9 @@ class AdminUserController extends DimeFormController
             ]);
             $data['filter']['status'] = $status;
             $items = Service::database()->userSearch($query);
-            $data['actors'] = ORM::findBy(Person::class, ['item' => $items]);
+            $data['actors']['items'] = ORM::findBy(Person::class, ['item' => $items]);
         } else {
-            $data['actors'] = ORM::findAll(Person::class);
+            $data['actors']['items'] = ORM::findAll(Person::class);
         }
 
         $data['actor'] = null;

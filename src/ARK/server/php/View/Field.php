@@ -383,7 +383,7 @@ class Field extends Element
         if ($this->attribute()->hasMultipleOccurrences()) {
             $options['compound'] = true;
         }
-        $options['constraints'] = $this->attribute()->constraints();
+        //$options['constraints'] = $this->attribute()->constraints();
         return $options;
     }
 

@@ -160,8 +160,8 @@ $('document').ready(function(){
         $('tr').each( function(i, e){
             getItemForm($(e).attr('data-unique-id'), false);
         });
-        console.log($('#dime_profile_list').length);
-        if($('#dime_profile_list').length){
+        console.log($('#dime_profile_table').length);
+        if($('#dime_profile_table').length){
             $('#actor_save').on("click", function(e){
                 var options = {
                         success: showResponse

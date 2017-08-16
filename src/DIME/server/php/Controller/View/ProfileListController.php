@@ -45,7 +45,7 @@ class ProfileListController extends DimeFormController
     public function buildData(Request $request)
     {
         $actors = ORM::findAll(Person::class);
-        $data['actors'] = $actors;
+        $data['actors']['items'] = $actors;
         $data['finds'] = [];
         return $data;
     }

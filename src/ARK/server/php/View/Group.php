@@ -78,7 +78,7 @@ abstract class Group extends Element
 
     public function buildForms($data, iterable $state, iterable $options) : iterable
     {
-        //dump('GROUP FORMS : '.$this->formName());
+        //dump('GROUP FORMS : '.$this->id());
         //dump($this);
         //dump($data);
         //dump($state);
@@ -87,6 +87,7 @@ abstract class Group extends Element
         if ($this->form) {
             //dump('GROUP : BUILD FORMS '.$this->formName());
             $builderData = $this->buildData($data, $state);
+            //dump($builderData);
             $builderOptions = $this->buildOptions($builderData, $state, $options);
             //dump($builderOptions);
             //dump($state);

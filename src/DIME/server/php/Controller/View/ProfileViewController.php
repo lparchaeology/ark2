@@ -59,7 +59,7 @@ class ProfileViewController extends DimeFormController
         }
         $data['actor'] = $actor;
         $items = Service::database()->getActorFinds($actor->id());
-        $data['finds'] = ORM::findBy(Find::class, ['item' => $items]);
+        $data['finds']['items'] = ORM::findBy(Find::class, ['item' => $items]);
         return $data;
     }
 

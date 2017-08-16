@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Item Trait
+ * ARK Model Item Trait.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,54 +30,29 @@
 
 namespace ARK\Model;
 
-use ARK\Model\Module;
-use ARK\Model\Schema;
-use ARK\Model\VersionTrait;
 use ARK\ORM\ORM;
-use ARK\Service;
 use ARK\Vocabulary\Term;
 
 trait ItemTrait
 {
     use VersionTrait;
 
-    protected $item = null;
-    protected $module = null;
-    protected $schma = null;
-    protected $schema = null;
-    protected $type = null;
+    protected $item;
+    protected $module;
+    protected $schma;
+    protected $schema;
+    protected $type;
     protected $status = 'allocated';
-    protected $statusTerm = null;
+    protected $statusTerm;
     protected $visibility = 'restricted';
-    protected $visibilityTerm = null;
-    protected $parentModule = null;
-    protected $parentItem = null;
-    protected $parent = null;
-    protected $idx = null;
-    protected $label = null;
-    protected $properties = null;
-    protected $meta = null;
-
-    protected function construct($schema, $type = null)
-    {
-        $this->schma = $schema;
-        $this->module = $this->schema()->module()->name();
-        // TODO Is this really needed?
-        if ($this->schema()->useTypeEntities()) {
-            $this->type = ($type ?: $this->makeType());
-            $this->property('type')->setValue($this->type);
-        }
-    }
-
-    protected function makeType()
-    {
-        return strtolower(substr(strrchr(get_class($this), '\\'), 1));
-    }
-
-    protected function makeIdentifier($parentId, $sep, $index)
-    {
-        return ($parentId && $index ? $parentId.$sep.$index : $index);
-    }
+    protected $visibilityTerm;
+    protected $parentModule;
+    protected $parentItem;
+    protected $parent;
+    protected $idx;
+    protected $label;
+    protected $properties;
+    protected $meta;
 
     public function id()
     {
@@ -93,7 +68,7 @@ trait ItemTrait
         return $this->parent;
     }
 
-    public function setParent(Item $parent)
+    public function setParent(Item $parent) : void
     {
         $this->parent = $parent;
         $this->parentModule = $parent->schema()->module()->name();
@@ -106,14 +81,14 @@ trait ItemTrait
     }
 
     // TODO Should this be here? Or use reflection?
-    public function setItem($id, $index = null, $name = null)
+    public function setItem($id, $index = null, $name = null) : void
     {
         $this->item = $id;
         $this->idx = ($index !== null ? $index : $id);
         $this->label = ($name !== null ? $name : $id);
         foreach ($this->properties() as $property) {
             $property->updateFragments();
-            if ($property->name() == 'id') {
+            if ($property->name() === 'id') {
                 $property->setValue($this->item);
             }
         }
@@ -132,7 +107,7 @@ trait ItemTrait
         return $this->type;
     }
 
-    public function setType($type)
+    public function setType($type) : void
     {
         // TODO Danger, Will Robinson!!!
         $this->type = $type;
@@ -175,7 +150,7 @@ trait ItemTrait
     public function path()
     {
         $resource = $this->schema()->module()->resource();
-        if ($this->schema()->generator() == 'hierarchy') {
+        if ($this->schema()->generator() === 'hierarchy') {
             return $this->parent()->path().'/'.$resource.'/'.$this->index();
         }
         return '/'.$resource.'/'.$this->index();
@@ -220,20 +195,10 @@ trait ItemTrait
         return null;
     }
 
-    public function setValue($attribute, $value)
+    public function setValue($attribute, $value) : void
     {
         if ($property = $this->property($attribute)) {
             $property->setValue($value);
-        }
-    }
-
-    private function loadRelated()
-    {
-        if ($this->related) {
-            return;
-        }
-        foreach ($this->relationships() as $module) {
-            $this->related[$module->id()] = $this->em->repository($module->id())->getRelated($this->schema()->module(), $this->id());
         }
     }
 
@@ -255,5 +220,36 @@ trait ItemTrait
             return $this->parent->schema->xmis($this->parent->schemaId(), $this->schema()->module());
         }
         return [];
+    }
+
+    protected function construct($schema, $type = null) : void
+    {
+        $this->schma = $schema;
+        $this->module = $this->schema()->module()->name();
+        // TODO Is this really needed?
+        if ($this->schema()->useTypeEntities()) {
+            $this->type = ($type ?: $this->makeType());
+            $this->property('type')->setValue($this->type);
+        }
+    }
+
+    protected function makeType()
+    {
+        return strtolower(substr(strrchr(get_class($this), '\\'), 1));
+    }
+
+    protected function makeIdentifier($parentId, $sep, $index)
+    {
+        return $parentId && $index ? $parentId.$sep.$index : $index;
+    }
+
+    private function loadRelated() : void
+    {
+        if ($this->related) {
+            return;
+        }
+        foreach ($this->relationships() as $module) {
+            $this->related[$module->id()] = $this->em->repository($module->id())->getRelated($this->schema()->module(), $this->id());
+        }
     }
 }
