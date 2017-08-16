@@ -246,7 +246,7 @@ class Database
             ':srid' => $srid,
         ];
 
-        return $this->spatial()->fetchColumn($sql, $params);
+        return $this->spatial()->fetchColumn($sql, $params, 'term');
     }
 
     public function getSpatialTermChoropleth(
