@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * DIME Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -47,19 +47,21 @@ class GeoFindController
         $wkt = $request->getContent();
         try {
             $point = Point::fromText($wkt);
-            $mid = Service::database()->getSpatialTermsContain('dime.denmark.municipality', $wkt, '4326');
-            $municipality = ORM::find(Term::class, ['concept' => 'dime.denmark.municipality', 'term' => $mid]);
-            $id = Service::database()->getMunicipalityMuseum($mid);
-            $museum = ORM::find(Actor::class, $id);
             $data['in'] = $wkt;
             $data['x'] = $point->x();
             $data['y'] = $point->y();
-            $data['municipality']['concept'] = $municipality->concept()->concept();
-            $data['municipality']['term'] = $municipality->name();
-            $data['municipality']['text'] = Service::translate($municipality->keyword());
-            $data['museum']['item'] = $museum->id();
-            $data['museum']['module'] = $museum->schema()->module()->name();
-            $data['museum']['name'] = $museum->property('fullname')->value()->content();
+            $mid = Service::database()->getSpatialTermsContain('dime.denmark.municipality', $wkt, '4326');
+            if ($mid) {
+                $municipality = ORM::findBy(Term::class, ['concept' => 'dime.denmark.municipality', 'term' => $mid]);
+                $id = Service::database()->getMunicipalityMuseum($mid[0]);
+                $museum = ORM::find(Actor::class, $id);
+                $data['municipality']['concept'] = $municipality->concept()->concept();
+                $data['municipality']['term'] = $municipality->name();
+                $data['municipality']['text'] = Service::translate($municipality->keyword());
+                $data['museum']['item'] = $museum->id();
+                $data['museum']['module'] = $museum->schema()->module()->name();
+                $data['museum']['name'] = $museum->property('fullname')->value()->content();
+            }
         } catch (Exception $e) {
             $data = [$e->getMessage()];
         }
