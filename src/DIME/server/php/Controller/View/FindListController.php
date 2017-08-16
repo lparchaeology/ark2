@@ -78,16 +78,7 @@ class FindListController extends DimeFormController
                 $state['options']['finder']['multiple'] = false;
                 $state['options']['finder']['mode'] = 'readonly';
             }
-
-            if ($actor->hasPermission('dime.find.create')) {
-                dump('can create');
-                $state['options']['status']['multiple'] = true;
-                $state['options']['status']['placeholder'] = '';
-                $state['options']['treasure']['multiple'] = true;
-                $state['options']['treasure']['placeholder'] = '';
-            }
         }
-        dump($state);
 
         return $state;
     }
@@ -141,7 +132,7 @@ class FindListController extends DimeFormController
         if ($advanced) {
             $museums = new ArrayCollection();
             $finders = new ArrayCollection();
-            $status = null;
+            $status = new ArrayCollection();
             $treasures = new ArrayCollection();
             $agencies = $this->museums($actor);
 
@@ -184,7 +175,7 @@ class FindListController extends DimeFormController
                     'concept' => 'dime.find.process',
                     'term' => $query['status'],
                 ]);
-                $data['filters']['status'] = ($myfinds ? $status->toArray() : $status->first());
+                $data['filters']['status'] = $status->first();
             }
 
             if (isset($query['treasure'])) {
@@ -192,7 +183,7 @@ class FindListController extends DimeFormController
                     'concept' => 'dime.treasure',
                     'term' => $query['treasure'],
                 ]);
-                $data['filters']['treasure'] = ($myfinds ? $treasures->toArray() : $treasures->first());
+                $data['filters']['treasure'] = $treasures->first();
             }
         }
 

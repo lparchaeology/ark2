@@ -102,23 +102,12 @@ abstract class AbstractWidget extends Element
 
         if ($state['choices'] && $state['value']['modus'] === 'active') {
             $name = $state['name'];
-            if (isset($state['options'][$name]['choices'])) {
-                $options['choices'] = $state['options'][$name]['choices'];
-                if (isset($state['options'][$name]['placeholder'])) {
-                    $options['placeholder'] = $state['options'][$name]['placeholder'];
-                }
-                if (isset($state['options'][$name]['multiple'])) {
-                    $options['multiple'] = $state['options'][$name]['multiple'];
-                }
-                if (isset($state['options'][$name]['required'])) {
-                    $options['required'] = $state['options'][$name]['required'];
-                }
-            } else {
-                $options['choices'] = $data;
-                if ($state['placeholder']) {
-                    $options['placeholder'] = $state['select']['placeholder'] ?? '';
-                }
+            $options['choices'] = $state['options'][$name]['choices'] ?? $options['choices'];
+            $options['placeholder'] = $state['options'][$name]['placeholder'] ?? $state['select']['placeholder'] ?? '-';
+            if (isset($state['options'][$name]['multiple'])) {
+                $options['multiple'] = $state['options'][$name]['multiple'];
             }
+            $options['required'] = $state['options'][$name]['required'] ?? $options['required'];
         }
 
         unset($options['state']);
