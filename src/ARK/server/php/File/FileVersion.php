@@ -78,22 +78,22 @@ class FileVersion extends FileHandler
         return $this->version;
     }
 
-    public function created() : DateTime
+    public function created() : ?DateTime
     {
         return $this->created;
     }
 
-    public function creator() : string
+    public function creator() : ?string
     {
         return $this->creator;
     }
 
-    public function modified() : DateTime
+    public function modified() : ?DateTime
     {
         return $this->modified;
     }
 
-    public function modifier() : string
+    public function modifier() : ?string
     {
         return $this->modifier;
     }
