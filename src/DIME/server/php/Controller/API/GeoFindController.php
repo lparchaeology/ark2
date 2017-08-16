@@ -54,10 +54,12 @@ class GeoFindController
             if ($mid) {
                 $mid = $mid[0]['term'];
 
-                $municipality = ORM::findBy(Term::class, ['concept' => 'dime.denmark.municipality', 'term' => $mid]);
-                $data['municipality']['concept'] = $municipality->concept()->concept();
-                $data['municipality']['term'] = $municipality->name();
-                $data['municipality']['text'] = Service::translate($municipality->keyword());
+                $municipality = ORM::find(Term::class, ['concept' => 'dime.denmark.municipality', 'term' => $mid]);
+                if ($municipality) {
+                    $data['municipality']['concept'] = $municipality->concept()->concept();
+                    $data['municipality']['term'] = $municipality->name();
+                    $data['municipality']['text'] = Service::translate($municipality->keyword());
+                }
 
                 $id = Service::database()->getMunicipalityMuseum($mid);
                 if ($id) {
