@@ -52,7 +52,7 @@ class GeoFindController
             $data['y'] = $point->y();
             $mid = Service::database()->getSpatialTermsContain('dime.denmark.municipality', $wkt, '4326');
             if ($mid) {
-                $municipality = ORM::findBy(Term::class, ['concept' => 'dime.denmark.municipality', 'term' => $mid]);
+                $municipality = ORM::findBy(Term::class, ['concept' => 'dime.denmark.municipality', 'term' => $mid[0]]);
                 $id = Service::database()->getMunicipalityMuseum($mid[0]);
                 $museum = ORM::find(Actor::class, $id);
                 $data['municipality']['concept'] = $municipality->concept()->concept();
