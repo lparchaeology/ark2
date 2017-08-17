@@ -1,9 +1,10 @@
-{# Standard table layout using only HTML5/Bootstrap #}
+{# Action table layout using Bootstrap-Table #}
 
 <div class='table-wrapper-div'>
 
-    {% set table_class = 'table bootstrap-table table-hover dime-table' %}
-    {% set items = data.items %}
+    {% set table_class %}
+    table bootstrap-table table-hover dime-table
+    {% endset %}
 
     <table
         id="{{layout.id}}"
@@ -25,7 +26,7 @@
         <thead>
             <tr>
                 <th class="checkedhead" data-field="checked" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
-                {% if items[0] is defined and items[0].hasAttribute(state.image) %}
+                {% if data[0] is defined and data[0].hasAttribute(state.image) %}
                     <th class="thumbimagehead" data-field="{{state.image}}" data-title="{{state.image}}" data-sortable="false"></th>
                 {% endif %}
                 {% for cell in layout.cells %}
@@ -39,14 +40,13 @@
                             {{field.keyword|trans}}
                         </th>
                     {%  endif %}
-                    {% do form[field.formName].setRendered %}
                 {% endfor %}
                 <th class="controlshead" data-field="controls" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
             </tr>
         </thead>
 
         <tbody>
-            {% for item in items %}
+            {% for item in data %}
                 <tr data-unique-id = "{{ item.id }}" >
                     <td class="not-card-visible"><span class="tablecheckbox glyphicon glyphicon-unchecked"></span></td>
                     {% if item.hasAttribute(state.image) %}
@@ -91,66 +91,5 @@
 </div>
 
 <script>
-window.itemkey =
-    {% if items[0] is defined %}
-        "{{ items[0].schema.module.name }}";
-    {% else %}
-        {{null}}
-    {% endif %}
-
-window.itemlist = [
-    {% if items|length > 0 %}
-        {% for item in items %}
-            "{{ item.id }}",
-        {% endfor %}
-    {% else %}
-            false
-     {% endif %}
-];
-if(typeof window.translations == 'undefined'){
-    window.translations = [];
-}
-window.translations['dime.user.update.success'] = "{{ 'dime.user.update.success' | trans }}";
-window.translations['dime.user.update.failure'] = "{{ 'dime.user.update.failure' | trans }}"
-
-window.userApiUrl = "{{ path('api.internal.user.actor', {'id': 'dummyid'}) }}".split('dummyid')[0];
 
 </script>
-{#}
-<div id = "thumbModal"></div>
-
-<div id = "chooseAction" class="btn chooseAction">{{ 'dime.chooseaction'|trans }}</div>
-<div id = "chooseActionSelectHolder"></div>
-
-window.defaultAvailableActions = [
-    {% if items[0] is defined %}
-    {% for action in workflow.schemaActions(items[0].schema) %}
-        {
-            "keyword":"{{ action.keyword }}",
-            "translation":"{{ action.keyword | trans }}",
-            "available":true,
-            "visible":false,
-        },
-    {% endfor %}
-    {% endif %}
-    ];
-
-window.itemAvailableActions = {
-    {% for item in items %}
-        "{{item.id}}": {
-            {% for action in workflow.actions(workflow.actor, item) %}
-            "{{ action.keyword }}":{
-                    "keyword":"{{ action.keyword }}",
-                    "translation":"{{ action.keyword | trans }}",
-                    "available":true,
-                    "visible":true,
-                },
-            {% endfor %}
-        },
-    {% endfor %}
-};
-
-console.log({"itemAvailableAction":window.itemAvailableActions,"defaultAvailableActions":window.defaultAvailableActions});
-
-</script>
-#}
