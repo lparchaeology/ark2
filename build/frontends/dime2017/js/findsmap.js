@@ -73,7 +73,7 @@ function initialiseMapView() {
 
         view = map.getView();
         extent = layer.getSource().getExtent();
-        view.fit(extent, map.getSize());
+        view.fit(extent);
 
         var select = new ol.interaction.Select({
             layers: function(layer) {
@@ -129,7 +129,7 @@ function initialiseMapView() {
 
             });
 
-            map.getView().fit(extent, map.getSize());
+            map.getView().fit(extent);
 
         });
 
@@ -170,7 +170,7 @@ function initialiseMapView() {
                     $('.modal-backdrop').detach();
                     view = map.getView();
                     extent = e.getSource().getExtent();
-                    view.fit(extent, map.getSize());
+                    view.fit(extent);
                     $('.map-legend').show();
                     prerun = true;
                 } else if (e.get("name") === "finds") {
@@ -262,7 +262,7 @@ function initialiseMapView() {
                     map.addLayer(municipalitylayer);
                     view = map.getView();
                     extent = municipalitylayer.getSource().getExtent();
-                    view.fit(extent, map.getSize());
+                    view.fit(extent);
                     $('.modal-backdrop').detach();
                 }).fail(function() {
                     $('.modal-backdrop').detach();
@@ -287,7 +287,7 @@ function initialiseMapView() {
                                       Math.max(newextent[2],extent[2]),
                                       Math.max(newextent[3],extent[3])
                                   ];
-                            view.fit(extent, map.getSize());
+                            view.fit(extent);
                         }
                     }
                 }

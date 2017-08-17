@@ -180,6 +180,7 @@ gulp.task('js', function() {
         config.vendorDir + '/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.js',
         config.vendorDir + '/vis/dist/vis.js',
         config.vendorDir + '/proj4/dist/proj4.js',
+        config.vendorDir + '/openlayers/dist/ol.js',
         config.frontendsDir + '/' + frontend + '/js/**/*'
     ];
     var dest = config.srcDir + '/' + namespace + '/frontend/' + frontend + '/assets/scripts';
@@ -204,6 +205,7 @@ gulp.task('css', function() {
     var cssSrc = [
         config.vendorDir + '/summernote/dist/summernote.css',
         config.vendorDir + '/select2/dist/css/select2.min.css',
+        config.vendorDir + '/openlayers/dist/ol.css',
     ];
     var sassSrc = [
         './frontends/' + frontend + '/scss/ark.scss',
