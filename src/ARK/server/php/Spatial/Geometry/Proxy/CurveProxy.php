@@ -1,16 +1,16 @@
 <?php
 
-namespace ARK\Spatial\Proxy;
+namespace ARK\Spatial\Geometry\Proxy;
 
-use ARK\Spatial\Geometry\TIN;
+use ARK\Spatial\Geometry\Curve;
 
 /**
- * Proxy class for TIN.
+ * Proxy class for Curve.
  */
-class TINProxy extends TIN implements ProxyInterface
+class CurveProxy extends Curve implements ProxyInterface
 {
     use GeometryProxyTrait;
-    use SurfaceProxyTrait;
+    use CurveProxyTrait;
 
     /**
      * Class constructor.
@@ -21,15 +21,15 @@ class TINProxy extends TIN implements ProxyInterface
      */
     public function __construct(string $data, bool $isBinary, int $srid = 0)
     {
-        $this->proxyData = $data;
-        $this->proxyIsBinary = $isBinary;
-        $this->proxySRID = $srid;
+        $this->proxyData = (string) $data;
+        $this->proxyIsBinary = (bool) $isBinary;
+        $this->proxySRID = (int) $srid;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getGeometry() : TIN
+    public function getGeometry() : Curve
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -41,7 +41,7 @@ class TINProxy extends TIN implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromText(string $wkt, int $srid = 0) : TINProxy
+    public static function fromText(string $wkt, int $srid = 0) : CurveProxy
     {
         return new self($wkt, false, $srid);
     }
@@ -49,7 +49,7 @@ class TINProxy extends TIN implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromBinary(string $wkb, int $srid = 0) : TINProxy
+    public static function fromBinary(string $wkb, int $srid = 0) : CurveProxy
     {
         return new self($wkb, true, $srid);
     }
@@ -66,7 +66,7 @@ class TINProxy extends TIN implements ProxyInterface
     private function load() : void
     {
         $this->proxyGeometry = $this->proxyIsBinary
-            ? TIN::fromBinary($this->proxyData, $this->proxySRID)
-            : TIN::fromText($this->proxyData, $this->proxySRID);
+            ? Curve::fromBinary($this->proxyData, $this->proxySRID)
+            : Curve::fromText($this->proxyData, $this->proxySRID);
     }
 }

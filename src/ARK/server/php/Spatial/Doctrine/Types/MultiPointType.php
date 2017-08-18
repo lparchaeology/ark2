@@ -2,7 +2,7 @@
 
 namespace ARK\Spatial\Doctrine\Types;
 
-use ARK\Spatial\Proxy\MultiPointProxy;
+use ARK\Spatial\Geometry\Proxy\MultiPointProxy;
 
 /**
  * Doctrine type for MultiPoint.

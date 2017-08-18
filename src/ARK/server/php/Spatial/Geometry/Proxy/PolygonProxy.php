@@ -1,16 +1,16 @@
 <?php
 
-namespace ARK\Spatial\Proxy;
+namespace ARK\Spatial\Geometry\Proxy;
 
-use ARK\Spatial\Geometry\MultiPolygon;
+use ARK\Spatial\Geometry\Polygon;
 
 /**
- * Proxy class for MultiPolygon.
+ * Proxy class for Polygon.
  */
-class MultiPolygonProxy extends MultiPolygon implements ProxyInterface
+class PolygonProxy extends Polygon implements ProxyInterface
 {
     use GeometryProxyTrait;
-    use GeometryCollectionProxyTrait;
+    use PolygonProxyTrait;
 
     /**
      * Class constructor.
@@ -29,7 +29,7 @@ class MultiPolygonProxy extends MultiPolygon implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function getGeometry() : MultiPolygon
+    public function getGeometry() : Polygon
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -41,7 +41,7 @@ class MultiPolygonProxy extends MultiPolygon implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromText(string $wkt, int $srid = 0) : MultiPolygonProxy
+    public static function fromText(string $wkt, int $srid = 0) : PolygonProxy
     {
         return new self($wkt, false, $srid);
     }
@@ -49,7 +49,7 @@ class MultiPolygonProxy extends MultiPolygon implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromBinary(string $wkb, int $srid = 0) : MultiPolygonProxy
+    public static function fromBinary(string $wkb, int $srid = 0) : PolygonProxy
     {
         return new self($wkb, true, $srid);
     }
@@ -66,7 +66,7 @@ class MultiPolygonProxy extends MultiPolygon implements ProxyInterface
     private function load() : void
     {
         $this->proxyGeometry = $this->proxyIsBinary
-            ? MultiPolygon::fromBinary($this->proxyData, $this->proxySRID)
-            : MultiPolygon::fromText($this->proxyData, $this->proxySRID);
+            ? Polygon::fromBinary($this->proxyData, $this->proxySRID)
+            : Polygon::fromText($this->proxyData, $this->proxySRID);
     }
 }

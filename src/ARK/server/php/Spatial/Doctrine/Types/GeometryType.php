@@ -3,7 +3,7 @@
 namespace ARK\Spatial\Doctrine\Types;
 
 use ARK\Spatial\Geometry\Geometry;
-use ARK\Spatial\Proxy\GeometryProxy;
+use ARK\Spatial\Geometry\Proxy\GeometryProxy;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 

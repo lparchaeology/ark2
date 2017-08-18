@@ -1,13 +1,13 @@
 <?php
 
-namespace ARK\Spatial\Proxy;
+namespace ARK\Spatial\Geometry\Proxy;
 
-use ARK\Spatial\Geometry\MultiLineString;
+use ARK\Spatial\Geometry\MultiPolygon;
 
 /**
- * Proxy class for MultiLineString.
+ * Proxy class for MultiPolygon.
  */
-class MultiLineStringProxy extends MultiLineString implements ProxyInterface
+class MultiPolygonProxy extends MultiPolygon implements ProxyInterface
 {
     use GeometryProxyTrait;
     use GeometryCollectionProxyTrait;
@@ -29,7 +29,7 @@ class MultiLineStringProxy extends MultiLineString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function getGeometry() : MultiLineString
+    public function getGeometry() : MultiPolygon
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -41,7 +41,7 @@ class MultiLineStringProxy extends MultiLineString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromText(string $wkt, int $srid = 0) : MultiLineStringProxy
+    public static function fromText(string $wkt, int $srid = 0) : MultiPolygonProxy
     {
         return new self($wkt, false, $srid);
     }
@@ -49,7 +49,7 @@ class MultiLineStringProxy extends MultiLineString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromBinary(string $wkb, int $srid = 0) : MultiLineStringProxy
+    public static function fromBinary(string $wkb, int $srid = 0) : MultiPolygonProxy
     {
         return new self($wkb, true, $srid);
     }
@@ -66,7 +66,7 @@ class MultiLineStringProxy extends MultiLineString implements ProxyInterface
     private function load() : void
     {
         $this->proxyGeometry = $this->proxyIsBinary
-            ? MultiLineString::fromBinary($this->proxyData, $this->proxySRID)
-            : MultiLineString::fromText($this->proxyData, $this->proxySRID);
+            ? MultiPolygon::fromBinary($this->proxyData, $this->proxySRID)
+            : MultiPolygon::fromText($this->proxyData, $this->proxySRID);
     }
 }

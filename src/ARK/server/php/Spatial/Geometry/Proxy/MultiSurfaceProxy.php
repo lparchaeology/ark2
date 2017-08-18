@@ -1,16 +1,16 @@
 <?php
 
-namespace ARK\Spatial\Proxy;
+namespace ARK\Spatial\Geometry\Proxy;
 
-use ARK\Spatial\Geometry\CompoundCurve;
+use ARK\Spatial\Geometry\MultiSurface;
 
 /**
- * Proxy class for CompoundCurve.
+ * Proxy class for MultiSurface.
  */
-class CompoundCurveProxy extends CompoundCurve implements ProxyInterface
+class MultiSurfaceProxy extends MultiSurface implements ProxyInterface
 {
     use GeometryProxyTrait;
-    use CurveProxyTrait;
+    use GeometryCollectionProxyTrait;
 
     /**
      * Class constructor.
@@ -29,7 +29,7 @@ class CompoundCurveProxy extends CompoundCurve implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function getGeometry() : CompoundCurve
+    public function getGeometry() : MultiSurface
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -41,7 +41,7 @@ class CompoundCurveProxy extends CompoundCurve implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromText(string $wkt, int $srid = 0) : CompoundCurveProxy
+    public static function fromText(string $wkt, int $srid = 0) : MultiSurfaceProxy
     {
         return new self($wkt, false, $srid);
     }
@@ -49,7 +49,7 @@ class CompoundCurveProxy extends CompoundCurve implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromBinary(string $wkb, int $srid = 0) : CompoundCurveProxy
+    public static function fromBinary(string $wkb, int $srid = 0) : MultiSurfaceProxy
     {
         return new self($wkb, true, $srid);
     }
@@ -66,7 +66,7 @@ class CompoundCurveProxy extends CompoundCurve implements ProxyInterface
     private function load() : void
     {
         $this->proxyGeometry = $this->proxyIsBinary
-            ? CompoundCurve::fromBinary($this->proxyData, $this->proxySRID)
-            : CompoundCurve::fromText($this->proxyData, $this->proxySRID);
+            ? MultiSurface::fromBinary($this->proxyData, $this->proxySRID)
+            : MultiSurface::fromText($this->proxyData, $this->proxySRID);
     }
 }

@@ -4,7 +4,7 @@ namespace ARK\Spatial\Engine;
 
 use ARK\Spatial\Exception\GeometryEngineException;
 use ARK\Spatial\Geometry\Geometry;
-use ARK\Spatial\Proxy;
+use ARK\Spatial\Geometry\Proxy;
 
 /**
  * Database implementation of the GeometryEngine.

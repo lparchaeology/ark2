@@ -1,16 +1,16 @@
 <?php
 
-namespace ARK\Spatial\Proxy;
+namespace ARK\Spatial\Geometry\Proxy;
 
-use ARK\Spatial\Geometry\CircularString;
+use ARK\Spatial\Geometry\MultiPoint;
 
 /**
- * Proxy class for CircularString.
+ * Proxy class for MultiPoint.
  */
-class CircularStringProxy extends CircularString implements ProxyInterface
+class MultiPointProxy extends MultiPoint implements ProxyInterface
 {
     use GeometryProxyTrait;
-    use CurveProxyTrait;
+    use GeometryCollectionProxyTrait;
 
     /**
      * Class constructor.
@@ -29,7 +29,7 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function getGeometry() : CircularString
+    public function getGeometry() : MultiPoint
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -41,7 +41,7 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromText(string $wkt, int $srid = 0) : CircularStringProxy
+    public static function fromText(string $wkt, int $srid = 0) : MultiPointProxy
     {
         return new self($wkt, false, $srid);
     }
@@ -49,7 +49,7 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromBinary(string $wkb, int $srid = 0) : CircularStringProxy
+    public static function fromBinary(string $wkb, int $srid = 0) : MultiPointProxy
     {
         return new self($wkb, true, $srid);
     }
@@ -66,7 +66,7 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     private function load() : void
     {
         $this->proxyGeometry = $this->proxyIsBinary
-            ? CircularString::fromBinary($this->proxyData, $this->proxySRID)
-            : CircularString::fromText($this->proxyData, $this->proxySRID);
+            ? MultiPoint::fromBinary($this->proxyData, $this->proxySRID)
+            : MultiPoint::fromText($this->proxyData, $this->proxySRID);
     }
 }

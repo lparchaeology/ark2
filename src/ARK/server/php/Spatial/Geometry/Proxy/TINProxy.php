@@ -1,16 +1,16 @@
 <?php
 
-namespace ARK\Spatial\Proxy;
+namespace ARK\Spatial\Geometry\Proxy;
 
-use ARK\Spatial\MultiCurve;
+use ARK\Spatial\Geometry\TIN;
 
 /**
- * Proxy class for MultiCurve.
+ * Proxy class for TIN.
  */
-class MultiCurveProxy extends MultiCurve implements ProxyInterface
+class TINProxy extends TIN implements ProxyInterface
 {
     use GeometryProxyTrait;
-    use GeometryCollectionProxyTrait;
+    use SurfaceProxyTrait;
 
     /**
      * Class constructor.
@@ -21,15 +21,15 @@ class MultiCurveProxy extends MultiCurve implements ProxyInterface
      */
     public function __construct(string $data, bool $isBinary, int $srid = 0)
     {
-        $this->proxyData = (string) $data;
-        $this->proxyIsBinary = (bool) $isBinary;
-        $this->proxySRID = (int) $srid;
+        $this->proxyData = $data;
+        $this->proxyIsBinary = $isBinary;
+        $this->proxySRID = $srid;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getGeometry() : MultiCurve
+    public function getGeometry() : TIN
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -41,7 +41,7 @@ class MultiCurveProxy extends MultiCurve implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromText(string $wkt, int $srid = 0) : MultiCurveProxy
+    public static function fromText(string $wkt, int $srid = 0) : TINProxy
     {
         return new self($wkt, false, $srid);
     }
@@ -49,7 +49,7 @@ class MultiCurveProxy extends MultiCurve implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromBinary(string $wkb, int $srid = 0) : MultiCurveProxy
+    public static function fromBinary(string $wkb, int $srid = 0) : TINProxy
     {
         return new self($wkb, true, $srid);
     }
@@ -66,7 +66,7 @@ class MultiCurveProxy extends MultiCurve implements ProxyInterface
     private function load() : void
     {
         $this->proxyGeometry = $this->proxyIsBinary
-            ? MultiCurve::fromBinary($this->proxyData, $this->proxySRID)
-            : MultiCurve::fromText($this->proxyData, $this->proxySRID);
+            ? TIN::fromBinary($this->proxyData, $this->proxySRID)
+            : TIN::fromText($this->proxyData, $this->proxySRID);
     }
 }

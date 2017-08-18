@@ -1,16 +1,16 @@
 <?php
 
-namespace ARK\Spatial\Proxy;
+namespace ARK\Spatial\Geometry\Proxy;
 
-use ARK\Spatial\Geometry\LineString;
+use ARK\Spatial\MultiCurve;
 
 /**
- * Proxy class for LineString.
+ * Proxy class for MultiCurve.
  */
-class LineStringProxy extends LineString implements ProxyInterface
+class MultiCurveProxy extends MultiCurve implements ProxyInterface
 {
     use GeometryProxyTrait;
-    use CurveProxyTrait;
+    use GeometryCollectionProxyTrait;
 
     /**
      * Class constructor.
@@ -21,15 +21,15 @@ class LineStringProxy extends LineString implements ProxyInterface
      */
     public function __construct(string $data, bool $isBinary, int $srid = 0)
     {
-        $this->proxyData = $data;
-        $this->proxyIsBinary = $isBinary;
-        $this->proxySRID = $srid;
+        $this->proxyData = (string) $data;
+        $this->proxyIsBinary = (bool) $isBinary;
+        $this->proxySRID = (int) $srid;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getGeometry() : LineString
+    public function getGeometry() : MultiCurve
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -41,7 +41,7 @@ class LineStringProxy extends LineString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromText(string $wkt, int $srid = 0) : LineStringProxy
+    public static function fromText(string $wkt, int $srid = 0) : MultiCurveProxy
     {
         return new self($wkt, false, $srid);
     }
@@ -49,7 +49,7 @@ class LineStringProxy extends LineString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromBinary(string $wkb, int $srid = 0) : LineStringProxy
+    public static function fromBinary(string $wkb, int $srid = 0) : MultiCurveProxy
     {
         return new self($wkb, true, $srid);
     }
@@ -66,7 +66,7 @@ class LineStringProxy extends LineString implements ProxyInterface
     private function load() : void
     {
         $this->proxyGeometry = $this->proxyIsBinary
-            ? LineString::fromBinary($this->proxyData, $this->proxySRID)
-            : LineString::fromText($this->proxyData, $this->proxySRID);
+            ? MultiCurve::fromBinary($this->proxyData, $this->proxySRID)
+            : MultiCurve::fromText($this->proxyData, $this->proxySRID);
     }
 }

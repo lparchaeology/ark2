@@ -1,15 +1,16 @@
 <?php
 
-namespace ARK\Spatial\Proxy;
+namespace ARK\Spatial\Geometry\Proxy;
 
-use ARK\Spatial\Geometry\Geometry;
+use ARK\Spatial\Geometry\PolyhedralSurface;
 
 /**
- * Proxy class for Geometry.
+ * Proxy class for PolyhedralSurface.
  */
-class GeometryProxy extends Geometry implements ProxyInterface
+class PolyhedralSurfaceProxy extends PolyhedralSurface implements ProxyInterface
 {
     use GeometryProxyTrait;
+    use SurfaceProxyTrait;
 
     /**
      * Class constructor.
@@ -28,7 +29,7 @@ class GeometryProxy extends Geometry implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function getGeometry() : Geometry
+    public function getGeometry() : PolyhedralSurface
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -40,7 +41,7 @@ class GeometryProxy extends Geometry implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromText(string $wkt, int $srid = 0) : GeometryProxy
+    public static function fromText(string $wkt, int $srid = 0) : PolyhedralSurfaceProxy
     {
         return new self($wkt, false, $srid);
     }
@@ -48,7 +49,7 @@ class GeometryProxy extends Geometry implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromBinary(string $wkb, int $srid = 0) : GeometryProxy
+    public static function fromBinary(string $wkb, int $srid = 0) : PolyhedralSurfaceProxy
     {
         return new self($wkb, true, $srid);
     }
@@ -65,7 +66,7 @@ class GeometryProxy extends Geometry implements ProxyInterface
     private function load() : void
     {
         $this->proxyGeometry = $this->proxyIsBinary
-            ? Geometry::fromBinary($this->proxyData, $this->proxySRID)
-            : Geometry::fromText($this->proxyData, $this->proxySRID);
+            ? PolyhedralSurface::fromBinary($this->proxyData, $this->proxySRID)
+            : PolyhedralSurface::fromText($this->proxyData, $this->proxySRID);
     }
 }

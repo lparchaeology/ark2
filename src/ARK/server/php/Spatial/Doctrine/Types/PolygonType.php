@@ -2,7 +2,7 @@
 
 namespace ARK\Spatial\Doctrine\Types;
 
-use ARK\Spatial\Proxy\PolygonProxy;
+use ARK\Spatial\Geometry\Proxy\PolygonProxy;
 
 /**
  * Doctrine type for Polygon.

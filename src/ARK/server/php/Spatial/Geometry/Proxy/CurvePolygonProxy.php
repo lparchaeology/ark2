@@ -1,6 +1,6 @@
 <?php
 
-namespace ARK\Spatial\Proxy;
+namespace ARK\Spatial\Geometry\Proxy;
 
 use ARK\Spatial\Geometry\Curve;
 use ARK\Spatial\Geometry\CurvePolygon;

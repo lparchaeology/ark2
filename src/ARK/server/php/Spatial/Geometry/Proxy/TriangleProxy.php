@@ -1,16 +1,16 @@
 <?php
 
-namespace ARK\Spatial\Proxy;
+namespace ARK\Spatial\Geometry\Proxy;
 
-use ARK\Spatial\Geometry\Curve;
+use ARK\Spatial\Geometry\Triangle;
 
 /**
- * Proxy class for Curve.
+ * Proxy class for Triangle.
  */
-class CurveProxy extends Curve implements ProxyInterface
+class TriangleProxy extends Triangle implements ProxyInterface
 {
     use GeometryProxyTrait;
-    use CurveProxyTrait;
+    use PolygonProxyTrait;
 
     /**
      * Class constructor.
@@ -21,15 +21,15 @@ class CurveProxy extends Curve implements ProxyInterface
      */
     public function __construct(string $data, bool $isBinary, int $srid = 0)
     {
-        $this->proxyData = (string) $data;
-        $this->proxyIsBinary = (bool) $isBinary;
-        $this->proxySRID = (int) $srid;
+        $this->proxyData = $data;
+        $this->proxyIsBinary = $isBinary;
+        $this->proxySRID = $srid;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getGeometry() : Curve
+    public function getGeometry() : Triangle
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -41,7 +41,7 @@ class CurveProxy extends Curve implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromText(string $wkt, int $srid = 0) : CurveProxy
+    public static function fromText(string $wkt, int $srid = 0) : TriangleProxy
     {
         return new self($wkt, false, $srid);
     }
@@ -49,7 +49,7 @@ class CurveProxy extends Curve implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromBinary(string $wkb, int $srid = 0) : CurveProxy
+    public static function fromBinary(string $wkb, int $srid = 0) : TriangleProxy
     {
         return new self($wkb, true, $srid);
     }
@@ -66,7 +66,7 @@ class CurveProxy extends Curve implements ProxyInterface
     private function load() : void
     {
         $this->proxyGeometry = $this->proxyIsBinary
-            ? Curve::fromBinary($this->proxyData, $this->proxySRID)
-            : Curve::fromText($this->proxyData, $this->proxySRID);
+            ? Triangle::fromBinary($this->proxyData, $this->proxySRID)
+            : Triangle::fromText($this->proxyData, $this->proxySRID);
     }
 }

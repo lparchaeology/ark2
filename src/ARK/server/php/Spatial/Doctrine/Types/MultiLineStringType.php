@@ -2,7 +2,7 @@
 
 namespace ARK\Spatial\Doctrine\Types;
 
-use ARK\Spatial\Proxy\MultiLineStringProxy;
+use ARK\Spatial\Geometry\Proxy\MultiLineStringProxy;
 
 /**
  * Doctrine type for MultiLineString.

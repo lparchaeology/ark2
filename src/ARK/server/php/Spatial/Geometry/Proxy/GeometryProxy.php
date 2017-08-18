@@ -1,16 +1,15 @@
 <?php
 
-namespace ARK\Spatial\Proxy;
+namespace ARK\Spatial\Geometry\Proxy;
 
-use ARK\Spatial\Geometry\Triangle;
+use ARK\Spatial\Geometry\Geometry;
 
 /**
- * Proxy class for Triangle.
+ * Proxy class for Geometry.
  */
-class TriangleProxy extends Triangle implements ProxyInterface
+class GeometryProxy extends Geometry implements ProxyInterface
 {
     use GeometryProxyTrait;
-    use PolygonProxyTrait;
 
     /**
      * Class constructor.
@@ -29,7 +28,7 @@ class TriangleProxy extends Triangle implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function getGeometry() : Triangle
+    public function getGeometry() : Geometry
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -41,7 +40,7 @@ class TriangleProxy extends Triangle implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromText(string $wkt, int $srid = 0) : TriangleProxy
+    public static function fromText(string $wkt, int $srid = 0) : GeometryProxy
     {
         return new self($wkt, false, $srid);
     }
@@ -49,7 +48,7 @@ class TriangleProxy extends Triangle implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromBinary(string $wkb, int $srid = 0) : TriangleProxy
+    public static function fromBinary(string $wkb, int $srid = 0) : GeometryProxy
     {
         return new self($wkb, true, $srid);
     }
@@ -66,7 +65,7 @@ class TriangleProxy extends Triangle implements ProxyInterface
     private function load() : void
     {
         $this->proxyGeometry = $this->proxyIsBinary
-            ? Triangle::fromBinary($this->proxyData, $this->proxySRID)
-            : Triangle::fromText($this->proxyData, $this->proxySRID);
+            ? Geometry::fromBinary($this->proxyData, $this->proxySRID)
+            : Geometry::fromText($this->proxyData, $this->proxySRID);
     }
 }

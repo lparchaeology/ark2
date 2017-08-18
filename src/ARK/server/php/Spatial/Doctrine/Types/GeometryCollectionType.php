@@ -2,7 +2,7 @@
 
 namespace ARK\Spatial\Doctrine\Types;
 
-use ARK\Spatial\Proxy\GeometryCollectionProxy;
+use ARK\Spatial\Geometry\Proxy\GeometryCollectionProxy;
 
 /**
  * Doctrine type for GeometryCollection.

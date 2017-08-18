@@ -2,7 +2,7 @@
 
 namespace ARK\Spatial\Doctrine\Types;
 
-use ARK\Spatial\Proxy\MultiPolygonProxy;
+use ARK\Spatial\Geometry\Proxy\MultiPolygonProxy;
 
 /**
  * Doctrine type for MultiPolygon.

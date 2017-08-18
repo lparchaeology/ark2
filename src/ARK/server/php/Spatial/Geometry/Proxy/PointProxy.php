@@ -1,16 +1,15 @@
 <?php
 
-namespace ARK\Spatial\Proxy;
+namespace ARK\Spatial\Geometry\Proxy;
 
-use ARK\Spatial\Geometry\Polygon;
+use ARK\Spatial\Geometry\Point;
 
 /**
- * Proxy class for Polygon.
+ * Proxy class for Point.
  */
-class PolygonProxy extends Polygon implements ProxyInterface
+class PointProxy extends Point implements ProxyInterface
 {
     use GeometryProxyTrait;
-    use PolygonProxyTrait;
 
     /**
      * Class constructor.
@@ -29,7 +28,7 @@ class PolygonProxy extends Polygon implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function getGeometry() : Polygon
+    public function getGeometry() : Point
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -41,7 +40,7 @@ class PolygonProxy extends Polygon implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromText(string $wkt, int $srid = 0) : PolygonProxy
+    public static function fromText(string $wkt, int $srid = 0) : PointProxy
     {
         return new self($wkt, false, $srid);
     }
@@ -49,9 +48,57 @@ class PolygonProxy extends Polygon implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromBinary(string $wkb, int $srid = 0) : PolygonProxy
+    public static function fromBinary(string $wkb, int $srid = 0) : PointProxy
     {
         return new self($wkb, true, $srid);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function x() : ?float
+    {
+        if ($this->proxyGeometry === null) {
+            $this->load();
+        }
+
+        return $this->proxyGeometry->x();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function y() : ?float
+    {
+        if ($this->proxyGeometry === null) {
+            $this->load();
+        }
+
+        return $this->proxyGeometry->y();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function z() : ?float
+    {
+        if ($this->proxyGeometry === null) {
+            $this->load();
+        }
+
+        return $this->proxyGeometry->z();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function m() : ?float
+    {
+        if ($this->proxyGeometry === null) {
+            $this->load();
+        }
+
+        return $this->proxyGeometry->m();
     }
 
     /**
@@ -66,7 +113,7 @@ class PolygonProxy extends Polygon implements ProxyInterface
     private function load() : void
     {
         $this->proxyGeometry = $this->proxyIsBinary
-            ? Polygon::fromBinary($this->proxyData, $this->proxySRID)
-            : Polygon::fromText($this->proxyData, $this->proxySRID);
+            ? Point::fromBinary($this->proxyData, $this->proxySRID)
+            : Point::fromText($this->proxyData, $this->proxySRID);
     }
 }

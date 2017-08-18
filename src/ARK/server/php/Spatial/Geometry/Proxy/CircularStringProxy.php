@@ -1,15 +1,16 @@
 <?php
 
-namespace ARK\Spatial\Proxy;
+namespace ARK\Spatial\Geometry\Proxy;
 
-use ARK\Spatial\Geometry\Surface;
+use ARK\Spatial\Geometry\CircularString;
 
 /**
- * Proxy class for Surface.
+ * Proxy class for CircularString.
  */
-class SurfaceProxy extends Surface implements ProxyInterface
+class CircularStringProxy extends CircularString implements ProxyInterface
 {
     use GeometryProxyTrait;
+    use CurveProxyTrait;
 
     /**
      * Class constructor.
@@ -28,7 +29,7 @@ class SurfaceProxy extends Surface implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function getGeometry() : Surface
+    public function getGeometry() : CircularString
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -40,7 +41,7 @@ class SurfaceProxy extends Surface implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromText(string $wkt, int $srid = 0) : SurfaceProxy
+    public static function fromText(string $wkt, int $srid = 0) : CircularStringProxy
     {
         return new self($wkt, false, $srid);
     }
@@ -48,7 +49,7 @@ class SurfaceProxy extends Surface implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromBinary(string $wkb, int $srid = 0) : SurfaceProxy
+    public static function fromBinary(string $wkb, int $srid = 0) : CircularStringProxy
     {
         return new self($wkb, true, $srid);
     }
@@ -65,7 +66,7 @@ class SurfaceProxy extends Surface implements ProxyInterface
     private function load() : void
     {
         $this->proxyGeometry = $this->proxyIsBinary
-            ? Surface::fromBinary($this->proxyData, $this->proxySRID)
-            : Surface::fromText($this->proxyData, $this->proxySRID);
+            ? CircularString::fromBinary($this->proxyData, $this->proxySRID)
+            : CircularString::fromText($this->proxyData, $this->proxySRID);
     }
 }

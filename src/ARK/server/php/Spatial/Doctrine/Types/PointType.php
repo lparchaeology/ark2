@@ -2,7 +2,7 @@
 
 namespace ARK\Spatial\Doctrine\Types;
 
-use ARK\Spatial\Proxy\PointProxy;
+use ARK\Spatial\Geometry\Proxy\PointProxy;
 
 /**
  * Doctrine type for Point.

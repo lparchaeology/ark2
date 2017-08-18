@@ -2,7 +2,7 @@
 
 namespace ARK\Spatial\Doctrine\Types;
 
-use ARK\Spatial\Proxy\LineStringProxy;
+use ARK\Spatial\Geometry\Proxy\LineStringProxy;
 
 /**
  * Doctrine type for LineString.

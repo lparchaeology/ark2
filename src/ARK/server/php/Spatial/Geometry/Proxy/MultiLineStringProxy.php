@@ -1,16 +1,16 @@
 <?php
 
-namespace ARK\Spatial\Proxy;
+namespace ARK\Spatial\Geometry\Proxy;
 
-use ARK\Spatial\Geometry\PolyhedralSurface;
+use ARK\Spatial\Geometry\MultiLineString;
 
 /**
- * Proxy class for PolyhedralSurface.
+ * Proxy class for MultiLineString.
  */
-class PolyhedralSurfaceProxy extends PolyhedralSurface implements ProxyInterface
+class MultiLineStringProxy extends MultiLineString implements ProxyInterface
 {
     use GeometryProxyTrait;
-    use SurfaceProxyTrait;
+    use GeometryCollectionProxyTrait;
 
     /**
      * Class constructor.
@@ -29,7 +29,7 @@ class PolyhedralSurfaceProxy extends PolyhedralSurface implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function getGeometry() : PolyhedralSurface
+    public function getGeometry() : MultiLineString
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -41,7 +41,7 @@ class PolyhedralSurfaceProxy extends PolyhedralSurface implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromText(string $wkt, int $srid = 0) : PolyhedralSurfaceProxy
+    public static function fromText(string $wkt, int $srid = 0) : MultiLineStringProxy
     {
         return new self($wkt, false, $srid);
     }
@@ -49,7 +49,7 @@ class PolyhedralSurfaceProxy extends PolyhedralSurface implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromBinary(string $wkb, int $srid = 0) : PolyhedralSurfaceProxy
+    public static function fromBinary(string $wkb, int $srid = 0) : MultiLineStringProxy
     {
         return new self($wkb, true, $srid);
     }
@@ -66,7 +66,7 @@ class PolyhedralSurfaceProxy extends PolyhedralSurface implements ProxyInterface
     private function load() : void
     {
         $this->proxyGeometry = $this->proxyIsBinary
-            ? PolyhedralSurface::fromBinary($this->proxyData, $this->proxySRID)
-            : PolyhedralSurface::fromText($this->proxyData, $this->proxySRID);
+            ? MultiLineString::fromBinary($this->proxyData, $this->proxySRID)
+            : MultiLineString::fromText($this->proxyData, $this->proxySRID);
     }
 }

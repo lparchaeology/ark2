@@ -1,16 +1,16 @@
 <?php
 
-namespace ARK\Spatial\Proxy;
+namespace ARK\Spatial\Geometry\Proxy;
 
-use ARK\Spatial\Geometry\GeometryCollection;
+use ARK\Spatial\Geometry\LineString;
 
 /**
- * Proxy class for GeometryCollection.
+ * Proxy class for LineString.
  */
-class GeometryCollectionProxy extends GeometryCollection implements ProxyInterface
+class LineStringProxy extends LineString implements ProxyInterface
 {
     use GeometryProxyTrait;
-    use GeometryCollectionProxyTrait;
+    use CurveProxyTrait;
 
     /**
      * Class constructor.
@@ -21,15 +21,15 @@ class GeometryCollectionProxy extends GeometryCollection implements ProxyInterfa
      */
     public function __construct(string $data, bool $isBinary, int $srid = 0)
     {
-        $this->proxyData = (string) $data;
-        $this->proxyIsBinary = (bool) $isBinary;
-        $this->proxySRID = (int) $srid;
+        $this->proxyData = $data;
+        $this->proxyIsBinary = $isBinary;
+        $this->proxySRID = $srid;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getGeometry() : GeometryCollection
+    public function getGeometry() : LineString
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -41,7 +41,7 @@ class GeometryCollectionProxy extends GeometryCollection implements ProxyInterfa
     /**
      * {@inheritdoc}
      */
-    public static function fromText(string $wkt, int $srid = 0) : GeometryCollectionProxy
+    public static function fromText(string $wkt, int $srid = 0) : LineStringProxy
     {
         return new self($wkt, false, $srid);
     }
@@ -49,7 +49,7 @@ class GeometryCollectionProxy extends GeometryCollection implements ProxyInterfa
     /**
      * {@inheritdoc}
      */
-    public static function fromBinary(string $wkb, int $srid = 0) : GeometryCollectionProxy
+    public static function fromBinary(string $wkb, int $srid = 0) : LineStringProxy
     {
         return new self($wkb, true, $srid);
     }
@@ -66,7 +66,7 @@ class GeometryCollectionProxy extends GeometryCollection implements ProxyInterfa
     private function load() : void
     {
         $this->proxyGeometry = $this->proxyIsBinary
-            ? GeometryCollection::fromBinary($this->proxyData, $this->proxySRID)
-            : GeometryCollection::fromText($this->proxyData, $this->proxySRID);
+            ? LineString::fromBinary($this->proxyData, $this->proxySRID)
+            : LineString::fromText($this->proxyData, $this->proxySRID);
     }
 }

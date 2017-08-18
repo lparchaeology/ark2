@@ -1,13 +1,13 @@
 <?php
 
-namespace ARK\Spatial\Proxy;
+namespace ARK\Spatial\Geometry\Proxy;
 
-use ARK\Spatial\Geometry\Point;
+use ARK\Spatial\Geometry\Surface;
 
 /**
- * Proxy class for Point.
+ * Proxy class for Surface.
  */
-class PointProxy extends Point implements ProxyInterface
+class SurfaceProxy extends Surface implements ProxyInterface
 {
     use GeometryProxyTrait;
 
@@ -28,7 +28,7 @@ class PointProxy extends Point implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function getGeometry() : Point
+    public function getGeometry() : Surface
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -40,7 +40,7 @@ class PointProxy extends Point implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromText(string $wkt, int $srid = 0) : PointProxy
+    public static function fromText(string $wkt, int $srid = 0) : SurfaceProxy
     {
         return new self($wkt, false, $srid);
     }
@@ -48,57 +48,9 @@ class PointProxy extends Point implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromBinary(string $wkb, int $srid = 0) : PointProxy
+    public static function fromBinary(string $wkb, int $srid = 0) : SurfaceProxy
     {
         return new self($wkb, true, $srid);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function x() : ?float
-    {
-        if ($this->proxyGeometry === null) {
-            $this->load();
-        }
-
-        return $this->proxyGeometry->x();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function y() : ?float
-    {
-        if ($this->proxyGeometry === null) {
-            $this->load();
-        }
-
-        return $this->proxyGeometry->y();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function z() : ?float
-    {
-        if ($this->proxyGeometry === null) {
-            $this->load();
-        }
-
-        return $this->proxyGeometry->z();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function m() : ?float
-    {
-        if ($this->proxyGeometry === null) {
-            $this->load();
-        }
-
-        return $this->proxyGeometry->m();
     }
 
     /**
@@ -113,7 +65,7 @@ class PointProxy extends Point implements ProxyInterface
     private function load() : void
     {
         $this->proxyGeometry = $this->proxyIsBinary
-            ? Point::fromBinary($this->proxyData, $this->proxySRID)
-            : Point::fromText($this->proxyData, $this->proxySRID);
+            ? Surface::fromBinary($this->proxyData, $this->proxySRID)
+            : Surface::fromText($this->proxyData, $this->proxySRID);
     }
 }

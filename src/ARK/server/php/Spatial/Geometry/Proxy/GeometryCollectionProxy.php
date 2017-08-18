@@ -1,13 +1,13 @@
 <?php
 
-namespace ARK\Spatial\Proxy;
+namespace ARK\Spatial\Geometry\Proxy;
 
-use ARK\Spatial\Geometry\MultiSurface;
+use ARK\Spatial\Geometry\GeometryCollection;
 
 /**
- * Proxy class for MultiSurface.
+ * Proxy class for GeometryCollection.
  */
-class MultiSurfaceProxy extends MultiSurface implements ProxyInterface
+class GeometryCollectionProxy extends GeometryCollection implements ProxyInterface
 {
     use GeometryProxyTrait;
     use GeometryCollectionProxyTrait;
@@ -21,15 +21,15 @@ class MultiSurfaceProxy extends MultiSurface implements ProxyInterface
      */
     public function __construct(string $data, bool $isBinary, int $srid = 0)
     {
-        $this->proxyData = $data;
-        $this->proxyIsBinary = $isBinary;
-        $this->proxySRID = $srid;
+        $this->proxyData = (string) $data;
+        $this->proxyIsBinary = (bool) $isBinary;
+        $this->proxySRID = (int) $srid;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getGeometry() : MultiSurface
+    public function getGeometry() : GeometryCollection
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -41,7 +41,7 @@ class MultiSurfaceProxy extends MultiSurface implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromText(string $wkt, int $srid = 0) : MultiSurfaceProxy
+    public static function fromText(string $wkt, int $srid = 0) : GeometryCollectionProxy
     {
         return new self($wkt, false, $srid);
     }
@@ -49,7 +49,7 @@ class MultiSurfaceProxy extends MultiSurface implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromBinary(string $wkb, int $srid = 0) : MultiSurfaceProxy
+    public static function fromBinary(string $wkb, int $srid = 0) : GeometryCollectionProxy
     {
         return new self($wkb, true, $srid);
     }
@@ -66,7 +66,7 @@ class MultiSurfaceProxy extends MultiSurface implements ProxyInterface
     private function load() : void
     {
         $this->proxyGeometry = $this->proxyIsBinary
-            ? MultiSurface::fromBinary($this->proxyData, $this->proxySRID)
-            : MultiSurface::fromText($this->proxyData, $this->proxySRID);
+            ? GeometryCollection::fromBinary($this->proxyData, $this->proxySRID)
+            : GeometryCollection::fromText($this->proxyData, $this->proxySRID);
     }
 }

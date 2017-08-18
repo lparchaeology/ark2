@@ -1,16 +1,16 @@
 <?php
 
-namespace ARK\Spatial\Proxy;
+namespace ARK\Spatial\Geometry\Proxy;
 
-use ARK\Spatial\Geometry\MultiPoint;
+use ARK\Spatial\Geometry\CompoundCurve;
 
 /**
- * Proxy class for MultiPoint.
+ * Proxy class for CompoundCurve.
  */
-class MultiPointProxy extends MultiPoint implements ProxyInterface
+class CompoundCurveProxy extends CompoundCurve implements ProxyInterface
 {
     use GeometryProxyTrait;
-    use GeometryCollectionProxyTrait;
+    use CurveProxyTrait;
 
     /**
      * Class constructor.
@@ -29,7 +29,7 @@ class MultiPointProxy extends MultiPoint implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function getGeometry() : MultiPoint
+    public function getGeometry() : CompoundCurve
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -41,7 +41,7 @@ class MultiPointProxy extends MultiPoint implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromText(string $wkt, int $srid = 0) : MultiPointProxy
+    public static function fromText(string $wkt, int $srid = 0) : CompoundCurveProxy
     {
         return new self($wkt, false, $srid);
     }
@@ -49,7 +49,7 @@ class MultiPointProxy extends MultiPoint implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromBinary(string $wkb, int $srid = 0) : MultiPointProxy
+    public static function fromBinary(string $wkb, int $srid = 0) : CompoundCurveProxy
     {
         return new self($wkb, true, $srid);
     }
@@ -66,7 +66,7 @@ class MultiPointProxy extends MultiPoint implements ProxyInterface
     private function load() : void
     {
         $this->proxyGeometry = $this->proxyIsBinary
-            ? MultiPoint::fromBinary($this->proxyData, $this->proxySRID)
-            : MultiPoint::fromText($this->proxyData, $this->proxySRID);
+            ? CompoundCurve::fromBinary($this->proxyData, $this->proxySRID)
+            : CompoundCurve::fromText($this->proxyData, $this->proxySRID);
     }
 }
