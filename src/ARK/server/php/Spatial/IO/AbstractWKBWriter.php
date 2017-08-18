@@ -3,16 +3,16 @@
 namespace ARK\Spatial\IO;
 
 use ARK\Spatial\Exception\GeometryIOException;
-use ARK\Spatial\CircularString;
-use ARK\Spatial\CompoundCurve;
-use ARK\Spatial\Curve;
-use ARK\Spatial\CurvePolygon;
-use ARK\Spatial\Geometry;
-use ARK\Spatial\GeometryCollection;
-use ARK\Spatial\LineString;
-use ARK\Spatial\Point;
-use ARK\Spatial\Polygon;
-use ARK\Spatial\PolyhedralSurface;
+use ARK\Spatial\Geometry\CircularString;
+use ARK\Spatial\Geometry\CompoundCurve;
+use ARK\Spatial\Geometry\Curve;
+use ARK\Spatial\Geometry\CurvePolygon;
+use ARK\Spatial\Geometry\Geometry;
+use ARK\Spatial\Geometry\GeometryCollection;
+use ARK\Spatial\Geometry\LineString;
+use ARK\Spatial\Geometry\Point;
+use ARK\Spatial\Geometry\Polygon;
+use ARK\Spatial\Geometry\PolyhedralSurface;
 
 /**
  * Base class for WKBWriter and EWKBWriter.
@@ -22,12 +22,12 @@ abstract class AbstractWKBWriter
     /**
      * The output byte order, BIG_ENDIAN or LITTLE_ENDIAN.
      *
-     * @var integer
+     * @var int
      */
     private $byteOrder;
 
     /**
-     * @var integer
+     * @var int
      */
     private $machineByteOrder;
 
@@ -40,39 +40,36 @@ abstract class AbstractWKBWriter
     }
 
     /**
-     * @param integer $byteOrder The byte order, one of the BIG_ENDIAN or LITTLE_ENDIAN constants.
+     * @param int $byteOrder the byte order, one of the BIG_ENDIAN or LITTLE_ENDIAN constants
      *
-     * @return void
      *
-     * @throws \InvalidArgumentException If the byte order is invalid.
+     * @throws \InvalidArgumentException if the byte order is invalid
      */
-    public function setByteOrder($byteOrder)
+    public function setByteOrder(int $byteOrder) : void
     {
         WKBTools::checkByteOrder($byteOrder);
         $this->byteOrder = $byteOrder;
     }
 
     /**
-     * @param Geometry $geometry The geometry to export as WKB.
+     * @param Geometry $geometry the geometry to export as WKB
      *
-     * @return string The WKB representation of the given geometry.
-     *
-     * @throws GeometryIOException If the given geometry cannot be exported as WKB.
+     * @throws GeometryIOException if the given geometry cannot be exported as WKB
+     * @return string              the WKB representation of the given geometry
      */
-    public function write(Geometry $geometry)
+    public function write(Geometry $geometry) : string
     {
         return $this->doWrite($geometry, true);
     }
 
     /**
-     * @param Geometry $geometry The geometry export as WKB write.
-     * @param boolean  $outer    False if the geometry is nested in another geometry, true otherwise.
+     * @param Geometry $geometry the geometry export as WKB write
+     * @param bool     $outer    false if the geometry is nested in another geometry, true otherwise
      *
-     * @return string The WKB representation of the given geometry.
-     *
-     * @throws GeometryIOException If the given geometry cannot be exported as WKT.
+     * @throws GeometryIOException if the given geometry cannot be exported as WKT
+     * @return string              the WKB representation of the given geometry
      */
-    protected function doWrite(Geometry $geometry, $outer)
+    protected function doWrite(Geometry $geometry, bool $outer) : string
     {
         if ($geometry instanceof Point) {
             return $this->writePoint($geometry, $outer);
@@ -110,21 +107,29 @@ abstract class AbstractWKBWriter
     }
 
     /**
-     * @return string
-     */
-    private function packByteOrder()
-    {
-        return pack('C', $this->byteOrder);
-    }
-
-    /**
-     * @param integer $uint
+     * @param int $uint
      *
      * @return string
      */
-    protected function packUnsignedInteger($uint)
+    protected function packUnsignedInteger(int $uint) : string
     {
         return pack($this->byteOrder === WKBTools::BIG_ENDIAN ? 'N' : 'V', $uint);
+    }
+
+    /**
+     * @param Geometry $geometry
+     * @param bool     $outer
+     *
+     * @return string
+     */
+    abstract protected function packHeader(Geometry $geometry, bool $outer) : string;
+
+    /**
+     * @return string
+     */
+    private function packByteOrder() : string
+    {
+        return pack('C', $this->byteOrder);
     }
 
     /**
@@ -132,7 +137,7 @@ abstract class AbstractWKBWriter
      *
      * @return string
      */
-    private function packDouble($double)
+    private function packDouble(float $double) : string
     {
         $binary = pack('d', $double);
 
@@ -146,17 +151,16 @@ abstract class AbstractWKBWriter
     /**
      * @param Point $point
      *
-     * @return string
-     *
      * @throws GeometryIOException
+     * @return string
      */
-    private function packPoint(Point $point)
+    private function packPoint(Point $point) : string
     {
         if ($point->isEmpty()) {
             throw new GeometryIOException('Empty points have no WKB representation.');
         }
 
-        $binary = $this->packDouble($point->x()) . $this->packDouble($point->y());
+        $binary = $this->packDouble($point->x()).$this->packDouble($point->y());
 
         if (null !== $z = $point->z()) {
             $binary .= $this->packDouble($z);
@@ -173,7 +177,7 @@ abstract class AbstractWKBWriter
      *
      * @return string
      */
-    private function packCurve(Curve $curve)
+    private function packCurve(Curve $curve) : string
     {
         $wkb = $this->packUnsignedInteger($curve->count());
 
@@ -185,46 +189,46 @@ abstract class AbstractWKBWriter
     }
 
     /**
-     * @param Point   $point
-     * @param boolean $outer
+     * @param Point $point
+     * @param bool  $outer
      *
      * @return string
      */
-    private function writePoint(Point $point, $outer)
+    private function writePoint(Point $point, $outer) : string
     {
         $wkb = $this->packByteOrder();
-        $wkb.= $this->packHeader($point, $outer);
-        $wkb.= $this->packPoint($point);
+        $wkb .= $this->packHeader($point, $outer);
+        $wkb .= $this->packPoint($point);
 
         return $wkb;
     }
 
     /**
-     * @param Curve   $curve
-     * @param boolean $outer
+     * @param Curve $curve
+     * @param bool  $outer
      *
      * @return string
      */
-    private function writeCurve(Curve $curve, $outer)
+    private function writeCurve(Curve $curve, bool $outer) : string
     {
         $wkb = $this->packByteOrder();
-        $wkb.= $this->packHeader($curve, $outer);
-        $wkb.= $this->packCurve($curve);
+        $wkb .= $this->packHeader($curve, $outer);
+        $wkb .= $this->packCurve($curve);
 
         return $wkb;
     }
 
     /**
      * @param Polygon $polygon
-     * @param boolean $outer
+     * @param bool    $outer
      *
      * @return string
      */
-    private function writePolygon(Polygon $polygon, $outer)
+    private function writePolygon(Polygon $polygon, bool $outer) : string
     {
         $wkb = $this->packByteOrder();
-        $wkb.= $this->packHeader($polygon, $outer);
-        $wkb.= $this->packUnsignedInteger($polygon->count());
+        $wkb .= $this->packHeader($polygon, $outer);
+        $wkb .= $this->packUnsignedInteger($polygon->count());
 
         foreach ($polygon as $ring) {
             $wkb .= $this->packCurve($ring);
@@ -235,15 +239,15 @@ abstract class AbstractWKBWriter
 
     /**
      * @param Geometry $collection
-     * @param boolean  $outer
+     * @param bool     $outer
      *
      * @return string
      */
-    private function writeComposedGeometry(Geometry $collection, $outer)
+    private function writeComposedGeometry(Geometry $collection, bool $outer) : string
     {
         $wkb = $this->packByteOrder();
-        $wkb.= $this->packHeader($collection, $outer);
-        $wkb.= $this->packUnsignedInteger($collection->count());
+        $wkb .= $this->packHeader($collection, $outer);
+        $wkb .= $this->packUnsignedInteger($collection->count());
 
         foreach ($collection as $geometry) {
             $wkb .= $this->doWrite($geometry, false);
@@ -251,12 +255,4 @@ abstract class AbstractWKBWriter
 
         return $wkb;
     }
-
-    /**
-     * @param Geometry $geometry
-     * @param boolean  $outer
-     *
-     * @return string
-     */
-    abstract protected function packHeader(Geometry $geometry, $outer);
 }

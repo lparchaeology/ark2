@@ -4,7 +4,7 @@ namespace ARK\Spatial\Engine;
 
 use ARK\Spatial\Exception\GeometryEngineException;
 use ARK\Spatial\Exception\SQLite3Exception;
-use ARK\Spatial\Geometry;
+use ARK\Spatial\Geometry\Geometry;
 
 /**
  * Database engine based on a SQLite3 driver.
@@ -29,18 +29,18 @@ class SQLite3Engine extends DatabaseEngine
 
     /**
      * @param \SQLite3 $sqlite3
-     * @param boolean  $useProxy
+     * @param bool     $useProxy
      */
-    public function __construct(\SQLite3 $sqlite3, $useProxy = true)
+    public function __construct(\SQLite3 $sqlite3, bool $useProxy = true)
     {
-        $this->sqlite3  = $sqlite3;
+        $this->sqlite3 = $sqlite3;
         $this->useProxy = $useProxy;
     }
 
     /**
      * @return \SQLite3
      */
-    public function getSQLite3()
+    public function getSQLite3() : \SQLite3
     {
         return $this->sqlite3;
     }
@@ -48,7 +48,7 @@ class SQLite3Engine extends DatabaseEngine
     /**
      * {@inheritdoc}
      */
-    protected function executeQuery($query, array $parameters)
+    protected function executeQuery(string $query, iterable $parameters) : iterable
     {
         if (isset($this->statements[$query])) {
             $statement = $this->statements[$query];
@@ -70,13 +70,11 @@ class SQLite3Engine extends DatabaseEngine
                 if ($errorCode === 1) {
                     // SQL error cause by a missing function, this must be reported with a GeometryEngineException.
                     throw GeometryEngineException::operationNotSupportedByEngine($exception);
-                } else {
-                    // Other SQLite3 error; we cannot trigger the original E_WARNING, so we throw this exception instead.
-                    throw $exception;
                 }
-            } else {
-                $this->statements[$query] = $statement;
+                // Other SQLite3 error; we cannot trigger the original E_WARNING, so we throw this exception instead.
+                throw $exception;
             }
+            $this->statements[$query] = $statement;
         }
 
         $index = 1;

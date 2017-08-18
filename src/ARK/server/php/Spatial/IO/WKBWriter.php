@@ -2,7 +2,7 @@
 
 namespace ARK\Spatial\IO;
 
-use ARK\Spatial\Geometry;
+use ARK\Spatial\Geometry\Geometry;
 
 /**
  * Writes geometries in the WKB format.
@@ -12,7 +12,7 @@ class WKBWriter extends AbstractWKBWriter
     /**
      * {@inheritdoc}
      */
-    protected function packHeader(Geometry $geometry, $outer)
+    protected function packHeader(Geometry $geometry, bool $outer) : string
     {
         $geometryType = $geometry->geometryTypeBinary();
 

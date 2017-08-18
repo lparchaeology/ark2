@@ -2,11 +2,10 @@
 
 namespace ARK\Spatial\Doctrine\Types;
 
-use ARK\Spatial\Geometry;
+use ARK\Spatial\Geometry\Geometry;
 use ARK\Spatial\Proxy\GeometryProxy;
-
-use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\Type;
 
 /**
  * Doctrine type for Geometry.
@@ -24,22 +23,14 @@ class GeometryType extends Type
      *
      * @see http://www.doctrine-project.org/jira/browse/DDC-3319
      *
-     * @var integer
+     * @var int
      */
     public static $srid = 0;
 
     /**
-     * @return string
-     */
-    protected function getProxyClassName()
-    {
-        return GeometryProxy::class;
-    }
-
-    /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName() : string
     {
         return 'Geometry';
     }
@@ -47,7 +38,7 @@ class GeometryType extends Type
     /**
      * {@inheritdoc}
      */
-    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform) : string
     {
         if ($platform->getName() === 'postgresql') {
             return 'GEOMETRY';
@@ -95,7 +86,7 @@ class GeometryType extends Type
     /**
      * {@inheritdoc}
      */
-    public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform)
+    public function convertToDatabaseValueSQL(string $sqlExpr, AbstractPlatform $platform) : string
     {
         return sprintf('ST_GeomFromWKB(%s, %d)', $sqlExpr, self::$srid);
     }
@@ -103,7 +94,7 @@ class GeometryType extends Type
     /**
      * {@inheritdoc}
      */
-    public function convertToPHPValueSQL($sqlExpr, $platform)
+    public function convertToPHPValueSQL(string $sqlExpr, $platform) : string
     {
         return sprintf('ST_AsBinary(%s)', $sqlExpr);
     }
@@ -111,7 +102,7 @@ class GeometryType extends Type
     /**
      * {@inheritdoc}
      */
-    public function canRequireSQLConversion()
+    public function canRequireSQLConversion() : bool
     {
         return true;
     }
@@ -119,7 +110,7 @@ class GeometryType extends Type
     /**
      * {@inheritdoc}
      */
-    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    public function requiresSQLCommentHint(AbstractPlatform $platform) : bool
     {
         return true;
     }
@@ -127,8 +118,16 @@ class GeometryType extends Type
     /**
      * {@inheritdoc}
      */
-    public function getBindingType()
+    public function getBindingType() : int
     {
         return \PDO::PARAM_LOB;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getProxyClassName() : string
+    {
+        return GeometryProxy::class;
     }
 }

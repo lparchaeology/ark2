@@ -26,18 +26,18 @@ class CompoundCurve extends Curve
      *
      * The coordinate system of each of the curves must match the one of the CompoundCurve.
      *
-     * @param CoordinateSystem $cs        The coordinate system of the CompoundCurve.
+     * @param CoordinateSystem $cs        the coordinate system of the CompoundCurve
      * @param Curve            ...$curves The curves that compose the CompoundCurve.
      *
-     * @throws EmptyGeometryException    If any of the input curves is empty.
-     * @throws InvalidGeometryException  If the compound curve is not continuous.
-     * @throws CoordinateSystemException If different coordinate systems are used.
+     * @throws EmptyGeometryException    if any of the input curves is empty
+     * @throws InvalidGeometryException  if the compound curve is not continuous
+     * @throws CoordinateSystemException if different coordinate systems are used
      */
     public function __construct(CoordinateSystem $cs, Curve ...$curves)
     {
-        parent::__construct($cs, ! $curves);
+        parent::__construct($cs, !$curves);
 
-        if (! $curves) {
+        if (!$curves) {
             return;
         }
 
@@ -51,7 +51,7 @@ class CompoundCurve extends Curve
                 $endPoint = $previousCurve->endPoint();
                 $startPoint = $curve->startPoint();
 
-                if ($endPoint != $startPoint) { // on purpose by-value comparison!
+                if ($endPoint !== $startPoint) { // on purpose by-value comparison!
                     throw new InvalidGeometryException('Incontinuous compound curve.');
                 }
             }
@@ -65,24 +65,23 @@ class CompoundCurve extends Curve
     /**
      * Creates a non-empty CompoundCurve composed of the given curves.
      *
-     * @param Curve    $curve1 The first curve.
+     * @param Curve $curve1    the first curve
      * @param Curve ...$curveN The subsequent curves, if any.
      *
+     * @throws EmptyGeometryException    if any of the input curves is empty
+     * @throws InvalidGeometryException  if the compound curve is not continuous
+     * @throws CoordinateSystemException if the curves use different coordinate systems
      * @return CompoundCurve
-     *
-     * @throws EmptyGeometryException    If any of the input curves is empty.
-     * @throws InvalidGeometryException  If the compound curve is not continuous.
-     * @throws CoordinateSystemException If the curves use different coordinate systems.
      */
-    public static function of(Curve $curve1, Curve ...$curveN)
+    public static function of(Curve $curve1, Curve ...$curveN) : CompoundCurve
     {
-        return new CompoundCurve($curve1->coordinateSystem(), $curve1, ...$curveN);
+        return new self($curve1->coordinateSystem(), $curve1, ...$curveN);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function startPoint()
+    public function startPoint() : Point
     {
         if ($this->isEmpty) {
             throw new EmptyGeometryException('The CompoundCurve is empty and has no start point.');
@@ -94,7 +93,7 @@ class CompoundCurve extends Curve
     /**
      * {@inheritdoc}
      */
-    public function endPoint()
+    public function endPoint() : Point
     {
         if ($this->isEmpty) {
             throw new EmptyGeometryException('The CompoundCurve is empty and has no end point.');
@@ -108,9 +107,9 @@ class CompoundCurve extends Curve
     /**
      * Returns the number of Curves in this CompoundCurve.
      *
-     * @return integer
+     * @return int
      */
-    public function numCurves()
+    public function numCurves() : int
     {
         return count($this->curves);
     }
@@ -118,18 +117,17 @@ class CompoundCurve extends Curve
     /**
      * Returns the specified Curve N in this CompoundCurve.
      *
-     * @param integer $n The curve number, 1-based.
+     * @param int $n the curve number, 1-based
      *
+     * @throws NoSuchGeometryException if there is no Curve at this index
      * @return Curve
-     *
-     * @throws NoSuchGeometryException If there is no Curve at this index.
      */
-    public function curveN($n)
+    public function curveN($n) : int
     {
         $n = (int) $n;
 
-        if (! isset($this->curves[$n - 1])) {
-            throw new NoSuchGeometryException('There is no Curve in this CompoundCurve at index ' . $n);
+        if (!isset($this->curves[$n - 1])) {
+            throw new NoSuchGeometryException('There is no Curve in this CompoundCurve at index '.$n);
         }
 
         return $this->curves[$n - 1];
@@ -140,7 +138,7 @@ class CompoundCurve extends Curve
      *
      * @return Curve[]
      */
-    public function curves()
+    public function curves() : iterable
     {
         return $this->curves;
     }
@@ -150,7 +148,7 @@ class CompoundCurve extends Curve
      *
      * {@inheritdoc}
      */
-    public function geometryType()
+    public function geometryType() : string
     {
         return 'CompoundCurve';
     }
@@ -160,7 +158,7 @@ class CompoundCurve extends Curve
      *
      * {@inheritdoc}
      */
-    public function geometryTypeBinary()
+    public function geometryTypeBinary() : int
     {
         return Geometry::COMPOUNDCURVE;
     }
@@ -168,7 +166,7 @@ class CompoundCurve extends Curve
     /**
      * {@inheritdoc}
      */
-    public function toArray()
+    public function toArray() : array
     {
         $result = [];
 
@@ -186,7 +184,7 @@ class CompoundCurve extends Curve
      *
      * {@inheritdoc}
      */
-    public function count()
+    public function count() : int
     {
         return count($this->curves);
     }
@@ -198,7 +196,7 @@ class CompoundCurve extends Curve
      *
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator() : \ArrayIterator
     {
         return new \ArrayIterator($this->curves);
     }

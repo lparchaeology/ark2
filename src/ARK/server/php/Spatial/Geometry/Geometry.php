@@ -8,34 +8,34 @@ use ARK\Spatial\Exception\GeometryEngineException;
 use ARK\Spatial\Exception\GeometryIOException;
 use ARK\Spatial\Exception\InvalidGeometryException;
 use ARK\Spatial\Exception\UnexpectedGeometryException;
-use ARK\Spatial\IO\WKTReader;
-use ARK\Spatial\IO\WKTWriter;
 use ARK\Spatial\IO\WKBReader;
 use ARK\Spatial\IO\WKBWriter;
+use ARK\Spatial\IO\WKTReader;
+use ARK\Spatial\IO\WKTWriter;
 
 /**
  * Geometry is the root class of the hierarchy.
  */
 abstract class Geometry implements \Countable, \IteratorAggregate
 {
-    const GEOMETRY           = 0;
-    const POINT              = 1;
-    const LINESTRING         = 2;
-    const POLYGON            = 3;
-    const MULTIPOINT         = 4;
-    const MULTILINESTRING    = 5;
-    const MULTIPOLYGON       = 6;
-    const GEOMETRYCOLLECTION = 7;
-    const CIRCULARSTRING     = 8;
-    const COMPOUNDCURVE      = 9;
-    const CURVEPOLYGON       = 10;
-    const MULTICURVE         = 11;
-    const MULTISURFACE       = 12;
-    const CURVE              = 13;
-    const SURFACE            = 14;
-    const POLYHEDRALSURFACE  = 15;
-    const TIN                = 16;
-    const TRIANGLE           = 17;
+    public const GEOMETRY = 0;
+    public const POINT = 1;
+    public const LINESTRING = 2;
+    public const POLYGON = 3;
+    public const MULTIPOINT = 4;
+    public const MULTILINESTRING = 5;
+    public const MULTIPOLYGON = 6;
+    public const GEOMETRYCOLLECTION = 7;
+    public const CIRCULARSTRING = 8;
+    public const COMPOUNDCURVE = 9;
+    public const CURVEPOLYGON = 10;
+    public const MULTICURVE = 11;
+    public const MULTISURFACE = 12;
+    public const CURVE = 13;
+    public const SURFACE = 14;
+    public const POLYHEDRALSURFACE = 15;
+    public const TIN = 16;
+    public const TRIANGLE = 17;
 
     /**
      * The coordinate system of this geometry.
@@ -47,20 +47,32 @@ abstract class Geometry implements \Countable, \IteratorAggregate
     /**
      * Whether this geometry is empty.
      *
-     * @var boolean
+     * @var bool
      */
     protected $isEmpty;
 
     /**
      * Class constructor.
      *
-     * @param CoordinateSystem $coordinateSystem The coordinate system of this geometry.
-     * @param boolean          $isEmpty          Whether this geometry is empty. Must be validated as a boolean.
+     * @param CoordinateSystem $coordinateSystem the coordinate system of this geometry
+     * @param bool             $isEmpty          Whether this geometry is empty. Must be validated as a boolean.
      */
-    protected function __construct(CoordinateSystem $coordinateSystem, $isEmpty)
+    protected function __construct(CoordinateSystem $coordinateSystem, bool $isEmpty)
     {
         $this->coordinateSystem = $coordinateSystem;
-        $this->isEmpty          = $isEmpty;
+        $this->isEmpty = $isEmpty;
+    }
+
+    /**
+     * Returns a text representation of this geometry.
+     *
+     * @noproxy
+     *
+     * @return string
+     */
+    final public function __toString() : string
+    {
+        return $this->asText();
     }
 
     /**
@@ -69,17 +81,16 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      * If the resulting geometry is valid but is not an instance of the class this method is called on,
      * for example passing a Polygon WKT to Point::fromText(), an exception is thrown.
      *
-     * @param string  $wkt  The Well-Known Text representation.
-     * @param integer $srid The optional SRID to use.
+     * @param string $wkt  the Well-Known Text representation
+     * @param int    $srid the optional SRID to use
      *
+     * @throws GeometryIOException         if the given string is not a valid WKT representation
+     * @throws CoordinateSystemException   if the WKT contains mixed coordinate systems
+     * @throws InvalidGeometryException    if the WKT represents an invalid geometry
+     * @throws UnexpectedGeometryException if the resulting geometry is not an instance of the current class
      * @return static
-     *
-     * @throws GeometryIOException         If the given string is not a valid WKT representation.
-     * @throws CoordinateSystemException   If the WKT contains mixed coordinate systems.
-     * @throws InvalidGeometryException    If the WKT represents an invalid geometry.
-     * @throws UnexpectedGeometryException If the resulting geometry is not an instance of the current class.
      */
-    public static function fromText($wkt, $srid = 0)
+    public static function fromText(string $wkt, int $srid = 0) : Geometry
     {
         static $wktReader;
 
@@ -89,7 +100,7 @@ abstract class Geometry implements \Countable, \IteratorAggregate
 
         $geometry = $wktReader->read($wkt, $srid);
 
-        if (! $geometry instanceof static) {
+        if (!$geometry instanceof static) {
             throw UnexpectedGeometryException::unexpectedGeometryType(static::class, $geometry);
         }
 
@@ -102,17 +113,16 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      * If the resulting geometry is valid but is not an instance of the class this method is called on,
      * for example passing a Polygon WKB to Point::fromBinary(), an exception is thrown.
      *
-     * @param string  $wkb  The Well-Known Binary representation.
-     * @param integer $srid The optional SRID to use.
+     * @param string $wkb  the Well-Known Binary representation
+     * @param int    $srid the optional SRID to use
      *
+     * @throws GeometryIOException         if the given string is not a valid WKB representation
+     * @throws CoordinateSystemException   if the WKB contains mixed coordinate systems
+     * @throws InvalidGeometryException    if the WKB represents an invalid geometry
+     * @throws UnexpectedGeometryException if the resulting geometry is not an instance of the current class
      * @return static
-     *
-     * @throws GeometryIOException         If the given string is not a valid WKB representation.
-     * @throws CoordinateSystemException   If the WKB contains mixed coordinate systems.
-     * @throws InvalidGeometryException    If the WKB represents an invalid geometry.
-     * @throws UnexpectedGeometryException If the resulting geometry is not an instance of the current class.
      */
-    public static function fromBinary($wkb, $srid = 0)
+    public static function fromBinary(string $wkb, int $srid = 0) : Geometry
     {
         static $wkbReader;
 
@@ -122,7 +132,7 @@ abstract class Geometry implements \Countable, \IteratorAggregate
 
         $geometry = $wkbReader->read($wkb, $srid);
 
-        if (! $geometry instanceof static) {
+        if (!$geometry instanceof static) {
             throw UnexpectedGeometryException::unexpectedGeometryType(static::class, $geometry);
         }
 
@@ -135,9 +145,9 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      * This dimension must be less than or equal to the coordinate dimension.
      * In non-homogeneous collections, this will return the largest topological dimension of the contained objects.
      *
-     * @return integer
+     * @return int
      */
-    abstract public function dimension();
+    abstract public function dimension() : int;
 
     /**
      * Returns the coordinate dimension of this geometry.
@@ -147,9 +157,9 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      * The coordinate dimension can be 2 (for x and y), 3 (with z or m added), or 4 (with both z and m added).
      * The ordinates x, y and z are spatial, and the ordinate m is a measure.
      *
-     * @return integer
+     * @return int
      */
-    public function coordinateDimension()
+    public function coordinateDimension() : int
     {
         return $this->coordinateSystem->coordinateDimension();
     }
@@ -162,9 +172,9 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * The spatial dimension is 3 if the coordinate system has a Z coordinate, 2 otherwise.
      *
-     * @return integer
+     * @return int
      */
-    public function spatialDimension()
+    public function spatialDimension() : int
     {
         return $this->coordinateSystem->spatialDimension();
     }
@@ -174,21 +184,21 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @return string
      */
-    abstract public function geometryType();
+    abstract public function geometryType() : string;
 
     /**
-     * @return integer
+     * @return int
      */
-    abstract public function geometryTypeBinary();
+    abstract public function geometryTypeBinary() : int;
 
     /**
      * Returns the Spatial Reference System ID for this geometry.
      *
      * @noproxy
      *
-     * @return integer The SRID, zero if not set.
+     * @return int the SRID, zero if not set
      */
-    public function SRID()
+    public function SRID() : int
     {
         return $this->coordinateSystem->SRID();
     }
@@ -205,11 +215,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @noproxy
      *
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return Geometry
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
      */
-    public function envelope()
+    public function envelope() : Geometry
     {
         return GeometryEngineRegistry::get()->envelope($this);
     }
@@ -221,7 +230,7 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @return string
      */
-    public function asText()
+    public function asText() : string
     {
         static $wktWriter;
 
@@ -239,7 +248,7 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @return string
      */
-    public function asBinary()
+    public function asBinary() : string
     {
         static $wkbWriter;
 
@@ -255,9 +264,9 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * If true, then this geometry represents the empty point set for the coordinate space.
      *
-     * @return boolean
+     * @return bool
      */
-    public function isEmpty()
+    public function isEmpty() : bool
     {
         return $this->isEmpty;
     }
@@ -269,11 +278,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @noproxy
      *
-     * @return boolean
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
+     * @return bool
      */
-    public function isValid()
+    public function isValid() : bool
     {
         return GeometryEngineRegistry::get()->isValid($this);
     }
@@ -286,11 +294,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @noproxy
      *
-     * @return boolean
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
+     * @return bool
      */
-    public function isSimple()
+    public function isSimple() : bool
     {
         return GeometryEngineRegistry::get()->isSimple($this);
     }
@@ -298,9 +305,9 @@ abstract class Geometry implements \Countable, \IteratorAggregate
     /**
      * Returns whether this geometry has z coordinate values.
      *
-     * @return boolean
+     * @return bool
      */
-    public function is3D()
+    public function is3D() : bool
     {
         return $this->coordinateSystem->hasZ();
     }
@@ -308,9 +315,9 @@ abstract class Geometry implements \Countable, \IteratorAggregate
     /**
      * Returns whether this geometry has m coordinate values.
      *
-     * @return boolean
+     * @return bool
      */
-    public function isMeasured()
+    public function isMeasured() : bool
     {
         return $this->coordinateSystem->hasM();
     }
@@ -323,11 +330,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @noproxy
      *
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return Geometry
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
      */
-    public function boundary()
+    public function boundary() : Geometry
     {
         return GeometryEngineRegistry::get()->boundary($this);
     }
@@ -339,11 +345,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @param Geometry $geometry
      *
-     * @return boolean
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
+     * @return bool
      */
-    public function equals(Geometry $geometry)
+    public function equals(Geometry $geometry) : bool
     {
         return GeometryEngineRegistry::get()->equals($this, $geometry);
     }
@@ -358,11 +363,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @param Geometry $geometry
      *
-     * @return boolean
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
+     * @return bool
      */
-    public function disjoint(Geometry $geometry)
+    public function disjoint(Geometry $geometry) : bool
     {
         return GeometryEngineRegistry::get()->disjoint($this, $geometry);
     }
@@ -377,11 +381,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @param Geometry $geometry
      *
-     * @return boolean
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
+     * @return bool
      */
-    public function intersects(Geometry $geometry)
+    public function intersects(Geometry $geometry) : bool
     {
         return GeometryEngineRegistry::get()->intersects($this, $geometry);
     }
@@ -395,11 +398,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @param Geometry $geometry
      *
-     * @return boolean
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
+     * @return bool
      */
-    public function touches(Geometry $geometry)
+    public function touches(Geometry $geometry) : bool
     {
         return GeometryEngineRegistry::get()->touches($this, $geometry);
     }
@@ -413,11 +415,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @param Geometry $geometry
      *
-     * @return boolean
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
+     * @return bool
      */
-    public function crosses(Geometry $geometry)
+    public function crosses(Geometry $geometry) : bool
     {
         return GeometryEngineRegistry::get()->crosses($this, $geometry);
     }
@@ -431,11 +432,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @param Geometry $geometry
      *
-     * @return boolean
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
+     * @return bool
      */
-    public function within(Geometry $geometry)
+    public function within(Geometry $geometry) : bool
     {
         return GeometryEngineRegistry::get()->within($this, $geometry);
     }
@@ -449,11 +449,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @param Geometry $geometry
      *
-     * @return boolean
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
+     * @return bool
      */
-    public function contains(Geometry $geometry)
+    public function contains(Geometry $geometry) : bool
     {
         return GeometryEngineRegistry::get()->contains($this, $geometry);
     }
@@ -467,11 +466,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @param Geometry $geometry
      *
-     * @return boolean
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
+     * @return bool
      */
-    public function overlaps(Geometry $geometry)
+    public function overlaps(Geometry $geometry) : bool
     {
         return GeometryEngineRegistry::get()->overlaps($this, $geometry);
     }
@@ -491,11 +489,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      * @param Geometry $geometry
      * @param string   $matrix
      *
-     * @return boolean
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
+     * @return bool
      */
-    public function relate(Geometry $geometry, $matrix)
+    public function relate(Geometry $geometry, string $matrix) : bool
     {
         return GeometryEngineRegistry::get()->relate($this, $geometry, $matrix);
     }
@@ -507,11 +504,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @param float $mValue
      *
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return Geometry
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
      */
-    public function locateAlong($mValue)
+    public function locateAlong(float $mValue) : Geometry
     {
         return GeometryEngineRegistry::get()->locateAlong($this, $mValue);
     }
@@ -524,11 +520,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      * @param float $mStart
      * @param float $mEnd
      *
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return Geometry
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
      */
-    public function locateBetween($mStart, $mEnd)
+    public function locateBetween(float $mStart, float $mEnd) : Geometry
     {
         return GeometryEngineRegistry::get()->locateBetween($this, $mStart, $mEnd);
     }
@@ -546,11 +541,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @param Geometry $geometry
      *
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return float
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
      */
-    public function distance(Geometry $geometry)
+    public function distance(Geometry $geometry) : float
     {
         return GeometryEngineRegistry::get()->distance($this, $geometry);
     }
@@ -568,11 +562,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @param float $distance
      *
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return Geometry
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
      */
-    public function buffer($distance)
+    public function buffer(float $distance) : Geometry
     {
         return GeometryEngineRegistry::get()->buffer($this, $distance);
     }
@@ -586,11 +579,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @noproxy
      *
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return Geometry
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
      */
-    public function convexHull()
+    public function convexHull() : Geometry
     {
         return GeometryEngineRegistry::get()->convexHull($this);
     }
@@ -604,11 +596,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @param Geometry $geometry
      *
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return Geometry
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
      */
-    public function intersection(Geometry $geometry)
+    public function intersection(Geometry $geometry) : Geometry
     {
         return GeometryEngineRegistry::get()->intersection($this, $geometry);
     }
@@ -620,11 +611,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @param Geometry $geometry
      *
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return Geometry
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
      */
-    public function union(Geometry $geometry)
+    public function union(Geometry $geometry) : Geometry
     {
         return GeometryEngineRegistry::get()->union($this, $geometry);
     }
@@ -636,11 +626,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @param Geometry $geometry
      *
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return Geometry
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
      */
-    public function difference(Geometry $geometry)
+    public function difference(Geometry $geometry) : Geometry
     {
         return GeometryEngineRegistry::get()->difference($this, $geometry);
     }
@@ -655,11 +644,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @param Geometry $geometry
      *
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return Geometry
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
      */
-    public function symDifference(Geometry $geometry)
+    public function symDifference(Geometry $geometry) : Geometry
     {
         return GeometryEngineRegistry::get()->symDifference($this, $geometry);
     }
@@ -671,11 +659,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @param float $size
      *
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return Geometry
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
      */
-    public function snapToGrid($size)
+    public function snapToGrid(float $size) : Geometry
     {
         return GeometryEngineRegistry::get()->snapToGrid($this, $size);
     }
@@ -687,11 +674,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @param float $tolerance
      *
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return Geometry
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
      */
-    public function simplify($tolerance)
+    public function simplify(float $tolerance) : Geometry
     {
         return GeometryEngineRegistry::get()->simplify($this, $tolerance);
     }
@@ -703,11 +689,10 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @param Geometry $geometry
      *
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return float
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
      */
-    public function maxDistance(Geometry $geometry)
+    public function maxDistance(Geometry $geometry) : float
     {
         return GeometryEngineRegistry::get()->maxDistance($this, $geometry);
     }
@@ -717,7 +702,7 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @return CoordinateSystem
      */
-    public function coordinateSystem()
+    public function coordinateSystem() : CoordinateSystem
     {
         return $this->coordinateSystem;
     }
@@ -727,17 +712,5 @@ abstract class Geometry implements \Countable, \IteratorAggregate
      *
      * @return array
      */
-    abstract public function toArray();
-
-    /**
-     * Returns a text representation of this geometry.
-     *
-     * @noproxy
-     *
-     * @return string
-     */
-    final public function __toString()
-    {
-        return $this->asText();
-    }
+    abstract public function toArray() : array;
 }

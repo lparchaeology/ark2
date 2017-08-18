@@ -3,8 +3,8 @@
 namespace ARK\Spatial;
 
 use ARK\Spatial\Engine\GeometryEngineRegistry;
-use ARK\Spatial\Exception\GeometryEngineException;
 use ARK\Spatial\Exception\CoordinateSystemException;
+use ARK\Spatial\Exception\GeometryEngineException;
 use ARK\Spatial\Exception\NoSuchGeometryException;
 
 /**
@@ -13,7 +13,7 @@ use ARK\Spatial\Exception\NoSuchGeometryException;
  * For each pair of polygons that "touch", the common boundary shall be expressible as a finite collection
  * of LineStrings. Each such LineString shall be part of the boundary of at most 2 Polygon patches.
  *
- * For any two polygons that share a common boundary, the "top" of the polygon shall be consistent. This means 
+ * For any two polygons that share a common boundary, the "top" of the polygon shall be consistent. This means
  * that when two linear rings from these two Polygons traverse the common boundary segment, they do so in
  * opposite directions. Since the Polyhedral surface is contiguous, all polygons will be thus consistently oriented.
  * This means that a non-oriented surface (such as Möbius band) shall not have single surface representations.
@@ -43,16 +43,16 @@ class PolyhedralSurface extends Surface
      *
      * The coordinate system of each of the patches must match the one of the PolyhedralSurface.
      *
-     * @param CoordinateSystem $cs         The coordinate system of the PolyhedralSurface.
+     * @param CoordinateSystem $cs         the coordinate system of the PolyhedralSurface
      * @param Polygon          ...$patches The patches that compose the PolyhedralSurface.
      *
-     * @throws CoordinateSystemException If different coordinate systems are used.
+     * @throws CoordinateSystemException if different coordinate systems are used
      */
     public function __construct(CoordinateSystem $cs, Polygon ...$patches)
     {
-        parent::__construct($cs, ! $patches);
+        parent::__construct($cs, !$patches);
 
-        if (! $patches) {
+        if (!$patches) {
             return;
         }
 
@@ -64,22 +64,21 @@ class PolyhedralSurface extends Surface
     /**
      * Creates a non-empty PolyhedralSurface composed of the given patches.
      *
-     * @param Polygon    $patch1 The first patch.
+     * @param Polygon $patch1    the first patch
      * @param Polygon ...$patchN The subsequent patches, if any.
      *
+     * @throws CoordinateSystemException if the patches use different coordinate systems
      * @return PolyhedralSurface
-     *
-     * @throws CoordinateSystemException If the patches use different coordinate systems.
      */
-    public static function of(Polygon $patch1, Polygon ...$patchN)
+    public static function of(Polygon $patch1, Polygon ...$patchN) : PolyhedralSurface
     {
         return new static($patch1->coordinateSystem(), $patch1, ...$patchN);
     }
 
     /**
-     * @return integer
+     * @return int
      */
-    public function numPatches()
+    public function numPatches() : int
     {
         return count($this->patches);
     }
@@ -87,18 +86,17 @@ class PolyhedralSurface extends Surface
     /**
      * Returns the specified patch N in this PolyhedralSurface.
      *
-     * @param integer $n The patch number, 1-based.
+     * @param int $n the patch number, 1-based
      *
+     * @throws NoSuchGeometryException if there is no patch at this index
      * @return Polygon
-     *
-     * @throws NoSuchGeometryException If there is no patch at this index.
      */
-    public function patchN($n)
+    public function patchN(int $n) : Polygon
     {
         $n = (int) $n;
 
-        if (! isset($this->patches[$n - 1])) {
-            throw new NoSuchGeometryException('There is no patch in this PolyhedralSurface at index ' . $n);
+        if (!isset($this->patches[$n - 1])) {
+            throw new NoSuchGeometryException('There is no patch in this PolyhedralSurface at index '.$n);
         }
 
         return $this->patches[$n - 1];
@@ -109,7 +107,7 @@ class PolyhedralSurface extends Surface
      *
      * @return Polygon[]
      */
-    public function patches()
+    public function patches() : iterable
     {
         return $this->patches;
     }
@@ -121,11 +119,10 @@ class PolyhedralSurface extends Surface
      *
      * @param Polygon $p
      *
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return MultiPolygon
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
      */
-    public function boundingPolygons(Polygon $p)
+    public function boundingPolygons(Polygon $p) : MultiPolygon
     {
         return GeometryEngineRegistry::get()->boundingPolygons($p);
     }
@@ -133,11 +130,10 @@ class PolyhedralSurface extends Surface
     /**
      * @noproxy
      *
-     * @return boolean
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
+     * @return bool
      */
-    public function isClosed()
+    public function isClosed() : bool
     {
         return GeometryEngineRegistry::get()->isClosed($this);
     }
@@ -147,7 +143,7 @@ class PolyhedralSurface extends Surface
      *
      * {@inheritdoc}
      */
-    public function geometryType()
+    public function geometryType() : string
     {
         return 'PolyhedralSurface';
     }
@@ -157,7 +153,7 @@ class PolyhedralSurface extends Surface
      *
      * {@inheritdoc}
      */
-    public function geometryTypeBinary()
+    public function geometryTypeBinary() : int
     {
         return Geometry::POLYHEDRALSURFACE;
     }
@@ -165,7 +161,7 @@ class PolyhedralSurface extends Surface
     /**
      * {@inheritdoc}
      */
-    public function toArray()
+    public function toArray() : array
     {
         $result = [];
 
@@ -183,7 +179,7 @@ class PolyhedralSurface extends Surface
      *
      * {@inheritdoc}
      */
-    public function count()
+    public function count() : int
     {
         return count($this->patches);
     }
@@ -195,7 +191,7 @@ class PolyhedralSurface extends Surface
      *
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator() : \ArrayIterator
     {
         return new \ArrayIterator($this->patches);
     }

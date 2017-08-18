@@ -7,28 +7,16 @@ namespace ARK\Spatial\IO;
  */
 class EWKTParser extends WKTParser
 {
-    const T_SRID = 1;
-    const T_WORD = 2;
-    const T_NUMBER = 3;
+    public const T_SRID = 1;
+    public const T_WORD = 2;
+    public const T_NUMBER = 3;
 
-    const REGEX_SRID = 'SRID\=([0-9]+)\s*;';
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRegex()
-    {
-        return [
-            self::T_SRID   => self::REGEX_SRID,
-            self::T_WORD   => self::REGEX_WORD,
-            self::T_NUMBER => self::REGEX_NUMBER,
-        ];
-    }
+    public const REGEX_SRID = 'SRID\=([0-9]+)\s*;';
 
     /**
-     * @return integer
+     * @return int
      */
-    public function getOptionalSRID()
+    public function getOptionalSRID() : int
     {
         $token = current($this->tokens);
 
@@ -42,5 +30,17 @@ class EWKTParser extends WKTParser
         next($this->tokens);
 
         return (int) $token[1];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getRegex() : iterable
+    {
+        return [
+            self::T_SRID => self::REGEX_SRID,
+            self::T_WORD => self::REGEX_WORD,
+            self::T_NUMBER => self::REGEX_NUMBER,
+        ];
     }
 }

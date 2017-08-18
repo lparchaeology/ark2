@@ -2,7 +2,7 @@
 
 namespace ARK\Spatial\IO;
 
-use ARK\Spatial\Geometry;
+use ARK\Spatial\Geometry\Geometry;
 
 /**
  * Writes geometries in the Extended WKT format designed by PostGIS.
@@ -12,7 +12,7 @@ class EWKTWriter extends AbstractWKTWriter
     /**
      * {@inheritdoc}
      */
-    public function write(Geometry $geometry)
+    public function write(Geometry $geometry) : string
     {
         $srid = $geometry->SRID();
 
@@ -20,6 +20,6 @@ class EWKTWriter extends AbstractWKTWriter
             return $this->doWrite($geometry);
         }
 
-        return 'SRID=' . $geometry->SRID() . ';' . $this->prettyPrintSpace . $this->doWrite($geometry);
+        return 'SRID='.$geometry->SRID().';'.$this->prettyPrintSpace.$this->doWrite($geometry);
     }
 }

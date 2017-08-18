@@ -37,15 +37,15 @@ class GeometryCollection extends Geometry
      * @param CoordinateSystem $cs
      * @param Geometry         ...$geometries
      *
-     * @throws CoordinateSystemException   If different coordinate systems are used.
-     * @throws UnexpectedGeometryException If a geometry is not a valid type for a sub-class of GeometryCollection.
+     * @throws CoordinateSystemException   if different coordinate systems are used
+     * @throws UnexpectedGeometryException if a geometry is not a valid type for a sub-class of GeometryCollection
      */
     public function __construct(CoordinateSystem $cs, Geometry ...$geometries)
     {
         $isEmpty = true;
 
         foreach ($geometries as $geometry) {
-            if (! $geometry->isEmpty()) {
+            if (!$geometry->isEmpty()) {
                 $isEmpty = false;
                 break;
             }
@@ -53,7 +53,7 @@ class GeometryCollection extends Geometry
 
         parent::__construct($cs, $isEmpty);
 
-        if (! $geometries) {
+        if (!$geometries) {
             return;
         }
 
@@ -62,7 +62,7 @@ class GeometryCollection extends Geometry
         $containedGeometryType = $this->containedGeometryType();
 
         foreach ($geometries as $geometry) {
-            if (! $geometry instanceof $containedGeometryType) {
+            if (!$geometry instanceof $containedGeometryType) {
                 throw new UnexpectedGeometryException(sprintf(
                     '%s expects instance of %s, instance of %s given.',
                     static::class,
@@ -78,13 +78,12 @@ class GeometryCollection extends Geometry
     /**
      * Creates a non-empty GeometryCollection composed of the given geometries.
      *
-     * @param Geometry    $geometry1 The first geometry.
+     * @param Geometry $geometry1    the first geometry
      * @param Geometry ...$geometryN The subsequent geometries, if any.
      *
+     * @throws CoordinateSystemException   if the geometries use different coordinate systems
+     * @throws UnexpectedGeometryException if a geometry is not a valid type for a sub-class of GeometryCollection
      * @return static
-     *
-     * @throws CoordinateSystemException   If the geometries use different coordinate systems.
-     * @throws UnexpectedGeometryException If a geometry is not a valid type for a sub-class of GeometryCollection.
      */
     public static function of(Geometry $geometry1, Geometry ...$geometryN)
     {
@@ -94,9 +93,9 @@ class GeometryCollection extends Geometry
     /**
      * Returns the number of geometries in this GeometryCollection.
      *
-     * @return integer
+     * @return int
      */
-    public function numGeometries()
+    public function numGeometries() : int
     {
         return count($this->geometries);
     }
@@ -104,18 +103,17 @@ class GeometryCollection extends Geometry
     /**
      * Returns the specified geometry N in this GeometryCollection.
      *
-     * @param integer $n The geometry number, 1-based.
+     * @param int $n the geometry number, 1-based
      *
+     * @throws NoSuchGeometryException if there is no Geometry at this index
      * @return Geometry
-     *
-     * @throws NoSuchGeometryException If there is no Geometry at this index.
      */
-    public function geometryN($n)
+    public function geometryN(int $n) : Geometry
     {
         $n = (int) $n;
 
-        if (! isset($this->geometries[$n - 1])) {
-            throw new NoSuchGeometryException('There is no Geometry in this GeometryCollection at index ' . $n);
+        if (!isset($this->geometries[$n - 1])) {
+            throw new NoSuchGeometryException('There is no Geometry in this GeometryCollection at index '.$n);
         }
 
         return $this->geometries[$n - 1];
@@ -126,7 +124,7 @@ class GeometryCollection extends Geometry
      *
      * @return Geometry[]
      */
-    public function geometries()
+    public function geometries() : iterable
     {
         return $this->geometries;
     }
@@ -136,7 +134,7 @@ class GeometryCollection extends Geometry
      *
      * {@inheritdoc}
      */
-    public function geometryType()
+    public function geometryType() : string
     {
         return 'GeometryCollection';
     }
@@ -146,7 +144,7 @@ class GeometryCollection extends Geometry
      *
      * {@inheritdoc}
      */
-    public function geometryTypeBinary()
+    public function geometryTypeBinary() : int
     {
         return Geometry::GEOMETRYCOLLECTION;
     }
@@ -154,7 +152,7 @@ class GeometryCollection extends Geometry
     /**
      * {@inheritdoc}
      */
-    public function dimension()
+    public function dimension() : int
     {
         $dimension = 0;
 
@@ -172,7 +170,7 @@ class GeometryCollection extends Geometry
     /**
      * {@inheritdoc}
      */
-    public function toArray()
+    public function toArray() : array
     {
         $result = [];
 
@@ -190,7 +188,7 @@ class GeometryCollection extends Geometry
      *
      * {@inheritdoc}
      */
-    public function count()
+    public function count() : int
     {
         return count($this->geometries);
     }
@@ -202,7 +200,7 @@ class GeometryCollection extends Geometry
      *
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator() : \ArrayIterator
     {
         return new \ArrayIterator($this->geometries);
     }
@@ -212,7 +210,7 @@ class GeometryCollection extends Geometry
      *
      * @return string
      */
-    protected function containedGeometryType()
+    protected function containedGeometryType() : string
     {
         return Geometry::class;
     }

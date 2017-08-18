@@ -2,8 +2,8 @@
 
 namespace ARK\Spatial\IO;
 
-use ARK\Spatial\Geometry;
 use ARK\Spatial\Exception\GeometryIOException;
+use ARK\Spatial\Geometry\Geometry;
 
 /**
  * Builds geometries out of Well-Known Binary strings.
@@ -11,19 +11,18 @@ use ARK\Spatial\Exception\GeometryIOException;
 class WKBReader extends AbstractWKBReader
 {
     /**
-     * @param string  $wkb  The WKB to read.
-     * @param integer $srid The optional SRID of the geometry.
-     *
-     * @return Geometry
+     * @param string $wkb  the WKB to read
+     * @param int    $srid the optional SRID of the geometry
      *
      * @throws GeometryIOException
+     * @return Geometry
      */
-    public function read($wkb, $srid = 0)
+    public function read(string $wkb, int $srid = 0) : Geometry
     {
         $buffer = new WKBBuffer($wkb);
         $geometry = $this->readGeometry($buffer, $srid);
 
-        if (! $buffer->isEndOfStream()) {
+        if (!$buffer->isEndOfStream()) {
             throw GeometryIOException::invalidWKB('unexpected data at end of stream');
         }
 
@@ -33,7 +32,7 @@ class WKBReader extends AbstractWKBReader
     /**
      * {@inheritdoc}
      */
-    protected function readGeometryHeader(WKBBuffer $buffer, & $geometryType, & $hasZ, & $hasM, & $srid)
+    protected function readGeometryHeader(WKBBuffer $buffer, int &$geometryType, bool &$hasZ, bool &$hasM, bool &$srid) : void
     {
         $wkbType = $buffer->readUnsignedLong();
 

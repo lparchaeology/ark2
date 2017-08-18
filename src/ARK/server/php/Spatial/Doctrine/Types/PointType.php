@@ -14,13 +14,13 @@ class PointType extends GeometryType
      */
     public function getName()
     {
-        return 'Point';
+        return 'Point';:string
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getProxyClassName()
+    protected function getProxyClassName():string
     {
         return PointProxy::class;
     }

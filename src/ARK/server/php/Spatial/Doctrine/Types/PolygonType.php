@@ -12,7 +12,7 @@ class PolygonType extends GeometryType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName() : string
     {
         return 'Polygon';
     }
@@ -20,7 +20,7 @@ class PolygonType extends GeometryType
     /**
      * {@inheritdoc}
      */
-    protected function getProxyClassName()
+    protected function getProxyClassName() : string
     {
         return PolygonProxy::class;
     }

@@ -49,17 +49,17 @@ class Polygon extends Surface
      *
      * The coordinate system of each of the rings must match the one of the Polygon.
      *
-     * @param CoordinateSystem $cs       The coordinate system of the Polygon.
+     * @param CoordinateSystem $cs       the coordinate system of the Polygon
      * @param LineString       ...$rings The rings that compose the Polygon, the first one being the exterior ring.
      *
-     * @throws InvalidGeometryException  If the resulting geometry is not valid for a sub-type of Polygon.
-     * @throws CoordinateSystemException If different coordinate systems are used.
+     * @throws InvalidGeometryException  if the resulting geometry is not valid for a sub-type of Polygon
+     * @throws CoordinateSystemException if different coordinate systems are used
      */
     public function __construct(CoordinateSystem $cs, LineString ...$rings)
     {
-        parent::__construct($cs, ! $rings);
+        parent::__construct($cs, !$rings);
 
-        if (! $rings) {
+        if (!$rings) {
             return;
         }
 
@@ -71,15 +71,14 @@ class Polygon extends Surface
     /**
      * Creates a non-empty Polygon composed of the given rings.
      *
-     * @param LineString    $exteriorRing  The exterior ring.
+     * @param LineString $exteriorRing     the exterior ring
      * @param LineString ...$interiorRings The interior rings, if any.
      *
+     * @throws InvalidGeometryException  if the resulting geometry is not valid for a sub-type of Polygon
+     * @throws CoordinateSystemException if the rings use different coordinate systems
      * @return Polygon
-     *
-     * @throws InvalidGeometryException  If the resulting geometry is not valid for a sub-type of Polygon.
-     * @throws CoordinateSystemException If the rings use different coordinate systems.
      */
-    public static function of(LineString $exteriorRing, LineString ...$interiorRings)
+    public static function of(LineString $exteriorRing, LineString ...$interiorRings) : Polygon
     {
         return new static($exteriorRing->coordinateSystem(), $exteriorRing, ...$interiorRings);
     }
@@ -87,11 +86,10 @@ class Polygon extends Surface
     /**
      * Returns the exterior ring of this Polygon.
      *
-     * @return LineString
-     *
      * @throws EmptyGeometryException
+     * @return LineString
      */
-    public function exteriorRing()
+    public function exteriorRing() : LineString
     {
         if ($this->isEmpty) {
             throw new EmptyGeometryException('An empty Polygon has no exterior ring.');
@@ -103,9 +101,9 @@ class Polygon extends Surface
     /**
      * Returns the number of interior rings in this Polygon.
      *
-     * @return integer
+     * @return int
      */
-    public function numInteriorRings()
+    public function numInteriorRings() : int
     {
         if ($this->isEmpty) {
             return 0;
@@ -117,18 +115,17 @@ class Polygon extends Surface
     /**
      * Returns the specified interior ring N in this Polygon.
      *
-     * @param integer $n The ring number, 1-based.
+     * @param int $n the ring number, 1-based
      *
+     * @throws NoSuchGeometryException if there is no interior ring at this index
      * @return LineString
-     *
-     * @throws NoSuchGeometryException If there is no interior ring at this index.
      */
-    public function interiorRingN($n)
+    public function interiorRingN(int $n) : LineString
     {
         $n = (int) $n;
 
-        if ($n === 0 || ! isset($this->rings[$n])) {
-            throw new NoSuchGeometryException('There is no interior ring in this Polygon at index ' . $n);
+        if ($n === 0 || !isset($this->rings[$n])) {
+            throw new NoSuchGeometryException('There is no interior ring in this Polygon at index '.$n);
         }
 
         return $this->rings[$n];
@@ -139,7 +136,7 @@ class Polygon extends Surface
      *
      * @return LineString[]
      */
-    public function interiorRings()
+    public function interiorRings() : iterable
     {
         return array_slice($this->rings, 1);
     }
@@ -149,7 +146,7 @@ class Polygon extends Surface
      *
      * {@inheritdoc}
      */
-    public function geometryType()
+    public function geometryType() : string
     {
         return 'Polygon';
     }
@@ -159,7 +156,7 @@ class Polygon extends Surface
      *
      * {@inheritdoc}
      */
-    public function geometryTypeBinary()
+    public function geometryTypeBinary() : int
     {
         return Geometry::POLYGON;
     }
@@ -167,7 +164,7 @@ class Polygon extends Surface
     /**
      * {@inheritdoc}
      */
-    public function toArray()
+    public function toArray() : array
     {
         $result = [];
 
@@ -185,7 +182,7 @@ class Polygon extends Surface
      *
      * {@inheritdoc}
      */
-    public function count()
+    public function count() : int
     {
         return count($this->rings);
     }
@@ -197,7 +194,7 @@ class Polygon extends Surface
      *
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator() : \ArrayIterator
     {
         return new \ArrayIterator($this->rings);
     }

@@ -3,7 +3,7 @@
 namespace ARK\Spatial\IO;
 
 use ARK\Spatial\Exception\GeometryIOException;
-use ARK\Spatial\Geometry;
+use ARK\Spatial\Geometry\Geometry;
 
 /**
  * Builds geometries out of Well-Known Text strings.
@@ -11,19 +11,18 @@ use ARK\Spatial\Geometry;
 class WKTReader extends AbstractWKTReader
 {
     /**
-     * @param string  $wkt  The WKT to read.
-     * @param integer $srid The optional SRID of the geometry.
-     *
-     * @return Geometry
+     * @param string $wkt  the WKT to read
+     * @param int    $srid the optional SRID of the geometry
      *
      * @throws GeometryIOException
+     * @return Geometry
      */
-    public function read($wkt, $srid = 0)
+    public function read(string $wkt, int $srid = 0) : Geometry
     {
         $parser = new WKTParser(strtoupper($wkt));
         $geometry = $this->readGeometry($parser, $srid);
 
-        if (! $parser->isEndOfStream()) {
+        if (!$parser->isEndOfStream()) {
             throw GeometryIOException::invalidWKT();
         }
 

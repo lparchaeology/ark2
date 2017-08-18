@@ -32,17 +32,17 @@ class LineString extends Curve
      *
      * The coordinate system of each of the points must match the one of the LineString.
      *
-     * @param CoordinateSystem $cs        The coordinate system of the LineString.
+     * @param CoordinateSystem $cs        the coordinate system of the LineString
      * @param Point            ...$points The points that compose the LineString.
      *
-     * @throws InvalidGeometryException  If only one point was given.
-     * @throws CoordinateSystemException If different coordinate systems are used.
+     * @throws InvalidGeometryException  if only one point was given
+     * @throws CoordinateSystemException if different coordinate systems are used
      */
     public function __construct(CoordinateSystem $cs, Point ...$points)
     {
-        parent::__construct($cs, ! $points);
+        parent::__construct($cs, !$points);
 
-        if (! $points) {
+        if (!$points) {
             return;
         }
 
@@ -58,17 +58,16 @@ class LineString extends Curve
     /**
      * Creates a non-empty LineString composed of the given points.
      *
-     * @param Point    $point1 The first point.
+     * @param Point $point1    the first point
      * @param Point ...$pointN The subsequent points.
      *
+     * @throws InvalidGeometryException  if only one point was given
+     * @throws CoordinateSystemException if the points use different coordinate systems
      * @return LineString
-     *
-     * @throws InvalidGeometryException  If only one point was given.
-     * @throws CoordinateSystemException If the points use different coordinate systems.
      */
-    public static function of(Point $point1, Point ...$pointN)
+    public static function of(Point $point1, Point ...$pointN) : LineString
     {
-        return new LineString($point1->coordinateSystem(), $point1, ...$pointN);
+        return new self($point1->coordinateSystem(), $point1, ...$pointN);
     }
 
     /**
@@ -79,20 +78,19 @@ class LineString extends Curve
      * @param Point $a
      * @param Point $b
      *
+     * @throws CoordinateSystemException if the points use different coordinate systems, or are not 2D
      * @return LineString
-     *
-     * @throws CoordinateSystemException If the points use different coordinate systems, or are not 2D.
      */
-    public static function rectangle(Point $a, Point $b)
+    public static function rectangle(Point $a, Point $b) : LineString
     {
         $cs = $a->coordinateSystem();
 
-        if ($cs != $b->coordinateSystem()) { // by-value comparison.
+        if ($cs !== $b->coordinateSystem()) { // by-value comparison.
             throw CoordinateSystemException::dimensionalityMix($a, $b);
         }
 
-        if ($cs->coordinateDimension() != 2) {
-            throw new CoordinateSystemException(__METHOD__ . ' expects 2D points.');
+        if ($cs->coordinateDimension() !== 2) {
+            throw new CoordinateSystemException(__METHOD__.' expects 2D points.');
         }
 
         $x1 = min($a->x(), $b->x());
@@ -106,13 +104,13 @@ class LineString extends Curve
         $p3 = new Point($cs, $x2, $y2);
         $p4 = new Point($cs, $x1, $y2);
 
-        return new LineString($cs, $p1, $p2, $p3, $p4, $p1);
+        return new self($cs, $p1, $p2, $p3, $p4, $p1);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function startPoint()
+    public function startPoint() : Point
     {
         if ($this->isEmpty) {
             throw new EmptyGeometryException('The LineString is empty and has no start point.');
@@ -124,7 +122,7 @@ class LineString extends Curve
     /**
      * {@inheritdoc}
      */
-    public function endPoint()
+    public function endPoint() : Point
     {
         if ($this->isEmpty) {
             throw new EmptyGeometryException('The LineString is empty and has no end point.');
@@ -136,9 +134,9 @@ class LineString extends Curve
     /**
      * Returns the number of Points in this LineString.
      *
-     * @return integer
+     * @return int
      */
-    public function numPoints()
+    public function numPoints() : int
     {
         return count($this->points);
     }
@@ -146,18 +144,17 @@ class LineString extends Curve
     /**
      * Returns the specified Point N in this LineString.
      *
-     * @param integer $n The point number, 1-based.
+     * @param int $n the point number, 1-based
      *
+     * @throws NoSuchGeometryException if there is no Point at this index
      * @return Point
-     *
-     * @throws NoSuchGeometryException If there is no Point at this index.
      */
-    public function pointN($n)
+    public function pointN(int $n) : Point
     {
         $n = (int) $n;
 
-        if (! isset($this->points[$n - 1])) {
-            throw new NoSuchGeometryException('There is no Point in this LineString at index ' . $n);
+        if (!isset($this->points[$n - 1])) {
+            throw new NoSuchGeometryException('There is no Point in this LineString at index '.$n);
         }
 
         return $this->points[$n - 1];
@@ -168,7 +165,7 @@ class LineString extends Curve
      *
      * @return Point[]
      */
-    public function points()
+    public function points() : iterable
     {
         return $this->points;
     }
@@ -178,7 +175,7 @@ class LineString extends Curve
      *
      * {@inheritdoc}
      */
-    public function geometryType()
+    public function geometryType() : string
     {
         return 'LineString';
     }
@@ -188,7 +185,7 @@ class LineString extends Curve
      *
      * {@inheritdoc}
      */
-    public function geometryTypeBinary()
+    public function geometryTypeBinary() : int
     {
         return Geometry::LINESTRING;
     }
@@ -196,7 +193,7 @@ class LineString extends Curve
     /**
      * {@inheritdoc}
      */
-    public function toArray()
+    public function toArray() : array
     {
         $result = [];
 
@@ -214,7 +211,7 @@ class LineString extends Curve
      *
      * {@inheritdoc}
      */
-    public function count()
+    public function count() : int
     {
         return count($this->points);
     }
@@ -226,7 +223,7 @@ class LineString extends Curve
      *
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator() : \ArrayIterator
     {
         return new \ArrayIterator($this->points);
     }

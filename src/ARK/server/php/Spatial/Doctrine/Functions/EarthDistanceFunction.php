@@ -4,8 +4,8 @@ namespace ARK\Spatial\Doctrine\Functions;
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\Lexer;
-use Doctrine\ORM\Query\SqlWalker;
 use Doctrine\ORM\Query\Parser;
+use Doctrine\ORM\Query\SqlWalker;
 
 /**
  * Earth distance function.
@@ -22,19 +22,19 @@ class EarthDistanceFunction extends FunctionNode
      *
      * @const string
      */
-    const FORMULA = '(%s * ACOS(SIN(%s) * SIN(%s) + COS(%s) * COS(%s) * COS(%s - %s)))';
+    public const FORMULA = '(%s * ACOS(SIN(%s) * SIN(%s) + COS(%s) * COS(%s) * COS(%s - %s)))';
 
     /**
      * The average great-circle circumference of the Earth, in meters.
      *
      * @const float
      */
-    const EARTH_RADIUS = 6371007.1809;
+    public const EARTH_RADIUS = 6371007.1809;
 
     /**
      * The number of radians in a degree.
      */
-    const DEGREES_TO_RADIANS = 0.0174532925;
+    public const DEGREES_TO_RADIANS = 0.0174532925;
 
     /**
      * @var \Doctrine\ORM\Query\AST\Node
@@ -49,7 +49,7 @@ class EarthDistanceFunction extends FunctionNode
     /**
      * {@inheritdoc}
      */
-    public function getSql(SqlWalker $s)
+    public function getSql(SqlWalker $s) : string
     {
         $platform = $s->getConnection()->getDatabasePlatform()->getName();
 
@@ -84,7 +84,7 @@ class EarthDistanceFunction extends FunctionNode
     /**
      * {@inheritdoc}
      */
-    public function parse(Parser $parser)
+    public function parse(Parser $parser) : void
     {
         $parser->match(Lexer::T_IDENTIFIER);
         $parser->match(Lexer::T_OPEN_PARENTHESIS);
@@ -101,7 +101,7 @@ class EarthDistanceFunction extends FunctionNode
      *
      * @return string
      */
-    private static function x($value)
+    private static function x($value) : string
     {
         return sprintf('ST_X(%s) * %f', $value, self::DEGREES_TO_RADIANS);
     }
@@ -111,7 +111,7 @@ class EarthDistanceFunction extends FunctionNode
      *
      * @return string
      */
-    private function y($value)
+    private function y($value) : string
     {
         return sprintf('ST_Y(%s) * %f', $value, self::DEGREES_TO_RADIANS);
     }

@@ -31,16 +31,16 @@ class CurvePolygon extends Surface
      *
      * The coordinate system of each of the rings must match the one of the CurvePolygon.
      *
-     * @param CoordinateSystem $cs       The coordinate system of the CurvePolygon.
+     * @param CoordinateSystem $cs       the coordinate system of the CurvePolygon
      * @param Curve            ...$rings The rings that compose the CurvePolygon.
      *
-     * @throws CoordinateSystemException If different coordinate systems are used.
+     * @throws CoordinateSystemException if different coordinate systems are used
      */
     public function __construct(CoordinateSystem $cs, Curve ...$rings)
     {
-        parent::__construct($cs, ! $rings);
+        parent::__construct($cs, !$rings);
 
-        if (! $rings) {
+        if (!$rings) {
             return;
         }
 
@@ -52,14 +52,13 @@ class CurvePolygon extends Surface
     /**
      * Creates a non-empty CurvePolygon composed of the given rings.
      *
-     * @param Curve    $exteriorRing  The exterior ring.
+     * @param Curve $exteriorRing     the exterior ring
      * @param Curve ...$interiorRings The interior rings, if any.
      *
+     * @throws CoordinateSystemException if the rings use different coordinate systems
      * @return CurvePolygon
-     *
-     * @throws CoordinateSystemException If the rings use different coordinate systems.
      */
-    public static function of(Curve $exteriorRing, Curve ...$interiorRings)
+    public static function of(Curve $exteriorRing, Curve ...$interiorRings) : CurvePolygon
     {
         return new static($exteriorRing->coordinateSystem(), $exteriorRing, ...$interiorRings);
     }
@@ -67,11 +66,10 @@ class CurvePolygon extends Surface
     /**
      * Returns the exterior ring of this CurvePolygon.
      *
-     * @return Curve
-     *
      * @throws EmptyGeometryException
+     * @return Curve
      */
-    public function exteriorRing()
+    public function exteriorRing() : Curve
     {
         if ($this->isEmpty) {
             throw new EmptyGeometryException('An empty CurvePolygon has no exterior ring.');
@@ -83,9 +81,9 @@ class CurvePolygon extends Surface
     /**
      * Returns the number of interior rings in this CurvePolygon.
      *
-     * @return integer
+     * @return int
      */
-    public function numInteriorRings()
+    public function numInteriorRings() : int
     {
         if ($this->isEmpty) {
             return 0;
@@ -97,18 +95,17 @@ class CurvePolygon extends Surface
     /**
      * Returns the specified interior ring N in this CurvePolygon.
      *
-     * @param integer $n The ring number, 1-based.
+     * @param int $n the ring number, 1-based
      *
+     * @throws NoSuchGeometryException if there is no interior ring at this index
      * @return Curve
-     *
-     * @throws NoSuchGeometryException If there is no interior ring at this index.
      */
-    public function interiorRingN($n)
+    public function interiorRingN($n) : Curve
     {
         $n = (int) $n;
 
-        if ($n === 0 || ! isset($this->rings[$n])) {
-            throw new NoSuchGeometryException('There is no interior ring in this CurvePolygon at index ' . $n);
+        if ($n === 0 || !isset($this->rings[$n])) {
+            throw new NoSuchGeometryException('There is no interior ring in this CurvePolygon at index '.$n);
         }
 
         return $this->rings[$n];
@@ -119,7 +116,7 @@ class CurvePolygon extends Surface
      *
      * @return Curve[]
      */
-    public function interiorRings()
+    public function interiorRings() : iterable
     {
         return array_slice($this->rings, 1);
     }
@@ -129,7 +126,7 @@ class CurvePolygon extends Surface
      *
      * {@inheritdoc}
      */
-    public function geometryType()
+    public function geometryType() : string
     {
         return 'CurvePolygon';
     }
@@ -139,7 +136,7 @@ class CurvePolygon extends Surface
      *
      * {@inheritdoc}
      */
-    public function geometryTypeBinary()
+    public function geometryTypeBinary() : int
     {
         return Geometry::CURVEPOLYGON;
     }
@@ -147,7 +144,7 @@ class CurvePolygon extends Surface
     /**
      * {@inheritdoc}
      */
-    public function toArray()
+    public function toArray() : array
     {
         $result = [];
 
@@ -165,7 +162,7 @@ class CurvePolygon extends Surface
      *
      * {@inheritdoc}
      */
-    public function count()
+    public function count() : int
     {
         return count($this->rings);
     }
@@ -177,7 +174,7 @@ class CurvePolygon extends Surface
      *
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator() : \ArrayIterator
     {
         return new \ArrayIterator($this->rings);
     }

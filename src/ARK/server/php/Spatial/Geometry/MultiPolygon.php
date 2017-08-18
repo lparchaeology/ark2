@@ -16,7 +16,7 @@ namespace ARK\Spatial;
  * components of the interior of a MultiPolygon is equal to the number of Polygons in the MultiPolygon.
  *
  * The boundary of a MultiPolygon is a set of closed Curves (LineStrings) corresponding to the boundaries of its
- * element Polygons. Each Curve in the boundary of the MultiPolygon is in the boundary of exactly 1 element 
+ * element Polygons. Each Curve in the boundary of the MultiPolygon is in the boundary of exactly 1 element
  * Polygon, and every Curve in the boundary of an element Polygon is in the boundary of the MultiPolygon.
  */
 class MultiPolygon extends MultiSurface
@@ -26,7 +26,7 @@ class MultiPolygon extends MultiSurface
      *
      * {@inheritdoc}
      */
-    public function geometryType()
+    public function geometryType() : string
     {
         return 'MultiPolygon';
     }
@@ -36,7 +36,7 @@ class MultiPolygon extends MultiSurface
      *
      * {@inheritdoc}
      */
-    public function geometryTypeBinary()
+    public function geometryTypeBinary() : int
     {
         return Geometry::MULTIPOLYGON;
     }
@@ -44,7 +44,7 @@ class MultiPolygon extends MultiSurface
     /**
      * {@inheritdoc}
      */
-    public function dimension()
+    public function dimension() : int
     {
         return 2;
     }
@@ -52,7 +52,7 @@ class MultiPolygon extends MultiSurface
     /**
      * {@inheritdoc}
      */
-    protected function containedGeometryType()
+    protected function containedGeometryType() : string
     {
         return Polygon::class;
     }

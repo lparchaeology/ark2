@@ -2,11 +2,13 @@
 
 namespace ARK\Spatial\Proxy;
 
-use ARK\Spatial\Exception\GeometryIOException;
 use ARK\Spatial\Exception\CoordinateSystemException;
+use ARK\Spatial\Exception\GeometryIOException;
 use ARK\Spatial\Exception\InvalidGeometryException;
 use ARK\Spatial\Exception\UnexpectedGeometryException;
-use ARK\Spatial\CircularString;
+use ARK\Spatial\Geometry\CircularString;
+use ARK\Spatial\Geometry\CoordinateSystem;
+use ARK\Spatial\Geometry\Point;
 
 /**
  * Proxy class for CircularString.
@@ -23,14 +25,14 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * `true` if WKB, `false` if WKT.
      *
-     * @var boolean
+     * @var bool
      */
     private $proxyIsBinary;
 
     /**
      * The SRID of the underlying geometry.
      *
-     * @var integer
+     * @var int
      */
     private $proxySRID;
 
@@ -44,38 +46,21 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * Class constructor.
      *
-     * @param string  $data     The WKT or WKB data.
-     * @param boolean $isBinary Whether the data is binary (true) or text (false).
-     * @param integer $srid     The SRID of the geometry.
+     * @param string $data     the WKT or WKB data
+     * @param bool   $isBinary whether the data is binary (true) or text (false)
+     * @param int    $srid     the SRID of the geometry
      */
-    public function __construct($data, $isBinary, $srid = 0)
+    public function __construct(string $data, bool $isBinary, int $srid = 0)
     {
-        $this->proxyData     = (string) $data;
-        $this->proxyIsBinary = (bool) $isBinary;
-        $this->proxySRID     = (int) $srid;
-    }
-
-    /**
-     * Loads the underlying geometry.
-     *
-     * @return void
-     *
-     * @throws GeometryIOException         If the proxy data is not valid.
-     * @throws CoordinateSystemException   If the resulting geometry contains mixed coordinate systems.
-     * @throws InvalidGeometryException    If the resulting geometry is not valid.
-     * @throws UnexpectedGeometryException If the resulting geometry is not an instance of the proxied class.
-     */
-    private function load()
-    {
-        $this->proxyGeometry = $this->proxyIsBinary
-            ? CircularString::fromBinary($this->proxyData, $this->proxySRID)
-            : CircularString::fromText($this->proxyData, $this->proxySRID);
+        $this->proxyData = $data;
+        $this->proxyIsBinary = $isBinary;
+        $this->proxySRID = $srid;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isLoaded()
+    public function isLoaded() : bool
     {
         return $this->proxyGeometry !== null;
     }
@@ -83,7 +68,7 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function getGeometry()
+    public function getGeometry() : Geometry
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -95,7 +80,7 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromText($wkt, $srid = 0)
+    public static function fromText(string $wkt, int $srid = 0) : CircularStringProxy
     {
         return new self($wkt, false, $srid);
     }
@@ -103,7 +88,7 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromBinary($wkb, $srid = 0)
+    public static function fromBinary(string $wkb, int $srid = 0) : CircularStringProxy
     {
         return new self($wkb, true, $srid);
     }
@@ -111,7 +96,7 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function SRID()
+    public function SRID() : int
     {
         return $this->proxySRID;
     }
@@ -119,9 +104,9 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function asText()
+    public function asText() : string
     {
-        if (! $this->proxyIsBinary) {
+        if (!$this->proxyIsBinary) {
             return $this->proxyData;
         }
 
@@ -135,7 +120,7 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function asBinary()
+    public function asBinary() : string
     {
         if ($this->proxyIsBinary) {
             return $this->proxyData;
@@ -148,11 +133,10 @@ class CircularStringProxy extends CircularString implements ProxyInterface
         return $this->proxyGeometry->asBinary();
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function startPoint()
+    public function startPoint() : Point
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -164,7 +148,7 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function endPoint()
+    public function endPoint() : Point
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -176,7 +160,7 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function numPoints()
+    public function numPoints() : int
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -188,7 +172,7 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function pointN($n)
+    public function pointN(int $n) : Point
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -200,7 +184,7 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function points()
+    public function points() : iterable
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -212,7 +196,7 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function toArray()
+    public function toArray() : array
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -224,7 +208,7 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count() : int
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -236,7 +220,7 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator() : \ArrayIterator
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -248,7 +232,7 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function coordinateDimension()
+    public function coordinateDimension() : int
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -260,7 +244,7 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function spatialDimension()
+    public function spatialDimension() : int
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -272,7 +256,7 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function isEmpty()
+    public function isEmpty() : bool
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -284,7 +268,7 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function is3D()
+    public function is3D() : bool
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -296,7 +280,7 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function isMeasured()
+    public function isMeasured() : bool
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -308,7 +292,7 @@ class CircularStringProxy extends CircularString implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function coordinateSystem()
+    public function coordinateSystem() : CoordinateSystem
     {
         if ($this->proxyGeometry === null) {
             $this->load();
@@ -317,4 +301,19 @@ class CircularStringProxy extends CircularString implements ProxyInterface
         return $this->proxyGeometry->coordinateSystem();
     }
 
+    /**
+     * Loads the underlying geometry.
+     *
+     *
+     * @throws GeometryIOException         if the proxy data is not valid
+     * @throws CoordinateSystemException   if the resulting geometry contains mixed coordinate systems
+     * @throws InvalidGeometryException    if the resulting geometry is not valid
+     * @throws UnexpectedGeometryException if the resulting geometry is not an instance of the proxied class
+     */
+    private function load() : void
+    {
+        $this->proxyGeometry = $this->proxyIsBinary
+            ? CircularString::fromBinary($this->proxyData, $this->proxySRID)
+            : CircularString::fromText($this->proxyData, $this->proxySRID);
+    }
 }

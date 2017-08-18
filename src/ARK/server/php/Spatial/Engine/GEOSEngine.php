@@ -3,9 +3,9 @@
 namespace ARK\Spatial\Engine;
 
 use ARK\Spatial\Exception\GeometryEngineException;
+use ARK\Spatial\Geometry\Geometry;
 use ARK\Spatial\IO\EWKBReader;
 use ARK\Spatial\IO\EWKBWriter;
-use ARK\Spatial\Geometry;
 
 /**
  * GeometryEngine implementation based on the GEOS PHP bindings.
@@ -47,7 +47,7 @@ class GEOSEngine implements GeometryEngine
      *
      * These methods are available since GEOS 3.5.0.
      *
-     * @var boolean
+     * @var bool
      */
     private $hasBinaryReadWrite;
 
@@ -71,11 +71,363 @@ class GEOSEngine implements GeometryEngine
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function union(Geometry $a, Geometry $b) : Geometry
+    {
+        try {
+            return $this->fromGEOS($this->toGEOS($a)->union($this->toGEOS($b)));
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function difference(Geometry $a, Geometry $b) : Geometry
+    {
+        try {
+            return $this->fromGEOS($this->toGEOS($a)->difference($this->toGEOS($b)));
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function envelope(Geometry $g) : Geometry
+    {
+        try {
+            return $this->fromGEOS($this->toGEOS($g)->envelope());
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function length(Geometry $g) : float
+    {
+        try {
+            return $this->toGEOS($g)->length();
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function area(Geometry $g) : float
+    {
+        try {
+            return $this->toGEOS($g)->area();
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function centroid(Geometry $g) : Geometry
+    {
+        try {
+            return $this->fromGEOS($this->toGEOS($g)->centroid());
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function pointOnSurface(Geometry $g) : Geometry
+    {
+        try {
+            return $this->fromGEOS($this->toGEOS($g)->pointOnSurface());
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function boundary(Geometry $g) : Geometry
+    {
+        try {
+            return $this->fromGEOS($this->toGEOS($g)->boundary());
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isValid(Geometry $g) : bool
+    {
+        try {
+            return $this->toGEOS($g)->checkValidity()['valid'];
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isClosed(Geometry $g) : bool
+    {
+        try {
+            return $this->toGEOS($g)->isClosed();
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isSimple(Geometry $g) : bool
+    {
+        try {
+            return $this->toGEOS($g)->isSimple();
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function equals(Geometry $a, Geometry $b) : bool
+    {
+        try {
+            return $this->toGEOS($a)->equals($this->toGEOS($b));
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function disjoint(Geometry $a, Geometry $b) : bool
+    {
+        try {
+            return $this->toGEOS($a)->disjoint($this->toGEOS($b));
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function intersects(Geometry $a, Geometry $b) : bool
+    {
+        try {
+            return $this->toGEOS($a)->intersects($this->toGEOS($b));
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function touches(Geometry $a, Geometry $b) : bool
+    {
+        try {
+            return $this->toGEOS($a)->touches($this->toGEOS($b));
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function crosses(Geometry $a, Geometry $b) : bool
+    {
+        try {
+            return $this->toGEOS($a)->crosses($this->toGEOS($b));
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function within(Geometry $a, Geometry $b) : bool
+    {
+        try {
+            return $this->toGEOS($a)->within($this->toGEOS($b));
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function contains(Geometry $a, Geometry $b) : bool
+    {
+        try {
+            return $this->toGEOS($a)->contains($this->toGEOS($b));
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function overlaps(Geometry $a, Geometry $b) : bool
+    {
+        try {
+            return $this->toGEOS($a)->overlaps($this->toGEOS($b));
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function relate(Geometry $a, Geometry $b, string $matrix) : bool
+    {
+        try {
+            return $this->toGEOS($a)->relate($this->toGEOS($b), $matrix);
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function locateAlong(Geometry $g, float $mValue) : Geometry
+    {
+        throw GeometryEngineException::unimplementedMethod(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function locateBetween(Geometry $g, float $mStart, float $mEnd) : Geometry
+    {
+        throw GeometryEngineException::unimplementedMethod(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function distance(Geometry $a, Geometry $b) : float
+    {
+        try {
+            return $this->toGEOS($a)->distance($this->toGEOS($b));
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buffer(Geometry $g, float $distance) : Geometry
+    {
+        try {
+            return $this->fromGEOS($this->toGEOS($g)->buffer($distance));
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function convexHull(Geometry $g) : Geometry
+    {
+        try {
+            return $this->fromGEOS($this->toGEOS($g)->convexHull());
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function intersection(Geometry $a, Geometry $b) : Geometry
+    {
+        try {
+            return $this->fromGEOS($this->toGEOS($a)->intersection($this->toGEOS($b)));
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function symDifference(Geometry $a, Geometry $b) : Geometry
+    {
+        try {
+            return $this->fromGEOS($this->toGEOS($a)->symDifference($this->toGEOS($b)));
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function snapToGrid(Geometry $g, float $size) : Geometry
+    {
+        throw GeometryEngineException::unimplementedMethod(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function simplify(Geometry $g, float $tolerance) : Geometry
+    {
+        try {
+            return $this->fromGEOS($this->toGEOS($g)->simplify($tolerance));
+        } catch (\Exception $e) {
+            throw GeometryEngineException::operationNotSupportedByEngine($e);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function maxDistance(Geometry $a, Geometry $b) : Geometry
+    {
+        throw GeometryEngineException::unimplementedMethod(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function boundingPolygons(Geometry $g) : Geometry
+    {
+        throw GeometryEngineException::unimplementedMethod(__METHOD__);
+    }
+
+    /**
      * @param Geometry $geometry
      *
      * @return \GEOSGeometry
      */
-    private function toGEOS(Geometry $geometry)
+    private function toGEOS(Geometry $geometry) : \GEOSGeometry
     {
         if ($geometry->isEmpty()) {
             $geosGeometry = $this->wktReader->read($geometry->asText());
@@ -96,7 +448,7 @@ class GEOSEngine implements GeometryEngine
      *
      * @return Geometry
      */
-    private function fromGEOS(\GEOSGeometry $geometry)
+    private function fromGEOS(\GEOSGeometry $geometry) : Geometry
     {
         if ($geometry->isEmpty()) {
             return Geometry::fromText($this->wktWriter->write($geometry), $geometry->getSRID());
@@ -107,357 +459,5 @@ class GEOSEngine implements GeometryEngine
         }
 
         return $this->ewkbReader->read(hex2bin($this->wkbWriter->writeHEX($geometry)));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function union(Geometry $a, Geometry $b)
-    {
-        try {
-            return $this->fromGEOS($this->toGEOS($a)->union($this->toGEOS($b)));
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function difference(Geometry $a, Geometry $b)
-    {
-        try {
-            return $this->fromGEOS($this->toGEOS($a)->difference($this->toGEOS($b)));
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function envelope(Geometry $g)
-    {
-        try {
-            return $this->fromGEOS($this->toGEOS($g)->envelope());
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function length(Geometry $g)
-    {
-        try {
-            return $this->toGEOS($g)->length();
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function area(Geometry $g)
-    {
-        try {
-            return $this->toGEOS($g)->area();
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function centroid(Geometry $g)
-    {
-        try {
-            return $this->fromGEOS($this->toGEOS($g)->centroid());
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function pointOnSurface(Geometry $g)
-    {
-        try {
-            return $this->fromGEOS($this->toGEOS($g)->pointOnSurface());
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function boundary(Geometry $g)
-    {
-        try {
-            return $this->fromGEOS($this->toGEOS($g)->boundary());
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isValid(Geometry $g)
-    {
-        try {
-            return $this->toGEOS($g)->checkValidity()['valid'];
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isClosed(Geometry $g)
-    {
-        try {
-            return $this->toGEOS($g)->isClosed();
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isSimple(Geometry $g)
-    {
-        try {
-            return $this->toGEOS($g)->isSimple();
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function equals(Geometry $a, Geometry $b)
-    {
-        try {
-            return $this->toGEOS($a)->equals($this->toGEOS($b));
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function disjoint(Geometry $a, Geometry $b)
-    {
-        try {
-            return $this->toGEOS($a)->disjoint($this->toGEOS($b));
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function intersects(Geometry $a, Geometry $b)
-    {
-        try {
-            return $this->toGEOS($a)->intersects($this->toGEOS($b));
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function touches(Geometry $a, Geometry $b)
-    {
-        try {
-            return $this->toGEOS($a)->touches($this->toGEOS($b));
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function crosses(Geometry $a, Geometry $b)
-    {
-        try {
-            return $this->toGEOS($a)->crosses($this->toGEOS($b));
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function within(Geometry $a, Geometry $b)
-    {
-        try {
-            return $this->toGEOS($a)->within($this->toGEOS($b));
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function contains(Geometry $a, Geometry $b)
-    {
-        try {
-            return $this->toGEOS($a)->contains($this->toGEOS($b));
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function overlaps(Geometry $a, Geometry $b)
-    {
-        try {
-            return $this->toGEOS($a)->overlaps($this->toGEOS($b));
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function relate(Geometry $a, Geometry $b, $matrix)
-    {
-        try {
-            return $this->toGEOS($a)->relate($this->toGEOS($b), $matrix);
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function locateAlong(Geometry $g, $mValue)
-    {
-        throw GeometryEngineException::unimplementedMethod(__METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function locateBetween(Geometry $g, $mStart, $mEnd)
-    {
-        throw GeometryEngineException::unimplementedMethod(__METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function distance(Geometry $a, Geometry $b)
-    {
-        try {
-            return $this->toGEOS($a)->distance($this->toGEOS($b));
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buffer(Geometry $g, $distance)
-    {
-        try {
-            return $this->fromGEOS($this->toGEOS($g)->buffer($distance));
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function convexHull(Geometry $g)
-    {
-        try {
-            return $this->fromGEOS($this->toGEOS($g)->convexHull());
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function intersection(Geometry $a, Geometry $b)
-    {
-        try {
-            return $this->fromGEOS($this->toGEOS($a)->intersection($this->toGEOS($b)));
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function symDifference(Geometry $a, Geometry $b)
-    {
-        try {
-            return $this->fromGEOS($this->toGEOS($a)->symDifference($this->toGEOS($b)));
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function snapToGrid(Geometry $g, $size)
-    {
-        throw GeometryEngineException::unimplementedMethod(__METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function simplify(Geometry $g, $tolerance)
-    {
-        try {
-            return $this->fromGEOS($this->toGEOS($g)->simplify($tolerance));
-        } catch (\Exception $e) {
-            throw GeometryEngineException::operationNotSupportedByEngine($e);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function maxDistance(Geometry $a, Geometry $b)
-    {
-        throw GeometryEngineException::unimplementedMethod(__METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function boundingPolygons(Geometry $g)
-    {
-        throw GeometryEngineException::unimplementedMethod(__METHOD__);
     }
 }

@@ -2,8 +2,8 @@
 
 namespace ARK\Spatial\IO;
 
-use ARK\Spatial\Geometry;
 use ARK\Spatial\Exception\GeometryIOException;
+use ARK\Spatial\Geometry\Geometry;
 
 /**
  * Reads geometries from the Extended WKT format designed by PostGIS.
@@ -11,19 +11,18 @@ use ARK\Spatial\Exception\GeometryIOException;
 class EWKTReader extends AbstractWKTReader
 {
     /**
-     * @param string $ewkt The EWKT to read.
-     *
-     * @return Geometry
+     * @param string $ewkt the EWKT to read
      *
      * @throws GeometryIOException
+     * @return Geometry
      */
-    public function read($ewkt)
+    public function read($ewkt) : Geometry
     {
         $parser = new EWKTParser(strtoupper($ewkt));
         $srid = $parser->getOptionalSRID();
         $geometry = $this->readGeometry($parser, $srid);
 
-        if (! $parser->isEndOfStream()) {
+        if (!$parser->isEndOfStream()) {
             throw GeometryIOException::invalidEWKT();
         }
 

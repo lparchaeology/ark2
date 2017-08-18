@@ -3,7 +3,7 @@
 namespace ARK\Spatial\Engine;
 
 use ARK\Spatial\Exception\GeometryEngineException;
-use ARK\Spatial\Geometry;
+use ARK\Spatial\Geometry\Geometry;
 
 /**
  * Database engine based on a PDO driver.
@@ -27,19 +27,19 @@ class PDOEngine extends DatabaseEngine
     /**
      * Class constructor.
      *
-     * @param \PDO    $pdo
-     * @param boolean $useProxy
+     * @param \PDO $pdo
+     * @param bool $useProxy
      */
-    public function __construct(\PDO $pdo, $useProxy = true)
+    public function __construct(\PDO $pdo, bool $useProxy = true)
     {
-        $this->pdo      = $pdo;
+        $this->pdo = $pdo;
         $this->useProxy = $useProxy;
     }
 
     /**
      * @return \PDO
      */
-    public function getPDO()
+    public function getPDO() : \PDO
     {
         return $this->pdo;
     }
@@ -47,13 +47,13 @@ class PDOEngine extends DatabaseEngine
     /**
      * {@inheritdoc}
      */
-    protected function executeQuery($query, array $parameters)
+    protected function executeQuery(string $query, iterable $parameters) : iterable
     {
         $errMode = $this->pdo->getAttribute(\PDO::ATTR_ERRMODE);
         $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
         try {
-            if (! isset($this->statements[$query])) {
+            if (!isset($this->statements[$query])) {
                 $this->statements[$query] = $this->pdo->prepare($query);
             }
 
@@ -83,7 +83,7 @@ class PDOEngine extends DatabaseEngine
 
             // 42XXX = syntax error or access rule violation; reported on undefined function.
             // 22XXX = data exception; reported by MySQL 5.7 on unsupported geometry.
-            if ($errorClass == '42' || $errorClass == '22') {
+            if ($errorClass === '42' || $errorClass === '22') {
                 throw GeometryEngineException::operationNotSupportedByEngine($e);
             }
 

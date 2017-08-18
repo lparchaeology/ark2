@@ -12,7 +12,7 @@ class LineStringType extends GeometryType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName() : string
     {
         return 'LineString';
     }
@@ -20,7 +20,7 @@ class LineStringType extends GeometryType
     /**
      * {@inheritdoc}
      */
-    protected function getProxyClassName()
+    protected function getProxyClassName() : string
     {
         return LineStringProxy::class;
     }

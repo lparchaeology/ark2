@@ -18,21 +18,11 @@ abstract class AbstractFunction extends FunctionNode
     private $args = [];
 
     /**
-     * @return string
-     */
-    abstract protected function getSqlFunctionName();
-
-    /**
-     * @return integer
-     */
-    abstract protected function getParameterCount();
-
-    /**
      * {@inheritdoc}
      */
-    public function getSql(SqlWalker $sqlWalker)
+    public function getSql(SqlWalker $sqlWalker) : string
     {
-        $sql = $this->getSqlFunctionName() . '(';
+        $sql = $this->getSqlFunctionName().'(';
 
         foreach ($this->args as $key => $arg) {
             if ($key !== 0) {
@@ -50,7 +40,7 @@ abstract class AbstractFunction extends FunctionNode
     /**
      * {@inheritdoc}
      */
-    public function parse(Parser $parser)
+    public function parse(Parser $parser) : void
     {
         $this->args = [];
 
@@ -59,7 +49,7 @@ abstract class AbstractFunction extends FunctionNode
 
         $parameterCount = $this->getParameterCount();
 
-        for ($i = 0; $i < $parameterCount; $i++) {
+        for ($i = 0; $i < $parameterCount; ++$i) {
             if ($i !== 0) {
                 $parser->match(Lexer::T_COMMA);
             }
@@ -69,4 +59,14 @@ abstract class AbstractFunction extends FunctionNode
 
         $parser->match(Lexer::T_CLOSE_PARENTHESIS);
     }
+
+    /**
+     * @return string
+     */
+    abstract protected function getSqlFunctionName() : string;
+
+    /**
+     * @return int
+     */
+    abstract protected function getParameterCount() : int;
 }

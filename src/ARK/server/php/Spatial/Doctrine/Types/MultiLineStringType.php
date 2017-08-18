@@ -12,7 +12,7 @@ class MultiLineStringType extends GeometryType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName() : string
     {
         return 'MultiLineString';
     }
@@ -20,7 +20,7 @@ class MultiLineStringType extends GeometryType
     /**
      * {@inheritdoc}
      */
-    protected function getProxyClassName()
+    protected function getProxyClassName() : string
     {
         return MultiLineStringProxy::class;
     }

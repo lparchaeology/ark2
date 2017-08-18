@@ -2,22 +2,22 @@
 
 namespace ARK\Spatial\IO;
 
-use ARK\Spatial\CoordinateSystem;
 use ARK\Spatial\Exception\GeometryIOException;
-use ARK\Spatial\Geometry;
-use ARK\Spatial\Point;
-use ARK\Spatial\LineString;
-use ARK\Spatial\CircularString;
-use ARK\Spatial\CompoundCurve;
-use ARK\Spatial\Polygon;
-use ARK\Spatial\CurvePolygon;
-use ARK\Spatial\MultiPoint;
-use ARK\Spatial\MultiLineString;
-use ARK\Spatial\MultiPolygon;
-use ARK\Spatial\GeometryCollection;
-use ARK\Spatial\PolyhedralSurface;
-use ARK\Spatial\TIN;
-use ARK\Spatial\Triangle;
+use ARK\Spatial\Geometry\CircularString;
+use ARK\Spatial\Geometry\CompoundCurve;
+use ARK\Spatial\Geometry\CoordinateSystem;
+use ARK\Spatial\Geometry\CurvePolygon;
+use ARK\Spatial\Geometry\Geometry;
+use ARK\Spatial\Geometry\GeometryCollection;
+use ARK\Spatial\Geometry\LineString;
+use ARK\Spatial\Geometry\MultiLineString;
+use ARK\Spatial\Geometry\MultiPoint;
+use ARK\Spatial\Geometry\MultiPolygon;
+use ARK\Spatial\Geometry\Point;
+use ARK\Spatial\Geometry\Polygon;
+use ARK\Spatial\Geometry\PolyhedralSurface;
+use ARK\Spatial\Geometry\TIN;
+use ARK\Spatial\Geometry\Triangle;
 
 /**
  * Base class for WKBReader and EWKBReader.
@@ -25,27 +25,25 @@ use ARK\Spatial\Triangle;
 abstract class AbstractWKBReader
 {
     /**
-     * @param WKBBuffer $buffer       The WKB buffer.
-     * @param integer   $geometryType A variable to store the geometry type.
-     * @param boolean   $hasZ         A variable to store whether the geometry has Z coordinates.
-     * @param boolean   $hasM         A variable to store whether the geometry has M coordinates.
-     * @param integer   $srid         A variable to store the SRID.
+     * @param WKBBuffer $buffer       the WKB buffer
+     * @param int       $geometryType a variable to store the geometry type
+     * @param bool      $hasZ         a variable to store whether the geometry has Z coordinates
+     * @param bool      $hasM         a variable to store whether the geometry has M coordinates
+     * @param int       $srid         a variable to store the SRID
      *
-     * @return void
      *
      * @throws GeometryIOException
      */
-    abstract protected function readGeometryHeader(WKBBuffer $buffer, & $geometryType, & $hasZ, & $hasM, & $srid);
+    abstract protected function readGeometryHeader(WKBBuffer $buffer, int &$geometryType, bool &$hasZ, bool &$hasM, int &$srid) : void;
 
     /**
      * @param WKBBuffer $buffer
-     * @param integer   $srid
-     *
-     * @return Geometry
+     * @param int       $srid
      *
      * @throws GeometryIOException
+     * @return Geometry
      */
-    protected function readGeometry(WKBBuffer $buffer, $srid)
+    protected function readGeometry(WKBBuffer $buffer, int $srid) : Geometry
     {
         $buffer->readByteOrder();
 
@@ -103,7 +101,7 @@ abstract class AbstractWKBReader
      *
      * @return Point
      */
-    private function readPoint(WKBBuffer $buffer, CoordinateSystem $cs)
+    private function readPoint(WKBBuffer $buffer, CoordinateSystem $cs) : Point
     {
         $coords = $buffer->readDoubles($cs->coordinateDimension());
 
@@ -116,13 +114,13 @@ abstract class AbstractWKBReader
      *
      * @return LineString
      */
-    private function readLineString(WKBBuffer $buffer, CoordinateSystem $cs)
+    private function readLineString(WKBBuffer $buffer, CoordinateSystem $cs) : LineString
     {
         $numPoints = $buffer->readUnsignedLong();
 
         $points = [];
 
-        for ($i = 0; $i < $numPoints; $i++) {
+        for ($i = 0; $i < $numPoints; ++$i) {
             $points[] = $this->readPoint($buffer, $cs);
         }
 
@@ -135,13 +133,13 @@ abstract class AbstractWKBReader
      *
      * @return CircularString
      */
-    private function readCircularString(WKBBuffer $buffer, CoordinateSystem $cs)
+    private function readCircularString(WKBBuffer $buffer, CoordinateSystem $cs) : CircularString
     {
         $numPoints = $buffer->readUnsignedLong();
 
         $points = [];
 
-        for ($i = 0; $i < $numPoints; $i++) {
+        for ($i = 0; $i < $numPoints; ++$i) {
             $points[] = $this->readPoint($buffer, $cs);
         }
 
@@ -154,12 +152,12 @@ abstract class AbstractWKBReader
      *
      * @return CompoundCurve
      */
-    private function readCompoundCurve(WKBBuffer $buffer, CoordinateSystem $cs)
+    private function readCompoundCurve(WKBBuffer $buffer, CoordinateSystem $cs) : CompoundCurve
     {
         $numCurves = $buffer->readUnsignedLong();
         $curves = [];
 
-        for ($i = 0; $i < $numCurves; $i++) {
+        for ($i = 0; $i < $numCurves; ++$i) {
             $curves[] = $this->readGeometry($buffer, $cs->SRID());
         }
 
@@ -172,13 +170,13 @@ abstract class AbstractWKBReader
      *
      * @return Polygon
      */
-    private function readPolygon(WKBBuffer $buffer, CoordinateSystem $cs)
+    private function readPolygon(WKBBuffer $buffer, CoordinateSystem $cs) : Polygon
     {
         $numRings = $buffer->readUnsignedLong();
 
         $rings = [];
 
-        for ($i = 0; $i < $numRings; $i++) {
+        for ($i = 0; $i < $numRings; ++$i) {
             $rings[] = $this->readLineString($buffer, $cs);
         }
 
@@ -191,13 +189,13 @@ abstract class AbstractWKBReader
      *
      * @return CurvePolygon
      */
-    private function readCurvePolygon(WKBBuffer $buffer, CoordinateSystem $cs)
+    private function readCurvePolygon(WKBBuffer $buffer, CoordinateSystem $cs) : CurvePolygon
     {
         $numRings = $buffer->readUnsignedLong();
 
         $rings = [];
 
-        for ($i = 0; $i < $numRings; $i++) {
+        for ($i = 0; $i < $numRings; ++$i) {
             $rings[] = $this->readGeometry($buffer, $cs->SRID());
         }
 
@@ -210,12 +208,12 @@ abstract class AbstractWKBReader
      *
      * @return MultiPoint
      */
-    private function readMultiPoint(WKBBuffer $buffer, CoordinateSystem $cs)
+    private function readMultiPoint(WKBBuffer $buffer, CoordinateSystem $cs) : MultiPoint
     {
         $numPoints = $buffer->readUnsignedLong();
         $points = [];
 
-        for ($i = 0; $i < $numPoints; $i++) {
+        for ($i = 0; $i < $numPoints; ++$i) {
             $points[] = $this->readGeometry($buffer, $cs->SRID());
         }
 
@@ -228,12 +226,12 @@ abstract class AbstractWKBReader
      *
      * @return MultiLineString
      */
-    private function readMultiLineString(WKBBuffer $buffer, CoordinateSystem $cs)
+    private function readMultiLineString(WKBBuffer $buffer, CoordinateSystem $cs) : MultiLineString
     {
         $numLineStrings = $buffer->readUnsignedLong();
         $lineStrings = [];
 
-        for ($i = 0; $i < $numLineStrings; $i++) {
+        for ($i = 0; $i < $numLineStrings; ++$i) {
             $lineStrings[] = $this->readGeometry($buffer, $cs->SRID());
         }
 
@@ -246,12 +244,12 @@ abstract class AbstractWKBReader
      *
      * @return MultiPolygon
      */
-    private function readMultiPolygon(WKBBuffer $buffer, CoordinateSystem $cs)
+    private function readMultiPolygon(WKBBuffer $buffer, CoordinateSystem $cs) : MultiPolygon
     {
         $numPolygons = $buffer->readUnsignedLong();
         $polygons = [];
 
-        for ($i = 0; $i < $numPolygons; $i++) {
+        for ($i = 0; $i < $numPolygons; ++$i) {
             $polygons[] = $this->readGeometry($buffer, $cs->SRID());
         }
 
@@ -264,12 +262,12 @@ abstract class AbstractWKBReader
      *
      * @return GeometryCollection
      */
-    private function readGeometryCollection(WKBBuffer $buffer, CoordinateSystem $cs)
+    private function readGeometryCollection(WKBBuffer $buffer, CoordinateSystem $cs) : GeometryCollection
     {
         $numGeometries = $buffer->readUnsignedLong();
         $geometries = [];
 
-        for ($i = 0; $i < $numGeometries; $i++) {
+        for ($i = 0; $i < $numGeometries; ++$i) {
             $geometries[] = $this->readGeometry($buffer, $cs->SRID());
         }
 
@@ -282,12 +280,12 @@ abstract class AbstractWKBReader
      *
      * @return PolyhedralSurface
      */
-    private function readPolyhedralSurface(WKBBuffer $buffer, CoordinateSystem $cs)
+    private function readPolyhedralSurface(WKBBuffer $buffer, CoordinateSystem $cs) : PolyhedralSurface
     {
         $numPatches = $buffer->readUnsignedLong();
         $patches = [];
 
-        for ($i = 0; $i < $numPatches; $i++) {
+        for ($i = 0; $i < $numPatches; ++$i) {
             $patches[] = $this->readGeometry($buffer, $cs->SRID());
         }
 
@@ -300,12 +298,12 @@ abstract class AbstractWKBReader
      *
      * @return TIN
      */
-    private function readTIN(WKBBuffer $buffer, CoordinateSystem $cs)
+    private function readTIN(WKBBuffer $buffer, CoordinateSystem $cs) : TIN
     {
         $numPatches = $buffer->readUnsignedLong();
         $patches = [];
 
-        for ($i = 0; $i < $numPatches; $i++) {
+        for ($i = 0; $i < $numPatches; ++$i) {
             $patches[] = $this->readGeometry($buffer, $cs->SRID());
         }
 
@@ -318,13 +316,13 @@ abstract class AbstractWKBReader
      *
      * @return Triangle
      */
-    private function readTriangle(WKBBuffer $buffer, CoordinateSystem $cs)
+    private function readTriangle(WKBBuffer $buffer, CoordinateSystem $cs) : Triangle
     {
         $numRings = $buffer->readUnsignedLong();
 
         $rings = [];
 
-        for ($i = 0; $i < $numRings; $i++) {
+        for ($i = 0; $i < $numRings; ++$i) {
             $rings[] = $this->readLineString($buffer, $cs);
         }
 

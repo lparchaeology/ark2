@@ -30,11 +30,10 @@ abstract class MultiCurve extends GeometryCollection
      *
      * @noproxy
      *
-     * @return integer
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
+     * @return bool
      */
-    public function isClosed()
+    public function isClosed() : bool
     {
         return GeometryEngineRegistry::get()->isClosed($this);
     }
@@ -46,11 +45,10 @@ abstract class MultiCurve extends GeometryCollection
      *
      * @noproxy
      *
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return float
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
      */
-    public function length()
+    public function length() : float
     {
         return GeometryEngineRegistry::get()->length($this);
     }

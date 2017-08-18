@@ -2,8 +2,8 @@
 
 namespace ARK\Spatial\IO;
 
-use ARK\Spatial\Geometry;
 use ARK\Spatial\Exception\GeometryIOException;
+use ARK\Spatial\Geometry\Geometry;
 
 /**
  * Reads geometries out of the Extended WKB format designed by PostGIS.
@@ -11,18 +11,17 @@ use ARK\Spatial\Exception\GeometryIOException;
 class EWKBReader extends AbstractWKBReader
 {
     /**
-     * @param string $ewkb The EWKB to read.
-     *
-     * @return Geometry
+     * @param string $ewkb the EWKB to read
      *
      * @throws GeometryIOException
+     * @return Geometry
      */
-    public function read($ewkb)
+    public function read($ewkb) : Geometry
     {
         $buffer = new WKBBuffer($ewkb);
         $geometry = $this->readGeometry($buffer, 0);
 
-        if (! $buffer->isEndOfStream()) {
+        if (!$buffer->isEndOfStream()) {
             throw GeometryIOException::invalidWKB('unexpected data at end of stream');
         }
 
@@ -32,7 +31,7 @@ class EWKBReader extends AbstractWKBReader
     /**
      * {@inheritdoc}
      */
-    protected function readGeometryHeader(WKBBuffer $buffer, & $geometryType, & $hasZ, & $hasM, & $srid)
+    protected function readGeometryHeader(WKBBuffer $buffer, int &$geometryType, bool &$hasZ, bool &$hasM, bool &$srid) : void
     {
         $header = $buffer->readUnsignedLong();
 
@@ -49,8 +48,8 @@ class EWKBReader extends AbstractWKBReader
         } else {
             $geometryType = $header & 0xFFF;
 
-            $hasZ    = (($header & EWKBTools::Z) !== 0);
-            $hasM    = (($header & EWKBTools::M) !== 0);
+            $hasZ = (($header & EWKBTools::Z) !== 0);
+            $hasM = (($header & EWKBTools::M) !== 0);
             $hasSRID = (($header & EWKBTools::S) !== 0);
 
             if ($hasSRID) {

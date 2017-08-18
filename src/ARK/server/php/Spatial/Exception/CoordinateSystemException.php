@@ -2,7 +2,7 @@
 
 namespace ARK\Spatial\Exception;
 
-use ARK\Spatial\Geometry;
+use ARK\Spatial\Geometry\Geometry;
 
 /**
  * Exception thrown when cordinate systems are mixed.
@@ -15,9 +15,9 @@ class CoordinateSystemException extends GeometryException
      *
      * @return CoordinateSystemException
      */
-    public static function sridMix(Geometry $reference, Geometry $culprit)
+    public static function sridMix(Geometry $reference, Geometry $culprit) : CoordinateSystemException
     {
-        return new CoordinateSystemException(sprintf(
+        return new self(sprintf(
             'SRID mix: %s with SRID %d cannot contain %s with SRID %d.',
             $reference->geometryType(),
             $reference->SRID(),
@@ -32,9 +32,9 @@ class CoordinateSystemException extends GeometryException
      *
      * @return CoordinateSystemException
      */
-    public static function dimensionalityMix(Geometry $reference, Geometry $culprit)
+    public static function dimensionalityMix(Geometry $reference, Geometry $culprit) : CoordinateSystemException
     {
-        return new CoordinateSystemException(sprintf(
+        return new self(sprintf(
             'Dimensionality mix: %s %s cannot contain %s %s.',
             $reference->geometryType(),
             $reference->coordinateSystem()->coordinateName(),

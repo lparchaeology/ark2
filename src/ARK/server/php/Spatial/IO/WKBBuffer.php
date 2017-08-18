@@ -15,22 +15,22 @@ class WKBBuffer
     private $wkb;
 
     /**
-     * @var integer
+     * @var int
      */
     private $length;
 
     /**
-     * @var integer
+     * @var int
      */
     private $position = 0;
 
     /**
-     * @var integer
+     * @var int
      */
     private $machineByteOrder;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $invert = false;
 
@@ -47,16 +47,71 @@ class WKBBuffer
     }
 
     /**
-     * Reads words from the buffer.
+     * Reads an unsigned long (32 bit) integer from the buffer.
      *
-     * @param integer $words      The number of words to read.
-     * @param integer $wordLength The word length in bytes.
+     * @return int
+     */
+    public function readUnsignedLong() : int
+    {
+        return unpack('L', $this->read(1, 4))[1];
+    }
+
+    /**
+     * Reads double-precision floating point numbers from the buffer.
      *
-     * @return string
+     * @param int $count the number of doubles to read
+     *
+     * @return float[] a 1-based array containing the numbers
+     */
+    public function readDoubles(int $count) : iterable
+    {
+        return unpack('d'.$count, $this->read($count, 8));
+    }
+
+    /**
+     * Reads the machine byte order from the buffer and stores the result to act accordingly.
      *
      * @throws GeometryIOException
      */
-    private function read($words, $wordLength)
+    public function readByteOrder() : void
+    {
+        $byteOrder = $this->readUnsignedChar();
+
+        if ($byteOrder !== WKBTools::BIG_ENDIAN && $byteOrder !== WKBTools::LITTLE_ENDIAN) {
+            throw GeometryIOException::invalidWKB('unknown byte order: '.$byteOrder);
+        }
+
+        $this->invert = ($byteOrder !== $this->machineByteOrder);
+    }
+
+    /**
+     * @param int $bytes
+     */
+    public function rewind(int $bytes) : void
+    {
+        $this->position -= $bytes;
+    }
+
+    /**
+     * Checks whether the pointer is at the end of the buffer.
+     *
+     * @return bool
+     */
+    public function isEndOfStream() : bool
+    {
+        return $this->position === $this->length;
+    }
+
+    /**
+     * Reads words from the buffer.
+     *
+     * @param int $words      the number of words to read
+     * @param int $wordLength the word length in bytes
+     *
+     * @throws GeometryIOException
+     * @return string
+     */
+    private function read(int $words, int $wordLength) : string
     {
         $length = $words * $wordLength;
 
@@ -71,7 +126,7 @@ class WKBBuffer
         if ($this->invert) {
             $data = '';
 
-            for ($i = 0; $i < $words; $i++) {
+            for ($i = 0; $i < $words; ++$i) {
                 $data .= strrev(substr($this->wkb, $this->position + $i * $wordLength, $wordLength));
             }
         } else {
@@ -86,68 +141,10 @@ class WKBBuffer
     /**
      * Reads an unsigned char (8 bit) integer from the buffer.
      *
-     * @return integer
+     * @return int
      */
-    private function readUnsignedChar()
+    private function readUnsignedChar() : int
     {
         return unpack('C', $this->read(1, 1))[1];
-    }
-
-    /**
-     * Reads an unsigned long (32 bit) integer from the buffer.
-     *
-     * @return integer
-     */
-    public function readUnsignedLong()
-    {
-        return unpack('L', $this->read(1, 4))[1];
-    }
-
-    /**
-     * Reads double-precision floating point numbers from the buffer.
-     *
-     * @param integer $count The number of doubles to read.
-     *
-     * @return float[] A 1-based array containing the numbers.
-     */
-    public function readDoubles($count)
-    {
-        return unpack('d' . $count, $this->read($count, 8));
-    }
-
-    /**
-     * Reads the machine byte order from the buffer and stores the result to act accordingly.
-     *
-     * @throws GeometryIOException
-     */
-    public function readByteOrder()
-    {
-        $byteOrder = $this->readUnsignedChar();
-
-        if ($byteOrder !== WKBTools::BIG_ENDIAN && $byteOrder !== WKBTools::LITTLE_ENDIAN) {
-            throw GeometryIOException::invalidWKB('unknown byte order: ' . $byteOrder);
-        }
-
-        $this->invert = ($byteOrder !== $this->machineByteOrder);
-    }
-
-    /**
-     * @param integer $bytes
-     *
-     * @return void
-     */
-    public function rewind($bytes)
-    {
-        $this->position -= $bytes;
-    }
-
-    /**
-     * Checks whether the pointer is at the end of the buffer.
-     *
-     * @return boolean
-     */
-    public function isEndOfStream()
-    {
-        return $this->position === $this->length;
     }
 }

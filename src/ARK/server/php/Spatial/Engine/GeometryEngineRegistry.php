@@ -17,9 +17,9 @@ final class GeometryEngineRegistry
     /**
      * Returns whether a geometry engine is set.
      *
-     * @return boolean
+     * @return bool
      */
-    public static function has()
+    public static function has() : bool
     {
         return self::$engine !== null;
     }
@@ -28,10 +28,8 @@ final class GeometryEngineRegistry
      * Sets the GeometryEngine to use for calculations.
      *
      * @param GeometryEngine $engine
-     *
-     * @return void
      */
-    public static function set(GeometryEngine $engine)
+    public static function set(GeometryEngine $engine) : void
     {
         self::$engine = $engine;
     }
@@ -39,11 +37,10 @@ final class GeometryEngineRegistry
     /**
      * Returns the GeometryEngine to use for calculations.
      *
-     * @return GeometryEngine
-     *
      * @throws GeometryEngineException
+     * @return GeometryEngine
      */
-    public static function get()
+    public static function get() : GeometryEngine
     {
         if (self::$engine === null) {
             throw GeometryEngineException::noEngineSet();

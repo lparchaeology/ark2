@@ -20,7 +20,7 @@ abstract class Curve extends Geometry
      *
      * A Curve is a 1-dimensional geometric object.
      */
-    public function dimension()
+    public function dimension() : int
     {
         return 1;
     }
@@ -30,11 +30,10 @@ abstract class Curve extends Geometry
      *
      * @noproxy
      *
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return float
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
      */
-    public function length()
+    public function length() : float
     {
         return GeometryEngineRegistry::get()->length($this);
     }
@@ -42,20 +41,18 @@ abstract class Curve extends Geometry
     /**
      * Returns the start Point of this Curve.
      *
+     * @throws EmptyGeometryException if the curve is empty
      * @return Point
-     *
-     * @throws EmptyGeometryException If the curve is empty.
      */
-    abstract public function startPoint();
+    abstract public function startPoint() : Point;
 
     /**
      * Returns the end Point of this Curve.
      *
+     * @throws EmptyGeometryException if the curve is empty
      * @return Point
-     *
-     * @throws EmptyGeometryException If the curve is empty.
      */
-    abstract public function endPoint();
+    abstract public function endPoint() : Point;
 
     /**
      * Returns whether this Curve is closed.
@@ -64,11 +61,10 @@ abstract class Curve extends Geometry
      *
      * @noproxy
      *
-     * @return boolean
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
+     * @return bool
      */
-    public function isClosed()
+    public function isClosed() : bool
     {
         return GeometryEngineRegistry::get()->isClosed($this);
     }
@@ -83,11 +79,10 @@ abstract class Curve extends Geometry
      *
      * @noproxy
      *
-     * @return boolean
-     *
-     * @throws GeometryEngineException If the operation is not supported by the geometry engine.
+     * @throws GeometryEngineException if the operation is not supported by the geometry engine
+     * @return bool
      */
-    public function isRing()
+    public function isRing() : bool
     {
         return $this->isClosed() && $this->isSimple();
     }

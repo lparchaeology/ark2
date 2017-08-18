@@ -43,16 +43,15 @@ class Point extends Geometry
     private $m;
 
     /**
-     * @param CoordinateSystem $cs        The coordinate system.
+     * @param CoordinateSystem $cs        the coordinate system
      * @param float            ...$coords The point coordinates; can be empty for an empty point.
      *
+     * @throws InvalidGeometryException if the number of coordinates does not match the coordinate system
      * @return Point
-     *
-     * @throws InvalidGeometryException If the number of coordinates does not match the coordinate system.
      */
-    public function __construct(CoordinateSystem $cs, ...$coords)
+    public function __construct(CoordinateSystem $cs, float ...$coords)
     {
-        parent::__construct($cs, ! $coords);
+        parent::__construct($cs, !$coords);
 
         if ($coords) {
             if (count($coords) !== $cs->coordinateDimension()) {
@@ -83,109 +82,109 @@ class Point extends Geometry
     /**
      * Creates a point with X and Y coordinates.
      *
-     * @param float   $x    The X coordinate.
-     * @param float   $y    The Y coordinate.
-     * @param integer $srid An optional SRID.
+     * @param float $x    the X coordinate
+     * @param float $y    the Y coordinate
+     * @param int   $srid an optional SRID
      *
      * @return Point
      */
-    public static function xy($x, $y, $srid = 0)
+    public static function xy(float $x, float $y, int $srid = 0) : Point
     {
-        return new Point(CoordinateSystem::xy($srid), $x, $y);
+        return new self(CoordinateSystem::xy($srid), $x, $y);
     }
 
     /**
      * Creates a point with X, Y and Z coordinates.
      *
-     * @param float   $x    The X coordinate.
-     * @param float   $y    The Y coordinate.
-     * @param float   $z    The Z coordinate.
-     * @param integer $srid An optional SRID.
+     * @param float $x    the X coordinate
+     * @param float $y    the Y coordinate
+     * @param float $z    the Z coordinate
+     * @param int   $srid an optional SRID
      *
      * @return Point
      */
-    public static function xyz($x, $y, $z, $srid = 0)
+    public static function xyz(float $x, float $y, float $z, int $srid = 0) : Point
     {
-        return new Point(CoordinateSystem::xyz($srid), $x, $y, $z);
+        return new self(CoordinateSystem::xyz($srid), $x, $y, $z);
     }
 
     /**
      * Creates a point with X, Y and M coordinates.
      *
-     * @param float   $x    The X coordinate.
-     * @param float   $y    The Y coordinate.
-     * @param float   $m    The M coordinate.
-     * @param integer $srid An optional SRID.
+     * @param float $x    the X coordinate
+     * @param float $y    the Y coordinate
+     * @param float $m    the M coordinate
+     * @param int   $srid an optional SRID
      *
      * @return Point
      */
-    public static function xym($x, $y, $m, $srid = 0)
+    public static function xym(float $x, float $y, float $m, int $srid = 0) : Point
     {
-        return new Point(CoordinateSystem::xym($srid), $x, $y, $m);
+        return new self(CoordinateSystem::xym($srid), $x, $y, $m);
     }
 
     /**
      * Creates a point with X, Y, Z and M coordinates.
      *
-     * @param float   $x    The X coordinate.
-     * @param float   $y    The Y coordinate.
-     * @param float   $z    The Z coordinate.
-     * @param float   $m    The M coordinate.
-     * @param integer $srid An optional SRID.
+     * @param float $x    the X coordinate
+     * @param float $y    the Y coordinate
+     * @param float $z    the Z coordinate
+     * @param float $m    the M coordinate
+     * @param int   $srid an optional SRID
      *
      * @return Point
      */
-    public static function xyzm($x, $y, $z, $m, $srid = 0)
+    public static function xyzm(float $x, float $y, float $z, float $m, int $srid = 0) : Point
     {
-        return new Point(CoordinateSystem::xyzm($srid), $x, $y, $z, $m);
+        return new self(CoordinateSystem::xyzm($srid), $x, $y, $z, $m);
     }
 
     /**
      * Creates an empty Point with XY dimensionality.
      *
-     * @param integer $srid An optional SRID.
+     * @param int $srid an optional SRID
      *
      * @return Point
      */
-    public static function xyEmpty($srid = 0)
+    public static function xyEmpty(int $srid = 0) : Point
     {
-        return new Point(CoordinateSystem::xy($srid));
+        return new self(CoordinateSystem::xy($srid));
     }
 
     /**
      * Creates an empty Point with XYZ dimensionality.
      *
-     * @param integer $srid An optional SRID.
+     * @param int $srid an optional SRID
      *
      * @return Point
      */
-    public static function xyzEmpty($srid = 0)
+    public static function xyzEmpty(int $srid = 0) : Point
     {
-        return new Point(CoordinateSystem::xyz($srid));
+        return new self(CoordinateSystem::xyz($srid));
     }
 
     /**
      * Creates an empty Point with XYM dimensionality.
      *
-     * @param integer $srid An optional SRID.
+     * @param int $srid an optional SRID
      *
      * @return Point
      */
-    public static function xymEmpty($srid = 0)
+    public static function xymEmpty(int $srid = 0) : Point
     {
-        return new Point(CoordinateSystem::xym($srid));
+        return new self(CoordinateSystem::xym($srid));
     }
 
     /**
      * Creates an empty Point with XYZM dimensionality.
      *
-     * @param integer $srid An optional SRID.
+     * @param int $srid an optional SRID
      *
      * @return Point
      */
-    public static function xyzmEmpty($srid = 0)
+    public static function xyzmEmpty(int $srid = 0) : Point
     {
-        return new Point(CoordinateSystem::xyzm($srid));
+        return new self(CoordinateSystem::xyzm($srid));
     }
 
     /**
@@ -195,7 +194,7 @@ class Point extends Geometry
      *
      * @return float|null
      */
-    public function x()
+    public function x() : ?float
     {
         return $this->x;
     }
@@ -207,7 +206,7 @@ class Point extends Geometry
      *
      * @return float|null
      */
-    public function y()
+    public function y() : ?float
     {
         return $this->y;
     }
@@ -219,7 +218,7 @@ class Point extends Geometry
      *
      * @return float|null
      */
-    public function z()
+    public function z() : ?float
     {
         return $this->z;
     }
@@ -231,7 +230,7 @@ class Point extends Geometry
      *
      * @return float|null
      */
-    public function m()
+    public function m() : ?float
     {
         return $this->m;
     }
@@ -241,7 +240,7 @@ class Point extends Geometry
      *
      * {@inheritdoc}
      */
-    public function geometryType()
+    public function geometryType() : string
     {
         return 'Point';
     }
@@ -251,7 +250,7 @@ class Point extends Geometry
      *
      * {@inheritdoc}
      */
-    public function geometryTypeBinary()
+    public function geometryTypeBinary() : int
     {
         return Geometry::POINT;
     }
@@ -261,7 +260,7 @@ class Point extends Geometry
      *
      * {@inheritdoc}
      */
-    public function dimension()
+    public function dimension() : int
     {
         return 0;
     }
@@ -269,7 +268,7 @@ class Point extends Geometry
     /**
      * {@inheritdoc}
      */
-    public function toArray()
+    public function toArray() : array
     {
         if ($this->isEmpty) {
             return [];
@@ -295,7 +294,7 @@ class Point extends Geometry
      *
      * {@inheritdoc}
      */
-    public function count()
+    public function count() : int
     {
         if ($this->isEmpty) {
             return 0;
@@ -311,7 +310,7 @@ class Point extends Geometry
      *
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator() : \ArrayIterator
     {
         return new \ArrayIterator($this->toArray());
     }
