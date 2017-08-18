@@ -1,6 +1,6 @@
 <?php
 
-namespace Brick\Geo\Doctrine\Functions;
+namespace ARK\Spatial\Doctrine\Functions;
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\Lexer;

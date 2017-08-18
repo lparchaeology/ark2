@@ -1,6 +1,6 @@
 <?php
 
-namespace Brick\Geo;
+namespace ARK\Spatial;
 
 /**
  * A MultiLineString is a MultiCurve whose elements are LineStrings.

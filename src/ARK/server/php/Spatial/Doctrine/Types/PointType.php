@@ -1,8 +1,8 @@
 <?php
 
-namespace Brick\Geo\Doctrine\Types;
+namespace ARK\Spatial\Doctrine\Types;
 
-use Brick\Geo\Proxy\PointProxy;
+use ARK\Spatial\Proxy\PointProxy;
 
 /**
  * Doctrine type for Point.

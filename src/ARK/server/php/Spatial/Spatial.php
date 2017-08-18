@@ -30,7 +30,7 @@
 namespace ARK\Spatial;
 
 use ARK\Framework\Application;
-use Brick\Geo\Point;
+use ARK\Spatial\Geometry\Point;
 use proj4php\Point as ProjPoint;
 use proj4php\Proj;
 use proj4php\Proj4php;

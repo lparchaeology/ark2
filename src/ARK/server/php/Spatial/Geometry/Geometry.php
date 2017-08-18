@@ -1,17 +1,17 @@
 <?php
 
-namespace Brick\Geo;
+namespace ARK\Spatial;
 
-use Brick\Geo\Engine\GeometryEngineRegistry;
-use Brick\Geo\Exception\CoordinateSystemException;
-use Brick\Geo\Exception\GeometryEngineException;
-use Brick\Geo\Exception\GeometryIOException;
-use Brick\Geo\Exception\InvalidGeometryException;
-use Brick\Geo\Exception\UnexpectedGeometryException;
-use Brick\Geo\IO\WKTReader;
-use Brick\Geo\IO\WKTWriter;
-use Brick\Geo\IO\WKBReader;
-use Brick\Geo\IO\WKBWriter;
+use ARK\Spatial\Engine\GeometryEngineRegistry;
+use ARK\Spatial\Exception\CoordinateSystemException;
+use ARK\Spatial\Exception\GeometryEngineException;
+use ARK\Spatial\Exception\GeometryIOException;
+use ARK\Spatial\Exception\InvalidGeometryException;
+use ARK\Spatial\Exception\UnexpectedGeometryException;
+use ARK\Spatial\IO\WKTReader;
+use ARK\Spatial\IO\WKTWriter;
+use ARK\Spatial\IO\WKBReader;
+use ARK\Spatial\IO\WKBWriter;
 
 /**
  * Geometry is the root class of the hierarchy.

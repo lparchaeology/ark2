@@ -1,9 +1,9 @@
 <?php
 
-namespace Brick\Geo\Doctrine\Types;
+namespace ARK\Spatial\Doctrine\Types;
 
-use Brick\Geo\Geometry;
-use Brick\Geo\Proxy\GeometryProxy;
+use ARK\Spatial\Geometry;
+use ARK\Spatial\Proxy\GeometryProxy;
 
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Brick\Geo\IO;
+namespace ARK\Spatial\IO;
 
-use Brick\Geo\Geometry;
-use Brick\Geo\Exception\GeometryIOException;
+use ARK\Spatial\Geometry;
+use ARK\Spatial\Exception\GeometryIOException;
 
 /**
  * Reads geometries from the Extended WKT format designed by PostGIS.

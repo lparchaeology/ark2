@@ -1,9 +1,9 @@
 <?php
 
-namespace Brick\Geo\IO;
+namespace ARK\Spatial\IO;
 
-use Brick\Geo\Exception\GeometryIOException;
-use Brick\Geo\Geometry;
+use ARK\Spatial\Exception\GeometryIOException;
+use ARK\Spatial\Geometry;
 
 /**
  * Builds geometries out of Well-Known Text strings.

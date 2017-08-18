@@ -1,10 +1,10 @@
 <?php
 
-namespace Brick\Geo;
+namespace ARK\Spatial;
 
-use Brick\Geo\Exception\CoordinateSystemException;
-use Brick\Geo\Exception\EmptyGeometryException;
-use Brick\Geo\Exception\NoSuchGeometryException;
+use ARK\Spatial\Exception\CoordinateSystemException;
+use ARK\Spatial\Exception\EmptyGeometryException;
+use ARK\Spatial\Exception\NoSuchGeometryException;
 
 /**
  * A CurvePolygon is a planar Surface defined by 1 exterior boundary and 0 or more interior boundaries.

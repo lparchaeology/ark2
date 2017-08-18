@@ -1,9 +1,9 @@
 <?php
 
-namespace Brick\Geo\Engine;
+namespace ARK\Spatial\Engine;
 
-use Brick\Geo\Geometry;
-use Brick\Geo\Exception\GeometryEngineException;
+use ARK\Spatial\Geometry;
+use ARK\Spatial\Exception\GeometryEngineException;
 
 /**
  * Interface for geometry engines.

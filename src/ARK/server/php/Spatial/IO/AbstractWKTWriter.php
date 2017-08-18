@@ -1,22 +1,22 @@
 <?php
 
-namespace Brick\Geo\IO;
+namespace ARK\Spatial\IO;
 
-use Brick\Geo\Exception\GeometryIOException;
-use Brick\Geo\Geometry;
-use Brick\Geo\Point;
-use Brick\Geo\LineString;
-use Brick\Geo\CircularString;
-use Brick\Geo\CompoundCurve;
-use Brick\Geo\Polygon;
-use Brick\Geo\CurvePolygon;
-use Brick\Geo\MultiPoint;
-use Brick\Geo\MultiLineString;
-use Brick\Geo\MultiPolygon;
-use Brick\Geo\GeometryCollection;
-use Brick\Geo\PolyhedralSurface;
-use Brick\Geo\TIN;
-use Brick\Geo\Triangle;
+use ARK\Spatial\Exception\GeometryIOException;
+use ARK\Spatial\Geometry;
+use ARK\Spatial\Point;
+use ARK\Spatial\LineString;
+use ARK\Spatial\CircularString;
+use ARK\Spatial\CompoundCurve;
+use ARK\Spatial\Polygon;
+use ARK\Spatial\CurvePolygon;
+use ARK\Spatial\MultiPoint;
+use ARK\Spatial\MultiLineString;
+use ARK\Spatial\MultiPolygon;
+use ARK\Spatial\GeometryCollection;
+use ARK\Spatial\PolyhedralSurface;
+use ARK\Spatial\TIN;
+use ARK\Spatial\Triangle;
 
 /**
  * Base class for WKTWriter and EWKTWriter.

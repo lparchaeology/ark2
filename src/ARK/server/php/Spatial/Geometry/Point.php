@@ -1,8 +1,8 @@
 <?php
 
-namespace Brick\Geo;
+namespace ARK\Spatial;
 
-use Brick\Geo\Exception\InvalidGeometryException;
+use ARK\Spatial\Exception\InvalidGeometryException;
 
 /**
  * A Point is a 0-dimensional geometric object and represents a single location in coordinate space.

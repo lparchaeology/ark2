@@ -1,8 +1,8 @@
 <?php
 
-namespace Brick\Geo\Doctrine\Types;
+namespace ARK\Spatial\Doctrine\Types;
 
-use Brick\Geo\Proxy\MultiPointProxy;
+use ARK\Spatial\Proxy\MultiPointProxy;
 
 /**
  * Doctrine type for MultiPoint.

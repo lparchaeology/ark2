@@ -1,18 +1,18 @@
 <?php
 
-namespace Brick\Geo\IO;
+namespace ARK\Spatial\IO;
 
-use Brick\Geo\Exception\GeometryIOException;
-use Brick\Geo\CircularString;
-use Brick\Geo\CompoundCurve;
-use Brick\Geo\Curve;
-use Brick\Geo\CurvePolygon;
-use Brick\Geo\Geometry;
-use Brick\Geo\GeometryCollection;
-use Brick\Geo\LineString;
-use Brick\Geo\Point;
-use Brick\Geo\Polygon;
-use Brick\Geo\PolyhedralSurface;
+use ARK\Spatial\Exception\GeometryIOException;
+use ARK\Spatial\CircularString;
+use ARK\Spatial\CompoundCurve;
+use ARK\Spatial\Curve;
+use ARK\Spatial\CurvePolygon;
+use ARK\Spatial\Geometry;
+use ARK\Spatial\GeometryCollection;
+use ARK\Spatial\LineString;
+use ARK\Spatial\Point;
+use ARK\Spatial\Polygon;
+use ARK\Spatial\PolyhedralSurface;
 
 /**
  * Base class for WKBWriter and EWKBWriter.

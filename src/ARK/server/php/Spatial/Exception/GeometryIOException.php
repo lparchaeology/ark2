@@ -1,6 +1,6 @@
 <?php
 
-namespace Brick\Geo\Exception;
+namespace ARK\Spatial\Exception;
 
 /**
  * Exception thrown when an error occurs reading or writing WKT/WKB representations.

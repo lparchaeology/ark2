@@ -1,6 +1,6 @@
 <?php
 
-namespace Brick\Geo\IO;
+namespace ARK\Spatial\IO;
 
 /**
  * Parser for the Extended WKT format designed by PostGIS.

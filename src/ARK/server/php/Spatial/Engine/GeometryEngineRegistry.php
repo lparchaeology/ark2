@@ -1,8 +1,8 @@
 <?php
 
-namespace Brick\Geo\Engine;
+namespace ARK\Spatial\Engine;
 
-use Brick\Geo\Exception\GeometryEngineException;
+use ARK\Spatial\Exception\GeometryEngineException;
 
 /**
  * This class holds the GeometryEngine implementation to use for calculations.

@@ -1,8 +1,8 @@
 <?php
 
-namespace Brick\Geo\Doctrine\Types;
+namespace ARK\Spatial\Doctrine\Types;
 
-use Brick\Geo\Proxy\MultiLineStringProxy;
+use ARK\Spatial\Proxy\MultiLineStringProxy;
 
 /**
  * Doctrine type for MultiLineString.

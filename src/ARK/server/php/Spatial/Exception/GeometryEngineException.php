@@ -1,6 +1,6 @@
 <?php
 
-namespace Brick\Geo\Exception;
+namespace ARK\Spatial\Exception;
 
 /**
  * Exception thrown by geometry engines.

@@ -1,11 +1,11 @@
 <?php
 
-namespace Brick\Geo;
+namespace ARK\Spatial;
 
-use Brick\Geo\Engine\GeometryEngineRegistry;
-use Brick\Geo\Exception\GeometryEngineException;
-use Brick\Geo\Exception\CoordinateSystemException;
-use Brick\Geo\Exception\NoSuchGeometryException;
+use ARK\Spatial\Engine\GeometryEngineRegistry;
+use ARK\Spatial\Exception\GeometryEngineException;
+use ARK\Spatial\Exception\CoordinateSystemException;
+use ARK\Spatial\Exception\NoSuchGeometryException;
 
 /**
  * A PolyhedralSurface is a contiguous collection of polygons, which share common boundary segments.

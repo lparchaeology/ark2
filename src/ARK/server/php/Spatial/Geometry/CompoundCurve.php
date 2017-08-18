@@ -1,11 +1,11 @@
 <?php
 
-namespace Brick\Geo;
+namespace ARK\Spatial;
 
-use Brick\Geo\Exception\CoordinateSystemException;
-use Brick\Geo\Exception\EmptyGeometryException;
-use Brick\Geo\Exception\InvalidGeometryException;
-use Brick\Geo\Exception\NoSuchGeometryException;
+use ARK\Spatial\Exception\CoordinateSystemException;
+use ARK\Spatial\Exception\EmptyGeometryException;
+use ARK\Spatial\Exception\InvalidGeometryException;
+use ARK\Spatial\Exception\NoSuchGeometryException;
 
 /**
  * A CompoundCurve is a collection of zero or more continuous CircularString or LineString instances.

@@ -1,8 +1,8 @@
 <?php
 
-namespace Brick\Geo\Doctrine\Types;
+namespace ARK\Spatial\Doctrine\Types;
 
-use Brick\Geo\Proxy\PolygonProxy;
+use ARK\Spatial\Proxy\PolygonProxy;
 
 /**
  * Doctrine type for Polygon.

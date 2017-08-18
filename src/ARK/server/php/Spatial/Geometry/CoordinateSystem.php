@@ -1,8 +1,8 @@
 <?php
 
-namespace Brick\Geo;
+namespace ARK\Spatial;
 
-use Brick\Geo\Exception\CoordinateSystemException;
+use ARK\Spatial\Exception\CoordinateSystemException;
 
 /**
  * Represents the dimensionality and spatial reference system of a geometry.

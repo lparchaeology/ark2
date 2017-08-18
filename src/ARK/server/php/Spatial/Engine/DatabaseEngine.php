@@ -1,10 +1,10 @@
 <?php
 
-namespace Brick\Geo\Engine;
+namespace ARK\Spatial\Engine;
 
-use Brick\Geo\Exception\GeometryEngineException;
-use Brick\Geo\Geometry;
-use Brick\Geo\Proxy;
+use ARK\Spatial\Exception\GeometryEngineException;
+use ARK\Spatial\Geometry;
+use ARK\Spatial\Proxy;
 
 /**
  * Database implementation of the GeometryEngine.

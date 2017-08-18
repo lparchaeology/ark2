@@ -1,6 +1,6 @@
 <?php
 
-namespace Brick\Geo;
+namespace ARK\Spatial;
 
 /**
  * A MultiPoint is a 0-dimensional GeometryCollection. The elements of a MultiPoint are restricted to Points.

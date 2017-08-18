@@ -1,8 +1,8 @@
 <?php
 
-namespace Brick\Geo\Proxy;
+namespace ARK\Spatial\Proxy;
 
-use Brick\Geo\Geometry;
+use ARK\Spatial\Geometry;
 
 /**
  * Interface implemented by geometry proxies.

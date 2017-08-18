@@ -1,12 +1,12 @@
 <?php
 
-namespace Brick\Geo\Proxy;
+namespace ARK\Spatial\Proxy;
 
-use Brick\Geo\Exception\GeometryIOException;
-use Brick\Geo\Exception\CoordinateSystemException;
-use Brick\Geo\Exception\InvalidGeometryException;
-use Brick\Geo\Exception\UnexpectedGeometryException;
-use Brick\Geo\GeometryCollection;
+use ARK\Spatial\Exception\GeometryIOException;
+use ARK\Spatial\Exception\CoordinateSystemException;
+use ARK\Spatial\Exception\InvalidGeometryException;
+use ARK\Spatial\Exception\UnexpectedGeometryException;
+use ARK\Spatial\GeometryCollection;
 
 /**
  * Proxy class for GeometryCollection.

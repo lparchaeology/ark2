@@ -1,8 +1,8 @@
 <?php
 
-namespace Brick\Geo\IO;
+namespace ARK\Spatial\IO;
 
-use Brick\Geo\Geometry;
+use ARK\Spatial\Geometry;
 
 /**
  * Writes geometries in the WKB format.

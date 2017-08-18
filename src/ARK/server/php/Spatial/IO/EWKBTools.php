@@ -1,6 +1,6 @@
 <?php
 
-namespace Brick\Geo\IO;
+namespace ARK\Spatial\IO;
 
 /**
  * Tools for EWKB classes.

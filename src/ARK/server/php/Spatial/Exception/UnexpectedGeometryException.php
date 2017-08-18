@@ -1,6 +1,6 @@
 <?php
 
-namespace Brick\Geo\Exception;
+namespace ARK\Spatial\Exception;
 
 /**
  * Exception thrown when a geometry is found different from the expected type.

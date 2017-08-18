@@ -1,8 +1,8 @@
 <?php
 
-namespace Brick\Geo\Doctrine\Types;
+namespace ARK\Spatial\Doctrine\Types;
 
-use Brick\Geo\Proxy\GeometryCollectionProxy;
+use ARK\Spatial\Proxy\GeometryCollectionProxy;
 
 /**
  * Doctrine type for GeometryCollection.

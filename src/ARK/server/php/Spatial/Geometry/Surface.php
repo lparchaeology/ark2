@@ -1,9 +1,9 @@
 <?php
 
-namespace Brick\Geo;
+namespace ARK\Spatial;
 
-use Brick\Geo\Engine\GeometryEngineRegistry;
-use Brick\Geo\Exception\GeometryEngineException;
+use ARK\Spatial\Engine\GeometryEngineRegistry;
+use ARK\Spatial\Exception\GeometryEngineException;
 
 /**
  * A Surface is a 2-dimensional geometric object.

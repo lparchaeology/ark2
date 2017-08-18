@@ -1,6 +1,6 @@
 <?php
 
-namespace Brick\Geo;
+namespace ARK\Spatial;
 
 /**
  * A MultiPolygon is a MultiSurface whose elements are Polygons.

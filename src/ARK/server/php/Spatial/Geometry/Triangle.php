@@ -1,8 +1,8 @@
 <?php
 
-namespace Brick\Geo;
+namespace ARK\Spatial;
 
-use Brick\Geo\Exception\InvalidGeometryException;
+use ARK\Spatial\Exception\InvalidGeometryException;
 
 /**
  * A Triangle is a Polygon with 3 distinct, non-collinear vertices and no interior boundary.

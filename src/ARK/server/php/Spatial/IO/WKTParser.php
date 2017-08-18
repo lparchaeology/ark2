@@ -1,8 +1,8 @@
 <?php
 
-namespace Brick\Geo\IO;
+namespace ARK\Spatial\IO;
 
-use Brick\Geo\Exception\GeometryIOException;
+use ARK\Spatial\Exception\GeometryIOException;
 
 /**
  * Well-Known Text parser.

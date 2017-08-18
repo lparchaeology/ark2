@@ -1,10 +1,10 @@
 <?php
 
-namespace Brick\Geo;
+namespace ARK\Spatial;
 
-use Brick\Geo\Engine\GeometryEngineRegistry;
-use Brick\Geo\Exception\EmptyGeometryException;
-use Brick\Geo\Exception\GeometryEngineException;
+use ARK\Spatial\Engine\GeometryEngineRegistry;
+use ARK\Spatial\Exception\EmptyGeometryException;
+use ARK\Spatial\Exception\GeometryEngineException;
 
 /**
  * A Curve is a 1-dimensional geometric object usually stored as a sequence of Points.

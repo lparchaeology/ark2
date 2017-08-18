@@ -1,11 +1,11 @@
 <?php
 
-namespace Brick\Geo\Engine;
+namespace ARK\Spatial\Engine;
 
-use Brick\Geo\Exception\GeometryEngineException;
-use Brick\Geo\IO\EWKBReader;
-use Brick\Geo\IO\EWKBWriter;
-use Brick\Geo\Geometry;
+use ARK\Spatial\Exception\GeometryEngineException;
+use ARK\Spatial\IO\EWKBReader;
+use ARK\Spatial\IO\EWKBWriter;
+use ARK\Spatial\Geometry;
 
 /**
  * GeometryEngine implementation based on the GEOS PHP bindings.
@@ -33,12 +33,12 @@ class GEOSEngine implements GeometryEngine
     private $wktWriter;
 
     /**
-     * @var \Brick\Geo\IO\EWKBReader
+     * @var \ARK\Spatial\IO\EWKBReader
      */
     private $ewkbReader;
 
     /**
-     * @var \Brick\Geo\IO\EWKBWriter
+     * @var \ARK\Spatial\IO\EWKBWriter
      */
     private $ewkbWriter;
 

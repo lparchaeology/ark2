@@ -1,10 +1,10 @@
 <?php
 
-namespace Brick\Geo\Engine;
+namespace ARK\Spatial\Engine;
 
-use Brick\Geo\Exception\GeometryEngineException;
-use Brick\Geo\Exception\SQLite3Exception;
-use Brick\Geo\Geometry;
+use ARK\Spatial\Exception\GeometryEngineException;
+use ARK\Spatial\Exception\SQLite3Exception;
+use ARK\Spatial\Geometry;
 
 /**
  * Database engine based on a SQLite3 driver.

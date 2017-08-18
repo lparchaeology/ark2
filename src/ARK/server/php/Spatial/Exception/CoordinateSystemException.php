@@ -1,8 +1,8 @@
 <?php
 
-namespace Brick\Geo\Exception;
+namespace ARK\Spatial\Exception;
 
-use Brick\Geo\Geometry;
+use ARK\Spatial\Geometry;
 
 /**
  * Exception thrown when cordinate systems are mixed.

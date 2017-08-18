@@ -1,10 +1,10 @@
 <?php
 
-namespace Brick\Geo;
+namespace ARK\Spatial;
 
-use Brick\Geo\Exception\CoordinateSystemException;
-use Brick\Geo\Exception\NoSuchGeometryException;
-use Brick\Geo\Exception\UnexpectedGeometryException;
+use ARK\Spatial\Exception\CoordinateSystemException;
+use ARK\Spatial\Exception\NoSuchGeometryException;
+use ARK\Spatial\Exception\UnexpectedGeometryException;
 
 /**
  * A GeometryCollection is a geometric object that is a collection of some number of geometric objects.

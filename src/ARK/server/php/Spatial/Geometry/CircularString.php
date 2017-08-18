@@ -1,11 +1,11 @@
 <?php
 
-namespace Brick\Geo;
+namespace ARK\Spatial;
 
-use Brick\Geo\Exception\CoordinateSystemException;
-use Brick\Geo\Exception\EmptyGeometryException;
-use Brick\Geo\Exception\InvalidGeometryException;
-use Brick\Geo\Exception\NoSuchGeometryException;
+use ARK\Spatial\Exception\CoordinateSystemException;
+use ARK\Spatial\Exception\EmptyGeometryException;
+use ARK\Spatial\Exception\InvalidGeometryException;
+use ARK\Spatial\Exception\NoSuchGeometryException;
 
 /**
  * A CircularString is a Curve made of zero or more connected circular arc segments.
