@@ -15,18 +15,6 @@ use ARK\Spatial\Exception\NoSuchGeometryException;
 class CurvePolygon extends Surface
 {
     /**
-     * The rings that compose this CurvePolygon.
-     *
-     * The first one represents the exterior ring, and the
-     * (optional) other ones represent the interior rings of the CurvePolygon.
-     *
-     * An empty CurvePolygon contains no rings.
-     *
-     * @var Curve[]
-     */
-    protected $rings = [];
-
-    /**
      * Class constructor.
      *
      * The coordinate system of each of the rings must match the one of the CurvePolygon.
@@ -38,15 +26,7 @@ class CurvePolygon extends Surface
      */
     public function __construct(CoordinateSystem $cs, Curve ...$rings)
     {
-        parent::__construct($cs, !$rings);
-
-        if (!$rings) {
-            return;
-        }
-
-        CoordinateSystem::check($this, ...$rings);
-
-        $this->rings = $rings;
+        $this->init(Geometry::CURVEPOLYGON, $cs, $rings ?? []);
     }
 
     /**
@@ -74,8 +54,7 @@ class CurvePolygon extends Surface
         if ($this->isEmpty) {
             throw new EmptyGeometryException('An empty CurvePolygon has no exterior ring.');
         }
-
-        return $this->rings[0];
+        return $this->element(0);
     }
 
     /**
@@ -85,11 +64,7 @@ class CurvePolygon extends Surface
      */
     public function numInteriorRings() : int
     {
-        if ($this->isEmpty) {
-            return 0;
-        }
-
-        return count($this->rings) - 1;
+        return $this->isEmpty() ? 0 : $this->count() - 1;
     }
 
     /**
@@ -100,82 +75,11 @@ class CurvePolygon extends Surface
      * @throws NoSuchGeometryException if there is no interior ring at this index
      * @return Curve
      */
-    public function interiorRingN($n) : Curve
+    public function interiorRingN(int $n) : Curve
     {
-        $n = (int) $n;
-
-        if ($n === 0 || !isset($this->rings[$n])) {
+        if ($n <= 0) {
             throw new NoSuchGeometryException('There is no interior ring in this CurvePolygon at index '.$n);
         }
-
-        return $this->rings[$n];
-    }
-
-    /**
-     * Returns the interior rings in this CurvePolygon.
-     *
-     * @return Curve[]
-     */
-    public function interiorRings() : iterable
-    {
-        return array_slice($this->rings, 1);
-    }
-
-    /**
-     * @noproxy
-     *
-     * {@inheritdoc}
-     */
-    public function geometryType() : string
-    {
-        return 'CurvePolygon';
-    }
-
-    /**
-     * @noproxy
-     *
-     * {@inheritdoc}
-     */
-    public function geometryTypeBinary() : int
-    {
-        return Geometry::CURVEPOLYGON;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function toArray() : array
-    {
-        $result = [];
-
-        foreach ($this->rings as $ring) {
-            $result[] = $ring->toArray();
-        }
-
-        return $result;
-    }
-
-    /**
-     * Returns the number of rings (exterior + interior) in this CurvePolygon.
-     *
-     * Required by interface Countable.
-     *
-     * {@inheritdoc}
-     */
-    public function count() : int
-    {
-        return count($this->rings);
-    }
-
-    /**
-     * Returns an iterator for the rings (exterior + interior) in this CurvePolygon.
-     *
-     * Required by interface IteratorAggregate.
-     *
-     * {@inheritdoc}
-     */
-    public function getIterator() : \ArrayIterator
-    {
-        return new \ArrayIterator($this->rings);
+        return $this->element($n + 1);
     }
 }

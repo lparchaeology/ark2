@@ -1,18 +1,13 @@
 <?php
 
-namespace ARK\Spatial;
+namespace ARK\Spatial\Geometry;
 
 use ARK\Spatial\Exception\InvalidGeometryException;
 
 /**
- * A Point is a 0-dimensional geometric object and represents a single location in coordinate space.
- *
- * A Point has an x-coordinate value, a y-coordinate value.
- * If called for by the associated Spatial Reference System, it may also have coordinate values for z and m.
- *
- * The boundary of a Point is the empty set.
+ * {@inheritdoc}
  */
-class Point extends Geometry
+class Point extends Geometry implements PointInterface
 {
     /**
      * The x-coordinate value for this Point, or NULL if the point is empty.
@@ -51,32 +46,7 @@ class Point extends Geometry
      */
     public function __construct(CoordinateSystem $cs, float ...$coords)
     {
-        parent::__construct($cs, !$coords);
-
-        if ($coords) {
-            if (count($coords) !== $cs->coordinateDimension()) {
-                throw new InvalidGeometryException(sprintf(
-                    'Expected %d coordinates for Point %s, got %d.',
-                    $cs->coordinateDimension(),
-                    $cs->coordinateName(),
-                    count($coords)
-                ));
-            }
-
-            $this->x = (float) $coords[0];
-            $this->y = (float) $coords[1];
-
-            $hasZ = $cs->hasZ();
-            $hasM = $cs->hasM();
-
-            if ($hasZ) {
-                $this->z = (float) $coords[2];
-            }
-
-            if ($hasM) {
-                $this->m = (float) $coords[$hasZ ? 3 : 2];
-            }
-        }
+        $this->init(Geometry::POINT, $cs, $coords ?? []);
     }
 
     /**
@@ -188,11 +158,7 @@ class Point extends Geometry
     }
 
     /**
-     * Returns the x-coordinate value for this Point.
-     *
-     * Returns NULL if the Point is empty.
-     *
-     * @return float|null
+     * {@inheritdoc}
      */
     public function x() : ?float
     {
@@ -200,11 +166,7 @@ class Point extends Geometry
     }
 
     /**
-     * Returns the y-coordinate value for this Point.
-     *
-     * Returns NULL if the Point is empty.
-     *
-     * @return float|null
+     * {@inheritdoc}
      */
     public function y() : ?float
     {
@@ -212,11 +174,7 @@ class Point extends Geometry
     }
 
     /**
-     * Returns the z-coordinate value for this Point.
-     *
-     * Returns NULL if the Point is empty, or does not have a Z coordinate.
-     *
-     * @return float|null
+     * {@inheritdoc}
      */
     public function z() : ?float
     {
@@ -224,11 +182,7 @@ class Point extends Geometry
     }
 
     /**
-     * Returns the m-coordinate value for this Point.
-     *
-     * Returns NULL if the Point is empty, or does not have a M coordinate.
-     *
-     * @return float|null
+     * {@inheritdoc}
      */
     public function m() : ?float
     {
@@ -236,82 +190,49 @@ class Point extends Geometry
     }
 
     /**
-     * @noproxy
-     *
-     * {@inheritdoc}
-     */
-    public function geometryType() : string
-    {
-        return 'Point';
-    }
-
-    /**
-     * @noproxy
-     *
-     * {@inheritdoc}
-     */
-    public function geometryTypeBinary() : int
-    {
-        return Geometry::POINT;
-    }
-
-    /**
-     * @noproxy
-     *
-     * {@inheritdoc}
-     */
-    public function dimension() : int
-    {
-        return 0;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function toArray() : array
     {
-        if ($this->isEmpty) {
-            return [];
-        }
-
-        $result = [$this->x, $this->y];
-
-        if ($this->z !== null) {
-            $result[] = $this->z;
-        }
-
-        if ($this->m !== null) {
-            $result[] = $this->m;
-        }
-
-        return $result;
+        return $this->elements();
     }
 
     /**
-     * Returns the number of coordinates in this Point.
-     *
-     * Required by interface Countable.
-     *
      * {@inheritdoc}
      */
-    public function count() : int
+    protected function init(int $code, CoordinateSystem $coordinateSystem, iterable $elements = null) : void
     {
-        if ($this->isEmpty) {
-            return 0;
+        parent::init($code, $coordinateSystem, $elements);
+
+        if (!$elements) {
+            return;
         }
 
-        return $this->coordinateSystem->coordinateDimension();
+        $this->x = $elements[0];
+        $this->y = $elements[1];
+
+        if ($cs->hasZ() && $cs->hasM()) {
+            $this->z = $elements[2];
+            $this->m = $elements[3];
+        } elseif ($cs->hasZ()) {
+            $this->z = $elements[2];
+        } elseif ($cs->hasM()) {
+            $this->m = $elements[2];
+        }
     }
 
     /**
-     * Returns an iterator for the coordinates in this Point.
-     *
-     * Required by interface IteratorAggregate.
-     *
      * {@inheritdoc}
      */
-    public function getIterator() : \ArrayIterator
+    protected function validate() : void
     {
-        return new \ArrayIterator($this->toArray());
+        if ($this->count() !== $cs->coordinateDimension()) {
+            throw new InvalidGeometryException(sprintf(
+                'Expected %d coordinates for Point %s, got %d.',
+                $cs->coordinateDimension(),
+                $cs->coordinateName(),
+                $this->count()
+            ));
+        }
     }
 }

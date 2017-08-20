@@ -24,6 +24,13 @@ class CoordinateSystem
     private $hasM;
 
     /**
+     * The dimension of teh coordinate system,: 2, 3 or 4.
+     *
+     * @var int
+     */
+    private $dimension;
+
+    /**
      * The Spatial Reference System Identifier of this coordinate system.
      *
      * @var int
@@ -41,6 +48,7 @@ class CoordinateSystem
     {
         $this->hasZ = $hasZ;
         $this->hasM = $hasM;
+        $this->dimension = 2 + $hasZ + $hasM;
         $this->srid = $srid;
     }
 
@@ -151,17 +159,7 @@ class CoordinateSystem
      */
     public function coordinateDimension() : int
     {
-        $coordinateDimension = 2;
-
-        if ($this->hasZ) {
-            ++$coordinateDimension;
-        }
-
-        if ($this->hasM) {
-            ++$coordinateDimension;
-        }
-
-        return $coordinateDimension;
+        return $this->dimension;
     }
 
     /**
@@ -179,7 +177,6 @@ class CoordinateSystem
     /**
      * @param Geometry $reference     the geometry holding the reference coordinate system
      * @param Geometry ...$geometries The geometries to check against this coordinate system.
-     *
      *
      * @throws CoordinateSystemException if the coordinate systems differ
      */

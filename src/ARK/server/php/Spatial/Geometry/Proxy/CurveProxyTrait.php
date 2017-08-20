@@ -52,15 +52,4 @@ trait CurveProxyTrait
         }
         return $this->proxyGeometry->pointN($n);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function points() : iterable
-    {
-        if ($this->proxyGeometry === null) {
-            $this->load();
-        }
-        return $this->proxyGeometry->points();
-    }
 }

@@ -10,7 +10,7 @@ use ARK\Spatial\IO\EWKBWriter;
 /**
  * GeometryEngine implementation based on the GEOS PHP bindings.
  */
-class GEOSEngine implements GeometryEngine
+class GEOSEngine implements GeometryEngineInterface
 {
     /**
      * @var \GEOSWKBReader

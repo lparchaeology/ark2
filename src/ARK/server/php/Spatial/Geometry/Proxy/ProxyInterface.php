@@ -21,5 +21,5 @@ interface ProxyInterface
      *
      * @return Geometry
      */
-    public function getGeometry() : Geometry;
+    public function geometry() : Geometry;
 }

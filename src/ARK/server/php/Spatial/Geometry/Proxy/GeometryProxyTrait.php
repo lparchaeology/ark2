@@ -48,41 +48,67 @@ trait GeometryProxyTrait
     /**
      * {@inheritdoc}
      */
-    public function SRID() : int
+    public function geometry() : Geometry
     {
-        return $this->proxySRID;
+        if ($this->proxyGeometry === null) {
+            $this->load();
+        }
+        return $this->proxyGeometry;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function asText() : string
+    public function coordinateSystem() : CoordinateSystem
     {
-        if (!$this->proxyIsBinary) {
-            return $this->proxyData;
-        }
-
         if ($this->proxyGeometry === null) {
             $this->load();
         }
-
-        return $this->proxyGeometry->asText();
+        return $this->proxyGeometry->coordinateSystem();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function asBinary() : string
+    public function elementType() : string
     {
-        if ($this->proxyIsBinary) {
-            return $this->proxyData;
-        }
-
         if ($this->proxyGeometry === null) {
             $this->load();
         }
+        return $this->proxyGeometry->elementType();
+    }
 
-        return $this->proxyGeometry->asBinary();
+    /**
+     * {@inheritdoc}
+     */
+    public function elementClass() : string
+    {
+        if ($this->proxyGeometry === null) {
+            $this->load();
+        }
+        return $this->proxyGeometry->elementClass();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function elements() : iterable
+    {
+        if ($this->proxyGeometry === null) {
+            $this->load();
+        }
+        return $this->proxyGeometry->elements();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function element(int $n) : Geometry
+    {
+        if ($this->proxyGeometry === null) {
+            $this->load();
+        }
+        return $this->proxyGeometry->element($n);
     }
 
     /**
@@ -93,8 +119,23 @@ trait GeometryProxyTrait
         if ($this->proxyGeometry === null) {
             $this->load();
         }
-
         return $this->proxyGeometry->toArray();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function fromText(string $wkt, int $srid = 0) : GeometryProxy
+    {
+        return new self($wkt, false, $srid);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function fromBinary(string $wkb, int $srid = 0) : GeometryProxy
+    {
+        return new self($wkb, true, $srid);
     }
 
     /**
@@ -105,7 +146,6 @@ trait GeometryProxyTrait
         if ($this->proxyGeometry === null) {
             $this->load();
         }
-
         return $this->proxyGeometry->count();
     }
 
@@ -117,7 +157,6 @@ trait GeometryProxyTrait
         if ($this->proxyGeometry === null) {
             $this->load();
         }
-
         return $this->proxyGeometry->getIterator();
     }
 
@@ -160,6 +199,46 @@ trait GeometryProxyTrait
     /**
      * {@inheritdoc}
      */
+    public function SRID() : int
+    {
+        return $this->proxySRID;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function asText() : string
+    {
+        if (!$this->proxyIsBinary) {
+            return $this->proxyData;
+        }
+
+        if ($this->proxyGeometry === null) {
+            $this->load();
+        }
+
+        return $this->proxyGeometry->asText();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function asBinary() : string
+    {
+        if ($this->proxyIsBinary) {
+            return $this->proxyData;
+        }
+
+        if ($this->proxyGeometry === null) {
+            $this->load();
+        }
+
+        return $this->proxyGeometry->asBinary();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isEmpty() : bool
     {
         if ($this->proxyGeometry === null) {
@@ -194,14 +273,18 @@ trait GeometryProxyTrait
     }
 
     /**
-     * {@inheritdoc}
+     * Loads the underlying geometry.
+     *
+     *
+     * @throws GeometryIOException         if the proxy data is not valid
+     * @throws CoordinateSystemException   if the resulting geometry contains mixed coordinate systems
+     * @throws InvalidGeometryException    if the resulting geometry is not valid
+     * @throws UnexpectedGeometryException if the resulting geometry is not an instance of the proxied class
      */
-    public function coordinateSystem() : CoordinateSystem
+    protected function load() : void
     {
-        if ($this->proxyGeometry === null) {
-            $this->load();
-        }
-
-        return $this->proxyGeometry->coordinateSystem();
+        $this->proxyGeometry = $this->proxyIsBinary
+            ? self::fromBinary($this->proxyData, $this->proxySRID)
+            : self::fromText($this->proxyData, $this->proxySRID);
     }
 }

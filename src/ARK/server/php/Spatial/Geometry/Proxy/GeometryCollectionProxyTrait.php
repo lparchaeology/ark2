@@ -32,16 +32,4 @@ trait GeometryCollectionProxyTrait
 
         return $this->proxyGeometry->geometryN($n);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function geometries() : iterable
-    {
-        if ($this->proxyGeometry === null) {
-            $this->load();
-        }
-
-        return $this->proxyGeometry->geometries();
-    }
 }

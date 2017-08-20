@@ -1,9 +1,8 @@
 <?php
 
-namespace ARK\Spatial;
+namespace ARK\Spatial\Geometry;
 
 use ARK\Spatial\Engine\GeometryEngineRegistry;
-use ARK\Spatial\Exception\GeometryEngineException;
 
 /**
  * A MultiSurface is a 2-dimensional GeometryCollection whose elements are Surfaces.
@@ -18,15 +17,10 @@ use ARK\Spatial\Exception\GeometryEngineException;
  * MultiSurface is MultiPolygon corresponding to a collection of Polygons only. Other collections shall use
  * MultiSurface.
  */
-abstract class MultiSurface extends GeometryCollection
+abstract class MultiSurface extends GeometryCollection implements SurfaceInterface
 {
     /**
-     * Returns the area of this MultiSurface, as measured in the spatial reference system of this MultiSurface.
-     *
-     * @noproxy
-     *
-     * @throws GeometryEngineException if the operation is not supported by the geometry engine
-     * @return float
+     * {@inheritdoc}
      */
     public function area() : float
     {
@@ -34,14 +28,7 @@ abstract class MultiSurface extends GeometryCollection
     }
 
     /**
-     * Returns the mathematical centroid for this MultiSurface.
-     *
-     * The result is not guaranteed to be on this MultiSurface.
-     *
-     * @noproxy
-     *
-     * @throws GeometryEngineException if the operation is not supported by the geometry engine
-     * @return Point
+     * {@inheritdoc}
      */
     public function centroid() : Point
     {
@@ -49,12 +36,7 @@ abstract class MultiSurface extends GeometryCollection
     }
 
     /**
-     * Returns a Point guaranteed to be on this MultiSurface.
-     *
-     * @noproxy
-     *
-     * @throws GeometryEngineException if the operation is not supported by the geometry engine
-     * @return Point
+     * {@inheritdoc}
      */
     public function pointOnSurface() : Point
     {

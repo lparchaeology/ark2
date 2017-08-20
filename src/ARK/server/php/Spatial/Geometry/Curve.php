@@ -3,35 +3,14 @@
 namespace ARK\Spatial;
 
 use ARK\Spatial\Engine\GeometryEngineRegistry;
-use ARK\Spatial\Exception\EmptyGeometryException;
-use ARK\Spatial\Exception\GeometryEngineException;
 
 /**
- * A Curve is a 1-dimensional geometric object usually stored as a sequence of Points.
- *
- * The subtype of Curve specifies the form of the interpolation between Points.
+ * {@inheritdoc}
  */
-abstract class Curve extends Geometry
+abstract class Curve extends Geometry implements CurveInterface
 {
     /**
-     * @noproxy
-     *
      * {@inheritdoc}
-     *
-     * A Curve is a 1-dimensional geometric object.
-     */
-    public function dimension() : int
-    {
-        return 1;
-    }
-
-    /**
-     * Returns the length of this Curve in its associated spatial reference.
-     *
-     * @noproxy
-     *
-     * @throws GeometryEngineException if the operation is not supported by the geometry engine
-     * @return float
      */
     public function length() : float
     {
@@ -39,30 +18,29 @@ abstract class Curve extends Geometry
     }
 
     /**
-     * Returns the start Point of this Curve.
-     *
-     * @throws EmptyGeometryException if the curve is empty
-     * @return Point
+     * {@inheritdoc}
      */
-    abstract public function startPoint() : Point;
+    public function startPoint() : Point
+    {
+        if ($this->isEmpty) {
+            throw new EmptyGeometryException('The LineString is empty and has no start point.');
+        }
+        return $this->element(0);
+    }
 
     /**
-     * Returns the end Point of this Curve.
-     *
-     * @throws EmptyGeometryException if the curve is empty
-     * @return Point
+     * {@inheritdoc}
      */
-    abstract public function endPoint() : Point;
+    public function endPoint() : Point
+    {
+        if ($this->isEmpty) {
+            throw new EmptyGeometryException('The LineString is empty and has no end point.');
+        }
+        return end($this->elements);
+    }
 
     /**
-     * Returns whether this Curve is closed.
-     *
-     * The curve is closed if `startPoint()` == `endPoint()`.
-     *
-     * @noproxy
-     *
-     * @throws GeometryEngineException if the operation is not supported by the geometry engine
-     * @return bool
+     * {@inheritdoc}
      */
     public function isClosed() : bool
     {
@@ -70,17 +48,7 @@ abstract class Curve extends Geometry
     }
 
     /**
-     * Returns whether this Curve is a ring.
-     *
-     * The curve is a ring if it is both closed and simple.
-     *
-     * The curve is closed if its start point is equal to its end point.
-     * The curve is simple if it does not pass through the same point more than once.
-     *
-     * @noproxy
-     *
-     * @throws GeometryEngineException if the operation is not supported by the geometry engine
-     * @return bool
+     * {@inheritdoc}
      */
     public function isRing() : bool
     {

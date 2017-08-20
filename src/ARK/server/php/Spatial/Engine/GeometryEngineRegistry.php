@@ -29,7 +29,7 @@ final class GeometryEngineRegistry
      *
      * @param GeometryEngine $engine
      */
-    public static function set(GeometryEngine $engine) : void
+    public static function set(GeometryEngineInterface $engine) : void
     {
         self::$engine = $engine;
     }
@@ -40,7 +40,7 @@ final class GeometryEngineRegistry
      * @throws GeometryEngineException
      * @return GeometryEngine
      */
-    public static function get() : GeometryEngine
+    public static function get() : GeometryEngineInterface
     {
         if (self::$engine === null) {
             throw GeometryEngineException::noEngineSet();

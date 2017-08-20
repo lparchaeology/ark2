@@ -3,9 +3,7 @@
 namespace ARK\Spatial;
 
 use ARK\Spatial\Exception\CoordinateSystemException;
-use ARK\Spatial\Exception\EmptyGeometryException;
 use ARK\Spatial\Exception\InvalidGeometryException;
-use ARK\Spatial\Exception\NoSuchGeometryException;
 
 /**
  * A CircularString is a Curve made of zero or more connected circular arc segments.
@@ -13,17 +11,8 @@ use ARK\Spatial\Exception\NoSuchGeometryException;
  * A circular arc segment is a curved segment defined by three points in a two-dimensional plane;
  * the first point cannot be the same as the third point.
  */
-class CircularString extends Curve
+class CircularString extends Curve implements LineStringInterface
 {
-    /**
-     * The Points that compose this CircularString.
-     *
-     * An empty CircularString contains no points.
-     *
-     * @var Point[]
-     */
-    protected $points = [];
-
     /**
      * @param CoordinateSystem $cs
      * @param Point            ...$points
@@ -34,25 +23,7 @@ class CircularString extends Curve
      */
     public function __construct(CoordinateSystem $cs, Point ...$points)
     {
-        parent::__construct($cs, !$points);
-
-        if (!$points) {
-            return;
-        }
-
-        CoordinateSystem::check($this, ...$points);
-
-        $numPoints = count($points);
-
-        if ($numPoints < 3) {
-            throw new InvalidGeometryException('A CircularString must be made of at least 3 points.');
-        }
-
-        if ($numPoints % 2 === 0) {
-            throw new InvalidGeometryException('A CircularString must have an odd number of points.');
-        }
-
-        $this->points = $points;
+        $this->init(Geometry::CIRCULARSTRING, $cs, $points ?? []);
     }
 
     /**
@@ -73,121 +44,30 @@ class CircularString extends Curve
     /**
      * {@inheritdoc}
      */
-    public function startPoint() : Point
+    public function numPoints() : int
     {
-        if ($this->isEmpty) {
-            throw new EmptyGeometryException('The CircularString is empty and has no start point.');
-        }
-
-        return $this->points[0];
+        return $this->count();
     }
 
     /**
      * {@inheritdoc}
-     */
-    public function endPoint() : Point
-    {
-        if ($this->isEmpty) {
-            throw new EmptyGeometryException('The CircularString is empty and has no end point.');
-        }
-
-        return end($this->points);
-    }
-
-    /**
-     * Returns the number of Points in this CircularString.
-     *
-     * @return int
-     */
-    public function numPoints() : int
-    {
-        return count($this->points);
-    }
-
-    /**
-     * Returns the specified Point N in this CircularString.
-     *
-     * @param int $n the point number, 1-based
-     *
-     * @throws NoSuchGeometryException if there is no Point at this index
-     * @return Point
      */
     public function pointN(int $n) : Point
     {
-        $n = (int) $n;
+        return $this->element($n);
+    }
 
-        if (!isset($this->points[$n - 1])) {
-            throw new NoSuchGeometryException('There is no Point in this CircularString at index '.$n);
+    /**
+     * Validate the class members.
+     */
+    protected function validate() : void
+    {
+        $points = $this->count();
+        if ($points < 3) {
+            throw new InvalidGeometryException('A CircularString must be made of at least 3 points.');
         }
-
-        return $this->points[$n - 1];
-    }
-
-    /**
-     * Returns the points that compose this CircularString.
-     *
-     * @return Point[]
-     */
-    public function points() : iterable
-    {
-        return $this->points;
-    }
-
-    /**
-     * @noproxy
-     *
-     * {@inheritdoc}
-     */
-    public function geometryType() : string
-    {
-        return 'CircularString';
-    }
-
-    /**
-     * @noproxy
-     *
-     * {@inheritdoc}
-     */
-    public function geometryTypeBinary() : int
-    {
-        return Geometry::CIRCULARSTRING;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function toArray() : array
-    {
-        $result = [];
-
-        foreach ($this->points as $point) {
-            $result[] = $point->toArray();
+        if ($points % 2 === 0) {
+            throw new InvalidGeometryException('A CircularString must have an odd number of points.');
         }
-
-        return $result;
-    }
-
-    /**
-     * Returns the number of points in this CircularString.
-     *
-     * Required by interface Countable.
-     *
-     * {@inheritdoc}
-     */
-    public function count() : int
-    {
-        return count($this->points);
-    }
-
-    /**
-     * Returns an iterator for the points in this CircularString.
-     *
-     * Required by interface IteratorAggregate.
-     *
-     * {@inheritdoc}
-     */
-    public function getIterator() : \ArrayIterator
-    {
-        return new \ArrayIterator($this->points);
     }
 }

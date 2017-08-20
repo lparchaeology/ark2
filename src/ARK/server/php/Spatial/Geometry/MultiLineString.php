@@ -8,38 +8,16 @@ namespace ARK\Spatial;
 class MultiLineString extends MultiCurve
 {
     /**
-     * @noproxy
+     * Class constructor.
      *
-     * {@inheritdoc}
-     */
-    public function geometryType() : string
-    {
-        return 'MultiLineString';
-    }
-
-    /**
-     * @noproxy
+     * @param CoordinateSystem $cs
+     * @param LineString       ...$linestrings
      *
-     * {@inheritdoc}
+     * @throws CoordinateSystemException   if different coordinate systems are used
+     * @throws UnexpectedGeometryException if a geometry is not a valid type for a sub-class of GeometryCollection
      */
-    public function geometryTypeBinary() : int
+    public function __construct(CoordinateSystem $cs, LineString ...$linestrings)
     {
-        return Geometry::MULTILINESTRING;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function dimension() : int
-    {
-        return 1;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function containedGeometryType() : string
-    {
-        return LineString::class;
+        $this->init(Geometry::MULTILINESTRING, $cs, $linestrings ?? []);
     }
 }

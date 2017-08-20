@@ -14,38 +14,16 @@ namespace ARK\Spatial;
 class MultiPoint extends GeometryCollection
 {
     /**
-     * @noproxy
+     * Class constructor.
      *
-     * {@inheritdoc}
-     */
-    public function geometryType() : string
-    {
-        return 'MultiPoint';
-    }
-
-    /**
-     * @noproxy
+     * @param CoordinateSystem $cs
+     * @param Point            ...$points
      *
-     * {@inheritdoc}
+     * @throws CoordinateSystemException   if different coordinate systems are used
+     * @throws UnexpectedGeometryException if a geometry is not a valid type for a sub-class of GeometryCollection
      */
-    public function geometryTypeBinary() : int
+    public function __construct(CoordinateSystem $cs, Point ...$points)
     {
-        return Geometry::MULTIPOINT;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function dimension() : int
-    {
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function containedGeometryType() : string
-    {
-        return Point::class;
+        $this->init(Geometry::MULTIPOINT, $cs, $points ?? []);
     }
 }

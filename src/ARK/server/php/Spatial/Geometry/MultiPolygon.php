@@ -1,6 +1,6 @@
 <?php
 
-namespace ARK\Spatial;
+namespace ARK\Spatial\Spatial;
 
 /**
  * A MultiPolygon is a MultiSurface whose elements are Polygons.
@@ -22,38 +22,16 @@ namespace ARK\Spatial;
 class MultiPolygon extends MultiSurface
 {
     /**
-     * @noproxy
+     * Class constructor.
      *
-     * {@inheritdoc}
-     */
-    public function geometryType() : string
-    {
-        return 'MultiPolygon';
-    }
-
-    /**
-     * @noproxy
+     * @param CoordinateSystem $cs
+     * @param Polygon          ...$polygons
      *
-     * {@inheritdoc}
+     * @throws CoordinateSystemException   if different coordinate systems are used
+     * @throws UnexpectedGeometryException if a geometry is not a valid type for a sub-class of GeometryCollection
      */
-    public function geometryTypeBinary() : int
+    public function __construct(CoordinateSystem $cs, Polygon ...$polygons)
     {
-        return Geometry::MULTIPOLYGON;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function dimension() : int
-    {
-        return 2;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function containedGeometryType() : string
-    {
-        return Polygon::class;
+        $this->init(Geometry::MULTIPOLYGON, $cs, $polygons ?? []);
     }
 }

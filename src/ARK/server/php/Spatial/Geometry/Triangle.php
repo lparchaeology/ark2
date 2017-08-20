@@ -1,6 +1,6 @@
 <?php
 
-namespace ARK\Spatial;
+namespace ARK\Spatial\Geometry;
 
 use ARK\Spatial\Exception\InvalidGeometryException;
 
@@ -14,12 +14,14 @@ class Triangle extends Polygon
      */
     public function __construct(CoordinateSystem $cs, LineString ...$rings)
     {
-        parent::__construct($cs, ...$rings);
+        $this->init(Geometry::TRIANGLE, $cs, $rings ?? []);
+    }
 
-        if ($this->isEmpty) {
-            return;
-        }
-
+    /**
+     * {@inheritdoc}
+     */
+    protected function validate() : void
+    {
         if ($this->exteriorRing()->numPoints() !== 4) {
             throw new InvalidGeometryException('A triangle must have exactly 4 (3 + 1) points.');
         }
@@ -27,25 +29,5 @@ class Triangle extends Polygon
         if ($this->numInteriorRings() !== 0) {
             throw new InvalidGeometryException('A triangle must not have interior rings.');
         }
-    }
-
-    /**
-     * @noproxy
-     *
-     * {@inheritdoc}
-     */
-    public function geometryType() : string
-    {
-        return 'Triangle';
-    }
-
-    /**
-     * @noproxy
-     *
-     * {@inheritdoc}
-     */
-    public function geometryTypeBinary() : int
-    {
-        return Geometry::TRIANGLE;
     }
 }

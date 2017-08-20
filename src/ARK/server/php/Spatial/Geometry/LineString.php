@@ -3,7 +3,6 @@
 namespace ARK\Spatial;
 
 use ARK\Spatial\Exception\CoordinateSystemException;
-use ARK\Spatial\Exception\EmptyGeometryException;
 use ARK\Spatial\Exception\InvalidGeometryException;
 use ARK\Spatial\Exception\NoSuchGeometryException;
 
@@ -12,18 +11,8 @@ use ARK\Spatial\Exception\NoSuchGeometryException;
  *
  * Each consecutive pair of Points defines a line segment.
  */
-class LineString extends Curve
+class LineString extends Curve implements LineStringInterface
 {
-    /**
-     * The Points that compose this LineString.
-     *
-     * An empty LineString contains no points.
-     * A non-empty LineString contains a minimum of 2 points.
-     *
-     * @var Point[]
-     */
-    protected $points = [];
-
     /**
      * Class constructor.
      *
@@ -40,19 +29,7 @@ class LineString extends Curve
      */
     public function __construct(CoordinateSystem $cs, Point ...$points)
     {
-        parent::__construct($cs, !$points);
-
-        if (!$points) {
-            return;
-        }
-
-        CoordinateSystem::check($this, ...$points);
-
-        if (count($points) < 2) {
-            throw new InvalidGeometryException('A LineString must be composed of at least 2 points.');
-        }
-
-        $this->points = $points;
+        $this->init(Geometry::LINESTRING, $cs, $points ?? []);
     }
 
     /**
@@ -81,7 +58,7 @@ class LineString extends Curve
      * @throws CoordinateSystemException if the points use different coordinate systems, or are not 2D
      * @return LineString
      */
-    public static function rectangle(Point $a, Point $b) : LineString
+    public static function extent(Point $a, Point $b) : LineString
     {
         $cs = $a->coordinateSystem();
 
@@ -108,37 +85,13 @@ class LineString extends Curve
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function startPoint() : Point
-    {
-        if ($this->isEmpty) {
-            throw new EmptyGeometryException('The LineString is empty and has no start point.');
-        }
-
-        return $this->points[0];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function endPoint() : Point
-    {
-        if ($this->isEmpty) {
-            throw new EmptyGeometryException('The LineString is empty and has no end point.');
-        }
-
-        return end($this->points);
-    }
-
-    /**
      * Returns the number of Points in this LineString.
      *
      * @return int
      */
     public function numPoints() : int
     {
-        return count($this->points);
+        return $this->count();
     }
 
     /**
@@ -151,80 +104,16 @@ class LineString extends Curve
      */
     public function pointN(int $n) : Point
     {
-        $n = (int) $n;
+        return $this->element($n);
+    }
 
-        if (!isset($this->points[$n - 1])) {
-            throw new NoSuchGeometryException('There is no Point in this LineString at index '.$n);
+    /**
+     * {@inheritdoc}
+     */
+    protected function validate() : void
+    {
+        if ($this->count() < 2) {
+            throw new InvalidGeometryException('A LineString must be composed of at least 2 points.');
         }
-
-        return $this->points[$n - 1];
-    }
-
-    /**
-     * Returns the points that compose this LineString.
-     *
-     * @return Point[]
-     */
-    public function points() : iterable
-    {
-        return $this->points;
-    }
-
-    /**
-     * @noproxy
-     *
-     * {@inheritdoc}
-     */
-    public function geometryType() : string
-    {
-        return 'LineString';
-    }
-
-    /**
-     * @noproxy
-     *
-     * {@inheritdoc}
-     */
-    public function geometryTypeBinary() : int
-    {
-        return Geometry::LINESTRING;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function toArray() : array
-    {
-        $result = [];
-
-        foreach ($this->points as $point) {
-            $result[] = $point->toArray();
-        }
-
-        return $result;
-    }
-
-    /**
-     * Returns the number of points in this LineString.
-     *
-     * Required by interface Countable.
-     *
-     * {@inheritdoc}
-     */
-    public function count() : int
-    {
-        return count($this->points);
-    }
-
-    /**
-     * Returns an iterator for the points in this LineString.
-     *
-     * Required by interface IteratorAggregate.
-     *
-     * {@inheritdoc}
-     */
-    public function getIterator() : \ArrayIterator
-    {
-        return new \ArrayIterator($this->points);
     }
 }

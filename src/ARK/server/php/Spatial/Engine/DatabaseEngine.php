@@ -4,14 +4,13 @@ namespace ARK\Spatial\Engine;
 
 use ARK\Spatial\Exception\GeometryEngineException;
 use ARK\Spatial\Geometry\Geometry;
-use ARK\Spatial\Geometry\Proxy;
 
 /**
  * Database implementation of the GeometryEngine.
  *
  * The target database must have support for GIS functions.
  */
-abstract class DatabaseEngine implements GeometryEngine
+abstract class DatabaseEngine implements GeometryEngineInterface
 {
     /**
      * @var bool
@@ -424,24 +423,24 @@ abstract class DatabaseEngine implements GeometryEngine
     private function getProxyClassName(string $geometryType) : string
     {
         $proxyClasses = [
-            'CIRCULARSTRING' => Proxy\CircularStringProxy::class,
-            'COMPOUNDCURVE' => Proxy\CompoundCurveProxy::class,
-            'CURVE' => Proxy\CurveProxy::class,
-            'CURVEPOLYGON' => Proxy\CurvePolygonProxy::class,
-            'GEOMETRY' => Proxy\GeometryProxy::class,
-            'GEOMETRYCOLLECTION' => Proxy\GeometryCollectionProxy::class,
-            'LINESTRING' => Proxy\LineStringProxy::class,
-            'MULTICURVE' => Proxy\MultiCurveProxy::class,
-            'MULTILINESTRING' => Proxy\MultiLineStringProxy::class,
-            'MULTIPOINT' => Proxy\MultiPointProxy::class,
-            'MULTIPOLYGON' => Proxy\MultiPolygonProxy::class,
-            'MULTISURFACE' => Proxy\MultiSurfaceProxy::class,
-            'POINT' => Proxy\PointProxy::class,
-            'POLYGON' => Proxy\PolygonProxy::class,
-            'POLYHEDRALSURFACE' => Proxy\PolyhedralSurfaceProxy::class,
-            'SURFACE' => Proxy\SurfaceProxy::class,
-            'TIN' => Proxy\TINProxy::class,
-            'TRIANGLE' => Proxy\TriangleProxy::class,
+            'CIRCULARSTRING' => CircularStringProxy::class,
+            'COMPOUNDCURVE' => CompoundCurveProxy::class,
+            'CURVE' => CurveProxy::class,
+            'CURVEPOLYGON' => CurvePolygonProxy::class,
+            'GEOMETRY' => GeometryProxy::class,
+            'GEOMETRYCOLLECTION' => GeometryCollectionProxy::class,
+            'LINESTRING' => LineStringProxy::class,
+            'MULTICURVE' => MultiCurveProxy::class,
+            'MULTILINESTRING' => MultiLineStringProxy::class,
+            'MULTIPOINT' => MultiPointProxy::class,
+            'MULTIPOLYGON' => MultiPolygonProxy::class,
+            'MULTISURFACE' => MultiSurfaceProxy::class,
+            'POINT' => PointProxy::class,
+            'POLYGON' => PolygonProxy::class,
+            'POLYHEDRALSURFACE' => PolyhedralSurfaceProxy::class,
+            'SURFACE' => SurfaceProxy::class,
+            'TIN' => TINProxy::class,
+            'TRIANGLE' => TriangleProxy::class,
         ];
 
         $geometryType = strtoupper($geometryType);

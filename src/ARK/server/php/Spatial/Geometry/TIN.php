@@ -16,32 +16,18 @@ class TIN extends PolyhedralSurface
      */
     public function __construct(CoordinateSystem $cs, Polygon ...$patches)
     {
-        parent::__construct($cs, ...$patches);
+        $this->init(Geometry::TIN, $cs, $patches ?? []);
+    }
 
-        foreach ($patches as $patch) {
+    /**
+     * {@inheritdoc}
+     */
+    protected function validate() : void
+    {
+        foreach ($this->elements() as $patch) {
             if (!$patch instanceof Triangle) {
                 throw new UnexpectedGeometryException('The patches in a TIN must be triangles.');
             }
         }
-    }
-
-    /**
-     * @noproxy
-     *
-     * {@inheritdoc}
-     */
-    public function geometryType() : string
-    {
-        return 'TIN';
-    }
-
-    /**
-     * @noproxy
-     *
-     * {@inheritdoc}
-     */
-    public function geometryTypeBinary() : int
-    {
-        return Geometry::TIN;
     }
 }

@@ -5,45 +5,12 @@ namespace ARK\Spatial;
 use ARK\Spatial\Exception\CoordinateSystemException;
 use ARK\Spatial\Exception\EmptyGeometryException;
 use ARK\Spatial\Exception\InvalidGeometryException;
-use ARK\Spatial\Exception\NoSuchGeometryException;
 
 /**
- * A Polygon is a planar Surface defined by 1 exterior boundary and 0 or more interior boundaries.
- *
- * Each interior boundary defines a hole in the Polygon.
- *
- * The exterior boundary linear ring defines the “top” of the surface which is the side of the surface from which the
- * exterior boundary appears to traverse the boundary in a counter clockwise direction. The interior linear rings will
- * have the opposite orientation, and appear as clockwise when viewed from the “top”.
- *
- * The assertions for Polygons (the rules that define valid Polygons) are as follows:
- *
- * a) Polygons are topologically closed;
- * b) The boundary of a Polygon consists of a set of linear rings that make up its exterior and interior boundaries;
- * c) No two Rings in the boundary cross and the Rings in the boundary of a Polygon may intersect at a Point but
- * only as a tangent;
- * d) A Polygon may not have cut lines, spikes or punctures;
- * e) The interior of every Polygon is a connected point set;
- * f) The exterior of a Polygon with 1 or more holes is not connected. Each hole defines a connected component of
- * the exterior.
- *
- * In the above assertions, interior, closure and exterior have the standard topological definitions. The combination
- * of (a) and (c) makes a Polygon a regular closed Point set. Polygons are simple geometric objects.
+ * {@inheritdoc}
  */
-class Polygon extends Surface
+class Polygon extends Surface implements PolygonInterface
 {
-    /**
-     * The rings that compose this polygon.
-     *
-     * The first one represents the exterior ring, and the
-     * (optional) other ones represent the interior rings of the Polygon.
-     *
-     * An empty Polygon contains no rings.
-     *
-     * @var LineString[]
-     */
-    protected $rings = [];
-
     /**
      * Class constructor.
      *
@@ -57,15 +24,7 @@ class Polygon extends Surface
      */
     public function __construct(CoordinateSystem $cs, LineString ...$rings)
     {
-        parent::__construct($cs, !$rings);
-
-        if (!$rings) {
-            return;
-        }
-
-        CoordinateSystem::check($this, ...$rings);
-
-        $this->rings = $rings;
+        $this->init(Geometry::POLYGON, $cs, $rings ?? []);
     }
 
     /**
@@ -84,118 +43,29 @@ class Polygon extends Surface
     }
 
     /**
-     * Returns the exterior ring of this Polygon.
-     *
-     * @throws EmptyGeometryException
-     * @return LineString
+     * {@inheritdoc}
      */
     public function exteriorRing() : LineString
     {
         if ($this->isEmpty) {
             throw new EmptyGeometryException('An empty Polygon has no exterior ring.');
         }
-
-        return $this->rings[0];
+        return $this->element(0);
     }
 
     /**
-     * Returns the number of interior rings in this Polygon.
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function numInteriorRings() : int
     {
-        if ($this->isEmpty) {
-            return 0;
-        }
-
-        return count($this->rings) - 1;
+        return $this->isEmpty ? 0 : $this->count() - 1;
     }
 
     /**
-     * Returns the specified interior ring N in this Polygon.
-     *
-     * @param int $n the ring number, 1-based
-     *
-     * @throws NoSuchGeometryException if there is no interior ring at this index
-     * @return LineString
+     * {@inheritdoc}
      */
     public function interiorRingN(int $n) : LineString
     {
-        $n = (int) $n;
-
-        if ($n === 0 || !isset($this->rings[$n])) {
-            throw new NoSuchGeometryException('There is no interior ring in this Polygon at index '.$n);
-        }
-
-        return $this->rings[$n];
-    }
-
-    /**
-     * Returns the interior rings in this Polygon.
-     *
-     * @return LineString[]
-     */
-    public function interiorRings() : iterable
-    {
-        return array_slice($this->rings, 1);
-    }
-
-    /**
-     * @noproxy
-     *
-     * {@inheritdoc}
-     */
-    public function geometryType() : string
-    {
-        return 'Polygon';
-    }
-
-    /**
-     * @noproxy
-     *
-     * {@inheritdoc}
-     */
-    public function geometryTypeBinary() : int
-    {
-        return Geometry::POLYGON;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function toArray() : array
-    {
-        $result = [];
-
-        foreach ($this->rings as $ring) {
-            $result[] = $ring->toArray();
-        }
-
-        return $result;
-    }
-
-    /**
-     * Returns the number of rings (exterior + interior) in this Polygon.
-     *
-     * Required by interface Countable.
-     *
-     * {@inheritdoc}
-     */
-    public function count() : int
-    {
-        return count($this->rings);
-    }
-
-    /**
-     * Returns an iterator for the rings (exterior + interior) in this Polygon.
-     *
-     * Required by interface IteratorAggregate.
-     *
-     * {@inheritdoc}
-     */
-    public function getIterator() : \ArrayIterator
-    {
-        return new \ArrayIterator($this->rings);
+        return $this->element($n + 1);
     }
 }

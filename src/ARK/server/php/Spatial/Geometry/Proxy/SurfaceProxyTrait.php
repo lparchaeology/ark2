@@ -32,16 +32,4 @@ trait SurfaceProxyTrait
 
         return $this->proxyGeometry->patchN($n);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function patches() : iterable
-    {
-        if ($this->proxyGeometry === null) {
-            $this->load();
-        }
-
-        return $this->proxyGeometry->patches();
-    }
 }

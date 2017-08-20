@@ -8,90 +8,8 @@ use ARK\Spatial\Geometry\Geometry;
 /**
  * Interface for geometry engines.
  */
-interface GeometryEngine
+interface GeometryEngineInterface
 {
-    /**
-     * Returns a geometry that represents the point set union of the geometries.
-     *
-     * @param Geometry $a the first geometry
-     * @param Geometry $b the second geometry
-     *
-     * @throws GeometryEngineException if the operation is not supported by the engine
-     * @return Geometry                the union of the geometries
-     */
-    public function union(Geometry $a, Geometry $b) : Geometry;
-
-    /**
-     * Returns a geometry that represents that part of `$a` that does not intersect with `$b`.
-     *
-     * @param Geometry $a the first geometry
-     * @param Geometry $b the second geometry
-     *
-     * @throws GeometryEngineException if the operation is not supported by the engine
-     * @return Geometry                the difference of the geometries
-     */
-    public function difference(Geometry $a, Geometry $b) : Geometry;
-
-    /**
-     * Returns a geometry representing the bounding box of the supplied geometry.
-     *
-     * @param Geometry $g the geometry
-     *
-     * @throws GeometryEngineException if the operation is not supported by the engine
-     * @return Geometry                the envelope of the geometry
-     */
-    public function envelope(Geometry $g) : Geometry;
-
-    /**
-     * Returns the length of a Curve or MultiCurve in its associated spatial reference.
-     *
-     * @param Geometry $g the geometry
-     *
-     * @throws GeometryEngineException if the operation is not supported by the engine
-     * @return float                   the length of the geometry
-     */
-    public function length(Geometry $g) : float;
-
-    /**
-     * Returns the area of a Surface or MultiSurface in its SRID units.
-     *
-     * @param Geometry $g the geometry
-     *
-     * @throws GeometryEngineException if the operation is not supported by the engine
-     * @return float                   the area of the geometry
-     */
-    public function area(Geometry $g) : float;
-
-    /**
-     * Returns the geometric center of a Surface or MultiSurface.
-     *
-     * @param Geometry $g the geometry
-     *
-     * @throws GeometryEngineException if the operation is not supported by the engine
-     * @return Geometry                the centroid of the geometry
-     */
-    public function centroid(Geometry $g) : Geometry;
-
-    /**
-     * Returns a Point guaranteed to be on a Surface or MultiSurface.
-     *
-     * @param Geometry $g the geometry
-     *
-     * @throws GeometryEngineException if the operation is not supported by the engine
-     * @return Geometry                a point of the surface of the geometry
-     */
-    public function pointOnSurface(Geometry $g) : Geometry;
-
-    /**
-     * Returns the closure of the combinatorial boundary of a Geometry.
-     *
-     * @param Geometry $g the geometry
-     *
-     * @throws GeometryEngineException if the operation is not supported by the engine
-     * @return Geometry                the boundary of the geometry
-     */
-    public function boundary(Geometry $g) : Geometry;
-
     /**
      * Checks whether a geometry is valid, as defined by the OGC specification.
      *
@@ -105,6 +23,16 @@ interface GeometryEngine
     public function isValid(Geometry $g) : bool;
 
     /**
+     * Returns true if the geometry has no anomalous geometric points, such as self intersection or self tangency.
+     *
+     * @param Geometry $g the geometry
+     *
+     * @throws GeometryEngineException if the operation is not supported by the engine
+     * @return bool                    whether the geometry is simple
+     */
+    public function isSimple(Geometry $g) : bool;
+
+    /**
      * Returns true if the geometry is closed.
      *
      * @param Geometry $g the geometry
@@ -115,14 +43,24 @@ interface GeometryEngine
     public function isClosed(Geometry $g) : bool;
 
     /**
-     * Returns true if the geometry has no anomalous geometric points, such as self intersection or self tangency.
+     * Returns a geometry representing the bounding box of the supplied geometry.
      *
      * @param Geometry $g the geometry
      *
      * @throws GeometryEngineException if the operation is not supported by the engine
-     * @return bool                    whether the geometry is simple
+     * @return Geometry                the envelope of the geometry
      */
-    public function isSimple(Geometry $g) : bool;
+    public function envelope(Geometry $g) : Geometry;
+
+    /**
+     * Returns the closure of the combinatorial boundary of a Geometry.
+     *
+     * @param Geometry $g the geometry
+     *
+     * @throws GeometryEngineException if the operation is not supported by the engine
+     * @return Geometry                the boundary of the geometry
+     */
+    public function boundary(Geometry $g) : Geometry;
 
     /**
      * Returns true if the given geometries represent the same geometry.
@@ -306,6 +244,17 @@ interface GeometryEngine
     public function intersection(Geometry $a, Geometry $b) : Geometry;
 
     /**
+     * Returns a geometry that represents the point set union of the geometries.
+     *
+     * @param Geometry $a the first geometry
+     * @param Geometry $b the second geometry
+     *
+     * @throws GeometryEngineException if the operation is not supported by the engine
+     * @return Geometry                the union of the geometries
+     */
+    public function union(Geometry $a, Geometry $b) : Geometry;
+
+    /**
      * Returns a geometry that represents the portions of `$a` and `$b` that do not intersect.
      *
      * @param Geometry $a the first geometry
@@ -315,6 +264,67 @@ interface GeometryEngine
      * @return Geometry                the symmetric difference of the geometries
      */
     public function symDifference(Geometry $a, Geometry $b) : Geometry;
+
+    /**
+     * Returns a geometry that represents that part of `$a` that does not intersect with `$b`.
+     *
+     * @param Geometry $a the first geometry
+     * @param Geometry $b the second geometry
+     *
+     * @throws GeometryEngineException if the operation is not supported by the engine
+     * @return Geometry                the difference of the geometries
+     */
+    public function difference(Geometry $a, Geometry $b) : Geometry;
+
+    /**
+     * Returns the length of a Curve or MultiCurve in its associated spatial reference.
+     *
+     * @param Geometry $g the Curve or MultiCurve
+     *
+     * @throws GeometryEngineException if the operation is not supported by the engine
+     * @return float                   the length of the geometry
+     */
+    public function length(Geometry $g) : float;
+
+    /**
+     * Returns the area of a Surface or MultiSurface in its SRID units.
+     *
+     * @param Geometry $g the Surface or MultiSurface
+     *
+     * @throws GeometryEngineException if the operation is not supported by the engine
+     * @return float                   the area of the geometry
+     */
+    public function area(Geometry $g) : float;
+
+    /**
+     * Returns the geometric center of a Surface or MultiSurface.
+     *
+     * @param Geometry $g the Surface or MultiSurface
+     *
+     * @throws GeometryEngineException if the operation is not supported by the engine
+     * @return Point                   the centroid of the geometry
+     */
+    public function centroid(Geometry $g) : Point;
+
+    /**
+     * Returns a Point guaranteed to be on a Surface or MultiSurface.
+     *
+     * @param Geometry $g the Surface or MultiSurface
+     *
+     * @throws GeometryEngineException if the operation is not supported by the engine
+     * @return Point                   a point of the surface of the geometry
+     */
+    public function pointOnSurface(Geometry $g) : Point;
+
+    /**
+     * Returns the collection of polygons that bounds the given polygon 'p' for any polygon 'p' in the surface.
+     *
+     * @param Geometry $g
+     *
+     * @throws GeometryEngineException if the operation is not supported by the engine
+     * @return MultiPolygon
+     */
+    public function boundingPolygons(Geometry $g) : MultiPolygon;
 
     /**
      * Snap all points of the input geometry to a regular grid.
@@ -348,14 +358,4 @@ interface GeometryEngine
      * @return float                   the max distance between the geometries
      */
     public function maxDistance(Geometry $a, Geometry $b) : float;
-
-    /**
-     * Returns the collection of polygons that bounds the given polygon 'p' for any polygon 'p' in the surface.
-     *
-     * @param Geometry $g
-     *
-     * @throws GeometryEngineException if the operation is not supported by the engine
-     * @return Geometry
-     */
-    public function boundingPolygons(Geometry $g) : Geometry;
 }

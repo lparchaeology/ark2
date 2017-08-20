@@ -14,7 +14,7 @@ class EWKBWriter extends AbstractWKBWriter
      */
     protected function packHeader(Geometry $geometry, bool $outer) : string
     {
-        $geometryType = $geometry->geometryTypeBinary();
+        $geometryType = $geometry->geometryCode();
 
         $cs = $geometry->coordinateSystem();
 
