@@ -12,8 +12,6 @@ interface CurveInterface
     /**
      * Returns the length of this Curve in its associated spatial reference.
      *
-     * @noproxy
-     *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return float
      */
@@ -40,8 +38,6 @@ interface CurveInterface
      *
      * The curve is closed if `startPoint()` == `endPoint()`.
      *
-     * @noproxy
-     *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return bool
      */
@@ -54,8 +50,6 @@ interface CurveInterface
      *
      * The curve is closed if its start point is equal to its end point.
      * The curve is simple if it does not pass through the same point more than once.
-     *
-     * @noproxy
      *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return bool

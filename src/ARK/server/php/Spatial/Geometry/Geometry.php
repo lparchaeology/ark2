@@ -41,7 +41,6 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
             'type' => 'CircularString',
             'code' => CIRCULARSTRING,
             'class' => CircularString::class,
-            'proxy' => CircularStringProxy::class,
             'element' => POINT,
             'dimension' => 1,
             'abstract' => false,
@@ -50,7 +49,6 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
             'type' => 'CompoundCurve',
             'code' => COMPOUNDCURVE,
             'class' => CompoundCurve::class,
-            'proxy' => CompoundCurveProxy::class,
             'element' => CURVE,
             'dimension' => 1,
             'abstract' => false,
@@ -59,7 +57,6 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
             'type' => 'Curve',
             'code' => CURVE,
             'class' => Curve::class,
-            'proxy' => null,
             'element' => POINT,
             'dimension' => 1,
             'abstract' => true,
@@ -68,7 +65,6 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
             'type' => 'CurvePolygon',
             'code' => CURVEPOLYGON,
             'class' => CurvePolygon::class,
-            'proxy' => CurvePolygonProxy::class,
             'element' => CURVE,
             'dimension' => 2,
             'abstract' => false,
@@ -77,7 +73,6 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
             'type' => 'Geometry',
             'code' => GEOMETRY,
             'class' => self::class,
-            'proxy' => null,
             'element' => null,
             'dimension' => null,
             'abstract' => true,
@@ -86,7 +81,6 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
             'type' => 'GeometryCollection',
             'code' => GEOMETRYCOLLECTION,
             'class' => GeometryCollection::class,
-            'proxy' => GeometryCollectionProxy::class,
             'element' => GEOMETRY,
             'dimension' => null,
             'abstract' => false,
@@ -95,7 +89,6 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
             'type' => 'LineString',
             'code' => LINESTRING,
             'class' => LineString::class,
-            'proxy' => LineStringProxy::class,
             'element' => POINT,
             'dimension' => 1,
             'abstract' => false,
@@ -104,7 +97,6 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
             'type' => 'MultiCurve',
             'code' => MULTICURVE,
             'class' => MultiCurve::class,
-            'proxy' => null,
             'element' => CURVE,
             'dimension' => 1,
             'abstract' => true,
@@ -113,7 +105,6 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
             'type' => 'MultiLineString',
             'code' => MULTILINESTRING,
             'class' => MultiLineString::class,
-            'proxy' => MultiLineStringProxy::class,
             'element' => LINESTRING,
             'dimension' => 1,
             'abstract' => false,
@@ -122,7 +113,6 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
             'type' => 'MultiPoint',
             'code' => MULTIPOINT,
             'class' => MultiPoint::class,
-            'proxy' => MultiPointProxy::class,
             'element' => POINT,
             'dimension' => 0,
             'abstract' => false,
@@ -131,7 +121,6 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
             'type' => 'MultiPolygon',
             'code' => MULTIPOLYGON,
             'class' => MultiPolygon::class,
-            'proxy' => MultiPolygonProxy::class,
             'element' => POLYGON,
             'dimension' => 2,
             'abstract' => false,
@@ -140,7 +129,6 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
             'type' => 'MultiSurface',
             'code' => MULTISURFACE,
             'class' => MultiSurface::class,
-            'proxy' => null,
             'element' => SURFACE,
             'dimension' => 2,
             'abstract' => true,
@@ -149,7 +137,6 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
             'type' => 'Point',
             'code' => POINT,
             'class' => Point::class,
-            'proxy' => PointProxy::class,
             'element' => null,
             'dimension' => 0,
             'abstract' => false,
@@ -158,7 +145,6 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
             'type' => 'Polygon',
             'code' => POLYGON,
             'class' => Polygon::class,
-            'proxy' => PolygonProxy::class,
             'element' => LINESTRING,
             'dimension' => 2,
             'abstract' => false,
@@ -167,7 +153,6 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
             'type' => 'PolyhedralSurface',
             'code' => POLYHEDRALSURFACE,
             'class' => PolyhedralSurface::class,
-            'proxy' => PolyhedralSurfaceProxy::class,
             'element' => POLYGON,
             'dimension' => 2,
             'abstract' => false,
@@ -176,7 +161,6 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
             'type' => 'Surface',
             'code' => SURFACE,
             'class' => Surface::class,
-            'proxy' => null,
             'element' => LINESTRING,
             'dimension' => 2,
             'abstract' => true,
@@ -185,7 +169,6 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
             'type' => 'TIN',
             'code' => TIN,
             'class' => TIN::class,
-            'proxy' => TINProxy::class,
             'element' => TRIANGLE,
             'dimension' => 2,
             'abstract' => false,
@@ -194,7 +177,6 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
             'type' => 'Triangle',
             'code' => TRIANGLE,
             'class' => Triangle::class,
-            'proxy' => TriangleProxy::class,
             'element' => LINESTRING,
             'dimension' => 2,
             'abstract' => false,
@@ -233,8 +215,6 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
 
     /**
      * Returns a text representation of this geometry.
-     *
-     * @noproxy
      *
      * @return string
      */
@@ -409,8 +389,6 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
     // GeometryInterface
 
     /**
-     * @noproxy
-     *
      * {@inheritdoc}
      */
     public function dimension() : int
@@ -435,8 +413,6 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
     }
 
     /**
-     * @noproxy
-     *
      * {@inheritdoc}
      */
     public function geometryType() : string
@@ -445,8 +421,6 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
     }
 
     /**
-     * @noproxy
-     *
      * {@inheritdoc}
      */
     public function geometryCode() : int

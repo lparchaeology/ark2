@@ -3,7 +3,6 @@
 namespace ARK\Spatial\Doctrine\Types;
 
 use ARK\Spatial\Geometry\Geometry;
-use ARK\Spatial\Geometry\Proxy\GeometryProxy;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 
@@ -60,9 +59,7 @@ class GeometryType extends Type
             $value = stream_get_contents($value);
         }
 
-        $proxyClassName = $this->getProxyClassName();
-
-        return new $proxyClassName($value, true, self::$srid);
+        return Geometry::fromBinary($value, self::$srid);
     }
 
     /**
@@ -121,13 +118,5 @@ class GeometryType extends Type
     public function getBindingType() : int
     {
         return \PDO::PARAM_LOB;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getProxyClassName() : string
-    {
-        return GeometryProxy::class;
     }
 }

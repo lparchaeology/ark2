@@ -25,8 +25,6 @@ interface MultiCurveInterface
      *
      * The MultiCurve is considered closed if each element curve is closed.
      *
-     * @noproxy
-     *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return bool
      */
@@ -36,8 +34,6 @@ interface MultiCurveInterface
      * Returns the length of this MultiCurve.
      *
      * The length is equal to the sum of the lengths of the element Curves.
-     *
-     * @noproxy
      *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return float

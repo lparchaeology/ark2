@@ -24,8 +24,6 @@ interface SurfaceInterface
     /**
      * Returns the area of this Surface, as measured in the spatial reference system of this Surface.
      *
-     * @noproxy
-     *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return float
      */
@@ -36,8 +34,6 @@ interface SurfaceInterface
      *
      * The result is not guaranteed to be on this Surface.
      *
-     * @noproxy
-     *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return Point
      */
@@ -45,8 +41,6 @@ interface SurfaceInterface
 
     /**
      * Returns a Point guaranteed to be on this Surface.
-     *
-     * @noproxy
      *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return Point

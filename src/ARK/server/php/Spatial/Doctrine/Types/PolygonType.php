@@ -2,8 +2,6 @@
 
 namespace ARK\Spatial\Doctrine\Types;
 
-use ARK\Spatial\Geometry\Proxy\PolygonProxy;
-
 /**
  * Doctrine type for Polygon.
  */
@@ -15,13 +13,5 @@ class PolygonType extends GeometryType
     public function getName() : string
     {
         return 'Polygon';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getProxyClassName() : string
-    {
-        return PolygonProxy::class;
     }
 }

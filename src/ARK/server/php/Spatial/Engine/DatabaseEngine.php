@@ -13,11 +13,6 @@ use ARK\Spatial\Geometry\Geometry;
 abstract class DatabaseEngine implements GeometryEngineInterface
 {
     /**
-     * @var bool
-     */
-    protected $useProxy;
-
-    /**
      * {@inheritdoc}
      */
     public function contains(Geometry $a, Geometry $b) : bool
@@ -388,12 +383,6 @@ abstract class DatabaseEngine implements GeometryEngineInterface
         list($wkt, $wkb, $geometryType, $srid) = $this->query($function, $parameters, true);
 
         if ($wkt !== null) {
-            if ($this->useProxy) {
-                $proxyClassName = $this->getProxyClassName($geometryType);
-
-                return new $proxyClassName($wkt, false, $srid);
-            }
-
             return Geometry::fromText($wkt, $srid);
         }
 
@@ -401,56 +390,9 @@ abstract class DatabaseEngine implements GeometryEngineInterface
             if (is_resource($wkb)) {
                 $wkb = stream_get_contents($wkb);
             }
-
-            if ($this->useProxy) {
-                $proxyClassName = $this->getProxyClassName($geometryType);
-
-                return new $proxyClassName($wkb, true, $srid);
-            }
-
             return Geometry::fromBinary($wkb, $srid);
         }
 
         throw GeometryEngineException::operationYieldedNoResult();
-    }
-
-    /**
-     * @param string $geometryType
-     *
-     * @throws GeometryEngineException
-     * @return string
-     */
-    private function getProxyClassName(string $geometryType) : string
-    {
-        $proxyClasses = [
-            'CIRCULARSTRING' => CircularStringProxy::class,
-            'COMPOUNDCURVE' => CompoundCurveProxy::class,
-            'CURVE' => CurveProxy::class,
-            'CURVEPOLYGON' => CurvePolygonProxy::class,
-            'GEOMETRY' => GeometryProxy::class,
-            'GEOMETRYCOLLECTION' => GeometryCollectionProxy::class,
-            'LINESTRING' => LineStringProxy::class,
-            'MULTICURVE' => MultiCurveProxy::class,
-            'MULTILINESTRING' => MultiLineStringProxy::class,
-            'MULTIPOINT' => MultiPointProxy::class,
-            'MULTIPOLYGON' => MultiPolygonProxy::class,
-            'MULTISURFACE' => MultiSurfaceProxy::class,
-            'POINT' => PointProxy::class,
-            'POLYGON' => PolygonProxy::class,
-            'POLYHEDRALSURFACE' => PolyhedralSurfaceProxy::class,
-            'SURFACE' => SurfaceProxy::class,
-            'TIN' => TINProxy::class,
-            'TRIANGLE' => TriangleProxy::class,
-        ];
-
-        $geometryType = strtoupper($geometryType);
-        $geometryType = preg_replace('/^ST_/', '', $geometryType);
-        $geometryType = preg_replace('/ .*/', '', $geometryType);
-
-        if (!isset($proxyClasses[$geometryType])) {
-            throw new GeometryEngineException('Unknown geometry type: '.$geometryType);
-        }
-
-        return $proxyClasses[$geometryType];
     }
 }

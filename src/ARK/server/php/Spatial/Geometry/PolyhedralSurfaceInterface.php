@@ -42,8 +42,6 @@ interface PolyhedralSurfaceInterface
     /**
      * Returns the collection of polygons in this surface that bounds the given polygon 'p' for any polygon 'p' in the surface.
      *
-     * @noproxy
-     *
      * @param Polygon $p
      *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
@@ -52,8 +50,6 @@ interface PolyhedralSurfaceInterface
     public function boundingPolygons(Polygon $p) : MultiPolygon;
 
     /**
-     * @noproxy
-     *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return bool
      */

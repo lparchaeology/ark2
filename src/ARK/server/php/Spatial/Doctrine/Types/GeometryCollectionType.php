@@ -2,8 +2,6 @@
 
 namespace ARK\Spatial\Doctrine\Types;
 
-use ARK\Spatial\Geometry\Proxy\GeometryCollectionProxy;
-
 /**
  * Doctrine type for GeometryCollection.
  */
@@ -15,13 +13,5 @@ class GeometryCollectionType extends GeometryType
     public function getName() : string
     {
         return 'GeometryCollection';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getProxyClassName() : string
-    {
-        return GeometryCollectionProxy::class;
     }
 }

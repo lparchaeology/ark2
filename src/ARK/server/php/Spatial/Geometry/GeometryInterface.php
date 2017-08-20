@@ -56,8 +56,6 @@ interface GeometryInterface
     /**
      * Returns the Spatial Reference System ID for this geometry.
      *
-     * @noproxy
-     *
      * @return int the SRID, zero if not set
      */
     public function SRID() : int;
@@ -72,8 +70,6 @@ interface GeometryInterface
      * the maximums. In some cases, this coordinate will be outside the range of
      * validity for the Spatial Reference System.
      *
-     * @noproxy
-     *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return Geometry
      */
@@ -82,16 +78,12 @@ interface GeometryInterface
     /**
      * Returns the WKT representation of this geometry.
      *
-     * @noproxy
-     *
      * @return string
      */
     public function asText() : string;
 
     /**
      * Returns the WKB representation of this geometry.
-     *
-     * @noproxy
      *
      * @return string
      */
@@ -101,8 +93,6 @@ interface GeometryInterface
      * Returns whether this geometry is valid, as defined by the OGC specification.
      *
      * For example, a polygon with self-intersecting rings is invalid.
-     *
-     * @noproxy
      *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return bool
@@ -123,8 +113,6 @@ interface GeometryInterface
      *
      * A geometry is simple if it has no anomalous geometric points,
      * such as self intersection or self tangency.
-     *
-     * @noproxy
      *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return bool
@@ -151,8 +139,6 @@ interface GeometryInterface
      * Because the result of this function is a closure, and hence topologically closed,
      * the resulting boundary can be represented using representational Geometry primitives.
      *
-     * @noproxy
-     *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return Geometry
      */
@@ -160,8 +146,6 @@ interface GeometryInterface
 
     /**
      * Returns whether this geometry is spatially equal to another geometry.
-     *
-     * @noproxy
      *
      * @param Geometry $geometry
      *
@@ -176,8 +160,6 @@ interface GeometryInterface
      * The geometries are disjoint if they do not share any space together.
      * This is the opposite of `intersects()`.
      *
-     * @noproxy
-     *
      * @param Geometry $geometry
      *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
@@ -191,8 +173,6 @@ interface GeometryInterface
      * The geometries intersect if they share any portion of space.
      * This is the opposite of `disjoint()`.
      *
-     * @noproxy
-     *
      * @param Geometry $geometry
      *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
@@ -204,8 +184,6 @@ interface GeometryInterface
      * Returns whether this geometry spatially touches another geometry.
      *
      * The geometries touch if they have at least one point in common, but their interiors do not intersect.
-     *
-     * @noproxy
      *
      * @param Geometry $geometry
      *
@@ -219,8 +197,6 @@ interface GeometryInterface
      *
      * The geometries cross if they have some, but not all, interior points in common.
      *
-     * @noproxy
-     *
      * @param Geometry $geometry
      *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
@@ -232,8 +208,6 @@ interface GeometryInterface
      * Returns whether this geometry is spatially within another geometry.
      *
      * This is the inverse of `contains()`: `$a->within($b) == $b->contains($a)`.
-     *
-     * @noproxy
      *
      * @param Geometry $geometry
      *
@@ -247,8 +221,6 @@ interface GeometryInterface
      *
      * This is the inverse of `within()`: `$a->contains($b) == $b->within($a)`.
      *
-     * @noproxy
-     *
      * @param Geometry $geometry
      *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
@@ -260,8 +232,6 @@ interface GeometryInterface
      * Returns whether this geometry spatially overlaps another geometry.
      *
      * The geometries overlap if they share space, but are not completely contained by each other.
-     *
-     * @noproxy
      *
      * @param Geometry $geometry
      *
@@ -280,8 +250,6 @@ interface GeometryInterface
      *
      * @see http://en.wikipedia.org/wiki/DE-9IM
      *
-     * @noproxy
-     *
      * @param Geometry $geometry
      * @param string   $matrix
      *
@@ -293,8 +261,6 @@ interface GeometryInterface
     /**
      * Returns a derived geometry collection value that matches the specified m coordinate value.
      *
-     * @noproxy
-     *
      * @param float $mValue
      *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
@@ -304,8 +270,6 @@ interface GeometryInterface
 
     /**
      * Returns a derived geometry collection value that matches the specified range of m coordinate values inclusively.
-     *
-     * @noproxy
      *
      * @param float $mStart
      * @param float $mEnd
@@ -324,8 +288,6 @@ interface GeometryInterface
      * that the distance between these 2 points is the returned distance
      * between their geometrys.
      *
-     * @noproxy
-     *
      * @param Geometry $geometry
      *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
@@ -342,8 +304,6 @@ interface GeometryInterface
      * some relatively small error in this distance, but it should be near the
      * resolution of the coordinates used.
      *
-     * @noproxy
-     *
      * @param float $distance
      *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
@@ -358,8 +318,6 @@ interface GeometryInterface
      * One can think of the convex hull as the geometry you get by wrapping an elastic band around a set of geometries.
      * This is different from a concave hull which is analogous to shrink-wrapping your geometries.
      *
-     * @noproxy
-     *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
      * @return Geometry
      */
@@ -369,8 +327,6 @@ interface GeometryInterface
      * Returns a geometry that represents the intersection of this geometry and another geometry.
      *
      * The intersection is the shared portion of the two geometries.
-     *
-     * @noproxy
      *
      * @param Geometry $geometry
      *
@@ -382,8 +338,6 @@ interface GeometryInterface
     /**
      * Returns a geometry that represents the union of this geometry and another geometry.
      *
-     * @noproxy
-     *
      * @param Geometry $geometry
      *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
@@ -393,8 +347,6 @@ interface GeometryInterface
 
     /**
      * Returns a geometry that represents the difference of this geometry and another geometry.
-     *
-     * @noproxy
      *
      * @param Geometry $geometry
      *
@@ -409,8 +361,6 @@ interface GeometryInterface
      * The result is a geometry that represents the portions of the two geometries that do not intersect.
      * It is called a symmetric difference because `$a->symDifference($b) == $b->symDifference($a)`.
      *
-     * @noproxy
-     *
      * @param Geometry $geometry
      *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
@@ -420,8 +370,6 @@ interface GeometryInterface
 
     /**
      * Snap all points of this geometry to a regular grid.
-     *
-     * @noproxy
      *
      * @param float $size
      *
@@ -433,8 +381,6 @@ interface GeometryInterface
     /**
      * Returns a simplified version of this geometry using the Douglas-Peucker algorithm.
      *
-     * @noproxy
-     *
      * @param float $tolerance
      *
      * @throws GeometryEngineException if the operation is not supported by the geometry engine
@@ -444,8 +390,6 @@ interface GeometryInterface
 
     /**
      * Returns the 2-dimensional largest distance between two geometries in projected units.
-     *
-     * @noproxy
      *
      * @param Geometry $geometry
      *
