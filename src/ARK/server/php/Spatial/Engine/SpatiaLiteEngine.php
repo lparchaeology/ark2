@@ -7,11 +7,11 @@ use ARK\Spatial\Exception\SQLite3Exception;
 use ARK\Spatial\Geometry\Geometry;
 
 /**
- * Database engine based on a SQLite3 driver.
+ * SpatiaLite engine based on a SQLite3 driver.
  *
  * The spatialite extension must be loaded in this driver.
  */
-class SQLite3Engine extends DatabaseEngine
+class SpatiaLiteEngine extends AbstractDatabaseEngine
 {
     /**
      * The database connection.

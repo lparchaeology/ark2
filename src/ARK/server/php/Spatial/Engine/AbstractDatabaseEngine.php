@@ -10,7 +10,7 @@ use ARK\Spatial\Geometry\Geometry;
  *
  * The target database must have support for GIS functions.
  */
-abstract class DatabaseEngine implements GeometryEngineInterface
+abstract class AbstractDatabaseEngine implements GeometryEngineInterface
 {
     /**
      * {@inheritdoc}

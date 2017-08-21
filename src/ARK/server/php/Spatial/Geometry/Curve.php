@@ -2,7 +2,7 @@
 
 namespace ARK\Spatial;
 
-use ARK\Spatial\Engine\GeometryEngineRegistry;
+use ARK\Spatial\Spatial;
 
 /**
  * {@inheritdoc}
@@ -14,7 +14,7 @@ abstract class Curve extends Geometry implements CurveInterface
      */
     public function length() : float
     {
-        return GeometryEngineRegistry::get()->length($this);
+        return Spatial::geometry()->length($this);
     }
 
     /**
@@ -44,7 +44,7 @@ abstract class Curve extends Geometry implements CurveInterface
      */
     public function isClosed() : bool
     {
-        return GeometryEngineRegistry::get()->isClosed($this);
+        return Spatial::geometry()->isClosed($this);
     }
 
     /**

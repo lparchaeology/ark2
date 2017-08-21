@@ -6,9 +6,9 @@ use ARK\Spatial\Exception\GeometryEngineException;
 use ARK\Spatial\Geometry\Geometry;
 
 /**
- * Database engine based on a PDO driver.
+ * MySQL or PostgreSQL engine based on a PDO driver.
  */
-class PDOEngine extends DatabaseEngine
+class PDOEngine extends AbstractDatabaseEngine
 {
     /**
      * The database connection.

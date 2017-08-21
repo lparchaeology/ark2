@@ -2,7 +2,7 @@
 
 namespace ARK\Spatial;
 
-use ARK\Spatial\Engine\GeometryEngineRegistry;
+use ARK\Spatial\Spatial;
 use ARK\Spatial\Exception\CoordinateSystemException;
 
 /**
@@ -60,7 +60,7 @@ class PolyhedralSurface extends Surface implements PolyhedralSurfaceInterface
      */
     public function boundingPolygons(Polygon $p) : MultiPolygon
     {
-        return GeometryEngineRegistry::get()->boundingPolygons($p);
+        return Spatial::geometry()->boundingPolygons($p);
     }
 
     /**
@@ -68,6 +68,6 @@ class PolyhedralSurface extends Surface implements PolyhedralSurfaceInterface
      */
     public function isClosed() : bool
     {
-        return GeometryEngineRegistry::get()->isClosed($this);
+        return Spatial::geometry()->isClosed($this);
     }
 }

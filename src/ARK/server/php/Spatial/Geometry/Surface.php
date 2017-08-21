@@ -2,7 +2,7 @@
 
 namespace ARK\Spatial\Geometry;
 
-use ARK\Spatial\Engine\GeometryEngineRegistry;
+use ARK\Spatial\Spatial;
 
 /**
  * {@inheritdoc}
@@ -14,7 +14,7 @@ abstract class Surface extends Geometry implements SurfaceInterface
      */
     public function area() : float
     {
-        return GeometryEngineRegistry::get()->area($this);
+        return Spatial::geometry()->area($this);
     }
 
     /**
@@ -22,7 +22,7 @@ abstract class Surface extends Geometry implements SurfaceInterface
      */
     public function centroid() : Point
     {
-        return GeometryEngineRegistry::get()->centroid($this);
+        return Spatial::geometry()->centroid($this);
     }
 
     /**
@@ -30,6 +30,6 @@ abstract class Surface extends Geometry implements SurfaceInterface
      */
     public function pointOnSurface() : Point
     {
-        return GeometryEngineRegistry::get()->pointOnSurface($this);
+        return Spatial::geometry()->pointOnSurface($this);
     }
 }

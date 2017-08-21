@@ -2,7 +2,6 @@
 
 namespace ARK\Spatial;
 
-use ARK\Spatial\Engine\GeometryEngineRegistry;
 use ARK\Spatial\Exception\CoordinateSystemException;
 use ARK\Spatial\Exception\GeometryIOException;
 use ARK\Spatial\Exception\InvalidGeometryException;
@@ -465,7 +464,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function envelope() : Geometry
     {
-        return GeometryEngineRegistry::get()->envelope($this);
+        return Spatial::geometry()->envelope($this);
     }
 
     /**
@@ -504,7 +503,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function isValid() : bool
     {
-        return GeometryEngineRegistry::get()->isValid($this);
+        return Spatial::geometry()->isValid($this);
     }
 
     /**
@@ -520,7 +519,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function isSimple() : bool
     {
-        return GeometryEngineRegistry::get()->isSimple($this);
+        return Spatial::geometry()->isSimple($this);
     }
 
     /**
@@ -544,7 +543,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function boundary() : Geometry
     {
-        return GeometryEngineRegistry::get()->boundary($this);
+        return Spatial::geometry()->boundary($this);
     }
 
     /**
@@ -552,7 +551,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function equals(Geometry $geometry) : bool
     {
-        return GeometryEngineRegistry::get()->equals($this, $geometry);
+        return Spatial::geometry()->equals($this, $geometry);
     }
 
     /**
@@ -560,7 +559,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function disjoint(Geometry $geometry) : bool
     {
-        return GeometryEngineRegistry::get()->disjoint($this, $geometry);
+        return Spatial::geometry()->disjoint($this, $geometry);
     }
 
     /**
@@ -568,7 +567,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function intersects(Geometry $geometry) : bool
     {
-        return GeometryEngineRegistry::get()->intersects($this, $geometry);
+        return Spatial::geometry()->intersects($this, $geometry);
     }
 
     /**
@@ -576,7 +575,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function touches(Geometry $geometry) : bool
     {
-        return GeometryEngineRegistry::get()->touches($this, $geometry);
+        return Spatial::geometry()->touches($this, $geometry);
     }
 
     /**
@@ -584,7 +583,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function crosses(Geometry $geometry) : bool
     {
-        return GeometryEngineRegistry::get()->crosses($this, $geometry);
+        return Spatial::geometry()->crosses($this, $geometry);
     }
 
     /**
@@ -592,7 +591,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function within(Geometry $geometry) : bool
     {
-        return GeometryEngineRegistry::get()->within($this, $geometry);
+        return Spatial::geometry()->within($this, $geometry);
     }
 
     /**
@@ -600,7 +599,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function contains(Geometry $geometry) : bool
     {
-        return GeometryEngineRegistry::get()->contains($this, $geometry);
+        return Spatial::geometry()->contains($this, $geometry);
     }
 
     /**
@@ -608,7 +607,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function overlaps(Geometry $geometry) : bool
     {
-        return GeometryEngineRegistry::get()->overlaps($this, $geometry);
+        return Spatial::geometry()->overlaps($this, $geometry);
     }
 
     /**
@@ -616,7 +615,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function relate(Geometry $geometry, string $matrix) : bool
     {
-        return GeometryEngineRegistry::get()->relate($this, $geometry, $matrix);
+        return Spatial::geometry()->relate($this, $geometry, $matrix);
     }
 
     /**
@@ -624,7 +623,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function locateAlong(float $mValue) : Geometry
     {
-        return GeometryEngineRegistry::get()->locateAlong($this, $mValue);
+        return Spatial::geometry()->locateAlong($this, $mValue);
     }
 
     /**
@@ -632,7 +631,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function locateBetween(float $mStart, float $mEnd) : Geometry
     {
-        return GeometryEngineRegistry::get()->locateBetween($this, $mStart, $mEnd);
+        return Spatial::geometry()->locateBetween($this, $mStart, $mEnd);
     }
 
     /**
@@ -640,7 +639,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function distance(Geometry $geometry) : float
     {
-        return GeometryEngineRegistry::get()->distance($this, $geometry);
+        return Spatial::geometry()->distance($this, $geometry);
     }
 
     /**
@@ -648,7 +647,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function buffer(float $distance) : Geometry
     {
-        return GeometryEngineRegistry::get()->buffer($this, $distance);
+        return Spatial::geometry()->buffer($this, $distance);
     }
 
     /**
@@ -656,7 +655,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function convexHull() : Geometry
     {
-        return GeometryEngineRegistry::get()->convexHull($this);
+        return Spatial::geometry()->convexHull($this);
     }
 
     /**
@@ -664,7 +663,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function intersection(Geometry $geometry) : Geometry
     {
-        return GeometryEngineRegistry::get()->intersection($this, $geometry);
+        return Spatial::geometry()->intersection($this, $geometry);
     }
 
     /**
@@ -672,7 +671,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function union(Geometry $geometry) : Geometry
     {
-        return GeometryEngineRegistry::get()->union($this, $geometry);
+        return Spatial::geometry()->union($this, $geometry);
     }
 
     /**
@@ -680,7 +679,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function difference(Geometry $geometry) : Geometry
     {
-        return GeometryEngineRegistry::get()->difference($this, $geometry);
+        return Spatial::geometry()->difference($this, $geometry);
     }
 
     /**
@@ -688,7 +687,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function symDifference(Geometry $geometry) : Geometry
     {
-        return GeometryEngineRegistry::get()->symDifference($this, $geometry);
+        return Spatial::geometry()->symDifference($this, $geometry);
     }
 
     /**
@@ -696,7 +695,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function snapToGrid(float $size) : Geometry
     {
-        return GeometryEngineRegistry::get()->snapToGrid($this, $size);
+        return Spatial::geometry()->snapToGrid($this, $size);
     }
 
     /**
@@ -704,7 +703,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function simplify(float $tolerance) : Geometry
     {
-        return GeometryEngineRegistry::get()->simplify($this, $tolerance);
+        return Spatial::geometry()->simplify($this, $tolerance);
     }
 
     /**
@@ -712,7 +711,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function maxDistance(Geometry $geometry) : float
     {
-        return GeometryEngineRegistry::get()->maxDistance($this, $geometry);
+        return Spatial::geometry()->maxDistance($this, $geometry);
     }
 
     /**

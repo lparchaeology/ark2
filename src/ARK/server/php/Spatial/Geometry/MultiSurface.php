@@ -2,7 +2,7 @@
 
 namespace ARK\Spatial\Geometry;
 
-use ARK\Spatial\Engine\GeometryEngineRegistry;
+use ARK\Spatial\Spatial;
 
 /**
  * A MultiSurface is a 2-dimensional GeometryCollection whose elements are Surfaces.
@@ -24,7 +24,7 @@ abstract class MultiSurface extends GeometryCollection implements SurfaceInterfa
      */
     public function area() : float
     {
-        return GeometryEngineRegistry::get()->area($this);
+        return Spatial::geometry()->area($this);
     }
 
     /**
@@ -32,7 +32,7 @@ abstract class MultiSurface extends GeometryCollection implements SurfaceInterfa
      */
     public function centroid() : Point
     {
-        return GeometryEngineRegistry::get()->centroid($this);
+        return Spatial::geometry()->centroid($this);
     }
 
     /**
@@ -40,6 +40,6 @@ abstract class MultiSurface extends GeometryCollection implements SurfaceInterfa
      */
     public function pointOnSurface() : Point
     {
-        return GeometryEngineRegistry::get()->pointOnSurface($this);
+        return Spatial::geometry()->pointOnSurface($this);
     }
 }

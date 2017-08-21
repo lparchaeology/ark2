@@ -2,7 +2,7 @@
 
 namespace ARK\Spatial\Geometry;
 
-use ARK\Spatial\Engine\GeometryEngineRegistry;
+use ARK\Spatial\Spatial;
 
 /**
  * {@inheritdoc}
@@ -14,7 +14,7 @@ abstract class MultiCurve extends GeometryCollection implements MultiCurveInterf
      */
     public function isClosed() : bool
     {
-        return GeometryEngineRegistry::get()->isClosed($this);
+        return Spatial::geometry()->isClosed($this);
     }
 
     /**
@@ -22,6 +22,6 @@ abstract class MultiCurve extends GeometryCollection implements MultiCurveInterf
      */
     public function length() : float
     {
-        return GeometryEngineRegistry::get()->length($this);
+        return Spatial::geometry()->length($this);
     }
 }

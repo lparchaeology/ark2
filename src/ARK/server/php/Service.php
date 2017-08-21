@@ -59,6 +59,11 @@ class Service
         self::$app = $app;
     }
 
+    public static function config() : iterable
+    {
+        return self::$app['ark'];
+    }
+
     public static function configDir() : string
     {
         return self::$app['dir.config'];
