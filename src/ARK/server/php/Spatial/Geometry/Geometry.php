@@ -197,7 +197,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      *
      * @var Geometry[]
      */
-    protected $elements = [];
+    protected $elements;
 
     /**
      * The coordinate system of this geometry.
@@ -212,6 +212,27 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      * @var bool
      */
     protected $isEmpty;
+
+    /**
+     * Geometry in WKT format.
+     *
+     * @var string
+     */
+    protected $wkt;
+
+    /**
+     * Geometry in WKB format.
+     *
+     * @var string
+     */
+    protected $wkb;
+
+    /**
+     * SRID for WKT/WKB format.
+     *
+     * @var string
+     */
+    protected $srid;
 
     /**
      * Returns a text representation of this geometry.
@@ -230,7 +251,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function coordinateSystem() : CoordinateSystem
     {
-        return $this->coordinateSystem;
+        return $this->coordinateSystem ?? $this->parse()->CoordinateSystem;
     }
 
     /**
@@ -260,7 +281,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function elements() : iterable
     {
-        return $this->elements;
+        return $this->elements === null ? $this->parse()->elements() : $this->elements;
     }
 
     /**
@@ -273,6 +294,9 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function element(int $n) : Geometry
     {
+        if ($this->elements === null) {
+            $this->parse();
+        }
         $n = ($n < 0 ? $n + $this->count() : $n - 1);
         if (!isset($this->elements[$n])) {
             throw new NoSuchGeometryException('There is no element in this Geometry at index '.$n);
@@ -288,7 +312,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
     public function toArray() : array
     {
         $result = [];
-        foreach ($this->elements as $element) {
+        foreach ($this->elements() as $element) {
             $result[] = $element->toArray();
         }
         return $result;
@@ -369,7 +393,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function count() : int
     {
-        return count($this->elements);
+        return $this->elements === null ? $this->parse()->count() : count($this->elements);
     }
 
     // IteratorAggregate interface
@@ -383,7 +407,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function getIterator() : \ArrayIterator
     {
-        return new \ArrayIterator($this->elements);
+        return $this->elements === null ? $this->parse()->getIterator() : new \ArrayIterator($this->elements);
     }
 
     // GeometryInterface
@@ -401,7 +425,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function coordinateDimension() : int
     {
-        return $this->coordinateSystem->coordinateDimension();
+        return $this->coordinateSystem()->coordinateDimension();
     }
 
     /**
@@ -409,7 +433,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function spatialDimension() : int
     {
-        return $this->coordinateSystem->spatialDimension();
+        return $this->coordinateSystem()->spatialDimension();
     }
 
     /**
@@ -433,7 +457,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function SRID() : int
     {
-        return $this->coordinateSystem->SRID();
+        return $this->coordinateSystem()->SRID();
     }
 
     /**
@@ -450,12 +474,14 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
     public function asText() : string
     {
         static $wktWriter;
+        if ($this->wkt === null) {
+            if ($wktWriter === null) {
+                $wktWriter = new WKTWriter();
+            }
 
-        if ($wktWriter === null) {
-            $wktWriter = new WKTWriter();
+            $this->wkt = $wktWriter->write($this);
         }
-
-        return $wktWriter->write($this);
+        return $this->wkt;
     }
 
     /**
@@ -464,12 +490,13 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
     public function asBinary() : string
     {
         static $wkbWriter;
-
-        if ($wkbWriter === null) {
-            $wkbWriter = new WKBWriter();
+        if ($this->wkb === null) {
+            if ($wkbWriter === null) {
+                $wkbWriter = new WKBWriter();
+            }
+            $this->wkb = $wkbWriter->write($this);
         }
-
-        return $wkbWriter->write($this);
+        return $this->wkb;
     }
 
     /**
@@ -485,7 +512,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function isEmpty() : bool
     {
-        return $this->isEmpty;
+        return $this->isEmpty === null ? $this->parse()->isEmpty() : $this->isEmpty;
     }
 
     /**
@@ -501,7 +528,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function is3D() : bool
     {
-        return $this->coordinateSystem->hasZ();
+        return $this->coordinateSystem()->hasZ();
     }
 
     /**
@@ -509,7 +536,7 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     public function isMeasured() : bool
     {
-        return $this->coordinateSystem->hasM();
+        return $this->coordinateSystem()->hasM();
     }
 
     /**
@@ -712,5 +739,37 @@ abstract class Geometry implements GeometryInterface, \Countable, \IteratorAggre
      */
     protected function validate() : void
     {
+    }
+
+    /**
+     * Parse the serialized format of this geometry.
+     */
+    protected function parse() : Geometry
+    {
+        static $wktReader;
+        static $wkbReader;
+
+        if ($this->wkt !== null) {
+            if ($wktReader === null) {
+                $wktReader = new WKTReader();
+            }
+            //TODO switch to array-based reader
+            $geometry = $wktReader->read($wkt, $srid);
+            if (!$geometry instanceof static) {
+                throw UnexpectedGeometryException::unexpectedGeometryType(static::class, $geometry);
+            }
+        } elseif ($this->wkb !== null) {
+            if ($wkbReader === null) {
+                $wkbReader = new WKBReader();
+            }
+            //TODO switch to array-based reader
+            $geometry = $wkbReader->read($wkb, $srid);
+            if (!$geometry instanceof static) {
+                throw UnexpectedGeometryException::unexpectedGeometryType(static::class, $geometry);
+            }
+        }
+        // ERROR!!!
+
+        return $this;
     }
 }
