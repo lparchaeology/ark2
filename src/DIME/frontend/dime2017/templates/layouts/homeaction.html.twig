@@ -1,0 +1,20 @@
+<div class="row dimehometoolbar">
+    <div class="col-md-3 dimehome dimehometool" >
+        {{ 'dime.home.welcome' | trans({ '%name%': global.user.displayName }) }}
+    </div>
+    <div class="col-md-3 dimehome dimehometool" >
+        {% include "blocks/notifications.html.twig" with { 'data':data } %}
+    </div>
+    <div class="col-md-3 dimehome dimehometool" >
+        <a href="{{ path("dime.finds.add") }}">
+            {{ "dime.find.add" | translate }}
+            <span class="dime-icon dimehometool-icon icon-add small"></span>
+        </a>
+    </div>
+    <div class="col-md-3 dimehome dimehometool" >
+        {% include "blocks/link.html.twig" with {'link':
+                       {"name": "dime.search.finds.mine",
+                       "active": true,
+                       "target": "dime.home.finds"} } %}
+    </div>
+</div>

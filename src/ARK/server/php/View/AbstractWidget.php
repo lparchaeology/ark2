@@ -67,9 +67,14 @@ abstract class AbstractWidget extends Element
             return null;
         }
         $name = $state['name'];
-        $data = $data[$name] ?? $data[$this->name] ?? $data[$this->id()] ?? null;
+        if (is_array($data)) {
+            $data = $data[$name] ?? $data[$this->name] ?? $data[$this->id()] ?? null;
+        }
         if ($data === null && $state['vocabulary']) {
             $data = $state['required'] ? $state['vocabulary']->defaultTerm() : null;
+        }
+        if ($state['sanitise'] === 'static') {
+            $data = $state['keyword'];
         }
         return $data;
     }

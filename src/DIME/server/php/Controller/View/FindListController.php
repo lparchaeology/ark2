@@ -51,24 +51,33 @@ class FindListController extends DimeFormController
         if ($request->attributes->get('_route') === 'dime.home.finds') {
             $actor = Service::workflow()->actor();
 
+            // Filter by Museum
+            // If the user is explicitly granted permission, they can filter for all museums.
+            // Otherwise the user is only able to filter museums they have explicitly granted permission for
             if ($actor->hasPermission('dime.find.filter.museum')) {
                 $state['options']['museum']['choices'] = ORM::findAll(Museum::class);
                 $state['options']['museum']['multiple'] = true;
-                $state['options']['museum']['placeholder'] = '';
+                $state['options']['museum']['placeholder'] = Service::translate('dime.placeholder');
             } else {
                 $state['options']['museum']['choices'] = $this->museums($actor);
                 $state['options']['museum']['multiple'] = false;
                 if (count($state['options']['museum']['choices']) > 0) {
                     $state['options']['museum']['placeholder'] = false;
                 } else {
+                    $state['options']['museum']['placeholder'] = '';
                     $state['options']['museum']['mode'] = 'readonly';
                 }
             }
 
+            // Filter by Finder.
+            // If the user is explicitly granted permission, they can filter for all actors.
+            // If the user is able to create new finds, then they are allowed to filter for their own finds
+            // Otherwise they cannot filter by Finder
             if ($actor->hasPermission('dime.find.filter.finder')) {
                 $finders = Service::database()->getFinders();
                 $state['options']['finder']['choices'] = ORM::findBy(Person::class, ['item' => $finders]);
                 $state['options']['finder']['multiple'] = false;
+                $state['options']['finder']['placeholder'] = Service::translate('dime.placeholder');
             } elseif ($actor->hasPermission('dime.find.create')) {
                 $state['options']['finder']['choices'] = [$actor];
                 $state['options']['finder']['multiple'] = false;
@@ -76,6 +85,7 @@ class FindListController extends DimeFormController
             } else {
                 $state['options']['finder']['choices'] = [];
                 $state['options']['finder']['multiple'] = false;
+                $state['options']['finder']['placeholder'] = '';
                 $state['options']['finder']['mode'] = 'readonly';
             }
         }
@@ -86,11 +96,16 @@ class FindListController extends DimeFormController
     public function buildData(Request $request)
     {
         $query = $request->query->all();
+        // If on the users home search/action page, then enable advanced filtering
         $advanced = ($request->attributes->get('_route') === 'dime.home.finds');
         $actor = Service::workflow()->actor();
+        // Only allow to filter for all Finders if explicitly granted
         $filterFinders = $actor->hasPermission('dime.find.filter.finder');
+        // Only allow to filter for all Museums if explicitly granted
         $filterMuseums = $actor->hasPermission('dime.find.filter.museum');
+        // Otherwise only allow advanced filtering for the current users finds
         $myfinds = $advanced && $actor->hasPermission('dime.find.create') && !$filterFinders;
+        // If the user can do Treasure Claim processing
         $claim = $actor->hasPermission('dime.find.treasure.claim');
 
         if (isset($query['municipality'])) {
@@ -194,6 +209,8 @@ class FindListController extends DimeFormController
             $finds = ORM::findAll(Find::class);
         }
 
+        // Enable Treasure Claim processing iff search is for Evaluated finds with Pending treasure status
+        // for a single Finder and a single Museum the user is an Agent for.
         if ($claim) {
             $claim = (
                 $finds
