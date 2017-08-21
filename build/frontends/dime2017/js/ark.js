@@ -108,6 +108,16 @@ $(document).ready(function() {
 
 });
 
+//Find selection tables
+$('#dime_find_table').on('onCheck.bs.table', updateSelectedFinds());
+$('#dime_find_table').on('onUncheck.bs.table', updateSelectedFinds());
+
+function updateSelectedFinds() {
+    $('#finds_selected').val($.map($table.bootstrapTable('getSelections'), function (row) {
+        return row.id
+    }));
+}
+
 // Summernote Editor
 var NoteSaveButton = function(context) {
     var ui = $.summernote.ui;
