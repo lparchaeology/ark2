@@ -96,14 +96,11 @@ function initialiseMapView() {
 
         collection.on('add', function(evt) {
 
-            if (!evt.shiftKey) {
-                var elements = $('.dime-table tr');
+            var elements = $('.dime-table tr');
 
-                for (var i = 0; i < elements.length; i++) {
-                    $(elements[i]).removeClass('selected');
-                    $(elements[i]).find('.tablecheckbox').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
-                }
-
+            for (var i = 0; i < elements.length; i++) {
+                $(elements[i]).removeClass('selected');
+                $(elements[i]).find('.tablecheckbox').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
             }
 
             var extent = [Infinity,Infinity,-Infinity,-Infinity];
@@ -112,7 +109,10 @@ function initialiseMapView() {
                 var ark_id = e.get('ark_id');
                 $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
                 $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
-                $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").parent().prepend($(".dime-table tr[data-unique-id='" + ark_id.toString() + "']"));
+
+                if($('.bootstrap-table button[name=tableView]').hasClass('active') != true ){
+                    $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").parent().prepend($(".dime-table tr[data-unique-id='" + ark_id.toString() + "']"));
+                }
 
                 var featureextent = e.getGeometry().getExtent();
 
@@ -144,9 +144,12 @@ function initialiseMapView() {
 
             collection.forEach(function(e, i, a) {
                 var ark_id = e.get('ark_id');
+                console.log('ark_id');
+                console.log(ark_id);
 
+                
                 $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected')
-                $(elements[i]).find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+                $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
 
             })
         });

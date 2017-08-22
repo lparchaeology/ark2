@@ -44,7 +44,6 @@
 
     var changeView = function (that, width, height) {
 
-
         var oldView = currentView( that );
 
         console.log(oldView);
@@ -139,13 +138,6 @@
     var conditionTableView = function (that) {
         that.$toolbar.find('button[name="tableView"]').click();
     };
-
-    /*
-    var changeTableView = function (that, cardViewState) {
-        that.options.cardView = cardViewState;
-        that.toggleView();
-    };
-    */
 
     var debounce = function(func,wait) {
         var timeout;

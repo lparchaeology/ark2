@@ -39,7 +39,7 @@
             var cardActive = "";
             var listActive = " active";
         }
-
+        
         $($btnGroup.find('[name="toggle"]')).remove();
 
         $([
@@ -72,8 +72,6 @@
         ].join('')).prependTo($btnGroup);
 
         $(document).ready(function (){
-
-
 
             window.removeTextSelection = function (){
                 var sel = window.getSelection ? window.getSelection() : document.selection;
@@ -112,7 +110,7 @@
                 $("#thumbModal").html(html);
                 $("#modalWindow").modal();
                 $('#modalWindow').on('hidden.bs.modal', function () {
-                    $('tr').removeClass('selected');
+                    $('tbody tr').removeClass('selected');
                 })
                 $('.modal-body img').load(function() {
                     $('.thumbmodal-container').width(this.naturalWidth+70);
@@ -133,8 +131,6 @@
                 }
                 var ark_id = self.attr('data-unique-id');
 
-                console.log( ark_id );
-
                 if (self.hasClass('selected')){
                     self.removeClass('selected');
                     self.find('.tablecheckbox').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
@@ -146,7 +142,9 @@
 
             };
 
-            var mapclick = function(evt) {
+            var mapclick = function(evt, row, $element) {
+                console.log(typeof evt);
+                console.log(row, $element);
                 removeTextSelection();
                 if($(evt.target).is('a')){
                     return true;
@@ -163,8 +161,16 @@
                 }
                 var ark_id = self.attr('data-unique-id');
 
-                console.log(self.hasClass('selected') );
-
+                if(typeof window.selected == 'undefined'){
+                    window.selected = [];
+                }
+                
+                if (self.hasClass('selected')){
+                    window.selected = window.selected.filter(function(e) { return e !== ark_id });
+                } else {
+                    window.selected.push(ark_id);
+                }
+                
                 if(typeof mapcollection == 'undefined'){
                     if (self.hasClass('selected')){
                         self.removeClass('selected');
@@ -172,14 +178,12 @@
                     } else {
                         self.addClass('selected');
                         self.find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
-
                     }
                     return true;
                 }
 
                 map.getLayers().forEach(function(i, e, a) {
                     if (i.get('name') == 'finds') {
-                        console.log(mapcollection);
                         if (typeof i.getSource().getFeatures == 'function') {
                             i.getSource().getFeatures().forEach(function(i, e, a) {
                                 if (i.get('ark_id').toUpperCase() == ark_id) {
@@ -195,7 +199,6 @@
                 });
 
             };
-
             if( window.itemkey = 'find'){
                 window.tableclick = mapclick;
             } else {
@@ -215,7 +218,26 @@
                 createItemModal(that.data[self[0].rowIndex-1], that.columns);
 
             };
+            
+            var sortSelection = function(clickfunc){
 
+                $('tbody tr').off("click");
+                $('tbody tr').on("click", {"target":this}, clickfunc );
+                
+                if(typeof mapcollection != 'undefined'){
+                    mapcollection.forEach(function(e, i, a) {
+                        var ark_id = e.get('ark_id');
+                        $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
+                    });
+                } else if(typeof mapcollection != 'undefined'){
+                    window.selected.forEach(function(ark_id){
+                        $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected')
+                        $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+                    
+                    });
+                }
+            }
+            
             that.$toolbar.find('button[name="tableView"]').on('click', function() {
                 $(this).blur();
 
@@ -235,15 +257,7 @@
                     $($btnGroup.find('[name="thumbView"]')).removeClass("active");
                     $($btnGroup.find('[name="tableView"]')).addClass("active");
 
-                    $('tr').off("click");
-                    $('tr').on("click", {"target":this}, window.tableclick );
-
-                    if(typeof mapcollection != 'undefined'){
-                        mapcollection.forEach(function(e, i, a) {
-                            var ark_id = e.get('ark_id');
-                            $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
-                        });
-                    }
+                    sortSelection(window.tableclick);
                 }
             });
 
@@ -260,16 +274,8 @@
                     $($btnGroup.find('[name="cardView"]')).removeClass("active");
                     $($btnGroup.find('[name="tableView"]')).removeClass("active");
 
-                    $('tr').off("click");
-                    $('tr').on("click", {"target":this}, thumbclick );
 
-                    if(typeof mapcollection != 'undefined'){
-                        mapcollection.forEach(function(e, i, a) {
-                            var ark_id = e.get('ark_id');
-
-                            $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
-                        });
-                    }
+                    sortSelection(window.thumbclick);
 
                 }
             });
@@ -291,17 +297,7 @@
                     $($btnGroup.find('[name="thumbView"]')).removeClass("active");
                     $($btnGroup.find('[name="tableView"]')).removeClass("active");
 
-                    $('tr').off("click");
-
-                    $('tr').on("click", {"target":this}, window.tableclick );
-
-                    if(typeof mapcollection != 'undefined'){
-                        mapcollection.forEach(function(e, i, a) {
-                            var ark_id = e.get('ark_id');
-
-                            $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
-                        });
-                    }
+                    sortSelection(window.tableclick);
 
                 }
             });
@@ -309,31 +305,17 @@
             $('td').off("click");
 
             that.$toolbar.find('button[name="cardView"]').click();
-
-
-            $('.bootstrap-table').on('all.bs.table', function( e ){
-                console.log($(this).find('button[name="thumbView"]'));
-
-                console.log($(this).find('button[name="thumbView"]').hasClass('active'));
-
-                if($(this).find('button[name="thumbView"]').hasClass('active')){
-                    $('tr').on("click", {"target":this}, window.thumbclick );
-                } else {
-                    $('tr').on("click", {"target":this}, window.tableclick );
-                }
-
-                if(typeof mapcollection != 'undefined'){
-                    mapcollection.forEach(function(e, i, a) {
-                        var ark_id = e.get('ark_id');
-
-                        $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
-                        $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
-                    });
-                }
+           
+            $('th').on('click', function( e ){
+                
+                window.setTimeout(function(){
+                    sortSelection(window.tableclick);
+                },300);
+                
             });
 
-        });
 
+        });
     };
 
 }(jQuery);
