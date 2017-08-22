@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 22, 2017 at 03:56 PM
+-- Generation Time: Aug 22, 2017 at 05:23 PM
 -- Server version: 10.2.7-MariaDB
 -- PHP Version: 7.1.8
 
@@ -921,6 +921,7 @@ INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `edit`, `datat
 ('core.actor', 'actor', 'type', 'core.actor.update', 'term', 'core.actor.type', 'core.actor.read', 'core.actor.type', 'restricted', 0, 1, 1, 1, 0, 1, 0),
 ('core.actor', 'museum', 'municipality', NULL, 'term', 'dime.actor.municipality', NULL, 'dime.denmark.municipality', 'public', 0, 0, 0, 1, 0, 1, 0),
 ('core.actor', 'museum', 'participating', NULL, 'boolean', 'dime.actor.participating', NULL, NULL, 'public', 0, 1, 1, 1, 0, 1, 0),
+('core.actor', 'person', 'detectorist_id', 'core.admin', 'identifier', 'dime.user.detectorist.id', 'core.actor.read', NULL, 'restricted', 0, 1, 1, 1, 0, 1, 0),
 ('core.actor', 'person', 'status', 'core.admin.user', 'term', 'core.security.status', 'core.admin.user', 'core.security.status', 'restricted', 0, 1, 1, 1, 0, 1, 0),
 ('core.actor', 'person', 'terms', 'core.actor.update', 'term', 'core.user.terms', 'core.actor.read', 'core.user.terms', 'restricted', 0, 1, 1, 1, 0, 1, 0),
 ('core.event', 'event', 'agents', NULL, 'actor', 'core.event.agent', NULL, NULL, 'public', 0, 1, 0, 1, 0, 1, 0),
@@ -2100,6 +2101,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.treasure.pending', 'vocabulary', 0, 0),
 ('dime.treasure.treasure', 'vocabulary', 0, 0),
 ('dime.user.actor.museum', 'dime', 0, 0),
+('dime.user.detectorist.id', 'dime', 0, 0),
 ('dime.user.login', 'dime', 0, 0),
 ('dime.user.name', 'dime', 0, 0),
 ('dime.user.password', 'dime', 0, 0),
@@ -2147,9 +2149,9 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('format.fileversion.creator', 'core', 0, 0),
 ('format.fileversion.expires', 'core', 0, 0),
 ('format.fileversion.modified', 'core', 0, 0),
-('format.fileversion.modifier', 'core', 0, 0),
-('format.fileversion.name', 'core', 0, 0);
+('format.fileversion.modifier', 'core', 0, 0);
 INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('format.fileversion.name', 'core', 0, 0),
 ('format.fileversion.sequence', 'core', 0, 0),
 ('format.fileversion.string', 'core', 0, 0),
 ('format.float', 'core', 0, 0),
@@ -3635,6 +3637,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.treasure.not', 'default', 'Ikke Danefæ', NULL),
 ('da', 'dime.treasure.pending', 'default', 'Verserende', NULL),
 ('da', 'dime.treasure.treasure', 'default', 'Danefæ', NULL),
+('da', 'dime.user.detectorist.id', 'default', 'Detektor ID', ''),
 ('da', 'dime.user.login', 'default', 'Login', NULL),
 ('da', 'dime.user.name', 'default', 'Brugernavn', NULL),
 ('da', 'dime.user.password', 'default', 'Password', NULL),
@@ -4711,6 +4714,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.treasure.pending', 'default', 'Pending Assessment', NULL),
 ('en', 'dime.treasure.treasure', 'default', 'Treasure Trove', NULL),
 ('en', 'dime.user.actor.museum', 'default', 'Associated Museum', ''),
+('en', 'dime.user.detectorist.id', 'default', 'Detectorist ID', ''),
 ('en', 'dime.user.login', 'default', 'Login', NULL),
 ('en', 'dime.user.name', 'default', 'User Name', NULL),
 ('en', 'dime.user.password', 'default', 'Password', NULL),
@@ -5091,9 +5095,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'language.limburgish', 'default', 'Limburgish', NULL),
 ('en', 'language.lingala', 'default', 'Lingala', NULL),
 ('en', 'language.linguafranca.nova', 'default', 'Lingua Franca Nova', NULL),
-('en', 'language.lithuanian', 'default', 'Lithuanian', NULL),
-('en', 'language.livonian', 'default', 'Livonian', NULL);
+('en', 'language.lithuanian', 'default', 'Lithuanian', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'language.livonian', 'default', 'Livonian', NULL),
 ('en', 'language.lojban', 'default', 'Lojban', NULL),
 ('en', 'language.lombard', 'default', 'Lombard', NULL),
 ('en', 'language.lozi', 'default', 'Lozi', NULL),
@@ -5742,7 +5746,8 @@ INSERT INTO `ark_view_cell` (`grp`, `item_type`, `row`, `col`, `seq`, `element`,
 ('dime_treasure_pdf', '', 0, 0, 2, 'dime_treasure_find', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_treasure_pdf', '', 0, 0, 3, 'dime_treasure_sender', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_treasure_sender', '', 0, 0, 4, 'core_widget_submit', NULL, NULL, NULL, 'send', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_user_actor', '', 0, 0, 2, 'core_actor_id', 'core.user.username', NULL, NULL, NULL, 7, 1, 0, NULL, NULL, 0, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_user_actor', '', 0, 0, 0, 'core_actor_id', 'core.user.username', NULL, NULL, NULL, 7, 1, 0, NULL, NULL, 0, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_user_actor', '', 0, 0, 2, 'dime_actor_detectorist_id', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, 'view', NULL, 'static', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_user_actor', '', 0, 0, 4, 'core_actor_status', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, 'view', NULL, 'static', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_user_actor', '', 0, 0, 6, 'core_actor_fullname', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_user_actor', '', 0, 0, 8, 'core_actor_address', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
@@ -5870,6 +5875,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `keyword`, `enabled`, `deprec
 ('core_widget_username', 'widget', 'core.user.username', 1, 0),
 ('core_workflow_action', 'grid', 'core.workflow.action', 1, 0),
 ('core_workflow_action_form', 'grid', 'core.workflow.action', 1, 0),
+('dime_actor_detectorist_id', 'field', NULL, 1, 0),
 ('dime_actor_municipality', 'field', NULL, 1, 0),
 ('dime_admin_page', 'grid', NULL, 1, 0),
 ('dime_admin_user_page', 'grid', NULL, 1, 0),
@@ -6031,6 +6037,7 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `item_type`, `attribute`, `dis
 ('core_message_type', 'core.message', 'message', 'type', NULL, 'active', NULL, NULL, NULL, NULL, ''),
 ('core_page_content', 'core.page', 'page', 'content', NULL, 'active', NULL, NULL, NULL, NULL, ''),
 ('core_user_terms', 'core.actor', 'person', 'terms', NULL, 'active', NULL, NULL, NULL, 'DIME\\Form\\Type\\UserTermsPropertyType', ''),
+('dime_actor_detectorist_id', 'core.actor', 'person', 'detectorist_id', NULL, 'active', NULL, NULL, NULL, NULL, ''),
 ('dime_actor_municipality', 'core.actor', 'museum', 'municipality', NULL, 'active', NULL, NULL, NULL, NULL, ''),
 ('dime_find_case', 'dime.find', 'find', 'case', NULL, 'active', NULL, NULL, NULL, NULL, ''),
 ('dime_find_classification', 'dime.find', 'find', 'classification', 'subtype', 'active', NULL, NULL, NULL, 'DIME\\Form\\Type\\ClassificationPropertyType', ''),

@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace DIME;
@@ -38,12 +37,18 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class DIME
 {
-    public static function version()
+    public static function version() : string
     {
         return '0.1.00';
     }
 
-    public static function getMapTicket()
+    public static function generateDetectoristId() : string
+    {
+        $seq = Service::database()->sequence()->generateSequence('DIME', '', 'detectorist_id');
+        return 'DB'.str_pad($seq, 6, '0', STR_PAD_LEFT);
+    }
+
+    public static function getMapTicket() : ?string
     {
         if ($credentials = Service::security()->credentials('kortforsyningen')) {
             $user = $credentials['kortforsyningen']['user'];
@@ -54,28 +59,28 @@ class DIME
                 return $ticket;
             }
         }
-        return false;
+        return null;
     }
 
-    public static function getNotifications($actor = null)
+    public static function getNotifications(Actor $actor = null) : ArrayCollection
     {
         if ($actor === null) {
             $actor = Service::workflow()->actor();
         }
-        if ($actor instanceof Actor && $actor->id() !== 'anonymous') {
-            $msgIds = Service::database()->getActorMessages($actor->id());
-            foreach ($actor->roles() as $role) {
-                $msgIds = array_merge($msgIds, Service::database()->getRoleMessages($role->role()->id()));
-                if ($role->isAgent()) {
-                    $msgIds = array_merge($msgIds, Service::database()->getActorMessages($role->agentFor()->id()));
-                }
-            }
-            return ORM::findBy(Notification::class, ['item' => $msgIds], ['created' => 'DESC']);
+        if ($actor->id() === 'anonymous') {
+            return new ArrayCollection();
         }
-        return new ArrayCollection();
+        $msgIds = Service::database()->getActorMessages($actor->id());
+        foreach ($actor->roles() as $role) {
+            $msgIds = array_merge($msgIds, Service::database()->getRoleMessages($role->role()->id()));
+            if ($role->isAgent()) {
+                $msgIds = array_merge($msgIds, Service::database()->getActorMessages($role->agentFor()->id()));
+            }
+        }
+        return ORM::findBy(Notification::class, ['item' => $msgIds], ['created' => 'DESC']);
     }
 
-    public static function getUnreadNotifications($actor = null)
+    public static function getUnreadNotifications(Actor $actor = null) : ArrayCollection
     {
         if ($actor === null) {
             $actor = Service::workflow()->actor();

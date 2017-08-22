@@ -33,7 +33,7 @@ use ARK\Framework\Application;
 use ARK\Spatial\Engine\GEOSEngine;
 use ARK\Spatial\Engine\PDOEngine;
 use ARK\Spatial\Engine\SpatialiteEngine;
-use ARK\Spatial\Geometry\Point;
+use Brick\Geo\Point;
 use proj4php\Point as ProjPoint;
 use proj4php\Proj;
 use proj4php\Proj4php;

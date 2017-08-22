@@ -62,6 +62,8 @@ class UserRegisterController extends DimeFormController
         $actor = $data['actor'];
         $actor->setItem($credentials['_username']);
         $actor->property('email')->setValue($credentials['email']);
+        $detectorist = DIME::generateDetectoristId();
+        $actor->property('detectorist_id')->setValue($detectorist);
 
         $user = Service::security()->createUser(
             $credentials['_username'],
