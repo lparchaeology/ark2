@@ -224,12 +224,14 @@
                 $('tbody tr').off("click");
                 $('tbody tr').on("click", {"target":this}, clickfunc );
                 
+                console.log(window.selected);
+                
                 if(typeof mapcollection != 'undefined'){
                     mapcollection.forEach(function(e, i, a) {
                         var ark_id = e.get('ark_id');
                         $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
                     });
-                } else if(typeof mapcollection != 'undefined'){
+                } else if(typeof window.selected != 'undefined'){
                     window.selected.forEach(function(ark_id){
                         $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected')
                         $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
@@ -307,9 +309,24 @@
             that.$toolbar.find('button[name="cardView"]').click();
            
             $('th').on('click', function( e ){
-                
                 window.setTimeout(function(){
-                    sortSelection(window.tableclick);
+                    $('tbody tr').off("click");
+                    $('tbody tr').on("click", {"target":this}, window.tableclick );
+                    
+                    console.log(window.selected);
+                    
+                    if(typeof mapcollection != 'undefined'){
+                        mapcollection.forEach(function(e, i, a) {
+                            var ark_id = e.get('ark_id');
+                            $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
+                        });
+                    } else if(typeof window.selected != 'undefined'){
+                        window.selected.forEach(function(ark_id){
+                            $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected')
+                            $(".dime-table tr[data-unique-id='" + ark_id.toString() + "']").find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+                        
+                        });
+                    }
                 },300);
                 
             });
