@@ -29,6 +29,7 @@
 
 namespace DIME\Controller\View;
 
+use ARK\Actor\Museum;
 use ARK\Actor\Person;
 use ARK\ORM\ORM;
 use ARK\Service;
@@ -42,6 +43,9 @@ class AdminUserController extends DimeFormController
     {
         $state = parent::buildState($request);
         $state['image'] = 'avatar';
+        $state['options']['museum']['choices'] = ORM::findAll(Museum::class);
+        $state['options']['museum']['multiple'] = false;
+        $state['options']['museum']['placeholder'] = Service::translate('dime.placeholder');
         return $state;
     }
 
@@ -80,14 +84,15 @@ class AdminUserController extends DimeFormController
 
     public function processForm(Request $request, Form $form) : void
     {
-        $query = [];
         $submitted = $form->getConfig()->getName();
         if ($submitted === 'filter') {
             $status = $form['status']->getData();
+            $query = [];
             if ($status) {
                 $query['status'] = $status->name();
             }
             $request->attributes->set('parameters', $query);
+            return;
         }
         if ($submitted === 'actions') {
             $action = $form['actions']->getData();
@@ -95,6 +100,21 @@ class AdminUserController extends DimeFormController
             //Service::workflow()->apply($agent, $action, $actor);
             //ORM::persist($actor);
             //ORM::flush($actor);
+            return;
+        }
+        $actor = $form['actor']->getData();
+        if ($submitted === 'password_set') {
+            $user = Service::security()->userProvider()->loadUserByUsername($actor->id());
+            $credentials = $form['password_set']->getData();
+            $user->setPassword($credentials['_password']);
+            ORM::persist($user);
+            ORM::flush($user);
+            return;
+        }
+        if ($submitted === 'role_add') {
+            $add = $form['role_add']->getData();
+            $role = ORM::find(Role::class, $add['role']);
+            Service::security()->registerRole($actor, $role, $add['museum'], $add['expiry']);
         }
     }
 }

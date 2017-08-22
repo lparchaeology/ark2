@@ -34,7 +34,6 @@ use ARK\Model\ItemTrait;
 use ARK\Model\LocalText;
 use ARK\ORM\ORM;
 use ARK\Workflow\Permission;
-use ARK\Workflow\Role;
 use ARK\Workflow\Security\ActorRole;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -89,21 +88,15 @@ class Actor implements Item
 
     public function roles() : Collection
     {
-        return ORM::findBy(ActorRole::class, ['actor' => $this->id(), 'enabled' => true]);
-    }
-
-    public function addRole($role, Actor $agentFor = null) : void
-    {
-        if ($this->hasRole($role) && $agentFor === null) {
-            return;
+        $roles = ORM::findBy(ActorRole::class, ['actor' => $this->id(), 'enabled' => true]);
+        // Check for expired
+        $enabled = new ArrayCollection();
+        foreach ($roles as $role) {
+            if ($role->isEnabled()) {
+                $enabled->add($role);
+            }
         }
-        if (is_string($role)) {
-            $role = ORM::find(Role::class, $role);
-        }
-        if ($role instanceof Role) {
-            $actorRole = new ActorRole($actor, $role, $agentFor);
-            ORM::persist($actorRole);
-        }
+        return $enabled;
     }
 
     public function hasPermission($permission = null) : bool

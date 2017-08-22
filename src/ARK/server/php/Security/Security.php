@@ -230,16 +230,21 @@ class Security
         ORM::persist($actorUser);
         if ($role) {
             $actorRole = new ActorRole($actor, $role, $agentFor);
+            $actorRole->enable();
             ORM::persist($actorRole);
             ORM::persist($agentFor);
         }
         ORM::flush($actor);
     }
 
-    public function registerRole(Actor $actor, Role $role, Actor $agentFor = null) : void
+    public function registerRole(Actor $actor, Role $role, Actor $agentFor = null, \DateTime $expiry = null) : void
     {
         ORM::persist($actor);
         $actorRole = new ActorRole($actor, $role, $agentFor);
+        $actorRole->enable();
+        if ($expireAt) {
+            $actorRole->expireAt($expiry);
+        }
         ORM::persist($actorRole);
         ORM::persist($agentFor);
         ORM::flush($actor);
