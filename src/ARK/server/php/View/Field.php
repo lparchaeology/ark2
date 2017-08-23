@@ -232,6 +232,7 @@ class Field extends Element
         } else {
             $options['required'] = $state['required'];
         }
+        $options['state']['value']['options']['required'] = $options['required'];
 
         return $options;
     }
