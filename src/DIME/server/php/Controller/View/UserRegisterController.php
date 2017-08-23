@@ -103,7 +103,7 @@ class UserRegisterController extends DimeFormController
         }
 
         $registeredBy = (Service::security()->isLoggedIn() ? Service::workflow()->actor() : $actor);
-        Service::workflow()->apply($actor, 'register', $registeredBy);
+        Service::workflow()->apply($registeredBy, 'register', $actor);
 
         Service::security()->registerUser($user, $actor);
 

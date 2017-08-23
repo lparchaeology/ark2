@@ -34,6 +34,7 @@ use ARK\ARK;
 use ARK\Model\Item;
 use ARK\Model\ItemTrait;
 use ARK\Service;
+use ARK\Workflow\Role;
 use DateTime;
 
 class Message implements Item
@@ -51,7 +52,7 @@ class Message implements Item
                 $dispatches[]['recipient'] = $recipient;
             }
             if ($recipient instanceof Role) {
-                $dispatches[]['role'] = $recipient;
+                $dispatches[]['role'] = $recipient->id();
             }
         }
         $this->property('recipients')->setValue($dispatches);

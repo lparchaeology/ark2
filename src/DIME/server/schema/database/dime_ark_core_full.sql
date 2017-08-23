@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 23, 2017 at 04:03 PM
+-- Generation Time: Aug 23, 2017 at 07:55 PM
 -- Server version: 10.2.7-MariaDB
 -- PHP Version: 7.1.8
 
@@ -1187,6 +1187,9 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('core.user.email', 'core', 0, 0),
 ('core.user.email.repeat', 'core', 0, 0),
 ('core.user.login', 'core', 0, 0),
+('core.user.login.heading', 'dime', 0, 0),
+('core.user.login.notregistered', 'dime', 0, 0),
+('core.user.login.register', 'dime', 0, 0),
 ('core.user.name', 'core', 0, 0),
 ('core.user.password', 'core', 0, 0),
 ('core.user.password.change', 'core', 0, 0),
@@ -2149,11 +2152,11 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('format.description.text', 'core', 0, 0),
 ('format.distance', 'core', 0, 0),
 ('format.email', 'core', 0, 0),
-('format.event', 'core', 0, 0),
+('format.event', 'core', 0, 0);
+INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
 ('format.file', 'core', 0, 0),
 ('format.fileversion', 'core', 0, 0),
-('format.fileversion.created', 'core', 0, 0);
-INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('format.fileversion.created', 'core', 0, 0),
 ('format.fileversion.creator', 'core', 0, 0),
 ('format.fileversion.expires', 'core', 0, 0),
 ('format.fileversion.modified', 'core', 0, 0),
@@ -3198,7 +3201,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'dime.find.process.released', 'default', 'Udgivet', NULL),
 ('da', 'dime.find.process.reported', 'default', 'Rapporteret', NULL),
 ('da', 'dime.find.process.validated', 'default', 'Valideret', NULL),
-('da', 'dime.find.query.set', 'default', 'Søgeresultat???', NULL),
+('da', 'dime.find.query.set', 'default', 'Søgeresultat??? %items%', NULL),
 ('da', 'dime.find.recipient', 'default', 'Modtager', NULL),
 ('da', 'dime.find.save', 'default', 'Gem', NULL),
 ('da', 'dime.find.search', 'default', 'Søg fund', NULL),
@@ -3898,6 +3901,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'core.user.email', 'default', 'Email', ''),
 ('en', 'core.user.email.repeat', 'default', 'Repeat Email', ''),
 ('en', 'core.user.login', 'default', 'Login', ''),
+('en', 'core.user.login.heading', 'default', 'Login', ''),
+('en', 'core.user.login.notregistered', 'default', 'Not registered as a user?', ''),
+('en', 'core.user.login.register', 'default', 'Register here.', ''),
 ('en', 'core.user.name', 'default', 'User Name', NULL),
 ('en', 'core.user.password', 'default', 'Password', ''),
 ('en', 'core.user.password.change', 'default', 'Change Password', ''),
@@ -4380,11 +4386,11 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.subtype.fibula.bird.profile', 'default', 'Bird-shaped fibula (Early medieval - small bird in profile)', NULL),
 ('en', 'dime.find.subtype.fibula.bow', 'default', 'Bow fibula', NULL),
 ('en', 'dime.find.subtype.fibula.bow.ball', 'default', 'Hard cast ball fibula (Pre- Roman Iron Age)', NULL),
-('en', 'dime.find.subtype.fibula.bow.band', 'default', 'Wide band-shaped bow fibulas (Roman Iron Age - Almgr. V)', NULL),
+('en', 'dime.find.subtype.fibula.bow.band', 'default', 'Wide band-shaped bow fibulas (Roman Iron Age - Almgr. V)', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'dime.find.subtype.fibula.bow.bilateral', 'default', 'Bilateral fibulas with two combs (Early Roman Iron Age - Almgr. I-IV)', NULL),
 ('en', 'dime.find.subtype.fibula.bow.button', 'default', 'Back button fibula', NULL),
-('en', 'dime.find.subtype.fibula.bow.cross', 'default', 'Cross shaped fibula', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.find.subtype.fibula.bow.cross', 'default', 'Cross shaped fibula', NULL),
 ('en', 'dime.find.subtype.fibula.bow.foot', 'default', 'Bow fibulas with enclosed foot including Nydam fibulas (Late Roman Iron Age - Almgr. VI)', NULL),
 ('en', 'dime.find.subtype.fibula.bow.high', 'default', 'Bow fibulas high needle holder (Late Roman Iron Age - Almgr. VII)', NULL),
 ('en', 'dime.find.subtype.fibula.bow.other', 'default', 'Other bow fibula (specify in description field)', NULL),
@@ -5083,13 +5089,13 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'language.finnish.tornedalen', 'default', 'Tornedalen Finnish', NULL),
 ('en', 'language.flemish', 'default', 'Flemish', NULL),
 ('en', 'language.flemish.west', 'default', 'West Flemish', NULL),
-('en', 'language.fon', 'default', 'Fon', NULL),
+('en', 'language.fon', 'default', 'Fon', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'language.frafra', 'default', 'Frafra', NULL),
 ('en', 'language.franconian.main', 'default', 'Main-Franconian', NULL),
 ('en', 'language.french', 'default', 'French', NULL),
 ('en', 'language.french.cajun', 'default', 'Cajun French', NULL),
-('en', 'language.french.canadian', 'default', 'Canadian French', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'language.french.canadian', 'default', 'Canadian French', NULL),
 ('en', 'language.french.middle', 'default', 'Middle French', NULL),
 ('en', 'language.french.old', 'default', 'Old French', NULL),
 ('en', 'language.french.swiss', 'default', 'Swiss French', NULL),
@@ -5764,7 +5770,7 @@ INSERT INTO `ark_view_cell` (`grp`, `item_type`, `row`, `col`, `seq`, `element`,
 ('core_user_role', '', 0, 0, 6, 'core_widget_date', 'core.user.role.expiry', NULL, NULL, 'expiry', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('core_user_role_add', '', 0, 0, 0, 'core_widget_choice', 'core.workflow.role', NULL, 'dime.workflow.role', 'role_add', NULL, 1, 0, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('core_user_role_add', '', 0, 0, 4, 'core_widget_actor', NULL, NULL, NULL, 'museum', NULL, 1, 0, NULL, 1, 0, NULL, 'redact', 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, '{\"attr\": {\"style\": \"width:95%\"}}'),
-('core_user_role_add', '', 0, 0, 6, 'core_widget_date', 'core.user.role.expiry', NULL, NULL, 'expiry', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('core_user_role_add', '', 0, 0, 6, 'core_widget_date', 'core.user.role.expiry', NULL, NULL, 'expiry', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('core_user_role_add', '', 0, 0, 10, 'core_widget_submit', 'core.button.save', NULL, NULL, 'role', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('core_workflow_action', '', 0, 0, 0, 'core_widget_choice', NULL, NULL, NULL, 'actions', 4, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('core_workflow_action', '', 0, 0, 2, 'core_widget_submit', 'core.button.apply', NULL, NULL, 'apply', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
