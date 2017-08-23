@@ -193,28 +193,13 @@ class Security
         }
     }
 
-    public function registerUser(User $user, Actor $actor = null, Role $role = null, Actor $agentFor = null) : void
+    public function registerUser(User $user, Actor $actor = null) : void
     {
         if ($this->options['verify_email']) {
             $user->setVerificationRequested();
         }
         if (!$this->options['verify_email_required'] && !$this->options['admin_confirm']) {
             $user->enable();
-        }
-        ORM::persist($user);
-        if ($actor) {
-            $actorUser = new ActorUser($actor, $user);
-            ORM::persist($actor);
-            ORM::persist($actorUser);
-            if ($role) {
-                $actorRole = new ActorRole($actor, $role, $agentFor);
-                // TODO
-                if (!$this->options['verify_email_required'] && !$this->options['admin_confirm']) {
-                    $actorRole->enable();
-                }
-                ORM::persist($actorRole);
-                ORM::persist($agentFor);
-            }
         }
         ORM::flush($user);
         ORM::flush($actor);
@@ -223,49 +208,50 @@ class Security
         }
     }
 
-    public function registerActor(User $user, Actor $actor, Role $role = null, Actor $agentFor = null) : void
+    public function createActorUser(Actor $actor, User $user, \DateTime $expiry = null) : ActorUser
     {
         $actorUser = new ActorUser($actor, $user);
-        ORM::persist($actor);
+        // TODO Always enable for now, need to think if any reason why you wouldn't?
+        $actorUser->enable();
+        $actorUser->expireAt($expiry);
         ORM::persist($actorUser);
-        if ($role) {
-            $actorRole = new ActorRole($actor, $role, $agentFor);
-            $actorRole->enable();
-            ORM::persist($actorRole);
-            ORM::persist($agentFor);
-        }
-        ORM::flush($actor);
+        return $actorUser;
     }
 
-    public function registerRole(Actor $actor, Role $role, Actor $agentFor = null, \DateTime $expiry = null) : void
+    public function createActorRole(Actor $actor, Role $role, Actor $agentFor = null, \DateTime $expiry = null) : ActorRole
     {
-        ORM::persist($actor);
         $actorRole = new ActorRole($actor, $role, $agentFor);
+        // TODO Always enable for now, need to think if any reason why you wouldn't?
         $actorRole->enable();
-        if ($expireAt) {
-            $actorRole->expireAt($expiry);
-        }
+        $actorRole->expireAt($expiry);
         ORM::persist($actorRole);
-        ORM::persist($agentFor);
-        ORM::flush($actor);
+        return $actorRole;
     }
 
-    public function createUser($username, $email, $plainPassword, $name = null, $level = 'ROLE_USER')
-    {
+    public function createUser(
+        string $username,
+        string $email,
+        string $plainPassword,
+        string $name = null,
+        string $level = 'ROLE_USER'
+    ) : User {
         $user = new User($username, $username, $email);
         $user->setPassword($plainPassword);
         $user->setName($name);
         $user->setLevel($level);
+        ORM::persist($user);
         return $user;
     }
 
     public function resetUser(User $user) : void
     {
         $user->setPasswordRequested();
+        ORM::persist($user);
+        ORM::flush($user);
         $this->sendResetMessage($user);
     }
 
-    public function hasVisibility($user, $model)
+    public function hasVisibility($user, $model) : bool
     {
         if ($model instanceof Item) {
             // Do something to check User/Actor can see Item

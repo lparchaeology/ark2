@@ -33,31 +33,32 @@ use ARK\Actor\Actor;
 use ARK\Actor\Person;
 use ARK\ARK;
 use ARK\Database\Console\DatabaseCommand;
-use Exception;
 use ARK\Framework\Application;
 use ARK\ORM\ORM;
 use ARK\Security\User;
 use ARK\Service;
+use ARK\Workflow\Role;
+use Exception;
 
 class SiteMigrateLoadCommand extends DatabaseCommand
 {
-    protected $app = null;
+    protected $app;
     protected $sourcePath = '';
     protected $mapPath = '';
     protected $path = '';
     protected $site = '';
     protected $siteKey = '';
-    protected $source = null;
-    protected $core = null;
-    protected $data = null;
-    protected $user = null;
-    protected $admin = null;
-    protected $userMap = null;
-    protected $schemaMap = null;
+    protected $source;
+    protected $core;
+    protected $data;
+    protected $user;
+    protected $admin;
+    protected $userMap;
+    protected $schemaMap;
     protected $mapActor = [];
     protected $mapUser = [];
 
-    protected function configure()
+    protected function configure() : void
     {
         $this->setName('site:migrate:load')
             ->setDescription('Migrate an ARK 1.2 site');
@@ -84,7 +85,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         $this->app = new Application($this->site);
 
         $this->loadUsers();
-return;
+        return;
         $this->core = Service::database()->core();
         $this->data = Service::database()->data();
         $this->user = Service::database()->user();
@@ -101,7 +102,7 @@ return;
             if (!$mod['core']) {
                 $destModChoices[] = $mod['module'];
             }
-            if ($mod['module'] == 'site') {
+            if ($mod['module'] === 'site') {
                 $hasSiteMod = true;
             }
             $destMod[$mod['module']] = $mod;
@@ -150,7 +151,7 @@ return;
         }
         $sites = $this->source->fetchAllTable('cor_tbl_ste', []);
         foreach ($sites as $site) {
-            if ($site['id'] != 'ARK') {
+            if ($site['id'] !== 'ARK') {
                 $item = [
                     'item' => $site['id'],
                     'module' => 'site',
@@ -179,7 +180,7 @@ return;
 
         // * MODULE SCHEMA * //
         foreach ($mapping as $mod => &$module) {
-            if ($module['mode'] == 'new') {
+            if ($module['mode'] === 'new') {
                 $this->addTranslation($module['config']['keyword'], $module['config']['entity']);
                 $this->core->insert('ark_module', $module['config']);
                 if (!$this->data->tableExists($module['config']['tbl'])) {
@@ -335,10 +336,10 @@ return;
                 'creator' => $row['cre_by'],
                 'created' => $row['cre_on'],
             ];
-            if (in_array($row['filetype'], ['image', 'images', 'drawing'])) {
+            if (in_array($row['filetype'], ['image', 'images', 'drawing'], true)) {
                 $item['type'] = 'image';
             }
-            if ($row['filetype'] == 'sheet') {
+            if ($row['filetype'] === 'sheet') {
                 $item['type'] = 'document';
             }
             $this->data->insert('ark_item_file', $item);
@@ -361,11 +362,11 @@ return;
         }
         foreach ($rows as $row) {
             $this->progress->advance();
-            if (!in_array($row['itemkey'], $modCodes)) {
+            if (!in_array($row['itemkey'], $modCodes, true)) {
                 continue;
             }
             $key = $this->makeItemKey($row['itemvalue']);
-            if ($row['filetype'] == 'images') {
+            if ($row['filetype'] === 'images') {
                 $row['filetype'] = 'image';
             }
             $frag = [
@@ -391,7 +392,7 @@ return;
             'txt' => 'ark_fragment_text',
         ];
         foreach ($classes as $dataclass => $new_tbl) {
-            if ($new_tbl == '') {
+            if ($new_tbl === '') {
                 continue;
             }
 
@@ -401,7 +402,7 @@ return;
             $type = $dataclass.'type';
             $old_tbl = 'cor_tbl_'.$dataclass;
             $lut = 'cor_lut_'.$type;
-            if ($dataclass == 'attribute') {
+            if ($dataclass === 'attribute') {
                 $sql = '
                     SELECT cor_tbl_attribute.*, cor_lut_attribute.attribute, cor_lut_attributetype.attributetype
                     FROM cor_tbl_attribute, cor_lut_attribute, cor_lut_attributetype
@@ -409,7 +410,7 @@ return;
                     AND cor_lut_attribute.attributetype = cor_lut_attributetype.id
                 ';
                 $attributes['format'] = 'identifier';
-            } elseif ($dataclass == 'action') {
+            } elseif ($dataclass === 'action') {
                 $sql = '
                     SELECT cor_tbl_action.*, cor_lut_actiontype.actiontype
                     FROM cor_tbl_action, cor_lut_actiontype
@@ -432,12 +433,12 @@ return;
             }
             foreach ($frags as $frag) {
                 $this->progress->advance();
-                if (substr($frag['itemkey'], 0, 11) == 'cor_tbl_map') {
+                if (substr($frag['itemkey'], 0, 11) === 'cor_tbl_map') {
                     $this->write('Skipping map frag : '.$frag['id'].' : '.$frag['itemkey'].' : '.$frag['itemvalue']);
                     continue;
                 }
                 // Skip if parent is a lut
-                if (substr($frag['itemkey'], 0, 8) == 'cor_lut_') {
+                if (substr($frag['itemkey'], 0, 8) === 'cor_lut_') {
                     $this->write('Skipping lut frag : '.$frag['id'].' : '.$frag['itemkey'].' : '.$frag['itemvalue']);
                     continue;
                 }
@@ -448,16 +449,16 @@ return;
                     $frag = array_merge($frag, $this->getParent($this->source, $frag['itemkey'], $frag['itemvalue']));
                 }
                 // Skip if parent doesn't exist, i.e. orphaned frag!
-                if ($frag['itemkey'] == null) {
+                if ($frag['itemkey'] === null) {
                     $this->write('Skipping orphan frag : '.$frag['id'].' : '.$frag['old_parent_table'].' : '.$frag['old_parent_id']);
                     continue;
                 }
-                if (!in_array($frag['itemkey'], $modCodes)) {
+                if (!in_array($frag['itemkey'], $modCodes, true)) {
                     //$this->write('Skipping frag for invalid mod_cd : '.$frag['itemkey']);
                     continue;
                 }
                 $module = $mapping[substr($frag['itemkey'], 0, 3)]['module'];
-                if ($dataclass == 'attribute') {
+                if ($dataclass === 'attribute') {
                     $frag['parameter'] = $this->siteKey.'.'.$frag['attributetype'];
                     $frag['value'] = $this->makeAttribute($frag['attribute']);
                     $attribute['vocabulary'] = $frag['parameter'];
@@ -529,7 +530,7 @@ return;
         }
         foreach ($rows as $row) {
             $this->progress->advance();
-            if (!in_array($row['itemkey'], $modCodes)) {
+            if (!in_array($row['itemkey'], $modCodes, true)) {
                 continue;
             }
             $module = $mapping[substr($row['itemkey'], 0, 3)]['module'];
@@ -569,7 +570,7 @@ return;
         }
         foreach ($rows as $row) {
             $this->progress->advance();
-            if (!in_array($row['itemkey'], $modCodes) || !in_array($row['xmi_itemkey'], $modCodes)) {
+            if (!in_array($row['itemkey'], $modCodes, true) || !in_array($row['xmi_itemkey'], $modCodes, true)) {
                 continue;
             }
             $module1 = $mapping[substr($row['itemkey'], 0, 3)]['module'];
@@ -741,7 +742,7 @@ return;
         $this->write("\nMigration Complete!");
     }
 
-    private function loadUsers()
+    private function loadUsers() : void
     {
         foreach ($this->userMap as $map) {
             if (!$map['map']) {
@@ -773,19 +774,22 @@ return;
                         $map['name'],
                         $map['level']
                     );
-                    Service::security()->registerUser($user, $actor);
+                }
+                if ($actor && $user) {
+                    Service::security()->createActorUser($actor, $user);
                 }
             }
             if ($actor) {
                 foreach ($map['roles'] as $role) {
-                    $actor->addRole($role);
+                    $role = ORM::find(Role::class, $role);
+                    Service::security()->createActorRole($actor, $role);
                 }
-                ORM::flush($actor);
             }
+            Service::security()->registerUser($user, $actor);
         }
     }
 
-    private function addTranslation($keyword, $text = null, $title = true)
+    private function addTranslation($keyword, $text = null, $title = true) : void
     {
         // May already exist
         try {
@@ -863,7 +867,7 @@ return;
         return ['itemkey' => $parent['itemkey'], 'itemvalue' => $parent['itemvalue']];
     }
 
-    private function addChainFields($table)
+    private function addChainFields($table) : void
     {
         // Add temp chain fields
         $schema_new = $this->admin->getSchemaManager()->createSchema();
@@ -888,7 +892,7 @@ return;
         }
     }
 
-    private function removeChainFields($table)
+    private function removeChainFields($table) : void
     {
         $schema_new = $this->admin->getSchemaManager()->createSchema();
         $schema = clone $schema_new;

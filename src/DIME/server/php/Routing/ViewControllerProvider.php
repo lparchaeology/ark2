@@ -74,6 +74,9 @@ class ViewControllerProvider implements ControllerProviderInterface
             ->bind('img');
 
         // Admin Routes
+        $controllers->match("/$admin/$users/register", 'DIME\Controller\View\UserRegisterController')
+            ->method('GET|POST')
+            ->bind('dime.admin.users.register');
         $controllers->match("/$admin/$users", 'DIME\Controller\View\AdminUserController')
             ->method('GET|POST')
             ->bind('dime.admin.users');

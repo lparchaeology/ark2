@@ -99,7 +99,7 @@ class ActorRole
         $this->expiresAt = null;
     }
 
-    public function expireAt(DateTime $date) : void
+    public function expireAt(?DateTime $date) : void
     {
         $this->expiresAt = $date;
     }

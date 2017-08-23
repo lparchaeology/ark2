@@ -30,6 +30,7 @@
 namespace DIME\Controller\View;
 
 use ARK\Actor\Actor;
+use ARK\Actor\Museum;
 use ARK\Actor\Person;
 use ARK\ORM\ORM;
 use ARK\Security\User;
@@ -41,6 +42,15 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserRegisterController extends DimeFormController
 {
+    public function buildState(Request $request) : iterable
+    {
+        $state = parent::buildState($request);
+        $state['options']['museum']['choices'] = ORM::findAll(Museum::class);
+        $state['options']['museum']['multiple'] = false;
+        $state['options']['museum']['placeholder'] = Service::translate('dime.placeholder');
+        return $state;
+    }
+
     public function buildData(Request $request)
     {
         $data['actor'] = new Person();
@@ -58,12 +68,13 @@ class UserRegisterController extends DimeFormController
     public function processForm(Request $request, Form $form) : void
     {
         $data = $form->getData();
+
         $credentials = $data['credentials'];
+
         $actor = $data['actor'];
         $actor->setItem($credentials['_username']);
         $actor->property('email')->setValue($credentials['email']);
-        $detectorist = DIME::generateDetectoristId();
-        $actor->property('detectorist_id')->setValue($detectorist);
+        ORM::persist($actor);
 
         $user = Service::security()->createUser(
             $credentials['_username'],
@@ -72,14 +83,31 @@ class UserRegisterController extends DimeFormController
             $actor->fullname()
         );
 
-        $role = ORM::find(Role::class, 'detectorist');
-        Service::security()->registerUser($user, $actor, $role);
+        $actorUser = Service::security()->createActorUser($actor, $user);
 
-        Service::workflow()->apply($actor, 'register', $actor);
-        ORM::flush($actor);
+        if (isset($data['role'])) {
+            $role = ORM::find(Role::class, $data['role']['role']->name());
+            $museum = $data['role']['museum'];
+            $expiry = $data['role']['expiry'];
+        } else {
+            $role = ORM::find(Role::class, 'detectorist');
+            $museum = null;
+            $expiry = null;
+        }
+
+        $actorRole = Service::security()->createActorRole($actor, $role, $museum, $expiry);
+
+        if ($role->id() === 'detectorist') {
+            $detectorist = DIME::generateDetectoristId();
+            $actor->property('detectorist_id')->setValue($detectorist);
+        }
+
+        $registeredBy = (Service::security()->isLoggedIn() ? Service::workflow()->actor() : $actor);
+        Service::workflow()->apply($actor, 'register', $registeredBy);
+
+        Service::security()->registerUser($user, $actor);
 
         if ($user->isEnabled()) {
-            dump('enabled, logging in');
             Service::security()->loginAsUser($user, 'default', $request);
         }
         $request->attributes->set('flash', 'success');

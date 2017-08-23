@@ -113,8 +113,9 @@ class AdminUserController extends DimeFormController
         }
         if ($submitted === 'role_add') {
             $add = $form['role_add']->getData();
-            $role = ORM::find(Role::class, $add['role']);
-            Service::security()->registerRole($actor, $role, $add['museum'], $add['expiry']);
+            $role = ORM::find(Role::class, $add['role']->name());
+            $actorRole = Service::security()->createActorRole($actor, $role, $add['museum'], $add['expiry']);
+            ORM::flush($actorRole);
         }
     }
 }
