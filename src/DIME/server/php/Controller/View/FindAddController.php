@@ -71,9 +71,13 @@ class FindAddController extends DimeFormController
         $actor = Service::workflow()->actor();
         ORM::persist($find);
         Service::workflow()->apply($actor, 'record', $find);
-        if ($clicked === 'report') {
+        if ($clicked === 'send') {
             Service::workflow()->apply($actor, 'report', $find);
-            $message = 'dime.find.add.success';
+            Service::workflow()->apply($actor, 'send', $find);
+            $message = 'dime.find.add.sent';
+        } elseif ($clicked === 'report') {
+            Service::workflow()->apply($actor, 'report', $find);
+            $message = 'dime.find.add.report';
         } else {
             $message = 'dime.find.add.success';
         }
