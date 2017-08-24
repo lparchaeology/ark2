@@ -48,15 +48,32 @@ class Agency
     protected $attributeName = '';
     protected $attribute;
     protected $operator = 'is';
+    protected $condition;
+    protected $conditionAttribute;
+    protected $conditionAttributeName;
+    protected $conditionOperator;
+    protected $conditionValue;
+
+    public function condition() : ?Condition
+    {
+        if ($this->condition === null && $this->conditionAttribute !== null) {
+            $this->condition = new Condition($this->conditionAttribute, $this->conditionOperator, $this->conditionValue);
+        }
+        return $this->condition;
+    }
 
     public function isGranted(Actor $actor, Item $item) : ?bool
     {
         $value = $item->property($this->attributeName)->value();
-        $isAgent = ($value instanceof Actor && $value->id() === $actor->id());
-        if ($this->operator === 'not' && $isAgent) {
+        if (!$value instanceof Actor) {
             return self::DENY;
         }
-        if ($isAgent) {
+        $isAgent = ($value === $actor || $actor->isAgentFor($value));
+        $isGranted = ($this->condition() ? $this->condition()->isGranted($item) : true);
+        if ($this->operator === 'not' && $isAgent && $isGranted) {
+            return self::DENY;
+        }
+        if ($isAgent && $isGranted) {
             return self::GRANT;
         }
         return self::ABSTAIN;
@@ -76,6 +93,8 @@ class Agency
 
         // Fields
         $builder->addStringField('operator', 10);
+        $builder->addStringField('conditionOperator', 10, 'condition_operator');
+        $builder->addStringField('conditionValue', 4000, 'condition_value');
 
         // Associations
         $builder->addCompositeManyToOneField(
@@ -94,6 +113,15 @@ class Agency
                 ['column' => 'schma'],
                 ['column' => 'type'],
                 ['column' => 'attribute'],
+            ]
+        );
+        $builder->addCompositeManyToOneField(
+            'conditionAttribute',
+            SchemaAttribute::class,
+            [
+                ['column' => 'schma'],
+                ['column' => 'type'],
+                ['column' => 'condition_attribute', 'reference' => 'attribute'],
             ]
         );
     }

@@ -51,6 +51,13 @@ class Condition
     protected $grp = 0;
     protected $value = '';
 
+    public function __construct(SchemaAttribute $attribute, string $operator, string $value)
+    {
+        $this->attribute = $attribute;
+        $this->operator = $operator;
+        $this->value = $value;
+    }
+
     public function group() : int
     {
         return $this->grp;

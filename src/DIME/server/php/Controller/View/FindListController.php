@@ -265,6 +265,7 @@ class FindListController extends DimeFormController
 
     public function processForm(Request $request, Form $form) : void
     {
+        $request->getSession()->getFlashBag()->clear();
         $clicked = $form->getClickedButton()->getName();
 
         if ($clicked === 'apply') {

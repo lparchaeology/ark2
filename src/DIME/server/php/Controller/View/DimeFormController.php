@@ -47,7 +47,6 @@ abstract class DimeFormController extends DimeController
 
     public function handleRequest(Request $request)
     {
-        $request->getSession()->getFlashBag()->clear();
         $route = ORM::find(Route::class, $request->attributes->get('_route'));
         if ($route) {
             $page = $route->page();

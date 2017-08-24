@@ -43,7 +43,9 @@ class FindAddController extends DimeFormController
         $actor = Service::workflow()->actor();
         $find = new Find('dime.find');
         $find->setValue('finder', $actor);
+        $find->setValue('process', 'recorded');
 
+        // If cloning an existing find, then check if user is allowed to clone, then copy relevent fields
         $query = $request->query->all();
         if (isset($query['id'])) {
             if ($source = ORM::find(Find::class, $query['id'])) {
@@ -73,7 +75,7 @@ class FindAddController extends DimeFormController
         Service::workflow()->apply($actor, 'record', $find);
         if ($clicked === 'send') {
             Service::workflow()->apply($actor, 'report', $find);
-            Service::workflow()->apply($actor, 'send', $find);
+            Service::workflow()->apply($actor, 'send', $find, $find->property('museum')->value());
             $message = 'dime.find.add.sent';
         } elseif ($clicked === 'report') {
             Service::workflow()->apply($actor, 'report', $find);

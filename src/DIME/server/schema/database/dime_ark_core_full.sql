@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 24, 2017 at 09:38 AM
+-- Generation Time: Aug 24, 2017 at 03:02 PM
 -- Server version: 10.2.7-MariaDB
 -- PHP Version: 7.1.8
 
@@ -5833,7 +5833,7 @@ INSERT INTO `ark_view_cell` (`grp`, `item_type`, `row`, `col`, `seq`, `element`,
 ('dime_find_item', '', 0, 0, 6, 'dime_find_photo', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_item', '', 0, 1, 0, 'dime_find_artefact', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_item', '', 0, 1, 2, 'dime_find_status', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_find_item', '', 0, 1, 4, 'dime_find_update', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_find_item', '', 0, 1, 4, 'dime_find_update', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_list', '', 0, 0, 0, 'dime_find_table', NULL, NULL, NULL, 'items', NULL, 0, 0, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_list_action', '', 0, 0, 0, 'dime_find_table', NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_list_action', '', 0, 0, 2, 'core_workflow_action', NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
@@ -5859,7 +5859,9 @@ INSERT INTO `ark_view_cell` (`grp`, `item_type`, `row`, `col`, `seq`, `element`,
 ('dime_find_table', '', 0, 0, 4, 'dime_find_material', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_table', '', 0, 0, 6, 'dime_find_municipality', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_update', '', 0, 0, 0, 'core_widget_submit', 'core.button.save', NULL, NULL, 'save', NULL, 1, 0, NULL, NULL, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-('dime_find_update', '', 0, 0, 2, 'core_widget_submit', 'core.button.clone', NULL, NULL, 'clone', NULL, 1, 0, NULL, NULL, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_find_update', '', 0, 0, 2, 'core_widget_submit', 'dime.action.notify', NULL, NULL, 'report', NULL, 1, 0, NULL, NULL, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_find_update', '', 0, 0, 4, 'core_widget_submit', 'dime.action.send', NULL, NULL, 'send', NULL, 1, 0, NULL, NULL, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
+('dime_find_update', '', 0, 0, 6, 'core_widget_submit', 'core.button.clone', NULL, NULL, 'clone', NULL, 1, 0, NULL, NULL, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_find_view', '', 0, 0, 0, 'dime_find_item', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_front_page', '', 0, 0, 0, 'dime_find_type', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
 ('dime_front_page', '', 0, 0, 2, 'dime_find_classification', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
@@ -6091,7 +6093,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `keyword`, `enabled`, `deprec
 ('dime_find_table', 'table', NULL, 1, 0),
 ('dime_find_treasure', 'field', NULL, 1, 0),
 ('dime_find_type', 'field', NULL, 1, 0),
-('dime_find_update', 'grid', 'dime.find.update', 1, 0),
+('dime_find_update', 'grid', NULL, 1, 0),
 ('dime_find_view', 'grid', NULL, 1, 0),
 ('dime_find_visibility', 'field', NULL, 1, 0),
 ('dime_find_weight', 'field', NULL, 1, 0),
@@ -9003,7 +9005,7 @@ INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event
 ('dime.find', 'notify', 'core.event.type', 'notified', 'dime.action.notify', NULL, 0, 0, 0, 0, 1),
 ('dime.find', 'publish', 'core.event.type', 'published', 'dime.action.publish', NULL, 0, 0, 0, 0, 1),
 ('dime.find', 'receive', 'core.event.type', 'received', 'dime.action.receive', NULL, 0, 0, 0, 0, 1),
-('dime.find', 'record', 'core.event.type', 'recorded', 'dime.action.record', 'recorder', 1, 1, 0, 1, 1),
+('dime.find', 'record', 'core.event.type', 'recorded', 'dime.action.record', 'recorder', 0, 0, 0, 1, 1),
 ('dime.find', 'recover', 'core.event.type', 'recovered', 'dime.action.recover', NULL, 0, 0, 0, 0, 1),
 ('dime.find', 'redact', 'core.event.type', 'redacted', 'dime.action.redact', NULL, 0, 0, 0, 0, 1),
 ('dime.find', 'refer', 'core.event.type', 'referred', 'dime.action.refer', NULL, 0, 0, 0, 0, 1),
@@ -9012,7 +9014,7 @@ INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event
 ('dime.find', 'report', 'core.event.type', 'reported', 'dime.action.report', 'reporter', 1, 0, 0, 1, 1),
 ('dime.find', 'request', 'core.event.type', 'requested', 'dime.action.request', NULL, 0, 0, 0, 0, 1),
 ('dime.find', 'reward', 'core.event.type', 'rewarded', 'dime.action.reward', NULL, 0, 0, 0, 0, 1),
-('dime.find', 'send', 'core.event.type', 'sent', 'dime.action.send', NULL, 0, 0, 0, 0, 1),
+('dime.find', 'send', 'core.event.type', 'sent', 'dime.action.send', NULL, 0, 0, 0, 1, 1),
 ('dime.find', 'share', 'core.event.type', 'shared', 'dime.action.share', NULL, 0, 0, 0, 0, 1),
 ('dime.find', 'subscribe', 'core.event.type', 'subscribed', 'dime.action.subscribe', NULL, 0, 0, 0, 0, 1),
 ('dime.find', 'suppress', 'core.event.type', 'suppressed', 'dime.action.suppress', NULL, 0, 0, 0, 0, 1),
@@ -9031,41 +9033,44 @@ CREATE TABLE `ark_workflow_agency` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `action` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `operator` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '''eq''',
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `operator` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'eq'
+  `condition_attribute` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
+  `condition_operator` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `condition_value` varchar(4000) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_workflow_agency`
 --
 
-INSERT INTO `ark_workflow_agency` (`schma`, `action`, `type`, `attribute`, `operator`) VALUES
-('dime.find', 'accession', 'find', 'custodian', 'is'),
-('dime.find', 'conserve', 'find', 'custodian', 'is'),
-('dime.find', 'decline', 'find', 'custodian', 'is'),
-('dime.find', 'delete', 'find', 'finder', 'is'),
-('dime.find', 'destroy', 'find', 'custodian', 'is'),
-('dime.find', 'discard', 'find', 'owner', 'is'),
-('dime.find', 'edit', 'find', 'custodian', 'is'),
-('dime.find', 'edit', 'find', 'finder', 'is'),
-('dime.find', 'edit', 'find', 'owner', 'is'),
-('dime.find', 'loan', 'find', 'owner', 'is'),
-('dime.find', 'lose', 'find', 'custodian', 'is'),
-('dime.find', 'publish', 'find', 'owner', 'is'),
-('dime.find', 'receive', 'find', 'recipient', 'is'),
-('dime.find', 'record', 'find', 'finder', 'is'),
-('dime.find', 'recover', 'find', 'custodian', 'is'),
-('dime.find', 'recover', 'find', 'owner', 'is'),
-('dime.find', 'redact', 'find', 'owner', 'is'),
-('dime.find', 'report', 'find', 'custodian', 'is'),
-('dime.find', 'report', 'find', 'finder', 'is'),
-('dime.find', 'report', 'find', 'owner', 'is'),
-('dime.find', 'request', 'find', 'custodian', 'not'),
-('dime.find', 'send', 'find', 'custodian', 'is'),
-('dime.find', 'suppress', 'find', 'owner', 'is'),
-('dime.find', 'transfer', 'find', 'owner', 'is'),
-('dime.find', 'view', 'find', 'finder', 'is'),
-('dime.find', 'withdraw', 'find', 'recipient', 'is');
+INSERT INTO `ark_workflow_agency` (`schma`, `action`, `type`, `operator`, `attribute`, `condition_attribute`, `condition_operator`, `condition_value`) VALUES
+('dime.find', 'accession', 'find', 'is', 'custodian', NULL, NULL, NULL),
+('dime.find', 'conserve', 'find', 'is', 'custodian', NULL, NULL, NULL),
+('dime.find', 'decline', 'find', 'is', 'custodian', NULL, NULL, NULL),
+('dime.find', 'delete', 'find', 'is', 'finder', NULL, NULL, NULL),
+('dime.find', 'destroy', 'find', 'is', 'custodian', NULL, NULL, NULL),
+('dime.find', 'discard', 'find', 'is', 'owner', NULL, NULL, NULL),
+('dime.find', 'edit', 'find', 'is', 'finder', 'process', 'is', 'recorded'),
+('dime.find', 'edit', 'find', 'is', 'museum', 'process', 'not', 'recorded'),
+('dime.find', 'loan', 'find', 'is', 'owner', NULL, NULL, NULL),
+('dime.find', 'lose', 'find', 'is', 'custodian', NULL, NULL, NULL),
+('dime.find', 'publish', 'find', 'is', 'owner', NULL, NULL, NULL),
+('dime.find', 'receive', 'find', 'is', 'recipient', NULL, NULL, NULL),
+('dime.find', 'record', 'find', 'is', 'finder', NULL, NULL, NULL),
+('dime.find', 'record', 'find', 'is', 'museum', NULL, NULL, NULL),
+('dime.find', 'recover', 'find', 'is', 'custodian', NULL, NULL, NULL),
+('dime.find', 'recover', 'find', 'is', 'owner', NULL, NULL, NULL),
+('dime.find', 'redact', 'find', 'is', 'owner', NULL, NULL, NULL),
+('dime.find', 'report', 'find', 'is', 'custodian', NULL, NULL, NULL),
+('dime.find', 'report', 'find', 'is', 'finder', NULL, NULL, NULL),
+('dime.find', 'report', 'find', 'is', 'owner', NULL, NULL, NULL),
+('dime.find', 'request', 'find', 'not', 'custodian', NULL, NULL, NULL),
+('dime.find', 'send', 'find', 'is', 'custodian', NULL, NULL, NULL),
+('dime.find', 'suppress', 'find', 'is', 'owner', NULL, NULL, NULL),
+('dime.find', 'transfer', 'find', 'is', 'owner', NULL, NULL, NULL),
+('dime.find', 'view', 'find', 'is', 'finder', NULL, NULL, NULL),
+('dime.find', 'withdraw', 'find', 'is', 'recipient', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -9091,7 +9096,9 @@ INSERT INTO `ark_workflow_allow` (`schma`, `action`, `role`, `operator`) VALUES
 ('core.actor', 'approve', 'registrar', 'is'),
 ('core.actor', 'cancel', 'admin', 'is'),
 ('core.actor', 'cancel', 'registrar', 'is'),
-('core.actor', 'edit', 'anonymous', 'not'),
+('core.actor', 'edit', 'admin', 'is'),
+('core.actor', 'edit', 'detectorist', 'is'),
+('core.actor', 'edit', 'registrar', 'is'),
 ('core.actor', 'restore', 'admin', 'is'),
 ('core.actor', 'restore', 'registrar', 'is'),
 ('core.actor', 'suspend', 'admin', 'is'),
@@ -9119,8 +9126,8 @@ INSERT INTO `ark_workflow_allow` (`schma`, `action`, `role`, `operator`) VALUES
 ('dime.find', 'edit', 'admin', 'is'),
 ('dime.find', 'edit', 'detectorist', 'is'),
 ('dime.find', 'edit', 'registrar', 'is'),
-('dime.find', 'edit', 'researcher', 'is'),
-('dime.find', 'record', 'anonymous', 'not'),
+('dime.find', 'record', 'detectorist', 'is'),
+('dime.find', 'record', 'registrar', 'is'),
 ('dime.find', 'reject', 'registrar', 'is'),
 ('dime.find', 'release', 'appraiser', 'is'),
 ('dime.find', 'release', 'registrar', 'is'),
@@ -9966,8 +9973,9 @@ ALTER TABLE `ark_workflow_action`
 --
 ALTER TABLE `ark_workflow_agency`
   ADD PRIMARY KEY (`schma`,`action`,`type`,`attribute`),
-  ADD KEY `schma` (`schma`,`type`,`attribute`),
-  ADD KEY `IDX_AC10BF48FDE1EB5347CC8C92` (`schma`,`action`);
+  ADD KEY `attribute` (`schma`,`type`,`attribute`) USING BTREE,
+  ADD KEY `action` (`schma`,`action`) USING BTREE,
+  ADD KEY `condition` (`schma`,`type`,`condition_attribute`) USING BTREE;
 
 --
 -- Indexes for table `ark_workflow_allow`
@@ -9983,8 +9991,8 @@ ALTER TABLE `ark_workflow_allow`
 --
 ALTER TABLE `ark_workflow_condition`
   ADD PRIMARY KEY (`schma`,`action`,`type`,`attribute`,`grp`),
-  ADD KEY `schma` (`schma`,`type`,`attribute`),
-  ADD KEY `IDX_161EE89EFDE1EB5347CC8C92` (`schma`,`action`);
+  ADD KEY `action` (`schma`,`action`) USING BTREE,
+  ADD KEY `attribute` (`schma`,`type`,`attribute`) USING BTREE;
 
 --
 -- Indexes for table `ark_workflow_grant`
@@ -10384,7 +10392,8 @@ ALTER TABLE `ark_workflow_action`
 --
 ALTER TABLE `ark_workflow_agency`
   ADD CONSTRAINT `workflow_agency_action` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_agency_attribute` FOREIGN KEY (`schma`,`type`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `type`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `workflow_agency_attribute` FOREIGN KEY (`schma`,`type`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `type`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflow_agency_condition` FOREIGN KEY (`schma`,`type`,`condition_attribute`) REFERENCES `ark_schema_attribute` (`schma`, `type`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_allow`

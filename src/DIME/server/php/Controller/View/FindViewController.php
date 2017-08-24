@@ -68,26 +68,32 @@ class FindViewController extends DimeFormController
         $find = $data['find'];
         $parameters['id'] = $find->id();
         $request->attributes->set('parameters', $parameters);
-        if ($clicked === 'save') {
-            $actor = Service::workflow()->actor();
-            Service::workflow()->apply($actor, 'edit', $find);
-            ORM::persist($find);
-            ORM::flush($find);
-            $request->attributes->set('flash', 'success');
-            $request->attributes->set('message', 'dime.find.update.success');
-            return;
-        }
         if ($clicked === 'clone') {
             $request->attributes->set('redirect', 'finds.add');
             return;
         }
-        if ($clicked === 'apply') {
+        $actor = Service::workflow()->actor();
+        if ($clicked === 'save') {
+            Service::workflow()->apply($actor, 'edit', $find);
+            $message = 'dime.find.update.saved';
+        }
+        if ($clicked === 'send') {
+            Service::workflow()->apply($actor, 'report', $find);
+            Service::workflow()->apply($actor, 'send', $find, $find->property('museum')->value());
+            $message = 'dime.find.update.sent';
+        }
+        if ($clicked === 'report') {
+            Service::workflow()->apply($actor, 'report', $find);
+            $message = 'dime.find.update.reported';
+        }
+        if (false && $clicked === 'apply') {
             $actor = Service::workflow()->actor();
             $action = $form['find']['action']['actions']->getNormData();
             $action->apply($actor, $find, $find->value('museum'));
-            ORM::persist($find);
-            ORM::flush($find);
-            return;
         }
+        ORM::persist($find);
+        ORM::flush($find);
+        $request->attributes->set('flash', 'success');
+        $request->attributes->set('message', 'dime.find.update.success');
     }
 }
