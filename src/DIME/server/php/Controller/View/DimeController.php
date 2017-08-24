@@ -56,6 +56,14 @@ abstract class DimeController
             ],
             'sidelinks' => [
                 [
+                    'name' => 'mine',
+                    'active' => false,
+                    'role' => 'ROLE_USER',
+                    'links' => [
+                        ['name' => 'dime.search.finds.mine', 'active' => false, 'target' => 'dime.home.finds'],
+                    ],
+                ],
+                [
                     'name' => 'add',
                     'active' => false,
                     'role' => 'ROLE_USER',
@@ -77,6 +85,14 @@ abstract class DimeController
                     'role' => 'ROLE_ADMIN',
                     'links' => [
                         ['name' => 'dime.admin.users', 'active' => false, 'target' => 'dime.admin.users'],
+                    ],
+                ],
+                [
+                    'name' => 'admin.users.register',
+                    'active' => false,
+                    'role' => 'ROLE_ADMIN',
+                    'links' => [
+                        ['name' => 'dime.admin.users.register', 'active' => false, 'target' => 'dime.admin.users.register'],
                     ],
                 ],
             ],

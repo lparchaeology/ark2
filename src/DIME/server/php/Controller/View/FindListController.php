@@ -211,7 +211,7 @@ class FindListController extends DimeFormController
 
         // Enable Treasure Claim processing iff search is for Evaluated finds with Pending treasure status
         // for a single Finder and a single Museum the user is an Agent for.
-        if ($claim) {
+        if ($advanced && $claim) {
             $claim = (
                 $finds
                 && $status->count() === 1
