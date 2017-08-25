@@ -63,14 +63,6 @@ abstract class DimeFormController extends DimeController
         return $page->handleRequest($request, $data, $state, [$this, 'processForm']);
     }
 
-    public function addFlash(Request $request, string $flash, string $message, iterable $parms = []) : void
-    {
-        if ($parms) {
-            $message = Service::translate('dime.find.query.set', 'default', $parms);
-        }
-        $request->getSession()->getFlashBag()->add($flash, $message);
-    }
-
     public function buildData(Request $request)
     {
         return null;

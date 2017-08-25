@@ -165,9 +165,6 @@ class Page extends Element
                 if (!$redirect) {
                     $redirect = $request->attributes->get('_route');
                 }
-                if ($flash = $request->attributes->get('flash')) {
-                    Service::view()->addFlash($flash, $request->attributes->get('message'));
-                }
                 $parameters = ($request->attributes->get('parameters') ?: []);
                 return Service::redirectPath($redirect, $parameters);
             }
@@ -178,7 +175,6 @@ class Page extends Element
         //dump($context);
         $response = Service::view()->renderResponse($this->template(), $context);
         //dump($response);
-        Service::view()->clearFlashes();
         return $response;
     }
 

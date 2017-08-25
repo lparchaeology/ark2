@@ -69,19 +69,16 @@ class UserProfileController extends DimeFormController
                 $user->setPassword($data['password']);
                 ORM::persist($user);
                 ORM::flush($user);
-                $request->attributes->set('flash', 'success');
-                $request->attributes->set('message', 'core.user.password.change.success');
+                Service::view()->addSuccessFlash('core.user.password.change');
             } else {
-                $request->attributes->set('flash', 'error');
-                $request->attributes->set('message', 'core.user.password.incorrect');
+                Service::view()->addSuccessFlash('core.user.password.change');
             }
         }
         if ($submitted === 'actor') {
             $actor = $form->getData();
             ORM::persist($actor);
             ORM::flush($actor);
-            $request->attributes->set('flash', 'success');
-            $request->attributes->set('message', 'dime.find.update.success');
+            Service::view()->addSuccessFlash('dime.find.update');
         }
     }
 }

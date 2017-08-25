@@ -102,15 +102,22 @@ class UserRegisterController extends DimeFormController
             $actor->property('detectorist_id')->setValue($detectorist);
         }
 
-        $registeredBy = (Service::security()->isLoggedIn() ? Service::workflow()->actor() : $actor);
+        if (Service::security()->isLoggedIn()) {
+            $registeredBy = Service::workflow()->actor();
+            $message = 'dime.admin.user.register';
+            $login = false;
+        } else {
+            $registeredBy = $actor;
+            $message = 'dime.user.register';
+            $login = true;
+        }
         Service::workflow()->apply($registeredBy, 'register', $actor);
 
         Service::security()->registerUser($user, $actor);
 
-        if ($user->isEnabled()) {
+        if ($login && $user->isEnabled()) {
             Service::security()->loginAsUser($user, 'default', $request);
         }
-        $request->attributes->set('flash', 'success');
-        $request->attributes->set('message', 'dime.user.register.success');
+        Service::view()->addSuccessFlash($message);
     }
 }

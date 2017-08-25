@@ -232,7 +232,7 @@ class FindListController extends DimeFormController
         }
 
         if ($query) {
-            $this->addFlash($request, 'info', 'dime.find.query.set', ['%items%' => count($visible)]);
+            Service::view()->addInfoFlash('dime.find.query.set', ['%items%' => count($visible)]);
         }
 
         $data['finds']['items'] = $visible;
@@ -265,7 +265,7 @@ class FindListController extends DimeFormController
 
     public function processForm(Request $request, Form $form) : void
     {
-        $request->getSession()->getFlashBag()->clear();
+        Service::view()->clearFlashes();
         $clicked = $form->getClickedButton()->getName();
 
         if ($clicked === 'apply') {

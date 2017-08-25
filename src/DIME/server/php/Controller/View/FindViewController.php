@@ -93,7 +93,6 @@ class FindViewController extends DimeFormController
         }
         ORM::persist($find);
         ORM::flush($find);
-        $request->attributes->set('flash', 'success');
-        $request->attributes->set('message', 'dime.find.update.success');
+        Service::view()->addSuccessFlash($message);
     }
 }

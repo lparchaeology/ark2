@@ -81,12 +81,11 @@ class FindAddController extends DimeFormController
             Service::workflow()->apply($actor, 'report', $find);
             $message = 'dime.find.add.report';
         } else {
-            $message = 'dime.find.add.success';
+            $message = 'dime.find.add';
         }
         ORM::flush($find);
         $parameters['id'] = $find->id();
         $request->attributes->set('parameters', $parameters);
-        $request->attributes->set('flash', 'success');
-        $request->attributes->set('message', $message);
+        Service::view()->addSuccessFlash($message, $parameters);
     }
 }

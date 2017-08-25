@@ -146,33 +146,36 @@ class View
         }
     }
 
-    public function addFlash(string $type, string $message) : void
+    public function addFlash(string $flash, string $message, iterable $parms = []) : void
     {
-        Service::session()->getFlashBag()->add($type, $message);
+        if ($parms) {
+            $message = Service::translate($message, $flash, $parms);
+        }
+        Service::session()->getFlashBag()->add($flash, $message);
     }
 
-    public function addSuccessFlash(string $message) : void
+    public function addSuccessFlash(string $message, iterable $parms = []) : void
     {
-        $this->addFlash('success', $message);
+        $this->addFlash('success', $message, $parms);
     }
 
-    public function addErrorFlash(string $message) : void
+    public function addErrorFlash(string $message, iterable $parms = []) : void
     {
-        $this->addFlash('error', $message);
+        $this->addFlash('error', $message, $parms);
     }
 
-    public function addDangerFlash(string $message) : void
+    public function addDangerFlash(string $message, iterable $parms = []) : void
     {
-        $this->addFlash('danger', $message);
+        $this->addFlash('danger', $message, $parms);
     }
 
-    public function addWarningFlash(string $message) : void
+    public function addWarningFlash(string $message, iterable $parms = []) : void
     {
-        $this->addFlash('warning', $message);
+        $this->addFlash('warning', $message, $parms);
     }
 
-    public function addInfoFlash(string $message) : void
+    public function addInfoFlash(string $message, iterable $parms = []) : void
     {
-        $this->addFlash('info', $message);
+        $this->addFlash('info', $message, $parms);
     }
 }

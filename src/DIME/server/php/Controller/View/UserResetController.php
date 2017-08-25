@@ -51,7 +51,6 @@ class UserResetController extends DimeFormController
         if ($user) {
             Service::security()->resetUser($user);
         }
-        $request->attributes->set('flash', 'success');
-        $request->attributes->set('message', 'dime.user.reset.sent');
+        Service::view()->addSuccessFlash('dime.user.reset.sent');
     }
 }

@@ -35,9 +35,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ErrorController
 {
-    public function __invoke(Application $app, Exception $e, Request $request, $code)
+    public function __invoke(Application $app, Exception $e, Request $request, $code) : Response
     {
-        print_r('here!');
         // 404.html, or 40x.html, or 4xx.html, or error.html
         $dir = $app['dir.site'].'/templates/'.$config['web']['frontend'].'/errors/';
         $templates = [

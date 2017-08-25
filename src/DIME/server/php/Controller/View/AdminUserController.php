@@ -109,13 +109,14 @@ class AdminUserController extends DimeFormController
             $user->setPassword($credentials['_password']);
             ORM::persist($user);
             ORM::flush($user);
-            return;
+            Service::view()->addSuccessFlash('dime.admin.user.password.set');
         }
         if ($submitted === 'role_add') {
             $add = $form['role_add']->getData();
             $role = ORM::find(Role::class, $add['role']->name());
             $actorRole = Service::security()->createActorRole($actor, $role, $add['museum'], $add['expiry']);
             ORM::flush($actorRole);
+            Service::view()->addSuccessFlash('dime.admin.user.role.add');
         }
     }
 }
