@@ -94,6 +94,13 @@ class ORM
         self::manager($class)->flush();
     }
 
+    public static function rollback() : void
+    {
+        Service::entityManager('data')->getConnection()->rollBack();
+        Service::entityManager('core')->getConnection()->rollBack();
+        Service::entityManager('user')->getConnection()->rollBack();
+    }
+
     public static function clear($class) : void
     {
         self::repository($class)->clear();

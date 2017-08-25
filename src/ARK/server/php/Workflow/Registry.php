@@ -38,6 +38,7 @@ use ARK\Model\Schema;
 use ARK\ORM\ORM;
 use ARK\Security\User;
 use ARK\Service;
+use ARK\Workflow\Exception\WorkflowException;
 use ARK\Workflow\Security\ActorUser;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -80,8 +81,12 @@ class Registry extends SymfonyRegistry
         $this->init($schema);
         $actions = new ArrayCollection();
         foreach ($this->actions[$schema] as $action) {
-            if ($action->isUpdate() && $action->isGranted($actor, $item)) {
-                $actions[$action->name()] = $action;
+            try {
+                if ($action->isUpdate() && $action->isGranted($actor, $item)) {
+                    $actions[$action->name()] = $action;
+                }
+            } catch (WorkflowException $e) {
+                // noop
             }
         }
         return $actions;
@@ -93,8 +98,12 @@ class Registry extends SymfonyRegistry
         $this->init($schema);
         $actions = new ArrayCollection();
         foreach ($this->actions[$schema] as $action) {
-            if ($action->isGranted($actor, $item)) {
-                $actions[$action->name()] = $action;
+            try {
+                if ($action->isGranted($actor, $item)) {
+                    $actions[$action->name()] = $action;
+                }
+            } catch (WorkflowException $e) {
+                // noop
             }
         }
         return $actions;
@@ -114,9 +123,12 @@ class Registry extends SymfonyRegistry
         if ($this->can($actor, 'edit', $item)) {
             return 'edit';
         }
-        $view = $this->action($item->schema()->name(), 'view');
-        if ($view->isAllowed($actor)) {
-            return 'view';
+        try {
+            if ($this->action($item->schema()->name(), 'view')->isAllowed($actor)) {
+                return 'view';
+            }
+        } catch (WorkflowException $e) {
+            // noop
         }
         return 'deny';
     }
@@ -128,7 +140,11 @@ class Registry extends SymfonyRegistry
             $action = $this->action($item->schema()->name(), $action);
         }
         if ($action instanceof Action) {
-            return $action->isGranted($actor, $item, $attribute);
+            try {
+                return $action->isGranted($actor, $item, $attribute);
+            } catch (WorkflowException $e) {
+                // noop
+            }
         }
         return false;
     }
@@ -137,6 +153,8 @@ class Registry extends SymfonyRegistry
     {
         if ($action = $this->action($item->schema()->name(), $action)) {
             $action->apply($actor, $item, $subject);
+        } else {
+            throw new WorkflowException();
         }
     }
 

@@ -38,6 +38,9 @@ use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Vocabulary\Term;
+use ARK\Workflow\Exception\ActionConditionNotMetException;
+use ARK\Workflow\Exception\ActionNoAgencyException;
+use ARK\Workflow\Exception\ActionNotAllowedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -51,7 +54,6 @@ class Action
     protected $agent = '';
     protected $defaultPermission = false;
     protected $defaultAgency = false;
-    protected $defaultCondition = false;
     protected $defaultAllowence = false;
     protected $enabled = true;
     protected $permissions;
@@ -106,7 +108,7 @@ class Action
     public function meetsConditions(Item $item) : bool
     {
         if ($this->conditions->isEmpty()) {
-            return Condition::PASS;
+            return true;
         }
 
         // Sort the groups
@@ -116,19 +118,19 @@ class Action
             }
         }
         // AND within a group, OR between groups, Condition never abstains
-        $vote = Condition::FAIL;
+        $vote = false;
         foreach ($this->groups as $group => $conditions) {
             foreach ($conditions as $condition) {
-                $vote = $condition->isGranted($item);
-                if ($vote === Condition::FAIL) {
+                $vote = $condition->isMet($item);
+                if (!$vote) {
                     $continue;
                 }
             }
-            if ($vote === Condition::PASS) {
+            if ($vote) {
                 return true;
             }
         }
-        return $this->defaultCondition;
+        return $vote;
     }
 
     public function hasPermission(Actor $actor, Item $item) : bool
@@ -139,9 +141,6 @@ class Action
 
     public function isAllowed(Actor $actor) : bool
     {
-        if ($this->allowances->isEmpty()) {
-            return $this->defaultAllowence;
-        }
         foreach ($this->allowances as $allow) {
             $vote = $allow->isAllowed($actor);
             if ($vote !== Allow::ABSTAIN) {
@@ -167,20 +166,28 @@ class Action
     {
         // TODO Sort out Permissions vs Allowances
         //dump('ACTION : '.$this->action);
-        //dump('Allowed = '.(string) $this->isAllowed($actor));
-        //dump('Agency = '.(string) $this->hasAgency($actor, $item));
-        //dump('Conditions = '.(string) $this->meetsConditions($item));
+        if ($this->isAllowed($actor) === Allow::DENY) {
+            //dump('Allowed = DENIED');
+            throw new ActionNotAllowedException();
+        }
         if ($attribute) {
             if (is_string($attribute)) {
                 $attribute = $item->property($attribute)->attribute();
             }
-            return $this->isAllowed($actor)
-                && ($this->hasAgency($actor, $item) || $actor->hasPermission($attribute->readPermission()))
-                && $this->meetsConditions($item);
+            $hasReadPermission = $actor->hasPermission($attribute->readPermission());
+        } else {
+            $hasReadPermission = false;
         }
-        return $this->isAllowed($actor)
-            && $this->hasAgency($actor, $item)
-            && $this->meetsConditions($item);
+
+        if ($this->hasAgency($actor, $item) === Allow::DENY && !$hasReadPermission) {
+            //dump('Agency = DENIED');
+            throw new ActionNoAgencyException();
+        }
+        if (!$this->meetsConditions($item)) {
+            //dump('Condition = FAILED');
+            throw new ActionConditionNotMetException();
+        }
+        return true;
     }
 
     public function notify(Item $item) : Collection
@@ -227,7 +234,7 @@ class Action
         $builder->addField('enabled', 'boolean');
         $builder->addField('defaultAllowence', 'boolean', [], 'default_allowance');
         $builder->addField('defaultAgency', 'boolean', [], 'default_agency');
-        $builder->addField('defaultCondition', 'boolean', [], 'default_condition');
+        $builder->addField('defaultPermission', 'boolean', [], 'default_permission');
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations

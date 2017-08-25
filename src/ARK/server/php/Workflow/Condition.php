@@ -38,9 +38,6 @@ use ARK\Vocabulary\Term;
 
 class Condition
 {
-    public const PASS = true;
-    public const FAIL = false;
-
     protected $schma = '';
     protected $actionName = '';
     protected $action;
@@ -63,7 +60,7 @@ class Condition
         return $this->grp;
     }
 
-    public function isGranted(Item $item) : bool
+    public function isMet(Item $item) : bool
     {
         $value = $item->value($this->attribute->name());
         if ($value instanceof Term) {
@@ -73,9 +70,9 @@ class Condition
             $value = $value->content();
         }
         if ($this->operator === 'not') {
-            return $value !== $this->value ? self::PASS : self::FAIL;
+            return $value !== $this->value;
         }
-        return $value === $this->value ? self::PASS : self::FAIL;
+        return $value === $this->value;
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void

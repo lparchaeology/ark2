@@ -34,6 +34,7 @@ use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
 use ARK\Vocabulary\Term;
+use ARK\Workflow\Exception\WorkflowException;
 use ARK\Workflow\Permission;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
@@ -155,20 +156,12 @@ class Page extends Element
         //dump($options);
         $forms = $this->content->buildForms($data, $state, $options);
         //dump($forms);
-        if ($forms && $request->getMethod() === 'POST') {
-            $posted = $this->postedForm($request, $forms);
-            if ($posted instanceof Form) {
-                if ($processForm !== null) {
-                    $processForm($request, $posted);
-                }
-                $redirect = $request->attributes->get('redirect');
-                if (!$redirect) {
-                    $redirect = $request->attributes->get('_route');
-                }
-                $parameters = ($request->attributes->get('parameters') ?: []);
-                return Service::redirectPath($redirect, $parameters);
+        if ($forms && $processForm && $request->getMethod() === 'POST') {
+            try {
+                return $this->processForm($request, $forms, $processForm);
+            } catch (WorkflowException $e) {
+                Service::view()->addErrorFlash($e->getMessage());
             }
-            // TODO Process Errors!!!
         }
         //dump('PAGE : RENDER');
         $context = $this->pageContext($data, $state, $forms);
@@ -197,7 +190,16 @@ class Page extends Element
         $builder->addManyToOneField('footer', Group::class, 'footer', 'element');
     }
 
-    private function postedForm(Request $request, iterable $forms)
+    protected function processForm(Request $request, iterable $forms, callable $processForm)
+    {
+        $posted = $this->postedForm($request, $forms);
+        $processForm($request, $posted);
+        $redirect = $request->attributes->get('redirect') ?? $request->attributes->get('_route');
+        $parameters = $request->attributes->get('parameters') ?? [];
+        return Service::redirectPath($redirect, $parameters);
+    }
+
+    protected function postedForm(Request $request, iterable $forms)
     {
         foreach ($forms as $id => $form) {
             $name = $form->getName();

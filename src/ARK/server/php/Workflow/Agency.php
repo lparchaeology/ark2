@@ -69,7 +69,7 @@ class Agency
             return self::DENY;
         }
         $isAgent = ($value === $actor || $actor->isAgentFor($value));
-        $isGranted = ($this->condition() ? $this->condition()->isGranted($item) : true);
+        $isGranted = ($this->condition() ? $this->condition()->isMet($item) : true);
         if ($this->operator === 'not' && $isAgent && $isGranted) {
             return self::DENY;
         }

@@ -33,6 +33,7 @@ use ARK\Error\ErrorException;
 use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\Workflow\Action;
 use DIME\DIME;
 use DIME\Entity\Find;
 use Symfony\Component\Form\Form;
@@ -83,7 +84,7 @@ class FindViewController extends DimeFormController
             $message = 'dime.find.update.sent';
         }
         if ($clicked === 'report') {
-            Service::workflow()->apply($actor, 'report', $find);
+            $result = Service::workflow()->apply($actor, 'report', $find);
             $message = 'dime.find.update.reported';
         }
         if (false && $clicked === 'apply') {
