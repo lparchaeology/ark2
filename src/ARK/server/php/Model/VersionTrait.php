@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Version Trait
+ * ARK Model Version Trait.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,63 +25,65 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model;
 
+use ARK\Actor\Actor;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\Service;
+use DateTime;
 
 trait VersionTrait
 {
-    protected $creator = null;
-    protected $created = null;
-    protected $modifier = null;
-    protected $modified = null;
+    protected $creator;
+    protected $created;
+    protected $modifier;
+    protected $modified;
     protected $version = '';
 
-    public function createdOn()
+    public function createdOn() : DateTime
     {
         return $this->created;
     }
 
-    public function createdBy()
+    public function createdBy() : Actor
     {
         return $this->creator;
     }
 
-    public function lastModifiedOn()
+    public function lastModifiedOn() : DateTime
     {
         return $this->modified;
     }
 
-    public function lastModifiedBy()
+    public function lastModifiedBy() : Actor
     {
         return $this->modifier;
     }
 
-    public function version()
+    public function version() : string
     {
         return $this->version;
     }
 
-    public function refreshVersion()
+    public function refreshVersion() : void
     {
         // TODO Auto-update behaviour
-        //$user = Service::user();
+        $actor = Service::workflow()->actor();
+        $this->modifier = $actor;
+        $this->modified = new DateTime();
         if (!$this->creator || !$this->created) {
-            $this->creator = 0;//$user->id();
-            $this->created = new \DateTime;
+            $this->creator = $this->modifier;
+            $this->created = $this->modified;
         }
-        $this->modifier = 0;//$user->id();
-        $this->modified = new \DateTime;
     }
 
-    public static function buildVersionMetadata(ClassMetadataBuilder $builder)
+    public static function buildVersionMetadata(ClassMetadataBuilder $builder) : void
     {
-        $builder->addField('modifier', 'integer');
+        $builder->addManyToOneField('modifier', Actor::class, 'modifier', 'id', true);
         $builder->addField('modified', 'datetime');
-        $builder->addField('creator', 'integer');
+        $builder->addManyToOneField('creator', Actor::class, 'creator', 'id', true);
         $builder->addField('created', 'datetime');
         $builder->addStringField('version', 128);
     }

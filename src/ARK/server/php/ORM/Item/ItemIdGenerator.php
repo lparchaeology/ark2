@@ -50,22 +50,22 @@ class ItemIdGenerator extends AbstractIdGenerator
             ));
         }
         $strategy = $entity->schema()->generator();
-        if ($strategy == 'assigned') {
+        if ($strategy === 'assigned') {
             return $entity->id();
         }
-        $parentItem = '';
+        $parentId = '';
         $parent = '';
-        if ($strategy == 'hierarchy' && $entity->parent()) {
-            $parentModule = $entity->parent()->schema()->module()->name();
-            $parentItem = $entity->parent()->id();
-            $parent = $this->makeIdentifier($parentModule, '.', $parentItem);
+        if ($strategy === 'hierarchy' && $entity->parent()) {
+            $parentModule = $entity->parent()->schema()->module()->id();
+            $parentId = $entity->parent()->id();
+            $parent = $this->makeIdentifier($parentModule, '.', $parentId);
         }
-        $index = Service::database()->data()->generateSequence($entity->schema()->module()->name(), $parent, $entity->schema()->sequence());
-        $item = $this->makeIdentifier($parent, '.', $index);
-        $label = $this->makeIdentifier($parentItem, '_', $index);
-        $entity->setItem($item, $index, $label);
+        $index = Service::database()->data()->generateSequence($entity->schema()->module()->id(), $parent, $entity->schema()->sequence());
+        $id = $this->makeIdentifier($parent, '.', $index);
+        $label = $this->makeIdentifier($parentId, '_', $index);
+        $entity->setId($id, $index, $label);
 
-        return $item;
+        return $id;
     }
 
     protected function makeIdentifier($parentId, $sep, $index)

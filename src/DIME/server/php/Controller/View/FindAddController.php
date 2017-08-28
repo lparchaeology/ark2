@@ -56,7 +56,6 @@ class FindAddController extends DimeFormController
                 }
             }
         }
-
         $data['find'] = $find;
         return $data;
     }

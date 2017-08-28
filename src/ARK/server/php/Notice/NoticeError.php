@@ -29,6 +29,12 @@
 
 namespace ARK\Notice;
 
-class NoticeError extends \Error
+class NoticeError extends \Error implements Notify
 {
+    use NoticeTrait;
+
+    public function __construct(\Throwable $previous = null)
+    {
+        parent::__construct($this->keyword(), $this->code(), $previous);
+    }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Workflow Registry.
+ * ARK Model DateTime Dataclass Trait.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,35 +27,35 @@
  * @since      2.0
  */
 
-namespace ARK\Workflow;
+namespace ARK\Model\Dataclass;
 
-use ARK\Model\ItemPropertAccessor;
-use Symfony\Component\Workflow\Marking;
+use ARK\ORM\ClassMetadataBuilder;
 
-class ItemPropertyMarkingStore implements MarkingStoreInterface
+trait DateTimeTrait
 {
-    private $property;
-    private $propertyAccessor;
+    protected $pattern = '';
+    protected $unicode = '';
+    protected $php = '';
 
-    public function __construct(string $attribute)
+    public function pattern() : string
     {
-        $this->property = $attribute;
-        $this->propertyAccessor = new ItemPropertAccessor();
+        return $this->pattern;
     }
 
-    public function getMarking($subject) : ?Marking
+    public function unicode() : string
     {
-        $place = $this->propertyAccessor->getValue($subject, $this->property);
-
-        if (!$place) {
-            return new Marking();
-        }
-
-        return new Marking([$place => 1]);
+        return $this->unicode;
     }
 
-    public function setMarking($subject, Marking $marking) : void
+    public function php() : string
     {
-        $this->propertyAccessor->setValue($subject, $this->property, key($marking->getPlaces()));
+        return $this->php;
+    }
+
+    public static function buildDateTimeMetadata(ClassMetadataBuilder $builder) : void
+    {
+        $builder->addStringField('pattern', 255);
+        $builder->addStringField('unicode', 50);
+        $builder->addStringField('php', 50);
     }
 }

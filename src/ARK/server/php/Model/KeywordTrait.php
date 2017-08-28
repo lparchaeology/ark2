@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Keyword Trait
+ * ARK Model Keyword Trait.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model;
@@ -34,14 +33,14 @@ use ARK\ORM\ClassMetadataBuilder;
 
 trait KeywordTrait
 {
-    protected $keyword = null;
+    protected $keyword;
 
-    public function keyword()
+    public function keyword() : ?string
     {
         return $this->keyword;
     }
 
-    public static function buildKeywordMetadata(ClassMetadataBuilder $builder)
+    public static function buildKeywordMetadata(ClassMetadataBuilder $builder) : void
     {
         $builder->addStringField('keyword', 100);
     }

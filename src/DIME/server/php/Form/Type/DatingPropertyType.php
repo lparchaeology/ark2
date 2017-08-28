@@ -44,11 +44,11 @@ class DatingPropertyType extends AbstractPropertyType
     {
         $valueOptions = $options['state']['value']['options'];
         $field = $options['state']['field'];
-        $datatype = $field->attribute()->datatype();
+        $dataclass = $field->attribute()->dataclass();
         $builder->add('year', $options['state']['value']['type'], $valueOptions);
         $builder->add('year_span', $options['state']['value']['type'], $valueOptions);
 
-        $valueOptions['choices'] = $datatype->attribute('period')->vocabulary()->terms();
+        $valueOptions['choices'] = $dataclass->attribute('period')->vocabulary()->terms();
         $valueOptions['placeholder'] = ' - ';
         $valueOptions['required'] = false;
         if ($options['state']['value']['type'] !== StaticType::class) {
@@ -75,7 +75,7 @@ class DatingPropertyType extends AbstractPropertyType
                 $forms['entered']->setData($value['entered']);
                 $forms['year']->setData($value['year'][0]);
                 $forms['year_span']->setData($value['year'][1]);
-                $vocabulary = $property->attribute()->datatype()->attribute('period')->vocabulary();
+                $vocabulary = $property->attribute()->dataclass()->attribute('period')->vocabulary();
                 if ($value['period'][0]) {
                     $forms['period']->setData($vocabulary->term($value['period'][0]));
                 }

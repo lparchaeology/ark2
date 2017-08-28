@@ -47,15 +47,15 @@ abstract class Element implements ElementInterface
     protected $element = '';
     protected $name = '';
     protected $type;
-    protected $formTypeClass = '';
+    protected $formType = '';
     protected $template = '';
     protected $mode = '';
 
-    public function __construct(string $element, $type, string $formTypeClass = null, string $template = null)
+    public function __construct(string $element, $type, string $formType = null, string $template = null)
     {
         $this->element = $element;
         $this->type = (is_string($type) ? ORM::find(Type::class, $type) : $type);
-        $this->formTypeClass = $formTypeClass;
+        $this->formType = $formType;
         $this->template = $template;
     }
 
@@ -115,12 +115,12 @@ abstract class Element implements ElementInterface
         return is_array($data) && array_key_exists($name, $data) ? $data[$name] : $data;
     }
 
-    public function formTypeClass() : string
+    public function formType() : string
     {
-        if ($this->formTypeClass) {
-            return $this->formTypeClass;
+        if ($this->formType) {
+            return $this->formType;
         }
-        return $this->type->formTypeClass();
+        return $this->type->formType();
     }
 
     public function defaultState($route = null) : iterable
@@ -272,7 +272,7 @@ abstract class Element implements ElementInterface
     {
         return Service::forms()->createNamedBuilder(
             $state['name'],
-            $this->formTypeClass(),
+            $this->formType(),
             $data,
             $options
         );

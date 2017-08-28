@@ -29,18 +29,12 @@
 
 namespace ARK\Notice;
 
-abstract class NoticeException extends \Exception
+abstract class NoticeException extends \Exception implements Notice
 {
     use NoticeTrait;
-    protected $notice;
 
-    public function __construct(string $code, \Throwable $previous = null)
+    public function __construct(\Throwable $previous = null)
     {
-        $this->notice = ORM::find(Notice::class, $code);
-        if ($this->notice) {
-            parent::__construct($this->notice->message(), $this->notice->code(), $previous);
-        } else {
-            parent::__construct('', 0, $previous);
-        }
+        parent::__construct($this->keyword(), $this->code(), $previous);
     }
 }

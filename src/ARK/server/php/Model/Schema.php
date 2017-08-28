@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Schema
+ * ARK Model Schema.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,24 +25,21 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model;
 
-use ARK\Error\Error;
-use ARK\Error\ErrorException;
-use ARK\Model\Attribute;
-use ARK\Model\EnabledTrait;
-use ARK\Model\KeywordTrait;
-use ARK\Model\Module;
+use ARK\Model\Exception\SubclassInvalidException;
+use ARK\Model\Exception\SubclassRequiredException;
+use ARK\Model\Exception\SuperclassInvalidException;
 use ARK\Model\Schema\SchemaAssociation;
 use ARK\Model\Schema\SchemaAttribute;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
+use ARK\Vocabulary\Term;
+use ARK\Workflow\Permission;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Criteria;
 
 class Schema
 {
@@ -50,22 +47,22 @@ class Schema
     use KeywordTrait;
 
     protected $schma = '';
-    protected $module = null;
+    protected $module;
     protected $generator = '';
     protected $sequence = '';
-    protected $type = null;
-    protected $vocabulary = null;
-    protected $visibility = 'restricted';
-    protected $visibilityTerm = null;
-    protected $create = null;
-    protected $read = null;
-    protected $update = null;
-    protected $delete = null;
+    protected $classProperty;
+    protected $vocabulary;
+    protected $visibility = 'private';
+    protected $visibilityTerm;
+    protected $create;
+    protected $read;
+    protected $update;
+    protected $delete;
     protected $entities = false;
-    protected $model = null;
-    protected $types = [];
-    protected $attributes = null;
-    protected $associations = null;
+    protected $model;
+    protected $subclasses = [];
+    protected $attributes;
+    protected $associations;
 
     public function __construct()
     {
@@ -73,92 +70,48 @@ class Schema
         $this->associations = new ArrayCollection();
     }
 
-    private function init()
-    {
-        if ($this->model === null) {
-            $module = $this->module->name();
-            $this->model[$module]['attributes'] = [];
-            $this->model[$module]['allattributes'] = [];
-            $this->model[$module]['associations'] = [];
-            $this->model[$module]['allassociations'] = [];
-            if ($this->vocabulary) {
-                foreach ($this->vocabulary->terms() as $term) {
-                    $type = $term->name();
-                    $this->types[] = $type;
-                    $this->model[$type]['type'] = $type;
-                    $this->model[$type]['attributes'] = [];
-                    $this->model[$type]['associations'] = [];
-                }
-            }
-            foreach ($this->attributes as $attribute) {
-                $this->model[$module]['allattributes'][$attribute->name()] = $attribute;
-                $this->model[$attribute->type()]['attributes'][$attribute->name()] = $attribute;
-            }
-            foreach ($this->associations as $association) {
-                $this->model[$module]['allassociations'][$association->name()] = $association;
-                $this->model[$association->type()]['associations'][$association->name()] = $association;
-            }
-        }
-    }
-
-    protected function checkType($type)
-    {
-        $this->init();
-        if ($type) {
-            if (!$this->useTypes()) {
-                throw new ErrorException(new Error('SURPLUS_TYPE', 'Type not required', "The Schema '$this->schma' does not require a Type."));
-            }
-            if (!in_array($type, $this->types)) {
-                throw new ErrorException(new Error('INVALID_TYPE', 'Invalid Type', "The Type '$type' is invalid."));
-            }
-        } elseif ($this->useTypes()) {
-            throw new ErrorException(new Error('MISSING_TYPE', 'Missing Type', "The Type for Schema '$this->schma' is required."));
-        }
-        return ($type ?: $this->module->name());
-    }
-
-    public function name()
+    public function name() : string
     {
         return $this->schma;
     }
 
-    public function module()
+    public function module() : Module
     {
         return $this->module;
     }
 
-    public function generator()
+    public function generator() : string
     {
         return $this->generator;
     }
 
-    public function sequence()
+    public function sequence() : string
     {
         return $this->sequence;
     }
 
-    public function useTypes()
+    public function useSubclasses() : bool
     {
-        return (bool) $this->type;
+        return (bool) $this->classProperty;
     }
 
-    public function useTypeEntities()
+    public function useSubclassEntities() : bool
     {
         return $this->entities;
     }
 
-    public function typeName()
+    public function classProperty() : string
     {
-        return $this->type;
+        return $this->classProperty;
     }
 
-    public function typeNames()
+    public function subclassNames() : iterable
     {
         $this->init();
-        return $this->types;
+        return $this->subclasses;
     }
 
-    public function visibility()
+    public function visibility() : Term
     {
         if ($this->visibilityTerm === null) {
             $this->visibilityTerm = ORM::find(Term::class, ['concept' => 'core.visibility', 'term' => $this->visibility]);
@@ -166,100 +119,93 @@ class Schema
         return $this->visibilityTerm;
     }
 
-    public function createPermission()
+    public function createPermission() : Permission
     {
         return $this->create;
     }
 
-    public function readPermission()
+    public function readPermission() : Permission
     {
         return $this->read;
     }
 
-    public function updatePermission()
+    public function updatePermission() : Permission
     {
         return $this->update;
     }
 
-    public function deletePermission()
+    public function deletePermission() : Permission
     {
         return $this->delete;
     }
 
-    public function attributes($type = null, $all = true)
+    public function attributes(string $subclass = null, bool $all = true) : iterable
     {
         $this->init();
-        $type = $this->checkType($type);
-        $attributes = array_values($this->model[$type]['attributes']);
-        if ($type != $this->module->name() && $all) {
-            return array_merge(array_values($this->model[$this->module->name()]['attributes']), $attributes);
+        $class = $this->checkClass($subclass);
+        $attributes = array_values($this->model[$class]['attributes']);
+        if ($all && $class !== $this->module->superclass()) {
+            return array_merge(array_values($this->model[$this->module->superclass()]['attributes']), $attributes);
         }
         return $attributes;
     }
 
-    public function hasAttribute($attribute, $type = null)
+    public function hasAttribute(string $attribute, string $subclass = null) : bool
     {
-        return in_array($attribute, $this->attributeNames($type));
+        return in_array($attribute, $this->attributeNames($subclass), true);
     }
 
-    public function attributeNames($type = null, $all = true)
+    public function attributeNames(string $subclass = null, bool $all = true) : iterable
     {
         $this->init();
-        $type = $this->checkType($type);
-        $names = array_keys($this->model[$type]['attributes']);
-        if ($type != $this->module->name() && $all) {
-            return array_merge(array_keys($this->model[$this->module->name()]['attributes']), $names);
+        $class = $this->checkClass($subclass);
+        $names = array_keys($this->model[$class]['attributes']);
+        if ($all && $subclass !== $this->module->superclass()) {
+            return array_merge(array_keys($this->model[$this->module->superclass()]['attributes']), $names);
         }
         return $names;
     }
 
-    public function attribute($attribute)
+    public function attribute(string $name) : ?Attribute
     {
         $this->init();
-        return (
-            isset($this->model[$this->module->name()]['allattributes'][$attribute])
-            ? $this->model[$this->module->name()]['allattributes'][$attribute]
-            : null
-        );
+        return $this->model[$this->module->id()]['allattributes'][$name] ?? null;
     }
 
-    public function associations($type = null, $all = true)
+    public function associations(string $subclass = null, bool $all = true) : iterable
     {
         $this->init();
-        $type = $this->checkType($type);
-        $associations = array_values($this->model[$type]['associations']);
-        if ($type != $this->module->name() && $all) {
-            return array_merge(array_values($this->model[$this->module->name()]['associations']), $associations);
+        $class = $this->checkClass($subclass);
+        $associations = array_values($this->model[$class]['associations']);
+        if ($all && $class !== $this->module->superclass()) {
+            return array_merge(array_values($this->model[$this->module->superclass()]['associations']), $associations);
         }
         return $associations;
     }
 
-    public function hasAssociation($association, $type = null)
+    public function hasAssociation(string $name, string $subclass = null) : bool
     {
-        return in_array($association, $this->associationNames($type));
+        return in_array($name, $this->associationNames($subclass), true);
     }
 
-    public function associationNames($type = null, $all = true)
+    public function associationNames(string $subclass = null, bool $all = true) : iterable
     {
         $this->init();
-        $type = $this->checkType($type);
-        $names = array_keys($this->model[$type]['associations']);
-        if ($type != $this->module->name() && $all) {
-            return array_merge(array_keys($this->model[$this->module->name()]['associations']), $names);
+        $class = $this->checkClass($subclass);
+        $names = array_keys($this->model[$class]['associations']);
+        if ($all && $class !== $this->module->superclass()) {
+            return array_merge(array_keys($this->model[$this->module->superclass()]['associations']), $names);
         }
         return $names;
     }
 
-    public function association($association)
+    public function association(string $name) : ?SchemaAssociation
     {
-        return (
-            isset($this->model[$type]['allassociations'][$association])
-            ? $this->model[$type]['allassociations'][$association]
-            : null
-        );
+        return $this->model[$subclass]['allassociations'][$name] ?? null
+        ;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_schema');
@@ -271,7 +217,7 @@ class Schema
         $builder->addManyToOneField('module', Module::class, null, null, false);
         $builder->addStringField('generator', 30);
         $builder->addStringField('sequence', 30);
-        $builder->addStringField('type', 30);
+        $builder->addStringField('classProperty', 30, 'class_property');
         $builder->addStringField('visibility', 30);
         $builder->addField('entities', 'boolean', [], 'entities');
         EnabledTrait::buildEnabledMetadata($builder);
@@ -286,5 +232,55 @@ class Schema
         $builder->addOneToMany('attributes', SchemaAttribute::class, 'schma');
         $builder->addOneToMany('associations', SchemaAssociation::class, 'schma');
         $builder->setReadOnly();
+    }
+
+    protected function checkClass(string $class = null) : string
+    {
+        $this->init();
+        $superclass = $this->module()->superclass();
+        if (!$class) {
+            $class = $superclass;
+        }
+        if ($this->useSubclasses()) {
+            if ($class === $superclass) {
+                throw new SubclassRequiredException();
+            }
+            if (!in_array($class, $this->subclasses, true)) {
+                throw new SubclassInvalidException();
+            }
+        } else {
+            if ($class !== $superclass) {
+                throw new SuperclassInvalidException();
+            }
+        }
+        return $class;
+    }
+
+    private function init() : void
+    {
+        if ($this->model === null) {
+            $module = $this->module->id();
+            $this->model[$module]['attributes'] = [];
+            $this->model[$module]['allattributes'] = [];
+            $this->model[$module]['associations'] = [];
+            $this->model[$module]['allassociations'] = [];
+            if ($this->vocabulary) {
+                foreach ($this->vocabulary->terms() as $term) {
+                    $subclass = $term->name();
+                    $this->subclasses[] = $subclass;
+                    $this->model[$subclass]['subclass'] = $subclass;
+                    $this->model[$subclass]['attributes'] = [];
+                    $this->model[$subclass]['associations'] = [];
+                }
+            }
+            foreach ($this->attributes as $attribute) {
+                $this->model[$module]['allattributes'][$attribute->name()] = $attribute;
+                $this->model[$attribute->class()]['attributes'][$attribute->name()] = $attribute;
+            }
+            foreach ($this->associations as $association) {
+                $this->model[$module]['allassociations'][$association->name()] = $association;
+                $this->model[$association->class()]['associations'][$association->name()] = $association;
+            }
+        }
     }
 }

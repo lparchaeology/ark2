@@ -143,13 +143,13 @@ abstract class AbstractWidget extends Element
         $builder->addStringField('name', 30);
         $builder->addStringField('choices', 30);
         $builder->addStringField('template', 100);
-        $builder->addStringField('formTypeClass', 100, 'form_type_class');
+        $builder->addStringField('formType', 100, 'form_type');
         $builder->addStringField('formOptions', 4000, 'form_options');
     }
 
     private function isButton()
     {
-        return is_subclass_of($this->formTypeClass(), SubmitButtonTypeInterface::class) ||
-            is_subclass_of($this->formTypeClass(), ButtonTypeInterface::class);
+        return is_subclass_of($this->formType(), SubmitButtonTypeInterface::class) ||
+            is_subclass_of($this->formType(), ButtonTypeInterface::class);
     }
 }

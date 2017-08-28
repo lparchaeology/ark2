@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model DateTime Fragment
+ * ARK Model DateTime Fragment.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,30 +25,21 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model\Fragment;
 
 use ARK\Model\Fragment;
-use ARK\ORM\ClassMetadata;
 use DateTime;
-use DateTimeZone;
 
 trait DateTimeTrait
 {
-    protected $realValue = null;
-    protected $realSpan = null;
+    protected $realValue;
+    protected $realSpan;
 
-    public function __toString()
+    public function __toString() : string
     {
         return $this->value()->format($this->pattern);
-    }
-
-    protected function makeDate($date)
-    {
-        $dt =  ($date instanceof DateTime ? $date->format($this->pattern) : $date);
-        return new DateTime($dt);
     }
 
     public function value()
@@ -67,7 +58,7 @@ trait DateTimeTrait
         return $this->realSpan;
     }
 
-    public function setValue($value, $parameter = null, $format = null)
+    public function setValue($value, $parameter = null, $format = null) : void
     {
         if (!$value instanceof DateTime) {
             $value = new DateTime($value);
@@ -77,7 +68,7 @@ trait DateTimeTrait
         $this->realValue = $value;
     }
 
-    public function setSpan($fromValue, $toValue, $parameter = null, $format = null)
+    public function setSpan($fromValue, $toValue, $parameter = null, $format = null) : void
     {
         if (!$fromValue instanceof DateTime) {
             $fromValue = new DateTime($fromValue);
@@ -89,5 +80,11 @@ trait DateTimeTrait
         parent::setSpan($fromValue, $toValue, $value->getTimeZone()->getName(), $format);
         $this->realValue = $fromValue;
         $this->realSpan = $toValue;
+    }
+
+    protected function makeDate($date) : DateTime
+    {
+        $dt = ($date instanceof DateTime ? $date->format($this->pattern) : $date);
+        return new DateTime($dt);
     }
 }

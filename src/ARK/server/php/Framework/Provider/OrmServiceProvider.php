@@ -145,16 +145,16 @@ class OrmServiceProvider implements ServiceProviderInterface
                             'namespace' => 'ARK\Model',
                             'path' => [
                                 $srcDir.'/Model/Attribute.php',
-                                $srcDir.'/Model/Type.php',
                                 $srcDir.'/Model/Datatype.php',
+                                $srcDir.'/Model/Dataclass.php',
                                 $srcDir.'/Model/Module.php',
                                 $srcDir.'/Model/Schema.php',
                             ],
                         ],
                         [
                             'type' => 'php',
-                            'namespace' => 'ARK\Model\Datatype',
-                            'path' => $srcDir.'/Model/Datatype',
+                            'namespace' => 'ARK\Model\Dataclass',
+                            'path' => $srcDir.'/Model/Dataclass',
                         ],
                         [
                             'type' => 'php',

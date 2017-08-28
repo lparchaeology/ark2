@@ -38,7 +38,7 @@ use ARK\Service;
 
 class ObjectFragment extends Fragment
 {
-    protected $children = null;
+    protected $children;
 
     public function __construct()
     {
@@ -46,7 +46,7 @@ class ObjectFragment extends Fragment
         $this->fid = Service::database()->data()->generateSequence('object', '', 'fid');
     }
 
-    public function children(Attribute $attribute)
+    public function children(Attribute $attribute) : Collection
     {
         if ($this->children->isEmpty()) {
             $this->children = new ArrayCollection();
@@ -56,23 +56,23 @@ class ObjectFragment extends Fragment
                'attribute' => $attribute->name(),
                'object' => $this->object->id(),
             ];
-            $this->children = ORM::findBy($attribute->datatype()->type()->dataClass(), $key);
+            $this->children = ORM::findBy($attribute->dataclass()->datatype()->dataClass(), $key);
         }
 
         return $this->children;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
-        return self::buildSubclassMetadata($metadata, self::class);
+        self::buildSubclassMetadata($metadata, self::class);
     }
 
-    public static function buildSubclassMetadata(ClassMetadata $metadata, $class)
+    public static function buildSubclassMetadata(ClassMetadata $metadata, string $class) : void
     {
-        $type = Service::database()->getFragmentType($class);
-        $builder = new ClassMetadataBuilder($metadata, $type['data_table']);
+        $datatype = Service::database()->getFragmentDatatype($class);
+        $builder = new ClassMetadataBuilder($metadata, $datatype['data_table']);
         $builder->addKey('fid', 'integer');
-        $builder->addStringField('value', $type['storage_size']);
-        $builder->addStringField('extent', $type['storage_size']);
+        $builder->addStringField('value', $datatype['storage_size']);
+        $builder->addStringField('extent', $datatype['storage_size']);
     }
 }

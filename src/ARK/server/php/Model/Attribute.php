@@ -33,6 +33,7 @@ use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Vocabulary\Vocabulary;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -42,7 +43,7 @@ abstract class Attribute
     use KeywordTrait;
 
     protected $attribute = '';
-    protected $datatype;
+    protected $dataclass;
     protected $vocabulary;
     protected $span = false;
     protected $minimum = 0;
@@ -50,42 +51,42 @@ abstract class Attribute
     protected $uniqueValues = false;
     protected $additionalValues = false;
 
-    public function name()
+    public function name() : string
     {
         return $this->attribute;
     }
 
-    public function datatype()
+    public function dataclass() : Dataclass
     {
-        return $this->datatype;
+        return $this->dataclass;
     }
 
-    public function hasVocabulary()
+    public function hasVocabulary() : bool
     {
         return $this->vocabulary !== null;
     }
 
-    public function isItem()
+    public function isItem() : bool
     {
-        return $this->datatype->type()->id() === 'item';
+        return $this->dataclass->datatype()->id() === 'item';
     }
 
-    public function isObject()
+    public function isObject() : bool
     {
-        return $this->datatype->type()->id() === 'object';
+        return $this->dataclass->datatype()->id() === 'object';
     }
 
-    public function entity()
+    public function entity() : string
     {
-        return $this->datatype->entity();
+        return $this->dataclass->entity();
     }
 
-    public function vocabulary()
+    public function vocabulary() : ?Vocabulary
     {
         return $this->vocabulary;
     }
 
-    public function hasTransitions()
+    public function hasTransitions() : bool
     {
         if ($this->vocabulary) {
             return (bool) $this->vocabulary->hasTransitions();
@@ -93,7 +94,7 @@ abstract class Attribute
         return false;
     }
 
-    public function transitions()
+    public function transitions() : Collection
     {
         if ($this->vocabulary) {
             return $this->vocabulary->transitions();
@@ -106,48 +107,48 @@ abstract class Attribute
         if ($this->vocabulary) {
             return $this->vocabulary->defaultTerm();
         }
-        return $this->datatype->defaultValue();
+        return $this->dataclass->defaultValue();
     }
 
-    public function isSpan()
+    public function isSpan() : bool
     {
         return $this->span;
     }
 
-    public function isRequired()
+    public function isRequired() : bool
     {
         // TODO Should inherit from parent???
         return $this->minimum > 0;
     }
 
-    public function hasMultipleOccurrences()
+    public function hasMultipleOccurrences() : bool
     {
         return $this->maximum !== 1;
     }
 
-    public function minimumOccurrences()
+    public function minimumOccurrences() : int
     {
         return $this->minimum;
     }
 
-    public function maximumOccurrences()
+    public function maximumOccurrences() : int
     {
         return $this->maximum;
     }
 
-    public function uniqueValues()
+    public function uniqueValues() : bool
     {
         return $this->uniqueValues;
     }
 
-    public function additionalValues()
+    public function additionalValues() : bool
     {
         return $this->additionalValues;
     }
 
     public function constraints() : iterable
     {
-        $constraints = $this->datatype->constraints();
+        $constraints = $this->dataclass->constraints();
         if ($this->maximum > 1) {
             $constraints[] = new Count(['min' => $this->minimum, 'max' => $this->maximum]);
         } elseif ($this->maximum === 0) {
@@ -158,15 +159,9 @@ abstract class Attribute
         return $constraints;
     }
 
-    public function keyword()
+    public function keyword() : ?string
     {
-        if ($this->keyword) {
-            return $this->keyword;
-        }
-        if ($this->datatype) {
-            return $this->datatype()->keyword();
-        }
-        return '';
+        return $this->keyword ?? $this->dataclass()->keyword() ?? null;
     }
 
     public function emptyValue()
@@ -177,7 +172,7 @@ abstract class Attribute
         if ($this->hasVocabulary()) {
             return null;
         }
-        return $this->datatype()->emptyValue();
+        return $this->dataclass()->emptyValue();
     }
 
     public function value(ArrayCollection $fragments, ArrayCollection $properties)
@@ -195,25 +190,25 @@ abstract class Attribute
             }
             return $this->vocabulary->term($fragments[0]->value());
         }
-        if ($this->datatype()->type()->isObject()) {
+        if ($this->dataclass()->datatype()->isObject()) {
             if ($this->hasMultipleOccurrences()) {
                 $data = [];
                 foreach ($fragments as $fragment) {
-                    $data[] = $this->datatype()->value($fragment, $properties->get($fragment->id()));
+                    $data[] = $this->dataclass()->value($fragment, $properties->get($fragment->id()));
                 }
                 return $data;
             }
             $fragment = $fragments->first();
-            return $this->datatype()->value($fragment, $properties->get($fragment->id()));
+            return $this->dataclass()->value($fragment, $properties->get($fragment->id()));
         }
         if ($this->hasMultipleOccurrences()) {
             $data = [];
             foreach ($fragments as $fragment) {
-                $data[] = $this->datatype()->value(new ArrayCollection([$fragment]));
+                $data[] = $this->dataclass()->value(new ArrayCollection([$fragment]));
             }
             return $data;
         }
-        return $this->datatype()->value($fragments);
+        return $this->dataclass()->value($fragments);
     }
 
     public function serialize(ArrayCollection $fragments, ArrayCollection $properties)
@@ -232,38 +227,41 @@ abstract class Attribute
             $fragment = $fragments[0];
             return $fragment->isSpan() ? [$fragment->value(), $fragment->extent()] : $fragment->value();
         }
-        if ($this->datatype()->type()->isObject()) {
+        if ($this->dataclass()->datatype()->isObject()) {
             if ($this->hasMultipleOccurrences()) {
                 $data = [];
                 foreach ($fragments as $fragment) {
-                    $data[] = $this->datatype()->serialize($fragment, $properties->get($fragment->id()));
+                    $data[] = $this->dataclass()->serialize($fragment, $properties->get($fragment->id()));
                 }
                 return $data;
             }
             $fragment = $fragments->first();
-            return $this->datatype()->serialize($fragment, $properties->get($fragment->id()));
+            return $this->dataclass()->serialize($fragment, $properties->get($fragment->id()));
         }
         if ($this->hasMultipleOccurrences()) {
             $data = [];
             foreach ($fragments as $fragment) {
-                $data[] = $this->datatype()->serialize(new ArrayCollection([$fragment]), $properties->get($fragment->id()));
+                $data[] = $this->dataclass()->serialize(new ArrayCollection([$fragment]), $properties->get($fragment->id()));
             }
             return $data;
         }
-        return $this->datatype()->serialize($fragments, $properties);
+        return $this->dataclass()->serialize($fragments, $properties);
     }
 
-    public function hydrate($data)
+    public function hydrate($data) : Collection
     {
         $fragments = new ArrayCollection();
+        if (is_array($data)) {
+            ksort($data);
+        }
         if ($data === null || $data === [] || $data === $this->emptyValue()) {
             return $fragments;
         }
-        if (!$this->hasMultipleOccurrences() && !$this->datatype()->hasMultipleValues()) {
+        if (!$this->hasMultipleOccurrences() && !$this->dataclass()->hasMultipleValues()) {
             $data = [$data];
         }
         foreach ($data as $datum) {
-            $frags = $this->datatype()->hydrate($datum, $this, $this->vocabulary);
+            $frags = $this->dataclass()->hydrate($datum, $this, $this->vocabulary);
             foreach ($frags as $frag) {
                 $fragments->add($frag);
             }
@@ -288,7 +286,7 @@ abstract class Attribute
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Associations
-        $builder->addManyToOneField('datatype', Datatype::class, 'datatype', 'datatype', false);
+        $builder->addManyToOneField('dataclass', Dataclass::class, 'dataclass', 'dataclass', false);
         $builder->addVocabularyField('vocabulary');
     }
 }

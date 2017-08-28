@@ -29,6 +29,20 @@
 
 namespace ARK\Notice;
 
-class Notice
+interface Notice
 {
+    public const ERROR = 0;
+    public const DANGER = 1;
+    public const WARNING = 2;
+    public const INFO = 3;
+    public const SUCCESS = 4;
+    public const LEVEL = ['error', 'danger', 'warning', 'info', 'success'];
+
+    public function keyword() : string;
+
+    public function level() : string;
+
+    public function code() : int;
+
+    public function statusCode() : int;
 }

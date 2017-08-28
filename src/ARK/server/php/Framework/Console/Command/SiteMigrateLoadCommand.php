@@ -762,7 +762,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
             if (!$actor || !$user) {
                 if (!$actor && $map['actor']) {
                     $actor = new Person();
-                    $actor->setItem($map['id']);
+                    $actor->setId($map['id']);
                     ORM::persist($actor);
                     $this->mapAbk[$map['actor']] = $map['id'];
                 }

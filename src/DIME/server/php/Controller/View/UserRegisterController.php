@@ -72,7 +72,7 @@ class UserRegisterController extends DimeFormController
         $credentials = $data['credentials'];
 
         $actor = $data['actor'];
-        $actor->setItem($credentials['_username']);
+        $actor->setId($credentials['_username']);
         $actor->property('email')->setValue($credentials['email']);
         ORM::persist($actor);
 

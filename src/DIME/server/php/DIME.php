@@ -77,7 +77,7 @@ class DIME
                 $msgIds = array_merge($msgIds, Service::database()->getActorMessages($role->agentFor()->id()));
             }
         }
-        return ORM::findBy(Notification::class, ['item' => $msgIds], ['created' => 'DESC']);
+        return ORM::findBy(Notification::class, ['id' => $msgIds], ['created' => 'DESC']);
     }
 
     public static function getUnreadNotifications(Actor $actor = null) : ArrayCollection

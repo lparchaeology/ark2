@@ -42,7 +42,7 @@ class Update
     protected $schma = '';
     protected $actionName = '';
     protected $action;
-    protected $type = '';
+    protected $class = '';
     protected $attributeName = '';
     protected $attribute;
     protected $subject;
@@ -73,7 +73,7 @@ class Update
         // Key
         $builder->addStringKey('schma', 30);
         $builder->addStringKey('actionName', 30, 'action');
-        $builder->addStringKey('type', 30);
+        $builder->addStringKey('class', 30);
         $builder->addStringKey('attributeName', 30, 'attribute');
 
         $builder->addStringField('actor', 'boolean');
@@ -96,7 +96,7 @@ class Update
             SchemaAttribute::class,
             [
                 ['column' => 'schma'],
-                ['column' => 'type'],
+                ['column' => 'class'],
                 ['column' => 'attribute'],
             ]
         );

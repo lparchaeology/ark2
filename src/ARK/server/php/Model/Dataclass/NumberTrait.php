@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Number Datatype Trait.
+ * ARK Model Number Dataclass Trait.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,7 +27,7 @@
  * @since      2.0
  */
 
-namespace ARK\Model\Datatype;
+namespace ARK\Model\Dataclass;
 
 use ARK\ORM\ClassMetadataBuilder;
 use Symfony\Component\Validator\Constraints\NotEqualTo;

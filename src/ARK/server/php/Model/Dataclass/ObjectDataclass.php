@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Object Datatype.
+ * ARK Model Object Dataclass.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,10 +27,10 @@
  * @since      2.0
  */
 
-namespace ARK\Model\Datatype;
+namespace ARK\Model\Dataclass;
 
 use ARK\Model\Attribute;
-use ARK\Model\Datatype;
+use ARK\Model\Dataclass;
 use ARK\Model\Fragment;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
@@ -39,7 +39,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints\Type;
 
-class ObjectDatatype extends Datatype
+class ObjectDataclass extends Dataclass
 {
     protected $attributes;
 
@@ -75,8 +75,9 @@ class ObjectDatatype extends Datatype
     public function emptyValue()
     {
         foreach ($this->attributes as $attribute) {
-            $data[$attribute->name()] = $attribute->datatype()->emptyValue();
+            $data[$attribute->name()] = $attribute->dataclass()->emptyValue();
         }
+        ksort($data);
         return $data;
     }
 
@@ -114,10 +115,10 @@ class ObjectDatatype extends Datatype
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_object');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_object');
 
         // Associations
-        $builder->addOneToMany('attributes', DatatypeAttribute::class, 'parent', null, null, null, ['sequence' => 'ASC']);
+        $builder->addOneToMany('attributes', DataclassAttribute::class, 'parent', null, null, null, ['sequence' => 'ASC']);
     }
 
     protected function fragmentValue($fragment, Collection $properties = null)

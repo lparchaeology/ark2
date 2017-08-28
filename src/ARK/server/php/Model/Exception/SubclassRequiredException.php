@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Blob Datatype.
+ * ARK Exception.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,17 +27,9 @@
  * @since      2.0
  */
 
-namespace ARK\Model\Datatype;
+namespace ARK\Model\Exception;
 
-use ARK\Model\Datatype;
-use ARK\ORM\ClassMetadata;
-use ARK\ORM\ClassMetadataBuilder;
-
-class BlobDatatype extends Datatype
+class SubclassRequiredException extends ModelException
 {
-    public static function loadMetadata(ClassMetadata $metadata) : void
-    {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_blob');
-        $builder->addField('preset', 'blob');
-    }
+    protected $keyword = 'core.model.exception.subclass.required';
 }

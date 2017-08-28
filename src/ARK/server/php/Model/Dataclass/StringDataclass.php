@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model String Datatype.
+ * ARK Model String Dataclass.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,16 +27,16 @@
  * @since      2.0
  */
 
-namespace ARK\Model\Datatype;
+namespace ARK\Model\Dataclass;
 
-use ARK\Model\Datatype;
+use ARK\Model\Dataclass;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
 
-class StringDatatype extends Datatype
+class StringDataclass extends Dataclass
 {
     protected $pattern = '';
     protected $minimumLength = 0;
@@ -80,7 +80,7 @@ class StringDatatype extends Datatype
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_string');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_string');
 
         // Attributes
         $builder->addStringField('pattern', 100);

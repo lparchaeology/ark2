@@ -27,10 +27,10 @@ INSERT INTO `ark_config_flash` (`id`, `active`, `type`, `language`, `text`) VALU
 (4, 0, 'success', 'en', 'This is a site Success flash message stored in the database.');
 
 --
--- Dumping data for table `ark_datatype`
+-- Dumping data for table `ark_dataclass`
 --
 
-INSERT INTO `ark_datatype` (`datatype`, `type`, `format_vocabulary`, `parameter_vocabulary`, `keyword`, `entity`, `value_name`, `active_form_class`, `readonly_form_class`, `static_form_class`, `parameter_name`, `parameter_form_class`, `format_name`, `format_form_class`, `form_type_class`, `object`, `array`, `span`, `multiple`, `sortable`, `searchable`, `enabled`, `deprecated`) VALUES
+INSERT INTO `ark_dataclass` (`dataclass`, `type`, `format_vocabulary`, `parameter_vocabulary`, `keyword`, `entity`, `value_name`, `active_form_class`, `readonly_form_class`, `static_form_class`, `parameter_name`, `parameter_form_class`, `format_name`, `format_form_class`, `form_type_class`, `object`, `array`, `span`, `multiple`, `sortable`, `searchable`, `enabled`, `deprecated`) VALUES
 ('actor', 'item', NULL, NULL, 'core.actor', 'ARK\\Actor\\Actor', NULL, 'ARK\\Form\\Type\\ActorChoiceType', 'ARK\\Form\\Type\\ActorChoiceType', NULL, NULL, NULL, NULL, NULL, 'ARK\\Form\\Type\\ItemChoicePropertyType', 0, 0, 0, 0, 0, 0, 1, 0),
 ('address', 'object', NULL, NULL, 'format.address', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 0, 1, 1, 0),
 ('blob', 'blob', NULL, NULL, 'format.blob', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0),
@@ -80,10 +80,10 @@ INSERT INTO `ark_datatype` (`datatype`, `type`, `format_vocabulary`, `parameter_
 ('yearweek', 'string', NULL, NULL, 'format.yearweek', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0);
 
 --
--- Dumping data for table `ark_datatype_attribute`
+-- Dumping data for table `ark_dataclass_attribute`
 --
 
-INSERT INTO `ark_datatype_attribute` (`parent`, `attribute`, `datatype`, `keyword`, `vocabulary`, `sequence`, `root`, `span`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`) VALUES
+INSERT INTO `ark_dataclass_attribute` (`parent`, `attribute`, `dataclass`, `keyword`, `vocabulary`, `sequence`, `root`, `span`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`) VALUES
 ('address', 'city', 'string', 'format.address.city', NULL, 2, 0, 0, 1, 1, 1, 0, 1, 0),
 ('address', 'country', 'term', 'format.address.country', 'country', 6, 0, 0, 1, 1, 1, 0, 1, 0),
 ('address', 'postcode', 'string', NULL, NULL, 4, 1, 0, 1, 1, 1, 0, 1, 0),
@@ -105,64 +105,64 @@ INSERT INTO `ark_datatype_attribute` (`parent`, `attribute`, `datatype`, `keywor
 ('version', 'version', 'string', 'format.fileversion.string', NULL, 8, 1, 0, 1, 1, 1, 0, 1, 0);
 
 --
--- Dumping data for table `ark_datatype_blob`
+-- Dumping data for table `ark_dataclass_blob`
 --
 
-INSERT INTO `ark_datatype_blob` (`datatype`, `preset`) VALUES
+INSERT INTO `ark_dataclass_blob` (`dataclass`, `preset`) VALUES
 ('blob', NULL);
 
 --
--- Dumping data for table `ark_datatype_boolean`
+-- Dumping data for table `ark_dataclass_boolean`
 --
 
-INSERT INTO `ark_datatype_boolean` (`datatype`, `preset`) VALUES
+INSERT INTO `ark_dataclass_boolean` (`dataclass`, `preset`) VALUES
 ('boolean', NULL);
 
 --
--- Dumping data for table `ark_datatype_date`
+-- Dumping data for table `ark_dataclass_date`
 --
 
-INSERT INTO `ark_datatype_date` (`datatype`, `pattern`, `unicode`, `preset`) VALUES
+INSERT INTO `ark_dataclass_date` (`dataclass`, `pattern`, `unicode`, `preset`) VALUES
 ('date', '^([0-9]{4})(-)(1[0-2]|0[1-9])\\\\2(3[01]|0[1-9]|[12][0-9])$', '', NULL),
 ('ordinaldate', '^([0-9]{4})-(36[0-6]|3[0-5][0-9]|[12][0-9]{2}|0[1-9][0-9]|00[1-9])$', '', NULL),
 ('weekdate', '^([0-9]{4})-W(5[0-3]|[1-4][0-9]|0[1-9])-([1-7])$', '', NULL);
 
 --
--- Dumping data for table `ark_datatype_datetime`
+-- Dumping data for table `ark_dataclass_datetime`
 --
 
-INSERT INTO `ark_datatype_datetime` (`datatype`, `pattern`, `unicode`, `preset`) VALUES
+INSERT INTO `ark_dataclass_datetime` (`dataclass`, `pattern`, `unicode`, `preset`) VALUES
 ('datetime', '^([0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])$', '', NULL);
 
 --
--- Dumping data for table `ark_datatype_decimal`
+-- Dumping data for table `ark_dataclass_decimal`
 --
 
-INSERT INTO `ark_datatype_decimal` (`datatype`, `prec`, `scale`, `minimum`, `exclusive_minimum`, `maximum`, `exclusive_maximum`, `multiple_of`, `preset`) VALUES
+INSERT INTO `ark_dataclass_decimal` (`dataclass`, `prec`, `scale`, `minimum`, `exclusive_minimum`, `maximum`, `exclusive_maximum`, `multiple_of`, `preset`) VALUES
 ('decimal', 100, 100, NULL, 0, NULL, 0, '', NULL),
 ('mass', 100, 100, NULL, 0, NULL, 0, '', NULL),
 ('money', 198, 2, NULL, 0, NULL, 0, '0.01', NULL);
 
 --
--- Dumping data for table `ark_datatype_float`
+-- Dumping data for table `ark_dataclass_float`
 --
 
-INSERT INTO `ark_datatype_float` (`datatype`, `minimum`, `exclusive_minimum`, `maximum`, `exclusive_maximum`, `multiple_of`, `preset`) VALUES
+INSERT INTO `ark_dataclass_float` (`dataclass`, `minimum`, `exclusive_minimum`, `maximum`, `exclusive_maximum`, `multiple_of`, `preset`) VALUES
 ('float', NULL, 0, NULL, 0, NULL, NULL),
 ('percent', 0, 0, 100, 0, NULL, NULL);
 
 --
--- Dumping data for table `ark_datatype_integer`
+-- Dumping data for table `ark_dataclass_integer`
 --
 
-INSERT INTO `ark_datatype_integer` (`datatype`, `minimum`, `exclusive_minimum`, `maximum`, `exclusive_maximum`, `multiple_of`, `preset`) VALUES
+INSERT INTO `ark_dataclass_integer` (`dataclass`, `minimum`, `exclusive_minimum`, `maximum`, `exclusive_maximum`, `multiple_of`, `preset`) VALUES
 ('integer', -2147483648, 0, 2147483647, 0, 1, NULL);
 
 --
--- Dumping data for table `ark_datatype_item`
+-- Dumping data for table `ark_dataclass_item`
 --
 
-INSERT INTO `ark_datatype_item` (`datatype`, `module`, `preset`) VALUES
+INSERT INTO `ark_dataclass_item` (`dataclass`, `module`, `preset`) VALUES
 ('actor', 'actor', NULL),
 ('event', 'event', NULL),
 ('file', 'file', NULL),
@@ -170,10 +170,10 @@ INSERT INTO `ark_datatype_item` (`datatype`, `module`, `preset`) VALUES
 ('person', 'actor', NULL);
 
 --
--- Dumping data for table `ark_datatype_object`
+-- Dumping data for table `ark_dataclass_object`
 --
 
-INSERT INTO `ark_datatype_object` (`datatype`) VALUES
+INSERT INTO `ark_dataclass_object` (`dataclass`) VALUES
 ('address'),
 ('dispatch'),
 ('distance'),
@@ -181,18 +181,18 @@ INSERT INTO `ark_datatype_object` (`datatype`) VALUES
 ('version');
 
 --
--- Dumping data for table `ark_datatype_spatial`
+-- Dumping data for table `ark_dataclass_spatial`
 --
 
-INSERT INTO `ark_datatype_spatial` (`datatype`, `preset`) VALUES
+INSERT INTO `ark_dataclass_spatial` (`dataclass`, `preset`) VALUES
 ('spatial', NULL),
 ('wkt', NULL);
 
 --
--- Dumping data for table `ark_datatype_string`
+-- Dumping data for table `ark_dataclass_string`
 --
 
-INSERT INTO `ark_datatype_string` (`datatype`, `pattern`, `min_length`, `max_length`, `default_size`, `preset`) VALUES
+INSERT INTO `ark_dataclass_string` (`dataclass`, `pattern`, `min_length`, `max_length`, `default_size`, `preset`) VALUES
 ('color', '^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$', 4, 7, 10, NULL),
 ('email', '^(?!^.{254})(([^@]+)@([^@]+))$', 3, 254, 30, NULL),
 ('identifier', '^(\\w{1,30})$', 1, 30, 30, NULL),
@@ -203,10 +203,10 @@ INSERT INTO `ark_datatype_string` (`datatype`, `pattern`, `min_length`, `max_len
 ('yearweek', '^([0-9]{4})-W(5[0-3]|[1-4][0-9]|0[1-9])$', 7, 8, 8, NULL);
 
 --
--- Dumping data for table `ark_datatype_text`
+-- Dumping data for table `ark_dataclass_text`
 --
 
-INSERT INTO `ark_datatype_text` (`datatype`, `mediatype`, `min_length`, `max_length`, `default_size`, `preset`) VALUES
+INSERT INTO `ark_dataclass_text` (`dataclass`, `mediatype`, `min_length`, `max_length`, `default_size`, `preset`) VALUES
 ('html', 'text/html', 1, 1431655765, 30, NULL),
 ('markdown', 'text/markdown', 1, 1431655765, 30, NULL),
 ('plaintext', 'text/plain', 1, 1431655765, 30, NULL),
@@ -215,30 +215,30 @@ INSERT INTO `ark_datatype_text` (`datatype`, `mediatype`, `min_length`, `max_len
 ('url', 'text/url', 1, 2083, 50, NULL);
 
 --
--- Dumping data for table `ark_datatype_time`
+-- Dumping data for table `ark_dataclass_time`
 --
 
-INSERT INTO `ark_datatype_time` (`datatype`, `pattern`, `unicode`, `preset`) VALUES
+INSERT INTO `ark_dataclass_time` (`dataclass`, `pattern`, `unicode`, `preset`) VALUES
 ('time', '^(2[0-3]|[01][0-9]):([0-5][0-9])$', '', NULL);
 
 --
--- Dumping data for table `ark_datatype_type`
+-- Dumping data for table `ark_dataclass_type`
 --
 
-INSERT INTO `ark_datatype_type` (`type`, `format_vocabulary`, `parameter_vocabulary`, `keyword`, `object`, `compound`, `storage_type`, `storage_size`, `spanable`, `value_name`, `active_form_class`, `readonly_form_class`, `static_form_class`, `parameter_name`, `parameter_form_class`, `format_name`, `format_form_class`, `model_table`, `model_class`, `data_table`, `data_class`, `form_type_class`, `enabled`, `deprecated`) VALUES
-('blob', 'mediatype', NULL, 'core.datatype.blob', 0, 1, 'blob', NULL, 0, 'blob', NULL, NULL, NULL, NULL, NULL, 'mediatype', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', 'ark_datatype_blob', 'ARK\\Model\\Datatype\\BlobDatatype', 'ark_fragment_blob', 'ARK\\Model\\Fragment\\BlobFragment', NULL, 0, 0),
-('boolean', NULL, NULL, 'core.datatype.boolean', 0, 0, 'boolean', NULL, 0, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, NULL, NULL, 'ark_datatype_boolean', 'ARK\\Model\\Datatype\\BooleanDatatype', 'ark_fragment_boolean', 'ARK\\Model\\Fragment\\BooleanFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 1, 0),
-('date', NULL, NULL, 'core.datatype.date', 0, 0, 'date', NULL, 1, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, NULL, NULL, 'ark_datatype_datetime', 'ARK\\Model\\Datatype\\DateDatatype', 'ark_fragment_date', 'ARK\\Model\\Fragment\\DateFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 1, 0),
-('datetime', NULL, NULL, 'core.datatype.datetime', 0, 0, 'datetime', NULL, 1, 'datetime', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateTimeType', NULL, 'ARK\\Form\\Type\\StaticType', 'timezone', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, 'ark_datatype_datetime', 'ARK\\Model\\Datatype\\DateTimeDatatype', 'ark_fragment_datetime', 'ARK\\Model\\Fragment\\DateTimeFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 1, 0),
-('decimal', NULL, NULL, 'core.datatype.decimal', 0, 0, 'string', 200, 1, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, NULL, NULL, 'ark_datatype_decimal', 'ARK\\Model\\Datatype\\DecimalDatatype', 'ark_fragment_decimal', 'ARK\\Model\\Fragment\\DecimalFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 1, 0),
-('float', NULL, NULL, 'core.datatype.float', 0, 0, 'float', NULL, 1, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, NULL, NULL, 'ark_datatype_float', 'ARK\\Model\\Datatype\\FloatDatatype', 'ark_fragment_float', 'ARK\\Model\\Fragment\\FloatFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 1, 0),
-('integer', NULL, NULL, 'core.datatype.integer', 0, 0, 'integer', NULL, 1, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\IntegerType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, NULL, NULL, 'ark_datatype_integer', 'ARK\\Model\\Datatype\\IntegerDatatype', 'ark_fragment_integer', 'ARK\\Model\\Fragment\\IntegerFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 1, 0),
-('item', NULL, NULL, 'core.datatype.item', 0, 1, 'string', 30, 1, 'item', NULL, NULL, 'ARK\\Form\\Type\\StaticType', 'module', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, 'ark_datatype_item', 'ARK\\Model\\Datatype\\ItemDatatype', 'ark_fragment_item', 'ARK\\Model\\Fragment\\ItemFragment', 'ARK\\Form\\Type\\ItemPropertyType', 1, 0),
-('object', NULL, NULL, 'core.datatype.object', 1, 0, 'integer', 0, 0, NULL, NULL, NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, NULL, NULL, 'ark_datatype_object', 'ARK\\Model\\Datatype\\ObjectDatatype', 'ark_fragment_object', 'ARK\\Model\\Fragment\\ObjectFragment', 'ARK\\Form\\Type\\ObjectType', 1, 0),
-('spatial', 'spatial.format', 'spatial.crs', 'core.datatype.spatial', 0, 1, 'string', 1431655765, 0, 'geometry', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, 'ARK\\Form\\Type\\StaticType', 'srid', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', 'format', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', 'ark_datatype_spatial', 'ARK\\Model\\Datatype\\SpatialDatatype', 'ark_fragment_spatial', 'ARK\\Model\\Fragment\\SpatialFragment', 'ARK\\Form\\Type\\WktPropertyType', 1, 0),
-('string', NULL, NULL, 'core.datatype.string', 0, 0, 'string', 4000, 1, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, NULL, NULL, 'ark_datatype_string', 'ARK\\Model\\Datatype\\StringDatatype', 'ark_fragment_string', 'ARK\\Model\\Fragment\\StringFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 1, 0),
-('text', 'mediatype', 'language', 'core.datatype.text', 0, 1, 'string', 1431655765, 0, 'content', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', NULL, 'ARK\\Form\\Type\\StaticType', 'language', NULL, 'mediatype', NULL, 'ark_datatype_text', 'ARK\\Model\\Datatype\\TextDatatype', 'ark_fragment_text', 'ARK\\Model\\Fragment\\TextFragment', 'ARK\\Form\\Type\\LocalTextPropertyType', 1, 0),
-('time', NULL, NULL, 'core.datatype.time', 0, 0, 'time', NULL, 1, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, NULL, NULL, 'ark_datatype_datetime', 'ARK\\Model\\Datatype\\TimeDatatype', 'ark_fragment_time', 'ARK\\Model\\Fragment\\TimeFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 0, 0);
+INSERT INTO `ark_dataclass_type` (`type`, `format_vocabulary`, `parameter_vocabulary`, `keyword`, `object`, `compound`, `storage_type`, `storage_size`, `spanable`, `value_name`, `active_form_class`, `readonly_form_class`, `static_form_class`, `parameter_name`, `parameter_form_class`, `format_name`, `format_form_class`, `model_table`, `model_class`, `data_table`, `data_class`, `form_type_class`, `enabled`, `deprecated`) VALUES
+('blob', 'mediatype', NULL, 'core.dataclass.blob', 0, 1, 'blob', NULL, 0, 'blob', NULL, NULL, NULL, NULL, NULL, 'mediatype', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', 'ark_dataclass_blob', 'ARK\\Model\\Dataclass\\BlobDataclass', 'ark_fragment_blob', 'ARK\\Model\\Fragment\\BlobFragment', NULL, 0, 0),
+('boolean', NULL, NULL, 'core.dataclass.boolean', 0, 0, 'boolean', NULL, 0, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, NULL, NULL, 'ark_dataclass_boolean', 'ARK\\Model\\Dataclass\\BooleanDataclass', 'ark_fragment_boolean', 'ARK\\Model\\Fragment\\BooleanFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 1, 0),
+('date', NULL, NULL, 'core.dataclass.date', 0, 0, 'date', NULL, 1, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, NULL, NULL, 'ark_dataclass_datetime', 'ARK\\Model\\Dataclass\\DateDataclass', 'ark_fragment_date', 'ARK\\Model\\Fragment\\DateFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 1, 0),
+('datetime', NULL, NULL, 'core.dataclass.datetime', 0, 0, 'datetime', NULL, 1, 'datetime', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateTimeType', NULL, 'ARK\\Form\\Type\\StaticType', 'timezone', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, 'ark_dataclass_datetime', 'ARK\\Model\\Dataclass\\DateTimeDataclass', 'ark_fragment_datetime', 'ARK\\Model\\Fragment\\DateTimeFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 1, 0),
+('decimal', NULL, NULL, 'core.dataclass.decimal', 0, 0, 'string', 200, 1, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, NULL, NULL, 'ark_dataclass_decimal', 'ARK\\Model\\Dataclass\\DecimalDataclass', 'ark_fragment_decimal', 'ARK\\Model\\Fragment\\DecimalFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 1, 0),
+('float', NULL, NULL, 'core.dataclass.float', 0, 0, 'float', NULL, 1, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, NULL, NULL, 'ark_dataclass_float', 'ARK\\Model\\Dataclass\\FloatDataclass', 'ark_fragment_float', 'ARK\\Model\\Fragment\\FloatFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 1, 0),
+('integer', NULL, NULL, 'core.dataclass.integer', 0, 0, 'integer', NULL, 1, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\IntegerType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, NULL, NULL, 'ark_dataclass_integer', 'ARK\\Model\\Dataclass\\IntegerDataclass', 'ark_fragment_integer', 'ARK\\Model\\Fragment\\IntegerFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 1, 0),
+('item', NULL, NULL, 'core.dataclass.item', 0, 1, 'string', 30, 1, 'item', NULL, NULL, 'ARK\\Form\\Type\\StaticType', 'module', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, 'ark_dataclass_item', 'ARK\\Model\\Dataclass\\ItemDataclass', 'ark_fragment_item', 'ARK\\Model\\Fragment\\ItemFragment', 'ARK\\Form\\Type\\ItemPropertyType', 1, 0),
+('object', NULL, NULL, 'core.dataclass.object', 1, 0, 'integer', 0, 0, NULL, NULL, NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, NULL, NULL, 'ark_dataclass_object', 'ARK\\Model\\Dataclass\\ObjectDataclass', 'ark_fragment_object', 'ARK\\Model\\Fragment\\ObjectFragment', 'ARK\\Form\\Type\\ObjectType', 1, 0),
+('spatial', 'spatial.format', 'spatial.crs', 'core.dataclass.spatial', 0, 1, 'string', 1431655765, 0, 'geometry', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, 'ARK\\Form\\Type\\StaticType', 'srid', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', 'format', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', 'ark_dataclass_spatial', 'ARK\\Model\\Dataclass\\SpatialDataclass', 'ark_fragment_spatial', 'ARK\\Model\\Fragment\\SpatialFragment', 'ARK\\Form\\Type\\WktPropertyType', 1, 0),
+('string', NULL, NULL, 'core.dataclass.string', 0, 0, 'string', 4000, 1, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, NULL, NULL, 'ark_dataclass_string', 'ARK\\Model\\Dataclass\\StringDataclass', 'ark_fragment_string', 'ARK\\Model\\Fragment\\StringFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 1, 0),
+('text', 'mediatype', 'language', 'core.dataclass.text', 0, 1, 'string', 1431655765, 0, 'content', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', NULL, 'ARK\\Form\\Type\\StaticType', 'language', NULL, 'mediatype', NULL, 'ark_dataclass_text', 'ARK\\Model\\Dataclass\\TextDataclass', 'ark_fragment_text', 'ARK\\Model\\Fragment\\TextFragment', 'ARK\\Form\\Type\\LocalTextPropertyType', 1, 0),
+('time', NULL, NULL, 'core.dataclass.time', 0, 0, 'time', NULL, 1, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, NULL, NULL, 'ark_dataclass_datetime', 'ARK\\Model\\Dataclass\\TimeDataclass', 'ark_fragment_time', 'ARK\\Model\\Fragment\\TimeFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 0, 0);
 
 --
 -- Dumping data for table `ark_instance`
@@ -314,7 +314,7 @@ INSERT INTO `ark_schema` (`schma`, `edit`, `module`, `new`, `remove`, `keyword`,
 -- Dumping data for table `ark_schema_attribute`
 --
 
-INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `edit`, `datatype`, `keyword`, `view`, `vocabulary`, `visibility`, `span`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`) VALUES
+INSERT INTO `ark_schema_attribute` (`schma`, `type`, `attribute`, `edit`, `dataclass`, `keyword`, `view`, `vocabulary`, `visibility`, `span`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`) VALUES
 ('core.actor', 'actor', 'address', NULL, 'address', 'core.actor.address', NULL, NULL, 'public', 0, 1, 1, 1, 0, 1, 0),
 ('core.actor', 'actor', 'avatar', NULL, 'image', 'core.actor.avatar', NULL, NULL, 'public', 0, 0, 1, 1, 0, 1, 0),
 ('core.actor', 'actor', 'biography', NULL, 'plaintext', 'core.actor.biography', NULL, NULL, 'public', 0, 1, 1, 1, 0, 1, 0),
@@ -421,19 +421,19 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('core.button.search', 'core', 0, 0),
 ('core.button.select', 'core', 0, 0),
 ('core.button.send', 'core', 0, 0),
-('core.datatype.blob', 'vocabulary', 0, 0),
-('core.datatype.boolean', 'vocabulary', 0, 0),
-('core.datatype.date', 'vocabulary', 0, 0),
-('core.datatype.datetime', 'vocabulary', 0, 0),
-('core.datatype.decimal', 'vocabulary', 0, 0),
-('core.datatype.float', 'vocabulary', 0, 0),
-('core.datatype.integer', 'vocabulary', 0, 0),
-('core.datatype.item', 'vocabulary', 0, 0),
-('core.datatype.object', 'vocabulary', 0, 0),
-('core.datatype.spatial', 'vocabulary', 0, 0),
-('core.datatype.string', 'vocabulary', 0, 0),
-('core.datatype.text', 'vocabulary', 0, 0),
-('core.datatype.time', 'vocabulary', 0, 0),
+('core.dataclass.blob', 'vocabulary', 0, 0),
+('core.dataclass.boolean', 'vocabulary', 0, 0),
+('core.dataclass.date', 'vocabulary', 0, 0),
+('core.dataclass.datetime', 'vocabulary', 0, 0),
+('core.dataclass.decimal', 'vocabulary', 0, 0),
+('core.dataclass.float', 'vocabulary', 0, 0),
+('core.dataclass.integer', 'vocabulary', 0, 0),
+('core.dataclass.item', 'vocabulary', 0, 0),
+('core.dataclass.object', 'vocabulary', 0, 0),
+('core.dataclass.spatial', 'vocabulary', 0, 0),
+('core.dataclass.string', 'vocabulary', 0, 0),
+('core.dataclass.text', 'vocabulary', 0, 0),
+('core.dataclass.time', 'vocabulary', 0, 0),
 ('core.event', 'core', 0, 0),
 ('core.event.agent', 'core', 0, 0),
 ('core.event.edited', 'core', 0, 0),

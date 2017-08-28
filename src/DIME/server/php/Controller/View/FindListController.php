@@ -75,7 +75,7 @@ class FindListController extends DimeFormController
             // Otherwise they cannot filter by Finder
             if ($actor->hasPermission('dime.find.filter.finder')) {
                 $finders = Service::database()->getFinders();
-                $state['options']['finder']['choices'] = ORM::findBy(Person::class, ['item' => $finders]);
+                $state['options']['finder']['choices'] = ORM::findBy(Person::class, ['id' => $finders]);
                 $state['options']['finder']['multiple'] = false;
                 $state['options']['finder']['placeholder'] = Service::translate('dime.placeholder');
             } elseif ($actor->hasPermission('dime.find.create')) {
@@ -116,12 +116,12 @@ class FindListController extends DimeFormController
             $data['filters']['municipality'] = $municipalities->toArray();
         }
 
-        if (isset($query['type'])) {
-            $types = ORM::findBy(Term::class, [
-                'concept' => 'dime.find.type',
-                'term' => $query['type'],
+        if (isset($query['class'])) {
+            $classes = ORM::findBy(Term::class, [
+                'concept' => 'dime.find.class',
+                'term' => $query['class'],
             ]);
-            $data['filters']['type'] = $types->toArray();
+            $data['filters']['class'] = $classes->toArray();
         }
 
         if (isset($query['period'])) {
@@ -156,7 +156,7 @@ class FindListController extends DimeFormController
             }
             if (isset($query['museum'])) {
                 $museums = ORM::findBy(Museum::class, [
-                    'item' => $query['museum'],
+                    'id' => $query['museum'],
                 ]);
                 if ($filterMuseums) {
                     $data['filters']['museum'] = $museums->toArray();
@@ -180,7 +180,7 @@ class FindListController extends DimeFormController
                 $query['finder'] = [$data['filters']['finder']->id()];
             } elseif ($filterFinders && isset($query['finder'])) {
                 $finder = ORM::findOneBy(Person::class, [
-                    'item' => $query['finder'],
+                    'id' => $query['finder'],
                 ]);
                 $data['filters']['finder'] = $finder;
             }
@@ -204,7 +204,7 @@ class FindListController extends DimeFormController
 
         if ($query) {
             $items = Service::database()->findSearch($query);
-            $finds = ORM::findBy(Find::class, ['item' => $items]);
+            $finds = ORM::findBy(Find::class, ['id' => $items]);
         } else {
             $finds = ORM::findAll(Find::class);
         }
@@ -274,7 +274,7 @@ class FindListController extends DimeFormController
 
         if ($clicked === 'search') {
             $municipalities = $form['municipality']->getData();
-            $types = $form['type']->getData();
+            $classes = $form['class']->getData();
             $period = $form['period']->getData();
             $materials = $form['material']->getData();
             $museums = $form['museum']->getData();
@@ -285,8 +285,8 @@ class FindListController extends DimeFormController
             if ($municipalities) {
                 $query['municipality'] = $this->queryName($municipalities);
             }
-            if ($types) {
-                $query['type'] = $this->queryName($types);
+            if ($classes) {
+                $query['class'] = $this->queryName($classes);
             }
             if ($period) {
                 $query['period'] = $this->queryName($period);

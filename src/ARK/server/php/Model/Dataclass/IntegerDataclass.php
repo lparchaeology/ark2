@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model DateTime Datatype.
+ * ARK Model Integer Dataclass.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,28 +27,38 @@
  * @since      2.0
  */
 
-namespace ARK\Model\Datatype;
+namespace ARK\Model\Dataclass;
 
-use ARK\Model\Datatype;
+use ARK\Model\Dataclass;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use Symfony\Component\Validator\Constraints\DateTime;
 
-class DateTimeDatatype extends Datatype
+class IntegerDataclass extends Dataclass
 {
-    use DateTimeTrait;
+    use NumberTrait;
 
-    public function constraints() : iterable
+    public function minimumValue() : int
     {
-        $constraints = parent::constraints();
-        $constraints[] = new DateTime(['format' => $this->php]);
-        return $constraints;
+        return $this->minimum;
+    }
+
+    public function maximumValue() : int
+    {
+        return $this->maximum;
+    }
+
+    public function multipleOf() : int
+    {
+        return $this->multipleOf;
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_datetime');
-        DateTimeTrait::buildDateTimeMetadata($builder);
-        $builder->addField('preset', 'datetime');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_integer');
+        $builder->addField('minimum', 'integer');
+        $builder->addField('maximum', 'integer');
+        $builder->addField('multipleOf', 'integer', [], 'multiple_of');
+        $builder->addField('preset', 'integer');
+        NumberTrait::buildNumberMetadata($builder);
     }
 }

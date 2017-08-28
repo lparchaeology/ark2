@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Form Type
+ * DIME Form Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,9 +27,9 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
+
 namespace DIME\Form\Type;
 
-use ARK\Form\Type\TermChoiceType;
 use ARK\Form\Type\AbstractPropertyType;
 use ARK\Model\Property;
 use ARK\ORM\ORM;
@@ -38,13 +38,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class ClassificationPropertyType extends AbstractPropertyType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $valueOptions = $options['state']['value']['options'];
         $field = $options['state']['field'];
-        $datatype = $field->attribute()->datatype();
+        $dataclass = $field->attribute()->dataclass();
 
-        $valueOptions['choices'] = $datatype->attribute('subtype')->vocabulary()->terms();
+        $valueOptions['choices'] = $dataclass->attribute('subtype')->vocabulary()->terms();
         $valueOptions['placeholder'] = ' - ';
         //$valueOptions['required'] = true;
         $builder->add('subtype', $options['state']['value']['type'], $valueOptions);
@@ -56,14 +56,7 @@ class ClassificationPropertyType extends AbstractPropertyType
         $builder->setDataMapper($this);
     }
 
-    protected function options()
-    {
-        return [
-            'compound' => true
-        ];
-    }
-
-    public function mapDataToForms($property, $forms)
+    public function mapDataToForms($property, $forms) : void
     {
         $forms = iterator_to_array($forms);
         if ($property instanceof Property) {
@@ -81,7 +74,7 @@ class ClassificationPropertyType extends AbstractPropertyType
         }
     }
 
-    public function mapFormsToData($forms, &$property)
+    public function mapFormsToData($forms, &$property) : void
     {
         $forms = iterator_to_array($forms);
         if ($property instanceof Property) {
@@ -93,5 +86,12 @@ class ClassificationPropertyType extends AbstractPropertyType
             $value['subtype'] = $forms['subtype']->getData();
             $property->setValue($value);
         }
+    }
+
+    protected function options()
+    {
+        return [
+            'compound' => true,
+        ];
     }
 }

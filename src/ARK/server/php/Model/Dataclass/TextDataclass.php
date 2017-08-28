@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Text Datatype.
+ * ARK Model Text Dataclass.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,10 +27,10 @@
  * @since      2.0
  */
 
-namespace ARK\Model\Datatype;
+namespace ARK\Model\Dataclass;
 
 use ARK\Model\Attribute;
-use ARK\Model\Datatype;
+use ARK\Model\Dataclass;
 use ARK\Model\Fragment;
 use ARK\Model\LocalText;
 use ARK\ORM\ClassMetadata;
@@ -41,7 +41,7 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Type;
 
-class TextDatatype extends Datatype
+class TextDataclass extends Dataclass
 {
     protected $mediatype = '';
     protected $minimumLength = 0;
@@ -124,7 +124,7 @@ class TextDatatype extends Datatype
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_text');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_text');
 
         // Attributes
         $builder->addStringField('mediatype', 30);

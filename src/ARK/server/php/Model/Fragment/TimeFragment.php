@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Time Fragment
+ * ARK Model Time Fragment.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,23 +25,21 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model\Fragment;
 
 use ARK\Model\Fragment;
 use ARK\ORM\ClassMetadata;
-use ARK\Model\Fragment\DateTimeTrait;
 
 class TimeFragment extends Fragment
 {
-    protected $pattern = 'H:i:s';
-
     use DateTimeTrait;
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    protected $pattern = 'H:i:s';
+
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
-        return self::buildSubclassMetadata($metadata, self::class);
+        self::buildSubclassMetadata($metadata, self::class);
     }
 }

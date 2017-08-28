@@ -65,7 +65,7 @@ class GeoFindController
                 if ($id) {
                     $museum = ORM::find(Museum::class, $id[0]['item']);
                     $data['museum']['item'] = $museum->id();
-                    $data['museum']['module'] = $museum->schema()->module()->name();
+                    $data['museum']['module'] = $museum->schema()->module()->id();
                     $data['museum']['name'] = $museum->property('fullname')->value()->content();
                 }
             }

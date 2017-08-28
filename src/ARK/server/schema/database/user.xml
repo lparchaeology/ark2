@@ -1,118 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema xmlns="http://www.concrete5.org/doctrine-xml/0.5">
-  <table name="ark_security_account">
-    <field name="user" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="account" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="protocol" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="provider" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="identifier" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="access_token" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="refresh_token" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="enabled" type="boolean">
-      <default value="1"/>
-      <notnull/>
-    </field>
-    <index name="IDX_2323959F8D93D649">
-      <col>user</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    <references name="user" table="ark_security_user" onupdate="cascade" ondelete="cascade">
-      <column local="user" foreign="user"/>
-    </references>
-  </table>
-  <table name="ark_security_level">
-    <field name="level" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="description" type="string" size="50"/>
-    <field name="enabled" type="boolean">
-      <default value="1"/>
-      <notnull/>
-    </field>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-  </table>
-  <table name="ark_security_user">
-    <field name="user" type="string" size="30">
-      <key/>
-      <notnull/>
-    </field>
-    <field name="username" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="email" type="string" size="100"/>
-    <field name="password" type="string" size="255"/>
-    <field name="name" type="string" size="100"/>
-    <field name="level" type="string" size="30">
-      <notnull/>
-    </field>
-    <field name="enabled" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="verified" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="locked" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="expired" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="expires_at" type="datetime">
-      <deftimestamp/>
-    </field>
-    <field name="credentials_expired" type="boolean">
-      <default value="0"/>
-      <notnull/>
-    </field>
-    <field name="credentials_expire_at" type="datetime">
-      <deftimestamp/>
-    </field>
-    <field name="verification_token" type="string" size="100"/>
-    <field name="verification_requested_at" type="datetime">
-      <deftimestamp/>
-    </field>
-    <field name="password_request_token" type="string" size="100"/>
-    <field name="password_requested_at" type="datetime">
-      <deftimestamp/>
-    </field>
-    <field name="last_login" type="datetime">
-      <deftimestamp/>
-    </field>
-    <index name="username">
-      <unique/>
-      <col>username</col>
-    </index>
-    <index name="unique_email">
-      <unique/>
-      <col>email</col>
-    </index>
-    <index name="level">
-      <col>level</col>
-    </index>
-    <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    <references name="level" table="ark_security_level" onupdate="cascade">
-      <column local="level" foreign="level"/>
-    </references>
-  </table>
+    <table name="ark_security_account">
+        <field name="user" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="account" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="protocol" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="provider" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="identifier" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="access_token" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="refresh_token" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="enabled" type="boolean">
+            <default value="1"/>
+            <notnull/>
+        </field>
+        <index name="IDX_2323959F8D93D649">
+            <col>user</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="user" table="ark_security_user" onupdate="cascade" ondelete="cascade">
+            <column local="user" foreign="user"/>
+        </references>
+    </table>
+    <table name="ark_security_level">
+        <field name="level" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="enabled" type="boolean">
+            <default value="1"/>
+            <notnull/>
+        </field>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    </table>
+    <table name="ark_security_user">
+        <field name="user" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
+        <field name="username" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="email" type="string" size="100">
+            <notnull/>
+        </field>
+        <field name="password" type="string" size="255"/>
+        <field name="name" type="string" size="100"/>
+        <field name="level" type="string" size="30">
+            <notnull/>
+        </field>
+        <field name="enabled" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="verified" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="locked" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="expired" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="expires_at" type="datetime"/>
+        <field name="credentials_expired" type="boolean">
+            <default value="0"/>
+            <notnull/>
+        </field>
+        <field name="credentials_expire_at" type="datetime"/>
+        <field name="verification_token" type="string" size="100"/>
+        <field name="verification_requested_at" type="datetime"/>
+        <field name="password_request_token" type="string" size="100"/>
+        <field name="password_requested_at" type="datetime"/>
+        <field name="last_login" type="datetime"/>
+        <index name="unique_email">
+            <unique/>
+            <col>email</col>
+        </index>
+        <index name="username">
+            <unique/>
+            <col>username</col>
+        </index>
+        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+    </table>
 </schema>

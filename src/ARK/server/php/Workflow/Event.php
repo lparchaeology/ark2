@@ -44,13 +44,13 @@ class Event implements Item
         $this->setParent($item);
         $this->property('agents')->setValue([$agent]);
         $this->property('subject')->setValue($item);
-        $this->property('type')->setValue($action->event());
+        $this->property('class')->setValue($action->event());
         $this->property('occurred')->setValue(ARK::timestamp());
     }
 
     public function term()
     {
-        return $this->property('type')->value();
+        return $this->property('class')->value();
     }
 
     public function agent()

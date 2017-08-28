@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Notice.
+ * ARK Model Date Dataclass.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,8 +27,28 @@
  * @since      2.0
  */
 
-namespace ARK\Notice;
+namespace ARK\Model\Dataclass;
 
-class NoticeLevel
+use ARK\Model\Dataclass;
+use ARK\ORM\ClassMetadata;
+use ARK\ORM\ClassMetadataBuilder;
+use Symfony\Component\Validator\Constraints\Date;
+
+class DateDataclass extends Dataclass
 {
+    use DateTimeTrait;
+
+    public function constraints() : iterable
+    {
+        $constraints = parent::constraints();
+        $constraints[] = new Date();
+        return $constraints;
+    }
+
+    public static function loadMetadata(ClassMetadata $metadata) : void
+    {
+        $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_date');
+        DateTimeTrait::buildDateTimeMetadata($builder);
+        $builder->addField('preset', 'date');
+    }
 }

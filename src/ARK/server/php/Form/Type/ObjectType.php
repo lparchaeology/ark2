@@ -69,8 +69,8 @@ class ObjectType extends AbstractType implements DataMapperInterface
         $forms = iterator_to_array($forms);
         $attribute = $property->attribute();
         $value = $property->value();
-        if ($attribute->datatype()->type()->isObject()) {
-            foreach ($attribute->datatype()->attributes() as $sub) {
+        if ($attribute->dataclass()->datatype()->isObject()) {
+            foreach ($attribute->dataclass()->attributes() as $sub) {
                 $key = $sub->name();
                 if ($key && isset($value[$key])) {
                     $forms[$key]->setData($value[$key]);
@@ -79,15 +79,15 @@ class ObjectType extends AbstractType implements DataMapperInterface
                 }
             }
         } elseif (is_array($value) && $value) {
-            $parameter = $attribute->datatype()->parameterName();
+            $parameter = $attribute->dataclass()->parameterName();
             if (isset($value[$parameter])) {
                 $forms[$parameter]->setData($value[$parameter]);
             }
-            $datatype = $attribute->datatype()->formatName();
-            if (isset($value[$datatype])) {
-                $forms[$datatype]->setData($value[$datatype]);
+            $dataclass = $attribute->dataclass()->formatName();
+            if (isset($value[$dataclass])) {
+                $forms[$dataclass]->setData($value[$dataclass]);
             }
-            $name = $attribute->datatype()->valueName();
+            $name = $attribute->dataclass()->valueName();
             $forms[$name]->setData($value[$name]);
         } elseif (!$value && $attribute->hasVocabulary() && $default = $attribute->vocabulary()->defaultTerm()) {
             $forms[$attribute->name()]->setData($default);
@@ -112,8 +112,8 @@ class ObjectType extends AbstractType implements DataMapperInterface
     protected function buildAttribute(FormBuilderInterface $builder, Attribute $attribute, array $options) : void
     {
         $name = $attribute->name();
-        if ($attribute->datatype()->type()->isObject()) {
-            foreach ($attribute->datatype()->attributes() as $child) {
+        if ($attribute->dataclass()->datatype()->isObject()) {
+            foreach ($attribute->dataclass()->attributes() as $child) {
                 $this->buildAttribute($builder, $child, $options);
             }
             return;
@@ -123,19 +123,19 @@ class ObjectType extends AbstractType implements DataMapperInterface
             $options['choices'] = $attribute->vocabulary()->terms();
             $options['multiple'] = $attribute->hasMultipleOccurrences();
         } else {
-            $class = $attribute->datatype()->type()->activeFormType();
+            $class = $attribute->dataclass()->datatype()->activeFormType();
         }
-        if ($attribute->datatype()->type()->id() === 'datetime') {
+        if ($attribute->dataclass()->datatype()->id() === 'datetime') {
             $options['widget'] = 'single_text';
             $options['html5'] = false;
             $options['attr']['class'] = 'datetimepicker';
         }
-        if ($attribute->datatype()->type()->id() === 'date') {
+        if ($attribute->dataclass()->datatype()->id() === 'date') {
             $options['widget'] = 'single_text';
             $options['html5'] = false;
             $options['attr']['class'] = 'datepicker';
         }
-        if ($attribute->datatype()->type()->id() === 'time') {
+        if ($attribute->dataclass()->datatype()->id() === 'time') {
             $options['widget'] = 'single_text';
             $options['html5'] = false;
             $options['attr']['class'] = 'timepicker';

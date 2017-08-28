@@ -66,7 +66,7 @@ class Field extends Element
 
     public function parameterModus() : ?string
     {
-        if (!$this->attribute()->datatype()->parameterName()) {
+        if (!$this->attribute()->dataclass()->parameterName()) {
             return null;
         }
         return $this->parameter ?: 'hidden';
@@ -74,7 +74,7 @@ class Field extends Element
 
     public function formatModus() : ?string
     {
-        if (!$this->attribute()->datatype()->formatName()) {
+        if (!$this->attribute()->dataclass()->formatName()) {
             return null;
         }
         return $this->format ?: 'hidden';
@@ -85,45 +85,45 @@ class Field extends Element
         return $this->attribute->name();
     }
 
-    public function formTypeClass() : string
+    public function formType() : string
     {
-        if ($this->formTypeClass) {
-            return $this->formTypeClass;
+        if ($this->formType) {
+            return $this->formType;
         }
-        if ($this->attribute()->datatype()->formTypeClass()) {
-            return $this->attribute()->datatype()->formTypeClass();
+        if ($this->attribute()->dataclass()->formType()) {
+            return $this->attribute()->dataclass()->formType();
         }
-        return parent::formTypeClass();
+        return parent::formType();
     }
 
     public function activeFormType() : ?string
     {
-        return $this->attribute()->datatype()->activeFormType();
+        return $this->attribute()->dataclass()->activeFormType();
     }
 
     public function readonlyFormType() : ?string
     {
-        return $this->attribute()->datatype()->readonlyFormType();
+        return $this->attribute()->dataclass()->readonlyFormType();
     }
 
     public function staticFormType() : ?string
     {
-        return $this->attribute()->datatype()->staticFormType();
+        return $this->attribute()->dataclass()->staticFormType();
     }
 
     public function parameterFormType() : ?string
     {
-        return $this->attribute()->datatype()->parameterFormType();
+        return $this->attribute()->dataclass()->parameterFormType();
     }
 
     public function formatFormType() : ?string
     {
-        return $this->attribute()->datatype()->formatFormType();
+        return $this->attribute()->dataclass()->formatFormType();
     }
 
     public function keyword() : ?string
     {
-        return $this->keyword ?: $this->attribute->keyword();
+        return $this->keyword ?? $this->attribute->keyword();
     }
 
     public function buildState($data, iterable $state) : iterable
@@ -268,19 +268,19 @@ class Field extends Element
             if (is_array($value)) {
                 if ($this->display) {
                     $value = $value[$this->display];
-                } elseif (isset($value[$this->attribute()->datatype()->valueName()])) {
-                    $value = $value[$this->attribute()->datatype()->valueName()];
+                } elseif (isset($value[$this->attribute()->dataclass()->valueName()])) {
+                    $value = $value[$this->attribute()->dataclass()->valueName()];
                 }
             }
             if ($value instanceof Actor) {
                 return $value->property('fullname')->value()->content();
             }
             if ($value instanceof Event) {
-                $type = $value->property('type')->value();
-                if ($type instanceof Term) {
-                    return Service::translate($type->keyword());
+                $class = $value->property('class')->value();
+                if ($class instanceof Term) {
+                    return Service::translate($class->keyword());
                 }
-                return $type;
+                return $class;
             }
             if ($value instanceof Item) {
                 if (isset($this->display)) {
@@ -310,7 +310,7 @@ class Field extends Element
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_field');
 
         // Fields
-        $builder->addStringField('formTypeClass', 100, 'form_type_class');
+        $builder->addStringField('formType', 100, 'form_type');
         $builder->addStringField('formOptions', 4000, 'form_options');
         $builder->addStringField('display', 30);
         $builder->addStringField('value', 10);
@@ -325,8 +325,7 @@ class Field extends Element
                 'nullable' => true,
             ],
             [
-                'column' => 'item_type',
-                'reference' => 'type',
+                'column' => 'class',
                 'nullable' => true,
             ],
             [
@@ -346,7 +345,7 @@ class Field extends Element
         if ($state['value']['modus'] === 'active' && isset($options['widget']) && $options['widget'] === 'picker') {
             $options['widget'] = 'single_text';
             $options['html5'] = false;
-            $picker = $this->attribute()->datatype()->type()->id().'picker';
+            $picker = $this->attribute()->dataclass()->datatype()->id().'picker';
             if (isset($options['attr']['class'])) {
                 $options['attr']['class'] = $options['attr']['class'].' '.$picker;
             } else {

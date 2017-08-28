@@ -99,7 +99,7 @@ class ActorUser
         $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_actor_user');
 
         // Key
-        $builder->addManyToOneKey('actor', Actor::class, 'actor', 'item');
+        $builder->addManyToOneKey('actor', Actor::class, 'actor', 'id');
         $builder->addStringKey('user', 30);
 
         // Attributes

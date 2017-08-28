@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model DateTime Datatype Trait.
+ * ARK Model Time Dataclass.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,35 +27,28 @@
  * @since      2.0
  */
 
-namespace ARK\Model\Datatype;
+namespace ARK\Model\Dataclass;
 
+use ARK\Model\Dataclass;
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use Symfony\Component\Validator\Constraints\Time;
 
-trait DateTimeTrait
+class TimeDataclass extends Dataclass
 {
-    protected $pattern = '';
-    protected $unicode = '';
-    protected $php = '';
+    use DateTimeTrait;
 
-    public function pattern() : string
+    public function constraints() : iterable
     {
-        return $this->pattern;
+        $constraints = parent::constraints();
+        $constraints[] = new Time($this->php);
+        return $constraints;
     }
 
-    public function unicode() : string
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
-        return $this->unicode;
-    }
-
-    public function php() : string
-    {
-        return $this->php;
-    }
-
-    public static function buildDateTimeMetadata(ClassMetadataBuilder $builder) : void
-    {
-        $builder->addStringField('pattern', 255);
-        $builder->addStringField('unicode', 50);
-        $builder->addStringField('php', 50);
+        $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_time');
+        DateTimeTrait::buildDateTimeMetadata($builder);
+        $builder->addField('preset', 'time');
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Datatype Attribute.
+ * ARK Model Geometry Dataclass.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,45 +27,51 @@
  * @since      2.0
  */
 
-namespace ARK\Model\Datatype;
+namespace ARK\Model\Dataclass;
 
-use ARK\Model\Attribute;
-use ARK\Model\Datatype;
+use ARK\Model\Dataclass;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use Brick\Geo\MultiPoint;
+use Brick\Geo\Point;
 
-class DatatypeAttribute extends Attribute
+class SpatialDataclass extends Dataclass
 {
-    protected $parent;
-    protected $sequence = 0;
-    protected $root = false;
+    protected $srid;
+    protected $format;
+    protected $extent;
 
-    public function parent() : Datatype
+    public function srid() : int
     {
-        return $this->parent;
+        return $this->srid;
     }
 
-    public function sequence() : int
+    public function format() : string
     {
-        return $this->sequence;
+        return $this->format;
     }
 
-    public function isRoot() : bool
+    public function extent() : ?MultiPoint
     {
-        return $this->root;
+        return MultiPoint::fromText($this->extent, $this->srid);
+    }
+
+    public function minimum() : ?Point
+    {
+        return $this->extent()[0];
+    }
+
+    public function maximum() : ?Point
+    {
+        return $this->extent()[1];
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
-        // Table
-        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_attribute');
-
-        // Key
-        $builder->addManyToOneKey('parent', 'ARK\Model\Datatype', 'parent', 'datatype', false);
-        $builder->addStringKey('attribute', 30);
-
-        // Attributes
-        $builder->addField('sequence', 'integer');
-        $builder->addField('root', 'boolean');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_spatial');
+        $builder->addStringField('preset', 1431655765);
+        $builder->addField('srid', 'integer');
+        $builder->addStringField('format', 30);
+        $builder->addStringField('extent', 100);
     }
 }

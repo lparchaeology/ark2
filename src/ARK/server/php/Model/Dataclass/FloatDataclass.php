@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Geometry Datatype.
+ * ARK Model Float Dataclass.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,53 +25,41 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
+ * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model\Datatype;
+namespace ARK\Model\Dataclass;
 
-use ARK\Model\Datatype;
+use ARK\Model\Dataclass;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use Brick\Geo\MultiPoint;
-use Brick\Geo\Point;
 
-class SpatialDatatype extends Datatype
+class FloatDataclass extends Dataclass
 {
-    protected $srid;
-    protected $format;
-    protected $extent;
+    use NumberTrait;
 
-    public function srid() : int
+    public function minimumValue() : float
     {
-        return $this->srid;
+        return $this->minimum;
     }
 
-    public function format() : string
+    public function maximumValue() : float
     {
-        return $this->format;
+        return $this->maximum;
     }
 
-    public function extent() : ?MultiPoint
+    public function multipleOf() : float
     {
-        return MultiPoint::fromText($this->extent, $this->srid);
-    }
-
-    public function minimum() : ?Point
-    {
-        return $this->extent()[0];
-    }
-
-    public function maximum() : ?Point
-    {
-        return $this->extent()[1];
+        return $this->multipleOf;
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_spatial');
-        $builder->addStringField('preset', 1431655765);
-        $builder->addField('srid', 'integer');
-        $builder->addStringField('format', 30);
-        $builder->addStringField('extent', 100);
+        $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_float');
+        $builder->addField('minimum', 'float');
+        $builder->addField('maximum', 'float');
+        $builder->addField('multipleOf', 'float', [], 'multiple_of');
+        $builder->addField('preset', 'float');
+        NumberTrait::buildNumberMetadata($builder);
     }
 }

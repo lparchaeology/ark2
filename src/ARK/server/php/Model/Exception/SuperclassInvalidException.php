@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Integer Datatype.
+ * ARK Exception.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,38 +27,9 @@
  * @since      2.0
  */
 
-namespace ARK\Model\Datatype;
+namespace ARK\Model\Exception;
 
-use ARK\Model\Datatype;
-use ARK\ORM\ClassMetadata;
-use ARK\ORM\ClassMetadataBuilder;
-
-class IntegerDatatype extends Datatype
+class SuperclassInvalidException extends ModelException
 {
-    use NumberTrait;
-
-    public function minimumValue() : int
-    {
-        return $this->minimum;
-    }
-
-    public function maximumValue() : int
-    {
-        return $this->maximum;
-    }
-
-    public function multipleOf() : int
-    {
-        return $this->multipleOf;
-    }
-
-    public static function loadMetadata(ClassMetadata $metadata) : void
-    {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_integer');
-        $builder->addField('minimum', 'integer');
-        $builder->addField('maximum', 'integer');
-        $builder->addField('multipleOf', 'integer', [], 'multiple_of');
-        $builder->addField('preset', 'integer');
-        NumberTrait::buildNumberMetadata($builder);
-    }
+    protected $keyword = 'core.model.exception.superclass.invalid';
 }

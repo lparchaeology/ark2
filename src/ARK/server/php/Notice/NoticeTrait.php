@@ -31,4 +31,23 @@ namespace ARK\Notice;
 
 trait NoticeTrait
 {
+    public function keyword() : string
+    {
+        return $this->keyword ?? 'core.notice.unknown';
+    }
+
+    public function level() : string
+    {
+        return Notice::LEVEL[$this->code()];
+    }
+
+    public function code() : int
+    {
+        return $this->level ?? Notice::ERROR;
+    }
+
+    public function statusCode() : int
+    {
+        return $this->statusCode ?? 500;
+    }
 }

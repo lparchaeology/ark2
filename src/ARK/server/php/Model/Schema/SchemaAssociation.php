@@ -41,7 +41,7 @@ class SchemaAssociation
     use KeywordTrait;
 
     protected $schma;
-    protected $type = '';
+    protected $class = '';
     protected $association = '';
     protected $module1 = '';
     protected $schema1 = '';
@@ -59,9 +59,9 @@ class SchemaAssociation
         return $this->schma;
     }
 
-    public function type() : string
+    public function class() : string
     {
-        return $this->type;
+        return $this->class;
     }
 
     public function name() : string
@@ -102,7 +102,7 @@ class SchemaAssociation
 
         // Key
         $builder->addManyToOneKey('schma', Schema::class);
-        $builder->addStringKey('type', 30, 'type');
+        $builder->addStringKey('class', 30);
         $builder->addStringKey('association', 30);
 
         // Fields

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Item Form Type
+ * ARK Item Form Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,49 +30,37 @@
 
 namespace ARK\Form\Type;
 
-use ARK\Actor\Actor;
-use ARK\Form\Type\AbstractPropertyType;
-use ARK\Form\Type\StaticType;
-use ARK\ORM\ORM;
 use ARK\Model\Item;
-use ARK\Model\Property;
 use ARK\Model\LocalText;
+use ARK\Model\Property;
 use ARK\Vocabulary\Term;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\FormBuilderInterface;
 
 class ItemPropertyType extends AbstractPropertyType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $field = $options['state']['field'];
-        $datatype = $field->attribute()->datatype();
+        $dataclass = $field->attribute()->dataclass();
         if (isset($options['state']['value']['display'])) {
             $builder->add($options['state']['value']['display'], $options['state']['value']['type'], $options['state']['value']['options']);
-            unset($options['state']['value']['options']['choices']);
-            unset($options['state']['value']['options']['placeholder']);
-            $builder->add($datatype->valueName(), HiddenType::class, $options['state']['value']['options']);
+            unset($options['state']['value']['options']['choices'], $options['state']['value']['options']['placeholder']);
+
+            $builder->add($dataclass->valueName(), HiddenType::class, $options['state']['value']['options']);
         } else {
-            $builder->add($datatype->valueName(), $options['state']['value']['type'], $options['state']['value']['options']);
+            $builder->add($dataclass->valueName(), $options['state']['value']['type'], $options['state']['value']['options']);
         }
         if ($options['state']['parameter'] !== null) {
-            $builder->add($datatype->parameterName(), $options['state']['parameter']['type'], $options['state']['parameter']['options']);
+            $builder->add($dataclass->parameterName(), $options['state']['parameter']['type'], $options['state']['parameter']['options']);
         }
         if ($options['state']['format'] !== null) {
-            $builder->add($datatype->formatName(), $options['state']['format']['type'], $options['state']['format']['options']);
+            $builder->add($dataclass->formatName(), $options['state']['format']['type'], $options['state']['format']['options']);
         }
         $builder->setDataMapper($this);
     }
 
-    protected function options()
-    {
-        return [
-            'compound' => true,
-        ];
-    }
-
-    public function mapDataToForms($property, $forms)
+    public function mapDataToForms($property, $forms) : void
     {
         if (!$property instanceof Property) {
             return;
@@ -80,7 +68,7 @@ class ItemPropertyType extends AbstractPropertyType
         $item = $this->value($property, $forms);
         $forms = iterator_to_array($forms);
         if ($item instanceof Item) {
-            $forms['module']->setData($item->schema()->module()->name());
+            $forms['module']->setData($item->schema()->module()->id());
             $forms['item']->setData($item->id());
             // TODO Make generic using module!
             $options = $forms['module']->getParent()->getConfig()->getOptions();
@@ -104,7 +92,7 @@ class ItemPropertyType extends AbstractPropertyType
         }
     }
 
-    public function mapFormsToData($forms, &$property)
+    public function mapFormsToData($forms, &$property) : void
     {
         if (!$property instanceof Property) {
             return;
@@ -119,5 +107,12 @@ class ItemPropertyType extends AbstractPropertyType
             $values['item'] = $item;
             $property->setValue($values);
         }
+    }
+
+    protected function options()
+    {
+        return [
+            'compound' => true,
+        ];
     }
 }

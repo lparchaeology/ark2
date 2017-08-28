@@ -40,7 +40,7 @@ class Notify
     protected $schma = '';
     protected $actionName = '';
     protected $action;
-    protected $type = '';
+    protected $class = '';
     protected $attributeName = '';
     protected $attribute;
     protected $roleName = '';
@@ -69,7 +69,7 @@ class Notify
         // Attributes
         $builder->addStringField('schma', 30);
         $builder->addStringField('actionName', 30, 'action');
-        $builder->addStringField('type', 30);
+        $builder->addStringField('class', 30);
         $builder->addStringField('attributeName', 30, 'attribute');
         $builder->addStringField('roleName', 30, 'role');
 
@@ -88,7 +88,7 @@ class Notify
             SchemaAttribute::class,
             [
                 ['column' => 'schma'],
-                ['column' => 'type'],
+                ['column' => 'class'],
                 ['column' => 'attribute'],
             ]
         );

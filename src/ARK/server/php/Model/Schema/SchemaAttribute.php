@@ -39,7 +39,7 @@ use ARK\Workflow\Permission;
 class SchemaAttribute extends Attribute
 {
     protected $schma;
-    protected $type = '';
+    protected $class = '';
     protected $visibility = 'restricted';
     protected $visibilityTerm;
     protected $read;
@@ -50,9 +50,9 @@ class SchemaAttribute extends Attribute
         return $this->schma;
     }
 
-    public function type() : string
+    public function class() : string
     {
-        return $this->type;
+        return $this->class;
     }
 
     public function visibility() : ?Term
@@ -87,7 +87,7 @@ class SchemaAttribute extends Attribute
 
         // Key
         $builder->addManyToOneKey('schma', Schema::class);
-        $builder->addStringKey('type', 30);
+        $builder->addStringKey('class', 30);
         $builder->addStringKey('attribute', 30);
 
         // Attributes

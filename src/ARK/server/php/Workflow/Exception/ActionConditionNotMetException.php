@@ -31,4 +31,5 @@ namespace ARK\Workflow\Exception;
 
 class ActionConditionNotMetException extends WorkflowException
 {
+    protected $keyword = 'core.workflow.exception.condition.notmet';
 }

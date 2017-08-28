@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Decimal Datatype.
+ * ARK Model Boolean Dataclass.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,53 +27,32 @@
  * @since      2.0
  */
 
-namespace ARK\Model\Datatype;
+namespace ARK\Model\Dataclass;
 
-use ARK\Model\Datatype;
+use ARK\Model\Dataclass;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use Symfony\Component\Validator\Constraints\IsFalse;
+use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\Validator\Constraints\Type;
 
-class DecimalDatatype extends Datatype
+class BooleanDataclass extends Dataclass
 {
-    use NumberTrait;
-
-    protected $precision = 200;
-    protected $scale = 0;
-
-    public function minimumValue() : string
+    public function constraints() : iterable
     {
-        return $this->minimum;
-    }
-
-    public function maximumValue() : string
-    {
-        return $this->maximum;
-    }
-
-    public function multipleOf() : string
-    {
-        return $this->multipleOf;
-    }
-
-    public function precision() : int
-    {
-        return $this->precision;
-    }
-
-    public function scale() : int
-    {
-        return $this->scale;
+        $constraints = parent::constraints();
+        $constraints[] = new Type('bool');
+        if ($this->preset === true) {
+            $constraints[] = new IsTrue();
+        } elseif ($this->preset === false) {
+            $constraints[] = new IsFalse();
+        }
+        return $constraints;
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_decimal');
-        $builder->addField('precision', 'integer', [], 'prec');
-        $builder->addField('scale', 'integer');
-        $builder->addStringField('minimum', 200);
-        $builder->addStringField('maximum', 200);
-        $builder->addStringField('multipleOf', 200, 'multiple_of');
-        $builder->addStringField('preset', 200);
-        NumberTrait::buildNumberMetadata($builder);
+        $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_boolean');
+        $builder->addField('preset', 'boolean');
     }
 }

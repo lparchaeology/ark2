@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Module JsonSchema Normalizer
+ * ARK Model Module JsonSchema Normalizer.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -40,7 +40,7 @@ class SchemaNormalizer extends SerializerAwareNormalizer implements NormalizerIn
 
     public function supportsNormalization($schema, $format = null)
     {
-        return (get_class($schema) === Schema::class);
+        return get_class($schema) === Schema::class;
     }
 
     public function normalize($schema, $format = null, array $context = [])
@@ -52,9 +52,9 @@ class SchemaNormalizer extends SerializerAwareNormalizer implements NormalizerIn
         $schema['schema_id'] = $schema->name();
         $schema['definitions'] = [];
         $context['definitions'] = true;
-        $types = array_merge([$schema->module->name()], $schema->typeNames());
-        foreach ($types as $type) {
-            foreach ($schema->attributes($type, false) as $attribute) {
+        $classes = array_merge([$schema->module->id()], $schema->subclassNames());
+        foreach ($classes as $class) {
+            foreach ($schema->attributes($class, false) as $attribute) {
                 $schema['definitions'] =
                     array_merge($schema['definitions'], $this->serializer->normalize($attribute, $format, $context));
             }
@@ -62,7 +62,7 @@ class SchemaNormalizer extends SerializerAwareNormalizer implements NormalizerIn
         unset($context['definitions']);
         $schema['type'] = 'object';
         $schema['properties'] = [];
-        foreach ($schema->attributes($schema->module->name(), false) as $attribute) {
+        foreach ($schema->attributes($schema->module->id(), false) as $attribute) {
             $schema['properties'][$attribute->name()] = $this->serializer->normalize($attribute, $format, $context);
             if ($attribute->isRequired()) {
                 $schema['required'] = $attribute->name();
@@ -70,9 +70,9 @@ class SchemaNormalizer extends SerializerAwareNormalizer implements NormalizerIn
         }
         $schema['additionalProperties'] = false;
         $anyof = [];
-        foreach ($schema->typeNames() as $type) {
+        foreach ($schema->subclassNames() as $class) {
             $subschema = null;
-            foreach ($schema->attributes($type, false) as $attribute) {
+            foreach ($schema->attributes($class, false) as $attribute) {
                 $subschema['properties'][$attribute->name()] =
                     $this->serializer->normalize($attribute, $format, $context);
                 if ($attribute->isRequired()) {
@@ -80,7 +80,7 @@ class SchemaNormalizer extends SerializerAwareNormalizer implements NormalizerIn
                 }
             }
             if ($subschema) {
-                $subschema['properties'][$type]['enum'] = [$type];
+                $subschema['properties'][$class]['enum'] = [$class];
                 $schema['anyOf'][] = $subschema;
             }
         }

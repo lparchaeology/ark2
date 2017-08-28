@@ -31,4 +31,5 @@ namespace ARK\Workflow\Exception;
 
 class ActionNoAgencyException extends WorkflowException
 {
+    protected $keyword = 'core.workflow.exception.action.noagency';
 }

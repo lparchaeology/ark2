@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Event Form Type
+ * ARK Event Form Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,22 +30,18 @@
 
 namespace ARK\Form\Type;
 
-use ARK\Form\Type\ScalarPropertyType;
 use ARK\Model\Property;
-use ARK\Vocabulary\Term;
+use ARK\Service;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 
 class VocabularyPropertyType extends ScalarPropertyType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder->setDataMapper($this);
     }
 
-    public function mapDataToForms($property, $forms)
+    public function mapDataToForms($property, $forms) : void
     {
         if (!$property instanceof Property) {
             return;
@@ -53,19 +49,25 @@ class VocabularyPropertyType extends ScalarPropertyType
         $term = $this->value($property, $forms);
         $forms = iterator_to_array($forms);
         $attribute = $property->attribute();
-        $termForm = $forms[$attribute->datatype()->valueName()];
-        $vocabularyForm = $forms[$attribute->datatype()->parameterName()];
+        $termForm = $forms[$attribute->dataclass()->valueName()];
+        $vocabularyForm = $forms[$attribute->dataclass()->parameterName()];
         $termForm->setData($term);
         $vocabularyForm->setData($attribute->vocabulary()->concept());
     }
 
-    public function mapFormsToData($forms, &$property)
+    public function mapFormsToData($forms, &$property) : void
     {
         if (!$property instanceof Property) {
             return;
         }
         $forms = iterator_to_array($forms);
-        $property->setValue($forms[$property->attribute()->datatype()->valueName()]->getData());
+        $form = $forms[$property->attribute()->dataclass()->valueName()];
+        $value = $form->getData();
+        $placeholder = $form->getConfig()->getOptions()['placeholder'];
+        if ($placeholder && ($value === $placeholder || $value === Service::translate($placeholder))) {
+            $value = null;
+        }
+        $property->setValue($value);
     }
 
     public function getBlockPrefix()

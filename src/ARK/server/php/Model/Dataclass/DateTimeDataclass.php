@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Boolean Datatype.
+ * ARK Model DateTime Dataclass.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,32 +27,28 @@
  * @since      2.0
  */
 
-namespace ARK\Model\Datatype;
+namespace ARK\Model\Dataclass;
 
-use ARK\Model\Datatype;
+use ARK\Model\Dataclass;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use Symfony\Component\Validator\Constraints\IsFalse;
-use Symfony\Component\Validator\Constraints\IsTrue;
-use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\DateTime;
 
-class BooleanDatatype extends Datatype
+class DateTimeDataclass extends Dataclass
 {
+    use DateTimeTrait;
+
     public function constraints() : iterable
     {
         $constraints = parent::constraints();
-        $constraints[] = new Type('bool');
-        if ($this->preset === true) {
-            $constraints[] = new IsTrue();
-        } elseif ($this->preset === false) {
-            $constraints[] = new IsFalse();
-        }
+        $constraints[] = new DateTime(['format' => $this->php]);
         return $constraints;
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_boolean');
-        $builder->addField('preset', 'boolean');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_datetime');
+        DateTimeTrait::buildDateTimeMetadata($builder);
+        $builder->addField('preset', 'datetime');
     }
 }

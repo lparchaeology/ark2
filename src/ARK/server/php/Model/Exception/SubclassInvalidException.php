@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Time Datatype.
+ * ARK Exception.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,28 +27,9 @@
  * @since      2.0
  */
 
-namespace ARK\Model\Datatype;
+namespace ARK\Model\Exception;
 
-use ARK\Model\Datatype;
-use ARK\ORM\ClassMetadata;
-use ARK\ORM\ClassMetadataBuilder;
-use Symfony\Component\Validator\Constraints\Time;
-
-class TimeDatatype extends Datatype
+class SubclassInvalidException extends ModelException
 {
-    use DateTimeTrait;
-
-    public function constraints() : iterable
-    {
-        $constraints = parent::constraints();
-        $constraints[] = new Time($this->php);
-        return $constraints;
-    }
-
-    public static function loadMetadata(ClassMetadata $metadata) : void
-    {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_time');
-        DateTimeTrait::buildDateTimeMetadata($builder);
-        $builder->addField('preset', 'time');
-    }
+    protected $keyword = 'core.model.exception.subclass.invalid';
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model DateTime Fragment
+ * ARK Model DateTime Fragment.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,32 +25,30 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model\Fragment;
 
 use ARK\Model\Fragment;
-use ARK\Model\Fragment\DateTimeTrait;
 use ARK\ORM\ClassMetadata;
 use DateTime;
 use DateTimeZone;
 
 class DateTimeFragment extends Fragment
 {
-    protected $pattern = DateTime::ATOM;
-
     use DateTimeTrait;
 
-    protected function makeDate($date)
+    protected $pattern = DateTime::ATOM;
+
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
-        $dt =  ($date instanceof DateTime ? $date->format($this->pattern) : $date);
-        $tz = new DateTimeZone(($this->parameter ?: 'UTC'));
-        return new DateTime($dt, $tz);
+        self::buildSubclassMetadata($metadata, self::class);
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    protected function makeDate($date) : DateTime
     {
-        return self::buildSubclassMetadata($metadata, self::class);
+        $dt = ($date instanceof DateTime ? $date->format($this->pattern) : $date);
+        $tz = new DateTimeZone(($this->parameter ?: 'UTC'));
+        return new DateTime($dt, $tz);
     }
 }

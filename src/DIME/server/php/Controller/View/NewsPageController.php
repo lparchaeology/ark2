@@ -38,7 +38,7 @@ class NewsPageController extends DimeFormController
 {
     public function buildData(Request $request)
     {
-        $data['finds']['items'] = ORM::findBy(Find::class, ['visibility' => 'public'], ['item' => 'DESC']);
+        $data['finds']['items'] = ORM::findBy(Find::class, ['visibility' => 'public'], ['id' => 'DESC']);
         return $data;
     }
 

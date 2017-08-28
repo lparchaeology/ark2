@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Command Message
+ * ARK Command Message.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\ORM\Bus;
@@ -38,7 +37,7 @@ class GenerateItemEntityMessage
     protected $classname = '';
     protected $schema = '';
 
-    public function __construct($project, $namespace, $entity, $classname, $schema)
+    public function __construct(string $project, string $namespace, string $entity, string $classname, string $schema)
     {
         $this->project = $project;
         $this->namespace = $namespace;
@@ -47,27 +46,27 @@ class GenerateItemEntityMessage
         $this->schema = $schema;
     }
 
-    public function project()
+    public function project() : string
     {
         return $this->project;
     }
 
-    public function namespace()
+    public function namespace() : string
     {
         return $this->namespace;
     }
 
-    public function entity()
+    public function entity() : string
     {
         return $this->entity;
     }
 
-    public function classname()
+    public function classname() : string
     {
         return $this->classname;
     }
 
-    public function schema()
+    public function schema() : string
     {
         return $this->schema;
     }

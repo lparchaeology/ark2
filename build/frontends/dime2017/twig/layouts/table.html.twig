@@ -78,7 +78,7 @@
                                 <span class="dime-icon icon-user-focus small"></span>
                             </a>
                         {% endif %}
-                        <a href="{{ path(state.modules[item.schema.module.name].route, {'id': item.id}) }}">
+                        <a href="{{ path(state.modules[item.schema.module.id].route, {'id': item.id}) }}">
                             <span class="glyphicon glyphicon-file"></span>
                         </a>
                     </td>
@@ -93,7 +93,7 @@
 <script>
 window.itemkey =
     {% if items[0] is defined %}
-        "{{ items[0].schema.module.name }}";
+        "{{ items[0].schema.module.id }}";
     {% else %}
         {{null}}
     {% endif %}

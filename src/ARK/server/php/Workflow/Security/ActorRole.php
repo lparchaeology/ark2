@@ -110,7 +110,7 @@ class ActorRole
         $builder = new ClassMetadataBuilder($metadata, 'ark_workflow_actor_role');
 
         // Key
-        $builder->addManyToOneKey('actor', Actor::class, 'actor', 'item');
+        $builder->addManyToOneKey('actor', Actor::class, 'actor', 'id');
         $builder->addStringKey('role', 30);
 
         // Attributes
@@ -118,6 +118,6 @@ class ActorRole
         $builder->addField('expiresAt', 'datetime', [], 'expires_at');
 
         // Relationships
-        $builder->addManyToOneField('agentFor', Actor::class, 'agent_for', 'item');
+        $builder->addManyToOneField('agentFor', Actor::class, 'agent_for', 'id');
     }
 }

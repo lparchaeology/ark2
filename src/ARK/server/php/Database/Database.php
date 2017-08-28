@@ -38,7 +38,7 @@ class Database
 {
     private $app;
     private $modules = [];
-    private $types = [];
+    private $datatypes = [];
     private $fragmentTables = [];
 
     public function __construct(Application $app)
@@ -114,17 +114,17 @@ class Database
         return $this->modules;
     }
 
-    public function getTypes() : ?iterable
+    public function getDatatypes() : ?iterable
     {
-        $this->loadTypes();
-        return $this->types;
+        $this->loadDatatypes();
+        return $this->datatypes;
     }
 
-    public function getFragmentType(string $class) : ?iterable
+    public function getFragmentDatatype(string $class) : ?iterable
     {
-        $this->loadTypes();
-        foreach ($this->types as $type => $attributes) {
-            if ($attributes['data_class'] === $class) {
+        $this->loadDatatypes();
+        foreach ($this->datatypes as $datatype => $attributes) {
+            if ($attributes['data_entity'] === $class) {
                 return $attributes;
             }
         }
@@ -133,17 +133,17 @@ class Database
 
     public function getFragmentTables() : ?iterable
     {
-        $this->loadTypes();
+        $this->loadDatatypes();
         return $this->fragmentTables;
     }
 
-    public function getTypeEntities(string $module = null) : ?iterable
+    public function getSubclassEntities(string $module = null) : ?iterable
     {
         if ($module === null) {
             return [];
         }
         $sql = '
-            SELECT ark_vocabulary_parameter.term as type, ark_vocabulary_parameter.value as classname
+            SELECT ark_vocabulary_parameter.term as class, ark_vocabulary_parameter.value as entity
             FROM ark_schema, ark_vocabulary_parameter
             WHERE ark_schema.module = :module
             AND ark_schema.enabled = true
@@ -153,7 +153,7 @@ class Database
         ';
         $params = [
             ':module' => $module,
-            ':parameter' => 'classname',
+            ':parameter' => 'entity',
         ];
 
         return $this->core()->fetchAll($sql, $params);
@@ -188,7 +188,7 @@ class Database
             SELECT *
             FROM ark_item_actor, ark_fragment_string
             WHERE ark_fragment_string.module = :module
-            AND ark_fragment_string.item = ark_item_actor.item
+            AND ark_fragment_string.item = ark_item_actor.id
             AND ark_fragment_string.attribute = :attribute
         ';
         $params = [
@@ -471,10 +471,10 @@ class Database
             ];
             $res = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
         }
-        if (isset($query['type'])) {
-            $sql = $pre."AND attribute = 'type' AND value IN (?)";
+        if (isset($query['class'])) {
+            $sql = $pre."AND attribute = 'class' AND value IN (?)";
             $params = [
-                $query['type'],
+                $query['class'],
             ];
             $typ = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
             $res = ($res ? array_intersect($res, $typ) : $typ);
@@ -552,28 +552,28 @@ class Database
         }
     }
 
-    private function loadTypes() : void
+    private function loadDatatypes() : void
     {
-        if ($this->types) {
+        if ($this->datatypes) {
             return;
         }
         $sql = '
             SELECT *
-            FROM ark_datatype_type
+            FROM ark_dataclass_type
             WHERE enabled = true
         ';
-        $types = $this->core()->fetchAll($sql, []);
-        foreach ($types as $type) {
-            $this->types[$type['type']] = $type;
-            if ($type['data_table']) {
-                $this->fragmentTables[] = $type['data_table'];
+        $datatypes = $this->core()->fetchAll($sql, []);
+        foreach ($datatypes as $datatype) {
+            $this->datatypes[$datatype['datatype']] = $datatype;
+            if ($datatype['data_table']) {
+                $this->fragmentTables[] = $datatype['data_table'];
             }
         }
     }
 
-    private function getFragmentTable(string $type) : ?iterable
+    private function getFragmentTable(string $datatype) : ?iterable
     {
-        $this->loadTypes();
-        return $this->types[$type]['data_table'];
+        $this->loadDatatypes();
+        return $this->datatypes[$datatype]['data_table'];
     }
 }

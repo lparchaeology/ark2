@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK ORM Item Persister
+ * ARK ORM Item Persister.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,24 +25,24 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model\Fragment;
 
+use ARK\Model\Attribute;
 use ARK\Model\Schema;
 use ARK\Service;
 
 trait ItemFragmentTrait
 {
-    public function findProperties($id, Schema $schema, $type)
+    public function findProperties(string $id, Schema $schema, string $type)
     {
         $attributes = $schema->attributes($type);
         foreach ($attributes as $attribute) {
             $properties[$attribute->name()] = null;
             $attribs[$attribute->name()] = $attribute;
         }
-        $frags = $this->getItemFragments($schema->module()->name(), $id);
+        $frags = $this->getItemFragments($schema->module()->id(), $id);
         $members = [];
         foreach ($frags as $key => $frag) {
             if ($frag['object'] !== null) {
@@ -64,14 +64,39 @@ trait ItemFragmentTrait
         return $properties;
     }
 
-    private function buildAttributeValue($attribute, $frag, array $members)
+    // TODO Move to ORM persister
+    protected function getItemFragments(string $module, string $item)
+    {
+        $sql = '';
+        $tables = Service::database()->getFragmentTables();
+        foreach ($tables as $table) {
+            if ($sql) {
+                $sql .= '
+                    UNION ALL
+                ';
+            }
+            $sql .= "
+                SELECT *
+                FROM $table
+                WHERE module = :module
+                AND item = :item
+            ";
+        }
+        $params = [
+            ':module' => $module,
+            ':item' => $item,
+        ];
+        return $this->conn->fetchAll($sql, $params);
+    }
+
+    private function buildAttributeValue(Attribute $attribute, $frag, iterable $members)
     {
         if ($attribute->format()->hasAttributes()) {
             foreach ($attribute->format()->attributes() as $attr) {
                 $properties[$attr->name()] = null;
                 $attributes[$attr->name()] = $attr;
             }
-            if ($attribute->format()->datatype()->isObject()) {
+            if ($attribute->format()->dataclass()->isObject()) {
                 foreach ($members[$frag['fid']] as $member) {
                     if (isset($member['object']) && $member['object'] === $frag['fid']) {
                         $attributeId = $member['attribute'];
@@ -92,30 +117,5 @@ trait ItemFragmentTrait
         } else {
             return $frag['value'];
         }
-    }
-
-    // TODO Move to ORM persister
-    protected function getItemFragments($module, $item)
-    {
-        $sql = '';
-        $tables = Service::database()->getFragmentTables();
-        foreach ($tables as $table) {
-            if ($sql) {
-                $sql .= "
-                    UNION ALL
-                ";
-            }
-            $sql .= "
-                SELECT *
-                FROM $table
-                WHERE module = :module
-                AND item = :item
-            ";
-        }
-        $params = array(
-            ':module' => $module,
-            ':item' => $item,
-        );
-        return $this->conn->fetchAll($sql, $params);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Float Datatype.
+ * ARK Model Decimal Dataclass.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,41 +25,55 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model\Datatype;
+namespace ARK\Model\Dataclass;
 
-use ARK\Model\Datatype;
+use ARK\Model\Dataclass;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
-class FloatDatatype extends Datatype
+class DecimalDataclass extends Dataclass
 {
     use NumberTrait;
 
-    public function minimumValue() : float
+    protected $precision = 200;
+    protected $scale = 0;
+
+    public function minimumValue() : string
     {
         return $this->minimum;
     }
 
-    public function maximumValue() : float
+    public function maximumValue() : string
     {
         return $this->maximum;
     }
 
-    public function multipleOf() : float
+    public function multipleOf() : string
     {
         return $this->multipleOf;
     }
 
+    public function precision() : int
+    {
+        return $this->precision;
+    }
+
+    public function scale() : int
+    {
+        return $this->scale;
+    }
+
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_float');
-        $builder->addField('minimum', 'float');
-        $builder->addField('maximum', 'float');
-        $builder->addField('multipleOf', 'float', [], 'multiple_of');
-        $builder->addField('preset', 'float');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_decimal');
+        $builder->addField('precision', 'integer', [], 'prec');
+        $builder->addField('scale', 'integer');
+        $builder->addStringField('minimum', 200);
+        $builder->addStringField('maximum', 200);
+        $builder->addStringField('multipleOf', 200, 'multiple_of');
+        $builder->addStringField('preset', 200);
         NumberTrait::buildNumberMetadata($builder);
     }
 }

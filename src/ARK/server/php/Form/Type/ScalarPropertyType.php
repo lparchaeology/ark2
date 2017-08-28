@@ -37,13 +37,13 @@ class ScalarPropertyType extends AbstractPropertyType
     public function buildForm(FormBuilderInterface $builder, iterable $options) : void
     {
         $field = $options['state']['field'];
-        $datatype = $field->attribute()->datatype();
-        $builder->add($datatype->valueName(), $options['state']['value']['type'], $options['state']['value']['options']);
+        $dataclass = $field->attribute()->dataclass();
+        $builder->add($dataclass->valueName(), $options['state']['value']['type'], $options['state']['value']['options']);
         if ($options['state']['parameter'] !== null) {
-            $builder->add($datatype->parameterName(), $options['state']['parameter']['type'], $options['state']['parameter']['options']);
+            $builder->add($dataclass->parameterName(), $options['state']['parameter']['type'], $options['state']['parameter']['options']);
         }
         if ($options['state']['format'] !== null) {
-            $builder->add($datatype->formatName(), $options['state']['format']['type'], $options['state']['format']['options']);
+            $builder->add($dataclass->formatName(), $options['state']['format']['type'], $options['state']['format']['options']);
         }
         $builder->setDataMapper($this);
     }
@@ -57,17 +57,17 @@ class ScalarPropertyType extends AbstractPropertyType
         $propertyForm = $forms->current()->getParent();
         $forms = iterator_to_array($forms);
         $attribute = $property->attribute();
-        $datatype = $attribute->datatype();
-        $valueName = $datatype->valueName();
-        $formatName = $datatype->formatName();
-        $parameterName = $datatype->parameterName();
+        $dataclass = $attribute->dataclass();
+        $valueName = $dataclass->valueName();
+        $formatName = $dataclass->formatName();
+        $parameterName = $dataclass->parameterName();
 
         $value = $property->value();
         if ($value === null || $value === $attribute->emptyValue()) {
             $value = $propertyForm->getConfig()->getOption('default_data');
         }
 
-        if ($datatype->isAtomic()) {
+        if ($dataclass->isAtomic()) {
             $forms[$valueName]->setData($value);
             return;
         }
@@ -87,10 +87,10 @@ class ScalarPropertyType extends AbstractPropertyType
             return;
         }
         $forms = iterator_to_array($forms);
-        $datatype = $property->attribute()->datatype();
+        $dataclass = $property->attribute()->dataclass();
         $value = null;
-        if ($datatype->isAtomic()) {
-            $value = $forms[$datatype->valueName()]->getData();
+        if ($dataclass->isAtomic()) {
+            $value = $forms[$dataclass->valueName()]->getData();
         } else {
             foreach ($forms as $key => $form) {
                 $value[$key] = $forms[$key]->getData();

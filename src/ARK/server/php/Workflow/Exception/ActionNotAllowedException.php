@@ -31,4 +31,5 @@ namespace ARK\Workflow\Exception;
 
 class ActionNotAllowedException extends WorkflowException
 {
+    protected $keyword = 'core.workflow.exception.action.notallowed';
 }

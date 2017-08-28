@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Date Datatype.
+ * ARK Model Blob Dataclass.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,28 +27,17 @@
  * @since      2.0
  */
 
-namespace ARK\Model\Datatype;
+namespace ARK\Model\Dataclass;
 
-use ARK\Model\Datatype;
+use ARK\Model\Dataclass;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use Symfony\Component\Validator\Constraints\Date;
 
-class DateDatatype extends Datatype
+class BlobDataclass extends Dataclass
 {
-    use DateTimeTrait;
-
-    public function constraints() : iterable
-    {
-        $constraints = parent::constraints();
-        $constraints[] = new Date();
-        return $constraints;
-    }
-
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_date');
-        DateTimeTrait::buildDateTimeMetadata($builder);
-        $builder->addField('preset', 'date');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_blob');
+        $builder->addField('preset', 'blob');
     }
 }

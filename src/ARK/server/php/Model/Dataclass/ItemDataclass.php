@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Item Datatype.
+ * ARK Model Item Dataclass.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,9 +27,9 @@
  * @since      2.0
  */
 
-namespace ARK\Model\Datatype;
+namespace ARK\Model\Dataclass;
 
-use ARK\Model\Datatype;
+use ARK\Model\Dataclass;
 use ARK\Model\Fragment;
 use ARK\Model\Item;
 use ARK\Model\Module;
@@ -40,7 +40,7 @@ use ARK\Vocabulary\Vocabulary;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints\Type;
 
-class ItemDatatype extends Datatype
+class ItemDataclass extends Dataclass
 {
     protected $module;
 
@@ -70,7 +70,7 @@ class ItemDatatype extends Datatype
 
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
-        $builder = new ClassMetadataBuilder($metadata, 'ark_datatype_item');
+        $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_item');
         $builder->addStringField('module', 30, 'module', true);
         $builder->addStringField('preset', 30);
     }
@@ -87,7 +87,7 @@ class ItemDatatype extends Datatype
     protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null) : void
     {
         if ($data instanceof Item) {
-            $fragment->setValue($data->id(), $data->schema()->module()->name());
+            $fragment->setValue($data->id(), $data->schema()->module()->id());
         } elseif (is_array($data)) {
             $fragment->setValue($data['item'], $data['module']);
         }

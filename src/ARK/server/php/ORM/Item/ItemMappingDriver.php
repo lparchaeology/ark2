@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK ORM Item Metadata Driver
+ * ARK ORM Item Metadata Driver.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,27 +30,24 @@
 
 namespace ARK\ORM\Item;
 
-use ARK\Service;
 use ARK\Model\VersionTrait;
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\ORM\Item\ItemRepository;
-use ARK\ORM\Item\ItemIdGenerator;
+use ARK\Service;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
-use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 class ItemMappingDriver implements MappingDriver
 {
     private $namespace = '';
-    private $classNames = null;
+    private $classNames;
 
-    public function __construct($namespace)
+    public function __construct(string $namespace)
     {
         $this->namespace = $namespace;
     }
 
-    public function loadMetadataForClass($className, ClassMetadata $metadata)
+    public function loadMetadataForClass($className, ClassMetadata $metadata) : void
     {
         // Table
         $module = Service::database()->getModuleForClassName($className);
@@ -62,28 +59,28 @@ class ItemMappingDriver implements MappingDriver
         $builder->setCustomRepositoryClass(ItemRepository::class);
 
         // Key
-        $builder->addStringKey('item', 30);
+        $builder->addStringKey('id', 30);
         $metadata->setIdGeneratorType(ClassMetadataInfo::GENERATOR_TYPE_CUSTOM);
         $metadata->setCustomGeneratorDefinition(['class' => ItemIdGenerator::class]);
 
         // Fields
         $builder->addStringField('module', 30);
         $builder->addStringField('schma', 30);
-        $typeEntities = Service::database()->getTypeEntities($module['module']);
-        if ($typeEntities) {
-            $builder->setSingleTableInheritance()->setDiscriminatorColumn('type', 'string', 30);
+        $subclasses = Service::database()->getSubclassEntities($module['module']);
+        if ($subclasses) {
+            $builder->setSingleTableInheritance()->setDiscriminatorColumn('class', 'string', 30);
             $metadata->addDiscriminatorMapClass('', $module['classname']);
-            foreach ($typeEntities as $type) {
-                $metadata->addDiscriminatorMapClass($type['type'], $type['classname']);
-                $classNames[] = $type['classname'];
+            foreach ($subclasses as $subclass) {
+                $metadata->addDiscriminatorMapClass($subclass['class'], $subclass['entity']);
+                $classNames[] = $subclass['entity'];
             }
         } else {
-            $builder->addStringField('type', 30);
+            $builder->addStringField('class', 30);
         }
         $builder->addStringField('status', 30, 'status', false, ['default' => 'allocated']);
         $builder->addStringField('visibility', 30, 'visibility', false, ['default' => 'restricted']);
         $builder->addStringField('parentModule', 30, 'parent_module', true);
-        $builder->addStringField('parentItem', 30, 'parent_item', true);
+        $builder->addStringField('parentId', 30, 'parent_id', true);
         $builder->addStringField('idx', 30);
         $builder->addStringField('label', 30);
         VersionTrait::buildVersionMetadata($builder);
@@ -98,10 +95,10 @@ class ItemMappingDriver implements MappingDriver
         if ($this->classNames === null) {
             $module = Service::database()->getModuleForNamespace($this->namespace);
             $this->classNames[] = $module['classname'];
-            $typeEntities = Service::database()->getTypeEntities($module['module']);
-            if ($typeEntities) {
-                foreach ($typeEntities as $type) {
-                    $this->classNames[] = $type['classname'];
+            $subclasses = Service::database()->getSubclassEntities($module['module']);
+            if ($subclasses) {
+                foreach ($subclasses as $subclass) {
+                    $this->classNames[] = $subclass['entity'];
                 }
             }
         }
@@ -113,7 +110,7 @@ class ItemMappingDriver implements MappingDriver
         return Service::database()->getModuleForClassName($className) === null;
     }
 
-    public function loadMetadataForGenerator($className, ClassMetadata $metadata)
+    public function loadMetadataForGenerator($className, ClassMetadata $metadata) : void
     {
         // Table
         $module = Service::database()->getModuleForClassName($className);

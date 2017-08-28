@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Schema Fragment
+ * ARK Model Schema Fragment.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,38 +25,32 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model;
 
+use ARK\Model\Fragment\ObjectFragment;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\ORM\ORM;
-use ARK\Model\Attribute;
-use ARK\Model\Type;
-use ARK\Model\Item;
-use ARK\Model\VersionTrait;
-use ARK\Model\Fragment\ObjectFragment;
 use ARK\Service;
 
 abstract class Fragment
 {
     use VersionTrait;
 
-    protected $fid = null;
+    protected $fid;
     protected $module = '';
     protected $item = '';
     protected $attribute = '';
-    protected $type = '';
+    protected $datatype = '';
     protected $format = '';
     protected $parameter = '';
-    protected $value = null;
+    protected $value;
     protected $span = false;
-    protected $extent = null;
-    protected $object = null;
+    protected $extent;
+    protected $object;
 
-    public function __toString()
+    public function __toString() : string
     {
         if ($this->span) {
             return '['.$this->value.' -> '.$this->extent.']';
@@ -64,43 +58,43 @@ abstract class Fragment
         return $this->value;
     }
 
-    public function id()
+    public function id() : int
     {
         return $this->fid;
     }
 
-    public function module()
+    public function module() : string
     {
         return $this->module;
     }
 
-    public function item()
+    public function item() : string
     {
         return $this->item;
     }
 
-    public function setItem(Item $item)
+    public function setItem(Item $item) : void
     {
         $this->item = $item->id();
-        $this->module = $item->schema()->module()->name();
+        $this->module = $item->schema()->module()->id();
     }
 
-    public function attribute()
+    public function attribute() : string
     {
         return $this->attribute;
     }
 
-    public function type()
+    public function datatype() : string
     {
-        return $this->type;
+        return $this->datatype;
     }
 
-    public function format()
+    public function format() : string
     {
         return $this->format;
     }
 
-    public function parameter()
+    public function parameter() : string
     {
         return $this->parameter;
     }
@@ -110,7 +104,7 @@ abstract class Fragment
         return $this->value;
     }
 
-    public function isSpan()
+    public function isSpan() : bool
     {
         return $this->span;
     }
@@ -120,7 +114,7 @@ abstract class Fragment
         return $this->extent;
     }
 
-    public function setValue($value, $parameter = null, $format = null)
+    public function setValue($value, $parameter = null, $format = null) : void
     {
         $this->value = $value;
         $this->span = false;
@@ -128,7 +122,7 @@ abstract class Fragment
         $this->format = $format;
     }
 
-    public function setSpan($value, $extent, $parameter = null, $format = null)
+    public function setSpan($value, $extent, $parameter = null, $format = null) : void
     {
         $this->value = $value;
         $this->span = true;
@@ -137,42 +131,42 @@ abstract class Fragment
         $this->format = $format;
     }
 
-    public function object()
+    public function object() : ?ObjectFragment
     {
         return $this->object;
     }
 
-    public function setObject(ObjectFragment $object)
+    public function setObject(ObjectFragment $object) : void
     {
         $this->object = $object;
     }
 
-    public static function create($module, $item, Attribute $attribute, ObjectFragment $object = null)
+    public static function create(string $module, string $item, Attribute $attribute, ObjectFragment $object = null) : Fragment
     {
-        $class = $attribute->datatype()->type()->dataClass();
-        $fragment = new $class;
+        $class = $attribute->dataclass()->datatype()->dataEntity();
+        $fragment = new $class();
         $fragment->module = $module;
         $fragment->item = $item;
         $fragment->attribute = $attribute->name();
-        $fragment->type = $attribute->datatype()->type()->id();
+        $fragment->datatype = $attribute->dataclass()->datatype()->id();
         $fragment->object = $object;
         $fragment->refreshVersion();
         return $fragment;
     }
 
-    public static function createFromAttribute(Attribute $attribute, ObjectFragment $object = null)
+    public static function createFromAttribute(Attribute $attribute, ObjectFragment $object = null) : Fragment
     {
-        $class = $attribute->datatype()->type()->dataClass();
-        $fragment = new $class;
+        $class = $attribute->dataclass()->datatype()->dataEntity();
+        $fragment = new $class();
         $fragment->attribute = $attribute->name();
-        $fragment->type = $attribute->datatype()->type()->id();
+        $fragment->datatype = $attribute->dataclass()->datatype()->id();
         $fragment->span = $attribute->isSpan();
         $fragment->object = $object;
         $fragment->refreshVersion();
         return $fragment;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata);
@@ -182,7 +176,7 @@ abstract class Fragment
         $builder->addStringField('module', 30);
         $builder->addStringField('item', 30);
         $builder->addStringField('attribute', 30);
-        $builder->addStringField('type', 30, 'type');
+        $builder->addStringField('datatype', 30);
         $builder->addStringField('format', 30);
         $builder->addStringField('parameter', 30);
         $builder->addField('span', 'boolean');
@@ -192,17 +186,17 @@ abstract class Fragment
         $builder->addManyToOneField('object', ObjectFragment::class, 'object', 'fid', true);
     }
 
-    public static function buildSubclassMetadata(ClassMetadata $metadata, $class)
+    public static function buildSubclassMetadata(ClassMetadata $metadata, string $class) : void
     {
-        $type = Service::database()->getFragmentType($class);
-        $builder = new ClassMetadataBuilder($metadata, $type['data_table']);
+        $datatype = Service::database()->getFragmentDatatype($class);
+        $builder = new ClassMetadataBuilder($metadata, $datatype['data_table']);
         $builder->addGeneratedKey('fid');
-        if ($type['storage_type'] == 'string') {
-            $builder->addStringField('value', $type['storage_size']);
-            $builder->addStringField('extent', $type['storage_size']);
+        if ($datatype['storage_type'] === 'string') {
+            $builder->addStringField('value', $datatype['storage_size']);
+            $builder->addStringField('extent', $datatype['storage_size']);
         } else {
-            $builder->addField('value', $type['storage_type']);
-            $builder->addField('extent', $type['storage_type']);
+            $builder->addField('value', $datatype['storage_type']);
+            $builder->addField('extent', $datatype['storage_type']);
         }
     }
 }

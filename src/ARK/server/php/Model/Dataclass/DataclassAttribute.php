@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Workflow Registry.
+ * ARK Model Dataclass Attribute.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,35 +27,45 @@
  * @since      2.0
  */
 
-namespace ARK\Workflow;
+namespace ARK\Model\Dataclass;
 
-use ARK\Model\ItemPropertAccessor;
-use Symfony\Component\Workflow\Marking;
+use ARK\Model\Attribute;
+use ARK\Model\Dataclass;
+use ARK\ORM\ClassMetadata;
+use ARK\ORM\ClassMetadataBuilder;
 
-class ItemPropertyMarkingStore implements MarkingStoreInterface
+class DataclassAttribute extends Attribute
 {
-    private $property;
-    private $propertyAccessor;
+    protected $parent;
+    protected $sequence = 0;
+    protected $root = false;
 
-    public function __construct(string $attribute)
+    public function parent() : Dataclass
     {
-        $this->property = $attribute;
-        $this->propertyAccessor = new ItemPropertAccessor();
+        return $this->parent;
     }
 
-    public function getMarking($subject) : ?Marking
+    public function sequence() : int
     {
-        $place = $this->propertyAccessor->getValue($subject, $this->property);
-
-        if (!$place) {
-            return new Marking();
-        }
-
-        return new Marking([$place => 1]);
+        return $this->sequence;
     }
 
-    public function setMarking($subject, Marking $marking) : void
+    public function isRoot() : bool
     {
-        $this->propertyAccessor->setValue($subject, $this->property, key($marking->getPlaces()));
+        return $this->root;
+    }
+
+    public static function loadMetadata(ClassMetadata $metadata) : void
+    {
+        // Table
+        $builder = new ClassMetadataBuilder($metadata, 'ark_dataclass_attribute');
+
+        // Key
+        $builder->addManyToOneKey('parent', 'ARK\Model\Dataclass', 'parent', 'dataclass', false);
+        $builder->addStringKey('attribute', 30);
+
+        // Attributes
+        $builder->addField('sequence', 'integer');
+        $builder->addField('root', 'boolean');
     }
 }

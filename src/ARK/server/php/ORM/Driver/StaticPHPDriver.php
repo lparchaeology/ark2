@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK ORM Unit of Work
+ * ARK ORM Unit of Work.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\ORM\Driver;
@@ -33,9 +32,7 @@ namespace ARK\ORM\Driver;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\Common\Persistence\Mapping\MappingException;
-use Exception;
 use Gedmo\Mapping\Driver;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 /**
  * The StaticPHPDriver calls a static loadMetadata() method on your entity
@@ -55,17 +52,17 @@ class StaticPHPDriver implements MappingDriver, Driver
         $this->addPaths((array) $paths);
     }
 
-    public function addPaths(array $paths)
+    public function addPaths(iterable $paths) : void
     {
         $this->paths = array_unique(array_merge($this->paths, $paths));
     }
 
-    public function loadMetadataForClass($className, ClassMetadata $metadata)
+    public function loadMetadataForClass($className, ClassMetadata $metadata) : void
     {
         $className::loadMetadata($metadata);
     }
 
-    public function readExtendedMetadata($meta, array &$config)
+    public function readExtendedMetadata($meta, iterable &$config) : void
     {
         if ($meta->getReflectionClass()->hasMethod('readExtendedMetadata')) {
             $className = $meta->name;
@@ -73,7 +70,7 @@ class StaticPHPDriver implements MappingDriver, Driver
         }
     }
 
-    public function getAllClassNames()
+    public function getAllClassNames() : iterable
     {
         if ($this->classNames !== null) {
             return $this->classNames;
@@ -85,7 +82,6 @@ class StaticPHPDriver implements MappingDriver, Driver
 
         $classes = [];
         $includedFiles = [];
-
         foreach ($this->paths as $path) {
             if (is_dir($path)) {
                 $iterator = new \RecursiveIteratorIterator(
@@ -94,7 +90,7 @@ class StaticPHPDriver implements MappingDriver, Driver
                 );
 
                 foreach ($iterator as $file) {
-                    if ($file->getBasename('.php') == $file->getBasename()) {
+                    if ($file->getBasename('.php') === $file->getBasename()) {
                         continue;
                     }
 
@@ -114,7 +110,7 @@ class StaticPHPDriver implements MappingDriver, Driver
         foreach ($declared as $className) {
             $rc = new \ReflectionClass($className);
             $sourceFile = $rc->getFileName();
-            if (in_array($sourceFile, $includedFiles) && !$this->isTransient($className)) {
+            if (in_array($sourceFile, $includedFiles, true) && !$this->isTransient($className)) {
                 $classes[] = $className;
             }
         }
@@ -124,12 +120,12 @@ class StaticPHPDriver implements MappingDriver, Driver
         return $classes;
     }
 
-    public function isTransient($className)
+    public function isTransient($className) : bool
     {
         return !method_exists($className, 'loadMetadata');
     }
 
-    public function setOriginalDriver($driver)
+    public function setOriginalDriver($driver) : void
     {
     }
 }

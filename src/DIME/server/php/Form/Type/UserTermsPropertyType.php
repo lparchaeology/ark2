@@ -41,9 +41,9 @@ class UserTermsPropertyType extends AbstractPropertyType
     public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $field = $options['state']['field'];
-        $datatype = $field->attribute()->datatype();
+        $dataclass = $field->attribute()->dataclass();
         $builder->add('agree', CheckboxType::class, ['label' => 'core.user.terms.agree', 'required' => true]);
-        $builder->add($datatype->valueName(), HiddenType::class, []);
+        $builder->add($dataclass->valueName(), HiddenType::class, []);
         $builder->setDataMapper($this);
     }
 
@@ -53,14 +53,14 @@ class UserTermsPropertyType extends AbstractPropertyType
             return;
         }
         $forms = iterator_to_array($forms);
-        $datatype = $property->attribute()->datatype();
+        $dataclass = $property->attribute()->dataclass();
         $value = $property->value();
         if ($value instanceof Term) {
-            $forms[$datatype->valueName()]->setData($value->name());
+            $forms[$dataclass->valueName()]->setData($value->name());
             $forms['agree']->setData(true);
         } else {
             $term = $property->attribute()->vocabulary()->defaultTerm();
-            $forms[$datatype->valueName()]->setData($term->name());
+            $forms[$dataclass->valueName()]->setData($term->name());
             $forms['agree']->setData(false);
         }
     }
@@ -74,8 +74,8 @@ class UserTermsPropertyType extends AbstractPropertyType
         if (!$forms['agree']->getData()) {
             return;
         }
-        $datatype = $property->attribute()->datatype();
-        $value = $forms[$datatype->valueName()]->getData();
+        $dataclass = $property->attribute()->dataclass();
+        $value = $forms[$dataclass->valueName()]->getData();
         $property->setValue($value);
     }
 

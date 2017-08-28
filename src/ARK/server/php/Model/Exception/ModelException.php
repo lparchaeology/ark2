@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Transaction
+ * ARK Exception.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,24 +25,12 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
-namespace ARK\Model\Transaction;
+namespace ARK\Model\Exception;
 
-use ARK\ORM\ORM;
-use ARK\Service;
+use ARK\Notice\NoticeException;
 
-class Transaction
+class ModelException extends NoticeException
 {
-    protected static function execute($data)
-    {
-        $result = self::process($data);
-        ORM::flush($data);
-        return $result;
-    }
-
-    protected static function process($data)
-    {
-    }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Local Text
+ * ARK Model Local Text.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,30 +25,28 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model;
 
 use ARK\Service;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class LocalText
 {
     protected $content = [];
     protected $mediatype = 'text/plain';
 
-    public function languages()
+    public function languages() : iterable
     {
         return array_keys($this->content);
     }
 
-    public function contents()
+    public function contents() : iterable
     {
         return $this->content;
     }
 
-    public function content($language = null)
+    public function content($language = null) : string
     {
         // If no language defined, use the default
         if (!$language) {
@@ -73,7 +71,7 @@ class LocalText
         return '';
     }
 
-    public function setContent($content, $language = null)
+    public function setContent(?string $content, string $language = null) : void
     {
         // If no language defined, use the default
         if (!$language) {
@@ -86,7 +84,7 @@ class LocalText
         }
     }
 
-    public function setContents(array $contents)
+    public function setContents(iterable $contents) : void
     {
         $this->content = [];
         foreach ($contents as $language => $content) {
@@ -94,12 +92,12 @@ class LocalText
         }
     }
 
-    public function mediaType()
+    public function mediaType() : string
     {
         return $this->mediatype;
     }
 
-    public function setMediaType($mediatype)
+    public function setMediaType($mediatype) : void
     {
         $this->mediatype = $mediatype;
     }

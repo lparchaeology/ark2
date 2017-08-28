@@ -47,7 +47,7 @@ class Cell implements ElementInterface
     protected $row = 0;
     protected $col = 0;
     protected $seq = 0;
-    protected $itemType = '';
+    protected $class = '';
     protected $element;
     protected $name = '';
     protected $width = 0;
@@ -88,9 +88,9 @@ class Cell implements ElementInterface
         return $this->seq;
     }
 
-    public function itemType() : string
+    public function class() : string
     {
-        return $this->itemType;
+        return $this->class;
     }
 
     public function element() : Element
@@ -271,7 +271,7 @@ class Cell implements ElementInterface
         $builder->addKey('row', 'integer');
         $builder->addKey('col', 'integer');
         $builder->addKey('seq', 'integer');
-        $builder->addStringKey('itemType', 30, 'item_type');
+        $builder->addStringKey('class', 30);
 
         // Fields
         $builder->addStringField('name', 30);

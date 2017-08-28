@@ -39,7 +39,7 @@ class Type
 
     protected $type = '';
     protected $layout = false;
-    protected $formTypeClass = '';
+    protected $formType = '';
     protected $template = '';
 
     public function id() : string
@@ -52,9 +52,9 @@ class Type
         return $this->layout;
     }
 
-    public function formTypeClass() : string
+    public function formType() : string
     {
-        return $this->formTypeClass;
+        return $this->formType;
     }
 
     public function template() : string
@@ -73,7 +73,7 @@ class Type
 
         // Attributes
         $builder->addField('layout', 'boolean');
-        $builder->addStringField('formTypeClass', 100, 'form_type_class');
+        $builder->addStringField('formType', 100, 'form_type');
         $builder->addStringField('template', 100);
         KeywordTrait::buildKeywordMetadata($builder);
     }

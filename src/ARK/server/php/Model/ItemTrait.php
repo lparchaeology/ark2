@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model;
@@ -37,33 +36,33 @@ trait ItemTrait
 {
     use VersionTrait;
 
-    protected $item;
+    protected $id = '';
     protected $module;
     protected $schma;
     protected $schema;
-    protected $type;
+    protected $class;
     protected $status = 'allocated';
     protected $statusTerm;
-    protected $visibility = 'restricted';
+    protected $visibility = 'private';
     protected $visibilityTerm;
     protected $parentModule;
-    protected $parentItem;
+    protected $parentId;
     protected $parent;
     protected $idx;
     protected $label;
     protected $properties;
     protected $meta;
 
-    public function id()
+    public function id() : string
     {
-        return $this->item;
+        return $this->id;
     }
 
-    public function parent()
+    public function parent() : ?Item
     {
-        if ($this->parentItem && !$this->parent) {
+        if ($this->parentId && $this->parent === null) {
             $module = ORM::find(Module::class, $this->parentModule);
-            $this->parent = ORM::find($module->classname(), $this->parentItem);
+            $this->parent = ORM::find($module->classname(), $this->parentId);
         }
         return $this->parent;
     }
@@ -71,57 +70,60 @@ trait ItemTrait
     public function setParent(Item $parent) : void
     {
         $this->parent = $parent;
-        $this->parentModule = $parent->schema()->module()->name();
-        $this->parentItem = $parent->id();
+        $this->parentModule = $parent->schema()->module()->id();
+        $this->parentId = $parent->id();
     }
 
-    public function index()
+    public function index() : string
     {
         return $this->idx;
     }
 
     // TODO Should this be here? Or use reflection?
-    public function setItem($id, $index = null, $name = null) : void
+    public function setId(string $id, string $index = null, string $label = null) : void
     {
-        $this->item = $id;
+        $this->id = $id;
         $this->idx = ($index !== null ? $index : $id);
-        $this->label = ($name !== null ? $name : $id);
+        $this->label = ($label !== null ? $label : $id);
         foreach ($this->properties() as $property) {
             $property->updateFragments();
             if ($property->name() === 'id') {
-                $property->setValue($this->item);
+                $property->setValue($this->id);
             }
         }
     }
 
-    public function label()
+    public function label() : string
     {
         return $this->label;
     }
 
-    public function type()
+    public function class() : string
     {
-        if ($this->type === null && $this->schema()->useTypeEntities()) {
-            $this->type = $this->makeType();
+        if ($this->class === null) {
+            $this->class =
+                $this->schema()->useSubclassEntities()
+                    ? $this->makeSubclass()
+                    : $this->schema()->module()->superclass();
         }
-        return $this->type;
+        return $this->class;
     }
 
-    public function setType($type) : void
+    public function setClass(string $class) : void
     {
         // TODO Danger, Will Robinson!!!
-        $this->type = $type;
+        $this->class = $class;
     }
 
-    public function schema()
+    public function schema() : Schema
     {
-        if (!$this->schema) {
+        if ($this->schema === null) {
             $this->schema = ORM::find(Schema::class, $this->schma);
         }
         return $this->schema;
     }
 
-    public function status()
+    public function status() : Term
     {
         if ($this->statusTerm === null) {
             $this->statusTerm = ORM::find(Term::class, ['concept' => 'core.item.status', 'term' => $this->status]);
@@ -129,7 +131,7 @@ trait ItemTrait
         return $this->statusTerm;
     }
 
-    public function visibility()
+    public function visibility() : Term
     {
         if ($this->visibilityTerm === null) {
             $this->visibilityTerm = ORM::find(Term::class, ['concept' => 'core.visibility', 'term' => $this->visibility]);
@@ -137,17 +139,17 @@ trait ItemTrait
         return $this->visibilityTerm;
     }
 
-    public function hasAttribute($attribute)
+    public function hasAttribute(string $name) : bool
     {
-        return $this->schema()->hasAttribute($attribute, $this->type());
+        return $this->schema()->hasAttribute($name, $this->class());
     }
 
-    public function attributes()
+    public function attributes() : iterable
     {
-        return $this->schema()->attributes($this->type());
+        return $this->schema()->attributes($this->class());
     }
 
-    public function path()
+    public function path() : string
     {
         $resource = $this->schema()->module()->resource();
         if ($this->schema()->generator() === 'hierarchy') {
@@ -156,7 +158,7 @@ trait ItemTrait
         return '/'.$resource.'/'.$this->index();
     }
 
-    public function properties()
+    public function properties() : iterable
     {
         foreach ($this->attributes() as $attribute) {
             if (!isset($this->properties[$attribute->name()])) {
@@ -166,7 +168,7 @@ trait ItemTrait
         return array_values($this->properties);
     }
 
-    public function propertyArray()
+    public function propertyArray() : iterable
     {
         foreach ($this->attributes() as $attribute) {
             if (!isset($this->properties[$attribute->name()])) {
@@ -176,18 +178,18 @@ trait ItemTrait
         return $this->properties;
     }
 
-    public function property($attribute)
+    public function property(string $attribute) : ?Property
     {
-        if ($this->schema()->attribute($attribute, $this->type()) === null) {
+        if ($this->schema()->attribute($attribute, $this->class()) === null) {
             return null;
         }
         if (!isset($this->properties[$attribute])) {
-            $this->properties[$attribute] = new Property($this, $this->schema()->attribute($attribute, $this->type()));
+            $this->properties[$attribute] = new Property($this, $this->schema()->attribute($attribute, $this->class()));
         }
         return $this->properties[$attribute];
     }
 
-    public function value($attribute)
+    public function value(string $attribute)
     {
         if ($property = $this->property($attribute)) {
             return $property->value();
@@ -195,14 +197,14 @@ trait ItemTrait
         return null;
     }
 
-    public function setValue($attribute, $value) : void
+    public function setValue(string $attribute, $value) : void
     {
         if ($property = $this->property($attribute)) {
             $property->setValue($value);
         }
     }
 
-    public function related($module = null)
+    public function related(string $module = null) : iterable
     {
         $this->loadRelated();
         if ($module) {
@@ -214,7 +216,7 @@ trait ItemTrait
         return $this->related;
     }
 
-    public function relationships()
+    public function relationships() : iterable
     {
         if ($this->parent) {
             return $this->parent->schema->xmis($this->parent->schemaId(), $this->schema()->module());
@@ -222,23 +224,23 @@ trait ItemTrait
         return [];
     }
 
-    protected function construct($schema, $type = null) : void
+    protected function construct(string $schema, string $class = null) : void
     {
         $this->schma = $schema;
-        $this->module = $this->schema()->module()->name();
+        $this->module = $this->schema()->module()->id();
         // TODO Is this really needed?
-        if ($this->schema()->useTypeEntities()) {
-            $this->type = ($type ?: $this->makeType());
-            $this->property('type')->setValue($this->type);
+        if ($this->schema()->useSubclassEntities()) {
+            $this->class = ($class ?: $this->makeSubclass());
+            $this->property('class')->setValue($this->class);
         }
     }
 
-    protected function makeType()
+    protected function makeSubclass() : string
     {
         return strtolower(substr(strrchr(get_class($this), '\\'), 1));
     }
 
-    protected function makeIdentifier($parentId, $sep, $index)
+    protected function makeIdentifier(string $parentId, string $sep, string $index) : string
     {
         return $parentId && $index ? $parentId.$sep.$index : $index;
     }

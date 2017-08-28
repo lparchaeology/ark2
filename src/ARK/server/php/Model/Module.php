@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Module
+ * ARK Model Module.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,16 +25,14 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model;
 
-use ARK\Model\EnabledTrait;
-use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class Module
 {
@@ -43,68 +41,75 @@ class Module
 
     protected $module = '';
     protected $resource = '';
+    protected $superclass = '';
     protected $project = '';
     protected $namespace = '';
     protected $entity = '';
     protected $classname = '';
-    protected $table = null;
+    protected $table = '';
     protected $core = false;
-    protected $schemas = null;
+    protected $schemas;
 
     public function __construct()
     {
         $this->schemas = new ArrayCollection();
     }
 
-    public function name()
+    public function id() : string
     {
         return $this->module;
     }
 
-    public function resource()
+    public function superclass() : string
+    {
+        return $this->superclass;
+    }
+
+    public function resource() : string
     {
         return $this->resource;
     }
 
-    public function project()
+    public function project() : string
     {
         return $this->project;
     }
 
-    public function sourceNamespace()
+    public function sourceNamespace() : string
     {
         return $this->namespace;
     }
 
-    public function entity()
+    public function entity() : string
     {
         return $this->entity;
     }
 
-    public function className()
+    public function className() : string
     {
         return $this->classname;
     }
 
-    public function table()
+    public function table() : string
     {
         return $this->table;
     }
 
-    public function isCore()
+    public function isCore() : bool
     {
         return $this->core;
     }
 
-    public function schemas()
+    public function schemas() : Collection
     {
         return $this->schemas;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_module');
         $builder->addStringKey('module', 30);
+        $builder->addStringField('superclass', 30);
         $builder->addStringField('resource', 30);
         $builder->addStringField('project', 30);
         $builder->addStringField('namespace', 100);

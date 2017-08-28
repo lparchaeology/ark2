@@ -39,7 +39,7 @@ class FrontPageController extends DimeFormController
     public function buildData(Request $request)
     {
         // Get the 25 most recent public Items
-        $finds = ORM::findBy(Find::class, ['visibility' => 'public'], ['item' => 'DESC'], 25);
+        $finds = ORM::findBy(Find::class, ['visibility' => 'public'], ['id' => 'DESC'], 25);
         // Then the 5 with images
         $featured = [];
         foreach ($finds as $find) {

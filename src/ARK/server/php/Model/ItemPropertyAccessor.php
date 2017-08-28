@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Item Property Accessor
+ * ARK Model Item Property Accessor.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,14 +25,12 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model;
 
-use ARK\Model\Item;
-use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyPath;
 
 class ItemPropertAccessor extends PropertyAccessor
 {
@@ -41,7 +39,7 @@ class ItemPropertAccessor extends PropertyAccessor
         if ($objectOrArray instanceof Item) {
             if ($propertyPath instanceof PropertyPath) {
                 // TODO Sub paths???
-                $attribute = (string)$propertyPath;
+                $attribute = (string) $propertyPath;
             } else {
                 $attribute = $propertyPath;
             }
@@ -52,12 +50,12 @@ class ItemPropertAccessor extends PropertyAccessor
         return parent::getValue($objectOrArray, $propertyPath);
     }
 
-    public function setValue(&$objectOrArray, $propertyPath, $value)
+    public function setValue(&$objectOrArray, $propertyPath, $value) : void
     {
         if ($objectOrArray instanceof Item) {
             if ($propertyPath instanceof PropertyPath) {
                 // TODO Sub paths???
-                $attribute = (string)$propertyPath;
+                $attribute = (string) $propertyPath;
             } else {
                 $attribute = $propertyPath;
             }

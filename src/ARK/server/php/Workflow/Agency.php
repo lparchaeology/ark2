@@ -44,7 +44,7 @@ class Agency
     protected $schma = '';
     protected $actionName = '';
     protected $action;
-    protected $type = '';
+    protected $class = '';
     protected $attributeName = '';
     protected $attribute;
     protected $operator = 'is';
@@ -88,7 +88,7 @@ class Agency
         // Key
         $builder->addStringKey('schma', 30);
         $builder->addStringKey('actionName', 30, 'action');
-        $builder->addStringKey('type', 30);
+        $builder->addStringKey('class', 30);
         $builder->addStringKey('attributeName', 30, 'attribute');
 
         // Fields
@@ -111,7 +111,7 @@ class Agency
             SchemaAttribute::class,
             [
                 ['column' => 'schma'],
-                ['column' => 'type'],
+                ['column' => 'class'],
                 ['column' => 'attribute'],
             ]
         );
@@ -120,7 +120,7 @@ class Agency
             SchemaAttribute::class,
             [
                 ['column' => 'schma'],
-                ['column' => 'type'],
+                ['column' => 'class'],
                 ['column' => 'condition_attribute', 'reference' => 'attribute'],
             ]
         );

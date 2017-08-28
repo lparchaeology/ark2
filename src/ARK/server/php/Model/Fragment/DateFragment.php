@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Model Date Fragment
+ * ARK Model Date Fragment.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,23 +25,21 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Model\Fragment;
 
 use ARK\Model\Fragment;
-use ARK\Model\Fragment\DateTimeTrait;
 use ARK\ORM\ClassMetadata;
 
 class DateFragment extends Fragment
 {
-    protected $pattern = 'Y-m-d';
-
     use DateTimeTrait;
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    protected $pattern = 'Y-m-d';
+
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
-        return self::buildSubclassMetadata($metadata, self::class);
+        self::buildSubclassMetadata($metadata, self::class);
     }
 }

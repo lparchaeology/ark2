@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Command Handler
+ * ARK Command Handler.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\ORM\Bus;
@@ -33,8 +32,8 @@ namespace ARK\ORM\Bus;
 use ARK\ARK;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\Command\GenerateItemEntityMessage;
-use ARK\ORM\ItemEntityMappingDriver;
 use ARK\ORM\ItemEntityGenerator;
+use ARK\ORM\ItemEntityMappingDriver;
 use ARK\Service;
 
 class GenerateItemEntityHandler
@@ -82,20 +81,20 @@ class <entity> extends <extends>
 }
 ';
 
-    public function __invoke(GenerateItemEntityMessage $message)
+    public function __invoke(GenerateItemEntityMessage $message) : void
     {
         $module = Service::database()->getModuleForClassName($message->classname());
         $class = $this->generateEntityClass($message->namespace(), $message->entity(), $message->schema());
         $this->writeEntityFile($message->project(), $message->classname(), $class);
-        $types = Service::database()->getTypeEntities($module['module']);
+        $subclasses = Service::database()->getSubclassEntities($module['module']);
         // TODO File base type
-        foreach ($types as $type) {
-            $classname = $type['classname'];
+        foreach ($subclasses as $class) {
+            $classname = $class['entity'];
             $pos = strrpos($classname, '\\');
             $namespace = substr($classname, 0, $pos);
             $entity = substr($classname, $pos + 1);
             $subclass = $this->generateEntitySubclass($namespace, $entity, $message->classname(), $message->entity());
-            $this->writeEntityFile($message->project(), $type['classname'], $subclass, $type);
+            $this->writeEntityFile($message->project(), $class['entity'], $subclass, $class);
         }
         /*
         TODO Make this work properly!!!
@@ -107,7 +106,7 @@ class <entity> extends <extends>
         */
     }
 
-    private function writeEntityFile($project, $classname, $class)
+    private function writeEntityFile(string $project, string $classname, string $class) : void
     {
         $path = str_replace('\\', DIRECTORY_SEPARATOR, $classname);
         $path = str_replace($project, ARK::autoloadDir($project), $path).'.php';
@@ -119,7 +118,7 @@ class <entity> extends <extends>
         chmod($path, 0664);
     }
 
-    private function generateEntityClass($namespace, $entity, $schema)
+    private function generateEntityClass(string $namespace, string $entity, string $schema) : string
     {
         $body = str_replace('<namespace>', $namespace, self::$classTemplate);
         $body = str_replace('<entity>', $entity, $body);
@@ -127,7 +126,7 @@ class <entity> extends <extends>
         return $body;
     }
 
-    private function generateEntitySubclass($namespace, $entity, $parent, $extends)
+    private function generateEntitySubclass(string $namespace, string $entity, string $parent, string $extends) : string
     {
         $body = str_replace('<namespace>', $namespace, self::$subclassTemplate);
         $body = str_replace('<entity>', $entity, $body);

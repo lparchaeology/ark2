@@ -41,7 +41,7 @@ class Condition
     protected $schma = '';
     protected $actionName = '';
     protected $action;
-    protected $type = '';
+    protected $class = '';
     protected $attributeName = '';
     protected $attribute;
     protected $operator = 'is';
@@ -84,7 +84,7 @@ class Condition
         // Key
         $builder->addStringKey('schma', 30);
         $builder->addStringKey('actionName', 30, 'action');
-        $builder->addStringKey('type', 30);
+        $builder->addStringKey('class', 30);
         $builder->addStringKey('attributeName', 30, 'attribute');
         $builder->addKey('grp', 'integer');
 
@@ -107,7 +107,7 @@ class Condition
             SchemaAttribute::class,
             [
                 ['column' => 'schma'],
-                ['column' => 'type'],
+                ['column' => 'class'],
                 ['column' => 'attribute'],
             ]
         );
