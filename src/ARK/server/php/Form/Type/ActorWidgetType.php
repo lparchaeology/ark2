@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Hidden Choice Form Type
+ * ARK Hidden Choice Form Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,6 +27,7 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
+
 namespace ARK\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -38,40 +39,40 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ActorWidgetType extends AbstractType implements DataMapperInterface, DataTransformerInterface
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $builder->setDataMapper($this);
         $builder->addModelTransformer($this);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults([
             'choice_value' => 'id',
             'choice_name' => 'id',
             'choice_label' => 'fullname',
             'state' => null,
-            'placeholder' => 'dime.placeholder',
+            'placeholder' => 'core.placeholder',
             'required' => false,
-            'attr' => array(
-                'style' => 'width: 100%'
-            )
+            'attr' => [
+                'style' => 'width: 100%',
+            ],
         ]);
     }
 
-    public function mapDataToForms($property, $forms)
+    public function mapDataToForms($property, $forms) : void
     {
     }
 
-    public function mapFormsToData($forms, &$property)
+    public function mapFormsToData($forms, &$property) : void
     {
     }
 
-    public function transform($value)
+    public function transform($value) : void
     {
     }
 
-    public function reverseTransform($value)
+    public function reverseTransform($value) : void
     {
     }
 

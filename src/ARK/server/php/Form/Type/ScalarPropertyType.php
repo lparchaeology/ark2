@@ -29,7 +29,13 @@
 
 namespace ARK\Form\Type;
 
+use ARK\Model\Item;
+use ARK\Model\LocalText;
 use ARK\Model\Property;
+use ARK\ORM\ORM;
+use ARK\Vocabulary\Term;
+use ARK\Vocabulary\Vocabulary;
+use DateTime;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class ScalarPropertyType extends AbstractPropertyType
@@ -38,6 +44,9 @@ class ScalarPropertyType extends AbstractPropertyType
     {
         $field = $options['state']['field'];
         $dataclass = $field->attribute()->dataclass();
+        if (isset($options['state']['display'])) {
+            $builder->add($options['state']['display']['name'], $options['state']['display']['type'], $options['state']['display']['options']);
+        }
         $builder->add($dataclass->valueName(), $options['state']['value']['type'], $options['state']['value']['options']);
         if ($options['state']['parameter'] !== null) {
             $builder->add($dataclass->parameterName(), $options['state']['parameter']['type'], $options['state']['parameter']['options']);
@@ -53,31 +62,102 @@ class ScalarPropertyType extends AbstractPropertyType
         if (!$property instanceof Property) {
             return;
         }
-        $forms->rewind();
-        $propertyForm = $forms->current()->getParent();
+        $options = $this->propertyOptions($forms);
         $forms = iterator_to_array($forms);
         $attribute = $property->attribute();
         $dataclass = $attribute->dataclass();
+        $display = null;
+        $displayName = $options['state']['display']['name'] ?? null;
+        $value = null;
         $valueName = $dataclass->valueName();
+        $format = null;
         $formatName = $dataclass->formatName();
+        $parameter = null;
         $parameterName = $dataclass->parameterName();
 
         $value = $property->value();
+        // TODO WEAK COMPARISON to empty value!
         if ($value === null || $value === $attribute->emptyValue()) {
-            $value = $propertyForm->getConfig()->getOption('default_data');
+            $value = $options['default_data'];
         }
 
-        if ($dataclass->isAtomic()) {
-            $forms[$valueName]->setData($value);
-            return;
+        if (isset($options['state']['display'])) {
+            if ($attribute->hasMultipleOccurrences()) {
+                $display = [];
+                if (is_iterable($value)) {
+                    foreach ($value as $val) {
+                        $display[] = $this->mapDisplayValue($val, $valueName, $options['state']['display']['property']);
+                    }
+                }
+            } else {
+                $display = $this->mapDisplayValue($value, $valueName, $options['state']['display']['property']);
+            }
         }
 
-        $forms[$valueName]->setData($value[$valueName]);
-        if ($formatName) {
-            $forms[$formatName]->setData($value[$formatName]);
+        if (!isset($options['state']['value']['options']['choices'])) {
+            if ($attribute->hasMultipleOccurrences()) {
+                $vals = [];
+                if (is_iterable($value)) {
+                    foreach ($value as $val) {
+                        $vals = [];
+                        if ($value instanceof Item) {
+                            $parameter = $val->schema()->module()->id();
+                            $vals[] = $val->id();
+                        } elseif ($val instanceof Term) {
+                            $parameter = $val->concept()->concept();
+                            $vals[] = $val->name();
+                        } else {
+                            $vals[] = $val;
+                        }
+                    }
+                }
+                $value = $vals;
+            } else {
+                if ($value instanceof Item) {
+                    $parameter = $value->schema()->module()->id();
+                    $value = $value->id();
+                } elseif ($value instanceof Term) {
+                    $parameter = $value->concept()->concept();
+                    $value = $value->name();
+                } elseif ($value instanceof DateTime) {
+                    // TODO LOCALISE!!!
+                    $value = $value->format('Y-m-d H:i:s');
+                }
+            }
         }
-        if ($parameterName) {
-            $forms[$parameterName]->setData($value[$parameterName]);
+
+        if (!$attribute->hasMultipleOccurrences() && is_array($value)) {
+            $format = $value[$formatName] ?? $format;
+            $parameter = $value[$parameterName] ?? $parameter;
+            $value = $value[$valueName] ?? $value;
+        }
+
+        $forms[$valueName]->setData($value);
+
+        if ($displayName && isset($forms[$displayName])) {
+            $forms[$displayName]->setData($display);
+        }
+
+        if ($formatName && isset($forms[$formatName])) {
+            if ($format === null) {
+                $vocab = $property->attribute()->dataclass()->formatVocabulary();
+                if ($vocab) {
+                    $vocab = ORM::find(Vocabulary::class, $vocab);
+                    $format = $vocab->defaultTerm()->name();
+                }
+            }
+            $forms[$formatName]->setData($format);
+        }
+
+        if ($parameterName && isset($forms[$parameterName])) {
+            if ($parameter === null) {
+                $vocab = $property->attribute()->dataclass()->parameterVocabulary();
+                if ($vocab) {
+                    $vocab = ORM::find(Vocabulary::class, $vocab);
+                    $parameter = $vocab->defaultTerm()->name();
+                }
+            }
+            $forms[$parameterName]->setData($parameter);
         }
     }
 
@@ -86,11 +166,18 @@ class ScalarPropertyType extends AbstractPropertyType
         if (!$property instanceof Property) {
             return;
         }
+        $options = $this->propertyOptions($forms);
         $forms = iterator_to_array($forms);
         $dataclass = $property->attribute()->dataclass();
         $value = null;
         if ($dataclass->isAtomic()) {
             $value = $forms[$dataclass->valueName()]->getData();
+            if (isset($options['state']['value']['choices'])
+                && $options['placeholder']
+                && ($value === $placeholder || $value === Service::translate($placeholder))
+            ) {
+                $value = null;
+            }
         } else {
             foreach ($forms as $key => $form) {
                 $value[$key] = $forms[$key]->getData();
@@ -104,5 +191,35 @@ class ScalarPropertyType extends AbstractPropertyType
         return [
             'compound' => true,
         ];
+    }
+
+    protected function mapDisplayValue($value, ?string $valueName, ?string $property = null)
+    {
+        $display = $value;
+        if ($display instanceof Item) {
+            if ($property) {
+                $display = $display->property($property)->value();
+            } else {
+                return $display->id();
+            }
+        }
+        if ($display instanceof Term) {
+            return $display->keyword();
+        }
+        if ($display instanceof LocalText) {
+            return $display->content();
+        }
+        if ($display instanceof DateTime) {
+            // TODO LOCALISE!!!
+            return $display->format('Y-m-d H:i:s');
+        }
+        if (is_array($display) && isset($display[$valueName])) {
+            return $display[$valueName];
+        }
+        return $display;
+        if ($display) {
+            return $display;
+        }
+        return Service::translate('core.placeholder');
     }
 }

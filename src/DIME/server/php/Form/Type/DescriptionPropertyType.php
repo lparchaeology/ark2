@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Form Type
+ * DIME Form Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -28,9 +28,8 @@
  * @php        >=5.6, >=7.0
  */
 
- namespace DIME\Form\Type;
+namespace DIME\Form\Type;
 
-use ARK\Form\Type\TermChoiceType;
 use ARK\Form\Type\AbstractPropertyType;
 use ARK\Model\LocalText;
 use ARK\Model\Property;
@@ -38,56 +37,54 @@ use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Workflow\Event;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class DescriptionPropertyType extends AbstractPropertyType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
+        if (isset($options['state']['display'])) {
+            $builder->add($options['state']['display']['name'], $options['state']['display']['type'], $options['state']['display']['options']);
+        }
         $builder->add('content', $options['state']['value']['type'], $options['state']['value']['options']);
-
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
         $builder->add('event', HiddenType::class, $fieldOptions);
         $builder->add('previous', HiddenType::class, $fieldOptions);
         $builder->add('mediatype', HiddenType::class, $fieldOptions);
         $builder->add('language', HiddenType::class, $fieldOptions);
-
         $builder->setDataMapper($this);
     }
 
-    protected function options()
+    public function mapDataToForms($property, $forms) : void
     {
-        return [
-            'compound' => true,
-         ];
-    }
-
-    public function mapDataToForms($property, $forms)
-    {
+        if (!$property instanceof Property) {
+            return;
+        }
+        $options = $this->propertyOptions($forms);
         $forms = iterator_to_array($forms);
-        if ($property instanceof Property) {
-            $value = $property->value();
-            if ($value) {
-                // No multi-vocality for now
-                $event = $value['event'];
-                $text = $value['text'];
-                $language = Service::locale();
-                if ($event instanceof Event) {
-                    $forms['event']->setData($event->id());
-                }
-                if ($text) {
-                    $forms['content']->setData($text->content($language));
-                    $forms['previous']->setData(serialize($text->contents()));
-                    $forms['mediatype']->setData($text->mediaType());
-                }
-                $forms['language']->setData($language);
+        $value = $property->value();
+        if ($value) {
+            // No multi-vocality for now
+            $event = $value['event'];
+            $text = $value['text'];
+            $language = Service::locale();
+            if ($event instanceof Event) {
+                $forms['event']->setData($event->id());
             }
+            if ($text) {
+                if (isset($options['state']['display'])) {
+                    $forms[$options['state']['display']['name']]->setData($text->content($language));
+                }
+                $forms['content']->setData($text->content($language));
+                $forms['previous']->setData(serialize($text->contents()));
+                $forms['mediatype']->setData($text->mediaType());
+            }
+            $forms['language']->setData($language);
         }
     }
 
-    public function mapFormsToData($forms, &$property)
+    public function mapFormsToData($forms, &$property) : void
     {
         $forms = iterator_to_array($forms);
         if ($property instanceof Property) {
@@ -107,5 +104,12 @@ class DescriptionPropertyType extends AbstractPropertyType
             $data['text'] = $text;
             $property->setValue($data);
         }
+    }
+
+    protected function options()
+    {
+        return [
+            'compound' => true,
+         ];
     }
 }

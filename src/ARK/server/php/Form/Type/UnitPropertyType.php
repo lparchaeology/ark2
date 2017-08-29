@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Item Form Type
+ * ARK Item Form Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,50 +30,8 @@
 
 namespace ARK\Form\Type;
 
-use ARK\Form\Type\ScalarPropertyType;
-use ARK\Model\Property;
-use ARK\ORM\ORM;
-use ARK\Vocabulary\Term;
-use ARK\Vocabulary\Vocabulary;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
-
 class UnitPropertyType extends ScalarPropertyType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->setDataMapper($this);
-    }
-
-    public function mapDataToForms($property, $forms)
-    {
-        if (!$property instanceof Property) {
-            return;
-        }
-        $forms = iterator_to_array($forms);
-        $value = $property->value();
-        $forms['value']->setData($value['value']);
-        if (!isset($value['unit'])) {
-            $vocab = $property->attribute()->dataclass()->parameterVocabulary();
-            $vocab = ORM::find(Vocabulary::class, $vocab);
-            $value['unit'] = $vocab->defaultTerm()->name();
-        }
-        $forms['unit']->setData($value['unit']);
-    }
-
-    public function mapFormsToData($forms, &$property)
-    {
-        if (!$property instanceof Property) {
-            return;
-        }
-        $forms = iterator_to_array($forms);
-        $value['value'] = $forms['value']->getData();
-        $value['unit'] = $forms['unit']->getData();
-        $property->setValue($value);
-    }
-
     public function getBlockPrefix()
     {
         return 'unit';

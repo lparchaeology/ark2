@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Event Form Type
+ * ARK Event Form Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -33,14 +33,16 @@ namespace DIME\Form\Type;
 use ARK\Form\Type\AbstractPropertyType;
 use ARK\Service;
 use Brick\Geo\Point;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\FormBuilderInterface;
 
 class LocationPropertyType extends AbstractPropertyType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
+        if (isset($options['state']['display'])) {
+            $builder->add($options['state']['display']['name'], $options['state']['display']['type'], $options['state']['display']['options']);
+        }
         $fieldOptions['mapped'] = false;
         $fieldOptions['label'] = 'dime.find.location.decimal';
         $builder->add('easting', $options['state']['value']['type'], $fieldOptions);
@@ -55,22 +57,16 @@ class LocationPropertyType extends AbstractPropertyType
         $builder->setDataMapper($this);
     }
 
-    protected function options()
+    public function mapDataToForms($property, $forms) : void
     {
-        return [
-            'compound' => true,
-        ];
-    }
-
-    public function mapDataToForms($property, $forms)
-    {
-        if (!$property) {
+        if (!$property instanceof Property) {
             return;
         }
+        $options = $this->propertyOptions($forms);
         $forms = iterator_to_array($forms);
         $value = $property->value();
         if ($value['geometry']) {
-            $point = Point::fromText($value['geometry'], (int)$value['srid']);
+            $point = Point::fromText($value['geometry'], (int) $value['srid']);
             $forms['easting']->setData($point->x());
             $forms['northing']->setData($point->y());
             $utm = Service::spatial()->transform($point, 32632);
@@ -78,13 +74,16 @@ class LocationPropertyType extends AbstractPropertyType
             $forms['utmNorthing']->setData($utm->y());
             $forms['srid']->setData($point->SRID());
             $forms['format']->setData($value['format']);
+            if (isset($options['state']['display'])) {
+                $forms[$options['state']['display']['name']]->setData($point->asText());
+            }
         } else {
             $forms['srid']->setData(4326);
             $forms['format']->setData('wkt');
         }
     }
 
-    public function mapFormsToData($forms, &$property)
+    public function mapFormsToData($forms, &$property) : void
     {
         $forms = iterator_to_array($forms);
         $point = Point::xy($forms['easting']->getData(), $forms['northing']->getData(), $forms['srid']->getData());
@@ -92,5 +91,12 @@ class LocationPropertyType extends AbstractPropertyType
         $value['srid'] = $point->SRID();
         $value['format'] = $forms['format']->getData();
         $property->setValue($value);
+    }
+
+    protected function options()
+    {
+        return [
+            'compound' => true,
+        ];
     }
 }

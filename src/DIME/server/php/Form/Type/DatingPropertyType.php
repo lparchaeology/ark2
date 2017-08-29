@@ -31,10 +31,9 @@
 namespace DIME\Form\Type;
 
 use ARK\Form\Type\AbstractPropertyType;
-use ARK\Form\Type\StaticType;
-use ARK\Form\Type\TermChoiceType;
 use ARK\Model\Property;
 use ARK\ORM\ORM;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -48,11 +47,14 @@ class DatingPropertyType extends AbstractPropertyType
         $builder->add('year', $options['state']['value']['type'], $valueOptions);
         $builder->add('year_span', $options['state']['value']['type'], $valueOptions);
 
-        $valueOptions['choices'] = $dataclass->attribute('period')->vocabulary()->terms();
-        $valueOptions['placeholder'] = ' - ';
-        $valueOptions['required'] = false;
-        if ($options['state']['value']['type'] !== StaticType::class) {
-            $options['state']['value']['type'] = TermChoiceType::class;
+        if (isset($options['state']['display'])) {
+            $builder->add('display_year', $options['state']['display']['type'], $options['state']['display']['options']);
+            $builder->add('display_period', $options['state']['display']['type'], $options['state']['display']['options']);
+        } else {
+            $valueOptions['choices'] = $dataclass->attribute('period')->vocabulary()->terms();
+            $valueOptions['placeholder'] = ' - ';
+            $valueOptions['required'] = false;
+            $options['state']['value']['type'] = ChoiceType::class;
         }
         $builder->add('period', $options['state']['value']['type'], $valueOptions);
         $builder->add('period_span', $options['state']['value']['type'], $valueOptions);
@@ -67,21 +69,27 @@ class DatingPropertyType extends AbstractPropertyType
 
     public function mapDataToForms($property, $forms) : void
     {
+        if (!$property instanceof Property) {
+            return;
+        }
+        $options = $this->propertyOptions($forms);
         $forms = iterator_to_array($forms);
-        if ($property instanceof Property) {
-            $value = $property->serialize();
-            if ($value) {
-                $forms['event']->setData($value['event']['item']);
-                $forms['entered']->setData($value['entered']);
-                $forms['year']->setData($value['year'][0]);
-                $forms['year_span']->setData($value['year'][1]);
-                $vocabulary = $property->attribute()->dataclass()->attribute('period')->vocabulary();
-                if ($value['period'][0]) {
-                    $forms['period']->setData($vocabulary->term($value['period'][0]));
-                }
-                if ($value['period'][1]) {
-                    $forms['period_span']->setData($vocabulary->term($value['period'][1]));
-                }
+        $value = $property->serialize();
+        if ($value) {
+            $forms['event']->setData($value['event']['item']);
+            $forms['entered']->setData($value['entered']);
+            $forms['year']->setData($value['year'][0]);
+            $forms['year_span']->setData($value['year'][1]);
+            $vocabulary = $property->attribute()->dataclass()->attribute('period')->vocabulary();
+            if ($value['period'][0]) {
+                $forms['period']->setData($vocabulary->term($value['period'][0]));
+            }
+            if ($value['period'][1]) {
+                $forms['period_span']->setData($vocabulary->term($value['period'][1]));
+            }
+            if (isset($options['state']['display'])) {
+                $forms['display_year']->setData($value['year'][0].' - '.$value['year'][1]);
+                $forms['display_period']->setData($value['period'][0].' - '.$value['period'][1]);
             }
         }
     }

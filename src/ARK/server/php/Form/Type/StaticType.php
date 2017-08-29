@@ -55,7 +55,7 @@ class StaticType extends AbstractType implements DataTransformerInterface
             'choice_name' => 'name',
             'choice_label' => 'keyword',
             'state' => null,
-            'placeholder' => 'dime.placeholder',
+            'placeholder' => 'core.placeholder',
             'expanded' => false,
             'multiple' => false,
             'display' => null,
@@ -90,9 +90,9 @@ class StaticType extends AbstractType implements DataTransformerInterface
         if ($value instanceof LocalText) {
             return $value->content();
         }
-        if (!$value) {
-            return Service::translate('dime.placeholder');
+        if ($value) {
+            return $value;
         }
-        return $value;
+        return Service::translate('core.placeholder');
     }
 }

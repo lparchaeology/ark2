@@ -41,6 +41,8 @@ use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Vocabulary\Term;
 use ARK\Workflow\Event;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormView;
 
@@ -192,23 +194,53 @@ class Field extends Element
             $options['label'] = false;
         }
 
-        $options['state']['value']['modus'] = $this->modeToModus($state, $state['value']['modus']);
+        // If field is static or has a display option, then the value subform is hidden
+        $valueModus = $this->modeToModus($state, $state['value']['modus']);
+        if ($valueModus === 'static') {
+            $options['state']['value']['modus'] = 'static';
+            $options['state']['display']['name'] = $this->display ?? 'static';
+            $options['state']['display']['modus'] = 'static';
+            $options['state']['display']['type'] = $this->staticFormType();
+            $options['state']['display']['property'] = $this->display;
+            $options['state']['display']['options'] = $this->valueOptions($options['state']);
+            $valueModus = 'hidden';
+        } elseif (!$options['state']['choices'] && $this->display) {
+            $options['state']['value']['modus'] = $valueModus;
+            $options['state']['display']['name'] = $this->display;
+            $options['state']['display']['modus'] = $valueModus;
+            $options['state']['display']['type'] = $this->modusToFormType(
+                $valueModus,
+                $options['state']['choices'],
+                $this->activeFormType(),
+                $this->readonlyFormType(),
+                $this->staticFormType()
+            );
+            $options['state']['display']['property'] = $this->display;
+            $options['state']['display']['options'] = $this->valueOptions($options['state']);
+            $valueModus = 'hidden';
+        }
+        $options['state']['value']['modus'] = $valueModus;
         $options['state']['value']['type'] = $this->modusToFormType(
-            $options['state']['value']['modus'],
+            $valueModus,
+            $options['state']['choices'],
             $this->activeFormType(),
             $this->readonlyFormType(),
             $this->staticFormType()
         );
         $options['state']['value']['options'] = $this->valueOptions($options['state']);
-        if ($this->display) {
-            $options['state']['value']['display'] = $this->display;
+        if ($this->attribute()->hasMultipleOccurrences()
+            && ($state['value']['modus'] === 'static' || $state['value']['modus'] === 'hidden')
+            && $options['state']['value']['type'] = HiddenType::class
+        ) {
+            $options['state']['value']['type'] = CollectionType::class;
+            $options['state']['value']['options']['entry_type'] = HiddenType::class;
         }
 
         if (isset($state['parameter']['modus'])) {
             $options['state']['parameter']['modus'] =
                 $this->modeToModus($state, $options['state']['parameter']['modus']);
             $options['state']['parameter']['type'] =
-                $this->modusToFormType($options['state']['parameter']['modus'], $this->parameterFormType());
+                $this->modusToFormType($options['state']['parameter']['modus'], false, $this->parameterFormType());
             $options['state']['parameter']['options'] = $this->baseOptions($options['state']['parameter']);
         } else {
             $options['state']['parameter'] = null;
@@ -218,7 +250,7 @@ class Field extends Element
             $options['state']['format']['modus'] =
                 $this->modeToModus($state, $options['state']['format']['modus']);
             $options['state']['format']['type'] =
-                $this->modusToFormType($options['state']['format']['modus'], $this->formatFormType());
+                $this->modusToFormType($options['state']['format']['modus'], false, $this->formatFormType());
             $options['state']['format']['options'] = $this->baseOptions($options['state']['format']);
         } else {
             $options['state']['format'] = null;
@@ -337,10 +369,16 @@ class Field extends Element
 
     protected function valueOptions(iterable $state) : iterable
     {
+        if ($state['value']['modus'] === 'static' || $state['value']['modus'] === 'hidden') {
+            $options = $this->baseOptions($state, []);
+            $options['compound'] = $this->attribute()->hasMultipleOccurrences();
+            return $options;
+        }
         if ($this->formOptionsArray === null) {
             $this->formOptionsArray = ($this->formOptions ? json_decode($this->formOptions, true) : []);
         }
         $options = $this->baseOptions($state, $this->formOptionsArray);
+        $options['compound'] = $this->attribute()->hasMultipleOccurrences();
         // TODO Nicer way to set js date pickers?
         if ($state['value']['modus'] === 'active' && isset($options['widget']) && $options['widget'] === 'picker') {
             $options['widget'] = 'single_text';
@@ -354,21 +392,16 @@ class Field extends Element
         } else {
             unset($options['widget']);
         }
-        if ($state['choices'] && $state['value']['modus'] !== 'static' && $this->attribute()->isItem()) {
-            if (isset($state['select']['choices'])) {
-                $choices = $state['select']['choices'];
-            } else {
-                $choices = ORM::findAll($this->attribute()->entity());
-            }
+        if ($state['choices'] && $this->attribute()->isItem()) {
+            $choices = $state['select']['choices'] ?? ORM::findAll($this->attribute()->entity());
             if ($choices) {
                 $options['choices'] = $choices;
                 if ($state['placeholder']) {
-                    if (isset($state['select']['placeholder'])) {
-                        $options['placeholder'] = $state['select']['placeholder'];
-                    } else {
-                        $options['placeholder'] = 'dime.placeholder';
-                    }
+                    $options['placeholder'] = $state['select']['placeholder'] ?? 'core.placeholder';
                 }
+                $options['choice_value'] = $state['select']['choice_value'] ?? 'id';
+                $options['choice_name'] = $state['select']['choice_name'] ?? 'id';
+                $options['choice_label'] = $state['select']['choice_label'] ?? $this->display ?? 'id';
             }
             if ($state['modus'] === 'readonly') {
                 $options['attr']['class'] = $this->concatOption($options, 'attr', 'class', 'readonly-select');
@@ -377,13 +410,10 @@ class Field extends Element
         if ($this->attribute()->hasVocabulary()) {
             $options = $this->vocabularyOptions($this->attribute()->vocabulary(), $options);
             if ($this->attribute()->isRequired() || !$state['placeholder']) {
-                $options['placeholder'] = 'dime.placeholder';
+                $options['placeholder'] = 'core.placeholder';
             }
         }
-        if ($this->attribute()->hasMultipleOccurrences()) {
-            $options['compound'] = true;
-        }
-        //$options['constraints'] = $this->attribute()->constraints();
+        $options['constraints'] = $this->attribute()->constraints();
         return $options;
     }
 
@@ -437,7 +467,7 @@ class Field extends Element
         return 'static';
     }
 
-    private function modusToFormType(string $modus, ?string $active, string $readonly = null, string $static = null) : ?string
+    private function modusToFormType(string $modus, ?bool $choices, ?string $active, string $readonly = null, string $static = null) : ?string
     {
         switch ($modus) {
             case 'hidden':
@@ -445,7 +475,10 @@ class Field extends Element
             case 'static':
                 return $static ?: StaticType::class;
             case 'readonly':
-                return $readonly ?: $active;
+                return $readonly ?? $active;
+        }
+        if ($choices) {
+            return ChoiceType::class;
         }
         return $active;
     }

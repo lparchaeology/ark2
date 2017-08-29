@@ -57,7 +57,7 @@ class FindListController extends DimeFormController
             if ($actor->hasPermission('dime.find.filter.museum')) {
                 $state['options']['museum']['choices'] = ORM::findAll(Museum::class);
                 $state['options']['museum']['multiple'] = true;
-                $state['options']['museum']['placeholder'] = Service::translate('dime.placeholder');
+                $state['options']['museum']['placeholder'] = Service::translate('core.placeholder');
             } else {
                 $state['options']['museum']['choices'] = $this->museums($actor);
                 $state['options']['museum']['multiple'] = false;
@@ -77,7 +77,7 @@ class FindListController extends DimeFormController
                 $finders = Service::database()->getFinders();
                 $state['options']['finder']['choices'] = ORM::findBy(Person::class, ['id' => $finders]);
                 $state['options']['finder']['multiple'] = false;
-                $state['options']['finder']['placeholder'] = Service::translate('dime.placeholder');
+                $state['options']['finder']['placeholder'] = Service::translate('core.placeholder');
             } elseif ($actor->hasPermission('dime.find.create')) {
                 $state['options']['finder']['choices'] = [$actor];
                 $state['options']['finder']['multiple'] = false;

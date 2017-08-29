@@ -47,7 +47,7 @@ class UserRegisterController extends DimeFormController
         $state = parent::buildState($request);
         $state['options']['museum']['choices'] = ORM::findAll(Museum::class);
         $state['options']['museum']['multiple'] = false;
-        $state['options']['museum']['placeholder'] = Service::translate('dime.placeholder');
+        $state['options']['museum']['placeholder'] = Service::translate('core.placeholder');
         return $state;
     }
 

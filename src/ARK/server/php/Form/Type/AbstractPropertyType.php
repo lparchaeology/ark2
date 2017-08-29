@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Abstract Form Type
+ * ARK Abstract Form Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,15 +30,15 @@
 
 namespace ARK\Form\Type;
 
-use ARK\Model\Property;
 use ARK\Model\LocalText;
+use ARK\Model\Property;
 use ARK\Vocabulary\Term;
 use RecursiveIteratorIterator;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractPropertyType extends AbstractType implements DataMapperInterface, DataTransformerInterface
@@ -53,13 +53,8 @@ abstract class AbstractPropertyType extends AbstractType implements DataMapperIn
         'state' => null,
     ];
 
-    protected function options()
-    {
-        return [];
-    }
-
     // Configure the *build* options only, not passed to view!
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults(array_merge($this->options, $this->options()));
     }
@@ -90,20 +85,8 @@ abstract class AbstractPropertyType extends AbstractType implements DataMapperIn
         return $value;
     }
 
-    // Returns the data value to poulate the form with
-    protected function value(Property $property, RecursiveIteratorIterator $forms)
-    {
-        $forms->rewind();
-        $propertyForm = $forms->current()->getParent();
-        $value = $property->value();
-        if ($value === null || $value == $property->attribute()->emptyValue()) {
-            $value = $propertyForm->getConfig()->getOption('default_data');
-        }
-        return $value;
-    }
-
     // Use to map parent model data to child form elements
-    public function mapDataToForms($property, $forms)
+    public function mapDataToForms($property, $forms) : void
     {
         if (!$property instanceof Property) {
             return;
@@ -114,7 +97,7 @@ abstract class AbstractPropertyType extends AbstractType implements DataMapperIn
     }
 
     // Use to map child form elements to parent data model
-    public function mapFormsToData($forms, &$property)
+    public function mapFormsToData($forms, &$property) : void
     {
         if (!$property instanceof Property) {
             return;
@@ -126,12 +109,35 @@ abstract class AbstractPropertyType extends AbstractType implements DataMapperIn
     }
 
     // Use to modify FormView to use during render
-    public function buildView(FormView $view, FormInterface $form, array $viewOptions)
+    public function buildView(FormView $view, FormInterface $form, array $viewOptions) : void
     {
     }
 
     // Use to modify child FormViews to use during render
-    public function finishView(FormView $view, FormInterface $form, array $viewOptions)
+    public function finishView(FormView $view, FormInterface $form, array $viewOptions) : void
     {
+    }
+
+    protected function options()
+    {
+        return [];
+    }
+
+    // Returns the data value to poulate the form with
+    protected function value(Property $property, RecursiveIteratorIterator $forms)
+    {
+        $forms->rewind();
+        $propertyForm = $forms->current()->getParent();
+        $value = $property->value();
+        if ($value === null || $value === $property->attribute()->emptyValue()) {
+            $value = $propertyForm->getConfig()->getOption('default_data');
+        }
+        return $value;
+    }
+
+    protected function propertyOptions($forms)
+    {
+        $forms->rewind();
+        return $forms->current()->getParent()->getConfig()->getOptions();
     }
 }

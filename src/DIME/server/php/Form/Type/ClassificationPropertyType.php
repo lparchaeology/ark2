@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace DIME\Form\Type;
@@ -44,9 +43,14 @@ class ClassificationPropertyType extends AbstractPropertyType
         $field = $options['state']['field'];
         $dataclass = $field->attribute()->dataclass();
 
-        $valueOptions['choices'] = $dataclass->attribute('subtype')->vocabulary()->terms();
-        $valueOptions['placeholder'] = ' - ';
-        //$valueOptions['required'] = true;
+        if (isset($options['state']['display'])) {
+            $builder->add($options['state']['display']['name'], $options['state']['display']['type'], $options['state']['display']['options']);
+        } else {
+            $valueOptions['choices'] = $dataclass->attribute('subtype')->vocabulary()->terms();
+            $valueOptions['placeholder'] = ' - ';
+            //$valueOptions['required'] = true;
+        }
+
         $builder->add('subtype', $options['state']['value']['type'], $valueOptions);
 
         $fieldOptions['label'] = false;
@@ -58,17 +62,23 @@ class ClassificationPropertyType extends AbstractPropertyType
 
     public function mapDataToForms($property, $forms) : void
     {
+        if (!$property instanceof Property) {
+            return;
+        }
+        $options = $this->propertyOptions($forms);
         $forms = iterator_to_array($forms);
-        if ($property instanceof Property) {
-            $value = $property->value();
-            if ($value && $value) {
-                $event = $value['event'];
-                if ($event) {
-                    $forms['event']->setData($event->id());
-                }
-                $class = $value['subtype'];
-                if ($class) {
-                    $forms['subtype']->setData($class);
+        $value = $property->value();
+        if ($value && is_array($value)) {
+            $event = $value['event'];
+            if ($event) {
+                $forms['event']->setData($event->id());
+            }
+            $subtype = $value['subtype'];
+            if ($subtype) {
+                if (isset($options['state']['display']['name'])) {
+                    $forms[$options['state']['display']['name']]->setData($subtype->keyword());
+                } else {
+                    $forms['subtype']->setData($subtype);
                 }
             }
         }

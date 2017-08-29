@@ -33,6 +33,7 @@ use ARK\Model\Attribute;
 use ARK\Model\Property;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -119,7 +120,7 @@ class ObjectType extends AbstractType implements DataMapperInterface
             return;
         }
         if ($attribute->hasVocabulary()) {
-            $class = TermChoiceType::class;
+            $class = ChoiceType::class;
             $options['choices'] = $attribute->vocabulary()->terms();
             $options['multiple'] = $attribute->hasMultipleOccurrences();
         } else {
