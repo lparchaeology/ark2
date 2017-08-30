@@ -199,9 +199,7 @@ class Field extends Element
 
         // If field is static or has a display option, then the value subform is hidden
         $valueModus = $this->modeToModus($state, $state['value']['modus']);
-        dump($this->id());
         if ($valueModus === 'static') {
-            dump('is static');
             $options['state']['value']['modus'] = 'static';
             $options['state']['display']['name'] = $options['state']['display']['name'] ?? 'static';
             $options['state']['display']['modus'] = 'static';
@@ -214,7 +212,6 @@ class Field extends Element
                 $options['state']['display']['property'] = $options['state']['display']['name'];
             }
         } elseif (isset($options['state']['display'])) {
-            dump('is display = '.$options['state']['display']['name']);
             $options['state']['value']['modus'] = $valueModus;
             $options['state']['display']['modus'] = $valueModus;
             $options['state']['display']['type'] = $this->modusToFormType(
@@ -274,10 +271,9 @@ class Field extends Element
             $options['required'] = $state['required'];
         }
         $options['state']['value']['options']['required'] = $options['required'];
-        if ($options['state']['choices']) {
+        if (!isset($options['state']['display']['modus'])) {
             unset($options['state']['display']);
         }
-        dump($options);
         return $options;
     }
 
@@ -406,8 +402,6 @@ class Field extends Element
         }
         if ($state['choices']) {
             if ($this->attribute()->isItem()) {
-                dump('choices item');
-                dump($state);
                 $fieldOptions = $state['options'][$state['name']] ?? [];
                 $choices = $fieldOptions['choices'] ?? ORM::findAll($this->attribute()->entity());
                 if ($choices) {

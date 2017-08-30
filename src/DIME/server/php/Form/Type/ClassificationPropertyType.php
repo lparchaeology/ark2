@@ -42,7 +42,6 @@ class ClassificationPropertyType extends AbstractPropertyType
         $valueOptions = $options['state']['value']['options'];
         $field = $options['state']['field'];
         $dataclass = $field->attribute()->dataclass();
-
         if (isset($options['state']['display'])) {
             $builder->add($options['state']['display']['name'], $options['state']['display']['type'], $options['state']['display']['options']);
         } else {
@@ -51,7 +50,6 @@ class ClassificationPropertyType extends AbstractPropertyType
             $valueOptions['choice_name'] = 'name';
             $valueOptions['choice_label'] = 'keyword';
             $valueOptions['placeholder'] = 'core.placeholder';
-            //$valueOptions['required'] = true;
         }
 
         $builder->add('subtype', $options['state']['value']['type'], $valueOptions);
@@ -77,7 +75,7 @@ class ClassificationPropertyType extends AbstractPropertyType
             }
             $subtype = $value['subtype'];
             if ($subtype) {
-                if (isset($options['state']['display']['name'])) {
+                if (isset($options['state']['display'])) {
                     $forms[$options['state']['display']['name']]->setData($subtype->keyword());
                 } else {
                     $forms['subtype']->setData($subtype);

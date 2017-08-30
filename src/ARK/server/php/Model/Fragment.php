@@ -89,12 +89,12 @@ abstract class Fragment
         return $this->datatype;
     }
 
-    public function format() : string
+    public function format() : ?string
     {
         return $this->format;
     }
 
-    public function parameter() : string
+    public function parameter() : ?string
     {
         return $this->parameter;
     }

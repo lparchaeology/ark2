@@ -119,9 +119,6 @@ class ScalarPropertyType extends AbstractPropertyType
                 } elseif ($value instanceof Term) {
                     $parameter = $value->concept()->concept();
                     $value = $value->name();
-                } elseif ($value instanceof DateTime) {
-                    // TODO LOCALISE!!!
-                    $value = $value->format('Y-m-d H:i:s');
                 }
             }
         }
