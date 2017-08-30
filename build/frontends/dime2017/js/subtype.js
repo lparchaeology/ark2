@@ -1,6 +1,6 @@
 var initSubtype = function(){
 
-    var type_id = "find_type_term";
+    var type_id = "find_class_term";
 
     var subtype_id = "find_classification_subtype";
 
@@ -198,16 +198,16 @@ $(document).ready(function(){
 
     $('#find_classify').attr('data-toggle','false');
 
-    window.type_id = "find_type_term";
+    window.type_id = "find_class_term";
 
     window.subtype_id = "find_classification_subtype";
 
     window.date_start_id = "find_dating_year";
 
-    var query = {"concept":"dime.find.type"};
+    var query = {"concept":"dime.find.class"};
     $.post(path + 'api/internal/vocabulary', JSON.stringify(query) )
     .fail(function() {
-        console.log('Error fetching type vocabulary');
+        console.log('Error fetching class vocabulary');
     })
     .done(function(response) {
         window.typevocabulary = response.terms;

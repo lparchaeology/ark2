@@ -52,8 +52,10 @@ class DatingPropertyType extends AbstractPropertyType
             $builder->add('display_period', $options['state']['display']['type'], $options['state']['display']['options']);
         } else {
             $valueOptions['choices'] = $dataclass->attribute('period')->vocabulary()->terms();
-            $valueOptions['placeholder'] = ' - ';
-            $valueOptions['required'] = false;
+            $valueOptions['choice_value'] = 'name';
+            $valueOptions['choice_name'] = 'name';
+            $valueOptions['choice_label'] = 'keyword';
+            $valueOptions['placeholder'] = 'core.placeholder';
             $options['state']['value']['type'] = ChoiceType::class;
         }
         $builder->add('period', $options['state']['value']['type'], $valueOptions);
@@ -76,7 +78,7 @@ class DatingPropertyType extends AbstractPropertyType
         $forms = iterator_to_array($forms);
         $value = $property->serialize();
         if ($value) {
-            $forms['event']->setData($value['event']['item']);
+            $forms['event']->setData($value['event']['id']);
             $forms['entered']->setData($value['entered']);
             $forms['year']->setData($value['year'][0]);
             $forms['year_span']->setData($value['year'][1]);

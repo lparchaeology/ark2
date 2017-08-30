@@ -264,7 +264,6 @@ abstract class Element implements ElementInterface
         $options['choice_value'] = 'name';
         $options['choice_name'] = 'name';
         $options['choice_label'] = 'keyword';
-        $options['placeholder'] = $vocabulary->keyword();
         return $options;
     }
 

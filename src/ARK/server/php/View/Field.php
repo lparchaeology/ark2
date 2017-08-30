@@ -135,6 +135,9 @@ class Field extends Element
         if (!isset($state['name'])) {
             $state['name'] = $this->formName();
         }
+        if ($this->display && !isset($state['display']['name'])) {
+            $state['display']['name'] = $this->display;
+        }
         if (!isset($state['keyword'])) {
             $state['keyword'] = $this->keyword();
         }
@@ -196,17 +199,23 @@ class Field extends Element
 
         // If field is static or has a display option, then the value subform is hidden
         $valueModus = $this->modeToModus($state, $state['value']['modus']);
+        dump($this->id());
         if ($valueModus === 'static') {
+            dump('is static');
             $options['state']['value']['modus'] = 'static';
-            $options['state']['display']['name'] = $this->display ?? 'static';
+            $options['state']['display']['name'] = $options['state']['display']['name'] ?? 'static';
             $options['state']['display']['modus'] = 'static';
             $options['state']['display']['type'] = $this->staticFormType();
-            $options['state']['display']['property'] = $this->display;
+            $options['state']['display']['property'] = $options['state']['display']['name'];
             $options['state']['display']['options'] = $this->valueOptions($options['state']);
             $valueModus = 'hidden';
-        } elseif (!$options['state']['choices'] && $this->display) {
+        } elseif ($options['state']['choices']) {
+            if (isset($options['state']['display']['name'])) {
+                $options['state']['display']['property'] = $options['state']['display']['name'];
+            }
+        } elseif (isset($options['state']['display'])) {
+            dump('is display = '.$options['state']['display']['name']);
             $options['state']['value']['modus'] = $valueModus;
-            $options['state']['display']['name'] = $this->display;
             $options['state']['display']['modus'] = $valueModus;
             $options['state']['display']['type'] = $this->modusToFormType(
                 $valueModus,
@@ -215,7 +224,7 @@ class Field extends Element
                 $this->readonlyFormType(),
                 $this->staticFormType()
             );
-            $options['state']['display']['property'] = $this->display;
+            $options['state']['display']['property'] = $options['state']['display']['name'];
             $options['state']['display']['options'] = $this->valueOptions($options['state']);
             $valueModus = 'hidden';
         }
@@ -265,7 +274,10 @@ class Field extends Element
             $options['required'] = $state['required'];
         }
         $options['state']['value']['options']['required'] = $options['required'];
-
+        if ($options['state']['choices']) {
+            unset($options['state']['display']);
+        }
+        dump($options);
         return $options;
     }
 
@@ -392,28 +404,32 @@ class Field extends Element
         } else {
             unset($options['widget']);
         }
-        if ($state['choices'] && $this->attribute()->isItem()) {
-            $choices = $state['select']['choices'] ?? ORM::findAll($this->attribute()->entity());
-            if ($choices) {
-                $options['choices'] = $choices;
-                if ($state['placeholder']) {
-                    $options['placeholder'] = $state['select']['placeholder'] ?? 'core.placeholder';
+        if ($state['choices']) {
+            if ($this->attribute()->isItem()) {
+                dump('choices item');
+                dump($state);
+                $fieldOptions = $state['options'][$state['name']] ?? [];
+                $choices = $fieldOptions['choices'] ?? ORM::findAll($this->attribute()->entity());
+                if ($choices) {
+                    $options['choices'] = $choices;
+                    if ($state['placeholder']) {
+                        $options['placeholder'] = $fieldOptions['placeholder'] ?? 'core.placeholder';
+                    }
+                    $options['choice_value'] = $fieldOptions['choice_value'] ?? 'id';
+                    $options['choice_name'] = $fieldOptions['choice_name'] ?? 'id';
+                    $options['choice_label'] = $fieldOptions['choice_label'] ?? $state['display']['property'] ?? 'id';
                 }
-                $options['choice_value'] = $state['select']['choice_value'] ?? 'id';
-                $options['choice_name'] = $state['select']['choice_name'] ?? 'id';
-                $options['choice_label'] = $state['select']['choice_label'] ?? $this->display ?? 'id';
+            } elseif ($this->attribute()->hasVocabulary()) {
+                $options = $this->vocabularyOptions($this->attribute()->vocabulary(), $options);
+                if ($this->attribute()->isRequired() || !$state['placeholder']) {
+                    $options['placeholder'] = 'core.placeholder';
+                }
             }
             if ($state['modus'] === 'readonly') {
                 $options['attr']['class'] = $this->concatOption($options, 'attr', 'class', 'readonly-select');
             }
         }
-        if ($this->attribute()->hasVocabulary()) {
-            $options = $this->vocabularyOptions($this->attribute()->vocabulary(), $options);
-            if ($this->attribute()->isRequired() || !$state['placeholder']) {
-                $options['placeholder'] = 'core.placeholder';
-            }
-        }
-        $options['constraints'] = $this->attribute()->constraints();
+        //$options['constraints'] = $this->attribute()->constraints();
         return $options;
     }
 

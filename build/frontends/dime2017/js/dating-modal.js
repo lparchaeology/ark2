@@ -5,14 +5,14 @@ var initTimeline = function(){
 
   //Create a DataSet (allows two way data-binding)
   var items = new vis.DataSet();
-  
+
   var all_items = JSON.parse(JSON.stringify(items));
-  
+
   var query = {"concept":"dime.period"};
-  
+
   for ( period_id in window.periodvocabulary){
           var period = window.periodvocabulary[period_id];
-          
+
           try {
               if( isNaN(period.parameters.year_end.value) ){
                   throw 'year end is NaN';
@@ -21,7 +21,7 @@ var initTimeline = function(){
           } catch (e) {
               end = new Date().getFullYear();
           }
-          
+
           try {
               if( isNaN(period.parameters.year_start.value) ){
                   throw 'year end is NaN';
@@ -30,14 +30,14 @@ var initTimeline = function(){
           } catch (e) {
               start = -10000;
           }
-          
+
           items.add({
               id:      period_id,
               content: $("#find_dating_period").find("option[value="+period.name+"]").html(),
               start:   vis.moment(start, "Y"),
               end:     vis.moment(end, "Y")
             });
-      } 
+      }
 
       function customOrder (a, b) {
         // order by length
@@ -62,7 +62,7 @@ var initTimeline = function(){
 
       // Create a Timeline
       var timeline = new vis.Timeline(container, items, options);
-      
+
       $('.vis-range').each(function(i,e){
           var remove = [];
           if( $(e).width() < 100 || $(e).width() > 1500 ){
@@ -72,7 +72,7 @@ var initTimeline = function(){
           }
       });
 
-      
+
       select2Options = {
               minimumResultsForSearch: 11,
               width: 'resolve',
@@ -88,24 +88,24 @@ var initTimeline = function(){
                   });
               },
           };
-      
+
       $('#find_classify').attr('data-toggle','modal');
-      
+
       $('#find_classify').on('click',function(){
           $(".classification-holder").empty();
-          console.log($('#find_type_term').val());
-          $(".classification-holder").append($('#find_type_term').clone().attr('id','find_type_term_modal'));
-          $('#find_type_term_modal').attr('style','width:20%');
-          $('#find_type_term_modal').val($('#find_type_term').val());
+          console.log($('#find_class_term').val());
+          $(".classification-holder").append($('#find_class_term').clone().attr('id','find_class_term_modal'));
+          $('#find_class_term_modal').attr('style','width:20%');
+          $('#find_class_term_modal').val($('#find_class_term').val());
 
-          $('#find_type_term_modal').select2(select2Options);
+          $('#find_class_term_modal').select2(select2Options);
 
           var zoomout = function(){
               $('.vis-tl-zoom-out').trigger('click');
           }
 
           window.setTimeout(zoomout, 3000);
-          
+
           var level1 = $('<select id="find_subtype_level1" style="width:20%">');
           $(".classification-holder").append(level1);
           level1.select2(select2Options);
@@ -114,7 +114,7 @@ var initTimeline = function(){
           $(".classification-holder").append(level2);
           level2.select2(select2Options);
 
-          $('#find_type_term_modal').on("select2:select select2:unselecting", function(){
+          $('#find_class_term_modal').on("select2:select select2:unselecting", function(){
               var target = $(this).val()
               level1.empty();
               level1.append('<option value="undefined">'+window.translations['undef']+'</option>');
@@ -125,9 +125,9 @@ var initTimeline = function(){
                       $(window.subtypevocabulary[subtype].optionelement).clone().appendTo(level1);
                   }
               }
-              $('#find_type_term').val(target);
-              $('#find_type_term').select2(select2Options);
-              $('#find_type_term').trigger('select2:select');
+              $('#find_class_term').val(target);
+              $('#find_class_term').select2(select2Options);
+              $('#find_class_term').trigger('select2:select');
           });
 
           var updateTimeline = function(target){
@@ -152,14 +152,14 @@ var initTimeline = function(){
                           $('#find_dating_year_span').val(target_years.end);
                           $('#find_dating_year_span').trigger('keyup');
                       } catch (e){
-                          
+
                       }
                   }
                   var targetSplit = target.split('.');
 
-                  $('#find_type_term').val(targetSplit[0]);
-                  $('#find_type_term').select2(select2Options);
-                  $('#find_type_term').trigger('select2:select');
+                  $('#find_class_term').val(targetSplit[0]);
+                  $('#find_class_term').select2(select2Options);
+                  $('#find_class_term').trigger('select2:select');
                   $('#find_classification_subtype').val(targetSplit[0]+'.'+targetSplit[1]);
                   $('#find_classification_subtype').select2(select2Options);
                   $('#find_classification_subtype').trigger('select2:select');
@@ -178,7 +178,7 @@ var initTimeline = function(){
                       console.log($('#find_subtype_level1').val());
                       $('#find_classification_subtype').val($('#find_subtype_level1').val());
                       $('#find_classification_subtype').select2(select2Options);
-                      
+
                   }
               }
 
@@ -204,11 +204,11 @@ var initTimeline = function(){
           });
 
           var currentSubtype = $('#find_classification_subtype').val();
-          
+
           level1.empty();
           level1.append('<option value="undefined">'+window.translations['undef']+'</option>');
           for (var subtype in window.subtypevocabulary) {
-              if( $('#find_type_term_modal').val() == subtype.split('.')[0] && subtype.split('.').length == 2 ){
+              if( $('#find_class_term_modal').val() == subtype.split('.')[0] && subtype.split('.').length == 2 ){
                   $(window.subtypevocabulary[subtype].optionelement).clone().appendTo(level1);
               }
           }
@@ -243,11 +243,11 @@ var initTimeline = function(){
                   timeline.addCustomTime( vis.moment(end, 'Y'), 'end' );
               }
           }
-          
+
       });
-      
+
       $(timeline).attr('pannning', false);
-      
+
       timeline.on('rangechange', function(event){
           $(timeline).attr('pannning', true);
       });
@@ -256,7 +256,7 @@ var initTimeline = function(){
               $(timeline).attr('pannning', false);
           }, 100);
       });
-      
+
       timeline.on('click', function(event){
           if($(timeline).attr('pannning')){
               return true;
@@ -280,9 +280,9 @@ var initTimeline = function(){
           }
 
           console.log("start",existing_start,"end",existing_end);
-          
+
           if( event.item != null ) {
-              
+
               try {
                   var item_start = vis.moment(window.periodvocabulary[event.item].parameters.year_start.value, 'Y');
               } catch (e){
@@ -308,7 +308,7 @@ var initTimeline = function(){
                   }
               } else {
                   var start = item_start;
-                  var end = item_end; 
+                  var end = item_end;
               }
 
          } else {
@@ -334,17 +334,17 @@ var initTimeline = function(){
                  }
              }
          }
-         
+
          $('#find_dating_year').val(new Date(start).getFullYear(),'Y');
          $('#find_dating_year').trigger('keyup');
          $('#find_dating_year_span').val(new Date(end).getFullYear(),'Y');
          $('#find_dating_year_span').trigger('keyup');
-         
+
          timeline.addCustomTime( start, 'start' );
          timeline.addCustomTime( end, 'end' );
-        
+
       });
-      
+
       $('.vis-tl-zoom-in').on('click', function () { timeline.zoomIn( 0.2); });
       $('.vis-tl-zoom-out').on('click', function () { timeline.zoomOut( 0.2); });
 
@@ -352,7 +352,7 @@ var initTimeline = function(){
           e.preventDefault();
           $('#dating-modal').modal('hide');
       });
-      
+
       $('.vis-item-content').each(function(){
           $(this).attr('title', $(this).html());
       });
@@ -382,9 +382,8 @@ var initTimeline = function(){
                   timeline.addCustomTime(timeline.getCustomTime('start'),'end');
                   return false;
               }
-              
+
           }
       });
-    
-};
 
+};

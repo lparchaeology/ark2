@@ -189,7 +189,7 @@ function updateMunicipality() {
     $.post(path + 'api/geo/find', wkt, function(result) {
         // TODO Find way without using actual form IDs
         $('#find_municipality_term').val(result['municipality']['term']).trigger("change");
-        $('#find_museum_item').val(result['museum']['item']).trigger("change");
+        $('#find_museum_id').val(result['museum']['id']).trigger("change");
     });
 }
 

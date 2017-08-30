@@ -89,7 +89,7 @@ class ItemDataclass extends Dataclass
         if ($data instanceof Item) {
             $fragment->setValue($data->id(), $data->schema()->module()->id());
         } elseif (is_array($data)) {
-            $fragment->setValue($data['item'], $data['module']);
+            $fragment->setValue($data['id'], $data['module']);
         }
     }
 }

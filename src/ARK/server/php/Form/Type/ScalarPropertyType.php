@@ -167,10 +167,13 @@ class ScalarPropertyType extends AbstractPropertyType
             return;
         }
         $options = $this->propertyOptions($forms);
+        if ($options['state']['modus'] === 'static') {
+            return;
+        }
         $forms = iterator_to_array($forms);
         $dataclass = $property->attribute()->dataclass();
         $value = null;
-        if ($dataclass->isAtomic()) {
+        if ($dataclass->isAtomic() || ($dataclass->entity() && !isset($options['state']['display']))) {
             $value = $forms[$dataclass->valueName()]->getData();
             if (isset($options['state']['value']['choices'])
                 && $options['placeholder']
@@ -179,8 +182,21 @@ class ScalarPropertyType extends AbstractPropertyType
                 $value = null;
             }
         } else {
-            foreach ($forms as $key => $form) {
-                $value[$key] = $forms[$key]->getData();
+            $valueName = $dataclass->valueName();
+            $value[$valueName] = $forms[$valueName]->getData();
+            if ($formatName = $dataclass->formatName()) {
+                $value[$formatName] = isset($forms[$formatName]) ? $forms[$formatName]->getData() : null;
+            }
+            if ($parameterName = $dataclass->parameterName()) {
+                $value[$parameterName] = isset($forms[$parameterName]) ? $forms[$parameterName]->getData() : null;
+            }
+            ksort($value);
+            if ($dataclass->entity()) {
+                try {
+                    $value = ORM::find($dataclass->entity(), $value);
+                } catch (\Throwable $e) {
+                    $value = null;
+                }
             }
         }
         $property->setValue($value);

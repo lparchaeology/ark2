@@ -31,6 +31,7 @@
 namespace DIME\Form\Type;
 
 use ARK\Form\Type\AbstractPropertyType;
+use ARK\Model\Property;
 use ARK\Service;
 use Brick\Geo\Point;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -52,6 +53,7 @@ class LocationPropertyType extends AbstractPropertyType
         $builder->add('utmEasting', $options['state']['value']['type'], $fieldOptions);
         $fieldOptions['label'] = ' ';
         $builder->add('utmNorthing', $options['state']['value']['type'], $fieldOptions);
+        $builder->add('geometry', HiddenType::class, $fieldOptions);
         $builder->add('srid', HiddenType::class, $fieldOptions);
         $builder->add('format', HiddenType::class, $fieldOptions);
         $builder->setDataMapper($this);
@@ -72,12 +74,16 @@ class LocationPropertyType extends AbstractPropertyType
             $utm = Service::spatial()->transform($point, 32632);
             $forms['utmEasting']->setData($utm->x());
             $forms['utmNorthing']->setData($utm->y());
+            $forms['geometry']->setData($value['geometry']);
             $forms['srid']->setData($point->SRID());
             $forms['format']->setData($value['format']);
             if (isset($options['state']['display'])) {
                 $forms[$options['state']['display']['name']]->setData($point->asText());
             }
         } else {
+            if (isset($options['state']['display'])) {
+                $forms[$options['state']['display']['name']]->setData('core.placeholder');
+            }
             $forms['srid']->setData(4326);
             $forms['format']->setData('wkt');
         }

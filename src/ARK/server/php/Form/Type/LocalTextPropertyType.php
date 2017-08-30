@@ -40,6 +40,10 @@ class LocalTextPropertyType extends AbstractPropertyType
 {
     public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
+        if (isset($options['state']['display'])) {
+            $builder->add($options['state']['display']['name'], $options['state']['display']['type'], $options['state']['display']['options']);
+        }
+
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
         $builder->add('previous', HiddenType::class, $fieldOptions);
@@ -66,6 +70,13 @@ class LocalTextPropertyType extends AbstractPropertyType
             $forms['previous']->setData(json_encode($text->contents()));
             $forms['mediatype']->setData($text->mediaType());
             $forms['content']->setData($text->content($language));
+            if (isset($options['state']['display'])) {
+                $options = $this->propertyOptions($forms);
+                $displayName = $options['state']['display']['name'];
+                if ($displayName && isset($forms[$displayName])) {
+                    $forms[$displayName]->setData($text->content($language));
+                }
+            }
         }
     }
 

@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.3
+-- version 4.7.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 29, 2017 at 08:45 PM
+-- Generation Time: Aug 30, 2017 at 06:20 PM
 -- Server version: 10.2.7-MariaDB
 -- PHP Version: 7.1.8
 
@@ -518,7 +518,7 @@ INSERT INTO `ark_dataclass_type` (`datatype`, `object`, `compound`, `storage_typ
 ('decimal', 0, 0, 'string', 200, NULL, NULL, NULL, NULL, NULL, 1, 'ark_dataclass_decimal', 'ARK\\Model\\Dataclass\\DecimalDataclass', 'ark_fragment_decimal', 'ARK\\Model\\Fragment\\DecimalFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.decimal'),
 ('float', 0, 0, 'float', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_dataclass_float', 'ARK\\Model\\Dataclass\\FloatDataclass', 'ark_fragment_float', 'ARK\\Model\\Fragment\\FloatFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.float'),
 ('integer', 0, 0, 'integer', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_dataclass_integer', 'ARK\\Model\\Dataclass\\IntegerDataclass', 'ark_fragment_integer', 'ARK\\Model\\Fragment\\IntegerFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\IntegerType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.integer'),
-('item', 0, 1, 'string', 30, 'item', 'module', NULL, NULL, NULL, 1, 'ark_dataclass_item', 'ARK\\Model\\Dataclass\\ItemDataclass', 'ark_fragment_item', 'ARK\\Model\\Fragment\\ItemFragment', 'ARK\\Form\\Type\\ScalarPropertyType', NULL, NULL, 'ARK\\Form\\Type\\StaticType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, 1, 0, 'core.datatype.item'),
+('item', 0, 1, 'string', 30, 'id', 'module', NULL, NULL, NULL, 1, 'ark_dataclass_item', 'ARK\\Model\\Dataclass\\ItemDataclass', 'ark_fragment_item', 'ARK\\Model\\Fragment\\ItemFragment', 'ARK\\Form\\Type\\ScalarPropertyType', NULL, NULL, 'ARK\\Form\\Type\\StaticType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, 1, 0, 'core.datatype.item'),
 ('object', 1, 0, 'integer', 0, NULL, NULL, NULL, NULL, NULL, 0, 'ark_dataclass_object', 'ARK\\Model\\Dataclass\\ObjectDataclass', 'ark_fragment_object', 'ARK\\Model\\Fragment\\ObjectFragment', 'ARK\\Form\\Type\\ObjectType', NULL, NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.object'),
 ('spatial', 0, 1, 'string', 1431655765, 'geometry', 'srid', 'spatial.crs', 'format', 'spatial.format', 0, 'ark_dataclass_spatial', 'ARK\\Model\\Dataclass\\SpatialDataclass', 'ark_fragment_spatial', 'ARK\\Model\\Fragment\\SpatialFragment', 'ARK\\Form\\Type\\WktPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, 'ARK\\Form\\Type\\StaticType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', 1, 0, 'core.datatype.spatial'),
 ('string', 0, 0, 'string', 4000, NULL, NULL, NULL, NULL, NULL, 1, 'ark_dataclass_string', 'ARK\\Model\\Dataclass\\StringDataclass', 'ark_fragment_string', 'ARK\\Model\\Fragment\\StringFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.string'),
@@ -5768,14 +5768,14 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_add', '', 0, 1, 8, 'core_widget_submit', NULL, NULL, 'send', NULL, 1, 0, NULL, NULL, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.action.send', NULL, NULL),
 ('dime_find_add_case', '', 0, 0, 4, 'dime_find_case', NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_artefact', '', 0, 0, 0, 'dime_widget_classify', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"data-toggle\": \"modal\", \"data-target\":\"#dating-modal\"}}'),
-('dime_find_artefact', '', 0, 0, 2, 'dime_find_class', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_artefact', '', 0, 0, 4, 'dime_find_classification', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_artefact', '', 0, 0, 2, 'dime_find_class', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_artefact', '', 0, 0, 4, 'dime_find_classification', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_artefact', '', 0, 0, 6, 'dime_find_dating', NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_artefact', '', 0, 0, 8, 'dime_find_mint', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_artefact', '', 0, 0, 10, 'dime_find_issuer', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_artefact', '', 0, 0, 12, 'dime_find_material', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_artefact', '', 0, 0, 14, 'dime_find_secondary', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_artefact', '', 0, 0, 16, 'dime_find_condition', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_artefact', '', 0, 0, 12, 'dime_find_material', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_artefact', '', 0, 0, 14, 'dime_find_secondary', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_artefact', '', 0, 0, 16, 'dime_find_condition', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_artefact', '', 0, 0, 18, 'dime_find_weight', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_artefact', '', 0, 0, 20, 'dime_find_length', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_artefact', '', 0, 0, 22, 'dime_find_description', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -5795,7 +5795,7 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_filter', '', 1, 4, 0, 'core_widget_choice', NULL, 'dime.find.process', 'status', NULL, 1, 0, NULL, NULL, 0, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}'),
 ('dime_find_filter', '', 1, 6, 0, 'core_widget_choice', NULL, 'dime.treasure', 'treasure', NULL, 1, 0, NULL, NULL, 0, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}'),
 ('dime_find_geo', '', 0, 0, 0, 'dime_find_location', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.find.coordinates', NULL, NULL),
-('dime_find_geo', '', 0, 0, 2, 'dime_find_municipality', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_geo', '', 0, 0, 2, 'dime_find_municipality', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_geo', '', 0, 0, 4, 'dime_find_museum', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_item', '', 0, 0, 0, 'dime_find_metadata', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_item', '', 0, 0, 2, 'dime_find_event', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -5818,10 +5818,10 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_search', '', 0, 0, 0, 'dime_find_filter', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_search', '', 1, 0, 0, 'dime_find_list', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_search', '', 1, 1, 0, 'dime_find_map', 'dime_map_public', NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_status', '', 0, 0, 0, 'dime_find_process', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'static', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_status', '', 0, 0, 2, 'dime_find_treasure', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'static', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_status', '', 0, 0, 0, 'dime_find_process', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, 'static', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_status', '', 0, 0, 2, 'dime_find_treasure', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, 'static', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_status', '', 0, 0, 4, 'dime_find_owner', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, 'static', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_status', '', 0, 0, 6, 'dime_find_custody', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'static', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_status', '', 0, 0, 6, 'dime_find_custody', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, 'static', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_status', '', 0, 0, 8, 'dime_find_custodian', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, 'static', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_status', '', 0, 0, 10, 'dime_find_recipient', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, 'static', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_table', '', 0, 0, 0, 'dime_find_id', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -6056,7 +6056,6 @@ INSERT INTO `ark_view_element` (`element`, `type`, `enabled`, `deprecated`, `key
 ('dime_find_photo', 'grid', 1, 0, 'dime.find.photo'),
 ('dime_find_process', 'field', 1, 0, NULL),
 ('dime_find_recipient', 'field', 1, 0, NULL),
-('dime_find_recorder', 'field', 1, 0, NULL),
 ('dime_find_search', 'grid', 1, 0, NULL),
 ('dime_find_secondary', 'field', 1, 0, NULL),
 ('dime_find_status', 'grid', 1, 0, 'dime.find.status'),
@@ -6176,10 +6175,10 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `class`, `attribute`, `display
 ('core_page_content', 'core.page', 'page', 'content', NULL, 'active', NULL, NULL, NULL, NULL, ''),
 ('core_user_terms', 'core.actor', 'person', 'terms', NULL, 'active', NULL, NULL, NULL, 'DIME\\Form\\Type\\UserTermsPropertyType', ''),
 ('dime_actor_detectorist_id', 'core.actor', 'person', 'detectorist_id', NULL, 'active', NULL, NULL, NULL, NULL, ''),
-('dime_actor_municipality', 'core.actor', 'museum', 'municipality', NULL, 'active', NULL, NULL, NULL, NULL, ''),
+('dime_actor_municipality', 'core.actor', 'museum', 'municipality', 'fullname', 'active', NULL, NULL, NULL, NULL, ''),
 ('dime_find_case', 'dime.find', 'find', 'case', NULL, 'active', NULL, NULL, NULL, NULL, ''),
 ('dime_find_class', 'dime.find', 'find', 'class', NULL, 'active', NULL, NULL, NULL, NULL, ''),
-('dime_find_classification', 'dime.find', 'find', 'classification', 'subtype', 'active', NULL, NULL, NULL, 'DIME\\Form\\Type\\ClassificationPropertyType', ''),
+('dime_find_classification', 'dime.find', 'find', 'classification', NULL, 'active', NULL, NULL, NULL, 'DIME\\Form\\Type\\ClassificationPropertyType', ''),
 ('dime_find_condition', 'dime.find', 'find', 'condition', NULL, 'active', NULL, NULL, NULL, NULL, ''),
 ('dime_find_custodian', 'dime.find', 'find', 'custodian', 'fullname', 'static', NULL, NULL, NULL, NULL, ''),
 ('dime_find_custody', 'dime.find', 'find', 'custody', NULL, 'static', NULL, NULL, NULL, NULL, ''),
@@ -6202,7 +6201,6 @@ INSERT INTO `ark_view_field` (`element`, `schma`, `class`, `attribute`, `display
 ('dime_find_owner', 'dime.find', 'find', 'owner', 'fullname', 'static', NULL, NULL, NULL, NULL, ''),
 ('dime_find_process', 'dime.find', 'find', 'process', NULL, 'static', NULL, NULL, NULL, NULL, ''),
 ('dime_find_recipient', 'dime.find', 'find', 'recipient', 'fullname', 'static', NULL, NULL, NULL, NULL, ''),
-('dime_find_recorder', 'dime.find', 'find', 'recorder', NULL, 'active', NULL, NULL, NULL, NULL, ''),
 ('dime_find_secondary', 'dime.find', 'find', 'secondary', NULL, 'active', NULL, NULL, NULL, NULL, '{\"multiple\":true, \"expanded\": \"true\"}'),
 ('dime_find_treasure', 'dime.find', 'find', 'treasure', NULL, 'static', NULL, NULL, NULL, NULL, ''),
 ('dime_find_visibility', 'dime.find', 'find', 'visibility', NULL, 'active', NULL, NULL, NULL, NULL, ''),
@@ -9869,11 +9867,13 @@ ALTER TABLE `ark_workflow_update`
 --
 ALTER TABLE `ark_view_tree`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
 --
 -- AUTO_INCREMENT for table `ark_workflow_notify`
 --
 ALTER TABLE `ark_workflow_notify`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+
 --
 -- Constraints for dumped tables
 --

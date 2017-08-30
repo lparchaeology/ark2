@@ -156,9 +156,18 @@ class Page extends Element
         //dump($options);
         $forms = $this->content->buildForms($data, $state, $options);
         //dump($forms);
-        if ($forms && $processForm && $request->getMethod() === 'POST') {
+        if ($forms && $request->getMethod() === 'POST') {
             try {
-                return $this->processForm($request, $forms, $processForm);
+                $posted = $this->postedForm($request, $forms);
+                if ($posted !== null && $posted->isValid()) {
+                    if ($processForm !== null) {
+                        $processForm($request, $posted);
+                    }
+                    $redirect = $request->attributes->get('redirect') ?? $request->attributes->get('_route');
+                    $parameters = $request->attributes->get('parameters') ?? [];
+                    return Service::redirectPath($redirect, $parameters);
+                }
+                Service::view()->addErrorFlash('core.error.form.invalid');
             } catch (WorkflowException $e) {
                 Service::view()->addErrorFlash($e->getMessage());
             }
@@ -190,25 +199,14 @@ class Page extends Element
         $builder->addManyToOneField('footer', Group::class, 'footer', 'element');
     }
 
-    protected function processForm(Request $request, iterable $forms, callable $processForm)
-    {
-        $posted = $this->postedForm($request, $forms);
-        $processForm($request, $posted);
-        $redirect = $request->attributes->get('redirect') ?? $request->attributes->get('_route');
-        $parameters = $request->attributes->get('parameters') ?? [];
-        return Service::redirectPath($redirect, $parameters);
-    }
-
     protected function postedForm(Request $request, iterable $forms)
     {
         foreach ($forms as $id => $form) {
-            $name = $form->getName();
-            if ($request->request->has($name)) {
+            if ($request->request->has($form->getName())) {
                 $form->getRoot()->handleRequest($request);
-                if ($form->isSubmitted() && $form->isValid()) {
+                if ($form->isSubmitted()) {
                     return $form->getRoot();
                 }
-                // TODO Tell it of errors!!!
                 return null;
             }
             if ($root = $this->postedForm($request, $form)) {

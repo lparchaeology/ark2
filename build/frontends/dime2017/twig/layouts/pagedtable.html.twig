@@ -92,7 +92,7 @@
                     {% for field in layout.fields %}
                         <td>
                             {% if field is defined and item[field.id]is defined %}
-                                {% if field.property.id == 'item' %}
+                                {% if field.property.id == 'id' %}
                                     {{ item[field.id]|raw }}
                                 {% elseif field.property.type == 'datetime' %}
                                     {{ item[field.id].format('Y-m-d H:i:s') }}

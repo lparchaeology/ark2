@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK JSON:API Action
+ * ARK JSON:API Action.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -34,15 +34,11 @@ use ARK\Api\JsonApi\Http\JsonApiRequest;
 use ARK\Api\JsonApi\Http\JsonApiResponse;
 use ARK\Api\JsonApi\JsonApiException;
 use ARK\Api\JsonApi\Resource\ItemResource;
-use ARK\Api\JsonApi\Serializer\ItemSerializer;
 use ARK\Database\Database;
 use ARK\Framework\Application;
 use ARK\Http\Error\BadRequestError;
-use ARK\Http\Error\InternalServerError;
 use ARK\Model\Item\Item;
-use ARK\Model\Module\Module;
 use ARK\ORM\EntityManager;
-use Exception;
 use Tobscure\JsonApi\Document;
 use Tobscure\JsonApi\Resource;
 
@@ -50,8 +46,8 @@ class SitePostAction extends AbstractJsonApiAction
 {
     use \ARK\Api\JsonApi\JsonSchemaTrait;
 
-    protected $em = null;
-    private $site = null;
+    protected $em;
+    private $site;
 
     public function __invoke(Application $app, JsonApiRequest $request, string $siteSlug = null)
     {
@@ -61,13 +57,13 @@ class SitePostAction extends AbstractJsonApiAction
             $this->site = $siteSlug;
         } elseif (!empty($this->data['id'])) {
             $this->site = $this->data['id'];
-        } elseif (!empty($this->data['attributes']['item'])) {
-            $this->site = $this->data['item'];
+        } elseif (!empty($this->data['attributes']['id'])) {
+            $this->site = $this->data['id'];
         }
         return parent::__invoke($app, $request);
     }
 
-    protected function fetchData()
+    protected function fetchData() : void
     {
         $item = $em->find('ARK\Model\Item\Site', $this->site);
         if ($item && $item->isValid()) {
@@ -76,7 +72,7 @@ class SitePostAction extends AbstractJsonApiAction
         }
     }
 
-    protected function validateParamaters()
+    protected function validateParamaters() : void
     {
         if ($this->parameters->hasParameters()) {
             $this->addError(new BadRequestError('Invalid Parameters', 'Post requests should not have parameters.'));
@@ -84,19 +80,19 @@ class SitePostAction extends AbstractJsonApiAction
         }
     }
 
-    protected function validateContent()
+    protected function validateContent() : void
     {
         $data = json_decode($this->request->getContent())->data->attributes;
         $schema = json_decode($this->app['serializer']->serialize($this->module, 'json', ['schemaId' => 'minories']));
         $this->validateJsonDecode($data, $schema, $this->errors);
     }
 
-    protected function performAction()
+    protected function performAction() : void
     {
         $this->em->persist(new Item($this->em, $this->module, $this->site, null, $this->site, $this->site, null, 'minories'));
     }
 
-    protected function createResponse()
+    protected function createResponse() : void
     {
         $resource = new ItemResource($this->em->find($this->module, $this->site), $this->parameters, $this->app['serializer']);
         $document = new Document($resource);

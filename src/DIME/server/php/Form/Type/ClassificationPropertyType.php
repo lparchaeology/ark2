@@ -47,7 +47,10 @@ class ClassificationPropertyType extends AbstractPropertyType
             $builder->add($options['state']['display']['name'], $options['state']['display']['type'], $options['state']['display']['options']);
         } else {
             $valueOptions['choices'] = $dataclass->attribute('subtype')->vocabulary()->terms();
-            $valueOptions['placeholder'] = ' - ';
+            $valueOptions['choice_value'] = 'name';
+            $valueOptions['choice_name'] = 'name';
+            $valueOptions['choice_label'] = 'keyword';
+            $valueOptions['placeholder'] = 'core.placeholder';
             //$valueOptions['required'] = true;
         }
 
@@ -56,7 +59,6 @@ class ClassificationPropertyType extends AbstractPropertyType
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
         $builder->add('event', HiddenType::class, $fieldOptions);
-
         $builder->setDataMapper($this);
     }
 

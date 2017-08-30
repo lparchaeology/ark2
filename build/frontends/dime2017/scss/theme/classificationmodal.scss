@@ -4,12 +4,11 @@
 }
 
 .dating-modal-container {
-    margin: 0 0 20px 0;
+    margin: 0 0 20px;
 }
 
-
 .dating-modal-container .select2 {
-	margin-right: 10px
+    margin-right: 10px;
 }
 
 .dating-modal-container.dime {
@@ -27,33 +26,35 @@
 }
 
 .classification-holder {
-    text-align:left;
+    text-align: left;
     margin: 0 0 20px 20px;
 }
 
 .vis-custom-time.start {
-	background-color:#108210;
+    background-color: #108210;
     z-index: 3;
 }
+
 .vis-custom-time.end {
-	background-color:#821010;
+    background-color: #821010;
     z-index: 3;
 }
 
 .vis-background {
-    background-color:#f9f9f9;
+    background-color: #f9f9f9;
 }
+
 .vis-item,
 .vis-item.vis-range {
     border-radius: 10px;
     border: 1px black solid;
-    background-color:#fff;
+    background-color: #fff;
     padding: 0 5px;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .vis-item .vis-item-content {
-    padding:0;
+    padding: 0;
     position: relative;
     display: inline-block;
     overflow: hidden;
@@ -61,10 +62,9 @@
     line-height: 1;
 }
 
-#find_type_term_modal{
-    width:20%
+#find_class_term_modal {
+    width: 20%;
 }
-
 
 .vis-tl-control {
     background-color: rgba(255,255,255,0.4);
@@ -82,8 +82,8 @@
     margin: 1px;
 }
 
-.vis-tl-control:focus,
-.vis-tl-control button:focus {
+.vis-tl-control button:focus,
+.vis-tl-control:focus {
     outline-color: rgba(255,255,255,.4);
     background-color: rgba(0, 0, 0, 1);
 }

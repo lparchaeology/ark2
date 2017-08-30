@@ -20,7 +20,7 @@
         <div class="mappick-utm col-sm-6">
             {% if state.modus == 'active' %}
                 <div class="radio">
-                    <input type="radio" name="mappick-coordinates-radio" id="mappick-utm" checked="checked" />
+                    <input type="radio" name="mappick-coordinates-radio" id="mappick-utm" checked="checked" form="ignore" />
                     <label for="mappick-utm"><span class="radiolabel">{{ 'dime.find.location.utm' | translate }}</span></label>
                 </div>
                 {{ form_widget(form.utmEasting, {'attr': {'class': 'mappick-utm-control'}}) }}
@@ -34,7 +34,7 @@
         <div class="mappick-decimal col-sm-6">
             {% if state.modus == 'active' %}
                 <div class="radio">
-                    <input type="radio" name="mappick-coordinates-radio" id="mappick-decimal" />
+                    <input type="radio" name="mappick-coordinates-radio" id="mappick-decimal" form="ignore" />
                     <label for="mappick-decimal"><span class="radiolabel">{{ 'dime.find.location.decimal' | translate }}</span></label>
                 </div>
                 {{ form_widget(form.easting, {'attr': {'class': 'mappick-decimal-control', 'readonly':'readonly'}}) }}
@@ -43,6 +43,7 @@
                 {{ form_widget(form.easting) }}
                 {{ form_widget(form.northing) }}
             {% endif %}
+            {{ form_row(form.geometry) }}
             {{ form_row(form.srid) }}
             {{ form_row(form.format) }}
         </div>

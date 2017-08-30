@@ -75,7 +75,7 @@ abstract class Dataclass
         return $this->datatype;
     }
 
-    public function entity() : string
+    public function entity() : ?string
     {
         return $this->entity;
     }

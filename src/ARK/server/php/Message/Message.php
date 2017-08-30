@@ -77,7 +77,7 @@ class Message implements Item
     public function isRecipient(Actor $actor) : bool
     {
         foreach ($this->recipients() as $dispatch) {
-            if ($actor->id() === $dispatch['recipient']['item']) {
+            if ($actor->id() === $dispatch['recipient']['id']) {
                 return true;
             }
         }
@@ -92,7 +92,7 @@ class Message implements Item
     public function wasReadBy(Actor $actor) : bool
     {
         foreach ($this->recipients() as $dispatch) {
-            if ($actor->id() === $dispatch['recipient']['item'] && isset($dispatch['read'])) {
+            if ($actor->id() === $dispatch['recipient']['id'] && isset($dispatch['read'])) {
                 return true;
             }
         }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * DIME Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -32,7 +32,6 @@ namespace DIME\Controller\API;
 
 use ARK\Http\JsonResponse;
 use ARK\ORM\ORM;
-use ARK\Service;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,30 +44,38 @@ class VocabularyController
 
     protected $root = false;
 
-    protected $parameters = null;
+    protected $parameters;
 
-    protected $related = null;
+    protected $related;
 
-    protected $descendents = null;
+    protected $descendents;
 
     public function __invoke(Request $request)
     {
         $content = json_decode($request->getContent());
+        $data = [];
         try {
             $vocabulary = ORM::find(Vocabulary::class, $content->concept);
-            $data['concept'] = $vocabulary->concept();
-            $data['type'] = $vocabulary->type();
-            $data['source'] = $vocabulary->source();
-            $data['closed'] = $vocabulary->closed();
-            $data['keyword'] = $vocabulary->keyword();
-            $data['terms'] = [];
-            foreach ($vocabulary->terms() as $term) {
-                $data['terms'][$term->name()] = $this->serializeTerm($term);
+            if ($vocabulary) {
+                $data['concept'] = $vocabulary->concept();
+                $data['type'] = $vocabulary->type();
+                $data['source'] = $vocabulary->source();
+                $data['closed'] = $vocabulary->closed();
+                $data['keyword'] = $vocabulary->keyword();
+                $data['terms'] = [];
+                foreach ($vocabulary->terms() as $term) {
+                    $data['terms'][$term->name()] = $this->serializeTerm($term);
+                }
+            } else {
+                $data['error']['code'] = 0;
+                $data['error']['message'] = 'No Vocabulary';
+                $data['error']['content'] = $content;
             }
             //$data['transitions'] = $vocabulary->transitions();
         } catch (Exception $e) {
-            $data['error']['code'][$e->getCode()];
-            $data['error']['message'][$e->getMessage()];
+            $data['error']['code'] = $e->getCode();
+            $data['error']['message'] = $e->getMessage();
+            $data['error']['content'] = $content;
         }
         return new JsonResponse($data);
     }
@@ -81,8 +88,8 @@ class VocabularyController
         $data['root'] = $term->isRoot();
         $data['parameters'] = [];
         foreach ($term->parameters() as $parameter) {
-            $data['parameters'][$parameter->name()]["type"] = $parameter->type();
-            $data['parameters'][$parameter->name()]["value"] = $parameter->value();
+            $data['parameters'][$parameter->name()]['type'] = $parameter->type();
+            $data['parameters'][$parameter->name()]['value'] = $parameter->value();
         }
         $data['related'] = [];
         foreach ($term->related() as $related) {

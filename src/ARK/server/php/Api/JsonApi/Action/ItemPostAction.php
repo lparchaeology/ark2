@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK JSON:API Action
+ * ARK JSON:API Action.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -34,14 +34,13 @@ use ARK\Api\JsonApi\Http\JsonApiRequest;
 use ARK\Api\JsonApi\Http\JsonApiResponse;
 use ARK\Api\JsonApi\JsonApiException;
 use ARK\Api\JsonApi\Resource\ItemResource;
-use ARK\Api\JsonApi\Serializer\ItemSerializer;
+use ARK\Database\Database;
 use ARK\Framework\Application;
 use ARK\Http\Error\BadRequestError;
 use ARK\Http\Error\InternalServerError;
 use ARK\Model\Item\Item;
 use ARK\Model\Module\Module;
 use Exception;
-use ARK\Database\Database;
 use Tobscure\JsonApi\Document;
 use Tobscure\JsonApi\Resource;
 
@@ -49,10 +48,10 @@ class ItemPostAction extends AbstractJsonApiAction
 {
     use \ARK\Api\JsonApi\JsonSchemaTrait;
 
-    private $site = null;
-    private $module = null;
-    private $item = null;
-    private $index = null;
+    private $site;
+    private $module;
+    private $item;
+    private $index;
 
     public function __invoke(Application $app, JsonApiRequest $request, $siteSlug = null, $moduleSlug = null, $itemSlug = null)
     {
@@ -70,14 +69,14 @@ class ItemPostAction extends AbstractJsonApiAction
         return parent::__invoke($app, $request);
     }
 
-    protected function fetchData()
+    protected function fetchData() : void
     {
         $root = Module::getRoot($this->app['database'], 'ark');
         $this->site = $root->submodule($root->schemaId(), 'ste')->item($this->site);
         $this->module = $this->site->submodule($this->module);
         if (!$this->item) {
             $last = Item::getLast($this->app['database'], $this->module, $this->site);
-            $this->index = (int)$last->index() + 1;
+            $this->index = (int) $last->index() + 1;
             $this->item = $this->site->id().'.'.$this->index;
         }
         $item = $this->module->item($this->item);
@@ -87,7 +86,7 @@ class ItemPostAction extends AbstractJsonApiAction
         }
     }
 
-    protected function validateParamaters()
+    protected function validateParamaters() : void
     {
         if ($this->parameters->hasParameters()) {
             $this->addError(new BadRequestError('Invalid Parameters', 'Post requests should not have parameters.'));
@@ -95,48 +94,21 @@ class ItemPostAction extends AbstractJsonApiAction
         }
     }
 
-    protected function validateContent()
+    protected function validateContent() : void
     {
         $data = json_decode($this->request->getContent())->data->attributes;
         $schema = json_decode($this->app['serializer']->serialize($this->module, 'json', ['schemaId' => 'simple']));
         $this->validateJsonDecode($data, $schema, $this->errors);
     }
 
-    private function insert(Database $db, array $properties)
-    {
-        $item = (!empty($properties['item']) ? $properties['item'] : $this->site->id().'_'.$this->index);
-        unset($properties['item']);
-        $modtype = (isset($properties['modtype']) ? $properties['modtype'] : '');
-        unset($properties['modtype']);
-        $rowsAdded = $db->addItem($this->module->id(), $this->site->id(), $this->index, $item, $modtype);
-        if ($rowsAdded == 0) {
-            throw new JsonApiException();
-        }
-        foreach ($properties as $key => $value) {
-            $property = $this->module->property('simple', '', $key);
-            if ($property && $property->type() == 'text') {
-                foreach ($value as $text) {
-                    $db->addPropertyFragments($this->module->id(), $this->item, $key, $property->type(), [['language' => $text[0], 'value' => $text[1]]]);
-                }
-            } elseif ($property && $property->type() != 'graph') {
-                $value = is_array($value) ? $value : [$value];
-                foreach ($value as $val) {
-                    $values[] = ['value' => $val];
-                }
-                $db->addPropertyFragments($this->module->id(), $this->item, $key, $property->type(), $values);
-                unset($values);
-            }
-        }
-    }
-
-    protected function performAction()
+    protected function performAction() : void
     {
         try {
             $properties = $this->data['attributes'];
             $this->app['database']->data()->beginTransaction();
             $this->insert($this->app['database'], $properties);
             $this->app['database']->data()->commit();
-            //$properties['item'] = $this->site;
+            //$properties['id'] = $this->site;
             //$this->app['database']->runDataTransaction($this->insert(), $properties);
         } catch (Exception $e) {
             $this->app['database']->data()->rollback();
@@ -160,10 +132,37 @@ class ItemPostAction extends AbstractJsonApiAction
         }
     }
 
-    protected function createResponse()
+    protected function createResponse() : void
     {
         $resource = new ItemResource($this->data, $this->parameters, $this->app['serializer']);
         $document = new Document($resource);
         $this->response = new JsonApiResponse($document, 201);
+    }
+
+    private function insert(Database $db, array $properties) : void
+    {
+        $item = (!empty($properties['id']) ? $properties['id'] : $this->site->id().'_'.$this->index);
+        unset($properties['id']);
+        $modtype = ($properties['modtype'] ?? '');
+        unset($properties['modtype']);
+        $rowsAdded = $db->addItem($this->module->id(), $this->site->id(), $this->index, $item, $modtype);
+        if ($rowsAdded === 0) {
+            throw new JsonApiException();
+        }
+        foreach ($properties as $key => $value) {
+            $property = $this->module->property('simple', '', $key);
+            if ($property && $property->type() === 'text') {
+                foreach ($value as $text) {
+                    $db->addPropertyFragments($this->module->id(), $this->item, $key, $property->type(), [['language' => $text[0], 'value' => $text[1]]]);
+                }
+            } elseif ($property && $property->type() !== 'graph') {
+                $value = is_array($value) ? $value : [$value];
+                foreach ($value as $val) {
+                    $values[] = ['value' => $val];
+                }
+                $db->addPropertyFragments($this->module->id(), $this->item, $key, $property->type(), $values);
+                unset($values);
+            }
+        }
     }
 }

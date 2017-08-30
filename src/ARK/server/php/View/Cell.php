@@ -191,6 +191,9 @@ class Cell implements ElementInterface
         if ($this->width !== null) {
             $state['width'] = $this->width;
         }
+        if ($this->display) {
+            $state['display']['name'] = $this->display;
+        }
         $state['keyword'] = $this->keyword;
         if ($this->mode === 'view') {
             $state['mode'] = 'view';

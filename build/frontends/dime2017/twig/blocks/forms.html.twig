@@ -70,6 +70,7 @@ col-xs-12 col-sm-4
 {% block property_widget -%}
     {% for key, subform in form %}
         {{- form_widget(subform, {'state': state, 'help': help}) -}}
+        {{- form_errors(subform) -}}
         {% do subform.setRendered %}
     {% endfor %}
 {%- endblock property_widget %}
@@ -110,6 +111,8 @@ col-xs-12 col-sm-4
             <div class="input-group-addon"> {{- form['unit'].vars['data'] -}} </div>
         </div>
         {{ block('form_help') }}
+        {{- form_errors(form['value']) -}}
+        {{- form_errors(form['unit']) -}}
     {% endif %}
     {% endspaceless %}
     {% do form.setRendered %}

@@ -36,13 +36,12 @@ use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Vocabulary\Term;
 use Brick\Geo\Point;
-use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class GeoFindController
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request) : JsonResponse
     {
         $wkt = $request->getContent();
         try {
@@ -64,12 +63,12 @@ class GeoFindController
                 $id = Service::database()->getMunicipalityMuseum($mid);
                 if ($id) {
                     $museum = ORM::find(Museum::class, $id[0]['item']);
-                    $data['museum']['item'] = $museum->id();
+                    $data['museum']['id'] = $museum->id();
                     $data['museum']['module'] = $museum->schema()->module()->id();
                     $data['museum']['name'] = $museum->property('fullname')->value()->content();
                 }
             }
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $data = [$e->getMessage()];
         }
         return new JsonResponse($data);
