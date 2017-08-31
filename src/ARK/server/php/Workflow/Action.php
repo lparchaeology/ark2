@@ -123,7 +123,7 @@ class Action
             foreach ($conditions as $condition) {
                 $vote = $condition->isMet($item);
                 if (!$vote) {
-                    $continue;
+                    continue 2;
                 }
             }
             if ($vote) {

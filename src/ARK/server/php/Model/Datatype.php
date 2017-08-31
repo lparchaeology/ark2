@@ -32,6 +32,7 @@ namespace ARK\Model;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Vocabulary\Vocabulary;
+use DateTime;
 
 class Datatype
 {
@@ -39,6 +40,8 @@ class Datatype
     use KeywordTrait;
 
     protected $datatype = '';
+    protected $numeric = false;
+    protected $temporal = false;
     protected $object = false;
     protected $compound = false;
     protected $storageType = '';
@@ -67,6 +70,16 @@ class Datatype
         return $this->datatype;
     }
 
+    public function isNumeric() : bool
+    {
+        return $this->numeric;
+    }
+
+    public function isTemporal() : bool
+    {
+        return $this->temporal;
+    }
+
     public function isObject() : bool
     {
         return $this->object;
@@ -75,6 +88,23 @@ class Datatype
     public function isCompound() : bool
     {
         return $this->compound;
+    }
+
+    public function cast($value)
+    {
+        if ($this->number) {
+            if ($this->storageType === 'integer') {
+                return (int) $value;
+            }
+            return (float) $value;
+        }
+        if ($this->temporal) {
+            return DateTime($value);
+        }
+        if ($this->compound || $this->object) {
+            return $value;
+        }
+        return (string) $value;
     }
 
     public function storageType() : string
@@ -177,6 +207,8 @@ class Datatype
         $builder->addStringKey('datatype', 30);
 
         // Attributes
+        $builder->addField('numeric', 'boolean', [], 'number');
+        $builder->addField('temporal', 'boolean');
         $builder->addField('object', 'boolean');
         $builder->addField('compound', 'boolean');
         $builder->addStringField('storageType', 30, 'storage_type');

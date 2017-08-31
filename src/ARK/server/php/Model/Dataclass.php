@@ -196,7 +196,7 @@ abstract class Dataclass
             return $this->fragmentValue($model, $properties);
         }
         if (!$model instanceof Collection || $model->isEmpty()) {
-            return $this->nullValue();
+            return $this->emptyValue();
         }
         if ($this->hasMultipleValues()) {
             $data = [];
@@ -319,6 +319,7 @@ abstract class Dataclass
         } else {
             $data[$this->valueName()] = $fragment->value();
         }
+        ksort($data);
         return $data;
     }
 

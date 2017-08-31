@@ -57,6 +57,16 @@ class FindViewController extends DimeFormController
         return $data;
     }
 
+    public function buildState(Request $request) : iterable
+    {
+        $state = parent::buildState($request);
+        $actor = Service::workflow()->actor();
+        if (!$actor->hasPermission('dime.find.register.any')) {
+            $state['options']['finder']['choices'] = [$actor];
+        }
+        return $state;
+    }
+
     public function buildWorkflow(Request $request, $data, iterable $state) : iterable
     {
         return parent::buildWorkflow($request, $data['find'], $state);

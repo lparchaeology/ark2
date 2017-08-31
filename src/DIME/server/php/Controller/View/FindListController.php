@@ -54,6 +54,9 @@ class FindListController extends DimeFormController
             // Filter by Museum
             // If the user is explicitly granted permission, they can filter for all museums.
             // Otherwise the user is only able to filter museums they have explicitly granted permission for
+            $state['options']['museum']['choice_value'] = 'id';
+            $state['options']['museum']['choice_name'] = 'id';
+            $state['options']['museum']['choice_label'] = 'fullname';
             if ($actor->hasPermission('dime.find.filter.museum')) {
                 $state['options']['museum']['choices'] = ORM::findAll(Museum::class);
                 $state['options']['museum']['multiple'] = true;
@@ -73,6 +76,9 @@ class FindListController extends DimeFormController
             // If the user is explicitly granted permission, they can filter for all actors.
             // If the user is able to create new finds, then they are allowed to filter for their own finds
             // Otherwise they cannot filter by Finder
+            $state['options']['finder']['choice_value'] = 'id';
+            $state['options']['finder']['choice_name'] = 'id';
+            $state['options']['finder']['choice_label'] = 'fullname';
             if ($actor->hasPermission('dime.find.filter.finder')) {
                 $finders = Service::database()->getFinders();
                 $state['options']['finder']['choices'] = ORM::findBy(Person::class, ['id' => $finders]);

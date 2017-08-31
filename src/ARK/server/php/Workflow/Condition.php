@@ -69,10 +69,39 @@ class Condition
         if ($value instanceof LocalText) {
             $value = $value->content();
         }
+        if ($this->operator === 'is') {
+            return $value === $this->value;
+        }
         if ($this->operator === 'not') {
             return $value !== $this->value;
         }
-        return $value === $this->value;
+        if ($this->attribute->dataclass()->datatype()->isNumeric()) {
+            $lhs = $this->attribute->dataclass()->datatype()->cast($value);
+            $rhs = $this->attribute->dataclass()->datatype()->cast($this->value);
+        } elseif ($this->attribute->hasMultipleOccurrences() || $this->attribute->dataclass()->hasMultipleValues()) {
+            $lhs = count($value);
+            $rhs = (int) $this->value;
+        } else {
+            $lhs = $value;
+            $rhs = $this->value;
+        }
+        switch ($this->operator) {
+            case 'eq':
+                // TODO weak comparison!!!
+                return $lhs === $rhs;
+            case 'ne':
+                // TODO weak comparison!!!
+                return $lhs !== $rhs;
+            case 'gt':
+                return $lhs > $rhs;
+            case 'ge':
+                return $lhs >= $rhs;
+            case 'lt':
+                return $lhs < $rhs;
+            case 'le':
+                return $lhs <= $rhs;
+        }
+        return false;
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void

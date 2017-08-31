@@ -299,7 +299,7 @@ class Field extends Element
         }
         if ($data instanceof Property) {
             $value = $data->value();
-            if (!$value) {
+            if (!$value || $value === $this->attribute()->emptyValue()) {
                 return '';
             }
             if ($this->attribute()->hasMultipleOccurrences() && is_array($value)) {

@@ -57,7 +57,7 @@ class Update
         } elseif ($this->subject) {
             $item->property($this->attributeName)->setValue($subject);
         } elseif ($this->clear) {
-            $item->property($this->attributeName)->setValue($this->attribute->nullValue());
+            $item->property($this->attributeName)->setValue($this->attribute->emptyValue());
         } elseif ($this->term) {
             $term = ORM::findOneBy(Term::class, ['concept' => $this->attribute->vocabulary()->concept(), 'term' => $this->term]);
             $item->property($this->attributeName)->setValue($term);

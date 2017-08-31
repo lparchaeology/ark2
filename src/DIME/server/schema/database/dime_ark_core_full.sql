@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 31, 2017 at 11:59 AM
+-- Generation Time: Aug 31, 2017 at 02:56 PM
 -- Server version: 10.2.8-MariaDB
 -- PHP Version: 7.1.8
 
@@ -481,6 +481,8 @@ INSERT INTO `ark_dataclass_time` (`dataclass`, `pattern`, `unicode`, `php`, `pre
 
 CREATE TABLE `ark_dataclass_type` (
   `datatype` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `number` tinyint(1) NOT NULL,
+  `temporal` tinyint(1) NOT NULL,
   `object` tinyint(1) NOT NULL DEFAULT 0,
   `compound` tinyint(1) NOT NULL DEFAULT 1,
   `storage_type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -510,20 +512,20 @@ CREATE TABLE `ark_dataclass_type` (
 -- Dumping data for table `ark_dataclass_type`
 --
 
-INSERT INTO `ark_dataclass_type` (`datatype`, `object`, `compound`, `storage_type`, `storage_size`, `value_name`, `parameter_name`, `parameter_vocabulary`, `format_name`, `format_vocabulary`, `spanable`, `model_table`, `model_entity`, `data_table`, `data_entity`, `form_type`, `active_form_type`, `readonly_form_type`, `static_form_type`, `parameter_form_type`, `format_form_type`, `enabled`, `deprecated`, `keyword`) VALUES
-('blob', 0, 1, 'blob', NULL, 'blob', NULL, NULL, 'mediatype', 'mediatype', 0, 'ark_dataclass_blob', 'ARK\\Model\\Dataclass\\BlobDataclass', 'ark_fragment_blob', 'ARK\\Model\\Fragment\\BlobFragment', NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', 0, 0, 'core.datatype.blob'),
-('boolean', 0, 0, 'boolean', NULL, NULL, NULL, NULL, NULL, NULL, 0, 'ark_dataclass_boolean', 'ARK\\Model\\Dataclass\\BooleanDataclass', 'ark_fragment_boolean', 'ARK\\Model\\Fragment\\BooleanFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.boolean'),
-('date', 0, 0, 'date', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_dataclass_datetime', 'ARK\\Model\\Dataclass\\DateDataclass', 'ark_fragment_date', 'ARK\\Model\\Fragment\\DateFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.date'),
-('datetime', 0, 0, 'datetime', NULL, 'datetime', 'timezone', NULL, NULL, NULL, 1, 'ark_dataclass_datetime', 'ARK\\Model\\Dataclass\\DateTimeDataclass', 'ark_fragment_datetime', 'ARK\\Model\\Fragment\\DateTimeFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateTimeType', NULL, 'ARK\\Form\\Type\\StaticType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, 1, 0, 'core.datatype.datetime'),
-('decimal', 0, 0, 'string', 200, NULL, NULL, NULL, NULL, NULL, 1, 'ark_dataclass_decimal', 'ARK\\Model\\Dataclass\\DecimalDataclass', 'ark_fragment_decimal', 'ARK\\Model\\Fragment\\DecimalFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.decimal'),
-('float', 0, 0, 'float', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_dataclass_float', 'ARK\\Model\\Dataclass\\FloatDataclass', 'ark_fragment_float', 'ARK\\Model\\Fragment\\FloatFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.float'),
-('integer', 0, 0, 'integer', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_dataclass_integer', 'ARK\\Model\\Dataclass\\IntegerDataclass', 'ark_fragment_integer', 'ARK\\Model\\Fragment\\IntegerFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\IntegerType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.integer'),
-('item', 0, 1, 'string', 30, 'id', 'module', NULL, NULL, NULL, 1, 'ark_dataclass_item', 'ARK\\Model\\Dataclass\\ItemDataclass', 'ark_fragment_item', 'ARK\\Model\\Fragment\\ItemFragment', 'ARK\\Form\\Type\\ScalarPropertyType', NULL, NULL, 'ARK\\Form\\Type\\StaticType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, 1, 0, 'core.datatype.item'),
-('object', 1, 0, 'integer', 0, NULL, NULL, NULL, NULL, NULL, 0, 'ark_dataclass_object', 'ARK\\Model\\Dataclass\\ObjectDataclass', 'ark_fragment_object', 'ARK\\Model\\Fragment\\ObjectFragment', 'ARK\\Form\\Type\\ObjectType', NULL, NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.object'),
-('spatial', 0, 1, 'string', 1431655765, 'geometry', 'srid', 'spatial.crs', 'format', 'spatial.format', 0, 'ark_dataclass_spatial', 'ARK\\Model\\Dataclass\\SpatialDataclass', 'ark_fragment_spatial', 'ARK\\Model\\Fragment\\SpatialFragment', 'ARK\\Form\\Type\\WktPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, 'ARK\\Form\\Type\\StaticType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', 1, 0, 'core.datatype.spatial'),
-('string', 0, 0, 'string', 4000, NULL, NULL, NULL, NULL, NULL, 1, 'ark_dataclass_string', 'ARK\\Model\\Dataclass\\StringDataclass', 'ark_fragment_string', 'ARK\\Model\\Fragment\\StringFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.string'),
-('text', 0, 1, 'string', 1431655765, 'content', 'language', 'language', 'mediatype', 'mediatype', 0, 'ark_dataclass_text', 'ARK\\Model\\Dataclass\\TextDataclass', 'ark_fragment_text', 'ARK\\Model\\Fragment\\TextFragment', 'ARK\\Form\\Type\\LocalTextPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.text'),
-('time', 0, 0, 'time', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_dataclass_datetime', 'ARK\\Model\\Dataclass\\TimeDataclass', 'ark_fragment_time', 'ARK\\Model\\Fragment\\TimeFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 0, 0, 'core.datatype.time');
+INSERT INTO `ark_dataclass_type` (`datatype`, `number`, `temporal`, `object`, `compound`, `storage_type`, `storage_size`, `value_name`, `parameter_name`, `parameter_vocabulary`, `format_name`, `format_vocabulary`, `spanable`, `model_table`, `model_entity`, `data_table`, `data_entity`, `form_type`, `active_form_type`, `readonly_form_type`, `static_form_type`, `parameter_form_type`, `format_form_type`, `enabled`, `deprecated`, `keyword`) VALUES
+('blob', 0, 0, 0, 1, 'blob', NULL, 'blob', NULL, NULL, 'mediatype', 'mediatype', 0, 'ark_dataclass_blob', 'ARK\\Model\\Dataclass\\BlobDataclass', 'ark_fragment_blob', 'ARK\\Model\\Fragment\\BlobFragment', NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', 0, 0, 'core.datatype.blob'),
+('boolean', 0, 0, 0, 0, 'boolean', NULL, NULL, NULL, NULL, NULL, NULL, 0, 'ark_dataclass_boolean', 'ARK\\Model\\Dataclass\\BooleanDataclass', 'ark_fragment_boolean', 'ARK\\Model\\Fragment\\BooleanFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.boolean'),
+('date', 0, 1, 0, 0, 'date', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_dataclass_datetime', 'ARK\\Model\\Dataclass\\DateDataclass', 'ark_fragment_date', 'ARK\\Model\\Fragment\\DateFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.date'),
+('datetime', 0, 1, 0, 0, 'datetime', NULL, 'datetime', 'timezone', NULL, NULL, NULL, 1, 'ark_dataclass_datetime', 'ARK\\Model\\Dataclass\\DateTimeDataclass', 'ark_fragment_datetime', 'ARK\\Model\\Fragment\\DateTimeFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateTimeType', NULL, 'ARK\\Form\\Type\\StaticType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, 1, 0, 'core.datatype.datetime'),
+('decimal', 1, 0, 0, 0, 'string', 200, NULL, NULL, NULL, NULL, NULL, 1, 'ark_dataclass_decimal', 'ARK\\Model\\Dataclass\\DecimalDataclass', 'ark_fragment_decimal', 'ARK\\Model\\Fragment\\DecimalFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.decimal'),
+('float', 1, 0, 0, 0, 'float', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_dataclass_float', 'ARK\\Model\\Dataclass\\FloatDataclass', 'ark_fragment_float', 'ARK\\Model\\Fragment\\FloatFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\NumberType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.float'),
+('integer', 1, 0, 0, 0, 'integer', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_dataclass_integer', 'ARK\\Model\\Dataclass\\IntegerDataclass', 'ark_fragment_integer', 'ARK\\Model\\Fragment\\IntegerFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\IntegerType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.integer'),
+('item', 0, 0, 0, 1, 'string', 30, 'id', 'module', NULL, NULL, NULL, 1, 'ark_dataclass_item', 'ARK\\Model\\Dataclass\\ItemDataclass', 'ark_fragment_item', 'ARK\\Model\\Fragment\\ItemFragment', 'ARK\\Form\\Type\\ScalarPropertyType', NULL, NULL, 'ARK\\Form\\Type\\StaticType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, 1, 0, 'core.datatype.item'),
+('object', 0, 0, 1, 0, 'integer', 0, NULL, NULL, NULL, NULL, NULL, 0, 'ark_dataclass_object', 'ARK\\Model\\Dataclass\\ObjectDataclass', 'ark_fragment_object', 'ARK\\Model\\Fragment\\ObjectFragment', 'ARK\\Form\\Type\\ObjectType', NULL, NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.object'),
+('spatial', 0, 0, 0, 1, 'string', 1431655765, 'geometry', 'srid', 'spatial.crs', 'format', 'spatial.format', 0, 'ark_dataclass_spatial', 'ARK\\Model\\Dataclass\\SpatialDataclass', 'ark_fragment_spatial', 'ARK\\Model\\Fragment\\SpatialFragment', 'ARK\\Form\\Type\\WktPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, 'ARK\\Form\\Type\\StaticType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', 1, 0, 'core.datatype.spatial'),
+('string', 0, 0, 0, 0, 'string', 4000, NULL, NULL, NULL, NULL, NULL, 1, 'ark_dataclass_string', 'ARK\\Model\\Dataclass\\StringDataclass', 'ark_fragment_string', 'ARK\\Model\\Fragment\\StringFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.string'),
+('text', 0, 0, 0, 1, 'string', 1431655765, 'content', 'language', 'language', 'mediatype', 'mediatype', 0, 'ark_dataclass_text', 'ARK\\Model\\Dataclass\\TextDataclass', 'ark_fragment_text', 'ARK\\Model\\Fragment\\TextFragment', 'ARK\\Form\\Type\\LocalTextPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 1, 0, 'core.datatype.text'),
+('time', 0, 1, 0, 0, 'time', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_dataclass_datetime', 'ARK\\Model\\Dataclass\\TimeDataclass', 'ark_fragment_time', 'ARK\\Model\\Fragment\\TimeFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 0, 0, 'core.datatype.time');
 
 -- --------------------------------------------------------
 
@@ -5768,8 +5770,6 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_add', '', 0, 0, 6, 'dime_find_photo', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_add', '', 0, 1, 0, 'dime_find_artefact', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_add', '', 0, 1, 4, 'core_widget_submit', NULL, NULL, 'save', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.find.save', NULL, NULL),
-('dime_find_add', '', 0, 1, 6, 'core_widget_submit', NULL, NULL, 'report', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.action.notify', NULL, NULL),
-('dime_find_add', '', 0, 1, 8, 'core_widget_submit', NULL, NULL, 'send', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'edit', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'dime.action.send', NULL, NULL),
 ('dime_find_add_case', '', 0, 0, 4, 'dime_find_case', NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_artefact', '', 0, 0, 0, 'dime_widget_classify', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"data-toggle\": \"modal\", \"data-target\":\"#dating-modal\"}}'),
 ('dime_find_artefact', '', 0, 0, 2, 'dime_find_class', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -5786,7 +5786,7 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_find_clone', '', 0, 0, 0, 'core_widget_submit', NULL, NULL, 'clone', NULL, 1, 0, NULL, NULL, NULL, 'dime.find', 'clone', 'dime.find.create', 'dime.find.create', 'edit', NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.button.clone', NULL, NULL),
 ('dime_find_edit', '', 0, 0, 0, 'dime_find_event', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_edit', '', 0, 1, 0, 'dime_find_artefact', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_find_event', '', 0, 0, 0, 'dime_find_finder', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'readonly', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('dime_find_event', '', 0, 0, 0, 'dime_find_finder', NULL, NULL, NULL, NULL, 1, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_event', '', 0, 0, 2, 'dime_find_finder_id', NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_event', '', 0, 0, 4, 'dime_find_finder_place', NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_find_event', '', 0, 0, 6, 'dime_find_finddate', NULL, NULL, NULL, NULL, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -8858,7 +8858,7 @@ INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event
 ('dime.find', 'refer', 'core.event.class', 'referred', 'dime.action.refer', NULL, 0, 0, 0, 1),
 ('dime.find', 'reject', 'core.event.class', 'rejected', 'dime.action.reject', NULL, 0, 0, 0, 1),
 ('dime.find', 'release', 'core.event.class', 'released', 'dime.action.release', NULL, 0, 0, 0, 1),
-('dime.find', 'report', 'core.event.class', 'reported', 'dime.action.report', 'reporter', 1, 0, 1, 1),
+('dime.find', 'report', 'core.event.class', 'reported', 'dime.action.report', NULL, 1, 0, 1, 1),
 ('dime.find', 'request', 'core.event.class', 'requested', 'dime.action.request', NULL, 0, 0, 0, 1),
 ('dime.find', 'reward', 'core.event.class', 'rewarded', 'dime.action.reward', NULL, 0, 0, 0, 1),
 ('dime.find', 'send', 'core.event.class', 'sent', 'dime.action.send', NULL, 0, 0, 1, 1),
@@ -8918,6 +8918,7 @@ INSERT INTO `ark_workflow_agency` (`schma`, `action`, `class`, `operator`, `attr
 ('dime.find', 'suppress', 'find', 'is', 'owner', NULL, NULL, NULL),
 ('dime.find', 'transfer', 'find', 'is', 'owner', NULL, NULL, NULL),
 ('dime.find', 'view', 'find', 'is', 'finder', NULL, NULL, NULL),
+('dime.find', 'view', 'find', 'is', 'museum', NULL, NULL, NULL),
 ('dime.find', 'withdraw', 'find', 'is', 'recipient', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
@@ -9036,6 +9037,7 @@ INSERT INTO `ark_workflow_condition` (`schma`, `action`, `class`, `attribute`, `
 ('dime.find', 'reject', 'find', 'process', 0, 'eq', 'reported'),
 ('dime.find', 'release', 'find', 'process', 0, 'eq', 'assessed'),
 ('dime.find', 'release', 'find', 'process', 1, 'eq', 'appraised'),
+('dime.find', 'report', 'find', 'image', 0, 'gt', '0'),
 ('dime.find', 'report', 'find', 'process', 0, 'eq', 'recorded'),
 ('dime.find', 'request', 'find', 'custody', 0, 'eq', 'held'),
 ('dime.find', 'reward', 'find', 'process', 0, 'eq', 'appraised'),
