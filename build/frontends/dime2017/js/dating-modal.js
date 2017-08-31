@@ -50,7 +50,13 @@ var initTimeline = function(){
       var options = {
         order: customOrder,
         editable: false,
-        margin: {item: 0},
+        margin: {
+            axis: 0,
+            item : {
+              horizontal : -5,
+              vertical : 1
+            }
+        },
         zoomMin: 157680000000,//1 years 1000*60*60*24*365*1 in milliseconds
         zoomMax: 315700000000000, //75000 years 1000*60*60*24*365*75000 in milliseconds
         showCurrentTime: false,
