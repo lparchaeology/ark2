@@ -86,12 +86,18 @@ class FilePropertyType extends AbstractPropertyType
             $files = [];
             $existing = $forms['existing']->getData();
             if (is_array($existing)) {
-                foreach ($existing as $id) {
-                    $files[] = ORM::find(File::class, $id);
+                foreach (array_filter($existing) as $id) {
+                    $file = ORM::find(File::class, $id);
+                    if ($file) {
+                        $files[] = $file;
+                    }
                 }
             }
             foreach ($upload as $up) {
-                $files[] = File::createFromUploadedFile($up);
+                $file = File::createFromUploadedFile($up);
+                if ($file) {
+                    $files[] = $file;
+                }
             }
             if ($files) {
                 $property->setValue($files);
