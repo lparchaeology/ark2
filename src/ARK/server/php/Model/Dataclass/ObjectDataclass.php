@@ -29,12 +29,14 @@
 
 namespace ARK\Model\Dataclass;
 
+use ARK\Actor\Actor;
 use ARK\Model\Attribute;
 use ARK\Model\Dataclass;
 use ARK\Model\Fragment;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Vocabulary\Vocabulary;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints\Type;
@@ -81,8 +83,13 @@ class ObjectDataclass extends Dataclass
         return $data;
     }
 
-    public function hydrate($data, Attribute $attribute, Vocabulary $vocabulary = null) : Collection
-    {
+    public function hydrate(
+        $data,
+        Attribute $attribute,
+        Actor $creator,
+        DateTime $created,
+        Vocabulary $vocabulary = null
+    ) : Collection {
         $fragments = new ArrayCollection();
         if ($data === [] || $data === null) {
             return $fragments;
@@ -91,18 +98,17 @@ class ObjectDataclass extends Dataclass
             $data = [$data];
         }
         foreach ($data as $datum) {
-            $fragment = Fragment::createFromAttribute($attribute);
+            $fragment = Fragment::createFromAttribute($attribute, $creator, $created);
             $fragment->setValue('');
             $fragments->add($fragment);
             if ($this->entity && $datum instanceof $this->entity) {
-                // FIXME PHP7 $datum = $this->entity::toArray($datum);
-                $datum = call_user_func($this->entity.'::toArray', $datum);
+                $datum = $this->entity::toArray($datum);
             }
             if (!is_array($datum)) {
                 return [];
             }
             foreach ($datum as $key => $value) {
-                $children = $this->attribute($key)->hydrate($value);
+                $children = $this->attribute($key)->hydrate($value, $creator, $created);
                 foreach ($children as $child) {
                     $child->setObject($fragment);
                     $fragments->add($child);

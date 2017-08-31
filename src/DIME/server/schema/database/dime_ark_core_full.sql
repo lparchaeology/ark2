@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 31, 2017 at 02:56 PM
+-- Generation Time: Aug 31, 2017 at 06:09 PM
 -- Server version: 10.2.8-MariaDB
 -- PHP Version: 7.1.8
 
@@ -9080,6 +9080,7 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('admin', 'dime.find.read.owner'),
 ('admin', 'dime.find.read.process'),
 ('admin', 'dime.find.read.treasure'),
+('admin', 'dime.find.register.any'),
 ('admin', 'dime.find.treasure.claim'),
 ('admin', 'dime.find.update'),
 ('admin', 'dime.find.update.custody'),
@@ -9133,6 +9134,7 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('registrar', 'dime.find.read.owner'),
 ('registrar', 'dime.find.read.process'),
 ('registrar', 'dime.find.read.treasure'),
+('registrar', 'dime.find.register.any'),
 ('registrar', 'dime.find.treasure.claim'),
 ('registrar', 'dime.find.update'),
 ('registrar', 'dime.find.update.custody'),
@@ -9291,6 +9293,7 @@ INSERT INTO `ark_workflow_permission` (`permission`, `keyword`, `enabled`) VALUE
 ('dime.find.read.owner', NULL, 1),
 ('dime.find.read.process', NULL, 1),
 ('dime.find.read.treasure', NULL, 1),
+('dime.find.register.any', NULL, 1),
 ('dime.find.treasure.claim', NULL, 1),
 ('dime.find.update', NULL, 1),
 ('dime.find.update.custody', NULL, 1),
@@ -9380,6 +9383,7 @@ INSERT INTO `ark_workflow_update` (`schma`, `action`, `class`, `attribute`, `act
 ('core.actor', 'unlock', 'person', 'status', NULL, NULL, NULL, 'approved'),
 ('dime.find', 'delete', 'find', 'custody', NULL, NULL, NULL, 'sent'),
 ('dime.find', 'delete', 'find', 'process', NULL, NULL, NULL, 'deleted'),
+('dime.find', 'publish', 'find', 'visibility', NULL, NULL, NULL, 'public'),
 ('dime.find', 'receive', 'find', 'custodian', 1, NULL, NULL, NULL),
 ('dime.find', 'receive', 'find', 'custody', NULL, NULL, NULL, 'held'),
 ('dime.find', 'receive', 'find', 'recipient', NULL, NULL, NULL, NULL),
@@ -9389,7 +9393,9 @@ INSERT INTO `ark_workflow_update` (`schma`, `action`, `class`, `attribute`, `act
 ('dime.find', 'record', 'find', 'owner', 1, NULL, NULL, NULL),
 ('dime.find', 'record', 'find', 'process', NULL, NULL, NULL, 'recorded'),
 ('dime.find', 'record', 'find', 'treasure', NULL, NULL, NULL, 'pending'),
+('dime.find', 'record', 'find', 'visibility', NULL, NULL, NULL, 'private'),
 ('dime.find', 'report', 'find', 'process', NULL, NULL, NULL, 'reported'),
+('dime.find', 'report', 'find', 'visibility', NULL, NULL, NULL, 'restricted'),
 ('dime.find', 'send', 'find', 'custody', NULL, NULL, NULL, 'sent'),
 ('dime.find', 'send', 'find', 'recipient', NULL, 1, NULL, NULL);
 

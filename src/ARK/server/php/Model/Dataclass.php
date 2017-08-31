@@ -29,6 +29,7 @@
 
 namespace ARK\Model;
 
+use ARK\Actor\Actor;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
@@ -231,8 +232,13 @@ abstract class Dataclass
         return $this->serializeFragment($model->first(), $properties);
     }
 
-    public function hydrate($data, Attribute $attribute, Vocabulary $vocabulary = null)
-    {
+    public function hydrate(
+        $data,
+        Attribute $attribute,
+        Actor $creator,
+        DateTime $created,
+        Vocabulary $vocabulary = null
+    ) : Collection {
         $fragments = new ArrayCollection();
         if ($data === [] || $data === null) {
             return $fragments;
@@ -241,7 +247,7 @@ abstract class Dataclass
             $data = [$data];
         }
         foreach ($data as $datum) {
-            $fragment = Fragment::createFromAttribute($attribute);
+            $fragment = Fragment::createFromAttribute($attribute, $creator, $created);
             $this->hydrateFragment($datum, $fragment, $vocabulary);
             $fragments[] = $fragment;
         }

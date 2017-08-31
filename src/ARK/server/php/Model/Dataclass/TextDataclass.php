@@ -29,6 +29,7 @@
 
 namespace ARK\Model\Dataclass;
 
+use ARK\Actor\Actor;
 use ARK\Model\Attribute;
 use ARK\Model\Dataclass;
 use ARK\Model\Fragment;
@@ -36,6 +37,7 @@ use ARK\Model\LocalText;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Vocabulary\Vocabulary;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints\Length;
@@ -96,15 +98,20 @@ class TextDataclass extends Dataclass
         return $data;
     }
 
-    public function hydrate($data, Attribute $attribute, Vocabulary $vocabulary = null) : Collection
-    {
+    public function hydrate(
+        $data,
+        Attribute $attribute,
+        Actor $creator,
+        DateTime $created,
+        Vocabulary $vocabulary = null
+    ) : Collection {
         $fragments = new ArrayCollection();
         if ($data === [] || $data === null) {
             return $fragments;
         }
         if ($data instanceof LocalText) {
             foreach ($data->contents() as $language => $content) {
-                $fragment = Fragment::createFromAttribute($attribute);
+                $fragment = Fragment::createFromAttribute($attribute, $creator, $created);
                 $fragment->setValue($content, $language, $data->mediatype());
                 $fragments[] = $fragment;
             }

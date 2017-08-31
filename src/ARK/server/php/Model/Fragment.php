@@ -29,10 +29,12 @@
 
 namespace ARK\Model;
 
+use ARK\Actor\Actor;
 use ARK\Model\Fragment\ObjectFragment;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
+use DateTime;
 
 abstract class Fragment
 {
@@ -141,7 +143,7 @@ abstract class Fragment
         $this->object = $object;
     }
 
-    public static function create(string $module, string $item, Attribute $attribute, ObjectFragment $object = null) : Fragment
+    public static function create(string $module, string $item, Attribute $attribute, Actor $creator, DateTime $created, ObjectFragment $object = null) : Fragment
     {
         $class = $attribute->dataclass()->datatype()->dataEntity();
         $fragment = new $class();
@@ -150,11 +152,11 @@ abstract class Fragment
         $fragment->attribute = $attribute->name();
         $fragment->datatype = $attribute->dataclass()->datatype()->id();
         $fragment->object = $object;
-        $fragment->refreshVersion();
+        $fragment->refreshVersion($creator, $created);
         return $fragment;
     }
 
-    public static function createFromAttribute(Attribute $attribute, ObjectFragment $object = null) : Fragment
+    public static function createFromAttribute(Attribute $attribute, Actor $creator, DateTime $created, ObjectFragment $object = null) : Fragment
     {
         $class = $attribute->dataclass()->datatype()->dataEntity();
         $fragment = new $class();
@@ -162,7 +164,7 @@ abstract class Fragment
         $fragment->datatype = $attribute->dataclass()->datatype()->id();
         $fragment->span = $attribute->isSpan();
         $fragment->object = $object;
-        $fragment->refreshVersion();
+        $fragment->refreshVersion($creator, $created);
         return $fragment;
     }
 

@@ -29,9 +29,11 @@
 
 namespace ARK\Model;
 
+use ARK\Actor\Actor;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Vocabulary\Vocabulary;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints\Count;
@@ -248,7 +250,7 @@ abstract class Attribute
         return $this->dataclass()->serialize($fragments, $properties);
     }
 
-    public function hydrate($data) : Collection
+    public function hydrate($data, Actor $creator, DateTime $created) : Collection
     {
         $fragments = new ArrayCollection();
         if (is_array($data)) {
@@ -261,7 +263,7 @@ abstract class Attribute
             $data = [$data];
         }
         foreach ($data as $datum) {
-            $frags = $this->dataclass()->hydrate($datum, $this, $this->vocabulary);
+            $frags = $this->dataclass()->hydrate($datum, $this, $creator, $created, $this->vocabulary);
             foreach ($frags as $frag) {
                 $fragments->add($frag);
             }

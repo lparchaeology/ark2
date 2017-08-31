@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Event Form Type
+ * ARK Event Form Type.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -31,41 +31,48 @@
 namespace ARK\Form\Type;
 
 use ARK\File\File;
-use ARK\Form\Type\AbstractPropertyType;
-use ARK\Model\Item;
 use ARK\Model\Property;
 use ARK\ORM\ORM;
-use ARK\Service;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FilePropertyType extends AbstractPropertyType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $fileOptions = [];
         if ($options['state']['multiple']) {
             $fileOptions['multiple'] = true;
         }
         $builder->add('file', FileType::class, $fileOptions);
+        $builder->add('existing', CollectionType::class, ['entry_type' => HiddenType::class]);
         $builder->setDataMapper($this);
     }
 
-    protected function options()
+    public function mapDataToForms($property, $forms) : void
     {
-        return [
-            'compound' => true,
-            'display' => null,
-        ];
+        if (!$property instanceof Property) {
+            return;
+        }
+        $forms = iterator_to_array($forms);
+        $value = $property->value();
+        $existing = [];
+        if (is_array($value)) {
+            foreach ($value as $val) {
+                if ($val instanceof File) {
+                    $existing[] = $val->id();
+                }
+            }
+        } elseif ($value instanceof File) {
+            $existing[] = $value->id();
+        }
+        $forms['existing']->setData($existing);
     }
 
-    public function mapDataToForms($property, $forms)
-    {
-    }
-
-    public function mapFormsToData($forms, &$property)
+    public function mapFormsToData($forms, &$property) : void
     {
         if (!$property instanceof Property) {
             return;
@@ -77,6 +84,12 @@ class FilePropertyType extends AbstractPropertyType
             $property->setValue($file);
         } elseif (is_array($upload)) {
             $files = [];
+            $existing = $forms['existing']->getData();
+            if (is_array($existing)) {
+                foreach ($existing as $id) {
+                    $files[] = ORM::find(File::class, $id);
+                }
+            }
             foreach ($upload as $up) {
                 $files[] = File::createFromUploadedFile($up);
             }
@@ -84,5 +97,13 @@ class FilePropertyType extends AbstractPropertyType
                 $property->setValue($files);
             }
         }
+    }
+
+    protected function options()
+    {
+        return [
+            'compound' => true,
+            'display' => null,
+        ];
     }
 }

@@ -42,22 +42,22 @@ trait VersionTrait
     protected $modified;
     protected $version = '';
 
-    public function createdOn() : DateTime
+    public function created() : DateTime
     {
         return $this->created;
     }
 
-    public function createdBy() : Actor
+    public function creator() : Actor
     {
         return $this->creator;
     }
 
-    public function lastModifiedOn() : DateTime
+    public function lastModified() : DateTime
     {
         return $this->modified;
     }
 
-    public function lastModifiedBy() : Actor
+    public function lastModifier() : Actor
     {
         return $this->modifier;
     }
@@ -67,9 +67,12 @@ trait VersionTrait
         return $this->version;
     }
 
-    public function refreshVersion() : void
+    public function refreshVersion(Actor $creator = null, DateTime $created = null) : void
     {
-        // TODO Auto-update behaviour
+        if ($creator) {
+            $this->creator = $creator;
+            $this->created = $created;
+        }
         $actor = Service::workflow()->actor();
         $this->modifier = $actor;
         $this->modified = new DateTime();

@@ -30,6 +30,8 @@
 namespace ARK\Model;
 
 use ARK\ORM\ORM;
+use ARK\Service;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -113,17 +115,25 @@ class Property
     {
         // TODO Nasty Hack! Better to track the fid and update the right frag object to keep history!
         // OTOH is more efficient look-ups if in block together, and simpler update code
+        // Will be moot if/when Property managed by ORM
+        // TODO In interim, copy the creator/created fields between frag sets
         if (!$this->fragments->isEmpty()) {
+            $frag = $this->fragments->get(0);
+            $creator = $frag->creator();
+            $created = $frag->created();
             ORM::remove($this->fragments);
             $this->fragments->clear();
+        } else {
+            $creator = Service::workflow()->actor();
+            $created = new DateTime();
         }
-        $this->fragments = $this->attribute->hydrate($value);
+        $this->fragments = $this->attribute->hydrate($value, $creator, $created);
         if ($this->fragments->isEmpty()) {
             return;
         }
         $this->updateFragments();
         ORM::persist($this->fragments);
-        $this->updateItem();
+        $this->updateItem($value);
     }
 
     // TODO Is there a better way?
@@ -135,10 +145,13 @@ class Property
     }
 
     // TODO Is there a better way?
-    protected function updateItem() : void
+    protected function updateItem($value) : void
     {
         if ($this->name() === $this->item->schema()->classProperty()) {
             $this->item->setClass($this->fragments->get(0)->value());
+        }
+        if ($this->name() === 'visibility') {
+            $this->item->setVisibility($value);
         }
         $this->item->refreshVersion();
     }

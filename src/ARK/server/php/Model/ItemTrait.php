@@ -67,6 +67,7 @@ trait ItemTrait
         return $this->parent;
     }
 
+    // TODO Should this be here? Or use reflection? Make function private, use Reflection to call!
     public function setParent(Item $parent) : void
     {
         $this->parent = $parent;
@@ -79,7 +80,7 @@ trait ItemTrait
         return $this->idx;
     }
 
-    // TODO Should this be here? Or use reflection?
+    // TODO Should this be here? Or use reflection? Make function private, use Reflection to call!
     public function setId(string $id, string $index = null, string $label = null) : void
     {
         $this->id = $id;
@@ -109,9 +110,9 @@ trait ItemTrait
         return $this->class;
     }
 
+    // TODO Danger, Will Robinson!!! Change to private and use reflection to call
     public function setClass(string $class) : void
     {
-        // TODO Danger, Will Robinson!!!
         $this->class = $class;
     }
 
@@ -137,6 +138,18 @@ trait ItemTrait
             $this->visibilityTerm = ORM::find(Term::class, ['concept' => 'core.visibility', 'term' => $this->visibility]);
         }
         return $this->visibilityTerm;
+    }
+
+    public function setVisibility($visibility) : void
+    {
+        if (is_string($visibility)) {
+            $visibility = ORM::find(Term::class, ['concept' => 'core.visibility', 'term' => $visibility]);
+        }
+        if ($visibility instanceof Term && $visibility->name() !== $this->visibility) {
+            $this->visibilityTerm = $visibility;
+            $this->visibility = $visibility->name();
+            $this->setValue('visibility', $visibility);
+        }
     }
 
     public function hasAttribute(string $name) : bool
@@ -201,6 +214,7 @@ trait ItemTrait
     {
         if ($property = $this->property($attribute)) {
             $property->setValue($value);
+            $this->refreshVersion();
         }
     }
 
