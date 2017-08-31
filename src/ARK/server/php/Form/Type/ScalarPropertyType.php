@@ -121,7 +121,9 @@ class ScalarPropertyType extends AbstractPropertyType
                     $value = $value->name();
                 } elseif ($value instanceof DateTime) {
                     // TODO LOCALISE!!!
-                    $value = $value->format('Y-m-d H:i:s');
+                    if ($options['state']['modus'] === 'static') {
+                        $value = $value->format('Y-m-d H:i:s');
+                    }
                 }
             }
         }
