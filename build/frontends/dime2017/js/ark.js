@@ -51,15 +51,24 @@ $(document).ready(function() {
             'initialPreviewConfig': initialPreviewConfig,
             //'initialPreviewAsData': true,
             'minFileCount': 0,
-            'maxFileCount': 3
+            'maxFileCount': 3,
+            'deleteUrl': "../true.json"
 
         });
     });
     
     $('.kv-file-remove').click(function(e){
-        console.log($(this).closest(".file-input").find("input[type=file]").attr('data-existing'));
+        var form_root_array = $(this).closest(".file-input").find("input[type=file]").attr('id').split("_");
+        form_root_array.splice(-1,1);
+        var existing_id_container = form_root_array.join("_")+"_existing";
+        var id_to_remove = $(this).attr('data-key');
         
-        console.log($(this).attr('data-key'));
+       // console.log($(this).closest(".file-input").fileinput('getFileStack'));
+        
+        $("#"+existing_id_container).find('input[value="'+id_to_remove+'"]').remove();
+        
+        $(this).closest(".file-preview-frame").remove();
+        
     });
 
     //$("date").datetimepicker();

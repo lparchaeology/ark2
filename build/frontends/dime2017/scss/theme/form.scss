@@ -76,6 +76,7 @@
     height: 1.6em;
     padding: 0 5px;
     border-radius: 0;
+    display:none;
 }
 
 .form-group-widget span.help {
@@ -256,6 +257,7 @@ input[type=radio]:checked ~ label::before {
     max-height: 90%;
     width: auto;
     height: auto;
+    margin: auto;
 }
 
 .krajee-default.file-preview-frame {
@@ -299,16 +301,20 @@ input[type=radio]:checked ~ label::before {
     }
 
 .form-group-widget {
-    max-width: 20em;
+   // max-width: 20em;
 }
 
 .glyphicon-question-sign {
     cursor: pointer;
 }
 
+.fileinput-remove {
+    display:none;
+}
+
 .file-input {
     margin: auto;
-    max-width: 200px;
+    //max-width: 200px;
 }
 
 .file-input .btn {
