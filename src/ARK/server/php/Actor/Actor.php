@@ -33,6 +33,8 @@ use ARK\Model\Item;
 use ARK\Model\ItemTrait;
 use ARK\Model\LocalText;
 use ARK\ORM\ORM;
+use ARK\Service;
+use ARK\Workflow\Action;
 use ARK\Workflow\Permission;
 use ARK\Workflow\Security\ActorRole;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -115,5 +117,10 @@ class Actor implements Item
             }
         }
         return false;
+    }
+
+    public function canAction(Action $action, Item $item, $attribute = null) : bool
+    {
+        return Service::workflow()->can($this, $action, $item, $attribute);
     }
 }

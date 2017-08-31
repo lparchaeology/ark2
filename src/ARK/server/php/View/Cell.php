@@ -31,10 +31,14 @@ namespace ARK\View;
 
 use ARK\Map\Map;
 use ARK\Model\EnabledTrait;
+use ARK\Model\Item;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\Service;
 use ARK\Vocabulary\Vocabulary;
+use ARK\Workflow\Action;
+use ARK\Workflow\Permission;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 
@@ -58,14 +62,17 @@ class Cell implements ElementInterface
     protected $placeholder = false;
     protected $choices = false;
     protected $required = false;
-    protected $mode = '';
-    protected $sanitise = '';
-    protected $value = '';
-    protected $parameter = '';
-    protected $format = '';
-    protected $display = '';
-    protected $template = '';
-    protected $options = '';
+    protected $action;
+    protected $viewPermission;
+    protected $editPermission;
+    protected $mode;
+    protected $sanitise;
+    protected $value;
+    protected $parameter;
+    protected $format;
+    protected $display;
+    protected $template;
+    protected $options;
     protected $optionsArray;
 
     public function group() : Element
@@ -143,6 +150,21 @@ class Cell implements ElementInterface
         return $this->required;
     }
 
+    public function action() : ?Action
+    {
+        return $this->action;
+    }
+
+    public function viewPermission() : ?Permission
+    {
+        return $this->viewPermission;
+    }
+
+    public function editPermission() : ?Permission
+    {
+        return $this->editPermission;
+    }
+
     public function mode() : string
     {
         return $this->mode;
@@ -195,17 +217,26 @@ class Cell implements ElementInterface
             $state['display']['name'] = $this->display;
         }
         $state['keyword'] = $this->keyword;
-        if ($this->mode === 'view') {
+        $actor = Service::workflow()->actor();
+        if (!$actor->hasPermission($this->editPermission)) {
+            $state['mode'] = 'view';
+        } elseif ($this->mode === 'view') {
             $state['mode'] = 'view';
         }
-        $state['modus'] = $this->valueModus();
+        if (!$actor->hasPermission($this->viewPermission)) {
+            $state['mode'] = 'deny';
+        }
+        $state['action'] = $this->action;
+        if ($this->action && $data instanceof Item && !$actor->canAction($this->action, $data)) {
+            $state['mode'] = 'deny';
+        }
         if ($this->valueModus() !== null) {
             $state['value']['modus'] = $this->valueModus();
         }
-        if ($this->valueModus() !== null) {
+        if ($this->parameterModus() !== null) {
             $state['parameter']['modus'] = $this->parameterModus();
         }
-        if ($this->valueModus() !== null) {
+        if ($this->formatModus() !== null) {
             $state['format']['modus'] = $this->formatModus();
         }
         if (!isset($state['sanitise']) || $this->sanitise) {
@@ -296,8 +327,21 @@ class Cell implements ElementInterface
         KeywordTrait::buildKeywordMetadata($builder);
 
         // Relationships
-        $builder->addManyToOneField('element', 'ARK\View\Element', 'element', 'element', false);
-        $builder->addManyToOneField('map', 'ARK\Map\Map');
+        $builder->addManyToOneField('element', Element::class, 'element', 'element', false);
+        $builder->addManyToOneField('map', Map::class);
         $builder->addManyToOneField('vocabulary', Vocabulary::class, 'vocabulary', 'concept');
+        $builder->addCompositeManyToOneField('action', Action::class, [
+            [
+                'column' => 'action_schema',
+                'reference' => 'schma',
+                'nullable' => true,
+            ],
+            [
+                'column' => 'action',
+                'nullable' => true,
+            ],
+        ]);
+        $builder->addManyToOneField('viewPermission', Permission::class, 'view', 'permission');
+        $builder->addManyToOneField('editPermission', Permission::class, 'edit', 'permission');
     }
 }

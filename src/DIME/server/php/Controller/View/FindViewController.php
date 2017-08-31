@@ -70,7 +70,7 @@ class FindViewController extends DimeFormController
         $parameters['id'] = $find->id();
         $request->attributes->set('parameters', $parameters);
         if ($clicked === 'clone') {
-            $request->attributes->set('redirect', 'finds.add');
+            $request->attributes->set('redirect', 'dime.finds.add');
             return;
         }
         $actor = Service::workflow()->actor();

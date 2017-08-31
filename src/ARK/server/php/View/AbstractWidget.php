@@ -53,7 +53,7 @@ abstract class AbstractWidget extends Element
             $state['keyword'] = $this->keyword();
         }
         $state['mode'] = $this->displayMode($state['mode']);
-        if ($state['mode'] === 'view' || $this->mode === 'view') {
+        if ($state['mode'] === 'view' && $state['value']['modus'] !== 'active') {
             $state['mode'] = 'deny';
         }
         $state['template'] = $this->template();
@@ -101,7 +101,7 @@ abstract class AbstractWidget extends Element
         if ($state['vocabulary']) {
             $options = $this->vocabularyOptions($state['vocabulary'], $options);
             if (!$state['placeholder']) {
-                $options['placeholder'] = ($state['required'] ? null : ' - ');
+                $options['placeholder'] = ($state['required'] ? null : 'core.placeholder');
             }
         }
 

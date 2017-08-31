@@ -4,6 +4,7 @@
 .mappick-group div {}
 
 .mappick-fields {
+    padding-left: 0;
     padding-right: 0;
 }
 
@@ -18,21 +19,24 @@
 }
 
 .mappick:-webkit-full-screen {
-   height: 100%;
-   width: 100%;
- }
+    height: 100%;
+    width: 100%;
+}
+
 .mappick:-moz-full-screen {
-   height: 100%;
-   width: 100%;
- }
+    height: 100%;
+    width: 100%;
+}
+
 .mappick:-ms-fullscreen {
-   height: 100%;
-   width: 100%;
- }
+    height: 100%;
+    width: 100%;
+}
+
 .mappick:fullscreen {
-   height: 100%;
-   width: 100%;
- }
+    height: 100%;
+    width: 100%;
+}
 
 .mappick-options {
     margin: 40px 0;
