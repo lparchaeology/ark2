@@ -22,6 +22,7 @@ $(document).ready(function() {
     $("input[type=file]").each(function(){
 
         initialPreview = [];
+        initialPreviewConfig = [];
 
         if (typeof $(this).attr('data-existing') == 'string'){
 
@@ -31,6 +32,7 @@ $(document).ready(function() {
 
             for (var i = 0; i < len; i++) {
                 initialPreview.push('<img class="profile-img" class="file-preview-image" src="/dime/img/'+arr[i]+'?p=preview">');
+                initialPreviewConfig.push({ key: arr[i] });
             }
 
         }
@@ -38,17 +40,27 @@ $(document).ready(function() {
         $(this).fileinput({
             'theme': 'gly',
             'showUpload':false,
+            'showRemove':true,
             //'autoReplace': true,
+            'overwriteInitial': false,
             //'validateInitialCount': true,
             'allowedFileTypes': ['image'],
             'previewFileType':'image',
             'allowedFileExtensions': ["jpg", "png", "gif"],
             'initialPreview': initialPreview,
+            'initialPreviewConfig': initialPreviewConfig,
+            //'initialPreviewAsData': true,
             'minFileCount': 0,
             'maxFileCount': 3
 
         });
-    })
+    });
+    
+    $('.kv-file-remove').click(function(e){
+        console.log($(this).closest(".file-input").find("input[type=file]").attr('data-existing'));
+        
+        console.log($(this).attr('data-key'));
+    });
 
     //$("date").datetimepicker();
     //$("time").datetimepicker();
