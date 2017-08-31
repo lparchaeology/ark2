@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 31, 2017 at 06:09 PM
+-- Generation Time: Aug 31, 2017 at 08:26 PM
 -- Server version: 10.2.8-MariaDB
 -- PHP Version: 7.1.8
 
@@ -5751,8 +5751,11 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('core_user_role_add', '', 0, 0, 4, 'core_widget_actor', NULL, NULL, 'museum', NULL, 1, 0, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'redact', 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}'),
 ('core_user_role_add', '', 0, 0, 6, 'core_widget_date', NULL, NULL, 'expiry', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.user.role.expiry', NULL, NULL),
 ('core_user_role_add', '', 0, 0, 10, 'core_widget_submit', NULL, NULL, 'role', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL),
-('core_workflow_action', '', 0, 0, 0, 'core_widget_choice', NULL, NULL, 'actions', 4, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_workflow_action', '', 0, 0, 2, 'core_widget_submit', NULL, NULL, 'apply', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL),
+('core_workflow_action', '', 0, 0, 0, 'core_widget_choice', NULL, NULL, 'actions', NULL, 0, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_workflow_action', '', 0, 0, 2, 'core_widget_submit', NULL, NULL, 'apply', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL),
+('core_workflow_action', '', 0, 2, 0, 'core_widget_actor', NULL, NULL, 'actors', NULL, 0, 0, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'redact', 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_workflow_action', '', 0, 2, 2, 'core_widget_date', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 'redact', 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_workflow_action', '', 0, 4, 0, 'core_widget_textarea', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 'redact', 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_workflow_action_form', '', 0, 0, 0, 'core_widget_choice', NULL, NULL, 'actions', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_workflow_action_form', '', 0, 0, 2, 'core_widget_submit', NULL, NULL, 'apply', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL),
 ('dime_admin_register_page', '', 0, 0, 0, 'core_user_credentials', NULL, NULL, NULL, 6, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -6014,7 +6017,7 @@ INSERT INTO `ark_view_element` (`element`, `type`, `enabled`, `deprecated`, `key
 ('core_widget_textarea', 'widget', 1, 0, NULL),
 ('core_widget_time', 'widget', 1, 0, NULL),
 ('core_widget_username', 'widget', 1, 0, 'core.user.username'),
-('core_workflow_action', 'grid', 1, 0, 'core.workflow.action'),
+('core_workflow_action', 'grid', 1, 0, NULL),
 ('core_workflow_action_form', 'grid', 1, 0, 'core.workflow.action'),
 ('dime_actor_detectorist_id', 'field', 1, 0, NULL),
 ('dime_actor_municipality', 'field', 1, 0, NULL),

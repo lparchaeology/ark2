@@ -63,7 +63,7 @@ abstract class AbstractWidget extends Element
 
     public function buildData($data, iterable $state)
     {
-        if ($this->isButton()) {
+        if ($this->isButton() || $state['sanitise'] === 'redact') {
             return null;
         }
         $name = $state['name'];
