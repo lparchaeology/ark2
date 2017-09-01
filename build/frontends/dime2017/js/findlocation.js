@@ -165,6 +165,10 @@ function updateMunicipality() {
             return true;
         } catch (typeError) {
             alert(window.invalidpointlocation);
+            $('#find_location_easting').val('');
+            $('#find_location_northing').val('');
+            $('#find_location_utmEasting').val('');
+            $('#find_location_utmNorthing').val('');
             mapPickSource.clear();
             return false;
         }

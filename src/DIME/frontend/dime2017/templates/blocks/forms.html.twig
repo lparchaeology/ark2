@@ -97,23 +97,23 @@ col-xs-12 col-sm-4
 
 {% block unit_widget -%}
     {% spaceless %}
-    {% if state['modus'] == 'static' %}
-        <div id="{{ id }}" class="static-widget" >
-            {% if form['value'].vars['data'] is empty %}
-                &nbsp;
-            {% else %}
-                {{ form['value'].vars['data']|translate }} {{form['unit'].vars['data']}}
-            {% endif %}
-        </div>
-    {% else %}
-        <div class="input-group">
-            {{- form_widget(form['value']) -}}
-            <div class="input-group-addon"> {{- form['unit'].vars['data'] -}} </div>
-        </div>
-        {{ block('form_help') }}
-        {{- form_errors(form['value']) -}}
-        {{- form_errors(form['unit']) -}}
-    {% endif %}
+        {% if state['modus'] == 'static' %}
+            <div id="{{ id }}" class="static-widget" >
+                {% if form['value'].vars['data'] is empty %}
+                    &nbsp;
+                {% else %}
+                    {{ form['value'].vars['data']|translate }} {{form['unit'].vars['data']}}
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="input-group">
+                {{- form_widget(form['value']) -}}
+                <div class="input-group-addon"> {{- form['unit'].vars['data'] -}} </div>
+            </div>
+            {{ block('form_help') }}
+            {{- form_errors(form['value']) -}}
+            {{- form_errors(form['unit']) -}}
+        {% endif %}
     {% endspaceless %}
     {% do form.setRendered %}
 {%- endblock unit_widget %}

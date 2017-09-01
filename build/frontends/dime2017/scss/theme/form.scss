@@ -269,10 +269,10 @@ input[type=radio]:checked ~ label::before {
     height: inherit;
 }
 
-/* hiding the upload button is not working so just hide it */
+/* form errors are put in 'help-block's which is a weird name */
 
-.kv-file-upload {
-    //display: none;
+.help-block {
+    color:#a94442;
 }
 
 /* Dating */
