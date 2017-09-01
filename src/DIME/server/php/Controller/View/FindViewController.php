@@ -31,6 +31,7 @@ namespace DIME\Controller\View;
 
 use ARK\Error\ErrorException;
 use ARK\Http\Error\NotFoundError;
+use ARK\Model\Item;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Workflow\Action;
@@ -57,18 +58,12 @@ class FindViewController extends DimeFormController
         return $data;
     }
 
-    public function buildState(Request $request) : iterable
+    public function buildState(Request $request, $data) : iterable
     {
-        $state = parent::buildState($request);
-        $id = $request->attributes->get('find');
-        $find = ORM::find(Find::class, $id);
+        $state = parent::buildState($request, $data);
+        $find = $this->item($data);
         $state['options']['finder']['choices'] = [$find->value('finder')];
         return $state;
-    }
-
-    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
-    {
-        return parent::buildWorkflow($request, $data['find'], $state);
     }
 
     public function processForm(Request $request, Form $form) : void
@@ -104,5 +99,10 @@ class FindViewController extends DimeFormController
         ORM::persist($find);
         ORM::flush($find);
         Service::view()->addSuccessFlash($message);
+    }
+
+    protected function item($data) : ?Item
+    {
+        return $data['find'];
     }
 }

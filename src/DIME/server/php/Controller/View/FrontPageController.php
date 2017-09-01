@@ -54,11 +54,4 @@ class FrontPageController extends DimeFormController
         $data['finds'] = $featured;
         return $data;
     }
-
-    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
-    {
-        $workflow['mode'] = 'view';
-        $workflow['actor'] = $state['actor'];
-        return $workflow;
-    }
 }

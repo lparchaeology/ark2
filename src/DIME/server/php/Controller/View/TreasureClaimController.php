@@ -53,13 +53,6 @@ class TreasureClaimController extends DimeFormController
         return $data;
     }
 
-    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
-    {
-        $workflow['mode'] = 'edit';
-        $workflow['actor'] = $state['actor'];
-        return $workflow;
-    }
-
     public function processForm(Request $request, Form $form)
     {
         $page = ORM::find(Page::class, 'dime_page_claim');

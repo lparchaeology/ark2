@@ -30,6 +30,7 @@
 namespace DIME\Controller\View;
 
 use ARK\Actor\Actor;
+use ARK\Model\Item;
 use ARK\ORM\ORM;
 use ARK\Routing\Route;
 use ARK\Service;
@@ -38,7 +39,7 @@ use DIME\DIME;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
-abstract class DimeFormController extends DimeController
+abstract class DimeFormController
 {
     public function __invoke(Request $request)
     {
@@ -57,9 +58,7 @@ abstract class DimeFormController extends DimeController
             $page = ORM::find(Page::class, $request->attributes->get('page'));
         }
         $data = $this->buildData($request);
-        $state = $this->buildState($request);
-        $state['workflow'] = $this->buildWorkflow($request, $data, $state);
-        $state['page_config'] = $this->pageConfig($request->attributes->get('_route'));
+        $state = $this->buildState($request, $data);
         return $page->handleRequest($request, $data, $state, [$this, 'processForm']);
     }
 
@@ -68,11 +67,23 @@ abstract class DimeFormController extends DimeController
         return null;
     }
 
-    public function buildState(Request $request) : iterable
+    public function buildState(Request $request, $data) : iterable
     {
-        $state['actor'] = Service::workflow()->actor();
+        $actor = Service::workflow()->actor();
+        $state['actor'] = $actor;
         $state['image'] = 'image';
         $state['notifications'] = DIME::getUnreadNotifications();
+
+        $item = $this->item($data);
+        $state['workflow']['mode'] = $item ? Service::workflow()->mode($actor, $item) : 'view';
+        $state['workflow']['actor'] = $actor;
+        if ($item && $state['workflow']['mode'] === 'edit') {
+            $state['workflow']['actions'] = Service::workflow()->updateActions($actor, $item);
+            $state['workflow']['actors'] = Service::workflow()->actors($actor, $item);
+        }
+
+        // FIXME temp hardcode for now, later replace with Nav table
+        $state['page_config'] = $this->pageConfig($request->attributes->get('_route'));
         // FIXME temp hardcode for now, do properly later!
         $state['modules']['find']['api'] = Service::url('api.finds.collection');
         $state['modules']['find']['view'] = Service::url('dime.finds.list');
@@ -97,19 +108,92 @@ abstract class DimeFormController extends DimeController
         return $state;
     }
 
-    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
-    {
-        $actor = $state['actor'];
-        $workflow['mode'] = Service::workflow()->mode($actor, $data);
-        $workflow['actor'] = $actor;
-        if ($workflow['mode'] === 'edit') {
-            $workflow['actions'] = Service::workflow()->updateActions($actor, $data);
-            $workflow['actors'] = Service::workflow()->actors($actor, $data);
-        }
-        return $workflow;
-    }
-
     public function processForm(Request $request, Form $form) : void
     {
+    }
+
+    public function defaultOptions(string $route = null) : iterable
+    {
+        $options['mode'] = 'view';
+        $options['data'] = null;
+        $options['forms'] = null;
+        $options['page_config'] = $this->pageConfig($route);
+        return $options;
+    }
+
+    protected function item($data) : ?Item
+    {
+        if ($data instanceof Item) {
+            return $data;
+        }
+        return null;
+    }
+
+    protected function pageConfig(string $route = null) : iterable
+    {
+        // TODO Use visibility / permissions
+        $homeTarget = (Service::security()->isGranted('ROLE_USER') ? 'dime.home' : 'dime.front');
+        $config = [
+            'navlinks' => [
+                ['name' => 'dime.home', 'dropdown' => false, 'target' => $homeTarget],
+                ['name' => 'dime.detector', 'dropdown' => false, 'target' => 'dime.detector'],
+                ['name' => 'dime.research', 'dropdown' => false, 'target' => 'dime.research'],
+                ['name' => 'dime.about', 'dropdown' => false, 'target' => 'dime.about'],
+                ['name' => 'dime.news', 'dropdown' => false, 'target' => 'dime.news'],
+            ],
+            'sidelinks' => [
+                [
+                    'name' => 'mine',
+                    'active' => false,
+                    'role' => 'ROLE_USER',
+                    'links' => [
+                        ['name' => 'dime.search.finds.mine', 'active' => false, 'target' => 'dime.home.finds'],
+                    ],
+                ],
+                [
+                    'name' => 'add',
+                    'active' => false,
+                    'role' => 'ROLE_USER',
+                    'links' => [
+                        ['name' => 'dime.find.add', 'active' => false, 'target' => 'dime.finds.add'],
+                    ],
+                ],
+                [
+                    'name' => 'search',
+                    'active' => false,
+                    'role' => 'IS_AUTHENTICATED_ANONYMOUSLY',
+                    'links' => [
+                        ['name' => 'dime.find.search', 'active' => false, 'target' => 'dime.finds.list'],
+                    ],
+                ],
+                [
+                    'name' => 'admin.users',
+                    'active' => false,
+                    'role' => 'ROLE_ADMIN',
+                    'links' => [
+                        ['name' => 'dime.admin.users', 'active' => false, 'target' => 'dime.admin.users'],
+                    ],
+                ],
+                [
+                    'name' => 'admin.users.register',
+                    'active' => false,
+                    'role' => 'ROLE_ADMIN',
+                    'links' => [
+                        ['name' => 'dime.admin.users.register', 'active' => false, 'target' => 'dime.admin.users.register'],
+                    ],
+                ],
+            ],
+        ];
+        if ($route) {
+            foreach ($config['sidelinks'] as &$section) {
+                foreach ($section['links'] as &$link) {
+                    if ($link['target'] === $route) {
+                        $section['active'] = true;
+                        $link['active'] = true;
+                    }
+                }
+            }
+        }
+        return $config;
     }
 }

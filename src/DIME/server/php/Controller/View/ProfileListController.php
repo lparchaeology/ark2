@@ -35,9 +35,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ProfileListController extends DimeFormController
 {
-    public function buildState(Request $request) : iterable
+    public function buildState(Request $request, $data) : iterable
     {
-        $state = parent::buildState($request);
+        $state = parent::buildState($request, $data);
         $state['image'] = 'avatar';
         return $state;
     }
@@ -48,12 +48,5 @@ class ProfileListController extends DimeFormController
         $data['actors']['items'] = $actors;
         $data['finds'] = [];
         return $data;
-    }
-
-    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
-    {
-        $workflow['mode'] = 'edit';
-        $workflow['actor'] = $state['actor'];
-        return $workflow;
     }
 }

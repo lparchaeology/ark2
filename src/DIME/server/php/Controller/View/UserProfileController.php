@@ -38,9 +38,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserProfileController extends DimeFormController
 {
-    public function buildState(Request $request) : iterable
+    public function buildState(Request $request, $data) : iterable
     {
-        $state = parent::buildState($request);
+        $state = parent::buildState($request, $data);
         $state['image'] = 'avatar';
         return $state;
     }
@@ -50,13 +50,6 @@ class UserProfileController extends DimeFormController
         $data['actor'] = Service::workflow()->actor();
         $data['user'] = Service::security()->user();
         return $data;
-    }
-
-    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
-    {
-        $workflow['mode'] = 'edit';
-        $workflow['actor'] = $state['actor'];
-        return $workflow;
     }
 
     public function processForm(Request $request, Form $form) : void

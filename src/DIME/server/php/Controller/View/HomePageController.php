@@ -50,11 +50,4 @@ class HomePageController extends DimeFormController
 
         return $data;
     }
-
-    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
-    {
-        $workflow['mode'] = 'edit';
-        $workflow['actor'] = $state['actor'];
-        return $workflow;
-    }
 }

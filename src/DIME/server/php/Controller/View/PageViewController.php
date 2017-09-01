@@ -29,11 +29,11 @@
 
 namespace DIME\Controller\View;
 
+use ARK\Entity\Page;
 use ARK\Error\ErrorException;
 use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\Entity\Page;
 use DIME\DIME;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -69,7 +69,6 @@ class PageViewController extends DimeFormController
         }
 
         $state = $this->buildState($request);
-        $state['page_config'] = $this->pageConfig($request->attributes->get('_route'));
 
         $options['content'][0] = $content;
         $options['state'] = $state;

@@ -33,6 +33,7 @@ namespace ARK\Form\Type;
 use ARK\File\File;
 use ARK\Model\Property;
 use ARK\ORM\ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -48,6 +49,7 @@ class FilePropertyType extends AbstractPropertyType
             $fileOptions['multiple'] = true;
         }
         $builder->add('file', FileType::class, $fileOptions);
+        $builder->add('previous', CollectionType::class, ['entry_type' => HiddenType::class]);
         $builder->add('existing', CollectionType::class, ['entry_type' => HiddenType::class]);
         $builder->setDataMapper($this);
     }
@@ -69,6 +71,7 @@ class FilePropertyType extends AbstractPropertyType
         } elseif ($value instanceof File) {
             $existing[] = $value->id();
         }
+        $forms['previous']->setData($existing);
         $forms['existing']->setData($existing);
     }
 
@@ -77,32 +80,38 @@ class FilePropertyType extends AbstractPropertyType
         if (!$property instanceof Property) {
             return;
         }
+        $options = $this->propertyOptions($forms);
         $forms = iterator_to_array($forms);
+
         $upload = $forms['file']->getData();
-        if ($upload instanceof UploadedFile) {
-            $file = File::createFromUploadedFile($upload);
-            $property->setValue($file);
-        } elseif (is_array($upload)) {
-            $files = [];
-            $existing = $forms['existing']->getData();
-            if (is_array($existing)) {
-                foreach (array_filter($existing) as $id) {
-                    $file = ORM::find(File::class, $id);
-                    if ($file) {
-                        $files[] = $file;
-                    }
-                }
-            }
-            foreach ($upload as $up) {
-                $file = File::createFromUploadedFile($up);
-                if ($file) {
-                    $files[] = $file;
-                }
-            }
-            if ($files) {
-                $property->setValue($files);
-            }
+
+        $previous = array_values(array_filter($forms['previous']->getData(), 'strlen'));
+        sort($previous);
+        $existing = array_values(array_filter($forms['existing']->getData(), 'strlen'));
+        sort($existing);
+        $removed = array_diff($previous, $existing);
+
+        if (!$removed && !$upload) {
+            return;
         }
+
+        if ($options['state']['multiple']) {
+            $files = new ArrayCollection();
+            $files = ORM::findBy(File::class, ['id' => $existing]);
+            foreach ($upload as $up) {
+                if ($file = File::createFromUploadedFile($up)) {
+                    $files->add($file);
+                }
+            }
+            $property->setValue($files);
+        } else {
+            $file = null;
+            if ($upload instanceof UploadedFile) {
+                $file = File::createFromUploadedFile($upload);
+            }
+            $property->setValue($file);
+        }
+        // TODO What about the deleted Files???
     }
 
     protected function options()

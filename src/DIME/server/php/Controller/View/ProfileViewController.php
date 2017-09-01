@@ -44,9 +44,9 @@ class ProfileViewController extends DimeFormController
         return parent::__invoke($request);
     }
 
-    public function buildState(Request $request) : iterable
+    public function buildState(Request $request, $data) : iterable
     {
-        $state = parent::buildState($request);
+        $state = parent::buildState($request, $data);
         $state['image'] = 'avatar';
         return $state;
     }
@@ -61,12 +61,5 @@ class ProfileViewController extends DimeFormController
         $items = Service::database()->getActorFinds($actor->id());
         $data['finds']['items'] = ORM::findBy(Find::class, ['id' => $items]);
         return $data;
-    }
-
-    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
-    {
-        $workflow['mode'] = 'edit';
-        $workflow['actor'] = $state['actor'];
-        return $workflow;
     }
 }

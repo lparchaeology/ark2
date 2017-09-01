@@ -29,15 +29,6 @@
 
 namespace DIME\Controller\View;
 
-use DIME\DIME;
-use Symfony\Component\HttpFoundation\Request;
-
 class AdminHomeController extends DimeFormController
 {
-    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
-    {
-        $workflow['mode'] = 'view';
-        $workflow['actor'] = $state['actor'];
-        return $workflow;
-    }
 }

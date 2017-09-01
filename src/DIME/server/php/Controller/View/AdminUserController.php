@@ -39,9 +39,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AdminUserController extends DimeFormController
 {
-    public function buildState(Request $request) : iterable
+    public function buildState(Request $request, $data) : iterable
     {
-        $state = parent::buildState($request);
+        $state = parent::buildState($request, $data);
         $state['image'] = 'avatar';
         $state['options']['museum']['choices'] = ORM::findAll(Museum::class);
         $state['options']['museum']['choice_value'] = 'id';
@@ -73,16 +73,6 @@ class AdminUserController extends DimeFormController
         $actor = Service::workflow()->actor();
         $data['action'] = Service::workflow()->actions($actor, $actor);
         return $data;
-    }
-
-    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
-    {
-        $actor = $state['actor'];
-        $workflow['mode'] = 'edit';
-        $workflow['actor'] = $actor;
-        $workflow['actions'] = Service::workflow()->updateActions($actor, $actor);
-        $workflow['actors'] = Service::workflow()->actors($actor, $actor);
-        return $workflow;
     }
 
     public function processForm(Request $request, Form $form) : void
@@ -121,5 +111,10 @@ class AdminUserController extends DimeFormController
             ORM::flush($actorRole);
             Service::view()->addSuccessFlash('dime.admin.user.role.add');
         }
+    }
+
+    protected function item($data) : ?Item
+    {
+        return Service::workflow()->actor();
     }
 }

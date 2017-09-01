@@ -44,61 +44,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class FindListController extends DimeFormController
 {
-    public function buildState(Request $request) : iterable
-    {
-        $state = parent::buildState($request);
-
-        if ($request->attributes->get('_route') === 'dime.home.finds') {
-            $actor = Service::workflow()->actor();
-
-            // Filter by Museum
-            // If the user is explicitly granted permission, they can filter for all museums.
-            // Otherwise the user is only able to filter museums they have explicitly granted permission for
-            $state['options']['museum']['choice_value'] = 'id';
-            $state['options']['museum']['choice_name'] = 'id';
-            $state['options']['museum']['choice_label'] = 'fullname';
-            if ($actor->hasPermission('dime.find.filter.museum')) {
-                $state['options']['museum']['choices'] = ORM::findAll(Museum::class);
-                $state['options']['museum']['multiple'] = true;
-                $state['options']['museum']['placeholder'] = Service::translate('core.placeholder');
-            } else {
-                $state['options']['museum']['choices'] = $this->museums($actor);
-                $state['options']['museum']['multiple'] = false;
-                if (count($state['options']['museum']['choices']) > 0) {
-                    $state['options']['museum']['placeholder'] = false;
-                } else {
-                    $state['options']['museum']['placeholder'] = '';
-                    $state['options']['museum']['mode'] = 'readonly';
-                }
-            }
-
-            // Filter by Finder.
-            // If the user is explicitly granted permission, they can filter for all actors.
-            // If the user is able to create new finds, then they are allowed to filter for their own finds
-            // Otherwise they cannot filter by Finder
-            $state['options']['finder']['choice_value'] = 'id';
-            $state['options']['finder']['choice_name'] = 'id';
-            $state['options']['finder']['choice_label'] = 'fullname';
-            if ($actor->hasPermission('dime.find.filter.finder')) {
-                $finders = Service::database()->getFinders();
-                $state['options']['finder']['choices'] = ORM::findBy(Person::class, ['id' => $finders]);
-                $state['options']['finder']['multiple'] = false;
-                $state['options']['finder']['placeholder'] = Service::translate('core.placeholder');
-            } elseif ($actor->hasPermission('dime.find.create')) {
-                $state['options']['finder']['choices'] = [$actor];
-                $state['options']['finder']['multiple'] = false;
-                $state['options']['finder']['placeholder'] = false;
-            } else {
-                $state['options']['finder']['choices'] = [];
-                $state['options']['finder']['multiple'] = false;
-                $state['options']['finder']['placeholder'] = '';
-                $state['options']['finder']['mode'] = 'readonly';
-            }
-        }
-
-        return $state;
-    }
-
     public function buildData(Request $request)
     {
         $query = $request->query->all();
@@ -256,17 +201,66 @@ class FindListController extends DimeFormController
         return $data;
     }
 
-    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
+    public function buildState(Request $request, $data) : iterable
     {
-        $actor = $state['actor'];
-        $workflow['actor'] = $actor;
-        $workflow['mode'] = 'edit';
+        $state = parent::buildState($request, $data);
+
         $query = $request->query->all();
         if (isset($query['status']) && isset($data['finds']['items'][0])) {
             //$workflow['actions'] = Service::workflow()->updateActions($actor, $data['finds'][0]);
         }
-        $workflow['actions'] = $data['actions'];
-        return $workflow;
+        $state['workflow']['mode'] = 'edit';
+        $state['workflow']['actions'] = $data['actions'];
+
+        if ($request->attributes->get('_route') === 'dime.home.finds') {
+            $actor = $state['actor'];
+
+            // Filter by Museum
+            // If the user is explicitly granted permission, they can filter for all museums.
+            // Otherwise the user is only able to filter museums they have explicitly granted permission for
+            $state['options']['museum']['choice_value'] = 'id';
+            $state['options']['museum']['choice_name'] = 'id';
+            $state['options']['museum']['choice_label'] = 'fullname';
+            if ($actor->hasPermission('dime.find.filter.museum')) {
+                $state['options']['museum']['choices'] = ORM::findAll(Museum::class);
+                $state['options']['museum']['multiple'] = true;
+                $state['options']['museum']['placeholder'] = Service::translate('core.placeholder');
+            } else {
+                $state['options']['museum']['choices'] = $this->museums($actor);
+                $state['options']['museum']['multiple'] = false;
+                if (count($state['options']['museum']['choices']) > 0) {
+                    $state['options']['museum']['placeholder'] = false;
+                } else {
+                    $state['options']['museum']['placeholder'] = '';
+                    $state['options']['museum']['mode'] = 'readonly';
+                }
+            }
+
+            // Filter by Finder.
+            // If the user is explicitly granted permission, they can filter for all actors.
+            // If the user is able to create new finds, then they are allowed to filter for their own finds
+            // Otherwise they cannot filter by Finder
+            $state['options']['finder']['choice_value'] = 'id';
+            $state['options']['finder']['choice_name'] = 'id';
+            $state['options']['finder']['choice_label'] = 'fullname';
+            if ($actor->hasPermission('dime.find.filter.finder')) {
+                $finders = Service::database()->getFinders();
+                $state['options']['finder']['choices'] = ORM::findBy(Person::class, ['id' => $finders]);
+                $state['options']['finder']['multiple'] = false;
+                $state['options']['finder']['placeholder'] = Service::translate('core.placeholder');
+            } elseif ($actor->hasPermission('dime.find.create')) {
+                $state['options']['finder']['choices'] = [$actor];
+                $state['options']['finder']['multiple'] = false;
+                $state['options']['finder']['placeholder'] = false;
+            } else {
+                $state['options']['finder']['choices'] = [];
+                $state['options']['finder']['multiple'] = false;
+                $state['options']['finder']['placeholder'] = '';
+                $state['options']['finder']['mode'] = 'readonly';
+            }
+        }
+
+        return $state;
     }
 
     public function processForm(Request $request, Form $form) : void

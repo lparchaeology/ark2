@@ -43,17 +43,10 @@ class UserLoginController extends DimeFormController
         return parent::__invoke($request);
     }
 
-    public function buildState(Request $request) : iterable
+    public function buildState(Request $request, $data) : iterable
     {
-        $state = parent::buildState($request);
+        $state = parent::buildState($request, $data);
         $state['last_username'] = Service::security()->lastUsername();
         return $state;
-    }
-
-    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
-    {
-        $workflow['mode'] = 'edit';
-        $workflow['actor'] = $state['actor'];
-        return $workflow;
     }
 }

@@ -42,9 +42,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserRegisterController extends DimeFormController
 {
-    public function buildState(Request $request) : iterable
+    public function buildState(Request $request, $data) : iterable
     {
-        $state = parent::buildState($request);
+        $state = parent::buildState($request, $data);
         $state['options']['museum']['choices'] = ORM::findAll(Museum::class);
         $state['options']['museum']['choice_value'] = 'id';
         $state['options']['museum']['choice_name'] = 'id';
@@ -59,13 +59,6 @@ class UserRegisterController extends DimeFormController
         $data['actor'] = new Person();
         $data['faq'] = 'dime.register.faq';
         return $data;
-    }
-
-    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
-    {
-        $workflow['mode'] = 'edit';
-        $workflow['actor'] = $state['actor'];
-        return $workflow;
     }
 
     public function processForm(Request $request, Form $form) : void

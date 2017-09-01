@@ -41,11 +41,4 @@ class NewsPageController extends DimeFormController
         $data['finds']['items'] = ORM::findBy(Find::class, ['visibility' => 'public'], ['id' => 'DESC']);
         return $data;
     }
-
-    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
-    {
-        $workflow['mode'] = 'edit';
-        $workflow['actor'] = $state['actor'];
-        return $workflow;
-    }
 }

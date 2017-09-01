@@ -37,13 +37,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserResetController extends DimeFormController
 {
-    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
-    {
-        $workflow['mode'] = 'edit';
-        $workflow['actor'] = $state['actor'];
-        return $workflow;
-    }
-
     public function processForm(Request $request, Form $form) : void
     {
         $data = $form->getData();

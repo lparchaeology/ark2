@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * DIME Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -33,21 +33,20 @@ namespace DIME\Controller\API;
 use ARK\Actor\Actor;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\View\Page;
 use DIME\DIME;
-use DIME\Controller\API\FormController;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserActorController extends FormController
 {
-    public function __invoke(Request $request, $id)
+    public function __invoke(Request $request, string $id)
     {
         $request->attributes->set('form', 'dime_user_actor');
         $request->attributes->set('actor', $id);
         return $this->handleRequest($request);
     }
 
-    public function buildState(Request $request)
+    public function buildState(Request $request) : iterable
     {
         $state = parent::buildState($request);
         $state['image'] = 'avatar';
@@ -61,16 +60,10 @@ class UserActorController extends FormController
         return $data;
     }
 
-    public function buildWorkflow(Request $request, $data, array $state)
-    {
-        $workflow['mode'] = 'edit';
-        $workflow['actor'] = $state['actor'];
-    }
-
-    public function processForm(Request $request, $form)
+    public function processForm(Request $request, Form $form) : void
     {
         $submitted = $form->getConfig()->getName();
-        if ($submitted == 'password_set') {
+        if ($submitted === 'password_set') {
             $data = $form->getData();
             $user = Service::security()->user();
             $user->setPassword($data['password']);
@@ -79,7 +72,7 @@ class UserActorController extends FormController
             $request->attributes->set('flash', 'success');
             $request->attributes->set('message', 'core.user.password.change.success');
         }
-        if ($submitted == 'actor') {
+        if ($submitted === 'actor') {
             $actor = $form->getData();
             ORM::persist($actor);
             ORM::flush($actor);

@@ -29,6 +29,7 @@
 
 namespace DIME\Controller\View;
 
+use ARK\Model\Item;
 use ARK\ORM\ORM;
 use ARK\Service;
 use DIME\DIME;
@@ -60,19 +61,14 @@ class FindAddController extends DimeFormController
         return $data;
     }
 
-    public function buildState(Request $request) : iterable
+    public function buildState(Request $request, $data) : iterable
     {
-        $state = parent::buildState($request);
-        $actor = Service::workflow()->actor();
+        $state = parent::buildState($request, $data);
+        $actor = $state['actor'];
         if (!$actor->hasPermission('dime.find.register.any')) {
             $state['options']['finder']['choices'] = [$actor];
         }
         return $state;
-    }
-
-    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
-    {
-        return parent::buildWorkflow($request, $data['find'], $state);
     }
 
     public function processForm(Request $request, Form $form) : void
@@ -96,5 +92,10 @@ class FindAddController extends DimeFormController
         $parameters['id'] = $find->id();
         $request->attributes->set('parameters', $parameters);
         Service::view()->addSuccessFlash($message, $parameters);
+    }
+
+    protected function item($data) : ?Item
+    {
+        return $data['find'];
     }
 }

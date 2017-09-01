@@ -37,18 +37,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class MessagePageController extends DimeFormController
 {
-    public function buildState(Request $request) : iterable
+    public function buildState(Request $request, $data) : iterable
     {
-        $state = parent::buildState($request);
+        $state = parent::buildState($request, $data);
         $state['event_vocabulary'] = ORM::find(Vocabulary::class, 'core.event.type');
         return $state;
-    }
-
-    public function buildWorkflow(Request $request, $data, iterable $state) : iterable
-    {
-        $workflow['mode'] = 'edit';
-        $workflow['actor'] = $state['actor'];
-        return $workflow;
     }
 
     public function buildData(Request $request)
