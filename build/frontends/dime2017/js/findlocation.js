@@ -92,10 +92,11 @@ function initialisePickMap() {
                 coords = ol.proj.transform(feature.getGeometry().getCoordinates(), 'EPSG:3857', 'EPSG:4326');
                 $('#find_location_easting').val(parseFloat(coords[0].toFixed(6)));
                 $('#find_location_northing').val(parseFloat(coords[1].toFixed(6)));
-                updateUtmPoint()
-                mapPickMap.getView().setCenter(feature.getGeometry().getCoordinates());
-                mapPickMap.getView().setZoom(12);
-                updateMunicipality();
+                updateUtmPoint();
+                if ( updateMunicipality() ){
+                    mapPickMap.getView().setCenter(feature.getGeometry().getCoordinates());
+                    mapPickMap.getView().setZoom(12);
+                }
             });
         } else {
             mapPickSource.removeFeature(removefeature);
@@ -146,39 +147,8 @@ function initialisePickMap() {
 
     updateUtmPoint();
 
-    //$('.mappick-fields input').change();
     updateMapPoint();
 
-/* This does not work well
-    var constrainPan = debounce(function() {
-
-        var visible = mapPickView.calculateExtent(mapPickMap.getSize());
-        var centre = mapPickView.getCenter();
-        var delta;
-        var adjust = false;
-        if ((delta = denmarkExtent[0] - visible[0]) > 0) {
-            adjust = true;
-            centre[0] += delta;
-        } else if ((delta = denmarkExtent[2] - visible[2]) < 0) {
-            adjust = true;
-            centre[0] += delta;
-        }
-        if ((delta = denmarkExtent[1] - visible[1]) > 0) {
-            adjust = true;
-            centre[1] += delta;
-        } else if ((delta = denmarkExtent[3] - visible[3]) < 0) {
-            adjust = true;
-            centre[1] += delta;
-        }
-        if (adjust) {
-            mapPickView.setZoom(Math.max(6,mapPickView.getZoom()));
-            mapPickView.setCenter(centre);
-        }
-    }, 10, false);
-
-    mapPickView.on('change:resolution', constrainPan);
-    mapPickView.on('change:center', constrainPan);
-    */
 };
 
 function updateMunicipality() {
@@ -188,8 +158,16 @@ function updateMunicipality() {
 
     $.post(path + 'api/geo/find', wkt, function(result) {
         // TODO Find way without using actual form IDs
-        $('#find_municipality_term').val(result['municipality']['term']).trigger("change");
-        $('#find_museum_id').val(result['museum']['id']).trigger("change");
+        console.log(result);
+        try {
+            $('#find_municipality_term').val(result['municipality']['term']).trigger("change");
+            $('#find_museum_id').val(result['museum']['id']).trigger("change");
+            return true;
+        } catch (typeError) {
+            alert(window.invalidpointlocation);
+            mapPickSource.clear();
+            return false;
+        }
     });
 }
 
