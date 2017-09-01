@@ -269,6 +269,12 @@ input[type=radio]:checked ~ label::before {
     height: inherit;
 }
 
+/* hiding the upload button is not working so just hide it */
+
+.kv-file-upload {
+    //display: none;
+}
+
 /* Dating */
 .advanced-dating {
     display: none;

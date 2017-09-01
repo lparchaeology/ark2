@@ -35,7 +35,7 @@ var initTimeline = function(){
               id:      period_id,
               content: $("#find_dating_period").find("option[value="+period.name+"]").html(),
               start:   vis.moment(start, "Y"),
-              end:     vis.moment(end, "Y")
+              end:     vis.moment(end, "Y").endOf("year")
             });
       }
 
@@ -244,9 +244,9 @@ var initTimeline = function(){
           var end = $('#find_dating_year_span').val();
           if(end){
               try {
-                  timeline.setCustomTime( vis.moment(end, 'Y'), 'end' );
+                  timeline.setCustomTime( vis.moment(end, 'Y').endOf("year"), 'end' );
               }catch (err){
-                  timeline.addCustomTime( vis.moment(end, 'Y'), 'end' );
+                  timeline.addCustomTime( vis.moment(end, 'Y').endOf("year"), 'end' );
               }
           }
 
@@ -299,16 +299,16 @@ var initTimeline = function(){
               }catch (e){
                   var item_end = vis.moment('10000', 'Y');
               }
-
+              
               if( event.event.shiftKey ){
                   if (existing_start < item_start) {
-                      var start = existing_start;
+                      var start = vis.moment(existing_start);
                   } else {
                       var start = item_start;
                   }
 
                   if (existing_end > item_end) {
-                      var end = existing_end;
+                      var end = vis.moment(existing_end);
                   } else {
                       var end = item_end;
                   }
@@ -316,6 +316,13 @@ var initTimeline = function(){
                   var start = item_start;
                   var end = item_end;
               }
+
+              console.log("start",start,"end",end);
+              var item_mid_point = (start.year() + end.year())/2;
+              
+              console.log(item_mid_point);
+              
+              timeline.moveTo(vis.moment(item_mid_point, 'Y'));
 
          } else {
              if ( existing_start == null ) {

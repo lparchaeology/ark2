@@ -52,8 +52,9 @@ $(document).ready(function() {
             //'initialPreviewAsData': true,
             'minFileCount': 0,
             'maxFileCount': 3,
-            'deleteUrl': "../true.json"
-
+            'deleteUrl': "../true.json",
+            //'uploadUrl': "../true.json",
+            //'uploadAsync': false,
         });
     });
     
