@@ -12,6 +12,7 @@ var initPeriod = function(){
     })
     .done(function(response) {
         window.periodvocabulary = response.terms;
+        initSimpleDating();
         initTimeline();
     });
 
@@ -211,12 +212,14 @@ $(document).ready(function(){
         e.preventDefault();
         $('#advanced-dating-button').hide();
         $('.advanced-dating').show();
+        $('.simple-dating').hide();
         $('.form-period').addClass("col-sm-6").removeClass("col-sm-11");
     });
     $('#simple-dating-button').on('click', function(e){
         e.preventDefault();
         $('#advanced-dating-button').show();
         $('.advanced-dating').hide();
+        $('.simple-dating').show();
         $('.form-period').removeClass("col-sm-6").addClass("col-sm-11");
     });
     $('#oldtid-dating-button').on('click', function(e){

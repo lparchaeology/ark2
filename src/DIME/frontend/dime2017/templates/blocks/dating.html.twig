@@ -9,12 +9,15 @@
         {% if (state.mode is sameas("edit")) %}
             <div class = "simple-dating">
                 <div class="col-sm-11 form-period">
-                    {{ form_widget(form.period) }}
+                    <select id="simple_dating_input"></select>
                 </div>
                 <span id="advanced-dating-button" class="advanced-dating-button dating-button"><span class="glyphicon glyphicon-expand"></span></span>
             </div>
             <div class = "advanced-dating">
                 <div class="row">
+                    <div class="col-sm-6">
+                        {{ form_widget(form.period) }}
+                    </div>
                     <div class="col-sm-6">
                         {{ form_widget(form.period_span) }}
                     </div>

@@ -350,7 +350,7 @@ var initTimeline = function(){
 
          $('#find_dating_year').val(new Date(start).getFullYear(),'Y');
          $('#find_dating_year').trigger('keyup');
-         $('#find_dating_year_span').val(new Date(end).getFullYear(),'Y');
+         $('#find_dating_year_span').val(new Date(end).getFullYear().endOf('year'),'Y');
          $('#find_dating_year_span').trigger('keyup');
 
          timeline.addCustomTime( start, 'start' );
