@@ -97,7 +97,7 @@ class Page extends Element
 
         $mode = $state['workflow']['mode'];
         if ($this->visibility === 'restricted') {
-            $actor = $state['workflow']['actor'];
+            $actor = $state['actor'];
             if ($mode === 'edit' && !$actor->hasPermission($this->updatePermission())) {
                 $mode = 'view';
             }
@@ -168,6 +168,9 @@ class Page extends Element
                     return Service::redirectPath($redirect, $parameters);
                 }
                 Service::view()->addErrorFlash('core.error.form.invalid');
+                foreach ($posted->getErrors(true) as $error) {
+                    Service::view()->addErrorFlash($error->getMessage());
+                }
             } catch (WorkflowException $e) {
                 Service::view()->addErrorFlash($e->getMessage());
             }

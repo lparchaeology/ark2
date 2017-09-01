@@ -106,16 +106,16 @@ abstract class AbstractWidget extends Element
         }
 
         if ($state['choices'] && $state['value']['modus'] === 'active') {
-            $name = $state['name'];
-            $options['choices'] = $state['options'][$name]['choices'] ?? $data;
-            $options['choice_value'] = $state['options'][$name]['choice_value'] ?? 'name';
-            $options['choice_name'] = $state['options'][$name]['choice_name'] ?? 'name';
-            $options['choice_label'] = $state['options'][$name]['choice_label'] ?? 'keyword';
-            $options['placeholder'] = $state['options'][$name]['placeholder'] ?? $state['placeholder'] ?? 'core.placeholder';
-            if (isset($state['options'][$name]['multiple'])) {
-                $options['multiple'] = $state['options'][$name]['multiple'];
+            $select = $state['select'][$state['name']] ?? [];
+            $options['choices'] = $select['choices'] ?? $data;
+            $options['choice_value'] = $select['choice_value'] ?? 'name';
+            $options['choice_name'] = $select['choice_name'] ?? 'name';
+            $options['choice_label'] = $select['choice_label'] ?? 'keyword';
+            $options['placeholder'] = $select['placeholder'] ?? $state['placeholder'] ?? 'core.placeholder';
+            if (isset($select['multiple'])) {
+                $options['multiple'] = $select['multiple'];
             }
-            $options['required'] = $state['options'][$name]['required'] ?? $options['required'];
+            $options['required'] = $select['required'] ?? $options['required'];
         }
 
         unset($options['state']);

@@ -66,7 +66,7 @@ class FindAddController extends DimeFormController
         $state = parent::buildState($request, $data);
         $actor = $state['actor'];
         if (!$actor->hasPermission('dime.find.register.any')) {
-            $state['options']['finder']['choices'] = [$actor];
+            $state['select']['finder']['choices'] = [$actor];
         }
         return $state;
     }

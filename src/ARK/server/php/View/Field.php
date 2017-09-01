@@ -402,16 +402,16 @@ class Field extends Element
         }
         if ($state['choices']) {
             if ($this->attribute()->isItem()) {
-                $fieldOptions = $state['options'][$state['name']] ?? [];
-                $choices = $fieldOptions['choices'] ?? ORM::findAll($this->attribute()->entity());
+                $select = $state['select'][$state['name']] ?? [];
+                $choices = $select['choices'] ?? ORM::findAll($this->attribute()->entity());
                 if ($choices) {
                     $options['choices'] = $choices;
                     if ($state['placeholder']) {
-                        $options['placeholder'] = $fieldOptions['placeholder'] ?? 'core.placeholder';
+                        $options['placeholder'] = $select['placeholder'] ?? 'core.placeholder';
                     }
-                    $options['choice_value'] = $fieldOptions['choice_value'] ?? 'id';
-                    $options['choice_name'] = $fieldOptions['choice_name'] ?? 'id';
-                    $options['choice_label'] = $fieldOptions['choice_label'] ?? $state['display']['property'] ?? 'id';
+                    $options['choice_value'] = $select['choice_value'] ?? 'id';
+                    $options['choice_name'] = $select['choice_name'] ?? 'id';
+                    $options['choice_label'] = $select['choice_label'] ?? $state['display']['property'] ?? 'id';
                 }
             } elseif ($this->attribute()->hasVocabulary()) {
                 $options = $this->vocabularyOptions($this->attribute()->vocabulary(), $options);

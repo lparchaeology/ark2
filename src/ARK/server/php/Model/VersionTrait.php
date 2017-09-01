@@ -42,27 +42,27 @@ trait VersionTrait
     protected $modified;
     protected $version = '';
 
-    public function created() : DateTime
+    public function created() : ?DateTime
     {
         return $this->created;
     }
 
-    public function creator() : Actor
+    public function creator() : ?Actor
     {
         return $this->creator;
     }
 
-    public function lastModified() : DateTime
+    public function lastModified() : ?DateTime
     {
         return $this->modified;
     }
 
-    public function lastModifier() : Actor
+    public function lastModifier() : ?Actor
     {
         return $this->modifier;
     }
 
-    public function version() : string
+    public function version() : ?string
     {
         return $this->version;
     }

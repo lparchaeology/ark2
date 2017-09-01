@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Form\Type;
@@ -42,7 +41,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FilePropertyType extends AbstractPropertyType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options) : void
+    public function buildForm(FormBuilderInterface $builder, iterable $options) : void
     {
         $fileOptions = [];
         if ($options['state']['multiple']) {
@@ -114,7 +113,7 @@ class FilePropertyType extends AbstractPropertyType
         // TODO What about the deleted Files???
     }
 
-    protected function options()
+    protected function options() : iterable
     {
         return [
             'compound' => true,

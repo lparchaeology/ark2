@@ -29,59 +29,18 @@
 
 namespace DIME\Controller\View;
 
-use ARK\Actor\Actor;
-use ARK\Model\Item;
-use ARK\ORM\ORM;
-use ARK\Routing\Route;
+use ARK\Framework\Controller;
 use ARK\Service;
-use ARK\View\Page;
 use DIME\DIME;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
-abstract class DimeFormController
+abstract class DimeFormController extends Controller
 {
-    public function __invoke(Request $request)
-    {
-        return $this->handleRequest($request);
-    }
-
-    public function handleRequest(Request $request)
-    {
-        $route = ORM::find(Route::class, $request->attributes->get('_route'));
-        if ($route) {
-            $page = $route->page();
-            if ($route->redirect()) {
-                $request->attributes->set('redirect', $route->redirect()->id());
-            }
-        } else {
-            $page = ORM::find(Page::class, $request->attributes->get('page'));
-        }
-        $data = $this->buildData($request);
-        $state = $this->buildState($request, $data);
-        return $page->handleRequest($request, $data, $state, [$this, 'processForm']);
-    }
-
-    public function buildData(Request $request)
-    {
-        return null;
-    }
-
     public function buildState(Request $request, $data) : iterable
     {
-        $actor = Service::workflow()->actor();
-        $state['actor'] = $actor;
+        $state = parent::buildState($request, $data);
         $state['image'] = 'image';
         $state['notifications'] = DIME::getUnreadNotifications();
-
-        $item = $this->item($data);
-        $state['workflow']['mode'] = $item ? Service::workflow()->mode($actor, $item) : 'view';
-        $state['workflow']['actor'] = $actor;
-        if ($item && $state['workflow']['mode'] === 'edit') {
-            $state['workflow']['actions'] = Service::workflow()->updateActions($actor, $item);
-            $state['workflow']['actors'] = Service::workflow()->actors($actor, $item);
-        }
-
         // FIXME temp hardcode for now, later replace with Nav table
         $state['page_config'] = $this->pageConfig($request->attributes->get('_route'));
         // FIXME temp hardcode for now, do properly later!
@@ -106,27 +65,6 @@ abstract class DimeFormController
         $state['modules']['file']['route'] = null;
         $state['modules']['file']['resource'] = Service::translate('core.file', 'resource');
         return $state;
-    }
-
-    public function processForm(Request $request, Form $form) : void
-    {
-    }
-
-    public function defaultOptions(string $route = null) : iterable
-    {
-        $options['mode'] = 'view';
-        $options['data'] = null;
-        $options['forms'] = null;
-        $options['page_config'] = $this->pageConfig($route);
-        return $options;
-    }
-
-    protected function item($data) : ?Item
-    {
-        if ($data instanceof Item) {
-            return $data;
-        }
-        return null;
     }
 
     protected function pageConfig(string $route = null) : iterable

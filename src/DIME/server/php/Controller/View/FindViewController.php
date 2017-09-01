@@ -61,8 +61,7 @@ class FindViewController extends DimeFormController
     public function buildState(Request $request, $data) : iterable
     {
         $state = parent::buildState($request, $data);
-        $find = $this->item($data);
-        $state['options']['finder']['choices'] = [$find->value('finder')];
+        $state['select']['finder']['choices'] = [$this->item($data)->value('finder')];
         return $state;
     }
 
@@ -70,7 +69,7 @@ class FindViewController extends DimeFormController
     {
         $clicked = $form->getClickedButton()->getName();
         $data = $form->getData();
-        $find = $data['find'];
+        $find = $this->item($data);
         $parameters['id'] = $find->id();
         $request->attributes->set('parameters', $parameters);
         if ($clicked === 'clone') {

@@ -43,12 +43,13 @@ class AdminUserController extends DimeFormController
     {
         $state = parent::buildState($request, $data);
         $state['image'] = 'avatar';
-        $state['options']['museum']['choices'] = ORM::findAll(Museum::class);
-        $state['options']['museum']['choice_value'] = 'id';
-        $state['options']['museum']['choice_name'] = 'id';
-        $state['options']['museum']['choice_label'] = 'fullname';
-        $state['options']['museum']['multiple'] = false;
-        $state['options']['museum']['placeholder'] = Service::translate('core.placeholder');
+        $select['choices'] = ORM::findAll(Museum::class);
+        $select['choice_value'] = 'id';
+        $select['choice_name'] = 'id';
+        $select['choice_label'] = 'fullname';
+        $select['multiple'] = false;
+        $select['placeholder'] = Service::translate('core.placeholder');
+        $state['select']['museum'] = $select;
         return $state;
     }
 

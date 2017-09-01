@@ -113,14 +113,10 @@ class Property
 
     public function setValue($value) : void
     {
-        // TODO Nasty Hack! Better to track the fid and update the right frag object to keep history!
-        // OTOH is more efficient look-ups if in block together, and simpler update code
-        // Will be moot if/when Property managed by ORM
-        // TODO In interim, copy the creator/created fields between frag sets
         if (!$this->fragments->isEmpty()) {
             $frag = $this->fragments->get(0);
-            $creator = $frag->creator();
-            $created = $frag->created();
+            $creator = $frag->creator() ?? Service::workflow()->actor();
+            $created = $frag->created() ?? new DateTime();
             ORM::remove($this->fragments);
             $this->fragments->clear();
         } else {

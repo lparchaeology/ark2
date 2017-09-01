@@ -36,6 +36,7 @@ use ARK\ORM\ORM;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 use DateTime;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class ScalarPropertyType extends AbstractPropertyType
@@ -46,6 +47,9 @@ class ScalarPropertyType extends AbstractPropertyType
         $dataclass = $field->attribute()->dataclass();
         if (isset($options['state']['display'])) {
             $builder->add($options['state']['display']['name'], $options['state']['display']['type'], $options['state']['display']['options']);
+        }
+        if (isset($options['state']['static'])) {
+            $builder->add('static', HiddenType::class, $options['state']['static']['options']);
         }
         $builder->add($dataclass->valueName(), $options['state']['value']['type'], $options['state']['value']['options']);
         if ($options['state']['parameter'] !== null) {
@@ -138,6 +142,10 @@ class ScalarPropertyType extends AbstractPropertyType
 
         if ($displayName && isset($forms[$displayName])) {
             $forms[$displayName]->setData($display);
+        }
+
+        if (isset($forms['static'])) {
+            $forms['static']->setData($display);
         }
 
         if ($formatName && isset($forms[$formatName])) {
