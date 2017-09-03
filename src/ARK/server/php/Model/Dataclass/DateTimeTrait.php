@@ -29,7 +29,10 @@
 
 namespace ARK\Model\Dataclass;
 
+use ARK\Model\Fragment;
 use ARK\ORM\ClassMetadataBuilder;
+use ARK\Vocabulary\Vocabulary;
+use Doctrine\Common\Collections\Collection;
 
 trait DateTimeTrait
 {
@@ -57,5 +60,22 @@ trait DateTimeTrait
         $builder->addStringField('pattern', 255);
         $builder->addStringField('unicode', 50);
         $builder->addStringField('php', 50);
+    }
+
+    protected function fragmentValue($fragment, Collection $properties = null)
+    {
+        if ($fragment instanceof Collection) {
+            $fragment = $fragment->first();
+        }
+        return $fragment->value();
+    }
+
+    protected function hydrateFragment($data, Fragment $fragment, Vocabulary $vocabulary = null) : void
+    {
+        if ($this->isSpan() || $fragment->isSpan()) {
+            $fragment->setSpan($data[0], $data[1]);
+        } else {
+            $fragment->setValue($data);
+        }
     }
 }

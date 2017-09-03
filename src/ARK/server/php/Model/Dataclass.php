@@ -354,14 +354,6 @@ abstract class Dataclass
             }
             return;
         }
-        if ($data instanceof DateTime) {
-            if ($span) {
-                $fragment->setSpan($data, $extent);
-            } else {
-                $fragment->setValue($data);
-            }
-            return;
-        }
         if ($data instanceof Item) {
             $format = null;
             $parameter = ($this->parameterName() ? $data->schema()->module()->id() : null);

@@ -40,7 +40,7 @@ class MessagePageController extends DimeFormController
     public function buildState(Request $request, $data) : iterable
     {
         $state = parent::buildState($request, $data);
-        $state['event_vocabulary'] = ORM::find(Vocabulary::class, 'core.event.type');
+        $state['event_vocabulary'] = ORM::find(Vocabulary::class, 'core.event.class');
         return $state;
     }
 

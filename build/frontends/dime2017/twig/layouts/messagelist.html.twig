@@ -35,10 +35,10 @@
                 {% endif %}
                 >
                         <td>
-                            {{ item.type }}
+                            {{ item.class }}
                         </td>
                         <td>
-                            {{ item.sentAt.datetime.date | localizeddate('full', 'short' ) }}
+                            {{ item.sentAt.date | localizeddate('full', 'short' ) }}
                         </td>
                         <td>
                             {{ item.sender.fullname }}

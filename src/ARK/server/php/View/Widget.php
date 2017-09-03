@@ -30,11 +30,124 @@
 namespace ARK\View;
 
 use ARK\ORM\ClassMetadata;
+use ARK\ORM\ClassMetadataBuilder;
+use Symfony\Component\Form\ButtonTypeInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\SubmitButtonTypeInterface;
 
-class Widget extends AbstractWidget
+class Widget extends Element
 {
+    protected $choices;
+    protected $formOptions = '';
+    protected $formOptionsArray;
+
+    public function buildState($data, iterable $state) : iterable
+    {
+        if (!isset($state['label'])) {
+            $state['label'] = $this->showLabel();
+        }
+        if (!isset($state['name'])) {
+            $state['name'] = $this->formName();
+        }
+        if (!isset($state['keyword'])) {
+            $state['keyword'] = $this->keyword();
+        }
+        $state['mode'] = $this->displayMode($state['mode']);
+        if ($state['mode'] === 'view' && $state['value']['modus'] !== 'active') {
+            $state['mode'] = 'deny';
+        }
+        $state['template'] = $this->template();
+        $state['widget'] = $this;
+        return $state;
+    }
+
+    public function buildData($data, iterable $state)
+    {
+        if ($this->isButton() || $state['sanitise'] === 'redact') {
+            return null;
+        }
+        $name = $state['name'];
+        if (is_iterable($data)) {
+            $data = $data[$name] ?? $data[$this->name] ?? $data[$this->id()] ?? null;
+        }
+        if ($data === null && $state['vocabulary']) {
+            $data = $state['required'] ? $state['vocabulary']->defaultTerm() : null;
+        }
+        if ($state['sanitise'] === 'static') {
+            $data = $state['keyword'];
+        }
+        return $data;
+    }
+
+    public function buildOptions($data, iterable $state, iterable $options = []) : iterable
+    {
+        if ($this->formOptionsArray === null) {
+            $this->formOptionsArray = ($this->formOptions ? json_decode($this->formOptions, true) : []);
+        }
+        $options = array_replace_recursive($this->defaultOptions(), $this->formOptionsArray, $options);
+
+        if ($state['label']) {
+            $options['label'] = $state['keyword'] ?? $this->keyword();
+        } else {
+            $options['label'] = false;
+        }
+
+        if ($state['mode'] === 'view') {
+            $options['required'] = false;
+        } else {
+            $options['required'] = $state['required'];
+        }
+
+        if ($state['vocabulary']) {
+            $options = $this->vocabularyOptions($state['vocabulary'], $options);
+            if (!$state['placeholder']) {
+                $options['placeholder'] = ($state['required'] ? null : 'core.placeholder');
+            }
+        }
+
+        if ($state['choices'] && $state['value']['modus'] === 'active') {
+            $select = $state['select'][$state['name']] ?? [];
+            $options['choices'] = $select['choices'] ?? $data;
+            $options['choice_value'] = $select['choice_value'] ?? 'name';
+            $options['choice_name'] = $select['choice_name'] ?? 'name';
+            $options['choice_label'] = $select['choice_label'] ?? 'keyword';
+            $options['placeholder'] = $select['placeholder'] ?? $state['placeholder'] ?? 'core.placeholder';
+            if (isset($select['multiple'])) {
+                $options['multiple'] = $select['multiple'];
+            }
+            $options['required'] = $select['required'] ?? $options['required'];
+        }
+
+        unset($options['state']);
+        if ($this->isButton()) {
+            unset($options['required'], $options['mapped']);
+        }
+        return $options;
+    }
+
+    public function buildContext($data, iterable $state, FormView $form = null) : iterable
+    {
+        $context = parent::buildContext($data, $state, $form);
+        $context['widget'] = $this;
+        return $context;
+    }
+
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
-        self::widgetMetadata($metadata);
+        // Joined Table Inheritance
+        $builder = new ClassMetadataBuilder($metadata, 'ark_view_widget');
+
+        // Fields
+        $builder->addStringField('name', 30);
+        $builder->addStringField('choices', 30);
+        $builder->addStringField('template', 100);
+        $builder->addStringField('formType', 100, 'form_type');
+        $builder->addStringField('formOptions', 4000, 'form_options');
+    }
+
+    private function isButton()
+    {
+        return is_subclass_of($this->formType(), SubmitButtonTypeInterface::class) ||
+            is_subclass_of($this->formType(), ButtonTypeInterface::class);
     }
 }
