@@ -287,19 +287,19 @@ var initTimeline = function(){
 
           console.log("start",existing_start,"end",existing_end);
 
-          if( event.item != null ) {
+          if( event.id != null ) {
 
               try {
-                  var item_start = vis.moment(window.periodvocabulary[event.item].parameters.year_start.value, 'Y');
+                  var item_start = vis.moment(window.periodvocabulary[event.id].parameters.year_start.value, 'Y');
               } catch (e){
                   var item_start = vis.moment(date.now(), 'Y');
               }
               try {
-                  var item_end = vis.moment(window.periodvocabulary[event.item].parameters.year_end.value, 'Y');
+                  var item_end = vis.moment(window.periodvocabulary[event.id].parameters.year_end.value, 'Y');
               }catch (e){
                   var item_end = vis.moment('10000', 'Y');
               }
-              
+
               if( event.event.shiftKey ){
                   if (existing_start < item_start) {
                       var start = vis.moment(existing_start);
@@ -319,9 +319,9 @@ var initTimeline = function(){
 
               console.log("start",start,"end",end);
               var item_mid_point = (start.year() + end.year())/2;
-              
+
               console.log(item_mid_point);
-              
+
               timeline.moveTo(vis.moment(item_mid_point, 'Y'));
 
          } else {

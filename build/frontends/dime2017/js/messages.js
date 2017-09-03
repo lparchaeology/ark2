@@ -71,7 +71,7 @@ var getMessage = function(id) {
         .done(function(data) {
           var response = data.data;
           console.log(data);
-          $.ajax(apiurl+'/actors/'+response.attributes.sender.item)
+          $.ajax(apiurl+'/actors/'+response.attributes.sender.id)
           .fail(function() {
               thisRow.data("message").find('.message-from').html('error reading sender');
           })
@@ -85,13 +85,13 @@ var getMessage = function(id) {
 
           thisRow.data("message").find('.message-date').html(formatDate(sent_at));
 
-          $.ajax(apiurl+'/events/'+response.attributes.event.item)
+          $.ajax(apiurl+'/events/'+response.attributes.event.id)
           .fail(function() {
               thisRow.data("message").find('.message-body').html('error reading message');
           })
           .done(function(response){
-              thisRow.data("message").find('.message-body').html(message_vocabulary["dime.find.event."+response.data.attributes.type]);
-              var subjectitem = $('<a href = "'+window.modules[response.data.attributes.subject.module].view+'/'+response.data.attributes.subject.item+'"><span class="glyphicon glyphicon-file"></span></a>')
+              thisRow.data("message").find('.message-body').html(message_vocabulary["dime.find.event."+response.data.attributes.class]);
+              var subjectitem = $('<a href = "'+window.modules[response.data.attributes.subject.module].view+'/'+response.data.attributes.subject.id+'"><span class="glyphicon glyphicon-file"></span></a>')
               subjectitem.appendTo(thisRow.data("message").find('.message-item'));
           });
 
