@@ -30,7 +30,6 @@
 namespace ARK\Database;
 
 use ARK\ARK;
-use DateTime;
 use Doctrine\DBAL\Connection;
 use Silex\Application;
 
@@ -435,8 +434,12 @@ class Database
         $read['item'] = $message;
         $read['attribute'] = 'read';
         $read['object'] = $recipient['object'];
-        $timestamp = ARK::timestamp()->format(DateTime::ATOM);
+        $timestamp = ARK::timestamp()->format('Y-m-d H:i:s');
         $read['value'] = $timestamp;
+        $read['creator'] = $actor;
+        $read['created'] = $timestamp;
+        $read['modifier'] = $actor;
+        $read['modified'] = $timestamp;
         $this->data()->insert('ark_fragment_datetime', $read);
     }
 

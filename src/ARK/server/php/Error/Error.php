@@ -97,7 +97,7 @@ class Error
         $this->source = $source;
     }
 
-    public function source() : ErrorSource
+    public function source() : ?ErrorSource
     {
         return $this->source;
     }
