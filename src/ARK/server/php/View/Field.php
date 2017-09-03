@@ -135,8 +135,8 @@ class Field extends Element
         if (!isset($state['name'])) {
             $state['name'] = $this->formName();
         }
-        if ($this->display && !isset($state['display']['name'])) {
-            $state['display']['name'] = $this->display;
+        if (!isset($state['display']['property'])) {
+            $state['display']['property'] = $this->display;
         }
         if (!isset($state['keyword'])) {
             $state['keyword'] = $this->keyword();
@@ -201,18 +201,22 @@ class Field extends Element
         $valueModus = $this->modeToModus($state, $state['value']['modus']);
         if ($valueModus === 'static') {
             $options['state']['value']['modus'] = 'static';
-            $options['state']['display']['name'] = $options['state']['display']['name'] ?? 'static';
+            $options['state']['display']['name'] = 'static';
             $options['state']['display']['modus'] = 'static';
             $options['state']['display']['type'] = $this->staticFormType();
-            $options['state']['display']['property'] = $options['state']['display']['name'];
             $options['state']['display']['options'] = $this->valueOptions($options['state']);
+            $options['state']['static']['name'] = '_static';
+            $options['state']['static']['modus'] = 'hidden';
+            $options['state']['static']['type'] = HiddenType::class;
+            $options['state']['static']['options'] = [];
             $valueModus = 'hidden';
         } elseif ($options['state']['choices']) {
-            if (isset($options['state']['display']['name'])) {
-                $options['state']['display']['property'] = $options['state']['display']['name'];
+            if (isset($options['state']['display']['property'])) {
+                $options['state']['display']['name'] = $options['state']['display']['property'];
             }
-        } elseif (isset($options['state']['display'])) {
+        } elseif (isset($options['state']['display']['property'])) {
             $options['state']['value']['modus'] = $valueModus;
+            $options['state']['display']['name'] = $options['state']['display']['property'];
             $options['state']['display']['modus'] = $valueModus;
             $options['state']['display']['type'] = $this->modusToFormType(
                 $valueModus,
@@ -221,10 +225,10 @@ class Field extends Element
                 $this->readonlyFormType(),
                 $this->staticFormType()
             );
-            $options['state']['display']['property'] = $options['state']['display']['name'];
             $options['state']['display']['options'] = $this->valueOptions($options['state']);
             $valueModus = 'hidden';
         }
+        $options['state']['value']['name'] = $this->attribute()->dataclass()->valueName();
         $options['state']['value']['modus'] = $valueModus;
         $options['state']['value']['type'] = $this->modusToFormType(
             $valueModus,
@@ -243,6 +247,7 @@ class Field extends Element
         }
 
         if (isset($state['parameter']['modus'])) {
+            $options['state']['parameter']['name'] = $this->attribute()->dataclass()->parameterName();
             $options['state']['parameter']['modus'] =
                 $this->modeToModus($state, $options['state']['parameter']['modus']);
             $options['state']['parameter']['type'] =
@@ -253,6 +258,7 @@ class Field extends Element
         }
 
         if (isset($state['format']['modus'])) {
+            $options['state']['format']['name'] = $this->attribute()->dataclass()->formatName();
             $options['state']['format']['modus'] =
                 $this->modeToModus($state, $options['state']['format']['modus']);
             $options['state']['format']['type'] =

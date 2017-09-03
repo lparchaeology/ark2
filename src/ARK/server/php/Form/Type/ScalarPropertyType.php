@@ -36,28 +36,17 @@ use ARK\ORM\ORM;
 use ARK\Vocabulary\Term;
 use ARK\Vocabulary\Vocabulary;
 use DateTime;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class ScalarPropertyType extends AbstractPropertyType
 {
     public function buildForm(FormBuilderInterface $builder, iterable $options) : void
     {
-        $field = $options['state']['field'];
-        $dataclass = $field->attribute()->dataclass();
-        if (isset($options['state']['display'])) {
-            $builder->add($options['state']['display']['name'], $options['state']['display']['type'], $options['state']['display']['options']);
-        }
-        if (isset($options['state']['static'])) {
-            $builder->add('static', HiddenType::class, $options['state']['static']['options']);
-        }
-        $builder->add($dataclass->valueName(), $options['state']['value']['type'], $options['state']['value']['options']);
-        if ($options['state']['parameter'] !== null) {
-            $builder->add($dataclass->parameterName(), $options['state']['parameter']['type'], $options['state']['parameter']['options']);
-        }
-        if ($options['state']['format'] !== null) {
-            $builder->add($dataclass->formatName(), $options['state']['format']['type'], $options['state']['format']['options']);
-        }
+        $this->addForm($builder, $options['state'], 'display');
+        $this->addForm($builder, $options['state'], 'static');
+        $this->addForm($builder, $options['state'], 'value');
+        $this->addForm($builder, $options['state'], 'format');
+        $this->addForm($builder, $options['state'], 'parameter');
         $builder->setDataMapper($this);
     }
 
@@ -144,8 +133,8 @@ class ScalarPropertyType extends AbstractPropertyType
             $forms[$displayName]->setData($display);
         }
 
-        if (isset($forms['static'])) {
-            $forms['static']->setData($display);
+        if (isset($forms['_static'])) {
+            $forms['_static']->setData($display);
         }
 
         if ($formatName && isset($forms[$formatName])) {

@@ -37,6 +37,7 @@ use RecursiveIteratorIterator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -52,6 +53,13 @@ abstract class AbstractPropertyType extends AbstractType implements DataMapperIn
         'hidden' => false,
         'state' => null,
     ];
+
+    public function addForm(FormBuilderInterface $builder, iterable $state, string $form) : void
+    {
+        if (isset($state[$form])) {
+            $builder->add($state[$form]['name'], $state[$form]['type'], $state[$form]['options']);
+        }
+    }
 
     // Configure the *build* options only, not passed to view!
     public function configureOptions(OptionsResolver $resolver) : void

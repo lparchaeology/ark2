@@ -62,6 +62,17 @@ class WktPropertyType extends AbstractPropertyType
             $forms['northing']->setData($point->y());
             $forms['srid']->setData($point->SRID());
             $forms['format']->setData($value['format']);
+            $options = $this->propertyOptions($forms);
+            if (isset($options['state']['display'])) {
+                $displayName = $options['state']['display']['name'];
+                if ($displayName && isset($forms[$displayName])) {
+                    $forms[$displayName]->setData($text->content($language));
+                }
+                if (isset($options['state']['static'])) {
+                    $staticName = $options['state']['static']['name'];
+                    $forms[$staticName]->setData($text->content($language));
+                }
+            }
         } else {
             $forms['srid']->setData(4326);
             $forms['format']->setData('wkt');

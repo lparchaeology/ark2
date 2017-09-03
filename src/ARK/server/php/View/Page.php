@@ -157,6 +157,9 @@ class Page extends Element
         $forms = $this->content->buildForms($data, $state, $options);
         //dump($forms);
         if ($forms && $request->getMethod() === 'POST') {
+            $parms = $request->request->all();
+            $parms = $this->fixStaticFields($parms);
+            $request->request->replace($parms);
             try {
                 $posted = $this->postedForm($request, $forms);
                 if ($posted !== null && $posted->isValid()) {
@@ -200,6 +203,19 @@ class Page extends Element
         $builder->addManyToOneField('sidebar', Group::class, 'sidebar', 'element');
         $builder->addManyToOneField('content', Group::class, 'content', 'element');
         $builder->addManyToOneField('footer', Group::class, 'footer', 'element');
+    }
+
+    protected function fixStaticFields(iterable $parms) : iterable
+    {
+        foreach ($parms as $key => &$value) {
+            if (is_iterable($value)) {
+                $parms[$key] = $this->fixStaticFields($value);
+            }
+            if ($key === '_static') {
+                $parms['static'] = $value;
+            }
+        }
+        return $parms;
     }
 
     protected function postedForm(Request $request, iterable $forms)

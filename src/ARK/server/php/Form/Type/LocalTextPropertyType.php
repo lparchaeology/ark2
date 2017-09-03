@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Form\Type;
@@ -40,19 +39,9 @@ class LocalTextPropertyType extends AbstractPropertyType
 {
     public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
-        if (isset($options['state']['display'])) {
-            $builder->add($options['state']['display']['name'], $options['state']['display']['type'], $options['state']['display']['options']);
-        }
-
         $fieldOptions['label'] = false;
         $fieldOptions['mapped'] = false;
         $builder->add('previous', HiddenType::class, $fieldOptions);
-
-        $field = $options['state']['field'];
-        $dataclass = $field->attribute()->dataclass();
-        $builder->add($dataclass->valueName(), $options['state']['value']['type'], $options['state']['value']['options']);
-        $builder->add($dataclass->parameterName(), $options['state']['parameter']['type'], $options['state']['parameter']['options']);
-        $builder->add($dataclass->formatName(), $options['state']['format']['type'], $options['state']['format']['options']);
         $builder->setDataMapper($this);
     }
 
@@ -61,6 +50,7 @@ class LocalTextPropertyType extends AbstractPropertyType
         if (!$property instanceof Property) {
             return;
         }
+        $options = $this->propertyOptions($forms);
         $text = $this->value($property, $forms);
         $forms = iterator_to_array($forms);
         $language = Service::locale();
@@ -71,10 +61,13 @@ class LocalTextPropertyType extends AbstractPropertyType
             $forms['mediatype']->setData($text->mediaType());
             $forms['content']->setData($text->content($language));
             if (isset($options['state']['display'])) {
-                $options = $this->propertyOptions($forms);
                 $displayName = $options['state']['display']['name'];
                 if ($displayName && isset($forms[$displayName])) {
                     $forms[$displayName]->setData($text->content($language));
+                }
+                if (isset($options['state']['static'])) {
+                    $staticName = $options['state']['static']['name'];
+                    $forms[$staticName]->setData($text->content($language));
                 }
             }
         }
@@ -94,5 +87,15 @@ class LocalTextPropertyType extends AbstractPropertyType
         $text->setMediaType($forms['mediatype']->getData());
         $text->setContent($forms['content']->getData(), $forms['language']->getData());
         $property->setValue($text);
+    }
+
+    public function getBlockPrefix() : string
+    {
+        return 'local_text_property';
+    }
+
+    public function getParent() : string
+    {
+        return ScalarPropertyType::class;
     }
 }
