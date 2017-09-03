@@ -134,7 +134,11 @@ class ScalarPropertyType extends AbstractPropertyType
         }
 
         if (isset($forms['_static'])) {
-            $forms['_static']->setData($display);
+            if (is_array($display)) {
+                $forms['_static']->setData(implode(',', $display));
+            } else {
+                $forms['_static']->setData($display);
+            }
         }
 
         if ($formatName && isset($forms[$formatName])) {

@@ -147,6 +147,9 @@ class ObjectDataclass extends Dataclass
 
     protected function serializeFragment(Fragment $fragment, Collection $properties = null)
     {
+        if ($this->dataclass === 'dating') {
+            $this->crash();
+        }
         if ($properties === null || $properties->isEmpty()) {
             return null;
         }

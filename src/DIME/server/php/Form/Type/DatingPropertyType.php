@@ -44,10 +44,8 @@ class DatingPropertyType extends AbstractPropertyType
         $valueOptions = $options['state']['value']['options'];
         $field = $options['state']['field'];
         $dataclass = $field->attribute()->dataclass();
-        $builder->add('year', $options['state']['value']['type'], $valueOptions);
-        $builder->add('year_span', $options['state']['value']['type'], $valueOptions);
 
-        if (isset($options['state']['display'])) {
+        if (isset($options['state']['static'])) {
             $builder->add('display_year', $options['state']['display']['type'], $options['state']['display']['options']);
             $builder->add('display_period', $options['state']['display']['type'], $options['state']['display']['options']);
         } else {
@@ -58,6 +56,8 @@ class DatingPropertyType extends AbstractPropertyType
             $valueOptions['placeholder'] = 'core.placeholder';
             $options['state']['value']['type'] = ChoiceType::class;
         }
+        $builder->add('year', $options['state']['value']['type'], $valueOptions);
+        $builder->add('year_span', $options['state']['value']['type'], $valueOptions);
         $builder->add('period', $options['state']['value']['type'], $valueOptions);
         $builder->add('period_span', $options['state']['value']['type'], $valueOptions);
 
@@ -76,23 +76,36 @@ class DatingPropertyType extends AbstractPropertyType
         }
         $options = $this->propertyOptions($forms);
         $forms = iterator_to_array($forms);
-        $value = $property->serialize();
+        $value = $property->value();
         if ($value) {
-            $forms['event']->setData($value['event']['id']);
-            $forms['entered']->setData($value['entered']);
+            if (isset($options['state']['static'])) {
+                $forms['display_year']->setData($value['year'][0].' - '.$value['year'][1]);
+                $p0 = ($value['period'][0] ? $value['period'][0]->keyword() : '');
+                $p1 = ($value['period'][1] ? $value['period'][1]->keyword() : '');
+                if ($p1) {
+                    $forms['display_period']->setData($p0.' - '.$p1);
+                } else {
+                    $forms['display_period']->setData($p0);
+                }
+                if ($p0) {
+                    $forms['period']->setData($value['period'][0]->name());
+                }
+                if ($p1) {
+                    $forms['period_span']->setData($value['period'][1]->name());
+                }
+            } else {
+                if ($value['period'][0]) {
+                    $forms['period']->setData($value['period'][0]);
+                }
+                if ($value['period'][1]) {
+                    $forms['period_span']->setData($value['period'][1]);
+                }
+            }
             $forms['year']->setData($value['year'][0]);
             $forms['year_span']->setData($value['year'][1]);
-            $vocabulary = $property->attribute()->dataclass()->attribute('period')->vocabulary();
-            if ($value['period'][0]) {
-                $forms['period']->setData($vocabulary->term($value['period'][0]));
-            }
-            if ($value['period'][1]) {
-                $forms['period_span']->setData($vocabulary->term($value['period'][1]));
-            }
-            if (isset($options['state']['display'])) {
-                $forms['display_year']->setData($value['year'][0].' - '.$value['year'][1]);
-                $forms['display_period']->setData($value['period'][0].' - '.$value['period'][1]);
-            }
+
+            $forms['event']->setData($value['event']['id']);
+            $forms['entered']->setData($value['entered']);
         }
     }
 

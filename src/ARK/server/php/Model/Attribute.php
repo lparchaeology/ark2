@@ -186,11 +186,11 @@ abstract class Attribute
             if ($this->hasMultipleOccurrences()) {
                 $data = [];
                 foreach ($fragments as $fragment) {
-                    $data[] = $this->vocabulary->term($fragment->value());
+                    $data[] = $this->fragmentToTerm($fragment);
                 }
                 return $data;
             }
-            return $this->vocabulary->term($fragments[0]->value());
+            return $this->fragmentToTerm($fragments[0]);
         }
         if ($this->dataclass()->datatype()->isObject()) {
             if ($this->hasMultipleOccurrences()) {
@@ -290,5 +290,15 @@ abstract class Attribute
         // Associations
         $builder->addManyToOneField('dataclass', Dataclass::class, 'dataclass', 'dataclass', false);
         $builder->addVocabularyField('vocabulary');
+    }
+
+    protected function fragmentToTerm(Fragment $fragment)
+    {
+        $value = ($fragment->value() ? $this->vocabulary->term($fragment->value()) : null);
+        if ($this->dataclass()->isSpan() || $fragment->isSpan()) {
+            $extent = ($fragment->extent() ? $this->vocabulary->term($fragment->extent()) : null);
+            return [$value, $extent];
+        }
+        return $value;
     }
 }

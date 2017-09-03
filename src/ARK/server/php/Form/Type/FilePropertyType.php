@@ -48,8 +48,11 @@ class FilePropertyType extends AbstractPropertyType
             $fileOptions['multiple'] = true;
         }
         $builder->add('file', FileType::class, $fileOptions);
-        $builder->add('previous', CollectionType::class, ['entry_type' => HiddenType::class]);
-        $builder->add('existing', CollectionType::class, ['entry_type' => HiddenType::class]);
+        $hiddenOptions['label'] = false;
+        $hiddenOptions['mapped'] = false;
+        $hiddenOptions['entry_type'] = HiddenType::class;
+        $builder->add('previous', CollectionType::class, $hiddenOptions);
+        $builder->add('existing', CollectionType::class, $hiddenOptions);
         $builder->setDataMapper($this);
     }
 
