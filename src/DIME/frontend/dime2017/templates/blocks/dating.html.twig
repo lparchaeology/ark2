@@ -34,18 +34,16 @@
             </div>
         {% else %}
              <div class="row">
-                 <div class="col-sm-6">
-                     {{ form_widget(form.period) }}
+                 <div class="col-sm-12">
+                    {{ form_widget(form.display_period) }}
+                    {{ form_widget(form.period) }}
+                    {{ form_widget(form.period_span) }}
                  </div>
-                 <div class="col-sm-6">
-                     {{ form_widget(form.period_span) }}
-                </div>
             </div>
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-12">
+                    {{ form_widget(form.display_year) }}
                     {{ form_widget(form.year) }}
-                </div>
-                <div class="col-sm-6">
                     {{ form_widget(form.year_span) }}
                 </div>
             </div>

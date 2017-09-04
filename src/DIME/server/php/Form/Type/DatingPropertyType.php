@@ -27,7 +27,6 @@
  * @since      2.0
  * @php        >=5.6, >=7.0
  */
-
 namespace DIME\Form\Type;
 
 use ARK\Form\Type\AbstractPropertyType;
@@ -37,104 +36,100 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class DatingPropertyType extends AbstractPropertyType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options) : void
+class DatingPropertyType extends AbstractPropertyType {
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $valueOptions = $options['state']['value']['options'];
-        $field = $options['state']['field'];
-        $dataclass = $field->attribute()->dataclass();
+        $valueOptions = $options ['state'] ['value'] ['options'];
+        $field = $options ['state'] ['field'];
+        $dataclass = $field->attribute ()->dataclass ();
 
-        if (isset($options['state']['static'])) {
-            $builder->add('display_year', $options['state']['display']['type'], $options['state']['display']['options']);
-            $builder->add('display_period', $options['state']['display']['type'], $options['state']['display']['options']);
+        if (isset ( $options ['state'] ['static'] )) {
+            $builder->add ( 'display_year', $options ['state'] ['display'] ['type'], $options ['state'] ['display'] ['options'] );
+            $builder->add ( 'display_period', $options ['state'] ['display'] ['type'], $options ['state'] ['display'] ['options'] );
         } else {
-            $valueOptions['choices'] = $dataclass->attribute('period')->vocabulary()->terms();
-            $valueOptions['choice_value'] = 'name';
-            $valueOptions['choice_name'] = 'name';
-            $valueOptions['choice_label'] = 'keyword';
-            $valueOptions['placeholder'] = 'core.placeholder';
-            $options['state']['value']['type'] = ChoiceType::class;
+            $valueOptions ['choices'] = $dataclass->attribute ( 'period' )->vocabulary ()->terms ();
+            $valueOptions ['choice_value'] = 'name';
+            $valueOptions ['choice_name'] = 'name';
+            $valueOptions ['choice_label'] = 'keyword';
+            $valueOptions ['placeholder'] = 'core.placeholder';
+            $options ['state'] ['value'] ['type'] = ChoiceType::class;
         }
-        $builder->add('year', $options['state']['value']['type'], $valueOptions);
-        $builder->add('year_span', $options['state']['value']['type'], $valueOptions);
-        $builder->add('period', $options['state']['value']['type'], $valueOptions);
-        $builder->add('period_span', $options['state']['value']['type'], $valueOptions);
+        $builder->add ( 'year', $options ['state'] ['value'] ['type'] );
+        $builder->add ( 'year_span', $options ['state'] ['value'] ['type'] );
+        $builder->add ( 'period', $options ['state'] ['value'] ['type'], $valueOptions );
+        $builder->add ( 'period_span', $options ['state'] ['value'] ['type'], $valueOptions );
 
-        $fieldOptions['label'] = false;
-        $fieldOptions['mapped'] = false;
-        $builder->add('event', HiddenType::class, $fieldOptions);
-        $builder->add('entered', HiddenType::class, $fieldOptions);
+        $fieldOptions ['label'] = false;
+        $fieldOptions ['mapped'] = false;
+        $builder->add ( 'event', HiddenType::class, $fieldOptions );
+        $builder->add ( 'entered', HiddenType::class, $fieldOptions );
 
-        $builder->setDataMapper($this);
+        $builder->setDataMapper ( $this );
     }
-
-    public function mapDataToForms($property, $forms) : void
+    public function mapDataToForms($property, $forms): void
     {
-        if (!$property instanceof Property) {
+        if (! $property instanceof Property) {
             return;
         }
-        $options = $this->propertyOptions($forms);
-        $forms = iterator_to_array($forms);
-        $value = $property->value();
+        $options = $this->propertyOptions ( $forms );
+        $forms = iterator_to_array ( $forms );
+        $value = $property->value ();
         if ($value) {
-            if (isset($options['state']['static'])) {
-                $forms['display_year']->setData($value['year'][0].' - '.$value['year'][1]);
-                $p0 = ($value['period'][0] ? $value['period'][0]->keyword() : '');
-                $p1 = ($value['period'][1] ? $value['period'][1]->keyword() : '');
+            if (isset ( $options ['state'] ['static'] )) {
+                $forms ['display_year']->setData ( $value ['year'] [0] . ' - ' . $value ['year'] [1] );
+                $p0 = ($value ['period'] [0] ? $value ['period'] [0]->keyword () : '');
+                $p1 = ($value ['period'] [1] ? $value ['period'] [1]->keyword () : '');
                 if ($p1) {
-                    $forms['display_period']->setData($p0.' - '.$p1);
+                    $forms ['display_period']->setData ( $p0 . ' - ' . $p1 );
                 } else {
-                    $forms['display_period']->setData($p0);
+                    $forms ['display_period']->setData ( $p0 );
                 }
                 if ($p0) {
-                    $forms['period']->setData($value['period'][0]->name());
+                    $forms ['period']->setData ( $value ['period'] [0]->name () );
                 }
                 if ($p1) {
-                    $forms['period_span']->setData($value['period'][1]->name());
+                    $forms ['period_span']->setData ( $value ['period'] [1]->name () );
                 }
             } else {
-                if ($value['period'][0]) {
-                    $forms['period']->setData($value['period'][0]);
+                if ($value ['period'] [0]) {
+                    $forms ['period']->setData ( $value ['period'] [0] );
                 }
-                if ($value['period'][1]) {
-                    $forms['period_span']->setData($value['period'][1]);
+                if ($value ['period'] [1]) {
+                    $forms ['period_span']->setData ( $value ['period'] [1] );
                 }
             }
-            $forms['year']->setData($value['year'][0]);
-            $forms['year_span']->setData($value['year'][1]);
+            $forms ['year']->setData ( $value ['year'] [0] );
+            $forms ['year_span']->setData ( $value ['year'] [1] );
 
-            $forms['event']->setData($value['event']['id']);
-            $forms['entered']->setData($value['entered']);
+            $forms ['event']->setData ( $value ['event'] ['id'] );
+            $forms ['entered']->setData ( $value ['entered'] );
         }
     }
-
-    public function mapFormsToData($forms, &$property) : void
+    public function mapFormsToData($forms, &$property): void
     {
-        $forms = iterator_to_array($forms);
+        $forms = iterator_to_array ( $forms );
         if ($property instanceof Property) {
-            $event = $forms['event']->getData();
+            $event = $forms ['event']->getData ();
             if ($event) {
-                $event = ORM::find(Event::class, $event);
+                $event = ORM::find ( Event::class, $event );
             }
-            $value['event'] = $event;
-            $value['entered'] = $forms['entered']->getData();
-            $value['year'][0] = $forms['year']->getData();
-            $value['year'][1] = $forms['year_span']->getData();
-            $value['period'][0] = $forms['period']->getData();
-            $value['period'][1] = $forms['period_span']->getData();
-            if ($value['year'][0] || $value['period'][0]) {
-                $property->setValue($value);
+            $value ['event'] = $event;
+            $value ['entered'] = $forms ['entered']->getData ();
+            $value ['year'] [0] = $forms ['year']->getData ();
+            $value ['year'] [1] = $forms ['year_span']->getData ();
+            $value ['period'] [0] = $forms ['period']->getData ();
+            $value ['period'] [1] = $forms ['period_span']->getData ();
+            if ($value ['year'] [0] || $value ['period'] [0]) {
+                $property->setValue ( $value );
             } else {
-                $property->setValue(null);
+                $property->setValue ( null );
             }
         }
     }
-
     protected function options()
     {
         return [
-            'compound' => true,
+                'compound' => true
         ];
     }
 }

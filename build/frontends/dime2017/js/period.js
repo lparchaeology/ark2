@@ -211,6 +211,11 @@ $(document).ready(function(){
     $('#advanced-dating-button').on('click', function(e){
         e.preventDefault();
         $('#advanced-dating-button').hide();
+        $("#find_dating_period").select2({
+            minimumResultsForSearch: 11,
+            width: 'resolve'
+        });
+        $("#find_dating_period").trigger("select2:select");
         $('.advanced-dating').show();
         $('.simple-dating').hide();
         $('.form-period').addClass("col-sm-6").removeClass("col-sm-11");
