@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * DIME Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,28 +25,25 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace DIME\Controller\API;
 
 use ARK\File\File;
-use ARK\ORM\ORM;
-use ARK\Service;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use League\Glide\Responses\SymfonyResponseFactory;
+use Symfony\Component\HttpFoundation\Response;
 
-class FileController
+class FilePostController
 {
-    public function __invoke(Request $request, $fileId)
+    public function __invoke(Request $request) : Response
     {
-        // TODO Wrap in a nice neat class or Service call
-        $file = ORM::find(File::class, $fileId);
-        $factory = new SymfonyResponseFactory($request);
-        $response = $factory->create(Service::filesystem(), $file->filepath());
-        $disposition = ($request->query->has('d') ? ResponseHeaderBag::DISPOSITION_ATTACHMENT : ResponseHeaderBag::DISPOSITION_INLINE);
-        $response->headers->set('Content-Disposition', $response->headers->makeDisposition($disposition, $file->name()));
-        return $response;
+        $ids = [];
+        foreach ($request->files as $upload) {
+            if ($file = File::createFromUploadedFile($upload)) {
+                $ids[] = $file->id();
+            }
+        }
+        return new JsonResponse($ids);
     }
 }

@@ -59,6 +59,10 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         // Internal API routes
+        $controllers->get('/api/internal/file/{id}', 'DIME\Controller\API\FileGetController')
+            ->bind('api.internal.file.get');
+        $controllers->post('/api/internal/file', 'DIME\Controller\API\FilePostController')
+            ->bind('api.internal.file.add');
         $controllers->match('/api/internal/users/{id}/actor', 'DIME\Controller\API\UserActorController')
             ->method('GET|POST')
             ->bind('api.internal.user.actor');
