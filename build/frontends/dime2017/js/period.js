@@ -48,7 +48,7 @@ var initPeriod = function(){
         var highlighted_item_id = item.attr('id');
         var highlighted_item_code = highlighted_item_id.split('-');
         var highlighted_item_concept = highlighted_item_code[highlighted_item_code.length-1];
-
+console.log(highlighted_item_concept);
         if( typeof periodvocabulary[highlighted_item_concept].parameters == "undefined" ){
             var tooltip = "undefined";
         } else {
