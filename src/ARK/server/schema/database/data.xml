@@ -9,7 +9,7 @@
         <field name="module1" type="string" size="30">
             <notnull/>
         </field>
-        <field name="item1" type="string" size="30">
+        <field name="id1" type="string" size="30">
             <notnull/>
         </field>
         <field name="association" type="string" size="30">
@@ -18,7 +18,7 @@
         <field name="module2" type="string" size="30">
             <notnull/>
         </field>
-        <field name="item2" type="string" size="30">
+        <field name="id2" type="string" size="30">
             <notnull/>
         </field>
         <field name="modifier" type="string" size="30">
@@ -39,11 +39,11 @@
         </index>
         <index name="item1">
             <col>module1</col>
-            <col>item1</col>
+            <col>id1</col>
         </index>
         <index name="item2">
             <col>module2</col>
-            <col>item2</col>
+            <col>id2</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     </table>
@@ -53,7 +53,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -77,6 +76,7 @@
             <notnull/>
         </field>
         <field name="extent" type="blob"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="string" size="30">
             <notnull/>
         </field>
@@ -90,16 +90,19 @@
             <notnull/>
         </field>
         <field name="version" type="string" size="36"/>
-        <index name="property">
-            <col>module</col>
-            <col>item</col>
-            <col>attribute</col>
-        </index>
-        <index name="object">
+        <index name="object_foreign">
             <col>object</col>
         </index>
+        <index name="attribute">
+            <col>module</col>
+            <col>attribute</col>
+        </index>
+        <index name="item">
+            <col>module</col>
+            <col>item</col>
+        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="ark_fragment_blob_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+        <references name="fragment_blob_object_constraint" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
             <column local="object" foreign="fid"/>
         </references>
     </table>
@@ -109,7 +112,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -133,6 +135,7 @@
             <notnull/>
         </field>
         <field name="extent" type="boolean"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="string" size="30">
             <notnull/>
         </field>
@@ -146,16 +149,22 @@
             <notnull/>
         </field>
         <field name="version" type="string" size="36"/>
-        <index name="module">
+        <index name="attribute">
             <col>module</col>
-            <col>item</col>
             <col>attribute</col>
         </index>
-        <index name="object">
+        <index name="object_foreign">
             <col>object</col>
         </index>
+        <index name="item">
+            <col>module</col>
+            <col>item</col>
+        </index>
+        <index name="value">
+            <col>value</col>
+        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="ark_fragment_boolean_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+        <references name="fragment_boolean_object_constraint" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
             <column local="object" foreign="fid"/>
         </references>
     </table>
@@ -165,7 +174,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -189,6 +197,7 @@
             <notnull/>
         </field>
         <field name="extent" type="date"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="string" size="30">
             <notnull/>
         </field>
@@ -202,13 +211,22 @@
             <notnull/>
         </field>
         <field name="version" type="string" size="36"/>
-        <index name="module">
+        <index name="value">
+            <col>value</col>
+        </index>
+        <index name="extent">
+            <col>extent</col>
+        </index>
+        <index name="object_foreign">
+            <col>object</col>
+        </index>
+        <index name="item">
             <col>module</col>
             <col>item</col>
-            <col>attribute</col>
         </index>
-        <index name="object">
-            <col>object</col>
+        <index name="attribute">
+            <col>module</col>
+            <col>attribute</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
         <references name="ark_fragment_date_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
@@ -221,7 +239,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -245,6 +262,7 @@
             <notnull/>
         </field>
         <field name="extent" type="datetime"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="string" size="30">
             <notnull/>
         </field>
@@ -258,16 +276,25 @@
             <notnull/>
         </field>
         <field name="version" type="string" size="36"/>
-        <index name="module">
+        <index name="item">
             <col>module</col>
             <col>item</col>
-            <col>attribute</col>
         </index>
-        <index name="object">
+        <index name="object_foreign">
             <col>object</col>
         </index>
+        <index name="value">
+            <col>value</col>
+        </index>
+        <index name="extent">
+            <col>extent</col>
+        </index>
+        <index name="attribute">
+            <col>module</col>
+            <col>attribute</col>
+        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="ark_fragment_datetime_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+        <references name="fragment_datetime_object_constraint" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
             <column local="object" foreign="fid"/>
         </references>
     </table>
@@ -277,7 +304,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -301,6 +327,7 @@
             <notnull/>
         </field>
         <field name="extent" type="string" size="200"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="string" size="30">
             <notnull/>
         </field>
@@ -314,16 +341,25 @@
             <notnull/>
         </field>
         <field name="version" type="string" size="36"/>
-        <index name="property">
+        <index name="attribute">
             <col>module</col>
-            <col>item</col>
             <col>attribute</col>
         </index>
-        <index name="object">
+        <index name="object_foreign">
             <col>object</col>
         </index>
+        <index name="extent">
+            <col>extent</col>
+        </index>
+        <index name="value">
+            <col>value</col>
+        </index>
+        <index name="item">
+            <col>module</col>
+            <col>item</col>
+        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="ark_fragment_decimal_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+        <references name="fragment_decimal_object_constraint" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
             <column local="object" foreign="fid"/>
         </references>
     </table>
@@ -333,7 +369,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -357,6 +392,7 @@
             <notnull/>
         </field>
         <field name="extent" type="float" size="10.0"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="string" size="30">
             <notnull/>
         </field>
@@ -370,16 +406,25 @@
             <notnull/>
         </field>
         <field name="version" type="string" size="36"/>
-        <index name="module">
+        <index name="item">
             <col>module</col>
             <col>item</col>
+        </index>
+        <index name="attribute">
+            <col>module</col>
             <col>attribute</col>
         </index>
-        <index name="object">
+        <index name="value">
+            <col>value</col>
+        </index>
+        <index name="extent">
+            <col>extent</col>
+        </index>
+        <index name="object_foreign">
             <col>object</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="ark_fragment_float_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+        <references name="fragment_float_object_constraint" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
             <column local="object" foreign="fid"/>
         </references>
     </table>
@@ -389,7 +434,9 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
+        <field name="module" type="string" size="30">
+            <notnull/>
+        </field>
         <field name="item" type="string" size="30">
             <notnull/>
         </field>
@@ -400,8 +447,12 @@
             <default value="integer"/>
             <notnull/>
         </field>
-        <field name="format" type="string" size="30"/>
-        <field name="parameter" type="string" size="30"/>
+        <field name="format" type="string" size="30">
+            <default value="NULL"/>
+        </field>
+        <field name="parameter" type="string" size="30">
+            <default value="NULL"/>
+        </field>
         <field name="value" type="bigint">
             <notnull/>
         </field>
@@ -410,9 +461,7 @@
             <notnull/>
         </field>
         <field name="extent" type="bigint"/>
-        <field name="module" type="string" size="30">
-            <notnull/>
-        </field>
+        <field name="object" type="integer"/>
         <field name="modifier" type="string" size="30">
             <notnull/>
         </field>
@@ -425,17 +474,28 @@
         <field name="created" type="datetime">
             <notnull/>
         </field>
-        <field name="version" type="string" size="36"/>
-        <index name="module">
+        <field name="version" type="string" size="36">
+            <default value="NULL"/>
+        </field>
+        <index name="extent">
+            <col>extent</col>
+        </index>
+        <index name="value">
+            <col>value</col>
+        </index>
+        <index name="item">
             <col>module</col>
             <col>item</col>
+        </index>
+        <index name="attribute">
+            <col>module</col>
             <col>attribute</col>
         </index>
-        <index name="object_fid">
+        <index name="object_foreign">
             <col>object</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="ark_fragment_integer_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+        <references name="fragment_integer_object_constraint" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
             <column local="object" foreign="fid"/>
         </references>
     </table>
@@ -445,7 +505,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -469,6 +528,7 @@
             <notnull/>
         </field>
         <field name="extent" type="string" size="30"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="string" size="30">
             <notnull/>
         </field>
@@ -482,16 +542,25 @@
             <notnull/>
         </field>
         <field name="version" type="string" size="36"/>
-        <index name="module">
-            <col>module</col>
-            <col>item</col>
-            <col>attribute</col>
-        </index>
-        <index name="object_fid">
+        <index name="object_foreign">
             <col>object</col>
         </index>
+        <index name="item">
+            <col>module</col>
+            <col>item</col>
+        </index>
+        <index name="value">
+            <col>value</col>
+        </index>
+        <index name="extent">
+            <col>extent</col>
+        </index>
+        <index name="attribute">
+            <col>module</col>
+            <col>attribute</col>
+        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="ark_fragment_item_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+        <references name="fragment_item_object_constraint" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
             <column local="object" foreign="fid"/>
         </references>
     </table>
@@ -500,7 +569,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -516,14 +584,13 @@
         </field>
         <field name="format" type="string" size="30"/>
         <field name="parameter" type="string" size="30"/>
-        <field name="value" type="string" size="30">
-            <notnull/>
-        </field>
+        <field name="value" type="string" size="30"/>
         <field name="span" type="boolean">
             <default value="0"/>
             <notnull/>
         </field>
         <field name="extent" type="string" size="30"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="string" size="30">
             <notnull/>
         </field>
@@ -540,13 +607,16 @@
         <index name="item">
             <col>module</col>
             <col>item</col>
-            <col>attribute</col>
         </index>
-        <index name="object">
+        <index name="object_foreign">
             <col>object</col>
         </index>
+        <index name="attribute">
+            <col>module</col>
+            <col>attribute</col>
+        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="ark_fragment_object_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+        <references name="fragment_object_object_constraint" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
             <column local="object" foreign="fid"/>
         </references>
     </table>
@@ -556,7 +626,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -586,6 +655,7 @@
             <notnull/>
         </field>
         <field name="extent" type="text"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="string" size="30">
             <notnull/>
         </field>
@@ -599,16 +669,19 @@
             <notnull/>
         </field>
         <field name="version" type="string" size="36"/>
-        <index name="property">
+        <index name="item">
             <col>module</col>
             <col>item</col>
-            <col>attribute</col>
         </index>
-        <index name="object">
+        <index name="object_foreign">
             <col>object</col>
         </index>
+        <index name="attribute">
+            <col>module</col>
+            <col>attribute</col>
+        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="ark_fragment_spatial_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+        <references name="fragment_spatial_object_constraint" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
             <column local="object" foreign="fid"/>
         </references>
     </table>
@@ -618,7 +691,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -642,6 +714,7 @@
             <notnull/>
         </field>
         <field name="extent" type="string" size="4000"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="string" size="30">
             <notnull/>
         </field>
@@ -655,16 +728,27 @@
             <notnull/>
         </field>
         <field name="version" type="string" size="36"/>
-        <index name="module">
+        <index name="item">
             <col>module</col>
             <col>item</col>
+        </index>
+        <index name="attribute">
+            <col>module</col>
             <col>attribute</col>
         </index>
-        <index name="object_fid">
+        <index name="object_foreign">
             <col>object</col>
         </index>
+        <index name="value">
+            <fulltext/>
+            <col>value</col>
+        </index>
+        <index name="extent">
+            <fulltext/>
+            <col>extent</col>
+        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="ark_fragment_string_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+        <references name="fragment_string_object_constraint" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
             <column local="object" foreign="fid"/>
         </references>
     </table>
@@ -674,7 +758,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -701,6 +784,7 @@
             <notnull/>
         </field>
         <field name="extent" type="text"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="string" size="30">
             <notnull/>
         </field>
@@ -714,16 +798,23 @@
             <notnull/>
         </field>
         <field name="version" type="string" size="36"/>
-        <index name="module">
+        <index name="item">
             <col>module</col>
             <col>item</col>
+        </index>
+        <index name="attribute">
+            <col>module</col>
             <col>attribute</col>
         </index>
-        <index name="object_fid">
+        <index name="object_foreign">
             <col>object</col>
         </index>
+        <index name="value">
+            <fulltext/>
+            <col>value</col>
+        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="ark_fragment_text_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+        <references name="fragment_text_object_constraint" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
             <column local="object" foreign="fid"/>
         </references>
     </table>
@@ -733,7 +824,6 @@
             <key/>
             <notnull/>
         </field>
-        <field name="object" type="integer"/>
         <field name="module" type="string" size="30">
             <notnull/>
         </field>
@@ -757,6 +847,7 @@
             <notnull/>
         </field>
         <field name="extent" type="time"/>
+        <field name="object" type="integer"/>
         <field name="modifier" type="string" size="30">
             <notnull/>
         </field>
@@ -770,16 +861,25 @@
             <notnull/>
         </field>
         <field name="version" type="string" size="36"/>
-        <index name="module">
+        <index name="item">
             <col>module</col>
             <col>item</col>
+        </index>
+        <index name="attribute">
+            <col>module</col>
             <col>attribute</col>
         </index>
-        <index name="objec">
+        <index name="object_foreign">
             <col>object</col>
         </index>
+        <index name="value">
+            <col>value</col>
+        </index>
+        <index name="extent">
+            <col>extent</col>
+        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="ark_fragment_time_ibfk_1" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
+        <references name="fragment_time_object_constraint" table="ark_fragment_object" onupdate="cascade" ondelete="cascade">
             <column local="object" foreign="fid"/>
         </references>
     </table>
@@ -826,12 +926,15 @@
             <notnull/>
         </field>
         <field name="version" type="string" size="36"/>
-        <index name="name">
-            <col>label</col>
-        </index>
         <index name="parent">
             <col>parent_module</col>
             <col>parent_id</col>
+        </index>
+        <index name="idx">
+            <col>idx</col>
+        </index>
+        <index name="label">
+            <col>label</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     </table>
@@ -878,12 +981,15 @@
             <notnull/>
         </field>
         <field name="version" type="string" size="36"/>
-        <index name="name">
-            <col>label</col>
-        </index>
         <index name="parent">
             <col>parent_module</col>
             <col>parent_id</col>
+        </index>
+        <index name="label">
+            <col>label</col>
+        </index>
+        <index name="idx">
+            <col>idx</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     </table>
@@ -934,62 +1040,11 @@
             <col>parent_module</col>
             <col>parent_id</col>
         </index>
-        <index name="name">
-            <col>label</col>
+        <index name="idx">
+            <col>idx</col>
         </index>
-        <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-    </table>
-    <table name="ark_item_find">
-        <field name="id" type="string" size="30">
-            <key/>
-            <notnull/>
-        </field>
-        <field name="module" type="string" size="30">
-            <default value="find"/>
-            <notnull/>
-        </field>
-        <field name="schma" type="string" size="30">
-            <default value="dime.find"/>
-            <notnull/>
-        </field>
-        <field name="class" type="string" size="30"/>
-        <field name="status" type="string" size="30">
-            <default value="allocated"/>
-            <notnull/>
-        </field>
-        <field name="visibility" type="string" size="30">
-            <default value="restricted"/>
-            <notnull/>
-        </field>
-        <field name="parent_module" type="string" size="30"/>
-        <field name="parent_id" type="string" size="30"/>
-        <field name="idx" type="string" size="30">
-            <notnull/>
-        </field>
-        <field name="label" type="string" size="30">
-            <notnull/>
-        </field>
-        <field name="modifier" type="string" size="30">
-            <notnull/>
-        </field>
-        <field name="modified" type="datetime">
-            <notnull/>
-        </field>
-        <field name="creator" type="string" size="30">
-            <notnull/>
-        </field>
-        <field name="created" type="datetime">
-            <notnull/>
-        </field>
-        <field name="version" type="string" size="36">
-            <notnull/>
-        </field>
-        <index name="name">
+        <index name="label">
             <col>label</col>
-        </index>
-        <index name="parent">
-            <col>parent_module</col>
-            <col>parent_id</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     </table>
@@ -1036,12 +1091,15 @@
             <notnull/>
         </field>
         <field name="version" type="string" size="36"/>
-        <index name="name">
-            <col>label</col>
-        </index>
         <index name="parent">
             <col>parent_module</col>
             <col>parent_id</col>
+        </index>
+        <index name="idx">
+            <col>idx</col>
+        </index>
+        <index name="label">
+            <col>label</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     </table>
@@ -1088,12 +1146,15 @@
             <notnull/>
         </field>
         <field name="version" type="string" size="36"/>
-        <index name="name">
-            <col>label</col>
-        </index>
         <index name="parent">
             <col>parent_module</col>
             <col>parent_id</col>
+        </index>
+        <index name="idx">
+            <col>idx</col>
+        </index>
+        <index name="label">
+            <col>label</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
     </table>
@@ -1143,7 +1204,17 @@
         <field name="locked_on" type="datetime">
             <deftimestamp/>
         </field>
+        <index name="sequence_foreign">
+            <col>module</col>
+            <col>parent</col>
+            <col>sequence</col>
+        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="sequence_lock_sequence_constraint" table="ark_sequence" onupdate="cascade" ondelete="cascade">
+            <column local="module" foreign="module"/>
+            <column local="parent" foreign="parent"/>
+            <column local="sequence" foreign="sequence"/>
+        </references>
     </table>
     <table name="ark_sequence_reserve">
         <field name="module" type="string" size="30">
@@ -1158,6 +1229,10 @@
             <key/>
             <notnull/>
         </field>
+        <field name="block" type="string" size="30">
+            <key/>
+            <notnull/>
+        </field>
         <field name="idx" type="integer">
             <notnull/>
         </field>
@@ -1167,7 +1242,17 @@
         <field name="max" type="integer">
             <notnull/>
         </field>
+        <index name="sequence_foreign">
+            <col>module</col>
+            <col>parent</col>
+            <col>sequence</col>
+        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
+        <references name="sequence_reserve_sequence_constraint" table="ark_sequence" onupdate="cascade" ondelete="cascade">
+            <column local="module" foreign="module"/>
+            <column local="parent" foreign="parent"/>
+            <column local="sequence" foreign="sequence"/>
+        </references>
     </table>
     <table name="ark_workflow_actor_role">
         <field name="actor" type="string" size="30">
@@ -1184,17 +1269,17 @@
             <notnull/>
         </field>
         <field name="expires_at" type="datetime"/>
-        <index name="agent_for">
-            <col>agent_for</col>
-        </index>
-        <index name="IDX_9FE8DE90447556F9">
+        <index name="actor_foreign">
             <col>actor</col>
         </index>
+        <index name="agent_foreign">
+            <col>agent_for</col>
+        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="ark_workflow_actor_role_ibfk_1" table="ark_item_actor" onupdate="cascade" ondelete="cascade">
+        <references name="workflow_actor_role_actor_constraint" table="ark_item_actor" onupdate="cascade" ondelete="cascade">
             <column local="actor" foreign="id"/>
         </references>
-        <references name="ark_workflow_actor_role_ibfk_2" table="ark_item_actor" onupdate="cascade" ondelete="set null">
+        <references name="workflow_actor_role_agent_constraint" table="ark_item_actor" onupdate="cascade" ondelete="set null">
             <column local="agent_for" foreign="id"/>
         </references>
     </table>
@@ -1212,11 +1297,11 @@
             <notnull/>
         </field>
         <field name="expires_at" type="datetime"/>
-        <index name="IDX_451282B3447556F9">
+        <index name="actor_foreign">
             <col>actor</col>
         </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
-        <references name="ark_workflow_actor_user_ibfk_1" table="ark_item_actor" onupdate="cascade" ondelete="cascade">
+        <references name="workflow_actor_user_actor_constraint" table="ark_item_actor" onupdate="cascade" ondelete="cascade">
             <column local="actor" foreign="id"/>
         </references>
     </table>

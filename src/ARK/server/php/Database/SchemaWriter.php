@@ -40,6 +40,7 @@ use Doctrine\DBAL\Schema\Table;
 use DoctrineXml\Checker;
 use DoctrineXml\Normalizer;
 use Exception;
+use ReflectionClass;
 use SimpleXMLElement;
 
 class SchemaWriter
@@ -148,7 +149,12 @@ class SchemaWriter
             $primaryIndex = '';
         }
         // Fields
-        $fields = $table->getColumns();
+        // Table::getProperty() modifies the order, so get direct access
+        //$fields = $table->getColumns();
+        $tableRefl = new ReflectionClass(Table::class);
+        $columnRefl = $tableRefl->getProperty('_columns');
+        $columnRefl->setAccessible(true);
+        $fields = $columnRefl->getValue($table);
         foreach ($fields as $field) {
             static::addField($element, $field, $primaryFields, $options, $platform);
         }

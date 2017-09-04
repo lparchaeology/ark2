@@ -1,10 +1,10 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.3
+-- version 4.7.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 03, 2017 at 02:32 PM
--- Server version: 10.1.25-MariaDB
+-- Generation Time: Sep 04, 2017 at 05:54 PM
+-- Server version: 10.2.8-MariaDB
 -- PHP Version: 7.1.8
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,88 +32,88 @@ SET time_zone = "+00:00";
 CREATE TABLE `ark_dataclass` (
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `datatype` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `entity` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `object` tinyint(1) NOT NULL DEFAULT 0,
+  `array` tinyint(1) NOT NULL DEFAULT 0,
+  `span` tinyint(1) NOT NULL DEFAULT 0,
+  `multiple` tinyint(1) NOT NULL DEFAULT 0,
   `value_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `format_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `format_vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parameter_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parameter_vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `active_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `readonly_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `static_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `parameter_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `format_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `object` tinyint(1) NOT NULL DEFAULT '0',
-  `array` tinyint(1) NOT NULL DEFAULT '0',
-  `span` tinyint(1) NOT NULL DEFAULT '0',
-  `multiple` tinyint(1) NOT NULL DEFAULT '0',
-  `sortable` tinyint(1) NOT NULL DEFAULT '1',
-  `searchable` tinyint(1) NOT NULL DEFAULT '1',
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `deprecated` tinyint(1) NOT NULL DEFAULT '0'
+  `entity` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
+  `form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
+  `active_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
+  `readonly_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
+  `static_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
+  `parameter_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
+  `format_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
+  `sortable` tinyint(1) NOT NULL DEFAULT 1,
+  `searchable` tinyint(1) NOT NULL DEFAULT 1,
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_dataclass`
 --
 
-INSERT INTO `ark_dataclass` (`dataclass`, `datatype`, `keyword`, `entity`, `value_name`, `format_name`, `format_vocabulary`, `parameter_name`, `parameter_vocabulary`, `form_type`, `active_form_type`, `readonly_form_type`, `static_form_type`, `parameter_form_type`, `format_form_type`, `object`, `array`, `span`, `multiple`, `sortable`, `searchable`, `enabled`, `deprecated`) VALUES
-('actor', 'item', 'core.actor', 'ARK\\Actor\\Actor', NULL, NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0),
-('address', 'object', 'format.address', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 0, 1, 1, 0),
-('blob', 'blob', 'format.blob', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0),
-('boolean', 'boolean', 'format.boolean', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('classification', 'object', 'dime.find.classification', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, NULL, 1, 0, 0, 0, 0, 1, 1, 0),
-('color', 'string', 'format.colour', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('date', 'date', 'format.date', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('datetime', 'datetime', 'format.datetime', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('dating', 'object', 'format.dating', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\IntegerType', NULL, NULL, NULL, NULL, 1, 0, 0, 0, 0, 1, 1, 0),
-('decimal', 'decimal', 'format.decimal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('denmark', 'spatial', 'format.wkt', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 1, 1, 0),
-('description', 'object', 'format.address', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', NULL, NULL, NULL, NULL, 1, 0, 0, 0, 0, 1, 1, 0),
-('dispatch', 'object', 'format.recipient', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 0, 1, 1, 0),
-('distance', 'decimal', 'format.distance', NULL, NULL, NULL, NULL, 'unit', 'distance', 'ARK\\Form\\Type\\UnitPropertyType', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('email', 'string', 'format.email', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('event', 'item', 'format.event', 'ARK\\Workflow\\Event', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 0, 1, 1, 0),
-('false', 'boolean', 'format.boolean', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('file', 'item', 'format.file', 'ARK\\File\\File', NULL, NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FileType', NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0),
-('float', 'float', 'format.float', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('html', 'text', 'format.html', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 1, 1, 1, 0),
-('identifier', 'string', 'format.identifier', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('image', 'item', 'format.image', 'ARK\\File\\Image', NULL, NULL, NULL, NULL, NULL, 'ARK\\Form\\Type\\FilePropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FileType', NULL, 'ARK\\Form\\Type\\ImageCollectionType', NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0),
-('institution', 'item', 'core.actor.class.institution', 'ARK\\Actor\\Institution', NULL, NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0),
-('integer', 'integer', 'format.integer', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('item', 'item', 'format.item', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0),
-('key', 'string', 'format.key', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('markdown', 'text', 'format.markdown', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 1, 1, 1, 0),
-('mass', 'decimal', 'format.mass', NULL, NULL, NULL, NULL, 'unit', 'mass', 'ARK\\Form\\Type\\UnitPropertyType', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('message', 'item', 'core.actor.format', 'ARK\\Message\\Message', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0),
-('module', 'string', 'format.module', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0),
-('money', 'decimal', 'format.money', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('monthday', 'string', 'format.yearmonth', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('museum', 'item', 'core.actor.class.museum', 'ARK\\Actor\\Museum', NULL, NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0),
-('ordinaldate', 'string', 'format.ordinaldate', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('password', 'string', 'format.password', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('percent', 'float', 'format.percent', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('person', 'item', 'core.actor.class.person', 'ARK\\Actor\\Person', NULL, NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 1, 0),
-('plaintext', 'text', 'format.localtext', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 1, 1, 1, 0),
-('richtext', 'text', 'format.richtext', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 1, 1, 1, 0),
-('shorttext', 'text', 'format.shortlocaltext', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, 1, 0, 0, 0, 1, 1, 1, 0),
-('spatial', 'spatial', 'format.geometry', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('string', 'string', 'format.string', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('telephone', 'string', 'format.telephone', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('term', 'string', 'format.identifier', 'ARK\\Vocabulary\\Term', 'term', NULL, NULL, 'concept', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('time', 'time', 'format.time', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('true', 'boolean', 'format.boolean', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('url', 'text', 'format.url', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('version', 'object', 'format.fileversion', 'ARK\\File\\FileVersion', NULL, NULL, NULL, NULL, NULL, 'ARK\\Form\\Type\\FilePropertyType', NULL, NULL, NULL, NULL, NULL, 1, 0, 0, 0, 0, 1, 1, 0),
-('weekdate', 'string', 'format.weekdate', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('wkt', 'spatial', 'format.wkt', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 1, 1, 0),
-('year', 'integer', 'format.year', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('yearmonth', 'string', 'format.yearmonth', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0),
-('yearspan', 'integer', 'format.yearspan', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 0, 1, 1, 1, 0),
-('yearweek', 'string', 'format.yearweek', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 1, 1, 1, 0);
+INSERT INTO `ark_dataclass` (`dataclass`, `datatype`, `object`, `array`, `span`, `multiple`, `value_name`, `format_name`, `format_vocabulary`, `parameter_name`, `parameter_vocabulary`, `entity`, `form_type`, `active_form_type`, `readonly_form_type`, `static_form_type`, `parameter_form_type`, `format_form_type`, `sortable`, `searchable`, `enabled`, `deprecated`, `keyword`) VALUES
+('actor', 'item', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 'ARK\\Actor\\Actor', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'core.actor'),
+('address', 'object', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 1, 0, 'format.address'),
+('blob', 'blob', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'format.blob'),
+('boolean', 'boolean', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.boolean'),
+('classification', 'object', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, NULL, 0, 1, 1, 0, 'dime.find.classification'),
+('color', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.colour'),
+('date', 'date', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.date'),
+('datetime', 'datetime', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.datetime'),
+('dating', 'object', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\IntegerType', NULL, NULL, NULL, NULL, 0, 1, 1, 0, 'format.dating'),
+('decimal', 'decimal', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.decimal'),
+('denmark', 'spatial', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 1, 0, 'format.wkt'),
+('description', 'object', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', NULL, NULL, NULL, NULL, 0, 1, 1, 0, 'format.address'),
+('dispatch', 'object', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 1, 0, 'format.recipient'),
+('distance', 'decimal', 0, 0, 0, 0, NULL, NULL, NULL, 'unit', 'distance', NULL, 'ARK\\Form\\Type\\UnitPropertyType', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, 1, 1, 1, 0, 'format.distance'),
+('email', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.email'),
+('event', 'item', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 'ARK\\Workflow\\Event', NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 1, 0, 'format.event'),
+('false', 'boolean', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.boolean'),
+('file', 'item', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 'ARK\\File\\File', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FileType', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'format.file'),
+('float', 'float', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.float'),
+('html', 'text', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.html'),
+('identifier', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.identifier'),
+('image', 'item', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 'ARK\\File\\Image', 'ARK\\Form\\Type\\FilePropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FileType', NULL, 'ARK\\Form\\Type\\ImageCollectionType', NULL, NULL, 0, 0, 1, 0, 'format.image'),
+('institution', 'item', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 'ARK\\Actor\\Institution', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'core.actor.class.institution'),
+('integer', 'integer', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.integer'),
+('item', 'item', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'format.item'),
+('key', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.key'),
+('markdown', 'text', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.markdown'),
+('mass', 'decimal', 0, 0, 0, 0, NULL, NULL, NULL, 'unit', 'mass', NULL, 'ARK\\Form\\Type\\UnitPropertyType', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, 1, 1, 1, 0, 'format.mass'),
+('message', 'item', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 'ARK\\Message\\Message', NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'core.actor.format'),
+('module', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'format.module'),
+('money', 'decimal', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.money'),
+('monthday', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.yearmonth'),
+('museum', 'item', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 'ARK\\Actor\\Museum', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'core.actor.class.museum'),
+('ordinaldate', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.ordinaldate'),
+('password', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.password'),
+('percent', 'float', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.percent'),
+('person', 'item', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 'ARK\\Actor\\Person', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, NULL, NULL, 0, 0, 1, 0, 'core.actor.class.person'),
+('plaintext', 'text', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.localtext'),
+('richtext', 'text', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.richtext'),
+('shorttext', 'text', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.shortlocaltext'),
+('spatial', 'spatial', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.geometry'),
+('string', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.string'),
+('telephone', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.telephone'),
+('term', 'string', 0, 0, 0, 0, 'term', NULL, NULL, 'concept', NULL, 'ARK\\Vocabulary\\Term', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', NULL, 1, 1, 1, 0, 'format.identifier'),
+('time', 'time', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.time'),
+('true', 'boolean', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.boolean'),
+('url', 'text', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.url'),
+('version', 'object', 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 'ARK\\File\\FileVersion', 'ARK\\Form\\Type\\FilePropertyType', NULL, NULL, NULL, NULL, NULL, 0, 1, 1, 0, 'format.fileversion'),
+('weekdate', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.weekdate'),
+('wkt', 'spatial', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 1, 1, 0, 'format.wkt'),
+('year', 'integer', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.year'),
+('yearmonth', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.yearmonth'),
+('yearspan', 'integer', 0, 0, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.yearspan'),
+('yearweek', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.yearweek');
 
 -- --------------------------------------------------------
 
@@ -125,50 +125,50 @@ CREATE TABLE `ark_dataclass_attribute` (
   `parent` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sequence` int(11) NOT NULL,
-  `root` tinyint(1) NOT NULL DEFAULT '0',
-  `span` tinyint(1) NOT NULL DEFAULT '0',
-  `minimum` int(11) NOT NULL DEFAULT '0',
-  `maximum` int(11) NOT NULL DEFAULT '1',
-  `unique_values` int(11) NOT NULL DEFAULT '1',
-  `additional_values` int(11) NOT NULL DEFAULT '0',
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `deprecated` tinyint(1) NOT NULL DEFAULT '0'
+  `root` tinyint(1) NOT NULL DEFAULT 0,
+  `span` tinyint(1) NOT NULL DEFAULT 0,
+  `minimum` int(11) NOT NULL DEFAULT 0,
+  `maximum` int(11) NOT NULL DEFAULT 1,
+  `unique_values` int(11) NOT NULL DEFAULT 1,
+  `additional_values` int(11) NOT NULL DEFAULT 0,
+  `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_dataclass_attribute`
 --
 
-INSERT INTO `ark_dataclass_attribute` (`parent`, `attribute`, `dataclass`, `keyword`, `vocabulary`, `sequence`, `root`, `span`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`) VALUES
-('address', 'city', 'string', 'format.address.city', NULL, 2, 0, 0, 0, 1, 1, 0, 1, 0),
-('address', 'country', 'term', 'format.address.country', 'country', 6, 0, 0, 1, 1, 1, 0, 1, 0),
-('address', 'postcode', 'string', NULL, NULL, 4, 0, 0, 0, 1, 1, 0, 1, 0),
-('address', 'street', 'string', 'format.address.street', NULL, 0, 1, 0, 1, 1, 1, 0, 1, 0),
-('classification', 'event', 'event', 'format.classification.classified', 'core.event.class', 2, 0, 0, 1, 1, 1, 0, 1, 0),
-('classification', 'subtype', 'term', 'format.classification.class', 'dime.find.subtype', 0, 1, 0, 1, 1, 1, 0, 1, 0),
-('dating', 'entered', 'identifier', 'core.format.dating.type', NULL, 0, 0, 0, 1, 1, 1, 0, 1, 0),
-('dating', 'event', 'event', 'format.dating.dated', NULL, 6, 0, 0, 1, 1, 1, 0, 1, 0),
-('dating', 'period', 'term', 'format.dating.period', 'dime.period', 4, 0, 1, 1, 1, 1, 0, 1, 0),
-('dating', 'year', 'integer', 'format.dating.year', NULL, 2, 1, 1, 1, 1, 1, 0, 1, 0),
-('description', 'event', 'event', 'format.description.described', NULL, 2, 1, 0, 1, 1, 1, 0, 1, 0),
-('description', 'text', 'plaintext', 'format.description.text', NULL, 0, 0, 0, 1, 1, 1, 0, 1, 0),
-('dispatch', 'read', 'datetime', 'format.recipient.read_on', NULL, 4, 0, 0, 1, 1, 1, 0, 1, 0),
-('dispatch', 'recipient', 'actor', 'format.recipient.sent_to', NULL, 2, 0, 0, 1, 1, 1, 0, 1, 0),
-('dispatch', 'role', 'identifier', 'format.recipient.sent_to', NULL, 6, 0, 0, 1, 1, 1, 0, 1, 0),
-('dispatch', 'status', 'term', 'format.recipient.status', 'core.message.recipient.status', 0, 1, 0, 1, 1, 1, 0, 1, 0),
-('version', 'created', 'datetime', 'format.fileversion.created', NULL, 10, 1, 0, 1, 1, 1, 0, 1, 0),
-('version', 'creator', 'string', 'format.fileversion.creator', NULL, 12, 1, 0, 1, 1, 1, 0, 1, 0),
-('version', 'expires', 'datetime', 'format.fileversion.expires', NULL, 18, 1, 0, 1, 1, 1, 0, 1, 0),
-('version', 'extension', 'string', NULL, NULL, 4, 1, 0, 1, 1, 1, 0, 1, 0),
-('version', 'modified', 'datetime', 'format.fileversion.modified', NULL, 14, 1, 0, 1, 1, 1, 0, 1, 0),
-('version', 'modifier', 'string', 'format.fileversion.modifier', NULL, 16, 1, 0, 1, 1, 1, 0, 1, 0),
-('version', 'name', 'string', 'format.fileversion.name', NULL, 2, 1, 0, 1, 1, 1, 0, 1, 0),
-('version', 'path', 'string', NULL, NULL, 0, 1, 0, 1, 1, 1, 0, 1, 0),
-('version', 'sequence', 'integer', 'format.fileversion.sequence', NULL, 6, 1, 0, 1, 1, 1, 0, 1, 0),
-('version', 'version', 'string', 'format.fileversion.string', NULL, 8, 1, 0, 1, 1, 1, 0, 1, 0);
+INSERT INTO `ark_dataclass_attribute` (`parent`, `attribute`, `dataclass`, `sequence`, `root`, `span`, `minimum`, `maximum`, `unique_values`, `additional_values`, `vocabulary`, `enabled`, `deprecated`, `keyword`) VALUES
+('address', 'city', 'string', 2, 0, 0, 0, 1, 1, 0, NULL, 1, 0, 'format.address.city'),
+('address', 'country', 'term', 6, 0, 0, 1, 1, 1, 0, 'country', 1, 0, 'format.address.country'),
+('address', 'postcode', 'string', 4, 0, 0, 0, 1, 1, 0, NULL, 1, 0, NULL),
+('address', 'street', 'string', 0, 1, 0, 1, 1, 1, 0, NULL, 1, 0, 'format.address.street'),
+('classification', 'event', 'event', 2, 0, 0, 1, 1, 1, 0, 'core.event.class', 1, 0, 'format.classification.classified'),
+('classification', 'subtype', 'term', 0, 1, 0, 1, 1, 1, 0, 'dime.find.subtype', 1, 0, 'format.classification.class'),
+('dating', 'entered', 'identifier', 0, 0, 0, 1, 1, 1, 0, NULL, 1, 0, 'core.format.dating.type'),
+('dating', 'event', 'event', 6, 0, 0, 1, 1, 1, 0, NULL, 1, 0, 'format.dating.dated'),
+('dating', 'period', 'term', 4, 0, 1, 1, 1, 1, 0, 'dime.period', 1, 0, 'format.dating.period'),
+('dating', 'year', 'integer', 2, 1, 1, 1, 1, 1, 0, NULL, 1, 0, 'format.dating.year'),
+('description', 'event', 'event', 2, 1, 0, 1, 1, 1, 0, NULL, 1, 0, 'format.description.described'),
+('description', 'text', 'plaintext', 0, 0, 0, 1, 1, 1, 0, NULL, 1, 0, 'format.description.text'),
+('dispatch', 'read', 'datetime', 4, 0, 0, 1, 1, 1, 0, NULL, 1, 0, 'format.recipient.read_on'),
+('dispatch', 'recipient', 'actor', 2, 0, 0, 1, 1, 1, 0, NULL, 1, 0, 'format.recipient.sent_to'),
+('dispatch', 'role', 'identifier', 6, 0, 0, 1, 1, 1, 0, NULL, 1, 0, 'format.recipient.sent_to'),
+('dispatch', 'status', 'term', 0, 1, 0, 1, 1, 1, 0, 'core.message.recipient.status', 1, 0, 'format.recipient.status'),
+('version', 'created', 'datetime', 10, 1, 0, 1, 1, 1, 0, NULL, 1, 0, 'format.fileversion.created'),
+('version', 'creator', 'string', 12, 1, 0, 1, 1, 1, 0, NULL, 1, 0, 'format.fileversion.creator'),
+('version', 'expires', 'datetime', 18, 1, 0, 1, 1, 1, 0, NULL, 1, 0, 'format.fileversion.expires'),
+('version', 'extension', 'string', 4, 1, 0, 1, 1, 1, 0, NULL, 1, 0, NULL),
+('version', 'modified', 'datetime', 14, 1, 0, 1, 1, 1, 0, NULL, 1, 0, 'format.fileversion.modified'),
+('version', 'modifier', 'string', 16, 1, 0, 1, 1, 1, 0, NULL, 1, 0, 'format.fileversion.modifier'),
+('version', 'name', 'string', 2, 1, 0, 1, 1, 1, 0, NULL, 1, 0, 'format.fileversion.name'),
+('version', 'path', 'string', 0, 1, 0, 1, 1, 1, 0, NULL, 1, 0, NULL),
+('version', 'sequence', 'integer', 6, 1, 0, 1, 1, 1, 0, NULL, 1, 0, 'format.fileversion.sequence'),
+('version', 'version', 'string', 8, 1, 0, 1, 1, 1, 0, NULL, 1, 0, 'format.fileversion.string');
 
 -- --------------------------------------------------------
 
@@ -178,7 +178,7 @@ INSERT INTO `ark_dataclass_attribute` (`parent`, `attribute`, `dataclass`, `keyw
 
 CREATE TABLE `ark_dataclass_blob` (
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `preset` blob
+  `preset` blob DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -260,12 +260,12 @@ INSERT INTO `ark_dataclass_datetime` (`dataclass`, `pattern`, `unicode`, `php`, 
 
 CREATE TABLE `ark_dataclass_decimal` (
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `prec` int(11) NOT NULL DEFAULT '200',
-  `scale` int(11) NOT NULL DEFAULT '0',
+  `prec` int(11) NOT NULL DEFAULT 200,
+  `scale` int(11) NOT NULL DEFAULT 0,
   `minimum` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT '0',
+  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT 0,
   `maximum` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT '0',
+  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT 0,
   `multiple_of` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `preset` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -288,9 +288,9 @@ INSERT INTO `ark_dataclass_decimal` (`dataclass`, `prec`, `scale`, `minimum`, `e
 CREATE TABLE `ark_dataclass_float` (
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `minimum` double DEFAULT NULL,
-  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT '0',
+  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT 0,
   `maximum` double DEFAULT NULL,
-  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT '0',
+  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT 0,
   `multiple_of` double DEFAULT NULL,
   `preset` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -312,10 +312,10 @@ INSERT INTO `ark_dataclass_float` (`dataclass`, `minimum`, `exclusive_minimum`, 
 CREATE TABLE `ark_dataclass_integer` (
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `minimum` int(11) DEFAULT NULL,
-  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT '0',
+  `exclusive_minimum` tinyint(1) NOT NULL DEFAULT 0,
   `maximum` int(11) DEFAULT NULL,
-  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT '0',
-  `multiple_of` int(11) DEFAULT '1',
+  `exclusive_maximum` tinyint(1) NOT NULL DEFAULT 0,
+  `multiple_of` int(11) DEFAULT 1,
   `preset` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -382,7 +382,7 @@ CREATE TABLE `ark_dataclass_spatial` (
   `srid` int(11) DEFAULT NULL,
   `format` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `extent` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `preset` longtext COLLATE utf8mb4_unicode_ci
+  `preset` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -437,7 +437,7 @@ CREATE TABLE `ark_dataclass_text` (
   `min_length` int(11) NOT NULL,
   `max_length` int(11) NOT NULL,
   `default_size` int(11) NOT NULL,
-  `preset` longtext COLLATE utf8mb4_unicode_ci
+  `preset` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -483,8 +483,8 @@ CREATE TABLE `ark_dataclass_type` (
   `datatype` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `number` tinyint(1) NOT NULL,
   `temporal` tinyint(1) NOT NULL,
-  `object` tinyint(1) NOT NULL DEFAULT '0',
-  `compound` tinyint(1) NOT NULL DEFAULT '1',
+  `object` tinyint(1) NOT NULL DEFAULT 0,
+  `compound` tinyint(1) NOT NULL DEFAULT 1,
   `storage_type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `storage_size` int(11) DEFAULT NULL,
   `value_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -492,7 +492,7 @@ CREATE TABLE `ark_dataclass_type` (
   `parameter_vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `format_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `format_vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `spanable` tinyint(1) NOT NULL DEFAULT '1',
+  `spanable` tinyint(1) NOT NULL DEFAULT 1,
   `model_table` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `model_entity` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `data_table` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -503,8 +503,8 @@ CREATE TABLE `ark_dataclass_type` (
   `static_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parameter_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `format_form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -535,8 +535,8 @@ INSERT INTO `ark_dataclass_type` (`datatype`, `number`, `temporal`, `object`, `c
 
 CREATE TABLE `ark_instance` (
   `instance` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `deprecated` tinyint(1) NOT NULL DEFAULT '0'
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `deprecated` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -556,8 +556,8 @@ INSERT INTO `ark_instance` (`instance`, `enabled`, `deprecated`) VALUES
 CREATE TABLE `ark_instance_route` (
   `instance` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `route` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `deprecated` tinyint(1) NOT NULL DEFAULT '0'
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `deprecated` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -569,8 +569,8 @@ CREATE TABLE `ark_instance_route` (
 CREATE TABLE `ark_instance_schema` (
   `instance` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `deprecated` tinyint(1) NOT NULL DEFAULT '0'
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `deprecated` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -597,9 +597,9 @@ INSERT INTO `ark_instance_schema` (`instance`, `schma`, `enabled`, `deprecated`)
 
 CREATE TABLE `ark_map` (
   `map` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `draggable` tinyint(1) NOT NULL DEFAULT '1',
-  `clickable` tinyint(1) NOT NULL DEFAULT '1',
-  `zoomable` tinyint(1) NOT NULL DEFAULT '1',
+  `draggable` tinyint(1) NOT NULL DEFAULT 1,
+  `clickable` tinyint(1) NOT NULL DEFAULT 1,
+  `zoomable` tinyint(1) NOT NULL DEFAULT 1,
   `zoom` int(11) NOT NULL,
   `min_zoom` int(11) DEFAULT NULL,
   `max_zoom` int(11) DEFAULT NULL,
@@ -607,7 +607,7 @@ CREATE TABLE `ark_map` (
   `center` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `extent` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `options` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL
+  `options` varchar(4000) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -630,8 +630,8 @@ CREATE TABLE `ark_map_layer` (
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `source_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `url` varchar(2000) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `options` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `parameters` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL
+  `options` varchar(4000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parameters` varchar(4000) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -655,11 +655,11 @@ CREATE TABLE `ark_map_legend` (
   `map` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `source` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `layer` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `seq` int(11) NOT NULL,
-  `is_default` tinyint(1) NOT NULL DEFAULT '0',
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `visible` tinyint(1) NOT NULL DEFAULT '0',
+  `is_default` tinyint(1) NOT NULL DEFAULT 0,
+  `visible` tinyint(1) NOT NULL DEFAULT 0,
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
   `options` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -667,17 +667,17 @@ CREATE TABLE `ark_map_legend` (
 -- Dumping data for table `ark_map_legend`
 --
 
-INSERT INTO `ark_map_legend` (`map`, `source`, `layer`, `keyword`, `seq`, `is_default`, `enabled`, `visible`, `options`) VALUES
-('dime_map_public', 'bing', 'aerial', NULL, 2, 0, 1, 0, ''),
-('dime_map_public', 'bing', 'aerialwithlabels', NULL, 1, 1, 1, 1, ''),
-('dime_map_public', 'bing', 'road', NULL, 3, 0, 1, 0, ''),
-('dime_map_public', 'kortforsyningen', 'foraar', NULL, 4, 0, 1, 0, ''),
-('dime_map_public', 'kortforsyningen', 'skaermkort', NULL, 5, 0, 1, 0, ''),
-('dime_map_user', 'bing', 'aerial', NULL, 2, 0, 1, 0, ''),
-('dime_map_user', 'bing', 'aerialwithlabels', NULL, 1, 1, 1, 1, ''),
-('dime_map_user', 'bing', 'road', NULL, 3, 0, 1, 0, ''),
-('dime_map_user', 'kortforsyningen', 'foraar', NULL, 4, 0, 1, 0, ''),
-('dime_map_user', 'kortforsyningen', 'skaermkort', NULL, 5, 0, 1, 0, '');
+INSERT INTO `ark_map_legend` (`map`, `source`, `layer`, `seq`, `is_default`, `visible`, `enabled`, `keyword`, `options`) VALUES
+('dime_map_public', 'bing', 'aerial', 2, 0, 0, 1, NULL, ''),
+('dime_map_public', 'bing', 'aerialwithlabels', 1, 1, 1, 1, NULL, ''),
+('dime_map_public', 'bing', 'road', 3, 0, 0, 1, NULL, ''),
+('dime_map_public', 'kortforsyningen', 'foraar', 4, 0, 0, 1, NULL, ''),
+('dime_map_public', 'kortforsyningen', 'skaermkort', 5, 0, 0, 1, NULL, ''),
+('dime_map_user', 'bing', 'aerial', 2, 0, 0, 1, NULL, ''),
+('dime_map_user', 'bing', 'aerialwithlabels', 1, 1, 1, 1, NULL, ''),
+('dime_map_user', 'bing', 'road', 3, 0, 0, 1, NULL, ''),
+('dime_map_user', 'kortforsyningen', 'foraar', 4, 0, 0, 1, NULL, ''),
+('dime_map_user', 'kortforsyningen', 'skaermkort', 5, 0, 0, 1, NULL, '');
 
 -- --------------------------------------------------------
 
@@ -687,23 +687,23 @@ INSERT INTO `ark_map_legend` (`map`, `source`, `layer`, `keyword`, `seq`, `is_de
 
 CREATE TABLE `ark_map_source` (
   `source` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `subtype` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `view_class` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ticket` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ticket_expiry` datetime DEFAULT CURRENT_TIMESTAMP,
-  `options` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ticket` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ticket_expiry` datetime DEFAULT NULL,
+  `options` varchar(4000) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_map_source`
 --
 
-INSERT INTO `ark_map_source` (`source`, `keyword`, `type`, `subtype`, `format`, `view_class`, `ticket`, `ticket_expiry`, `options`) VALUES
-('bing', 'map.source.bing', 'raster', 'tile', 'bing', 'BingMaps', 'Ak5AqjsEQ44KtAl7jHhrjGuzNshN1fZv3MOx2MUi0p4zFmq6XeWLKmyqeP2UgJK3', NULL, ''),
-('kortforsyningen', 'map.source.kfs', 'raster', 'tile', 'wms', 'TileWMS', '', NULL, '');
+INSERT INTO `ark_map_source` (`source`, `type`, `subtype`, `format`, `view_class`, `keyword`, `ticket`, `ticket_expiry`, `options`) VALUES
+('bing', 'raster', 'tile', 'bing', 'BingMaps', 'map.source.bing', 'Ak5AqjsEQ44KtAl7jHhrjGuzNshN1fZv3MOx2MUi0p4zFmq6XeWLKmyqeP2UgJK3', NULL, ''),
+('kortforsyningen', 'raster', 'tile', 'wms', 'TileWMS', 'map.source.kfs', '', NULL, '');
 
 -- --------------------------------------------------------
 
@@ -720,9 +720,9 @@ CREATE TABLE `ark_module` (
   `entity` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `classname` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tbl` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `core` tinyint(1) NOT NULL DEFAULT '0',
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
+  `core` tinyint(1) NOT NULL DEFAULT 0,
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -747,8 +747,8 @@ INSERT INTO `ark_module` (`module`, `superclass`, `resource`, `project`, `namesp
 CREATE TABLE `ark_route` (
   `route` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `path` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `can_get` tinyint(1) NOT NULL DEFAULT '1',
-  `can_post` tinyint(1) NOT NULL DEFAULT '0',
+  `can_get` tinyint(1) NOT NULL DEFAULT 1,
+  `can_post` tinyint(1) NOT NULL DEFAULT 0,
   `page` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `redirect` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `controller` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
@@ -801,7 +801,7 @@ CREATE TABLE `ark_schema` (
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `class_property` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `entities` tinyint(1) NOT NULL DEFAULT '0',
+  `entities` tinyint(1) NOT NULL DEFAULT 0,
   `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'restricted',
   `generator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sequence` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -809,22 +809,22 @@ CREATE TABLE `ark_schema` (
   `view` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `edit` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `remove` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `deprecated` tinyint(1) NOT NULL DEFAULT '0'
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_schema`
 --
 
-INSERT INTO `ark_schema` (`schma`, `module`, `class_property`, `vocabulary`, `entities`, `visibility`, `generator`, `sequence`, `new`, `view`, `edit`, `remove`, `keyword`, `enabled`, `deprecated`) VALUES
-('core.actor', 'actor', 'class', 'core.actor.class', 1, 'restricted', 'assigned', NULL, 'core.actor.create', 'core.actor.read', 'core.actor.update', 'core.actor.delete', 'core.actor', 1, 0),
-('core.event', 'event', 'class', 'core.event.class', 0, 'restricted', 'sequence', 'id', 'core.event.create', 'core.event.read', 'core.event.update', 'core.event.delete', 'core.event', 1, 0),
-('core.file', 'file', 'class', 'core.file.class', 1, 'restricted', 'sequence', 'id', 'core.file.create', 'core.event.read', 'core.file.update', 'core.file.delete', 'core.file', 1, 0),
-('core.message', 'message', 'class', 'core.message.class', 1, 'restricted', 'sequence', 'id', 'core.message.create', 'core.message.read', 'core.message.update', 'core.message.delete', 'core.message', 1, 0),
-('core.page', 'page', NULL, NULL, 0, 'public', 'assigned', NULL, 'core.page.create', NULL, 'core.page.update', 'core.page.delete', 'core.page', 1, 0),
-('dime.find', 'find', 'class', 'dime.find.class', 0, 'private', 'sequence', 'id', 'dime.find.create', 'dime.find.read', 'dime.find.update', 'dime.find.delete', 'dime.find', 1, 0);
+INSERT INTO `ark_schema` (`schma`, `module`, `class_property`, `vocabulary`, `entities`, `visibility`, `generator`, `sequence`, `new`, `view`, `edit`, `remove`, `enabled`, `deprecated`, `keyword`) VALUES
+('core.actor', 'actor', 'class', 'core.actor.class', 1, 'restricted', 'assigned', NULL, 'core.actor.create', 'core.actor.read', 'core.actor.update', 'core.actor.delete', 1, 0, 'core.actor'),
+('core.event', 'event', 'class', 'core.event.class', 0, 'restricted', 'sequence', 'id', 'core.event.create', 'core.event.read', 'core.event.update', 'core.event.delete', 1, 0, 'core.event'),
+('core.file', 'file', 'class', 'core.file.class', 1, 'restricted', 'sequence', 'id', 'core.file.create', 'core.event.read', 'core.file.update', 'core.file.delete', 1, 0, 'core.file'),
+('core.message', 'message', 'class', 'core.message.class', 1, 'restricted', 'sequence', 'id', 'core.message.create', 'core.message.read', 'core.message.update', 'core.message.delete', 1, 0, 'core.message'),
+('core.page', 'page', NULL, NULL, 0, 'public', 'assigned', NULL, 'core.page.create', NULL, 'core.page.update', 'core.page.delete', 1, 0, 'core.page'),
+('dime.find', 'find', 'class', 'dime.find.class', 0, 'private', 'sequence', 'id', 'dime.find.create', 'dime.find.read', 'dime.find.update', 'dime.find.delete', 1, 0, 'dime.find');
 
 -- --------------------------------------------------------
 
@@ -836,17 +836,15 @@ CREATE TABLE `ark_schema_association` (
   `schma` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `class` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `association` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `module1` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `schema1` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `module2` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `schema2` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `degree` int(11) NOT NULL,
   `inverse` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `inverse_degree` int(11) NOT NULL,
-  `bidirectional` tinyint(1) NOT NULL DEFAULT '0',
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `deprecated` tinyint(1) NOT NULL DEFAULT '0'
+  `bidirectional` tinyint(1) NOT NULL DEFAULT 0,
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -860,17 +858,17 @@ CREATE TABLE `ark_schema_attribute` (
   `class` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `span` tinyint(1) NOT NULL DEFAULT 0,
+  `minimum` int(11) NOT NULL DEFAULT 0,
+  `maximum` int(11) NOT NULL DEFAULT 1,
   `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `span` tinyint(1) NOT NULL DEFAULT '0',
-  `minimum` int(11) NOT NULL DEFAULT '0',
-  `maximum` int(11) NOT NULL DEFAULT '1',
-  `unique_values` int(11) NOT NULL DEFAULT '1',
-  `additional_values` int(11) NOT NULL DEFAULT '0',
+  `unique_values` int(11) NOT NULL DEFAULT 1,
+  `additional_values` int(11) NOT NULL DEFAULT 0,
   `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'public',
   `edit` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `view` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -878,77 +876,77 @@ CREATE TABLE `ark_schema_attribute` (
 -- Dumping data for table `ark_schema_attribute`
 --
 
-INSERT INTO `ark_schema_attribute` (`schma`, `class`, `attribute`, `dataclass`, `vocabulary`, `span`, `minimum`, `maximum`, `unique_values`, `additional_values`, `visibility`, `edit`, `view`, `enabled`, `deprecated`, `keyword`) VALUES
-('core.actor', 'actor', 'address', 'address', NULL, 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.actor.address'),
-('core.actor', 'actor', 'avatar', 'image', NULL, 0, 0, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.actor.avatar'),
-('core.actor', 'actor', 'biography', 'plaintext', NULL, 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.actor.biography'),
-('core.actor', 'actor', 'class', 'term', 'core.actor.class', 0, 1, 1, 1, 0, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.actor.class'),
-('core.actor', 'actor', 'email', 'email', NULL, 0, 1, 1, 1, 0, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.actor.email'),
-('core.actor', 'actor', 'fullname', 'shorttext', NULL, 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.actor.fullname'),
-('core.actor', 'actor', 'id', 'identifier', NULL, 0, 1, 1, 1, 0, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.actor.id'),
-('core.actor', 'actor', 'initials', 'shorttext', NULL, 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.actor.initials'),
-('core.actor', 'actor', 'shortname', 'shorttext', NULL, 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.actor.shortname'),
-('core.actor', 'actor', 'telephone', 'telephone', NULL, 0, 1, 1, 1, 0, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.actor.telephone'),
-('core.actor', 'museum', 'municipality', 'term', 'dime.denmark.municipality', 0, 0, 0, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.actor.municipality'),
-('core.actor', 'museum', 'participating', 'boolean', NULL, 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.actor.participating'),
-('core.actor', 'person', 'detectorist_id', 'identifier', NULL, 0, 1, 1, 1, 0, 'restricted', 'core.admin', 'core.actor.read', 1, 0, 'dime.user.detectorist.id'),
-('core.actor', 'person', 'status', 'term', 'core.security.status', 0, 1, 1, 1, 0, 'restricted', 'core.admin.user', 'core.admin.user', 1, 0, 'core.security.status'),
-('core.actor', 'person', 'terms', 'term', 'core.user.terms', 0, 1, 1, 1, 0, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.user.terms'),
-('core.event', 'event', 'agents', 'actor', NULL, 0, 1, 0, 1, 0, 'public', NULL, NULL, 1, 0, 'core.event.agent'),
-('core.event', 'event', 'class', 'term', 'core.event.class', 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.event.class'),
-('core.event', 'event', 'id', 'identifier', NULL, 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.event.id'),
-('core.event', 'event', 'occurred', 'datetime', NULL, 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.event.occurred'),
-('core.event', 'event', 'subject', 'item', NULL, 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.event.subject'),
-('core.file', 'file', 'class', 'term', 'core.file.class', 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.class'),
-('core.file', 'file', 'copyright', 'actor', NULL, 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.copyright'),
-('core.file', 'file', 'description', 'plaintext', NULL, 0, 0, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.description'),
-('core.file', 'file', 'id', 'identifier', NULL, 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.id'),
-('core.file', 'file', 'license', 'term', 'core.license', 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.status'),
-('core.file', 'file', 'mediatype', 'term', 'mediatype', 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.mediatype'),
-('core.file', 'file', 'status', 'term', 'core.file.status', 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.status'),
-('core.file', 'file', 'title', 'shorttext', NULL, 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.title'),
-('core.file', 'file', 'versions', 'version', NULL, 0, 1, 0, 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.versions'),
-('core.message', 'mail', 'attachments', 'file', NULL, 0, 0, 0, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.mail.attachments'),
-('core.message', 'mail', 'body', 'plaintext', NULL, 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.mail.body'),
-('core.message', 'mail', 'subject', 'shorttext', NULL, 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.mail.subject'),
-('core.message', 'message', 'class', 'term', 'core.message.class', 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.class'),
-('core.message', 'message', 'id', 'identifier', NULL, 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.id'),
-('core.message', 'message', 'recipients', 'dispatch', NULL, 0, 1, 0, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.recipients'),
-('core.message', 'message', 'sender', 'actor', NULL, 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.sender'),
-('core.message', 'message', 'sent', 'datetime', NULL, 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.sent_at'),
-('core.message', 'notification', 'event', 'event', NULL, 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.notification.event'),
-('core.page', 'page', 'content', 'html', NULL, 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'property.content'),
-('core.page', 'page', 'id', 'identifier', NULL, 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.page.id'),
-('dime.find', 'coin', 'issuer', 'shorttext', NULL, 0, 0, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.issuer'),
-('dime.find', 'coin', 'mint', 'shorttext', NULL, 0, 0, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.mint'),
-('dime.find', 'find', 'case', 'identifier', NULL, 0, 0, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.case'),
-('dime.find', 'find', 'class', 'term', 'dime.find.class', 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.class'),
-('dime.find', 'find', 'classification', 'classification', NULL, 0, 0, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.classification'),
-('dime.find', 'find', 'condition', 'term', 'dime.find.condition', 0, 0, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.condition'),
-('dime.find', 'find', 'custodian', 'actor', NULL, 0, 1, 1, 1, 0, 'restricted', 'dime.find.update.custody', 'dime.find.read.custody', 1, 0, 'dime.find.custodian'),
-('dime.find', 'find', 'custody', 'term', 'dime.find.custody', 0, 1, 1, 1, 0, 'restricted', 'dime.find.update.custody', 'dime.find.read.custody', 1, 0, 'dime.find.custody'),
-('dime.find', 'find', 'dating', 'dating', NULL, 0, 0, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.dating'),
-('dime.find', 'find', 'description', 'description', NULL, 0, 0, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.description'),
-('dime.find', 'find', 'finddate', 'date', NULL, 0, 0, 1, 1, 0, 'restricted', 'dime.find.update.finddate', 'dime.find.read.finddate', 1, 0, 'dime.find.finddate'),
-('dime.find', 'find', 'finder', 'person', NULL, 0, 1, 1, 1, 0, 'restricted', 'dime.find.update.finder', 'dime.find.read.finder', 1, 0, 'dime.find.finder'),
-('dime.find', 'find', 'finder_id', 'identifier', NULL, 0, 0, 1, 1, 0, 'restricted', 'dime.find.update.finder', 'dime.find.read.finder', 1, 0, 'dime.find.finder_id'),
-('dime.find', 'find', 'finder_place', 'identifier', NULL, 0, 0, 1, 1, 0, 'restricted', 'dime.find.update.finder', 'dime.find.read.finder', 1, 0, 'dime.find.finder_place'),
-('dime.find', 'find', 'id', 'identifier', NULL, 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.id'),
-('dime.find', 'find', 'image', 'image', NULL, 0, 0, 3, 1, 1, 'public', NULL, NULL, 1, 0, 'dime.find.images'),
-('dime.find', 'find', 'length', 'distance', NULL, 0, 0, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.length'),
-('dime.find', 'find', 'location', 'wkt', NULL, 0, 1, 1, 1, 0, 'restricted', 'dime.find.update.location', 'dime.find.read.location', 1, 0, 'dime.find.location'),
-('dime.find', 'find', 'material', 'term', 'dime.material', 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.material'),
-('dime.find', 'find', 'municipality', 'term', 'dime.denmark.municipality', 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.municipality'),
-('dime.find', 'find', 'museum', 'museum', NULL, 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'core.actor.class.museum'),
-('dime.find', 'find', 'museum_id', 'identifier', NULL, 0, 0, 1, 1, 0, 'restricted', 'dime.find.update.museum_id', 'dime.find.read', 1, 0, 'dime.find.museum_id'),
-('dime.find', 'find', 'owner', 'actor', NULL, 0, 1, 1, 1, 0, 'restricted', 'dime.find.update.owner', 'dime.find.read.owner', 1, 0, 'dime.find.owner'),
-('dime.find', 'find', 'process', 'term', 'dime.find.process', 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.process'),
-('dime.find', 'find', 'recipient', 'actor', NULL, 0, 0, 1, 1, 0, 'restricted', 'dime.find.update.custody', 'dime.find.read.custody', 1, 0, 'dime.find.recipient'),
-('dime.find', 'find', 'recorder', 'actor', NULL, 0, 1, 1, 1, 0, 'restricted', 'dime.find.update.finder', 'dime.find.read.finder', 1, 0, 'dime.find.recorder'),
-('dime.find', 'find', 'secondary', 'term', 'dime.find.secondary', 0, 0, 0, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.material.secondary'),
-('dime.find', 'find', 'treasure', 'term', 'dime.treasure', 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.treasure'),
-('dime.find', 'find', 'visibility', 'term', 'core.visibility', 0, 1, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.visibility'),
-('dime.find', 'find', 'weight', 'mass', NULL, 0, 0, 1, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.weight');
+INSERT INTO `ark_schema_attribute` (`schma`, `class`, `attribute`, `dataclass`, `span`, `minimum`, `maximum`, `vocabulary`, `unique_values`, `additional_values`, `visibility`, `edit`, `view`, `enabled`, `deprecated`, `keyword`) VALUES
+('core.actor', 'actor', 'address', 'address', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.actor.address'),
+('core.actor', 'actor', 'avatar', 'image', 0, 0, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.actor.avatar'),
+('core.actor', 'actor', 'biography', 'plaintext', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.actor.biography'),
+('core.actor', 'actor', 'class', 'term', 0, 1, 1, 'core.actor.class', 1, 0, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.actor.class'),
+('core.actor', 'actor', 'email', 'email', 0, 1, 1, NULL, 1, 0, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.actor.email'),
+('core.actor', 'actor', 'fullname', 'shorttext', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.actor.fullname'),
+('core.actor', 'actor', 'id', 'identifier', 0, 1, 1, NULL, 1, 0, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.actor.id'),
+('core.actor', 'actor', 'initials', 'shorttext', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.actor.initials'),
+('core.actor', 'actor', 'shortname', 'shorttext', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.actor.shortname'),
+('core.actor', 'actor', 'telephone', 'telephone', 0, 1, 1, NULL, 1, 0, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.actor.telephone'),
+('core.actor', 'museum', 'municipality', 'term', 0, 0, 0, 'dime.denmark.municipality', 1, 0, 'public', NULL, NULL, 1, 0, 'dime.actor.municipality'),
+('core.actor', 'museum', 'participating', 'boolean', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.actor.participating'),
+('core.actor', 'person', 'detectorist_id', 'identifier', 0, 1, 1, NULL, 1, 0, 'restricted', 'core.admin', 'core.actor.read', 1, 0, 'dime.user.detectorist.id'),
+('core.actor', 'person', 'status', 'term', 0, 1, 1, 'core.security.status', 1, 0, 'restricted', 'core.admin.user', 'core.admin.user', 1, 0, 'core.security.status'),
+('core.actor', 'person', 'terms', 'term', 0, 1, 1, 'core.user.terms', 1, 0, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.user.terms'),
+('core.event', 'event', 'agents', 'actor', 0, 1, 0, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.event.agent'),
+('core.event', 'event', 'class', 'term', 0, 1, 1, 'core.event.class', 1, 0, 'public', NULL, NULL, 1, 0, 'core.event.class'),
+('core.event', 'event', 'id', 'identifier', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.event.id'),
+('core.event', 'event', 'occurred', 'datetime', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.event.occurred'),
+('core.event', 'event', 'subject', 'item', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.event.subject'),
+('core.file', 'file', 'class', 'term', 0, 1, 1, 'core.file.class', 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.class'),
+('core.file', 'file', 'copyright', 'actor', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.copyright'),
+('core.file', 'file', 'description', 'plaintext', 0, 0, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.description'),
+('core.file', 'file', 'id', 'identifier', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.id'),
+('core.file', 'file', 'license', 'term', 0, 1, 1, 'core.license', 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.status'),
+('core.file', 'file', 'mediatype', 'term', 0, 1, 1, 'mediatype', 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.mediatype'),
+('core.file', 'file', 'status', 'term', 0, 1, 1, 'core.file.status', 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.status'),
+('core.file', 'file', 'title', 'shorttext', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.title'),
+('core.file', 'file', 'versions', 'version', 0, 1, 0, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.versions'),
+('core.message', 'mail', 'attachments', 'file', 0, 0, 0, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.mail.attachments'),
+('core.message', 'mail', 'body', 'plaintext', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.mail.body'),
+('core.message', 'mail', 'subject', 'shorttext', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.mail.subject'),
+('core.message', 'message', 'class', 'term', 0, 1, 1, 'core.message.class', 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.class'),
+('core.message', 'message', 'id', 'identifier', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.id'),
+('core.message', 'message', 'recipients', 'dispatch', 0, 1, 0, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.recipients'),
+('core.message', 'message', 'sender', 'actor', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.sender'),
+('core.message', 'message', 'sent', 'datetime', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.sent_at'),
+('core.message', 'notification', 'event', 'event', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.notification.event'),
+('core.page', 'page', 'content', 'html', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'property.content'),
+('core.page', 'page', 'id', 'identifier', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.page.id'),
+('dime.find', 'coin', 'issuer', 'shorttext', 0, 0, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.issuer'),
+('dime.find', 'coin', 'mint', 'shorttext', 0, 0, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.mint'),
+('dime.find', 'find', 'case', 'identifier', 0, 0, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.case'),
+('dime.find', 'find', 'class', 'term', 0, 1, 1, 'dime.find.class', 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.class'),
+('dime.find', 'find', 'classification', 'classification', 0, 0, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.classification'),
+('dime.find', 'find', 'condition', 'term', 0, 0, 1, 'dime.find.condition', 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.condition'),
+('dime.find', 'find', 'custodian', 'actor', 0, 1, 1, NULL, 1, 0, 'restricted', 'dime.find.update.custody', 'dime.find.read.custody', 1, 0, 'dime.find.custodian'),
+('dime.find', 'find', 'custody', 'term', 0, 1, 1, 'dime.find.custody', 1, 0, 'restricted', 'dime.find.update.custody', 'dime.find.read.custody', 1, 0, 'dime.find.custody'),
+('dime.find', 'find', 'dating', 'dating', 0, 0, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.dating'),
+('dime.find', 'find', 'description', 'description', 0, 0, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.description'),
+('dime.find', 'find', 'finddate', 'date', 0, 0, 1, NULL, 1, 0, 'restricted', 'dime.find.update.finddate', 'dime.find.read.finddate', 1, 0, 'dime.find.finddate'),
+('dime.find', 'find', 'finder', 'person', 0, 1, 1, NULL, 1, 0, 'restricted', 'dime.find.update.finder', 'dime.find.read.finder', 1, 0, 'dime.find.finder'),
+('dime.find', 'find', 'finder_id', 'identifier', 0, 0, 1, NULL, 1, 0, 'restricted', 'dime.find.update.finder', 'dime.find.read.finder', 1, 0, 'dime.find.finder_id'),
+('dime.find', 'find', 'finder_place', 'identifier', 0, 0, 1, NULL, 1, 0, 'restricted', 'dime.find.update.finder', 'dime.find.read.finder', 1, 0, 'dime.find.finder_place'),
+('dime.find', 'find', 'id', 'identifier', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.id'),
+('dime.find', 'find', 'image', 'image', 0, 0, 3, NULL, 1, 1, 'public', NULL, NULL, 1, 0, 'dime.find.images'),
+('dime.find', 'find', 'length', 'distance', 0, 0, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.length'),
+('dime.find', 'find', 'location', 'wkt', 0, 1, 1, NULL, 1, 0, 'restricted', 'dime.find.update.location', 'dime.find.read.location', 1, 0, 'dime.find.location'),
+('dime.find', 'find', 'material', 'term', 0, 1, 1, 'dime.material', 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.material'),
+('dime.find', 'find', 'municipality', 'term', 0, 1, 1, 'dime.denmark.municipality', 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.municipality'),
+('dime.find', 'find', 'museum', 'museum', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.actor.class.museum'),
+('dime.find', 'find', 'museum_id', 'identifier', 0, 0, 1, NULL, 1, 0, 'restricted', 'dime.find.update.museum_id', 'dime.find.read', 1, 0, 'dime.find.museum_id'),
+('dime.find', 'find', 'owner', 'actor', 0, 1, 1, NULL, 1, 0, 'restricted', 'dime.find.update.owner', 'dime.find.read.owner', 1, 0, 'dime.find.owner'),
+('dime.find', 'find', 'process', 'term', 0, 1, 1, 'dime.find.process', 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.process'),
+('dime.find', 'find', 'recipient', 'actor', 0, 0, 1, NULL, 1, 0, 'restricted', 'dime.find.update.custody', 'dime.find.read.custody', 1, 0, 'dime.find.recipient'),
+('dime.find', 'find', 'recorder', 'actor', 0, 1, 1, NULL, 1, 0, 'restricted', 'dime.find.update.finder', 'dime.find.read.finder', 1, 0, 'dime.find.recorder'),
+('dime.find', 'find', 'secondary', 'term', 0, 0, 0, 'dime.find.secondary', 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.material.secondary'),
+('dime.find', 'find', 'treasure', 'term', 0, 1, 1, 'dime.treasure', 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.treasure'),
+('dime.find', 'find', 'visibility', 'term', 0, 1, 1, 'core.visibility', 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.visibility'),
+('dime.find', 'find', 'weight', 'mass', 0, 0, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'dime.find.weight');
 
 -- --------------------------------------------------------
 
@@ -958,14 +956,14 @@ INSERT INTO `ark_schema_attribute` (`schma`, `class`, `attribute`, `dataclass`, 
 
 CREATE TABLE `ark_schema_item` (
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `format` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dataclass` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `minimum` int(11) NOT NULL DEFAULT '0',
-  `maximum` int(11) NOT NULL DEFAULT '1',
-  `unique_values` int(11) NOT NULL DEFAULT '1',
-  `additional_values` int(11) NOT NULL DEFAULT '0',
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
+  `minimum` int(11) NOT NULL DEFAULT 0,
+  `maximum` int(11) NOT NULL DEFAULT 1,
+  `unique_values` int(11) NOT NULL DEFAULT 1,
+  `additional_values` int(11) NOT NULL DEFAULT 0,
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -973,7 +971,7 @@ CREATE TABLE `ark_schema_item` (
 -- Dumping data for table `ark_schema_item`
 --
 
-INSERT INTO `ark_schema_item` (`attribute`, `format`, `vocabulary`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`, `keyword`) VALUES
+INSERT INTO `ark_schema_item` (`attribute`, `dataclass`, `vocabulary`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`, `keyword`) VALUES
 ('class', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.item.type'),
 ('id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.item.id'),
 ('index', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.item.index'),
@@ -991,8 +989,8 @@ INSERT INTO `ark_schema_item` (`attribute`, `format`, `vocabulary`, `minimum`, `
 CREATE TABLE `ark_translation` (
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `domain` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `is_plural` tinyint(1) NOT NULL DEFAULT '0',
-  `has_parameters` tinyint(1) NOT NULL DEFAULT '0'
+  `is_plural` tinyint(1) NOT NULL DEFAULT 0,
+  `has_parameters` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -1042,6 +1040,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('core.actor.visibility', 'core', 0, 0),
 ('core.admin', 'core', 0, 0),
 ('core.admin.user.register', 'dime', 0, 0),
+('core.blank', 'core', 0, 0),
 ('core.button.apply', 'core', 0, 0),
 ('core.button.change', 'core', 0, 0),
 ('core.button.clone', 'core', 0, 0),
@@ -1525,8 +1524,10 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.controls', 'dime', 0, 0),
 ('dime.copyright', 'dime', 0, 0),
 ('dime.credits', 'dime', 0, 0),
+('dime.denmark.admin', 'dime', 0, 0),
 ('dime.denmark.admin.denmark', 'vocabulary', 0, 0),
 ('dime.denmark.municipality', 'dime', 0, 0),
+('dime.denmark.region', 'dime', 0, 0),
 ('dime.detector', 'dime', 0, 0),
 ('dime.exhibits', 'dime', 0, 0),
 ('dime.exhibits.forests', 'dime', 0, 0),
@@ -1995,6 +1996,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('dime.map.layer.skaermkort', 'dime', 0, 0),
 ('dime.map.public', 'core', 0, 0),
 ('dime.map.user', 'core', 0, 0),
+('dime.material', 'dime', 0, 0),
 ('dime.material.aluminium', 'vocabulary', 0, 0),
 ('dime.material.ceramic', 'dime', 0, 0),
 ('dime.material.copper', 'vocabulary', 0, 0),
@@ -2112,11 +2114,11 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('format.address', 'core', 0, 0),
 ('format.address.city', 'core', 0, 0),
 ('format.address.country', 'core', 0, 0),
-('format.address.street', 'core', 0, 0),
+('format.address.street', 'core', 0, 0);
+INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
 ('format.blob', 'core', 0, 0),
 ('format.boolean', 'core', 0, 0),
-('format.classification.class', 'core', 0, 0);
-INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters`) VALUES
+('format.classification.class', 'core', 0, 0),
 ('format.classification.classified', 'core', 0, 0),
 ('format.colour', 'core', 0, 0),
 ('format.date', 'core', 0, 0),
@@ -2854,6 +2856,7 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('spatial.format.wkt', 'vocabulary', 0, 0),
 ('test.test', 'core', 0, 0),
 ('translation.domain.core', 'core', 0, 0),
+('translation.domain.dime', 'dime', 0, 0),
 ('translation.domain.user', 'core', 0, 0),
 ('translation.domain.vocabulary', 'core', 0, 0),
 ('translation.role.default', 'core', 0, 0),
@@ -2911,9 +2914,9 @@ INSERT INTO `ark_translation_domain` (`domain`, `keyword`) VALUES
 
 CREATE TABLE `ark_translation_language` (
   `language` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `markup` tinyint(1) NOT NULL DEFAULT '0',
-  `vocabulary` tinyint(1) NOT NULL DEFAULT '0',
-  `text` tinyint(1) NOT NULL DEFAULT '0'
+  `markup` tinyint(1) NOT NULL DEFAULT 0,
+  `vocabulary` tinyint(1) NOT NULL DEFAULT 0,
+  `text` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -2935,7 +2938,7 @@ CREATE TABLE `ark_translation_message` (
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `text` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `notes` longtext COLLATE utf8mb4_unicode_ci
+  `notes` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -2971,6 +2974,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'core.actor.visibility', 'default', 'Synlighed af privateoplysninger???', NULL),
 ('da', 'core.admin', 'resource', 'admin', NULL),
 ('da', 'core.admin.user.register', 'default', 'Tilmeld dig en ny bruger', ''),
+('da', 'core.blank', 'default', '', NULL),
 ('da', 'core.button.apply', 'default', 'Ansøg', NULL),
 ('da', 'core.button.change', 'default', 'Ændr', NULL),
 ('da', 'core.button.clone', 'default', 'Kopiier side', NULL),
@@ -3758,9 +3762,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('da', 'map.layer.bing.aerial', 'default', 'Bing luftfoto', NULL),
 ('da', 'map.layer.bing.aerialwithlabels', 'default', 'Luftfoto med etiketter', NULL),
 ('da', 'map.layer.bing.road', 'default', 'Bing Vejkort', NULL),
-('da', 'map.layer.foraar', 'default', 'Foraar', NULL),
 ('da', 'map.layer.road', 'default', 'Vej', NULL),
-('da', 'map.layer.skaermkort', 'default', 'Skærmkort', NULL),
 ('da', 'map.legend.max', 'default', 'Max', NULL),
 ('da', 'map.legend.min', 'default', 'Min', NULL),
 ('da', 'map.style.choropleth', 'default', 'Kommune', NULL),
@@ -3813,6 +3815,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'core.actor.visibility', 'default', 'Privacy', ''),
 ('en', 'core.admin', 'resource', 'admin', ''),
 ('en', 'core.admin.user.register', 'default', 'Register a new user', ''),
+('en', 'core.blank', 'default', '', NULL),
 ('en', 'core.button.apply', 'default', 'Apply', ''),
 ('en', 'core.button.change', 'default', 'Change', ''),
 ('en', 'core.button.clone', 'default', 'Clone', ''),
@@ -4189,7 +4192,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.controls', 'default', 'Go', ''),
 ('en', 'dime.copyright', 'default', 'Copyright © 2013-2017 Arkæologisk IT, Aarhus University', NULL),
 ('en', 'dime.credits', 'default', 'Data modelling and support: Carsten Risager | Design: Casper Skaaning Anderson | Implementation: L ~ P Archaeology', NULL),
+('en', 'dime.denmark.admin', 'default', 'Danish Administration Units', ''),
 ('en', 'dime.denmark.municipality', 'default', 'Municipalities', NULL),
+('en', 'dime.denmark.region', 'default', 'Danish Regions', ''),
 ('en', 'dime.detector', 'default', 'Detecting', NULL),
 ('en', 'dime.detector', 'resource', 'detecting', NULL),
 ('en', 'dime.exhibits', 'default', 'Exhibits', NULL),
@@ -4357,9 +4362,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.subtype.coin.viking.sceat', 'default', 'Sceat', NULL),
 ('en', 'dime.find.subtype.fibula.beak', 'default', 'Beak fibula', NULL),
 ('en', 'dime.find.subtype.fibula.bird.above', 'default', 'Bird fibula (top view)', NULL),
-('en', 'dime.find.subtype.fibula.bird.profile', 'default', 'Bird-shaped fibula (Early medieval - small bird in profile)', NULL),
-('en', 'dime.find.subtype.fibula.bow', 'default', 'Bow fibula', NULL);
+('en', 'dime.find.subtype.fibula.bird.profile', 'default', 'Bird-shaped fibula (Early medieval - small bird in profile)', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'dime.find.subtype.fibula.bow', 'default', 'Bow fibula', NULL),
 ('en', 'dime.find.subtype.fibula.bow.ball', 'default', 'Hard cast ball fibula (Pre- Roman Iron Age)', NULL),
 ('en', 'dime.find.subtype.fibula.bow.band', 'default', 'Wide band-shaped bow fibulas (Roman Iron Age - Almgr. V)', NULL),
 ('en', 'dime.find.subtype.fibula.bow.bilateral', 'default', 'Bilateral fibulas with two combs (Early Roman Iron Age - Almgr. I-IV)', NULL),
@@ -4726,6 +4731,7 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.krogager', 'default', 'KrogagerFonden', NULL),
 ('en', 'dime.map.layer.foraar', 'default', 'Foraar Layer', NULL),
 ('en', 'dime.map.layer.skaermkort', 'default', 'Skaermkort', NULL),
+('en', 'dime.material', 'default', 'DIME Material', ''),
 ('en', 'dime.material.aluminium', 'default', 'Aluminium', NULL),
 ('en', 'dime.material.ceramic', 'default', 'Ceramic', ''),
 ('en', 'dime.material.copper', 'default', 'Copper', NULL),
@@ -5057,10 +5063,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'language.filipino', 'default', 'Filipino', NULL),
 ('en', 'language.finnish', 'default', 'Finnish', NULL),
 ('en', 'language.finnish.tornedalen', 'default', 'Tornedalen Finnish', NULL),
-('en', 'language.flemish', 'default', 'Flemish', NULL),
-('en', 'language.flemish.west', 'default', 'West Flemish', NULL),
-('en', 'language.fon', 'default', 'Fon', NULL);
+('en', 'language.flemish', 'default', 'Flemish', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'language.flemish.west', 'default', 'West Flemish', NULL),
+('en', 'language.fon', 'default', 'Fon', NULL),
 ('en', 'language.frafra', 'default', 'Frafra', NULL),
 ('en', 'language.franconian.main', 'default', 'Main-Franconian', NULL),
 ('en', 'language.french', 'default', 'French', NULL),
@@ -5650,7 +5656,7 @@ CREATE TABLE `ark_view_cell` (
   `name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `width` int(11) DEFAULT NULL,
   `label` tinyint(1) DEFAULT NULL,
-  `help` tinyint(1) NOT NULL DEFAULT '0',
+  `help` tinyint(1) NOT NULL DEFAULT 0,
   `placeholder` tinyint(1) DEFAULT NULL,
   `choices` tinyint(1) DEFAULT NULL,
   `required` tinyint(1) DEFAULT NULL,
@@ -5665,8 +5671,8 @@ CREATE TABLE `ark_view_cell` (
   `format` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `display` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `data` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
   `keyword` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `template` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `options` varchar(4000) COLLATE utf8mb4_unicode_ci DEFAULT NULL
@@ -5853,7 +5859,6 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('dime_home_page', '', 1, 0, 0, 'dime_home_dashboard', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_home_page', '', 1, 1, 0, 'dime_find_list', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_message_page', '', 0, 0, 0, 'dime_home_action', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('dime_message_page', '', 1, 0, 0, 'core_message_table', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_message_page', '', 1, 1, 0, 'core_message_item', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_profile_list', '', 0, 0, 2, 'dime_profile_table', NULL, NULL, 'items', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('dime_profile_list', '', 0, 0, 4, 'core_workflow_action', NULL, NULL, 'batch', NULL, 0, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
@@ -5916,8 +5921,8 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 CREATE TABLE `ark_view_element` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -6128,7 +6133,6 @@ INSERT INTO `ark_view_element` (`element`, `type`, `enabled`, `deprecated`, `key
 ('dime_user_profile', 'grid', 1, 0, NULL),
 ('dime_user_register', 'grid', 1, 0, NULL),
 ('dime_user_register_actor', 'grid', 1, 0, NULL),
-('dime_widget_actors', 'actor', 1, 0, NULL),
 ('dime_widget_classify', 'widget', 1, 0, 'dime.find.classify'),
 ('dime_widget_role', 'widget', 1, 0, 'core.workflow.role'),
 ('dime_widget_terms', 'widget', 1, 0, NULL),
@@ -6151,7 +6155,7 @@ CREATE TABLE `ark_view_field` (
   `format` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `template` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `form_options` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL
+  `form_options` varchar(4000) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -6226,7 +6230,7 @@ CREATE TABLE `ark_view_group` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `layout` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'grid',
   `mode` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `form` tinyint(1) NOT NULL DEFAULT '0',
+  `form` tinyint(1) NOT NULL DEFAULT 0,
   `name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `method` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `action` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -6329,12 +6333,12 @@ INSERT INTO `ark_view_group` (`element`, `layout`, `mode`, `form`, `name`, `meth
 CREATE TABLE `ark_view_nav` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `parent` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `seq` int(11) NOT NULL DEFAULT '0',
+  `seq` int(11) NOT NULL DEFAULT 0,
   `level` int(11) DEFAULT NULL,
   `icon` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `route` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `uri` varchar(2038) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `seperator` tinyint(1) NOT NULL DEFAULT '0',
+  `seperator` tinyint(1) NOT NULL DEFAULT 0,
   `template` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -6360,14 +6364,14 @@ INSERT INTO `ark_view_nav` (`element`, `parent`, `seq`, `level`, `icon`, `route`
 
 CREATE TABLE `ark_view_page` (
   `element` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `view` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT '''NULL''',
+  `header` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sidebar` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `content` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
+  `footer` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
+  `mode` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '''view''',
+  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'restricted',
+  `view` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `edit` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
-  `header` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT '''NULL''',
-  `sidebar` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT '''NULL''',
-  `content` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `footer` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `mode` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'view',
-  `visibility` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `template` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -6375,39 +6379,39 @@ CREATE TABLE `ark_view_page` (
 -- Dumping data for table `ark_view_page`
 --
 
-INSERT INTO `ark_view_page` (`element`, `view`, `edit`, `header`, `sidebar`, `content`, `footer`, `mode`, `visibility`, `template`) VALUES
-('core_page_admin', 'core.admin', 'core.admin', 'core_site_header', 'core_site_sidebar', 'core_admin_page', 'core_site_footer', 'edit', 'restricted', NULL),
-('core_page_admin_user', 'core.admin.user', 'core.admin.user', 'core_site_header', 'core_site_sidebar', 'core_admin_user_page', 'core_site_footer', 'edit', 'restricted', NULL),
-('core_page_home', NULL, NULL, 'core_site_header', 'core_site_sidebar', 'core_home_page', 'core_site_footer', 'view', 'public', NULL),
-('core_page_message', 'core.message.read', NULL, 'core_site_header', 'core_site_sidebar', 'core_message_page', 'core_site_footer', 'view', 'restricted', NULL),
-('core_page_messages', 'core.message.read', NULL, 'core_site_header', 'core_site_sidebar', 'core_message_page', 'core_site_footer', 'view', 'restricted', NULL),
-('core_page_profile', NULL, NULL, 'core_site_header', 'core_site_sidebar', 'core_profile_page', 'core_site_footer', 'view', 'public', NULL),
-('core_page_profiles', NULL, NULL, 'core_site_header', 'core_site_sidebar', 'core_profiles_page', 'core_site_footer', 'view', 'public', NULL),
-('core_page_user_confirm', NULL, NULL, 'core_site_header', 'core_site_sidebar', NULL, 'core_site_footer', 'edit', 'public', NULL),
-('core_page_user_login', NULL, NULL, 'core_site_header', 'core_site_sidebar', 'core_user_login', 'core_site_footer', 'edit', 'public', NULL),
-('core_page_user_profile', 'core.actor.read', 'core.actor.update', 'core_site_header', 'core_site_sidebar', 'core_user_profile', 'core_site_footer', 'edit', 'restricted', NULL),
-('core_page_user_register', NULL, NULL, 'core_site_header', 'core_site_sidebar', 'core_user_register', 'core_site_footer', 'edit', 'public', NULL),
-('core_page_user_reset', NULL, NULL, 'core_site_header', 'core_site_sidebar', 'core_user_reset', 'core_site_footer', 'edit', 'public', NULL),
-('dime_page_admin', 'core.admin', 'core.admin', 'dime_site_header', 'dime_site_sidebar', 'dime_admin_page', 'dime_site_footer', 'edit', 'restricted', NULL),
-('dime_page_admin_register', 'core.admin.user', 'core.admin.user', 'dime_site_header', 'dime_site_sidebar', 'dime_admin_register_page', 'dime_site_footer', 'edit', 'restricted', NULL),
-('dime_page_admin_user', 'core.admin.user', 'core.admin.user', 'dime_site_header', 'dime_site_sidebar', 'dime_admin_user_page', 'dime_site_footer', 'edit', 'restricted', NULL),
-('dime_page_claim', 'dime.find.treasure.claim', 'dime.find.treasure.claim', 'dime_site_header', 'dime_site_sidebar', 'dime_treasure_claim', 'dime_site_footer', 'edit', 'restricted', NULL),
-('dime_page_find', 'dime.find.read', 'dime.find.update', 'dime_site_header', 'dime_site_sidebar', 'dime_find_view', 'dime_site_footer', 'edit', 'restricted', NULL),
-('dime_page_find_add', 'dime.find.read', 'dime.find.update', 'dime_site_header', 'dime_site_sidebar', 'dime_find_add', 'dime_site_footer', 'edit', 'restricted', NULL),
-('dime_page_find_list', 'dime.find.read', 'dime.find.update', 'dime_site_header', 'dime_site_sidebar', 'dime_find_search', 'dime_site_footer', 'edit', 'public', NULL),
-('dime_page_front', NULL, NULL, 'dime_site_header', 'dime_site_sidebar', 'dime_front_page', 'dime_site_footer', 'view', 'public', NULL),
-('dime_page_home', 'core.actor.read', NULL, 'dime_site_header', 'dime_site_sidebar', 'dime_home_page', 'dime_site_footer', 'view', 'restricted', NULL),
-('dime_page_home_find_list', 'dime.find.read', 'dime.find.update', 'dime_site_header', 'dime_site_sidebar', 'dime_home_find_search', 'dime_site_footer', 'edit', 'restricted', NULL),
-('dime_page_message', 'core.message.read', NULL, 'dime_site_header', 'dime_site_sidebar', 'dime_message_page', 'dime_site_footer', 'view', 'restricted', NULL),
-('dime_page_news', NULL, NULL, 'dime_site_header', 'dime_site_sidebar', 'dime_find_news', 'dime_site_footer', 'view', 'public', NULL),
-('dime_page_profile', NULL, NULL, 'dime_site_header', 'dime_site_sidebar', 'dime_profile_page', 'dime_site_footer', 'view', 'public', NULL),
-('dime_page_profile_list', NULL, NULL, 'dime_site_header', 'dime_site_sidebar', 'dime_profile_list_page', 'dime_site_footer', 'view', 'public', NULL),
-('dime_page_static', NULL, NULL, 'dime_site_header', 'dime_site_sidebar', NULL, 'dime_site_footer', 'view', 'public', NULL),
-('dime_page_user_confirm', NULL, NULL, 'dime_site_header', 'dime_site_sidebar', NULL, 'dime_site_footer', 'edit', 'public', NULL),
-('dime_page_user_login', NULL, NULL, 'dime_site_header', 'dime_site_sidebar', 'core_user_login', 'dime_site_footer', 'edit', 'public', NULL),
-('dime_page_user_profile', 'core.actor.read', 'core.actor.update', 'dime_site_header', 'dime_site_sidebar', 'dime_user_profile', 'dime_site_footer', 'edit', 'restricted', NULL),
-('dime_page_user_register', NULL, NULL, 'dime_site_header', 'dime_site_sidebar', 'dime_user_register', 'dime_site_footer', 'edit', 'public', NULL),
-('dime_page_user_reset', NULL, NULL, 'dime_site_header', 'dime_site_sidebar', 'core_user_reset', 'dime_site_footer', 'edit', 'public', NULL);
+INSERT INTO `ark_view_page` (`element`, `header`, `sidebar`, `content`, `footer`, `mode`, `visibility`, `view`, `edit`, `template`) VALUES
+('core_page_admin', 'core_site_header', 'core_site_sidebar', 'core_admin_page', 'core_site_footer', 'edit', 'restricted', 'core.admin', 'core.admin', NULL),
+('core_page_admin_user', 'core_site_header', 'core_site_sidebar', 'core_admin_user_page', 'core_site_footer', 'edit', 'restricted', 'core.admin.user', 'core.admin.user', NULL),
+('core_page_home', 'core_site_header', 'core_site_sidebar', 'core_home_page', 'core_site_footer', 'view', 'public', NULL, NULL, NULL),
+('core_page_message', 'core_site_header', 'core_site_sidebar', 'core_message_page', 'core_site_footer', 'view', 'restricted', 'core.message.read', NULL, NULL),
+('core_page_messages', 'core_site_header', 'core_site_sidebar', 'core_message_page', 'core_site_footer', 'view', 'restricted', 'core.message.read', NULL, NULL),
+('core_page_profile', 'core_site_header', 'core_site_sidebar', 'core_profile_page', 'core_site_footer', 'view', 'public', NULL, NULL, NULL),
+('core_page_profiles', 'core_site_header', 'core_site_sidebar', 'core_profiles_page', 'core_site_footer', 'view', 'public', NULL, NULL, NULL),
+('core_page_user_confirm', 'core_site_header', 'core_site_sidebar', NULL, 'core_site_footer', 'edit', 'public', NULL, NULL, NULL),
+('core_page_user_login', 'core_site_header', 'core_site_sidebar', 'core_user_login', 'core_site_footer', 'edit', 'public', NULL, NULL, NULL),
+('core_page_user_profile', 'core_site_header', 'core_site_sidebar', 'core_user_profile', 'core_site_footer', 'edit', 'restricted', 'core.actor.read', 'core.actor.update', NULL),
+('core_page_user_register', 'core_site_header', 'core_site_sidebar', 'core_user_register', 'core_site_footer', 'edit', 'public', NULL, NULL, NULL),
+('core_page_user_reset', 'core_site_header', 'core_site_sidebar', 'core_user_reset', 'core_site_footer', 'edit', 'public', NULL, NULL, NULL),
+('dime_page_admin', 'dime_site_header', 'dime_site_sidebar', 'dime_admin_page', 'dime_site_footer', 'edit', 'restricted', 'core.admin', 'core.admin', NULL),
+('dime_page_admin_register', 'dime_site_header', 'dime_site_sidebar', 'dime_admin_register_page', 'dime_site_footer', 'edit', 'restricted', 'core.admin.user', 'core.admin.user', NULL),
+('dime_page_admin_user', 'dime_site_header', 'dime_site_sidebar', 'dime_admin_user_page', 'dime_site_footer', 'edit', 'restricted', 'core.admin.user', 'core.admin.user', NULL),
+('dime_page_claim', 'dime_site_header', 'dime_site_sidebar', 'dime_treasure_claim', 'dime_site_footer', 'edit', 'restricted', 'dime.find.treasure.claim', 'dime.find.treasure.claim', NULL),
+('dime_page_find', 'dime_site_header', 'dime_site_sidebar', 'dime_find_view', 'dime_site_footer', 'edit', 'restricted', 'dime.find.read', 'dime.find.update', NULL),
+('dime_page_find_add', 'dime_site_header', 'dime_site_sidebar', 'dime_find_add', 'dime_site_footer', 'edit', 'restricted', 'dime.find.read', 'dime.find.update', NULL),
+('dime_page_find_list', 'dime_site_header', 'dime_site_sidebar', 'dime_find_search', 'dime_site_footer', 'edit', 'public', 'dime.find.read', 'dime.find.update', NULL),
+('dime_page_front', 'dime_site_header', 'dime_site_sidebar', 'dime_front_page', 'dime_site_footer', 'view', 'public', NULL, NULL, NULL),
+('dime_page_home', 'dime_site_header', 'dime_site_sidebar', 'dime_home_page', 'dime_site_footer', 'view', 'restricted', 'core.actor.read', NULL, NULL),
+('dime_page_home_find_list', 'dime_site_header', 'dime_site_sidebar', 'dime_home_find_search', 'dime_site_footer', 'edit', 'restricted', 'dime.find.read', 'dime.find.update', NULL),
+('dime_page_message', 'dime_site_header', 'dime_site_sidebar', 'dime_message_page', 'dime_site_footer', 'view', 'restricted', 'core.message.read', NULL, NULL),
+('dime_page_news', 'dime_site_header', 'dime_site_sidebar', 'dime_find_news', 'dime_site_footer', 'view', 'public', NULL, NULL, NULL),
+('dime_page_profile', 'dime_site_header', 'dime_site_sidebar', 'dime_profile_page', 'dime_site_footer', 'view', 'public', NULL, NULL, NULL),
+('dime_page_profile_list', 'dime_site_header', 'dime_site_sidebar', 'dime_profile_list_page', 'dime_site_footer', 'view', 'public', NULL, NULL, NULL),
+('dime_page_static', 'dime_site_header', 'dime_site_sidebar', NULL, 'dime_site_footer', 'view', 'public', NULL, NULL, NULL),
+('dime_page_user_confirm', 'dime_site_header', 'dime_site_sidebar', NULL, 'dime_site_footer', 'edit', 'public', NULL, NULL, NULL),
+('dime_page_user_login', 'dime_site_header', 'dime_site_sidebar', 'core_user_login', 'dime_site_footer', 'edit', 'public', NULL, NULL, NULL),
+('dime_page_user_profile', 'dime_site_header', 'dime_site_sidebar', 'dime_user_profile', 'dime_site_footer', 'edit', 'restricted', 'core.actor.read', 'core.actor.update', NULL),
+('dime_page_user_register', 'dime_site_header', 'dime_site_sidebar', 'dime_user_register', 'dime_site_footer', 'edit', 'public', NULL, NULL, NULL),
+('dime_page_user_reset', 'dime_site_header', 'dime_site_sidebar', 'core_user_reset', 'dime_site_footer', 'edit', 'public', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -6453,24 +6457,24 @@ INSERT INTO `ark_view_tree` (`id`, `ancestor`, `descendant`, `depth`) VALUES
 
 CREATE TABLE `ark_view_type` (
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `layout` tinyint(1) NOT NULL DEFAULT 0,
   `class` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `layout` tinyint(1) NOT NULL DEFAULT '0',
-  `form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `template` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+  `form_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
+  `template` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_view_type`
 --
 
-INSERT INTO `ark_view_type` (`type`, `keyword`, `class`, `layout`, `form_type`, `template`) VALUES
-('field', NULL, 'ARK\\View\\Field', 0, 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/field.html.twig'),
-('grid', NULL, 'ARK\\View\\Grid', 1, 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/grid.html.twig'),
-('nav', NULL, 'ARK\\View\\Nav', 0, NULL, 'blocks/nav.html.twig'),
-('page', NULL, 'ARK\\View\\Page', 0, NULL, 'pages/page.html.twig'),
-('table', NULL, 'ARK\\View\\Table', 1, 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/table.html.twig'),
-('widget', NULL, 'ARK\\View\\Widget', 0, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', 'layouts/widget.html.twig');
+INSERT INTO `ark_view_type` (`type`, `layout`, `class`, `form_type`, `template`, `keyword`) VALUES
+('field', 0, 'ARK\\View\\Field', 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/field.html.twig', NULL),
+('grid', 1, 'ARK\\View\\Grid', 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/grid.html.twig', NULL),
+('nav', 0, 'ARK\\View\\Nav', NULL, 'blocks/nav.html.twig', NULL),
+('page', 0, 'ARK\\View\\Page', NULL, 'pages/page.html.twig', NULL),
+('table', 1, 'ARK\\View\\Table', 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/table.html.twig', NULL),
+('widget', 0, 'ARK\\View\\Widget', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', 'layouts/widget.html.twig', NULL);
 
 -- --------------------------------------------------------
 
@@ -6512,7 +6516,6 @@ INSERT INTO `ark_view_widget` (`element`, `name`, `choices`, `template`, `form_t
 ('core_widget_textarea', 'textarea', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', ''),
 ('core_widget_time', 'time', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', '{\"widget\": \"single_text\",\"html5\": false, \"attr\": {\"class\": \"timepicker\"}}'),
 ('core_widget_username', '_username', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', ''),
-('dime_widget_actors', 'actors', 'actors', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', ''),
 ('dime_widget_classify', 'classify', NULL, 'blocks/classification.html.twig', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', '');
 
 -- --------------------------------------------------------
@@ -6525,12 +6528,12 @@ CREATE TABLE `ark_vocabulary` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `source` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `closed` tinyint(1) NOT NULL DEFAULT '1',
-  `transitions` tinyint(1) NOT NULL DEFAULT '0',
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
+  `closed` tinyint(1) NOT NULL DEFAULT 1,
+  `transitions` tinyint(1) NOT NULL DEFAULT 0,
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci
+  `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -6553,18 +6556,18 @@ INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `transition
 ('core.visibility', 'list', 'ARK Core', 1, 0, 1, 0, 'core.visibility', 'Data Visibility'),
 ('core.workflow.role', 'list', 'ARK Core', 1, 0, 1, 0, 'core.workflow.role', 'ARK Workflow Roles'),
 ('country', 'list', 'ISO3166', 1, 0, 1, 0, 'vocabulary.country', 'ISO Country Codes'),
-('dime.denmark.admin', 'taxonomy', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.denmark.admin', 'Danish NUTS and LAU Administrative Unit Hierarchy'),
+('dime.denmark.admin', 'taxonomy', 'DIME', 1, 0, 1, 0, 'dime.denmark.admin', 'Danish NUTS and LAU Administrative Unit Hierarchy'),
 ('dime.denmark.municipality', 'list', 'DIME', 1, 0, 1, 0, 'dime.denmark.municipality', 'Danish LAU-1 Municipality (Kommune) List'),
-('dime.denmark.region', 'list', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.denmark.region', 'Danish NUTS2 Region List'),
+('dime.denmark.region', 'list', 'DIME', 1, 0, 1, 0, 'dime.denmark.region', 'Danish NUTS2 Region List'),
 ('dime.find.class', 'list', 'DIME', 1, 0, 1, 0, 'dime.find.class', 'DIME Find Type'),
-('dime.find.condition', 'list', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.find.condition', 'DIME Find Condition'),
+('dime.find.condition', 'list', 'DIME', 1, 0, 1, 0, 'dime.find.condition', 'DIME Find Condition'),
 ('dime.find.custody', 'list', 'DIME', 1, 0, 1, 0, 'dime.find.custody', 'DIME Find Custody'),
 ('dime.find.process', 'list', 'DIME', 1, 0, 1, 0, 'dime.find.process', 'DIME Find Process'),
-('dime.find.secondary', 'list', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.find.secondary', 'DIME Secondary Materials List'),
+('dime.find.secondary', 'list', 'DIME', 1, 0, 1, 0, 'dime.find.material.secondary', 'DIME Secondary Materials List'),
 ('dime.find.subtype', 'taxonomy', 'DIME', 1, 0, 1, 0, 'dime.find.subtype', 'DIME Find Subtype'),
-('dime.material', 'list', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.material', 'DIME Material List'),
-('dime.period', 'taxonomy', 'DIME', 1, 0, 1, 0, 'vocabulary.dime.period', 'DIME Period Taxonomy'),
-('dime.treasure', 'list', 'DIME', 1, 1, 1, 0, 'vocabulary.dime.treasure', 'DIME Treasure Status'),
+('dime.material', 'list', 'DIME', 1, 0, 1, 0, 'dime.material', 'DIME Material List'),
+('dime.period', 'taxonomy', 'DIME', 1, 0, 1, 0, 'dime.period', 'DIME Period Taxonomy'),
+('dime.treasure', 'list', 'DIME', 1, 1, 1, 0, 'dime.treasure', 'DIME Treasure Status'),
 ('dime.user.terms', 'list', 'DIME', 1, 0, 1, 0, 'dime.user.terms', 'DIME Terms and Conditions'),
 ('dime.workflow.role', 'list', 'DIME', 1, 0, 1, 0, 'core.workflow.role', 'DIME Workflow Roles'),
 ('distance', 'list', 'SI', 1, 0, 1, 0, 'vocabulary.distance', 'SI Distance Units'),
@@ -7311,10 +7314,10 @@ CREATE TABLE `ark_vocabulary_relation` (
   `notation` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
   `recipricol` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `recipricol_notation` varchar(3) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `equivalence` tinyint(1) NOT NULL DEFAULT '0',
-  `hierarchy` tinyint(1) NOT NULL DEFAULT '0',
-  `associative` tinyint(1) NOT NULL DEFAULT '0',
-  `description` text COLLATE utf8mb4_unicode_ci
+  `equivalence` tinyint(1) NOT NULL DEFAULT 0,
+  `hierarchy` tinyint(1) NOT NULL DEFAULT 0,
+  `associative` tinyint(1) NOT NULL DEFAULT 0,
+  `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -7339,12 +7342,12 @@ INSERT INTO `ark_vocabulary_relation` (`relation`, `notation`, `recipricol`, `re
 CREATE TABLE `ark_vocabulary_term` (
   `concept` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `term` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `alias` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
+  `is_default` tinyint(1) NOT NULL DEFAULT 0,
+  `root` tinyint(1) NOT NULL DEFAULT 0,
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `alias` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `is_default` tinyint(1) NOT NULL DEFAULT '0',
-  `root` tinyint(1) NOT NULL DEFAULT '0',
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
   `description` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -7352,1419 +7355,1419 @@ CREATE TABLE `ark_vocabulary_term` (
 -- Dumping data for table `ark_vocabulary_term`
 --
 
-INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `keyword`, `alias`, `is_default`, `root`, `enabled`, `deprecated`, `description`) VALUES
-('core.actor.class', 'institution', 'core.actor.class.institution', '', 0, 0, 1, 0, ''),
-('core.actor.class', 'museum', 'core.actor.class.museum', '', 0, 0, 1, 0, ''),
-('core.actor.class', 'person', 'core.actor.class.person', '', 0, 0, 1, 0, ''),
-('core.event.class', 'accessioned', 'dime.find.event.accessioned', '', 0, 0, 0, 0, ''),
-('core.event.class', 'activated', 'core.actor.event.activated', '', 0, 0, 0, 0, ''),
-('core.event.class', 'agreed', 'dime.find.event.agreed', '', 0, 0, 0, 0, ''),
-('core.event.class', 'annotated', 'dime.find.event.annotated', '', 0, 0, 0, 0, ''),
-('core.event.class', 'appraised', 'dime.find.event.appraised', '', 0, 0, 0, 0, ''),
-('core.event.class', 'approved', 'core.actor.event.approved', '', 0, 0, 0, 0, ''),
-('core.event.class', 'assessed', 'dime.find.event.assessed', '', 0, 0, 0, 0, ''),
-('core.event.class', 'cancelled', 'core.actor.event.cancelled', '', 0, 0, 0, 0, ''),
-('core.event.class', 'cited', 'dime.find.event.cited', '', 0, 0, 0, 0, ''),
-('core.event.class', 'classified', 'dime.find.event.classified', '', 0, 0, 0, 0, ''),
-('core.event.class', 'commented', 'dime.find.event.commented', '', 0, 0, 0, 0, ''),
-('core.event.class', 'conserved', 'dime.find.event.conserved', '', 0, 0, 0, 0, ''),
-('core.event.class', 'contacted', 'dime.find.event.contacted', '', 0, 0, 0, 0, ''),
-('core.event.class', 'dated', 'dime.find.event.dated', '', 0, 0, 0, 0, ''),
-('core.event.class', 'declined', 'dime.find.event.declined', '', 0, 0, 0, 0, ''),
-('core.event.class', 'deleted', 'dime.find.event.deleted', '', 0, 0, 0, 0, ''),
-('core.event.class', 'described', 'dime.find.event.described', '', 0, 0, 0, 0, ''),
-('core.event.class', 'destroyed', 'dime.find.event.destroyed', '', 0, 0, 0, 0, ''),
-('core.event.class', 'disagreed', 'dime.find.event.disagreed', '', 0, 0, 0, 0, ''),
-('core.event.class', 'discarded', 'dime.find.event.discarded', '', 0, 0, 0, 0, ''),
-('core.event.class', 'edited', 'core.event.edited', '', 0, 0, 0, 0, ''),
-('core.event.class', 'evaluated', 'dime.find.event.evaluated', '', 0, 0, 0, 0, ''),
-('core.event.class', 'exported', 'dime.find.event.exported', '', 0, 0, 0, 0, ''),
-('core.event.class', 'followed', 'dime.find.event.followed', '', 0, 0, 0, 0, ''),
-('core.event.class', 'identified', 'dime.find.event.identified', '', 0, 0, 0, 0, ''),
-('core.event.class', 'liked', 'dime.find.event.liked', '', 0, 0, 0, 0, ''),
-('core.event.class', 'loaned', 'dime.find.event.loaned', '', 0, 0, 0, 0, ''),
-('core.event.class', 'locked', 'core.user', '', 0, 0, 0, 0, ''),
-('core.event.class', 'lost', 'dime.find.event.lost', '', 0, 0, 0, 0, ''),
-('core.event.class', 'notified', 'dime.find.event.notified', '', 0, 0, 0, 0, ''),
-('core.event.class', 'published', 'dime.find.event.published', '', 0, 0, 0, 0, ''),
-('core.event.class', 'received', 'dime.find.event.received', '', 0, 0, 0, 0, ''),
-('core.event.class', 'recorded', 'dime.find.event.recorded', '', 0, 0, 0, 0, ''),
-('core.event.class', 'recovered', 'dime.find.event.recovered', '', 0, 0, 0, 0, ''),
-('core.event.class', 'redacted', 'dime.find.event.redacted', '', 0, 0, 0, 0, ''),
-('core.event.class', 'referred', 'dime.find.event.referred', '', 0, 0, 0, 0, ''),
-('core.event.class', 'registered', 'core.actor.event.registered', '', 0, 0, 0, 0, ''),
-('core.event.class', 'rejected', 'dime.find.event.rejected', '', 0, 0, 0, 0, ''),
-('core.event.class', 'released', 'dime.find.event.released', '', 0, 0, 0, 0, ''),
-('core.event.class', 'reported', 'dime.find.event.reported', '', 0, 0, 0, 0, ''),
-('core.event.class', 'requested', 'dime.find.event.requested', '', 0, 0, 0, 0, ''),
-('core.event.class', 'restored', 'core.actor.event.restored', '', 0, 0, 0, 0, ''),
-('core.event.class', 'rewarded', 'dime.find.event.rewarded', '', 0, 0, 0, 0, ''),
-('core.event.class', 'sent', 'dime.find.event.sent', '', 0, 0, 0, 0, ''),
-('core.event.class', 'shared', 'dime.find.event.shared', '', 0, 0, 0, 0, ''),
-('core.event.class', 'subscribed', 'dime.find.event.subscribed', '', 0, 0, 0, 0, ''),
-('core.event.class', 'suppressed', 'dime.find.event.suppressed', '', 0, 0, 0, 0, ''),
-('core.event.class', 'suspended', 'core.actor.event.suspended', '', 0, 0, 0, 0, ''),
-('core.event.class', 'transferred', 'dime.find.event.transferred', '', 0, 0, 0, 0, ''),
-('core.event.class', 'unlocked', 'core.user.agree', '', 0, 0, 0, 0, ''),
-('core.event.class', 'validated', 'dime.find.event.validated', '', 0, 0, 0, 0, ''),
-('core.event.class', 'viewed', 'core.event.class.viewed', '', 0, 0, 0, 0, ''),
-('core.event.class', 'withdrawn', 'dime.find.event.withdrawn', '', 0, 0, 0, 0, ''),
-('core.file.class', 'audio', 'core.file.class.audio', '', 0, 0, 1, 0, ''),
-('core.file.class', 'document', 'core.file.class.document', '', 0, 0, 1, 0, ''),
-('core.file.class', 'image', 'core.file.class.image', '', 0, 0, 1, 0, ''),
-('core.file.class', 'other', 'core.file.class.other', '', 0, 0, 1, 0, ''),
-('core.file.class', 'text', 'core.file.class.text', '', 0, 0, 1, 0, ''),
-('core.file.class', 'video', 'core.file.class.video', '', 0, 0, 1, 0, ''),
-('core.file.status', 'checkedin', 'core.file.status.checkedin', '', 0, 0, 1, 0, ''),
-('core.file.status', 'checkedout', 'core.file.status.checkedout', '', 0, 0, 1, 0, ''),
-('core.file.status', 'expired', 'core.file.status.expired', '', 0, 0, 1, 0, ''),
-('core.file.status', 'locked', 'core.file.status.locked', '', 0, 0, 1, 0, ''),
-('core.file.status', 'new', 'core.file.status.new', '', 0, 0, 1, 0, ''),
-('core.form.modus', 'active', 'core.form.mode.active', '', 0, 0, 1, 0, 'Form field is editable.'),
-('core.form.modus', 'disabled', 'core.form.mode.disabled', '', 0, 0, 1, 0, 'Form field is Disabled.'),
-('core.form.modus', 'hidden', 'core.form.mode.hidden', '', 0, 0, 1, 0, 'Form field is Hidden'),
-('core.form.modus', 'readonly', 'core.form.mode.readonly', '', 0, 0, 1, 0, 'Form field is Readonly.'),
-('core.form.modus', 'static', 'core.form.mode.static', '', 0, 0, 1, 0, 'Field is displayed but not as a form element.'),
-('core.item.status', 'allocated', 'core.item.status.allocated', '', 0, 0, 1, 0, ''),
-('core.item.status', 'deleted', 'core.item.status.deleted', '', 0, 0, 1, 0, ''),
-('core.item.status', 'registered', 'core.item.status.registered', '', 0, 0, 1, 0, ''),
-('core.item.status', 'void', 'core.item.status.void', '', 0, 0, 1, 0, ''),
-('core.license', 'cc0', 'core.license.cc0', 'CC0', 0, 0, 1, 0, ''),
-('core.license', 'ccbyncsa', 'core.license.ccbyncsa', 'CC BY-NC-SA', 1, 0, 1, 0, ''),
-('core.license', 'ccbysa', 'core.license.ccbysa', 'CC BY-SA', 0, 0, 1, 0, ''),
-('core.message.class', 'mail', 'core.message.class.mail', '', 0, 0, 1, 0, ''),
-('core.message.class', 'notification', 'core.message.class.notification', '', 0, 0, 1, 0, ''),
-('core.message.recipient.status', 'discarded', 'core.message.recipient.status.discarded', '', 0, 0, 1, 0, ''),
-('core.message.recipient.status', 'read', 'core.message.recipient.status.read', '', 0, 0, 1, 0, ''),
-('core.message.recipient.status', 'unread', 'core.message.recipient.status.unread', '', 1, 0, 1, 0, ''),
-('core.message.status', 'draft', 'core.message.status.draft', '', 0, 0, 1, 0, ''),
-('core.message.status', 'read', 'core.message.status.read', '', 0, 0, 1, 0, ''),
-('core.message.status', 'sent', 'core.message.status.sent', '', 0, 0, 1, 0, ''),
-('core.security.status', 'approved', 'core.security.status.approve', '', 0, 0, 1, 0, ''),
-('core.security.status', 'closed', 'core.security.status.closed', '', 0, 0, 1, 0, ''),
-('core.security.status', 'expired', 'core.security.status.expired', '', 0, 0, 1, 0, ''),
-('core.security.status', 'locked', 'core.security.status.locked', '', 0, 0, 1, 0, ''),
-('core.security.status', 'registered', 'core.security.status.registered', '', 1, 0, 1, 0, ''),
-('core.security.status', 'suspended', 'core.security.status.suspended', '', 0, 0, 1, 0, ''),
-('core.security.status', 'verified', 'core.security.status.verified', '', 0, 0, 1, 0, ''),
-('core.user.terms', 'v1', 'core.user.terms.v1', '', 1, 0, 1, 0, ''),
-('core.visibility', 'private', 'core.visibility.private', '', 1, 0, 1, 0, ''),
-('core.visibility', 'public', 'core.visibility.public', '', 0, 0, 1, 0, ''),
-('core.visibility', 'restricted', 'core.visibility.restricted', '', 0, 0, 1, 0, ''),
-('core.workflow.role', 'admin', 'core.role.admin', '', 0, 0, 1, 0, ''),
-('core.workflow.role', 'anon', 'core.role.anon', '', 0, 0, 1, 0, ''),
-('core.workflow.role', 'user', 'core.role.user', '', 0, 0, 1, 0, ''),
-('country', 'AD', 'country.andorra', 'andorra', 0, 0, 1, 0, ''),
-('country', 'AE', 'country.unitedarabemirates', 'unitedarabemirates', 0, 0, 1, 0, ''),
-('country', 'AF', 'country.afghanistan', 'afghanistan', 0, 0, 1, 0, ''),
-('country', 'AG', 'country.antigua', 'antigua', 0, 0, 1, 0, ''),
-('country', 'AI', 'country.anguilla', 'anguilla', 0, 0, 1, 0, ''),
-('country', 'AL', 'country.albania', 'albania', 0, 0, 1, 0, ''),
-('country', 'AM', 'country.armenia', 'armenia', 0, 0, 1, 0, ''),
-('country', 'AO', 'country.angola', 'angola', 0, 0, 1, 0, ''),
-('country', 'AQ', 'country.antarctica', 'antarctica', 0, 0, 1, 0, ''),
-('country', 'AR', 'country.argentina', 'argentina', 0, 0, 1, 0, ''),
-('country', 'AS', 'country.americansamoa', 'americansamoa', 0, 0, 1, 0, ''),
-('country', 'AT', 'country.austria', 'austria', 0, 0, 1, 0, ''),
-('country', 'AU', 'country.australia', 'australia', 0, 0, 1, 0, ''),
-('country', 'AW', 'country.aruba', 'aruba', 0, 0, 1, 0, ''),
-('country', 'AX', 'country.alandislands', 'alandislands', 0, 0, 1, 0, ''),
-('country', 'AZ', 'country.azerbaijan', 'azerbaijan', 0, 0, 1, 0, ''),
-('country', 'BA', 'country.bosniaherzegovina', 'bosniaherzegovina', 0, 0, 1, 0, ''),
-('country', 'BB', 'country.barbados', 'barbados', 0, 0, 1, 0, ''),
-('country', 'BD', 'country.bangladesh', 'bangladesh', 0, 0, 1, 0, ''),
-('country', 'BE', 'country.belgium', 'belgium', 0, 0, 1, 0, ''),
-('country', 'BF', 'country.burkinafaso', 'burkinafaso', 0, 0, 1, 0, ''),
-('country', 'BG', 'country.bulgaria', 'bulgaria', 0, 0, 1, 0, ''),
-('country', 'BH', 'country.bahrain', 'bahrain', 0, 0, 1, 0, ''),
-('country', 'BI', 'country.burundi', 'burundi', 0, 0, 1, 0, ''),
-('country', 'BJ', 'country.benin', 'benin', 0, 0, 1, 0, ''),
-('country', 'BL', 'country.saintbarthelemy', 'saintbarthelemy', 0, 0, 1, 0, ''),
-('country', 'BM', 'country.bermuda', 'bermuda', 0, 0, 1, 0, ''),
-('country', 'BN', 'country.brunei', 'brunei', 0, 0, 1, 0, ''),
-('country', 'BO', 'country.bolivia', 'bolivia', 0, 0, 1, 0, ''),
-('country', 'BQ', 'country.bonaire', 'bonaire', 0, 0, 1, 0, ''),
-('country', 'BR', 'country.brazil', 'brazil', 0, 0, 1, 0, ''),
-('country', 'BS', 'country.bahamas', 'bahamas', 0, 0, 1, 0, ''),
-('country', 'BT', 'country.bhutan', 'bhutan', 0, 0, 1, 0, ''),
-('country', 'BW', 'country.botswana', 'botswana', 0, 0, 1, 0, ''),
-('country', 'BY', 'country.belarus', 'belarus', 0, 0, 1, 0, ''),
-('country', 'BZ', 'country.belize', 'belize', 0, 0, 1, 0, ''),
-('country', 'CA', 'country.canada', 'canada', 0, 0, 1, 0, ''),
-('country', 'CC', 'country.cocosislands', 'cocosislands', 0, 0, 1, 0, ''),
-('country', 'CD', 'country.democraticrepubliccongo', 'democraticrepubliccongo', 0, 0, 1, 0, ''),
-('country', 'CF', 'country.centralafricanrepublic', 'centralafricanrepublic', 0, 0, 1, 0, ''),
-('country', 'CG', 'country.congo', 'congo', 0, 0, 1, 0, ''),
-('country', 'CH', 'country.switzerland', 'switzerland', 0, 0, 1, 0, ''),
-('country', 'CI', 'country.cotedivoire', 'cotedivoire', 0, 0, 1, 0, ''),
-('country', 'CK', 'country.cookislands', 'cookislands', 0, 0, 1, 0, ''),
-('country', 'CL', 'country.chile', 'chile', 0, 0, 1, 0, ''),
-('country', 'CM', 'country.cameroon', 'cameroon', 0, 0, 1, 0, ''),
-('country', 'CN', 'country.china', 'china', 0, 0, 1, 0, ''),
-('country', 'CO', 'country.colombia', 'colombia', 0, 0, 1, 0, ''),
-('country', 'CR', 'country.costarica', 'costarica', 0, 0, 1, 0, ''),
-('country', 'CU', 'country.cuba', 'cuba', 0, 0, 1, 0, ''),
-('country', 'CV', 'country.caboverde', 'caboverde', 0, 0, 1, 0, ''),
-('country', 'CW', 'country.curacao', 'curacao', 0, 0, 1, 0, ''),
-('country', 'CX', 'country.christmasisland', 'christmasisland', 0, 0, 1, 0, ''),
-('country', 'CY', 'country.cyprus', 'cyprus', 0, 0, 1, 0, ''),
-('country', 'CZ', 'country.czechrepublic', 'czechrepublic', 0, 0, 1, 0, ''),
-('country', 'DE', 'country.germany', 'germany', 0, 0, 1, 0, ''),
-('country', 'DJ', 'country.djibouti', 'djibouti', 0, 0, 1, 0, ''),
-('country', 'DK', 'country.denmark', 'denmark', 1, 0, 1, 0, ''),
-('country', 'DM', 'country.dominica', 'dominica', 0, 0, 1, 0, ''),
-('country', 'DO', 'country.dominicanrepublic', 'dominicanrepublic', 0, 0, 1, 0, ''),
-('country', 'DZ', 'country.algeria', 'algeria', 0, 0, 1, 0, ''),
-('country', 'EC', 'country.ecuador', 'ecuador', 0, 0, 1, 0, ''),
-('country', 'EE', 'country.estonia', 'estonia', 0, 0, 1, 0, ''),
-('country', 'EG', 'country.egypt', 'egypt', 0, 0, 1, 0, ''),
-('country', 'EH', 'country.westernsahara', 'westernsahara', 0, 0, 1, 0, ''),
-('country', 'ER', 'country.eritrea', 'eritrea', 0, 0, 1, 0, ''),
-('country', 'ES', 'country.spain', 'spain', 0, 0, 1, 0, ''),
-('country', 'ET', 'country.ethiopia', 'ethiopia', 0, 0, 1, 0, ''),
-('country', 'FI', 'country.finland', 'finland', 0, 0, 1, 0, ''),
-('country', 'FJ', 'country.fiji', 'fiji', 0, 0, 1, 0, ''),
-('country', 'FK', 'country.falklandislands', 'falklandislands', 0, 0, 1, 0, ''),
-('country', 'FM', 'country.micronesia', 'micronesia', 0, 0, 1, 0, ''),
-('country', 'FO', 'country.faroeislands', 'faroeislands', 0, 0, 1, 0, ''),
-('country', 'FR', 'country.france', 'france', 0, 0, 1, 0, ''),
-('country', 'GA', 'country.gabon', 'gabon', 0, 0, 1, 0, ''),
-('country', 'GB', 'country.unitedkingdom', 'unitedkingdom', 0, 0, 1, 0, ''),
-('country', 'GD', 'country.grenada', 'grenada', 0, 0, 1, 0, ''),
-('country', 'GE', 'country.georgia', 'georgia', 0, 0, 1, 0, ''),
-('country', 'GF', 'country.frenchguiana', 'frenchguiana', 0, 0, 1, 0, ''),
-('country', 'GG', 'country.guernsey', 'guernsey', 0, 0, 1, 0, ''),
-('country', 'GH', 'country.ghana', 'ghana', 0, 0, 1, 0, ''),
-('country', 'GI', 'country.gibraltar', 'gibraltar', 0, 0, 1, 0, ''),
-('country', 'GL', 'country.greenland', 'greenland', 0, 0, 1, 0, ''),
-('country', 'GM', 'country.gambia', 'gambia', 0, 0, 1, 0, ''),
-('country', 'GN', 'country.guinea', 'guinea', 0, 0, 1, 0, ''),
-('country', 'GP', 'country.guadeloupe', 'guadeloupe', 0, 0, 1, 0, ''),
-('country', 'GQ', 'country.equatorialguinea', 'equatorialguinea', 0, 0, 1, 0, ''),
-('country', 'GR', 'country.greece', 'greece', 0, 0, 1, 0, ''),
-('country', 'GS', 'country.southgeorgia', 'southgeorgia', 0, 0, 1, 0, ''),
-('country', 'GT', 'country.guatemala', 'guatemala', 0, 0, 1, 0, ''),
-('country', 'GU', 'country.guam', 'guam', 0, 0, 1, 0, ''),
-('country', 'GW', 'country.guinea-bissau', 'guinea-bissau', 0, 0, 1, 0, ''),
-('country', 'GY', 'country.guyana', 'guyana', 0, 0, 1, 0, ''),
-('country', 'HK', 'country.hongkong', 'hongkong', 0, 0, 1, 0, ''),
-('country', 'HN', 'country.honduras', 'honduras', 0, 0, 1, 0, ''),
-('country', 'HR', 'country.croatia', 'croatia', 0, 0, 1, 0, ''),
-('country', 'HT', 'country.haiti', 'haiti', 0, 0, 1, 0, ''),
-('country', 'HU', 'country.hungary', 'hungary', 0, 0, 1, 0, ''),
-('country', 'ID', 'country.indonesia', 'indonesia', 0, 0, 1, 0, ''),
-('country', 'IE', 'country.ireland', 'ireland', 0, 0, 1, 0, ''),
-('country', 'IL', 'country.israel', 'israel', 0, 0, 1, 0, ''),
-('country', 'IM', 'country.isleofman', 'isleofman', 0, 0, 1, 0, ''),
-('country', 'IN', 'country.india', 'india', 0, 0, 1, 0, ''),
-('country', 'IQ', 'country.iraq', 'iraq', 0, 0, 1, 0, ''),
-('country', 'IR', 'country.iran', 'iran', 0, 0, 1, 0, ''),
-('country', 'IS', 'country.iceland', 'iceland', 0, 0, 1, 0, ''),
-('country', 'IT', 'country.italy', 'italy', 0, 0, 1, 0, ''),
-('country', 'JE', 'country.jersey', 'jersey', 0, 0, 1, 0, ''),
-('country', 'JM', 'country.jamaica', 'jamaica', 0, 0, 1, 0, ''),
-('country', 'JO', 'country.jordan', 'jordan', 0, 0, 1, 0, ''),
-('country', 'JP', 'country.japan', 'japan', 0, 0, 1, 0, ''),
-('country', 'KE', 'country.kenya', 'kenya', 0, 0, 1, 0, ''),
-('country', 'KG', 'country.kyrgyzstan', 'kyrgyzstan', 0, 0, 1, 0, ''),
-('country', 'KH', 'country.cambodia', 'cambodia', 0, 0, 1, 0, ''),
-('country', 'KI', 'country.kiribati', 'kiribati', 0, 0, 1, 0, ''),
-('country', 'KM', 'country.comoros', 'comoros', 0, 0, 1, 0, ''),
-('country', 'KN', 'country.saintkitts', 'saintkitts', 0, 0, 1, 0, ''),
-('country', 'KP', 'country.northkorea', 'northkorea', 0, 0, 1, 0, ''),
-('country', 'KR', 'country.southkorea', 'southkorea', 0, 0, 1, 0, ''),
-('country', 'KW', 'country.kuwait', 'kuwait', 0, 0, 1, 0, ''),
-('country', 'KY', 'country.caymanislands', 'caymanislands', 0, 0, 1, 0, ''),
-('country', 'KZ', 'country.kazakhstan', 'kazakhstan', 0, 0, 1, 0, ''),
-('country', 'LA', 'country.lao', 'lao', 0, 0, 1, 0, ''),
-('country', 'LB', 'country.lebanon', 'lebanon', 0, 0, 1, 0, ''),
-('country', 'LC', 'country.saintlucia', 'saintlucia', 0, 0, 1, 0, ''),
-('country', 'LI', 'country.liechtenstein', 'liechtenstein', 0, 0, 1, 0, ''),
-('country', 'LK', 'country.srilanka', 'srilanka', 0, 0, 1, 0, ''),
-('country', 'LR', 'country.liberia', 'liberia', 0, 0, 1, 0, ''),
-('country', 'LS', 'country.lesotho', 'lesotho', 0, 0, 1, 0, ''),
-('country', 'LT', 'country.lithuania', 'lithuania', 0, 0, 1, 0, ''),
-('country', 'LU', 'country.luxembourg', 'luxembourg', 0, 0, 1, 0, ''),
-('country', 'LV', 'country.latvia', 'latvia', 0, 0, 1, 0, ''),
-('country', 'LY', 'country.libya', 'libya', 0, 0, 1, 0, ''),
-('country', 'MA', 'country.morocco', 'morocco', 0, 0, 1, 0, ''),
-('country', 'MC', 'country.monaco', 'monaco', 0, 0, 1, 0, ''),
-('country', 'MD', 'country.moldova', 'moldova', 0, 0, 1, 0, ''),
-('country', 'ME', 'country.montenegro', 'montenegro', 0, 0, 1, 0, ''),
-('country', 'MF', 'country.saintmartin', 'saintmartin', 0, 0, 1, 0, ''),
-('country', 'MG', 'country.madagascar', 'madagascar', 0, 0, 1, 0, ''),
-('country', 'MH', 'country.marshallislands', 'marshallislands', 0, 0, 1, 0, ''),
-('country', 'MK', 'country.macedonia', 'macedonia', 0, 0, 1, 0, ''),
-('country', 'ML', 'country.mali', 'mali', 0, 0, 1, 0, ''),
-('country', 'MM', 'country.myanmar', 'myanmar', 0, 0, 1, 0, ''),
-('country', 'MN', 'country.mongolia', 'mongolia', 0, 0, 1, 0, ''),
-('country', 'MO', 'country.macao', 'macao', 0, 0, 1, 0, ''),
-('country', 'MP', 'country.northernmarianaislands', 'northernmarianaislands', 0, 0, 1, 0, ''),
-('country', 'MQ', 'country.martinique', 'martinique', 0, 0, 1, 0, ''),
-('country', 'MR', 'country.mauritania', 'mauritania', 0, 0, 1, 0, ''),
-('country', 'MS', 'country.montserrat', 'montserrat', 0, 0, 1, 0, ''),
-('country', 'MT', 'country.malta', 'malta', 0, 0, 1, 0, ''),
-('country', 'MU', 'country.mauritius', 'mauritius', 0, 0, 1, 0, ''),
-('country', 'MV', 'country.maldives', 'maldives', 0, 0, 1, 0, ''),
-('country', 'MW', 'country.malawi', 'malawi', 0, 0, 1, 0, ''),
-('country', 'MX', 'country.mexico', 'mexico', 0, 0, 1, 0, ''),
-('country', 'MY', 'country.malaysia', 'malaysia', 0, 0, 1, 0, ''),
-('country', 'MZ', 'country.mozambique', 'mozambique', 0, 0, 1, 0, ''),
-('country', 'NA', 'country.namibia', 'namibia', 0, 0, 1, 0, ''),
-('country', 'NC', 'country.newcaledonia', 'newcaledonia', 0, 0, 1, 0, ''),
-('country', 'NE', 'country.niger', 'niger', 0, 0, 1, 0, ''),
-('country', 'NF', 'country.norfolkisland', 'norfolkisland', 0, 0, 1, 0, ''),
-('country', 'NG', 'country.nigeria', 'nigeria', 0, 0, 1, 0, ''),
-('country', 'NI', 'country.nicaragua', 'nicaragua', 0, 0, 1, 0, ''),
-('country', 'NL', 'country.netherlands', 'netherlands', 0, 0, 1, 0, ''),
-('country', 'NO', 'country.norway', 'norway', 0, 0, 1, 0, ''),
-('country', 'NP', 'country.nepal', 'nepal', 0, 0, 1, 0, ''),
-('country', 'NR', 'country.nauru', 'nauru', 0, 0, 1, 0, ''),
-('country', 'NU', 'country.niue', 'niue', 0, 0, 1, 0, ''),
-('country', 'NZ', 'country.newzealand', 'newzealand', 0, 0, 1, 0, ''),
-('country', 'OM', 'country.oman', 'oman', 0, 0, 1, 0, ''),
-('country', 'PA', 'country.panama', 'panama', 0, 0, 1, 0, ''),
-('country', 'PE', 'country.peru', 'peru', 0, 0, 1, 0, ''),
-('country', 'PF', 'country.frenchpolynesia', 'frenchpolynesia', 0, 0, 1, 0, ''),
-('country', 'PG', 'country.papuanewguinea', 'papuanewguinea', 0, 0, 1, 0, ''),
-('country', 'PH', 'country.philippines', 'philippines', 0, 0, 1, 0, ''),
-('country', 'PK', 'country.pakistan', 'pakistan', 0, 0, 1, 0, ''),
-('country', 'PL', 'country.poland', 'poland', 0, 0, 1, 0, ''),
-('country', 'PM', 'country.saintpierremiquelon', 'saintpierremiquelon', 0, 0, 1, 0, ''),
-('country', 'PN', 'country.pitcairn', 'pitcairn', 0, 0, 1, 0, ''),
-('country', 'PR', 'country.puertorico', 'puertorico', 0, 0, 1, 0, ''),
-('country', 'PS', 'country.palestine', 'palestine', 0, 0, 1, 0, ''),
-('country', 'PT', 'country.portugal', 'portugal', 0, 0, 1, 0, ''),
-('country', 'PW', 'country.palau', 'palau', 0, 0, 1, 0, ''),
-('country', 'PY', 'country.paraguay', 'paraguay', 0, 0, 1, 0, ''),
-('country', 'QA', 'country.qatar', 'qatar', 0, 0, 1, 0, ''),
-('country', 'RE', 'country.reunion', 'reunion', 0, 0, 1, 0, ''),
-('country', 'RO', 'country.romania', 'romania', 0, 0, 1, 0, ''),
-('country', 'RS', 'country.serbia', 'serbia', 0, 0, 1, 0, ''),
-('country', 'RU', 'country.russia', 'russia', 0, 0, 1, 0, ''),
-('country', 'RW', 'country.rwanda', 'rwanda', 0, 0, 1, 0, ''),
-('country', 'SA', 'country.saudiarabia', 'saudiarabia', 0, 0, 1, 0, ''),
-('country', 'SB', 'country.solomonislands', 'solomonislands', 0, 0, 1, 0, ''),
-('country', 'SC', 'country.seychelles', 'seychelles', 0, 0, 1, 0, ''),
-('country', 'SD', 'country.sudan', 'sudan', 0, 0, 1, 0, ''),
-('country', 'SE', 'country.sweden', 'sweden', 0, 0, 1, 0, ''),
-('country', 'SG', 'country.singapore', 'singapore', 0, 0, 1, 0, ''),
-('country', 'SH', 'country.sainthelena', 'sainthelena', 0, 0, 1, 0, ''),
-('country', 'SI', 'country.slovenia', 'slovenia', 0, 0, 1, 0, ''),
-('country', 'SJ', 'country.svalbard', 'svalbard', 0, 0, 1, 0, ''),
-('country', 'SK', 'country.slovakia', 'slovakia', 0, 0, 1, 0, ''),
-('country', 'SL', 'country.sierraleone', 'sierraleone', 0, 0, 1, 0, ''),
-('country', 'SM', 'country.sanmarino', 'sanmarino', 0, 0, 1, 0, ''),
-('country', 'SN', 'country.senegal', 'senegal', 0, 0, 1, 0, ''),
-('country', 'SO', 'country.somalia', 'somalia', 0, 0, 1, 0, ''),
-('country', 'SR', 'country.suriname', 'suriname', 0, 0, 1, 0, ''),
-('country', 'SS', 'country.southsudan', 'southsudan', 0, 0, 1, 0, ''),
-('country', 'ST', 'country.saotome', 'saotome', 0, 0, 1, 0, ''),
-('country', 'SV', 'country.elsalvador', 'elsalvador', 0, 0, 1, 0, ''),
-('country', 'SX', 'country.sintmaarten', 'sintmaarten', 0, 0, 1, 0, ''),
-('country', 'SY', 'country.syria', 'syria', 0, 0, 1, 0, ''),
-('country', 'SZ', 'country.swaziland', 'swaziland', 0, 0, 1, 0, ''),
-('country', 'TC', 'country.turkscaicos', 'turkscaicos', 0, 0, 1, 0, ''),
-('country', 'TD', 'country.chad', 'chad', 0, 0, 1, 0, ''),
-('country', 'TG', 'country.togo', 'togo', 0, 0, 1, 0, ''),
-('country', 'TH', 'country.thailand', 'thailand', 0, 0, 1, 0, ''),
-('country', 'TJ', 'country.tajikistan', 'tajikistan', 0, 0, 1, 0, ''),
-('country', 'TK', 'country.tokelau', 'tokelau', 0, 0, 1, 0, ''),
-('country', 'TL', 'country.timorleste', 'timorleste', 0, 0, 1, 0, ''),
-('country', 'TM', 'country.turkmenistan', 'turkmenistan', 0, 0, 1, 0, ''),
-('country', 'TN', 'country.tunisia', 'tunisia', 0, 0, 1, 0, ''),
-('country', 'TO', 'country.tonga', 'tonga', 0, 0, 1, 0, ''),
-('country', 'TR', 'country.turkey', 'turkey', 0, 0, 1, 0, ''),
-('country', 'TT', 'country.trinidadtobago', 'trinidadtobago', 0, 0, 1, 0, ''),
-('country', 'TV', 'country.tuvalu', 'tuvalu', 0, 0, 1, 0, ''),
-('country', 'TW', 'country.taiwan', 'taiwan', 0, 0, 1, 0, ''),
-('country', 'TZ', 'country.tanzania', 'tanzania', 0, 0, 1, 0, ''),
-('country', 'UA', 'country.ukraine', 'ukraine', 0, 0, 1, 0, ''),
-('country', 'UG', 'country.uganda', 'uganda', 0, 0, 1, 0, ''),
-('country', 'US', 'country.unitedstatesamerica', 'unitedstatesamerica', 0, 0, 1, 0, ''),
-('country', 'UY', 'country.uruguay', 'uruguay', 0, 0, 1, 0, ''),
-('country', 'UZ', 'country.uzbekistan', 'uzbekistan', 0, 0, 1, 0, ''),
-('country', 'VA', 'country.vatican', 'vatican', 0, 0, 1, 0, ''),
-('country', 'VC', 'country.saintvincent', 'saintvincent', 0, 0, 1, 0, ''),
-('country', 'VE', 'country.venezuela', 'venezuela', 0, 0, 1, 0, ''),
-('country', 'VG', 'country.britishvirginislands', 'britishvirginislands', 0, 0, 1, 0, ''),
-('country', 'VI', 'country.usvirginislands', 'usvirginislands', 0, 0, 1, 0, ''),
-('country', 'VN', 'country.vietnam', 'vietnam', 0, 0, 1, 0, ''),
-('country', 'VU', 'country.vanuatu', 'vanuatu', 0, 0, 1, 0, ''),
-('country', 'WF', 'country.wallisfutuna', 'wallisfutuna', 0, 0, 1, 0, ''),
-('country', 'WS', 'country.samoa', 'samoa', 0, 0, 1, 0, ''),
-('country', 'YE', 'country.yemen', 'yemen', 0, 0, 1, 0, ''),
-('country', 'YT', 'country.mayotte', 'mayotte', 0, 0, 1, 0, ''),
-('country', 'ZA', 'country.southafrica', 'southafrica', 0, 0, 1, 0, ''),
-('country', 'ZM', 'country.zambia', 'zambia', 0, 0, 1, 0, ''),
-('country', 'ZW', 'country.zimbabwe', 'zimbabwe', 0, 0, 1, 0, ''),
-('dime.denmark.admin', 'DK', 'dime.denmark.admin.denmark', 'denmark', 1, 0, 1, 0, ''),
-('dime.denmark.municipality', '101', 'dime.kommune.kobenhavn', 'kobenhavn', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '147', 'dime.kommune.frederiksbeg', 'frederiksbeg', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '151', 'dime.kommune.ballerup', 'ballerup', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '153', 'dime.kommune.brondby', 'brondby', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '155', 'dime.kommune.dragor', 'dragor', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '157', 'dime.kommune.gentofte', 'gentofte', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '159', 'dime.kommune.gladsaxe', 'gladsaxe', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '161', 'dime.kommune.glostrup', 'glostrup', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '163', 'dime.kommune.herlev', 'herlev', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '165', 'dime.kommune.albertslund', 'albertslund', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '167', 'dime.kommune.hvidovre', 'hvidovre', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '169', 'dime.kommune.hojetaastrup', 'hojetaastrup', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '173', 'dime.kommune.lyngbytaarbaek', 'lyngbytaarbaek', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '175', 'dime.kommune.rodovre', 'rodovre', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '183', 'dime.kommune.ishoj', 'ishoj', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '185', 'dime.kommune.tarnby', 'tarnby', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '187', 'dime.kommune.vallensbaek', 'vallensbaek', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '190', 'dime.kommune.fureso', 'fureso', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '201', 'dime.kommune.allerod', 'allerod', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '210', 'dime.kommune.fredensborg', 'fredensborg', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '217', 'dime.kommune.helsingor', 'helsingor', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '219', 'dime.kommune.hillerod', 'hillerod', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '223', 'dime.kommune.horsholm', 'horsholm', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '230', 'dime.kommune.rudersdal', 'rudersdal', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '240', 'dime.kommune.egedal', 'egedal', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '250', 'dime.kommune.frederikssund', 'frederikssund', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '253', 'dime.kommune.greve', 'greve', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '259', 'dime.kommune.koge', 'koge', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '260', 'dime.kommune.halsnaes', 'halsnaes', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '265', 'dime.kommune.roskilde', 'roskilde', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '269', 'dime.kommune.solrod', 'solrod', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '270', 'dime.kommune.gribskov', 'gribskov', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '306', 'dime.kommune.odsherred', 'odsherred', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '316', 'dime.kommune.holbaek', 'holbaek', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '320', 'dime.kommune.faxe', 'faxe', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '326', 'dime.kommune.kalundborg', 'kalundborg', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '329', 'dime.kommune.ringsted', 'ringsted', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '330', 'dime.kommune.slagelse', 'slagelse', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '336', 'dime.kommune.stevns', 'stevns', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '340', 'dime.kommune.soro', 'soro', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '350', 'dime.kommune.lejre', 'lejre', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '360', 'dime.kommune.lolland', 'lolland', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '370', 'dime.kommune.naestved', 'naestved', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '376', 'dime.kommune.guldborgsund', 'guldborgsund', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '390', 'dime.kommune.vordingborg', 'vordingborg', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '400', 'dime.kommune.bornholm', 'bornholm', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '410', 'dime.kommune.middelfart', 'middelfart', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '420', 'dime.kommune.assens', 'assens', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '430', 'dime.kommune.faaborgmidtfyn', 'faaborgmidtfyn', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '440', 'dime.kommune.kerteminde', 'kerteminde', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '450', 'dime.kommune.nyborg', 'nyborg', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '461', 'dime.kommune.odense', 'odense', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '479', 'dime.kommune.svendborg', 'svendborg', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '480', 'dime.kommune.nordfyns', 'nordfyns', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '482', 'dime.kommune.langeland', 'langeland', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '492', 'dime.kommune.aero', 'aero', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '510', 'dime.kommune.haderslev', 'haderslev', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '530', 'dime.kommune.billund', 'billund', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '540', 'dime.kommune.sonderborg', 'sonderborg', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '550', 'dime.kommune.tonder', 'tonder', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '561', 'dime.kommune.esbjerg', 'esbjerg', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '563', 'dime.kommune.fano', 'fano', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '573', 'dime.kommune.varde', 'varde', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '575', 'dime.kommune.vejen', 'vejen', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '580', 'dime.kommune.aabenraa', 'aabenraa', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '607', 'dime.kommune.fredericia', 'fredericia', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '615', 'dime.kommune.horsens', 'horsens', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '621', 'dime.kommune.kolding', 'kolding', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '630', 'dime.kommune.vejle', 'vejle', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '657', 'dime.kommune.herning', 'herning', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '661', 'dime.kommune.holstebro', 'holstebro', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '665', 'dime.kommune.lemvig', 'lemvig', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '671', 'dime.kommune.struer', 'struer', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '706', 'dime.kommune.syddjurs', 'syddjurs', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '707', 'dime.kommune.norddjurs', 'norddjurs', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '710', 'dime.kommune.favrskov', 'favrskov', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '727', 'dime.kommune.odder', 'odder', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '730', 'dime.kommune.randers', 'randers', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '740', 'dime.kommune.silkeborg', 'silkeborg', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '741', 'dime.kommune.samso', 'samso', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '746', 'dime.kommune.skanderborg', 'skanderborg', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '751', 'dime.kommune.arhus', 'arhus', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '756', 'dime.kommune.ikastbrande', 'ikastbrande', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '760', 'dime.kommune.ringkobingskjern', 'ringkobingskjern', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '766', 'dime.kommune.hedensted', 'hedensted', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '773', 'dime.kommune.morso', 'morso', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '779', 'dime.kommune.skive', 'skive', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '787', 'dime.kommune.thisted', 'thisted', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '791', 'dime.kommune.viborg', 'viborg', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '810', 'dime.kommune.bronderslev', 'bronderslev', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '813', 'dime.kommune.frederikshavn', 'frederikshavn', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '820', 'dime.kommune.vesthimmerland', 'vesthimmerland', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '825', 'dime.kommune.laeso', 'laeso', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '840', 'dime.kommune.rebild', 'rebild', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '846', 'dime.kommune.mariagerfjord', 'mariagerfjord', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '849', 'dime.kommune.jammerbugt', 'jammerbugt', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '851', 'dime.kommune.aalborg', 'aalborg', 0, 0, 1, 0, ''),
-('dime.denmark.municipality', '860', 'dime.kommune.hjorring', 'hjorring', 0, 0, 1, 0, ''),
-('dime.denmark.region', 'DK01', 'dime.region.hovedstaden', 'hovedstaden', 0, 0, 1, 0, ''),
-('dime.denmark.region', 'DK02', 'dime.region.sjaelland', 'sjaelland', 0, 0, 1, 0, ''),
-('dime.denmark.region', 'DK03', 'dime.region.syddanmark', 'syddanmark', 0, 0, 1, 0, ''),
-('dime.denmark.region', 'DK04', 'dime.region.midtjylland', 'midtjylland', 0, 0, 1, 0, ''),
-('dime.denmark.region', 'DK05', 'dime.region.nordjylland', 'nordjylland', 0, 0, 1, 0, ''),
-('dime.find.class', 'accessory', 'dime.find.type.accessory', '', 0, 0, 1, 0, ''),
-('dime.find.class', 'coin', 'dime.find.type.coin', '', 0, 0, 1, 0, ''),
-('dime.find.class', 'fibula', 'dime.find.type.fibula', '', 0, 0, 1, 0, ''),
-('dime.find.class', 'metal', 'dime.find.type.metal', '', 0, 0, 1, 0, ''),
-('dime.find.class', 'military', 'dime.find.type.military', '', 0, 0, 1, 0, ''),
-('dime.find.class', 'tool', 'dime.find.type.tool', '', 0, 0, 1, 0, ''),
-('dime.find.condition', 'fragmented', 'dime.find.condition.fragmented', '', 0, 0, 1, 0, ''),
-('dime.find.condition', 'modified', 'dime.find.condition.modified', '', 0, 0, 1, 0, ''),
-('dime.find.condition', 'unfinished', 'dime.find.condition.unfinished', '', 0, 0, 1, 0, ''),
-('dime.find.condition', 'whole', 'dime.find.condition.whole', '', 1, 0, 1, 0, ''),
-('dime.find.custody', 'destroyed', 'dime.find.custody.destroyed', '', 0, 0, 1, 0, ''),
-('dime.find.custody', 'discarded', 'dime.find.custody.discarded', '', 0, 0, 1, 0, ''),
-('dime.find.custody', 'held', 'dime.find.custody.held', '', 0, 1, 1, 0, ''),
-('dime.find.custody', 'lost', 'dime.find.custody.lost', '', 0, 0, 1, 0, ''),
-('dime.find.custody', 'requested', 'dime.find.custody.requested', '', 0, 0, 1, 0, ''),
-('dime.find.custody', 'sent', 'dime.find.custody.sent', '', 0, 0, 1, 0, ''),
-('dime.find.process', 'accessioned', 'dime.find.process.accessioned', '', 0, 0, 1, 0, ''),
-('dime.find.process', 'assessed', 'dime.find.process.assessed', '', 0, 0, 1, 0, ''),
-('dime.find.process', 'deleted', 'dime.find.process.deleted', '', 0, 0, 1, 0, ''),
-('dime.find.process', 'evaluated', 'dime.find.process.evaluated', '', 0, 0, 1, 0, ''),
-('dime.find.process', 'inactive', 'dime.find.process.inactive', '', 0, 0, 1, 0, ''),
-('dime.find.process', 'recorded', 'dime.find.process.recorded', '', 0, 1, 1, 0, ''),
-('dime.find.process', 'rejected', 'dime.find.process.rejected', '', 0, 0, 1, 0, ''),
-('dime.find.process', 'released', 'dime.find.process.released', '', 0, 0, 1, 0, ''),
-('dime.find.process', 'reported', 'dime.find.process.reported', '', 0, 0, 1, 0, ''),
-('dime.find.process', 'validated', 'dime.find.process.validated', '', 0, 0, 1, 0, ''),
-('dime.find.secondary', 'ceramic', 'dime.find.secondary.ceramic', '', 0, 0, 1, 0, ''),
-('dime.find.secondary', 'enamel', 'dime.find.secondary.enamel', '', 0, 0, 1, 0, ''),
-('dime.find.secondary', 'gilded', 'dime.find.secondary.gilded', '', 0, 0, 1, 0, ''),
-('dime.find.secondary', 'glass', 'dime.find.secondary.glass', '', 0, 0, 1, 0, ''),
-('dime.find.secondary', 'iron', 'dime.find.secondary.iron', '', 0, 0, 1, 0, ''),
-('dime.find.secondary', 'looped', 'dime.find.secondary.looped', '', 0, 0, 1, 0, ''),
-('dime.find.secondary', 'niello', 'dime.find.secondary.niello', '', 0, 0, 1, 0, ''),
-('dime.find.secondary', 'organic', 'dime.find.secondary.organic', '', 0, 0, 1, 0, ''),
-('dime.find.secondary', 'stone', 'dime.find.secondary.stone', '', 0, 0, 1, 0, ''),
-('dime.find.secondary', 'tinned', 'dime.find.secondary.tinned', '', 0, 0, 1, 0, ''),
-('dime.find.secondary', 'zz', 'dime.find.secondary.other', 'other', 0, 0, 1, 0, ''),
-('dime.find.subtype', 'accessory.bell', 'dime.find.subtype.accessory.bell', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.brooch', 'dime.find.subtype.accessory.brooch', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.buckle', 'dime.find.subtype.accessory.buckle', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.button', 'dime.find.subtype.accessory.button', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.button.bar', 'dime.find.subtype.accessory.button.bar', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.button.other', 'dime.find.subtype.accessory.button.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.button.round', 'dime.find.subtype.accessory.button.round', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.button.stud', 'dime.find.subtype.accessory.button.stud', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.fitting', 'dime.find.subtype.accessory.fitting', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.fitting.belt', 'dime.find.subtype.accessory.fitting.belt', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.fitting.other', 'dime.find.subtype.accessory.fitting.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.fitting.unknown', 'dime.find.subtype.accessory.fitting.unknown', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.hook', 'dime.find.subtype.accessory.hook', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.jewelery', 'dime.find.subtype.accessory.jewelery', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.jewelery.bracelet', 'dime.find.subtype.accessory.jewelery.bracelet', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.jewelery.bracteate', 'dime.find.subtype.accessory.jewelery.bracteate', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.jewelery.earring', 'dime.find.subtype.accessory.jewelery.earring', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.jewelery.necklace', 'dime.find.subtype.accessory.jewelery.necklace', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.jewelery.other', 'dime.find.subtype.accessory.jewelery.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.jewelery.pasyning', 'dime.find.subtype.accessory.jewelery.pasyning', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.jewelery.pearl', 'dime.find.subtype.accessory.jewelery.pearl', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.jewelery.pendant', 'dime.find.subtype.accessory.jewelery.pendant', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.jewelery.ring', 'dime.find.subtype.accessory.jewelery.ring', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.lace', 'dime.find.subtype.accessory.lace', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.medal', 'dime.find.subtype.accessory.medal', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.other', 'dime.find.subtype.accessory.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.pilgrim', 'dime.find.subtype.accessory.pilgrim', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.pin', 'dime.find.subtype.accessory.pin', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.tutulus', 'dime.find.subtype.accessory.tutulus', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'accessory.unknown', 'dime.find.subtype.accessory.unknown', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.danish', 'dime.find.subtype.coin.danish', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.danish.civilwar', 'dime.find.subtype.coin.danish.civilwar', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.danish.early', 'dime.find.subtype.coin.danish.early', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.danish.hvide', 'dime.find.subtype.coin.danish.hvide', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.danish.klipping', 'dime.find.subtype.coin.danish.klipping', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.danish.other', 'dime.find.subtype.coin.danish.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.danish.søsling', 'dime.find.subtype.coin.danish.søsling', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.danish.sterling', 'dime.find.subtype.coin.danish.sterling', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.foreign', 'dime.find.subtype.coin.foreign', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.foreign.hohlpfennig', 'dime.find.subtype.coin.foreign.hohlpfennig', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.foreign.hvide', 'dime.find.subtype.coin.foreign.hvide', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.foreign.other', 'dime.find.subtype.coin.foreign.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.foreign.sterling', 'dime.find.subtype.coin.foreign.sterling', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.foreign.tournois', 'dime.find.subtype.coin.foreign.tournois', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.jeton', 'dime.find.subtype.coin.jeton', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.modern', 'dime.find.subtype.coin.modern', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.modern.danish', 'dime.find.subtype.coin.modern.danish', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.modern.foreign', 'dime.find.subtype.coin.modern.foreign', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.other', 'dime.find.subtype.coin.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.roman', 'dime.find.subtype.coin.roman', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.roman.aureus', 'dime.find.subtype.coin.roman.aureus', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.roman.denarius', 'dime.find.subtype.coin.roman.denarius', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.roman.other', 'dime.find.subtype.coin.roman.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.roman.sestertius', 'dime.find.subtype.coin.roman.sestertius', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.roman.siliqua', 'dime.find.subtype.coin.roman.siliqua', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.roman.solidus', 'dime.find.subtype.coin.roman.solidus', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.unknown', 'dime.find.subtype.coin.unknown', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.viking', 'dime.find.subtype.coin.viking', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.viking.byzantine', 'dime.find.subtype.coin.viking.byzantine', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.viking.carolingian', 'dime.find.subtype.coin.viking.carolingian', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.viking.denarius', 'dime.find.subtype.coin.viking.denarius', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.viking.dirham', 'dime.find.subtype.coin.viking.dirham', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.viking.english', 'dime.find.subtype.coin.viking.english', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.viking.german', 'dime.find.subtype.coin.viking.german', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.viking.nordic', 'dime.find.subtype.coin.viking.nordic', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.viking.other', 'dime.find.subtype.coin.viking.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.viking.penny', 'dime.find.subtype.coin.viking.penny', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.viking.phennig', 'dime.find.subtype.coin.viking.phennig', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'coin.viking.sceat', 'dime.find.subtype.coin.viking.sceat', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.beak', 'dime.find.subtype.fibula.beak', '', 0, 0, 1, 0, ''),
-('dime.find.subtype', 'fibula.bird.above', 'dime.find.subtype.fibula.bird.above', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.bird.profile', 'dime.find.subtype.fibula.bird.profile', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.bow', 'dime.find.subtype.fibula.bow', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.bow.ball', 'dime.find.subtype.fibula.bow.ball', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.bow.band', 'dime.find.subtype.fibula.bow.band', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.bow.bilateral', 'dime.find.subtype.fibula.bow.bilateral', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.bow.button', 'dime.find.subtype.fibula.bow.button', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.bow.cross', 'dime.find.subtype.fibula.bow.cross', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.bow.foot', 'dime.find.subtype.fibula.bow.foot', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.bow.high', 'dime.find.subtype.fibula.bow.high', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.bow.other', 'dime.find.subtype.fibula.bow.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.bow.relief', 'dime.find.subtype.fibula.bow.relief', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.bowl', 'dime.find.subtype.fibula.bowl', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.bowl.animal', 'dime.find.subtype.fibula.bowl.animal', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.bowl.circular', 'dime.find.subtype.fibula.bowl.circular', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.bowl.large', 'dime.find.subtype.fibula.bowl.large', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.bowl.other', 'dime.find.subtype.fibula.bowl.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.bowl.small', 'dime.find.subtype.fibula.bowl.small', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.circular', 'dime.find.subtype.fibula.circular', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.circular.large', 'dime.find.subtype.fibula.circular.large', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.circular.other', 'dime.find.subtype.fibula.circular.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.circular.small', 'dime.find.subtype.fibula.circular.small', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.circular.tin', 'dime.find.subtype.fibula.circular.tin', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.enamel', 'dime.find.subtype.fibula.enamel', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.enamel.central', 'dime.find.subtype.fibula.enamel.central', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.enamel.cross', 'dime.find.subtype.fibula.enamel.cross', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.enamel.multiple', 'dime.find.subtype.fibula.enamel.multiple', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.enamel.other', 'dime.find.subtype.fibula.enamel.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.equalarm', 'dime.find.subtype.fibula.equalarm', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.equalarm.large', 'dime.find.subtype.fibula.equalarm.large', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.equalarm.other', 'dime.find.subtype.fibula.equalarm.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.equalarm.small', 'dime.find.subtype.fibula.equalarm.small', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.healing', 'dime.find.subtype.fibula.healing', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.healing.aalborg', 'dime.find.subtype.fibula.healing.aalborg', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.healing.lamb', 'dime.find.subtype.fibula.healing.lamb', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.healing.other', 'dime.find.subtype.fibula.healing.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.healing.urnes', 'dime.find.subtype.fibula.healing.urnes', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.other', 'dime.find.subtype.fibula.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.plate', 'dime.find.subtype.fibula.plate', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.plate.bird', 'dime.find.subtype.fibula.plate.bird', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.plate.circular', 'dime.find.subtype.fibula.plate.circular', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.plate.coin', 'dime.find.subtype.fibula.plate.coin', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.plate.horse', 'dime.find.subtype.fibula.plate.horse', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.plate.other', 'dime.find.subtype.fibula.plate.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.plate.oval', 'dime.find.subtype.fibula.plate.oval', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.plate.råhede', 'dime.find.subtype.fibula.plate.råhede', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.plate.rectangular', 'dime.find.subtype.fibula.plate.rectangular', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.plate.ship', 'dime.find.subtype.fibula.plate.ship', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.plate.snake', 'dime.find.subtype.fibula.plate.snake', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.plate.swastika', 'dime.find.subtype.fibula.plate.swastika', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.plate.tongue', 'dime.find.subtype.fibula.plate.tongue', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.plate.valkyrie', 'dime.find.subtype.fibula.plate.valkyrie', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.ring', 'dime.find.subtype.fibula.ring', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.ring.circular', 'dime.find.subtype.fibula.ring.circular', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.ring.heart', 'dime.find.subtype.fibula.ring.heart', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.ring.other', 'dime.find.subtype.fibula.ring.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.ring.star', 'dime.find.subtype.fibula.ring.star', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.trilobal', 'dime.find.subtype.fibula.trilobal', '', 0, 0, 0, 0, '');
-INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `keyword`, `alias`, `is_default`, `root`, `enabled`, `deprecated`, `description`) VALUES
-('dime.find.subtype', 'fibula.unknown', 'dime.find.subtype.fibula.unknown', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.viking', 'dime.find.subtype.fibula.viking', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.viking.other', 'dime.find.subtype.fibula.viking.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.viking.rhombic', 'dime.find.subtype.fibula.viking.rhombic', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.viking.ring', 'dime.find.subtype.fibula.viking.ring', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'fibula.viking.roof', 'dime.find.subtype.fibula.viking.roof', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'metal.ingot', 'dime.find.subtype.metal.ingot', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'metal.mold', 'dime.find.subtype.metal.mold', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'metal.other', 'dime.find.subtype.metal.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'metal.rest', 'dime.find.subtype.metal.rest', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'metal.slag', 'dime.find.subtype.metal.slag', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'metal.tin', 'dime.find.subtype.metal.tin', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'metal.unknown', 'dime.find.subtype.metal.unknown', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'military.ammunition', 'dime.find.subtype.military.ammunition', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'military.armor', 'dime.find.subtype.military.armor', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'military.arrow', 'dime.find.subtype.military.arrow', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'military.firearm', 'dime.find.subtype.military.firearm', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'military.fitting', 'dime.find.subtype.military.fitting', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'military.fitting.other', 'dime.find.subtype.military.fitting.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'military.fitting.sheath', 'dime.find.subtype.military.fitting.sheath', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'military.fitting.uniform', 'dime.find.subtype.military.fitting.uniform', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'military.helmet', 'dime.find.subtype.military.helmet', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'military.melee', 'dime.find.subtype.military.melee', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'military.melee.axe', 'dime.find.subtype.military.melee.axe', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'military.melee.blunt', 'dime.find.subtype.military.melee.blunt', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'military.melee.knife', 'dime.find.subtype.military.melee.knife', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'military.melee.other', 'dime.find.subtype.military.melee.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'military.melee.pointed', 'dime.find.subtype.military.melee.pointed', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'military.melee.sword', 'dime.find.subtype.military.melee.sword', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'military.other', 'dime.find.subtype.military.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'military.shield', 'dime.find.subtype.military.shield', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'military.unknown', 'dime.find.subtype.military.unknown', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.equestrian', 'dime.find.subtype.tool.equestrian', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.equestrian.bell', 'dime.find.subtype.tool.equestrian.bell', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.equestrian.bridle', 'dime.find.subtype.tool.equestrian.bridle', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.equestrian.cheek', 'dime.find.subtype.tool.equestrian.cheek', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.equestrian.other', 'dime.find.subtype.tool.equestrian.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.equestrian.shoe', 'dime.find.subtype.tool.equestrian.shoe', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.equestrian.stirrup', 'dime.find.subtype.tool.equestrian.stirrup', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.equestrian.tack', 'dime.find.subtype.tool.equestrian.tack', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.house', 'dime.find.subtype.tool.house', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.house.crockery', 'dime.find.subtype.tool.house.crockery', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.house.cutlery', 'dime.find.subtype.tool.house.cutlery', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.house.fixtures', 'dime.find.subtype.tool.house.fixtures', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.house.key', 'dime.find.subtype.tool.house.key', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.house.knife', 'dime.find.subtype.tool.house.knife', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.house.light', 'dime.find.subtype.tool.house.light', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.house.lock', 'dime.find.subtype.tool.house.lock', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.house.other', 'dime.find.subtype.tool.house.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.house.pot', 'dime.find.subtype.tool.house.pot', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.house.scissors', 'dime.find.subtype.tool.house.scissors', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.house.striker', 'dime.find.subtype.tool.house.striker', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.measure', 'dime.find.subtype.tool.measure', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.measure.clip', 'dime.find.subtype.tool.measure.clip', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.measure.ingot', 'dime.find.subtype.tool.measure.ingot', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.measure.scale', 'dime.find.subtype.tool.measure.scale', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.measure.weight', 'dime.find.subtype.tool.measure.weight', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.other', 'dime.find.subtype.tool.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.textile', 'dime.find.subtype.tool.textile', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.textile.case', 'dime.find.subtype.tool.textile.case', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.textile.needle', 'dime.find.subtype.tool.textile.needle', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.textile.scissors', 'dime.find.subtype.tool.textile.scissors', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.textile.thimble', 'dime.find.subtype.tool.textile.thimble', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.textile.whorl', 'dime.find.subtype.tool.textile.whorl', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.toilet', 'dime.find.subtype.tool.toilet', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.toilet.comb', 'dime.find.subtype.tool.toilet.comb', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.toilet.ear', 'dime.find.subtype.tool.toilet.ear', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.toilet.other', 'dime.find.subtype.tool.toilet.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.toilet.razor', 'dime.find.subtype.tool.toilet.razor', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.toilet.tweezers', 'dime.find.subtype.tool.toilet.tweezers', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.toy', 'dime.find.subtype.tool.toy', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.toy.counter', 'dime.find.subtype.tool.toy.counter', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.toy.dice', 'dime.find.subtype.tool.toy.dice', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.toy.other', 'dime.find.subtype.tool.toy.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.unknown', 'dime.find.subtype.tool.unknown', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.work', 'dime.find.subtype.tool.work', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.work.axe', 'dime.find.subtype.tool.work.axe', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.work.chisel', 'dime.find.subtype.tool.work.chisel', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.work.drill', 'dime.find.subtype.tool.work.drill', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.work.fitting', 'dime.find.subtype.tool.work.fitting', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.work.hammer', 'dime.find.subtype.tool.work.hammer', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.work.knife', 'dime.find.subtype.tool.work.knife', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.work.nail', 'dime.find.subtype.tool.work.nail', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.work.other', 'dime.find.subtype.tool.work.other', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.work.pliars', 'dime.find.subtype.tool.work.pliars', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.work.rivet', 'dime.find.subtype.tool.work.rivet', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.work.sickle', 'dime.find.subtype.tool.work.sickle', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.writing', 'dime.find.subtype.tool.writing', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.writing.bylamulet', 'dime.find.subtype.tool.writing.bylamulet', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.writing.clasp', 'dime.find.subtype.tool.writing.clasp', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.writing.guldgubbe', 'dime.find.subtype.tool.writing.guldgubbe', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.writing.runebrev', 'dime.find.subtype.tool.writing.runebrev', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.writing.seal', 'dime.find.subtype.tool.writing.seal', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.writing.stamp', 'dime.find.subtype.tool.writing.stamp', '', 0, 0, 0, 0, ''),
-('dime.find.subtype', 'tool.writing.stylus', 'dime.find.subtype.tool.writing.stylus', '', 0, 0, 0, 0, ''),
-('dime.material', 'ag', 'dime.material.silver', 'silver', 0, 0, 1, 0, ''),
-('dime.material', 'al', 'dime.material.aluminium', 'aluminium', 0, 0, 1, 0, ''),
-('dime.material', 'au', 'dime.material.gold', 'gold', 0, 0, 1, 0, ''),
-('dime.material', 'ceramic', 'dime.material.ceramic', 'ceramic', 0, 0, 1, 0, ''),
-('dime.material', 'cu', 'dime.material.copper', 'copper', 0, 0, 1, 0, ''),
-('dime.material', 'cual', 'dime.material.copperalloy', 'copperalloy', 0, 0, 1, 0, ''),
-('dime.material', 'fe', 'dime.material.iron', 'iron', 0, 0, 1, 0, ''),
-('dime.material', 'glass', 'dime.material.glass', 'glass', 0, 0, 1, 0, ''),
-('dime.material', 'pb', 'dime.material.lead', 'lead', 0, 0, 1, 0, ''),
-('dime.material', 'sa', 'dime.material.tin', 'tin', 0, 0, 1, 0, ''),
-('dime.material', 'stone', 'dime.material.stone', 'stone', 0, 0, 1, 0, ''),
-('dime.material', 'xx', 'dime.material.othermetal', 'othermetal', 0, 0, 1, 0, ''),
-('dime.period', 'AMXX', 'dime.period.mesolithic', 'mesolithic', 0, 0, 1, 0, 'Mesolithic'),
-('dime.period', 'APXX', 'dime.period.palaeolithic', 'palaeolithic', 0, 0, 1, 0, 'Palaeolithic'),
-('dime.period', 'AXXX', 'dime.period.stone', 'stone', 0, 0, 1, 0, 'Stone Age'),
-('dime.period', 'AYXX', 'dime.period.neolithic', 'neolithic', 0, 0, 1, 0, 'Neolithic'),
-('dime.period', 'BÆX1', 'dime.period.bronze.1', 'bronze.1', 0, 0, 1, 0, 'Bronze Age Period 1'),
-('dime.period', 'BÆX2', 'dime.period.bronze.2', 'bronze.2', 0, 0, 1, 0, 'Bronze Age Period 2'),
-('dime.period', 'BÆX3', 'dime.period.bronze.3', 'bronze.3', 0, 0, 1, 0, 'Bronze Age Period 3'),
-('dime.period', 'BÆXX', 'dime.period.bronze.early', 'bronze.early', 0, 0, 1, 0, 'Early Bronze Age'),
-('dime.period', 'BXXX', 'dime.period.bronze', 'bronze', 0, 0, 1, 0, 'Bronze Age'),
-('dime.period', 'BYX4', 'dime.period.bronze.4', 'bronze.4', 0, 0, 1, 0, 'Bronze Age Period 4'),
-('dime.period', 'BYX5', 'dime.period.bronze.5', 'bronze.5', 0, 0, 1, 0, 'Bronze Age Period 5'),
-('dime.period', 'BYX6', 'dime.period.bronze.6', 'bronze.6', 0, 0, 1, 0, 'Bronze Age Period 6'),
-('dime.period', 'BYXX', 'dime.period.bronze.late', 'bronze.late', 0, 0, 1, 0, 'Late Bronze Age'),
-('dime.period', 'CÆFÆ', 'dime.period.iron.preroman.early', 'iron.preroman.early', 0, 0, 1, 0, 'Early Pre-Roman Iron Age'),
-('dime.period', 'CÆFM', 'dime.period.iron.preroman.middle', 'iron.preroman.middle', 0, 0, 1, 0, 'Middle Pre-Roman Iron Age'),
-('dime.period', 'CÆFX', 'dime.period.iron.preroman', 'iron.preroman', 0, 0, 1, 0, 'Pre-Roman Iron Age'),
-('dime.period', 'CÆFY', 'dime.period.iron.preroman.late', 'iron.preroman.late', 0, 0, 1, 0, 'Late Pre-Roman Iron Age'),
-('dime.period', 'CÆRA', 'dime.period.iron.roman.early.b1', 'iron.roman.early.b1', 0, 0, 1, 0, 'Early Roman Iron Age B1'),
-('dime.period', 'CÆRÆ', 'dime.period.iron.roman.early', 'iron.roman.early', 0, 0, 1, 0, 'Early Roman Iron Age'),
-('dime.period', 'CÆRB', 'dime.period.iron.roman.early.b2', 'iron.roman.early.b2', 0, 0, 1, 0, 'Early Roman Iron Age B2'),
-('dime.period', 'CÆRC', 'dime.period.iron.roman.late.c1', 'iron.roman.late.c1', 0, 0, 1, 0, 'Late Roman Iron Age C1'),
-('dime.period', 'CÆRD', 'dime.period.iron.roman.late.c2', 'iron.roman.late.c2', 0, 0, 1, 0, 'Late Roman Iron Age C2'),
-('dime.period', 'CÆRE', 'dime.period.iron.roman.late.c3', 'iron.roman.late.c3', 0, 0, 1, 0, 'Late Roman Iron Age C3'),
-('dime.period', 'CÆRX', 'dime.period.iron.roman', 'iron.roman', 0, 0, 1, 0, 'Roman Iron Age'),
-('dime.period', 'CÆRY', 'dime.period.iron.roman.late', 'iron.roman.late', 0, 0, 1, 0, 'Late Roman Iron Age'),
-('dime.period', 'CÆXX', 'dime.period.iron.early', 'iron.early', 0, 0, 1, 0, 'Early Iron Age'),
-('dime.period', 'CVDÆ', 'dime.period.viking.medieval', 'viking.medieval', 0, 0, 1, 0, 'Viking / Early Medieval '),
-('dime.period', 'CXXX', 'dime.period.iron', 'iron', 0, 0, 1, 0, 'Iron Age'),
-('dime.period', 'CYGÆ', 'dime.period.iron.germainic.early', 'iron.germainic.early', 0, 0, 1, 0, 'Early Germanic Iron Age'),
-('dime.period', 'CYGX', 'dime.period.iron.germainic', 'iron.germainic', 0, 0, 1, 0, 'Germanic Iron Age'),
-('dime.period', 'CYGY', 'dime.period.iron.germainic.late', 'iron.germainic.late', 0, 0, 1, 0, 'Late Germanic Iron Age'),
-('dime.period', 'CYVÆ', 'dime.period.viking.early', 'viking.early', 0, 0, 1, 0, 'Early Viking Age'),
-('dime.period', 'CYVX', 'dime.period.viking', 'viking', 0, 0, 1, 0, 'Viking Age'),
-('dime.period', 'CYVY', 'dime.period.viking.late', 'viking.late', 0, 0, 1, 0, 'Late Viking Age'),
-('dime.period', 'CYXX', 'dime.period.iron.late', 'iron.late', 0, 0, 1, 0, 'Late Iron Age'),
-('dime.period', 'DÆX1', 'dime.period.medieval.early', 'medieval.early', 0, 0, 1, 0, 'Early Medieval'),
-('dime.period', 'DHXX', 'dime.period.medieval.high', 'medieval.high', 0, 0, 1, 0, 'High Medieval'),
-('dime.period', 'DLXX', 'dime.period.medieval.late', 'medieval.late', 0, 0, 1, 0, 'Late Medieval'),
-('dime.period', 'DXXX', 'dime.period.medieval', 'medieval', 0, 0, 1, 0, 'Medieval'),
-('dime.period', 'EXXX', 'dime.period.reformation', 'reformation', 0, 0, 1, 0, 'Reformation'),
-('dime.period', 'FÆXX', 'dime.period.absolutism', 'absolutism', 0, 0, 1, 0, 'Absolutism'),
-('dime.period', 'FMIN', 'dime.period.industrial', 'industrial', 0, 0, 1, 0, 'Industrial Age'),
-('dime.period', 'FMV1', 'dime.period.ww1', 'ww1', 0, 0, 1, 0, 'First World War'),
-('dime.period', 'FMV2', 'dime.period.ww2', 'ww2', 0, 0, 1, 0, 'Second World War'),
-('dime.period', 'FMVM', 'dime.period.interwar', 'interwar', 0, 0, 1, 0, 'Interwar Years'),
-('dime.period', 'FXXX', 'dime.period.modern', 'modern', 0, 0, 1, 0, 'Modern Age'),
-('dime.period', 'FYXX', 'dime.period.welfare', 'welfare', 0, 0, 1, 0, 'Welfare Age'),
-('dime.period', 'HXXX', 'dime.period.historic', 'historic', 0, 0, 1, 0, 'Historic Age'),
-('dime.period', 'OXXX', 'dime.period.prehistoric', 'prehistoric', 0, 0, 1, 0, 'Prehistoric'),
-('dime.period', 'XXXX', 'dime.period.undated', 'undated', 0, 0, 1, 0, 'Undated'),
-('dime.treasure', 'appraisal', 'dime.treasure.appraisal', '', 0, 0, 1, 0, ''),
-('dime.treasure', 'not', 'dime.treasure.not', '', 0, 0, 1, 0, ''),
-('dime.treasure', 'pending', 'dime.treasure.pending', '', 0, 1, 1, 0, ''),
-('dime.treasure', 'treasure', 'dime.treasure.treasure', '', 0, 0, 1, 0, ''),
-('dime.user.terms', 'v1', 'dime.user.terms.v1', '', 1, 0, 1, 0, ''),
-('dime.workflow.role', 'admin', 'dime.role.admin', '', 0, 0, 1, 0, ''),
-('dime.workflow.role', 'curator', 'dime.role.curator', '', 0, 0, 1, 0, ''),
-('dime.workflow.role', 'detectorist', 'dime.role.detectorist', '', 1, 0, 1, 0, ''),
-('dime.workflow.role', 'registrar', 'dime.role.registrar', '', 0, 0, 1, 0, ''),
-('dime.workflow.role', 'researcher', 'dime.role.researcher', '', 0, 0, 1, 0, ''),
-('distance', 'km', 'length.kilometre', 'kilometre', 0, 0, 1, 0, ''),
-('distance', 'm', 'length.metre', 'metre', 0, 0, 1, 0, ''),
-('distance', 'mm', 'length.millimetre', 'millimetre', 1, 0, 1, 0, ''),
-('distance', 'nm', 'length.nanometre', 'nanometre', 0, 0, 1, 0, ''),
-('distance', 'µm', 'length.micrometre', 'nanometre', 0, 0, 1, 0, ''),
-('language', 'aa', 'language.afar', 'afar', 0, 0, 1, 0, ''),
-('language', 'ab', 'language.abkhazian', 'abkhazian', 0, 0, 1, 0, ''),
-('language', 'ace', 'language.achinese', 'achinese', 0, 0, 1, 0, ''),
-('language', 'ach', 'language.acoli', 'acoli', 0, 0, 1, 0, ''),
-('language', 'ada', 'language.adangme', 'adangme', 0, 0, 1, 0, ''),
-('language', 'ady', 'language.adyghe', 'adyghe', 0, 0, 1, 0, ''),
-('language', 'ae', 'language.avestan', 'avestan', 0, 0, 1, 0, ''),
-('language', 'aeb', 'language.arabic.tunisian', 'arabic.tunisian', 0, 0, 1, 0, ''),
-('language', 'af', 'language.afrikaans', 'afrikaans', 0, 0, 1, 0, ''),
-('language', 'afh', 'language.afrihili', 'afrihili', 0, 0, 1, 0, ''),
-('language', 'agq', 'language.aghem', 'aghem', 0, 0, 1, 0, ''),
-('language', 'ain', 'language.ainu', 'ainu', 0, 0, 1, 0, ''),
-('language', 'ak', 'language.akan', 'akan', 0, 0, 1, 0, ''),
-('language', 'akk', 'language.akkadian', 'akkadian', 0, 0, 1, 0, ''),
-('language', 'akz', 'language.alabama', 'alabama', 0, 0, 1, 0, ''),
-('language', 'ale', 'language.aleut', 'aleut', 0, 0, 1, 0, ''),
-('language', 'aln', 'language.albanian.gheg', 'albanian.gheg', 0, 0, 1, 0, ''),
-('language', 'alt', 'language.altai.southern', 'altai.southern', 0, 0, 1, 0, ''),
-('language', 'am', 'language.amharic', 'amharic', 0, 0, 1, 0, ''),
-('language', 'an', 'language.aragonese', 'aragonese', 0, 0, 1, 0, ''),
-('language', 'ang', 'language.english.old', 'english.old', 0, 0, 1, 0, ''),
-('language', 'anp', 'language.angika', 'angika', 0, 0, 1, 0, ''),
-('language', 'ar', 'language.arabic', 'arabic', 0, 0, 1, 0, ''),
-('language', 'ar-001', 'language.arabic.modern', 'arabic.modern', 0, 0, 1, 0, ''),
-('language', 'arc', 'language.aramaic', 'aramaic', 0, 0, 1, 0, ''),
-('language', 'arn', 'language.mapuche', 'mapuche', 0, 0, 1, 0, ''),
-('language', 'aro', 'language.araona', 'araona', 0, 0, 1, 0, ''),
-('language', 'arp', 'language.arapaho', 'arapaho', 0, 0, 1, 0, ''),
-('language', 'arq', 'language.arabic.algerian', 'arabic.algerian', 0, 0, 1, 0, ''),
-('language', 'arw', 'language.arawak', 'arawak', 0, 0, 1, 0, ''),
-('language', 'ary', 'language.arabic.moroccan', 'arabic.moroccan', 0, 0, 1, 0, ''),
-('language', 'arz', 'language.arabic.egyptian', 'arabic.egyptian', 0, 0, 1, 0, ''),
-('language', 'as', 'language.assamese', 'assamese', 0, 0, 1, 0, ''),
-('language', 'asa', 'language.asu', 'asu', 0, 0, 1, 0, ''),
-('language', 'ast', 'language.asturian', 'asturian', 0, 0, 1, 0, ''),
-('language', 'av', 'language.avaric', 'avaric', 0, 0, 1, 0, ''),
-('language', 'avk', 'language.kotava', 'kotava', 0, 0, 1, 0, ''),
-('language', 'awa', 'language.awadhi', 'awadhi', 0, 0, 1, 0, ''),
-('language', 'ay', 'language.aymara', 'aymara', 0, 0, 1, 0, ''),
-('language', 'az', 'language.azerbaijani', 'azerbaijani', 0, 0, 1, 0, ''),
-('language', 'ba', 'language.bashkir', 'bashkir', 0, 0, 1, 0, ''),
-('language', 'bal', 'language.baluchi', 'baluchi', 0, 0, 1, 0, ''),
-('language', 'ban', 'language.balinese', 'balinese', 0, 0, 1, 0, ''),
-('language', 'bar', 'language.bavarian', 'bavarian', 0, 0, 1, 0, ''),
-('language', 'bas', 'language.basaa', 'basaa', 0, 0, 1, 0, ''),
-('language', 'bax', 'language.bamun', 'bamun', 0, 0, 1, 0, ''),
-('language', 'bbc', 'language.bataktoba', 'bataktoba', 0, 0, 1, 0, ''),
-('language', 'bbj', 'language.ghomala', 'ghomala', 0, 0, 1, 0, ''),
-('language', 'be', 'language.belarusian', 'belarusian', 0, 0, 1, 0, ''),
-('language', 'bej', 'language.beja', 'beja', 0, 0, 1, 0, ''),
-('language', 'bem', 'language.bemba', 'bemba', 0, 0, 1, 0, ''),
-('language', 'bew', 'language.betawi', 'betawi', 0, 0, 1, 0, ''),
-('language', 'bez', 'language.bena', 'bena', 0, 0, 1, 0, ''),
-('language', 'bfd', 'language.bafut', 'bafut', 0, 0, 1, 0, ''),
-('language', 'bfq', 'language.badaga', 'badaga', 0, 0, 1, 0, ''),
-('language', 'bg', 'language.bulgarian', 'bulgarian', 0, 0, 1, 0, ''),
-('language', 'bgn', 'language.balochi.western', 'balochi.western', 0, 0, 1, 0, ''),
-('language', 'bho', 'language.bhojpuri', 'bhojpuri', 0, 0, 1, 0, ''),
-('language', 'bi', 'language.bislama', 'bislama', 0, 0, 1, 0, ''),
-('language', 'bik', 'language.bikol', 'bikol', 0, 0, 1, 0, ''),
-('language', 'bin', 'language.bini', 'bini', 0, 0, 1, 0, ''),
-('language', 'bjn', 'language.banjar', 'banjar', 0, 0, 1, 0, ''),
-('language', 'bkm', 'language.kom', 'kom', 0, 0, 1, 0, ''),
-('language', 'bla', 'language.siksika', 'siksika', 0, 0, 1, 0, ''),
-('language', 'bm', 'language.bambara', 'bambara', 0, 0, 1, 0, ''),
-('language', 'bn', 'language.bengali', 'bengali', 0, 0, 1, 0, ''),
-('language', 'bo', 'language.tibetan', 'tibetan', 0, 0, 1, 0, ''),
-('language', 'bpy', 'language.bishnupriya', 'bishnupriya', 0, 0, 1, 0, ''),
-('language', 'bqi', 'language.bakhtiari', 'bakhtiari', 0, 0, 1, 0, ''),
-('language', 'br', 'language.breton', 'breton', 0, 0, 1, 0, ''),
-('language', 'bra', 'language.braj', 'braj', 0, 0, 1, 0, ''),
-('language', 'brh', 'language.brahui', 'brahui', 0, 0, 1, 0, ''),
-('language', 'brx', 'language.bodo', 'bodo', 0, 0, 1, 0, ''),
-('language', 'bs', 'language.bosnian', 'bosnian', 0, 0, 1, 0, ''),
-('language', 'bss', 'language.akoose', 'akoose', 0, 0, 1, 0, ''),
-('language', 'bua', 'language.buriat', 'buriat', 0, 0, 1, 0, ''),
-('language', 'bug', 'language.buginese', 'buginese', 0, 0, 1, 0, ''),
-('language', 'bum', 'language.bulu', 'bulu', 0, 0, 1, 0, ''),
-('language', 'byn', 'language.blin', 'blin', 0, 0, 1, 0, ''),
-('language', 'byv', 'language.medumba', 'medumba', 0, 0, 1, 0, ''),
-('language', 'ca', 'language.catalan', 'catalan', 0, 0, 1, 0, ''),
-('language', 'cad', 'language.caddo', 'caddo', 0, 0, 1, 0, ''),
-('language', 'car', 'language.carib', 'carib', 0, 0, 1, 0, ''),
-('language', 'cay', 'language.cayuga', 'cayuga', 0, 0, 1, 0, ''),
-('language', 'cch', 'language.atsam', 'atsam', 0, 0, 1, 0, ''),
-('language', 'ce', 'language.chechen', 'chechen', 0, 0, 1, 0, ''),
-('language', 'ceb', 'language.cebuano', 'cebuano', 0, 0, 1, 0, ''),
-('language', 'cgg', 'language.chiga', 'chiga', 0, 0, 1, 0, ''),
-('language', 'ch', 'language.chamorro', 'chamorro', 0, 0, 1, 0, ''),
-('language', 'chb', 'language.chibcha', 'chibcha', 0, 0, 1, 0, ''),
-('language', 'chg', 'language.chagatai', 'chagatai', 0, 0, 1, 0, ''),
-('language', 'chk', 'language.chuukese', 'chuukese', 0, 0, 1, 0, ''),
-('language', 'chm', 'language.mari', 'mari', 0, 0, 1, 0, ''),
-('language', 'chn', 'language.jargon.chinook', 'jargon.chinook', 0, 0, 1, 0, ''),
-('language', 'cho', 'language.choctaw', 'choctaw', 0, 0, 1, 0, ''),
-('language', 'chp', 'language.chipewyan', 'chipewyan', 0, 0, 1, 0, ''),
-('language', 'chr', 'language.cherokee', 'cherokee', 0, 0, 1, 0, ''),
-('language', 'chy', 'language.cheyenne', 'cheyenne', 0, 0, 1, 0, ''),
-('language', 'ckb', 'language.kurdish.central', 'kurdish.central', 0, 0, 1, 0, ''),
-('language', 'co', 'language.corsican', 'corsican', 0, 0, 1, 0, ''),
-('language', 'cop', 'language.coptic', 'coptic', 0, 0, 1, 0, ''),
-('language', 'cps', 'language.capiznon', 'capiznon', 0, 0, 1, 0, ''),
-('language', 'cr', 'language.cree', 'cree', 0, 0, 1, 0, ''),
-('language', 'crh', 'language.turkish.crimean', 'turkish.crimean', 0, 0, 1, 0, ''),
-('language', 'cs', 'language.czech', 'czech', 0, 0, 1, 0, ''),
-('language', 'csb', 'language.kashubian', 'kashubian', 0, 0, 1, 0, ''),
-('language', 'cu', 'language.slavic.church', 'slavic.church', 0, 0, 1, 0, ''),
-('language', 'cv', 'language.chuvash', 'chuvash', 0, 0, 1, 0, ''),
-('language', 'cy', 'language.welsh', 'welsh', 0, 0, 1, 0, ''),
-('language', 'da', 'language.danish', 'danish', 0, 0, 1, 0, ''),
-('language', 'dak', 'language.dakota', 'dakota', 0, 0, 1, 0, ''),
-('language', 'dar', 'language.dargwa', 'dargwa', 0, 0, 1, 0, ''),
-('language', 'dav', 'language.taita', 'taita', 0, 0, 1, 0, ''),
-('language', 'de', 'language.german', 'german', 0, 0, 1, 0, ''),
-('language', 'de-AT', 'language.german.austrian', 'german.austrian', 0, 0, 1, 0, ''),
-('language', 'de-CH', 'language.german.swisshigh', 'german.swisshigh', 0, 0, 1, 0, ''),
-('language', 'del', 'language.delaware', 'delaware', 0, 0, 1, 0, ''),
-('language', 'den', 'language.slave', 'slave', 0, 0, 1, 0, ''),
-('language', 'dgr', 'language.dogrib', 'dogrib', 0, 0, 1, 0, ''),
-('language', 'din', 'language.dinka', 'dinka', 0, 0, 1, 0, ''),
-('language', 'dje', 'language.zarma', 'zarma', 0, 0, 1, 0, ''),
-('language', 'doi', 'language.dogri', 'dogri', 0, 0, 1, 0, ''),
-('language', 'dsb', 'language.sorbian.lower', 'sorbian.lower', 0, 0, 1, 0, ''),
-('language', 'dtp', 'language.dusun.central', 'dusun.central', 0, 0, 1, 0, ''),
-('language', 'dua', 'language.duala', 'duala', 0, 0, 1, 0, ''),
-('language', 'dum', 'language.dutch.middle', 'dutch.middle', 0, 0, 1, 0, ''),
-('language', 'dv', 'language.divehi', 'divehi', 0, 0, 1, 0, ''),
-('language', 'dyo', 'language.jolafonyi', 'jolafonyi', 0, 0, 1, 0, ''),
-('language', 'dyu', 'language.dyula', 'dyula', 0, 0, 1, 0, ''),
-('language', 'dz', 'language.dzongkha', 'dzongkha', 0, 0, 1, 0, ''),
-('language', 'dzg', 'language.dazaga', 'dazaga', 0, 0, 1, 0, ''),
-('language', 'ebu', 'language.embu', 'embu', 0, 0, 1, 0, ''),
-('language', 'ee', 'language.ewe', 'ewe', 0, 0, 1, 0, ''),
-('language', 'efi', 'language.efik', 'efik', 0, 0, 1, 0, ''),
-('language', 'egl', 'language.emilian', 'emilian', 0, 0, 1, 0, ''),
-('language', 'egy', 'language.egyptian.ancient', 'egyptian.ancient', 0, 0, 1, 0, ''),
-('language', 'eka', 'language.ekajuk', 'ekajuk', 0, 0, 1, 0, ''),
-('language', 'el', 'language.greek', 'greek', 0, 0, 1, 0, ''),
-('language', 'elx', 'language.elamite', 'elamite', 0, 0, 1, 0, ''),
-('language', 'en', 'language.english', 'english', 0, 0, 1, 0, ''),
-('language', 'en-AU', 'language.english.australian', 'english.australian', 0, 0, 1, 0, ''),
-('language', 'en-CA', 'language.english.canadian', 'english.canadian', 0, 0, 1, 0, ''),
-('language', 'en-GB', 'language.english.british', 'english.british', 0, 0, 1, 0, ''),
-('language', 'en-US', 'language.english.american', 'english.american', 0, 0, 1, 0, ''),
-('language', 'enm', 'language.english.middle', 'english.middle', 0, 0, 1, 0, ''),
-('language', 'eo', 'language.esperanto', 'esperanto', 0, 0, 1, 0, ''),
-('language', 'es', 'language.spanish', 'spanish', 0, 0, 1, 0, ''),
-('language', 'es-419', 'Language.spanish.latinamerican', 'spanish.latinamerican', 0, 0, 1, 0, ''),
-('language', 'es-ES', 'language.spanish.european', 'spanish.european', 0, 0, 1, 0, ''),
-('language', 'es-MX', 'language.spanish.mexican', 'spanish.mexican', 0, 0, 1, 0, ''),
-('language', 'esu', 'language.yupik.central', 'yupik.central', 0, 0, 1, 0, ''),
-('language', 'et', 'language.estonian', 'estonian', 0, 0, 1, 0, ''),
-('language', 'eu', 'language.basque', 'basque', 0, 0, 1, 0, ''),
-('language', 'ewo', 'language.ewondo', 'ewondo', 0, 0, 1, 0, ''),
-('language', 'ext', 'language.extremaduran', 'extremaduran', 0, 0, 1, 0, ''),
-('language', 'fa', 'language.persian', 'persian', 0, 0, 1, 0, ''),
-('language', 'fan', 'language.fang', 'fang', 0, 0, 1, 0, ''),
-('language', 'fat', 'language.fanti', 'fanti', 0, 0, 1, 0, ''),
-('language', 'ff', 'language.fulah', 'fulah', 0, 0, 1, 0, ''),
-('language', 'fi', 'language.finnish', 'finnish', 0, 0, 1, 0, ''),
-('language', 'fil', 'language.filipino', 'filipino', 0, 0, 1, 0, ''),
-('language', 'fit', 'language.finnish.tornedalen', 'finnish.tornedalen', 0, 0, 1, 0, ''),
-('language', 'fj', 'language.fijian', 'fijian', 0, 0, 1, 0, ''),
-('language', 'fo', 'language.faroese', 'faroese', 0, 0, 1, 0, ''),
-('language', 'fon', 'language.fon', 'fon', 0, 0, 1, 0, ''),
-('language', 'fr', 'language.french', 'french', 0, 0, 1, 0, ''),
-('language', 'fr-CA', 'language.french.canadian', 'french.canadian', 0, 0, 1, 0, ''),
-('language', 'fr-CH', 'language.french.swiss', 'french.swiss', 0, 0, 1, 0, ''),
-('language', 'frc', 'language.french.cajun', 'french.cajun', 0, 0, 1, 0, ''),
-('language', 'frm', 'language.french.middle', 'french.middle', 0, 0, 1, 0, ''),
-('language', 'fro', 'language.french.old', 'french.old', 0, 0, 1, 0, ''),
-('language', 'frp', 'language.arpitan', 'arpitan', 0, 0, 1, 0, ''),
-('language', 'frr', 'language.frisian.northern', 'frisian.northern', 0, 0, 1, 0, ''),
-('language', 'frs', 'language.frisian.eastern', 'frisian.eastern', 0, 0, 1, 0, ''),
-('language', 'fur', 'language.friulian', 'friulian', 0, 0, 1, 0, ''),
-('language', 'fy', 'language.frisian.western', 'frisian.western', 0, 0, 1, 0, ''),
-('language', 'ga', 'language.irish', 'irish', 0, 0, 1, 0, ''),
-('language', 'gaa', 'language.ga', 'ga', 0, 0, 1, 0, ''),
-('language', 'gag', 'language.gagauz', 'gagauz', 0, 0, 1, 0, ''),
-('language', 'gan', 'language.chinese.gan', 'chinese.gan', 0, 0, 1, 0, ''),
-('language', 'gay', 'language.gayo', 'gayo', 0, 0, 1, 0, ''),
-('language', 'gba', 'language.gbaya', 'gbaya', 0, 0, 1, 0, ''),
-('language', 'gbz', 'language.dari.zoroastrian', 'dari.zoroastrian', 0, 0, 1, 0, ''),
-('language', 'gd', 'language.gaelic.scottish', 'gaelic.scottish', 0, 0, 1, 0, ''),
-('language', 'gez', 'language.geez', 'geez', 0, 0, 1, 0, ''),
-('language', 'gil', 'language.gilbertese', 'gilbertese', 0, 0, 1, 0, ''),
-('language', 'gl', 'language.galician', 'galician', 0, 0, 1, 0, ''),
-('language', 'glk', 'language.gilaki', 'gilaki', 0, 0, 1, 0, ''),
-('language', 'gmh', 'language.german.middlehigh', 'german.middlehigh', 0, 0, 1, 0, ''),
-('language', 'gn', 'language.guarani', 'guarani', 0, 0, 1, 0, ''),
-('language', 'goh', 'language.german.oldhigh', 'german.oldhigh', 0, 0, 1, 0, ''),
-('language', 'gom', 'language.konkani.goan', 'konkani.goan', 0, 0, 1, 0, ''),
-('language', 'gon', 'language.gondi', 'gondi', 0, 0, 1, 0, ''),
-('language', 'gor', 'language.gorontalo', 'gorontalo', 0, 0, 1, 0, ''),
-('language', 'got', 'language.gothic', 'gothic', 0, 0, 1, 0, ''),
-('language', 'grb', 'language.grebo', 'grebo', 0, 0, 1, 0, ''),
-('language', 'grc', 'language.greek.ancient', 'greek.ancient', 0, 0, 1, 0, ''),
-('language', 'gsw', 'language.german.swiss', 'german.swiss', 0, 0, 1, 0, ''),
-('language', 'gu', 'language.gujarati', 'gujarati', 0, 0, 1, 0, ''),
-('language', 'guc', 'language.wayuu', 'wayuu', 0, 0, 1, 0, ''),
-('language', 'gur', 'language.frafra', 'frafra', 0, 0, 1, 0, ''),
-('language', 'guz', 'language.gusii', 'gusii', 0, 0, 1, 0, ''),
-('language', 'gv', 'language.manx', 'manx', 0, 0, 1, 0, ''),
-('language', 'gwi', 'language.gwichin', 'gwichin', 0, 0, 1, 0, ''),
-('language', 'ha', 'language.hausa', 'hausa', 0, 0, 1, 0, ''),
-('language', 'hai', 'language.haida', 'haida', 0, 0, 1, 0, ''),
-('language', 'hak', 'language.chinese.hakka', 'chinese.hakka', 0, 0, 1, 0, ''),
-('language', 'haw', 'language.hawaiian', 'hawaiian', 0, 0, 1, 0, ''),
-('language', 'he', 'language.hebrew', 'hebrew', 0, 0, 1, 0, ''),
-('language', 'hi', 'language.hindi', 'hindi', 0, 0, 1, 0, ''),
-('language', 'hif', 'language.hindi.fiji', 'hindi.fiji', 0, 0, 1, 0, ''),
-('language', 'hil', 'language.hiligaynon', 'hiligaynon', 0, 0, 1, 0, ''),
-('language', 'hit', 'language.hittite', 'hittite', 0, 0, 1, 0, ''),
-('language', 'hmn', 'language.hmong', 'hmong', 0, 0, 1, 0, ''),
-('language', 'ho', 'language.motu.hiri', 'motu.hiri', 0, 0, 1, 0, ''),
-('language', 'hr', 'language.croatian', 'croatian', 0, 0, 1, 0, ''),
-('language', 'hsb', 'language.sorbian.upper', 'sorbian.upper', 0, 0, 1, 0, ''),
-('language', 'hsn', 'language.chinese.xiang', 'chinese.xiang', 0, 0, 1, 0, ''),
-('language', 'ht', 'language.creole.haitian', 'creole.haitian', 0, 0, 1, 0, ''),
-('language', 'hu', 'language.hungarian', 'hungarian', 0, 0, 1, 0, ''),
-('language', 'hup', 'language.hupa', 'hupa', 0, 0, 1, 0, ''),
-('language', 'hy', 'language.armenian', 'armenian', 0, 0, 1, 0, ''),
-('language', 'hz', 'language.herero', 'herero', 0, 0, 1, 0, ''),
-('language', 'ia', 'language.interlingua', 'interlingua', 0, 0, 1, 0, ''),
-('language', 'iba', 'language.iban', 'iban', 0, 0, 1, 0, ''),
-('language', 'ibb', 'language.ibibio', 'ibibio', 0, 0, 1, 0, ''),
-('language', 'id', 'language.indonesian', 'indonesian', 0, 0, 1, 0, ''),
-('language', 'ie', 'language.interlingue', 'interlingue', 0, 0, 1, 0, ''),
-('language', 'ig', 'language.igbo', 'igbo', 0, 0, 1, 0, ''),
-('language', 'ii', 'language.yi.sichuan', 'yi.sichuan', 0, 0, 1, 0, ''),
-('language', 'ik', 'language.inupiaq', 'inupiaq', 0, 0, 1, 0, ''),
-('language', 'ilo', 'language.iloko', 'iloko', 0, 0, 1, 0, ''),
-('language', 'inh', 'language.ingush', 'ingush', 0, 0, 1, 0, ''),
-('language', 'io', 'language.ido', 'ido', 0, 0, 1, 0, ''),
-('language', 'is', 'language.icelandic', 'icelandic', 0, 0, 1, 0, ''),
-('language', 'it', 'language.italian', 'italian', 0, 0, 1, 0, ''),
-('language', 'iu', 'language.inuktitut', 'inuktitut', 0, 0, 1, 0, ''),
-('language', 'izh', 'language.ingrian', 'ingrian', 0, 0, 1, 0, ''),
-('language', 'ja', 'language.japanese', 'japanese', 0, 0, 1, 0, ''),
-('language', 'jam', 'language.english.jamaicancreole ', 'english.jamaicancreole ', 0, 0, 1, 0, ''),
-('language', 'jbo', 'language.lojban', 'lojban', 0, 0, 1, 0, ''),
-('language', 'jgo', 'language.ngomba', 'ngomba', 0, 0, 1, 0, ''),
-('language', 'jmc', 'language.machame', 'machame', 0, 0, 1, 0, ''),
-('language', 'jpr', 'language.judeopersian', 'judeopersian', 0, 0, 1, 0, ''),
-('language', 'jrb', 'language.judeoarabic', 'judeoarabic', 0, 0, 1, 0, ''),
-('language', 'jut', 'language.jutish', 'jutish', 0, 0, 1, 0, ''),
-('language', 'jv', 'language.javanese', 'javanese', 0, 0, 1, 0, ''),
-('language', 'ka', 'language.georgian', 'georgian', 0, 0, 1, 0, ''),
-('language', 'kaa', 'language.karakalpak', 'karakalpak', 0, 0, 1, 0, ''),
-('language', 'kab', 'language.kabyle', 'kabyle', 0, 0, 1, 0, ''),
-('language', 'kac', 'language.kachin', 'kachin', 0, 0, 1, 0, ''),
-('language', 'kaj', 'language.jju', 'jju', 0, 0, 1, 0, ''),
-('language', 'kam', 'language.kamba', 'kamba', 0, 0, 1, 0, ''),
-('language', 'kaw', 'language.kawi', 'kawi', 0, 0, 1, 0, ''),
-('language', 'kbd', 'language.kabardian', 'kabardian', 0, 0, 1, 0, ''),
-('language', 'kbl', 'language.kanembu', 'kanembu', 0, 0, 1, 0, ''),
-('language', 'kcg', 'language.tyap', 'tyap', 0, 0, 1, 0, ''),
-('language', 'kde', 'language.makonde', 'makonde', 0, 0, 1, 0, ''),
-('language', 'kea', 'language.kabuverdianu', 'kabuverdianu', 0, 0, 1, 0, ''),
-('language', 'ken', 'language.kenyang', 'kenyang', 0, 0, 1, 0, ''),
-('language', 'kfo', 'language.koro', 'koro', 0, 0, 1, 0, ''),
-('language', 'kg', 'language.kongo', 'kongo', 0, 0, 1, 0, ''),
-('language', 'kgp', 'language.kaingang', 'kaingang', 0, 0, 1, 0, ''),
-('language', 'kha', 'language.khasi', 'khasi', 0, 0, 1, 0, ''),
-('language', 'kho', 'language.khotanese', 'khotanese', 0, 0, 1, 0, ''),
-('language', 'khq', 'language.chiini.koyra', 'chiini.koyra', 0, 0, 1, 0, ''),
-('language', 'khw', 'language.khowar', 'khowar', 0, 0, 1, 0, ''),
-('language', 'ki', 'language.kikuyu', 'kikuyu', 0, 0, 1, 0, ''),
-('language', 'kiu', 'language.kirmanjki', 'kirmanjki', 0, 0, 1, 0, ''),
-('language', 'kj', 'language.kuanyama', 'kuanyama', 0, 0, 1, 0, ''),
-('language', 'kk', 'language.kazakh', 'kazakh', 0, 0, 1, 0, ''),
-('language', 'kkj', 'language.kako', 'kako', 0, 0, 1, 0, ''),
-('language', 'kl', 'language.kalaallisut', 'kalaallisut', 0, 0, 1, 0, ''),
-('language', 'kln', 'language.kalenjin', 'kalenjin', 0, 0, 1, 0, ''),
-('language', 'km', 'language.khmer', 'khmer', 0, 0, 1, 0, ''),
-('language', 'kmb', 'language.kimbundu', 'kimbundu', 0, 0, 1, 0, ''),
-('language', 'kn', 'language.kannada', 'kannada', 0, 0, 1, 0, ''),
-('language', 'ko', 'language.korean', 'korean', 0, 0, 1, 0, ''),
-('language', 'koi', 'language.komi.permyak', 'komi.permyak', 0, 0, 1, 0, ''),
-('language', 'kok', 'language.konkani', 'konkani', 0, 0, 1, 0, ''),
-('language', 'kos', 'language.kosraean', 'kosraean', 0, 0, 1, 0, ''),
-('language', 'kpe', 'language.kpelle', 'kpelle', 0, 0, 1, 0, ''),
-('language', 'kr', 'language.kanuri', 'kanuri', 0, 0, 1, 0, ''),
-('language', 'krc', 'language.karachaybalkar', 'karachaybalkar', 0, 0, 1, 0, ''),
-('language', 'kri', 'language.krio', 'krio', 0, 0, 1, 0, ''),
-('language', 'krj', 'language.kinaraya', 'kinaraya', 0, 0, 1, 0, ''),
-('language', 'krl', 'language.karelian', 'karelian', 0, 0, 1, 0, ''),
-('language', 'kru', 'language.kurukh', 'kurukh', 0, 0, 1, 0, ''),
-('language', 'ks', 'language.kashmiri', 'kashmiri', 0, 0, 1, 0, ''),
-('language', 'ksb', 'language.shambala', 'shambala', 0, 0, 1, 0, ''),
-('language', 'ksf', 'language.bafia', 'bafia', 0, 0, 1, 0, ''),
-('language', 'ksh', 'language.colognian', 'colognian', 0, 0, 1, 0, ''),
-('language', 'ku', 'language.kurdish', 'kurdish', 0, 0, 1, 0, ''),
-('language', 'kum', 'language.kumyk', 'kumyk', 0, 0, 1, 0, ''),
-('language', 'kut', 'language.kutenai', 'kutenai', 0, 0, 1, 0, ''),
-('language', 'kv', 'language.komi', 'komi', 0, 0, 1, 0, ''),
-('language', 'kw', 'language.cornish', 'cornish', 0, 0, 1, 0, ''),
-('language', 'ky', 'language.kyrgyz', 'kyrgyz', 0, 0, 1, 0, ''),
-('language', 'la', 'language.latin', 'latin', 0, 0, 1, 0, ''),
-('language', 'lad', 'language.ladino', 'ladino', 0, 0, 1, 0, ''),
-('language', 'lag', 'language.langi', 'langi', 0, 0, 1, 0, ''),
-('language', 'lah', 'language.lahnda', 'lahnda', 0, 0, 1, 0, ''),
-('language', 'lam', 'language.lamba', 'lamba', 0, 0, 1, 0, ''),
-('language', 'lb', 'language.luxembourgish', 'luxembourgish', 0, 0, 1, 0, ''),
-('language', 'lez', 'language.lezghian', 'lezghian', 0, 0, 1, 0, ''),
-('language', 'lfn', 'language.linguafranca.nova', 'linguafranca.nova', 0, 0, 1, 0, ''),
-('language', 'lg', 'language.ganda', 'ganda', 0, 0, 1, 0, ''),
-('language', 'li', 'language.limburgish', 'limburgish', 0, 0, 1, 0, ''),
-('language', 'lij', 'language.ligurian', 'ligurian', 0, 0, 1, 0, ''),
-('language', 'liv', 'language.livonian', 'livonian', 0, 0, 1, 0, ''),
-('language', 'lkt', 'language.lakota', 'lakota', 0, 0, 1, 0, ''),
-('language', 'lmo', 'language.lombard', 'lombard', 0, 0, 1, 0, ''),
-('language', 'ln', 'language.lingala', 'lingala', 0, 0, 1, 0, ''),
-('language', 'lo', 'language.lao', 'lao', 0, 0, 1, 0, ''),
-('language', 'lol', 'language.mongo', 'mongo', 0, 0, 1, 0, ''),
-('language', 'loz', 'language.lozi', 'lozi', 0, 0, 1, 0, ''),
-('language', 'lrc', 'language.luri.northern', 'luri.northern', 0, 0, 1, 0, ''),
-('language', 'lt', 'language.lithuanian', 'lithuanian', 0, 0, 1, 0, ''),
-('language', 'ltg', 'language.latgalian', 'latgalian', 0, 0, 1, 0, ''),
-('language', 'lu', 'language.luba.katanga', 'luba.katanga', 0, 0, 1, 0, ''),
-('language', 'lua', 'language.luba.lulua', 'luba.lulua', 0, 0, 1, 0, ''),
-('language', 'lui', 'language.luiseno', 'luiseno', 0, 0, 1, 0, ''),
-('language', 'lun', 'language.lunda', 'lunda', 0, 0, 1, 0, ''),
-('language', 'luo', 'language.luo', 'luo', 0, 0, 1, 0, ''),
-('language', 'lus', 'language.mizo', 'mizo', 0, 0, 1, 0, ''),
-('language', 'luy', 'language.luyia', 'luyia', 0, 0, 1, 0, ''),
-('language', 'lv', 'language.latvian', 'latvian', 0, 0, 1, 0, ''),
-('language', 'lzh', 'language.chinese.literary', 'chinese.literary', 0, 0, 1, 0, ''),
-('language', 'lzz', 'language.laz', 'laz', 0, 0, 1, 0, ''),
-('language', 'mad', 'language.madurese', 'madurese', 0, 0, 1, 0, ''),
-('language', 'maf', 'language.mafa', 'mafa', 0, 0, 1, 0, ''),
-('language', 'mag', 'language.magahi', 'magahi', 0, 0, 1, 0, ''),
-('language', 'mai', 'language.maithili', 'maithili', 0, 0, 1, 0, ''),
-('language', 'mak', 'language.makasar', 'makasar', 0, 0, 1, 0, ''),
-('language', 'man', 'language.mandingo', 'mandingo', 0, 0, 1, 0, ''),
-('language', 'mas', 'language.masai', 'masai', 0, 0, 1, 0, ''),
-('language', 'mde', 'language.maba', 'maba', 0, 0, 1, 0, ''),
-('language', 'mdf', 'language.moksha', 'moksha', 0, 0, 1, 0, ''),
-('language', 'mdr', 'language.mandar', 'mandar', 0, 0, 1, 0, ''),
-('language', 'men', 'language.mende', 'mende', 0, 0, 1, 0, ''),
-('language', 'mer', 'language.meru', 'meru', 0, 0, 1, 0, ''),
-('language', 'mfe', 'language.morisyen', 'morisyen', 0, 0, 1, 0, ''),
-('language', 'mg', 'language.malagasy', 'malagasy', 0, 0, 1, 0, ''),
-('language', 'mga', 'language.irish.middle', 'irish.middle', 0, 0, 1, 0, ''),
-('language', 'mgh', 'language.makhuwameetto', 'makhuwameetto', 0, 0, 1, 0, ''),
-('language', 'mgo', 'language.meta', 'meta', 0, 0, 1, 0, ''),
-('language', 'mh', 'language.marshallese', 'marshallese', 0, 0, 1, 0, ''),
-('language', 'mi', 'language.maori', 'maori', 0, 0, 1, 0, ''),
-('language', 'mic', 'language.micmac', 'micmac', 0, 0, 1, 0, ''),
-('language', 'min', 'language.minangkabau', 'minangkabau', 0, 0, 1, 0, ''),
-('language', 'mk', 'language.macedonian', 'macedonian', 0, 0, 1, 0, ''),
-('language', 'ml', 'language.malayalam', 'malayalam', 0, 0, 1, 0, ''),
-('language', 'mn', 'language.mongolian', 'mongolian', 0, 0, 1, 0, ''),
-('language', 'mnc', 'language.manchu', 'manchu', 0, 0, 1, 0, ''),
-('language', 'mni', 'language.manipuri', 'manipuri', 0, 0, 1, 0, ''),
-('language', 'moh', 'language.mohawk', 'mohawk', 0, 0, 1, 0, ''),
-('language', 'mos', 'language.mossi', 'mossi', 0, 0, 1, 0, ''),
-('language', 'mr', 'language.marathi', 'marathi', 0, 0, 1, 0, ''),
-('language', 'mrj', 'language.mari.western', 'mari.western', 0, 0, 1, 0, ''),
-('language', 'ms', 'language.malay', 'malay', 0, 0, 1, 0, ''),
-('language', 'mt', 'language.maltese', 'maltese', 0, 0, 1, 0, ''),
-('language', 'mua', 'language.mundang', 'mundang', 0, 0, 1, 0, ''),
-('language', 'mul', 'language.multiple', 'multiple', 0, 0, 1, 0, ''),
-('language', 'mus', 'language.creek', 'creek', 0, 0, 1, 0, ''),
-('language', 'mwl', 'language.mirandese', 'mirandese', 0, 0, 1, 0, ''),
-('language', 'mwr', 'language.marwari', 'marwari', 0, 0, 1, 0, ''),
-('language', 'mwv', 'language.mentawai', 'mentawai', 0, 0, 1, 0, ''),
-('language', 'my', 'language.burmese', 'burmese', 0, 0, 1, 0, ''),
-('language', 'mye', 'language.myene', 'myene', 0, 0, 1, 0, ''),
-('language', 'myv', 'language.erzya', 'erzya', 0, 0, 1, 0, ''),
-('language', 'mzn', 'language.mazanderani', 'mazanderani', 0, 0, 1, 0, ''),
-('language', 'na', 'language.nauru', 'nauru', 0, 0, 1, 0, ''),
-('language', 'nan', 'language.chinese.minnan', 'chinese.minnan', 0, 0, 1, 0, ''),
-('language', 'nap', 'language.neapolitan', 'neapolitan', 0, 0, 1, 0, ''),
-('language', 'naq', 'language.nama', 'nama', 0, 0, 1, 0, ''),
-('language', 'nb', 'language.norwegian.bokmål', 'norwegian.bokmål', 0, 0, 1, 0, ''),
-('language', 'nd', 'language.ndebele.north', 'ndebele.north', 0, 0, 1, 0, ''),
-('language', 'nds', 'language.german.low', 'german.low', 0, 0, 1, 0, ''),
-('language', 'nds-NL', 'language.saxon.low', 'saxon.low', 0, 0, 1, 0, ''),
-('language', 'ne', 'language.nepali', 'nepali', 0, 0, 1, 0, ''),
-('language', 'new', 'language.newari', 'newari', 0, 0, 1, 0, ''),
-('language', 'ng', 'language.ndonga', 'ndonga', 0, 0, 1, 0, ''),
-('language', 'nia', 'language.nias', 'nias', 0, 0, 1, 0, ''),
-('language', 'niu', 'language.niuean', 'niuean', 0, 0, 1, 0, ''),
-('language', 'njo', 'language.aonaga', 'aonaga', 0, 0, 1, 0, ''),
-('language', 'nl', 'language.dutch', 'dutch', 0, 0, 1, 0, ''),
-('language', 'nl-BE', 'language.flemish', 'flemish', 0, 0, 1, 0, ''),
-('language', 'nmg', 'language.kwasio', 'kwasio', 0, 0, 1, 0, ''),
-('language', 'nn', 'language.norwegian.nynorsk', 'norwegian.nynorsk', 0, 0, 1, 0, ''),
-('language', 'nnh', 'language.ngiemboon', 'ngiemboon', 0, 0, 1, 0, ''),
-('language', 'no', 'language.norwegian', 'norwegian', 0, 0, 1, 0, ''),
-('language', 'nog', 'language.nogai', 'nogai', 0, 0, 1, 0, ''),
-('language', 'non', 'language.norse.old', 'norse.old', 0, 0, 1, 0, ''),
-('language', 'nov', 'language.novial', 'novial', 0, 0, 1, 0, ''),
-('language', 'nqo', 'language.nko', 'nko', 0, 0, 1, 0, ''),
-('language', 'nr', 'language.ndebele.south', 'ndebele.south', 0, 0, 1, 0, ''),
-('language', 'nso', 'language.sotho.northern', 'sotho.northern', 0, 0, 1, 0, ''),
-('language', 'nus', 'language.nuer', 'nuer', 0, 0, 1, 0, ''),
-('language', 'nv', 'language.navajo', 'navajo', 0, 0, 1, 0, ''),
-('language', 'nwc', 'language.newari.classical', 'newari.classical', 0, 0, 1, 0, ''),
-('language', 'ny', 'language.nyanja', 'nyanja', 0, 0, 1, 0, ''),
-('language', 'nym', 'language.nyamwezi', 'nyamwezi', 0, 0, 1, 0, ''),
-('language', 'nyn', 'language.nyankole', 'nyankole', 0, 0, 1, 0, ''),
-('language', 'nyo', 'language.nyoro', 'nyoro', 0, 0, 1, 0, ''),
-('language', 'nzi', 'language.nzima', 'nzima', 0, 0, 1, 0, ''),
-('language', 'oc', 'language.occitan', 'occitan', 0, 0, 1, 0, ''),
-('language', 'oj', 'language.ojibwa', 'ojibwa', 0, 0, 1, 0, ''),
-('language', 'om', 'language.oromo', 'oromo', 0, 0, 1, 0, ''),
-('language', 'or', 'language.oriya', 'oriya', 0, 0, 1, 0, ''),
-('language', 'os', 'language.ossetic', 'ossetic', 0, 0, 1, 0, ''),
-('language', 'osa', 'language.osage', 'osage', 0, 0, 1, 0, ''),
-('language', 'ota', 'language.turkish.ottoman', 'turkish.ottoman', 0, 0, 1, 0, ''),
-('language', 'pa', 'language.punjabi', 'punjabi', 0, 0, 1, 0, ''),
-('language', 'pag', 'language.pangasinan', 'pangasinan', 0, 0, 1, 0, ''),
-('language', 'pal', 'language.pahlavi', 'pahlavi', 0, 0, 1, 0, ''),
-('language', 'pam', 'language.pampanga', 'pampanga', 0, 0, 1, 0, ''),
-('language', 'pap', 'language.papiamento', 'papiamento', 0, 0, 1, 0, ''),
-('language', 'pau', 'language.palauan', 'palauan', 0, 0, 1, 0, ''),
-('language', 'pcd', 'language.picard', 'picard', 0, 0, 1, 0, ''),
-('language', 'pdc', 'language.german.pennsylvania', 'german.pennsylvania', 0, 0, 1, 0, ''),
-('language', 'pdt', 'language.plautdietsch', 'plautdietsch', 0, 0, 1, 0, ''),
-('language', 'peo', 'language.persian.old', 'persian.old', 0, 0, 1, 0, ''),
-('language', 'pfl', 'language.german.palatine', 'german.palatine', 0, 0, 1, 0, ''),
-('language', 'phn', 'language.phoenician', 'phoenician', 0, 0, 1, 0, ''),
-('language', 'pi', 'language.pali', 'pali', 0, 0, 1, 0, ''),
-('language', 'pl', 'language.polish', 'polish', 0, 0, 1, 0, ''),
-('language', 'pms', 'language.piedmontese', 'piedmontese', 0, 0, 1, 0, ''),
-('language', 'pnt', 'language.pontic', 'pontic', 0, 0, 1, 0, ''),
-('language', 'pon', 'language.pohnpeian', 'pohnpeian', 0, 0, 1, 0, ''),
-('language', 'prg', 'language.prussian', 'prussian', 0, 0, 1, 0, ''),
-('language', 'pro', 'language.provençal.old', 'provençal.old', 0, 0, 1, 0, ''),
-('language', 'ps', 'language.pashto', 'pashto', 0, 0, 1, 0, ''),
-('language', 'pt', 'language.portuguese', 'portuguese', 0, 0, 1, 0, ''),
-('language', 'pt-BR', 'language.portuguese.brazilian', 'portuguese.brazilian', 0, 0, 1, 0, ''),
-('language', 'pt-PT', 'language.portuguese.european', 'portuguese.european', 0, 0, 1, 0, ''),
-('language', 'qu', 'language.quechua', 'quechua', 0, 0, 1, 0, ''),
-('language', 'quc', 'language.kiche', 'kiche', 0, 0, 1, 0, ''),
-('language', 'qug', 'language.quichua.chimborazohighland', 'quichua.chimborazohighland', 0, 0, 1, 0, ''),
-('language', 'raj', 'language.rajasthani', 'rajasthani', 0, 0, 1, 0, ''),
-('language', 'rap', 'language.rapanui', 'rapanui', 0, 0, 1, 0, ''),
-('language', 'rar', 'language.rarotongan', 'rarotongan', 0, 0, 1, 0, ''),
-('language', 'rgn', 'language.romagnol', 'romagnol', 0, 0, 1, 0, ''),
-('language', 'rif', 'language.riffian', 'riffian', 0, 0, 1, 0, ''),
-('language', 'rm', 'language.romansh', 'romansh', 0, 0, 1, 0, ''),
-('language', 'rn', 'language.rundi', 'rundi', 0, 0, 1, 0, ''),
-('language', 'ro', 'language.romanian', 'romanian', 0, 0, 1, 0, ''),
-('language', 'ro-MD', 'language.moldavian', 'moldavian', 0, 0, 1, 0, ''),
-('language', 'rof', 'language.rombo', 'rombo', 0, 0, 1, 0, ''),
-('language', 'rom', 'language.romany', 'romany', 0, 0, 1, 0, ''),
-('language', 'root', 'language.root', 'root', 0, 0, 1, 0, ''),
-('language', 'rtm', 'language.rotuman', 'rotuman', 0, 0, 1, 0, ''),
-('language', 'ru', 'language.russian', 'russian', 0, 0, 1, 0, ''),
-('language', 'rue', 'language.rusyn', 'rusyn', 0, 0, 1, 0, ''),
-('language', 'rug', 'language.roviana', 'roviana', 0, 0, 1, 0, ''),
-('language', 'rup', 'language.aromanian', 'aromanian', 0, 0, 1, 0, ''),
-('language', 'rw', 'language.kinyarwanda', 'kinyarwanda', 0, 0, 1, 0, ''),
-('language', 'rwk', 'language.rwa', 'rwa', 0, 0, 1, 0, ''),
-('language', 'sa', 'language.sanskrit', 'sanskrit', 0, 0, 1, 0, ''),
-('language', 'sad', 'language.sandawe', 'sandawe', 0, 0, 1, 0, ''),
-('language', 'sah', 'language.sakha', 'sakha', 0, 0, 1, 0, ''),
-('language', 'sam', 'language.aramaic.samaritan', 'aramaic.samaritan', 0, 0, 1, 0, ''),
-('language', 'saq', 'language.samburu', 'samburu', 0, 0, 1, 0, ''),
-('language', 'sas', 'language.sasak', 'sasak', 0, 0, 1, 0, ''),
-('language', 'sat', 'language.santali', 'santali', 0, 0, 1, 0, ''),
-('language', 'saz', 'language.saurashtra', 'saurashtra', 0, 0, 1, 0, ''),
-('language', 'sba', 'language.ngambay', 'ngambay', 0, 0, 1, 0, ''),
-('language', 'sbp', 'language.sangu', 'sangu', 0, 0, 1, 0, ''),
-('language', 'sc', 'language.sardinian', 'sardinian', 0, 0, 1, 0, ''),
-('language', 'scn', 'language.sicilian', 'sicilian', 0, 0, 1, 0, ''),
-('language', 'sco', 'language.scots', 'scots', 0, 0, 1, 0, ''),
-('language', 'sd', 'language.sindhi', 'sindhi', 0, 0, 1, 0, ''),
-('language', 'sdc', 'language.sardinian.sassarese', 'sardinian.sassarese', 0, 0, 1, 0, ''),
-('language', 'sdh', 'language.southern kurdish', 'southern kurdish', 0, 0, 1, 0, ''),
-('language', 'se', 'language.northern sami', 'northern sami', 0, 0, 1, 0, ''),
-('language', 'see', 'language.seneca', 'seneca', 0, 0, 1, 0, ''),
-('language', 'seh', 'language.sena', 'sena', 0, 0, 1, 0, ''),
-('language', 'sei', 'language.seri', 'seri', 0, 0, 1, 0, ''),
-('language', 'sel', 'language.selkup', 'selkup', 0, 0, 1, 0, ''),
-('language', 'ses', 'language.senni.koyraboro', 'senni.koyraboro', 0, 0, 1, 0, ''),
-('language', 'sg', 'language.sango', 'sango', 0, 0, 1, 0, ''),
-('language', 'sga', 'language.irish.old', 'irish.old', 0, 0, 1, 0, ''),
-('language', 'sgs', 'language.samogitian', 'samogitian', 0, 0, 1, 0, ''),
-('language', 'sh', 'language.serbocroatian', 'serbocroatian', 0, 0, 1, 0, ''),
-('language', 'shi', 'language.tachelhit', 'tachelhit', 0, 0, 1, 0, ''),
-('language', 'shn', 'language.shan', 'shan', 0, 0, 1, 0, ''),
-('language', 'shu', 'language.arabic.chadian', 'arabic.chadian', 0, 0, 1, 0, ''),
-('language', 'si', 'language.sinhala', 'sinhala', 0, 0, 1, 0, ''),
-('language', 'sid', 'language.sidamo', 'sidamo', 0, 0, 1, 0, ''),
-('language', 'sk', 'language.slovak', 'slovak', 0, 0, 1, 0, ''),
-('language', 'sl', 'language.slovenian', 'slovenian', 0, 0, 1, 0, ''),
-('language', 'sli', 'language.silesian.lower', 'silesian.lower', 0, 0, 1, 0, ''),
-('language', 'sly', 'language.selayar', 'selayar', 0, 0, 1, 0, ''),
-('language', 'sm', 'language.samoan', 'samoan', 0, 0, 1, 0, ''),
-('language', 'sma', 'language.sami.southern', 'sami.southern', 0, 0, 1, 0, '');
-INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `keyword`, `alias`, `is_default`, `root`, `enabled`, `deprecated`, `description`) VALUES
-('language', 'smj', 'language.sami.lule', 'sami.lule', 0, 0, 1, 0, ''),
-('language', 'smn', 'language.sami.inari', 'sami.inari', 0, 0, 1, 0, ''),
-('language', 'sms', 'language.sami.skolt', 'sami.skolt', 0, 0, 1, 0, ''),
-('language', 'sn', 'language.shona', 'shona', 0, 0, 1, 0, ''),
-('language', 'snk', 'language.soninke', 'soninke', 0, 0, 1, 0, ''),
-('language', 'so', 'language.somali', 'somali', 0, 0, 1, 0, ''),
-('language', 'sog', 'language.sogdien', 'sogdien', 0, 0, 1, 0, ''),
-('language', 'sq', 'language.albanian', 'albanian', 0, 0, 1, 0, ''),
-('language', 'sr', 'language.serbian', 'serbian', 0, 0, 1, 0, ''),
-('language', 'srn', 'language.tongo.sranan', 'tongo.sranan', 0, 0, 1, 0, ''),
-('language', 'srr', 'language.serer', 'serer', 0, 0, 1, 0, ''),
-('language', 'ss', 'language.swati', 'swati', 0, 0, 1, 0, ''),
-('language', 'ssy', 'language.saho', 'saho', 0, 0, 1, 0, ''),
-('language', 'st', 'language.sotho.southern', 'sotho.southern', 0, 0, 1, 0, ''),
-('language', 'stq', 'language.frisian.saterland', 'frisian.saterland', 0, 0, 1, 0, ''),
-('language', 'su', 'language.sundanese', 'sundanese', 0, 0, 1, 0, ''),
-('language', 'suk', 'language.sukuma', 'sukuma', 0, 0, 1, 0, ''),
-('language', 'sus', 'language.susu', 'susu', 0, 0, 1, 0, ''),
-('language', 'sux', 'language.sumerian', 'sumerian', 0, 0, 1, 0, ''),
-('language', 'sv', 'language.swedish', 'swedish', 0, 0, 1, 0, ''),
-('language', 'sw', 'language.swahili', 'swahili', 0, 0, 1, 0, ''),
-('language', 'sw-CD', 'language.swahili.congo', 'swahili.congo', 0, 0, 1, 0, ''),
-('language', 'swb', 'language.comorian', 'comorian', 0, 0, 1, 0, ''),
-('language', 'syc', 'language.syriac.classical', 'syriac.classical', 0, 0, 1, 0, ''),
-('language', 'syr', 'language.syriac', 'syriac', 0, 0, 1, 0, ''),
-('language', 'szl', 'language.silesian', 'silesian', 0, 0, 1, 0, ''),
-('language', 'ta', 'language.tamil', 'tamil', 0, 0, 1, 0, ''),
-('language', 'tcy', 'language.tulu', 'tulu', 0, 0, 1, 0, ''),
-('language', 'te', 'language.telugu', 'telugu', 0, 0, 1, 0, ''),
-('language', 'tem', 'language.timne', 'timne', 0, 0, 1, 0, ''),
-('language', 'teo', 'language.teso', 'teso', 0, 0, 1, 0, ''),
-('language', 'ter', 'language.tereno', 'tereno', 0, 0, 1, 0, ''),
-('language', 'tet', 'language.tetum', 'tetum', 0, 0, 1, 0, ''),
-('language', 'tg', 'language.tajik', 'tajik', 0, 0, 1, 0, ''),
-('language', 'th', 'language.thai', 'thai', 0, 0, 1, 0, ''),
-('language', 'ti', 'language.tigrinya', 'tigrinya', 0, 0, 1, 0, ''),
-('language', 'tig', 'language.tigre', 'tigre', 0, 0, 1, 0, ''),
-('language', 'tiv', 'language.tiv', 'tiv', 0, 0, 1, 0, ''),
-('language', 'tk', 'language.turkmen', 'turkmen', 0, 0, 1, 0, ''),
-('language', 'tkl', 'language.tokelau', 'tokelau', 0, 0, 1, 0, ''),
-('language', 'tkr', 'language.tsakhur', 'tsakhur', 0, 0, 1, 0, ''),
-('language', 'tl', 'language.tagalog', 'tagalog', 0, 0, 1, 0, ''),
-('language', 'tlh', 'language.klingon', 'klingon', 0, 0, 1, 0, ''),
-('language', 'tli', 'language.tlingit', 'tlingit', 0, 0, 1, 0, ''),
-('language', 'tly', 'language.talysh', 'talysh', 0, 0, 1, 0, ''),
-('language', 'tmh', 'language.tamashek', 'tamashek', 0, 0, 1, 0, ''),
-('language', 'tn', 'language.tswana', 'tswana', 0, 0, 1, 0, ''),
-('language', 'to', 'language.tongan', 'tongan', 0, 0, 1, 0, ''),
-('language', 'tog', 'language.tonga.nyasa', 'tonga.nyasa', 0, 0, 1, 0, ''),
-('language', 'tpi', 'language.pisin.tok', 'pisin.tok', 0, 0, 1, 0, ''),
-('language', 'tr', 'language.turkish', 'turkish', 0, 0, 1, 0, ''),
-('language', 'tru', 'language.turoyo', 'turoyo', 0, 0, 1, 0, ''),
-('language', 'trv', 'language.taroko', 'taroko', 0, 0, 1, 0, ''),
-('language', 'ts', 'language.tsonga', 'tsonga', 0, 0, 1, 0, ''),
-('language', 'tsd', 'language.tsakonian', 'tsakonian', 0, 0, 1, 0, ''),
-('language', 'tsi', 'language.tsimshian', 'tsimshian', 0, 0, 1, 0, ''),
-('language', 'tt', 'language.tatar', 'tatar', 0, 0, 1, 0, ''),
-('language', 'ttt', 'language.tat.muslim', 'tat.muslim', 0, 0, 1, 0, ''),
-('language', 'tum', 'language.tumbuka', 'tumbuka', 0, 0, 1, 0, ''),
-('language', 'tvl', 'language.tuvalu', 'tuvalu', 0, 0, 1, 0, ''),
-('language', 'tw', 'language.twi', 'twi', 0, 0, 1, 0, ''),
-('language', 'twq', 'language.tasawaq', 'tasawaq', 0, 0, 1, 0, ''),
-('language', 'ty', 'language.tahitian', 'tahitian', 0, 0, 1, 0, ''),
-('language', 'tyv', 'language.tuvinian', 'tuvinian', 0, 0, 1, 0, ''),
-('language', 'tzm', 'language.tamazight.centralatlas', 'tamazight.centralatlas', 0, 0, 1, 0, ''),
-('language', 'udm', 'language.udmurt', 'udmurt', 0, 0, 1, 0, ''),
-('language', 'ug', 'language.uyghur', 'uyghur', 0, 0, 1, 0, ''),
-('language', 'uga', 'language.ugaritic', 'ugaritic', 0, 0, 1, 0, ''),
-('language', 'uk', 'language.ukrainian', 'ukrainian', 0, 0, 1, 0, ''),
-('language', 'umb', 'language.umbundu', 'umbundu', 0, 0, 1, 0, ''),
-('language', 'und', 'language.unknown', 'unknown', 0, 0, 1, 0, ''),
-('language', 'ur', 'language.urdu', 'urdu', 0, 0, 1, 0, ''),
-('language', 'uz', 'language.uzbek', 'uzbek', 0, 0, 1, 0, ''),
-('language', 'vai', 'language.vai', 'vai', 0, 0, 1, 0, ''),
-('language', 've', 'language.venda', 'venda', 0, 0, 1, 0, ''),
-('language', 'vec', 'language.venetian', 'venetian', 0, 0, 1, 0, ''),
-('language', 'vep', 'language.veps', 'veps', 0, 0, 1, 0, ''),
-('language', 'vi', 'language.vietnamese', 'vietnamese', 0, 0, 1, 0, ''),
-('language', 'vls', 'language.flemish.west', 'flemish.west', 0, 0, 1, 0, ''),
-('language', 'vmf', 'language.franconian.main', 'franconian.main', 0, 0, 1, 0, ''),
-('language', 'vo', 'language.volapük', 'volapük', 0, 0, 1, 0, ''),
-('language', 'vot', 'language.votic', 'votic', 0, 0, 1, 0, ''),
-('language', 'vro', 'language.võro', 'võro', 0, 0, 1, 0, ''),
-('language', 'vun', 'language.vunjo', 'vunjo', 0, 0, 1, 0, ''),
-('language', 'wa', 'language.walloon', 'walloon', 0, 0, 1, 0, ''),
-('language', 'wae', 'language.walser', 'walser', 0, 0, 1, 0, ''),
-('language', 'wal', 'language.wolaytta', 'wolaytta', 0, 0, 1, 0, ''),
-('language', 'war', 'language.waray', 'waray', 0, 0, 1, 0, ''),
-('language', 'was', 'language.washo', 'washo', 0, 0, 1, 0, ''),
-('language', 'wbp', 'language.warlpiri', 'warlpiri', 0, 0, 1, 0, ''),
-('language', 'wo', 'language.wolof', 'wolof', 0, 0, 1, 0, ''),
-('language', 'wuu', 'language.chinese.wu', 'chinese.wu', 0, 0, 1, 0, ''),
-('language', 'xal', 'language.kalmyk', 'kalmyk', 0, 0, 1, 0, ''),
-('language', 'xh', 'language.xhosa', 'xhosa', 0, 0, 1, 0, ''),
-('language', 'xmf', 'language.mingrelian', 'mingrelian', 0, 0, 1, 0, ''),
-('language', 'xog', 'language.soga', 'soga', 0, 0, 1, 0, ''),
-('language', 'yao', 'language.yao', 'yao', 0, 0, 1, 0, ''),
-('language', 'yap', 'language.yapese', 'yapese', 0, 0, 1, 0, ''),
-('language', 'yav', 'language.yangben', 'yangben', 0, 0, 1, 0, ''),
-('language', 'ybb', 'language.yemba', 'yemba', 0, 0, 1, 0, ''),
-('language', 'yi', 'language.yiddish', 'yiddish', 0, 0, 1, 0, ''),
-('language', 'yo', 'language.yoruba', 'yoruba', 0, 0, 1, 0, ''),
-('language', 'yrl', 'language.nheengatu', 'nheengatu', 0, 0, 1, 0, ''),
-('language', 'yue', 'language.cantonese', 'cantonese', 0, 0, 1, 0, ''),
-('language', 'za', 'language.zhuang', 'zhuang', 0, 0, 1, 0, ''),
-('language', 'zap', 'language.zapotec', 'zapotec', 0, 0, 1, 0, ''),
-('language', 'zbl', 'language.blissymbols', 'blissymbols', 0, 0, 1, 0, ''),
-('language', 'zea', 'language.zeelandic', 'zeelandic', 0, 0, 1, 0, ''),
-('language', 'zen', 'language.zenaga', 'zenaga', 0, 0, 1, 0, ''),
-('language', 'zgh', 'language.tamazight.standardmoroccan', 'tamazight.standardmoroccan', 0, 0, 1, 0, ''),
-('language', 'zh', 'language.chinese', 'chinese', 0, 0, 1, 0, ''),
-('language', 'zh-Hans', 'language.chinese.simplified', 'chinese.simplified', 0, 0, 1, 0, ''),
-('language', 'zh-Hant', 'language.chinese.traditional', 'chinese.traditional', 0, 0, 1, 0, ''),
-('language', 'zu', 'language.zulu', 'zulu', 0, 0, 1, 0, ''),
-('language', 'zun', 'language.zuni', 'zuni', 0, 0, 1, 0, ''),
-('language', 'zxx', 'language.none', 'none', 0, 0, 1, 0, ''),
-('language', 'zza', 'language.zaza', 'zaza', 0, 0, 1, 0, ''),
-('mass', 'g', 'mass.gram', 'gram', 1, 0, 1, 0, ''),
-('mass', 'kg', 'mass.kilogram', 'kilogram', 0, 0, 1, 0, ''),
-('mass', 'mg', 'mass.milligram', 'milligram', 0, 0, 1, 0, ''),
-('mass', 't', 'mass.tonne', 'tonne', 0, 0, 1, 0, ''),
-('mass', 'µg', 'mass.microgram', 'microgram', 0, 0, 1, 0, ''),
-('mediatype', 'image/jpeg', 'core.mediatype.image.jpeg', 'jpeg', 0, 0, 1, 0, ''),
-('mediatype', 'image/png', 'core.mediatype.image.png', 'png', 0, 0, 1, 0, ''),
-('mediatype', 'text/html', 'core.mediatype.text.html', 'html', 0, 0, 1, 0, ''),
-('mediatype', 'text/plain', 'core.mediatype.text.plain', 'plain', 0, 0, 1, 0, ''),
-('spatial.crs', '4326', 'spatial.crs.wgs84', 'WGS84', 0, 0, 1, 0, ''),
-('spatial.format', 'geojson', 'spatial.format.geojson', '', 0, 0, 1, 0, ''),
-('spatial.format', 'gpx', 'spatial.format.gpx', '', 0, 0, 1, 0, ''),
-('spatial.format', 'wkt', 'spatial.format.wkt', '', 0, 0, 1, 0, '');
+INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('core.actor.class', 'institution', '', 0, 0, 1, 0, 'core.actor.class.institution', ''),
+('core.actor.class', 'museum', '', 0, 0, 1, 0, 'core.actor.class.museum', ''),
+('core.actor.class', 'person', '', 0, 0, 1, 0, 'core.actor.class.person', ''),
+('core.event.class', 'accessioned', '', 0, 0, 0, 0, 'dime.find.event.accessioned', ''),
+('core.event.class', 'activated', '', 0, 0, 0, 0, 'core.actor.event.activated', ''),
+('core.event.class', 'agreed', '', 0, 0, 0, 0, 'dime.find.event.agreed', ''),
+('core.event.class', 'annotated', '', 0, 0, 0, 0, 'dime.find.event.annotated', ''),
+('core.event.class', 'appraised', '', 0, 0, 0, 0, 'dime.find.event.appraised', ''),
+('core.event.class', 'approved', '', 0, 0, 0, 0, 'core.actor.event.approved', ''),
+('core.event.class', 'assessed', '', 0, 0, 0, 0, 'dime.find.event.assessed', ''),
+('core.event.class', 'cancelled', '', 0, 0, 0, 0, 'core.actor.event.cancelled', ''),
+('core.event.class', 'cited', '', 0, 0, 0, 0, 'dime.find.event.cited', ''),
+('core.event.class', 'classified', '', 0, 0, 0, 0, 'dime.find.event.classified', ''),
+('core.event.class', 'commented', '', 0, 0, 0, 0, 'dime.find.event.commented', ''),
+('core.event.class', 'conserved', '', 0, 0, 0, 0, 'dime.find.event.conserved', ''),
+('core.event.class', 'contacted', '', 0, 0, 0, 0, 'dime.find.event.contacted', ''),
+('core.event.class', 'dated', '', 0, 0, 0, 0, 'dime.find.event.dated', ''),
+('core.event.class', 'declined', '', 0, 0, 0, 0, 'dime.find.event.declined', ''),
+('core.event.class', 'deleted', '', 0, 0, 0, 0, 'dime.find.event.deleted', ''),
+('core.event.class', 'described', '', 0, 0, 0, 0, 'dime.find.event.described', ''),
+('core.event.class', 'destroyed', '', 0, 0, 0, 0, 'dime.find.event.destroyed', ''),
+('core.event.class', 'disagreed', '', 0, 0, 0, 0, 'dime.find.event.disagreed', ''),
+('core.event.class', 'discarded', '', 0, 0, 0, 0, 'dime.find.event.discarded', ''),
+('core.event.class', 'edited', '', 0, 0, 0, 0, 'core.event.edited', ''),
+('core.event.class', 'evaluated', '', 0, 0, 0, 0, 'dime.find.event.evaluated', ''),
+('core.event.class', 'exported', '', 0, 0, 0, 0, 'dime.find.event.exported', ''),
+('core.event.class', 'followed', '', 0, 0, 0, 0, 'dime.find.event.followed', ''),
+('core.event.class', 'identified', '', 0, 0, 0, 0, 'dime.find.event.identified', ''),
+('core.event.class', 'liked', '', 0, 0, 0, 0, 'dime.find.event.liked', ''),
+('core.event.class', 'loaned', '', 0, 0, 0, 0, 'dime.find.event.loaned', ''),
+('core.event.class', 'locked', '', 0, 0, 0, 0, 'core.user', ''),
+('core.event.class', 'lost', '', 0, 0, 0, 0, 'dime.find.event.lost', ''),
+('core.event.class', 'notified', '', 0, 0, 0, 0, 'dime.find.event.notified', ''),
+('core.event.class', 'published', '', 0, 0, 0, 0, 'dime.find.event.published', ''),
+('core.event.class', 'received', '', 0, 0, 0, 0, 'dime.find.event.received', ''),
+('core.event.class', 'recorded', '', 0, 0, 0, 0, 'dime.find.event.recorded', ''),
+('core.event.class', 'recovered', '', 0, 0, 0, 0, 'dime.find.event.recovered', ''),
+('core.event.class', 'redacted', '', 0, 0, 0, 0, 'dime.find.event.redacted', ''),
+('core.event.class', 'referred', '', 0, 0, 0, 0, 'dime.find.event.referred', ''),
+('core.event.class', 'registered', '', 0, 0, 0, 0, 'core.actor.event.registered', ''),
+('core.event.class', 'rejected', '', 0, 0, 0, 0, 'dime.find.event.rejected', ''),
+('core.event.class', 'released', '', 0, 0, 0, 0, 'dime.find.event.released', ''),
+('core.event.class', 'reported', '', 0, 0, 0, 0, 'dime.find.event.reported', ''),
+('core.event.class', 'requested', '', 0, 0, 0, 0, 'dime.find.event.requested', ''),
+('core.event.class', 'restored', '', 0, 0, 0, 0, 'core.actor.event.restored', ''),
+('core.event.class', 'rewarded', '', 0, 0, 0, 0, 'dime.find.event.rewarded', ''),
+('core.event.class', 'sent', '', 0, 0, 0, 0, 'dime.find.event.sent', ''),
+('core.event.class', 'shared', '', 0, 0, 0, 0, 'dime.find.event.shared', ''),
+('core.event.class', 'subscribed', '', 0, 0, 0, 0, 'dime.find.event.subscribed', ''),
+('core.event.class', 'suppressed', '', 0, 0, 0, 0, 'dime.find.event.suppressed', ''),
+('core.event.class', 'suspended', '', 0, 0, 0, 0, 'core.actor.event.suspended', ''),
+('core.event.class', 'transferred', '', 0, 0, 0, 0, 'dime.find.event.transferred', ''),
+('core.event.class', 'unlocked', '', 0, 0, 0, 0, 'core.user.agree', ''),
+('core.event.class', 'validated', '', 0, 0, 0, 0, 'dime.find.event.validated', ''),
+('core.event.class', 'viewed', '', 0, 0, 0, 0, 'core.event.class.viewed', ''),
+('core.event.class', 'withdrawn', '', 0, 0, 0, 0, 'dime.find.event.withdrawn', ''),
+('core.file.class', 'audio', '', 0, 0, 1, 0, 'core.file.class.audio', ''),
+('core.file.class', 'document', '', 0, 0, 1, 0, 'core.file.class.document', ''),
+('core.file.class', 'image', '', 0, 0, 1, 0, 'core.file.class.image', ''),
+('core.file.class', 'other', '', 0, 0, 1, 0, 'core.file.class.other', ''),
+('core.file.class', 'text', '', 0, 0, 1, 0, 'core.file.class.text', ''),
+('core.file.class', 'video', '', 0, 0, 1, 0, 'core.file.class.video', ''),
+('core.file.status', 'checkedin', '', 0, 0, 1, 0, 'core.file.status.checkedin', ''),
+('core.file.status', 'checkedout', '', 0, 0, 1, 0, 'core.file.status.checkedout', ''),
+('core.file.status', 'expired', '', 0, 0, 1, 0, 'core.file.status.expired', ''),
+('core.file.status', 'locked', '', 0, 0, 1, 0, 'core.file.status.locked', ''),
+('core.file.status', 'new', '', 0, 0, 1, 0, 'core.file.status.new', ''),
+('core.form.modus', 'active', '', 0, 0, 1, 0, 'core.form.mode.active', 'Form field is editable.'),
+('core.form.modus', 'disabled', '', 0, 0, 1, 0, 'core.form.mode.disabled', 'Form field is Disabled.'),
+('core.form.modus', 'hidden', '', 0, 0, 1, 0, 'core.form.mode.hidden', 'Form field is Hidden'),
+('core.form.modus', 'readonly', '', 0, 0, 1, 0, 'core.form.mode.readonly', 'Form field is Readonly.'),
+('core.form.modus', 'static', '', 0, 0, 1, 0, 'core.form.mode.static', 'Field is displayed but not as a form element.'),
+('core.item.status', 'allocated', '', 0, 0, 1, 0, 'core.item.status.allocated', ''),
+('core.item.status', 'deleted', '', 0, 0, 1, 0, 'core.item.status.deleted', ''),
+('core.item.status', 'registered', '', 0, 0, 1, 0, 'core.item.status.registered', ''),
+('core.item.status', 'void', '', 0, 0, 1, 0, 'core.item.status.void', ''),
+('core.license', 'cc0', 'CC0', 0, 0, 1, 0, 'core.license.cc0', ''),
+('core.license', 'ccbyncsa', 'CC BY-NC-SA', 1, 0, 1, 0, 'core.license.ccbyncsa', ''),
+('core.license', 'ccbysa', 'CC BY-SA', 0, 0, 1, 0, 'core.license.ccbysa', ''),
+('core.message.class', 'mail', '', 0, 0, 1, 0, 'core.message.class.mail', ''),
+('core.message.class', 'notification', '', 0, 0, 1, 0, 'core.message.class.notification', ''),
+('core.message.recipient.status', 'discarded', '', 0, 0, 1, 0, 'core.message.recipient.status.discarded', ''),
+('core.message.recipient.status', 'read', '', 0, 0, 1, 0, 'core.message.recipient.status.read', ''),
+('core.message.recipient.status', 'unread', '', 1, 0, 1, 0, 'core.message.recipient.status.unread', ''),
+('core.message.status', 'draft', '', 0, 0, 1, 0, 'core.message.status.draft', ''),
+('core.message.status', 'read', '', 0, 0, 1, 0, 'core.message.status.read', ''),
+('core.message.status', 'sent', '', 0, 0, 1, 0, 'core.message.status.sent', ''),
+('core.security.status', 'approved', '', 0, 0, 1, 0, 'core.security.status.approve', ''),
+('core.security.status', 'closed', '', 0, 0, 1, 0, 'core.security.status.closed', ''),
+('core.security.status', 'expired', '', 0, 0, 1, 0, 'core.security.status.expired', ''),
+('core.security.status', 'locked', '', 0, 0, 1, 0, 'core.security.status.locked', ''),
+('core.security.status', 'registered', '', 1, 0, 1, 0, 'core.security.status.registered', ''),
+('core.security.status', 'suspended', '', 0, 0, 1, 0, 'core.security.status.suspended', ''),
+('core.security.status', 'verified', '', 0, 0, 1, 0, 'core.security.status.verified', ''),
+('core.user.terms', 'v1', '', 1, 0, 1, 0, 'core.user.terms.v1', ''),
+('core.visibility', 'private', '', 1, 0, 1, 0, 'core.visibility.private', ''),
+('core.visibility', 'public', '', 0, 0, 1, 0, 'core.visibility.public', ''),
+('core.visibility', 'restricted', '', 0, 0, 1, 0, 'core.visibility.restricted', ''),
+('core.workflow.role', 'admin', '', 0, 0, 1, 0, 'core.role.admin', ''),
+('core.workflow.role', 'anon', '', 0, 0, 1, 0, 'core.role.anon', ''),
+('core.workflow.role', 'user', '', 0, 0, 1, 0, 'core.role.user', ''),
+('country', 'AD', 'andorra', 0, 0, 1, 0, 'country.andorra', ''),
+('country', 'AE', 'unitedarabemirates', 0, 0, 1, 0, 'country.unitedarabemirates', ''),
+('country', 'AF', 'afghanistan', 0, 0, 1, 0, 'country.afghanistan', ''),
+('country', 'AG', 'antigua', 0, 0, 1, 0, 'country.antigua', ''),
+('country', 'AI', 'anguilla', 0, 0, 1, 0, 'country.anguilla', ''),
+('country', 'AL', 'albania', 0, 0, 1, 0, 'country.albania', ''),
+('country', 'AM', 'armenia', 0, 0, 1, 0, 'country.armenia', ''),
+('country', 'AO', 'angola', 0, 0, 1, 0, 'country.angola', ''),
+('country', 'AQ', 'antarctica', 0, 0, 1, 0, 'country.antarctica', ''),
+('country', 'AR', 'argentina', 0, 0, 1, 0, 'country.argentina', ''),
+('country', 'AS', 'americansamoa', 0, 0, 1, 0, 'country.americansamoa', ''),
+('country', 'AT', 'austria', 0, 0, 1, 0, 'country.austria', ''),
+('country', 'AU', 'australia', 0, 0, 1, 0, 'country.australia', ''),
+('country', 'AW', 'aruba', 0, 0, 1, 0, 'country.aruba', ''),
+('country', 'AX', 'alandislands', 0, 0, 1, 0, 'country.alandislands', ''),
+('country', 'AZ', 'azerbaijan', 0, 0, 1, 0, 'country.azerbaijan', ''),
+('country', 'BA', 'bosniaherzegovina', 0, 0, 1, 0, 'country.bosniaherzegovina', ''),
+('country', 'BB', 'barbados', 0, 0, 1, 0, 'country.barbados', ''),
+('country', 'BD', 'bangladesh', 0, 0, 1, 0, 'country.bangladesh', ''),
+('country', 'BE', 'belgium', 0, 0, 1, 0, 'country.belgium', ''),
+('country', 'BF', 'burkinafaso', 0, 0, 1, 0, 'country.burkinafaso', ''),
+('country', 'BG', 'bulgaria', 0, 0, 1, 0, 'country.bulgaria', ''),
+('country', 'BH', 'bahrain', 0, 0, 1, 0, 'country.bahrain', ''),
+('country', 'BI', 'burundi', 0, 0, 1, 0, 'country.burundi', ''),
+('country', 'BJ', 'benin', 0, 0, 1, 0, 'country.benin', ''),
+('country', 'BL', 'saintbarthelemy', 0, 0, 1, 0, 'country.saintbarthelemy', ''),
+('country', 'BM', 'bermuda', 0, 0, 1, 0, 'country.bermuda', ''),
+('country', 'BN', 'brunei', 0, 0, 1, 0, 'country.brunei', ''),
+('country', 'BO', 'bolivia', 0, 0, 1, 0, 'country.bolivia', ''),
+('country', 'BQ', 'bonaire', 0, 0, 1, 0, 'country.bonaire', ''),
+('country', 'BR', 'brazil', 0, 0, 1, 0, 'country.brazil', ''),
+('country', 'BS', 'bahamas', 0, 0, 1, 0, 'country.bahamas', ''),
+('country', 'BT', 'bhutan', 0, 0, 1, 0, 'country.bhutan', ''),
+('country', 'BW', 'botswana', 0, 0, 1, 0, 'country.botswana', ''),
+('country', 'BY', 'belarus', 0, 0, 1, 0, 'country.belarus', ''),
+('country', 'BZ', 'belize', 0, 0, 1, 0, 'country.belize', ''),
+('country', 'CA', 'canada', 0, 0, 1, 0, 'country.canada', ''),
+('country', 'CC', 'cocosislands', 0, 0, 1, 0, 'country.cocosislands', ''),
+('country', 'CD', 'democraticrepubliccongo', 0, 0, 1, 0, 'country.democraticrepubliccongo', ''),
+('country', 'CF', 'centralafricanrepublic', 0, 0, 1, 0, 'country.centralafricanrepublic', ''),
+('country', 'CG', 'congo', 0, 0, 1, 0, 'country.congo', ''),
+('country', 'CH', 'switzerland', 0, 0, 1, 0, 'country.switzerland', ''),
+('country', 'CI', 'cotedivoire', 0, 0, 1, 0, 'country.cotedivoire', ''),
+('country', 'CK', 'cookislands', 0, 0, 1, 0, 'country.cookislands', ''),
+('country', 'CL', 'chile', 0, 0, 1, 0, 'country.chile', ''),
+('country', 'CM', 'cameroon', 0, 0, 1, 0, 'country.cameroon', ''),
+('country', 'CN', 'china', 0, 0, 1, 0, 'country.china', ''),
+('country', 'CO', 'colombia', 0, 0, 1, 0, 'country.colombia', ''),
+('country', 'CR', 'costarica', 0, 0, 1, 0, 'country.costarica', ''),
+('country', 'CU', 'cuba', 0, 0, 1, 0, 'country.cuba', ''),
+('country', 'CV', 'caboverde', 0, 0, 1, 0, 'country.caboverde', ''),
+('country', 'CW', 'curacao', 0, 0, 1, 0, 'country.curacao', ''),
+('country', 'CX', 'christmasisland', 0, 0, 1, 0, 'country.christmasisland', ''),
+('country', 'CY', 'cyprus', 0, 0, 1, 0, 'country.cyprus', ''),
+('country', 'CZ', 'czechrepublic', 0, 0, 1, 0, 'country.czechrepublic', ''),
+('country', 'DE', 'germany', 0, 0, 1, 0, 'country.germany', ''),
+('country', 'DJ', 'djibouti', 0, 0, 1, 0, 'country.djibouti', ''),
+('country', 'DK', 'denmark', 1, 0, 1, 0, 'country.denmark', ''),
+('country', 'DM', 'dominica', 0, 0, 1, 0, 'country.dominica', ''),
+('country', 'DO', 'dominicanrepublic', 0, 0, 1, 0, 'country.dominicanrepublic', ''),
+('country', 'DZ', 'algeria', 0, 0, 1, 0, 'country.algeria', ''),
+('country', 'EC', 'ecuador', 0, 0, 1, 0, 'country.ecuador', ''),
+('country', 'EE', 'estonia', 0, 0, 1, 0, 'country.estonia', ''),
+('country', 'EG', 'egypt', 0, 0, 1, 0, 'country.egypt', ''),
+('country', 'EH', 'westernsahara', 0, 0, 1, 0, 'country.westernsahara', ''),
+('country', 'ER', 'eritrea', 0, 0, 1, 0, 'country.eritrea', ''),
+('country', 'ES', 'spain', 0, 0, 1, 0, 'country.spain', ''),
+('country', 'ET', 'ethiopia', 0, 0, 1, 0, 'country.ethiopia', ''),
+('country', 'FI', 'finland', 0, 0, 1, 0, 'country.finland', ''),
+('country', 'FJ', 'fiji', 0, 0, 1, 0, 'country.fiji', ''),
+('country', 'FK', 'falklandislands', 0, 0, 1, 0, 'country.falklandislands', ''),
+('country', 'FM', 'micronesia', 0, 0, 1, 0, 'country.micronesia', ''),
+('country', 'FO', 'faroeislands', 0, 0, 1, 0, 'country.faroeislands', ''),
+('country', 'FR', 'france', 0, 0, 1, 0, 'country.france', ''),
+('country', 'GA', 'gabon', 0, 0, 1, 0, 'country.gabon', ''),
+('country', 'GB', 'unitedkingdom', 0, 0, 1, 0, 'country.unitedkingdom', ''),
+('country', 'GD', 'grenada', 0, 0, 1, 0, 'country.grenada', ''),
+('country', 'GE', 'georgia', 0, 0, 1, 0, 'country.georgia', ''),
+('country', 'GF', 'frenchguiana', 0, 0, 1, 0, 'country.frenchguiana', ''),
+('country', 'GG', 'guernsey', 0, 0, 1, 0, 'country.guernsey', ''),
+('country', 'GH', 'ghana', 0, 0, 1, 0, 'country.ghana', ''),
+('country', 'GI', 'gibraltar', 0, 0, 1, 0, 'country.gibraltar', ''),
+('country', 'GL', 'greenland', 0, 0, 1, 0, 'country.greenland', ''),
+('country', 'GM', 'gambia', 0, 0, 1, 0, 'country.gambia', ''),
+('country', 'GN', 'guinea', 0, 0, 1, 0, 'country.guinea', ''),
+('country', 'GP', 'guadeloupe', 0, 0, 1, 0, 'country.guadeloupe', ''),
+('country', 'GQ', 'equatorialguinea', 0, 0, 1, 0, 'country.equatorialguinea', ''),
+('country', 'GR', 'greece', 0, 0, 1, 0, 'country.greece', ''),
+('country', 'GS', 'southgeorgia', 0, 0, 1, 0, 'country.southgeorgia', ''),
+('country', 'GT', 'guatemala', 0, 0, 1, 0, 'country.guatemala', ''),
+('country', 'GU', 'guam', 0, 0, 1, 0, 'country.guam', ''),
+('country', 'GW', 'guinea-bissau', 0, 0, 1, 0, 'country.guinea-bissau', ''),
+('country', 'GY', 'guyana', 0, 0, 1, 0, 'country.guyana', ''),
+('country', 'HK', 'hongkong', 0, 0, 1, 0, 'country.hongkong', ''),
+('country', 'HN', 'honduras', 0, 0, 1, 0, 'country.honduras', ''),
+('country', 'HR', 'croatia', 0, 0, 1, 0, 'country.croatia', ''),
+('country', 'HT', 'haiti', 0, 0, 1, 0, 'country.haiti', ''),
+('country', 'HU', 'hungary', 0, 0, 1, 0, 'country.hungary', ''),
+('country', 'ID', 'indonesia', 0, 0, 1, 0, 'country.indonesia', ''),
+('country', 'IE', 'ireland', 0, 0, 1, 0, 'country.ireland', ''),
+('country', 'IL', 'israel', 0, 0, 1, 0, 'country.israel', ''),
+('country', 'IM', 'isleofman', 0, 0, 1, 0, 'country.isleofman', ''),
+('country', 'IN', 'india', 0, 0, 1, 0, 'country.india', ''),
+('country', 'IQ', 'iraq', 0, 0, 1, 0, 'country.iraq', ''),
+('country', 'IR', 'iran', 0, 0, 1, 0, 'country.iran', ''),
+('country', 'IS', 'iceland', 0, 0, 1, 0, 'country.iceland', ''),
+('country', 'IT', 'italy', 0, 0, 1, 0, 'country.italy', ''),
+('country', 'JE', 'jersey', 0, 0, 1, 0, 'country.jersey', ''),
+('country', 'JM', 'jamaica', 0, 0, 1, 0, 'country.jamaica', ''),
+('country', 'JO', 'jordan', 0, 0, 1, 0, 'country.jordan', ''),
+('country', 'JP', 'japan', 0, 0, 1, 0, 'country.japan', ''),
+('country', 'KE', 'kenya', 0, 0, 1, 0, 'country.kenya', ''),
+('country', 'KG', 'kyrgyzstan', 0, 0, 1, 0, 'country.kyrgyzstan', ''),
+('country', 'KH', 'cambodia', 0, 0, 1, 0, 'country.cambodia', ''),
+('country', 'KI', 'kiribati', 0, 0, 1, 0, 'country.kiribati', ''),
+('country', 'KM', 'comoros', 0, 0, 1, 0, 'country.comoros', ''),
+('country', 'KN', 'saintkitts', 0, 0, 1, 0, 'country.saintkitts', ''),
+('country', 'KP', 'northkorea', 0, 0, 1, 0, 'country.northkorea', ''),
+('country', 'KR', 'southkorea', 0, 0, 1, 0, 'country.southkorea', ''),
+('country', 'KW', 'kuwait', 0, 0, 1, 0, 'country.kuwait', ''),
+('country', 'KY', 'caymanislands', 0, 0, 1, 0, 'country.caymanislands', ''),
+('country', 'KZ', 'kazakhstan', 0, 0, 1, 0, 'country.kazakhstan', ''),
+('country', 'LA', 'lao', 0, 0, 1, 0, 'country.lao', ''),
+('country', 'LB', 'lebanon', 0, 0, 1, 0, 'country.lebanon', ''),
+('country', 'LC', 'saintlucia', 0, 0, 1, 0, 'country.saintlucia', ''),
+('country', 'LI', 'liechtenstein', 0, 0, 1, 0, 'country.liechtenstein', ''),
+('country', 'LK', 'srilanka', 0, 0, 1, 0, 'country.srilanka', ''),
+('country', 'LR', 'liberia', 0, 0, 1, 0, 'country.liberia', ''),
+('country', 'LS', 'lesotho', 0, 0, 1, 0, 'country.lesotho', ''),
+('country', 'LT', 'lithuania', 0, 0, 1, 0, 'country.lithuania', ''),
+('country', 'LU', 'luxembourg', 0, 0, 1, 0, 'country.luxembourg', ''),
+('country', 'LV', 'latvia', 0, 0, 1, 0, 'country.latvia', ''),
+('country', 'LY', 'libya', 0, 0, 1, 0, 'country.libya', ''),
+('country', 'MA', 'morocco', 0, 0, 1, 0, 'country.morocco', ''),
+('country', 'MC', 'monaco', 0, 0, 1, 0, 'country.monaco', ''),
+('country', 'MD', 'moldova', 0, 0, 1, 0, 'country.moldova', ''),
+('country', 'ME', 'montenegro', 0, 0, 1, 0, 'country.montenegro', ''),
+('country', 'MF', 'saintmartin', 0, 0, 1, 0, 'country.saintmartin', ''),
+('country', 'MG', 'madagascar', 0, 0, 1, 0, 'country.madagascar', ''),
+('country', 'MH', 'marshallislands', 0, 0, 1, 0, 'country.marshallislands', ''),
+('country', 'MK', 'macedonia', 0, 0, 1, 0, 'country.macedonia', ''),
+('country', 'ML', 'mali', 0, 0, 1, 0, 'country.mali', ''),
+('country', 'MM', 'myanmar', 0, 0, 1, 0, 'country.myanmar', ''),
+('country', 'MN', 'mongolia', 0, 0, 1, 0, 'country.mongolia', ''),
+('country', 'MO', 'macao', 0, 0, 1, 0, 'country.macao', ''),
+('country', 'MP', 'northernmarianaislands', 0, 0, 1, 0, 'country.northernmarianaislands', ''),
+('country', 'MQ', 'martinique', 0, 0, 1, 0, 'country.martinique', ''),
+('country', 'MR', 'mauritania', 0, 0, 1, 0, 'country.mauritania', ''),
+('country', 'MS', 'montserrat', 0, 0, 1, 0, 'country.montserrat', ''),
+('country', 'MT', 'malta', 0, 0, 1, 0, 'country.malta', ''),
+('country', 'MU', 'mauritius', 0, 0, 1, 0, 'country.mauritius', ''),
+('country', 'MV', 'maldives', 0, 0, 1, 0, 'country.maldives', ''),
+('country', 'MW', 'malawi', 0, 0, 1, 0, 'country.malawi', ''),
+('country', 'MX', 'mexico', 0, 0, 1, 0, 'country.mexico', ''),
+('country', 'MY', 'malaysia', 0, 0, 1, 0, 'country.malaysia', ''),
+('country', 'MZ', 'mozambique', 0, 0, 1, 0, 'country.mozambique', ''),
+('country', 'NA', 'namibia', 0, 0, 1, 0, 'country.namibia', ''),
+('country', 'NC', 'newcaledonia', 0, 0, 1, 0, 'country.newcaledonia', ''),
+('country', 'NE', 'niger', 0, 0, 1, 0, 'country.niger', ''),
+('country', 'NF', 'norfolkisland', 0, 0, 1, 0, 'country.norfolkisland', ''),
+('country', 'NG', 'nigeria', 0, 0, 1, 0, 'country.nigeria', ''),
+('country', 'NI', 'nicaragua', 0, 0, 1, 0, 'country.nicaragua', ''),
+('country', 'NL', 'netherlands', 0, 0, 1, 0, 'country.netherlands', ''),
+('country', 'NO', 'norway', 0, 0, 1, 0, 'country.norway', ''),
+('country', 'NP', 'nepal', 0, 0, 1, 0, 'country.nepal', ''),
+('country', 'NR', 'nauru', 0, 0, 1, 0, 'country.nauru', ''),
+('country', 'NU', 'niue', 0, 0, 1, 0, 'country.niue', ''),
+('country', 'NZ', 'newzealand', 0, 0, 1, 0, 'country.newzealand', ''),
+('country', 'OM', 'oman', 0, 0, 1, 0, 'country.oman', ''),
+('country', 'PA', 'panama', 0, 0, 1, 0, 'country.panama', ''),
+('country', 'PE', 'peru', 0, 0, 1, 0, 'country.peru', ''),
+('country', 'PF', 'frenchpolynesia', 0, 0, 1, 0, 'country.frenchpolynesia', ''),
+('country', 'PG', 'papuanewguinea', 0, 0, 1, 0, 'country.papuanewguinea', ''),
+('country', 'PH', 'philippines', 0, 0, 1, 0, 'country.philippines', ''),
+('country', 'PK', 'pakistan', 0, 0, 1, 0, 'country.pakistan', ''),
+('country', 'PL', 'poland', 0, 0, 1, 0, 'country.poland', ''),
+('country', 'PM', 'saintpierremiquelon', 0, 0, 1, 0, 'country.saintpierremiquelon', ''),
+('country', 'PN', 'pitcairn', 0, 0, 1, 0, 'country.pitcairn', ''),
+('country', 'PR', 'puertorico', 0, 0, 1, 0, 'country.puertorico', ''),
+('country', 'PS', 'palestine', 0, 0, 1, 0, 'country.palestine', ''),
+('country', 'PT', 'portugal', 0, 0, 1, 0, 'country.portugal', ''),
+('country', 'PW', 'palau', 0, 0, 1, 0, 'country.palau', ''),
+('country', 'PY', 'paraguay', 0, 0, 1, 0, 'country.paraguay', ''),
+('country', 'QA', 'qatar', 0, 0, 1, 0, 'country.qatar', ''),
+('country', 'RE', 'reunion', 0, 0, 1, 0, 'country.reunion', ''),
+('country', 'RO', 'romania', 0, 0, 1, 0, 'country.romania', ''),
+('country', 'RS', 'serbia', 0, 0, 1, 0, 'country.serbia', ''),
+('country', 'RU', 'russia', 0, 0, 1, 0, 'country.russia', ''),
+('country', 'RW', 'rwanda', 0, 0, 1, 0, 'country.rwanda', ''),
+('country', 'SA', 'saudiarabia', 0, 0, 1, 0, 'country.saudiarabia', ''),
+('country', 'SB', 'solomonislands', 0, 0, 1, 0, 'country.solomonislands', ''),
+('country', 'SC', 'seychelles', 0, 0, 1, 0, 'country.seychelles', ''),
+('country', 'SD', 'sudan', 0, 0, 1, 0, 'country.sudan', ''),
+('country', 'SE', 'sweden', 0, 0, 1, 0, 'country.sweden', ''),
+('country', 'SG', 'singapore', 0, 0, 1, 0, 'country.singapore', ''),
+('country', 'SH', 'sainthelena', 0, 0, 1, 0, 'country.sainthelena', ''),
+('country', 'SI', 'slovenia', 0, 0, 1, 0, 'country.slovenia', ''),
+('country', 'SJ', 'svalbard', 0, 0, 1, 0, 'country.svalbard', ''),
+('country', 'SK', 'slovakia', 0, 0, 1, 0, 'country.slovakia', ''),
+('country', 'SL', 'sierraleone', 0, 0, 1, 0, 'country.sierraleone', ''),
+('country', 'SM', 'sanmarino', 0, 0, 1, 0, 'country.sanmarino', ''),
+('country', 'SN', 'senegal', 0, 0, 1, 0, 'country.senegal', ''),
+('country', 'SO', 'somalia', 0, 0, 1, 0, 'country.somalia', ''),
+('country', 'SR', 'suriname', 0, 0, 1, 0, 'country.suriname', ''),
+('country', 'SS', 'southsudan', 0, 0, 1, 0, 'country.southsudan', ''),
+('country', 'ST', 'saotome', 0, 0, 1, 0, 'country.saotome', ''),
+('country', 'SV', 'elsalvador', 0, 0, 1, 0, 'country.elsalvador', ''),
+('country', 'SX', 'sintmaarten', 0, 0, 1, 0, 'country.sintmaarten', ''),
+('country', 'SY', 'syria', 0, 0, 1, 0, 'country.syria', ''),
+('country', 'SZ', 'swaziland', 0, 0, 1, 0, 'country.swaziland', ''),
+('country', 'TC', 'turkscaicos', 0, 0, 1, 0, 'country.turkscaicos', ''),
+('country', 'TD', 'chad', 0, 0, 1, 0, 'country.chad', ''),
+('country', 'TG', 'togo', 0, 0, 1, 0, 'country.togo', ''),
+('country', 'TH', 'thailand', 0, 0, 1, 0, 'country.thailand', ''),
+('country', 'TJ', 'tajikistan', 0, 0, 1, 0, 'country.tajikistan', ''),
+('country', 'TK', 'tokelau', 0, 0, 1, 0, 'country.tokelau', ''),
+('country', 'TL', 'timorleste', 0, 0, 1, 0, 'country.timorleste', ''),
+('country', 'TM', 'turkmenistan', 0, 0, 1, 0, 'country.turkmenistan', ''),
+('country', 'TN', 'tunisia', 0, 0, 1, 0, 'country.tunisia', ''),
+('country', 'TO', 'tonga', 0, 0, 1, 0, 'country.tonga', ''),
+('country', 'TR', 'turkey', 0, 0, 1, 0, 'country.turkey', ''),
+('country', 'TT', 'trinidadtobago', 0, 0, 1, 0, 'country.trinidadtobago', ''),
+('country', 'TV', 'tuvalu', 0, 0, 1, 0, 'country.tuvalu', ''),
+('country', 'TW', 'taiwan', 0, 0, 1, 0, 'country.taiwan', ''),
+('country', 'TZ', 'tanzania', 0, 0, 1, 0, 'country.tanzania', ''),
+('country', 'UA', 'ukraine', 0, 0, 1, 0, 'country.ukraine', ''),
+('country', 'UG', 'uganda', 0, 0, 1, 0, 'country.uganda', ''),
+('country', 'US', 'unitedstatesamerica', 0, 0, 1, 0, 'country.unitedstatesamerica', ''),
+('country', 'UY', 'uruguay', 0, 0, 1, 0, 'country.uruguay', ''),
+('country', 'UZ', 'uzbekistan', 0, 0, 1, 0, 'country.uzbekistan', ''),
+('country', 'VA', 'vatican', 0, 0, 1, 0, 'country.vatican', ''),
+('country', 'VC', 'saintvincent', 0, 0, 1, 0, 'country.saintvincent', ''),
+('country', 'VE', 'venezuela', 0, 0, 1, 0, 'country.venezuela', ''),
+('country', 'VG', 'britishvirginislands', 0, 0, 1, 0, 'country.britishvirginislands', ''),
+('country', 'VI', 'usvirginislands', 0, 0, 1, 0, 'country.usvirginislands', ''),
+('country', 'VN', 'vietnam', 0, 0, 1, 0, 'country.vietnam', ''),
+('country', 'VU', 'vanuatu', 0, 0, 1, 0, 'country.vanuatu', ''),
+('country', 'WF', 'wallisfutuna', 0, 0, 1, 0, 'country.wallisfutuna', ''),
+('country', 'WS', 'samoa', 0, 0, 1, 0, 'country.samoa', ''),
+('country', 'YE', 'yemen', 0, 0, 1, 0, 'country.yemen', ''),
+('country', 'YT', 'mayotte', 0, 0, 1, 0, 'country.mayotte', ''),
+('country', 'ZA', 'southafrica', 0, 0, 1, 0, 'country.southafrica', ''),
+('country', 'ZM', 'zambia', 0, 0, 1, 0, 'country.zambia', ''),
+('country', 'ZW', 'zimbabwe', 0, 0, 1, 0, 'country.zimbabwe', ''),
+('dime.denmark.admin', 'DK', 'denmark', 1, 0, 1, 0, 'dime.denmark.admin.denmark', ''),
+('dime.denmark.municipality', '101', 'kobenhavn', 0, 0, 1, 0, 'dime.kommune.kobenhavn', ''),
+('dime.denmark.municipality', '147', 'frederiksbeg', 0, 0, 1, 0, 'dime.kommune.frederiksbeg', ''),
+('dime.denmark.municipality', '151', 'ballerup', 0, 0, 1, 0, 'dime.kommune.ballerup', ''),
+('dime.denmark.municipality', '153', 'brondby', 0, 0, 1, 0, 'dime.kommune.brondby', ''),
+('dime.denmark.municipality', '155', 'dragor', 0, 0, 1, 0, 'dime.kommune.dragor', ''),
+('dime.denmark.municipality', '157', 'gentofte', 0, 0, 1, 0, 'dime.kommune.gentofte', ''),
+('dime.denmark.municipality', '159', 'gladsaxe', 0, 0, 1, 0, 'dime.kommune.gladsaxe', ''),
+('dime.denmark.municipality', '161', 'glostrup', 0, 0, 1, 0, 'dime.kommune.glostrup', ''),
+('dime.denmark.municipality', '163', 'herlev', 0, 0, 1, 0, 'dime.kommune.herlev', ''),
+('dime.denmark.municipality', '165', 'albertslund', 0, 0, 1, 0, 'dime.kommune.albertslund', ''),
+('dime.denmark.municipality', '167', 'hvidovre', 0, 0, 1, 0, 'dime.kommune.hvidovre', ''),
+('dime.denmark.municipality', '169', 'hojetaastrup', 0, 0, 1, 0, 'dime.kommune.hojetaastrup', ''),
+('dime.denmark.municipality', '173', 'lyngbytaarbaek', 0, 0, 1, 0, 'dime.kommune.lyngbytaarbaek', ''),
+('dime.denmark.municipality', '175', 'rodovre', 0, 0, 1, 0, 'dime.kommune.rodovre', ''),
+('dime.denmark.municipality', '183', 'ishoj', 0, 0, 1, 0, 'dime.kommune.ishoj', ''),
+('dime.denmark.municipality', '185', 'tarnby', 0, 0, 1, 0, 'dime.kommune.tarnby', ''),
+('dime.denmark.municipality', '187', 'vallensbaek', 0, 0, 1, 0, 'dime.kommune.vallensbaek', ''),
+('dime.denmark.municipality', '190', 'fureso', 0, 0, 1, 0, 'dime.kommune.fureso', ''),
+('dime.denmark.municipality', '201', 'allerod', 0, 0, 1, 0, 'dime.kommune.allerod', ''),
+('dime.denmark.municipality', '210', 'fredensborg', 0, 0, 1, 0, 'dime.kommune.fredensborg', ''),
+('dime.denmark.municipality', '217', 'helsingor', 0, 0, 1, 0, 'dime.kommune.helsingor', ''),
+('dime.denmark.municipality', '219', 'hillerod', 0, 0, 1, 0, 'dime.kommune.hillerod', ''),
+('dime.denmark.municipality', '223', 'horsholm', 0, 0, 1, 0, 'dime.kommune.horsholm', ''),
+('dime.denmark.municipality', '230', 'rudersdal', 0, 0, 1, 0, 'dime.kommune.rudersdal', ''),
+('dime.denmark.municipality', '240', 'egedal', 0, 0, 1, 0, 'dime.kommune.egedal', ''),
+('dime.denmark.municipality', '250', 'frederikssund', 0, 0, 1, 0, 'dime.kommune.frederikssund', ''),
+('dime.denmark.municipality', '253', 'greve', 0, 0, 1, 0, 'dime.kommune.greve', ''),
+('dime.denmark.municipality', '259', 'koge', 0, 0, 1, 0, 'dime.kommune.koge', ''),
+('dime.denmark.municipality', '260', 'halsnaes', 0, 0, 1, 0, 'dime.kommune.halsnaes', ''),
+('dime.denmark.municipality', '265', 'roskilde', 0, 0, 1, 0, 'dime.kommune.roskilde', ''),
+('dime.denmark.municipality', '269', 'solrod', 0, 0, 1, 0, 'dime.kommune.solrod', ''),
+('dime.denmark.municipality', '270', 'gribskov', 0, 0, 1, 0, 'dime.kommune.gribskov', ''),
+('dime.denmark.municipality', '306', 'odsherred', 0, 0, 1, 0, 'dime.kommune.odsherred', ''),
+('dime.denmark.municipality', '316', 'holbaek', 0, 0, 1, 0, 'dime.kommune.holbaek', ''),
+('dime.denmark.municipality', '320', 'faxe', 0, 0, 1, 0, 'dime.kommune.faxe', ''),
+('dime.denmark.municipality', '326', 'kalundborg', 0, 0, 1, 0, 'dime.kommune.kalundborg', ''),
+('dime.denmark.municipality', '329', 'ringsted', 0, 0, 1, 0, 'dime.kommune.ringsted', ''),
+('dime.denmark.municipality', '330', 'slagelse', 0, 0, 1, 0, 'dime.kommune.slagelse', ''),
+('dime.denmark.municipality', '336', 'stevns', 0, 0, 1, 0, 'dime.kommune.stevns', ''),
+('dime.denmark.municipality', '340', 'soro', 0, 0, 1, 0, 'dime.kommune.soro', ''),
+('dime.denmark.municipality', '350', 'lejre', 0, 0, 1, 0, 'dime.kommune.lejre', ''),
+('dime.denmark.municipality', '360', 'lolland', 0, 0, 1, 0, 'dime.kommune.lolland', ''),
+('dime.denmark.municipality', '370', 'naestved', 0, 0, 1, 0, 'dime.kommune.naestved', ''),
+('dime.denmark.municipality', '376', 'guldborgsund', 0, 0, 1, 0, 'dime.kommune.guldborgsund', ''),
+('dime.denmark.municipality', '390', 'vordingborg', 0, 0, 1, 0, 'dime.kommune.vordingborg', ''),
+('dime.denmark.municipality', '400', 'bornholm', 0, 0, 1, 0, 'dime.kommune.bornholm', ''),
+('dime.denmark.municipality', '410', 'middelfart', 0, 0, 1, 0, 'dime.kommune.middelfart', ''),
+('dime.denmark.municipality', '420', 'assens', 0, 0, 1, 0, 'dime.kommune.assens', ''),
+('dime.denmark.municipality', '430', 'faaborgmidtfyn', 0, 0, 1, 0, 'dime.kommune.faaborgmidtfyn', ''),
+('dime.denmark.municipality', '440', 'kerteminde', 0, 0, 1, 0, 'dime.kommune.kerteminde', ''),
+('dime.denmark.municipality', '450', 'nyborg', 0, 0, 1, 0, 'dime.kommune.nyborg', ''),
+('dime.denmark.municipality', '461', 'odense', 0, 0, 1, 0, 'dime.kommune.odense', ''),
+('dime.denmark.municipality', '479', 'svendborg', 0, 0, 1, 0, 'dime.kommune.svendborg', ''),
+('dime.denmark.municipality', '480', 'nordfyns', 0, 0, 1, 0, 'dime.kommune.nordfyns', ''),
+('dime.denmark.municipality', '482', 'langeland', 0, 0, 1, 0, 'dime.kommune.langeland', ''),
+('dime.denmark.municipality', '492', 'aero', 0, 0, 1, 0, 'dime.kommune.aero', ''),
+('dime.denmark.municipality', '510', 'haderslev', 0, 0, 1, 0, 'dime.kommune.haderslev', ''),
+('dime.denmark.municipality', '530', 'billund', 0, 0, 1, 0, 'dime.kommune.billund', ''),
+('dime.denmark.municipality', '540', 'sonderborg', 0, 0, 1, 0, 'dime.kommune.sonderborg', ''),
+('dime.denmark.municipality', '550', 'tonder', 0, 0, 1, 0, 'dime.kommune.tonder', ''),
+('dime.denmark.municipality', '561', 'esbjerg', 0, 0, 1, 0, 'dime.kommune.esbjerg', ''),
+('dime.denmark.municipality', '563', 'fano', 0, 0, 1, 0, 'dime.kommune.fano', ''),
+('dime.denmark.municipality', '573', 'varde', 0, 0, 1, 0, 'dime.kommune.varde', ''),
+('dime.denmark.municipality', '575', 'vejen', 0, 0, 1, 0, 'dime.kommune.vejen', ''),
+('dime.denmark.municipality', '580', 'aabenraa', 0, 0, 1, 0, 'dime.kommune.aabenraa', ''),
+('dime.denmark.municipality', '607', 'fredericia', 0, 0, 1, 0, 'dime.kommune.fredericia', ''),
+('dime.denmark.municipality', '615', 'horsens', 0, 0, 1, 0, 'dime.kommune.horsens', ''),
+('dime.denmark.municipality', '621', 'kolding', 0, 0, 1, 0, 'dime.kommune.kolding', ''),
+('dime.denmark.municipality', '630', 'vejle', 0, 0, 1, 0, 'dime.kommune.vejle', ''),
+('dime.denmark.municipality', '657', 'herning', 0, 0, 1, 0, 'dime.kommune.herning', ''),
+('dime.denmark.municipality', '661', 'holstebro', 0, 0, 1, 0, 'dime.kommune.holstebro', ''),
+('dime.denmark.municipality', '665', 'lemvig', 0, 0, 1, 0, 'dime.kommune.lemvig', ''),
+('dime.denmark.municipality', '671', 'struer', 0, 0, 1, 0, 'dime.kommune.struer', ''),
+('dime.denmark.municipality', '706', 'syddjurs', 0, 0, 1, 0, 'dime.kommune.syddjurs', ''),
+('dime.denmark.municipality', '707', 'norddjurs', 0, 0, 1, 0, 'dime.kommune.norddjurs', ''),
+('dime.denmark.municipality', '710', 'favrskov', 0, 0, 1, 0, 'dime.kommune.favrskov', ''),
+('dime.denmark.municipality', '727', 'odder', 0, 0, 1, 0, 'dime.kommune.odder', ''),
+('dime.denmark.municipality', '730', 'randers', 0, 0, 1, 0, 'dime.kommune.randers', ''),
+('dime.denmark.municipality', '740', 'silkeborg', 0, 0, 1, 0, 'dime.kommune.silkeborg', ''),
+('dime.denmark.municipality', '741', 'samso', 0, 0, 1, 0, 'dime.kommune.samso', ''),
+('dime.denmark.municipality', '746', 'skanderborg', 0, 0, 1, 0, 'dime.kommune.skanderborg', ''),
+('dime.denmark.municipality', '751', 'arhus', 0, 0, 1, 0, 'dime.kommune.arhus', ''),
+('dime.denmark.municipality', '756', 'ikastbrande', 0, 0, 1, 0, 'dime.kommune.ikastbrande', ''),
+('dime.denmark.municipality', '760', 'ringkobingskjern', 0, 0, 1, 0, 'dime.kommune.ringkobingskjern', ''),
+('dime.denmark.municipality', '766', 'hedensted', 0, 0, 1, 0, 'dime.kommune.hedensted', ''),
+('dime.denmark.municipality', '773', 'morso', 0, 0, 1, 0, 'dime.kommune.morso', ''),
+('dime.denmark.municipality', '779', 'skive', 0, 0, 1, 0, 'dime.kommune.skive', ''),
+('dime.denmark.municipality', '787', 'thisted', 0, 0, 1, 0, 'dime.kommune.thisted', ''),
+('dime.denmark.municipality', '791', 'viborg', 0, 0, 1, 0, 'dime.kommune.viborg', ''),
+('dime.denmark.municipality', '810', 'bronderslev', 0, 0, 1, 0, 'dime.kommune.bronderslev', ''),
+('dime.denmark.municipality', '813', 'frederikshavn', 0, 0, 1, 0, 'dime.kommune.frederikshavn', ''),
+('dime.denmark.municipality', '820', 'vesthimmerland', 0, 0, 1, 0, 'dime.kommune.vesthimmerland', ''),
+('dime.denmark.municipality', '825', 'laeso', 0, 0, 1, 0, 'dime.kommune.laeso', ''),
+('dime.denmark.municipality', '840', 'rebild', 0, 0, 1, 0, 'dime.kommune.rebild', ''),
+('dime.denmark.municipality', '846', 'mariagerfjord', 0, 0, 1, 0, 'dime.kommune.mariagerfjord', ''),
+('dime.denmark.municipality', '849', 'jammerbugt', 0, 0, 1, 0, 'dime.kommune.jammerbugt', ''),
+('dime.denmark.municipality', '851', 'aalborg', 0, 0, 1, 0, 'dime.kommune.aalborg', ''),
+('dime.denmark.municipality', '860', 'hjorring', 0, 0, 1, 0, 'dime.kommune.hjorring', ''),
+('dime.denmark.region', 'DK01', 'hovedstaden', 0, 0, 1, 0, 'dime.region.hovedstaden', ''),
+('dime.denmark.region', 'DK02', 'sjaelland', 0, 0, 1, 0, 'dime.region.sjaelland', ''),
+('dime.denmark.region', 'DK03', 'syddanmark', 0, 0, 1, 0, 'dime.region.syddanmark', ''),
+('dime.denmark.region', 'DK04', 'midtjylland', 0, 0, 1, 0, 'dime.region.midtjylland', ''),
+('dime.denmark.region', 'DK05', 'nordjylland', 0, 0, 1, 0, 'dime.region.nordjylland', ''),
+('dime.find.class', 'accessory', '', 0, 0, 1, 0, 'dime.find.type.accessory', ''),
+('dime.find.class', 'coin', '', 0, 0, 1, 0, 'dime.find.type.coin', ''),
+('dime.find.class', 'fibula', '', 0, 0, 1, 0, 'dime.find.type.fibula', ''),
+('dime.find.class', 'metal', '', 0, 0, 1, 0, 'dime.find.type.metal', ''),
+('dime.find.class', 'military', '', 0, 0, 1, 0, 'dime.find.type.military', ''),
+('dime.find.class', 'tool', '', 0, 0, 1, 0, 'dime.find.type.tool', ''),
+('dime.find.condition', 'fragmented', '', 0, 0, 1, 0, 'dime.find.condition.fragmented', ''),
+('dime.find.condition', 'modified', '', 0, 0, 1, 0, 'dime.find.condition.modified', ''),
+('dime.find.condition', 'unfinished', '', 0, 0, 1, 0, 'dime.find.condition.unfinished', ''),
+('dime.find.condition', 'whole', '', 1, 0, 1, 0, 'dime.find.condition.whole', ''),
+('dime.find.custody', 'destroyed', '', 0, 0, 1, 0, 'dime.find.custody.destroyed', ''),
+('dime.find.custody', 'discarded', '', 0, 0, 1, 0, 'dime.find.custody.discarded', ''),
+('dime.find.custody', 'held', '', 0, 1, 1, 0, 'dime.find.custody.held', ''),
+('dime.find.custody', 'lost', '', 0, 0, 1, 0, 'dime.find.custody.lost', ''),
+('dime.find.custody', 'requested', '', 0, 0, 1, 0, 'dime.find.custody.requested', ''),
+('dime.find.custody', 'sent', '', 0, 0, 1, 0, 'dime.find.custody.sent', ''),
+('dime.find.process', 'accessioned', '', 0, 0, 1, 0, 'dime.find.process.accessioned', ''),
+('dime.find.process', 'assessed', '', 0, 0, 1, 0, 'dime.find.process.assessed', ''),
+('dime.find.process', 'deleted', '', 0, 0, 1, 0, 'dime.find.process.deleted', ''),
+('dime.find.process', 'evaluated', '', 0, 0, 1, 0, 'dime.find.process.evaluated', ''),
+('dime.find.process', 'inactive', '', 0, 0, 1, 0, 'dime.find.process.inactive', ''),
+('dime.find.process', 'recorded', '', 0, 1, 1, 0, 'dime.find.process.recorded', ''),
+('dime.find.process', 'rejected', '', 0, 0, 1, 0, 'dime.find.process.rejected', ''),
+('dime.find.process', 'released', '', 0, 0, 1, 0, 'dime.find.process.released', ''),
+('dime.find.process', 'reported', '', 0, 0, 1, 0, 'dime.find.process.reported', ''),
+('dime.find.process', 'validated', '', 0, 0, 1, 0, 'dime.find.process.validated', ''),
+('dime.find.secondary', 'ceramic', '', 0, 0, 1, 0, 'dime.find.secondary.ceramic', ''),
+('dime.find.secondary', 'enamel', '', 0, 0, 1, 0, 'dime.find.secondary.enamel', ''),
+('dime.find.secondary', 'gilded', '', 0, 0, 1, 0, 'dime.find.secondary.gilded', ''),
+('dime.find.secondary', 'glass', '', 0, 0, 1, 0, 'dime.find.secondary.glass', ''),
+('dime.find.secondary', 'iron', '', 0, 0, 1, 0, 'dime.find.secondary.iron', ''),
+('dime.find.secondary', 'looped', '', 0, 0, 1, 0, 'dime.find.secondary.looped', ''),
+('dime.find.secondary', 'niello', '', 0, 0, 1, 0, 'dime.find.secondary.niello', ''),
+('dime.find.secondary', 'organic', '', 0, 0, 1, 0, 'dime.find.secondary.organic', ''),
+('dime.find.secondary', 'stone', '', 0, 0, 1, 0, 'dime.find.secondary.stone', ''),
+('dime.find.secondary', 'tinned', '', 0, 0, 1, 0, 'dime.find.secondary.tinned', ''),
+('dime.find.secondary', 'zz', 'other', 0, 0, 1, 0, 'dime.find.secondary.other', ''),
+('dime.find.subtype', 'accessory.bell', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.bell', ''),
+('dime.find.subtype', 'accessory.brooch', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.brooch', ''),
+('dime.find.subtype', 'accessory.buckle', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.buckle', ''),
+('dime.find.subtype', 'accessory.button', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.button', ''),
+('dime.find.subtype', 'accessory.button.bar', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.button.bar', ''),
+('dime.find.subtype', 'accessory.button.other', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.button.other', ''),
+('dime.find.subtype', 'accessory.button.round', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.button.round', ''),
+('dime.find.subtype', 'accessory.button.stud', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.button.stud', ''),
+('dime.find.subtype', 'accessory.fitting', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.fitting', ''),
+('dime.find.subtype', 'accessory.fitting.belt', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.fitting.belt', ''),
+('dime.find.subtype', 'accessory.fitting.other', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.fitting.other', ''),
+('dime.find.subtype', 'accessory.fitting.unknown', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.fitting.unknown', ''),
+('dime.find.subtype', 'accessory.hook', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.hook', ''),
+('dime.find.subtype', 'accessory.jewelery', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.jewelery', ''),
+('dime.find.subtype', 'accessory.jewelery.bracelet', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.jewelery.bracelet', ''),
+('dime.find.subtype', 'accessory.jewelery.bracteate', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.jewelery.bracteate', ''),
+('dime.find.subtype', 'accessory.jewelery.earring', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.jewelery.earring', ''),
+('dime.find.subtype', 'accessory.jewelery.necklace', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.jewelery.necklace', ''),
+('dime.find.subtype', 'accessory.jewelery.other', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.jewelery.other', ''),
+('dime.find.subtype', 'accessory.jewelery.pasyning', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.jewelery.pasyning', ''),
+('dime.find.subtype', 'accessory.jewelery.pearl', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.jewelery.pearl', ''),
+('dime.find.subtype', 'accessory.jewelery.pendant', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.jewelery.pendant', ''),
+('dime.find.subtype', 'accessory.jewelery.ring', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.jewelery.ring', ''),
+('dime.find.subtype', 'accessory.lace', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.lace', ''),
+('dime.find.subtype', 'accessory.medal', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.medal', ''),
+('dime.find.subtype', 'accessory.other', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.other', ''),
+('dime.find.subtype', 'accessory.pilgrim', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.pilgrim', ''),
+('dime.find.subtype', 'accessory.pin', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.pin', ''),
+('dime.find.subtype', 'accessory.tutulus', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.tutulus', ''),
+('dime.find.subtype', 'accessory.unknown', '', 0, 0, 0, 0, 'dime.find.subtype.accessory.unknown', ''),
+('dime.find.subtype', 'coin.danish', '', 0, 0, 0, 0, 'dime.find.subtype.coin.danish', ''),
+('dime.find.subtype', 'coin.danish.civilwar', '', 0, 0, 0, 0, 'dime.find.subtype.coin.danish.civilwar', ''),
+('dime.find.subtype', 'coin.danish.early', '', 0, 0, 0, 0, 'dime.find.subtype.coin.danish.early', ''),
+('dime.find.subtype', 'coin.danish.hvide', '', 0, 0, 0, 0, 'dime.find.subtype.coin.danish.hvide', ''),
+('dime.find.subtype', 'coin.danish.klipping', '', 0, 0, 0, 0, 'dime.find.subtype.coin.danish.klipping', ''),
+('dime.find.subtype', 'coin.danish.other', '', 0, 0, 0, 0, 'dime.find.subtype.coin.danish.other', ''),
+('dime.find.subtype', 'coin.danish.søsling', '', 0, 0, 0, 0, 'dime.find.subtype.coin.danish.søsling', ''),
+('dime.find.subtype', 'coin.danish.sterling', '', 0, 0, 0, 0, 'dime.find.subtype.coin.danish.sterling', ''),
+('dime.find.subtype', 'coin.foreign', '', 0, 0, 0, 0, 'dime.find.subtype.coin.foreign', ''),
+('dime.find.subtype', 'coin.foreign.hohlpfennig', '', 0, 0, 0, 0, 'dime.find.subtype.coin.foreign.hohlpfennig', ''),
+('dime.find.subtype', 'coin.foreign.hvide', '', 0, 0, 0, 0, 'dime.find.subtype.coin.foreign.hvide', ''),
+('dime.find.subtype', 'coin.foreign.other', '', 0, 0, 0, 0, 'dime.find.subtype.coin.foreign.other', ''),
+('dime.find.subtype', 'coin.foreign.sterling', '', 0, 0, 0, 0, 'dime.find.subtype.coin.foreign.sterling', ''),
+('dime.find.subtype', 'coin.foreign.tournois', '', 0, 0, 0, 0, 'dime.find.subtype.coin.foreign.tournois', ''),
+('dime.find.subtype', 'coin.jeton', '', 0, 0, 0, 0, 'dime.find.subtype.coin.jeton', ''),
+('dime.find.subtype', 'coin.modern', '', 0, 0, 0, 0, 'dime.find.subtype.coin.modern', ''),
+('dime.find.subtype', 'coin.modern.danish', '', 0, 0, 0, 0, 'dime.find.subtype.coin.modern.danish', ''),
+('dime.find.subtype', 'coin.modern.foreign', '', 0, 0, 0, 0, 'dime.find.subtype.coin.modern.foreign', ''),
+('dime.find.subtype', 'coin.other', '', 0, 0, 0, 0, 'dime.find.subtype.coin.other', ''),
+('dime.find.subtype', 'coin.roman', '', 0, 0, 0, 0, 'dime.find.subtype.coin.roman', ''),
+('dime.find.subtype', 'coin.roman.aureus', '', 0, 0, 0, 0, 'dime.find.subtype.coin.roman.aureus', ''),
+('dime.find.subtype', 'coin.roman.denarius', '', 0, 0, 0, 0, 'dime.find.subtype.coin.roman.denarius', ''),
+('dime.find.subtype', 'coin.roman.other', '', 0, 0, 0, 0, 'dime.find.subtype.coin.roman.other', ''),
+('dime.find.subtype', 'coin.roman.sestertius', '', 0, 0, 0, 0, 'dime.find.subtype.coin.roman.sestertius', ''),
+('dime.find.subtype', 'coin.roman.siliqua', '', 0, 0, 0, 0, 'dime.find.subtype.coin.roman.siliqua', ''),
+('dime.find.subtype', 'coin.roman.solidus', '', 0, 0, 0, 0, 'dime.find.subtype.coin.roman.solidus', ''),
+('dime.find.subtype', 'coin.unknown', '', 0, 0, 0, 0, 'dime.find.subtype.coin.unknown', ''),
+('dime.find.subtype', 'coin.viking', '', 0, 0, 0, 0, 'dime.find.subtype.coin.viking', ''),
+('dime.find.subtype', 'coin.viking.byzantine', '', 0, 0, 0, 0, 'dime.find.subtype.coin.viking.byzantine', ''),
+('dime.find.subtype', 'coin.viking.carolingian', '', 0, 0, 0, 0, 'dime.find.subtype.coin.viking.carolingian', ''),
+('dime.find.subtype', 'coin.viking.denarius', '', 0, 0, 0, 0, 'dime.find.subtype.coin.viking.denarius', ''),
+('dime.find.subtype', 'coin.viking.dirham', '', 0, 0, 0, 0, 'dime.find.subtype.coin.viking.dirham', ''),
+('dime.find.subtype', 'coin.viking.english', '', 0, 0, 0, 0, 'dime.find.subtype.coin.viking.english', ''),
+('dime.find.subtype', 'coin.viking.german', '', 0, 0, 0, 0, 'dime.find.subtype.coin.viking.german', ''),
+('dime.find.subtype', 'coin.viking.nordic', '', 0, 0, 0, 0, 'dime.find.subtype.coin.viking.nordic', ''),
+('dime.find.subtype', 'coin.viking.other', '', 0, 0, 0, 0, 'dime.find.subtype.coin.viking.other', ''),
+('dime.find.subtype', 'coin.viking.penny', '', 0, 0, 0, 0, 'dime.find.subtype.coin.viking.penny', ''),
+('dime.find.subtype', 'coin.viking.phennig', '', 0, 0, 0, 0, 'dime.find.subtype.coin.viking.phennig', ''),
+('dime.find.subtype', 'coin.viking.sceat', '', 0, 0, 0, 0, 'dime.find.subtype.coin.viking.sceat', ''),
+('dime.find.subtype', 'fibula.beak', '', 0, 0, 1, 0, 'dime.find.subtype.fibula.beak', ''),
+('dime.find.subtype', 'fibula.bird.above', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.bird.above', ''),
+('dime.find.subtype', 'fibula.bird.profile', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.bird.profile', ''),
+('dime.find.subtype', 'fibula.bow', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.bow', ''),
+('dime.find.subtype', 'fibula.bow.ball', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.bow.ball', ''),
+('dime.find.subtype', 'fibula.bow.band', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.bow.band', ''),
+('dime.find.subtype', 'fibula.bow.bilateral', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.bow.bilateral', ''),
+('dime.find.subtype', 'fibula.bow.button', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.bow.button', ''),
+('dime.find.subtype', 'fibula.bow.cross', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.bow.cross', ''),
+('dime.find.subtype', 'fibula.bow.foot', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.bow.foot', ''),
+('dime.find.subtype', 'fibula.bow.high', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.bow.high', ''),
+('dime.find.subtype', 'fibula.bow.other', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.bow.other', ''),
+('dime.find.subtype', 'fibula.bow.relief', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.bow.relief', ''),
+('dime.find.subtype', 'fibula.bowl', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.bowl', ''),
+('dime.find.subtype', 'fibula.bowl.animal', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.bowl.animal', ''),
+('dime.find.subtype', 'fibula.bowl.circular', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.bowl.circular', ''),
+('dime.find.subtype', 'fibula.bowl.large', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.bowl.large', ''),
+('dime.find.subtype', 'fibula.bowl.other', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.bowl.other', ''),
+('dime.find.subtype', 'fibula.bowl.small', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.bowl.small', ''),
+('dime.find.subtype', 'fibula.circular', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.circular', ''),
+('dime.find.subtype', 'fibula.circular.large', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.circular.large', ''),
+('dime.find.subtype', 'fibula.circular.other', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.circular.other', ''),
+('dime.find.subtype', 'fibula.circular.small', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.circular.small', ''),
+('dime.find.subtype', 'fibula.circular.tin', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.circular.tin', ''),
+('dime.find.subtype', 'fibula.enamel', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.enamel', ''),
+('dime.find.subtype', 'fibula.enamel.central', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.enamel.central', ''),
+('dime.find.subtype', 'fibula.enamel.cross', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.enamel.cross', ''),
+('dime.find.subtype', 'fibula.enamel.multiple', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.enamel.multiple', ''),
+('dime.find.subtype', 'fibula.enamel.other', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.enamel.other', ''),
+('dime.find.subtype', 'fibula.equalarm', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.equalarm', ''),
+('dime.find.subtype', 'fibula.equalarm.large', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.equalarm.large', ''),
+('dime.find.subtype', 'fibula.equalarm.other', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.equalarm.other', ''),
+('dime.find.subtype', 'fibula.equalarm.small', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.equalarm.small', ''),
+('dime.find.subtype', 'fibula.healing', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.healing', ''),
+('dime.find.subtype', 'fibula.healing.aalborg', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.healing.aalborg', ''),
+('dime.find.subtype', 'fibula.healing.lamb', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.healing.lamb', ''),
+('dime.find.subtype', 'fibula.healing.other', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.healing.other', ''),
+('dime.find.subtype', 'fibula.healing.urnes', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.healing.urnes', ''),
+('dime.find.subtype', 'fibula.other', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.other', ''),
+('dime.find.subtype', 'fibula.plate', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.plate', ''),
+('dime.find.subtype', 'fibula.plate.bird', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.plate.bird', ''),
+('dime.find.subtype', 'fibula.plate.circular', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.plate.circular', ''),
+('dime.find.subtype', 'fibula.plate.coin', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.plate.coin', ''),
+('dime.find.subtype', 'fibula.plate.horse', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.plate.horse', ''),
+('dime.find.subtype', 'fibula.plate.other', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.plate.other', ''),
+('dime.find.subtype', 'fibula.plate.oval', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.plate.oval', ''),
+('dime.find.subtype', 'fibula.plate.råhede', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.plate.råhede', ''),
+('dime.find.subtype', 'fibula.plate.rectangular', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.plate.rectangular', ''),
+('dime.find.subtype', 'fibula.plate.ship', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.plate.ship', ''),
+('dime.find.subtype', 'fibula.plate.snake', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.plate.snake', ''),
+('dime.find.subtype', 'fibula.plate.swastika', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.plate.swastika', ''),
+('dime.find.subtype', 'fibula.plate.tongue', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.plate.tongue', ''),
+('dime.find.subtype', 'fibula.plate.valkyrie', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.plate.valkyrie', ''),
+('dime.find.subtype', 'fibula.ring', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.ring', ''),
+('dime.find.subtype', 'fibula.ring.circular', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.ring.circular', ''),
+('dime.find.subtype', 'fibula.ring.heart', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.ring.heart', ''),
+('dime.find.subtype', 'fibula.ring.other', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.ring.other', ''),
+('dime.find.subtype', 'fibula.ring.star', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.ring.star', ''),
+('dime.find.subtype', 'fibula.trilobal', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.trilobal', '');
+INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('dime.find.subtype', 'fibula.unknown', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.unknown', ''),
+('dime.find.subtype', 'fibula.viking', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.viking', ''),
+('dime.find.subtype', 'fibula.viking.other', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.viking.other', ''),
+('dime.find.subtype', 'fibula.viking.rhombic', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.viking.rhombic', ''),
+('dime.find.subtype', 'fibula.viking.ring', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.viking.ring', ''),
+('dime.find.subtype', 'fibula.viking.roof', '', 0, 0, 0, 0, 'dime.find.subtype.fibula.viking.roof', ''),
+('dime.find.subtype', 'metal.ingot', '', 0, 0, 0, 0, 'dime.find.subtype.metal.ingot', ''),
+('dime.find.subtype', 'metal.mold', '', 0, 0, 0, 0, 'dime.find.subtype.metal.mold', ''),
+('dime.find.subtype', 'metal.other', '', 0, 0, 0, 0, 'dime.find.subtype.metal.other', ''),
+('dime.find.subtype', 'metal.rest', '', 0, 0, 0, 0, 'dime.find.subtype.metal.rest', ''),
+('dime.find.subtype', 'metal.slag', '', 0, 0, 0, 0, 'dime.find.subtype.metal.slag', ''),
+('dime.find.subtype', 'metal.tin', '', 0, 0, 0, 0, 'dime.find.subtype.metal.tin', ''),
+('dime.find.subtype', 'metal.unknown', '', 0, 0, 0, 0, 'dime.find.subtype.metal.unknown', ''),
+('dime.find.subtype', 'military.ammunition', '', 0, 0, 0, 0, 'dime.find.subtype.military.ammunition', ''),
+('dime.find.subtype', 'military.armor', '', 0, 0, 0, 0, 'dime.find.subtype.military.armor', ''),
+('dime.find.subtype', 'military.arrow', '', 0, 0, 0, 0, 'dime.find.subtype.military.arrow', ''),
+('dime.find.subtype', 'military.firearm', '', 0, 0, 0, 0, 'dime.find.subtype.military.firearm', ''),
+('dime.find.subtype', 'military.fitting', '', 0, 0, 0, 0, 'dime.find.subtype.military.fitting', ''),
+('dime.find.subtype', 'military.fitting.other', '', 0, 0, 0, 0, 'dime.find.subtype.military.fitting.other', ''),
+('dime.find.subtype', 'military.fitting.sheath', '', 0, 0, 0, 0, 'dime.find.subtype.military.fitting.sheath', ''),
+('dime.find.subtype', 'military.fitting.uniform', '', 0, 0, 0, 0, 'dime.find.subtype.military.fitting.uniform', ''),
+('dime.find.subtype', 'military.helmet', '', 0, 0, 0, 0, 'dime.find.subtype.military.helmet', ''),
+('dime.find.subtype', 'military.melee', '', 0, 0, 0, 0, 'dime.find.subtype.military.melee', ''),
+('dime.find.subtype', 'military.melee.axe', '', 0, 0, 0, 0, 'dime.find.subtype.military.melee.axe', ''),
+('dime.find.subtype', 'military.melee.blunt', '', 0, 0, 0, 0, 'dime.find.subtype.military.melee.blunt', ''),
+('dime.find.subtype', 'military.melee.knife', '', 0, 0, 0, 0, 'dime.find.subtype.military.melee.knife', ''),
+('dime.find.subtype', 'military.melee.other', '', 0, 0, 0, 0, 'dime.find.subtype.military.melee.other', ''),
+('dime.find.subtype', 'military.melee.pointed', '', 0, 0, 0, 0, 'dime.find.subtype.military.melee.pointed', ''),
+('dime.find.subtype', 'military.melee.sword', '', 0, 0, 0, 0, 'dime.find.subtype.military.melee.sword', ''),
+('dime.find.subtype', 'military.other', '', 0, 0, 0, 0, 'dime.find.subtype.military.other', ''),
+('dime.find.subtype', 'military.shield', '', 0, 0, 0, 0, 'dime.find.subtype.military.shield', ''),
+('dime.find.subtype', 'military.unknown', '', 0, 0, 0, 0, 'dime.find.subtype.military.unknown', ''),
+('dime.find.subtype', 'tool.equestrian', '', 0, 0, 0, 0, 'dime.find.subtype.tool.equestrian', ''),
+('dime.find.subtype', 'tool.equestrian.bell', '', 0, 0, 0, 0, 'dime.find.subtype.tool.equestrian.bell', ''),
+('dime.find.subtype', 'tool.equestrian.bridle', '', 0, 0, 0, 0, 'dime.find.subtype.tool.equestrian.bridle', ''),
+('dime.find.subtype', 'tool.equestrian.cheek', '', 0, 0, 0, 0, 'dime.find.subtype.tool.equestrian.cheek', ''),
+('dime.find.subtype', 'tool.equestrian.other', '', 0, 0, 0, 0, 'dime.find.subtype.tool.equestrian.other', ''),
+('dime.find.subtype', 'tool.equestrian.shoe', '', 0, 0, 0, 0, 'dime.find.subtype.tool.equestrian.shoe', ''),
+('dime.find.subtype', 'tool.equestrian.stirrup', '', 0, 0, 0, 0, 'dime.find.subtype.tool.equestrian.stirrup', ''),
+('dime.find.subtype', 'tool.equestrian.tack', '', 0, 0, 0, 0, 'dime.find.subtype.tool.equestrian.tack', ''),
+('dime.find.subtype', 'tool.house', '', 0, 0, 0, 0, 'dime.find.subtype.tool.house', ''),
+('dime.find.subtype', 'tool.house.crockery', '', 0, 0, 0, 0, 'dime.find.subtype.tool.house.crockery', ''),
+('dime.find.subtype', 'tool.house.cutlery', '', 0, 0, 0, 0, 'dime.find.subtype.tool.house.cutlery', ''),
+('dime.find.subtype', 'tool.house.fixtures', '', 0, 0, 0, 0, 'dime.find.subtype.tool.house.fixtures', ''),
+('dime.find.subtype', 'tool.house.key', '', 0, 0, 0, 0, 'dime.find.subtype.tool.house.key', ''),
+('dime.find.subtype', 'tool.house.knife', '', 0, 0, 0, 0, 'dime.find.subtype.tool.house.knife', ''),
+('dime.find.subtype', 'tool.house.light', '', 0, 0, 0, 0, 'dime.find.subtype.tool.house.light', ''),
+('dime.find.subtype', 'tool.house.lock', '', 0, 0, 0, 0, 'dime.find.subtype.tool.house.lock', ''),
+('dime.find.subtype', 'tool.house.other', '', 0, 0, 0, 0, 'dime.find.subtype.tool.house.other', ''),
+('dime.find.subtype', 'tool.house.pot', '', 0, 0, 0, 0, 'dime.find.subtype.tool.house.pot', ''),
+('dime.find.subtype', 'tool.house.scissors', '', 0, 0, 0, 0, 'dime.find.subtype.tool.house.scissors', ''),
+('dime.find.subtype', 'tool.house.striker', '', 0, 0, 0, 0, 'dime.find.subtype.tool.house.striker', ''),
+('dime.find.subtype', 'tool.measure', '', 0, 0, 0, 0, 'dime.find.subtype.tool.measure', ''),
+('dime.find.subtype', 'tool.measure.clip', '', 0, 0, 0, 0, 'dime.find.subtype.tool.measure.clip', ''),
+('dime.find.subtype', 'tool.measure.ingot', '', 0, 0, 0, 0, 'dime.find.subtype.tool.measure.ingot', ''),
+('dime.find.subtype', 'tool.measure.scale', '', 0, 0, 0, 0, 'dime.find.subtype.tool.measure.scale', ''),
+('dime.find.subtype', 'tool.measure.weight', '', 0, 0, 0, 0, 'dime.find.subtype.tool.measure.weight', ''),
+('dime.find.subtype', 'tool.other', '', 0, 0, 0, 0, 'dime.find.subtype.tool.other', ''),
+('dime.find.subtype', 'tool.textile', '', 0, 0, 0, 0, 'dime.find.subtype.tool.textile', ''),
+('dime.find.subtype', 'tool.textile.case', '', 0, 0, 0, 0, 'dime.find.subtype.tool.textile.case', ''),
+('dime.find.subtype', 'tool.textile.needle', '', 0, 0, 0, 0, 'dime.find.subtype.tool.textile.needle', ''),
+('dime.find.subtype', 'tool.textile.scissors', '', 0, 0, 0, 0, 'dime.find.subtype.tool.textile.scissors', ''),
+('dime.find.subtype', 'tool.textile.thimble', '', 0, 0, 0, 0, 'dime.find.subtype.tool.textile.thimble', ''),
+('dime.find.subtype', 'tool.textile.whorl', '', 0, 0, 0, 0, 'dime.find.subtype.tool.textile.whorl', ''),
+('dime.find.subtype', 'tool.toilet', '', 0, 0, 0, 0, 'dime.find.subtype.tool.toilet', ''),
+('dime.find.subtype', 'tool.toilet.comb', '', 0, 0, 0, 0, 'dime.find.subtype.tool.toilet.comb', ''),
+('dime.find.subtype', 'tool.toilet.ear', '', 0, 0, 0, 0, 'dime.find.subtype.tool.toilet.ear', ''),
+('dime.find.subtype', 'tool.toilet.other', '', 0, 0, 0, 0, 'dime.find.subtype.tool.toilet.other', ''),
+('dime.find.subtype', 'tool.toilet.razor', '', 0, 0, 0, 0, 'dime.find.subtype.tool.toilet.razor', ''),
+('dime.find.subtype', 'tool.toilet.tweezers', '', 0, 0, 0, 0, 'dime.find.subtype.tool.toilet.tweezers', ''),
+('dime.find.subtype', 'tool.toy', '', 0, 0, 0, 0, 'dime.find.subtype.tool.toy', ''),
+('dime.find.subtype', 'tool.toy.counter', '', 0, 0, 0, 0, 'dime.find.subtype.tool.toy.counter', ''),
+('dime.find.subtype', 'tool.toy.dice', '', 0, 0, 0, 0, 'dime.find.subtype.tool.toy.dice', ''),
+('dime.find.subtype', 'tool.toy.other', '', 0, 0, 0, 0, 'dime.find.subtype.tool.toy.other', ''),
+('dime.find.subtype', 'tool.unknown', '', 0, 0, 0, 0, 'dime.find.subtype.tool.unknown', ''),
+('dime.find.subtype', 'tool.work', '', 0, 0, 0, 0, 'dime.find.subtype.tool.work', ''),
+('dime.find.subtype', 'tool.work.axe', '', 0, 0, 0, 0, 'dime.find.subtype.tool.work.axe', ''),
+('dime.find.subtype', 'tool.work.chisel', '', 0, 0, 0, 0, 'dime.find.subtype.tool.work.chisel', ''),
+('dime.find.subtype', 'tool.work.drill', '', 0, 0, 0, 0, 'dime.find.subtype.tool.work.drill', ''),
+('dime.find.subtype', 'tool.work.fitting', '', 0, 0, 0, 0, 'dime.find.subtype.tool.work.fitting', ''),
+('dime.find.subtype', 'tool.work.hammer', '', 0, 0, 0, 0, 'dime.find.subtype.tool.work.hammer', ''),
+('dime.find.subtype', 'tool.work.knife', '', 0, 0, 0, 0, 'dime.find.subtype.tool.work.knife', ''),
+('dime.find.subtype', 'tool.work.nail', '', 0, 0, 0, 0, 'dime.find.subtype.tool.work.nail', ''),
+('dime.find.subtype', 'tool.work.other', '', 0, 0, 0, 0, 'dime.find.subtype.tool.work.other', ''),
+('dime.find.subtype', 'tool.work.pliars', '', 0, 0, 0, 0, 'dime.find.subtype.tool.work.pliars', ''),
+('dime.find.subtype', 'tool.work.rivet', '', 0, 0, 0, 0, 'dime.find.subtype.tool.work.rivet', ''),
+('dime.find.subtype', 'tool.work.sickle', '', 0, 0, 0, 0, 'dime.find.subtype.tool.work.sickle', ''),
+('dime.find.subtype', 'tool.writing', '', 0, 0, 0, 0, 'dime.find.subtype.tool.writing', ''),
+('dime.find.subtype', 'tool.writing.bylamulet', '', 0, 0, 0, 0, 'dime.find.subtype.tool.writing.bylamulet', ''),
+('dime.find.subtype', 'tool.writing.clasp', '', 0, 0, 0, 0, 'dime.find.subtype.tool.writing.clasp', ''),
+('dime.find.subtype', 'tool.writing.guldgubbe', '', 0, 0, 0, 0, 'dime.find.subtype.tool.writing.guldgubbe', ''),
+('dime.find.subtype', 'tool.writing.runebrev', '', 0, 0, 0, 0, 'dime.find.subtype.tool.writing.runebrev', ''),
+('dime.find.subtype', 'tool.writing.seal', '', 0, 0, 0, 0, 'dime.find.subtype.tool.writing.seal', ''),
+('dime.find.subtype', 'tool.writing.stamp', '', 0, 0, 0, 0, 'dime.find.subtype.tool.writing.stamp', ''),
+('dime.find.subtype', 'tool.writing.stylus', '', 0, 0, 0, 0, 'dime.find.subtype.tool.writing.stylus', ''),
+('dime.material', 'ag', 'silver', 0, 0, 1, 0, 'dime.material.silver', ''),
+('dime.material', 'al', 'aluminium', 0, 0, 1, 0, 'dime.material.aluminium', ''),
+('dime.material', 'au', 'gold', 0, 0, 1, 0, 'dime.material.gold', ''),
+('dime.material', 'ceramic', 'ceramic', 0, 0, 1, 0, 'dime.material.ceramic', ''),
+('dime.material', 'cu', 'copper', 0, 0, 1, 0, 'dime.material.copper', ''),
+('dime.material', 'cual', 'copperalloy', 0, 0, 1, 0, 'dime.material.copperalloy', ''),
+('dime.material', 'fe', 'iron', 0, 0, 1, 0, 'dime.material.iron', ''),
+('dime.material', 'glass', 'glass', 0, 0, 1, 0, 'dime.material.glass', ''),
+('dime.material', 'pb', 'lead', 0, 0, 1, 0, 'dime.material.lead', ''),
+('dime.material', 'sa', 'tin', 0, 0, 1, 0, 'dime.material.tin', ''),
+('dime.material', 'stone', 'stone', 0, 0, 1, 0, 'dime.material.stone', ''),
+('dime.material', 'xx', 'othermetal', 0, 0, 1, 0, 'dime.material.othermetal', ''),
+('dime.period', 'AMXX', 'mesolithic', 0, 0, 1, 0, 'dime.period.mesolithic', 'Mesolithic'),
+('dime.period', 'APXX', 'palaeolithic', 0, 0, 1, 0, 'dime.period.palaeolithic', 'Palaeolithic'),
+('dime.period', 'AXXX', 'stone', 0, 0, 1, 0, 'dime.period.stone', 'Stone Age'),
+('dime.period', 'AYXX', 'neolithic', 0, 0, 1, 0, 'dime.period.neolithic', 'Neolithic'),
+('dime.period', 'BÆX1', 'bronze.1', 0, 0, 1, 0, 'dime.period.bronze.1', 'Bronze Age Period 1'),
+('dime.period', 'BÆX2', 'bronze.2', 0, 0, 1, 0, 'dime.period.bronze.2', 'Bronze Age Period 2'),
+('dime.period', 'BÆX3', 'bronze.3', 0, 0, 1, 0, 'dime.period.bronze.3', 'Bronze Age Period 3'),
+('dime.period', 'BÆXX', 'bronze.early', 0, 0, 1, 0, 'dime.period.bronze.early', 'Early Bronze Age'),
+('dime.period', 'BXXX', 'bronze', 0, 0, 1, 0, 'dime.period.bronze', 'Bronze Age'),
+('dime.period', 'BYX4', 'bronze.4', 0, 0, 1, 0, 'dime.period.bronze.4', 'Bronze Age Period 4'),
+('dime.period', 'BYX5', 'bronze.5', 0, 0, 1, 0, 'dime.period.bronze.5', 'Bronze Age Period 5'),
+('dime.period', 'BYX6', 'bronze.6', 0, 0, 1, 0, 'dime.period.bronze.6', 'Bronze Age Period 6'),
+('dime.period', 'BYXX', 'bronze.late', 0, 0, 1, 0, 'dime.period.bronze.late', 'Late Bronze Age'),
+('dime.period', 'CÆFÆ', 'iron.preroman.early', 0, 0, 1, 0, 'dime.period.iron.preroman.early', 'Early Pre-Roman Iron Age'),
+('dime.period', 'CÆFM', 'iron.preroman.middle', 0, 0, 1, 0, 'dime.period.iron.preroman.middle', 'Middle Pre-Roman Iron Age'),
+('dime.period', 'CÆFX', 'iron.preroman', 0, 0, 1, 0, 'dime.period.iron.preroman', 'Pre-Roman Iron Age'),
+('dime.period', 'CÆFY', 'iron.preroman.late', 0, 0, 1, 0, 'dime.period.iron.preroman.late', 'Late Pre-Roman Iron Age'),
+('dime.period', 'CÆRA', 'iron.roman.early.b1', 0, 0, 1, 0, 'dime.period.iron.roman.early.b1', 'Early Roman Iron Age B1'),
+('dime.period', 'CÆRÆ', 'iron.roman.early', 0, 0, 1, 0, 'dime.period.iron.roman.early', 'Early Roman Iron Age'),
+('dime.period', 'CÆRB', 'iron.roman.early.b2', 0, 0, 1, 0, 'dime.period.iron.roman.early.b2', 'Early Roman Iron Age B2'),
+('dime.period', 'CÆRC', 'iron.roman.late.c1', 0, 0, 1, 0, 'dime.period.iron.roman.late.c1', 'Late Roman Iron Age C1'),
+('dime.period', 'CÆRD', 'iron.roman.late.c2', 0, 0, 1, 0, 'dime.period.iron.roman.late.c2', 'Late Roman Iron Age C2'),
+('dime.period', 'CÆRE', 'iron.roman.late.c3', 0, 0, 1, 0, 'dime.period.iron.roman.late.c3', 'Late Roman Iron Age C3'),
+('dime.period', 'CÆRX', 'iron.roman', 0, 0, 1, 0, 'dime.period.iron.roman', 'Roman Iron Age'),
+('dime.period', 'CÆRY', 'iron.roman.late', 0, 0, 1, 0, 'dime.period.iron.roman.late', 'Late Roman Iron Age'),
+('dime.period', 'CÆXX', 'iron.early', 0, 0, 1, 0, 'dime.period.iron.early', 'Early Iron Age'),
+('dime.period', 'CVDÆ', 'viking.medieval', 0, 0, 1, 0, 'dime.period.viking.medieval', 'Viking / Early Medieval '),
+('dime.period', 'CXXX', 'iron', 0, 0, 1, 0, 'dime.period.iron', 'Iron Age'),
+('dime.period', 'CYGÆ', 'iron.germainic.early', 0, 0, 1, 0, 'dime.period.iron.germainic.early', 'Early Germanic Iron Age'),
+('dime.period', 'CYGX', 'iron.germainic', 0, 0, 1, 0, 'dime.period.iron.germainic', 'Germanic Iron Age'),
+('dime.period', 'CYGY', 'iron.germainic.late', 0, 0, 1, 0, 'dime.period.iron.germainic.late', 'Late Germanic Iron Age'),
+('dime.period', 'CYVÆ', 'viking.early', 0, 0, 1, 0, 'dime.period.viking.early', 'Early Viking Age'),
+('dime.period', 'CYVX', 'viking', 0, 0, 1, 0, 'dime.period.viking', 'Viking Age'),
+('dime.period', 'CYVY', 'viking.late', 0, 0, 1, 0, 'dime.period.viking.late', 'Late Viking Age'),
+('dime.period', 'CYXX', 'iron.late', 0, 0, 1, 0, 'dime.period.iron.late', 'Late Iron Age'),
+('dime.period', 'DÆX1', 'medieval.early', 0, 0, 1, 0, 'dime.period.medieval.early', 'Early Medieval'),
+('dime.period', 'DHXX', 'medieval.high', 0, 0, 1, 0, 'dime.period.medieval.high', 'High Medieval'),
+('dime.period', 'DLXX', 'medieval.late', 0, 0, 1, 0, 'dime.period.medieval.late', 'Late Medieval'),
+('dime.period', 'DXXX', 'medieval', 0, 0, 1, 0, 'dime.period.medieval', 'Medieval'),
+('dime.period', 'EXXX', 'reformation', 0, 0, 1, 0, 'dime.period.reformation', 'Reformation'),
+('dime.period', 'FÆXX', 'absolutism', 0, 0, 1, 0, 'dime.period.absolutism', 'Absolutism'),
+('dime.period', 'FMIN', 'industrial', 0, 0, 1, 0, 'dime.period.industrial', 'Industrial Age'),
+('dime.period', 'FMV1', 'ww1', 0, 0, 1, 0, 'dime.period.ww1', 'First World War'),
+('dime.period', 'FMV2', 'ww2', 0, 0, 1, 0, 'dime.period.ww2', 'Second World War'),
+('dime.period', 'FMVM', 'interwar', 0, 0, 1, 0, 'dime.period.interwar', 'Interwar Years'),
+('dime.period', 'FXXX', 'modern', 0, 0, 1, 0, 'dime.period.modern', 'Modern Age'),
+('dime.period', 'FYXX', 'welfare', 0, 0, 1, 0, 'dime.period.welfare', 'Welfare Age'),
+('dime.period', 'HXXX', 'historic', 0, 0, 1, 0, 'dime.period.historic', 'Historic Age'),
+('dime.period', 'OXXX', 'prehistoric', 0, 0, 1, 0, 'dime.period.prehistoric', 'Prehistoric'),
+('dime.period', 'XXXX', 'undated', 0, 0, 1, 0, 'dime.period.undated', 'Undated'),
+('dime.treasure', 'appraisal', '', 0, 0, 1, 0, 'dime.treasure.appraisal', ''),
+('dime.treasure', 'not', '', 0, 0, 1, 0, 'dime.treasure.not', ''),
+('dime.treasure', 'pending', '', 0, 1, 1, 0, 'dime.treasure.pending', ''),
+('dime.treasure', 'treasure', '', 0, 0, 1, 0, 'dime.treasure.treasure', ''),
+('dime.user.terms', 'v1', '', 1, 0, 1, 0, 'dime.user.terms.v1', ''),
+('dime.workflow.role', 'admin', '', 0, 0, 1, 0, 'dime.role.admin', ''),
+('dime.workflow.role', 'curator', '', 0, 0, 1, 0, 'dime.role.curator', ''),
+('dime.workflow.role', 'detectorist', '', 1, 0, 1, 0, 'dime.role.detectorist', ''),
+('dime.workflow.role', 'registrar', '', 0, 0, 1, 0, 'dime.role.registrar', ''),
+('dime.workflow.role', 'researcher', '', 0, 0, 1, 0, 'dime.role.researcher', ''),
+('distance', 'km', 'kilometre', 0, 0, 1, 0, 'length.kilometre', ''),
+('distance', 'm', 'metre', 0, 0, 1, 0, 'length.metre', ''),
+('distance', 'mm', 'millimetre', 1, 0, 1, 0, 'length.millimetre', ''),
+('distance', 'nm', 'nanometre', 0, 0, 1, 0, 'length.nanometre', ''),
+('distance', 'µm', 'nanometre', 0, 0, 1, 0, 'length.micrometre', ''),
+('language', 'aa', 'afar', 0, 0, 1, 0, 'language.afar', ''),
+('language', 'ab', 'abkhazian', 0, 0, 1, 0, 'language.abkhazian', ''),
+('language', 'ace', 'achinese', 0, 0, 1, 0, 'language.achinese', ''),
+('language', 'ach', 'acoli', 0, 0, 1, 0, 'language.acoli', ''),
+('language', 'ada', 'adangme', 0, 0, 1, 0, 'language.adangme', ''),
+('language', 'ady', 'adyghe', 0, 0, 1, 0, 'language.adyghe', ''),
+('language', 'ae', 'avestan', 0, 0, 1, 0, 'language.avestan', ''),
+('language', 'aeb', 'arabic.tunisian', 0, 0, 1, 0, 'language.arabic.tunisian', ''),
+('language', 'af', 'afrikaans', 0, 0, 1, 0, 'language.afrikaans', ''),
+('language', 'afh', 'afrihili', 0, 0, 1, 0, 'language.afrihili', ''),
+('language', 'agq', 'aghem', 0, 0, 1, 0, 'language.aghem', ''),
+('language', 'ain', 'ainu', 0, 0, 1, 0, 'language.ainu', ''),
+('language', 'ak', 'akan', 0, 0, 1, 0, 'language.akan', ''),
+('language', 'akk', 'akkadian', 0, 0, 1, 0, 'language.akkadian', ''),
+('language', 'akz', 'alabama', 0, 0, 1, 0, 'language.alabama', ''),
+('language', 'ale', 'aleut', 0, 0, 1, 0, 'language.aleut', ''),
+('language', 'aln', 'albanian.gheg', 0, 0, 1, 0, 'language.albanian.gheg', ''),
+('language', 'alt', 'altai.southern', 0, 0, 1, 0, 'language.altai.southern', ''),
+('language', 'am', 'amharic', 0, 0, 1, 0, 'language.amharic', ''),
+('language', 'an', 'aragonese', 0, 0, 1, 0, 'language.aragonese', ''),
+('language', 'ang', 'english.old', 0, 0, 1, 0, 'language.english.old', ''),
+('language', 'anp', 'angika', 0, 0, 1, 0, 'language.angika', ''),
+('language', 'ar', 'arabic', 0, 0, 1, 0, 'language.arabic', ''),
+('language', 'ar-001', 'arabic.modern', 0, 0, 1, 0, 'language.arabic.modern', ''),
+('language', 'arc', 'aramaic', 0, 0, 1, 0, 'language.aramaic', ''),
+('language', 'arn', 'mapuche', 0, 0, 1, 0, 'language.mapuche', ''),
+('language', 'aro', 'araona', 0, 0, 1, 0, 'language.araona', ''),
+('language', 'arp', 'arapaho', 0, 0, 1, 0, 'language.arapaho', ''),
+('language', 'arq', 'arabic.algerian', 0, 0, 1, 0, 'language.arabic.algerian', ''),
+('language', 'arw', 'arawak', 0, 0, 1, 0, 'language.arawak', ''),
+('language', 'ary', 'arabic.moroccan', 0, 0, 1, 0, 'language.arabic.moroccan', ''),
+('language', 'arz', 'arabic.egyptian', 0, 0, 1, 0, 'language.arabic.egyptian', ''),
+('language', 'as', 'assamese', 0, 0, 1, 0, 'language.assamese', ''),
+('language', 'asa', 'asu', 0, 0, 1, 0, 'language.asu', ''),
+('language', 'ast', 'asturian', 0, 0, 1, 0, 'language.asturian', ''),
+('language', 'av', 'avaric', 0, 0, 1, 0, 'language.avaric', ''),
+('language', 'avk', 'kotava', 0, 0, 1, 0, 'language.kotava', ''),
+('language', 'awa', 'awadhi', 0, 0, 1, 0, 'language.awadhi', ''),
+('language', 'ay', 'aymara', 0, 0, 1, 0, 'language.aymara', ''),
+('language', 'az', 'azerbaijani', 0, 0, 1, 0, 'language.azerbaijani', ''),
+('language', 'ba', 'bashkir', 0, 0, 1, 0, 'language.bashkir', ''),
+('language', 'bal', 'baluchi', 0, 0, 1, 0, 'language.baluchi', ''),
+('language', 'ban', 'balinese', 0, 0, 1, 0, 'language.balinese', ''),
+('language', 'bar', 'bavarian', 0, 0, 1, 0, 'language.bavarian', ''),
+('language', 'bas', 'basaa', 0, 0, 1, 0, 'language.basaa', ''),
+('language', 'bax', 'bamun', 0, 0, 1, 0, 'language.bamun', ''),
+('language', 'bbc', 'bataktoba', 0, 0, 1, 0, 'language.bataktoba', ''),
+('language', 'bbj', 'ghomala', 0, 0, 1, 0, 'language.ghomala', ''),
+('language', 'be', 'belarusian', 0, 0, 1, 0, 'language.belarusian', ''),
+('language', 'bej', 'beja', 0, 0, 1, 0, 'language.beja', ''),
+('language', 'bem', 'bemba', 0, 0, 1, 0, 'language.bemba', ''),
+('language', 'bew', 'betawi', 0, 0, 1, 0, 'language.betawi', ''),
+('language', 'bez', 'bena', 0, 0, 1, 0, 'language.bena', ''),
+('language', 'bfd', 'bafut', 0, 0, 1, 0, 'language.bafut', ''),
+('language', 'bfq', 'badaga', 0, 0, 1, 0, 'language.badaga', ''),
+('language', 'bg', 'bulgarian', 0, 0, 1, 0, 'language.bulgarian', ''),
+('language', 'bgn', 'balochi.western', 0, 0, 1, 0, 'language.balochi.western', ''),
+('language', 'bho', 'bhojpuri', 0, 0, 1, 0, 'language.bhojpuri', ''),
+('language', 'bi', 'bislama', 0, 0, 1, 0, 'language.bislama', ''),
+('language', 'bik', 'bikol', 0, 0, 1, 0, 'language.bikol', ''),
+('language', 'bin', 'bini', 0, 0, 1, 0, 'language.bini', ''),
+('language', 'bjn', 'banjar', 0, 0, 1, 0, 'language.banjar', ''),
+('language', 'bkm', 'kom', 0, 0, 1, 0, 'language.kom', ''),
+('language', 'bla', 'siksika', 0, 0, 1, 0, 'language.siksika', ''),
+('language', 'bm', 'bambara', 0, 0, 1, 0, 'language.bambara', ''),
+('language', 'bn', 'bengali', 0, 0, 1, 0, 'language.bengali', ''),
+('language', 'bo', 'tibetan', 0, 0, 1, 0, 'language.tibetan', ''),
+('language', 'bpy', 'bishnupriya', 0, 0, 1, 0, 'language.bishnupriya', ''),
+('language', 'bqi', 'bakhtiari', 0, 0, 1, 0, 'language.bakhtiari', ''),
+('language', 'br', 'breton', 0, 0, 1, 0, 'language.breton', ''),
+('language', 'bra', 'braj', 0, 0, 1, 0, 'language.braj', ''),
+('language', 'brh', 'brahui', 0, 0, 1, 0, 'language.brahui', ''),
+('language', 'brx', 'bodo', 0, 0, 1, 0, 'language.bodo', ''),
+('language', 'bs', 'bosnian', 0, 0, 1, 0, 'language.bosnian', ''),
+('language', 'bss', 'akoose', 0, 0, 1, 0, 'language.akoose', ''),
+('language', 'bua', 'buriat', 0, 0, 1, 0, 'language.buriat', ''),
+('language', 'bug', 'buginese', 0, 0, 1, 0, 'language.buginese', ''),
+('language', 'bum', 'bulu', 0, 0, 1, 0, 'language.bulu', ''),
+('language', 'byn', 'blin', 0, 0, 1, 0, 'language.blin', ''),
+('language', 'byv', 'medumba', 0, 0, 1, 0, 'language.medumba', ''),
+('language', 'ca', 'catalan', 0, 0, 1, 0, 'language.catalan', ''),
+('language', 'cad', 'caddo', 0, 0, 1, 0, 'language.caddo', ''),
+('language', 'car', 'carib', 0, 0, 1, 0, 'language.carib', ''),
+('language', 'cay', 'cayuga', 0, 0, 1, 0, 'language.cayuga', ''),
+('language', 'cch', 'atsam', 0, 0, 1, 0, 'language.atsam', ''),
+('language', 'ce', 'chechen', 0, 0, 1, 0, 'language.chechen', ''),
+('language', 'ceb', 'cebuano', 0, 0, 1, 0, 'language.cebuano', ''),
+('language', 'cgg', 'chiga', 0, 0, 1, 0, 'language.chiga', ''),
+('language', 'ch', 'chamorro', 0, 0, 1, 0, 'language.chamorro', ''),
+('language', 'chb', 'chibcha', 0, 0, 1, 0, 'language.chibcha', ''),
+('language', 'chg', 'chagatai', 0, 0, 1, 0, 'language.chagatai', ''),
+('language', 'chk', 'chuukese', 0, 0, 1, 0, 'language.chuukese', ''),
+('language', 'chm', 'mari', 0, 0, 1, 0, 'language.mari', ''),
+('language', 'chn', 'jargon.chinook', 0, 0, 1, 0, 'language.jargon.chinook', ''),
+('language', 'cho', 'choctaw', 0, 0, 1, 0, 'language.choctaw', ''),
+('language', 'chp', 'chipewyan', 0, 0, 1, 0, 'language.chipewyan', ''),
+('language', 'chr', 'cherokee', 0, 0, 1, 0, 'language.cherokee', ''),
+('language', 'chy', 'cheyenne', 0, 0, 1, 0, 'language.cheyenne', ''),
+('language', 'ckb', 'kurdish.central', 0, 0, 1, 0, 'language.kurdish.central', ''),
+('language', 'co', 'corsican', 0, 0, 1, 0, 'language.corsican', ''),
+('language', 'cop', 'coptic', 0, 0, 1, 0, 'language.coptic', ''),
+('language', 'cps', 'capiznon', 0, 0, 1, 0, 'language.capiznon', ''),
+('language', 'cr', 'cree', 0, 0, 1, 0, 'language.cree', ''),
+('language', 'crh', 'turkish.crimean', 0, 0, 1, 0, 'language.turkish.crimean', ''),
+('language', 'cs', 'czech', 0, 0, 1, 0, 'language.czech', ''),
+('language', 'csb', 'kashubian', 0, 0, 1, 0, 'language.kashubian', ''),
+('language', 'cu', 'slavic.church', 0, 0, 1, 0, 'language.slavic.church', ''),
+('language', 'cv', 'chuvash', 0, 0, 1, 0, 'language.chuvash', ''),
+('language', 'cy', 'welsh', 0, 0, 1, 0, 'language.welsh', ''),
+('language', 'da', 'danish', 0, 0, 1, 0, 'language.danish', ''),
+('language', 'dak', 'dakota', 0, 0, 1, 0, 'language.dakota', ''),
+('language', 'dar', 'dargwa', 0, 0, 1, 0, 'language.dargwa', ''),
+('language', 'dav', 'taita', 0, 0, 1, 0, 'language.taita', ''),
+('language', 'de', 'german', 0, 0, 1, 0, 'language.german', ''),
+('language', 'de-AT', 'german.austrian', 0, 0, 1, 0, 'language.german.austrian', ''),
+('language', 'de-CH', 'german.swisshigh', 0, 0, 1, 0, 'language.german.swisshigh', ''),
+('language', 'del', 'delaware', 0, 0, 1, 0, 'language.delaware', ''),
+('language', 'den', 'slave', 0, 0, 1, 0, 'language.slave', ''),
+('language', 'dgr', 'dogrib', 0, 0, 1, 0, 'language.dogrib', ''),
+('language', 'din', 'dinka', 0, 0, 1, 0, 'language.dinka', ''),
+('language', 'dje', 'zarma', 0, 0, 1, 0, 'language.zarma', ''),
+('language', 'doi', 'dogri', 0, 0, 1, 0, 'language.dogri', ''),
+('language', 'dsb', 'sorbian.lower', 0, 0, 1, 0, 'language.sorbian.lower', ''),
+('language', 'dtp', 'dusun.central', 0, 0, 1, 0, 'language.dusun.central', ''),
+('language', 'dua', 'duala', 0, 0, 1, 0, 'language.duala', ''),
+('language', 'dum', 'dutch.middle', 0, 0, 1, 0, 'language.dutch.middle', ''),
+('language', 'dv', 'divehi', 0, 0, 1, 0, 'language.divehi', ''),
+('language', 'dyo', 'jolafonyi', 0, 0, 1, 0, 'language.jolafonyi', ''),
+('language', 'dyu', 'dyula', 0, 0, 1, 0, 'language.dyula', ''),
+('language', 'dz', 'dzongkha', 0, 0, 1, 0, 'language.dzongkha', ''),
+('language', 'dzg', 'dazaga', 0, 0, 1, 0, 'language.dazaga', ''),
+('language', 'ebu', 'embu', 0, 0, 1, 0, 'language.embu', ''),
+('language', 'ee', 'ewe', 0, 0, 1, 0, 'language.ewe', ''),
+('language', 'efi', 'efik', 0, 0, 1, 0, 'language.efik', ''),
+('language', 'egl', 'emilian', 0, 0, 1, 0, 'language.emilian', ''),
+('language', 'egy', 'egyptian.ancient', 0, 0, 1, 0, 'language.egyptian.ancient', ''),
+('language', 'eka', 'ekajuk', 0, 0, 1, 0, 'language.ekajuk', ''),
+('language', 'el', 'greek', 0, 0, 1, 0, 'language.greek', ''),
+('language', 'elx', 'elamite', 0, 0, 1, 0, 'language.elamite', ''),
+('language', 'en', 'english', 0, 0, 1, 0, 'language.english', ''),
+('language', 'en-AU', 'english.australian', 0, 0, 1, 0, 'language.english.australian', ''),
+('language', 'en-CA', 'english.canadian', 0, 0, 1, 0, 'language.english.canadian', ''),
+('language', 'en-GB', 'english.british', 0, 0, 1, 0, 'language.english.british', ''),
+('language', 'en-US', 'english.american', 0, 0, 1, 0, 'language.english.american', ''),
+('language', 'enm', 'english.middle', 0, 0, 1, 0, 'language.english.middle', ''),
+('language', 'eo', 'esperanto', 0, 0, 1, 0, 'language.esperanto', ''),
+('language', 'es', 'spanish', 0, 0, 1, 0, 'language.spanish', ''),
+('language', 'es-419', 'spanish.latinamerican', 0, 0, 1, 0, 'Language.spanish.latinamerican', ''),
+('language', 'es-ES', 'spanish.european', 0, 0, 1, 0, 'language.spanish.european', ''),
+('language', 'es-MX', 'spanish.mexican', 0, 0, 1, 0, 'language.spanish.mexican', ''),
+('language', 'esu', 'yupik.central', 0, 0, 1, 0, 'language.yupik.central', ''),
+('language', 'et', 'estonian', 0, 0, 1, 0, 'language.estonian', ''),
+('language', 'eu', 'basque', 0, 0, 1, 0, 'language.basque', ''),
+('language', 'ewo', 'ewondo', 0, 0, 1, 0, 'language.ewondo', ''),
+('language', 'ext', 'extremaduran', 0, 0, 1, 0, 'language.extremaduran', ''),
+('language', 'fa', 'persian', 0, 0, 1, 0, 'language.persian', ''),
+('language', 'fan', 'fang', 0, 0, 1, 0, 'language.fang', ''),
+('language', 'fat', 'fanti', 0, 0, 1, 0, 'language.fanti', ''),
+('language', 'ff', 'fulah', 0, 0, 1, 0, 'language.fulah', ''),
+('language', 'fi', 'finnish', 0, 0, 1, 0, 'language.finnish', ''),
+('language', 'fil', 'filipino', 0, 0, 1, 0, 'language.filipino', ''),
+('language', 'fit', 'finnish.tornedalen', 0, 0, 1, 0, 'language.finnish.tornedalen', ''),
+('language', 'fj', 'fijian', 0, 0, 1, 0, 'language.fijian', ''),
+('language', 'fo', 'faroese', 0, 0, 1, 0, 'language.faroese', ''),
+('language', 'fon', 'fon', 0, 0, 1, 0, 'language.fon', ''),
+('language', 'fr', 'french', 0, 0, 1, 0, 'language.french', ''),
+('language', 'fr-CA', 'french.canadian', 0, 0, 1, 0, 'language.french.canadian', ''),
+('language', 'fr-CH', 'french.swiss', 0, 0, 1, 0, 'language.french.swiss', ''),
+('language', 'frc', 'french.cajun', 0, 0, 1, 0, 'language.french.cajun', ''),
+('language', 'frm', 'french.middle', 0, 0, 1, 0, 'language.french.middle', ''),
+('language', 'fro', 'french.old', 0, 0, 1, 0, 'language.french.old', ''),
+('language', 'frp', 'arpitan', 0, 0, 1, 0, 'language.arpitan', ''),
+('language', 'frr', 'frisian.northern', 0, 0, 1, 0, 'language.frisian.northern', ''),
+('language', 'frs', 'frisian.eastern', 0, 0, 1, 0, 'language.frisian.eastern', ''),
+('language', 'fur', 'friulian', 0, 0, 1, 0, 'language.friulian', ''),
+('language', 'fy', 'frisian.western', 0, 0, 1, 0, 'language.frisian.western', ''),
+('language', 'ga', 'irish', 0, 0, 1, 0, 'language.irish', ''),
+('language', 'gaa', 'ga', 0, 0, 1, 0, 'language.ga', ''),
+('language', 'gag', 'gagauz', 0, 0, 1, 0, 'language.gagauz', ''),
+('language', 'gan', 'chinese.gan', 0, 0, 1, 0, 'language.chinese.gan', ''),
+('language', 'gay', 'gayo', 0, 0, 1, 0, 'language.gayo', ''),
+('language', 'gba', 'gbaya', 0, 0, 1, 0, 'language.gbaya', ''),
+('language', 'gbz', 'dari.zoroastrian', 0, 0, 1, 0, 'language.dari.zoroastrian', ''),
+('language', 'gd', 'gaelic.scottish', 0, 0, 1, 0, 'language.gaelic.scottish', ''),
+('language', 'gez', 'geez', 0, 0, 1, 0, 'language.geez', ''),
+('language', 'gil', 'gilbertese', 0, 0, 1, 0, 'language.gilbertese', ''),
+('language', 'gl', 'galician', 0, 0, 1, 0, 'language.galician', ''),
+('language', 'glk', 'gilaki', 0, 0, 1, 0, 'language.gilaki', ''),
+('language', 'gmh', 'german.middlehigh', 0, 0, 1, 0, 'language.german.middlehigh', ''),
+('language', 'gn', 'guarani', 0, 0, 1, 0, 'language.guarani', ''),
+('language', 'goh', 'german.oldhigh', 0, 0, 1, 0, 'language.german.oldhigh', ''),
+('language', 'gom', 'konkani.goan', 0, 0, 1, 0, 'language.konkani.goan', ''),
+('language', 'gon', 'gondi', 0, 0, 1, 0, 'language.gondi', ''),
+('language', 'gor', 'gorontalo', 0, 0, 1, 0, 'language.gorontalo', ''),
+('language', 'got', 'gothic', 0, 0, 1, 0, 'language.gothic', ''),
+('language', 'grb', 'grebo', 0, 0, 1, 0, 'language.grebo', ''),
+('language', 'grc', 'greek.ancient', 0, 0, 1, 0, 'language.greek.ancient', ''),
+('language', 'gsw', 'german.swiss', 0, 0, 1, 0, 'language.german.swiss', ''),
+('language', 'gu', 'gujarati', 0, 0, 1, 0, 'language.gujarati', ''),
+('language', 'guc', 'wayuu', 0, 0, 1, 0, 'language.wayuu', ''),
+('language', 'gur', 'frafra', 0, 0, 1, 0, 'language.frafra', ''),
+('language', 'guz', 'gusii', 0, 0, 1, 0, 'language.gusii', ''),
+('language', 'gv', 'manx', 0, 0, 1, 0, 'language.manx', ''),
+('language', 'gwi', 'gwichin', 0, 0, 1, 0, 'language.gwichin', ''),
+('language', 'ha', 'hausa', 0, 0, 1, 0, 'language.hausa', ''),
+('language', 'hai', 'haida', 0, 0, 1, 0, 'language.haida', ''),
+('language', 'hak', 'chinese.hakka', 0, 0, 1, 0, 'language.chinese.hakka', ''),
+('language', 'haw', 'hawaiian', 0, 0, 1, 0, 'language.hawaiian', ''),
+('language', 'he', 'hebrew', 0, 0, 1, 0, 'language.hebrew', ''),
+('language', 'hi', 'hindi', 0, 0, 1, 0, 'language.hindi', ''),
+('language', 'hif', 'hindi.fiji', 0, 0, 1, 0, 'language.hindi.fiji', ''),
+('language', 'hil', 'hiligaynon', 0, 0, 1, 0, 'language.hiligaynon', ''),
+('language', 'hit', 'hittite', 0, 0, 1, 0, 'language.hittite', ''),
+('language', 'hmn', 'hmong', 0, 0, 1, 0, 'language.hmong', ''),
+('language', 'ho', 'motu.hiri', 0, 0, 1, 0, 'language.motu.hiri', ''),
+('language', 'hr', 'croatian', 0, 0, 1, 0, 'language.croatian', ''),
+('language', 'hsb', 'sorbian.upper', 0, 0, 1, 0, 'language.sorbian.upper', ''),
+('language', 'hsn', 'chinese.xiang', 0, 0, 1, 0, 'language.chinese.xiang', ''),
+('language', 'ht', 'creole.haitian', 0, 0, 1, 0, 'language.creole.haitian', ''),
+('language', 'hu', 'hungarian', 0, 0, 1, 0, 'language.hungarian', ''),
+('language', 'hup', 'hupa', 0, 0, 1, 0, 'language.hupa', ''),
+('language', 'hy', 'armenian', 0, 0, 1, 0, 'language.armenian', ''),
+('language', 'hz', 'herero', 0, 0, 1, 0, 'language.herero', ''),
+('language', 'ia', 'interlingua', 0, 0, 1, 0, 'language.interlingua', ''),
+('language', 'iba', 'iban', 0, 0, 1, 0, 'language.iban', ''),
+('language', 'ibb', 'ibibio', 0, 0, 1, 0, 'language.ibibio', ''),
+('language', 'id', 'indonesian', 0, 0, 1, 0, 'language.indonesian', ''),
+('language', 'ie', 'interlingue', 0, 0, 1, 0, 'language.interlingue', ''),
+('language', 'ig', 'igbo', 0, 0, 1, 0, 'language.igbo', ''),
+('language', 'ii', 'yi.sichuan', 0, 0, 1, 0, 'language.yi.sichuan', ''),
+('language', 'ik', 'inupiaq', 0, 0, 1, 0, 'language.inupiaq', ''),
+('language', 'ilo', 'iloko', 0, 0, 1, 0, 'language.iloko', ''),
+('language', 'inh', 'ingush', 0, 0, 1, 0, 'language.ingush', ''),
+('language', 'io', 'ido', 0, 0, 1, 0, 'language.ido', ''),
+('language', 'is', 'icelandic', 0, 0, 1, 0, 'language.icelandic', ''),
+('language', 'it', 'italian', 0, 0, 1, 0, 'language.italian', ''),
+('language', 'iu', 'inuktitut', 0, 0, 1, 0, 'language.inuktitut', ''),
+('language', 'izh', 'ingrian', 0, 0, 1, 0, 'language.ingrian', ''),
+('language', 'ja', 'japanese', 0, 0, 1, 0, 'language.japanese', ''),
+('language', 'jam', 'english.jamaicancreole ', 0, 0, 1, 0, 'language.english.jamaicancreole ', ''),
+('language', 'jbo', 'lojban', 0, 0, 1, 0, 'language.lojban', ''),
+('language', 'jgo', 'ngomba', 0, 0, 1, 0, 'language.ngomba', ''),
+('language', 'jmc', 'machame', 0, 0, 1, 0, 'language.machame', ''),
+('language', 'jpr', 'judeopersian', 0, 0, 1, 0, 'language.judeopersian', ''),
+('language', 'jrb', 'judeoarabic', 0, 0, 1, 0, 'language.judeoarabic', ''),
+('language', 'jut', 'jutish', 0, 0, 1, 0, 'language.jutish', ''),
+('language', 'jv', 'javanese', 0, 0, 1, 0, 'language.javanese', ''),
+('language', 'ka', 'georgian', 0, 0, 1, 0, 'language.georgian', ''),
+('language', 'kaa', 'karakalpak', 0, 0, 1, 0, 'language.karakalpak', ''),
+('language', 'kab', 'kabyle', 0, 0, 1, 0, 'language.kabyle', ''),
+('language', 'kac', 'kachin', 0, 0, 1, 0, 'language.kachin', ''),
+('language', 'kaj', 'jju', 0, 0, 1, 0, 'language.jju', ''),
+('language', 'kam', 'kamba', 0, 0, 1, 0, 'language.kamba', ''),
+('language', 'kaw', 'kawi', 0, 0, 1, 0, 'language.kawi', ''),
+('language', 'kbd', 'kabardian', 0, 0, 1, 0, 'language.kabardian', ''),
+('language', 'kbl', 'kanembu', 0, 0, 1, 0, 'language.kanembu', ''),
+('language', 'kcg', 'tyap', 0, 0, 1, 0, 'language.tyap', ''),
+('language', 'kde', 'makonde', 0, 0, 1, 0, 'language.makonde', ''),
+('language', 'kea', 'kabuverdianu', 0, 0, 1, 0, 'language.kabuverdianu', ''),
+('language', 'ken', 'kenyang', 0, 0, 1, 0, 'language.kenyang', ''),
+('language', 'kfo', 'koro', 0, 0, 1, 0, 'language.koro', ''),
+('language', 'kg', 'kongo', 0, 0, 1, 0, 'language.kongo', ''),
+('language', 'kgp', 'kaingang', 0, 0, 1, 0, 'language.kaingang', ''),
+('language', 'kha', 'khasi', 0, 0, 1, 0, 'language.khasi', ''),
+('language', 'kho', 'khotanese', 0, 0, 1, 0, 'language.khotanese', ''),
+('language', 'khq', 'chiini.koyra', 0, 0, 1, 0, 'language.chiini.koyra', ''),
+('language', 'khw', 'khowar', 0, 0, 1, 0, 'language.khowar', ''),
+('language', 'ki', 'kikuyu', 0, 0, 1, 0, 'language.kikuyu', ''),
+('language', 'kiu', 'kirmanjki', 0, 0, 1, 0, 'language.kirmanjki', ''),
+('language', 'kj', 'kuanyama', 0, 0, 1, 0, 'language.kuanyama', ''),
+('language', 'kk', 'kazakh', 0, 0, 1, 0, 'language.kazakh', ''),
+('language', 'kkj', 'kako', 0, 0, 1, 0, 'language.kako', ''),
+('language', 'kl', 'kalaallisut', 0, 0, 1, 0, 'language.kalaallisut', ''),
+('language', 'kln', 'kalenjin', 0, 0, 1, 0, 'language.kalenjin', ''),
+('language', 'km', 'khmer', 0, 0, 1, 0, 'language.khmer', ''),
+('language', 'kmb', 'kimbundu', 0, 0, 1, 0, 'language.kimbundu', ''),
+('language', 'kn', 'kannada', 0, 0, 1, 0, 'language.kannada', ''),
+('language', 'ko', 'korean', 0, 0, 1, 0, 'language.korean', ''),
+('language', 'koi', 'komi.permyak', 0, 0, 1, 0, 'language.komi.permyak', ''),
+('language', 'kok', 'konkani', 0, 0, 1, 0, 'language.konkani', ''),
+('language', 'kos', 'kosraean', 0, 0, 1, 0, 'language.kosraean', ''),
+('language', 'kpe', 'kpelle', 0, 0, 1, 0, 'language.kpelle', ''),
+('language', 'kr', 'kanuri', 0, 0, 1, 0, 'language.kanuri', ''),
+('language', 'krc', 'karachaybalkar', 0, 0, 1, 0, 'language.karachaybalkar', ''),
+('language', 'kri', 'krio', 0, 0, 1, 0, 'language.krio', ''),
+('language', 'krj', 'kinaraya', 0, 0, 1, 0, 'language.kinaraya', ''),
+('language', 'krl', 'karelian', 0, 0, 1, 0, 'language.karelian', ''),
+('language', 'kru', 'kurukh', 0, 0, 1, 0, 'language.kurukh', ''),
+('language', 'ks', 'kashmiri', 0, 0, 1, 0, 'language.kashmiri', ''),
+('language', 'ksb', 'shambala', 0, 0, 1, 0, 'language.shambala', ''),
+('language', 'ksf', 'bafia', 0, 0, 1, 0, 'language.bafia', ''),
+('language', 'ksh', 'colognian', 0, 0, 1, 0, 'language.colognian', ''),
+('language', 'ku', 'kurdish', 0, 0, 1, 0, 'language.kurdish', ''),
+('language', 'kum', 'kumyk', 0, 0, 1, 0, 'language.kumyk', ''),
+('language', 'kut', 'kutenai', 0, 0, 1, 0, 'language.kutenai', ''),
+('language', 'kv', 'komi', 0, 0, 1, 0, 'language.komi', ''),
+('language', 'kw', 'cornish', 0, 0, 1, 0, 'language.cornish', ''),
+('language', 'ky', 'kyrgyz', 0, 0, 1, 0, 'language.kyrgyz', ''),
+('language', 'la', 'latin', 0, 0, 1, 0, 'language.latin', ''),
+('language', 'lad', 'ladino', 0, 0, 1, 0, 'language.ladino', ''),
+('language', 'lag', 'langi', 0, 0, 1, 0, 'language.langi', ''),
+('language', 'lah', 'lahnda', 0, 0, 1, 0, 'language.lahnda', ''),
+('language', 'lam', 'lamba', 0, 0, 1, 0, 'language.lamba', ''),
+('language', 'lb', 'luxembourgish', 0, 0, 1, 0, 'language.luxembourgish', ''),
+('language', 'lez', 'lezghian', 0, 0, 1, 0, 'language.lezghian', ''),
+('language', 'lfn', 'linguafranca.nova', 0, 0, 1, 0, 'language.linguafranca.nova', ''),
+('language', 'lg', 'ganda', 0, 0, 1, 0, 'language.ganda', ''),
+('language', 'li', 'limburgish', 0, 0, 1, 0, 'language.limburgish', ''),
+('language', 'lij', 'ligurian', 0, 0, 1, 0, 'language.ligurian', ''),
+('language', 'liv', 'livonian', 0, 0, 1, 0, 'language.livonian', ''),
+('language', 'lkt', 'lakota', 0, 0, 1, 0, 'language.lakota', ''),
+('language', 'lmo', 'lombard', 0, 0, 1, 0, 'language.lombard', ''),
+('language', 'ln', 'lingala', 0, 0, 1, 0, 'language.lingala', ''),
+('language', 'lo', 'lao', 0, 0, 1, 0, 'language.lao', ''),
+('language', 'lol', 'mongo', 0, 0, 1, 0, 'language.mongo', ''),
+('language', 'loz', 'lozi', 0, 0, 1, 0, 'language.lozi', ''),
+('language', 'lrc', 'luri.northern', 0, 0, 1, 0, 'language.luri.northern', ''),
+('language', 'lt', 'lithuanian', 0, 0, 1, 0, 'language.lithuanian', ''),
+('language', 'ltg', 'latgalian', 0, 0, 1, 0, 'language.latgalian', ''),
+('language', 'lu', 'luba.katanga', 0, 0, 1, 0, 'language.luba.katanga', ''),
+('language', 'lua', 'luba.lulua', 0, 0, 1, 0, 'language.luba.lulua', ''),
+('language', 'lui', 'luiseno', 0, 0, 1, 0, 'language.luiseno', ''),
+('language', 'lun', 'lunda', 0, 0, 1, 0, 'language.lunda', ''),
+('language', 'luo', 'luo', 0, 0, 1, 0, 'language.luo', ''),
+('language', 'lus', 'mizo', 0, 0, 1, 0, 'language.mizo', ''),
+('language', 'luy', 'luyia', 0, 0, 1, 0, 'language.luyia', ''),
+('language', 'lv', 'latvian', 0, 0, 1, 0, 'language.latvian', ''),
+('language', 'lzh', 'chinese.literary', 0, 0, 1, 0, 'language.chinese.literary', ''),
+('language', 'lzz', 'laz', 0, 0, 1, 0, 'language.laz', ''),
+('language', 'mad', 'madurese', 0, 0, 1, 0, 'language.madurese', ''),
+('language', 'maf', 'mafa', 0, 0, 1, 0, 'language.mafa', ''),
+('language', 'mag', 'magahi', 0, 0, 1, 0, 'language.magahi', ''),
+('language', 'mai', 'maithili', 0, 0, 1, 0, 'language.maithili', ''),
+('language', 'mak', 'makasar', 0, 0, 1, 0, 'language.makasar', ''),
+('language', 'man', 'mandingo', 0, 0, 1, 0, 'language.mandingo', ''),
+('language', 'mas', 'masai', 0, 0, 1, 0, 'language.masai', ''),
+('language', 'mde', 'maba', 0, 0, 1, 0, 'language.maba', ''),
+('language', 'mdf', 'moksha', 0, 0, 1, 0, 'language.moksha', ''),
+('language', 'mdr', 'mandar', 0, 0, 1, 0, 'language.mandar', ''),
+('language', 'men', 'mende', 0, 0, 1, 0, 'language.mende', ''),
+('language', 'mer', 'meru', 0, 0, 1, 0, 'language.meru', ''),
+('language', 'mfe', 'morisyen', 0, 0, 1, 0, 'language.morisyen', ''),
+('language', 'mg', 'malagasy', 0, 0, 1, 0, 'language.malagasy', ''),
+('language', 'mga', 'irish.middle', 0, 0, 1, 0, 'language.irish.middle', ''),
+('language', 'mgh', 'makhuwameetto', 0, 0, 1, 0, 'language.makhuwameetto', ''),
+('language', 'mgo', 'meta', 0, 0, 1, 0, 'language.meta', ''),
+('language', 'mh', 'marshallese', 0, 0, 1, 0, 'language.marshallese', ''),
+('language', 'mi', 'maori', 0, 0, 1, 0, 'language.maori', ''),
+('language', 'mic', 'micmac', 0, 0, 1, 0, 'language.micmac', ''),
+('language', 'min', 'minangkabau', 0, 0, 1, 0, 'language.minangkabau', ''),
+('language', 'mk', 'macedonian', 0, 0, 1, 0, 'language.macedonian', ''),
+('language', 'ml', 'malayalam', 0, 0, 1, 0, 'language.malayalam', ''),
+('language', 'mn', 'mongolian', 0, 0, 1, 0, 'language.mongolian', ''),
+('language', 'mnc', 'manchu', 0, 0, 1, 0, 'language.manchu', ''),
+('language', 'mni', 'manipuri', 0, 0, 1, 0, 'language.manipuri', ''),
+('language', 'moh', 'mohawk', 0, 0, 1, 0, 'language.mohawk', ''),
+('language', 'mos', 'mossi', 0, 0, 1, 0, 'language.mossi', ''),
+('language', 'mr', 'marathi', 0, 0, 1, 0, 'language.marathi', ''),
+('language', 'mrj', 'mari.western', 0, 0, 1, 0, 'language.mari.western', ''),
+('language', 'ms', 'malay', 0, 0, 1, 0, 'language.malay', ''),
+('language', 'mt', 'maltese', 0, 0, 1, 0, 'language.maltese', ''),
+('language', 'mua', 'mundang', 0, 0, 1, 0, 'language.mundang', ''),
+('language', 'mul', 'multiple', 0, 0, 1, 0, 'language.multiple', ''),
+('language', 'mus', 'creek', 0, 0, 1, 0, 'language.creek', ''),
+('language', 'mwl', 'mirandese', 0, 0, 1, 0, 'language.mirandese', ''),
+('language', 'mwr', 'marwari', 0, 0, 1, 0, 'language.marwari', ''),
+('language', 'mwv', 'mentawai', 0, 0, 1, 0, 'language.mentawai', ''),
+('language', 'my', 'burmese', 0, 0, 1, 0, 'language.burmese', ''),
+('language', 'mye', 'myene', 0, 0, 1, 0, 'language.myene', ''),
+('language', 'myv', 'erzya', 0, 0, 1, 0, 'language.erzya', ''),
+('language', 'mzn', 'mazanderani', 0, 0, 1, 0, 'language.mazanderani', ''),
+('language', 'na', 'nauru', 0, 0, 1, 0, 'language.nauru', ''),
+('language', 'nan', 'chinese.minnan', 0, 0, 1, 0, 'language.chinese.minnan', ''),
+('language', 'nap', 'neapolitan', 0, 0, 1, 0, 'language.neapolitan', ''),
+('language', 'naq', 'nama', 0, 0, 1, 0, 'language.nama', ''),
+('language', 'nb', 'norwegian.bokmål', 0, 0, 1, 0, 'language.norwegian.bokmål', ''),
+('language', 'nd', 'ndebele.north', 0, 0, 1, 0, 'language.ndebele.north', ''),
+('language', 'nds', 'german.low', 0, 0, 1, 0, 'language.german.low', ''),
+('language', 'nds-NL', 'saxon.low', 0, 0, 1, 0, 'language.saxon.low', ''),
+('language', 'ne', 'nepali', 0, 0, 1, 0, 'language.nepali', ''),
+('language', 'new', 'newari', 0, 0, 1, 0, 'language.newari', ''),
+('language', 'ng', 'ndonga', 0, 0, 1, 0, 'language.ndonga', ''),
+('language', 'nia', 'nias', 0, 0, 1, 0, 'language.nias', ''),
+('language', 'niu', 'niuean', 0, 0, 1, 0, 'language.niuean', ''),
+('language', 'njo', 'aonaga', 0, 0, 1, 0, 'language.aonaga', ''),
+('language', 'nl', 'dutch', 0, 0, 1, 0, 'language.dutch', ''),
+('language', 'nl-BE', 'flemish', 0, 0, 1, 0, 'language.flemish', ''),
+('language', 'nmg', 'kwasio', 0, 0, 1, 0, 'language.kwasio', ''),
+('language', 'nn', 'norwegian.nynorsk', 0, 0, 1, 0, 'language.norwegian.nynorsk', ''),
+('language', 'nnh', 'ngiemboon', 0, 0, 1, 0, 'language.ngiemboon', ''),
+('language', 'no', 'norwegian', 0, 0, 1, 0, 'language.norwegian', ''),
+('language', 'nog', 'nogai', 0, 0, 1, 0, 'language.nogai', ''),
+('language', 'non', 'norse.old', 0, 0, 1, 0, 'language.norse.old', ''),
+('language', 'nov', 'novial', 0, 0, 1, 0, 'language.novial', ''),
+('language', 'nqo', 'nko', 0, 0, 1, 0, 'language.nko', ''),
+('language', 'nr', 'ndebele.south', 0, 0, 1, 0, 'language.ndebele.south', ''),
+('language', 'nso', 'sotho.northern', 0, 0, 1, 0, 'language.sotho.northern', ''),
+('language', 'nus', 'nuer', 0, 0, 1, 0, 'language.nuer', ''),
+('language', 'nv', 'navajo', 0, 0, 1, 0, 'language.navajo', ''),
+('language', 'nwc', 'newari.classical', 0, 0, 1, 0, 'language.newari.classical', ''),
+('language', 'ny', 'nyanja', 0, 0, 1, 0, 'language.nyanja', ''),
+('language', 'nym', 'nyamwezi', 0, 0, 1, 0, 'language.nyamwezi', ''),
+('language', 'nyn', 'nyankole', 0, 0, 1, 0, 'language.nyankole', ''),
+('language', 'nyo', 'nyoro', 0, 0, 1, 0, 'language.nyoro', ''),
+('language', 'nzi', 'nzima', 0, 0, 1, 0, 'language.nzima', ''),
+('language', 'oc', 'occitan', 0, 0, 1, 0, 'language.occitan', ''),
+('language', 'oj', 'ojibwa', 0, 0, 1, 0, 'language.ojibwa', ''),
+('language', 'om', 'oromo', 0, 0, 1, 0, 'language.oromo', ''),
+('language', 'or', 'oriya', 0, 0, 1, 0, 'language.oriya', ''),
+('language', 'os', 'ossetic', 0, 0, 1, 0, 'language.ossetic', ''),
+('language', 'osa', 'osage', 0, 0, 1, 0, 'language.osage', ''),
+('language', 'ota', 'turkish.ottoman', 0, 0, 1, 0, 'language.turkish.ottoman', ''),
+('language', 'pa', 'punjabi', 0, 0, 1, 0, 'language.punjabi', ''),
+('language', 'pag', 'pangasinan', 0, 0, 1, 0, 'language.pangasinan', ''),
+('language', 'pal', 'pahlavi', 0, 0, 1, 0, 'language.pahlavi', ''),
+('language', 'pam', 'pampanga', 0, 0, 1, 0, 'language.pampanga', ''),
+('language', 'pap', 'papiamento', 0, 0, 1, 0, 'language.papiamento', ''),
+('language', 'pau', 'palauan', 0, 0, 1, 0, 'language.palauan', ''),
+('language', 'pcd', 'picard', 0, 0, 1, 0, 'language.picard', ''),
+('language', 'pdc', 'german.pennsylvania', 0, 0, 1, 0, 'language.german.pennsylvania', ''),
+('language', 'pdt', 'plautdietsch', 0, 0, 1, 0, 'language.plautdietsch', ''),
+('language', 'peo', 'persian.old', 0, 0, 1, 0, 'language.persian.old', ''),
+('language', 'pfl', 'german.palatine', 0, 0, 1, 0, 'language.german.palatine', ''),
+('language', 'phn', 'phoenician', 0, 0, 1, 0, 'language.phoenician', ''),
+('language', 'pi', 'pali', 0, 0, 1, 0, 'language.pali', ''),
+('language', 'pl', 'polish', 0, 0, 1, 0, 'language.polish', ''),
+('language', 'pms', 'piedmontese', 0, 0, 1, 0, 'language.piedmontese', ''),
+('language', 'pnt', 'pontic', 0, 0, 1, 0, 'language.pontic', ''),
+('language', 'pon', 'pohnpeian', 0, 0, 1, 0, 'language.pohnpeian', ''),
+('language', 'prg', 'prussian', 0, 0, 1, 0, 'language.prussian', ''),
+('language', 'pro', 'provençal.old', 0, 0, 1, 0, 'language.provençal.old', ''),
+('language', 'ps', 'pashto', 0, 0, 1, 0, 'language.pashto', ''),
+('language', 'pt', 'portuguese', 0, 0, 1, 0, 'language.portuguese', ''),
+('language', 'pt-BR', 'portuguese.brazilian', 0, 0, 1, 0, 'language.portuguese.brazilian', ''),
+('language', 'pt-PT', 'portuguese.european', 0, 0, 1, 0, 'language.portuguese.european', ''),
+('language', 'qu', 'quechua', 0, 0, 1, 0, 'language.quechua', ''),
+('language', 'quc', 'kiche', 0, 0, 1, 0, 'language.kiche', ''),
+('language', 'qug', 'quichua.chimborazohighland', 0, 0, 1, 0, 'language.quichua.chimborazohighland', ''),
+('language', 'raj', 'rajasthani', 0, 0, 1, 0, 'language.rajasthani', ''),
+('language', 'rap', 'rapanui', 0, 0, 1, 0, 'language.rapanui', ''),
+('language', 'rar', 'rarotongan', 0, 0, 1, 0, 'language.rarotongan', ''),
+('language', 'rgn', 'romagnol', 0, 0, 1, 0, 'language.romagnol', ''),
+('language', 'rif', 'riffian', 0, 0, 1, 0, 'language.riffian', ''),
+('language', 'rm', 'romansh', 0, 0, 1, 0, 'language.romansh', ''),
+('language', 'rn', 'rundi', 0, 0, 1, 0, 'language.rundi', ''),
+('language', 'ro', 'romanian', 0, 0, 1, 0, 'language.romanian', ''),
+('language', 'ro-MD', 'moldavian', 0, 0, 1, 0, 'language.moldavian', ''),
+('language', 'rof', 'rombo', 0, 0, 1, 0, 'language.rombo', ''),
+('language', 'rom', 'romany', 0, 0, 1, 0, 'language.romany', ''),
+('language', 'root', 'root', 0, 0, 1, 0, 'language.root', ''),
+('language', 'rtm', 'rotuman', 0, 0, 1, 0, 'language.rotuman', ''),
+('language', 'ru', 'russian', 0, 0, 1, 0, 'language.russian', ''),
+('language', 'rue', 'rusyn', 0, 0, 1, 0, 'language.rusyn', ''),
+('language', 'rug', 'roviana', 0, 0, 1, 0, 'language.roviana', ''),
+('language', 'rup', 'aromanian', 0, 0, 1, 0, 'language.aromanian', ''),
+('language', 'rw', 'kinyarwanda', 0, 0, 1, 0, 'language.kinyarwanda', ''),
+('language', 'rwk', 'rwa', 0, 0, 1, 0, 'language.rwa', ''),
+('language', 'sa', 'sanskrit', 0, 0, 1, 0, 'language.sanskrit', ''),
+('language', 'sad', 'sandawe', 0, 0, 1, 0, 'language.sandawe', ''),
+('language', 'sah', 'sakha', 0, 0, 1, 0, 'language.sakha', ''),
+('language', 'sam', 'aramaic.samaritan', 0, 0, 1, 0, 'language.aramaic.samaritan', ''),
+('language', 'saq', 'samburu', 0, 0, 1, 0, 'language.samburu', ''),
+('language', 'sas', 'sasak', 0, 0, 1, 0, 'language.sasak', ''),
+('language', 'sat', 'santali', 0, 0, 1, 0, 'language.santali', ''),
+('language', 'saz', 'saurashtra', 0, 0, 1, 0, 'language.saurashtra', ''),
+('language', 'sba', 'ngambay', 0, 0, 1, 0, 'language.ngambay', ''),
+('language', 'sbp', 'sangu', 0, 0, 1, 0, 'language.sangu', ''),
+('language', 'sc', 'sardinian', 0, 0, 1, 0, 'language.sardinian', ''),
+('language', 'scn', 'sicilian', 0, 0, 1, 0, 'language.sicilian', ''),
+('language', 'sco', 'scots', 0, 0, 1, 0, 'language.scots', ''),
+('language', 'sd', 'sindhi', 0, 0, 1, 0, 'language.sindhi', ''),
+('language', 'sdc', 'sardinian.sassarese', 0, 0, 1, 0, 'language.sardinian.sassarese', ''),
+('language', 'sdh', 'southern kurdish', 0, 0, 1, 0, 'language.southern kurdish', ''),
+('language', 'se', 'northern sami', 0, 0, 1, 0, 'language.northern sami', ''),
+('language', 'see', 'seneca', 0, 0, 1, 0, 'language.seneca', ''),
+('language', 'seh', 'sena', 0, 0, 1, 0, 'language.sena', ''),
+('language', 'sei', 'seri', 0, 0, 1, 0, 'language.seri', ''),
+('language', 'sel', 'selkup', 0, 0, 1, 0, 'language.selkup', ''),
+('language', 'ses', 'senni.koyraboro', 0, 0, 1, 0, 'language.senni.koyraboro', ''),
+('language', 'sg', 'sango', 0, 0, 1, 0, 'language.sango', ''),
+('language', 'sga', 'irish.old', 0, 0, 1, 0, 'language.irish.old', ''),
+('language', 'sgs', 'samogitian', 0, 0, 1, 0, 'language.samogitian', ''),
+('language', 'sh', 'serbocroatian', 0, 0, 1, 0, 'language.serbocroatian', ''),
+('language', 'shi', 'tachelhit', 0, 0, 1, 0, 'language.tachelhit', ''),
+('language', 'shn', 'shan', 0, 0, 1, 0, 'language.shan', ''),
+('language', 'shu', 'arabic.chadian', 0, 0, 1, 0, 'language.arabic.chadian', ''),
+('language', 'si', 'sinhala', 0, 0, 1, 0, 'language.sinhala', ''),
+('language', 'sid', 'sidamo', 0, 0, 1, 0, 'language.sidamo', ''),
+('language', 'sk', 'slovak', 0, 0, 1, 0, 'language.slovak', ''),
+('language', 'sl', 'slovenian', 0, 0, 1, 0, 'language.slovenian', ''),
+('language', 'sli', 'silesian.lower', 0, 0, 1, 0, 'language.silesian.lower', ''),
+('language', 'sly', 'selayar', 0, 0, 1, 0, 'language.selayar', ''),
+('language', 'sm', 'samoan', 0, 0, 1, 0, 'language.samoan', ''),
+('language', 'sma', 'sami.southern', 0, 0, 1, 0, 'language.sami.southern', '');
+INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('language', 'smj', 'sami.lule', 0, 0, 1, 0, 'language.sami.lule', ''),
+('language', 'smn', 'sami.inari', 0, 0, 1, 0, 'language.sami.inari', ''),
+('language', 'sms', 'sami.skolt', 0, 0, 1, 0, 'language.sami.skolt', ''),
+('language', 'sn', 'shona', 0, 0, 1, 0, 'language.shona', ''),
+('language', 'snk', 'soninke', 0, 0, 1, 0, 'language.soninke', ''),
+('language', 'so', 'somali', 0, 0, 1, 0, 'language.somali', ''),
+('language', 'sog', 'sogdien', 0, 0, 1, 0, 'language.sogdien', ''),
+('language', 'sq', 'albanian', 0, 0, 1, 0, 'language.albanian', ''),
+('language', 'sr', 'serbian', 0, 0, 1, 0, 'language.serbian', ''),
+('language', 'srn', 'tongo.sranan', 0, 0, 1, 0, 'language.tongo.sranan', ''),
+('language', 'srr', 'serer', 0, 0, 1, 0, 'language.serer', ''),
+('language', 'ss', 'swati', 0, 0, 1, 0, 'language.swati', ''),
+('language', 'ssy', 'saho', 0, 0, 1, 0, 'language.saho', ''),
+('language', 'st', 'sotho.southern', 0, 0, 1, 0, 'language.sotho.southern', ''),
+('language', 'stq', 'frisian.saterland', 0, 0, 1, 0, 'language.frisian.saterland', ''),
+('language', 'su', 'sundanese', 0, 0, 1, 0, 'language.sundanese', ''),
+('language', 'suk', 'sukuma', 0, 0, 1, 0, 'language.sukuma', ''),
+('language', 'sus', 'susu', 0, 0, 1, 0, 'language.susu', ''),
+('language', 'sux', 'sumerian', 0, 0, 1, 0, 'language.sumerian', ''),
+('language', 'sv', 'swedish', 0, 0, 1, 0, 'language.swedish', ''),
+('language', 'sw', 'swahili', 0, 0, 1, 0, 'language.swahili', ''),
+('language', 'sw-CD', 'swahili.congo', 0, 0, 1, 0, 'language.swahili.congo', ''),
+('language', 'swb', 'comorian', 0, 0, 1, 0, 'language.comorian', ''),
+('language', 'syc', 'syriac.classical', 0, 0, 1, 0, 'language.syriac.classical', ''),
+('language', 'syr', 'syriac', 0, 0, 1, 0, 'language.syriac', ''),
+('language', 'szl', 'silesian', 0, 0, 1, 0, 'language.silesian', ''),
+('language', 'ta', 'tamil', 0, 0, 1, 0, 'language.tamil', ''),
+('language', 'tcy', 'tulu', 0, 0, 1, 0, 'language.tulu', ''),
+('language', 'te', 'telugu', 0, 0, 1, 0, 'language.telugu', ''),
+('language', 'tem', 'timne', 0, 0, 1, 0, 'language.timne', ''),
+('language', 'teo', 'teso', 0, 0, 1, 0, 'language.teso', ''),
+('language', 'ter', 'tereno', 0, 0, 1, 0, 'language.tereno', ''),
+('language', 'tet', 'tetum', 0, 0, 1, 0, 'language.tetum', ''),
+('language', 'tg', 'tajik', 0, 0, 1, 0, 'language.tajik', ''),
+('language', 'th', 'thai', 0, 0, 1, 0, 'language.thai', ''),
+('language', 'ti', 'tigrinya', 0, 0, 1, 0, 'language.tigrinya', ''),
+('language', 'tig', 'tigre', 0, 0, 1, 0, 'language.tigre', ''),
+('language', 'tiv', 'tiv', 0, 0, 1, 0, 'language.tiv', ''),
+('language', 'tk', 'turkmen', 0, 0, 1, 0, 'language.turkmen', ''),
+('language', 'tkl', 'tokelau', 0, 0, 1, 0, 'language.tokelau', ''),
+('language', 'tkr', 'tsakhur', 0, 0, 1, 0, 'language.tsakhur', ''),
+('language', 'tl', 'tagalog', 0, 0, 1, 0, 'language.tagalog', ''),
+('language', 'tlh', 'klingon', 0, 0, 1, 0, 'language.klingon', ''),
+('language', 'tli', 'tlingit', 0, 0, 1, 0, 'language.tlingit', ''),
+('language', 'tly', 'talysh', 0, 0, 1, 0, 'language.talysh', ''),
+('language', 'tmh', 'tamashek', 0, 0, 1, 0, 'language.tamashek', ''),
+('language', 'tn', 'tswana', 0, 0, 1, 0, 'language.tswana', ''),
+('language', 'to', 'tongan', 0, 0, 1, 0, 'language.tongan', ''),
+('language', 'tog', 'tonga.nyasa', 0, 0, 1, 0, 'language.tonga.nyasa', ''),
+('language', 'tpi', 'pisin.tok', 0, 0, 1, 0, 'language.pisin.tok', ''),
+('language', 'tr', 'turkish', 0, 0, 1, 0, 'language.turkish', ''),
+('language', 'tru', 'turoyo', 0, 0, 1, 0, 'language.turoyo', ''),
+('language', 'trv', 'taroko', 0, 0, 1, 0, 'language.taroko', ''),
+('language', 'ts', 'tsonga', 0, 0, 1, 0, 'language.tsonga', ''),
+('language', 'tsd', 'tsakonian', 0, 0, 1, 0, 'language.tsakonian', ''),
+('language', 'tsi', 'tsimshian', 0, 0, 1, 0, 'language.tsimshian', ''),
+('language', 'tt', 'tatar', 0, 0, 1, 0, 'language.tatar', ''),
+('language', 'ttt', 'tat.muslim', 0, 0, 1, 0, 'language.tat.muslim', ''),
+('language', 'tum', 'tumbuka', 0, 0, 1, 0, 'language.tumbuka', ''),
+('language', 'tvl', 'tuvalu', 0, 0, 1, 0, 'language.tuvalu', ''),
+('language', 'tw', 'twi', 0, 0, 1, 0, 'language.twi', ''),
+('language', 'twq', 'tasawaq', 0, 0, 1, 0, 'language.tasawaq', ''),
+('language', 'ty', 'tahitian', 0, 0, 1, 0, 'language.tahitian', ''),
+('language', 'tyv', 'tuvinian', 0, 0, 1, 0, 'language.tuvinian', ''),
+('language', 'tzm', 'tamazight.centralatlas', 0, 0, 1, 0, 'language.tamazight.centralatlas', ''),
+('language', 'udm', 'udmurt', 0, 0, 1, 0, 'language.udmurt', ''),
+('language', 'ug', 'uyghur', 0, 0, 1, 0, 'language.uyghur', ''),
+('language', 'uga', 'ugaritic', 0, 0, 1, 0, 'language.ugaritic', ''),
+('language', 'uk', 'ukrainian', 0, 0, 1, 0, 'language.ukrainian', ''),
+('language', 'umb', 'umbundu', 0, 0, 1, 0, 'language.umbundu', ''),
+('language', 'und', 'unknown', 0, 0, 1, 0, 'language.unknown', ''),
+('language', 'ur', 'urdu', 0, 0, 1, 0, 'language.urdu', ''),
+('language', 'uz', 'uzbek', 0, 0, 1, 0, 'language.uzbek', ''),
+('language', 'vai', 'vai', 0, 0, 1, 0, 'language.vai', ''),
+('language', 've', 'venda', 0, 0, 1, 0, 'language.venda', ''),
+('language', 'vec', 'venetian', 0, 0, 1, 0, 'language.venetian', ''),
+('language', 'vep', 'veps', 0, 0, 1, 0, 'language.veps', ''),
+('language', 'vi', 'vietnamese', 0, 0, 1, 0, 'language.vietnamese', ''),
+('language', 'vls', 'flemish.west', 0, 0, 1, 0, 'language.flemish.west', ''),
+('language', 'vmf', 'franconian.main', 0, 0, 1, 0, 'language.franconian.main', ''),
+('language', 'vo', 'volapük', 0, 0, 1, 0, 'language.volapük', ''),
+('language', 'vot', 'votic', 0, 0, 1, 0, 'language.votic', ''),
+('language', 'vro', 'võro', 0, 0, 1, 0, 'language.võro', ''),
+('language', 'vun', 'vunjo', 0, 0, 1, 0, 'language.vunjo', ''),
+('language', 'wa', 'walloon', 0, 0, 1, 0, 'language.walloon', ''),
+('language', 'wae', 'walser', 0, 0, 1, 0, 'language.walser', ''),
+('language', 'wal', 'wolaytta', 0, 0, 1, 0, 'language.wolaytta', ''),
+('language', 'war', 'waray', 0, 0, 1, 0, 'language.waray', ''),
+('language', 'was', 'washo', 0, 0, 1, 0, 'language.washo', ''),
+('language', 'wbp', 'warlpiri', 0, 0, 1, 0, 'language.warlpiri', ''),
+('language', 'wo', 'wolof', 0, 0, 1, 0, 'language.wolof', ''),
+('language', 'wuu', 'chinese.wu', 0, 0, 1, 0, 'language.chinese.wu', ''),
+('language', 'xal', 'kalmyk', 0, 0, 1, 0, 'language.kalmyk', ''),
+('language', 'xh', 'xhosa', 0, 0, 1, 0, 'language.xhosa', ''),
+('language', 'xmf', 'mingrelian', 0, 0, 1, 0, 'language.mingrelian', ''),
+('language', 'xog', 'soga', 0, 0, 1, 0, 'language.soga', ''),
+('language', 'yao', 'yao', 0, 0, 1, 0, 'language.yao', ''),
+('language', 'yap', 'yapese', 0, 0, 1, 0, 'language.yapese', ''),
+('language', 'yav', 'yangben', 0, 0, 1, 0, 'language.yangben', ''),
+('language', 'ybb', 'yemba', 0, 0, 1, 0, 'language.yemba', ''),
+('language', 'yi', 'yiddish', 0, 0, 1, 0, 'language.yiddish', ''),
+('language', 'yo', 'yoruba', 0, 0, 1, 0, 'language.yoruba', ''),
+('language', 'yrl', 'nheengatu', 0, 0, 1, 0, 'language.nheengatu', ''),
+('language', 'yue', 'cantonese', 0, 0, 1, 0, 'language.cantonese', ''),
+('language', 'za', 'zhuang', 0, 0, 1, 0, 'language.zhuang', ''),
+('language', 'zap', 'zapotec', 0, 0, 1, 0, 'language.zapotec', ''),
+('language', 'zbl', 'blissymbols', 0, 0, 1, 0, 'language.blissymbols', ''),
+('language', 'zea', 'zeelandic', 0, 0, 1, 0, 'language.zeelandic', ''),
+('language', 'zen', 'zenaga', 0, 0, 1, 0, 'language.zenaga', ''),
+('language', 'zgh', 'tamazight.standardmoroccan', 0, 0, 1, 0, 'language.tamazight.standardmoroccan', ''),
+('language', 'zh', 'chinese', 0, 0, 1, 0, 'language.chinese', ''),
+('language', 'zh-Hans', 'chinese.simplified', 0, 0, 1, 0, 'language.chinese.simplified', ''),
+('language', 'zh-Hant', 'chinese.traditional', 0, 0, 1, 0, 'language.chinese.traditional', ''),
+('language', 'zu', 'zulu', 0, 0, 1, 0, 'language.zulu', ''),
+('language', 'zun', 'zuni', 0, 0, 1, 0, 'language.zuni', ''),
+('language', 'zxx', 'none', 0, 0, 1, 0, 'language.none', ''),
+('language', 'zza', 'zaza', 0, 0, 1, 0, 'language.zaza', ''),
+('mass', 'g', 'gram', 1, 0, 1, 0, 'mass.gram', ''),
+('mass', 'kg', 'kilogram', 0, 0, 1, 0, 'mass.kilogram', ''),
+('mass', 'mg', 'milligram', 0, 0, 1, 0, 'mass.milligram', ''),
+('mass', 't', 'tonne', 0, 0, 1, 0, 'mass.tonne', ''),
+('mass', 'µg', 'microgram', 0, 0, 1, 0, 'mass.microgram', ''),
+('mediatype', 'image/jpeg', 'jpeg', 0, 0, 1, 0, 'core.mediatype.image.jpeg', ''),
+('mediatype', 'image/png', 'png', 0, 0, 1, 0, 'core.mediatype.image.png', ''),
+('mediatype', 'text/html', 'html', 0, 0, 1, 0, 'core.mediatype.text.html', ''),
+('mediatype', 'text/plain', 'plain', 0, 0, 1, 0, 'core.mediatype.text.plain', ''),
+('spatial.crs', '4326', 'WGS84', 0, 0, 1, 0, 'spatial.crs.wgs84', ''),
+('spatial.format', 'geojson', '', 0, 0, 1, 0, 'spatial.format.geojson', ''),
+('spatial.format', 'gpx', '', 0, 0, 1, 0, 'spatial.format.gpx', ''),
+('spatial.format', 'wkt', '', 0, 0, 1, 0, 'spatial.format.wkt', '');
 
 -- --------------------------------------------------------
 
@@ -8774,24 +8777,24 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `keyword`, `alias`, `is_de
 
 CREATE TABLE `ark_vocabulary_type` (
   `type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `equivalence` tinyint(1) NOT NULL DEFAULT 0,
+  `hierarchy` tinyint(1) NOT NULL DEFAULT 0,
+  `association` tinyint(1) NOT NULL DEFAULT 0,
+  `enabled` tinyint(1) NOT NULL DEFAULT 0,
+  `deprecated` tinyint(1) NOT NULL DEFAULT 0,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `equivalence` tinyint(1) NOT NULL DEFAULT '0',
-  `hierarchy` tinyint(1) NOT NULL DEFAULT '0',
-  `association` tinyint(1) NOT NULL DEFAULT '0',
-  `enabled` tinyint(1) NOT NULL DEFAULT '0',
-  `deprecated` tinyint(1) NOT NULL DEFAULT '0',
-  `description` text COLLATE utf8mb4_unicode_ci
+  `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_vocabulary_type`
 --
 
-INSERT INTO `ark_vocabulary_type` (`type`, `keyword`, `equivalence`, `hierarchy`, `association`, `enabled`, `deprecated`, `description`) VALUES
-('list', 'core.vocabulary.type.list', 0, 0, 0, 1, 0, 'A list of valid terms'),
-('ring', 'core.vocabulary.type.ring', 1, 0, 0, 0, 0, 'A list of equivalent terms'),
-('taxonomy', 'core.vocabulary.type.taxonomy', 0, 1, 0, 1, 0, 'A hierarchy of related terms'),
-('thesaurus', 'core.vocabulary.type.thesaurus', 1, 1, 1, 0, 0, 'A collection of related terms');
+INSERT INTO `ark_vocabulary_type` (`type`, `equivalence`, `hierarchy`, `association`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('list', 0, 0, 0, 1, 0, 'core.vocabulary.type.list', 'A list of valid terms'),
+('ring', 1, 0, 0, 0, 0, 'core.vocabulary.type.ring', 'A list of equivalent terms'),
+('taxonomy', 0, 1, 0, 1, 0, 'core.vocabulary.type.taxonomy', 'A hierarchy of related terms'),
+('thesaurus', 1, 1, 1, 0, 0, 'core.vocabulary.type.thesaurus', 'A collection of related terms');
 
 -- --------------------------------------------------------
 
@@ -8804,75 +8807,75 @@ CREATE TABLE `ark_workflow_action` (
   `action` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `event_vocabulary` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `event_term` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `agent` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `default_permission` tinyint(1) NOT NULL DEFAULT '0',
-  `default_agency` tinyint(1) NOT NULL DEFAULT '0',
-  `default_allowance` tinyint(1) NOT NULL DEFAULT '0',
-  `enabled` tinyint(1) NOT NULL DEFAULT '1'
+  `agent` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
+  `default_permission` tinyint(1) NOT NULL DEFAULT 0,
+  `default_agency` tinyint(1) NOT NULL DEFAULT 0,
+  `default_allowance` tinyint(1) NOT NULL DEFAULT 0,
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_workflow_action`
 --
 
-INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event_term`, `keyword`, `agent`, `default_permission`, `default_agency`, `default_allowance`, `enabled`) VALUES
-('core.actor', 'activate', 'core.event.class', 'activated', 'core.action.activate', NULL, 0, 1, 0, 1),
-('core.actor', 'approve', 'core.event.class', 'approved', 'core.action.approve', NULL, 0, 1, 0, 1),
-('core.actor', 'cancel', 'core.event.class', 'cancelled', 'core.action.cancel', NULL, 0, 1, 0, 1),
-('core.actor', 'edit', 'core.event.class', 'edited', 'core.action.edit', NULL, 0, 1, 0, 1),
-('core.actor', 'lock', 'core.event.class', 'locked', 'core.action.activate', NULL, 0, 1, 0, 1),
-('core.actor', 'register', 'core.event.class', 'registered', 'core.action.register', NULL, 1, 1, 1, 1),
-('core.actor', 'restore', 'core.event.class', 'restored', 'core.action.restore', NULL, 0, 1, 0, 1),
-('core.actor', 'suspend', 'core.event.class', 'suspended', 'core.action.suspend', NULL, 0, 1, 0, 1),
-('core.actor', 'unlock', 'core.event.class', 'unlocked', 'core.action.activate', NULL, 0, 1, 0, 1),
-('core.actor', 'view', 'core.event.class', 'viewed', 'core.action.view1', NULL, 0, 1, 0, 1),
-('dime.find', 'accession', 'core.event.class', 'accessioned', 'dime.action.accession', NULL, 0, 0, 0, 1),
-('dime.find', 'agree', 'core.event.class', 'agreed', 'dime.action.agree', NULL, 0, 0, 0, 1),
-('dime.find', 'annotate', 'core.event.class', 'annotated', 'dime.action.annotate', NULL, 0, 0, 0, 1),
-('dime.find', 'appraise', 'core.event.class', 'appraised', 'dime.action.appraise', 'appraiser', 0, 0, 0, 1),
-('dime.find', 'assess', 'core.event.class', 'assessed', 'dime.action.assess', 'assessor', 0, 0, 0, 1),
-('dime.find', 'cite', 'core.event.class', 'cited', 'dime.action.cite', NULL, 0, 0, 0, 1),
-('dime.find', 'classify', 'core.event.class', 'classified', 'dime.action.classify', NULL, 0, 0, 0, 1),
-('dime.find', 'clone', NULL, NULL, NULL, NULL, 1, 0, 1, 1),
-('dime.find', 'comment', 'core.event.class', 'commented', 'dime.action.comment', NULL, 0, 0, 0, 1),
-('dime.find', 'conserve', 'core.event.class', 'conserved', 'dime.action.conserve', NULL, 0, 0, 0, 1),
-('dime.find', 'contact', 'core.event.class', 'contacted', 'dime.action.contact', NULL, 0, 0, 0, 1),
-('dime.find', 'date', 'core.event.class', 'dated', 'dime.action.date', NULL, 0, 0, 0, 1),
-('dime.find', 'decline', 'core.event.class', 'declined', 'dime.action.decline', NULL, 0, 0, 0, 1),
-('dime.find', 'delete', 'core.event.class', 'deleted', 'dime.action.delete', NULL, 0, 0, 0, 1),
-('dime.find', 'describe', 'core.event.class', 'described', 'dime.action.describe', NULL, 0, 0, 0, 1),
-('dime.find', 'destroy', 'core.event.class', 'destroyed', 'dime.action.destroy', NULL, 0, 0, 0, 1),
-('dime.find', 'disagree', 'core.event.class', 'disagreed', 'dime.action.disagree', NULL, 0, 0, 0, 1),
-('dime.find', 'discard', 'core.event.class', 'discarded', 'dime.action.discard', NULL, 0, 0, 0, 1),
-('dime.find', 'edit', 'core.event.class', 'edited', 'dime.action.edit', NULL, 0, 0, 0, 1),
-('dime.find', 'evaluate', 'core.event.class', 'evaluated', 'dime.action.evaluate', NULL, 0, 0, 0, 1),
-('dime.find', 'export', 'core.event.class', 'exported', 'dime.action.export', NULL, 0, 0, 0, 1),
-('dime.find', 'follow', 'core.event.class', 'followed', 'dime.action.follow', NULL, 0, 0, 0, 1),
-('dime.find', 'identify', 'core.event.class', 'identified', 'dime.action.identify', NULL, 0, 0, 0, 1),
-('dime.find', 'like', 'core.event.class', 'liked', 'dime.action.like', NULL, 0, 0, 0, 1),
-('dime.find', 'loan', 'core.event.class', 'loaned', 'dime.action.loan', NULL, 0, 0, 0, 1),
-('dime.find', 'lose', 'core.event.class', 'lost', 'dime.action.lose', NULL, 0, 0, 0, 1),
-('dime.find', 'notify', 'core.event.class', 'notified', 'dime.action.notify', NULL, 0, 0, 0, 1),
-('dime.find', 'publish', 'core.event.class', 'published', 'dime.action.publish', NULL, 0, 0, 0, 1),
-('dime.find', 'receive', 'core.event.class', 'received', 'dime.action.receive', NULL, 0, 0, 0, 1),
-('dime.find', 'record', 'core.event.class', 'recorded', 'dime.action.record', 'recorder', 0, 0, 1, 1),
-('dime.find', 'recover', 'core.event.class', 'recovered', 'dime.action.recover', NULL, 0, 0, 0, 1),
-('dime.find', 'redact', 'core.event.class', 'redacted', 'dime.action.redact', NULL, 0, 0, 0, 1),
-('dime.find', 'refer', 'core.event.class', 'referred', 'dime.action.refer', NULL, 0, 0, 0, 1),
-('dime.find', 'reject', 'core.event.class', 'rejected', 'dime.action.reject', NULL, 0, 0, 0, 1),
-('dime.find', 'release', 'core.event.class', 'released', 'dime.action.release', NULL, 0, 0, 0, 1),
-('dime.find', 'report', 'core.event.class', 'reported', 'dime.action.report', NULL, 1, 0, 1, 1),
-('dime.find', 'request', 'core.event.class', 'requested', 'dime.action.request', NULL, 0, 0, 0, 1),
-('dime.find', 'reward', 'core.event.class', 'rewarded', 'dime.action.reward', NULL, 0, 0, 0, 1),
-('dime.find', 'send', 'core.event.class', 'sent', 'dime.action.send', NULL, 0, 0, 1, 1),
-('dime.find', 'share', 'core.event.class', 'shared', 'dime.action.share', NULL, 0, 0, 0, 1),
-('dime.find', 'subscribe', 'core.event.class', 'subscribed', 'dime.action.subscribe', NULL, 0, 0, 0, 1),
-('dime.find', 'suppress', 'core.event.class', 'suppressed', 'dime.action.suppress', NULL, 0, 0, 0, 1),
-('dime.find', 'transfer', 'core.event.class', 'transferred', 'dime.action.transfer', NULL, 0, 0, 0, 1),
-('dime.find', 'validate', 'core.event.class', 'validated', 'dime.action.validate', NULL, 0, 0, 0, 1),
-('dime.find', 'view', 'core.event.class', 'viewed', 'dime.action.view', NULL, 0, 0, 0, 1),
-('dime.find', 'withdraw', 'core.event.class', 'withdrawn', 'dime.action.withdraw', NULL, 0, 0, 0, 1);
+INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event_term`, `agent`, `default_permission`, `default_agency`, `default_allowance`, `enabled`, `keyword`) VALUES
+('core.actor', 'activate', 'core.event.class', 'activated', NULL, 0, 1, 0, 1, 'core.action.activate'),
+('core.actor', 'approve', 'core.event.class', 'approved', NULL, 0, 1, 0, 1, 'core.action.approve'),
+('core.actor', 'cancel', 'core.event.class', 'cancelled', NULL, 0, 1, 0, 1, 'core.action.cancel'),
+('core.actor', 'edit', 'core.event.class', 'edited', NULL, 0, 1, 0, 1, 'core.action.edit'),
+('core.actor', 'lock', 'core.event.class', 'locked', NULL, 0, 1, 0, 1, 'core.action.activate'),
+('core.actor', 'register', 'core.event.class', 'registered', NULL, 1, 1, 1, 1, 'core.action.register'),
+('core.actor', 'restore', 'core.event.class', 'restored', NULL, 0, 1, 0, 1, 'core.action.restore'),
+('core.actor', 'suspend', 'core.event.class', 'suspended', NULL, 0, 1, 0, 1, 'core.action.suspend'),
+('core.actor', 'unlock', 'core.event.class', 'unlocked', NULL, 0, 1, 0, 1, 'core.action.activate'),
+('core.actor', 'view', 'core.event.class', 'viewed', NULL, 0, 1, 0, 1, 'core.action.view1'),
+('dime.find', 'accession', 'core.event.class', 'accessioned', NULL, 0, 0, 0, 1, 'dime.action.accession'),
+('dime.find', 'agree', 'core.event.class', 'agreed', NULL, 0, 0, 0, 1, 'dime.action.agree'),
+('dime.find', 'annotate', 'core.event.class', 'annotated', NULL, 0, 0, 0, 1, 'dime.action.annotate'),
+('dime.find', 'appraise', 'core.event.class', 'appraised', 'appraiser', 0, 0, 0, 1, 'dime.action.appraise'),
+('dime.find', 'assess', 'core.event.class', 'assessed', 'assessor', 0, 0, 0, 1, 'dime.action.assess'),
+('dime.find', 'cite', 'core.event.class', 'cited', NULL, 0, 0, 0, 1, 'dime.action.cite'),
+('dime.find', 'classify', 'core.event.class', 'classified', NULL, 0, 0, 0, 1, 'dime.action.classify'),
+('dime.find', 'clone', NULL, NULL, NULL, 1, 0, 1, 1, NULL),
+('dime.find', 'comment', 'core.event.class', 'commented', NULL, 0, 0, 0, 1, 'dime.action.comment'),
+('dime.find', 'conserve', 'core.event.class', 'conserved', NULL, 0, 0, 0, 1, 'dime.action.conserve'),
+('dime.find', 'contact', 'core.event.class', 'contacted', NULL, 0, 0, 0, 1, 'dime.action.contact'),
+('dime.find', 'date', 'core.event.class', 'dated', NULL, 0, 0, 0, 1, 'dime.action.date'),
+('dime.find', 'decline', 'core.event.class', 'declined', NULL, 0, 0, 0, 1, 'dime.action.decline'),
+('dime.find', 'delete', 'core.event.class', 'deleted', NULL, 0, 0, 0, 1, 'dime.action.delete'),
+('dime.find', 'describe', 'core.event.class', 'described', NULL, 0, 0, 0, 1, 'dime.action.describe'),
+('dime.find', 'destroy', 'core.event.class', 'destroyed', NULL, 0, 0, 0, 1, 'dime.action.destroy'),
+('dime.find', 'disagree', 'core.event.class', 'disagreed', NULL, 0, 0, 0, 1, 'dime.action.disagree'),
+('dime.find', 'discard', 'core.event.class', 'discarded', NULL, 0, 0, 0, 1, 'dime.action.discard'),
+('dime.find', 'edit', 'core.event.class', 'edited', NULL, 0, 0, 0, 1, 'dime.action.edit'),
+('dime.find', 'evaluate', 'core.event.class', 'evaluated', NULL, 0, 0, 0, 1, 'dime.action.evaluate'),
+('dime.find', 'export', 'core.event.class', 'exported', NULL, 0, 0, 0, 1, 'dime.action.export'),
+('dime.find', 'follow', 'core.event.class', 'followed', NULL, 0, 0, 0, 1, 'dime.action.follow'),
+('dime.find', 'identify', 'core.event.class', 'identified', NULL, 0, 0, 0, 1, 'dime.action.identify'),
+('dime.find', 'like', 'core.event.class', 'liked', NULL, 0, 0, 0, 1, 'dime.action.like'),
+('dime.find', 'loan', 'core.event.class', 'loaned', NULL, 0, 0, 0, 1, 'dime.action.loan'),
+('dime.find', 'lose', 'core.event.class', 'lost', NULL, 0, 0, 0, 1, 'dime.action.lose'),
+('dime.find', 'notify', 'core.event.class', 'notified', NULL, 0, 0, 0, 1, 'dime.action.notify'),
+('dime.find', 'publish', 'core.event.class', 'published', NULL, 0, 0, 0, 1, 'dime.action.publish'),
+('dime.find', 'receive', 'core.event.class', 'received', NULL, 0, 0, 0, 1, 'dime.action.receive'),
+('dime.find', 'record', 'core.event.class', 'recorded', 'recorder', 0, 0, 1, 1, 'dime.action.record'),
+('dime.find', 'recover', 'core.event.class', 'recovered', NULL, 0, 0, 0, 1, 'dime.action.recover'),
+('dime.find', 'redact', 'core.event.class', 'redacted', NULL, 0, 0, 0, 1, 'dime.action.redact'),
+('dime.find', 'refer', 'core.event.class', 'referred', NULL, 0, 0, 0, 1, 'dime.action.refer'),
+('dime.find', 'reject', 'core.event.class', 'rejected', NULL, 0, 0, 0, 1, 'dime.action.reject'),
+('dime.find', 'release', 'core.event.class', 'released', NULL, 0, 0, 0, 1, 'dime.action.release'),
+('dime.find', 'report', 'core.event.class', 'reported', NULL, 1, 0, 1, 1, 'dime.action.report'),
+('dime.find', 'request', 'core.event.class', 'requested', NULL, 0, 0, 0, 1, 'dime.action.request'),
+('dime.find', 'reward', 'core.event.class', 'rewarded', NULL, 0, 0, 0, 1, 'dime.action.reward'),
+('dime.find', 'send', 'core.event.class', 'sent', NULL, 0, 0, 1, 1, 'dime.action.send'),
+('dime.find', 'share', 'core.event.class', 'shared', NULL, 0, 0, 0, 1, 'dime.action.share'),
+('dime.find', 'subscribe', 'core.event.class', 'subscribed', NULL, 0, 0, 0, 1, 'dime.action.subscribe'),
+('dime.find', 'suppress', 'core.event.class', 'suppressed', NULL, 0, 0, 0, 1, 'dime.action.suppress'),
+('dime.find', 'transfer', 'core.event.class', 'transferred', NULL, 0, 0, 0, 1, 'dime.action.transfer'),
+('dime.find', 'validate', 'core.event.class', 'validated', NULL, 0, 0, 0, 1, 'dime.action.validate'),
+('dime.find', 'view', 'core.event.class', 'viewed', NULL, 0, 0, 0, 1, 'dime.action.view'),
+('dime.find', 'withdraw', 'core.event.class', 'withdrawn', NULL, 0, 0, 0, 1, 'dime.action.withdraw');
 
 -- --------------------------------------------------------
 
@@ -9005,7 +9008,7 @@ CREATE TABLE `ark_workflow_condition` (
   `action` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `class` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `grp` int(11) NOT NULL DEFAULT '0',
+  `grp` int(11) NOT NULL DEFAULT 0,
   `operator` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'eq',
   `value` varchar(4000) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -9248,66 +9251,67 @@ INSERT INTO `ark_workflow_notify` (`id`, `schma`, `action`, `class`, `attribute`
 CREATE TABLE `ark_workflow_permission` (
   `permission` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1'
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `description` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_workflow_permission`
 --
 
-INSERT INTO `ark_workflow_permission` (`permission`, `keyword`, `enabled`) VALUES
-('core.actor.create', NULL, 1),
-('core.actor.delete', NULL, 1),
-('core.actor.read', NULL, 1),
-('core.actor.register', NULL, 1),
-('core.actor.update', NULL, 1),
-('core.admin', NULL, 1),
-('core.admin.system', NULL, 1),
-('core.admin.user', NULL, 1),
-('core.event.create', NULL, 1),
-('core.event.delete', NULL, 1),
-('core.event.read', NULL, 1),
-('core.event.update', NULL, 1),
-('core.file.create', NULL, 1),
-('core.file.delete', NULL, 1),
-('core.file.read', NULL, 1),
-('core.file.update', NULL, 1),
-('core.message.create', NULL, 1),
-('core.message.delete', NULL, 1),
-('core.message.read', NULL, 1),
-('core.message.update', NULL, 1),
-('core.page.create', NULL, 1),
-('core.page.delete', NULL, 1),
-('core.page.read', NULL, 1),
-('core.page.update', NULL, 1),
-('core.user.confirm', NULL, 1),
-('core.user.login', NULL, 1),
-('core.user.logout', NULL, 1),
-('core.user.register', NULL, 1),
-('core.user.reset', NULL, 1),
-('dime.find.create', NULL, 1),
-('dime.find.delete', NULL, 1),
-('dime.find.filter.finder', NULL, 1),
-('dime.find.filter.museum', NULL, 1),
-('dime.find.read', NULL, 1),
-('dime.find.read.custody', NULL, 1),
-('dime.find.read.finddate', NULL, 1),
-('dime.find.read.finder', NULL, 1),
-('dime.find.read.location', NULL, 1),
-('dime.find.read.owner', NULL, 1),
-('dime.find.read.process', NULL, 1),
-('dime.find.read.treasure', NULL, 1),
-('dime.find.register.any', NULL, 1),
-('dime.find.treasure.claim', NULL, 1),
-('dime.find.update', NULL, 1),
-('dime.find.update.custody', NULL, 1),
-('dime.find.update.finddate', NULL, 1),
-('dime.find.update.finder', NULL, 1),
-('dime.find.update.location', NULL, 1),
-('dime.find.update.museum_id', NULL, 1),
-('dime.find.update.owner', NULL, 1),
-('dime.find.update.process', NULL, 1),
-('dime.find.update.treasure', NULL, 1);
+INSERT INTO `ark_workflow_permission` (`permission`, `keyword`, `enabled`, `description`) VALUES
+('core.actor.create', NULL, 1, NULL),
+('core.actor.delete', NULL, 1, NULL),
+('core.actor.read', NULL, 1, NULL),
+('core.actor.register', NULL, 1, NULL),
+('core.actor.update', NULL, 1, NULL),
+('core.admin', NULL, 1, NULL),
+('core.admin.system', NULL, 1, NULL),
+('core.admin.user', NULL, 1, NULL),
+('core.event.create', NULL, 1, NULL),
+('core.event.delete', NULL, 1, NULL),
+('core.event.read', NULL, 1, NULL),
+('core.event.update', NULL, 1, NULL),
+('core.file.create', NULL, 1, NULL),
+('core.file.delete', NULL, 1, NULL),
+('core.file.read', NULL, 1, NULL),
+('core.file.update', NULL, 1, NULL),
+('core.message.create', NULL, 1, NULL),
+('core.message.delete', NULL, 1, NULL),
+('core.message.read', NULL, 1, NULL),
+('core.message.update', NULL, 1, NULL),
+('core.page.create', NULL, 1, NULL),
+('core.page.delete', NULL, 1, NULL),
+('core.page.read', NULL, 1, NULL),
+('core.page.update', NULL, 1, NULL),
+('core.user.confirm', NULL, 1, NULL),
+('core.user.login', NULL, 1, NULL),
+('core.user.logout', NULL, 1, NULL),
+('core.user.register', NULL, 1, NULL),
+('core.user.reset', NULL, 1, NULL),
+('dime.find.create', NULL, 1, NULL),
+('dime.find.delete', NULL, 1, NULL),
+('dime.find.filter.finder', NULL, 1, NULL),
+('dime.find.filter.museum', NULL, 1, NULL),
+('dime.find.read', NULL, 1, NULL),
+('dime.find.read.custody', NULL, 1, NULL),
+('dime.find.read.finddate', NULL, 1, NULL),
+('dime.find.read.finder', NULL, 1, NULL),
+('dime.find.read.location', NULL, 1, NULL),
+('dime.find.read.owner', NULL, 1, NULL),
+('dime.find.read.process', NULL, 1, NULL),
+('dime.find.read.treasure', NULL, 1, NULL),
+('dime.find.register.any', NULL, 1, NULL),
+('dime.find.treasure.claim', NULL, 1, NULL),
+('dime.find.update', NULL, 1, NULL),
+('dime.find.update.custody', NULL, 1, NULL),
+('dime.find.update.finddate', NULL, 1, NULL),
+('dime.find.update.finder', NULL, 1, NULL),
+('dime.find.update.location', NULL, 1, NULL),
+('dime.find.update.museum_id', NULL, 1, NULL),
+('dime.find.update.owner', NULL, 1, NULL),
+('dime.find.update.process', NULL, 1, NULL),
+('dime.find.update.treasure', NULL, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -9317,24 +9321,24 @@ INSERT INTO `ark_workflow_permission` (`permission`, `keyword`, `enabled`) VALUE
 
 CREATE TABLE `ark_workflow_role` (
   `role` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `agent_for` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1'
+  `agent_for` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  `keyword` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_workflow_role`
 --
 
-INSERT INTO `ark_workflow_role` (`role`, `keyword`, `agent_for`, `enabled`) VALUES
-('admin', 'core.role.admin', NULL, 1),
-('anonymous', 'core.role.anon', NULL, 1),
-('appraiser', 'dime.role.appraiser', 'museum', 1),
-('curator', 'dime.role.curator', 'museum', 1),
-('detectorist', 'dime.role.detectorist', NULL, 1),
-('registrar', 'dime.role.registrar', 'museum', 1),
-('researcher', 'dime.role.researcher', 'museum', 1),
-('user', 'core.role.user', NULL, 1);
+INSERT INTO `ark_workflow_role` (`role`, `agent_for`, `enabled`, `keyword`) VALUES
+('admin', NULL, 1, 'core.role.admin'),
+('anonymous', NULL, 1, 'core.role.anon'),
+('appraiser', 'museum', 1, 'dime.role.appraiser'),
+('curator', 'museum', 1, 'dime.role.curator'),
+('detectorist', NULL, 1, 'dime.role.detectorist'),
+('registrar', 'museum', 1, 'dime.role.registrar'),
+('researcher', 'museum', 1, 'dime.role.researcher'),
+('user', NULL, 1, 'core.role.user');
 
 -- --------------------------------------------------------
 
@@ -9412,20 +9416,20 @@ INSERT INTO `ark_workflow_update` (`schma`, `action`, `class`, `attribute`, `act
 --
 ALTER TABLE `ark_dataclass`
   ADD PRIMARY KEY (`dataclass`),
-  ADD KEY `fragment_type` (`datatype`),
-  ADD KEY `parameter_vocabulary` (`parameter_vocabulary`),
-  ADD KEY `format_vocabulary` (`format_vocabulary`),
-  ADD KEY `format_translation` (`keyword`);
+  ADD KEY `datatype_foreign` (`datatype`) USING BTREE,
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE,
+  ADD KEY `parameter_foreign` (`parameter_vocabulary`) USING BTREE,
+  ADD KEY `format_foreign` (`format_vocabulary`) USING BTREE;
 
 --
 -- Indexes for table `ark_dataclass_attribute`
 --
 ALTER TABLE `ark_dataclass_attribute`
   ADD PRIMARY KEY (`parent`,`attribute`),
-  ADD KEY `vocabulary` (`vocabulary`),
-  ADD KEY `format` (`dataclass`),
-  ADD KEY `format_attribute_translation` (`keyword`),
-  ADD KEY `IDX_46CF00B73D8E604F` (`parent`);
+  ADD KEY `vocabulary_foreign` (`vocabulary`) USING BTREE,
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE,
+  ADD KEY `dataclass_foreign` (`dataclass`) USING BTREE,
+  ADD KEY `parent_foreign` (`parent`) USING BTREE;
 
 --
 -- Indexes for table `ark_dataclass_blob`
@@ -9474,7 +9478,7 @@ ALTER TABLE `ark_dataclass_integer`
 --
 ALTER TABLE `ark_dataclass_item`
   ADD PRIMARY KEY (`dataclass`),
-  ADD KEY `module` (`module`);
+  ADD KEY `module_foreign` (`module`) USING BTREE;
 
 --
 -- Indexes for table `ark_dataclass_object`
@@ -9511,9 +9515,9 @@ ALTER TABLE `ark_dataclass_time`
 --
 ALTER TABLE `ark_dataclass_type`
   ADD PRIMARY KEY (`datatype`),
-  ADD KEY `format_vocabulary` (`format_vocabulary`),
-  ADD KEY `parameter_vocabulary` (`parameter_vocabulary`),
-  ADD KEY `datatype_translation` (`keyword`);
+  ADD KEY `format_foreign` (`format_vocabulary`) USING BTREE,
+  ADD KEY `parameter_foreign` (`parameter_vocabulary`) USING BTREE,
+  ADD KEY `datatype_foreign` (`keyword`) USING BTREE;
 
 --
 -- Indexes for table `ark_instance`
@@ -9526,67 +9530,67 @@ ALTER TABLE `ark_instance`
 --
 ALTER TABLE `ark_instance_route`
   ADD PRIMARY KEY (`instance`,`route`),
-  ADD KEY `schma` (`route`),
-  ADD KEY `IDX_63EF5444230B1DE` (`instance`);
+  ADD KEY `route_foreign` (`route`) USING BTREE,
+  ADD KEY `instance_foreign` (`instance`) USING BTREE;
 
 --
 -- Indexes for table `ark_instance_schema`
 --
 ALTER TABLE `ark_instance_schema`
   ADD PRIMARY KEY (`instance`,`schma`),
-  ADD KEY `schma` (`schma`),
-  ADD KEY `IDX_63EF5444230B1DE` (`instance`);
+  ADD KEY `schema_foreign` (`schma`) USING BTREE,
+  ADD KEY `instance_foreign` (`instance`) USING BTREE;
 
 --
 -- Indexes for table `ark_map`
 --
 ALTER TABLE `ark_map`
   ADD PRIMARY KEY (`map`),
-  ADD KEY `map_translation` (`keyword`);
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE;
 
 --
 -- Indexes for table `ark_map_layer`
 --
 ALTER TABLE `ark_map_layer`
   ADD PRIMARY KEY (`source`,`layer`),
-  ADD KEY `map_layer_translation` (`keyword`),
-  ADD KEY `IDX_ADAEEC535F8A7F73` (`source`);
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE,
+  ADD KEY `source_foreign` (`source`) USING BTREE;
 
 --
 -- Indexes for table `ark_map_legend`
 --
 ALTER TABLE `ark_map_legend`
   ADD PRIMARY KEY (`map`,`source`,`layer`),
-  ADD UNIQUE KEY `sequence` (`map`,`source`,`layer`,`seq`),
-  ADD KEY `legend_layer` (`source`,`layer`),
-  ADD KEY `map_legend_translation` (`keyword`),
-  ADD KEY `IDX_C9233F5F93ADAABB` (`map`);
+  ADD UNIQUE KEY `sequence_unique` (`map`,`source`,`layer`,`seq`) USING BTREE,
+  ADD KEY `layer_foreign` (`source`,`layer`) USING BTREE,
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE,
+  ADD KEY `map_foreign` (`map`) USING BTREE;
 
 --
 -- Indexes for table `ark_map_source`
 --
 ALTER TABLE `ark_map_source`
   ADD PRIMARY KEY (`source`),
-  ADD KEY `map_source_translation` (`keyword`);
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE;
 
 --
 -- Indexes for table `ark_module`
 --
 ALTER TABLE `ark_module`
   ADD PRIMARY KEY (`module`),
-  ADD UNIQUE KEY `tbl` (`tbl`),
-  ADD UNIQUE KEY `classname` (`classname`),
-  ADD UNIQUE KEY `resource` (`resource`),
-  ADD UNIQUE KEY `entity` (`entity`),
-  ADD KEY `module_translation` (`keyword`);
+  ADD UNIQUE KEY `tbl_unique` (`tbl`) USING BTREE,
+  ADD UNIQUE KEY `classname_unique` (`classname`) USING BTREE,
+  ADD UNIQUE KEY `resource_unique` (`resource`) USING BTREE,
+  ADD UNIQUE KEY `entity_unique` (`entity`) USING BTREE,
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE;
 
 --
 -- Indexes for table `ark_route`
 --
 ALTER TABLE `ark_route`
   ADD PRIMARY KEY (`route`),
-  ADD KEY `page` (`page`),
-  ADD KEY `redirect` (`redirect`);
+  ADD KEY `page_foreign` (`page`) USING BTREE,
+  ADD KEY `redirect_foreign` (`redirect`) USING BTREE;
 
 --
 -- Indexes for table `ark_schema`
@@ -9594,57 +9598,57 @@ ALTER TABLE `ark_route`
 ALTER TABLE `ark_schema`
   ADD PRIMARY KEY (`schma`),
   ADD KEY `module` (`module`),
-  ADD KEY `type_vocabulary` (`vocabulary`),
-  ADD KEY `view` (`view`),
-  ADD KEY `edit` (`edit`),
-  ADD KEY `remove` (`remove`),
-  ADD KEY `new` (`new`),
-  ADD KEY `schema_translation` (`keyword`);
+  ADD KEY `vocabulary_foreign` (`vocabulary`) USING BTREE,
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE,
+  ADD KEY `new_foreign` (`new`) USING BTREE,
+  ADD KEY `remove_foreign` (`remove`) USING BTREE,
+  ADD KEY `edit_foreign` (`edit`) USING BTREE,
+  ADD KEY `view_foreign` (`view`) USING BTREE;
 
 --
 -- Indexes for table `ark_schema_association`
 --
 ALTER TABLE `ark_schema_association`
   ADD PRIMARY KEY (`schma`,`class`,`association`),
-  ADD KEY `inverse_schema` (`inverse`),
-  ADD KEY `module1` (`module1`,`schema1`),
-  ADD KEY `module2` (`module2`,`schema2`),
-  ADD KEY `schema_association_translation` (`keyword`),
-  ADD KEY `IDX_39AF30E1FDE1EB53` (`schma`);
+  ADD KEY `inverse_foreign` (`inverse`) USING BTREE,
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE,
+  ADD KEY `schema_foreign` (`schma`) USING BTREE,
+  ADD KEY `schema1_foreign` (`schema1`) USING BTREE,
+  ADD KEY `schema2_foreign` (`schema2`) USING BTREE;
 
 --
 -- Indexes for table `ark_schema_attribute`
 --
 ALTER TABLE `ark_schema_attribute`
   ADD PRIMARY KEY (`schma`,`class`,`attribute`),
-  ADD KEY `format` (`dataclass`),
-  ADD KEY `vocabulary` (`vocabulary`),
-  ADD KEY `view` (`view`),
-  ADD KEY `edit` (`edit`),
-  ADD KEY `schema_attribute_translation` (`keyword`),
-  ADD KEY `IDX_A53B51DEFDE1EB53` (`schma`);
+  ADD KEY `dataclass_foreign` (`dataclass`) USING BTREE,
+  ADD KEY `vocabulary_foreign` (`vocabulary`) USING BTREE,
+  ADD KEY `view_foreign` (`view`) USING BTREE,
+  ADD KEY `edit_foreign` (`edit`) USING BTREE,
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE,
+  ADD KEY `schema_foreign` (`schma`) USING BTREE;
 
 --
 -- Indexes for table `ark_schema_item`
 --
 ALTER TABLE `ark_schema_item`
   ADD PRIMARY KEY (`attribute`),
-  ADD KEY `format` (`format`),
-  ADD KEY `vocabulary` (`vocabulary`);
+  ADD KEY `dataclass_foreign` (`dataclass`) USING BTREE,
+  ADD KEY `vocabulary_foreign` (`vocabulary`) USING BTREE;
 
 --
 -- Indexes for table `ark_translation`
 --
 ALTER TABLE `ark_translation`
   ADD PRIMARY KEY (`keyword`),
-  ADD KEY `domain` (`domain`);
+  ADD KEY `domain_foreign` (`domain`) USING BTREE;
 
 --
 -- Indexes for table `ark_translation_domain`
 --
 ALTER TABLE `ark_translation_domain`
   ADD PRIMARY KEY (`domain`),
-  ADD KEY `translation_domain_translation` (`keyword`);
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE;
 
 --
 -- Indexes for table `ark_translation_language`
@@ -9657,53 +9661,52 @@ ALTER TABLE `ark_translation_language`
 --
 ALTER TABLE `ark_translation_message`
   ADD PRIMARY KEY (`language`,`keyword`,`role`),
-  ADD KEY `keyword` (`keyword`),
-  ADD KEY `role` (`role`),
-  ADD KEY `IDX_725771B1D4DB71B5` (`language`);
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE,
+  ADD KEY `language_foreign` (`language`) USING BTREE,
+  ADD KEY `role_foreign` (`role`) USING BTREE;
 
 --
 -- Indexes for table `ark_translation_parameter`
 --
 ALTER TABLE `ark_translation_parameter`
   ADD PRIMARY KEY (`keyword`,`parameter`),
-  ADD KEY `IDX_7E35DE3C5A93713B` (`keyword`);
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE;
 
 --
 -- Indexes for table `ark_translation_role`
 --
 ALTER TABLE `ark_translation_role`
   ADD PRIMARY KEY (`role`),
-  ADD KEY `translation_role_translation` (`keyword`);
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE;
 
 --
 -- Indexes for table `ark_view_cell`
 --
 ALTER TABLE `ark_view_cell`
   ADD PRIMARY KEY (`grp`,`class`,`row`,`col`,`seq`),
-  ADD KEY `child` (`element`),
-  ADD KEY `map` (`map`),
-  ADD KEY `keyword` (`keyword`),
-  ADD KEY `vocabulary` (`vocabulary`),
-  ADD KEY `grp` (`grp`) USING BTREE,
-  ADD KEY `view` (`view`),
-  ADD KEY `edit` (`edit`),
-  ADD KEY `action` (`action_schema`,`action`) USING BTREE;
+  ADD KEY `element_foreign` (`element`) USING BTREE,
+  ADD KEY `map_foreign` (`map`) USING BTREE,
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE,
+  ADD KEY `vocabulary_foreign` (`vocabulary`) USING BTREE,
+  ADD KEY `grp_foreign` (`grp`) USING BTREE,
+  ADD KEY `view_foreign` (`view`) USING BTREE,
+  ADD KEY `edit_foreign` (`edit`) USING BTREE,
+  ADD KEY `action_foreign` (`action_schema`,`action`) USING BTREE;
 
 --
 -- Indexes for table `ark_view_element`
 --
 ALTER TABLE `ark_view_element`
   ADD PRIMARY KEY (`element`),
-  ADD KEY `type` (`type`),
-  ADD KEY `view_translation` (`keyword`);
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE,
+  ADD KEY `type_foreign` (`type`) USING BTREE;
 
 --
 -- Indexes for table `ark_view_field`
 --
 ALTER TABLE `ark_view_field`
   ADD PRIMARY KEY (`element`),
-  ADD KEY `schma` (`schma`),
-  ADD KEY `field_attribute` (`schma`,`class`,`attribute`);
+  ADD KEY `attribute_foreign` (`schma`,`class`,`attribute`) USING BTREE;
 
 --
 -- Indexes for table `ark_view_group`
@@ -9716,20 +9719,20 @@ ALTER TABLE `ark_view_group`
 --
 ALTER TABLE `ark_view_nav`
   ADD PRIMARY KEY (`element`),
-  ADD UNIQUE KEY `parent` (`parent`,`seq`),
-  ADD KEY `IDX_99FD383C3D8E604F` (`parent`);
+  ADD UNIQUE KEY `sequence_unique` (`parent`,`seq`) USING BTREE,
+  ADD KEY `parent_foreign` (`parent`) USING BTREE;
 
 --
 -- Indexes for table `ark_view_page`
 --
 ALTER TABLE `ark_view_page`
   ADD PRIMARY KEY (`element`),
-  ADD KEY `navbar_element` (`header`),
-  ADD KEY `sidebar_element` (`sidebar`),
-  ADD KEY `content_element` (`content`),
-  ADD KEY `footer_element` (`footer`),
-  ADD KEY `view_permission` (`view`),
-  ADD KEY `edit_permission` (`edit`);
+  ADD KEY `navbar_foreign` (`header`) USING BTREE,
+  ADD KEY `sidebar_foreign` (`sidebar`) USING BTREE,
+  ADD KEY `content_foreign` (`content`) USING BTREE,
+  ADD KEY `footer_foreign` (`footer`) USING BTREE,
+  ADD KEY `view_foreign` (`view`) USING BTREE,
+  ADD KEY `edit_foreign` (`edit`) USING BTREE;
 
 --
 -- Indexes for table `ark_view_tree`
@@ -9737,15 +9740,15 @@ ALTER TABLE `ark_view_page`
 ALTER TABLE `ark_view_tree`
   ADD PRIMARY KEY (`id`),
   ADD KEY `depth` (`depth`),
-  ADD KEY `ancestor` (`ancestor`),
-  ADD KEY `descendent` (`descendant`);
+  ADD KEY `ancestor_foreign` (`ancestor`) USING BTREE,
+  ADD KEY `descendent_foreign` (`descendant`) USING BTREE;
 
 --
 -- Indexes for table `ark_view_type`
 --
 ALTER TABLE `ark_view_type`
   ADD PRIMARY KEY (`type`),
-  ADD KEY `view_type_keyword` (`keyword`);
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE;
 
 --
 -- Indexes for table `ark_view_widget`
@@ -9758,24 +9761,24 @@ ALTER TABLE `ark_view_widget`
 --
 ALTER TABLE `ark_vocabulary`
   ADD PRIMARY KEY (`concept`),
-  ADD KEY `type` (`type`),
-  ADD KEY `vocabulary_translation` (`keyword`);
+  ADD KEY `type_foreign` (`type`) USING BTREE,
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE;
 
 --
 -- Indexes for table `ark_vocabulary_parameter`
 --
 ALTER TABLE `ark_vocabulary_parameter`
   ADD PRIMARY KEY (`concept`,`term`,`name`),
-  ADD KEY `concept` (`concept`,`term`);
+  ADD KEY `term_foreign` (`concept`,`term`) USING BTREE;
 
 --
 -- Indexes for table `ark_vocabulary_related`
 --
 ALTER TABLE `ark_vocabulary_related`
   ADD PRIMARY KEY (`from_concept`,`from_term`,`to_concept`,`to_term`),
-  ADD KEY `relation` (`relation`),
-  ADD KEY `from_term` (`from_concept`,`from_term`),
-  ADD KEY `to_term` (`to_concept`,`to_term`);
+  ADD KEY `relation_foreign` (`relation`) USING BTREE,
+  ADD KEY `from_foreign` (`from_concept`,`from_term`) USING BTREE,
+  ADD KEY `to_foreign` (`to_concept`,`to_term`) USING BTREE;
 
 --
 -- Indexes for table `ark_vocabulary_relation`
@@ -9788,99 +9791,99 @@ ALTER TABLE `ark_vocabulary_relation`
 --
 ALTER TABLE `ark_vocabulary_term`
   ADD PRIMARY KEY (`concept`,`term`),
-  ADD UNIQUE KEY `keyword` (`keyword`),
-  ADD KEY `IDX_33B2DCCE74A6050` (`concept`);
+  ADD UNIQUE KEY `keyword_foreign` (`keyword`) USING BTREE,
+  ADD KEY `concept_foreign` (`concept`) USING BTREE;
 
 --
 -- Indexes for table `ark_vocabulary_type`
 --
 ALTER TABLE `ark_vocabulary_type`
   ADD PRIMARY KEY (`type`),
-  ADD KEY `vocabulary_type_translation` (`keyword`);
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE;
 
 --
 -- Indexes for table `ark_workflow_action`
 --
 ALTER TABLE `ark_workflow_action`
   ADD PRIMARY KEY (`schma`,`action`),
-  ADD KEY `event_vocabulary` (`event_vocabulary`,`event_term`),
-  ADD KEY `workflow_action_translation` (`keyword`),
-  ADD KEY `IDX_9B1CF53CFDE1EB53` (`schma`);
+  ADD KEY `schema_foreign` (`schma`) USING BTREE,
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE,
+  ADD KEY `event_foreign` (`event_vocabulary`,`event_term`) USING BTREE;
 
 --
 -- Indexes for table `ark_workflow_agency`
 --
 ALTER TABLE `ark_workflow_agency`
   ADD PRIMARY KEY (`schma`,`action`,`class`,`attribute`),
-  ADD KEY `attribute` (`schma`,`class`,`attribute`) USING BTREE,
-  ADD KEY `action` (`schma`,`action`) USING BTREE,
-  ADD KEY `condition` (`schma`,`class`,`condition_attribute`) USING BTREE;
+  ADD KEY `attribute_foreign` (`schma`,`class`,`attribute`) USING BTREE,
+  ADD KEY `action_foreign` (`schma`,`action`) USING BTREE,
+  ADD KEY `condition_foreign` (`schma`,`class`,`condition_attribute`) USING BTREE;
 
 --
 -- Indexes for table `ark_workflow_allow`
 --
 ALTER TABLE `ark_workflow_allow`
   ADD PRIMARY KEY (`schma`,`action`,`role`),
-  ADD KEY `schma` (`schma`),
-  ADD KEY `role` (`role`),
-  ADD KEY `IDX_783D21C6FDE1EB5347CC8C92` (`schma`,`action`);
+  ADD KEY `action_foreign` (`schma`,`action`) USING BTREE,
+  ADD KEY `schema_foreign` (`schma`) USING BTREE,
+  ADD KEY `role_foreign` (`role`) USING BTREE;
 
 --
 -- Indexes for table `ark_workflow_condition`
 --
 ALTER TABLE `ark_workflow_condition`
   ADD PRIMARY KEY (`schma`,`action`,`class`,`attribute`,`grp`),
-  ADD KEY `action` (`schma`,`action`) USING BTREE,
-  ADD KEY `attribute` (`schma`,`class`,`attribute`) USING BTREE;
+  ADD KEY `action_foreign` (`schma`,`action`) USING BTREE,
+  ADD KEY `attribute_foreign` (`schma`,`class`,`attribute`) USING BTREE;
 
 --
 -- Indexes for table `ark_workflow_grant`
 --
 ALTER TABLE `ark_workflow_grant`
   ADD PRIMARY KEY (`role`,`permission`),
-  ADD KEY `permission` (`permission`),
-  ADD KEY `IDX_CF71076257698A6A` (`role`);
+  ADD KEY `role_foreign` (`role`) USING BTREE,
+  ADD KEY `permission_foreign` (`permission`) USING BTREE;
 
 --
 -- Indexes for table `ark_workflow_notify`
 --
 ALTER TABLE `ark_workflow_notify`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `schma` (`schma`,`class`,`attribute`),
-  ADD KEY `role` (`role`),
-  ADD KEY `action` (`schma`,`action`) USING BTREE,
-  ADD KEY `keyword` (`keyword`);
+  ADD KEY `attribute_foreign` (`schma`,`class`,`attribute`) USING BTREE,
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE,
+  ADD KEY `action_foreign` (`schma`,`action`) USING BTREE,
+  ADD KEY `role_foreign` (`role`) USING BTREE;
 
 --
 -- Indexes for table `ark_workflow_permission`
 --
 ALTER TABLE `ark_workflow_permission`
   ADD PRIMARY KEY (`permission`),
-  ADD KEY `workflow_permission_keyword` (`keyword`);
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE;
 
 --
 -- Indexes for table `ark_workflow_role`
 --
 ALTER TABLE `ark_workflow_role`
   ADD PRIMARY KEY (`role`),
-  ADD KEY `workflow_role_translation` (`keyword`);
+  ADD KEY `keyword_foreign` (`keyword`) USING BTREE;
 
 --
 -- Indexes for table `ark_workflow_trigger`
 --
 ALTER TABLE `ark_workflow_trigger`
   ADD PRIMARY KEY (`schma`,`action`,`trigger_schma`,`trigger_action`),
-  ADD KEY `schma` (`schma`),
-  ADD KEY `trigger_schma` (`trigger_schma`,`trigger_action`),
-  ADD KEY `IDX_2BD951CBFDE1EB5347CC8C92` (`schma`,`action`);
+  ADD KEY `schema_foreign` (`schma`) USING BTREE,
+  ADD KEY `action_foreign` (`schma`,`action`) USING BTREE,
+  ADD KEY `trigger_foreign` (`trigger_schma`,`trigger_action`) USING BTREE;
 
 --
 -- Indexes for table `ark_workflow_update`
 --
 ALTER TABLE `ark_workflow_update`
   ADD PRIMARY KEY (`schma`,`action`,`class`,`attribute`),
-  ADD KEY `schma` (`schma`,`class`,`attribute`),
-  ADD KEY `IDX_44F54CD6FDE1EB5347CC8C92` (`schma`,`action`);
+  ADD KEY `schema_foreign` (`schma`,`class`,`attribute`) USING BTREE,
+  ADD KEY `action_foreign` (`schma`,`action`) USING BTREE;
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -9891,11 +9894,13 @@ ALTER TABLE `ark_workflow_update`
 --
 ALTER TABLE `ark_view_tree`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
 --
 -- AUTO_INCREMENT for table `ark_workflow_notify`
 --
 ALTER TABLE `ark_workflow_notify`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+
 --
 -- Constraints for dumped tables
 --
@@ -9904,389 +9909,408 @@ ALTER TABLE `ark_workflow_notify`
 -- Constraints for table `ark_dataclass`
 --
 ALTER TABLE `ark_dataclass`
-  ADD CONSTRAINT `format_datatype` FOREIGN KEY (`datatype`) REFERENCES `ark_dataclass_type` (`datatype`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `format_format_vocabulary` FOREIGN KEY (`format_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `format_parameter_vocabulary` FOREIGN KEY (`parameter_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `format_translation` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `dataclass_datatype_constraint` FOREIGN KEY (`datatype`) REFERENCES `ark_dataclass_type` (`datatype`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `dataclass_format_constraint` FOREIGN KEY (`format_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `dataclass_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `dataclass_parameter_constraint` FOREIGN KEY (`parameter_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_dataclass_attribute`
 --
 ALTER TABLE `ark_dataclass_attribute`
-  ADD CONSTRAINT `format_attribute_format` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `format_attribute_parent` FOREIGN KEY (`parent`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `format_attribute_translation` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `format_attribute_vocabulary` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `dataclass_attribute_dataclass_constraint` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `dataclass_attribute_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `dataclass_attribute_parent_constraint` FOREIGN KEY (`parent`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `dataclass_attribute_vocabulary_constraint` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_dataclass_blob`
 --
 ALTER TABLE `ark_dataclass_blob`
-  ADD CONSTRAINT `ark_dataclass_blob_ibfk_1` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `dataclass_blob_dataclass_constraint` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_dataclass_boolean`
 --
 ALTER TABLE `ark_dataclass_boolean`
-  ADD CONSTRAINT `ark_dataclass_boolean_ibfk_1` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `dataclass_boolean_dataclass_constraint` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_dataclass_date`
+--
+ALTER TABLE `ark_dataclass_date`
+  ADD CONSTRAINT `dataclass_date_dataclass_constraint` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_dataclass_datetime`
 --
 ALTER TABLE `ark_dataclass_datetime`
-  ADD CONSTRAINT `ark_dataclass_datetime_ibfk_1` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `dataclass_datetime_dataclass_constraint` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_dataclass_decimal`
 --
 ALTER TABLE `ark_dataclass_decimal`
-  ADD CONSTRAINT `ark_dataclass_decimal_ibfk_1` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `dataclass_decimal_dataclass_constraint` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_dataclass_float`
 --
 ALTER TABLE `ark_dataclass_float`
-  ADD CONSTRAINT `ark_dataclass_float_ibfk_1` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `dataclass_float_dataclass_constraint` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_dataclass_integer`
 --
 ALTER TABLE `ark_dataclass_integer`
-  ADD CONSTRAINT `ark_dataclass_integer_ibfk_1` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `dataclass_integer_dataclass_constraint` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_dataclass_item`
 --
 ALTER TABLE `ark_dataclass_item`
-  ADD CONSTRAINT `ark_dataclass_item_ibfk_1` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_dataclass_item_ibfk_2` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `dataclass_item_dataclass_constraint` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `dataclass_item_module_constraint` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_dataclass_object`
 --
 ALTER TABLE `ark_dataclass_object`
-  ADD CONSTRAINT `ark_dataclass_object_ibfk_1` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `dataclass_object_dataclass_constraint` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_dataclass_spatial`
 --
 ALTER TABLE `ark_dataclass_spatial`
-  ADD CONSTRAINT `ark_dataclass_spatial_ibfk_1` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `dataclass_spatial_dataclass_constraint` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_dataclass_string`
 --
 ALTER TABLE `ark_dataclass_string`
-  ADD CONSTRAINT `ark_dataclass_string_ibfk_1` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `dataclass_string_dataclass_constraint` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_dataclass_text`
 --
 ALTER TABLE `ark_dataclass_text`
-  ADD CONSTRAINT `ark_dataclass_text_ibfk_1` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `dataclass_text_dataclass_constraint` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_dataclass_time`
+--
+ALTER TABLE `ark_dataclass_time`
+  ADD CONSTRAINT `dataclass_time_dataclass_constraint` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_dataclass_type`
 --
 ALTER TABLE `ark_dataclass_type`
-  ADD CONSTRAINT `datatype_format_vocabulary` FOREIGN KEY (`format_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `datatype_parameter_vocabulary` FOREIGN KEY (`parameter_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `datatype_translation` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `dataclass_type_format_constraint` FOREIGN KEY (`format_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `dataclass_type_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `dataclass_type_parameter_constraint` FOREIGN KEY (`parameter_vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_instance_route`
 --
 ALTER TABLE `ark_instance_route`
-  ADD CONSTRAINT `instance` FOREIGN KEY (`instance`) REFERENCES `ark_instance` (`instance`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `route` FOREIGN KEY (`route`) REFERENCES `ark_route` (`route`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `instance_route_instance_constraint` FOREIGN KEY (`instance`) REFERENCES `ark_instance` (`instance`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `instance_route_route_constraint` FOREIGN KEY (`route`) REFERENCES `ark_route` (`route`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_instance_schema`
 --
 ALTER TABLE `ark_instance_schema`
-  ADD CONSTRAINT `ark_instance_schema_ibfk_1` FOREIGN KEY (`instance`) REFERENCES `ark_instance` (`instance`),
-  ADD CONSTRAINT `schema` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `instance_schema_instance_constraint` FOREIGN KEY (`instance`) REFERENCES `ark_instance` (`instance`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `instance_schema_schema_constraint` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_map`
 --
 ALTER TABLE `ark_map`
-  ADD CONSTRAINT `map_translation` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `map_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_map_layer`
 --
 ALTER TABLE `ark_map_layer`
-  ADD CONSTRAINT `map_layer_source` FOREIGN KEY (`source`) REFERENCES `ark_map_source` (`source`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `map_layer_translation` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `map_layer_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `map_layer_source_constraint` FOREIGN KEY (`source`) REFERENCES `ark_map_source` (`source`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_map_legend`
 --
 ALTER TABLE `ark_map_legend`
-  ADD CONSTRAINT `map_legend_layer` FOREIGN KEY (`source`,`layer`) REFERENCES `ark_map_layer` (`source`, `layer`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `map_legend_map` FOREIGN KEY (`map`) REFERENCES `ark_map` (`map`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `map_legend_translation` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `map_legend_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `map_legend_layer_constraint` FOREIGN KEY (`source`,`layer`) REFERENCES `ark_map_layer` (`source`, `layer`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `map_legend_map_constraint` FOREIGN KEY (`map`) REFERENCES `ark_map` (`map`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_map_source`
 --
 ALTER TABLE `ark_map_source`
-  ADD CONSTRAINT `map_source_translation` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `map_source_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_module`
 --
 ALTER TABLE `ark_module`
-  ADD CONSTRAINT `module_translation` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `module_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_route`
 --
 ALTER TABLE `ark_route`
-  ADD CONSTRAINT `ark_route_ibfk_1` FOREIGN KEY (`page`) REFERENCES `ark_view_page` (`element`),
-  ADD CONSTRAINT `ark_route_ibfk_2` FOREIGN KEY (`redirect`) REFERENCES `ark_route` (`route`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `route_page_constraint` FOREIGN KEY (`page`) REFERENCES `ark_view_page` (`element`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `route_redirect_constraint` FOREIGN KEY (`redirect`) REFERENCES `ark_route` (`route`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_schema`
 --
 ALTER TABLE `ark_schema`
-  ADD CONSTRAINT `schema_edit_permission` FOREIGN KEY (`edit`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_module` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_new_permission` FOREIGN KEY (`new`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_remove_permission` FOREIGN KEY (`remove`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_translation` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_view_permission` FOREIGN KEY (`view`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_vocabulary` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `schema_edit_constraint` FOREIGN KEY (`edit`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `schema_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `schema_module_constraint` FOREIGN KEY (`module`) REFERENCES `ark_module` (`module`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `schema_new_constraint` FOREIGN KEY (`new`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `schema_remove_constraint` FOREIGN KEY (`remove`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `schema_view_constraint` FOREIGN KEY (`view`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `schema_vocabulary_constraint` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_schema_association`
 --
 ALTER TABLE `ark_schema_association`
-  ADD CONSTRAINT `schema_association_from` FOREIGN KEY (`module1`,`schema1`) REFERENCES `ark_schema` (`module`, `schma`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_association_schema` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_association_to` FOREIGN KEY (`module2`,`schema2`) REFERENCES `ark_schema` (`module`, `schma`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_association_translation` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `schema_association_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `schema_association_schema1_constraint` FOREIGN KEY (`schema1`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `schema_association_schema2_constraint` FOREIGN KEY (`schema2`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `schema_association_schema_constraint` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_schema_attribute`
 --
 ALTER TABLE `ark_schema_attribute`
-  ADD CONSTRAINT `schema_attribute_edit_permission` FOREIGN KEY (`edit`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_attribute_format` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_attribute_schema` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_attribute_translation` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_attribute_view_permission` FOREIGN KEY (`view`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `schema_attribute_vocabulary` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `schema_attribute_dataclass_constraint` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `schema_attribute_edit_constraint` FOREIGN KEY (`edit`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `schema_attribute_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `schema_attribute_schema_constraint` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `schema_attribute_view_constraint` FOREIGN KEY (`view`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `schema_attribute_vocabulary_constraint` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_schema_item`
+--
+ALTER TABLE `ark_schema_item`
+  ADD CONSTRAINT `schema_item_dataclass_constraint` FOREIGN KEY (`dataclass`) REFERENCES `ark_dataclass` (`dataclass`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `schema_item_vocabulary_constraint` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_translation`
 --
 ALTER TABLE `ark_translation`
-  ADD CONSTRAINT `translation_domain` FOREIGN KEY (`domain`) REFERENCES `ark_translation_domain` (`domain`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `translation_domain_constraint` FOREIGN KEY (`domain`) REFERENCES `ark_translation_domain` (`domain`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_translation_domain`
 --
 ALTER TABLE `ark_translation_domain`
-  ADD CONSTRAINT `translation_domain_translation` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `translation_domain_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_translation_message`
 --
 ALTER TABLE `ark_translation_message`
-  ADD CONSTRAINT `translation_message_keyword` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `translation_message_language` FOREIGN KEY (`language`) REFERENCES `ark_translation_language` (`language`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `translation_message_role` FOREIGN KEY (`role`) REFERENCES `ark_translation_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `translation_message_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `translation_message_language_constraint` FOREIGN KEY (`language`) REFERENCES `ark_translation_language` (`language`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `translation_message_role_constraint` FOREIGN KEY (`role`) REFERENCES `ark_translation_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_translation_parameter`
 --
 ALTER TABLE `ark_translation_parameter`
-  ADD CONSTRAINT `translation_parameter_keyword` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `translation_parameter_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_translation_role`
 --
 ALTER TABLE `ark_translation_role`
-  ADD CONSTRAINT `translation_role_translation` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `translation_role_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_cell`
 --
 ALTER TABLE `ark_view_cell`
-  ADD CONSTRAINT `ark_view_cell_ibfk_1` FOREIGN KEY (`view`) REFERENCES `ark_workflow_permission` (`permission`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_view_cell_ibfk_2` FOREIGN KEY (`edit`) REFERENCES `ark_workflow_permission` (`permission`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_view_cell_ibfk_3` FOREIGN KEY (`action_schema`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `grid_element` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `keyword` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `layout` FOREIGN KEY (`grp`) REFERENCES `ark_view_group` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `map` FOREIGN KEY (`map`) REFERENCES `ark_map` (`map`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `vocabulary` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `view_cell_action_constraint` FOREIGN KEY (`action_schema`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_cell_edit_constraint` FOREIGN KEY (`edit`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_cell_element_constraint` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_cell_group_constraint` FOREIGN KEY (`grp`) REFERENCES `ark_view_group` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_cell_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_cell_map_constraint` FOREIGN KEY (`map`) REFERENCES `ark_map` (`map`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_cell_view_constraint` FOREIGN KEY (`view`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_cell_vocabulary_constraint` FOREIGN KEY (`vocabulary`) REFERENCES `ark_vocabulary` (`concept`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_element`
 --
 ALTER TABLE `ark_view_element`
-  ADD CONSTRAINT `element_type` FOREIGN KEY (`type`) REFERENCES `ark_view_type` (`type`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `view_translation` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `view_element_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_element_type_constraint` FOREIGN KEY (`type`) REFERENCES `ark_view_type` (`type`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_field`
 --
 ALTER TABLE `ark_view_field`
-  ADD CONSTRAINT `field_attribute` FOREIGN KEY (`schma`,`class`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `field_element` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `view_field_attribute_constraint` FOREIGN KEY (`schma`,`class`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_field_element_constraint` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_group`
 --
 ALTER TABLE `ark_view_group`
-  ADD CONSTRAINT `layout_element` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `view_group_element_constraint` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_nav`
 --
 ALTER TABLE `ark_view_nav`
-  ADD CONSTRAINT `nav_element` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `nav_parent` FOREIGN KEY (`parent`) REFERENCES `ark_view_nav` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `view_nav_element_constraint` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_nav_parent_constraint` FOREIGN KEY (`parent`) REFERENCES `ark_view_nav` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_page`
 --
 ALTER TABLE `ark_view_page`
-  ADD CONSTRAINT `content_element` FOREIGN KEY (`content`) REFERENCES `ark_view_group` (`element`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `edit_permission` FOREIGN KEY (`edit`) REFERENCES `ark_workflow_permission` (`permission`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `element` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `footer_element` FOREIGN KEY (`footer`) REFERENCES `ark_view_group` (`element`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `header_element` FOREIGN KEY (`header`) REFERENCES `ark_view_group` (`element`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `sidebar_element` FOREIGN KEY (`sidebar`) REFERENCES `ark_view_group` (`element`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `view_permission` FOREIGN KEY (`view`) REFERENCES `ark_workflow_permission` (`permission`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `view_page_content_constraint` FOREIGN KEY (`content`) REFERENCES `ark_view_group` (`element`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_page_edit_constraint` FOREIGN KEY (`edit`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_page_element_constraint` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_page_footer_constraint` FOREIGN KEY (`footer`) REFERENCES `ark_view_group` (`element`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_page_header_constraint` FOREIGN KEY (`header`) REFERENCES `ark_view_group` (`element`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_page_sidebar_constraint` FOREIGN KEY (`sidebar`) REFERENCES `ark_view_group` (`element`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_page_view_constraint` FOREIGN KEY (`view`) REFERENCES `ark_workflow_permission` (`permission`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_tree`
 --
 ALTER TABLE `ark_view_tree`
-  ADD CONSTRAINT `ancestor_element` FOREIGN KEY (`ancestor`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `descendent_element` FOREIGN KEY (`descendant`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `view_tree_ancestor_constraint` FOREIGN KEY (`ancestor`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `view_tree_descendent_constraint` FOREIGN KEY (`descendant`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_type`
 --
 ALTER TABLE `ark_view_type`
-  ADD CONSTRAINT `view_type_keyword` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `view_type_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_view_widget`
 --
 ALTER TABLE `ark_view_widget`
-  ADD CONSTRAINT `widget_element` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `view_widget_element_constraint` FOREIGN KEY (`element`) REFERENCES `ark_view_element` (`element`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary`
 --
 ALTER TABLE `ark_vocabulary`
-  ADD CONSTRAINT `vocabulary_translation` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `vocabulary_type` FOREIGN KEY (`type`) REFERENCES `ark_vocabulary_type` (`type`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `vocabulary_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `vocabulary_type_constraint` FOREIGN KEY (`type`) REFERENCES `ark_vocabulary_type` (`type`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary_parameter`
 --
 ALTER TABLE `ark_vocabulary_parameter`
-  ADD CONSTRAINT `ark_vocabulary_parameter_ibfk_1` FOREIGN KEY (`concept`,`term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `vocabulary_parameter_term_constraint` FOREIGN KEY (`concept`,`term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary_related`
 --
 ALTER TABLE `ark_vocabulary_related`
-  ADD CONSTRAINT `vocabulary_related_from` FOREIGN KEY (`from_concept`,`from_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `vocabulary_related_relation` FOREIGN KEY (`relation`) REFERENCES `ark_vocabulary_relation` (`relation`) ON DELETE CASCADE,
-  ADD CONSTRAINT `vocabulary_related_to` FOREIGN KEY (`to_concept`,`to_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `vocabulary_related_from_constraint` FOREIGN KEY (`from_concept`,`from_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `vocabulary_related_relation_constraint` FOREIGN KEY (`relation`) REFERENCES `ark_vocabulary_relation` (`relation`) ON DELETE CASCADE,
+  ADD CONSTRAINT `vocabulary_related_to_constraint` FOREIGN KEY (`to_concept`,`to_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary_term`
 --
 ALTER TABLE `ark_vocabulary_term`
-  ADD CONSTRAINT `vocabulary_term_concept` FOREIGN KEY (`concept`) REFERENCES `ark_vocabulary` (`concept`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `vocabulary_term_translation` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `vocabulary_term_concept_constraint` FOREIGN KEY (`concept`) REFERENCES `ark_vocabulary` (`concept`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `vocabulary_term_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_vocabulary_type`
 --
 ALTER TABLE `ark_vocabulary_type`
-  ADD CONSTRAINT `vocabulary_type_translation` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `vocabulary_type_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_action`
 --
 ALTER TABLE `ark_workflow_action`
-  ADD CONSTRAINT `workflow_action_schema` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_action_term` FOREIGN KEY (`event_vocabulary`,`event_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_action_translation` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `workflow_action_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflow_action_schema_constraint` FOREIGN KEY (`schma`) REFERENCES `ark_schema` (`schma`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflow_action_term_constraint` FOREIGN KEY (`event_vocabulary`,`event_term`) REFERENCES `ark_vocabulary_term` (`concept`, `term`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_agency`
 --
 ALTER TABLE `ark_workflow_agency`
-  ADD CONSTRAINT `workflow_agency_action` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_agency_attribute` FOREIGN KEY (`schma`,`class`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_agency_condition` FOREIGN KEY (`schma`,`class`,`condition_attribute`) REFERENCES `ark_schema_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `workflow_agency_action_constraint` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflow_agency_attribute_constraint` FOREIGN KEY (`schma`,`class`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflow_agency_condition_constraint` FOREIGN KEY (`schma`,`class`,`condition_attribute`) REFERENCES `ark_schema_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_allow`
 --
 ALTER TABLE `ark_workflow_allow`
-  ADD CONSTRAINT `workflow_allow_action` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_allow_role` FOREIGN KEY (`role`) REFERENCES `ark_workflow_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `workflow_allow_action_constraint` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflow_allow_role_constraint` FOREIGN KEY (`role`) REFERENCES `ark_workflow_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_condition`
 --
 ALTER TABLE `ark_workflow_condition`
-  ADD CONSTRAINT `workflow_condition_action` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_condition_attribute` FOREIGN KEY (`schma`,`class`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `workflow_condition_action_constraint` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflow_condition_attribute_constraint` FOREIGN KEY (`schma`,`class`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_grant`
 --
 ALTER TABLE `ark_workflow_grant`
-  ADD CONSTRAINT `workflow_grant_permission` FOREIGN KEY (`permission`) REFERENCES `ark_workflow_permission` (`permission`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_grant_role` FOREIGN KEY (`role`) REFERENCES `ark_workflow_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `workflow_grant_permission_constraint` FOREIGN KEY (`permission`) REFERENCES `ark_workflow_permission` (`permission`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflow_grant_role_constraint` FOREIGN KEY (`role`) REFERENCES `ark_workflow_role` (`role`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_notify`
 --
 ALTER TABLE `ark_workflow_notify`
-  ADD CONSTRAINT `ark_workflow_notify_ibfk_1` FOREIGN KEY (`role`) REFERENCES `ark_workflow_role` (`role`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_workflow_notify_ibfk_2` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_notify_action` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_notify_attribute` FOREIGN KEY (`schma`,`class`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `workflow_notify_action_constraint` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflow_notify_attribute_constraint` FOREIGN KEY (`schma`,`class`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflow_notify_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflow_notify_role_constraint` FOREIGN KEY (`role`) REFERENCES `ark_workflow_role` (`role`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_permission`
 --
 ALTER TABLE `ark_workflow_permission`
-  ADD CONSTRAINT `workflow_permission_keyword` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `workflow_permission_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_role`
 --
 ALTER TABLE `ark_workflow_role`
-  ADD CONSTRAINT `workflow_role_translation` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `workflow_role_keyword_constraint` FOREIGN KEY (`keyword`) REFERENCES `ark_translation` (`keyword`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_trigger`
 --
 ALTER TABLE `ark_workflow_trigger`
-  ADD CONSTRAINT `workflow_trigger_action` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_trigger_trigger` FOREIGN KEY (`trigger_schma`,`trigger_action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `workflow_trigger_action_constraint` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflow_trigger_trigger_constraint` FOREIGN KEY (`trigger_schma`,`trigger_action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_update`
 --
 ALTER TABLE `ark_workflow_update`
-  ADD CONSTRAINT `workflow_update_action` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `workflow_update_attribute` FOREIGN KEY (`schma`,`class`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `workflow_update_action_constraint` FOREIGN KEY (`schma`,`action`) REFERENCES `ark_workflow_action` (`schma`, `action`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflow_update_attribute_constraint` FOREIGN KEY (`schma`,`class`,`attribute`) REFERENCES `ark_schema_attribute` (`schma`, `class`, `attribute`) ON DELETE CASCADE ON UPDATE CASCADE;
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 

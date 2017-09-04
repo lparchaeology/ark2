@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 31, 2017 at 02:59 PM
+-- Generation Time: Sep 04, 2017 at 05:54 PM
 -- Server version: 10.2.8-MariaDB
 -- PHP Version: 7.1.8
 
@@ -32,10 +32,10 @@ SET time_zone = "+00:00";
 CREATE TABLE `ark_association` (
   `fid` int(11) NOT NULL,
   `module1` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `item1` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id1` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `association` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `module2` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `item2` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id2` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `modifier` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `modified` datetime NOT NULL,
   `creator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -224,7 +224,59 @@ INSERT INTO `ark_fragment_datetime` (`fid`, `module`, `item`, `attribute`, `data
 (60, 'event', '1022', 'occurred', 'datetime', NULL, 'UTC', '2017-08-31 14:07:35', 0, NULL, NULL, 'ahavfrue', '2017-08-31 14:07:35', 'ahavfrue', '2017-08-31 14:07:35', ''),
 (61, 'message', '1022', 'sent', 'datetime', NULL, 'UTC', '2017-08-31 14:07:36', 0, NULL, NULL, 'ahavfrue', '2017-08-31 14:07:36', 'ahavfrue', '2017-08-31 14:07:36', ''),
 (62, 'event', '1023', 'occurred', 'datetime', NULL, 'UTC', '2017-08-31 14:07:51', 0, NULL, NULL, 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:51', ''),
-(63, 'message', '1023', 'sent', 'datetime', NULL, 'UTC', '2017-08-31 14:07:51', 0, NULL, NULL, 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:51', '');
+(63, 'message', '1023', 'sent', 'datetime', NULL, 'UTC', '2017-08-31 14:07:51', 0, NULL, NULL, 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:51', ''),
+(64, 'file', '1005', 'created', 'datetime', NULL, 'UTC', '2017-08-31 17:50:04', 0, NULL, 1297, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(65, 'file', '1005', 'modified', 'datetime', NULL, 'UTC', '2017-08-31 17:50:04', 0, NULL, 1297, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(66, 'event', '1024', 'occurred', 'datetime', NULL, 'UTC', '2017-08-31 17:50:04', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(67, 'message', '1024', 'sent', 'datetime', NULL, 'UTC', '2017-08-31 17:50:04', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(68, 'event', '1025', 'occurred', 'datetime', NULL, 'UTC', '2017-08-31 17:59:22', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:59:22', 'ahavfrue', '2017-08-31 17:59:22', ''),
+(69, 'message', '1025', 'sent', 'datetime', NULL, 'UTC', '2017-08-31 17:59:22', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:59:22', 'ahavfrue', '2017-08-31 17:59:22', ''),
+(70, 'event', '1026', 'occurred', 'datetime', NULL, 'UTC', '2017-08-31 18:00:37', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(71, 'message', '1026', 'sent', 'datetime', NULL, 'UTC', '2017-08-31 18:00:37', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(72, 'file', '1006', 'created', 'datetime', NULL, 'UTC', '2017-08-31 18:08:14', 0, NULL, 1319, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(73, 'file', '1006', 'modified', 'datetime', NULL, 'UTC', '2017-08-31 18:08:14', 0, NULL, 1319, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(74, 'event', '1027', 'occurred', 'datetime', NULL, 'UTC', '2017-08-31 18:08:14', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(75, 'message', '1027', 'sent', 'datetime', NULL, 'UTC', '2017-08-31 18:08:14', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(76, 'file', '1007', 'created', 'datetime', NULL, 'UTC', '2017-08-31 18:08:49', 0, NULL, 1324, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(77, 'file', '1007', 'modified', 'datetime', NULL, 'UTC', '2017-08-31 18:08:49', 0, NULL, 1324, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(78, 'event', '1028', 'occurred', 'datetime', NULL, 'UTC', '2017-08-31 18:08:49', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(79, 'message', '1028', 'sent', 'datetime', NULL, 'UTC', '2017-08-31 18:08:49', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(80, 'file', '1008', 'created', 'datetime', NULL, 'UTC', '2017-08-31 18:09:16', 0, NULL, 1329, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(81, 'file', '1008', 'modified', 'datetime', NULL, 'UTC', '2017-08-31 18:09:16', 0, NULL, 1329, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(82, 'event', '1029', 'occurred', 'datetime', NULL, 'UTC', '2017-08-31 18:09:16', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(83, 'message', '1029', 'sent', 'datetime', NULL, 'UTC', '2017-08-31 18:09:16', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(84, 'event', '1030', 'occurred', 'datetime', NULL, 'UTC', '2017-08-31 18:15:20', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(85, 'message', '1030', 'sent', 'datetime', NULL, 'UTC', '2017-08-31 18:15:20', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(86, 'file', '1009', 'created', 'datetime', NULL, 'UTC', '2017-09-01 11:53:15', 0, NULL, 1344, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(87, 'file', '1009', 'modified', 'datetime', NULL, 'UTC', '2017-09-01 11:53:15', 0, NULL, 1344, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(88, 'event', '1031', 'occurred', 'datetime', NULL, 'UTC', '2017-09-01 11:53:15', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(89, 'message', '1031', 'sent', 'datetime', NULL, 'UTC', '2017-09-01 11:53:15', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(90, 'file', '1010', 'created', 'datetime', NULL, 'UTC', '2017-09-01 12:48:44', 0, NULL, 1349, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:44', ''),
+(91, 'file', '1010', 'modified', 'datetime', NULL, 'UTC', '2017-09-01 12:48:44', 0, NULL, 1349, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:44', ''),
+(92, 'file', '1011', 'created', 'datetime', NULL, 'UTC', '2017-09-01 12:48:45', 0, NULL, 1350, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(93, 'file', '1011', 'modified', 'datetime', NULL, 'UTC', '2017-09-01 12:48:45', 0, NULL, 1350, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(94, 'event', '1032', 'occurred', 'datetime', NULL, 'UTC', '2017-09-01 12:48:45', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(95, 'message', '1032', 'sent', 'datetime', NULL, 'UTC', '2017-09-01 12:48:45', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(96, 'file', '1012', 'created', 'datetime', NULL, 'UTC', '2017-09-01 12:50:07', 0, NULL, 1355, 'ahavfrue', '2017-09-01 12:50:07', 'ahavfrue', '2017-09-01 12:50:07', ''),
+(97, 'file', '1012', 'modified', 'datetime', NULL, 'UTC', '2017-09-01 12:50:07', 0, NULL, 1355, 'ahavfrue', '2017-09-01 12:50:07', 'ahavfrue', '2017-09-01 12:50:07', ''),
+(98, 'event', '1033', 'occurred', 'datetime', NULL, 'UTC', '2017-09-01 12:50:08', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:08', 'ahavfrue', '2017-09-01 12:50:08', ''),
+(99, 'message', '1033', 'sent', 'datetime', NULL, 'UTC', '2017-09-01 12:50:08', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:08', 'ahavfrue', '2017-09-01 12:50:08', ''),
+(100, 'event', '1034', 'occurred', 'datetime', NULL, 'UTC', '2017-09-01 12:50:26', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:26', 'ahavfrue', '2017-09-01 12:50:26', ''),
+(101, 'message', '1034', 'sent', 'datetime', NULL, 'UTC', '2017-09-01 12:50:26', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:26', 'ahavfrue', '2017-09-01 12:50:26', ''),
+(102, 'file', '1013', 'created', 'datetime', NULL, 'UTC', '2017-09-01 12:50:38', 0, NULL, 1364, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(103, 'file', '1013', 'modified', 'datetime', NULL, 'UTC', '2017-09-01 12:50:38', 0, NULL, 1364, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(104, 'event', '1035', 'occurred', 'datetime', NULL, 'UTC', '2017-09-01 12:50:38', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(105, 'message', '1035', 'sent', 'datetime', NULL, 'UTC', '2017-09-01 12:50:38', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(106, 'event', '1036', 'occurred', 'datetime', NULL, 'UTC', '2017-09-01 12:50:47', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:47', 'ahavfrue', '2017-09-01 12:50:47', ''),
+(107, 'message', '1036', 'sent', 'datetime', NULL, 'UTC', '2017-09-01 12:50:47', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:47', 'ahavfrue', '2017-09-01 12:50:47', ''),
+(108, 'file', '1014', 'created', 'datetime', NULL, 'UTC', '2017-09-01 12:51:02', 0, NULL, 1373, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(109, 'file', '1014', 'modified', 'datetime', NULL, 'UTC', '2017-09-01 12:51:02', 0, NULL, 1373, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(110, 'event', '1037', 'occurred', 'datetime', NULL, 'UTC', '2017-09-01 12:51:02', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(111, 'message', '1037', 'sent', 'datetime', NULL, 'UTC', '2017-09-01 12:51:02', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(112, 'file', '1015', 'created', 'datetime', NULL, 'UTC', '2017-09-01 12:51:19', 0, NULL, 1378, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
+(113, 'file', '1015', 'modified', 'datetime', NULL, 'UTC', '2017-09-01 12:51:19', 0, NULL, 1378, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
+(114, 'event', '1038', 'occurred', 'datetime', NULL, 'UTC', '2017-09-01 12:51:19', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
+(115, 'message', '1038', 'sent', 'datetime', NULL, 'UTC', '2017-09-01 12:51:19', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', '');
 
 -- --------------------------------------------------------
 
@@ -269,7 +321,9 @@ INSERT INTO `ark_fragment_decimal` (`fid`, `module`, `item`, `attribute`, `datat
 (154, 'find', '1', 'length', 'decimal', NULL, 'mm', '22', 0, NULL, NULL, '0', '2017-05-26 08:57:03', '0', '2017-05-26 08:57:03', ''),
 (155, 'find', '11', 'weight', 'decimal', NULL, NULL, '1', 0, NULL, NULL, '0', '2017-07-02 17:35:13', '0', '2017-07-02 17:35:13', ''),
 (156, 'find', '11', 'length', 'decimal', NULL, NULL, '2', 0, NULL, NULL, '0', '2017-07-02 17:35:13', '0', '2017-07-02 17:35:13', ''),
-(159, 'find', '1027', 'weight', 'decimal', NULL, NULL, '111', 0, NULL, NULL, 'ahavfrue', '2017-08-31 13:48:10', 'ahavfrue', '2017-08-31 13:48:10', '');
+(159, 'find', '1027', 'weight', 'decimal', NULL, NULL, '111', 0, NULL, NULL, 'ahavfrue', '2017-08-31 13:48:10', 'ahavfrue', '2017-08-31 13:48:10', ''),
+(164, 'find', '1035', 'weight', 'decimal', NULL, NULL, '123', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(165, 'find', '1035', 'length', 'decimal', NULL, NULL, '234', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', '');
 
 -- --------------------------------------------------------
 
@@ -304,45 +358,57 @@ CREATE TABLE `ark_fragment_float` (
 
 CREATE TABLE `ark_fragment_integer` (
   `fid` int(11) NOT NULL,
-  `object` int(11) DEFAULT NULL,
+  `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `item` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `attribute` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `datatype` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'integer',
-  `format` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `parameter` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `datatype` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '''integer''',
+  `format` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
+  `parameter` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL',
   `value` bigint(20) NOT NULL,
   `span` tinyint(1) NOT NULL DEFAULT 0,
   `extent` bigint(20) DEFAULT NULL,
-  `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `object` int(11) DEFAULT NULL,
   `modifier` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `modified` datetime NOT NULL,
   `creator` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created` datetime NOT NULL,
-  `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `version` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT 'NULL'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ark_fragment_integer`
 --
 
-INSERT INTO `ark_fragment_integer` (`fid`, `object`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `module`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
-(2, 7, '1', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 'file', '0', '2017-05-03 08:54:22', '0', '0000-00-00 00:00:00', NULL),
-(3, 8, '2', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 'file', '0', '2017-05-03 08:54:22', '0', '0000-00-00 00:00:00', NULL),
-(4, 9, '3', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 'file', '0', '2017-05-05 10:56:49', '0', '0000-00-00 00:00:00', NULL),
-(5, 10, '4', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 'file', '0', '2017-05-05 10:56:45', '0', '0000-00-00 00:00:00', NULL),
-(6, 11, '5', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 'file', '0', '2017-05-05 10:56:42', '0', '0000-00-00 00:00:00', NULL),
-(7, 12, '6', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 'file', '0', '2017-05-05 10:56:39', '0', '0000-00-00 00:00:00', NULL),
-(8, 13, '7', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 'file', '0', '2017-05-05 10:56:36', '0', '0000-00-00 00:00:00', NULL),
-(9, 14, '8', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 'file', '0', '2017-05-05 10:56:33', '0', '0000-00-00 00:00:00', NULL),
-(10, 15, '9', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 'file', '0', '2017-05-05 10:56:29', '0', '0000-00-00 00:00:00', NULL),
-(11, 16, '10', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 'file', '0', '2017-05-05 10:56:25', '0', '0000-00-00 00:00:00', NULL),
-(12, 17, '11', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 'file', '0', '2017-05-05 10:56:21', '0', '0000-00-00 00:00:00', NULL),
-(13, 18, '12', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 'file', '0', '2017-05-05 10:56:18', '0', '0000-00-00 00:00:00', NULL),
-(14, 19, '13', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 'file', '0', '2017-05-05 10:56:11', '0', '0000-00-00 00:00:00', NULL),
-(56, 392, '1', 'year', 'integer', NULL, NULL, 1380, 1, 1535, 'find', '0', '2017-05-26 08:57:03', '0', '2017-05-26 08:57:03', ''),
-(57, 428, '11', 'year', 'integer', NULL, NULL, -3950, 1, NULL, 'find', '0', '2017-07-02 17:35:13', '0', '2017-07-02 17:35:13', ''),
-(58, 1267, '1003', 'sequence', 'integer', NULL, NULL, 20170831134754, 0, NULL, 'file', 'ahavfrue', '2017-08-31 13:47:54', 'ahavfrue', '2017-08-31 13:47:54', ''),
-(59, 1282, '1004', 'sequence', 'integer', NULL, NULL, 20170831140735, 0, NULL, 'file', 'ahavfrue', '2017-08-31 14:07:35', 'ahavfrue', '2017-08-31 14:07:35', '');
+INSERT INTO `ark_fragment_integer` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `object`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
+(2, 'file', '1', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 7, '0', '2017-05-03 08:54:22', '0', '0000-00-00 00:00:00', NULL),
+(3, 'file', '2', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 8, '0', '2017-05-03 08:54:22', '0', '0000-00-00 00:00:00', NULL),
+(4, 'file', '3', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 9, '0', '2017-05-05 10:56:49', '0', '0000-00-00 00:00:00', NULL),
+(5, 'file', '4', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 10, '0', '2017-05-05 10:56:45', '0', '0000-00-00 00:00:00', NULL),
+(6, 'file', '5', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 11, '0', '2017-05-05 10:56:42', '0', '0000-00-00 00:00:00', NULL),
+(7, 'file', '6', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 12, '0', '2017-05-05 10:56:39', '0', '0000-00-00 00:00:00', NULL),
+(8, 'file', '7', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 13, '0', '2017-05-05 10:56:36', '0', '0000-00-00 00:00:00', NULL),
+(9, 'file', '8', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 14, '0', '2017-05-05 10:56:33', '0', '0000-00-00 00:00:00', NULL),
+(10, 'file', '9', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 15, '0', '2017-05-05 10:56:29', '0', '0000-00-00 00:00:00', NULL),
+(11, 'file', '10', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 16, '0', '2017-05-05 10:56:25', '0', '0000-00-00 00:00:00', NULL),
+(12, 'file', '11', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 17, '0', '2017-05-05 10:56:21', '0', '0000-00-00 00:00:00', NULL),
+(13, 'file', '12', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 18, '0', '2017-05-05 10:56:18', '0', '0000-00-00 00:00:00', NULL),
+(14, 'file', '13', 'sequence', 'integer', NULL, NULL, 1, 0, NULL, 19, '0', '2017-05-05 10:56:11', '0', '0000-00-00 00:00:00', NULL),
+(56, 'find', '1', 'year', 'integer', NULL, NULL, 1380, 1, 1535, 392, '0', '2017-05-26 08:57:03', '0', '2017-05-26 08:57:03', ''),
+(57, 'find', '11', 'year', 'integer', NULL, NULL, -3950, 1, NULL, 428, '0', '2017-07-02 17:35:13', '0', '2017-07-02 17:35:13', ''),
+(58, 'file', '1003', 'sequence', 'integer', NULL, NULL, 20170831134754, 0, NULL, 1267, 'ahavfrue', '2017-08-31 13:47:54', 'ahavfrue', '2017-08-31 13:47:54', ''),
+(59, 'file', '1004', 'sequence', 'integer', NULL, NULL, 20170831140735, 0, NULL, 1282, 'ahavfrue', '2017-08-31 14:07:35', 'ahavfrue', '2017-08-31 14:07:35', ''),
+(60, 'file', '1005', 'sequence', 'integer', NULL, NULL, 20170831175004, 0, NULL, 1297, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(63, 'find', '1035', 'year', 'integer', NULL, NULL, -9000, 1, NULL, 1309, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(64, 'file', '1006', 'sequence', 'integer', NULL, NULL, 20170831180814, 0, NULL, 1319, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(65, 'file', '1007', 'sequence', 'integer', NULL, NULL, 20170831180849, 0, NULL, 1324, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(66, 'file', '1008', 'sequence', 'integer', NULL, NULL, 20170831180916, 0, NULL, 1329, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(67, 'file', '1009', 'sequence', 'integer', NULL, NULL, 20170901115315, 0, NULL, 1344, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(68, 'file', '1010', 'sequence', 'integer', NULL, NULL, 20170901124844, 0, NULL, 1349, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:44', ''),
+(69, 'file', '1011', 'sequence', 'integer', NULL, NULL, 20170901124845, 0, NULL, 1350, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(70, 'file', '1012', 'sequence', 'integer', NULL, NULL, 20170901125007, 0, NULL, 1355, 'ahavfrue', '2017-09-01 12:50:07', 'ahavfrue', '2017-09-01 12:50:07', ''),
+(71, 'file', '1013', 'sequence', 'integer', NULL, NULL, 20170901125038, 0, NULL, 1364, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(72, 'file', '1014', 'sequence', 'integer', NULL, NULL, 20170901125102, 0, NULL, 1373, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(73, 'file', '1015', 'sequence', 'integer', NULL, NULL, 20170901125119, 0, NULL, 1378, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', '');
 
 -- --------------------------------------------------------
 
@@ -453,8 +519,6 @@ INSERT INTO `ark_fragment_item` (`fid`, `module`, `item`, `attribute`, `datatype
 (556, 'message', '1011', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-28 21:50:58', 'ahavfrue', '2017-08-28 21:50:58', ''),
 (557, 'message', '1011', 'recipient', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, 1123, 'ahavfrue', '2017-08-28 21:50:58', 'ahavfrue', '2017-08-28 21:50:58', ''),
 (558, 'message', '1011', 'event', 'item', NULL, 'event', '1011', 0, NULL, NULL, 'ahavfrue', '2017-08-28 21:50:58', 'ahavfrue', '2017-08-28 21:50:58', ''),
-(559, 'find', '1028', 'finder', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-29 09:50:58', 'ahavfrue', '2017-08-29 09:50:58', ''),
-(560, 'find', '1028', 'museum', 'item', NULL, 'actor', 'SKH', 0, NULL, NULL, 'ahavfrue', '2017-08-29 09:50:58', 'ahavfrue', '2017-08-29 09:50:58', ''),
 (561, 'find', '1028', 'owner', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-29 09:50:58', 'ahavfrue', '2017-08-29 09:50:58', ''),
 (562, 'find', '1028', 'custodian', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-29 09:50:58', 'ahavfrue', '2017-08-29 09:50:58', ''),
 (563, 'event', '1012', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-29 09:50:58', 'ahavfrue', '2017-08-29 09:50:58', ''),
@@ -542,7 +606,108 @@ INSERT INTO `ark_fragment_item` (`fid`, `module`, `item`, `attribute`, `datatype
 (661, 'message', '1023', 'recipient', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, 1292, 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:51', ''),
 (662, 'message', '1023', 'recipient', 'item', NULL, 'actor', 'NJM', 0, NULL, 1294, 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:51', ''),
 (663, 'message', '1023', 'recipient', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, 1296, 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:51', ''),
-(664, 'message', '1023', 'event', 'item', NULL, 'event', '1023', 0, NULL, NULL, 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:51', '');
+(664, 'message', '1023', 'event', 'item', NULL, 'event', '1023', 0, NULL, NULL, 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:51', ''),
+(667, 'event', '1024', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(668, 'event', '1024', 'subject', 'item', NULL, 'find', '1035', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(669, 'find', '1035', 'custodian', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(671, 'find', '1035', 'owner', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(672, 'message', '1024', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(673, 'message', '1024', 'recipient', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, 1302, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(674, 'message', '1024', 'event', 'item', NULL, 'event', '1024', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(678, 'event', '1025', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:59:22', 'ahavfrue', '2017-08-31 17:59:22', ''),
+(679, 'event', '1025', 'subject', 'item', NULL, 'find', '1035', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:59:22', 'ahavfrue', '2017-08-31 17:59:22', ''),
+(680, 'message', '1025', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:59:22', 'ahavfrue', '2017-08-31 17:59:22', ''),
+(681, 'message', '1025', 'recipient', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, 1307, 'ahavfrue', '2017-08-31 17:59:22', 'ahavfrue', '2017-08-31 17:59:22', ''),
+(682, 'message', '1025', 'event', 'item', NULL, 'event', '1025', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:59:22', 'ahavfrue', '2017-08-31 17:59:22', ''),
+(683, 'find', '1035', 'finder', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:03', ''),
+(684, 'find', '1035', 'museum', 'item', NULL, 'actor', 'SBM', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(685, 'find', '1035', 'image', 'item', NULL, 'file', '1005', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(686, 'event', '1026', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(687, 'event', '1026', 'subject', 'item', NULL, 'find', '1035', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(688, 'message', '1026', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(689, 'message', '1026', 'recipient', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, 1312, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(690, 'message', '1026', 'recipient', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, 1314, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(691, 'message', '1026', 'recipient', 'item', NULL, 'actor', 'SBM', 0, NULL, 1316, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(692, 'message', '1026', 'recipient', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, 1318, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(693, 'message', '1026', 'event', 'item', NULL, 'event', '1026', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(696, 'event', '1027', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(697, 'event', '1027', 'subject', 'item', NULL, 'find', '1036', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(698, 'find', '1036', 'custodian', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(700, 'find', '1036', 'owner', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(701, 'message', '1027', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(702, 'message', '1027', 'recipient', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, 1323, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(703, 'message', '1027', 'event', 'item', NULL, 'event', '1027', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(708, 'event', '1028', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(709, 'event', '1028', 'subject', 'item', NULL, 'find', '1036', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(710, 'message', '1028', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(711, 'message', '1028', 'recipient', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, 1328, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(712, 'message', '1028', 'event', 'item', NULL, 'event', '1028', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(718, 'event', '1029', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(719, 'event', '1029', 'subject', 'item', NULL, 'find', '1036', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(720, 'message', '1029', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(721, 'message', '1029', 'recipient', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, 1333, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(722, 'message', '1029', 'event', 'item', NULL, 'event', '1029', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(723, 'find', '1036', 'finder', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:08:13', ''),
+(724, 'find', '1036', 'museum', 'item', NULL, 'actor', 'FHM', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(725, 'find', '1036', 'image', 'item', NULL, 'file', '1006', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(726, 'find', '1036', 'image', 'item', NULL, 'file', '1007', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(727, 'find', '1036', 'image', 'item', NULL, 'file', '1008', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(728, 'event', '1030', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(729, 'event', '1030', 'subject', 'item', NULL, 'find', '1036', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(730, 'message', '1030', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(731, 'message', '1030', 'recipient', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, 1337, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(732, 'message', '1030', 'recipient', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, 1339, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(733, 'message', '1030', 'recipient', 'item', NULL, 'actor', 'FHM', 0, NULL, 1341, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(734, 'message', '1030', 'recipient', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, 1343, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(735, 'message', '1030', 'event', 'item', NULL, 'event', '1030', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(736, 'find', '1028', 'finder', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-08-29 09:50:58', ''),
+(737, 'find', '1028', 'museum', 'item', NULL, 'actor', 'SKH', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-08-29 09:50:58', ''),
+(738, 'find', '1028', 'image', 'item', NULL, 'file', '1009', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(739, 'event', '1031', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(740, 'event', '1031', 'subject', 'item', NULL, 'find', '1028', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(741, 'message', '1031', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(742, 'message', '1031', 'recipient', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, 1348, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(743, 'message', '1031', 'event', 'item', NULL, 'event', '1031', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(747, 'event', '1032', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(748, 'event', '1032', 'subject', 'item', NULL, 'find', '1037', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(749, 'find', '1037', 'custodian', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(751, 'find', '1037', 'owner', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(752, 'message', '1032', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(753, 'message', '1032', 'recipient', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, 1354, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(754, 'message', '1032', 'event', 'item', NULL, 'event', '1032', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(759, 'event', '1033', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:08', 'ahavfrue', '2017-09-01 12:50:08', ''),
+(760, 'event', '1033', 'subject', 'item', NULL, 'find', '1037', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:08', 'ahavfrue', '2017-09-01 12:50:08', ''),
+(761, 'message', '1033', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:08', 'ahavfrue', '2017-09-01 12:50:08', ''),
+(762, 'message', '1033', 'recipient', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, 1359, 'ahavfrue', '2017-09-01 12:50:08', 'ahavfrue', '2017-09-01 12:50:08', ''),
+(763, 'message', '1033', 'event', 'item', NULL, 'event', '1033', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:08', 'ahavfrue', '2017-09-01 12:50:08', ''),
+(766, 'event', '1034', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:26', 'ahavfrue', '2017-09-01 12:50:26', ''),
+(767, 'event', '1034', 'subject', 'item', NULL, 'find', '1037', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:26', 'ahavfrue', '2017-09-01 12:50:26', ''),
+(768, 'message', '1034', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:26', 'ahavfrue', '2017-09-01 12:50:26', ''),
+(769, 'message', '1034', 'recipient', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, 1363, 'ahavfrue', '2017-09-01 12:50:26', 'ahavfrue', '2017-09-01 12:50:26', ''),
+(770, 'message', '1034', 'event', 'item', NULL, 'event', '1034', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:26', 'ahavfrue', '2017-09-01 12:50:26', ''),
+(774, 'event', '1035', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(775, 'event', '1035', 'subject', 'item', NULL, 'find', '1037', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(776, 'message', '1035', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(777, 'message', '1035', 'recipient', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, 1368, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(778, 'message', '1035', 'event', 'item', NULL, 'event', '1035', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(781, 'event', '1036', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:47', 'ahavfrue', '2017-09-01 12:50:47', ''),
+(782, 'event', '1036', 'subject', 'item', NULL, 'find', '1037', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:47', 'ahavfrue', '2017-09-01 12:50:47', ''),
+(783, 'message', '1036', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:47', 'ahavfrue', '2017-09-01 12:50:47', ''),
+(784, 'message', '1036', 'recipient', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, 1372, 'ahavfrue', '2017-09-01 12:50:47', 'ahavfrue', '2017-09-01 12:50:47', ''),
+(785, 'message', '1036', 'event', 'item', NULL, 'event', '1036', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:47', 'ahavfrue', '2017-09-01 12:50:47', ''),
+(789, 'event', '1037', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(790, 'event', '1037', 'subject', 'item', NULL, 'find', '1037', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(791, 'message', '1037', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(792, 'message', '1037', 'recipient', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, 1377, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(793, 'message', '1037', 'event', 'item', NULL, 'event', '1037', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(794, 'find', '1037', 'finder', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:48:43', ''),
+(795, 'find', '1037', 'museum', 'item', NULL, 'actor', 'HOM', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:48:44', ''),
+(796, 'find', '1037', 'image', 'item', NULL, 'file', '1015', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(797, 'event', '1038', 'agents', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
+(798, 'event', '1038', 'subject', 'item', NULL, 'find', '1037', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
+(799, 'message', '1038', 'sender', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
+(800, 'message', '1038', 'recipient', 'item', NULL, 'actor', 'ahavfrue', 0, NULL, 1382, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
+(801, 'message', '1038', 'event', 'item', NULL, 'event', '1038', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', '');
 
 -- --------------------------------------------------------
 
@@ -558,7 +723,7 @@ CREATE TABLE `ark_fragment_object` (
   `datatype` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'object',
   `format` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parameter` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `value` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `span` tinyint(1) NOT NULL DEFAULT 0,
   `extent` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `object` int(11) DEFAULT NULL,
@@ -618,7 +783,6 @@ INSERT INTO `ark_fragment_object` (`fid`, `module`, `item`, `attribute`, `dataty
 (1119, 'message', '1010', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-28 19:00:48', 'ahavfrue', '2017-08-28 19:00:48', ''),
 (1122, 'message', '1011', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-28 21:50:58', 'ahavfrue', '2017-08-28 21:50:58', ''),
 (1123, 'message', '1011', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-28 21:50:58', 'ahavfrue', '2017-08-28 21:50:58', ''),
-(1125, 'find', '1028', 'description', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-29 09:50:58', 'ahavfrue', '2017-08-29 09:50:58', ''),
 (1126, 'message', '1012', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-29 09:50:58', 'ahavfrue', '2017-08-29 09:50:58', ''),
 (1127, 'message', '1012', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-29 09:50:58', 'ahavfrue', '2017-08-29 09:50:58', ''),
 (1129, 'find', '1029', 'description', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-29 10:11:37', 'ahavfrue', '2017-08-29 10:11:37', ''),
@@ -662,7 +826,69 @@ INSERT INTO `ark_fragment_object` (`fid`, `module`, `item`, `attribute`, `dataty
 (1293, 'message', '1023', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:51', ''),
 (1294, 'message', '1023', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:51', ''),
 (1295, 'message', '1023', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:51', ''),
-(1296, 'message', '1023', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:51', '');
+(1296, 'message', '1023', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:51', ''),
+(1297, 'file', '1005', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(1301, 'message', '1024', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(1302, 'message', '1024', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(1306, 'message', '1025', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:59:22', 'ahavfrue', '2017-08-31 17:59:22', ''),
+(1307, 'message', '1025', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:59:22', 'ahavfrue', '2017-08-31 17:59:22', ''),
+(1308, 'find', '1035', 'classification', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(1309, 'find', '1035', 'dating', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(1310, 'find', '1035', 'description', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(1311, 'message', '1026', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(1312, 'message', '1026', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(1313, 'message', '1026', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(1314, 'message', '1026', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(1315, 'message', '1026', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(1316, 'message', '1026', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(1317, 'message', '1026', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(1318, 'message', '1026', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(1319, 'file', '1006', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(1322, 'message', '1027', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(1323, 'message', '1027', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(1324, 'file', '1007', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(1327, 'message', '1028', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(1328, 'message', '1028', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(1329, 'file', '1008', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(1332, 'message', '1029', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(1333, 'message', '1029', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(1334, 'find', '1036', 'classification', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(1335, 'find', '1036', 'description', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(1336, 'message', '1030', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(1337, 'message', '1030', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(1338, 'message', '1030', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(1339, 'message', '1030', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(1340, 'message', '1030', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(1341, 'message', '1030', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(1342, 'message', '1030', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(1343, 'message', '1030', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(1344, 'file', '1009', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(1345, 'find', '1028', 'classification', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(1346, 'find', '1028', 'description', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-08-29 09:50:58', ''),
+(1347, 'message', '1031', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(1348, 'message', '1031', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(1349, 'file', '1010', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:44', ''),
+(1350, 'file', '1011', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(1353, 'message', '1032', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(1354, 'message', '1032', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(1355, 'file', '1012', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:07', 'ahavfrue', '2017-09-01 12:50:07', ''),
+(1358, 'message', '1033', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:08', 'ahavfrue', '2017-09-01 12:50:08', ''),
+(1359, 'message', '1033', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:08', 'ahavfrue', '2017-09-01 12:50:08', ''),
+(1362, 'message', '1034', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:26', 'ahavfrue', '2017-09-01 12:50:26', ''),
+(1363, 'message', '1034', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:26', 'ahavfrue', '2017-09-01 12:50:26', ''),
+(1364, 'file', '1013', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(1367, 'message', '1035', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(1368, 'message', '1035', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(1371, 'message', '1036', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:47', 'ahavfrue', '2017-09-01 12:50:47', ''),
+(1372, 'message', '1036', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:47', 'ahavfrue', '2017-09-01 12:50:47', ''),
+(1373, 'file', '1014', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(1376, 'message', '1037', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(1377, 'message', '1037', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(1378, 'file', '1015', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
+(1379, 'find', '1037', 'classification', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(1380, 'find', '1037', 'description', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(1381, 'message', '1038', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
+(1382, 'message', '1038', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', '');
 
 -- --------------------------------------------------------
 
@@ -706,12 +932,15 @@ INSERT INTO `ark_fragment_spatial` (`fid`, `module`, `item`, `attribute`, `datat
 (94, 'find', '1', 'location', 'spatial', 'wkt', '4326', 'POINT (10.417267 55.207459)', 0, NULL, NULL, '0', '2017-06-07 11:54:46', '0', '2017-05-26 08:57:03', ''),
 (95, 'find', '11', 'location', 'spatial', 'wkt', '4326', 'POINT (9.478633 55.989771)', 0, NULL, NULL, '0', '2017-07-02 17:35:13', '0', '2017-07-02 17:35:13', ''),
 (96, 'find', '12', 'location', 'spatial', 'wkt', '4326', 'POINT (10.151843 55.984624)', 0, NULL, NULL, '0', '2017-08-14 11:20:22', '0', '2017-08-14 11:20:22', ''),
-(100, 'find', '1028', 'location', 'spatial', 'wkt', '4326', 'POINT (9.359981 56.241175)', 0, NULL, NULL, 'ahavfrue', '2017-08-29 09:50:58', 'ahavfrue', '2017-08-29 09:50:58', ''),
 (101, 'find', '1029', 'location', 'spatial', 'wkt', '4326', 'POINT (9.206173 55.95931)', 0, NULL, NULL, 'ahavfrue', '2017-08-29 10:11:37', 'ahavfrue', '2017-08-29 10:11:37', ''),
 (103, 'find', '1030', 'location', 'spatial', 'wkt', '4326', 'POINT (9.061412 55.915698)', 0, NULL, NULL, 'ahavfrue', '2017-08-29 10:13:58', 'ahavfrue', '2017-08-29 10:13:58', ''),
 (105, 'find', '1031', 'location', 'spatial', 'wkt', '4326', 'POINT (9.12733 55.841745)', 0, NULL, NULL, 'ahavfrue', '2017-08-29 10:26:22', 'ahavfrue', '2017-08-29 10:26:22', ''),
 (109, 'find', '1027', 'location', 'spatial', 'wkt', '4326', 'POINT (9.294063 55.873115)', 0, NULL, NULL, 'ahavfrue', '2017-08-31 13:48:10', 'ahavfrue', '2017-08-31 13:48:10', ''),
-(111, 'find', '1032', 'location', 'spatial', 'wkt', '4326', 'POINT (9.994723 56.999303)', 0, NULL, NULL, 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:51', '');
+(111, 'find', '1032', 'location', 'spatial', 'wkt', '4326', 'POINT (9.994723 56.999303)', 0, NULL, NULL, 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:51', ''),
+(114, 'find', '1035', 'location', 'spatial', 'wkt', '4326', 'POINT (9.770432 56.053559)', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(118, 'find', '1036', 'location', 'spatial', 'wkt', '4326', 'POINT (9.728755 56.344288)', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(119, 'find', '1028', 'location', 'spatial', 'wkt', '4326', 'POINT (9.359981 56.241175)', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-08-29 09:50:58', ''),
+(126, 'find', '1037', 'location', 'spatial', 'wkt', '4326', 'POINT (9.565029 55.940318)', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:48:44', '');
 
 -- --------------------------------------------------------
 
@@ -1225,10 +1454,6 @@ INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `dataty
 (1849, 'message', '1011', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, NULL, 'ahavfrue', '2017-08-28 21:50:58', 'ahavfrue', '2017-08-28 21:50:58', ''),
 (1850, 'message', '1011', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1122, 'ahavfrue', '2017-08-28 21:50:58', 'ahavfrue', '2017-08-28 21:50:58', ''),
 (1851, 'message', '1011', 'id', 'string', NULL, NULL, '1011', 0, NULL, NULL, 'ahavfrue', '2017-08-28 21:50:58', 'ahavfrue', '2017-08-28 21:50:58', ''),
-(1852, 'find', '1028', 'id', 'string', NULL, NULL, '1028', 0, NULL, NULL, 'ahavfrue', '2017-08-29 09:50:58', 'ahavfrue', '2017-08-29 09:50:58', ''),
-(1853, 'find', '1028', 'municipality', 'string', NULL, 'dime.denmark.municipality', '740', 0, NULL, NULL, 'ahavfrue', '2017-08-29 09:50:58', 'ahavfrue', '2017-08-29 09:50:58', ''),
-(1854, 'find', '1028', 'class', 'string', NULL, 'dime.find.class', 'fibula', 0, NULL, NULL, 'ahavfrue', '2017-08-29 09:50:58', 'ahavfrue', '2017-08-29 09:50:58', ''),
-(1855, 'find', '1028', 'material', 'string', NULL, 'dime.material', 'ceramic', 0, NULL, NULL, 'ahavfrue', '2017-08-29 09:50:58', 'ahavfrue', '2017-08-29 09:50:58', ''),
 (1856, 'find', '1028', 'process', 'string', NULL, 'dime.find.process', 'recorded', 0, NULL, NULL, 'ahavfrue', '2017-08-29 09:50:58', 'ahavfrue', '2017-08-29 09:50:58', ''),
 (1857, 'find', '1028', 'custody', 'string', NULL, 'dime.find.custody', 'held', 0, NULL, NULL, 'ahavfrue', '2017-08-29 09:50:58', 'ahavfrue', '2017-08-29 09:50:58', ''),
 (1858, 'event', '1012', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, NULL, 'ahavfrue', '2017-08-29 09:50:58', 'ahavfrue', '2017-08-29 09:50:58', ''),
@@ -1345,7 +1570,227 @@ INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `dataty
 (2001, 'message', '1023', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1291, 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:51', ''),
 (2002, 'message', '1023', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1293, 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:51', ''),
 (2003, 'message', '1023', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1295, 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:51', ''),
-(2004, 'message', '1023', 'id', 'string', NULL, NULL, '1023', 0, NULL, NULL, 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:51', '');
+(2004, 'message', '1023', 'id', 'string', NULL, NULL, '1023', 0, NULL, NULL, 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:51', ''),
+(2009, 'file', '1005', 'class', 'string', NULL, 'core.file.class', 'image', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2010, 'file', '1005', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2011, 'file', '1005', 'id', 'string', NULL, NULL, '1005', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2012, 'file', '1005', 'path', 'string', NULL, NULL, 'image/1000/1005.20170831175004.JPG', 0, NULL, 1297, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2013, 'file', '1005', 'name', 'string', NULL, NULL, 'IMG_0629.JPG', 0, NULL, 1297, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2014, 'file', '1005', 'extension', 'string', NULL, NULL, 'JPG', 0, NULL, 1297, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2015, 'file', '1005', 'version', 'string', NULL, NULL, '2017-08-31 17:50:04', 0, NULL, 1297, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2016, 'file', '1005', 'creator', 'string', NULL, NULL, 'ahavfrue', 0, NULL, 1297, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2017, 'file', '1005', 'modifier', 'string', NULL, NULL, 'ahavfrue', 0, NULL, 1297, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2026, 'event', '1024', 'class', 'string', NULL, 'core.event.class', 'recorded', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2027, 'event', '1024', 'id', 'string', NULL, NULL, '1024', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2028, 'find', '1035', 'custody', 'string', NULL, 'dime.find.custody', 'held', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2030, 'find', '1035', 'treasure', 'string', NULL, 'dime.treasure', 'pending', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2032, 'message', '1024', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2033, 'message', '1024', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1301, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2034, 'message', '1024', 'id', 'string', NULL, NULL, '1024', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2048, 'event', '1025', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:59:22', 'ahavfrue', '2017-08-31 17:59:22', ''),
+(2049, 'event', '1025', 'id', 'string', NULL, NULL, '1025', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:59:22', 'ahavfrue', '2017-08-31 17:59:22', ''),
+(2050, 'message', '1025', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:59:22', 'ahavfrue', '2017-08-31 17:59:22', ''),
+(2051, 'message', '1025', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1306, 'ahavfrue', '2017-08-31 17:59:22', 'ahavfrue', '2017-08-31 17:59:22', ''),
+(2052, 'message', '1025', 'id', 'string', NULL, NULL, '1025', 0, NULL, NULL, 'ahavfrue', '2017-08-31 17:59:22', 'ahavfrue', '2017-08-31 17:59:22', ''),
+(2053, 'find', '1035', 'id', 'string', NULL, NULL, '1035', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2054, 'find', '1035', 'case', 'string', NULL, NULL, 'case11', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2055, 'find', '1035', 'finder_id', 'string', NULL, NULL, 'fund', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2056, 'find', '1035', 'finder_place', 'string', NULL, NULL, 'sted', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2057, 'find', '1035', 'municipality', 'string', NULL, 'dime.denmark.municipality', '746', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2058, 'find', '1035', 'class', 'string', NULL, 'dime.find.class', 'accessory', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2059, 'find', '1035', 'subtype', 'string', NULL, 'dime.find.subtype', 'accessory.bell', 0, NULL, 1308, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2060, 'find', '1035', 'period', 'string', NULL, 'dime.period', 'AMXX', 1, NULL, 1309, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2061, 'find', '1035', 'material', 'string', NULL, 'dime.material', 'cu', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2062, 'find', '1035', 'secondary', 'string', NULL, 'dime.find.secondary', 'ceramic', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2063, 'find', '1035', 'secondary', 'string', NULL, 'dime.find.secondary', 'glass', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2064, 'find', '1035', 'secondary', 'string', NULL, 'dime.find.secondary', 'stone', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2065, 'find', '1035', 'condition', 'string', NULL, 'dime.find.condition', 'modified', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2066, 'event', '1026', 'class', 'string', NULL, 'core.event.class', 'reported', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(2067, 'event', '1026', 'id', 'string', NULL, NULL, '1026', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(2068, 'find', '1035', 'process', 'string', NULL, 'dime.find.process', 'reported', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:03', ''),
+(2069, 'find', '1035', 'visibility', 'string', NULL, 'core.visibility', 'restricted', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(2070, 'message', '1026', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(2071, 'message', '1026', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1311, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(2072, 'message', '1026', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1313, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(2073, 'message', '1026', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1315, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(2074, 'message', '1026', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1317, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(2075, 'message', '1026', 'id', 'string', NULL, NULL, '1026', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+(2077, 'file', '1006', 'class', 'string', NULL, 'core.file.class', 'image', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(2078, 'file', '1006', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(2079, 'file', '1006', 'id', 'string', NULL, NULL, '1006', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(2080, 'file', '1006', 'path', 'string', NULL, NULL, 'image/1000/1006.20170831180814.JPG', 0, NULL, 1319, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(2081, 'file', '1006', 'name', 'string', NULL, NULL, 'IMG_0629.JPG', 0, NULL, 1319, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(2082, 'file', '1006', 'extension', 'string', NULL, NULL, 'JPG', 0, NULL, 1319, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(2083, 'file', '1006', 'version', 'string', NULL, NULL, '2017-08-31 18:08:14', 0, NULL, 1319, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(2084, 'file', '1006', 'creator', 'string', NULL, NULL, 'ahavfrue', 0, NULL, 1319, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(2085, 'file', '1006', 'modifier', 'string', NULL, NULL, 'ahavfrue', 0, NULL, 1319, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', '');
+INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `object`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
+(2090, 'event', '1027', 'class', 'string', NULL, 'core.event.class', 'recorded', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(2091, 'event', '1027', 'id', 'string', NULL, NULL, '1027', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(2092, 'find', '1036', 'custody', 'string', NULL, 'dime.find.custody', 'held', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(2094, 'find', '1036', 'treasure', 'string', NULL, 'dime.treasure', 'pending', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(2096, 'message', '1027', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(2097, 'message', '1027', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1322, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(2098, 'message', '1027', 'id', 'string', NULL, NULL, '1027', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(2101, 'file', '1007', 'class', 'string', NULL, 'core.file.class', 'image', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(2102, 'file', '1007', 'mediatype', 'string', NULL, 'mediatype', 'image/png', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(2103, 'file', '1007', 'id', 'string', NULL, NULL, '1007', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(2104, 'file', '1007', 'path', 'string', NULL, NULL, 'image/1000/1007.20170831180849.png', 0, NULL, 1324, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(2105, 'file', '1007', 'name', 'string', NULL, NULL, 'id.png', 0, NULL, 1324, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(2106, 'file', '1007', 'extension', 'string', NULL, NULL, 'png', 0, NULL, 1324, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(2107, 'file', '1007', 'version', 'string', NULL, NULL, '2017-08-31 18:08:49', 0, NULL, 1324, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(2108, 'file', '1007', 'creator', 'string', NULL, NULL, 'ahavfrue', 0, NULL, 1324, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(2109, 'file', '1007', 'modifier', 'string', NULL, NULL, 'ahavfrue', 0, NULL, 1324, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(2113, 'event', '1028', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(2114, 'event', '1028', 'id', 'string', NULL, NULL, '1028', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(2115, 'message', '1028', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(2116, 'message', '1028', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1327, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(2117, 'message', '1028', 'id', 'string', NULL, NULL, '1028', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+(2120, 'file', '1008', 'class', 'string', NULL, 'core.file.class', 'image', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(2121, 'file', '1008', 'mediatype', 'string', NULL, 'mediatype', 'image/png', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(2122, 'file', '1008', 'id', 'string', NULL, NULL, '1008', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(2123, 'file', '1008', 'path', 'string', NULL, NULL, 'image/1000/1008.20170831180916.png', 0, NULL, 1329, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(2124, 'file', '1008', 'name', 'string', NULL, NULL, 'LAYT, John - ID.png', 0, NULL, 1329, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(2125, 'file', '1008', 'extension', 'string', NULL, NULL, 'png', 0, NULL, 1329, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(2126, 'file', '1008', 'version', 'string', NULL, NULL, '2017-08-31 18:09:16', 0, NULL, 1329, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(2127, 'file', '1008', 'creator', 'string', NULL, NULL, 'ahavfrue', 0, NULL, 1329, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(2128, 'file', '1008', 'modifier', 'string', NULL, NULL, 'ahavfrue', 0, NULL, 1329, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(2132, 'event', '1029', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(2133, 'event', '1029', 'id', 'string', NULL, NULL, '1029', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(2134, 'message', '1029', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(2135, 'message', '1029', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1332, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(2136, 'message', '1029', 'id', 'string', NULL, NULL, '1029', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+(2137, 'find', '1036', 'id', 'string', NULL, NULL, '1036', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(2138, 'find', '1036', 'municipality', 'string', NULL, 'dime.denmark.municipality', '710', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(2139, 'find', '1036', 'class', 'string', NULL, 'dime.find.class', 'accessory', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(2140, 'find', '1036', 'subtype', 'string', NULL, 'dime.find.subtype', 'accessory.bell', 0, NULL, 1334, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(2141, 'find', '1036', 'material', 'string', NULL, 'dime.material', 'ag', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(2142, 'event', '1030', 'class', 'string', NULL, 'core.event.class', 'reported', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(2143, 'event', '1030', 'id', 'string', NULL, NULL, '1030', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(2144, 'find', '1036', 'process', 'string', NULL, 'dime.find.process', 'reported', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:08:13', ''),
+(2145, 'find', '1036', 'visibility', 'string', NULL, 'core.visibility', 'restricted', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:08:14', ''),
+(2146, 'message', '1030', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(2147, 'message', '1030', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1336, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(2148, 'message', '1030', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1338, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(2149, 'message', '1030', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1340, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(2150, 'message', '1030', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1342, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(2151, 'message', '1030', 'id', 'string', NULL, NULL, '1030', 0, NULL, NULL, 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+(2152, 'find', '1028', 'id', 'string', NULL, NULL, '1028', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-08-29 09:50:58', ''),
+(2153, 'find', '1028', 'municipality', 'string', NULL, 'dime.denmark.municipality', '740', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-08-29 09:50:58', ''),
+(2154, 'file', '1009', 'class', 'string', NULL, 'core.file.class', 'image', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(2155, 'file', '1009', 'mediatype', 'string', NULL, 'mediatype', 'image/png', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(2156, 'file', '1009', 'id', 'string', NULL, NULL, '1009', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(2157, 'file', '1009', 'path', 'string', NULL, NULL, 'image/1000/1009.20170901115315.png', 0, NULL, 1344, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(2158, 'file', '1009', 'name', 'string', NULL, NULL, 'id.png', 0, NULL, 1344, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(2159, 'file', '1009', 'extension', 'string', NULL, NULL, 'png', 0, NULL, 1344, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(2160, 'file', '1009', 'version', 'string', NULL, NULL, '2017-09-01 11:53:15', 0, NULL, 1344, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(2161, 'file', '1009', 'creator', 'string', NULL, NULL, 'ahavfrue', 0, NULL, 1344, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(2162, 'file', '1009', 'modifier', 'string', NULL, NULL, 'ahavfrue', 0, NULL, 1344, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(2163, 'find', '1028', 'class', 'string', NULL, 'dime.find.class', 'fibula', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-08-29 09:50:58', ''),
+(2164, 'find', '1028', 'material', 'string', NULL, 'dime.material', 'ceramic', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-08-29 09:50:58', ''),
+(2165, 'event', '1031', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(2166, 'event', '1031', 'id', 'string', NULL, NULL, '1031', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(2167, 'message', '1031', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(2168, 'message', '1031', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1347, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(2169, 'message', '1031', 'id', 'string', NULL, NULL, '1031', 0, NULL, NULL, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+(2171, 'file', '1010', 'class', 'string', NULL, 'core.file.class', 'image', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:44', 'ahavfrue', '2017-09-01 12:48:44', ''),
+(2172, 'file', '1010', 'mediatype', 'string', NULL, 'mediatype', 'image/png', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:44', 'ahavfrue', '2017-09-01 12:48:44', ''),
+(2173, 'file', '1010', 'id', 'string', NULL, NULL, '1010', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:44', 'ahavfrue', '2017-09-01 12:48:44', ''),
+(2174, 'file', '1010', 'path', 'string', NULL, NULL, 'image/1000/1010.20170901124844.png', 0, NULL, 1349, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:44', ''),
+(2175, 'file', '1010', 'name', 'string', NULL, NULL, 'id.png', 0, NULL, 1349, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:44', ''),
+(2176, 'file', '1010', 'extension', 'string', NULL, NULL, 'png', 0, NULL, 1349, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:44', ''),
+(2177, 'file', '1010', 'version', 'string', NULL, NULL, '2017-09-01 12:48:44', 0, NULL, 1349, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:44', ''),
+(2178, 'file', '1010', 'creator', 'string', NULL, NULL, 'ahavfrue', 0, NULL, 1349, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:44', ''),
+(2179, 'file', '1010', 'modifier', 'string', NULL, NULL, 'ahavfrue', 0, NULL, 1349, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:44', ''),
+(2180, 'file', '1011', 'class', 'string', NULL, 'core.file.class', 'image', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(2181, 'file', '1011', 'mediatype', 'string', NULL, 'mediatype', 'image/png', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(2182, 'file', '1011', 'id', 'string', NULL, NULL, '1011', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(2183, 'file', '1011', 'path', 'string', NULL, NULL, 'image/1000/1011.20170901124845.png', 0, NULL, 1350, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(2184, 'file', '1011', 'name', 'string', NULL, NULL, 'LAYT, John - ID.png', 0, NULL, 1350, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(2185, 'file', '1011', 'extension', 'string', NULL, NULL, 'png', 0, NULL, 1350, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(2186, 'file', '1011', 'version', 'string', NULL, NULL, '2017-09-01 12:48:45', 0, NULL, 1350, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(2187, 'file', '1011', 'creator', 'string', NULL, NULL, 'ahavfrue', 0, NULL, 1350, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(2188, 'file', '1011', 'modifier', 'string', NULL, NULL, 'ahavfrue', 0, NULL, 1350, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(2193, 'event', '1032', 'class', 'string', NULL, 'core.event.class', 'recorded', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(2194, 'event', '1032', 'id', 'string', NULL, NULL, '1032', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(2195, 'find', '1037', 'custody', 'string', NULL, 'dime.find.custody', 'held', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(2196, 'find', '1037', 'process', 'string', NULL, 'dime.find.process', 'recorded', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:43', ''),
+(2197, 'find', '1037', 'treasure', 'string', NULL, 'dime.treasure', 'pending', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(2198, 'find', '1037', 'visibility', 'string', NULL, 'core.visibility', 'private', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(2199, 'message', '1032', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(2200, 'message', '1032', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1353, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(2201, 'message', '1032', 'id', 'string', NULL, NULL, '1032', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(2204, 'file', '1012', 'class', 'string', NULL, 'core.file.class', 'image', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:07', 'ahavfrue', '2017-09-01 12:50:07', ''),
+(2205, 'file', '1012', 'mediatype', 'string', NULL, 'mediatype', 'image/jpeg', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:07', 'ahavfrue', '2017-09-01 12:50:07', ''),
+(2206, 'file', '1012', 'id', 'string', NULL, NULL, '1012', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:07', 'ahavfrue', '2017-09-01 12:50:07', ''),
+(2207, 'file', '1012', 'path', 'string', NULL, NULL, 'image/1000/1012.20170901125007.jpg', 0, NULL, 1355, 'ahavfrue', '2017-09-01 12:50:07', 'ahavfrue', '2017-09-01 12:50:07', ''),
+(2208, 'file', '1012', 'name', 'string', NULL, NULL, 'profile.jpg', 0, NULL, 1355, 'ahavfrue', '2017-09-01 12:50:07', 'ahavfrue', '2017-09-01 12:50:07', ''),
+(2209, 'file', '1012', 'extension', 'string', NULL, NULL, 'jpg', 0, NULL, 1355, 'ahavfrue', '2017-09-01 12:50:07', 'ahavfrue', '2017-09-01 12:50:07', ''),
+(2210, 'file', '1012', 'version', 'string', NULL, NULL, '2017-09-01 12:50:07', 0, NULL, 1355, 'ahavfrue', '2017-09-01 12:50:07', 'ahavfrue', '2017-09-01 12:50:07', ''),
+(2211, 'file', '1012', 'creator', 'string', NULL, NULL, 'ahavfrue', 0, NULL, 1355, 'ahavfrue', '2017-09-01 12:50:07', 'ahavfrue', '2017-09-01 12:50:07', ''),
+(2212, 'file', '1012', 'modifier', 'string', NULL, NULL, 'ahavfrue', 0, NULL, 1355, 'ahavfrue', '2017-09-01 12:50:07', 'ahavfrue', '2017-09-01 12:50:07', ''),
+(2216, 'event', '1033', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:08', 'ahavfrue', '2017-09-01 12:50:08', ''),
+(2217, 'event', '1033', 'id', 'string', NULL, NULL, '1033', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:08', 'ahavfrue', '2017-09-01 12:50:08', ''),
+(2218, 'message', '1033', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:08', 'ahavfrue', '2017-09-01 12:50:08', ''),
+(2219, 'message', '1033', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1358, 'ahavfrue', '2017-09-01 12:50:08', 'ahavfrue', '2017-09-01 12:50:08', ''),
+(2220, 'message', '1033', 'id', 'string', NULL, NULL, '1033', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:08', 'ahavfrue', '2017-09-01 12:50:08', ''),
+(2226, 'event', '1034', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:26', 'ahavfrue', '2017-09-01 12:50:26', ''),
+(2227, 'event', '1034', 'id', 'string', NULL, NULL, '1034', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:26', 'ahavfrue', '2017-09-01 12:50:26', ''),
+(2228, 'message', '1034', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:26', 'ahavfrue', '2017-09-01 12:50:26', ''),
+(2229, 'message', '1034', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1362, 'ahavfrue', '2017-09-01 12:50:26', 'ahavfrue', '2017-09-01 12:50:26', ''),
+(2230, 'message', '1034', 'id', 'string', NULL, NULL, '1034', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:26', 'ahavfrue', '2017-09-01 12:50:26', ''),
+(2233, 'file', '1013', 'class', 'string', NULL, 'core.file.class', 'image', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(2234, 'file', '1013', 'mediatype', 'string', NULL, 'mediatype', 'image/png', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(2235, 'file', '1013', 'id', 'string', NULL, NULL, '1013', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(2236, 'file', '1013', 'path', 'string', NULL, NULL, 'image/1000/1013.20170901125038.png', 0, NULL, 1364, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(2237, 'file', '1013', 'name', 'string', NULL, NULL, 'id.png', 0, NULL, 1364, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(2238, 'file', '1013', 'extension', 'string', NULL, NULL, 'png', 0, NULL, 1364, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(2239, 'file', '1013', 'version', 'string', NULL, NULL, '2017-09-01 12:50:38', 0, NULL, 1364, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(2240, 'file', '1013', 'creator', 'string', NULL, NULL, 'ahavfrue', 0, NULL, 1364, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(2241, 'file', '1013', 'modifier', 'string', NULL, NULL, 'ahavfrue', 0, NULL, 1364, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(2245, 'event', '1035', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(2246, 'event', '1035', 'id', 'string', NULL, NULL, '1035', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(2247, 'message', '1035', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(2248, 'message', '1035', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1367, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(2249, 'message', '1035', 'id', 'string', NULL, NULL, '1035', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+(2255, 'event', '1036', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:47', 'ahavfrue', '2017-09-01 12:50:47', ''),
+(2256, 'event', '1036', 'id', 'string', NULL, NULL, '1036', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:47', 'ahavfrue', '2017-09-01 12:50:47', ''),
+(2257, 'message', '1036', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:47', 'ahavfrue', '2017-09-01 12:50:47', ''),
+(2258, 'message', '1036', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1371, 'ahavfrue', '2017-09-01 12:50:47', 'ahavfrue', '2017-09-01 12:50:47', ''),
+(2259, 'message', '1036', 'id', 'string', NULL, NULL, '1036', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:50:47', 'ahavfrue', '2017-09-01 12:50:47', ''),
+(2262, 'file', '1014', 'class', 'string', NULL, 'core.file.class', 'image', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(2263, 'file', '1014', 'mediatype', 'string', NULL, 'mediatype', 'image/png', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(2264, 'file', '1014', 'id', 'string', NULL, NULL, '1014', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(2265, 'file', '1014', 'path', 'string', NULL, NULL, 'image/1000/1014.20170901125102.png', 0, NULL, 1373, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(2266, 'file', '1014', 'name', 'string', NULL, NULL, 'id.png', 0, NULL, 1373, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(2267, 'file', '1014', 'extension', 'string', NULL, NULL, 'png', 0, NULL, 1373, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(2268, 'file', '1014', 'version', 'string', NULL, NULL, '2017-09-01 12:51:02', 0, NULL, 1373, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(2269, 'file', '1014', 'creator', 'string', NULL, NULL, 'ahavfrue', 0, NULL, 1373, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(2270, 'file', '1014', 'modifier', 'string', NULL, NULL, 'ahavfrue', 0, NULL, 1373, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(2274, 'event', '1037', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(2275, 'event', '1037', 'id', 'string', NULL, NULL, '1037', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(2276, 'message', '1037', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(2277, 'message', '1037', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1376, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(2278, 'message', '1037', 'id', 'string', NULL, NULL, '1037', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+(2279, 'find', '1037', 'id', 'string', NULL, NULL, '1037', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(2280, 'find', '1037', 'municipality', 'string', NULL, 'dime.denmark.municipality', '615', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:48:44', ''),
+(2281, 'file', '1015', 'class', 'string', NULL, 'core.file.class', 'image', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
+(2282, 'file', '1015', 'mediatype', 'string', NULL, 'mediatype', 'image/png', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
+(2283, 'file', '1015', 'id', 'string', NULL, NULL, '1015', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
+(2284, 'file', '1015', 'path', 'string', NULL, NULL, 'image/1000/1015.20170901125119.png', 0, NULL, 1378, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
+(2285, 'file', '1015', 'name', 'string', NULL, NULL, 'LAYT, John - ID.png', 0, NULL, 1378, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
+(2286, 'file', '1015', 'extension', 'string', NULL, NULL, 'png', 0, NULL, 1378, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
+(2287, 'file', '1015', 'version', 'string', NULL, NULL, '2017-09-01 12:51:19', 0, NULL, 1378, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
+(2288, 'file', '1015', 'creator', 'string', NULL, NULL, 'ahavfrue', 0, NULL, 1378, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
+(2289, 'file', '1015', 'modifier', 'string', NULL, NULL, 'ahavfrue', 0, NULL, 1378, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
+(2290, 'find', '1037', 'class', 'string', NULL, 'dime.find.class', 'accessory', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(2291, 'find', '1037', 'subtype', 'string', NULL, 'dime.find.subtype', 'accessory.bell', 0, NULL, 1379, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(2292, 'find', '1037', 'material', 'string', NULL, 'dime.material', 'ag', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:48:45', ''),
+(2293, 'event', '1038', 'class', 'string', NULL, 'core.event.class', 'edited', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
+(2294, 'event', '1038', 'id', 'string', NULL, NULL, '1038', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
+(2295, 'message', '1038', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
+(2296, 'message', '1038', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 1381, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
+(2297, 'message', '1038', 'id', 'string', NULL, NULL, '1038', 0, NULL, NULL, 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', '');
 
 -- --------------------------------------------------------
 
@@ -1539,10 +1984,11 @@ INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `attribute`, `datatype
 (338, 'actor', 'testme', 'fullname', 'text', 'text/plain', 'da', 'Test Me', 0, NULL, NULL, '0', '2017-08-16 00:22:11', '0', '2017-08-16 00:22:11', ''),
 (339, 'actor', 'ttc1', 'fullname', 'text', 'text/plain', 'da', 'Torben Trier Christiansen', 0, NULL, NULL, '0', '2017-08-16 03:49:55', '0', '2017-08-16 03:49:55', ''),
 (341, 'actor', 'ahavfrue', 'fullname', 'text', 'text/plain', 'da', 'Ariel Havfrue', 0, NULL, NULL, '0', '2017-08-23 17:03:43', '0', '2017-08-23 17:03:43', ''),
-(342, 'find', '1028', 'text', 'text', 'text/plain', 'da', 'qqq', 0, NULL, 1125, 'ahavfrue', '2017-08-29 09:50:58', 'ahavfrue', '2017-08-29 09:50:58', ''),
 (343, 'find', '1029', 'text', 'text', 'text/plain', 'da', 'aaa', 0, NULL, 1129, 'ahavfrue', '2017-08-29 10:11:37', 'ahavfrue', '2017-08-29 10:11:37', ''),
 (344, 'find', '1031', 'text', 'text', 'text/plain', 'da', 'aaa', 0, NULL, 1145, 'ahavfrue', '2017-08-29 10:26:22', 'ahavfrue', '2017-08-29 10:26:22', ''),
-(348, 'find', '1027', 'text', 'text', 'text/plain', 'da', 'aaa', 0, NULL, 1273, 'ahavfrue', '2017-08-31 13:48:10', 'ahavfrue', '2017-08-31 13:48:10', '');
+(348, 'find', '1027', 'text', 'text', 'text/plain', 'da', 'aaa', 0, NULL, 1273, 'ahavfrue', '2017-08-31 13:48:10', 'ahavfrue', '2017-08-31 13:48:10', ''),
+(351, 'find', '1035', 'text', 'text', 'text/plain', 'da', 'aaaaaaa', 0, NULL, 1310, 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:04', ''),
+(352, 'find', '1028', 'text', 'text', 'text/plain', 'da', 'qqq', 0, NULL, 1346, 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-08-29 09:50:58', '');
 
 -- --------------------------------------------------------
 
@@ -1688,6 +2134,21 @@ INSERT INTO `ark_item_event` (`id`, `module`, `schma`, `class`, `status`, `visib
 ('1021', 'event', 'core.event', 'reported', 'allocated', 'private', 'find', '1027', '1021', '1021', 'ahavfrue', '2017-08-31 13:48:10', 'ahavfrue', '2017-08-31 13:48:10', ''),
 ('1022', 'event', 'core.event', 'recorded', 'allocated', 'private', 'find', '1032', '1022', '1022', 'ahavfrue', '2017-08-31 14:07:35', 'ahavfrue', '2017-08-31 14:07:35', ''),
 ('1023', 'event', 'core.event', 'reported', 'allocated', 'private', 'find', '1032', '1023', '1023', 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:51', ''),
+('1024', 'event', 'core.event', 'recorded', 'allocated', 'private', 'find', '1035', '1024', '1024', 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+('1025', 'event', 'core.event', 'edited', 'allocated', 'private', 'find', '1035', '1025', '1025', 'ahavfrue', '2017-08-31 17:59:22', 'ahavfrue', '2017-08-31 17:59:22', ''),
+('1026', 'event', 'core.event', 'reported', 'allocated', 'private', 'find', '1035', '1026', '1026', 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+('1027', 'event', 'core.event', 'recorded', 'allocated', 'private', 'find', '1036', '1027', '1027', 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+('1028', 'event', 'core.event', 'edited', 'allocated', 'private', 'find', '1036', '1028', '1028', 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+('1029', 'event', 'core.event', 'edited', 'allocated', 'private', 'find', '1036', '1029', '1029', 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+('1030', 'event', 'core.event', 'reported', 'allocated', 'private', 'find', '1036', '1030', '1030', 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+('1031', 'event', 'core.event', 'edited', 'allocated', 'private', 'find', '1028', '1031', '1031', 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+('1032', 'event', 'core.event', 'recorded', 'allocated', 'private', 'find', '1037', '1032', '1032', 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+('1033', 'event', 'core.event', 'edited', 'allocated', 'private', 'find', '1037', '1033', '1033', 'ahavfrue', '2017-09-01 12:50:08', 'ahavfrue', '2017-09-01 12:50:08', ''),
+('1034', 'event', 'core.event', 'edited', 'allocated', 'private', 'find', '1037', '1034', '1034', 'ahavfrue', '2017-09-01 12:50:26', 'ahavfrue', '2017-09-01 12:50:26', ''),
+('1035', 'event', 'core.event', 'edited', 'allocated', 'private', 'find', '1037', '1035', '1035', 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+('1036', 'event', 'core.event', 'edited', 'allocated', 'private', 'find', '1037', '1036', '1036', 'ahavfrue', '2017-09-01 12:50:47', 'ahavfrue', '2017-09-01 12:50:47', ''),
+('1037', 'event', 'core.event', 'edited', 'allocated', 'private', 'find', '1037', '1037', '1037', 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+('1038', 'event', 'core.event', 'edited', 'allocated', 'private', 'find', '1037', '1038', '1038', 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
 ('11', 'event', 'core.event', 'recorded', 'allocated', 'restricted', 'find', '12', '11', '11', '0', '2017-08-14 11:20:22', '0', '2017-08-14 11:20:22', ''),
 ('12', 'event', 'core.event', 'registered', 'allocated', 'restricted', 'actor', 'ttrierc', '12', '12', '0', '2017-08-15 07:36:27', '0', '2017-08-15 07:36:27', ''),
 ('13', 'event', 'core.event', 'registered', 'allocated', 'restricted', 'actor', 'testme', '13', '13', '0', '2017-08-16 00:22:12', '0', '2017-08-16 00:22:12', '');
@@ -1725,6 +2186,17 @@ INSERT INTO `ark_item_file` (`id`, `module`, `schma`, `class`, `status`, `visibi
 ('10', 'file', 'core.file', 'image', 'allocated', 'restricted', NULL, NULL, '10', '10', '0', '2017-05-05 10:43:16', '0', '0000-00-00 00:00:00', ''),
 ('1003', 'file', 'core.file', 'image', 'allocated', 'private', NULL, NULL, '1003', '1003', 'ahavfrue', '2017-08-31 13:47:54', 'ahavfrue', '2017-08-31 13:47:54', ''),
 ('1004', 'file', 'core.file', 'image', 'allocated', 'private', NULL, NULL, '1004', '1004', 'ahavfrue', '2017-08-31 14:07:35', 'ahavfrue', '2017-08-31 14:07:35', ''),
+('1005', 'file', 'core.file', 'image', 'allocated', 'private', NULL, NULL, '1005', '1005', 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+('1006', 'file', 'core.file', 'image', 'allocated', 'private', NULL, NULL, '1006', '1006', 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+('1007', 'file', 'core.file', 'image', 'allocated', 'private', NULL, NULL, '1007', '1007', 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+('1008', 'file', 'core.file', 'image', 'allocated', 'private', NULL, NULL, '1008', '1008', 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+('1009', 'file', 'core.file', 'image', 'allocated', 'private', NULL, NULL, '1009', '1009', 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+('1010', 'file', 'core.file', 'image', 'allocated', 'private', NULL, NULL, '1010', '1010', 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:44', ''),
+('1011', 'file', 'core.file', 'image', 'allocated', 'private', NULL, NULL, '1011', '1011', 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+('1012', 'file', 'core.file', 'image', 'allocated', 'private', NULL, NULL, '1012', '1012', 'ahavfrue', '2017-09-01 12:50:07', 'ahavfrue', '2017-09-01 12:50:07', ''),
+('1013', 'file', 'core.file', 'image', 'allocated', 'private', NULL, NULL, '1013', '1013', 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+('1014', 'file', 'core.file', 'image', 'allocated', 'private', NULL, NULL, '1014', '1014', 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+('1015', 'file', 'core.file', 'image', 'allocated', 'private', NULL, NULL, '1015', '1015', 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
 ('11', 'file', 'core.file', 'image', 'allocated', 'restricted', NULL, NULL, '11', '11', '0', '2017-05-05 10:43:18', '0', '0000-00-00 00:00:00', ''),
 ('12', 'file', 'core.file', 'image', 'allocated', 'restricted', NULL, NULL, '12', '12', '0', '2017-05-05 10:43:21', '0', '0000-00-00 00:00:00', ''),
 ('13', 'file', 'core.file', 'image', 'allocated', 'restricted', NULL, NULL, '13', '13', '0', '2017-05-05 10:43:25', '0', '0000-00-00 00:00:00', ''),
@@ -1769,11 +2241,14 @@ INSERT INTO `ark_item_find` (`id`, `module`, `schma`, `class`, `status`, `visibi
 ('1', 'find', 'dime.find', 'accessory', 'registered', 'public', NULL, NULL, '1', '1', '0', '2017-05-26 09:57:03', '0', '2017-05-26 09:57:03', ''),
 ('10', 'find', 'dime.find', 'fibula', 'registered', 'public', NULL, NULL, '10', '10', '0', '2017-05-10 19:19:02', '0', '2017-05-10 15:46:19', ''),
 ('1027', 'find', 'dime.find', 'metal', 'allocated', 'private', NULL, NULL, '1027', '1027', 'ahavfrue', '2017-08-31 13:48:10', 'ahavfrue', '2017-08-28 18:55:39', ''),
-('1028', 'find', 'dime.find', 'fibula', 'allocated', 'private', NULL, NULL, '1028', '1028', 'ahavfrue', '2017-08-29 09:50:58', 'ahavfrue', '2017-08-28 19:00:48', ''),
+('1028', 'find', 'dime.find', 'fibula', 'allocated', 'private', NULL, NULL, '1028', '1028', 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-08-28 19:00:48', ''),
 ('1029', 'find', 'dime.find', 'coin', 'allocated', 'private', NULL, NULL, '1029', '1029', 'ahavfrue', '2017-08-29 10:11:37', 'ahavfrue', '2017-08-28 21:50:57', ''),
 ('1030', 'find', 'dime.find', 'accessory', 'allocated', 'private', NULL, NULL, '1030', '1030', 'ahavfrue', '2017-08-29 10:13:58', 'ahavfrue', '2017-08-29 10:13:47', ''),
 ('1031', 'find', 'dime.find', 'fibula', 'allocated', 'private', NULL, NULL, '1031', '1031', 'ahavfrue', '2017-08-29 10:26:22', 'ahavfrue', '2017-08-29 10:23:38', ''),
 ('1032', 'find', 'dime.find', 'accessory', 'allocated', 'private', NULL, NULL, '1032', '1032', 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:35', ''),
+('1035', 'find', 'dime.find', 'accessory', 'allocated', 'restricted', NULL, NULL, '1035', '1035', 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 17:50:03', ''),
+('1036', 'find', 'dime.find', 'accessory', 'allocated', 'restricted', NULL, NULL, '1036', '1036', 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:08:13', ''),
+('1037', 'find', 'dime.find', 'accessory', 'allocated', 'private', NULL, NULL, '1037', '1037', 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:48:43', ''),
 ('11', 'find', 'dime.find', 'fibula', 'allocated', 'restricted', NULL, NULL, '11', '11', '0', '2017-07-02 18:35:13', '0', '2017-07-02 18:35:13', ''),
 ('12', 'find', 'dime.find', 'accessory', 'allocated', 'restricted', NULL, NULL, '12', '12', '0', '2017-08-14 12:20:22', '0', '2017-08-14 12:20:22', ''),
 ('2', 'find', 'dime.find', 'fibula', 'registered', 'public', NULL, NULL, '2', '2', '0', '2017-05-10 19:18:57', '0', '2017-05-10 15:43:51', ''),
@@ -1831,6 +2306,21 @@ INSERT INTO `ark_item_message` (`id`, `module`, `schma`, `class`, `status`, `vis
 ('1021', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '1021', '1021', 'ahavfrue', '2017-08-31 13:48:10', 'ahavfrue', '2017-08-31 13:48:10', ''),
 ('1022', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '1022', '1022', 'ahavfrue', '2017-08-31 14:07:36', 'ahavfrue', '2017-08-31 14:07:36', ''),
 ('1023', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '1023', '1023', 'ahavfrue', '2017-08-31 14:07:51', 'ahavfrue', '2017-08-31 14:07:51', ''),
+('1024', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '1024', '1024', 'ahavfrue', '2017-08-31 17:50:04', 'ahavfrue', '2017-08-31 17:50:04', ''),
+('1025', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '1025', '1025', 'ahavfrue', '2017-08-31 17:59:22', 'ahavfrue', '2017-08-31 17:59:22', ''),
+('1026', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '1026', '1026', 'ahavfrue', '2017-08-31 18:00:37', 'ahavfrue', '2017-08-31 18:00:37', ''),
+('1027', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '1027', '1027', 'ahavfrue', '2017-08-31 18:08:14', 'ahavfrue', '2017-08-31 18:08:14', ''),
+('1028', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '1028', '1028', 'ahavfrue', '2017-08-31 18:08:49', 'ahavfrue', '2017-08-31 18:08:49', ''),
+('1029', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '1029', '1029', 'ahavfrue', '2017-08-31 18:09:16', 'ahavfrue', '2017-08-31 18:09:16', ''),
+('1030', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '1030', '1030', 'ahavfrue', '2017-08-31 18:15:20', 'ahavfrue', '2017-08-31 18:15:20', ''),
+('1031', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '1031', '1031', 'ahavfrue', '2017-09-01 11:53:15', 'ahavfrue', '2017-09-01 11:53:15', ''),
+('1032', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '1032', '1032', 'ahavfrue', '2017-09-01 12:48:45', 'ahavfrue', '2017-09-01 12:48:45', ''),
+('1033', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '1033', '1033', 'ahavfrue', '2017-09-01 12:50:08', 'ahavfrue', '2017-09-01 12:50:08', ''),
+('1034', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '1034', '1034', 'ahavfrue', '2017-09-01 12:50:26', 'ahavfrue', '2017-09-01 12:50:26', ''),
+('1035', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '1035', '1035', 'ahavfrue', '2017-09-01 12:50:38', 'ahavfrue', '2017-09-01 12:50:38', ''),
+('1036', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '1036', '1036', 'ahavfrue', '2017-09-01 12:50:47', 'ahavfrue', '2017-09-01 12:50:47', ''),
+('1037', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '1037', '1037', 'ahavfrue', '2017-09-01 12:51:02', 'ahavfrue', '2017-09-01 12:51:02', ''),
+('1038', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '1038', '1038', 'ahavfrue', '2017-09-01 12:51:19', 'ahavfrue', '2017-09-01 12:51:19', ''),
 ('11', 'message', 'core.message', 'notification', 'allocated', 'restricted', NULL, NULL, '11', '11', '0', '2017-08-15 07:36:27', '0', '2017-08-15 07:36:27', ''),
 ('12', 'message', 'core.message', 'notification', 'allocated', 'restricted', NULL, NULL, '12', '12', '0', '2017-08-16 00:22:12', '0', '2017-08-16 00:22:12', ''),
 ('9', 'message', 'core.message', 'notification', 'allocated', 'restricted', NULL, NULL, '9', '9', '0', '2017-08-14 11:18:20', '0', '2017-08-14 11:18:20', '');
@@ -1890,11 +2380,11 @@ CREATE TABLE `ark_sequence` (
 --
 
 INSERT INTO `ark_sequence` (`module`, `parent`, `sequence`, `idx`, `min`, `max`) VALUES
-('event', '', 'id', 1023, NULL, NULL),
-('file', '', 'id', 1004, NULL, NULL),
-('find', '', 'id', 1032, NULL, NULL),
-('message', '', 'id', 1023, NULL, NULL),
-('object', '', 'fid', 1296, NULL, NULL);
+('event', '', 'id', 1038, NULL, NULL),
+('file', '', 'id', 1015, NULL, NULL),
+('find', '', 'id', 1037, NULL, NULL),
+('message', '', 'id', 1038, NULL, NULL),
+('object', '', 'fid', 1415, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2340,7 +2830,172 @@ INSERT INTO `ark_sequence_lock` (`id`, `module`, `parent`, `sequence`, `idx`, `r
 (469, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 15:07:51'),
 (470, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 15:07:51'),
 (471, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 15:07:51'),
-(472, 'message', '', 'id', 1, 0, NULL, '2017-08-31 15:07:51');
+(472, 'message', '', 'id', 1, 0, NULL, '2017-08-31 15:07:51'),
+(473, 'find', '', 'id', 1, 0, NULL, '2017-08-31 18:13:13'),
+(474, 'find', '', 'id', 1, 0, NULL, '2017-08-31 18:13:34'),
+(475, 'file', '', 'id', 1, 0, NULL, '2017-08-31 18:50:04'),
+(476, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 18:50:04'),
+(477, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 18:50:04'),
+(478, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 18:50:04'),
+(479, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 18:50:04'),
+(480, 'find', '', 'id', 1, 0, NULL, '2017-08-31 18:50:04'),
+(481, 'event', '', 'id', 1, 0, NULL, '2017-08-31 18:50:04'),
+(482, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 18:50:04'),
+(483, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 18:50:04'),
+(484, 'message', '', 'id', 1, 0, NULL, '2017-08-31 18:50:04'),
+(485, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 18:59:22'),
+(486, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 18:59:22'),
+(487, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 18:59:22'),
+(488, 'event', '', 'id', 1, 0, NULL, '2017-08-31 18:59:22'),
+(489, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 18:59:22'),
+(490, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 18:59:22'),
+(491, 'message', '', 'id', 1, 0, NULL, '2017-08-31 18:59:22'),
+(492, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:00:37'),
+(493, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:00:37'),
+(494, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:00:37'),
+(495, 'event', '', 'id', 1, 0, NULL, '2017-08-31 19:00:37'),
+(496, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:00:37'),
+(497, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:00:37'),
+(498, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:00:37'),
+(499, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:00:37'),
+(500, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:00:37'),
+(501, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:00:37'),
+(502, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:00:37'),
+(503, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:00:37'),
+(504, 'message', '', 'id', 1, 0, NULL, '2017-08-31 19:00:37'),
+(505, 'file', '', 'id', 1, 0, NULL, '2017-08-31 19:08:14'),
+(506, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:08:14'),
+(507, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:08:14'),
+(508, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:08:14'),
+(509, 'find', '', 'id', 1, 0, NULL, '2017-08-31 19:08:14'),
+(510, 'event', '', 'id', 1, 0, NULL, '2017-08-31 19:08:14'),
+(511, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:08:14'),
+(512, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:08:14'),
+(513, 'message', '', 'id', 1, 0, NULL, '2017-08-31 19:08:14'),
+(514, 'file', '', 'id', 1, 0, NULL, '2017-08-31 19:08:49'),
+(515, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:08:49'),
+(516, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:08:49'),
+(517, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:08:49'),
+(518, 'event', '', 'id', 1, 0, NULL, '2017-08-31 19:08:49'),
+(519, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:08:49'),
+(520, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:08:49'),
+(521, 'message', '', 'id', 1, 0, NULL, '2017-08-31 19:08:49'),
+(522, 'file', '', 'id', 1, 0, NULL, '2017-08-31 19:09:16'),
+(523, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:09:16'),
+(524, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:09:16'),
+(525, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:09:16'),
+(526, 'event', '', 'id', 1, 0, NULL, '2017-08-31 19:09:16'),
+(527, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:09:16'),
+(528, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:09:16'),
+(529, 'message', '', 'id', 1, 0, NULL, '2017-08-31 19:09:16'),
+(530, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:15:20'),
+(531, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:15:20'),
+(532, 'event', '', 'id', 1, 0, NULL, '2017-08-31 19:15:20'),
+(533, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:15:20'),
+(534, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:15:20'),
+(535, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:15:20'),
+(536, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:15:20'),
+(537, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:15:20'),
+(538, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:15:20'),
+(539, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:15:20'),
+(540, 'object', '', 'fid', 1, 0, NULL, '2017-08-31 19:15:20'),
+(541, 'message', '', 'id', 1, 0, NULL, '2017-08-31 19:15:20'),
+(542, 'file', '', 'id', 1, 0, NULL, '2017-09-01 12:53:15'),
+(543, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 12:53:15'),
+(544, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 12:53:15'),
+(545, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 12:53:15'),
+(546, 'event', '', 'id', 1, 0, NULL, '2017-09-01 12:53:15'),
+(547, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 12:53:15'),
+(548, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 12:53:15'),
+(549, 'message', '', 'id', 1, 0, NULL, '2017-09-01 12:53:15'),
+(550, 'file', '', 'id', 1, 0, NULL, '2017-09-01 13:48:44'),
+(551, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:48:44'),
+(552, 'file', '', 'id', 1, 0, NULL, '2017-09-01 13:48:45'),
+(553, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:48:45'),
+(554, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:48:45'),
+(555, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:48:45'),
+(556, 'find', '', 'id', 1, 0, NULL, '2017-09-01 13:48:45'),
+(557, 'event', '', 'id', 1, 0, NULL, '2017-09-01 13:48:45'),
+(558, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:48:45'),
+(559, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:48:45'),
+(560, 'message', '', 'id', 1, 0, NULL, '2017-09-01 13:48:45'),
+(561, 'file', '', 'id', 1, 0, NULL, '2017-09-01 13:50:07'),
+(562, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:50:07'),
+(563, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:50:07'),
+(564, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:50:08'),
+(565, 'event', '', 'id', 1, 0, NULL, '2017-09-01 13:50:08'),
+(566, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:50:08'),
+(567, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:50:08'),
+(568, 'message', '', 'id', 1, 0, NULL, '2017-09-01 13:50:08'),
+(569, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:50:26'),
+(570, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:50:26'),
+(571, 'event', '', 'id', 1, 0, NULL, '2017-09-01 13:50:26'),
+(572, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:50:26'),
+(573, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:50:26'),
+(574, 'message', '', 'id', 1, 0, NULL, '2017-09-01 13:50:26'),
+(575, 'file', '', 'id', 1, 0, NULL, '2017-09-01 13:50:38'),
+(576, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:50:38'),
+(577, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:50:38'),
+(578, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:50:38'),
+(579, 'event', '', 'id', 1, 0, NULL, '2017-09-01 13:50:38'),
+(580, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:50:38'),
+(581, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:50:38'),
+(582, 'message', '', 'id', 1, 0, NULL, '2017-09-01 13:50:38'),
+(583, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:50:47'),
+(584, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:50:47'),
+(585, 'event', '', 'id', 1, 0, NULL, '2017-09-01 13:50:47'),
+(586, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:50:47'),
+(587, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:50:47'),
+(588, 'message', '', 'id', 1, 0, NULL, '2017-09-01 13:50:47'),
+(589, 'file', '', 'id', 1, 0, NULL, '2017-09-01 13:51:02'),
+(590, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:51:02'),
+(591, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:51:02'),
+(592, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:51:02'),
+(593, 'event', '', 'id', 1, 0, NULL, '2017-09-01 13:51:02'),
+(594, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:51:02'),
+(595, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:51:02'),
+(596, 'message', '', 'id', 1, 0, NULL, '2017-09-01 13:51:02'),
+(597, 'file', '', 'id', 1, 0, NULL, '2017-09-01 13:51:19'),
+(598, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:51:19'),
+(599, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:51:19'),
+(600, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:51:19'),
+(601, 'event', '', 'id', 1, 0, NULL, '2017-09-01 13:51:19'),
+(602, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:51:19'),
+(603, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 13:51:19'),
+(604, 'message', '', 'id', 1, 0, NULL, '2017-09-01 13:51:19'),
+(605, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 15:32:54'),
+(606, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 15:32:54'),
+(607, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 15:32:54'),
+(608, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 15:55:43'),
+(609, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 15:55:43'),
+(610, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 15:55:43'),
+(611, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:11:59'),
+(612, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:11:59'),
+(613, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:11:59'),
+(614, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:12:35'),
+(615, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:12:35'),
+(616, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:12:35'),
+(617, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:24:32'),
+(618, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:24:32'),
+(619, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:24:32'),
+(620, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:31:03'),
+(621, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:31:03'),
+(622, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:31:03'),
+(623, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:37:02'),
+(624, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:37:02'),
+(625, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:37:02'),
+(626, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:41:28'),
+(627, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:41:28'),
+(628, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:41:28'),
+(629, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:43:23'),
+(630, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:43:23'),
+(631, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:43:23'),
+(632, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:43:36'),
+(633, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:43:36'),
+(634, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:43:36'),
+(635, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:44:11'),
+(636, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:44:11'),
+(637, 'object', '', 'fid', 1, 0, NULL, '2017-09-01 16:44:11');
 
 -- --------------------------------------------------------
 
@@ -2352,6 +3007,7 @@ CREATE TABLE `ark_sequence_reserve` (
   `module` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `parent` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sequence` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `block` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `idx` int(11) NOT NULL,
   `min` int(11) NOT NULL,
   `max` int(11) NOT NULL
@@ -2433,128 +3089,161 @@ INSERT INTO `ark_workflow_actor_user` (`actor`, `user`, `enabled`, `expires_at`)
 ALTER TABLE `ark_association`
   ADD PRIMARY KEY (`fid`),
   ADD KEY `association` (`association`),
-  ADD KEY `item1` (`module1`,`item1`),
-  ADD KEY `item2` (`module2`,`item2`);
+  ADD KEY `item1` (`module1`,`id1`),
+  ADD KEY `item2` (`module2`,`id2`);
 
 --
 -- Indexes for table `ark_fragment_blob`
 --
 ALTER TABLE `ark_fragment_blob`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `property` (`module`,`item`,`attribute`),
-  ADD KEY `object` (`object`);
+  ADD KEY `object_foreign` (`object`) USING BTREE,
+  ADD KEY `attribute` (`module`,`attribute`) USING BTREE,
+  ADD KEY `item` (`module`,`item`) USING BTREE;
 
 --
 -- Indexes for table `ark_fragment_boolean`
 --
 ALTER TABLE `ark_fragment_boolean`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `module` (`module`,`item`,`attribute`),
-  ADD KEY `object` (`object`);
+  ADD KEY `attribute` (`module`,`attribute`) USING BTREE,
+  ADD KEY `object_foreign` (`object`) USING BTREE,
+  ADD KEY `item` (`module`,`item`) USING BTREE,
+  ADD KEY `value` (`value`);
 
 --
 -- Indexes for table `ark_fragment_date`
 --
 ALTER TABLE `ark_fragment_date`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `module` (`module`,`item`,`attribute`),
-  ADD KEY `object` (`object`);
+  ADD KEY `value` (`value`),
+  ADD KEY `extent` (`extent`),
+  ADD KEY `object_foreign` (`object`) USING BTREE,
+  ADD KEY `item` (`module`,`item`) USING BTREE,
+  ADD KEY `attribute` (`module`,`attribute`) USING BTREE;
 
 --
 -- Indexes for table `ark_fragment_datetime`
 --
 ALTER TABLE `ark_fragment_datetime`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `module` (`module`,`item`,`attribute`),
-  ADD KEY `object` (`object`);
+  ADD KEY `item` (`module`,`item`) USING BTREE,
+  ADD KEY `object_foreign` (`object`) USING BTREE,
+  ADD KEY `value` (`value`),
+  ADD KEY `extent` (`extent`),
+  ADD KEY `attribute` (`module`,`attribute`) USING BTREE;
 
 --
 -- Indexes for table `ark_fragment_decimal`
 --
 ALTER TABLE `ark_fragment_decimal`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `property` (`module`,`item`,`attribute`),
-  ADD KEY `object` (`object`);
+  ADD KEY `attribute` (`module`,`attribute`) USING BTREE,
+  ADD KEY `object_foreign` (`object`) USING BTREE,
+  ADD KEY `extent` (`extent`),
+  ADD KEY `value` (`value`),
+  ADD KEY `item` (`module`,`item`) USING BTREE;
 
 --
 -- Indexes for table `ark_fragment_float`
 --
 ALTER TABLE `ark_fragment_float`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `module` (`module`,`item`,`attribute`),
-  ADD KEY `object` (`object`);
+  ADD KEY `item` (`module`,`item`) USING BTREE,
+  ADD KEY `attribute` (`module`,`attribute`) USING BTREE,
+  ADD KEY `value` (`value`),
+  ADD KEY `extent` (`extent`),
+  ADD KEY `object_foreign` (`object`) USING BTREE;
 
 --
 -- Indexes for table `ark_fragment_integer`
 --
 ALTER TABLE `ark_fragment_integer`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `module` (`module`,`item`,`attribute`),
-  ADD KEY `object_fid` (`object`);
+  ADD KEY `extent` (`extent`),
+  ADD KEY `value` (`value`),
+  ADD KEY `item` (`module`,`item`) USING BTREE,
+  ADD KEY `attribute` (`module`,`attribute`) USING BTREE,
+  ADD KEY `object_foreign` (`object`) USING BTREE;
 
 --
 -- Indexes for table `ark_fragment_item`
 --
 ALTER TABLE `ark_fragment_item`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `module` (`module`,`item`,`attribute`),
-  ADD KEY `object_fid` (`object`);
+  ADD KEY `object_foreign` (`object`) USING BTREE,
+  ADD KEY `item` (`module`,`item`) USING BTREE,
+  ADD KEY `value` (`value`),
+  ADD KEY `extent` (`extent`),
+  ADD KEY `attribute` (`module`,`attribute`) USING BTREE;
 
 --
 -- Indexes for table `ark_fragment_object`
 --
 ALTER TABLE `ark_fragment_object`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `item` (`module`,`item`,`attribute`),
-  ADD KEY `object` (`object`);
+  ADD KEY `item` (`module`,`item`) USING BTREE,
+  ADD KEY `object_foreign` (`object`) USING BTREE,
+  ADD KEY `attribute` (`module`,`attribute`) USING BTREE;
 
 --
 -- Indexes for table `ark_fragment_spatial`
 --
 ALTER TABLE `ark_fragment_spatial`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `property` (`module`,`item`,`attribute`),
-  ADD KEY `object` (`object`);
+  ADD KEY `item` (`module`,`item`) USING BTREE,
+  ADD KEY `object_foreign` (`object`) USING BTREE,
+  ADD KEY `attribute` (`module`,`attribute`) USING BTREE;
 
 --
 -- Indexes for table `ark_fragment_string`
 --
 ALTER TABLE `ark_fragment_string`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `module` (`module`,`item`,`attribute`),
-  ADD KEY `object_fid` (`object`);
+  ADD KEY `item` (`module`,`item`) USING BTREE,
+  ADD KEY `attribute` (`module`,`attribute`) USING BTREE,
+  ADD KEY `object_foreign` (`object`) USING BTREE;
+ALTER TABLE `ark_fragment_string` ADD FULLTEXT KEY `value` (`value`);
+ALTER TABLE `ark_fragment_string` ADD FULLTEXT KEY `extent` (`extent`);
 
 --
 -- Indexes for table `ark_fragment_text`
 --
 ALTER TABLE `ark_fragment_text`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `module` (`module`,`item`,`attribute`),
-  ADD KEY `object_fid` (`object`);
+  ADD KEY `item` (`module`,`item`) USING BTREE,
+  ADD KEY `attribute` (`module`,`attribute`) USING BTREE,
+  ADD KEY `object_foreign` (`object`) USING BTREE;
+ALTER TABLE `ark_fragment_text` ADD FULLTEXT KEY `value` (`value`);
 
 --
 -- Indexes for table `ark_fragment_time`
 --
 ALTER TABLE `ark_fragment_time`
   ADD PRIMARY KEY (`fid`),
-  ADD KEY `module` (`module`,`item`,`attribute`),
-  ADD KEY `objec` (`object`);
+  ADD KEY `item` (`module`,`item`) USING BTREE,
+  ADD KEY `attribute` (`module`,`attribute`) USING BTREE,
+  ADD KEY `object_foreign` (`object`) USING BTREE,
+  ADD KEY `value` (`value`),
+  ADD KEY `extent` (`extent`);
 
 --
 -- Indexes for table `ark_item_actor`
 --
 ALTER TABLE `ark_item_actor`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `name` (`label`),
-  ADD KEY `parent` (`parent_module`,`parent_id`);
+  ADD KEY `parent` (`parent_module`,`parent_id`),
+  ADD KEY `idx` (`idx`),
+  ADD KEY `label` (`label`) USING BTREE;
 
 --
 -- Indexes for table `ark_item_event`
 --
 ALTER TABLE `ark_item_event`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `name` (`label`),
-  ADD KEY `parent` (`parent_module`,`parent_id`);
+  ADD KEY `parent` (`parent_module`,`parent_id`),
+  ADD KEY `label` (`label`) USING BTREE,
+  ADD KEY `idx` (`idx`);
 
 --
 -- Indexes for table `ark_item_file`
@@ -2562,31 +3251,35 @@ ALTER TABLE `ark_item_event`
 ALTER TABLE `ark_item_file`
   ADD PRIMARY KEY (`id`),
   ADD KEY `parent` (`parent_module`,`parent_id`),
-  ADD KEY `name` (`label`(191));
+  ADD KEY `idx` (`idx`),
+  ADD KEY `label` (`label`(191)) USING BTREE;
 
 --
 -- Indexes for table `ark_item_find`
 --
 ALTER TABLE `ark_item_find`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `name` (`label`) USING BTREE,
-  ADD KEY `parent` (`parent_module`,`parent_id`) USING BTREE;
+  ADD KEY `parent` (`parent_module`,`parent_id`) USING BTREE,
+  ADD KEY `idx` (`idx`),
+  ADD KEY `label` (`label`) USING BTREE;
 
 --
 -- Indexes for table `ark_item_message`
 --
 ALTER TABLE `ark_item_message`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `name` (`label`),
-  ADD KEY `parent` (`parent_module`,`parent_id`);
+  ADD KEY `parent` (`parent_module`,`parent_id`),
+  ADD KEY `idx` (`idx`),
+  ADD KEY `label` (`label`) USING BTREE;
 
 --
 -- Indexes for table `ark_item_page`
 --
 ALTER TABLE `ark_item_page`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `name` (`label`),
-  ADD KEY `parent` (`parent_module`,`parent_id`);
+  ADD KEY `parent` (`parent_module`,`parent_id`),
+  ADD KEY `idx` (`idx`),
+  ADD KEY `label` (`label`) USING BTREE;
 
 --
 -- Indexes for table `ark_sequence`
@@ -2598,28 +3291,30 @@ ALTER TABLE `ark_sequence`
 -- Indexes for table `ark_sequence_lock`
 --
 ALTER TABLE `ark_sequence_lock`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `sequence_foreign` (`module`,`parent`,`sequence`) USING BTREE;
 
 --
 -- Indexes for table `ark_sequence_reserve`
 --
 ALTER TABLE `ark_sequence_reserve`
-  ADD PRIMARY KEY (`module`,`parent`,`sequence`);
+  ADD PRIMARY KEY (`module`,`parent`,`sequence`,`block`),
+  ADD KEY `sequence_foreign` (`module`,`parent`,`sequence`) USING BTREE;
 
 --
 -- Indexes for table `ark_workflow_actor_role`
 --
 ALTER TABLE `ark_workflow_actor_role`
   ADD PRIMARY KEY (`actor`,`role`),
-  ADD KEY `agent_for` (`agent_for`),
-  ADD KEY `IDX_9FE8DE90447556F9` (`actor`);
+  ADD KEY `actor_foreign` (`actor`) USING BTREE,
+  ADD KEY `agent_foreign` (`agent_for`) USING BTREE;
 
 --
 -- Indexes for table `ark_workflow_actor_user`
 --
 ALTER TABLE `ark_workflow_actor_user`
   ADD PRIMARY KEY (`actor`,`user`),
-  ADD KEY `IDX_451282B3447556F9` (`actor`);
+  ADD KEY `actor_foreign` (`actor`) USING BTREE;
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -2653,13 +3348,13 @@ ALTER TABLE `ark_fragment_date`
 -- AUTO_INCREMENT for table `ark_fragment_datetime`
 --
 ALTER TABLE `ark_fragment_datetime`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
 
 --
 -- AUTO_INCREMENT for table `ark_fragment_decimal`
 --
 ALTER TABLE `ark_fragment_decimal`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=160;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=166;
 
 --
 -- AUTO_INCREMENT for table `ark_fragment_float`
@@ -2671,31 +3366,31 @@ ALTER TABLE `ark_fragment_float`
 -- AUTO_INCREMENT for table `ark_fragment_integer`
 --
 ALTER TABLE `ark_fragment_integer`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT for table `ark_fragment_item`
 --
 ALTER TABLE `ark_fragment_item`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=665;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=802;
 
 --
 -- AUTO_INCREMENT for table `ark_fragment_spatial`
 --
 ALTER TABLE `ark_fragment_spatial`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
 
 --
 -- AUTO_INCREMENT for table `ark_fragment_string`
 --
 ALTER TABLE `ark_fragment_string`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2005;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2298;
 
 --
 -- AUTO_INCREMENT for table `ark_fragment_text`
 --
 ALTER TABLE `ark_fragment_text`
-  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=349;
+  MODIFY `fid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=353;
 
 --
 -- AUTO_INCREMENT for table `ark_fragment_time`
@@ -2707,7 +3402,7 @@ ALTER TABLE `ark_fragment_time`
 -- AUTO_INCREMENT for table `ark_sequence_lock`
 --
 ALTER TABLE `ark_sequence_lock`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=473;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=638;
 
 --
 -- Constraints for dumped tables
@@ -2717,13 +3412,13 @@ ALTER TABLE `ark_sequence_lock`
 -- Constraints for table `ark_fragment_blob`
 --
 ALTER TABLE `ark_fragment_blob`
-  ADD CONSTRAINT `ark_fragment_blob_ibfk_1` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fragment_blob_object_constraint` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_fragment_boolean`
 --
 ALTER TABLE `ark_fragment_boolean`
-  ADD CONSTRAINT `ark_fragment_boolean_ibfk_1` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fragment_boolean_object_constraint` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_fragment_date`
@@ -2735,74 +3430,86 @@ ALTER TABLE `ark_fragment_date`
 -- Constraints for table `ark_fragment_datetime`
 --
 ALTER TABLE `ark_fragment_datetime`
-  ADD CONSTRAINT `ark_fragment_datetime_ibfk_1` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fragment_datetime_object_constraint` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_fragment_decimal`
 --
 ALTER TABLE `ark_fragment_decimal`
-  ADD CONSTRAINT `ark_fragment_decimal_ibfk_1` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fragment_decimal_object_constraint` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_fragment_float`
 --
 ALTER TABLE `ark_fragment_float`
-  ADD CONSTRAINT `ark_fragment_float_ibfk_1` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fragment_float_object_constraint` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_fragment_integer`
 --
 ALTER TABLE `ark_fragment_integer`
-  ADD CONSTRAINT `ark_fragment_integer_ibfk_1` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fragment_integer_object_constraint` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_fragment_item`
 --
 ALTER TABLE `ark_fragment_item`
-  ADD CONSTRAINT `ark_fragment_item_ibfk_1` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fragment_item_object_constraint` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_fragment_object`
 --
 ALTER TABLE `ark_fragment_object`
-  ADD CONSTRAINT `ark_fragment_object_ibfk_1` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fragment_object_object_constraint` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_fragment_spatial`
 --
 ALTER TABLE `ark_fragment_spatial`
-  ADD CONSTRAINT `ark_fragment_spatial_ibfk_1` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fragment_spatial_object_constraint` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_fragment_string`
 --
 ALTER TABLE `ark_fragment_string`
-  ADD CONSTRAINT `ark_fragment_string_ibfk_1` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fragment_string_object_constraint` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_fragment_text`
 --
 ALTER TABLE `ark_fragment_text`
-  ADD CONSTRAINT `ark_fragment_text_ibfk_1` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fragment_text_object_constraint` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_fragment_time`
 --
 ALTER TABLE `ark_fragment_time`
-  ADD CONSTRAINT `ark_fragment_time_ibfk_1` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fragment_time_object_constraint` FOREIGN KEY (`object`) REFERENCES `ark_fragment_object` (`fid`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_sequence_lock`
+--
+ALTER TABLE `ark_sequence_lock`
+  ADD CONSTRAINT `sequence_lock_sequence_constraint` FOREIGN KEY (`module`,`parent`,`sequence`) REFERENCES `ark_sequence` (`module`, `parent`, `sequence`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `ark_sequence_reserve`
+--
+ALTER TABLE `ark_sequence_reserve`
+  ADD CONSTRAINT `sequence_reserve_sequence_constraint` FOREIGN KEY (`module`,`parent`,`sequence`) REFERENCES `ark_sequence` (`module`, `parent`, `sequence`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_actor_role`
 --
 ALTER TABLE `ark_workflow_actor_role`
-  ADD CONSTRAINT `ark_workflow_actor_role_ibfk_1` FOREIGN KEY (`actor`) REFERENCES `ark_item_actor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ark_workflow_actor_role_ibfk_2` FOREIGN KEY (`agent_for`) REFERENCES `ark_item_actor` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `workflow_actor_role_actor_constraint` FOREIGN KEY (`actor`) REFERENCES `ark_item_actor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflow_actor_role_agent_constraint` FOREIGN KEY (`agent_for`) REFERENCES `ark_item_actor` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `ark_workflow_actor_user`
 --
 ALTER TABLE `ark_workflow_actor_user`
-  ADD CONSTRAINT `ark_workflow_actor_user_ibfk_1` FOREIGN KEY (`actor`) REFERENCES `ark_item_actor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `workflow_actor_user_actor_constraint` FOREIGN KEY (`actor`) REFERENCES `ark_item_actor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 

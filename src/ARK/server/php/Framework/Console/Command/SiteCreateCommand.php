@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Console Command
+ * ARK Console Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,11 +30,10 @@
 namespace ARK\Framework\Console\Command;
 
 use ARK\ARK;
-use ARK\Framework\Console\ProcessTrait;
 use ARK\Database\Console\DatabaseCommand;
+use ARK\Framework\Console\ProcessTrait;
 use Doctrine\DBAL\DBALException;
 use Exception;
-use Symfony\Component\Console\Input\ArrayInput;
 
 class SiteCreateCommand extends DatabaseCommand
 {
@@ -42,7 +41,7 @@ class SiteCreateCommand extends DatabaseCommand
 
     private $drivers = ['pdo_mysql', 'pdo_pgsql', 'pdo_sqlite'];
 
-    protected function configure()
+    protected function configure() : void
     {
         $this->setName('site:create')
              ->setDescription('Create a new site')
@@ -62,7 +61,7 @@ class SiteCreateCommand extends DatabaseCommand
         $config['admin'] = $this->chooseServerConfig();
         $config['server'] = $config['admin'];
         unset($config['server']['wrapperClass']);
-        $config['server']['user'] = $this->askQuestion("Please enter the site database user");
+        $config['server']['user'] = $this->askQuestion('Please enter the site database user');
         $config['server']['password'] = $this->askPassword($config['server']['user']);
         foreach (['core', 'data', 'spatial', 'user'] as $db) {
             $config['connections'][$db]['dbname'] = $site.'_ark_'.$db;
@@ -128,14 +127,14 @@ class SiteCreateCommand extends DatabaseCommand
                     ['keep', 'drop', 'stop'],
                     'keep'
                 );
-                if ($action != 'keep') {
+                if ($action !== 'keep') {
                     $admin->close();
                     return false;
                 }
             }
 
             // Create the database
-            if ($action != 'keep') {
+            if ($action !== 'keep') {
                 // TODO drop action
                 try {
                     $admin->createDatabase($dbname);
@@ -159,11 +158,7 @@ class SiteCreateCommand extends DatabaseCommand
 
         // Load the schemas, not done above as need to connect to db itself
         foreach ($config['connections'] as $db => $conn) {
-            if ($db == 'spatial') {
-                // TODO add spatial when working
-                continue;
-            }
-            if ($actions[$db] != 'keep') {
+            if ($actions[$db] !== 'keep') {
                 $admin->close();
                 $dbname = $conn['dbname'];
                 $config['admin']['dbname'] = $dbname;
@@ -172,13 +167,16 @@ class SiteCreateCommand extends DatabaseCommand
                 $this->write("Loading $db schema into database $dbname...");
                 $admin->beginTransaction();
                 try {
-                    $admin->loadSchema(ARK::namespaceDir('ARK')."/server/schema/database/$db.xml");
-                    $admin->commit();
+                    // TODO Need to add Doctrine spatial types!
+                    if ($db !== 'spatial') {
+                        $admin->loadSchema(ARK::namespaceDir('ARK')."/server/schema/database/$db.xml");
+                        $admin->commit();
+                    }
                     $this->write(" * Loaded $db schema...");
                 } catch (DBALException $e) {
                     $this->writeException("Load Schema to database $dbname failed", $e);
                     $admin->rollBack();
-                    $admin->executeQuery("SET FOREIGN_KEY_CHECKS=1");
+                    $admin->executeQuery('SET FOREIGN_KEY_CHECKS=1');
                     $admin->close();
                     return false;
                 }
