@@ -42,15 +42,11 @@ class SchemaAssociation
 
     protected $schma;
     protected $class = '';
-    protected $association = '';
-    protected $module1 = '';
-    protected $schema1 = '';
     protected $owningSchema;
-    protected $module2 = '';
-    protected $schema2 = '';
+    protected $association = '';
+    protected $inverseSchema;
     protected $degree = 0;
     protected $inverse;
-    protected $inverseSchema;
     protected $inverseDegree = 1;
     protected $bidirectional = false;
 
@@ -106,12 +102,8 @@ class SchemaAssociation
         $builder->addStringKey('association', 30);
 
         // Fields
-        $builder->addStringField('module1', 30);
-        $builder->addStringField('schema1', 30);
         $builder->addField('degree', 'integer');
         $builder->addStringField('inverse', 30);
-        $builder->addStringField('module2', 30);
-        $builder->addStringField('schema2', 30);
         $builder->addField('inverseDegree', 'integer', [], 'inverse_degree');
         $builder->addField('bidirectional', 'boolean');
         EnabledTrait::buildEnabledMetadata($builder);
