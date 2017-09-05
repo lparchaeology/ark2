@@ -35,6 +35,7 @@ use ARK\ORM\ORM;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
+use ARK\Service;
 
 class DatingPropertyType extends AbstractPropertyType {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -46,6 +47,7 @@ class DatingPropertyType extends AbstractPropertyType {
         if (isset ( $options ['state'] ['static'] )) {
             $builder->add ( 'display_year', $options ['state'] ['display'] ['type'], $options ['state'] ['display'] ['options'] );
             $builder->add ( 'display_period', $options ['state'] ['display'] ['type'], $options ['state'] ['display'] ['options'] );
+            $integerType = "Symfony\Component\Form\Extension\Core\Type\HiddenType";
         } else {
             $valueOptions ['choices'] = $dataclass->attribute ( 'period' )->vocabulary ()->terms ();
             $valueOptions ['choice_value'] = 'name';
@@ -53,9 +55,11 @@ class DatingPropertyType extends AbstractPropertyType {
             $valueOptions ['choice_label'] = 'keyword';
             $valueOptions ['placeholder'] = 'core.placeholder';
             $options ['state'] ['value'] ['type'] = ChoiceType::class;
+            $integerType = "Symfony\Component\Form\Extension\Core\Type\IntegerType";
         }
-        $builder->add ( 'year', $options ['state'] ['value'] ['type'] );
-        $builder->add ( 'year_span', $options ['state'] ['value'] ['type'] );
+
+        $builder->add ( 'year', $integerType, $valueOptions );
+        $builder->add ( 'year_span', $integerType, $valueOptions );
         $builder->add ( 'period', $options ['state'] ['value'] ['type'], $valueOptions );
         $builder->add ( 'period_span', $options ['state'] ['value'] ['type'], $valueOptions );
 
@@ -76,10 +80,14 @@ class DatingPropertyType extends AbstractPropertyType {
         $value = $property->value ();
         if ($value) {
             if (isset ( $options ['state'] ['static'] )) {
+
                 $forms ['display_year']->setData ( $value ['year'] [0] . ' - ' . $value ['year'] [1] );
                 $p0 = ($value ['period'] [0] ? $value ['period'] [0]->keyword () : '');
                 $p1 = ($value ['period'] [1] ? $value ['period'] [1]->keyword () : '');
-                if ($p1) {
+
+                $p0 = Service::translate ( $p0 );
+                $p1 = Service::translate ( $p1 );
+                if ($p1 && $p1 !== $p0) {
                     $forms ['display_period']->setData ( $p0 . ' - ' . $p1 );
                 } else {
                     $forms ['display_period']->setData ( $p0 );

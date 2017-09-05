@@ -29,6 +29,13 @@ var initSimpleDating = function(){
         }, '#select2-'+simpledating_id+'_span-results .select2-results__option.select2-results__option--highlighted');
 
     };
+
+    $('#'+simpledating_id).empty();
+    
+
+    var noselection = $('<option> - </option>');
+
+    $('#'+simpledating_id).append(noselection);
     
     for (var period in window.periodvocabulary) {
         periodvocabulary[period].optionelement = $('#'+advanceddating_id+' option[value="'+period+'"]').clone();
@@ -46,6 +53,9 @@ var initSimpleDating = function(){
             console.log(periodvocabulary[period]);
 
             $('#'+advanceddating_id).val(period);
+            console.log(periodvocabulary[period]);
+            $('#'+advanceddating_id+'_span').val(period);
+            console.log(periodvocabulary[period]);
             return true;
         } catch (e) {
             return false;

@@ -148,6 +148,10 @@ console.log(highlighted_item_concept);
 
     $('#'+date_start_period_id).on("select2:select select2:unselecting", function(){
         period = periodvocabulary[this.value];
+        
+        if(typeof period == 'undefined'){
+            return false;
+        }
 
         if ($('#'+date_start_id).val() == '') {
             var year = period.parameters.year_start.value;
@@ -166,7 +170,10 @@ console.log(highlighted_item_concept);
 
     $('#'+date_start_period_id+'_span').on("select2:select select2:unselecting", function(){
         period = periodvocabulary[this.value];
-
+        
+        if(typeof period == 'undefined'){
+            return false;
+        }
         if ($('#'+date_start_id+'_span').val() == '') {
             var year = period.parameters.year_end.value;
 
@@ -215,7 +222,13 @@ $(document).ready(function(){
             minimumResultsForSearch: 11,
             width: 'resolve'
         });
+        $("#find_dating_period_span").select2({
+            minimumResultsForSearch: 11,
+            width: 'resolve'
+        });
         $("#find_dating_period").trigger("select2:select");
+        $("#find_dating_period_span").trigger("select2:select");
+        
         $('.advanced-dating').show();
         $('.simple-dating').hide();
         $('.form-period').addClass("col-sm-6").removeClass("col-sm-11");
@@ -225,6 +238,7 @@ $(document).ready(function(){
         $('#advanced-dating-button').show();
         $('.advanced-dating').hide();
         $('.simple-dating').show();
+        initSimpleDating();
         $('.form-period').removeClass("col-sm-6").addClass("col-sm-11");
     });
     $('#oldtid-dating-button').on('click', function(e){
