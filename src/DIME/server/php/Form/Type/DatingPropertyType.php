@@ -58,8 +58,8 @@ class DatingPropertyType extends AbstractPropertyType {
             $integerType = "Symfony\Component\Form\Extension\Core\Type\IntegerType";
         }
 
-        $builder->add ( 'year', $integerType, $valueOptions );
-        $builder->add ( 'year_span', $integerType, $valueOptions );
+        $builder->add ( 'year', $integerType );
+        $builder->add ( 'year_span', $integerType );
         $builder->add ( 'period', $options ['state'] ['value'] ['type'], $valueOptions );
         $builder->add ( 'period_span', $options ['state'] ['value'] ['type'], $valueOptions );
 

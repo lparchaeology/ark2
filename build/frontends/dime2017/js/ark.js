@@ -36,6 +36,9 @@ $(document).ready(function() {
             }
 
         }
+        
+        $("#find_image_existing").data('uploadUploaded',{});
+        $("#find_image_existing").data('uploadPreview',{});
 
         $(this).fileinput({
             'theme': 'gly',
@@ -53,28 +56,60 @@ $(document).ready(function() {
             'minFileCount': 0,
             'maxFileCount': 3,
             'deleteUrl': "../true.json",
-            //'uploadUrl': "../true.json",
-            //'uploadAsync': false,
-        });
+            'uploadUrl': "/dime/api/internal/file",
+            'uploadAsync': false,
+        }).on("filebatchselected", function(event, files) {
+            // trigger upload method immediately after files are selected
+            console.log(files);
+            $("input[type=file]").fileinput("upload");
+        }).on('filebatchuploadsuccess', function(event, data, previewId, index) {
+            var response = data.response;
+            if ( $("#find_image_existing > input[value='null']").length > 0 ){
+                $("#find_image_existing > input[value='null']").first().val(response[0]);
+            } else {
+                var count = $("#find_image_existing > input").length;
+                if (count < 3) {
+                    if($("#find_image_existing_0").length == 0){
+                        $("#find_image_existing").append($("<input type=\"hidden\" id=\"find_image_existing_0\" name=\"find[image][existing][0]\" value=\""+response[0]+"\">"))
+                    } else if($("#find_image_existing_1").length == 0) {
+                        $("#find_image_existing").append($("<input type=\"hidden\" id=\"find_image_existing_1\" name=\"find[image][existing][1]\" value=\""+response[0]+"\">"))
+                    } else {
+                        $("#find_image_existing").append($("<input type=\"hidden\" id=\"find_image_existing_2\" name=\"find[image][existing][2]\" value=\""+response[0]+"\">"))
+                    } 
+                } else {
+                    $("#find_image_existing_"+(count-1).toString()).val(response[0]);
+                }
+            }
+            var uploadUploaded = $("#find_image_existing").data('uploadUploaded');
+            var thumbnails = $(".kv-preview-thumb");
+            uploadUploaded[response[0]] = thumbnails.last();
+        }).on('filebatchuploadcomplete', function(event, file, extra) {
+            var uploadUploaded = $("#find_image_existing").data('uploadUploaded');
+            var uploadPreview = $("#find_image_existing").data('uploadPreview');
+            for (key in uploadUploaded){
+                uploadPreview[$(uploadUploaded[key])[0].id] = key;
+            }
+        }).on('filesuccessremove', function(event, id) {
+            var form_root_array = $(this).closest(".file-input").find("input[type=file]").attr('id').split("_");
+            form_root_array.splice(-1,1);
+            
+            console.log($('#'+id));
+            
+            var existing_id_container = form_root_array.join("_")+"_existing";
+            
+            var uploadPreview = $("#find_image_existing").data('uploadPreview');
+            
+            console.log(id);
+            console.log(uploadPreview);
+            console.log(uploadPreview[id]);
+            
+            if ($("#"+existing_id_container).find('input[value="'+uploadPreview[id]+'"]').remove()) {
+                console.log('Uploaded thumbnail successfully removed');
+             } else {
+                 return false; // abort the thumbnail removal
+             }
+         });
     });
-    
-    $('.kv-file-remove').click(function(e){
-        var form_root_array = $(this).closest(".file-input").find("input[type=file]").attr('id').split("_");
-        form_root_array.splice(-1,1);
-        var existing_id_container = form_root_array.join("_")+"_existing";
-        var id_to_remove = $(this).attr('data-key');
-        
-       // console.log($(this).closest(".file-input").fileinput('getFileStack'));
-        
-        $("#"+existing_id_container).find('input[value="'+id_to_remove+'"]').remove();
-        
-        $(this).closest(".file-preview-frame").remove();
-        
-    });
-
-    //$("date").datetimepicker();
-    //$("time").datetimepicker();
-    //$("datetime").datetimepicker();
 
     if(typeof applocale != 'undefined' ){
         $('.datetimepicker').datetimepicker({
