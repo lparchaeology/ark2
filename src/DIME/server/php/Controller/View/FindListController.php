@@ -56,8 +56,6 @@ class FindListController extends DimeFormController
         $filterMuseums = $actor->hasPermission('dime.find.filter.museum');
         // Otherwise only allow advanced filtering for the current users finds
         $myfinds = $advanced && $actor->hasPermission('dime.find.create') && !$filterFinders;
-        // If the user can do Treasure Claim processing
-        $claim = $actor->hasPermission('dime.find.treasure.claim');
 
         if (isset($query['municipality'])) {
             $municipalities = ORM::findBy(Term::class, [
@@ -160,21 +158,6 @@ class FindListController extends DimeFormController
             $finds = ORM::findAll(Find::class);
         }
 
-        // Enable Treasure Claim processing iff search is for Evaluated finds with Pending treasure status
-        // for a single Finder and a single Museum the user is an Agent for.
-        if ($advanced && $claim) {
-            $claim = (
-                $finds
-                && $status->count() === 1
-                && $status->first()->name() === 'dime.find.process.evaluated'
-                && $treasures->count() === 1
-                && $treasures->first()->name() === 'dime.treasure.pending'
-                && $finders->count() === 1
-                && $museums->count() === 1
-                && $actor->isAgentFor($museums->first())
-            );
-        }
-
         $visible = new ArrayCollection();
         foreach ($finds as $find) {
             if ($find->visibility()->name() === 'public' || Service::workflow()->can($actor, 'view', $find)) {
@@ -188,10 +171,6 @@ class FindListController extends DimeFormController
 
         $data['finds']['items'] = $visible;
         $data['finds']['selected'] = [];
-        $data['actions'] = [];
-        if ($claim) {
-            $data['actions'][] = ORM::findBy(Action::class, ['schma' => 'dime.find', 'action' => 'claim']);
-        }
         if ($myfinds || Service::workflow()->actor()->hasPermission('dime.find.read.location')) {
             $data['map']['finds'] = $visible;
         } else {
@@ -204,17 +183,33 @@ class FindListController extends DimeFormController
     public function buildState(Request $request, $data) : iterable
     {
         $state = parent::buildState($request, $data);
-
+        $actor = $state['actor'];
         $query = $request->query->all();
-        if (isset($query['status']) && isset($data['finds']['items'][0])) {
-            //$workflow['actions'] = Service::workflow()->updateActions($actor, $data['finds'][0]);
-        }
-        $state['workflow']['mode'] = 'edit';
-        $state['actions'] = $data['actions'];
-        $state['select']['actions']['choices'] = $data['actions'];
+        // If on the users home search/action page, then enable advanced filtering
+        $advanced = ($request->attributes->get('_route') === 'dime.home.finds');
 
-        if ($request->attributes->get('_route') === 'dime.home.finds') {
-            $actor = $state['actor'];
+        if ($advanced) {
+            // Enable Treasure Claim processing iff search is for Evaluated finds with Pending treasure status
+            // for a single Finder and a single Museum the user is an Agent for.
+            // If the user can do Treasure Claim processing
+            $claim = $actor->hasPermission('dime.find.treasure.claim')
+                && count($data['finds']['items']) > 0
+                && isset($query['museum']) && count($query['museum']) === 1
+                && ORM::find(Museum::class, $query['museum'][0])
+                && $actor->isAgentFor(ORM::find(Museum::class, $query['museum'][0]))
+                && isset($query['finder']) && count($query['finder']) === 1
+                && isset($query['status']) && count($query['status']) === 1;
+
+            if ($claim) {
+                $state['workflow']['mode'] = 'edit';
+                $state['actions'] = Service::workflow()->updateActions($actor, $data['finds']['items'][0]);
+                $state['select']['actions']['choices'] = $state['actions'];
+                $state['select']['actions']['choice_value'] = 'name';
+                $state['select']['actions']['choice_name'] = 'name';
+                $state['select']['actions']['choice_label'] = 'keyword';
+                $state['select']['actions']['multiple'] = false;
+                $state['select']['actions']['placeholder'] = Service::translate('core.placeholder');
+            }
 
             $select['choice_value'] = 'id';
             $select['choice_name'] = 'id';
@@ -261,7 +256,6 @@ class FindListController extends DimeFormController
             }
             $state['select']['finder'] = $select;
         }
-
         return $state;
     }
 
@@ -269,9 +263,34 @@ class FindListController extends DimeFormController
     {
         Service::view()->clearFlashes();
         $clicked = $form->getClickedButton()->getName();
-
         if ($clicked === 'apply') {
-            $selected = $form['finds']['selected']->getData();
+            //$selected = $form['finds']['selected']->getData();
+            $actor = Service::workflow()->actor();
+            $data = $form->getData();
+            $finds = $data['items'];
+            $action = $data['actions'];
+            $subject = $data['actors'];
+            $date = $data['date'];
+            $text = $data['textarea'];
+            foreach ($finds as $find) {
+                $action->apply($actor, $find, $subject);
+                ORM::persist($find);
+            }
+            ORM::flush($find);
+            $message = $action->keyword();
+            Service::view()->addSuccessFlash($message);
+            if (false && $action->name === 'claim') {
+                $page = ORM::find(Page::class, 'dime_page_claim');
+                $data['finds'] = [];
+                $data['museum'] = $find->property('museum')->value();
+                $data['claimant'] = $find->property('finder')->value();
+                $state = [];
+                $options['state']['actor'] = $actor;
+                $options['state']['mode'] = 'view';
+                $forms = $page->buildForms($data, $options);
+                $context = $page->renderContext($data, ['state' => $options['state']], $forms, $form);
+                $pdf = Service::view()->renderPdfResponse('pages/treasureclaimpdf.html.twig', $context, 'danefae.pdf');
+            }
         }
 
         if ($clicked === 'search') {

@@ -34,7 +34,6 @@ use ARK\Http\Error\NotFoundError;
 use ARK\Model\Item;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\Workflow\Action;
 use DIME\DIME;
 use DIME\Entity\Find;
 use Symfony\Component\Form\Form;
@@ -61,6 +60,7 @@ class FindViewController extends DimeFormController
     public function buildState(Request $request, $data) : iterable
     {
         $state = parent::buildState($request, $data);
+        // Finder cannot be changed
         $state['select']['finder']['choices'] = [$this->item($data)->value('finder')];
         return $state;
     }
@@ -81,21 +81,25 @@ class FindViewController extends DimeFormController
             Service::workflow()->apply($actor, 'edit', $find);
             $message = 'dime.find.update.saved';
         }
-        if ($clicked === 'send') {
-            Service::workflow()->apply($actor, 'report', $find);
-            Service::workflow()->apply($actor, 'send', $find, $find->property('museum')->value());
-            $message = 'dime.find.update.sent';
+        if ($clicked === 'submit') {
+            Service::workflow()->apply($actor, 'submit', $find, $find->property('museum')->value());
+            $message = 'dime.find.update.submitted';
         }
         if ($clicked === 'report') {
             $result = Service::workflow()->apply($actor, 'report', $find);
             $message = 'dime.find.update.reported';
         }
-        if (false && $clicked === 'apply') {
-            $actor = Service::workflow()->actor();
-            $action = $form['find']['action']['actions']->getNormData();
-            $action->apply($actor, $find, $find->value('museum'));
+        if ($clicked === 'apply') {
+            $action = $form['find']['actions']->getNormData();
+            $subject = $form['find']['actors']->getNormData();
+            $date = $form['find']['date']->getNormData();
+            $text = $form['find']['textarea']->getNormData();
+            $action->apply($actor, $find, $subject);
+            $message = $action->keyword();
         }
-        ORM::persist($find);
+        if (!isset($message)) {
+            return;
+        }
         ORM::flush($find);
         Service::view()->addSuccessFlash($message);
     }

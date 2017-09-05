@@ -179,6 +179,7 @@ class Page extends Element
             }
         }
         //dump('PAGE : RENDER');
+        //dump($state);
         $context = $this->pageContext($data, $state, $forms);
         //dump($context);
         $response = Service::view()->renderResponse($this->template(), $context);

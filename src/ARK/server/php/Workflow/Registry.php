@@ -87,6 +87,7 @@ class Registry extends SymfonyRegistry
                 }
             } catch (WorkflowException $e) {
                 // noop
+                //dump($e->getMessage());
             }
         }
         return $actions;

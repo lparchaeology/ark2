@@ -466,53 +466,48 @@ class Database
         $types = [
             Connection::PARAM_STR_ARRAY,
         ];
-        $res = [];
+        $results = [];
         if (isset($query['municipality'])) {
             $sql = $pre."AND attribute = 'municipality' AND value IN (?)";
             $params = [
                 $query['municipality'],
             ];
-            $res = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
+            $results['municipality'] = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
         }
         if (isset($query['class'])) {
             $sql = $pre."AND attribute = 'class' AND value IN (?)";
             $params = [
                 $query['class'],
             ];
-            $typ = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
-            $res = ($res ? array_intersect($res, $typ) : $typ);
+            $results['class'] = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
         }
         if (isset($query['period'])) {
             $sql = $pre."AND attribute = 'period' AND value IN (?)";
             $params = [
                 $query['period'],
             ];
-            $prd = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
-            $res = ($res ? array_intersect($res, $prd) : $prd);
+            $results['period'] = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
         }
         if (isset($query['material'])) {
             $sql = $pre."AND attribute = 'material' AND value IN (?)";
             $params = [
                 $query['material'],
             ];
-            $mat = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
-            $res = ($res ? array_intersect($res, $mat) : $mat);
+            $results['material'] = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
         }
         if (isset($query['status'])) {
             $sql = $pre."AND attribute = 'process' AND value IN (?)";
             $params = [
                 $query['status'],
             ];
-            $sta = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
-            $res = ($res ? array_intersect($res, $sta) : $sta);
+            $results['status'] = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
         }
         if (isset($query['treasure'])) {
             $sql = $pre."AND attribute = 'treasure' AND value IN (?)";
             $params = [
                 $query['treasure'],
             ];
-            $tre = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
-            $res = ($res ? array_intersect($res, $tre) : $tre);
+            $results['treasure'] = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
         }
 
         $pre = "
@@ -525,19 +520,23 @@ class Database
             $params = [
                 $query['museum'],
             ];
-            $mus = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
-            $res = ($res ? array_intersect($res, $mus) : $mus);
+            $results['museum'] = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
         }
         if (isset($query['finder'])) {
             $sql = $pre."AND attribute = 'finder' AND parameter = 'actor' AND value IN (?)";
             $params = [
                 $query['finder'],
             ];
-            $fin = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
-            $res = ($res ? array_intersect($res, $fin) : $fin);
+            $results['finder'] = $this->data()->fetchAllColumn($sql, 'item', $params, $types);
         }
-
-        return $res;
+        $all = [];
+        foreach ($results as $key => $items) {
+            $all = array_merge($all, $items);
+        }
+        $all = array_unique($all);
+        sort($all);
+        $result = call_user_func_array('array_intersect', array_merge([$all], array_values($results)));
+        return $result;
     }
 
     private function loadModules() : void

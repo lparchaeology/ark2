@@ -39,28 +39,34 @@ use ARK\Vocabulary\Term;
 
 class Update
 {
-    protected $schma = '';
-    protected $actionName = '';
+    protected $schma;
+    protected $actionName;
     protected $action;
-    protected $class = '';
-    protected $attributeName = '';
+    protected $class;
+    protected $attributeName;
     protected $attribute;
     protected $subject;
     protected $actor;
     protected $clear;
-    protected $term = '';
+    protected $term;
+    protected $id;
+    protected $source;
 
     public function apply(Actor $actor, Item $item, Actor $subject = null) : void
     {
         if ($this->actor) {
-            $item->property($this->attributeName)->setValue($actor);
+            $value = ($this->id ? ORM::find(Actor::class, $this->id) : $actor);
         } elseif ($this->subject) {
-            $item->property($this->attributeName)->setValue($subject);
+            $value = $subject;
         } elseif ($this->clear) {
-            $item->property($this->attributeName)->setValue($this->attribute->emptyValue());
+            $value = $this->attribute->emptyValue();
         } elseif ($this->term) {
-            $term = ORM::findOneBy(Term::class, ['concept' => $this->attribute->vocabulary()->concept(), 'term' => $this->term]);
-            $item->property($this->attributeName)->setValue($term);
+            $value = ORM::findOneBy(Term::class, ['concept' => $this->attribute->vocabulary()->concept(), 'term' => $this->term]);
+        } elseif ($this->source) {
+            $value = $item->property($this->source->name())->value();
+        }
+        if (isset($value) || $this->clear) {
+            $item->property($this->attributeName)->setValue($value);
         }
     }
 
@@ -80,6 +86,7 @@ class Update
         $builder->addStringField('subject', 'boolean');
         $builder->addStringField('clear', 'boolean');
         $builder->addStringField('term', 30);
+        $builder->addStringField('id', 30);
 
         // Associations
         $builder->addCompositeManyToOneField(
@@ -98,6 +105,15 @@ class Update
                 ['column' => 'schma'],
                 ['column' => 'class'],
                 ['column' => 'attribute'],
+            ]
+        );
+        $builder->addCompositeManyToOneField(
+            'source',
+            SchemaAttribute::class,
+            [
+                ['column' => 'schma'],
+                ['column' => 'class'],
+                ['column' => 'source', 'reference' => 'attribute'],
             ]
         );
     }

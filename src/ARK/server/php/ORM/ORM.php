@@ -89,9 +89,12 @@ class ORM
         return self::manager($entity)->contains($entity);
     }
 
-    public static function flush($class) : void
+    public static function flush($entity) : void
     {
-        self::manager($class)->flush();
+        if (is_object($entity) || is_array($entity)) {
+            self::persist($entity);
+        }
+        self::manager($entity)->flush();
     }
 
     public static function rollback() : void
