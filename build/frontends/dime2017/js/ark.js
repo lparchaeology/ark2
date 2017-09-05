@@ -77,6 +77,23 @@ $(document).ready(function() {
                         $("#find_image_existing").append($("<input type=\"hidden\" id=\"find_image_existing_2\" name=\"find[image][existing][2]\" value=\""+response[0]+"\">"))
                     } 
                 } else {
+                    var removePreview = $("#find_image_existing_"+(count-1).toString()).val();
+                    console.log(removePreview);
+                    var uploadPreview = $("#find_image_existing").data('uploadPreview')
+                    console.log(uploadPreview);
+                    for (upload in uploadPreview){
+                        if(removePreview==uploadPreview[upload]){
+                           console.log(uploadPreview[upload]);
+
+                            $("#"+upload).find("button.kv-file-remove").click();
+                        }
+                    }
+                    
+                    
+                    console.log($("button.kv-file-remove[data-key="+removePreview+"]"))
+                    
+                    $("button.kv-file-remove[data-key="+removePreview+"]").click();
+                    
                     $("#find_image_existing_"+(count-1).toString()).val(response[0]);
                 }
             }
@@ -93,6 +110,8 @@ $(document).ready(function() {
             var form_root_array = $(this).closest(".file-input").find("input[type=file]").attr('id').split("_");
             form_root_array.splice(-1,1);
             
+            console.log(id);
+            
             console.log($('#'+id));
             
             var existing_id_container = form_root_array.join("_")+"_existing";
@@ -108,7 +127,17 @@ $(document).ready(function() {
              } else {
                  return false; // abort the thumbnail removal
              }
-         });
+         }).on('filedeleted', function(event, id) {
+             var form_root_array = $(this).closest(".file-input").find("input[type=file]").attr('id').split("_");
+             form_root_array.splice(-1,1);
+             var existing_id_container = form_root_array.join("_")+"_existing";
+             
+             if ($("#"+existing_id_container).find('input[value="'+id+'"]').remove()) {
+                 console.log('Uploaded thumbnail successfully removed');
+              } else {
+                  return false; // abort the thumbnail removal
+              }
+          });
     });
 
     if(typeof applocale != 'undefined' ){
@@ -164,17 +193,6 @@ $(document).ready(function() {
     $('[data-toggle="tooltip"]').tooltip({'trigger':'click'});
 
 });
-/*
-//Find selection tables
-$('#dime_find_table').on('onCheck.bs.table', updateSelectedFinds());
-$('#dime_find_table').on('onUncheck.bs.table', updateSelectedFinds());
-
-function updateSelectedFinds() {
-    $('#finds_selected').val($.map($table.bootstrapTable('getSelections'), function (row) {
-        return row.id
-    }));
-}
-*/
 // Summernote Editor
 var NoteSaveButton = function(context) {
     var ui = $.summernote.ui;
@@ -222,29 +240,7 @@ $('#pageedit').on('click', function() {
         });
     }
 });
-/*
-jQuery(function($) {
-    $('form[data-async]').on('submit', function(event) {
-        var $form = $(this);
-        var $target = $($form.attr('data-target'));
 
-        $.ajax({
-            type: $form.attr('method'),
-            url: $form.attr('action'),
-            data: $form.serialize(),
-
-            success: function(data, status) {
-                console.log(data);
-                location.reload();
-                //$target.modal('hide');
-            }
-
-        });
-
-        event.preventDefault();
-    });
-});
-*/
 function debounce(func, wait, immediate) {
     var timeout;
     return function() {

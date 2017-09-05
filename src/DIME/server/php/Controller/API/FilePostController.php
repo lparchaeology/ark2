@@ -32,6 +32,7 @@ use ARK\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use ARK\ORM\ORM;
 
 class FilePostController {
     public function __invoke(Request $request): Response
@@ -39,6 +40,8 @@ class FilePostController {
         $ids = [ ];
         foreach ( $request->files as $upload ) {
             if ($file = File::createFromUploadedFile ( $upload ['image'] ['file'] [0] )) {
+                ORM::persist ( $file );
+                ORM::flush ( $file );
                 $ids [] = $file->id ();
             }
         }

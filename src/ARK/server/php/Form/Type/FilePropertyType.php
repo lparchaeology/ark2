@@ -79,8 +79,8 @@ class FilePropertyType extends AbstractPropertyType {
         while ( $i < $maximumOccurrences ) {
             if (is_array ( $value )) {
                 if (array_key_exists ( $i, $value )) {
-                    if ($value [$id] instanceof File) {
-                        $existing [] = $value [$id]->id ();
+                    if ($value [$i] instanceof File) {
+                        $existing [] = $value [$i]->id ();
                     } else {
                         $existing [] = "null";
                     }
@@ -109,23 +109,31 @@ class FilePropertyType extends AbstractPropertyType {
         $existing = array_values ( array_filter ( $forms ['existing']->getData (), 'strlen' ) );
         sort ( $existing );
         $removed = array_diff ( $previous, $existing );
+        $additions = array_diff ( $existing, $previous );
 
-        $additions = array_diff ( $previous, $existing );
+        dump ( $existing );
 
-        if (! $removed && ! $upload) {
+        if (! $removed && ! $upload && ! $additions) {
             return;
         }
 
         if ($options ['state'] ['multiple']) {
             $files = new ArrayCollection ();
-            $files = ORM::findBy ( File::class, [
-                    'id' => $existing
-            ] );
+            foreach ( $existing as $fileId ) {
+                $file = ORM::find ( File::class, $fileId );
+                if ($file) {
+                    $files [] = $file;
+                }
+            }
+
             foreach ( $upload as $up ) {
                 if ($file = File::createFromUploadedFile ( $up )) {
                     $files->add ( $file );
                 }
             }
+
+            dump ( $files );
+
             $property->setValue ( $files );
         } else {
             $file = null;
