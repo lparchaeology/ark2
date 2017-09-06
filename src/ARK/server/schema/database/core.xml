@@ -1798,7 +1798,7 @@
         </field>
         <field name="keyword" type="string" size="100"/>
         <field name="description" type="string" size="100"/>
-        <index name="keyword_foreign">
+        <index name="keyword_unique">
             <unique/>
             <col>keyword</col>
         </index>
@@ -1879,6 +1879,7 @@
             <notnull/>
         </field>
         <field name="keyword" type="string" size="100"/>
+        <field name="description" type="string" size="100"/>
         <index name="schema_foreign">
             <col>schma</col>
         </index>
@@ -2212,6 +2213,8 @@
         <field name="subject" type="boolean"/>
         <field name="clear" type="boolean"/>
         <field name="term" type="string" size="30"/>
+        <field name="id" type="string" size="30"/>
+        <field name="source" type="string" size="30"/>
         <index name="schema_foreign">
             <col>schma</col>
             <col>class</col>
@@ -2221,10 +2224,20 @@
             <col>schma</col>
             <col>action</col>
         </index>
+        <index name="source_foreign">
+            <col>schma</col>
+            <col>class</col>
+            <col>source</col>
+        </index>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
         <references name="workflow_update_action_constraint" table="ark_workflow_action" onupdate="cascade" ondelete="cascade">
             <column local="schma" foreign="schma"/>
             <column local="action" foreign="action"/>
+        </references>
+        <references name="workflow_update_agency_constraint" table="ark_schema_attribute" onupdate="cascade" ondelete="cascade">
+            <column local="schma" foreign="schma"/>
+            <column local="class" foreign="class"/>
+            <column local="source" foreign="attribute"/>
         </references>
         <references name="workflow_update_attribute_constraint" table="ark_schema_attribute" onupdate="cascade" ondelete="cascade">
             <column local="schma" foreign="schma"/>

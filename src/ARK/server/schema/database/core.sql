@@ -5288,13 +5288,13 @@ TRUNCATE TABLE `ark_workflow_update`;
 -- Dumping data for table `ark_workflow_update`
 --
 
-INSERT INTO `ark_workflow_update` (`schma`, `action`, `class`, `attribute`, `actor`, `subject`, `clear`, `term`) VALUES
-('core.actor', 'approve', 'person', 'status', NULL, NULL, NULL, 'approved'),
-('core.actor', 'cancel', 'person', 'status', NULL, NULL, NULL, 'closed'),
-('core.actor', 'lock', 'person', 'status', NULL, NULL, NULL, 'locked'),
-('core.actor', 'register', 'person', 'status', NULL, NULL, NULL, 'registered'),
-('core.actor', 'suspend', 'person', 'status', NULL, NULL, NULL, 'suspended'),
-('core.actor', 'unlock', 'person', 'status', NULL, NULL, NULL, 'approved');
+INSERT INTO `ark_workflow_update` (`schma`, `action`, `class`, `attribute`, `actor`, `subject`, `clear`, `term`, `id`, `source`) VALUES
+('core.actor', 'approve', 'person', 'status', NULL, NULL, NULL, 'approved', NULL, NULL),
+('core.actor', 'cancel', 'person', 'status', NULL, NULL, NULL, 'closed', NULL, NULL),
+('core.actor', 'lock', 'person', 'status', NULL, NULL, NULL, 'locked', NULL, NULL),
+('core.actor', 'register', 'person', 'status', NULL, NULL, NULL, 'registered', NULL, NULL),
+('core.actor', 'suspend', 'person', 'status', NULL, NULL, NULL, 'suspended', NULL, NULL),
+('core.actor', 'unlock', 'person', 'status', NULL, NULL, NULL, 'approved', NULL, NULL);
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
