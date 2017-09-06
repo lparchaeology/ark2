@@ -31,6 +31,7 @@ namespace ARK\View;
 
 use ARK\Error\Error;
 use ARK\Error\ErrorException;
+use ARK\File\File;
 use ARK\Framework\Application;
 use ARK\ORM\ORM;
 use ARK\Service;
