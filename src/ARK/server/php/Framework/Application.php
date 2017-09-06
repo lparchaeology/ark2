@@ -65,7 +65,6 @@ use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\Debug\ErrorHandler;
-use Symfony\Component\Debug\ExceptionHandler;
 use Symfony\Component\HttpFoundation\Request;
 
 class Application extends SilexApplication
@@ -100,7 +99,6 @@ class Application extends SilexApplication
         } else {
             // TODO Check is production safe, also need a custom Exception Handler to log?
             ErrorHandler::register();
-            ExceptionHandler::register(false);
         }
 
         // Enable core providers

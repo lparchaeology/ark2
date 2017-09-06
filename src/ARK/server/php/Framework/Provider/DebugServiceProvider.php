@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Debug Service Provider
+ * ARK Debug Service Provider.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Framework\Provider;
@@ -38,10 +37,11 @@ use Sorien\Provider\DoctrineProfilerServiceProvider;
 
 class DebugServiceProvider implements ServiceProviderInterface
 {
-    public function register(Container $container)
+    public function register(Container $container) : void
     {
+        // Must always have registered, otherwise stray dump() calls will crash app
+        $container->register(new VarDumperServiceProvider());
         if ($container['debug']) {
-            $container->register(new VarDumperServiceProvider());
             $container->register(new WebProfilerServiceProvider(), [
                 'profiler.cache_dir' => $container['dir.var'].'/cache/profiler',
             ]);
