@@ -36,7 +36,7 @@ $(document).ready(function() {
             }
 
         }
-        
+
         $("#find_image_existing").data('uploadUploaded',{});
         $("#find_image_existing").data('uploadPreview',{});
 
@@ -56,7 +56,7 @@ $(document).ready(function() {
             'minFileCount': 0,
             'maxFileCount': 3,
             'deleteUrl': "../true.json",
-            'uploadUrl': "/dime/api/internal/file",
+            'uploadUrl': "/api/internal/file",
             'uploadAsync': false,
         }).on("filebatchselected", function(event, files) {
             // trigger upload method immediately after files are selected
@@ -75,7 +75,7 @@ $(document).ready(function() {
                         $("#find_image_existing").append($("<input type=\"hidden\" id=\"find_image_existing_1\" name=\"find[image][existing][1]\" value=\""+response[0]+"\">"))
                     } else {
                         $("#find_image_existing").append($("<input type=\"hidden\" id=\"find_image_existing_2\" name=\"find[image][existing][2]\" value=\""+response[0]+"\">"))
-                    } 
+                    }
                 } else {
                     var removePreview = $("#find_image_existing_"+(count-1).toString()).val();
                     console.log(removePreview);
@@ -88,12 +88,12 @@ $(document).ready(function() {
                             $("#"+upload).find("button.kv-file-remove").click();
                         }
                     }
-                    
-                    
+
+
                     console.log($("button.kv-file-remove[data-key="+removePreview+"]"))
-                    
+
                     $("button.kv-file-remove[data-key="+removePreview+"]").click();
-                    
+
                     $("#find_image_existing_"+(count-1).toString()).val(response[0]);
                 }
             }
@@ -109,19 +109,19 @@ $(document).ready(function() {
         }).on('filesuccessremove', function(event, id) {
             var form_root_array = $(this).closest(".file-input").find("input[type=file]").attr('id').split("_");
             form_root_array.splice(-1,1);
-            
+
             console.log(id);
-            
+
             console.log($('#'+id));
-            
+
             var existing_id_container = form_root_array.join("_")+"_existing";
-            
+
             var uploadPreview = $("#find_image_existing").data('uploadPreview');
-            
+
             console.log(id);
             console.log(uploadPreview);
             console.log(uploadPreview[id]);
-            
+
             if ($("#"+existing_id_container).find('input[value="'+uploadPreview[id]+'"]').remove()) {
                 console.log('Uploaded thumbnail successfully removed');
              } else {
@@ -131,7 +131,7 @@ $(document).ready(function() {
              var form_root_array = $(this).closest(".file-input").find("input[type=file]").attr('id').split("_");
              form_root_array.splice(-1,1);
              var existing_id_container = form_root_array.join("_")+"_existing";
-             
+
              if ($("#"+existing_id_container).find('input[value="'+id+'"]').remove()) {
                  console.log('Uploaded thumbnail successfully removed');
               } else {
@@ -159,7 +159,7 @@ $(document).ready(function() {
 
     // FIXME Hide Bootstrap Table loading animation as is a bit broken
     $('.table-bootstrap-table').bootstrapTable('hideLoading');
-    
+
     // Bootstrap table seems to be ignoring the icons attribute so hack it here for now
     $('.btn-group[title="Columns"]').find('i.glyphicon-th').removeClass('glyphicon-th').addClass('glyphicon-th-list');
 
