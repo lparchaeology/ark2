@@ -67,6 +67,12 @@ class MediaType
         return $parts[1] ?? null;
     }
 
+    public function defaultExtension() : ?string
+    {
+        $exts = self::repository()->findExtensions($this->mediatype);
+        return $exts[0] ?? null;
+    }
+
     public static function isValidMediaType(string $mediatype) : bool
     {
         self::repository();

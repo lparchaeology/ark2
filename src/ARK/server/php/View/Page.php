@@ -166,6 +166,9 @@ class Page extends Element
                     if ($processForm !== null) {
                         $processForm($request, $posted);
                     }
+                    if ($file = $request->attributes->get('_file')) {
+                        return Service::view()->fileResponse($file);
+                    }
                     $redirect = $request->attributes->get('redirect') ?? $request->attributes->get('_route');
                     $parameters = $request->attributes->get('parameters') ?? [];
                     return Service::redirectPath($redirect, $parameters);

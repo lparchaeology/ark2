@@ -151,6 +151,14 @@ abstract class File implements Item
         return null;
     }
 
+    public static function createFromContent(MediaType $mediatype, string $filename, $content) : File
+    {
+        $file = self::createForMediatype($mediatype);
+        $file->addFileVersion($filename, $mediatype->defaultExtension());
+        $file->current()->write($content);
+        return $file;
+    }
+
     protected function setMediatype(MediaType $mediatype) : void
     {
         $this->mediatype = $mediatype;

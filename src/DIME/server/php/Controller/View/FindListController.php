@@ -32,8 +32,11 @@ namespace DIME\Controller\View;
 use ARK\Actor\Actor;
 use ARK\Actor\Museum;
 use ARK\Actor\Person;
+use ARK\File\File;
+use ARK\File\MediaType;
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\View\Page;
 use ARK\Vocabulary\Term;
 use ARK\Workflow\Action;
 use DIME\DIME;
@@ -276,20 +279,31 @@ class FindListController extends DimeFormController
                 $action->apply($actor, $find, $subject);
                 ORM::persist($find);
             }
-            ORM::flush($find);
-            $message = $action->keyword();
-            Service::view()->addSuccessFlash($message);
-            if (false && $action->name === 'claim') {
+            if ($action->name() === 'claim') {
                 $page = ORM::find(Page::class, 'dime_page_claim');
-                $data['finds'] = [];
-                $data['museum'] = $find->property('museum')->value();
-                $data['claimant'] = $find->property('finder')->value();
-                $state = [];
-                $options['state']['actor'] = $actor;
-                $options['state']['mode'] = 'view';
-                $forms = $page->buildForms($data, $options);
-                $context = $page->renderContext($data, ['state' => $options['state']], $forms, $form);
-                $pdf = Service::view()->renderPdfResponse('pages/treasureclaimpdf.html.twig', $context, 'danefae.pdf');
+                $content = $page->content();
+                $data['finds'] = $finds;
+                $data['museum'] = $finds[0]->property('museum')->value();
+                $data['claimant'] = $finds[0]->property('finder')->value();
+                $state['actor'] = $actor;
+                $state['mode'] = 'view';
+                $state['workflow']['mode'] = 'edit';
+                $options['state'] = $state;
+                $forms = $content->buildForms($data, $state, $options);
+                $context = $page->pageContext($data, $state, $forms);
+                $pdf = Service::view()->renderPdf('pages/treasureclaimpdf.html.twig', $context);
+                $mediatype = new MediaType('application/pdf');
+                $file = File::createFromContent($mediatype, 'danefae', $pdf);
+                foreach ($finds as $find) {
+                    $find->property('claim')->setValue($file);
+                }
+            }
+            ORM::flush($find);
+            if (isset($file)) {
+                $request->attributes->set('_file', $file->id());
+            } else {
+                $message = $action->keyword();
+                Service::view()->addSuccessFlash($message);
             }
         }
 

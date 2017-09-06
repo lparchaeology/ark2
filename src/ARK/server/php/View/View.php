@@ -34,7 +34,9 @@ use ARK\Error\ErrorException;
 use ARK\Framework\Application;
 use ARK\ORM\ORM;
 use ARK\Service;
+use League\Glide\Responses\SymfonyResponseFactory;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Twig_Environment;
 
 class View
@@ -126,6 +128,15 @@ class View
     {
         $html = $this->renderView($view, $parameters);
         $this->app['renderer.image']->generateFromHtml($html, $path);
+    }
+
+    public function fileResponse(string $id, string $disposition = ResponseHeaderBag::DISPOSITION_ATTACHMENT) : Response
+    {
+        $file = ORM::find(File::class, $id);
+        $factory = new SymfonyResponseFactory();
+        $response = $factory->create(Service::filesystem(), $file->path());
+        $response->headers->set('Content-Disposition', $response->headers->makeDisposition($disposition, $file->name()));
+        return $response;
     }
 
     public function flashes() : void

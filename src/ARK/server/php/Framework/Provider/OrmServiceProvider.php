@@ -222,6 +222,7 @@ class OrmServiceProvider implements ServiceProviderInterface
                         [
                             'type' => 'item',
                             'namespace' => 'ARK\File',
+                            'path' => $srcDir.'/File',
                         ],
                         [
                             'type' => 'php',
