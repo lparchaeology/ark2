@@ -272,11 +272,11 @@ class FindListController extends DimeFormController
             $data = $form->getData();
             $finds = $data['items'];
             $action = $data['actions'];
-            $subject = $data['actors'];
-            $date = $data['date'];
-            $text = $data['textarea'];
+            //$subject = $data['actors'];
+            //$date = $data['date'];
+            //$text = $data['textarea'];
             foreach ($finds as $find) {
-                $action->apply($actor, $find, $subject);
+                $action->apply($actor, $find);
                 ORM::persist($find);
             }
             if ($action->name() === 'claim') {

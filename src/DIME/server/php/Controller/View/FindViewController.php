@@ -91,10 +91,10 @@ class FindViewController extends DimeFormController
         }
         if ($clicked === 'apply') {
             $action = $form['find']['actions']->getNormData();
-            $subject = $form['find']['actors']->getNormData();
-            $date = $form['find']['date']->getNormData();
-            $text = $form['find']['textarea']->getNormData();
-            $action->apply($actor, $find, $subject);
+            //$subject = $form['find']['actors']->getNormData();
+            //$date = $form['find']['date']->getNormData();
+            //$text = $form['find']['textarea']->getNormData();
+            $action->apply($actor, $find);
             $message = $action->keyword();
         }
         if (!isset($message)) {
