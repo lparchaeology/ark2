@@ -36,6 +36,7 @@ use ARK\File\File;
 use ARK\File\MediaType;
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\View\Group;
 use ARK\View\Page;
 use ARK\Vocabulary\Term;
 use ARK\Workflow\Action;
@@ -202,10 +203,11 @@ class FindListController extends DimeFormController
                 && $actor->isAgentFor(ORM::find(Museum::class, $query['museum'][0]))
                 && isset($query['finder']) && count($query['finder']) === 1
                 && isset($query['status']) && count($query['status']) === 1;
-
+            $claim = true;
             if ($claim) {
                 $state['workflow']['mode'] = 'edit';
-                $state['actions'] = Service::workflow()->updateActions($actor, $data['finds']['items'][0]);
+                //$state['actions'] = Service::workflow()->updateActions($actor, $data['finds']['items'][0]);
+                $state['actions'] = [ORM::find(Action::class, ['schma' => 'dime.find', 'action' => 'claim'])];
                 $state['select']['actions']['choices'] = $state['actions'];
                 $state['select']['actions']['choice_value'] = 'name';
                 $state['select']['actions']['choice_name'] = 'name';
@@ -276,24 +278,37 @@ class FindListController extends DimeFormController
             //$date = $data['date'];
             //$text = $data['textarea'];
             foreach ($finds as $find) {
-                $action->apply($actor, $find);
-                ORM::persist($find);
+                //$action->apply($actor, $find);
+                //ORM::persist($find);
             }
             if ($action->name() === 'claim') {
-                $page = ORM::find(Page::class, 'dime_page_claim');
-                $content = $page->content();
+                $layout = ORM::find(Group::class, 'dime_treasure_pdf');
                 $data['finds'] = $finds;
                 $data['museum'] = $finds[0]->property('museum')->value();
                 $data['claimant'] = $finds[0]->property('finder')->value();
+                $data['agent'] = $actor;
+                $state = $layout->buildState($data, $layout->defaultState());
                 $state['actor'] = $actor;
                 $state['mode'] = 'view';
                 $state['workflow']['mode'] = 'edit';
-                $options['state'] = $state;
-                $forms = $content->buildForms($data, $state, $options);
-                $context = $page->pageContext($data, $state, $forms);
-                $pdf = Service::view()->renderPdf('pages/treasureclaimpdf.html.twig', $context);
+                $options = $layout->buildOptions($data, $state);
+                $forms = $layout->buildForms($data, $state, $options);
+                $state['forms'] = null;
+                if ($forms) {
+                    foreach ($forms as $name => $form) {
+                        if ($form) {
+                            $state['forms'][$name] = $form->createView();
+                        }
+                    }
+                }
+                $context = $layout->buildContext($data, $state);
+                $context['layout'] = $layout;
+                $context['forms'] = $state['forms'];
+                $context['form'] = null;
+
+                $pdf = Service::view()->renderPdf('layouts/grid.html.twig', $context);
                 $mediatype = new MediaType('application/pdf');
-                $file = File::createFromContent($mediatype, 'danefae', $pdf);
+                $file = File::createFromContent($mediatype, 'danefae.pdf', $pdf);
                 foreach ($finds as $find) {
                     $find->property('claim')->setValue($file);
                 }
