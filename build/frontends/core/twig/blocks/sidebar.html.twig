@@ -1,27 +1,11 @@
 {# Define the standard sidebar block #}
 
+{% use "blocks/link.html.twig" %}
+
 {% block sidebar %}
 
     <div class="row">
-        {% if page.sidebar.keyword %}
-            {{ vocabulary.keyword|translate }}
-        {% endif %}
-        <ul class="list-group" role="menu" aria-labelledby="menu">
-            {% set children = page.sidebar.children %}
-            {% tree nav in children %}
-                {% if is_granted(nav.route) %}
-                    {% if nav.children %}
-                        <li>{% include "blocks/nav.html.twig" %}
-                        <ul class="list-group">
-                    {% else %}
-                        <li>{% include "blocks/nav.html.twig" %}</li>
-                    {% endif %}
-                    {% subtree nav.children %}
-                    {% if nav.children %}
-                        </ul></li>
-                    {% endif %}
-                {% endif %}
-            {% endtree %}
+        <ul class="list-group">
         </ul>
     </div>
 

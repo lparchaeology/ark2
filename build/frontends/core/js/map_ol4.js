@@ -1,14 +1,14 @@
 $(document).ready(function() {
     if ($('#mapview').length) {
-        initialiseMapView();
+        window.map = initialiseMapView();
     }
 });
 
 function initialiseMapView() {
 
     var layers = [];
-    for (var i = 0; i < layerConfig.length; ++i) {
-        var config = layerConfig[i];
+    for (var i = 0; i < mapConfig.layers.length; ++i) {
+        var config = mapConfig.layers[i];
         layer = new ol.layer.Tile({
             name: config.name,
             visible: config.visible,
@@ -24,21 +24,10 @@ function initialiseMapView() {
         controls: [],
         loadTilesWhileInteracting: true,
         target: 'map',
-        view: new ol.View({
-            center: [1155972, 7580813],
-            zoom: 7,
-            maxZoom: 16,
-        })
+        view: new ol.View(mapConfig.view)
     });
-
-    map.on('moveend', function() {
-        console.log('wha');
-        var center = map.getView().get('center');
-        var extents = map.getView().calculateExtent(map.getSize());
-        centerstring = '[' + center.toString() + ']';
-        var zoom = map.getView().getZoom();
-        console.log(zoom);
-    });
+    map.addControl(new ol.control.Zoom());
+    map.addControl(new ol.control.ZoomSlider());
 
     $('a.layer-select').on('click', function() {
         var name = $(this).attr('value');
@@ -50,51 +39,42 @@ function initialiseMapView() {
         }
     });
 
-    if (wkts.length != 0) {
+    if (points.length > 0) {
 
         features = [];
 
-        var styles = {
-            'features': new ol.style.Style({
-                image: new ol.style.Circle({
-                    radius: 5,
-                    fill: new ol.style.Fill({
-                        color: '#f00'
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: '#000',
-                        width: 1
-                    })
-                })
+        var style = new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 5,
+                fill: new ol.style.Fill({color: '#f00'}),
+                stroke: new ol.style.Stroke({color: '#000', width: 1})
             })
-        };
+        });
 
         var format = new ol.format.WKT();
 
-        for (wkt in wkts) {
-            feature = format.readFeature(wkts[wkt], {
+        for (id in points) {
+            feature = format.readFeature(points[id], {
                 dataProjection: 'EPSG:4326',
                 featureProjection: 'EPSG:3857'
             });
-            feature.set('ark_id', wkt);
+            feature.set('ark_id', id);
             features.push(feature);
         }
 
-        var featureLayer = new ol.layer.Vector({
-            source: new ol.source.Vector({
-                features: features
-            }),
-            style: dimestyles['features']
+        var layer = new ol.layer.Vector({
+            source: new ol.source.Vector({features: features}),
+            style: style
         });
 
-        featureLayer.set('name', 'features');
-        featureLayer.set('selectable', true);
+        layer.set('name', 'finds');
 
-        map.addLayer(featureLayer);
+        layer.set('selectable', true);
+        map.addLayer(layer);
 
         view = map.getView();
-        extent = featureLayer.getSource().getExtent();
-        view.fit(extent, map.getSize());
+        extent = layer.getSource().getExtent();
+        view.fit(extent);
 
         var select = new ol.interaction.Select({
             layers: function(layer) {
@@ -103,13 +83,8 @@ function initialiseMapView() {
             style: new ol.style.Style({
                 image: new ol.style.Circle({
                     radius: 8,
-                    fill: new ol.style.Fill({
-                        color: '#f00'
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: '#000',
-                        width: 1
-                    })
+                    fill: new ol.style.Fill({color: '#f00'}),
+                    stroke: new ol.style.Stroke({color: '#000', width: 1})
                 })
             }),
         });
@@ -118,54 +93,68 @@ function initialiseMapView() {
 
         var collection = select.getFeatures();
 
+        window.mapcollection = collection;
+
         collection.on('add', function(evt) {
+
             var elements = $('.table tr');
 
             for (var i = 0; i < elements.length; i++) {
                 $(elements[i]).removeClass('selected');
+                $(elements[i]).find('.tablecheckbox').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
             }
+
+            var extent = [Infinity,Infinity,-Infinity,-Infinity];
 
             collection.forEach(function(e, i, a) {
                 var ark_id = e.get('ark_id');
-
                 $(".table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
-            })
+                $(".table tr[data-unique-id='" + ark_id.toString() + "']").find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+
+                if($('.bootstrap-table button[name=tableView]').hasClass('active') != true ){
+                    $(".table tr[data-unique-id='" + ark_id.toString() + "']").parent().prepend($(".table tr[data-unique-id='" + ark_id.toString() + "']"));
+                }
+
+                var featureextent = e.getGeometry().getExtent();
+
+                if(typeof featureextent != 'undefined'){
+                    extent = [
+                        Math.min(featureextent[0],extent[0]),
+                        Math.min(featureextent[1],extent[1]),
+                        Math.max(featureextent[2],extent[2]),
+                        Math.max(featureextent[3],extent[3])
+                    ];
+
+                }
+
+
+            });
+
+            map.getView().fit(extent);
+
         });
 
         collection.on('remove', function(evt) {
-            var elements = $('.table tr');
+
+            var elements = $('.dime-table tr');
+
             for (var i = 0; i < elements.length; i++) {
                 $(elements[i]).removeClass('selected');
+                $(elements[i]).find('.tablecheckbox').removeClass('glyphicon-check').addClass('glyphicon-unchecked');
             }
+
             collection.forEach(function(e, i, a) {
                 var ark_id = e.get('ark_id');
+                console.log('ark_id');
+                console.log(ark_id);
 
-                $(".table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected');
+
+                $(".table tr[data-unique-id='" + ark_id.toString() + "']").addClass('selected')
+                $(".table tr[data-unique-id='" + ark_id.toString() + "']").find('.tablecheckbox').removeClass('glyphicon-unchecked').addClass('glyphicon-check');
+
             })
         });
 
-        $('table.table').on('click-row.bs.table', function(evt, row, element, field) {
-            ark_id = element.attr('data-unique-id');
-            map.getLayers().forEach(function(i, e, a) {
-                if (i.get('name') == 'yours') {
-                    console.log(evt.shiftKey);
-                    if (!evt.shiftKey) {
-                        collection.clear();
-                    }
-                    if (typeof i.getSource().getFeatures == 'function') {
-                        i.getSource().getFeatures().forEach(function(i, e, a) {
-                            if (i.get('ark_id').toUpperCase() == ark_id) {
-                                if (element.hasClass('selected')) {
-                                    collection.remove(i);
-                                } else {
-                                    collection.push(i);
-                                }
-                            }
-                        });
-                    }
-                }
-            });
-        });
     }
 
     $('.style-select-option').on('click', function() {
@@ -193,18 +182,26 @@ function initialiseMapView() {
                 }
             });
             if (prerun == false) {
+
+                var payload = {
+                    "concept": "core.map.chorpleth",
+                    "module": itemkey,
+                    "attribute": "location",
+                    "itemlist": itemlist
+                }
+
                 $.get(path + 'api/geo/choropleth', false, function(result) {
                     var format = new ol.format.WKT();
-                    var kommunesource = [];
-                    var kommunes = result['kommune'];
-                    for (kommune in kommunes) {
-                        feature = format.readFeature(kommunes[kommune]['geometry'], {
-                            dataProjection: 'EPSG:'+kommunes[kommune]['srid'],
+                    var regionsource = [];
+                    var regions = result['region'];
+                    for (region in regions) {
+                        feature = format.readFeature(regions[region]['geometry'], {
+                            dataProjection: 'EPSG:'+regions[region]['srid'],
                             featureProjection: 'EPSG:3857'
                         });
-                        feature.set('count', kommunes[kommune]['count']);
-                        feature.set('band', kommunes[kommune]['band']);
-                        kommunesource.push(feature);
+                        feature.set('count', regions[region]['count']);
+                        feature.set('band', regions[region]['band']);
+                        regionsource.push(feature);
                     }
 
                     var bands = {
@@ -255,39 +252,37 @@ function initialiseMapView() {
 
                     $('.map-legend').show();
 
-                    var kommunelayer = new ol.layer.Vector({
+                    var choroplethlayer = new ol.layer.Vector({
                         source: new ol.source.Vector({
-                            features: kommunesource
+                            features: regionsource
                         }),
                         style: function(feature, resolution) {
                             return [styles[feature.get('band')]];
                         }
 
                     });
-                    kommunelayer.set('name', "kommunelayer");
-                    kommunelayer.set('selectable', false);
-                    map.addLayer(kommunelayer);
+                    choroplethlayer.set('name', "choroplethlayer");
+                    choroplethlayer.set('selectable', false);
+                    map.addLayer(choroplethlayer);
                     view = map.getView();
-                    extent = kommunelayer.getSource().getExtent();
-                    view.fit(extent, map.getSize());
+                    extent = choroplethlayer.getSource().getExtent();
+                    view.fit(extent);
                     $('.modal-backdrop').detach();
                 }).fail(function() {
                     $('.modal-backdrop').detach();
                 });
             }
 
-        } else {
+        } else if ($(this).attr("value") == 'distribution') {
             view = map.getView();
-
-            //[minx,miny,maxx,maxy]
 
             extent = [Infinity, Infinity, -Infinity, -Infinity];
 
             map.getLayers().forEach(function(e, i, a) {
-                if (e.get("name") === "kommunelayer") {
+                if (e.get("name") === "choroplethlayer") {
                     e.setVisible(false);
                 } else {
-                    if (e.get("name") === "yours" || e.get("name") === "theirs") {
+                    if (e.get("name") === "finds") {
                         e.setVisible(true);
                         newextent = e.getSource().getExtent();
                         if(newextent[0] != Infinity){
@@ -296,10 +291,19 @@ function initialiseMapView() {
                                       Math.min(newextent[1],extent[1]),
                                       Math.max(newextent[2],extent[2]),
                                       Math.max(newextent[3],extent[3])
-                                      ];
-                            view.fit(extent, map.getSize());
+                                  ];
+                            view.fit(extent);
                         }
                     }
+                }
+            });
+
+            $('.map-legend').hide();
+
+        } else {
+            map.getLayers().forEach(function(e, i, a) {
+                if (e.get("name") === "municipalitylayer" || e.get("name") === "finds") {
+                    e.setVisible(false);
                 }
             });
 
@@ -319,6 +323,8 @@ function initialiseMapView() {
         default:
 
     }
+
+    return map;
 }
 
 function mapSource(source, config) {

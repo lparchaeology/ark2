@@ -13,8 +13,7 @@
         {% block head %}{% endblock %}
 
         <!-- Combined Bootstrap and ARK CSS -->
-        <link href="https://openlayers.org/en/v3.20.1/css/ol.css" rel="stylesheet" type="text/css">
-        <link href="{{ asset('/styles/ark.min.css', 'frontend') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('styles/ark.min.css', 'frontend') }}" rel="stylesheet" type="text/css"/>
 
         <!-- Bootstrap -->
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -30,7 +29,9 @@
         {% block body %}{% endblock %}
 
         <!-- Combined jQuery, Bootstrap and ARK js -->
-        <script src="{{ asset('/scripts/ark.min.js', 'frontend') }}"></script>
+        <script> var path = "{{ path('home') | escape('js') }}";</script>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        <script src="{{ asset('scripts/ark.min.js', 'frontend') }}"></script>
 
     </body>
 

@@ -1,44 +1,50 @@
 .dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  float: left;
-  min-width: 140px;
-  padding: 10px 0;
-  margin: 2px 0 0; // override default ul
-  list-style: none;
-  font-size: 12px;
-  text-align: left; // Ensures proper alignment if parent has it changed (e.g., modal footer)
-  border: none; // IE8 fallback
-  border-radius: 0;
-  @include box-shadow(0 0px 30px rgba(0,0,0,0.25));
-  background-clip: padding-box;
-  > li > a {
-    color: $gray-base;
-    padding: 5px 20px;
-    &:hover, &:focus {
-      color: #FFFFFF;
-      background: $brand-primary;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    float: left;
+    min-width: 140px;
+    padding: 10px 0;
+    margin: 2px 0 0; // override default ul
+    list-style: none;
+    font-size: 12px;
+    text-align: left; // Ensures proper alignment if parent has it changed (e.g., modal footer)
+    border: none; // IE8 fallback
+    border-radius: 0;
+    @include box-shadow(0 0px 30px rgba(0,0,0,0.25));
+    background-clip: padding-box;
+
+    > li > a {
+        color: $gray-base;
+        padding: 5px 20px;
+
+        &:focus,
+        &:hover {
+            color: #FFFFFF;
+            background: $brand-primary;
+        }
     }
-  }
-  .active > a {
-    &,
-    &:hover,
-    &:focus {
-      color: $gray-base;
-      background-color: $gray-light;
+
+    .active > a {
+        &,
+        &:focus,
+        &:hover {
+            color: $gray-base;
+            background-color: $gray-light;
+        }
     }
-  }
 }
 
 .navbar-nav {
     .dropdown-menu {
-      background: $gray-base;
-      > li > a {
-        color: #ffffff;
-      }
-      .divider {
-        background: $gray-darker;
-      }
+        background: $gray-base;
+
+        > li > a {
+            color: #ffffff;
+        }
+
+        .divider {
+            background: $gray-darker;
+        }
     }
 }

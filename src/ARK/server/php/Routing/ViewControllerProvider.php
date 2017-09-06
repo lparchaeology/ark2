@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Ark Route Site Controller Provider
+ * Ark Route Site Controller Provider.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,22 +21,19 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Routing;
 
 use ARK\ORM\ORM;
+use ARK\View\Page;
+use Silex\API\ControllerProviderInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
-use Silex\ServiceControllerResolver;
-use Silex\API\ControllerProviderInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ViewControllerProvider implements ControllerProviderInterface
 {
@@ -44,30 +41,31 @@ class ViewControllerProvider implements ControllerProviderInterface
     {
         /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
-        return $controllers;
         $routes = ORM::findAll(Route::class);
-        $pages = ORM::findAll(Page::class);
-        $instances = ORM::findAll(Instance::class);
+        //$pages = ORM::findAll(Page::class);
+        //$instances = ORM::findAll(Instance::class);
 
         foreach ($routes as $route) {
             $this->addRoute($controllers, $route);
         }
 
+        /*
         $controllers
-            ->get("/{parent}/{collection}", 'ARK\Controller\ItemListController')
+            ->get('/{parent}/{collection}', 'ARK\Controller\ItemListController')
             ->bind('core.item.list');
 
         $controllers
-            ->get("/{parent}/{collection}/{item}", 'ARK\Controller\ItemViewController')
+            ->get('/{parent}/{collection}/{item}', 'ARK\Controller\ItemViewController')
             ->bind('core.item.view');
+        */
 
         return $controllers;
     }
 
-    public function addRoute($controllers, Route $route)
+    public function addRoute(ControllerCollection $controllers, Route $route) : void
     {
-        $controller = $controllers->match($route->pattern(), $route->controller());
-        $controller->method($route->method);
-        $controller->bind($route->id());
+        $controllers->match($route->pattern(), $route->controller())
+                    ->method($route->method())
+                    ->bind($route->id());
     }
 }

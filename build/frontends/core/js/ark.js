@@ -8,23 +8,29 @@ $(document).ready(function() {
     // HACK To fix Select2 not being responsive
     // See https://github.com/select2/select2/issues/3278 and http://stackoverflow.com/a/41429176
     $(".select2.select2-container").css("width", "100%");
-    // Fake readonly mode
-    $('.readonly-select').prop('disabled', true);
+
     //$("date").datetimepicker();
     //$("time").datetimepicker();
     //$("datetime").datetimepicker();
-    $('.datetimepicker').datetimepicker({
-        format: 'yyyy-mm-dd hh:ii'
-    });
-    $('.datepicker').datetimepicker({
-        format: 'yyyy-mm-dd',
-        minView: 2
-    });
-    $('.timepicker').datetimepicker({
-        format: 'hh:ii',
-        maxView: 0
-    });
+    if (typeof applocale != 'undefined') {
+        $('.datetimepicker').datetimepicker({
+            locale: applocale
+        });
 
+        $('.datepicker').datetimepicker({
+            locale: applocale,
+            minView: 2
+        });
+
+        $('.timepicker').datetimepicker({
+            locale: applocale,
+            format: 'hh:ii',
+            maxView: 0
+        });
+    }
+
+    // Fake readonly mode
+    $('.readonly-select').prop('disabled', true);
 });
 
 // Undo fake readonly mode
@@ -74,6 +80,22 @@ $('#pageedit').on('click', function() {
         });
     }
 });
+
+function debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+        var context = this,
+            args = arguments;
+        var later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+};
 
 jQuery(function($) {
     $('form[data-async]').on('submit', function(event) {

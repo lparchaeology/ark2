@@ -154,7 +154,7 @@ class Page extends Element
         }
         $options = $this->buildOptions($data, $state, []);
         //dump($options);
-        $forms = $this->content->buildForms($data, $state, $options);
+        $forms = ($this->content() ? $this->content->buildForms($data, $state, $options) : null);
         //dump($forms);
         if ($forms && $request->getMethod() === 'POST') {
             $parms = $request->request->all();

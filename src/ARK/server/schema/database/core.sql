@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 04, 2017 at 02:59 PM
+-- Generation Time: Sep 06, 2017 at 04:54 PM
 -- Server version: 10.2.8-MariaDB
 -- PHP Version: 7.1.8
 
@@ -12,12 +12,6 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `core_ark_core`
@@ -420,17 +414,17 @@ TRUNCATE TABLE `ark_route`;
 --
 
 INSERT INTO `ark_route` (`route`, `path`, `can_get`, `can_post`, `page`, `redirect`, `controller`) VALUES
-('about', '/about', 1, 0, 'core_page_static', NULL, 'ARK\\Controller\\View\\PageViewController'),
+('about', '/about', 1, 0, 'core_page_static', NULL, 'ARK\\Framework\\Controller\\StaticPageController'),
 ('admin', '/admin', 1, 0, 'core_page_admin', NULL, 'ARK\\Controller\\AdminPageController'),
 ('admin.user', '/admin/users', 1, 1, 'core_page_admin_user', NULL, 'ARK\\User\\Controller\\UserAdminListController'),
 ('admin.user.id', '/admin/users/{id}', 1, 1, 'core_page_admin_user', NULL, 'ARK\\User\\Controller\\UserAdminViewController'),
-('admin.user.register', '/admin/users/register', 1, 1, 'core_page_admin_register', NULL, 'ARK\\Contoller\\UserRegisterController'),
+('admin.user.register', '/admin/users/register', 1, 1, 'core_page_admin_register', NULL, 'ARK\\User\\Controller\\UserRegisterController'),
 ('home', '/', 1, 0, 'core_page_home', NULL, 'ARK\\Controller\\HomePageController'),
-('news', '/news', 1, 0, 'core_page_news', NULL, 'ARK\\Controller\\View\\NewsPageController'),
-('profile', '/profiles', 1, 0, NULL, NULL, 'ARK\\Controller\\View\\ProfileListController'),
-('profile.id', '/profiles/{id}', 1, 0, NULL, NULL, 'ARK\\Controller\\View\\ProfileViewController'),
-('profile.id.message', '/profiles/{id}/messages', 1, 0, NULL, NULL, 'ARK\\Controller\\View\\MessageListController'),
-('profile.id.message.id', '/profiles/{id}/messages/{id}', 1, 0, NULL, NULL, 'ARK\\Controller\\View\\MessageViewController'),
+('news', '/news', 1, 0, 'core_page_news', NULL, 'ARK\\Controller\\NewsPageController'),
+('profile', '/profiles', 1, 0, NULL, NULL, 'ARK\\Controller\\ProfileListController'),
+('profile.id', '/profiles/{id}', 1, 0, NULL, NULL, 'ARK\\Controller\\ProfileViewController'),
+('profile.id.message', '/profiles/{id}/messages', 1, 0, NULL, NULL, 'ARK\\Controller\\MessageListController'),
+('profile.id.message.id', '/profiles/{id}/messages/{msgid}', 1, 0, NULL, NULL, 'ARK\\Controller\\MessageViewController'),
 ('user.check', '/users/check', 1, 1, NULL, NULL, ''),
 ('user.confirm', '/users/confirm', 1, 1, 'core_page_user_confirm', NULL, 'ARK\\User\\Controller\\UserConfirmController'),
 ('user.login', '/users/login', 1, 1, 'core_page_user_login', NULL, 'ARK\\User\\Controller\\UserLoginController'),
@@ -516,7 +510,7 @@ TRUNCATE TABLE `ark_schema_item`;
 -- Dumping data for table `ark_schema_item`
 --
 
-INSERT INTO `ark_schema_item` (`attribute`, `format`, `vocabulary`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`, `keyword`) VALUES
+INSERT INTO `ark_schema_item` (`attribute`, `dataclass`, `vocabulary`, `minimum`, `maximum`, `unique_values`, `additional_values`, `enabled`, `deprecated`, `keyword`) VALUES
 ('class', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.item.type'),
 ('id', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.item.id'),
 ('index', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.item.index'),
@@ -3965,7 +3959,7 @@ INSERT INTO `ark_view_page` (`element`, `header`, `sidebar`, `content`, `footer`
 ('core_page_news', 'core_site_header', 'core_site_sidebar', NULL, 'core_site_footer', 'view', 'public', NULL, NULL, NULL),
 ('core_page_profile', 'core_site_header', 'core_site_sidebar', 'core_profile_page', 'core_site_footer', 'edit', 'restricted', NULL, NULL, NULL),
 ('core_page_profiles', 'core_site_header', 'core_site_sidebar', 'core_profile_list_page', 'core_site_footer', 'edit', 'restricted', NULL, NULL, NULL),
-('core_page_static', 'core_site_header', 'core_site_sidebar', NULL, 'core_site_footer', 'view', 'public', NULL, NULL, NULL),
+('core_page_static', 'core_site_header', 'core_site_sidebar', NULL, 'core_site_footer', 'view', 'public', 'core.page.read', 'core.page.update', 'pages/static.html.twig'),
 ('core_page_user_confirm', 'core_site_header', 'core_site_sidebar', NULL, 'core_site_footer', 'edit', 'public', NULL, NULL, NULL),
 ('core_page_user_login', 'core_site_header', 'core_site_sidebar', 'core_user_login', 'core_site_footer', 'edit', 'public', NULL, NULL, NULL),
 ('core_page_user_profile', 'core_site_header', 'core_site_sidebar', 'core_user_profile', 'core_site_footer', 'edit', 'restricted', 'core.actor.read', 'core.actor.update', NULL),
@@ -3986,13 +3980,13 @@ TRUNCATE TABLE `ark_view_type`;
 -- Dumping data for table `ark_view_type`
 --
 
-INSERT INTO `ark_view_type` (`type`, `keyword`, `class`, `layout`, `form_type`, `template`) VALUES
-('field', NULL, 'ARK\\View\\Field', 0, 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/field.html.twig'),
-('grid', NULL, 'ARK\\View\\Grid', 1, 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/grid.html.twig'),
-('nav', NULL, 'ARK\\View\\Nav', 0, NULL, 'blocks/nav.html.twig'),
-('page', NULL, 'ARK\\View\\Page', 0, NULL, 'pages/page.html.twig'),
-('table', NULL, 'ARK\\View\\Table', 1, 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/table.html.twig'),
-('widget', NULL, 'ARK\\View\\Widget', 0, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', 'layouts/widget.html.twig');
+INSERT INTO `ark_view_type` (`type`, `layout`, `class`, `form_type`, `template`, `keyword`) VALUES
+('field', 0, 'ARK\\View\\Field', 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/field.html.twig', NULL),
+('grid', 1, 'ARK\\View\\Grid', 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/grid.html.twig', NULL),
+('nav', 0, 'ARK\\View\\Nav', NULL, 'blocks/nav.html.twig', NULL),
+('page', 0, 'ARK\\View\\Page', NULL, 'pages/page.html.twig', NULL),
+('table', 1, 'ARK\\View\\Table', 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/table.html.twig', NULL),
+('widget', 0, 'ARK\\View\\Widget', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', 'layouts/widget.html.twig', NULL);
 
 --
 -- Truncate table before insert `ark_view_widget`
@@ -5127,17 +5121,25 @@ TRUNCATE TABLE `ark_workflow_action`;
 -- Dumping data for table `ark_workflow_action`
 --
 
-INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event_term`, `agent`, `default_permission`, `default_agency`, `default_allowance`, `enabled`, `keyword`) VALUES
-('core.actor', 'activate', 'core.event.class', 'activated', NULL, 0, 1, 0, 1, 'core.action.activate'),
-('core.actor', 'approve', 'core.event.class', 'approved', NULL, 0, 1, 0, 1, 'core.action.approve'),
-('core.actor', 'cancel', 'core.event.class', 'cancelled', NULL, 0, 1, 0, 1, 'core.action.cancel'),
-('core.actor', 'edit', 'core.event.class', 'edited', NULL, 0, 1, 0, 1, 'core.action.edit'),
-('core.actor', 'lock', 'core.event.class', 'locked', NULL, 0, 1, 0, 1, 'core.action.activate'),
-('core.actor', 'register', 'core.event.class', 'registered', NULL, 1, 1, 1, 1, 'core.action.register'),
-('core.actor', 'restore', 'core.event.class', 'restored', NULL, 0, 1, 0, 1, 'core.action.restore'),
-('core.actor', 'suspend', 'core.event.class', 'suspended', NULL, 0, 1, 0, 1, 'core.action.suspend'),
-('core.actor', 'unlock', 'core.event.class', 'unlocked', NULL, 0, 1, 0, 1, 'core.action.activate'),
-('core.actor', 'view', 'core.event.class', 'viewed', NULL, 0, 1, 0, 1, 'core.action.view1');
+INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event_term`, `agent`, `default_permission`, `default_agency`, `default_allowance`, `enabled`, `keyword`, `description`) VALUES
+('core.actor', 'activate', 'core.event.class', 'activated', NULL, 0, 1, 0, 1, 'core.action.activate', NULL),
+('core.actor', 'approve', 'core.event.class', 'approved', NULL, 0, 1, 0, 1, 'core.action.approve', NULL),
+('core.actor', 'cancel', 'core.event.class', 'cancelled', NULL, 0, 1, 0, 1, 'core.action.cancel', NULL),
+('core.actor', 'edit', 'core.event.class', 'edited', NULL, 0, 1, 0, 1, 'core.action.edit', NULL),
+('core.actor', 'lock', 'core.event.class', 'locked', NULL, 0, 1, 0, 1, 'core.action.activate', NULL),
+('core.actor', 'register', 'core.event.class', 'registered', NULL, 1, 1, 1, 1, 'core.action.register', NULL),
+('core.actor', 'restore', 'core.event.class', 'restored', NULL, 0, 1, 0, 1, 'core.action.restore', NULL),
+('core.actor', 'suspend', 'core.event.class', 'suspended', NULL, 0, 1, 0, 1, 'core.action.suspend', NULL),
+('core.actor', 'unlock', 'core.event.class', 'unlocked', NULL, 0, 1, 0, 1, 'core.action.activate', NULL),
+('core.actor', 'view', 'core.event.class', 'viewed', NULL, 0, 1, 0, 1, 'core.action.view', NULL),
+('core.event', 'edit', 'core.event.class', 'edited', NULL, 0, 1, 0, 1, 'core.action.edit', NULL),
+('core.event', 'view', 'core.event.class', 'viewed', NULL, 0, 1, 0, 1, 'core.action.view', NULL),
+('core.file', 'edit', 'core.event.class', 'edited', NULL, 0, 1, 0, 1, 'core.action.edit', NULL),
+('core.file', 'view', 'core.event.class', 'viewed', NULL, 0, 1, 0, 1, 'core.action.view', NULL),
+('core.message', 'edit', 'core.event.class', 'edited', NULL, 0, 1, 0, 1, 'core.action.edit', NULL),
+('core.message', 'view', 'core.event.class', 'viewed', NULL, 0, 1, 0, 1, 'core.action.view', NULL),
+('core.page', 'edit', 'core.event.class', 'edited', NULL, 0, 1, 0, 1, 'core.action.edit', NULL),
+('core.page', 'view', 'core.event.class', 'viewed', NULL, 1, 1, 1, 1, 'core.action.view', NULL);
 
 --
 -- Truncate table before insert `ark_workflow_agency`
@@ -5162,7 +5164,11 @@ INSERT INTO `ark_workflow_allow` (`schma`, `action`, `role`, `operator`) VALUES
 ('core.actor', 'suspend', 'admin', 'is'),
 ('core.actor', 'view', 'admin', 'is'),
 ('core.actor', 'view', 'anonymous', 'is'),
-('core.actor', 'view', 'user', 'is');
+('core.actor', 'view', 'user', 'is'),
+('core.page', 'edit', 'admin', 'is'),
+('core.page', 'view', 'admin', 'is'),
+('core.page', 'view', 'anonymous', 'is'),
+('core.page', 'view', 'user', 'is');
 
 --
 -- Truncate table before insert `ark_workflow_condition`
@@ -5297,7 +5303,3 @@ INSERT INTO `ark_workflow_update` (`schma`, `action`, `class`, `attribute`, `act
 ('core.actor', 'unlock', 'person', 'status', NULL, NULL, NULL, 'approved', NULL, NULL);
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

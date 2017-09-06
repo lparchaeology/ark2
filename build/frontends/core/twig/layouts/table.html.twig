@@ -1,67 +1,116 @@
 {# Standard table layout using only HTML5/Bootstrap #}
 
-<div>
+<div class='table-wrapper-div'>
 
-    {% set table_class %}
-    table bootstrap-table table-hover dime-table
-    {% endset %}
+    {% set table_class = 'table bootstrap-table table-hover' %}
+    {% set items = data.items %}
 
     <table
-        id="{{layout.name}}"
+        id="{{layout.id}}"
         class="{{table_class}}"
         data-toggle="table"
         data-classes="{{table_class}}"
-        data-sort-name="{{layout.elements[0].name}}"
+        data-sort-name="id"
         {#data-show-refresh="true"#}
         data-show-toggle="true"
         data-show-columns="true"
         data-mobile-responsive="true"
         data-show-export="true"
         data-switchcardview="true"
-    >
+        data-click-to-select="true"
+        data-locale={{ app.locale }}
+        icons="{ columns: 'glyphicon-th-list icon-th-list' }">
 
         <thead>
             <tr>
-                {% if data[layout.name][0] is defined and data[layout.name][0].hasAttribute('image') %}
-                    <th class="thumbimagehead" data-field="image" data-title="image" data-sortable="false"></th>
+                <th class="checkedhead" data-field="checked" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
+                {% if items[0]is defined and items[0].hasAttribute(state.image) %}
+                    <th class="thumbimagehead" data-field="{{state.image}}" data-title="{{state.image}}" data-sortable="false"></th>
                 {% endif %}
-                {% for field in layout.elements %}
-                    {% if field.attribute.name == 'id' %}
-                    <th data-field="{{field.name}}" data-title="{{field.keyword|trans}}" data-sortable="true">
-                    {% else %}
-                    <th data-field="{{field.name}}" data-title="{{field.keyword|trans}}" data-sortable="true" data-card-visible="false">
-                    {% endif %}
-                        {{field.keyword|trans}}
-                    </th>
-                {% endfor %}
-            </tr>
-        </thead>
-
-        <tbody>
-            {% for item in data[layout.name] %}
-                <tr data-unique-id = "{{ item.id }}" >
-                    {% if item.hasAttribute('image') %}
-                        <td class="thumbimage">
-                            {% set images = item.property('image').value() %}
-                            {% if images is not empty %}
-                                <img src="{{path('img', {'image': 'thumb.'~images[0]})}}" alt='' />
-                            {% endif %}
-                        </td>
-                    {% endif %}
-                    {% for field in layout.elements %}
-                        <td>
-                            {% if field.attribute.name == 'id' %}
-                                {% set itempath = path('finds.view', {'itemSlug': item.id}) %}
-                                <a href="{{ itempath }}">{{ field.renderView(item) }}</a>
+                {% for cell in layout.cells %}
+                    {% set field = cell.element %}
+                    {% if state.actor.hasPermission(field.attribute.readPermission) %}
+                        {% if field.attribute.name == 'id' %}
+                            <th data-field="{{field.id}}" data-title="{{ field.keyword | translate }}" data-sortable="true" data-sorter="alphanum" data-card-visible="false">
                             {% else %}
-                                {{ field.renderView(item) }}
-                            {% endif %}
-                        </td>
+                                <th data-field="{{field.id}}" data-title="{{f ield.keyword | translate }}" data-sortable="true" data-sorter="alphanum" data-card-visible="false">
+                                {% endif %}
+                                {{field.keyword|trans}}
+                            </th>
+                        {% endif %}
+                        {% do
+                            form[field.formName].setRendered %}
                     {% endfor %}
+                    <th class="controlshead" data-field="controls" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
                 </tr>
-            {% endfor %}
-        </tbody>
+            </thead>
 
-    </table>
+            <tbody>
+                {% for item in items %}
+                    <tr data-unique-id="{{ item.id }}">
+                        <td class="not-card-visible">
+                            <span class="tablecheckbox glyphicon glyphicon-unchecked"></span>
+                        </td>
+                        {% if item.hasAttribute(state.image) %}
+                            <td class="thumbimage">
+                                {% set image = item.property(state.image).value() %}
+                                {% if image is not empty %}
+                                    {% if item.property(state.image).attribute.hasMultipleOccurrences %}
+                                        {% set image = image[0] %}
+                                    {% endif %}
+                                    <img src="{{path('img', {'image': image.id}) ~ '?p=thumb'}}" alt=''/>
+                                {% else %}
+                                    <span class="glyphicon glyphicon-picture placeholder-img"></span>
+                                {% endif %}
+                            </td>
+                        {% endif %}
+                        {% for cell in layout.cells %}
+                            {% set field = cell.element %}
+                            {% if state.actor.hasPermission(field.attribute.readPermission) %}
+                                <td>
+                                    <span class="cell-label">{{field.keyword|trans}}</span>
+                                    {{ field.renderView(item, state) }}
+                                </td>
+                            {% endif %}
+                        {% endfor %}
+                        <td class="controls">
+                            <span class="cell-label">{{ 'core.controls' | translate }}</span>
+                            {% if (state.name == 'actors') %}
+                                <a href="#" class="open-focus">
+                                    <span class="icon icon-user-focus small"></span>
+                                </a>
+                            {% endif %}
+                            <a href="{{ path(state.modules[item.schema.module.id].route, {'id': item.id}) }}">
+                                <span class="glyphicon glyphicon-file"></span>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
 
-</div>
+        </table>
+
+    </div>
+
+    <script>
+        window.itemkey = {% if items[0] is defined %}
+            "{{ items[0].schema.module.id }}";
+        {% else %}
+            {{null}}
+        {% endif %}
+
+        window.itemlist = [{% if items|length > 0 %}
+                {% for item in items %}
+                    "{{ item.id }}",
+                {% endfor %}
+            {% else %}
+                false
+            {% endif %},];
+        if (typeof window.translations == 'undefined') {
+            window.translations = [];
+        }
+        window.translations['core.user.update.success'] = "{{ 'core.user.update.success' | trans }}";
+        window.translations['core.user.update.failure'] = "{{ 'core.user.update.failure' | trans }}"
+
+        window.userApiUrl = "{{ path('api.internal.user.actor', {'id': 'dummyid'}) }}".split('dummyid')[0];
+    </script>

@@ -1,0 +1,17 @@
+{# Define the static content block #}
+{% block content %}
+
+    {% block flash %}{% endblock %}
+
+    {% if state.workflow.mode == 'edit' %}
+        <button id="pageedit" type="button" class="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">
+            {{ 'core.button.edit' | translate }}
+        </button>
+        <div class="inlineedit">
+            {{ data.property('content').value.content | raw }}
+        </div>
+    {% else %}
+        {{ data.property('content').value.content | raw }}
+    {% endif %}
+
+{% endblock content %}

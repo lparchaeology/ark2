@@ -1,0 +1,95 @@
+{# Define the map block #}
+
+<div id="mapview" class="mapview">
+
+    <div class="btn-group dropdown map layer-select">
+        <button class="btn btn-default dropdown-toggle layer-select" type="button" id="mapLayerMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <span class="icon icon-map small"></span>
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu layer-select" aria-labelledby="mapLayerMenu">
+            {% set config = [] %}
+            {% for layer in map.layers %}
+                {% if layer.isDefault %}
+                    <li><a class="layer-select selected" value="{{ layer.name }}">{{ layer.keyword | translate }}</a></li>
+                {% else %}
+                    <li><a class="layer-select" value="{{ layer.name }}">{{ layer.keyword | translate }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="btn-group dropdown map style-select">
+        <button class="btn btn-default dropdown-toggle style-select" type="button" id="mapStyleMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <span class="icon icon-heatmap small"></span>
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu style-select" aria-labelledby="mapStyleMenu">
+            {% if global.user %}
+                <li><a class="style-select-option" value="distribution">{{ 'map.style.distribution' | translate }}</a></li>
+            {% endif %}
+            <li><a class="style-select-option" value="choropleth">{{ 'map.style.choropleth' | translate }}</a></li>
+            <li><a class="style-select-option" value="none">{{ 'map.style.none' | translate }}</a></li>
+        </ul>
+    </div>
+
+    <div id="map" class="map search_map"></div>
+
+        <div id="map-legend" class="map-legend">
+            <span class="map-legend-label">{{ 'map.legend.max' | translate }}</span>
+            <div class="legend-image"></div>
+            <span class="map-legend-label">{{ 'map.legend.min' | translate }}</span>
+        </div>
+
+        {# Convert the ARK map config into OpenLayers json #}
+        {% set view = {
+            'projection': 'EPSG:' ~ state.map.srid,
+            'center': state.map.center.toArray,
+            'extent': state.map.extent.toArray[0] | merge(state.map.extent.toArray[1]),
+            'zoom': state.map.zoom,
+            'minZoom': state.map.minimumZoom,
+            'maxZoom': state.map.maximumZoom
+        } %}
+        {% set layers = [] %}
+        {% for layer in state.map.layers %}
+            {% if layer.source.viewClass == 'BingMaps' %}
+                {% set source = {'key': layer.source.ticket, 'imagerySet': layer.sourceName} %}
+            {% endif %}
+            {% if layer.source.viewClass == 'TileWMS' %}
+                {% set source = {'url': layer.url ~ '&TRANSPARENT=TRUE&ticket=' ~ data['kortforsyningenticket'] | raw, 'params': layer.parameters} %}
+            {% endif %}
+            {% set conf = {'name': layer.name, 'visible': layer.isVisible, 'class': layer.source.viewClass, 'source': source} %}
+            {% set layers = layers | merge([conf]) %}
+        {% endfor %}
+        {% set config = [] %}
+        {% set config = config | merge({'view': view}) %}
+        {% set config = config | merge({'layers': layers}) %}
+
+        <script>
+            var layerConfig = JSON.parse("{{ config | json_encode() | escape('js') }}");
+
+            wkts = [];
+
+            {% if global.user %}
+
+                var default_overlay = "distribution";
+
+                {% for item in data[layout.name] %}
+                    {% set location = item.property('location').value() %}
+                    {% if location['coordinates'] is defined %}
+                        wkts[{{ item.id }}] = '{{ location['coordinates'] }}';
+                    {% else %}
+                        'POINT (0 0)';
+                    {% endif %}
+                {% endfor %}
+
+            {% else %}
+
+                var default_overlay = "choropleth";
+
+            {% endif %}
+        </script>
+
+    </div>
+
+</div>

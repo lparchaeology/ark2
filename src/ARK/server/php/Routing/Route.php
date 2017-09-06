@@ -48,9 +48,9 @@ class Route
         return $this->route;
     }
 
-    public function path() : string
+    public function pattern() : string
     {
-        return $this->route;
+        return $this->path;
     }
 
     public function canGet() : bool
@@ -61,6 +61,16 @@ class Route
     public function canPost() : bool
     {
         return $this->post;
+    }
+
+    public function method() : string
+    {
+        if ($this->get && $this->post) {
+            return 'GET|POST';
+        } elseif ($this->post) {
+            return 'POST';
+        }
+        return 'GET';
     }
 
     public function page() : ?Page
@@ -75,7 +85,7 @@ class Route
 
     public function controller() : string
     {
-        return $this->page;
+        return $this->controller;
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void

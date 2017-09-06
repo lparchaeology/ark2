@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Site Controller
+ * Page Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -29,50 +29,33 @@
 
 namespace ARK\Framework\Controller;
 
+use ARK\Entity\Page;
 use ARK\Error\ErrorException;
+use ARK\Framework\Controller;
 use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
-use ARK\Service;
-use ARK\View\Element;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class StaticPageController
+class StaticPageController extends Controller
 {
-    public function __invoke(Request $request, $view, $item)
+    public function buildData(Request $request)
     {
-        if (!$view = ORM::find('ARK\View\Page', $page)) {
-            throw new ErrorException(new NotFoundError('VIEW_NOT_FOUND', 'View not found', "Page view for $view not found"));
+        $route = $request->attributes->get('_route');
+        if (!$page = ORM::find(Page::class, $route)) {
+            throw new ErrorException(new NotFoundError('PAGE_NOT_FOUND', 'Page not found', "Page $page not found"));
         }
-        if (!$item = ORM::find('ARK\Entity\Page', $item)) {
-            throw new ErrorException(new NotFoundError('ITEM_NOT_FOUND', 'Item not found', "Item $route not found"));
-        }
+        return $page;
+    }
 
-        if ($request->getMethod() == 'POST') {
-            $value = $item->property('content')->value();
-            $value[0]['content'] = $request->getContent();
-            $item->property('content')->setValue($value);
-            ORM::flush('data');
-            return new Response('', 203);
-        }
-
-        $options['page'] = $page;
-        $options['data'] = $item;
-
-        // TODO Use visibility / permissions
-        if (Service::security()->isGranted('ROLE_ADMIN')) {
-            $content .= '<button id="pageedit" type="button" class="btn btn-default" data-toggle="button" aria-pressed="false" autocomplete="off">Edit</button>';
-            $content .= '<div class="inlineedit">';
-        }
-        if ($value) {
-            $content .= $value[0]['content'];
-        }
-        // TODO Use visibility / permissions
-        if (Service::security()->isGranted('ROLE_ADMIN')) {
-            $content .= '</div>';
-        }
-
-        $page = $view->renderView($options);
-        return new Response($page);
+    public function processForm(Request $request, Form $form) : void
+    {
+        $page = $this->buildData($request);
+        $content = $page->property('content')->value();
+        $content->setContent($request->getContent());
+        $page->property('content')->setValue($content);
+        ORM::flush($page);
+        //return new Response('', 203);
     }
 }
