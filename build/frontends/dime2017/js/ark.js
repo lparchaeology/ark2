@@ -31,7 +31,7 @@ $(document).ready(function() {
             var len = arr.length;
 
             for (var i = 0; i < len; i++) {
-                initialPreview.push('<img class="profile-img" class="file-preview-image" src="/dime/img/'+arr[i]+'?p=preview">');
+                initialPreview.push('<img class="profile-img" class="file-preview-image" src="/img/'+arr[i]+'?p=preview">');
                 initialPreviewConfig.push({ key: arr[i] });
             }
 

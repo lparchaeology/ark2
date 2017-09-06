@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 06, 2017 at 02:44 AM
+-- Generation Time: Sep 06, 2017 at 03:18 AM
 -- Server version: 10.1.25-MariaDB
 -- PHP Version: 7.1.8
 
@@ -7360,7 +7360,7 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 ('core.event.class', 'appraised', '', 0, 0, 0, 0, 'dime.find.event.appraised', ''),
 ('core.event.class', 'approved', '', 0, 0, 0, 0, 'core.actor.event.approved', ''),
 ('core.event.class', 'cancelled', '', 0, 0, 0, 0, 'core.actor.event.cancelled', ''),
-('core.event.class', 'claimed', '', 0, 0, 0, 0, NULL, ''),
+('core.event.class', 'claimed', '', 0, 0, 0, 0, 'dime.find.event.claimed', ''),
 ('core.event.class', 'conserved', '', 0, 0, 0, 0, 'dime.find.event.conserved', ''),
 ('core.event.class', 'declined', '', 0, 0, 0, 0, 'dime.find.event.declined', ''),
 ('core.event.class', 'deleted', '', 0, 0, 0, 0, 'dime.find.event.deleted', ''),
@@ -7962,9 +7962,9 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 ('dime.find.subtype', 'metal.unknown', '', 0, 0, 0, 0, 'dime.find.subtype.metal.unknown', ''),
 ('dime.find.subtype', 'military.ammunition', '', 0, 0, 0, 0, 'dime.find.subtype.military.ammunition', ''),
 ('dime.find.subtype', 'military.armor', '', 0, 0, 0, 0, 'dime.find.subtype.military.armor', ''),
-('dime.find.subtype', 'military.arrow', '', 0, 0, 0, 0, 'dime.find.subtype.military.arrow', ''),
-('dime.find.subtype', 'military.firearm', '', 0, 0, 0, 0, 'dime.find.subtype.military.firearm', '');
+('dime.find.subtype', 'military.arrow', '', 0, 0, 0, 0, 'dime.find.subtype.military.arrow', '');
 INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('dime.find.subtype', 'military.firearm', '', 0, 0, 0, 0, 'dime.find.subtype.military.firearm', ''),
 ('dime.find.subtype', 'military.fitting', '', 0, 0, 0, 0, 'dime.find.subtype.military.fitting', ''),
 ('dime.find.subtype', 'military.fitting.other', '', 0, 0, 0, 0, 'dime.find.subtype.military.fitting.other', ''),
 ('dime.find.subtype', 'military.fitting.sheath', '', 0, 0, 0, 0, 'dime.find.subtype.military.fitting.sheath', ''),
@@ -8635,9 +8635,9 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 ('language', 'sux', 'sumerian', 0, 0, 1, 0, 'language.sumerian', ''),
 ('language', 'sv', 'swedish', 0, 0, 1, 0, 'language.swedish', ''),
 ('language', 'sw', 'swahili', 0, 0, 1, 0, 'language.swahili', ''),
-('language', 'sw-CD', 'swahili.congo', 0, 0, 1, 0, 'language.swahili.congo', ''),
-('language', 'swb', 'comorian', 0, 0, 1, 0, 'language.comorian', '');
+('language', 'sw-CD', 'swahili.congo', 0, 0, 1, 0, 'language.swahili.congo', '');
 INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('language', 'swb', 'comorian', 0, 0, 1, 0, 'language.comorian', ''),
 ('language', 'syc', 'syriac.classical', 0, 0, 1, 0, 'language.syriac.classical', ''),
 ('language', 'syr', 'syriac', 0, 0, 1, 0, 'language.syriac', ''),
 ('language', 'szl', 'silesian', 0, 0, 1, 0, 'language.silesian', ''),
