@@ -62,7 +62,7 @@
                         </div>
                         <div class="row">
                             {% if find.property('description').value.text %}
-                                {{ find.property('description').value.text.keyword | translate }}
+                                {{ find.property('description').value.text.content.keyword | translate }}
                             {% endif %}
                         </div>
                     </td>
