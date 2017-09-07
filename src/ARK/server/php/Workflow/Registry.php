@@ -125,7 +125,8 @@ class Registry extends SymfonyRegistry
             return 'edit';
         }
         try {
-            if ($this->action($item->schema()->name(), 'view')->isAllowed($actor)) {
+            $action = $this->action($item->schema()->name(), 'view');
+            if ($action && $action->isAllowed($actor)) {
                 return 'view';
             }
         } catch (WorkflowException $e) {
