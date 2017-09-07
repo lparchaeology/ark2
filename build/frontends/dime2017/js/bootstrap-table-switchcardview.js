@@ -306,8 +306,10 @@
 
             $('td').off("click");
 
-            that.$toolbar.find('button[name="cardView"]').click();
-           
+            if(window.itemkey != 'actor'){
+                that.$toolbar.find('button[name="cardView"]').click();
+            }
+            
             $('th').on('click', function( e ){
                 window.setTimeout(function(){
                     $('tbody tr').off("click");
