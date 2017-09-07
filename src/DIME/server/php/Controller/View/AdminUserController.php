@@ -31,6 +31,7 @@ namespace DIME\Controller\View;
 
 use ARK\Actor\Museum;
 use ARK\Actor\Person;
+use ARK\Model\Item;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Vocabulary\Term;
