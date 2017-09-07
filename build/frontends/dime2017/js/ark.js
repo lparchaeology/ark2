@@ -56,7 +56,7 @@ $(document).ready(function() {
             'minFileCount': 0,
             'maxFileCount': 3,
             'deleteUrl': "../true.json",
-            'uploadUrl': "/api/internal/file",
+            'uploadUrl': "../api/internal/file",
             'uploadAsync': false,
         }).on("filebatchselected", function(event, files) {
             // trigger upload method immediately after files are selected

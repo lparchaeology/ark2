@@ -160,7 +160,6 @@ $('document').ready(function(){
         $('tr').each( function(i, e){
             getItemForm($(e).attr('data-unique-id'), false);
         });
-        console.log($('#dime_profile_table').length);
         if($('#dime_profile_table').length){
             $('#actor_save').on("click", function(e){
                 var options = {
@@ -174,7 +173,6 @@ $('document').ready(function(){
             });
         }
 
-        that.$toolbar.find('button[name="tableView"]').click();
     }
 
 });
