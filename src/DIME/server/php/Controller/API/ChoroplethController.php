@@ -32,10 +32,11 @@ namespace DIME\Controller\API;
 use ARK\Service;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ChoroplethController
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request) : Response
     {
         // get all the municipality
         $municipalities = Service::database()->getSpatialTerms('dime.denmark.municipality');

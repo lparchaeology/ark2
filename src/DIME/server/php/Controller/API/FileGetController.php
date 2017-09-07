@@ -34,11 +34,12 @@ use ARK\ORM\ORM;
 use ARK\Service;
 use League\Glide\Responses\SymfonyResponseFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class FileGetController
 {
-    public function __invoke(Request $request, $id)
+    public function __invoke(Request $request, $id) : Response
     {
         // TODO Wrap in a nice neat class or Service call
         $file = ORM::find(File::class, $id);

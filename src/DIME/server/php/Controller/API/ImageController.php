@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * DIME Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -34,10 +34,11 @@ use ARK\File\Image;
 use ARK\ORM\ORM;
 use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ImageController
 {
-    public function __invoke(Request $request, $image)
+    public function __invoke(Request $request, $image) : Response
     {
         // TODO Wrap in a nice neat class or Service call
         $file = ORM::find(Image::class, $image);

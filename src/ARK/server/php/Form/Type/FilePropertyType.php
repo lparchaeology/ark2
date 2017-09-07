@@ -79,6 +79,7 @@ class FilePropertyType extends AbstractPropertyType
 
         $maximumOccurrences = $property->attribute()->maximumOccurrences();
 
+        $existing = [];
         while ($i < $maximumOccurrences) {
             if (is_array($value)) {
                 if (array_key_exists($i, $value)) {

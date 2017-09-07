@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * DIME Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace DIME\Controller\API;
@@ -34,12 +33,14 @@ use ARK\Http\JsonResponse;
 use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\View\Group;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class FormController
 {
-    public function handleRequest(Request $request)
+    public function handleRequest(Request $request) : Response
     {
         try {
             $data = $this->processRequest($request);
@@ -48,6 +49,20 @@ class FormController
             $data['message'][$e->getMessage()];
         }
         return new JsonResponse($data);
+    }
+
+    public function buildData(Request $request)
+    {
+        return null;
+    }
+
+    public function buildState(Request $request) : iterable
+    {
+        return [];
+    }
+
+    public function processForm(Request $request, Form $form) : void
+    {
     }
 
     protected function processRequest(Request $request)
@@ -64,7 +79,7 @@ class FormController
 
         $forms = $group->buildForms($data, $state, $options);
         $form = $forms[$group->formName()];
-        if ($request->getMethod() == 'POST') {
+        if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $this->processForm($request, $form);
@@ -104,19 +119,5 @@ class FormController
             $json = [$data['id'] => $data];
         }
         return $json;
-    }
-
-    public function buildData(Request $request)
-    {
-        return null;
-    }
-
-    public function buildState(Request $request)
-    {
-        return [];
-    }
-
-    public function processForm(Request $request, $form)
-    {
     }
 }

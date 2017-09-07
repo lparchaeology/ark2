@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * DIME Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -34,12 +34,12 @@ use ARK\Actor\Actor;
 use ARK\Http\JsonResponse;
 use ARK\Message\Message;
 use ARK\ORM\ORM;
-use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class MessageReadController
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request) : Response
     {
         try {
             $content = json_decode($request->getContent(), true);

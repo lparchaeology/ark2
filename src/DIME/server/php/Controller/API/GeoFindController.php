@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace DIME\Controller\API;
@@ -38,10 +37,11 @@ use ARK\Vocabulary\Term;
 use Brick\Geo\Point;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class GeoFindController
 {
-    public function __invoke(Request $request) : JsonResponse
+    public function __invoke(Request $request) : Response
     {
         $wkt = $request->getContent();
         try {

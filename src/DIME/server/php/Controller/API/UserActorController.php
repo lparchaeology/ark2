@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace DIME\Controller\API;
@@ -36,10 +35,11 @@ use ARK\Service;
 use DIME\DIME;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserActorController extends FormController
 {
-    public function __invoke(Request $request, string $id)
+    public function __invoke(Request $request, string $id) : Response
     {
         $request->attributes->set('form', 'dime_user_actor');
         $request->attributes->set('actor', $id);

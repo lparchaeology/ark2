@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller
+ * DIME Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace DIME\Controller\API;
@@ -34,10 +33,11 @@ use ARK\Http\JsonResponse;
 use ARK\Service;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class GeoChoroplethController
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request) : Response
     {
         try {
             $concept = $request->query->get('concept');
@@ -49,7 +49,7 @@ class GeoChoroplethController
 
             $terms = Service::database()->getSpatialTermChoropleth($concept, $module, $attribute, $itemlist);
 
-            $terms = array_column($terms, "count", "term");
+            $terms = array_column($terms, 'count', 'term');
 
             $curmax = 0;
             $curmin = INF;
@@ -67,7 +67,7 @@ class GeoChoroplethController
             foreach ($terms as $term => $count) {
                 $datum['term'] = $term;
                 $datum['count'] = $count;
-                if ($term['count'] == $curmin) {
+                if ($term['count'] === $curmin) {
                     $datum['band'] = 1;
                 } elseif ($term['count'] < $curmin + $band) {
                     $datum['band'] = 2;
@@ -80,7 +80,7 @@ class GeoChoroplethController
             }
         } catch (Exception $e) {
             $data = [
-                $e->getMessage()
+                $e->getMessage(),
             ];
         }
 
