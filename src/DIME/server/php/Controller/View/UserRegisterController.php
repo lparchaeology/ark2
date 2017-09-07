@@ -45,6 +45,7 @@ class UserRegisterController extends DimeFormController
     public function buildState(Request $request, $data) : iterable
     {
         $state = parent::buildState($request, $data);
+        $state['workflow']['mode'] = 'edit';
         $select['choices'] = ORM::findAll(Museum::class);
         $select['choice_value'] = 'id';
         $select['choice_name'] = 'id';

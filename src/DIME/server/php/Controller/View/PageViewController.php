@@ -68,7 +68,7 @@ class PageViewController extends DimeFormController
             $content .= $value->content();
         }
 
-        $state = $this->buildState($request);
+        $state = $this->buildState($request, $item);
 
         $options['content'][0] = $content;
         $options['state'] = $state;
