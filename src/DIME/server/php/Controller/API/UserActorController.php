@@ -30,55 +30,81 @@
 namespace DIME\Controller\API;
 
 use ARK\Actor\Actor;
+use ARK\Framework\ApiController;
+use ARK\Model\Item;
 use ARK\ORM\ORM;
+use ARK\Security\User;
 use ARK\Service;
 use DIME\DIME;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class UserActorController extends FormController
+class UserActorController extends ApiController
 {
-    public function __invoke(Request $request, string $id) : Response
+    public function __invoke(Request $request, string $id = null) : Response
     {
-        $request->attributes->set('form', 'dime_user_actor');
-        $request->attributes->set('actor', $id);
+        // TODO Error id no id
+        $request->attributes->set('_form', 'dime_user_actor');
+        $request->attributes->set('_id', $id);
         return $this->handleRequest($request);
-    }
-
-    public function buildState(Request $request) : iterable
-    {
-        $state = parent::buildState($request);
-        $state['image'] = 'avatar';
-        return $state;
     }
 
     public function buildData(Request $request)
     {
-        $actor = $request->attributes->get('actor');
+        $actor = $request->attributes->get('_id');
         $data['actor'] = ORM::find(Actor::class, $actor);
         return $data;
     }
 
+    public function buildState(Request $request, $data) : iterable
+    {
+        $state = parent::buildState($request, $data);
+        $state['image'] = 'avatar';
+        return $state;
+    }
+
     public function processForm(Request $request, Form $form) : void
     {
+        $id = $request->attributes->get('_id');
         $submitted = $form->getConfig()->getName();
+
         if ($submitted === 'password_set') {
             $data = $form->getData();
-            $user = Service::security()->user();
+            $user = ORM::find(User::class, $id);
             $user->setPassword($data['password']);
-            ORM::persist($user);
             ORM::flush($user);
-            $request->attributes->set('flash', 'success');
-            $request->attributes->set('message', 'core.user.password.change.success');
+            $request->attributes->set('_status', 'success');
+            $request->attributes->set('_message', 'dime.admin.user.password.set');
         }
+
+        if ($submitted === 'role_add') {
+            $data = $form->getData();
+            $actor = ORM::find(Actor::class, $id);
+            $ar = Service::security()->createActorRole($actor, $data['role'], $data['museum'], $data['expiry']);
+            ORM::flush($ar);
+            $request->attributes->set('_status', 'success');
+            $request->attributes->set('_message', 'dime.admin.user.role.added');
+        }
+
         if ($submitted === 'actor') {
+            dump($form->getName());
             $actor = $form->getData();
-            ORM::persist($actor);
+            dump($actor->id());
+            dump($actor->property('email')->value());
             ORM::flush($actor);
-            $request->attributes->set('flash', 'success');
-            $request->attributes->set('message', 'dime.user.update.success');
-            // TODO Reload & Return data?
+            dump($actor->property('email')->value());
+            $actor = ORM::find(Actor::class, $id);
+            dump($actor->id());
+            dump($actor->property('email')->value());
+            dump();
+            $request->attributes->set('_status', 'success');
+            $request->attributes->set('_message', 'dime.admin.user.updated');
         }
+    }
+
+    protected function item($data) : ?Item
+    {
+        return $data['actor'];
     }
 }

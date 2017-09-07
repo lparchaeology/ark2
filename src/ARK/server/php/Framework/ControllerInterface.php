@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller.
+ * ARK Controller Interface.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,33 +27,20 @@
  * @since      2.0
  */
 
-namespace DIME\Controller\API;
+namespace ARK\Framework;
 
-use ARK\File\File;
-use ARK\ORM\ORM;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
-class FilePostController
+interface ControllerInterface
 {
-    public function __invoke(Request $request) : Response
-    {
-        $ids = [];
-        dump($request);
-        dump($request->files);
-        foreach ($request->files as $upload) {
-            dump($upload);
-            // TODO Make generic, file widget should set properly
-            $uploadFile = $upload['image']['file'][0] ?? $upload['avatar']['file'] ?? null;
+    public function handleRequest(Request $request);
 
-            if ($file = File::createFromUploadedFile($uploadFile)) {
-                ORM::persist($file);
-                $ids[] = $file->id();
-            }
-        }
-        ORM::flush(File::class);
+    public function buildData(Request $request);
 
-        return new JsonResponse($ids);
-    }
+    public function buildState(Request $request, $data) : iterable;
+
+    public function defaultOptions(string $route = null) : iterable;
+
+    public function processForm(Request $request, Form $form) : void;
 }

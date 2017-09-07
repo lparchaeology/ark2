@@ -97,22 +97,26 @@ class AdminUserController extends DimeFormController
             //ORM::flush($actor);
             return;
         }
+
+        /*
         $actor = $form['actor']->getData();
+
         if ($submitted === 'password_set') {
-            $user = Service::security()->userProvider()->loadUserByUsername($actor->id());
-            $credentials = $form['password_set']->getData();
-            $user->setPassword($credentials['_password']);
-            ORM::persist($user);
+            $data = $form->getData();
+            $user = ORM::find(User::class, $id);
+            $user->setPassword($data['password']);
             ORM::flush($user);
             Service::view()->addSuccessFlash('dime.admin.user.password.set');
         }
+
         if ($submitted === 'role_add') {
-            $add = $form['role_add']->getData();
-            $role = ORM::find(Role::class, $add['role']->name());
-            $actorRole = Service::security()->createActorRole($actor, $role, $add['museum'], $add['expiry']);
-            ORM::flush($actorRole);
-            Service::view()->addSuccessFlash('dime.admin.user.role.add');
+            $data = $form->getData();
+            $actor = ORM::find(Actor::class, $id);
+            $ar = Service::security()->createActorRole($actor, $data['role'], $data['museum'], $data['expiry']);
+            ORM::flush($ar);
+            Service::view()->addSuccessFlash('dime.admin.user.password.set');
         }
+        */
     }
 
     protected function item($data) : ?Item

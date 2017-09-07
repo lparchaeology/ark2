@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 07, 2017 at 10:47 AM
+-- Generation Time: Sep 07, 2017 at 06:28 PM
 -- Server version: 10.2.8-MariaDB
 -- PHP Version: 7.1.8
 
@@ -5778,10 +5778,10 @@ INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `ma
 ('core_user_role', '', 0, 0, 0, 'core_widget_choice', NULL, 'dime.workflow.role', 'role', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.workflow.role', NULL, NULL),
 ('core_user_role', '', 0, 0, 4, 'core_widget_actor', NULL, NULL, 'museum', NULL, 1, 0, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'redact', 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}'),
 ('core_user_role', '', 0, 0, 6, 'core_widget_date', NULL, NULL, 'expiry', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.user.role.expiry', NULL, NULL),
-('core_user_role_add', '', 0, 0, 0, 'core_widget_choice', NULL, 'dime.workflow.role', 'role_add', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.workflow.role', NULL, NULL),
+('core_user_role_add', '', 0, 0, 0, 'core_widget_choice', NULL, 'dime.workflow.role', 'role', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.workflow.role', NULL, NULL),
 ('core_user_role_add', '', 0, 0, 4, 'core_widget_actor', NULL, NULL, 'museum', NULL, 1, 0, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'redact', 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}'),
 ('core_user_role_add', '', 0, 0, 6, 'core_widget_date', NULL, NULL, 'expiry', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.user.role.expiry', NULL, NULL),
-('core_user_role_add', '', 0, 0, 10, 'core_widget_submit', NULL, NULL, 'role', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL),
+('core_user_role_add', '', 0, 0, 10, 'core_widget_submit', NULL, NULL, 'role_add', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL),
 ('core_workflow_action', '', 0, 0, 0, 'core_widget_choice', NULL, NULL, 'actions', NULL, 0, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
 ('core_workflow_action', '', 0, 0, 2, 'core_widget_submit', NULL, NULL, 'apply', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL),
 ('core_workflow_action', '', 0, 2, 0, 'core_widget_actor', NULL, NULL, 'actors', NULL, 0, 0, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, 'redact', 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),

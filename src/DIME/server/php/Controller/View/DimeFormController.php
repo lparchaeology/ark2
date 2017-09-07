@@ -29,12 +29,12 @@
 
 namespace DIME\Controller\View;
 
-use ARK\Framework\Controller;
+use ARK\Framework\PageController;
 use ARK\Service;
 use DIME\DIME;
 use Symfony\Component\HttpFoundation\Request;
 
-abstract class DimeFormController extends Controller
+abstract class DimeFormController extends PageController
 {
     public function buildState(Request $request, $data) : iterable
     {
