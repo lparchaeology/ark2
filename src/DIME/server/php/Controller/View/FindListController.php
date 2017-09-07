@@ -203,11 +203,11 @@ class FindListController extends DimeFormController
                 && $actor->isAgentFor(ORM::find(Museum::class, $query['museum'][0]))
                 && isset($query['finder']) && count($query['finder']) === 1
                 && isset($query['status']) && count($query['status']) === 1;
-            $claim = true;
+
             if ($claim) {
                 $state['workflow']['mode'] = 'edit';
-                //$state['actions'] = Service::workflow()->updateActions($actor, $data['finds']['items'][0]);
-                $state['actions'] = [ORM::find(Action::class, ['schma' => 'dime.find', 'action' => 'claim'])];
+                $state['actions'] = Service::workflow()->updateActions($actor, $data['finds']['items'][0]);
+                //$state['actions'] = [ORM::find(Action::class, ['schma' => 'dime.find', 'action' => 'claim'])];
                 $state['select']['actions']['choices'] = $state['actions'];
                 $state['select']['actions']['choice_value'] = 'name';
                 $state['select']['actions']['choice_name'] = 'name';
@@ -278,8 +278,8 @@ class FindListController extends DimeFormController
             //$date = $data['date'];
             //$text = $data['textarea'];
             foreach ($finds as $find) {
-                //$action->apply($actor, $find);
-                //ORM::persist($find);
+                $action->apply($actor, $find);
+                ORM::persist($find);
             }
             if ($action->name() === 'claim') {
                 //$layout = ORM::find(Group::class, 'dime_treasure_pdf');

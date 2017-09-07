@@ -175,7 +175,7 @@ class Page extends Element
                 }
                 Service::view()->addErrorFlash('core.error.form.invalid');
                 foreach ($posted->getErrors(true) as $error) {
-                    Service::view()->addErrorFlash($error->getMessage());
+                    //Service::view()->addErrorFlash($error->getMessage());
                 }
             } catch (WorkflowException $e) {
                 Service::view()->addErrorFlash($e->getMessage());
