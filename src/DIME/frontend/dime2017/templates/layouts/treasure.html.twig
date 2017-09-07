@@ -1,0 +1,58 @@
+{# DIME treasure form layout #}
+
+<div class="container-fluid">
+
+<div class="row">
+    <div class="col-md-4">
+        {{ data.museum.property('id').value }}
+    </div>
+    <div class="col-md-4">
+        <div class="row">{{ data.claimant.property('fullname').value.content }}</div>
+        <div class="row">{{ data.claimant.property('email').value }}</div>
+        <div class="row">{{ data.claimant.property('telephone').value }}</div>
+    </div>
+    <div class="col-md-4">
+        Nationalmuseet
+    </div>
+</div>
+
+<div class="row">
+    <table class="table">
+
+        <thead>
+            <tr>
+                <th class="col-md-2">ID</th>
+                <th class="col-md-6">Details</th>
+                <th class="col-md-2">Photos</th>
+                <th class="col-md-2">Nationalmuseet</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for find in data.finds %}
+
+                <tr>
+
+                    <td>
+                        {{ find.property('museum_id').value }}
+                    </td>
+
+                    <td>
+                        {{ find.property('class').value.keyword }}
+                    </td>
+
+                    <td>
+                    </td>
+
+                    <td>
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+</div>

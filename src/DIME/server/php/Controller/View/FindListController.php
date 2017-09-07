@@ -282,13 +282,15 @@ class FindListController extends DimeFormController
                 //ORM::persist($find);
             }
             if ($action->name() === 'claim') {
-                $layout = ORM::find(Group::class, 'dime_treasure_pdf');
+                //$layout = ORM::find(Group::class, 'dime_treasure_pdf');
                 $data['finds'] = $finds;
                 $data['museum'] = $finds[0]->property('museum')->value();
                 $data['claimant'] = $finds[0]->property('finder')->value();
                 $data['agent'] = $actor;
+                /*
                 $state = $layout->buildState($data, $layout->defaultState());
                 $state['actor'] = $actor;
+                $state['image'] = 'image';
                 $state['mode'] = 'view';
                 $state['workflow']['mode'] = 'edit';
                 $options = $layout->buildOptions($data, $state);
@@ -305,8 +307,12 @@ class FindListController extends DimeFormController
                 $context['layout'] = $layout;
                 $context['forms'] = $state['forms'];
                 $context['form'] = null;
+                */
 
-                $pdf = Service::view()->renderPdf('layouts/grid.html.twig', $context);
+                $options['page-size'] = 'A4';
+                $options['orientation'] = 'Landscape';
+                $options['viewport-size'] = '1280x800';
+                $pdf = Service::view()->renderPdf('pages/treasure.html.twig', ['data' => $data], $options);
                 $mediatype = new MediaType('application/pdf');
                 $file = File::createFromContent($mediatype, 'danefae.pdf', $pdf);
                 foreach ($finds as $find) {

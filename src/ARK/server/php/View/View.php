@@ -91,10 +91,10 @@ class View
         return $response;
     }
 
-    public function renderPdf(string $view, iterable $parameters = []) : string
+    public function renderPdf(string $view, iterable $parameters = [], iterable $options = []) : string
     {
         $html = $this->renderView($view, $parameters);
-        return $this->app['renderer.pdf']->getOutputFromHtml($html);
+        return $this->app['renderer.pdf']->getOutputFromHtml($html, $options);
     }
 
     public function generatePdf(string $view, string $path, iterable $parameters = []) : void

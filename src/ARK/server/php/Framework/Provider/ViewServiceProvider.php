@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK View Service Provider
+ * ARK View Service Provider.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -32,8 +32,8 @@ namespace ARK\Framework\Provider;
 
 use ARK\ARK;
 use ARK\Translation\Twig\TranslateExtension;
-use ARK\View\Bus\NavAddMessage;
 use ARK\View\Bus\NavAddHandler;
+use ARK\View\Bus\NavAddMessage;
 use ARK\View\View;
 use Fuz\Jordan\Twig\Extension\TreeExtension;
 use Knp\Snappy\Image;
@@ -47,7 +47,7 @@ use Twig_Extensions_Extension_Intl;
 
 class ViewServiceProvider implements ServiceProviderInterface
 {
-    public function register(Container $container)
+    public function register(Container $container) : void
     {
         // ARK View Service
         $container['view'] = function ($app) {
