@@ -98,7 +98,9 @@ class ViewServiceProvider implements ServiceProviderInterface
         $container['renderer.pdf.binary'] = $container['ark']['view']['renderer']['pdf'];
         $container['renderer.pdf.options'] = [];
         $container['renderer.pdf'] = function ($container) {
-            return new Pdf($container['renderer.pdf.binary'], $container['renderer.pdf.options']);
+            $pdf = new Pdf($container['renderer.pdf.binary'], $container['renderer.pdf.options']);
+            $pdf->setTemporaryFolder($container['dir.files'].'/tmp');
+            return $pdf;
         };
         $container['renderer.image.binary'] = $container['ark']['view']['renderer']['image'];
         $container['renderer.image.options'] = [];
