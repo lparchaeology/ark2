@@ -69,6 +69,11 @@ class Service
         return self::$app['dir.config'];
     }
 
+    public static function routes() : iterable
+    {
+        return self::$app['routes'];
+    }
+
     public static function path(string $name, iterable $parameters = [], bool $relative = false) : string
     {
         return self::$app['url_generator']->generate(

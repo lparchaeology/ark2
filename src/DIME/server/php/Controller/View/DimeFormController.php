@@ -30,6 +30,7 @@
 namespace DIME\Controller\View;
 
 use ARK\Framework\PageController;
+use ARK\Routing\Route;
 use ARK\Service;
 use DIME\DIME;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,7 +44,7 @@ abstract class DimeFormController extends PageController
         $state['notifications'] = DIME::getUnreadNotifications();
         // FIXME temp hardcode for now, later replace with Nav table
         $state['page_config'] = $this->pageConfig($request->attributes->get('_route'));
-        // FIXME temp hardcode for now, do properly later!
+        // FIXME Routes to pass into JS, temp hardcode for now, do properly later!
         $state['modules']['find']['api'] = Service::url('api.finds.collection');
         $state['modules']['find']['view'] = Service::url('dime.finds.list');
         $state['modules']['find']['route'] = 'dime.finds.view';
@@ -64,6 +65,15 @@ abstract class DimeFormController extends PageController
         $state['modules']['file']['view'] = null;
         $state['modules']['file']['route'] = null;
         $state['modules']['file']['resource'] = Service::translate('core.file', 'resource');
+        foreach (Service::routes() as $name => $route) {
+            $state['routes'][$name] = [
+                'host' => $route->getHost(),
+                'path' => $route->getPath(),
+                'schemes' => $route->getSchemes(),
+                'requirements' => $route->getRequirements(),
+                'condition' => $route->getCondition(),
+            ];
+        }
         return $state;
     }
 
