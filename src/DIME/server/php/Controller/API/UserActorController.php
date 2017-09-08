@@ -88,16 +88,9 @@ class UserActorController extends ApiController
         }
 
         if ($submitted === 'actor') {
-            dump($form->getName());
             $actor = $form->getData();
-            dump($actor->id());
-            dump($actor->property('email')->value());
             ORM::flush($actor);
-            dump($actor->property('email')->value());
             $actor = ORM::find(Actor::class, $id);
-            dump($actor->id());
-            dump($actor->property('email')->value());
-            dump();
             $request->attributes->set('_status', 'success');
             $request->attributes->set('_message', 'dime.admin.user.updated');
         }
