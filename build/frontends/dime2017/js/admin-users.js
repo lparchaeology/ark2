@@ -1,56 +1,24 @@
 /*functions for making ajax user admin page */
 
-// Set the page level flash
-function setPageAlert(status, message, timeout) {
-    var msg = window.translations[message] ? window.translations[message] : message;
-    status = status === 'error' ? 'danger' : status;
-    $('#alerts').html(
-        $('<div class="alert alert-dismissable alert-fadeout fade in alert-' + status + '" role="alert">'
-            + '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + msg + '</div>')
-    );
-    if (timeout !== undefined) {
-        window.setTimeout(function () {
-            $(".alert-fadeout").fadeTo(500, 0).slideUp(500, function () {
-                $(this).remove();
-            });
-        }, timeout);
-    }
-}
-
-function clearPageAlert() {
-    $('#alerts').html('');
-}
-
 // Return current user ID
 function adminUserId() {
     return $('#actor_id_value').val();
 }
 
-// Return current user admin url
-function makeAdminUserUrl(id) {
-    return window.userApiUrl + id;
-}
-
-// Return current user admin url
-var adminUserFormUrl = function adminUserFormUrl() {
-    return makeAdminUserUrl(adminUserId());
-};
-
 // Set the current user ID
 var setAdminUserId = function setAdminUserId(id) {
-    var url = makeAdminUserUrl(id);
-    $('#actor').attr('action', url);
-    $('#password_set').attr('action', url);
-    $('#role_add').attr('action', url);
+    $('#actor').attr('action', Router.generatePath('api.internal.actor', { id: id }));
+    $('#password_set').attr('action', Router.generatePath('api.internal.user.password.set', { id: id }));
+    $('#role_add').attr('action', Router.generatePath('api.internal.actor.role.add', { id: id }));
 };
 
 // Call API to fetch user details
 var fetchAdminUserActor = function (id) {
     clearPageAlert();
     $('#actor').clearForm();
-    $.ajax(makeAdminUserUrl(id)).fail(function (response) {
+    $.ajax(Router.generatePath('api.internal.actor', { id: id })).fail(function (response) {
         $('#actor').clearForm();
-        setPageAlert(response.status, response.message);
+        setPageAlert(response.status, response.message, 5000);
     }).done(function (response) {
         FormMapper.mapDataToForm(response, $('#actor')[0]);
         setAdminUserId(id);
@@ -65,25 +33,10 @@ function adminUserFormSubmit(data, $form, options) {
 
 // AJAX Form post-submit callback
 function adminUserFormSuccess(response) {
-    setPageAlert(response.status, response.message);
+    setPageAlert(response.status, response.message, 5000);
 }
 
 var itemFormToHtml = function (data) {
-    $('.form-horizontal[name=actor]').find("input[type=text], textarea").each(function (i, e, a) {
-        $(e).val(data[$(e).attr('id')]['value']);
-    });
-    $('.form-horizontal[name=actor]').find("input[type=hidden]").each(function (i, e, a) {
-        $(e).val(data[$(e).attr('id')]['value']);
-    });
-    $('.form-horizontal[name=actor]').find("select").each(function (i, e, a) {
-        var keyword = data[$(e).attr('id')]['value'].split('.');
-        $(e).val(keyword[keyword.length - 1]);
-        $(e).select2({
-            minimumResultsForSearch: 11,
-            width: 'resolve',
-        });
-    });
-
     var initialAvatarPreview = [];
 
     var defaultImage = 1;

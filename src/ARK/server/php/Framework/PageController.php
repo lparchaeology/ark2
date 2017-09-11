@@ -51,7 +51,38 @@ abstract class PageController extends Controller
         }
         $data = $this->buildData($request);
         $state = $this->buildState($request, $data);
-        return $page->handleRequest($request, $data, $state, [$this, 'processForm']);
+        $state = $page->buildState($data, $state);
+        $options = $page->buildOptions($data, $state, []);
+        $forms = ($page->content() ? $page->content()->buildForms($data, $state, $options) : null);
+        if ($state['mode'] === 'deny') {
+            throw new AccessDeniedException('core.error.access.denied');
+        }
+        if ($forms && $request->getMethod() === 'POST') {
+            $parms = $request->request->all();
+            $parms = $this->fixStaticFields($parms);
+            $request->request->replace($parms);
+            try {
+                $posted = $this->postedForm($request, $forms);
+                if ($posted !== null && $posted->isValid()) {
+                    $this->processForm($request, $posted);
+                    if ($file = $request->attributes->get('_file')) {
+                        return Service::view()->fileResponse($file);
+                    }
+                    $redirect = $request->attributes->get('redirect') ?? $request->attributes->get('_route');
+                    $parameters = $request->attributes->get('parameters') ?? [];
+                    return Service::redirectPath($redirect, $parameters);
+                }
+                Service::view()->addErrorFlash('core.error.form.invalid');
+                foreach ($posted->getErrors(true) as $error) {
+                    //Service::view()->addErrorFlash($error->getMessage());
+                }
+            } catch (WorkflowException $e) {
+                Service::view()->addErrorFlash($e->getMessage());
+            }
+        }
+        $context = $page->pageContext($data, $state, $forms);
+        $response = Service::view()->renderResponse($page->template(), $context);
+        return $response;
     }
 
     public function buildState(Request $request, $data) : iterable
@@ -78,6 +109,17 @@ abstract class PageController extends Controller
             $select['multiple'] = false;
             $select['placeholder'] = Service::translate('core.placeholder');
             $state['select']['actors'] = $select;
+        }
+        $state['routing']['base_path'] = $request->getBasePath();
+        $state['routing']['routes'] = [];
+        foreach (Service::routes() as $name => $route) {
+            $state['routing']['routes'][$name] = [
+                'host' => $route->getHost(),
+                'path' => $route->getPath(),
+                'schemes' => $route->getSchemes(),
+                'requirements' => $route->getRequirements(),
+                'condition' => $route->getCondition(),
+            ];
         }
         return $state;
     }

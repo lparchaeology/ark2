@@ -65,15 +65,6 @@ abstract class DimeFormController extends PageController
         $state['modules']['file']['view'] = null;
         $state['modules']['file']['route'] = null;
         $state['modules']['file']['resource'] = Service::translate('core.file', 'resource');
-        foreach (Service::routes() as $name => $route) {
-            $state['routes'][$name] = [
-                'host' => $route->getHost(),
-                'path' => $route->getPath(),
-                'schemes' => $route->getSchemes(),
-                'requirements' => $route->getRequirements(),
-                'condition' => $route->getCondition(),
-            ];
-        }
         return $state;
     }
 

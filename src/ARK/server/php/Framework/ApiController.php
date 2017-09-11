@@ -52,38 +52,43 @@ abstract class ApiController extends Controller
             $state = array_replace_recursive($group->defaultState(), $state);
             $state['actor'] = Service::workflow()->actor();
             $options = $group->defaultOptions();
-
             $forms = $group->buildForms($data, $state, $options);
-            $form = $forms[$group->formName()];
-            if ($request->getMethod() === 'POST') {
-                //$form->handleRequest($request);
-                dump($form);
-                $form->submit($request->request->get($form->getName()));
-                dump($form);
-                if ($form->isSubmitted() && $form->isValid()) {
-                    $this->processForm($request, $form);
-                    $data = $group->buildData($data, $state);
-                    if ($status = $request->attributes->get('_status')) {
-                        $json['status'] = $status;
-                        $json['message'] = $request->attributes->get('_message');
+            // TODO verify this does block!!!
+            if ($state['mode'] === 'deny') {
+                throw new AccessDeniedException('core.error.access.denied');
+            }
+            $json = [];
+            if ($forms && $request->getMethod() === 'POST') {
+                $parms = $request->request->all();
+                $parms = $this->fixStaticFields($parms);
+                $request->request->replace($parms);
+                try {
+                    $posted = $this->postedForm($request, $forms);
+                    if ($posted !== null && $posted->isValid()) {
+                        $this->processForm($request, $posted);
+                        // RETURN data
+                        if ($status = $request->attributes->get('_status')) {
+                            $json['status'] = $status;
+                            $json['message'] = $request->attributes->get('_message');
+                        } else {
+                            $json['status'] = 'warning';
+                            $json['message'] = 'core.form.process.unknown';
+                        }
                     } else {
-                        $json['status'] = 'warning';
-                        $json['message'] = 'core.form.process.unknown';
+                        $json['status'] = 'error';
+                        $json['message'] = 'core.form.validation.failed';
+                        foreach ($posted->getErrors(true) as $error) {
+                            $json['errors'][] = $error->getMessage();
+                        }
                     }
-                } else {
-                    dump($form);
-                    dump($form->isSubmitted());
-                    dump($form->isValid());
-                    $json['status'] = 'error';
-                    $json['message'] = 'core.form.validation.failed';
-                    foreach ($form->getErrors(true) as $error) {
-                        $json['errors'][] = $error->getMessage();
-                    }
-                    dump($json);
+                } catch (WorkflowException $e) {
+                    $json['status'] = $e->getCode();
+                    $json['message'] = $e->getMessage();
                 }
             } else {
+                $form = $forms[$group->formName()];
                 $view = $form->createView();
-                $json = $this->jsonView($view);
+                $json = $this->jsonView($view, $json);
             }
         } catch (Throwable $e) {
             $json['status'] = $e->getCode();
@@ -92,9 +97,8 @@ abstract class ApiController extends Controller
         return new JsonResponse($json);
     }
 
-    private function jsonView(FormView $view)
+    private function jsonView(FormView $view, iterable $json = [])
     {
-        $json = [];
         if ($view->children) {
             foreach ($view as $name => $child) {
                 $json = array_merge($json, $this->jsonView($child));

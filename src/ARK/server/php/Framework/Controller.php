@@ -74,4 +74,34 @@ abstract class Controller implements ControllerInterface
     {
         return $data instanceof Item ? $data : null;
     }
+
+    protected function fixStaticFields(iterable $parms) : iterable
+    {
+        foreach ($parms as $key => &$value) {
+            if (is_iterable($value)) {
+                $parms[$key] = $this->fixStaticFields($value);
+            }
+            if ($key === '_static') {
+                $parms['static'] = $value;
+            }
+        }
+        return $parms;
+    }
+
+    protected function postedForm(Request $request, iterable $forms)
+    {
+        foreach ($forms as $id => $form) {
+            if ($request->request->has($form->getName())) {
+                $form->getRoot()->handleRequest($request);
+                if ($form->isSubmitted()) {
+                    return $form->getRoot();
+                }
+                return null;
+            }
+            if ($root = $this->postedForm($request, $form)) {
+                return $root;
+            }
+        }
+        return null;
+    }
 }

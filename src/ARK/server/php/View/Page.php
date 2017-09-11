@@ -34,12 +34,8 @@ use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
 use ARK\Vocabulary\Term;
-use ARK\Workflow\Exception\WorkflowException;
 use ARK\Workflow\Permission;
 use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class Page extends Element
 {
@@ -136,58 +132,7 @@ class Page extends Element
         $context['state']['forms'] = $views;
         $context['forms'] = $views;
         $context['form'] = null;
-        //dump($context);
         return $context;
-    }
-
-    public function handleRequest(Request $request, $data, iterable $state, callable $processForm = null) : Response
-    {
-        //dump('PAGE : '.$this->element);
-        //dump($this);
-        //dump($request);
-        //dump($data);
-        //dump($state);
-        $state = $this->buildState($data, $state);
-        //dump($state);
-        if ($state['mode'] === 'deny') {
-            throw new AccessDeniedException('core.error.access.denied');
-        }
-        $options = $this->buildOptions($data, $state, []);
-        //dump($options);
-        $forms = ($this->content() ? $this->content->buildForms($data, $state, $options) : null);
-        //dump($forms);
-        if ($forms && $request->getMethod() === 'POST') {
-            $parms = $request->request->all();
-            $parms = $this->fixStaticFields($parms);
-            $request->request->replace($parms);
-            try {
-                $posted = $this->postedForm($request, $forms);
-                if ($posted !== null && $posted->isValid()) {
-                    if ($processForm !== null) {
-                        $processForm($request, $posted);
-                    }
-                    if ($file = $request->attributes->get('_file')) {
-                        return Service::view()->fileResponse($file);
-                    }
-                    $redirect = $request->attributes->get('redirect') ?? $request->attributes->get('_route');
-                    $parameters = $request->attributes->get('parameters') ?? [];
-                    return Service::redirectPath($redirect, $parameters);
-                }
-                Service::view()->addErrorFlash('core.error.form.invalid');
-                foreach ($posted->getErrors(true) as $error) {
-                    //Service::view()->addErrorFlash($error->getMessage());
-                }
-            } catch (WorkflowException $e) {
-                Service::view()->addErrorFlash($e->getMessage());
-            }
-        }
-        //dump('PAGE : RENDER');
-        //dump($state);
-        $context = $this->pageContext($data, $state, $forms);
-        //dump($context);
-        $response = Service::view()->renderResponse($this->template(), $context);
-        //dump($response);
-        return $response;
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
@@ -207,35 +152,5 @@ class Page extends Element
         $builder->addManyToOneField('sidebar', Group::class, 'sidebar', 'element');
         $builder->addManyToOneField('content', Group::class, 'content', 'element');
         $builder->addManyToOneField('footer', Group::class, 'footer', 'element');
-    }
-
-    protected function fixStaticFields(iterable $parms) : iterable
-    {
-        foreach ($parms as $key => &$value) {
-            if (is_iterable($value)) {
-                $parms[$key] = $this->fixStaticFields($value);
-            }
-            if ($key === '_static') {
-                $parms['static'] = $value;
-            }
-        }
-        return $parms;
-    }
-
-    protected function postedForm(Request $request, iterable $forms)
-    {
-        foreach ($forms as $id => $form) {
-            if ($request->request->has($form->getName())) {
-                $form->getRoot()->handleRequest($request);
-                if ($form->isSubmitted()) {
-                    return $form->getRoot();
-                }
-                return null;
-            }
-            if ($root = $this->postedForm($request, $form)) {
-                return $root;
-            }
-        }
-        return null;
     }
 }

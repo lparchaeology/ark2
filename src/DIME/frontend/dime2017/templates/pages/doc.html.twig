@@ -31,14 +31,17 @@
         {% block body %}{% endblock %}
 
         <!-- Combined jQuery, Bootstrap and ARK js -->
-        {% set ark = {'modules': state.modules, 'routes': state.routes} %}
+        {% set ark = {'modules': state.modules} %}
         <script>
             var ark = JSON.parse("{{ ark | json_encode() | escape('js') }}");
         </script>
         <script> var path = "{{ path('dime.front')|escape('js') }}";</script>
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
         <script src="{{ asset('scripts/ark.min.js', 'frontend') }}"></script>
-
+        <script>
+            Router.setBasePath('{{ state.routing.base_path }}');
+            Router.setRoutes(JSON.parse("{{ state.routing.routes | json_encode() | escape('js') }}"))
+        </script>
     </body>
 
 </html>

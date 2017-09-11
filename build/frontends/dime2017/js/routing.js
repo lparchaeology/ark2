@@ -1,43 +1,34 @@
-(function () {
-    var router = {
-        host: "",
-        baseurl: "",
-        _routes: [],
+var Router = (function () {
 
-        generate: function (name, params) {
-            var route = this._routes[name];
-            var url = this.baseurl + route.path;
+    var base = '';
+    var routes = [];
 
-            // Get params if exists
-            if (params !== undefined) {
-                for (var key in params) {
-                    if (params.hasOwnProperty(key)) {
-                        var param = params[key];
-                        url = url.replace("{" + key + "}", param);
-                    }
-                }
+    var generatePath = function generatePath(name, parameters) {
+        parameters = parameters === undefined ? [] : parameters;
+        var route = this.routes[name];
+        var url = this.base + route.path;
+
+        for (var id in parameters) {
+            if (parameters.hasOwnProperty(id)) {
+                url = url.replace('{' + id + '}', parameters[id]);
             }
+        }
 
-            var res = url.match(/{[a-zA-Z]+}/);
-            if (res !== null) {
-                throw new Error("Identifier " + res + " needs to be set!");
-            }
-
-            if (route.requirements.length > 0) {
-                if (route.requirements._scheme !== undefined) {
-                    if (route.requirements._scheme != window.location.protocol) {
-                        url = route.requirements._scheme + "://" + url;
-                    }
-                }
-            }
-
-            return url;
-        },
-
-        addRoute: function (name, route) {
-            this._routes[name] = route;
-        },
+        return url;
     };
 
-    window.router = router;
+    var setBasePath = function setBasePath(path) {
+        this.base = path;
+    };
+
+    var setRoutes = function addRoutes(routes) {
+        this.routes = routes;
+    };
+
+    return {
+        generatePath: generatePath,
+        setBasePath: setBasePath,
+        setRoutes: setRoutes,
+    };
+
 })();
