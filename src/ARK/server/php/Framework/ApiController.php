@@ -56,7 +56,10 @@ abstract class ApiController extends Controller
             $forms = $group->buildForms($data, $state, $options);
             $form = $forms[$group->formName()];
             if ($request->getMethod() === 'POST') {
-                $form->handleRequest($request);
+                //$form->handleRequest($request);
+                dump($form);
+                $form->submit($request->request->get($form->getName()));
+                dump($form);
                 if ($form->isSubmitted() && $form->isValid()) {
                     $this->processForm($request, $form);
                     $data = $group->buildData($data, $state);
@@ -68,9 +71,15 @@ abstract class ApiController extends Controller
                         $json['message'] = 'core.form.process.unknown';
                     }
                 } else {
+                    dump($form);
+                    dump($form->isSubmitted());
+                    dump($form->isValid());
                     $json['status'] = 'error';
                     $json['message'] = 'core.form.validation.failed';
-                    // TODO Return Errors!!!!
+                    foreach ($form->getErrors(true) as $error) {
+                        $json['errors'][] = $error->getMessage();
+                    }
+                    dump($json);
                 }
             } else {
                 $view = $form->createView();

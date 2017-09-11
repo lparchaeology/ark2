@@ -1,23 +1,77 @@
 /*functions for making ajax user admin page */
 
-var emptyForm = function () {
-    $('.form-horizontal').each(function (i, e, a) {
-        console.log('clearing out');
-        console.log(e);
+// Set the page level flash
+function setPageAlert(status, message, timeout) {
+    var msg = window.translations[message] ? window.translations[message] : message;
+    status = status === 'error' ? 'danger' : status;
+    $('#alerts').html(
+        $('<div class="alert alert-dismissable alert-fadeout fade in alert-' + status + '" role="alert">'
+            + '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + msg + '</div>')
+    );
+    if (timeout !== undefined) {
+        window.setTimeout(function () {
+            $(".alert-fadeout").fadeTo(500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, timeout);
+    }
+}
+
+// Return current user ID
+function adminUserId() {
+    return $('#actor_id_value').val();
+}
+
+// Return current user admin url
+function makeAdminUserUrl(id) {
+    return window.userApiUrl + id;
+}
+
+// Return current user admin url
+var adminUserFormUrl = function adminUserFormUrl() {
+    return makeAdminUserUrl(adminUserId());
+};
+
+// Set the current user ID
+var setAdminUserId = function setAdminUserId(id) {
+    var url = makeAdminUserUrl(id);
+    $('#actor').attr('action', url);
+    $('#password_set').attr('action', url);
+    $('#role_add').attr('action', url);
+};
+
+// Call API to fetch user details
+var fetchAdminUserActor = function (id) {
+    $.ajax(makeAdminUserUrl(id)).fail(function (response) {
+        console.log(response);
+        $('#actor').clearForm();
+        setPageAlert(response.status, response.message);
+    }).done(function (response) {
+        console.log(response);
+        FormMapper.mapDataToForm(response, $('#actor')[0]);
+        setAdminUserId(id);
     });
 };
+
+// AJAX Form Submission
+function adminUserFormSubmit(data, $form, options) {
+    return adminUserId() ? true : false;
+}
+
+// AJAX Form post-submit callback
+function adminUserFormSuccess(response) {
+    setPageAlert(response.status, response.message);
+}
 
 var itemFormToHtml = function (data) {
     $('.form-horizontal[name=actor]').find("input[type=text], textarea").each(function (i, e, a) {
         $(e).val(data[$(e).attr('id')]['value']);
     });
     $('.form-horizontal[name=actor]').find("input[type=hidden]").each(function (i, e, a) {
-        console.log(data[$(e).attr('id')]);
         $(e).val(data[$(e).attr('id')]['value']);
     });
     $('.form-horizontal[name=actor]').find("select").each(function (i, e, a) {
         var keyword = data[$(e).attr('id')]['value'].split('.');
-        console.log(keyword[keyword.length - 1]);
         $(e).val(keyword[keyword.length - 1]);
         $(e).select2({
             minimumResultsForSearch: 11,
@@ -50,95 +104,18 @@ var itemFormToHtml = function (data) {
 
 };
 
-var showItemForm = function (id) {
-
-    var thisRow = $(".dime-table tr[data-unique-id='" + id + "']");
-
-    var data = thisRow.data("data");
-
-    var working = thisRow.data("working");
-
-    if (data) {
-        $('#actor_id_value').html(id);
-        working = thisRow.data("working", true);
-        var thisForm = $('#actor_id_value').closest('form');
-        thisForm.attr('action', window.userApiUrl + id + "/actor");
-        itemFormToHtml(data);
-    } else if (working === true) {
-        showItemForm(id);
-    } else {
-        getItemForm(id, true);
-    }
+var adminUserSelected = function (e) {
+    e.preventDefault();
+    var target = $(e.target).is('tr') ? $(e.target) : $(e.target).closest('tr');
+    console.log(target);
+    fetchAdminUserActor(target.attr('data-unique-id'));
 };
-
-var getItemForm = function (id, showImmediately) {
-
-    if (typeof id === 'undefined') {
-        return false;
-    }
-
-    var thisRow = $(".dime-table tr[data-unique-id='" + id + "']");
-
-    if (thisRow.data("data")) {
-        return true;
-    } else {
-        thisRow.data("working", true);
-    }
-
-
-    $.ajax(window.userApiUrl + id + '/actor').fail(function () {
-        emptyForm();
-    }).done(function (response) {
-        console.log(response);
-        thisRow.data("data", response);
-        thisRow.data("working", false);
-        if (showImmediately) {
-            showItemForm(id);
-        }
-    });
-
-};
-
-var userFocusClick = function (evt) {
-    evt.preventDefault();
-    var self = $(evt.target).is('tr') ? $(evt.target) : $(evt.target).closest('tr');
-    console.log(self.attr('data-unique-id'));
-    showItemForm(self.attr('data-unique-id'));
-};
-
-// Find selected Actor
-function selectedActor() {
-    return $('#actor_id_value').val();
-}
-
-// Generate URL for selected actor/user
-function ajaxFormUrl() {
-    return window.userApiUrl + selectedActor + '/actor';
-}
-
-// AJAX Form Submission
-function ajaxFormSubmit(data, $form, options) {
-    return selectedActor();
-}
-
-//post-submit callback
-function ajaxFormSuccess(response) {
-    var msg = window.translations[response.message]
-        ? window.translations[response.message]
-        : response.message;
-    $('#actor_id_value').closest('form').prepend(
-        $('<div class="alert alert-' + response.status + '" role="alert">' + msg + '</div>')
-    );
-}
 
 $('document').ready(function () {
 
-    $('.icon-user-focus').on("click", { "target": this }, userFocusClick);
-
     var ajaxFormOptions = {
-        beforeSubmit: ajaxFormSubmit,
-        success: ajaxFormSuccess,
-        url: ajaxFormUrl,
+        beforeSubmit: adminUserFormSubmit,
+        success: adminUserFormSuccess,
         type: 'post',
         clearForm: false,
         dataType: 'json',
@@ -146,26 +123,9 @@ $('document').ready(function () {
 
     $('#actor').ajaxForm(ajaxFormOptions);
     ajaxFormOptions.clearForm = true;
-    $('#password_set').attr('action', 'form.php');
     $('#password_set').ajaxForm(ajaxFormOptions);
-    $('#actor').ajaxForm(ajaxFormOptions);
-    /*
-    $('#actor').submit(function () {
-        $(this).ajaxSubmit(ajaxFormOptions);
-        return false;
-    });
-    $('#role_add').submit(function () {
-        $(this).ajaxSubmit(ajaxFormOptions);
-        return false;
-    });
-    $('#role_add').submit(function () {
-        $(this).ajaxSubmit(ajaxFormOptions);
-        return false;
-    });
-    */
+    $('#role_add').ajaxForm(ajaxFormOptions);
 
-    $('tr').each(function (i, e) {
-        getItemForm($(e).attr('data-unique-id'), false);
-    });
+    $('.icon-user-focus').on("click", { "target": this }, adminUserSelected);
 
 });

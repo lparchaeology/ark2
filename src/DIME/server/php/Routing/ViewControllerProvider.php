@@ -63,9 +63,9 @@ class ViewControllerProvider implements ControllerProviderInterface
             ->bind('api.internal.file.get');
         $controllers->post('/api/internal/file', 'DIME\Controller\API\FilePostController')
             ->bind('api.internal.file.add');
-        $controllers->match('/api/internal/users/{id}/actor', 'DIME\Controller\API\UserActorController')
+        $controllers->match('/api/internal/admin/users/{id}', 'DIME\Controller\API\AdminUserController')
             ->method('GET|POST')
-            ->bind('api.internal.user.actor');
+            ->bind('api.internal.admin.users');
         $controllers->post('/api/internal/vocabulary', 'DIME\Controller\API\VocabularyController')
             ->bind('api.internal.vocabulary');
         $controllers->post('/api/internal/message/read', 'DIME\Controller\API\MessageReadController')

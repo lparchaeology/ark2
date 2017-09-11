@@ -89,6 +89,7 @@ abstract class Group extends Element
             $builderData = $this->buildData($data, $state);
             //dump($builderData);
             $builderOptions = $this->buildOptions($builderData, $state, $options);
+            $builderOptions['attr']['id'] = $this->formName();
             //dump($builderOptions);
             //dump($state);
             $builder = $this->formBuilder($builderData, $state, $builderOptions);
