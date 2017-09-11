@@ -32,13 +32,14 @@ namespace ARK\Framework\Controller;
 use ARK\Entity\Page;
 use ARK\Error\ErrorException;
 use ARK\Framework\Controller;
+use ARK\Framework\PageController;
 use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class StaticPageController extends Controller
+class StaticPageController extends PageController
 {
     public function buildData(Request $request)
     {
