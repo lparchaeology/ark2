@@ -17,6 +17,10 @@ function setPageAlert(status, message, timeout) {
     }
 }
 
+function clearPageAlert() {
+    $('#alerts').html('');
+}
+
 // Return current user ID
 function adminUserId() {
     return $('#actor_id_value').val();
@@ -42,12 +46,12 @@ var setAdminUserId = function setAdminUserId(id) {
 
 // Call API to fetch user details
 var fetchAdminUserActor = function (id) {
+    clearPageAlert();
+    $('#actor').clearForm();
     $.ajax(makeAdminUserUrl(id)).fail(function (response) {
-        console.log(response);
         $('#actor').clearForm();
         setPageAlert(response.status, response.message);
     }).done(function (response) {
-        console.log(response);
         FormMapper.mapDataToForm(response, $('#actor')[0]);
         setAdminUserId(id);
     });
@@ -55,6 +59,7 @@ var fetchAdminUserActor = function (id) {
 
 // AJAX Form Submission
 function adminUserFormSubmit(data, $form, options) {
+    clearPageAlert();
     return adminUserId() ? true : false;
 }
 
@@ -107,24 +112,32 @@ var itemFormToHtml = function (data) {
 var adminUserSelected = function (e) {
     e.preventDefault();
     var target = $(e.target).is('tr') ? $(e.target) : $(e.target).closest('tr');
-    console.log(target);
     fetchAdminUserActor(target.attr('data-unique-id'));
 };
 
 $('document').ready(function () {
 
-    var ajaxFormOptions = {
+    $('#actor').ajaxForm({
         beforeSubmit: adminUserFormSubmit,
         success: adminUserFormSuccess,
         type: 'post',
         clearForm: false,
         dataType: 'json',
-    };
-
-    $('#actor').ajaxForm(ajaxFormOptions);
-    ajaxFormOptions.clearForm = true;
-    $('#password_set').ajaxForm(ajaxFormOptions);
-    $('#role_add').ajaxForm(ajaxFormOptions);
+    });
+    $('#password_set').ajaxForm({
+        beforeSubmit: adminUserFormSubmit,
+        success: adminUserFormSuccess,
+        type: 'post',
+        clearForm: true,
+        dataType: 'json',
+    });
+    $('#role_add').ajaxForm({
+        beforeSubmit: adminUserFormSubmit,
+        success: adminUserFormSuccess,
+        type: 'post',
+        clearForm: true,
+        dataType: 'json',
+    });
 
     $('.icon-user-focus').on("click", { "target": this }, adminUserSelected);
 

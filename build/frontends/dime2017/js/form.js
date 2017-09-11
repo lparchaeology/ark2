@@ -27,6 +27,7 @@ var FormMapper = (function () {
         for (var i = 0; i < field.options.length; i++) {
             field.options[i].selected |= data.indexOf(field.options[i].value) > -1;
         }
+        $(field).trigger('change');
     };
 
     var mapDataToSelectField = function mapDataToSelectField(data, field) {
@@ -34,6 +35,7 @@ var FormMapper = (function () {
             data = 'core.placeholder';
         }
         field.value = data.toString() || data;
+        $(field).trigger('change');
     };
 
     var mapDataToStaticField = function mapDataToStaticField(data, field) {

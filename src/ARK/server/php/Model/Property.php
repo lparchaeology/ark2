@@ -117,6 +117,9 @@ class Property
             $frag = $this->fragments->get(0);
             $creator = $frag->creator() ?? Service::workflow()->actor();
             $created = $frag->created() ?? new DateTime();
+            if ($created->format('Y') < 1) {
+                $created = new DateTime();
+            }
             ORM::remove($this->fragments);
             $this->fragments->clear();
         } else {
