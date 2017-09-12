@@ -1,5 +1,5 @@
-$('document').ready(function(){
-    
+$('document').ready(function () {
+
     /*
     $.post(path + 'api/internal/schema',window.module )
         .fail(function() {
@@ -16,7 +16,7 @@ $('document').ready(function(){
                 });
             }
         });
-/*    
+/*
     var getavailableActions = function(itemkey, itemvalue){
         $.post(path + 'api/v2/'.itemkey, itemvalue )
         .fail(function() {
@@ -34,38 +34,39 @@ $('document').ready(function(){
         });
     }
 */
-    var getAvailableActions = function(itemkey, itemvalue){
-            return JSON.parse(JSON.stringify(window.itemAvailableActions[itemvalue]));
-    }
+    var getAvailableActions = function (itemkey, itemvalue) {
+        return JSON.parse(JSON.stringify(window.itemAvailableActions[itemvalue]));
+    };
 
-    var generateDropdownItem = function(action){
-        if (action.visible){
-            action.available ? disabled = '' :  disabled = 'disabled="true" class="disabled"';
-            var dropdownElement = $('<li '+disabled+' value="'+action.keyword+'">'+action.translation+'</li>');
+    var generateDropdownItem = function (action) {
+        var disabled = '';
+        var dropdownElement = '';
+        if (action.visible) {
+            disabled = action.available ? '' : 'disabled="true" class="disabled"';
+            dropdownElement = $('<li ' + disabled + ' value="' + action.keyword + '">' + action.translation + '</li>');
             return dropdownElement;
         }
-    }
+    };
 
-    $('#chooseAction').click(function(){
+    $('#chooseAction').click(function () {
         $('#chooseActionSelectHolder').empty();
-        $('tr.selected').each(function(i,e,a){
+        $('tr.selected').each(function (i, e, a) {
             window.availableActions = JSON.parse(JSON.stringify(window.defaultAvailableActions));
-            var itemActions = getAvailableActions(window.itemkey,$(e).attr('data-unique-id'));
-            for( action in window.availableActions){
-                if ( itemActions.hasOwnProperty( window.availableActions[action].keyword ) ) {
-                    window.availableActions[action]['visible'] = true;
+            var itemActions = getAvailableActions(window.itemkey, $(e).attr('data-unique-id'));
+            for (var action in window.availableActions) {
+                if (itemActions.hasOwnProperty(window.availableActions[action].keyword)) {
+                    window.availableActions[action].visible = true;
                 }
-                if ( itemActions.hasOwnProperty( window.availableActions[action].keyword ) == false ){
-                    window.availableActions[action]['available'] = false;
+                if (itemActions.hasOwnProperty(window.availableActions[action].keyword) === false) {
+                    window.availableActions[action].available = false;
                 }
             }
         });
         var dropdown = $('<ul class="action-select">');
-        for(action in window.availableActions){
-            dropdown.append(generateDropdownItem( window.availableActions[action]));
+        for (var action in window.availableActions) {
+            dropdown.append(generateDropdownItem(window.availableActions[action]));
         }
         $('#chooseActionSelectHolder').append(dropdown);
-    })
-    
-    
+    });
+
 });

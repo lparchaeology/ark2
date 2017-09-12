@@ -8,12 +8,24 @@
  * @version: v1.1.0
  */
 
-!function ($) {
+! function ($) {
 
     'use strict';
 
+    var conditionCardView = function (that) {
+        that.$toolbar.find('button[name="cardView"]').click();
+    };
+
+    var conditionThumbView = function (that) {
+        that.$toolbar.find('button[name="thumbView"]').click();
+    };
+
+    var conditionTableView = function (that) {
+        that.$toolbar.find('button[name="tableView"]').click();
+    };
+
     var showHideColumns = function (that, checked) {
-        if (that.options.columnsHidden.length > 0 ) {
+        if (that.options.columnsHidden.length > 0) {
             $.each(that.columns, function (i, column) {
                 if (that.options.columnsHidden.indexOf(column.field) !== -1) {
                     if (column.visible !== checked) {
@@ -26,16 +38,16 @@
 
     var resetView = function (that) {
         if (that.options.height || that.options.showFooter) {
-            setTimeout(function(){
+            setTimeout(function () {
                 that.resetView.call(that);
             }, 1);
         }
     };
 
-    var currentView = function ( that ) {
-        if(that.$toolbar.find('button[name="tableView"]').hasClass('active')){
+    var currentView = function (that) {
+        if (that.$toolbar.find('button[name="tableView"]').hasClass('active')) {
             return 'tableView';
-        } else if(that.$toolbar.find('button[name="cardView"]').hasClass('active')){
+        } else if (that.$toolbar.find('button[name="cardView"]').hasClass('active')) {
             return 'cardView';
         } else {
             return 'thumbView';
@@ -44,16 +56,14 @@
 
     var changeView = function (that, width, height) {
 
-        var oldView = currentView( that );
+        var oldView = currentView(that);
 
-        console.log(oldView);
-
-        if (oldView != 'tableView'){
+        if (oldView !== 'tableView') {
             $('#dime_find_table').removeClass("cardViewTable");
             $('#dime_find_home').removeClass("cardViewTable");
             $('#dime_find_table').removeClass("thumbViewTable");
             $('#dime_find_home').removeClass("thumbViewTable");
-            if (oldView == 'thumbView'){
+            if (oldView === 'thumbView') {
                 that.toggleView();
             }
             that.$toolbar.find('button').removeClass('active');
@@ -62,12 +72,10 @@
         var thatClientWidth = $('.table-wrapper-div .fixed-table-body')[0].clientWidth;
         var thatScrollWidth = $('.table-wrapper-div .fixed-table-body')[0].scrollWidth;
 
-        var overflowWide = (thatClientWidth < thatScrollWidth);
-
-        console.log(overflowWide);
+        var overflowWide = thatClientWidth < thatScrollWidth;
 
         if (that.options.minHeight) {
-            if ((width <= that.options.minWidth) && (height <= that.options.minHeight)) {
+            if (width <= that.options.minWidth && height <= that.options.minHeight) {
                 that.$toolbar.find('button[name="tableView"]').addClass('disabled');
                 switch (oldView) {
                     case 'tableView':
@@ -80,7 +88,7 @@
                         conditionThumbView(that);
                         break;
                 }
-            } else if ((width > that.options.minWidth) && (height > that.options.minHeight)) {
+            } else if (width > that.options.minWidth && height > that.options.minHeight) {
                 that.$toolbar.find('button[name="tableView"]').removeClass('disabled');
                 switch (oldView) {
                     case 'tableView':
@@ -127,26 +135,14 @@
         resetView(that);
     };
 
-    var conditionCardView = function (that) {
-        that.$toolbar.find('button[name="cardView"]').click();
-    };
-
-    var conditionThumbView = function (that) {
-        that.$toolbar.find('button[name="thumbView"]').click();
-    };
-
-    var conditionTableView = function (that) {
-        that.$toolbar.find('button[name="tableView"]').click();
-    };
-
-    var debounce = function(func,wait) {
+    var debounce = function (func, wait) {
         var timeout;
-        return function() {
+        return function () {
             var context = this,
                 args = arguments;
-            var later = function() {
+            var later = function () {
                 timeout = null;
-                func.apply(context,args);
+                func.apply(context, args);
             };
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
@@ -159,7 +155,7 @@
         minHeight: undefined,
         heightThreshold: 100, // just slightly larger than mobile chrome's auto-hiding toolbar
         checkOnInit: true,
-        columnsHidden: []
+        columnsHidden: [],
     });
 
     var BootstrapTable = $.fn.bootstrapTable.Constructor,
@@ -184,23 +180,23 @@
         var that = this,
             old = {
                 width: $('.bootstrap-table').width(),
-                height: $('.bootstrap-table').height()
+                height: $('.bootstrap-table').height(),
             };
 
-        $(window).on('resize orientationchange',debounce(function (evt) {
+        $(window).on('resize orientationchange', debounce(function (evt) {
             // reset view if height has only changed by at least the threshold.
             var height = $('.bootstrap-table').height(),
                 width = $('.bootstrap-table').width();
 
-            if (Math.abs(old.height - height) > that.options.heightThreshold || old.width != width) {
+            if (Math.abs(old.height - height) > that.options.heightThreshold || old.width !== width) {
                 changeView(that, width, height);
                 old = {
                     width: width,
-                    height: height
+                    height: height,
                 };
             }
 
-        },200));
+        }, 200));
 
         if (this.options.checkOnInit) {
             var height = $('.bootstrap-table').height(),
@@ -208,13 +204,13 @@
             changeView(this, width, height);
             old = {
                 width: width,
-                height: height
+                height: height,
             };
         }
 
-        $('.bootstrap-table').on('column-switch.bs.table', function(){
+        $('.bootstrap-table').on('column-switch.bs.table', function () {
             var height = $('.bootstrap-table').height(),
-            width = $('.bootstrap-table').width();
+                width = $('.bootstrap-table').width();
 
             changeView(that, width, height);
             return true;
