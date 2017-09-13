@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Build Console Command
+ * ARK Build Console Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -32,8 +32,8 @@ namespace ARK\Framework\Console\Command;
 use ARK\ARK;
 use ARK\Framework\Console\ProcessTrait;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class BuildFrontendCommand extends Command
@@ -44,19 +44,17 @@ class BuildFrontendCommand extends Command
     protected $command = 'build';
     protected $description = 'Build an ARK frontend. (Args: frontend)';
 
-    protected function configure()
+    protected function configure() : void
     {
         $this->setName('frontend:'.$this->name)
              ->setDescription($this->description)
              ->addArgument('frontend', InputArgument::REQUIRED, 'The name of the frontend');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : void
     {
         $frontend = $input->getArgument('frontend');
-        $config = json_decode(file_get_contents(ARK::installDir()."/build/frontends/$frontend/config.json"), true);
-        $namespace = $config['namespace'];
         $output->writeln('Runnning build, please wait...');
-        $this->runProcess("npm run $this->command -- --namespace $namespace --frontend $frontend", $output);
+        $this->runProcess("npm run $this->command -- --frontend $frontend", $output);
     }
 }

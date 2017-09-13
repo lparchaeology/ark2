@@ -1,19 +1,30 @@
 {% block flash -%}
 
-    <div class="row">
+    <div id="alerts" class="row">
         <div class="col-xs-12">
             {# Display flashes in order of priority #}
             {% set types = ['danger', 'error', 'success', 'warning', 'info'] %}
+            {% set glyphs = {
+                    'danger': 'glyphicon-exclamation-sign',
+                    'success': 'glyphicon-ok',
+                    'warning': 'glyphicon-warning-sign',
+                    'info': 'glyphicon-info-sign',
+                }
+            %}
             {% for type in types %}
                 {%if type == 'error'%}
                     {% set alert = 'danger' %}
                 {% else %}
                     {% set alert = type %}
                 {% endif %}
-                {% for message in app.session.flashBag.get(type) %}
-                    <div class="alert alert-{{ alert }} " role="alert">
-                        <button class="close" data-dismiss="alert">×</button>
-                        {{ message | translate }}
+                {% for message in global.session.getFlashBag.get(type) %}
+                    <div class="alert alert-{{ alert }} alert-dismissable fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <span class="glyphicon {{ glyphs[alert] }}" aria-hidden="true"></span>
+                        <span class="sr-only">{{ 'core.alert.aria.' ~ alert }}</span>
+                        {{ message | translate(type) }}
                     </div>
                 {% endfor %}
             {% endfor %}

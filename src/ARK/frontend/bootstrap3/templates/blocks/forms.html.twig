@@ -26,12 +26,13 @@ col-xs-12 col-sm-4
 {%- endblock form_group_class %}
 
 {% block form_help -%}
-    {% if help is defined and help is not null %}
-        <span class="help" title="{{ help | translate('help') }}" data-toggle="tooltip" data-placement="bottom" >
-            <span class="glyphicon glyphicon-question-sign">
+    {% spaceless %}
+        {% if help is defined and help is not null %}
+            <span class="help" title="{{ help | translate('help') }}" data-toggle="tooltip" data-placement="bottom" >
+                <span class="glyphicon glyphicon-question-sign"></span>
             </span>
-        </span>
-    {% endif %}
+        {% endif %}
+    {% endspaceless %}
 {%- endblock form_help %}
 
 {% block form_widget -%}
@@ -69,6 +70,7 @@ col-xs-12 col-sm-4
 {% block property_widget -%}
     {% for key, subform in form %}
         {{- form_widget(subform, {'state': state, 'help': help}) -}}
+        {{- form_errors(subform) -}}
         {% do subform.setRendered %}
     {% endfor %}
 {%- endblock property_widget %}
@@ -94,11 +96,25 @@ col-xs-12 col-sm-4
 {%- endblock static_widget %}
 
 {% block unit_widget -%}
-    <div class="input-group">
-        {{- form_widget(form['value']) -}}
-        <div class="input-group-addon"> {{- form['unit'].vars['data'] -}} </div>
-    </div>
-    {{ block('form_help') }}
+    {% spaceless %}
+        {% if state['modus'] == 'static' %}
+            <div id="{{ id }}" class="static-widget" >
+                {% if form['value'].vars['data'] is empty %}
+                    &nbsp;
+                {% else %}
+                    {{ form['value'].vars['data']|translate }} {{form['unit'].vars['data']}}
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="input-group">
+                {{- form_widget(form['value']) -}}
+                <div class="input-group-addon"> {{- form['unit'].vars['data'] -}} </div>
+            </div>
+            {{ block('form_help') }}
+            {{- form_errors(form['value']) -}}
+            {{- form_errors(form['unit']) -}}
+        {% endif %}
+    {% endspaceless %}
     {% do form.setRendered %}
 {%- endblock unit_widget %}
 

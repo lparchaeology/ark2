@@ -1,5 +1,5 @@
 {
-    "site": "",
+    "site": "core",
     "debug": true,
     "locale": {
         "default": "en",
@@ -10,7 +10,9 @@
         "driver": "mysql"
     },
     "mailer": {
-        "enabled": false
+        "enabled": false,
+        "email": "noreply@example.com",
+        "sender": "ARK (Do Not Reply)"
     },
     "file": {
         "root": "/files",
@@ -27,8 +29,8 @@
         "driver": "gd",
         "max_image_size": 4000000,
         "presets": {
-            "thumb": { "w": 100, "h": 100 },
-            "preview": { "w": 500, "h": 500 }
+            "thumb": {"w": 100, "h": 100},
+            "preview": {"w": 500, "h": 500}
         }
     },
     "view": {
@@ -49,7 +51,7 @@
     },
     "web": {
         "enable": true,
-        "frontend": "bootstrap"
+        "frontend": "core"
     },
     "routes": {
         "/api/v2": "ARK\\Routing\\ApiControllerProvider",
@@ -57,7 +59,7 @@
     },
     "security": {
         "access_rules": [
-            ["(^/home)|(^/users)$)", "ROLE_USER"],
+            ["(^/users)", "ROLE_USER"],
             ["^/.+$", "IS_AUTHENTICATED_ANONYMOUSLY"]
         ],
         "user": {

@@ -43,16 +43,16 @@ use Symfony\Component\Console\Question\Question;
 
 abstract class AbstractCommand extends Command
 {
-    const SUCCESS_CODE = 0;
-    const ERROR_CODE = 1;
+    public const SUCCESS_CODE = 0;
+    public const ERROR_CODE = 1;
 
-    protected $query = null;
-    protected $progress = null;
-    protected $result = null;
-    protected $input = null;
-    protected $output = null;
+    protected $query;
+    protected $progress;
+    protected $result;
+    protected $input;
+    protected $output;
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : void
     {
         $this->query = $this->getHelper('question');
         $this->input = $input;
@@ -64,11 +64,11 @@ abstract class AbstractCommand extends Command
 
     abstract protected function doExecute();
 
-    protected function runCommand(string $command, array $arguments = [])
+    protected function runCommand(string $command, array $arguments = []) : int
     {
         $command = $this->getApplication()->find($command);
         $returnCode = $command->run(new ArrayInput($arguments), $this->output);
-        if ($returnCode == self::SUCCESS_CODE && $command->result() !== null) {
+        if ($returnCode === self::SUCCESS_CODE && $command->result() !== null) {
             return $command->result();
         }
 
@@ -80,17 +80,17 @@ abstract class AbstractCommand extends Command
         return $this->getApplication()->app($key);
     }
 
-    protected function successCode()
+    protected function successCode() : int
     {
         return self::SUCCESS_CODE;
     }
 
-    protected function errorCode()
+    protected function errorCode() : int
     {
         return self::ERROR_CODE;
     }
 
-    protected function result()
+    protected function result() : int
     {
         return $this->result;
     }
@@ -110,9 +110,9 @@ abstract class AbstractCommand extends Command
         return $this->input->getArgument($argument);
     }
 
-    protected function write(string $message)
+    protected function write(string $message) : void
     {
-        if ($this->progress->getProgress() != $this->progress->getMaxSteps()) {
+        if ($this->progress->getProgress() !== $this->progress->getMaxSteps()) {
             $this->progress->clear();
             $this->output->writeln($message);
             $this->progress->display();
@@ -121,7 +121,7 @@ abstract class AbstractCommand extends Command
         }
     }
 
-    protected function writeTable(array $headers, array $rows)
+    protected function writeTable(array $headers, array $rows) : void
     {
         $table = new Table($this->output);
         $table->setHeaders($headers);
@@ -129,7 +129,7 @@ abstract class AbstractCommand extends Command
         $table->render();
     }
 
-    protected function writeException(string $message, Exception $e)
+    protected function writeException(string $message, Exception $e) : void
     {
         $this->write($message.' : '.$e->getCode().' - '.$e->getMessage());
     }

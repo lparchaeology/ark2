@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Build Console
+ * ARK Build Console.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -31,14 +31,15 @@ namespace ARK\Framework\Console;
 
 use ARK\ARK;
 use ARK\Database\Console\DatabaseReverseCommand;
-use ARK\Framework\Console\AbstractConsole;
-use ARK\Framework\Console\Command\BuildStatusCommand;
-use ARK\Framework\Console\Command\BuildUpdateCommand;
+use ARK\Framework\Console\Command\BuildFrontendAssetsCommand;
+use ARK\Framework\Console\Command\BuildFrontendBaseCommand;
 use ARK\Framework\Console\Command\BuildFrontendCommand;
 use ARK\Framework\Console\Command\BuildFrontendCreateCommand;
-use ARK\Framework\Console\Command\BuildFrontendCssCommand;
-use ARK\Framework\Console\Command\BuildFrontendJsCommand;
-use ARK\Framework\Console\Command\BuildFrontendTwigCommand;
+use ARK\Framework\Console\Command\BuildFrontendScriptsCommand;
+use ARK\Framework\Console\Command\BuildFrontendStylesCommand;
+use ARK\Framework\Console\Command\BuildFrontendTemplatesCommand;
+use ARK\Framework\Console\Command\BuildStatusCommand;
+use ARK\Framework\Console\Command\BuildUpdateCommand;
 use ARK\Framework\SystemApplication;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand;
@@ -48,7 +49,7 @@ class BuildConsole extends AbstractConsole
 {
     public function __construct()
     {
-        parent::__construct('ARK Build Console', new SystemApplication);
+        parent::__construct('ARK Build Console', new SystemApplication());
 
         // Build Environment Commands
         $this->add(new BuildStatusCommand());
@@ -57,9 +58,11 @@ class BuildConsole extends AbstractConsole
         // Build Commands
         $this->add(new BuildFrontendCommand());
         $this->add(new BuildFrontendCreateCommand());
-        $this->add(new BuildFrontendCssCommand());
-        $this->add(new BuildFrontendJsCommand());
-        $this->add(new BuildFrontendTwigCommand());
+        $this->add(new BuildFrontendAssetsCommand());
+        $this->add(new BuildFrontendBaseCommand());
+        $this->add(new BuildFrontendScriptsCommand());
+        $this->add(new BuildFrontendStylesCommand());
+        $this->add(new BuildFrontendTemplatesCommand());
 
         // Database Commands
         $this->add(new DatabaseReverseCommand());

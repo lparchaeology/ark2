@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Debug Route Command
+ * ARK Debug Route Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -31,29 +31,21 @@ namespace ARK\Framework\Console\Command;
 
 use ARK\ARK;
 use ARK\Framework\Console\AbstractCommand;
-use ARK\Service;
-use Symfony\Component\Console\Helper\Helper;
-use Symfony\Component\Console\Helper\TableSeparator;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
- * Adapted from Symfony\Bundle\FrameworkBundle\Command\AboutCommand
+ * Adapted from Symfony\Bundle\FrameworkBundle\Command\AboutCommand.
  *
  * @author Roland Franssen <franssen.roland@gmail.com>
  */
 class CacheClearCommand extends AbstractCommand
 {
-    protected function configure()
+    protected function configure() : void
     {
         $this->setName('cache:clear')
              ->setDescription('Clear the system cache');
     }
 
-    protected function doExecute()
+    protected function doExecute() : void
     {
         $app = $this->app();
 
@@ -62,18 +54,17 @@ class CacheClearCommand extends AbstractCommand
         $cacheDir = $this->app('cache_dir');
         // Check for sub-directory only if --all/-a option wasn't passed to command
         if (!$all && ($dir = $input->getOption('dir'))) {
-            $cacheSubDir = $cacheDir . DIRECTORY_SEPARATOR . $dir;
+            $cacheSubDir = $cacheDir.DIRECTORY_SEPARATOR.$dir;
             if (!$fs->exists($cacheSubDir)) {
                 $msg = sprintf('Directory "%s" does not exist under cache directory', $dir);
                 // Only explicitely specified and non-existing paths throws exception
-                if ($dir != 'twig') {
+                if ($dir !== 'twig') {
                     throw new \InvalidArgumentException($msg);
                 }
                 // For default dir (twig) only display message and end command execution
-                else {
-                    $output->writeln($msg . ', nothing to do!');
-                    return;
-                }
+
+                $output->writeln($msg.', nothing to do!');
+                return;
             }
             $cacheDir = $cacheSubDir;
         }
@@ -84,7 +75,7 @@ class CacheClearCommand extends AbstractCommand
                 new \RecursiveDirectoryIterator($cacheDir, \FilesystemIterator::SKIP_DOTS),
                 function ($fileInfo, $key, $iterator) {
                     // Only accept entries that do NOT start with an .
-                    return substr($fileInfo->getFilename(), 0, 1) != '.';
+                    return substr($fileInfo->getFilename(), 0, 1) !== '.';
                 }
             ),
             \RecursiveIteratorIterator::CHILD_FIRST

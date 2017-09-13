@@ -1,0 +1,27 @@
+// Build the Theme CSS from Sass source
+
+// Import any custom Bootstrap variable overrides
+@import "bootstrap/variables";
+
+// Import Vendor Bootstrap
+@import "bootstrap";
+
+// Import Custom Bootstrap styles
+//@import "bootstrap/custom";
+
+// Import other vendor styles
+//@import "package";
+
+// Import other custom styles
+//@import "custom/custom";
+@import "custom/core";
+@import "custom/form";
+@import "custom/map";
+@import "custom/carousel";
+@import "custom/table";
+@import "custom/frame";
+@import "custom/home";
+@import "custom/messages";
+@import "custom/search";
+@import "custom/danefaevurdering";
+@import "custom/classificationmodal";

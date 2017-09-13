@@ -1,12 +1,14 @@
 {# Define the footer block #}
 {% block footer %}
 
-    <footer class="footer navbar-fixed-bottom">
+<footer class="footer navbar-fixed-bottom">
+    <div class= "credits col-md-6 col-md-push-3">
         {{ 'site.footer' | translate }}
-    </footer>
+    </div>
+</footer>
 
-    <script>
-        window.applocale = "{{ app.locale }}";
-    </script>
+<script>
+    window.applocale = "{{ app.locale }}";
+</script>
 
 {% endblock footer %}

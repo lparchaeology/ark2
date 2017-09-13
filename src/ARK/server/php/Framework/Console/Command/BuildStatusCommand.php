@@ -21,7 +21,7 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
@@ -41,7 +41,7 @@ class BuildStatusCommand extends Command
     protected function configure() : void
     {
         $this->setName('env:status')
-             ->setDescription('Show the sttus of the build environment.');
+             ->setDescription('Show the status of the build environment.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output) : void
@@ -49,8 +49,5 @@ class BuildStatusCommand extends Command
         $output->writeln('');
         $output->writeln('Status:');
         $this->runProcess('npm doctor', $output);
-        $output->writeln('');
-        $output->writeln('Outdated Packages:');
-        $this->runProcess('npm outdated', $output);
     }
 }

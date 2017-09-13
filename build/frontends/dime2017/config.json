@@ -1,15 +1,44 @@
 {
-    "name":"dime2017",
-    "namespace":"DIME",
+    "frontend": "dime2017",
+    "namespace": "DIME",
+    "options": {
+        "uglify": {
+            "compress": false
+        },
+        "sass": {
+            "outputStyle": "compressed",
+            "precision": 8,
+            "includePaths": []
+        },
+        "sourcemaps": {
+            "loadMaps": true
+        },
+        "autoprefixer": {
+            "browsers": [
+                "Android 2.3",
+                "Android >= 4",
+                "Chrome >= 20",
+                "Firefox >= 24",
+                "Explorer >= 8",
+                "iOS >= 6",
+                "Opera >= 12",
+                "Safari >= 6"
+            ]
+        }
+    },
     "assets": {
         "fonts": {
             "vendor": [
                 "bootstrap-sass/assets/fonts/**/*",
-                "notosans-fontface/fonts/**/*"
+                "notosans-fontface/fonts/**/*",
                 "summernote/dist/font/**/*"
             ],
-            "core": [],
-            "custom": []
+            "core": [
+                "fonts/**/*"
+            ],
+            "custom": [
+                "fonts/**/*"
+            ]
         },
         "images": {
             "vendor": [
@@ -74,23 +103,101 @@
             }
         },
         "styles": {
-            "ark": {
-                "vendor": [],
-                "core": [
-                    "notosans-fontface/scss/**/*"
-                ],
-                "custom": []
-            },
-            "ol4": {
-                "vendor": [],
-                "core": [],
-                "custom": []
-            }
+            "ark": [{
+                    "stream": "prebuild",
+                    "format": "css",
+                    "vendor": [
+                        "summernote/dist/summernote.css",
+                        "select2/dist/css/select2.min.css",
+                        "openlayers/dist/ol.css"
+                    ],
+                    "core": [],
+                    "custom": []
+                },
+                {
+                    "stream": "build",
+                    "format": "sass",
+                    "src": [
+                        "scss/theme.scss"
+                    ],
+                    "vendor": [
+                        "bootstrap-sass/assets/stylesheets",
+                        "notosans-fontface/scss"
+                    ],
+                    "core": [],
+                    "custom": []
+                },
+                {
+                    "stream": "postbuild",
+                    "format": "css",
+                    "vendor": [
+                        "select2-bootstrap-theme/dist/select2-bootstrap.css",
+                        "bootstrap-datetime-picker/css/bootstrap-datetimepicker.css",
+                        "x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css",
+                        "bootstrap-table/dist/bootstrap-table.css",
+                        "bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css",
+                        "bootstrap-fileinput/css/fileinput.css",
+                        "vis/dist/vis-timeline-graph2d.min.css"
+                    ],
+                    "core": [],
+                    "custom": []
+                }
+            ]
         }
+    },
+    "bin": {
+        "vendor": [],
+        "core": [
+            "bin/**/*",
+            "bin/**/.*"
+        ],
+        "custom": [
+            "bin/**/*",
+            "bin/**/.*"
+        ]
+    },
+    "config": {
+        "vendor": [],
+        "core": [
+            "config/**/*",
+            "config/**/.*"
+        ],
+        "custom": [
+            "config/**/*",
+            "config/**/.*"
+        ]
     },
     "templates": {
         "vendor": [],
-        "core": [],
-        "custom": []
+        "core": [
+            "twig/**/*",
+            "twig/**/.*"
+        ],
+        "custom": [
+            "twig/**/*",
+            "twig/**/.*"
+        ]
+    },
+    "translations": {
+        "vendor": [],
+        "core": [
+            "xliff/**/*",
+            "xliff/**/.*"
+        ],
+        "custom": [
+            "xliff/**/*",
+            "xliff/**/.*"
+        ]
+    },
+    "web": {
+        "vendor": [],
+        "core": [
+            "web/**/*",
+            "web/**/.*"
+        ],
+        "custom": [
+            "web/**/*",
+            "web/**/.*"
+        ]
     }
 }
