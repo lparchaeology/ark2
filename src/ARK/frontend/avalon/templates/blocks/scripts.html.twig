@@ -1,0 +1,9 @@
+{% block scripts -%}
+
+<!-- Combined jQuery, Bootstrap and ARK js -->
+<script src="{{ asset('scripts/ark.min.js', 'frontend') }}">
+    Router.setBasePath('{{ state.routing.base_path }}');
+    Router.setRoutes(JSON.parse("{{ state.routing.routes | json_encode() | escape('js') }}"))
+</script>
+
+{%- endblock scripts %}

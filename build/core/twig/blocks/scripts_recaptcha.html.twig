@@ -1,0 +1,9 @@
+{% extends 'blocks/scripts.html.twig' %}
+
+{% block scripts -%}
+
+{{ parent() }}
+<!-- Recaptcha only for pages that need it -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+{%- endblock scripts %}

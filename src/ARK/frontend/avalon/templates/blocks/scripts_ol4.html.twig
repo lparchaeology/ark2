@@ -1,0 +1,9 @@
+{% extends 'blocks/scripts.html.twig' %}
+
+{% block scripts -%}
+
+{{ parent() }}
+<!-- OpenLayers only for pages that need it -->
+<script src="{{ asset('scripts/ol4.min.js', 'frontend') }}"></script>
+
+{%- endblock scripts %}
