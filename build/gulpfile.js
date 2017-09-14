@@ -73,6 +73,28 @@ function mergePaths(frontend, paths) {
 }
 
 /*
+ * Task to install required files into the frontend
+ */
+function installFiles(group) {
+    var config = frontendConfig();
+    var src = mergePaths(config.frontend, config[group]);
+    var dest = frontendDestPath(config) + '/' + group;
+    return gulp.src(src)
+        .pipe(gulp.dest(dest));
+}
+
+/*
+ * Task to install required files into the frontend
+ */
+function installAssets(group) {
+    var config = frontendConfig();
+    var src = mergePaths(config.frontend, config.assets[group]);
+    var dest = frontendDestPath(config) + '/assets/' + group;
+    return gulp.src(src)
+        .pipe(gulp.dest(dest));
+}
+
+/*
  * core task to provide help on available tasks
  */
 gulp.task('core', function () {
@@ -133,77 +155,49 @@ gulp.task('create', function () {
  * Task to install required bin files into the frontend
  */
 gulp.task('bin', function () {
-    var config = frontendConfig();
-    var src = mergePaths(config.frontend, config.bin);
-    var dest = frontendDestPath(config) + '/bin';
-    return gulp.src(src)
-        .pipe(gulp.dest(dest));
+    return installFiles('bin');
 });
 
 /*
  * Task to install required config files into the frontend
  */
 gulp.task('config', function () {
-    var config = frontendConfig();
-    var src = mergePaths(config.frontend, config.config);
-    var dest = frontendDestPath(config) + '/config';
-    return gulp.src(src)
-        .pipe(gulp.dest(dest));
+    return installFiles('config');
 });
 
 /*
  * Task to install required twig templates into the frontend
  */
 gulp.task('templates', function () {
-    var config = frontendConfig();
-    var src = mergePaths(config.frontend, config.templates);
-    var dest = frontendDestPath(config) + '/templates';
-    return gulp.src(src)
-        .pipe(gulp.dest(dest));
+    return installFiles('templates');
 });
 
 /*
  * Task to install required xliff files into the frontend
  */
 gulp.task('translations', function () {
-    var config = frontendConfig();
-    var src = mergePaths(config.frontend, config.translations);
-    var dest = frontendDestPath(config) + '/translations';
-    return gulp.src(src)
-        .pipe(gulp.dest(dest));
+    return installFiles('translations');
 });
 
 /*
  * Task to install required web files into the frontend
  */
 gulp.task('web', function () {
-    var config = frontendConfig();
-    var src = mergePaths(config.frontend, config.web);
-    var dest = frontendDestPath(config) + '/web';
-    return gulp.src(src)
-        .pipe(gulp.dest(dest));
+    return installFiles('web');
 });
 
 /*
  * Task to install required fonts into the frontend
  */
 gulp.task('fonts', function () {
-    var config = frontendConfig();
-    var src = mergePaths(config.frontend, config.assets.fonts);
-    var dest = frontendDestPath(config) + '/assets/fonts';
-    return gulp.src(src)
-        .pipe(gulp.dest(dest));
+    return installAssets('fonts');
 });
 
 /*
  * Task to install required images into the frontend
  */
 gulp.task('images', function () {
-    var config = frontendConfig();
-    var src = mergePaths(config.frontend, config.assets.images);
-    var dest = frontendDestPath(config) + '/assets/images';
-    return gulp.src(src)
-        .pipe(gulp.dest(dest));
+    return installAssets('images');
 });
 
 /*
