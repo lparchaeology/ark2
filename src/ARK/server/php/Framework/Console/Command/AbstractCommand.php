@@ -64,7 +64,7 @@ abstract class AbstractCommand extends Command
 
     abstract protected function doExecute();
 
-    protected function runCommand(string $command, array $arguments = []) : int
+    protected function runCommand(string $command, array $arguments = [])
     {
         $command = $this->getApplication()->find($command);
         $returnCode = $command->run(new ArrayInput($arguments), $this->output);
@@ -80,17 +80,17 @@ abstract class AbstractCommand extends Command
         return $this->getApplication()->app($key);
     }
 
-    protected function successCode() : int
+    protected function successCode()
     {
         return self::SUCCESS_CODE;
     }
 
-    protected function errorCode() : int
+    protected function errorCode()
     {
         return self::ERROR_CODE;
     }
 
-    protected function result() : int
+    protected function result()
     {
         return $this->result;
     }
