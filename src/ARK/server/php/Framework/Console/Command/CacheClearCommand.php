@@ -30,7 +30,7 @@
 namespace ARK\Framework\Console\Command;
 
 use ARK\ARK;
-use ARK\Framework\Console\AbstractCommand;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Adapted from Symfony\Bundle\FrameworkBundle\Command\AboutCommand.
@@ -51,9 +51,10 @@ class CacheClearCommand extends AbstractCommand
 
         $fs = new Filesystem();
 
-        $cacheDir = $this->app('cache_dir');
+        $all = true;
+        $cacheDir = ARK::cacheDir();
         // Check for sub-directory only if --all/-a option wasn't passed to command
-        if (!$all && ($dir = $input->getOption('dir'))) {
+        if (!$all && ($dir = $this->input->getOption('dir'))) {
             $cacheSubDir = $cacheDir.DIRECTORY_SEPARATOR.$dir;
             if (!$fs->exists($cacheSubDir)) {
                 $msg = sprintf('Directory "%s" does not exist under cache directory', $dir);
@@ -63,12 +64,12 @@ class CacheClearCommand extends AbstractCommand
                 }
                 // For default dir (twig) only display message and end command execution
 
-                $output->writeln($msg.', nothing to do!');
+                $this->output->writeln($msg.', nothing to do!');
                 return;
             }
             $cacheDir = $cacheSubDir;
         }
-        $output->writeln(sprintf('Clearing <comment>%s</comment>', realpath($cacheDir)));
+        $this->output->writeln(sprintf('Clearing <comment>%s</comment>', realpath($cacheDir)));
         // Create recursive iterator for directory structure, with custom filter (callback) that keeps "dotfiles" (like .gitignore)
         $deleteIterator = new \RecursiveIteratorIterator(
             new \RecursiveCallbackFilterIterator(
@@ -83,9 +84,9 @@ class CacheClearCommand extends AbstractCommand
         $toDelete = \iterator_count($deleteIterator);
         if ($toDelete > 0) {
             $fs->remove($deleteIterator);
-            $output->writeln(sprintf('Deleted <info>%s</info> file%s', $toDelete, $toDelete > 1 ? 's' : null));
+            $this->output->writeln(sprintf('Deleted <info>%s</info> file%s', $toDelete, $toDelete > 1 ? 's' : null));
         } else {
-            $output->writeln('No files to delete!');
+            $this->output->writeln('No files to delete!');
         }
     }
 }

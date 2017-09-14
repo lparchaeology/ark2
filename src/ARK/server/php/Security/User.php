@@ -399,7 +399,7 @@ class User implements AdvancedUserInterface, Serializable
         }
     }
 
-    public function actors() : iterable
+    public function actors() : ?iterable
     {
         if ($this->actors === null) {
             $aus = ORM::findBy(ActorUser::class, ['user' => $this->id()]);
@@ -408,8 +408,8 @@ class User implements AdvancedUserInterface, Serializable
                     $this->actors[] = $au->actor();
                 }
             }
-            return $this->actors;
         }
+        return $this->actors;
     }
 
     public function hasRole(Role $role) : bool

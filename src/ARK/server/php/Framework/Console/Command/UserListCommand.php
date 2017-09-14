@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Console Command
+ * ARK Console Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -29,28 +29,29 @@
 
 namespace ARK\Framework\Console\Command;
 
-use ARK\Framework\Console\Command\AbstractCommand;
 use ARK\ORM\ORM;
 use ARK\Security\User;
 
 class UserListCommand extends AbstractCommand
 {
-    protected function configure()
+    protected function configure() : void
     {
         $this->setName('user:list')
             ->setDescription('List all users.');
     }
 
-    protected function doExecute()
+    protected function doExecute() : void
     {
         $users = ORM::findAll(User::class);
         $headers = ['ID', 'Name', 'Email', 'Status', 'Level', 'Roles'];
         $rows = [];
         foreach ($users as $user) {
             $roles = [];
-            foreach ($user->actors() as $actor) {
-                foreach ($actor->roles() as $role) {
-                    $roles[$role->id()] = $role->id();
+            if ($user->actors()) {
+                foreach ($user->actors() as $actor) {
+                    foreach ($actor->roles() as $role) {
+                        $roles[$role->role()->id()] = $role->role()->id();
+                    }
                 }
             }
             $roles = implode(', ', array_keys($roles));

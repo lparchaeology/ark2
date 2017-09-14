@@ -29,17 +29,16 @@
 
 namespace ARK\Framework\Console;
 
-use ARK\Framework\SystemApplication;
-
 use ARK\Database\Console\DatabaseCloneCommand;
 use ARK\Database\Console\DatabaseServerAddCommand;
-use ARK\Framework\Console\AbstractConsole;
+use ARK\Framework\Console\Command\CacheClearCommand;
 use ARK\Framework\Console\Command\SiteCreateCommand;
 use ARK\Framework\Console\Command\SiteFrontendCommand;
 use ARK\Framework\Console\Command\SiteMigrateInfoCommand;
 use ARK\Framework\Console\Command\SiteMigrateLoadCommand;
 use ARK\Framework\Console\Command\SiteMigrateMapCommand;
 use ARK\Framework\Console\Command\SystemAboutCommand;
+use ARK\Framework\SystemApplication;
 
 class SystemConsole extends AbstractConsole
 {
@@ -60,5 +59,6 @@ class SystemConsole extends AbstractConsole
 
         // System Commands
         $this->add(new SystemAboutCommand());
+        $this->add(new CacheClearCommand());
     }
 }
