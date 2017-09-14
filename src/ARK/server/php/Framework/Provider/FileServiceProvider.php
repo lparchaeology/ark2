@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Debug Service Provider
+ * ARK Debug Service Provider.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -31,21 +31,21 @@
 namespace ARK\Framework\Provider;
 
 use ARK\ARK;
+use League\Flysystem\Adapter\Local;
+use League\Glide\Responses\SymfonyResponseFactory;
+use League\Glide\ServerFactory;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use League\Glide\ServerFactory;
-use League\Glide\Responses\SymfonyResponseFactory;
-use League\Flysystem\Adapter\Local;
 use WyriHaximus\SliFly\FlysystemServiceProvider;
 
 class FileServiceProvider implements ServiceProviderInterface
 {
-    public function register(Container $container)
+    public function register(Container $container) : void
     {
         // Configure directories
         $container['dir.install'] = ARK::installDir();
-        $container['dir.var'] = ARK::varDir();
-        $container['dir.cache'] = ARK::cacheDir();
+        $container['dir.var'] = ARK::siteVarDir($container['ark']['site']);
+        $container['dir.cache'] = ARK::siteCacheDir($container['ark']['site']);
         $container['dir.sites'] = ARK::sitesDir();
         $container['dir.site'] = ARK::siteDir($container['ark']['site']);
         $container['dir.config'] = $container['dir.site'].'/config';
@@ -54,10 +54,10 @@ class FileServiceProvider implements ServiceProviderInterface
 
         $container->register(new FlysystemServiceProvider());
         $data = $container['ark']['file']['data'];
-        $data['path'] = ($data['adapter'] == 'Local' ? $container['dir.files'].$data['path'] : $data['path']);
+        $data['path'] = ($data['adapter'] === 'Local' ? $container['dir.files'].$data['path'] : $data['path']);
         $data['adapter'] = 'League\\Flysystem\\Adapter\\'.$data['adapter'];
         $cache = $container['ark']['file']['cache'];
-        $cache['path'] = ($cache['adapter'] == 'Local' ? $container['dir.files'].$cache['path'] : $cache['path']);
+        $cache['path'] = ($cache['adapter'] === 'Local' ? $container['dir.files'].$cache['path'] : $cache['path']);
         $cache['adapter'] = 'League\\Flysystem\\Adapter\\'.$cache['adapter'];
         $container['flysystem.filesystems'] = [
             'tmp' => ['adapter' => Local::class, 'args' => [$container['dir.files'].'/tmp']],
@@ -69,7 +69,7 @@ class FileServiceProvider implements ServiceProviderInterface
         $container['glide.server'] = function ($app) {
             $config = $app['ark']['image'];
             $config['source'] = $app['flysystems']['data'];
-            $config['cache'] =  $app['flysystems']['cache'];
+            $config['cache'] = $app['flysystems']['cache'];
             $config['base_url'] = '/img/';
             $config['response'] = new SymfonyResponseFactory();
             return ServerFactory::create($config);

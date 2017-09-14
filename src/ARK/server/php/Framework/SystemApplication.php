@@ -51,7 +51,7 @@ class SystemApplication extends SilexApplication
         parent::__construct();
 
         $this['debug'] = true;
-        $this->register(new LoggerServiceProvider('console'));
+        $this->register(new LoggerServiceProvider('system'));
         $this->register(new BusServiceProvider());
         $this->register(new MailerServiceProvider());
         $this->register(new VarDumperServiceProvider());

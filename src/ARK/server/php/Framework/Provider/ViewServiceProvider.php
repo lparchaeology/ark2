@@ -91,7 +91,7 @@ class ViewServiceProvider implements ServiceProviderInterface
             'blocks/forms.html.twig',
         ];
         $container['twig.options'] = [
-            'cache' => $container['dir.var'].'/cache/twig',
+            'cache' => $container['dir.cache'].'/twig',
         ];
 
         // Enable render to PDF or Image

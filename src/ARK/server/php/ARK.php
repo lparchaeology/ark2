@@ -102,6 +102,21 @@ class ARK
         return self::sitesDir().'/'.$site;
     }
 
+    public static function siteVarDir(string $site) : string
+    {
+        return self::siteDir($site).'/var';
+    }
+
+    public static function siteCacheDir(string $site) : string
+    {
+        return self::siteVarDir($site).'/cache';
+    }
+
+    public static function siteLogDir(string $site) : string
+    {
+        return self::siteVarDir($site).'/log';
+    }
+
     public static function templatesDir(string $site, string $frontend) : string
     {
         return self::siteDir($site).'/templates/'.$frontend;

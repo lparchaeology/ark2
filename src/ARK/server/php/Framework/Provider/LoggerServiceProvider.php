@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Debug Service Provider
+ * ARK Debug Service Provider.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -45,10 +45,14 @@ class LoggerServiceProvider implements ServiceProviderInterface
         $this->logName = $logName;
     }
 
-    public function register(Container $container)
+    public function register(Container $container) : void
     {
-        $container->register(new MonologServiceProvider);
-        $container['monolog.logfile'] = ARK::logDir().'/'.$this->logName.'.log';
+        $container->register(new MonologServiceProvider());
+        if ($this->logName === 'system') {
+            $container['monolog.logfile'] = ARK::logDir().'/'.$this->logName.'.log';
+        } else {
+            $container['monolog.logfile'] = ARK::siteLogDir($container['ark']['site']).'/'.$this->logName.'.log';
+        }
         $container['monolog.name'] = $this->logName;
         if ($container['debug']) {
             $container['monolog.level'] = 'DEBUG';

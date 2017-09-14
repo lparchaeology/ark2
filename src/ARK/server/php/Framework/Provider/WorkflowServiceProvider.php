@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Workflow Service Provider
+ * Workflow Service Provider.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -36,7 +36,7 @@ use Pimple\ServiceProviderInterface;
 
 class WorkflowServiceProvider implements ServiceProviderInterface
 {
-    public function register(Container $container)
+    public function register(Container $container) : void
     {
         $container['workflow.registry'] = function () {
             return new Registry();

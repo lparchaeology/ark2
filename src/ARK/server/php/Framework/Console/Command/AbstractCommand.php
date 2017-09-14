@@ -48,7 +48,7 @@ abstract class AbstractCommand extends Command
 
     protected $query;
     protected $progress;
-    protected $result;
+    protected $result = self::ERROR_CODE;
     protected $input;
     protected $output;
 
@@ -64,7 +64,7 @@ abstract class AbstractCommand extends Command
 
     abstract protected function doExecute();
 
-    protected function runCommand(string $command, array $arguments = [])
+    protected function runCommand(string $command, array $arguments = []) : int
     {
         $command = $this->getApplication()->find($command);
         $returnCode = $command->run(new ArrayInput($arguments), $this->output);
@@ -80,12 +80,12 @@ abstract class AbstractCommand extends Command
         return $this->getApplication()->app($key);
     }
 
-    protected function successCode()
+    protected function successCode() : int
     {
         return self::SUCCESS_CODE;
     }
 
-    protected function errorCode()
+    protected function errorCode() : int
     {
         return self::ERROR_CODE;
     }

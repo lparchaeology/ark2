@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Console Command
+ * ARK Console Command.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,12 +30,11 @@
 namespace ARK\Framework\Console\Command;
 
 use ARK\ARK;
-use ARK\Framework\Console\Command\AbstractCommand;
 use Symfony\Component\Filesystem\Filesystem;
 
 class SiteFrontendCommand extends AbstractCommand
 {
-    protected function configure()
+    protected function configure() : void
     {
         $this->setName('site:frontend')
              ->setDescription('Install or replace a frontend. WARNING: Will delete the old frontend!')
@@ -46,12 +45,12 @@ class SiteFrontendCommand extends AbstractCommand
     protected function doExecute()
     {
         $site = $this->getArgument('site');
-        $frontend= $this->getArgument('frontend');
+        $frontend = $this->getArgument('frontend');
         $namespace = null;
 
         $frontends = ARK::frontends();
         if ($frontend) {
-            if (!in_array($frontend, array_keys($frontends))) {
+            if (!in_array($frontend, array_keys($frontends), true)) {
                 $this->write("\nFAILED: Frontend $frontend not found, are you sure you built it?");
                 return $this->errorCode();
             }
@@ -77,6 +76,7 @@ class SiteFrontendCommand extends AbstractCommand
         if (!$fs->exists($siteDir)) {
             $fs->mkdir($siteDir);
             $fs->mkdir($siteDir.'/bin');
+            $fs->mkdir($siteDir.'/config');
             $fs->mkdir($siteDir.'/files');
             $fs->mkdir($siteDir.'/files/download');
             $fs->mkdir($siteDir.'/files/upload');
@@ -84,12 +84,12 @@ class SiteFrontendCommand extends AbstractCommand
             $fs->mkdir($siteDir.'/files/data');
             $fs->mkdir($siteDir.'/files/cache');
             $fs->mkdir($siteDir.'/schema');
+            $fs->mkdir($siteDir.'/web');
             $fs->mirror($srcDir.'/bin', $siteDir.'/bin');
             $fs->mirror($srcDir.'/config', $siteDir.'/config');
             $fs->mirror($srcDir.'/web', $siteDir.'/web');
         } elseif ($refresh) {
             $fs->mirror($srcDir.'/bin', $siteDir.'/bin');
-            $fs->mirror($srcDir.'/config', $siteDir.'/config');
             $fs->mirror($srcDir.'/web', $siteDir.'/web');
         }
         if ($fs->exists($templatesDir)) {
@@ -102,7 +102,7 @@ class SiteFrontendCommand extends AbstractCommand
             $fs->remove($assetsDir);
         }
 
-        if (strtolower($symlink) == 'copy') {
+        if (strtolower($symlink) === 'copy') {
             $fs->mirror($srcDir.'/templates', $templatesDir);
             $fs->mirror($srcDir.'/translations', $translationsDir);
             $fs->mirror($srcDir.'/assets', $assetsDir);
@@ -111,6 +111,15 @@ class SiteFrontendCommand extends AbstractCommand
             $fs->symlink($srcDir.'/translations', $translationsDir, true);
             $fs->symlink($srcDir.'/assets', $assetsDir, true);
         }
+
+        umask(0000);
+        $fs->mkdir($siteDir.'/var');
+        $fs->mkdir($siteDir.'/var/cache');
+        $fs->mkdir($siteDir.'/var/cache/doctrine');
+        $fs->mkdir($siteDir.'/var/cache/profiler');
+        $fs->mkdir($siteDir.'/var/cache/twig');
+        $fs->mkdir($siteDir.'/var/log');
+
         return $this->successCode();
     }
 }

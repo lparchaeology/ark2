@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 11, 2017 at 06:43 PM
+-- Generation Time: Sep 14, 2017 at 05:25 PM
 -- Server version: 10.2.8-MariaDB
 -- PHP Version: 7.1.8
 
@@ -6451,17 +6451,17 @@ INSERT INTO `ark_view_page` (`element`, `header`, `sidebar`, `content`, `footer`
 ('dime_page_admin_register', 'dime_site_header', 'dime_site_sidebar', 'dime_admin_register_page', 'dime_site_footer', 'edit', 'restricted', 'core.admin.user', 'core.admin.user', NULL),
 ('dime_page_admin_user', 'dime_site_header', 'dime_site_sidebar', 'dime_admin_user_page', 'dime_site_footer', 'edit', 'restricted', 'core.admin.user', 'core.admin.user', NULL),
 ('dime_page_claim', 'dime_site_header', 'dime_site_sidebar', 'dime_treasure_header', 'dime_site_footer', 'edit', 'restricted', 'dime.find.treasure.claim', 'dime.find.treasure.claim', NULL),
-('dime_page_find', 'dime_site_header', 'dime_site_sidebar', 'dime_find_view', 'dime_site_footer', 'edit', 'restricted', 'dime.find.read', 'dime.find.update', NULL),
-('dime_page_find_add', 'dime_site_header', 'dime_site_sidebar', 'dime_find_add', 'dime_site_footer', 'edit', 'restricted', 'dime.find.read', 'dime.find.update', NULL),
-('dime_page_find_list', 'dime_site_header', 'dime_site_sidebar', 'dime_find_search', 'dime_site_footer', 'edit', 'public', 'dime.find.read', 'dime.find.update', NULL),
+('dime_page_find', 'dime_site_header', 'dime_site_sidebar', 'dime_find_view', 'dime_site_footer', 'edit', 'restricted', 'dime.find.read', 'dime.find.update', 'pages/map.html.twig'),
+('dime_page_find_add', 'dime_site_header', 'dime_site_sidebar', 'dime_find_add', 'dime_site_footer', 'edit', 'restricted', 'dime.find.read', 'dime.find.update', 'pages/map.html.twig'),
+('dime_page_find_list', 'dime_site_header', 'dime_site_sidebar', 'dime_find_search', 'dime_site_footer', 'edit', 'public', 'dime.find.read', 'dime.find.update', 'pages/map.html.twig'),
 ('dime_page_front', 'dime_site_header', 'dime_site_sidebar', 'dime_front_page', 'dime_site_footer', 'view', 'public', NULL, NULL, NULL),
 ('dime_page_home', 'dime_site_header', 'dime_site_sidebar', 'dime_home_page', 'dime_site_footer', 'view', 'restricted', 'core.actor.read', NULL, NULL),
-('dime_page_home_find_list', 'dime_site_header', 'dime_site_sidebar', 'dime_home_find_search', 'dime_site_footer', 'edit', 'restricted', 'dime.find.read', 'dime.find.update', NULL),
+('dime_page_home_find_list', 'dime_site_header', 'dime_site_sidebar', 'dime_home_find_search', 'dime_site_footer', 'edit', 'restricted', 'dime.find.read', 'dime.find.update', 'pages/map.html.twig'),
 ('dime_page_message', 'dime_site_header', 'dime_site_sidebar', 'dime_message_page', 'dime_site_footer', 'view', 'restricted', 'core.message.read', NULL, NULL),
 ('dime_page_news', 'dime_site_header', 'dime_site_sidebar', 'dime_find_news', 'dime_site_footer', 'view', 'public', NULL, NULL, NULL),
 ('dime_page_profile', 'dime_site_header', 'dime_site_sidebar', 'dime_profile_page', 'dime_site_footer', 'view', 'public', NULL, NULL, NULL),
 ('dime_page_profile_list', 'dime_site_header', 'dime_site_sidebar', 'dime_profile_list_page', 'dime_site_footer', 'view', 'public', NULL, NULL, NULL),
-('dime_page_static', 'dime_site_header', 'dime_site_sidebar', NULL, 'dime_site_footer', 'view', 'public', NULL, NULL, NULL),
+('dime_page_static', 'dime_site_header', 'dime_site_sidebar', NULL, 'dime_site_footer', 'view', 'public', NULL, NULL, 'pages/static.html.twig'),
 ('dime_page_user_confirm', 'dime_site_header', 'dime_site_sidebar', NULL, 'dime_site_footer', 'edit', 'public', NULL, NULL, NULL),
 ('dime_page_user_login', 'dime_site_header', 'dime_site_sidebar', 'core_user_login', 'dime_site_footer', 'edit', 'public', NULL, NULL, NULL),
 ('dime_page_user_profile', 'dime_site_header', 'dime_site_sidebar', 'dime_user_profile', 'dime_site_footer', 'edit', 'restricted', 'core.actor.read', 'core.actor.update', NULL),

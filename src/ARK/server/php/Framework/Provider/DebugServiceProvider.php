@@ -43,7 +43,7 @@ class DebugServiceProvider implements ServiceProviderInterface
         $container->register(new VarDumperServiceProvider());
         if ($container['debug']) {
             $container->register(new WebProfilerServiceProvider(), [
-                'profiler.cache_dir' => $container['dir.var'].'/cache/profiler',
+                'profiler.cache_dir' => $container['dir.cache'].'/profiler',
             ]);
             // HACK Fix to work-around bug in the profiler not finding the dump template
             $container['profiler.templates_path.debug'] = function () {
