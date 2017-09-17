@@ -37,22 +37,22 @@ class Role
 {
     use KeywordTrait;
 
-    protected $name = '';
+    protected $role = '';
 
-    public function __construct(string $name = 'default')
+    public function __construct(string $id = 'default')
     {
-        $this->name = $name;
+        $this->role = $id;
     }
 
-    public function name() : string
+    public function id() : string
     {
-        return $this->name;
+        return $this->role;
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
         $builder = new ClassMetadataBuilder($metadata, 'ark_translation_role');
-        $builder->addStringKey('name', 30, 'role');
+        $builder->addStringKey('role', 30);
         KeywordTrait::buildKeywordMetadata($builder);
     }
 }

@@ -31,7 +31,6 @@ namespace ARK\Translation\Console;
 
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\Translation\Command\TranslationAddMessage;
 use ARK\Translation\Domain;
 use ARK\Translation\Language;
 use ARK\Translation\Message;
@@ -59,18 +58,18 @@ class TranslationAddCommand extends Command
 
         $keyword = $input->getArgument('keyword');
 
-        $key = ORM::find(Translation::class, $keyword);
-        if ($key) {
-            $domain = $key->domain()->name();
-            $output->writeln("\nTranslation keyword exists in domain".$domain);
+        if ($translation = ORM::find(Translation::class, $keyword)) {
+            $domain = $translation->domain();
+            $output->writeln("\nTranslation keyword exists in domain ".$domain->id()."\n");
         } else {
             $domains = ORM::findAll(Domain::class);
             foreach ($domains as $domain) {
-                $domainNames[] = $domain->name();
+                $domainNames[] = $domain->id();
             }
             $domainQuestion = new ChoiceQuestion("Please choose the domain (Default: 'core'): ", $domainNames, 'core');
             $domainQuestion->setAutocompleterValues($domainNames);
             $domain = $question->ask($input, $output, $domainQuestion);
+            $domain = ORM::find(Domain::class, $domain);
         }
 
         $languages = ORM::findAll(Language::class);
@@ -87,15 +86,15 @@ class TranslationAddCommand extends Command
 
         $roles = ORM::findAll(Role::class);
         foreach ($roles as $role) {
-            $roleNames[] = $role->name();
+            $roleNames[] = $role->id();
         }
         $roleQuestion = new ChoiceQuestion("Please choose the role (Default: 'default'): ", $roleNames, 'default');
         $roleQuestion->setAutocompleterValues($roleNames);
         $role = $question->ask($input, $output, $roleQuestion);
 
-        $message = ORM::findOneBy(Message::class, ['language' => $language, 'parent' => $keyword, 'role' => $role]);
+        $message = ORM::findOneBy(Message::class, ['language' => $language, 'key' => $keyword, 'role' => $role]);
         if ($message) {
-            $output->writeln("\nMessage exists:");
+            $output->writeln("\nWARNING: Message already exists!");
             $output->writeln('  Text: '.$message->text());
             $output->writeln('  Notes: '.$message->notes());
             $output->writeln('Text and Notes will be replaced.');
@@ -107,8 +106,12 @@ class TranslationAddCommand extends Command
         $notesQuestion = new Question('Please enter any translation notes: ');
         $notes = $question->ask($input, $output, $notesQuestion);
 
-        $message = new TranslationAddMessage($keyword, $domain, $role, $language, $text, $notes);
-        Service::bus()->handleCommand($message);
+        if (!$translation) {
+            $translation = new Translation($keyword, $domain);
+            ORM::persist($translation);
+        }
+        $translation->setMessage($text, $language, $role, $notes);
+        ORM::flush($translation);
 
         $output->writeln("\nTranslation added.");
     }

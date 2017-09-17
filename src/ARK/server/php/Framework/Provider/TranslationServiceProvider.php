@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Translation Service Provider
+ * ARK Translation Service Provider.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,22 +25,19 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Framework\Provider;
 
+use ARK\Translation\Loader\ActorLoader;
+use ARK\Translation\Loader\DatabaseLoader;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Silex\Provider\TranslationServiceProvider as CoreTranslationServiceProvider;
-use ARK\Translation\Bus\TranslationAddHandler;
-use ARK\Translation\Bus\TranslationAddMessage;
-use ARK\Translation\Loader\ActorLoader;
-use ARK\Translation\Loader\DatabaseLoader;
 
 class TranslationServiceProvider implements ServiceProviderInterface
 {
-    public function register(Container $container)
+    public function register(Container $container) : void
     {
         $container->register(new CoreTranslationServiceProvider());
         $container['locale_fallbacks'] = $container['ark']['locale']['locales'];
@@ -55,19 +52,15 @@ class TranslationServiceProvider implements ServiceProviderInterface
             $this->loadTranslationFiles($translator, $container['locale_fallbacks'], $container['dir.site'].'/translations/'.$container['ark']['web']['frontend']);
             return $translator;
         });
-        $commands = [
-            TranslationAddMessage::class => TranslationAddHandler::class,
-        ];
-        $container['bus.command.handlers'] = array_merge($container['bus.command.handlers'], $commands);
     }
 
-    private function loadTranslationFiles($translator, array $languages, $dir)
+    private function loadTranslationFiles($translator, array $languages, $dir) : void
     {
         try {
             $files = new \DirectoryIterator($dir);
             foreach ($files as $file) {
                 $parts = explode('.', $file->getFilename());
-                if ($file->getExtension() == 'xlf' && in_array($parts[1], $languages)) {
+                if ($file->getExtension() === 'xlf' && in_array($parts[1], $languages, true)) {
                     $translator->addResource('xliff', $file->getPathname(), $parts[1], $parts[0]);
                 }
             }

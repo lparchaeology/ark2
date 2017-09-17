@@ -70,12 +70,12 @@ class TranslationDimeCommand extends Command
             }
             $output->writeln('');
         } else {
-            $domain = ORM::findOneBy(Domain::class, ['domain' => 'dime']);
+            $domain = ORM::find(Domain::class, 'dime');
             $key = new Translation($keyword, $domain);
         }
 
-        $da = ORM::findOneBy(Language::class, ['language' => 'da']);
-        $en = ORM::findOneBy(Language::class, ['language' => 'en']);
+        $da = ORM::find(Language::class, 'da');
+        $en = ORM::find(Language::class, 'en');
 
         $roles = ORM::findAll(Role::class);
         foreach ($roles as $role) {

@@ -39,7 +39,7 @@ class Domain
 
     protected $domain = '';
 
-    public function name() : string
+    public function id() : string
     {
         return $this->domain;
     }

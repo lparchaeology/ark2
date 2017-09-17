@@ -32,6 +32,7 @@ namespace ARK\Translation;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Service;
+use ARK\Vocabulary\Parameter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -46,10 +47,11 @@ class Translation
     protected $parameters;
     protected $messages;
 
-    public function __construct(string $keyword, Domain $domain)
+    public function __construct(string $keyword, Domain $domain, $isPlural = false)
     {
         $this->keyword = $keyword;
         $this->domain = $domain;
+        $this->isPlural = $isPlural;
         $this->parameters = new ArrayCollection();
         $this->messages = new ArrayCollection();
     }
@@ -69,11 +71,6 @@ class Translation
         return $this->isPlural;
     }
 
-    public function setPlural(bool $plural) : void
-    {
-        $this->isPlural = $plural;
-    }
-
     public function hasParameters() : bool
     {
         return $this->hasParameters;
@@ -84,16 +81,12 @@ class Translation
         return $this->parameters;
     }
 
-    public function setParameters(iterable $parameters) : void
-    {
-        $this->hasParameters = (bool) count($parameters);
-        $this->parameters = new ArrayCollection($parameters);
-    }
-
-    public function addParameter(Parameter $parameter) : void
+    public function addParameter(string $parameter) : void
     {
         $this->hasParameters = true;
+        $parameter = new Parameter($this, $parameter);
         $this->parameters->add($parameter);
+        ORM::persist($parameter);
     }
 
     public function messages() : Collection
@@ -101,16 +94,12 @@ class Translation
         return $this->messages;
     }
 
-    public function message(string $language = null, string $role = 'default') : ?Message
+    public function message($language = null, $role = 'default') : ?Message
     {
+        $language = $this->getLanguage($language);
+        $role = $this->getRole($role);
+
         // TODO select by language and role with fallbacks
-        if ($language === null) {
-            $language = Service::locale();
-        }
-        $language = ORM::find(Language::class, $language);
-
-        $role = ORM::find(Role::class, $role);
-
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq('language', $language))
             ->andWhere(Criteria::expr()->eq('role', $role));
@@ -121,14 +110,18 @@ class Translation
         return $results->first();
     }
 
-    public function setMessages(iterable $messages) : void
+    public function setMessage(string $message, $language = null, $role = null, string $notes = '') : void
     {
-        $this->messages = new ArrayCollection($messages);
-    }
+        $language = $this->getLanguage($language);
+        $role = $this->getRole($role);
 
-    public function addMessage(Message $message) : void
-    {
-        $this->messages->add($message);
+        if (!$msg = $this->message($language, $role)) {
+            $msg = new Message($this, $language, $role);
+            $this->messages->add($msg);
+        }
+        $msg->setText($message);
+        $msg->setNotes($notes);
+        ORM::persist($msg);
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
@@ -140,5 +133,31 @@ class Translation
         $builder->addField('hasParameters', 'boolean', [], 'has_parameters');
         $builder->addOneToManyCascade('parameters', Parameter::class, 'key');
         $builder->addOneToManyCascade('messages', Message::class, 'key');
+    }
+
+    private function getLanguage($language = null) : ?Language
+    {
+        $language = $language ?? Service::locale();
+        if (is_string($language)) {
+            $language = ORM::find(Language::class, $language);
+        }
+        if (!$language instanceof Language || !$language->usedForMarkup()) {
+            // TODO Proper error
+            throw new \Exception();
+        }
+        return $language;
+    }
+
+    private function getRole($role = 'default') : ?Role
+    {
+        $role = $role ?? 'default';
+        if (is_string($role)) {
+            $role = ORM::find(Role::class, $role);
+        }
+        if (!$role instanceof Role) {
+            // TODO Proper error
+            throw new \Exception();
+        }
+        return $role;
     }
 }

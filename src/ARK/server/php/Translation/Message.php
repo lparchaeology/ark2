@@ -38,7 +38,6 @@ class Message
     protected $language;
     protected $key;
     protected $role;
-    protected $keyword = '';
     protected $text = '';
     protected $notes = '';
 
@@ -125,7 +124,6 @@ class Message
         $builder->addManyToOneKey('language', Language::class);
         $builder->addManyToOneKey('key', Translation::class, 'keyword');
         $builder->addManyToOneKey('role', Role::class);
-        $builder->addStringField('keyword', 100);
         $builder->addStringField('text', 4294967295);
         $builder->addStringField('notes', 4294967295);
     }

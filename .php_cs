@@ -32,6 +32,7 @@ $rules = [
     'silenced_deprecation_error' => false,
     'strict_comparison' => true,
     'strict_param' => true,
+    'use_yoda_style' => false,
 ];
 
 $exclude = [
