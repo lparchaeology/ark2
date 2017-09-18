@@ -99,6 +99,16 @@
                 ],
                 "core": [],
                 "custom": []
+            },
+            "jquery": {
+                "vendor": [
+                    "jquery/dist/jquery.js",
+                    "jquery-form/src/jquery.form.js"
+                ],
+                "core": [
+                    "js/routing.js"
+                ],
+                "custom": []
             }
         },
         "styles": {

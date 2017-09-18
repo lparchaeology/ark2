@@ -59,7 +59,7 @@ class ViewControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         // Internal API routes
-        $controllers->match('/api/internal/translations/{translation}/domains/{domain}/languages/{language}',
+        $controllers->match('/api/internal/translations/{keyword}/languages/{language}',
                             'DIME\Controller\API\TranslationMessageController')
             ->method('GET|POST')
             ->bind('api.internal.translation.message');

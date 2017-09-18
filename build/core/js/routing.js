@@ -5,6 +5,7 @@ var Router = (function () {
 
     var generatePath = function generatePath(name, parameters) {
         parameters = parameters === undefined ? [] : parameters;
+        this.base = this.base === undefined ? '' : this.base;
         var route = this.routes[name];
         var url = this.base + route.path;
 

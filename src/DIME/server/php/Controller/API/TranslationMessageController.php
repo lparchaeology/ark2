@@ -39,7 +39,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TranslationMessageController
 {
-    public function __invoke(Request $request, string $keyword, string $role, string $language) : Response
+    public function __invoke(Request $request, string $keyword, string $language) : Response
     {
         try {
             $json = [];
@@ -71,10 +71,11 @@ class TranslationMessageController
             if ($request->getMethod() === 'POST') {
                 $content = json_decode($request->getContent(), true);
                 if (!$translation) {
-                    $translation = new Translation($keyword, $domain);
+                    $translation = new Translation($keyword, 'dime');
                     ORM::persist($translation);
                 }
-                $translation->setMessage($content['message'], $language, $role, $content['notes']);
+                // TODO Cater for roles.
+                $translation->setMessage($content['message'], $language, 'default', $content['notes']);
                 ORM::flush($translation);
                 $json['status'] = 'success';
             }

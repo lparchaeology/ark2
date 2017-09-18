@@ -103,58 +103,30 @@
         </div>
     </div>
 
-    <div id="translationResult"></div>
-
 </form>
+
+<script src="{{ asset('scripts/jquery.min.js', 'frontend') }}"></script>
 
 <script type="text/javascript">
 
-    function saveEditForm(key, message, locale) {
-
-        Sfjs.request(
-            "",
-            function(xhr) {
-                // Success
-                var el = document.getElementById(key).getElementsByClassName("translation");
-                el[0].innerHTML = xhr.responseText;
-
-                if (xhr.responseText !== "") {
-                    clearState(key);
-                }
-            },
-            function(xhr) {
-                // Error
-                console.log("Saving edit form "+key +" - Error");
-            },
-            serializeQueryString({translation: key, language: language }),
-            { method: 'POST' }
-        );
-
-        return false;
-    }
-
-    var serializeQueryString = function(obj, prefix) {
-        var str = [];
-        for(var p in obj) {
-            if (obj.hasOwnProperty(p)) {
-                var k = prefix ? prefix + "[" + p + "]" : p, v = obj[p];
-                str.push(typeof v == "object" ? serializeQueryString(v, k) : encodeURIComponent(k) + "=" + encodeURIComponent(v));
+    // TODO Obtain routes from controller?
+    Router.setBasePath('');
+    Router.setRoutes(
+        {
+            'api.internal.translation.message': {
+                'path': '/api/internal/translations/{keyword}/languages/{language}'
             }
         }
-        return str.join("&");
-    };
+    );
 
-    // We need to hack a bit Sfjs.request because it does not support POST requests
-    // May not work for ActiveXObject('Microsoft.XMLHTTP'); :(
-    (function(open) {
-        XMLHttpRequest.prototype.open = function(method, url, async, user, pass) {
-            open.call(this, method, url, async, user, pass);
-            if (method.toLowerCase() === 'post') {
-                this.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            }
+    function saveEditForm(keyword, language, message) {
+        var response = {
+            message: message,
+            notes: ''
         };
-    })(XMLHttpRequest.prototype.open);
-
+        var path = Router.generatePath('api.internal.translation.message', { keyword: keyword, language: language });
+        $.post(path, JSON.stringify(response), function(result) {});
+    }
 </script>
 
 {% endblock %}
@@ -200,7 +172,7 @@
                 </td>
                 <td width="155px">
                     <input type="button" value="Save"
-                        onclick='saveEditForm("{{ key }}", document.getElementById("edit_{{ key }}").value, {{ message.locale }})'>
+                        onclick='saveEditForm("{{ message.id }}", "{{ message.locale }}", document.getElementById("edit_{{ key }}").value)'>
                 </td>
             </tr>
         {% endfor %}
