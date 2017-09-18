@@ -53,6 +53,8 @@ class SiteMigrateLoadCommand extends DatabaseCommand
     protected $data;
     protected $user;
     protected $admin;
+    protected $map = [];
+    protected $item = [];
     protected $userMap;
     protected $schemaMap;
     protected $mapActor = [];
@@ -75,8 +77,6 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         $this->source = $this->getConnection($source['database']);
         $this->source->beginTransaction();
         $this->sourcePath = $source['path'];
-        //$this->schemaMap = ARK::jsonDecodeFile($this->mapPath.'/schema.map.json');
-        $this->userMap = ARK::jsonDecodeFile($this->mapPath.'/users.map.json');
 
         $this->site = strtolower($this->askChoice('Please choose the destination ARK instance', ARK::sites()));
         if ($this->site === $this->errorCode()) {
@@ -84,8 +84,9 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         }
         $this->app = new Application($this->site);
 
-        $this->loadUsers();
-        return;
+        $this->loadUserMap($module);
+        //$this->schemaMap = ARK::jsonDecodeFile($this->mapPath.'/schema.map.json');
+
         $this->core = Service::database()->core();
         $this->data = Service::database()->data();
         $this->user = Service::database()->user();
@@ -742,48 +743,69 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         $this->write("\nMigration Complete!");
     }
 
-    private function loadUsers() : void
+    protected function loadModuleMap($module) : void
     {
-        foreach ($this->userMap as $map) {
-            if (!$map['map']) {
+        $this->map[$module] = ARK::jsonDecodeFile($this->mapPath.'/'.$module.'.map.json');
+        foreach ($this->map[$module]['map'] as $id => $item) {
+            $this->item[$module][$id] = $item['id'];
+        }
+    }
+
+    protected function createActors() : void
+    {
+        $this->loadModuleMap('actor');
+
+        foreach ($this->map['actor']['map'] as $old => $map) {
+            if (!$map['id']) {
                 continue;
             }
-
-            if ($map['user']) {
-                $this->mapUser[$map['user']] = $map['id'];
+            $new = $map['id'];
+            $actor = ORM::find(Actor::class, $new);
+            if (!$actor) {
+                $actor = new Person();
+                $actor->setId($new);
+                ORM::persist($actor);
             }
-            if ($map['actor']) {
-                $this->mapActor[$map['actor']] = $map['id'];
-            }
-
-            $actor = ORM::find(Actor::class, $map['id']);
-            $user = ORM::find(User::class, $map['id']);
-
-            if (!$actor || !$user) {
-                if (!$actor && $map['actor']) {
-                    $actor = new Person();
-                    $actor->setId($map['id']);
-                    ORM::persist($actor);
-                    $this->mapAbk[$map['actor']] = $map['id'];
-                }
-                if (!$user && $map['user']) {
-                    $user = Service::security()->createUser(
-                        $map['id'],
-                        $map['email'],
-                        $map['password'],
-                        $map['name'],
-                        $map['level']
-                    );
-                }
-                if ($actor && $user) {
-                    Service::security()->createActorUser($actor, $user);
-                }
-            }
-            if ($actor) {
+            if ($actor && isset($map['roles'])) {
                 foreach ($map['roles'] as $role) {
                     $role = ORM::find(Role::class, $role);
                     Service::security()->createActorRole($actor, $role);
                 }
+            }
+        }
+        ORM::flush(Actor::class);
+    }
+
+    protected function createUsers() : void
+    {
+        $this->map['user'] = ARK::jsonDecodeFile($this->mapPath.'/user.map.json');
+        foreach ($this->map['user']['map'] as $id => $item) {
+            $this->item['user'][$id] = $item['id'];
+        }
+
+        foreach ($this->map['user']['map'] as $old => $map) {
+            if (!$map['id']) {
+                continue;
+            }
+            $new = $map['id'];
+
+            $user = ORM::find(User::class, $new);
+            if (!$user) {
+                $user = Service::security()->createUser(
+                    $new,
+                    $map['email'],
+                    'password',
+                    $map['name'],
+                    $map['level']
+                );
+            }
+
+            $oldActor = $this->item['user'][$old]['actor'] ?? null;
+            $newActor = $this->item['actor'][$oldActor] ?? null;
+            $actor = ORM::find(Actor::class, $newActor);
+
+            if ($actor && $user) {
+                Service::security()->createActorUser($actor, $user);
             }
             Service::security()->registerUser($user, $actor);
         }

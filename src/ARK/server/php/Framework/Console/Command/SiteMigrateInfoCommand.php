@@ -34,7 +34,7 @@ use ARK\Database\Console\DatabaseCommand;
 
 class SiteMigrateInfoCommand extends DatabaseCommand
 {
-    protected $source = null;
+    protected $source;
     protected $modules = [];
     protected $itemkeys = [];
     protected $sites = [];
@@ -44,7 +44,7 @@ class SiteMigrateInfoCommand extends DatabaseCommand
     protected $tables = [];
     protected $frags = [];
 
-    protected function configure()
+    protected function configure() : void
     {
         $this->setName('site:migrate:info')
             ->setDescription('Analyse the migration mapping for an ARK 1 site');
@@ -62,7 +62,7 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         $this->report();
     }
 
-    protected function analyse()
+    protected function analyse() : void
     {
         // SITES
         $this->write('Analysing Sites...');
@@ -78,7 +78,7 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         $this->modules = $this->source->fetchAllTable('cor_tbl_module');
         foreach ($this->modules as &$module) {
             $mod = $module['shortform'];
-            if ($mod == 'cor') {
+            if ($mod === 'cor') {
                 continue;
             }
             $this->itemkeys[] = $module['itemkey'];
@@ -128,7 +128,6 @@ class SiteMigrateInfoCommand extends DatabaseCommand
             $user['actor'] = $row['itemvalue'] ?? null;
             $user['name'] = $row['firstname'].' '.$row['lastname'];
             $user['email'] = $row['email'] ? $row['email'] : null;
-            $user['type'] = null;
             $user['site'] = $row['ste_cd'] ?? null;
             $user['audit'] = false;
             $user['action'] = false;
@@ -169,7 +168,6 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         $actors = $this->source->fetchAll($sql, ['abk_cd', $txttype['id']]);
         foreach ($actors as $row) {
             $actor['actor'] = $row['abk_cd'];
-            $actor['username'] = null;
             $actor['name'] = $row['txt'];
             $actor['site'] = $row['ste_cd'];
             $actor['type'] = $row['abktype'];
@@ -250,59 +248,35 @@ class SiteMigrateInfoCommand extends DatabaseCommand
             } else {
                 $this->frags[$xmi]['xmi'][$mod] = 1;
             }
-            if ($mod == 'abk_cd') {
+            if ($mod === 'abk_cd') {
                 $this->actors[$frag['itemvalue']]['action'] = true;
             }
-            if ($xmi == 'abk_cd') {
+            if ($xmi === 'abk_cd') {
                 $this->actors[$frag['xmi_itemvalue']]['action'] = true;
             }
         }
 
         // USERS / ACTORS
         foreach ($this->users as $id => &$user) {
-            if (isset($user['actor']) && isset($this->actors[$user['actor']])) {
-                $user['action'] = $this->actors[$user['actor']]['action'];
-                $user['type'] = $this->actors[$user['actor']]['type'] ?? null;
-                unset($this->actors[$user['actor']]);
+            if (isset($user['actor'])) {
+                $user['action'] = $this->actors[$user['actor']]['action'] ?? false;
             }
             if (!isset($user['user'])) {
                 $user['user'] = $id;
                 $user['username'] = null;
-                $user['email'] = null;
-                $user['actor'] = null;
                 $user['name'] = null;
-                $user['type'] = null;
+                $user['email'] = null;
+                $user['groups'] = [];
+                $user['actor'] = null;
                 $user['site'] = null;
                 $user['audit'] = $user['audit'] ?? false;
                 $user['action'] = $user['action'] ?? false;
-                $user['groups'] = [];
             }
         }
         unset($user);
-        foreach ($this->actors as $id => $actor) {
-            if (!isset($actor['actor'])) {
-                $user['user'] = null;
-                $user['username'] = null;
-                $user['email'] = null;
-                $user['actor'] = $id;
-                $user['name'] = null;
-                $user['type'] = null;
-                $user['site'] = null;
-                $user['audit'] = false;
-                $user['action'] = $actor['action'];
-                $user['groups'] = [];
-                $this->users[] = $user;
-            } else {
-                $actor['user'] = null;
-                $actor['email'] = null;
-                $actor['audit'] = false;
-                $actor['groups'] = [];
-                $this->users[] = $actor;
-            }
-        }
     }
 
-    protected function report()
+    protected function report() : void
     {
         // REPORT SITES
         $this->write("\nSITES");
@@ -318,7 +292,7 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         $headers = ['Code', 'Description', 'Modtype', 'Table', 'Items'];
         $rows = [];
         foreach ($this->modules as $module) {
-            if (isset($module['shortform']) && $module['shortform'] != 'cor') {
+            if (isset($module['shortform']) && $module['shortform'] !== 'cor') {
                 $rows[] = [$module['shortform'], $module['description'], $module['modtype'], $module['table'], $module['rows']];
             }
         }
@@ -338,8 +312,8 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         $this->writeTable($headers, $rows);
 
         // REPORT USERS
-        $this->write("\nUSERS / ACTORS");
-        $headers = ['User', 'Username', 'Email', 'Name', 'Actor', 'Groups', 'Site', 'Audit', 'Action'];
+        $this->write("\nUSERS");
+        $headers = ['User', 'Username', 'Email', 'Name', 'Groups', 'Actor', 'Site', 'Audit', 'Action'];
         $rows = [];
         foreach ($this->users as $id => $user) {
             $rows[] = [
@@ -347,10 +321,25 @@ class SiteMigrateInfoCommand extends DatabaseCommand
                 $user['username'],
                 $user['email'],
                 $user['name'],
-                $user['actor'],
                 implode(', ', $user['groups']),
+                $user['actor'],
                 $user['site'],
                 $user['audit'],
+                $user['action'],
+            ];
+        }
+        $this->writeTable($headers, $rows);
+        $this->write('');
+
+        // REPORT ACTORS
+        $this->write("\nACTORS");
+        $headers = ['Actor', 'Name', 'Site', 'Action'];
+        $rows = [];
+        foreach ($this->users as $id => $user) {
+            $rows[] = [
+                $user['actor'],
+                $user['name'],
+                $user['site'],
                 $user['action'],
             ];
         }
@@ -360,7 +349,7 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         // REPORT FRAG SCHEMA
         $this->write("\nTYPES AS USED BY MODULES");
         foreach ($this->modules as &$module) {
-            if (!isset($module['shortform']) || $module['shortform'] == 'cor' || !isset($this->frags[$module['itemkey']])) {
+            if (!isset($module['shortform']) || $module['shortform'] === 'cor' || !isset($this->frags[$module['itemkey']])) {
                 continue;
             }
             $module['frags'] = $this->frags[$module['itemkey']];
@@ -402,13 +391,13 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         if (!isset($frag['itemkey'])) {
             return 'error';
         }
-        if (in_array($frag['itemkey'], $this->itemkeys)) {
+        if (in_array($frag['itemkey'], $this->itemkeys, true)) {
             return $frag['itemkey'];
         }
-        if (!in_array($frag['itemkey'], $this->tables) && $this->source->tableExists($frag['itemkey'])) {
+        if (!in_array($frag['itemkey'], $this->tables, true) && $this->source->tableExists($frag['itemkey'])) {
             $this->tables[] = $frag['itemkey'];
         }
-        if (in_array($frag['itemkey'], $this->tables)) {
+        if (in_array($frag['itemkey'], $this->tables, true)) {
             $tbl = $frag['itemkey'];
             $sql = "
                 SELECT *
@@ -440,7 +429,7 @@ class SiteMigrateInfoCommand extends DatabaseCommand
 
     private function countTypeFrags($type, $field = null)
     {
-        if ($type == 'file') {
+        if ($type === 'file') {
             return null;
         }
         $typename = $type.'type';
@@ -476,7 +465,7 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         return $this->source->executeQuery($sql, $parms)->fetch()['COUNT(*)'];
     }
 
-    private function summariseTypeFrags($type, $field = null)
+    private function summariseTypeFrags($type, $field = null) : void
     {
         $typename = $type.'type';
         $sql = "
@@ -492,7 +481,7 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         $this->summariseFrags($type, $sql);
     }
 
-    private function summariseFrags($type, $sql, $parms = [])
+    private function summariseFrags($type, $sql, $parms = []) : void
     {
         $frags = $this->source->fetchAll($sql, $parms);
         $typename = $type.'type';
@@ -513,7 +502,7 @@ class SiteMigrateInfoCommand extends DatabaseCommand
         }
     }
 
-    private function buildTypes($type, $sql = '')
+    private function buildTypes($type, $sql = '') : void
     {
         $typename = $type.'type';
         $lut = 'cor_lut_'.$typename;

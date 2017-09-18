@@ -32,6 +32,7 @@ namespace ARK\Database;
 use ARK\ARK;
 use Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\Table;
 use DoctrineXml\Parser;
 
 class AdminConnection extends Connection
