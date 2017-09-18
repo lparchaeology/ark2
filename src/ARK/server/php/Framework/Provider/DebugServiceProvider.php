@@ -56,6 +56,11 @@ class DebugServiceProvider implements ServiceProviderInterface
                 'dev_area',
                 ['pattern' => '^/(_(profiler|wdt)|css|images|js)/', 'anonymous' => true]
             );
+            // Modified Translation template for editing translations
+            $container['data_collector.templates'] = $container->extend('data_collector.templates', function ($templates) {
+                $templates[] = array('translation', 'profiler/translation.html.twig');
+                return $templates;
+            });
         }
     }
 }
