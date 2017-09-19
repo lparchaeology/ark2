@@ -1,8 +1,9 @@
 {
     "modules": {
-        "cxt": {
+        "context": {
             "module": "context",
             "resource": "contexts",
+            "code": "cxt",
             "project": "ARK",
             "namespace": "ARK\\Entity",
             "entity": "Context",
@@ -10,9 +11,10 @@
             "tbl": "ark_item_context",
             "keyword": "core.module.context"
         },
-        "grp": {
+        "group": {
             "module": "group",
             "resource": "groups",
+            "code": "grp",
             "project": "ARK",
             "namespace": "ARK\\Entity",
             "entity": "Group",
@@ -20,9 +22,10 @@
             "tbl": "ark_item_group",
             "keyword": "core.module.group"
         },
-        "lus": {
+        "landuse": {
             "module": "landuse",
             "resource": "landuses",
+            "code": "lus",
             "project": "ARK",
             "namespace": "ARK\\Entity",
             "entity": "Landuse",
@@ -30,9 +33,10 @@
             "tbl": "ark_item_landuse",
             "keyword": "core.module.landuse"
         },
-        "pln": {
+        "plan": {
             "module": "plan",
             "resource": "plans",
+            "code": "pln",
             "project": "ARK",
             "namespace": "ARK\\Entity",
             "entity": "Plan",
@@ -40,9 +44,10 @@
             "tbl": "ark_item_plan",
             "keyword": "core.module.plan"
         },
-        "rgf": {
+        "rfind": {
             "module": "rfind",
             "resource": "rfinds",
+            "code": "rgf",
             "project": "ARK",
             "namespace": "ARK\\Entity",
             "entity": "Rfind",
@@ -50,9 +55,10 @@
             "tbl": "ark_item_rfind",
             "keyword": "core.module.rfind"
         },
-        "sec": {
+        "section": {
             "module": "section",
             "resource": "sections",
+            "code": "sec",
             "project": "ARK",
             "namespace": "ARK\\Entity",
             "entity": "Section",
@@ -60,9 +66,10 @@
             "tbl": "ark_item_section",
             "keyword": "core.module.section"
         },
-        "sgr": {
+        "subgroup": {
             "module": "subgroup",
             "resource": "subgroups",
+            "code": "sgr",
             "project": "ARK",
             "namespace": "ARK\\Entity",
             "entity": "Subgroup",
@@ -70,9 +77,10 @@
             "tbl": "ark_item_subgroup",
             "keyword": "core.module.subgroup"
         },
-        "smp": {
+        "sample": {
             "module": "sample",
             "resource": "samples",
+            "code": "smp",
             "project": "ARK",
             "namespace": "ARK\\Entity",
             "entity": "Sample",
@@ -80,9 +88,10 @@
             "tbl": "ark_item_sample",
             "keyword": "core.module.sample"
         },
-        "spf": {
+        "find": {
             "module": "find",
             "resource": "finds",
+            "code": "spf",
             "project": "ARK",
             "namespace": "ARK\\Entity",
             "entity": "Find",
@@ -90,9 +99,10 @@
             "tbl": "ark_item_find",
             "keyword": "core.module.find"
         },
-        "sph": {
+        "photo": {
             "module": "photo",
             "resource": "photos",
+            "code": "sph",
             "project": "ARK",
             "namespace": "ARK\\Entity",
             "entity": "Photo",
@@ -100,9 +110,10 @@
             "tbl": "ark_item_photo",
             "keyword": "core.module.photo"
         },
-        "tmb": {
+        "timber": {
             "module": "timber",
             "resource": "timbers",
+            "code": "tmb",
             "project": "ARK",
             "namespace": "ARK\\Entity",
             "entity": "Timber",

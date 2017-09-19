@@ -172,7 +172,7 @@ class SiteMigrateMapCommand extends SiteMigrateInfoCommand
         $this->export();
     }
 
-    private function export() : void
+    protected function export() : void
     {
         $this->write('Writing mapping to '.$this->exportPath);
 
@@ -190,22 +190,22 @@ class SiteMigrateMapCommand extends SiteMigrateInfoCommand
             if (in_array('ADMINS', $user['groups'], true)) {
                 $map['level'] = 'ROLE_ADMIN';
                 if (isset($user['actor'])) {
-                    $roles[$user['actor']] = 'administrator';
+                    $roles[$user['actor']] = ['admin', 'archaeologist', 'manager', 'sysadmin'];
                 }
             } elseif (in_array('SUPERVISOR', $user['groups'], true)) {
                 $map['level'] = 'ROLE_USER';
                 if (isset($user['actor'])) {
-                    $roles[$user['actor']] = 'supervisor';
+                    $roles[$user['actor']] = ['archaeologist', 'supervisor'];
                 }
             } elseif (in_array('USERS', $user['groups'], true)) {
                 $map['level'] = 'ROLE_USER';
                 if (isset($user['actor'])) {
-                    $roles[$user['actor']] = 'archaeologist';
+                    $roles[$user['actor']] = ['archaeologist'];
                 }
             } else {
-                $map['level'] = 'ROLE_ANON';
+                $map['level'] = 'ROLE_USER';
                 if (isset($user['actor'])) {
-                    $roles[$user['actor']] = 'anonymous';
+                    $roles[$user['actor']] = ['researcher'];
                 }
             }
             $map['enabled'] = $user['enabled'] ?? false;
@@ -223,11 +223,12 @@ class SiteMigrateMapCommand extends SiteMigrateInfoCommand
         foreach ($this->actors as $actor) {
             $actors['map'][$actor['actor']]['id'] = $actor['actor'];
             if (isset($roles[$actor['actor']])) {
-                $actors['map'][$actor['actor']]['roles'][] = $roles[$actor['actor']];
+                $actors['map'][$actor['actor']]['roles'] = $roles[$actor['actor']];
             } else {
                 $actors['map'][$actor['actor']]['roles'] = [];
             }
             $actors['map'][$actor['actor']]['meta']['name'] = $actor['name'];
+            $actors['map'][$actor['actor']]['meta']['action'] = $actor['action'];
             $actors['items'][] = $actor;
         }
         ARK::jsonEncodeWrite($actors, $this->exportPath.'/actor.map.json');

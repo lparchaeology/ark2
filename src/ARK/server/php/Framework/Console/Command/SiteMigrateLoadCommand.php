@@ -84,7 +84,8 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         }
         $this->app = new Application($this->site);
 
-        $this->loadUserMap($module);
+        $this->createActors();
+        $this->createUsers();
         //$this->schemaMap = ARK::jsonDecodeFile($this->mapPath.'/schema.map.json');
 
         $this->core = Service::database()->core();
@@ -159,7 +160,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
                     'schma' => 'core.site',
                     'idx' => $site['id'],
                     'label' => $site['id'],
-                    'creator' => $site['cre_by'],
+                    'creator' => $this->item['creator'][$site['cre_by']],
                     'created' => $site['cre_on'],
                     'version' => '',
                 ];
@@ -301,7 +302,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
                     $newItem['module'] = $module['module'];
                     $newItem['schma'] = $module['schema'];
                     $newItem['type'] = (isset($item['modtype']) ? strtolower($item['modtype']) : '');
-                    $newItem['creator'] = $item['cre_by'];
+                    $newItem['creator'] = $this->item['creator'][$item['cre_by']];
                     $newItem['created'] = $item['cre_on'];
                     $this->data->insert($module['config']['tbl'], $newItem);
                     $updates = $updates + 1;
@@ -334,7 +335,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
                 'type' => 'other',
                 'idx' => $row['id'],
                 'label' => $row['filename'],
-                'creator' => $row['cre_by'],
+                'creator' => $this->item['creator'][$row['cre_by']],
                 'created' => $row['cre_on'],
             ];
             if (in_array($row['filetype'], ['image', 'images', 'drawing'], true)) {
@@ -500,7 +501,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
                     unset($frag['txt'], $frag['language']);
                 }
                 if (isset($frag['cre_by'])) {
-                    $frag['creator'] = $frag['cre_by'];
+                    $frag['creator'] = $this->item['creator'][$frag['cre_by']];
                     unset($frag['cre_by']);
                 }
                 if (isset($frag['cre_on'])) {
@@ -802,6 +803,15 @@ class SiteMigrateLoadCommand extends DatabaseCommand
 
             $oldActor = $this->item['user'][$old]['actor'] ?? null;
             $newActor = $this->item['actor'][$oldActor] ?? null;
+            if ($newActor) {
+                $this->item['creator'][$old] = $newActor;
+            } elseif ($oldActor) {
+                $this->item['creator'][$old] = $oldActor;
+            } elseif (isset($map['name'])) {
+                $this->item['creator'][$old] = $map['name'];
+            } else {
+                $this->item['creator'][$old] = (string) $old;
+            }
             $actor = ORM::find(Actor::class, $newActor);
 
             if ($actor && $user) {
@@ -811,7 +821,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         }
     }
 
-    private function addTranslation($keyword, $text = null, $title = true) : void
+    protected function addTranslation($keyword, $text = null, $title = true) : void
     {
         // May already exist
         try {
@@ -833,7 +843,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         }
     }
 
-    private function makeAttribute($attribute)
+    protected function makeAttribute($attribute)
     {
         if (isset(self::$attributes[$attribute])) {
             return self::$attributes[$attribute];
@@ -852,7 +862,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         return strtolower($attribute);
     }
 
-    private function makeItemKey($itemvalue)
+    protected function makeItemKey($itemvalue)
     {
         $parts = explode('_', $itemvalue);
         if (count($parts) > 1) {
@@ -874,7 +884,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         ];
     }
 
-    private function getParent($conn, $tbl, $id)
+    protected function getParent($conn, $tbl, $id)
     {
         $sql = "
             SELECT *
@@ -889,7 +899,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         return ['itemkey' => $parent['itemkey'], 'itemvalue' => $parent['itemvalue']];
     }
 
-    private function addChainFields($table) : void
+    protected function addChainFields($table) : void
     {
         // Add temp chain fields
         $schema_new = $this->admin->getSchemaManager()->createSchema();
@@ -914,7 +924,7 @@ class SiteMigrateLoadCommand extends DatabaseCommand
         }
     }
 
-    private function removeChainFields($table) : void
+    protected function removeChainFields($table) : void
     {
         $schema_new = $this->admin->getSchemaManager()->createSchema();
         $schema = clone $schema_new;

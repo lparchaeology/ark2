@@ -1,0 +1,18 @@
+{
+    "modules": {
+        "context": "simple",
+        "group": "simple",
+        "landuse": "simple",
+        "plan": "simple",
+        "rfind": "simple",
+        "section": "simple",
+        "subgroup": "simple",
+        "sample": "simple",
+        "find": "simple",
+        "photo": "simple",
+        "timber": "simple"
+    },
+    "connections": [
+        ["context", "photo"]
+    ]
+}
