@@ -52,8 +52,9 @@ class FindAddController extends DimeFormController
             if ($source = ORM::find(Find::class, $query['id'])) {
                 if ($source->value('finder')->id() === $actor->id()) {
                     $find->setValue('finddate', $source->value('finddate'));
-                    $find->setValue('finder_place', $source->value('finder_place'));
-                    $find->setValue('location', $source->value('location'));
+                    $find->setValue('class', $source->value('class'));
+                    $find->setValue('classification', $source->value('classification'));
+                    $find->setValue('material', $source->value('material'));
                 }
             }
         }
