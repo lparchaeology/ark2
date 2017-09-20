@@ -1,0 +1,11 @@
+{
+    "module": "section",
+    "resource": "sections",
+    "code": "sec",
+    "project": "ARK",
+    "namespace": "ARK\\Entity",
+    "entity": "Section",
+    "classname": "ARK\\Entity\\Section",
+    "tbl": "ark_item_section",
+    "keyword": "core.module.section"
+}

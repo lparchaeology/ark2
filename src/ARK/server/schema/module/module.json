@@ -1,0 +1,11 @@
+{
+    "module": "example",
+    "resource": "examples",
+    "code": "exp",
+    "project": "ARK",
+    "namespace": "ARK\\Entity",
+    "entity": "Example",
+    "classname": "ARK\\Entity\\Example",
+    "table": "ark_item_example",
+    "keyword": "core.module.example"
+}

@@ -12,7 +12,7 @@
         "photo": "simple",
         "timber": "simple"
     },
-    "connections": [
+    "relationships": [
         ["context", "photo"]
     ]
 }

@@ -1,0 +1,45 @@
+{
+    "module": "context",
+    "schema": "simple",
+    "classes": {
+        "cut": "Cut",
+        "fill": "Fill",
+        "masonry": "Masonry",
+        "skeleton": "Skeleton",
+        "timber": "Timber"
+    },
+    "attributes": {
+        "context": {
+            "id": "Context",
+            "class": "Class",
+            "short_desc": "Register Text",
+            "interpretation": "Basic Interp",
+            "process": "Basic Process",
+            "description": "Description",
+            "described_by": "Described By",
+            "described_on": "Described On",
+            "status": "Record Status Flag",
+            "location": "Location",
+            "period": "Period (Provisional)",
+            "attachments": "Attached Files",
+            "file_sheet": "Attached Files",
+            "file_drawing": "Attached Files",
+            "issued": "Issued To",
+            "issuer": "Issued On",
+            "compiled": "Compiled By",
+            "compiler": "Compiled On",
+            "checked": "Checked On",
+            "checker": "Checked By"
+        }
+    },
+    "relationships": {
+        "context": {
+            "photo": "Site Photo",
+            "subgroup": "Subgroup",
+            "sample": "Samples",
+            "plan": "Plans",
+            "timber": "Timbers",
+            "find": "Registered Finds"
+        }
+    }
+}

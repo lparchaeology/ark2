@@ -1,0 +1,11 @@
+{
+    "module": "find",
+    "resource": "finds",
+    "code": "spf",
+    "project": "ARK",
+    "namespace": "ARK\\Entity",
+    "entity": "Find",
+    "classname": "ARK\\Entity\\Find",
+    "tbl": "ark_item_find",
+    "keyword": "core.module.find"
+}

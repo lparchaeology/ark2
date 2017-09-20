@@ -35,6 +35,7 @@ class SiteMigrateMapCommand extends SiteMigrateInfoCommand
 {
     protected $sourcePath;
     protected $exportPath;
+    protected $roles;
     protected $defaults = [
         'cxt' => [
             'module' => 'context',
@@ -180,8 +181,14 @@ class SiteMigrateMapCommand extends SiteMigrateInfoCommand
         $source['database'] = $this->source->getParams();
         ARK::jsonEncodeWrite($source, $this->exportPath.'/source.json');
 
+        $this->exportUsers();
+        $this->exportActors();
+        $this->exportSites();
+    }
+
+    protected function exportUsers() : void
+    {
         $users = [];
-        $roles = [];
         foreach ($this->users as $user) {
             $map = [];
             $map['id'] = $user['username'] ?? $user['actor'] ?? $user['user'] ?? null;
@@ -190,22 +197,22 @@ class SiteMigrateMapCommand extends SiteMigrateInfoCommand
             if (in_array('ADMINS', $user['groups'], true)) {
                 $map['level'] = 'ROLE_ADMIN';
                 if (isset($user['actor'])) {
-                    $roles[$user['actor']] = ['admin', 'archaeologist', 'manager', 'sysadmin'];
+                    $this->roles[$user['actor']] = ['admin', 'archaeologist', 'manager', 'sysadmin'];
                 }
             } elseif (in_array('SUPERVISOR', $user['groups'], true)) {
                 $map['level'] = 'ROLE_USER';
                 if (isset($user['actor'])) {
-                    $roles[$user['actor']] = ['archaeologist', 'supervisor'];
+                    $this->roles[$user['actor']] = ['archaeologist', 'supervisor'];
                 }
             } elseif (in_array('USERS', $user['groups'], true)) {
                 $map['level'] = 'ROLE_USER';
                 if (isset($user['actor'])) {
-                    $roles[$user['actor']] = ['archaeologist'];
+                    $this->roles[$user['actor']] = ['archaeologist'];
                 }
             } else {
                 $map['level'] = 'ROLE_USER';
                 if (isset($user['actor'])) {
-                    $roles[$user['actor']] = ['researcher'];
+                    $this->roles[$user['actor']] = ['researcher'];
                 }
             }
             $map['enabled'] = $user['enabled'] ?? false;
@@ -218,12 +225,15 @@ class SiteMigrateMapCommand extends SiteMigrateInfoCommand
             $users['items'][] = $user;
         }
         ARK::jsonEncodeWrite($users, $this->exportPath.'/user.map.json');
+    }
 
+    protected function exportActors() : void
+    {
         $actors = [];
         foreach ($this->actors as $actor) {
             $actors['map'][$actor['actor']]['id'] = $actor['actor'];
-            if (isset($roles[$actor['actor']])) {
-                $actors['map'][$actor['actor']]['roles'] = $roles[$actor['actor']];
+            if (isset($this->roles[$actor['actor']])) {
+                $actors['map'][$actor['actor']]['roles'] = $this->roles[$actor['actor']];
             } else {
                 $actors['map'][$actor['actor']]['roles'] = [];
             }
@@ -232,15 +242,49 @@ class SiteMigrateMapCommand extends SiteMigrateInfoCommand
             $actors['items'][] = $actor;
         }
         ARK::jsonEncodeWrite($actors, $this->exportPath.'/actor.map.json');
+    }
 
+    protected function exportSites() : void
+    {
         $sites = [];
         foreach ($this->sites as $site) {
             $map = [];
-            $map['site'] = $site['id'];
-            $map['map'] = ($site['items'] > 0);
-            $sites[] = $map;
+            $map['id'] = $site['items'] > 0 ? $site['id'] : false;
+            $map['modules'] = [];
+            foreach ($site['modules'] as $module => $count) {
+                $map['modules'][$module] = ($module === 'abk' ? 'actor' : $module);
+            }
+            $map['meta']['name'] = $site['description'];
+            $map['meta']['items'] = $site['items'];
+            $sites[$site['id']] = $map;
         }
         ARK::jsonEncodeWrite($sites, $this->exportPath.'/site.map.json');
+    }
+
+    protected function modules() : iterable
+    {
+        $modules = [];
+        foreach (ARK::namespaces() as $namespace) {
+            $dir = ARK::namespaceDir($namespace).'/server/schema/module';
+            if (is_dir($dir)) {
+                foreach (scandir($dir) as $module) {
+                    $modDir = $dir.'/'.$module;
+                    if ($module !== '.' && $module !== '..' && is_dir($modDir)) {
+                        $key = $namespace.':'.$module;
+                        $modules[$key]['namespace'] = $namespace;
+                        $modules[$key]['module'] = $module;
+                        $modules[$key]['dir'] = $modDir;
+                        $modules[$key]['schemas'] = [];
+                        foreach (scandir($modDir) as $schema) {
+                            if ($schema !== '.' && $schema !== '..' && $schema !== 'module.json') {
+                                $modules[$key]['schemas'][] = explode('.', $schema)[0];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $modules;
     }
 
     private function exportSchemaMapping() : void
@@ -296,17 +340,20 @@ class SiteMigrateMapCommand extends SiteMigrateInfoCommand
 
         $this->write("\nConfigure the modules mapping.");
         $mapping = [];
+        $modules = $this->modules();
+        $modlist = array_merge(['custom'], array_keys($modules));
         foreach ($this->modules as $source) {
             $mod = $source['shortform'];
-            if ($mod === 'cor') {
+            if ($mod === 'cor' || $mod === 'abk' || $mod === 'ste') {
                 continue;
             }
             $descr = $source['description'];
             $this->write("\nModule $mod - $descr");
-            if ($mod === 'abk') {
-                $this->write(' - Auto-mapped to Actor module');
-            } else {
+
+            $migrate = $this->askChoice('Please choose the module you wish to migrate to:', $modlist, 'custom');
+            if ($migrate === 'custom') {
                 $default = $this->$defaults[$mod] ?? null;
+                $module['key'] = $migrate;
                 $module['module'] = $this->askQuestion('Please enter the new module code as a singular noun, e.g. context or image', $default['module'] ?? null);
                 $module['resource'] = $this->askQuestion('Please enter the resource code as a plural noun, e.g. contexts or images', $default['resource'] ?? $module['module'].'s');
                 $module['project'] = $this->askQuestion('Please enter the root namespace, e.g. ARK or MyProject', $default['project'] ?? 'ARK');
@@ -334,6 +381,15 @@ class SiteMigrateMapCommand extends SiteMigrateInfoCommand
                 $schema = $this->askChoice('Please choose a schema to use', $schemaChoices, $coreSchema);
                 $mapping[$mod]['schema'] = $schema;
                 unset($schemas, $module, $schemaChoices, $coreSchema, $siteSchema);
+            } else {
+                $schemas = $modules[$migrate]['schemas'];
+                if (count($schemas) > 1) {
+                    $schema = $this->askChoice('Please choose the schema to use:', $schemas);
+                } else {
+                    $schema = $schemas[0];
+                }
+                $module['key'] = $migrate;
+                $module['schema'] = $schema;
             }
         }
         foreach (array_keys($mapping) as $mod) {

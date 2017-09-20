@@ -1,0 +1,11 @@
+{
+    "module": "photo",
+    "resource": "photos",
+    "code": "sph",
+    "project": "ARK",
+    "namespace": "ARK\\Entity",
+    "entity": "Photo",
+    "classname": "ARK\\Entity\\Photo",
+    "tbl": "ark_item_photo",
+    "keyword": "core.module.photo"
+}

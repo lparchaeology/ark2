@@ -1,0 +1,11 @@
+{
+    "module": "landuse",
+    "resource": "landuses",
+    "code": "lus",
+    "project": "ARK",
+    "namespace": "ARK\\Entity",
+    "entity": "Landuse",
+    "classname": "ARK\\Entity\\Landuse",
+    "tbl": "ark_item_landuse",
+    "keyword": "core.module.landuse"
+}

@@ -1,0 +1,11 @@
+ {
+     "module": "group",
+     "resource": "groups",
+     "code": "grp",
+     "project": "ARK",
+     "namespace": "ARK\\Entity",
+     "entity": "Group",
+     "classname": "ARK\\Entity\\Group",
+     "tbl": "ark_item_group",
+     "keyword": "core.module.group"
+ }

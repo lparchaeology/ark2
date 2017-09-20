@@ -1,0 +1,11 @@
+{
+    "module": "site",
+    "resource": "sites",
+    "code": "ste",
+    "project": "ARK",
+    "namespace": "ARK\\Entity",
+    "entity": "Site",
+    "classname": "ARK\\Entity\\Site",
+    "tbl": "ark_item_site",
+    "keyword": "core.module.site"
+}
