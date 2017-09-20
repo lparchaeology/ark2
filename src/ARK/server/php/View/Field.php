@@ -45,6 +45,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Intl\DateFormatter\IntlDateFormatter;
 
 class Field extends Element
 {
@@ -397,6 +398,25 @@ class Field extends Element
         if ($state['value']['modus'] === 'active' && isset($options['widget']) && $options['widget'] === 'picker') {
             $options['widget'] = 'single_text';
             $options['html5'] = false;
+            switch ($state['pattern']) {
+                case 'full':
+                    $options['format'] = IntlDateFormatter::FULL;
+                    break;
+                case 'long':
+                    $options['format'] = IntlDateFormatter::LONG;
+                    break;
+                case 'medium':
+                    $options['format'] = IntlDateFormatter::MEDIUM;
+                    break;
+                case 'short':
+                    $options['format'] = IntlDateFormatter::SHORT;
+                    break;
+                case null:
+                case '':
+                    break;
+                default:
+                    $options['format'] = $state['pattern'];
+            }
             $picker = $this->attribute()->dataclass()->datatype()->id().'picker';
             if (isset($options['attr']['class'])) {
                 $options['attr']['class'] = $options['attr']['class'].' '.$picker;

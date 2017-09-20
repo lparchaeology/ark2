@@ -15,16 +15,16 @@ $(document).ready(function () {
     //$("datetime").datetimepicker();
     if (typeof applocale !== 'undefined') {
         $('.datetimepicker').datetimepicker({
-            locale: applocale,
+            locale: $('.datetimepicker')[0].lang,
         });
 
         $('.datepicker').datetimepicker({
-            locale: applocale,
+            locale: $('.datepicker')[0].lang,
             minView: 2,
         });
 
         $('.timepicker').datetimepicker({
-            locale: applocale,
+            locale: $('.timepicker')[0].lang,
             format: 'hh:ii',
             maxView: 0,
         });
