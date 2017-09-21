@@ -119,7 +119,8 @@
         }
     );
 
-    function saveEditForm(keyword, language, message) {
+    function saveEditForm(keyword, language, id) {
+        var message = document.getElementById(id).value;
         var response = {
             message: message,
             notes: ''
@@ -132,21 +133,19 @@
 {% endblock %}
 
 {% macro render_table(messages) %}
+    {% set locale = global.request.locale %}
     <table>
         <thead>
         <tr>
-            <th>Locale</th>
             <th>Domain</th>
             <th>Times used</th>
             <th>Message ID</th>
-            <th>Message Preview</th>
-            <th>Actions</th>
+            <th>Message</th>
         </tr>
         </thead>
         <tbody>
         {% for key, message in messages %}
             <tr id="{{ key }}">
-                <td class="font-normal text-small">{{ message.locale }}</td>
                 <td class="font-normal text-small text-bold nowrap">{{ message.domain }}</td>
                 <td class="font-normal text-small">{{ message.count }}</td>
                 <td>
@@ -168,11 +167,23 @@
                     {% endif %}
                 </td>
                 <td class="translation">
-                    <textarea id="edit_{{ key }}">{{ message.translation }}</textarea>
-                </td>
-                <td width="155px">
-                    <input type="button" value="Save"
-                        onclick='saveEditForm("{{ message.id }}", "{{ message.locale }}", document.getElementById("edit_{{ key }}").value)'>
+                    <div>
+                        {% set id = 'edit_' ~ key %}
+                        <label for="{{ id }}" >{{ message.locale }}:</label>
+                        <textarea id="{{ id }}">{{ message.translation }}</textarea>
+                        <input type="button" value="Save"
+                            onclick='saveEditForm("{{ message.id }}", "{{ message.locale }}", "{{ id }}")'>
+                    </div>
+
+                    {% if message.locale != locale %}
+                        {% set id = 'edit_' ~ key ~ '_' ~ locale %}
+                        <div>
+                            <label for="{{ id }}" >{{ locale }}:</label>
+                            <textarea id="{{ id }}"></textarea>
+                            <input type="button" value="Save"
+                                onclick='saveEditForm("{{ message.id }}", "{{ locale }}", "{{ id }}")'>
+                        </div>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
