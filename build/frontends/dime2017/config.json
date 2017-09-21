@@ -98,7 +98,11 @@
                     "vis/dist/vis.js"
                 ],
                 "core": [
-                    "js/**/*"
+                    "js/core.js",
+                    "js/alert.js",
+                    "js/pageedit.js",
+                    "js/routing.js",
+                    "js/utilities.js"
                 ],
                 "custom": [
                     "js/**/*"
