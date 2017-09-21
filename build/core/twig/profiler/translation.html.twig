@@ -156,11 +156,11 @@
                     {% endif %}
 
                     {% if message.parameters|length > 0 %}
-                        <button class="btn-link newline text-small sf-toggle" data-toggle-selector="#parameters-{{ loop.index }}" data-toggle-alt-content="Hide parameters">Show parameters</button>
-
-                        <div id="parameters-{{ loop.index }}" class="hidden">
+                        <div id="parameters-{{ loop.index }}">
                             {% for parameters in message.parameters %}
-                                {{ profiler_dump(parameters) }}
+                                {% for parm, value in parameters %}
+                                    {{ parm }} => {{ value }}
+                                {% endfor %}
                                 {% if not loop.last %}<br />{% endif %}
                             {% endfor %}
                         </div>
