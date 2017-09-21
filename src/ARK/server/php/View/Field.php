@@ -398,6 +398,7 @@ class Field extends Element
         if ($state['value']['modus'] === 'active' && isset($options['widget']) && $options['widget'] === 'picker') {
             $options['widget'] = 'single_text';
             $options['html5'] = false;
+            $state['pattern'] = null;
             switch ($state['pattern']) {
                 case 'full':
                     $options['format'] = IntlDateFormatter::FULL;

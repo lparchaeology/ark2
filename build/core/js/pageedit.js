@@ -19,6 +19,7 @@ $('#pageedit').on('click', function () {
         $('.inlineedit').summernote('destroy');
     } else {
         $('.inlineedit').summernote({
+            lang: lang,
             focus: true,
             buttons: {
                 save: NoteSaveButton,

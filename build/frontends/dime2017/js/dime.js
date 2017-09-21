@@ -31,6 +31,7 @@ $(document).ready(function () {
         $("#find_image_existing").data('uploadPreview', {});
 
         $(this).fileinput({
+            'language': lang,
             'theme': 'gly',
             'showUpload': false,
             'showRemove': true,

@@ -1,7 +1,11 @@
 $(document).ready(function () {
 
+    moment.locale(lang);
+    $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales[lang]);
+
     // Replace all select tags with Select2
     $("select").select2({
+        language: lang,
         minimumResultsForSearch: 11,
         width: 'resolve',
     });
@@ -9,26 +13,19 @@ $(document).ready(function () {
     // See https://github.com/select2/select2/issues/3278 and http://stackoverflow.com/a/41429176
     $(".select2.select2-container").css("width", "100%");
 
+    $('.datetimepicker').datetimepicker({
+        language: lang,
+    });
 
-    //$("date").datetimepicker();
-    //$("time").datetimepicker();
-    //$("datetime").datetimepicker();
-    if (typeof applocale !== 'undefined') {
-        $('.datetimepicker').datetimepicker({
-            locale: $('.datetimepicker')[0].lang,
-        });
+    $('.datepicker').datetimepicker({
+        language: lang,
+        minView: 2,
+    });
 
-        $('.datepicker').datetimepicker({
-            locale: $('.datepicker')[0].lang,
-            minView: 2,
-        });
-
-        $('.timepicker').datetimepicker({
-            locale: $('.timepicker')[0].lang,
-            format: 'hh:ii',
-            maxView: 0,
-        });
-    }
+    $('.timepicker').datetimepicker({
+        language: lang,
+        maxView: 0,
+    });
 
     // FIXME Hide Bootstrap Table loading animation as is a bit broken
     $('.table-bootstrap-table').bootstrapTable('hideLoading');
