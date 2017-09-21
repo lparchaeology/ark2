@@ -29,6 +29,7 @@
 
 namespace DIME\Controller\View;
 
+use ARK\Model\Fragment\ItemFragment;
 use ARK\ORM\ORM;
 use ARK\Service;
 use DIME\DIME;
@@ -39,14 +40,19 @@ class HomePageController extends DimeFormController
 {
     public function buildData(Request $request)
     {
-        // Find 9 most recent finds for current actor
-        $items = Service::database()->getActorFinds(Service::workflow()->actor()->id());
-        $finds = ORM::findBy(Find::class, ['id' => $items], ['created' => 'DESC'], 9);
-        $data['finds']['items'] = $finds;
+        $actor = Service::workflow()->actor();
+        $finder = ['module' => 'find', 'attribute' => 'finder', 'value' => $actor->id()];
 
-        // TODO Use visibility / permissions
-        $data['map']['finds'] = (Service::security()->isGranted('ROLE_USER') ? $finds : []);
-        $data['map']['kortforsyningenticket'] = DIME::getMapTicket();
+        // Populate the Dashboard
+        $data['dashboard']['finds'] = ORM::count(ItemFragment::class, $finder);
+
+        // Find 9 most recent finds for current actor
+        $frags = ORM::findBy(ItemFragment::class, $finder, ['created' => 'DESC'], 9);
+        $items = [];
+        foreach ($frags as $frag) {
+            $items[$frag->item()] = $frag->item();
+        }
+        $data['finds']['items'] = ORM::findBy(Find::class, ['id' => array_keys($items)]);
 
         return $data;
     }

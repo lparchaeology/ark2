@@ -119,12 +119,12 @@ class ORM
         return new ArrayCollection(self::repository($class)->findAll());
     }
 
-    public static function findBy($class, array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    public static function findBy($class, iterable $criteria, iterable $orderBy = null, $limit = null, $offset = null)
     {
         return new ArrayCollection(self::repository($class)->findBy($criteria, $orderBy, $limit, $offset));
     }
 
-    public static function findOneBy($class, array $criteria, array $orderBy = null)
+    public static function findOneBy($class, iterable $criteria, iterable $orderBy = null)
     {
         return self::repository($class)->findOneBy($criteria, $orderBy);
     }
@@ -132,5 +132,10 @@ class ORM
     public static function matching($class, Criteria $criteria)
     {
         return self::repository($class)->matching($criteria);
+    }
+
+    public static function count($class, iterable $criteria)
+    {
+        return self::findBy($class, $criteria)->count();
     }
 }

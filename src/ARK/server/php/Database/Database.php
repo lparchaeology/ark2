@@ -312,12 +312,10 @@ class Database
     public function getActorFinds(string $actor) : ?iterable
     {
         $sql = "
-            SELECT item
+            SELECT DISTINCT item
             FROM ark_fragment_item
             WHERE module = 'find'
-            AND (attribute = 'finder'
-              OR attribute = 'owner'
-              OR attribute = 'custodian')
+            AND attribute = 'finder'
             AND value = :actor
         ";
         $params = [
