@@ -50,7 +50,13 @@ class Widget extends Element
             $state['name'] = $this->formName();
         }
         if (!isset($state['keyword'])) {
-            $state['keyword'] = $this->keyword();
+            if ($this->keyword()) {
+                $state['keyword'] = $this->keyword();
+            } elseif (isset($state['vocabulary'])) {
+                $state['keyword'] = $state['vocabulary']->keyword();
+            } else {
+                $state['keyword'] = null;
+            }
         }
         $state['mode'] = $this->displayMode($state['mode']);
         if ($state['mode'] === 'view' && $state['value']['modus'] !== 'active') {
