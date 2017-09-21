@@ -64,7 +64,7 @@
         {% set config = [] %}
         {% set config = config | merge({'view': view}) %}
         {% set config = config | merge({'layers': layers}) %}
-{% dump(config) %}
+
         <script>
             var mapConfig = JSON.parse("{{ config | json_encode() | escape('js') }}");
 

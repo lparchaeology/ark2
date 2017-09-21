@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     editableNewRegisterRow();
     $('#register-table').bootstrapTable('hideLoading');
 });

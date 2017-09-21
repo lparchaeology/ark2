@@ -10,6 +10,7 @@
     var sprintf = $.fn.bootstrapTable.utils.sprintf;
 
     $.extend($.fn.bootstrapTable.defaults, {
+        locale: lang,
         switchcardview: false,
     });
 

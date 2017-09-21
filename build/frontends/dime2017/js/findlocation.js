@@ -1,12 +1,12 @@
-$(document).ready(function() {
+$(document).ready(function () {
     if ($('#mappick').length) {
         var mapPickLayers;
         var mapPickSource;
         var mapPickMap;
         $('#mappick').height($('#mappick').width());
         initialisePickMap();
-        $( window ).resize(function() {
-            if( $('button[title="Toggle full-screen"]').hasClass('ol-full-screen-false')) {
+        $(window).resize(function () {
+            if ($('button[title="Toggle full-screen"]').hasClass('ol-full-screen-false')) {
                 $('#mappick').height($('#mappick').width());
             } else {
                 $('#mappick').height('100%');
@@ -66,7 +66,7 @@ function initialisePickMap() {
         loadTilesWhileInteracting: true,
         target: 'mappick',
         view: mapPickView,
-        controls: [ new ol.control.FullScreen(), new ol.control.Zoom() ],
+        controls: [new ol.control.FullScreen(), new ol.control.Zoom()],
     });
 
     var draw = new ol.interaction.Draw({
@@ -86,14 +86,14 @@ function initialisePickMap() {
 
     var removefeature = null;
 
-    mapPickSource.on('addfeature', function() {
-        if(mapPickSource.getFeatures().length == 1){
-            mapPickSource.forEachFeature(function(feature) {
+    mapPickSource.on('addfeature', function () {
+        if (mapPickSource.getFeatures().length == 1) {
+            mapPickSource.forEachFeature(function (feature) {
                 coords = ol.proj.transform(feature.getGeometry().getCoordinates(), 'EPSG:3857', 'EPSG:4326');
                 $('#find_location_easting').val(parseFloat(coords[0].toFixed(6)));
                 $('#find_location_northing').val(parseFloat(coords[1].toFixed(6)));
                 updateUtmPoint();
-                if ( updateMunicipality() ){
+                if (updateMunicipality()) {
                     mapPickMap.getView().setCenter(feature.getGeometry().getCoordinates());
                     mapPickMap.getView().setZoom(12);
                 }
@@ -104,15 +104,15 @@ function initialisePickMap() {
 
     });
 
-    draw.on('drawend', function(e) {
-        if ( confirm(window.newpointconfirmmessage) ) {
+    draw.on('drawend', function (e) {
+        if (confirm(window.newpointconfirmmessage)) {
             mapPickSource.clear();
         } else {
             removefeature = e.feature;
         }
     });
 
-    $('.mappick-fields input').on('change', function() {
+    $('.mappick-fields input').on('change', function () {
         switch ($('input[name=mappick-coordinates-radio]:checked', '.mappick-fields').attr('id')) {
             case 'mappick-decimal':
                 $(".mappick-decimal-control").attr("readonly", false);
@@ -126,17 +126,17 @@ function initialisePickMap() {
         }
     });
 
-    $('.mappick-decimal-control').on('change', function() {
+    $('.mappick-decimal-control').on('change', function () {
         updateUtmPoint();
         updateMapPoint();
     });
 
-    $('.mappick-utm-control').on('change', function() {
+    $('.mappick-utm-control').on('change', function () {
         updateDecimalPoint();
         updateMapPoint();
     });
 
-    $(".mappick-fields").keydown(function(event) {
+    $(".mappick-fields").keydown(function (event) {
         if (event.keyCode == 13) {
             event.preventDefault();
             document.activeElement.blur();
@@ -156,7 +156,7 @@ function updateMunicipality() {
     northing = $('#find_location_northing').val();
     var wkt = 'POINT(' + easting + ' ' + northing + ')';
 
-    $.post(path + 'api/geo/find', wkt, function(result) {
+    $.post(path + 'api/geo/find', wkt, function (result) {
         // TODO Find way without using actual form IDs
         console.log(result);
         try {
@@ -176,10 +176,10 @@ function updateMunicipality() {
 }
 
 function updateMapPoint() {
-    if($('#find_location_easting').is('input')){
+    if ($('#find_location_easting').is('input')) {
         easting = $('#find_location_easting').val();
         northing = $('#find_location_northing').val();
-    } else if ($('#find_location_easting').is('div')){
+    } else if ($('#find_location_easting').is('div')) {
         easting = $('#find_location_easting').text();
         northing = $('#find_location_northing').text();
 
