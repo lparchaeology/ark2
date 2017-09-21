@@ -13,18 +13,13 @@ $(document).ready(function () {
     // See https://github.com/select2/select2/issues/3278 and http://stackoverflow.com/a/41429176
     $(".select2.select2-container").css("width", "100%");
 
-    $('.datetimepicker').datetimepicker({
-        language: lang,
-    });
-
-    $('.datepicker').datetimepicker({
-        language: lang,
-        minView: 2,
-    });
-
-    $('.timepicker').datetimepicker({
-        language: lang,
-        maxView: 0,
+    // Replace all date/time tags with a picker
+    $('.datetimepicker-input').datetimepicker({
+        locale: lang,
+        showClear: true,
+        showClose: true,
+        showTodayButton: true,
+        allowInputToggle: true,
     });
 
     // FIXME Hide Bootstrap Table loading animation as is a bit broken

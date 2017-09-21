@@ -67,6 +67,7 @@ class Cell implements ElementInterface
     protected $editPermission;
     protected $mode;
     protected $sanitise;
+    protected $pattern;
     protected $value;
     protected $parameter;
     protected $format;
@@ -175,6 +176,11 @@ class Cell implements ElementInterface
         return $this->sanitise;
     }
 
+    public function pattern() : ?string
+    {
+        return $this->pattern;
+    }
+
     public function valueModus() : ?string
     {
         return $this->value;
@@ -209,6 +215,9 @@ class Cell implements ElementInterface
         }
         if ($this->sanitise !== null) {
             $state['sanitise'] = $this->sanitise;
+        }
+        if ($this->pattern !== null) {
+            $state['pattern'] = $this->pattern;
         }
         if ($this->width !== null) {
             $state['width'] = $this->width;
@@ -316,6 +325,7 @@ class Cell implements ElementInterface
         $builder->addField('choices', 'boolean');
         $builder->addStringField('mode', 10);
         $builder->addStringField('sanitise', 10);
+        $builder->addStringField('pattern', 30);
         $builder->addStringField('value', 10);
         $builder->addStringField('parameter', 10);
         $builder->addStringField('format', 10);

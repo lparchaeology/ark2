@@ -248,7 +248,7 @@ gulp.task('styles', function () {
                 config.options.sass.includePaths = mergePaths(config.frontend, stream);
                 streams.add(
                     gulp.src(src)
-                    //.pipe(sourcemaps.init(config.options.sourcemaps))
+                    .pipe(sourcemaps.init(config.options.sourcemaps))
                     .pipe(sass(config.options.sass).on('error', sass.logError))
                 );
             } else if (stream.format === 'css') {
@@ -261,7 +261,7 @@ gulp.task('styles', function () {
         }
         streams.pipe(concat(style + '.min.css'))
             .pipe(autoprefixer(config.options.autoprefixer))
-            //.pipe(sourcemaps.write('.'))
+            .pipe(sourcemaps.write('.'))
             .pipe(gulp.dest(dest));
     }
 

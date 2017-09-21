@@ -41,11 +41,11 @@ use ARK\ORM\ORM;
 use ARK\Service;
 use ARK\Vocabulary\Term;
 use ARK\Workflow\Event;
+use IntlDateFormatter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\Intl\DateFormatter\IntlDateFormatter;
 
 class Field extends Element
 {
@@ -398,32 +398,82 @@ class Field extends Element
         if ($state['value']['modus'] === 'active' && isset($options['widget']) && $options['widget'] === 'picker') {
             $options['widget'] = 'single_text';
             $options['html5'] = false;
-            $state['pattern'] = null;
-            switch ($state['pattern']) {
+            $type = $this->attribute()->dataclass()->datatype()->id();
+            $pattern = $state['pattern'] ?? null;
+            $moment = null;
+            switch ($pattern) {
                 case 'full':
-                    $options['format'] = IntlDateFormatter::FULL;
+                    $pattern = IntlDateFormatter::FULL;
+                    if ($type === 'date') {
+                        $moment = 'LL';
+                    } elseif ($type === 'time') {
+                        $moment = 'LT';
+                    } else {
+                        $moment = 'LLLL';
+                    }
                     break;
                 case 'long':
-                    $options['format'] = IntlDateFormatter::LONG;
+                    $pattern = IntlDateFormatter::LONG;
+                    if ($type === 'date') {
+                        $moment = 'LL';
+                    } elseif ($type === 'time') {
+                        $moment = 'LT';
+                    } else {
+                        $moment = 'LLL';
+                    }
                     break;
                 case 'medium':
-                    $options['format'] = IntlDateFormatter::MEDIUM;
+                    $pattern = IntlDateFormatter::MEDIUM;
+                    if ($type === 'date') {
+                        $moment = 'LL';
+                    } elseif ($type === 'time') {
+                        $moment = 'LT';
+                    } else {
+                        $moment = 'LL LT';
+                    }
                     break;
                 case 'short':
-                    $options['format'] = IntlDateFormatter::SHORT;
+                    $pattern = IntlDateFormatter::SHORT;
+                    if ($type === 'date') {
+                        $moment = 'L';
+                    } elseif ($type === 'time') {
+                        $moment = 'LT';
+                    } else {
+                        $moment = 'L LT';
+                    }
                     break;
                 case null:
                 case '':
+                    $pattern = null;
                     break;
                 default:
-                    $options['format'] = $state['pattern'];
+                    $moment = $pattern;
+                    break;
             }
-            $picker = $this->attribute()->dataclass()->datatype()->id().'picker';
-            if (isset($options['attr']['class'])) {
-                $options['attr']['class'] = $options['attr']['class'].' '.$picker;
-            } else {
-                $options['attr']['class'] = $picker;
+            if ($pattern !== null) {
+                if (is_numeric($pattern)) {
+                    switch ($type) {
+                        case 'date':
+                            $options['format'] = $pattern;
+                            //$intl = new IntlDateFormatter(Service::locale(), $pattern, IntlDateFormatter::NONE);
+                            //$pattern = $intl->getPattern();
+                            break;
+                        case 'time':
+                            //$intl = new IntlDateFormatter(Service::locale(), IntlDateFormatter::NONE, $pattern);
+                            //$pattern = $intl->getPattern();
+                            break;
+                        case 'datetime':
+                        default:
+                            $intl = new IntlDateFormatter(Service::locale(), $pattern, $pattern);
+                            $options['date_format'] = $pattern;
+                            $pattern = $intl->getPattern();
+                            $options['format'] = $pattern;
+                            break;
+                    }
+                }
+                $options['attr']['data-date-format'] = $moment;
             }
+            $options['attr']['class'] = $this->concatAttr($options, 'class', 'datetimepicker-input');
         } else {
             unset($options['widget']);
         }
@@ -447,7 +497,7 @@ class Field extends Element
                 }
             }
             if ($state['modus'] === 'readonly') {
-                $options['attr']['class'] = $this->concatOption($options, 'attr', 'class', 'readonly-select');
+                $options['attr']['class'] = $this->concatAttr($options, 'class', 'readonly-select');
             }
         }
         //$options['constraints'] = $this->attribute()->constraints();
@@ -464,7 +514,7 @@ class Field extends Element
         }
         if ($state['modus'] === 'readonly') {
             if ($this->attribute()->hasVocabulary()) {
-                $options['attr']['class'] = $this->concatOption($options, 'attr', 'class', 'readonly-select');
+                $options['attr']['class'] = $this->concatAttr($options, 'class', 'readonly-select');
             } else {
                 $options['attr']['readonly'] = true;
             }
@@ -472,12 +522,19 @@ class Field extends Element
         return $options;
     }
 
+    protected function concat(iterable $options, string $option, string $value) : string
+    {
+        return isset($options[$attr]) ? $options[$attr].' '.$value : $value;
+    }
+
+    protected function concatAttr(iterable $options, string $attr, string $value) : string
+    {
+        return isset($options['attr'][$attr]) ? $options['attr'][$attr].' '.$value : $value;
+    }
+
     protected function concatOption(iterable $options, string $option, string $attr, string $value) : string
     {
-        if (isset($options[$option][$attr])) {
-            return $options[$option][$attr].' '.$value;
-        }
-        return $value;
+        return isset($options[$option][$attr]) ? $options[$option][$attr].' '.$value : $value;
     }
 
     private function modeToModus(iterable $state, string $modus) : string
