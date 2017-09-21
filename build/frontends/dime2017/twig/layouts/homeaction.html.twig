@@ -1,3 +1,4 @@
+{% if global.user %}
 <div class="row dimehometoolbar">
     <div class="col-md-3 dimehome dimehometool" >
         {{ 'dime.home.welcome' | trans({ '%name%': global.user.displayName }) }}
@@ -18,3 +19,4 @@
                        "target": "dime.home.finds"} } %}
     </div>
 </div>
+{% endif %}
