@@ -51,8 +51,8 @@ class DIME
     public static function getMapTicket() : ?string
     {
         if ($credentials = Service::security()->credentials('kortforsyningen')) {
-            $user = $credentials['kortforsyningen']['user'];
-            $password = $credentials['kortforsyningen']['password'];
+            $user = $credentials['user'];
+            $password = $credentials['password'];
             $path = "http://services.kortforsyningen.dk/service?request=GetTicket&login=$user&password=$password";
             $ticket = file_get_contents($path);
             if (strlen($ticket) === 32) {

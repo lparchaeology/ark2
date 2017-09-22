@@ -140,7 +140,7 @@ class ViewControllerProvider implements ControllerProviderInterface
             ->bind('dime.news');
 
         // Temp Routes?
-        $controllers->match("/$files/{id}", 'DIME\Controller\View\FileController')
+        $controllers->match("/$files/{id}", 'DIME\Controller\API\FileGetController')
             ->method('GET|POST')
             ->bind('files.view');
         $controllers->match("/$claim/{id}", 'DIME\Controller\View\TreasureClaimController')

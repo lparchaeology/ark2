@@ -29,20 +29,15 @@
                 {% for cell in layout.cells %}
                     {% set field = cell.element %}
                     {% if state.actor.hasPermission(field.attribute.readPermission) %}
-                        {% if field.attribute.name == 'id' %}
-                            <th data-field="{{field.id}}" data-title="{{ field.keyword | translate }}" data-sortable="true" data-sorter="alphanum" data-card-visible="false">
-                            {% else %}
-                                <th data-field="{{field.id}}" data-title="{{f ield.keyword | translate }}" data-sortable="true" data-sorter="alphanum" data-card-visible="false">
-                                {% endif %}
-                                {{field.keyword|trans}}
-                            </th>
-                        {% endif %}
-                        {% do
-                            form[field.formName].setRendered %}
-                    {% endfor %}
-                    <th class="controlshead" data-field="controls" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
-                </tr>
-            </thead>
+                        <th data-field="{{field.id}}" data-title="{{f ield.keyword | translate }}" data-sortable="true" data-sorter="alphanum" data-visible="{{ cell.visible }}" data-card-visible="false">
+                            {{ field.keyword|trans }}
+                        </th>
+                    {% endif %}
+                    {% do form[field.formName].setRendered %}
+                {% endfor %}
+                <th class="controlshead" data-field="controls" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
+            </tr>
+        </thead>
 
             <tbody>
                 {% for item in items %}

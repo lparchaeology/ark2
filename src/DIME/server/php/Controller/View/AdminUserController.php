@@ -51,6 +51,7 @@ class AdminUserController extends DimeFormController
         $select['multiple'] = false;
         $select['placeholder'] = Service::translate('core.placeholder');
         $state['select']['museum'] = $select;
+        $state['controls']['actor'] = true;
         return $state;
     }
 

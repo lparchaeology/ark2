@@ -317,6 +317,8 @@ class Field extends Element
                     $value = $value[$this->display];
                 } elseif (isset($value[$this->attribute()->dataclass()->valueName()])) {
                     $value = $value[$this->attribute()->dataclass()->valueName()];
+                } elseif (isset($value['subtype'])) {
+                    $value = $value['subtype'];
                 }
             }
             if ($value instanceof Actor) {
@@ -342,11 +344,14 @@ class Field extends Element
                 return Service::translate($value->keyword());
             }
             if ($value instanceof \DateTime) {
-                return $value->format('Y-m-d H:i:s');
+                return $value->format('Y-m-d');
             }
             if ($this->attribute()->hasVocabulary()) {
                 return Service::translate($value);
             }
+        }
+        if (is_array($value)) {
+            return 'ERROR';
         }
         return $value ?? '';
     }
