@@ -36,6 +36,7 @@ use ARK\ORM\ORM;
 use ARK\Translation\Translation;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use ARK\Translation\Domain;
 
 class TranslationMessageController
 {
@@ -70,9 +71,10 @@ class TranslationMessageController
             }
             if ($request->getMethod() === 'POST') {
                 $content = json_decode($request->getContent(), true);
-                if (!$translation) {
-                    $translation = new Translation($keyword, 'dime');
-                    ORM::persist($translation);
+		if (!$translation) {
+                    $domain = ORM::find(Domain::class, 'dime');
+		    $translation = new Translation($keyword, $domain);
+		    ORM::persist($translation);
                 }
                 // TODO Cater for roles.
                 $translation->setMessage($content['message'], $language, 'default', $content['notes']);

@@ -67,6 +67,8 @@ class Cell implements ElementInterface
     protected $editPermission;
     protected $mode;
     protected $sanitise;
+    protected $visible = true;
+    protected $pattern;
     protected $value;
     protected $parameter;
     protected $format;
@@ -150,6 +152,10 @@ class Cell implements ElementInterface
         return $this->required;
     }
 
+    public function isVisible() {
+        return $this->visible ?? true;
+    }
+
     public function action() : ?Action
     {
         return $this->action;
@@ -209,7 +215,8 @@ class Cell implements ElementInterface
         }
         if ($this->sanitise !== null) {
             $state['sanitise'] = $this->sanitise;
-        }
+	}
+	$state['visible'] = $this->visible ?? true;
         if ($this->width !== null) {
             $state['width'] = $this->width;
         }
@@ -315,7 +322,8 @@ class Cell implements ElementInterface
         $builder->addField('placeholder', 'boolean');
         $builder->addField('choices', 'boolean');
         $builder->addStringField('mode', 10);
-        $builder->addStringField('sanitise', 10);
+	$builder->addStringField('sanitise', 10);
+	$builder->addField('visible', 'boolean');
         $builder->addStringField('value', 10);
         $builder->addStringField('parameter', 10);
         $builder->addStringField('format', 10);

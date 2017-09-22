@@ -303,8 +303,8 @@ class Field extends Element
         $value = '';
         if ($data instanceof Item) {
             $data = $data->property($this->attribute()->name());
-        }
-        if ($data instanceof Property) {
+	}
+	if ($data instanceof Property) {
             $value = $data->value();
             if (!$value || $value === $this->attribute()->emptyValue()) {
                 return '';
@@ -317,7 +317,9 @@ class Field extends Element
                     $value = $value[$this->display];
                 } elseif (isset($value[$this->attribute()->dataclass()->valueName()])) {
                     $value = $value[$this->attribute()->dataclass()->valueName()];
-                }
+		} elseif (isset($value['subtype'])) {
+			$value = $value['subtype'];
+		}
             }
             if ($value instanceof Actor) {
                 return $value->property('fullname')->value()->content();
@@ -342,12 +344,15 @@ class Field extends Element
                 return Service::translate($value->keyword());
             }
             if ($value instanceof \DateTime) {
-                return $value->format('Y-m-d H:i:s');
+                return $value->format('Y-m-d');
             }
             if ($this->attribute()->hasVocabulary()) {
                 return Service::translate($value);
             }
-        }
+	}
+	if (is_array($value)) {
+		return 'ERROR';
+	}
         return $value ?? '';
     }
 

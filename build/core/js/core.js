@@ -20,6 +20,10 @@ $(document).ready(function () {
     $('.datepicker').datetimepicker({
         language: lang,
         minView: 2,
+	    autoclose: true,
+	    clearBtn: true,
+	    todayBtn: true,
+	    todayHighlight: true,
     });
 
     $('.timepicker').datetimepicker({

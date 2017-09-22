@@ -10,8 +10,26 @@ col-xs-12 col-sm-4
 {% block form_label -%}
     {% spaceless %}
         {% if label is not same as(false) %}
-            {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' ' ~ block('form_label_class'))|trim}) %}
-            {{- parent() -}}
+            {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' ' ~ block('form_label_class') ~ ' control-label')|trim}) %}
+            {% if not compound -%}
+                {% set label_attr = label_attr|merge({'for': id}) %}
+            {%- endif -%}
+            {% if required -%}
+                {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+            {%- endif -%}
+            {% if label is empty -%}
+                {%- if label_format is not empty -%}
+                    {% set label = label_format|replace({
+                        '%name%': name,
+                        '%id%': id,
+                    }) %}
+                {%- else -%}
+                    {% set label = name|humanize %}
+                {%- endif -%}
+            {%- endif -%}
+            <label{% if label_attr %}{% with { attr: label_attr } %}{{ block('attributes') }}{% endwith %}{% endif %}>
+                {{ translation_domain is same as(false) ? label|raw : label|trans({}, translation_domain)|raw }}
+            </label>
         {% endif %}
     {% endspaceless %}
 {%- endblock form_label %}
