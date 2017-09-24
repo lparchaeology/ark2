@@ -29,27 +29,13 @@
         <field name="format_vocabulary" type="string" size="30"/>
         <field name="parameter_name" type="string" size="30"/>
         <field name="parameter_vocabulary" type="string" size="30"/>
-        <field name="entity" type="string" size="100">
-            <default value="NULL"/>
-        </field>
-        <field name="form_type" type="string" size="100">
-            <default value="NULL"/>
-        </field>
-        <field name="active_form_type" type="string" size="100">
-            <default value="NULL"/>
-        </field>
-        <field name="readonly_form_type" type="string" size="100">
-            <default value="NULL"/>
-        </field>
-        <field name="static_form_type" type="string" size="100">
-            <default value="NULL"/>
-        </field>
-        <field name="parameter_form_type" type="string" size="100">
-            <default value="NULL"/>
-        </field>
-        <field name="format_form_type" type="string" size="100">
-            <default value="NULL"/>
-        </field>
+        <field name="entity" type="string" size="100"/>
+        <field name="form_type" type="string" size="100"/>
+        <field name="active_form_type" type="string" size="100"/>
+        <field name="readonly_form_type" type="string" size="100"/>
+        <field name="static_form_type" type="string" size="100"/>
+        <field name="parameter_form_type" type="string" size="100"/>
+        <field name="format_form_type" type="string" size="100"/>
         <field name="sortable" type="boolean">
             <default value="1"/>
             <notnull/>
@@ -132,9 +118,7 @@
             <default value="0"/>
             <notnull/>
         </field>
-        <field name="vocabulary" type="string" size="30">
-            <default value="NULL"/>
-        </field>
+        <field name="vocabulary" type="string" size="30"/>
         <field name="enabled" type="boolean">
             <default value="1"/>
             <notnull/>
@@ -661,9 +645,7 @@
             <default value="1"/>
             <notnull/>
         </field>
-        <field name="keyword" type="string" size="100">
-            <default value="NULL"/>
-        </field>
+        <field name="keyword" type="string" size="100"/>
         <field name="options" type="string" size="4000">
             <notnull/>
         </field>
@@ -1278,10 +1260,15 @@
         <field name="edit" type="string" size="30"/>
         <field name="mode" type="string" size="10"/>
         <field name="sanitise" type="string" size="10"/>
+        <field name="visible" type="boolean">
+            <default value="1"/>
+            <notnull/>
+        </field>
+        <field name="pattern" type="string" size="30"/>
+        <field name="display" type="string" size="30"/>
         <field name="value" type="string" size="10"/>
         <field name="parameter" type="string" size="10"/>
         <field name="format" type="string" size="10"/>
-        <field name="display" type="string" size="30"/>
         <field name="data" type="string" size="30"/>
         <field name="enabled" type="boolean">
             <default value="1"/>
@@ -1481,12 +1468,8 @@
         </field>
         <field name="header" type="string" size="30"/>
         <field name="sidebar" type="string" size="30"/>
-        <field name="content" type="string" size="30">
-            <default value="NULL"/>
-        </field>
-        <field name="footer" type="string" size="30">
-            <default value="NULL"/>
-        </field>
+        <field name="content" type="string" size="30"/>
+        <field name="footer" type="string" size="30"/>
         <field name="mode" type="string" size="10">
             <default value="view"/>
             <notnull/>
@@ -1496,9 +1479,7 @@
             <notnull/>
         </field>
         <field name="view" type="string" size="30"/>
-        <field name="edit" type="string" size="30">
-            <default value="NULL"/>
-        </field>
+        <field name="edit" type="string" size="30"/>
         <field name="template" type="string" size="100"/>
         <index name="navbar_foreign">
             <col>header</col>
@@ -1585,9 +1566,7 @@
         <field name="class" type="string" size="100">
             <notnull/>
         </field>
-        <field name="form_type" type="string" size="100">
-            <default value="NULL"/>
-        </field>
+        <field name="form_type" type="string" size="100"/>
         <field name="template" type="string" size="100">
             <notnull/>
         </field>
@@ -1777,9 +1756,7 @@
             <key/>
             <notnull/>
         </field>
-        <field name="alias" type="string" size="50">
-            <default value="NULL"/>
-        </field>
+        <field name="alias" type="string" size="50"/>
         <field name="is_default" type="boolean">
             <default value="0"/>
             <notnull/>
@@ -1859,9 +1836,7 @@
         </field>
         <field name="event_vocabulary" type="string" size="30"/>
         <field name="event_term" type="string" size="30"/>
-        <field name="agent" type="string" size="30">
-            <default value="NULL"/>
-        </field>
+        <field name="agent" type="string" size="30"/>
         <field name="default_permission" type="boolean">
             <default value="0"/>
             <notnull/>
@@ -1923,9 +1898,7 @@
             <key/>
             <notnull/>
         </field>
-        <field name="condition_attribute" type="string" size="30">
-            <default value="NULL"/>
-        </field>
+        <field name="condition_attribute" type="string" size="30"/>
         <field name="condition_operator" type="string" size="10"/>
         <field name="condition_value" type="string" size="4000"/>
         <index name="attribute_foreign">
@@ -2138,9 +2111,7 @@
             <key/>
             <notnull/>
         </field>
-        <field name="agent_for" type="string" size="30">
-            <default value="NULL"/>
-        </field>
+        <field name="agent_for" type="string" size="30"/>
         <field name="enabled" type="boolean">
             <default value="1"/>
             <notnull/>
