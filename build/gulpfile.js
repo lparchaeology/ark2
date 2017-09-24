@@ -255,13 +255,13 @@ gulp.task('styles', function () {
                 src = mergePaths(config.frontend, stream);
                 streams.add(
                     gulp.src(src)
-                    .pipe(concat(stream.stream + '.css'))
+                    //.pipe(concat(stream.stream + '.css'))
                 );
             }
         }
         streams.pipe(concat(style + '.min.css'))
             .pipe(autoprefixer(config.options.autoprefixer))
-            .pipe(sourcemaps.write('.'))
+            //.pipe(sourcemaps.write('.'))
             .pipe(gulp.dest(dest));
     }
 

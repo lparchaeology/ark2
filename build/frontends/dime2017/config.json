@@ -57,7 +57,9 @@
                 "vendor": [
                     "jquery/dist/jquery.js",
                     "jquery-form/src/jquery.form.js",
-                    "bootstrap-sass/assets/javascripts/bootstrap.js",
+                    "moment/moment.js",
+                    "moment/locale/en-gb.js",
+                    "moment/locale/da.js",
                     "summernote/dist/summernote.js",
                     "summernote/dist/lang/summernote-da-DK.js",
                     "select2/dist/js/select2.js",
@@ -69,9 +71,8 @@
                     "html2canvas/dist/html2canvas.js",
                     "tableexport.jquery.plugin/tableExport.js",
                     "colresizable/colResizable-1.6.js",
-                    "moment/moment.js",
-                    "moment/locale/en-gb.js",
-                    "moment/locale/da.js",
+                    "bootstrap-sass/assets/javascripts/bootstrap.js",
+                    "eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js",
                     "bootstrap-fileinput/js/plugins/piexif.js",
                     "bootstrap-fileinput/js/plugins/purify.js",
                     "bootstrap-fileinput/js/plugins/sortable.js",
@@ -93,7 +94,6 @@
                     "bootstrap-table/dist/extensions/resizeable/bootstrap-table-resizeable.js",
                     "bootstrap-table/dist/extensions/select2-filter/bootstrap-table-select2-filter.js",
                     "bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.js",
-                    "eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js",
                     "vis/dist/vis.js"
                 ],
                 "core": [
@@ -156,11 +156,11 @@
                     "format": "css",
                     "vendor": [
                         "select2-bootstrap-theme/dist/select2-bootstrap.css",
-                        "eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css",
                         "x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css",
                         "bootstrap-table/dist/bootstrap-table.css",
                         "bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css",
                         "bootstrap-fileinput/css/fileinput.css",
+                        "eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css",
                         "vis/dist/vis-timeline-graph2d.min.css"
                     ],
                     "core": [],
