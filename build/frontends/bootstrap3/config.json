@@ -94,8 +94,8 @@
             },
             "ol4": {
                 "vendor": [
-                    "openlayers/dist/ol.js",
-                    "proj4/dist/proj4.js"
+                    "proj4/dist/proj4.js",
+                    "openlayers/dist/ol.js"
                 ],
                 "core": [],
                 "custom": []
