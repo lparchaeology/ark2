@@ -12,24 +12,24 @@
         "context": {
             "id": "Context",
             "class": "Class",
+            "status": "Status",
+            "visibility": "Visibility",
             "short_desc": "Register Text",
-            "interpretation": "Basic Interp",
+            "interpretation": "Basic Interpretation",
             "process": "Basic Process",
-            "description": "Description",
-            "described_by": "Described By",
-            "described_on": "Described On",
-            "status": "Record Status Flag",
+            "description": {
+                "description": "Described By",
+                "described_by": "Described By",
+                "described_on": "Described On"
+            },
             "location": "Location",
             "period": "Period (Provisional)",
+            "record_sheet": "Record Sheet",
+            "drawing": "Single Context Plan",
             "attachments": "Attached Files",
-            "file_sheet": "Attached Files",
-            "file_drawing": "Attached Files",
-            "issued": "Issued To",
-            "issuer": "Issued On",
-            "compiled": "Compiled By",
-            "compiler": "Compiled On",
-            "checked": "Checked On",
-            "checker": "Checked By"
+            "issued": "Issued Event",
+            "compiled": "Compiled Event",
+            "checked": "Checked Event"
         }
     },
     "relationships": {
@@ -37,7 +37,7 @@
             "photo": "Site Photo",
             "subgroup": "Subgroup",
             "sample": "Samples",
-            "plan": "Plans",
+            "drawing": "Drawings",
             "timber": "Timbers",
             "find": "Registered Finds"
         }
