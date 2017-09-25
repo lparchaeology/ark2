@@ -30,6 +30,7 @@
 
 namespace ARK\Security;
 
+use ARK\Actor\Actor;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Security\Validator\PasswordStrength;
@@ -69,7 +70,6 @@ class User implements AdvancedUserInterface, Serializable
     protected $passwordRequestedAt;
     protected $lastLogin;
     protected $accounts;
-    protected $actors;
 
     public function __construct(string $id, string $username = null, string $email = null)
     {
@@ -401,15 +401,19 @@ class User implements AdvancedUserInterface, Serializable
 
     public function actors() : ?iterable
     {
-        if ($this->actors === null) {
-            $aus = ORM::findBy(ActorUser::class, ['user' => $this->id()]);
-            foreach ($aus as $au) {
-                if ($au->isEnabled()) {
-                    $this->actors[] = $au->actor();
-                }
+        $aus = ORM::findBy(ActorUser::class, ['user' => $this->id()]);
+        $actors = new ArrayCollection();
+        foreach ($aus as $au) {
+            if ($au->isEnabled()) {
+                $actors->add($au->actor());
             }
         }
-        return $this->actors;
+        return $actors;
+    }
+
+    public function isActor(Actor $actor) : bool
+    {
+        return $this->actors()->contains($actor);
     }
 
     public function hasRole(Role $role) : bool

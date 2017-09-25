@@ -88,11 +88,13 @@ abstract class PageController extends Controller
     public function buildState(Request $request, $data) : iterable
     {
         $state = parent::buildState($request, $data);
-        $actor = $state['actor'];
+
+        // Check the Actor's workflow mode for this Item, i.e. edit or view
         $item = $this->item($data);
-        $state['workflow']['mode'] = $item ? Service::workflow()->mode($actor, $item) : 'view';
+        $state['workflow']['mode'] = $item ? Service::workflow()->mode($state['actor'], $item) : 'view';
+
+        // Set up the Select choices to show users
         if ($item && $state['workflow']['mode'] === 'edit') {
-            $state['actions'] = Service::workflow()->updateActions($actor, $item);
             $select['choice_value'] = 'name';
             $select['choice_name'] = 'name';
             $select['choice_label'] = 'keyword';
@@ -101,7 +103,6 @@ abstract class PageController extends Controller
             $select['placeholder'] = Service::translate('core.placeholder');
             $state['select']['actions'] = $select;
 
-            $state['actors'] = Service::workflow()->actors($actor, $item);
             $select['choice_value'] = 'id';
             $select['choice_name'] = 'id';
             $select['choice_label'] = 'fullname';
@@ -110,6 +111,8 @@ abstract class PageController extends Controller
             $select['placeholder'] = Service::translate('core.placeholder');
             $state['select']['actors'] = $select;
         }
+
+        // Set up routing paths for JavaScript Router
         $state['routing']['base_path'] = $request->getBasePath();
         $state['routing']['routes'] = [];
         foreach (Service::routes() as $name => $route) {
@@ -121,6 +124,7 @@ abstract class PageController extends Controller
                 'condition' => $route->getCondition(),
             ];
         }
+
         return $state;
     }
 
