@@ -218,8 +218,11 @@ class Security
         return $actorUser;
     }
 
-    public function createActorRole(Actor $actor, Role $role, Actor $agentFor = null, \DateTime $expiry = null) : ActorRole
+    public function createActorRole(Actor $actor, Role $role = null, Actor $agentFor = null, \DateTime $expiry = null) : ActorRole
     {
+        if (!$role) {
+            $role = ORM::find(Role::class, $this->options['default_role']);
+        }
         $actorRole = new ActorRole($actor, $role, $agentFor);
         // TODO Always enable for now, need to think if any reason why you wouldn't?
         $actorRole->enable();
