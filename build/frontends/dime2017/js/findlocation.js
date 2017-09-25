@@ -1,4 +1,6 @@
-$(document).ready(function () {
+$(document).ready(function() {
+    //we should check here for user auth to update the map
+
     if ($('#mappick').length) {
         var mapPickLayers;
         var mapPickSource;
