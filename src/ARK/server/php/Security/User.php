@@ -71,7 +71,7 @@ class User implements AdvancedUserInterface, Serializable
     protected $lastLogin;
     protected $accounts;
 
-    public function __construct(string $id, string $username = null, string $email = null)
+    public function __construct(string $id = null, string $username = null, string $email = null)
     {
         $this->id = $id;
         $this->username = ($username ?: $id);
@@ -440,20 +440,20 @@ class User implements AdvancedUserInterface, Serializable
     {
         $metadata->addConstraint(new UniqueEntity('username'));
         $metadata->addPropertyConstraints('username', [
-            new NotBlank(),
+            //new NotBlank(),
             new Regex('/^[a-zA-Z0-9]{3,30}$/us'),
         ]);
 
         $metadata->addConstraint(new UniqueEntity('email'));
         $metadata->addPropertyConstraints('email', [
-            new NotBlank(),
+            //new NotBlank(),
             new Email(),
         ]);
 
-        $metadata->addPropertyConstraints('_password', [
-            new NotBlank(['groups' => ['full']]),
+        $metadata->addPropertyConstraints('password', [
+            //new NotBlank(['groups' => ['full']]),
             new Length(['min' => 8, 'groups' => ['full']]),
-            new PasswordStrength(2),
+            //new PasswordStrength(1),
         ]);
     }
 

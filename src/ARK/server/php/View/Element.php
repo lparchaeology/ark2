@@ -204,7 +204,7 @@ abstract class Element implements ElementInterface
 
     public function buildForm(FormBuilderInterface $builder, $data, iterable $state, iterable $options = []) : void
     {
-        //dump('BUILD FORM : '.get_class($this).' '.$this->id().' '.$this->formName().' '.$this->keyword());
+        dump('BUILD FORM : '.get_class($this).' '.$this->id().' '.$this->formName().' '.$this->keyword());
         //dump($this);
         //dump($data);
         //dump($state);
@@ -218,7 +218,7 @@ abstract class Element implements ElementInterface
         $options = $this->buildOptions($data, $state, $options);
         //dump($data);
         //dump($state);
-        //dump($options);
+        dump($options);
         $elementBuilder = $this->formBuilder($data, $state, $options);
         //dump($elementBuilder);
         $builder->add($elementBuilder);

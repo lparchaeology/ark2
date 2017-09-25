@@ -114,7 +114,7 @@ abstract class Group extends Element
 
     public function buildForm(FormBuilderInterface $builder, $data, iterable $state, iterable $options = []) : void
     {
-        //dump('BUILD GROUP : '.$this->id());
+        dump('BUILD GROUP : '.$this->id());
         //dump($data);
         //dump($state);
         //dump($options);
@@ -124,10 +124,10 @@ abstract class Group extends Element
             return;
         }
         $data = $this->buildData($data, $state);
-        //dump($state);
-        //dump($data);
+        dump($state);
+        dump($data);
         $options = $this->buildOptions($data, $state, $options);
-        //dump($options);
+        dump($options);
         if (!$this->form && $this->name) {
             $layoutBuilder = $this->formBuilder([$this->name => $data], $state, $options);
             //dump('GROUP : CELL BUILDER');
@@ -168,6 +168,7 @@ abstract class Group extends Element
         $builder->addStringField('action', 30);
         $builder->addStringField('mode', 10);
         $builder->addStringField('template', 100);
+        $builder->addStringField('formType', 100, 'form_type');
 
         // Associations
         $builder->addOneToMany('cells', Cell::class, 'group');

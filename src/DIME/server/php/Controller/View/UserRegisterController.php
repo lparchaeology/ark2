@@ -59,27 +59,26 @@ class UserRegisterController extends DimeFormController
     public function buildData(Request $request)
     {
         $data['actor'] = new Person();
+        $data['credentials'] = new User();
         $data['faq'] = 'dime.register.faq';
         return $data;
     }
 
     public function processForm(Request $request, Form $form) : void
     {
+        dump($form);
         $data = $form->getData();
-
-        $credentials = $data['credentials'];
-
+        dump($data);
+        $user = $data['credentials'];
+        dump($user);
         $actor = $data['actor'];
-        $actor->setId($credentials['_username']);
-        $actor->property('email')->setValue($credentials['email']);
+        $actor->setId($user->username());
+        $actor->property('email')->setValue($user->email());
         ORM::persist($actor);
 
-        $user = Service::security()->createUser(
-            $credentials['_username'],
-            $credentials['email'],
-            $credentials['password'],
-            $actor->fullname()
-        );
+        $user->setName($actor->fullname());
+        $user->setLevel('ROLE_USER');
+        ORM::persist($user);
 
         $actorUser = Service::security()->createActorUser($actor, $user);
 
