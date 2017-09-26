@@ -269,13 +269,10 @@ class Cell implements ElementInterface
     public function buildOptions($data, iterable $state, iterable $options = []) : iterable
     {
         if ($this->optionsArray === null) {
-            dump($this->options);
             $this->optionsArray = json_decode($this->options, true);
-            dump($this->optionsArray);
             if (!is_array($this->optionsArray)) {
                 $this->optionsArray = [];
             }
-            dump($this->optionsArray);
         }
         $options = array_replace_recursive($options, $this->optionsArray);
         return $options;
@@ -293,15 +290,15 @@ class Cell implements ElementInterface
 
     public function buildForm(FormBuilderInterface $builder, $data, iterable $state, iterable $options = []) : void
     {
-        dump('BUILD CELL FORM : '.$this->element->formName());
+        //dump('BUILD CELL FORM : '.$this->element->formName());
         //dump($data);
         //dump($state);
-        dump($options);
+        //dump($options);
         $state = $this->buildState($data, $state);
         //dump($state);
         $data = $this->buildData($data, $state);
         $options = $this->buildOptions($data, $state, $options);
-        dump($options);
+        //dump($options);
         $this->element->buildForm($builder, $data, $state, $options);
     }
 
