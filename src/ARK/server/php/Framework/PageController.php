@@ -83,8 +83,9 @@ abstract class PageController extends Controller
                 }
                 Service::view()->addErrorFlash('core.error.form.invalid');
                 foreach ($posted->getErrors(true) as $error) {
-                    $cause = $error->getCause()->getPropertyPath().' '.(string) $error->getCause()->getCause()->getMessage();
-                    Service::view()->addErrorFlash($error->getMessage().' '.$cause);
+                    $cause = $error->getCause();
+                    $msg = ($cause ? $cause->getPropertyPath().' '.(string) $cause->getCause()->getMessage() : '');
+                    Service::view()->addErrorFlash($error->getMessage().' '.$msg);
                 }
             } catch (WorkflowException $e) {
                 Service::view()->addErrorFlash($e->getMessage());

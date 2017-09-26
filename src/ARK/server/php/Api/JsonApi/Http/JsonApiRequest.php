@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK JSON:API Request
+ * ARK JSON:API Request.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -21,36 +21,32 @@
  * along with ARK.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @author     John Layt <j.layt@lparchaeology.com>
- * @copyright  2016 L - P : Heritage LLP.
+ * @copyright  2017 L - P : Heritage LLP.
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Api\JsonApi\Http;
 
-use ARK\Api\JsonApi\Http\JsonApiParameters;
 use ARK\Api\JsonApi\JsonApiException;
 use ARK\Api\JsonApi\JsonSchemaTrait;
 use ARK\Error\ErrorBag;
 use ARK\Framework\Application;
-use ARK\Http\Error\InternalServerError;
 use ARK\Http\Error\BadRequestError;
 use ARK\Http\Error\NotAcceptableError;
 use ARK\Http\Error\UnrecognizedParamaterError;
 use ARK\Http\Error\UnsupportedMediaTypeError;
-use ARK\Serializer\JsonSchema\ValidationError;
 use Symfony\Component\HttpFoundation\Request;
 
 class JsonApiRequest extends Request
 {
     use JsonSchemaTrait;
 
-    protected $resourcePath = null;
-    protected $queryParameters = null;
+    protected $resourcePath;
+    protected $queryParameters;
 
-    public function setResourcePath(/*string*/ $resourcePath)
+    public function setResourcePath(/*string*/ $resourcePath) : void
     {
         $this->resourcePath = $resourcePath;
     }
@@ -69,12 +65,13 @@ class JsonApiRequest extends Request
         return $this->queryParameters;
     }
 
-    public function validate(ErrorBag $errors, array $customParameters = [])
+    public function validate(ErrorBag $errors, array $customParameters = []) : void
     {
         $this->validateMethod($errors);
+        // TODO Turn this one once incoming calls pass correct headers
         if (!Application::debug()) {
-            $this->validateContentTypeHeader($errors);
-            $this->validateAcceptHeader($errors);
+            //$this->validateContentTypeHeader($errors);
+            //$this->validateAcceptHeader($errors);
         }
         $this->validateQueryParameters($errors, $customParameters);
         $this->validateContent($errors);
@@ -83,45 +80,45 @@ class JsonApiRequest extends Request
         }
     }
 
-    public function validateMethod(ErrorBag $errors)
+    public function validateMethod(ErrorBag $errors) : void
     {
         $method = $this->getMethod();
-        if ($method == 'GET' || $method == 'POST' || $method == 'PATCH' || $method == 'DELETE') {
+        if ($method === 'GET' || $method === 'POST' || $method === 'PATCH' || $method === 'DELETE') {
             return;
         }
         $errors->addError(new MethodNotAllowedError($method));
     }
 
-    public function validateContentTypeHeader(ErrorBag $errors)
+    public function validateContentTypeHeader(ErrorBag $errors) : void
     {
-        if ($this->getContent() && $this->headers->get("Content-Type") != 'application/vnd.api+json') {
-            $errors->addError(new UnsupportedMediaTypeError($this->headers->get("Content-Type")));
+        if ($this->getContent() && $this->headers->get('Content-Type') !== 'application/vnd.api+json') {
+            $errors->addError(new UnsupportedMediaTypeError($this->headers->get('Content-Type')));
         }
     }
 
-    public function validateAcceptHeader(ErrorBag $errors)
+    public function validateAcceptHeader(ErrorBag $errors) : void
     {
-        if ($this->headers->get("Accept") != 'application/vnd.api+json') {
-            $errors->addError(new NotAcceptableError($this->headers->get("Accept")));
+        if ($this->headers->get('Accept') !== 'application/vnd.api+json') {
+            $errors->addError(new NotAcceptableError($this->headers->get('Accept')));
         }
     }
 
-    public function validateQueryParameters(ErrorBag $errors, array $customParameters = [])
+    public function validateQueryParameters(ErrorBag $errors, array $customParameters = []) : void
     {
         $valid = array_merge(['fields', 'include', 'sort', 'page', 'filter'], $customParameters);
         foreach ($this->query->all() as $name => $value) {
-            if (!in_array($name, $valid)) {
+            if (!in_array($name, $valid, true)) {
                 $errors->addError(new UnrecognizedParamaterError($name));
             }
         }
     }
 
-    public function validateContent(ErrorBag $errors)
+    public function validateContent(ErrorBag $errors) : void
     {
         // Validate Content against Method
         $method = $this->getMethod();
         $content = $this->getContent();
-        if ($method == 'GET' || $method == 'DELETE') {
+        if ($method === 'GET' || $method === 'DELETE') {
             if ($content) {
                 $error = new BadRequestError(
                     'Method / Content Mismatch',
@@ -132,7 +129,7 @@ class JsonApiRequest extends Request
             }
             return;
         }
-        if ($method == 'POST' || $method == 'PATCH') {
+        if ($method === 'POST' || $method === 'PATCH') {
             if (!$content) {
                 $error = new BadRequestError(
                     'Method / Content Mismatch',
