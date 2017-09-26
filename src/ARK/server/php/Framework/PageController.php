@@ -82,10 +82,9 @@ abstract class PageController extends Controller
                     return Service::redirectPath($redirect, $parameters);
                 }
                 Service::view()->addErrorFlash('core.error.form.invalid');
-                dump($posted);
                 foreach ($posted->getErrors(true) as $error) {
-                    dump($error);
-                    Service::view()->addErrorFlash($error->getMessage());
+                    $cause = $error->getCause()->getPropertyPath().' '.(string) $error->getCause()->getCause()->getMessage();
+                    Service::view()->addErrorFlash($error->getMessage().' '.$cause);
                 }
             } catch (WorkflowException $e) {
                 Service::view()->addErrorFlash($e->getMessage());

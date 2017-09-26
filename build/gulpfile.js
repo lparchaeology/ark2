@@ -261,7 +261,7 @@ gulp.task('styles', function () {
         }
         streams.pipe(concat(style + '.min.css'))
             .pipe(autoprefixer(config.options.autoprefixer))
-            //.pipe(sourcemaps.write('.'))
+            .pipe(sourcemaps.write('.'))
             .pipe(gulp.dest(dest));
     }
 
