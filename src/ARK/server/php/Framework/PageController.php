@@ -63,8 +63,8 @@ abstract class PageController extends Controller
         dump($state);
         dump($options);
         dump($forms);
-        dump($forms['']['credentials']['username']);
-        dump($forms['']['actor']['fullname']);
+        //dump($forms['']['credentials']['username']);
+        //dump($forms['']['actor']['fullname']);
         if ($forms && $request->getMethod() === 'POST') {
             $parms = $request->request->all();
             $parms = $this->fixStaticFields($parms);
