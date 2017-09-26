@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Route Service Provider
+ * ARK Route Service Provider.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -25,24 +25,22 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Framework\Provider;
 
-use ARK\Routing\Router\SilexRouter;
+use ARK\Framework\Routing\SilexRouter;
 use ARK\Service;
 use Exception;
 use Pimple\Container;
-use Pimple\ServiceProviderInterface;
 use Silex\Provider\RoutingServiceProvider as SilexRoutingServiceProvider;
+use Symfony\Cmf\Component\Routing\ChainRouter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Cmf\Component\Routing\ChainRouter;
 
 class RoutingServiceProvider extends SilexRoutingServiceProvider
 {
-    public function register(Container $container)
+    public function register(Container $container) : void
     {
         parent::register($container);
 
@@ -64,7 +62,7 @@ class RoutingServiceProvider extends SilexRoutingServiceProvider
         };
 
         foreach ($container['ark']['routes'] as $path => $provider) {
-            $container->mount($path, new $provider);
+            $container->mount($path, new $provider());
         }
 
         // TODO Proper error handling
@@ -73,13 +71,13 @@ class RoutingServiceProvider extends SilexRoutingServiceProvider
                 return;
             }
             // 404.html, or 40x.html, or 4xx.html, or error.html
-            $templates = array(
+            $templates = [
                 'errors/'.$code.'.html.twig',
                 'errors/'.substr($code, 0, 2).'x.html.twig',
                 'errors/'.substr($code, 0, 1).'xx.html.twig',
                 'errors/default.html.twig',
-            );
-            return new Response($container['twig']->resolveTemplate($templates)->render(array('code' => $code)), $code);
+            ];
+            return new Response($container['twig']->resolveTemplate($templates)->render(['code' => $code]), $code);
         });
     }
 }

@@ -33,6 +33,7 @@ use ARK\Framework\PageController;
 use ARK\ORM;
 use ARK\Security\User;
 use ARK\Service;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserResetPageController extends PageController

@@ -34,9 +34,10 @@ use ARK\Error\ErrorException;
 use ARK\Framework\PageController;
 use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
-class ProfilePageController extends PageController
+class UserProfilePageController extends PageController
 {
     public function __invoke(Request $request, $id = null)
     {

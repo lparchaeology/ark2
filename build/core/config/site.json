@@ -55,8 +55,8 @@
         "frontend": "core"
     },
     "routes": {
-        "/api/v2": "ARK\\Routing\\ApiControllerProvider",
-        "/": "ARK\\Routing\\ViewControllerProvider"
+        "/api/v2": "ARK\\Framework\\Routing\\ApiControllerProvider",
+        "/": "ARK\\Framework\\Routing\\ViewControllerProvider"
     },
     "security": {
         "access_rules": [

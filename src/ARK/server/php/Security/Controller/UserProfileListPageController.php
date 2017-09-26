@@ -34,7 +34,7 @@ use ARK\Framework\PageController;
 use ARK\ORM\ORM;
 use Symfony\Component\HttpFoundation\Request;
 
-class ProfileListPageController extends PageController
+class UserProfileListPageController extends PageController
 {
     public function buildState(Request $request, $data) : iterable
     {
