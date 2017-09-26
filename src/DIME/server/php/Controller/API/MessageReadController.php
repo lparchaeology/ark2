@@ -42,22 +42,33 @@ class MessageReadController
     public function __invoke(Request $request) : Response
     {
         try {
-            $content = json_decode($request->getContent(), true);
+		$content = json_decode($request->getContent(), true);
+		dump($content);
             $message = $content['message'];
             $message = ORM::find(Message::class, $message);
             $recipient = $content['recipient'];
-            $recipient = ORM::find(Actor::class, $recipient);
-            if ($message && $recipient && $message->isRecipient($recipient)) {
+	    $recipient = ORM::find(Actor::class, $recipient);
+	    $data = [];
+	    if ($message) {
+                $data['message'] = $message->id();
+	    }
+            if ($recipient) {
+		    $data['recipient'] = $recipient->id();
+	    }
+	    if ($message && $recipient) {
+		    $data['is_recipient'] = $message->isRecipient($recipient);
+	    }
+	    if ($message && $recipient && $message->isRecipient($recipient)) {
                 $data['result'] = $message->markAsRead($recipient);
                 ORM::persist($message);
                 ORM::flush($message);
             } else {
-                $data['error']['code']['9999'];
-                $data['error']['message']['Message or Recipient Not Found'];
+                $data['error']['code'] = '9999';
+                $data['error']['message'] = 'Message or Recipient Not Found';
             }
         } catch (Exception $e) {
-            $data['error']['code'][$e->getCode()];
-            $data['error']['message'][$e->getMessage()];
+            $data['error']['code'] = $e->getCode();
+            $data['error']['message'] = $e->getMessage();
         }
         return new JsonResponse($data);
     }

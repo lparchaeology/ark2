@@ -33,8 +33,10 @@ use ARK\ORM\ORM;
 use ARK\Routing\Route;
 use ARK\Service;
 use ARK\View\Page;
+use ARK\Workflow\Exception\WorkflowException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 abstract class PageController extends Controller
 {
@@ -73,8 +75,9 @@ abstract class PageController extends Controller
                     return Service::redirectPath($redirect, $parameters);
                 }
                 Service::view()->addErrorFlash('core.error.form.invalid');
-                foreach ($posted->getErrors(true) as $error) {
-                    //Service::view()->addErrorFlash($error->getMessage());
+		foreach ($posted->getErrors(true) as $error) {
+		    $cause = $error->getCause()->getPropertyPath() . ' ' .(string) $error->getCause()->getCause()->getMessage();
+                    Service::view()->addErrorFlash($error->getMessage().' '.$cause);
                 }
             } catch (WorkflowException $e) {
                 Service::view()->addErrorFlash($e->getMessage());

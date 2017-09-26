@@ -70,7 +70,7 @@ class ScalarPropertyType extends AbstractPropertyType
 
         $value = $property->value();
         // TODO WEAK COMPARISON to empty value!
-        if ($value === null || $value === $attribute->emptyValue()) {
+        if ($value == null || $value == $attribute->emptyValue()) {
             $value = $options['default_data'];
         }
 
@@ -115,7 +115,7 @@ class ScalarPropertyType extends AbstractPropertyType
                 } elseif ($value instanceof DateTime) {
                     // TODO LOCALISE!!!
                     if ($options['state']['modus'] === 'static') {
-                        $value = $value->format('Y-m-d H:i:s');
+                        $value = $value->format('Y-m-d');
                     }
                 }
             }
@@ -138,7 +138,7 @@ class ScalarPropertyType extends AbstractPropertyType
                 $forms['_static']->setData(implode(',', $display));
             } else {
                 $forms['_static']->setData($display);
-            }
+	    }
         }
 
         if ($formatName && isset($forms[$formatName])) {

@@ -126,7 +126,7 @@ class Property
             $creator = Service::workflow()->actor();
             $created = new DateTime();
         }
-        $this->fragments = $this->attribute->hydrate($value, $creator, $created);
+	    $this->fragments = $this->attribute->hydrate($value, $creator, $created);
         if ($this->fragments->isEmpty()) {
             return;
         }
