@@ -29,12 +29,14 @@
 
 namespace ARK\Framework;
 
+use ARK\Framework\Routing\Route;
 use ARK\ORM\ORM;
-use ARK\Routing\Route;
 use ARK\Service;
 use ARK\View\Page;
+use ARK\Workflow\Exception\WorkflowException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 abstract class PageController extends Controller
 {
@@ -57,12 +59,19 @@ abstract class PageController extends Controller
         if ($state['mode'] === 'deny') {
             throw new AccessDeniedException('core.error.access.denied');
         }
+        dump($data);
+        dump($state);
+        dump($options);
+        dump($forms);
+        //dump($forms['']['credentials']['username']);
+        //dump($forms['']['actor']['fullname']);
         if ($forms && $request->getMethod() === 'POST') {
             $parms = $request->request->all();
             $parms = $this->fixStaticFields($parms);
             $request->request->replace($parms);
             try {
                 $posted = $this->postedForm($request, $forms);
+                dump($posted);
                 if ($posted !== null && $posted->isValid()) {
                     $this->processForm($request, $posted);
                     if ($file = $request->attributes->get('_file')) {
@@ -74,7 +83,9 @@ abstract class PageController extends Controller
                 }
                 Service::view()->addErrorFlash('core.error.form.invalid');
                 foreach ($posted->getErrors(true) as $error) {
-                    //Service::view()->addErrorFlash($error->getMessage());
+                    $cause = $error->getCause();
+                    $msg = ($cause ? $cause->getPropertyPath().' '.(string) $cause->getCause()->getMessage() : '');
+                    Service::view()->addErrorFlash($error->getMessage().' '.$msg);
                 }
             } catch (WorkflowException $e) {
                 Service::view()->addErrorFlash($e->getMessage());

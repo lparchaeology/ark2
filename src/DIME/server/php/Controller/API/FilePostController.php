@@ -40,10 +40,7 @@ class FilePostController
     public function __invoke(Request $request) : Response
     {
         $ids = [];
-        dump($request);
-        dump($request->files);
         foreach ($request->files as $upload) {
-            dump($upload);
             // TODO Make generic, file widget should set properly
             $uploadFile = $upload['image']['file'][0] ?? $upload['avatar']['file'] ?? null;
 

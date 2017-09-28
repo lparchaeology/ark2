@@ -74,25 +74,14 @@ class FindAddController extends DimeFormController
 
     public function processForm(Request $request, Form $form) : void
     {
-        $clicked = $form->getClickedButton()->getName();
         $find = $form->getData();
         $actor = Service::workflow()->actor();
         ORM::persist($find);
         Service::workflow()->apply($actor, 'record', $find);
-        if ($clicked === 'send') {
-            Service::workflow()->apply($actor, 'report', $find);
-            Service::workflow()->apply($actor, 'send', $find, $find->property('museum')->value());
-            $message = 'dime.find.add.sent';
-        } elseif ($clicked === 'report') {
-            Service::workflow()->apply($actor, 'report', $find);
-            $message = 'dime.find.add.report';
-        } else {
-            $message = 'dime.find.add';
-        }
         ORM::flush($find);
         $parameters['id'] = $find->id();
         $request->attributes->set('parameters', $parameters);
-        Service::view()->addSuccessFlash($message, $parameters);
+        Service::view()->addSuccessFlash('dime.find.add', $parameters);
     }
 
     protected function item($data) : ?Item

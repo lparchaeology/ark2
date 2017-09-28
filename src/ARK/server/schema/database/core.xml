@@ -1421,6 +1421,7 @@
         <field name="method" type="string" size="10"/>
         <field name="action" type="string" size="30"/>
         <field name="template" type="string" size="100"/>
+        <field name="form_type" type="string" size="100"/>
         <opt for="mysql" engine="InnoDB" collate="utf8mb4_unicode_ci" charset="utf8mb4"/>
         <references name="view_group_element_constraint" table="ark_view_element" onupdate="cascade" ondelete="cascade">
             <column local="element" foreign="element"/>

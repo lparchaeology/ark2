@@ -25,7 +25,6 @@
  * @license    GPL-3.0+
  * @see        http://ark.lparchaeology.com/
  * @since      2.0
- * @php        >=5.6, >=7.0
  */
 
 namespace ARK\Framework\Provider;
@@ -163,8 +162,8 @@ class OrmServiceProvider implements ServiceProviderInterface
                         ],
                         [
                             'type' => 'php',
-                            'namespace' => 'ARK\Routing',
-                            'path' => $srcDir.'/Routing',
+                            'namespace' => 'ARK\Framework\Routing',
+                            'path' => $srcDir.'/Framework/Routing',
                         ],
                         [
                             'type' => 'php',

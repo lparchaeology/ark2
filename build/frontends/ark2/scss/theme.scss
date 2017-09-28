@@ -1,24 +1,14 @@
 // Build the Theme CSS from Sass source
 
 // Import any custom Bootstrap variable overrides
-@import "notosans-fontface";
-@import "bootstrap/variables";
+$FontPathOpenSans: "../fonts/open-sans";
+@import 'open-sans.scss';
 
-// Import Vendor Bootstrap
-@import "bootstrap";
+// Import Bootstrap (vendor or custom)
+@import 'custom/bootstrap';
 
-// Import Custom Bootstrap styles
-@import 'bootstrap/tables';
-@import 'bootstrap/buttons';
-@import 'bootstrap/dropdowns';
-@import 'bootstrap/navs';
-@import 'bootstrap/navbar';
-@import 'bootstrap/labels';
-@import 'bootstrap/panels';
-@import 'bootstrap/card';
+// Import other non-Bootstrap vendor styles
+@import 'summernote';
 
-// Import other vendor styles
-//@import "package";
-
-// Import other custom styles
-//@import "custom/custom";
+// Import other non-Bootstrap custom styles
+//@import 'custom/custom';

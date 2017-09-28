@@ -1,0 +1,13 @@
+//
+// Tweaks
+// --------------------------------------------------
+
+// Needed when using navbar-fixed-top
+body {
+    padding-top: 40px;
+}
+@media screen and (max-width: 768px) {
+    body {
+        padding-top: 20px;
+    }
+}

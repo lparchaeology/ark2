@@ -88,10 +88,10 @@ class Condition
         switch ($this->operator) {
             case 'eq':
                 // TODO weak comparison!!!
-                return $lhs === $rhs;
+                return $lhs == $rhs;
             case 'ne':
                 // TODO weak comparison!!!
-                return $lhs !== $rhs;
+                return $lhs != $rhs;
             case 'gt':
                 return $lhs > $rhs;
             case 'ge':

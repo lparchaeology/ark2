@@ -6,7 +6,7 @@
 var gulp = require('gulp');
 var util = require('gulp-util');
 var rename = require('gulp-rename');
-var fs = require('fs');
+var fs = require('fs-extra');
 var concat = require('gulp-concat');
 
 var baseTasks = [
@@ -20,8 +20,8 @@ var baseTasks = [
 var assetTasks = [
     'fonts',
     'images',
-    'scripts',
-    'styles',
+    //'scripts',
+    //'styles',
 ];
 
 var buildTasks = baseTasks.concat(assetTasks);
@@ -55,20 +55,30 @@ function frontendDestPath(config) {
 }
 
 /*
+ * Task to install required files into the frontend
+ */
+function copyFiles(src, dest) {
+    return gulp.src(src).pipe(gulp.dest(dest));
+}
+
+/*
+ * Return Prefixed Paths
+ */
+function prefixPaths(prefix, paths) {
+    var prefixed = [];
+    for (var path in paths) {
+        prefixed.push(prefix + paths[path]);
+    }
+    return prefixed;
+}
+
+/*
  * Return Destination Path
  */
 function mergePaths(frontend, paths) {
-    var prefixed = [];
-    var path = '';
-    for (path in paths.vendor) {
-        prefixed.push('node_modules/' + paths.vendor[path]);
-    }
-    for (path in paths.core) {
-        prefixed.push('core/' + paths.core[path]);
-    }
-    for (path in paths.custom) {
-        prefixed.push('frontends/' + frontend + '/' + paths.custom[path]);
-    }
+    var prefixed = prefixPaths('node_modules/', paths.vendor);
+    prefixed = prefixed.concat(prefixPaths('core/', paths.core));
+    prefixed = prefixed.concat(prefixPaths('frontends/' + frontend + '/', paths.custom));
     return prefixed;
 }
 
@@ -79,8 +89,8 @@ function installFiles(group) {
     var config = frontendConfig();
     var src = mergePaths(config.frontend, config[group]);
     var dest = frontendDestPath(config) + '/' + group;
-    return gulp.src(src)
-        .pipe(gulp.dest(dest));
+    fs.removeSync(dest);
+    return copyFiles(src, dest);
 }
 
 /*
@@ -88,10 +98,19 @@ function installFiles(group) {
  */
 function installAssets(group) {
     var config = frontendConfig();
-    var src = mergePaths(config.frontend, config.assets[group]);
     var dest = frontendDestPath(config) + '/assets/' + group;
-    return gulp.src(src)
-        .pipe(gulp.dest(dest));
+    fs.removeSync(dest);
+    var sub = '';
+    for (sub in config.assets[group].vendor) {
+        copyFiles(prefixPaths('node_modules/', config.assets[group].vendor[sub]), dest + '/' + sub);
+    }
+    for (sub in config.assets[group].core) {
+        copyFiles(prefixPaths('core/', config.assets[group].core[sub]), dest + '/' + sub);
+    }
+    for (sub in config.assets[group].custom) {
+        copyFiles(prefixPaths('frontends/' + config.frontend + '/', config.assets[group].custom[sub]), dest + '/' + sub);
+    }
+    return util.noop();
 }
 
 /*
@@ -134,8 +153,7 @@ gulp.task('create', function () {
     fs.mkdirSync(dest + '/images/brand');
     fs.mkdirSync(dest + '/images/icons');
     fs.mkdirSync(dest + '/js');
-    gulp.src('core/scss/**/*')
-        .pipe(gulp.dest(dest + '/scss'));
+    copyFiles('core/scss/**/*', dest + '/scss');
     fs.mkdirSync(dest + '/twig');
     fs.mkdirSync(dest + '/twig/blocks');
     fs.mkdirSync(dest + '/twig/errors');
@@ -232,9 +250,9 @@ gulp.task('styles', function () {
     var sass = require('gulp-sass');
     var autoprefixer = require('gulp-autoprefixer');
     var sourcemaps = require('gulp-sourcemaps');
+    var streams = require('merge-stream')();
 
     var config = frontendConfig();
-    var streams = require('merge-stream')();
     var src = [];
     var dest = frontendDestPath(config) + '/assets/styles';
     var style = '';
@@ -255,13 +273,13 @@ gulp.task('styles', function () {
                 src = mergePaths(config.frontend, stream);
                 streams.add(
                     gulp.src(src)
-                    //.pipe(concat(stream.stream + '.css'))
+                    .pipe(concat(stream.stream + '.css'))
                 );
             }
         }
         streams.pipe(concat(style + '.min.css'))
             .pipe(autoprefixer(config.options.autoprefixer))
-            //.pipe(sourcemaps.write('.'))
+            .pipe(sourcemaps.write('.'))
             .pipe(gulp.dest(dest));
     }
 

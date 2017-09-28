@@ -79,7 +79,7 @@ class MediaType
         return in_array($mediatype, self::$mediatypes, true);
     }
 
-    public static function isValidExtension(string $extension) : bbol
+    public static function isValidExtension(string $extension) : bool
     {
         self::repository();
         return in_array($extension, self::$extensions, true);

@@ -168,6 +168,7 @@ abstract class Group extends Element
         $builder->addStringField('action', 30);
         $builder->addStringField('mode', 10);
         $builder->addStringField('template', 100);
+        $builder->addStringField('formType', 100, 'form_type');
 
         // Associations
         $builder->addOneToMany('cells', Cell::class, 'group');

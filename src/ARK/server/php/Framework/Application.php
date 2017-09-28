@@ -49,6 +49,7 @@ use ARK\Framework\Provider\ViewServiceProvider;
 use ARK\Framework\Provider\WorkflowServiceProvider;
 use ARK\Model\Model;
 use ARK\Service;
+use Saxulum\DoctrineOrmManagerRegistry\Provider\DoctrineOrmManagerRegistryProvider;
 use Silex\Application as SilexApplication;
 use Silex\Application\FormTrait;
 use Silex\Application\MonologTrait;
@@ -132,6 +133,11 @@ class Application extends SilexApplication
         // - On Register: Intl
         // - Optional on Use: Translation, CSRF, Validator
         $this->register(new FormServiceProvider());
+
+        // Enable Forms
+        // - On Register: ORM, Validator, Form
+        // - Optional on Use:
+        $this->register(new DoctrineOrmManagerRegistryProvider());
 
         // Enable Security
         // - On Register: Forms, Validator, Mailer, DBAL/ORM

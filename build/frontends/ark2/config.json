@@ -28,29 +28,31 @@
     },
     "assets": {
         "fonts": {
-            "vendor": [
-                "bootstrap-sass/assets/fonts/**/*",
-                "notosans-fontface/fonts/**/*",
-                "summernote/dist/font/**/*"
-            ],
-            "core": [
-                "fonts/**/*"
-            ],
-            "custom": [
-                "fonts/**/*"
-            ]
+            "vendor": {
+                "": ["summernote/dist/font/**/*"],
+                "bootstrap": ["bootstrap-sass/assets/fonts/bootstrap/**/*"],
+                "opensans": ["npm-font-open-sans/fonts/**/*"]
+            },
+            "core": {
+                "": ["fonts/**/*"]
+            },
+            "custom": {
+                "": ["fonts/**/*"]
+            }
         },
         "images": {
-            "vendor": [
-                "x-editable/dist/bootstrap3-editable/img/**/*",
-                "bootstrap-fileinput/img/**/*"
-            ],
-            "core": [
-                "images/**/*"
-            ],
-            "custom": [
-                "images/**/*"
-            ]
+            "vendor": {
+                "icons": [
+                    "x-editable/dist/bootstrap3-editable/img/**/*",
+                    "bootstrap-fileinput/img/**/*"
+                ]
+            },
+            "core": {
+                "": ["images/**/*"]
+            },
+            "custom": {
+                "": ["images/**/*"]
+            }
         },
         "scripts": {
             "ark": {
@@ -102,12 +104,10 @@
             }
         },
         "styles": {
-            "ark": [
-                {
+            "ark": [{
                     "stream": "prebuild",
                     "format": "css",
                     "vendor": [
-                        "summernote/dist/summernote.css",
                         "select2/dist/css/select2.min.css",
                         "openlayers/dist/ol.css"
                     ],
@@ -122,7 +122,8 @@
                     ],
                     "vendor": [
                         "bootstrap-sass/assets/stylesheets",
-                        "notosans-fontface/scss"
+                        "npm-font-open-sans",
+                        "summernote/src/less"
                     ],
                     "core": [],
                     "custom": []
