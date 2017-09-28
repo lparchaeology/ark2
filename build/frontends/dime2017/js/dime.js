@@ -140,6 +140,19 @@ $(document).ready(function () {
         $("body").append($div);
     });
 
-    $('[data-toggle="tooltip"]').tooltip({ 'trigger': 'click' });
+    
+
+    
+
+    $('[data-toggle="tooltip"]').tooltip({
+        'trigger': 'manual'
+    }).on('click', function(e) {
+        // show this one
+        $(this).tooltip('toggle');
+        // if any other tooltip are visible, hide them
+        $('[data-toggle="tooltip"]').not(this).tooltip('hide');
+        // set them unclicked
+        $('[data-toggle="tooltip"]').not(this).data("bs.tooltip").inState.click = false;
+    });
 
 });
