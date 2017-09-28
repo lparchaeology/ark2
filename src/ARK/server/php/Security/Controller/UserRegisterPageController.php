@@ -43,6 +43,8 @@ class UserRegisterPageController extends PageController
     public function buildData(Request $request)
     {
         $data['actor'] = new Person();
+        $data['user'] = new User();
+        $data['user']->setLevel('ROLE_USER');
         return $data;
     }
 
@@ -71,15 +73,27 @@ class UserRegisterPageController extends PageController
             $actor->fullname()
         );
 
-        $actorUser = Service::security()->createActorUser($actor, $user);
-        $actorRole = Service::security()->createActorRole($actor);
+        if (!isset($data['role'])) {
+            $data['role']['role'] = null;
+            $data['role']['agency'] = null;
+            $data['role']['expiry'] = null;
+        }
+        Service::security()->createActorRole(
+            $actor,
+            $data['role']['role'],
+            $data['role']['agency'],
+            $data['role']['expiry']
+        );
 
-        Service::workflow()->apply($registeredBy, 'register', $actor);
         Service::security()->registerUser($user, $actor);
 
-        if ($user->isEnabled()) {
+        if (Service::security()->isLoggedIn()) {
+            Service::view()->addSuccessFlash('core.admin.user.register');
+        } elseif ($user->isEnabled()) {
+            Service::view()->addSuccessFlash('core.security.user.register.enabled');
             Service::security()->loginAsUser($user, 'default', $request);
+        } else {
+            Service::view()->addSuccessFlash('core.security.user.register.confirm');
         }
-        Service::view()->addSuccessFlash('core.user.register');
     }
 }

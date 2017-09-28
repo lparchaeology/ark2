@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 04, 2017 at 10:12 AM
+-- Generation Time: Sep 28, 2017 at 09:04 PM
 -- Server version: 10.2.8-MariaDB
 -- PHP Version: 7.1.8
 
@@ -20,14 +20,9 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `dime_ark_user`
+-- Database: `avalon_ark_user`
 --
 
---
--- Truncate table before insert `ark_security_level`
---
-
-TRUNCATE TABLE `ark_security_level`;
 --
 -- Dumping data for table `ark_security_level`
 --
@@ -39,16 +34,12 @@ INSERT INTO `ark_security_level` (`level`, `description`, `enabled`) VALUES
 ('ROLE_USER', 'A user with registered user level privileges.', 1);
 
 --
--- Truncate table before insert `ark_security_user`
---
-
-TRUNCATE TABLE `ark_security_user`;
---
 -- Dumping data for table `ark_security_user`
 --
 
-INSERT INTO `ark_security_user` (`user`, `username`, `email`, `password`, `name`, `level`, `enabled`, `verified`, `locked`, `expired`, `expires_at`, `credentials_expired`, `credentials_expire_at`, `verification_token`, `verification_requested_at`, `password_request_token`, `password_requested_at`, `last_login`) VALUES
-('core', 'core', 'core@localhost', NULL, 'Core System', 'ROLE_ANON', 0, 0, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `ark_security_user` (`user`, `username`, `email`, `password`, `level`, `name`, `enabled`, `activated`, `verified`, `locked`, `expired`, `expires_at`, `credentials_expired`, `credentials_expire_at`, `verification_token`, `verification_requested_at`, `password_request_token`, `password_requested_at`, `last_login`) VALUES
+('core', 'core', 'core@localhost', NULL, 'ROLE_ANON', 'Core System', 0, 0, 0, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
+('sysadmin', 'sysadmin', NULL, NULL, 'ROLE_SUPER_ADMIN', 'sysadmin', 0, 1, 1, 0, 0, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL);
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 

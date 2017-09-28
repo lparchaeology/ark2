@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK User Account
+ * ARK User Account.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -30,9 +30,8 @@
 
 namespace ARK\Security;
 
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\ORM\ORM;
-use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Account
 {
@@ -91,7 +90,7 @@ class Account
         return $this->refreshToken;
     }
 
-    public static function loadMetadata(ClassMetadata $metadata)
+    public static function loadMetadata(ClassMetadata $metadata) : void
     {
         // Table
         $builder = new ClassMetadataBuilder($metadata, 'ark_security_account');

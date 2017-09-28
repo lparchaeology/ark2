@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 06, 2017 at 04:54 PM
+-- Generation Time: Sep 28, 2017 at 09:04 PM
 -- Server version: 10.2.8-MariaDB
 -- PHP Version: 7.1.8
 
@@ -13,15 +13,16 @@ SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
---
--- Database: `core_ark_core`
---
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Truncate table before insert `ark_dataclass`
+-- Database: `avalon_ark_core`
 --
 
-TRUNCATE TABLE `ark_dataclass`;
 --
 -- Dumping data for table `ark_dataclass`
 --
@@ -79,11 +80,6 @@ INSERT INTO `ark_dataclass` (`dataclass`, `datatype`, `object`, `array`, `span`,
 ('yearweek', 'string', 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 0, 'format.yearweek');
 
 --
--- Truncate table before insert `ark_dataclass_attribute`
---
-
-TRUNCATE TABLE `ark_dataclass_attribute`;
---
 -- Dumping data for table `ark_dataclass_attribute`
 --
 
@@ -110,22 +106,12 @@ INSERT INTO `ark_dataclass_attribute` (`parent`, `attribute`, `dataclass`, `sequ
 ('version', 'version', 'string', 8, 1, 0, 1, 1, 1, 0, NULL, 1, 0, 'format.fileversion.string');
 
 --
--- Truncate table before insert `ark_dataclass_blob`
---
-
-TRUNCATE TABLE `ark_dataclass_blob`;
---
 -- Dumping data for table `ark_dataclass_blob`
 --
 
 INSERT INTO `ark_dataclass_blob` (`dataclass`, `preset`) VALUES
 ('blob', NULL);
 
---
--- Truncate table before insert `ark_dataclass_boolean`
---
-
-TRUNCATE TABLE `ark_dataclass_boolean`;
 --
 -- Dumping data for table `ark_dataclass_boolean`
 --
@@ -136,11 +122,6 @@ INSERT INTO `ark_dataclass_boolean` (`dataclass`, `preset`) VALUES
 ('true', 1);
 
 --
--- Truncate table before insert `ark_dataclass_date`
---
-
-TRUNCATE TABLE `ark_dataclass_date`;
---
 -- Dumping data for table `ark_dataclass_date`
 --
 
@@ -150,22 +131,12 @@ INSERT INTO `ark_dataclass_date` (`dataclass`, `pattern`, `unicode`, `php`, `pre
 ('weekdate', '^([0-9]{4})-W(5[0-3]|[1-4][0-9]|0[1-9])-([1-7])$', NULL, 'o-W-N', NULL);
 
 --
--- Truncate table before insert `ark_dataclass_datetime`
---
-
-TRUNCATE TABLE `ark_dataclass_datetime`;
---
 -- Dumping data for table `ark_dataclass_datetime`
 --
 
 INSERT INTO `ark_dataclass_datetime` (`dataclass`, `pattern`, `unicode`, `php`, `preset`) VALUES
 ('datetime', '^([0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])$', '', 'c', NULL);
 
---
--- Truncate table before insert `ark_dataclass_decimal`
---
-
-TRUNCATE TABLE `ark_dataclass_decimal`;
 --
 -- Dumping data for table `ark_dataclass_decimal`
 --
@@ -176,11 +147,6 @@ INSERT INTO `ark_dataclass_decimal` (`dataclass`, `prec`, `scale`, `minimum`, `e
 ('money', 198, 2, NULL, 0, NULL, 0, '0.01', NULL);
 
 --
--- Truncate table before insert `ark_dataclass_float`
---
-
-TRUNCATE TABLE `ark_dataclass_float`;
---
 -- Dumping data for table `ark_dataclass_float`
 --
 
@@ -189,22 +155,12 @@ INSERT INTO `ark_dataclass_float` (`dataclass`, `minimum`, `exclusive_minimum`, 
 ('percent', 0, 0, 100, 0, NULL, NULL);
 
 --
--- Truncate table before insert `ark_dataclass_integer`
---
-
-TRUNCATE TABLE `ark_dataclass_integer`;
---
 -- Dumping data for table `ark_dataclass_integer`
 --
 
 INSERT INTO `ark_dataclass_integer` (`dataclass`, `minimum`, `exclusive_minimum`, `maximum`, `exclusive_maximum`, `multiple_of`, `preset`) VALUES
 ('integer', -2147483648, 0, 2147483647, 0, 1, NULL);
 
---
--- Truncate table before insert `ark_dataclass_item`
---
-
-TRUNCATE TABLE `ark_dataclass_item`;
 --
 -- Dumping data for table `ark_dataclass_item`
 --
@@ -217,11 +173,6 @@ INSERT INTO `ark_dataclass_item` (`dataclass`, `module`, `preset`) VALUES
 ('person', 'actor', NULL);
 
 --
--- Truncate table before insert `ark_dataclass_object`
---
-
-TRUNCATE TABLE `ark_dataclass_object`;
---
 -- Dumping data for table `ark_dataclass_object`
 --
 
@@ -233,11 +184,6 @@ INSERT INTO `ark_dataclass_object` (`dataclass`) VALUES
 ('version');
 
 --
--- Truncate table before insert `ark_dataclass_spatial`
---
-
-TRUNCATE TABLE `ark_dataclass_spatial`;
---
 -- Dumping data for table `ark_dataclass_spatial`
 --
 
@@ -245,11 +191,6 @@ INSERT INTO `ark_dataclass_spatial` (`dataclass`, `srid`, `format`, `extent`, `p
 ('spatial', NULL, NULL, NULL, NULL),
 ('wkt', NULL, NULL, NULL, NULL);
 
---
--- Truncate table before insert `ark_dataclass_string`
---
-
-TRUNCATE TABLE `ark_dataclass_string`;
 --
 -- Dumping data for table `ark_dataclass_string`
 --
@@ -267,11 +208,6 @@ INSERT INTO `ark_dataclass_string` (`dataclass`, `pattern`, `min_length`, `max_l
 ('yearweek', '^([0-9]{4})-W(5[0-3]|[1-4][0-9]|0[1-9])$', 7, 8, 8, NULL);
 
 --
--- Truncate table before insert `ark_dataclass_text`
---
-
-TRUNCATE TABLE `ark_dataclass_text`;
---
 -- Dumping data for table `ark_dataclass_text`
 --
 
@@ -284,22 +220,12 @@ INSERT INTO `ark_dataclass_text` (`dataclass`, `mediatype`, `min_length`, `max_l
 ('url', 'text/url', 1, 2083, 50, NULL);
 
 --
--- Truncate table before insert `ark_dataclass_time`
---
-
-TRUNCATE TABLE `ark_dataclass_time`;
---
 -- Dumping data for table `ark_dataclass_time`
 --
 
 INSERT INTO `ark_dataclass_time` (`dataclass`, `pattern`, `unicode`, `php`, `preset`) VALUES
 ('time', '^(2[0-3]|[01][0-9]):([0-5][0-9])$', '', 'H:i:s', NULL);
 
---
--- Truncate table before insert `ark_dataclass_type`
---
-
-TRUNCATE TABLE `ark_dataclass_type`;
 --
 -- Dumping data for table `ark_dataclass_type`
 --
@@ -320,27 +246,12 @@ INSERT INTO `ark_dataclass_type` (`datatype`, `number`, `temporal`, `object`, `c
 ('time', 0, 1, 0, 0, 'time', NULL, NULL, NULL, NULL, NULL, NULL, 1, 'ark_dataclass_datetime', 'ARK\\Model\\Dataclass\\TimeDataclass', 'ark_fragment_time', 'ARK\\Model\\Fragment\\TimeFragment', 'ARK\\Form\\Type\\ScalarPropertyType', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', NULL, 'ARK\\Form\\Type\\StaticType', NULL, NULL, 0, 0, 'core.datatype.time');
 
 --
--- Truncate table before insert `ark_instance`
---
-
-TRUNCATE TABLE `ark_instance`;
---
 -- Dumping data for table `ark_instance`
 --
 
 INSERT INTO `ark_instance` (`instance`, `enabled`, `deprecated`) VALUES
 ('core', 1, 0);
 
---
--- Truncate table before insert `ark_instance_route`
---
-
-TRUNCATE TABLE `ark_instance_route`;
---
--- Truncate table before insert `ark_instance_schema`
---
-
-TRUNCATE TABLE `ark_instance_schema`;
 --
 -- Dumping data for table `ark_instance_schema`
 --
@@ -353,16 +264,6 @@ INSERT INTO `ark_instance_schema` (`instance`, `schma`, `enabled`, `deprecated`)
 ('core', 'core.page', 1, 0);
 
 --
--- Truncate table before insert `ark_map`
---
-
-TRUNCATE TABLE `ark_map`;
---
--- Truncate table before insert `ark_map_layer`
---
-
-TRUNCATE TABLE `ark_map_layer`;
---
 -- Dumping data for table `ark_map_layer`
 --
 
@@ -372,27 +273,12 @@ INSERT INTO `ark_map_layer` (`source`, `layer`, `keyword`, `source_name`, `url`,
 ('bing', 'road', 'map.layer.bing.road', 'Road', '', '', '');
 
 --
--- Truncate table before insert `ark_map_legend`
---
-
-TRUNCATE TABLE `ark_map_legend`;
---
--- Truncate table before insert `ark_map_source`
---
-
-TRUNCATE TABLE `ark_map_source`;
---
 -- Dumping data for table `ark_map_source`
 --
 
 INSERT INTO `ark_map_source` (`source`, `type`, `subtype`, `format`, `view_class`, `keyword`, `ticket`, `ticket_expiry`, `options`) VALUES
 ('bing', 'raster', 'tile', 'bing', 'BingMaps', 'map.source.bing', 'Ak5AqjsEQ44KtAl7jHhrjGuzNshN1fZv3MOx2MUi0p4zFmq6XeWLKmyqeP2UgJK3', NULL, '');
 
---
--- Truncate table before insert `ark_module`
---
-
-TRUNCATE TABLE `ark_module`;
 --
 -- Dumping data for table `ark_module`
 --
@@ -405,107 +291,106 @@ INSERT INTO `ark_module` (`module`, `superclass`, `resource`, `project`, `namesp
 ('page', 'page', 'page', 'ARK', 'ARK\\Entity', 'Page', 'ARK\\Entity\\Page', 'ark_item_page', 1, 1, 0, 'core.page');
 
 --
--- Truncate table before insert `ark_route`
---
-
-TRUNCATE TABLE `ark_route`;
---
 -- Dumping data for table `ark_route`
 --
 
 INSERT INTO `ark_route` (`route`, `path`, `can_get`, `can_post`, `page`, `redirect`, `controller`) VALUES
-('about', '/about', 1, 0, 'core_page_static', NULL, 'ARK\\Framework\\Controller\\StaticPageController'),
-('admin', '/admin', 1, 0, 'core_page_admin', NULL, 'ARK\\Controller\\AdminPageController'),
-('admin.user', '/admin/users', 1, 1, 'core_page_admin_user', NULL, 'ARK\\User\\Controller\\UserAdminListController'),
-('admin.user.id', '/admin/users/{id}', 1, 1, 'core_page_admin_user', NULL, 'ARK\\User\\Controller\\UserAdminViewController'),
-('admin.user.register', '/admin/users/register', 1, 1, 'core_page_admin_register', NULL, 'ARK\\User\\Controller\\UserRegisterController'),
-('home', '/', 1, 0, 'core_page_home', NULL, 'ARK\\Controller\\HomePageController'),
-('news', '/news', 1, 0, 'core_page_news', NULL, 'ARK\\Controller\\NewsPageController'),
-('profile', '/profiles', 1, 0, NULL, NULL, 'ARK\\Controller\\ProfileListController'),
-('profile.id', '/profiles/{id}', 1, 0, NULL, NULL, 'ARK\\Controller\\ProfileViewController'),
-('profile.id.message', '/profiles/{id}/messages', 1, 0, NULL, NULL, 'ARK\\Controller\\MessageListController'),
-('profile.id.message.id', '/profiles/{id}/messages/{msgid}', 1, 0, NULL, NULL, 'ARK\\Controller\\MessageViewController'),
+('admin', '/admin', 1, 0, 'core_page_admin', NULL, 'ARK\\Framework\\Controller\\AdminPageController'),
+('admin.event.list', '/admin/events', 1, 0, NULL, NULL, 'ARK\\Framework\\Controller\\EventListPageController'),
+('admin.event.view', '/admin/events/{event}', 1, 0, NULL, NULL, 'ARK\\Framework\\Controller\\EventPageController'),
+('admin.file.add', '/admin/files/add', 1, 0, NULL, NULL, 'ARK\\Framework\\Controller\\FileAddPageController'),
+('admin.file.list', '/admin/files', 1, 0, NULL, NULL, 'ARK\\Framework\\Controller\\FileListPageController'),
+('admin.file.view', '/admin/files/{file}', 1, 0, NULL, NULL, 'ARK\\Framework\\Controller\\FilePageController'),
+('admin.message.list', '/admin/messages', 1, 0, NULL, NULL, 'ARK\\Framework\\Controller\\MessageListPageController'),
+('admin.message.view', '/admin/messages/{message}', 1, 0, NULL, NULL, 'ARK\\Framework\\Controller\\MessagePageController'),
+('admin.page.list', '/admin/pages', 1, 0, NULL, NULL, 'ARK\\Framework\\Controller\\PageListPageController'),
+('admin.page.view', '/admin/pages/{page}', 1, 0, NULL, NULL, 'ARK\\Framework\\Controller\\PagePageController'),
+('admin.user.list', '/admin/users', 1, 1, 'core_page_admin_user_list', NULL, 'ARK\\Security\\Controller\\UserAdminListPageController'),
+('admin.user.register', '/admin/users/register', 1, 1, 'core_page_admin_user_register', NULL, 'ARK\\Security\\Controller\\UserRegisterController'),
+('admin.user.view', '/admin/users/{user}', 1, 1, 'core_page_admin_user', NULL, 'ARK\\Security\\Controller\\UserAdminPageController'),
+('admin.vocabulary.list', '/admin/vocabularies', 1, 0, NULL, NULL, 'ARK\\Framework\\Controller\\VocabularyListPageController'),
+('admin.vocabulary.term.list', '/admin/vocabularies/{vocabulary}/terms', 1, 0, NULL, NULL, 'ARK\\Framework\\Controller\\VocabularyTermListPageController'),
+('admin.vocabulary.term.view', '/admin/vocabularies/{vocabulary}/terms/{term}', 1, 0, NULL, NULL, 'ARK\\Framework\\Controller\\VocabularyTermPageController'),
+('admin.vocabulary.view', '/admin/vocabularies/{vocabulary}', 1, 0, NULL, NULL, 'ARK\\Framework\\Controller\\VocabularyPageController'),
+('home', '/', 1, 0, 'core_page_home', NULL, 'ARK\\Framework\\Controller\\HomePageController'),
+('img', '/img/{image}', 1, 0, NULL, NULL, 'ARK\\Framework\\Controller\\ImageController'),
+('news', '/news', 1, 0, 'core_page_news', NULL, 'ARK\\Framework\\Controller\\NewsPageController'),
+('profile.list', '/profiles', 1, 0, NULL, NULL, 'ARK\\Security\\Controller\\UserProfileListPageController'),
+('profile.message.list', '/profiles/{profile}/messages', 1, 0, NULL, NULL, 'ARK\\Framework\\Controller\\MessageListPageController'),
+('profile.message.view', '/profiles/{profile}/messages/{message}', 1, 0, NULL, NULL, 'ARK\\Framework\\Controller\\MessagePageController'),
+('profile.view', '/profiles/{profile}', 1, 0, NULL, NULL, 'ARK\\Security\\Controller\\UserProfilePageController'),
+('static.demo', '/demo', 1, 0, 'core_page_static', NULL, 'ARK\\Framework\\Controller\\StaticPageController'),
 ('user.check', '/users/check', 1, 1, NULL, NULL, ''),
-('user.confirm', '/users/confirm', 1, 1, 'core_page_user_confirm', NULL, 'ARK\\User\\Controller\\UserConfirmController'),
-('user.login', '/users/login', 1, 1, 'core_page_user_login', NULL, 'ARK\\User\\Controller\\UserLoginController'),
-('user.logout', '/users/logout', 1, 1, NULL, NULL, ''),
-('user.register', '/users/register', 1, 1, 'core_page_user_register', NULL, 'ARK\\User\\Controller\\UserRegisterController'),
-('user.reset', '/users/reset', 1, 1, 'core_page_user_reset', NULL, 'ARK\\User\\Controller\\UserResetController');
+('user.confirm', '/users/confirm', 1, 1, 'core_page_user_confirm', NULL, 'ARK\\Security\\Controller\\UserConfirmPageController'),
+('user.login', '/users/login', 1, 1, 'core_page_user_login', NULL, 'ARK\\Security\\Controller\\UserLoginPageController'),
+('user.register', '/users/register', 1, 1, 'core_page_user_register', NULL, 'ARK\\Security\\Controller\\UserRegisterPageController'),
+('user.reset', '/users/reset', 1, 1, 'core_page_user_reset', NULL, 'ARK\\Security\\Controller\\UserResetPageController'),
+('user.verify', '/users/verify', 1, 1, NULL, NULL, '');
 
 --
--- Truncate table before insert `ark_schema`
+-- Dumping data for table `ark_route_parameter`
 --
 
-TRUNCATE TABLE `ark_schema`;
+INSERT INTO `ark_route_parameter` (`route`, `parameter`) VALUES
+('admin.message.view', 'message'),
+('profile.message.view', 'message'),
+('profile.message.view', 'profile'),
+('profile.view', 'profile');
+
 --
 -- Dumping data for table `ark_schema`
 --
 
-INSERT INTO `ark_schema` (`schma`, `module`, `class_property`, `vocabulary`, `entities`, `visibility`, `generator`, `sequence`, `new`, `view`, `edit`, `remove`, `enabled`, `deprecated`, `keyword`) VALUES
-('core.actor', 'actor', 'class', 'core.actor.class', 1, 'restricted', 'assigned', NULL, 'core.actor.create', 'core.actor.read', 'core.actor.update', 'core.actor.delete', 1, 0, 'core.actor'),
-('core.event', 'event', 'class', 'core.event.class', 0, 'restricted', 'sequence', 'id', 'core.event.create', 'core.event.read', 'core.event.update', 'core.event.delete', 1, 0, 'core.event'),
-('core.file', 'file', 'class', 'core.file.class', 1, 'restricted', 'sequence', 'id', 'core.file.create', 'core.event.read', 'core.file.update', 'core.file.delete', 1, 0, 'core.file'),
-('core.message', 'message', 'class', 'core.message.class', 1, 'restricted', 'sequence', 'id', 'core.message.create', 'core.message.read', 'core.message.update', 'core.message.delete', 1, 0, 'core.message'),
-('core.page', 'page', NULL, NULL, 0, 'public', 'assigned', NULL, 'core.page.create', 'core.page.read', 'core.page.update', 'core.page.delete', 1, 0, 'core.page');
+INSERT INTO `ark_schema` (`schma`, `module`, `class_property`, `vocabulary`, `entities`, `visibility`, `generator`, `sequence`, `event`, `new`, `view`, `edit`, `remove`, `enabled`, `deprecated`, `keyword`) VALUES
+('core.actor', 'actor', 'class', 'core.actor.class', 1, 'restricted', 'assigned', NULL, NULL, 'core.actor.create', 'core.actor.read', 'core.actor.update', 'core.actor.delete', 1, 0, 'core.actor'),
+('core.event', 'event', 'class', 'core.event.class', 0, 'restricted', 'sequence', 'id', NULL, 'core.event.create', 'core.event.read', 'core.event.update', 'core.event.delete', 1, 0, 'core.event'),
+('core.file', 'file', 'class', 'core.file.class', 1, 'restricted', 'sequence', 'id', NULL, 'core.file.create', 'core.event.read', 'core.file.update', 'core.file.delete', 1, 0, 'core.file'),
+('core.message', 'message', 'class', 'core.message.class', 1, 'restricted', 'sequence', 'id', NULL, 'core.message.create', 'core.message.read', 'core.message.update', 'core.message.delete', 1, 0, 'core.message'),
+('core.page', 'page', NULL, NULL, 0, 'public', 'assigned', NULL, NULL, 'core.page.create', 'core.page.read', 'core.page.update', 'core.page.delete', 1, 0, 'core.page');
 
---
--- Truncate table before insert `ark_schema_association`
---
-
-TRUNCATE TABLE `ark_schema_association`;
---
--- Truncate table before insert `ark_schema_attribute`
---
-
-TRUNCATE TABLE `ark_schema_attribute`;
 --
 -- Dumping data for table `ark_schema_attribute`
 --
 
-INSERT INTO `ark_schema_attribute` (`schma`, `class`, `attribute`, `dataclass`, `span`, `minimum`, `maximum`, `vocabulary`, `unique_values`, `additional_values`, `visibility`, `edit`, `view`, `enabled`, `deprecated`, `keyword`) VALUES
-('core.actor', 'actor', 'address', 'address', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.actor.address'),
-('core.actor', 'actor', 'avatar', 'image', 0, 0, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.actor.avatar'),
-('core.actor', 'actor', 'biography', 'plaintext', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.actor.biography'),
-('core.actor', 'actor', 'class', 'term', 0, 1, 1, 'core.actor.class', 1, 0, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.actor.class'),
-('core.actor', 'actor', 'email', 'email', 0, 1, 1, NULL, 1, 0, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.actor.email'),
-('core.actor', 'actor', 'fullname', 'shorttext', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.actor.fullname'),
-('core.actor', 'actor', 'id', 'identifier', 0, 1, 1, NULL, 1, 0, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.actor.id'),
-('core.actor', 'actor', 'initials', 'shorttext', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.actor.initials'),
-('core.actor', 'actor', 'shortname', 'shorttext', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.actor.shortname'),
-('core.actor', 'actor', 'telephone', 'telephone', 0, 1, 1, NULL, 1, 0, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.actor.telephone'),
-('core.actor', 'person', 'status', 'term', 0, 1, 1, 'core.security.status', 1, 0, 'restricted', 'core.admin.user', 'core.admin.user', 1, 0, 'core.security.status'),
-('core.actor', 'person', 'terms', 'term', 0, 1, 1, 'core.user.terms', 1, 0, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.user.terms'),
-('core.event', 'event', 'agents', 'actor', 0, 1, 0, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.event.agent'),
-('core.event', 'event', 'class', 'term', 0, 1, 1, 'core.event.class', 1, 0, 'public', NULL, NULL, 1, 0, 'core.event.class'),
-('core.event', 'event', 'id', 'identifier', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.event.id'),
-('core.event', 'event', 'occurred', 'datetime', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.event.occurred'),
-('core.event', 'event', 'subject', 'item', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.event.subject'),
-('core.file', 'file', 'class', 'term', 0, 1, 1, 'core.file.class', 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.class'),
-('core.file', 'file', 'copyright', 'actor', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.copyright'),
-('core.file', 'file', 'description', 'plaintext', 0, 0, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.description'),
-('core.file', 'file', 'id', 'identifier', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.id'),
-('core.file', 'file', 'license', 'term', 0, 1, 1, 'core.license', 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.status'),
-('core.file', 'file', 'mediatype', 'term', 0, 1, 1, 'mediatype', 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.mediatype'),
-('core.file', 'file', 'status', 'term', 0, 1, 1, 'core.file.status', 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.status'),
-('core.file', 'file', 'title', 'shorttext', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.title'),
-('core.file', 'file', 'versions', 'version', 0, 1, 0, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.file.versions'),
-('core.message', 'mail', 'attachments', 'file', 0, 0, 0, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.mail.attachments'),
-('core.message', 'mail', 'body', 'plaintext', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.mail.body'),
-('core.message', 'mail', 'subject', 'shorttext', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.mail.subject'),
-('core.message', 'message', 'class', 'term', 0, 1, 1, 'core.message.class', 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.class'),
-('core.message', 'message', 'id', 'identifier', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.id'),
-('core.message', 'message', 'recipients', 'dispatch', 0, 1, 0, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.recipients'),
-('core.message', 'message', 'sender', 'actor', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.sender'),
-('core.message', 'message', 'sent', 'datetime', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.sent_at'),
-('core.message', 'notification', 'event', 'event', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.message.notification.event'),
-('core.page', 'page', 'content', 'html', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'property.content'),
-('core.page', 'page', 'id', 'identifier', 0, 1, 1, NULL, 1, 0, 'public', NULL, NULL, 1, 0, 'core.page.id');
+INSERT INTO `ark_schema_attribute` (`schma`, `class`, `attribute`, `dataclass`, `span`, `minimum`, `maximum`, `vocabulary`, `unique_values`, `additional_values`, `event`, `visibility`, `edit`, `view`, `enabled`, `deprecated`, `keyword`) VALUES
+('core.actor', 'actor', 'address', 'address', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.actor.address'),
+('core.actor', 'actor', 'avatar', 'image', 0, 0, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.actor.avatar'),
+('core.actor', 'actor', 'biography', 'plaintext', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.actor.biography'),
+('core.actor', 'actor', 'class', 'term', 0, 1, 1, 'core.actor.class', 1, 0, NULL, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.actor.class'),
+('core.actor', 'actor', 'email', 'email', 0, 1, 1, NULL, 1, 0, NULL, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.actor.email'),
+('core.actor', 'actor', 'fullname', 'shorttext', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.actor.fullname'),
+('core.actor', 'actor', 'id', 'identifier', 0, 1, 1, NULL, 1, 0, NULL, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.actor.id'),
+('core.actor', 'actor', 'initials', 'shorttext', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.actor.initials'),
+('core.actor', 'actor', 'shortname', 'shorttext', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.actor.shortname'),
+('core.actor', 'actor', 'telephone', 'telephone', 0, 1, 1, NULL, 1, 0, NULL, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.actor.telephone'),
+('core.actor', 'person', 'status', 'term', 0, 1, 1, 'core.security.user.status', 1, 0, NULL, 'restricted', 'core.admin.user', 'core.admin.user', 1, 0, 'core.security.user.status'),
+('core.actor', 'person', 'terms', 'term', 0, 1, 1, 'core.user.terms', 1, 0, NULL, 'restricted', 'core.actor.update', 'core.actor.read', 1, 0, 'core.user.terms'),
+('core.event', 'event', 'agents', 'actor', 0, 1, 0, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.event.agent'),
+('core.event', 'event', 'class', 'term', 0, 1, 1, 'core.event.class', 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.event.class'),
+('core.event', 'event', 'id', 'identifier', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.event.id'),
+('core.event', 'event', 'occurred', 'datetime', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.event.occurred'),
+('core.event', 'event', 'subject', 'item', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.event.subject'),
+('core.file', 'file', 'class', 'term', 0, 1, 1, 'core.file.class', 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.file.class'),
+('core.file', 'file', 'copyright', 'actor', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.file.copyright'),
+('core.file', 'file', 'description', 'plaintext', 0, 0, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.file.description'),
+('core.file', 'file', 'id', 'identifier', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.file.id'),
+('core.file', 'file', 'license', 'term', 0, 1, 1, 'core.license', 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.file.status'),
+('core.file', 'file', 'mediatype', 'term', 0, 1, 1, 'mediatype', 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.file.mediatype'),
+('core.file', 'file', 'status', 'term', 0, 1, 1, 'core.file.status', 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.file.status'),
+('core.file', 'file', 'title', 'shorttext', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.file.title'),
+('core.file', 'file', 'versions', 'version', 0, 1, 0, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.file.versions'),
+('core.message', 'mail', 'attachments', 'file', 0, 0, 0, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.message.mail.attachments'),
+('core.message', 'mail', 'body', 'plaintext', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.message.mail.body'),
+('core.message', 'mail', 'subject', 'shorttext', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.message.mail.subject'),
+('core.message', 'message', 'class', 'term', 0, 1, 1, 'core.message.class', 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.message.class'),
+('core.message', 'message', 'id', 'identifier', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.message.id'),
+('core.message', 'message', 'recipients', 'dispatch', 0, 1, 0, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.message.recipients'),
+('core.message', 'message', 'sender', 'actor', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.message.sender'),
+('core.message', 'message', 'sent', 'datetime', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.message.sent_at'),
+('core.message', 'notification', 'event', 'event', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.message.notification.event'),
+('core.page', 'page', 'content', 'html', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'property.content'),
+('core.page', 'page', 'id', 'identifier', 0, 1, 1, NULL, 1, 0, NULL, 'public', NULL, NULL, 1, 0, 'core.page.id');
 
---
--- Truncate table before insert `ark_schema_item`
---
-
-TRUNCATE TABLE `ark_schema_item`;
 --
 -- Dumping data for table `ark_schema_item`
 --
@@ -519,11 +404,6 @@ INSERT INTO `ark_schema_item` (`attribute`, `dataclass`, `vocabulary`, `minimum`
 ('schema', 'identifier', NULL, 1, 1, 1, 0, 1, 0, 'core.item.module'),
 ('status', 'identifier', 'core.item.status', 1, 1, 1, 0, 1, 0, 'core.item.status');
 
---
--- Truncate table before insert `ark_translation`
---
-
-TRUNCATE TABLE `ark_translation`;
 --
 -- Dumping data for table `ark_translation`
 --
@@ -674,19 +554,13 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('core.placeholder', 'core', 0, 0),
 ('core.profile', 'core', 0, 0),
 ('core.profiles', 'core', 0, 0),
-('core.role.admin', 'core', 0, 0),
-('core.role.anon', 'core', 0, 0),
-('core.role.anonymous', 'core', 0, 0),
-('core.role.user', 'core', 0, 0),
-('core.security.status', 'core', 0, 0),
-('core.security.status.approve', 'core', 0, 0),
-('core.security.status.closed', 'core', 0, 0),
-('core.security.status.expired', 'core', 0, 0),
-('core.security.status.locked', 'core', 0, 0),
-('core.security.status.new', 'core', 0, 0),
-('core.security.status.registered', 'core', 0, 0),
-('core.security.status.suspended', 'core', 0, 0),
-('core.security.status.verified', 'core', 0, 0),
+('core.security.user.status', 'core', 0, 0),
+('core.security.user.status.disabled', 'core', 0, 0),
+('core.security.user.status.enabled', 'core', 0, 0),
+('core.security.user.status.expired', 'core', 0, 0),
+('core.security.user.status.locked', 'core', 0, 0),
+('core.security.user.status.registered', 'core', 0, 0),
+('core.security.user.status.verified', 'core', 0, 0),
 ('core.user', 'core', 0, 0),
 ('core.user.agree', 'core', 0, 0),
 ('core.user.email', 'core', 0, 0),
@@ -740,6 +614,11 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('core.widget.submit', 'core', 0, 0),
 ('core.workflow.action', 'core', 0, 0),
 ('core.workflow.role', 'core', 0, 0),
+('core.workflow.role.admin', 'core', 0, 0),
+('core.workflow.role.anon', 'core', 0, 0),
+('core.workflow.role.anonymous', 'core', 0, 0),
+('core.workflow.role.sysadmin', 'core', 0, 0),
+('core.workflow.role.user', 'core', 0, 0),
 ('country.afghanistan', 'vocabulary', 0, 0),
 ('country.alandislands', 'vocabulary', 0, 0),
 ('country.albania', 'vocabulary', 0, 0),
@@ -1763,11 +1642,6 @@ INSERT INTO `ark_translation` (`keyword`, `domain`, `is_plural`, `has_parameters
 ('vocabulary.spatial.format', 'core', 0, 0);
 
 --
--- Truncate table before insert `ark_translation_domain`
---
-
-TRUNCATE TABLE `ark_translation_domain`;
---
 -- Dumping data for table `ark_translation_domain`
 --
 
@@ -1777,22 +1651,12 @@ INSERT INTO `ark_translation_domain` (`domain`, `keyword`) VALUES
 ('vocabulary', 'translation.domain.vocabulary');
 
 --
--- Truncate table before insert `ark_translation_language`
---
-
-TRUNCATE TABLE `ark_translation_language`;
---
 -- Dumping data for table `ark_translation_language`
 --
 
 INSERT INTO `ark_translation_language` (`language`, `markup`, `vocabulary`, `text`) VALUES
 ('en', 1, 1, 1);
 
---
--- Truncate table before insert `ark_translation_message`
---
-
-TRUNCATE TABLE `ark_translation_message`;
 --
 -- Dumping data for table `ark_translation_message`
 --
@@ -1873,18 +1737,13 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'core.profile', 'default', 'Profile', ''),
 ('en', 'core.profile', 'resource', 'profile', ''),
 ('en', 'core.profiles', 'resource', 'profiles', ''),
-('en', 'core.role.admin', 'default', 'Administrator', ''),
-('en', 'core.role.anon', 'default', 'Anonymous', ''),
-('en', 'core.role.user', 'default', 'Researcher', ''),
-('en', 'core.security.status', 'default', 'Status', ''),
-('en', 'core.security.status.approve', 'default', 'Approved', ''),
-('en', 'core.security.status.closed', 'default', 'Closed', ''),
-('en', 'core.security.status.expired', 'default', 'Expired', ''),
-('en', 'core.security.status.locked', 'default', 'Locked', ''),
-('en', 'core.security.status.new', 'default', 'New', ''),
-('en', 'core.security.status.registered', 'default', 'Registered', ''),
-('en', 'core.security.status.suspended', 'default', 'Suspended', ''),
-('en', 'core.security.status.verified', 'default', 'Verified', ''),
+('en', 'core.security.user.status', 'default', 'Status', ''),
+('en', 'core.security.user.status.disabled', 'default', 'Disabled', ''),
+('en', 'core.security.user.status.enabled', 'default', 'Enabled', ''),
+('en', 'core.security.user.status.expired', 'default', 'Expired', ''),
+('en', 'core.security.user.status.locked', 'default', 'Locked', ''),
+('en', 'core.security.user.status.registered', 'default', 'Registered', ''),
+('en', 'core.security.user.status.verified', 'default', 'Verified', ''),
 ('en', 'core.user', 'resource', 'users', ''),
 ('en', 'core.user.agree', 'default', 'I agree to abide by the site Terms and Conditions.', ''),
 ('en', 'core.user.email', 'default', 'Email', ''),
@@ -1932,6 +1791,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'core.widget.submit', 'default', 'Submit', ''),
 ('en', 'core.workflow.action', 'default', 'Actions', ''),
 ('en', 'core.workflow.role', 'default', 'Role', ''),
+('en', 'core.workflow.role.admin', 'default', 'Administrator', ''),
+('en', 'core.workflow.role.anon', 'default', 'Anonymous', ''),
+('en', 'core.workflow.role.user', 'default', 'Researcher', ''),
 ('en', 'country.afghanistan', 'default', 'Afghanistan ', NULL),
 ('en', 'country.alandislands', 'default', 'Åland Islands ', NULL),
 ('en', 'country.albania', 'default', 'Albania ', NULL),
@@ -2497,9 +2359,9 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'dime.find.subtype.tool.textile.needle', 'default', 'Needle', NULL),
 ('en', 'dime.find.subtype.tool.textile.scissors', 'default', 'Scissors', NULL),
 ('en', 'dime.find.subtype.tool.textile.thimble', 'default', 'Thimble', NULL),
-('en', 'dime.find.subtype.tool.textile.whorl', 'default', 'Spindle whorl', NULL);
+('en', 'dime.find.subtype.tool.textile.whorl', 'default', 'Spindle whorl', NULL),
+('en', 'dime.find.subtype.tool.toilet', 'default', 'Toilet equipment (comb, razor, tweezers)', NULL);
 INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
-('en', 'dime.find.subtype.tool.toilet', 'default', 'Toilet equipment (comb, razor, tweezers)', NULL),
 ('en', 'dime.find.subtype.tool.toilet.comb', 'default', 'comb', NULL),
 ('en', 'dime.find.subtype.tool.toilet.ear', 'default', 'Ear spoon', NULL),
 ('en', 'dime.find.subtype.tool.toilet.other', 'default', 'Other toilet equipment (specify in description field)', NULL),
@@ -3284,10 +3146,10 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'language.moksha', 'default', 'Moksha', NULL),
 ('en', 'language.moldavian', 'default', 'Moldavian', NULL),
 ('en', 'language.mongo', 'default', 'Mongo', NULL),
-('en', 'language.mongolian', 'default', 'Mongolian', NULL);
-INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
+('en', 'language.mongolian', 'default', 'Mongolian', NULL),
 ('en', 'language.morisyen', 'default', 'Morisyen', NULL),
-('en', 'language.mossi', 'default', 'Mossi', NULL),
+('en', 'language.mossi', 'default', 'Mossi', NULL);
+INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `notes`) VALUES
 ('en', 'language.motu.hiri', 'default', 'Hiri Motu', NULL),
 ('en', 'language.multiple', 'default', 'Multiple Languages', NULL),
 ('en', 'language.mundang', 'default', 'Mundang', NULL),
@@ -3583,22 +3445,12 @@ INSERT INTO `ark_translation_message` (`language`, `keyword`, `role`, `text`, `n
 ('en', 'user.menu.view', 'default', 'View your profile', NULL);
 
 --
--- Truncate table before insert `ark_translation_parameter`
---
-
-TRUNCATE TABLE `ark_translation_parameter`;
---
 -- Dumping data for table `ark_translation_parameter`
 --
 
 INSERT INTO `ark_translation_parameter` (`keyword`, `parameter`) VALUES
 ('user.greeting', 'name');
 
---
--- Truncate table before insert `ark_translation_role`
---
-
-TRUNCATE TABLE `ark_translation_role`;
 --
 -- Dumping data for table `ark_translation_role`
 --
@@ -3639,349 +3491,330 @@ INSERT INTO `ark_translation_role` (`role`, `keyword`, `description`) VALUES
 ('warning', NULL, 'Warning flash message');
 
 --
--- Truncate table before insert `ark_view_cell`
---
-
-TRUNCATE TABLE `ark_view_cell`;
---
 -- Dumping data for table `ark_view_cell`
 --
 
-INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `map`, `vocabulary`, `name`, `width`, `label`, `help`, `placeholder`, `choices`, `required`, `action_schema`, `action`, `view`, `edit`, `mode`, `sanitise`, `value`, `parameter`, `format`, `display`, `data`, `enabled`, `deprecated`, `keyword`, `template`, `options`) VALUES
-('core_action_select', '', 0, 0, 2, 'core_widget_submit', NULL, NULL, 'apply', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL),
-('core_actor_item', '', 0, 0, 0, 'core_actor_id', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_actor_item', '', 0, 0, 1, 'core_actor_fullname', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_actor_item', '', 0, 0, 2, 'core_actor_shortname', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_actor_table', '', 0, 0, 0, 'core_actor_id', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_actor_table', '', 0, 0, 1, 'core_actor_class', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_actor_table', '', 0, 0, 2, 'core_actor_fullname', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_admin_register_page', '', 0, 0, 0, 'core_user_credentials', NULL, NULL, NULL, 6, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_admin_register_page', '', 0, 0, 2, 'core_user_register_actor', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_admin_register_page', '', 0, 0, 4, 'core_user_role', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_admin_register_page', '', 0, 0, 6, 'core_widget_submit', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.user.register', NULL, NULL),
-('core_admin_user_page', '', 0, 0, 0, 'core_user_filter', NULL, NULL, 'filter', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_admin_user_page', '', 0, 0, 2, 'core_profile_table', NULL, NULL, 'actors', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_admin_user_page', '', 0, 0, 4, 'core_workflow_action', NULL, NULL, 'batch', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_admin_user_page', '', 0, 1, 2, 'core_user_password_set', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_admin_user_page', '', 0, 1, 4, 'core_user_role_add', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_file_item', '', 0, 0, 0, 'core_file_id', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_file_item', '', 0, 0, 1, 'core_file_class', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_file_item', '', 0, 0, 2, 'core_file_mediatype', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_file_item', '', 0, 0, 3, 'core_file_title', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_file_item', '', 0, 0, 4, 'core_file_status', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_file_item', '', 0, 0, 5, 'core_file_description', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_file_item', '', 0, 1, 1, 'core_widget_submit', NULL, NULL, 'save', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL),
-('core_file_table', '', 0, 0, 0, 'core_file_id', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_file_table', '', 0, 0, 1, 'core_file_class', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_message_item', '', 0, 0, 0, 'core_message_class', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'static', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_message_item', '', 0, 0, 1, 'core_message_sender', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'static', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_message_item', '', 0, 0, 2, 'core_message_sent', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'static', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_message_item', '', 0, 0, 3, 'core_message_event', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'static', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_message_page', '', 1, 0, 0, 'core_message_table', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_message_page', '', 1, 1, 0, 'core_message_item', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_message_table', '', 0, 0, 0, 'core_message_class', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_message_table', '', 0, 0, 1, 'core_message_sender', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_message_table', '', 0, 0, 2, 'core_message_sent', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_message_table', '', 0, 0, 3, 'core_message_event', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_page_view', '', 0, 0, 0, 'core_page_content', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_profile_list_page', '', 0, 0, 0, 'core_profile_table', NULL, NULL, 'actors', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_profile_page', '', 0, 0, 0, 'core_profile_view', NULL, NULL, 'actor', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_profile_table', '', 0, 0, 0, 'core_actor_id', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_profile_table', '', 0, 0, 2, 'core_actor_fullname', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_profile_view', '', 0, 0, 0, 'core_actor_id', NULL, NULL, NULL, 8, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_profile_view', '', 0, 0, 2, 'core_actor_fullname', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_profile_view', '', 0, 0, 8, 'core_actor_biography', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_profile_view', '', 0, 1, 2, 'core_actor_avatar', NULL, NULL, NULL, 4, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_actor', '', 0, 0, 2, 'core_actor_fullname', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_actor', '', 0, 0, 4, 'core_actor_shortname', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_actor', '', 0, 0, 6, 'core_actor_initials', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_actor', '', 0, 0, 8, 'core_actor_address', NULL, NULL, NULL, NULL, 1, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_actor', '', 0, 0, 10, 'core_actor_telephone', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_actor', '', 0, 0, 18, 'core_actor_biography', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_actor', '', 0, 0, 20, 'core_actor_avatar', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_credentials', '', 0, 0, 0, 'core_widget_username', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_credentials', '', 0, 0, 2, 'core_widget_email', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_credentials', '', 0, 0, 4, 'core_widget_password_confirm', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_filter', '', 0, 0, 0, 'core_widget_choice', NULL, 'core.security.status', 'status', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}'),
-('core_user_filter', '', 0, 2, 0, 'core_widget_submit', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.select', NULL, NULL),
-('core_user_login', '', 0, 0, 0, 'core_widget_username', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_login', '', 0, 0, 2, 'core_widget_password', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_login', '', 0, 0, 4, 'core_widget_submit', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.user.login', NULL, NULL),
-('core_user_password_change', '', 0, 0, 0, 'core_widget_password', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.user.password.current', NULL, NULL),
-('core_user_password_change', '', 0, 0, 2, 'core_widget_password_confirm', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_password_change', '', 0, 0, 4, 'core_widget_submit', NULL, NULL, 'save', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.button.change', NULL, NULL),
-('core_user_password_set', '', 0, 0, 0, 'core_widget_password_confirm', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_password_set', '', 0, 0, 2, 'core_widget_submit', NULL, NULL, 'password_set', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL),
-('core_user_profile', '', 1, 1, 0, 'core_user_password_change', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_register', '', 0, 0, 0, 'core_user_credentials', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_register', '', 0, 0, 2, 'core_user_actor', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_register', '', 0, 0, 4, 'core_user_role', NULL, 'core.workflow.role', NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_register', '', 0, 0, 8, 'core_widget_submit', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.user.register', NULL, NULL),
-('core_user_register', '', 0, 2, 0, 'core_widget_textarea', NULL, NULL, NULL, NULL, 1, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, 'view', 'redact', 'static', NULL, NULL, NULL, NULL, 1, 0, 'core.user.register.faq', NULL, NULL),
-('core_user_register_actor', '', 0, 0, 0, 'core_actor_fullname', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_register_actor', '', 0, 0, 2, 'core_actor_address', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_register_actor', '', 0, 0, 4, 'core_actor_telephone', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_register_actor', '', 0, 0, 6, 'core_user_terms', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_reset', '', 0, 0, 0, 'core_widget_username', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_user_reset', '', 0, 0, 4, 'core_widget_submit', NULL, NULL, 'reset', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.user.reset', NULL, NULL),
-('core_user_role', '', 0, 0, 0, 'core_widget_choice', NULL, NULL, 'role', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.workflow.role', NULL, NULL),
-('core_user_role', '', 0, 0, 6, 'core_widget_date', NULL, NULL, 'expiry', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.user.role.expiry', NULL, NULL),
-('core_user_role_add', '', 0, 0, 0, 'core_widget_choice', NULL, NULL, 'role_add', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.workflow.role', NULL, NULL),
-('core_user_role_add', '', 0, 0, 6, 'core_widget_date', NULL, NULL, 'expiry', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.user.role.expiry', NULL, NULL),
-('core_user_role_add', '', 0, 0, 10, 'core_widget_submit', NULL, NULL, 'role', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL),
-('core_workflow_action', '', 0, 0, 0, 'core_widget_choice', NULL, NULL, 'actions', NULL, 0, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_workflow_action', '', 0, 0, 2, 'core_widget_submit', NULL, NULL, 'apply', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 'active', NULL, NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL),
-('core_workflow_action', '', 0, 2, 2, 'core_widget_date', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 'redact', 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_workflow_action', '', 0, 4, 0, 'core_widget_textarea', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 'redact', 'active', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_workflow_action_form', '', 0, 0, 0, 'core_widget_choice', NULL, NULL, 'actions', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
-('core_workflow_action_form', '', 0, 0, 2, 'core_widget_submit', NULL, NULL, 'apply', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL);
+INSERT INTO `ark_view_cell` (`grp`, `class`, `row`, `col`, `seq`, `element`, `map`, `vocabulary`, `name`, `width`, `label`, `help`, `placeholder`, `choices`, `required`, `action_schema`, `action`, `view`, `edit`, `mode`, `sanitise`, `visible`, `pattern`, `display`, `value`, `parameter`, `format`, `data`, `enabled`, `deprecated`, `keyword`, `template`, `options`) VALUES
+('core_action_select', '', 0, 0, 2, 'core_widget_submit', NULL, NULL, 'apply', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL),
+('core_actor_item', '', 0, 0, 0, 'core_actor_id', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_actor_item', '', 0, 0, 1, 'core_actor_fullname', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_actor_item', '', 0, 0, 2, 'core_actor_shortname', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_actor_table', '', 0, 0, 0, 'core_actor_id', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_actor_table', '', 0, 0, 1, 'core_actor_class', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_actor_table', '', 0, 0, 2, 'core_actor_fullname', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_admin_user', '', 0, 0, 2, 'core_user_password_set', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_admin_user', '', 0, 0, 4, 'core_user_role_add', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_admin_user_list', '', 0, 0, 0, 'core_user_filter', NULL, NULL, 'filter', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_admin_user_list', '', 0, 0, 2, 'core_user_table', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_admin_user_list', '', 0, 0, 4, 'core_workflow_action', NULL, NULL, 'action', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_admin_user_register', '', 0, 0, 0, 'core_user_credentials', NULL, NULL, NULL, 6, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_admin_user_register', '', 0, 0, 2, 'core_user_register_actor', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_admin_user_register', '', 0, 0, 4, 'core_user_role', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_admin_user_register', '', 0, 0, 6, 'core_widget_submit', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.user.register', NULL, NULL),
+('core_file_item', '', 0, 0, 0, 'core_file_id', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_file_item', '', 0, 0, 1, 'core_file_class', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_file_item', '', 0, 0, 2, 'core_file_mediatype', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_file_item', '', 0, 0, 3, 'core_file_title', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_file_item', '', 0, 0, 4, 'core_file_status', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_file_item', '', 0, 0, 5, 'core_file_description', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_file_item', '', 0, 1, 1, 'core_widget_submit', NULL, NULL, 'save', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL),
+('core_message_item', '', 0, 0, 0, 'core_message_class', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'static', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_message_item', '', 0, 0, 1, 'core_message_sender', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'static', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_message_item', '', 0, 0, 2, 'core_message_sent', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'static', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_message_item', '', 0, 0, 3, 'core_message_event', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'static', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_message_page', '', 1, 0, 0, 'core_message_table', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_message_page', '', 1, 1, 0, 'core_message_item', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_message_table', '', 0, 0, 0, 'core_message_class', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_message_table', '', 0, 0, 1, 'core_message_sender', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_message_table', '', 0, 0, 2, 'core_message_sent', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_message_table', '', 0, 0, 3, 'core_message_event', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_page_view', '', 0, 0, 0, 'core_page_content', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_profile_list_page', '', 0, 0, 0, 'core_profile_table', NULL, NULL, 'actors', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_profile_page', '', 0, 0, 0, 'core_profile_view', NULL, NULL, 'actor', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'view', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_profile_table', '', 0, 0, 0, 'core_actor_id', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_profile_table', '', 0, 0, 2, 'core_actor_fullname', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_profile_view', '', 0, 0, 0, 'core_actor_id', NULL, NULL, NULL, 8, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_profile_view', '', 0, 0, 2, 'core_actor_fullname', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_profile_view', '', 0, 0, 8, 'core_actor_biography', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_profile_view', '', 0, 1, 2, 'core_actor_avatar', NULL, NULL, NULL, 4, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_actor', '', 0, 0, 2, 'core_actor_fullname', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_actor', '', 0, 0, 4, 'core_actor_shortname', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_actor', '', 0, 0, 6, 'core_actor_initials', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_actor', '', 0, 0, 8, 'core_actor_address', NULL, NULL, NULL, NULL, 1, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_actor', '', 0, 0, 10, 'core_actor_telephone', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_actor', '', 0, 0, 18, 'core_actor_biography', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_actor', '', 0, 0, 20, 'core_actor_avatar', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_credentials', '', 0, 0, 0, 'core_widget_username', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_credentials', '', 0, 0, 2, 'core_widget_email', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_credentials', '', 0, 0, 4, 'core_widget_password_confirm', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_filter', '', 0, 0, 0, 'core_widget_choice', NULL, 'core.security.user.status', 'status', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, '{\"attr\": {\"style\": \"width:95%\"}}'),
+('core_user_filter', '', 0, 2, 0, 'core_widget_submit', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.select', NULL, NULL),
+('core_user_login', '', 0, 0, 0, 'core_widget_username', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_login', '', 0, 0, 2, 'core_widget_password', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_login', '', 0, 0, 4, 'core_widget_submit', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, 'core.user.login', NULL, NULL),
+('core_user_password_change', '', 0, 0, 0, 'core_widget_password', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, 'core.user.password.current', NULL, NULL),
+('core_user_password_change', '', 0, 0, 2, 'core_widget_password_confirm', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_password_change', '', 0, 0, 4, 'core_widget_submit', NULL, NULL, 'save', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, 'core.button.change', NULL, NULL),
+('core_user_password_set', '', 0, 0, 0, 'core_widget_password_confirm', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_password_set', '', 0, 0, 2, 'core_widget_submit', NULL, NULL, 'password_set', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL),
+('core_user_profile', '', 1, 1, 0, 'core_user_password_change', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_register', '', 0, 0, 0, 'core_user_credentials', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_register', '', 0, 0, 2, 'core_user_actor', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_register', '', 0, 0, 4, 'core_user_role', NULL, 'core.workflow.role', NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_register', '', 0, 0, 8, 'core_widget_submit', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.user.register', NULL, NULL),
+('core_user_register', '', 0, 2, 0, 'core_widget_textarea', NULL, NULL, NULL, NULL, 1, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, 'view', 'redact', 1, NULL, NULL, 'static', NULL, NULL, NULL, 1, 0, 'core.user.register.faq', NULL, NULL),
+('core_user_register_actor', '', 0, 0, 0, 'core_actor_fullname', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_register_actor', '', 0, 0, 2, 'core_actor_address', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_register_actor', '', 0, 0, 4, 'core_actor_telephone', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_register_actor', '', 0, 0, 6, 'core_user_terms', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_reset', '', 0, 0, 0, 'core_widget_username', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_reset', '', 0, 0, 4, 'core_widget_submit', NULL, NULL, 'reset', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, 'core.user.reset', NULL, NULL),
+('core_user_role', '', 0, 0, 0, 'core_widget_choice', NULL, NULL, 'role', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.workflow.role', NULL, NULL),
+('core_user_role', '', 0, 0, 6, 'core_widget_date', NULL, NULL, 'expiry', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, 'core.user.role.expiry', NULL, NULL),
+('core_user_role_add', '', 0, 0, 0, 'core_widget_choice', NULL, NULL, 'role_add', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.workflow.role', NULL, NULL),
+('core_user_role_add', '', 0, 0, 6, 'core_widget_date', NULL, NULL, 'expiry', NULL, 1, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, 'core.user.role.expiry', NULL, NULL),
+('core_user_role_add', '', 0, 0, 10, 'core_widget_submit', NULL, NULL, 'role', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, 'core.button.save', NULL, NULL),
+('core_user_table', '', 0, 0, 0, 'core_widget_static', NULL, NULL, 'username', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_table', '', 0, 0, 2, 'core_widget_static', NULL, NULL, 'name', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_table', '', 0, 0, 4, 'core_widget_static', NULL, NULL, 'level', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_user_table', '', 0, 0, 6, 'core_widget_static', NULL, NULL, 'status', NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_workflow_action', '', 0, 0, 0, 'core_widget_choice', NULL, NULL, 'actions', NULL, 0, 0, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_workflow_action', '', 0, 0, 2, 'core_widget_submit', NULL, NULL, 'apply', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL),
+('core_workflow_action', '', 0, 2, 2, 'core_widget_date', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_workflow_action', '', 0, 4, 0, 'core_widget_textarea', NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, 'redact', 1, NULL, NULL, 'active', NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_workflow_action_form', '', 0, 0, 0, 'core_widget_choice', NULL, NULL, 'actions', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+('core_workflow_action_form', '', 0, 0, 2, 'core_widget_submit', NULL, NULL, 'apply', NULL, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, 'core.button.apply', NULL, NULL);
 
---
--- Truncate table before insert `ark_view_element`
---
-
-TRUNCATE TABLE `ark_view_element`;
 --
 -- Dumping data for table `ark_view_element`
 --
 
-INSERT INTO `ark_view_element` (`element`, `type`, `enabled`, `deprecated`, `keyword`) VALUES
-('core_action_select', 'grid', 1, 0, 'core.action.select'),
-('core_actor_address', 'field', 1, 0, NULL),
-('core_actor_avatar', 'field', 1, 0, NULL),
-('core_actor_biography', 'field', 1, 0, NULL),
-('core_actor_class', 'field', 1, 0, NULL),
-('core_actor_email', 'field', 1, 0, NULL),
-('core_actor_fullname', 'field', 1, 0, NULL),
-('core_actor_id', 'field', 1, 0, NULL),
-('core_actor_initials', 'field', 1, 0, NULL),
-('core_actor_item', 'grid', 1, 0, NULL),
-('core_actor_shortname', 'field', 1, 0, NULL),
-('core_actor_status', 'field', 1, 0, NULL),
-('core_actor_table', 'table', 1, 0, NULL),
-('core_actor_telephone', 'field', 1, 0, NULL),
-('core_admin_page', 'grid', 1, 0, NULL),
-('core_admin_register_page', 'grid', 1, 0, 'core.admin.user.register'),
-('core_admin_user_page', 'grid', 1, 0, NULL),
-('core_file_class', 'field', 1, 0, NULL),
-('core_file_description', 'field', 1, 0, NULL),
-('core_file_id', 'field', 1, 0, NULL),
-('core_file_item', 'grid', 1, 0, NULL),
-('core_file_mediatype', 'field', 1, 0, NULL),
-('core_file_status', 'field', 1, 0, NULL),
-('core_file_table', 'table', 1, 0, NULL),
-('core_file_title', 'field', 1, 0, NULL),
-('core_file_versions', 'field', 1, 0, NULL),
-('core_home_page', 'grid', 1, 0, NULL),
-('core_message_class', 'field', 1, 0, NULL),
-('core_message_event', 'field', 1, 0, NULL),
-('core_message_id', 'field', 1, 0, NULL),
-('core_message_item', 'grid', 1, 0, NULL),
-('core_message_page', 'grid', 1, 0, NULL),
-('core_message_sender', 'field', 1, 0, NULL),
-('core_message_sent', 'field', 1, 0, NULL),
-('core_message_table', 'table', 1, 0, NULL),
-('core_nav_header', 'nav', 1, 0, NULL),
-('core_nav_home', 'nav', 1, 0, NULL),
-('core_nav_sidebar', 'nav', 1, 0, NULL),
-('core_page_admin', 'page', 1, 0, NULL),
-('core_page_admin_register', 'page', 1, 0, NULL),
-('core_page_admin_user', 'page', 1, 0, NULL),
-('core_page_content', 'field', 1, 0, NULL),
-('core_page_home', 'page', 1, 0, NULL),
-('core_page_message', 'page', 1, 0, NULL),
-('core_page_messages', 'page', 1, 0, NULL),
-('core_page_news', 'page', 1, 0, NULL),
-('core_page_profile', 'page', 1, 0, NULL),
-('core_page_profiles', 'page', 1, 0, NULL),
-('core_page_static', 'page', 1, 0, NULL),
-('core_page_user_confirm', 'page', 1, 0, NULL),
-('core_page_user_login', 'page', 1, 0, NULL),
-('core_page_user_profile', 'page', 1, 0, NULL),
-('core_page_user_register', 'page', 1, 0, NULL),
-('core_page_user_reset', 'page', 1, 0, NULL),
-('core_page_view', 'grid', 1, 0, NULL),
-('core_profile_list_page', 'grid', 1, 0, NULL),
-('core_profile_page', 'grid', 1, 0, NULL),
-('core_profile_table', 'table', 1, 0, 'core.profiles'),
-('core_profile_view', 'grid', 1, 0, 'core.profile'),
-('core_site_footer', 'grid', 1, 0, NULL),
-('core_site_header', 'grid', 1, 0, NULL),
-('core_site_sidebar', 'grid', 1, 0, NULL),
-('core_user_actor', 'grid', 1, 0, NULL),
-('core_user_credentials', 'grid', 1, 0, NULL),
-('core_user_filter', 'grid', 1, 0, NULL),
-('core_user_login', 'grid', 1, 0, NULL),
-('core_user_password_change', 'grid', 1, 0, 'core.user.password.change'),
-('core_user_password_set', 'grid', 1, 0, 'core.user.password.set'),
-('core_user_profile', 'grid', 1, 0, NULL),
-('core_user_register', 'grid', 1, 0, NULL),
-('core_user_register_actor', 'grid', 1, 0, NULL),
-('core_user_reset', 'grid', 1, 0, NULL),
-('core_user_role', 'grid', 1, 0, NULL),
-('core_user_role_add', 'grid', 1, 0, 'core.user.role.add'),
-('core_user_terms', 'field', 1, 0, NULL),
-('core_widget_button', 'widget', 1, 0, NULL),
-('core_widget_checkbox', 'widget', 1, 0, NULL),
-('core_widget_choice', 'widget', 1, 0, NULL),
-('core_widget_date', 'widget', 1, 0, NULL),
-('core_widget_dateinterval', 'widget', 1, 0, NULL),
-('core_widget_datetime', 'widget', 1, 0, NULL),
-('core_widget_email', 'widget', 1, 0, 'core.user.email'),
-('core_widget_email_confirm', 'widget', 1, 0, 'core.user.email'),
-('core_widget_monthday', 'widget', 1, 0, NULL),
-('core_widget_password', 'widget', 1, 0, 'core.user.password'),
-('core_widget_password_confirm', 'widget', 1, 0, 'core.user.password'),
-('core_widget_role', 'widget', 1, 0, 'core.workflow.role'),
-('core_widget_selected', 'widget', 1, 0, NULL),
-('core_widget_static', 'widget', 1, 0, NULL),
-('core_widget_submit', 'widget', 1, 0, 'core.widget.submit'),
-('core_widget_submit_recaptcha', 'widget', 1, 0, 'core.widget.submit'),
-('core_widget_terms', 'widget', 1, 0, NULL),
-('core_widget_textarea', 'widget', 1, 0, NULL),
-('core_widget_time', 'widget', 1, 0, NULL),
-('core_widget_username', 'widget', 1, 0, 'core.user.username'),
-('core_workflow_action', 'grid', 1, 0, NULL),
-('core_workflow_action_form', 'grid', 1, 0, 'core.workflow.action'),
-('just_parking', 'grid', 1, 0, NULL);
+INSERT INTO `ark_view_element` (`element`, `type`) VALUES
+('core_actor_address', 'field'),
+('core_actor_avatar', 'field'),
+('core_actor_biography', 'field'),
+('core_actor_class', 'field'),
+('core_actor_email', 'field'),
+('core_actor_fullname', 'field'),
+('core_actor_id', 'field'),
+('core_actor_initials', 'field'),
+('core_actor_shortname', 'field'),
+('core_actor_status', 'field'),
+('core_actor_telephone', 'field'),
+('core_file_class', 'field'),
+('core_file_description', 'field'),
+('core_file_id', 'field'),
+('core_file_mediatype', 'field'),
+('core_file_status', 'field'),
+('core_file_title', 'field'),
+('core_file_versions', 'field'),
+('core_message_class', 'field'),
+('core_message_event', 'field'),
+('core_message_id', 'field'),
+('core_message_sender', 'field'),
+('core_message_sent', 'field'),
+('core_page_content', 'field'),
+('core_user_terms', 'field'),
+('core_action_select', 'grid'),
+('core_actor_item', 'grid'),
+('core_admin', 'grid'),
+('core_admin_user', 'grid'),
+('core_admin_user_list', 'grid'),
+('core_admin_user_register', 'grid'),
+('core_file_item', 'grid'),
+('core_home_page', 'grid'),
+('core_message_item', 'grid'),
+('core_message_page', 'grid'),
+('core_page_view', 'grid'),
+('core_profile_list_page', 'grid'),
+('core_profile_page', 'grid'),
+('core_profile_view', 'grid'),
+('core_site_footer', 'grid'),
+('core_site_header', 'grid'),
+('core_site_sidebar', 'grid'),
+('core_user_actor', 'grid'),
+('core_user_credentials', 'grid'),
+('core_user_filter', 'grid'),
+('core_user_login', 'grid'),
+('core_user_password_change', 'grid'),
+('core_user_password_set', 'grid'),
+('core_user_profile', 'grid'),
+('core_user_register', 'grid'),
+('core_user_register_actor', 'grid'),
+('core_user_reset', 'grid'),
+('core_user_role', 'grid'),
+('core_user_role_add', 'grid'),
+('core_workflow_action', 'grid'),
+('core_workflow_action_form', 'grid'),
+('just_parking', 'grid'),
+('core_nav_header', 'nav'),
+('core_nav_home', 'nav'),
+('core_nav_sidebar', 'nav'),
+('core_page_admin', 'page'),
+('core_page_admin_user', 'page'),
+('core_page_admin_user_list', 'page'),
+('core_page_admin_user_register', 'page'),
+('core_page_home', 'page'),
+('core_page_message', 'page'),
+('core_page_messages', 'page'),
+('core_page_news', 'page'),
+('core_page_profile', 'page'),
+('core_page_profiles', 'page'),
+('core_page_static', 'page'),
+('core_page_user_confirm', 'page'),
+('core_page_user_login', 'page'),
+('core_page_user_profile', 'page'),
+('core_page_user_register', 'page'),
+('core_page_user_reset', 'page'),
+('core_actor_table', 'table'),
+('core_file_table', 'table'),
+('core_message_table', 'table'),
+('core_profile_table', 'table'),
+('core_user_table', 'table'),
+('core_widget_button', 'widget'),
+('core_widget_checkbox', 'widget'),
+('core_widget_choice', 'widget'),
+('core_widget_date', 'widget'),
+('core_widget_dateinterval', 'widget'),
+('core_widget_datetime', 'widget'),
+('core_widget_email', 'widget'),
+('core_widget_email_confirm', 'widget'),
+('core_widget_monthday', 'widget'),
+('core_widget_password', 'widget'),
+('core_widget_password_confirm', 'widget'),
+('core_widget_role', 'widget'),
+('core_widget_selected', 'widget'),
+('core_widget_static', 'widget'),
+('core_widget_submit', 'widget'),
+('core_widget_submit_recaptcha', 'widget'),
+('core_widget_terms', 'widget'),
+('core_widget_textarea', 'widget'),
+('core_widget_time', 'widget'),
+('core_widget_username', 'widget');
 
---
--- Truncate table before insert `ark_view_field`
---
-
-TRUNCATE TABLE `ark_view_field`;
 --
 -- Dumping data for table `ark_view_field`
 --
 
-INSERT INTO `ark_view_field` (`element`, `schma`, `class`, `attribute`, `display`, `value`, `parameter`, `format`, `template`, `form_type`, `form_options`) VALUES
-('core_actor_address', 'core.actor', 'actor', 'address', NULL, 'active', NULL, NULL, NULL, NULL, ''),
-('core_actor_avatar', 'core.actor', 'actor', 'avatar', NULL, 'active', NULL, NULL, 'blocks/avatar.html.twig', NULL, ''),
-('core_actor_biography', 'core.actor', 'actor', 'biography', NULL, 'active', NULL, NULL, NULL, NULL, ''),
-('core_actor_class', 'core.actor', 'actor', 'class', NULL, 'active', NULL, NULL, NULL, NULL, ''),
-('core_actor_email', 'core.actor', 'actor', 'email', NULL, 'active', NULL, NULL, NULL, NULL, ''),
-('core_actor_fullname', 'core.actor', 'actor', 'fullname', NULL, 'active', NULL, NULL, NULL, NULL, ''),
-('core_actor_id', 'core.actor', 'actor', 'id', NULL, 'readonly', NULL, NULL, NULL, NULL, ''),
-('core_actor_initials', 'core.actor', 'actor', 'initials', NULL, 'active', NULL, NULL, NULL, NULL, ''),
-('core_actor_shortname', 'core.actor', 'actor', 'shortname', NULL, 'active', NULL, NULL, NULL, NULL, ''),
-('core_actor_status', 'core.actor', 'person', 'status', NULL, 'active', NULL, NULL, NULL, NULL, ''),
-('core_actor_telephone', 'core.actor', 'actor', 'telephone', NULL, 'active', NULL, NULL, NULL, NULL, ''),
-('core_file_class', 'core.file', 'file', 'class', NULL, 'active', NULL, NULL, NULL, NULL, ''),
-('core_file_description', 'core.file', 'file', 'description', NULL, 'active', NULL, NULL, NULL, NULL, ''),
-('core_file_id', 'core.file', 'file', 'id', NULL, 'readonly', NULL, NULL, NULL, NULL, ''),
-('core_file_mediatype', 'core.file', 'file', 'mediatype', NULL, 'active', NULL, NULL, NULL, NULL, ''),
-('core_file_status', 'core.file', 'file', 'status', NULL, 'active', NULL, NULL, NULL, NULL, ''),
-('core_file_title', 'core.file', 'file', 'title', NULL, 'active', NULL, NULL, NULL, NULL, ''),
-('core_file_versions', 'core.file', 'file', 'versions', NULL, 'active', NULL, NULL, NULL, NULL, ''),
-('core_message_class', 'core.message', 'message', 'class', NULL, 'active', NULL, NULL, NULL, NULL, ''),
-('core_message_event', 'core.message', 'notification', 'event', NULL, 'active', NULL, NULL, NULL, NULL, ''),
-('core_message_id', 'core.message', 'message', 'id', NULL, 'readonly', NULL, NULL, NULL, NULL, ''),
-('core_message_sender', 'core.message', 'message', 'sender', 'fullname', 'readonly', NULL, NULL, NULL, NULL, ''),
-('core_message_sent', 'core.message', 'message', 'sent', NULL, 'active', NULL, NULL, NULL, NULL, ''),
-('core_page_content', 'core.page', 'page', 'content', NULL, 'active', NULL, NULL, NULL, NULL, ''),
-('core_user_terms', 'core.actor', 'person', 'terms', NULL, 'active', NULL, NULL, NULL, 'ARK\\Form\\Type\\UserTermsPropertyType', '');
+INSERT INTO `ark_view_field` (`element`, `schma`, `class`, `attribute`, `display`, `value`, `parameter`, `format`, `keyword`, `template`, `form_type`, `form_options`) VALUES
+('core_actor_address', 'core.actor', 'actor', 'address', NULL, 'active', NULL, NULL, NULL, NULL, NULL, ''),
+('core_actor_avatar', 'core.actor', 'actor', 'avatar', NULL, 'active', NULL, NULL, NULL, 'blocks/avatar.html.twig', NULL, ''),
+('core_actor_biography', 'core.actor', 'actor', 'biography', NULL, 'active', NULL, NULL, NULL, NULL, NULL, ''),
+('core_actor_class', 'core.actor', 'actor', 'class', NULL, 'active', NULL, NULL, NULL, NULL, NULL, ''),
+('core_actor_email', 'core.actor', 'actor', 'email', NULL, 'active', NULL, NULL, NULL, NULL, NULL, ''),
+('core_actor_fullname', 'core.actor', 'actor', 'fullname', NULL, 'active', NULL, NULL, NULL, NULL, NULL, ''),
+('core_actor_id', 'core.actor', 'actor', 'id', NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, ''),
+('core_actor_initials', 'core.actor', 'actor', 'initials', NULL, 'active', NULL, NULL, NULL, NULL, NULL, ''),
+('core_actor_shortname', 'core.actor', 'actor', 'shortname', NULL, 'active', NULL, NULL, NULL, NULL, NULL, ''),
+('core_actor_status', 'core.actor', 'person', 'status', NULL, 'active', NULL, NULL, NULL, NULL, NULL, ''),
+('core_actor_telephone', 'core.actor', 'actor', 'telephone', NULL, 'active', NULL, NULL, NULL, NULL, NULL, ''),
+('core_file_class', 'core.file', 'file', 'class', NULL, 'active', NULL, NULL, NULL, NULL, NULL, ''),
+('core_file_description', 'core.file', 'file', 'description', NULL, 'active', NULL, NULL, NULL, NULL, NULL, ''),
+('core_file_id', 'core.file', 'file', 'id', NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, ''),
+('core_file_mediatype', 'core.file', 'file', 'mediatype', NULL, 'active', NULL, NULL, NULL, NULL, NULL, ''),
+('core_file_status', 'core.file', 'file', 'status', NULL, 'active', NULL, NULL, NULL, NULL, NULL, ''),
+('core_file_title', 'core.file', 'file', 'title', NULL, 'active', NULL, NULL, NULL, NULL, NULL, ''),
+('core_file_versions', 'core.file', 'file', 'versions', NULL, 'active', NULL, NULL, NULL, NULL, NULL, ''),
+('core_message_class', 'core.message', 'message', 'class', NULL, 'active', NULL, NULL, NULL, NULL, NULL, ''),
+('core_message_event', 'core.message', 'notification', 'event', NULL, 'active', NULL, NULL, NULL, NULL, NULL, ''),
+('core_message_id', 'core.message', 'message', 'id', NULL, 'readonly', NULL, NULL, NULL, NULL, NULL, ''),
+('core_message_sender', 'core.message', 'message', 'sender', 'fullname', 'readonly', NULL, NULL, NULL, NULL, NULL, ''),
+('core_message_sent', 'core.message', 'message', 'sent', NULL, 'active', NULL, NULL, NULL, NULL, NULL, ''),
+('core_page_content', 'core.page', 'page', 'content', NULL, 'active', NULL, NULL, NULL, NULL, NULL, ''),
+('core_user_terms', 'core.actor', 'person', 'terms', NULL, 'active', NULL, NULL, NULL, NULL, 'ARK\\Form\\Type\\UserTermsPropertyType', '');
 
 --
--- Truncate table before insert `ark_view_group`
+-- Dumping data for table `ark_view_form`
 --
 
-TRUNCATE TABLE `ark_view_group`;
+INSERT INTO `ark_view_form` (`element`, `name`, `mode`, `method`, `action`, `keyword`, `template`, `form_type`) VALUES
+('core_action_select', 'actions', NULL, NULL, NULL, 'core.action.select', NULL, NULL),
+('core_actor_item', 'actor_item', NULL, NULL, NULL, NULL, NULL, NULL),
+('core_admin_user_register', 'user', NULL, NULL, NULL, 'core.admin.user.register', NULL, NULL),
+('core_file_item', 'item', 'edit', NULL, NULL, NULL, NULL, NULL),
+('core_message_item', 'message', 'view', NULL, NULL, NULL, 'layouts/message.html.twig', NULL),
+('core_profile_view', 'actor', NULL, NULL, NULL, NULL, NULL, NULL),
+('core_user_filter', 'filter', NULL, NULL, NULL, NULL, NULL, NULL),
+('core_user_login', NULL, NULL, 'POST', 'user.check', NULL, 'user/layouts/login.html.twig', NULL),
+('core_user_password_change', 'password_change', NULL, NULL, NULL, 'core.user.password.change', NULL, NULL),
+('core_user_password_set', 'password_set', NULL, NULL, NULL, 'core.user.password.set', NULL, NULL),
+('core_user_register', NULL, NULL, NULL, NULL, NULL, 'user/layouts/register.html.twig', NULL),
+('core_user_reset', NULL, NULL, NULL, NULL, NULL, 'user/layouts/reset.html.twig', NULL),
+('core_user_role_add', 'role_add', NULL, NULL, NULL, 'core.user.role.add', NULL, NULL),
+('core_workflow_action_form', 'action', NULL, NULL, NULL, 'core.workflow.action', 'layouts/action.html.twig', NULL);
+
 --
 -- Dumping data for table `ark_view_group`
 --
 
-INSERT INTO `ark_view_group` (`element`, `layout`, `mode`, `form`, `name`, `method`, `action`, `template`) VALUES
-('core_action_select', 'grid', NULL, 1, 'actions', NULL, NULL, NULL),
-('core_actor_item', 'grid', NULL, 1, 'actor_item', NULL, NULL, NULL),
-('core_actor_table', 'table', 'view', 1, 'actor_list', NULL, NULL, 'layouts/table.html.twig'),
-('core_admin_page', 'grid', NULL, 0, NULL, NULL, NULL, NULL),
-('core_admin_register_page', 'grid', NULL, 1, NULL, NULL, NULL, NULL),
-('core_admin_user_page', 'grid', NULL, 0, NULL, NULL, NULL, NULL),
-('core_file_item', 'grid', 'edit', 1, 'item', NULL, NULL, NULL),
-('core_file_table', 'table', NULL, 0, 'items', NULL, NULL, 'layouts/table.html.twig'),
-('core_home_page', 'grid', NULL, 0, NULL, NULL, NULL, NULL),
-('core_message_item', 'grid', 'view', 1, 'message', NULL, NULL, 'layouts/message.html.twig'),
-('core_message_page', 'grid', NULL, 0, NULL, NULL, NULL, NULL),
-('core_message_table', 'grid', 'view', 1, 'messages', NULL, NULL, 'layouts/messagelist.html.twig'),
-('core_page_view', 'grid', NULL, 0, NULL, NULL, NULL, NULL),
-('core_profile_list_page', 'grid', 'view', 0, NULL, NULL, NULL, NULL),
-('core_profile_page', 'grid', 'view', 0, NULL, NULL, NULL, NULL),
-('core_profile_table', 'table', 'view', 1, 'actors', NULL, NULL, 'layouts/table.html.twig'),
-('core_profile_view', 'grid', NULL, 1, 'actor', NULL, NULL, NULL),
-('core_site_footer', 'grid', NULL, 0, NULL, NULL, NULL, NULL),
-('core_site_header', 'grid', NULL, 0, NULL, NULL, NULL, NULL),
-('core_site_sidebar', 'grid', NULL, 0, NULL, NULL, NULL, NULL),
-('core_user_actor', 'grid', NULL, 0, 'actor', NULL, NULL, NULL),
-('core_user_credentials', 'grid', NULL, 0, 'credentials', NULL, NULL, NULL),
-('core_user_filter', 'grid', NULL, 1, 'filter', NULL, NULL, NULL),
-('core_user_login', 'grid', NULL, 1, NULL, 'POST', 'user.check', 'user/layouts/login.html.twig'),
-('core_user_password_change', 'grid', NULL, 1, 'password_change', NULL, NULL, NULL),
-('core_user_password_set', 'grid', NULL, 1, 'password_set', NULL, NULL, NULL),
-('core_user_profile', 'grid', NULL, 0, NULL, NULL, NULL, NULL),
-('core_user_register', 'grid', NULL, 1, NULL, NULL, NULL, 'user/layouts/register.html.twig'),
-('core_user_register_actor', 'grid', NULL, 0, 'actor', NULL, NULL, NULL),
-('core_user_reset', 'grid', NULL, 1, NULL, NULL, NULL, 'user/layouts/reset.html.twig'),
-('core_user_role', 'grid', NULL, 0, 'role', NULL, NULL, NULL),
-('core_user_role_add', 'grid', NULL, 1, 'role_add', NULL, NULL, NULL),
-('core_workflow_action', 'grid', NULL, 0, NULL, NULL, NULL, NULL),
-('core_workflow_action_form', 'grid', NULL, 1, 'action', NULL, NULL, 'layouts/action.html.twig');
+INSERT INTO `ark_view_group` (`element`, `name`, `mode`, `keyword`, `template`, `form_type`) VALUES
+('core_admin', NULL, NULL, NULL, NULL, NULL),
+('core_admin_user', NULL, NULL, NULL, NULL, NULL),
+('core_admin_user_list', NULL, NULL, NULL, NULL, NULL),
+('core_home_page', NULL, NULL, NULL, NULL, NULL),
+('core_message_page', NULL, NULL, NULL, NULL, NULL),
+('core_page_view', NULL, NULL, 'core.profile', NULL, NULL),
+('core_profile_list_page', NULL, 'view', NULL, NULL, NULL),
+('core_profile_page', NULL, 'view', NULL, NULL, NULL),
+('core_site_footer', NULL, NULL, NULL, NULL, NULL),
+('core_site_header', NULL, NULL, NULL, NULL, NULL),
+('core_site_sidebar', NULL, NULL, NULL, NULL, NULL),
+('core_user_actor', 'actor', NULL, NULL, NULL, NULL),
+('core_user_credentials', 'credentials', NULL, NULL, NULL, NULL),
+('core_user_profile', NULL, NULL, NULL, NULL, NULL),
+('core_user_register_actor', 'actor', NULL, NULL, NULL, NULL),
+('core_user_role', 'role', NULL, NULL, NULL, NULL),
+('core_workflow_action', NULL, NULL, 'core.workflow.action', NULL, NULL);
 
---
--- Truncate table before insert `ark_view_nav`
---
-
-TRUNCATE TABLE `ark_view_nav`;
 --
 -- Dumping data for table `ark_view_nav`
 --
 
-INSERT INTO `ark_view_nav` (`element`, `parent`, `seq`, `level`, `icon`, `route`, `uri`, `seperator`, `template`) VALUES
-('core_nav_header', NULL, 0, 1, NULL, NULL, NULL, 0, NULL),
-('core_nav_home', 'core_nav_header', 0, 2, NULL, 'home', NULL, 0, NULL),
-('core_nav_sidebar', NULL, 0, 1, NULL, NULL, NULL, 0, NULL);
+INSERT INTO `ark_view_nav` (`element`, `parent`, `seq`, `level`, `seperator`, `icon`, `route`, `keyword`, `template`, `uri`) VALUES
+('core_nav_header', NULL, 0, 1, 0, NULL, NULL, NULL, NULL, NULL),
+('core_nav_home', 'core_nav_header', 0, 2, 0, NULL, 'home', NULL, NULL, NULL),
+('core_nav_sidebar', NULL, 0, 1, 0, NULL, NULL, NULL, NULL, NULL);
 
---
--- Truncate table before insert `ark_view_page`
---
-
-TRUNCATE TABLE `ark_view_page`;
 --
 -- Dumping data for table `ark_view_page`
 --
 
-INSERT INTO `ark_view_page` (`element`, `header`, `sidebar`, `content`, `footer`, `mode`, `visibility`, `view`, `edit`, `template`) VALUES
-('core_page_admin', 'core_site_header', 'core_site_sidebar', 'core_admin_page', 'core_site_footer', 'edit', 'restricted', 'core.admin', 'core.admin', NULL),
-('core_page_admin_register', 'core_site_header', 'core_site_sidebar', 'core_admin_register_page', NULL, 'edit', 'restricted', 'core.admin.user', 'core.admin.user', NULL),
-('core_page_admin_user', 'core_site_header', 'core_site_sidebar', 'core_admin_user_page', 'core_site_footer', 'edit', 'restricted', 'core.admin.user', 'core.admin.user', NULL),
-('core_page_home', 'core_site_header', 'core_site_sidebar', 'core_home_page', 'core_site_footer', 'view', 'public', NULL, NULL, NULL),
-('core_page_message', 'core_site_header', 'core_site_sidebar', 'core_message_page', 'core_site_footer', 'edit', 'restricted', 'core.message.read', 'core.message.update', NULL),
-('core_page_messages', 'core_site_header', 'core_site_sidebar', 'core_message_page', 'core_site_footer', 'edit', 'restricted', 'core.message.read', 'core.message.update', NULL),
-('core_page_news', 'core_site_header', 'core_site_sidebar', NULL, 'core_site_footer', 'view', 'public', NULL, NULL, NULL),
-('core_page_profile', 'core_site_header', 'core_site_sidebar', 'core_profile_page', 'core_site_footer', 'edit', 'restricted', NULL, NULL, NULL),
-('core_page_profiles', 'core_site_header', 'core_site_sidebar', 'core_profile_list_page', 'core_site_footer', 'edit', 'restricted', NULL, NULL, NULL),
-('core_page_static', 'core_site_header', 'core_site_sidebar', NULL, 'core_site_footer', 'view', 'public', 'core.page.read', 'core.page.update', 'pages/static.html.twig'),
-('core_page_user_confirm', 'core_site_header', 'core_site_sidebar', NULL, 'core_site_footer', 'edit', 'public', NULL, NULL, NULL),
-('core_page_user_login', 'core_site_header', 'core_site_sidebar', 'core_user_login', 'core_site_footer', 'edit', 'public', NULL, NULL, NULL),
-('core_page_user_profile', 'core_site_header', 'core_site_sidebar', 'core_user_profile', 'core_site_footer', 'edit', 'restricted', 'core.actor.read', 'core.actor.update', NULL),
-('core_page_user_register', 'core_site_header', 'core_site_sidebar', 'core_user_register', 'core_site_footer', 'edit', 'public', NULL, NULL, NULL),
-('core_page_user_reset', 'core_site_header', 'core_site_sidebar', 'core_user_reset', 'core_site_footer', 'edit', 'public', NULL, NULL, NULL);
+INSERT INTO `ark_view_page` (`element`, `mode`, `header`, `sidebar`, `content`, `footer`, `visibility`, `view`, `edit`, `keyword`, `template`) VALUES
+('core_page_admin', 'edit', 'core_site_header', 'core_site_sidebar', 'core_admin', 'core_site_footer', 'restricted', 'core.admin', 'core.admin', NULL, NULL),
+('core_page_admin_user', 'edit', 'core_site_header', 'core_site_sidebar', 'core_admin_user_list', 'core_site_footer', 'restricted', 'core.admin.user', 'core.admin.user', NULL, NULL),
+('core_page_admin_user_list', 'edit', 'core_site_header', 'core_site_sidebar', 'core_admin_user_list', 'core_site_footer', 'restricted', 'core.admin.user', 'core.admin.user', NULL, NULL),
+('core_page_admin_user_register', 'edit', 'core_site_header', 'core_site_sidebar', 'core_admin_user_register', 'core_site_footer', 'restricted', 'core.admin.user', 'core.admin.user', NULL, NULL),
+('core_page_home', 'view', 'core_site_header', 'core_site_sidebar', 'core_home_page', 'core_site_footer', 'public', NULL, NULL, NULL, NULL),
+('core_page_message', 'edit', 'core_site_header', 'core_site_sidebar', 'core_message_page', 'core_site_footer', 'restricted', 'core.message.read', 'core.message.update', NULL, NULL),
+('core_page_messages', 'edit', 'core_site_header', 'core_site_sidebar', 'core_message_page', 'core_site_footer', 'restricted', 'core.message.read', 'core.message.update', NULL, NULL),
+('core_page_news', 'view', 'core_site_header', 'core_site_sidebar', NULL, 'core_site_footer', 'public', NULL, NULL, NULL, NULL),
+('core_page_profile', 'edit', 'core_site_header', 'core_site_sidebar', 'core_profile_page', 'core_site_footer', 'restricted', NULL, NULL, NULL, NULL),
+('core_page_profiles', 'edit', 'core_site_header', 'core_site_sidebar', 'core_profile_list_page', 'core_site_footer', 'restricted', NULL, NULL, NULL, NULL),
+('core_page_static', 'view', 'core_site_header', 'core_site_sidebar', NULL, 'core_site_footer', 'public', 'core.page.read', 'core.page.update', NULL, 'pages/static.html.twig'),
+('core_page_user_confirm', 'edit', 'core_site_header', 'core_site_sidebar', NULL, 'core_site_footer', 'public', NULL, NULL, NULL, NULL),
+('core_page_user_login', 'edit', 'core_site_header', 'core_site_sidebar', 'core_user_login', 'core_site_footer', 'public', NULL, NULL, NULL, NULL),
+('core_page_user_profile', 'edit', 'core_site_header', 'core_site_sidebar', 'core_user_profile', 'core_site_footer', 'restricted', 'core.actor.read', 'core.actor.update', NULL, NULL),
+('core_page_user_register', 'edit', 'core_site_header', 'core_site_sidebar', 'core_user_register', 'core_site_footer', 'public', NULL, NULL, NULL, NULL),
+('core_page_user_reset', 'edit', 'core_site_header', 'core_site_sidebar', 'core_user_reset', 'core_site_footer', 'public', NULL, NULL, NULL, NULL);
 
 --
--- Truncate table before insert `ark_view_tree`
+-- Dumping data for table `ark_view_table`
 --
 
-TRUNCATE TABLE `ark_view_tree`;
---
--- Truncate table before insert `ark_view_type`
---
+INSERT INTO `ark_view_table` (`element`, `mode`, `caption`, `header`, `footer`, `sortable`, `searchable`, `row`, `list`, `card`, `thumbnail`, `view`, `image`, `export`, `columns`, `pagination`, `selection`, `keyword`, `classes`, `template`, `url`) VALUES
+('core_actor_table', 'view', 0, 1, 0, 1, 1, 1, 0, 1, 0, 'row', 'avatar', 1, 1, NULL, NULL, NULL, 'table bootstrap-table table-hover', NULL, NULL),
+('core_file_table', 'view', 0, 1, 0, 1, 1, 1, 0, 1, 0, 'row', NULL, 1, 1, NULL, NULL, NULL, 'table bootstrap-table table-hover', NULL, NULL),
+('core_message_table', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', NULL, 1, 1, NULL, NULL, NULL, 'table bootstrap-table table-hover', NULL, NULL),
+('core_profile_table', 'view', 0, 1, 0, 1, 1, 1, 0, 1, 0, 'row', 'avatar', 1, 1, NULL, NULL, 'core.profiles', 'table bootstrap-table table-hover', NULL, NULL),
+('core_user_table', 'view', 0, 1, 0, 1, 1, 1, 0, 0, 0, 'row', NULL, 1, 1, NULL, 'multiple', NULL, 'table bootstrap-table table-hover', NULL, NULL);
 
-TRUNCATE TABLE `ark_view_type`;
 --
 -- Dumping data for table `ark_view_type`
 --
 
 INSERT INTO `ark_view_type` (`type`, `layout`, `class`, `form_type`, `template`, `keyword`) VALUES
 ('field', 0, 'ARK\\View\\Field', 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/field.html.twig', NULL),
+('form', 1, 'ARK\\View\\Form', 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/grid.html.twig', NULL),
 ('grid', 1, 'ARK\\View\\Grid', 'ARK\\Form\\Type\\SimplePropertyType', 'layouts/grid.html.twig', NULL),
 ('nav', 0, 'ARK\\View\\Nav', NULL, 'blocks/nav.html.twig', NULL),
 ('page', 0, 'ARK\\View\\Page', NULL, 'pages/page.html.twig', NULL),
@@ -3989,59 +3822,49 @@ INSERT INTO `ark_view_type` (`type`, `layout`, `class`, `form_type`, `template`,
 ('widget', 0, 'ARK\\View\\Widget', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', 'layouts/widget.html.twig', NULL);
 
 --
--- Truncate table before insert `ark_view_widget`
---
-
-TRUNCATE TABLE `ark_view_widget`;
---
 -- Dumping data for table `ark_view_widget`
 --
 
-INSERT INTO `ark_view_widget` (`element`, `name`, `choices`, `template`, `form_type`, `form_options`) VALUES
-('core_widget_button', 'button', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', ''),
-('core_widget_checkbox', 'checkbox', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', ''),
-('core_widget_choice', 'choice', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', ''),
-('core_widget_date', 'date', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateType', '{\"widget\": \"single_text\",\"html5\": false, \"attr\": {\"class\": \"datepicker\"}}'),
-('core_widget_dateinterval', 'dateinterval', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateIntervalType', ''),
-('core_widget_datetime', 'datetime', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateTimeType', '{\"widget\": \"single_text\",\"html5\": false, \"attr\": {\"class\": \"datetimepicker\"}}'),
-('core_widget_email', 'email', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\EmailType', ''),
-('core_widget_email_confirm', 'email', NULL, NULL, 'ARK\\Form\\Type\\RepeatedEmailType', ''),
-('core_widget_monthday', 'monthday', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\BirthdayType', ''),
-('core_widget_password', '_password', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\PasswordType', ''),
-('core_widget_password_confirm', 'password', NULL, NULL, 'ARK\\Form\\Type\\RepeatedPasswordType', ''),
-('core_widget_selected', 'selected', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\HiddenType', ''),
-('core_widget_static', 'static', NULL, NULL, 'ARK\\Form\\Type\\StaticType', ''),
-('core_widget_submit', 'submit', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', ''),
-('core_widget_submit_recaptcha', 'submit', NULL, NULL, 'ARK\\Form\\Type\\RecaptchaSubmitType', ''),
-('core_widget_terms', 'terms', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', ''),
-('core_widget_textarea', 'textarea', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', ''),
-('core_widget_time', 'time', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', '{\"widget\": \"single_text\",\"html5\": false, \"attr\": {\"class\": \"timepicker\"}}'),
-('core_widget_username', '_username', NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', '');
+INSERT INTO `ark_view_widget` (`element`, `name`, `choices`, `keyword`, `template`, `form_type`, `form_options`) VALUES
+('core_widget_button', 'button', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ButtonType', ''),
+('core_widget_checkbox', 'checkbox', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CheckboxType', ''),
+('core_widget_choice', 'choice', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', ''),
+('core_widget_date', 'date', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateType', '{\"widget\": \"single_text\",\"html5\": false, \"attr\": {\"class\": \"datepicker\"}}'),
+('core_widget_dateinterval', 'dateinterval', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateIntervalType', ''),
+('core_widget_datetime', 'datetime', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\DateTimeType', '{\"widget\": \"single_text\",\"html5\": false, \"attr\": {\"class\": \"datetimepicker\"}}'),
+('core_widget_email', 'email', NULL, 'core.user.email', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\EmailType', ''),
+('core_widget_email_confirm', 'email', NULL, 'core.user.email', NULL, 'ARK\\Form\\Type\\RepeatedEmailType', ''),
+('core_widget_monthday', 'monthday', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\BirthdayType', ''),
+('core_widget_password', '_password', NULL, 'core.user.password', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\PasswordType', ''),
+('core_widget_password_confirm', 'password', NULL, 'core.user.password', NULL, 'ARK\\Form\\Type\\RepeatedPasswordType', ''),
+('core_widget_selected', 'selected', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\HiddenType', ''),
+('core_widget_static', 'static', NULL, NULL, NULL, 'ARK\\Form\\Type\\StaticType', ''),
+('core_widget_submit', 'submit', NULL, 'core.widget.submit', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\SubmitType', ''),
+('core_widget_submit_recaptcha', 'submit', NULL, 'core.widget.submit', NULL, 'ARK\\Form\\Type\\RecaptchaSubmitType', ''),
+('core_widget_terms', 'terms', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType', ''),
+('core_widget_textarea', 'textarea', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextareaType', ''),
+('core_widget_time', 'time', NULL, NULL, NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TimeType', '{\"widget\": \"single_text\",\"html5\": false, \"attr\": {\"class\": \"timepicker\"}}'),
+('core_widget_username', '_username', NULL, 'core.user.username', NULL, 'Symfony\\Component\\Form\\Extension\\Core\\Type\\TextType', '');
 
---
--- Truncate table before insert `ark_vocabulary`
---
-
-TRUNCATE TABLE `ark_vocabulary`;
 --
 -- Dumping data for table `ark_vocabulary`
 --
 
 INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `transitions`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
-('core.actor.class', 'list', 'ARK Core', 1, 0, 1, 0, 'core.actor.class', 'Actor Type'),
-('core.event.class', 'list', 'ARK Core', 1, 0, 1, 0, 'core.event.class', 'Core Event'),
-('core.file.class', 'list', 'ARK Core', 1, 0, 1, 0, 'core.file.class', 'File Type'),
+('core.actor.class', 'list', 'ARK Core', 1, 0, 1, 0, 'core.actor.class', 'Actor Class'),
+('core.event.class', 'list', 'ARK Core', 1, 0, 1, 0, 'core.event.class', 'Event Class'),
+('core.file.class', 'list', 'ARK Core', 1, 0, 1, 0, 'core.file.class', 'File Class'),
 ('core.file.status', 'list', 'ARK Core', 1, 0, 1, 0, 'core.file.status', 'File Status'),
 ('core.form.modus', 'list', 'ARK Core', 1, 0, 1, 0, 'core.form.mode', 'Form field modes'),
 ('core.item.status', 'list', 'ARK Core', 1, 0, 1, 0, 'core.item.status', 'Item Status'),
 ('core.license', 'list', 'ARK Core', 1, 0, 1, 0, 'core.file.class', 'File License'),
-('core.message.class', 'list', 'ARK Core', 1, 0, 1, 0, 'core.message.class', 'Message Type'),
+('core.message.class', 'list', 'ARK Core', 1, 0, 1, 0, 'core.message.class', 'Message Class'),
 ('core.message.recipient.status', 'list', 'ARK Core', 1, 0, 1, 0, 'core.message.recipient.status', 'Message Recipient Status'),
 ('core.message.status', 'list', 'ARK Core', 1, 0, 1, 0, 'core.message.status', 'Message Status'),
-('core.security.status', 'list', 'ARK Core', 1, 0, 1, 0, 'core.security.status', 'Security Status'),
+('core.security.user.status', 'list', 'ARK Core', 1, 0, 1, 0, 'core.security.user.status', 'Security User Status'),
 ('core.user.terms', 'list', 'ARK Core', 1, 0, 1, 0, 'core.user.terms', 'User Terms and Conditions'),
 ('core.visibility', 'list', 'ARK Core', 1, 0, 1, 0, 'core.visibility', 'Data Visibility'),
-('core.workflow.role', 'list', 'ARK Core', 1, 0, 1, 0, 'core.workflow.role', 'ARK Workflow Roles'),
+('core.workflow.role', 'list', 'ARK Core', 1, 0, 1, 0, 'core.workflow.role', 'Workflow Roles'),
 ('country', 'list', 'ISO3166', 1, 0, 1, 0, 'vocabulary.country', 'ISO Country Codes'),
 ('distance', 'list', 'SI', 1, 0, 1, 0, 'vocabulary.distance', 'SI Distance Units'),
 ('language', 'list', 'ISO639', 1, 0, 1, 0, 'vocabulary.language', 'ISO Language Codes'),
@@ -4050,11 +3873,6 @@ INSERT INTO `ark_vocabulary` (`concept`, `type`, `source`, `closed`, `transition
 ('spatial.crs', 'list', 'EPSG', 1, 0, 1, 0, 'vocabulary.spatial.crs', 'Coordinate Reference System'),
 ('spatial.format', 'list', 'ARK Core', 1, 0, 1, 0, 'vocabulary.spatial.format', 'Spatial data formats');
 
---
--- Truncate table before insert `ark_vocabulary_parameter`
---
-
-TRUNCATE TABLE `ark_vocabulary_parameter`;
 --
 -- Dumping data for table `ark_vocabulary_parameter`
 --
@@ -4075,11 +3893,6 @@ INSERT INTO `ark_vocabulary_parameter` (`concept`, `term`, `name`, `type`, `valu
 ('core.message.class', 'notification', 'entity', 'string', 'ARK\\Message\\Notification');
 
 --
--- Truncate table before insert `ark_vocabulary_related`
---
-
-TRUNCATE TABLE `ark_vocabulary_related`;
---
 -- Dumping data for table `ark_vocabulary_related`
 --
 
@@ -4094,11 +3907,6 @@ INSERT INTO `ark_vocabulary_related` (`from_concept`, `from_term`, `to_concept`,
 ('core.item.status', 'void', 'core.item.status', 'registered', 'transition', 'register', 0);
 
 --
--- Truncate table before insert `ark_vocabulary_relation`
---
-
-TRUNCATE TABLE `ark_vocabulary_relation`;
---
 -- Dumping data for table `ark_vocabulary_relation`
 --
 
@@ -4111,11 +3919,6 @@ INSERT INTO `ark_vocabulary_relation` (`relation`, `notation`, `recipricol`, `re
 ('usedfor', 'UF', 'use', 'U', 1, 0, 0, 'Leads from the preferred entry term to the\\nnon-preferred term(s).'),
 ('whole', 'BTP', 'part', 'NTP', 0, 1, 0, 'The \'Part Of\' whole/part hierarchy relationship.');
 
---
--- Truncate table before insert `ark_vocabulary_term`
---
-
-TRUNCATE TABLE `ark_vocabulary_term`;
 --
 -- Dumping data for table `ark_vocabulary_term`
 --
@@ -4208,20 +4011,20 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 ('core.message.status', 'draft', '', 0, 0, 1, 0, 'core.message.status.draft', ''),
 ('core.message.status', 'read', '', 0, 0, 1, 0, 'core.message.status.read', ''),
 ('core.message.status', 'sent', '', 0, 0, 1, 0, 'core.message.status.sent', ''),
-('core.security.status', 'approved', '', 0, 0, 1, 0, 'core.security.status.approve', ''),
-('core.security.status', 'closed', '', 0, 0, 1, 0, 'core.security.status.closed', ''),
-('core.security.status', 'expired', '', 0, 0, 1, 0, 'core.security.status.expired', ''),
-('core.security.status', 'locked', '', 0, 0, 1, 0, 'core.security.status.locked', ''),
-('core.security.status', 'registered', '', 1, 0, 1, 0, 'core.security.status.registered', ''),
-('core.security.status', 'suspended', '', 0, 0, 1, 0, 'core.security.status.suspended', ''),
-('core.security.status', 'verified', '', 0, 0, 1, 0, 'core.security.status.verified', ''),
+('core.security.user.status', 'disabled', '', 0, 0, 1, 0, 'core.security.user.status.disabled', ''),
+('core.security.user.status', 'enabled', '', 0, 0, 1, 0, 'core.security.user.status.enabled', ''),
+('core.security.user.status', 'expired', '', 0, 0, 1, 0, 'core.security.user.status.expired', ''),
+('core.security.user.status', 'locked', '', 0, 0, 1, 0, 'core.security.user.status.locked', ''),
+('core.security.user.status', 'registered', '', 1, 0, 1, 0, 'core.security.user.status.registered', ''),
+('core.security.user.status', 'verified', '', 0, 0, 1, 0, 'core.security.user.status.verified', ''),
 ('core.user.terms', 'v1', '', 1, 0, 1, 0, 'core.user.terms.v1', ''),
 ('core.visibility', 'private', '', 1, 0, 1, 0, 'core.visibility.private', ''),
 ('core.visibility', 'public', '', 0, 0, 1, 0, 'core.visibility.public', ''),
 ('core.visibility', 'restricted', '', 0, 0, 1, 0, 'core.visibility.restricted', ''),
-('core.workflow.role', 'admin', '', 0, 0, 1, 0, 'core.role.admin', ''),
-('core.workflow.role', 'anon', '', 0, 0, 1, 0, 'core.role.anon', ''),
-('core.workflow.role', 'user', '', 0, 0, 1, 0, 'core.role.user', ''),
+('core.workflow.role', 'admin', '', 0, 0, 1, 0, 'core.workflow.role.admin', ''),
+('core.workflow.role', 'anonymous', '', 0, 0, 1, 0, 'core.workflow.role.anon', ''),
+('core.workflow.role', 'sysadmin', '', 0, 0, 1, 0, 'core.workflow.role.sysadmin', ''),
+('core.workflow.role', 'user', '', 0, 0, 1, 0, 'core.workflow.role.user', ''),
 ('country', 'AD', 'andorra', 0, 0, 1, 0, 'country.andorra', ''),
 ('country', 'AE', 'unitedarabemirates', 0, 0, 1, 0, 'country.unitedarabemirates', ''),
 ('country', 'AF', 'afghanistan', 0, 0, 1, 0, 'country.afghanistan', ''),
@@ -4856,10 +4659,10 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 ('language', 'nia', 'nias', 0, 0, 1, 0, 'language.nias', ''),
 ('language', 'niu', 'niuean', 0, 0, 1, 0, 'language.niuean', ''),
 ('language', 'njo', 'aonaga', 0, 0, 1, 0, 'language.aonaga', ''),
-('language', 'nl', 'dutch', 0, 0, 1, 0, 'language.dutch', ''),
-('language', 'nl-BE', 'flemish', 0, 0, 1, 0, 'language.flemish', ''),
-('language', 'nmg', 'kwasio', 0, 0, 1, 0, 'language.kwasio', '');
+('language', 'nl', 'dutch', 0, 0, 1, 0, 'language.dutch', '');
 INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `root`, `enabled`, `deprecated`, `keyword`, `description`) VALUES
+('language', 'nl-BE', 'flemish', 0, 0, 1, 0, 'language.flemish', ''),
+('language', 'nmg', 'kwasio', 0, 0, 1, 0, 'language.kwasio', ''),
 ('language', 'nn', 'norwegian.nynorsk', 0, 0, 1, 0, 'language.norwegian.nynorsk', ''),
 ('language', 'nnh', 'ngiemboon', 0, 0, 1, 0, 'language.ngiemboon', ''),
 ('language', 'no', 'norwegian', 0, 0, 1, 0, 'language.norwegian', ''),
@@ -5098,11 +4901,6 @@ INSERT INTO `ark_vocabulary_term` (`concept`, `term`, `alias`, `is_default`, `ro
 ('spatial.format', 'wkt', '', 0, 0, 1, 0, 'spatial.format.wkt', '');
 
 --
--- Truncate table before insert `ark_vocabulary_type`
---
-
-TRUNCATE TABLE `ark_vocabulary_type`;
---
 -- Dumping data for table `ark_vocabulary_type`
 --
 
@@ -5112,11 +4910,6 @@ INSERT INTO `ark_vocabulary_type` (`type`, `equivalence`, `hierarchy`, `associat
 ('taxonomy', 0, 1, 0, 1, 0, 'core.vocabulary.type.taxonomy', 'A hierarchy of related terms'),
 ('thesaurus', 1, 1, 1, 0, 0, 'core.vocabulary.type.thesaurus', 'A collection of related terms');
 
---
--- Truncate table before insert `ark_workflow_action`
---
-
-TRUNCATE TABLE `ark_workflow_action`;
 --
 -- Dumping data for table `ark_workflow_action`
 --
@@ -5142,39 +4935,33 @@ INSERT INTO `ark_workflow_action` (`schma`, `action`, `event_vocabulary`, `event
 ('core.page', 'view', 'core.event.class', 'viewed', NULL, 1, 1, 1, 1, 'core.action.view', NULL);
 
 --
--- Truncate table before insert `ark_workflow_agency`
---
-
-TRUNCATE TABLE `ark_workflow_agency`;
---
--- Truncate table before insert `ark_workflow_allow`
---
-
-TRUNCATE TABLE `ark_workflow_allow`;
---
 -- Dumping data for table `ark_workflow_allow`
 --
 
 INSERT INTO `ark_workflow_allow` (`schma`, `action`, `role`, `operator`) VALUES
 ('core.actor', 'activate', 'admin', 'is'),
+('core.actor', 'activate', 'sysadmin', 'is'),
 ('core.actor', 'approve', 'admin', 'is'),
+('core.actor', 'approve', 'sysadmin', 'is'),
 ('core.actor', 'cancel', 'admin', 'is'),
+('core.actor', 'cancel', 'sysadmin', 'is'),
 ('core.actor', 'edit', 'admin', 'is'),
+('core.actor', 'edit', 'sysadmin', 'is'),
 ('core.actor', 'restore', 'admin', 'is'),
+('core.actor', 'restore', 'sysadmin', 'is'),
 ('core.actor', 'suspend', 'admin', 'is'),
+('core.actor', 'suspend', 'sysadmin', 'is'),
 ('core.actor', 'view', 'admin', 'is'),
 ('core.actor', 'view', 'anonymous', 'is'),
+('core.actor', 'view', 'sysadmin', 'is'),
 ('core.actor', 'view', 'user', 'is'),
 ('core.page', 'edit', 'admin', 'is'),
+('core.page', 'edit', 'sysadmin', 'is'),
 ('core.page', 'view', 'admin', 'is'),
 ('core.page', 'view', 'anonymous', 'is'),
+('core.page', 'view', 'sysadmin', 'is'),
 ('core.page', 'view', 'user', 'is');
 
---
--- Truncate table before insert `ark_workflow_condition`
---
-
-TRUNCATE TABLE `ark_workflow_condition`;
 --
 -- Dumping data for table `ark_workflow_condition`
 --
@@ -5186,11 +4973,6 @@ INSERT INTO `ark_workflow_condition` (`schma`, `action`, `class`, `attribute`, `
 ('core.actor', 'suspend', 'person', 'status', 0, 'eq', 'approved');
 
 --
--- Truncate table before insert `ark_workflow_grant`
---
-
-TRUNCATE TABLE `ark_workflow_grant`;
---
 -- Dumping data for table `ark_workflow_grant`
 --
 
@@ -5198,7 +4980,6 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('admin', 'core.actor.read'),
 ('admin', 'core.actor.update'),
 ('admin', 'core.admin'),
-('admin', 'core.admin.system'),
 ('admin', 'core.admin.user'),
 ('admin', 'core.message.read'),
 ('admin', 'core.message.update'),
@@ -5208,6 +4989,13 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('anonymous', 'core.user.login'),
 ('anonymous', 'core.user.register'),
 ('anonymous', 'core.user.reset'),
+('sysadmin', 'core.actor.read'),
+('sysadmin', 'core.actor.update'),
+('sysadmin', 'core.admin'),
+('sysadmin', 'core.admin.system'),
+('sysadmin', 'core.admin.user'),
+('sysadmin', 'core.message.read'),
+('sysadmin', 'core.message.update'),
 ('user', 'core.actor.read'),
 ('user', 'core.actor.update'),
 ('user', 'core.file.read'),
@@ -5215,22 +5003,12 @@ INSERT INTO `ark_workflow_grant` (`role`, `permission`) VALUES
 ('user', 'core.message.update');
 
 --
--- Truncate table before insert `ark_workflow_notify`
---
-
-TRUNCATE TABLE `ark_workflow_notify`;
---
 -- Dumping data for table `ark_workflow_notify`
 --
 
 INSERT INTO `ark_workflow_notify` (`id`, `schma`, `action`, `class`, `attribute`, `role`, `keyword`) VALUES
 (1, 'core.actor', 'register', 'person', NULL, 'admin', NULL);
 
---
--- Truncate table before insert `ark_workflow_permission`
---
-
-TRUNCATE TABLE `ark_workflow_permission`;
 --
 -- Dumping data for table `ark_workflow_permission`
 --
@@ -5267,29 +5045,15 @@ INSERT INTO `ark_workflow_permission` (`permission`, `keyword`, `enabled`, `desc
 ('core.user.reset', NULL, 1, NULL);
 
 --
--- Truncate table before insert `ark_workflow_role`
---
-
-TRUNCATE TABLE `ark_workflow_role`;
---
 -- Dumping data for table `ark_workflow_role`
 --
 
-INSERT INTO `ark_workflow_role` (`role`, `agent_for`, `enabled`, `keyword`) VALUES
-('admin', NULL, 1, 'core.role.admin'),
-('anonymous', NULL, 1, 'core.role.anon'),
-('user', NULL, 1, 'core.role.user');
+INSERT INTO `ark_workflow_role` (`role`, `agent_for`, `level`, `enabled`, `keyword`) VALUES
+('admin', NULL, 'ROLE_ADMIN', 1, 'core.workflow.role.admin'),
+('anonymous', NULL, 'ROLE_ANON', 1, 'core.workflow.role.anon'),
+('sysadmin', NULL, 'ROLE_SUPER_ADMIN', 1, 'core.workflow.role.admin'),
+('user', NULL, 'ROLE_USER', 1, 'core.workflow.role.user');
 
---
--- Truncate table before insert `ark_workflow_trigger`
---
-
-TRUNCATE TABLE `ark_workflow_trigger`;
---
--- Truncate table before insert `ark_workflow_update`
---
-
-TRUNCATE TABLE `ark_workflow_update`;
 --
 -- Dumping data for table `ark_workflow_update`
 --
@@ -5303,3 +5067,7 @@ INSERT INTO `ark_workflow_update` (`schma`, `action`, `class`, `attribute`, `act
 ('core.actor', 'unlock', 'person', 'status', NULL, NULL, NULL, 'approved', NULL, NULL);
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

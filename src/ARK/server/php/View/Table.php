@@ -29,12 +29,59 @@
 
 namespace ARK\View;
 
+use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
+use ARK\ORM\ClassMetadataBuilder;
 
 class Table extends Group
 {
+    protected $caption;
+    protected $header;
+    protected $footer;
+    protected $sortable;
+    protected $searchable;
+    protected $row;
+    protected $list;
+    protected $card;
+    protected $thumbnail;
+    protected $view;
+    protected $image;
+    protected $export;
+    protected $columns;
+    protected $pagination;
+    protected $selection;
+    protected $classes;
+    protected $url;
+
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
-        self::groupMetadata($metadata);
+        // Joined Table Inheritance
+        $builder = new ClassMetadataBuilder($metadata, 'ark_view_table');
+        $builder->setReadOnly();
+
+        // Fields
+        $builder->addStringField('mode', 10);
+        $builder->addField('caption', 'boolean');
+        $builder->addField('header', 'boolean');
+        $builder->addField('footer', 'boolean');
+        $builder->addField('sortable', 'boolean');
+        $builder->addField('searchable', 'boolean');
+        $builder->addField('row', 'boolean');
+        $builder->addField('list', 'boolean');
+        $builder->addField('card', 'boolean');
+        $builder->addField('thumbnail', 'boolean');
+        $builder->addStringField('view', 10);
+        $builder->addStringField('image', 30);
+        $builder->addField('export', 'boolean');
+        $builder->addField('columns', 'boolean');
+        $builder->addField('pagination', 'integer');
+        $builder->addStringField('selection', 10);
+        KeywordTrait::buildKeywordMetadata($builder);
+        $builder->addStringField('classes', 100);
+        $builder->addStringField('template', 100);
+        $builder->addStringField('url', 2038);
+
+        // Associations
+        $builder->addOneToMany('cells', Cell::class, 'group');
     }
 }

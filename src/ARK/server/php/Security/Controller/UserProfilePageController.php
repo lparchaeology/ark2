@@ -39,15 +39,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserProfilePageController extends PageController
 {
-    public function __invoke(Request $request, $id = null)
-    {
-        $request->attributes->set('_actor', $id);
-        return parent::__invoke($request);
-    }
-
     public function buildData(Request $request)
     {
-        $id = $request->attributes->get('_actor');
+        $id = $request->attributes->get('user');
         if (!$actor = ORM::find(Actor::class, $id)) {
             throw new ErrorException(
                 new NotFoundError('PROFILE_NOT_FOUND', 'Profile not found', "Profile for user $id not found")

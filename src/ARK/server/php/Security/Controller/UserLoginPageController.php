@@ -35,16 +35,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserLoginPageController extends PageController
 {
-    public function __invoke(Request $request)
+    public function buildState(Request $request, $data) : iterable
     {
         if ($error = Service::security()->lastError($request)) {
             Service::view()->addErrorFlash($error);
         }
-        return parent::__invoke($request);
-    }
-
-    public function buildState(Request $request, $data) : iterable
-    {
         $state = parent::buildState($request, $data);
         $state['security']['last_username'] = Service::security()->lastUsername();
         return $state;

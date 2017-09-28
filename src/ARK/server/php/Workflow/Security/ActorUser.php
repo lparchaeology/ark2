@@ -30,11 +30,11 @@
 namespace ARK\Workflow\Security;
 
 use ARK\Actor\Actor;
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Security\User;
 use ARK\Service;
 use DateTime;
-use Doctrine\ORM\Mapping\ClassMetadata;
 
 class ActorUser
 {

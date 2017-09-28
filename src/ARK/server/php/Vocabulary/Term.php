@@ -31,10 +31,10 @@ namespace ARK\Vocabulary;
 
 use ARK\Model\EnabledTrait;
 use ARK\Model\KeywordTrait;
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Term
 {

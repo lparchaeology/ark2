@@ -32,6 +32,7 @@ namespace ARK\View;
 use ARK\Actor\Actor;
 use ARK\Form\Type\StaticType;
 use ARK\Model\Item;
+use ARK\Model\KeywordTrait;
 use ARK\Model\LocalText;
 use ARK\Model\Property;
 use ARK\Model\Schema\SchemaAttribute;
@@ -83,7 +84,7 @@ class Field extends Element
         return $this->format ?: 'hidden';
     }
 
-    public function formName() : string
+    public function name() : string
     {
         return $this->attribute->name();
     }
@@ -134,7 +135,7 @@ class Field extends Element
         $state['required'] = $this->attribute()->isRequired();
         $state['multiple'] = $this->attribute->hasMultipleOccurrences();
         if (!isset($state['name'])) {
-            $state['name'] = $this->formName();
+            $state['name'] = $this->name();
         }
         if (!isset($state['display']['property'])) {
             $state['display']['property'] = $this->display;
@@ -292,7 +293,8 @@ class Field extends Element
     }
 
     // FIXME Should probably have some way to use FormTypes here to render 'static' mode
-    public function renderView($data, iterable $state) : string
+    // TODO May actually just be able to use renderView() now?
+    public function renderStaticView($data, iterable $state) : string
     {
         //dump('RENDER FIELD '.$this->id().' '.$this->keyword());
         $state = $this->buildState($data, $state);
@@ -362,13 +364,14 @@ class Field extends Element
         $builder = new ClassMetadataBuilder($metadata, 'ark_view_field');
 
         // Fields
-        $builder->addStringField('formType', 100, 'form_type');
-        $builder->addStringField('formOptions', 4000, 'form_options');
         $builder->addStringField('display', 30);
         $builder->addStringField('value', 10);
         $builder->addStringField('parameter', 10);
         $builder->addStringField('format', 10);
+        KeywordTrait::buildKeywordMetadata($builder);
         $builder->addStringField('template', 100);
+        $builder->addStringField('formType', 100, 'form_type');
+        $builder->addStringField('formOptions', 4000, 'form_options');
 
         // Associations
         $builder->addCompositeManyToOneField('attribute', 'ARK\Model\Schema\SchemaAttribute', [

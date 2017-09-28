@@ -30,9 +30,6 @@
 namespace ARK\Framework\Controller;
 
 use ARK\Framework\PageController;
-use ARK\Message\Message;
-use ARK\ORM\ORM;
-use ARK\Vocabulary\Vocabulary;
 use DIME\DIME;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -41,20 +38,6 @@ class MessageListPageController extends PageController
     public function buildData(Request $request)
     {
         $data['messages'] = DIME::getNotifications();
-        $msg = $request->query->get('id');
-        if ($msg) {
-            $message = ORM::find(Message::class, $msg);
-            if ($messages->contains($message)) {
-                $data['message'] = $message;
-            }
-        }
         return $data;
-    }
-
-    public function buildState(Request $request, $data) : iterable
-    {
-        $state = parent::buildState($request, $data);
-        $state['event_vocabulary'] = ORM::find(Vocabulary::class, 'core.event.class');
-        return $state;
     }
 }

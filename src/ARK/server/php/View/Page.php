@@ -30,9 +30,9 @@
 namespace ARK\View;
 
 use ARK\Actor\Actor;
+use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use ARK\Service;
 use ARK\Vocabulary\Term;
 use ARK\Workflow\Permission;
 use Symfony\Component\Form\Form;
@@ -110,12 +110,6 @@ class Page extends Element
         return $state;
     }
 
-    public function renderView($data, iterable $state, iterable $forms = null) : string
-    {
-        $context = $this->renderContext($data, $state, $forms);
-        return Service::view()->renderView($this->template(), $context);
-    }
-
     public function pageContext($data, iterable $state, iterable $forms = null) : iterable
     {
         $context = $this->buildContext($data, $state);
@@ -143,14 +137,15 @@ class Page extends Element
         // Fields
         $builder->addStringField('mode', 10);
         $builder->addStringField('visibility', 30);
+        KeywordTrait::buildKeywordMetadata($builder);
         $builder->addStringField('template', 100);
 
         // Associations
-        $builder->addPermissionField('read', 'view');
-        $builder->addPermissionField('update', 'edit');
         $builder->addManyToOneField('header', Group::class, 'header', 'element');
         $builder->addManyToOneField('sidebar', Group::class, 'sidebar', 'element');
         $builder->addManyToOneField('content', Group::class, 'content', 'element');
         $builder->addManyToOneField('footer', Group::class, 'footer', 'element');
+        $builder->addPermissionField('read', 'view');
+        $builder->addPermissionField('update', 'edit');
     }
 }

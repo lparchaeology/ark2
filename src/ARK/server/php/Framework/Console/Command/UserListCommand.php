@@ -47,28 +47,11 @@ class UserListCommand extends AbstractCommand
         $rows = [];
         foreach ($users as $user) {
             $roles = [];
-            if ($user->actors()) {
-                foreach ($user->actors() as $actor) {
-                    foreach ($actor->roles() as $role) {
-                        $roles[$role->role()->id()] = $role->role()->id();
-                    }
-                }
+            foreach ($user->roles() as $role) {
+                $roles[] = $role->id();
             }
-            $roles = implode(', ', array_keys($roles));
-
-            if ($user->isExpired()) {
-                $status = 'Expired';
-            } elseif ($user->isLocked()) {
-                $status = 'Locked';
-            } elseif (!$user->isEnabled()) {
-                $status = 'Disabled';
-            } elseif ($user->isVerified()) {
-                $status = 'Verified';
-            } else {
-                $status = 'Enabled';
-            }
-
-            $rows[] = [$user->id(), $user->name(), $user->email(), $status, $user->level(), $roles];
+            $roles = implode(', ', $roles);
+            $rows[] = [$user->id(), $user->name(), $user->email(), $user->status()->name(), $user->level(), $roles];
         }
         $this->writeTable($headers, $rows);
     }

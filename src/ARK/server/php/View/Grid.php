@@ -29,7 +29,9 @@
 
 namespace ARK\View;
 
+use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
+use ARK\ORM\ClassMetadataBuilder;
 
 class Grid extends Group
 {
@@ -92,6 +94,18 @@ class Grid extends Group
 
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
-        self::groupMetadata($metadata);
+        // Joined Table Inheritance
+        $builder = new ClassMetadataBuilder($metadata, 'ark_view_group');
+        $builder->setReadOnly();
+
+        // Fields
+        $builder->addStringField('name', 30);
+        $builder->addStringField('mode', 10);
+        KeywordTrait::buildKeywordMetadata($builder);
+        $builder->addStringField('template', 100);
+        $builder->addStringField('formType', 100, 'form_type');
+
+        // Associations
+        $builder->addOneToMany('cells', Cell::class, 'group');
     }
 }

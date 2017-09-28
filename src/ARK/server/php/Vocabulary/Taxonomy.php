@@ -29,9 +29,9 @@
 
 namespace ARK\Vocabulary;
 
+use ARK\ORM\ClassMetadata;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Taxonomy extends Vocabulary
 {

@@ -31,8 +31,8 @@
 namespace ARK\Map;
 
 use ARK\Model\KeywordTrait;
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
-use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Layer implements LayerInterface
 {

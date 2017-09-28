@@ -59,10 +59,6 @@ abstract class PageController extends Controller
         if ($state['mode'] === 'deny') {
             throw new AccessDeniedException('core.error.access.denied');
         }
-        dump($data);
-        dump($state);
-        dump($options);
-        dump($forms);
         //dump($forms['']['credentials']['username']);
         //dump($forms['']['actor']['fullname']);
         if ($forms && $request->getMethod() === 'POST') {

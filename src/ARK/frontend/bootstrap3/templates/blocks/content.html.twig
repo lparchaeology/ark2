@@ -5,7 +5,7 @@
 
     {% if layout is defined %}
 
-        {{ layout.renderForm(data, state, form)|raw }}
+        {{ layout.renderView(data, state, form)|raw }}
 
     {% elseif content[2] is defined %}
 

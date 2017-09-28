@@ -57,7 +57,7 @@ class SiteCreateCommand extends DatabaseCommand
         $site = strtolower($site);
 
         $frontends = array_keys(ARK::frontends());
-        $frontend = $this->askChoice('Please choose the frontend to use', $frontends, 'core');
+        $frontend = $this->askChoice('Please choose the frontend to use', $frontends, 'ark2');
         $config['admin'] = $this->chooseServerConfig();
         $config['server'] = $config['admin'];
         unset($config['server']['wrapperClass']);
@@ -176,7 +176,7 @@ class SiteCreateCommand extends DatabaseCommand
                 } catch (DBALException $e) {
                     $this->writeException("Load Schema to database $dbname failed", $e);
                     $admin->rollBack();
-                    $admin->executeQuery('SET FOREIGN_KEY_CHECKS=1');
+                    $admin->enableForeignKeyChecks();
                     $admin->close();
                     return false;
                 }
@@ -186,14 +186,46 @@ class SiteCreateCommand extends DatabaseCommand
                     $admin->commit();
                     $this->write(" * Loaded $db data...");
                 } catch (Exception $e) {
+                    $this->writeException("Load Data to database $dbname failed", $e);
                     $admin->rollBack();
+                    $admin->enableForeignKeyChecks();
+                    $admin->close();
+                    return false;
                 }
             }
         }
 
+        // Set up the Sysdmin user
+        $this->write("Setting up the 'sysadmin' user for the site.");
+        $password = $this->askPassword('sysadmin');
+        $email = $this->askQuestion('Please enter the email for the site sysadmin user');
+        $admin->close();
+        $config['admin']['dbname'] = $config['connections']['user']['dbname'];
+        $admin = $this->getConnection($config['admin']);
+        $admin->connect();
+        $admin->beginTransaction();
+        try {
+            $sql = '
+                UPDATE ark_security_user
+                SET enabled = :enabled, password = :password, email = :email
+                WHERE user = :user
+            ';
+            $parms = [
+                ':enabled' => true,
+                ':email' => $email,
+                ':password' => $password,
+                ':user' => 'sysadmin',
+            ];
+            $admin->executeUpdate($sql, $parms);
+            $admin->commit();
+            $this->write('Site sysadmin user enabled');
+        } catch (Exception $e) {
+            $this->writeException('Enabling site sysadmin user failed, please enable manually', $e);
+            $admin->rollBack();
+        }
+
         // Termiate the admin connection
         $admin->close();
-        // TODO Write out config file?
         return true;
     }
 }

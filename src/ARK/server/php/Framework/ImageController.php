@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DIME Controller.
+ * ARK Controller.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -27,19 +27,40 @@
  * @since      2.0
  */
 
-namespace DIME\Controller\API;
+namespace ARK\Framework;
 
+use ARK\Error\ErrorException;
 use ARK\File\Image;
+use ARK\Http\Error\NotFoundError;
 use ARK\ORM\ORM;
 use ARK\Service;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ImageController
+class ImageController extends Controller
 {
-    public function __invoke(Request $request, $image) : Response
+    public function handleRequest(Request $request) : Response
     {
-        $file = ORM::find(Image::class, $image);
+        if (!$file = $this->buildData($request)) {
+            throw new ErrorException(
+                new NotFoundError('IMAGE_NOT_FOUND', 'Image not found', 'The image file was not found')
+            );
+        }
         return Service::imageResponse($file->path(), $request->query->all());
+    }
+
+    public function buildData(Request $request)
+    {
+        return ORM::find(Image::class, $request->attributes->get('image'));
+    }
+
+    public function buildState(Request $request, $data) : iterable
+    {
+        return [];
+    }
+
+    public function defaultOptions(string $route = null) : iterable
+    {
+        return [];
     }
 }

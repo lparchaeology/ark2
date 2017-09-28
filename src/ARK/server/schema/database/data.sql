@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 06, 2017 at 04:55 PM
+-- Generation Time: Sep 28, 2017 at 09:03 PM
 -- Server version: 10.2.8-MariaDB
 -- PHP Version: 7.1.8
 
@@ -13,174 +13,193 @@ SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
 --
--- Database: `core_ark_data`
+-- Database: `avalon_ark_data`
 --
 
 --
--- Truncate table before insert `ark_association`
+-- Dumping data for table `ark_fragment_datetime`
 --
 
-TRUNCATE TABLE `ark_association`;
+INSERT INTO `ark_fragment_datetime` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `object`, `extent`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
+(1, 'file', '4', 'created', 'datetime', NULL, 'UTC', '2017-09-27 08:20:58', 0, 8, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(2, 'file', '4', 'modified', 'datetime', NULL, 'UTC', '2017-09-27 08:20:58', 0, 8, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(3, 'event', '1', 'occurred', 'datetime', NULL, 'UTC', '2017-09-27 08:20:59', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
+(4, 'message', '1', 'sent', 'datetime', NULL, 'UTC', '2017-09-27 08:20:59', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', '');
+
 --
--- Truncate table before insert `ark_fragment_blob`
+-- Dumping data for table `ark_fragment_integer`
 --
 
-TRUNCATE TABLE `ark_fragment_blob`;
+INSERT INTO `ark_fragment_integer` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `object`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
+(1, 'file', '4', 'sequence', 'integer', NULL, NULL, 20170927082058, 0, NULL, 8, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', '');
+
 --
--- Truncate table before insert `ark_fragment_boolean`
+-- Dumping data for table `ark_fragment_item`
 --
 
-TRUNCATE TABLE `ark_fragment_boolean`;
+INSERT INTO `ark_fragment_item` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `object`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
+(1, 'actor', 'sysadmin', 'avatar', 'item', NULL, 'file', '4', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(2, 'event', '1', 'agents', 'item', NULL, 'actor', 'anonymous', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
+(3, 'event', '1', 'subject', 'item', NULL, 'actor', 'sysadmin', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
+(4, 'message', '1', 'sender', 'item', NULL, 'actor', 'anonymous', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
+(5, 'message', '1', 'event', 'item', NULL, 'event', '1', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', '');
+
 --
--- Truncate table before insert `ark_fragment_date`
+-- Dumping data for table `ark_fragment_object`
 --
 
-TRUNCATE TABLE `ark_fragment_date`;
---
--- Truncate table before insert `ark_fragment_datetime`
---
+INSERT INTO `ark_fragment_object` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `object`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
+(7, 'actor', 'sysadmin', 'address', 'object', NULL, NULL, '', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(8, 'file', '4', 'versions', 'object', NULL, NULL, '', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(9, 'message', '1', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
+(10, 'message', '1', 'recipients', 'object', NULL, NULL, '', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', '');
 
-TRUNCATE TABLE `ark_fragment_datetime`;
---
--- Truncate table before insert `ark_fragment_decimal`
---
-
-TRUNCATE TABLE `ark_fragment_decimal`;
---
--- Truncate table before insert `ark_fragment_float`
---
-
-TRUNCATE TABLE `ark_fragment_float`;
---
--- Truncate table before insert `ark_fragment_integer`
---
-
-TRUNCATE TABLE `ark_fragment_integer`;
---
--- Truncate table before insert `ark_fragment_item`
---
-
-TRUNCATE TABLE `ark_fragment_item`;
---
--- Truncate table before insert `ark_fragment_object`
---
-
-TRUNCATE TABLE `ark_fragment_object`;
---
--- Truncate table before insert `ark_fragment_spatial`
---
-
-TRUNCATE TABLE `ark_fragment_spatial`;
---
--- Truncate table before insert `ark_fragment_string`
---
-
-TRUNCATE TABLE `ark_fragment_string`;
 --
 -- Dumping data for table `ark_fragment_string`
 --
 
-INSERT INTO `ark_fragment_string` (`fid`, `object`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
-(1, NULL, 'actor', 'anonymous', 'id', 'string', NULL, NULL, 'anonymous', 0, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
-(2, NULL, 'actor', 'anonymous', 'class', 'string', NULL, 'core.actor.class', 'person', 0, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL);
+INSERT INTO `ark_fragment_string` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `object`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
+(1, 'actor', 'anonymous', 'id', 'string', NULL, NULL, 'anonymous', 0, NULL, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
+(2, 'actor', 'anonymous', 'class', 'string', NULL, 'core.actor.class', 'person', 0, NULL, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
+(3, 'actor', 'sysadmin', 'class', 'string', NULL, 'core.actor.class', 'person', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:57', 'anonymous', '2017-09-27 08:20:57', ''),
+(4, 'actor', 'sysadmin', 'city', 'string', NULL, NULL, 'London', 0, NULL, 7, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(5, 'actor', 'sysadmin', 'country', 'string', NULL, 'country', 'GB', 0, NULL, 7, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(6, 'actor', 'sysadmin', 'postcode', 'string', NULL, NULL, 'E1 6QL', 0, NULL, 7, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(7, 'actor', 'sysadmin', 'street', 'string', NULL, NULL, '1 Brick Lane', 0, NULL, 7, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(8, 'actor', 'sysadmin', 'telephone', 'string', NULL, NULL, '123456', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(9, 'file', '4', 'class', 'string', NULL, 'core.file.class', 'image', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(10, 'file', '4', 'mediatype', 'string', NULL, 'mediatype', 'image/png', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(11, 'file', '4', 'id', 'string', NULL, NULL, '4', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(12, 'file', '4', 'path', 'string', NULL, NULL, 'image/0/4.20170927082058.png', 0, NULL, 8, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(13, 'file', '4', 'name', 'string', NULL, NULL, 'Screen Shot 2017-09-06 at 09.52.15.png', 0, NULL, 8, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(14, 'file', '4', 'extension', 'string', NULL, NULL, 'png', 0, NULL, 8, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(15, 'file', '4', 'version', 'string', NULL, NULL, '2017-09-27 08:20:58', 0, NULL, 8, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(16, 'file', '4', 'creator', 'string', NULL, NULL, 'anonymous', 0, NULL, 8, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(17, 'file', '4', 'modifier', 'string', NULL, NULL, 'anonymous', 0, NULL, 8, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(18, 'actor', 'sysadmin', 'id', 'string', NULL, NULL, 'sysadmin', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(19, 'actor', 'sysadmin', 'email', 'string', NULL, NULL, 'sysadmin@lparchaeology.com', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(20, 'event', '1', 'class', 'string', NULL, 'core.event.class', 'registered', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
+(21, 'event', '1', 'id', 'string', NULL, NULL, '1', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
+(22, 'actor', 'sysadmin', 'status', 'string', NULL, 'core.security.status', 'registered', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
+(23, 'message', '1', 'class', 'string', NULL, 'core.message.class', 'notification', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
+(24, 'message', '1', 'status', 'string', NULL, 'core.message.recipient.status', 'unread', 0, NULL, 9, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
+(25, 'message', '1', 'role', 'string', NULL, NULL, 'admin', 0, NULL, 10, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', ''),
+(26, 'message', '1', 'id', 'string', NULL, NULL, '1', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', '');
 
---
--- Truncate table before insert `ark_fragment_text`
---
-
-TRUNCATE TABLE `ark_fragment_text`;
 --
 -- Dumping data for table `ark_fragment_text`
 --
 
-INSERT INTO `ark_fragment_text` (`fid`, `object`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
-(1, NULL, 'actor', 'anonymous', 'fullname', 'text', 'text/plain', 'en', 'Anonymous', 0, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
-(2, NULL, 'actor', 'anonymous', 'shortname', 'text', 'text/plain', 'en', 'Anon', 0, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
-(3, NULL, 'actor', 'anonymous', 'initials', 'text', 'text/plain', 'en', 'ANO', 0, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
-(4, NULL, 'page', 'about', 'content', 'text', 'text/html', 'en', '<H1>Welcome to Avalon</H1>', 0, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL);
+INSERT INTO `ark_fragment_text` (`fid`, `module`, `item`, `attribute`, `datatype`, `format`, `parameter`, `value`, `span`, `extent`, `object`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
+(1, 'actor', 'anonymous', 'fullname', 'text', 'text/plain', 'en', 'Anonymous', 0, NULL, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
+(2, 'actor', 'anonymous', 'shortname', 'text', 'text/plain', 'en', 'Anon', 0, NULL, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
+(3, 'actor', 'anonymous', 'initials', 'text', 'text/plain', 'en', 'ANO', 0, NULL, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
+(4, 'page', 'demo', 'content', 'text', 'text/html', 'en', '<div class=\"container theme-showcase\" role=\"main\">\r\n\r\n<br><br><br><br><br>\r\n\r\n<!-- TEXT STYLING -->\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h3 class=\"panel-title\">Headings &amp; Paragraphs</h3>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n      <div class=\"col-md-6\">\r\n        <h1>Sample heading h1</h1>\r\n        <h2>Sample heading h2</h2>\r\n        <h3>Sample heading h3</h3>\r\n        <h4>Sample heading h4</h4>\r\n        <h5>Sample heading h5</h5>\r\n        <h6>Sample heading h6</h6>\r\n      </div>\r\n\r\n      <div class=\"col-md-6\">\r\n        <p><strong>Paragraph:</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n        <br>\r\n        <p class=\"small\"><strong>Paragraph Small:</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n<br><br>\r\n<!-- BUTTONS -->\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h3 class=\"panel-title\">BUTTONS</h3>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n      <p>\r\n        <br>\r\n        <button type=\"button\" class=\"btn btn-lg btn-default\">Default</button>\r\n        <button type=\"button\" class=\"btn btn-lg btn-primary\">Primary</button>\r\n        <button type=\"button\" class=\"btn btn-lg btn-danger\">Danger</button>\r\n        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\r\n        <button type=\"button\" class=\"btn btn-lg btn-success\">Success</button>\r\n        <button type=\"button\" class=\"btn btn-lg btn-info\">Info</button>\r\n        <button type=\"button\" class=\"btn btn-lg btn-warning\">Warning</button>\r\n        <button type=\"button\" class=\"btn btn-lg btn-link\">Link</button>\r\n      </p><br>\r\n      <p>\r\n        <button type=\"button\" class=\"btn btn-default\">Default</button>\r\n        <button type=\"button\" class=\"btn btn-primary\">Primary</button>\r\n        <button type=\"button\" class=\"btn btn-danger\">Danger</button>\r\n        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\r\n        <button type=\"button\" class=\"btn btn-success\">Success</button>\r\n        <button type=\"button\" class=\"btn btn-info\">Info</button>\r\n        <button type=\"button\" class=\"btn btn-warning\">Warning</button>\r\n        <button type=\"button\" class=\"btn btn-link\">Link</button>\r\n      </p><br>\r\n      <p>\r\n        <button type=\"button\" class=\"btn btn-sm btn-default\">Default</button>\r\n        <button type=\"button\" class=\"btn btn-sm btn-primary\">Primary</button>\r\n        <button type=\"button\" class=\"btn btn-sm btn-danger\">Danger</button>\r\n        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\r\n        <button type=\"button\" class=\"btn btn-sm btn-success\">Success</button>\r\n        <button type=\"button\" class=\"btn btn-sm btn-info\">Info</button>\r\n        <button type=\"button\" class=\"btn btn-sm btn-warning\">Warning</button>\r\n        <button type=\"button\" class=\"btn btn-sm btn-link\">Link</button>\r\n      </p><br>\r\n    </div>\r\n  </div>\r\n\r\n<br><br>\r\n<!-- TABLE -->\r\n  <div class=\"row\">\r\n    <div class=\"col-md-12\">\r\n      <table class=\"table\">\r\n        <thead>\r\n          <tr>\r\n            <th>Name</th>\r\n            <th>Type</th>\r\n            <th>Registered text</th>\r\n            <th>Subgroup</th>\r\n            <th>Issued to</th>\r\n            <th>Issue date</th>\r\n          </tr>\r\n        </thead>\r\n        <tbody>\r\n          <tr>\r\n            <td><strong>MN012_1</strong></td>\r\n            <td>Deposit</td>\r\n            <td>Ward Boundary-Marker in situ, pre…</td>\r\n            <td>MN012_1421</td>\r\n            <td>Naralie Johnston</td>\r\n            <td>10 Jan, 2016</td>\r\n          </tr>\r\n          <tr>\r\n            <td><strong>MN012_1</strong></td>\r\n            <td>Deposit</td>\r\n            <td>Ward Boundary-Marker in situ, pre…</td>\r\n            <td>MN012_1421</td>\r\n            <td>Naralie Johnston</td>\r\n            <td>10 Jan, 2016</td>\r\n          </tr>\r\n          <tr>\r\n            <td><strong>MN012_1</strong></td>\r\n            <td>Deposit</td>\r\n            <td>Ward Boundary-Marker in situ, pre…</td>\r\n            <td>MN012_1421</td>\r\n            <td>Naralie Johnston</td>\r\n            <td>10 Jan, 2016</td>\r\n          </tr>\r\n          <td><strong>MN012_1</strong></td>\r\n          <td>Deposit</td>\r\n          <td>Ward Boundary-Marker in situ, pre…</td>\r\n          <td>MN012_1421</td>\r\n          <td>Naralie Johnston</td>\r\n          <td>10 Jan, 2016</td>\r\n        </tr>\r\n        <tr>\r\n          <td><strong>MN012_1</strong></td>\r\n          <td>Deposit</td>\r\n          <td>Ward Boundary-Marker in situ, pre…</td>\r\n          <td>MN012_1421</td>\r\n          <td>Naralie Johnston</td>\r\n          <td>10 Jan, 2016</td>\r\n        </tr>\r\n        </tbody>\r\n      </table>\r\n    </div>\r\n  </div>\r\n\r\n<br><br>\r\n<!-- LABELS -->\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h3 class=\"panel-title\">LABELS</h3>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n      <p class=\"text-center\">\r\n        <span class=\"label label-primary\">context</span>\r\n        <span class=\"label label-danger\">find</span>\r\n        <span class=\"label label-warning\">photo</span>\r\n        <span class=\"label label-info\">section</span>\r\n        <span class=\"label label-success\">subgroup</span>\r\n        <span class=\"label label-mustard\">timber</span>\r\n        <span class=\"label label-brown\">sample</span>\r\n        <span class=\"label label-blue\">plan</span>\r\n        <span class=\"label label-default\">default</span>\r\n      </p>\r\n      <br>\r\n      <h4 class=\"text-center\">\r\n        <span class=\"label label-primary\">context</span>\r\n        <span class=\"label label-danger\">find</span>\r\n        <span class=\"label label-warning\">photo</span>\r\n        <span class=\"label label-info\">section</span>\r\n        <span class=\"label label-success\">subgroup</span>\r\n        <span class=\"label label-mustard\">timber</span>\r\n        <span class=\"label label-brown\">sample</span>\r\n        <span class=\"label label-blue\">plan</span>\r\n        <span class=\"label label-default\">default</span>\r\n      </h4>\r\n    </div>\r\n  </div>\r\n\r\n<br><br>\r\n<!-- CARDS -->\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h3 class=\"panel-title\">CARDS</h3>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n      <div class=\"col-md-3\">\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-primary\">context</span>\r\n            <div class=\"image\">\r\n              <img src=\"http://www.dyfedarchaeology.org.uk/nevern/plan.jpg\" class=\"img-responsive\">\r\n            </div>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_1</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Lorem ipsum dolor sit amet</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Issued to: Dan Eddisford</p>\r\n              <p>Issue Date: 14 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-info\">section</span>\r\n            <div class=\"image\">\r\n              <img src=\"https://s-media-cache-ak0.pinimg.com/originals/26/1a/5d/261a5dd4c44b81063a9079247455e6f8.jpg\" class=\"img-responsive\" alt=\"\">\r\n            </div>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_1</div>\r\n            <small>\r\n              <p>Registered text: Lorem ipsum dolor sit amet</p>\r\n              <p>Location: TP3</p>\r\n              <p>Context: MNO12_1, MNO12_2, MNO12_4, MNO12_5</p>\r\n              <p>Drawn by: Chriz Harward</p>\r\n              <p>Drawn on: 14 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-warning\">photo</span>\r\n            <div class=\"image\">\r\n              <img src=\"http://photos.projects-abroad.co.uk/volunteer-projects/archaeology/archaeology-romania.jpg\" class=\"img-responsive\" alt=\"\">\r\n            </div>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_0001</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Ward Boundary-Marker in situ, pre demolition 100 Minories</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Taken by: Naralie Johnston</p>\r\n              <p>Taken on: 10 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"col-md-3\">\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-warning\">photo</span>\r\n            <div class=\"image\">\r\n              <img src=\"http://photos.projects-abroad.co.uk/volunteer-projects/archaeology/archaeology-romania.jpg\" class=\"img-responsive\" alt=\"\">\r\n            </div>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_0001</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Ward Boundary-Marker in situ, pre demolition 100 Minories</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Taken by: Naralie Johnston</p>\r\n              <p>Taken on: 10 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-blue\">plan</span>\r\n            <div class=\"image\">\r\n              <img src=\"http://www.sbarch.org.uk/History_SG/Stoke_Park/Stoke_Park_Misc/Rotunda.jpg\" class=\"img-responsive\" alt=\"\">\r\n            </div>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12</div>\r\n            <small>\r\n              <p>Type: Object</p>\r\n              <p>Context: MNO12_30</p>\r\n              <p>Register text: Lorem ipusaiydiua dusaydui asyduisay a dsuiyi…</p>\r\n              <p>Object material: N/A</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-danger\">find</span>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_30</div>\r\n            <small>\r\n              <p>Type: Object</p>\r\n              <p>Context: MNO12_30</p>\r\n              <p>Register text: Lorem ipusaiydiua dusaydui asyduisay a dsuiyi…</p>\r\n              <p>Object material: N/A</p>\r\n              <p>Date added: 08 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"col-md-3\">\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-success\">subgroup</span>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">Subgroup Test</div>\r\n            <small>\r\n              <p>Type: Object</p>\r\n              <p>Context: MNO12_30</p>\r\n              <p>Register text: Lorem ipusaiydiua dusaydui asyduisay a dsuiyi…</p>\r\n              <p>Object material: N/A</p>\r\n              <p>Date added: 08 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-primary\">context</span>\r\n            <div class=\"image\">\r\n              <img src=\"http://www.dyfedarchaeology.org.uk/nevern/plan.jpg\" class=\"img-responsive\">\r\n            </div>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_1</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Lorem ipsum dolor sit amet</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Issued to: Dan Eddisford</p>\r\n              <p>Issue Date: 14 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-warning\">photo</span>\r\n            <div class=\"image\">\r\n              <img src=\"http://photos.projects-abroad.co.uk/volunteer-projects/archaeology/archaeology-romania.jpg\" class=\"img-responsive\" alt=\"\">\r\n            </div>\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_0001</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Ward Boundary-Marker in situ, pre demolition 100 Minories</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Taken by: Naralie Johnston</p>\r\n              <p>Taken on: 10 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <div class=\"col-md-3\">\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-brown\">sample</span>\r\n            <img src=\"https://www.york.ac.uk/media/archaeology/images/Colluvial%20deposits%20Mwanga%20smaller.jpg\" class=\"img-responsive\">\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_1</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Lorem ipsum dolor sit amet</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Issued to: Dan Eddisford</p>\r\n              <p>Issue Date: 14 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-mustard\">timber</span>\r\n            <img src=\"http://www.britannia-archaeology.com/files/9614/3337/3296/North_Fen_Walkway.JPG\" class=\"img-responsive\">\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_1</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Lorem ipsum dolor sit amet</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Issued to: Dan Eddisford</p>\r\n              <p>Issue Date: 14 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n        <div class=\"card\">\r\n          <div class=\"card-header\">\r\n            <span class=\"label label-primary\">context</span>\r\n            <img src=\"https://msu.edu/~aarondan/archaeology_files/image006.jpg\" class=\"img-responsive\">\r\n          </div>\r\n          <div class=\"card-description\">\r\n            <div class=\"title\">MNO12_1</div>\r\n            <small>\r\n              <p>Type: Deposit</p>\r\n              <p>Registered text: Lorem ipsum dolor sit amet</p>\r\n              <p>Subgroup: MN012_1421</p>\r\n              <p>Issued to: Dan Eddisford</p>\r\n              <p>Issue Date: 14 Jan, 2016</p>\r\n            </small>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"col-md-12\">\r\n        <p class=\"text-center\">\r\n          <button type=\"button\" class=\"btn btn-lg btn-default\">Load more</button>\r\n          <br><br>\r\n        </p>\r\n\r\n      </div>\r\n\r\n    </div>\r\n  </div>\r\n\r\n<br><br>\r\n<!-- HORIZONTAL PILLS -->\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h3 class=\"panel-title\">Horizontal Pills</h3>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n      <div class=\"col-md-12\">\r\n        <ul class=\"nav nav-pills\">\r\n          <li role=\"presentation\" class=\"active\"><a href=\"#\">Selected Tab</a></li>\r\n          <li role=\"presentation\"><a href=\"#\">Tab Two</a></li>\r\n          <li role=\"presentation\"><a href=\"#\">Tab Three</a></li>\r\n          <li role=\"presentation\"><a href=\"#\">Tab Four</a></li>\r\n          <li role=\"presentation\"><a href=\"#\">Tab Five</a></li>\r\n          <li role=\"presentation\"><a href=\"#\">Tab Six</a></li>\r\n        </ul>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n<!-- VERTICAL PILLS -->\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h3 class=\"panel-title\">Vertical Pills</h3>\r\n    </div>\r\n    <br>\r\n    <div class=\"panel-body\">\r\n      <div class=\"col-md-2\">\r\n        <ul class=\"nav nav-pills nav-stacked nav-pills-stacked-example\">\r\n          <li role=\"presentation\" class=\"active\"><a href=\"#\">All Records</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-primary circle\"></span> &nbsp;Contexts</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-danger circle\"></span> &nbsp;Finds</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-warning circle\"></span> &nbsp;Photos</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-blue circle\"></span>  &nbsp;Plans</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-info circle\"></span> &nbsp;Sections</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-success circle\"></span> &nbsp;Sub-groups</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-mustard circle\"></span>  &nbsp;Timbers</a></li>\r\n          <li role=\"presentation\"><a href=\"#\"><span class=\"label label-brown circle\"></span>  &nbsp;Samples</a></li>\r\n        </ul>\r\n      </div>\r\n      <div class=\"col-md-10\">\r\n        <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n        </p>\r\n      </div>\r\n    </div>\r\n    <br>\r\n  </div>\r\n\r\n  <div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n      <h3 class=\"panel-title\">Dropdowns & Dropups</h3>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n      <div class=\"col-md-4\">\r\n        <div class=\"dropdown theme-dropdown clearfix\">\r\n          <a id=\"dropdownMenu1\" href=\"#\" class=\"sr-only dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Dropdown <span class=\"caret\"></span></a>\r\n          <ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu1\">\r\n            <li class=\"active\"><a href=\"#\">Action</a></li>\r\n            <li><a href=\"#\">Another action</a></li>\r\n            <li><a href=\"#\">Something else here</a></li>\r\n            <li role=\"separator\" class=\"divider\"></li>\r\n            <li><a href=\"#\">Separated link</a></li>\r\n          </ul>\r\n        </div>\r\n\r\n\r\n        <div class=\"dropdown\">\r\n          <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"dropdownMenu2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\r\n            Dropdown\r\n            <span class=\"caret\"></span>\r\n          </button>\r\n          <ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu2\">\r\n            <li><a href=\"#\">Action</a></li>\r\n            <li><a href=\"#\">Another action</a></li>\r\n            <li><a href=\"#\">Something else here</a></li>\r\n            <li role=\"separator\" class=\"divider\"></li>\r\n            <li><a href=\"#\">Separated link</a></li>\r\n          </ul>\r\n        </div>\r\n      </div>\r\n      <div class=\"col-md-4\">\r\n        <div class=\"dropdown theme-dropdown clearfix\">\r\n          <a id=\"dropdownMenu1\" href=\"#\" class=\"sr-only dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Dropdown <span class=\"caret\"></span></a>\r\n          <ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu1\">\r\n            <li class=\"active\"><a href=\"#\">Action</a></li>\r\n            <li><a href=\"#\">Another action</a></li>\r\n            <li><a href=\"#\">Something else here</a></li>\r\n            <li role=\"separator\" class=\"divider\"></li>\r\n            <li><a href=\"#\">Separated link</a></li>\r\n          </ul>\r\n        </div>\r\n        <div class=\"dropup\">\r\n          <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"dropdownMenu2\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\r\n            Dropup\r\n            <span class=\"caret\"></span>\r\n          </button>\r\n          <ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu2\">\r\n            <li><a href=\"#\">Action</a></li>\r\n            <li><a href=\"#\">Another action</a></li>\r\n            <li><a href=\"#\">Something else here</a></li>\r\n            <li role=\"separator\" class=\"divider\"></li>\r\n            <li><a href=\"#\">Separated link</a></li>\r\n          </ul>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n\r\n\r\n  <div class=\"page-header\">\r\n    <h1>List groups</h1>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div class=\"col-sm-4\">\r\n      <ul class=\"list-group\">\r\n        <li class=\"list-group-item\">Cras justo odio</li>\r\n        <li class=\"list-group-item\">Dapibus ac facilisis in</li>\r\n        <li class=\"list-group-item\">Morbi leo risus</li>\r\n        <li class=\"list-group-item\">Porta ac consectetur ac</li>\r\n        <li class=\"list-group-item\">Vestibulum at eros</li>\r\n      </ul>\r\n    </div><!-- /.col-sm-4 -->\r\n    <div class=\"col-sm-4\">\r\n      <div class=\"list-group\">\r\n        <a href=\"#\" class=\"list-group-item active\">\r\n          Cras justo odio\r\n        </a>\r\n        <a href=\"#\" class=\"list-group-item\">Dapibus ac facilisis in</a>\r\n        <a href=\"#\" class=\"list-group-item\">Morbi leo risus</a>\r\n        <a href=\"#\" class=\"list-group-item\">Porta ac consectetur ac</a>\r\n        <a href=\"#\" class=\"list-group-item\">Vestibulum at eros</a>\r\n      </div>\r\n    </div><!-- /.col-sm-4 -->\r\n    <div class=\"col-sm-4\">\r\n      <div class=\"list-group\">\r\n        <a href=\"#\" class=\"list-group-item active\">\r\n          <h4 class=\"list-group-item-heading\">List group item heading</h4>\r\n          <p class=\"list-group-item-text\">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>\r\n        </a>\r\n        <a href=\"#\" class=\"list-group-item\">\r\n          <h4 class=\"list-group-item-heading\">List group item heading</h4>\r\n          <p class=\"list-group-item-text\">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>\r\n        </a>\r\n        <a href=\"#\" class=\"list-group-item\">\r\n          <h4 class=\"list-group-item-heading\">List group item heading</h4>\r\n          <p class=\"list-group-item-text\">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>\r\n        </a>\r\n      </div>\r\n    </div><!-- /.col-sm-4 -->\r\n  </div>\r\n\r\n\r\n\r\n  <div class=\"page-header\">\r\n    <h1>Carousel</h1>\r\n  </div>\r\n  <div id=\"carousel-example-generic\" class=\"carousel slide\" data-ride=\"carousel\">\r\n    <ol class=\"carousel-indicators\">\r\n      <li data-target=\"#carousel-example-generic\" data-slide-to=\"0\" class=\"active\"></li>\r\n      <li data-target=\"#carousel-example-generic\" data-slide-to=\"1\"></li>\r\n      <li data-target=\"#carousel-example-generic\" data-slide-to=\"2\"></li>\r\n    </ol>\r\n    <div class=\"carousel-inner\" role=\"listbox\">\r\n      <div class=\"item active\">\r\n        <img src=\"http://anthro.ucsc.edu/images/20091205_CLWHD_arch_dig_0255.jpg?t=0\" alt=\"First slide\">\r\n      </div>\r\n      <div class=\"item\">\r\n        <img src=\"http://anthro.ucsc.edu/images/20091205_CLWHD_arch_dig_0255.jpg?t=0\" alt=\"Second slide\">\r\n      </div>\r\n      <div class=\"item\">\r\n        <img src=\"http://anthro.ucsc.edu/images/20091205_CLWHD_arch_dig_0255.jpg?t=0\" alt=\"Third slide\">\r\n      </div>\r\n    </div>\r\n    <a class=\"left carousel-control\" href=\"#carousel-example-generic\" role=\"button\" data-slide=\"prev\">\r\n      <span class=\"glyphicon glyphicon-chevron-left\" aria-hidden=\"true\"></span>\r\n      <span class=\"sr-only\">Previous</span>\r\n    </a>\r\n    <a class=\"right carousel-control\" href=\"#carousel-example-generic\" role=\"button\" data-slide=\"next\">\r\n      <span class=\"glyphicon glyphicon-chevron-right\" aria-hidden=\"true\"></span>\r\n      <span class=\"sr-only\">Next</span>\r\n    </a>\r\n  </div>\r\n\r\n\r\n</div> <!-- /container -->', 0, NULL, NULL, 'core', '2017-09-06 00:00:00', 'core', '2017-09-06 00:00:00', NULL),
+(5, 'actor', 'sysadmin', 'fullname', 'text', 'text/plain', 'en', 'Sysadmin', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(6, 'actor', 'sysadmin', 'shortname', 'text', 'text/plain', 'en', 'Sysadmin', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(7, 'actor', 'sysadmin', 'initials', 'text', 'text/plain', 'en', 'LPA', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', ''),
+(8, 'actor', 'sysadmin', 'biography', 'text', 'text/plain', 'en', 'Sysadmin', 0, NULL, NULL, 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', '');
 
---
--- Truncate table before insert `ark_fragment_time`
---
-
-TRUNCATE TABLE `ark_fragment_time`;
---
--- Truncate table before insert `ark_item_actor`
---
-
-TRUNCATE TABLE `ark_item_actor`;
 --
 -- Dumping data for table `ark_item_actor`
 --
 
 INSERT INTO `ark_item_actor` (`id`, `module`, `schma`, `class`, `status`, `visibility`, `parent_module`, `parent_id`, `idx`, `label`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
-('anonymous', 'actor', 'core.actor', 'person', 'allocated', 'public', NULL, NULL, 'anonymous', 'anonymous', '', '2017-09-06 00:00:00', '', '2017-09-06 00:00:00', NULL);
+('anonymous', 'actor', 'core.actor', 'person', 'allocated', 'public', NULL, NULL, 'anonymous', 'anonymous', '', '2017-09-06 00:00:00', '', '2017-09-06 00:00:00', NULL),
+('sysadmin', 'actor', 'core.actor', 'person', 'allocated', 'private', NULL, NULL, 'sysadmin', 'sysadmin', 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:57', '');
 
 --
--- Truncate table before insert `ark_item_event`
+-- Dumping data for table `ark_item_event`
 --
 
-TRUNCATE TABLE `ark_item_event`;
+INSERT INTO `ark_item_event` (`id`, `module`, `schma`, `class`, `status`, `visibility`, `parent_module`, `parent_id`, `idx`, `label`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
+('1', 'event', 'core.event', 'registered', 'allocated', 'private', 'actor', 'sysadmin', '1', '1', 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', '');
+
 --
--- Truncate table before insert `ark_item_file`
+-- Dumping data for table `ark_item_file`
 --
 
-TRUNCATE TABLE `ark_item_file`;
+INSERT INTO `ark_item_file` (`id`, `module`, `schma`, `class`, `status`, `visibility`, `parent_module`, `parent_id`, `idx`, `label`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
+('4', 'file', 'core.file', 'image', 'allocated', 'private', NULL, NULL, '4', '4', 'anonymous', '2017-09-27 08:20:58', 'anonymous', '2017-09-27 08:20:58', '');
+
 --
--- Truncate table before insert `ark_item_message`
+-- Dumping data for table `ark_item_message`
 --
 
-TRUNCATE TABLE `ark_item_message`;
---
--- Truncate table before insert `ark_item_page`
---
+INSERT INTO `ark_item_message` (`id`, `module`, `schma`, `class`, `status`, `visibility`, `parent_module`, `parent_id`, `idx`, `label`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
+('1', 'message', 'core.message', 'notification', 'allocated', 'private', NULL, NULL, '1', '1', 'anonymous', '2017-09-27 08:20:59', 'anonymous', '2017-09-27 08:20:59', '');
 
-TRUNCATE TABLE `ark_item_page`;
 --
 -- Dumping data for table `ark_item_page`
 --
 
 INSERT INTO `ark_item_page` (`id`, `module`, `schma`, `class`, `status`, `visibility`, `parent_module`, `parent_id`, `idx`, `label`, `modifier`, `modified`, `creator`, `created`, `version`) VALUES
-('about', 'page', 'core.page', NULL, 'allocated', 'public', NULL, NULL, 'about', 'about', '', '2017-09-06 00:00:00', '', '2017-09-06 00:00:00', NULL);
+('demo', 'page', 'core.page', NULL, 'allocated', 'public', NULL, NULL, 'about', 'about', '', '2017-09-06 00:00:00', '', '2017-09-06 00:00:00', NULL);
 
 --
--- Truncate table before insert `ark_sequence`
+-- Dumping data for table `ark_sequence`
 --
 
-TRUNCATE TABLE `ark_sequence`;
+INSERT INTO `ark_sequence` (`module`, `parent`, `sequence`, `idx`, `min`, `max`) VALUES
+('event', '', 'id', 2, NULL, NULL),
+('file', '', 'id', 5, NULL, NULL),
+('message', '', 'id', 2, NULL, NULL),
+('object', '', 'fid', 14, NULL, NULL);
+
 --
--- Truncate table before insert `ark_sequence_lock`
+-- Dumping data for table `ark_sequence_lock`
 --
 
-TRUNCATE TABLE `ark_sequence_lock`;
---
--- Truncate table before insert `ark_sequence_reserve`
---
+INSERT INTO `ark_sequence_lock` (`id`, `module`, `parent`, `sequence`, `idx`, `recycle`, `locked_by`, `locked_on`) VALUES
+(1, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:10:09'),
+(2, 'file', '', 'id', 1, 0, NULL, '2017-09-27 09:10:10'),
+(3, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:10:10'),
+(4, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:10:56'),
+(5, 'file', '', 'id', 1, 0, NULL, '2017-09-27 09:10:56'),
+(6, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:10:56'),
+(7, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:12:56'),
+(8, 'file', '', 'id', 1, 0, NULL, '2017-09-27 09:12:57'),
+(9, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:12:57'),
+(10, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:20:58'),
+(11, 'file', '', 'id', 1, 0, NULL, '2017-09-27 09:20:58'),
+(12, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:20:58'),
+(13, 'event', '', 'id', 1, 0, NULL, '2017-09-27 09:20:59'),
+(14, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:20:59'),
+(15, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:20:59'),
+(16, 'message', '', 'id', 1, 0, NULL, '2017-09-27 09:20:59'),
+(17, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:21:59'),
+(18, 'file', '', 'id', 1, 0, NULL, '2017-09-27 09:21:59'),
+(19, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:21:59'),
+(20, 'event', '', 'id', 1, 0, NULL, '2017-09-27 09:21:59'),
+(21, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:21:59'),
+(22, 'object', '', 'fid', 1, 0, NULL, '2017-09-27 09:21:59'),
+(23, 'message', '', 'id', 1, 0, NULL, '2017-09-27 09:21:59');
 
-TRUNCATE TABLE `ark_sequence_reserve`;
---
--- Truncate table before insert `ark_workflow_actor_role`
---
-
-TRUNCATE TABLE `ark_workflow_actor_role`;
 --
 -- Dumping data for table `ark_workflow_actor_role`
 --
 
 INSERT INTO `ark_workflow_actor_role` (`actor`, `role`, `agent_for`, `enabled`, `expires_at`) VALUES
-('anonymous', 'anonymous', NULL, 1, NULL);
+('anonymous', 'anonymous', NULL, 1, NULL),
+('sysadmin', 'sysadmin', NULL, 1, NULL);
 
---
--- Truncate table before insert `ark_workflow_actor_user`
---
-
-TRUNCATE TABLE `ark_workflow_actor_user`;
 --
 -- Dumping data for table `ark_workflow_actor_user`
 --
 
 INSERT INTO `ark_workflow_actor_user` (`actor`, `user`, `enabled`, `expires_at`) VALUES
-('anonymous', 'anonymous', 1, NULL);
+('anonymous', 'anonymous', 1, NULL),
+('sysadmin', 'sysadmin', 1, NULL);
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

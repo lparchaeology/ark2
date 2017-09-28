@@ -29,7 +29,7 @@
 
 namespace ARK\Vocabulary;
 
-use Doctrine\ORM\Mapping\ClassMetadata;
+use ARK\ORM\ClassMetadata;
 
 class Thesaurus extends Vocabulary
 {

@@ -1,6 +1,6 @@
 {# ARK GridLayout template for standard Bootstrap grid #}
 
-{% if layout.form %}
+{% if layout.type.id == 'form' %}
     {{ form_start(form) }}
 {% endif %}
 
@@ -41,7 +41,7 @@
         {% endif %}
 
         {% for idx, cell in col %}
-            {{ cell.renderForm(data, state, form)|raw }}
+            {{ cell.renderView(data, state, form)|raw }}
         {% endfor %}
         </div>
     {% endfor %}
@@ -52,6 +52,6 @@
 
 {% endfor %}
 
-{% if layout.form %}
+{% if layout.type.id == 'form' %}
     {{ form_end(form) }}
 {% endif %}

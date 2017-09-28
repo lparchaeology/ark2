@@ -2,109 +2,86 @@
 
 <div class='table-wrapper-div'>
 
-    {% set table_class = 'table bootstrap-table table-hover' %}
-    {% set items = data.items %}
-
     <table
-        id="{{layout.id}}"
-        class="{{table_class}}"
+        id="{{table.id}}"
+        class="{{ table.classes }}"
         data-toggle="table"
-        data-classes="{{table_class}}"
+        data-classes="{{ table.classes }}"
         data-sort-name="id"
-        {#data-show-refresh="true"#}
-        data-show-toggle="true"
-        data-show-columns="true"
+        data-show-refresh="{{ table.canRefresh }}"
+        data-show-toggle="{{ table.canToggleView }}"
+        data-show-columns="{{ table.canChooseColumns }}"
         data-mobile-responsive="true"
-        data-show-export="true"
-        data-switchcardview="true"
+        data-show-export="{{ table.canExportData }}"
+        data-switchcardview="{{ table.canToggleView }}"
         data-click-to-select="true"
+        {% if table.dataUrl %}
+            data-url="{{ table.dataUrl }}"
+        {% endif %}
         icons="{ columns: 'glyphicon-th-list icon-th-list' }">
 
-        <thead>
-            <tr>
-                <th class="checkedhead" data-field="checked" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
-                {% if items[0]is defined and items[0].hasAttribute(state.image) %}
-                    <th class="thumbimagehead" data-field="{{state.image}}" data-title="{{state.image}}" data-sortable="false"></th>
-                {% endif %}
-                {% for cell in layout.cells %}
-                    {% set field = cell.element %}
-                    {% if state.actor.hasPermission(field.attribute.readPermission) %}
-                        <th data-field="{{field.id}}" data-title="{{f ield.keyword | translate }}" data-sortable="true" data-sorter="alphanum" data-visible="{{ cell.visible }}" data-card-visible="false">
-                            {{ field.keyword|trans }}
-                        </th>
-                    {% endif %}
-                    {% do form[field.formName].setRendered %}
-                {% endfor %}
-                <th class="controlshead" data-field="controls" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
-            </tr>
-        </thead>
+        {% if table.showCaption %}
+            <caption>{% table.keyword | translate('caption') %}</caption>
+        {% endif %}
 
-            <tbody>
-                {% for item in items %}
-                    <tr data-unique-id="{{ item.id }}">
+        {% if table.showHeader %}
+            <thead>
+                <tr>
+                    {% if table.selection %}
+                        <th class="checkedhead" data-field="checked" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
+                    {% endif %}
+                    {% if table.image %}
+                        <th class="thumbimagehead" data-field="{{table.image}}" data-title="{{table.image}}" data-sortable="false"></th>
+                    {% endif %}
+                    {% for cell in layout.cells %}
+                        {% set label = cell.element.keyword | translate('label') %}
+                        <th data-field="{{ cell.element.id }}" data-title="{{ label }}" data-sortable="{{ cell.sortable }}" data-sorter="alphanum" data-visible="{{ cell.visible }}" data-card-visible="false">
+                            {% label %}
+                        </th>
+                    {% endfor %}
+                    <th class="controlshead" data-field="controls" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
+                </tr>
+            </thead>
+        {% endif %}
+
+        <tbody>
+            {% for item in data %}
+                <tr data-unique-id="{{ item.id }}">
+                    {% if table.selection %}
                         <td class="not-card-visible">
                             <span class="tablecheckbox glyphicon glyphicon-unchecked"></span>
                         </td>
-                        {% if item.hasAttribute(state.image) %}
-                            <td class="thumbimage">
-                                {% set image = item.property(state.image).value() %}
-                                {% if image is not empty %}
-                                    {% if item.property(state.image).attribute.hasMultipleOccurrences %}
-                                        {% set image = image[0] %}
-                                    {% endif %}
-                                    <img src="{{path('img', {'image': image.id}) ~ '?p=thumb'}}" alt=''/>
-                                {% else %}
-                                    <span class="glyphicon glyphicon-picture placeholder-img"></span>
+                    {% endif %}
+                    {% if table.image %}
+                        <td class="thumbimage">
+                            {% set image = item.property(table.image).value() %}
+                            {% if image is not empty %}
+                                {% if item.property(table.image).attribute.hasMultipleOccurrences %}
+                                    {% set image = image[0] %}
                                 {% endif %}
-                            </td>
-                        {% endif %}
-                        {% for cell in layout.cells %}
-                            {% set field = cell.element %}
-                            {% if state.actor.hasPermission(field.attribute.readPermission) %}
-                                <td>
-                                    <span class="cell-label">{{field.keyword|trans}}</span>
-                                    {{ field.renderView(item, state) }}
-                                </td>
+                                <img src="{{path('img', {'image': image.id}) ~ '?p=thumb'}}" alt=''/>
+                            {% else %}
+                                <span class="glyphicon glyphicon-picture placeholder-img"></span>
                             {% endif %}
-                        {% endfor %}
-                        <td class="controls">
-                            <span class="cell-label">{{ 'core.controls' | translate }}</span>
-                            {% if (state.name == 'actors') %}
-                                <a href="#" class="open-focus">
-                                    <span class="icon icon-user-focus small"></span>
-                                </a>
-                            {% endif %}
-                            <a href="{{ path(state.modules[item.schema.module.id].route, {'id': item.id}) }}">
-                                <span class="glyphicon glyphicon-file"></span>
-                            </a>
                         </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
+                    {% endif %}
+                    {% for cell in layout.cells %}
+                        <td>
+                            <span class="cell-label">{{ cell.element.keyword | translate('label') }}</span>
+                            {{ cell.element.renderView(item, state) }}
+                        </td>
+                    {% endfor %}
+                    <td class="controls">
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
 
-        </table>
-
-    </div>
-
-    <script>
-        window.itemkey = {% if items[0] is defined %}
-            "{{ items[0].schema.module.id }}";
-        {% else %}
-            {{null}}
+        {% if table.showFooter %}
+            <tfoot>
+            </tfoot>
         {% endif %}
 
-        window.itemlist = [{% if items|length > 0 %}
-                {% for item in items %}
-                    "{{ item.id }}",
-                {% endfor %}
-            {% else %}
-                false
-            {% endif %},];
-        if (typeof window.translations == 'undefined') {
-            window.translations = [];
-        }
-        window.translations['core.user.update.success'] = "{{ 'core.user.update.success' | trans }}";
-        window.translations['core.user.update.failure'] = "{{ 'core.user.update.failure' | trans }}"
+    </table>
 
-        window.userApiUrl = "{{ path('api.internal.user.actor', {'id': 'dummyid'}) }}".split('dummyid')[0];
-    </script>
+</div>

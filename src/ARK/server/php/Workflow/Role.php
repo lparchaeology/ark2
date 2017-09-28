@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ARK Security Role.
+ * ARK Workflow Role.
  *
  * Copyright (C) 2017  L - P : Heritage LLP.
  *
@@ -31,27 +31,29 @@ namespace ARK\Workflow;
 
 use ARK\Actor\Actor;
 use ARK\Model\KeywordTrait;
+use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Vocabulary\Term;
 use ARK\Workflow\Security\ActorRole;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\ClassMetadata;
 
 class Role
 {
     use KeywordTrait;
 
-    protected $role = '';
+    protected $role;
     protected $agentFor;
+    protected $level;
     protected $enabled = true;
     protected $actors;
     protected $permissions;
 
-    public function __construct($role)
+    public function __construct($role, string $level = 'ROLE_USER')
     {
         $this->role = ($role instanceof Term ? $role->name() : $role);
+        $level = $level;
         $this->actors = new ArrayCollection();
         $this->permissions = new ArrayCollection();
     }
@@ -69,6 +71,11 @@ class Role
     public function agentFor() : ?string
     {
         return $this->agentFor;
+    }
+
+    public function level() : string
+    {
+        return $this->level;
     }
 
     public function isEnabled() : bool
@@ -153,6 +160,7 @@ class Role
 
         // Attributes
         $builder->addStringField('agentFor', 30, 'agent_for');
+        $builder->addStringField('level', 30);
         $builder->addField('enabled', 'boolean');
         KeywordTrait::buildKeywordMetadata($builder);
 

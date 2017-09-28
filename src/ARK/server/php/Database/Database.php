@@ -441,19 +441,6 @@ class Database
         $this->data()->insert('ark_fragment_datetime', $read);
     }
 
-    public function userSearch(iterable $query) : ?iterable
-    {
-        $sql = "
-            SELECT item
-            FROM ark_fragment_string
-            WHERE module = 'actor'
-            AND attribute = 'status'
-            AND value = :status
-        ";
-
-        return $this->data()->fetchAllColumn($sql, 'item', $query);
-    }
-
     public function findSearch(iterable $query) : ?iterable
     {
         $pre = "

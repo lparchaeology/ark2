@@ -29,7 +29,6 @@
 
 namespace ARK\View;
 
-use ARK\Model\EnabledTrait;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
@@ -41,15 +40,14 @@ use Symfony\Component\Form\FormView;
 
 abstract class Element implements ElementInterface
 {
-    use EnabledTrait;
     use KeywordTrait;
 
     protected $element = '';
-    protected $name = '';
     protected $type;
-    protected $formType = '';
-    protected $template = '';
+    protected $name = '';
     protected $mode = '';
+    protected $template = '';
+    protected $formType = '';
 
     public function __construct(string $element, $type, string $formType = null, string $template = null)
     {
@@ -64,13 +62,9 @@ abstract class Element implements ElementInterface
         return $this->element;
     }
 
-    public function formName() : ?string
+    public function name() : ?string
     {
         return $this->name;
-        if ($this->name) {
-            return $this->name;
-        }
-        return $this->element;
     }
 
     public function type() : Type
@@ -101,18 +95,11 @@ abstract class Element implements ElementInterface
 
     public function buildData($data, iterable $state)
     {
-        $name = (isset($state['name'])) ? $state['name'] : null;
+        $name = $state['name'] ?? $this->name ?? null;
         if ($name && is_array($data) && array_key_exists($name, $data)) {
             return $data[$name];
         }
-        if ($this->name) {
-            if (is_array($data) && array_key_exists($this->name, $data)) {
-                return $data[$this->name];
-            }
-            return null;
-        }
-        $name = $this->formName();
-        return is_array($data) && array_key_exists($name, $data) ? $data[$name] : $data;
+        return null;
     }
 
     public function formType() : string
@@ -149,7 +136,7 @@ abstract class Element implements ElementInterface
 
     public function buildState($data, iterable $state) : iterable
     {
-        $state['name'] = $this->formName();
+        $state['name'] = $this->name();
         $state['mode'] = $this->displayMode($state['mode']);
         $state['template'] = $this->template();
         return $state;
@@ -204,13 +191,12 @@ abstract class Element implements ElementInterface
 
     public function buildForm(FormBuilderInterface $builder, $data, iterable $state, iterable $options = []) : void
     {
-        //dump('BUILD FORM : '.get_class($this).' '.$this->id().' '.$this->formName().' '.$this->keyword());
+        //dump('BUILD FORM : '.get_class($this).' '.$this->id().' '.$this->name().' '.$this->keyword());
         //dump($this);
         //dump($data);
         //dump($state);
         //dump($options);
         $state = $this->buildState($data, $state);
-        //dump($state);
         if ($state['mode'] === 'deny') {
             return;
         }
@@ -220,16 +206,15 @@ abstract class Element implements ElementInterface
         //dump($state);
         //dump($options);
         $elementBuilder = $this->formBuilder($data, $state, $options);
-        //dump($elementBuilder);
         $builder->add($elementBuilder);
     }
 
-    public function renderForm($data, iterable $state, FormView $form = null) : string
+    public function renderView($data, iterable $state, FormView $form = null) : string
     {
         //dump('RENDER FORM : '.get_class($this).' '.$this->id().' '.$this->keyword());
+        $context = $this->buildContext($data, $state, $form);
         //dump($state);
         //dump($form);
-        $context = $this->buildContext($data, $state, $form);
         //dump($context);
         if ($context['state']['mode'] === 'deny') {
             return '';
@@ -250,10 +235,6 @@ abstract class Element implements ElementInterface
 
         // Key
         $builder->addStringKey('element', 30);
-
-        // Fields
-        EnabledTrait::buildEnabledMetadata($builder);
-        KeywordTrait::buildKeywordMetadata($builder);
 
         // Relationships
         $builder->addManyToOneField('type', Type::class, 'type', 'type', false);

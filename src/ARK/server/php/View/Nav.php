@@ -29,6 +29,7 @@
 
 namespace ARK\View;
 
+use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
@@ -142,11 +143,12 @@ class Nav extends Element
 
         $builder->addField('seq', 'integer');
         $builder->addField('level', 'integer');
+        $builder->addField('seperator', 'boolean');
         $builder->addStringField('icon', 50);
         $builder->addStringField('route', 50);
-        $builder->addStringField('uri', 50);
-        $builder->addField('seperator', 'boolean');
+        KeywordTrait::buildKeywordMetadata($builder);
         $builder->addStringField('template', 100);
+        $builder->addStringField('uri', 2038);
 
         $builder->addManyToOneField('parent', self::class, 'parent', 'element', true, 'children');
         $builder->addOneToMany('children', self::class, 'parent');

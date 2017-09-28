@@ -33,10 +33,11 @@ use ARK\Model\Item;
 use ARK\Service;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class Controller implements ControllerInterface
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request) : Response
     {
         return $this->handleRequest($request);
     }

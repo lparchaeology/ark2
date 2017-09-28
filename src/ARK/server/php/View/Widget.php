@@ -29,6 +29,7 @@
 
 namespace ARK\View;
 
+use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use Symfony\Component\Form\ButtonTypeInterface;
@@ -43,12 +44,8 @@ class Widget extends Element
 
     public function buildState($data, iterable $state) : iterable
     {
-        if (!isset($state['label'])) {
-            $state['label'] = $this->showLabel();
-        }
-        if (!isset($state['name'])) {
-            $state['name'] = $this->formName();
-        }
+        $state['label'] = $state['label'] ?? $this->showLabel();
+        $state['name'] = $state['name'] ?? $this->name();
         if (!isset($state['keyword'])) {
             if ($this->keyword()) {
                 $state['keyword'] = $this->keyword();
@@ -146,6 +143,7 @@ class Widget extends Element
         // Fields
         $builder->addStringField('name', 30);
         $builder->addStringField('choices', 30);
+        KeywordTrait::buildKeywordMetadata($builder);
         $builder->addStringField('template', 100);
         $builder->addStringField('formType', 100, 'form_type');
         $builder->addStringField('formOptions', 4000, 'form_options');

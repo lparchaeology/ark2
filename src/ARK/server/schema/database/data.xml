@@ -447,12 +447,8 @@
             <default value="integer"/>
             <notnull/>
         </field>
-        <field name="format" type="string" size="30">
-            <default value="NULL"/>
-        </field>
-        <field name="parameter" type="string" size="30">
-            <default value="NULL"/>
-        </field>
+        <field name="format" type="string" size="30"/>
+        <field name="parameter" type="string" size="30"/>
         <field name="value" type="bigint">
             <notnull/>
         </field>
@@ -474,9 +470,7 @@
         <field name="created" type="datetime">
             <notnull/>
         </field>
-        <field name="version" type="string" size="36">
-            <default value="NULL"/>
-        </field>
+        <field name="version" type="string" size="36"/>
         <index name="extent">
             <col>extent</col>
         </index>

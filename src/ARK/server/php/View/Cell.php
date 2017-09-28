@@ -117,7 +117,7 @@ class Cell implements ElementInterface
         return $this->vocabulary;
     }
 
-    public function formName() : ?string
+    public function name() : ?string
     {
         return $this->name;
     }
@@ -280,7 +280,7 @@ class Cell implements ElementInterface
 
     public function buildForms($data, iterable $state, iterable $options) : iterable
     {
-        //dump('BUILD CELL : '.$this->element->formName());
+        //dump('BUILD CELL : '.$this->element->name());
         if ($this->element->type()->isLayout()) {
             $state = $this->buildState($data, $state);
             return $this->element->buildForms($data, $state, $options);
@@ -290,25 +290,24 @@ class Cell implements ElementInterface
 
     public function buildForm(FormBuilderInterface $builder, $data, iterable $state, iterable $options = []) : void
     {
-        //dump('BUILD CELL FORM : '.$this->element->formName());
+        //dump('BUILD CELL FORM : '.$this->element->name());
         //dump($data);
         //dump($state);
         //dump($options);
         $state = $this->buildState($data, $state);
-        //dump($state);
         $data = $this->buildData($data, $state);
         $options = $this->buildOptions($data, $state, $options);
-        //dump($options);
         $this->element->buildForm($builder, $data, $state, $options);
     }
 
-    public function renderForm($data, iterable $state, FormView $form = null) : string
+    public function renderView($data, iterable $state, FormView $form = null) : string
     {
         //dump('RENDER CELL FORM : '.$this->element->id());
-        //dump($state);
         //dump($data);
+        //dump($state);
+        //dump($form);
         $state = $this->buildState($data, $state);
-        return $this->element->renderForm($data, $state, $form);
+        return $this->element->renderView($data, $state, $form);
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
