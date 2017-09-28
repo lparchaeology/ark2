@@ -42,8 +42,7 @@ class MessageReadController
     public function __invoke(Request $request) : Response
     {
         try {
-		$content = json_decode($request->getContent(), true);
-		dump($content);
+            $content = json_decode($request->getContent(), true);
             $message = $content['message'];
             $message = ORM::find(Message::class, $message);
             $recipient = $content['recipient'];

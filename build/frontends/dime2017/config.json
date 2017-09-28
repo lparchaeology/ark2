@@ -100,6 +100,7 @@
                 "core": [
                     "js/core.js",
                     "js/alert.js",
+		    "js/form.js",
                     "js/pageedit.js",
                     "js/routing.js",
                     "js/utilities.js"

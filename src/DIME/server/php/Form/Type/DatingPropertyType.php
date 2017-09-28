@@ -115,25 +115,32 @@ class DatingPropertyType extends AbstractPropertyType {
     }
     public function mapFormsToData($forms, &$property): void
     {
-        $forms = iterator_to_array ( $forms );
+        $forms = iterator_to_array($forms);
         if ($property instanceof Property) {
-            $event = $forms ['event']->getData ();
+                $event = $forms['event']->getData();
             if ($event) {
-                $event = ORM::find ( Event::class, $event );
+                    $event = ORM::find(Event::class, $event);
             }
-            $value ['event'] = $event;
-            $value ['entered'] = $forms ['entered']->getData ();
-            $value ['year'] [0] = $forms ['year']->getData ();
-            $value ['year'] [1] = $forms ['year_span']->getData ();
-            $value ['period'] [0] = $forms ['period']->getData ();
-            $value ['period'] [1] = $forms ['period_span']->getData ();
-            if ($value ['year'] [0] || $value ['period'] [0]) {
-                $property->setValue ( $value );
+            $value['event'] = $event;
+            $value['entered'] = $forms['entered']->getData();
+            $value['year'][0] = $forms['year']->getData();
+            $value['year'][1] = $forms['year_span']->getData();
+            if ($value['year'][0] === null && $value['year'][1] === null) {
+                    unset($value['year']);
+            }
+            $value['period'][0] = $forms['period']->getData();
+            $value['period'][1] = $forms['period_span']->getData();
+            if ($value['period'][0] === null && $value['period'][1] === null) {
+                    unset($value['period']);
+            }
+            if (isset($value['year'][0]) || isset($value['period'][0])) {
+                    $property->setValue($value);
             } else {
-                $property->setValue ( null );
+                $property->setValue(null);
             }
         }
     }
+
     protected function options()
     {
         return [

@@ -73,8 +73,8 @@ class JsonApiRequest extends Request
     {
         $this->validateMethod($errors);
         if (!Application::debug()) {
-            $this->validateContentTypeHeader($errors);
-            $this->validateAcceptHeader($errors);
+            //$this->validateContentTypeHeader($errors);
+            //$this->validateAcceptHeader($errors);
         }
         $this->validateQueryParameters($errors, $customParameters);
         $this->validateContent($errors);
