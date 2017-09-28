@@ -188,6 +188,8 @@
 
 .bootstrap-table .table.dime-table.cardViewTable:not(.table-condensed) tbody td.thumbimage ~ td{
     border-top:none;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .bootstrap-table .table:not(.table-condensed).dime-table tbody td,
