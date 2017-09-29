@@ -43,7 +43,6 @@ class FrontPageController extends DimeFormController
         // Then the 5 with images
         $featured = [];
         foreach ($finds as $find) {
-            $images = $find->property('image')->value();
             if ($images = $find->property('image')->value()) {
                 $featured[] = $find;
             }

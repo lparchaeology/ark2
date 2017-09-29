@@ -59,15 +59,17 @@ abstract class PageController extends Controller
         if ($state['mode'] === 'deny') {
             throw new AccessDeniedException('core.error.access.denied');
         }
-        //dump($forms['']['credentials']['username']);
-        //dump($forms['']['actor']['fullname']);
+        //dump($data);
+        //dump($state);
+        //dump($options);
+        //dump($forms);
         if ($forms && $request->getMethod() === 'POST') {
             $parms = $request->request->all();
             $parms = $this->fixStaticFields($parms);
             $request->request->replace($parms);
             try {
                 $posted = $this->postedForm($request, $forms);
-                dump($posted);
+                //dump($posted);
                 if ($posted !== null && $posted->isValid()) {
                     $this->processForm($request, $posted);
                     if ($file = $request->attributes->get('_file')) {

@@ -99,7 +99,7 @@ abstract class Element implements ElementInterface
         if ($name && is_array($data) && array_key_exists($name, $data)) {
             return $data[$name];
         }
-        return null;
+        return $data;
     }
 
     public function formType() : string
@@ -211,11 +211,12 @@ abstract class Element implements ElementInterface
 
     public function renderView($data, iterable $state, FormView $form = null) : string
     {
-        //dump('RENDER FORM : '.get_class($this).' '.$this->id().' '.$this->keyword());
+        dump('RENDER FORM : '.get_class($this).' '.$this->id().' '.$this->keyword());
         $context = $this->buildContext($data, $state, $form);
+        //dump($data);
         //dump($state);
         //dump($form);
-        //dump($context);
+        dump($context);
         if ($context['state']['mode'] === 'deny') {
             return '';
         }
