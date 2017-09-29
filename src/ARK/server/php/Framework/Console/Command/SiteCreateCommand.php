@@ -34,6 +34,7 @@ use ARK\Database\Console\DatabaseCommand;
 use ARK\Framework\Console\ProcessTrait;
 use Doctrine\DBAL\DBALException;
 use Exception;
+use Symfony\Component\Security\Core\Encoder\BCryptPasswordEncoder;
 
 class SiteCreateCommand extends DatabaseCommand
 {
@@ -78,17 +79,8 @@ class SiteCreateCommand extends DatabaseCommand
             $config['site'] = $site;
             ARK::writeSiteConfig($site, $config);
             $this->write('Site created.');
-            $this->write('Please add an Admin User from the Site Admin Console.');
             $this->result = $site;
             return $this->successCode();
-
-            /* TODO Need new Application with full DB connection created to do this, use Command Bus?
-            $admin = $this->app['user.manager']->create($adminEmail, $adminPassword);
-            $admin->setEnabled(true);
-            $admin->addRole('ROLE_ADMIN');
-            $this->app['user.manager']->save($admin);
-            $this->output->writeln('ARK admin user created.');
-            */
         }
         $this->write("\nFAILED: ARK site database not created.");
         return $this->errorCode();
@@ -198,6 +190,8 @@ class SiteCreateCommand extends DatabaseCommand
         // Set up the Sysdmin user
         $this->write("Setting up the 'sysadmin' user for the site.");
         $password = $this->askPassword('sysadmin');
+        $encoder = new BCryptPasswordEncoder(13);
+        $password = $encoder->encodePassword($password, null);
         $email = $this->askQuestion('Please enter the email for the site sysadmin user');
         $admin->close();
         $config['admin']['dbname'] = $config['connections']['user']['dbname'];
