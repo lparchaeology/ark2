@@ -64,6 +64,22 @@ class SiteCreateCommand extends DatabaseCommand
         unset($config['server']['wrapperClass']);
         $config['server']['user'] = $this->askQuestion('Please enter the site database user');
         $config['server']['password'] = $this->askPassword($config['server']['user']);
+
+        $strategy = [
+            'Separate databases for config, data, and users (recommended for large or multi-site installs)',
+            'Separate databases for config and data (recommended for smaller or single site installs)',
+            'Single database for config and data (not recommended, makes upgrades harder)',
+        ];
+        $strategy = $this->askChoice('Please choose a database strategy', $strategy, 0);
+
+        $spatial = [
+            'same' => 'Use the same database server',
+            'new' => 'Use a different database server',
+            'geos' => 'Use GEOS (processing only, no indexing)',
+            'none' => 'No geospatial processing',
+        ];
+        $spatial = $this->askChoice('Please choose a geospatial indexing/processing option', $strategy, 0);
+
         foreach (['core', 'data', 'spatial', 'user'] as $db) {
             $config['connections'][$db]['dbname'] = $site.'_ark_'.$db;
             $config['connections'][$db]['server'] = $config['server']['server'];
@@ -116,7 +132,7 @@ class SiteCreateCommand extends DatabaseCommand
                 $options = ['keep', 'drop', 'stop'];
                 $action = $this->askChoice(
                     "The $db database $dbname already exists on server, do you want to do with it?",
-                    ['keep', 'drop', 'stop'],
+                    $options,
                     'keep'
                 );
                 if ($action !== 'keep') {

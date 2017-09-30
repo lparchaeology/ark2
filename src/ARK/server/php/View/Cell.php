@@ -75,7 +75,6 @@ class Cell implements ElementInterface
     protected $display;
     protected $template;
     protected $options;
-    protected $optionsArray;
 
     public function group() : Element
     {
@@ -207,75 +206,20 @@ class Cell implements ElementInterface
         return $this->template ?? '';
     }
 
-    public function buildState($data, iterable $state) : iterable
+    public function options() : string
     {
-        $state['name'] = $this->name;
-        $state['label'] = $this->label;
-        $state['help'] = $this->help;
-        $state['placeholder'] = $this->placeholder;
-        $state['choices'] = $this->choices;
-        $state['map'] = $this->map;
-        $state['vocabulary'] = $this->vocabulary;
-        if ($this->required === false) {
-            $state['required'] = false;
-        }
-        if ($this->sanitise !== null) {
-            $state['sanitise'] = $this->sanitise;
-        }
-        $state['visible'] = $this->visible ?? true;
-        if ($this->pattern !== null) {
-            $state['pattern'] = $this->pattern;
-        }
-        if ($this->width !== null) {
-            $state['width'] = $this->width;
-        }
-        if ($this->display) {
-            $state['display']['name'] = $this->display;
-        }
-        $state['keyword'] = $this->keyword;
-        $actor = Service::workflow()->actor();
-        if (!$actor->hasPermission($this->editPermission)) {
-            $state['mode'] = 'view';
-        } elseif ($this->mode === 'view') {
-            $state['mode'] = 'view';
-        }
-        if (!$actor->hasPermission($this->viewPermission)) {
-            $state['mode'] = 'deny';
-        }
-        $state['action'] = $this->action;
-        if ($this->action && $data instanceof Item && !$actor->canAction($this->action, $data)) {
-            $state['mode'] = 'deny';
-        }
-        if ($this->valueModus() !== null) {
-            $state['value']['modus'] = $this->valueModus();
-        }
-        if ($this->parameterModus() !== null) {
-            $state['parameter']['modus'] = $this->parameterModus();
-        }
-        if ($this->formatModus() !== null) {
-            $state['format']['modus'] = $this->formatModus();
-        }
-        if (!isset($state['sanitise']) || $this->sanitise) {
-            $state['sanitise'] = $this->sanitise;
-        }
-        return $state;
+        return json_decode($this->options ?? '{}', true);
     }
 
-    public function buildData($data, iterable $state)
+    public function buildView(iterable $parent) : void
     {
-        return $data;
-    }
-
-    public function buildOptions($data, iterable $state, iterable $options = []) : iterable
-    {
-        if ($this->optionsArray === null) {
-            $this->optionsArray = json_decode($this->options, true);
-            if (!is_array($this->optionsArray)) {
-                $this->optionsArray = [];
-            }
-        }
-        $options = array_replace_recursive($options, $this->optionsArray);
-        return $options;
+        //dump('BUILD CELL VIEW : '.$this->element->name());
+        //dump($parent);
+        $view['state'] = $this->buildState($parent['state'], $parent['data']);
+        $view['data'] = $parent['data'];
+        $view['options'] = array_replace_recursive($parent['options'], $this->options());
+        $view['children'] = [];
+        $this->element->buildView($view);
     }
 
     public function buildForms($data, iterable $state, iterable $options) : iterable
@@ -288,26 +232,16 @@ class Cell implements ElementInterface
         return [];
     }
 
-    public function buildForm(FormBuilderInterface $builder, $data, iterable $state, iterable $options = []) : void
+    public function buildForm(iterable $view, FormBuilderInterface $builder) : void
     {
         //dump('BUILD CELL FORM : '.$this->element->name());
-        //dump($data);
-        //dump($state);
-        //dump($options);
-        $state = $this->buildState($data, $state);
-        $data = $this->buildData($data, $state);
-        $options = $this->buildOptions($data, $state, $options);
-        $this->element->buildForm($builder, $data, $state, $options);
+        $this->element->buildForm($view, $builder);
     }
 
-    public function renderView($data, iterable $state, FormView $form = null) : string
+    public function renderView(iterable $view, FormView $form = null) : string
     {
-        //dump('RENDER CELL FORM : '.$this->element->id());
-        //dump($data);
-        //dump($state);
-        //dump($form);
-        $state = $this->buildState($data, $state);
-        return $this->element->renderView($data, $state, $form);
+        //dump('RENDER CELL VIEW : '.$this->element->id());
+        return $this->element->renderView($view, $form);
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
@@ -361,5 +295,59 @@ class Cell implements ElementInterface
         ]);
         $builder->addManyToOneField('viewPermission', Permission::class, 'view', 'permission');
         $builder->addManyToOneField('editPermission', Permission::class, 'edit', 'permission');
+    }
+
+    protected function buildState(iterable $state, $data) : iterable
+    {
+        $state['name'] = $this->name;
+        $state['label'] = $this->label;
+        $state['help'] = $this->help;
+        $state['placeholder'] = $this->placeholder;
+        $state['choices'] = $this->choices;
+        $state['map'] = $this->map;
+        $state['vocabulary'] = $this->vocabulary;
+        if ($this->required === false) {
+            $state['required'] = false;
+        }
+        if ($this->sanitise !== null) {
+            $state['sanitise'] = $this->sanitise;
+        }
+        $state['visible'] = $this->visible ?? true;
+        if ($this->pattern !== null) {
+            $state['pattern'] = $this->pattern;
+        }
+        if ($this->width !== null) {
+            $state['width'] = $this->width;
+        }
+        if ($this->display) {
+            $state['display']['name'] = $this->display;
+        }
+        $state['keyword'] = $this->keyword;
+        $actor = Service::workflow()->actor();
+        if (!$actor->hasPermission($this->editPermission)) {
+            $state['mode'] = 'view';
+        } elseif ($this->mode === 'view') {
+            $state['mode'] = 'view';
+        }
+        if (!$actor->hasPermission($this->viewPermission)) {
+            $state['mode'] = 'deny';
+        }
+        $state['action'] = $this->action;
+        if ($this->action && $data instanceof Item && !$actor->canAction($this->action, $data)) {
+            $state['mode'] = 'deny';
+        }
+        if ($this->valueModus() !== null) {
+            $state['value']['modus'] = $this->valueModus();
+        }
+        if ($this->parameterModus() !== null) {
+            $state['parameter']['modus'] = $this->parameterModus();
+        }
+        if ($this->formatModus() !== null) {
+            $state['format']['modus'] = $this->formatModus();
+        }
+        if (!isset($state['sanitise']) || $this->sanitise) {
+            $state['sanitise'] = $this->sanitise;
+        }
+        return $state;
     }
 }

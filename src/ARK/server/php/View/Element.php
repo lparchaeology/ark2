@@ -48,6 +48,7 @@ abstract class Element implements ElementInterface
     protected $mode = '';
     protected $template = '';
     protected $formType = '';
+    protected $cells;
 
     public function __construct(string $element, $type, string $formType = null, string $template = null)
     {
@@ -55,6 +56,7 @@ abstract class Element implements ElementInterface
         $this->type = (is_string($type) ? ORM::find(Type::class, $type) : $type);
         $this->formType = $formType;
         $this->template = $template;
+        $this->cells = new ArrayCollection();
     }
 
     public function id() : string
@@ -72,34 +74,17 @@ abstract class Element implements ElementInterface
         return $this->type;
     }
 
+    public function mode() : string
+    {
+        return $this->mode;
+    }
+
     public function template() : string
     {
         if ($this->template) {
             return $this->template;
         }
         return $this->type->template();
-    }
-
-    public function mode() : string
-    {
-        return $this->mode;
-    }
-
-    public function displayMode(?string $parentMode) : ?string
-    {
-        if ($this->mode && $parentMode === 'edit') {
-            return $this->mode;
-        }
-        return $parentMode;
-    }
-
-    public function buildData($data, iterable $state)
-    {
-        $name = $state['name'] ?? $this->name ?? null;
-        if ($name && is_array($data) && array_key_exists($name, $data)) {
-            return $data[$name];
-        }
-        return $data;
     }
 
     public function formType() : string
@@ -110,116 +95,48 @@ abstract class Element implements ElementInterface
         return $this->type->formType();
     }
 
-    public function defaultState($route = null) : iterable
+    public function cells() : iterable
     {
-        $state['actor'] = null;
-        $state['page'] = null;
-        $state['layout'] = null;
-        $state['field'] = null;
-        $state['widget'] = null;
-        $state['map'] = null;
-        $state['vocabulary'] = null;
-        $state['name'] = null;
-        $state['mode'] = null;
-        $state['modus'] = null;
-        $state['sanitise'] = null;
-        $state['label'] = null;
-        $state['help'] = null;
-        $state['keyword'] = null;
-        $state['action'] = null;
-        $state['required'] = true;
-        $state['value']['modus'] = null;
-        $state['parameter']['modus'] = null;
-        $state['format']['modus'] = null;
-        return $state;
+        return $this->cells;
     }
 
-    public function buildState($data, iterable $state) : iterable
+    public function buildView(iterable $parent = []) : iterable
     {
-        $state['name'] = $this->name();
-        $state['mode'] = $this->displayMode($state['mode']);
-        $state['template'] = $this->template();
-        return $state;
-    }
-
-    public function defaultOptions($route = null) : iterable
-    {
-        return [];
-    }
-
-    public function buildOptions($data, iterable $state, iterable $options = []) : iterable
-    {
-        $options = array_replace_recursive($this->defaultOptions(), $options);
-        if ($state['label']) {
-            $options['label'] = $state['keyword'] ?? $this->keyword();
+        //dump('BUILD VIEW : '.get_class($this).' '.$this->id().' '.$this->name().' '.$this->keyword());
+        //dump($parent);
+        $view['state'] = $this->buildState($parent['data'], $parent['state']);
+        $view['data'] = $this->buildData($parent['data'], $view['state']);
+        $view['options'] = $this->buildOptions($view['data'], $view['state'], $view['options']);
+        $children = [];
+        foreach ($this->cells() as $cell) {
+            $children[] = $cell->buildView($view);
         }
-        $options['required'] = ($state['mode'] === 'view' ? false : $state['required']);
-        return $options;
+        $view['children'] = $children;
+        //dump($view);
+        return $view;
     }
 
-    public function defaultContext() : iterable
-    {
-        $context['state'] = null;
-        $context['data'] = null;
-        $context['form'] = null;
-        $context['help'] = null;
-        return $context;
-    }
-
-    public function buildContext($data, iterable $state, FormView $form = null) : iterable
-    {
-        $context = $this->defaultContext();
-        $state = $this->buildState($data, $state);
-        $context['state'] = $state;
-        $context['data'] = $this->buildData($data, $state);
-        $name = $state['name'];
-        if ($form === null) {
-            $context['form'] = ($state['forms'][$name] ?? $form);
-        } else {
-            $context['form'] = ($form[$name] ?? $form);
-        }
-        if ($state['label']) {
-            $context['label'] = $state['keyword'] ?? $this->keyword();
-        } else {
-            $context['label'] = null;
-        }
-        if ($state['help'] && $state['modus'] === 'active') {
-            $context['help'] = $state['keyword'] ?? $this->keyword();
-        }
-        return $context;
-    }
-
-    public function buildForm(FormBuilderInterface $builder, $data, iterable $state, iterable $options = []) : void
+    public function buildForm(iterable $view, FormBuilderInterface $builder) : void
     {
         //dump('BUILD FORM : '.get_class($this).' '.$this->id().' '.$this->name().' '.$this->keyword());
-        //dump($this);
-        //dump($data);
-        //dump($state);
-        //dump($options);
-        $state = $this->buildState($data, $state);
-        if ($state['mode'] === 'deny') {
+        //dump($view);
+        if ($view['state']['mode'] === 'deny') {
             return;
         }
-        $data = $this->buildData($data, $state);
-        $options = $this->buildOptions($data, $state, $options);
-        //dump($data);
-        //dump($state);
-        //dump($options);
-        $elementBuilder = $this->formBuilder($data, $state, $options);
+        $elementBuilder = $this->formBuilder($view['state']['name'], $view['data'], $view['options']);
         $builder->add($elementBuilder);
     }
 
-    public function renderView($data, iterable $state, FormView $form = null) : string
+    public function renderView(iterable $view, FormView $form = null) : string
     {
-        dump('RENDER FORM : '.get_class($this).' '.$this->id().' '.$this->keyword());
-        $context = $this->buildContext($data, $state, $form);
-        //dump($data);
-        //dump($state);
+        dump('RENDER VIEW : '.get_class($this).' '.$this->id().' '.$this->keyword());
+        //dump($view);
         //dump($form);
-        dump($context);
-        if ($context['state']['mode'] === 'deny') {
+        if ($view['state']['mode'] === 'deny') {
             return '';
         }
+        $context = $this->buildContext($view, $form);
+        //dump($context);
         return Service::view()->renderView($context['state']['template'], $context);
     }
 
@@ -241,6 +158,71 @@ abstract class Element implements ElementInterface
         $builder->addManyToOneField('type', Type::class, 'type', 'type', false);
     }
 
+    protected function displayMode(?string $parentMode) : ?string
+    {
+        if ($this->mode && $parentMode === 'edit') {
+            return $this->mode;
+        }
+        return $parentMode;
+    }
+
+    protected function buildData($data, iterable $state)
+    {
+        $name = $state['name'] ?? $this->name ?? null;
+        if ($name && is_array($data) && array_key_exists($name, $data)) {
+            return $data[$name];
+        }
+        return $data;
+    }
+
+    protected function defaultState($route = null) : iterable
+    {
+        $state['actor'] = null;
+        $state['page'] = null;
+        $state['element'] = null;
+        $state['layout'] = null;
+        $state['field'] = null;
+        $state['widget'] = null;
+        $state['map'] = null;
+        $state['vocabulary'] = null;
+        $state['name'] = null;
+        $state['mode'] = null;
+        $state['modus'] = null;
+        $state['sanitise'] = null;
+        $state['label'] = null;
+        $state['help'] = null;
+        $state['keyword'] = null;
+        $state['action'] = null;
+        $state['required'] = true;
+        $state['value']['modus'] = null;
+        $state['parameter']['modus'] = null;
+        $state['format']['modus'] = null;
+        return $state;
+    }
+
+    protected function buildState($data, iterable $state) : iterable
+    {
+        $state['name'] = $this->name();
+        $state['mode'] = $this->displayMode($state['mode']);
+        $state['template'] = $this->template();
+        return $state;
+    }
+
+    protected function defaultOptions($route = null) : iterable
+    {
+        return [];
+    }
+
+    protected function buildOptions($data, iterable $state, iterable $options = []) : iterable
+    {
+        $options = array_replace_recursive($this->defaultOptions(), $options);
+        if ($state['label']) {
+            $options['label'] = $state['keyword'] ?? $this->keyword();
+        }
+        $options['required'] = ($state['mode'] === 'view' ? false : $state['required']);
+        return $options;
+    }
+
     protected function vocabularyOptions(Vocabulary $vocabulary, iterable $options = []) : iterable
     {
         $options['choices'] = $vocabulary->terms();
@@ -250,10 +232,33 @@ abstract class Element implements ElementInterface
         return $options;
     }
 
-    protected function formBuilder($data, $state, $options = []) : FormBuilderInterface
+    protected function buildContext(iterable $view, FormView $form = null) : iterable
+    {
+        $state = $view['state'];
+        $name = $state['name'];
+        $context['state'] = $state;
+        $context['data'] = $view['data'];
+        if ($form === null) {
+            $context['form'] = ($state['forms'][$name] ?? null);
+        } else {
+            $context['form'] = ($form[$name] ?? $form);
+        }
+        if ($state['label']) {
+            $context['label'] = $state['keyword'] ?? $this->keyword();
+        } else {
+            $context['label'] = null;
+        }
+        if ($state['help'] && $state['modus'] === 'active') {
+            $context['help'] = $state['keyword'] ?? $this->keyword();
+        }
+        $context['element'] = $this;
+        return $context;
+    }
+
+    protected function formBuilder(string $name, $data, $options = []) : FormBuilderInterface
     {
         return Service::forms()->createNamedBuilder(
-            $state['name'],
+            $name,
             $this->formType(),
             $data,
             $options

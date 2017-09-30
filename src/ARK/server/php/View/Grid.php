@@ -33,8 +33,10 @@ use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
-class Grid extends Group
+class Grid extends Element
 {
+    use GroupTrait;
+
     protected $grid;
 
     public function rowCount() : int

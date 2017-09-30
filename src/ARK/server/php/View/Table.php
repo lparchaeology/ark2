@@ -33,8 +33,10 @@ use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 
-class Table extends Group
+class Table extends Element
 {
+    use GroupTrait;
+
     protected $caption;
     protected $header;
     protected $footer;

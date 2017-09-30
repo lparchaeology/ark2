@@ -86,7 +86,27 @@ class Page extends Element
         return $this->footer;
     }
 
-    public function buildState($data, iterable $state) : iterable
+    public static function loadMetadata(ClassMetadata $metadata) : void
+    {
+        // Joined Table Inheritance
+        $builder = new ClassMetadataBuilder($metadata, 'ark_view_page');
+
+        // Fields
+        $builder->addStringField('mode', 10);
+        $builder->addStringField('visibility', 30);
+        KeywordTrait::buildKeywordMetadata($builder);
+        $builder->addStringField('template', 100);
+
+        // Associations
+        $builder->addManyToOneField('header', Group::class, 'header', 'element');
+        $builder->addManyToOneField('sidebar', Group::class, 'sidebar', 'element');
+        $builder->addManyToOneField('content', Group::class, 'content', 'element');
+        $builder->addManyToOneField('footer', Group::class, 'footer', 'element');
+        $builder->addPermissionField('read', 'view');
+        $builder->addPermissionField('update', 'edit');
+    }
+
+    protected function buildState($data, iterable $state) : iterable
     {
         $state = array_replace_recursive($this->defaultState(), $state);
         $state = parent::buildState($data, $state);
@@ -110,7 +130,7 @@ class Page extends Element
         return $state;
     }
 
-    public function pageContext($data, iterable $state, iterable $forms = null) : iterable
+    protected function pageContext($data, iterable $state, iterable $forms = null) : iterable
     {
         $context = $this->buildContext($data, $state);
         $context['page'] = $this;
@@ -127,25 +147,5 @@ class Page extends Element
         $context['forms'] = $views;
         $context['form'] = null;
         return $context;
-    }
-
-    public static function loadMetadata(ClassMetadata $metadata) : void
-    {
-        // Joined Table Inheritance
-        $builder = new ClassMetadataBuilder($metadata, 'ark_view_page');
-
-        // Fields
-        $builder->addStringField('mode', 10);
-        $builder->addStringField('visibility', 30);
-        KeywordTrait::buildKeywordMetadata($builder);
-        $builder->addStringField('template', 100);
-
-        // Associations
-        $builder->addManyToOneField('header', Group::class, 'header', 'element');
-        $builder->addManyToOneField('sidebar', Group::class, 'sidebar', 'element');
-        $builder->addManyToOneField('content', Group::class, 'content', 'element');
-        $builder->addManyToOneField('footer', Group::class, 'footer', 'element');
-        $builder->addPermissionField('read', 'view');
-        $builder->addPermissionField('update', 'edit');
     }
 }

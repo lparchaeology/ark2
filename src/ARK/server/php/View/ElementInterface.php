@@ -36,17 +36,13 @@ interface ElementInterface
 {
     public function name() : ?string;
 
-    public function template() : string;
-
     public function mode() : string;
 
-    public function buildState($data, iterable $state) : iterable;
+    public function template() : string;
 
-    public function buildData($data, iterable $state);
+    public function buildView(iterable $parent) : iterable;
 
-    public function buildOptions($data, iterable $state, iterable $options = []) : iterable;
+    public function buildForm(iterable $view, FormBuilderInterface $builder) : void;
 
-    public function buildForm(FormBuilderInterface $builder, $data, iterable $state, iterable $options = []) : void;
-
-    public function renderView($data, iterable $state, FormView $form = null) : string;
+    public function renderView(iterable $view, FormView $form = null) : string;
 }

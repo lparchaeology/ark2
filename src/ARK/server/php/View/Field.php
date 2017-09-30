@@ -130,168 +130,6 @@ class Field extends Element
         return $this->keyword ?? $this->attribute->keyword();
     }
 
-    public function buildState($data, iterable $state) : iterable
-    {
-        $state['required'] = $this->attribute()->isRequired();
-        $state['multiple'] = $this->attribute->hasMultipleOccurrences();
-        if (!isset($state['name'])) {
-            $state['name'] = $this->name();
-        }
-        if (!isset($state['display']['property'])) {
-            $state['display']['property'] = $this->display;
-        }
-        if (!isset($state['keyword'])) {
-            $state['keyword'] = $this->keyword();
-        }
-        if (!isset($state['value']['modus'])) {
-            $state['value']['modus'] = $this->valueModus();
-        }
-        if (!isset($state['parameter']['modus'])) {
-            $state['parameter']['modus'] = $this->parameterModus();
-        }
-        if (!isset($state['format']['modus'])) {
-            $state['format']['modus'] = $this->formatModus();
-        }
-        if ($state['sanitise'] !== 'redact' && $data instanceof Item) {
-            if ($state['mode'] === 'edit' && Service::workflow()->can($state['actor'], 'edit', $data, $this->attribute())) {
-                $state['mode'] = 'edit';
-            } elseif (Service::workflow()->can($state['actor'], 'view', $data, $this->attribute())) {
-                $state['mode'] = 'view';
-            } else {
-                $state['mode'] = 'deny';
-            }
-        }
-        $state['mode'] = $this->displayMode($state['mode']);
-        $state['modus'] = $this->modeToModus($state, ($state['modus'] ?? $this->valueModus()));
-        $state['template'] = $this->template();
-        $state['field'] = $this;
-        return $state;
-    }
-
-    public function buildData($data, iterable $state)
-    {
-        $name = $state['name'];
-        if (is_array($data)) {
-            if (array_key_exists($name, $data)) {
-                $data = $data[$name];
-            } elseif (array_key_exists($this->name, $data)) {
-                $data = $data[$this->name];
-            } elseif (array_key_exists($this->id(), $data)) {
-                $data = $data[$this->id()];
-            }
-        }
-        if ($data instanceof Property) {
-            return $data;
-        }
-        if ($data instanceof Item) {
-            return $data->property($this->attribute->name());
-        }
-        return null;
-    }
-
-    public function buildOptions($data, iterable $state, iterable $options = []) : iterable
-    {
-        $options['state'] = $state;
-
-        if ($state['label']) {
-            $options['label'] = ($state['keyword'] ? $state['keyword'] : $this->keyword());
-        } else {
-            $options['label'] = false;
-        }
-
-        // If field is static or has a display option, then the value subform is hidden
-        $valueModus = $this->modeToModus($state, $state['value']['modus']);
-        if ($valueModus === 'static') {
-            $options['state']['value']['modus'] = 'static';
-            $options['state']['display']['name'] = 'static';
-            $options['state']['display']['modus'] = 'static';
-            $options['state']['display']['type'] = $this->staticFormType();
-            $options['state']['display']['options'] = $this->valueOptions($options['state']);
-            $options['state']['static']['name'] = '_static';
-            $options['state']['static']['modus'] = 'hidden';
-            $options['state']['static']['type'] = HiddenType::class;
-            $options['state']['static']['options'] = [];
-            $valueModus = 'hidden';
-        } elseif ($options['state']['choices']) {
-            if (isset($options['state']['display']['property'])) {
-                $options['state']['display']['name'] = $options['state']['display']['property'];
-            }
-        } elseif (isset($options['state']['display']['property'])) {
-            $options['state']['value']['modus'] = $valueModus;
-            $options['state']['display']['name'] = $options['state']['display']['property'];
-            $options['state']['display']['modus'] = $valueModus;
-            $options['state']['display']['type'] = $this->modusToFormType(
-                $valueModus,
-                $options['state']['choices'],
-                $this->activeFormType(),
-                $this->readonlyFormType(),
-                $this->staticFormType()
-            );
-            $options['state']['display']['options'] = $this->valueOptions($options['state']);
-            $valueModus = 'hidden';
-        }
-        $options['state']['value']['name'] = $this->attribute()->dataclass()->valueName();
-        $options['state']['value']['modus'] = $valueModus;
-        $options['state']['value']['type'] = $this->modusToFormType(
-            $valueModus,
-            $options['state']['choices'],
-            $this->activeFormType(),
-            $this->readonlyFormType(),
-            $this->staticFormType()
-        );
-        $options['state']['value']['options'] = $this->valueOptions($options['state']);
-        if ($this->attribute()->hasMultipleOccurrences()
-            && ($state['value']['modus'] === 'static' || $state['value']['modus'] === 'hidden')
-            && $options['state']['value']['type'] = HiddenType::class
-        ) {
-            $options['state']['value']['type'] = CollectionType::class;
-            $options['state']['value']['options']['entry_type'] = HiddenType::class;
-        }
-
-        if (isset($state['parameter']['modus'])) {
-            $options['state']['parameter']['name'] = $this->attribute()->dataclass()->parameterName();
-            $options['state']['parameter']['modus'] =
-                $this->modeToModus($state, $options['state']['parameter']['modus']);
-            $options['state']['parameter']['type'] =
-                $this->modusToFormType($options['state']['parameter']['modus'], false, $this->parameterFormType());
-            $options['state']['parameter']['options'] = $this->baseOptions($options['state']['parameter']);
-        } else {
-            $options['state']['parameter'] = null;
-        }
-
-        if (isset($state['format']['modus'])) {
-            $options['state']['format']['name'] = $this->attribute()->dataclass()->formatName();
-            $options['state']['format']['modus'] =
-                $this->modeToModus($state, $options['state']['format']['modus']);
-            $options['state']['format']['type'] =
-                $this->modusToFormType($options['state']['format']['modus'], false, $this->formatFormType());
-            $options['state']['format']['options'] = $this->baseOptions($options['state']['format']);
-        } else {
-            $options['state']['format'] = null;
-        }
-
-        if ($state['required']) {
-            $options['default_data'] = $this->attribute->defaultValue();
-        }
-        if ($state['mode'] === 'view' || $options['state']['value']['modus'] !== 'active') {
-            $options['required'] = false;
-        } else {
-            $options['required'] = $state['required'];
-        }
-        $options['state']['value']['options']['required'] = $options['required'];
-        if (!isset($options['state']['display']['modus'])) {
-            unset($options['state']['display']);
-        }
-        return $options;
-    }
-
-    public function buildContext($data, iterable $state, FormView $form = null) : iterable
-    {
-        $context = parent::buildContext($data, $state, $form);
-        $context['field'] = $this;
-        return $context;
-    }
-
     // FIXME Should probably have some way to use FormTypes here to render 'static' mode
     // TODO May actually just be able to use renderView() now?
     public function renderStaticView($data, iterable $state) : string
@@ -388,6 +226,168 @@ class Field extends Element
                 'nullable' => true,
             ],
         ]);
+    }
+
+    protected function buildState($data, iterable $state) : iterable
+    {
+        $state['required'] = $this->attribute()->isRequired();
+        $state['multiple'] = $this->attribute->hasMultipleOccurrences();
+        if (!isset($state['name'])) {
+            $state['name'] = $this->name();
+        }
+        if (!isset($state['display']['property'])) {
+            $state['display']['property'] = $this->display;
+        }
+        if (!isset($state['keyword'])) {
+            $state['keyword'] = $this->keyword();
+        }
+        if (!isset($state['value']['modus'])) {
+            $state['value']['modus'] = $this->valueModus();
+        }
+        if (!isset($state['parameter']['modus'])) {
+            $state['parameter']['modus'] = $this->parameterModus();
+        }
+        if (!isset($state['format']['modus'])) {
+            $state['format']['modus'] = $this->formatModus();
+        }
+        if ($state['sanitise'] !== 'redact' && $data instanceof Item) {
+            if ($state['mode'] === 'edit' && Service::workflow()->can($state['actor'], 'edit', $data, $this->attribute())) {
+                $state['mode'] = 'edit';
+            } elseif (Service::workflow()->can($state['actor'], 'view', $data, $this->attribute())) {
+                $state['mode'] = 'view';
+            } else {
+                $state['mode'] = 'deny';
+            }
+        }
+        $state['mode'] = $this->displayMode($state['mode']);
+        $state['modus'] = $this->modeToModus($state, ($state['modus'] ?? $this->valueModus()));
+        $state['template'] = $this->template();
+        $state['field'] = $this;
+        return $state;
+    }
+
+    protected function buildData($data, iterable $state)
+    {
+        $name = $state['name'];
+        if (is_array($data)) {
+            if (array_key_exists($name, $data)) {
+                $data = $data[$name];
+            } elseif (array_key_exists($this->name, $data)) {
+                $data = $data[$this->name];
+            } elseif (array_key_exists($this->id(), $data)) {
+                $data = $data[$this->id()];
+            }
+        }
+        if ($data instanceof Property) {
+            return $data;
+        }
+        if ($data instanceof Item) {
+            return $data->property($this->attribute->name());
+        }
+        return null;
+    }
+
+    protected function buildOptions($data, iterable $state, iterable $options = []) : iterable
+    {
+        $options['state'] = $state;
+
+        if ($state['label']) {
+            $options['label'] = ($state['keyword'] ? $state['keyword'] : $this->keyword());
+        } else {
+            $options['label'] = false;
+        }
+
+        // If field is static or has a display option, then the value subform is hidden
+        $valueModus = $this->modeToModus($state, $state['value']['modus']);
+        if ($valueModus === 'static') {
+            $options['state']['value']['modus'] = 'static';
+            $options['state']['display']['name'] = 'static';
+            $options['state']['display']['modus'] = 'static';
+            $options['state']['display']['type'] = $this->staticFormType();
+            $options['state']['display']['options'] = $this->valueOptions($options['state']);
+            $options['state']['static']['name'] = '_static';
+            $options['state']['static']['modus'] = 'hidden';
+            $options['state']['static']['type'] = HiddenType::class;
+            $options['state']['static']['options'] = [];
+            $valueModus = 'hidden';
+        } elseif ($options['state']['choices']) {
+            if (isset($options['state']['display']['property'])) {
+                $options['state']['display']['name'] = $options['state']['display']['property'];
+            }
+        } elseif (isset($options['state']['display']['property'])) {
+            $options['state']['value']['modus'] = $valueModus;
+            $options['state']['display']['name'] = $options['state']['display']['property'];
+            $options['state']['display']['modus'] = $valueModus;
+            $options['state']['display']['type'] = $this->modusToFormType(
+                $valueModus,
+                $options['state']['choices'],
+                $this->activeFormType(),
+                $this->readonlyFormType(),
+                $this->staticFormType()
+            );
+            $options['state']['display']['options'] = $this->valueOptions($options['state']);
+            $valueModus = 'hidden';
+        }
+        $options['state']['value']['name'] = $this->attribute()->dataclass()->valueName();
+        $options['state']['value']['modus'] = $valueModus;
+        $options['state']['value']['type'] = $this->modusToFormType(
+            $valueModus,
+            $options['state']['choices'],
+            $this->activeFormType(),
+            $this->readonlyFormType(),
+            $this->staticFormType()
+        );
+        $options['state']['value']['options'] = $this->valueOptions($options['state']);
+        if ($this->attribute()->hasMultipleOccurrences()
+            && ($state['value']['modus'] === 'static' || $state['value']['modus'] === 'hidden')
+            && $options['state']['value']['type'] = HiddenType::class
+        ) {
+            $options['state']['value']['type'] = CollectionType::class;
+            $options['state']['value']['options']['entry_type'] = HiddenType::class;
+        }
+
+        if (isset($state['parameter']['modus'])) {
+            $options['state']['parameter']['name'] = $this->attribute()->dataclass()->parameterName();
+            $options['state']['parameter']['modus'] =
+                $this->modeToModus($state, $options['state']['parameter']['modus']);
+            $options['state']['parameter']['type'] =
+                $this->modusToFormType($options['state']['parameter']['modus'], false, $this->parameterFormType());
+            $options['state']['parameter']['options'] = $this->baseOptions($options['state']['parameter']);
+        } else {
+            $options['state']['parameter'] = null;
+        }
+
+        if (isset($state['format']['modus'])) {
+            $options['state']['format']['name'] = $this->attribute()->dataclass()->formatName();
+            $options['state']['format']['modus'] =
+                $this->modeToModus($state, $options['state']['format']['modus']);
+            $options['state']['format']['type'] =
+                $this->modusToFormType($options['state']['format']['modus'], false, $this->formatFormType());
+            $options['state']['format']['options'] = $this->baseOptions($options['state']['format']);
+        } else {
+            $options['state']['format'] = null;
+        }
+
+        if ($state['required']) {
+            $options['default_data'] = $this->attribute->defaultValue();
+        }
+        if ($state['mode'] === 'view' || $options['state']['value']['modus'] !== 'active') {
+            $options['required'] = false;
+        } else {
+            $options['required'] = $state['required'];
+        }
+        $options['state']['value']['options']['required'] = $options['required'];
+        if (!isset($options['state']['display']['modus'])) {
+            unset($options['state']['display']);
+        }
+        return $options;
+    }
+
+    protected function buildContext(iterable $view, FormView $form = null) : iterable
+    {
+        $context = parent::buildContext($view, $form);
+        $context['field'] = $this;
+        return $context;
     }
 
     protected function valueOptions(iterable $state) : iterable

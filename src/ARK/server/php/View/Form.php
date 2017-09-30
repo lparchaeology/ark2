@@ -35,8 +35,10 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class Form extends Group
+class Form extends Elemets
 {
+    use GroupTrait;
+
     protected $method = '';
     protected $action = '';
     protected $formType = '';
@@ -56,50 +58,33 @@ class Form extends Group
         return $this->formType;
     }
 
-    public function buildForms($data, iterable $state, iterable $options) : iterable
+    public function buildForms(iterable $view) : iterable
     {
         //dump('BUILD FORMS : '.$this->id().' '.$this->name());
-        //dump($data);
-        //dump($state);
-        //dump($options);
-        $state = $this->buildState($data, $state);
-        $builderData = $this->buildData($data, $state);
-        //dump($builderData);
-        $builderOptions = $this->buildOptions($builderData, $state, $options);
-        $builderOptions['attr']['id'] = $this->name();
-        //dump($builderOptions);
-        //dump($state);
-        $builder = $this->formBuilder($builderData, $state, $builderOptions);
+        //dump($view);
+        $name = $view['state']['name'];
+        $builderView = $view;
+        $builderView['options']['attr']['id'] = $name;
+        $builder = $this->formBuilder($name, $builderView);
         if ($this->method) {
             $builder->setMethod($this->method);
         }
         if ($this->action) {
             $builder->setAction(Service::path($this->action));
         }
-        $this->buildForm($builder, $data, $state, $options);
-        //dump('GROUP : FORM BUILDER '.$this->name());
-        //dump($builder);
-        $form = $builder->getForm();
-        return [$this->name() => $form];
+        $this->buildForm($view, $builder);
+        return [$name => $builder->getForm()];
     }
 
-    public function buildForm(FormBuilderInterface $builder, $data, iterable $state, iterable $options = []) : void
+    public function buildForm(iterable $view, FormBuilderInterface $builder) : void
     {
         //dump('BUILD FORM : '.$this->id());
-        //dump($data);
-        //dump($state);
-        //dump($options);
-        $state = $this->buildState($data, $state);
-        if ($state['mode'] === 'deny') {
+        //dump($view);
+        if ($view['state']['mode'] === 'deny') {
             return;
         }
-        $data = $this->buildData($data, $state);
-        $options = $this->buildOptions($data, $state, $options);
-        //dump($data);
-        //dump($state);
-        //dump($options);
         foreach ($this->cells() as $cell) {
-            $cell->buildForm($builder, $data, $state, $options);
+            $cell->buildForm($view, $builder);
         }
     }
 
