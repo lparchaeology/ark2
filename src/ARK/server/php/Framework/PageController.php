@@ -51,18 +51,14 @@ abstract class PageController extends Controller
         } else {
             $page = ORM::find(Page::class, $request->attributes->get('page'));
         }
-        $data = $this->buildData($request);
-        $state = $this->buildState($request, $data);
-        $state = $page->buildState($data, $state);
-        $options = $page->buildOptions($data, $state, []);
-        $forms = ($page->content() ? $page->content()->buildForms($data, $state, $options) : null);
-        if ($state['mode'] === 'deny') {
+        $parent['data'] = $this->buildData($request);
+        $parent['state'] = $this->buildState($request, $parent['data']);
+        $parent['options'] = [];
+        $view = $page->buildView($parent);
+        if ($view['state']['mode'] === 'deny') {
             throw new AccessDeniedException('core.error.access.denied');
         }
-        //dump($data);
-        //dump($state);
-        //dump($options);
-        //dump($forms);
+        $forms = $page->buildForms($view);
         if ($forms && $request->getMethod() === 'POST') {
             $parms = $request->request->all();
             $parms = $this->fixStaticFields($parms);
@@ -89,8 +85,10 @@ abstract class PageController extends Controller
                 Service::view()->addErrorFlash($e->getMessage());
             }
         }
-        $context = $page->pageContext($data, $state, $forms);
-        $response = Service::view()->renderResponse($page->template(), $context);
+        $view = $page->createFormViews($view, $forms);
+        dump($view);
+        $response = new Response($page->renderView($view));
+        //dump($response)
         return $response;
     }
 

@@ -33,6 +33,7 @@ use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use Symfony\Component\Form\ButtonTypeInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\SubmitButtonTypeInterface;
 
 class Widget extends Element

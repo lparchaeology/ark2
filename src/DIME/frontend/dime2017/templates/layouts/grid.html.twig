@@ -1,6 +1,6 @@
 {# ARK GridLayout template for standard Bootstrap grid #}
 
-{% if layout.type.id == 'form' %}
+{% if element.type.id == 'form' %}
     {{ form_start(form) }}
 {% endif %}
 
@@ -13,7 +13,7 @@
     </div>
 {% endif %}
 
-{% for rdx, row in layout.grid %}
+{% for rdx, row in element.grid %}
 
     {% set rowlength = row | length %}
     {% if rowlength > 1 %}
@@ -22,8 +22,8 @@
 
     {% for cdx, col in row %}
 
-        {% if layout.columnWidth(rdx, cdx) %}
-            <div class="col-md-{{- layout.columnWidth(rdx, cdx) -}}" >
+        {% if element.columnWidth(rdx, cdx) %}
+            <div class="col-md-{{- element.columnWidth(rdx, cdx) -}}" >
         {% elseif rowlength > 12 %}
             <div class="col-md-12">
         {% elseif rowlength > 6 %}
@@ -52,6 +52,6 @@
 
 {% endfor %}
 
-{% if layout.type.id == 'form' %}
+{% if element.type.id == 'form' %}
     {{ form_end(form) }}
 {% endif %}

@@ -6,7 +6,7 @@
     {% set items = data.items %}
 
     <table
-        id="{{layout.id}}"
+        id="{{element.id}}"
         class="{{table_class}}"
         data-toggle="table"
         data-classes="{{table_class}}"
@@ -27,13 +27,11 @@
                 {% if items[0] is defined and items[0].hasAttribute(state.image) %}
                     <th class="thumbimagehead" data-field="{{state.image}}" data-title="{{state.image}}" data-sortable="false"></th>
                 {% endif %}
-                {% for cell in layout.cells %}
-                    {% set field = cell.element %}
-                    {% if state.actor.hasPermission(field.attribute.readPermission) %}
-                        <th data-field="{{field.id}}" data-title="{{field.keyword|trans}}" data-sortable="true" data-sorter="alphanum" data-visible="{{ cell.visible }}" data-card-visible="false">
-                            {{field.keyword|trans}}
-                        </th>
-                    {%  endif %}
+                {% for child in children %}
+                    {% set field = child.element %}
+                    <th data-field="{{ field.id }}" data-title="{{ field.keyword }}" data-sortable="true" data-sorter="alphanum" data-visible="{{ cell.visible }}" data-card-visible="false">
+                        {{ field.keyword | translate }}
+                    </th>
                     {% do form[field.formName].setRendered %}
                 {% endfor %}
                 <th class="controlshead" data-field="controls" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
@@ -57,14 +55,13 @@
                             {% endif %}
                         </td>
                     {% endif %}
-                    {% for cell in layout.cells %}
-                        {% set field = cell.element %}
-                        {% if state.actor.hasPermission(field.attribute.readPermission) %}
-                            <td>
-                                <span class="cell-label">{{field.keyword|trans}}</span>
-                                {{ field.renderView(item, state) }}
-                            </td>
-                        {% endif %}
+                    {% for child in children %}
+                        {% set child = child | merge({'data' : item }) %}
+                        {% set field = child.element %}
+                        <td>
+                            <span class="cell-label">{{ field.keyword | translate }}</span>
+                            {{ field.renderView(child) }}
+                        </td>
                     {% endfor %}
                     <td class="controls">
                         <span class="cell-label">{{ 'dime.controls'|trans }}</span>
@@ -109,41 +106,3 @@ window.translations['dime.user.update.success'] = "{{ 'dime.user.update.success'
 window.translations['dime.user.update.failure'] = "{{ 'dime.user.update.failure' | trans }}"
 
 </script>
-{#}
-<div id = "thumbModal"></div>
-
-<div id = "chooseAction" class="btn chooseAction">{{ 'dime.chooseaction'|trans }}</div>
-<div id = "chooseActionSelectHolder"></div>
-
-window.defaultAvailableActions = [
-    {% if items[0] is defined %}
-    {% for action in workflow.schemaActions(items[0].schema) %}
-        {
-            "keyword":"{{ action.keyword }}",
-            "translation":"{{ action.keyword | trans }}",
-            "available":true,
-            "visible":false,
-        },
-    {% endfor %}
-    {% endif %}
-    ];
-
-window.itemAvailableActions = {
-    {% for item in items %}
-        "{{item.id}}": {
-            {% for action in workflow.actions(workflow.actor, item) %}
-            "{{ action.keyword }}":{
-                    "keyword":"{{ action.keyword }}",
-                    "translation":"{{ action.keyword | trans }}",
-                    "available":true,
-                    "visible":true,
-                },
-            {% endfor %}
-        },
-    {% endfor %}
-};
-
-console.log({"itemAvailableAction":window.itemAvailableActions,"defaultAvailableActions":window.defaultAvailableActions});
-
-</script>
-#}

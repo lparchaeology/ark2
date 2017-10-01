@@ -206,12 +206,12 @@ class Cell implements ElementInterface
         return $this->template ?? '';
     }
 
-    public function options() : string
+    public function options() : iterable
     {
         return json_decode($this->options ?? '{}', true);
     }
 
-    public function buildView(iterable $parent) : void
+    public function buildView(iterable $parent) : iterable
     {
         //dump('BUILD CELL VIEW : '.$this->element->name());
         //dump($parent);
@@ -219,17 +219,13 @@ class Cell implements ElementInterface
         $view['data'] = $parent['data'];
         $view['options'] = array_replace_recursive($parent['options'], $this->options());
         $view['children'] = [];
-        $this->element->buildView($view);
+        return $this->element->buildView($view);
     }
 
-    public function buildForms($data, iterable $state, iterable $options) : iterable
+    public function buildForms(iterable $view) : iterable
     {
         //dump('BUILD CELL : '.$this->element->name());
-        if ($this->element->type()->isLayout()) {
-            $state = $this->buildState($data, $state);
-            return $this->element->buildForms($data, $state, $options);
-        }
-        return [];
+        return $this->element->buildForms($view);
     }
 
     public function buildForm(iterable $view, FormBuilderInterface $builder) : void

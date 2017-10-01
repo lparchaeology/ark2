@@ -47,17 +47,16 @@
 
 <div class="carouselextratext">
 
-{% for key,item in data %}
+{% for key, item in data %}
     <div class="carouselextratext_{{ key }}">
-        {% for cell in layout.cells %}
-            <div class="homefield">{{cell.element.keyword|trans}}: {{ cell.element.renderView(item, state) }}</div>
+        {% for child in children %}
+            {% set child = child | merge({'data' : item }) %}
+            {% dump(child) %}
+            <div class="homefield">{{ child.element.renderView(child) | raw }}</div>
         {% endfor %}
     </div>
 {% endfor %}
 
 </div>
-
-
-</script>
 
 {%- endblock carousel %}

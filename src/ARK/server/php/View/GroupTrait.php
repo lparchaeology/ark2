@@ -38,8 +38,8 @@ trait GroupTrait
         //dump('GROUP FORMS : '.$this->id());
         //dump($view);
         $forms = [];
-        foreach ($this->cells() as $cell) {
-            $forms = array_merge($forms, $cell->buildForms($view));
+        foreach ($view['children'] as $child) {
+            $forms = array_merge($forms, $child['element']->buildForms($child));
         }
         return $forms;
     }

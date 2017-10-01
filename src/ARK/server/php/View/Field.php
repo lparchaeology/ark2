@@ -385,9 +385,13 @@ class Field extends Element
 
     protected function buildContext(iterable $view, FormView $form = null) : iterable
     {
-        $context = parent::buildContext($view, $form);
-        $context['field'] = $this;
-        return $context;
+        $view = parent::buildContext($view, $form);
+        $view['field'] = $this;
+        if (!$view['form']) {
+            $builder = $this->formBuilder($view['state']['name'], $view['data'], $view['options']);
+            $view['form'] = $builder->getForm()->createView();
+        }
+        return $view;
     }
 
     protected function valueOptions(iterable $state) : iterable

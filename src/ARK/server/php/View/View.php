@@ -65,23 +65,23 @@ class View
         );
     }
 
-    public function renderResponse(string $view, iterable $parameters = [], Response $response = null) : Response
+    public function renderResponse(string $template, iterable $context = [], Response $response = null) : Response
     {
-        return $this->app->render($view, $parameters, $response);
+        return $this->app->render($template, $context, $response);
     }
 
-    public function renderView(string $view, iterable $parameters = []) : string
+    public function renderView(string $template, iterable $context = []) : string
     {
-        return $this->app->renderView($view, $parameters);
+        return $this->app->renderView($template, $context);
     }
 
     public function renderPdfResponse(
-        string $view,
-        iterable $parameters = [],
+        string $template,
+        iterable $context = [],
         string $filename = 'file.pdf',
         Response $response = null
     ) : Response {
-        $pdf = $this->renderPdf($view, $parameters);
+        $pdf = $this->renderPdf($template, $context);
         $headers = ['Content-Type' => 'application/pdf', 'Content-Disposition' => 'filename="'.$filename.'"'];
         if ($response === null) {
             return new Response($pdf, 200, $headers);
@@ -91,25 +91,25 @@ class View
         return $response;
     }
 
-    public function renderPdf(string $view, iterable $parameters = [], iterable $options = []) : string
+    public function renderPdf(string $template, iterable $context = [], iterable $options = []) : string
     {
-        $html = $this->renderView($view, $parameters);
+        $html = $this->renderView($template, $context);
         return $this->app['renderer.pdf']->getOutputFromHtml($html, $options);
     }
 
-    public function generatePdf(string $view, string $path, iterable $parameters = []) : void
+    public function generatePdf(string $template, string $path, iterable $context = []) : void
     {
-        $html = $this->renderView($view, $parameters);
+        $html = $this->renderView($template, $context);
         $this->app['renderer.pdf']->generateFromHtml($html, $path);
     }
 
     public function renderImageResponse(
-        string $view,
-        iterable $parameters = [],
+        string $template,
+        iterable $context = [],
         string $filename = 'image.jpg',
         Response $response = null
     ) : Response {
-        $pdf = $this->renderImage($view, $parameters);
+        $pdf = $this->renderImage($template, $context);
         $headers = ['Content-Type' => 'image/jpg', 'Content-Disposition' => 'filename="'.$filename.'"'];
         if ($response === null) {
             return new Response($pdf, 200, $headers);
@@ -119,15 +119,15 @@ class View
         return $response;
     }
 
-    public function renderImage(string $view, iterable $parameters = []) : string
+    public function renderImage(string $template, iterable $context = []) : string
     {
-        $html = $this->renderView($view, $parameters);
+        $html = $this->renderView($template, $context);
         return $this->app['renderer.image']->getOutputFromHtml($html);
     }
 
-    public function generateImage(string $view, string $path, iterable $parameters = []) : void
+    public function generateImage(string $template, string $path, iterable $context = []) : void
     {
-        $html = $this->renderView($view, $parameters);
+        $html = $this->renderView($template, $context);
         $this->app['renderer.image']->generateFromHtml($html, $path);
     }
 

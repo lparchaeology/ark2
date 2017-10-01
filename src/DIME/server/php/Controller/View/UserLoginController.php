@@ -32,10 +32,11 @@ namespace DIME\Controller\View;
 use ARK\Service;
 use DIME\DIME;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserLoginController extends DimeFormController
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request) : Response
     {
         if ($error = Service::security()->lastError($request)) {
             Service::view()->addErrorFlash($error);

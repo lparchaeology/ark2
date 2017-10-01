@@ -97,23 +97,39 @@ abstract class Element implements ElementInterface
 
     public function cells() : iterable
     {
-        return $this->cells;
+        return $this->cells ?? [];
     }
 
     public function buildView(iterable $parent = []) : iterable
     {
         //dump('BUILD VIEW : '.get_class($this).' '.$this->id().' '.$this->name().' '.$this->keyword());
         //dump($parent);
+        $view['element'] = $this;
         $view['state'] = $this->buildState($parent['data'], $parent['state']);
         $view['data'] = $this->buildData($parent['data'], $view['state']);
-        $view['options'] = $this->buildOptions($view['data'], $view['state'], $view['options']);
+        $view['options'] = $this->buildOptions($view['data'], $view['state'], $parent['options']);
         $children = [];
         foreach ($this->cells() as $cell) {
             $children[] = $cell->buildView($view);
         }
         $view['children'] = $children;
+        if ($view['state']['label']) {
+            $view['label'] = $view['state']['keyword'] ?? $this->keyword();
+        } else {
+            $view['label'] = null;
+        }
+        if ($view['state']['help'] && $view['state']['modus'] === 'active') {
+            $view['help'] = $view['state']['keyword'] ?? $this->keyword();
+        } else {
+            $view['help'] = null;
+        }
         //dump($view);
         return $view;
+    }
+
+    public function buildForms(iterable $view) : iterable
+    {
+        return [];
     }
 
     public function buildForm(iterable $view, FormBuilderInterface $builder) : void
@@ -129,15 +145,15 @@ abstract class Element implements ElementInterface
 
     public function renderView(iterable $view, FormView $form = null) : string
     {
-        dump('RENDER VIEW : '.get_class($this).' '.$this->id().' '.$this->keyword());
+        //dump('RENDER VIEW : '.get_class($this).' '.$this->id().' '.$this->keyword());
         //dump($view);
         //dump($form);
         if ($view['state']['mode'] === 'deny') {
             return '';
         }
-        $context = $this->buildContext($view, $form);
-        //dump($context);
-        return Service::view()->renderView($context['state']['template'], $context);
+        $view = $this->buildContext($view, $form);
+        //dump($view);
+        return Service::view()->renderView($view['state']['template'], $view);
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
@@ -234,25 +250,13 @@ abstract class Element implements ElementInterface
 
     protected function buildContext(iterable $view, FormView $form = null) : iterable
     {
-        $state = $view['state'];
-        $name = $state['name'];
-        $context['state'] = $state;
-        $context['data'] = $view['data'];
+        $name = $view['state']['name'];
         if ($form === null) {
-            $context['form'] = ($state['forms'][$name] ?? null);
+            $view['form'] = ($view['state']['forms'][$name] ?? null);
         } else {
-            $context['form'] = ($form[$name] ?? $form);
+            $view['form'] = ($form[$name] ?? $form);
         }
-        if ($state['label']) {
-            $context['label'] = $state['keyword'] ?? $this->keyword();
-        } else {
-            $context['label'] = null;
-        }
-        if ($state['help'] && $state['modus'] === 'active') {
-            $context['help'] = $state['keyword'] ?? $this->keyword();
-        }
-        $context['element'] = $this;
-        return $context;
+        return $view;
     }
 
     protected function formBuilder(string $name, $data, $options = []) : FormBuilderInterface

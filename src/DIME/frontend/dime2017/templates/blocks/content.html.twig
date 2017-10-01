@@ -3,9 +3,11 @@
 
     {% block flash %}{% endblock %}
 
-    {% if layout is defined %}
+    {% if children is defined %}
 
-        {{ layout.renderView(data, state, form)|raw }}
+        {% for child in children %}
+            {{ child.element.renderView(child) | raw }}
+        {% endfor %}
 
     {% elseif content[2] is defined %}
 

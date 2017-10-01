@@ -36,6 +36,7 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\Vocabulary\Term;
 use ARK\Workflow\Permission;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormView;
 
 class Page extends Element
 {
@@ -66,24 +67,54 @@ class Page extends Element
         return $this->update;
     }
 
-    public function header() : ?Group
+    public function header() : ?Element
     {
         return $this->header;
     }
 
-    public function sidebar() : ?Group
+    public function sidebar() : ?Element
     {
         return $this->sidebar;
     }
 
-    public function content() : ?Group
+    public function content() : ?Element
     {
         return $this->content;
     }
 
-    public function footer() : ?Group
+    public function footer() : ?Element
     {
         return $this->footer;
+    }
+
+    public function buildView(iterable $parent = []) : iterable
+    {
+        //dump('BUILD PAGE VIEW : '.get_class($this).' '.$this->id().' '.$this->name().' '.$this->keyword());
+        //dump($parent);
+        $view = parent::buildView($parent);
+        if ($this->content()) {
+            $view['children'] = [$this->content()->buildView($view)];
+        }
+        //dump($view);
+        return $view;
+    }
+
+    public function buildForms(iterable $view) : iterable
+    {
+        //dump('PAGE FORMS : '.$this->id());
+        //dump($view);
+        return $this->content() ? $this->content()->buildForms($view) : [];
+    }
+
+    public function createFormViews(iterable $view, iterable $forms) : iterable
+    {
+        $view['forms'] = [];
+        foreach ($forms as $name => $form) {
+            if ($form) {
+                $view['forms'][$name] = $form->createView();
+            }
+        }
+        return $view;
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
@@ -98,10 +129,10 @@ class Page extends Element
         $builder->addStringField('template', 100);
 
         // Associations
-        $builder->addManyToOneField('header', Group::class, 'header', 'element');
-        $builder->addManyToOneField('sidebar', Group::class, 'sidebar', 'element');
-        $builder->addManyToOneField('content', Group::class, 'content', 'element');
-        $builder->addManyToOneField('footer', Group::class, 'footer', 'element');
+        $builder->addManyToOneField('header', Element::class, 'header', 'element');
+        $builder->addManyToOneField('sidebar', Element::class, 'sidebar', 'element');
+        $builder->addManyToOneField('content', Element::class, 'content', 'element');
+        $builder->addManyToOneField('footer', Element::class, 'footer', 'element');
         $builder->addPermissionField('read', 'view');
         $builder->addPermissionField('update', 'edit');
     }
@@ -130,22 +161,12 @@ class Page extends Element
         return $state;
     }
 
-    protected function pageContext($data, iterable $state, iterable $forms = null) : iterable
+    protected function buildContext(iterable $view, FormView $form = null) : iterable
     {
-        $context = $this->buildContext($data, $state);
-        $context['page'] = $this;
-        $context['layout'] = $this->content();
-        $views = null;
-        if ($forms) {
-            foreach ($forms as $name => $form) {
-                if ($form) {
-                    $views[$name] = $form->createView();
-                }
-            }
-        }
-        $context['state']['forms'] = $views;
-        $context['forms'] = $views;
-        $context['form'] = null;
-        return $context;
+        $view = parent::buildContext($view, $form);
+        $view['page'] = $this;
+        $view['layout'] = $this->content();
+        $view['form'] = $form;
+        return $view;
     }
 }

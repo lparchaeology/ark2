@@ -35,7 +35,7 @@ use ARK\ORM\ClassMetadataBuilder;
 use ARK\Service;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class Form extends Elemets
+class Form extends Element
 {
     use GroupTrait;
 
@@ -65,7 +65,7 @@ class Form extends Elemets
         $name = $view['state']['name'];
         $builderView = $view;
         $builderView['options']['attr']['id'] = $name;
-        $builder = $this->formBuilder($name, $builderView);
+        $builder = $this->formBuilder($name, $view['data'], $builderView);
         if ($this->method) {
             $builder->setMethod($this->method);
         }
