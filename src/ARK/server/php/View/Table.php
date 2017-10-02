@@ -51,10 +51,82 @@ class Table extends Element
     protected $image;
     protected $export;
     protected $columns;
+    protected $refresh;
     protected $pagination;
     protected $selection;
     protected $classes;
     protected $url;
+
+    public function showCaption() : bool
+    {
+        return $this->caption;
+    }
+
+    public function showHeader() : bool
+    {
+        return $this->header;
+    }
+
+    public function showFooter() : bool
+    {
+        return $this->footer;
+    }
+
+    public function isSearchable() : bool
+    {
+        return $this->searchable;
+    }
+
+    public function isSortable() : bool
+    {
+        return $this->sortable;
+    }
+
+    public function canExportData() : bool
+    {
+        return $this->export;
+    }
+
+    public function canChooseColumns() : bool
+    {
+        return $this->columns;
+    }
+
+    public function canRefresh() : bool
+    {
+        return $this->refresh ?? false;
+    }
+
+    public function canToggleView() : bool
+    {
+        return $this->row + $this->list + $this->card + $this->thumbnail;
+    }
+
+    public function selection() : string
+    {
+        return $this->selection ?? '';
+    }
+
+    public function image() : string
+    {
+        return $this->image ?? '';
+    }
+
+    public function classes() : string
+    {
+        return $this->classes ?? '';
+    }
+
+    public function dataUrl() : string
+    {
+        return $this->url ?? '';
+    }
+
+    public function pageSize() : integer
+    {
+        // TODO Get default from config file
+        return $this->pagination ?? 10;
+    }
 
     public function buildForms(iterable $view) : iterable
     {

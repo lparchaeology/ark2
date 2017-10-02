@@ -208,7 +208,9 @@ abstract class Element implements ElementInterface
 
     protected function buildState($data, iterable $state) : iterable
     {
-        $state['name'] = $this->name();
+        if (!isset($state['name'])) {
+            $state['name'] = $this->name();
+        }
         $state['mode'] = $this->displayMode($state['mode']);
         $state['template'] = $this->template();
         return $state;

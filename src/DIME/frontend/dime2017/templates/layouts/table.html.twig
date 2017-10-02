@@ -55,8 +55,6 @@
                     {% endif %}
                     {% for child in children %}
                         {% set child = child | merge({'data' : item.property(child.state.name) }) %}
-                        {% set state = child.state | merge({'label': false}) %}
-                        {% set child = child | merge({'state' : state }) %}
                         <td>
                             <span class="cell-label">{{ child.state.keyword | translate }}</span>
                             {{ child.element.renderView(child, forms, form) | raw }}

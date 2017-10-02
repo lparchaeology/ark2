@@ -220,6 +220,7 @@ class Cell implements ElementInterface
         $view['data'] = $parent['data'];
         $view['options'] = array_replace_recursive($parent['options'], $this->options());
         $view['children'] = [];
+        //dump($view);
         return $this->element->buildView($view);
     }
 

@@ -78,7 +78,7 @@ class SiteCreateCommand extends DatabaseCommand
             'geos' => 'Use GEOS (processing only, no indexing)',
             'none' => 'No geospatial processing',
         ];
-        $spatial = $this->askChoice('Please choose a geospatial indexing/processing option', $strategy, 0);
+        $spatial = $this->askChoice('Please choose a geospatial indexing/processing option', $spatial, 0);
 
         foreach (['core', 'data', 'spatial', 'user'] as $db) {
             $config['connections'][$db]['dbname'] = $site.'_ark_'.$db;
