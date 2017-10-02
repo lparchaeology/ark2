@@ -35,64 +35,7 @@ use ARK\ORM\ClassMetadataBuilder;
 
 class Grid extends Element
 {
-    use GroupTrait;
-
-    protected $grid;
-
-    public function rowCount() : int
-    {
-        return count($this->grid());
-    }
-
-    public function columnCount(int $row) : int
-    {
-        return count($this->row($row));
-    }
-
-    public function cellCount(int $row, int $col) : int
-    {
-        return count($this->column($row, $col));
-    }
-
-    public function grid() : iterable
-    {
-        if ($this->grid === null) {
-            $this->grid = [];
-            foreach ($this->cells as $cell) {
-                $this->grid[$cell->row()][$cell->col()][$cell->seq()] = $cell;
-            }
-        }
-        return $this->grid;
-    }
-
-    public function row(int $row) : iterable
-    {
-        if ($row < 0 || $row >= count($this->grid())) {
-            return [];
-        }
-        return $this->grid[$row];
-    }
-
-    public function column(int $row, int $col) : iterable
-    {
-        if ($row < 0 || $row >= count($this->grid())) {
-            return [];
-        }
-        if ($col < 0 || $col >= count($this->grid[$row])) {
-            return [];
-        }
-        return $this->grid[$row][$col];
-    }
-
-    public function columnWidth(int $row, int $col) : ?int
-    {
-        $column = $this->column($row, $col);
-        if ($column === []) {
-            return null;
-        }
-        reset($column);
-        return current($column)->width();
-    }
+    use GridTrait;
 
     public static function loadMetadata(ClassMetadata $metadata) : void
     {

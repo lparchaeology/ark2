@@ -35,8 +35,6 @@ use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\Vocabulary\Term;
 use ARK\Workflow\Permission;
-use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormView;
 
 class Page extends Element
 {
@@ -93,7 +91,7 @@ class Page extends Element
         //dump($parent);
         $view = parent::buildView($parent);
         if ($this->content()) {
-            $view['children'] = [$this->content()->buildView($view)];
+            $view['children'][] = $this->content()->buildView($view);
         }
         //dump($view);
         return $view;
@@ -103,18 +101,19 @@ class Page extends Element
     {
         //dump('PAGE FORMS : '.$this->id());
         //dump($view);
-        return $this->content() ? $this->content()->buildForms($view) : [];
+        $child = $view['children'][0] ?? [];
+        return isset($child['element']) ? $child['element']->buildForms($child) : [];
     }
 
-    public function createFormViews(iterable $view, iterable $forms) : iterable
+    public function createFormViews(iterable $forms) : iterable
     {
-        $view['forms'] = [];
+        $views = [];
         foreach ($forms as $name => $form) {
             if ($form) {
-                $view['forms'][$name] = $form->createView();
+                $views[$name] = $form->createView();
             }
         }
-        return $view;
+        return $views;
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
@@ -156,17 +155,7 @@ class Page extends Element
             // TODO What?
         }
         $state['mode'] = $mode;
-
         $state['page'] = $this;
         return $state;
-    }
-
-    protected function buildContext(iterable $view, FormView $form = null) : iterable
-    {
-        $view = parent::buildContext($view, $form);
-        $view['page'] = $this;
-        $view['layout'] = $this->content();
-        $view['form'] = $form;
-        return $view;
     }
 }

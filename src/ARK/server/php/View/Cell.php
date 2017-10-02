@@ -215,6 +215,7 @@ class Cell implements ElementInterface
     {
         //dump('BUILD CELL VIEW : '.$this->element->name());
         //dump($parent);
+        $view['element'] = $parent['element'];
         $view['state'] = $this->buildState($parent['state'], $parent['data']);
         $view['data'] = $parent['data'];
         $view['options'] = array_replace_recursive($parent['options'], $this->options());
@@ -234,10 +235,10 @@ class Cell implements ElementInterface
         $this->element->buildForm($view, $builder);
     }
 
-    public function renderView(iterable $view, FormView $form = null) : string
+    public function renderView(iterable $view, iterable $forms = [], FormView $form = null) : string
     {
         //dump('RENDER CELL VIEW : '.$this->element->id());
-        return $this->element->renderView($view, $form);
+        return $this->element->renderView($view, $forms, $form);
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
@@ -296,7 +297,9 @@ class Cell implements ElementInterface
     protected function buildState(iterable $state, $data) : iterable
     {
         $state['name'] = $this->name;
-        $state['label'] = $this->label;
+        if ($this->label !== null) {
+            $state['label'] = $this->label;
+        }
         $state['help'] = $this->help;
         $state['placeholder'] = $this->placeholder;
         $state['choices'] = $this->choices;

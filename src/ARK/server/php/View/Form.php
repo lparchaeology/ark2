@@ -37,35 +37,32 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class Form extends Element
 {
-    use GroupTrait;
+    use GridTrait;
 
     protected $method = '';
     protected $action = '';
-    protected $formType = '';
 
     public function formMethod() : string
     {
-        return $this->method;
+        return $this->method ?? '';
     }
 
     public function formAction() : string
     {
-        return $this->action;
-    }
-
-    public function formType() : string
-    {
-        return $this->formType;
+        return $this->action ?? '';
     }
 
     public function buildForms(iterable $view) : iterable
     {
         //dump('BUILD FORMS : '.$this->id().' '.$this->name());
         //dump($view);
-        $name = $view['state']['name'];
-        $builderView = $view;
-        $builderView['options']['attr']['id'] = $name;
-        $builder = $this->formBuilder($name, $view['data'], $builderView);
+        if ($view['state']['mode'] === 'deny') {
+            return [];
+        }
+        $name = $view['state']['name'] ?? '';
+        $options = $view['options'];
+        $options['attr']['id'] = $name;
+        $builder = $this->formBuilder($name, $view['data'], $options);
         if ($this->method) {
             $builder->setMethod($this->method);
         }
@@ -83,8 +80,12 @@ class Form extends Element
         if ($view['state']['mode'] === 'deny') {
             return;
         }
-        foreach ($this->cells() as $cell) {
-            $cell->buildForm($view, $builder);
+        foreach ($view['children'] as $row) {
+            foreach ($row as $col) {
+                foreach ($col as $child) {
+                    $child['element']->buildForm($child, $builder);
+                }
+            }
         }
     }
 

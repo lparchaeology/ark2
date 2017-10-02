@@ -6,7 +6,7 @@
     {% if children is defined %}
 
         {% for child in children %}
-            {{ child.element.renderView(child) | raw }}
+            {{ child.element.renderView(child, forms, form) | raw }}
         {% endfor %}
 
     {% elseif content[2] is defined %}

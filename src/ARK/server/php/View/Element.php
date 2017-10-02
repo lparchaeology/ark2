@@ -81,18 +81,12 @@ abstract class Element implements ElementInterface
 
     public function template() : string
     {
-        if ($this->template) {
-            return $this->template;
-        }
-        return $this->type->template();
+        return $this->template ?? $this->type->template() ?? '';
     }
 
     public function formType() : string
     {
-        if ($this->formType) {
-            return $this->formType;
-        }
-        return $this->type->formType();
+        return $this->formType ?? $this->type->formType() ?? '';
     }
 
     public function cells() : iterable
@@ -108,15 +102,11 @@ abstract class Element implements ElementInterface
         $view['state'] = $this->buildState($parent['data'], $parent['state']);
         $view['data'] = $this->buildData($parent['data'], $view['state']);
         $view['options'] = $this->buildOptions($view['data'], $view['state'], $parent['options']);
-        $children = [];
-        foreach ($this->cells() as $cell) {
-            $children[] = $cell->buildView($view);
-        }
-        $view['children'] = $children;
+        $view['children'] = $this->buildChildren($view);
         if ($view['state']['label']) {
             $view['label'] = $view['state']['keyword'] ?? $this->keyword();
         } else {
-            $view['label'] = null;
+            $view['label'] = $view['state']['label'];
         }
         if ($view['state']['help'] && $view['state']['modus'] === 'active') {
             $view['help'] = $view['state']['keyword'] ?? $this->keyword();
@@ -143,7 +133,7 @@ abstract class Element implements ElementInterface
         $builder->add($elementBuilder);
     }
 
-    public function renderView(iterable $view, FormView $form = null) : string
+    public function renderView(iterable $view, iterable $forms = [], FormView $form = null) : string
     {
         //dump('RENDER VIEW : '.get_class($this).' '.$this->id().' '.$this->keyword());
         //dump($view);
@@ -151,7 +141,7 @@ abstract class Element implements ElementInterface
         if ($view['state']['mode'] === 'deny') {
             return '';
         }
-        $view = $this->buildContext($view, $form);
+        $view = $this->buildContext($view, $forms, $form);
         //dump($view);
         return Service::view()->renderView($view['state']['template'], $view);
     }
@@ -248,11 +238,17 @@ abstract class Element implements ElementInterface
         return $options;
     }
 
-    protected function buildContext(iterable $view, FormView $form = null) : iterable
+    protected function buildChildren(iterable $view) : iterable
     {
-        $name = $view['state']['name'];
+        return [];
+    }
+
+    protected function buildContext(iterable $view, iterable $forms = [], FormView $form = null) : iterable
+    {
+        $view['forms'] = $forms;
+        $name = $view['state']['name'] ?? '';
         if ($form === null) {
-            $view['form'] = ($view['state']['forms'][$name] ?? null);
+            $view['form'] = ($view['forms'][$name] ?? null);
         } else {
             $view['form'] = ($form[$name] ?? $form);
         }

@@ -33,15 +33,12 @@ use ARK\Actor\Actor;
 use ARK\Form\Type\StaticType;
 use ARK\Model\Item;
 use ARK\Model\KeywordTrait;
-use ARK\Model\LocalText;
 use ARK\Model\Property;
 use ARK\Model\Schema\SchemaAttribute;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
 use ARK\ORM\ORM;
 use ARK\Service;
-use ARK\Vocabulary\Term;
-use ARK\Workflow\Event;
 use IntlDateFormatter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -128,72 +125,6 @@ class Field extends Element
     public function keyword() : ?string
     {
         return $this->keyword ?? $this->attribute->keyword();
-    }
-
-    // FIXME Should probably have some way to use FormTypes here to render 'static' mode
-    // TODO May actually just be able to use renderView() now?
-    public function renderStaticView($data, iterable $state) : string
-    {
-        //dump('RENDER FIELD '.$this->id().' '.$this->keyword());
-        $state = $this->buildState($data, $state);
-        if ($state['mode'] === 'deny') {
-            return '';
-        }
-        $data = $this->buildData($data, $state);
-        $value = '';
-        if ($data instanceof Item) {
-            $data = $data->property($this->attribute()->name());
-        }
-        if ($data instanceof Property) {
-            $value = $data->value();
-            if (!$value || $value === $this->attribute()->emptyValue()) {
-                return '';
-            }
-            if ($this->attribute()->hasMultipleOccurrences() && is_array($value)) {
-                $value = $value[0];
-            }
-            if (is_array($value)) {
-                if ($this->display) {
-                    $value = $value[$this->display];
-                } elseif (isset($value[$this->attribute()->dataclass()->valueName()])) {
-                    $value = $value[$this->attribute()->dataclass()->valueName()];
-                } elseif (isset($value['subtype'])) {
-                    $value = $value['subtype'];
-                }
-            }
-            if ($value instanceof Actor) {
-                return $value->property('fullname')->value()->content();
-            }
-            if ($value instanceof Event) {
-                $class = $value->property('class')->value();
-                if ($class instanceof Term) {
-                    return Service::translate($class->keyword());
-                }
-                return $class;
-            }
-            if ($value instanceof Item) {
-                if (isset($this->display)) {
-                    return $value->property($this->display)->value()->content();
-                }
-                return $value->property('id')->serialize();
-            }
-            if ($value instanceof LocalText) {
-                return $value->content();
-            }
-            if ($value instanceof Term) {
-                return Service::translate($value->keyword());
-            }
-            if ($value instanceof \DateTime) {
-                return $value->format('Y-m-d');
-            }
-            if ($this->attribute()->hasVocabulary()) {
-                return Service::translate($value);
-            }
-        }
-        if (is_array($value)) {
-            return 'ERROR';
-        }
-        return $value ?? '';
     }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
@@ -383,17 +314,6 @@ class Field extends Element
         return $options;
     }
 
-    protected function buildContext(iterable $view, FormView $form = null) : iterable
-    {
-        $view = parent::buildContext($view, $form);
-        $view['field'] = $this;
-        if (!$view['form']) {
-            $builder = $this->formBuilder($view['state']['name'], $view['data'], $view['options']);
-            $view['form'] = $builder->getForm()->createView();
-        }
-        return $view;
-    }
-
     protected function valueOptions(iterable $state) : iterable
     {
         if ($state['value']['modus'] === 'static' || $state['value']['modus'] === 'hidden') {
@@ -532,6 +452,17 @@ class Field extends Element
             }
         }
         return $options;
+    }
+
+    protected function buildContext(iterable $view, iterable $forms = [], FormView $form = null) : iterable
+    {
+        $view = parent::buildContext($view, $forms, $form);
+        $view['field'] = $this;
+        if (!$view['form']) {
+            $builder = $this->formBuilder($view['state']['name'], $view['data'], $view['options']);
+            $view['form'] = $builder->getForm()->createView();
+        }
+        return $view;
     }
 
     protected function concat(iterable $options, string $option, string $value) : string

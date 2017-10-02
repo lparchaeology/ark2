@@ -51,7 +51,6 @@
     <div class="carouselextratext_{{ key }}">
         {% for child in children %}
             {% set child = child | merge({'data' : item }) %}
-            {% dump(child) %}
             <div class="homefield">{{ child.element.renderView(child) | raw }}</div>
         {% endfor %}
     </div>

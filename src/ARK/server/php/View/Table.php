@@ -32,10 +32,11 @@ namespace ARK\View;
 use ARK\Model\KeywordTrait;
 use ARK\ORM\ClassMetadata;
 use ARK\ORM\ClassMetadataBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 
 class Table extends Element
 {
-    use GroupTrait;
+    use GridTrait;
 
     protected $caption;
     protected $header;
@@ -54,6 +55,32 @@ class Table extends Element
     protected $selection;
     protected $classes;
     protected $url;
+
+    public function buildForms(iterable $view) : iterable
+    {
+        //dump('TABLE FORMS : '.$this->id());
+        //dump($view);
+        if ($view['state']['mode'] === 'deny') {
+            return [];
+        }
+        $forms = [];
+        foreach ($view['children'] as $child) {
+            $forms = array_merge($forms, $child['element']->buildForms($child));
+        }
+        return $forms;
+    }
+
+    public function buildForm(iterable $view, FormBuilderInterface $builder) : void
+    {
+        //dump('TABLE FORM : '.$this->id());
+        //dump($view);
+        if ($view['state']['mode'] === 'deny') {
+            return;
+        }
+        foreach ($view['children'] as $child) {
+            $child['element']->buildForm($child, $builder);
+        }
+    }
 
     public static function loadMetadata(ClassMetadata $metadata) : void
     {
@@ -85,5 +112,17 @@ class Table extends Element
 
         // Associations
         $builder->addOneToMany('cells', Cell::class, 'group');
+    }
+
+    protected function buildChildren(iterable $view) : iterable
+    {
+        $children = [];
+        foreach ($this->cells as $cell) {
+            $cellView = $cell->buildView($view);
+            if ($cellView) {
+                $children[] = $cellView;
+            }
+        }
+        return $children;
     }
 }

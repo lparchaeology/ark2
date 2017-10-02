@@ -44,5 +44,5 @@ interface ElementInterface
 
     public function buildForm(iterable $view, FormBuilderInterface $builder) : void;
 
-    public function renderView(iterable $view, FormView $form = null) : string;
+    public function renderView(iterable $view, iterable $forms = [], FormView $form = null) : string;
 }

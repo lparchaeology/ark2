@@ -1,6 +1,6 @@
 {# ARK GridLayout template for standard Bootstrap grid #}
 
-{% if element.type.id == 'form' %}
+{% if element.type.id == 'form' and form %}
     {{ form_start(form) }}
 {% endif %}
 
@@ -13,17 +13,17 @@
     </div>
 {% endif %}
 
-{% for rdx, row in element.grid %}
+{% for row in children %}
 
     {% set rowlength = row | length %}
     {% if rowlength > 1 %}
         <div class="row">
     {% endif %}
 
-    {% for cdx, col in row %}
+    {% for col in row %}
 
-        {% if element.columnWidth(rdx, cdx) %}
-            <div class="col-md-{{- element.columnWidth(rdx, cdx) -}}" >
+        {% if col[0]['state']['width'] is defined %}
+            <div class="col-md-{{- col[0]['state']['width'] -}}" >
         {% elseif rowlength > 12 %}
             <div class="col-md-12">
         {% elseif rowlength > 6 %}
@@ -36,14 +36,15 @@
             <div class="col-md-4">
         {% elseif rowlength == 2 %}
             <div class="col-md-6">
-        {% elseif rowlength == 1 %}
-            <div class="col-md-12">
         {% endif %}
 
-        {% for idx, cell in col %}
-            {{ cell.renderView(data, state, form)|raw }}
+        {% for child in col %}
+            {{ child.element.renderView(child, forms, form) | raw }}
         {% endfor %}
-        </div>
+
+        {% if rowlength > 1 %}
+            </div>
+        {% endif %}
     {% endfor %}
 
     {% if rowlength > 1 %}
@@ -52,6 +53,6 @@
 
 {% endfor %}
 
-{% if element.type.id == 'form' %}
+{% if element.type.id == 'form' and form %}
     {{ form_end(form) }}
 {% endif %}

@@ -59,6 +59,7 @@ abstract class PageController extends Controller
             throw new AccessDeniedException('core.error.access.denied');
         }
         $forms = $page->buildForms($view);
+        //dump($forms);
         if ($forms && $request->getMethod() === 'POST') {
             $parms = $request->request->all();
             $parms = $this->fixStaticFields($parms);
@@ -85,9 +86,8 @@ abstract class PageController extends Controller
                 Service::view()->addErrorFlash($e->getMessage());
             }
         }
-        $view = $page->createFormViews($view, $forms);
-        dump($view);
-        $response = new Response($page->renderView($view));
+        $forms = $page->createFormViews($forms);
+        $response = new Response($page->renderView($view, $forms));
         //dump($response)
         return $response;
     }

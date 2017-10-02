@@ -142,11 +142,15 @@ class Widget extends Element
         return $options;
     }
 
-    protected function buildContext(iterable $view, FormView $form = null) : iterable
+    protected function buildContext(iterable $view, iterable $forms = [], FormView $form = null) : iterable
     {
-        $context = parent::buildContext($view, $form);
-        $context['widget'] = $this;
-        return $context;
+        $view = parent::buildContext($view, $forms, $form);
+        $view['widget'] = $this;
+        if (!$view['form']) {
+            $builder = $this->formBuilder($view['state']['name'], $view['data'], $view['options']);
+            $view['form'] = $builder->getForm()->createView();
+        }
+        return $view;
     }
 
     private function isButton()

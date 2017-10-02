@@ -25,14 +25,12 @@
             <tr>
                 <th class="checkedhead" data-field="checked" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
                 {% if items[0] is defined and items[0].hasAttribute(state.image) %}
-                    <th class="thumbimagehead" data-field="{{state.image}}" data-title="{{state.image}}" data-sortable="false"></th>
+                    <th class="thumbimagehead" data-field="{{ state.image }}" data-title="{{ state.image }}" data-sortable="false"></th>
                 {% endif %}
                 {% for child in children %}
-                    {% set field = child.element %}
-                    <th data-field="{{ field.id }}" data-title="{{ field.keyword }}" data-sortable="true" data-sorter="alphanum" data-visible="{{ cell.visible }}" data-card-visible="false">
-                        {{ field.keyword | translate }}
+                    <th data-field="{{ child.element.id }}" data-title="{{ child.state.keyword | translate }}" data-sortable="true" data-sorter="alphanum" data-visible="{{ child.state.visible }}" data-card-visible="false">
+                        {{ child.state.keyword | translate }}
                     </th>
-                    {% do form[field.formName].setRendered %}
                 {% endfor %}
                 <th class="controlshead" data-field="controls" data-sortable="false" data-switchable="false" data-card-visible="false"></th>
             </tr>
@@ -56,11 +54,12 @@
                         </td>
                     {% endif %}
                     {% for child in children %}
-                        {% set child = child | merge({'data' : item }) %}
-                        {% set field = child.element %}
+                        {% set child = child | merge({'data' : item.property(child.state.name) }) %}
+                        {% set state = child.state | merge({'label': false}) %}
+                        {% set child = child | merge({'state' : state }) %}
                         <td>
-                            <span class="cell-label">{{ field.keyword | translate }}</span>
-                            {{ field.renderView(child) }}
+                            <span class="cell-label">{{ child.state.keyword | translate }}</span>
+                            {{ child.element.renderView(child, forms, form) | raw }}
                         </td>
                     {% endfor %}
                     <td class="controls">
